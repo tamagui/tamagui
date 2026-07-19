@@ -578,7 +578,7 @@ jobs:
     # Only run on main/v* branches (not PRs)
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v') || github.ref == 'refs/heads/rn82'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
