@@ -245,6 +245,13 @@ Renders Dialog into appropriate container. Beyond
 Main container for Dialog content, this is where you should apply animations.
 `Dialog.Content` no longer accepts the old no-op `size` variant in v3.
 
+To sit the content a level above the page, wrap it in `theme="surface2"` (see
+[Surfaces and levels](/docs/core/surfaces)):
+
+```tsx
+<Dialog.Content theme="surface2">{/* ... */}</Dialog.Content>
+```
+
 Beyond [Tamagui Props](/docs/intro/props), adds:
 
 <PropsTable

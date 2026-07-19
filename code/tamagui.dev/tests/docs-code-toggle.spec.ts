@@ -89,3 +89,44 @@ test.describe('docs 3-mode code toggle', () => {
     await expect(page).not.toHaveURL(/syntax=(tailwind|unstyled)/)
   })
 })
+
+// component-doc smoke: all three modes render on real component pages (the task
+// asks for Button + one more). asserts each mode's rendered code and the
+// unstyled/tailwind transforms actually apply on a component page, not just the
+// upgrade guide.
+for (const component of ['/ui/button', '/ui/dialog']) {
+  test.describe(`docs 3-mode toggle renders on ${component}`, () => {
+    test('styled default, then unstyled rewrites the import', async ({
+      page,
+      context,
+    }) => {
+      await page.goto(component)
+      await expect(page.getByTestId('docs-syntax')).toContainText('Styled')
+      const styled = await codeText(page)
+      expect(styled).toContain("'tamagui'")
+
+      await page.getByTestId('docs-syntax').click()
+      await page.getByTestId('docs-syntax-unstyled').click()
+      await page.waitForURL(/syntax=unstyled/)
+
+      const unstyled = await codeText(page)
+      expect(unstyled).not.toEqual(styled)
+      expect(unstyled).toContain('tamagui/unstyled')
+
+      const cookie = (await context.cookies()).find((c) => c.name === 'tamaguiSyntax')
+      expect(cookie?.value).toBe('unstyled')
+    })
+
+    test('tailwind transforms the code', async ({ page }) => {
+      await page.goto(component)
+      const styled = await codeText(page)
+
+      await page.getByTestId('docs-syntax').click()
+      await page.getByTestId('docs-syntax-tailwind').click()
+      await page.waitForURL(/syntax=tailwind/)
+
+      await expect(page.getByTestId('docs-syntax')).toContainText('Tailwind')
+      expect(await codeText(page)).not.toEqual(styled)
+    })
+  })
+}
