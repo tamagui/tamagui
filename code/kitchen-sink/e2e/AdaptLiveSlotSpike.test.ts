@@ -46,16 +46,23 @@ async function getText(id: string) {
 //    ("Couldn't click at: 798.0,2187.0" on a 2280px screen). anchor below what
 //    you tap so the tap target ends up well inside the viewport.
 //
-//    anchor on sheet-live-slot-press-count, the last element INSIDE the sheet
-//    card, not on sheet-live-slot-source. source is the last node in the react
-//    tree but it never reaches 75% on iOS: at maximum scroll it is still clipped
-//    by the screen bottom, so the search scrolls to the end and then fails with
-//    "Unable to scroll down ... does not pass visibility percent threshold (75)".
-//    Detox's own DETOX_VISIBILITY_*.png artifact draws that clipped region.
-//    android did not care - espresso measures a view's own visible rect, so the
-//    same anchor passed there. press-count is comfortably visible at the end of
-//    content on both (iOS ~2251 of 2556, android ~2018 of 2280 with the nav bar
-//    at ~2160) and leaves both tap targets far clear of either bottom edge.
+//    the anchor has to differ per platform. this is not a hedge - each branch is
+//    a separately proven green CI run, and no single anchor satisfied both:
+//
+//    - android anchors on sheet-live-slot-source (green: run 29687908034, all
+//      four tests [OK]). anchoring on press-count instead failed with "view was
+//      <0> percent visible" even though the failure screenshot plainly shows that
+//      text on screen at ~2018 of 2280. that contradiction is unexplained - do
+//      not "fix" it from first principles without an artifact in hand.
+//    - iOS anchors on sheet-live-slot-press-count (green: run 29689674422, all
+//      five iOS jobs including auto-discovered). source is the last node in the
+//      react tree but at maximum scroll it is still clipped by the screen bottom
+//      and never reaches 75%, so the search exhausts: "Unable to scroll down ...
+//      does not pass visibility percent threshold (75)". Detox's own
+//      DETOX_VISIBILITY_*.png artifact draws that clipped region.
+//
+//    the tests and every assertion are identical on both platforms. only which
+//    element the scroll stops at differs.
 //
 // 4. match buttons by testID, never by rendered label. Button runs children
 //    through wrapChildrenInText, which wraps EACH string child in its own Text,
@@ -63,7 +70,11 @@ async function getText(id: string) {
 //    android TextViews ("increment " and "slot"). espresso's withText never sees
 //    a joined "increment slot".
 async function scrollToEnd() {
-  await waitFor(element(by.id('sheet-live-slot-press-count')))
+  const anchor =
+    device.getPlatform() === 'android'
+      ? 'sheet-live-slot-source'
+      : 'sheet-live-slot-press-count'
+  await waitFor(element(by.id(anchor)))
     .toBeVisible()
     .whileElement(by.id('adapt-live-slot-scroll'))
     .scroll(250, 'down')
