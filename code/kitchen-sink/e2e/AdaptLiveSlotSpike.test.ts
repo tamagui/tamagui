@@ -21,13 +21,21 @@ async function getText(id: string) {
 // the case is taller than a phone screen; scroll an element into view before
 // tapping it (web tests get this for free via Playwright auto-scroll).
 //
-// never use scrollTo('top'/'bottom') against adapt-live-slot-scroll. that action
-// scrolls in a loop until it detects the content edge, and this case never gives
-// it a stable edge to find: LiveSlotPublisher republishes on every render and
-// notifies from a layout effect, so each scroll-driven layout schedules another
-// render of the slot subtree. on iOS that loop never returns - the app stops
-// answering Detox entirely, and every later request in the file times out.
-// bounded `scroll(250, 'down')` swipes are safe because each one terminates.
+// never use scrollTo('top'/'bottom') against adapt-live-slot-scroll.
+//
+// observed (PR #4140, run 29678604567): the iOS app answered every Detox request
+// up to `scrollTo top` on this ScrollView, then never answered another one. All
+// four tests in this file timed out at 180s and the iOS Detox job failed outright.
+// bounded `scroll(250, 'down')` swipes do not do this.
+//
+// inferred, NOT proven: scrollTo scrolls in a loop until it detects the content
+// edge, and this case likely never presents a stable one - LiveSlotPublisher
+// republishes on every render and notifies from a layout effect, so each
+// scroll-driven layout schedules another render of the slot subtree. scrollTo was
+// used in exactly one place in this whole e2e suite (here), so there is no
+// evidence separating "Detox scrollTo is broken on iOS" from "it is broken
+// against this particular always-relayouting case". If you need scrollTo
+// elsewhere, do not assume it is safe.
 //
 // always match on testID, never on a button's rendered label: Button runs its
 // children through wrapChildrenInText, which wraps EACH string child in its own
