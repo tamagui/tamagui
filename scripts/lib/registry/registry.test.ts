@@ -1,6 +1,15 @@
 import { describe, expect, test } from 'bun:test'
+// the real A1 vocabulary from style-grammar's committed source (see emit.ts) —
+// pure source read so the registry CI job needs no workspace build.
+import {
+  stateToPseudoProp,
+  stateNames,
+  stateToSelector,
+  stateToModifier,
+} from '../../../code/core/style-grammar/src/states'
 import { extractImportSpecifiers, classifyDependencies, packageNameOf } from './deps'
-import { reprefixNames, buildItem, type Skin } from './core'
+import { reprefixNames, buildItem, loadSkin, type Skin } from './core'
+import { buildRegistry } from './emit'
 import { deriveStates, type StateTables } from './states-derive'
 
 describe('extractImportSpecifiers', () => {
@@ -220,5 +229,56 @@ describe('deriveStates', () => {
   test('does not match a state word inside a comment or string', () => {
     const src = `// open the sheet\nconst label = 'checked out'\nstyled(F, {})`
     expect(deriveStates(src, TABLES)).toEqual([])
+  })
+})
+
+// the reassembly join: the generator now feeds the REAL @tamagui/style-grammar
+// vocabulary (not the fixture above) into deriveStates + buildItem, so these
+// tests run against the real tables and the real skin sources. they prove the
+// A1 wiring is live end to end — table shapes match what deriveStates expects,
+// derivation matches the three authoring tiers on the real skins, and every
+// emitted state joins back to a Tailwind modifier.
+const REAL_TABLES: StateTables = {
+  pseudoProps: stateToPseudoProp,
+  allStates: stateNames,
+  selectors: stateToSelector,
+}
+
+describe('A1 reassembly join (real style-grammar tables + real skins)', () => {
+  test('the injected table shapes match what deriveStates consumes', () => {
+    // guards the exact failure the reassembly could reintroduce: a states.ts
+    // export renamed/reshaped so the generator silently derives nothing.
+    expect(Object.values(stateToPseudoProp)).toContain('pressStyle')
+    expect(stateNames).toContain('open')
+    expect(stateToSelector.selected).toBe('[data-state="active"]')
+  })
+
+  test('source-scanned tiers derive from the real Button + Sheet skin source', async () => {
+    const button = await loadSkin('Button')
+    // tier 1 pseudo-prop (pressStyle) + tier 2 canonical variant (disabled)
+    expect(deriveStates(button.source, REAL_TABLES)).toEqual(['disabled', 'pressed'])
+
+    const sheet = await loadSkin('Sheet')
+    // tier 2 canonical `open` variant — the blessed component-tier form
+    expect(deriveStates(sheet.source, REAL_TABLES)).toEqual(['open'])
+  })
+
+  test('buildRegistry emits uniform canonical meta.states across the real skins', async () => {
+    const { registry } = await buildRegistry()
+    const states = Object.fromEntries(registry.items.map((i) => [i.name, i.meta?.states]))
+    // source-scanned + extraStates-merged, all canonical A1 names
+    expect(states.button).toEqual(['disabled', 'pressed'])
+    expect(states.sheet).toEqual(['open'])
+    // extraStates escape hatch: on-state via activeStyle -> checked
+    expect(states.togglegroup).toEqual(['checked', 'pressed'])
+    // extraStates: v2-compat `active` selection prop -> selected
+    expect(states.listitem).toEqual(['disabled', 'pressed', 'selected'])
+
+    // the join: every state any item emits resolves to a Tailwind modifier.
+    for (const item of registry.items) {
+      for (const state of item.meta?.states ?? []) {
+        expect(stateToModifier[state], `${item.name} state ${state}`).toBeTruthy()
+      }
+    }
   })
 })

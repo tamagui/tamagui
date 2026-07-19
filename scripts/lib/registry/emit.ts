@@ -12,7 +12,15 @@ import { discoverSkins, loadSkin, buildItem, renderConsumerCopy, type Skin } fro
 import { validateRegistry } from './validate'
 import type { StateTables } from './states-derive'
 import type { Registry, RegistryItem } from './types'
-import { stateToPseudoProp, stateNames, stateToSelector } from '@tamagui/style-grammar'
+// import the A1 vocabulary from style-grammar's committed source, not the built
+// package: the registry `generate` CI job does pure source reads (no workspace
+// build), and the generator already reads skin SOURCE across packages. states.ts
+// is pure data with no imports.
+import {
+  stateToPseudoProp,
+  stateNames,
+  stateToSelector,
+} from '../../../code/core/style-grammar/src/states'
 
 const JSON_INDENT = 2
 

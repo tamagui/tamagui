@@ -50,3 +50,22 @@ test('preserves close behavior through the copied parts', async ({ page }) => {
   await expect(container).toHaveAttribute('data-state', 'closed')
   await expect(page.getByTestId('sheet-skin-overlay')).toHaveCount(0)
 })
+
+// A1 component-state, end to end on web: the copied Sheet skin, driven only by
+// the public behavior, emits the canonical `open` web attribute the vocabulary
+// maps that state to (stateToSelector.open === '[data-state="open"]', and the
+// registry's meta.states=['open'] for sheet). resolving the container BY that
+// attribute selector — the exact form a shadcn/Tailwind consumer's
+// `data-[state=open]:` class uses — proves the state resolves through one
+// data-state vocabulary, not a per-component spelling.
+test('the copied skin resolves the canonical open-state web selector', async ({
+  page,
+}) => {
+  const openContainer = `[data-testid="sheet-skin-container"][data-state="open"]`
+
+  await page.getByTestId('sheet-skin-open').click()
+  await expect(page.locator(openContainer)).toBeVisible()
+
+  await page.getByTestId('sheet-skin-close').click()
+  await expect(page.locator(openContainer)).toHaveCount(0)
+})

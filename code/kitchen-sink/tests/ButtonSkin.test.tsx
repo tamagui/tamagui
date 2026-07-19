@@ -25,6 +25,11 @@ test('disables press and focus behavior', async ({ page }) => {
   await expect(button).toBeDisabled()
   await expect(button).toHaveAttribute('aria-disabled', 'true')
   await expect(button).toHaveAttribute('tabindex', '-1')
+  // A1 canonical `disabled` state (registry meta.states=['disabled','pressed']
+  // for button) styles the copied skin: the `variants: { disabled: { true } }`
+  // block dims the frame. proves the state modifier resolves to real styling,
+  // not just the behavior's aria/tabindex.
+  await expect(button).toHaveCSS('opacity', '0.35')
 
   await button.evaluate((element) => {
     ;(element as HTMLElement).click()
