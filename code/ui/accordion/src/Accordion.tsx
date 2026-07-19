@@ -1,7 +1,7 @@
 import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, GetRef, TamaguiElement } from '@tamagui/core'
 import { View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -581,27 +581,110 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
 const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
-  const [measuredHeight, setMeasuredHeight] = React.useState<number>(0)
-  const hasMeasured = measuredHeight > 0
+  const open = !!itemContext.open
 
-  // when open and not measured yet, use auto so SSR shows content
-  // once measured, use numeric height for animations
-  const height = itemContext.open ? (hasMeasured ? measuredHeight : 'auto') : 0
+  // at rest an open item renders auto height with the child in normal flow, so
+  // content and viewport changes stay fluid with no JS involved. any open/close
+  // animation switches to a measured pixel height over an absolutely positioned
+  // child, animates, and releases back to auto once the outer settles at its
+  // target. closing from rest pins the current measured height for one commit
+  // (so drivers see a numeric start value) before targeting 0.
+  const [fixed, setFixed] = React.useState(!open)
+  const [pinned, setPinned] = React.useState(false)
+  const [contentHeight, setContentHeight] = React.useState(0)
+  const outerRef = React.useRef<TamaguiElement | null>(null)
+  const innerRef = React.useRef<TamaguiElement | null>(null)
+  const composedRef = useComposedRefs(outerRef, ref)
+  const lastOuterHeightRef = React.useRef(0)
+  const settleTimerRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined
+  )
+  const prevOpenRef = React.useRef(open)
 
-  // for SSR: when open but not yet measured, use static positioning so content
-  // contributes to parent height. after measurement, use absolute for animations.
-  const shouldAbsolutePosition = hasMeasured || !itemContext.open
+  if (prevOpenRef.current !== open) {
+    prevOpenRef.current = open
+    clearTimeout(settleTimerRef.current)
+    if (!fixed) {
+      setFixed(true)
+      setPinned(true)
+    }
+  }
+
+  // the pin commit paints the current height as a pixel value. flush styles,
+  // then retarget in a second pre-paint commit so drivers animate from the
+  // pinned number instead of jumping out of auto.
+  useIsomorphicLayoutEffect(() => {
+    if (!pinned) return
+    if (isWeb) {
+      // reading layout forces the style flush; the value itself is unused
+      void (outerRef.current as HTMLElement | null)?.offsetHeight
+    }
+    setPinned(false)
+  }, [pinned])
+
+  React.useEffect(() => () => clearTimeout(settleTimerRef.current), [])
+
+  // measure the just-mounted content synchronously in the same commit so the
+  // open animation retargets immediately instead of waiting a layout-event
+  // roundtrip (ResizeObserver on web, an onLayout bridge hop on native — that
+  // hop alone costs a few hundred ms on a dev simulator). getBoundingClientRect
+  // exists on web elements and on Fabric host components; anywhere it doesn't,
+  // the onLayout below still owns measurement.
+  useIsomorphicLayoutEffect(() => {
+    if (!fixed || !open) return
+    const el = innerRef.current as {
+      getBoundingClientRect?: () => { height: number }
+    } | null
+    const naturalHeight = el?.getBoundingClientRect?.().height
+    if (naturalHeight && naturalHeight > 0 && naturalHeight !== contentHeight) {
+      setContentHeight(naturalHeight)
+    }
+  })
+
+  // rest renders an explicit 'auto' rather than removing the height style:
+  // removal makes drivers clear the key themselves (reanimated emits a null
+  // clear-value on native whose yoga semantics are driver-internal), while a
+  // committed 'auto' is deterministic on every driver and platform
+  const height = fixed
+    ? pinned
+      ? lastOuterHeightRef.current
+      : open
+        ? contentHeight
+        : 0
+    : ('auto' as const)
 
   return (
-    <View ref={ref} height={height} position="relative" {...rest}>
+    <View
+      ref={composedRef}
+      position="relative"
+      {...rest}
+      height={height}
+      overflow="hidden"
+      onLayout={({ nativeEvent }) => {
+        const outerHeight = nativeEvent.layout.height
+        lastOuterHeightRef.current = outerHeight
+        // release to auto shortly after the animated outer stays at the open
+        // target: layout events only fire on change, so a quiet 100ms inside
+        // the target band means the animation settled (an out-of-band event —
+        // a spring overshooting through the target — cancels the release)
+        clearTimeout(settleTimerRef.current)
+        if (fixed && !pinned && open && contentHeight > 0) {
+          if (Math.abs(outerHeight - contentHeight) < 1) {
+            settleTimerRef.current = setTimeout(() => setFixed(false), 100)
+          }
+        }
+      }}
+    >
       <View
-        position={shouldAbsolutePosition ? 'absolute' : 'relative'}
-        top={shouldAbsolutePosition ? 0 : undefined}
-        left={shouldAbsolutePosition ? 0 : undefined}
-        right={shouldAbsolutePosition ? 0 : undefined}
+        ref={innerRef}
+        position={fixed ? 'absolute' : 'relative'}
+        top={fixed ? 0 : undefined}
+        left={fixed ? 0 : undefined}
+        right={fixed ? 0 : undefined}
         onLayout={({ nativeEvent }) => {
-          if (nativeEvent.layout.height && nativeEvent.layout.height !== measuredHeight) {
-            setMeasuredHeight(nativeEvent.layout.height)
+          const naturalHeight = nativeEvent.layout.height
+          if (fixed && open && naturalHeight !== contentHeight) {
+            setContentHeight(naturalHeight)
           }
         }}
       >

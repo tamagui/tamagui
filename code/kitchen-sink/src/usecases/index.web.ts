@@ -71,6 +71,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./DialogSheetAdaptUnmountCase').DialogSheetAdaptUnmountCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
+  ExitStyleNewKeyCase: () => require('./ExitStyleNewKeyCase').ExitStyleNewKeyCase,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,
   FocusVisibleButtonPointer: () =>
     require('./FocusVisibleButtonPointer').FocusVisibleButtonPointer,
@@ -249,6 +250,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ToggleGroupActiveProps: () =>
     require('./ToggleGroupActiveProps').ToggleGroupActiveProps,
   ToggleGroupXGroupCase: () => require('./ToggleGroupXGroupCase').ToggleGroupXGroupCase,
+  ToggleGroupFilledActiveCase: () =>
+    require('./ToggleGroupFilledActiveCase').ToggleGroupFilledActiveCase,
+  AccordionDefaultOpenCase: () =>
+    require('./AccordionDefaultOpenCase').AccordionDefaultOpenCase,
   TooltipAnimationCase: () => require('./TooltipAnimationCase').TooltipAnimationCase,
   TooltipCase: () => require('./TooltipCase').TooltipCase,
   TooltipGlobalPatternCase: () =>

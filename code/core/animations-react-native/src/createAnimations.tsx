@@ -63,6 +63,29 @@ const colorStyleKey = {
   borderBottomColor: true,
 }
 
+// layout dimension keys. these must run on the JS driver (useNativeDriver:false)
+// because the native animated module can't drive layout props.
+const layoutStyleKey = {
+  height: true,
+  width: true,
+  minHeight: true,
+  maxHeight: true,
+  minWidth: true,
+  maxWidth: true,
+}
+
+// a color string that RN's color interpolation can actually parse. var(...),
+// calc(...) and empty strings reach createInterpolationFromStringOutputRange /
+// mapStringToNumericComponents and throw ('.map of null' / 'outputRange must
+// contain color or value with numeric component'). those must be applied as a
+// static style instead of entering interpolation.
+function isAnimatableColor(value: unknown): value is string {
+  if (typeof value !== 'string') return false
+  if (value === '') return false
+  if (value.includes('var(') || value.includes('calc(')) return false
+  return true
+}
+
 // these style keys are costly to animate and only work with native driver on Fabric
 const costlyToAnimateStyleKey = {
   borderRadius: true,
@@ -285,6 +308,14 @@ export function createAnimations<A extends AnimationsConfig>(
 
         const nonAnimatedStyle = {}
 
+        // track which animated keys/transforms the incoming style actually
+        // carries this pass, so entries that left the style can be dropped
+        // below (an Animated.Value that persisted forever would keep painting
+        // a stale pixel value, e.g. a released-to-auto accordion height)
+        const seenAnimateKeys = new Set<string>()
+        let sawTransform = false
+        let transformCount = 0
+
         for (const key in style) {
           const rawVal = style[key]
           // Resolve dynamic theme values (like $theme-dark)
@@ -295,7 +326,11 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          if (animatedStyleKey[key] == null && !costlyToAnimateStyleKey[key]) {
+          if (
+            animatedStyleKey[key] == null &&
+            !costlyToAnimateStyleKey[key] &&
+            !layoutStyleKey[key]
+          ) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -305,8 +340,23 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
+          // layout dimension keys only animate numbers — 'auto' (an open
+          // accordion at rest) and percent strings apply as static styles
+          if (layoutStyleKey[key] && typeof val !== 'number') {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+
+          // unparseable themed colors (var(), calc(), empty) crash RN
+          // interpolation — apply them as a static style instead
+          if (colorStyleKey[key] && !isAnimatableColor(val)) {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+
           if (key !== 'transform') {
             animateStyles.current[key] = update(key, animateStyles.current[key], val)
+            seenAnimateKeys.add(key)
             continue
           }
           // key: 'transform'
@@ -317,6 +367,8 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
+          sawTransform = true
+          transformCount = val.length
           for (const [index, transform] of val.entries()) {
             if (!transform) continue
             // tkey: e.g: 'translateX'
@@ -326,6 +378,22 @@ export function createAnimations<A extends AnimationsConfig>(
               [tkey]: update(tkey, currentTransform, transform[tkey]),
             }
             animatedTranforms.current = [...animatedTranforms.current]
+          }
+        }
+
+        // drop stale Animated.Values whose keys left the incoming style, so the
+        // key genuinely leaves the rendered style object (a released height goes
+        // back to auto instead of staying pinned at its last pixel value). skip
+        // while exiting (presence still animates the leaving keys) and while
+        // disabled (the loop above intentionally skips every key)
+        if (!isExiting && !isDisabled) {
+          for (const k in animateStyles.current) {
+            if (!seenAnimateKeys.has(k)) delete animateStyles.current[k]
+          }
+          if (!sawTransform) {
+            if (animatedTranforms.current.length) animatedTranforms.current = []
+          } else if (animatedTranforms.current.length > transformCount) {
+            animatedTranforms.current = animatedTranforms.current.slice(0, transformCount)
           }
         }
 
@@ -416,7 +484,8 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToValue,
-                  useNativeDriver: nativeDriver,
+                  // layout dimension keys can't run on the native driver
+                  useNativeDriver: nativeDriver && !layoutStyleKey[key],
                   ...animationConfig,
                 })
               }
@@ -515,7 +584,16 @@ export function createAnimations<A extends AnimationsConfig>(
                 [tkey]: update(tkey, currentTransform, transform[tkey]),
               }
             }
-          } else if (animatedStyleKey[key] != null || costlyToAnimateStyleKey[key]) {
+          } else if (
+            animatedStyleKey[key] != null ||
+            costlyToAnimateStyleKey[key] ||
+            layoutStyleKey[key]
+          ) {
+            // layout keys only animate numbers ('auto'/percents are static);
+            // unparseable themed colors can't be interpolated — skip both and
+            // let the next render apply them statically
+            if (layoutStyleKey[key] && typeof val !== 'number') continue
+            if (colorStyleKey[key] && !isAnimatableColor(val)) continue
             animateStyles.current[key] = update(key, animateStyles.current[key], val)
           }
         }
@@ -572,7 +650,8 @@ export function createAnimations<A extends AnimationsConfig>(
             value.stopAnimation()
             const anim = Animated[animationConfig.type || 'spring'](value, {
               toValue: animateToValue,
-              useNativeDriver: nativeDriver,
+              // layout dimension keys can't run on the native driver
+              useNativeDriver: nativeDriver && !layoutStyleKey[key],
               ...animationConfig,
             })
             ;(animationConfig.delay
