@@ -47,10 +47,13 @@ async function getText(id: string) {
 // .atIndex(0). Do not put atIndex inside a whileElement search.
 //
 // observed (PR #4140, run on c26b68c7d7): both whileElement calls failed with
-// "Got: was null" for views that demonstrably exist - test 2's own earlier
-// toExist/toHaveText on sibling views inside the same sheet subtree passed using
-// the same by.id, and every non-whileElement testElement() call in this file
-// passed. The two whileElement calls were the only failures.
+// "Got: was null" while the view they were looking for was fully on screen. The
+// Detox testFnFailure.png artifacts show the scroll had already worked and both
+// targets were rendered and visible at the moment the matcher found nothing. So
+// this is not reachability, layout, or a failed scroll - the matcher itself
+// stopped matching a visible view. Every non-whileElement testElement() call in
+// this file passed, including toExist/toHaveText on sibling views inside the
+// same sheet subtree; the two whileElement calls were the only failures.
 //
 // inferred, NOT proven (the matcher is native Java we can't read from here):
 // Detox's Android at-index matcher looks to be stateful, counting matches as
