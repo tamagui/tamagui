@@ -136,6 +136,12 @@ ThemeableStack compat shims were dropped to keep the removal decision pure.
 cutover** — they deploy as a pair, since bento main must keep building against
 tamagui v2.4.x until prod flips.
 
+Routing (2026-07-19): the toast/ThemeableStack migration landed on bento `v3`
+(e17522f); the remaining tail (createSwitch reconstruction + whatever
+build:prod surfaces next) is a dedicated lane on branch bento `v3`. The
+bento-complete site prod build is a RELEASE gate, not a merge gate for the
+tamagui component-contract PRs.
+
 ## Standing constraints
 
 - v2 release track is separate: `v2-animations-reliable` must go green before
