@@ -16,7 +16,7 @@ export default function SSRTestPage() {
 
       <Button
         data-testid="theme-light-button"
-        size="$3"
+        size="small"
         bg="$color3"
         boxShadow="inset 0 -2px 0 1px $color1"
         $theme-light={{

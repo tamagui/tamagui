@@ -1,3 +1,9 @@
+// Styled Button = the unstyled @tamagui/ui Button behavior primitive + the
+// default v2-look skin, layered here in `tamagui`. This is the single skin
+// definition: `tamagui` exports it as the default `Button`, `tamagui/unstyled`
+// exposes the unstyled primitive, and the shadcn registry item is generated
+// from this exact file (it imports @tamagui/ui and applies the skin — nothing
+// duplicated).
 import {
   ButtonFrame as ButtonBehaviorFrame,
   ButtonIcon as ButtonBehaviorIcon,
@@ -10,7 +16,7 @@ import {
   styled,
   useButton,
   withStaticProperties,
-} from 'tamagui'
+} from '@tamagui/ui'
 
 export const buttonSizes = createSizeTable(
   {
