@@ -19,7 +19,7 @@ import {
   useCreateShallowSetState,
 } from '@tamagui/core'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
@@ -426,9 +426,9 @@ const getThumbSize = (val?: SizeTokens | number | true) => {
 }
 
 // Unstyled thumb frame: positioning + the size mechanism (hit-target
-// dimensions) only. Border, background, and hover/press/focus color styling
-// live in the tamagui skin.
-export const SliderThumbFrame = styled(ThemeableStack, {
+// dimensions) + the circular shape modifier (opt-in, off by default). Border,
+// background, and hover/press/focus color styling live in the tamagui skin.
+export const SliderThumbFrame = styled(YStack, {
   name: 'SliderThumb',
   position: 'absolute',
 
@@ -436,6 +436,24 @@ export const SliderThumbFrame = styled(ThemeableStack, {
     size: {
       number: getThumbSize,
       Size: getThumbSize,
+    },
+
+    circular: {
+      true: {
+        borderRadius: 100_000,
+        padding: 0,
+      },
+    },
+
+    // opt-in v2-compat elevate (formerly from ThemeableStack), off by default.
+    // On the frame (the animated node), not a skin wrapper — a variant block on a
+    // wrapper breaks the native animation driver's interpolation.
+    elevate: {
+      true: {
+        shadowColor: '$shadowColor',
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+      },
     },
   } as const,
 })

@@ -3,5 +3,6 @@ export declare const manifest: {
     categories: string[];
     tokens: string[];
     native: string[];
+    genericsOnly: false;
 };
 //# sourceMappingURL=Toast.manifest.d.ts.map

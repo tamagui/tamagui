@@ -1,5 +1,5 @@
 import type { GestureReponderEvent, SizeTokens, TamaguiElement } from '@tamagui/core';
-import type { SizableStackProps } from '@tamagui/stacks';
+import type { YStackProps } from '@tamagui/stacks';
 export type ScopedProps<P> = P & {
     __scopeSlider?: string;
 };
@@ -17,7 +17,9 @@ type SliderImplPrivateProps = {
     onEndKeyDown(event: React.KeyboardEvent): void;
     onStepKeyDown(event: React.KeyboardEvent): void;
 };
-export type SliderTrackProps = SizableStackProps;
+export type SliderTrackProps = YStackProps & {
+    size?: SizeTokens | true;
+};
 export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProps {
     dir?: Direction;
     orientation: 'horizontal' | 'vertical';

@@ -18,4 +18,6 @@ export const manifest = {
   native: [
     'requires a Portal/Adapt provider at the app root; on native the Select adapts to a Sheet, so the Sheet native peer requirements apply when adaptation is used',
   ],
+  // grandfathered: the active-item indicator uses a palette step ($color10).
+  genericsOnly: false,
 } satisfies SkinManifest

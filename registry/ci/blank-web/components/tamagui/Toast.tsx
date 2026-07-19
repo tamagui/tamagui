@@ -5,9 +5,9 @@
 // HERE and is wired through Toast.List's `renderItem`, so the copy-paste registry
 // item is a complete, customizable toast (no hidden styling in the behavior pkg).
 //
-// Surfaced at the `tamagui/toast` subpath (not the main entry) because the main
-// entry's `export * from '@tamagui/toast'` already occupies the `Toast` name with
-// the v1 imperative API.
+// Surfaced at both the `tamagui` root (shadowing the unstyled @tamagui/toast
+// composable Toast) and the `tamagui/toast` subpath. The v1 imperative Toast was
+// removed in v3, so this styled v2 Toast owns the `Toast` name.
 import {
   Toast as ToastBehavior,
   toast,

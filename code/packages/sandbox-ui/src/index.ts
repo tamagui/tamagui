@@ -1,4 +1,4 @@
-import { View, ThemeableStack, YStack, styled } from 'tamagui'
+import { View, YStack, styled } from 'tamagui'
 
 export * from 'tamagui'
 export * from '@tamagui/toast'
@@ -38,7 +38,7 @@ export const Test14Component = styled(YStack, {
   },
 })
 
-export const TestBorderExtraction = styled(ThemeableStack, {
+export const TestBorderExtraction = styled(YStack, {
   theme: 'contentContainer',
   backgroundColor: '$background',
   borderColor: '$borderColor',

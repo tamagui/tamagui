@@ -8,9 +8,24 @@ import {
   type GetProps,
   ListItem as UiListItem,
   styled,
-  themeableVariantStyles,
   withStaticProperties,
 } from '@tamagui/ui'
+
+// the additive-border "outlined" appearance (formerly themeableVariantStyles.outlined
+// from ThemeableStack, now removed from the behavior package).
+const outlined = {
+  backgroundColor: 'transparent',
+  borderWidth: 1,
+  borderColor: '$borderColor',
+  hoverStyle: {
+    backgroundColor: 'transparent',
+    borderColor: '$borderColorHover',
+  },
+  pressStyle: {
+    backgroundColor: 'transparent',
+    borderColor: '$borderColorPress',
+  },
+} as const
 
 const StyledListItem = styled(UiListItem, {
   name: 'ListItem',
@@ -30,7 +45,7 @@ const StyledListItem = styled(UiListItem, {
 
   variants: {
     variant: {
-      outlined: themeableVariantStyles.outlined,
+      outlined,
     },
 
     active: {

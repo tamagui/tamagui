@@ -33,7 +33,6 @@ export const ProgressIndicatorFrame = styled(YStack, {
   name: INDICATOR_NAME,
   height: '100%',
   width: '100%',
-  backgroundColor: '$background',
 })
 
 export type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
@@ -114,11 +113,12 @@ type ScopedProps<P> = P & { __scopeProgress?: Scope }
 
 type ProgressState = 'indeterminate' | 'complete' | 'loading'
 
+// Unstyled Progress frame: the clip (overflow hidden) + the size mechanism
+// (size-derived track height) only. The pill radius and theme background live in
+// the tamagui skin (code/ui/tamagui/src/components/Progress.tsx).
 export const ProgressFrame = styled(YStack, {
   name: 'Progress',
-  borderRadius: 100_000,
   overflow: 'hidden',
-  backgroundColor: '$background',
 
   variants: {
     size: {

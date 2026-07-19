@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:ui",
+  "title": "Label",
+  "description": "v2-look Label: theme text color + press color feedback, over the unstyled @tamagui/ui Label behavior (label element, flex alignment, selection/cursor resets, the size-derived font mechanism, and the htmlFor/aria wiring).",
+  "files": [
+    {
+      "path": "components/tamagui/Label.tsx",
+      "content": "// Styled Label = the unstyled @tamagui/ui Label behavior (label element, flex\n// alignment, selection/cursor resets, the size-derived font mechanism, and the\n// htmlFor/aria wiring) + the default v2-look skin (theme text color + the press\n// color feedback). Single skin definition; the shadcn registry item is generated\n// from this file.\nimport { type GetProps, Label as UiLabel, styled } from '@tamagui/ui'\n\nexport const Label = styled(UiLabel, {\n  name: 'Label',\n  color: '$color',\n  pressStyle: { color: '$colorPress' },\n})\n\nexport type LabelProps = GetProps<typeof Label> & {\n  htmlFor?: string\n}\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Label.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "form"
+  ],
+  "meta": {
+    "tokens": [
+      "$color",
+      "$colorPress"
+    ],
+    "states": [
+      "pressed"
+    ]
+  }
+}

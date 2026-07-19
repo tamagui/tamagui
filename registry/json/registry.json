@@ -58,6 +58,24 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "v2-look Card: theme background over the unstyled @tamagui/ui Card behavior (structural layout + the size mechanism for size-derived radius and Header/Footer padding). Statics: Card.Header, Card.Footer, Card.Background.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "tokens": [
+          "$background"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
@@ -103,6 +121,28 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "v2-look Label: theme text color + press color feedback, over the unstyled @tamagui/ui Label behavior (label element, flex alignment, selection/cursor resets, the size-derived font mechanism, and the htmlFor/aria wiring).",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "tokens": [
+          "$color",
+          "$colorPress"
+        ],
+        "states": [
+          "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "listitem",
       "type": "registry:ui",
       "title": "ListItem",
@@ -127,6 +167,24 @@
           "disabled",
           "pressed",
           "selected"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "v2-look Progress: theme background on the track and indicator + pill radius on the track, over the unstyled @tamagui/ui Progress behavior (clip, size-derived track height, and the indeterminate/complete/loading state machine). Static: Progress.Indicator.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "feedback"
+      ],
+      "meta": {
+        "tokens": [
+          "$background"
         ]
       }
     },
@@ -160,6 +218,24 @@
         ],
         "states": [
           "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "v2-look Separator: theme line color over the unstyled @tamagui/ui Separator behavior (orientation + layout + the collapsed 1px rule, transparent by default). Supports the vertical variant.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "tokens": [
+          "$backgroundFocus"
         ]
       }
     },
@@ -223,6 +299,41 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "surface",
+      "type": "registry:ui",
+      "title": "Surface",
+      "description": "Surface: a copied panel/well/toolbar fixture — a YStack + the composable chrome/interaction facets (filled, outlined, elevated, rounded, interactive) + a `level` prop that shifts the subtree to the surface1-3 sub-theme. Nothing on by default; every facet is opt-in. Generics-only, so it restyles under any re-bound level.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "registryDependencies": [
+        "facets"
+      ],
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$borderColor",
+          "$borderColorHover",
+          "$borderColorPress",
+          "$shadowColor",
+          "$outlineColor",
+          "$radius",
+          "$pressScale"
+        ],
+        "themes": [
+          "surface1",
+          "surface2",
+          "surface3"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "toast",
       "type": "registry:ui",
       "title": "Toast",
@@ -281,6 +392,33 @@
         ],
         "states": [
           "checked",
+          "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "facets",
+      "type": "registry:lib",
+      "title": "facets",
+      "description": "Composable Surface facets: filled, outlined, elevated, rounded (chrome, static styles only) and interactive (hover/press/focus pseudos). Canonical boolean variants, pure functions of theme generics + conventional variables, spreadable into any styled() variants block. Nothing on by default.",
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$borderColor",
+          "$borderColorHover",
+          "$borderColorPress",
+          "$shadowColor",
+          "$outlineColor",
+          "$radius",
+          "$pressScale"
+        ],
+        "states": [
           "pressed"
         ]
       }

@@ -3,14 +3,16 @@
 // shadcn registry item is generated from this file.
 import {
   createRefComponent,
+  type GetProps,
   type GetRef,
   Sheet as SheetBehavior,
   type SheetProps,
   styled,
+  useSheetContext,
   withStaticProperties,
 } from '@tamagui/ui'
 
-export const SheetHandle = styled(SheetBehavior.Handle, {
+const SheetHandleFrame = styled(SheetBehavior.Handle, {
   name: 'SheetHandle',
   height: 10,
   borderRadius: 1000,
@@ -34,6 +36,17 @@ export const SheetHandle = styled(SheetBehavior.Handle, {
       },
     },
   } as const,
+})
+
+// The behavior forwards `open` to its inner handle frame, not to this styled
+// wrapper, so read the sheet context here and forward `open` — otherwise the
+// open-opacity variant above never toggles.
+export const SheetHandle = createRefComponent<
+  GetRef<typeof SheetHandleFrame>,
+  GetProps<typeof SheetHandleFrame>
+>(function SheetHandle(props, ref) {
+  const context = useSheetContext((props as any).scope)
+  return <SheetHandleFrame ref={ref} {...props} open={context.open} />
 })
 
 export const SheetOverlay = styled(SheetBehavior.Overlay, {

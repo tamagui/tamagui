@@ -35,7 +35,7 @@ import {
 } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import type { YStackProps } from '@tamagui/stacks'
-import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
+import { ButtonNestingContext, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
@@ -461,14 +461,34 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
 
 const CONTENT_NAME = 'DialogContent'
 
-// Unstyled content frame: stacking + pointer events only. Background, border,
-// padding, radius, and elevation live in the tamagui skin.
-const DialogContentFrame = styled(ThemeableStack, {
+// Unstyled content frame: stacking + pointer events + the opt-in elevate/bordered
+// v2-compat variants (formerly inherited from ThemeableStack, off by default).
+// Background, padding, and radius live in the tamagui skin. The variants stay on
+// this frame (not a skin wrapper) because the frame is the animated node — a
+// variant block on a wrapper around it breaks the native animation driver's
+// interpolation.
+const DialogContentFrame = styled(YStack, {
   name: CONTENT_NAME,
   zIndex: 2,
   position: 'relative',
   // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
   pointerEvents: 'auto',
+
+  variants: {
+    elevate: {
+      true: {
+        shadowColor: '$shadowColor',
+        shadowRadius: 12,
+        shadowOffset: { width: 0, height: 4 },
+      },
+    },
+    bordered: {
+      true: {
+        borderWidth: 1,
+        borderColor: '$borderColor',
+      },
+    },
+  } as const,
 })
 
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>

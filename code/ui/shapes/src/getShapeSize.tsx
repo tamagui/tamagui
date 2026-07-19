@@ -1,8 +1,8 @@
-import type { SizableStackProps } from '@tamagui/stacks'
+import type { YStackProps } from '@tamagui/stacks'
 import type { SizeVariantSpreadFunction } from '@tamagui/web'
 import { resolveDefaultSizeToken } from '@tamagui/web'
 
-export const getShapeSize: SizeVariantSpreadFunction<SizableStackProps> = (
+export const getShapeSize: SizeVariantSpreadFunction<YStackProps> = (
   size,
   { tokens }
 ) => {

@@ -14,7 +14,6 @@ import type {
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
 import { router } from 'one'
-import { useToastController } from '@tamagui/toast'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { processError } from '~/features/posthog/errorHandling'
 import useSWR, { mutate } from 'swr'
@@ -35,6 +34,7 @@ import {
   Sheet,
   Spinner,
   Tabs,
+  toast,
   View,
   VisuallyHidden,
   XStack,
@@ -664,8 +664,6 @@ const DiscordPanel = ({
   apiType: 'channel' | 'support'
   isTeamMember: boolean
 }) => {
-  const toast = useToastController()
-
   const hasSupportAccess = () => {
     const supportItems = subscription?.subscription_items?.filter((item) => {
       return (
@@ -745,8 +743,8 @@ const DiscordPanel = ({
 
   useEffect(() => {
     if (searchSwr.error) {
-      toast.show('Discord search failed', {
-        message: searchSwr.error.message || 'Could not search Discord members',
+      toast('Discord search failed', {
+        description: searchSwr.error.message || 'Could not search Discord members',
       })
       processError({
         error: searchSwr.error,

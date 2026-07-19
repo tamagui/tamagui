@@ -2,7 +2,7 @@ import {
   Button,
   type GetProps,
   SizableText,
-  ThemeableStack,
+  YStack,
   createStyledContext,
   createStyledHOC,
   styled,
@@ -20,7 +20,7 @@ export const CustomButtonContext = createStyledContext<{
   color: undefined,
 })
 
-const CustomButtonFrame = styled(ThemeableStack, {
+const CustomButtonFrame = styled(YStack, {
   name: 'CustomButton',
   context: CustomButtonContext,
   render: 'button',
@@ -69,7 +69,7 @@ const CustomButtonText = styled(SizableText, {
 
 // This is the key pattern from issue #3676 - using $color to reference context value
 // The child should use $color to reference the parent's color value from context
-const ContextRefButtonFrame = styled(ThemeableStack, {
+const ContextRefButtonFrame = styled(YStack, {
   name: 'ContextRefButton',
   context: CustomButtonContext,
   render: 'button',
@@ -138,7 +138,7 @@ const ContextRefButtonComponent = createStyledHOC(
 // Issue #3670 - pressStyle color not propagating to children
 // Button with pressStyle that changes color - should propagate to text on press
 // Note: This only works with animation drivers that re-render on press (not CSS driver)
-const PressStyleButtonFrame = styled(ThemeableStack, {
+const PressStyleButtonFrame = styled(YStack, {
   name: 'PressStyleButton',
   context: CustomButtonContext,
   render: 'button',

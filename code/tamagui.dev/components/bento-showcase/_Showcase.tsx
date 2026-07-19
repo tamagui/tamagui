@@ -1,5 +1,4 @@
 import { Code, Eye, Info, Link, Lock, Minus, Plus } from '@tamagui/lucide-icons-2'
-import { useToastController } from '@tamagui/toast'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { SizeTokens, ThemeName } from 'tamagui'
 
@@ -11,7 +10,7 @@ import {
   SizableText,
   Spinner,
   Text,
-  ThemeableStack,
+  toast,
   ToggleGroup,
   View,
   XGroup,
@@ -70,7 +69,6 @@ const ShowcaseView = forwardRef<any, Props>(
     ref
   ) => {
     const [view, setView] = useState<'code' | 'preview'>('preview')
-    const toast = useToastController()
 
     const { section, part } = useCurrentRouteParams()
 
@@ -144,7 +142,7 @@ const ShowcaseView = forwardRef<any, Props>(
                   navigator?.clipboard?.writeText?.(
                     window.location.href.split('#')[0] + `#${fileName}`
                   )
-                  toast.show('Link copied to clipboard')
+                  toast('Link copied to clipboard')
                 }}
               >
                 <Button.Icon>
@@ -493,11 +491,12 @@ const ResizableBox = createStyledHOC(XStack)<ResizableBoxExtraProps>(
 
 export function Hint({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeableStack
+    <View
       position="absolute"
       b={12}
       l={12}
-      bordered
+      borderWidth={1}
+      borderColor="$borderColor"
       bg="$color1"
       theme="green"
       p="$2"
@@ -511,7 +510,7 @@ export function Hint({ children }: { children: React.ReactNode }) {
     >
       <Info color="$color" size={18} />
       <SizableText size="$4">{children}</SizableText>
-    </ThemeableStack>
+    </View>
   )
 }
 

@@ -36,17 +36,19 @@ const labelSizeVariant = (val: SizeTokens | true, extras: VariantSpreadExtras<an
   }
 }
 
+// Unstyled Label frame: structural layout (label element, flex alignment,
+// selection/cursor resets) + the size mechanism (size-derived font) only. The
+// theme text color + the press color feedback live in the tamagui skin
+// (code/ui/tamagui/src/components/Label.tsx).
 export const LabelFrame = styled(SizableText, {
   name: 'Label',
   render: 'label',
   size: true,
-  color: '$color',
   backgroundColor: 'transparent',
   display: 'flex',
   alignItems: 'center',
   userSelect: 'none',
   cursor: 'default',
-  pressStyle: { color: '$colorPress' },
 
   variants: {
     size: {
