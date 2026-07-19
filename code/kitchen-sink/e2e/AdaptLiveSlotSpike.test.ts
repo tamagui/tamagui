@@ -43,9 +43,19 @@ async function getText(id: string) {
 //    stops the instant its target crosses 75% visibility, parking it against the
 //    bottom edge - and this app draws edge-to-edge, so "visible" to espresso
 //    includes the strip behind the navigation bar, where taps are swallowed
-//    ("Couldn't click at: 798.0,2187.0" on a 2280px screen). anchoring on the
-//    last element settles at the end of the content instead, which is the
-//    position scrollTo('bottom') used to reach and test 2 passed from.
+//    ("Couldn't click at: 798.0,2187.0" on a 2280px screen). anchor below what
+//    you tap so the tap target ends up well inside the viewport.
+//
+//    anchor on sheet-live-slot-press-count, the last element INSIDE the sheet
+//    card, not on sheet-live-slot-source. source is the last node in the react
+//    tree but it never reaches 75% on iOS: at maximum scroll it is still clipped
+//    by the screen bottom, so the search scrolls to the end and then fails with
+//    "Unable to scroll down ... does not pass visibility percent threshold (75)".
+//    Detox's own DETOX_VISIBILITY_*.png artifact draws that clipped region.
+//    android did not care - espresso measures a view's own visible rect, so the
+//    same anchor passed there. press-count is comfortably visible at the end of
+//    content on both (iOS ~2251 of 2556, android ~2018 of 2280 with the nav bar
+//    at ~2160) and leaves both tap targets far clear of either bottom edge.
 //
 // 4. match buttons by testID, never by rendered label. Button runs children
 //    through wrapChildrenInText, which wraps EACH string child in its own Text,
@@ -53,7 +63,7 @@ async function getText(id: string) {
 //    android TextViews ("increment " and "slot"). espresso's withText never sees
 //    a joined "increment slot".
 async function scrollToEnd() {
-  await waitFor(element(by.id('sheet-live-slot-source')))
+  await waitFor(element(by.id('sheet-live-slot-press-count')))
     .toBeVisible()
     .whileElement(by.id('adapt-live-slot-scroll'))
     .scroll(250, 'down')
@@ -90,7 +100,12 @@ describe('AdaptLiveSlotSpike', () => {
     await detoxExpect(testElement('live-slot-press-count')).toHaveText('press-count: 1')
 
     await withSync(() => testElement('live-slot-focus-input').replaceText('ios-focus'))
-    await detoxExpect(testElement('live-slot-typed-value')).toHaveText('typed: ios-focus')
+    // waitFor for the same reason as the sheet's typed-value below: withSync
+    // disables synchronization again before returning, so a bare expect can read
+    // the node before React commits onChangeText. Same string, just polled.
+    await waitFor(testElement('live-slot-typed-value'))
+      .toHaveText('typed: ios-focus')
+      .withTimeout(10000)
   })
 
   it('renders slot content as plain children inside a no-portal Sheet target with working touch coordinates', async () => {
