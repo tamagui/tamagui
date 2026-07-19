@@ -4,7 +4,7 @@
 
 // Metro bundler configuration
 export const METRO_HOST = '127.0.0.1'
-export const METRO_PORT = 8081
+export const METRO_PORT = 9034
 export const METRO_URL = `http://${METRO_HOST}:${METRO_PORT}`
 
 // Detox server port (used for test communication)
