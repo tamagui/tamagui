@@ -126,6 +126,16 @@ T7. **Benchmarks last** (Gate 4): v2.4.6 column, equal workloads, production
 Then Gate 5: clean-checkout release candidate, freeze artifacts, explicit user
 approval to publish (never automatic).
 
+## Release-coupled: bento
+
+The bento checkout (bundled by tamagui.dev when `hasBento`) consumed removed
+v1 Toast APIs + ThemeableStack. Resolution (2026-07-19): bento gets a `v3`
+branch fully migrated to the v3 contract; the v3-beta site pins to it; the
+ThemeableStack compat shims were dropped to keep the removal decision pure.
+**At v3 release: bento `v3` merges to bento main together with the tamagui.dev
+cutover** — they deploy as a pair, since bento main must keep building against
+tamagui v2.4.x until prod flips.
+
 ## Standing constraints
 
 - v2 release track is separate: `v2-animations-reliable` must go green before
