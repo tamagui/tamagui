@@ -255,9 +255,16 @@ Consequences, learned the hard way 2026-07-19:
   *skipped*. Skipped is not a failure, so naive "any failures?" queries — including
   the ones used to drive merges in this campaign — count it as fine. A PR can look
   entirely green having never run Android on the merged commit.
-- Branches named `v*` (e.g. `v3/t12-v1-removal-surface`, `v3/t3-native-ci-truth`)
-  DO get real Android signal, but from the **push** run. Enumerate runs per SHA and
-  read the one with `event=push`: `gh run list --branch <b> --json event,headSha,...`.
+- Which branches get a push run at all is a second trap. `test-native.yml` triggers
+  on push for `main`, `native-*`, `v*`, `rn82` — and in GitHub Actions branch globs
+  **`*` does not match `/`**. So:
+  - `v3-beta` matches `v*` → push run, Android RUNS.
+  - `v3/t12-v1-removal-surface` does NOT match (the slash) → **no push run at all**,
+    so Android has never run on that branch.
+  - `v3/t3-native-ci-truth` gets push runs only because that branch itself added
+    `v3/**` to the triggers (`d3841defef`).
+  Enumerate per SHA and read the `event=push` one:
+  `gh run list --branch <b> --json event,headSha,name,status,conclusion`.
 - **Do not merge a native-affecting PR on the PR rollup alone.** Confirm the push
   run's Android job actually ran and passed for that exact SHA.
 
