@@ -368,6 +368,73 @@ const warnedNativePassthroughCandidates = new Set<string>()
  * Works with user-defined tokens - does NOT hardcode Tailwind's color/spacing system.
  * Non-tailwind classes are preserved in className.
  */
+// Parsing a Tailwind candidate depends only on the class string and the grammar
+// config, never on the surrounding props, so the decision is cached per class.
+// Without this the full parse (split + classify + resolve + border expansion) ran
+// on every render of every component carrying a className — measured at ~18µs per
+// call for a 4-class string, a 1.53x tax over writing the same styles as props.
+// The plan is a flat [key, value][] applied in order, so the authored ordering
+// between classes and ordinary props is unchanged.
+//
+// null = web-only candidate dropped on native. 'raw' = not claimed by the
+// grammar, caller preserves the class string. An array (which may legitimately be
+// empty) = claimed, apply these entries.
+type TailwindClassPlan = [string, any][] | null | 'raw'
+
+const classPlanCache = new WeakMap<object, Map<string, TailwindClassPlan>>()
+
+function getClassPlanCache(grammarConfig: object) {
+  let cache = classPlanCache.get(grammarConfig)
+  if (!cache) {
+    cache = new Map()
+    classPlanCache.set(grammarConfig, cache)
+  }
+  return cache
+}
+
+function computeClassPlan(
+  cls: string,
+  grammarConfig: ReturnType<typeof getStyleGrammarConfig>,
+  config: TamaguiInternalConfig
+): TailwindClassPlan {
+  const classification = classifyCandidate(cls, grammarConfig)
+  if (classification.kind === 'passthrough') {
+    return isWeb ? 'raw' : null
+  }
+  const parsed = classification.parsed
+  // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
+  // these may emit multiple props and may have no dash, so handle before the generic parse.
+  const mods = parsed.modifiers.join(':')
+  const util = parsed.kind === 'utility' ? parsed.properties : null
+  if (util) {
+    const entries: [string, any][] = []
+    for (const p in util) {
+      // BASE (unmodified) util props are set DIRECTLY as props so they flow through the normal
+      // resolution — critical for props routed to viewProps (pointerEvents) or expanded (flex),
+      // which the `$prop` flat form doesn't convert for non-style keys. MODIFIED util props
+      // (hover:/md:) still use the `$mods:prop` flat form the modifier pass understands.
+      entries.push([mods ? `$${mods}:${p}` : p, util[p]])
+    }
+    return entries
+  }
+  // Resolve only after the registry has claimed the candidate. Directional border/radius
+  // expansion below consumes that parsed decision instead of re-parsing width vs color.
+  const flatProp = tailwindClassToFlatProp(parsed, config)
+  if (flatProp) {
+    const expanded = expandBorderCandidate(parsed, flatProp.value)
+    if (expanded) {
+      const entries: [string, any][] = []
+      for (const p in expanded) {
+        entries.push([mods ? `$${mods}:${p}` : `$${p}`, expanded[p]])
+      }
+      return entries
+    }
+    return [[flatProp.key, flatProp.value]]
+  }
+  // not claimed: caller preserves the raw class
+  return 'raw'
+}
+
 function preprocessTailwindClassName(
   props: Record<string, any>,
   shorthands: Record<string, string>,
@@ -387,57 +454,35 @@ function preprocessTailwindClassName(
   const regularClasses: string[] = []
   const result: Record<string, any> = {}
   const grammarConfig = getStyleGrammarConfig(config)
+  const plans = getClassPlanCache(grammarConfig)
 
   const applyClass = (cls: string) => {
-    const classification = classifyCandidate(cls, grammarConfig)
-    if (classification.kind === 'passthrough') {
-      if (!isWeb) {
-        if (
-          process.env.NODE_ENV !== 'production' &&
-          !warnedNativePassthroughCandidates.has(cls)
-        ) {
-          warnedNativePassthroughCandidates.add(cls)
-          console.warn(
-            `[tamagui] Tailwind candidate "${cls}" is web-only and was dropped on native. Use a Tamagui grammar candidate or a native style prop for cross-platform output.`
-          )
-        }
-        return
+    let plan = plans.get(cls)
+    if (plan === undefined) {
+      plan = computeClassPlan(cls, grammarConfig, config)
+      plans.set(cls, plan)
+    }
+    if (plan === null) {
+      // web-only candidate on native: dropped, warned once
+      if (
+        process.env.NODE_ENV !== 'production' &&
+        !warnedNativePassthroughCandidates.has(cls)
+      ) {
+        warnedNativePassthroughCandidates.add(cls)
+        console.warn(
+          `[tamagui] Tailwind candidate "${cls}" is web-only and was dropped on native. Use a Tamagui grammar candidate or a native style prop for cross-platform output.`
+        )
       }
+      return
+    }
+    if (plan === 'raw') {
+      // not claimed by the grammar: preserve the class as-is
       regularClasses.push(cls)
       return
     }
-    const parsed = classification.parsed
-    // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
-    // these may emit multiple props and may have no dash, so handle before the generic parse.
-    const mods = parsed.modifiers.join(':')
-    const util = parsed.kind === 'utility' ? parsed.properties : null
-    if (util) {
-      for (const p in util) {
-        // BASE (unmodified) util props are set DIRECTLY as props so they flow through the normal
-        // resolution — critical for props routed to viewProps (pointerEvents) or expanded (flex),
-        // which the `$prop` flat form doesn't convert for non-style keys. MODIFIED util props
-        // (hover:/md:) still use the `$mods:prop` flat form the modifier pass understands.
-        if (mods) result[`$${mods}:${p}`] = util[p]
-        else result[p] = util[p]
-      }
-      return
+    for (let i = 0; i < plan.length; i++) {
+      result[plan[i][0]] = plan[i][1]
     }
-    // Resolve only after the registry has claimed the candidate. Directional border/radius
-    // expansion below consumes that parsed decision instead of re-parsing width vs color.
-    const flatProp = tailwindClassToFlatProp(parsed, config)
-    if (flatProp) {
-      const expanded = expandBorderCandidate(parsed, flatProp.value)
-      if (expanded) {
-        for (const p in expanded) {
-          result[mods ? `$${mods}:${p}` : `$${p}`] = expanded[p]
-        }
-      } else {
-        result[flatProp.key] = flatProp.value
-      }
-      return
-    }
-    // preserve all other classes (non-tailwind or failed conversion)
-    regularClasses.push(cls)
   }
 
   // Expand the className exactly where it was authored. Claimed classes and
