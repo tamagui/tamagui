@@ -41,6 +41,8 @@ const explicitTag =
 const skipStarters = canary || skipAll || process.argv.includes('--skip-starters')
 const skipVersion = shouldFinish || rePublish || process.argv.includes('--skip-version')
 const shouldPatch = process.argv.includes('--patch')
+const shouldMinor = process.argv.includes('--minor')
+const shouldMajor = process.argv.includes('--major')
 const dirty =
   shouldFinish || rePublish || undocumented || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
@@ -62,11 +64,16 @@ const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = shouldFinish || rePublish || undocumented || process.argv.includes('--ci')
 const skipFinish =
   rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
+const skipPush = process.argv.includes('--skip-push')
 const forcePublishAll = process.argv.includes('--force-publish-all')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
 async function getLastReleaseRef(): Promise<string | null> {
+  if (process.env.RELEASE_BASE_REF) {
+    return process.env.RELEASE_BASE_REF
+  }
+
   // find the most recent baseline: either a v* tag or a canary commit
   let tagRef: { ref: string; date: number } | null = null
   let canaryRef: { ref: string; date: number } | null = null
@@ -151,10 +158,14 @@ const nextVersion = (() => {
     plusVersion = 0
   }
   const curMajor = +curVersion.split('.')[0] || 1
-  const patchVersion = shouldPatch ? +patch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
-  const minorVersion = curMinor + (shouldPatch ? 0 : plusVersion)
-  const next = `${curMajor}.${minorVersion}.${patchVersion}`
+  if (shouldMajor) {
+    return `${curMajor + plusVersion}.0.0`
+  }
+  if (shouldMinor || !shouldPatch) {
+    return `${curMajor}.${curMinor + plusVersion}.0`
+  }
+  const next = `${curMajor}.${curMinor}.${+patch + plusVersion}`
 
   return next
 })()
@@ -244,7 +255,7 @@ async function run() {
 
     // ensure we are up to date
     // ensure we are on main (skip branch check for canary releases and dry runs)
-    if (!canary && !rePublish && !dryRun) {
+    if (!canary && !rePublish && !dryRun && !process.env.CI) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
@@ -406,7 +417,7 @@ async function run() {
     // clobber the stable line, so it skips this gate.
     const curMajor = Number.parseInt(curVersion.split('.')[0], 10)
     const nextMajor = Number.parseInt(version.split('.')[0], 10)
-    if (nextMajor > curMajor && publishTag === 'latest') {
+    if (nextMajor > curMajor && publishTag === 'latest' && !isCI) {
       console.info(`\n⚠️  MAJOR VERSION BUMP: ${curVersion} → ${version}\n`)
 
       for (let i = 1; i <= 3; i++) {
@@ -428,7 +439,7 @@ async function run() {
     }
 
     if (!rePublish && !shouldFinish && !dryRun) {
-      await spawnify(`bun install`)
+      await spawnify(process.env.CI ? `bun install --frozen-lockfile` : `bun install`)
     }
 
     // build from fresh
@@ -612,12 +623,14 @@ async function run() {
 
       const failedPublishes: string[] = []
 
-      try {
-        await spawnify(`npm whoami`, { cwd: tmpDir })
-      } catch (err) {
-        throw new Error(
-          `npm is not authenticated for publishing. Run \`npm login\` and then re-run the release.\n\n${err}`
-        )
+      if (!process.env.CI) {
+        try {
+          await spawnify(`npm whoami`, { cwd: tmpDir })
+        } catch (err) {
+          throw new Error(
+            `npm is not authenticated for publishing. Run \`npm login\` and then re-run the release.\n\n${err}`
+          )
+        }
       }
 
       const publishOne = async ({ name, cwd }: { name: string; cwd: string }) => {
@@ -633,6 +646,11 @@ async function run() {
         // replace workspace:* with version in temp copy
         const pkgJsonPath = join(tmpPackageDir, 'package.json')
         const pkgJson = await fs.readJSON(pkgJsonPath)
+        pkgJson.repository = {
+          type: 'git',
+          url: 'https://github.com/tamagui/tamagui.git',
+          directory: path.relative(process.cwd(), cwd),
+        }
         for (const field of [
           'dependencies',
           'devDependencies',
@@ -709,7 +727,7 @@ async function run() {
       // for a non-latest channel (canary/beta/rc/…), point that dist-tag at the
       // latest published version of each skipped package so e.g.
       // `npm install @tamagui/lucide-icons-2@beta` still resolves
-      if (publishTag !== 'latest' && skippedPackages.length > 0) {
+      if (publishTag !== 'latest' && skippedPackages.length > 0 && !process.env.CI) {
         console.info(
           `Updating ${publishTag} dist-tags for ${skippedPackages.length} skipped packages...`
         )
@@ -792,10 +810,6 @@ async function run() {
           }
 
           await spawnify(`git commit -m ${gitTag}`, { cwd })
-          if (!canary) {
-            await spawnify(`git tag ${gitTag}`, { cwd })
-          }
-
           if (!dirty) {
             // pull once more before pushing so if there was a push in interim we get it
             const currentBranch = (
@@ -804,12 +818,18 @@ async function run() {
             await spawnify(`git pull --rebase origin ${currentBranch}`, { cwd })
           }
 
-          await spawnify(`git push origin head`, { cwd })
           if (!canary) {
-            await spawnify(`git push origin ${gitTag}`, { cwd })
+            await spawnify(`git tag ${gitTag}`, { cwd })
           }
 
-          console.info(`✅ Pushed and versioned\n`)
+          if (!skipPush) {
+            await spawnify(`git push origin head`, { cwd })
+            if (!canary) {
+              await spawnify(`git push origin ${gitTag}`, { cwd })
+            }
+          }
+
+          console.info(`✅ ${skipPush ? 'Versioned locally' : 'Pushed and versioned'}\n`)
         }
       }
 
