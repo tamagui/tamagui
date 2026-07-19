@@ -22,7 +22,8 @@ function pinBentoRef(bentoPath, silent) {
     execSync(`git -C "${bentoPath}" checkout --quiet ${ref}`, { stdio: 'pipe' })
     if (!silent) console.info(`Pinned bento to ref "${ref}" at ${bentoPath}`)
   } catch (e) {
-    if (!silent) console.warn(`Could not pin bento to TAMAGUI_BENTO_REF="${ref}": ${e.message}`)
+    if (!silent)
+      console.warn(`Could not pin bento to TAMAGUI_BENTO_REF="${ref}": ${e.message}`)
   }
 }
 
