@@ -1,7 +1,7 @@
 /**
  * Detox E2E for <Variables> inline theme patches on native (plans/variables.md).
  *
- * Validates the native inline theme layer end to end on a real simulator:
+ * Validates the native inline theme layer end to end on a real simulator/emulator:
  * - config custom variables resolve through useTheme() per scheme
  * - patching values updates JS readers and styled consumers
  * - dark-scoped patch values apply when the OS appearance flips
@@ -23,10 +23,26 @@ import { execFileSync } from 'node:child_process'
 import { by, device, element, expect, waitFor } from 'detox'
 import { safeLaunchApp } from './utils/detox'
 
-// detox 20.47 has no device.setAppearance; drive the simulator directly
-const setSimAppearance = (mode: 'light' | 'dark') => {
-  execFileSync('xcrun', ['simctl', 'ui', device.id, 'appearance', mode])
+// detox 20.47 has no device.setAppearance; drive the native device directly
+const setDeviceAppearance = (mode: 'light' | 'dark') => {
+  if (device.getPlatform() === 'ios') {
+    execFileSync('xcrun', ['simctl', 'ui', device.id, 'appearance', mode])
+    return
+  }
+
+  execFileSync('adb', [
+    '-s',
+    device.id,
+    'shell',
+    'cmd',
+    'uimode',
+    'night',
+    mode === 'dark' ? 'yes' : 'no',
+  ])
 }
+
+const dynamicValue = (name: 'dynamic' | 'refDynamic', value: boolean) =>
+  `${name}:${device.getPlatform() === 'ios' && value}`
 
 const CONFIG_LIGHT_ACCENT = 'val:rgb(0, 90, 200)'
 const CONFIG_DARK_ACCENT = 'val:rgb(90, 90, 255)'
@@ -35,7 +51,7 @@ const PATCH_DARK_ACCENT = 'val:rgb(200, 100, 100)'
 
 describe('Variables', () => {
   beforeAll(async () => {
-    setSimAppearance('light')
+    setDeviceAppearance('light')
     await safeLaunchApp({
       newInstance: true,
       launchArgs: { directUseCase: 'VariablesNativeCase' },
@@ -46,7 +62,7 @@ describe('Variables', () => {
   })
 
   afterAll(async () => {
-    setSimAppearance('light')
+    setDeviceAppearance('light')
   })
 
   it('config variables resolve through useTheme at launch', async () => {
@@ -57,14 +73,18 @@ describe('Variables', () => {
   })
 
   it('appearance flip applies dark config values and opens the dynamic gate', async () => {
-    setSimAppearance('dark')
+    setDeviceAppearance('dark')
     await waitFor(element(by.id('vars-native-val')))
       .toHaveText(CONFIG_DARK_ACCENT)
       .withTimeout(15000)
     await expect(element(by.id('vars-native-env'))).toHaveText('env:dark/dark')
     // gate open: config variable pair reports a DynamicColorIOS value
-    await expect(element(by.id('vars-native-dynamic'))).toHaveText('dynamic:true')
-    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText('refDynamic:true')
+    await expect(element(by.id('vars-native-dynamic'))).toHaveText(
+      dynamicValue('dynamic', true)
+    )
+    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText(
+      dynamicValue('refDynamic', true)
+    )
   })
 
   it('patch under dark: dark bucket wins, literal pair stays dynamic, reference deopts', async () => {
@@ -73,13 +93,15 @@ describe('Variables', () => {
       .toHaveText(PATCH_DARK_ACCENT)
       .withTimeout(10000)
     // literal light+dark patch keeps the DynamicColorIOS pair
-    await expect(element(by.id('vars-native-dynamic'))).toHaveText('dynamic:true')
+    await expect(element(by.id('vars-native-dynamic'))).toHaveText(
+      dynamicValue('dynamic', true)
+    )
     // reference patch ($color) has no pair: deopts to the tracked path
     await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText('refDynamic:false')
   })
 
   it('flip back to light keeps the base patch value', async () => {
-    setSimAppearance('light')
+    setDeviceAppearance('light')
     await waitFor(element(by.id('vars-native-val')))
       .toHaveText(PATCH_ACCENT)
       .withTimeout(15000)
@@ -90,6 +112,8 @@ describe('Variables', () => {
     await waitFor(element(by.id('vars-native-val')))
       .toHaveText(CONFIG_LIGHT_ACCENT)
       .withTimeout(10000)
-    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText('refDynamic:true')
+    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText(
+      dynamicValue('refDynamic', true)
+    )
   })
 })

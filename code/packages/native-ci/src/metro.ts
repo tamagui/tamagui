@@ -126,7 +126,7 @@ export function startMetro(): MetroProcess {
   // Only clear cache in CI - locally we want fast startup using cached transforms
   const isCI = !!process.env.CI
   const useDevClient = projectUsesDevClient()
-  const args = ['bun', 'expo', 'start', '--offline']
+  const args = ['bun', 'expo', 'start', '--offline', '--port', String(METRO_PORT)]
   if (useDevClient) {
     args.splice(3, 0, '--dev-client')
     console.info('Dev client detected')
@@ -196,7 +196,7 @@ async function isMetroRunning(platform: Platform): Promise<boolean> {
 
 /**
  * Kill whatever process is listening on the Metro port.
- * Prevents conflicts with other projects' Metro instances (or anything else on 8081).
+ * Prevents conflicts with other projects' Metro instances on the dedicated Detox port.
  */
 function killPortProcess(): void {
   try {

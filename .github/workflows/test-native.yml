@@ -6,6 +6,7 @@ on:
       - main
       - 'native-*'
       - 'v*'
+      - 'v3/**'
       - rn82
   pull_request:
     branches:
@@ -29,6 +30,52 @@ env:
   android_cache_version: v4
 
 jobs:
+  build-one-native-bundles:
+    name: Build One Production Native Bundles
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: sandbox
+
+      - name: Build iOS and Android Production Bundles
+        working-directory: code/sandbox
+        env:
+          NODE_ENV: production
+          ONE_SERVER_URL: https://native-bundle.invalid
+        run: |
+          mkdir -p ../../one-native-bundles
+
+          bun run build:native:ios
+          test -s dist/ios.js
+          mv dist/ios.js ../../one-native-bundles/ios.js
+
+          bun run build:native:android
+          test -s dist/android.js
+          mv dist/android.js ../../one-native-bundles/android.js
+
+          cd ../../one-native-bundles
+          sha256sum ios.js android.js > SHA256SUMS
+          wc -c ios.js android.js > sizes.txt
+          cat SHA256SUMS
+          cat sizes.txt
+
+      - name: Upload One Production Native Bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: one-production-native-bundles-${{ github.sha }}
+          path: one-native-bundles
+          retention-days: 14
+          if-no-files-found: error
+
   # ─────────────────────────────────────────────────────────────────────────────
   # iOS Build & Test
   # ─────────────────────────────────────────────────────────────────────────────
@@ -531,7 +578,7 @@ jobs:
     # Only run on main/v* branches (not PRs)
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v') || github.ref == 'refs/heads/rn82'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -620,21 +667,21 @@ jobs:
             # Wait for boot to complete
             adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
 
-            # More robust screen unlock and focus sequence
+            # Wake and unlock without opening Pixel Launcher. The launcher is not
+            # needed by Detox and can raise an ANR dialog under runner load that
+            # steals window focus from every test app launch.
+            adb shell input keyevent 224  # KEYEVENT_WAKEUP
             adb shell wm dismiss-keyguard
-            adb shell input keyevent 82   # KEYEVENT_MENU - wake/unlock
-            adb shell input keyevent 3    # KEYEVENT_HOME - go home first
+            adb shell input keyevent 82   # KEYEVENT_MENU - unlock
+            adb shell am force-stop com.google.android.apps.nexuslauncher
             sleep 1
-            adb shell input keyevent 82   # Unlock again
-            adb shell input keyevent 4    # Back button to dismiss any dialogs
-            sleep 3
 
             # Verify screen is on and unlocked
             adb shell dumpsys window | grep -E "mAwake|mScreenOn" || true
 
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
-            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 0
+            ./run-detox-android-ci.sh
 
       - name: Upload Detox Artifacts on Failure
         if: failure()

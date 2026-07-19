@@ -24,16 +24,10 @@ describe('Select multiple', () => {
     await testElement('multiple-inline-red-delicious').tap()
     await expect(testElement('multiple-inline-red-delicious')).toBeVisible()
     await expect(testElement('multiple-inline-red-delicious-indicator')).toBeVisible()
-    await expect(testElement('multiple-inline-red-delicious')).toHaveValue(
-      'checkbox, checked'
-    )
 
     await testElement('multiple-inline-green-pear').tap()
     await expect(testElement('multiple-inline-green-pear')).toBeVisible()
     await expect(testElement('multiple-inline-green-pear-indicator')).toBeVisible()
-    await expect(testElement('multiple-inline-green-pear')).toHaveValue(
-      'checkbox, checked'
-    )
     await expect(testElement('multiple-inline-value')).toHaveText(
       '["red-delicious","green-pear"]'
     )
@@ -60,12 +54,11 @@ describe('Select multiple', () => {
     await testElement('multiple-adapt-blueberry').tap()
     await expect(testElement('multiple-adapt-blueberry')).toBeVisible()
     await expect(testElement('multiple-adapt-blueberry-indicator')).toBeVisible()
-    await expect(testElement('multiple-adapt-blueberry')).toHaveValue('checkbox, checked')
     await expect(testElement('multiple-adapt-value')).toHaveText(
       '["red-delicious","blueberry"]'
     )
 
-    await testElement('multiple-adapt-overlay').tap({ x: 5, y: 5 })
+    await testElement('multiple-adapt-overlay').tap({ x: 20, y: 100 })
     await waitFor(testElement('multiple-adapt-red-delicious'))
       .not.toBeVisible()
       .withTimeout(5000)

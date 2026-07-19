@@ -1,4 +1,5 @@
 import * as assert from 'assert'
+import { execFileSync } from 'node:child_process'
 import { by, device, element, expect as detoxExpect, waitFor } from 'detox'
 import { safeLaunchApp, withSync } from './utils/detox'
 import { remountDirectUseCase } from './utils/navigation'
@@ -15,13 +16,41 @@ async function openDialog() {
   await waitFor(testElement('dialog-adapt-content')).toExist().withTimeout(10000)
 }
 
+function setAndroidAnimationScale(scale: 0 | 1) {
+  if (device.getPlatform() !== 'android') return
+
+  for (const setting of [
+    'window_animation_scale',
+    'transition_animation_scale',
+    'animator_duration_scale',
+  ]) {
+    execFileSync('adb', [
+      '-s',
+      device.id,
+      'shell',
+      'settings',
+      'put',
+      'global',
+      setting,
+      String(scale),
+    ])
+  }
+}
+
 describe('DialogSheetAdaptHandoff', () => {
   beforeAll(async () => {
+    // this case must have a real exit window to interrupt. the Android CI
+    // runner disables system animations globally, so opt this file back in.
+    setAndroidAnimationScale(1)
     await safeLaunchApp({
       newInstance: true,
       launchArgs: { directUseCase: 'DialogSheetAdaptHandoffCase' },
     })
     await waitFor(testElement('dialog-adapt-open')).toExist().withTimeout(180000)
+  })
+
+  afterAll(() => {
+    setAndroidAnimationScale(0)
   })
 
   beforeEach(async () => {
