@@ -289,6 +289,17 @@ PR-green is not backed by Android evidence, because that check set does not cont
 an Android run. Hence the rule above — read the push run before merging anything
 native-affecting. Whether to also run Android on PRs is the repo owner's cost call.
 
+## Native suite carries 37 deliberately-skipped tests
+
+The Android Detox run reports `4 skipped suites, 37 skipped tests`. These are
+source-level `describe.skip` / `it.skip` in `PressStyleNative`, `SheetKeyboardDrag`
+and `SheetDragResist`, with identical counts on `origin/main` — pre-existing and
+deliberate (SheetDragResist's are documented Detox `swipe()` limitations), NOT
+silent CI skipping. Recorded because "green while not exercising anything" is
+exactly what the T3 lane exists to eliminate, and a reader comparing totals should
+know these are intentional. Worth revisiting on their own merits before 1.0; not
+touched by this campaign.
+
 ## Small known defects (pre-existing, not regressions)
 
 - **`accessibilityLabel` leaks to the DOM on web.**
