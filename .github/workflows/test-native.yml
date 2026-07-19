@@ -681,7 +681,19 @@ jobs:
 
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
+            mkdir -p e2e/artifacts
+            adb logcat -c
+            adb logcat -v threadtime > e2e/artifacts/android-logcat.txt &
+            logcat_pid=$!
+
+            set +e
             bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 0
+            test_status=$?
+            set -e
+
+            kill "$logcat_pid" 2>/dev/null || true
+            wait "$logcat_pid" 2>/dev/null || true
+            exit "$test_status"
 
       - name: Upload Detox Artifacts on Failure
         if: failure()
