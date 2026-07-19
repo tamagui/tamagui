@@ -683,7 +683,7 @@ jobs:
             # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
             mkdir -p e2e/artifacts
             adb logcat -c
-            adb logcat -v threadtime > e2e/artifacts/android-logcat.txt &
+            adb logcat -v threadtime AndroidRuntime:E ReactNativeJS:V ReactNative:V Detox:V ActivityManager:I ActivityTaskManager:I '*:S' > e2e/artifacts/android-logcat.txt &
             logcat_pid=$!
 
             set +e
