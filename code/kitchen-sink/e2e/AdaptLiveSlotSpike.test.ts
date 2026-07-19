@@ -18,16 +18,15 @@ async function getText(id: string) {
   return attributes.text as string
 }
 
-// the case is taller than a phone screen (web tests get this for free via
-// Playwright auto-scroll). match on testID, never on the rendered label: Button
-// runs its children through wrapChildrenInText, which wraps EACH string child in
-// its own Text, so `<Button>increment {name}</Button>` becomes two sibling Text
-// nodes. android renders those as two TextViews ("increment " and "slot") and
-// Espresso's withText never sees the joined "increment slot".
-// resetting to the top first keeps the downward search deterministic no matter
-// where the previous interaction left the scroll position.
+// the case is taller than a phone screen; scroll an element into view before
+// tapping it (web tests get this for free via Playwright auto-scroll).
+//
+// always match on testID, never on a button's rendered label: Button runs its
+// children through wrapChildrenInText, which wraps EACH string child in its own
+// Text. `<Button>increment {name}</Button>` is therefore two sibling Text nodes,
+// which android renders as two TextViews ("increment " and "slot"), so espresso's
+// withText never sees a joined "increment slot" to match.
 async function scrollIntoView(id: string) {
-  await testElement('adapt-live-slot-scroll').scrollTo('top')
   await waitFor(testElement(id))
     .toBeVisible()
     .whileElement(by.id('adapt-live-slot-scroll'))
@@ -120,13 +119,15 @@ describe('AdaptLiveSlotSpike', () => {
     await detoxExpect(testElement('slot-state-count')).toHaveText('slot count: 1')
     const slotInstanceBefore = await getText('slot-state-instance')
 
-    await scrollIntoView('slot-state-toggle')
+    // the toggle sits just above the panels and stays co-visible with the
+    // increment button once the panels are scrolled into view
+    await waitFor(testElement('slot-state-toggle')).toBeVisible().withTimeout(5000)
     await withSync(() => testElement('slot-state-toggle').tap())
     await waitFor(testElement('slot-state-content')).toExist().withTimeout(10000)
     const slotCountAfterAdapt = await getText('slot-state-count')
     const slotInstanceAfterAdapt = await getText('slot-state-instance')
 
-    await scrollIntoView('slot-state-toggle')
+    await waitFor(testElement('slot-state-toggle')).toBeVisible().withTimeout(5000)
     await withSync(() => testElement('slot-state-toggle').tap())
     await waitFor(testElement('slot-state-content')).toExist().withTimeout(10000)
     const slotCountAfterReturn = await getText('slot-state-count')
