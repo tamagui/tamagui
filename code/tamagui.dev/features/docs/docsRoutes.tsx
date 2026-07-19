@@ -46,6 +46,7 @@ export const docsRoutes = [
       { title: 'View & Text', route: '/docs/core/view-and-text' },
       { title: 'Theme', route: '/docs/core/theme' },
       { title: 'Variables', route: '/docs/core/variables' },
+      { title: 'Surfaces & levels', route: '/docs/core/surfaces' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
     ],
   },
@@ -123,6 +124,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Install', route: '/ui/intro' },
       { title: 'Stacks', route: '/ui/stacks' },
+      { title: 'Surface', route: '/ui/surface' },
       { title: 'Headings', route: '/ui/headings' },
       { title: 'Text', route: '/ui/text' },
       { title: 'Native', route: '/ui/native' },

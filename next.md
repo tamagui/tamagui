@@ -65,12 +65,11 @@ migration notes so far:
 ## open decisions (not currently being executed)
 
 - theme model
-  - remove component themes / remove `name` from `styled()` (or just make not theme-related)
-  - component example just show using theme="surface1" for example
+  - ~~remove component themes / remove `name` from `styled()`; component example just show using theme="surface1"~~ decided + shipping: component themes give way to `theme="surface1-3"` sub-themes; see `plans/v3-beta-campaign-plan.md` decision 3 and `plans/surface-levels.md`
   - maybe make theme builder have easy "inverse" option so accent can be something else
   - ~~`$backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops).~~ resolved: migrated all four to `$backgroundPress` (matching the slider fix), regression-tested in kitchen-sink `ActiveStateBackground.test.tsx`
 - update button a bit to how i do them
-- consider removing or simplifying `ThemeableStack` / `SizableStack`
+- ~~consider removing or simplifying `ThemeableStack` / `SizableStack`~~ done: removed in PR #4137; replaced by the copied `Surface` fixture + facets (`plans/surface-levels.md`)
 - simplify Select/ListItem further where it directly helps perf or API clarity
 - Adapt render callback public API: render callback that lets you decide how to render given the resolved typed props; de-couple native integrations to `@tamagui/sheet/adapt-to-[some-native-library]` exports
 
@@ -421,7 +420,7 @@ v3:
   - we may need to move the web-only valid style props to a webOnly const and filter it out on native? how does that work currently...
   - see various `@deprecated` jsdocs
   - need to copy/paste all the component docs to 2.0.0.mdx
-  - need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack
+  - ~~need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack~~ done (T5): all v3 `3.0.0.mdx` component pages now say YStack; new `/ui/surface` + `/docs/core/surfaces` pages added
   - see how much of accessibilityDirectMap we can remove for web
   - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
   - @tamagui/cli => tamagui
