@@ -69,11 +69,58 @@ registry, state grammar, and the review's correctness fixes were found on
 
 Execution started 2026-07-18 (user: "get us all the way"), fully parallel per
 user 2026-07-19. Assignments:
-T1+T2 → `v3/t12-v1-removal-surface` (Opus xhigh) — DONE, PR #4137;
-T3 → `v3/t3-native-ci-truth` (Sol xhigh) — in progress;
+T1+T2 → `v3/t12-v1-removal-surface` (Opus xhigh) — PR #4137, lint green,
+  **blocked on a real native Toast regression** (see below);
+T3 → `v3/t3-native-ci-truth` (Sol xhigh) — PR #4140 opened 2026-07-19;
 T4 → `v3/t4-state-wiring` (Opus high) — DONE, merged (`72b550b1b0`);
-T5 → `v3/t5-docs-migration` (Opus high, based on the T12 branch);
-T7 → `v3/t7-benchmarks` (Sol high).
+T5 → `v3/t5-docs-migration` (Opus high, stacked on T12) — PR #4138, was red
+  only from staleness (branched before the snapshot refresh + oxfmt); base
+  merged in, lint fixed;
+T7 → `v3/t7-benchmarks` (Sol high) — DONE, merged 2026-07-19 (#4139).
+
+T7 result (production builds, 200 items / 60 heavy, 10 samples, mount ms):
+v3 compiled beats v2.4.6 compiled on the workloads that matter — group
+19.3 vs 43.8, heavy 18.8 vs 24.9, animated 15.8 vs 21.5; simple/rich are a
+wash (0.54 vs 0.47). Both are still far off Tailwind/inline on group/heavy
+(1.3 / 2.6), which is the pre-existing gap Gate 4 exists to attack.
+
+Native Toast regression (T12, found and FIXED 2026-07-19, `259b5b2b25`).
+
+Root cause: `withStaticProperties` does `Object.assign(component, staticProps)`
+— it mutates in place. The new Toast skin composed straight onto the imported
+behavior component:
+
+```tsx
+function ToastList(props) { return <ToastBehavior.List ... /> }   // lazy read
+export const Toast = withStaticProperties(ToastBehavior, { List: ToastList })
+```
+
+so `ToastBehavior.List` *became* the skin's `ToastList`, and that function reads
+`.List` at render time — i.e. itself. `Viewport` survived because
+`Viewport: ToastBehavior.Viewport` is captured when the object literal evaluates,
+before the mutation. Native-only because on web `tamagui` and `@tamagui/toast`
+resolve to separate ESM instances (the same split behind the "conflicting star
+exports" warning), so the mutation landed on a different object; on native both
+resolve through one CJS instance.
+
+Confirmed by runtime instrumentation, not inference: publish reached exactly one
+subscriber, `ToastRoot` re-rendered with `toasts.length = 1`, `ToastViewport`
+rendered with `ctx.toasts.length = 1` and children count 1, and the behavior
+`ToastList` was never entered; a demo-side probe printed
+`Toast.List name = ToastList | Viewport = WithTheme`. Fix: capture the behavior
+parts up front and hang the styled parts on a distinct root. Verified on the
+iOS simulator — `toast-item` visible + swipe-to-dismiss, the exact assertion
+that failed 3/3 in CI.
+
+**Follow-up (not done, deliberately deferred):** four sibling skins — Dialog,
+Accordion, Slider, ToggleGroup — also call `withStaticProperties` on components
+imported from `@tamagui/ui`, so they graft styled parts onto the unstyled
+package's own exports for every consumer. They don't self-recurse (each reads
+its parts eagerly via `styled(UiX.Part, ...)`), so nothing is broken today, but
+it contradicts the three-layer contract that `@tamagui/ui` is the unstyled home.
+Fixing it means wrapping roots like `UiSlider`, which is a styled frame, and
+that risks breaking `styled()` extension and the compiler — too much to fold
+into this PR. Fix it in its own change, with `styled(Slider)` coverage.
 
 Integration policy (user 2026-07-19): worker branches validate on their own
 PRs in parallel; v3-beta takes BATCHED merges of already-green branches (one
