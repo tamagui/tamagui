@@ -632,9 +632,9 @@ const HeightAnimator = View.styleable((props, ref) => {
   // the onLayout below still owns measurement.
   useIsomorphicLayoutEffect(() => {
     if (!fixed || !open) return
-    const el = innerRef.current as
-      | { getBoundingClientRect?: () => { height: number } }
-      | null
+    const el = innerRef.current as {
+      getBoundingClientRect?: () => { height: number }
+    } | null
     const naturalHeight = el?.getBoundingClientRect?.().height
     if (naturalHeight && naturalHeight > 0 && naturalHeight !== contentHeight) {
       setContentHeight(naturalHeight)

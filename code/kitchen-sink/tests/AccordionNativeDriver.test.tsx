@@ -56,10 +56,7 @@ test('native driver: accordion height opens through intermediate frames and clos
   // no single frame covers the whole distance (would indicate a snap)
   const maxOpenJump = result.opening
     .slice(1)
-    .reduce(
-      (max, height, i) => Math.max(max, Math.abs(height - result.opening[i])),
-      0
-    )
+    .reduce((max, height, i) => Math.max(max, Math.abs(height - result.opening[i])), 0)
   expect(maxOpenJump).toBeLessThan(result.openHeight - 1)
 
   // closing tweens back down through intermediate heights and lands at 0

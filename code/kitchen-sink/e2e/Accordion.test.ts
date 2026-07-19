@@ -30,7 +30,7 @@ describe('Accordion (auto-height, native)', () => {
     await waitFor(element(by.id('accordion-default-root')))
       .toExist()
       .withTimeout(10000)
-  }, 15000)
+  })
 
   it('default-open item shows content, closed sibling sits below it (no overlap)', async () => {
     await expect(element(by.id('def-content-text'))).toBeVisible()

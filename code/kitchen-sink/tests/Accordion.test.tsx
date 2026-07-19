@@ -167,9 +167,7 @@ for (const animationDriver of ['css', 'reanimated']) {
     expect(beforeReverse).toBeLessThan(result.openHeight - 1)
     expect(afterReverse).toBeGreaterThan(1)
     expect(afterReverse).toBeLessThan(result.openHeight - 1)
-    expect(Math.abs(afterReverse - beforeReverse)).toBeLessThan(
-      result.openHeight * 0.2
-    )
+    expect(Math.abs(afterReverse - beforeReverse)).toBeLessThan(result.openHeight * 0.2)
     expect(result.reopening.at(-1)?.height).toBeCloseTo(result.openHeight, 0)
 
     expect(
