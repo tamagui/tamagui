@@ -616,12 +616,11 @@ async function run() {
 
     if (!shouldFinish && !skipPublish) {
       const tmpDir = `/tmp/tamagui-publish`
+      await fs.remove(tmpDir)
       await ensureDir(tmpDir)
 
       // publishTag was resolved + validated up front (single source of truth)
       const publishOptions = `--tag ${publishTag}`
-
-      const failedPublishes: string[] = []
 
       if (!process.env.CI) {
         try {
@@ -633,7 +632,37 @@ async function run() {
         }
       }
 
-      const publishOne = async ({ name, cwd }: { name: string; cwd: string }) => {
+      const isPublished = async ({ name }: { name: string }) => {
+        try {
+          const { stdout } = await exec(`npm view ${name}@${version} version --json`)
+          const found = JSON.parse(stdout.trim())
+          return found === version || (Array.isArray(found) && found.includes(version))
+        } catch (error) {
+          const message = String(error)
+          if (/E404|404 Not Found|is not in this registry/i.test(message)) {
+            return false
+          }
+          throw new Error(`Could not verify ${name}@${version} on npm:\n${message}`)
+        }
+      }
+
+      console.info(`Checking ${packagesToPublish.length} package versions on npm...`)
+      const publishedChecks = await pMap(
+        packagesToPublish,
+        async (pkg) => ({ pkg, published: await isPublished(pkg) }),
+        { concurrency: 8 }
+      )
+      const pendingPackages = publishedChecks
+        .filter(({ pkg, published }) => {
+          if (published) {
+            console.info(`Skipping ${pkg.name}: this version is already published`)
+            return false
+          }
+          return true
+        })
+        .map(({ pkg }) => pkg)
+
+      const prepareOne = async ({ name, cwd }: { name: string; cwd: string }) => {
         // Copy to temp directory and replace workspace:* with versions
         const tmpPackageDir = join(tmpDir, name.replace('/', '_'))
         await fs.copy(cwd, tmpPackageDir, {
@@ -667,59 +696,69 @@ async function run() {
         }
         await writeJSON(pkgJsonPath, pkgJson, { spaces: 2 })
 
-        const filename = `${name.replace('/', '_')}-package.tmp.tgz`
-        const absolutePath = `${tmpDir}/${filename}`
         await spawnify(`npm pack --pack-destination ${tmpDir}`, {
           cwd: tmpPackageDir,
           avoidLog: true,
         })
 
-        // npm pack creates a file with the package name, rename it to our expected name
         const npmFilename = `${name.replace('@', '').replace('/', '-')}-${version}.tgz`
-        await fs.rename(join(tmpDir, npmFilename), absolutePath)
+        const tarballPath = join(tmpDir, npmFilename)
+        const workspaceDir = join(tmpDir, 'workspaces', name.replace('/', '_'))
+        await ensureDir(workspaceDir)
+        await spawnify(
+          `tar -xzf ${JSON.stringify(tarballPath)} -C ${JSON.stringify(workspaceDir)} --strip-components=1`,
+          { avoidLog: true }
+        )
 
-        const accessOption = name.startsWith('@') ? '--access public' : ''
-        const buildPublishCommand = () =>
-          ['npm publish', absolutePath, publishOptions, accessOption]
-            .filter(Boolean)
-            .join(' ')
+        return path.relative(tmpDir, workspaceDir)
+      }
 
-        console.info(`Publishing ${name}: ${buildPublishCommand()}`)
+      if (pendingPackages.length > 0) {
+        if (process.stdin.isTTY && process.stdout.isTTY && !process.env.CI) {
+          console.info(
+            'npm will open the browser for 2FA once. Select “do not challenge for the next 5 minutes” so the same short-lived approval can publish the remaining packages.'
+          )
+        }
+
+        const workspaces = await pMap(pendingPackages, prepareOne, { concurrency: 8 })
+        await writeJSON(
+          join(tmpDir, 'package.json'),
+          {
+            name: 'tamagui-release',
+            private: true,
+            workspaces,
+          },
+          { spaces: 2 }
+        )
+
+        const webAuthCache = join(process.cwd(), 'scripts/cache-npm-webauth.cjs')
+        const nodeOptions = [process.env.NODE_OPTIONS, `--require=${webAuthCache}`]
+          .filter(Boolean)
+          .join(' ')
 
         try {
-          await spawnify(buildPublishCommand(), {
-            cwd: tmpDir,
-            interactive: true,
-          })
-        } catch (err) {
-          if (rePublish) {
-            console.warn(
-              `⚠️  ${name}: publish failed (likely already published), continuing`
-            )
-            return
-          }
-          console.error(`Failed to publish ${name}:`, err)
-          failedPublishes.push(name)
+          await spawnify(
+            `npm publish --workspaces --ignore-scripts --access public ${publishOptions}`,
+            {
+              cwd: tmpDir,
+              env: { ...process.env, NODE_OPTIONS: nodeOptions },
+              interactive: true,
+            }
+          )
+        } catch (error) {
+          const postflight = await pMap(
+            pendingPackages,
+            async (pkg) => ({ pkg, published: await isPublished(pkg) }),
+            { concurrency: 8 }
+          )
+          const completed = postflight.filter(({ published }) => published)
+          const missing = postflight.filter(({ published }) => !published)
+
+          throw new Error(
+            `Publish stopped after ${completed.length} packages. Still missing:\n${missing.map(({ pkg }) => pkg.name).join('\n')}\n\nRe-run with --republish to retry only these packages.`,
+            { cause: error }
+          )
         }
-      }
-
-      if (process.stdin.isTTY && process.stdout.isTTY) {
-        console.info(
-          'npm will open the browser for 2FA. Select “do not challenge for the next 5 minutes” so the remaining packages can publish without more prompts.'
-        )
-      }
-
-      // publish the first package serially so browser 2FA can authorize the batch
-      const [firstPkg, ...restPkgs] = packagesToPublish
-      if (firstPkg) {
-        await publishOne(firstPkg)
-      }
-      await pMap(restPkgs, publishOne, { concurrency: 15 })
-
-      if (failedPublishes.length > 0) {
-        throw new Error(
-          `Failed to publish ${failedPublishes.length} packages:\n${failedPublishes.join('\n')}\n\nRe-run with --republish to retry.`
-        )
       }
 
       console.info(`✅ Published\n`)
