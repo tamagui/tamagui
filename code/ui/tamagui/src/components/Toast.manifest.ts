@@ -2,7 +2,7 @@ import type { SkinManifest } from './registry-manifest'
 
 export const manifest = {
   description:
-    'v2-look Toast (v2 composable API): card background/border/radius/padding/shadow/focus outline, styled title/description text, rounded close button, action/cancel buttons, and the styled default toast content wired through Toast.List renderItem, over the unstyled @tamagui/toast/v2 behavior (state engine, stacking, drag-to-dismiss, timers).',
+    'v2-look Toast (v2 composable API): card background/border/radius/padding/shadow/focus outline, styled title/description text, rounded close button, action/cancel buttons, and the styled default toast content wired through Toast.List renderItem, over the unstyled @tamagui/toast behavior (state engine, stacking, drag-to-dismiss, timers).',
   categories: ['feedback'],
   tokens: [
     '$background',

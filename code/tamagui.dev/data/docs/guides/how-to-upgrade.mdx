@@ -581,13 +581,14 @@ createTamagui({
 styled(View, { backgroundColor: '$squareBackground' })
 ```
 
-## 16. Migrate off the v1 imperative Toast
+## 16. Migrate off the imperative Toast
 
-v3 removes the v1 imperative Toast. `@tamagui/toast` (and the `Toast` export from
-`tamagui`) is now the v2 composable + `toast()` API. These removed exports have no
+v3 removes the old imperative Toast. `@tamagui/toast` (and the `Toast` export from
+`tamagui`) is now the composable + `toast()` API, and it's the only Toast — there
+is no longer a separate "v2" toast entry point. These removed exports have no
 replacement under the same name:
 
-| Removed (v1)                | Replacement (v2)                                             |
+| Removed (v2)                | Replacement (v3)                                             |
 | --------------------------- | ----------------------------------------------------------- |
 | `ToastProvider` + `ToastViewport` | `<Toaster />` (all-in-one), or `<Toast.Provider>` + `<Toast.Viewport><Toast.List /></Toast.Viewport>` |
 | `useToastController().show(title, opts)` | `toast(title, { description: opts.message, ...opts })` |

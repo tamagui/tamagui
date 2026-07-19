@@ -1,7 +1,10 @@
-// @tamagui/toast — the v2 composable + imperative toast API. The v1 imperative
-// surface (Toast/ToastProvider/ToastViewport/useToastController/useToastState)
-// was removed in v3; see the upgrade guide. The styled default skin lives in
-// `tamagui` (tamagui/toast + the `tamagui` root).
+// @tamagui/toast — the unstyled composable + imperative toast API. Most apps
+// should import the styled version from `tamagui` instead; this package is the
+// behavior layer the skin is built on.
+//
+// The old imperative surface (ToastProvider/ToastViewport/useToastController/
+// useToastState) was removed in v3; see the upgrade guide. Native OS toasts are
+// optional — install `burnt` and pass `native` only if you want them.
 
 // composable component API
 export { Toast, useToasts, useToastItem } from './ToastComposable'

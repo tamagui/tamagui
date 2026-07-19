@@ -1,13 +1,13 @@
-// Styled Toast (v2 composable API) = the unstyled @tamagui/toast/v2 behavior +
-// the default v2-look skin, layered here in `tamagui`. Single skin definition;
-// the shadcn registry item is generated from this file. Because the v2 behavior
-// renders its default toast content internally, the styled default content lives
-// HERE and is wired through Toast.List's `renderItem`, so the copy-paste registry
-// item is a complete, customizable toast (no hidden styling in the behavior pkg).
+// Styled Toast = the unstyled @tamagui/toast behavior + the default skin,
+// layered here in `tamagui`. Single skin definition; the shadcn registry item is
+// generated from this file. Because the behavior renders its default toast
+// content internally, the styled default content lives HERE and is wired through
+// Toast.List's `renderItem`, so the copy-paste registry item is a complete,
+// customizable toast (no hidden styling in the behavior package).
 //
 // Surfaced at both the `tamagui` root (shadowing the unstyled @tamagui/toast
-// composable Toast) and the `tamagui/toast` subpath. The v1 imperative Toast was
-// removed in v3, so this styled v2 Toast owns the `Toast` name.
+// composable Toast) and the `tamagui/toast` subpath. There is exactly one Toast
+// API in v3 — the old imperative ToastProvider/useToastController was removed.
 import {
   Toast as ToastBehavior,
   toast,
@@ -21,7 +21,7 @@ import {
   type ToastT,
   type ToasterPosition,
   type ToasterProps,
-} from '@tamagui/toast/v2'
+} from '@tamagui/toast'
 import {
   createRefComponent,
   SizableText,
@@ -33,7 +33,7 @@ import {
 } from '@tamagui/ui'
 
 /* -------------------------------------------------------------------------------------------------
- * Styled parts — the v2-look skin over the unstyled @tamagui/toast/v2 primitives.
+ * Styled parts — the default skin over the unstyled @tamagui/toast primitives.
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastItem = styled(ToastBehavior.Item, {
@@ -256,7 +256,7 @@ export const Toaster = createRefComponent<TamaguiElement, ToasterProps>(
 
 Toaster.displayName = 'Toaster'
 
-// Re-export the non-visual v2 surface so `tamagui/toast` is a drop-in for the
+// Re-export the non-visual surface so `tamagui/toast` is a drop-in for the
 // styled toast: imperative API, render hooks, and the public types.
 export { toast, useToastItem, useToasts }
 export type { ExternalToast, ToastPosition, ToastT, ToasterPosition, ToasterProps }

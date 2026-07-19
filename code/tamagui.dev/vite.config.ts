@@ -336,6 +336,13 @@ export const LocationNotification = BentoComponentStub
             destination: 'https://vxrn.dev',
             permanent: true,
           },
+          // the v3 composable toast replaced the old imperative one, so the
+          // temporary "toast-2" page folded back into /ui/toast
+          {
+            source: '/ui/toast-2',
+            destination: '/ui/toast',
+            permanent: true,
+          },
           {
             source: '/docs/components/:slug/:version',
             destination: '/ui/:slug/:version',

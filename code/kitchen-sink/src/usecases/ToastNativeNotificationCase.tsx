@@ -5,7 +5,7 @@ import {
   Toast,
   requestNotificationPermission,
   type ToastT,
-} from '@tamagui/toast/v2'
+} from '@tamagui/toast'
 
 export function ToastNativeNotificationCase() {
   const [permission, setPermission] = useState<string>(

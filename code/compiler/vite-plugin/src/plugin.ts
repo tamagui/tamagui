@@ -966,7 +966,6 @@ export function tamaguiPlugin({
         '@tamagui/core',
         '@tamagui/web',
         '@tamagui/toast',
-        '@tamagui/toast/v2',
         '@tamagui/sheet',
         '@tamagui/sheet/controller',
       ])

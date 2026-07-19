@@ -5,7 +5,7 @@ import {
   useToastItem,
   type ToastPosition,
   type ToastT,
-} from '@tamagui/toast/v2'
+} from '@tamagui/toast'
 import {
   ArrowDown,
   ArrowDownLeft,
