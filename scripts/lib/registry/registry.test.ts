@@ -1,10 +1,12 @@
 import { describe, expect, test } from 'bun:test'
+// the real A1 vocabulary from style-grammar's committed source (see emit.ts) —
+// pure source read so the registry CI job needs no workspace build.
 import {
   stateToPseudoProp,
   stateNames,
   stateToSelector,
   stateToModifier,
-} from '@tamagui/style-grammar'
+} from '../../../code/core/style-grammar/src/states'
 import { extractImportSpecifiers, classifyDependencies, packageNameOf } from './deps'
 import { reprefixNames, buildItem, loadSkin, type Skin } from './core'
 import { buildRegistry } from './emit'
