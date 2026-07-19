@@ -42,8 +42,23 @@ async function getText(id: string) {
 // Text. `<Button>increment {name}</Button>` is therefore two sibling Text nodes,
 // which android renders as two TextViews ("increment " and "slot"), so espresso's
 // withText never sees a joined "increment slot" to match.
+//
+// note the bare by.id here rather than the testElement() helper, which appends
+// .atIndex(0). Do not put atIndex inside a whileElement search.
+//
+// observed (PR #4140, run on c26b68c7d7): both whileElement calls failed with
+// "Got: was null" for views that demonstrably exist - test 2's own earlier
+// toExist/toHaveText on sibling views inside the same sheet subtree passed using
+// the same by.id, and every non-whileElement testElement() call in this file
+// passed. The two whileElement calls were the only failures.
+//
+// inferred, NOT proven (the matcher is native Java we can't read from here):
+// Detox's Android at-index matcher looks to be stateful, counting matches as
+// espresso walks the tree without resetting between evaluations. A whileElement
+// search re-evaluates after every scroll, so from the second evaluation on, the
+// burnt-out counter matches nothing. atIndex is fine everywhere else in this file.
 async function scrollIntoView(id: string) {
-  await waitFor(testElement(id))
+  await waitFor(element(by.id(id)))
     .toBeVisible()
     .whileElement(by.id('adapt-live-slot-scroll'))
     .scroll(250, 'down')
