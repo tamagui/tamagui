@@ -32,9 +32,14 @@ registry, state grammar, and the review's correctness fixes were found on
    YStack extensions). Work item T2 below executes this as: delete the
    ThemeableStack variant system from behavior packages, ship `Surface` as a
    copied skin fixture in the canonical skin set + registry.
-4. **OQ2 "atom one": still open.** Treated as "a sensible minimal base" for the
-   unstyled docs baseline until the user says otherwise.
-5. **Benchmarks (review Gate 4) stay deprioritized to the very end** (user call,
+4. **OQ2 "atom one": CLOSED as moot (2026-07-18).** The phrase was a
+   voice-dictation artifact recorded from an earlier session; the user does
+   not recognize it. No decision was hiding behind it. The unstyled docs
+   baseline is simply the bare behavior primitives.
+5. **Surface defaults: nothing on by default (user, 2026-07-18).** A bare
+   `<Surface>` renders no chrome or interaction styling; all facets opt-in.
+   See `plans/surface-levels.md`.
+6. **Benchmarks (review Gate 4) stay deprioritized to the very end** (user call,
    unchanged).
 
 ## Landed (post-merge v3-beta @ 61ab5e4b84)

@@ -112,8 +112,10 @@ system):
    compositions (`bordered` minus `backgrounded`), not additional keys. One
    tier of vocabulary.
 
-Surface then collapses to: YStack + `level` variant + facets, with
-`backgrounded` and `rounded` defaulting on. Component skins use interaction
+Surface then collapses to: YStack + `level` variant + facets, with **nothing
+on by default** (owner decision 2026-07-18): a bare `<Surface>` renders no
+chrome and no interaction styling; every facet is opt-in at the use site.
+It is purely a copy-paste composition point. Component skins use interaction
 facets where they match (ListItem is `hoverable pressable`) and hand-write
 chrome where their look demands it; facets are convenience, not law.
 
