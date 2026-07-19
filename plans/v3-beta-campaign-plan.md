@@ -206,6 +206,31 @@ Under investigation on the T12 branch. Fix belongs in the compiler (stable total
 ordering / remove the shared-state race), NOT in sorting classes in the test and
 NOT by refreshing the snapshot.
 
+## Reading native CI correctly: "Android Detox Tests" is SKIPPED on PR runs
+
+`.github/workflows/test-native.yml:579` gates the Android job on
+`github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v') ||
+github.ref == 'refs/heads/rn82'` — deliberately, per its own comment ("not PRs").
+A `pull_request` run's ref is `refs/pull/<n>/merge`, so **Android is skipped on
+every PR run** and only really executes on the push-triggered run for the branch.
+
+Consequences, learned the hard way 2026-07-19:
+
+- `gh pr checks <n>` shows the PR run, where `Android Detox Tests` reports
+  *skipped*. Skipped is not a failure, so naive "any failures?" queries — including
+  the ones used to drive merges in this campaign — count it as fine. A PR can look
+  entirely green having never run Android on the merged commit.
+- Branches named `v*` (e.g. `v3/t12-v1-removal-surface`, `v3/t3-native-ci-truth`)
+  DO get real Android signal, but from the **push** run. Enumerate runs per SHA and
+  read the one with `event=push`: `gh run list --branch <b> --json event,headSha,...`.
+- **Do not merge a native-affecting PR on the PR rollup alone.** Confirm the push
+  run's Android job actually ran and passed for that exact SHA.
+
+This is the R1 greenwashing failure mode wearing a different hat: not a swallowed
+error, just a skipped job sitting quietly next to real ones. Whether to run Android
+on PRs is a runner-cost decision for the repo owner; making "skipped" legible (or
+gating merge on the push run) is the cheaper half.
+
 ## Small known defects (pre-existing, not regressions)
 
 - **`accessibilityLabel` leaks to the DOM on web.**
