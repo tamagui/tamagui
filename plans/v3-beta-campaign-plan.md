@@ -226,10 +226,15 @@ Consequences, learned the hard way 2026-07-19:
 - **Do not merge a native-affecting PR on the PR rollup alone.** Confirm the push
   run's Android job actually ran and passed for that exact SHA.
 
-This is the R1 greenwashing failure mode wearing a different hat: not a swallowed
-error, just a skipped job sitting quietly next to real ones. Whether to run Android
-on PRs is a runner-cost decision for the repo owner; making "skipped" legible (or
-gating merge on the push run) is the cheaper half.
+To be accurate about severity: this is NOT the R1 greenwashing bug in another form.
+R1 was Android reporting success without being exercised. Here Android really does
+run, on the push run, and every Android result analysed in this campaign came from
+those runs. The skip is deliberate and commented, a runner-cost choice.
+
+The real consequence is narrow but still bites: a merge decision made purely on
+PR-green is not backed by Android evidence, because that check set does not contain
+an Android run. Hence the rule above — read the push run before merging anything
+native-affecting. Whether to also run Android on PRs is the repo owner's cost call.
 
 ## Small known defects (pre-existing, not regressions)
 
