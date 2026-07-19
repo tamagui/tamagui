@@ -44,15 +44,18 @@ export function AccordionDefaultOpenCase() {
             <Accordion.Content
               id="def-content"
               testID="def-content"
-              onLayout={() => setInitialLayoutPass((pass) => (pass === 0 ? 1 : pass))}
               borderWidth={1}
               borderTopWidth={0}
               borderColor="$borderColor"
             >
-              <Paragraph testID="def-content-text">
-                This content should be visible immediately on first paint, at its full
-                natural height, with no collapse-to-zero flash.
-              </Paragraph>
+              <View
+                onLayout={() => setInitialLayoutPass((pass) => (pass === 0 ? 1 : pass))}
+              >
+                <Paragraph testID="def-content-text">
+                  This content should be visible immediately on first paint, at its full
+                  natural height, with no collapse-to-zero flash.
+                </Paragraph>
+              </View>
             </Accordion.Content>
           </Accordion.HeightAnimator>
         </Accordion.Item>

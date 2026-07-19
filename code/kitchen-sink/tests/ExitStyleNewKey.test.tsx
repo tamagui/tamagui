@@ -19,9 +19,7 @@ test('exitStyle-introduced keys animate and hold unmount for the exit duration',
   await expect(target).toBeVisible()
 
   const result = await page.evaluate(async () => {
-    const hide = document.querySelector<HTMLElement>(
-      '[data-testid="exit-new-key-hide"]'
-    )!
+    const hide = document.querySelector<HTMLElement>('[data-testid="exit-new-key-hide"]')!
     hide.click()
     const samples: Array<{ t: number; borderWidth: number; y: number }> = []
     const startedAt = performance.now()
