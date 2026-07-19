@@ -1136,7 +1136,10 @@ const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
       <ToastPositionWrapper
         ref={ref}
         testID={rest.testID}
-        accessibilityLabel={rest.accessibilityLabel}
+        // v2 removed the deprecated a11y props in favour of web standards, so
+        // `accessibilityLabel` is no longer mapped and reaches the DOM verbatim —
+        // React then warns about an unrecognised prop on every toast.
+        aria-label={rest['aria-label']}
         {...dataAttributes}
         transition={
           isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
