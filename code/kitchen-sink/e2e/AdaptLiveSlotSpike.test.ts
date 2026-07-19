@@ -21,6 +21,14 @@ async function getText(id: string) {
 // the case is taller than a phone screen; scroll an element into view before
 // tapping it (web tests get this for free via Playwright auto-scroll).
 //
+// never use scrollTo('top'/'bottom') against adapt-live-slot-scroll. that action
+// scrolls in a loop until it detects the content edge, and this case never gives
+// it a stable edge to find: LiveSlotPublisher republishes on every render and
+// notifies from a layout effect, so each scroll-driven layout schedules another
+// render of the slot subtree. on iOS that loop never returns - the app stops
+// answering Detox entirely, and every later request in the file times out.
+// bounded `scroll(250, 'down')` swipes are safe because each one terminates.
+//
 // always match on testID, never on a button's rendered label: Button runs its
 // children through wrapChildrenInText, which wraps EACH string child in its own
 // Text. `<Button>increment {name}</Button>` is therefore two sibling Text nodes,
@@ -43,8 +51,11 @@ describe('AdaptLiveSlotSpike', () => {
   })
 
   beforeEach(async () => {
+    // no scroll reset needed: remountDirectUseCase bumps the host's React key
+    // (see DirectUseCaseHost in App.native.tsx), so the ScrollView is a fresh
+    // instance sitting at offset 0. an explicit scrollTo('top') here is not just
+    // redundant, it wedges the iOS app - see the scrollIntoView note below.
     await remountDirectUseCase('live-slot-content', { skipEnableSync: true })
-    await testElement('adapt-live-slot-scroll').scrollTo('top')
   })
 
   afterEach(async () => {
@@ -71,7 +82,7 @@ describe('AdaptLiveSlotSpike', () => {
     )
     await detoxExpect(element(by.label('No portal sheet live slot panel'))).toExist()
 
-    await testElement('adapt-live-slot-scroll').scrollTo('bottom')
+    await scrollIntoView('sheet-live-slot-button')
     const sheetButton = element(by.label('No portal sheet button'))
     await waitFor(sheetButton).toBeVisible().withTimeout(10000)
     await withSync(() => sheetButton.tap())
