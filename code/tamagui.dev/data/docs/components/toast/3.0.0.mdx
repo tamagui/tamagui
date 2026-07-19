@@ -30,7 +30,7 @@ demoName: Toast
 Toast ships with `tamagui` — there's nothing extra to install:
 
 ```tsx
-import { toast, Toaster } from 'tamagui'
+import { Toast, toast } from 'tamagui'
 ```
 
 If you're using the unstyled primitives directly, it's also published on its own:
@@ -48,26 +48,8 @@ yarn add @tamagui/toast
 
 ## Quick Start
 
-The fastest path is `<Toaster />`, which renders the default styled toast for you:
-
-```tsx
-import { Button, toast, Toaster } from 'tamagui'
-
-function App() {
-  return (
-    <>
-      <Toaster position="bottom-right" />
-      <Button onPress={() => toast('Hello!')}>Show Toast</Button>
-    </>
-  )
-}
-```
-
-Mount `<Toaster>` inside your `TamaguiProvider`, usually next to your app navigation or root layout. Call `toast()` from anywhere — it doesn't need to be inside a component.
-
-## Composable API
-
-When you want control over the markup, compose the parts yourself. This is the same API `<Toaster />` is built on:
+Toast is a composable component API: you mount the parts, and `toast()` drives
+them from anywhere in your app.
 
 ```tsx
 import { Button, Toast, toast } from 'tamagui'
@@ -76,21 +58,31 @@ function App() {
   return (
     <Toast position="bottom-right">
       <Toast.Viewport>
-        <Toast.List
-          renderItem={({ toast: t, index }) => (
-            <Toast.Item key={t.id} toast={t} index={index}>
-              <Toast.Title>{t.title}</Toast.Title>
-              <Toast.Description>{t.description}</Toast.Description>
-              <Toast.Close />
-            </Toast.Item>
-          )}
-        />
+        <Toast.List />
       </Toast.Viewport>
 
       <Button onPress={() => toast('Hello!')}>Show Toast</Button>
     </Toast>
   )
 }
+```
+
+Mount this inside your `TamaguiProvider`, usually next to your app navigation or
+root layout. `toast()` is global, so callers don't need to be inside `<Toast>`.
+
+`<Toast.List />` renders the default styled toast. Pass `renderItem` to own the
+markup completely:
+
+```tsx
+<Toast.List
+  renderItem={({ toast: t, index }) => (
+    <Toast.Item key={t.id} toast={t} index={index}>
+      <Toast.Title>{t.title}</Toast.Title>
+      <Toast.Description>{t.description}</Toast.Description>
+      <Toast.Close />
+    </Toast.Item>
+  )}
+/>
 ```
 
 Omit `renderItem` and `Toast.List` renders the default styled toast content.
@@ -312,10 +304,10 @@ yarn add burnt
 import '@tamagui/native/setup-burnt'
 ```
 
-Then opt in per-toast or for the whole app:
+Then opt in on the root:
 
 ```tsx
-<Toaster native />
+<Toast native>{/* ... */}</Toast>
 ```
 
 Burnt is resolved lazily, so apps that don't set it up never load it and never need the native module.
@@ -366,7 +358,7 @@ Each part can be styled independently:
 
 ## Upgrading from v2
 
-The v2 imperative API (`ToastProvider`, `ToastViewport`, `useToastController`, `useToastState`) was removed. Replace the provider tree with `<Toaster />` and call `toast()` directly:
+The v2 imperative API (`ToastProvider`, `ToastViewport`, `useToastController`, `useToastState`) was removed. Replace the provider tree with the composable parts shown above, and call `toast()` directly instead of going through a controller hook:
 
 ```tsx
 // v2
