@@ -18,50 +18,42 @@ async function getText(id: string) {
   return attributes.text as string
 }
 
-// the case is taller than a phone screen; scroll an element into view before
-// tapping it (web tests get this for free via Playwright auto-scroll).
+// the case is taller than a phone screen, so native tests must scroll before they
+// can touch anything (the web tests get this free via Playwright auto-scroll).
+// four rules, each one paid for by a red CI run on PR #4140:
 //
-// never use scrollTo('top'/'bottom') against adapt-live-slot-scroll.
+// 1. never scrollTo('top'/'bottom') on adapt-live-slot-scroll. the iOS app
+//    answered every Detox request up to `scrollTo top`, then never answered
+//    another one - all four tests here timed out at 180s and the iOS job failed.
+//    bounded scroll(250,'down') swipes are fine. inferred, not proven: scrollTo
+//    loops until it finds the content edge, and LiveSlotPublisher republishes on
+//    every render + notifies from a layout effect, so a scroll keeps scheduling
+//    more layout and the edge never settles. this was the suite's only scrollTo,
+//    so "broken on iOS" vs "broken against this case" is untested - assume
+//    nothing if you reach for it elsewhere.
 //
-// observed (PR #4140, run 29678604567): the iOS app answered every Detox request
-// up to `scrollTo top` on this ScrollView, then never answered another one. All
-// four tests in this file timed out at 180s and the iOS Detox job failed outright.
-// bounded `scroll(250, 'down')` swipes do not do this.
+// 2. never put .atIndex() inside a whileElement search - use bare by.id, not the
+//    testElement() helper. both searches here returned "was null" for views the
+//    failure screenshots show were on screen the whole time. inferred, not proven
+//    (native java): the at-index matcher counts matches as espresso walks the tree
+//    and never resets, so it is single-use and a search re-evaluates it. atIndex
+//    is fine everywhere else in this file.
 //
-// inferred, NOT proven: scrollTo scrolls in a loop until it detects the content
-// edge, and this case likely never presents a stable one - LiveSlotPublisher
-// republishes on every render and notifies from a layout effect, so each
-// scroll-driven layout schedules another render of the slot subtree. scrollTo was
-// used in exactly one place in this whole e2e suite (here), so there is no
-// evidence separating "Detox scrollTo is broken on iOS" from "it is broken
-// against this particular always-relayouting case". If you need scrollTo
-// elsewhere, do not assume it is safe.
+// 3. don't anchor the search on the element you're about to tap. whileElement
+//    stops the instant its target crosses 75% visibility, parking it against the
+//    bottom edge - and this app draws edge-to-edge, so "visible" to espresso
+//    includes the strip behind the navigation bar, where taps are swallowed
+//    ("Couldn't click at: 798.0,2187.0" on a 2280px screen). anchoring on the
+//    last element settles at the end of the content instead, which is the
+//    position scrollTo('bottom') used to reach and test 2 passed from.
 //
-// always match on testID, never on a button's rendered label: Button runs its
-// children through wrapChildrenInText, which wraps EACH string child in its own
-// Text. `<Button>increment {name}</Button>` is therefore two sibling Text nodes,
-// which android renders as two TextViews ("increment " and "slot"), so espresso's
-// withText never sees a joined "increment slot" to match.
-//
-// note the bare by.id here rather than the testElement() helper, which appends
-// .atIndex(0). Do not put atIndex inside a whileElement search.
-//
-// observed (PR #4140, run on c26b68c7d7): both whileElement calls failed with
-// "Got: was null" while the view they were looking for was fully on screen. The
-// Detox testFnFailure.png artifacts show the scroll had already worked and both
-// targets were rendered and visible at the moment the matcher found nothing. So
-// this is not reachability, layout, or a failed scroll - the matcher itself
-// stopped matching a visible view. Every non-whileElement testElement() call in
-// this file passed, including toExist/toHaveText on sibling views inside the
-// same sheet subtree; the two whileElement calls were the only failures.
-//
-// inferred, NOT proven (the matcher is native Java we can't read from here):
-// Detox's Android at-index matcher looks to be stateful, counting matches as
-// espresso walks the tree without resetting between evaluations. A whileElement
-// search re-evaluates after every scroll, so from the second evaluation on, the
-// burnt-out counter matches nothing. atIndex is fine everywhere else in this file.
-async function scrollIntoView(id: string) {
-  await waitFor(element(by.id(id)))
+// 4. match buttons by testID, never by rendered label. Button runs children
+//    through wrapChildrenInText, which wraps EACH string child in its own Text,
+//    so `<Button>increment {name}</Button>` is two sibling Text nodes - two
+//    android TextViews ("increment " and "slot"). espresso's withText never sees
+//    a joined "increment slot".
+async function scrollToEnd() {
+  await waitFor(element(by.id('sheet-live-slot-source')))
     .toBeVisible()
     .whileElement(by.id('adapt-live-slot-scroll'))
     .scroll(250, 'down')
@@ -80,7 +72,7 @@ describe('AdaptLiveSlotSpike', () => {
     // no scroll reset needed: remountDirectUseCase bumps the host's React key
     // (see DirectUseCaseHost in App.native.tsx), so the ScrollView is a fresh
     // instance sitting at offset 0. an explicit scrollTo('top') here is not just
-    // redundant, it wedges the iOS app - see the scrollIntoView note above.
+    // redundant, it wedges the iOS app - see the scrollToEnd note above.
     await remountDirectUseCase('live-slot-content', { skipEnableSync: true })
   })
 
@@ -108,7 +100,7 @@ describe('AdaptLiveSlotSpike', () => {
     )
     await detoxExpect(element(by.label('No portal sheet live slot panel'))).toExist()
 
-    await scrollIntoView('sheet-live-slot-button')
+    await scrollToEnd()
     const sheetButton = element(by.label('No portal sheet button'))
     await waitFor(sheetButton).toBeVisible().withTimeout(10000)
     await withSync(() => sheetButton.tap())
@@ -117,9 +109,15 @@ describe('AdaptLiveSlotSpike', () => {
     )
 
     await withSync(() => testElement('sheet-live-slot-input').replaceText('sheet-ios'))
-    await detoxExpect(testElement('sheet-live-slot-typed-value')).toHaveText(
-      'sheet typed: sheet-ios'
-    )
+    // waitFor, not a bare expect: withSync turns synchronization back off before
+    // returning, so nothing makes Detox wait for React to commit the onChangeText
+    // update before the assertion reads the node. This asserts the same text, it
+    // just tolerates the commit landing a beat late. Observed (PR #4140, run on
+    // de55fe697a): the bare expect read "sheet typed: empty" while the failure
+    // screenshot taken moments later showed "sheet typed: sheet-ios".
+    await waitFor(testElement('sheet-live-slot-typed-value'))
+      .toHaveText('sheet typed: sheet-ios')
+      .withTimeout(10000)
   })
 
   it('candidate live-publish updates props while active without remounting', async () => {
@@ -151,7 +149,7 @@ describe('AdaptLiveSlotSpike', () => {
       measuredV2StateBaseline.countAfterReturn
     )
 
-    await scrollIntoView('slot-state-increment')
+    await scrollToEnd()
     await withSync(() => testElement('slot-state-increment').tap())
     await detoxExpect(testElement('slot-state-count')).toHaveText('slot count: 1')
     const slotInstanceBefore = await getText('slot-state-instance')
