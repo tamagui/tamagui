@@ -45,6 +45,21 @@ test('skins still expose the behavior parts they do not restyle', () => {
   expect(Accordion.HeightAnimator).toBe(UiAccordion.HeightAnimator)
 })
 
+// Composing onto a fresh root means every static the behavior root exposed has to
+// be re-listed by hand, and `Dialog.Adapt` was dropped exactly that way — it only
+// surfaced as a typecheck failure in downstream apps. Derive the expectation from
+// the behavior component so a part can't silently go missing from a skin again.
+test.each([
+  ['Dialog', Dialog, UiDialog],
+  ['Accordion', Accordion, UiAccordion],
+  ['Slider', Slider, UiSlider],
+  ['ToggleGroup', ToggleGroup, UiToggleGroup],
+] as const)('the %s skin carries every part of the behavior root', (_n, skin, behavior) => {
+  const parts = Object.keys(behavior).filter((key) => /^[A-Z]/.test(key))
+  expect(parts.length).toBeGreaterThan(0)
+  expect(Object.keys(skin)).toEqual(expect.arrayContaining(parts))
+})
+
 test('the skin root is a distinct component from the behavior root', () => {
   expect(Dialog).not.toBe(UiDialog)
   expect(Accordion).not.toBe(UiAccordion)
