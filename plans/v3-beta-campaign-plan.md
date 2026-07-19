@@ -67,6 +67,13 @@ registry, state grammar, and the review's correctness fixes were found on
 
 ## Remaining work to beta
 
+Execution started 2026-07-18 (user: "get us all the way"). Assignments:
+T1+T2 → branch `v3/t12-v1-removal-surface` (Opus xhigh);
+T3 → branch `v3/t3-native-ci-truth` (Sol xhigh);
+T4 → branch `v3/t4-state-wiring` (Opus high).
+T5 docs + T7 benchmarks queue behind T1/T2 landing. Integration to v3-beta is
+sequential through the coordinating session after each branch goes green.
+
 T1. **Remove v1 surfaces** (decision 2). Delete `code/ui/button/src/v1` and the
     v1 Toast; the unstyled behavior + skins own the primary export names.
     Sweep re-exports, types, docs, kitchen-sink/canary usages. Migration note in
