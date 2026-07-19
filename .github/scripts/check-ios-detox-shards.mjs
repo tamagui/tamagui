@@ -9,8 +9,8 @@ const shouldWriteGitHubOutput = process.argv.includes('--github-output')
 // type-check tax is gone (e2e now transpiles via e2e/tsconfig.json), so startup
 // is small and these fit well under the native-ci runner's 45-minute process
 // timeout. CompilerExtraction runs an in-test `npx tamagui build` (~12-19min,
-// variable) so it gets its OWN shard (with the iOS-skipped SafeArea/
-// SheetKeyboardDrag, which cost ~0, plus the small iOS-running
+// variable) so it gets its OWN shard (with the iOS-skipped
+// SheetKeyboardDrag, which costs ~0, plus the small iOS-running
 // SheetFitKeyboardSafeArea, ~1 launch); the remaining files are bin-packed to
 // ~14.5min test-exec each (~25min wall). SelectAndroidOnPress is android-only
 // and remains explicitly excluded below; it still runs in the android job.
@@ -19,7 +19,7 @@ const seedShards = [
     name: '1/4',
     slug: '1-4',
     test_files:
-      'e2e/CompilerExtraction.test.ts e2e/SafeArea.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts e2e/SheetPressResponderSheetRngh.test.ts',
+      'e2e/CompilerExtraction.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts e2e/SheetPressResponderSheetRngh.test.ts',
   },
   {
     name: '2/4',
