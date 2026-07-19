@@ -58,7 +58,7 @@ describe('Select multiple', () => {
       '["red-delicious","blueberry"]'
     )
 
-    await testElement('multiple-adapt-overlay').tap({ x: 5, y: 5 })
+    await testElement('multiple-adapt-overlay').tap({ x: 20, y: 100 })
     await waitFor(testElement('multiple-adapt-red-delicious'))
       .not.toBeVisible()
       .withTimeout(5000)

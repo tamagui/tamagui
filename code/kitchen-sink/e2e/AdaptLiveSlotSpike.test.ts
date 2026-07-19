@@ -18,15 +18,6 @@ async function getText(id: string) {
   return attributes.text as string
 }
 
-// the case is taller than a phone screen; scroll an element into view before
-// tapping it (web tests get this for free via Playwright auto-scroll)
-async function scrollIntoView(id: string) {
-  await waitFor(testElement(id))
-    .toBeVisible()
-    .whileElement(by.id('adapt-live-slot-scroll'))
-    .scroll(250, 'down')
-}
-
 describe('AdaptLiveSlotSpike', () => {
   beforeAll(async () => {
     await safeLaunchApp({
@@ -108,8 +99,12 @@ describe('AdaptLiveSlotSpike', () => {
       measuredV2StateBaseline.countAfterReturn
     )
 
-    await scrollIntoView('slot-state-increment')
-    await withSync(() => testElement('slot-state-increment').tap())
+    const incrementButton = element(by.label('increment slot')).atIndex(0)
+    await waitFor(incrementButton)
+      .toBeVisible()
+      .whileElement(by.id('adapt-live-slot-scroll'))
+      .scroll(250, 'down')
+    await withSync(() => incrementButton.tap())
     await detoxExpect(testElement('slot-state-count')).toHaveText('slot count: 1')
     const slotInstanceBefore = await getText('slot-state-instance')
 
