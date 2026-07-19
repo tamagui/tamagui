@@ -206,6 +206,17 @@ Under investigation on the T12 branch. Fix belongs in the compiler (stable total
 ordering / remove the shared-state race), NOT in sorting classes in the test and
 NOT by refreshing the snapshot.
 
+## Small known defects (pre-existing, not regressions)
+
+- **`accessibilityLabel` leaks to the DOM on web.**
+  `code/ui/toast/src/ToastComposable.tsx:1139` forwards
+  `accessibilityLabel={rest.accessibilityLabel}` to `ToastPositionWrapper`, and it
+  reaches a DOM node, so React logs "React does not recognize the
+  `accessibilityLabel` prop on a DOM element" for every toast on web. Observed in
+  a Playwright probe of the Toast demo. Identical on `v3-beta`, so it is NOT from
+  the T12 contract work — left alone to keep #4137 from growing further. One-line
+  fix, worth doing before beta since it is console noise in every consumer app.
+
 ## Release-coupled: bento
 
 The bento checkout (bundled by tamagui.dev when `hasBento`) consumed removed
