@@ -184,6 +184,35 @@ T7. **Benchmarks last** (Gate 4): v2.4.6 column, equal workloads, production
 Then Gate 5: clean-checkout release candidate, freeze artifacts, explicit user
 approval to publish (never automatic).
 
+## T6 CLEARED: v3-beta fully green including Android (2026-07-19, `c2516230b2`)
+
+First genuinely-complete native validation of the merged campaign:
+
+```
+Checks | Registry | Test iOS Native (Maestro)          success
+Native Tests (Detox):
+  Android Detox Tests                                  success
+  iOS Detox Tests 1/4 2/4 3/4 4/4 + auto-discovered    success
+  Build Android App | Build iOS App                    success
+  Build One Production Native Bundles                  success   (review R3)
+```
+
+Two reasons this is the meaningful checkpoint rather than just another green:
+
+1. **It is the first Android run the component contract has ever had.** #4137 could
+   not get one on its own branch — the `v*` push glob does not match slashes — so
+   the v1 removals, Surface, facets and behavior/skin split were merged on iOS +
+   Maestro evidence alone. This run is what actually cleared them on Android.
+2. **It runs against the post-#4140 CI**, so a green Android result now means the
+   job ran, rather than reporting success while skipping.
+
+Cost note for future campaigns: three earlier attempts at this verdict were
+cancelled, because everything on `v3-beta` — pushes, merges and `workflow_dispatch`
+— shares the concurrency group `Native Tests (Detox)-refs/heads/v3-beta` with
+`cancel-in-progress: true`. Small doc pushes killed expensive macOS/emulator runs
+twice. **Batch pushes to `v3-beta` while a native run is in flight, or push while
+the run is still queued** (restarting a queued run is free).
+
 ## Compiler emits nondeterministic output (found 2026-07-19) — beta-blocker class
 
 `code/tests/next-webpack/tests/exports.unit.test.ts` is not a stale snapshot, it
