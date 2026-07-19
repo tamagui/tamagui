@@ -3,7 +3,7 @@
  * Native bench orchestrator. Mirrors run-benchmarks.ts but drives an iOS simulator via
  * Expo Go: starts each framework's metro on its own port, deep-links to each scenario,
  * collects timings POSTed from the bench app to http://localhost:8091/result, writes a
- * comparison table to stdout (and optionally HTML).
+ * comparison table to stdout and JSON, then generates HTML from that JSON.
  *
  * Prereqs:
  *   - Xcode + iOS simulator runtime installed
@@ -12,17 +12,17 @@
  *
  * Usage:
  *   bun code/comparisons/run-benchmarks-native.ts
- *   bun code/comparisons/run-benchmarks-native.ts --runs=3 --html
+ *   bun code/comparisons/run-benchmarks-native.ts --runs=3
  *   bun code/comparisons/run-benchmarks-native.ts --only=tamagui   # subset
  *   bun code/comparisons/run-benchmarks-native.ts --udid=<UDID>    # pick a sim
  */
 import { execFileSync, execSync, spawn, type ChildProcess } from 'child_process'
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
+import { generateNativeBenchmarkHtml } from './generate-native-benchmark-html'
 
 const args = process.argv.slice(2)
 const NUM_RUNS = parseInt(args.find((a) => a.startsWith('--runs='))?.split('=')[1] ?? '1')
-const OUTPUT_HTML = args.includes('--html')
 const ONLY = args.find((a) => a.startsWith('--only='))?.split('=')[1]
 const UDID_ARG = args.find((a) => a.startsWith('--udid='))?.split('=')[1]
 const SCENARIO_TIMEOUT_MS = 60_000
@@ -589,49 +589,6 @@ function printTable(results: AllResults) {
   console.log(`  ${NUM_RUNS} run(s) on iOS sim, 200 items per scenario (60 for heavy)\n`)
 }
 
-function generateHtml(results: AllResults): string {
-  const labels = Object.keys(results)
-  const fmt = (v: { mount: number; rerender: number } | null, f: 'mount' | 'rerender') =>
-    v
-      ? `<span class="value">${v[f].toFixed(1)}</span>`
-      : `<span class="ratio">skip</span>`
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<title>Native Benchmark Comparison (iOS)</title>
-<style>
-  body { font-family: system-ui; background: #0a0a0a; color: #eee; padding: 40px; max-width: 900px; margin: 0 auto; }
-  h1 { font-size: 24px; margin-bottom: 4px; }
-  .sub { color: #888; font-size: 13px; margin-bottom: 20px; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { padding: 8px 12px; text-align: right; border-bottom: 1px solid #222; }
-  th:first-child, td:first-child { text-align: left; }
-  th { background: #141414; color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
-  tr:hover td { background: #141414; }
-  .section-header td { font-weight: 600; background: #1a1a1a; border-top: 2px solid #333; }
-  .ratio { font-size: 11px; color: #888; }
-  .value { font-weight: 600; font-family: monospace; color: #eee; }
-</style>
-</head>
-<body>
-<h1>Native Benchmark Comparison (iOS)</h1>
-<p class="sub">200/60 components · ${NUM_RUNS} run(s) · iOS simulator via Expo Go</p>
-<table>
-<thead><tr><th>Scenario</th>${labels.map((f) => `<th>${f}</th>`).join('')}</tr></thead>
-<tbody>
-<tr class="section-header"><td colspan="${labels.length + 1}">Mount (ms)</td></tr>
-${SCENARIOS.map((s) => `<tr><td>${SCENARIO_LABELS[s]}</td>${labels.map((f) => `<td>${fmt(results[f][s], 'mount')}</td>`).join('')}</tr>`).join('\n')}
-<tr class="section-header"><td colspan="${labels.length + 1}">Re-render (ms)</td></tr>
-${SCENARIOS.map((s) => `<tr><td>${SCENARIO_LABELS[s]}</td>${labels.map((f) => `<td>${fmt(results[f][s], 'rerender')}</td>`).join('')}</tr>`).join('\n')}
-</tbody>
-</table>
-</body>
-</html>`
-}
-
-// ── main ─────────────────────────────────────────────────
-
 async function main() {
   console.log(`\n🏁 Running native benchmarks (${NUM_RUNS} run(s))...\n`)
 
@@ -747,18 +704,12 @@ async function main() {
   // always write JSON
   const outDir = join(HERE, 'output')
   mkdirSync(outDir, { recursive: true })
-  writeFileSync(
-    join(outDir, 'benchmarks-native.json'),
-    JSON.stringify(allResults, null, 2)
-  )
-  console.log(`  JSON: ${join(outDir, 'benchmarks-native.json')}`)
-
-  if (OUTPUT_HTML) {
-    const html = generateHtml(allResults)
-    const outPath = join(outDir, 'benchmarks-native.html')
-    writeFileSync(outPath, html)
-    console.log(`  HTML: ${outPath}\n`)
-  }
+  const jsonPath = join(outDir, 'benchmarks-native.json')
+  const htmlPath = join(outDir, 'benchmarks-native.html')
+  writeFileSync(jsonPath, JSON.stringify(allResults, null, 2))
+  generateNativeBenchmarkHtml(jsonPath, htmlPath)
+  console.log(`  JSON: ${jsonPath}`)
+  console.log(`  HTML: ${htmlPath}\n`)
 
   harness.stop()
 }
