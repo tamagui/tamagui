@@ -152,6 +152,14 @@ export const createSizeTable = <
   }
 
   const resolve = ((name: SizeTableName<Table> = defaultSize) => {
+    if (!(name in values)) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(
+          `Unknown size "${String(name)}" — this size table only has: ${Object.keys(values).join(', ')}. v3 skins use named sizes (token sizes like "$4" were removed, see the upgrade guide). Falling back to "${String(defaultSize)}".`
+        )
+      }
+      return values[defaultSize]
+    }
     return values[name]
   }) as CreatedSizeTable<Table, DefaultName>['resolve']
 
