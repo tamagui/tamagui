@@ -265,9 +265,7 @@ describe('A1 reassembly join (real style-grammar tables + real skins)', () => {
 
   test('buildRegistry emits uniform canonical meta.states across the real skins', async () => {
     const { registry } = await buildRegistry()
-    const states = Object.fromEntries(
-      registry.items.map((i) => [i.name, i.meta?.states])
-    )
+    const states = Object.fromEntries(registry.items.map((i) => [i.name, i.meta?.states]))
     // source-scanned + extraStates-merged, all canonical A1 names
     expect(states.button).toEqual(['disabled', 'pressed'])
     expect(states.sheet).toEqual(['open'])

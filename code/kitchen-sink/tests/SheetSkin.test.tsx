@@ -58,7 +58,9 @@ test('preserves close behavior through the copied parts', async ({ page }) => {
 // attribute selector — the exact form a shadcn/Tailwind consumer's
 // `data-[state=open]:` class uses — proves the state resolves through one
 // data-state vocabulary, not a per-component spelling.
-test('the copied skin resolves the canonical open-state web selector', async ({ page }) => {
+test('the copied skin resolves the canonical open-state web selector', async ({
+  page,
+}) => {
   const openContainer = `[data-testid="sheet-skin-container"][data-state="open"]`
 
   await page.getByTestId('sheet-skin-open').click()
