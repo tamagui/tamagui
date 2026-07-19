@@ -667,33 +667,21 @@ jobs:
             # Wait for boot to complete
             adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
 
-            # More robust screen unlock and focus sequence
+            # Wake and unlock without opening Pixel Launcher. The launcher is not
+            # needed by Detox and can raise an ANR dialog under runner load that
+            # steals window focus from every test app launch.
+            adb shell input keyevent 224  # KEYEVENT_WAKEUP
             adb shell wm dismiss-keyguard
-            adb shell input keyevent 82   # KEYEVENT_MENU - wake/unlock
-            adb shell input keyevent 3    # KEYEVENT_HOME - go home first
+            adb shell input keyevent 82   # KEYEVENT_MENU - unlock
+            adb shell am force-stop com.google.android.apps.nexuslauncher
             sleep 1
-            adb shell input keyevent 82   # Unlock again
-            adb shell input keyevent 4    # Back button to dismiss any dialogs
-            sleep 3
 
             # Verify screen is on and unlocked
             adb shell dumpsys window | grep -E "mAwake|mScreenOn" || true
 
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
-            mkdir -p e2e/artifacts
-            adb logcat -c
-            adb logcat -v threadtime AndroidRuntime:E ReactNativeJS:V ReactNative:V Detox:V ActivityManager:I ActivityTaskManager:I '*:S' > e2e/artifacts/android-logcat.txt &
-            logcat_pid=$!
-
-            set +e
-            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 0
-            test_status=$?
-            set -e
-
-            kill "$logcat_pid" 2>/dev/null || true
-            wait "$logcat_pid" 2>/dev/null || true
-            exit "$test_status"
+            ./run-detox-android-ci.sh
 
       - name: Upload Detox Artifacts on Failure
         if: failure()
