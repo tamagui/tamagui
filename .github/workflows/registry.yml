@@ -25,7 +25,9 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  # fast, no workspace build needed — pure source reads.
+  # the generator reads its A1 state vocabulary from @tamagui/style-grammar, so
+  # that one leaf package (no runtime deps) must be built first; everything else
+  # is a pure source read.
   generate:
     runs-on: ubuntu-latest
     steps:
@@ -36,6 +38,9 @@ jobs:
 
       - name: Install
         uses: ./.github/actions/install
+
+      - name: Build style-grammar (registry generator reads its state vocabulary)
+        run: bun --filter='@tamagui/style-grammar' run build
 
       - name: Unit tests (derivation, drift transform, item build)
         run: bun run registry:test
