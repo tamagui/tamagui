@@ -1,5 +1,10 @@
 v3 release plan:
 
+> **2026-07-18: beta-exit status and open work now live in
+> `plans/v3-beta-campaign-plan.md` (single source, includes the decisions log).**
+> This file remains for the release-command reference, migration notes, and the
+> long-tail backlog; its "active work" / "open decisions" sections may lag.
+
 ## cutting a beta (verified July 2026)
 
 From the v3-beta branch, with a clean tree and CI green on the pushed HEAD:

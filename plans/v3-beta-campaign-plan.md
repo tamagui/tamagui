@@ -1,160 +1,111 @@
-# v3 beta-readiness campaign — execution plan
+# v3 beta campaign — consolidated plan and status
 
-Owner: lead/manager session (branch `v3-kit-restructure`, off `origin/v3-beta`).
-Coordinator: `ab-mrp10baa-67081` (relays user natew). Tracking task `t-mrph1lep-1ike0`.
-Anchor: `docs/reviews/v3-beta-review-2026-07-17.md` (verdict HOLD; user agrees with all issues).
+Updated 2026-07-18. This is the single source of truth for beta exit, superseding
+the beta-relevant queues in `next.md` and the per-lane status scattered across
+`plans/` (per the review's consolidation ask). Anchor review:
+`docs/reviews/v3-beta-review-2026-07-17.md` (verdict HOLD, audited `5418244f4a`).
 
-Status: PLAN — reported early to coordinator for incoming user feedback before deep
-package migration begins. Packaging/registry/docs workstreams are GATED on that
-feedback. Packaging-agnostic workstreams (perf, correctness, native-CI) start now.
+Big change since the review: the C4 unstyled sweep, canonical skins, DRY shadcn
+registry, state grammar, and the review's correctness fixes were found on
+`v3/reassembly` (never in the reviewed SHA), merged to `v3-beta`, and pushed as
+`61ab5e4b84` on 2026-07-18. First-ever CI run on that work is in flight.
 
----
+## Decisions log
 
-## 1. Target package architecture
+1. **Packaging (old OQ1): RESOLVED, user-approved 2026-07-18.** `tamagui` keeps
+   behavior primitives as the main export; styled skins live at subpaths inside
+   `tamagui` (`tamagui/unstyled`, per-component subpaths); `@tamagui/ui` is the
+   unstyled home. The separate `@tamagui/kit` package from the earlier draft was
+   NOT built and is not planned; skins in `tamagui` are the canonical source.
+2. **v1 compat surfaces: REMOVE, user decision 2026-07-18.** The retained v1
+   Button (`code/ui/button/src/v1`) and v1 imperative Toast (which still owns the
+   primary `Toast` export) go away. Rationale: same as the v1→v2 transition, no
+   need to ship the old surface into v3. Work item T1 below.
+3. **Surface component / ThemeableStack:** direction is specced and accepted but
+   not executed. `plans/variables.md` (coordinator-accepted): "Surface is a
+   copied fixture, not a framework hook" — a user-owned copied `Surface` skin
+   reads conventional variables (`$surfaceBorder`, `$focusRingColor`,
+   `$disabledOpacity`, `$pressScale`, easings) via the shipped `<Variables>`
+   primitive; behavior components never read them. `next.md` companions: remove
+   component themes in favor of `theme="surface1-3"` sub-themes, remove or
+   simplify `ThemeableStack`/`SizableStack` (docs already treat stacks as plain
+   YStack extensions). Work item T2 below executes this as: delete the
+   ThemeableStack variant system from behavior packages, ship `Surface` as a
+   copied skin fixture in the canonical skin set + registry.
+4. **OQ2 "atom one": still open.** Treated as "a sensible minimal base" for the
+   unstyled docs baseline until the user says otherwise.
+5. **Benchmarks (review Gate 4) stay deprioritized to the very end** (user call,
+   unchanged).
 
-Current: `tamagui` (`code/ui/tamagui`) is an umbrella that star-exports every
-`@tamagui/<component>` package plus core `createTamagui`/views. In v3-beta those
-component packages are behavior-first but MIXED: Button/Sheet/Select are (mostly)
-unstyled, while Dialog, Slider, Toggle, Input, ListItem, Toast, Accordion still
-embed colors/radii/padding/elevation. v2-look skins are duplicated across
-kitchen-sink, demos, and canary. No shadcn registry exists.
+## Landed (post-merge v3-beta @ 61ab5e4b84)
 
-Target three layers (per user direction):
+- Behavior/aesthetic separation for the 10-component beta set: Button, Select,
+  Sheet, Accordion, Dialog, Slider, Toggle, Input/TextArea, ListItem, Toast.
+  Canonical skins + per-component manifests in `code/ui/tamagui/src/components/`.
+- `@tamagui/ui` unstyled package, `tamagui/unstyled` + per-component subpaths.
+- DRY shadcn registry (`scripts/generate-registry.ts`, `registry/json/r/*.json`)
+  with blank web/Expo CI install fixtures.
+- Review correctness fixes present in history: C1 Dismissable bookkeeping,
+  C4 nested Button, D2 Popover aria-controls (`d235edc4c9`), C2 CSS exit
+  completion, C3 animated-number, P4 Motion per-value splitter (`2298a42c6f`),
+  D1 migration docs (`976f589252`).
+- Perf hot-path work: ref-clone removal (`bd18969c1d`), dead baseProps merge +
+  no-compound fast path (`d46390d6e1`), motion per-render memoization
+  (`2a17f57173`), flat group syntax fix (`ca26eed780`).
+- A1 state vocabulary in style grammar (`c87e3d375e`, `d481fdc6e1`) — note
+  runtime wiring is "dormant until style-grammar reassembly" per `7b89542c59`,
+  see T4.
+- `<Variables>` primitive: web + native packets landed, iOS-simulator validated
+  (Detox 5/5), including custom config variables. See `plans/variables.md`.
+- Whole-monorepo typecheck passes; full package build passes (165 tasks); motion
+  conversion contract test passes.
 
-1. **`@tamagui/ui` (new) — the unstyled layer.** One home for "everything
-   unstyled": the behavior/structural-only primitives. Finish the C4 sweep so
-   every primitive here is genuinely unstyled behind a reviewed structural-style
-   allowlist (layout, hit targets, positioning, focus, native interaction only).
-   The official **`tamagui` package API surface stays UNCHANGED** — `tamagui`
-   re-exports from `@tamagui/ui`, so `import { Button } from 'tamagui'` keeps the
-   same names/types; the components merely physically originate in `@tamagui/ui`.
-2. **KIT (`@tamagui/kit`, new) — the styled/preset layer.** A real published
-   package NEXT TO `tamagui` (NOT living in kitchen-sink). The single canonical
-   source of the v2-matching styled components. kitchen-sink, demos, canary,
-   docs, and starters all consume KIT — zero duplication.
-3. **Registry — shadcn-compatible, fully DRY.** Generated FROM the KIT source
-   (single source of truth), not hand-duplicated. "The copy-paste thing should
-   be the same thing" = registry items ARE the KIT component source.
+## Remaining work to beta
 
-### OPEN QUESTION 1 (needs user feedback before packaging starts)
+T1. **Remove v1 surfaces** (decision 2). Delete `code/ui/button/src/v1` and the
+    v1 Toast; the unstyled behavior + skins own the primary export names.
+    Sweep re-exports, types, docs, kitchen-sink/canary usages. Migration note in
+    upgrade guide.
 
-Does `import { Button } from 'tamagui'` resolve to the UNSTYLED `@tamagui/ui`
-behavior primitive (v3-beta semantics preserved) or to the STYLED KIT component
-(v2 look)? Lead reading: "API surface unchanged" = tamagui keeps exporting the
-same names/types and continues to export the behavior primitives (re-exported
-from `@tamagui/ui`); KIT is the opt-in v2-look package. This matches the v3 plan
-("components become behavior primitives"). The alternative — `tamagui` stays the
-v2 STYLED experience and unstyled moves to `@tamagui/ui` — is a very different
-migration. Confirm which.
+T2. **Fleet tail + Surface** (decision 3). Strip remaining aesthetics from
+    Card, Progress, Label, Separator; replace the stacks/ThemeableStack variant
+    system with the copied `Surface` fixture + `surface1-3` sub-themes + the
+    skin-kit variable conventions. Manually confirm Switch, Checkbox,
+    RadioGroup, Tabs, Avatar, Group are clean (heuristic grep says yes).
+    Acceptance: review Gate 1 fleet-wide (no theme colors, visual padding
+    scales, radii, borders, elevation, or opinionated states outside a reviewed
+    structural allowlist).
 
-### OPEN QUESTION 2
+T3. **Native CI truthful (R1, P0)** + **G1 publish bytes (R3)** + **starter
+    (R2)**. Only a wip commit exists (`6723976e32`). Android AppCompat launch
+    fix, remove `continue-on-error` + shell failure swallowing, stabilize the
+    iOS CompilerExtraction benchmark, produce One iOS/Android production
+    bundles, make G1 the artifact path for the actual publish, replace starter
+    placeholder `true` tests and consume copied skins in the starter.
 
-"Unstyled default = atom one" (user's words). Interpreting as: the unstyled
-docs/default baseline is a single minimal base ("atom one"). Need the concrete
-intent — is "atom one" a named base theme/preset, a design reference, or just
-"a sensible minimal base"? Treating as a sensible minimal base for now.
+T4. **A1 runtime wiring.** Un-dormant the shared state vocabulary so `open:`,
+    `checked:`, `invalid:` modifiers resolve to data selectors on web and
+    component state on native, then regenerate registry skins on it.
 
----
+T5. **Docs.** Verify the 3-mode docs toggle (UNSTYLED / STYLED / TAILWIND,
+    branch `v3/docs-toggle-migration`) is merged and working against the landed
+    packaging; regenerate migration guide snippets against final exports
+    (compiled fixtures); document decision 2's removal.
 
-## 2. DRY registry generation
+T6. **CI green on v3-beta @ 61ab5e4b84** (in flight 2026-07-18): Checks +
+    Detox + Maestro on the merged tree, first validation of the reassembly work
+    and the universal render-path rewrites it contains.
 
-- KIT component source files are the single source. A codegen script
-  (`scripts/generate-registry.ts`) reads each KIT component + a small per-component
-  manifest (files, npm deps, peer/native requirements, token/theme assumptions)
-  and emits a shadcn-schema `registry.json` + per-item JSON.
-- The SAME generator emits the mechanically-checked copies consumed by
-  kitchen-sink, demos, canary, and starters — a CI check fails if any copy drifts
-  from KIT source.
-- CI: install the generated registry into a blank web app and a blank Expo app,
-  build, and run an interaction smoke (per review §1.3 recommendation).
+T7. **Benchmarks last** (Gate 4): v2.4.6 column, equal workloads, production
+    builds, retained samples; enforce bundle budgets.
 
-## 3. Docs toggle (UNSTYLED / STYLED / TAILWIND)
+Then Gate 5: clean-checkout release candidate, freeze artifacts, explicit user
+approval to publish (never automatic).
 
-- Existing infra to extend, NOT replace: `features/docs/docsCodeMode.tsx`
-  (`CodeMode = 'tamagui' | 'tailwind'`, localStorage + listener store) and the
-  server-side `features/docs/isTailwindMode.ts` (cookie / `/tailwind` route /
-  `tailwind.` subdomain / `?syntax=` param) + `syntaxCookie.ts`.
-- Extend `CodeMode` to `'unstyled' | 'styled' | 'tailwind'`. `styled` replaces the
-  old default (`tamagui`) and drops the old "bring your own styling"; `unstyled`
-  renders `@tamagui/ui` usage; `tailwind` MUST drive the EXISTING tailwind path
-  (set the same `syntaxCookie` / use `/tailwind` + subdomain) so TAILWIND is a
-  different route to the same switcher, not a parallel system.
-- One consistent toggle across ALL component docs pages.
+## Standing constraints
 
-## 4. Prioritized blockers → workstreams
-
-P0 (blocks beta / central claim):
-- L1 — three-layer contract (packaging + KIT + registry + docs). THE big one. GATED.
-- R1 — native CI not green (Android launch + failure swallowing, iOS compiler
-  benchmark red, One prod bundles absent).
-- R2 — Expo starter consumes raw behavior Button; placeholder `true` tests.
-- R3 — G1 does not certify the exact publish bytes.
-
-P1:
-- C1 Dismissable pointer-event bookkeeping; C2 CSS exit timer vs real completion;
-  C3 CSS animated-number wrong value + no rAF cleanup; C4 nested Button semantics;
-  D1 migration docs contradict APIs; A1 shared component-state vocabulary;
-  P2 Vite serialized compile / no caches; P3 Metro duplicate Babel + cache churn;
-  P4 Motion runs full splitter per value; P5 render-path allocations (ref-clone).
-
-P2:
-- D2 Popover `aria-controls`; P6 Tailwind default footprint; bundle governance
-  (fail on thresholds, narrow subpath entries).
-
-## 5. Careful performance pass (first-class workstream)
-
-User flagged a concrete "huge no": the universal component clones the whole props
-object just to strip `ref` — `code/core/web/src/createComponent.tsx:256`
-(`const { ref: forwardedRef, ...propsIn } = propsInWithRef`), allocating a new
-object every render.
-
-Fix direction (user's): do NOT clone to delete `ref`. Read `ref` off the incoming
-props and skip it NATURALLY in the existing split-styles pass (that pass already
-iterates every prop to separate style vs non-style; `ref` is simply skipped there
-and never forwarded, no copy). Then broaden into a careful hot-path allocation
-hunt: the dead `baseProps` merge (P5), `Object.entries` materialization in
-`getSplitStyles` when no compound variants exist (P5), Motion per-value splitter
-(P4), CSS ticker allocations (C3). Measure before/after with a real render
-profile, not micro-benchmarks alone.
-
-## 6. Squad assignment (bounded, non-overlapping, own worktrees)
-
-Each parallel worker gets its OWN `~/.worktrees/<name>` worktree (heavy file
-overlap — never two workers mutating the same checkout). Claude workers = Opus;
-Codex workers = Sol. Never Fable. Effort scaled to difficulty.
-
-START NOW (packaging-agnostic, cannot be invalidated by incoming feedback):
-- **W1 perf** (Opus, xhigh) — ref-clone skip-in-split-styles, dead `baseProps`
-  merge, `getSplitStyles` no-compound fast path. Area: `code/core/web`.
-- **W2 correctness/a11y** (Opus, high) — C1 Dismissable, C4 nested Button,
-  D2 Popover aria-controls. Area: `code/ui/{dismissable,button,popover}`.
-- **W3 correctness/animation** (Sol, high) — C2 CSS exit real completion,
-  C3 animated-number value + cleanup, P4 Motion split hoist. Area:
-  `code/core/{animations-css,animations-motion}`.
-- **W7 native-CI/release** (Sol, high) — R1 Android AppCompat launch + remove
-  `continue-on-error`/failure swallowing, iOS compiler benchmark stabilize,
-  R3 G1-as-release-artifact, R2 starter smokes. Area: `.github/workflows`,
-  `scripts`, `code/starters`.
-
-GATED on user feedback (packaging decision):
-- **W4 packaging** (Opus, xhigh) — `@tamagui/ui` + `@tamagui/kit` boundaries;
-  finish C4 aesthetic sweep across the fleet. Area: `code/ui/*`, new packages.
-- **W5 registry** (Opus, high) — DRY shadcn registry generated from KIT + CI
-  install-into-blank-app. Depends on KIT existing.
-- **W6 docs+migration** (Opus, high) — 3-mode toggle + tailwind-switcher
-  integration; D1 migration-doc fixes with compiled fixtures; A1 shared state
-  vocabulary. Area: `code/tamagui.dev`, `code/core/style-grammar`.
-
-De-prioritized to the very end (per user): v2-vs-v3 performance comparison (P1
-benchmark matrix with a v2.4.6 column).
-
-## 7. Migration order / risk
-
-1. Land packaging-agnostic fixes (W1/W2/W3/W7) on branches — low risk, high value.
-2. Resolve OPEN QUESTIONS 1 & 2, then W4 establishes `@tamagui/ui` + KIT
-   boundaries (highest-churn, highest-risk — single worker, own worktree).
-3. W5 registry + W6 docs follow once KIT exists (they consume it).
-4. Reassemble, validate each layer (typecheck/build + web/native interaction),
-   then native CI + G1 truthful-evidence pass.
-5. Do NOT push/publish without explicit coordinator/user approval — land locally
-   on branches, report for review.
+- v2 release track is separate: `v2-animations-reliable` must go green before
+  any v2.4.x release (worker active as of 2026-07-18).
+- An agent may hold the local Xcode/iOS build resources; queue local iOS work
+  behind a watcher instead of racing it.
+- gh API budget 60/hr shared; fetch logs once to files.
