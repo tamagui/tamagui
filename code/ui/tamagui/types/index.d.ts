@@ -61,7 +61,7 @@ export { Dialog, DialogContent, DialogOverlay } from './components/Dialog';
 export { Slider, SliderActive, SliderThumb, SliderTrack } from './components/Slider';
 export { ListItem, type ListItemProps } from './components/ListItem';
 export { Card, CardFrame, type CardProps } from './components/Card';
-export { Progress, ProgressIndicator, type ProgressProps, } from './components/Progress';
+export { Progress, ProgressIndicator, type ProgressProps } from './components/Progress';
 export { Label, type LabelProps } from './components/Label';
 export { Separator, type SeparatorProps } from './components/Separator';
 export { Toast, Toaster, ToastItem, ToastTitle, ToastDescription, ToastClose, ToastAction, toast, useToastItem, useToasts, type ExternalToast, type ToastPosition, type ToastT, type ToasterPosition, type ToasterProps, } from './components/Toast';
