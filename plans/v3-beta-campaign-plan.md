@@ -289,6 +289,26 @@ PR-green is not backed by Android evidence, because that check set does not cont
 an Android run. Hence the rule above — read the push run before merging anything
 native-affecting. Whether to also run Android on PRs is the repo owner's cost call.
 
+## Carried into main with T3 (#4140, merged 2026-07-19) — two open items
+
+1. **`AdaptLiveSlotSpike` test 2 is flaky on Android.** It merged green, but on the
+   verifying push run its first attempt failed on a full 10s timeout waiting for
+   `sheet typed: sheet-ios` and passed only on `[Retry #1]`. The same anchor passed
+   first-try in an earlier run, so it is intermittent, not systematic. On the branch
+   whose whole point is that green means green, a retry-dependent pass is a soft
+   green and is recorded as such rather than quietly accepted.
+2. **Flakes that pass on retry retain no artifacts**, which is why (1) could not be
+   diagnosed. The Android log-retention step is failure-only, so a retried-but-passed
+   job uploads nothing. That is a real observability gap and the blocker on fixing
+   (1) — closing it is a prerequisite, not a nice-to-have. Guessing without artifacts
+   produced both wrong turns in this file's history.
+
+Also unexplained and deliberately not "fixed" from first principles: Android reported
+`sheet-live-slot-press-count` as 0% visible while the failure screenshot shows it on
+screen at ~2018/2280, clear of the nav bar at ~2160. Worked around with a
+per-platform scroll anchor; the contradiction is documented in-code with a warning
+that it needs a view-hierarchy dump, not reasoning.
+
 ## Native suite carries 37 deliberately-skipped tests
 
 The Android Detox run reports `4 skipped suites, 37 skipped tests`. These are
@@ -299,6 +319,33 @@ silent CI skipping. Recorded because "green while not exercising anything" is
 exactly what the T3 lane exists to eliminate, and a reader comparing totals should
 know these are intentional. Worth revisiting on their own merits before 1.0; not
 touched by this campaign.
+
+## `wrapChildrenInText` bugs (found 2026-07-19, fixed in #4141)
+
+Surfaced while fixing T3's Android matcher, and initially mis-filed as a
+test-matching quirk. The owner pushed back — "isn't it supposed to join adjacent
+text?" — which reclassified it as a product bug. Verified at runtime:
+
+```
+['increment ', 'slot']  ->  2 separate <Text> elements
+['Count: ', 5]          ->  <Text>"Count: "</Text> + a RAW, unwrapped 5
+```
+
+1. **Adjacent text children were not joined.** `<Button>increment {name}</Button>`
+   rendered as sibling text nodes: visible gap, `ellipsis`/wrapping applied per
+   fragment instead of across the string, and assistive tech (plus native matchers)
+   saw fragments rather than one label.
+2. **Numbers were never wrapped** — the check was `typeof child === 'string'`, so a
+   bare number leaks into the frame and throws "Text strings must be rendered within
+   a `<Text>` component" on native.
+
+Fix groups adjacent string+numeric children into one `Text`. Notably **no snapshot
+changes were required** (static 98, webpack 18, exports 8/8 cold), so compiled output
+of real screens is unaffected.
+
+Lesson worth keeping: iOS hid this by merging fragments into a single accessibility
+element. Only Android's stricter matcher told the truth, and the first instinct was
+to work around the messenger.
 
 ## Small known defects (pre-existing, not regressions)
 
