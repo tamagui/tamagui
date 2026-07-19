@@ -1,4 +1,4 @@
-import { toast, useToastItem, useToasts, type ExternalToast, type ToastListProps, type ToastPosition, type ToastRootProps, type ToastT, type ToasterPosition, type ToasterProps } from '@tamagui/toast';
+import { toast, useToastItem, useToasts, type ExternalToast, type ToastListProps, type ToastPosition, type ToastRootProps, type ToastT } from '@tamagui/toast';
 import { type TamaguiElement } from '@tamagui/ui';
 export declare const ToastItem: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").Size | undefined;
@@ -243,7 +243,6 @@ export declare const Toast: ((props: ToastRootProps & import("@tamagui/ui").RefP
         children?: React.ReactNode;
     }) => import("react/jsx-runtime").JSX.Element | null;
 };
-export declare const Toaster: import("@tamagui/ui").RefComponent<TamaguiElement, ToasterProps>;
 export { toast, useToastItem, useToasts };
-export type { ExternalToast, ToastPosition, ToastT, ToasterPosition, ToasterProps };
+export type { ExternalToast, ToastPosition, ToastT };
 //# sourceMappingURL=Toast.d.ts.map

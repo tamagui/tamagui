@@ -50,6 +50,7 @@ export const Dialog = withStaticProperties(DialogRoot, {
   Description: UiDialog.Description,
   Close: UiDialog.Close,
   FocusScope: UiDialog.FocusScope,
+  Adapt: UiDialog.Adapt,
   Overlay: DialogOverlay,
   Content: DialogContent,
 })

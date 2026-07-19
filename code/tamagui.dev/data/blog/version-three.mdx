@@ -116,14 +116,27 @@ v3 removes APIs that already had clearer replacements.
 </Theme>
 ```
 
-The removed set includes `focusable`, `fullscreen`, `styleable`, forwardRef
-component wrappers, `inlineWhenUnflattened`, deprecated UI kit aliases, old
-platform style keys, and true token keys.
+The removed set includes `focusable`, `fullscreen`, the `styleable` static,
+forwardRef component wrappers, `inlineWhenUnflattened`, deprecated UI kit
+aliases, old platform style keys, and true token keys.
 
 If your code still uses `focusable`, move to `tabIndex`. If it uses
 `fullscreen`, write the layout explicitly with `position` and `inset`. If it
-uses `.styleable()` or relies on Tamagui forwarding through wrapper statics,
-move to ordinary React composition and refs.
+relies on Tamagui forwarding through wrapper statics, move to ordinary React
+composition and refs.
+
+`.styleable()` is the one case that is a rename rather than a removal. It moved
+off the component and became a standalone factory with the same behavior, so a
+wrapper still keeps its `staticConfig` and still accepts pseudo styles, media
+props, and parent variants through `styled()`:
+
+```tsx
+// before
+const MyInput = StyledInput.styleable<Props>((props, ref) => ...)
+
+// after
+const MyInput = createStyledHOC(StyledInput)<Props>((props, ref) => ...)
+```
 
 ## True tokens are gone
 

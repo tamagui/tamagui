@@ -1,5 +1,5 @@
 import { useColorScheme } from 'react-native'
-import { TamaguiProvider, type TamaguiProviderProps, Toaster } from 'tamagui'
+import { TamaguiProvider, type TamaguiProviderProps, Toast } from 'tamagui'
 import { config } from '../tamagui.config'
 
 export function Provider({
@@ -15,7 +15,11 @@ export function Provider({
       {...rest}
     >
       {children}
-      <Toaster position="top-center" swipeDirection="horizontal" duration={6000} />
+      <Toast position="top-center" swipeDirection="horizontal" duration={6000}>
+        <Toast.Viewport>
+          <Toast.List />
+        </Toast.Viewport>
+      </Toast>
     </TamaguiProvider>
   )
 }

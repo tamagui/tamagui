@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { LoadProgressBar, Slot, usePathname } from 'one'
-import { Theme, Toaster, YStack } from 'tamagui'
+import { Theme, Toast, YStack } from 'tamagui'
 import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
 import { Header } from '~/features/site/header/Header'
@@ -69,7 +69,11 @@ export default function SiteLayout() {
         <Slot />
       </Theme>
       {!hideFooter && <Footer />}
-      <Toaster />
+      <Toast>
+        <Toast.Viewport>
+          <Toast.List />
+        </Toast.Viewport>
+      </Toast>
     </YStack>
   )
 }

@@ -114,7 +114,7 @@ Use these replacements:
 | `themeInverse` | `theme="inverse"` |
 | `<Theme inverse>` | `<Theme name="inverse">` |
 | `Sheet.Frame` | `Sheet.Container` plus `Sheet.Background` |
-| `.styleable()` | ordinary React composition or styled wrappers |
+| `Component.styleable(fn)` | `createStyledHOC(Component)(fn)` |
 | forwardRef wrapper statics | direct refs and normal component composition |
 | `inlineWhenUnflattened` | remove it |
 | deprecated UI kit aliases | import the current component names |
@@ -590,13 +590,13 @@ replacement under the same name:
 
 | Removed (v2)                | Replacement (v3)                                             |
 | --------------------------- | ----------------------------------------------------------- |
-| `ToastProvider` + `ToastViewport` | `<Toaster />` (all-in-one), or `<Toast.Provider>` + `<Toast.Viewport><Toast.List /></Toast.Viewport>` |
+| `ToastProvider` + `ToastViewport` | `<Toast>` + `<Toast.Viewport><Toast.List /></Toast.Viewport>` |
 | `useToastController().show(title, opts)` | `toast(title, { description: opts.message, ...opts })` |
 | `useToastController().hide()` | `toast.dismiss()`                                           |
-| `useToastState()`           | rendering is handled by `<Toaster />` / `<Toast.List>`; use `useToasts()` for the list |
+| `useToastState()`           | rendering is handled by `<Toast.List>`; use `useToasts()` for the list |
 
-The `toast()` function is global (no provider needed around callers). Render one
-`<Toaster />` at the app root and trigger toasts from anywhere:
+The `toast()` function is global (no provider needed around callers). Mount the
+toast parts once at the app root and trigger toasts from anywhere:
 
 ```tsx
 // before (v1)
@@ -616,13 +616,17 @@ function Save() {
 }
 
 // after (v3)
-import { Toaster, toast } from 'tamagui'
+import { Toast, toast } from 'tamagui'
 
 function Root({ children }) {
   return (
     <>
       {children}
-      <Toaster />
+      <Toast>
+        <Toast.Viewport>
+          <Toast.List />
+        </Toast.Viewport>
+      </Toast>
     </>
   )
 }

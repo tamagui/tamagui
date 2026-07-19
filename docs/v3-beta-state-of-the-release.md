@@ -65,8 +65,19 @@ install was that it forced a native dependency (`burnt`). It no longer does —
 `burnt` is resolved lazily through `@tamagui/native`, so toasts render as in-app
 views everywhere by default and native OS toasts are strictly opt-in. The
 package still exists as the unstyled behavior layer, exactly like
-`@tamagui/dialog` or `@tamagui/sheet`, but `import { toast, Toaster } from
+`@tamagui/dialog` or `@tamagui/sheet`, but `import { Toast, toast } from
 'tamagui'` needs no extra install.
+
+**`Toaster` is removed; the composable API is the only Toast API** (decided
+2026-07-19). `plans/base-ui-comparison.md:228` had flagged "two overlapping
+public APIs (Radix-style v1 + Sonner-style v2) need a consolidation decision for
+v3". The v3 work deleted the Radix-style imperative half but left the
+Sonner-style `<Toaster />` all-in-one, which was a thin wrapper over
+`<Toast><Toast.Viewport><Toast.List /></Toast.Viewport></Toast>`. It did not
+match any other component's shape, and it was implemented **twice** (unstyled and
+styled), each hand-forwarding the same 15 props, so the prop list was declared in
+three places and could drift. Mounting the parts directly is 5 lines, and a bare
+`<Toast.List />` is already styled, so nothing was lost.
 
 ---
 
@@ -87,9 +98,14 @@ Condensed:
    `Sheet.Overlay` must now be a direct child of `Sheet`.
 3. **Removed props/aliases** (14 of them): `focusable`→`tabIndex`,
    `fullscreen`→explicit `position`+`inset`, `themeInverse`→`theme="inverse"`,
-   `.styleable()`→ordinary composition, `inlineWhenUnflattened`→delete,
-   `forceRemoveScrollEnabled`→`disableRemoveScroll` (**note the inverted
-   intent**), `@tamagui/animations-moti`→`@tamagui/animations-reanimated`.
+   `inlineWhenUnflattened`→delete, `forceRemoveScrollEnabled`→
+   `disableRemoveScroll` (**note the inverted intent**),
+   `@tamagui/animations-moti`→`@tamagui/animations-reanimated`.
+   One item on that list is a **rename, not a removal**:
+   `Component.styleable(fn)` became `createStyledHOC(Component)(fn)`, same
+   behavior (see §4.7). The guide, the CLI and the blog post all described it as
+   "move to ordinary React composition", which would have lost the pass-through
+   behavior; that guidance is corrected.
 4. **`$true` token keys are gone.** Pass the token it aliased (`$4` in the
    default config). A component's visual `size` is its own styled variant, not a
    global token, so this swap does not change rendered component size.
@@ -125,7 +141,8 @@ Condensed:
 15. **`createTamagui` defaultProps deprecated.** Replacements: styling defaults →
     `variables`; default look → edit your copied component; prop propagation →
     `createStyledContext`.
-16. **Imperative Toast removed.** `ToastProvider`+`ToastViewport` → `<Toaster />`;
+16. **Imperative Toast removed, and `Toaster` with it.** `ToastProvider`+
+    `ToastViewport` → `<Toast>` + `<Toast.Viewport><Toast.List /></Toast.Viewport>`;
     `useToastController().show(t, opts)` → `toast(t, { description: opts.message })`;
     `.hide()` → `toast.dismiss()`; `useToastState()` → `useToasts()`. `toast()` is
     global, no provider needed around callers.
@@ -229,6 +246,45 @@ again. Verified by reverting the fix and watching the test fail, then restoring.
 logged "React does not recognize the `accessibilityLabel` prop on a DOM element"
 for every toast on web. One-line fix, but it was console noise in every consumer
 app.
+
+### 4.7 `.styleable()` was documented as a removal when it was a rename
+
+Worth recording because the migration guidance was actively wrong. `.styleable()`
+did not lose its capabilities. PR #4086 moved it off the component and into a
+standalone factory with an identical static config
+(`neverFlatten: true, isHOC: true, isStyledHOC: false`):
+
+```tsx
+// before
+const MyInput = StyledInput.styleable<Props>((props, ref) => ...)
+// after
+const MyInput = createStyledHOC(StyledInput)<Props>((props, ref) => ...)
+```
+
+Both things it bought you still work. The compiler still sees a `staticConfig` on
+the wrapper, and the `isHOC` pass-through logic in `styled.tsx` and
+`getSplitStyles.tsx` is untouched, so `styled()` over a wrapped component still
+forwards pseudo styles, media props and parent variants. The kitchen-sink
+regression cases for exactly that (`StyledStyleableInputOnFocus`,
+`StyledStyleableInputVariant`, `StyledStyledStyleableInputOnFocus`) were migrated
+rather than deleted, and Sheet, Slider and Label all use the factory today.
+
+The real motivation was type complexity, not API taste. As a static method,
+`styleable` had to be a member of every component's type, parameterized by that
+same component's six generics. Because a styled component's type includes its
+parent's static properties, it then had to be explicitly `Omit`-ed at every level
+to stop the type recursing, which is what the
+`// insanity, for styled(styled(styleable(styled())))` comment in `types.tsx` was
+about. The factory form infers the same six generics from its argument, so
+`TamaguiComponent` no longer carries a self-referential member and the Omit dance
+is gone.
+
+The cost is discoverability: you can no longer find it by autocompleting on a
+component, and it needs an import.
+
+The commit body recorded none of this, and the guide, CLI and blog all said "move
+to ordinary React composition", which would silently drop the pass-through
+behavior. All three are corrected.
 
 ### 4.6 Flat group syntax silently produced no styles
 

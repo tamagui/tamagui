@@ -1,15 +1,15 @@
 import type { ReactNode } from 'react'
-import { Theme, Toaster, toast, type ExternalToast } from 'tamagui'
+import { Theme, Toast, toast, type ExternalToast } from 'tamagui'
 
-// v3 removed the v1 imperative Toast (ToastProvider/ToastViewport/useToastController).
-// This is a thin site-local adapter over the v2 `toast()` + `<Toaster/>` API so the
-// studio's many `toastController.show(title, { message })` call sites keep working.
-// `message` maps to the v2 `description`.
+// v3 removed the old imperative Toast (ToastProvider/ToastViewport/useToastController).
+// This is a thin site-local adapter over the `toast()` + composable `<Toast>` API so
+// the studio's many `toastController.show(title, { message })` call sites keep
+// working. `message` maps to the new `description`.
 type ShowOptions = Omit<ExternalToast, 'description'> & {
   message?: ReactNode
   demo?: boolean
-  // v1 accepted arbitrary custom fields (customData, per-toast theme, …); the v2
-  // styled Toaster owns the look, so extra keys are accepted and ignored.
+  // the old API accepted arbitrary custom fields (customData, per-toast theme, …);
+  // the styled Toast.List owns the look, so extra keys are accepted and ignored.
   customData?: Record<string, unknown>
   [key: string]: unknown
 }
@@ -31,7 +31,11 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     <>
       {children}
       <Theme name="accent">
-        <Toaster position="bottom-center" swipeDirection="vertical" />
+        <Toast position="bottom-center" swipeDirection="vertical">
+          <Toast.Viewport>
+            <Toast.List />
+          </Toast.Viewport>
+        </Toast>
       </Theme>
     </>
   )

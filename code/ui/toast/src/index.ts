@@ -30,10 +30,6 @@ export type {
   ToastAction,
 } from './ToastState'
 
-// all-in-one component (thin wrapper over the composable API)
-export { Toaster } from './Toaster'
-export type { ToasterProps, ToasterPosition } from './Toaster'
-
 export type { SwipeDirection } from './types'
 export type { BurntToastOptions, CreateNativeToastOptions, NativeToastRef } from './types'
 export { requestNotificationPermission } from './createNativeToast'

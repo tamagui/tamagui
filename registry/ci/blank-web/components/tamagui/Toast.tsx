@@ -19,8 +19,6 @@ import {
   type ToastPosition,
   type ToastRootProps,
   type ToastT,
-  type ToasterPosition,
-  type ToasterProps,
 } from '@tamagui/toast'
 import {
   createRefComponent,
@@ -166,9 +164,8 @@ const BehaviorList = ToastBehavior.List
 const BehaviorViewport = ToastBehavior.Viewport
 const BehaviorIcon = ToastBehavior.Icon
 
-// Styled list — defaults renderItem to the styled default content so the
-// composable `<Toast.List />` and `<Toaster />` are styled by default; a
-// consumer-supplied renderItem still overrides it.
+// Styled list — defaults renderItem to the styled default content so a bare
+// `<Toast.List />` is styled; a consumer-supplied renderItem still overrides it.
 function ToastList(props: ToastListProps) {
   return <BehaviorList renderItem={renderStyledToast} {...props} />
 }
@@ -196,67 +193,7 @@ export const Toast = withStaticProperties(ToastRoot, {
   Icon: BehaviorIcon,
 })
 
-/* -------------------------------------------------------------------------------------------------
- * Toaster — drop-in all-in-one, styled. Mirrors the behavior Toaster composition
- * but renders the styled default content via renderItem.
- * -----------------------------------------------------------------------------------------------*/
-
-export const Toaster = createRefComponent<TamaguiElement, ToasterProps>(
-  function Toaster(props, ref) {
-    const {
-      position = 'bottom-right',
-      expand = false,
-      visibleToasts,
-      gap,
-      duration,
-      offset,
-      hotkey,
-      swipeDirection,
-      swipeThreshold,
-      closeButton,
-      theme,
-      icons,
-      toastOptions,
-      containerAriaLabel = 'Notifications',
-      native,
-      burntOptions,
-      notificationOptions,
-      reducedMotion,
-    } = props
-
-    return (
-      <ToastBehavior
-        position={position}
-        expand={expand}
-        visibleToasts={visibleToasts}
-        gap={gap}
-        duration={toastOptions?.duration ?? duration}
-        swipeDirection={swipeDirection}
-        swipeThreshold={swipeThreshold}
-        closeButton={closeButton}
-        theme={theme}
-        icons={icons}
-        native={native}
-        burntOptions={burntOptions}
-        notificationOptions={notificationOptions}
-        reducedMotion={reducedMotion}
-      >
-        <ToastBehavior.Viewport
-          ref={ref}
-          offset={offset}
-          hotkey={hotkey}
-          label={containerAriaLabel}
-        >
-          <ToastList />
-        </ToastBehavior.Viewport>
-      </ToastBehavior>
-    )
-  }
-)
-
-Toaster.displayName = 'Toaster'
-
 // Re-export the non-visual surface so `tamagui/toast` is a drop-in for the
 // styled toast: imperative API, render hooks, and the public types.
 export { toast, useToastItem, useToasts }
-export type { ExternalToast, ToastPosition, ToastT, ToasterPosition, ToasterProps }
+export type { ExternalToast, ToastPosition, ToastT }

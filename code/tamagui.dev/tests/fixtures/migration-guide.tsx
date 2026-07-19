@@ -31,7 +31,7 @@ import {
   styled,
   Surface,
   Theme,
-  Toaster,
+  Toast,
   toast,
   View,
   XStack,
@@ -208,12 +208,16 @@ export const Misc = () => (
 // §4 — styled `tamagui` Button carries its own named size scale.
 export const StyledButtonSize = () => <Button size="medium">Save</Button>
 
-// §16 — v1 imperative Toast removed; v3 uses the global toast() + one <Toaster />.
+// §16 — imperative Toast removed; v3 uses the global toast() + the composable parts.
 export function ToastRoot({ children }: { children: React.ReactNode }) {
   return (
     <>
       {children}
-      <Toaster />
+      <Toast>
+        <Toast.Viewport>
+          <Toast.List />
+        </Toast.Viewport>
+      </Toast>
     </>
   )
 }

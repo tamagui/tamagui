@@ -64,7 +64,7 @@ export { Card, CardFrame, type CardProps } from './components/Card';
 export { Progress, ProgressIndicator, type ProgressProps } from './components/Progress';
 export { Label, type LabelProps } from './components/Label';
 export { Separator, type SeparatorProps } from './components/Separator';
-export { Toast, Toaster, ToastItem, ToastTitle, ToastDescription, ToastClose, ToastAction, toast, useToastItem, useToasts, type ExternalToast, type ToastPosition, type ToastT, type ToasterPosition, type ToasterProps, } from './components/Toast';
+export { Toast, ToastItem, ToastTitle, ToastDescription, ToastClose, ToastAction, toast, useToastItem, useToasts, type ExternalToast, type ToastPosition, type ToastT, } from './components/Toast';
 export { Surface, type SurfaceProps } from './components/Surface';
 export { facets } from './components/facets';
 export * from './createTamagui';

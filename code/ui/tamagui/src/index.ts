@@ -109,13 +109,11 @@ export { Card, CardFrame, type CardProps } from './components/Card'
 export { Progress, ProgressIndicator, type ProgressProps } from './components/Progress'
 export { Label, type LabelProps } from './components/Label'
 export { Separator, type SeparatorProps } from './components/Separator'
-// styled v2 Toast skin — shadows the unstyled @tamagui/toast composable Toast /
-// Toaster / toast re-exported above, so `import { Toast, Toaster, toast } from
-// 'tamagui'` is the styled v2-look toast. (The v1 imperative Toast was removed in
-// v3.) Also surfaced at the tamagui/toast subpath.
+// styled Toast skin — shadows the unstyled @tamagui/toast composable Toast /
+// toast re-exported above, so `import { Toast, toast } from 'tamagui'` is the
+// styled toast. Also surfaced at the tamagui/toast subpath.
 export {
   Toast,
-  Toaster,
   ToastItem,
   ToastTitle,
   ToastDescription,
@@ -127,8 +125,6 @@ export {
   type ExternalToast,
   type ToastPosition,
   type ToastT,
-  type ToasterPosition,
-  type ToasterProps,
 } from './components/Toast'
 // Surface — the copied panel/well/toolbar fixture (YStack + level variant +
 // facets), plus the raw facet set for skins/user code that want to compose the

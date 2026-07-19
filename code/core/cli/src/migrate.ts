@@ -119,7 +119,7 @@ Replace:
 - \`themeInverse\` -> \`theme="inverse"\`.
 - \`<Theme inverse>\` -> \`<Theme name="inverse">\`.
 - \`Sheet.Frame\` -> \`Sheet.Container\` plus \`Sheet.Background\`.
-- \`.styleable()\` -> ordinary React composition or styled wrappers.
+- \`Component.styleable(fn)\` -> \`createStyledHOC(Component)(fn)\` (same behavior, standalone factory).
 - forwardRef wrapper statics -> direct refs and normal composition.
 - \`inlineWhenUnflattened\` -> remove it.
 - deprecated UI kit aliases -> current component names.
