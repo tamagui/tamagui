@@ -119,12 +119,31 @@ It is purely a copy-paste composition point. Component skins use interaction
 facets where they match (ListItem is `hoverable pressable`) and hand-write
 chrome where their look demands it; facets are convenience, not law.
 
-Needs more thought before executing (flagged, not blocking):
+### Naming (proposed 2026-07-18, pending owner pick)
 
-- naming (`backgrounded` vs `filled`; adjective booleans vs a single
-  `chrome={['border','bg']}` prop — lean adjectives, they read at use-site);
-- whether `focusable` the facet should stay purely visual (ring) with actual
-  focusability owned by behavior primitives — lean yes, visual only;
+The earlier draft mixed word-forms (adjectives + `-able`s + "backgrounded"),
+which read as arbitrary. Proposed: **all adjectives, interaction collapsed to
+one facet** — `filled`, `bordered`, `elevated`, `rounded`, `interactive`.
+
+```tsx
+<Surface level={2} filled bordered rounded interactive />
+```
+
+- `filled` replaces `backgrounded` (established UI term, real English).
+- `interactive` replaces `hoverable`/`pressable`/`focusable`: the three
+  feedbacks travel together in practice, per-state differences already live
+  in the generics, and one word stops the `-able`s from falsely implying
+  capability (behavior primitives own actual focus/press capability).
+  Press-only/hover-only wants → fork the facet file; granularity lives in
+  the fork, not the API.
+- `bordered` over `outlined` (Material's "outlined" implies border-minus-fill
+  as a preset; `bordered` stays purely additive).
+- Noun pairing: `Surface` the noun, `level` which one, adjectives how it
+  looks; `theme="surface2"` and `<Surface level={2}>` share vocabulary.
+- Rejected: noun facets (`border`, `fill`) — collide with real style props.
+
+Still open before executing (not blocking):
+
 - native parity for the focus ring (outline vs focusStyle border swap).
 
 ## Docs presentation
