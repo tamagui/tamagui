@@ -297,10 +297,15 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
       ? getTamaguiConfigPathFromOptionsConfig(props.config, root)
       : ''
     const tmpDir = join(root, '.tamagui')
+    // esbuild inlines process.env.TAMAGUI_TARGET into these bundles (see bundle.ts),
+    // so their contents are platform-specific. keep web and native on separate paths:
+    // sharing one path let a native bundle be picked up as the web config (and vice
+    // versa) by the mtime reuse check below, emitting web classes with no CSS variables.
+    const platformSuffix = (props.platform || 'web') === 'native' ? '.native' : '.web'
     // detect module format from config entry point
     const configFormat = configEntry ? detectModuleFormat(configEntry) : 'cjs'
     const configExt = configFormat === 'esm' ? '.mjs' : '.cjs'
-    const configOutPath = join(tmpDir, `tamagui.config${configExt}`)
+    const configOutPath = join(tmpDir, `tamagui.config${platformSuffix}${configExt}`)
     const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
     // detect format per component module
     const componentFormats: Array<'esm' | 'cjs'> = baseComponents.map((mod) => {
@@ -319,7 +324,7 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
         `${componentModule
           .split(sep)
           .join('-')
-          .replace(/[^a-z0-9]+/gi, '')}-components.config${ext}`
+          .replace(/[^a-z0-9]+/gi, '')}-components.config${platformSuffix}${ext}`
       )
     })
     let compilerDependencies: string[] = currentBundle?.dependencies ?? []
