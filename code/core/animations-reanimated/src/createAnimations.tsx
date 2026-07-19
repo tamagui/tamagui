@@ -148,9 +148,7 @@ const cloneAnimationValue = (value: unknown): unknown => {
   return value
 }
 
-const cloneStyleRecord = (
-  style: Record<string, unknown>
-): Record<string, unknown> => {
+const cloneStyleRecord = (style: Record<string, unknown>): Record<string, unknown> => {
   const next: Record<string, unknown> = {}
   for (const key in style) {
     next[key] = cloneAnimationValue(style[key])
@@ -226,6 +224,14 @@ const COLOR_STYLE_KEYS: Record<string, boolean> = {
 // an animation descriptor from a color value that isn't clearly parseable.
 const toReanimatedColor = (value: unknown): unknown => {
   'worklet'
+  if (typeof value === 'number') {
+    const color = value >>> 0
+    const alpha = ((color >>> 24) & 255) / 255
+    const red = (color >>> 16) & 255
+    const green = (color >>> 8) & 255
+    const blue = color & 255
+    return `rgba(${red}, ${green}, ${blue}, ${alpha})`
+  }
   if (typeof value !== 'string') return value
   const trimmed = value.trim()
   if (trimmed === 'transparent') return 'rgba(0, 0, 0, 0)'
@@ -234,9 +240,11 @@ const toReanimatedColor = (value: unknown): unknown => {
 
 const isInterpolatableColor = (value: unknown): boolean => {
   'worklet'
-  if (typeof value === 'number') return true
   if (typeof value !== 'string') return false
-  return /^(#[0-9a-fA-F]{3,8}$|rgba?\(|hsla?\(|hwb\()/.test(value)
+  return (
+    /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(value) ||
+    /^(?:rgba?|hsla?|hwb)\([0-9+\-.,%/\s]+\)$/.test(value)
+  )
 }
 
 const getSeeds = (
@@ -278,7 +286,8 @@ const applyAnimation = (
   targetValue: number | string,
   config: TransitionConfig,
   callback?: AnimationCallback,
-  seedValue?: number | string
+  seedValue?: number | string,
+  validateStartAsColor = false
 ): number | string => {
   'worklet'
   const delay = config.delay
@@ -305,16 +314,23 @@ const applyAnimation = (
   // a painted predecessor: history may hold a stale clear-value ('') from when
   // the key was last removed, which poisons the start value (NaN frames). the
   // wrapper substitutes the seed for whatever start value reanimated passes.
-  if (seedValue !== undefined) {
+  // color history gets the same treatment only when reanimated's own parser
+  // rejects it, preserving valid in-flight values during interruption.
+  if (seedValue !== undefined || validateStartAsColor) {
     const innerOnStart = animatedValue.onStart
     animatedValue.onStart = (
       animation: unknown,
-      _value: unknown,
+      value: unknown,
       timestamp: number,
       previousAnimation: unknown
     ) => {
       'worklet'
-      innerOnStart(animation, seedValue, timestamp, previousAnimation)
+      const startValue = validateStartAsColor
+        ? isInterpolatableColor(toReanimatedColor(value))
+          ? toReanimatedColor(value)
+          : (seedValue ?? targetValue)
+        : seedValue
+      innerOnStart(animation, startValue, timestamp, previousAnimation)
     }
   }
 
@@ -940,7 +956,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         lastPaintedRef.current = renderSnapshot.painted
       }, [renderSnapshot])
 
-
       // reconcile the emitter latch with real re-renders.
       //
       // the avoidReRenders fast path lets a pure pseudo change (hover/press/focus) push
@@ -1292,9 +1307,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             if (key === 'transform') continue
 
             let targetValue = animatedValues[key]
-            let seedValue: unknown = key in snapshot.seeds
-              ? snapshot.seeds[key]
-              : undefined
+            let seedValue: unknown =
+              key in snapshot.seeds ? snapshot.seeds[key] : undefined
             if (COLOR_STYLE_KEYS[key]) {
               targetValue = toReanimatedColor(targetValue)
               seedValue = toReanimatedColor(seedValue)
@@ -1329,13 +1343,20 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
             emitted[key] = true
             if (previouslyEmitted[key]) {
-              result[key] = applyAnimation(targetValue as number, propConfig, callback)
+              result[key] = applyAnimation(
+                targetValue as number,
+                propConfig,
+                callback,
+                undefined,
+                !!COLOR_STYLE_KEYS[key]
+              )
             } else if (seedValue !== undefined) {
               result[key] = applyAnimation(
                 targetValue as number,
                 propConfig,
                 callback,
-                seedValue as number | string
+                seedValue as number | string,
+                !!COLOR_STYLE_KEYS[key]
               )
             } else if (currentlyExiting && typeof targetValue === 'number') {
               // a key introduced by exitStyle with no painted predecessor must
