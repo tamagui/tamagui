@@ -5,7 +5,7 @@
 import type { TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
 import type { ToastPosition } from './ToastComposable';
-import type { SwipeDirection } from './ToastProvider';
+import type { SwipeDirection } from './types';
 import type { ExternalToast } from './ToastState';
 import type { BurntToastOptions } from './types';
 export type ToasterPosition = ToastPosition;

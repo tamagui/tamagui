@@ -581,7 +581,90 @@ createTamagui({
 styled(View, { backgroundColor: '$squareBackground' })
 ```
 
-## 16. Verification checklist
+## 16. Migrate off the v1 imperative Toast
+
+v3 removes the v1 imperative Toast. `@tamagui/toast` (and the `Toast` export from
+`tamagui`) is now the v2 composable + `toast()` API. These removed exports have no
+replacement under the same name:
+
+| Removed (v1)                | Replacement (v2)                                             |
+| --------------------------- | ----------------------------------------------------------- |
+| `ToastProvider` + `ToastViewport` | `<Toaster />` (all-in-one), or `<Toast.Provider>` + `<Toast.Viewport><Toast.List /></Toast.Viewport>` |
+| `useToastController().show(title, opts)` | `toast(title, { description: opts.message, ...opts })` |
+| `useToastController().hide()` | `toast.dismiss()`                                           |
+| `useToastState()`           | rendering is handled by `<Toaster />` / `<Toast.List>`; use `useToasts()` for the list |
+
+The `toast()` function is global (no provider needed around callers). Render one
+`<Toaster />` at the app root and trigger toasts from anywhere:
+
+```tsx
+// before (v1)
+import { ToastProvider, ToastViewport, useToastController } from '@tamagui/toast'
+
+function Root({ children }) {
+  return (
+    <ToastProvider>
+      {children}
+      <ToastViewport />
+    </ToastProvider>
+  )
+}
+function Save() {
+  const toast = useToastController()
+  return <Button onPress={() => toast.show('Saved!', { message: 'All good.' })}>Save</Button>
+}
+
+// after (v3)
+import { Toaster, toast } from 'tamagui'
+
+function Root({ children }) {
+  return (
+    <>
+      {children}
+      <Toaster />
+    </>
+  )
+}
+function Save() {
+  return <Button onPress={() => toast('Saved!', { description: 'All good.' })}>Save</Button>
+}
+```
+
+## 17. Replace ThemeableStack and SizableStack
+
+`ThemeableStack` and `SizableStack` (and their `themeableVariants` /
+`themeableVariantStyles`) are removed from `@tamagui/stacks`. Their one good idea —
+composable chrome variants — moves into the copied layer as the `Surface` fixture
+and its `facets`. The base `YStack`/`XStack` `elevation` prop and `getElevation`
+are unchanged.
+
+- Extending `ThemeableStack`: use `styled(YStack, { … })` and add the styles you
+  actually used inline. The removed variants map to plain styles:
+
+  ```tsx
+  // before
+  const Panel = styled(ThemeableStack, { bordered: true })
+  // after
+  const Panel = styled(YStack, { borderWidth: 1, borderColor: '$borderColor' })
+  ```
+
+- `elevate` → the base `elevation` prop, or a shadow read from generics.
+- `bordered` → `borderWidth` + `borderColor: '$borderColor'`.
+- `circular` → `borderRadius: 100_000` (+ equal width/height for a circle).
+
+- For panels/wells/toolbars, copy the `Surface` fixture from the registry
+  (`npx shadcn add surface`). It is a `YStack` + a `level` variant (theme
+  `surface1-3`) + the composable facets `filled outlined elevated rounded
+  interactive`, with nothing on by default:
+
+  ```tsx
+  <Surface level={2} filled rounded interactive />
+  ```
+
+  Facets read theme generics (`$background`, `$borderColor`, …), never the color
+  scale, so they restyle for free under any `level` or `theme` change.
+
+## 18. Verification checklist
 
 Run validation at the layer your app changed.
 

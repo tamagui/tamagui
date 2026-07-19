@@ -5,10 +5,10 @@
 // tamagui.dev's own complete, CI-validated config).
 //
 // NOTES:
-// - the styled Button named-size snippet (`import { Button } from 'tamagui';
-//   <Button size="medium" />`) is omitted until W4 lands the styled `tamagui`
-//   pilot (today's code/ui/button is still the behavior primitive); tracked
-//   separately and added here once the styled size scale is importable.
+// - `import { Button } from 'tamagui'` is the STYLED v2-look skin (the tamagui
+//   index shadows the unstyled @tamagui/ui primitive with the default skin), so
+//   `<Button size="medium" />` compiles against its named size scale below. The
+//   unstyled primitive lives at `tamagui/unstyled` and owns no size scale.
 // - a couple of guide snippets use values that only exist in the v5 default
 //   config the guide targets (the kebab media key `max-md` in §8, and the
 //   px-string font scale in §6). those are source-verified against
@@ -29,7 +29,10 @@ import {
   Select,
   Sheet,
   styled,
+  Surface,
   Theme,
+  Toaster,
+  toast,
   View,
   XStack,
   YStack,
@@ -200,4 +203,29 @@ export const Misc = () => (
     <Paragraph fontSize={17} />
     <Button>ok</Button>
   </>
+)
+
+// §4 — styled `tamagui` Button carries its own named size scale.
+export const StyledButtonSize = () => <Button size="medium">Save</Button>
+
+// §16 — v1 imperative Toast removed; v3 uses the global toast() + one <Toaster />.
+export function ToastRoot({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      {children}
+      <Toaster />
+    </>
+  )
+}
+export const ToastTrigger = () => (
+  <Button onPress={() => toast('Saved!', { description: 'All good.' })}>Save</Button>
+)
+
+// §17 — ThemeableStack removed: extend YStack, or copy the Surface fixture.
+export const Panel = styled(YStack, {
+  borderWidth: 1,
+  borderColor: '$borderColor',
+})
+export const SurfaceUsage = () => (
+  <Surface level={2} filled outlined rounded interactive />
 )

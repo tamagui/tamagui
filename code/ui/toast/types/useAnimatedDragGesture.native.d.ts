@@ -8,7 +8,7 @@
  * registry, never imported directly. The gesture is created in useMemo and
  * returns null when RNGH is not set up.
  */
-import type { SwipeDirection } from './ToastProvider';
+import type { SwipeDirection } from './types';
 export interface UseAnimatedDragGestureOptions {
     direction: SwipeDirection;
     threshold: number;

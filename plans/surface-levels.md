@@ -179,3 +179,22 @@ so far. Revisit post-beta only with a concrete consumer.
 3. Sweep skins for scale references; enforce the generics-only rule in the
    registry generator check.
 4. Docs page + component-page one-liners.
+
+## Implementation notes (executed 2026-07-18)
+
+- **`level` is a prop, not a variant.** A theme boundary can only be created by
+  the `theme` prop / `<Theme>` component, not by a variant returning
+  `{ theme: 'surfaceN' }` (a styled variant contributes to style resolution, not
+  the theme context — verified at runtime). So `Surface` is a small `forwardRef`
+  wrapper: `<Surface level={2}>` renders `<Theme name="surface2"><SurfaceFrame …/></Theme>`;
+  the facets (`filled`/`outlined`/`elevated`/`rounded`/`interactive`) stay
+  variants on `SurfaceFrame`. Do not "simplify" it back to a `level` variant.
+- **The v2-compat `elevate`/`bordered` variants live on the animated frame, not
+  a skin wrapper.** Dialog/Slider call sites still pass `elevate`/`bordered`, so
+  the opt-in variants sit on the unstyled `DialogContent`/`SliderThumb` frames
+  (like ThemeableStack did). A variant block on a `styled()` wrapper _around_ the
+  animated node crashes the native animation driver's interpolation.
+- **Generics-only is enforced by default** in the registry generator
+  (`assertGenericsOnly`, `$colorN` ban); Surface + facets + the new fleet-tail
+  skins comply. The grandfathered v2-compat skins that still reference palette
+  steps (Sheet/Select/Toast) opt out with `genericsOnly: false`.

@@ -5,9 +5,9 @@
 // HERE and is wired through Toast.List's `renderItem`, so the copy-paste registry
 // item is a complete, customizable toast (no hidden styling in the behavior pkg).
 //
-// Surfaced at the `tamagui/toast` subpath (not the main entry) because the main
-// entry's `export * from '@tamagui/toast'` already occupies the `Toast` name with
-// the v1 imperative API.
+// Surfaced at both the `tamagui` root (shadowing the unstyled @tamagui/toast
+// composable Toast) and the `tamagui/toast` subpath. The v1 imperative Toast was
+// removed in v3, so this styled v2 Toast owns the `Toast` name.
 import {
   Toast as ToastBehavior,
   toast,
@@ -17,6 +17,7 @@ import {
   type ToastItemRenderProps,
   type ToastListProps,
   type ToastPosition,
+  type ToastRootProps,
   type ToastT,
   type ToasterPosition,
   type ToasterProps,
@@ -157,26 +158,42 @@ const renderStyledToast = ({ toast: t, index }: ToastItemRenderProps) => (
   </ToastItem>
 )
 
+// Capture the behavior parts up front. `withStaticProperties` assigns onto the
+// component it is given, so composing directly onto ToastBehavior would rewrite
+// @tamagui/toast's own Toast.List/.Item for every consumer of the unstyled
+// package — and ToastList below would end up rendering itself.
+const BehaviorList = ToastBehavior.List
+const BehaviorViewport = ToastBehavior.Viewport
+const BehaviorIcon = ToastBehavior.Icon
+
 // Styled list — defaults renderItem to the styled default content so the
 // composable `<Toast.List />` and `<Toaster />` are styled by default; a
 // consumer-supplied renderItem still overrides it.
 function ToastList(props: ToastListProps) {
-  return <ToastBehavior.List renderItem={renderStyledToast} {...props} />
+  return <BehaviorList renderItem={renderStyledToast} {...props} />
 }
 
 /* -------------------------------------------------------------------------------------------------
  * Toast — the styled composable API (styled parts on the behavior root).
  * -----------------------------------------------------------------------------------------------*/
 
-export const Toast = withStaticProperties(ToastBehavior, {
-  Viewport: ToastBehavior.Viewport,
+// A distinct root, so the styled parts hang off this skin instead of mutating
+// the shared behavior component (see BehaviorList above).
+const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
+  function Toast(props, ref) {
+    return <ToastBehavior {...props} ref={ref} />
+  }
+)
+
+export const Toast = withStaticProperties(ToastRoot, {
+  Viewport: BehaviorViewport,
   List: ToastList,
   Item: ToastItem,
   Title: ToastTitle,
   Description: ToastDescription,
   Close: ToastClose,
   Action: ToastAction,
-  Icon: ToastBehavior.Icon,
+  Icon: BehaviorIcon,
 })
 
 /* -------------------------------------------------------------------------------------------------

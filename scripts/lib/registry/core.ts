@@ -94,11 +94,32 @@ function siblingSkinBase(spec: string, skinBases: Set<string>): string | null {
 // so every item carries a uniform `meta.states` — the canonical A1 state names
 // the skin styles. left undefined until the style-grammar branch merges at
 // reassembly; when absent no states are emitted (registry unchanged).
+// the generics-only rule (plans/surface-levels.md): a skin styles against theme
+// GENERICS ($background, $borderColor, $backgroundHover, …), never the color
+// SCALE ($color1..$color12) directly. that is what makes levels/facets compose —
+// anything that re-binds generics restyles every skin beneath it. enforced by
+// default; the grandfathered v2-compat skins that still reference palette steps
+// opt out with `genericsOnly: false` in their manifest.
+const SCALE_REF = /\$color(1[0-2]|[1-9])\b/g
+
+export function assertGenericsOnly(skin: Skin): void {
+  if (skin.manifest.genericsOnly === false) return
+  const hits = [...new Set(skin.source.match(SCALE_REF) ?? [])].sort()
+  if (hits.length) {
+    throw new Error(
+      `skin "${skin.base}" violates the generics-only rule: references the color scale directly (${hits.join(', ')}). ` +
+        `style against theme generics ($background/$borderColor/…) so it restyles under any re-bound level, ` +
+        `or set \`genericsOnly: false\` in ${skin.base}.manifest.ts if this is a grandfathered v2-compat skin.`
+    )
+  }
+}
+
 export function buildItem(
   skin: Skin,
   skinBases: Set<string>,
   stateTables?: StateTables
 ): RegistryItem {
+  assertGenericsOnly(skin)
   const { dependencies, relatives } = classifyDependencies(skin.source)
   const type = skin.manifest.type ?? 'registry:ui'
   const target = `${installTargetDir}/${skin.base}.tsx`

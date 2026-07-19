@@ -1,6 +1,10 @@
 export type SkinManifest = {
     /** one-line human description shown in the registry. */
     description: string;
+    /** shadcn registry-item type. defaults to 'registry:ui' (a lib helper uses 'registry:lib'). */
+    type?: 'registry:lib' | 'registry:block' | 'registry:component' | 'registry:ui' | 'registry:hook' | 'registry:theme' | 'registry:page' | 'registry:file' | 'registry:style' | 'registry:base' | 'registry:font' | 'registry:item';
+    /** human title override. defaults to the skin file basename. */
+    title?: string;
     /** shadcn registry categories (e.g. 'form', 'overlay'). */
     categories?: string[];
     /**
@@ -29,5 +33,18 @@ export type SkinManifest = {
      * (`selected`), ToggleGroup's `activeStyle` (`checked`).
      */
     extraStates?: string[];
+    /** escape hatch: npm deps a static import scan cannot see. rare. */
+    extraDependencies?: string[];
+    /** escape hatch: registry deps a static import scan cannot see. rare. */
+    extraRegistryDependencies?: string[];
+    /**
+     * enforce the generics-only rule on this skin: the generator fails if the skin
+     * source references the color scale ($colorN) directly (see plans/surface-levels.md).
+     * defaults to true. the copied chrome layer (Surface, facets) MUST stay
+     * generics-only so it restyles under any re-bound level. the v2-compat
+     * component skins that still reference specific palette steps for their look
+     * opt out with `genericsOnly: false`.
+     */
+    genericsOnly?: boolean;
 };
 //# sourceMappingURL=registry-manifest.d.ts.map

@@ -3,5 +3,6 @@ export declare const manifest: {
     categories: string[];
     tokens: string[];
     native: string[];
+    genericsOnly: false;
 };
 //# sourceMappingURL=Select.manifest.d.ts.map

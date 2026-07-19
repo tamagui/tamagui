@@ -1,4 +1,5 @@
 export * from './Sheet';
+export { useSheetContext } from './SheetContext';
 export * from './SheetController';
 export * from './useSheetController';
 export * from './useSheetOpenState';

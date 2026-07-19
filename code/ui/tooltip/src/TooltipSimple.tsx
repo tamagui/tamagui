@@ -1,6 +1,6 @@
 import { createRefComponent, getVariableValue } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import type { SizableStackProps } from '@tamagui/stacks'
+import type { YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
 
@@ -11,7 +11,7 @@ export type TooltipSimpleProps = TooltipProps & {
   disabled?: boolean
   label?: React.ReactNode
   children?: React.ReactNode
-  contentProps?: SizableStackProps
+  contentProps?: YStackProps
 }
 
 export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(

@@ -1,7 +1,9 @@
-import { View, ThemeableStack, YStack, styled } from 'tamagui'
+import { View, YStack, styled } from 'tamagui'
 
+// no `export * from '@tamagui/toast'`: tamagui already re-exports the toast
+// surface, and starring both makes Toast/Toaster ambiguous (ES drops ambiguous
+// star exports entirely, so they'd silently disappear from this package)
 export * from 'tamagui'
-export * from '@tamagui/toast'
 export * from './SandboxHeading'
 export * from './views'
 
@@ -38,7 +40,7 @@ export const Test14Component = styled(YStack, {
   },
 })
 
-export const TestBorderExtraction = styled(ThemeableStack, {
+export const TestBorderExtraction = styled(YStack, {
   theme: 'contentContainer',
   backgroundColor: '$background',
   borderColor: '$borderColor',

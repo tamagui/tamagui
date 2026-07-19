@@ -31,11 +31,13 @@ const cardPaddingVariant = (
   }
 }
 
+// Unstyled Card frame: structural layout + the size mechanism (size-derived
+// radius on the frame, size-derived padding on Header/Footer) only. The theme
+// background lives in the tamagui skin (code/ui/tamagui/src/components/Card.tsx).
 export const CardFrame = styled(YStack, {
   name: 'Card',
   context: CardContext,
   size: true,
-  backgroundColor: '$background',
   position: 'relative',
 
   variants: {
