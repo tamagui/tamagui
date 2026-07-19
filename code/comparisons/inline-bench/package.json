@@ -7,8 +7,8 @@
     "dev": "vite --port 9103"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.0",

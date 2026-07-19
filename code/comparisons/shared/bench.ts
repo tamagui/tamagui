@@ -9,8 +9,8 @@
  * playwright tests read results via the same IDs across all apps.
  */
 
-// counts can be overridden via URL query (?scale=200&heavy=60) so the same
-// dev server can run the runtime variant at a smaller dataset without rebuild.
+// every framework receives the same workload. query overrides exist for deliberate
+// local experiments, but the committed matrix records these defaults.
 const urlParams =
   typeof window !== 'undefined'
     ? new URLSearchParams(window.location.search)
@@ -19,12 +19,12 @@ const urlParams =
 const scaleParam = urlParams.get('scale')
 const heavyParam = urlParams.get('heavy')
 
-export const ITEM_COUNT = scaleParam ? parseInt(scaleParam, 10) : 500
+export const ITEM_COUNT = scaleParam ? parseInt(scaleParam, 10) : 200
 export const HEAVY_COUNT = heavyParam
   ? parseInt(heavyParam, 10)
   : scaleParam
-    ? Math.max(30, Math.round((parseInt(scaleParam, 10) / 500) * 150))
-    : 150
+    ? Math.max(30, Math.round((parseInt(scaleParam, 10) / 200) * 60))
+    : 60
 
 export interface BenchResult {
   mount: number
@@ -36,13 +36,18 @@ export interface BenchScenario {
   name: string
 }
 
-export const scenarios: BenchScenario[] = [
+const allScenarios: BenchScenario[] = [
   { id: 'simple', name: '1. Simple (static layout props)' },
   { id: 'rich', name: '2. Rich (pseudo states)' },
   { id: 'group', name: '3. Group hover (parent group state affects child styles)' },
   { id: 'heavy', name: '4. Heavy page (realistic card list, nested, mixed)' },
   { id: 'animated', name: '5. Animated (JS spring)' },
 ]
+
+const scenarioParam = urlParams.get('scenario')
+export const scenarios = scenarioParam
+  ? allScenarios.filter((scenario) => scenario.id === scenarioParam)
+  : allScenarios
 
 /**
  * renders a results table to a container element.

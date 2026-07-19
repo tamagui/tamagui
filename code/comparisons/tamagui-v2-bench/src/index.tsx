@@ -161,7 +161,7 @@ function HeavyItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 5: animated (always deopts — transition prop) ──
+// ── scenario 5: animated (transition API) ──
 
 function AnimatedItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -268,7 +268,7 @@ function App() {
         if (currentIdx + 1 >= scenarios.length && resultsRef.current) {
           const label =
             new URLSearchParams(window.location.search).get('label') ??
-            'Tamagui benchmark'
+            'Tamagui v2.4.6 (compiled)'
           renderResults(resultsRef.current, label, next)
         }
         return next
@@ -286,7 +286,7 @@ function App() {
 
   return (
     <div style={{ padding: 24, color: '#eee', fontFamily: 'system-ui' }}>
-      <h1 style={{ fontSize: 24, margin: '0 0 8px' }}>Tamagui Benchmark</h1>
+      <h1 style={{ fontSize: 24, margin: '0 0 8px' }}>Tamagui 2.4.6 Benchmark</h1>
       <p style={{ color: '#888', margin: '0 0 20px', fontSize: 14 }}>
         {ITEM_COUNT} components × {scenarios.length} scenarios
       </p>
