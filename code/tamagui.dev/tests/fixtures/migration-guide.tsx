@@ -226,4 +226,6 @@ export const Panel = styled(YStack, {
   borderWidth: 1,
   borderColor: '$borderColor',
 })
-export const SurfaceUsage = () => <Surface level={2} filled outlined rounded interactive />
+export const SurfaceUsage = () => (
+  <Surface level={2} filled outlined rounded interactive />
+)
