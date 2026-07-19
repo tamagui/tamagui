@@ -202,9 +202,44 @@ attempt to attribute the failure to a `sandbox-ui` star-export change was wrong
 and was reverted back in (`f21f7fae7f`). Do not bisect against this test until
 it is deterministic, and do not read a single green run on these PRs as proof.
 
-Under investigation on the T12 branch. Fix belongs in the compiler (stable total
-ordering / remove the shared-state race), NOT in sorting classes in the test and
-NOT by refreshing the snapshot.
+**ROOT-CAUSED AND FIXED 2026-07-19 (`e39285988c`, on the T12 branch).**
+
+`bundleConfig()` (`code/compiler/static/src/extractor/bundleConfig.ts`) wrote the
+web and native bundles to the SAME paths (`.tamagui/tamagui.config.cjs`,
+`.tamagui/<mod>-components.config.cjs`). Those bundles are not interchangeable —
+`bundle.ts` inlines `process.env.TAMAGUI_TARGET` as a literal via esbuild
+`define`. A reuse check then skips rebuilding when the output file is **less than
+3 seconds old**. So when two `tamagui build` invocations land within 3s, the web
+pass finds the native pass's file "fresh" and loads the **native** bundle as the
+web config. Native variables are `variable: ''`, so every CSS-variable-backed
+class collapsed (`_gap-c-space-4` → `_gap-`, `_col-color12` → `_col-`) and the
+web-only `_pos-relative` / `_ws-normal` defaults vanished. Self-sustaining: each
+process's native pass refreshed the mtime for the next process's web pass.
+
+Not a race in the usual sense — a cache keyed on **elapsed time** over a
+**platform-ambiguous path**. That is why isolated runs never reproduced it (40/40
+clean standalone) while the vitest suite — 7 builds back-to-back sharing one
+`.tamagui` — failed ~25%.
+
+Fix: platform-scope the paths (`tamagui.config.web.cjs` / `.native.cjs`, same for
+component bundles), plus `allFiles.sort()` in the CLI since chokidar `add` order
+isn't guaranteed. Same 30 cold runs: **7/30 failures → 0/30**, byte-identical
+output.
+
+Severity correction: the earlier "ordering is cosmetic" framing understated this.
+The observed failures were not reordering — classes were **dropped** and variable
+references **emptied**. That is a real visual break, not a reproducibility
+annoyance.
+
+Two consequences worth keeping:
+- `_tt-f-transform44812` on H1 SHOULD be emitted. `createFont`'s `processSection`
+  forward-fills the heading font's `transform: { 6: 'uppercase', 7: 'none' }`
+  across all 16 size keys, so size 10 resolves to `none`, backed by a real rule
+  `._tt-f-transform44812{text-transform:var(--f-transform-10);}`. The old snapshot
+  lacked it because it was captured during a contaminated run.
+- **A genuine behavioural bug fell out of this:** native `pointerEvents="none"`
+  was being deleted, because the native pass had been running with web semantics.
+  Pointer events were not actually disabled on native.
 
 ## Reading native CI correctly: "Android Detox Tests" is SKIPPED on PR runs
 
