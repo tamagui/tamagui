@@ -6,6 +6,7 @@ on:
       - main
       - 'native-*'
       - 'v*'
+      - 'v3/**'
       - rn82
   pull_request:
     branches:
