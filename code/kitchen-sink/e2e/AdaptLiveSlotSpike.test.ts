@@ -38,6 +38,7 @@ describe('AdaptLiveSlotSpike', () => {
 
   beforeEach(async () => {
     await remountDirectUseCase('live-slot-content', { skipEnableSync: true })
+    await testElement('adapt-live-slot-scroll').scrollTo('top')
   })
 
   afterEach(async () => {
@@ -64,8 +65,10 @@ describe('AdaptLiveSlotSpike', () => {
     )
     await detoxExpect(element(by.label('No portal sheet live slot panel'))).toExist()
 
-    await scrollIntoView('sheet-live-slot-button')
-    await withSync(() => testElement('sheet-live-slot-button').tap())
+    await testElement('adapt-live-slot-scroll').scrollTo('bottom')
+    const sheetButton = element(by.label('No portal sheet button'))
+    await waitFor(sheetButton).toBeVisible().withTimeout(10000)
+    await withSync(() => sheetButton.tap())
     await detoxExpect(testElement('sheet-live-slot-press-count')).toHaveText(
       'sheet press-count: 1'
     )
