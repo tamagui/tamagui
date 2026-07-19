@@ -268,16 +268,12 @@ async function measure(
     })
     pages.set(key, page)
   }
+  const previousResults = page.locator('#bench-results-table')
+  if ((await previousResults.count()) > 0) {
+    await previousResults.evaluate((element) => element.replaceChildren())
+  }
   await page.locator('#bench-start').click()
-  await page.waitForFunction(
-    () => (document.querySelector('#bench-start') as HTMLButtonElement)?.disabled === true
-  )
-  await page.waitForFunction(
-    () =>
-      (document.querySelector('#bench-start') as HTMLButtonElement)?.disabled === false,
-    undefined,
-    { timeout: 120_000 }
-  )
+  await page.waitForSelector(`#bench-result-${scenario}-rerender`, { timeout: 120_000 })
   const mount = Number(
     await page.locator(`#bench-result-${scenario}-mount`).getAttribute('data-value')
   )
