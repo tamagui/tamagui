@@ -633,10 +633,12 @@ function Save() {
 ## 17. Replace ThemeableStack and SizableStack
 
 `ThemeableStack` and `SizableStack` (and their `themeableVariants` /
-`themeableVariantStyles`) are removed from `@tamagui/stacks`. Their one good idea —
-composable chrome variants — moves into the copied layer as the `Surface` fixture
-and its `facets`. The base `YStack`/`XStack` `elevation` prop and `getElevation`
-are unchanged.
+`themeableVariantStyles`) are deprecated. v3's own behavior packages no longer
+extend them (Dialog, Slider, Card, and friends are plain `styled(YStack)` now);
+they remain exported from `@tamagui/stacks` only as a compat shim and will be
+removed in a future major. Their one good idea — composable chrome variants —
+moves into the copied layer as the `Surface` fixture and its `facets`. The base
+`YStack`/`XStack` `elevation` prop and `getElevation` are unchanged.
 
 - Extending `ThemeableStack`: use `styled(YStack, { … })` and add the styles you
   actually used inline. The removed variants map to plain styles:
