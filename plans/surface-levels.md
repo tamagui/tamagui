@@ -68,6 +68,63 @@ copied fixture, and one documented rule.
    theme mechanism would re-invent the v2 token stepper v3 just deleted.
    Numeric knobs that should cascade (`$radius`) are custom variables.
 
+## Facets: the variant-system piece (owner addition, 2026-07-18)
+
+The owner's addition: v3 has a typed variant helper (`createVariantResolver`
+machinery), so surfaces should get composable capability variants. This is
+ThemeableStack's one good idea (`bordered`, `elevate`, `outlined`,
+hover/press/focus theming) reborn in the right layer with the right inputs.
+
+**Facets are canonical boolean variants, generated once by a small helper in
+the copied layer, each a pure function of generics + conventional variables.**
+
+Chrome facets — each owns exactly one property family, static styles only:
+
+- `backgrounded` → `bg: '$background'`
+- `bordered` → `borderWidth: 1, borderColor: '$borderColor'`
+- `elevated` → shadow generics / elevation
+- `rounded` → `borderRadius: '$radius'` (custom variable)
+
+Interaction facets — each owns exactly one pseudo, never static styles:
+
+- `hoverable` → `hoverStyle: { bg: '$backgroundHover', borderColor: '$borderColorHover' }`
+- `pressable` → `pressStyle: { bg: '$backgroundPress', borderColor: '$borderColorPress', scale: '$pressScale' }`
+- `focusable` → focus-visible ring from `$focusRingColor`/`$focusRingWidth`
+
+Composition rules (these are what keep it from becoming a second variant
+system):
+
+1. **Family ownership kills compound variants.** Chrome facets never touch
+   pseudos; interaction facets only touch pseudos. An interaction facet may
+   state-shift ANY family's generic (`borderColorPress`), because the value is
+   inert when that chrome is absent (no borderWidth → borderColor does
+   nothing). `pressable + bordered` composes with zero coordination.
+2. **Generics-only, so facets are level-aware for free.**
+   `<Surface level={2} pressable bordered>` needs no facet cooperation; the
+   level re-bound the generics the facets read.
+3. **They live in the copied layer** — a `facets.ts` shipped beside the skins
+   in the registry, imported by Surface and any skin that wants them, forkable
+   like every copy. Core contributes only the existing variant machinery.
+4. **A1 stays accurate for free.** hover/press/focus are pseudo-tier states in
+   the A1 vocabulary, so the registry's derived `meta.states` picks facet
+   usage up without new scanning rules.
+5. **No preset facets.** `outlined`-style multi-family combos are documented
+   compositions (`bordered` minus `backgrounded`), not additional keys. One
+   tier of vocabulary.
+
+Surface then collapses to: YStack + `level` variant + facets, with
+`backgrounded` and `rounded` defaulting on. Component skins use interaction
+facets where they match (ListItem is `hoverable pressable`) and hand-write
+chrome where their look demands it; facets are convenience, not law.
+
+Needs more thought before executing (flagged, not blocking):
+
+- naming (`backgrounded` vs `filled`; adjective booleans vs a single
+  `chrome={['border','bg']}` prop — lean adjectives, they read at use-site);
+- whether `focusable` the facet should stay purely visual (ring) with actual
+  focusability owned by behavior primitives — lean yes, visual only;
+- native parity for the focus ring (outline vs focusStyle border swap).
+
 ## Docs presentation
 
 One theming page ("Surfaces and levels") owns the concept. Component pages
