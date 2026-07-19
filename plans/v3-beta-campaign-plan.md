@@ -69,14 +69,25 @@ registry, state grammar, and the review's correctness fixes were found on
 
 Execution started 2026-07-18 (user: "get us all the way"), fully parallel per
 user 2026-07-19. Assignments:
-T1+T2 → `v3/t12-v1-removal-surface` (Opus xhigh) — PR #4137, lint green,
-  **blocked on a real native Toast regression** (see below);
-T3 → `v3/t3-native-ci-truth` (Sol xhigh) — PR #4140 opened 2026-07-19;
-T4 → `v3/t4-state-wiring` (Opus high) — DONE, merged (`72b550b1b0`);
-T5 → `v3/t5-docs-migration` (Opus high, stacked on T12) — PR #4138, was red
-  only from staleness (branched before the snapshot refresh + oxfmt); base
-  merged in, lint fixed;
-T7 → `v3/t7-benchmarks` (Sol high) — DONE, merged 2026-07-19 (#4139).
+T1+T2 → `v3/t12-v1-removal-surface` — PR #4137. Toast regression fixed and
+  verified (simulator + CI Maestro + web). Now also carries T5's docs and the
+  compiler determinism fix. Awaiting a full run on `3e1de5df1b`. NOTE: Android
+  has never run on this branch (the `v*` push glob does not match slashes) —
+  its Android signal arrives on the `v3-beta` push run after merge;
+T3 → `v3/t3-native-ci-truth` — PR #4140. **iOS Detox green (all 4 shards)** —
+  the `scrollTo` wedge is fixed and observed. Android still iterating: the
+  `atIndex` fix landed and exposed two further bugs (a tap parked behind the
+  nav bar by `whileElement`'s 75%-visibility stop, and an assertion race —
+  `withSync` re-disables synchronization in its `finally`, so reads after it
+  run unsynchronized);
+T4 → `v3/t4-state-wiring` — DONE, merged (`72b550b1b0`);
+T5 → `v3/t5-docs-migration` — DONE, merged 2026-07-19 (#4138) into T12;
+T7 → `v3/t7-benchmarks` — DONE, merged 2026-07-19 (#4139).
+
+Merge order (forced by the push-run/Android facts above): #4137 → `v3-beta`
+first, which both unblocks bento (it needs the v3 contract on `v3-beta`) and
+produces the first real Android run for the contract work. #4140 merges on its
+own push-run Android verdict, not on its PR rollup.
 
 T7 result (production builds, 200 items / 60 heavy, 10 samples, mount ms):
 v3 compiled beats v2.4.6 compiled on the workloads that matter — group
