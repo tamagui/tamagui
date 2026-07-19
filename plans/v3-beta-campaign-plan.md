@@ -173,6 +173,39 @@ T7. **Benchmarks last** (Gate 4): v2.4.6 column, equal workloads, production
 Then Gate 5: clean-checkout release candidate, freeze artifacts, explicit user
 approval to publish (never automatic).
 
+## Compiler emits nondeterministic output (found 2026-07-19) — beta-blocker class
+
+`code/tests/next-webpack/tests/exports.unit.test.ts` is not a stale snapshot, it
+is a **flaky check over nondeterministic compiler output**. Same commit, caches
+(`.tamagui`, `node_modules/.cache`) cleared before each run, three runs:
+pass / fail / pass — and the failures differ from each other:
+
+- atomic classes emitted in a different ORDER on a Separator (identical class
+  set, order-only), and
+- an `h1` sometimes gaining `_tt-f-transform44812` (a font-derived
+  `textTransform`) and sometimes not.
+
+Ordering is cosmetic — each atomic class is its own CSS rule, so the cascade is
+decided by stylesheet order, not className order. A class appearing or not is
+NOT cosmetic: that is a real visual difference and suggests the compiler
+sometimes drops a style it should emit. Treat the two symptoms as potentially
+separate bugs.
+
+Why this matters beyond CI: non-reproducible builds. Same source in, different
+bytes out.
+
+**This retroactively explains a chain of wrong conclusions**, recorded so nobody
+re-derives them: #4138's "Separator ordering" failure, #4137 passing at
+`0008581e6c` and failing after, and a local "8 passed" that became a failure on
+rerun were all this one flake. A bisect run against it is a coin flip — an
+attempt to attribute the failure to a `sandbox-ui` star-export change was wrong
+and was reverted back in (`f21f7fae7f`). Do not bisect against this test until
+it is deterministic, and do not read a single green run on these PRs as proof.
+
+Under investigation on the T12 branch. Fix belongs in the compiler (stable total
+ordering / remove the shared-state race), NOT in sorting classes in the test and
+NOT by refreshing the snapshot.
+
 ## Release-coupled: bento
 
 The bento checkout (bundled by tamagui.dev when `hasBento`) consumed removed
