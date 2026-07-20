@@ -1,6 +1,6 @@
 import { ChevronDown } from '@tamagui/lucide-icons-2'
 import { useLayoutEffect, useState } from 'react'
-import { Accordion, Button, Paragraph, Square, View, YStack } from 'tamagui'
+import { Accordion, Button, Paragraph, Square, View, YStack, isWeb } from 'tamagui'
 
 // verifies first-paint of a defaultValue-open item shows content at full height
 // (no collapse-to-0 flash), which is the client-side equivalent of the SSR case.
@@ -39,7 +39,7 @@ export function AccordionDefaultOpenCase() {
           <Accordion.HeightAnimator
             id="def-height"
             testID="def-height"
-            transition="300ms"
+            transition={isWeb ? '300ms' : '2000ms'}
           >
             <Accordion.Content
               id="def-content"
@@ -81,7 +81,7 @@ export function AccordionDefaultOpenCase() {
           <Accordion.HeightAnimator
             id="def-height2"
             testID="def-height2"
-            transition="300ms"
+            transition={isWeb ? '300ms' : '2000ms'}
           >
             <Accordion.Content
               id="def-content2"

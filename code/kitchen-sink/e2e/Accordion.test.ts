@@ -16,13 +16,30 @@ import { safeLaunchApp } from './utils/detox'
 
 async function frame(id: string) {
   const attrs: any = await element(by.id(id)).getAttributes()
-  // single element -> attrs.frame; if a collection, take first
-  const f = attrs.frame ?? attrs.elements?.[0]?.frame
-  return f as { x: number; y: number; width: number; height: number }
+  return attrs.frame as { x: number; y: number; width: number; height: number }
+}
+
+async function pollHeight(
+  id: string,
+  predicate: (height: number) => boolean,
+  label: string,
+  timeoutMs = 8000
+) {
+  const startedAt = Date.now()
+  let last = await frame(id)
+  while (!predicate(last.height)) {
+    assert.ok(
+      Date.now() - startedAt < timeoutMs,
+      `timed out polling for ${label}, last height ${last.height}`
+    )
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    last = await frame(id)
+  }
+  return last.height
 }
 
 describe('Accordion (auto-height, native)', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await safeLaunchApp({
       newInstance: true,
       launchArgs: { directUseCase: 'AccordionDefaultOpenCase' },
@@ -54,74 +71,49 @@ describe('Accordion (auto-height, native)', () => {
   it('closes the default-open item through an intermediate height', async () => {
     const open = await frame('def-height')
     await element(by.id('def-trigger')).tap()
-    await new Promise((resolve) => setTimeout(resolve, 90))
-    const closing = await frame('def-height')
-    assert.ok(closing.height > 0, 'default-open close should stay above 0 mid-flight')
-    assert.ok(
-      closing.height < open.height,
-      `default-open close ${closing.height} should be below ${open.height}`
+    const closing = await pollHeight(
+      'def-height',
+      (height) => height > 1 && height < open.height - 1,
+      'default-open close intermediate'
     )
+    assert.ok(closing > 0, 'default-open close should stay above 0 mid-flight')
     await waitFor(element(by.id('def-content-text')))
       .not.toBeVisible()
       .withTimeout(4000)
-    await new Promise((resolve) => setTimeout(resolve, 300))
-    const closed = await frame('def-height')
-    assert.ok(
-      closed.height <= 1,
-      `default-open height ${closed.height} should settle at 0`
+    const closed = await pollHeight(
+      'def-height',
+      (height) => height <= 1,
+      'default-open close settle'
     )
+    assert.ok(closed <= 1, `default-open height ${closed} should settle at 0`)
     await device.takeScreenshot('accordion-after-close')
   })
 
   it('opens, reverses, and closes through intermediate numeric heights', async () => {
-    // poll instead of fixed offsets: animation start and settle timing vary
-    // with simulator/js-thread speed, so sample against observed motion
-    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-    const pollHeight = async (
-      predicate: (height: number) => boolean,
-      label: string,
-      timeoutMs = 5000
-    ) => {
-      const startedAt = Date.now()
-      let last = await frame('def-height2')
-      while (!predicate(last.height)) {
-        assert.ok(
-          Date.now() - startedAt < timeoutMs,
-          `timed out polling for ${label}, last height ${last.height}`
-        )
-        await sleep(50)
-        last = await frame('def-height2')
-      }
-      return last.height
-    }
-    const pollSettled = async (label: string) => {
-      let previous = await frame('def-height2')
-      for (let i = 0; i < 100; i++) {
-        await sleep(250)
-        const next = await frame('def-height2')
-        if (Math.abs(next.height - previous.height) < 1) {
-          return next.height
-        }
-        previous = next
-      }
-      assert.fail(`height never settled for ${label}`)
-      return 0
-    }
-
     await element(by.id('def-trigger2')).tap()
-    const opening = await pollHeight((h) => h > 0, 'open start')
-    const initialOpen = await pollSettled('open settle')
-    assert.ok(
-      opening < initialOpen,
-      `opening height ${opening} should be an intermediate below settled ${initialOpen}`
+    await waitFor(element(by.id('def-content2'))).toExist().withTimeout(4000)
+    const natural = await frame('def-content2')
+    const opening = await pollHeight(
+      'def-height2',
+      (height) => height > 1 && height < natural.height - 1,
+      'open intermediate'
     )
+    const initialOpen = await pollHeight(
+      'def-height2',
+      (height) => Math.abs(height - natural.height) <= 1,
+      'open settle'
+    )
+    assert.ok(opening < initialOpen, `opening ${opening} should be below ${initialOpen}`)
 
     await element(by.id('grow-content')).tap()
     // at rest the wrapper is auto height by design, so content growth applies
     // fluidly (no pinned pixel to animate from) — assert the growth lands,
     // not an intermediate frame
-    await pollHeight((h) => h > initialOpen + 10, 'content growth')
-    const open = await pollSettled('grown settle')
+    const open = await pollHeight(
+      'def-height2',
+      (height) => height > initialOpen + 10,
+      'content growth'
+    )
 
     const trigger2 = await frame('def-trigger2')
     const content2 = await frame('def-content2')
@@ -138,20 +130,26 @@ describe('Accordion (auto-height, native)', () => {
 
     await element(by.id('def-trigger2')).tap()
     const closingBeforeReverse = await pollHeight(
-      (h) => h > 1 && h < open - 5,
+      'def-height2',
+      (height) => height > 1 && height < open - 5,
       'close intermediate'
     )
 
     await element(by.id('def-trigger2')).tap()
     const reopening = await pollHeight(
-      (h) => h > closingBeforeReverse + 2,
+      'def-height2',
+      (height) => height > closingBeforeReverse + 2,
       'reversal rising'
     )
     assert.ok(
       reopening <= open + 2,
       `reversal height ${reopening} should stay at or below the open endpoint ${open}`
     )
-    const reopened = await pollSettled('reopen settle')
+    const reopened = await pollHeight(
+      'def-height2',
+      (height) => Math.abs(height - open) <= 2,
+      'reopen settle'
+    )
     assert.ok(
       Math.abs(reopened - open) <= 2,
       `reopened height ${reopened} should settle at ${open}`
@@ -159,12 +157,13 @@ describe('Accordion (auto-height, native)', () => {
 
     await element(by.id('def-trigger2')).tap()
     const closing = await pollHeight(
-      (h) => h > 1 && h < open - 5,
+      'def-height2',
+      (height) => height > 1 && height < open - 5,
       'final close intermediate'
     )
     assert.ok(closing > 0, 'final close should have an intermediate height')
 
-    await pollHeight((h) => h <= 1, 'final close settle')
+    await pollHeight('def-height2', (height) => height <= 1, 'final close settle')
     const closed = await frame('def-height2')
     const closedMarker = await frame('after-accordion-marker')
     assert.ok(closed.height <= 1, `closed height ${closed.height} should settle at 0`)

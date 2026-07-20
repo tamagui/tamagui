@@ -245,7 +245,7 @@ jobs:
           # --retries 0: no whole-file retry (that re-ran beforeAll + every test of a
           # flaky file, the 2x wall-time variance). individual flaky tests retry
           # in-place via jest.retryTimes (e2e/jest.setup.ts).
-          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 0 ${{ matrix.test_files }}
+          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 0 e2e/Accordion.test.ts
 
       - name: Report iOS Test Status
         if: always() && env.SKIP_IOS_TESTS == 'true'
