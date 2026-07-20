@@ -555,6 +555,8 @@ const AccordionContentFrame = styled(Collapsible.Content, {
 
 type AccordionContentProps = GetProps<typeof AccordionContentFrame>
 
+const AccordionHeightAnimatorContext = React.createContext(false)
+
 /**
  * `AccordionContent` contains the collapsible content for an `AccordionItem`.
  */
@@ -562,9 +564,10 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
   props: ScopedProps<AccordionContentProps>,
   forwardedRef
 ) {
-  const { __scopeAccordion, ...contentProps } = props
+  const { __scopeAccordion, forceMount, ...contentProps } = props
   const accordionContext = useAccordionContext(__scopeAccordion)
   const itemContext = useAccordionItemContext(__scopeAccordion)
+  const heightAnimatorPresent = React.useContext(AccordionHeightAnimatorContext)
   return (
     <AccordionContentFrame
       role="region"
@@ -573,6 +576,7 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
       // @ts-ignore
       __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
       {...contentProps}
+      forceMount={forceMount || heightAnimatorPresent}
       ref={forwardedRef}
     />
   )
@@ -580,22 +584,22 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
 
 const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
-  const { children, ...rest } = props
+  const { children, transition, ...rest } = props
   const open = !!itemContext.open
 
-  // at rest an open item renders auto height with the child in normal flow, so
-  // content and viewport changes stay fluid with no JS involved. any open/close
-  // animation switches to a measured pixel height over an absolutely positioned
-  // child, animates, and releases back to auto once the outer settles at its
-  // target. closing from rest pins the current measured height for one commit
-  // (so drivers see a numeric start value) before targeting 0.
+  // height stays auto so open content remains in normal flow at rest. minHeight
+  // carries the numeric animation target and remains committed while open, so
+  // closing never has to switch an animated key from auto to a number. closing
+  // from rest pins the current measurement for one commit before targeting 0.
   const [fixed, setFixed] = React.useState(!open)
   const [pinned, setPinned] = React.useState(false)
+  const [contentPresent, setContentPresent] = React.useState(open)
   const [contentHeight, setContentHeight] = React.useState(0)
   const outerRef = React.useRef<TamaguiElement | null>(null)
   const innerRef = React.useRef<TamaguiElement | null>(null)
   const composedRef = useComposedRefs(outerRef, ref)
   const lastOuterHeightRef = React.useRef(0)
+  const pinnedHeightRef = React.useRef(0)
   const settleTimerRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined
   )
@@ -604,7 +608,13 @@ const HeightAnimator = View.styleable((props, ref) => {
   if (prevOpenRef.current !== open) {
     prevOpenRef.current = open
     clearTimeout(settleTimerRef.current)
+    if (open) {
+      setContentPresent(true)
+    } else if (lastOuterHeightRef.current < 1) {
+      setContentPresent(false)
+    }
     if (!fixed) {
+      pinnedHeightRef.current = lastOuterHeightRef.current
       setFixed(true)
       setPinned(true)
     }
@@ -618,8 +628,11 @@ const HeightAnimator = View.styleable((props, ref) => {
     if (isWeb) {
       // reading layout forces the style flush; the value itself is unused
       void (outerRef.current as HTMLElement | null)?.offsetHeight
+      setPinned(false)
+      return
     }
-    setPinned(false)
+    const frame = requestAnimationFrame(() => setPinned(false))
+    return () => cancelAnimationFrame(frame)
   }, [pinned])
 
   React.useEffect(() => () => clearTimeout(settleTimerRef.current), [])
@@ -641,28 +654,23 @@ const HeightAnimator = View.styleable((props, ref) => {
     }
   })
 
-  // rest renders an explicit 'auto' rather than removing the height style:
-  // removal makes drivers clear the key themselves (reanimated emits a null
-  // clear-value on native whose yoga semantics are driver-internal), while a
-  // committed 'auto' is deterministic on every driver and platform
-  const height = fixed
-    ? pinned
-      ? lastOuterHeightRef.current
-      : open
-        ? contentHeight
-        : 0
-    : ('auto' as const)
+  const minHeight = pinned ? pinnedHeightRef.current : open ? contentHeight : 0
 
   return (
     <View
       ref={composedRef}
       position="relative"
       {...rest}
-      height={height}
+      transition={fixed ? transition : undefined}
+      height="auto"
+      minHeight={minHeight}
       overflow="hidden"
       onLayout={({ nativeEvent }) => {
         const outerHeight = nativeEvent.layout.height
         lastOuterHeightRef.current = outerHeight
+        if (isWeb && !open && contentPresent && outerHeight < 1) {
+          setContentPresent(false)
+        }
         // release to auto shortly after the animated outer stays at the open
         // target: layout events only fire on change, so a quiet 100ms inside
         // the target band means the animation settled (an out-of-band event —
@@ -674,6 +682,12 @@ const HeightAnimator = View.styleable((props, ref) => {
           }
         }
       }}
+      // @ts-expect-error internal animation-driver completion hook
+      onDidAnimate={() => {
+        if (!prevOpenRef.current && !pinned) {
+          setContentPresent(false)
+        }
+      }}
     >
       <View
         ref={innerRef}
@@ -683,12 +697,14 @@ const HeightAnimator = View.styleable((props, ref) => {
         right={fixed ? 0 : undefined}
         onLayout={({ nativeEvent }) => {
           const naturalHeight = nativeEvent.layout.height
-          if (fixed && open && naturalHeight !== contentHeight) {
+          if (open && naturalHeight !== contentHeight) {
             setContentHeight(naturalHeight)
           }
         }}
       >
-        {children}
+        <AccordionHeightAnimatorContext.Provider value={contentPresent}>
+          {children}
+        </AccordionHeightAnimatorContext.Provider>
       </View>
     </View>
   )

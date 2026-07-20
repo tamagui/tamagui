@@ -38,6 +38,17 @@ async function pollHeight(
   return last.height
 }
 
+async function pollLabel(id: string, predicate: (label: string) => boolean) {
+  const startedAt = Date.now()
+  let attrs: any = await element(by.id(id)).getAttributes()
+  while (!predicate(attrs.label ?? '')) {
+    assert.ok(Date.now() - startedAt < 4000, `timed out polling label for ${id}`)
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    attrs = await element(by.id(id)).getAttributes()
+  }
+  return attrs.label as string
+}
+
 describe('Accordion (auto-height, native)', () => {
   beforeEach(async () => {
     await safeLaunchApp({
@@ -71,12 +82,27 @@ describe('Accordion (auto-height, native)', () => {
   it('closes the default-open item through an intermediate height', async () => {
     const open = await frame('def-height')
     await element(by.id('def-trigger')).tap()
+    await expect(element(by.id('def-content-text'))).toBeVisible()
     const closing = await pollHeight(
       'def-height',
       (height) => height > 1 && height < open.height - 1,
       'default-open close intermediate'
     )
     assert.ok(closing > 0, 'default-open close should stay above 0 mid-flight')
+    const frameSamples = (
+      await pollLabel(
+        'default-close-frame-samples',
+        (label) => label !== 'idle' && label !== 'recording'
+      )
+    )
+      .split(',')
+      .map(Number)
+    assert.ok(frameSamples.length > 5, `expected native frame samples: ${frameSamples}`)
+    assert.ok(
+      frameSamples.every((height) => height > open.height * 0.5),
+      `close must not paint a collapsed frame before animating: ${frameSamples}`
+    )
+    await expect(element(by.id('def-content-text'))).toExist()
     await waitFor(element(by.id('def-content-text')))
       .not.toBeVisible()
       .withTimeout(4000)
@@ -136,6 +162,7 @@ describe('Accordion (auto-height, native)', () => {
       (height) => height > 1 && height < open - 5,
       'close intermediate'
     )
+    await expect(element(by.id('def-content2-text'))).toExist()
 
     await element(by.id('def-trigger2')).tap()
     const reopening = await pollHeight(
@@ -164,6 +191,7 @@ describe('Accordion (auto-height, native)', () => {
       'final close intermediate'
     )
     assert.ok(closing > 0, 'final close should have an intermediate height')
+    await expect(element(by.id('def-content2-text'))).toExist()
 
     await pollHeight('def-height2', (height) => height <= 1, 'final close settle')
     const closed = await frame('def-height2')

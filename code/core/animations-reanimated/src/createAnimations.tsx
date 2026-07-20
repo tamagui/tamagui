@@ -751,6 +751,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         themeName,
         stateRef,
         styleState,
+        onDidAnimate,
       } = animationProps
 
       // State flags
@@ -786,6 +787,27 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // Get sendExitComplete callback from presence
       const sendExitComplete = presence?.[1]
+      const onDidAnimateRef = useRef(onDidAnimate)
+      useIsomorphicLayoutEffect(() => {
+        onDidAnimateRef.current = onDidAnimate
+      }, [onDidAnimate])
+
+      const didAnimateCycleIdRef = useRef(0)
+      const pendingDidAnimateKeysRef = useRef<Set<string>>(new Set())
+      const didAnimateCompletedRef = useRef(false)
+      const isCompletingAnimationRef = useSharedValue(false)
+      const didAnimateCycleIdShared = useSharedValue(0)
+      const markDidAnimateKeyDone = useEvent(
+        (key: string, cycleId: number, finished: boolean) => {
+          if (!finished || cycleId !== didAnimateCycleIdRef.current) return
+          if (didAnimateCompletedRef.current) return
+          pendingDidAnimateKeysRef.current.delete(key)
+          if (pendingDidAnimateKeysRef.current.size === 0) {
+            didAnimateCompletedRef.current = true
+            onDidAnimateRef.current?.()
+          }
+        }
+      )
 
       // =========================================================================
       // Exit cycle state for deterministic per-property completion tracking
@@ -1231,6 +1253,83 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         exitKeysRegistered.current = exitKeys.length > 0
       }
 
+      // onDidAnimate is an internal completion hook used by components that
+      // need to retain content through an in-place style transition. register
+      // the exact keys that can animate before publishing the cycle to the
+      // worklet; shared values are only written from the layout effect, never
+      // from the mapper that reads them.
+      const previousDidAnimateStyleRef = useRef<string | null>(null)
+      const didAnimateStyle = onDidAnimate ? JSON.stringify(style) : null
+      const previousDidAnimateStyle = previousDidAnimateStyleRef.current
+      const shouldRegisterDidAnimate =
+        didAnimateStyle !== null &&
+        previousDidAnimateStyle !== null &&
+        previousDidAnimateStyle !== didAnimateStyle &&
+        !isExiting &&
+        !isEntering &&
+        !justFinishedEntering
+      const didAnimateKeys: string[] = []
+      if (shouldRegisterDidAnimate) {
+        const snapshotSeeds = renderSnapshot.value.seeds
+        const animateOnly = props.animateOnly as string[] | undefined
+
+        for (const key in animatedStyles) {
+          if (key === 'transform') continue
+          const hasUsableSeed =
+            key in snapshotSeeds &&
+            (!COLOR_STYLE_KEYS[key] ||
+              isInterpolatableColor(toReanimatedColor(snapshotSeeds[key])))
+          const canStart = committedRenderKeysRef.current.has(key) || hasUsableSeed
+          if (
+            canStart &&
+            (!COLOR_STYLE_KEYS[key] ||
+              isInterpolatableColor(toReanimatedColor(animatedStyles[key]))) &&
+            canAnimateProperty(key, animatedStyles[key], animateOnly)
+          ) {
+            didAnimateKeys.push(key)
+          }
+        }
+
+        const transforms = animatedStyles.transform
+        if (transforms && Array.isArray(transforms)) {
+          for (const transform of transforms) {
+            if (!transform) continue
+            const transformKey = Object.keys(transform)[0]
+            if (!transformKey) continue
+            if (animateOnly && !animateOnly.includes(transformKey)) continue
+            const key = `transform:${transformKey}`
+            if (committedRenderKeysRef.current.has(key) || key in snapshotSeeds) {
+              didAnimateKeys.push(key)
+            }
+          }
+        }
+      }
+
+      useIsomorphicLayoutEffect(() => {
+        if (didAnimateStyle === null) {
+          previousDidAnimateStyleRef.current = null
+          isCompletingAnimationRef.value = false
+          return
+        }
+
+        // only a committed render may advance the authoritative cycle. the
+        // captured previous value prevents StrictMode's repeated effect from
+        // registering the same transition twice.
+        const previousStyleStillCurrent =
+          previousDidAnimateStyleRef.current === previousDidAnimateStyle
+        previousDidAnimateStyleRef.current = didAnimateStyle
+        if (!shouldRegisterDidAnimate || !previousStyleStillCurrent) return
+
+        const cycleId = ++didAnimateCycleIdRef.current
+        pendingDidAnimateKeysRef.current = new Set(didAnimateKeys)
+        didAnimateCompletedRef.current = didAnimateKeys.length === 0
+        isCompletingAnimationRef.value = didAnimateKeys.length > 0
+        didAnimateCycleIdShared.value = cycleId
+        if (didAnimateKeys.length === 0) {
+          onDidAnimateRef.current?.()
+        }
+      }, [didAnimateStyle, shouldRegisterDidAnimate])
+
       // handle zero-animation case in effect (after render commit)
       React.useEffect(() => {
         if (!justStartedExiting || !sendExitComplete) return
@@ -1253,7 +1352,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const mapperStateRef = useSharedValue<{ emitted: Record<string, boolean> }>({
         emitted: {},
       })
-
       // Create animated style
       const animatedStyle = useAnimatedStyle(
         () => {
@@ -1289,6 +1387,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // read exit state from shared values
           const currentlyExiting = isExitingRef.value
           const currentCycleId = exitCycleIdShared.value
+          const currentlyCompletingAnimation = isCompletingAnimationRef.value
+          const currentDidAnimateCycleId = didAnimateCycleIdShared.value
 
           // Include static values from emitter (for hover/press style changes)
           for (const key in staticValues) {
@@ -1330,14 +1430,30 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             }
             const propConfig = config.propertyConfigs[key] ?? config.baseConfig
 
-            // create callback for exit tracking
+            const shouldAnimate =
+              previouslyEmitted[key] ||
+              seedValue !== undefined ||
+              (currentlyExiting && typeof targetValue === 'number')
+
+            // create callback for exit and component animation completion tracking
             let callback: AnimationCallback | undefined
-            if (currentlyExiting) {
+            if (shouldAnimate && currentlyExiting) {
               const capturedKey = key
               const capturedCycleId = currentCycleId
               callback = (finished) => {
                 'worklet'
                 runOnJS(markExitKeyDone)(capturedKey, capturedCycleId, finished ?? false)
+              }
+            } else if (shouldAnimate && currentlyCompletingAnimation) {
+              const capturedKey = key
+              const capturedCycleId = currentDidAnimateCycleId
+              callback = (finished) => {
+                'worklet'
+                runOnJS(markDidAnimateKeyDone)(
+                  capturedKey,
+                  capturedCycleId,
+                  finished ?? false
+                )
               }
             }
 
@@ -1391,10 +1507,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                 const propConfig =
                   config.propertyConfigs[transformKey] ?? config.baseConfig
 
-                // create callback for exit tracking (transform sub-key)
+                const subKey = `transform:${transformKey}`
+                const shouldAnimate =
+                  previouslyEmitted[subKey] ||
+                  subKey in snapshot.seeds ||
+                  (currentlyExiting && typeof targetValue === 'number')
+
+                // create callback for exit and component animation completion tracking
                 let callback: AnimationCallback | undefined
-                if (currentlyExiting) {
-                  const capturedKey = `transform:${transformKey}`
+                if (shouldAnimate && currentlyExiting) {
+                  const capturedKey = subKey
                   const capturedCycleId = currentCycleId
                   callback = (finished) => {
                     'worklet'
@@ -1404,9 +1526,19 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                       finished ?? false
                     )
                   }
+                } else if (shouldAnimate && currentlyCompletingAnimation) {
+                  const capturedKey = subKey
+                  const capturedCycleId = currentDidAnimateCycleId
+                  callback = (finished) => {
+                    'worklet'
+                    runOnJS(markDidAnimateKeyDone)(
+                      capturedKey,
+                      capturedCycleId,
+                      finished ?? false
+                    )
+                  }
                 }
 
-                const subKey = `transform:${transformKey}`
                 emitted[subKey] = true
                 validTransforms.push({
                   [transformKey]: previouslyEmitted[subKey]
@@ -1448,6 +1580,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               isExitingRef,
               exitCycleIdShared,
               markExitKeyDone,
+              isCompletingAnimationRef,
+              didAnimateCycleIdShared,
+              markDidAnimateKeyDone,
             ]
           : undefined
       )

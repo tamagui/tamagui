@@ -1,5 +1,12 @@
 import { ChevronDown } from '@tamagui/lucide-icons-2'
-import { useLayoutEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
+import {
+  measure,
+  runOnJS,
+  useAnimatedRef,
+  useFrameCallback,
+  useSharedValue,
+} from 'react-native-reanimated'
 import { Accordion, Button, Paragraph, Square, View, YStack, isWeb } from 'tamagui'
 
 // verifies first-paint of a defaultValue-open item shows content at full height
@@ -10,6 +17,48 @@ export function AccordionDefaultOpenCase() {
   const [expanded, setExpanded] = useState(false)
   const [initialLayoutPass, setInitialLayoutPass] = useState(0)
   const [probeVisible, setProbeVisible] = useState(true)
+  const [closeFrameSamples, setCloseFrameSamples] = useState('idle')
+  const defaultOpenHeightRef = useAnimatedRef<any>()
+  const recordingCloseFrames = useSharedValue(false)
+  const closeFrameStartedAt = useSharedValue(0)
+  const recordedCloseFrames = useSharedValue<number[]>([])
+
+  const finishRecordingCloseFrames = useCallback((samples: number[]) => {
+    setCloseFrameSamples(samples.join(','))
+  }, [])
+  useFrameCallback(
+    useCallback(
+      ({ timestamp }) => {
+        'worklet'
+        if (isWeb || !recordingCloseFrames.value) return
+        const frame = measure(defaultOpenHeightRef)
+        if (!frame) return
+        if (closeFrameStartedAt.value === 0) {
+          closeFrameStartedAt.value = timestamp
+        }
+        recordedCloseFrames.value = [...recordedCloseFrames.value, frame.height]
+        if (timestamp - closeFrameStartedAt.value >= 750) {
+          recordingCloseFrames.value = false
+          runOnJS(finishRecordingCloseFrames)(recordedCloseFrames.value)
+        }
+      },
+      [
+        closeFrameStartedAt,
+        defaultOpenHeightRef,
+        finishRecordingCloseFrames,
+        recordedCloseFrames,
+        recordingCloseFrames,
+      ]
+    )
+  )
+
+  const recordDefaultOpenClose = useCallback(() => {
+    if (isWeb) return
+    setCloseFrameSamples('recording')
+    closeFrameStartedAt.value = 0
+    recordedCloseFrames.value = []
+    recordingCloseFrames.value = true
+  }, [closeFrameStartedAt, recordedCloseFrames, recordingCloseFrames])
 
   useLayoutEffect(() => {
     if (initialLayoutPass === 1) setInitialLayoutPass(2)
@@ -22,6 +71,7 @@ export function AccordionDefaultOpenCase() {
           <Accordion.Trigger
             id="def-trigger"
             testID="def-trigger"
+            onPressIn={recordDefaultOpenClose}
             flexDirection="row"
             justify="space-between"
             borderWidth={1}
@@ -37,6 +87,7 @@ export function AccordionDefaultOpenCase() {
             )}
           </Accordion.Trigger>
           <Accordion.HeightAnimator
+            ref={defaultOpenHeightRef}
             id="def-height"
             testID="def-height"
             transition={isWeb ? '300ms' : '5000ms'}
@@ -107,6 +158,14 @@ export function AccordionDefaultOpenCase() {
           </Accordion.HeightAnimator>
         </Accordion.Item>
       </Accordion>
+      <View
+        testID="default-close-frame-samples"
+        accessibilityLabel={closeFrameSamples}
+        position="absolute"
+        pointerEvents="none"
+        width={1}
+        height={1}
+      />
       <Paragraph id="after-accordion-marker" testID="after-accordion-marker">
         After accordion
       </Paragraph>
