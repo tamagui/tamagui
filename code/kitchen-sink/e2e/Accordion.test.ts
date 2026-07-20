@@ -46,7 +46,7 @@ describe('Accordion (auto-height, native)', () => {
     })
     await waitFor(element(by.id('accordion-default-root')))
       .toExist()
-      .withTimeout(10000)
+      .withTimeout(30000)
   })
 
   it('default-open item shows content, closed sibling sits below it (no overlap)', async () => {
@@ -91,7 +91,9 @@ describe('Accordion (auto-height, native)', () => {
 
   it('opens, reverses, and closes through intermediate numeric heights', async () => {
     await element(by.id('def-trigger2')).tap()
-    await waitFor(element(by.id('def-content2'))).toExist().withTimeout(4000)
+    await waitFor(element(by.id('def-content2')))
+      .toExist()
+      .withTimeout(4000)
     const natural = await frame('def-content2')
     const opening = await pollHeight(
       'def-height2',

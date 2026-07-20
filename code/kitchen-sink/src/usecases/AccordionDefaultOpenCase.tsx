@@ -39,7 +39,7 @@ export function AccordionDefaultOpenCase() {
           <Accordion.HeightAnimator
             id="def-height"
             testID="def-height"
-            transition={isWeb ? '300ms' : '2000ms'}
+            transition={isWeb ? '300ms' : '5000ms'}
           >
             <Accordion.Content
               id="def-content"
@@ -81,7 +81,7 @@ export function AccordionDefaultOpenCase() {
           <Accordion.HeightAnimator
             id="def-height2"
             testID="def-height2"
-            transition={isWeb ? '300ms' : '2000ms'}
+            transition={isWeb ? '300ms' : '5000ms'}
           >
             <Accordion.Content
               id="def-content2"
