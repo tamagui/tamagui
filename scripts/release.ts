@@ -5,6 +5,7 @@ import { promisify } from 'node:util'
 import pMap from 'p-map'
 import prompts from 'prompts'
 
+import { ensureNpmAuthentication } from './release-npm-auth'
 import { computePublishTag } from './release-publish-tag'
 import { spawnify } from './spawnify'
 
@@ -433,6 +434,15 @@ async function run() {
       }
     }
 
+    if (!shouldFinish && !skipPublish && !dryRun) {
+      await ensureNpmAuthentication({
+        env: process.env,
+        interactive: !!process.stdin.isTTY && !!process.stdout.isTTY,
+        check: () => spawnify(`npm whoami`),
+        login: () => spawnify(`npm login`, { interactive: true }),
+      })
+    }
+
     // dry run only previews the publish plan, so skip the heavy install/build/test
     if (!dryRun) {
       console.info('install and build')
@@ -621,16 +631,6 @@ async function run() {
 
       // publishTag was resolved + validated up front (single source of truth)
       const publishOptions = `--tag ${publishTag}`
-
-      if (!process.env.CI) {
-        try {
-          await spawnify(`npm whoami`, { cwd: tmpDir })
-        } catch (err) {
-          throw new Error(
-            `npm is not authenticated for publishing. Run \`npm login\` and then re-run the release.\n\n${err}`
-          )
-        }
-      }
 
       const isPublished = async ({ name }: { name: string }) => {
         try {
