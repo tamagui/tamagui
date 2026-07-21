@@ -119,6 +119,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./MenuSubNestedPositionCase').MenuSubNestedPositionCase,
   MenuSubLeftCase: () => require('./MenuSubLeftCase').MenuSubLeftCase,
   MultiDriverAnimation: () => require('./MultiDriverAnimation').MultiDriverAnimation,
+  NativeMixedDriverCase: () => require('./NativeMixedDriverCase').NativeMixedDriverCase,
   MenuSubStyledCase: () => require('./MenuSubStyledCase').MenuSubStyledCase,
   MenuThemeCase: () => require('./MenuThemeCase').MenuThemeCase,
   MenuUnstyledCase: () => require('./MenuUnstyledCase').MenuUnstyledCase,

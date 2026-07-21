@@ -68,6 +68,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   MenuRadioGroupCase: () => require('./MenuRadioGroupCase').MenuRadioGroupCase,
   MenuSubCase: () => require('./MenuSubCase').MenuSubCase,
   MenuSubLeftCase: () => require('./MenuSubLeftCase').MenuSubLeftCase,
+  NativeMixedDriverCase: () => require('./NativeMixedDriverCase').NativeMixedDriverCase,
   NativePortalTest: () => require('./NativePortalTest').NativePortalTest,
   GroupUseCases: () => require('./GroupUseCases').GroupUseCases,
   ImageTokenStyle: () => require('./ImageTokenStyle').ImageTokenStyle,

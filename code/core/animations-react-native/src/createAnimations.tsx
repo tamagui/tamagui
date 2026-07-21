@@ -74,6 +74,18 @@ const layoutStyleKey = {
   maxWidth: true,
 }
 
+function hasAnimatedLayoutKey(
+  style: Record<string, any>,
+  isDark: boolean,
+  animateOnly?: string[]
+) {
+  for (const key in layoutStyleKey) {
+    if (animateOnly && !animateOnly.includes(key)) continue
+    if (typeof resolveDynamicValue(style[key], isDark) === 'number') return true
+  }
+  return false
+}
+
 // a color string that RN's color interpolation can actually parse. var(...),
 // calc(...) and empty strings reach createInterpolationFromStringOutputRange /
 // mapStringToNumericComponents and throw ('.map of null' / 'outputRange must
@@ -229,6 +241,7 @@ export function createAnimations<A extends AnimationsConfig>(
       style,
       componentState,
       presence,
+      stateRef,
       useStyleEmitter,
     }) => {
       const isDisabled = isWeb && componentState.unmounted === true
@@ -252,6 +265,7 @@ export function createAnimations<A extends AnimationsConfig>(
           }
         >()
       )
+      const pseudoActiveRef = React.useRef(false)
 
       // exit cycle guards to prevent stale/duplicate completion
       const exitCycleIdRef = React.useRef(0)
@@ -307,6 +321,16 @@ export function createAnimations<A extends AnimationsConfig>(
             : 'default'
 
         const nonAnimatedStyle = {}
+        // animatedStyle owns every Animated.Value on the node. Fabric cannot mix
+        // native- and JS-driven values inside that shared graph, so one layout
+        // animation makes the whole node use the JS driver.
+        const useNativeDriverForNode =
+          nativeDriver &&
+          !hasAnimatedLayoutKey(
+            style,
+            isDark,
+            hasTransitionOnly ? animateOnly : undefined
+          )
 
         // track which animated keys/transforms the incoming style actually
         // carries this pass, so entries that left the style can be dropped
@@ -368,9 +392,9 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           sawTransform = true
-          transformCount = val.length
-          for (const [index, transform] of val.entries()) {
+          for (const transform of val) {
             if (!transform) continue
+            const index = transformCount++
             // tkey: e.g: 'translateX'
             const tkey = Object.keys(transform)[0]
             const currentTransform = animatedTranforms.current[index]?.[tkey]
@@ -385,8 +409,9 @@ export function createAnimations<A extends AnimationsConfig>(
         // key genuinely leaves the rendered style object (a released height goes
         // back to auto instead of staying pinned at its last pixel value). skip
         // while exiting (presence still animates the leaving keys) and while
-        // disabled (the loop above intentionally skips every key)
-        if (!isExiting && !isDisabled) {
+        // disabled (the loop above intentionally skips every key). an active
+        // pseudo owns the current emitted style until its matching release.
+        if (!isExiting && !isDisabled && !pseudoActiveRef.current) {
           for (const k in animateStyles.current) {
             if (!seenAnimateKeys.has(k)) delete animateStyles.current[k]
           }
@@ -484,9 +509,8 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToValue,
-                  // layout dimension keys can't run on the native driver
-                  useNativeDriver: nativeDriver && !layoutStyleKey[key],
                   ...animationConfig,
+                  useNativeDriver: useNativeDriverForNode,
                 })
               }
 
@@ -569,17 +593,33 @@ export function createAnimations<A extends AnimationsConfig>(
       // avoidReRenders: receive style changes imperatively from tamagui
       // and update Animated.Values directly without React re-renders
       // reuses the same update() + runner pattern as the useMemo path
-      useStyleEmitter?.((nextStyle) => {
+      useStyleEmitter?.((nextStyle, _effectiveTransition, pseudoActive) => {
+        pseudoActiveRef.current = pseudoActive === true
+        const runners: Function[] = []
+        const seenAnimateKeys = new Set<string>()
+        let transformCount = 0
+        let animatedShapeChanged = false
+        // nextStyle is the complete style for this node, so the emitter makes
+        // the same single driver decision as the render path. include the
+        // currently rendered graph because its stale keys are not removed until
+        // the structural-change commit below.
+        const useNativeDriverForNode =
+          nativeDriver &&
+          !hasAnimatedLayoutKey(nextStyle, isDark) &&
+          !Object.keys(animateStyles.current).some((key) => layoutStyleKey[key])
+
         for (const key in nextStyle) {
           const rawVal = nextStyle[key]
           const val = resolveDynamicValue(rawVal, isDark)
           if (val === undefined) continue
 
           if (key === 'transform' && Array.isArray(val)) {
-            for (const [index, transform] of val.entries()) {
+            for (const transform of val) {
               if (!transform) continue
+              const index = transformCount++
               const tkey = Object.keys(transform)[0]
               const currentTransform = animatedTranforms.current[index]?.[tkey]
+              if (!currentTransform) animatedShapeChanged = true
               animatedTranforms.current[index] = {
                 [tkey]: update(tkey, currentTransform, transform[tkey]),
               }
@@ -594,12 +634,35 @@ export function createAnimations<A extends AnimationsConfig>(
             // let the next render apply them statically
             if (layoutStyleKey[key] && typeof val !== 'number') continue
             if (colorStyleKey[key] && !isAnimatableColor(val)) continue
+            if (!animateStyles.current[key]) animatedShapeChanged = true
             animateStyles.current[key] = update(key, animateStyles.current[key], val)
+            seenAnimateKeys.add(key)
           }
         }
 
+        // the emitter receives a complete style. keep the Animated style graph
+        // equally complete, including a pseudo release that omits a pseudo-only
+        // key. React Native needs a commit when that graph's shape changes.
+        for (const key in animateStyles.current) {
+          if (!seenAnimateKeys.has(key)) {
+            delete animateStyles.current[key]
+            animatedShapeChanged = true
+          }
+        }
+        if (animatedTranforms.current.length > transformCount) {
+          animatedTranforms.current = animatedTranforms.current.slice(0, transformCount)
+          animatedShapeChanged = true
+        }
+
         // run the queued animations immediately
-        res.runners.forEach((r) => r())
+        runners.forEach((r) => r())
+
+        // pseudo state normally stays on the avoidReRenders path. adding or
+        // removing a style key cannot be expressed by an existing Animated.Value,
+        // so commit the pending state only for that structural change.
+        if (animatedShapeChanged && stateRef.current.nextState) {
+          stateRef.current.baseSetStateShallow?.(stateRef.current.nextState)
+        }
 
         function update(
           key: string,
@@ -646,13 +709,12 @@ export function createAnimations<A extends AnimationsConfig>(
             props.transition,
             'default'
           )
-          res.runners.push(() => {
+          runners.push(() => {
             value.stopAnimation()
             const anim = Animated[animationConfig.type || 'spring'](value, {
               toValue: animateToValue,
-              // layout dimension keys can't run on the native driver
-              useNativeDriver: nativeDriver && !layoutStyleKey[key],
               ...animationConfig,
+              useNativeDriver: useNativeDriverForNode,
             })
             ;(animationConfig.delay
               ? Animated.sequence([Animated.delay(animationConfig.delay), anim])

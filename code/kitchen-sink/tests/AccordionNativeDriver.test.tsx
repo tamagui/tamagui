@@ -108,3 +108,54 @@ test('native driver: settled accordion releases to auto and follows content grow
   const shrunkHeight = await wrapperHeight()
   expect(shrunkHeight).toBeLessThan(grownHeight - 5)
 })
+
+test('native driver: height and opacity animate together on one node', async ({
+  page,
+}) => {
+  const pageErrors: Error[] = []
+  page.on('pageerror', (error) => pageErrors.push(error))
+
+  await setupPage(page, {
+    name: 'NativeMixedDriverCase',
+    type: 'useCase',
+    searchParams: { animationDriver: 'native' },
+  })
+
+  const node = page.locator('#native-mixed-driver-node')
+  await expect(node).toHaveCSS('height', '40px')
+  await expect(node).toHaveCSS('opacity', '1')
+
+  await page.click('#native-mixed-driver-toggle')
+  await expect(node).toHaveCSS('height', '160px')
+  await expect(node).toHaveCSS('opacity', '0')
+
+  await page.click('#native-mixed-driver-toggle')
+  await expect(node).toHaveCSS('height', '40px')
+  await expect(node).toHaveCSS('opacity', '1')
+  expect(pageErrors).toEqual([])
+})
+
+test('native driver: pseudo-only key survives a render and clears on release', async ({
+  page,
+}) => {
+  await setupPage(page, {
+    name: 'NativeMixedDriverCase',
+    type: 'useCase',
+    searchParams: { animationDriver: 'native' },
+  })
+
+  const node = page.locator('#native-pseudo-only-node')
+  await expect(node).toHaveCSS('opacity', '1')
+
+  await node.hover()
+  await expect(node).toHaveCSS('opacity', '0.2')
+
+  await page.evaluate(() => {
+    document.getElementById('native-pseudo-only-rerender')?.click()
+  })
+  await expect(page.locator('#native-pseudo-only-render-count')).toHaveText('1')
+  await expect(node).toHaveCSS('opacity', '0.2')
+
+  await page.mouse.move(0, 0)
+  await expect(node).toHaveCSS('opacity', '1')
+})
