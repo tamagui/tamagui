@@ -71,7 +71,7 @@ test('npm publishes prepared packages through one workspace process', async () =
       [
         'node',
         '-e',
-        `const { spawnSync } = require('node:child_process'); const result = spawnSync('npm', ['publish', '--workspaces', '--ignore-scripts', '--dry-run', '--json', '--loglevel', 'notice'], { encoding: 'utf8' }); const output = result.stdout + result.stderr; if (result.status !== 0 || !output.includes('tamagui-release-test-first') || !output.includes('tamagui-release-test-second')) process.exitCode = 1`,
+        `const { spawnSync } = require('node:child_process'); const result = spawnSync('npm', ['publish', '--workspaces', '--ignore-scripts', '--dry-run', '--loglevel', 'notice'], { encoding: 'utf8' }); const output = result.stdout + result.stderr; if (result.status !== 0 || !output.includes('tamagui-release-test-first') || !output.includes('tamagui-release-test-second')) process.exitCode = 1`,
       ],
       {
         cwd: root,
