@@ -5,8 +5,6 @@ export declare const webPropsToSkip: {
     onClick: number;
     onDoubleClick: number;
     onContextMenu: number;
-    onMouseEnter: number;
-    onMouseLeave: number;
     onMouseMove: number;
     onMouseOver: number;
     onMouseOut: number;

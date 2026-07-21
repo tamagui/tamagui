@@ -175,6 +175,32 @@ describe('flatten-tests', () => {
     expect(code).toContain('<View style=')
   })
 
+  test(`preserves hoverStyle when partial-flattening for macOS`, async () => {
+    const output = await extractForNative(
+      `
+        import { View } from 'tamagui'
+        export function Test() {
+          return (
+            <View
+              width={60}
+              height={40}
+              backgroundColor="rgb(1,2,3)"
+              hoverStyle={{ opacity: 0.5 }}
+              pressStyle={{ opacity: 0.8 }}
+            />
+          )
+        }
+      `,
+      'macos'
+    )
+    const code = output?.code ?? ''
+
+    expect(code).toContain('"width": 60')
+    expect(code).toContain('hoverStyle')
+    expect(code).toContain('pressStyle')
+    expect(code).toContain('<View style=')
+  })
+
   // theme tokens must NOT be baked into the flattened static style — they stay inline
   // so the runtime resolves them per-theme (theme switching keeps working).
   test(`keeps theme tokens inline when partial-flattening`, async () => {

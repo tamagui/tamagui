@@ -18,14 +18,29 @@ const emtpyComponent = () => null
 // Mock usePressability for testing - returns empty event handlers
 const usePressabilityMock = () => ({})
 
+const flattenStyle = (style) =>
+  Array.isArray(style)
+    ? style.reduce((acc, item) => Object.assign(acc, flattenStyle(item)), {})
+    : style || {}
+
+const testNativePlatform = process.env.TEST_NATIVE_PLATFORM
+const testPlatformOS =
+  testNativePlatform === 'tvos'
+    ? 'ios'
+    : testNativePlatform === 'androidtv'
+      ? 'android'
+      : testNativePlatform || 'web'
+
 function proxyWorm() {
   return new Proxy(
     {
       StyleSheet: {
         create() {},
+        flatten: flattenStyle,
       },
       Platform: {
-        OS: 'web',
+        OS: testPlatformOS,
+        isTV: testNativePlatform === 'tvos' || testNativePlatform === 'androidtv',
       },
       Image: emtpyComponent,
       View: createMockComponent('View'),

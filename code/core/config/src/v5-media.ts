@@ -1,3 +1,5 @@
+import { isNativeDesktop } from '@tamagui/core'
+
 // note order is important!
 // earlier defined = less important
 
@@ -17,19 +19,19 @@ export const breakpoints = {
 }
 
 const mediaQueryForceNonOverlap = process.env.TAMAGUI_TARGET === 'native' ? 1 : 0.02
+const isNative = process.env.TAMAGUI_TARGET === 'native'
+const isNativeTouch = isNative && !isNativeDesktop
 
 export const media = {
-  // always true on native
-  touchable:
-    process.env.TAMAGUI_TARGET === 'native'
-      ? ({ minWidth: 0 } as never)
-      : { pointer: 'coarse' },
+  // Native mobile is touch-first; native desktop has a hover-capable pointer.
+  touchable: isNative
+    ? ((isNativeDesktop ? { maxWidth: 0 } : { minWidth: 0 }) as never)
+    : { pointer: 'coarse' },
 
-  // always false on native (can't hover on touch)
-  hoverable:
-    process.env.TAMAGUI_TARGET === 'native'
-      ? ({ maxWidth: 0 } as never)
-      : { hover: 'hover' },
+  // Native desktop is hover-capable; native mobile is not.
+  hoverable: isNative
+    ? ((isNativeDesktop ? { minWidth: 0 } : { maxWidth: 0 }) as never)
+    : { hover: 'hover' },
 
   // Max-width queries (desktop-first, ordered large-to-small so smaller wins)
   'max-xxl': { maxWidth: breakpoints.xxl - mediaQueryForceNonOverlap },
@@ -77,8 +79,8 @@ export const media = {
 export type V5Media = typeof media
 
 export const mediaQueryDefaultActive = {
-  touchable: process.env.TAMAGUI_TARGET === 'native',
-  hoverable: process.env.TAMAGUI_TARGET !== 'native',
+  touchable: isNativeTouch,
+  hoverable: !isNative || isNativeDesktop,
   // Max queries
   'max-xxl': true,
   'max-xl': true,

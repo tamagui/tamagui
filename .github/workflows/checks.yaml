@@ -86,6 +86,13 @@ jobs:
       - name: Run unit tests
         run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=1
 
+      - name: Run native hover regressions
+        run: |
+          bun --cwd code/core/core-test run test:native
+          bun --cwd code/core/core-test run test:macos
+          bun --cwd code/compiler/static-tests run test:babel:native
+          bun --cwd code/compiler/static-tests run test:flatten:native
+
   changes:
     runs-on: ubuntu-latest
     outputs:

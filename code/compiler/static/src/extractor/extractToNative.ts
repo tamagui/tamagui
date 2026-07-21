@@ -57,8 +57,30 @@ export function extractToNative(
 export function getBabelPlugin() {
   return declare((api, options: TamaguiOptions) => {
     api.assertVersion(7)
-    return getBabelParseDefinition(options)
+    const callerPlatform = api.caller(
+      (caller: { platform?: string } | undefined) => caller?.platform || null
+    )
+    const nativePlatform =
+      getNativePlatform(callerPlatform) ||
+      getNativePlatform(options.nativePlatform) ||
+      getNativePlatform(process.env.EXPO_OS)
+    return getBabelParseDefinition({
+      ...options,
+      ...(nativePlatform && { nativePlatform }),
+    })
   })
+}
+
+function getNativePlatform(platform: string | undefined | null) {
+  if (
+    platform === 'android' ||
+    platform === 'ios' ||
+    platform === 'macos' ||
+    platform === 'windows' ||
+    platform === 'tvos'
+  ) {
+    return platform
+  }
 }
 
 export function getBabelParseDefinition(options: TamaguiOptions) {

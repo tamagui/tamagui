@@ -198,6 +198,15 @@ describe('Web Alignment - Native Focus Mapping', () => {
 })
 
 describe('Web Alignment - Native Event Mapping', () => {
+  test('mouse hover handlers are omitted on touch-native targets', () => {
+    const onMouseEnter = () => {}
+    const onMouseLeave = () => {}
+    const result = getSplitStylesFor({ onMouseEnter, onMouseLeave })
+
+    expect(result.viewProps.onMouseEnter).toBeUndefined()
+    expect(result.viewProps.onMouseLeave).toBeUndefined()
+  })
+
   describe('Web event props should work on native (after migration)', () => {
     // IMPORTANT: Currently, web event props (onClick, onPointerDown, etc.) are
     // filtered out on native via webPropsToSkip.native.ts

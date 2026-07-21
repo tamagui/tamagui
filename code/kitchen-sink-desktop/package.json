@@ -1,0 +1,60 @@
+{
+  "name": "tamaguidesktop",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "start:local": "TAMAGUI_USE_LOCAL=1 expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "macos": "rnc-cli run-macos",
+    "windows": "rnc-cli run-windows",
+    "autolink-windows": "react-native autolink-windows",
+    "link:tamagui": "bunx lllink ../..",
+    "unlink:tamagui": "bunx lllink --unlink",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tamagui/config": "2.4.6",
+    "expo": "~54.0.34",
+    "expo-desktop-modules-core": "^54.0.0",
+    "expo-desktop-prebuild-config": "^1.0.0",
+    "expo-desktop-stubs": "^54.0.0",
+    "expo-status-bar": "~3.0.9",
+    "react": "19.1.4",
+    "react-native": "0.81.6",
+    "react-native-macos": "0.81.9",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-windows": "0.81.32",
+    "tamagui": "2.4.6"
+  },
+  "devDependencies": {
+    "@tamagui/babel-plugin": "2.4.6",
+    "@tamagui/metro-plugin": "2.4.6",
+    "@types/react": "~19.1.0",
+    "typescript": "~5.9.2",
+    "@react-native-community/cli": "latest",
+    "@rnx-kit/metro-config": "latest",
+    "@react-native/metro-config": "~0.81"
+  },
+  "private": true,
+  "overrides": {
+    "react": "19.1.4",
+    "react-native": "0.81.6"
+  },
+  "expo": {
+    "autolinking": {
+      "exclude": [
+        "react-native-reanimated",
+        "react-native-worklets"
+      ]
+    },
+    "install": {
+      "exclude": [
+        "react",
+        "react-native"
+      ]
+    }
+  }
+}

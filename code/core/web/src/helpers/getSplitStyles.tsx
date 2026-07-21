@@ -2,6 +2,7 @@ import {
   getPlatformDriver,
   isAndroid,
   isClient,
+  isNativeDesktop,
   isWeb,
   supportsDynamicColorIOS,
   useIsomorphicLayoutEffect,
@@ -161,10 +162,16 @@ function isValidStyleKey(
   return key in validStyles ? true : accept && key in accept
 }
 
-function shouldSkipNativeHoverProp(key: string, isMedia: false | boolean | string) {
+function shouldSkipNativeHoverProp(
+  key: string,
+  isMedia: false | boolean | string,
+  nativeDesktop?: boolean
+) {
   if (process.env.TAMAGUI_TARGET !== 'native') return false
+  if (isNativeDesktop || nativeDesktop) return false
   if (getPlatformDriver()?.pseudo) return false
-  if (key === 'hoverStyle') return true
+  if (key === 'hoverStyle' || key === 'onMouseEnter' || key === 'onMouseLeave')
+    return true
   if (isMedia === 'group') {
     return getGroupPropParts(key.slice(1)).pseudo === 'hover'
   }
@@ -517,7 +524,7 @@ export const getSplitStyles: StyleSplitter = (
 
     const isStyleProp = isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand)
 
-    if (shouldSkipNativeHoverProp(keyInit, isMedia)) {
+    if (shouldSkipNativeHoverProp(keyInit, isMedia, styleProps.nativeDesktop)) {
       continue
     }
 
@@ -665,7 +672,7 @@ export const getSplitStyles: StyleSplitter = (
         key = normalizeGroupKey(key, groupContext)
       }
 
-      if (shouldSkipNativeHoverProp(key, isMedia)) {
+      if (shouldSkipNativeHoverProp(key, isMedia, styleProps.nativeDesktop)) {
         return
       }
 
@@ -992,7 +999,12 @@ export const getSplitStyles: StyleSplitter = (
             const groupPseudoKey = groupInfo.pseudo
             const groupMediaKey = groupInfo.media
 
-            if (process.env.TAMAGUI_TARGET === 'native' && groupPseudoKey === 'hover') {
+            if (
+              process.env.TAMAGUI_TARGET === 'native' &&
+              !isNativeDesktop &&
+              !styleProps.nativeDesktop &&
+              groupPseudoKey === 'hover'
+            ) {
               return
             }
 

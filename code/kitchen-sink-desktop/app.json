@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "TamaguiDesktop",
+    "slug": "TamaguiDesktop",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.tamagui.desktop"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "dev.tamagui.desktop"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "platforms": [
+      "android",
+      "ios",
+      "macos",
+      "windows"
+    ],
+    "macos": {
+      "bundleIdentifier": "dev.tamagui.desktop"
+    },
+    "plugins": [
+      [
+        "expo-desktop-config-plugins",
+        {
+          "displayName": "Tamagui Desktop",
+          "bundleIdentifier": "dev.tamagui.desktop"
+        }
+      ]
+    ]
+  }
+}

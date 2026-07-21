@@ -62,7 +62,15 @@ const UNTOUCHED_PROPS = {
 // Platform variants that can't be resolved at compile time on native builds.
 // Defined at module level (not inside the loop) to avoid repeated Set allocations during compilation.
 // (requires runtime Platform.OS + Platform.isTV checks via react-native-tvos)
-const nativeOnlyPlatforms = new Set(['android', 'ios', 'tv', 'androidtv', 'tvos'])
+const nativeOnlyPlatforms = new Set([
+  'android',
+  'ios',
+  'macos',
+  'windows',
+  'tv',
+  'androidtv',
+  'tvos',
+])
 
 const createTernary = (x: Ternary) => x
 
@@ -427,6 +435,9 @@ export function createExtractor(
      */
 
     const isTargetingHTML = platform === 'web'
+    const isTargetingNativeDesktop =
+      platform === 'native' &&
+      (options.nativePlatform === 'macos' || options.nativePlatform === 'windows')
     const ogDebug = shouldPrintDebug
     const tm = timer()
     const propsWithFileInfo: TamaguiOptionsWithFileInfo = {
@@ -1169,8 +1180,7 @@ export function createExtractor(
                   // rn (event listeners + style merge in createComponent), and if
                   // we let them flatten into the stylesheet they get written
                   // under a literal key that rn treats as an unknown style prop.
-                  // hover is intentionally excluded: it is no-op on native and
-                  // should be dropped rather than preserved as runtime work.
+                  ...(isTargetingNativeDesktop ? ['hoverStyle'] : []),
                   'pressStyle',
                   'focusStyle',
                   'focusVisibleStyle',
@@ -1452,7 +1462,8 @@ export function createExtractor(
               (platform === 'native' &&
                 name[0] === '$' &&
                 (name.startsWith('$theme-') ||
-                  (name.startsWith('$group-') && getGroupPseudo(name) !== 'hover')))
+                  (name.startsWith('$group-') &&
+                    (isTargetingNativeDesktop || getGroupPseudo(name) !== 'hover'))))
             ) {
               inlined.set(name, true)
               return attr
@@ -1660,7 +1671,7 @@ export function createExtractor(
                     }
                   }
 
-                  // $platform-web, $platform-native, $platform-ios, $platform-android, $platform-tv, $platform-androidtv, $platform-tvos
+                  // $platform-web, $platform-native, and concrete native platforms
                   if (name.startsWith('$platform-')) {
                     const platformName = name.slice(10) // remove '$platform-'
                     const isMatchingPlatform =
@@ -2041,7 +2052,7 @@ export function createExtractor(
             // style props into a single `style={…}` so the runtime skips its per-prop
             // loop for them (the dominant deopt cost on RN). theme tokens ($…) and
             // dynamic props stay inline so theme/media switching + dynamics are
-            // unaffected; dead native hoverStyle is dropped (no-op on touch).
+            // unaffected; dead mobile-native hoverStyle is dropped (no-op on touch).
             let partial: (t.JSXAttribute | t.JSXSpreadAttribute)[] | null = null
             if (
               platform === 'native' &&
@@ -2070,8 +2081,12 @@ export function createExtractor(
                   if (!t.isJSXAttribute(a) || !t.isJSXIdentifier(a.name)) return true
                   const n = a.name.name
                   if (consumed.has(n)) return false
-                  if (n === 'hoverStyle') return false
-                  if (n.startsWith('$group-') && getGroupPseudo(n) === 'hover')
+                  if (!isTargetingNativeDesktop && n === 'hoverStyle') return false
+                  if (
+                    !isTargetingNativeDesktop &&
+                    n.startsWith('$group-') &&
+                    getGroupPseudo(n) === 'hover'
+                  )
                     return false
                   return true
                 })
@@ -2490,6 +2505,7 @@ export function createExtractor(
                   }
                   if (
                     platform === 'native' &&
+                    !isTargetingNativeDesktop &&
                     k.startsWith('$group-') &&
                     getGroupPseudo(k) === 'hover'
                   ) {
@@ -2511,6 +2527,7 @@ export function createExtractor(
                 {
                   ...styleProps,
                   noClass: true,
+                  nativeDesktop: isTargetingNativeDesktop,
                   fallbackProps: completeProps,
                   ...(platform === 'native' && {
                     resolveValues: 'except-theme',
@@ -2582,7 +2599,8 @@ export function createExtractor(
                   platform === 'native' &&
                   key[0] === '$' &&
                   (key.startsWith('$theme-') ||
-                    (key.startsWith('$group-') && getGroupPseudo(key) !== 'hover'))
+                    (key.startsWith('$group-') &&
+                      (isTargetingNativeDesktop || getGroupPseudo(key) !== 'hover')))
                 ) {
                   shouldFlatten = false
                 }

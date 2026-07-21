@@ -309,6 +309,48 @@ test('hoverStyle on native should drop dead hover work', async () => {
   expect(code).toMatchSnapshot()
 })
 
+test('hoverStyle on macOS should preserve runtime hover work', async () => {
+  const output = await extractForNative(
+    `
+      import { YStack } from 'tamagui'
+      export function Test({ onEnter }) {
+        return (
+          <YStack
+            backgroundColor="red"
+            hoverStyle={{ backgroundColor: 'green' }}
+            onMouseEnter={onEnter}
+          />
+        )
+      }
+    `,
+    'macos'
+  )
+  const code = output?.code ?? ''
+
+  expect(code).not.toContain('"hoverStyle"')
+  expect(code).toContain('hoverStyle')
+  expect(code).toContain('onMouseEnter={onEnter}')
+  expect(code).toContain("backgroundColor: 'green'")
+  expect(code).toContain('<YStack')
+})
+
+test('styled hoverStyle on macOS should preserve the runtime component', async () => {
+  const output = await extractForNative(
+    `
+      import { MyHoverStack } from '@tamagui/test-design-system'
+
+      export function Test() {
+        return <MyHoverStack backgroundColor="red" />
+      }
+    `,
+    'macos'
+  )
+  const code = output?.code ?? ''
+
+  expect(code).toContain('<MyHoverStack')
+  expect(code).not.toContain('<__ReactNativeView')
+})
+
 test('$theme-* on native should de-opt (preserve as inline prop)', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
@@ -349,6 +391,27 @@ test('$group-*-hover on native should drop dead hover work', async () => {
   expect(code).toMatchSnapshot()
 })
 
+test('$group-*-hover on macOS should preserve runtime hover work', async () => {
+  const output = await extractForNative(
+    `
+      import { YStack } from 'tamagui'
+      export function Test() {
+        return (
+          <YStack group="row">
+            <YStack $group-row-hover={{ backgroundColor: 'green' }} />
+          </YStack>
+        )
+      }
+    `,
+    'macos'
+  )
+  const code = output?.code ?? ''
+
+  expect(code).toContain('$group-row-hover')
+  expect(code).toContain("backgroundColor: 'green'")
+  expect(code).toContain('group="row"')
+})
+
 test('$group-* non-hover on native should de-opt (preserve as inline prop)', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
@@ -371,6 +434,23 @@ test('$group-* non-hover on native should de-opt (preserve as inline prop)', asy
   // group="row" parent must remain (it provides the runtime container context)
   expect(code).toContain('group="row"')
   expect(code).toMatchSnapshot()
+})
+
+test('$platform-macos on native should preserve runtime platform work', async () => {
+  const output = await extractForNative(
+    `
+      import { YStack } from 'tamagui'
+      export function Test() {
+        return <YStack $platform-macos={{ backgroundColor: 'green' }} />
+      }
+    `,
+    'macos'
+  )
+  const code = output?.code ?? ''
+
+  expect(code).toContain('$platform-macos')
+  expect(code).toContain("backgroundColor: 'green'")
+  expect(code).toContain('<YStack')
 })
 
 test('ternary with mixed theme-token and non-token values preserves all props', async () => {

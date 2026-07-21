@@ -1076,7 +1076,7 @@ export type PseudoStyles = {
     enterStyle?: ViewStyle;
     exitStyle?: ViewStyle;
 };
-export type AllPlatforms = 'web' | 'native' | 'android' | 'ios' | 'tv' | 'androidtv' | 'tvos';
+export type AllPlatforms = 'web' | 'native' | 'android' | 'ios' | 'macos' | 'windows' | 'tv' | 'androidtv' | 'tvos';
 type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true ? Omit<A, ShorthandLonghandProps> : A;
 export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>;
 export type WithThemeShorthandsAndPseudos<A extends object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
@@ -1768,6 +1768,8 @@ export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFuncti
  */
 export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web' | 'except-theme';
 export type SplitStyleProps = {
+    /** Compiler-only desktop capability when Platform.OS is unavailable in Node. */
+    nativeDesktop?: boolean;
     styledContext?: Record<string, any>;
     mediaState?: Record<string, boolean>;
     noClass?: boolean;

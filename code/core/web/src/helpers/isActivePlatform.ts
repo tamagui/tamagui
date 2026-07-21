@@ -7,7 +7,7 @@ import { currentPlatform, isAndroid, isIos, isTV } from '@tamagui/constants'
  *
  * Cascade (low → high importance):
  *   $platform-native / $platform-web         → bump 0  (widest)
- *   $platform-android / $platform-ios        → bump 1  (OS-specific)
+ *   $platform-android / $platform-ios / desktop OSes → bump 1  (OS-specific)
  *   $platform-tv                             → bump 2  (TV subset of Android/iOS)
  *   $platform-androidtv / $platform-tvos     → bump 3  (most specific)
  *
@@ -17,7 +17,14 @@ export function getPlatformSpecificityBump(mediaKeyShort: string): number {
   if (mediaKeyShort === 'platform-androidtv' || mediaKeyShort === 'platform-tvos')
     return 3
   if (mediaKeyShort === 'platform-tv') return 2
-  if (mediaKeyShort === 'platform-android' || mediaKeyShort === 'platform-ios') return 1
+  if (
+    mediaKeyShort === 'platform-android' ||
+    mediaKeyShort === 'platform-ios' ||
+    mediaKeyShort === 'platform-macos' ||
+    mediaKeyShort === 'platform-windows'
+  ) {
+    return 1
+  }
   return 0
 }
 
@@ -27,9 +34,9 @@ export function isActivePlatform(key: string) {
   }
   const platform = key.slice(10)
   return (
-    // exact platform match (web, ios, android)
+    // exact platform match (web, ios, android, macos, windows)
     platform === currentPlatform ||
-    // native matches all non-web platforms (iOS, Android, tvOS, Android TV)
+    // native matches all non-web platforms
     (platform === 'native' && currentPlatform !== 'web') ||
     // TAMAGUI_TARGET fallback (web or native build target)
     platform === process.env.TAMAGUI_TARGET ||

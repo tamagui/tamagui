@@ -137,6 +137,11 @@ export interface TamaguiBuildOptions {
 
 export interface TamaguiOptions extends TamaguiBuildOptions {
   platform?: 'native' | 'web'
+  /**
+   * Concrete React Native target supplied by Metro's Babel caller. This lets
+   * native compilation retain capabilities that differ between mobile and desktop.
+   */
+  nativePlatform?: 'android' | 'ios' | 'macos' | 'windows' | 'tvos'
 }
 
 // for cli

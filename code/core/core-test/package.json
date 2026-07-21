@@ -12,11 +12,12 @@
     "test:run": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts",
     "test:web": "TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.web.test.tsx",
     "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.ios.test.tsx",
+    "test:macos": "TEST_NATIVE_PLATFORM=macos TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.macos.test.tsx",
     "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.native.test.tsx",
     "test:token-provenance": "NODE_ENV=development TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE=1 TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts getSplitStyles.tokenProvenance.native.test.tsx",
     "test:androidtv": "TEST_NATIVE_PLATFORM=androidtv TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.androidtv.test.tsx",
     "test:tvos": "TEST_NATIVE_PLATFORM=tvos TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.tvos.test.tsx",
-    "test": "bun run test:native && bun run test:token-provenance && bun run test:web && bun run test:ios && bun run test:androidtv && bun run test:tvos",
+    "test": "bun run test:native && bun run test:token-provenance && bun run test:web && bun run test:ios && bun run test:macos && bun run test:androidtv && bun run test:tvos",
     "test:update": "bun run test:native --update && bun run test:web --update"
   },
   "devDependencies": {

@@ -2,10 +2,16 @@ import * as babel from '@babel/core'
 import type { ExtractToClassNamesProps } from '@tamagui/static'
 import { createExtractor, extractToClassNames } from '@tamagui/static'
 
-export async function extractForNative(code: string) {
+export async function extractForNative(code: string, platform?: string) {
   const out = await babel.transformAsync(code, {
     configFile: './babel-config-test.cjs',
     filename: 'test.tsx',
+    ...(platform && {
+      caller: {
+        name: 'tamagui-static-tests',
+        platform,
+      },
+    }),
   })
 
   return out

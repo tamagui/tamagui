@@ -2019,6 +2019,8 @@ export type AllPlatforms =
   | 'native'
   | 'android'
   | 'ios'
+  | 'macos'
+  | 'windows'
   | 'tv'
   | 'androidtv'
   | 'tvos'
@@ -3201,6 +3203,8 @@ export type ResolveVariableAs =
   | 'except-theme'
 
 export type SplitStyleProps = {
+  /** Compiler-only desktop capability when Platform.OS is unavailable in Node. */
+  nativeDesktop?: boolean
   styledContext?: Record<string, any>
   mediaState?: Record<string, boolean>
   noClass?: boolean

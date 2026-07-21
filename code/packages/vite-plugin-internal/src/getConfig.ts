@@ -13,10 +13,32 @@ export function getConfig(tamaguiPlugin: any) {
     !process.env.DISABLE_NATIVE_TEST &&
     process.env.TAMAGUI_TARGET !== 'web'
 
-  const nativeExtensions =
-    process.env.TEST_NATIVE_PLATFORM === 'ios' ||
-    // tvOS uses iOS-specific file extensions (Platform.OS === 'ios' per react-native-tvos)
-    process.env.TEST_NATIVE_PLATFORM === 'tvos'
+  const nativeDesktopPlatform =
+    process.env.TEST_NATIVE_PLATFORM === 'macos' ||
+    process.env.TEST_NATIVE_PLATFORM === 'windows'
+      ? process.env.TEST_NATIVE_PLATFORM
+      : undefined
+
+  const nativeExtensions = nativeDesktopPlatform
+    ? [
+        `.${nativeDesktopPlatform}.ts`,
+        `.${nativeDesktopPlatform}.tsx`,
+        `.${nativeDesktopPlatform}.js`,
+        `.${nativeDesktopPlatform}.jsx`,
+        '.native.tsx',
+        '.native.ts',
+        '.native.js',
+        '.native.jsx',
+        '.cjs',
+        '.js',
+        '.ts',
+        '.jsx',
+        '.tsx',
+        '.json',
+      ]
+    : process.env.TEST_NATIVE_PLATFORM === 'ios' ||
+        // tvOS uses iOS-specific file extensions (Platform.OS === 'ios' per react-native-tvos)
+        process.env.TEST_NATIVE_PLATFORM === 'tvos'
       ? [
           '.ios.ts',
           '.ios.tsx',

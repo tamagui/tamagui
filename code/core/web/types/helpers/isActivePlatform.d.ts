@@ -5,7 +5,7 @@
  *
  * Cascade (low → high importance):
  *   $platform-native / $platform-web         → bump 0  (widest)
- *   $platform-android / $platform-ios        → bump 1  (OS-specific)
+ *   $platform-android / $platform-ios / desktop OSes → bump 1  (OS-specific)
  *   $platform-tv                             → bump 2  (TV subset of Android/iOS)
  *   $platform-androidtv / $platform-tvos     → bump 3  (most specific)
  *

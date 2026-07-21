@@ -14,12 +14,11 @@ export const webPropsToSkip = {
   ...webOnlyStylePropsViewWithoutPointerEvents,
   ...webOnlyStylePropsText,
 
-  // Web-only event handlers
+  // Web-only event handlers. Mouse enter/leave are intentionally omitted:
+  // createComponent consumes them on mobile and forwards them on native desktop.
   onClick: 1,
   onDoubleClick: 1,
   onContextMenu: 1,
-  onMouseEnter: 1,
-  onMouseLeave: 1,
   onMouseMove: 1,
   onMouseOver: 1,
   onMouseOut: 1,
