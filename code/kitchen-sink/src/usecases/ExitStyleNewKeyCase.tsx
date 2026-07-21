@@ -32,6 +32,7 @@ export function ExitStyleNewKeyCase() {
               size={80}
               bg="$blue10"
               borderColor="$red10"
+              transform={[{ matrix: [1, 0, 0, 1, 0, 0] }]}
               exitStyle={{
                 borderWidth: 10,
                 y: 40,

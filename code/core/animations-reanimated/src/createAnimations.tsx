@@ -13,6 +13,7 @@ import {
   type UniversalAnimatedNumber,
 } from '@tamagui/core'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
+import normalizeColor from '@react-native/normalize-colors'
 import React, { forwardRef, useMemo, useRef } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated_, {
@@ -77,6 +78,7 @@ type AnimationSnapshot = {
   animated: Record<string, unknown>
   statics: Record<string, unknown>
   transforms: Array<Record<string, unknown>>
+  gatedKeys: Record<string, boolean>
   /**
    * for each animated key (transform sub-keys as `transform:key`), the value the
    * previous committed render painted for it, when one exists and is animatable.
@@ -156,10 +158,6 @@ const cloneStyleRecord = (style: Record<string, unknown>): Record<string, unknow
   return next
 }
 
-const cloneTransforms = (
-  transforms: Array<Record<string, unknown>>
-): Array<Record<string, unknown>> => transforms.map(cloneStyleRecord)
-
 const cloneTransitionConfig = (config: TransitionConfig): TransitionConfig => {
   return cloneAnimationValue(config) as TransitionConfig
 }
@@ -170,21 +168,6 @@ const getAnimatedTransforms = (value: unknown): Array<Record<string, unknown>> =
     (item): item is Record<string, unknown> =>
       item !== null && typeof item === 'object' && !Array.isArray(item)
   )
-}
-
-const getAnimatedKeySet = (
-  animated: Record<string, unknown>,
-  transforms: Array<Record<string, unknown>>
-): Set<string> => {
-  const keys = new Set<string>()
-  for (const key in animated) {
-    if (key !== 'transform') keys.add(key)
-  }
-  for (const transform of transforms) {
-    const key = Object.keys(transform)[0]
-    if (key) keys.add(`transform:${key}`)
-  }
-  return keys
 }
 
 const getRemovedAnimatedKeys = (
@@ -200,11 +183,33 @@ const getRemovedAnimatedKeys = (
 
 // implicit start values for style keys that were never painted (e.g. a key
 // introduced by exitStyle with no base value). most numerics default to 0.
-const getImplicitDefault = (key: string): number => {
+const getImplicitDefault = (
+  key: string,
+  targetValue: number | string
+): number | string => {
   'worklet'
-  return key === 'opacity' || key === 'scale' || key === 'scaleX' || key === 'scaleY'
-    ? 1
-    : 0
+  const value =
+    key === 'opacity' || key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
+  if (typeof targetValue !== 'string') return value
+
+  // reanimated derives a string animation's suffix from its start value. keep
+  // units on implicit starts so fresh `50%` and `90deg` keys interpolate.
+  let suffixIndex = 0
+  while (suffixIndex < targetValue.length) {
+    const character = targetValue[suffixIndex]
+    const code = character.charCodeAt(0)
+    if (
+      (code >= 48 && code <= 57) ||
+      character === '.' ||
+      character === '-' ||
+      character === '+'
+    ) {
+      suffixIndex++
+    } else {
+      break
+    }
+  }
+  return suffixIndex > 0 ? `${value}${targetValue.slice(suffixIndex)}` : value
 }
 
 const COLOR_STYLE_KEYS: Record<string, boolean> = {
@@ -217,11 +222,9 @@ const COLOR_STYLE_KEYS: Record<string, boolean> = {
   color: true,
 }
 
-// reanimated interpolates only color strings its own parser accepts. anything
-// else falls through to its generic prefix/suffix string handler, which
-// mangles the value into '<letters>NaN' — the browser silently drops that,
-// native processColor throws a redbox. normalize what we can and never build
-// an animation descriptor from a color value that isn't clearly parseable.
+// reanimated can pass either its rgba output or a processed numeric color back
+// as animation history. snapshot targets are normalized on the JS side below;
+// this worklet conversion exists only to validate that in-flight history.
 const toReanimatedColor = (value: unknown): unknown => {
   'worklet'
   if (typeof value === 'number') {
@@ -238,30 +241,120 @@ const toReanimatedColor = (value: unknown): unknown => {
   return trimmed
 }
 
-const isInterpolatableColor = (value: unknown): boolean => {
+const isReanimatedColorHistory = (value: unknown): boolean => {
   'worklet'
-  if (typeof value !== 'string') return false
-  return (
-    /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(value) ||
-    /^(?:rgba?|hsla?|hwb)\([0-9+\-.,%/\s]+\)$/.test(value)
-  )
+  const normalized = toReanimatedColor(value)
+  return typeof normalized === 'string' && normalized.startsWith('rgba(')
 }
 
-const getSeeds = (
-  keys: Set<string>,
-  previousPainted: Record<string, unknown>
-): Record<string, unknown> => {
+const normalizeAnimationColor = (value: unknown): string | undefined => {
+  if (typeof value === 'number') {
+    return toReanimatedColor(value) as string
+  }
+  if (typeof value !== 'string') return
+
+  const color = normalizeColor(value)
+  if (color == null) return
+  const red = Math.round((color & 0xff000000) >>> 24)
+  const green = Math.round((color & 0x00ff0000) >>> 16)
+  const blue = Math.round((color & 0x0000ff00) >>> 8)
+  const alpha = (color & 0x000000ff) / 255
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`
+}
+
+const buildSnapshot = (
+  animated: Record<string, unknown>,
+  statics: Record<string, unknown>,
+  transforms: Array<Record<string, unknown>>,
+  previousKeys: Set<string>,
+  lastPainted: Record<string, unknown>
+) => {
+  const snapshotAnimated: Record<string, unknown> = {}
+  const snapshotStatics = cloneStyleRecord(statics)
+
+  for (const key in snapshotStatics) {
+    if (!COLOR_STYLE_KEYS[key]) continue
+    const normalized = normalizeAnimationColor(snapshotStatics[key])
+    if (normalized !== undefined) snapshotStatics[key] = normalized
+  }
+
+  for (const key in animated) {
+    if (key === 'transform') continue
+    const value = animated[key]
+    if (COLOR_STYLE_KEYS[key]) {
+      const normalized = normalizeAnimationColor(value)
+      if (normalized === undefined) {
+        // invalid colors must paint plainly. creating a descriptor makes
+        // reanimated's string interpolator emit '<letters>NaN'.
+        snapshotStatics[key] = cloneAnimationValue(value)
+        continue
+      }
+      snapshotAnimated[key] = normalized
+    } else {
+      snapshotAnimated[key] = cloneAnimationValue(value)
+    }
+  }
+
+  const snapshotTransforms = transforms.map(cloneStyleRecord)
+  const keys = new Set(Object.keys(snapshotAnimated))
+  for (const transform of snapshotTransforms) {
+    const key = Object.keys(transform)[0]
+    const value = key ? transform[key] : undefined
+    if (key && (typeof value === 'number' || typeof value === 'string')) {
+      keys.add(`transform:${key}`)
+    }
+  }
+
   const seeds: Record<string, unknown> = {}
   for (const key of keys) {
-    const prev = previousPainted[key]
-    if (typeof prev !== 'number' && typeof prev !== 'string') continue
-    if (prev === 'auto' || (typeof prev === 'string' && prev.startsWith('calc'))) {
+    let value = lastPainted[key]
+    if (typeof value !== 'number' && typeof value !== 'string') continue
+    if (value === 'auto' || (typeof value === 'string' && value.startsWith('calc'))) {
       continue
     }
-    seeds[key] = prev
+    if (COLOR_STYLE_KEYS[key]) value = normalizeAnimationColor(value)
+    if (value !== undefined) seeds[key] = value
   }
-  return seeds
+
+  const gatedKeys: Record<string, boolean> = {}
+  for (const key of keys) gatedKeys[key] = true
+
+  const removedKeys = getRemovedAnimatedKeys(keys, previousKeys)
+  const painted: Record<string, unknown> = {
+    ...snapshotStatics,
+    ...snapshotAnimated,
+  }
+  const staticTransforms = getAnimatedTransforms(snapshotStatics.transform)
+  delete painted.transform
+  for (const transform of staticTransforms) {
+    const key = Object.keys(transform)[0]
+    if (key) painted[`transform:${key}`] = transform[key]
+  }
+  for (const transform of snapshotTransforms) {
+    const key = Object.keys(transform)[0]
+    if (key) painted[`transform:${key}`] = transform[key]
+  }
+
+  return {
+    value: {
+      animated: snapshotAnimated,
+      statics: snapshotStatics,
+      transforms: snapshotTransforms,
+      gatedKeys,
+      seeds,
+      removedKeys,
+      removeTransform: Object.keys(removedKeys).some((key) =>
+        key.startsWith('transform:')
+      ),
+      clearValue: isWeb ? '' : null,
+    },
+    painted,
+    keys,
+  }
 }
+
+const getGatedKeys = (snapshot: AnimationSnapshot): string[] =>
+  Object.keys(snapshot.gatedKeys)
 
 const createReanimatedConfig = (config: TransitionConfig): Record<string, unknown> => {
   'worklet'
@@ -326,7 +419,7 @@ const applyAnimation = (
     ) => {
       'worklet'
       const startValue = validateStartAsColor
-        ? isInterpolatableColor(toReanimatedColor(value))
+        ? isReanimatedColorHistory(value)
           ? toReanimatedColor(value)
           : (seedValue ?? targetValue)
         : seedValue
@@ -339,6 +432,53 @@ const applyAnimation = (
   }
 
   return animatedValue
+}
+
+const animateSnapshotValue = (
+  key: string,
+  implicitKey: string,
+  targetValue: number | string,
+  config: TransitionConfig,
+  previouslyEmitted: boolean,
+  seedValue: unknown,
+  gated: boolean,
+  currentlyExiting: boolean,
+  exitCycleId: number,
+  currentlyCompletingAnimation: boolean,
+  didAnimateCycleId: number,
+  markExitKeyDone: (key: string, cycleId: number, finished: boolean) => void,
+  markDidAnimateKeyDone: (key: string, cycleId: number, finished: boolean) => void,
+  validateStartAsColor = false
+): number | string => {
+  'worklet'
+
+  const cycleGated = gated && (currentlyExiting || currentlyCompletingAnimation)
+  if (!previouslyEmitted && seedValue === undefined && !cycleGated) {
+    return targetValue
+  }
+
+  let callback: AnimationCallback | undefined
+  if (gated && currentlyExiting) {
+    callback = (finished) => {
+      'worklet'
+      runOnJS(markExitKeyDone)(key, exitCycleId, finished ?? false)
+    }
+  } else if (gated && currentlyCompletingAnimation) {
+    callback = (finished) => {
+      'worklet'
+      runOnJS(markDidAnimateKeyDone)(key, didAnimateCycleId, finished ?? false)
+    }
+  }
+
+  return applyAnimation(
+    targetValue,
+    config,
+    callback,
+    previouslyEmitted
+      ? undefined
+      : ((seedValue ?? getImplicitDefault(implicitKey, targetValue)) as number | string),
+    validateStartAsColor
+  )
 }
 
 // =============================================================================
@@ -426,6 +566,29 @@ const canAnimateProperty = (
   if (typeof value === 'string' && value.startsWith('calc')) return false
   if (animateOnly && !animateOnly.includes(key)) return false
   return true
+}
+
+const splitAnimationStyles = (
+  style: Record<string, unknown>,
+  isDark: boolean,
+  disableAnimation: boolean,
+  animateOnly?: string[]
+) => {
+  const animated: Record<string, unknown> = {}
+  const statics: Record<string, unknown> = {}
+
+  for (const key in style) {
+    const value = resolveDynamicValue(style[key], isDark)
+    if (value === undefined) continue
+
+    if (!disableAnimation && canAnimateProperty(key, value, animateOnly)) {
+      animated[key] = cloneAnimationValue(value)
+    } else {
+      statics[key] = cloneAnimationValue(value)
+    }
+  }
+
+  return { animated, statics }
 }
 
 // =============================================================================
@@ -804,6 +967,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           pendingDidAnimateKeysRef.current.delete(key)
           if (pendingDidAnimateKeysRef.current.size === 0) {
             didAnimateCompletedRef.current = true
+            isCompletingAnimationRef.value = false
             onDidAnimateRef.current?.()
           }
         }
@@ -850,6 +1014,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         exitCycleIdRef.current++
         exitCompletedRef.current = false
         pendingExitKeysRef.current.clear()
+        didAnimateCycleIdRef.current++
+        pendingDidAnimateKeysRef.current.clear()
+        didAnimateCompletedRef.current = true
       }
       // invalidate pending callbacks when exit is canceled/interrupted
       if (justStoppedExiting) {
@@ -861,7 +1028,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       useIsomorphicLayoutEffect(() => {
         isExitingRef.value = isExiting
         exitCycleIdShared.value = exitCycleIdRef.current
-      }, [isExiting, exitCycleIdRef.current])
+        if (justStartedExiting) {
+          isCompletingAnimationRef.value = false
+          didAnimateCycleIdShared.value = didAnimateCycleIdRef.current
+        }
+      }, [isExiting, exitCycleIdRef.current, justStartedExiting])
 
       // track previous exiting state
       React.useEffect(() => {
@@ -881,28 +1052,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const carryRef = useRef<Record<string, unknown>>({})
 
       // Separate styles into animated and static
-      const { animatedStyles, staticStyles } = useMemo(() => {
-        const animated: Record<string, unknown> = {}
-        const staticStyles: Record<string, unknown> = {}
+      const { animatedStyles, staticStyles, nextCarry } = useMemo(() => {
         const animateOnly = props.animateOnly as string[] | undefined
-
-        for (const key in style) {
-          const rawValue = (style as Record<string, unknown>)[key]
-          const value = resolveDynamicValue(rawValue, isDark)
-
-          if (value === undefined) continue
-
-          if (disableAnimation) {
-            staticStyles[key] = cloneAnimationValue(value)
-            continue
-          }
-
-          if (canAnimateProperty(key, value, animateOnly)) {
-            animated[key] = cloneAnimationValue(value)
-          } else {
-            staticStyles[key] = cloneAnimationValue(value)
-          }
-        }
+        const { animated, statics } = splitAnimationStyles(
+          style as Record<string, unknown>,
+          isDark,
+          disableAnimation,
+          animateOnly
+        )
 
         // every animated key keeps its FIRST animated value in React's style for
         // as long as it stays animated. the value never changes across renders,
@@ -913,58 +1070,38 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // a key appearing post-mount (a just-measured height) paints its value in
         // the same commit the mapper first sees it, a frame before the mapper's
         // first write.
-        const carry = carryRef.current
-        for (const key in carry) {
-          if (!(key in animated)) delete carry[key]
+        // derive from committed state. mutating carryRef during render leaks
+        // abandoned concurrent renders into later commits.
+        const nextCarry = cloneStyleRecord(carryRef.current)
+        for (const key in nextCarry) {
+          if (!(key in animated)) delete nextCarry[key]
         }
         for (const key in animated) {
-          if (!(key in carry)) {
-            carry[key] = cloneAnimationValue(animated[key])
+          if (!(key in nextCarry)) {
+            nextCarry[key] = cloneAnimationValue(animated[key])
           }
-          staticStyles[key] = carry[key]
+          statics[key] = nextCarry[key]
         }
 
-        return { animatedStyles: animated, staticStyles }
+        return { animatedStyles: animated, staticStyles: statics, nextCarry }
       }, [disableAnimation, style, isDark, props.animateOnly])
 
-      const renderSnapshot = useMemo(() => {
-        const transforms = getAnimatedTransforms(animatedStyles.transform)
-        const regularAnimated: Record<string, unknown> = {}
-        for (const key in animatedStyles) {
-          if (key !== 'transform') regularAnimated[key] = animatedStyles[key]
-        }
-        const keys = getAnimatedKeySet(animatedStyles, transforms)
-        const removedKeys = getRemovedAnimatedKeys(keys, committedRenderKeysRef.current)
-        const seeds = getSeeds(keys, lastPaintedRef.current)
-        const painted: Record<string, unknown> = { ...staticStyles }
-        for (const key in regularAnimated) {
-          painted[key] = regularAnimated[key]
-        }
-        delete painted.transform
-        for (const t of transforms) {
-          const tKey = Object.keys(t)[0]
-          if (tKey) painted[`transform:${tKey}`] = t[tKey]
-        }
-        return {
-          value: {
-            animated: cloneStyleRecord(regularAnimated),
-            statics: cloneStyleRecord(staticStyles),
-            transforms: cloneTransforms(transforms),
-            seeds: cloneStyleRecord(seeds),
-            removedKeys: { ...removedKeys },
-            removeTransform: Object.keys(removedKeys).some((key) =>
-              key.startsWith('transform:')
-            ),
-            clearValue: isWeb ? '' : null,
-          } satisfies AnimationSnapshot,
-          painted,
-          keys,
-        }
-      }, [animatedStyles, staticStyles])
+      const renderSnapshot = useMemo(
+        () =>
+          buildSnapshot(
+            animatedStyles,
+            staticStyles,
+            getAnimatedTransforms(animatedStyles.transform),
+            committedRenderKeysRef.current,
+            lastPaintedRef.current
+          ),
+        [animatedStyles, staticStyles]
+      )
       const renderSnapshotRef = useSharedValue<AnimationSnapshot>({
         animated: {},
         statics: {},
         transforms: [],
+        gatedKeys: {},
         seeds: {},
         removedKeys: {},
         removeTransform: false,
@@ -974,9 +1111,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const emitterKeysRef = useRef<Set<string> | null>(null)
 
       useIsomorphicLayoutEffect(() => {
+        carryRef.current = nextCarry
         committedRenderKeysRef.current = renderSnapshot.keys
         lastPaintedRef.current = renderSnapshot.painted
-      }, [renderSnapshot])
+      }, [nextCarry, renderSnapshot])
 
       // reconcile the emitter latch with real re-renders.
       //
@@ -1099,9 +1237,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // this emitter snapshot is a transient override to keep latched or a base it can drop.
           pseudoActiveRef.current = pseudoActive === true
           const animateOnly = props.animateOnly as string[] | undefined
-          const animated: Record<string, unknown> = {}
-          const statics: Record<string, unknown> = {}
-          const transforms: Array<Record<string, unknown>> = []
 
           // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
           // rebuild config whenever transition changes (entering OR exiting pseudo states)
@@ -1122,60 +1257,23 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             isHydrating: configRef.value.isHydrating,
           }
 
-          for (const key in nextStyle) {
-            const rawValue = nextStyle[key]
-            const value = resolveDynamicValue(rawValue, isDark)
-
-            if (value == undefined) continue
-
-            if (configRef.value.disableAnimation) {
-              statics[key] = cloneAnimationValue(value)
-              continue
-            }
-
-            if (key === 'transform' && Array.isArray(value)) {
-              for (const t of value as Record<string, unknown>[]) {
-                if (t && typeof t === 'object') {
-                  const tKey = Object.keys(t)[0]
-                  const tVal = t[tKey]
-                  if (typeof tVal === 'number' || typeof tVal === 'string') {
-                    transforms.push(cloneAnimationValue(t) as Record<string, unknown>)
-                  }
-                }
-              }
-              continue
-            }
-
-            if (canAnimateProperty(key, value, animateOnly)) {
-              animated[key] = cloneAnimationValue(value)
-            } else {
-              statics[key] = cloneAnimationValue(value)
-            }
-          }
-
-          const keys = getAnimatedKeySet(animated, transforms)
           const previousKeys = emitterKeysRef.current ?? committedRenderKeysRef.current
-          const removedKeys = getRemovedAnimatedKeys(keys, previousKeys)
-          const seeds = getSeeds(keys, lastPaintedRef.current)
-          emitterSnapshotRef.value = {
-            animated: cloneStyleRecord(animated),
-            statics: cloneStyleRecord(statics),
-            transforms: cloneTransforms(transforms),
-            seeds: cloneStyleRecord(seeds),
-            removedKeys: { ...removedKeys },
-            removeTransform: Object.keys(removedKeys).some((key) =>
-              key.startsWith('transform:')
-            ),
-            clearValue: isWeb ? '' : null,
-          }
-          emitterKeysRef.current = keys
-          const painted: Record<string, unknown> = { ...statics, ...animated }
-          delete painted.transform
-          for (const t of transforms) {
-            const tKey = Object.keys(t)[0]
-            if (tKey) painted[`transform:${tKey}`] = t[tKey]
-          }
-          lastPaintedRef.current = painted
+          const { animated, statics } = splitAnimationStyles(
+            nextStyle,
+            isDark,
+            configRef.value.disableAnimation,
+            animateOnly
+          )
+          const snapshot = buildSnapshot(
+            animated,
+            statics,
+            getAnimatedTransforms(animated.transform),
+            previousKeys,
+            lastPaintedRef.current
+          )
+          emitterSnapshotRef.value = snapshot.value
+          emitterKeysRef.current = snapshot.keys
+          lastPaintedRef.current = snapshot.painted
 
           if (
             process.env.NODE_ENV === 'development' &&
@@ -1185,7 +1283,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             console.info('[animations-reanimated] useStyleEmitter update', {
               animated,
               statics,
-              transforms,
+              transforms: snapshot.value.transforms,
             })
           }
         }
@@ -1195,60 +1293,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // This must happen BEFORE useAnimatedStyle runs so callbacks have a populated set
       const exitKeysRegistered = useRef(false)
       if (justStartedExiting && sendExitComplete) {
-        const exitKeys: string[] = []
-        const animateOnly = props.animateOnly as string[] | undefined
-
-        // regular animated properties. mirror the worklet: during exit every
-        // fresh key with a seed or a numeric target (exitStyle-introduced keys
-        // animate from their implicit default) gates completion; only fresh
-        // non-numeric keys with no seed paint directly and are excluded.
-        const snapshotSeeds = renderSnapshot.value.seeds
-        for (const key in animatedStyles) {
-          if (key === 'transform') continue
-          // mirror the worklet: color seeds/targets the worklet refuses to
-          // interpolate paint plain and must not gate exit completion
-          const hasUsableSeed =
-            key in snapshotSeeds &&
-            (!COLOR_STYLE_KEYS[key] ||
-              isInterpolatableColor(toReanimatedColor(snapshotSeeds[key])))
-          const paintsDirectly =
-            (!committedRenderKeysRef.current.has(key) &&
-              !hasUsableSeed &&
-              typeof animatedStyles[key] !== 'number') ||
-            (COLOR_STYLE_KEYS[key] &&
-              !isInterpolatableColor(toReanimatedColor(animatedStyles[key])))
-          if (
-            !paintsDirectly &&
-            canAnimateProperty(key, animatedStyles[key], animateOnly)
-          ) {
-            exitKeys.push(key)
-          }
-        }
-
-        // transform sub-keys (filter by animateOnly if specified)
-        const transforms = animatedStyles.transform
-        if (transforms && Array.isArray(transforms)) {
-          for (const t of transforms) {
-            if (!t) continue
-            const tKey = Object.keys(t)[0]
-            if (tKey) {
-              // check animateOnly filter for transform sub-keys
-              if (animateOnly && !animateOnly.includes(tKey)) {
-                continue
-              }
-              const exitKey = `transform:${tKey}`
-              const paintsDirectly =
-                !committedRenderKeysRef.current.has(exitKey) &&
-                !(exitKey in renderSnapshot.value.seeds) &&
-                typeof t[tKey] !== 'number'
-              if (!paintsDirectly) {
-                exitKeys.push(exitKey)
-              }
-            }
-          }
-        }
-
-        // register keys for this cycle
+        const exitKeys = getGatedKeys(renderSnapshot.value)
         pendingExitKeysRef.current = new Set(exitKeys)
         exitKeysRegistered.current = exitKeys.length > 0
       }
@@ -1268,42 +1313,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         !isExiting &&
         !isEntering &&
         !justFinishedEntering
-      const didAnimateKeys: string[] = []
-      if (shouldRegisterDidAnimate) {
-        const snapshotSeeds = renderSnapshot.value.seeds
-        const animateOnly = props.animateOnly as string[] | undefined
-
-        for (const key in animatedStyles) {
-          if (key === 'transform') continue
-          const hasUsableSeed =
-            key in snapshotSeeds &&
-            (!COLOR_STYLE_KEYS[key] ||
-              isInterpolatableColor(toReanimatedColor(snapshotSeeds[key])))
-          const canStart = committedRenderKeysRef.current.has(key) || hasUsableSeed
-          if (
-            canStart &&
-            (!COLOR_STYLE_KEYS[key] ||
-              isInterpolatableColor(toReanimatedColor(animatedStyles[key]))) &&
-            canAnimateProperty(key, animatedStyles[key], animateOnly)
-          ) {
-            didAnimateKeys.push(key)
-          }
-        }
-
-        const transforms = animatedStyles.transform
-        if (transforms && Array.isArray(transforms)) {
-          for (const transform of transforms) {
-            if (!transform) continue
-            const transformKey = Object.keys(transform)[0]
-            if (!transformKey) continue
-            if (animateOnly && !animateOnly.includes(transformKey)) continue
-            const key = `transform:${transformKey}`
-            if (committedRenderKeysRef.current.has(key) || key in snapshotSeeds) {
-              didAnimateKeys.push(key)
-            }
-          }
-        }
-      }
+      const didAnimateKeys = shouldRegisterDidAnimate
+        ? getGatedKeys(renderSnapshot.value)
+        : []
 
       useIsomorphicLayoutEffect(() => {
         if (didAnimateStyle === null) {
@@ -1392,9 +1404,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
           // Include static values from emitter (for hover/press style changes)
           for (const key in staticValues) {
-            result[key] = COLOR_STYLE_KEYS[key]
-              ? toReanimatedColor(staticValues[key])
-              : staticValues[key]
+            result[key] = staticValues[key]
           }
           for (const key in snapshot.removedKeys) {
             if (!key.startsWith('transform:') && !(key in staticValues)) {
@@ -1406,87 +1416,28 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           for (const key in animatedValues) {
             if (key === 'transform') continue
 
-            let targetValue = animatedValues[key]
-            let seedValue: unknown =
-              key in snapshot.seeds ? snapshot.seeds[key] : undefined
-            if (COLOR_STYLE_KEYS[key]) {
-              targetValue = toReanimatedColor(targetValue)
-              seedValue = toReanimatedColor(seedValue)
-              if (!isInterpolatableColor(targetValue)) {
-                // interpolating this would corrupt it into '<letters>NaN'
-                // (native processColor throws) — paint it plain instead
-                console.warn(
-                  '[animations-reanimated] non-interpolatable color painted plain:',
-                  key,
-                  JSON.stringify(animatedValues[key])
-                )
-                emitted[key] = true
-                result[key] = targetValue
-                continue
-              }
-              if (seedValue !== undefined && !isInterpolatableColor(seedValue)) {
-                seedValue = undefined
-              }
-            }
-            const propConfig = config.propertyConfigs[key] ?? config.baseConfig
-
-            const shouldAnimate =
-              previouslyEmitted[key] ||
-              seedValue !== undefined ||
-              (currentlyExiting && typeof targetValue === 'number')
-
-            // create callback for exit and component animation completion tracking
-            let callback: AnimationCallback | undefined
-            if (shouldAnimate && currentlyExiting) {
-              const capturedKey = key
-              const capturedCycleId = currentCycleId
-              callback = (finished) => {
-                'worklet'
-                runOnJS(markExitKeyDone)(capturedKey, capturedCycleId, finished ?? false)
-              }
-            } else if (shouldAnimate && currentlyCompletingAnimation) {
-              const capturedKey = key
-              const capturedCycleId = currentDidAnimateCycleId
-              callback = (finished) => {
-                'worklet'
-                runOnJS(markDidAnimateKeyDone)(
-                  capturedKey,
-                  capturedCycleId,
-                  finished ?? false
-                )
-              }
-            }
-
+            const targetValue = animatedValues[key]
             emitted[key] = true
-            if (previouslyEmitted[key]) {
-              result[key] = applyAnimation(
-                targetValue as number,
-                propConfig,
-                callback,
-                undefined,
-                !!COLOR_STYLE_KEYS[key]
-              )
-            } else if (seedValue !== undefined) {
-              result[key] = applyAnimation(
-                targetValue as number,
-                propConfig,
-                callback,
-                seedValue as number | string,
-                !!COLOR_STYLE_KEYS[key]
-              )
-            } else if (currentlyExiting && typeof targetValue === 'number') {
-              // a key introduced by exitStyle with no painted predecessor must
-              // still animate over the exit (and gate exit completion) — start
-              // it from the property's implicit default
-              result[key] = applyAnimation(
-                targetValue,
-                propConfig,
-                callback,
-                getImplicitDefault(key)
-              )
-            } else {
+            if (typeof targetValue !== 'number' && typeof targetValue !== 'string') {
               result[key] = targetValue
+              continue
             }
+            result[key] = animateSnapshotValue(
+              key,
+              key,
+              targetValue,
+              config.propertyConfigs[key] ?? config.baseConfig,
+              !!previouslyEmitted[key],
+              snapshot.seeds[key],
+              !!snapshot.gatedKeys[key],
+              currentlyExiting,
+              currentCycleId,
+              currentlyCompletingAnimation,
+              currentDidAnimateCycleId,
+              markExitKeyDone,
+              markDidAnimateKeyDone,
+              !!COLOR_STYLE_KEYS[key]
+            )
           }
 
           // Handle transforms
@@ -1500,65 +1451,33 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               if (!t) continue
               const keys = Object.keys(t)
               if (keys.length === 0) continue
-              const value = t[keys[0]]
+              const transformKey = keys[0]
+              const value = t[transformKey]
               if (typeof value === 'number' || typeof value === 'string') {
-                const transformKey = Object.keys(t)[0]
-                const targetValue = t[transformKey]
                 const propConfig =
                   config.propertyConfigs[transformKey] ?? config.baseConfig
 
                 const subKey = `transform:${transformKey}`
-                const shouldAnimate =
-                  previouslyEmitted[subKey] ||
-                  subKey in snapshot.seeds ||
-                  (currentlyExiting && typeof targetValue === 'number')
-
-                // create callback for exit and component animation completion tracking
-                let callback: AnimationCallback | undefined
-                if (shouldAnimate && currentlyExiting) {
-                  const capturedKey = subKey
-                  const capturedCycleId = currentCycleId
-                  callback = (finished) => {
-                    'worklet'
-                    runOnJS(markExitKeyDone)(
-                      capturedKey,
-                      capturedCycleId,
-                      finished ?? false
-                    )
-                  }
-                } else if (shouldAnimate && currentlyCompletingAnimation) {
-                  const capturedKey = subKey
-                  const capturedCycleId = currentDidAnimateCycleId
-                  callback = (finished) => {
-                    'worklet'
-                    runOnJS(markDidAnimateKeyDone)(
-                      capturedKey,
-                      capturedCycleId,
-                      finished ?? false
-                    )
-                  }
-                }
-
                 emitted[subKey] = true
                 validTransforms.push({
-                  [transformKey]: previouslyEmitted[subKey]
-                    ? applyAnimation(targetValue as number, propConfig, callback)
-                    : subKey in snapshot.seeds
-                      ? applyAnimation(
-                          targetValue as number,
-                          propConfig,
-                          callback,
-                          snapshot.seeds[subKey] as number | string
-                        )
-                      : currentlyExiting && typeof targetValue === 'number'
-                        ? applyAnimation(
-                            targetValue,
-                            propConfig,
-                            callback,
-                            getImplicitDefault(transformKey)
-                          )
-                        : targetValue,
+                  [transformKey]: animateSnapshotValue(
+                    subKey,
+                    transformKey,
+                    value,
+                    propConfig,
+                    !!previouslyEmitted[subKey],
+                    snapshot.seeds[subKey],
+                    !!snapshot.gatedKeys[subKey],
+                    currentlyExiting,
+                    currentCycleId,
+                    currentlyCompletingAnimation,
+                    currentDidAnimateCycleId,
+                    markExitKeyDone,
+                    markDidAnimateKeyDone
+                  ),
                 })
+              } else {
+                validTransforms.push(t)
               }
             }
 

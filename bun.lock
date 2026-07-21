@@ -329,6 +329,7 @@
       "name": "@tamagui/animations-reanimated",
       "version": "2.4.6",
       "dependencies": {
+        "@react-native/normalize-colors": "0.83.2",
         "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/core": "workspace:*",
         "@tamagui/use-presence": "workspace:*",
