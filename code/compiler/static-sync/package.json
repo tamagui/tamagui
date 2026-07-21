@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-sync",
-  "version": "2.4.6",
+  "version": "2.5.0",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
