@@ -7,6 +7,7 @@ import { promisify } from 'node:util'
 import pMap from 'p-map'
 import prompts from 'prompts'
 
+import { ensureNpmAuthentication } from './release-npm-auth'
 import { computePublishTag } from './release-publish-tag'
 import { spawnify } from './spawnify'
 import {
@@ -49,6 +50,8 @@ const explicitTag =
 const skipStarters = canary || skipAll || process.argv.includes('--skip-starters')
 const skipVersion = shouldFinish || rePublish || process.argv.includes('--skip-version')
 const shouldPatch = process.argv.includes('--patch')
+const shouldMinor = process.argv.includes('--minor')
+const shouldMajor = process.argv.includes('--major')
 const dirty =
   shouldFinish || rePublish || undocumented || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
@@ -68,28 +71,18 @@ const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = shouldFinish || rePublish || undocumented || process.argv.includes('--ci')
-const canPromptForNpmOtp =
-  !shouldFinish && !undocumented && !process.argv.includes('--ci') && !process.env.CI
 const skipFinish =
   rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
+const skipPush = process.argv.includes('--skip-push')
 const forcePublishAll = process.argv.includes('--force-publish-all')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
-function isPublishAuthOrOtpError(message: string) {
-  return (
-    /EOTP|one-time password/i.test(message) ||
-    /code E404[\s\S]*PUT https:\/\/registry\.npmjs\.org\/@[^/\s]+%2f[^/\s]+/i.test(
-      message
-    )
-  )
-}
-
-function redactNpmOtp(command: string) {
-  return command.replace(/--otp(?:=|\s+)\S+/g, '--otp=******')
-}
-
 async function getLastReleaseRef(): Promise<string | null> {
+  if (process.env.RELEASE_BASE_REF) {
+    return process.env.RELEASE_BASE_REF
+  }
+
   // find the most recent baseline: either a v* tag or a canary commit
   let tagRef: { ref: string; date: number } | null = null
   let canaryRef: { ref: string; date: number } | null = null
@@ -174,10 +167,14 @@ const nextVersion = (() => {
     plusVersion = 0
   }
   const curMajor = +curVersion.split('.')[0] || 1
-  const patchVersion = shouldPatch ? +patch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
-  const minorVersion = curMinor + (shouldPatch ? 0 : plusVersion)
-  const next = `${curMajor}.${minorVersion}.${patchVersion}`
+  if (shouldMajor) {
+    return `${curMajor + plusVersion}.0.0`
+  }
+  if (shouldMinor || !shouldPatch) {
+    return `${curMajor}.${curMinor + plusVersion}.0`
+  }
+  const next = `${curMajor}.${curMinor}.${+patch + plusVersion}`
 
   return next
 })()
@@ -268,8 +265,9 @@ async function run() {
 
     // ensure we are up to date
     // ensure we are on main (skip branch check for canary releases, channel
-    // prereleases like --beta/--rc which cut from their own branch, and dry runs)
-    if (!canary && !rePublish && !dryRun && !requestedChannel) {
+    // prereleases like --beta/--rc which cut from their own branch, dry runs,
+    // and CI where the workflow already checked out the intended ref)
+    if (!canary && !rePublish && !dryRun && !requestedChannel && !process.env.CI) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
@@ -431,7 +429,7 @@ async function run() {
     // clobber the stable line, so it skips this gate.
     const curMajor = Number.parseInt(curVersion.split('.')[0], 10)
     const nextMajor = Number.parseInt(version.split('.')[0], 10)
-    if (nextMajor > curMajor && publishTag === 'latest') {
+    if (nextMajor > curMajor && publishTag === 'latest' && !isCI) {
       console.info(`\n⚠️  MAJOR VERSION BUMP: ${curVersion} → ${version}\n`)
 
       for (let i = 1; i <= 3; i++) {
@@ -447,13 +445,22 @@ async function run() {
       }
     }
 
+    if (!shouldFinish && !skipPublish && !dryRun) {
+      await ensureNpmAuthentication({
+        env: process.env,
+        interactive: !!process.stdin.isTTY && !!process.stdout.isTTY,
+        check: () => spawnify(`npm whoami`),
+        login: () => spawnify(`npm login`, { interactive: true }),
+      })
+    }
+
     // dry run only previews the publish plan, so skip the heavy install/build/test
     if (!dryRun) {
       console.info('install and build')
     }
 
     if (!rePublish && !shouldFinish && !dryRun) {
-      await spawnify(`bun install`)
+      await spawnify(process.env.CI ? `bun install --frozen-lockfile` : `bun install`)
     }
 
     // build from fresh
@@ -705,64 +712,43 @@ async function run() {
 
     if (!shouldFinish && !skipPublish) {
       const tmpDir = `/tmp/tamagui-publish`
+      await fs.remove(tmpDir)
       await ensureDir(tmpDir)
 
-      // shared OTP state — set once on first EOTP, then threaded through every
-      // subsequent npm publish. single-flight so parallel failures don't
-      // stack prompts; re-prompt if the code expires mid-batch.
-      let cachedOtp: string | undefined
-      let otpPromptInFlight: Promise<string> | undefined
-      const getOtp = (reason: string, optional = false): Promise<string> => {
-        if (otpPromptInFlight) return otpPromptInFlight
-        otpPromptInFlight = (async () => {
-          console.info(`\n${reason}`)
-          const { code } = await prompts({
-            type: 'text',
-            name: 'code',
-            message: optional
-              ? 'npm 2FA code (6 digits, empty to skip)'
-              : 'npm 2FA code (6 digits)',
-            validate: (v: string) =>
-              (optional && !(v ?? '').trim()) ||
-              /^\d{6}$/.test((v ?? '').trim()) ||
-              'Enter a 6-digit code',
-          })
-          if (!code) {
-            if (optional) return ''
-            throw new Error('No OTP provided, aborting publish')
+      const isPublished = async ({ name }: { name: string }) => {
+        try {
+          const { stdout } = await exec(`npm view ${name}@${version} version --json`)
+          const found = JSON.parse(stdout.trim())
+          return found === version || (Array.isArray(found) && found.includes(version))
+        } catch (error) {
+          const message = String(error)
+          if (/E404|404 Not Found|is not in this registry/i.test(message)) {
+            return false
           }
-          cachedOtp = String(code).trim()
-          return cachedOtp
-        })().finally(() => {
-          otpPromptInFlight = undefined
+          throw new Error(`Could not verify ${name}@${version} on npm:\n${message}`)
+        }
+      }
+
+      console.info(`Checking ${packagesToPublish.length} package versions on npm...`)
+      const publishedChecks = await pMap(
+        packagesToPublish,
+        async (pkg) => ({ pkg, published: await isPublished(pkg) }),
+        { concurrency: 8 }
+      )
+      const pendingPackages = publishedChecks
+        .filter(({ pkg, published }) => {
+          if (published) {
+            console.info(`Skipping ${pkg.name}: this version is already published`)
+            return false
+          }
+          return true
         })
-        return otpPromptInFlight
-      }
+        .map(({ pkg }) => pkg)
 
-      const failedPublishes: string[] = []
-
-      try {
-        await spawnify(`npm whoami`, { cwd: tmpDir })
-      } catch (err) {
-        throw new Error(
-          `npm is not authenticated for publishing. Run \`npm login\` and then re-run the release.\n\n${err}`
-        )
-      }
-
-      if (
-        !process.env.npm_config_otp &&
-        !process.env.NPM_CONFIG_OTP &&
-        canPromptForNpmOtp
-      ) {
-        await getOtp(
-          'Most Tamagui npm publishes require 2FA. Provide the current code now so every package publish uses it.',
-          true
-        )
-      } else {
-        cachedOtp = process.env.npm_config_otp || process.env.NPM_CONFIG_OTP
-      }
-
-      const publishOne = async ({ name }: { name: string }) => {
+      // publish the exact G1-certified bytes: each staged tarball is re-hashed
+      // immediately before publish so nothing can change between certification
+      // and the registry upload.
+      const publishOne = async ({ name }: { name: string }, interactive = false) => {
         const artifact = stagedReleaseArtifacts.get(name)
         if (!artifact) throw new Error(`Missing G1 artifact for ${name}`)
         const actualHash = await sha256File(artifact.tarball)
@@ -772,67 +758,44 @@ async function run() {
           )
         }
 
-        const buildPublishCommand = () => publishCommand(artifact, publishTag)
+        const command = publishCommand(artifact, publishTag)
+        console.info(`Publishing ${name}: ${command}`)
+        await spawnify(command, { cwd: tmpDir, interactive })
+      }
 
-        console.info(
-          `Publishing ${name}: ${redactNpmOtp(
-            [buildPublishCommand(), cachedOtp && '--otp=******'].filter(Boolean).join(' ')
-          )}`
-        )
-
-        let attempt = 0
-        let otp = cachedOtp
-        while (true) {
-          attempt++
-          try {
-            await spawnify(buildPublishCommand(), {
-              cwd: tmpDir,
-              env: otp
-                ? {
-                    ...process.env,
-                    npm_config_otp: otp,
-                  }
-                : process.env,
-            })
-            return
-          } catch (err) {
-            const msg = String(err)
-            const needsOtp = isPublishAuthOrOtpError(msg)
-            if (needsOtp && attempt < 3) {
-              // the otp we used is stale; force a fresh prompt
-              if (otp && cachedOtp === otp) cachedOtp = undefined
-              otp = await getOtp(
-                attempt === 1
-                  ? `npm requires a 2FA code to publish ${name}`
-                  : `npm 2FA code expired, need a fresh one for ${name}`
-              )
-              continue
-            }
-            if (rePublish) {
-              console.warn(
-                `⚠️  ${name}: publish failed (likely already published), continuing`
-              )
-              return
-            }
-            console.error(`Failed to publish ${name}:`, err)
-            failedPublishes.push(name)
-            return
-          }
+      if (pendingPackages.length > 0) {
+        if (process.stdin.isTTY && process.stdout.isTTY && !process.env.CI) {
+          console.info(
+            'npm will open the browser for 2FA once. Select “do not challenge for the next 5 minutes” so the same short-lived approval can publish the remaining packages.'
+          )
         }
-      }
 
-      // probe with the first package serially so EOTP triggers exactly one
-      // prompt before we fan out the rest in parallel
-      const [firstPkg, ...restPkgs] = packagesToPublish
-      if (firstPkg) {
-        await publishOne(firstPkg)
-      }
-      await pMap(restPkgs, publishOne, { concurrency: 15 })
+        try {
+          // the first publish runs alone and interactively so a single web-auth
+          // approval (passkey) or CI OIDC exchange completes before fanning out;
+          // the rest ride npm's no-challenge window in throttled chunks.
+          const [firstPkg, ...restPkgs] = pendingPackages
+          await publishOne(firstPkg, true)
+          for (let index = 0; index < restPkgs.length; index += 6) {
+            await sleep(1000)
+            await Promise.all(
+              restPkgs.slice(index, index + 6).map((pkg) => publishOne(pkg))
+            )
+          }
+        } catch (error) {
+          const postflight = await pMap(
+            pendingPackages,
+            async (pkg) => ({ pkg, published: await isPublished(pkg) }),
+            { concurrency: 8 }
+          )
+          const completed = postflight.filter(({ published }) => published)
+          const missing = postflight.filter(({ published }) => !published)
 
-      if (failedPublishes.length > 0) {
-        throw new Error(
-          `Failed to publish ${failedPublishes.length} packages:\n${failedPublishes.join('\n')}\n\nRe-run with --republish to retry.`
-        )
+          throw new Error(
+            `Publish stopped after ${completed.length} packages. Still missing:\n${missing.map(({ pkg }) => pkg.name).join('\n')}\n\nRe-run with --republish to retry only these packages.`,
+            { cause: error }
+          )
+        }
       }
 
       console.info(`✅ Published\n`)
@@ -840,7 +803,7 @@ async function run() {
       // for a non-latest channel (canary/beta/rc/…), point that dist-tag at the
       // latest published version of each skipped package so e.g.
       // `npm install @tamagui/lucide-icons-2@beta` still resolves
-      if (publishTag !== 'latest' && skippedPackages.length > 0) {
+      if (publishTag !== 'latest' && skippedPackages.length > 0 && !process.env.CI) {
         console.info(
           `Updating ${publishTag} dist-tags for ${skippedPackages.length} skipped packages...`
         )
@@ -923,10 +886,6 @@ async function run() {
           }
 
           await spawnify(`git commit -m ${gitTag}`, { cwd })
-          if (!canary) {
-            await spawnify(`git tag ${gitTag}`, { cwd })
-          }
-
           if (!dirty) {
             // pull once more before pushing so if there was a push in interim we get it
             const currentBranch = (
@@ -935,12 +894,18 @@ async function run() {
             await spawnify(`git pull --rebase origin ${currentBranch}`, { cwd })
           }
 
-          await spawnify(`git push origin head`, { cwd })
           if (!canary) {
-            await spawnify(`git push origin ${gitTag}`, { cwd })
+            await spawnify(`git tag ${gitTag}`, { cwd })
           }
 
-          console.info(`✅ Pushed and versioned\n`)
+          if (!skipPush) {
+            await spawnify(`git push origin head`, { cwd })
+            if (!canary) {
+              await spawnify(`git push origin ${gitTag}`, { cwd })
+            }
+          }
+
+          console.info(`✅ ${skipPush ? 'Versioned locally' : 'Pushed and versioned'}\n`)
         }
       }
 

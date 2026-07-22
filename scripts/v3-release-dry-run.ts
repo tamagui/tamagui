@@ -646,7 +646,8 @@ async function main(): Promise<void> {
       const temporaryManifest = createTemporaryPackManifest(
         pkg.manifest,
         workspaceVersions,
-        options.repoRoot
+        options.repoRoot,
+        relative(options.repoRoot, pkg.dir)
       )
       assertInternalDependenciesArePacked(temporaryManifest, packedNames)
       const stagingDir = join(stagingRoot, safeName(pkg.name))

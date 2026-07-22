@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/ui",
-  "version": "2.4.6",
+  "version": "2.5.1",
   "description": "Unstyled, behavior-first UI primitives for Tamagui (web and native)",
   "repository": {
     "type": "git",

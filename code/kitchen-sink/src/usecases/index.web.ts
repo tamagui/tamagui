@@ -99,6 +99,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   OnTransitionCase: () => require('./OnTransitionCase').OnTransitionCase,
   StyleValidation: () => require('./StyleValidation').StyleValidation,
   FocusScopeNoFocusCase: () => require('./FocusScopeNoFocusCase').FocusScopeNoFocusCase,
+  ExitStyleNewKeyCase: () => require('./ExitStyleNewKeyCase').ExitStyleNewKeyCase,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,
   FocusVisibleButtonPointer: () =>
     require('./FocusVisibleButtonPointer').FocusVisibleButtonPointer,
@@ -151,6 +152,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./MenuSubNestedPositionCase').MenuSubNestedPositionCase,
   MenuSubLeftCase: () => require('./MenuSubLeftCase').MenuSubLeftCase,
   MultiDriverAnimation: () => require('./MultiDriverAnimation').MultiDriverAnimation,
+  NativeMixedDriverCase: () => require('./NativeMixedDriverCase').NativeMixedDriverCase,
   MenuSubStyledCase: () => require('./MenuSubStyledCase').MenuSubStyledCase,
   MenuThemeCase: () => require('./MenuThemeCase').MenuThemeCase,
   GroupUseCases: () => require('./GroupUseCases').GroupUseCases,
@@ -293,6 +295,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ToggleGroupActiveProps: () =>
     require('./ToggleGroupActiveProps').ToggleGroupActiveProps,
   ToggleGroupXGroupCase: () => require('./ToggleGroupXGroupCase').ToggleGroupXGroupCase,
+  ToggleGroupFilledActiveCase: () =>
+    require('./ToggleGroupFilledActiveCase').ToggleGroupFilledActiveCase,
+  AccordionDefaultOpenCase: () =>
+    require('./AccordionDefaultOpenCase').AccordionDefaultOpenCase,
   TooltipAnimationCase: () => require('./TooltipAnimationCase').TooltipAnimationCase,
   TooltipCase: () => require('./TooltipCase').TooltipCase,
   TooltipGlobalPatternCase: () =>

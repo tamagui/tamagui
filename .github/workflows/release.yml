@@ -1,0 +1,196 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Version to publish
+        required: true
+        default: canary
+        type: choice
+        options:
+          - canary
+          - patch
+          - minor
+          - major
+
+permissions: {}
+
+concurrency:
+  group: npm-release
+  cancel-in-progress: false
+
+jobs:
+  ensure-ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Require current main and successful full CI
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: ${{ github.sha }}
+          WORKFLOW_FILE: checks.yaml
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REF" == "refs/heads/main" ]]
+
+          main_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)
+          [[ "$TARGET_SHA" == "$main_sha" ]]
+
+          get_runs() {
+            gh api --method GET "repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_FILE/runs" \
+              -f head_sha="$TARGET_SHA" -f per_page=20
+          }
+
+          wait_for_run() {
+            local run_id="$1"
+            for ((attempt = 1; attempt <= 40; attempt++)); do
+              read -r status conclusion < <(
+                gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id" \
+                  --jq '[.status, (.conclusion // "pending")] | @tsv'
+              )
+              if [[ "$status" == "completed" ]]; then
+                [[ "$conclusion" == "success" ]]
+                return
+              fi
+              sleep 120
+            done
+            echo "Timed out waiting for CI run $run_id" >&2
+            return 1
+          }
+
+          runs=$(get_runs)
+          run_id=$(jq -r '.workflow_runs | sort_by(.created_at) | last | .id // empty' <<< "$runs")
+          if [[ -n "$run_id" ]]; then
+            status=$(jq -r --argjson id "$run_id" '.workflow_runs[] | select(.id == $id) | .status' <<< "$runs")
+            conclusion=$(jq -r --argjson id "$run_id" '.workflow_runs[] | select(.id == $id) | .conclusion // "pending"' <<< "$runs")
+            if [[ "$status" == "completed" && "$conclusion" == "success" ]]; then
+              echo "Full CI already passed for $TARGET_SHA."
+              exit 0
+            fi
+            if [[ "$status" != "completed" ]] && wait_for_run "$run_id"; then
+              echo "Existing full CI passed for $TARGET_SHA."
+              exit 0
+            fi
+          fi
+
+          started=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          gh api --method POST \
+            "repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_FILE/dispatches" \
+            -f ref=main
+
+          run_id=''
+          for ((attempt = 1; attempt <= 12; attempt++)); do
+            sleep 10
+            runs=$(get_runs)
+            run_id=$(jq -r --arg started "$started" \
+              '[.workflow_runs[] | select(.event == "workflow_dispatch" and .created_at >= $started)] | sort_by(.created_at) | last | .id // empty' \
+              <<< "$runs")
+            [[ -n "$run_id" ]] && break
+          done
+          [[ -n "$run_id" ]]
+          wait_for_run "$run_id"
+
+  publish:
+    needs: ensure-ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout release source
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate release source and select baseline
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          [[ "$GITHUB_REF" == "refs/heads/main" ]]
+          [[ "$(git rev-parse HEAD)" == "$(git rev-parse origin/main)" ]]
+
+          tag_ref=$(git describe --tags --match 'v*' --abbrev=0 2>/dev/null || true)
+          canary_ref=$(git log --grep='^canary' --format='%H' -1)
+          if [[ -z "$tag_ref" ]]; then
+            base_ref="$canary_ref"
+          elif [[ -z "$canary_ref" ]]; then
+            base_ref="$tag_ref"
+          elif (( $(git log -1 --format=%ct "$canary_ref") > $(git log -1 --format=%ct "$tag_ref") )); then
+            base_ref="$canary_ref"
+          else
+            base_ref="$tag_ref"
+          fi
+          [[ -n "$base_ref" ]]
+          echo "base-ref=$base_ref" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: 'package.json'
+
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@12.0.1
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Prepare release commit
+        env:
+          RELEASE_KIND: ${{ inputs.release }}
+          RELEASE_BASE_REF: ${{ steps.source.outputs.base-ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Tamagui Release'
+          git config user.email 'tamagui@users.noreply.github.com'
+          bun scripts/release.ts "--$RELEASE_KIND" --ci --dirty --skip-publish --skip-push --skip-tests --skip-native-tests --skip-checks
+
+      - name: Push release commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          [[ "$(git rev-parse origin/main)" == "$TARGET_SHA" ]]
+          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')
+          trap 'git config --local --unset-all http.https://github.com/.extraheader || true' EXIT
+          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic $auth"
+          git push origin HEAD:main
+
+      - name: Publish prepared version
+        env:
+          RELEASE_BASE_REF: ${{ steps.source.outputs.base-ref }}
+        run: bun scripts/release.ts --republish --ci --dirty --skip-finish
+
+      - name: Push stable tag
+        if: inputs.release != 'canary'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./code/ui/tamagui/package.json').version")
+          [[ "$(git rev-list -n 1 "v$version")" == "$(git rev-parse HEAD)" ]]
+          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')
+          trap 'git config --local --unset-all http.https://github.com/.extraheader || true' EXIT
+          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic $auth"
+          git push origin "v$version"
+          gh release create "v$version" --verify-tag --generate-notes --title "v$version"

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/style-grammar",
-  "version": "2.4.3",
+  "version": "2.5.1",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

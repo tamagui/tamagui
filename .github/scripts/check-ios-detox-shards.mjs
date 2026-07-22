@@ -19,7 +19,7 @@ const seedShards = [
     name: '1/4',
     slug: '1-4',
     test_files:
-      'e2e/CompilerExtraction.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts e2e/SheetPressResponderSheetRngh.test.ts',
+      'e2e/Accordion.test.ts e2e/CompilerExtraction.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts e2e/SheetPressResponderSheetRngh.test.ts',
   },
   {
     name: '2/4',
@@ -31,7 +31,7 @@ const seedShards = [
     name: '3/4',
     slug: '3-4',
     test_files:
-      'e2e/SheetScrollableDrag.test.ts e2e/ThemeMutation.test.ts e2e/NativePortal.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/MenuRadioGroup.test.ts e2e/PressStyleScrollStuck.test.ts',
+      'e2e/SheetScrollableDrag.test.ts e2e/ThemeMutation.test.ts e2e/NativePortal.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/MenuRadioGroup.test.ts e2e/PressStyleScrollStuck.test.ts e2e/NativeMixedDriver.test.ts',
   },
   {
     name: '4/4',

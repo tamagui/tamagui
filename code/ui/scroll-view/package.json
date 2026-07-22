@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/scroll-view",
-  "version": "2.4.6",
+  "version": "2.5.1",
   "source": "src/index.ts",
   "files": [
     "src",

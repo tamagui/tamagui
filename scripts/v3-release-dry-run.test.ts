@@ -184,10 +184,16 @@ describe('G1 temporary manifests', () => {
         ['@tamagui/core', '3.0.0-beta.0'],
         ['@tamagui/web', '3.0.0-beta.0'],
       ]),
-      '/repo'
+      '/repo',
+      'code/example'
     )
     expect(output.dependencies).toEqual({ '@tamagui/core': '^3.0.0-beta.0' })
     expect(output.peerDependencies).toEqual({ '@tamagui/web': '3.0.0-beta.0' })
+    expect(output.repository).toEqual({
+      type: 'git',
+      url: 'https://github.com/tamagui/tamagui.git',
+      directory: 'code/example',
+    })
     expect(source.dependencies).toEqual({ '@tamagui/core': 'workspace:^' })
     expect(JSON.stringify(output)).not.toContain('workspace:')
   })
@@ -201,7 +207,8 @@ describe('G1 temporary manifests', () => {
           dependencies: { '@tamagui/animations-motion': '2.4.6' },
         },
         new Map(),
-        '/repo'
+        '/repo',
+        'code/example'
       )
     ).not.toThrow()
   })
@@ -211,14 +218,16 @@ describe('G1 temporary manifests', () => {
       createTemporaryPackManifest(
         { name: 'bad', version: '1.0.0', dependencies: { x: 'file:/repo/x' } },
         new Map(),
-        '/repo'
+        '/repo',
+        'code/example'
       )
     ).toThrow(/local path/)
     expect(() =>
       createTemporaryPackManifest(
         { name: 'bad', version: '1.0.0', dependencies: { x: 'workspace:*' } },
         new Map(),
-        '/repo'
+        '/repo',
+        'code/example'
       )
     ).toThrow(/unresolved workspace/)
     for (const deletedPackage of DEFAULT_DELETED_PACKAGE_REFS) {
@@ -230,7 +239,8 @@ describe('G1 temporary manifests', () => {
             dependencies: { [deletedPackage]: '1.0.0' },
           },
           new Map(),
-          '/repo'
+          '/repo',
+          'code/example'
         )
       ).toThrow(/deleted/)
     }

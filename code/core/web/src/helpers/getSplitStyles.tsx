@@ -1509,14 +1509,20 @@ export const getSplitStyles: StyleSplitter = (
           addStyleToInsertRules(rulesToInsert, containerCSS)
         }
       }
-      // transition prop is skipped when it's a named animation (e.g. 'quick')
-      // but raw CSS values (from $web) should pass through as style
-      if (
-        keyInit === 'transition' &&
-        typeof valInit === 'string' &&
-        !driver?.animations?.[valInit]
-      ) {
-        // not a known animation name, treat as raw CSS
+      if (keyInit === 'transition' && typeof valInit === 'string') {
+        const animationConfig = driver?.animations?.[valInit]
+        if (
+          animationConfig &&
+          driver?.outputStyle === 'css' &&
+          process.env.IS_STATIC === 'is_static'
+        ) {
+          // css output needs no runtime component: lower its named transition
+          // to ordinary css so the compiler can keep flattening.
+          valInit = `all ${animationConfig}`
+        } else if (animationConfig) {
+          continue
+        }
+        // unknown names are raw CSS transition values and pass through.
       } else {
         continue
       }

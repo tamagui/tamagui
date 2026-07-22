@@ -339,10 +339,18 @@ function forbiddenLocalReference(value: string): boolean {
 export function createTemporaryPackManifest(
   manifest: PackageManifest,
   workspaceVersions: ReadonlyMap<string, string>,
-  repoRoot: string
+  repoRoot: string,
+  packageDirectory: string
 ): PackageManifest {
   const output = structuredClone(manifest)
   if (output.private === true) throw new Error(`${output.name ?? 'package'} is private`)
+  // npm trusted publishing (OIDC provenance) requires repository metadata that
+  // matches the GitHub repo, so stamp it on every published manifest.
+  output.repository = {
+    type: 'git',
+    url: 'https://github.com/tamagui/tamagui.git',
+    directory: packageDirectory,
+  }
   for (const field of DEPENDENCY_FIELDS) {
     const dependencies = output[field]
     if (!dependencies) continue
