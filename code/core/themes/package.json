@@ -13,6 +13,7 @@
     "v4",
     "v5",
     "v5-subtle",
+    "v5-tokens",
     "v3.cjs",
     "v3.d.ts",
     "v3-themes.cjs",
@@ -22,7 +23,9 @@
     "v5.cjs",
     "v5.d.ts",
     "v5-subtle.cjs",
-    "v5-subtle.d.ts"
+    "v5-subtle.d.ts",
+    "v5-tokens.cjs",
+    "v5-tokens.d.ts"
   ],
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -82,6 +85,15 @@
       "import": "./dist/esm/v5-subtle.mjs",
       "require": "./dist/cjs/v5-subtle.cjs",
       "default": "./dist/esm/v5-subtle.mjs"
+    },
+    "./v5-tokens": {
+      "types": "./types/v5-tokens.d.ts",
+      "react-native": "./dist/esm/v5-tokens.native.js",
+      "browser": "./dist/esm/v5-tokens.mjs",
+      "module": "./dist/esm/v5-tokens.mjs",
+      "import": "./dist/esm/v5-tokens.mjs",
+      "require": "./dist/cjs/v5-tokens.cjs",
+      "default": "./dist/esm/v5-tokens.mjs"
     },
     "./v5-builder": {
       "types": "./types/v5-builder.d.ts",
