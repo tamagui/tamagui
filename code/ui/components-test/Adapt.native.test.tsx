@@ -8,9 +8,15 @@ import {
   useAdaptedCapabilities,
 } from '@tamagui/adapt'
 import { getPortal } from '@tamagui/native'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
+import { createTamagui } from '@tamagui/core'
 import React from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 import { afterEach, describe, expect, test } from 'vitest'
+
+// Adapt reads media/settings from the global config — register one instead of
+// depending on another test file in the same worker having done it first
+createTamagui(getDefaultTamaguiConfig())
 
 const scope = 'AdaptTeleportTest'
 
