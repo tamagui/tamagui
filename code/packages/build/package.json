@@ -9,10 +9,12 @@
     "externalNodePlugin.js",
     "pretty-print-errors.js",
     "tamagui-build.js",
+    "tamagui-build-workspace.js",
     "teesx.sh"
   ],
   "bin": {
     "tamagui-build": "tamagui-build.js",
+    "tamagui-build-workspace": "tamagui-build-workspace.js",
     "teesx": "./teesx.sh"
   },
   "publishConfig": {
@@ -26,7 +28,6 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-typescript": "^7.26.0",
     "@swc/core": "^1.14.0",
-    "@tamagui/babel-plugin-fully-specified": "workspace:*",
     "@types/fs-extra": "^9.0.13",
     "baseline-browser-mapping": "^2.9.15",
     "chokidar": "^3.5.2",

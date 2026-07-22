@@ -1,7 +1,9 @@
 import { execSync, spawn } from 'node:child_process'
+import { createRequire } from 'node:module'
 import { existsSync, readFileSync, writeFileSync, statSync, readdirSync } from 'node:fs'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { join } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { readFile } from 'node:fs/promises'
 
 const watchPackagePath = join(__dirname, 'fixtures', 'watch-package')
@@ -17,6 +19,7 @@ const distEsmFilePath = join(distPath, 'esm', 'index.mjs')
 const distTypesFilePath = join(simplePackagePath, 'types', 'index.d.ts')
 const jsMainPackagePath = join(__dirname, 'fixtures', 'js-main-package')
 const jsMainDistPath = join(jsMainPackagePath, 'dist')
+const repositoryRoot = join(__dirname, '../../../..')
 // console.log({
 //   distCjsFilePath,
 //   distEsmFilePath,
@@ -33,7 +36,7 @@ describe('tamagui-build integration test', () => {
     execSync('rm -rf dist', { cwd: jsMainPackagePath })
   })
 
-  it('should build the package correctly', () => {
+  it('should build the package correctly', async () => {
     execSync('bun run build', { cwd: simplePackagePath })
 
     // Check if the output files exist
@@ -47,6 +50,21 @@ describe('tamagui-build integration test', () => {
     expect(cjsOutput).toContain('Hello,')
     expect(esmOutput).toContain('Hello,')
     expect(esmOutput).toContain('./nested/index.mjs')
+    expect(esmOutput).toContain('./star.mjs')
+    expect(esmOutput).toContain('import("./lazy.mjs")')
+    expect(esmOutput).toContain('./common.mjs')
+    expect(cjsOutput).toContain('require("./star.cjs")')
+    expect(cjsOutput).toContain('import("./lazy.cjs")')
+    expect(cjsOutput).toContain('require("./common.cjs")')
+
+    const require = createRequire(import.meta.url)
+    const cjsModule = require(distCjsFilePath)
+    const esmModule = await import(pathToFileURL(distEsmFilePath).href)
+    expect(cjsModule.starMarker).toBe('star-marker')
+    expect(cjsModule.loadCommon().commonMarker).toBe('common-marker')
+    expect((await cjsModule.loadLazy()).default.lazyMarker).toBe('lazy-marker')
+    expect(esmModule.starMarker).toBe('star-marker')
+    expect((await esmModule.loadLazy()).lazyMarker).toBe('lazy-marker')
     expect(existsSync(join(distPath, 'cjs', 'index.cjs'))).toBe(true)
     expect(existsSync(join(distPath, 'esm', 'index.js'))).toBe(true)
     expect(existsSync(join(distPath, 'jsx', 'index.js'))).toBe(true)
@@ -110,7 +128,17 @@ describe('tamagui-build integration test', () => {
   })
 
   it('should rebuild the package on file change when --watch is used', async () => {
-    const watchProcess = spawn('bun', ['run', 'build:watch'], { cwd: watchPackagePath })
+    const watchProcess = spawn(
+      'node',
+      [
+        'code/packages/build/tamagui-build-workspace.js',
+        '--watch',
+        '--skip-types',
+        '--filter',
+        'tamagui-build-test-watch-package',
+      ],
+      { cwd: repositoryRoot }
+    )
 
     // Cache existing content
     const originalContent = readFileSync(watchSrcFilePath, 'utf-8')

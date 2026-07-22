@@ -23,7 +23,6 @@
  *     tamagui-build --swap-exports -- pnpm publish --no-git-checks
  */
 
-const { transform } = require('@babel/core')
 const FSE = require('fs-extra')
 const esbuild = require('esbuild')
 const fastGlob = require('fast-glob')
@@ -274,6 +273,106 @@ async function pruneUnusedImports(contents, filePath) {
   }
 }
 
+function resolveOutputModuleSpecifier(specifier, filePath, outputExtension) {
+  if (!specifier.startsWith('.') && !specifier.startsWith('/')) {
+    return specifier
+  }
+
+  const suffixIndex = specifier.search(/[?#]/)
+  const suffix = suffixIndex === -1 ? '' : specifier.slice(suffixIndex)
+  const pathname = suffixIndex === -1 ? specifier : specifier.slice(0, suffixIndex)
+
+  if (path.extname(pathname)) {
+    return specifier
+  }
+
+  const targetPath = path.resolve(path.dirname(filePath), pathname)
+  if (FSE.existsSync(`${targetPath}.js`)) {
+    return `${pathname}${outputExtension}${suffix}`
+  }
+
+  if (
+    FSE.existsSync(targetPath) &&
+    FSE.lstatSync(targetPath).isDirectory() &&
+    FSE.existsSync(path.join(targetPath, 'index.js'))
+  ) {
+    return `${pathname.replace(/\/$/, '')}/index${outputExtension}${suffix}`
+  }
+
+  return specifier
+}
+
+async function fullySpecifyOutputs(outputs, { format, outputExtension }) {
+  const jsOutputs = outputs.filter((file) => file?.path.endsWith('.js'))
+  if (!jsOutputs.length) {
+    return new Map()
+  }
+
+  const transformed = new Map()
+
+  await Promise.all(
+    jsOutputs.map(async (file) => {
+      const bundle = await rolldown({
+        input: file.path,
+        platform: 'neutral',
+        treeshake: false,
+        plugins: [
+          {
+            name: 'tamagui-build-fully-specified',
+            resolveId(id, importer) {
+              if (!importer) return id
+              return {
+                id: resolveOutputModuleSpecifier(id, file.path, outputExtension),
+                external: true,
+              }
+            },
+            load(id) {
+              if (id === file.path) return file.contents
+            },
+          },
+        ],
+      })
+
+      try {
+        const result = await bundle.generate({
+          format,
+          codeSplitting: false,
+          sourcemap: !shouldSkipSourceMaps,
+          comments: true,
+          minify: false,
+          polyfillRequire: false,
+        })
+        const chunk = result.output.find(
+          (output) => output.type === 'chunk' && output.facadeModuleId === file.path
+        )
+        if (!chunk) {
+          throw new Error(`rolldown did not emit ${file.path}`)
+        }
+
+        transformed.set(file.path, {
+          code: stripRolldownRegionComments(chunk.code).replace(
+            /\n?\/\/# sourceMappingURL=.*(?:\n|$)/g,
+            ''
+          ),
+          map: chunk.map || null,
+        })
+      } finally {
+        await bundle.close?.()
+      }
+    })
+  )
+
+  return transformed
+}
+
+function getFullySpecifiedOutput(outputs, filePath) {
+  const result = outputs.get(filePath)
+  if (!result) {
+    throw new Error(`rolldown did not emit ${filePath}`)
+  }
+  return result
+}
+
 function hasFlag(flag) {
   return process.argv.includes(flag)
 }
@@ -295,6 +394,7 @@ const reactCompilerPlugin = {
       const isTSX = args.path.endsWith('.tsx')
 
       try {
+        const { transform } = require('@babel/core')
         const result = transform(source, {
           filename: args.path,
           configFile: false,
@@ -370,7 +470,7 @@ const exludeIndex = process.argv.indexOf('--exclude')
 const baseUrl =
   baseUrlIndex > -1 && process.argv[baseUrlIndex + 1]
     ? process.argv[baseUrlIndex + 1]
-    : '.'
+    : null
 const tsProject =
   tsProjectIndex > -1 && process.argv[tsProjectIndex + 1]
     ? process.argv[tsProjectIndex + 1]
@@ -830,8 +930,10 @@ function createCompilerOptions(baseOptions, targetDir) {
     compilerOptions.declarationDir = './'
   }
 
-  if (!ignoreBaseUrl) {
-    compilerOptions.baseUrl = baseUrl
+  if (ignoreBaseUrl) {
+    delete compilerOptions.baseUrl
+  } else if (baseUrl) {
+    compilerOptions.baseUrl = path.resolve(baseUrl)
   }
 
   return compilerOptions
@@ -1262,12 +1364,10 @@ async function esbuildWriteIfChanged(
             contents = await pruneUnusedImports(contents, path)
           }
 
-          // esbuild emits bare require() in esm output as a __require() shim that throws
-          // ("Dynamic require ... is not supported") under Metro's esm module scope. native
-          // always has a real require, so call it directly. this keeps the
-          // require('react-native')-behind-a-TAMAGUI_TARGET==='native' DCE guard working on
-          // native instead of crashing at runtime (e.g. toast PanResponder).
-          if (platform === 'native' && isESM) {
+          // expose esbuild's require shim so rolldown can resolve and rewrite local
+          // specifiers. rolldown restores the shim for web esm, while the native output
+          // below keeps a real require for metro.
+          if (isESM) {
             contents = contents.replaceAll('__require(', 'require(')
           }
         }
@@ -1324,6 +1424,13 @@ async function esbuildWriteIfChanged(
   )
 
   if (specifyCJS) {
+    const transformedOutputs = opts.bundle
+      ? new Map()
+      : await fullySpecifyOutputs(outputs, {
+          format: 'cjs',
+          outputExtension: platform === 'native' ? '.native.cjs' : '.cjs',
+        })
+
     await Promise.all(
       outputs.map(async (file) => {
         if (!file) return
@@ -1332,19 +1439,7 @@ async function esbuildWriteIfChanged(
 
         const result = opts.bundle
           ? { code: contents }
-          : transform(contents, {
-              filename: path,
-              configFile: false,
-              sourceMap: !shouldSkipSourceMaps,
-              plugins: [
-                [
-                  require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
-                  {
-                    esExtensionDefault: platform === 'native' ? '.native.cjs' : '.cjs',
-                  },
-                ],
-              ].filter(Boolean),
-            })
+          : getFullySpecifiedOutput(transformedOutputs, path)
 
         const shouldPreserveJsAlias =
           preserveJsPathSet.has(path) || preserveJsPathAbsoluteSet.has(path)
@@ -1376,6 +1471,13 @@ async function esbuildWriteIfChanged(
     return
   }
 
+  const transformedOutputs = opts.bundle
+    ? new Map()
+    : await fullySpecifyOutputs(outputs, {
+        format: isESM ? 'esm' : 'cjs',
+        outputExtension: platform === 'native' ? '.native.js' : '.mjs',
+      })
+
   await Promise.all(
     outputs.map(async (file) => {
       if (!file) return
@@ -1391,22 +1493,11 @@ async function esbuildWriteIfChanged(
       // and babel is bad on huge bundled files
       const result = opts.bundle
         ? { code: contents }
-        : transform(contents, {
-            filename: newOutPath,
-            configFile: false,
-            sourceMap: !shouldSkipSourceMaps,
-            plugins: [
-              [
-                isESM
-                  ? require.resolve('@tamagui/babel-plugin-fully-specified')
-                  : require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
-                {
-                  esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
-                  esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
-                },
-              ],
-            ].filter(Boolean),
-          })
+        : getFullySpecifiedOutput(transformedOutputs, path)
+
+      if (platform === 'native' && isESM) {
+        result.code = result.code.replace(/\b__require(?:\$\d+)?\(/g, 'require(')
+      }
 
       const shouldPreserveJsAlias =
         preserveJsPathSet.has(path) || preserveJsPathAbsoluteSet.has(path)

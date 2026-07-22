@@ -1,21 +1,20 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "rootDir": ".",
     "paths": {
       "@tamagui/compiler-core": [
-        "code/compiler/compiler-core/src/index.ts"
+        "./code/compiler/compiler-core/src/index.ts"
       ],
       "tamagui": [
-        "code/ui/tamagui"
+        "./code/ui/tamagui"
       ],
       "@tamagui/*": [
-        "code/core/*",
-        "code/ui/*",
-        "code/packages/*"
+        "./code/core/*",
+        "./code/ui/*",
+        "./code/packages/*"
       ],
       "@tamagui/demos": [
-        "code/demos"
+        "./code/demos"
       ]
     },
     "outDir": "dist",
@@ -27,14 +26,13 @@
     "declaration": true,
     "experimentalDecorators": false,
     "emitDecoratorMetadata": false,
-    "downlevelIteration": true,
     "strict": true,
     "esModuleInterop": true,
     "inlineSourceMap": true,
     "preserveSymlinks": true,
     "jsx": "react-jsx",
-    "module": "System",
-    "moduleResolution": "node",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
     "noEmitOnError": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,

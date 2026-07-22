@@ -1,6 +1,12 @@
 import { getNativeOnlyMarker } from './nativeOnly'
 
 export { nestedHello } from './nested'
+export * from './star'
+
+export const loadLazy = () => import('./lazy')
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+export const loadCommon = () => require('./common')
 
 export const greet = (name: string): string => {
   return `Hello, ${name}!`
@@ -28,7 +34,9 @@ export function guardNativeSideEffects(items: string[], debug?: string) {
 }
 
 export function getPlatformMarker() {
-  return process.env.TAMAGUI_TARGET === 'native' ? 'native-only-marker' : 'web-only-marker'
+  return process.env.TAMAGUI_TARGET === 'native'
+    ? 'native-only-marker'
+    : 'web-only-marker'
 }
 
 export function getNativeImportMarker() {
