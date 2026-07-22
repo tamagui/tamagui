@@ -335,6 +335,60 @@ const normalizePath = (value: string) => value.replace(/\\/g, '/')
 
 const PLUGIN_INSTANCE_KEY = '__tamagui_vite_plugin_instance__'
 
+interface CompilerModuleReport {
+  stats: {
+    found: number
+    lowered: number
+    flattened: number
+    styled: number
+    bailed: number
+  }
+  diagnostics: { code: string; message: string; component?: string }[]
+}
+
+function reportCompilerStats(root: string, reports: Map<string, CompilerModuleReport>) {
+  const totals = { found: 0, lowered: 0, flattened: 0, styled: 0, bailed: 0 }
+  const bailoutsByCode = new Map<string, number>()
+  const moduleLines: string[] = []
+  for (const [id, report] of [...reports].sort(([left], [right]) =>
+    left < right ? -1 : 1
+  )) {
+    if (report.stats.found === 0) continue
+    totals.found += report.stats.found
+    totals.lowered += report.stats.lowered
+    totals.flattened += report.stats.flattened
+    totals.styled += report.stats.styled
+    totals.bailed += report.stats.bailed
+    for (const diagnostic of report.diagnostics) {
+      bailoutsByCode.set(diagnostic.code, (bailoutsByCode.get(diagnostic.code) ?? 0) + 1)
+    }
+    const relativeId = path.relative(root, id)
+    const codes = [...new Set(report.diagnostics.map(({ code }) => code))]
+    moduleLines.push(
+      `  ${relativeId}: found ${report.stats.found} lowered ${report.stats.lowered} ` +
+        `flattened ${report.stats.flattened} bailed ${report.stats.bailed}` +
+        (codes.length ? ` (${codes.join(', ')})` : '')
+    )
+  }
+  const partial = totals.lowered - totals.flattened
+  console.info(
+    `\n[tamagui] compiler stats: ${moduleLines.length} modules with candidates\n` +
+      `  found ${totals.found} · lowered ${totals.lowered} ` +
+      `(flattened ${totals.flattened}, partial ${partial}, styled ${totals.styled}) · bailed ${totals.bailed}`
+  )
+  if (bailoutsByCode.size) {
+    console.info(
+      [...bailoutsByCode.entries()]
+        .sort(([, left], [, right]) => right - left)
+        .map(([code, count]) => `  bailout ${code}: ${count}`)
+        .join('\n')
+    )
+  }
+  if (process.env.TAMAGUI_COMPILER_STATS === 'verbose') {
+    console.info(moduleLines.join('\n'))
+  }
+}
+
 function getNextPluginInstanceId() {
   const next = ((globalThis as any)[PLUGIN_INSTANCE_KEY] || 0) + 1
   ;(globalThis as any)[PLUGIN_INSTANCE_KEY] = next
@@ -643,10 +697,16 @@ export function tamaguiPlugin({
   let buildEnvironmentPromise: Promise<void> | null = null
   let buildCleanupPromise: Promise<void> | null = null
   const activeBuildEnvironments = new Set<Environment>()
+  const compilerReports = process.env.TAMAGUI_COMPILER_STATS
+    ? new Map<string, CompilerModuleReport>()
+    : null
 
   const releaseBuildEnvironment = async (environment: Environment) => {
     if (!activeBuildEnvironments.delete(environment) || activeBuildEnvironments.size) {
       return
+    }
+    if (compilerReports?.size) {
+      reportCompilerStats(config?.root ?? process.cwd(), compilerReports)
     }
     const currentCleanup = Promise.resolve().then(async () => {
       try {
@@ -1341,6 +1401,10 @@ export function tamaguiPlugin({
           },
         })
         transformedModuleIds.add(validId)
+        compilerReports?.set(validId, {
+          stats: result.plan.stats,
+          diagnostics: result.plan.diagnostics,
+        })
         for (const dependency of result.plan.dependencies) {
           if (path.isAbsolute(dependency)) this.addWatchFile(dependency)
         }
