@@ -81,6 +81,7 @@ jobs:
         run: |
           bun run check:v6-tailwind-defaults
           bun run test:v6-tailwind-defaults
+          bun run test:v6-entries
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
