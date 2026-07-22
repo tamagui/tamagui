@@ -109,8 +109,9 @@ type CustomButtonProps = GetProps<typeof CustomButtonFrame> & {
   children?: React.ReactNode
 }
 
-const CustomButtonComponent = createStyledHOC(CustomButtonFrame)<CustomButtonProps>(
-  function CustomButton(props, ref) {
+const CustomButtonComponent = createStyledHOC(
+  CustomButtonFrame,
+  function CustomButton(props: CustomButtonProps, ref) {
     const { children, ...rest } = props
     return (
       <CustomButtonFrame {...rest} ref={ref}>
@@ -125,15 +126,16 @@ type ContextRefButtonProps = GetProps<typeof ContextRefButtonFrame> & {
 }
 
 const ContextRefButtonComponent = createStyledHOC(
-  ContextRefButtonFrame
-)<ContextRefButtonProps>(function ContextRefButton(props, ref) {
-  const { children, ...rest } = props
-  return (
-    <ContextRefButtonFrame {...rest} ref={ref}>
-      <ContextRefButtonText>{children}</ContextRefButtonText>
-    </ContextRefButtonFrame>
-  )
-})
+  ContextRefButtonFrame,
+  function ContextRefButton(props: ContextRefButtonProps, ref) {
+    const { children, ...rest } = props
+    return (
+      <ContextRefButtonFrame {...rest} ref={ref}>
+        <ContextRefButtonText>{children}</ContextRefButtonText>
+      </ContextRefButtonFrame>
+    )
+  }
+)
 
 // Issue #3670 - pressStyle color not propagating to children
 // Button with pressStyle that changes color - should propagate to text on press
@@ -174,15 +176,16 @@ type PressStyleButtonProps = GetProps<typeof PressStyleButtonFrame> & {
 }
 
 const PressStyleButtonComponent = createStyledHOC(
-  PressStyleButtonFrame
-)<PressStyleButtonProps>(function PressStyleButton(props, ref) {
-  const { children, ...rest } = props
-  return (
-    <PressStyleButtonFrame {...rest} ref={ref}>
-      <PressStyleButtonText>{children}</PressStyleButtonText>
-    </PressStyleButtonFrame>
-  )
-})
+  PressStyleButtonFrame,
+  function PressStyleButton(props: PressStyleButtonProps, ref) {
+    const { children, ...rest } = props
+    return (
+      <PressStyleButtonFrame {...rest} ref={ref}>
+        <PressStyleButtonText>{children}</PressStyleButtonText>
+      </PressStyleButtonFrame>
+    )
+  }
+)
 
 export function StyledContextColor() {
   return (

@@ -56,7 +56,8 @@ export const SelectItemFrame = styled(View, {
   flexDirection: 'row',
 })
 
-export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>(
+export const SelectItem = createStyledHOC(
+  SelectItemFrame,
   function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {
     const {
       scope,

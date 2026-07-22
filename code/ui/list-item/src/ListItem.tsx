@@ -164,8 +164,9 @@ const ListItemIcon = (props: {
   return getThemedIcon(children)
 }
 
-const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
-  function ListItem(propsIn, ref) {
+const ListItemComponent = createStyledHOC(
+  ListItemFrame,
+  function ListItem(propsIn: ListItemProps, ref) {
     const processedProps = useProps(propsIn, {
       noNormalize: true,
       noExpand: true,

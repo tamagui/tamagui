@@ -80,7 +80,7 @@ export const VisuallyHidden: TamaguiComponent<
     visible?: boolean | undefined
     preserveDimensions?: boolean | undefined
   }
-> = createStyledHOC(VisuallyHiddenFrame)(function VisuallyHidden(props, forwardedRef) {
+> = createStyledHOC(VisuallyHiddenFrame, function VisuallyHidden(props, forwardedRef) {
   const { visible, ...rest } = props as any
 
   // When `visible` is true the user opted out of hiding entirely — pass through.

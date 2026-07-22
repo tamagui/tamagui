@@ -11,8 +11,12 @@ const StyledInput = styled(View, styledBody[0], styledBody[1])
  * A web-aligned input component.
  * @see — Docs https://tamagui.dev/ui/inputs#input
  */
-export const Input = createStyledHOC(StyledInput)<InputExtraProps>(
-  (props, _forwardedRef) => {
+export const Input = createStyledHOC(
+  StyledInput,
+  (
+    props: Omit<GetProps<typeof StyledInput>, keyof InputExtraProps> & InputExtraProps,
+    _forwardedRef
+  ) => {
     const {
       disabled,
       id,

@@ -281,8 +281,9 @@ export function createNonNativeMenu() {
 
   const MenuTriggerFrame = Menu.Anchor
 
-  const MenuTrigger = createStyledHOC(View)<ScopedProps<MenuTriggerProps>>(
-    (props, forwardedRef) => {
+  const MenuTrigger = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuTriggerProps>, forwardedRef) => {
       const {
         scope,
         asChild,

@@ -4,7 +4,7 @@ import type { InputNativeProps } from './InputNativeProps'
 
 /**
  * Extra props that Input adds on top of the base styled component.
- * Used with createStyledHOC<InputExtraProps>() - the StyledHOCFactory merge
+ * Annotated on the createStyledHOC render fn - the StyledHOCMergedProps merge
  * (`Omit<BaseProps, keyof CustomProps> & CustomProps`) automatically overrides
  * base event handlers (HTMLDivElement) with these (HTMLInputElement).
  * Consumer-facing InputProps is derived via GetProps<typeof Input>.

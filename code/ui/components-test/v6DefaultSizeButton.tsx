@@ -69,8 +69,9 @@ const ButtonText = styled(ButtonBehaviorText, {
   },
 })
 
-const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(
-  function Button(props, ref) {
+const ButtonComponent = createStyledHOC(
+  ButtonFrame,
+  function Button(props: ButtonBehaviorProps, ref) {
     const size = (props.size ?? buttonSizes.defaultSize) as ButtonSize
     const { props: buttonProps } = useButton(
       {

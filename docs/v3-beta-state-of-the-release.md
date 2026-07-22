@@ -102,7 +102,7 @@ Condensed:
    `disableRemoveScroll` (**note the inverted intent**),
    `@tamagui/animations-moti`→`@tamagui/animations-reanimated`.
    One item on that list is a **rename, not a removal**:
-   `Component.styleable(fn)` became `createStyledHOC(Component)(fn)`, same
+   `Component.styleable(fn)` became `createStyledHOC(Component, fn)`, same
    behavior (see §4.7). The guide, the CLI and the blog post all described it as
    "move to ordinary React composition", which would have lost the pass-through
    behavior; that guidance is corrected.
@@ -258,7 +258,7 @@ standalone factory with an identical static config
 // before
 const MyInput = StyledInput.styleable<Props>((props, ref) => ...)
 // after
-const MyInput = createStyledHOC(StyledInput)<Props>((props, ref) => ...)
+const MyInput = createStyledHOC(StyledInput, (props: Props, ref) => ...)
 ```
 
 Both things it bought you still work. The compiler still sees a `staticConfig` on

@@ -6,8 +6,9 @@ const StyledImage = styled(View, {
   render: 'img',
 })
 
-export const Image = createStyledHOC(StyledImage)<ImageProps>(
-  (inProps, ref) => {
+export const Image = createStyledHOC(
+  StyledImage,
+  (inProps: ImageProps, ref) => {
     const {
       // exclude native only props
       blurRadius,

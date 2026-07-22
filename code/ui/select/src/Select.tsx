@@ -68,9 +68,10 @@ export type SelectValueExtraProps = SelectScopedProps<{
 
 export type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps
 
-export const SelectValue = createStyledHOC(SelectValueFrame)<SelectValueExtraProps>(
+export const SelectValue = createStyledHOC(
+  SelectValueFrame,
   function SelectValue(
-    { scope, children: childrenProp, placeholder, ...props },
+    { scope, children: childrenProp, placeholder, ...props }: SelectValueProps,
     forwardedRef
   ) {
     // We ignore `className` and `style` as this part shouldn't be styled.
@@ -133,21 +134,27 @@ export type SelectItemIndicatorProps = SelectScopedProps<
   GetProps<typeof SelectItemIndicatorFrame>
 >
 
-export const SelectItemIndicator = createStyledHOC(SelectItemIndicatorFrame)<{
-  scope?: string
-}>(function SelectItemIndicator(props, forwardedRef) {
-  const { scope, ...itemIndicatorProps } = props
-  const context = useSelectItemParentContext(scope)
-  const itemContext = useSelectItemContext(scope)
+export const SelectItemIndicator = createStyledHOC(
+  SelectItemIndicatorFrame,
+  function SelectItemIndicator(
+    props: {
+      scope?: string
+    },
+    forwardedRef
+  ) {
+    const { scope, ...itemIndicatorProps } = props
+    const context = useSelectItemParentContext(scope)
+    const itemContext = useSelectItemContext(scope)
 
-  if (context.shouldRenderWebNative) {
-    return null
+    if (context.shouldRenderWebNative) {
+      return null
+    }
+
+    return itemContext.isSelected ? (
+      <SelectItemIndicatorFrame aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
+    ) : null
   }
-
-  return itemContext.isSelected ? (
-    <SelectItemIndicatorFrame aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
-  ) : null
-})
+)
 
 /* -------------------------------------------------------------------------------------------------
  * SelectIndicator
@@ -164,53 +171,57 @@ export const SelectIndicatorFrame = styled(View, {
 
 export type SelectIndicatorProps = GetProps<typeof SelectIndicatorFrame>
 
-export const SelectIndicator = createStyledHOC(SelectIndicatorFrame)<
-  SelectScopedProps<SelectIndicatorProps>
->(function SelectIndicator({ scope, ...props }, forwardedRef) {
-  const itemContext = useSelectItemParentContext(scope)
-  const context = useSelectContext(scope)
-  const [layout, setLayout] = React.useState<any>(null)
+export const SelectIndicator = createStyledHOC(
+  SelectIndicatorFrame,
+  function SelectIndicator(
+    { scope, ...props }: SelectScopedProps<SelectIndicatorProps>,
+    forwardedRef
+  ) {
+    const itemContext = useSelectItemParentContext(scope)
+    const context = useSelectContext(scope)
+    const [layout, setLayout] = React.useState<any>(null)
 
-  const rafRef = React.useRef<any>(0)
+    const rafRef = React.useRef<any>(0)
 
-  React.useLayoutEffect(() => {
-    const update = (index: number | null) => {
-      if (typeof index !== 'number') return
-      cancelAnimationFrame(rafRef.current)
-      rafRef.current = requestAnimationFrame(() => {
-        const node = itemContext.listRef?.current?.[index]
-        if (node) {
-          setLayout({
-            width: Math.round(node.offsetWidth),
-            height: Math.round(node.offsetHeight),
-            x: Math.round(node.offsetLeft),
-            y: Math.round(node.offsetTop),
-          })
-        }
-      })
-    }
+    React.useLayoutEffect(() => {
+      const update = (index: number | null) => {
+        if (typeof index !== 'number') return
+        cancelAnimationFrame(rafRef.current)
+        rafRef.current = requestAnimationFrame(() => {
+          const node = itemContext.listRef?.current?.[index]
+          if (node) {
+            setLayout({
+              width: Math.round(node.offsetWidth),
+              height: Math.round(node.offsetHeight),
+              x: Math.round(node.offsetLeft),
+              y: Math.round(node.offsetTop),
+            })
+          }
+        })
+      }
 
-    // use ref for initial read to avoid depending on state
-    if (context.open && context.activeIndexRef.current !== null) {
-      update(context.activeIndexRef.current)
-    }
+      // use ref for initial read to avoid depending on state
+      if (context.open && context.activeIndexRef.current !== null) {
+        update(context.activeIndexRef.current)
+      }
 
-    return itemContext.activeIndexSubscribe(update)
-  }, [context.open, itemContext.listRef])
+      return itemContext.activeIndexSubscribe(update)
+    }, [context.open, itemContext.listRef])
 
-  if (!layout) return null
+    if (!layout) return null
 
-  return (
-    <SelectIndicatorFrame
-      ref={forwardedRef}
-      {...props}
-      width={layout.width}
-      height={layout.height}
-      x={layout.x}
-      y={layout.y}
-    />
-  )
-})
+    return (
+      <SelectIndicatorFrame
+        ref={forwardedRef}
+        {...props}
+        width={layout.width}
+        height={layout.height}
+        x={layout.x}
+        y={layout.y}
+      />
+    )
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * SelectGroup
@@ -235,8 +246,9 @@ const NativeSelect = NativeSelectFrame as any
 
 type SelectGroupProps = SelectScopedProps<GetProps<typeof SelectGroupFrame>>
 
-export const SelectGroup = createStyledHOC(SelectGroupFrame)<{ scope?: string }>(
-  (props, forwardedRef) => {
+export const SelectGroup = createStyledHOC(
+  SelectGroupFrame,
+  (props: SelectGroupProps, forwardedRef) => {
     const { scope, ...groupProps } = props
     const groupId = React.useId()
 
@@ -306,7 +318,8 @@ export const SelectLabelFrame = styled(Text, {
 
 export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>
 
-export const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>(
+export const SelectLabel = createStyledHOC(
+  SelectLabelFrame,
   (props: SelectLabelProps, forwardedRef) => {
     const { scope, ...labelProps } = props
     const context = useSelectItemParentContext(scope)

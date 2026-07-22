@@ -532,8 +532,9 @@ export type PopperAnchorExtraProps = {
 }
 export type PopperAnchorProps = ViewProps
 
-export const PopperAnchor = createStyledHOC(TamaguiView)<PopperAnchorExtraProps>(
-  function PopperAnchor(props, forwardedRef) {
+export const PopperAnchor = createStyledHOC(
+  TamaguiView,
+  function PopperAnchor(props: PopperAnchorExtraProps, forwardedRef) {
     const { virtualRef, scope, ...rest } = props
     const context = usePopperContextSlow(scope)
     const { getReferenceProps, refs, update } = context

@@ -490,29 +490,31 @@ type AccordionTriggerProps = GetProps<typeof AccordionTriggerFrame>
  * `AccordionTrigger` is the trigger that toggles the collapsed state of an `AccordionItem`. It
  * should always be nested inside of an `AccordionHeader`.
  */
-const AccordionTrigger = createStyledHOC(AccordionTriggerFrame)(function AccordionTrigger(
-  props: ScopedProps<AccordionTriggerProps>,
-  forwardedRef
-) {
-  const { __scopeAccordion, ...triggerProps } = props
-  const accordionContext = useAccordionContext(__scopeAccordion)
-  const itemContext = useAccordionItemContext(__scopeAccordion)
-  const collapsibleContext = useAccordionCollapsibleContext(__scopeAccordion)
+const AccordionTrigger = createStyledHOC(
+  AccordionTriggerFrame,
+  function AccordionTrigger(props: ScopedProps<AccordionTriggerProps>, forwardedRef) {
+    const { __scopeAccordion, ...triggerProps } = props
+    const accordionContext = useAccordionContext(__scopeAccordion)
+    const itemContext = useAccordionItemContext(__scopeAccordion)
+    const collapsibleContext = useAccordionCollapsibleContext(__scopeAccordion)
 
-  return (
-    <Collection.ItemSlot scope={__scopeAccordion || ACCORDION_CONTEXT}>
-      <AccordionTriggerFrame
-        //   @ts-ignore
-        __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
-        aria-disabled={(itemContext.open && !collapsibleContext.collapsible) || undefined}
-        data-orientation={accordionContext.orientation}
-        id={itemContext.triggerId}
-        {...triggerProps}
-        ref={forwardedRef}
-      />
-    </Collection.ItemSlot>
-  )
-})
+    return (
+      <Collection.ItemSlot scope={__scopeAccordion || ACCORDION_CONTEXT}>
+        <AccordionTriggerFrame
+          //   @ts-ignore
+          __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
+          aria-disabled={
+            (itemContext.open && !collapsibleContext.collapsible) || undefined
+          }
+          data-orientation={accordionContext.orientation}
+          id={itemContext.triggerId}
+          {...triggerProps}
+          ref={forwardedRef}
+        />
+      </Collection.ItemSlot>
+    )
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * AccordionContent
@@ -529,27 +531,27 @@ type AccordionContentProps = GetProps<typeof AccordionContentFrame>
 /**
  * `AccordionContent` contains the collapsible content for an `AccordionItem`.
  */
-const AccordionContent = createStyledHOC(AccordionContentFrame)(function AccordionContent(
-  props: ScopedProps<AccordionContentProps>,
-  forwardedRef
-) {
-  const { __scopeAccordion, ...contentProps } = props
-  const accordionContext = useAccordionContext(__scopeAccordion)
-  const itemContext = useAccordionItemContext(__scopeAccordion)
-  return (
-    <AccordionContentFrame
-      role="region"
-      aria-labelledby={itemContext.triggerId}
-      data-orientation={accordionContext.orientation}
-      // @ts-ignore
-      __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
-      {...contentProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const AccordionContent = createStyledHOC(
+  AccordionContentFrame,
+  function AccordionContent(props: ScopedProps<AccordionContentProps>, forwardedRef) {
+    const { __scopeAccordion, ...contentProps } = props
+    const accordionContext = useAccordionContext(__scopeAccordion)
+    const itemContext = useAccordionItemContext(__scopeAccordion)
+    return (
+      <AccordionContentFrame
+        role="region"
+        aria-labelledby={itemContext.triggerId}
+        data-orientation={accordionContext.orientation}
+        // @ts-ignore
+        __scopeCollapsible={__scopeAccordion || ACCORDION_CONTEXT}
+        {...contentProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
-const HeightAnimator = createStyledHOC(View)((props, ref) => {
+const HeightAnimator = createStyledHOC(View, (props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
   const [measuredHeight, setMeasuredHeight] = React.useState<number>(0)

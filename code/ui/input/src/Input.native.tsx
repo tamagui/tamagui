@@ -1,6 +1,6 @@
 import React from 'react'
 import { TextInput, type TextInputProps as RNTextInputProps } from 'react-native'
-import { createStyledHOC, styled } from '@tamagui/core'
+import { createStyledHOC, type GetProps, styled } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { useNativeInputRef } from '@tamagui/element'
 import { styledBody } from './shared'
@@ -12,8 +12,12 @@ const StyledInput = styled(TextInput, styledBody[0], styledBody[1])
  * A web-aligned input component for React Native.
  * @see — Docs https://tamagui.dev/ui/inputs#input
  */
-export const Input = createStyledHOC(StyledInput)<InputExtraProps>(
-  (props, forwardedRef) => {
+export const Input = createStyledHOC(
+  StyledInput,
+  (
+    props: Omit<GetProps<typeof StyledInput>, keyof InputExtraProps> & InputExtraProps,
+    forwardedRef
+  ) => {
     const {
       // Web props we need to convert
       type,

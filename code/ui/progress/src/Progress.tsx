@@ -37,7 +37,8 @@ export const ProgressIndicatorFrame = styled(YStack, {
 
 export type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
 
-const ProgressIndicator = createStyledHOC(ProgressIndicatorFrame)(
+const ProgressIndicator = createStyledHOC(
+  ProgressIndicatorFrame,
   function ProgressIndicator(props: ScopedProps<ProgressIndicatorProps>, forwardedRef) {
     const { __scopeProgress, transition, ...indicatorProps } = props
     const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
@@ -143,8 +144,9 @@ export interface ProgressExtraProps {
 export type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps
 
 const Progress = withStaticProperties(
-  createStyledHOC(ProgressFrame)<ProgressExtraProps>(
-    function Progress(props, forwardedRef) {
+  createStyledHOC(
+    ProgressFrame,
+    function Progress(props: ProgressProps, forwardedRef) {
       const {
         // @ts-expect-error
         __scopeProgress,

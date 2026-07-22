@@ -253,8 +253,9 @@ type ButtonProps = GetProps<typeof ButtonFrame>
 
 // createStyledHOC wraps a functional component so it can be further styled with styled()
 // see /docs/core/styled#createstyledhoc for full documentation
-export const Button = createStyledHOC(ButtonFrame)<ButtonProps>(
-  ({ children, ...props }, ref) => {
+export const Button = createStyledHOC(
+  ButtonFrame,
+  ({ children, ...props }: ButtonProps, ref) => {
     return (
       <ButtonFrame ref={ref} {...props}>
         <ButtonText>{children}</ButtonText>

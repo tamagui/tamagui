@@ -134,25 +134,26 @@ type AvatarFallbackExtraProps = {
 }
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps
 
-const AvatarFallback = createStyledHOC(AvatarFallbackFrame)<
-  ScopedProps<AvatarFallbackExtraProps>
->((props, forwardedRef) => {
-  const { __scopeAvatar, delay: delayProp, delayMs, ...fallbackProps } = props
-  const context = useAvatarContext(FALLBACK_NAME, __scopeAvatar)
-  const delay = delayProp ?? delayMs
-  const [canRender, setCanRender] = React.useState(delay === undefined)
+const AvatarFallback = createStyledHOC(
+  AvatarFallbackFrame,
+  (props: ScopedProps<AvatarFallbackExtraProps>, forwardedRef) => {
+    const { __scopeAvatar, delay: delayProp, delayMs, ...fallbackProps } = props
+    const context = useAvatarContext(FALLBACK_NAME, __scopeAvatar)
+    const delay = delayProp ?? delayMs
+    const [canRender, setCanRender] = React.useState(delay === undefined)
 
-  React.useEffect(() => {
-    if (delay !== undefined) {
-      const timerId = setTimeout(() => setCanRender(true), delay)
-      return () => clearTimeout(timerId)
-    }
-  }, [delay])
+    React.useEffect(() => {
+      if (delay !== undefined) {
+        const timerId = setTimeout(() => setCanRender(true), delay)
+        return () => clearTimeout(timerId)
+      }
+    }, [delay])
 
-  return canRender && context.imageLoadingStatus !== 'loaded' ? (
-    <AvatarFallbackFrame {...fallbackProps} ref={forwardedRef} />
-  ) : null
-})
+    return canRender && context.imageLoadingStatus !== 'loaded' ? (
+      <AvatarFallbackFrame {...fallbackProps} ref={forwardedRef} />
+    ) : null
+  }
+)
 
 AvatarFallback.displayName = FALLBACK_NAME
 

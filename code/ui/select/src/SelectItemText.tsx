@@ -23,42 +23,43 @@ export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame> &
   SelectItemTextExtraProps
 
 export const SelectItemText = createStyledHOC(
-  SelectItemTextFrame
-)<SelectItemTextExtraProps>(function SelectItemText(props, forwardedRef) {
-  const { scope, className, ...itemTextProps } = props
-  // note: only uses itemParentContext (not selectContext) to avoid re-renders
-  // when activeIndex changes on hover
-  const itemParentContext = useSelectItemParentContext(scope)
-  const ref = React.useRef<TamaguiTextElement | null>(null)
-  const composedRefs = useComposedRefs(forwardedRef, ref)
-  const itemContext = useSelectItemContext(scope)
-  const contents = React.useRef<React.ReactNode>(null)
-  const label = React.useRef(props.children)
-  label.current = props.children
-  const labelText = getSelectLabelText(props.children)
+  SelectItemTextFrame,
+  function SelectItemText(props: SelectItemTextProps, forwardedRef) {
+    const { scope, className, ...itemTextProps } = props
+    // note: only uses itemParentContext (not selectContext) to avoid re-renders
+    // when activeIndex changes on hover
+    const itemParentContext = useSelectItemParentContext(scope)
+    const ref = React.useRef<TamaguiTextElement | null>(null)
+    const composedRefs = useComposedRefs(forwardedRef, ref)
+    const itemContext = useSelectItemContext(scope)
+    const contents = React.useRef<React.ReactNode>(null)
+    const label = React.useRef(props.children)
+    label.current = props.children
+    const labelText = getSelectLabelText(props.children)
 
-  // we portal this to the selected area, which is fine to be a bit unsafe concurrently (mostly? its not changing often)...
-  // until react native supports portals this is best i think
-  contents.current = (
-    <SelectItemTextFrame
-      className={className}
-      id={itemContext.textId}
-      {...itemTextProps}
-      ref={composedRefs}
-    />
-  )
-
-  useIsomorphicLayoutEffect(() => {
-    return itemParentContext.registry.registerLabel(
-      itemContext.value,
-      label.current,
-      itemContext.textValue
+    // we portal this to the selected area, which is fine to be a bit unsafe concurrently (mostly? its not changing often)...
+    // until react native supports portals this is best i think
+    contents.current = (
+      <SelectItemTextFrame
+        className={className}
+        id={itemContext.textId}
+        {...itemTextProps}
+        ref={composedRefs}
+      />
     )
-  }, [itemContext.textValue, itemContext.value, itemParentContext.registry, labelText])
 
-  if (itemParentContext.shouldRenderWebNative) {
-    return <>{props.children}</>
+    useIsomorphicLayoutEffect(() => {
+      return itemParentContext.registry.registerLabel(
+        itemContext.value,
+        label.current,
+        itemContext.textValue
+      )
+    }, [itemContext.textValue, itemContext.value, itemParentContext.registry, labelText])
+
+    if (itemParentContext.shouldRenderWebNative) {
+      return <>{props.children}</>
+    }
+
+    return <>{contents.current}</>
   }
-
-  return <>{contents.current}</>
-})
+)

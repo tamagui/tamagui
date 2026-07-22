@@ -41,7 +41,7 @@ const TextInput = styled(
   }
 )
 
-export const Input = createStyledHOC(TamaguiInput)(function MyInput({ ...props }, ref) {
+export const Input = createStyledHOC(TamaguiInput, function MyInput({ ...props }, ref) {
   const parentTheme = useThemeName()
 
   return (

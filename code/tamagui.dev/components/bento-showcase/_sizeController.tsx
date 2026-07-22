@@ -4,45 +4,56 @@ import { Theme, YGroup, createStyledHOC } from 'tamagui'
 import { Button } from '~/components/Button'
 import { useContainerDim } from './hooks/useContainerDim'
 
-export const SizeController = createStyledHOC(YGroup)<{
-  size: SizeTokens
-  setSize: (size: SizeTokens) => void
-  sizes?: SizeTokens[]
-}>(({ size, setSize, sizes = ['$3', '$4', '$6', '$8', '$9'], ...props }, ref) => {
-  const { width } = useContainerDim('window')
-  if (!width || width < 400) {
-    return null
+export const SizeController = createStyledHOC(
+  YGroup,
+  (
+    {
+      size,
+      setSize,
+      sizes = ['$3', '$4', '$6', '$8', '$9'],
+      ...props
+    }: {
+      size: SizeTokens
+      setSize: (size: SizeTokens) => void
+      sizes?: SizeTokens[]
+    },
+    ref
+  ) => {
+    const { width } = useContainerDim('window')
+    if (!width || width < 400) {
+      return null
+    }
+    return (
+      <Theme name="accent">
+        <YGroup ref={ref} justify="center" items="center" r={0} b={0} gap="$1" {...props}>
+          <YGroup.Item>
+            <Button
+              size="medium"
+              onPress={() => {
+                const index = sizes.indexOf(size)
+                setSize(sizes[index - 1 < 0 ? 0 : index - 1])
+              }}
+            >
+              <Button.Icon>
+                <Minus />
+              </Button.Icon>
+            </Button>
+          </YGroup.Item>
+          <YGroup.Item>
+            <Button
+              size="medium"
+              onPress={() => {
+                const index = sizes.indexOf(size)
+                setSize(sizes[index + 1 >= sizes.length ? 4 : index + 1])
+              }}
+            >
+              <Button.Icon>
+                <Plus />
+              </Button.Icon>
+            </Button>
+          </YGroup.Item>
+        </YGroup>
+      </Theme>
+    )
   }
-  return (
-    <Theme name="accent">
-      <YGroup ref={ref} justify="center" items="center" r={0} b={0} gap="$1" {...props}>
-        <YGroup.Item>
-          <Button
-            size="medium"
-            onPress={() => {
-              const index = sizes.indexOf(size)
-              setSize(sizes[index - 1 < 0 ? 0 : index - 1])
-            }}
-          >
-            <Button.Icon>
-              <Minus />
-            </Button.Icon>
-          </Button>
-        </YGroup.Item>
-        <YGroup.Item>
-          <Button
-            size="medium"
-            onPress={() => {
-              const index = sizes.indexOf(size)
-              setSize(sizes[index + 1 >= sizes.length ? 4 : index + 1])
-            }}
-          >
-            <Button.Icon>
-              <Plus />
-            </Button.Icon>
-          </Button>
-        </YGroup.Item>
-      </YGroup>
-    </Theme>
-  )
-})
+)

@@ -16,7 +16,7 @@ const Text = styled(Button.Text, {
 
 const ButtonStyled = styled(Button, {})
 
-export const ButtonCustom = createStyledHOC(Frame)((props, ref) => {
+export const ButtonCustom = createStyledHOC(Frame, (props, ref) => {
   return (
     <>
       <Frame ref={ref} {...props} />

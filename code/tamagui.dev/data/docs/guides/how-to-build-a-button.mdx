@@ -540,7 +540,8 @@ import { Button } from './OurButton'
 
 const SizeContext = createContext<SizeTokens>('$md')
 
-const ButtonFrame = createStyledHOC(Button)(
+const ButtonFrame = createStyledHOC(
+  Button,
   ({ size = '$md', ...props }: GetProps<typeof OGB.ButtonFrame>) => {
     return (
       <SizeContext.Provider value={size}>
@@ -550,7 +551,7 @@ const ButtonFrame = createStyledHOC(Button)(
   }
 )
 
-const ButtonText = createStyledHOC(Button.Text)((props: GetProps<typeof OGB.ButtonText>) => {
+const ButtonText = createStyledHOC(Button.Text, (props: GetProps<typeof OGB.ButtonText>) => {
   const size = useContext(SizeContext)
   return <Button.Text size={size} {...props} />
 })
