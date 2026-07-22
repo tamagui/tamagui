@@ -1,7 +1,7 @@
 name: Release
 
-# github evaluates workflow_run from the default branch. this path publishes
-# successful v3-beta push builds without changing the branch or creating tags.
+# github evaluates workflow_run from the default branch. keep this workflow on
+# main as well as v3-beta so successful v3-beta CI can publish automatically.
 on:
   workflow_run:
     workflows: [Checks]
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: Version to publish
+        description: Version to publish from main
         required: true
         default: canary
         type: choice
@@ -97,6 +97,8 @@ jobs:
           --skip-checks
 
   ensure-ci:
+    name: Approve main release source
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -171,6 +173,8 @@ jobs:
           wait_for_run "$run_id"
 
   publish:
+    name: Publish approved main release
+    if: github.event_name == 'workflow_dispatch'
     needs: ensure-ci
     runs-on: ubuntu-latest
     timeout-minutes: 60
