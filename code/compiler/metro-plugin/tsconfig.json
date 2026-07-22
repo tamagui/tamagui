@@ -3,6 +3,7 @@
   "compilerOptions": {
     "composite": true,
     "importHelpers": false,
+    "isolatedDeclarations": true,
     "rootDir": "src"
   },
   "include": ["src/**/*.ts"],

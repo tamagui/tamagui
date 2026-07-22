@@ -5,6 +5,9 @@
       "@tamagui/compiler-core": [
         "./code/compiler/compiler-core/src/index.ts"
       ],
+      "@tamagui/colors/legacy": [
+        "./code/core/colors/src/legacy.ts"
+      ],
       "tamagui": [
         "./code/ui/tamagui"
       ],

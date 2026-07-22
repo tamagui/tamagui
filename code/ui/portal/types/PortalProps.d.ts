@@ -1,4 +1,4 @@
-import { ViewProps } from '@tamagui/web/types';
+import { ViewProps } from '@tamagui/web';
 import type { StackZIndexProp } from '@tamagui/z-index-stack';
 import { CSSProperties, ReactNode } from 'react';
 export type PortalProps = {

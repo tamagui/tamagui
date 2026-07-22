@@ -9,6 +9,7 @@ export declare function addFont(props: {
     fontFamilyToken?: undefined;
     fontDeclaration?: undefined;
 } | {
+    fontFamily?: undefined;
     fontFamilyToken: never;
     fontDeclaration: {
         [x: string]: {
@@ -17,6 +18,5 @@ export declare function addFont(props: {
             language: string;
         };
     };
-    fontFamily?: undefined;
 } | undefined;
 //# sourceMappingURL=index.d.ts.map

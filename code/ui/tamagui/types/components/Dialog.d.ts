@@ -4,15 +4,15 @@ export declare const DialogOverlay: React.FunctionComponent<Omit<import("@tamagu
     forceMount?: boolean;
 } & {
     scope?: import("@tamagui/ui").DialogScopes;
-}, "elevation" | keyof import("@tamagui/web").StackStyleBase | "open"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    open?: boolean | undefined;
+}, "elevation" | "open" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").Size | undefined;
+    open?: boolean | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    open?: boolean | undefined;
     elevation?: number | import("@tamagui/web").Size | undefined;
+    open?: boolean | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-    open?: boolean | undefined;
     elevation?: number | import("@tamagui/web").Size | undefined;
+    open?: boolean | undefined;
 }>> & {
     ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & {
@@ -20,34 +20,34 @@ export declare const DialogOverlay: React.FunctionComponent<Omit<import("@tamagu
 } & {
     scope?: import("@tamagui/ui").DialogScopes;
 }, import("@tamagui/web").StackStyleBase, {
-    open?: boolean | undefined;
     elevation?: number | import("@tamagui/web").Size | undefined;
+    open?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & {
         forceMount?: boolean;
     } & {
         scope?: import("@tamagui/ui").DialogScopes;
     }, import("@tamagui/web").StackStyleBase, {
-        open?: boolean | undefined;
         elevation?: number | import("@tamagui/web").Size | undefined;
+        open?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const DialogContent: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "elevate" | "bordered"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
+export declare const DialogContent: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "bordered" | "elevate" | "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 }>> & Omit<import("@tamagui/dismissable").DismissableProps, "onDismiss"> & {
-    trapFocus?: import("@tamagui/focus-scope").FocusScopeProps["trapped"];
-    onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onMountAutoFocus"];
-    onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onUnmountAutoFocus"];
+    trapFocus?: import("@tamagui/focus-scope").FocusScopeProps['trapped'];
+    onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onMountAutoFocus'];
+    onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onUnmountAutoFocus'];
     context: {
         forceMount?: boolean;
         keepChildrenMounted?: boolean;
@@ -60,12 +60,12 @@ export declare const DialogContent: React.FunctionComponent<Omit<import("@tamagu
         titleId: string;
         descriptionId: string;
         onOpenToggle(): void;
-        open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-        onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-        modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+        open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+        onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+        modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
         dialogScope: import("@tamagui/ui").DialogScopes;
         adaptScope: string;
-        onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+        onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
     };
     onTransition?: import("@tamagui/web").OnTransition;
 } & {
@@ -81,45 +81,45 @@ export declare const DialogContent: React.FunctionComponent<Omit<import("@tamagu
         titleId: string;
         descriptionId: string;
         onOpenToggle(): void;
-        open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-        onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-        modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+        open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+        onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+        modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
         dialogScope: import("@tamagui/ui").DialogScopes;
         adaptScope: string;
-        onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+        onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
     };
-}, "onPointerDownCapture" | "context"> & {
+}, "context" | "onPointerDownCapture"> & {
     scope?: import("@tamagui/ui").DialogScopes;
-}, "elevation" | keyof import("@tamagui/web").StackStyleBase | "elevate" | "bordered"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
+}, "bordered" | "elevate" | "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 }>> & {
     ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "elevate" | "bordered"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "bordered" | "elevate" | "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 }>> & Omit<import("@tamagui/dismissable").DismissableProps, "onDismiss"> & {
-    trapFocus?: import("@tamagui/focus-scope").FocusScopeProps["trapped"];
-    onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onMountAutoFocus"];
-    onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onUnmountAutoFocus"];
+    trapFocus?: import("@tamagui/focus-scope").FocusScopeProps['trapped'];
+    onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onMountAutoFocus'];
+    onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onUnmountAutoFocus'];
     context: {
         forceMount?: boolean;
         keepChildrenMounted?: boolean;
@@ -132,12 +132,12 @@ export declare const DialogContent: React.FunctionComponent<Omit<import("@tamagu
         titleId: string;
         descriptionId: string;
         onOpenToggle(): void;
-        open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-        onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-        modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+        open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+        onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+        modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
         dialogScope: import("@tamagui/ui").DialogScopes;
         adaptScope: string;
-        onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+        onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
     };
     onTransition?: import("@tamagui/web").OnTransition;
 } & {
@@ -153,36 +153,36 @@ export declare const DialogContent: React.FunctionComponent<Omit<import("@tamagu
         titleId: string;
         descriptionId: string;
         onOpenToggle(): void;
-        open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-        onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-        modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+        open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+        onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+        modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
         dialogScope: import("@tamagui/ui").DialogScopes;
         adaptScope: string;
-        onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+        onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
     };
-}, "onPointerDownCapture" | "context"> & {
+}, "context" | "onPointerDownCapture"> & {
     scope?: import("@tamagui/ui").DialogScopes;
 }, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    elevate?: boolean | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "elevate" | "bordered"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
+    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "bordered" | "elevate" | "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     }>> & Omit<import("@tamagui/dismissable").DismissableProps, "onDismiss"> & {
-        trapFocus?: import("@tamagui/focus-scope").FocusScopeProps["trapped"];
-        onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onMountAutoFocus"];
-        onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onUnmountAutoFocus"];
+        trapFocus?: import("@tamagui/focus-scope").FocusScopeProps['trapped'];
+        onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onMountAutoFocus'];
+        onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onUnmountAutoFocus'];
         context: {
             forceMount?: boolean;
             keepChildrenMounted?: boolean;
@@ -195,12 +195,12 @@ export declare const DialogContent: React.FunctionComponent<Omit<import("@tamagu
             titleId: string;
             descriptionId: string;
             onOpenToggle(): void;
-            open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-            onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-            modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+            open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+            onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+            modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
             dialogScope: import("@tamagui/ui").DialogScopes;
             adaptScope: string;
-            onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+            onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
         };
         onTransition?: import("@tamagui/web").OnTransition;
     } & {
@@ -216,19 +216,19 @@ export declare const DialogContent: React.FunctionComponent<Omit<import("@tamagu
             titleId: string;
             descriptionId: string;
             onOpenToggle(): void;
-            open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-            onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-            modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+            open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+            onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+            modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
             dialogScope: import("@tamagui/ui").DialogScopes;
             adaptScope: string;
-            onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+            onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
         };
-    }, "onPointerDownCapture" | "context"> & {
+    }, "context" | "onPointerDownCapture"> & {
         scope?: import("@tamagui/ui").DialogScopes;
     }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
 export declare const Dialog: ((props: {
@@ -258,7 +258,7 @@ export declare const Dialog: ((props: {
         size?: import("@tamagui/web").FontSize | undefined;
     }>, "scope"> & {
         scope?: import("@tamagui/ui").DialogScopes;
-    }, (HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").Text, import("@tamagui/ui").TextNonStyleProps & {
+    }, import("react-native").Text | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").TextNonStyleProps & {
         scope?: import("@tamagui/ui").DialogScopes;
     }, import("@tamagui/web").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSize | undefined;
@@ -267,12 +267,12 @@ export declare const Dialog: ((props: {
         size?: import("@tamagui/web").FontSize | undefined;
     }>, "scope"> & {
         scope?: import("@tamagui/ui").DialogScopes;
-    }, (HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").Text, import("@tamagui/ui").TextNonStyleProps & {
+    }, import("react-native").Text | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").TextNonStyleProps & {
         scope?: import("@tamagui/ui").DialogScopes;
     }, import("@tamagui/web").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSize | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
-    Close: import("@tamagui/ui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, "scope" | "displayWhenAdapted"> & {
+    Close: import("@tamagui/ui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, "displayWhenAdapted" | "scope"> & {
         displayWhenAdapted?: boolean;
     } & {
         scope?: import("@tamagui/ui").DialogScopes;
@@ -283,26 +283,21 @@ export declare const Dialog: ((props: {
     }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
     FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
     Adapt: ((props: import("@tamagui/ui").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
-        Contents: {
-            ({ scope, ...rest }: {
-                scope?: string;
-            }): React.FunctionComponentElement<any>;
-            shouldForwardSpace: boolean;
-        };
+        Contents: typeof import("@tamagui/ui").AdaptContents;
     };
     Overlay: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & {
         forceMount?: boolean;
     } & {
         scope?: import("@tamagui/ui").DialogScopes;
-    }, "elevation" | keyof import("@tamagui/web").StackStyleBase | "open"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        open?: boolean | undefined;
+    }, "elevation" | "open" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").Size | undefined;
+        open?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        open?: boolean | undefined;
         elevation?: number | import("@tamagui/web").Size | undefined;
+        open?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        open?: boolean | undefined;
         elevation?: number | import("@tamagui/web").Size | undefined;
+        open?: boolean | undefined;
     }>> & {
         ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & {
@@ -310,34 +305,34 @@ export declare const Dialog: ((props: {
     } & {
         scope?: import("@tamagui/ui").DialogScopes;
     }, import("@tamagui/web").StackStyleBase, {
-        open?: boolean | undefined;
         elevation?: number | import("@tamagui/web").Size | undefined;
+        open?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & {
             forceMount?: boolean;
         } & {
             scope?: import("@tamagui/ui").DialogScopes;
         }, import("@tamagui/web").StackStyleBase, {
-            open?: boolean | undefined;
             elevation?: number | import("@tamagui/web").Size | undefined;
+            open?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     };
-    Content: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "elevate" | "bordered"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
+    Content: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "bordered" | "elevate" | "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     }>> & Omit<import("@tamagui/dismissable").DismissableProps, "onDismiss"> & {
-        trapFocus?: import("@tamagui/focus-scope").FocusScopeProps["trapped"];
-        onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onMountAutoFocus"];
-        onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onUnmountAutoFocus"];
+        trapFocus?: import("@tamagui/focus-scope").FocusScopeProps['trapped'];
+        onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onMountAutoFocus'];
+        onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onUnmountAutoFocus'];
         context: {
             forceMount?: boolean;
             keepChildrenMounted?: boolean;
@@ -350,12 +345,12 @@ export declare const Dialog: ((props: {
             titleId: string;
             descriptionId: string;
             onOpenToggle(): void;
-            open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-            onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-            modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+            open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+            onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+            modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
             dialogScope: import("@tamagui/ui").DialogScopes;
             adaptScope: string;
-            onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+            onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
         };
         onTransition?: import("@tamagui/web").OnTransition;
     } & {
@@ -371,45 +366,45 @@ export declare const Dialog: ((props: {
             titleId: string;
             descriptionId: string;
             onOpenToggle(): void;
-            open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-            onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-            modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+            open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+            onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+            modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
             dialogScope: import("@tamagui/ui").DialogScopes;
             adaptScope: string;
-            onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+            onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
         };
-    }, "onPointerDownCapture" | "context"> & {
+    }, "context" | "onPointerDownCapture"> & {
         scope?: import("@tamagui/ui").DialogScopes;
-    }, "elevation" | keyof import("@tamagui/web").StackStyleBase | "elevate" | "bordered"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
+    }, "bordered" | "elevate" | "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     }>> & {
         ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "elevate" | "bordered"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
+    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "bordered" | "elevate" | "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     }>> & Omit<import("@tamagui/dismissable").DismissableProps, "onDismiss"> & {
-        trapFocus?: import("@tamagui/focus-scope").FocusScopeProps["trapped"];
-        onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onMountAutoFocus"];
-        onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onUnmountAutoFocus"];
+        trapFocus?: import("@tamagui/focus-scope").FocusScopeProps['trapped'];
+        onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onMountAutoFocus'];
+        onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onUnmountAutoFocus'];
         context: {
             forceMount?: boolean;
             keepChildrenMounted?: boolean;
@@ -422,12 +417,12 @@ export declare const Dialog: ((props: {
             titleId: string;
             descriptionId: string;
             onOpenToggle(): void;
-            open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-            onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-            modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+            open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+            onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+            modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
             dialogScope: import("@tamagui/ui").DialogScopes;
             adaptScope: string;
-            onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+            onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
         };
         onTransition?: import("@tamagui/web").OnTransition;
     } & {
@@ -443,36 +438,36 @@ export declare const Dialog: ((props: {
             titleId: string;
             descriptionId: string;
             onOpenToggle(): void;
-            open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-            onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-            modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+            open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+            onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+            modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
             dialogScope: import("@tamagui/ui").DialogScopes;
             adaptScope: string;
-            onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+            onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
         };
-    }, "onPointerDownCapture" | "context"> & {
+    }, "context" | "onPointerDownCapture"> & {
         scope?: import("@tamagui/ui").DialogScopes;
     }, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        elevate?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "elevate" | "bordered"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-            elevation?: number | import("@tamagui/web").Size | undefined;
-            elevate?: boolean | undefined;
+        __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "bordered" | "elevate" | "elevation" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
             bordered?: boolean | undefined;
+            elevate?: boolean | undefined;
+            elevation?: number | import("@tamagui/web").Size | undefined;
         } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-            elevation?: number | import("@tamagui/web").Size | undefined;
-            elevate?: boolean | undefined;
             bordered?: boolean | undefined;
+            elevate?: boolean | undefined;
+            elevation?: number | import("@tamagui/web").Size | undefined;
         } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-            elevation?: number | import("@tamagui/web").Size | undefined;
-            elevate?: boolean | undefined;
             bordered?: boolean | undefined;
+            elevate?: boolean | undefined;
+            elevation?: number | import("@tamagui/web").Size | undefined;
         }>> & Omit<import("@tamagui/dismissable").DismissableProps, "onDismiss"> & {
-            trapFocus?: import("@tamagui/focus-scope").FocusScopeProps["trapped"];
-            onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onMountAutoFocus"];
-            onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps["onUnmountAutoFocus"];
+            trapFocus?: import("@tamagui/focus-scope").FocusScopeProps['trapped'];
+            onOpenAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onMountAutoFocus'];
+            onCloseAutoFocus?: import("@tamagui/focus-scope").FocusScopeProps['onUnmountAutoFocus'];
             context: {
                 forceMount?: boolean;
                 keepChildrenMounted?: boolean;
@@ -485,12 +480,12 @@ export declare const Dialog: ((props: {
                 titleId: string;
                 descriptionId: string;
                 onOpenToggle(): void;
-                open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-                onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-                modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+                open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+                onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+                modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
                 dialogScope: import("@tamagui/ui").DialogScopes;
                 adaptScope: string;
-                onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+                onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
             };
             onTransition?: import("@tamagui/web").OnTransition;
         } & {
@@ -506,19 +501,19 @@ export declare const Dialog: ((props: {
                 titleId: string;
                 descriptionId: string;
                 onOpenToggle(): void;
-                open: Exclude<import("@tamagui/ui").DialogProps["open"], void | null>;
-                onOpenChange: Exclude<import("@tamagui/ui").DialogProps["onOpenChange"], void | null>;
-                modal: Exclude<import("@tamagui/ui").DialogProps["modal"], void | null>;
+                open: Exclude<import("@tamagui/ui").DialogProps['open'], void | null>;
+                onOpenChange: Exclude<import("@tamagui/ui").DialogProps['onOpenChange'], void | null>;
+                modal: Exclude<import("@tamagui/ui").DialogProps['modal'], void | null>;
                 dialogScope: import("@tamagui/ui").DialogScopes;
                 adaptScope: string;
-                onAnimationComplete?: import("@tamagui/ui").DialogProps["onAnimationComplete"];
+                onAnimationComplete?: import("@tamagui/ui").DialogProps['onAnimationComplete'];
             };
-        }, "onPointerDownCapture" | "context"> & {
+        }, "context" | "onPointerDownCapture"> & {
             scope?: import("@tamagui/ui").DialogScopes;
         }, import("@tamagui/web").StackStyleBase, {
-            elevation?: number | import("@tamagui/web").Size | undefined;
-            elevate?: boolean | undefined;
             bordered?: boolean | undefined;
+            elevate?: boolean | undefined;
+            elevation?: number | import("@tamagui/web").Size | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     };
 };

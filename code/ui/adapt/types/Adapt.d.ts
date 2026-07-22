@@ -75,7 +75,7 @@ export type AdaptProps = {
     children: React.JSX.Element | ((contents: React.ReactNode, adapt: AdaptRenderState) => React.ReactNode);
 };
 type Component = (props: any) => any;
-export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI, "platform" | "Contents" | "scopeName" | "portalName" | "setPlatform" | "when" | "setWhen" | "active" | "rawActive" | "setRawActive" | "slot" | "handoff" | "targetFullyHidden" | "registerTarget" | "unregisterTarget" | "registerContents" | "unregisterContents" | "registerRenderCallback" | "unregisterRenderCallback">;
+export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI, "Contents" | "active" | "handoff" | "platform" | "portalName" | "rawActive" | "registerContents" | "registerRenderCallback" | "registerTarget" | "scopeName" | "setPlatform" | "setRawActive" | "setWhen" | "slot" | "targetFullyHidden" | "unregisterContents" | "unregisterRenderCallback" | "unregisterTarget" | "when">;
 export declare const ProvideAdaptContext: ({ children, ...context }: AdaptParentContextI & {
     children: any;
 }) => import("react/jsx-runtime").JSX.Element;
@@ -95,22 +95,14 @@ type AdaptParentProps = {
     };
 };
 export declare const AdaptParent: ({ children, Contents, scope, open, onOpenChange, state, }: AdaptParentProps) => import("react/jsx-runtime").JSX.Element;
-/**
- * Components
- */
-export declare const AdaptContents: {
-    ({ scope, ...rest }: {
-        scope?: string;
-    }): React.FunctionComponentElement<any>;
-    shouldForwardSpace: boolean;
-};
+export declare function AdaptContents({ scope, ...rest }: {
+    scope?: string;
+}): React.FunctionComponentElement<any>;
+export declare namespace AdaptContents {
+    var shouldForwardSpace: boolean;
+}
 export declare const Adapt: ((props: AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
-    Contents: {
-        ({ scope, ...rest }: {
-            scope?: string;
-        }): React.FunctionComponentElement<any>;
-        shouldForwardSpace: boolean;
-    };
+    Contents: typeof AdaptContents;
 };
 export declare const AdaptPortalContents: (props: {
     children: React.ReactNode;

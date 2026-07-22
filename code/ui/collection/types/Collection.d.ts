@@ -10,10 +10,10 @@ declare function createCollection<ItemElement extends TamaguiElement, ItemData =
     } & {
         scope?: any;
     }>;
-    readonly Slot: import("@tamagui/core").RefComponent<TamaguiElement | undefined, CollectionProps & {
+    readonly Slot: import("@tamagui/compose-refs").RefComponent<TamaguiElement | undefined, CollectionProps & {
         scope?: any;
     }>;
-    readonly ItemSlot: import("@tamagui/core").RefComponent<ItemElement | undefined, ItemData & {
+    readonly ItemSlot: import("@tamagui/compose-refs").RefComponent<ItemElement | undefined, ItemData & {
         children: React.ReactNode;
     } & {
         scope?: any;

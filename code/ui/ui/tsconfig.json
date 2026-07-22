@@ -1,12 +1,17 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "isolatedDeclarations": true
   },
   "exclude": [
     "types",
     "dist",
     "**/__tests__"
   ],
-  "references": []
+  "references": [
+    {
+      "path": "../../packages/element"
+    }
+  ]
 }

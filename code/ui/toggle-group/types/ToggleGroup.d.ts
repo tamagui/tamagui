@@ -24,127 +24,127 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
     Item: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }, {
-        color?: string | undefined;
         active?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
+        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
-    }>, "color" | "active" | "$native" | "$web" | "$android" | "$ios" | "$tv" | "$androidtv" | "$tvos" | import("@tamagui/web").GroupMediaKeys | "value" | "size" | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | "activeStyle" | "defaultActiveStyle" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+        size?: number | import("@tamagui/web").Size | undefined;
+    }>, "$android" | "$androidtv" | "$ios" | "$native" | "$tv" | "$tvos" | "$web" | "__scopeToggleGroup" | "active" | "activeStyle" | "color" | "defaultActiveStyle" | "size" | "value" | import("@tamagui/web").GroupMediaKeys | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }> & {
-        color?: string | undefined;
         active?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
+        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
+        size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
-    }>>> | "__scopeToggleGroup"> & Omit<import("@tamagui/web").StackNonStyleProps, "color" | "active" | "size" | keyof import("@tamagui/web").StackStyleBase | "activeStyle" | "defaultActiveStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }>>>> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "activeStyle" | "color" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }> & {
-        color?: string | undefined;
         active?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
+        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
+        size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }> & {
-        color?: string | undefined;
         active?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
+        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
+        size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }, {
-        color?: string | undefined;
         active?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
+        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
+        size?: number | import("@tamagui/web").Size | undefined;
     }>> & {
         value: string;
         id?: string;
         disabled?: boolean;
     } & {
         __scopeToggleGroup?: string;
-    }, (HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View, import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "color" | "active" | "size" | keyof import("@tamagui/web").StackStyleBase | "activeStyle" | "defaultActiveStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "activeStyle" | "color" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }> & {
-        color?: string | undefined;
         active?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
+        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
+        size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }> & {
-        color?: string | undefined;
         active?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
+        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
+        size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }, {
-        color?: string | undefined;
         active?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
+        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
+        size?: number | import("@tamagui/web").Size | undefined;
     }>> & {
         value: string;
         id?: string;
@@ -154,17 +154,17 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
     }, import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
-                readonly activeStyle: "style";
+                readonly activeStyle: 'style';
             };
         }>> | undefined;
     }, {
-        color?: string | undefined;
         active?: boolean | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
+        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
+        size?: number | import("@tamagui/web").Size | undefined;
     }, {
         accept: {
-            readonly activeStyle: "style";
+            readonly activeStyle: 'style';
         };
     }>;
 };

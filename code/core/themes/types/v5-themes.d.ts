@@ -4,72 +4,72 @@ export declare const V5_BG_OFFSET: number;
 export { interpolateColor, opacify } from './opacify';
 export declare const v5ComponentThemes: {
     readonly Button: {
-        readonly template: "surface2";
+        readonly template: 'surface2';
     };
     readonly Input: {
-        readonly template: "surface1";
+        readonly template: 'surface1';
     };
     readonly Progress: {
-        readonly template: "surface1";
+        readonly template: 'surface1';
     };
     readonly ProgressIndicator: {
-        readonly template: "surface3";
+        readonly template: 'surface3';
     };
     readonly Slider: {
-        readonly template: "surface1";
+        readonly template: 'surface1';
     };
     readonly SliderActive: {
-        readonly template: "surface3";
+        readonly template: 'surface3';
     };
     readonly SliderThumb: {
-        readonly template: "surface2";
+        readonly template: 'surface2';
     };
     readonly Switch: {
-        readonly template: "surface2";
+        readonly template: 'surface2';
     };
     readonly TextArea: {
-        readonly template: "surface1";
+        readonly template: 'surface1';
     };
     readonly Tooltip: {
-        readonly template: "accent";
+        readonly template: 'accent';
     };
     readonly SwitchThumb: {
-        readonly template: "accent";
+        readonly template: 'accent';
     };
 };
 export declare const v5ComponentThemesWithInverses: {
-    readonly ProgressIndicator: {
-        readonly template: "accent";
-    };
-    readonly SliderThumb: {
-        readonly template: "accent";
-    };
-    readonly Tooltip: {
-        readonly template: "accent";
-    };
     readonly Button: {
-        readonly template: "surface2";
+        readonly template: 'surface2';
     };
     readonly Input: {
-        readonly template: "surface1";
+        readonly template: 'surface1';
     };
     readonly Progress: {
-        readonly template: "surface1";
+        readonly template: 'surface1';
     };
     readonly Slider: {
-        readonly template: "surface1";
+        readonly template: 'surface1';
     };
     readonly SliderActive: {
-        readonly template: "surface3";
+        readonly template: 'surface3';
     };
     readonly Switch: {
-        readonly template: "surface2";
+        readonly template: 'surface2';
     };
     readonly TextArea: {
-        readonly template: "surface1";
+        readonly template: 'surface1';
     };
     readonly SwitchThumb: {
-        readonly template: "accent";
+        readonly template: 'accent';
+    };
+    readonly ProgressIndicator: {
+        readonly template: 'accent';
+    };
+    readonly SliderThumb: {
+        readonly template: 'accent';
+    };
+    readonly Tooltip: {
+        readonly template: 'accent';
     };
 };
 /** Default grandchildren themes available in v5 */
@@ -413,32 +413,32 @@ export declare const defaultChildrenThemes: {
     };
     neutral: {
         light: {
-            neutral2: string;
             neutral1: string;
-            neutral4: string;
-            neutral8: string;
-            neutral12: string;
-            neutral3: string;
-            neutral5: string;
-            neutral7: string;
-            neutral9: string;
             neutral10: string;
-            neutral6: string;
             neutral11: string;
+            neutral12: string;
+            neutral2: string;
+            neutral3: string;
+            neutral4: string;
+            neutral5: string;
+            neutral6: string;
+            neutral7: string;
+            neutral8: string;
+            neutral9: string;
         };
         dark: {
-            neutral2: string;
             neutral1: string;
-            neutral4: string;
-            neutral8: string;
-            neutral12: string;
-            neutral3: string;
-            neutral5: string;
-            neutral7: string;
-            neutral9: string;
             neutral10: string;
-            neutral6: string;
             neutral11: string;
+            neutral12: string;
+            neutral2: string;
+            neutral3: string;
+            neutral4: string;
+            neutral5: string;
+            neutral6: string;
+            neutral7: string;
+            neutral8: string;
+            neutral9: string;
         };
     };
 };
@@ -521,5 +521,5 @@ export type CreateV5ThemeOptions<Children extends Record<string, ChildTheme> = t
  *   childrenThemes: {},
  * })
  */
-export declare function createV5Theme<Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes, GrandChildren extends Record<string, GrandChildrenThemeDefinition> = typeof v5GrandchildrenThemes, GetThemeReturn extends Record<string, string | number> = {}>(options?: CreateV5ThemeOptions<Children, GrandChildren, GetThemeReturn>): Record<"light" | "dark" | "light_accent" | "dark_accent" | ("black" | "white" | keyof Children extends string ? `light_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T ? T extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (string & keyof Children) | (keyof T extends infer T_1 ? T_1 extends keyof T ? T_1 extends string ? `black_${T_1}` | `white_${T_1}` | `${string & keyof Children}_${T_1}` : never : never : never) : never : never}` | `dark_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T_2 ? T_2 extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T_2 extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (string & keyof Children) | (keyof T_2 extends infer T_3 ? T_3 extends keyof T_2 ? T_3 extends string ? `black_${T_3}` | `white_${T_3}` | `${string & keyof Children}_${T_3}` : never : never : never) : never : never}` : never), { [ThemeKey in "color" | "shadowColor" | "borderColor" | "borderColorHover" | "colorHover" | "colorFocus" | "colorPress" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "background" | "placeholderColor" | "colorTransparent" | "backgroundHover" | "backgroundPress" | "backgroundFocus" | "borderColorFocus" | "borderColorPress" | "accentBackground" | "accentColor" | "background0" | "background02" | "background04" | "background06" | "background08" | "color0" | "color02" | "color04" | "color06" | "color08" | "black" | "black2" | "black1" | "black4" | "black8" | "black12" | "black3" | "black5" | "black7" | "black9" | "black10" | "black6" | "black11" | "white" | "white2" | "white1" | "white4" | "white8" | "white12" | "white3" | "white5" | "white7" | "white9" | "white10" | "white6" | "white11" | "white0" | "white02" | "white04" | "white06" | "white08" | "black0" | "black02" | "black04" | "black06" | "black08" | "shadow1" | "shadow2" | "shadow3" | "shadow4" | "shadow5" | "shadow6" | "shadow7" | "shadow8" | "highlight1" | "highlight2" | "highlight3" | "highlight4" | "highlight5" | "highlight6" | "highlight7" | "highlight8" | "outlineColor" | "accent0" | "accent2" | "accent1" | "accent4" | "accent8" | "accent12" | "accent3" | "accent5" | "accent7" | "accent9" | "accent10" | "accent6" | "accent11" | keyof UnionToIntersection<ChildrenColors<Children, "dark">>]: string; } & Omit<DefaultV5ThemeValues, keyof GetThemeReturn> & GetThemeReturn>;
+export declare function createV5Theme<Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes, GrandChildren extends Record<string, GrandChildrenThemeDefinition> = typeof v5GrandchildrenThemes, GetThemeReturn extends Record<string, string | number> = {}>(options?: CreateV5ThemeOptions<Children, GrandChildren, GetThemeReturn>): Record<"dark" | "dark_accent" | "light" | "light_accent" | ("black" | "white" | keyof Children extends string ? `dark_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T ? T extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (keyof T extends infer T_1 ? T_1 extends keyof T ? T_1 extends string ? `${string & keyof Children}_${T_1}` | `black_${T_1}` | `white_${T_1}` : never : never : never) | (string & keyof Children) : never : never}` | `light_${(GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) extends infer T ? T extends (GrandChildren extends undefined ? undefined : Record<keyof GrandChildren, any>) ? T extends undefined ? "black" | "white" | (string & keyof Children) : "black" | "white" | (keyof T extends infer T_1 ? T_1 extends keyof T ? T_1 extends string ? `${string & keyof Children}_${T_1}` | `black_${T_1}` | `white_${T_1}` : never : never : never) | (string & keyof Children) : never : never}` : never), { [ThemeKey in "accent0" | "accent1" | "accent10" | "accent11" | "accent12" | "accent2" | "accent3" | "accent4" | "accent5" | "accent6" | "accent7" | "accent8" | "accent9" | "accentBackground" | "accentColor" | "background" | "background0" | "background02" | "background04" | "background06" | "background08" | "backgroundFocus" | "backgroundHover" | "backgroundPress" | "black" | "black0" | "black02" | "black04" | "black06" | "black08" | "black1" | "black10" | "black11" | "black12" | "black2" | "black3" | "black4" | "black5" | "black6" | "black7" | "black8" | "black9" | "borderColor" | "borderColorFocus" | "borderColorHover" | "borderColorPress" | "color" | "color0" | "color02" | "color04" | "color06" | "color08" | "color1" | "color10" | "color11" | "color12" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "colorFocus" | "colorHover" | "colorPress" | "colorTransparent" | "highlight1" | "highlight2" | "highlight3" | "highlight4" | "highlight5" | "highlight6" | "highlight7" | "highlight8" | "outlineColor" | "placeholderColor" | "shadow1" | "shadow2" | "shadow3" | "shadow4" | "shadow5" | "shadow6" | "shadow7" | "shadow8" | "shadowColor" | "white" | "white0" | "white02" | "white04" | "white06" | "white08" | "white1" | "white10" | "white11" | "white12" | "white2" | "white3" | "white4" | "white5" | "white6" | "white7" | "white8" | "white9" | keyof UnionToIntersection<ChildrenColors<Children, "dark">>]: string; } & Omit<DefaultV5ThemeValues, keyof GetThemeReturn> & GetThemeReturn>;
 //# sourceMappingURL=v5-themes.d.ts.map

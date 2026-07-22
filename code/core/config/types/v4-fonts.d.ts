@@ -23,8 +23,8 @@ declare const defaultSizes: {
     readonly 16: 134;
 };
 export declare const fonts: {
-    body: FillInFont<GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
-    heading: FillInFont<GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
+    body: FillInFont<GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16>;
+    heading: FillInFont<GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16>;
 };
 export {};
 //# sourceMappingURL=v4-fonts.d.ts.map

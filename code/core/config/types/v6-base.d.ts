@@ -1,4 +1,5 @@
 import { shorthands } from '@tamagui/shorthands/v6';
+import { selectionStyles } from './v5-base';
 export * from './v5-base';
 export { shorthands };
 export declare const tokens: {
@@ -402,16 +403,6 @@ export declare const tokens: {
         readonly $96: 384;
     };
     readonly radius: {
-        readonly $none: 0;
-        readonly $xs: 2;
-        readonly $sm: 4;
-        readonly $md: 6;
-        readonly $lg: 8;
-        readonly $xl: 12;
-        readonly $2xl: 16;
-        readonly $3xl: 24;
-        readonly $4xl: 32;
-        readonly $full: 9999;
         readonly 0: number;
         readonly 1: number;
         readonly 2: number;
@@ -425,6 +416,16 @@ export declare const tokens: {
         readonly 10: number;
         readonly 11: number;
         readonly 12: number;
+        readonly $none: 0;
+        readonly $xs: 2;
+        readonly $sm: 4;
+        readonly $md: 6;
+        readonly $lg: 8;
+        readonly $xl: 12;
+        readonly $2xl: 16;
+        readonly $3xl: 24;
+        readonly $4xl: 32;
+        readonly $full: 9999;
     };
     readonly zIndex: {
         readonly $0: 0;
@@ -441,7 +442,7 @@ export declare const tokens: {
     };
 };
 export declare const fonts: {
-    body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
+    body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
         size: {
             $xs: number;
             $sm: number;
@@ -473,7 +474,7 @@ export declare const fonts: {
             $9xl: number;
         };
     };
-    heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
+    heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
         size: {
             $xs: number;
             $sm: number;
@@ -507,13 +508,6 @@ export declare const fonts: {
     };
 };
 export declare const settings: {
-    defaultSize: string;
-    defaultTokens: {
-        space: string;
-        radius: string;
-        zIndex: string;
-        fontSize: string;
-    };
     mediaQueryDefaultActive: {
         touchable: boolean;
         hoverable: boolean;
@@ -547,6 +541,13 @@ export declare const settings: {
     addThemeClassName: "html";
     onlyAllowShorthands: true;
     styleCompat: "web";
+    defaultSize: string;
+    defaultTokens: {
+        space: string;
+        radius: string;
+        zIndex: string;
+        fontSize: string;
+    };
 };
 export type V6Settings = typeof settings;
 export declare const defaultConfig: {
@@ -1084,16 +1085,6 @@ export declare const defaultConfig: {
             readonly $96: 384;
         };
         readonly radius: {
-            readonly $none: 0;
-            readonly $xs: 2;
-            readonly $sm: 4;
-            readonly $md: 6;
-            readonly $lg: 8;
-            readonly $xl: 12;
-            readonly $2xl: 16;
-            readonly $3xl: 24;
-            readonly $4xl: 32;
-            readonly $full: 9999;
             readonly 0: number;
             readonly 1: number;
             readonly 2: number;
@@ -1107,6 +1098,16 @@ export declare const defaultConfig: {
             readonly 10: number;
             readonly 11: number;
             readonly 12: number;
+            readonly $none: 0;
+            readonly $xs: 2;
+            readonly $sm: 4;
+            readonly $md: 6;
+            readonly $lg: 8;
+            readonly $xl: 12;
+            readonly $2xl: 16;
+            readonly $3xl: 24;
+            readonly $4xl: 32;
+            readonly $full: 9999;
         };
         readonly zIndex: {
             readonly $0: 0;
@@ -1123,7 +1124,7 @@ export declare const defaultConfig: {
         };
     };
     fonts: {
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
             size: {
                 $xs: number;
                 $sm: number;
@@ -1155,7 +1156,7 @@ export declare const defaultConfig: {
                 $9xl: number;
             };
         };
-        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
+        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
             size: {
                 $xs: number;
                 $sm: number;
@@ -1188,18 +1189,8 @@ export declare const defaultConfig: {
             };
         };
     };
-    selectionStyles: (theme: any) => {
-        backgroundColor: any;
-        color: any;
-    } | null;
+    selectionStyles: typeof selectionStyles;
     settings: {
-        defaultSize: string;
-        defaultTokens: {
-            space: string;
-            radius: string;
-            zIndex: string;
-            fontSize: string;
-        };
         mediaQueryDefaultActive: {
             touchable: boolean;
             hoverable: boolean;
@@ -1233,6 +1224,13 @@ export declare const defaultConfig: {
         addThemeClassName: "html";
         onlyAllowShorthands: true;
         styleCompat: "web";
+        defaultSize: string;
+        defaultTokens: {
+            space: string;
+            radius: string;
+            zIndex: string;
+            fontSize: string;
+        };
     };
 };
 //# sourceMappingURL=v6-base.d.ts.map

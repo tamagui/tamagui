@@ -34,7 +34,7 @@ export declare const PopperPositionContext: {
         namespace?: string;
         keys?: never;
     }): import("@tamagui/core").StyledContext<VariantProps, never>;
-    <VariantProps extends Record<string, any>>(defaultValues: VariantProps & ({ [Key_1 in Exclude<keyof VariantProps, { [Key in keyof VariantProps]-?: {} extends Pick<VariantProps, Key> ? Key : never; }[keyof VariantProps]>]: VariantProps[Key_1]; } & { [Key_2 in { [Key in keyof VariantProps]-?: {} extends Pick<VariantProps, Key> ? Key : never; }[keyof VariantProps]]: VariantProps[Key_2] | undefined; }), namespaceOrOptions?: string | {
+    <VariantProps extends Record<string, any>>(defaultValues: VariantProps & ({ [Key in Exclude<keyof VariantProps, { [Key in keyof VariantProps]-?: {} extends Pick<VariantProps, Key> ? Key : never; }[keyof VariantProps]>]: VariantProps[Key]; } & { [Key in { [Key in keyof VariantProps]-?: {} extends Pick<VariantProps, Key> ? Key : never; }[keyof VariantProps]]: VariantProps[Key] | undefined; }), namespaceOrOptions?: string | {
         namespace?: string;
         keys?: never;
     }): import("@tamagui/core").StyledContext<VariantProps, Extract<keyof VariantProps, string>>;
@@ -116,7 +116,7 @@ export type PopperAnchorExtraProps = {
     scope?: string;
 };
 export type PopperAnchorProps = ViewProps;
-export declare const PopperAnchor: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof PopperAnchorExtraProps> & PopperAnchorExtraProps, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperAnchorExtraProps, import("@tamagui/core").StackStyleBase, {}, {}>;
+export declare const PopperAnchor: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof PopperAnchorExtraProps> & PopperAnchorExtraProps, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperAnchorExtraProps, import("@tamagui/core").StackStyleBase, {}, {}>;
 export type PopperContentProps = ViewProps & {
     scope?: string;
     /**

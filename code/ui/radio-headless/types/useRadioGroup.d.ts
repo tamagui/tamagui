@@ -62,12 +62,6 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
     bubbleInput: import("react/jsx-runtime").JSX.Element;
     native: boolean | undefined;
     frameAttrs: {
-        onKeyDown?: import("@tamagui/helpers").EventHandler<import("react").KeyboardEvent<HTMLDivElement>> | undefined;
-        onFocus?: import("@tamagui/helpers").EventHandler<import("react").FocusEvent<HTMLDivElement, Element>> | undefined;
-        id: string | undefined;
-        onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
-        type?: string | undefined;
-        value?: string | undefined;
         'data-state': string;
         'data-disabled': string | undefined;
         role: any;
@@ -76,9 +70,15 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
         'aria-required': boolean | undefined;
         disabled: boolean | undefined;
         ref: (node: any) => void;
+        type?: string | undefined;
+        value?: string | undefined;
+        id: string | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
+        onKeyDown?: import("@tamagui/helpers").EventHandler<import("react").KeyboardEvent<HTMLDivElement>> | undefined;
+        onFocus?: import("@tamagui/helpers").EventHandler<import("react").FocusEvent<HTMLDivElement, Element>> | undefined;
     };
     rovingFocusGroupAttrs: {
-        asChild: "except-style";
+        asChild: 'except-style';
         tabIndex: number;
         active: boolean;
     };

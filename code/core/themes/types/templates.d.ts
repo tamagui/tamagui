@@ -1,5 +1,17 @@
 export declare const templates: {
     base: {
+        color1: number;
+        color2: number;
+        color3: number;
+        color4: number;
+        color5: number;
+        color6: number;
+        color7: number;
+        color8: number;
+        color9: number;
+        color10: number;
+        color11: number;
+        color12: number;
         background: number;
         backgroundHover: number;
         backgroundPress: number;
@@ -16,36 +28,8 @@ export declare const templates: {
         borderColorFocus: number;
         borderColorPress: number;
         placeholderColor: number;
-        color1: number;
-        color2: number;
-        color3: number;
-        color4: number;
-        color5: number;
-        color6: number;
-        color7: number;
-        color8: number;
-        color9: number;
-        color10: number;
-        color11: number;
-        color12: number;
     };
     colorLight: {
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        backgroundStrong: number;
-        backgroundTransparent: number;
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-        colorTransparent: number;
-        placeholderColor: number;
         color1: number;
         color2: number;
         color3: number;
@@ -58,19 +42,43 @@ export declare const templates: {
         color10: number;
         color11: number;
         color12: number;
+        background: number;
+        backgroundHover: number;
+        backgroundPress: number;
+        backgroundFocus: number;
+        backgroundStrong: number;
+        backgroundTransparent: number;
+        color: number;
+        colorHover: number;
+        colorPress: number;
+        colorFocus: number;
+        colorTransparent: number;
+        placeholderColor: number;
+        borderColor: number;
+        borderColorHover: number;
+        borderColorFocus: number;
+        borderColorPress: number;
     };
 };
 export declare const maskOptions: {
     component: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -90,14 +98,6 @@ export declare const maskOptions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
     };
     alt: {
         palette?: import("@tamagui/create-theme").CreateThemePalette;
@@ -112,17 +112,25 @@ export declare const maskOptions: {
         parentName?: string;
     };
     button: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            borderColor: string;
-            borderColorHover: string;
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
+            borderColor: string;
+            borderColorHover: string;
         };
         skip: {
             color1: number;
@@ -142,14 +150,6 @@ export declare const maskOptions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
     };
 };
 //# sourceMappingURL=templates.d.ts.map

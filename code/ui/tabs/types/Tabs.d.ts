@@ -3,70 +3,70 @@ import { type TokenSize } from '@tamagui/size';
 import type { GetProps, TamaguiElement } from '@tamagui/web';
 import * as React from 'react';
 import type { LayoutRectangle } from 'react-native';
-export declare const TabsFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+export declare const TabsFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     size?: TokenSize | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     size?: TokenSize | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
 }>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const TabsListFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+export declare const TabsListFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     size?: TokenSize | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     size?: TokenSize | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
 }>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const TabsTabFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase | "disabled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: TokenSize | undefined;
+export declare const TabsTabFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     disabled?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     size?: TokenSize | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     disabled?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
     size?: TokenSize | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
     disabled?: boolean | undefined;
+    size?: TokenSize | undefined;
 }>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    size?: TokenSize | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     disabled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        size?: TokenSize | undefined;
+    size?: TokenSize | undefined;
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         disabled?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+        size?: TokenSize | undefined;
+    }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const TabsContentFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+export declare const TabsContentFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     size?: TokenSize | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     size?: TokenSize | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
 }>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/web").StaticConfigPublic];
 };
 type TabsScopeProps = {
     __scopeTabs?: string;
@@ -125,25 +125,25 @@ type TabsContentExtraProps = TabsScopeProps & {
     forceMount?: boolean;
 };
 export type TabsContentProps = GetProps<typeof TabsContentFrame> & TabsContentExtraProps;
-export declare const TabsList: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const TabsList: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
-}>, "disabled" | "__scopeTabs" | "loop"> & TabsScopeProps & {
+}>, "__scopeTabs" | "disabled" | "loop"> & TabsScopeProps & {
     /** Whether keyboard navigation loops after the first or last trigger. */
     loop?: boolean;
     /** Disables every trigger in the list. */
     disabled?: boolean;
-}, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
     /** Whether keyboard navigation loops after the first or last trigger. */
     loop?: boolean;
     /** Disables every trigger in the list. */
     disabled?: boolean;
-}, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
-export declare const TabsTab: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    size?: TokenSize | undefined;
+}, import("@tamagui/web").StaticConfigPublic>;
+export declare const TabsTab: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     disabled?: boolean | undefined;
-}>, "value" | "__scopeTabs" | "onInteraction" | "activeStyle" | "activeTheme"> & TabsScopeProps & {
+    size?: TokenSize | undefined;
+}>, "__scopeTabs" | "activeStyle" | "activeTheme" | "onInteraction" | "value"> & TabsScopeProps & {
     /** The value selected when this trigger is activated. */
     value: string;
     /** Reports the measured trigger rectangle for custom indicators. */
@@ -152,7 +152,7 @@ export declare const TabsTab: import("@tamagui/core").TamaguiComponent<Omit<impo
     activeStyle?: GetProps<typeof TabsTabFrame>;
     /** Theme to apply while this trigger is selected. */
     activeTheme?: string | null;
-}, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
     /** The value selected when this trigger is activated. */
     value: string;
     /** Reports the measured trigger rectangle for custom indicators. */
@@ -161,28 +161,28 @@ export declare const TabsTab: import("@tamagui/core").TamaguiComponent<Omit<impo
     activeStyle?: GetProps<typeof TabsTabFrame>;
     /** Theme to apply while this trigger is selected. */
     activeTheme?: string | null;
-}, import("@tamagui/core").StackStyleBase, {
-    size?: TokenSize | undefined;
+}, import("@tamagui/web").StackStyleBase, {
     disabled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
-export declare const TabsContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: TokenSize | undefined;
-}>, "value" | "__scopeTabs" | "forceMount"> & TabsScopeProps & {
+}, import("@tamagui/web").StaticConfigPublic>;
+export declare const TabsContent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    size?: TokenSize | undefined;
+}>, "__scopeTabs" | "forceMount" | "value"> & TabsScopeProps & {
     /** The value that selects this content. */
     value: string;
     /** Mounts the content even when its value is not selected. */
     forceMount?: boolean;
-}, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
     /** The value that selects this content. */
     value: string;
     /** Mounts the content even when its value is not selected. */
     forceMount?: boolean;
-}, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
-export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/web").StaticConfigPublic>;
+export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
-}>, "value" | "size" | "dir" | "orientation" | "__scopeTabs" | "defaultValue" | "onValueChange" | "activationMode"> & TabsScopeProps & {
+}>, "__scopeTabs" | "activationMode" | "defaultValue" | "dir" | "onValueChange" | "orientation" | "size" | "value"> & TabsScopeProps & {
     /** The value for the selected tab, if controlled */
     value?: string;
     /** The value of the tab to select by default, if uncontrolled */
@@ -196,20 +196,20 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
      * Mainly so arrow navigation is done accordingly (left & right vs. up & down).
      * @defaultValue horizontal
      */
-    orientation?: RovingFocusGroupProps["orientation"];
+    orientation?: RovingFocusGroupProps['orientation'];
     /** The direction of navigation between tab triggers. */
-    dir?: RovingFocusGroupProps["dir"];
+    dir?: RovingFocusGroupProps['dir'];
     /**
      * Whether a tab is activated automatically or manually. Automatic activation is only
      * supported on web; native tabs always activate manually.
      * @defaultValue automatic
      */
-    activationMode?: "automatic" | "manual";
+    activationMode?: 'automatic' | 'manual';
 } & {
-    ref?: React.Ref<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View> | undefined;
-}> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
-}>, "value" | "size" | "dir" | "orientation" | "__scopeTabs" | "defaultValue" | "onValueChange" | "activationMode"> & TabsScopeProps & {
+}>, "__scopeTabs" | "activationMode" | "defaultValue" | "dir" | "onValueChange" | "orientation" | "size" | "value"> & TabsScopeProps & {
     /** The value for the selected tab, if controlled */
     value?: string;
     /** The value of the tab to select by default, if uncontrolled */
@@ -223,16 +223,16 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
      * Mainly so arrow navigation is done accordingly (left & right vs. up & down).
      * @defaultValue horizontal
      */
-    orientation?: RovingFocusGroupProps["orientation"];
+    orientation?: RovingFocusGroupProps['orientation'];
     /** The direction of navigation between tab triggers. */
-    dir?: RovingFocusGroupProps["dir"];
+    dir?: RovingFocusGroupProps['dir'];
     /**
      * Whether a tab is activated automatically or manually. Automatic activation is only
      * supported on web; native tabs always activate manually.
      * @defaultValue automatic
      */
-    activationMode?: "automatic" | "manual";
-}, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
+    activationMode?: 'automatic' | 'manual';
+}, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
     /** The value for the selected tab, if controlled */
     value?: string;
     /** The value of the tab to select by default, if uncontrolled */
@@ -246,21 +246,21 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
      * Mainly so arrow navigation is done accordingly (left & right vs. up & down).
      * @defaultValue horizontal
      */
-    orientation?: RovingFocusGroupProps["orientation"];
+    orientation?: RovingFocusGroupProps['orientation'];
     /** The direction of navigation between tab triggers. */
-    dir?: RovingFocusGroupProps["dir"];
+    dir?: RovingFocusGroupProps['dir'];
     /**
      * Whether a tab is activated automatically or manually. Automatic activation is only
      * supported on web; native tabs always activate manually.
      * @defaultValue automatic
      */
-    activationMode?: "automatic" | "manual";
-}, import("@tamagui/core").StackStyleBase, {
+    activationMode?: 'automatic' | 'manual';
+}, import("@tamagui/web").StackStyleBase, {
     size?: TokenSize | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-    __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
-    }>, "value" | "size" | "dir" | "orientation" | "__scopeTabs" | "defaultValue" | "onValueChange" | "activationMode"> & TabsScopeProps & {
+    }>, "__scopeTabs" | "activationMode" | "defaultValue" | "dir" | "onValueChange" | "orientation" | "size" | "value"> & TabsScopeProps & {
         /** The value for the selected tab, if controlled */
         value?: string;
         /** The value of the tab to select by default, if uncontrolled */
@@ -274,16 +274,16 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
          * Mainly so arrow navigation is done accordingly (left & right vs. up & down).
          * @defaultValue horizontal
          */
-        orientation?: RovingFocusGroupProps["orientation"];
+        orientation?: RovingFocusGroupProps['orientation'];
         /** The direction of navigation between tab triggers. */
-        dir?: RovingFocusGroupProps["dir"];
+        dir?: RovingFocusGroupProps['dir'];
         /**
          * Whether a tab is activated automatically or manually. Automatic activation is only
          * supported on web; native tabs always activate manually.
          * @defaultValue automatic
          */
-        activationMode?: "automatic" | "manual";
-    }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
+        activationMode?: 'automatic' | 'manual';
+    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
         /** The value for the selected tab, if controlled */
         value?: string;
         /** The value of the tab to select by default, if uncontrolled */
@@ -297,53 +297,53 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
          * Mainly so arrow navigation is done accordingly (left & right vs. up & down).
          * @defaultValue horizontal
          */
-        orientation?: RovingFocusGroupProps["orientation"];
+        orientation?: RovingFocusGroupProps['orientation'];
         /** The direction of navigation between tab triggers. */
-        dir?: RovingFocusGroupProps["dir"];
+        dir?: RovingFocusGroupProps['dir'];
         /**
          * Whether a tab is activated automatically or manually. Automatic activation is only
          * supported on web; native tabs always activate manually.
          * @defaultValue automatic
          */
-        activationMode?: "automatic" | "manual";
-    }, import("@tamagui/core").StackStyleBase, {
+        activationMode?: 'automatic' | 'manual';
+    }, import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Frame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    Frame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         size?: TokenSize | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         size?: TokenSize | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
     }>> & {
         ref?: React.Ref<TamaguiElement> | undefined;
-    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
-    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
             size?: TokenSize | undefined;
-        }, import("@tamagui/core").StaticConfigPublic];
+        }, import("@tamagui/web").StaticConfigPublic];
     };
-    List: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    List: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
-    }>, "disabled" | "__scopeTabs" | "loop"> & TabsScopeProps & {
+    }>, "__scopeTabs" | "disabled" | "loop"> & TabsScopeProps & {
         /** Whether keyboard navigation loops after the first or last trigger. */
         loop?: boolean;
         /** Disables every trigger in the list. */
         disabled?: boolean;
-    }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
+    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
         /** Whether keyboard navigation loops after the first or last trigger. */
         loop?: boolean;
         /** Disables every trigger in the list. */
         disabled?: boolean;
-    }, import("@tamagui/core").StackStyleBase, {
+    }, import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
-    Tab: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        size?: TokenSize | undefined;
+    }, import("@tamagui/web").StaticConfigPublic>;
+    Tab: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         disabled?: boolean | undefined;
-    }>, "value" | "__scopeTabs" | "onInteraction" | "activeStyle" | "activeTheme"> & TabsScopeProps & {
+        size?: TokenSize | undefined;
+    }>, "__scopeTabs" | "activeStyle" | "activeTheme" | "onInteraction" | "value"> & TabsScopeProps & {
         /** The value selected when this trigger is activated. */
         value: string;
         /** Reports the measured trigger rectangle for custom indicators. */
@@ -352,7 +352,7 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
         activeStyle?: GetProps<typeof TabsTabFrame>;
         /** Theme to apply while this trigger is selected. */
         activeTheme?: string | null;
-    }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
+    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
         /** The value selected when this trigger is activated. */
         value: string;
         /** Reports the measured trigger rectangle for custom indicators. */
@@ -361,25 +361,25 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
         activeStyle?: GetProps<typeof TabsTabFrame>;
         /** Theme to apply while this trigger is selected. */
         activeTheme?: string | null;
-    }, import("@tamagui/core").StackStyleBase, {
-        size?: TokenSize | undefined;
+    }, import("@tamagui/web").StackStyleBase, {
         disabled?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
-    Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: TokenSize | undefined;
-    }>, "value" | "__scopeTabs" | "forceMount"> & TabsScopeProps & {
+    }, import("@tamagui/web").StaticConfigPublic>;
+    Content: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        size?: TokenSize | undefined;
+    }>, "__scopeTabs" | "forceMount" | "value"> & TabsScopeProps & {
         /** The value that selects this content. */
         value: string;
         /** Mounts the content even when its value is not selected. */
         forceMount?: boolean;
-    }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
+    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
         /** The value that selects this content. */
         value: string;
         /** Mounts the content even when its value is not selected. */
         forceMount?: boolean;
-    }, import("@tamagui/core").StackStyleBase, {
+    }, import("@tamagui/web").StackStyleBase, {
         size?: TokenSize | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/web").StaticConfigPublic>;
 };
 export {};
 //# sourceMappingURL=Tabs.d.ts.map

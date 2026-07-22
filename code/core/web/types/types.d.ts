@@ -1832,7 +1832,7 @@ export type ViewStyleWithPseudos = TextStyle | (TextStyle & {
  * --------------------------------------------
  */
 export type StylableComponent = TamaguiComponent | ComponentType<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
-export declare const variantResolverNames: readonly ["Size", "Space", "Color", "Radius", "ZIndex", "Theme", "FontSize", "FontStyle", "FontTransform", "FontLineHeight", "FontLetterSpacing", "number", "string", "boolean", "any"];
+export declare const variantResolverNames: readonly ['Size', 'Space', 'Color', 'Radius', 'ZIndex', 'Theme', 'FontSize', 'FontStyle', 'FontTransform', 'FontLineHeight', 'FontLetterSpacing', 'number', 'string', 'boolean', 'any'];
 export type VariantResolverName = (typeof variantResolverNames)[number];
 type TrimWhitespace = ' ' | '\n' | '\t' | '\r' | '\v' | '\f';
 type Trim<S extends string> = S extends `${TrimWhitespace}${infer Next}` ? Trim<Next> : S extends `${infer Next}${TrimWhitespace}` ? Trim<Next> : S;

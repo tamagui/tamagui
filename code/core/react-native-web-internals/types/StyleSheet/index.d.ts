@@ -6,6 +6,14 @@
  *
  * @flow
  */
+declare const absoluteFillObject: {
+    position: string;
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+};
+declare const absoluteFill: any;
 /**
  * create
  */
@@ -38,22 +46,13 @@ type Options = {
 };
 export declare function StyleSheet(styles: any, options?: Options): StyleProps;
 export declare namespace StyleSheet {
-    var absoluteFill: any;
-    var absoluteFillObject: {
-        position: string;
-        left: number;
-        right: number;
-        top: number;
-        bottom: number;
-    };
-    var create: (styles: any) => any;
-    var compose: (style1: any, style2: any) => any;
-    var flatten: typeof import(".").flatten;
-    var getSheet: () => {
-        id: string;
-        textContent: string;
-    };
-    var hairlineWidth: number;
+    export { absoluteFill };
+    export { absoluteFillObject };
+    export { create };
+    export { compose };
+    export { flatten };
+    export { getSheet };
+    export var hairlineWidth: number;
 }
 export type IStyleSheet = {
     (styles: any, options?: Options): StyleProps;

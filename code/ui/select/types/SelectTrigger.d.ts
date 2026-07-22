@@ -9,7 +9,7 @@ export declare const SelectTriggerFrame: React.FunctionComponent<Omit<import("@t
 export type SelectTriggerProps = SelectScopedProps<GetProps<typeof SelectTriggerFrame>>;
 export declare const SelectTrigger: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope"> & {
     scope?: string;
-}, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
+}, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & {
     scope?: string;
 }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=SelectTrigger.d.ts.map

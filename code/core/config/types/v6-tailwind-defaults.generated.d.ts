@@ -1,7 +1,7 @@
 export declare const tailwindSource: {
-    readonly tailwindVersion: "4.3.0";
-    readonly colorConverter: "playwright@1.58.2";
-    readonly checksum: "a2856683c9a107e37bb9d06bc6d318ca729aeac4dad0b3077f5526303d5d8f88";
+    readonly tailwindVersion: '4.3.0';
+    readonly colorConverter: 'playwright@1.58.2';
+    readonly checksum: 'a2856683c9a107e37bb9d06bc6d318ca729aeac4dad0b3077f5526303d5d8f88';
 };
 export declare const tailwindColors: {
     $white: string;
@@ -428,33 +428,33 @@ export declare const tailwindZIndex: {
     readonly $50: 50;
 };
 export declare const tailwindFontSize: {
-    readonly $xs: "12px";
-    readonly $sm: "14px";
-    readonly $base: "16px";
-    readonly $lg: "18px";
-    readonly $xl: "20px";
-    readonly $2xl: "24px";
-    readonly $3xl: "30px";
-    readonly $4xl: "36px";
-    readonly $5xl: "48px";
-    readonly $6xl: "60px";
-    readonly $7xl: "72px";
-    readonly $8xl: "96px";
-    readonly $9xl: "128px";
+    readonly $xs: '12px';
+    readonly $sm: '14px';
+    readonly $base: '16px';
+    readonly $lg: '18px';
+    readonly $xl: '20px';
+    readonly $2xl: '24px';
+    readonly $3xl: '30px';
+    readonly $4xl: '36px';
+    readonly $5xl: '48px';
+    readonly $6xl: '60px';
+    readonly $7xl: '72px';
+    readonly $8xl: '96px';
+    readonly $9xl: '128px';
 };
 export declare const tailwindLineHeight: {
-    readonly $xs: "16px";
-    readonly $sm: "20px";
-    readonly $base: "24px";
-    readonly $lg: "28px";
-    readonly $xl: "28px";
-    readonly $2xl: "32px";
-    readonly $3xl: "36px";
-    readonly $4xl: "40px";
-    readonly $5xl: "48px";
-    readonly $6xl: "60px";
-    readonly $7xl: "72px";
-    readonly $8xl: "96px";
-    readonly $9xl: "128px";
+    readonly $xs: '16px';
+    readonly $sm: '20px';
+    readonly $base: '24px';
+    readonly $lg: '28px';
+    readonly $xl: '28px';
+    readonly $2xl: '32px';
+    readonly $3xl: '36px';
+    readonly $4xl: '40px';
+    readonly $5xl: '48px';
+    readonly $6xl: '60px';
+    readonly $7xl: '72px';
+    readonly $8xl: '96px';
+    readonly $9xl: '128px';
 };
 //# sourceMappingURL=v6-tailwind-defaults.generated.d.ts.map

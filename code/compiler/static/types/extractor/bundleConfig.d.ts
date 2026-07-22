@@ -27,7 +27,6 @@ export declare const esbuildOptions: {
     platform: "node";
 };
 export declare const esbuildOptionsWithPlugins: {
-    plugins: esbuild.Plugin[];
     define: {
         __DEV__: string;
     };
@@ -35,6 +34,7 @@ export declare const esbuildOptionsWithPlugins: {
     format: "cjs";
     jsx: "automatic";
     platform: "node";
+    plugins: esbuild.Plugin[];
 };
 export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>;
 export declare function hasBundledConfigChanged(): boolean;

@@ -4,5 +4,5 @@ export declare const SwitchStyledContext: import("@tamagui/core").StyledContext<
     disabled?: boolean;
     frameWidth?: number;
     size?: SizeTokens | number | true;
-}, "size" | "active" | "disabled" | "frameWidth">;
+}, "active" | "disabled" | "frameWidth" | "size">;
 //# sourceMappingURL=StyledContext.d.ts.map

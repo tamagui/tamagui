@@ -1,5 +1,4 @@
-export declare const defaultTemplatesStrongest: Record<"light_base" | "light_surface1" | "light_surface3" | "light_surface2" | "light_inverse" | "light_alt1" | "light_alt2" | "dark_base" | "dark_surface1" | "dark_surface3" | "dark_surface2" | "dark_inverse" | "dark_alt1" | "dark_alt2", {
-    colorTransparent: number;
+export declare const defaultTemplatesStrongest: Record<"dark_alt1" | "dark_alt2" | "dark_base" | "dark_inverse" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "light_alt1" | "light_alt2" | "light_base" | "light_inverse" | "light_surface1" | "light_surface2" | "light_surface3", {
     color: number;
     colorHover: number;
     colorPress: number;
@@ -38,5 +37,6 @@ export declare const defaultTemplatesStrongest: Record<"light_base" | "light_sur
     borderColorHover: number;
     borderColorPress: number;
     borderColorFocus: number;
+    colorTransparent: number;
 }>;
 //# sourceMappingURL=defaultTemplatesStrongest.d.ts.map

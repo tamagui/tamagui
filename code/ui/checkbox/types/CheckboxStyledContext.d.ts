@@ -3,5 +3,5 @@ export declare const CheckboxStyledContext: import("@tamagui/core").StyledContex
     size: SizeTokens | true;
     active?: boolean;
     disabled?: boolean;
-}, "size" | "active" | "disabled">;
+}, "active" | "disabled" | "size">;
 //# sourceMappingURL=CheckboxStyledContext.d.ts.map

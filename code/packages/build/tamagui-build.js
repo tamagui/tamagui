@@ -33,11 +33,11 @@ const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
 const { es5Plugin } = require('./esbuild-es5')
 const { transformSync: oxcTransformSync } = require('oxc-transform')
-const ts = require('typescript')
+const { getTsconfig } = require('get-tsconfig')
 const path = require('node:path')
 const childProcess = require('node:child_process')
+const { getTypeScriptNativePath } = require('./typescript-native')
 const {
-  printTypescriptDiagnostics,
   printEsbuildError,
   printBuildError,
   printTypescriptCompilationError,
@@ -788,18 +788,6 @@ async function buildTsc(allFiles) {
     const { config, error } = await loadTsConfig()
     if (error) throw error
 
-    // much slower
-    // if (config.options.isolatedDeclarations) {
-    //   console.info(
-    //     childProcess
-    //       .execSync(`npx tsgo --project ./tsconfig.json --emitDeclarationOnly`)
-    //       .toString()
-    //   )
-    //   return
-    // }
-
-    const compilerOptions = createCompilerOptions(config.options, targetDir)
-
     if (config.options.isolatedDeclarations) {
       const oxc = await import('oxc-transform')
 
@@ -846,25 +834,7 @@ async function buildTsc(allFiles) {
       return
     }
 
-    const { program, emitResult, diagnostics } = await compileTypeScript(
-      config.fileNames,
-      compilerOptions
-    )
-
-    // exit on errors
-    if (diagnostics.some((x) => x.code) && !shouldWatch) {
-      printTypescriptDiagnostics(diagnostics, ts)
-      if (shouldWatch) {
-        return
-      }
-      process.exit(1)
-    }
-
-    reportDiagnostics(diagnostics)
-
-    if (emitResult.emitSkipped) {
-      throw new Error('TypeScript compilation failed')
-    }
+    await emitDeclarationsWithTsgo(targetDir, allFiles)
   } catch (err) {
     printTypescriptCompilationError(err, pkg.name)
     if (!shouldWatch) {
@@ -875,96 +845,79 @@ async function buildTsc(allFiles) {
   }
 }
 
+async function emitDeclarationsWithTsgo(targetDir, allFiles) {
+  const tsgoPath = getTypeScriptNativePath()
+  const args = [
+    '--project',
+    tsProject || 'tsconfig.json',
+    '--declaration',
+    '--emitDeclarationOnly',
+    '--declarationMap',
+    String(!shouldSkipSourceMaps),
+    '--outDir',
+    targetDir,
+    '--rootDir',
+    'src',
+    '--tsBuildInfoFile',
+    'tsconfig.tsbuildinfo',
+  ]
+
+  if (declarationToRoot) {
+    args.push('--declarationDir', './')
+  }
+  if (!ignoreBaseUrl && baseUrl) {
+    args.push('--baseUrl', path.resolve(baseUrl))
+  }
+
+  await new Promise((resolve, reject) => {
+    const child = childProcess.spawn(tsgoPath, args, { stdio: 'inherit' })
+    child.once('error', reject)
+    child.once('exit', (code, signal) => {
+      if (code === 0) {
+        resolve()
+        return
+      }
+      reject(
+        new Error(
+          signal
+            ? `TypeScript native declaration emit stopped by ${signal}`
+            : `TypeScript native declaration emit exited with code ${code}`
+        )
+      )
+    })
+  })
+
+  const declarationRoot = declarationToRoot ? '.' : targetDir
+  await Promise.all(
+    allFiles.map(async (file) => {
+      const relativeFile = path.relative(path.resolve('src'), path.resolve(file))
+      const declarationPath = path
+        .join(declarationRoot, relativeFile)
+        .replace(/\.tsx?$/, '.d.ts')
+      const output = await FSE.readFile(declarationPath, 'utf8')
+      const normalized = output.replace(
+        /(["'])@tamagui\/([^/"']+)\/types\1/g,
+        '$1@tamagui/$2$1'
+      )
+      if (normalized !== output) {
+        await writeIfUnchanged(declarationPath, normalized)
+      }
+    })
+  )
+}
+
 async function loadTsConfig() {
   if (cachedConfig && shouldWatch) {
     return cachedConfig
   }
 
-  const configPath = ts.findConfigFile(
-    './',
-    ts.sys.fileExists,
-    tsProject || 'tsconfig.json'
-  )
-  if (!configPath) {
+  const result = getTsconfig(process.cwd(), tsProject || 'tsconfig.json')
+  if (!result) {
     return { error: new Error("Could not find a valid 'tsconfig.json'.") }
   }
 
-  const configFile = ts.readConfigFile(configPath, ts.sys.readFile)
-  if (configFile.error) {
-    return {
-      error: new Error(`Error reading tsconfig.json: ${configFile.error.messageText}`),
-    }
-  }
-
-  const parsedCommandLine = ts.parseJsonConfigFileContent(
-    configFile.config,
-    ts.sys,
-    path.dirname(configPath)
-  )
-
-  if (parsedCommandLine.errors.length) {
-    return {
-      error: new Error(
-        `Error parsing tsconfig.json: ${ts.formatDiagnostics(parsedCommandLine.errors, formatHost)}`
-      ),
-    }
-  }
-
-  cachedConfig = { config: parsedCommandLine }
+  cachedConfig = { config: { options: result.config.compilerOptions || {} } }
   return cachedConfig
-}
-
-function createCompilerOptions(baseOptions, targetDir) {
-  const compilerOptions = {
-    ...baseOptions,
-    declaration: true,
-    emitDeclarationOnly: true,
-    declarationMap: !shouldSkipSourceMaps,
-    outDir: targetDir,
-    rootDir: 'src',
-    incremental: true,
-    tsBuildInfoFile: 'tsconfig.tsbuildinfo',
-  }
-
-  if (declarationToRoot) {
-    compilerOptions.declarationDir = './'
-  }
-
-  if (ignoreBaseUrl) {
-    delete compilerOptions.baseUrl
-  } else if (baseUrl) {
-    compilerOptions.baseUrl = path.resolve(baseUrl)
-  }
-
-  return compilerOptions
-}
-
-async function compileTypeScript(fileNames, options) {
-  const program = ts.createProgram(fileNames, options)
-  const emitResult = program.emit()
-  const allDiagnostics = ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics)
-
-  return { program, emitResult, diagnostics: allDiagnostics }
-}
-
-const formatHost = {
-  getCanonicalFileName: (path) => path,
-  getCurrentDirectory: ts.sys.getCurrentDirectory,
-  getNewLine: () => ts.sys.newLine,
-}
-
-function reportDiagnostics(diagnostics) {
-  diagnostics.forEach((diagnostic) => {
-    let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')
-    if (diagnostic.file && diagnostic.start !== undefined) {
-      const { line, character } = ts.getLineAndCharacterOfPosition(
-        diagnostic.file,
-        diagnostic.start
-      )
-      message = `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
-    }
-    console.error(message)
-  })
 }
 
 async function buildJs(allFiles) {

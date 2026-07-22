@@ -1,5 +1,5 @@
 import { type ButtonIconProps as ButtonBehaviorIconProps, type GetProps } from '@tamagui/ui';
-export declare const buttonSizes: import("@tamagui/size").CreatedSizeTable<{
+export declare const buttonSizes: import("@tamagui/ui").CreatedSizeTable<{
     readonly small: {
         readonly frame: {
             readonly gap: 6;
@@ -51,112 +51,112 @@ export declare const buttonSizes: import("@tamagui/size").CreatedSizeTable<{
     };
 }, "medium">;
 export type ButtonSize = keyof typeof buttonSizes.values;
-export declare const ButtonFrame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "color" | "size" | "fontSize" | "ellipsis" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign" | "disabled" | keyof import("@tamagui/web").StackStyleBase | "circular" | "variant"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-    size?: "small" | "medium" | "large" | "wide" | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    ellipsis?: boolean | "unset" | undefined;
+export declare const ButtonFrame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "color" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    circular?: boolean | undefined;
+    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: "unset" | boolean | undefined;
     fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "normal" | "unset" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "italic" | "normal" | "unset" | undefined;
+    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
     letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-    disabled?: boolean | undefined;
-    circular?: boolean | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
+    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
     variant?: "outlined" | "quiet" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-    size?: "small" | "medium" | "large" | "wide" | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    ellipsis?: boolean | "unset" | undefined;
+    circular?: boolean | undefined;
+    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: "unset" | boolean | undefined;
     fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "normal" | "unset" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "italic" | "normal" | "unset" | undefined;
+    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
     letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-    disabled?: boolean | undefined;
-    circular?: boolean | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
+    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
     variant?: "outlined" | "quiet" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-    size?: "small" | "medium" | "large" | "wide" | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    ellipsis?: boolean | "unset" | undefined;
+    circular?: boolean | undefined;
+    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: "unset" | boolean | undefined;
     fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "normal" | "unset" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "italic" | "normal" | "unset" | undefined;
+    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
     letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-    disabled?: boolean | undefined;
-    circular?: boolean | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
+    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }>> & {
     ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-    size?: "small" | "medium" | "large" | "wide" | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    ellipsis?: boolean | "unset" | undefined;
+    circular?: boolean | undefined;
+    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: "unset" | boolean | undefined;
     fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "normal" | "unset" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "italic" | "normal" | "unset" | undefined;
+    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
     letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-    disabled?: boolean | undefined;
-    circular?: boolean | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
+    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-        size?: "small" | "medium" | "large" | "wide" | undefined;
-        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-        ellipsis?: boolean | "unset" | undefined;
+        circular?: boolean | undefined;
+        color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: "unset" | boolean | undefined;
         fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-        fontStyle?: "normal" | "unset" | "italic" | undefined;
-        fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+        fontStyle?: "italic" | "normal" | "unset" | undefined;
+        fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
         letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-        disabled?: boolean | undefined;
-        circular?: boolean | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
+        textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
         variant?: "outlined" | "quiet" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
 export declare const ButtonText: import("react").FunctionComponent<Omit<import("@tamagui/ui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-    size?: "small" | "medium" | "large" | "wide" | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-    size?: "small" | "medium" | "large" | "wide" | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
-    size?: "small" | "medium" | "large" | "wide" | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
 }>> & {
     ref?: import("react").Ref<import("@tamagui/ui").TamaguiTextElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    size?: "small" | "medium" | "large" | "wide" | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: "small" | "medium" | "large" | "wide" | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
 export declare const ButtonIcon: ({ size, ...props }: ButtonBehaviorIconProps) => import("react/jsx-runtime").JSX.Element;
 declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-    size?: "small" | "medium" | "large" | "wide" | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    ellipsis?: boolean | "unset" | undefined;
+    circular?: boolean | undefined;
+    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: "unset" | boolean | undefined;
     fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "normal" | "unset" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "italic" | "normal" | "unset" | undefined;
+    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
     letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-    disabled?: boolean | undefined;
-    circular?: boolean | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
+    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
     variant?: "outlined" | "quiet" | undefined;
-}>, "value" | "icon" | "form" | "name" | "scaleIcon" | keyof import("@tamagui/ui").TextContextStyles | "textProps" | "noTextWrap" | "iconAfter" | "iconSize" | "type" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget"> & import("@tamagui/ui").TextContextStyles & {
+}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "textProps" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
@@ -176,7 +176,7 @@ declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<impor
     }) => import("react").ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
-    type?: "submit" | "reset" | "button";
+    type?: 'submit' | 'reset' | 'button';
     form?: string;
     formAction?: string;
     formEncType?: string;
@@ -205,7 +205,7 @@ declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<impor
     }) => import("react").ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
-    type?: "submit" | "reset" | "button";
+    type?: 'submit' | 'reset' | 'button';
     form?: string;
     formAction?: string;
     formEncType?: string;
@@ -215,35 +215,35 @@ declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<impor
     name?: string;
     value?: string | readonly string[] | number;
 }, import("@tamagui/web").StackStyleBase, {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-    size?: "small" | "medium" | "large" | "wide" | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    ellipsis?: boolean | "unset" | undefined;
+    circular?: boolean | undefined;
+    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: "unset" | boolean | undefined;
     fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "normal" | "unset" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "italic" | "normal" | "unset" | undefined;
+    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
     letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-    disabled?: boolean | undefined;
-    circular?: boolean | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
+    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const Button: import("react").FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-    size?: "small" | "medium" | "large" | "wide" | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    ellipsis?: boolean | "unset" | undefined;
+    circular?: boolean | undefined;
+    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: "unset" | boolean | undefined;
     fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "normal" | "unset" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "italic" | "normal" | "unset" | undefined;
+    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
     letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-    disabled?: boolean | undefined;
-    circular?: boolean | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
+    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
     variant?: "outlined" | "quiet" | undefined;
-}>, "value" | "icon" | "form" | "name" | "scaleIcon" | keyof import("@tamagui/ui").TextContextStyles | "textProps" | "noTextWrap" | "iconAfter" | "iconSize" | "type" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget"> & import("@tamagui/ui").TextContextStyles & {
+}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "textProps" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
@@ -263,7 +263,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     }) => import("react").ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
-    type?: "submit" | "reset" | "button";
+    type?: 'submit' | 'reset' | 'button';
     form?: string;
     formAction?: string;
     formEncType?: string;
@@ -275,20 +275,20 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
 } & {
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-    size?: "small" | "medium" | "large" | "wide" | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    ellipsis?: boolean | "unset" | undefined;
+    circular?: boolean | undefined;
+    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: "unset" | boolean | undefined;
     fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "normal" | "unset" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "italic" | "normal" | "unset" | undefined;
+    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
     letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-    disabled?: boolean | undefined;
-    circular?: boolean | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
+    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
     variant?: "outlined" | "quiet" | undefined;
-}>, "value" | "icon" | "form" | "name" | "scaleIcon" | keyof import("@tamagui/ui").TextContextStyles | "textProps" | "noTextWrap" | "iconAfter" | "iconSize" | "type" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget"> & import("@tamagui/ui").TextContextStyles & {
+}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "textProps" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
@@ -308,7 +308,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     }) => import("react").ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
-    type?: "submit" | "reset" | "button";
+    type?: 'submit' | 'reset' | 'button';
     form?: string;
     formAction?: string;
     formEncType?: string;
@@ -337,7 +337,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     }) => import("react").ReactNode) | null;
     iconSize?: number;
     scaleIcon?: number;
-    type?: "submit" | "reset" | "button";
+    type?: 'submit' | 'reset' | 'button';
     form?: string;
     formAction?: string;
     formEncType?: string;
@@ -347,35 +347,35 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     name?: string;
     value?: string | readonly string[] | number;
 }, import("@tamagui/web").StackStyleBase, {
-    color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-    size?: "small" | "medium" | "large" | "wide" | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    ellipsis?: boolean | "unset" | undefined;
+    circular?: boolean | undefined;
+    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+    disabled?: boolean | undefined;
+    ellipsis?: "unset" | boolean | undefined;
     fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontStyle?: "normal" | "unset" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+    fontStyle?: "italic" | "normal" | "unset" | undefined;
+    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
     letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-    disabled?: boolean | undefined;
-    circular?: boolean | undefined;
+    size?: "large" | "medium" | "small" | "wide" | undefined;
+    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
     variant?: "outlined" | "quiet" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-        size?: "small" | "medium" | "large" | "wide" | undefined;
-        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-        ellipsis?: boolean | "unset" | undefined;
+        circular?: boolean | undefined;
+        color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: "unset" | boolean | undefined;
         fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-        fontStyle?: "normal" | "unset" | "italic" | undefined;
-        fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+        fontStyle?: "italic" | "normal" | "unset" | undefined;
+        fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
         letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-        disabled?: boolean | undefined;
-        circular?: boolean | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
+        textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
         variant?: "outlined" | "quiet" | undefined;
-    }>, "value" | "icon" | "form" | "name" | "scaleIcon" | keyof import("@tamagui/ui").TextContextStyles | "textProps" | "noTextWrap" | "iconAfter" | "iconSize" | "type" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget"> & import("@tamagui/ui").TextContextStyles & {
+    }>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "textProps" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
         textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
         noTextWrap?: boolean;
     } & {
@@ -395,7 +395,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         }) => import("react").ReactNode) | null;
         iconSize?: number;
         scaleIcon?: number;
-        type?: "submit" | "reset" | "button";
+        type?: 'submit' | 'reset' | 'button';
         form?: string;
         formAction?: string;
         formEncType?: string;
@@ -424,7 +424,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         }) => import("react").ReactNode) | null;
         iconSize?: number;
         scaleIcon?: number;
-        type?: "submit" | "reset" | "button";
+        type?: 'submit' | 'reset' | 'button';
         form?: string;
         formAction?: string;
         formEncType?: string;
@@ -434,110 +434,110 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         name?: string;
         value?: string | readonly string[] | number;
     }, import("@tamagui/web").StackStyleBase, {
-        color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-        size?: "small" | "medium" | "large" | "wide" | undefined;
-        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-        ellipsis?: boolean | "unset" | undefined;
+        circular?: boolean | undefined;
+        color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: "unset" | boolean | undefined;
         fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-        fontStyle?: "normal" | "unset" | "italic" | undefined;
-        fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+        fontStyle?: "italic" | "normal" | "unset" | undefined;
+        fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
         letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-        disabled?: boolean | undefined;
-        circular?: boolean | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
+        textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
         variant?: "outlined" | "quiet" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "color" | "size" | "fontSize" | "ellipsis" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign" | "disabled" | keyof import("@tamagui/web").StackStyleBase | "circular" | "variant"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-        size?: "small" | "medium" | "large" | "wide" | undefined;
-        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-        ellipsis?: boolean | "unset" | undefined;
+    Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "color" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        circular?: boolean | undefined;
+        color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: "unset" | boolean | undefined;
         fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-        fontStyle?: "normal" | "unset" | "italic" | undefined;
-        fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+        fontStyle?: "italic" | "normal" | "unset" | undefined;
+        fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
         letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-        disabled?: boolean | undefined;
-        circular?: boolean | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
+        textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
         variant?: "outlined" | "quiet" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-        size?: "small" | "medium" | "large" | "wide" | undefined;
-        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-        ellipsis?: boolean | "unset" | undefined;
+        circular?: boolean | undefined;
+        color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: "unset" | boolean | undefined;
         fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-        fontStyle?: "normal" | "unset" | "italic" | undefined;
-        fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+        fontStyle?: "italic" | "normal" | "unset" | undefined;
+        fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
         letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-        disabled?: boolean | undefined;
-        circular?: boolean | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
+        textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
         variant?: "outlined" | "quiet" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-        size?: "small" | "medium" | "large" | "wide" | undefined;
-        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-        ellipsis?: boolean | "unset" | undefined;
+        circular?: boolean | undefined;
+        color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: "unset" | boolean | undefined;
         fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-        fontStyle?: "normal" | "unset" | "italic" | undefined;
-        fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+        fontStyle?: "italic" | "normal" | "unset" | undefined;
+        fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
         letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-        disabled?: boolean | undefined;
-        circular?: boolean | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
+        textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
         variant?: "outlined" | "quiet" | undefined;
     }>> & {
         ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-        size?: "small" | "medium" | "large" | "wide" | undefined;
-        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-        ellipsis?: boolean | "unset" | undefined;
+        circular?: boolean | undefined;
+        color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+        disabled?: boolean | undefined;
+        ellipsis?: "unset" | boolean | undefined;
         fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-        fontStyle?: "normal" | "unset" | "italic" | undefined;
-        fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+        fontStyle?: "italic" | "normal" | "unset" | undefined;
+        fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
         letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-        disabled?: boolean | undefined;
-        circular?: boolean | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
+        textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
         variant?: "outlined" | "quiet" | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-            color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/ui").GetThemeValueForKey<"color"> | undefined;
-            size?: "small" | "medium" | "large" | "wide" | undefined;
-            fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-            ellipsis?: boolean | "unset" | undefined;
+            circular?: boolean | undefined;
+            color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
+            disabled?: boolean | undefined;
+            ellipsis?: "unset" | boolean | undefined;
             fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-            fontStyle?: "normal" | "unset" | "italic" | undefined;
-            fontWeight?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
+            fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
+            fontStyle?: "italic" | "normal" | "unset" | undefined;
+            fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
             letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
             maxFontSizeMultiplier?: number | undefined;
-            textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
-            disabled?: boolean | undefined;
-            circular?: boolean | undefined;
+            size?: "large" | "medium" | "small" | "wide" | undefined;
+            textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
             variant?: "outlined" | "quiet" | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     };
-    Icon: ({ size, ...props }: ButtonBehaviorIconProps) => import("react/jsx-runtime").JSX.Element;
+    Icon: typeof ButtonIcon;
     Text: import("react").FunctionComponent<Omit<import("@tamagui/ui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-        size?: "small" | "medium" | "large" | "wide" | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-        size?: "small" | "medium" | "large" | "wide" | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
-        size?: "small" | "medium" | "large" | "wide" | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
     }>> & {
         ref?: import("react").Ref<import("@tamagui/ui").TamaguiTextElement> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: "small" | "medium" | "large" | "wide" | undefined;
+        size?: "large" | "medium" | "small" | "wide" | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiTextElement, import("@tamagui/ui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-            size?: "small" | "medium" | "large" | "wide" | undefined;
+            size?: "large" | "medium" | "small" | "wide" | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     };
 };

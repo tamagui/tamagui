@@ -6,7 +6,7 @@ import * as PopperPrimitive from '@tamagui/popper';
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus';
 import type { TextProps } from '@tamagui/web';
 import { type GetRef, type ViewProps, View } from '@tamagui/web';
-import type { TamaguiElement } from '@tamagui/web/types';
+import type { TamaguiElement } from '@tamagui/web';
 import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
 type ScopedProps<P> = P & {
@@ -159,51 +159,51 @@ export declare function createBaseMenu(): {
             (props: ScopedProps<MenuPortalProps>): import("react/jsx-runtime").JSX.Element;
             displayName: string;
         };
-        Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof MenuContentProps> & MenuContentProps & {
+        Content: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof MenuContentProps> & MenuContentProps & {
             scope?: string;
-        }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuContentProps & {
+        }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuContentProps & {
             scope?: string;
-        }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-        Group: import("@tamagui/core").TamaguiComponent<Omit<ViewProps, keyof MenuGroupProps> & MenuGroupProps, TamaguiElement, import("@tamagui/core").StackNonStyleProps & MenuGroupProps, import("@tamagui/core").StackStyleBase, {}, {}>;
-        Label: import("@tamagui/core").TamaguiComponent<Omit<TextProps, keyof MenuLabelProps> & MenuLabelProps, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & MenuLabelProps, import("@tamagui/core").TextStylePropsBase, {}, {}>;
-        Item: import("@tamagui/core").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuItemProps> & MenuItemProps & {
+        }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
+        Group: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, keyof MenuGroupProps> & MenuGroupProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuGroupProps, import("@tamagui/web").StackStyleBase, {}, {}>;
+        Label: import("@tamagui/web").TamaguiComponent<Omit<TextProps, keyof MenuLabelProps> & MenuLabelProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & MenuLabelProps, import("@tamagui/web").TextStylePropsBase, {}, {}>;
+        Item: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuItemProps> & MenuItemProps & {
             scope?: string;
-        }, TamaguiElement, import("@tamagui/core").StackNonStyleProps & MenuItemProps & {
+        }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuItemProps & {
             scope?: string;
-        }, import("@tamagui/core").StackStyleBase, {}, {}>;
-        CheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuCheckboxItemProps> & MenuCheckboxItemProps & {
+        }, import("@tamagui/web").StackStyleBase, {}, {}>;
+        CheckboxItem: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuCheckboxItemProps> & MenuCheckboxItemProps & {
             scope?: string;
-        }, TamaguiElement, import("@tamagui/core").StackNonStyleProps & MenuCheckboxItemProps & {
+        }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuCheckboxItemProps & {
             scope?: string;
-        }, import("@tamagui/core").StackStyleBase, {}, {}>;
-        RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuRadioGroupProps> & MenuRadioGroupProps & {
+        }, import("@tamagui/web").StackStyleBase, {}, {}>;
+        RadioGroup: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuRadioGroupProps> & MenuRadioGroupProps & {
             scope?: string;
-        }, TamaguiElement, import("@tamagui/core").StackNonStyleProps & MenuRadioGroupProps & {
+        }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuRadioGroupProps & {
             scope?: string;
-        }, import("@tamagui/core").StackStyleBase, {}, {}>;
-        RadioItem: import("@tamagui/core").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuRadioItemProps> & MenuRadioItemProps & {
+        }, import("@tamagui/web").StackStyleBase, {}, {}>;
+        RadioItem: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuRadioItemProps> & MenuRadioItemProps & {
             scope?: string;
-        }, TamaguiElement, import("@tamagui/core").StackNonStyleProps & MenuRadioItemProps & {
+        }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuRadioItemProps & {
             scope?: string;
-        }, import("@tamagui/core").StackStyleBase, {}, {}>;
-        ItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuItemIndicatorProps> & MenuItemIndicatorProps & {
+        }, import("@tamagui/web").StackStyleBase, {}, {}>;
+        ItemIndicator: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof MenuItemIndicatorProps> & MenuItemIndicatorProps & {
             scope?: string;
-        }, TamaguiElement, import("@tamagui/core").StackNonStyleProps & MenuItemIndicatorProps & {
+        }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuItemIndicatorProps & {
             scope?: string;
-        }, import("@tamagui/core").StackStyleBase, {}, {}>;
-        Separator: import("@tamagui/core").TamaguiComponent<Omit<ViewProps, keyof MenuSeparatorProps> & MenuSeparatorProps, TamaguiElement, import("@tamagui/core").StackNonStyleProps & MenuSeparatorProps, import("@tamagui/core").StackStyleBase, {}, {}>;
-        Arrow: import("@tamagui/core").RefComponent<TamaguiElement, Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & PopperPrimitive.PopperArrowExtraProps & import("@tamagui/core").RefProp<TamaguiElement>, "ref">>;
+        }, import("@tamagui/web").StackStyleBase, {}, {}>;
+        Separator: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, keyof MenuSeparatorProps> & MenuSeparatorProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuSeparatorProps, import("@tamagui/web").StackStyleBase, {}, {}>;
+        Arrow: import("@tamagui/web").RefComponent<TamaguiElement, Omit<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & PopperPrimitive.PopperArrowExtraProps & import("@tamagui/web").RefProp<TamaguiElement>, "ref">>;
         Sub: React.FC<ScopedProps<MenuSubProps>>;
-        SubTrigger: import("@tamagui/core").RefComponent<TamaguiElement, ScopedProps<MenuSubTriggerProps>>;
-        SubContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, keyof MenuSubContentProps> & MenuSubContentProps & {
+        SubTrigger: import("@tamagui/web").RefComponent<TamaguiElement, ScopedProps<MenuSubTriggerProps>>;
+        SubContent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof MenuSubContentProps> & MenuSubContentProps & {
             scope?: string;
-        }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuSubContentProps & {
+        }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuSubContentProps & {
             scope?: string;
-        }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-        ItemTitle: import("@tamagui/core").TamaguiComponent<Omit<TextProps, keyof MenuItemTitleProps> & MenuItemTitleProps, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & MenuItemTitleProps, import("@tamagui/core").TextStylePropsBase, {}, {}>;
-        ItemSubtitle: import("@tamagui/core").TamaguiComponent<Omit<TextProps, keyof MenuItemSubTitleProps> & MenuItemSubTitleProps, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & MenuItemSubTitleProps, import("@tamagui/core").TextStylePropsBase, {}, {}>;
-        ItemImage: import("@tamagui/core").RefComponent<TamaguiElement, ImageProps>;
-        ItemIcon: import("@tamagui/core").TamaguiComponent<Omit<ViewProps, "$native" | "$web" | "$android" | "$ios" | "$tv" | "$androidtv" | "$tvos" | import("@tamagui/core").GroupMediaKeys | keyof import("@tamagui/core").StackStyleBase | keyof import("@tamagui/core").StackNonStyleProps | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>>> & import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>>, TamaguiElement, import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>>, import("@tamagui/core").StackStyleBase, {}, {}>;
+        }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
+        ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<TextProps, keyof MenuItemTitleProps> & MenuItemTitleProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & MenuItemTitleProps, import("@tamagui/web").TextStylePropsBase, {}, {}>;
+        ItemSubtitle: import("@tamagui/web").TamaguiComponent<Omit<TextProps, keyof MenuItemSubTitleProps> & MenuItemSubTitleProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & MenuItemSubTitleProps, import("@tamagui/web").TextStylePropsBase, {}, {}>;
+        ItemImage: import("@tamagui/web").RefComponent<TamaguiElement, ImageProps>;
+        ItemIcon: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "$android" | "$androidtv" | "$ios" | "$native" | "$tv" | "$tvos" | "$web" | import("@tamagui/web").GroupMediaKeys | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, import("@tamagui/web").StackStyleBase, {}, {}>;
     };
 };
 export type { MenuAnchorProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIconProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubTitleProps, MenuItemTitleProps, MenuLabelProps, MenuPortalProps, MenuBaseProps as MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuSeparatorProps, MenuSubTriggerProps, };

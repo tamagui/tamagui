@@ -28,7 +28,6 @@ export declare const tokenCategories: {
         zIndex: boolean;
     };
     color: {
-        caretColor?: boolean | undefined;
         backgroundColor: boolean;
         borderColor: boolean;
         borderBlockStartColor: boolean;
@@ -48,6 +47,7 @@ export declare const tokenCategories: {
         textDecorationColor: boolean;
         textShadowColor: boolean;
         outlineColor: boolean;
+        caretColor?: boolean | undefined;
     };
 };
 //# sourceMappingURL=tokenCategories.d.ts.map

@@ -11,7 +11,7 @@ type SelectItemTextExtraProps = SelectScopedProps<{}>;
 export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame> & SelectItemTextExtraProps;
 export declare const SelectItemText: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {}>, "scope"> & {
     scope?: import("./types").SelectScopes;
-}, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").Text, import("@tamagui/core").RNTamaguiTextNonStyleProps & {
+}, import("react-native").Text | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiTextNonStyleProps & {
     scope?: import("./types").SelectScopes;
 }, import("@tamagui/core").TextStylePropsBase, {}, import("@tamagui/core").StaticConfigPublic>;
 export {};

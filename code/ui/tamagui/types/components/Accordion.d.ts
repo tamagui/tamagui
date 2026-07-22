@@ -10,7 +10,7 @@ export declare const AccordionContent: React.FunctionComponent<Omit<import("@tam
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentExtraProps & void, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentExtraProps & void, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const Accordion: ((props: (((import("@tamagui/ui").AccordionSingleProps | import("@tamagui/ui").AccordionMultipleProps) & {
+export declare const Accordion: ((props: (((import("@tamagui/ui").AccordionMultipleProps | import("@tamagui/ui").AccordionSingleProps) & {
     __scopeAccordion?: string;
 }) & import("@tamagui/ui").RefProp<TamaguiElement>) & import("@tamagui/ui").RefProp<TamaguiElement>) => React.ReactNode) & {
     displayName?: string;

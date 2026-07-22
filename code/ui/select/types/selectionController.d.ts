@@ -18,7 +18,7 @@ export type SelectItemRegistry = ReturnType<typeof createSelectItemRegistry>;
 export declare function getSelectLabelText(label: ReactNode): string;
 export declare function createSelectItemRegistry(onChange?: () => void): {
     subscribe(listener: () => void): () => void;
-    registerItem: (item: Omit<SelectRegisteredItem, "id">) => SelectItemRegistration;
+    registerItem: (item: Omit<SelectRegisteredItem, 'id'>) => SelectItemRegistration;
     registerLabel: (value: string, label: ReactNode, textValue?: string) => () => void;
     getItems: () => SelectRegisteredItem[];
     getItem: (value: string) => SelectRegisteredItem | undefined;
@@ -38,7 +38,7 @@ export declare function createSelectSelectionController({ mode: initialMode, val
 }): {
     registry: {
         subscribe(listener: () => void): () => void;
-        registerItem: (item: Omit<SelectRegisteredItem, "id">) => SelectItemRegistration;
+        registerItem: (item: Omit<SelectRegisteredItem, 'id'>) => SelectItemRegistration;
         registerLabel: (value: string, label: ReactNode, textValue?: string) => () => void;
         getItems: () => SelectRegisteredItem[];
         getItem: (value: string) => SelectRegisteredItem | undefined;
@@ -65,11 +65,11 @@ export declare function createSelectSelectionController({ mode: initialMode, val
     moveActive: (direction: 1 | -1) => SelectRegisteredItem | undefined;
 };
 export declare function getSelectListboxProps(mode: SelectMode): {
-    role: "listbox";
+    role: 'listbox';
     'aria-multiselectable': boolean | undefined;
 };
 export declare function getSelectOptionProps(mode: SelectMode, selected: boolean, disabled: boolean, platform: 'web' | 'native'): {
-    accessibilityRole: "checkbox" | "button";
+    accessibilityRole: "button" | "checkbox";
     accessibilityState: {
         selected: boolean | undefined;
         checked: boolean | undefined;
@@ -79,10 +79,10 @@ export declare function getSelectOptionProps(mode: SelectMode, selected: boolean
     'aria-selected'?: undefined;
     'aria-disabled'?: undefined;
 } | {
-    role: "option";
-    'aria-selected': boolean;
-    'aria-disabled': true | undefined;
     accessibilityRole?: undefined;
     accessibilityState?: undefined;
+    role: 'option';
+    'aria-selected': boolean;
+    'aria-disabled': true | undefined;
 };
 //# sourceMappingURL=selectionController.d.ts.map
