@@ -746,7 +746,9 @@ export function createComponent<
     }
     const isStringElement = typeof elementType === 'string'
 
-    const mediaState = useMedia(componentContext, debugProp)
+    // stateRef.current is this instance's key into useMedia's per-component
+    // States map (setMediaShouldUpdate below writes under the same key)
+    const mediaState = useMedia(componentContext, debugProp, stateRef.current)
 
     setDidGetVariableValue(false)
 
@@ -1054,7 +1056,7 @@ export function createComponent<
     }
 
     setMediaShouldUpdate(
-      componentContext,
+      stateRef.current,
       shouldListenForMedia,
       mediaListeningKeys,
       stateRef.current.optimizeForFirstRender

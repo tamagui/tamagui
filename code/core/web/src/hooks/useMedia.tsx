@@ -155,6 +155,11 @@ type MediaState = {
   keys?: Set<string> | null
 }
 
+// per-component media-update state, keyed on a per-instance object
+// (createComponent passes stateRef.current). never key this on a shared object
+// like componentContext: every component under a provider would write to the
+// same entry and the last sibling to render would win, disabling media updates
+// for any earlier-rendered media-dependent sibling.
 const States = new WeakMap<any, MediaState>()
 
 // shared "touch tracker" prototype: one object whose enumerable getter
@@ -226,7 +231,10 @@ function subscribe(subscriber: () => void) {
 
 export function useMedia(
   componentContext?: ComponentContextI,
-  debug?: DebugProp
+  debug?: DebugProp,
+  // per-component-instance key for the States map (createComponent passes
+  // stateRef.current, matching its setMediaShouldUpdate call)
+  uid?: object
 ): UseMediaState {
   'use no memo'
 
@@ -244,6 +252,7 @@ export function useMedia(
     proxy: UseMediaState
     getSnapshot: () => MediaQueryState
     componentContext?: ComponentContextI
+    uid?: object
     debug?: DebugProp
     optimizeForFirstRender: boolean
   }
@@ -265,6 +274,7 @@ export function useMedia(
       proxy: undefined as unknown as UseMediaState,
       getSnapshot: undefined as unknown as () => MediaQueryState,
       componentContext,
+      uid,
       debug,
       optimizeForFirstRender,
     }
@@ -297,9 +307,7 @@ export function useMedia(
         return ms
       }
 
-      const curKeys = r.componentContext
-        ? States.get(r.componentContext)?.keys || r.keys!
-        : r.keys!
+      const curKeys = (r.uid ? States.get(r.uid)?.keys : undefined) || r.keys!
       const { lastState, pendingState } = r
 
       if (!curKeys.size) {
@@ -332,6 +340,7 @@ export function useMedia(
   } else {
     // refresh per-render inputs the closures read through the ref
     internalRef.current.componentContext = componentContext
+    internalRef.current.uid = uid
     internalRef.current.debug = debug
   }
 
@@ -379,9 +388,7 @@ export function useMedia(
   useEffect(() => {
     const renderVersion = ref.renderVersion
     const shouldSubscribe =
-      ref.optimizeForFirstRender ||
-      !ref.componentContext ||
-      !!States.get(ref.componentContext)?.enabled
+      ref.optimizeForFirstRender || !ref.uid || !!States.get(ref.uid)?.enabled
 
     if (shouldSubscribe) {
       if (!ref.unsubscribe) {
