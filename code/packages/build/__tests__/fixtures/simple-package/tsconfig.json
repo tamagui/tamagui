@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "rootDir": ".",
     "paths": {
       "vxrn": ["./packages/vxrn"],

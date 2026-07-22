@@ -1,6 +1,13 @@
 import { execSync, spawn } from 'node:child_process'
 import { createRequire } from 'node:module'
-import { existsSync, readFileSync, writeFileSync, statSync, readdirSync } from 'node:fs'
+import {
+  existsSync,
+  readFileSync,
+  writeFileSync,
+  statSync,
+  readdirSync,
+  rmSync,
+} from 'node:fs'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -70,6 +77,21 @@ describe('tamagui-build integration test', () => {
     expect(existsSync(join(distPath, 'jsx', 'index.js'))).toBe(true)
     expect(existsSync(join(distPath, 'cjs', 'ignored.test-d.cjs'))).toBe(false)
     expect(existsSync(join(distPath, 'esm', 'ignored.test-d.mjs'))).toBe(false)
+  })
+
+  it('rebuilds declarations when incremental state outlives the output', () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+    execSync(
+      'node ../../../tamagui-tsgo.js --project tsconfig.json --declaration --emitDeclarationOnly --declarationMap true --outDir types --rootDir src --tsBuildInfoFile tsconfig.tsbuildinfo',
+      { cwd: simplePackagePath }
+    )
+    expect(existsSync(join(simplePackagePath, 'tsconfig.tsbuildinfo'))).toBe(true)
+
+    rmSync(join(simplePackagePath, 'types'), { recursive: true, force: true })
+    execSync('bun run build', { cwd: simplePackagePath })
+
+    expect(existsSync(distTypesFilePath)).toBe(true)
+    expect(existsSync(join(simplePackagePath, 'tsconfig.tsbuildinfo'))).toBe(false)
   })
 
   it('should bundle the package correctly', () => {

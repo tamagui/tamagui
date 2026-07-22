@@ -847,6 +847,7 @@ async function buildTsc(allFiles) {
 
 async function emitDeclarationsWithTsgo(targetDir, allFiles) {
   const tsgoPath = getTypeScriptNativePath()
+  await FSE.remove('tsconfig.tsbuildinfo')
   const args = [
     '--project',
     tsProject || 'tsconfig.json',
