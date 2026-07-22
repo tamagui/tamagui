@@ -78,11 +78,9 @@ export default defineConfig({
       name: `animated-${driver}`,
       testMatch: '**/*.animated.test.{ts,tsx}',
       use: animatedChromiumUse,
-      // AnimationsWithMediaQueries only passes with css and motion drivers for now
-      ...(driver !== 'motion' &&
-        driver !== 'css' && {
-          testIgnore: '**/AnimationsWithMediaQueries.animated.test.{ts,tsx}',
-        }),
+      // the native driver skips AnimationsWithMediaQueries via test.skip in the
+      // file itself; css, motion, and reanimated all run it (reanimated was
+      // excluded until the enter-transition mediaEmit listener drop was fixed)
       metadata: { animationDriver: driver },
     })),
   ],
