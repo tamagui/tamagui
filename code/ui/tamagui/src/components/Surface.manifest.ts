@@ -13,8 +13,6 @@ export const manifest = {
     '$borderColorPress',
     '$shadowColor',
     '$outlineColor',
-    '$radius',
-    '$pressScale',
   ],
   themes: ['surface1', 'surface2', 'surface3'],
 } satisfies SkinManifest

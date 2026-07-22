@@ -30,9 +30,7 @@
       "$borderColorHover",
       "$borderColorPress",
       "$shadowColor",
-      "$outlineColor",
-      "$radius",
-      "$pressScale"
+      "$outlineColor"
     ],
     "themes": [
       "surface1",

@@ -41,9 +41,12 @@ Button and the v1 imperative Toast are deleted. This is what made the primary
 single largest source of breaking changes below.
 
 **Surface is a copied fixture, not a framework hook.** A user-owned copied
-`Surface` skin reads conventional variables (`$surfaceBorder`, `$focusRingColor`,
-`$disabledOpacity`, `$pressScale`, easings) through the shipped `<Variables>`
-primitive. Behavior components never read them.
+`Surface` skin reads theme generics (`$background`, `$borderColor` families,
+`$shadowColor`, `$outlineColor`) plus standard tokens/literals: `rounded`
+resolves the configured default radius token (`borderRadius: true`) and the
+`interactive` press scale is a literal, so it renders correctly under a stock
+config with no custom `variables` declared (`$surfaceBorder` was rejected in
+`plans/surface-levels.md`). Behavior components never read any of this.
 
 **Nothing on by default.** A bare `<Surface>` renders no chrome and no
 interaction styling. Every facet is opt-in. Facet names are all adjectives:

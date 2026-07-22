@@ -321,9 +321,7 @@
           "$borderColorHover",
           "$borderColorPress",
           "$shadowColor",
-          "$outlineColor",
-          "$radius",
-          "$pressScale"
+          "$outlineColor"
         ],
         "themes": [
           "surface1",
@@ -414,9 +412,7 @@
           "$borderColorHover",
           "$borderColorPress",
           "$shadowColor",
-          "$outlineColor",
-          "$radius",
-          "$pressScale"
+          "$outlineColor"
         ],
         "states": [
           "pressed"

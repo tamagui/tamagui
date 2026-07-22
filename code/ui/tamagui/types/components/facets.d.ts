@@ -21,7 +21,7 @@ export declare const elevated: {
 };
 export declare const rounded: {
     readonly true: {
-        readonly borderRadius: "$radius";
+        readonly borderRadius: true;
     };
 };
 export declare const interactive: {
@@ -33,7 +33,7 @@ export declare const interactive: {
         readonly pressStyle: {
             readonly backgroundColor: "$backgroundPress";
             readonly borderColor: "$borderColorPress";
-            readonly scale: "$pressScale";
+            readonly scale: 0.97;
         };
         readonly focusVisibleStyle: {
             readonly outlineColor: "$outlineColor";
@@ -66,7 +66,7 @@ export declare const facets: {
     };
     readonly rounded: {
         readonly true: {
-            readonly borderRadius: "$radius";
+            readonly borderRadius: true;
         };
     };
     readonly interactive: {
@@ -78,7 +78,7 @@ export declare const facets: {
             readonly pressStyle: {
                 readonly backgroundColor: "$backgroundPress";
                 readonly borderColor: "$borderColorPress";
-                readonly scale: "$pressScale";
+                readonly scale: 0.97;
             };
             readonly focusVisibleStyle: {
                 readonly outlineColor: "$outlineColor";
