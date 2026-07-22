@@ -322,6 +322,7 @@ export type TamaguiComponentStateRef = {
     group?: ComponentGroupEmitter;
     nextState?: TamaguiComponentState;
     nextMedia?: UseMediaState;
+    avoidReRenders?: boolean;
     mediaEmitCleanup?: () => void;
     prevPseudoState?: {
         hover?: boolean;
