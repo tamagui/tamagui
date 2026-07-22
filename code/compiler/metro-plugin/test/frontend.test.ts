@@ -397,7 +397,7 @@ export const App = ({ dynamic }) => <>
       expect(afterRecovery.metadata?.tamagui.cacheHit).toBe(true)
       expect(outputCode(afterRecovery)).toContain('"paddingTop": 5')
 
-      await frontend.ensureValidCache({
+      const productionOptionsAfterEdits = {
         dev: false,
         entryFiles: [appPath],
         // Expo production exports may still report hot=true. Production must not retain
@@ -405,13 +405,59 @@ export const App = ({ dynamic }) => <>
         hot: true,
         platform: 'ios',
         transform: { experimentalImportSupport: true },
-      })
+      }
+      const productionGeneration = await frontend.ensureValidCache(
+        productionOptionsAfterEdits
+      )
       await write(themePath, 'export const space = 20\n')
       expect(await frontend.updateFile(themePath)).toEqual({
         changed: false,
         affectedIds: [],
         generation: null,
       })
+
+      // a later production build (fresh process) must observe the source edit
+      // instead of reusing the published manifest and silently de-optimizing
+      await write(tokensPath, 'export const spacing = 21\n')
+      const laterBuildFrontend = new MetroCompilerFrontend({
+        projectRoot,
+        cacheRoot,
+        watch: false,
+        originalBabelTransformerPath: transformerPath,
+        loadCompilerProject: async () => compilerProject,
+        resolver: {
+          resolveRequest,
+          sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+          unstable_enablePackageExports: true,
+        },
+      })
+      try {
+        const refreshed = await laterBuildFrontend.ensureValidCache(
+          productionOptionsAfterEdits
+        )
+        expect(refreshed.generation).not.toBe(productionGeneration.generation)
+        expect(refreshed.moduleIds).toContain(appPath)
+        const afterLaterBuild = await firstWorker.transform(args)
+        expect(afterLaterBuild.metadata?.tamagui.cacheHit).toBe(true)
+        expect(outputCode(afterLaterBuild)).toContain('"paddingTop": 21')
+
+        // and an unchanged tree keeps the published generation
+        const reused = await new MetroCompilerFrontend({
+          projectRoot,
+          cacheRoot,
+          watch: false,
+          originalBabelTransformerPath: transformerPath,
+          loadCompilerProject: async () => compilerProject,
+          resolver: {
+            resolveRequest,
+            sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+            unstable_enablePackageExports: true,
+          },
+        }).ensureValidCache(productionOptionsAfterEdits)
+        expect(reused.generation).toBe(refreshed.generation)
+      } finally {
+        await laterBuildFrontend.close()
+      }
     } finally {
       await frontend.close()
     }

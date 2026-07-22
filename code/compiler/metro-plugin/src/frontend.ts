@@ -35,6 +35,7 @@ import {
 
 interface CompiledRecord {
   input: HostModuleInput
+  sourceHash: string
   compiledHash: string
 }
 
@@ -235,6 +236,7 @@ export class MetroCompilerFrontend {
       validation.valid &&
       validation.generation &&
       validation.optionsHash === optionsHash &&
+      (await this.#sourcesAreFresh(validation.sourceHashes)) &&
       ((!retainsLiveGraph(options) && !this.#graph) ||
         (this.#publishedGeneration && this.#scanOptionsHash === optionsHash))
     ) {
@@ -321,6 +323,18 @@ export class MetroCompilerFrontend {
       }
       return result
     })
+  }
+
+  /** A published plan only applies while every recorded module source is unchanged. */
+  async #sourcesAreFresh(sourceHashes: Record<string, string>): Promise<boolean> {
+    const checks = Object.entries(sourceHashes).map(async ([moduleId, sourceHash]) => {
+      try {
+        return metroCompilerContentHash(await readFile(moduleId, 'utf8')) === sourceHash
+      } catch {
+        return false
+      }
+    })
+    return (await Promise.all(checks)).every(Boolean)
   }
 
   #enqueue<T>(operation: () => Promise<T>): Promise<T> {
@@ -434,6 +448,7 @@ export class MetroCompilerFrontend {
     const id = resolvedModuleId(path)
     return {
       input: { id, source: compiled.code, imports },
+      sourceHash: metroCompilerContentHash(source),
       compiledHash: metroCompilerContentHash(compiled.code),
     }
   }
@@ -518,6 +533,7 @@ export class MetroCompilerFrontend {
     this.#entries.set(id, {
       schemaVersion: METRO_COMPILER_CACHE_VERSION,
       moduleId: id,
+      sourceHash: record.sourceHash,
       compiledHash: record.compiledHash,
       plan,
       diagnostics,
