@@ -510,7 +510,14 @@ export function createComponent<
     // input (which, with no clone above, would be React's own props object)
     props = componentState.props as typeof props
 
-    if (animationDriver?.avoidReRenders) {
+    // latch on first render: animationDriver derives from the per-render
+    // animatedBy prop, and the layout effect below is conditioned on
+    // avoidReRenders — letting it flip between renders would change the hook
+    // count mid-lifecycle (same latch pattern as hasAnimated in
+    // useComponentState). ??= keeps the first value: false stays false.
+    stateRef.current.avoidReRenders ??= !!animationDriver?.avoidReRenders
+
+    if (stateRef.current.avoidReRenders) {
       // post-commit reconciliation of `nextState` with the committed React state.
       // `nextState` is the source of truth for the fast `setStateShallow` path; it
       // must stay populated until React actually commits the corresponding update,
