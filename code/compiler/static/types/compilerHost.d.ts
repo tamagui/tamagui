@@ -10,6 +10,8 @@ export interface TamaguiCompilerHostOptions {
     tamaguiConfig: TamaguiInternalConfig;
     components: LoadedComponents[];
     componentModules: CompilerComponentModule[];
+    /** Keep elements with dynamic style props fully on the runtime path. */
+    disablePartialExtraction?: boolean;
 }
 export declare function createTamaguiCompilerHost(options: TamaguiCompilerHostOptions): CompilerLoweringHost;
 //# sourceMappingURL=compilerHost.d.ts.map

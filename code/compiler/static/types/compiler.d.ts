@@ -8,6 +8,8 @@ export interface CompilerProject {
     projectInfo: TamaguiProjectInfo;
     componentModules: CompilerProjectComponentModule[];
     generation: string;
+    /** Keep elements with dynamic style props fully on the runtime path. */
+    disablePartialExtraction?: boolean;
 }
 export interface CompilerResolution {
     id: string;
