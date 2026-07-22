@@ -564,10 +564,14 @@ export type VariablesValues = {
 };
 export type VariablesProps = {
     values?: VariablesValues;
-    /** applied additionally when the subtree's scheme is dark */
-    dark?: VariablesValues;
-    /** applied additionally when the subtree's scheme is light */
-    light?: VariablesValues;
+    /**
+     * per theme name: applied additionally when the subtree's resolved theme
+     * matches that name (by theme-name segment, so `blue` matches `dark_blue`).
+     * `dark`/`light` keys follow the subtree's color scheme.
+     */
+    themes?: {
+        [Name in ThemeName]?: VariablesValues;
+    };
     children?: ReactNode;
 };
 export type Tokens = TamaguiConfig['tokens'];
@@ -616,7 +620,7 @@ export type UseThemeWithStateProps = ThemeProps & {
     disable?: boolean;
     needsUpdate?: () => boolean;
     /** <Variables> inline theme layer: patches merged over the parent theme */
-    inlineValues?: Pick<VariablesProps, 'values' | 'dark' | 'light'>;
+    inlineValues?: Pick<VariablesProps, 'values' | 'themes'>;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S) | S;

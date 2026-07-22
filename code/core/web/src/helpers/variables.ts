@@ -170,16 +170,72 @@ const toDeclarationBlock = (declarations: ResolvedDeclarations) =>
     .map(([key, value]) => `--${cssVariablePrefix}${simpleHash(key, 40)}:${value};`)
     .join('')
 
+// matches the theme-class scoping on web (Theme.tsx strips the scheme prefix
+// before emitting t_ classes) and how theme nesting composes names: bucket
+// "blue" applies under "dark_blue", "light_blue_surface1", or a top-level
+// "blue" theme. scheme names never reach this (they resolve by scheme).
+const schemePrefix = /^(light|dark)_/
+
+const isSchemeName = (name: string) => name === 'light' || name === 'dark'
+
+const bucketMatchesThemeName = (bucketName: string, themeName: string): boolean => {
+  const base = themeName.replace(schemePrefix, '')
+  return base === bucketName || base.startsWith(`${bucketName}_`)
+}
+
+// non-scheme bucket names of a themes map, sorted so prefix chains apply
+// least-specific first (blue before blue_surface1) — the same order the CSS
+// rules are emitted in, where the later equal-specificity rule wins
+const getThemedBucketNames = (themes: VariablesProps['themes']): string[] => {
+  if (!themes) return []
+  const names: string[] = []
+  for (const name in themes) {
+    if (!isSchemeName(name) && themes[name]) {
+      names.push(name)
+    }
+  }
+  return names.sort()
+}
+
+// dev-only: the names a themes-map bucket can ever match — every '_'-joined
+// prefix of every scheme-stripped theme name in the config
+const themeBucketNameSets = new WeakMap<object, Set<string>>()
+
+const warnOnUnknownThemeBucket = (name: string, conf: TamaguiInternalConfig) => {
+  let set = themeBucketNameSets.get(conf.themes)
+  if (!set) {
+    set = new Set()
+    for (const themeName in conf.themes) {
+      const parts = themeName.replace(schemePrefix, '').split('_')
+      for (let i = 1; i <= parts.length; i++) {
+        set.add(parts.slice(0, i).join('_'))
+      }
+    }
+    themeBucketNameSets.set(conf.themes, set)
+  }
+  if (!set.has(name)) {
+    warnOnce(
+      `unknown-theme:${name}`,
+      `Variables: themes["${name}"] doesn't match any theme name in your config — it will never apply.`
+    )
+  }
+}
+
 // sibling references that form a cycle compute to invalid CSS in the browser
 // and are unresolvable in the native fixed-point resolver. contract
-// (plans/variables.md): a key whose reference chain reaches a cycle in EITHER
-// scheme-effective map ({...values, ...light} / {...values, ...dark}) is
-// dropped from all emission, in every mode, so web and native stay identical
-// regardless of the active scheme.
-const getCycleDroppedKeys = (props: VariablesProps): Set<string> | null => {
+// (plans/variables.md): a key whose reference chain reaches a cycle in ANY
+// effective map that can occur at runtime ({...values, ...matched theme
+// buckets, ...scheme bucket}) is dropped from all emission, in every mode, so
+// web and native stay identical regardless of the active theme. buckets can
+// only co-occur when their names form a prefix chain (blue, blue_surface1),
+// plus at most one scheme bucket, so those are exactly the maps checked.
+const getCycleDroppedKeys = (props: InlineValues): Set<string> | null => {
   const values = props.values as Record<string, VariableValIn> | undefined
-  const light = props.light as Record<string, VariableValIn> | undefined
-  const dark = props.dark as Record<string, VariableValIn> | undefined
+  const themes = props.themes as
+    | Record<string, Record<string, VariableValIn> | undefined>
+    | undefined
+  const light = themes?.light
+  const dark = themes?.dark
 
   let dropped: Set<string> | null = null
 
@@ -207,8 +263,25 @@ const getCycleDroppedKeys = (props: VariablesProps): Set<string> | null => {
     }
   }
 
-  check({ ...values, ...light })
-  check({ ...values, ...dark })
+  const checkWithSchemes = (base: Record<string, VariableValIn>) => {
+    check({ ...base, ...light })
+    check({ ...base, ...dark })
+  }
+
+  checkWithSchemes({ ...values })
+
+  const bucketNames = getThemedBucketNames(props.themes)
+  for (const name of bucketNames) {
+    // full prefix chain present in the map, least-specific first (sorted
+    // order guarantees prefixes come before their extensions)
+    const merged: Record<string, VariableValIn> = { ...values }
+    for (const other of bucketNames) {
+      if (other === name || name.startsWith(`${other}_`)) {
+        Object.assign(merged, themes![other])
+      }
+    }
+    checkWithSchemes(merged)
+  }
 
   if (dropped && process.env.NODE_ENV === 'development') {
     warnOnce(
@@ -227,25 +300,43 @@ const rulesCache = new Map<string, VariablesCSS | null>()
  * Identifier is a pure function of the resolved declarations so SSR and
  * client agree, and a build-time extractor can precompute it.
  *
- * Scheme scoping supports two levels of light/dark inversion, matching the
- * theme system's own selector strategy (getThemeCSSRules).
+ * The themes map emits each bucket under its theme-class scope. dark/light
+ * buckets keep the scheme strategy (two levels of light/dark inversion plus
+ * the prefers-color-scheme fallback, matching getThemeCSSRules); other names
+ * scope by plain theme class.
  */
 export function getVariablesCSSRules(
   props: VariablesProps,
   conf: TamaguiInternalConfig
 ): VariablesCSS | null {
   const cycleDropped = getCycleDroppedKeys(props)
+  const themes = props.themes as
+    | Record<string, VariablesProps['values'] | undefined>
+    | undefined
 
   const base = resolveDeclarations(props.values, conf, cycleDropped)
-  const dark = resolveDeclarations(props.dark, conf, cycleDropped)
-  const light = resolveDeclarations(props.light, conf, cycleDropped)
+  const dark = resolveDeclarations(themes?.dark, conf, cycleDropped)
+  const light = resolveDeclarations(themes?.light, conf, cycleDropped)
 
-  if (!base.length && !dark.length && !light.length) {
+  // non-scheme buckets, sorted: later rules win equal-specificity ties, so
+  // within a prefix chain (blue, blue_surface1) the more specific name wins
+  const themed: [string, ResolvedDeclarations][] = []
+  for (const name of getThemedBucketNames(props.themes)) {
+    if (process.env.NODE_ENV === 'development') {
+      warnOnUnknownThemeBucket(name, conf)
+    }
+    const declarations = resolveDeclarations(themes![name], conf, cycleDropped)
+    if (declarations.length) {
+      themed.push([name, declarations])
+    }
+  }
+
+  if (!base.length && !dark.length && !light.length && !themed.length) {
     return null
   }
 
   const prefersColorThemes = !!getSetting('shouldAddPrefersColorThemes')
-  const payload = JSON.stringify([base, dark, light, prefersColorThemes])
+  const payload = JSON.stringify([base, themed, dark, light, prefersColorThemes])
 
   const cached = rulesCache.get(payload)
   if (cached !== undefined) {
@@ -258,6 +349,18 @@ export function getVariablesCSSRules(
 
   if (base.length) {
     rules.push(`:root ${cls} {${toDeclarationBlock(base)}}`)
+  }
+
+  // non-scheme theme buckets: plain theme-class scoping (0,3,0). the class can
+  // sit on :root itself (addThemeClassName 'html') or below it, so emit both
+  // shapes. nested inversion is a scheme concept and doesn't apply here.
+  // emitted before the scheme rules so scheme buckets win overlapping keys —
+  // required for consistency, since the scheme inversion selector (0,4,0)
+  // outranks these regardless of order.
+  for (const [name, declarations] of themed) {
+    rules.push(
+      `:root .t_${name} ${cls}, :root.t_${name} ${cls} {${toDeclarationBlock(declarations)}}`
+    )
   }
 
   // explicit scheme classes: one level (0,3,0) then the two-level inversion
@@ -306,7 +409,7 @@ export function getVariablesCSSRules(
 
 // ---- inline theme layer (<Variables> on native + JS theme readers on web) ----
 
-type InlineValues = Pick<VariablesProps, 'values' | 'dark' | 'light'>
+type InlineValues = Pick<VariablesProps, 'values' | 'themes'>
 
 // non-enumerable marker on merged theme objects: cache key for idempotency,
 // overridden key set, and literal light/dark pairs for the iOS fast-scheme path
@@ -331,27 +434,53 @@ const serializeBucket = (bucket: VariablesProps['values']): string => {
     .join(',')
 }
 
-export const getInlineValuesKey = (inline: InlineValues): string =>
-  `${serializeBucket(inline.values)};${serializeBucket(inline.dark)};${serializeBucket(inline.light)}`
+export const getInlineValuesKey = (inline: InlineValues): string => {
+  let key = serializeBucket(inline.values)
+  if (inline.themes) {
+    const themes = inline.themes as Record<string, VariablesProps['values']>
+    for (const name of Object.keys(themes).sort()) {
+      key += `;${name}=${serializeBucket(themes[name])}`
+    }
+  }
+  return key
+}
 
 const mergedThemeCache = new WeakMap<object, Map<string, Record<string, Variable>>>()
 
 /**
  * Builds the merged theme for a <Variables> layer: parent theme spread plus
  * overridden keys as Variables, resolved per the shared contract (effective
- * scheme map, fixed-point references, cycle-involved keys dropped in both
- * schemes). Returns the parent theme unchanged when nothing applies.
- * Identity-stable per (parentTheme, values, scheme) so snapshot bailouts and
+ * map = values + matching non-scheme theme buckets + scheme bucket,
+ * fixed-point references, cycle-involved keys dropped everywhere). Non-scheme
+ * buckets match the subtree's resolved theme name by segment (bucket "blue"
+ * under "dark_blue"), mirroring the theme-class scoping on web; dark/light
+ * buckets resolve by the scheme derived from the theme name. Returns the
+ * parent theme unchanged when nothing applies. Identity-stable per
+ * (parentTheme, values, matched buckets, scheme) so snapshot bailouts and
  * proxy caches hold.
  */
 export function getMergedInlineTheme(
   parentTheme: Record<string, Variable>,
   inline: InlineValues,
-  scheme: 'light' | 'dark' | undefined,
+  themeName: string | undefined,
   conf: TamaguiInternalConfig
 ): Record<string, Variable> {
-  const activeScheme = scheme === 'dark' ? 'dark' : 'light'
-  const cacheKey = `${getInlineValuesKey(inline)}|${activeScheme}`
+  const name = themeName || 'light'
+  const activeScheme = name.split('_')[0] === 'dark' ? 'dark' : 'light'
+
+  const bucketNames = getThemedBucketNames(inline.themes)
+  let matched: string[] | undefined
+  for (const bucketName of bucketNames) {
+    if (process.env.NODE_ENV === 'development') {
+      warnOnUnknownThemeBucket(bucketName, conf)
+    }
+    if (bucketMatchesThemeName(bucketName, name)) {
+      matched ||= []
+      matched.push(bucketName)
+    }
+  }
+
+  const cacheKey = `${getInlineValuesKey(inline)}|${activeScheme}|${matched ? matched.join(',') : ''}`
 
   // idempotency: re-applying the same layer to its own output is a no-op
   const existingInfo = (parentTheme as any)[inlineLayerKey] as InlineLayerInfo | undefined
@@ -365,10 +494,20 @@ export function getMergedInlineTheme(
   }
 
   const values = (inline.values || {}) as Record<string, VariableValIn>
-  const light = (inline.light || {}) as Record<string, VariableValIn>
-  const dark = (inline.dark || {}) as Record<string, VariableValIn>
-  const effective = { ...values, ...(activeScheme === 'dark' ? dark : light) }
-  const opposite = { ...values, ...(activeScheme === 'dark' ? light : dark) }
+  const themes = (inline.themes || {}) as Record<
+    string,
+    Record<string, VariableValIn> | undefined
+  >
+  const light = themes.light || {}
+  const dark = themes.dark || {}
+  const base = { ...values }
+  if (matched) {
+    for (const bucketName of matched) {
+      Object.assign(base, themes[bucketName])
+    }
+  }
+  const effective = { ...base, ...(activeScheme === 'dark' ? dark : light) }
+  const opposite = { ...base, ...(activeScheme === 'dark' ? light : dark) }
   const dropped = getCycleDroppedKeys(inline)
   const keySet = getThemeKeySet(conf)
 

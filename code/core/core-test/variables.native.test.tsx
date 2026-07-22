@@ -57,7 +57,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
   test('scheme-effective merge: dark bucket wins under dark', () => {
     const inline = {
       values: { surfaceBorder: '#111' },
-      dark: { surfaceBorder: '#eee' },
+      themes: { dark: { surfaceBorder: '#eee' } },
     }
     const light: any = getMergedInlineTheme(lightTheme, inline, 'light', conf)
     const dark: any = getMergedInlineTheme(conf.themes.dark as any, inline, 'dark', conf)
@@ -110,12 +110,27 @@ describe('getMergedInlineTheme (native inline layer)', () => {
       lightTheme,
       {
         values: { surfaceBorder: '$chained', chained: '$surfaceBorder' },
-        dark: { chained: 'red' },
+        themes: { dark: { chained: 'red' } },
       },
       'light',
       conf
     )
     expect(scheme).toBe(lightTheme)
+
+    // cycle only reachable by combining a non-scheme bucket with a scheme
+    // bucket drops everywhere too — even where the buckets don't apply
+    const combined: any = getMergedInlineTheme(
+      lightTheme,
+      {
+        themes: {
+          blue: { surfaceBorder: '$chained' },
+          dark: { chained: '$surfaceBorder' },
+        },
+      },
+      'light',
+      conf
+    )
+    expect(combined).toBe(lightTheme)
   })
 
   test('unknown keys drop', () => {
@@ -124,12 +139,90 @@ describe('getMergedInlineTheme (native inline layer)', () => {
     ).toBe(lightTheme)
   })
 
+  test('non-scheme buckets match the resolved theme name by segment', () => {
+    const darkTheme = conf.themes.dark as any
+    const inline = {
+      values: { surfaceBorder: '#111' },
+      themes: { blue: { surfaceBorder: '#00f' } },
+    }
+    // dark_blue: the blue bucket matches and wins over values
+    const darkBlue: any = getMergedInlineTheme(darkTheme, inline, 'dark_blue', conf)
+    expect(darkBlue.surfaceBorder.val).toBe('#00f')
+    // sub-theme below blue still matches (segment prefix, like t_blue on web)
+    const darkBlueButton: any = getMergedInlineTheme(
+      darkTheme,
+      inline,
+      'dark_blue_Button',
+      conf
+    )
+    expect(darkBlueButton.surfaceBorder.val).toBe('#00f')
+    // plain dark: no match, base values apply
+    const plain: any = getMergedInlineTheme(darkTheme, inline, 'dark', conf)
+    expect(plain.surfaceBorder.val).toBe('#111')
+    // top-level theme without a scheme prefix matches its own name
+    const redInline = {
+      values: { surfaceBorder: '#111' },
+      themes: { red: { surfaceBorder: '#a00' } },
+    }
+    const red: any = getMergedInlineTheme(conf.themes.red as any, redInline, 'red', conf)
+    expect(red.surfaceBorder.val).toBe('#a00')
+  })
+
+  test('scheme buckets win overlapping keys over non-scheme buckets', () => {
+    const darkTheme = conf.themes.dark as any
+    const merged: any = getMergedInlineTheme(
+      darkTheme,
+      {
+        themes: {
+          blue: { surfaceBorder: '#00f' },
+          dark: { surfaceBorder: '#e0e' },
+        },
+      },
+      'dark_blue',
+      conf
+    )
+    expect(merged.surfaceBorder.val).toBe('#e0e')
+  })
+
+  test('prefix-chain buckets apply least-specific first so the deeper name wins', () => {
+    const darkTheme = conf.themes.dark as any
+    const inline = {
+      themes: {
+        red_alt1: { surfaceBorder: '#b00' },
+        red: { surfaceBorder: '#a00', accent: '#0aa' },
+      },
+    }
+    const alt: any = getMergedInlineTheme(darkTheme, inline, 'dark_red_alt1', conf)
+    expect(alt.surfaceBorder.val).toBe('#b00')
+    // keys only in the shallower bucket still apply
+    expect(alt.accent.val).toBe('#0aa')
+    const base: any = getMergedInlineTheme(darkTheme, inline, 'dark_red', conf)
+    expect(base.surfaceBorder.val).toBe('#a00')
+  })
+
+  test('non-scheme bucket literals produce identity iOS pairs', () => {
+    const darkTheme = conf.themes.dark as any
+    const merged: any = getMergedInlineTheme(
+      darkTheme,
+      {
+        themes: { blue: { accent: '#00f', surfaceBorder: '$background' } },
+      },
+      'dark_blue',
+      conf
+    )
+    const info = merged[inlineLayerKey]
+    // a literal that doesn't vary by scheme keeps the fast path with the same
+    // value on both sides; references still deopt
+    expect(info.pairs.accent).toEqual({ light: '#00f', dark: '#00f' })
+    expect(info.pairs.surfaceBorder).toBe(undefined)
+  })
+
   test('layer info: overridden set and literal-only iOS pairs', () => {
     const merged: any = getMergedInlineTheme(
       lightTheme,
       {
         values: { accent: '#111', surfaceBorder: '$background' },
-        dark: { accent: '#eee' },
+        themes: { dark: { accent: '#eee' } },
       },
       'light',
       conf
@@ -146,7 +239,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
   test('nested layers carry parent overrides forward', () => {
     const outer: any = getMergedInlineTheme(
       lightTheme,
-      { values: { accent: '#111' }, dark: { accent: '#eee' } },
+      { values: { accent: '#111' }, themes: { dark: { accent: '#eee' } } },
       'light',
       conf
     )
