@@ -7,10 +7,15 @@ import {
   useAdaptTarget,
   useAdaptedCapabilities,
 } from '@tamagui/adapt'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
+import { createTamagui } from '@tamagui/core'
 import { getPortal } from '@tamagui/native'
 import React from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 import { afterEach, describe, expect, test } from 'vitest'
+
+// Adapt reads media state (useMedia) which requires a created config
+createTamagui(getDefaultTamaguiConfig())
 
 const scope = 'AdaptTeleportTest'
 
