@@ -26,6 +26,7 @@ export type ViteTamaguiLoader = {
   getCompilerProject(): Promise<{
     projectInfo: TamaguiProjectInfo
     componentModules: { moduleName: string; id: string }[]
+    disablePartialExtraction?: boolean
   }>
   getEvaluationDependencies(): string[]
   isEvaluationDependency(id: string): boolean
@@ -196,6 +197,7 @@ export function createViteTamaguiLoader(
           moduleName,
           id,
         })),
+        disablePartialExtraction: !!options.disablePartialExtraction,
       }
     },
     getEvaluationDependencies: () => [...evaluationDependencies],

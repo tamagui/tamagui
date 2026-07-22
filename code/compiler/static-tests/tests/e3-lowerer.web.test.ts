@@ -34,7 +34,11 @@ beforeAll(() => {
   })
 })
 
-function compile(source: string, target: CompilerTarget = 'web') {
+function compile(
+  source: string,
+  target: CompilerTarget = 'web',
+  hostOptions?: { disablePartialExtraction?: boolean }
+) {
   const id = resolvedModuleId(
     resolve(import.meta.dirname, `fixtures/e3-${target}-lowerer.tsx`)
   )
@@ -59,6 +63,7 @@ function compile(source: string, target: CompilerTarget = 'web') {
     tamaguiConfig: projectInfo.tamaguiConfig!,
     components: projectInfo.components!,
     componentModules: [{ moduleName: '@tamagui/core', resolvedId: coreId }],
+    ...hostOptions,
   })
   const plan = lowerModule({
     module: materializeModule(graph, id),
@@ -630,6 +635,56 @@ export const CreateElementApp = () => createElement(
     expect(output.code).not.toContain('padding: 14')
     expect(plan.css).toContain('padding-top:12px')
     expect(plan.css).toContain('padding-top:14px')
+  })
+
+  test('disablePartialExtraction keeps every partial candidate byte-identical', () => {
+    // mirrors the partial-extraction shapes seen in the tamagui.dev build:
+    // bare components mixing one dynamic direct style prop with static ones
+    const source = `
+import { View } from '@tamagui/core'
+import { jsx } from 'react/jsx-runtime'
+export const Cards = ({ width, height, flex, x, opacity }) => (
+  <>
+    <View width={width} padding={12} data-partial="one" />
+    <View height={height} margin={4} opacity={0.5} data-partial="two" />
+    <View flex={flex} paddingTop={8} data-partial="three" />
+    <View x={x} transform={[{ scale: 2 }]} padding={12} data-partial="four" />
+  </>
+)
+export const Compiled = ({ width }) => jsx(View, {
+  width,
+  padding: 12,
+  'data-partial': 'five',
+})
+`
+    const enabled = compile(source)
+    expect(codes(enabled.plan)).toEqual([])
+    expect(enabled.plan.stats).toEqual({
+      found: 5,
+      lowered: 5,
+      flattened: 0,
+      styled: 0,
+      bailed: 0,
+    })
+
+    const disabled = compile(source, 'web', { disablePartialExtraction: true })
+    expect(codes(disabled.plan)).toEqual([
+      'local/dynamic-style-value',
+      'local/dynamic-style-value',
+      'local/dynamic-style-value',
+      'local/dynamic-style-value',
+      'local/dynamic-style-value',
+    ])
+    expect(disabled.plan.stats).toEqual({
+      found: 5,
+      lowered: 0,
+      flattened: 0,
+      styled: 0,
+      bailed: 5,
+    })
+    expect(disabled.output.changed).toBe(false)
+    expect(disabled.output.code).toBe(source)
+    expect(disabled.plan.css).toBe('')
   })
 
   test('lowers nested compiled candidates independently', () => {

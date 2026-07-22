@@ -87,6 +87,13 @@ export interface TamaguiBuildOptions {
   disableExtraction?: boolean | string[]
 
   /**
+   * Disable partial extraction (extracting static style props into CSS beside
+   * retained runtime props on the same element). Elements with dynamic style
+   * props stay fully on the runtime path instead.
+   */
+  disablePartialExtraction?: boolean
+
+  /**
    * Disable just the addition of data- attributes that are added in dev mode to help
    * tie DOM to your filename/component-name.
    */

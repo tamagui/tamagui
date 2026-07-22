@@ -29,6 +29,8 @@ export interface TamaguiCompilerHostOptions {
   tamaguiConfig: TamaguiInternalConfig
   components: LoadedComponents[]
   componentModules: CompilerComponentModule[]
+  /** Keep elements with dynamic style props fully on the runtime path. */
+  disablePartialExtraction?: boolean
 }
 
 interface TamaguiLoweringComponent extends LoweringComponent {
@@ -798,7 +800,11 @@ export function createTamaguiCompilerHost(
     resolveComponent: resolve,
     isStyleProp,
     canLowerDynamicStyleProp(name, component) {
-      return platform === 'web' && !!directStyleName(name, component)
+      return (
+        platform === 'web' &&
+        !options.disablePartialExtraction &&
+        !!directStyleName(name, component)
+      )
     },
     lowerCandidate(input): LoweringCandidateResult {
       const component = input.component as TamaguiLoweringComponent

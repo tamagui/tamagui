@@ -213,6 +213,7 @@ export class MetroCompilerFrontend {
         moduleName,
         resolvedId: id,
       })),
+      disablePartialExtraction: this.config.tamaguiOptions?.disablePartialExtraction,
     })
     this.#entries.clear()
     for (const id of this.#graph.moduleIds()) this.#refreshEntry(id)
@@ -455,6 +456,7 @@ export class MetroCompilerFrontend {
         compilerImplementationVersions,
         componentModules,
         configCss,
+        disablePartialExtraction: !!this.config.tamaguiOptions?.disablePartialExtraction,
         target,
       })
     )
