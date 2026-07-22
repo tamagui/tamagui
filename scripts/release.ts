@@ -46,6 +46,18 @@ const requestedChannel = isBeta ? 'beta' : isRC ? 'rc' : null
 const explicitTagIdx = process.argv.indexOf('--tag')
 const explicitTag =
   explicitTagIdx !== -1 ? (process.argv[explicitTagIdx + 1] || '').trim() : undefined
+const explicitVersionIdx = process.argv.indexOf('--version')
+const explicitVersion =
+  explicitVersionIdx !== -1
+    ? (process.argv[explicitVersionIdx + 1] || '').trim()
+    : undefined
+
+if (
+  explicitVersion !== undefined &&
+  !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(explicitVersion)
+) {
+  throw new Error(`Invalid release version: ${explicitVersion || '(empty)'}`)
+}
 
 const skipStarters = canary || skipAll || process.argv.includes('--skip-starters')
 const skipVersion = shouldFinish || rePublish || process.argv.includes('--skip-version')
@@ -131,6 +143,10 @@ const currentChannelNumber = channelMatch ? Number.parseInt(channelMatch[3], 10)
 const nextVersion = (() => {
   if (rePublish) {
     return curVersion
+  }
+
+  if (explicitVersion) {
+    return explicitVersion
   }
 
   if (canary) {
@@ -357,7 +373,7 @@ async function run() {
     if (!shouldFinish) {
       let answer: { version: string }
 
-      if (isCI || skipVersion) {
+      if (explicitVersion || isCI || skipVersion) {
         if (!nextVersion) {
           throw new Error(
             `Cannot compute a ${requestedChannel} version from a stable base (${curVersion}) non-interactively.\n` +
