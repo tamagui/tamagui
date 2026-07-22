@@ -632,6 +632,36 @@ export const CreateElementApp = () => createElement(
     expect(plan.css).toContain('padding-top:14px')
   })
 
+  test('lowers nested compiled candidates independently', () => {
+    const source = `
+import { View } from '@tamagui/core'
+import { jsx } from 'react/jsx-runtime'
+export const Card = () => jsx(View, {
+  padding: 12,
+  'data-outer': 'yes',
+  children: jsx(View, { margin: 4, testID: 'inner', 'data-inner': 'yes' }),
+})
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toEqual({
+      found: 2,
+      lowered: 2,
+      flattened: 2,
+      styled: 0,
+      bailed: 0,
+    })
+    expect(output.code).not.toContain('padding: 12')
+    expect(output.code).not.toContain('margin: 4')
+    expect(output.code).toContain(`'data-outer': 'yes'`)
+    expect(output.code).toContain(`'data-inner': 'yes'`)
+    expect(output.code).toContain(`'data-testid': 'inner'`)
+    expect(output.code).not.toContain('testID')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('margin-top:4px')
+  })
+
   test('registry identity is canonical resolved id plus export name', () => {
     const source = `
 import { View } from '@tamagui/core'

@@ -6,6 +6,7 @@ import type {
   LoweringComponent,
   MaterializedElement,
   MaterializedStyledDefinition,
+  SourceEdit,
 } from '@tamagui/compiler-core'
 import {
   StyleObjectIdentifier,
@@ -188,50 +189,67 @@ function extractedStyleArtifacts(
   }
 }
 
-function compiledPropsContent(
+/**
+ * Granular edits inside a compiled-call props object. Whole-span replacement would
+ * also cover the children property, so nested candidates could never both commit.
+ */
+function compiledPropsEdits(
   input: LoweringCandidateInput,
   styleEntries: MaterializedElement['entries'],
   replacement: string
-): string | null {
+): SourceEdit[] | null {
   const propsSpan = input.element.propsSpan
   if (!propsSpan) return null
   const original = input.source.slice(propsSpan.start, propsSpan.end)
   const trimmed = original.trim()
   if (!trimmed.startsWith('{') || !trimmed.endsWith('}')) {
-    return `{ ${replacement} }`
+    return [
+      {
+        start: propsSpan.start,
+        end: propsSpan.end,
+        content: `{ ${replacement} }`,
+        origin: propsSpan,
+      },
+    ]
   }
 
   if (styleEntries.length === 0) {
     const close = original.lastIndexOf('}')
-    const beforeClose = original.slice(0, close)
-    const separator = beforeClose.slice(1).trim() ? ', ' : ' '
-    return `${beforeClose}${separator}${replacement} ${original.slice(close)}`
+    const separator = original.slice(1, close).trim() ? ', ' : ' '
+    const position = propsSpan.start + close
+    return [
+      {
+        start: position,
+        end: position,
+        content: `${separator}${replacement} `,
+        origin: propsSpan,
+      },
+    ]
   }
 
-  type LocalEdit = { start: number; end: number; content: string }
-  const localEdits: LocalEdit[] = []
+  const edits: SourceEdit[] = []
   for (const [index, entry] of styleEntries.entries()) {
-    let start = entry.span.start - propsSpan.start
-    let end = entry.span.end - propsSpan.start
+    let start = entry.span.start
+    let end = entry.span.end
     if (index === 0) {
-      localEdits.push({ start, end, content: replacement })
+      edits.push({ start, end, content: replacement, origin: entry.span })
       continue
     }
 
-    let cursor = end
+    let cursor = end - propsSpan.start
     while (cursor < original.length - 1 && /\s/.test(original[cursor]!)) cursor++
     if (original[cursor] === ',') {
-      end = cursor + 1
+      end = propsSpan.start + cursor + 1
     } else {
-      cursor = start - 1
+      cursor = start - propsSpan.start - 1
       while (cursor > 0 && /\s/.test(original[cursor]!)) cursor--
-      if (original[cursor] === ',') start = cursor
+      if (original[cursor] === ',') start = propsSpan.start + cursor
     }
-    localEdits.push({ start, end, content: '' })
+    edits.push({ start, end, content: '', origin: entry.span })
   }
 
-  const merged: LocalEdit[] = []
-  for (const edit of localEdits.sort((left, right) => left.start - right.start)) {
+  const merged: SourceEdit[] = []
+  for (const edit of edits.sort((left, right) => left.start - right.start)) {
     const previous = merged.at(-1)
     if (previous && edit.start <= previous.end && !previous.content && !edit.content) {
       previous.end = Math.max(previous.end, edit.end)
@@ -239,11 +257,7 @@ function compiledPropsContent(
       merged.push(edit)
     }
   }
-  let output = original
-  for (const edit of merged.sort((left, right) => right.start - left.start)) {
-    output = output.slice(0, edit.start) + edit.content + output.slice(edit.end)
-  }
-  return output
+  return merged
 }
 
 const compilerStyleProps = new Set([
@@ -972,22 +986,15 @@ export function createTamaguiCompilerHost(
               )
               if (artifacts.className) {
                 if (input.element.form !== 'jsx') {
-                  const propsContent = compiledPropsContent(
+                  const propsEdits = compiledPropsEdits(
                     input,
                     staticStyleEntries,
                     objectClassName(artifacts.className)
                   )
-                  if (propsContent) {
+                  if (propsEdits) {
                     return {
                       ok: true,
-                      edits: [
-                        {
-                          start: input.element.propsSpan!.start,
-                          end: input.element.propsSpan!.end,
-                          content: propsContent,
-                          origin: input.element.propsSpan!,
-                        },
-                      ],
+                      edits: propsEdits,
                       css: artifacts.css,
                       imports: [],
                       flattened: false,
@@ -1105,16 +1112,20 @@ export function createTamaguiCompilerHost(
               if (entry.kind !== 'prop' || entry.name !== 'testID') return []
               const content = input.source.slice(entry.span.start, entry.span.end)
               const nameOffset = content.indexOf('testID')
-              return nameOffset === -1
-                ? []
-                : [
-                    {
-                      start: entry.span.start + nameOffset,
-                      end: entry.span.start + nameOffset + 'testID'.length,
-                      content: 'data-testid',
-                      origin: entry.span,
-                    },
-                  ]
+              if (nameOffset === -1) return []
+              const alreadyQuoted =
+                content[nameOffset - 1] === '"' || content[nameOffset - 1] === "'"
+              return [
+                {
+                  start: entry.span.start + nameOffset,
+                  end: entry.span.start + nameOffset + 'testID'.length,
+                  content:
+                    input.element.form === 'jsx' || alreadyQuoted
+                      ? 'data-testid'
+                      : `'data-testid'`,
+                  origin: entry.span,
+                },
+              ]
             })
           : []
       const unsafeSpread = input.element.entries.find(
@@ -1158,8 +1169,8 @@ export function createTamaguiCompilerHost(
             origin: span,
           }))
         if (input.element.form !== 'jsx') {
-          const propsContent = compiledPropsContent(input, styleEntries, styleContent)
-          if (!propsContent) {
+          const propsEdits = compiledPropsEdits(input, styleEntries, styleContent)
+          if (!propsEdits) {
             return bailout(
               input,
               'local/unsupported-target',
@@ -1168,15 +1179,7 @@ export function createTamaguiCompilerHost(
           }
           return {
             ok: true,
-            edits: [
-              ...tagEdits,
-              {
-                start: input.element.propsSpan!.start,
-                end: input.element.propsSpan!.end,
-                content: propsContent,
-                origin: input.element.propsSpan!,
-              },
-            ],
+            edits: [...tagEdits, ...propsEdits],
             css: [],
             imports: [
               {
@@ -1255,12 +1258,12 @@ export function createTamaguiCompilerHost(
         )
       }
       if (input.element.form !== 'jsx') {
-        const propsContent = compiledPropsContent(
+        const propsEdits = compiledPropsEdits(
           input,
           styleEntries,
           objectStyleProperties(className, inlineStyle)
         )
-        if (!propsContent) {
+        if (!propsEdits) {
           return bailout(
             input,
             'local/unsupported-target',
@@ -1269,15 +1272,7 @@ export function createTamaguiCompilerHost(
         }
         return {
           ok: true,
-          edits: [
-            ...tagEdits,
-            {
-              start: input.element.propsSpan!.start,
-              end: input.element.propsSpan!.end,
-              content: propsContent,
-              origin: input.element.propsSpan!,
-            },
-          ],
+          edits: [...tagEdits, ...webPropEdits, ...propsEdits],
           css: artifacts.css,
           imports: [],
           flattened: true,
