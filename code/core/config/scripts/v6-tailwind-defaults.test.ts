@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 
+import { tailwindColors } from '../src/v6-tailwind-colors.generated'
 import {
-  tailwindColors,
   tailwindFontSize,
   tailwindLineHeight,
   tailwindRadius,
@@ -9,7 +9,7 @@ import {
   tailwindSource,
   tailwindSpace,
   tailwindZIndex,
-} from '../src/v6-tailwind-defaults.generated'
+} from '../src/v6-tailwind-scales.generated'
 import { settings } from '../src/v6-base'
 import {
   PLAYWRIGHT_VERSION,

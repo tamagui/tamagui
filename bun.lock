@@ -419,6 +419,7 @@
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
+        "@tamagui/cli": "workspace:*",
         "playwright": "1.58.2",
         "tailwindcss": "4.3.0",
       },

@@ -34,7 +34,13 @@
     "v5-subtle.cjs",
     "v5-subtle.d.ts",
     "v6.cjs",
-    "v6.d.ts"
+    "v6.d.ts",
+    "v6-base.cjs",
+    "v6-base.d.ts",
+    "v6-classic.cjs",
+    "v6-classic.d.ts",
+    "v6-builder.cjs",
+    "v6-builder.d.ts"
   ],
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -85,6 +91,33 @@
       "import": "./dist/esm/v6.mjs",
       "require": "./dist/cjs/v6.cjs",
       "default": "./dist/esm/v6.mjs"
+    },
+    "./v6-base": {
+      "types": "./types/v6-base.d.ts",
+      "react-native": "./dist/esm/v6-base.native.js",
+      "browser": "./dist/esm/v6-base.mjs",
+      "module": "./dist/esm/v6-base.mjs",
+      "import": "./dist/esm/v6-base.mjs",
+      "require": "./dist/cjs/v6-base.cjs",
+      "default": "./dist/esm/v6-base.mjs"
+    },
+    "./v6-classic": {
+      "types": "./types/v6-classic.d.ts",
+      "react-native": "./dist/esm/v6-classic.native.js",
+      "browser": "./dist/esm/v6-classic.mjs",
+      "module": "./dist/esm/v6-classic.mjs",
+      "import": "./dist/esm/v6-classic.mjs",
+      "require": "./dist/cjs/v6-classic.cjs",
+      "default": "./dist/esm/v6-classic.mjs"
+    },
+    "./v6-builder": {
+      "types": "./types/v6-builder.d.ts",
+      "react-native": "./dist/esm/v6-builder.native.js",
+      "browser": "./dist/esm/v6-builder.mjs",
+      "module": "./dist/esm/v6-builder.mjs",
+      "import": "./dist/esm/v6-builder.mjs",
+      "require": "./dist/cjs/v6-builder.cjs",
+      "default": "./dist/esm/v6-builder.mjs"
     },
     "./v5-css": {
       "types": "./types/v5-css.d.ts",
@@ -138,7 +171,9 @@
   "scripts": {
     "build": "tamagui-build",
     "check:v6-tailwind-defaults": "bun ./scripts/generate-v6-tailwind-defaults.ts --check",
+    "generate:v6-tailwind-themes": "tamagui generate-themes ./src/v6-tailwind-themes.generate.ts ./src/v6-tailwind-themes.generated.ts",
     "test:v6-tailwind-defaults": "bun test ./scripts/v6-tailwind-defaults.test.ts",
+    "test:v6-entries": "bun test ./scripts/v6-entries.test.ts",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
@@ -161,6 +196,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "@tamagui/cli": "workspace:*",
     "playwright": "1.58.2",
     "tailwindcss": "4.3.0"
   }
