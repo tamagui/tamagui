@@ -72,16 +72,20 @@ function getWorkspacePackages() {
     .map((packageJsonPath) => {
       const packageRoot = path.dirname(packageJsonPath)
       const packageJson = FSE.readJSONSync(packageJsonPath)
-      const selectedCommand = shouldWatch
-        ? packageJson.scripts?.watch || packageJson.scripts?.['build:watch']
+      const selectedScript = shouldWatch
+        ? packageJson.scripts?.watch
+          ? 'watch'
+          : packageJson.scripts?.['build:watch']
+            ? 'build:watch'
+            : null
         : packageJson.scripts?.build
+          ? 'build'
+          : null
+      const selectedCommand = selectedScript ? packageJson.scripts[selectedScript] : null
       if (!selectedCommand) return null
 
-      const packageArgs =
-        getBuildArgs(selectedCommand) || getBuildArgs(packageJson.scripts?.build || '')
-      const command = packageArgs ? null : packageJson.scripts?.build
+      const packageArgs = getBuildArgs(selectedCommand)
 
-      if (!packageArgs && !command) return null
       if (filters.length && !filters.includes(packageJson.name)) return null
 
       return {
@@ -89,7 +93,7 @@ function getWorkspacePackages() {
         root: packageRoot,
         src: path.join(packageRoot, 'src'),
         args: packageArgs,
-        command,
+        script: packageArgs ? null : selectedScript,
         dependencies: Object.keys({
           ...packageJson.dependencies,
           ...packageJson.devDependencies,
@@ -129,11 +133,10 @@ function drainQueue() {
     const item = queue.shift()
     running++
 
-    const child = item.command
-      ? spawn(item.command, {
+    const child = item.script
+      ? spawn('bun', ['run', item.script], {
           cwd: item.root,
           env: process.env,
-          shell: true,
           stdio: 'inherit',
         })
       : spawn(process.execPath, [buildScript, ...item.args], {
@@ -236,7 +239,7 @@ async function shutdown(signal) {
 if (shouldList) {
   for (const item of packages) {
     console.info(
-      `${item.name}\t${path.relative(root, item.root)}\t${item.command || `tamagui-build ${item.args.join(' ')}`}`
+      `${item.name}\t${path.relative(root, item.root)}\t${item.script ? `bun run ${item.script}` : `tamagui-build ${item.args.join(' ')}`}`
     )
   }
   process.exit(0)

@@ -2,6 +2,7 @@ import { getNativeOnlyMarker } from './nativeOnly'
 
 export { nestedHello } from './nested'
 export * from './star'
+export * from './dotted.name'
 
 export const loadLazy = () => import('./lazy')
 

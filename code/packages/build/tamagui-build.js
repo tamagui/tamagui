@@ -282,13 +282,13 @@ function resolveOutputModuleSpecifier(specifier, filePath, outputExtension) {
   const suffix = suffixIndex === -1 ? '' : specifier.slice(suffixIndex)
   const pathname = suffixIndex === -1 ? specifier : specifier.slice(0, suffixIndex)
 
-  if (path.extname(pathname)) {
-    return specifier
-  }
-
   const targetPath = path.resolve(path.dirname(filePath), pathname)
   if (FSE.existsSync(`${targetPath}.js`)) {
     return `${pathname}${outputExtension}${suffix}`
+  }
+
+  if (path.extname(pathname)) {
+    return specifier
   }
 
   if (
