@@ -1,9 +1,7 @@
-import type { SizeVariantSpreadFunction } from '@tamagui/core'
+import type { SizeVariantSpreadFunction, VariantSpreadExtras } from '@tamagui/core'
 import { Text } from '@tamagui/core'
-import { getVariableValue, isWeb } from '@tamagui/core'
-import { getButtonSized } from '@tamagui/get-button-sized'
+import { getVariableValue, isWeb, resolveTokenSize } from '@tamagui/core'
 import { getFontSized } from '@tamagui/get-font-sized'
-import { getSize } from '@tamagui/get-token'
 
 // Structural-only defaults for the unstyled Input behavior primitive.
 // Theme decoration (palette, border, background, font family, hover/focus color
@@ -19,6 +17,9 @@ export const defaultStyles = {
   minWidth: 0,
 } as const
 
+const resolveInputFrame = (val: any, extras: VariantSpreadExtras<any>) =>
+  resolveTokenSize(val, { tokens: extras.tokens, font: extras.font! }).frame
+
 export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = true, extras) => {
   // Check for textarea mode via tag, rows, multiline, or numberOfLines
   if (
@@ -29,8 +30,8 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = true, ext
   ) {
     return textAreaSizeVariant(val, extras)
   }
-  const buttonStyles = getButtonSized(val, extras)
-  const sizeVal = getVariableValue(getSize(val)) as number
+  const frame = resolveInputFrame(val, extras)
+  const sizeVal = getVariableValue(frame.size) as number
   const paddingHorizontal = Math.max(0, Math.round(sizeVal * 0.6 - 12))
   const fontStyle = getFontSized(val as any, extras)
   // lineHeight messes up input on native
@@ -39,7 +40,8 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = true, ext
   }
   return {
     ...fontStyle,
-    ...buttonStyles,
+    height: frame.size,
+    borderRadius: frame.radius,
     paddingHorizontal,
   }
 }
@@ -49,7 +51,7 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
   extras
 ) => {
   const { props } = extras
-  const buttonStyles = getButtonSized(val, extras)
+  const frame = resolveInputFrame(val, extras)
   const fontStyle = getFontSized(val as any, extras)!
   const lines = props.rows ?? props.numberOfLines
   const height =
@@ -58,11 +60,11 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
   if (!isWeb && fontStyle) {
     delete fontStyle['lineHeight']
   }
-  const sizeVal = getVariableValue(getSize(val)) as number
+  const sizeVal = getVariableValue(frame.size) as number
   const paddingVertical = Math.max(0, Math.round(sizeVal * 0.52 - 11.5))
   const paddingHorizontal = Math.max(0, Math.round(sizeVal * 0.6 - 12))
   return {
-    ...buttonStyles,
+    borderRadius: frame.radius,
     ...fontStyle,
     paddingVertical,
     paddingHorizontal,
