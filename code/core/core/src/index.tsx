@@ -239,8 +239,8 @@ setupHooks({
       }
 
       if (elementType === baseViews.View && baseViews.TextAncestor) {
-        // optimize view (viewProps is only undefined for passthrough, handled above)
-        return createOptimizedView(children, viewProps!, baseViews, isInText)
+        // optimize view
+        return createOptimizedView(children, viewProps, baseViews, isInText)
       }
     },
   }),

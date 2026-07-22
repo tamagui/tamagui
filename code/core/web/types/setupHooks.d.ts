@@ -6,7 +6,7 @@ type InternalHooks = {
         current: TamaguiComponentStateRef;
     }, willHydrate?: boolean) => any;
     setElementProps?: (node?: any) => void;
-    useChildren?: (elementType: any, children: any, viewProps: Record<string, any> | undefined, isPassthrough?: boolean) => any;
+    useChildren?: (elementType: any, children: any, viewProps: Record<string, any>, isPassthrough?: boolean) => any;
     getBaseViews?: () => {
         View: any;
         Text: any;
