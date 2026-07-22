@@ -81,7 +81,7 @@ export const MediaPlayer = memo(
                 }}
                 my="$-7"
                 icon={Pause}
-                size="large"
+                size="$5"
                 circular
                 boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
                 aria-label="Pause"

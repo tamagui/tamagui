@@ -414,7 +414,7 @@ const componentsIn = {
     <Button
       aria-label="Beta blog post"
       pointerEvents="none"
-      size="small"
+      size="$3"
       theme="yellow"
       position="absolute"
       t={-15}
@@ -876,7 +876,7 @@ const componentsIn = {
                   <Button
                     position="absolute"
                     aria-label="Copy code to clipboard"
-                    size="small"
+                    size="$3"
                     r="$3"
                     display="inline-flex"
                     icon={clipBoard.hasCopied ? CheckCircle : Copy}

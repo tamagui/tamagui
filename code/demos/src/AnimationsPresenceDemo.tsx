@@ -70,7 +70,7 @@ export function AnimationsPresenceDemo() {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="large"
+        size="$5"
         position="absolute"
         l="$4"
         circular
@@ -82,7 +82,7 @@ export function AnimationsPresenceDemo() {
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="large"
+        size="$5"
         position="absolute"
         r="$4"
         circular

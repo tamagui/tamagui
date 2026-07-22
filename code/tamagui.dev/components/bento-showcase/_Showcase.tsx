@@ -137,7 +137,7 @@ const ShowcaseView = forwardRef<any, Props>(
                 id={fileName}
                 circular
                 variant="quiet"
-                size="medium"
+                size="$4"
                 onPress={() => {
                   navigator?.clipboard?.writeText?.(
                     window.location.href.split('#')[0] + `#${fileName}`
@@ -160,7 +160,7 @@ const ShowcaseView = forwardRef<any, Props>(
                     <XGroup.Item>
                       <Button
                         theme={view === 'preview' ? 'accent' : null}
-                        size="medium"
+                        size="$4"
                         icon={Eye}
                       />
                     </XGroup.Item>
@@ -168,7 +168,7 @@ const ShowcaseView = forwardRef<any, Props>(
                   <ToggleGroup.Item value="code" aria-label="Code" asChild>
                     <XGroup.Item>
                       <Button
-                        size="medium"
+                        size="$4"
                         icon={approved ? <Code size={16} /> : <Lock size={16} />}
                         theme={view === 'code' ? 'accent' : null}
                       >
@@ -585,7 +585,7 @@ export const SizeController = createStyledHOC(XGroup)((props, ref) => {
     >
       <XGroup.Item>
         <Button
-          size="medium"
+          size="$4"
           variant="quiet"
           py="$2"
           onPress={() => {
@@ -601,7 +601,7 @@ export const SizeController = createStyledHOC(XGroup)((props, ref) => {
 
       <XGroup.Item>
         <Button
-          size="medium"
+          size="$4"
           variant="quiet"
           py="$2"
           onPress={() => {

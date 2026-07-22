@@ -37,7 +37,7 @@ export function MenuItemPseudoOverrideCase() {
     <YStack padding="$4" gap="$4">
       <Menu placement="bottom-start" offset={8}>
         <Menu.Trigger asChild>
-          <Button data-testid="spread-trigger" size="medium">
+          <Button data-testid="spread-trigger" size="$4">
             Open Menu (Spread Style)
           </Button>
         </Menu.Trigger>
@@ -52,7 +52,7 @@ export function MenuItemPseudoOverrideCase() {
 
       <Menu placement="bottom-start" offset={8}>
         <Menu.Trigger asChild>
-          <Button data-testid="custom-trigger" size="medium">
+          <Button data-testid="custom-trigger" size="$4">
             Open Menu (Direct Props)
           </Button>
         </Menu.Trigger>
@@ -76,7 +76,7 @@ export function MenuItemPseudoOverrideCase() {
 
       <Menu placement="bottom-start" offset={8}>
         <Menu.Trigger asChild>
-          <Button data-testid="shorthand-trigger" size="medium">
+          <Button data-testid="shorthand-trigger" size="$4">
             Open Menu (Shorthands)
           </Button>
         </Menu.Trigger>
@@ -95,7 +95,7 @@ export function MenuItemPseudoOverrideCase() {
 
       <Menu placement="bottom-start" offset={8}>
         <Menu.Trigger asChild>
-          <Button data-testid="styled-trigger" size="medium">
+          <Button data-testid="styled-trigger" size="$4">
             Open Menu (styled() Component)
           </Button>
         </Menu.Trigger>

@@ -251,7 +251,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                     purchaseModal.show = true
                   }
                 }}
-                size="medium"
+                size="$4"
               >
                 {hasAccess ? (active ? 'Refine' : 'Generate') : 'Access'}
               </Button>
@@ -339,7 +339,7 @@ const HistoryButton = ({
     <XStack group="item" containerType="normal" position="relative">
       <Button
         onPress={onPress}
-        size="medium"
+        size="$4"
         rounded="$8"
         theme={active ? 'accent' : null}
       >

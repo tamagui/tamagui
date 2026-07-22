@@ -75,7 +75,7 @@ export function ToastMultipleCase() {
             {positions.map((pos) => (
               <Button
                 key={pos}
-                size="small"
+                size="$3"
                 backgroundColor={position === pos ? '$color8' : undefined}
                 onPress={() => setPosition(pos)}
               >
@@ -90,21 +90,21 @@ export function ToastMultipleCase() {
         {/* Options */}
         <XStack gap="$4" flexWrap="wrap">
           <Button
-            size="medium"
+            size="$4"
             backgroundColor={closeButton ? '$color8' : undefined}
             onPress={() => setCloseButton(!closeButton)}
           >
             Close Button: {closeButton ? 'On' : 'Off'}
           </Button>
           <Button
-            size="medium"
+            size="$4"
             backgroundColor={expand ? '$color8' : undefined}
             onPress={() => setExpand(!expand)}
           >
             Always Expand: {expand ? 'On' : 'Off'}
           </Button>
           <Button
-            size="medium"
+            size="$4"
             backgroundColor={useNative ? '$color8' : undefined}
             onPress={() => setUseNative(!useNative)}
           >
@@ -119,14 +119,14 @@ export function ToastMultipleCase() {
           <Text fontWeight="600">Toast Types</Text>
           <XStack flexWrap="wrap" gap="$2">
             <Button
-              size="medium"
+              size="$4"
               onPress={() => toast('This is a default toast')}
               testID="toast-default"
             >
               Default
             </Button>
             <Button
-              size="medium"
+              size="$4"
               theme="green"
               onPress={() => toast.success('Operation completed successfully!')}
               testID="toast-success"
@@ -134,7 +134,7 @@ export function ToastMultipleCase() {
               Success
             </Button>
             <Button
-              size="medium"
+              size="$4"
               theme="red"
               onPress={() => toast.error('Something went wrong')}
               testID="toast-error"
@@ -142,7 +142,7 @@ export function ToastMultipleCase() {
               Error
             </Button>
             <Button
-              size="medium"
+              size="$4"
               theme="yellow"
               onPress={() => toast.warning('Please review before continuing')}
               testID="toast-warning"
@@ -150,7 +150,7 @@ export function ToastMultipleCase() {
               Warning
             </Button>
             <Button
-              size="medium"
+              size="$4"
               theme="blue"
               onPress={() => toast.info('Here is some information')}
               testID="toast-info"
@@ -158,7 +158,7 @@ export function ToastMultipleCase() {
               Info
             </Button>
             <Button
-              size="medium"
+              size="$4"
               onPress={() => toast.loading('Loading data...')}
               testID="toast-loading"
             >
@@ -174,7 +174,7 @@ export function ToastMultipleCase() {
           <Text fontWeight="600">With Description</Text>
           <XStack flexWrap="wrap" gap="$2">
             <Button
-              size="medium"
+              size="$4"
               onPress={() =>
                 toast.success('File uploaded', {
                   description: 'Your file has been uploaded to the cloud.',
@@ -185,7 +185,7 @@ export function ToastMultipleCase() {
               With Description
             </Button>
             <Button
-              size="medium"
+              size="$4"
               onPress={() =>
                 toast.error('Upload failed', {
                   description: 'Please check your internet connection and try again.',
@@ -205,7 +205,7 @@ export function ToastMultipleCase() {
           <Text fontWeight="600">Promise Toast</Text>
           <XStack flexWrap="wrap" gap="$2">
             <Button
-              size="medium"
+              size="$4"
               onPress={() => {
                 toast.promise(new Promise((resolve) => setTimeout(resolve, 2000)), {
                   loading: 'Saving changes...',
@@ -218,7 +218,7 @@ export function ToastMultipleCase() {
               Promise (Success)
             </Button>
             <Button
-              size="medium"
+              size="$4"
               onPress={() => {
                 toast.promise(
                   new Promise((_, reject) =>
@@ -245,7 +245,7 @@ export function ToastMultipleCase() {
           <Text fontWeight="600">With Actions</Text>
           <XStack flexWrap="wrap" gap="$2">
             <Button
-              size="medium"
+              size="$4"
               onPress={() =>
                 toast('New message received', {
                   action: {
@@ -259,7 +259,7 @@ export function ToastMultipleCase() {
               With Action
             </Button>
             <Button
-              size="medium"
+              size="$4"
               onPress={() =>
                 toast('Are you sure?', {
                   action: {
@@ -285,7 +285,7 @@ export function ToastMultipleCase() {
           <Text fontWeight="600">Multiple Toasts</Text>
           <XStack flexWrap="wrap" gap="$2">
             <Button
-              size="medium"
+              size="$4"
               onPress={() => {
                 toast.success('First toast')
                 setTimeout(() => toast.info('Second toast'), 200)
@@ -297,7 +297,7 @@ export function ToastMultipleCase() {
               Show 4 Toasts
             </Button>
             <Button
-              size="medium"
+              size="$4"
               onPress={() => toast.dismiss()}
               testID="toast-dismiss-all"
             >
@@ -313,7 +313,7 @@ export function ToastMultipleCase() {
           <Text fontWeight="600">Manual Control</Text>
           <XStack flexWrap="wrap" gap="$2">
             <Button
-              size="medium"
+              size="$4"
               onPress={() => {
                 const id = toast.loading('Processing...')
                 setTimeout(() => {

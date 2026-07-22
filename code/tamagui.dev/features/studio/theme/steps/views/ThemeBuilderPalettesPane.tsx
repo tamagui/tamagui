@@ -45,7 +45,7 @@ export const ThemeBuilderPalettesPane = memo(() => {
         {palettes.length === 0 && (
           <YStack flex={1} items="center" justify="center" gap="$4">
             <Paragraph color="$color10">No palettes defined yet</Paragraph>
-            <Button theme="accent" size="medium">
+            <Button theme="accent" size="$4">
               Add Palette
             </Button>
           </YStack>

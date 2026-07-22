@@ -18,7 +18,7 @@ export const SizeController = createStyledHOC(YGroup)<{
       <YGroup ref={ref} justify="center" items="center" r={0} b={0} gap="$1" {...props}>
         <YGroup.Item>
           <Button
-            size="medium"
+            size="$4"
             onPress={() => {
               const index = sizes.indexOf(size)
               setSize(sizes[index - 1 < 0 ? 0 : index - 1])
@@ -31,7 +31,7 @@ export const SizeController = createStyledHOC(YGroup)<{
         </YGroup.Item>
         <YGroup.Item>
           <Button
-            size="medium"
+            size="$4"
             onPress={() => {
               const index = sizes.indexOf(size)
               setSize(sizes[index + 1 >= sizes.length ? 4 : index + 1])

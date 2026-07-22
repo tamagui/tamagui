@@ -84,17 +84,17 @@ export function ToggleGroupXGroupCase() {
           <XGroup rounded="$10" testID="pattern-b-xgroup">
             <ToggleGroup.Item value="left" aria-label="Left" asChild>
               <XGroup.Item>
-                <Button testID="pattern-b-left" size="medium" icon={AlignLeft} />
+                <Button testID="pattern-b-left" size="$4" icon={AlignLeft} />
               </XGroup.Item>
             </ToggleGroup.Item>
             <ToggleGroup.Item value="center" aria-label="Center" asChild>
               <XGroup.Item>
-                <Button testID="pattern-b-center" size="medium" icon={AlignCenter} />
+                <Button testID="pattern-b-center" size="$4" icon={AlignCenter} />
               </XGroup.Item>
             </ToggleGroup.Item>
             <ToggleGroup.Item value="right" aria-label="Right" asChild>
               <XGroup.Item>
-                <Button testID="pattern-b-right" size="medium" icon={AlignRight} />
+                <Button testID="pattern-b-right" size="$4" icon={AlignRight} />
               </XGroup.Item>
             </ToggleGroup.Item>
           </XGroup>

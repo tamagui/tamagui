@@ -27,7 +27,7 @@ export function ToastNativeBurntCase() {
         <YStack gap="$3" width={280}>
           <Button
             testID="burnt-toast-default"
-            size="large"
+            size="$5"
             onPress={() => {
               count.current++
               toast(`Toast #${count.current}`, {
@@ -40,7 +40,7 @@ export function ToastNativeBurntCase() {
 
           <Button
             testID="burnt-toast-success"
-            size="large"
+            size="$5"
             theme="green"
             onPress={() =>
               toast.success('Success!', {
@@ -54,7 +54,7 @@ export function ToastNativeBurntCase() {
 
           <Button
             testID="burnt-toast-error"
-            size="large"
+            size="$5"
             theme="red"
             onPress={() =>
               toast.error('Error', {

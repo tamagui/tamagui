@@ -30,13 +30,14 @@ async function fontSizePx(page: any, testId: string) {
   })
 }
 
-test('button icon and text use the copied skin named-size projections', async ({
+test('button icon and text resolve through the font scale at the size token', async ({
   page,
 }) => {
-  expect(await nestedSvgWidth(page, 'btn-2')).toBe(14)
+  // kitchen-sink uses the v3 Inter scale: font.body.size.$3 === 13, $5 === 16
+  expect(await nestedSvgWidth(page, 'btn-2')).toBe(13)
   expect(await fontSizePx(page, 'btn-2')).toBe(13)
-  expect(await nestedSvgWidth(page, 'btn-6')).toBe(20)
-  expect(await fontSizePx(page, 'btn-6')).toBe(17)
+  expect(await nestedSvgWidth(page, 'btn-6')).toBe(16)
+  expect(await fontSizePx(page, 'btn-6')).toBe(16)
 })
 
 test('direct icon token size resolves via the font size scale, not size tokens', async ({

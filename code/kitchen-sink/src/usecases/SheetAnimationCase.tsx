@@ -94,7 +94,7 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
   return (
     <XStack gap="$2" alignItems="center" flexWrap="wrap">
       <Button
-        size="medium"
+        size="$4"
         onPress={handleOpen}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}

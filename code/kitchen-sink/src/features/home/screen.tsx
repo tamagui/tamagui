@@ -49,7 +49,7 @@ function TestCasesSection() {
     <YStack gap="$2">
       <Button
         testID="toggle-test-cases"
-        size="medium"
+        size="$4"
         onPress={() => {
           setExpanded(!expanded)
         }}

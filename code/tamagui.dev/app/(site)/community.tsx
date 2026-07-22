@@ -44,7 +44,7 @@ export default function Community() {
                 borderColor="$borderColor"
                 borderWidth={1}
                 mt="$-3"
-                size="large"
+                size="$5"
                 iconAfter={ChevronRight}
                 rounded="$10"
               >

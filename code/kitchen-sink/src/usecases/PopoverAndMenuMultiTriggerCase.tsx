@@ -86,7 +86,7 @@ export function PopoverAndMenuMultiTriggerCase() {
             <Popover.Arrow scope="shared-pop" />
             <Paragraph data-testid="pop-content-text">Shared popover</Paragraph>
             <Popover.Close scope="shared-pop" asChild>
-              <Button data-testid="pop-close" size="small" mt="$2">
+              <Button data-testid="pop-close" size="$3" mt="$2">
                 Close
               </Button>
             </Popover.Close>

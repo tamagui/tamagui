@@ -42,7 +42,7 @@ export function AnimationsDelayDemo() {
         </AnimatePresence>
       </XStack>
 
-      <Button size="medium" onPress={() => setShow(!show)}>
+      <Button size="$4" onPress={() => setShow(!show)}>
         {show ? 'Hide' : 'Show'}
       </Button>
     </YStack>

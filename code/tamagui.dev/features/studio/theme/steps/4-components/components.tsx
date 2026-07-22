@@ -15,8 +15,8 @@ export const components: PreviewComponent[] = [
         <Button>Default</Button>
         <Button theme="blue">Active</Button>
         <Button disabled>Disabled</Button>
-        <Button size="small">Small</Button>
-        <Button size="large">Large</Button>
+        <Button size="$3">Small</Button>
+        <Button size="$5">Large</Button>
       </XStack>
     ),
   },
@@ -38,8 +38,8 @@ export const components: PreviewComponent[] = [
         </Card.Header>
         <Card.Footer p="$3">
           <XStack gap="$3" justify="flex-end">
-            <Button size="medium">Cancel</Button>
-            <Button size="medium" theme="blue">
+            <Button size="$4">Cancel</Button>
+            <Button size="$4" theme="blue">
               Save
             </Button>
           </XStack>

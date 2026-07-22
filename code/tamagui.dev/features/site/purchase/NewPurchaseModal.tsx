@@ -585,7 +585,7 @@ export function PurchaseModalContents() {
                   position="absolute"
                   t="$2"
                   r="$2"
-                  size="small"
+                  size="$3"
                   circular
                   icon={X}
                 />

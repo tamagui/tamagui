@@ -46,7 +46,7 @@ export const NativeSheetDemo = () => {
         >
           <Sheet.Background />
           <Button
-            size="large"
+            size="$5"
             circular
             icon={ChevronDown}
             onPress={() => setOpen(false)}
@@ -54,7 +54,7 @@ export const NativeSheetDemo = () => {
           <Input width={200} />
           <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
           <Button
-            size="large"
+            size="$5"
             circular
             icon={ChevronUp}
             onPress={() => setInnerOpen(true)}
@@ -87,7 +87,7 @@ function InnerSheet(props: SheetProps) {
         <Sheet.ScrollView>
           <YStack p="$5" gap="$8">
             <Button
-              size="large"
+              size="$5"
               circular
               alignSelf="center"
               icon={ChevronDown}

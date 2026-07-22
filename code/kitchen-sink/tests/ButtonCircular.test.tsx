@@ -11,7 +11,8 @@ test(`copied skin default circular button is square`, async ({ page }) => {
     return window.getComputedStyle(el)
   })
 
-  expect(styles.width).toBe(`36px`)
+  // default size resolves settings.defaultSize ($4 -> size token 44 in v5)
+  expect(styles.width).toBe(`44px`)
   expect(styles.height).toBe(styles.width)
   expect(styles.borderRadius).toBe(`1000px`)
 })

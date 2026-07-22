@@ -270,7 +270,7 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
               {parts.map((part: any) => {
                 return (
                   <YStack key={part.name}>
-                    <Button size="medium">{part.name}</Button>
+                    <Button size="$4">{part.name}</Button>
                   </YStack>
                 )
               })}

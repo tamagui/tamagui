@@ -12,7 +12,8 @@ test('uses button behavior without framework aesthetics', async ({ page }) => {
   await expect(button).toHaveAttribute('role', 'button')
   await expect(button).toHaveAttribute('tabindex', '0')
   await expect(button).toHaveAttribute('type', 'button')
-  await expect(button).toHaveCSS('height', '36px')
+  // default size resolves settings.defaultSize ($4 -> size token 44 in v5)
+  await expect(button).toHaveCSS('height', '44px')
   expect(await button.evaluate((element) => element.tagName)).toBe('BUTTON')
 
   await button.click()
@@ -94,20 +95,25 @@ test('plumbs leading and trailing icons around wrapped text', async ({ page }) =
 
   expect(leadingOrder).toEqual(['button-skin-leading-icon', 'Leading icon'])
   expect(trailingOrder).toEqual(['Trailing icon', 'button-skin-trailing-icon'])
-  await expect(page.getByTestId('button-skin-leading-icon')).toHaveCSS('width', '16px')
-  await expect(page.getByText('Wrapped string text')).toHaveCSS('font-size', '15px')
+  // icon + text follow the font scale at the default size token ($4 -> 14 in
+  // kitchen-sink's v3 Inter scale)
+  await expect(page.getByTestId('button-skin-leading-icon')).toHaveCSS('width', '14px')
+  await expect(page.getByText('Wrapped string text')).toHaveCSS('font-size', '14px')
   await expect(page.getByTestId('button-skin-explicit-text')).toHaveText(
     'Explicit text part'
   )
 })
 
-test('applies circular and custom named sizes from the copied skin', async ({ page }) => {
+test('applies circular and explicit token sizes from the copied skin', async ({
+  page,
+}) => {
   const circular = page.getByTestId('button-skin-circular')
   const wide = page.getByTestId('button-skin-wide')
 
-  await expect(circular).toHaveCSS('height', '44px')
-  await expect(circular).toHaveCSS('width', '44px')
-  await expect(page.getByTestId('button-skin-circle-icon')).toHaveCSS('width', '20px')
-  await expect(wide).toHaveCSS('height', '44px')
+  // $5 -> size token 52; circular pins a square, icon follows font scale ($5 -> 16)
+  await expect(circular).toHaveCSS('height', '52px')
+  await expect(circular).toHaveCSS('width', '52px')
+  await expect(page.getByTestId('button-skin-circle-icon')).toHaveCSS('width', '16px')
+  await expect(wide).toHaveCSS('height', '52px')
   await expect(wide).toHaveCSS('min-width', '180px')
 })

@@ -111,7 +111,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
                 aria-label="View more"
                 y={200}
                 iconAfter={ArrowDown}
-                size="medium"
+                size="$4"
                 theme="accent"
                 z={10}
                 onPress={() => setDisableScrollPane((prev) => !prev)}
@@ -300,7 +300,7 @@ export function AnimationsDemoBase(props) {
         l={20}
         icon={Play}
         theme={props.tint}
-        size="large"
+        size="$5"
         circular
         onPress={onPress}
       />

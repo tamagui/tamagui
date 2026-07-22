@@ -133,7 +133,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
             />
           </YStack>
           <Button
-            size="small"
+            size="$3"
             onPress={async () => {
               const confirmed = await rootStore.confirmDialog('confirm-delete', {
                 thingName: `palette`,

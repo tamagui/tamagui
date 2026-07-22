@@ -185,7 +185,7 @@ export function TakeoutHeroNew({
           <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
             <ThemeTintAlt>
               <Button
-                size="medium"
+                size="$4"
                 bg="$color5"
                 borderWidth={0.5}
                 borderColor="$color7"
@@ -201,7 +201,7 @@ export function TakeoutHeroNew({
           </Link>
 
           <Link href="https://takeout.tamagui.dev" target="_blank">
-            <Button size="medium" theme="accent">
+            <Button size="$4" theme="accent">
               <Button.Text fontFamily="$mono">Demo (web)</Button.Text>
             </Button>
           </Link>

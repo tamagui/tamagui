@@ -294,7 +294,7 @@ const ImageGallery = () => {
             </YStack>
 
             <Dialog.Close asChild>
-              <Button position="absolute" t="$6" r="$6" size="medium" circular icon={X} />
+              <Button position="absolute" t="$6" r="$6" size="$4" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>
@@ -361,7 +361,7 @@ const ImagesCarousel = () => {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="large"
+        size="$5"
         position="absolute"
         l="$4"
         circular
@@ -371,7 +371,7 @@ const ImagesCarousel = () => {
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="large"
+        size="$5"
         position="absolute"
         r="$4"
         circular

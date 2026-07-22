@@ -23,11 +23,11 @@ export const Components = () => {
       <XStack width="100%" {...demoProps.gapPropsLg} flexWrap="wrap">
         <XStack {...demoProps.gapPropsLg}>
           <AccentTheme>
-            <Button size="medium" {...demoProps.borderRadiusProps}>
+            <Button size="$4" {...demoProps.borderRadiusProps}>
               Active
             </Button>
           </AccentTheme>
-          <Button size="medium" {...demoProps.borderRadiusProps}>
+          <Button size="$4" {...demoProps.borderRadiusProps}>
             Subtle
           </Button>
         </XStack>

@@ -24,7 +24,7 @@ export function MenuAccessibilityCase() {
 
       <Menu placement="bottom-start">
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="medium">
+          <Button data-testid="menu-trigger" size="$4">
             Open Menu
           </Button>
         </Menu.Trigger>

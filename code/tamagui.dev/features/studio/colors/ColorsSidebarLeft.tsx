@@ -58,7 +58,7 @@ const ColorsSidebarPalettes = () => {
         </YStack>
       </SidebarPanelUnpad>
       <Button
-        size="medium"
+        size="$4"
         style={{ marginTop: 16, width: '100%' }}
         onPress={() => {
           state.colors.createScale()

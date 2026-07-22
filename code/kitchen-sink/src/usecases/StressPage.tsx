@@ -121,7 +121,7 @@ function Header() {
         {['All', 'Active', 'Pending', 'Archived'].map((tab) => (
           <Button
             key={tab}
-            size="medium"
+            size="$4"
             variant={tab === 'All' ? undefined : 'outlined'}
           >
             {tab}
@@ -205,7 +205,7 @@ function FormSection() {
           <Switch size="$3" />
           <SizableText size="$3">Enable notifications</SizableText>
         </XStack>
-        <Button size="medium">Save Changes</Button>
+        <Button size="$4">Save Changes</Button>
       </YStack>
     </StyledCard>
   )

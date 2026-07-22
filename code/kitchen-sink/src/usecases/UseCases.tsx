@@ -251,11 +251,11 @@ export const Sandbox = () => {
 
           {/* <SliderDemo /> */}
 
-          {/* <TestFontTokensInVariants type="H1" size="large">
+          {/* <TestFontTokensInVariants type="H1" size="$5">
             Hello world
             </TestFontTokensInVariants> */}
 
-          {/* <Button size="small" $sm={{ size: 'large' }} >
+          {/* <Button size="$3" $sm={{ size: 'large' }} >
             test
             </Button> */}
 
@@ -322,7 +322,7 @@ export const Sandbox = () => {
 //   const [position, setPosition] = useState(0)
 //   return (
 //     <>
-//       <Button size="large" circular onPress={() => setOpen((x) => !x)} />
+//       <Button size="$5" circular onPress={() => setOpen((x) => !x)} />
 //       <Sheet
 //         modal
 //         open={open}

@@ -17,7 +17,7 @@ const DialogCloseButton = () => (
   <Unspaced>
     <Dialog.Close asChild="except-style">
       <Button
-        size="medium"
+        size="$4"
         position="absolute"
         t="$3"
         r="$3"

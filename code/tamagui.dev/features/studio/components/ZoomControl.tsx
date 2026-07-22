@@ -18,13 +18,13 @@ export const ZoomControls = ({
     <XStack items="center" gap="$4">
       <Group orientation="horizontal" size="$2">
         <Group.Item>
-          <Button size="small" icon={ZoomOut} onPress={handleZoomOut} />
+          <Button size="$3" icon={ZoomOut} onPress={handleZoomOut} />
         </Group.Item>
         <Group.Item>
-          <Button size="small" icon={RefreshCw} onPress={handleResetZoom} />
+          <Button size="$3" icon={RefreshCw} onPress={handleResetZoom} />
         </Group.Item>
         <Group.Item>
-          <Button size="small" icon={ZoomIn} onPress={handleZoomIn} />
+          <Button size="$3" icon={ZoomIn} onPress={handleZoomIn} />
         </Group.Item>
       </Group>
 

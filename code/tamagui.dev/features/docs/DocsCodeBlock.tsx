@@ -120,7 +120,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             <Button
               aria-label="Show or hide code"
               icon={Code2}
-              size="medium"
+              size="$4"
               fontWeight="400"
               z={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
@@ -128,7 +128,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
             <TooltipSimple label="Toggle tint on/off">
-              <Button size="medium" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
+              <Button size="$4" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
             </TooltipSimple>
           </XStack>
         )}
@@ -154,7 +154,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 <Spacer flex={1} />
                 <Button
                   z={10}
-                  size="medium"
+                  size="$4"
                   onPress={() => setIsCutoff(!isCutoff)}
                   self="center"
                 >
@@ -213,7 +213,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   <Button
                     position="absolute"
                     aria-label="Copy code to clipboard"
-                    size="small"
+                    size="$3"
                     t={showFileName ? '$6' : '$3'}
                     r="$3"
                     display="inline-flex"
@@ -233,7 +233,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 <>
                   <Spacer />
                   <Button
-                    size="medium"
+                    size="$4"
                     onPress={() => setIsCutoff(!isCutoff)}
                     self="center"
                   >

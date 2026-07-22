@@ -183,7 +183,7 @@ function SignIn() {
             type="submit"
             disabled={loading}
             onClick={() => handleOAuthSignIn('github')}
-            size="medium"
+            size="$4"
             icon={loading ? <Spinner size="small" /> : GithubIcon}
             opacity={loading ? 0.5 : 1}
           >

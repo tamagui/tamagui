@@ -21,7 +21,7 @@ export function MenuBottomCase() {
     >
       <Menu placement="bottom-start" stayInFrame allowFlip={false}>
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="medium">
+          <Button data-testid="menu-trigger" size="$4">
             Open Menu Below
           </Button>
         </Menu.Trigger>

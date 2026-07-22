@@ -201,7 +201,7 @@ export function SheetKeyboardFitContentCase() {
               <XStack gap="$2">
                 <Button
                   testID="sheet-kb-fit-load-tall"
-                  size="medium"
+                  size="$4"
                   theme="green"
                   flex={1}
                   onPress={() => {
@@ -213,7 +213,7 @@ export function SheetKeyboardFitContentCase() {
                 </Button>
                 <Button
                   testID="sheet-kb-fit-load-short"
-                  size="medium"
+                  size="$4"
                   theme="blue"
                   flex={1}
                   onPress={() => {
@@ -225,7 +225,7 @@ export function SheetKeyboardFitContentCase() {
                 </Button>
                 <Button
                   testID="sheet-kb-fit-reset"
-                  size="medium"
+                  size="$4"
                   flex={1}
                   onPress={() => {
                     setImageUrl(null)
@@ -238,7 +238,7 @@ export function SheetKeyboardFitContentCase() {
 
               <Button
                 testID="sheet-kb-fit-dismiss-kb"
-                size="medium"
+                size="$4"
                 onPress={() => {
                   Keyboard.dismiss()
                   addEventMetric('dismiss-kb')
@@ -249,7 +249,7 @@ export function SheetKeyboardFitContentCase() {
 
               <Button
                 testID="sheet-kb-fit-post"
-                size="medium"
+                size="$4"
                 theme="green"
                 onPress={() => addEventMetric('post')}
               >
@@ -258,7 +258,7 @@ export function SheetKeyboardFitContentCase() {
 
               <Button
                 testID="sheet-kb-fit-close"
-                size="medium"
+                size="$4"
                 theme="red"
                 onPress={() => setOpen(false)}
               >

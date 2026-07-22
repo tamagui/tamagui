@@ -36,8 +36,8 @@ const PopoverWithAnimatePresenceArrow = () => {
           />
         </AnimatePresence>
         <YStack gap="$2">
-          <Button size="small">Item 1</Button>
-          <Button size="small">Item 2</Button>
+          <Button size="$3">Item 1</Button>
+          <Button size="$3">Item 2</Button>
         </YStack>
       </Popover.Content>
     </Popover>

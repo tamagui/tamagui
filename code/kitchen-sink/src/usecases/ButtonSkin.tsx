@@ -71,10 +71,10 @@ export const ButtonSkin = () => {
           aria-label="Circular button"
           circular
           icon={CircleIcon}
-          size="large"
+          size="$5"
         />
 
-        <Button testID="button-skin-wide" size="wide">
+        <Button testID="button-skin-wide" size="$5" minWidth={180}>
           Custom wide size
         </Button>
       </XStack>
@@ -95,7 +95,7 @@ export const ButtonSkin = () => {
           Outer
           <Button
             testID="button-skin-nested-inner"
-            size="small"
+            size="$3"
             variant="quiet"
             onPress={() => setNestedInnerPresses((value) => value + 1)}
           >

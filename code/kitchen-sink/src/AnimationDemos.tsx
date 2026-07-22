@@ -108,7 +108,7 @@ export function Demo3() {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="large"
+        size="$5"
         position="absolute"
         left="$4"
         circular
@@ -120,7 +120,7 @@ export function Demo3() {
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="large"
+        size="$5"
         position="absolute"
         right="$4"
         circular

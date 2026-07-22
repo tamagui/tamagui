@@ -76,11 +76,11 @@ export const HomeExamples = memo(
                       theme={i === activeIndex ? 'accent' : null}
                       variant={i !== activeIndex ? 'quiet' : undefined}
                       rounded={0}
-                      size="medium"
+                      size="$4"
                     >
                       <Button.Text
                         fontFamily="$silkscreen"
-                        size="medium"
+                        size="$4"
                         fontWeight="600"
                       >
                         {example.name}
@@ -207,10 +207,10 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                     aria-label="See example"
                     onPress={() => setActiveIndex(i)}
                     theme={i === activeIndex ? (tint as any) : 'alt1'}
-                    size="small"
+                    size="$3"
                     rounded={0}
                   >
-                    <Button.Text size="small">{example.name}</Button.Text>
+                    <Button.Text size="$3">{example.name}</Button.Text>
                   </Button>
                 </XGroup.Item>
               ))}

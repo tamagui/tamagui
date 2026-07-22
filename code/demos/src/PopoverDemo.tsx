@@ -122,7 +122,7 @@ export function Demo({
 
         <Popover.Close asChild>
           <Button
-            size="medium"
+            size="$4"
             onPress={() => {
               /* Custom code goes here, does not interfere with popover closure */
             }}

@@ -31,8 +31,8 @@ export const isSafariMobile = (() => {
 
 export function PurchaseButton({ children, fontFamily = '$mono', ...props }) {
   return (
-    <Button size="large" rounded="$10" {...props}>
-      <Button.Text size="large" fontFamily={fontFamily as any}>
+    <Button size="$5" rounded="$10" {...props}>
+      <Button.Text size="$5" fontFamily={fontFamily as any}>
         {children}
       </Button.Text>
     </Button>

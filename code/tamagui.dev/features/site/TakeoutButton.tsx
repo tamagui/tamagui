@@ -7,7 +7,7 @@ export const TakeoutButton = (props: ButtonProps) => {
       theme="red"
       borderColor="$color6"
       boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
-      size="medium"
+      size="$4"
       rounded="$10"
       hoverStyle={{
         z: 100,

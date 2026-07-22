@@ -40,7 +40,7 @@ export function MenuSubLeftCase() {
       <XStack justifyContent="flex-end" paddingRight="$10">
         <Menu allowFlip={false} placement="bottom-end" offset={8}>
           <Menu.Trigger asChild>
-            <Button id="menu-trigger" size="medium">
+            <Button id="menu-trigger" size="$4">
               Open Menu (Left Submenu)
             </Button>
           </Menu.Trigger>

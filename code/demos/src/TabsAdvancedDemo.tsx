@@ -25,7 +25,7 @@ export const TabsAdvancedDemo = () => {
         l="$4"
         $xxs={{ display: 'none' }}
       >
-        <Button size="small" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button size="$3" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
       </XStack>

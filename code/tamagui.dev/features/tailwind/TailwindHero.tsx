@@ -89,7 +89,7 @@ export function TailwindHero() {
           <ButtonLink
             href={'/tailwind/intro/introduction' as Href}
             theme="accent"
-            size="large"
+            size="$5"
             fontFamily="$mono"
           >
             Read the docs
@@ -97,7 +97,7 @@ export function TailwindHero() {
           <ButtonLink
             href={'/tailwind/intro/styles' as Href}
             variant="quiet"
-            size="large"
+            size="$5"
             fontFamily="$mono"
           >
             How it works

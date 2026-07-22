@@ -241,7 +241,7 @@ function Scenario01_OpacityBasic() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -279,7 +279,7 @@ function Scenario02_ScaleBasic() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -317,7 +317,7 @@ function Scenario03_TranslateX() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -355,7 +355,7 @@ function Scenario04_TranslateY() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -393,7 +393,7 @@ function Scenario05_Rotate() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -432,7 +432,7 @@ function Scenario06_MultipleTransforms() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -471,7 +471,7 @@ function Scenario07_Width() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -507,7 +507,7 @@ function Scenario08_Height() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -546,7 +546,7 @@ function Scenario09_WidthAndHeight() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -584,7 +584,7 @@ function Scenario10_BorderRadius() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -623,7 +623,7 @@ function Scenario11_BackgroundColor() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -660,7 +660,7 @@ function Scenario12_TextColor() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -700,7 +700,7 @@ function Scenario13_BorderColor() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -739,7 +739,7 @@ function Scenario14_SpringBouncy() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -777,7 +777,7 @@ function Scenario15_SpringLazy() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -815,7 +815,7 @@ function Scenario16_SpringQuick() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -853,7 +853,7 @@ function Scenario17_SpringCustom() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -893,7 +893,7 @@ function Scenario18_Timing100ms() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -931,7 +931,7 @@ function Scenario19_Timing200ms() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -969,7 +969,7 @@ function Scenario20_TimingWithDelay() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1008,7 +1008,7 @@ function Scenario21_EnterStyle() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           if (!visible) startLogging()
           setVisible(!visible)
@@ -1049,7 +1049,7 @@ function Scenario22_ExitStyle() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           if (visible) startLogging()
           setVisible(!visible)
@@ -1093,7 +1093,7 @@ function Scenario23_EnterExitCombined() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -1151,7 +1151,7 @@ function Scenario24_RapidToggle() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={handleRapidToggle}
         testID="scenario-24-trigger"
         data-testid="scenario-24-trigger"
@@ -1192,7 +1192,7 @@ function Scenario25_Interruption() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={handleInterrupt}
         testID="scenario-25-trigger"
         data-testid="scenario-25-trigger"
@@ -1208,7 +1208,7 @@ function Scenario25_Interruption() {
         testID="scenario-25-target"
         data-testid="scenario-25-target"
       />
-      <Button size="small" onPress={() => setPosition(0)}>
+      <Button size="$3" onPress={() => setPosition(0)}>
         Reset
       </Button>
     </XStack>
@@ -1229,7 +1229,7 @@ function Scenario26_AnimateOnly() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1269,7 +1269,7 @@ function Scenario27_AnimationConfig() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1311,7 +1311,7 @@ function Scenario28_MultiProperty() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1361,7 +1361,7 @@ function Scenario29_NestedAnimations() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startOuter()
           startInner()
@@ -1447,7 +1447,7 @@ function Scenario31_PerPropertyConfigs() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1496,7 +1496,7 @@ function Scenario32_PerPropertyWithInterruption() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={handleInterrupt}
         testID="scenario-32-trigger"
         data-testid="scenario-32-trigger"
@@ -1514,7 +1514,7 @@ function Scenario32_PerPropertyWithInterruption() {
         testID="scenario-32-target"
         data-testid="scenario-32-target"
       />
-      <Button size="small" onPress={() => setState(0)}>
+      <Button size="$3" onPress={() => setState(0)}>
         Reset
       </Button>
       <Paragraph size="$1">state={state}</Paragraph>
@@ -1538,7 +1538,7 @@ function Scenario33_MixedSpringTiming() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1585,7 +1585,7 @@ function Scenario34_ComplexObjectManyProps() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1656,7 +1656,7 @@ function Scenario35_RapidPerPropertyChanges() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={handleRapid}
         testID="scenario-35-trigger"
         data-testid="scenario-35-trigger"
@@ -1694,7 +1694,7 @@ function Scenario36_TimingTest() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1735,7 +1735,7 @@ function Scenario37_EnterStyleScaleX() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           if (!visible) startLogging()
           setVisible(!visible)
@@ -1781,7 +1781,7 @@ function Scenario38_PerPropertyWithTransform() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1827,7 +1827,7 @@ function Scenario39_ObjectFormatPerProperty() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1872,7 +1872,7 @@ function Scenario40_ObjectFormatNoDefault() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1915,7 +1915,7 @@ function Scenario41_PerPropertyWithDelay() {
   return (
     <XStack gap="$2" alignItems="center">
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -1959,7 +1959,7 @@ function Scenario42_TransitionEnterExit() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2010,7 +2010,7 @@ function Scenario43_TransitionEnterOnly() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2061,7 +2061,7 @@ function Scenario44_TransitionExitOnly() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2113,7 +2113,7 @@ function Scenario45_TransitionEnterExitWithDefault() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2125,7 +2125,7 @@ function Scenario45_TransitionEnterExitWithDefault() {
         45: Toggle
       </Button>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setActive(!active)
@@ -2178,7 +2178,7 @@ function Scenario46_TransitionEnterExitPerProperty() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2229,7 +2229,7 @@ function Scenario47_TransitionEnterExitWithDelay() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2278,7 +2278,7 @@ function Scenario48_AnimateOnlyWithExitStyle() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           if (visible) startLogging()
           setVisible(!visible)
@@ -2328,7 +2328,7 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2379,7 +2379,7 @@ function Scenario50_EnterTimingVerification() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2430,7 +2430,7 @@ function Scenario51_DurationNormalization() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)
@@ -2481,7 +2481,7 @@ function Scenario52_DurationNormalizationInlineConfig() {
   return (
     <XStack gap="$2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="$3"
         onPress={() => {
           startLogging()
           setVisible(!visible)

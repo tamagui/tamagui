@@ -70,7 +70,7 @@ export const DropTamaguiConfig = () => {
             self="flex-end"
             rounded="$10"
             onPress={() => setShow(true)}
-            size="medium"
+            size="$4"
             variant="quiet"
             $sm={{
               display: 'none',
@@ -120,7 +120,7 @@ export const DropTamaguiConfig = () => {
                 position="absolute"
                 t="$4"
                 r="$4"
-                size="small"
+                size="$3"
                 circular
                 z={1000}
                 icon={X}

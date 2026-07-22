@@ -149,7 +149,7 @@ function Demo({
 
           <Popover.Close asChild>
             <Button
-              size="medium"
+              size="$4"
               id={`${dataTestId}-close`}
               onPress={() => {
                 /* Custom code goes here, does not interfere with popover closure */
@@ -174,7 +174,7 @@ function SimplePopoverTest() {
         <YStack gap="$2">
           <Paragraph>This is a simple popover</Paragraph>
           <Popover.Close asChild>
-            <Button size="small" id="simple-popover-close">
+            <Button size="$3" id="simple-popover-close">
               Close
             </Button>
           </Popover.Close>
@@ -212,7 +212,7 @@ export function PopoverAnimatePositionCase() {
             <YStack gap="$2" width={200}>
               <Paragraph>Popover with animatePosition</Paragraph>
               <Popover.Close asChild>
-                <Button size="small" id="animate-position-close">
+                <Button size="$3" id="animate-position-close">
                   Close
                 </Button>
               </Popover.Close>
