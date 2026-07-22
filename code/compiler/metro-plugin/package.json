@@ -34,6 +34,7 @@
   },
   "scripts": {
     "build": "tamagui-build --skip-native",
+    "test:web": "vitest --run --config vitest.config.ts",
     "watch": "tamagui-build --skip-native --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"

@@ -36,7 +36,7 @@
     },
     "test": {
       "dependsOn": ["^build:js"],
-      "inputs": ["../../bun.lockb", "src/**", "tests/**", "__tests__/**", "*.config.*"],
+      "inputs": ["../../bun.lockb", "src/**", "test/**", "tests/**", "__tests__/**", "*.config.*"],
       "outputs": [],
       "env": [
         "TAMAGUI_TARGET",
@@ -61,7 +61,7 @@
     },
     "test:web": {
       "dependsOn": ["^build:js"],
-      "inputs": ["../../bun.lockb", "src/**", "tests/**", "__tests__/**", "*.config.*"],
+      "inputs": ["../../bun.lockb", "src/**", "test/**", "tests/**", "__tests__/**", "*.config.*"],
       "outputs": [],
       "env": [
         "TAMAGUI_TARGET",
