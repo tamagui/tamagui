@@ -7,26 +7,12 @@ export const repoRoot = join(import.meta.dir, '..', '..', '..')
 // skin source root — the single source of truth.
 //
 // the styled components live in `tamagui` (code/ui/tamagui) = the unstyled
-// `@tamagui/ui` primitive + ONE default skin definition layered on top. the
-// registry generates FROM that styled skin source. the exact
-// styled = unstyled + skin layering mechanism (how the skin is defined + made
-// registry-extractable) is owned by the packaging worker (W4) and is still
-// being finalized — it determines the concrete files this points at.
-//
-// until that mechanism lands we target a fixture that mirrors the layout the
-// generator consumes (one <Component>.tsx skin + co-located
-// <Component>.manifest.ts per primitive). flip `USE_REAL_SKIN_SOURCE` and set
-// the real root once W4's mechanism is defined — nothing else in the generator
-// changes.
+// `@tamagui/ui` primitive + ONE default skin definition layered on top
+// (one <Component>.tsx skin + co-located <Component>.manifest.ts per
+// primitive). the registry generates FROM that styled skin source.
 // ---------------------------------------------------------------------------
 
-export const USE_REAL_SKIN_SOURCE = true
-
-// reassembly: W4's styled=unstyled+skin components landed at
-// code/ui/tamagui/src/components (one <Component>.tsx + co-located manifest).
-export const skinSourceRoot = USE_REAL_SKIN_SOURCE
-  ? join(repoRoot, 'code/ui/tamagui/src/components')
-  : join(repoRoot, 'registry/__fixtures__/skins/src')
+export const skinSourceRoot = join(repoRoot, 'code/ui/tamagui/src/components')
 
 // where generated registry artifacts are written (checked in, served in CI)
 export const outDir = join(repoRoot, 'registry/json')
@@ -63,13 +49,11 @@ export const providedPeers = new Set([
 // identity / debugging); everything else must be byte-identical to the skin source.
 //
 // `canonicalNamePrefix` is the prefix the skin source uses in its `name:`
-// fields. each consumer swaps it for its own prefix. (with the fixture stub the
-// skin == the demos skin, so the canonical prefix is 'Demo'. the real styled
-// source likely uses no prefix — set canonicalNamePrefix to '' when
-// USE_REAL_SKIN_SOURCE flips.)
+// fields. each consumer swaps it for its own prefix. the real styled source
+// uses bare names, so the canonical prefix is empty.
 // ---------------------------------------------------------------------------
 
-export const canonicalNamePrefix = USE_REAL_SKIN_SOURCE ? '' : 'Demo'
+export const canonicalNamePrefix = ''
 
 export type DriftConsumer = {
   key: string

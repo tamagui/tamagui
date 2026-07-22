@@ -4,14 +4,22 @@
 // are dependency-free glyphs (see IconGlyph) so `tamagui` stays lean and native-
 // bundleable — no react-native-svg pulled into the core package. Consumers can
 // pass their own icon components as children of the icon parts.
+//
+// Sizing is token-based: `size` accepts a size token ('$4') or `true`, which
+// resolves through `settings.defaultSize`/`settings.defaultTokens` — the same
+// language Button, Input, Label, ListItem, and Tabs speak.
 import {
-  createSizeTable,
   type GetProps,
+  getVariableValue,
+  resolveTokenSize,
   Select as SelectBehavior,
   type SelectProps as SelectBehaviorProps,
   type SelectScopedProps,
   SizableText,
+  SizeContext,
+  type SizeTokens,
   styled,
+  type VariantSpreadExtras,
   withStaticProperties,
 } from '@tamagui/ui'
 
@@ -39,35 +47,60 @@ const Check = ({ size = 14 }: { size?: number }) => (
   </IconGlyph>
 )
 
-export const selectSizes = createSizeTable(
-  {
-    small: {
-      frame: { gap: 6, height: 32, paddingHorizontal: 10 },
-      text: { fontSize: 13, lineHeight: 18 },
-      icon: 14,
-    },
-    medium: {
-      frame: { gap: 8, height: 38, paddingHorizontal: 12 },
-      text: { fontSize: 15, lineHeight: 20 },
-      icon: 16,
-    },
-    large: {
-      frame: { gap: 10, height: 46, paddingHorizontal: 16 },
-      text: { fontSize: 17, lineHeight: 24 },
-      icon: 20,
-    },
-  } as const,
-  'medium'
-)
+export type SelectSize = SizeTokens
 
-export type SelectSize = keyof typeof selectSizes.values
+const selectTriggerSizeVariant = (
+  val: SelectSize,
+  extras: VariantSpreadExtras<Record<string, unknown>>
+) => {
+  const { frame } = resolveTokenSize(val, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  return {
+    borderRadius: frame.radius,
+    gap: Math.round(getVariableValue(frame.size) * 0.2),
+    height: frame.size,
+    paddingHorizontal: frame.space,
+  }
+}
+
+// items keep their own small static radius (they sit inside the rounded
+// viewport) — only height/padding/gap follow the size token
+const selectItemSizeVariant = (
+  val: SelectSize,
+  extras: VariantSpreadExtras<Record<string, unknown>>
+) => {
+  const { frame } = resolveTokenSize(val, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  return {
+    gap: Math.round(getVariableValue(frame.size) * 0.2),
+    height: frame.size,
+    paddingHorizontal: frame.space,
+  }
+}
+
+const selectTextSizeVariant = (
+  val: SelectSize,
+  extras: VariantSpreadExtras<Record<string, unknown>>
+) => {
+  const { text } = resolveTokenSize(val, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  return {
+    fontSize: text.fontSize,
+    ...(text.lineHeight !== undefined && { lineHeight: text.lineHeight }),
+  }
+}
 
 export const SelectTrigger = styled(SelectBehavior.Trigger, {
-  context: selectSizes.Context,
+  context: SizeContext,
   name: 'SelectTrigger',
   backgroundColor: '$background',
   borderColor: '$borderColor',
-  borderRadius: 8,
   borderWidth: 1,
   justifyContent: 'space-between',
 
@@ -79,21 +112,31 @@ export const SelectTrigger = styled(SelectBehavior.Trigger, {
     outlineWidth: 2,
   },
 
-  variants: { size: selectSizes.frame } as const,
-  defaultVariants: { size: 'medium' },
+  variants: {
+    size: {
+      true: selectTriggerSizeVariant,
+      Size: selectTriggerSizeVariant,
+    },
+  } as const,
+  defaultVariants: { size: true },
 })
 
 export const SelectValue = styled(SelectBehavior.Value, {
-  context: selectSizes.Context,
+  context: SizeContext,
   name: 'SelectValue',
   color: '$color',
   ellipsis: true,
-  variants: { size: selectSizes.text } as const,
-  defaultVariants: { size: 'medium' },
+  variants: {
+    size: {
+      true: selectTextSizeVariant,
+      Size: selectTextSizeVariant,
+    },
+  } as const,
+  defaultVariants: { size: true },
 })
 
 export const SelectIcon = styled(SelectBehavior.Icon, {
-  context: selectSizes.Context,
+  context: SizeContext,
   name: 'SelectIcon',
   marginLeft: 'auto',
   children: <ChevronDown />,
@@ -105,22 +148,26 @@ export const SelectGroup = styled(SelectBehavior.Group, {
 })
 
 export const SelectLabel = styled(SelectBehavior.Label, {
-  context: selectSizes.Context,
+  context: SizeContext,
   name: 'SelectLabel',
   color: '$color10',
   fontWeight: '600',
   paddingHorizontal: 10,
   paddingVertical: 6,
-  variants: { size: selectSizes.text } as const,
-  defaultVariants: { size: 'medium' },
+  variants: {
+    size: {
+      true: selectTextSizeVariant,
+      Size: selectTextSizeVariant,
+    },
+  } as const,
+  defaultVariants: { size: true },
 })
 
 export const SelectItem = styled(SelectBehavior.Item, {
-  context: selectSizes.Context,
+  context: SizeContext,
   name: 'SelectItem',
   cursor: 'default',
   outlineOffset: -1,
-  paddingHorizontal: 10,
   borderRadius: 6,
 
   hoverStyle: { backgroundColor: '$backgroundHover' },
@@ -132,18 +179,28 @@ export const SelectItem = styled(SelectBehavior.Item, {
     outlineWidth: 1,
   },
 
-  variants: { size: selectSizes.frame } as const,
-  defaultVariants: { size: 'medium' },
+  variants: {
+    size: {
+      true: selectItemSizeVariant,
+      Size: selectItemSizeVariant,
+    },
+  } as const,
+  defaultVariants: { size: true },
 })
 
 export const SelectItemText = styled(SelectBehavior.ItemText, {
-  context: selectSizes.Context,
+  context: SizeContext,
   name: 'SelectItemText',
   color: '$color',
   ellipsis: true,
   userSelect: 'none',
-  variants: { size: selectSizes.text } as const,
-  defaultVariants: { size: 'medium' },
+  variants: {
+    size: {
+      true: selectTextSizeVariant,
+      Size: selectTextSizeVariant,
+    },
+  } as const,
+  defaultVariants: { size: true },
 })
 
 export const SelectItemIndicator = styled(SelectBehavior.ItemIndicator, {
@@ -199,26 +256,16 @@ export const SelectSeparator = styled(SelectBehavior.Separator, {
 export type SelectRootProps<
   Value extends string,
   Multiple extends boolean | undefined = false,
-> = Omit<SelectScopedProps<SelectBehaviorProps<Value, Multiple>>, 'size'> & {
-  // accept the discrete skin sizes AND the behavior's token/`true` size so
-  // existing token-sized consumers keep type-checking; resolved to a discrete
-  // size for the size-table context below.
-  size?: SelectSize | SelectBehaviorProps<Value, Multiple>['size']
-}
+> = SelectScopedProps<SelectBehaviorProps<Value, Multiple>>
 
 export function SelectRoot<
   Value extends string = string,
   Multiple extends boolean | undefined = false,
->({ size, ...props }: SelectRootProps<Value, Multiple>) {
-  const namedSize = (
-    typeof size === 'string' && size in selectSizes.values
-      ? size
-      : selectSizes.defaultSize
-  ) as SelectSize
+>({ size = true, ...props }: SelectRootProps<Value, Multiple>) {
   return (
-    <selectSizes.Context.Provider size={namedSize}>
-      <SelectBehavior.Root<Value, Multiple> {...props} />
-    </selectSizes.Context.Provider>
+    <SizeContext.Provider size={size}>
+      <SelectBehavior.Root<Value, Multiple> size={size} {...props} />
+    </SizeContext.Provider>
   )
 }
 
