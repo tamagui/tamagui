@@ -1,5 +1,6 @@
 import { watch, type FSWatcher } from 'node:fs'
 import { readFile, realpath } from 'node:fs/promises'
+import { createRequire } from 'node:module'
 import { basename, join, relative, resolve } from 'node:path'
 
 import {
@@ -81,6 +82,21 @@ export interface MetroCompilerUpdate {
 function compareCodeUnits(left: string, right: string): number {
   return left < right ? -1 : left > right ? 1 : 0
 }
+
+const requireFromFrontend = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
+
+// upgrading the compiler must invalidate published plans even when the Tamagui
+// config output is unchanged
+const compilerImplementationVersions = (
+  ['@tamagui/metro-plugin', '@tamagui/static', '@tamagui/compiler-core'] as const
+).map((packageName) => {
+  const { version } = requireFromFrontend(`${packageName}/package.json`) as {
+    version: string
+  }
+  return `${packageName}@${version}`
+})
 
 function scanOptionsHash(
   options: MetroCompilerScanOptions,
@@ -405,6 +421,7 @@ export class MetroCompilerFrontend {
     const generation = metroCompilerContentHash(
       JSON.stringify({
         cacheVersion: METRO_COMPILER_CACHE_VERSION,
+        compilerImplementationVersions,
         componentModules,
         configCss,
         target,
