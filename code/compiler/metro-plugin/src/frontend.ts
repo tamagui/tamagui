@@ -38,6 +38,8 @@ interface CompiledRecord {
   input: HostModuleInput
   sourceHash: string
   compiledHash: string
+  /** Specifiers that reached the compiled output as require() calls instead of imports. */
+  requireSpecifiers: string[]
 }
 
 export interface MetroCompilerFrontendConfig extends MetroResolverConfig {
@@ -214,6 +216,35 @@ export class MetroCompilerFrontend {
     })
     this.#entries.clear()
     for (const id of this.#graph.moduleIds()) this.#refreshEntry(id)
+    const totalFound = [...this.#entries.values()].reduce(
+      (sum, entry) => sum + entry.plan.stats.found,
+      0
+    )
+    if (this.#entries.size > 0 && totalFound === 0) {
+      const componentNames = compilerProject.componentModules.map(
+        ({ moduleName }) => moduleName
+      )
+      const cjsComponentImporters = [...this.#records.values()].filter((record) =>
+        record.requireSpecifiers.some((specifier) =>
+          componentNames.some(
+            (name) => specifier === name || specifier.startsWith(`${name}/`)
+          )
+        )
+      ).length
+      if (cjsComponentImporters > 0) {
+        const diagnostic = metroDiagnostic(
+          'metro/no-linked-components',
+          `The Tamagui compiler linked 0 components across ${this.#entries.size} modules even though ` +
+            `${cjsComponentImporters} module(s) reference ${componentNames.join(', ')} through require() calls. ` +
+            `Metro compiled modules to CommonJS before the compiler could analyze them, so component ` +
+            `imports cannot be linked and nothing will be optimized. Enable experimentalImportSupport ` +
+            `in your transformer's getTransformOptions (Expo enables it by default) to restore ` +
+            `Tamagui compilation.`
+        )
+        diagnostics.push(diagnostic)
+        this.#report(diagnostic)
+      }
+    }
     const generation = await this.#publish(options.platform)
     const moduleIds = this.#graph.moduleIds()
     if (this.config.watch !== false && retainsLiveGraph(options)) {
@@ -443,7 +474,9 @@ export class MetroCompilerFrontend {
       args
     )
     const imports: HostResolvedImport[] = []
+    const requireSpecifiers: string[] = []
     for (const dependency of moduleSpecifiersFromAst(compiled.result.ast)) {
+      if (!dependency.isESMImport) requireSpecifiers.push(dependency.specifier)
       try {
         const resolution = this.#resolver.resolve(path, dependency, options.platform)
         if (!resolution) continue
@@ -467,6 +500,7 @@ export class MetroCompilerFrontend {
       input: { id, source: compiled.code, imports },
       sourceHash: metroCompilerContentHash(source),
       compiledHash: metroCompilerContentHash(compiled.code),
+      requireSpecifiers,
     }
   }
 
