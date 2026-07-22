@@ -11,6 +11,7 @@ export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
 
 import { createMedia } from '@tamagui/react-native-media-driver'
 import { isWeb } from '@tamagui/constants'
+import { useContext } from 'react'
 import {
   createMeasure,
   createMeasureInWindow,
@@ -216,15 +217,30 @@ setupHooks({
 
   // attempt at properly fixing RN input, but <Pressable><TextInput /> just doesnt work on RN
   ...(process.env.TAMAGUI_TARGET === 'native' && {
-    useChildren(elementType, children, viewProps) {
+    useChildren(elementType, children, viewProps, isPassthrough) {
+      // hook: read TextAncestor before ANY per-render branch — elementType and
+      // isPassthrough change between renders (Adapt/Popover toggle passThrough)
+      // and must not change the hook count. baseViews resolves once at module
+      // load, so the TextAncestor presence branch is constant for the app's
+      // lifetime (rules-of-hooks safe, same pattern as the isAndroid-gated
+      // NativeMenuContext read in createComponent).
+      const isInText = baseViews.TextAncestor
+        ? // eslint-disable-next-line react-hooks/rules-of-hooks
+          Boolean(useContext(baseViews.TextAncestor))
+        : false
+
       if (process.env.NODE_ENV === 'test') {
         // test mode - just use regular views since optimizations cause weirdness
         return
       }
 
+      if (isPassthrough) {
+        return
+      }
+
       if (elementType === baseViews.View && baseViews.TextAncestor) {
-        // optimize view
-        return createOptimizedView(children, viewProps, baseViews)
+        // optimize view (viewProps is only undefined for passthrough, handled above)
+        return createOptimizedView(children, viewProps!, baseViews, isInText)
       }
     },
   }),

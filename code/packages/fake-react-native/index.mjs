@@ -1,4 +1,10 @@
+import React from 'react'
+
 const emtpyComponent = () => null
+
+// real context: consumers (tamagui's useChildren) call React.useContext on it,
+// the proxyWorm fallback object would break that
+const TextAncestorContext = React.createContext(false)
 
 function proxyWorm() {
   return new Proxy(
@@ -6,6 +12,7 @@ function proxyWorm() {
       StyleSheet: {
         create() {},
       },
+      unstable_TextAncestorContext: TextAncestorContext,
       Platform: {
         OS: 'web',
       },
@@ -52,6 +59,7 @@ export const Easing = proxy.Easing
 export const Appearance = proxy.Appearance
 export const findNodeHandle = proxy.findNodeHandle
 export const unstable_batchedUpdates = proxy.unstable_batchedUpdates
+export const unstable_TextAncestorContext = proxy.unstable_TextAncestorContext
 
 // Default export
 export default proxy

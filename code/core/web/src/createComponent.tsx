@@ -1666,6 +1666,14 @@ export function createComponent<
 
     let content: ReactNode | undefined
 
+    // ONLY native: useChildren reads TextAncestor context (a hook), so it must
+    // run on every render — passthrough included — or toggling passThrough
+    // (Adapt/Popover flip it per breakpoint) would change the hook count
+    // mid-lifecycle. it returns undefined for passthrough.
+    const childrenFromHooks = hooks.useChildren
+      ? hooks.useChildren(elementType, children, viewProps, isPassthrough)
+      : undefined
+
     if (isPassthrough) {
       // avoid re-parenting but avoid layout changes
       content = React.createElement(
@@ -1679,9 +1687,8 @@ export function createComponent<
       )
     } else {
       // here elementType is either the custom animated driver view, or base view
-      if (hooks.useChildren) {
-        // ONLY native:
-        content = hooks.useChildren(elementType, content || children, viewProps)
+      if (childrenFromHooks) {
+        content = childrenFromHooks
       }
 
       const isRenderPropString = typeof renderProp === 'string'
