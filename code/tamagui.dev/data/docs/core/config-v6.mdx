@@ -1,0 +1,100 @@
+---
+title: 'Config v6'
+description: Tailwind-aligned scales and shorthands with swappable color palettes
+---
+
+<IntroParagraph>
+  Config v6 aligns Tamagui's default scales and shorthands with Tailwind CSS: `w-4` and
+  `p={'$4'}` mean the same 16 pixels, radius and type scales use Tailwind's names, and the
+  color palette is swappable without touching anything else.
+</IntroParagraph>
+
+V6 is the opt-in home for Tailwind-compatible defaults, so [v5](/docs/core/config-v5)
+stays stable. It builds on the same fonts, media queries and settings as v5 - the changes
+are the scales, two new shorthands, and how colors work.
+
+```bash
+npm install @tamagui/config
+```
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(defaultConfig)
+```
+
+### Changes from v5
+
+- **Tailwind spacing scale** - `space` and `size` tokens use Tailwind's 4px-based scale:
+  `$1` = 4, `$4` = 16, `$8` = 32, up to `$96` = 384, plus `$px` and half steps like
+  `$0.5`. Negative space tokens are included.
+- **Tailwind radius names** - `$xs` through `$4xl`, `$none` and `$full`, alongside v5's
+  numeric component scale.
+- **Tailwind type scale** - font `size` and `lineHeight` gain `$xs` through `$9xl` on top
+  of the v5 numeric steps.
+- **Direct z-index values** - `$0`-`$50` resolve to their own numbers (v5 mapped `$1` to
+  100).
+- **`w` and `h` shorthands** - width and height, matching Tailwind's `w-*`/`h-*`.
+- **Tailwind colors by default** - the full Tailwind palette as color tokens
+  (`$blue-500`), with themes generated from that same palette. Colors are the one
+  deliberately swappable piece - see [v6 Colors](/docs/core/config-v6-colors) for using
+  the v5 colors or your own instead.
+
+The scale change is the breaking one: `$4` was 44px in v5 and is 16px in v6.
+`settings.defaultSize` is `$11` (44px) so unstyled components keep the same control
+geometry as v5.
+
+### Entries
+
+The package splits along one seam - the aligned base never changes, the colors do:
+
+- `@tamagui/config/v6` - the default. Aligned base plus the Tailwind palette: color
+  tokens and themes generated from it.
+- `@tamagui/config/v6-classic` - aligned base plus the v5 color story: the generated v5
+  themes, no color tokens.
+- `@tamagui/config/v6-base` - just the aligned pieces (`shorthands`, scale `tokens`,
+  `fonts`, `media`, `settings`) and `createV6Config(colors)` for bringing your own
+  colors.
+- `@tamagui/config/v6-builder` - runtime theme generation from any palette. Pulls in
+  `@tamagui/theme-builder`, so it stays out of the static entries.
+
+All of this is covered end to end, with copy-paste examples for each palette, in
+[v6 Colors](/docs/core/config-v6-colors).
+
+### Animations
+
+Like v5, v6 bundles no animation driver. Import one from the v5 entries and spread it in:
+
+```tsx fileName="tamagui.config.ts"
+import { animationsCSS } from '@tamagui/config/v5-css'
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  animations: animationsCSS,
+})
+```
+
+See [Choosing an Animation Driver](/docs/core/animation-drivers) for the trade-offs
+between the `css`, `react-native`, `reanimated` and `motion` drivers.
+
+### Tailwind className mode
+
+V6 is the config for `styleMode: 'tailwind'`, which accepts Tailwind class names directly
+on `className`. The default v6 palette is what makes `bg-blue-500` resolve to the real
+Tailwind color token:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    styleMode: 'tailwind',
+  },
+})
+```

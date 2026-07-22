@@ -20,6 +20,8 @@ export const docsRoutes = [
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
       { title: 'Config v5', route: '/docs/core/config-v5' },
+      { title: 'Config v6', route: '/docs/core/config-v6' },
+      { title: 'v6 Colors', route: '/docs/core/config-v6-colors' },
       { title: 'Tokens', route: '/docs/core/tokens' },
       { title: 'Themes', route: '/docs/intro/themes' },
     ],
