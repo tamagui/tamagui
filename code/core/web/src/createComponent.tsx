@@ -1339,12 +1339,22 @@ export function createComponent<
         // Non-CSS drivers handle their own animation timing
         setStateShallow({ unmounted: false })
       }
+    }, [state.unmounted, inputStyle])
 
+    // unmount-only cleanup. this must NOT live on the enter effect above: that
+    // effect re-runs on every unmounted transition (true -> 'should-enter' ->
+    // false), and a cleanup returned there ran mid-lifecycle — dropping the
+    // mediaEmit listener right after mount for value-input avoidReRenders
+    // drivers, with no re-registration (render only registers while
+    // mediaEmitCleanup is unset), so media styles silently stopped applying
+    useIsomorphicLayoutEffect(() => {
       return () => {
         componentSetStates.delete(setState)
         stateRef.current.mediaEmitCleanup?.()
+        // clear so a render after a simulated unmount (StrictMode dev) can re-register
+        stateRef.current.mediaEmitCleanup = undefined
       }
-    }, [state.unmounted, inputStyle])
+    }, [])
 
     useIsomorphicLayoutEffect(() => {
       if (disabled) return
