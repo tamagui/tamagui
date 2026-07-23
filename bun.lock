@@ -1456,7 +1456,7 @@
         "@tamagui/metro-plugin": "workspace:*",
         "@tamagui/toast": "workspace:*",
         "@tamagui/web": "workspace:*",
-        "expo": "~55.0.6",
+        "expo": "~55.0.28",
         "expo-font": "~55.0.4",
         "react": ">=19",
         "react-native": "0.83.2",
@@ -1491,7 +1491,7 @@
     "code/packages/bento-get": {
       "name": "bento-get",
       "version": "2.5.1",
-      "bin": "dist/cli.js",
+      "bin": "dist/cli.mjs",
       "dependencies": {
         "@inkjs/ui": "2.0.0",
         "@supabase/supabase-js": "^2.48.1",
@@ -3639,7 +3639,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@tamagui/config": "workspace:*",
-        "expo": "~55.0.6",
+        "expo": "~55.0.28",
         "react": ">=19",
         "react-dom": "*",
         "react-native": "0.83.2",
