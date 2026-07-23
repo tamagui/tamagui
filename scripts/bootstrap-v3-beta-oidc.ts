@@ -176,7 +176,10 @@ async function main(): Promise<void> {
             name,
             version: bootstrapVersion,
             description: 'Tamagui v3 package bootstrap',
-            repository: 'https://github.com/tamagui/tamagui',
+            repository: {
+              type: 'git',
+              url: 'git+https://github.com/tamagui/tamagui.git',
+            },
             license: 'MIT',
             files: ['README.md'],
             publishConfig: { access: 'public' },
@@ -217,7 +220,16 @@ async function main(): Promise<void> {
   }
 
   for (const name of packages) {
-    if (!packageExists(name)) throw new Error(`${name} was not published`)
+    let visible = false
+    for (let attempt = 1; attempt <= 30; attempt++) {
+      if (packageExists(name)) {
+        visible = true
+        break
+      }
+      console.info(`${name}: waiting for npm registry propagation (${attempt}/30)`)
+      await Bun.sleep(10_000)
+    }
+    if (!visible) throw new Error(`${name} was not published`)
     verifyOwner(name)
     const trust = readTrust(name)
     if (trustMatches(trust ?? {})) {
