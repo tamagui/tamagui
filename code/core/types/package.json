@@ -2,11 +2,12 @@
   "name": "@tamagui/types",
   "version": "2.5.1",
   "files": [
-    "types.ts"
+    "types.ts",
+    "types.d.ts"
   ],
   "type": "module",
   "sideEffects": false,
-  "types": "./types.ts",
+  "types": "./types.d.ts",
   "exports": {
     ".": {
       "types": "./types.ts"

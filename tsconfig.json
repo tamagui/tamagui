@@ -2,11 +2,8 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "@tamagui/compiler-core": [
-        "./code/compiler/compiler-core/src/index.ts"
-      ],
       "@tamagui/colors/legacy": [
-        "./code/core/colors/src/legacy.ts"
+        "./code/core/colors/types/legacy.d.ts"
       ],
       "tamagui": [
         "./code/ui/tamagui"
