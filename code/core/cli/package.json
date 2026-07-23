@@ -2,8 +2,8 @@
   "name": "@tamagui/cli",
   "version": "2.5.1",
   "bin": {
-    "tama": "./dist/index.cjs",
-    "tamagui": "./dist/index.cjs"
+    "tama": "dist/index.cjs",
+    "tamagui": "dist/index.cjs"
   },
   "source": "src/index.ts",
   "files": [

@@ -4,7 +4,7 @@
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": {
     "tamagui-build": "tamagui-build.js",
-    "teesx": "./teesx.sh"
+    "teesx": "teesx.sh"
   },
   "publishConfig": {
     "access": "public"

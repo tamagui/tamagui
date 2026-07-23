@@ -2,7 +2,9 @@
   "name": "bento-get",
   "version": "2.5.1",
   "license": "MIT",
-  "bin": "dist/cli.js",
+  "bin": {
+    "bento-get": "dist/cli.js"
+  },
   "source": "src/cli.tsx",
   "files": [
     "source",

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "repository": {
-    "url": "https://github.com/tamagui/tamagui"
+    "url": "git+https://github.com/tamagui/tamagui.git"
   },
   "workspaces": [
     "./code/compiler/**/*",
