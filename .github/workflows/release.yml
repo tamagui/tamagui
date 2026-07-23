@@ -81,6 +81,22 @@ jobs:
         if: steps.candidate.outputs.release == 'true'
         run: bun install --frozen-lockfile
 
+      - name: Get Playwright version
+        if: steps.candidate.outputs.release == 'true'
+        id: beta-pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        if: steps.candidate.outputs.release == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.beta-pw-version.outputs.version }}
+
+      - name: Install Playwright Chromium
+        if: steps.candidate.outputs.release == 'true'
+        run: bunx playwright install --with-deps chromium
+
       - name: Publish tested source to the beta channel
         if: steps.candidate.outputs.release == 'true'
         env:
