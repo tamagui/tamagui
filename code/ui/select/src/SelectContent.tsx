@@ -1,7 +1,8 @@
-import { isWeb } from '@tamagui/core'
+import { useAdaptContext, useAdaptIsActive } from '@tamagui/adapt'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
+import { composeEventHandlers } from '@tamagui/helpers'
 
 import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -12,7 +13,7 @@ import {
   useSelectItemParentContext,
 } from './context'
 import type { SelectContentProps } from './types'
-import { useShowSelectSheet } from './useSelectBreakpointActive'
+import type { SelectOpenChangeDetails } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectContent
@@ -21,12 +22,17 @@ import { useShowSelectSheet } from './useSelectBreakpointActive'
 export const SelectContent = ({
   children,
   scope,
+  onEscapeKeyDown,
+  onPointerDownOutside,
+  onFocusOutside,
+  onInteractOutside,
   ...focusScopeProps
 }: SelectContentProps & FocusScopeProps) => {
   const context = useSelectContext(scope)
   const itemParentContext = useSelectItemParentContext(scope)
   const zIndex = useContext(SelectZIndexContext)
-  const showSheet = useShowSelectSheet(context)
+  const isAdapted = useAdaptIsActive(context.adaptScope)
+  const adaptContext = useAdaptContext(context.adaptScope)
 
   const contents = children
 
@@ -34,8 +40,11 @@ export const SelectContent = ({
     return <>{children}</>
   }
 
-  if (showSheet) {
-    if (!context.open) {
+  if (isAdapted) {
+    // content is published into the Sheet via SelectViewport's AdaptPortalContents;
+    // keep it mounted through the sheet slide-out (adaptContext.targetFullyHidden),
+    // otherwise the sheet body vanishes mid-slide on close. mirrors Popover/Dialog.
+    if (!context.open && adaptContext.targetFullyHidden) {
       return null
     }
     return <>{contents}</>
@@ -47,13 +56,35 @@ export const SelectContent = ({
         <Dismissable
           asChild
           forceUnmount={!context.open}
-          onDismiss={() => itemParentContext.setOpen(false)}
-          // prevent focus-outside and pointer-outside from triggering dismiss:
-          // SelectImpl has its own document pointerdown listener for outside clicks,
-          // and focus changes during open (e.g. FocusScope trapping) shouldn't dismiss.
-          // only escape key should trigger onDismiss here.
-          onFocusOutside={(e) => e.preventDefault()}
-          onPointerDownOutside={(e) => e.preventDefault()}
+          onDismiss={(details) => {
+            if (details.reason !== 'focus-out') {
+              itemParentContext.requestOpenChange(
+                false,
+                details as SelectOpenChangeDetails
+              )
+            }
+          }}
+          onEscapeKeyDown={(details) => {
+            const event = details.event as unknown as KeyboardEvent | undefined
+            event?.stopImmediatePropagation()
+            onEscapeKeyDown?.(details)
+          }}
+          onInteractOutside={onInteractOutside}
+          // focus changes during open should not dismiss the list
+          onFocusOutside={composeEventHandlers(onFocusOutside, (e) => e.cancel(), {
+            checkDefaultPrevented: false,
+          })}
+          onPointerDownOutside={composeEventHandlers(
+            onPointerDownOutside,
+            (details) => {
+              const trigger = context.floatingContext?.refs?.reference?.current
+              const target = details.event?.target
+              if (trigger instanceof HTMLElement && target instanceof Node) {
+                if (trigger.contains(target)) details.cancel()
+              }
+            },
+            { checkDefaultPrevented: false }
+          )}
         >
           <FocusScope
             {...focusScopeProps}
@@ -61,19 +92,18 @@ export const SelectContent = ({
             trapped
             onMountAutoFocus={(e) => {
               // prevent FocusScope from auto-focusing - floating-ui handles focus in SelectItem
-              e.preventDefault()
+              e.cancel()
             }}
             onUnmountAutoFocus={(e) => {
               // return focus to trigger on close
-              e.preventDefault()
+              e.cancel()
               const trigger = context.floatingContext?.refs?.reference?.current
               if (trigger instanceof HTMLElement) {
                 trigger.focus()
               }
             }}
           >
-            {/* div needed for FocusScope ref, display:contents keeps layout neutral */}
-            {isWeb ? <div style={{ display: 'contents' }}>{contents}</div> : contents}
+            {contents}
           </FocusScope>
         </Dismissable>
       </RemoveScroll>

@@ -1,0 +1,2328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CSS Utility Coverage Comparison</title>
+<style>
+  :root {
+    --full: #22c55e;
+    --partial: #f59e0b;
+    --web-only: #3b82f6;
+    --none: #ef4444;
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface-2: #1e1e1e;
+    --text: #e5e5e5;
+    --text-muted: #999;
+    --border: #2a2a2a;
+    --accent: #a78bfa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 32px; margin-bottom: 8px; }
+  .subtitle { color: var(--text-muted); margin-bottom: 24px; font-size: 15px; }
+
+  /* view filter */
+  .view-bar {
+    display: flex; flex-wrap: wrap;
+    gap: 8px; align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+  }
+  .view-bar-label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--text-muted); margin-right: 8px;
+  }
+  .view-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+  }
+  .view-btn:hover { border-color: var(--accent); }
+  .view-btn.active {
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .view-explain {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+    padding: 0 4px;
+  }
+
+  .legend {
+    display: flex; gap: 20px; margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .legend-dot {
+    width: 12px; height: 12px; border-radius: 3px;
+  }
+  .legend-dot.full { background: var(--full); }
+  .legend-dot.partial { background: var(--partial); }
+  .legend-dot.web-only { background: var(--web-only); }
+  .legend-dot.none { background: var(--none); }
+
+  /* summary cards */
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .summary-card h3 { font-size: 18px; margin-bottom: 12px; }
+  .pct { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
+  .pct.tamagui { color: #a78bfa; }
+  .pct.tailwind { color: #38bdf8; }
+  .pct.nativewind { color: #f472b6; }
+  .pct.uniwind { color: #fb923c; }
+  .stat-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); padding: 2px 0; }
+  .bar { height: 6px; border-radius: 3px; background: var(--surface-2); margin-top: 12px; overflow: hidden; display: flex; }
+  .bar-full { background: var(--full); }
+  .bar-partial { background: var(--partial); }
+  .bar-web { background: var(--web-only); }
+  .bar-none { background: var(--none); }
+
+  /* category sections */
+  .category { margin-bottom: 40px; }
+  .category.empty { display: none; }
+  .category h2 {
+    font-size: 20px; margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .category h2 .count {
+    font-size: 12px; color: var(--text-muted); font-weight: 400;
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: var(--surface); }
+  tr.row-hidden { display: none; }
+  .util-name { font-weight: 600; }
+  .util-desc { color: var(--text-muted); font-size: 12px; }
+
+  .support-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .support-full { background: color-mix(in srgb, var(--full) 20%, transparent); color: var(--full); }
+  .support-partial { background: color-mix(in srgb, var(--partial) 20%, transparent); color: var(--partial); }
+  .support-web-only { background: color-mix(in srgb, var(--web-only) 20%, transparent); color: var(--web-only); }
+  .support-none { background: color-mix(in srgb, var(--none) 20%, transparent); color: var(--none); }
+
+  .example { font-family: 'SF Mono', Monaco, monospace; font-size: 11px; color: var(--text-muted); }
+  .notes { font-size: 12px; color: var(--text-muted); font-style: italic; max-width: 200px; }
+</style>
+</head>
+<body>
+
+<h1>CSS Utility Coverage Comparison</h1>
+<p class="subtitle">Tamagui flat-styles vs Tailwind CSS vs NativeWind v5 vs Uniwind</p>
+
+<div class="view-bar">
+  <span class="view-bar-label">Platform view</span>
+  <button class="view-btn" data-view="cross">Cross-platform (web + native)</button>
+  <button class="view-btn" data-view="strict">Strict (no native caveats)</button>
+  <button class="view-btn" data-view="web-only">Web-only</button>
+  <button class="view-btn" data-view="all">All</button>
+</div>
+<div class="view-explain" id="viewExplain"></div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot full"></div> Full support (web + native)</div>
+  <div class="legend-item"><div class="legend-dot partial"></div> Partial (cross-platform with caveats)</div>
+  <div class="legend-item"><div class="legend-dot web-only"></div> Web-only</div>
+  <div class="legend-item"><div class="legend-dot none"></div> Not supported</div>
+</div>
+
+<div class="summary" id="summary"></div>
+
+<div id="categories">
+<div class="category" data-cat-idx="0">
+  <h2>Layout <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">display</div>
+          <div class="util-desc">Set display type</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui: `$dsp` is a named prop; `flex`/`none` work cross-platform, other values (block/grid/contents) web-only. RN natively only has flex + none, so NativeWind/Uniwind map flex/hidden and ignore the rest on native.</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">position</div>
+          <div class="util-desc">Set positioning mode</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui: `$pos` named prop; absolute/relative/static cross-platform, fixed/sticky web-only (RN has no fixed/sticky positioning). NativeWind/Uniwind map absolute/relative on native and drop fixed/sticky.</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">top/right/bottom/left</div>
+          <div class="util-desc">Position offsets</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">inset</div>
+          <div class="util-desc">Shorthand for all position offsets</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">z-index</div>
+          <div class="util-desc">Stack order</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"full","tw":"web-only","n":"full","u":"partial"}'>
+        <td>
+          <div class="util-name">overflow</div>
+          <div class="util-desc">Overflow behavior</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui: `$ov` named prop, cross-platform (visible/hidden/scroll). RN ignores overflow:scroll on Android for clipping. Uniwind: only overflow-hidden documented.</td>
+      </tr>
+      <tr data-util-idx="6" data-support='{"t":"full","tw":"web-only","n":"full","u":"partial"}'>
+        <td>
+          <div class="util-name">aspect-ratio</div>
+          <div class="util-desc">Aspect ratio</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui: `$aspectRatio` cross-platform. Uniwind docs note aspect-ratio has "limited support".</td>
+      </tr>
+      <tr data-util-idx="7" data-support='{"t":"full","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">box-sizing</div>
+          <div class="util-desc">Box model sizing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui: `$bxs` named prop, maps to RN 0.77+ boxSizing (New Architecture) so border-box/content-box both work cross-platform. RN defaults to and only supports border-box, so NativeWind/Uniwind box-border is a no-op and box-content is unsupported on native.</td>
+      </tr>
+      <tr data-util-idx="8" data-support='{"t":"full","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">isolation</div>
+          <div class="util-desc">Stacking context isolation</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$isolation` maps to RN 0.77+ isolation (New Architecture) for native stacking contexts; NativeWind `isolate` is web-only.</td>
+      </tr>
+      <tr data-util-idx="9" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">visibility</div>
+          <div class="util-desc">Element visibility</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `visibility="hidden"` is cross-platform - native CSS visibility on web, expands to `opacity:0 + pointerEvents:none` on native. `visibility="collapse"` stays web-only (no RN equivalent). NativeWind `invisible` maps to opacity:0 on native (collapse is web-only).</td>
+      </tr>
+      <tr data-util-idx="10" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">float</div>
+          <div class="util-desc">Float positioning</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ float: "left" }}` on web (the platform escape hatch passes raw CSS through). Not applicable to RN flexbox, so web-only across the board.</td>
+      </tr>
+      <tr data-util-idx="11" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">clear</div>
+          <div class="util-desc">Clear floats</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ clear: "both" }}` on web. No RN equivalent.</td>
+      </tr>
+      <tr data-util-idx="12" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">columns</div>
+          <div class="util-desc">Multi-column layout</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$columnCount` is a typed prop but CSS multi-column only renders on web; RN has no multi-column layout. Uniwind explicitly lists `columns-*` as unsupported.</td>
+      </tr>
+      <tr data-util-idx="13" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">object-fit</div>
+          <div class="util-desc">Replaced element sizing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `objectFit` is auto-mapped on native — Tamagui core expands `objectFit` to RN `resizeMode`, and the Image component also writes `style.objectFit` (RN 0.76+ reads it natively). Works with the default Image and expo-image (via `contentFit`).</td>
+      </tr>
+      <tr data-util-idx="14" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">object-position</div>
+          <div class="util-desc">Replaced element position</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `objectPosition` is forwarded into the Image `style` on native and to `contentPosition` when using expo-image (full support there). Default RN Image currently ignores it — limited to keyword values like center/top/bottom/left/right via expo-image.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="1">
+  <h2>Flexbox <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">flex-direction</div>
+          <div class="util-desc">Main axis direction</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">flex-wrap</div>
+          <div class="util-desc">Wrapping behavior</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">flex</div>
+          <div class="util-desc">Flex shorthand</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui: `$f` plus separate `$fg`/`$fs`/`$fb` give full control cross-platform. On native, RN flex is a single number, so the CSS `flex: grow shrink basis` shorthand (e.g. flex-auto/flex-initial) does not map cleanly; NativeWind/Uniwind support flex-1 but the multi-value shorthands are web-leaning.</td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">flex-grow</div>
+          <div class="util-desc">Flex grow factor</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">flex-shrink</div>
+          <div class="util-desc">Flex shrink factor</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"full","tw":"web-only","n":"full","u":"partial"}'>
+        <td>
+          <div class="util-name">flex-basis</div>
+          <div class="util-desc">Initial main size</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="6" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">justify-content</div>
+          <div class="util-desc">Main axis alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="7" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">align-items</div>
+          <div class="util-desc">Cross axis alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="8" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">align-self</div>
+          <div class="util-desc">Individual cross axis alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="9" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">align-content</div>
+          <div class="util-desc">Multi-line cross axis alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="10" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">gap</div>
+          <div class="util-desc">Gap between flex/grid items</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui: `$gap`/`$columnGap`/`$rowGap` are named props, cross-platform via RN 0.71+ flexbox gap. All four support it natively now (RN 0.71+ added row/column gap to flexbox); pre-0.71 needed a margin workaround.</td>
+      </tr>
+      <tr data-util-idx="11" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">order</div>
+          <div class="util-desc">Flex item order</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$order` is a typed prop but flex `order` only affects web layout; RN flexbox ignores order (paint order = child order). Web-only for everyone.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="2">
+  <h2>Grid <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">grid-template-columns</div>
+          <div class="util-desc">Define grid columns</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">CSS grid only exists on web; RN has no grid layout engine. Tamagui exposes `$gridTemplate*` as typed props but they no-op on native. All RN approaches require manual flex layout or a list component instead.</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">grid-column</div>
+          <div class="util-desc">Column span/placement</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">grid-row</div>
+          <div class="util-desc">Row span/placement</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">grid-template-areas</div>
+          <div class="util-desc">Named grid areas</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">grid-auto-flow</div>
+          <div class="util-desc">Auto-placement algorithm</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$gridAutoFlow` is a typed prop but renders web-only (RN has no grid).</td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">place-content/items/self</div>
+          <div class="util-desc">Combined alignment shorthands</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ placeContent / placeItems / placeSelf: ... }}` on web. RN has no CSS grid, so place-* is web-only everywhere.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="3">
+  <h2>Spacing <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">padding</div>
+          <div class="util-desc">Inner spacing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">margin</div>
+          <div class="util-desc">Outer spacing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">padding-block/inline (logical)</div>
+          <div class="util-desc">Logical spacing (writing-mode aware)</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">NativeWind v5 maps ps/pe to RN paddingStart/End (RTL aware)</td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">margin-block/inline (logical)</div>
+          <div class="util-desc">Logical margin (writing-mode aware)</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">NativeWind v5 maps ms/me to RN marginStart/End (RTL aware)</td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"none","tw":"web-only","n":"web-only","u":"full"}'>
+        <td>
+          <div class="util-name">space-between</div>
+          <div class="util-desc">Space between child elements</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui has no `space-*` className; the idiomatic equivalent is `$gap` (cross-platform). NativeWind v5 marks space-x/space-y as web-only (it injects a `> * + *` sibling selector that has no native equivalent) and recommends gap on native. Uniwind lists space-x/y as supported.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="4">
+  <h2>Sizing <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">width</div>
+          <div class="util-desc">Element width</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">height</div>
+          <div class="util-desc">Element height</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">min-width / max-width</div>
+          <div class="util-desc">Width constraints</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">min-height / max-height</div>
+          <div class="util-desc">Height constraints</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">size (width + height)</div>
+          <div class="util-desc">Combined width and height shorthand</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">The `size-*` shorthand (sets width+height together) shipped in Tailwind v3.4. Tamagui has no single shorthand: use `$w`/`$h` (both cross-platform, so the capability exists, just two props). NativeWind v5 docs only enumerate `w-*`/`h-*` as Full on native; `size-*` native support is undocumented/unconfirmed.</td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"web-only","tw":"web-only","n":"none","u":"none"}'>
+        <td>
+          <div class="util-name">inline-size / block-size</div>
+          <div class="util-desc">Logical sizing (writing-mode aware)</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui types `$inlineSize`/`$blockSize` as size-token props but they only resolve on web (RN has no inlineSize/blockSize style props; use `$w`/`$h`). On native, writing-mode is effectively LTR/TTB so logical == physical anyway.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="5">
+  <h2>Typography <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">font-family</div>
+          <div class="util-desc">Font family</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">font-size</div>
+          <div class="util-desc">Font size</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">font-weight</div>
+          <div class="util-desc">Font weight</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">font-style</div>
+          <div class="util-desc">Italic/normal</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">color</div>
+          <div class="util-desc">Text color</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">text-align</div>
+          <div class="util-desc">Text alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="6" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">text-transform</div>
+          <div class="util-desc">Text case transformation</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="7" data-support='{"t":"full","tw":"web-only","n":"full","u":"partial"}'>
+        <td>
+          <div class="util-name">text-decoration</div>
+          <div class="util-desc">Underline/strikethrough</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="8" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">letter-spacing</div>
+          <div class="util-desc">Letter spacing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="9" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">line-height</div>
+          <div class="util-desc">Line height</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="10" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">line-clamp</div>
+          <div class="util-desc">Truncate text to N lines</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="11" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">white-space</div>
+          <div class="util-desc">Whitespace handling</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$whiteSpace` is a web-only text prop (tree-shaken on native). On native, text wrapping is controlled by `numberOfLines` and container width, not white-space.</td>
+      </tr>
+      <tr data-util-idx="12" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">word-break</div>
+          <div class="util-desc">Word breaking behavior</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$wordWrap` (`ww` shorthand) is web-only. RN has no word-break control; it breaks at whitespace or character based on platform text engine.</td>
+      </tr>
+      <tr data-util-idx="13" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">text-overflow</div>
+          <div class="util-desc">Text overflow behavior</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$textOverflow="ellipsis"` works cross-platform on Text - web uses CSS text-overflow, native maps to numberOfLines={1} + ellipsizeMode="tail". Other values (clip) are web-only.</td>
+      </tr>
+      <tr data-util-idx="14" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">text-indent</div>
+          <div class="util-desc">First line indentation</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ textIndent: "1em" }}` on web. RN text engine has no text-indent.</td>
+      </tr>
+      <tr data-util-idx="15" data-support='{"t":"full","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">vertical-align</div>
+          <div class="util-desc">Vertical alignment of inline elements</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$verticalAlign` maps to RN 0.71+ verticalAlign on Text (auto/top/bottom/middle), so it works cross-platform. NativeWind `align-*` is largely a web inline-element concept; RN only honors a subset on Text.</td>
+      </tr>
+      <tr data-util-idx="16" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">font-variant-numeric</div>
+          <div class="util-desc">Numeric font features</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$fontVariant` maps to RN fontVariant array; RN supports a subset (tabular-nums, oldstyle-nums, lining-nums, etc.) cross-platform but not the full CSS font-variant-numeric grammar. NativeWind maps the common numeric variants to RN fontVariant, same subset limitation.</td>
+      </tr>
+      <tr data-util-idx="17" data-support='{"t":"full","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">text-shadow</div>
+          <div class="util-desc">Text shadow</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tailwind text-shadow utilities are new in v4.1; NativeWind v5 maps to RN textShadow* (single shadow only). Tamagui `$textShadow` + offset/radius/color are cross-platform via RN textShadow* props.</td>
+      </tr>
+      <tr data-util-idx="18" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">text-wrap (balance / pretty)</div>
+          <div class="util-desc">Better line-break distribution for headings/paragraphs</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tailwind `text-balance` (text-wrap: balance) and `text-pretty` shipped in v3.4. Tamagui `$textWrap` is a web-only prop. RN text layout has no balance/pretty algorithm, so all are web-only (NativeWind passes them through on web only).</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="6">
+  <h2>Backgrounds <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">background-color</div>
+          <div class="util-desc">Background color</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">background-image</div>
+          <div class="util-desc">Background images and gradients</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$backgroundImage` maps to RN 0.76+ experimental_backgroundImage, so CSS gradients (linear/radial) render on native; raster url() background images stay web-only (use the Image component on native). NativeWind v5 similarly maps gradient utilities to RN 0.76+ backgroundImage; url() backgrounds remain web-only.</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">background-position</div>
+          <div class="util-desc">Background image position</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ backgroundPosition: ... }}` on web. RN has no CSS background-image so no native equivalent.</td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">background-size</div>
+          <div class="util-desc">Background image sizing</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ backgroundSize: ... }}` on web. No RN equivalent.</td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">background-repeat</div>
+          <div class="util-desc">Background tiling</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ backgroundRepeat: ... }}` on web. No RN equivalent.</td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">background-clip</div>
+          <div class="util-desc">Background painting area</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ backgroundClip: ... }}` on web (commonly used for gradient text). No RN equivalent.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="7">
+  <h2>Borders <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">border-width</div>
+          <div class="util-desc">Border width</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">border-color</div>
+          <div class="util-desc">Border color</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"full","u":"partial"}'>
+        <td>
+          <div class="util-name">border-style</div>
+          <div class="util-desc">Border style</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">border-radius</div>
+          <div class="util-desc">Corner rounding</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">border-width (logical)</div>
+          <div class="util-desc">Logical border widths (block/inline)</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">NativeWind v5 maps border-s/border-e to RN borderStartWidth/borderEndWidth</td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">outline</div>
+          <div class="util-desc">Outline styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$outline*` named props map to RN 0.77+ outline / outlineColor / outlineWidth / outlineOffset (New Architecture), so outlines render cross-platform. NativeWind v5 maps outline-* to the same RN props.</td>
+      </tr>
+      <tr data-util-idx="6" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">ring</div>
+          <div class="util-desc">Box-shadow based ring</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui has no `ring` shorthand but the same effect is a one-liner via `$bxsh` (box-shadow), which works cross-platform on RN 0.76+. NativeWind ring is box-shadow-based, so on native it inherits the RN boxShadow limitations (no inset). Uniwind: ring not documented.</td>
+      </tr>
+      <tr data-util-idx="7" data-support='{"t":"none","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">divide</div>
+          <div class="util-desc">Borders between children</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">divide-* injects a `> * + *` sibling border. NativeWind v5 lists divide-width as web-only (no native sibling selector). Tamagui has no divide equivalent; idiomatic approach is a `<Separator>` component between children.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="8">
+  <h2>Effects <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">opacity</div>
+          <div class="util-desc">Element opacity</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">box-shadow</div>
+          <div class="util-desc">Box shadow</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">NativeWind v5 maps shadow-* to RN 0.76+ boxShadow; still differs from CSS spread/inset</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">mix-blend-mode</div>
+          <div class="util-desc">Element blending mode</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$mixBlendMode` is a web-only prop (also reachable via `$web={{ mixBlendMode: ... }}`). No native equivalent — RN has no compositing-mode primitive.</td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">cursor</div>
+          <div class="util-desc">Mouse cursor style</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$cur` (cursor) is accepted as a prop on native without error but only renders on web/web-of-RN; touch platforms have no cursor. Effectively web-only for everyone.</td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">pointer-events</div>
+          <div class="util-desc">Pointer event behavior</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$pe` maps to the core RN View pointerEvents prop (cross-platform). NativeWind maps pointer-events-* to the same RN prop. Uniwind: not documented.</td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"full","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">user-select</div>
+          <div class="util-desc">Text selection behavior</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$ussel` (userSelect) maps to RN 0.71+ userSelect on Text/View, so none/text/auto work cross-platform. NativeWind select-* maps to the same RN prop; select-all is web-only.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="9">
+  <h2>Filters <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">filter (blur, brightness, etc)</div>
+          <div class="util-desc">CSS filter effects</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$filter` maps to RN 0.76+ filter, so blur/brightness/contrast/etc. render on native — but some filters (e.g. drop-shadow) are Android 12+ only and behavior differs from CSS. NativeWind v5 maps filter utilities to the same RN 0.76+ prop with the same platform caveats.</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">backdrop-filter</div>
+          <div class="util-desc">Backdrop filter effects</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$backdropFilter` is web-only. RN has no backdrop-filter; native blur-behind effects need a dedicated component (e.g. expo-blur / @react-native-community/blur).</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="10">
+  <h2>Transforms <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">transform</div>
+          <div class="util-desc">CSS transform</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">translate</div>
+          <div class="util-desc">Translate position</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">scale</div>
+          <div class="util-desc">Scale sizing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">rotate</div>
+          <div class="util-desc">Rotation</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">skew</div>
+          <div class="util-desc">Skew distortion</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">transform-origin</div>
+          <div class="util-desc">Transform origin point</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="6" data-support='{"t":"full","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">perspective</div>
+          <div class="util-desc">3D perspective depth</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="7" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">backface-visibility</div>
+          <div class="util-desc">Backface visibility in 3D</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="11">
+  <h2>Transitions & Animation <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">animation</div>
+          <div class="util-desc">Animation driver / keyframes</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui: `animation="..."` plus enter/exit styles, cross-platform via pluggable drivers (CSS on web; Reanimated/Moti/RN-Animated on native). NativeWind v5 `animate-*` is marked experimental on native (it now delegates to Reanimated CSS animations, RN 0.81+ / New Arch only). Uniwind animations are Pro-tier (paid) and Reanimated-backed.</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">transition-property</div>
+          <div class="util-desc">Which properties to transition</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui has no `transition-*` class; instead any prop change on a component with an `animation` driver animates automatically (cross-platform). NativeWind v5 transition-* is experimental on native (Reanimated-backed, RN 0.81+ / New Arch). Uniwind transitions are Pro-tier.</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">transition-duration</div>
+          <div class="util-desc">Transition timing</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui sets duration through the animation driver config (e.g. spring/timing presets) rather than a `duration-*` class. NativeWind v5 duration-* is part of its experimental native transition support.</td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"partial"}'>
+        <td>
+          <div class="util-name">transition-timing-function</div>
+          <div class="util-desc">Easing function</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui configures easing per-animation driver (e.g. cubic-bezier on CSS, spring on Reanimated) rather than an `ease-*` class. NativeWind v5 ease-* is part of its experimental native transition support.</td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"full","tw":"none","n":"none","u":"none"}'>
+        <td>
+          <div class="util-name">enter/exit styles</div>
+          <div class="util-desc">Mount/unmount animation styles</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui-specific: AnimatePresence + enterStyle/exitStyle</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="12">
+  <h2>Interactive States <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">hover</div>
+          <div class="util-desc">Hover state styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui `hoverStyle` / `$hover:` fires wherever a pointer exists (web + RN desktop/trackpad via onHoverIn); inert on touch like everywhere. NativeWind hover behaves the same. Uniwind explicitly lists `hover:` as unsupported (no RN equivalent in its model).</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">press / active</div>
+          <div class="util-desc">Press/active state styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">focus</div>
+          <div class="util-desc">Focus state styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">focus-visible</div>
+          <div class="util-desc">Keyboard focus state</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `focusVisibleStyle` / `$focusVisible:` is registered only on web (it depends on the `:focus-visible` pseudo). NativeWind focus-visible is likewise web-only. No framework has a native equivalent (RN has no keyboard-vs-pointer focus distinction).</td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">focus-within</div>
+          <div class="util-desc">Focus within container</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui exposes `focusWithinStyle` but it relies on the `:focus-within` pseudo, so it only takes effect on web; RN has no focus-within. Use a named `group` + focus state for a native equivalent.</td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">disabled</div>
+          <div class="util-desc">Disabled state styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="6" data-support='{"t":"full","tw":"web-only","n":"full","u":"partial"}'>
+        <td>
+          <div class="util-name">group hover/press/focus</div>
+          <div class="util-desc">Styling a child based on a named parent state</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui: mark the parent `group` (or `group="card"`) and style children with `$group-hover:`, `$group-card-hover:`, `$group-press:`, `$group-focus:` — implemented via a JS state emitter so it works cross-platform (web + native). NativeWind v5 group-* tracks parent state on native. Uniwind: group-active/focus is Pro-tier (free no-ops); group-hover never (no native hover).</td>
+      </tr>
+      <tr data-util-idx="7" data-support='{"t":"none","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">peer variants</div>
+          <div class="util-desc">Styling based on a sibling element state</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">peer-* needs a CSS sibling selector. NativeWind v5 supports peer-* on web only — there is no native sibling-tracking model. Tamagui has no peer concept; the closest pattern is lifting shared state to a parent `group` or to React state. Uniwind: not supported.</td>
+      </tr>
+      <tr data-util-idx="8" data-support='{"t":"none","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">has variant</div>
+          <div class="util-desc">Style based on descendant matching (:has())</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">has-* (`:has()` parent-selector) shipped in Tailwind v3.4. NativeWind v5 supports has-* on web only (no native `:has()`); Tamagui and Uniwind have no equivalent — track the condition in JS/state instead.</td>
+      </tr>
+      <tr data-util-idx="9" data-support='{"t":"none","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">not variant</div>
+          <div class="util-desc">Negate a variant / pseudo-class (:not())</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">The `not-*` variant is new in Tailwind v4.0 and relies on the CSS `:not()` selector — web only. NativeWind has no native `:not()` model; Tamagui/Uniwind have no equivalent (invert the condition in JS).</td>
+      </tr>
+      <tr data-util-idx="10" data-support='{"t":"none","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">nth variant</div>
+          <div class="util-desc">Index-based selection (:nth-child)</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">The `nth-*` variant is new in Tailwind v4.0 (CSS `:nth-child()`) — web only. RN has no structural pseudo-classes, so NativeWind is web-only here and Tamagui/Uniwind have no equivalent; compute from the list index in JS.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="13">
+  <h2>Responsive & Media <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">breakpoints</div>
+          <div class="util-desc">Responsive breakpoint modifiers</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">dark mode</div>
+          <div class="util-desc">Dark theme modifier</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">NativeWind v5 dark: uses native @media (prefers-color-scheme: dark)</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">combined media + pseudo</div>
+          <div class="util-desc">Media query + interactive state</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">container queries</div>
+          <div class="util-desc">Style a child based on the size/state of a named parent container</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: container queries are the `group` system combined with media keys — mark a parent `group="card"` and use `$group-card-$sm:` style keys. On web this uses real CSS container queries (containerType); on native it measures the parent and applies styles via the group emitter, so it works cross-platform (the `untilMeasured` prop exists to avoid flashes before first measure). NativeWind v5 also supports `@container` on native, implemented via onLayout measurement (size-based only, not CSS containment). Tailwind is web-only; Uniwind: not documented.</td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"web-only","tw":"web-only","n":"none","u":"none"}'>
+        <td>
+          <div class="util-name">container query units (cqw/cqh)</div>
+          <div class="util-desc">Sizing relative to the query container (cqw, cqh, cqi, cqb)</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">cqw/cqh/cqi/cqb are CSS length units tied to a real CSS containment context. Tamagui: reachable on web via `$web={{ width: "50cqw" }}` once a parent sets containerType (which Tamagui&#39;s group system does). Tamagui and NativeWind implement container *queries* differently on native (JS measurement / group emitter) and do not expose container-relative length units there; use a measured value or a breakpoint instead.</td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"full","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">prefers-reduced-motion</div>
+          <div class="util-desc">Reduced motion preference</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">`$motionReduce` and `$motionSafe` are built-in media keys in @tamagui/config. Web subscribes to `(prefers-reduced-motion: reduce | no-preference)` via `window.matchMedia`; native subscribes to `AccessibilityInfo.isReduceMotionEnabled` + the `reduceMotionChanged` event through `@tamagui/react-native-media-driver`. NativeWind v5 maps the same two states.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="14">
+  <h2>Platform <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">web-specific styles</div>
+          <div class="util-desc">Web-only styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tailwind is web-only by default</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"none","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">native-specific styles</div>
+          <div class="util-desc">Native-only styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"none","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">ios-specific styles</div>
+          <div class="util-desc">iOS-only styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"none","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">android-specific styles</div>
+          <div class="util-desc">Android-only styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"full","tw":"none","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">safe area insets</div>
+          <div class="util-desc">Safe area padding</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui accepts `"safe"` as a first-class value on any inset/padding/margin prop (pt/pb/px/py/inset/top/...). On web it emits `env(safe-area-inset-*)`; on native it reads insets from `@tamagui/native/setup-safe-area`. NativeWind and Uniwind ship the same as utilities; Uniwind also has `-safe-or-*` / `-safe-offset-*` variants for fallbacks.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="15">
+  <h2>Pseudo Elements <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"none","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">::before / ::after</div>
+          <div class="util-desc">Generated content pseudo-elements</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Generated content has no RN equivalent (no pseudo-element box). NativeWind v5 only ships `content-none` and it is web-only. Tamagui has no before/after; render an extra element instead. Uniwind lists before:/after: as unsupported.</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"partial","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">::placeholder</div>
+          <div class="util-desc">Input placeholder styling</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui Input/TextArea expose `placeholderTextColor` (the one RN-supported placeholder style) cross-platform, but not arbitrary placeholder typography. NativeWind v5 rewrites `placeholder:` to the RN placeholderTextColor prop. Uniwind lists placeholder: as unsupported.</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"none","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">::selection</div>
+          <div class="util-desc">Text selection styling</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"none","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">first / last / odd / even child</div>
+          <div class="util-desc">Positional child selectors</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Index-based child selectors need a CSS structural pseudo (:first-child / :nth-child). NativeWind v5 removed native support ("future version") — web-only. Tamagui has none; pass the index in JS (`index === 0 && {...}`). Uniwind: not supported.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="16">
+  <h2>Tables <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">border-collapse</div>
+          <div class="util-desc">Table border collapsing</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ borderCollapse: ... }}` on web. RN has no table model.</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">border-spacing</div>
+          <div class="util-desc">Table border spacing</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ borderSpacing: ... }}` on web. No RN equivalent.</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">table-layout</div>
+          <div class="util-desc">Table layout algorithm</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ tableLayout: ... }}` on web. No RN equivalent.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="17">
+  <h2>SVG <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">fill</div>
+          <div class="util-desc">SVG fill color</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">@tamagui/lucide-icons accepts `fill` as a style prop on both web and native, resolving theme tokens (e.g. `fill="$color10"`) via the icon `themed()` wrapper. Plain colors (e.g. `fill="red"`) pass through unchanged.</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">stroke</div>
+          <div class="util-desc">SVG stroke color</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">@tamagui/lucide-icons accepts `stroke` as a style prop on both web and native with theme-token resolution; when provided it also feeds the icon paths so the visible stroke color updates (not just the root <Svg>).</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"full","tw":"web-only","n":"full","u":"none"}'>
+        <td>
+          <div class="util-name">stroke-width</div>
+          <div class="util-desc">SVG stroke width</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui icons accept numeric `strokeWidth` directly and resolve size tokens (e.g. `strokeWidth="$1"`) on both web and native.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="18">
+  <h2>Interactivity <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">scroll-behavior</div>
+          <div class="util-desc">Smooth scrolling</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ scrollBehavior: ... }}` on web. On native, use ScrollView animation props instead.</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">scroll-snap</div>
+          <div class="util-desc">Scroll snapping</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: scroll-snap-type / scroll-snap-align reachable via `$web={{ ... }}` on web. On native, ScrollView has `snapToInterval` / `snapToOffsets` instead of CSS scroll-snap.</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">touch-action</div>
+          <div class="util-desc">Touch interaction behavior</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$touchAction` is a web-only prop. On native, gesture handling is done with the gesture system (PanResponder / react-native-gesture-handler), not a style.</td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">resize</div>
+          <div class="util-desc">Element resizability</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ resize: ... }}` on web (mostly useful on textareas). No native equivalent — RN form controls aren&#39;t user-resizable.</td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">appearance</div>
+          <div class="util-desc">Native form control appearance reset</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ appearance: "none" }}` on web for resetting browser-native control chrome. RN controls are already custom-rendered, so there is nothing to reset on native.</td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"web-only","tw":"web-only","n":"none","u":"none"}'>
+        <td>
+          <div class="util-name">field-sizing</div>
+          <div class="util-desc">Auto-resize form fields to their content</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ fieldSizing: "content" }}` on web (the platform escape hatch passes raw CSS through). On native, use the `multiline` + onContentSizeChange pattern to auto-grow a TextInput. NativeWind/Uniwind have no field-sizing utility.</td>
+      </tr>
+      <tr data-util-idx="6" data-support='{"t":"none","tw":"none","n":"none","u":"none"}'>
+        <td>
+          <div class="util-name">scroll-timeline / scroll-driven animation</div>
+          <div class="util-desc">Animations driven by scroll position</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tailwind v4 has no built-in scroll-timeline utility (only arbitrary `[animation-timeline:...]` or a community plugin). On native, scroll-driven effects use Animated.event / Reanimated useAnimatedScrollHandler. No framework here ships a first-class scroll-timeline utility.</td>
+      </tr>
+      <tr data-util-idx="7" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">caret-color</div>
+          <div class="util-desc">Text input caret color</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: on web, `$caretColor` is the CSS caret-color property. On native, `@tamagui/input` Input forwards `caretColor` to RN TextInput `cursorColor` (Android) + `selectionColor` (iOS+Android caret) — explicit `cursorColor`/`selectionColor` props still win. Cross-platform but only applies to the Input/TextArea components (not a generic style prop).</td>
+      </tr>
+      <tr data-util-idx="8" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">accent-color</div>
+          <div class="util-desc">Form control accent color</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: reachable via `$web={{ accentColor: ... }}` on web for native form control tinting (checkbox / radio / progress). RN controls are custom-rendered, so no native equivalent.</td>
+      </tr>
+      <tr data-util-idx="9" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">will-change</div>
+          <div class="util-desc">GPU rendering hints</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui: `$willChange` is a web-only GPU hint. RN has no will-change; native rasterization hints are platform-specific (e.g. shouldRasterizeIOS / renderToHardwareTextureAndroid).</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="19">
+  <h2>Accessibility <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"partial","tw":"web-only","n":"partial","u":"none"}'>
+        <td>
+          <div class="util-name">sr-only</div>
+          <div class="util-desc">Visually hide an element but keep it for screen readers</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui ships `<VisuallyHidden>` (from `@tamagui/visually-hidden`) as a primitive that emits the standard sr-only style block on web (1x1, absolute, clip-path, no display:none) AND wires the matching a11y semantics on both platforms: `aria-hidden=false` on web, `accessible={true}` on native, plus `importantForAccessibility="yes"` on Android so ancestors with hide-descendants don&#39;t silence it. `visible` prop flips it back to fully visible (the `not-sr-only` escape hatch). NativeWind v5 `sr-only` only emits the visual-hide style on native — it does NOT wire accessibilityElementsHidden / importantForAccessibility / aria-hidden, so SR semantics differ from web. `not-sr-only` is web-only. Marked partial (not full) because it&#39;s a primitive component, not a class utility.</td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"none"}'>
+        <td>
+          <div class="util-name">forced-colors / forced-color-adjust</div>
+          <div class="util-desc">Windows high-contrast / forced-colors mode</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Forced-colors is a web/OS high-contrast feature. Tailwind v4 ships the `forced-colors:` variant + `forced-color-adjust-*`; NativeWind exposes them web-only. Tamagui: the `forced-color-adjust` property is reachable via `$web={{ forcedColorAdjust: ... }}` on web (the `forced-colors:` media variant itself is not exposed as a Tamagui media key). RN has its own high-contrast handling, so no native style mapping.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category" data-cat-idx="20">
+  <h2>Design Tokens & Theming <span class="count" data-count></span></h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind v5</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-util-idx="0" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">design tokens</div>
+          <div class="util-desc">Configurable design tokens</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr data-util-idx="1" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">theme switching</div>
+          <div class="util-desc">Runtime theme switching</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui has nested theme support with sub-themes</td>
+      </tr>
+      <tr data-util-idx="2" data-support='{"t":"web-only","tw":"web-only","n":"web-only","u":"partial"}'>
+        <td>
+          <div class="util-name">color-scheme</div>
+          <div class="util-desc">Declare light/dark for native form controls & scrollbars</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">The CSS `color-scheme` property (Tailwind v4 `scheme-*` utilities, new in v4.0) tells the browser to theme built-in UI (form controls, scrollbars). Tamagui sets color-scheme on web automatically when you switch to a dark `<Theme>`; on native there is no equivalent property (RN controls follow the app theme directly). Uniwind exposes light/dark theming but `scheme-*` breadth is undocumented.</td>
+      </tr>
+      <tr data-util-idx="3" data-support='{"t":"full","tw":"none","n":"none","u":"partial"}'>
+        <td>
+          <div class="util-name">sub-themes / component themes</div>
+          <div class="util-desc">Scoped component-level theming</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui unique: deeply nested component-aware themes</td>
+      </tr>
+      <tr data-util-idx="4" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">arbitrary values</div>
+          <div class="util-desc">One-off custom values</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui takes any raw value directly as a prop ($bg="rgb(...)") — no bracket escape hatch needed. NativeWind v5 improved arbitrary calc()/clamp() handling. Uniwind bundles the real Tailwind v4 oxide compiler, so bracket arbitrary values parse; calc() resolves on web, limited on native.</td>
+      </tr>
+      <tr data-util-idx="5" data-support='{"t":"partial","tw":"web-only","n":"full","u":"partial"}'>
+        <td>
+          <div class="util-name">CSS variables / custom properties</div>
+          <div class="util-desc">CSS custom properties and var() references</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui: the design-token system ($color, $4, theme values) IS the cross-platform var() equivalent — on web tokens compile to real CSS custom properties (`var(--...)`), on native they resolve to JS values. Raw `var(--x)` string literals only work on web. NativeWind v5 implements Tailwind v4 `@theme` + `var()` resolution on web AND native (its runtime resolves custom properties). Uniwind theming exists but var()/@theme breadth is less documented.</td>
+      </tr>
+      <tr data-util-idx="6" data-support='{"t":"full","tw":"web-only","n":"full","u":"full"}'>
+        <td>
+          <div class="util-name">color opacity modifier</div>
+          <div class="util-desc">Inline color alpha via /N syntax</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui supports inline `/N` cross-platform on any color prop (`$bg="$blue10/50"`) and in tw-mode classNames (`bg-blue-500/50`); the runtime applies it via color-mix() on web and rgba() multiply on native, matching NativeWind v5 behavior. NativeWind v5 fully supports `/N` cross-platform (Tailwind v4 compiles it to color-mix(); v5 ships a runtime color-mix resolver). Uniwind supports `/N` in its examples.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<script>
+const FRAMEWORKS = ["tamagui","tailwind","nativewind","uniwind"];
+const FW_LABELS = {"tamagui":"Tamagui","tailwind":"Tailwind","nativewind":"NativeWind v5","uniwind":"Uniwind"};
+const DATA = [{"name":"Layout","utilities":[{"name":"display","description":"Set display type","notes":"Tamagui: `$dsp` is a named prop; `flex`/`none` work cross-platform, other values (block/grid/contents) web-only. RN natively only has flex + none, so NativeWind/Uniwind map flex/hidden and ignore the rest on native.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"position","description":"Set positioning mode","notes":"Tamagui: `$pos` named prop; absolute/relative/static cross-platform, fixed/sticky web-only (RN has no fixed/sticky positioning). NativeWind/Uniwind map absolute/relative on native and drop fixed/sticky.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"top/right/bottom/left","description":"Position offsets","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"inset","description":"Shorthand for all position offsets","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"z-index","description":"Stack order","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"overflow","description":"Overflow behavior","notes":"Tamagui: `$ov` named prop, cross-platform (visible/hidden/scroll). RN ignores overflow:scroll on Android for clipping. Uniwind: only overflow-hidden documented.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"partial"}},{"name":"aspect-ratio","description":"Aspect ratio","notes":"Tamagui: `$aspectRatio` cross-platform. Uniwind docs note aspect-ratio has \"limited support\".","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"partial"}},{"name":"box-sizing","description":"Box model sizing","notes":"Tamagui: `$bxs` named prop, maps to RN 0.77+ boxSizing (New Architecture) so border-box/content-box both work cross-platform. RN defaults to and only supports border-box, so NativeWind/Uniwind box-border is a no-op and box-content is unsupported on native.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"isolation","description":"Stacking context isolation","notes":"Tamagui: `$isolation` maps to RN 0.77+ isolation (New Architecture) for native stacking contexts; NativeWind `isolate` is web-only.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"visibility","description":"Element visibility","notes":"Tamagui: `visibility=\"hidden\"` is cross-platform - native CSS visibility on web, expands to `opacity:0 + pointerEvents:none` on native. `visibility=\"collapse\"` stays web-only (no RN equivalent). NativeWind `invisible` maps to opacity:0 on native (collapse is web-only).","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"float","description":"Float positioning","notes":"Tamagui: reachable via `$web={{ float: \"left\" }}` on web (the platform escape hatch passes raw CSS through). Not applicable to RN flexbox, so web-only across the board.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"clear","description":"Clear floats","notes":"Tamagui: reachable via `$web={{ clear: \"both\" }}` on web. No RN equivalent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"columns","description":"Multi-column layout","notes":"Tamagui: `$columnCount` is a typed prop but CSS multi-column only renders on web; RN has no multi-column layout. Uniwind explicitly lists `columns-*` as unsupported.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"object-fit","description":"Replaced element sizing","notes":"Tamagui: `objectFit` is auto-mapped on native — Tamagui core expands `objectFit` to RN `resizeMode`, and the Image component also writes `style.objectFit` (RN 0.76+ reads it natively). Works with the default Image and expo-image (via `contentFit`).","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"object-position","description":"Replaced element position","notes":"Tamagui: `objectPosition` is forwarded into the Image `style` on native and to `contentPosition` when using expo-image (full support there). Default RN Image currently ignores it — limited to keyword values like center/top/bottom/left/right via expo-image.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"none"}}]},{"name":"Flexbox","utilities":[{"name":"flex-direction","description":"Main axis direction","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"flex-wrap","description":"Wrapping behavior","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"flex","description":"Flex shorthand","notes":"Tamagui: `$f` plus separate `$fg`/`$fs`/`$fb` give full control cross-platform. On native, RN flex is a single number, so the CSS `flex: grow shrink basis` shorthand (e.g. flex-auto/flex-initial) does not map cleanly; NativeWind/Uniwind support flex-1 but the multi-value shorthands are web-leaning.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"flex-grow","description":"Flex grow factor","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"flex-shrink","description":"Flex shrink factor","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"flex-basis","description":"Initial main size","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"partial"}},{"name":"justify-content","description":"Main axis alignment","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"align-items","description":"Cross axis alignment","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"align-self","description":"Individual cross axis alignment","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"align-content","description":"Multi-line cross axis alignment","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"gap","description":"Gap between flex/grid items","notes":"Tamagui: `$gap`/`$columnGap`/`$rowGap` are named props, cross-platform via RN 0.71+ flexbox gap. All four support it natively now (RN 0.71+ added row/column gap to flexbox); pre-0.71 needed a margin workaround.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"order","description":"Flex item order","notes":"Tamagui: `$order` is a typed prop but flex `order` only affects web layout; RN flexbox ignores order (paint order = child order). Web-only for everyone.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Grid","utilities":[{"name":"grid-template-columns","description":"Define grid columns","notes":"CSS grid only exists on web; RN has no grid layout engine. Tamagui exposes `$gridTemplate*` as typed props but they no-op on native. All RN approaches require manual flex layout or a list component instead.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"grid-column","description":"Column span/placement","notes":"","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"grid-row","description":"Row span/placement","notes":"","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"grid-template-areas","description":"Named grid areas","notes":"","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"grid-auto-flow","description":"Auto-placement algorithm","notes":"Tamagui: `$gridAutoFlow` is a typed prop but renders web-only (RN has no grid).","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"place-content/items/self","description":"Combined alignment shorthands","notes":"Tamagui: reachable via `$web={{ placeContent / placeItems / placeSelf: ... }}` on web. RN has no CSS grid, so place-* is web-only everywhere.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Spacing","utilities":[{"name":"padding","description":"Inner spacing","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"margin","description":"Outer spacing","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"padding-block/inline (logical)","description":"Logical spacing (writing-mode aware)","notes":"NativeWind v5 maps ps/pe to RN paddingStart/End (RTL aware)","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"margin-block/inline (logical)","description":"Logical margin (writing-mode aware)","notes":"NativeWind v5 maps ms/me to RN marginStart/End (RTL aware)","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"space-between","description":"Space between child elements","notes":"Tamagui has no `space-*` className; the idiomatic equivalent is `$gap` (cross-platform). NativeWind v5 marks space-x/space-y as web-only (it injects a `> * + *` sibling selector that has no native equivalent) and recommends gap on native. Uniwind lists space-x/y as supported.","support":{"tamagui":"none","tailwind":"web-only","nativewind":"web-only","uniwind":"full"}}]},{"name":"Sizing","utilities":[{"name":"width","description":"Element width","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"height","description":"Element height","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"min-width / max-width","description":"Width constraints","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"min-height / max-height","description":"Height constraints","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"size (width + height)","description":"Combined width and height shorthand","notes":"The `size-*` shorthand (sets width+height together) shipped in Tailwind v3.4. Tamagui has no single shorthand: use `$w`/`$h` (both cross-platform, so the capability exists, just two props). NativeWind v5 docs only enumerate `w-*`/`h-*` as Full on native; `size-*` native support is undocumented/unconfirmed.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"inline-size / block-size","description":"Logical sizing (writing-mode aware)","notes":"Tamagui types `$inlineSize`/`$blockSize` as size-token props but they only resolve on web (RN has no inlineSize/blockSize style props; use `$w`/`$h`). On native, writing-mode is effectively LTR/TTB so logical == physical anyway.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"none","uniwind":"none"}}]},{"name":"Typography","utilities":[{"name":"font-family","description":"Font family","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"font-size","description":"Font size","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"font-weight","description":"Font weight","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"font-style","description":"Italic/normal","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"color","description":"Text color","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"text-align","description":"Text alignment","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"text-transform","description":"Text case transformation","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"text-decoration","description":"Underline/strikethrough","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"partial"}},{"name":"letter-spacing","description":"Letter spacing","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"line-height","description":"Line height","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"line-clamp","description":"Truncate text to N lines","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"white-space","description":"Whitespace handling","notes":"Tamagui: `$whiteSpace` is a web-only text prop (tree-shaken on native). On native, text wrapping is controlled by `numberOfLines` and container width, not white-space.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"word-break","description":"Word breaking behavior","notes":"Tamagui: `$wordWrap` (`ww` shorthand) is web-only. RN has no word-break control; it breaks at whitespace or character based on platform text engine.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"text-overflow","description":"Text overflow behavior","notes":"Tamagui: `$textOverflow=\"ellipsis\"` works cross-platform on Text - web uses CSS text-overflow, native maps to numberOfLines={1} + ellipsizeMode=\"tail\". Other values (clip) are web-only.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"text-indent","description":"First line indentation","notes":"Tamagui: reachable via `$web={{ textIndent: \"1em\" }}` on web. RN text engine has no text-indent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"vertical-align","description":"Vertical alignment of inline elements","notes":"Tamagui: `$verticalAlign` maps to RN 0.71+ verticalAlign on Text (auto/top/bottom/middle), so it works cross-platform. NativeWind `align-*` is largely a web inline-element concept; RN only honors a subset on Text.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"font-variant-numeric","description":"Numeric font features","notes":"Tamagui: `$fontVariant` maps to RN fontVariant array; RN supports a subset (tabular-nums, oldstyle-nums, lining-nums, etc.) cross-platform but not the full CSS font-variant-numeric grammar. NativeWind maps the common numeric variants to RN fontVariant, same subset limitation.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"text-shadow","description":"Text shadow","notes":"Tailwind text-shadow utilities are new in v4.1; NativeWind v5 maps to RN textShadow* (single shadow only). Tamagui `$textShadow` + offset/radius/color are cross-platform via RN textShadow* props.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"text-wrap (balance / pretty)","description":"Better line-break distribution for headings/paragraphs","notes":"Tailwind `text-balance` (text-wrap: balance) and `text-pretty` shipped in v3.4. Tamagui `$textWrap` is a web-only prop. RN text layout has no balance/pretty algorithm, so all are web-only (NativeWind passes them through on web only).","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Backgrounds","utilities":[{"name":"background-color","description":"Background color","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"background-image","description":"Background images and gradients","notes":"Tamagui: `$backgroundImage` maps to RN 0.76+ experimental_backgroundImage, so CSS gradients (linear/radial) render on native; raster url() background images stay web-only (use the Image component on native). NativeWind v5 similarly maps gradient utilities to RN 0.76+ backgroundImage; url() backgrounds remain web-only.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"background-position","description":"Background image position","notes":"Tamagui: reachable via `$web={{ backgroundPosition: ... }}` on web. RN has no CSS background-image so no native equivalent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"background-size","description":"Background image sizing","notes":"Tamagui: reachable via `$web={{ backgroundSize: ... }}` on web. No RN equivalent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"background-repeat","description":"Background tiling","notes":"Tamagui: reachable via `$web={{ backgroundRepeat: ... }}` on web. No RN equivalent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"background-clip","description":"Background painting area","notes":"Tamagui: reachable via `$web={{ backgroundClip: ... }}` on web (commonly used for gradient text). No RN equivalent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Borders","utilities":[{"name":"border-width","description":"Border width","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"border-color","description":"Border color","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"border-style","description":"Border style","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"partial"}},{"name":"border-radius","description":"Corner rounding","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"border-width (logical)","description":"Logical border widths (block/inline)","notes":"NativeWind v5 maps border-s/border-e to RN borderStartWidth/borderEndWidth","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"outline","description":"Outline styling","notes":"Tamagui: `$outline*` named props map to RN 0.77+ outline / outlineColor / outlineWidth / outlineOffset (New Architecture), so outlines render cross-platform. NativeWind v5 maps outline-* to the same RN props.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"ring","description":"Box-shadow based ring","notes":"Tamagui has no `ring` shorthand but the same effect is a one-liner via `$bxsh` (box-shadow), which works cross-platform on RN 0.76+. NativeWind ring is box-shadow-based, so on native it inherits the RN boxShadow limitations (no inset). Uniwind: ring not documented.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"divide","description":"Borders between children","notes":"divide-* injects a `> * + *` sibling border. NativeWind v5 lists divide-width as web-only (no native sibling selector). Tamagui has no divide equivalent; idiomatic approach is a `<Separator>` component between children.","support":{"tamagui":"none","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Effects","utilities":[{"name":"opacity","description":"Element opacity","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"box-shadow","description":"Box shadow","notes":"NativeWind v5 maps shadow-* to RN 0.76+ boxShadow; still differs from CSS spread/inset","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"mix-blend-mode","description":"Element blending mode","notes":"Tamagui: `$mixBlendMode` is a web-only prop (also reachable via `$web={{ mixBlendMode: ... }}`). No native equivalent — RN has no compositing-mode primitive.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"cursor","description":"Mouse cursor style","notes":"Tamagui: `$cur` (cursor) is accepted as a prop on native without error but only renders on web/web-of-RN; touch platforms have no cursor. Effectively web-only for everyone.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"pointer-events","description":"Pointer event behavior","notes":"Tamagui: `$pe` maps to the core RN View pointerEvents prop (cross-platform). NativeWind maps pointer-events-* to the same RN prop. Uniwind: not documented.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"user-select","description":"Text selection behavior","notes":"Tamagui: `$ussel` (userSelect) maps to RN 0.71+ userSelect on Text/View, so none/text/auto work cross-platform. NativeWind select-* maps to the same RN prop; select-all is web-only.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"none"}}]},{"name":"Filters","utilities":[{"name":"filter (blur, brightness, etc)","description":"CSS filter effects","notes":"Tamagui: `$filter` maps to RN 0.76+ filter, so blur/brightness/contrast/etc. render on native — but some filters (e.g. drop-shadow) are Android 12+ only and behavior differs from CSS. NativeWind v5 maps filter utilities to the same RN 0.76+ prop with the same platform caveats.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"backdrop-filter","description":"Backdrop filter effects","notes":"Tamagui: `$backdropFilter` is web-only. RN has no backdrop-filter; native blur-behind effects need a dedicated component (e.g. expo-blur / @react-native-community/blur).","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Transforms","utilities":[{"name":"transform","description":"CSS transform","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"translate","description":"Translate position","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"scale","description":"Scale sizing","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"rotate","description":"Rotation","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"skew","description":"Skew distortion","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"transform-origin","description":"Transform origin point","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"perspective","description":"3D perspective depth","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"backface-visibility","description":"Backface visibility in 3D","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}}]},{"name":"Transitions & Animation","utilities":[{"name":"animation","description":"Animation driver / keyframes","notes":"Tamagui: `animation=\"...\"` plus enter/exit styles, cross-platform via pluggable drivers (CSS on web; Reanimated/Moti/RN-Animated on native). NativeWind v5 `animate-*` is marked experimental on native (it now delegates to Reanimated CSS animations, RN 0.81+ / New Arch only). Uniwind animations are Pro-tier (paid) and Reanimated-backed.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"transition-property","description":"Which properties to transition","notes":"Tamagui has no `transition-*` class; instead any prop change on a component with an `animation` driver animates automatically (cross-platform). NativeWind v5 transition-* is experimental on native (Reanimated-backed, RN 0.81+ / New Arch). Uniwind transitions are Pro-tier.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"transition-duration","description":"Transition timing","notes":"Tamagui sets duration through the animation driver config (e.g. spring/timing presets) rather than a `duration-*` class. NativeWind v5 duration-* is part of its experimental native transition support.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"transition-timing-function","description":"Easing function","notes":"Tamagui configures easing per-animation driver (e.g. cubic-bezier on CSS, spring on Reanimated) rather than an `ease-*` class. NativeWind v5 ease-* is part of its experimental native transition support.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"partial"}},{"name":"enter/exit styles","description":"Mount/unmount animation styles","notes":"Tamagui-specific: AnimatePresence + enterStyle/exitStyle","support":{"tamagui":"full","tailwind":"none","nativewind":"none","uniwind":"none"}}]},{"name":"Interactive States","utilities":[{"name":"hover","description":"Hover state styling","notes":"Tamagui `hoverStyle` / `$hover:` fires wherever a pointer exists (web + RN desktop/trackpad via onHoverIn); inert on touch like everywhere. NativeWind hover behaves the same. Uniwind explicitly lists `hover:` as unsupported (no RN equivalent in its model).","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"press / active","description":"Press/active state styling","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"focus","description":"Focus state styling","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"focus-visible","description":"Keyboard focus state","notes":"Tamagui: `focusVisibleStyle` / `$focusVisible:` is registered only on web (it depends on the `:focus-visible` pseudo). NativeWind focus-visible is likewise web-only. No framework has a native equivalent (RN has no keyboard-vs-pointer focus distinction).","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"focus-within","description":"Focus within container","notes":"Tamagui exposes `focusWithinStyle` but it relies on the `:focus-within` pseudo, so it only takes effect on web; RN has no focus-within. Use a named `group` + focus state for a native equivalent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"disabled","description":"Disabled state styling","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"group hover/press/focus","description":"Styling a child based on a named parent state","notes":"Tamagui: mark the parent `group` (or `group=\"card\"`) and style children with `$group-hover:`, `$group-card-hover:`, `$group-press:`, `$group-focus:` — implemented via a JS state emitter so it works cross-platform (web + native). NativeWind v5 group-* tracks parent state on native. Uniwind: group-active/focus is Pro-tier (free no-ops); group-hover never (no native hover).","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"partial"}},{"name":"peer variants","description":"Styling based on a sibling element state","notes":"peer-* needs a CSS sibling selector. NativeWind v5 supports peer-* on web only — there is no native sibling-tracking model. Tamagui has no peer concept; the closest pattern is lifting shared state to a parent `group` or to React state. Uniwind: not supported.","support":{"tamagui":"none","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"has variant","description":"Style based on descendant matching (:has())","notes":"has-* (`:has()` parent-selector) shipped in Tailwind v3.4. NativeWind v5 supports has-* on web only (no native `:has()`); Tamagui and Uniwind have no equivalent — track the condition in JS/state instead.","support":{"tamagui":"none","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"not variant","description":"Negate a variant / pseudo-class (:not())","notes":"The `not-*` variant is new in Tailwind v4.0 and relies on the CSS `:not()` selector — web only. NativeWind has no native `:not()` model; Tamagui/Uniwind have no equivalent (invert the condition in JS).","support":{"tamagui":"none","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"nth variant","description":"Index-based selection (:nth-child)","notes":"The `nth-*` variant is new in Tailwind v4.0 (CSS `:nth-child()`) — web only. RN has no structural pseudo-classes, so NativeWind is web-only here and Tamagui/Uniwind have no equivalent; compute from the list index in JS.","support":{"tamagui":"none","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Responsive & Media","utilities":[{"name":"breakpoints","description":"Responsive breakpoint modifiers","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"dark mode","description":"Dark theme modifier","notes":"NativeWind v5 dark: uses native @media (prefers-color-scheme: dark)","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"combined media + pseudo","description":"Media query + interactive state","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"container queries","description":"Style a child based on the size/state of a named parent container","notes":"Tamagui: container queries are the `group` system combined with media keys — mark a parent `group=\"card\"` and use `$group-card-$sm:` style keys. On web this uses real CSS container queries (containerType); on native it measures the parent and applies styles via the group emitter, so it works cross-platform (the `untilMeasured` prop exists to avoid flashes before first measure). NativeWind v5 also supports `@container` on native, implemented via onLayout measurement (size-based only, not CSS containment). Tailwind is web-only; Uniwind: not documented.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"container query units (cqw/cqh)","description":"Sizing relative to the query container (cqw, cqh, cqi, cqb)","notes":"cqw/cqh/cqi/cqb are CSS length units tied to a real CSS containment context. Tamagui: reachable on web via `$web={{ width: \"50cqw\" }}` once a parent sets containerType (which Tamagui's group system does). Tamagui and NativeWind implement container *queries* differently on native (JS measurement / group emitter) and do not expose container-relative length units there; use a measured value or a breakpoint instead.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"none","uniwind":"none"}},{"name":"prefers-reduced-motion","description":"Reduced motion preference","notes":"`$motionReduce` and `$motionSafe` are built-in media keys in @tamagui/config. Web subscribes to `(prefers-reduced-motion: reduce | no-preference)` via `window.matchMedia`; native subscribes to `AccessibilityInfo.isReduceMotionEnabled` + the `reduceMotionChanged` event through `@tamagui/react-native-media-driver`. NativeWind v5 maps the same two states.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"partial","uniwind":"none"}}]},{"name":"Platform","utilities":[{"name":"web-specific styles","description":"Web-only styling","notes":"Tailwind is web-only by default","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"native-specific styles","description":"Native-only styling","notes":"","support":{"tamagui":"full","tailwind":"none","nativewind":"full","uniwind":"none"}},{"name":"ios-specific styles","description":"iOS-only styling","notes":"","support":{"tamagui":"full","tailwind":"none","nativewind":"full","uniwind":"full"}},{"name":"android-specific styles","description":"Android-only styling","notes":"","support":{"tamagui":"full","tailwind":"none","nativewind":"full","uniwind":"full"}},{"name":"safe area insets","description":"Safe area padding","notes":"Tamagui accepts `\"safe\"` as a first-class value on any inset/padding/margin prop (pt/pb/px/py/inset/top/...). On web it emits `env(safe-area-inset-*)`; on native it reads insets from `@tamagui/native/setup-safe-area`. NativeWind and Uniwind ship the same as utilities; Uniwind also has `-safe-or-*` / `-safe-offset-*` variants for fallbacks.","support":{"tamagui":"full","tailwind":"none","nativewind":"full","uniwind":"full"}}]},{"name":"Pseudo Elements","utilities":[{"name":"::before / ::after","description":"Generated content pseudo-elements","notes":"Generated content has no RN equivalent (no pseudo-element box). NativeWind v5 only ships `content-none` and it is web-only. Tamagui has no before/after; render an extra element instead. Uniwind lists before:/after: as unsupported.","support":{"tamagui":"none","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"::placeholder","description":"Input placeholder styling","notes":"Tamagui Input/TextArea expose `placeholderTextColor` (the one RN-supported placeholder style) cross-platform, but not arbitrary placeholder typography. NativeWind v5 rewrites `placeholder:` to the RN placeholderTextColor prop. Uniwind lists placeholder: as unsupported.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"::selection","description":"Text selection styling","notes":"","support":{"tamagui":"none","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"first / last / odd / even child","description":"Positional child selectors","notes":"Index-based child selectors need a CSS structural pseudo (:first-child / :nth-child). NativeWind v5 removed native support (\"future version\") — web-only. Tamagui has none; pass the index in JS (`index === 0 && {...}`). Uniwind: not supported.","support":{"tamagui":"none","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Tables","utilities":[{"name":"border-collapse","description":"Table border collapsing","notes":"Tamagui: reachable via `$web={{ borderCollapse: ... }}` on web. RN has no table model.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"border-spacing","description":"Table border spacing","notes":"Tamagui: reachable via `$web={{ borderSpacing: ... }}` on web. No RN equivalent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"table-layout","description":"Table layout algorithm","notes":"Tamagui: reachable via `$web={{ tableLayout: ... }}` on web. No RN equivalent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"SVG","utilities":[{"name":"fill","description":"SVG fill color","notes":"@tamagui/lucide-icons accepts `fill` as a style prop on both web and native, resolving theme tokens (e.g. `fill=\"$color10\"`) via the icon `themed()` wrapper. Plain colors (e.g. `fill=\"red\"`) pass through unchanged.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"stroke","description":"SVG stroke color","notes":"@tamagui/lucide-icons accepts `stroke` as a style prop on both web and native with theme-token resolution; when provided it also feeds the icon paths so the visible stroke color updates (not just the root <Svg>).","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}},{"name":"stroke-width","description":"SVG stroke width","notes":"Tamagui icons accept numeric `strokeWidth` directly and resolve size tokens (e.g. `strokeWidth=\"$1\"`) on both web and native.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"none"}}]},{"name":"Interactivity","utilities":[{"name":"scroll-behavior","description":"Smooth scrolling","notes":"Tamagui: reachable via `$web={{ scrollBehavior: ... }}` on web. On native, use ScrollView animation props instead.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"scroll-snap","description":"Scroll snapping","notes":"Tamagui: scroll-snap-type / scroll-snap-align reachable via `$web={{ ... }}` on web. On native, ScrollView has `snapToInterval` / `snapToOffsets` instead of CSS scroll-snap.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"touch-action","description":"Touch interaction behavior","notes":"Tamagui: `$touchAction` is a web-only prop. On native, gesture handling is done with the gesture system (PanResponder / react-native-gesture-handler), not a style.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"resize","description":"Element resizability","notes":"Tamagui: reachable via `$web={{ resize: ... }}` on web (mostly useful on textareas). No native equivalent — RN form controls aren't user-resizable.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"appearance","description":"Native form control appearance reset","notes":"Tamagui: reachable via `$web={{ appearance: \"none\" }}` on web for resetting browser-native control chrome. RN controls are already custom-rendered, so there is nothing to reset on native.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"field-sizing","description":"Auto-resize form fields to their content","notes":"Tamagui: reachable via `$web={{ fieldSizing: \"content\" }}` on web (the platform escape hatch passes raw CSS through). On native, use the `multiline` + onContentSizeChange pattern to auto-grow a TextInput. NativeWind/Uniwind have no field-sizing utility.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"none","uniwind":"none"}},{"name":"scroll-timeline / scroll-driven animation","description":"Animations driven by scroll position","notes":"Tailwind v4 has no built-in scroll-timeline utility (only arbitrary `[animation-timeline:...]` or a community plugin). On native, scroll-driven effects use Animated.event / Reanimated useAnimatedScrollHandler. No framework here ships a first-class scroll-timeline utility.","support":{"tamagui":"none","tailwind":"none","nativewind":"none","uniwind":"none"}},{"name":"caret-color","description":"Text input caret color","notes":"Tamagui: on web, `$caretColor` is the CSS caret-color property. On native, `@tamagui/input` Input forwards `caretColor` to RN TextInput `cursorColor` (Android) + `selectionColor` (iOS+Android caret) — explicit `cursorColor`/`selectionColor` props still win. Cross-platform but only applies to the Input/TextArea components (not a generic style prop).","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"accent-color","description":"Form control accent color","notes":"Tamagui: reachable via `$web={{ accentColor: ... }}` on web for native form control tinting (checkbox / radio / progress). RN controls are custom-rendered, so no native equivalent.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}},{"name":"will-change","description":"GPU rendering hints","notes":"Tamagui: `$willChange` is a web-only GPU hint. RN has no will-change; native rasterization hints are platform-specific (e.g. shouldRasterizeIOS / renderToHardwareTextureAndroid).","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Accessibility","utilities":[{"name":"sr-only","description":"Visually hide an element but keep it for screen readers","notes":"Tamagui ships `<VisuallyHidden>` (from `@tamagui/visually-hidden`) as a primitive that emits the standard sr-only style block on web (1x1, absolute, clip-path, no display:none) AND wires the matching a11y semantics on both platforms: `aria-hidden=false` on web, `accessible={true}` on native, plus `importantForAccessibility=\"yes\"` on Android so ancestors with hide-descendants don't silence it. `visible` prop flips it back to fully visible (the `not-sr-only` escape hatch). NativeWind v5 `sr-only` only emits the visual-hide style on native — it does NOT wire accessibilityElementsHidden / importantForAccessibility / aria-hidden, so SR semantics differ from web. `not-sr-only` is web-only. Marked partial (not full) because it's a primitive component, not a class utility.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"partial","uniwind":"none"}},{"name":"forced-colors / forced-color-adjust","description":"Windows high-contrast / forced-colors mode","notes":"Forced-colors is a web/OS high-contrast feature. Tailwind v4 ships the `forced-colors:` variant + `forced-color-adjust-*`; NativeWind exposes them web-only. Tamagui: the `forced-color-adjust` property is reachable via `$web={{ forcedColorAdjust: ... }}` on web (the `forced-colors:` media variant itself is not exposed as a Tamagui media key). RN has its own high-contrast handling, so no native style mapping.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"none"}}]},{"name":"Design Tokens & Theming","utilities":[{"name":"design tokens","description":"Configurable design tokens","notes":"","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"theme switching","description":"Runtime theme switching","notes":"Tamagui has nested theme support with sub-themes","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"color-scheme","description":"Declare light/dark for native form controls & scrollbars","notes":"The CSS `color-scheme` property (Tailwind v4 `scheme-*` utilities, new in v4.0) tells the browser to theme built-in UI (form controls, scrollbars). Tamagui sets color-scheme on web automatically when you switch to a dark `<Theme>`; on native there is no equivalent property (RN controls follow the app theme directly). Uniwind exposes light/dark theming but `scheme-*` breadth is undocumented.","support":{"tamagui":"web-only","tailwind":"web-only","nativewind":"web-only","uniwind":"partial"}},{"name":"sub-themes / component themes","description":"Scoped component-level theming","notes":"Tamagui unique: deeply nested component-aware themes","support":{"tamagui":"full","tailwind":"none","nativewind":"none","uniwind":"partial"}},{"name":"arbitrary values","description":"One-off custom values","notes":"Tamagui takes any raw value directly as a prop ($bg=\"rgb(...)\") — no bracket escape hatch needed. NativeWind v5 improved arbitrary calc()/clamp() handling. Uniwind bundles the real Tailwind v4 oxide compiler, so bracket arbitrary values parse; calc() resolves on web, limited on native.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}},{"name":"CSS variables / custom properties","description":"CSS custom properties and var() references","notes":"Tamagui: the design-token system ($color, $4, theme values) IS the cross-platform var() equivalent — on web tokens compile to real CSS custom properties (`var(--...)`), on native they resolve to JS values. Raw `var(--x)` string literals only work on web. NativeWind v5 implements Tailwind v4 `@theme` + `var()` resolution on web AND native (its runtime resolves custom properties). Uniwind theming exists but var()/@theme breadth is less documented.","support":{"tamagui":"partial","tailwind":"web-only","nativewind":"full","uniwind":"partial"}},{"name":"color opacity modifier","description":"Inline color alpha via /N syntax","notes":"Tamagui supports inline `/N` cross-platform on any color prop (`$bg=\"$blue10/50\"`) and in tw-mode classNames (`bg-blue-500/50`); the runtime applies it via color-mix() on web and rgba() multiply on native, matching NativeWind v5 behavior. NativeWind v5 fully supports `/N` cross-platform (Tailwind v4 compiles it to color-mix(); v5 ships a runtime color-mix resolver). Uniwind supports `/N` in its examples.","support":{"tamagui":"full","tailwind":"web-only","nativewind":"full","uniwind":"full"}}]}];
+
+const VIEW_EXPLAIN = {
+  cross: "Only utilities where at least one cross-platform framework reaches <b>Full or Partial</b> support — meaning the utility runs on both web and native, with or without caveats. Coverage % = (Full + Partial × 0.5) / total. This is the number that matters for a write-once-run-everywhere library.",
+  strict: "Only utilities where at least one cross-platform framework reaches <b>Full</b> support — no native caveats. Coverage % = Full / total. The strictest read: how many CSS utilities work identically on web and native.",
+  'web-only': "Only utilities that no cross-platform framework supports on native (they exist on web only). Useful for seeing which CSS features simply don't translate to React Native and which framework still ships a web shim for them.",
+  all: "Every utility tracked. Coverage % = (Full + Web-only + Partial × 0.5) / total. Web-only is full credit because it works on its target platform — cross-platform delta is what the <b>Cross-platform</b> view above measures.",
+};
+
+// determine if a utility row belongs to the current view
+function rowMatchesView(s, view) {
+  const cross = [s.t, s.n, s.u]; // cross-platform contenders
+  const all = [s.t, s.tw, s.n, s.u];
+  if (view === 'cross') {
+    return cross.some(l => l === 'full' || l === 'partial');
+  }
+  if (view === 'strict') {
+    return cross.some(l => l === 'full');
+  }
+  if (view === 'web-only') {
+    const someoneWebOnly = all.some(l => l === 'web-only');
+    const nooneNative = cross.every(l => l !== 'full' && l !== 'partial');
+    return someoneWebOnly && nooneNative;
+  }
+  return true; // 'all'
+}
+
+// per-framework coverage % for the current view
+function computeView(view) {
+  const out = {};
+  for (const fw of FRAMEWORKS) out[fw] = { full:0, partial:0, webOnly:0, none:0, total:0 };
+  for (const cat of DATA) {
+    for (const u of cat.utilities) {
+      const s = { t: u.support.tamagui, tw: u.support.tailwind, n: u.support.nativewind, u: u.support.uniwind };
+      if (!rowMatchesView(s, view)) continue;
+      for (const fw of FRAMEWORKS) {
+        const lvl = u.support[fw];
+        out[fw].total++;
+        if (lvl === 'full') out[fw].full++;
+        else if (lvl === 'partial') out[fw].partial++;
+        else if (lvl === 'web-only') out[fw].webOnly++;
+        else out[fw].none++;
+      }
+    }
+  }
+  return out;
+}
+
+function pctForView(view, s) {
+  if (!s.total) return 0;
+  if (view === 'strict') {
+    return (s.full / s.total) * 100;
+  }
+  if (view === 'cross') {
+    return ((s.full + s.partial * 0.5) / s.total) * 100;
+  }
+  if (view === 'web-only') {
+    return ((s.full + s.webOnly + s.partial * 0.5) / s.total) * 100;
+  }
+  return ((s.full + s.partial * 0.5 + s.webOnly) / s.total) * 100;
+}
+
+function renderSummary(view) {
+  const stats = computeView(view);
+  const wrap = document.getElementById('summary');
+  wrap.innerHTML = '';
+  for (const fw of FRAMEWORKS) {
+    const s = stats[fw];
+    const pct = pctForView(view, s).toFixed(1);
+    const t = s.total || 1;
+    const fullW = ((s.full / t) * 100).toFixed(1);
+    const partialW = ((s.partial / t) * 100).toFixed(1);
+    const webW = ((s.webOnly / t) * 100).toFixed(1);
+    const div = document.createElement('div');
+    div.className = 'summary-card';
+    div.innerHTML = `
+      <h3>${FW_LABELS[fw]}</h3>
+      <div class="pct ${fw}">${pct}%</div>
+      <div class="stat-row"><span>Full (web+native)</span><span>${s.full}/${s.total}</span></div>
+      <div class="stat-row"><span>Partial</span><span>${s.partial}/${s.total}</span></div>
+      <div class="stat-row"><span>Web-only</span><span>${s.webOnly}/${s.total}</span></div>
+      <div class="stat-row"><span>None</span><span>${s.none}/${s.total}</span></div>
+      <div class="bar">
+        <div class="bar-full" style="width:${fullW}%"></div>
+        <div class="bar-partial" style="width:${partialW}%"></div>
+        <div class="bar-web" style="width:${webW}%"></div>
+      </div>
+    `;
+    wrap.appendChild(div);
+  }
+}
+
+function applyRowFilter(view) {
+  const cats = document.querySelectorAll('.category');
+  cats.forEach((catEl) => {
+    let shown = 0;
+    catEl.querySelectorAll('tbody tr').forEach((tr) => {
+      const s = JSON.parse(tr.getAttribute('data-support'));
+      const match = rowMatchesView(s, view);
+      tr.classList.toggle('row-hidden', !match);
+      if (match) shown++;
+    });
+    catEl.classList.toggle('empty', shown === 0);
+    const countEl = catEl.querySelector('[data-count]');
+    if (countEl) countEl.textContent = `${shown} utilities`;
+  });
+}
+
+function setView(view) {
+  document.querySelectorAll('.view-btn').forEach((b) => {
+    b.classList.toggle('active', b.getAttribute('data-view') === view);
+  });
+  document.getElementById('viewExplain').innerHTML = VIEW_EXPLAIN[view] || '';
+  renderSummary(view);
+  applyRowFilter(view);
+  try {
+    history.replaceState(null, '', '?view=' + view);
+  } catch (e) {}
+  try { localStorage.setItem('coverageView', view); } catch (e) {}
+}
+
+document.querySelectorAll('.view-btn').forEach((b) => {
+  b.addEventListener('click', () => setView(b.getAttribute('data-view')));
+});
+
+const urlView = new URLSearchParams(location.search).get('view');
+const storedView = (() => { try { return localStorage.getItem('coverageView'); } catch (e) { return null; } })();
+const initialView = urlView || storedView || 'cross';
+setView(['cross','strict','web-only','all'].includes(initialView) ? initialView : 'cross');
+</script>
+
+</body>
+</html>

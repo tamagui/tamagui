@@ -131,7 +131,8 @@ export const SeasonTogglePopover = (props: { children: any }) => {
       <Popover.Content
         enterStyle={{ y: -6, opacity: 0 }}
         exitStyle={{ y: -6, opacity: 0 }}
-        elevation="$4"
+        backgroundColor="$background"
+        boxShadow="0 4px 12px $shadowColor"
         p="$0"
         t="$2"
         overflow="hidden"

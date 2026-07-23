@@ -167,7 +167,8 @@ export function SheetKeyboardDragCase() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle testID="sheet-keyboard-drag-handle" />
-        <Sheet.Frame testID="sheet-keyboard-drag-frame">
+        <Sheet.Container testID="sheet-keyboard-drag-frame">
+          <Sheet.Background />
           <Sheet.ScrollView
             keyboardShouldPersistTaps="handled"
             keyboardDismissMode="interactive"
@@ -243,7 +244,7 @@ export function SheetKeyboardDragCase() {
               </YStack>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
 
       {/* ActionSheet for comparison */}

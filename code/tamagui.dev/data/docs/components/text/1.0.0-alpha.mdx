@@ -81,7 +81,6 @@ Finally Paragraph extends `SizableText` and simply sets some default values from
 export const Paragraph = styled(SizableText, {
   fontFamily: '$body',
   color: '$color',
-  // note tamagui uses a generic "true" token that your sizes should set to be the same as the default on your scale
-  size: '$true',
+  size: true,
 })
 ```

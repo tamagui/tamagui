@@ -105,7 +105,13 @@ const QueueCardFrame = ({
       overflow="hidden"
       elevation="$4"
     >
-      <YStack fullscreen rounded={7} borderWidth={1} borderColor="$borderColor" />
+      <YStack
+        position="absolute"
+        inset={0}
+        rounded={7}
+        borderWidth={1}
+        borderColor="$borderColor"
+      />
 
       <YStack className="rotate-slow-right">{glow.Component()}</YStack>
       <YStack className="rotate-slow-left">{glow2.Component()}</YStack>

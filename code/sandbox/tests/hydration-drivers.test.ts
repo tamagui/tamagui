@@ -27,27 +27,33 @@ for (const driver of drivers) {
     })
 
     test('indicator dots render with className not inline style', async ({ page }) => {
+      const response = await page.request.get(`/hydration-${driver}`)
+      expect(response.ok()).toBe(true)
+
+      const html = await response.text()
+      const marker = 'data-testid="indicator-dot-1"'
+      const markerIndex = html.indexOf(marker)
+      expect(markerIndex).toBeGreaterThan(-1)
+
+      const tagStart = html.lastIndexOf('<div', markerIndex)
+      const tagEnd = html.indexOf('>', markerIndex)
+      const serverTag = html.slice(tagStart, tagEnd)
+
+      expect(serverTag).toContain('_width-16px')
+      expect(serverTag).not.toContain('style=')
+
       await page.goto(`/hydration-${driver}`)
+      await page.waitForSelector(`[data-testid=hydrated-true]`)
 
       const dot = page.getByTestId('indicator-dot-1')
       await expect(dot).toBeVisible({ timeout: 15000 })
 
-      // get the computed width
-      const width = await dot.evaluate((el) => getComputedStyle(el).width)
-      expect(width).toBe('16px')
-
-      // for css driver, should have className-based styles
-      // for motion driver with outputStyle: 'inline', may have inline after hydration
       const classes = await dot.getAttribute('class')
-      const style = await dot.getAttribute('style')
 
       console.log(`${driver} driver - classes:`, classes)
-      console.log(`${driver} driver - inline style:`, style)
+      console.log(`${driver} driver - server tag:`, serverTag)
 
-      // the key test: on initial render (SSR), the styles should be class-based
-      // to avoid hydration mismatch
       expect(classes?.length).toBeGreaterThan(0)
-      expect(style).toBeNull()
     })
 
     test('transform styles render correctly before and after hydration', async ({

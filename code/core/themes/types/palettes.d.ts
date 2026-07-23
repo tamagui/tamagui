@@ -1,4 +1,6 @@
 export declare const palettes: {
+    light: string[];
+    dark: string[];
     dark_blue: string[];
     dark_gray: string[];
     dark_green: string[];
@@ -15,7 +17,5 @@ export declare const palettes: {
     light_purple: string[];
     light_red: string[];
     light_yellow: string[];
-    light: string[];
-    dark: string[];
 };
 //# sourceMappingURL=palettes.d.ts.map

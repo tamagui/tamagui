@@ -1,15 +1,7 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
 import { memo, useEffect, useState } from 'react'
-import {
-  Button,
-  Paragraph,
-  ScrollView,
-  Separator,
-  Spacer,
-  TooltipSimple,
-  XGroup,
-  XStack,
-} from 'tamagui'
+import { Paragraph, ScrollView, Spacer, TooltipSimple, XGroup, XStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
@@ -77,42 +69,17 @@ export const PromoBanner = () => {
           }}
         >
           <XStack flex={1} items="center" gap="$4" px="$4" py="$2">
-            <XStack items="center" gap="$4">
+            <XStack items="center" gap="$2">
               <Link href="/">
-                <Button chromeless size="$2" circular icon={HomeIcon} scaleIcon={1.5} />
+                <Button
+                  variant="quiet"
+                  size="small"
+                  circular
+                  icon={HomeIcon}
+                  scaleIcon={1.5}
+                />
               </Link>
-
-              <TooltipSimple label="Tamagui 2 is here! It's a massive new release »">
-                <Link href="/blog/version-two">
-                  <Paragraph
-                    size="$2"
-                    color="$color11"
-                    hoverStyle={{ color: '$color12' }}
-                    cursor="pointer"
-                    ellipsis
-                  >
-                    Version 2 is here 🎉
-                  </Paragraph>
-                </Link>
-              </TooltipSimple>
-
-              <Separator vertical height={16} borderColor="$color5" />
-
-              <TooltipSimple label="Ever wished there was a Rails for cross-platform React?">
-                <Link href="/takeout">
-                  <Paragraph
-                    size="$2"
-                    color="$color10"
-                    hoverStyle={{ color: '$color11' }}
-                    cursor="pointer"
-                    ellipsis
-                  >
-                    Takeout 2 is here, too!
-                  </Paragraph>
-                </Link>
-              </TooltipSimple>
-
-              {/* <Separator vertical height={16} borderColor="$color5" /> */}
+              <XStack id="docs-version-picker-slot" items="center" />
             </XStack>
 
             <Spacer flex={1} />
@@ -159,7 +126,10 @@ const BannerThemes = memo(() => {
           setFeaturedThemes(featuredWithMeta)
         }
       })
-      .catch(console.error)
+      .catch((err) => {
+        // themes api can be unreachable in dev/offline — banner falls back
+        console.warn('Could not fetch recent themes:', err)
+      })
   }, [])
 
   const handleThemeClick = (theme: ThemeWithData) => {
@@ -196,7 +166,7 @@ const BannerThemes = memo(() => {
                     hoverStyle={{
                       bg: '$background02',
                     }}
-                    size="$2.5"
+                    size="small"
                     rounded="$10"
                     borderWidth={0}
                     onPress={() => handleThemeClick(theme)}
@@ -214,7 +184,7 @@ const BannerThemes = memo(() => {
                 <Link href={`/theme/${theme.id}/${theme.slug}`}>
                   <XGroup.Item>
                     <Button
-                      size="$2.5"
+                      size="small"
                       bg="transparent"
                       hoverStyle={{
                         bg: '$background02',

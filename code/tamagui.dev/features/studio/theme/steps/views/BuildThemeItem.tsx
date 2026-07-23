@@ -1,5 +1,6 @@
 import { memo } from 'react'
-import { Button, XStack, YStack, SizableText } from 'tamagui'
+import { XStack, YStack, SizableText } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Trash2 } from '@tamagui/lucide-icons-2'
 import type { BuildTheme } from '../../types'
 
@@ -18,7 +19,7 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
 
   return (
     <Button
-      size="$4"
+      size="medium"
       theme={isActive ? 'accent' : undefined}
       onPress={onPress}
       borderWidth={1}
@@ -40,10 +41,10 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
 
         {onDelete && (
           <Button
-            size="$2"
+            size="small"
             icon={Trash2}
             circular
-            chromeless
+            variant="quiet"
             onPress={(e) => {
               e.stopPropagation()
               onDelete()

@@ -12,7 +12,6 @@ import {
 } from 'react'
 import {
   AnimatePresence,
-  Button,
   ScrollView,
   Separator,
   Spacer,
@@ -23,6 +22,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
@@ -150,7 +150,8 @@ const ThemeBuilderModal = memo(() => {
       transition="medium"
     >
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         transition="medium"
         animateOnly={['transform']}
         ref={ref}
@@ -177,7 +178,7 @@ const ThemeBuilderModal = memo(() => {
           }}
         >
           <Button
-            size="$2"
+            size="small"
             circular
             icon={hide ? ChevronLeft : ChevronRight}
             onPress={() => setHide(!hide)}
@@ -190,7 +191,7 @@ const ThemeBuilderModal = memo(() => {
           gap="$4"
           flex={1}
         >
-          <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
+          <AnimatePresence mode="wait" custom={{ going: store.direction }}>
             <Section
               flex={1}
               transition="75ms"
@@ -284,14 +285,14 @@ const ThemeStudioStepButtonsBar = () => {
             <a
               href={`start-chat-dev://theme?value=${btoa(JSON.stringify(lastInserted))}`}
             >
-              <Button size="$3">Chat</Button>
+              <Button size="medium">Chat</Button>
             </a>
             <View flex={1} />
           </>
         )}
 
       <Button
-        size="$3"
+        size="medium"
         onPress={() => {
           if (confirm(`Reset theme builder state?`)) {
             store.reset()
@@ -304,8 +305,8 @@ const ThemeStudioStepButtonsBar = () => {
 
       {canGoBackward && (
         <Button
-          chromeless
-          size="$3"
+          variant="quiet"
+          size="medium"
           // disabled={disableBackward}
           // opacity={disableBackward ? 0.5 : 1}
           icon={ChevronLeft}
@@ -318,7 +319,7 @@ const ThemeStudioStepButtonsBar = () => {
       {canGoForward && (
         <Theme name={!disableForward ? 'accent' : undefined}>
           <Button
-            size="$3"
+            size="medium"
             disabled={disableForward}
             opacity={disableForward ? 0.5 : 1}
             cursor={disableForward ? 'not-allowed' : undefined}
@@ -341,7 +342,7 @@ const Section = styled(YStack, {
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
-      ':number': (going) => ({
+      number: (going) => ({
         enterStyle: {
           x: going > 0 ? 20 : -20,
           opacity: 0,

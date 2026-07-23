@@ -1,6 +1,5 @@
 import { X } from '@tamagui/lucide-icons-2'
 import {
-  Button,
   Dialog,
   H1,
   H5,
@@ -11,6 +10,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useTakeoutStore } from './useTakeoutStore'
 
@@ -26,11 +26,12 @@ export const TakeoutFaqModal = () => {
     >
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame p="$4" gap="$4">
+          <Sheet.Container p="$4" gap="$4">
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$shadow4"
             transition="lazy"
@@ -207,7 +208,7 @@ export const TakeoutFaqModal = () => {
           </ScrollView>
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+              <Button position="absolute" t="$2" r="$2" size="small" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

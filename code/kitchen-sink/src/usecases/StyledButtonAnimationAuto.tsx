@@ -5,6 +5,7 @@ import {
   View,
   Text,
   createStyledContext,
+  resolveDefaultSizeToken,
   styled,
   useTheme,
   withStaticProperties,
@@ -30,23 +31,20 @@ export const ButtonFrame = styled(View, {
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      Size: (name, { tokens }) => {
+        const sizeToken = resolveDefaultSizeToken(name) as Exclude<SizeTokens, true>
+
         return {
-          height: tokens.size[name],
+          height: tokens.size[sizeToken],
 
-          borderRadius: tokens.radius[name],
+          borderRadius: tokens.radius[sizeToken],
 
-          // note the getSpace and getSize helpers will let you shift down/up token sizes
+          // resolve tokens to numeric values and multiply to derive related
+          // sizes - this is a stylistic choice that depends on your token scale
 
-          // whereas with gap we just multiply by 0.2
+          gap: tokens.space[sizeToken].val * 0.2,
 
-          // this is a stylistic choice, and depends on your design system values
-
-          gap: tokens.space[name].val * 0.2,
-
-          paddingHorizontal: getSpace(name, {
-            shift: -1,
-          }),
+          paddingHorizontal: getSpace(sizeToken).val * 0.9,
         }
       },
     },
@@ -64,9 +62,13 @@ export const ButtonText = styled(Text, {
   userSelect: 'none',
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
+      FontSize: (name, { font }) => {
+        const sizeToken = resolveDefaultSizeToken(name) as Exclude<typeof name, true>
+
+        return {
+          fontSize: font?.size[sizeToken],
+        }
+      },
     },
   } as const,
 })
@@ -74,14 +76,12 @@ export const ButtonText = styled(Text, {
 const ButtonIcon = (props: { children: any }) => {
   const { size } = React.useContext(ButtonContext.context)
 
-  const smaller = getSize(size, {
-    shift: -2,
-  })
+  const smaller = getSize(size).val * 0.4
 
   const theme = useTheme()
 
   return React.cloneElement(props.children, {
-    size: smaller.val * 0.5,
+    size: smaller,
     color: theme.color.get(),
   })
 }

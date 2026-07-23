@@ -1,5 +1,6 @@
 import { CheckboxWithLabel, SelectDemoContents, SwitchWithLabel } from '@tamagui/demos'
-import { Button, H4, RadioGroup, Separator, Spacer, XStack, YStack } from 'tamagui'
+import { H4, RadioGroup, Separator, Spacer, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 import { RadioGroupItemWithLabel } from '../views/RadioGroupItemWithLabel'
@@ -22,11 +23,11 @@ export const Components = () => {
       <XStack width="100%" {...demoProps.gapPropsLg} flexWrap="wrap">
         <XStack {...demoProps.gapPropsLg}>
           <AccentTheme>
-            <Button size="$3" {...demoProps.borderRadiusProps}>
+            <Button size="medium" {...demoProps.borderRadiusProps}>
               Active
             </Button>
           </AccentTheme>
-          <Button size="$3" {...demoProps.borderRadiusProps}>
+          <Button size="medium" {...demoProps.borderRadiusProps}>
             Subtle
           </Button>
         </XStack>

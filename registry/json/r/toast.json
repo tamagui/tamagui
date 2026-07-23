@@ -1,0 +1,44 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toast",
+  "type": "registry:ui",
+  "title": "Toast",
+  "description": "v2-look Toast (v2 composable API): card background/border/radius/padding/shadow/focus outline, styled title/description text, rounded close button, action/cancel buttons, and the styled default toast content wired through Toast.List renderItem, over the unstyled @tamagui/toast behavior (state engine, stacking, drag-to-dismiss, timers).",
+  "files": [
+    {
+      "path": "components/tamagui/Toast.tsx",
+      "content": "// Styled Toast = the unstyled @tamagui/toast behavior + the default skin,\n// layered here in `tamagui`. Single skin definition; the shadcn registry item is\n// generated from this file. Because the behavior renders its default toast\n// content internally, the styled default content lives HERE and is wired through\n// Toast.List's `renderItem`, so the copy-paste registry item is a complete,\n// customizable toast (no hidden styling in the behavior package).\n//\n// Surfaced at both the `tamagui` root (shadowing the unstyled @tamagui/toast\n// composable Toast) and the `tamagui/toast` subpath. There is exactly one Toast\n// API in v3 — the old imperative ToastProvider/useToastController was removed.\nimport {\n  Toast as ToastBehavior,\n  toast,\n  useToastItem,\n  useToasts,\n  type ExternalToast,\n  type ToastItemRenderProps,\n  type ToastListProps,\n  type ToastPosition,\n  type ToastRootProps,\n  type ToastT,\n} from '@tamagui/toast'\nimport {\n  createRefComponent,\n  SizableText,\n  styled,\n  type TamaguiElement,\n  withStaticProperties,\n  XStack,\n  YStack,\n} from '@tamagui/ui'\n\n/* -------------------------------------------------------------------------------------------------\n * Styled parts — the default skin over the unstyled @tamagui/toast primitives.\n * -----------------------------------------------------------------------------------------------*/\n\nexport const ToastItem = styled(ToastBehavior.Item, {\n  name: 'ToastItem',\n  backgroundColor: '$background',\n  borderRadius: '$6',\n  paddingHorizontal: '$4',\n  paddingVertical: '$3',\n  borderWidth: 1,\n  borderColor: '$borderColor',\n  shadowColor: 'rgba(0, 0, 0, 0.15)',\n  shadowOffset: { width: 0, height: 4 },\n  shadowRadius: 12,\n  focusVisibleStyle: {\n    outlineWidth: 2,\n    outlineColor: '$color8',\n    outlineStyle: 'solid',\n  },\n})\n\nexport const ToastTitle = styled(ToastBehavior.Title, {\n  name: 'ToastTitle',\n  color: '$color',\n  fontWeight: '600',\n  size: '$4',\n})\n\nexport const ToastDescription = styled(ToastBehavior.Description, {\n  name: 'ToastDescription',\n  color: '$color11',\n  size: '$2',\n})\n\nexport const ToastClose = styled(ToastBehavior.Close, {\n  name: 'ToastClose',\n  borderRadius: '$10',\n  backgroundColor: '$background',\n  borderWidth: 1,\n  borderColor: '$borderColor',\n  shadowColor: 'rgba(0, 0, 0, 0.08)',\n  shadowOffset: { width: 0, height: 1 },\n  shadowRadius: 3,\n  hoverStyle: { backgroundColor: '$color3' },\n  pressStyle: { backgroundColor: '$color4' },\n})\n\nexport const ToastAction = styled(ToastBehavior.Action, {\n  name: 'ToastAction',\n  borderRadius: '$2',\n  paddingHorizontal: '$2',\n  backgroundColor: '$color5',\n  hoverStyle: { backgroundColor: '$color6' },\n  pressStyle: { backgroundColor: '$color7' },\n})\n\n/* -------------------------------------------------------------------------------------------------\n * ToastDefaultContent — the default toast body (icon / title / description /\n * actions / close), styled. Rendered via Toast.List's renderItem below.\n * -----------------------------------------------------------------------------------------------*/\n\nfunction ToastDefaultContent({ toast: t }: { toast: ToastT }) {\n  const { closeButton } = useToasts()\n  const { handleClose } = useToastItem()\n  const dismissible = t.dismissible !== false\n\n  const title = typeof t.title === 'function' ? t.title() : t.title\n  const description =\n    typeof t.description === 'function' ? t.description() : t.description\n\n  return (\n    <XStack alignItems=\"flex-start\" gap=\"$3\">\n      <ToastBehavior.Icon />\n\n      <YStack flex={1} gap=\"$1\">\n        {title ? <ToastTitle>{title}</ToastTitle> : null}\n        {description ? <ToastDescription>{description}</ToastDescription> : null}\n\n        {t.action || t.cancel ? (\n          <XStack gap=\"$2\" marginTop=\"$2\">\n            {t.cancel ? (\n              <ToastAction\n                backgroundColor=\"transparent\"\n                onPress={(e: any) => {\n                  t.cancel?.onClick?.(e)\n                  handleClose()\n                }}\n              >\n                <SizableText size=\"$2\" color=\"$color11\">\n                  {t.cancel.label}\n                </SizableText>\n              </ToastAction>\n            ) : null}\n            {t.action ? (\n              <ToastAction\n                backgroundColor=\"$color12\"\n                hoverStyle={{ backgroundColor: '$color11' }}\n                pressStyle={{ backgroundColor: '$color10' }}\n                onPress={(e: any) => {\n                  t.action?.onClick?.(e)\n                  if (!(e as any).defaultPrevented) {\n                    handleClose()\n                  }\n                }}\n              >\n                <SizableText size=\"$2\" fontWeight=\"600\" color=\"$background\">\n                  {t.action.label}\n                </SizableText>\n              </ToastAction>\n            ) : null}\n          </XStack>\n        ) : null}\n      </YStack>\n\n      {closeButton && dismissible ? <ToastClose /> : null}\n    </XStack>\n  )\n}\n\nconst renderStyledToast = ({ toast: t, index }: ToastItemRenderProps) => (\n  <ToastItem toast={t} index={index}>\n    <ToastDefaultContent toast={t} />\n  </ToastItem>\n)\n\n// Capture the behavior parts up front. `withStaticProperties` assigns onto the\n// component it is given, so composing directly onto ToastBehavior would rewrite\n// @tamagui/toast's own Toast.List/.Item for every consumer of the unstyled\n// package — and ToastList below would end up rendering itself.\nconst BehaviorList = ToastBehavior.List\nconst BehaviorViewport = ToastBehavior.Viewport\nconst BehaviorIcon = ToastBehavior.Icon\n\n// Styled list — defaults renderItem to the styled default content so a bare\n// `<Toast.List />` is styled; a consumer-supplied renderItem still overrides it.\nfunction ToastList(props: ToastListProps) {\n  return <BehaviorList renderItem={renderStyledToast} {...props} />\n}\n\n/* -------------------------------------------------------------------------------------------------\n * Toast — the styled composable API (styled parts on the behavior root).\n * -----------------------------------------------------------------------------------------------*/\n\n// A distinct root, so the styled parts hang off this skin instead of mutating\n// the shared behavior component (see BehaviorList above).\nconst ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(\n  function Toast(props, ref) {\n    return <ToastBehavior {...props} ref={ref} />\n  }\n)\n\nexport const Toast = withStaticProperties(ToastRoot, {\n  Viewport: BehaviorViewport,\n  List: ToastList,\n  Item: ToastItem,\n  Title: ToastTitle,\n  Description: ToastDescription,\n  Close: ToastClose,\n  Action: ToastAction,\n  Icon: BehaviorIcon,\n})\n\n// Re-export the non-visual surface so `tamagui/toast` is a drop-in for the\n// styled toast: imperative API, render hooks, and the public types.\nexport { toast, useToastItem, useToasts }\nexport type { ExternalToast, ToastPosition, ToastT }\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Toast.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/toast",
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "meta": {
+    "native": [
+      "requires a Portal provider at the app root for the toast viewport to mount above content"
+    ],
+    "tokens": [
+      "$background",
+      "$borderColor",
+      "$color",
+      "$color3",
+      "$color4",
+      "$color5",
+      "$color6",
+      "$color7",
+      "$color8",
+      "$color10",
+      "$color11",
+      "$color12"
+    ],
+    "states": [
+      "pressed"
+    ]
+  }
+}

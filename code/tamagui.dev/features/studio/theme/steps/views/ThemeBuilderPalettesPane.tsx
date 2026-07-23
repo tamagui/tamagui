@@ -1,5 +1,6 @@
 import { memo } from 'react'
-import { YStack, XStack, H4, Paragraph, Button } from 'tamagui'
+import { YStack, XStack, H4, Paragraph } from 'tamagui'
+import { Button } from '~/components/Button'
 import { useThemeBuilderStore } from '../../store/ThemeBuilderStore'
 import { ColorThemeIndicator } from '../../views/ColorThemeIndicator'
 
@@ -44,7 +45,7 @@ export const ThemeBuilderPalettesPane = memo(() => {
         {palettes.length === 0 && (
           <YStack flex={1} items="center" justify="center" gap="$4">
             <Paragraph color="$color10">No palettes defined yet</Paragraph>
-            <Button theme="accent" size="$3">
+            <Button theme="accent" size="medium">
               Add Palette
             </Button>
           </YStack>

@@ -9,9 +9,11 @@ import {
 import { Animate } from '@tamagui/animate'
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
+import type { GetProps, OnTransition, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
+  createStyledHOC,
   createStyledContext,
+  createRefComponent,
   getExpandedShorthand,
   LayoutMeasurementController,
   styled,
@@ -32,9 +34,8 @@ import {
   resolveViewZIndex,
 } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { SheetController } from '@tamagui/sheet/controller'
 import type { YStackProps } from '@tamagui/stacks'
-import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
+import { ButtonNestingContext, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
@@ -69,21 +70,21 @@ type DialogProps = ScopedProps<{
   onAnimationComplete?: (info: { open: boolean }) => void
 }>
 
-type NonNull<A> = Exclude<A, void | null>
-
 type DialogContextValue = {
   forceMount?: boolean
   keepChildrenMounted?: boolean
   disableRemoveScroll?: boolean
+  hasPresentParts: boolean
+  setPartPresence(id: string, present: boolean): void
   triggerRef: React.RefObject<TamaguiElement | null>
   contentRef: React.RefObject<TamaguiElement | null>
   contentId: string
   titleId: string
   descriptionId: string
   onOpenToggle(): void
-  open: NonNull<DialogProps['open']>
-  onOpenChange: NonNull<DialogProps['onOpenChange']>
-  modal: NonNull<DialogProps['modal']>
+  open: Exclude<DialogProps['open'], void | null>
+  onOpenChange: Exclude<DialogProps['onOpenChange'], void | null>
+  modal: Exclude<DialogProps['modal'], void | null>
   dialogScope: DialogScopes
   adaptScope: string
   onAnimationComplete?: DialogProps['onAnimationComplete']
@@ -91,24 +92,12 @@ type DialogContextValue = {
 
 export const DialogContext = createStyledContext<DialogContextValue>(
   // since we always provide this we can avoid setting here
-  {} as DialogContextValue,
+  {},
   'Dialog__'
 )
 
 export const { useStyledContext: useDialogContext, Provider: DialogProvider } =
   DialogContext
-
-/**
- * Tracks whether the Sheet adapted from a Dialog has finished its slide-out
- * animation. DialogSheetController owns the state; DialogContent reads it so
- * it can hold adapted children mounted until the sheet is fully off-screen,
- * instead of tearing them down the moment Dialog.open flips false.
- *
- * Default true so the value is "safe to unmount" if no provider is mounted
- * (matches the historical behavior where adapted children unmount immediately
- * on close in native).
- */
-const DialogAdaptHiddenContext = React.createContext(true)
 
 /* -------------------------------------------------------------------------------------------------
  * DialogTrigger
@@ -120,14 +109,20 @@ const DialogTriggerFrame = styled(View, {
 
 type DialogTriggerProps = ScopedProps<ViewProps>
 
-const DialogTrigger = DialogTriggerFrame.styleable<ScopedProps<{}>>(
+const DialogTrigger = createStyledHOC(DialogTriggerFrame)<ScopedProps<{}>>(
   function DialogTrigger(props, forwardedRef) {
     const { scope, ...triggerProps } = props
     const isInsideButton = React.useContext(ButtonNestingContext)
     const context = useDialogContext(scope)
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
+    // only mark descendants as button-nested when this trigger renders its OWN
+    // <button>. with asChild the child element BECOMES the trigger (it receives
+    // our composed onPress directly), so it is the control, not a decorative
+    // button nested inside one - forcing nesting here would strip its
+    // interactivity (Button's nested branch neutralizes role/tabIndex/press).
+    // preserve whatever nesting the trigger itself sits in. matches Popover.Trigger.
     return (
-      <ButtonNestingContext.Provider value={true}>
+      <ButtonNestingContext.Provider value={props.asChild ? isInsideButton : true}>
         <DialogTriggerFrame
           render={isInsideButton ? 'span' : 'button'}
           aria-haspopup="dialog"
@@ -160,35 +155,21 @@ type DialogPortalProps = ScopedProps<
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
   render: 'dialog',
-
-  variants: {
-    unstyled: {
-      false: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        fullscreen: true,
-
-        '$platform-web': {
-          // undo dialog styles
-          borderWidth: 0,
-          backgroundColor: 'transparent',
-          color: 'inherit',
-          maxInlineSize: 'none',
-          margin: 0,
-          width: 'auto',
-          height: 'auto',
-          // ensure always in frame and right height
-          maxHeight: '100vh',
-          position: 'fixed',
-          // ensure dialog inherits stacking context from portal wrapper
-          zIndex: 1,
-        },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'absolute',
+  inset: 0,
+  $web: {
+    borderWidth: 0,
+    backgroundColor: 'transparent',
+    color: 'inherit',
+    maxInlineSize: 'none',
+    margin: 0,
+    width: 'auto',
+    height: 'auto',
+    maxHeight: '100vh',
+    position: 'fixed',
+    zIndex: 1,
   },
 })
 
@@ -218,34 +199,27 @@ const DialogPortalItem = ({
 
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
-  // when adapted we portal to the adapt, when not we portal to root modal if needed
+  // when adapted we publish to the Adapt live slot, otherwise we portal to root modal if needed
   return isAdapted ? (
     <AdaptPortalContents scope={context.adaptScope}>{content}</AdaptPortalContents>
   ) : context.modal ? (
-    <PortalItem hostName={context.modal ? 'root' : context.adaptScope}>
-      {content}
-    </PortalItem>
+    <PortalItem hostName="root">{content}</PortalItem>
   ) : (
     content
   )
 }
 
-const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
-  (props, forwardRef) => {
+const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
+  (props, forwardedRef) => {
     const { scope, forceMount, children, ...frameProps } = props
     const dialogRef = React.useRef<TamaguiElement>(null)
-    const ref = composeRefs(dialogRef, forwardRef)
+    const ref = composeRefs(dialogRef, forwardedRef)
 
     const context = useDialogContext(scope)
+    const portalContext = forceMount ? { ...context, forceMount: true } : context
     const keepMounted = forceMount || context.keepChildrenMounted
     const isAdapted = useAdaptIsActive(context.adaptScope)
-    const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
-
-    if (context.open && isFullyHidden) {
-      setIsFullyHidden(false)
-    }
-
-    const isVisible = context.open ? true : !isFullyHidden
+    const isVisible = context.open || context.hasPresentParts
 
     if (isWeb) {
       useIsomorphicLayoutEffect(() => {
@@ -260,41 +234,18 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
       }, [isVisible])
     }
 
-    const onAnimationCompleteRef = React.useRef(context.onAnimationComplete)
-    onAnimationCompleteRef.current = context.onAnimationComplete
-
-    const handleExitComplete = React.useCallback(() => {
-      setIsFullyHidden(true)
-      onAnimationCompleteRef.current?.({ open: false })
-    }, [])
-
-    React.useEffect(() => {
-      if (context.open && !isAdapted && onAnimationCompleteRef.current) {
-        const tm = setTimeout(() => {
-          onAnimationCompleteRef.current?.({ open: true })
-        }, 350)
-        return () => clearTimeout(tm)
-      }
-    }, [context.open, isAdapted])
-
     const zIndex = getExpandedShorthand('zIndex', props)
 
     const contents = (
       <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
-        <Animate
-          type="presence"
-          present={Boolean(context.open)}
-          keepChildrenMounted={Boolean(keepMounted)}
-          onExitComplete={handleExitComplete}
-          passThrough={isAdapted}
-        >
+        <DialogProvider scope={context.dialogScope} {...portalContext}>
           {children}
-        </Animate>
+        </DialogProvider>
       </StackZIndexContext>
     )
 
     const framedContents =
-      isFullyHidden && !keepMounted && !isAdapted ? null : (
+      !isVisible && !keepMounted && !isAdapted ? null : (
         <LayoutMeasurementController disable={!context.open}>
           <DialogPortalFrame
             ref={ref}
@@ -328,7 +279,7 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
     return isAdapted ? (
       framedContents
     ) : (
-      <DialogPortalItem context={context}>{framedContents}</DialogPortalItem>
+      <DialogPortalItem context={portalContext}>{framedContents}</DialogPortalItem>
     )
   }
 )
@@ -349,18 +300,92 @@ const PassthroughTheme = ({
   )
 }
 
+function useDialogAnimationReporter(context: DialogContextValue) {
+  const onAnimationCompleteRef = React.useRef(context.onAnimationComplete)
+  onAnimationCompleteRef.current = context.onAnimationComplete
+
+  const openRef = React.useRef(context.open)
+  const pendingTransitionRef = React.useRef<boolean | null>(context.open ? true : null)
+
+  if (openRef.current !== context.open) {
+    openRef.current = context.open
+    pendingTransitionRef.current = context.open
+  }
+
+  const reportComplete = React.useCallback((open: boolean) => {
+    if (pendingTransitionRef.current !== open) return
+    if (openRef.current !== open) return
+
+    pendingTransitionRef.current = null
+    onAnimationCompleteRef.current?.({ open })
+  }, [])
+
+  return React.useMemo(
+    () => ({
+      onEnterComplete: () => reportComplete(true),
+      onExitComplete: () => reportComplete(false),
+    }),
+    [reportComplete]
+  )
+}
+
+function useDialogPartPresence(
+  context: DialogContextValue,
+  options: {
+    disabled?: boolean
+    forceMount?: boolean
+    id: string
+    onExitComplete?: () => void
+  }
+) {
+  const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
+  const reactId = React.useId()
+  const partPresenceId = `${context.contentId}-${options.id}-${reactId}`
+  const keepMounted = options.forceMount || context.keepChildrenMounted
+  const isPresent = context.open || !isFullyHidden
+
+  useIsomorphicLayoutEffect(() => {
+    if (context.open && isFullyHidden) {
+      setIsFullyHidden(false)
+    }
+  }, [context.open, isFullyHidden])
+
+  useIsomorphicLayoutEffect(() => {
+    if (options.disabled) return
+
+    context.setPartPresence(partPresenceId, isPresent)
+    return () => {
+      context.setPartPresence(partPresenceId, false)
+    }
+  }, [context.setPartPresence, isPresent, options.disabled, partPresenceId])
+
+  const onExitComplete = React.useCallback(() => {
+    setIsFullyHidden(true)
+    options.onExitComplete?.()
+  }, [options.onExitComplete])
+
+  return {
+    keepMounted,
+    onExitComplete,
+    shouldRender: Boolean(keepMounted || context.open || !isFullyHidden),
+  }
+}
+
 /* -------------------------------------------------------------------------------------------------
  * DialogOverlay
  * -----------------------------------------------------------------------------------------------*/
 
 const OVERLAY_NAME = 'DialogOverlay'
 
-/**
- * exported for internal use with extractable()
- */
+// Unstyled overlay frame: positioning + pointer-event bookkeeping only. The
+// dim/scrim background lives in the tamagui skin
+// (code/ui/tamagui/src/components/Dialog.tsx).
 export const DialogOverlayFrame = styled(YStack, {
   name: OVERLAY_NAME,
   zIndex: 1,
+  inset: 0,
+  position: 'absolute',
+  pointerEvents: 'auto',
 
   variants: {
     open: {
@@ -371,20 +396,7 @@ export const DialogOverlayFrame = styled(YStack, {
         pointerEvents: 'none',
       },
     },
-
-    unstyled: {
-      false: {
-        fullscreen: true,
-        position: 'absolute',
-        backgroundColor: '$background',
-        pointerEvents: 'auto',
-      },
-    },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export type DialogOverlayExtraProps = ScopedProps<{
@@ -397,33 +409,48 @@ export type DialogOverlayExtraProps = ScopedProps<{
 
 type DialogOverlayProps = YStackProps & DialogOverlayExtraProps
 
-const DialogOverlay = DialogOverlayFrame.styleable<DialogOverlayExtraProps>(
+const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProps>(
   function DialogOverlay({ scope, ...props }, forwardedRef) {
     const context = useDialogContext(scope)
-    const { forceMount = context.forceMount, ...overlayProps } = props
+    const { forceMount = context.forceMount, exitStyle, ...overlayProps } = props
     const isAdapted = useAdaptIsActive(context.adaptScope)
+    const presence = useDialogPartPresence(context, {
+      disabled: isAdapted,
+      forceMount,
+      id: 'overlay',
+    })
 
-    if (!forceMount) {
-      if (!context.modal || isAdapted) {
-        return null
-      }
+    if (!forceMount && isAdapted) {
+      return null
+    }
+
+    if (!presence.shouldRender) {
+      return null
     }
 
     // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
     // ie. when `Overlay` and `Content` are siblings
     return (
-      <DialogOverlayFrame
-        data-state={getState(context.open)}
-        // TODO: this will be apply for v2
-        // onPress={() => {
-        //   // if the overlay is pressed, close the dialog
-        //   context.onOpenChange(false)
-        // }}
-        // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
-        pointerEvents={context.open ? 'auto' : 'none'}
-        {...overlayProps}
-        ref={forwardedRef}
-      />
+      <Animate
+        type="presence"
+        present={Boolean(context.open)}
+        keepChildrenMounted={Boolean(presence.keepMounted)}
+        onExitComplete={presence.onExitComplete}
+        passThrough={isAdapted}
+      >
+        <DialogOverlayFrame
+          key={`${context.contentId}-overlay`}
+          data-state={getState(context.open)}
+          // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
+          pointerEvents={context.open ? 'auto' : 'none'}
+          // presence freezes the exiting clone with open=true props, so the
+          // open-keyed pointerEvents above stays "auto" during exit — exitStyle
+          // applies while exiting and lets clicks pass through immediately
+          exitStyle={{ pointerEvents: 'none', ...exitStyle }}
+          {...overlayProps}
+          ref={forwardedRef}
+        />
+      </Animate>
     )
   }
 )
@@ -434,36 +461,34 @@ const DialogOverlay = DialogOverlayFrame.styleable<DialogOverlayExtraProps>(
 
 const CONTENT_NAME = 'DialogContent'
 
-const DialogContentFrame = styled(ThemeableStack, {
+// Unstyled content frame: stacking + pointer events + the opt-in elevate/bordered
+// v2-compat variants (formerly inherited from ThemeableStack, off by default).
+// Background, padding, and radius live in the tamagui skin. The variants stay on
+// this frame (not a skin wrapper) because the frame is the animated node — a
+// variant block on a wrapper around it breaks the native animation driver's
+// interpolation.
+const DialogContentFrame = styled(YStack, {
   name: CONTENT_NAME,
   zIndex: 2,
+  position: 'relative',
+  // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
+  pointerEvents: 'auto',
 
   variants: {
-    size: {
-      '...size': (val, extras) => {
-        return {}
+    elevate: {
+      true: {
+        shadowColor: '$shadowColor',
+        shadowRadius: 12,
+        shadowOffset: { width: 0, height: 4 },
       },
     },
-
-    unstyled: {
-      false: {
-        position: 'relative',
-        backgroundColor: '$background',
+    bordered: {
+      true: {
         borderWidth: 1,
         borderColor: '$borderColor',
-        padding: '$true',
-        borderRadius: '$true',
-        elevate: true,
-        // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
-        pointerEvents: 'auto',
       },
     },
   } as const,
-
-  defaultVariants: {
-    size: '$true',
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
@@ -474,28 +499,88 @@ type DialogContentExtraProps = ScopedProps<
 
 type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps
 
-const DialogContent = DialogContentFrame.styleable<DialogContentExtraProps>(
+const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProps>(
   function DialogContent({ scope, ...props }, forwardedRef) {
     const context = useDialogContext(scope)
+    const isAdapted = useAdaptIsActive(context.adaptScope)
+    const reporter = useDialogAnimationReporter(context)
+    const onTransitionProp = props.onTransition
+    const onTransition = React.useCallback<OnTransition>(
+      (event) => {
+        if (event.phase === 'end' && event.cause === 'enter') {
+          reporter.onEnterComplete()
+        }
+        onTransitionProp?.(event)
+      },
+      [reporter.onEnterComplete, onTransitionProp]
+    )
+    const presence = useDialogPartPresence(context, {
+      disabled: isAdapted,
+      forceMount: context.forceMount,
+      id: 'content',
+      onExitComplete: reporter.onExitComplete,
+    })
 
     const contents = (
       <>
         {context.modal ? (
-          <DialogContentModal context={context} {...props} ref={forwardedRef} />
+          <DialogContentModal
+            context={context}
+            {...props}
+            onTransition={onTransition}
+            ref={forwardedRef}
+          />
         ) : (
-          <DialogContentNonModal context={context} {...props} ref={forwardedRef} />
+          <DialogContentNonModal
+            context={context}
+            {...props}
+            onTransition={onTransition}
+            ref={forwardedRef}
+          />
         )}
       </>
     )
 
-    if (!isWeb || context.disableRemoveScroll) {
-      return contents
+    if (isAdapted) {
+      if (!isWeb || context.disableRemoveScroll) {
+        return contents
+      }
+
+      return (
+        <RemoveScroll enabled={context.open && context.modal}>
+          <div data-remove-scroll-container className="_dsp_contents">
+            {contents}
+          </div>
+        </RemoveScroll>
+      )
     }
 
+    if (!presence.shouldRender) {
+      return null
+    }
+
+    const animated = (
+      <Animate
+        type="presence"
+        present={Boolean(context.open)}
+        keepChildrenMounted={Boolean(presence.keepMounted)}
+        onExitComplete={presence.onExitComplete}
+      >
+        <React.Fragment key={context.contentId}>{contents}</React.Fragment>
+      </Animate>
+    )
+
+    if (!isWeb || context.disableRemoveScroll) {
+      return animated
+    }
+
+    // RemoveScroll must stay OUTSIDE the presence boundary: the exiting clone
+    // freezes props, so an enabled={open} baked inside it would keep the body
+    // pointer-events lock for the whole exit animation
     return (
-      <RemoveScroll enabled={context.open}>
+      <RemoveScroll enabled={context.open && context.modal}>
         <div data-remove-scroll-container className="_dsp_contents">
-          {contents}
+          {animated}
         </div>
       </RemoveScroll>
     )
@@ -508,8 +593,13 @@ type DialogContentTypeProps = DialogContentImplProps & {
   context: DialogContextValue
 }
 
-const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
-  ({ children, context, ...props }, forwardedRef) => {
+const DialogContentModal = createRefComponent<TamaguiElement, DialogContentTypeProps>(
+  ({ children, context: contextProp, ...props }, forwardedRef) => {
+    // re-read context via hook: this component renders inside the presence
+    // boundary, whose exiting clone freezes props at open=true — a hook
+    // subscription still receives fresh context so open-derived behavior
+    // (body pointer-events lock, focus trap) releases as soon as close starts
+    const context = useDialogContext(contextProp.dialogScope)
     const contentRef = React.useRef<TamaguiElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
@@ -523,29 +613,28 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
         trapFocus={context.open}
         disableOutsidePointerEvents
         onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-          event.preventDefault()
+          event.cancel()
           context.triggerRef.current?.focus()
         })}
         onPointerDownOutside={composeEventHandlers(
           props.onPointerDownOutside,
           (event) => {
-            const originalEvent = event['detail'].originalEvent
+            const originalEvent = event.event
+            if (!originalEvent) return
             const ctrlLeftClick =
               originalEvent.button === 0 && originalEvent.ctrlKey === true
             const isRightClick = originalEvent.button === 2 || ctrlLeftClick
             // If the event is a right-click, we shouldn't close because
             // it is effectively as if we right-clicked the `Overlay`.
-            if (isRightClick) event.preventDefault()
+            if (isRightClick) event.cancel()
           }
         )}
         // When focus is trapped, a `focusout` event may still happen.
         // We make sure we don't trigger our `onDismiss` in such case.
         onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) =>
-          event.preventDefault()
+          event.cancel()
         )}
-        {...(!props.unstyled && {
-          outlineStyle: 'none',
-        })}
+        outlineStyle="none"
       >
         {children}
       </DialogContentImpl>
@@ -555,25 +644,28 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
+const DialogContentNonModal = createRefComponent<TamaguiElement, DialogContentTypeProps>(
   (props, forwardedRef) => {
+    // fresh context read for the same presence-freeze reason as DialogContentModal
+    const context = useDialogContext(props.context.dialogScope)
     const hasInteractedOutsideRef = React.useRef(false)
 
     return (
       <DialogContentImpl
         {...props}
+        context={context}
         ref={forwardedRef}
         trapFocus={false}
         disableOutsidePointerEvents={false}
         onCloseAutoFocus={(event) => {
           props.onCloseAutoFocus?.(event)
 
-          if (!event.defaultPrevented) {
+          if (!event.isCanceled) {
             if (!hasInteractedOutsideRef.current) {
               props.context.triggerRef.current?.focus()
             }
             // Always prevent auto focus because we either focus manually or want user agent focus
-            event.preventDefault()
+            event.cancel()
           }
 
           hasInteractedOutsideRef.current = false
@@ -581,7 +673,7 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
         onInteractOutside={(event) => {
           props.onInteractOutside?.(event)
 
-          if (!event.defaultPrevented) hasInteractedOutsideRef.current = true
+          if (!event.isCanceled) hasInteractedOutsideRef.current = true
 
           // Prevent dismissing when clicking the trigger.
           // As the trigger is already setup to close, without doing so would
@@ -589,11 +681,11 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
           //
           // We use `onInteractOutside` as some browsers also
           // focus on pointer down, creating the same issue.
-          const target = event.target as HTMLElement
+          const target = event.event?.target as HTMLElement | null
           const trigger = props.context.triggerRef.current
-          if (!(trigger instanceof HTMLElement)) return
+          if (!target || !(trigger instanceof HTMLElement)) return
           const targetIsTrigger = trigger.contains(target)
-          if (targetIsTrigger) event.preventDefault()
+          if (targetIsTrigger) event.cancel()
         }}
       />
     )
@@ -612,22 +704,23 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
 
   /**
    * Event handler called when auto-focusing on open.
-   * Can be prevented.
+   * Can be canceled.
    */
   onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
 
   /**
    * Event handler called when auto-focusing on close.
-   * Can be prevented.
+   * Can be canceled.
    */
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
 
   context: DialogContextValue
+  onTransition?: OnTransition
 }
 
 type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps
 
-const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProps>(
+const DialogContentImpl = createRefComponent<TamaguiElement, DialogContentImplProps>(
   (props, forwardedRef) => {
     const {
       trapFocus,
@@ -639,24 +732,23 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       onFocusOutside,
       onInteractOutside,
       context,
+      onTransition,
       ...contentProps
     } = props
 
     const contentRef = React.useRef<TamaguiElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const isAdapted = useAdaptIsActive(context.adaptScope)
+    const adaptContext = useAdaptContext(context.adaptScope)
 
     // TODO this will re-parent, ideally we would not change tree structure
 
-    // when adapted, the dialog's content is portaled into the Sheet via
-    // Adapt.Contents. hold children mounted until the sheet's slide-out
-    // animation is fully complete (DialogAdaptHiddenContext is flipped by
-    // DialogSheetController via SheetController.onAnimationComplete), then
-    // unmount. opt out with `keepChildrenMounted` if you need the old
-    // permanent-mount behavior.
-    const isAdaptFullyHidden = React.useContext(DialogAdaptHiddenContext)
     if (isAdapted) {
-      if (!context.open && !context.keepChildrenMounted && isAdaptFullyHidden) {
+      if (
+        !context.open &&
+        !context.keepChildrenMounted &&
+        adaptContext.targetFullyHidden
+      ) {
         return null
       }
 
@@ -676,6 +768,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
         data-state={getState(context.open)}
         // allow clicking through content during exit animation
         pointerEvents={context.open ? 'auto' : 'none'}
+        onTransition={onTransition}
         {...contentProps}
       />
     )
@@ -732,7 +825,7 @@ const DialogTitleFrame = styled(H2, {
 type DialogTitleExtraProps = ScopedProps<{}>
 type DialogTitleProps = DialogTitleExtraProps & GetProps<typeof DialogTitleFrame>
 
-const DialogTitle = DialogTitleFrame.styleable<DialogTitleExtraProps>(
+const DialogTitle = createStyledHOC(DialogTitleFrame)<DialogTitleExtraProps>(
   function DialogTitle(props, forwardedRef) {
     const { scope, ...titleProps } = props
     const context = useDialogContext(scope)
@@ -752,19 +845,19 @@ type DialogDescriptionExtraProps = ScopedProps<{}>
 type DialogDescriptionProps = DialogDescriptionExtraProps &
   GetProps<typeof DialogDescriptionFrame>
 
-const DialogDescription = DialogDescriptionFrame.styleable<DialogDescriptionExtraProps>(
-  function DialogDescription(props, forwardedRef) {
-    const { scope, ...descriptionProps } = props
-    const context = useDialogContext(scope)
-    return (
-      <DialogDescriptionFrame
-        id={context.descriptionId}
-        {...descriptionProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+const DialogDescription = createStyledHOC(
+  DialogDescriptionFrame
+)<DialogDescriptionExtraProps>(function DialogDescription(props, forwardedRef) {
+  const { scope, ...descriptionProps } = props
+  const context = useDialogContext(scope)
+  return (
+    <DialogDescriptionFrame
+      id={context.descriptionId}
+      {...descriptionProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * DialogClose
@@ -783,7 +876,7 @@ export type DialogCloseExtraProps = ScopedProps<{
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
 
-const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
+const DialogClose = createStyledHOC(DialogCloseFrame)<DialogCloseExtraProps>(
   (props, forwardedRef) => {
     const { scope, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(scope)
@@ -883,87 +976,83 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({
  * Dialog
  * -----------------------------------------------------------------------------------------------*/
 
-export type DialogHandle = {
-  open: (val: boolean) => void
-}
-
 const Dialog = withStaticProperties(
-  React.forwardRef<{ open: (val: boolean) => void }, DialogProps>(
-    function Dialog(props, ref) {
-      const {
-        scope = '',
-        children,
-        open: openProp,
-        defaultOpen = false,
-        onOpenChange,
-        modal = true,
-        keepChildrenMounted,
-        disableRemoveScroll = false,
-        onAnimationComplete,
-      } = props
+  createRefComponent<TamaguiElement, DialogProps>(function Dialog(props) {
+    const {
+      scope = '',
+      children,
+      open: openProp,
+      defaultOpen = false,
+      onOpenChange,
+      modal = true,
+      keepChildrenMounted,
+      disableRemoveScroll = false,
+      onAnimationComplete,
+    } = props
 
-      const baseId = React.useId()
-      const dialogId = `Dialog-${scope}-${baseId}`
-      const contentId = `${dialogId}-content`
-      const titleId = `${dialogId}-title`
-      const descriptionId = `${dialogId}-description`
+    const baseId = React.useId()
+    const dialogId = `Dialog-${scope}-${baseId}`
+    const contentId = `${dialogId}-content`
+    const titleId = `${dialogId}-title`
+    const descriptionId = `${dialogId}-description`
 
-      const triggerRef = React.useRef<TamaguiElement>(null)
-      const contentRef = React.useRef<TamaguiElement>(null)
+    const triggerRef = React.useRef<TamaguiElement>(null)
+    const contentRef = React.useRef<TamaguiElement>(null)
+    const presentPartIdsRef = React.useRef(new Set<string>())
+    const [presentPartCount, setPresentPartCount] = React.useState(0)
 
-      const [open, setOpen] = useControllableState({
-        prop: openProp,
-        defaultProp: defaultOpen,
-        onChange: onOpenChange,
-      })
+    const [open, setOpen] = useControllableState({
+      prop: openProp,
+      defaultProp: defaultOpen,
+      onChange: onOpenChange,
+    })
 
-      const onOpenToggle = React.useCallback(() => {
-        setOpen((prevOpen) => !prevOpen)
-      }, [setOpen])
+    const onOpenToggle = React.useCallback(() => {
+      setOpen((prevOpen) => !prevOpen)
+    }, [setOpen])
 
-      const adaptScope = `DialogAdapt${scope}`
+    const adaptScope = `DialogAdapt${scope}`
 
-      const context = {
-        dialogScope: scope,
-        adaptScope,
-        triggerRef,
-        contentRef,
-        contentId,
-        titleId,
-        descriptionId,
-        open,
-        onOpenChange: setOpen,
-        onOpenToggle,
-        modal,
-        keepChildrenMounted,
-        disableRemoveScroll,
-        onAnimationComplete,
-      } satisfies DialogContextValue
+    const setPartPresence = React.useCallback((id: string, present: boolean) => {
+      const presentPartIds = presentPartIdsRef.current
+      const hasPart = presentPartIds.has(id)
 
-      React.useImperativeHandle(
-        ref,
-        () => ({
-          open: setOpen,
-        }),
-        [setOpen]
-      )
+      if (present && !hasPart) {
+        presentPartIds.add(id)
+        setPresentPartCount(presentPartIds.size)
+      } else if (!present && hasPart) {
+        presentPartIds.delete(id)
+        setPresentPartCount(presentPartIds.size)
+      }
+    }, [])
 
-      return (
-        <AdaptParent
-          scope={adaptScope}
-          portal={{
-            forwardProps: props,
-          }}
-        >
-          <DialogProvider scope={scope} {...context}>
-            <DialogSheetController onOpenChange={setOpen} scope={scope}>
-              {children}
-            </DialogSheetController>
-          </DialogProvider>
-        </AdaptParent>
-      )
-    }
-  ),
+    const context = {
+      dialogScope: scope,
+      adaptScope,
+      triggerRef,
+      contentRef,
+      contentId,
+      titleId,
+      descriptionId,
+      open,
+      onOpenChange: setOpen,
+      onOpenToggle,
+      modal,
+      keepChildrenMounted,
+      disableRemoveScroll,
+      hasPresentParts: presentPartCount > 0,
+      setPartPresence,
+      onAnimationComplete,
+    } satisfies DialogContextValue
+
+    return (
+      <AdaptParent scope={adaptScope} open={open} onOpenChange={setOpen} state={context}>
+        <DialogProvider scope={scope} {...context}>
+          {children}
+        </DialogProvider>
+      </AdaptParent>
+    )
+  }),
   {
     Trigger: DialogTrigger,
     Portal: DialogPortal,
@@ -976,56 +1065,6 @@ const Dialog = withStaticProperties(
     Adapt,
   }
 )
-
-const getAdaptScope = (dialogScope: string) => `DialogAdapt${dialogScope}`
-
-const DialogSheetController = (
-  props: ScopedProps<{
-    children: React.ReactNode
-    onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
-  }>
-) => {
-  const context = useDialogContext(props.scope)
-  const isAdapted = useAdaptIsActive(context.adaptScope)
-
-  // tracks whether the adapted Sheet has finished its slide-out animation.
-  // starts true (= safe to unmount) when the dialog is closed; flips to
-  // false the moment the dialog opens; flips back to true when the sheet
-  // signals onAnimationComplete with open=false (i.e. slide-out finished).
-  const [isAdaptFullyHidden, setIsAdaptFullyHidden] = React.useState(!context.open)
-  // mirror context.open into the hidden flag during render — an opening
-  // dialog must immediately mark its children as not-hidden so they render
-  // for the enter animation.
-  if (context.open && isAdaptFullyHidden) {
-    setIsAdaptFullyHidden(false)
-  }
-
-  const handleSheetAnimationComplete = React.useCallback(
-    ({ open }: { open: boolean }) => {
-      if (!open) {
-        setIsAdaptFullyHidden(true)
-      }
-    },
-    []
-  )
-
-  return (
-    <SheetController
-      onOpenChange={(val) => {
-        if (isAdapted) {
-          props.onOpenChange?.(val)
-        }
-      }}
-      onAnimationComplete={handleSheetAnimationComplete}
-      open={context.open}
-      hidden={!isAdapted}
-    >
-      <DialogAdaptHiddenContext.Provider value={isAdaptFullyHidden}>
-        {props.children}
-      </DialogAdaptHiddenContext.Provider>
-    </SheetController>
-  )
-}
 
 export {
   //

@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'StyledStyledStyleableInputOnFocus', type: 'useCase' })
 })
 
-test(`styled styleable input + onFocus`, async ({ page }) => {
+test(`styled createStyledHOC input + onFocus`, async ({ page }) => {
   const input = page.locator('#onFocus')
 
   await input.focus()

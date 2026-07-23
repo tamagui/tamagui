@@ -54,7 +54,10 @@ RUN git config --global user.email "you@example.com" && git config --global user
 # Use BENTO_BRANCH env var if set, otherwise default to main
 WORKDIR /root
 RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
-      BRANCH="${BENTO_BRANCH:-main}"; \
+      # v3 requires the bento v3 branch (styleable was removed in tamagui v3);
+      # BENTO_BRANCH is ignored on purpose so an inherited v2 value from the
+      # production Railway environment can't break preview builds
+      BRANCH="v3"; \
       echo "Cloning bento repository (branch: $BRANCH)..."; \
       unset GITHUB_TOKEN && \
       echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \

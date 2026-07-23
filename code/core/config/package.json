@@ -3,6 +3,39 @@
   "version": "2.5.1",
   "type": "module",
   "sideEffects": false,
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "reanimated",
+    "v3",
+    "v4",
+    "v5",
+    "v5-css",
+    "v5-motion",
+    "v5-reanimated",
+    "v5-rn",
+    "v5-subtle",
+    "reanimated.cjs",
+    "v3.cjs",
+    "v3.d.ts",
+    "v4.cjs",
+    "v4.d.ts",
+    "v5.cjs",
+    "v5.d.ts",
+    "v5-css.cjs",
+    "v5-css.d.ts",
+    "v5-motion.cjs",
+    "v5-motion.d.ts",
+    "v5-reanimated.cjs",
+    "v5-reanimated.d.ts",
+    "v5-rn.cjs",
+    "v5-rn.d.ts",
+    "v5-subtle.cjs",
+    "v5-subtle.d.ts",
+    "v6.cjs",
+    "v6.d.ts"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -16,15 +49,6 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
-    },
-    "./reanimated": {
-      "types": "./types/index.reanimated.d.ts",
-      "react-native": "./dist/esm/index.reanimated.native.js",
-      "browser": "./dist/esm/index.reanimated.mjs",
-      "module": "./dist/esm/index.reanimated.mjs",
-      "import": "./dist/esm/index.reanimated.mjs",
-      "require": "./dist/cjs/index.reanimated.cjs",
-      "default": "./dist/esm/index.reanimated.mjs"
     },
     "./v3": {
       "types": "./types/v3.d.ts",
@@ -52,6 +76,15 @@
       "import": "./dist/esm/v5.mjs",
       "require": "./dist/cjs/v5.cjs",
       "default": "./dist/esm/v5.mjs"
+    },
+    "./v6": {
+      "types": "./types/v6.d.ts",
+      "react-native": "./dist/esm/v6.native.js",
+      "browser": "./dist/esm/v6.mjs",
+      "module": "./dist/esm/v6.mjs",
+      "import": "./dist/esm/v6.mjs",
+      "require": "./dist/cjs/v6.cjs",
+      "default": "./dist/esm/v6.mjs"
     },
     "./v5-css": {
       "types": "./types/v5-css.d.ts",
@@ -104,6 +137,8 @@
   },
   "scripts": {
     "build": "tamagui-build",
+    "check:v6-tailwind-defaults": "bun ./scripts/generate-v6-tailwind-defaults.ts --check",
+    "test:v6-tailwind-defaults": "bun test ./scripts/v6-tailwind-defaults.test.ts",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
@@ -115,6 +150,7 @@
     "@tamagui/animations-reanimated": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/create-system-font": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/font-silkscreen": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
@@ -124,14 +160,8 @@
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
-  },
-  "peerDependencies": {
-    "@tamagui/animations-moti": "*"
-  },
-  "peerDependenciesMeta": {
-    "@tamagui/animations-moti": {
-      "optional": true
-    }
+    "@tamagui/build": "workspace:*",
+    "playwright": "1.58.2",
+    "tailwindcss": "4.3.0"
   }
 }

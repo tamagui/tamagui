@@ -9,13 +9,18 @@
  * This hook handles ONLY the drag gesture animations.
  * Uses the same pattern as Sheet for universal animation support.
  *
- * NOTE: For CSS driver, we use a ref-based approach with direct DOM manipulation
- * because CSS driver's useAnimatedNumberStyle doesn't reactively update.
- * For Motion/Reanimated drivers, we use the AnimatedView + motionValue pattern.
+ * On web, pointer moves write directly to the drag wrapper to avoid a render on
+ * every event. Native uses the public animated-number hooks and driver view.
  */
 
 import { isWeb } from '@tamagui/constants'
-import { useConfiguration, useEvent, View as TamaguiView } from '@tamagui/core'
+import {
+  useAnimatedNumber,
+  useAnimatedNumbersStyle,
+  useAnimationDriver,
+  useEvent,
+  View as TamaguiView,
+} from '@tamagui/core'
 import * as React from 'react'
 import type { Animated } from 'react-native'
 
@@ -28,11 +33,6 @@ export interface UseToastAnimationsOptions {
    * When true, animations complete instantly (accessibility)
    */
   reducedMotion?: boolean
-  /**
-   * Primary swipe axis — determines which animated value is tracked for style updates.
-   * 'horizontal' tracks translateX, 'vertical' tracks translateY.
-   */
-  swipeAxis?: 'horizontal' | 'vertical'
 }
 
 export interface ToastAnimationValues {
@@ -157,24 +157,17 @@ function animateSpring(
 export function useToastAnimations(
   options: UseToastAnimationsOptions = {}
 ): ToastAnimationValues {
-  const { onExitComplete, reducedMotion, swipeAxis = 'horizontal' } = options
+  const { onExitComplete, reducedMotion } = options
 
-  const { animationDriver } = useConfiguration()
-
-  if (!animationDriver) {
-    throw new Error('Toast requires an animation driver to be set in TamaguiProvider')
-  }
-
-  const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumbersStyle } =
-    animationDriver
+  const animationDriver = useAnimationDriver()
   const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
 
-  // ref for direct DOM manipulation (CSS driver fallback)
+  // ref for direct DOM manipulation during web pointer moves
   const dragRef = React.useRef<HTMLDivElement>(null)
   const cancelAnimationRef = React.useRef<(() => void) | null>(null)
   const currentOffsetRef = React.useRef({ x: 0, y: 0 })
 
-  // on web, use direct DOM for drag (CSS driver has no reactive style updates)
+  // on web, use direct DOM for drag to avoid a render for every pointer event
   // on native, use the animation driver's AnimatedView + animatedStyle
   const useDirectDom = isWeb
 
@@ -183,22 +176,13 @@ export function useToastAnimations(
   const translateY = useAnimatedNumber(0)
 
   // multi-value: both axes reactive in one animated style (off-thread on Reanimated)
-  const animatedStyle = useAnimatedNumbersStyle
-    ? useAnimatedNumbersStyle([translateX, translateY], (x: number, y: number) => {
-        'worklet'
-        return { transform: [{ translateX: x }, { translateY: y }] }
-      })
-    : useAnimatedNumberStyle(
-        swipeAxis === 'vertical' ? translateY : translateX,
-        (primary) => {
-          'worklet'
-          const secondary =
-            swipeAxis === 'vertical' ? translateX.getValue() : translateY.getValue()
-          return swipeAxis === 'vertical'
-            ? { transform: [{ translateX: secondary }, { translateY: primary }] }
-            : { transform: [{ translateX: primary }, { translateY: secondary }] }
-        }
-      )
+  const animatedStyle = useAnimatedNumbersStyle(
+    [translateX, translateY],
+    (x: number, y: number) => {
+      'worklet'
+      return { transform: [{ translateX: x }, { translateY: y }] }
+    }
+  )
 
   // set drag offset directly (no animation) - used during gesture
   const setDragOffset = useEvent((x: number, y: number) => {

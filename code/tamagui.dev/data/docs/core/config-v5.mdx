@@ -176,7 +176,8 @@ easiest way to add or change colors is using `@tamagui/colors` which provides
 Radix color palettes:
 
 ```tsx fileName="tamagui.config.ts"
-import { createV5Theme, defaultChildrenThemes, defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig } from '@tamagui/config/v5'
+import { createV5Theme, defaultChildrenThemes } from '@tamagui/themes/v5-builder'
 import { cyan, cyanDark, amber, amberDark } from '@tamagui/colors'
 import { createTamagui } from 'tamagui'
 
@@ -199,7 +200,7 @@ export const config = createTamagui({
 Or use only the colors you need:
 
 ```tsx fileName="tamagui.config.ts"
-import { createV5Theme } from '@tamagui/config/v5'
+import { createV5Theme } from '@tamagui/themes/v5-builder'
 import { blue, blueDark, gray, grayDark } from '@tamagui/colors'
 
 // minimal theme with just blue and gray
@@ -259,7 +260,7 @@ receives each theme's palette and scheme, so your custom values automatically
 adapt to every color and light/dark variant:
 
 ```tsx fileName="tamagui.config.ts"
-import { createV5Theme, opacify } from '@tamagui/config/v5'
+import { createV5Theme, opacify } from '@tamagui/themes/v5-builder'
 
 const themes = createV5Theme({
   getTheme: ({ palette, scheme }) => {
@@ -302,7 +303,7 @@ import {
   adjustPalettes,
   defaultChildrenThemes,
   createV5Theme,
-} from '@tamagui/config/v5'
+} from '@tamagui/themes/v5-builder'
 
 // adjust a single palette - desaturate and lighten
 const mutedBlue = adjustPalette(blue, (hsl, i) => ({

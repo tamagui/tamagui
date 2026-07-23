@@ -28,7 +28,7 @@ test('Input with autoFocus should receive focus after menu close', async ({ page
   await expect(afterMenuInput).toBeFocused()
 })
 
-test('onCloseAutoFocus preventDefault should prevent default focus restore and allow custom focus', async ({
+test('onCloseAutoFocus cancellation should prevent default focus restore and allow custom focus', async ({
   page,
 }) => {
   const trigger = page.locator('[data-testid="prevent-default-trigger"]')

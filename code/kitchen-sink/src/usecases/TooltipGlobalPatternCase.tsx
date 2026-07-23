@@ -1,4 +1,5 @@
-import { Button, Paragraph, Tooltip, TooltipGroup, YStack, XStack } from 'tamagui'
+import { Paragraph, Tooltip, TooltipGroup, YStack, XStack } from 'tamagui'
+import { Button } from '../components/Button'
 import { useState } from 'react'
 
 /**
@@ -22,7 +23,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Top Left')}
               >
-                <Button data-testid="trigger-tl" size="$4">
+                <Button data-testid="trigger-tl" size="medium">
                   Top Left
                 </Button>
               </Tooltip.Trigger>
@@ -32,7 +33,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Top Right')}
               >
-                <Button data-testid="trigger-tr" size="$4">
+                <Button data-testid="trigger-tr" size="medium">
                   Top Right
                 </Button>
               </Tooltip.Trigger>
@@ -44,7 +45,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Bottom Left')}
               >
-                <Button data-testid="trigger-bl" size="$4">
+                <Button data-testid="trigger-bl" size="medium">
                   Bottom Left
                 </Button>
               </Tooltip.Trigger>
@@ -54,7 +55,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Bottom Right')}
               >
-                <Button data-testid="trigger-br" size="$4">
+                <Button data-testid="trigger-br" size="medium">
                   Bottom Right
                 </Button>
               </Tooltip.Trigger>
@@ -66,7 +67,7 @@ export function TooltipGlobalPatternCase() {
             animatePosition
             transition="200ms"
             bg="$background"
-            elevation="$2"
+            boxShadow="0 4px 12px $shadowColor"
             rounded="$4"
             px="$2.5"
             py="$1"

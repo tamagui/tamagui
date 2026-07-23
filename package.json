@@ -17,14 +17,15 @@
     "./code/sandbox",
     "./code/packages/**/*",
     "./code/tamagui.dev",
-    "./code/ui/**/*"
+    "./code/ui/**/*",
+    "./registry/ci/blank-web",
+    "./registry/ci/blank-expo"
   ],
   "scripts": {
     "postinstall": "bun ./scripts/postinstall.ts",
     "build:app": "./scripts/ci-build-app.sh",
     "build:force": "bun run clean:build && bun run build -- --force",
-    "build:js": "bun run build --force -- --skip-types",
-    "build:pre": "cd code/packages/babel-plugin-fully-specified && bun run build",
+    "build:js": "node ./code/packages/build/tamagui-build-workspace.js --skip-types",
     "build:types": "SKIP_JS=1 bun run build",
     "build:verbose": "bun run build -vvv",
     "build": "turbo run build",
@@ -34,9 +35,9 @@
     "check:tamagui": "./node_modules/.bin/tamagui check",
     "check": "bun run check:deps && bun run check:unused && bun run check:tamagui && bun run check:references",
     "ci": "bun install && bun run check && bun run lint && bun run typecheck && bun run build && bun run test",
-    "clean:build": "./scripts/run.sh clean:build",
+    "clean:build": "node ./code/packages/build/tamagui-build-workspace.js --script clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
-    "clean": "./scripts/run.sh clean:build",
+    "clean": "node ./code/packages/build/tamagui-build-workspace.js --script clean:build",
     "create": "./node_modules/.bin/create-tamagui",
     "dev:build": "cd code/tamagui.dev && bun run build:prod",
     "dev:extract": "TAMAGUI_EXTRACT=1 cd code/tamagui.dev && bun run dev:clean",
@@ -78,6 +79,13 @@
     "release": "bun ./scripts/release.ts",
     "check:references": "bun ./scripts/check-references.ts",
     "check:references:fix": "bun ./scripts/check-references.ts --fix",
+    "registry": "bun ./scripts/generate-registry.ts build && bun ./scripts/generate-registry.ts write-consumers",
+    "registry:build": "bun ./scripts/generate-registry.ts build",
+    "registry:check": "bun ./scripts/generate-registry.ts check",
+    "registry:validate": "bun ./scripts/generate-registry.ts validate",
+    "registry:drift": "bun ./scripts/generate-registry.ts drift",
+    "registry:test": "bun test scripts/lib/registry/registry.test.ts",
+    "registry:write-consumers": "bun ./scripts/generate-registry.ts write-consumers",
     "repair": "bun ./scripts/repair.ts",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\"",
     "sandbox": "./scripts/bun-run.sh sandbox dev",
@@ -101,13 +109,14 @@
     "test:web": "turbo run test:web --concurrency=1",
     "test:native": "turbo run test:native --concurrency=1",
     "typecheck:perf": "./scripts/bun-run.sh @tamagui/monorepo-test test",
+    "typecheck:ts7:canary": "node ./code/packages/build/tamagui-tsgo.js -p code/ui/select/tsconfig.json --noEmit && node ./code/packages/build/tamagui-tsgo.js -p code/core/colors/tsconfig.json --noEmit && node ./code/packages/build/tamagui-tsgo.js -p code/packages/build/__tests__/fixtures/simple-package/tsconfig.json --noEmit",
     "typecheck": "./scripts/typecheck.sh",
     "up": "tko up",
     "upgrade:starters:expo-router": "cd code/starters/expo-router && bun install && bun run upgrade:tamagui",
     "upgrade:starters": "bun run upgrade:starters:expo-router",
     "vercel:build": "bun run build:js && cd code/old-site && bun run ci:build",
     "watch:js": "SKIP_TYPES=1 bun run watch:packages",
-    "watch:packages": "SKIP_INITIAL_BUILD=1 SKIP_TYPES_INITIAL=1 ./scripts/run.sh watch",
+    "watch:packages": "SKIP_INITIAL_BUILD=1 node ./code/packages/build/tamagui-build-workspace.js --watch --skip-types",
     "watch:ts": "bun ./scripts/watch-ts.ts",
     "watch": "npm-run-all --parallel watch:ts watch:packages",
     "repair:exports": "node scripts/repair-exports.js"
@@ -131,8 +140,7 @@
     "prompts": "2.1.0",
     "react-native-screens": "~4.23.0",
     "turbo": "^2.1.3",
-    "typescript": "~5.9.2",
-    "ultra-runner": "^3.10.5"
+    "typescript": "~5.9.2"
   },
   "overrides": {
     "@babel/core": "7.29.7",
@@ -191,7 +199,11 @@
     "websocket-driver": "0.7.5",
     "whatwg-url": "14.1.1",
     "ws": "8.21.0",
-    "yaml": "2.8.3"
+    "yaml": "2.8.3",
+    "@playwright/test": "1.58.2",
+    "motion": "12.37.0",
+    "framer-motion": "12.37.0",
+    "@vxrn/mdx-rust": "1.20.4"
   },
   "packageManager": "bun@1.3.9",
   "manypkg": {

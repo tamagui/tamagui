@@ -3,9 +3,12 @@
  * Tests that Portal/Sheet/Popover work correctly when using teleport
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/lucide-icons-2'
 import React from 'react'
-import { Adapt, Button, Popover, Select, Sheet, Text, XStack, YStack } from 'tamagui'
+import { Adapt, Popover, Text, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+import { Select } from '../components/Select'
+import { Sheet } from '../components/Sheet'
 import { getPortal } from '@tamagui/native'
 
 const items = [{ name: 'Apple' }, { name: 'Pear' }, { name: 'Blackberry' }]
@@ -15,17 +18,19 @@ function SelectWithSheet({ id }: { id: string }) {
 
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000}>
-      <Select.Trigger testID={`${id}-trigger`} maxWidth={220} iconAfter={ChevronDown}>
+      <Select.Trigger testID={`${id}-trigger`} maxWidth={220}>
         <Select.Value placeholder="Select a fruit" />
+        <Select.Icon />
       </Select.Trigger>
 
       <Adapt when={true} platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$shadowColor"
             transition="lazy"
@@ -70,15 +75,16 @@ function PopoverTest({ id }: { id: string }) {
         testID={`${id}-content`}
         borderWidth={1}
         borderColor="$borderColor"
+        backgroundColor="$background"
+        boxShadow="0 4px 12px $shadowColor"
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
-        elevate
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
         <YStack gap="$3" padding="$4">
           <Text testID={`${id}-text`}>Popover content works!</Text>
           <Popover.Close asChild>
-            <Button testID={`${id}-close`} size="$3">
+            <Button testID={`${id}-close`} size="medium">
               Close
             </Button>
           </Popover.Close>
@@ -110,14 +116,15 @@ function SheetTest({ id }: { id: string }) {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame testID={`${id}-frame`} padding="$4">
+        <Sheet.Container testID={`${id}-frame`} padding="$4">
+          <Sheet.Background />
           <YStack gap="$4">
             <Text testID={`${id}-text`}>Sheet content works!</Text>
             <Button testID={`${id}-close`} onPress={() => setOpen(false)}>
               Close Sheet
             </Button>
           </YStack>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )

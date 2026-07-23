@@ -1,5 +1,5 @@
 import { Platform } from 'react-native'
-import { Input as TamaguiInput, styled, useThemeName } from 'tamagui'
+import { Input as TamaguiInput, createStyledHOC, styled, useThemeName } from 'tamagui'
 
 export function StyledRNW() {
   return <Input id="styled-rnw-input" aria-label="ok" placeholder="search" />
@@ -41,13 +41,12 @@ const TextInput = styled(
   }
 )
 
-export const Input = TamaguiInput.styleable(function MyInput({ ...props }, ref) {
+export const Input = createStyledHOC(TamaguiInput)(function MyInput({ ...props }, ref) {
   const parentTheme = useThemeName()
 
   return (
-    // @ts-ignore - complex type inference issue with styleable + styled combination
+    // @ts-ignore - complex type inference issue with createStyledHOC + styled combination
     <TextInput
-      unstyled
       keyboardAppearance={parentTheme?.includes('dark') ? 'dark' : 'default'}
       {...props}
       focusStyle={{ margin: 0, ...props.focusStyle }}

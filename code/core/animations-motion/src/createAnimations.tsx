@@ -7,6 +7,8 @@ import {
   getConfig,
   getSplitStyles,
   hooks,
+  normalizeValueWithProperty,
+  type OnTransition,
   styleToCSS,
   Text,
   TransitionProp,
@@ -15,6 +17,8 @@ import {
   useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
+  createRefComponent,
+  transformsToString,
 } from '@tamagui/web'
 import {
   type AnimationOptions,
@@ -25,14 +29,7 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, {
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 const isServer = typeof window === 'undefined'
 
@@ -107,8 +104,15 @@ type MotionRefs = {
   animationState: 'enter' | 'exit' | 'default'
   frozenExitTarget: Record<string, unknown> | null
   exitCompleteScheduled: boolean
+  enterCompleteScheduled: boolean
+  disableAnimation: boolean
   wasEntering: boolean
   wasDisabled: boolean
+  onTransition: OnTransition | null | undefined
+  enterStarted: boolean
+  exitStarted: boolean
+  updateInFlight: boolean
+  updateControls: AnimationPlaybackControlsWithThen | null
   wasNoClass: boolean
 }
 
@@ -146,6 +150,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         stateRef,
         useStyleEmitter,
         presence,
+        onTransition,
         styleProps,
       } = animationProps
 
@@ -175,10 +180,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           animationState: 'default',
           frozenExitTarget: null,
           exitCompleteScheduled: false,
+          enterCompleteScheduled: false,
+          disableAnimation: true,
           wasEntering: false,
           wasDisabled: false,
+          onTransition: undefined,
+          enterStarted: false,
+          exitStarted: false,
+          updateInFlight: false,
+          updateControls: null,
           wasNoClass: !!styleProps.noClass,
         }
+      }
+
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        refs.current.onTransition?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
       }
 
       // track entering state transitions
@@ -203,6 +225,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       refs.current.isExiting = isExiting
       refs.current.sendExitComplete = sendExitComplete
       refs.current.animationState = animationState
+      refs.current.disableAnimation = disableAnimation
+      refs.current.onTransition = onTransition
 
       // detect transition into exiting state
       const justStartedExiting = isExiting && !refs.current.wasExiting
@@ -212,12 +236,21 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       if (justStartedExiting || justStoppedExiting) {
         refs.current.frozenExitTarget = null
         refs.current.exitCompleteScheduled = false
+        refs.current.enterCompleteScheduled = false
       }
 
       // track previous exiting state
       useEffect(() => {
         refs.current.wasExiting = isExiting
       })
+
+      // exit interrupted by a re-enter: emit a finished:false end for it
+      useIsomorphicLayoutEffect(() => {
+        if (justStoppedExiting && refs.current.exitStarted) {
+          refs.current.exitStarted = false
+          emit('end', 'exit', false)
+        }
+      }, [justStoppedExiting])
 
       const {
         dontAnimate = {},
@@ -255,6 +288,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // read current state from refs (closure variables can be stale)
         const isCurrentlyExiting = refs.current.isExiting
         const currentSendExitComplete = refs.current.sendExitComplete
+        const currentAnimationState = refs.current.animationState
 
         // freeze exit target: once the first exit animation starts, subsequent
         // renders (e.g. direction change) should not reverse the exit animation.
@@ -445,30 +479,91 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         } finally {
           // exit completion: notify AnimatePresence when exit animation finishes
           if (isCurrentlyExiting && currentSendExitComplete) {
+            // an enter animation that was still in flight is now interrupted
+            if (refs.current.enterStarted) {
+              refs.current.enterStarted = false
+              emit('end', 'enter', false)
+            }
             if (startedControls) {
               // new animation started — attach completion handler
+              if (!refs.current.exitStarted) {
+                refs.current.exitStarted = true
+                emit('start', 'exit')
+              }
               refs.current.exitCompleteScheduled = true
+              const complete = (finished: boolean) => {
+                // guard: only complete if still exiting (prevents stale promise
+                // from calling sendExitComplete after a re-entry cancels the exit)
+                if (!refs.current.isExiting) return
+                if (refs.current.exitStarted) {
+                  refs.current.exitStarted = false
+                  // exit 'end' fires immediately before presence safeToRemove
+                  emit('end', 'exit', finished)
+                }
+                currentSendExitComplete()
+              }
               startedControls.finished
-                .then(() => {
-                  // guard: only complete if still exiting (prevents stale promise
-                  // from calling sendExitComplete after a re-entry cancels the exit)
-                  if (refs.current.isExiting) {
-                    currentSendExitComplete()
-                  }
-                })
-                .catch(() => {
-                  if (refs.current.isExiting) {
-                    currentSendExitComplete()
-                  }
-                })
+                .then(() => complete(true))
+                .catch(() => complete(false))
             } else if (!refs.current.exitCompleteScheduled) {
               // no animation started AND none previously scheduled (e.g. diff=null
               // on re-render mid-exit because frozenExitTarget matches lastDoAnimate)
               // — complete immediately only if we've never started an exit animation
+              emit('start', 'exit')
+              emit('end', 'exit', true)
               currentSendExitComplete()
             }
             // else: exit animation already scheduled via a previous flush,
             // its .finished promise will call sendExitComplete when done
+          } else if (currentAnimationState === 'enter') {
+            if (startedControls) {
+              if (!refs.current.enterStarted) {
+                refs.current.enterStarted = true
+                emit('start', 'enter')
+              }
+              refs.current.enterCompleteScheduled = true
+              const complete = (finished: boolean) => {
+                if (refs.current.disposed || refs.current.animationState !== 'enter')
+                  return
+                if (refs.current.enterStarted) {
+                  refs.current.enterStarted = false
+                  emit('end', 'enter', finished)
+                }
+              }
+              startedControls.finished
+                .then(() => complete(true))
+                .catch(() => complete(false))
+            } else if (
+              !refs.current.enterCompleteScheduled &&
+              !refs.current.disableAnimation
+            ) {
+              // no animation needed for this enter (no style diff) — complete
+              // immediately. skipped while animation is disabled (mount flushes
+              // apply enter styles without animating; completing there would
+              // report enter done before the real transition even starts)
+              emit('start', 'enter')
+              emit('end', 'enter', true)
+            }
+          } else if (startedControls) {
+            // update: a style change while mounted. a new update that supersedes
+            // an in-flight one closes it out as finished:false (motion silently
+            // replaces the conflicting property animation without settling the
+            // old controls, so we can't rely on its promise for the interrupted
+            // one). the latest controls reports true on natural completion.
+            const controls = startedControls
+            if (refs.current.updateInFlight) {
+              emit('end', 'update', false)
+            }
+            refs.current.updateInFlight = true
+            refs.current.updateControls = controls
+            emit('start', 'update')
+            const settle = (finished: boolean) => {
+              if (refs.current.updateControls !== controls) return
+              refs.current.updateInFlight = false
+              refs.current.updateControls = null
+              emit('end', 'update', finished)
+            }
+            controls.finished.then(() => settle(true)).catch(() => settle(false))
           }
         }
       }
@@ -870,13 +965,102 @@ export const disableAnimationProps: Set<string> = new Set<string>([
   'userSelect',
 ])
 
+// props equality for the getSplitStyles memo: functions and children can't
+// affect style output (they pass through), so they don't participate
+function motionPropsEqual(a: Record<string, any>, b: Record<string, any>) {
+  for (const key in a) {
+    if (!(key in b)) return false
+  }
+  for (const key in b) {
+    if (key === 'children') continue
+    const av = a[key]
+    const bv = b[key]
+    if (typeof bv === 'function' && typeof av === 'function') continue
+    if (!Object.is(av, bv)) return false
+  }
+  return true
+}
+
+// one-level style object comparison: style arrays are recreated per render
+// with usually-identical contents
+function motionStylesEqual(a: any[], b: any[]) {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    const sa = a[i]
+    const sb = b[i]
+    if (sa === sb) continue
+    if (!sa || !sb) return false
+    let aCount = 0
+    for (const key in sa) {
+      aCount++
+      if (!Object.is(sa[key], sb[key])) return false
+    }
+    let bCount = 0
+    for (const _key in sb) {
+      bCount++
+    }
+    if (aCount !== bCount) return false
+  }
+  return true
+}
+
 const MotionView = createMotionView('div')
 const MotionText = createMotionView('span')
+
+const transformAliases: Record<string, string> = {
+  x: 'translateX',
+  y: 'translateY',
+  scale: 'scale',
+  scaleX: 'scaleX',
+  scaleY: 'scaleY',
+  rotate: 'rotate',
+  rotateX: 'rotateX',
+  rotateY: 'rotateY',
+  rotateZ: 'rotateZ',
+  skewX: 'skewX',
+  skewY: 'skewY',
+}
+
+function compileAnimatedStyle(
+  initialSource: Record<string, unknown>,
+  initialResolved: Record<string, unknown>
+) {
+  const shorthands = getConfig().shorthands
+  const entries = Object.keys(initialSource).map((source) => ({
+    source,
+    target: shorthands?.[source] ?? source,
+    tokenValue:
+      typeof initialSource[source] === 'string' && initialSource[source].startsWith('$')
+        ? initialResolved[shorthands?.[source] ?? source]
+        : undefined,
+  }))
+
+  return (sourceStyle: Record<string, unknown>) => {
+    const resolved: Record<string, unknown> = {}
+    const transforms: Record<string, unknown>[] = []
+
+    for (const entry of entries) {
+      const value = sourceStyle[entry.source]
+      if (value === undefined) continue
+      if (entry.source === 'transform' && Array.isArray(value)) {
+        resolved.transform = transformsToString(value)
+      } else if (entry.source in transformAliases) {
+        transforms.push({ [transformAliases[entry.source]]: value })
+      } else {
+        resolved[entry.target] =
+          entry.tokenValue ?? normalizeValueWithProperty(value, entry.target)
+      }
+    }
+
+    if (transforms.length) resolved.transform = transformsToString(transforms)
+    return resolved
+  }
+}
 
 function createMotionView(defaultTag: string) {
   const isText = defaultTag === 'span'
 
-  const Component = forwardRef((propsIn: any, ref) => {
+  const Component = createRefComponent((propsIn: any, ref) => {
     const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
     const [scope, animate] = useAnimateSSRSafe()
     const hostRef = useRef<HTMLElement>(null)
@@ -909,6 +1093,13 @@ function createMotionView(defaultTag: string) {
     })()
 
     function getProps(props: any) {
+      if (
+        process.env.NODE_ENV === 'development' &&
+        propsIn.debug === 'profile' &&
+        typeof performance !== 'undefined'
+      ) {
+        performance.mark('tamagui-motion-style-split')
+      }
       const out = getSplitStyles(
         props,
         isText ? Text.staticConfig : View.staticConfig,
@@ -936,7 +1127,65 @@ function createMotionView(defaultTag: string) {
       return out.viewProps
     }
 
-    const props = getProps({ ...propsRest, style: nonAnimatedStyles })
+    const resolvedAnimatedStyle = useMemo(() => {
+      if (!animatedStyle) return null
+      const currentValues = animatedStyle.motionValues
+        ? animatedStyle.motionValues.map((value) => value.get())
+        : animatedStyle.motionValue
+          ? [animatedStyle.motionValue.get()]
+          : []
+      const initialSource = animatedStyle.getStyle(...currentValues)
+      const initialResolved = getProps({ style: initialSource }).style ?? {}
+      return {
+        initial: initialResolved,
+        resolve: compileAnimatedStyle(initialSource, initialResolved),
+      }
+    }, [animatedStyle, state?.theme, state?.name])
+
+    // memoize the full getSplitStyles pass: it costs ~90us per render and its
+    // style-affecting inputs are usually unchanged. functions and children
+    // pass through getSplitStyles untouched, so they refresh on cache hits
+    // without invalidating.
+    const memoRef = useRef<null | {
+      propsRest: any
+      styles: any[]
+      theme: any
+      themeName: string | undefined
+      result: any
+    }>(null)
+
+    let props: any
+    const cached = memoRef.current
+    if (
+      cached &&
+      cached.theme === state?.theme &&
+      cached.themeName === state?.name &&
+      motionStylesEqual(cached.styles, nonAnimatedStyles) &&
+      motionPropsEqual(cached.propsRest, propsRest)
+    ) {
+      props = { ...cached.result }
+      for (const key in propsRest) {
+        const val = propsRest[key]
+        if (key === 'children' || typeof val === 'function') {
+          props[key] = val
+        }
+      }
+    } else {
+      props = getProps({ ...propsRest, style: nonAnimatedStyles })
+      memoRef.current = {
+        propsRest,
+        styles: nonAnimatedStyles,
+        theme: state?.theme,
+        themeName: state?.name,
+        result: props,
+      }
+    }
+
+    if (resolvedAnimatedStyle) {
+      // reassign so the animated initial never leaks into the memo cache
+      props = { ...props, style: { ...props.style, ...resolvedAnimatedStyle.initial } }
+    }
+
     const Element = render || 'div'
     const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
@@ -953,7 +1202,7 @@ function createMotionView(defaultTag: string) {
             const animationConfig = MotionValueStrategy.get(mv)
             const node = hostRef.current
 
-            const webStyle = getProps({ style: nextStyle }).style
+            const webStyle = resolvedAnimatedStyle?.resolve(nextStyle)
 
             if (webStyle && node instanceof HTMLElement) {
               const motionAnimationConfig =
@@ -979,7 +1228,7 @@ function createMotionView(defaultTag: string) {
         const animationConfig = MotionValueStrategy.get(animatedStyle.motionValue!)
         const node = hostRef.current
 
-        const webStyle = getProps({ style: nextStyle }).style
+        const webStyle = resolvedAnimatedStyle?.resolve(nextStyle)
 
         if (webStyle && node instanceof HTMLElement) {
           const motionAnimationConfig =
@@ -999,7 +1248,7 @@ function createMotionView(defaultTag: string) {
           settlePendingMotionOnFinish(animatedStyle.motionValue!, controls)
         }
       })
-    }, [animatedStyle])
+    }, [animatedStyle, resolvedAnimatedStyle])
 
     return <Element {...transformedProps} ref={composedRefs} />
   })

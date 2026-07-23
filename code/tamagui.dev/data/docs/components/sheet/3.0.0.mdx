@@ -1,0 +1,415 @@
+---
+title: Sheet
+description: A bottom sheet that animates
+name: sheet
+component: Sheet
+package: sheet
+demoName: Sheet
+---
+
+<HeroContainer showAnimationDriverControl>
+  <SheetDemo />
+</HeroContainer>
+
+```tsx hero template=Sheet
+
+```
+
+<Highlights
+  features={[
+    `Lightweight implementation with dragging support.`,
+    `Multiple snap points and a handle.`,
+    `Automatically adjusts to screen size.`,
+    `Accepts animations, themes, size props and more.`,
+  ]}
+/>
+
+Sheet is a bottom panel that slides up from the bottom of the screen, commonly used for mobile-friendly dialogs and action menus. It supports drag-to-dismiss, multiple snap points, and [automatically stacks](/ui/z-index) above other content.
+
+## Installation
+
+Sheet is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/sheet
+```
+
+<Notice theme="blue">
+  For native apps, we recommend [setting up native
+  portals](/ui/portal#native-portal-setup-recommended) to preserve React
+  context inside Sheet content.
+</Notice>
+
+## Anatomy
+
+```tsx
+import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+
+export default () => (
+  <Sheet>
+    <Sheet.Overlay />
+    <Sheet.Handle />
+    <Sheet.Container>
+      <Sheet.Background />
+      {/* ...inner contents */}
+    </Sheet.Container>
+  </Sheet>
+)
+```
+
+## API Reference
+
+### Sheet
+
+Contains every component for the sheet.
+
+<PropsTable
+  data={[
+    {
+      name: 'open',
+      type: 'boolean',
+      description: `Set to use as controlled component.`,
+    },
+    {
+      name: 'scope',
+      type: 'string',
+      description: `Isolates this Sheet and its parts from other Sheet instances when needed.`,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      description: `Uncontrolled open state on mount.`,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      description: `Called on change open, controlled or uncontrolled.`,
+    },
+    {
+      name: 'position',
+      type: 'number',
+      description: `Controlled position, set to an index of snapPoints.`,
+    },
+    {
+      name: 'defaultPosition',
+      type: 'number',
+      description: `Uncontrolled default position on mount.`,
+    },
+    {
+      name: 'snapPoints',
+      type: 'number[]',
+      default: `[80, 10]`,
+      description: `Array of numbers, 0-100 that corresponds to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
+    },
+    {
+      name: 'onPositionChange',
+      type: '(position: number) => void',
+      description: `Called on change position, controlled or uncontrolled.`,
+    },
+    {
+      name: 'dismissOnOverlayPress',
+      type: 'boolean',
+      default: 'true',
+      description: `Controls tapping on the overlay to close, defaults to true.`,
+    },
+    {
+      name: 'animationConfig',
+      type: 'Animated.SpringAnimationConfig',
+      default: 'true',
+      description: `Customize the spring used, passed to react-native Animated.spring().`,
+    },
+    {
+      name: 'native',
+      type: 'boolean | "ios"[]',
+      description: `(iOS only) Render to the native system sheet; must install the native dependency first. UIKit does not expose continuous position, so Sheet.useAnimatedPosition() and onTransition are unavailable in this mode.`,
+    },
+    {
+      name: 'disableDrag',
+      type: 'boolean',
+      description: `Disables all touch events to drag the sheet.`,
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      description: `Renders sheet into the root of your app instead of inline.`,
+    },
+    {
+      name: 'dismissOnSnapToBottom',
+      type: 'boolean',
+      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+    },
+    {
+      name: 'disableRemoveScroll',
+      type: 'boolean',
+      default: 'false',
+      description: `Disables the RemoveScroll behavior that prevents body scrolling while sheet is open. By default, RemoveScroll is enabled when the sheet is open and modal.`,
+    },
+    {
+      name: 'portalProps',
+      type: 'Object',
+      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+    },
+    {
+      name: 'moveOnKeyboardChange',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+    },
+    {
+      name: 'preferAdaptParentOpenState',
+      type: 'boolean',
+      default: 'false',
+      description: `By default Sheet will prefer the open prop over a parent component that is controlling it via Adapt. In general if you want to Adapt to a sheet, you'd leave the open prop undefined. If you'd like to have the parent override the prop you've set manually on Sheet, set this to true.`,
+    },
+    {
+      name: 'onTransition',
+      type: `(e: { phase: 'start' | 'end', cause: 'open' | 'close' | 'snap', position: number, finished?: boolean }) => void`,
+      description: `Fires at the start and end of the custom sheet's position transition. cause is "open" when moving from closed, "close" when moving off screen, and "snap" when moving between snap points while open. On the end phase, finished is false when the transition was interrupted (e.g. a close canceled by a re-open). position is the resolved translateY target in px from the top of the screen. Replaces the old onAnimationComplete prop. The native iOS system sheet does not expose this lifecycle.`,
+    },
+    {
+      name: 'disableHideWhenClosed',
+      type: 'boolean',
+      default: 'false',
+      description: `By default a fully-closed sheet wrapper is hidden with display: "none". Set this to keep the closed wrapper laid out, for example so native visual effects can initialize below it. pointerEvents still gates interaction while closed.`,
+    },
+    {
+      name: 'disableTransparencyHide',
+      type: 'boolean',
+      description: `Deprecated alias for disableHideWhenClosed, honored through the v3 betas.`,
+    },
+    {
+      name: 'unmountChildrenWhenHidden',
+      type: 'boolean',
+      default: 'false',
+      description: `(experimental) Remove the children while the sheet is fully closed to save some rendering cost. Can interfere with animations.`,
+    },
+  ]}
+/>
+
+### Sheet.Overlay
+
+Displays behind the sheet content. Extends [YStack](/ui/stacks).
+
+`Sheet.Overlay` must be a direct child of `Sheet`. It renders outside the animated
+content region so it stays fixed while the container moves.
+
+In v3 the sheet no longer fades anything for you. `Sheet.Overlay` has no baked-in
+opacity, so you drive its fade yourself. See [Overlay fades](#overlay-fades) for
+the two supported patterns.
+
+### Sheet.Container
+
+Contains the sheet content and layout props. Extends
+[YStack](/ui/stacks).
+
+<PropsTable
+  data={[
+    {
+      name: 'adjustPaddingForOffscreenContent',
+      type: 'boolean',
+      description: `Adds padding for currently offscreen content so flex children size to the visible sheet area.`,
+    },
+  ]}
+/>
+
+### Sheet.Background
+
+The themed sheet surface. Extends [YStack](/ui/stacks).
+
+Place it as the first child of `Sheet.Container`. By default it fills the
+container and extends past the bottom edge so spring overshoot does not reveal
+the page below the sheet. Put visual surface props like `bg`, `borderRadius`,
+`elevation`, and `shadow*` on `Sheet.Background`; keep layout props like
+`padding`, `gap`, and `maxHeight` on `Sheet.Container`.
+
+<PropsTable
+  data={[
+    {
+      name: 'disableHideBottomOverflow',
+      type: 'boolean',
+      description: `Disables the default background extension below the sheet.`,
+    },
+  ]}
+/>
+
+### Sheet.Handle
+
+Shows a handle above the container by default. On tap, it will cycle between
+`snapPoints`, but this can be overridden with `onPress`.
+
+Extends [XStack](/ui/stacks).
+
+In v3 the Handle ships no opacity of its own. The idle dim and the fade-in on
+open are aesthetics, so they live in the copied skin rather than the behavior
+package. Set `opacity` (and an `open`-driven opacity if you want it) on your own
+`Sheet.Handle`.
+
+### Sheet.ScrollView
+
+Allows scrolling within Sheet. Extends
+[ScrollView](/ui/scroll-view).
+
+## Sheet.useAnimatedPosition
+
+`Sheet.useAnimatedPosition()` returns the sheet's live animated position so you
+can drive effects that track the drag on the UI thread. Call it inside a `Sheet`;
+it throws with a clear message outside that scope.
+
+```tsx
+const { value, screenSize, frameSize, snapOffsets, minY } =
+  Sheet.useAnimatedPosition()
+```
+
+- `value` is the exact `UniversalAnimatedNumber` driving the frame's translateY,
+  in px from the top of the screen. Feed it to
+  [useAnimatedNumberStyle](/docs/core/animations#imperative-animation-hooks).
+- `screenSize` is the height of the viewport the sheet positions against.
+- `frameSize` is the measured height of the sheet frame.
+- `snapOffsets` are the resolved translateY positions, in the same order as
+  `snapPoints`.
+- `minY` is the top-most (fully open) position.
+
+These are enough to compute any progress mapping inside a `getStyle` worklet.
+There is no separate derived progress value; the recipe lives in docs and the
+canonical skin.
+
+`Sheet.useAnimatedPosition()` and the Sheet `onTransition` callback are available
+on Tamagui's custom Sheet. The native iOS system sheet selected by the `native`
+prop is driven by UIKit, which does not expose a continuous position. Remove the
+`native` prop when you need position-linked effects or transition lifecycle events.
+
+## Overlay fades
+
+The sheet does not fade anything for you, so an overlay fade is your code. There
+are two supported patterns.
+
+**1. Presence fade** — animates on open and close only. Put enter/exit styles on
+`Sheet.Overlay`:
+
+```tsx
+<Sheet.Overlay
+  opacity={0.5}
+  transition="quick"
+  enterStyle={{ opacity: 0 }}
+  exitStyle={{ opacity: 0 }}
+/>
+```
+
+**2. Drag-linked fade** — tracks the finger. Read the animated position and map
+it to opacity with `useAnimatedNumberStyle`:
+
+```tsx
+import type { Animated } from 'react-native'
+import {
+  Sheet,
+  View as TamaguiView,
+  useAnimationDriver,
+  useAnimatedNumberStyle,
+} from 'tamagui'
+
+// drag-linked overlay fade built entirely on the public hooks:
+// Sheet.useAnimatedPosition() gives the live translateY, useAnimatedNumberStyle
+// maps it to an opacity worklet. rendered through the driver's animated view so
+// it works on every driver (css re-renders + DOM transition, motion/reanimated
+// run on their own value).
+function DragLinkedBackdrop() {
+  const animationDriver = useAnimationDriver()
+  const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
+
+  const { value, screenSize } = Sheet.useAnimatedPosition()
+
+  const style = useAnimatedNumberStyle(value, (y: number) => {
+    'worklet'
+    return { opacity: Math.max(0, 0.6 * (1 - y / screenSize)) }
+  })
+
+  return (
+    <AnimatedView
+      transition="quick"
+      style={[
+        { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' },
+        style,
+      ]}
+    />
+  )
+}
+
+<Sheet.Overlay backgroundColor="transparent">
+  <DragLinkedBackdrop />
+</Sheet.Overlay>
+```
+
+Keep `Sheet.Overlay` as the direct child of `Sheet`, then render the hook-driven
+backdrop inside it. The driver's animated view makes the worklet-driven style
+apply on every driver.
+
+## Native Gesture Handler Integration
+
+For the best gesture experience on iOS and Android, Sheet supports optional integration with `react-native-gesture-handler`. This provides:
+
+- **Smooth scroll-to-drag handoffs** - Seamlessly transition between scrolling content and dragging the sheet
+- **No gesture conflicts** - Sheet and ScrollView gestures coordinate properly
+- **Native-quality feel** - Matches the behavior of system sheets
+
+#### Setup
+
+1. Install `react-native-gesture-handler`:
+
+```bash
+npm install react-native-gesture-handler
+```
+
+2. Add the setup import to your app entry point (before any Tamagui imports):
+
+```tsx
+// App.tsx or index.js
+import '@tamagui/native/setup-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>{/* Your app */}</GestureHandlerRootView>
+  )
+}
+```
+
+That's it! Sheet will automatically detect and use the native gesture handler when available.
+
+#### Using Sheet.ScrollView
+
+When using scrollable content inside a Sheet, use `Sheet.ScrollView` for proper gesture coordination:
+
+```tsx
+<Sheet>
+  <Sheet.Handle />
+  <Sheet.Container>
+    <Sheet.Background />
+    <Sheet.ScrollView>{/* Scrollable content */}</Sheet.ScrollView>
+  </Sheet.Container>
+</Sheet>
+```
+
+This ensures:
+
+- Scrolling up at the top of content works naturally
+- Dragging down when scroll is at top drags the sheet
+- Direction changes mid-gesture work smoothly
+
+#### Without Gesture Handler
+
+If you don't set up `react-native-gesture-handler`, Sheet falls back to React Native's built-in `PanResponder`. This works well for basic use cases but has some limitations on iOS where scroll and pan gestures can occasionally conflict.
+
+## Notes
+
+A fully-closed sheet is hidden with `display: 'none'` rather than by fading to
+transparent. Use [`disableHideWhenClosed`](#sheet) if you need the closed
+wrapper to stay laid out. `pointerEvents` still gates interaction while closed,
+and `unmountChildrenWhenHidden` keys off the same closed state.
+
+For Android you need to manually re-propagate any context when using `modal`.
+This is because React Native doesn't support portals yet.
+
+## Native Support
+
+We've deprecated the `native` prop in favor of using Adapt.

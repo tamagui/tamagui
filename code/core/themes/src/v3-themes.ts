@@ -500,6 +500,19 @@ const surface3 = [
   },
 ] as any
 
+const inverse = [
+  {
+    parent: 'light',
+    palette: 'dark',
+    template: 'base',
+  },
+  {
+    parent: 'dark',
+    palette: 'light',
+    template: 'base',
+  },
+] as any
+
 /**
  * These are optional themes that serve as defaults for components. They don't
  * change color1 through color12 just "generic" properties like color,
@@ -558,6 +571,7 @@ export const defaultSubThemes = {
   active: {
     template: 'surface3',
   },
+  inverse,
   surface1: {
     template: 'surface1',
   },

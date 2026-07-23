@@ -2,9 +2,9 @@ name: Test iOS Kitchen Sink Go (Maestro)
 
 on:
   push:
-    branches: [main, 'v2-*']
+    branches: [main, 'v2-*', 'v3-*']
   pull_request:
-    branches: [main, 'v*']
+    branches: [main, 'v2-*', 'v3-*']
   workflow_dispatch:
 
 permissions:
@@ -17,13 +17,18 @@ jobs:
   test:
     # TODO: re-enable once Sheet demo is fixed on Expo Go CI
     if: false
-    name: Run Maestro Tests (exports=${{ matrix.package-exports }})
+    name: Run Maestro Tests (${{ matrix.ios_device.slug }}, exports=${{ matrix.package-exports }})
     runs-on: macos-14
     timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
         package-exports: [true, false]
+        ios_device:
+          - name: iPhone 16
+            slug: iphone-16
+          - name: iPhone 16 Pro Max
+            slug: iphone-16-pro-max
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -31,6 +36,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
 
       - name: Set Xcode version
@@ -51,14 +57,21 @@ jobs:
       - name: Boot iOS Simulator
         working-directory: ${{ github.workspace }}
         run: |
-          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == "iPhone 16") | .udid' | head -1)
+          xcrun simctl shutdown all 2>/dev/null || true
+          sleep 1
+
+          DEVICE_NAME="${{ matrix.ios_device.name }}"
+          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r --arg name "$DEVICE_NAME" '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == $name) | .udid' | head -1)
           if [ -z "$DEVICE_ID" ]; then
-            echo "iPhone 16 not found, using first available iPhone"
-            DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name | contains("iPhone")) | .udid' | head -1)
+            echo "::error::$DEVICE_NAME simulator not found"
+            xcrun simctl list devices available
+            exit 1
           fi
-          echo "Booting simulator: $DEVICE_ID"
+          echo "Booting simulator: $DEVICE_NAME ($DEVICE_ID)"
           xcrun simctl boot "$DEVICE_ID" || true
           xcrun simctl bootstatus "$DEVICE_ID" -b
+          echo "SIM_DEVICE_ID=$DEVICE_ID" >> "$GITHUB_ENV"
+          echo "MAESTRO_DEVICE_ID=$DEVICE_ID" >> "$GITHUB_ENV"
 
           echo "Waiting for simulator to be fully ready for Maestro..."
           for i in {1..30}; do
@@ -127,6 +140,6 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: maestro-artifacts-exports-${{ matrix.package-exports }}
+          name: maestro-artifacts-${{ matrix.ios_device.slug }}-exports-${{ matrix.package-exports }}
           path: |
             ~/.maestro/tests/**/*

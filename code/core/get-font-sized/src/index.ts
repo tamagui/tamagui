@@ -1,15 +1,14 @@
 import { isClient } from '@tamagui/constants'
 import type {
   FontSizeTokens,
-  GenericFont,
   TextProps,
   TextStyle,
   VariantSpreadFunction,
 } from '@tamagui/web'
-import { getTokens, styled, Text } from '@tamagui/web'
+import { resolveDefaultToken, styled, Text } from '@tamagui/web'
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
-  sizeTokenIn = '$true',
+  sizeTokenIn = true,
   { font, fontFamily, props }
 ) => {
   if (!font) {
@@ -18,7 +17,10 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
     }
   }
 
-  const sizeToken = sizeTokenIn === '$true' ? getDefaultSizeToken(font) : sizeTokenIn
+  const sizeToken = resolveDefaultToken(sizeTokenIn, 'fontSize') as Exclude<
+    FontSizeTokens,
+    true
+  >
 
   const style: TextStyle = {}
 
@@ -73,45 +75,11 @@ export const SizableText = styled(Text, {
 
   variants: {
     size: {
-      '...fontSize': getFontSized,
+      FontSize: getFontSized,
     },
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    size: true,
   },
 })
-
-const cache = new WeakMap<any, FontSizeTokens>()
-
-function getDefaultSizeToken(font: GenericFont) {
-  if (typeof font === 'object' && cache.has(font)) {
-    return cache.get(font)!
-  }
-
-  // use either font.size if it has true set, or fallback to tokens.size mapping to the same
-  const tokens = getTokens()
-  const sizeTokens = '$true' in font.size ? font.size : tokens?.size
-  if (!sizeTokens) {
-    return Object.keys(font.size)[3]
-  }
-  const sizeDefault = sizeTokens['$true']
-  const sizeDefaultSpecific = sizeDefault
-    ? Object.keys(sizeTokens).find(
-        (x) => x !== '$true' && sizeTokens[x]['val'] === sizeDefault['val']
-      )
-    : null
-
-  if (!sizeDefault || !sizeDefaultSpecific) {
-    if (process.env.NODE_ENV === 'development') {
-      console.warn(`No default size is set in your tokens for the "true" key, fonts will be inconsistent.
-
-      Fix this by having consistent tokens across fonts and sizes and setting a true key for your size tokens, or
-      set true keys for all your font tokens: "size", "lineHeight", "fontStyle", etc.`)
-    }
-    return Object.keys(font.size)[3]
-  }
-
-  cache.set(font, sizeDefaultSpecific as FontSizeTokens)
-  return sizeDefaultSpecific
-}

@@ -1,5 +1,13 @@
 // re-exports all of @tamagui/web just adds hooks
 export * from '@tamagui/web'
+export {
+  SizeContext,
+  createSizeContext,
+  createSizeTable,
+  resolveTokenSize,
+} from '@tamagui/size'
+export type * from '@tamagui/size'
+export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
 
 import { createMedia } from '@tamagui/react-native-media-driver'
 import { isWeb } from '@tamagui/constants'
@@ -259,21 +267,6 @@ export const Text = WebText as any as RNTamaguiText
 
 // const zz = <A />
 
-// const variants = {
-//   fullscreen: {
-//     true: {},
-//   },
-//   elevation: {
-//     '...size': () => ({}),
-//     ':number': () => ({}),
-//   },
-// } as const
-
-// export const YStack = styled(View, {
-//   flexDirection: 'column',
-//   variants,
-// })
-
 // import { TextInput } from 'react-native'
 // export const InputFrame = styled(
 //   TextInput,
@@ -282,22 +275,14 @@ export const Text = WebText as any as RNTamaguiText
 //     backgroundColor: 'green',
 
 //     variants: {
-//       // unstyled: {
-//       //   false: {},
-//       // },
-
 //       size: {
-//         '...size': () => ({}),
+//         Size: () => ({}),
 //       },
 
 //       // disabled: {
-//       //   ':boolean': () => ({})
+//       //   boolean: () => ({})
 //       // },
 //     } as const,
-
-//     // defaultVariants: {
-//     //   unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-//     // },
 //   },
 //   {
 //     isText: true,

@@ -1,0 +1,510 @@
+---
+title: Select
+description: Show a menu of items that users can select from
+name: select
+component: Select
+package: select
+demoName: Select
+---
+
+<HeroContainer>
+  <SelectDemo />
+</HeroContainer>
+
+```tsx hero template=Select
+
+```
+
+<Highlights
+  features={[
+    `Comes with styling, yet completely customizable and themeable.`,
+    `Accepts transitions, themes, size props and more.`,
+    `Accessible, keyboard navigable, full-featured.`,
+    `Adapts to Sheet with the same handoff model as Dialog and Popover.`,
+  ]}
+/>
+
+Select provides a dropdown menu for choosing from a list of options. It's fully accessible with keyboard navigation, supports typeahead search, and [automatically stacks](/ui/z-index) above other content.
+
+In v3, Select keeps adapted sheet content mounted through the sheet exit
+animation, and web trigger and viewport parts expose `data-state="open" | "closed"`
+for styling.
+
+Select also supports ordered multiple selection across custom web lists,
+browser-native controls, adapted Sheets, and plain React Native content. The
+same item registry and value controller power every path.
+
+## Installation
+
+Select is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/select
+```
+
+<Notice theme="blue">
+  For native apps, we recommend [setting up native
+  portals](/ui/portal#native-portal-setup-recommended) to preserve React
+  context inside Select content.
+</Notice>
+
+## Anatomy
+
+```tsx
+import { Select } from 'tamagui' // or '@tamagui/select'
+
+export default () => (
+  <Select defaultValue="">
+    <Select.Trigger>
+      <Select.Value placeholder="Search..." />
+    </Select.Trigger>
+    {/* Optional: Control focus behavior */}
+    <Select.FocusScope loop trapped focusOnIdle={true}>
+      <Select.Content>
+        <Select.ScrollUpButton />
+        <Select.Viewport>
+          <Select.Group>
+            <Select.Label />
+            <Select.Item>
+              <Select.ItemText />
+            </Select.Item>
+          </Select.Group>
+        </Select.Viewport>
+        <Select.ScrollDownButton />
+      </Select.Content>
+    </Select.FocusScope>
+  </Select>
+)
+```
+
+## Multiple selection
+
+Pass `multiple` to use a controlled or uncontrolled `string[]`. Selecting a new
+item appends it. Selecting it again removes it without changing the order of the
+remaining values. Multiple selection keeps custom lists and adapted Sheets open.
+
+```tsx
+const [fruit, setFruit] = useState<Array<'apple' | 'pear'>>([])
+
+<Select multiple name="fruit" value={fruit} onValueChange={setFruit}>
+  <Select.Trigger>
+    <Select.Value placeholder="Choose fruit" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Viewport>
+      <Select.Item value="apple">
+        <Select.ItemText>Apple</Select.ItemText>
+        <Select.ItemIndicator />
+      </Select.Item>
+      <Select.Item value="pear">
+        <Select.ItemText>Pear</Select.ItemText>
+        <Select.ItemIndicator />
+      </Select.Item>
+    </Select.Viewport>
+  </Select.Content>
+</Select>
+```
+
+`Select.Value` renders registered `Select.ItemText` labels in selection order,
+separated by `, `. Use `renderValue` for chips, localized separators, summaries,
+or labels that must render before lazy items mount.
+
+```tsx
+<Select
+  multiple
+  value={fruit}
+  renderValue={(values) => `${values.length} selected`}
+/>
+```
+
+### Behavior by render path
+
+- A custom floating web Select is an ARIA multi-select listbox. Arrow keys and
+  typeahead move focus. Enter and Space toggle the focused option.
+- `native="web"` renders a real `<select multiple>`. Browser selection,
+  keyboard behavior, and form submission are authoritative.
+- An adapted Sheet uses the same listbox controller on web and stays open after
+  each toggle. The Sheet closes through its overlay, drag-to-bottom behavior,
+  platform back action, or controlled state. Select does not add a Done row.
+- Plain React Native content renders inline when no Adapt target is active.
+  Multiple items expose checkbox-style accessibility state and remain visible
+  after a toggle.
+
+On custom web paths, `name` renders one root-level hidden input per selected
+value, including when the collection is portaled into a Sheet. `form` can point
+those inputs at an external form. The browser-native path puts `name` and `form`
+on its `<select>` directly and does not render hidden inputs. React Native does
+not render HTML form controls.
+
+## API Reference
+
+### Select
+
+Contains every component for the select:
+
+<PropsTable
+  data={[
+    {
+      name: 'id',
+      type: 'string',
+      description: `Optional for usage with Label.`,
+    },
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      description: `Set the size of itself and pass to all inner elements.`,
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      description: `Select children API components.`,
+    },
+    {
+      name: 'value',
+      type: 'string | string[]',
+      description: `Controlled value. With multiple, this is an ordered string array.`,
+    },
+    {
+      name: 'defaultValue',
+      type: 'string | string[]',
+      description: `Default value. With multiple, this defaults to an empty array.`,
+    },
+    {
+      name: 'multiple',
+      type: 'boolean',
+      default: 'false',
+      description: `Enables ordered multiple selection and makes value callbacks array-valued.`,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value, details) => void',
+      description: `Cancelable value request. Details identify item-press, keyboard, or native-change.`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      description: `Controlled open value.`,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      description: `Default open value.`,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean, details) => void',
+      description: `Cancelable open request with the interaction reason and source event.`,
+    },
+    {
+      name: 'dir',
+      type: 'Direction',
+      description: `Direction of text display.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `Web form field name. Multiple values submit as repeated entries.`,
+    },
+    {
+      name: 'form',
+      type: 'string',
+      description: `Associates the web form control with an external form id.`,
+    },
+    {
+      name: 'native',
+      type: 'NativeValue',
+      description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
+    },
+    {
+      name: 'renderValue',
+      type: '(value: string | string[]) => ReactNode',
+      description: `Render function for the selected value. Multiple mode receives the ordered string array. Useful for SSR, lazy mounting, chips, and custom summaries.`,
+    },
+    {
+      name: 'lazyMount',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, defers mounting Select items until opened using React's startTransition. Significantly improves initial render performance for pages with many Selects. Should be combined with \`renderValue\` for best results.`,
+    },
+    {
+      name: 'zIndex',
+      type: 'number',
+      description: `z-index for the select portal. Use when select dropdowns need to appear above other portaled content like dialogs or fixed headers. Defaults to automatic stacking (~100000).`,
+    },
+  ]}
+/>
+
+### Select.Trigger
+
+Extends [ListItem](/ui/list-item) to give sizing, icons, and more.
+On web it includes `data-state="open" | "closed"`.
+
+### Select.Value
+
+Extends [Paragraph](/ui/text), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'placeholder',
+      type: 'string',
+      description: `Optional placeholder to show when no value selected.`,
+    },
+  ]}
+/>
+
+### Select.Content
+
+Main container for Select content, used to contain the up/down arrows.
+
+<PropsTable
+  data={[
+    {
+      name: 'onEscapeKeyDown',
+      type: '(event: KeyboardEvent) => void',
+      description: `Called when Escape is pressed while the content is active.`,
+    },
+    {
+      name: 'onInteractOutside',
+      type: '(event: Event) => void',
+      description: `Called when pointer or focus interaction happens outside the content.`,
+    },
+    {
+      name: 'onPointerDownOutside',
+      type: '(event: Event) => void',
+      description: `Called on outside pointer down. Select composes this with its own preventDefault handling.`,
+    },
+    {
+      name: 'onFocusOutside',
+      type: '(event: Event) => void',
+      description: `Called on outside focus. Select composes this with its own preventDefault handling.`,
+    },
+  ]}
+/>
+
+### Select.ScrollUpButton
+
+Inside Content first, displays when you can scroll up, stuck to the top.
+
+Extends [YStack](/ui/stacks).
+
+### Select.ScrollDownButton
+
+Inside Content last, displays when you can scroll down, stuck to the bottom.
+
+Extends [YStack](/ui/stacks).
+
+### Select.Viewport
+
+Extends [YStack](/ui/stacks). Contains scrollable content items as children.
+On web it includes `data-state="open" | "closed"`.
+
+<PropsTable
+  data={[
+    {
+      name: 'disableScroll',
+      type: 'boolean',
+      description: `Removes ability to scroll and all style and functionality related to scrolling.`,
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      description: `Removes all default styles.`,
+    },
+  ]}
+/>
+
+<Notice>
+  Make sure to not pass `height` prop as that is managed internally because of UX reasons
+  and having a fixed height will break that behavior.
+</Notice>
+
+### Select.Group
+
+Extends [YStack](/ui/stacks). Use only when grouping together items, alongside a Label as the first child.
+
+### Select.Label
+
+Extends [SizableText](/ui/text). Used to label Groups. Includes size-based padding and minHeight for consistent appearance with other Select items.
+
+### Select.Separator
+
+Extends [Separator](/ui/separator). Use inside `Select.Group` or
+`Select.Viewport` to visually divide option groups.
+
+### Select.Item
+
+Extends [ListItem](/ui/list-item). Used to add selectable string values to the
+list. Item registration order controls keyboard navigation, typeahead, and
+selection anchoring.
+
+<PropsTable
+  data={[
+    {
+      name: 'value',
+      type: 'string',
+      description: `Provide a value that will be passed on selection.`,
+    },
+
+]}
+/>
+
+### Select.ItemText
+
+Extends [Paragraph](/ui/text). Used inside Item to provide unselectable text that will show above once selected in the parent Select.
+
+### Select.Indicator
+
+An animated indicator that highlights the currently focused item. Place it inside `Select.Viewport` to enable a smooth sliding highlight animation as users navigate through options.
+
+```tsx
+<Select.Viewport>
+  <Select.Indicator transition="quick" />
+  <Select.Group>{/* items */}</Select.Group>
+</Select.Viewport>
+```
+
+Use the `transition` prop to control the animation speed. You can use any animation name from your config like `quick`, `quicker`, or `quickest`.
+
+<Notice>
+  By default, Select uses the item's `hoverStyle` and `pressStyle` for hover feedback. Add
+  `Select.Indicator` for a smoother animated effect. If using the indicator, you may want
+  to set items to have transparent hover styles to avoid visual conflict.
+</Notice>
+
+### Select.FocusScope
+
+Provides access to the underlying FocusScope component used by Select for focus management. Can be used to control focus behavior from a parent component.
+
+<PropsTable
+  data={[
+    {
+      name: 'enabled',
+      type: 'boolean',
+      default: 'true',
+      description: `Whether focus management is enabled.`,
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, tabbing from last item will focus first tabbable and shift+tab from first item will focus last tabbable.`,
+    },
+    {
+      name: 'trapped',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus.`,
+    },
+    {
+      name: 'noFocus',
+      type: 'boolean',
+      default: 'false',
+      description: `Zero focus mode. While active, focus is allowed neither inside nor outside the scope. Web only.`,
+    },
+    {
+      name: 'focusOnIdle',
+      type: 'boolean | number',
+      default: 'false',
+      description: `When true, waits for idle before focusing. When a number, waits that many ms. This prevents reflows during animations.`,
+    },
+    {
+      name: 'onMountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on mount. Can be prevented.`,
+    },
+    {
+      name: 'onUnmountAutoFocus',
+      type: '(event: Event) => void',
+      description: `Event handler called when auto-focusing on unmount. Can be prevented.`,
+    },
+  ]}
+/>
+
+## Performance
+
+For pages with many Select components, you can significantly improve initial render performance by using the `lazyMount` prop combined with `renderValue`:
+
+```tsx
+const labels = {
+  apple: 'Apple',
+  orange: 'Orange',
+  banana: 'Banana',
+}
+
+<Select
+  lazyMount
+  renderValue={(value) => labels[value]}
+  defaultValue="apple"
+>
+  {/* Items are not mounted until the Select is opened */}
+  <Select.Trigger>
+    <Select.Value />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Viewport>
+      {/* These items mount in a startTransition when first opened */}
+      <Select.Item value="apple">
+        <Select.ItemText>Apple</Select.ItemText>
+      </Select.Item>
+      {/* ... more items */}
+    </Select.Viewport>
+  </Select.Content>
+</Select>
+```
+
+**How it works:**
+
+- `lazyMount` defers mounting all Select items until the dropdown is first opened
+- The mount happens inside React's `startTransition`, keeping the trigger responsive
+- `renderValue` provides the display text synchronously, avoiding the need to mount items just to show the selected value
+- Once mounted, items stay mounted for fast subsequent opens
+
+This is especially useful when rendering many Selects on a single page, as each Select with 20+ items would otherwise mount all those items on initial page load.
+
+### Adapted Sheet
+
+When used alongside `<Adapt />`, Select will render as a sheet when that breakpoint is active.
+
+This is the only way to render a Select on Native for now, as mobile apps tend to show Select very differently from web and Tamagui wants to present the right abstractions for each platform.
+
+See [Sheet](/ui/sheet) for more props.
+
+Use `Adapt.Contents` inside `Sheet.Container` to insert the contents given to
+`Select.Content`.
+
+```tsx
+import { Adapt, Select, Sheet } from 'tamagui'
+
+export default () => (
+  <Select defaultValue="">
+    <Select.Trigger>
+      <Select.Value placeholder="Search..." />
+    </Select.Trigger>
+
+    <Adapt when="max-md" platform="touch">
+      <Sheet modal dismissOnSnapToBottom>
+        <Sheet.Container>
+          <Sheet.Background />
+          <Adapt.Contents />
+        </Sheet.Container>
+        <Sheet.Overlay />
+      </Sheet>
+    </Adapt>
+
+    <Select.Content>
+      <Select.ScrollUpButton />
+      <Select.Viewport>
+        <Select.Group>
+          <Select.Label />
+          <Select.Item>
+            <Select.ItemText />
+          </Select.Item>
+          <Select.Separator />
+        </Select.Group>
+      </Select.Viewport>
+      <Select.ScrollDownButton />
+    </Select.Content>
+  </Select>
+)
+```

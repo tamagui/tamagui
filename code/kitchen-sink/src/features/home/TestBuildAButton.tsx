@@ -5,6 +5,7 @@ import {
   View,
   Text,
   createStyledContext,
+  resolveDefaultSizeToken,
   styled,
   useTheme,
   withStaticProperties,
@@ -47,14 +48,14 @@ export const ButtonFrame = styled(View, {
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      Size: (name, { tokens }) => {
+        const sizeToken = resolveDefaultSizeToken(name) as Exclude<SizeTokens, true>
+
         return {
-          height: tokens.size[name],
-          borderRadius: tokens.radius[name],
-          gap: tokens.space[name].val * 0.2,
-          paddingHorizontal: getSpace(name, {
-            shift: -1,
-          }),
+          height: tokens.size[sizeToken],
+          borderRadius: tokens.radius[sizeToken],
+          gap: tokens.space[sizeToken].val * 0.2,
+          paddingHorizontal: getSpace(sizeToken).val * 0.9,
         }
       },
     },
@@ -75,9 +76,13 @@ export const ButtonText = styled(Text, {
 
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
+      FontSize: (name, { font }) => {
+        const sizeToken = resolveDefaultSizeToken(name) as Exclude<typeof name, true>
+
+        return {
+          fontSize: font?.size[sizeToken],
+        }
+      },
     },
   } as const,
 })
@@ -85,12 +90,10 @@ export const ButtonText = styled(Text, {
 const ButtonIcon = (props: { children: any }) => {
   // @ts-ignore
   const { size } = React.useContext(ButtonContext)
-  const smaller = getSize(size, {
-    shift: -2,
-  })
+  const smaller = getSize(size).val * 0.4
   const theme = useTheme()
   return React.cloneElement(props.children, {
-    size: smaller.val * 0.5,
+    size: smaller,
     color: theme.color.get(),
   })
 }

@@ -13,6 +13,7 @@ export * from './helpers/getExpandedShorthands'
 export * from './helpers/getShorthandValue'
 export * from './helpers/getSplitStyles'
 export * from './helpers/getThemeCSSRules'
+export * from './helpers/variables'
 export * from './helpers/getVariantExtras'
 export { autoVariables, mutatedAutoVariables } from './helpers/registerCSSVariable'
 export { insertStyleRules } from './helpers/insertStyleRule'
@@ -36,6 +37,8 @@ export * from './helpers/wrapStyleTags'
 
 export * from './createComponent'
 export * from './createFont'
+export * from './eventDetails'
+export * from './createStyledHOC'
 export * from './createShorthands'
 export * from './createTamagui'
 export * from './createTokens'
@@ -52,9 +55,12 @@ export type * from './interfaces/TamaguiComponentEvents'
 export type * from './types'
 
 export * from './interfaces/GetRef'
+export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
 
 export {
   getConfig,
+  getDefaultSizeToken,
+  getDefaultToken,
   getSetting,
   getStyleCompat,
   getThemes,
@@ -62,9 +68,12 @@ export {
   getTokens,
   getTokenValue,
   loadAnimationDriver,
+  resolveDefaultSizeToken,
+  resolveDefaultToken,
   setConfig,
   setupDev,
   updateConfig,
+  DEFAULT_SIZE_TOKEN,
   type StyleCompat,
 } from './config'
 
@@ -87,6 +96,7 @@ export {
   mediaState,
   setMediaState,
 } from './helpers/mediaState'
+export * from './hooks/useAnimationDriver'
 export * from './hooks/useProps'
 export * from './hooks/useTheme'
 export * from './hooks/useThemeName'
@@ -99,6 +109,7 @@ export * from './views/Slot'
 export * from './views/TamaguiProvider'
 export * from './views/Text'
 export * from './views/Theme'
+export * from './views/Variables'
 export * from './views/ThemeProvider'
 export * from './views/View'
 

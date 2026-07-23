@@ -3,6 +3,7 @@ import { MISSING_THEME_MESSAGE } from './constants/constants'
 import type {
   AnimationDriver,
   ConfigListener,
+  DefaultTokenCategory,
   GenericTamaguiSettings,
   TamaguiInternalConfig,
   Token,
@@ -11,6 +12,8 @@ import type {
 } from './types'
 
 export type StyleCompat = 'legacy' | 'react-native' | 'web'
+
+export const DEFAULT_SIZE_TOKEN = '$4'
 
 let conf: TamaguiInternalConfig | null
 let setConfigCalledByThisInstance = false
@@ -74,6 +77,39 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
     // @ts-expect-error
     config[key]
   )
+}
+
+type DefaultTokenConfig = Pick<TamaguiInternalConfig, 'settings'>
+
+export const getDefaultToken = (
+  category: DefaultTokenCategory,
+  config: DefaultTokenConfig | null = getConfigFromGlobalOrLocal()
+): string => {
+  const defaultSize = config?.settings.defaultSize || DEFAULT_SIZE_TOKEN
+  return category === 'size'
+    ? defaultSize
+    : config?.settings.defaultTokens?.[category] || defaultSize
+}
+
+export const resolveDefaultToken = <Val>(
+  val: Val,
+  category: DefaultTokenCategory,
+  config?: DefaultTokenConfig | null
+): Exclude<Val, true> | string => {
+  return val === true ? getDefaultToken(category, config) : (val as any)
+}
+
+export const getDefaultSizeToken = (
+  config: DefaultTokenConfig | null = getConfigFromGlobalOrLocal()
+): string => {
+  return getDefaultToken('size', config)
+}
+
+export const resolveDefaultSizeToken = <Val>(
+  val: Val,
+  config?: DefaultTokenConfig | null
+): Exclude<Val, true> | string => {
+  return resolveDefaultToken(val, 'size', config)
 }
 
 export function getStyleCompat(): StyleCompat {

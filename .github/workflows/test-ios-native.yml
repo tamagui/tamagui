@@ -2,10 +2,16 @@ name: Test iOS Native (Maestro)
 
 on:
   push:
-    branches: [main, 'v2-*', rn82]
+    branches: [main, 'v2-*', 'v3-*', 'v3/**', rn82]
   pull_request:
-    branches: [main, 'v*']
+    branches: [main, 'v2-*', 'v3-*']
   workflow_dispatch:
+
+# cancel superseded runs off main — hosted macOS runners are scarce and
+# stale queued runs starve every other branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 permissions:
   contents: read
@@ -28,15 +34,16 @@ jobs:
     secrets: inherit
 
   test:
-    name: Run Maestro Tests (exports=${{ matrix.package-exports }})
+    name: Run Maestro Tests (${{ matrix.ios_device.slug }}, exports=${{ matrix.package-exports }})
     needs: build
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: macos-15
     timeout-minutes: 45
     strategy:
       fail-fast: false
-      matrix:
-        package-exports: [true, false]
+      # full device/exports matrix on main only; single combo elsewhere to
+      # keep hosted macOS runner load sane
+      matrix: ${{ github.ref == 'refs/heads/main' && fromJSON('{"package-exports":[true,false],"ios_device":[{"name":"iPhone 16","slug":"iphone-16"},{"name":"iPhone 16 Pro Max","slug":"iphone-16-pro-max"}]}') || fromJSON('{"package-exports":[true],"ios_device":[{"name":"iPhone 16","slug":"iphone-16"}]}') }}
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -44,6 +51,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
 
       - name: Set Xcode version
@@ -90,28 +98,35 @@ jobs:
           echo "$METRO_PID" > /tmp/metro-pid
           cd "${{ github.workspace }}"
 
+          xcrun simctl shutdown all 2>/dev/null || true
+          sleep 1
+
           # boot simulator
-          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == "iPhone 16") | .udid' | head -1)
+          DEVICE_NAME="${{ matrix.ios_device.name }}"
+          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r --arg name "$DEVICE_NAME" '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == $name) | .udid' | head -1)
           if [ -z "$DEVICE_ID" ]; then
-            echo "iPhone 16 not found, using first available iPhone"
-            DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name | contains("iPhone")) | .udid' | head -1)
+            echo "::error::$DEVICE_NAME simulator not found"
+            xcrun simctl list devices available
+            exit 1
           fi
-          echo "Booting simulator: $DEVICE_ID"
+          echo "Booting simulator: $DEVICE_NAME ($DEVICE_ID)"
           xcrun simctl boot "$DEVICE_ID" || true
           xcrun simctl bootstatus "$DEVICE_ID" -b
+          echo "SIM_DEVICE_ID=$DEVICE_ID" >> "$GITHUB_ENV"
+          echo "MAESTRO_DEVICE_ID=$DEVICE_ID" >> "$GITHUB_ENV"
 
           # install app and verify FrontBoard registration
           APP_PATH="${{ needs.build.outputs.built-app-path }}"
           BUNDLE_ID="com.tamagui.tamaguikitchensink"
           for attempt in 1 2 3; do
-            xcrun simctl install booted "$APP_PATH"
+            xcrun simctl install "$DEVICE_ID" "$APP_PATH"
             sleep 3
-            if xcrun simctl get_app_container booted "$BUNDLE_ID" 2>/dev/null; then
+            if xcrun simctl get_app_container "$DEVICE_ID" "$BUNDLE_ID" 2>/dev/null; then
               echo "App installed and registered (attempt $attempt)"
               break
             fi
             echo "::warning::App not registered after install (attempt $attempt)"
-            xcrun simctl uninstall booted "$BUNDLE_ID" 2>/dev/null || true
+            xcrun simctl uninstall "$DEVICE_ID" "$BUNDLE_ID" 2>/dev/null || true
             sleep 3
             if [ $attempt -eq 3 ]; then
               echo "::error::App failed to register after 3 attempts"
@@ -167,10 +182,10 @@ jobs:
         if: env.SKIP_MAESTRO_TESTS != 'true'
         run: |
           # capture simulator device logs in background for debugging app crashes
-          xcrun simctl spawn booted log stream --predicate 'process == "tamaguikitchensink" OR subsystem == "com.tamagui.tamaguikitchensink"' --level debug > /tmp/simulator-app.log 2>&1 &
+          xcrun simctl spawn "$SIM_DEVICE_ID" log stream --predicate 'process == "tamaguikitchensink" OR subsystem == "com.tamagui.tamaguikitchensink"' --level debug > /tmp/simulator-app.log 2>&1 &
           echo $! > /tmp/simlog-pid
           # also capture broader crash/error logs
-          xcrun simctl spawn booted log stream --predicate 'eventMessage CONTAINS "crash" OR eventMessage CONTAINS "fatal" OR eventMessage CONTAINS "error" OR process == "ReportCrash"' --level error > /tmp/simulator-errors.log 2>&1 &
+          xcrun simctl spawn "$SIM_DEVICE_ID" log stream --predicate 'eventMessage CONTAINS "crash" OR eventMessage CONTAINS "fatal" OR eventMessage CONTAINS "error" OR process == "ReportCrash"' --level error > /tmp/simulator-errors.log 2>&1 &
           echo $! > /tmp/simlog-errors-pid
 
       - name: Warm up App (cold start + Hermes bytecode compile)
@@ -182,7 +197,7 @@ jobs:
           # if WarmUp fails, the Maestro xcuitest driver (port 7001) is usually
           # dead — every subsequent flow will fail with "Failed to connect to
           # /127.0.0.1:7001", so fail fast rather than burn 15+ min on doomed retries.
-          if ! maestro test ./flows/WarmUp.yaml --no-ansi; then
+          if ! maestro --device "$MAESTRO_DEVICE_ID" test ./flows/WarmUp.yaml --no-ansi; then
             echo "::error::WarmUp failed — Maestro driver is likely dead, aborting"
             echo "=== Recent app logs ==="
             tail -50 /tmp/simulator-app.log 2>/dev/null || echo "No app logs"
@@ -230,7 +245,7 @@ jobs:
         if: failure() && env.SKIP_MAESTRO_TESTS != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: maestro-artifacts-exports-${{ matrix.package-exports }}
+          name: maestro-artifacts-${{ matrix.ios_device.slug }}-exports-${{ matrix.package-exports }}
           path: |
             ~/.maestro/tests/**/*
             /tmp/simulator-app.log

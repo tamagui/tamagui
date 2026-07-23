@@ -15,7 +15,6 @@ import { ScrollView } from 'react-native'
 import type { ImageProps, XStackProps } from 'tamagui'
 import {
   Adapt,
-  Button,
   Card,
   H1,
   H2,
@@ -36,6 +35,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
@@ -192,7 +192,8 @@ const TableCol = styled(YStack, {
 })
 
 const TableHighlight = styled(YStack, {
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
   bg: '$yellow1',
 })
 
@@ -413,7 +414,7 @@ const componentsIn = {
     <Button
       aria-label="Beta blog post"
       pointerEvents="none"
-      size="$2"
+      size="small"
       theme="yellow"
       position="absolute"
       t={-15}
@@ -813,10 +814,9 @@ const componentsIn = {
                     <span style={{ color: 'var(--color12)' }}>tamagui UI</span>
                   </CodeInline>
                 </Link>{' '}
-                is a bunch of unstyled and styled components for building common UI
-                elements. It's similar to Radix, but works on native and web, and has a
-                powerful Adapt primitive to shapeshift UI based on the platform or media
-                query.
+                provides composable components for building common UI elements. It's
+                similar to Radix, but works on native and web, and has a powerful Adapt
+                primitive to shapeshift UI based on the platform or media query.
               </LI>
             </Theme>
           </UL>
@@ -876,7 +876,7 @@ const componentsIn = {
                   <Button
                     position="absolute"
                     aria-label="Copy code to clipboard"
-                    size="$2"
+                    size="small"
                     r="$3"
                     display="inline-flex"
                     icon={clipBoard.hasCopied ? CheckCircle : Copy}

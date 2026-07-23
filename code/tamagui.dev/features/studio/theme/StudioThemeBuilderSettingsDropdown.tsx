@@ -1,6 +1,5 @@
 import { Check, LogOut, Menu } from '@tamagui/lucide-icons-2'
 import {
-  Button,
   Checkbox,
   H6,
   Label,
@@ -10,6 +9,7 @@ import {
   YGroup,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import type { ThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
@@ -26,7 +26,13 @@ export const StudioThemeBuilderSettingsDropdown = () => {
       }}
     >
       <Popover.Trigger asChild>
-        <Button size="$2" scaleIcon={1.5} chromeless circular icon={Menu}></Button>
+        <Button
+          size="small"
+          scaleIcon={1.5}
+          variant="quiet"
+          circular
+          icon={Menu}
+        ></Button>
       </Popover.Trigger>
 
       <Popover.Content
@@ -36,7 +42,8 @@ export const StudioThemeBuilderSettingsDropdown = () => {
         trapFocus={false}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
-        elevate
+        backgroundColor="$background"
+        boxShadow="0 4px 12px $shadowColor"
         maxW={400}
         transition={[
           'quickest',
@@ -66,7 +73,12 @@ export const StudioThemeBuilderSettingsDropdown = () => {
             })}
           </YGroup>
         </Popover.ScrollView>
-        <Popover.Arrow borderWidth={1} style={{ zIndex: 1 }} borderColor="$borderColor" />
+        <Popover.Arrow
+          backgroundColor="$background"
+          borderWidth={1}
+          style={{ zIndex: 1 }}
+          borderColor="$borderColor"
+        />
       </Popover.Content>
     </Popover>
   )

@@ -1,102 +1,84 @@
 import { YStack } from '@tamagui/stacks'
-import type { GetProps, SizeTokens } from '@tamagui/web'
-import { createStyledContext, styled, withStaticProperties } from '@tamagui/web'
+import type { GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/web'
+import {
+  createStyledContext,
+  resolveDefaultToken,
+  styled,
+  withStaticProperties,
+} from '@tamagui/web'
 
 const CardContext = createStyledContext({
-  size: '$true' as SizeTokens,
+  size: true as SizeTokens | true,
 })
 
+const cardRadiusVariant = (
+  val: SizeTokens | true,
+  { tokens }: VariantSpreadExtras<any>
+) => {
+  const radiusToken = resolveDefaultToken(val, 'radius')
+  return {
+    borderRadius: tokens.radius[radiusToken] ?? radiusToken,
+  }
+}
+
+const cardPaddingVariant = (
+  val: SizeTokens | true,
+  { tokens }: VariantSpreadExtras<any>
+) => {
+  const spaceToken = resolveDefaultToken(val, 'space')
+  return {
+    padding: tokens.space[spaceToken] ?? spaceToken,
+  }
+}
+
+// Unstyled Card frame: structural layout + the size mechanism (size-derived
+// radius on the frame, size-derived padding on Header/Footer) only. The theme
+// background lives in the tamagui skin (code/ui/tamagui/src/components/Card.tsx).
 export const CardFrame = styled(YStack, {
   name: 'Card',
   context: CardContext,
+  size: true,
+  position: 'relative',
 
   variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        backgroundColor: '$background',
-        position: 'relative',
-      },
-    },
-
     size: {
-      '...size': (val, { tokens }) => {
-        return {
-          borderRadius: tokens.radius[val] ?? val,
-        }
-      },
+      true: cardRadiusVariant,
+      Size: cardRadiusVariant,
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export const CardHeader = styled(YStack, {
   name: 'CardHeader',
   context: CardContext,
+  zIndex: 10,
+  backgroundColor: 'transparent',
+  marginBottom: 'auto',
 
   variants: {
-    unstyled: {
-      false: {
-        zIndex: 10,
-        backgroundColor: 'transparent',
-        marginBottom: 'auto',
-      },
-    },
-
     size: {
-      '...size': (val, { tokens }) => {
-        return {
-          padding: tokens.space[val] ?? val,
-        }
-      },
+      true: cardPaddingVariant,
+      Size: cardPaddingVariant,
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export const CardFooter = styled(CardHeader, {
   name: 'CardFooter',
-
-  variants: {
-    unstyled: {
-      false: {
-        zIndex: 5,
-        flexDirection: 'row',
-        marginTop: 'auto',
-        marginBottom: 0,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  zIndex: 5,
+  flexDirection: 'row',
+  marginTop: 'auto',
+  marginBottom: 0,
 })
 
 export const CardBackground = styled(YStack, {
   name: 'CardBackground',
-
-  variants: {
-    unstyled: {
-      false: {
-        zIndex: 0,
-        fullscreen: true,
-        overflow: 'hidden',
-        pointerEvents: 'none',
-        padding: 0,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  zIndex: 0,
+  position: 'absolute',
+  inset: 0,
+  overflow: 'hidden',
+  pointerEvents: 'none',
+  padding: 0,
 })
 
 export type CardHeaderProps = GetProps<typeof CardHeader>

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sheet",
+  "type": "registry:ui",
+  "title": "Sheet",
+  "description": "v2-look Sheet: styled handle (open/closed opacity), dimmed overlay, rounded background, padded container and scroll view, plus the controlled composition, over the unstyled @tamagui/ui Sheet behavior.",
+  "files": [
+    {
+      "path": "components/tamagui/Sheet.tsx",
+      "content": "// Styled Sheet = the unstyled @tamagui/ui Sheet behavior primitive + the\n// default v2-look skin, layered here in `tamagui`. Single skin definition; the\n// shadcn registry item is generated from this file.\nimport {\n  createRefComponent,\n  type GetProps,\n  type GetRef,\n  Sheet as SheetBehavior,\n  type SheetProps,\n  styled,\n  useSheetContext,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nconst SheetHandleFrame = styled(SheetBehavior.Handle, {\n  name: 'SheetHandle',\n  height: 10,\n  borderRadius: 1000,\n  backgroundColor: '$color5',\n  zIndex: 10,\n  marginHorizontal: '35%',\n  marginBottom: '$2',\n\n  // Handle opacity aesthetics live in the skin, not the behavior package.\n  opacity: 0.5,\n  hoverStyle: {\n    opacity: 0.7,\n  },\n  variants: {\n    open: {\n      true: {\n        opacity: 1,\n      },\n      false: {\n        opacity: 0,\n      },\n    },\n  } as const,\n})\n\n// The behavior forwards `open` to its inner handle frame, not to this styled\n// wrapper, so read the sheet context here and forward `open` — otherwise the\n// open-opacity variant above never toggles.\nexport const SheetHandle = createRefComponent<\n  GetRef<typeof SheetHandleFrame>,\n  GetProps<typeof SheetHandleFrame>\n>(function SheetHandle(props, ref) {\n  const context = useSheetContext((props as any).scope)\n  return <SheetHandleFrame ref={ref} {...props} open={context.open} />\n})\n\nexport const SheetOverlay = styled(SheetBehavior.Overlay, {\n  name: 'SheetOverlay',\n  backgroundColor: '$shadowColor',\n  opacity: 0.45,\n})\n\nexport const SheetContainer = styled(SheetBehavior.Container, {\n  name: 'SheetContainer',\n  // no padding on the Container: the keyboard-avoidance measures this frame, and\n  // in snapPointsMode=\"fit\" any vertical padding here inflates the frame beyond\n  // the preserved fit height, so the keyboard lift is off by exactly the padding\n  // (SheetWebKeyboard geometry). Content inset comes from the ScrollView skin +\n  // the consumer's own content padding, matching the pre-skin baseline.\n})\n\nexport const SheetBackground = styled(SheetBehavior.Background, {\n  name: 'SheetBackground',\n  backgroundColor: '$background',\n  borderTopLeftRadius: '$6',\n  borderTopRightRadius: '$6',\n})\n\nexport const SheetScrollView = styled(SheetBehavior.ScrollView, {\n  name: 'SheetScrollView',\n  // no flex here: the behavior's fitSizingStyle sets flex per mode (undefined for\n  // snapPointsMode=\"fit\" so the content-sized Container doesn't collapse, 1\n  // otherwise), and consumer props apply AFTER that guard — a skin-level flex:1\n  // would override it and collapse the fit-mode scrollview (SheetWebKeyboard).\n  paddingHorizontal: '$2',\n})\n\nconst sheetParts = {\n  Container: SheetContainer,\n  Background: SheetBackground,\n  Overlay: SheetOverlay,\n  Handle: SheetHandle,\n  ScrollView: SheetScrollView,\n}\n\ntype SheetRef = GetRef<typeof SheetBehavior.Root>\n\nexport const SheetRoot = createRefComponent<SheetRef, SheetProps>(\n  function SheetRoot(props, ref) {\n    return <SheetBehavior.Root ref={ref} {...props} />\n  }\n)\n\nconst SheetControlledRoot = createRefComponent<\n  SheetRef,\n  Omit<SheetProps, 'open' | 'onOpenChange'>\n>(function SheetControlled(props, ref) {\n  return <SheetBehavior.Controlled ref={ref} {...props} />\n})\n\nexport const SheetControlled = withStaticProperties(SheetControlledRoot, sheetParts)\n\nexport const Sheet = withStaticProperties(SheetRoot, {\n  Root: SheetRoot,\n  Controlled: SheetControlled,\n  useAnimatedPosition: SheetBehavior.useAnimatedPosition,\n  ...sheetParts,\n})\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Sheet.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "overlay"
+  ],
+  "meta": {
+    "native": [
+      "requires a Portal provider at the app root for the sheet to mount above content",
+      "react-native-safe-area-context is used for safe-area insets on native (optional peer)"
+    ],
+    "peerDependencies": [
+      "react-native-safe-area-context"
+    ],
+    "tokens": [
+      "$background",
+      "$color5",
+      "$shadowColor"
+    ],
+    "states": [
+      "open"
+    ]
+  }
+}

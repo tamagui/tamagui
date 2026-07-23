@@ -27,6 +27,7 @@
     "v2-reanimated.js",
     "v2-native.d.ts",
     "v2-native.js",
+    "scripts",
     "dist",
     "**/__tests__"
   ],
@@ -35,13 +36,13 @@
       "path": "../animations-css"
     },
     {
-      "path": "../animations-moti"
-    },
-    {
       "path": "../animations-react-native"
     },
     {
       "path": "../colors"
+    },
+    {
+      "path": "../create-system-font"
     },
     {
       "path": "../font-inter"

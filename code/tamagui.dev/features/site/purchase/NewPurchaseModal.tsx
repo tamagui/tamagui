@@ -3,7 +3,6 @@ import { X } from '@tamagui/lucide-icons-2'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
-  Button,
   Dialog,
   H3,
   Paragraph,
@@ -20,6 +19,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
@@ -299,11 +299,12 @@ export function PurchaseModalContents() {
       >
         <Dialog.Adapt when="maxMd">
           <Sheet modal dismissOnSnapToBottom transition="medium">
-            <Sheet.Frame bg="$color1" p={0} flex={1}>
+            <Sheet.Container p={0} flex={1}>
+              <Sheet.Background bg="$color1" />
               <Sheet.ScrollView flex={1}>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               bg="$shadow4"
               transition="lazy"
@@ -580,7 +581,14 @@ export function PurchaseModalContents() {
             </YStack>
             <Unspaced>
               <Dialog.Close asChild>
-                <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+                <Button
+                  position="absolute"
+                  t="$2"
+                  r="$2"
+                  size="small"
+                  circular
+                  icon={X}
+                />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>
@@ -619,7 +627,7 @@ const AnimatedYStack = styled(YStack, {
   transition: '100ms',
   variants: {
     direction: {
-      ':number': (direction) => ({
+      number: (direction) => ({
         enterStyle: {
           x: direction > 0 ? -10 : 10,
           opacity: 0,
@@ -643,7 +651,6 @@ function Tab({
   return (
     <Tabs.Tab
       group="takeoutBody"
-      unstyled
       items="center"
       justify="center"
       overflow="hidden"
@@ -659,7 +666,8 @@ function Tab({
       value={props.value as string}
     >
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         pointerEvents="none"
         z={-1}
         {...(isActive && {

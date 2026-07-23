@@ -16,6 +16,7 @@
  * the same hang.
  */
 
+import { execFileSync } from 'node:child_process'
 import { device } from 'detox'
 
 const DEFAULT_LAUNCH_ARGS = {
@@ -26,6 +27,10 @@ const DEFAULT_LAUNCH_ARGS = {
 // Detox returns from launchApp once RCTContentDidAppearNotification fires, but
 // the JSI global / surface bindings can still be settling for a beat after.
 const POST_LAUNCH_SETTLE_MS = 1500
+const ANDROID_APP_ID = 'com.tamagui.tamaguikitchensink'
+const ANDROID_MAIN_ACTIVITY = `${ANDROID_APP_ID}/.MainActivity`
+const ANDROID_PIXEL_LAUNCHER_ID = 'com.google.android.apps.nexuslauncher'
+const ANDROID_FOCUS_TIMEOUT_MS = 10000
 
 // Simulators/emulators can refuse a launch even though the app is installed.
 // Sleeping briefly and re-launching nearly always recovers.
@@ -74,6 +79,43 @@ const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 type LaunchAppParams = Parameters<typeof device.launchApp>[0]
 
 let lastLaunchParams: LaunchAppParams | undefined
+
+function runAdb(...args: string[]): string {
+  return execFileSync('adb', ['-s', device.id, ...args], {
+    encoding: 'utf8',
+    maxBuffer: 4 * 1024 * 1024,
+  })
+}
+
+export function androidWindowHasAppFocus(windowState: string): boolean {
+  return windowState
+    .split('\n')
+    .some((line) => line.includes('mCurrentFocus=') && line.includes(ANDROID_APP_ID))
+}
+
+async function ensureAndroidAppFocus(): Promise<void> {
+  if (device.getPlatform() !== 'android') return
+
+  const readWindowState = () => runAdb('shell', 'dumpsys', 'window')
+  if (androidWindowHasAppFocus(readWindowState())) return
+
+  console.warn('safeLaunchApp: Android app connected without window focus; recovering')
+  runAdb('shell', 'am', 'force-stop', ANDROID_PIXEL_LAUNCHER_ID)
+  runAdb('shell', 'input', 'keyevent', '224')
+  runAdb('shell', 'wm', 'dismiss-keyguard')
+  runAdb('shell', 'cmd', 'statusbar', 'collapse')
+  runAdb('shell', 'am', 'start', '-W', '-n', ANDROID_MAIN_ACTIVITY)
+
+  const deadline = Date.now() + ANDROID_FOCUS_TIMEOUT_MS
+  while (Date.now() < deadline) {
+    if (androidWindowHasAppFocus(readWindowState())) return
+    await sleep(500)
+  }
+
+  throw new Error(
+    `timed out after ${ANDROID_FOCUS_TIMEOUT_MS}ms waiting for Android app window focus`
+  )
+}
 
 async function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   let timeout: ReturnType<typeof setTimeout> | undefined
@@ -171,6 +213,7 @@ export async function safeLaunchApp(params?: LaunchAppParams): Promise<void> {
         } as any),
         Math.min(LAUNCH_CONNECT_TIMEOUT_MS, launchBudget)
       )
+      await ensureAndroidAppFocus()
       await withTimeout(device.disableSynchronization(), DISABLE_SYNC_TIMEOUT_MS)
       await sleep(POST_LAUNCH_SETTLE_MS)
       return

@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import type { YStackProps } from 'tamagui'
 import {
   Adapt,
-  Button,
   ListItem,
   Paragraph,
   Popover,
@@ -13,6 +12,7 @@ import {
   YGroup,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { accentThemeName } from '../../accentThemeName'
 import { useHasAccent } from '../../hooks/useHasAccent'
 import { useThemeBuilderStore } from '../store/ThemeBuilderStore'
@@ -97,7 +97,7 @@ export function Panel({
                 onPress={(event) => {
                   event.stopPropagation()
                 }}
-                size="$2"
+                size="small"
                 circular
                 icon={<MoreVertical size="$1" />}
               />
@@ -105,9 +105,10 @@ export function Panel({
 
             <Adapt when="maxMd" platform="touch">
               <Sheet modal dismissOnSnapToBottom>
-                <Sheet.Frame p="$4">
+                <Sheet.Container p="$4">
+                  <Sheet.Background />
                   <Adapt.Contents />
-                </Sheet.Frame>
+                </Sheet.Container>
                 <Sheet.Overlay
                   transition="quickest"
                   enterStyle={{ opacity: 0 }}
@@ -123,7 +124,8 @@ export function Panel({
               exitStyle={{ y: -3, opacity: 0 }}
               y={0}
               opacity={1}
-              elevate
+              backgroundColor="$background"
+              boxShadow="0 4px 12px $shadowColor"
               p={0}
               animateOnly={['transform', 'opacity']}
               transition={[
@@ -135,7 +137,11 @@ export function Panel({
                 },
               ]}
             >
-              <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+              <Popover.Arrow
+                backgroundColor="$background"
+                borderWidth={1}
+                borderColor="$borderColor"
+              />
 
               <YGroup>
                 {hasAccent && (

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Popover, Button, Input, Label, YStack, XStack, TextArea } from 'tamagui'
+import { Popover, Input, Label, YStack, XStack, TextArea } from 'tamagui'
+import { Button } from '../components/Button'
 import { ChevronDown } from '@tamagui/lucide-icons-2'
 
 export function PopoverFocusScopeCase() {
@@ -15,7 +16,8 @@ export function PopoverFocusScopeCase() {
         <Popover.Content
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
-          elevate
+          backgroundColor="$background"
+          boxShadow="0 4px 12px $shadowColor"
           transition={[
             'quick',
             {
@@ -75,7 +77,8 @@ export function PopoverFocusScopeCase() {
           trapFocus={false}
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
-          elevate
+          backgroundColor="$background"
+          boxShadow="0 4px 12px $shadowColor"
           transition={[
             'quick',
             {
@@ -110,7 +113,8 @@ export function PopoverFocusScopeCase() {
         <Popover.Content
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
-          elevate
+          backgroundColor="$background"
+          boxShadow="0 4px 12px $shadowColor"
           transition={[
             'quick',
             {
@@ -131,14 +135,15 @@ export function PopoverFocusScopeCase() {
             {/* Nested Popover */}
             <Popover>
               <Popover.Trigger asChild>
-                <Button data-testid="nested-popover-trigger" size="$3">
+                <Button data-testid="nested-popover-trigger" size="medium">
                   Open Nested
                 </Button>
               </Popover.Trigger>
               <Popover.Content
                 enterStyle={{ y: -10, opacity: 0 }}
                 exitStyle={{ y: -10, opacity: 0 }}
-                elevate
+                backgroundColor="$background"
+                boxShadow="0 4px 12px $shadowColor"
                 transition={[
                   'quick',
                   {
@@ -151,7 +156,7 @@ export function PopoverFocusScopeCase() {
                 <YStack gap="$3" padding="$3" data-testid="nested-popover-content">
                   <Input data-testid="nested-popover-input" placeholder="Nested input" />
                   <Popover.Close asChild>
-                    <Button data-testid="nested-popover-close" size="$3">
+                    <Button data-testid="nested-popover-close" size="medium">
                       Close Nested
                     </Button>
                   </Popover.Close>

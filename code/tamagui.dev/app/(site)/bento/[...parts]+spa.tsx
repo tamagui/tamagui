@@ -1,23 +1,23 @@
 import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
 import { listingData } from '~/components/bento-showcase/data'
 import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons-2'
-import { useToastController } from '@tamagui/toast'
 import type { Href } from 'one'
 import { Link, useParams } from 'one'
 import { startTransition } from 'react'
 import {
   Anchor,
-  Button,
   H1,
   Paragraph,
   SizableText,
   styled,
   Text,
+  toast,
   View,
   XStack,
   YStack,
   Theme,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { ContainerBento } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
@@ -40,7 +40,6 @@ function useParts() {
 export default function BentoPage() {
   const { section, part } = useParts()
   const Comp = Sections?.[section]?.[part]
-  const toast = useToastController()
 
   const { showAppropriateModal, subscriptionStatus, userData } = useSubscriptionModal()
 
@@ -65,7 +64,13 @@ export default function BentoPage() {
         </ContainerBento>
 
         <YStack py="$8" pb="$16" position="relative">
-          <YStack pointerEvents="none" fullscreen className="bg-grid" opacity={0.033} />
+          <YStack
+            pointerEvents="none"
+            position="absolute"
+            inset={0}
+            className="bg-grid"
+            opacity={0.033}
+          />
           <ContainerBento>
             <XStack position="relative" t={0}>
               <View className="sticky">
@@ -78,7 +83,7 @@ export default function BentoPage() {
                             `${window.location.hostname}/bento#${sectionName}`
                           )
 
-                          toast.show('Link copied to clipboard')
+                          toast('Link copied to clipboard')
                         }}
                         gap="$2"
                         items="center"
@@ -183,7 +188,7 @@ export const DetailHeader = (props: { children: string }) => {
 
               <Button
                 icon={bentoStore.disableTint ? Paintbrush : CircleDashed}
-                size="$3"
+                size="medium"
                 rounded="$6"
                 onPress={() => {
                   startTransition(() => {

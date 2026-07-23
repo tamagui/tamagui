@@ -44,17 +44,29 @@ export function SourceVersionSwitcher({
       disablePreventBodyScroll
       zIndex={200000}
     >
-      <Select.Trigger size="$2" iconAfter={ChevronDown} borderRadius={8}>
+      <Select.Trigger
+        height={32}
+        paddingHorizontal="$3"
+        gap="$2"
+        backgroundColor="$background"
+        borderWidth={1}
+        borderColor="$borderColor"
+        borderRadius={8}
+      >
         <Select.Value placeholder={versions[0]} fontFamily="$mono" />
+        <Select.Icon marginLeft="auto">
+          <ChevronDown size={14} />
+        </Select.Icon>
       </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             backgroundColor="$shadowColor"
             transition="lazy"
@@ -78,7 +90,8 @@ export function SourceVersionSwitcher({
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['$background', 'transparent']}
             rounded="$4"
           />
@@ -88,8 +101,9 @@ export function SourceVersionSwitcher({
           minW={200}
           borderWidth={1}
           borderColor="$borderColor"
-          elevation="$3"
           borderRadius="$4"
+          padding="$1"
+          boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
         >
           <Select.Group>
             <Select.Label>Source Version</Select.Label>
@@ -123,7 +137,8 @@ export function SourceVersionSwitcher({
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['transparent', '$background']}
             rounded="$4"
           />

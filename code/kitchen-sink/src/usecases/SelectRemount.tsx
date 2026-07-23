@@ -3,9 +3,11 @@
  * https://github.com/tamagui/tamagui/issues/1859
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/lucide-icons-2'
 import React from 'react'
-import { Adapt, Button, Select, Sheet, Text, XStack, YStack } from 'tamagui'
+import { Adapt, Button, Text, XStack, YStack } from 'tamagui'
+import { Select } from '../components/Select'
+import { Sheet } from '../components/Sheet'
 
 const items = [
   { name: 'Apple' },
@@ -34,18 +36,19 @@ function SelectComponent({ id }: { id: string }) {
         testID={`${id}-trigger`}
         aria-label={`${id}-trigger`}
         maxWidth={220}
-        iconAfter={ChevronDown}
       >
         <Select.Value placeholder="Select a fruit" />
+        <Select.Icon />
       </Select.Trigger>
 
       <Adapt when={true} platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$shadowColor"
             transition="lazy"

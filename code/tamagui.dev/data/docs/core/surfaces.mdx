@@ -1,0 +1,99 @@
+---
+title: Surfaces and levels
+description: One operation — re-binding theme generics against the color scale, scoped to a subtree
+---
+
+Panels, wells, toolbars, per-area restyling, and whole-surface press states are
+all one operation: re-binding the generic theme keys against the color scale,
+scoped to a subtree. v3 ships two entry points for that operation and adds one
+convention on top. There is no separate surface engine.
+
+## Two vocabulary layers
+
+Keep raw material and styling keys separate:
+
+- **Scales** (`color1`..`color12` per scheme) are raw material.
+- **Generics** (`background`, `backgroundHover`, `backgroundPress`, `borderColor`,
+  `color`, …) are the only keys a skin may style against.
+
+A skin never references `$color9` directly. This one rule is what makes everything
+below compose: anything that re-binds the generics restyles every skin beneath it,
+with no skin cooperation needed.
+
+## Levels are sub-themes
+
+`surface1`, `surface2`, and `surface3` are sub-themes that re-bind the generics a
+little darker (or lighter) than their parent. "Everything in this panel a step up"
+is just `theme="surface2"`:
+
+```tsx
+<Theme name="surface2">
+  <YStack backgroundColor="$background" borderColor="$borderColor">
+    {/* every skin in here reads the surface2 generics */}
+  </YStack>
+</Theme>
+```
+
+The light and dark asymmetry (light hover shifts up the scale, dark shifts down)
+lives in the theme templates and is resolved once at theme-build time, not in
+per-component logic. Custom levels are a template you define; the builder
+generates the light and dark variants. They are named, typed, and class-swap
+cheap on the web.
+
+## Surface is the panel fixture
+
+For layout code — panels, wells, toolbars — copy the [Surface](/ui/surface)
+fixture. It is a `YStack` + a `level` prop + the composable facets, with nothing
+on by default:
+
+```tsx
+<Surface level={2} filled outlined rounded interactive />
+```
+
+Because the facets read generics and `level` re-binds those generics, a level
+restyles every facet with zero cooperation. Component skins (Card, the Select
+popover, ListItem) do not extend Surface — they get their family resemblance by
+styling against the same generics and setting their own level.
+
+## Variables is the one-off escape hatch
+
+When a patch lives in exactly one place, use
+[`Variables`](/docs/core/variables) instead of naming a sub-theme:
+
+```tsx
+<Variables values={{ backgroundHover: '$blue4' }}>
+  {/* this panel's hover is blue4; everything else inherits */}
+</Variables>
+```
+
+The rule: used in more than one place, make it a sub-theme; used once,
+`Variables`. Same operation, two entry points, chosen by whether it deserves a
+name.
+
+## Custom knobs go in config.variables
+
+Numbers that should cascade but are not part of the color palette —
+`$radius`, `$pressScale`, `$focusRingWidth`, `$disabledOpacity`, easings — are
+declared once in `config.variables`, typed through module augmentation, and read
+by skins the same way generics are. The facets read `$radius` and `$pressScale`
+from here. This is also how you ship your own tokens.
+
+Do not reintroduce component-scoped tokens like `$surfaceBorder`. Inside a level
+the border already is `$borderColor`; the template re-bound it.
+
+## What to learn, in total
+
+- Style skins against generics, never the scale.
+- `theme="surface1-3"` shifts a subtree's level.
+- `Variables` patches one-offs.
+- `Surface` is a copy-paste panel primitive.
+- Custom knobs go in `config.variables`.
+
+## Not rebuilt on purpose
+
+Whole-subtree state re-theming — a parent press recoloring its children — is
+deliberately not rebuilt; that was v2 component-theme territory, expensive and
+confusing. Where a real case exists (list selection), the state vocabulary emits
+`data-state` and group styles cover it. Relative levels (`level="+1"` compounding
+under nesting) are also deferred: theme resolution is absolute today, and named
+absolute levels cover the cases seen so far.

@@ -1,5 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
-import { Button, Sheet, Text, YStack, Paragraph } from 'tamagui'
+import { Text, YStack, Paragraph } from 'tamagui'
+import { Button } from '../components/Button'
+import { Sheet } from '../components/Sheet'
 
 /**
  * Web test case for Sheet drag resistance behavior
@@ -66,7 +68,7 @@ function NoScrollViewSheet() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle data-testid="no-scroll-handle" />
-        <Sheet.Frame
+        <Sheet.Container
           data-testid="no-scroll-frame"
           padding="$4"
           gap="$4"
@@ -82,6 +84,7 @@ function NoScrollViewSheet() {
             }
           }}
         >
+          <Sheet.Background />
           <Paragraph data-testid="no-scroll-snap-indicator">
             Current snap point: {position}
           </Paragraph>
@@ -107,14 +110,14 @@ function NoScrollViewSheet() {
               setLastDragY(0)
             }}
             theme="red"
-            size="$3"
+            size="medium"
           >
             Reset Drag Tracking
           </Button>
           <Button data-testid="no-scroll-close" onPress={() => setOpen(false)}>
             Close
           </Button>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )
@@ -170,7 +173,8 @@ function NonScrollableContentSheet() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle data-testid="non-scrollable-handle" />
-        <Sheet.Frame data-testid="non-scrollable-frame">
+        <Sheet.Container data-testid="non-scrollable-frame">
+          <Sheet.Background />
           <Sheet.ScrollView
             data-testid="non-scrollable-scrollview"
             onScroll={(e: any) => {
@@ -208,7 +212,7 @@ function NonScrollableContentSheet() {
                   setDragEventCount(0)
                 }}
                 theme="red"
-                size="$3"
+                size="medium"
               >
                 Reset Counters
               </Button>
@@ -217,7 +221,7 @@ function NonScrollableContentSheet() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )
@@ -284,7 +288,8 @@ function ScrollableContentSheet() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle data-testid="scrollable-handle" />
-        <Sheet.Frame data-testid="scrollable-frame">
+        <Sheet.Container data-testid="scrollable-frame">
+          <Sheet.Background />
           <Sheet.ScrollView
             data-testid="scrollable-scrollview"
             onScroll={(e: any) => {
@@ -317,7 +322,7 @@ function ScrollableContentSheet() {
                 data-testid="scrollable-reset"
                 onPress={() => setMaxDragUp(0)}
                 theme="red"
-                size="$3"
+                size="medium"
               >
                 Reset Drag Tracking
               </Button>
@@ -352,7 +357,7 @@ function ScrollableContentSheet() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

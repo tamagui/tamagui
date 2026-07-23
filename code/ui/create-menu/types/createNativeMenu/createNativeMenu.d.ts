@@ -38,5 +38,5 @@ export type NativeMenuComponents = {
         Auxiliary: FC<NativeContextMenuAuxiliaryProps>;
     };
 };
-export declare const createNativeMenu: (MenuType: "ContextMenu" | "Menu") => NativeMenuComponents;
+export declare const createNativeMenu: (MenuType: 'ContextMenu' | 'Menu') => NativeMenuComponents;
 //# sourceMappingURL=createNativeMenu.d.ts.map

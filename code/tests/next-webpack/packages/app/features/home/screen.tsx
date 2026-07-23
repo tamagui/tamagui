@@ -62,11 +62,12 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             backgroundColor="$shadowColor"
             transition="lazy"
@@ -90,7 +91,8 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['$background', 'transparent']}
           />
         </Select.ScrollUpButton>
@@ -137,9 +139,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
               width={'$4'}
               pointerEvents="none"
             >
-              <ChevronDown
-                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
-              />
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </YStack>
           )}
         </Select.Viewport>
@@ -157,7 +157,8 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['transparent', '$background']}
           />
         </Select.ScrollDownButton>
@@ -282,7 +283,8 @@ function SheetDemo() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
+        <Sheet.Container items="center" justify="center" gap="$10">
+          <Sheet.Background bg="$color2" />
           <XStack gap="$2">
             <Paragraph text="center">Made by</Paragraph>
             <Anchor
@@ -313,7 +315,7 @@ function SheetDemo() {
               })
             }}
           />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )

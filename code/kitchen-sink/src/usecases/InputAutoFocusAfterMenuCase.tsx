@@ -5,7 +5,7 @@ import { useState, useRef } from 'react'
 
 /**
  * tests that Input autoFocus works both standalone and after a menu closes,
- * and that onCloseAutoFocus with preventDefault properly prevents focus restoration.
+ * and that onCloseAutoFocus cancellation properly prevents focus restoration.
  */
 export function InputAutoFocusAfterMenuCase() {
   const [showInput, setShowInput] = useState(false)
@@ -34,7 +34,7 @@ export function InputAutoFocusAfterMenuCase() {
             minWidth={200}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
           >
             <Menu.Item
               data-testid="menu-item-show-input"
@@ -56,7 +56,7 @@ export function InputAutoFocusAfterMenuCase() {
         />
       )}
 
-      {/* onCloseAutoFocus preventDefault test: prevent focus restore + manually focus a custom target */}
+      {/* onCloseAutoFocus cancellation test: prevent focus restore + manually focus a custom target */}
       <Input
         ref={customInputRef}
         data-testid="custom-focus-target"
@@ -77,9 +77,9 @@ export function InputAutoFocusAfterMenuCase() {
             minWidth={200}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
             onCloseAutoFocus={(event) => {
-              event.preventDefault()
+              event.cancel()
               // manually focus a custom target instead of the trigger
               customInputRef.current?.focus()
               setPreventDefaultFocusTarget('custom-focused')

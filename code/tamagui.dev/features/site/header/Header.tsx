@@ -7,7 +7,6 @@ import { useWindowDimensions, type LayoutRectangle } from 'react-native'
 import {
   Adapt,
   AnimatePresence,
-  Button,
   Circle,
   debounce,
   isClient,
@@ -24,8 +23,10 @@ import {
   XGroup,
   XStack,
   YStack,
+  createStyledHOC,
   type PopoverProps,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 import { useBannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
@@ -124,7 +125,8 @@ export function Header(props: HeaderProps) {
             <YStack
               opacity={isScrolled ? 0.6 : 0}
               className={`ease-out all ms300`}
-              fullscreen
+              position="absolute"
+              inset={0}
               bg="$color2"
             />
             <YStack mx="auto" px="$4" width="100%">
@@ -138,7 +140,8 @@ export function Header(props: HeaderProps) {
             className="ease-in-out all ms200"
             z={-1}
             rounded="$10"
-            fullscreen
+            position="absolute"
+            inset={0}
             boxShadow="0 8px 20px $shadow3"
             opacity={0}
             {...(isScrolled && {
@@ -175,12 +178,16 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <TooltipGroup delay={tooltipDelay}>
           <XGroup maxH={32} bg="transparent" items="center" size="$4">
             <XGroup.Item>
-              <ThemeToggle borderWidth={0} chromeless />
+              <ThemeToggle borderWidth={0} variant="quiet" />
             </XGroup.Item>
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton size="$2" rounded="$10" elevation="$0.5" />
+        <SearchButton
+          size="small"
+          rounded="$10"
+          boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)"
+        />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
           <XStack group containerType="normal">
@@ -222,7 +229,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         }}
         z={-1}
         justify="center"
-        fullscreen
+        inset={0}
         pointerEvents="none"
         items="center"
       >
@@ -288,7 +295,7 @@ const HeaderMenuButton = () => {
     <Popover.Trigger>
       <SlidingPopoverTarget id="menu">
         <Button
-          size="$5"
+          size="large"
           circular
           my={-1}
           bg="transparent"
@@ -394,11 +401,12 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
 
       <Adapt platform="touch" when="sm">
         <Sheet transition="medium" zIndex={100000000} modal dismissOnSnapToBottom>
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay z={100} bg="$shadow4" />
         </Sheet>
       </Adapt>
@@ -435,7 +443,7 @@ const SlidingPopoverContext = React.createContext({
   close() {},
 })
 
-export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
+export const SlidingPopoverTarget = createStyledHOC(YStack)<{ id: ID }>(
   ({ id, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
     const [layout, setLayout] = React.useState<LayoutRectangle | undefined>()
@@ -564,7 +572,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       maxH="90vh"
       maxW={360}
       minW={360}
-      elevation="$2"
+      boxShadow="0 4px 12px $shadowColor"
       p={0}
       rounded="$6"
       opacity={1}
@@ -1071,7 +1079,7 @@ const Frame = styled(YStack, {
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
-      ':number': (going) => ({
+      number: (going) => ({
         enterStyle: {
           x: going > 0 ? 50 : -50,
           opacity: 0,

@@ -1,0 +1,2 @@
+export { tailwindColors, tailwindFontSize, tailwindLineHeight, tailwindRadius, tailwindSize, tailwindSource, tailwindSpace, tailwindZIndex, } from './v6-tailwind-defaults.generated';
+//# sourceMappingURL=v6-tailwind-tokens.d.ts.map

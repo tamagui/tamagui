@@ -1,19 +1,19 @@
 /**
  * tvOS Platform Style Tests
  *
- * Verifies that $platform-* props work correctly on tvOS (Apple TV).
+ * Verifies that platform props work correctly on tvOS (Apple TV).
  *
  * react-native-tvos behavior (verified):
  *   - tvOS: Platform.OS === 'ios', Platform.isTV === true
  *
  * So on tvOS:
- *   - $platform-ios should apply (Platform.OS === 'ios')
- *   - $platform-native should apply (non-web platform)
- *   - $platform-tv should apply (Platform.isTV === true)
- *   - $platform-tvos should apply (Platform.OS === 'ios' && Platform.isTV === true)
- *   - $platform-android should NOT apply
- *   - $platform-androidtv should NOT apply
- *   - $platform-web should NOT apply
+ *   - $ios should apply (Platform.OS === 'ios')
+ *   - $native should apply (non-web platform)
+ *   - $tv should apply (Platform.isTV === true)
+ *   - $tvos should apply (Platform.OS === 'ios' && Platform.isTV === true)
+ *   - $android should NOT apply
+ *   - $androidtv should NOT apply
+ *   - $web should NOT apply
  */
 
 import { View, createTamagui } from '@tamagui/core'
@@ -73,78 +73,78 @@ function getSplitStylesFor(props: Record<string, any>, Component = View) {
   )!
 }
 
-describe('tvOS - $platform-* style props', () => {
-  test('$platform-ios applies on tvOS (Platform.OS === "ios")', () => {
+describe('tvOS - platform style props', () => {
+  test('$ios applies on tvOS (Platform.OS === "ios")', () => {
     const result = getSplitStylesFor({
-      '$platform-ios': { backgroundColor: 'red' },
+      $ios: { backgroundColor: 'red' },
     })
     expect(result.style?.backgroundColor).toBe('red')
   })
 
-  test('$platform-native applies on tvOS (non-web platform)', () => {
+  test('$native applies on tvOS (non-web platform)', () => {
     const result = getSplitStylesFor({
-      '$platform-native': { backgroundColor: 'green' },
+      $native: { backgroundColor: 'green' },
     })
     expect(result.style?.backgroundColor).toBe('green')
   })
 
-  test('$platform-tv applies on tvOS (Platform.isTV === true)', () => {
+  test('$tv applies on tvOS (Platform.isTV === true)', () => {
     const result = getSplitStylesFor({
-      '$platform-tv': { backgroundColor: 'blue' },
+      $tv: { backgroundColor: 'blue' },
     })
     expect(result.style?.backgroundColor).toBe('blue')
   })
 
-  test('$platform-tvos applies on tvOS (Platform.OS === "ios" && Platform.isTV === true)', () => {
+  test('$tvos applies on tvOS (Platform.OS === "ios" && Platform.isTV === true)', () => {
     const result = getSplitStylesFor({
-      '$platform-tvos': { backgroundColor: 'purple' },
+      $tvos: { backgroundColor: 'purple' },
     })
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
-  test('$platform-android does NOT apply on tvOS', () => {
+  test('$android does NOT apply on tvOS', () => {
     const result = getSplitStylesFor({
-      '$platform-android': { backgroundColor: 'orange' },
+      $android: { backgroundColor: 'orange' },
     })
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$platform-androidtv does NOT apply on tvOS', () => {
+  test('$androidtv does NOT apply on tvOS', () => {
     const result = getSplitStylesFor({
-      '$platform-androidtv': { backgroundColor: 'pink' },
+      $androidtv: { backgroundColor: 'pink' },
     })
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$platform-web does NOT apply on tvOS', () => {
+  test('$web does NOT apply on tvOS', () => {
     const result = getSplitStylesFor({
-      '$platform-web': { backgroundColor: 'yellow' },
+      $web: { backgroundColor: 'yellow' },
     })
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$platform-tvos overrides $platform-ios on tvOS (tvos declared after)', () => {
+  test('$tvos overrides $ios on tvOS (tvos declared after)', () => {
     const result = getSplitStylesFor({
-      '$platform-ios': { backgroundColor: 'red' },
-      '$platform-tvos': { backgroundColor: 'purple' },
+      $ios: { backgroundColor: 'red' },
+      $tvos: { backgroundColor: 'purple' },
     })
     // tvos is more specific → always wins regardless of declaration order
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
-  test('$platform-tvos overrides $platform-ios on tvOS (tvos declared first)', () => {
+  test('$tvos overrides $ios on tvOS (tvos declared first)', () => {
     const result = getSplitStylesFor({
-      '$platform-tvos': { backgroundColor: 'purple' },
-      '$platform-ios': { backgroundColor: 'red' },
+      $tvos: { backgroundColor: 'purple' },
+      $ios: { backgroundColor: 'red' },
     })
     // tvos is more specific → wins even when declared first
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
-  test('$platform-tv and $platform-tvos both apply on tvOS', () => {
+  test('$tv and $tvos both apply on tvOS', () => {
     const result = getSplitStylesFor({
-      '$platform-tv': { marginTop: 10 },
-      '$platform-tvos': { marginBottom: 20 },
+      $tv: { marginTop: 10 },
+      $tvos: { marginBottom: 20 },
     })
     expect(result.style?.marginTop).toBe(10)
     expect(result.style?.marginBottom).toBe(20)
@@ -152,9 +152,9 @@ describe('tvOS - $platform-* style props', () => {
 
   test('platform specificity cascade: native → tv → tvos (each overrides previous for same key, retains others)', () => {
     const result = getSplitStylesFor({
-      '$platform-native': { backgroundColor: 'green', opacity: 1, zIndex: 2 },
-      '$platform-tv': { backgroundColor: 'blue', marginTop: 8 },
-      '$platform-tvos': { backgroundColor: 'purple' },
+      $native: { backgroundColor: 'green', opacity: 1, zIndex: 2 },
+      $tv: { backgroundColor: 'blue', marginTop: 8 },
+      $tvos: { backgroundColor: 'purple' },
     })
     // tvos wins for backgroundColor (most specific)
     expect(result.style?.backgroundColor).toBe('purple')
@@ -167,9 +167,9 @@ describe('tvOS - $platform-* style props', () => {
 
   test('platform specificity cascade is order-independent (most specific declared first, retains other props)', () => {
     const result = getSplitStylesFor({
-      '$platform-tvos': { backgroundColor: 'purple' },
-      '$platform-tv': { backgroundColor: 'blue', marginTop: 8 },
-      '$platform-native': { backgroundColor: 'green', opacity: 1, zIndex: 2 },
+      $tvos: { backgroundColor: 'purple' },
+      $tv: { backgroundColor: 'blue', marginTop: 8 },
+      $native: { backgroundColor: 'green', opacity: 1, zIndex: 2 },
     })
     // tvos wins for backgroundColor even though it was declared first
     expect(result.style?.backgroundColor).toBe('purple')

@@ -50,8 +50,8 @@ export function SheetFit3pcNativeRepro() {
 
   // 3pc focuses its primary input once the open animation completes, raising the
   // soft keyboard; with moveOnKeyboardChange the sheet then shifts up.
-  const handleAnimationComplete = ({ open: didOpen }: { open: boolean }) => {
-    if (didOpen) {
+  const handleTransition = (e: { phase: string; cause: string }) => {
+    if (e.phase === 'end' && e.cause !== 'close') {
       setTimeout(() => inputRef.current?.focus(), 150)
     }
   }
@@ -87,7 +87,7 @@ export function SheetFit3pcNativeRepro() {
         snapPointsMode="fit"
         dismissOnSnapToBottom
         moveOnKeyboardChange
-        onAnimationComplete={handleAnimationComplete}
+        onTransition={handleTransition}
       >
         <TamaguiSheet.Overlay
           testID="repro-3pc-native-overlay"
@@ -96,14 +96,13 @@ export function SheetFit3pcNativeRepro() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <TamaguiSheet.Frame
-          testID="repro-3pc-native-frame"
-          borderRadius={sheetBorderRadius}
-          borderBottomRightRadius={0}
-          borderBottomLeftRadius={0}
-          bg="transparent"
-          overflow="hidden"
-        >
+        <TamaguiSheet.Container testID="repro-3pc-native-frame" overflow="hidden">
+          <TamaguiSheet.Background
+            borderBottomRightRadius={0}
+            borderBottomLeftRadius={0}
+            bg="transparent"
+            borderRadius={sheetBorderRadius}
+          />
           {/* decorative absolute layers exactly like 3pc's wrapper */}
           <YStack
             {...sheetTopRadius}
@@ -155,7 +154,7 @@ export function SheetFit3pcNativeRepro() {
               </Button>
             </YStack>
           </TamaguiSheet.ScrollView>
-        </TamaguiSheet.Frame>
+        </TamaguiSheet.Container>
       </TamaguiSheet>
     </View>
   )

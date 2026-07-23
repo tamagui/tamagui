@@ -7,7 +7,6 @@ import { createStore, createUseStore } from '@tamagui/use-store'
 import { useState } from 'react'
 import { z } from 'zod'
 import {
-  Button,
   Dialog,
   H3,
   Paragraph,
@@ -22,6 +21,7 @@ import {
   useThemeName,
   SizableText,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { authFetch } from '~/features/api/authFetch'
 import { useUser } from '~/features/user/useUser'
 
@@ -343,7 +343,7 @@ export const AddTeamMemberModalComponent = () => {
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
                     />
-                    <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                    <Button size="medium" theme="accent" onPress={handleApplyCoupon}>
                       <Button.Text>Apply</Button.Text>
                     </Button>
                   </XStack>
@@ -387,7 +387,7 @@ export const AddTeamMemberModalComponent = () => {
             </YStack>
           )}
           <Dialog.Close asChild>
-            <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+            <Button position="absolute" t="$2" r="$2" size="small" circular icon={X} />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>

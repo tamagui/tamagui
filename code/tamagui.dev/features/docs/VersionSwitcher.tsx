@@ -40,17 +40,30 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
       disablePreventBodyScroll
       zIndex={200000}
     >
-      <Select.Trigger maxWidth={220} iconAfter={ChevronDown} borderRadius={8}>
+      <Select.Trigger
+        maxWidth={220}
+        height={36}
+        paddingHorizontal="$3"
+        gap="$2"
+        backgroundColor="$background"
+        borderWidth={1}
+        borderColor="$borderColor"
+        borderRadius={8}
+      >
         <Select.Value placeholder="2.0.0" />
+        <Select.Icon marginLeft="auto">
+          <ChevronDown size={16} />
+        </Select.Icon>
       </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             backgroundColor="$shadowColor"
             transition="lazy"
@@ -74,7 +87,8 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['$background', 'transparent']}
             rounded="$4"
           />
@@ -125,7 +139,8 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['transparent', '$background']}
             rounded="$4"
           />

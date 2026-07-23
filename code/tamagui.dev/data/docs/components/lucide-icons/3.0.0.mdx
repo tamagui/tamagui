@@ -1,0 +1,68 @@
+---
+title: Lucide Icons
+description: Cross-platform compatible SVG-based icons
+name: lucide-icons
+component: LucideIcons
+package: lucide-icons
+demoName: LucideIcons
+---
+
+<HeroContainer noPad>
+  <LucideIconsDemo />
+</HeroContainer>
+
+## Installation
+
+```sh
+yarn add react-native-svg @tamagui/lucide-icons-2
+```
+
+<Notice>
+  If you're using icons in a monorepo, install `react-native-svg` in the parent
+  app or workspace root rather than a leaf package.
+</Notice>
+
+## Usage
+
+Use them as regular React components:
+
+```tsx
+import { Button } from 'tamagui'
+import { Plus } from '@tamagui/lucide-icons-2'
+
+// Button will automatically pass size/theme to icon
+export default () => <Button icon={Plus}>Hello world</Button>
+
+// or you can control it
+export default () => <Button icon={<Plus size="$4" />}>Hello world</Button>
+```
+
+They accept your theme keys for color and your font size tokens for size. In v3,
+`size="$4"` resolves through the current font's `font.size.$4` scale so icons
+line up with `$4` text. Raw numeric sizes are unchanged.
+
+```tsx
+<Plus size="$4" color="$color" />
+<Plus size={18} color="$blue10" />
+```
+
+Themed icons no longer run full Tamagui style resolution, so media and pseudo
+props are not accepted directly on the icon. Wrap the icon when you need those
+styles:
+
+```tsx
+import { View, styled } from 'tamagui'
+
+const IconFrame = styled(View, {
+  $sm: { opacity: 0.6 },
+  hoverStyle: { scale: 1.05 },
+})
+
+<IconFrame>
+  <Plus size="$4" />
+</IconFrame>
+```
+
+## Credit
+
+The great [Lucide Icons](https://lucide.dev/), a superset of the wonderful [Feather Icons](https://feathericons.com/).

@@ -6,7 +6,8 @@ import { fonts } from './v4-fonts'
 import { media, mediaQueryDefaultActive } from './v4-media'
 
 export { shorthands } from '@tamagui/shorthands/v4'
-export { createThemes } from '@tamagui/theme-builder'
+// static re-exports only. to build custom themes import { createThemes } from
+// '@tamagui/theme-builder' directly, keeping this config entry builder-free.
 export { tamaguiThemes, tokens } from '@tamagui/themes/v4'
 export { animations } from './v4-animations'
 export { createSystemFont, fonts } from './v4-fonts'
@@ -26,6 +27,7 @@ export const selectionStyles = (theme) =>
 export const settings = {
   mediaQueryDefaultActive,
   defaultFont: 'body',
+  defaultSize: '$4',
   fastSchemeChange: true,
   shouldAddPrefersColorThemes: true,
   allowedStyleValues: 'somewhat-strict-web',

@@ -6,15 +6,23 @@ export declare const overlayThemeDefinitions: {
 }[];
 export declare const componentThemeDefinitions: {
     ListItem: ({
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -34,26 +42,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         parent: string;
         mask: "strengthen";
     } | {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -73,27 +81,27 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         parent: string;
         mask: "identity";
     })[];
     Card: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -113,28 +121,28 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "soften";
     };
     Button: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            borderColor: string;
-            borderColorHover: string;
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
+            borderColor: string;
+            borderColorHover: string;
         };
         skip: {
             color1: number;
@@ -154,26 +162,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "soften2";
     };
     Checkbox: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -193,26 +201,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "softenBorder2";
     };
     Switch: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -232,26 +240,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "soften2";
     };
     SwitchThumb: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -271,26 +279,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "inverseStrengthen2";
     };
     TooltipContent: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -310,26 +318,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "soften2";
     };
     DrawerFrame: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -349,26 +357,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "soften";
     };
     Progress: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -388,26 +396,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "soften";
     };
     RadioGroupItem: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -427,26 +435,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "softenBorder2";
     };
     TooltipArrow: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -466,26 +474,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "soften";
     };
     SliderTrackActive: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -505,26 +513,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "inverseSoften";
     };
     SliderTrack: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -544,26 +552,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "soften2";
     };
     SliderThumb: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -583,26 +591,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "inverse";
     };
     Tooltip: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -622,26 +630,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "inverse";
     };
     ProgressIndicator: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -661,14 +669,6 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "inverse";
     };
     SheetOverlay: {
@@ -690,15 +690,23 @@ export declare const componentThemeDefinitions: {
         };
     }[];
     Input: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -718,26 +726,26 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "softenBorder2";
     };
     TextArea: {
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
         override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
             shadowColor: number;
             shadowColorHover: number;
             shadowColorPress: number;
             shadowColorFocus: number;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
         };
         skip: {
             color1: number;
@@ -757,14 +765,6 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette;
-        overrideStrategy?: "shift" | "swap";
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
-        strength?: number;
-        max?: number;
-        min?: number;
-        parentName?: string;
         mask: "softenBorder2";
     };
 };

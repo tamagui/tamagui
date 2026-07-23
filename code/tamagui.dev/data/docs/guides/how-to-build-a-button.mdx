@@ -535,12 +535,12 @@ keeping the compound API:
 
 ```tsx
 import { createContext } from 'react'
-import { SizeTokens, GetProps, withStaticProperties } from '@tamagui/core'
+import { SizeTokens, GetProps, createStyledHOC, withStaticProperties } from '@tamagui/core'
 import { Button } from './OurButton'
 
 const SizeContext = createContext<SizeTokens>('$md')
 
-const ButtonFrame = Button.styleable(
+const ButtonFrame = createStyledHOC(Button)(
   ({ size = '$md', ...props }: GetProps<typeof OGB.ButtonFrame>) => {
     return (
       <SizeContext.Provider value={size}>
@@ -550,7 +550,7 @@ const ButtonFrame = Button.styleable(
   }
 )
 
-const ButtonText = Button.Text.styleable((props: GetProps<typeof OGB.ButtonText>) => {
+const ButtonText = createStyledHOC(Button.Text)((props: GetProps<typeof OGB.ButtonText>) => {
   const size = useContext(SizeContext)
   return <Button.Text size={size} {...props} />
 })
@@ -560,11 +560,11 @@ export const NewButton = withStaticProperties(ButtonFrame, {
 })
 ```
 
-What the hell is `ButtonText.styleable` and `ButtonFrame.styleable`?
+What the hell is `createStyledHOC`?
 
-While it's explained in [the styled docs](/docs/core/styled#styleable),
+While it's explained in [the styled docs](/docs/core/styled#createstyledhoc),
 the short of it is: if you want a functional component that returns a styled
-component _to then be able to be styled again_, you need `styleable`.
+component _to then be able to be styled again_, you need `createStyledHOC`.
 
 That's because merging things like themes, animations, variants, media queries,
 and pseudo queries is quite complex, and if Tamagui doesn't know that there is a

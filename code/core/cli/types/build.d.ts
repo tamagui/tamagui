@@ -21,7 +21,7 @@ export type BuildResult = {
  */
 export declare function insertCssImport(jsContent: string, cssImport: string): string;
 export declare const build: (options: CLIResolvedOptions & {
-    target?: "web" | "native" | "both";
+    target?: 'web' | 'native' | 'both';
     dir?: string;
     include?: string;
     exclude?: string;

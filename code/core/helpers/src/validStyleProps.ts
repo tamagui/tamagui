@@ -5,6 +5,9 @@ import {
   webOnlyStylePropsText,
   webOnlyStylePropsView,
 } from './webOnlyStyleProps'
+import { tokenCategories } from './tokenCategories'
+
+export { tokenCategories } from './tokenCategories'
 
 // generally organizing this so we don't duplicate things so its a bit weird
 
@@ -40,65 +43,6 @@ const textColors = {
   textShadowColor: true,
 }
 
-// used for propMapping to find the right token category
-// just specificy the least costly, all else go to `space` (most keys - we can exclude)
-export const tokenCategories = {
-  radius: {
-    borderRadius: true,
-    borderTopLeftRadius: true,
-    borderTopRightRadius: true,
-    borderBottomLeftRadius: true,
-    borderBottomRightRadius: true,
-
-    // logical
-    borderStartStartRadius: true,
-    borderStartEndRadius: true,
-    borderEndStartRadius: true,
-    borderEndEndRadius: true,
-  },
-  size: {
-    width: true,
-    height: true,
-    minWidth: true,
-    minHeight: true,
-    maxWidth: true,
-    maxHeight: true,
-    blockSize: true,
-    minBlockSize: true,
-    maxBlockSize: true,
-    inlineSize: true,
-    minInlineSize: true,
-    maxInlineSize: true,
-  },
-  zIndex: {
-    zIndex: true,
-  },
-  color: {
-    backgroundColor: true,
-    borderColor: true,
-    borderBlockStartColor: true,
-    borderBlockEndColor: true,
-    borderBlockColor: true,
-    borderBottomColor: true,
-    borderInlineColor: true,
-    borderInlineStartColor: true,
-    borderInlineEndColor: true,
-    borderTopColor: true,
-    borderLeftColor: true,
-    borderRightColor: true,
-    borderEndColor: true,
-    borderStartColor: true,
-    shadowColor: true,
-    ...textColors,
-    // outlineColor is supported on RN 0.77+ (New Architecture)
-    outlineColor: true,
-    // caretColor is web-only
-    ...(process.env.TAMAGUI_TARGET === 'web' && {
-      caretColor: true,
-    }),
-  },
-}
-
 // discrete (non-animatable) view style properties - keyword-based, no interpolation
 // defined above stylePropsView so it can be spread in without duplication
 const nonAnimatableViewProps = {
@@ -126,6 +70,9 @@ const nonAnimatableViewProps = {
   outlineStyle: true,
   overflow: true,
   position: true,
+  // visibility: native maps "hidden" -> opacity:0 + pointerEvents:none via expandStyle;
+  // on web passes through as CSS visibility (visible | hidden | collapse).
+  visibility: true,
 }
 
 // discrete (non-animatable) font properties

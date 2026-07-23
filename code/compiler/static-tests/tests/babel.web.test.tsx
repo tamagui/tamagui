@@ -5,7 +5,7 @@ import { extractForWeb } from './lib/extract'
 
 window['React'] = React
 
-test('theme props get extracted properly', async () => {
+test('theme props with a dynamic sibling bail out transactionally', async () => {
   const output = await extractForWeb(
     `
 import { View } from '@tamagui/core'
@@ -23,7 +23,9 @@ import { View } from '@tamagui/core'
     }
   )
 
-  expect(output?.js).toContain(`<_TamaguiTheme name="green"><div className={`)
+  expect(output?.js).toContain('theme="green"')
+  expect(output?.js).toContain("bg={props.green ? 'red' : 'blue'}")
+  expect(output?.styles).toBe('')
 })
 
 test('theme + media queries + conditionals extract', async () => {
@@ -90,7 +92,7 @@ test('conditional specific after generic style overrides', async () => {
   expect(output?.styles).toMatchSnapshot()
 })
 
-test('conditional styles get full base styles merged onto + shorthand', async () => {
+test('conditional styles extract disjoint static siblings', async () => {
   const output = await extractForWeb(
     `
 import { View } from '@tamagui/core'
@@ -108,6 +110,9 @@ import { View } from '@tamagui/core'
     }
   )
 
+  expect(output?.js).toContain('className="_w-10px"')
+  expect(output?.js).toContain("bg={props.green ? 'red' : 'blue'}")
+  expect(output?.styles).toContain('width:10px')
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })
@@ -473,8 +478,7 @@ test('$group- with untilMeasured on the same parent does NOT extract child group
 test('$group- styles on an animated element stay on the runtime path (never extract to CSS)', async () => {
   // Q2 invariant: a static @container class can't drive a JS animation driver's
   // interpolation, so an animated element's $group- style must NOT extract to CSS.
-  // the compiler enforces this via createExtractor's `animation` de-opt (the whole
-  // element drops to runtime), backed by extractToClassNames' animation guard.
+  // the shared compiler enforces this with an all-or-nothing animation bailout.
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -484,7 +488,7 @@ test('$group- styles on an animated element stay on the runtime path (never extr
         <View group="card">
           <View
             width={100}
-            animation="bouncy"
+            transition="bouncy"
             $group-card={{ backgroundColor: 'red' }}
           />
         </View>
@@ -545,7 +549,7 @@ test('$theme- styles extract to atomic CSS', async () => {
   expect(output?.styles).toContain('t_dark')
 })
 
-test('$platform-web styles are flattened on web', async () => {
+test('$web styles are flattened on web', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -554,21 +558,21 @@ test('$platform-web styles are flattened on web', async () => {
       return (
         <View
           width={100}
-          $platform-web={{ backgroundColor: 'red' }}
+          $web={{ backgroundColor: 'red' }}
         />
       )
     }
   `
   )
 
-  // $platform-web styles SHOULD be flattened on web - the platform is known at compile time
+  // $web styles SHOULD be flattened on web - the platform is known at compile time
   // The component should be converted to a plain div with the styles applied
   expect(output?.js).toContain('div')
-  expect(output?.js).not.toContain('$platform-web')
+  expect(output?.js).not.toContain('$web')
   expect(output?.styles).toContain('background-color')
 })
 
-test('$platform-web transition property is preserved', async () => {
+test('$web transition property is preserved', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -577,7 +581,7 @@ test('$platform-web transition property is preserved', async () => {
       return (
         <View
           width={100}
-          $platform-web={{
+          $web={{
             transition: 'clip-path 400ms ease, transform 400ms ease',
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
           }}
@@ -587,34 +591,9 @@ test('$platform-web transition property is preserved', async () => {
   `
   )
 
-  // transition inside $platform-web should be preserved as a CSS property
+  // transition inside $web should be preserved as a CSS property
   expect(output?.styles).toContain('transition')
   expect(output?.styles).toContain('clip-path')
-})
-
-test('CSS-only named transition stays flattened and emits CSS', async () => {
-  const output = await extractForWeb(`
-    import { View } from '@tamagui/core'
-
-    export function Test(props) {
-      return <View transition="medium" opacity={props.active ? 1 : 0} />
-    }
-  `)
-
-  expect({ js: output?.js, styles: output?.styles }).toMatchInlineSnapshot(`
-    {
-      "js": "const _cn3 = "is_View _transition-all300mscub1822784663";
-    const _cn2 = "is_View _transition-all300mscub1822784663 _o-1";
-    const _cn = "is_View _transition-all300mscub1822784663 _o-0";
-    import { View } from '@tamagui/core';
-    export function Test(props) {
-      return <div className={!props.active ? _cn : props.active ? _cn2 : _cn3} />;
-    }",
-      "styles": ":root ._transition-all300mscub1822784663{transition:all 300ms cubic-bezier(0.25, 0.1, 0.25, 1);}
-    :root ._o-1{opacity:1;}
-    :root ._o-0{opacity:0;}",
-    }
-  `)
 })
 
 // Verifies that conditional spread with runtime variable from hook inside map is correctly extracted
@@ -762,7 +741,7 @@ test('Text with hoverStyle and conditional spread preserves ternary', async () =
   expect(output?.js).toMatchSnapshot()
 })
 
-test('conditional color prop keeps hoverStyle color when flattened', async () => {
+test('conditional color prop keeps hoverStyle on the runtime component', async () => {
   const output = await extractForWeb(
     `
     import { Text } from '@tamagui/core'
@@ -786,15 +765,10 @@ test('conditional color prop keeps hoverStyle color when flattened', async () =>
     }
   )
 
-  expect(output?.styles).toContain('color:var(--color11)')
-  expect(output?.styles).toContain(
-    '._col-0hover-color:hover{color:var(--color) !important;}'
-  )
+  expect(output?.styles).toBe('')
   expect(output?.js).toContain('isActive')
-  expect(output?.js).toContain('!isActive ?')
-  expect(output?.js).toContain('isActive ?')
-  expect(output?.js).toContain('_col-0hover-color _col-color11')
-  expect(output?.js).toContain('_col-0hover-color _col-color')
+  expect(output?.js).toContain("color={isActive ? '$color' : '$color11'}")
+  expect(output?.js).toContain("hoverStyle={{ color: '$color' }}")
 })
 
 // role attribute is passed through during extraction
@@ -820,8 +794,8 @@ test('role attribute is preserved during extraction', async () => {
   expect(output?.js).toContain('button')
 })
 
-// fontWeight ternary is dropped when combined with theme-token color ternary
-test('ternary with mixed theme-token and non-token values preserves all props', async () => {
+// dynamic font props remain when a disjoint static font prop is extracted
+test('ternary with mixed theme-token and non-token values retains dynamic props', async () => {
   const output = await extractForWeb(
     `
     import { Text } from '@tamagui/core'
@@ -845,12 +819,11 @@ test('ternary with mixed theme-token and non-token values preserves all props', 
     }
   )
 
-  // both ternary branches should include fontWeight
-  expect(output?.styles).toContain('font-weight:600')
-  expect(output?.styles).toContain('font-weight:400')
-  // both color values should also be present (as CSS variables for theme tokens)
-  expect(output?.styles).toContain('color:var(--color12')
-  expect(output?.styles).toContain('color:var(--color11')
+  // the static font size is disjoint, while both expressions stay on the runtime component.
+  expect(output?.styles).toContain('font-size:var(--f-size-3)')
+  expect(output?.js).not.toContain('fontSize="$3"')
+  expect(output?.js).toContain("fontWeight={isActive ? '600' : '400'}")
+  expect(output?.js).toContain("color={isActive ? '$color12' : '$color11'}")
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })

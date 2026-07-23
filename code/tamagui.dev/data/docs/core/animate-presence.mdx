@@ -118,7 +118,8 @@ const GalleryItem = styled(YStack, {
   zIndex: 1,
   x: 0,
   opacity: 1,
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
 
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
@@ -206,7 +207,7 @@ export function Demo() {
 - **`children`** - One or more Tamagui components with unique `key` props
 - **`initial`** - If `false`, children entering on initial mount won't animate (default: `true`)
 - **`custom`** - Pass data to children's variants for dynamic exit animations
-- **`exitBeforeEnter`** - If `true`, only one child renders at a time (default: `false`)
+- **`mode`** - Determines how entering and exiting children render. Use `"wait"` to render one child at a time.
 - **`onExitComplete`** - Callback fired when all exiting children have finished animating
 
 ### Component Props

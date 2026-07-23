@@ -23,8 +23,7 @@ test('basic extraction', async () => {
 
 test('theme value extraction should work when no theme variables used', async () => {
   // here we override default "$color" so it should flatten totally
-  // actually since we do unstyled: false and it expands to $color it acceses it
-  // were not smart enough yet to detect its later overriden :/
+  // we're not smart enough yet to detect that it's later overridden
   // that could be a perf optimization, but also have work to improve flattening soon anyway
   const output = await extractForNative(`
     import { Paragraph } from 'tamagui'
@@ -104,7 +103,7 @@ test('handles style order merge properly', async () => {
   expect(code).toMatchSnapshot()
 })
 
-test(`normalize ternaries flips the conditional properly`, async () => {
+test(`dynamic ternary remains on the runtime component`, async () => {
   const inputCode = `
   import { View } from 'tamagui'
   export function Test(props) {
@@ -115,7 +114,7 @@ test(`normalize ternaries flips the conditional properly`, async () => {
 `
   const output = await extractForNative(inputCode)
   const outCode = output?.code ?? ''
-  expect(outCode).toContain(`props === 123 ? _sheet["0"] : _sheet["1"]`)
+  expect(outCode).toContain(`props !== 123 ? 12 : 0`)
   expect(outCode).toMatchSnapshot()
 })
 
@@ -264,12 +263,7 @@ test('multiple media query components should not conflict', async () => {
   expect(styledMatches.length).toBe(uniqueNames.size)
 })
 
-test('string ternary test should not be confused with media key', async () => {
-  // Regression: <View width={someString ? 24 : 66} xs={{ height: 30 }} />
-  // someString evaluates to a string at runtime, and _withStableStyle's
-  // resolvedExpressions check `typeof expr === 'string' ? media[expr] : expr`
-  // would incorrectly treat it as a media key lookup.
-  // The fix: compiler wraps non-string-literal expressions with !! to coerce to boolean.
+test('string ternary and media prop remain distinct on the runtime component', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test({ someString }) {
@@ -282,10 +276,8 @@ test('string ternary test should not be confused with media key', async () => {
     }
   `)
   const code = output?.code ?? ''
-  // the ternary test expression must be coerced to boolean
-  expect(code).toContain('!!someString')
-  // the media key should remain a plain string literal
-  expect(code).toContain('"sm"')
+  expect(code).toContain('someString ? 24 : 66')
+  expect(code).toContain('$sm={{ height: 30 }}')
   expect(code).toMatchSnapshot()
 })
 
@@ -305,7 +297,7 @@ test('hoverStyle on native should drop dead hover work', async () => {
   expect(code).not.toContain('"hoverStyle"')
   expect(code).not.toContain('hoverStyle')
   expect(code).not.toContain("backgroundColor: 'green'")
-  expect(code).toContain('__ReactNativeView')
+  expect(code).toContain('__TamaguiNativeView')
   expect(code).toMatchSnapshot()
 })
 

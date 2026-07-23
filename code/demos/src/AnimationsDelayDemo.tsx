@@ -1,5 +1,6 @@
 import React from 'react'
-import { AnimatePresence, Button, Square, XStack, YStack, isWeb } from 'tamagui'
+import { AnimatePresence, Square, XStack, YStack, isWeb } from 'tamagui'
+import { Button } from './Button'
 
 import { useIsIntersecting } from './useOnIntersecting'
 
@@ -41,7 +42,7 @@ export function AnimationsDelayDemo() {
         </AnimatePresence>
       </XStack>
 
-      <Button size="$3" onPress={() => setShow(!show)}>
+      <Button size="medium" onPress={() => setShow(!show)}>
         {show ? 'Hide' : 'Show'}
       </Button>
     </YStack>

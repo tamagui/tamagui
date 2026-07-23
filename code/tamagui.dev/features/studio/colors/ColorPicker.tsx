@@ -74,7 +74,6 @@ const HueSlider = memo(
           }}
         />
         <Slider.Thumb
-          unstyled
           position="absolute"
           index={0}
           size="$1"
@@ -118,7 +117,6 @@ const SatSlider = memo(
           }}
         />
         <Slider.Thumb
-          unstyled
           position="absolute"
           index={0}
           size="$1"
@@ -161,7 +159,6 @@ const LightSlider = memo(
           }}
         />
         <Slider.Thumb
-          unstyled
           position="absolute"
           index={0}
           size="$1"
@@ -285,19 +282,20 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
               select="none"
               pointerEvents="none"
               position="absolute"
-              fullscreen
+              inset={0}
               items="center"
               justify="center"
             >
               {!props.value && <Checkerboard rotate="45deg" />}
-              <YStack fullscreen bg={hex as any} />
+              <YStack position="absolute" inset={0} bg={hex as any} />
             </YStack>
           </View>
         </Popover.Trigger>
 
         <Popover.Content
           transition="quick"
-          elevation="$8"
+          backgroundColor="$background"
+          boxShadow="0 4px 12px $shadowColor"
           borderWidth={1}
           borderColor="$color10"
           p={0}
@@ -310,7 +308,12 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             opacity: 0,
           }}
         >
-          <Popover.Arrow borderWidth={1} borderColor="$color10" size="$4" />
+          <Popover.Arrow
+            backgroundColor="$background"
+            borderWidth={1}
+            borderColor="$color10"
+            size="$4"
+          />
           {!props.disableLightness && (
             <>
               <Separator vertical />

@@ -2,8 +2,22 @@
   "name": "@tamagui/build",
   "version": "2.5.1",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "files": [
+    "babel-plugin-process-env-to-meta.js",
+    "babel-plugin-process-env-to-meta.ts",
+    "esbuild-es5.js",
+    "externalNodePlugin.js",
+    "pretty-print-errors.js",
+    "tamagui-build.js",
+    "tamagui-build-workspace.js",
+    "tamagui-tsgo.js",
+    "typescript-native.js",
+    "teesx.sh"
+  ],
   "bin": {
     "tamagui-build": "tamagui-build.js",
+    "tamagui-build-workspace": "tamagui-build-workspace.js",
+    "tamagui-tsgo": "tamagui-tsgo.js",
     "teesx": "./teesx.sh"
   },
   "publishConfig": {
@@ -17,7 +31,6 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-typescript": "^7.26.0",
     "@swc/core": "^1.14.0",
-    "@tamagui/babel-plugin-fully-specified": "workspace:*",
     "@types/fs-extra": "^9.0.13",
     "baseline-browser-mapping": "^2.9.15",
     "chokidar": "^3.5.2",
@@ -26,11 +39,20 @@
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",
+    "get-tsconfig": "^4.14.0",
     "lodash.debounce": "^4.0.8",
     "oxc-transform": "^0.112.0",
     "picomatch": "4.0.3",
-    "rolldown": "1.0.1",
-    "typescript": "~5.9.2"
+    "rolldown": "1.0.1"
+  },
+  "optionalDependencies": {
+    "@typescript/typescript-darwin-arm64": "7.1.0-dev.20260722.1",
+    "@typescript/typescript-darwin-x64": "7.1.0-dev.20260722.1",
+    "@typescript/typescript-linux-arm": "7.1.0-dev.20260722.1",
+    "@typescript/typescript-linux-arm64": "7.1.0-dev.20260722.1",
+    "@typescript/typescript-linux-x64": "7.1.0-dev.20260722.1",
+    "@typescript/typescript-win32-arm64": "7.1.0-dev.20260722.1",
+    "@typescript/typescript-win32-x64": "7.1.0-dev.20260722.1"
   },
   "peerDependencies": {
     "babel-plugin-react-compiler": ">=1"

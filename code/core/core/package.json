@@ -79,9 +79,12 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/react-native-use-pressable": "workspace:*",
+    "@tamagui/size": "workspace:*",
     "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/use-event": "workspace:*",
     "@tamagui/web": "workspace:*"

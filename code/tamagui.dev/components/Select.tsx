@@ -3,9 +3,17 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import type { SelectItemProps, SelectProps, SelectTriggerProps } from 'tamagui'
 import { Select as TamaguiSelect, YStack, useProps, withStaticProperties } from 'tamagui'
 
-export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
+export const SelectItem = ({ children, ...props }: SelectItemProps) => {
   return (
-    <TamaguiSelect.Item index={index + 1} borderColor="transparent" {...props}>
+    <TamaguiSelect.Item
+      minHeight={36}
+      paddingHorizontal="$3"
+      borderRadius="$3"
+      borderColor="transparent"
+      hoverStyle={{ backgroundColor: '$backgroundHover' }}
+      focusStyle={{ backgroundColor: '$backgroundFocus' }}
+      {...props}
+    >
       <TamaguiSelect.ItemText>{children}</TamaguiSelect.ItemText>
     </TamaguiSelect.Item>
   )
@@ -24,13 +32,10 @@ const SelectComponent = (
     defaultOpen,
     onOpenChange,
     dir,
-    name,
-    autoComplete,
     size,
     children,
     onActiveChange,
     renderValue,
-    variant,
     ...selectTriggerProps
   } = useProps(propsIn)
   const selectProps = {
@@ -43,15 +48,25 @@ const SelectComponent = (
     defaultOpen,
     onOpenChange,
     dir,
-    name,
-    autoComplete,
     size,
     renderValue,
   } as SelectProps
   return (
     <TamaguiSelect {...selectProps} zIndex={1_000_000}>
-      <TamaguiSelect.Trigger iconAfter={ChevronDown} {...selectTriggerProps}>
+      <TamaguiSelect.Trigger
+        height={36}
+        paddingHorizontal="$3"
+        gap="$2"
+        backgroundColor="$background"
+        borderWidth={1}
+        borderColor="$borderColor"
+        borderRadius="$3"
+        {...selectTriggerProps}
+      >
         <TamaguiSelect.Value placeholder={placeholder} />
+        <TamaguiSelect.Icon marginLeft="auto">
+          <ChevronDown size={16} />
+        </TamaguiSelect.Icon>
       </TamaguiSelect.Trigger>
 
       <TamaguiSelect.Content>
@@ -68,7 +83,8 @@ const SelectComponent = (
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['$background', '$background0']}
             rounded="$4"
           />
@@ -89,6 +105,9 @@ const SelectComponent = (
           className="blur-medium"
           borderWidth={1}
           borderColor="$borderColor"
+          borderRadius="$4"
+          padding="$1"
+          boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
         >
           {children}
         </TamaguiSelect.Viewport>
@@ -106,7 +125,8 @@ const SelectComponent = (
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['$background0', '$background']}
             rounded="$4"
           />

@@ -1,7 +1,7 @@
-import type { ScrollView as RNScrollView } from 'react-native';
+import type { ScrollViewRef } from '@tamagui/scroll-view';
 import type { ScrollBridge } from './types';
 interface UseSheetScrollViewGesturesProps {
-    scrollRef: React.RefObject<RNScrollView | null>;
+    scrollRef: React.RefObject<ScrollViewRef | null>;
     scrollBridge: ScrollBridge;
     hasScrollableContent: boolean;
     scrollEnabled: boolean;

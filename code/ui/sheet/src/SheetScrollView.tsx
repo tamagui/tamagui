@@ -1,10 +1,9 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isWeb, View, type GetRef } from '@tamagui/core'
-import type { ScrollViewProps } from '@tamagui/scroll-view'
+import { createStyledHOC, isWeb, View, type GetProps } from '@tamagui/core'
+import type { ScrollViewRef } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { useEffect, useRef, useState } from 'react'
-import type { ScrollView as RNScrollView } from 'react-native'
 import { useGestureSheetContext } from './GestureSheetContext'
 import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
 import { useSheetContext } from './SheetContext'
@@ -20,21 +19,28 @@ import {
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
-export const SheetScrollView = React.forwardRef<
-  GetRef<typeof ScrollView>,
-  ScrollViewProps
->(
+type SheetScrollViewBaseProps = GetProps<typeof ScrollView>
+
+type SheetScrollViewProps = SheetScopedProps<
+  SheetScrollViewBaseProps & {
+    h?: SheetScrollViewBaseProps['height']
+    o?: SheetScrollViewBaseProps['opacity']
+    pos?: SheetScrollViewBaseProps['position']
+  }
+>
+
+export const SheetScrollView = createStyledHOC(ScrollView)<SheetScrollViewProps>(
   (
     {
-      __scopeSheet,
+      scope,
       children,
       onScroll,
       scrollEnabled: scrollEnabledProp,
       ...props
-    }: SheetScopedProps<ScrollViewProps>,
+    }: SheetScrollViewProps,
     ref
   ) => {
-    const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
+    const context = useSheetContext(scope)
     const gestureContext = useGestureSheetContext()
     const { scrollBridge, setHasScrollView, hasFit, screenSize } = context
     const keyboardOccludedHeight = Math.max(0, context.keyboardOccludedHeight || 0)
@@ -50,7 +56,7 @@ export const SheetScrollView = React.forwardRef<
       prop: scrollEnabledProp,
       defaultProp: true,
     })
-    const scrollRef = React.useRef<RNScrollView | null>(null)
+    const scrollRef = React.useRef<ScrollViewRef | null>(null)
 
     const [hasScrollableContent, setHasScrollableContent] = useState(true)
     const parentHeight = useRef(0)
@@ -61,8 +67,8 @@ export const SheetScrollView = React.forwardRef<
     // closed), so the height now comes from the sheet, which doesn't remount.
     const frozenFrameHeight = Math.max(0, context.keyboardStableFrameHeight || 0)
 
-    // with snapPointsMode="fit", Frame is content-sized (flex: 0, flex-basis: auto, height: undefined).
-    // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Frame
+    // with snapPointsMode="fit", Container is content-sized (flex: 0, flex-basis: auto, height: undefined).
+    // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Container
     // around it) collapse to 0 height. instead, let the ScrollView size to its content and cap it
     // at the available viewport (screenSize / maxContentSize) so scrolling kicks in for tall content.
     const fitSizingStyle = hasFit
@@ -364,5 +370,11 @@ export const SheetScrollView = React.forwardRef<
         {contentWrapper}
       </ScrollView>
     )
+  },
+  {
+    disableTheme: true,
+    staticConfig: {
+      componentName: SHEET_SCROLL_VIEW_NAME,
+    },
   }
 )

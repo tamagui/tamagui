@@ -1,18 +1,8 @@
 import { ThemeTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons-2'
 import type { Frontmatter } from '@vxrn/mdx-rust'
-import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H6,
-  Paragraph,
-  Separator,
-  View,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { H1, H2, H3, H6, Paragraph, Separator, View, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { usePathname } from 'one'
 import { Container } from '~/components/Containers'
@@ -44,7 +34,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
         <YStack mt="$2" items="flex-start">
           <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
-              <Button size="$3" chromeless icon={ArrowLeft} ml="$-2">
+              <Button size="medium" variant="quiet" icon={ArrowLeft} ml="$-2">
                 <Button.Text>{isDraft ? 'Drafts' : 'Blog'}</Button.Text>
               </Button>
             </Link>

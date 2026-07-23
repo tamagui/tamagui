@@ -43,6 +43,7 @@
     "**/.next/**",
     "**/build/**",
     "**/.expo/**",
-    "**/starters/**"
+    "**/starters/**",
+    "**/comparisons/**"
   ]
 }

@@ -1,4 +1,5 @@
-import { Button, XGroup } from 'tamagui'
+import { XGroup } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useRootStore } from '../state/useGlobalState'
 
@@ -12,7 +13,7 @@ export function StudioToggleThemeBuilderScheme() {
         onPress={() => {
           rootStore.theme = 'light'
         }}
-        size="$3"
+        size="medium"
         rounded="$10"
       >
         Light
@@ -22,7 +23,7 @@ export function StudioToggleThemeBuilderScheme() {
         onPress={() => {
           rootStore.theme = 'dark'
         }}
-        size="$3"
+        size="medium"
         rounded="$10"
       >
         Dark

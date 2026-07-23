@@ -8,53 +8,49 @@ import {
 import type { AllPlatforms, MediaQueryKey } from '@tamagui/core'
 import { createStyledContext, useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-import { getPortal } from '@tamagui/native'
-import { PortalHost, PortalItem } from '@tamagui/portal'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
-import React, { createContext, useContext, useId, useMemo } from 'react'
+import React, { createContext, useContext, useId } from 'react'
 
-/**
- * External store for passing children from AdaptPortalContents to Adapt.Contents
- * when teleport is enabled. This bypasses PortalItem to avoid nested teleport
- * (inner portal inside an already-teleported Sheet) which breaks touch
- * coordinate mapping on iOS.
- */
-type AdaptChildrenStore = {
-  set(children: React.ReactNode): void
-  get(): React.ReactNode
+type AdaptSlotStore = {
+  element: React.ReactNode
+  version: number
+  publish(element: React.ReactNode): void
+  clear(): void
+  notify(): void
+  getSnapshot(): number
   subscribe(callback: () => void): () => void
 }
 
-function createAdaptChildrenStore(): AdaptChildrenStore {
-  let children: React.ReactNode = null
+function createAdaptSlotStore(): AdaptSlotStore {
   const listeners = new Set<() => void>()
-  return {
-    set(c) {
-      children = c
-      for (const l of listeners) l()
+
+  const store: AdaptSlotStore = {
+    element: null,
+    version: 0,
+    publish(element) {
+      store.element = element
     },
-    get: () => children,
+    clear() {
+      store.element = null
+    },
+    notify() {
+      store.version += 1
+      for (const listener of listeners) {
+        listener()
+      }
+    },
+    getSnapshot() {
+      return store.version
+    },
     subscribe(callback) {
       listeners.add(callback)
-      return () => listeners.delete(callback)
+      return () => {
+        listeners.delete(callback)
+      }
     },
   }
-}
 
-const AdaptChildrenStoreContext = createContext<AdaptChildrenStore | null>(null)
-
-const emptySubscribe = () => () => {}
-const emptyGet = () => null
-
-/** Renders adapt children from external store (used when teleport is enabled) */
-function TeleportAdaptContents() {
-  const store = useContext(AdaptChildrenStoreContext)
-  const children = React.useSyncExternalStore(
-    store?.subscribe ?? emptySubscribe,
-    store?.get ?? emptyGet,
-    store?.get ?? emptyGet
-  )
-  return <>{children}</>
+  return store
 }
 
 /**
@@ -63,6 +59,34 @@ function TeleportAdaptContents() {
 
 export type AdaptWhen = MediaQueryKeyString | boolean | null
 export type AdaptPlatform = AllPlatforms | 'touch' | null
+export type AdaptCapabilitiesValue = {
+  scroll?: boolean
+  overlay?: boolean
+  dismiss?: boolean
+}
+
+// structurally matches @tamagui/sheet's SheetTransitionEvent (adapt cannot
+// import it — sheet depends on adapt). the adapt target reports its position
+// transition here so the parent can release the presence latch on real close
+// completion instead of a timer.
+export type AdaptTargetTransitionEvent = {
+  phase: 'start' | 'end'
+  cause: 'open' | 'close' | 'snap'
+  finished?: boolean
+}
+
+export type AdaptTargetHandoff = {
+  hidden: boolean
+  skipNextAnimation?: boolean
+  onTransition: (e: AdaptTargetTransitionEvent) => void
+}
+
+export type AdaptTarget<State = unknown> = {
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  handoff: AdaptTargetHandoff
+  state: State
+}
 
 export type AdaptParentContextI = {
   Contents: Component
@@ -71,30 +95,102 @@ export type AdaptParentContextI = {
   setPlatform: (when: AdaptPlatform) => any
   when: AdaptWhen
   setWhen: (when: AdaptWhen) => any
+  active: boolean
+  rawActive: boolean
+  setRawActive: (active: boolean) => void
   portalName?: string
   lastScope?: string
+  slot: AdaptSlotStore | null
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  state?: unknown
+  handoff: AdaptTargetHandoff
+  targetFullyHidden: boolean
+  registerTarget: () => void
+  unregisterTarget: () => void
+  registerContents: () => void
+  unregisterContents: () => void
+  registerRenderCallback: () => void
+  unregisterRenderCallback: () => void
 }
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
+
+export type AdaptRenderState<State = unknown> = {
+  active: boolean
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  state: State
+  handoff: AdaptTargetHandoff
+}
 
 export type AdaptProps = {
   scope?: string
   when?: AdaptWhen
   platform?: AdaptPlatform
-  children: React.JSX.Element | ((children: React.ReactNode) => React.ReactNode)
+  children:
+    | React.JSX.Element
+    | ((contents: React.ReactNode, adapt: AdaptRenderState) => React.ReactNode)
 }
 
 type Component = (props: any) => any
 
-export const AdaptContext = createStyledContext<AdaptParentContextI>({
-  Contents: null as any,
-  scopeName: '',
-  portalName: '',
-  platform: null as any,
-  setPlatform: (x: AdaptPlatform) => {},
-  when: null as any,
-  setWhen: () => {},
-})
+const adaptContextKeys = [
+  'Contents',
+  'scopeName',
+  'portalName',
+  'platform',
+  'setPlatform',
+  'when',
+  'setWhen',
+  'active',
+  'rawActive',
+  'setRawActive',
+  'slot',
+  'handoff',
+  'targetFullyHidden',
+  'registerTarget',
+  'unregisterTarget',
+  'registerContents',
+  'unregisterContents',
+  'registerRenderCallback',
+  'unregisterRenderCallback',
+] as const
+
+export const AdaptContext = createStyledContext<
+  AdaptParentContextI,
+  (typeof adaptContextKeys)[number]
+>(
+  {
+    Contents: null as any,
+    scopeName: '',
+    portalName: '',
+    platform: null as any,
+    setPlatform: (x: AdaptPlatform) => {},
+    when: null as any,
+    setWhen: () => {},
+    active: false,
+    rawActive: false,
+    setRawActive: () => {},
+    slot: null,
+    handoff: {
+      hidden: true,
+      onTransition: () => {},
+    },
+    targetFullyHidden: true,
+    registerTarget: () => {},
+    unregisterTarget: () => {},
+    registerContents: () => {},
+    unregisterContents: () => {},
+    registerRenderCallback: () => {},
+    unregisterRenderCallback: () => {},
+  },
+  {
+    keys: adaptContextKeys,
+  }
+)
+
+const AdaptCapabilitiesContext = createContext<AdaptCapabilitiesValue>({})
 
 const LastAdaptContextScope = createContext('')
 
@@ -132,6 +228,10 @@ type AdaptParentProps = {
   children?: React.ReactNode
   Contents?: AdaptParentContextI['Contents']
   scope: string
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  state?: unknown
+  // unused, removed with the old paths in PRs B-E
   portal?:
     | boolean
     | {
@@ -139,79 +239,196 @@ type AdaptParentProps = {
       }
 }
 
-const AdaptPortals = new Map()
-
-export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentProps) => {
+export const AdaptParent = ({
+  children,
+  Contents,
+  scope,
+  open,
+  onOpenChange,
+  state,
+}: AdaptParentProps) => {
   const id = useId()
   const portalName = `AdaptPortal${scope}${id}`
 
-  const childrenStoreRef = React.useRef<AdaptChildrenStore | null>(null)
-  if (!childrenStoreRef.current) {
-    childrenStoreRef.current = createAdaptChildrenStore()
+  const slotRef = React.useRef<AdaptSlotStore | null>(null)
+  if (!slotRef.current) {
+    slotRef.current = createAdaptSlotStore()
   }
-
-  const isTeleport =
-    process.env.TAMAGUI_TARGET === 'native' && getPortal().state.type === 'teleport'
-
-  const FinalContents = useMemo(() => {
-    if (Contents) {
-      return Contents
-    }
-
-    // when teleport is enabled, use store-based children passing to avoid
-    // nested teleport (inner PortalItem inside already-teleported Sheet)
-    // which breaks touch coordinate mapping on iOS.
-    if (isTeleport) {
-      return TeleportAdaptContents
-    }
-
-    if (AdaptPortals.has(portalName)) {
-      return AdaptPortals.get(portalName)
-    }
-
-    const element = () => {
-      return (
-        <PortalHost
-          key={id}
-          name={portalName}
-          forwardProps={typeof portal === 'boolean' ? undefined : portal?.forwardProps}
-        />
-      )
-    }
-
-    AdaptPortals.set(portalName, element)
-
-    return element
-  }, [portalName, Contents, isTeleport])
-
-  useIsomorphicLayoutEffect(() => {
-    if (!isTeleport) {
-      AdaptPortals.set(portalName, FinalContents)
-      return () => {
-        AdaptPortals.delete(portalName)
-      }
-    }
-  }, [portalName, isTeleport])
 
   const [when, setWhen] = React.useState<AdaptWhen>(null)
   const [platform, setPlatform] = React.useState<AdaptPlatform>(null)
+  const [rawActive, setRawActive] = React.useState(false)
+  const [exiting, setExiting] = React.useState(false)
+  const [present, setPresent] = React.useState(false)
+  const [targetFullyHidden, setTargetFullyHidden] = React.useState(!open)
+  const targetCountRef = React.useRef(0)
+  const contentsCountRef = React.useRef(0)
+  const renderCallbackCountRef = React.useRef(0)
+  const rawActiveRef = React.useRef(false)
+  const openRef = React.useRef(open)
+  const wasTargetHiddenRef = React.useRef(!rawActive)
+  const hasHadActiveTargetRef = React.useRef(false)
+
+  const shouldStartExit = !rawActive && present && Boolean(open)
+  const active = rawActive || exiting || shouldStartExit
+  const targetHidden = !rawActive
+  const skipNextAnimation = Boolean(
+    rawActive && wasTargetHiddenRef.current && hasHadActiveTargetRef.current && open
+  )
+
+  rawActiveRef.current = rawActive
+  openRef.current = open
+  if (rawActive) {
+    hasHadActiveTargetRef.current = true
+  }
+  wasTargetHiddenRef.current = targetHidden
+
+  const releasePresenceLatch = React.useCallback(() => {
+    setExiting(false)
+    if (!rawActiveRef.current) {
+      setPresent(false)
+    }
+  }, [])
+
+  useIsomorphicLayoutEffect(() => {
+    if (shouldStartExit) {
+      setExiting(true)
+    }
+  }, [shouldStartExit])
+
+  useIsomorphicLayoutEffect(() => {
+    if (open && rawActive) {
+      setTargetFullyHidden(false)
+      return
+    }
+
+    // once closed and the target is no longer active (exit finished or never
+    // started), mark it hidden. an active exit waits for the target's
+    // close-complete transition to fire the handoff below.
+    if (!open && !active) {
+      setTargetFullyHidden(true)
+    }
+  }, [active, open, rawActive])
+
+  useIsomorphicLayoutEffect(() => {
+    if (rawActive) {
+      setPresent(true)
+    } else if (!active) {
+      setPresent(false)
+    }
+
+    if (rawActive && exiting) {
+      setExiting(false)
+    }
+  }, [active, exiting, rawActive])
+
+  const handoff = React.useMemo<AdaptTargetHandoff>(
+    () => ({
+      hidden: targetHidden,
+      skipNextAnimation,
+      onTransition(e) {
+        // only act on completed transitions; a started or interrupted
+        // (finished === false) transition leaves the latch as-is.
+        if (e.phase !== 'end' || e.finished === false) return
+
+        if (e.cause !== 'close') {
+          setTargetFullyHidden(false)
+          return
+        }
+
+        if (openRef.current && rawActiveRef.current) {
+          setTargetFullyHidden(false)
+          return
+        }
+
+        setTargetFullyHidden(true)
+        releasePresenceLatch()
+      },
+    }),
+    [releasePresenceLatch, skipNextAnimation, targetHidden]
+  )
+
+  const registerTarget = React.useCallback(() => {
+    targetCountRef.current += 1
+
+    if (process.env.NODE_ENV === 'development' && targetCountRef.current > 1) {
+      console.error(
+        `Adapt expected exactly one target in scope "${scope}", but ${targetCountRef.current} targets registered.`
+      )
+    }
+  }, [scope])
+
+  const unregisterTarget = React.useCallback(() => {
+    targetCountRef.current = Math.max(0, targetCountRef.current - 1)
+  }, [])
+
+  const registerContents = React.useCallback(() => {
+    contentsCountRef.current += 1
+  }, [])
+
+  const unregisterContents = React.useCallback(() => {
+    contentsCountRef.current = Math.max(0, contentsCountRef.current - 1)
+  }, [])
+
+  const registerRenderCallback = React.useCallback(() => {
+    renderCallbackCountRef.current += 1
+  }, [])
+
+  const unregisterRenderCallback = React.useCallback(() => {
+    renderCallbackCountRef.current = Math.max(0, renderCallbackCountRef.current - 1)
+  }, [])
+
+  React.useEffect(() => {
+    if (process.env.NODE_ENV !== 'development') return
+    if (!active) return
+
+    const timer = setTimeout(() => {
+      if (
+        rawActiveRef.current &&
+        targetCountRef.current === 0 &&
+        contentsCountRef.current === 0 &&
+        renderCallbackCountRef.current === 0
+      ) {
+        console.error(
+          `Adapt is active in scope "${scope}" but no target registered with useAdaptTarget(), Adapt.Contents marker, or render callback consumed it.`
+        )
+      }
+    })
+
+    return () => clearTimeout(timer)
+  }, [active, scope])
+
+  const FinalContents = Contents || AdaptSlotContents
 
   return (
-    <AdaptChildrenStoreContext.Provider value={childrenStoreRef.current}>
-      <LastAdaptContextScope.Provider value={scope}>
-        <ProvideAdaptContext
-          Contents={FinalContents}
-          when={when}
-          platform={platform}
-          setPlatform={setPlatform}
-          setWhen={setWhen}
-          portalName={portalName}
-          scopeName={scope}
-        >
-          {children}
-        </ProvideAdaptContext>
-      </LastAdaptContextScope.Provider>
-    </AdaptChildrenStoreContext.Provider>
+    <LastAdaptContextScope.Provider value={scope}>
+      <ProvideAdaptContext
+        Contents={FinalContents}
+        when={when}
+        platform={platform}
+        setPlatform={setPlatform}
+        setWhen={setWhen}
+        active={active}
+        rawActive={rawActive}
+        setRawActive={setRawActive}
+        portalName={portalName}
+        scopeName={scope}
+        slot={slotRef.current}
+        open={open}
+        onOpenChange={onOpenChange}
+        state={state}
+        handoff={handoff}
+        targetFullyHidden={targetFullyHidden}
+        registerTarget={registerTarget}
+        unregisterTarget={unregisterTarget}
+        registerContents={registerContents}
+        unregisterContents={unregisterContents}
+        registerRenderCallback={registerRenderCallback}
+        unregisterRenderCallback={unregisterRenderCallback}
+      >
+        {children}
+      </ProvideAdaptContext>
+    </LastAdaptContextScope.Provider>
   )
 }
 
@@ -230,8 +447,17 @@ export const AdaptContents = ({ scope, ...rest }: { scope?: string }) => {
     )
   }
 
+  useIsomorphicLayoutEffect(() => {
+    if (!context.active) return
+
+    context.registerContents()
+    return () => {
+      context.unregisterContents()
+    }
+  }, [context.active, context.registerContents, context.unregisterContents])
+
   // forwards props - see shouldForwardSpace
-  return React.createElement(context.Contents, { ...rest, key: `stable` })
+  return React.createElement(context.Contents, { ...rest, scope, key: `stable` })
 }
 
 AdaptContents.shouldForwardSpace = true
@@ -240,25 +466,50 @@ export const Adapt = withStaticProperties(
   function Adapt(props: AdaptProps) {
     const { platform, when, children, scope } = props
     const context = useAdaptContext(scope)
-    const enabled = useAdaptIsActiveGiven(props)
+    const rawEnabled = useAdaptIsActiveGiven(props)
+    const enabled = rawEnabled || context.active
+    const isRenderCallback = typeof children === 'function'
 
     useIsomorphicLayoutEffect(() => {
-      context?.setWhen?.((when || enabled) as AdaptWhen)
+      context?.setWhen?.((when || rawEnabled) as AdaptWhen)
       context?.setPlatform?.(platform || null)
-    }, [when, platform, enabled, context.setWhen, context.setPlatform])
+      context?.setRawActive?.(rawEnabled)
+    }, [
+      when,
+      platform,
+      rawEnabled,
+      context.setWhen,
+      context.setPlatform,
+      context.setRawActive,
+    ])
+
+    useIsomorphicLayoutEffect(() => {
+      if (!enabled || !isRenderCallback) return
+
+      context.registerRenderCallback()
+      return () => {
+        context.unregisterRenderCallback()
+      }
+    }, [
+      enabled,
+      isRenderCallback,
+      context.registerRenderCallback,
+      context.unregisterRenderCallback,
+    ])
 
     useIsomorphicLayoutEffect(() => {
       return () => {
         context?.setWhen?.(null)
         context?.setPlatform?.(null)
+        context?.setRawActive?.(false)
       }
     }, [])
 
     let output: React.ReactNode
 
-    if (typeof children === 'function') {
+    if (isRenderCallback) {
       const Component = context?.Contents
-      output = children(Component ? <Component /> : null)
+      output = children(Component ? <Component /> : null, getAdaptRenderState(context))
     } else {
       output = children
     }
@@ -276,54 +527,69 @@ export const AdaptPortalContents = (props: {
   passThrough?: boolean
 }) => {
   const isActive = useAdaptIsActive(props.scope)
-  const { portalName } = useAdaptContext(props.scope)
-  const childrenStore = useContext(AdaptChildrenStoreContext)
-  const isTeleport = !isWeb && getPortal().state.type === 'teleport'
-
-  // when teleport is enabled, bypass PortalItem to avoid nested teleport
-  // (inner portal inside already-teleported Sheet) which breaks touch
-  // coordinate mapping on iOS. children are passed via external store
-  // to TeleportAdaptContents rendered at Adapt.Contents.
-  if (isTeleport && childrenStore) {
-    return (
-      <AdaptPortalTeleport isActive={isActive} store={childrenStore}>
-        {props.children}
-      </AdaptPortalTeleport>
-    )
-  }
+  const { slot } = useAdaptContext(props.scope)
 
   return (
-    <PortalItem passThrough={!isActive} hostName={portalName}>
+    <AdaptSlotPublisher isActive={isActive} slot={slot}>
       {props.children}
-    </PortalItem>
+    </AdaptSlotPublisher>
   )
 }
 
-function AdaptPortalTeleport({
+function AdaptSlotContents({ scope }: { scope?: string }) {
+  const { slot } = useAdaptContext(scope)
+
+  React.useSyncExternalStore(
+    slot?.subscribe ?? emptySubscribe,
+    slot?.getSnapshot ?? emptySnapshot,
+    slot?.getSnapshot ?? emptySnapshot
+  )
+
+  return <>{slot?.element ?? null}</>
+}
+
+function AdaptSlotPublisher({
   isActive,
-  store,
+  slot,
   children,
 }: {
   isActive: boolean
-  store: AdaptChildrenStore
+  slot: AdaptSlotStore | null
   children: React.ReactNode
 }) {
-  // keep the teleport store in sync without clearing it between parent
-  // renders. clearing only on real unmount or inactive lets React reconcile
-  // sheet/dialog/popover contents instead of remounting the subtree.
+  const publishedRef = React.useRef(false)
+
+  // Publish the live element value after every commit. Do not memoize this handoff:
+  // stale element deps caused the Sheet overlay-hoist regression this replaces.
   useIsomorphicLayoutEffect(() => {
+    if (!slot) return
+
     if (isActive) {
-      store.set(children)
+      slot.publish(children)
+      publishedRef.current = true
     } else {
-      store.set(null)
+      slot.clear()
+      publishedRef.current = false
     }
+
+    slot.notify()
   })
+
   useIsomorphicLayoutEffect(() => {
-    return () => store.set(null)
-  }, [store])
+    return () => {
+      if (publishedRef.current) {
+        slot?.clear()
+        slot?.notify()
+        publishedRef.current = false
+      }
+    }
+  }, [slot])
 
   return isActive ? null : <>{children}</>
 }
+
+const emptySubscribe = () => () => {}
+const emptySnapshot = () => 0
 
 const useAdaptIsActiveGiven = ({
   when,
@@ -360,5 +626,69 @@ const useAdaptIsActiveGiven = ({
 
 export const useAdaptIsActive = (scope?: string) => {
   const props = useAdaptContext(scope)
-  return useAdaptIsActiveGiven(props)
+  const isActiveGiven = useAdaptIsActiveGiven(props)
+  return props.active || isActiveGiven
+}
+
+export function useAdaptTarget<State = unknown>(
+  scope?: string
+): AdaptTarget<State> | null {
+  const context = useAdaptContext(scope)
+
+  useIsomorphicLayoutEffect(() => {
+    if (!context.active) return
+
+    context.registerTarget()
+    return () => {
+      context.unregisterTarget()
+    }
+  }, [context.active, context.registerTarget, context.unregisterTarget])
+
+  if (!context.active) {
+    return null
+  }
+
+  return {
+    open: context.open,
+    onOpenChange: context.onOpenChange,
+    handoff: context.handoff,
+    state: context.state as State,
+  }
+}
+
+export const AdaptCapabilities = ({
+  children,
+  scroll,
+  overlay,
+  dismiss,
+}: AdaptCapabilitiesValue & { children?: React.ReactNode }) => {
+  const parent = useContext(AdaptCapabilitiesContext)
+  const value = React.useMemo(
+    () => ({
+      scroll: scroll ?? parent.scroll,
+      overlay: overlay ?? parent.overlay,
+      dismiss: dismiss ?? parent.dismiss,
+    }),
+    [dismiss, overlay, parent.dismiss, parent.overlay, parent.scroll, scroll]
+  )
+
+  return (
+    <AdaptCapabilitiesContext.Provider value={value}>
+      {children}
+    </AdaptCapabilitiesContext.Provider>
+  )
+}
+
+export const useAdaptedCapabilities = () => {
+  return useContext(AdaptCapabilitiesContext)
+}
+
+function getAdaptRenderState(context: AdaptParentContextI): AdaptRenderState {
+  return {
+    active: context.active,
+    open: context.open,
+    onOpenChange: context.onOpenChange,
+    state: context.state,
+    handoff: context.handoff,
+  }
 }

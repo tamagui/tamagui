@@ -1,0 +1,17 @@
+{
+  "name": "@tamagui/comparison-conformance-native",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start --port 8099"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "expo": "~55.0.28",
+    "expo-linking": "*",
+    "react": ">=19",
+    "react-native": "0.83.2",
+    "tamagui": "workspace:*"
+  }
+}

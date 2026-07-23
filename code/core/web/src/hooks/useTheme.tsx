@@ -1,4 +1,5 @@
 import { useRef, type MutableRefObject } from 'react'
+import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
 import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
 import { useThemeState } from './useThemeState'
@@ -8,6 +9,7 @@ const EMPTY = {}
 type KeysBag = {
   keys: MutableRefObject<Set<string> | null>
   schemeKeys: MutableRefObject<Set<string> | null>
+  optimizeForFirstRender: boolean
 }
 
 export const useTheme = () => {
@@ -21,7 +23,7 @@ export const useTheme = () => {
 export type ThemeWithState = [ThemeParsed, ThemeState]
 
 /**
- * Adds a proxy around themeState that tracks update keys
+ * Adds the public theme value wrapper and tracks update keys in updates mode.
  */
 export const useThemeWithState = (
   props: UseThemeWithStateProps,
@@ -45,17 +47,28 @@ export const useThemeWithState = (
     bag.current = {
       keys: { current: null },
       schemeKeys: { current: null },
+      optimizeForFirstRender: isOptimizedForFirstRender(),
     }
   }
-  const { keys, schemeKeys } = bag.current
-  const themeState = useThemeState(props, isRoot, keys, schemeKeys, forThemeView)
+  const { keys, schemeKeys, optimizeForFirstRender } = bag.current
+  const themeState = useThemeState(
+    props,
+    isRoot,
+    keys,
+    schemeKeys,
+    forThemeView,
+    optimizeForFirstRender
+  )
 
   if (process.env.NODE_ENV === 'development') {
     if (!props.passThrough && !themeState?.theme) {
       if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
+        // stringify only the theme name, not all props - props can carry
+        // circular React refs (e.g. a context Provider) that would make
+        // JSON.stringify throw and turn this dev warning into a hard crash.
         console.error(
-          `[tamagui] No theme found, this could be due to an invalid theme name (given theme props ${JSON.stringify(
-            props
+          `[tamagui] No theme found, this could be due to an invalid theme name (given theme name ${JSON.stringify(
+            props.name
           )}).\n\nIf this is intended and you are using Tamagui without any themes, you can disable this warning by setting the environment variable TAMAGUI_DISABLE_NO_THEME_WARNING=1`
         )
       }
@@ -64,7 +77,7 @@ export const useThemeWithState = (
 
   const themeProxied = props.passThrough
     ? {}
-    : getThemeProxied(props, themeState, keys, schemeKeys)
+    : getThemeProxied(props, themeState, keys, schemeKeys, optimizeForFirstRender)
 
   return [themeProxied, themeState]
 }

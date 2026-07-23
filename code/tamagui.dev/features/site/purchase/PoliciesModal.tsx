@@ -1,5 +1,6 @@
 import { X } from '@tamagui/lucide-icons-2'
-import { Button, Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from 'tamagui'
+import { Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 import { ProPolicy } from '../../pro/ProPolicy'
 import { useTakeoutStore } from './useTakeoutStore'
@@ -16,11 +17,12 @@ export const ProPoliciesModal = () => {
     >
       <Dialog.Adapt when="maxMd">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame p="$8">
+          <Sheet.Container p="$8">
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$shadow4"
             transition="lazy"
@@ -67,7 +69,7 @@ export const ProPoliciesModal = () => {
           </ScrollView>
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+              <Button position="absolute" t="$2" r="$2" size="small" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

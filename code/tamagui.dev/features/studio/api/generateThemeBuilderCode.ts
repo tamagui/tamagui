@@ -37,7 +37,7 @@ export async function generateThemeBuilderCode({
     ? `\n  componentThemes: v5ComponentThemes,`
     : `\n  componentThemes: false,`
 
-  return `import { createV5Theme, defaultChildrenThemes } from '@tamagui/config/v5'${includeComponentThemes ? `\nimport { v5ComponentThemes } from '@tamagui/themes/v5'` : ``}
+  return `import { createV5Theme, defaultChildrenThemes${includeComponentThemes ? `, v5ComponentThemes` : ``} } from '@tamagui/themes/v5-builder'
 import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'
 
 const darkPalette = ${arrayToJS(darkPalette)}

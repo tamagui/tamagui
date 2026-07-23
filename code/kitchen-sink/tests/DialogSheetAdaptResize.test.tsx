@@ -22,6 +22,8 @@ test.describe('Dialog Sheet Adapt - viewport resize', () => {
     await trigger.click({ force: true })
     await page.waitForTimeout(500)
 
+    await expect(page.getByTestId('dialog-sheet-frame')).toHaveCount(0)
+
     // dialog content should be visible
     const title = page.getByTestId('dialog-title')
     await expect(title).toBeVisible({ timeout: 5000 })

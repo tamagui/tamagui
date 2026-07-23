@@ -76,14 +76,14 @@ export const getTokenForKey = (
   const { theme, conf = getConfig(), context, fontFamily, staticConfig } = styleState
 
   const themeValue = theme ? theme[value] || theme[value.slice(1)] : undefined
-
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
   let hasSet = false
 
   const customTokenAccept = staticConfig?.accept?.[key]
   if (customTokenAccept) {
-    const val = themeValue ?? tokensParsed[customTokenAccept]?.[value]
+    const tokenValue = value
+    const val = themeValue ?? tokensParsed[customTokenAccept]?.[tokenValue]
     if (val != null) {
       resolveAs = 'value' // always resolve custom tokens as values
       valOrVar = val

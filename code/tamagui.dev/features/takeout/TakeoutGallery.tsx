@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 import type { ViewProps } from 'tamagui'
 import {
   AnimatePresence,
-  Button,
   Dialog,
   H6,
   Paragraph,
@@ -15,6 +14,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 const androidImages = [
   '/takeout/starter-screenshots/android-001.jpg',
@@ -294,7 +294,7 @@ const ImageGallery = () => {
             </YStack>
 
             <Dialog.Close asChild>
-              <Button position="absolute" t="$6" r="$6" size="$3" circular icon={X} />
+              <Button position="absolute" t="$6" r="$6" size="medium" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>
@@ -361,7 +361,7 @@ const ImagesCarousel = () => {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="$5"
+        size="large"
         position="absolute"
         l="$4"
         circular
@@ -371,7 +371,7 @@ const ImagesCarousel = () => {
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="$5"
+        size="large"
         position="absolute"
         r="$4"
         circular

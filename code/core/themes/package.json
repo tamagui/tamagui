@@ -4,6 +4,26 @@
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "type": "module",
   "sideEffects": false,
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "v3",
+    "v3-themes",
+    "v4",
+    "v5",
+    "v5-subtle",
+    "v3.cjs",
+    "v3.d.ts",
+    "v3-themes.cjs",
+    "v3-themes.d.ts",
+    "v4.cjs",
+    "v4.d.ts",
+    "v5.cjs",
+    "v5.d.ts",
+    "v5-subtle.cjs",
+    "v5-subtle.d.ts"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -62,6 +82,24 @@
       "import": "./dist/esm/v5-subtle.mjs",
       "require": "./dist/cjs/v5-subtle.cjs",
       "default": "./dist/esm/v5-subtle.mjs"
+    },
+    "./v5-builder": {
+      "types": "./types/v5-builder.d.ts",
+      "react-native": "./dist/esm/v5-builder.native.js",
+      "browser": "./dist/esm/v5-builder.mjs",
+      "module": "./dist/esm/v5-builder.mjs",
+      "import": "./dist/esm/v5-builder.mjs",
+      "require": "./dist/cjs/v5-builder.cjs",
+      "default": "./dist/esm/v5-builder.mjs"
+    },
+    "./v5-subtle-builder": {
+      "types": "./types/v5-subtle-builder.d.ts",
+      "react-native": "./dist/esm/v5-subtle-builder.native.js",
+      "browser": "./dist/esm/v5-subtle-builder.mjs",
+      "module": "./dist/esm/v5-subtle-builder.mjs",
+      "import": "./dist/esm/v5-subtle-builder.mjs",
+      "require": "./dist/cjs/v5-subtle-builder.cjs",
+      "default": "./dist/esm/v5-subtle-builder.mjs"
     }
   },
   "publishConfig": {
@@ -69,8 +107,8 @@
   },
   "scripts": {
     "generate": "bun run generate:v5 & bun run generate:v5-subtle",
-    "generate:v5": "tamagui generate-themes ./src/v5-themes.ts ./src/generated-v5.ts",
-    "generate:v5-subtle": "tamagui generate-themes ./src/v5-themes-subtle.ts ./src/generated-v5-subtle.ts",
+    "generate:v5": "tamagui generate-themes ./src/v5-themes.generate.ts ./src/generated-v5.ts",
+    "generate:v5-subtle": "tamagui generate-themes ./src/v5-themes-subtle.generate.ts ./src/generated-v5-subtle.ts",
     "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
     "generate:v4": "tamagui generate-themes ./src/v4-default.ts ./src/generated-v4.ts",
     "generate:v4-tamagui": "tamagui generate-themes ./src/v4-tamagui.ts ./src/generated-v4-tamagui.ts",

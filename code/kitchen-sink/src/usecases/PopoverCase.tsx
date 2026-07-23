@@ -6,9 +6,9 @@ import {
 } from '@tamagui/lucide-icons-2'
 import { useState } from 'react'
 import type { PopoverProps } from 'tamagui'
+import { Button } from '../components/Button'
 import {
   Adapt,
-  Button,
   H1,
   H2,
   isWeb,
@@ -111,9 +111,10 @@ function Demo({
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet modal dismissOnSnapToBottom>
-            <Sheet.Frame padding="$4">
+            <Sheet.Container padding="$4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay backgroundColor="$shadowColor" />
           </Sheet>
         </Adapt>
@@ -122,6 +123,8 @@ function Demo({
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
+        backgroundColor="$background"
+        boxShadow="0 4px 12px $shadowColor"
         transition="100ms"
         width={300}
         height={300}
@@ -133,7 +136,6 @@ function Demo({
           y: -10,
           opacity: 0,
         }}
-        elevate
         id={`${dataTestId}-content`}
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
@@ -147,7 +149,7 @@ function Demo({
 
           <Popover.Close asChild>
             <Button
-              size="$3"
+              size="medium"
               id={`${dataTestId}-close`}
               onPress={() => {
                 /* Custom code goes here, does not interfere with popover closure */
@@ -172,7 +174,7 @@ function SimplePopoverTest() {
         <YStack gap="$2">
           <Paragraph>This is a simple popover</Paragraph>
           <Popover.Close asChild>
-            <Button size="$2" id="simple-popover-close">
+            <Button size="small" id="simple-popover-close">
               Close
             </Button>
           </Popover.Close>
@@ -202,14 +204,15 @@ export function PopoverAnimatePositionCase() {
             transition="quick"
             enterStyle={{ y: 5, opacity: 0 }}
             exitStyle={{ y: 5, opacity: 0 }}
-            elevate
+            backgroundColor="$background"
+            boxShadow="0 4px 12px $shadowColor"
             padding="$4"
           >
             <Popover.Arrow />
             <YStack gap="$2" width={200}>
               <Paragraph>Popover with animatePosition</Paragraph>
               <Popover.Close asChild>
-                <Button size="$2" id="animate-position-close">
+                <Button size="small" id="animate-position-close">
                   Close
                 </Button>
               </Popover.Close>

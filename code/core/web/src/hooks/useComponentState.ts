@@ -3,6 +3,7 @@ import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import { getSetting } from '../config'
+import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
@@ -46,6 +47,7 @@ export const useComponentState = (
   if (!stateRef.current) {
     stateRef.current = {
       startedUnhydrated: needsHydration && !isHydrated,
+      optimizeForFirstRender: isOptimizedForFirstRender(),
     }
   }
 
@@ -215,27 +217,36 @@ export const useComponentState = (
   if (process.env.NODE_ENV === 'development' && globalThis.time)
     globalThis.time`state-useCreateShallowSetState`
 
-  // set enter/exit variants onto our new props object
+  // set enter/exit variants onto a FRESH props object — never mutate the caller's
+  // incoming props. with the ref-strip clone removed in createComponent, on the
+  // no-defaults path that input IS React's own props object and must stay
+  // immutable. the augmented copy is returned as `props` below.
+  let outProps: typeof props = props
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
     if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
       console.warn(`has presenceState ${JSON.stringify(presenceState)}`)
     }
     const { enterVariant, exitVariant, enterExitVariant, custom } = presenceState
-    if (isObj(custom)) {
-      Object.assign(props, custom)
-    }
     const exv = exitVariant ?? enterExitVariant
     const env = enterVariant ?? enterExitVariant
-    if (state.unmounted && env && staticConfig.variants[env]) {
-      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-        console.warn(`Animating presence ENTER "${env}"`)
+    const enter = Boolean(state.unmounted && env && staticConfig.variants[env])
+    const exit = Boolean(isExiting && exv)
+    if (isObj(custom) || enter || exit) {
+      outProps = { ...props }
+      if (isObj(custom)) {
+        Object.assign(outProps, custom)
       }
-      props[env] = true
-    } else if (isExiting && exv) {
-      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-        console.warn(`Animating presence EXIT "${exv}"`)
+      if (enter) {
+        if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+          console.warn(`Animating presence ENTER "${env}"`)
+        }
+        outProps[env as string] = true
+      } else if (exit) {
+        if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+          console.warn(`Animating presence EXIT "${exv}"`)
+        }
+        outProps[exv as string] = exitVariant !== enterExitVariant
       }
-      props[exv] = exitVariant !== enterExitVariant
     }
   }
 
@@ -278,6 +289,7 @@ export const useComponentState = (
   }
 
   return {
+    props: outProps,
     startedUnhydrated: curStateRef.startedUnhydrated,
     curStateRef,
     disabled,
@@ -303,10 +315,13 @@ export const useComponentState = (
 }
 
 function hasAnimatedStyleValue(style: object) {
-  return Object.keys(style).some((k) => {
+  for (const k in style) {
     const val = style[k]
-    return val && typeof val === 'object' && '_animation' in val
-  })
+    if (val && typeof val === 'object' && '_animation' in val) {
+      return true
+    }
+  }
+  return false
 }
 
 const isDisabled = (props: any) => {

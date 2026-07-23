@@ -1,14 +1,6 @@
 import { X } from '@tamagui/lucide-icons-2'
-import {
-  Adapt,
-  Button,
-  Dialog,
-  Paragraph,
-  Sheet,
-  Unspaced,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button } from '../components/Button'
+import { Adapt, Dialog, Paragraph, Sheet, Unspaced, XStack, YStack } from 'tamagui'
 
 export function DialogNestedCase() {
   return (
@@ -37,9 +29,10 @@ function DialogInstance({ level = 1 }: { level?: number }) {
           dismissOnSnapToBottom
           unmountChildrenWhenHidden
         >
-          <Sheet.Frame padding="$4" gap="$4">
+          <Sheet.Container padding="$4" gap="$4">
+            <Sheet.Background />
             <Adapt.Contents />
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             transition="lazy"
             enterStyle={{ opacity: 0 }}
@@ -107,7 +100,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
                   position="absolute"
                   right="$3"
                   top="$3"
-                  size="$2"
+                  size="small"
                   circular
                   icon={X}
                 />

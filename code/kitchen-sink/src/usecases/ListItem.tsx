@@ -119,5 +119,17 @@ export const ThemedListItem = () => (
         borderRadius="$3"
       />
     </ListItem.Apply>
+
+    <ListItem
+      id="themed-list-item-child-icon"
+      size="$10"
+      color="$red10"
+      borderRadius="$3"
+    >
+      <ListItem.Icon>
+        <Star />
+      </ListItem.Icon>
+      <ListItem.Text>Child icon inherits ListItem props</ListItem.Text>
+    </ListItem>
   </View>
 )

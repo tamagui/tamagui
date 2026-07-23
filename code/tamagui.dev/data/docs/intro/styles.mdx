@@ -30,7 +30,7 @@ const MyView = () => (
 The types for the full set of styles accepted by styled, View and Text are
 exported as `ViewStyle` and `TextStyle`.
 
-For the full base styles, see the React Native docs (version 2 targets React
+For the full base styles, see the React Native docs (version 3 targets React
 Native 0.82):
 
 - [React Native View style props](https://reactnative.dev/docs/view-style-props)
@@ -166,21 +166,21 @@ type ViewStyle = WithStates & {
   $theme-dark?: WithStates
 
   // add platform queries
-  $platform-native?: WithStates
-  $platform-ios?: WithStates
-  $platform-android?: WithStates
-  $platform-web?: WithStates
+  $native?: WithStates
+  $ios?: WithStates
+  $android?: WithStates
+  $web?: WithStates
 }
 
 // Text style starts with this base but builds up the same:
 type TextStyleBase = BaseViewStyle & {
   color?: string,
   fontFamily?: string,
-  fontSize?: string,
+  fontSize?: number | string,
   fontStyle?: string,
   fontWeight?: string,
-  letterSpacing?: string,
-  lineHeight?: string,
+  letterSpacing?: number | string,
+  lineHeight?: number | string,
   textAlign?: string,
   textDecorationColor?: string,
   textDecorationLine?: string,
@@ -190,6 +190,23 @@ type TextStyleBase = BaseViewStyle & {
   textShadowRadius?: string,
   textTransform?: string,
 }
+```
+
+## Font size values
+
+v3 distinguishes raw numeric font sizes from exact px strings:
+
+- `fontSize={17}` is a numeric platform value and keeps the platform-default
+  line-height path.
+- `fontSize="17px"` is an exact pixel value. Web passes it through as CSS;
+  native parses it to a number.
+
+The v5 config font `size` and `lineHeight` scales are pinned to px strings in
+v3, preserving v2 visual output while making exact px intent explicit.
+
+```tsx
+<Text fontSize={17}>Platform line height</Text>
+<Text fontSize="17px">Exact px size</Text>
 ```
 
 ## Pseudo States
@@ -363,7 +380,7 @@ being one of: platform, screen size, theme, or group. All of these styles use
 the same pattern, they use a `$` prefix for their styles, and they nest styles
 as a sub-object.
 
-For example you can target `$theme-light`, `$platform-ios`, or `$group-header`.
+For example you can target `$theme-light`, `$ios`, or `$group-header`.
 For screen size, which we call media queries, they have no prefix. Instead you
 define media queries on `createTamagui`. For example, if you define a media
 query named `large`, then `$large` is the prop name.
@@ -413,7 +430,7 @@ Android).
 Use it like so:
 
 ```tsx
-<Text $platform-ios={{ color: 'white' }} />
+<Text $ios={{ color: 'white' }} />
 ```
 
 ### Group

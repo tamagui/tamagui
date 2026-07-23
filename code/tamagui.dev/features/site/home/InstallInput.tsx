@@ -1,7 +1,8 @@
 import { ThemeTint } from '@tamagui/logo'
 import { Check, Copy } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
-import { Button, Paragraph, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Paragraph, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useClipboard } from '~/hooks/useClipboard'
 
@@ -24,7 +25,13 @@ export const InstallInput = memo(() => {
         rounded="$10"
         position="relative"
       >
-        <YStack bg="$color9" opacity={0.125} fullscreen backdropFilter="blur(50px)" />
+        <YStack
+          bg="$color9"
+          opacity={0.125}
+          position="absolute"
+          inset={0}
+          backdropFilter="blur(50px)"
+        />
         <Paragraph
           text="center"
           size="$5"
@@ -42,7 +49,7 @@ export const InstallInput = memo(() => {
         >
           <Button
             aria-label={installScript}
-            size="$3"
+            size="medium"
             rounded="$8"
             mr="$-6"
             zIndex={1}

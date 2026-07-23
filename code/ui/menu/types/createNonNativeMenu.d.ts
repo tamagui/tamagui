@@ -1,5 +1,5 @@
 import type * as BaseMenuTypes from '@tamagui/create-menu';
-import { type MenuArrowProps as BaseMenuArrowProps, type MenuCheckboxItemProps as BaseMenuCheckboxItemProps, type MenuContentProps as BaseMenuContentProps, type MenuGroupProps as BaseMenuGroupProps, type MenuItemIndicatorProps as BaseMenuItemIndicatorProps, type MenuItemProps as BaseMenuItemProps, type MenuLabelProps as BaseMenuLabelProps, type MenuPortalProps as BaseMenuPortalProps, type MenuRadioGroupProps as BaseMenuRadioGroupProps, type MenuRadioItemProps as BaseMenuRadioItemProps, type MenuSubContentProps as BaseMenuSubContentProps, type MenuSubTriggerProps as BaseMenuSubTriggerProps, type CreateBaseMenuProps } from '@tamagui/create-menu';
+import { type MenuArrowProps as BaseMenuArrowProps, type MenuCheckboxItemProps as BaseMenuCheckboxItemProps, type MenuContentProps as BaseMenuContentProps, type MenuGroupProps as BaseMenuGroupProps, type MenuItemIndicatorProps as BaseMenuItemIndicatorProps, type MenuItemProps as BaseMenuItemProps, type MenuLabelProps as BaseMenuLabelProps, type MenuPortalProps as BaseMenuPortalProps, type MenuRadioGroupProps as BaseMenuRadioGroupProps, type MenuRadioItemProps as BaseMenuRadioItemProps, type MenuSeparatorProps as BaseMenuSeparatorProps, type MenuSubContentProps as BaseMenuSubContentProps, type MenuSubTriggerProps as BaseMenuSubTriggerProps } from '@tamagui/create-menu';
 import { type ScrollViewProps } from '@tamagui/scroll-view';
 import { type TamaguiElement, type ViewProps } from '@tamagui/web';
 import * as React from 'react';
@@ -39,7 +39,7 @@ type MenuSubProps = BaseMenuTypes.MenuSubProps & {
 type MenuSubTriggerProps = BaseMenuSubTriggerProps;
 type MenuSubContentProps = BaseMenuSubContentProps;
 type MenuScrollViewProps = ScrollViewProps;
-export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
+export declare function createNonNativeMenu(): {
     (props: ScopedProps<MenuProps>): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 } & {
@@ -56,115 +56,127 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
         (props: ScopedProps<MenuPortalProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    Content: React.ForwardRefExoticComponent<MenuContentProps & {
+    Content: import("@tamagui/web").RefComponent<TamaguiElement, ScopedProps<MenuContentProps>>;
+    Group: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, keyof BaseMenuGroupProps> & BaseMenuGroupProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuGroupProps, import("@tamagui/web").StackStyleBase, {}, {}>;
+    Label: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").TextProps, keyof BaseMenuLabelProps> & BaseMenuLabelProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & BaseMenuLabelProps, import("@tamagui/web").TextStylePropsBase, {}, {}>;
+    Item: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof BaseMenuItemProps> & BaseMenuItemProps & {
         scope?: string;
-    } & React.RefAttributes<TamaguiElement>>;
-    Group: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, keyof BaseMenuTypes.MenuGroupProps> & BaseMenuTypes.MenuGroupProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuGroupProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    Label: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }>, keyof BaseMenuTypes.MenuLabelProps> & BaseMenuTypes.MenuLabelProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & BaseMenuTypes.MenuLabelProps, import("@tamagui/web").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    Item: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, "scope" | keyof BaseMenuTypes.MenuItemProps> & BaseMenuTypes.MenuItemProps & {
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuItemProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuItemProps & {
+    }, import("@tamagui/web").StackStyleBase, {}, {}>;
+    CheckboxItem: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof BaseMenuCheckboxItemProps> & BaseMenuCheckboxItemProps & {
         scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    CheckboxItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, "scope" | keyof BaseMenuTypes.MenuCheckboxItemProps> & BaseMenuTypes.MenuCheckboxItemProps & {
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuCheckboxItemProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuCheckboxItemProps & {
+    }, import("@tamagui/web").StackStyleBase, {}, {}>;
+    RadioGroup: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof BaseMenuRadioGroupProps> & BaseMenuRadioGroupProps & {
         scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    RadioGroup: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, "scope" | keyof BaseMenuTypes.MenuRadioGroupProps> & BaseMenuTypes.MenuRadioGroupProps & {
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuRadioGroupProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuRadioGroupProps & {
+    }, import("@tamagui/web").StackStyleBase, {}, {}>;
+    RadioItem: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof BaseMenuRadioItemProps> & BaseMenuRadioItemProps & {
         scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    RadioItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, "scope" | keyof BaseMenuTypes.MenuRadioItemProps> & BaseMenuTypes.MenuRadioItemProps & {
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuRadioItemProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuRadioItemProps & {
+    }, import("@tamagui/web").StackStyleBase, {}, {}>;
+    ItemIndicator: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof BaseMenuItemIndicatorProps> & BaseMenuItemIndicatorProps & {
         scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    ItemIndicator: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, "scope" | keyof BaseMenuTypes.MenuItemIndicatorProps> & BaseMenuTypes.MenuItemIndicatorProps & {
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuItemIndicatorProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuItemIndicatorProps & {
-        scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    Separator: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, keyof BaseMenuTypes.MenuSeparatorProps> & BaseMenuTypes.MenuSeparatorProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuSeparatorProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    Arrow: React.ForwardRefExoticComponent<BaseMenuTypes.MenuArrowProps & React.RefAttributes<TamaguiElement>>;
+    }, import("@tamagui/web").StackStyleBase, {}, {}>;
+    Separator: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, keyof BaseMenuSeparatorProps> & BaseMenuSeparatorProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuSeparatorProps, import("@tamagui/web").StackStyleBase, {}, {}>;
+    Arrow: import("@tamagui/web").RefComponent<TamaguiElement, Omit<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & import("@tamagui/popper").PopperArrowExtraProps & import("@tamagui/web").RefProp<TamaguiElement>, "ref">>;
     Sub: {
         (props: ScopedProps<MenuSubProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    SubTrigger: React.ForwardRefExoticComponent<BaseMenuTypes.MenuSubTriggerProps & {
+    SubTrigger: import("@tamagui/web").RefComponent<TamaguiElement, BaseMenuSubTriggerProps & {
         scope?: string;
-    } & React.RefAttributes<TamaguiElement>>;
-    SubContent: React.ForwardRefExoticComponent<BaseMenuTypes.MenuSubContentProps & {
-        scope?: string;
-    } & React.RefAttributes<TamaguiElement>>;
-    ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }>, keyof BaseMenuTypes.MenuItemTitleProps> & BaseMenuTypes.MenuItemTitleProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & BaseMenuTypes.MenuItemTitleProps, import("@tamagui/web").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    ItemSubtitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }>, keyof BaseMenuTypes.MenuItemSubTitleProps> & BaseMenuTypes.MenuItemSubTitleProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & BaseMenuTypes.MenuItemSubTitleProps, import("@tamagui/web").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>>;
-    ItemIcon: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    ScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").ScrollView, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/web").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<typeof import("react-native").ScrollView, {
+    }>;
+    SubContent: import("@tamagui/web").RefComponent<TamaguiElement, ScopedProps<BaseMenuSubContentProps>>;
+    ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").TextProps, keyof BaseMenuTypes.MenuItemTitleProps> & BaseMenuTypes.MenuItemTitleProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & BaseMenuTypes.MenuItemTitleProps, import("@tamagui/web").TextStylePropsBase, {}, {}>;
+    ItemSubtitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").TextProps, keyof BaseMenuTypes.MenuItemSubTitleProps> & BaseMenuTypes.MenuItemSubTitleProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & BaseMenuTypes.MenuItemSubTitleProps, import("@tamagui/web").TextStylePropsBase, {}, {}>;
+    ItemImage: import("@tamagui/web").RefComponent<TamaguiElement, import("@tamagui/image").ImageProps>;
+    ItemIcon: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "$android" | "$androidtv" | "$ios" | "$native" | "$tv" | "$tvos" | "$web" | import("@tamagui/web").GroupMediaKeys | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, import("@tamagui/web").StackStyleBase, {}, {}>;
+    ScrollView: React.FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, "contentContainerStyle" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+        readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
+            acceptsClassName: true;
+            neverFlatten: true;
             accept: {
-                readonly contentContainerStyle: "style";
+                readonly contentContainerStyle: 'style';
             };
         }>> | undefined;
-    }, {
-        fullscreen?: boolean | undefined;
-    }, {
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+        readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
+            acceptsClassName: true;
+            neverFlatten: true;
+            accept: {
+                readonly contentContainerStyle: 'style';
+            };
+        }>> | undefined;
+    }>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+        readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
+            acceptsClassName: true;
+            neverFlatten: true;
+            accept: {
+                readonly contentContainerStyle: 'style';
+            };
+        }>> | undefined;
+    }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+        readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
+            acceptsClassName: true;
+            neverFlatten: true;
+            accept: {
+                readonly contentContainerStyle: 'style';
+            };
+        }>> | undefined;
+    }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase & {
+        readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
+            acceptsClassName: true;
+            neverFlatten: true;
+            accept: {
+                readonly contentContainerStyle: 'style';
+            };
+        }>> | undefined;
+    }, {}>> & {
+        ref?: React.Ref<import("@tamagui/scroll-view").ScrollViewRef> | undefined;
+    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase & {
+        readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
+            acceptsClassName: true;
+            neverFlatten: true;
+            accept: {
+                readonly contentContainerStyle: 'style';
+            };
+        }>> | undefined;
+    }, {}, {
+        acceptsClassName: true;
+        neverFlatten: true;
         accept: {
-            readonly contentContainerStyle: "style";
+            readonly contentContainerStyle: 'style';
         };
-    } & import("@tamagui/web").StaticConfigPublic>;
+    } & import("@tamagui/web").StaticConfigPublic> & Omit<{
+        acceptsClassName: true;
+        neverFlatten: true;
+        accept: {
+            readonly contentContainerStyle: 'style';
+        };
+    } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase & {
+            readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
+                acceptsClassName: true;
+                neverFlatten: true;
+                accept: {
+                    readonly contentContainerStyle: 'style';
+                };
+            }>> | undefined;
+        }, {}, {
+            acceptsClassName: true;
+            neverFlatten: true;
+            accept: {
+                readonly contentContainerStyle: 'style';
+            };
+        } & import("@tamagui/web").StaticConfigPublic];
+    };
 };
 export type { MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIndicatorProps, MenuItemProps, MenuLabelProps, MenuPortalProps, MenuProps, MenuRadioGroupProps, MenuRadioItemProps, MenuScrollViewProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps, };
 //# sourceMappingURL=createNonNativeMenu.d.ts.map

@@ -43,15 +43,11 @@ export const AnimatePresence: FunctionComponent<
   enterExitVariant,
   initial = true,
   onExitComplete,
-  exitBeforeEnter,
-  mode,
+  mode = 'sync',
   presenceAffectsLayout = true,
   custom,
   passThrough,
 }) => {
-  // Determine effective mode: mode prop takes precedence, then exitBeforeEnter for backwards compatibility
-  const effectiveMode = mode ?? (exitBeforeEnter ? 'wait' : 'sync')
-
   /**
    * Filter any children that aren't ReactElements. We can only track components
    * between renders with a props.key.
@@ -156,7 +152,7 @@ export const AnimatePresence: FunctionComponent<
     const exitingChildren = renderedChildren.filter(
       (child) => !presentKeys.includes(getChildKey(child))
     )
-    if (effectiveMode === 'wait' && exitingChildren.length) {
+    if (mode === 'wait' && exitingChildren.length) {
       nextChildren = exitingChildren
     }
 

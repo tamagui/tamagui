@@ -8,7 +8,7 @@
  * persists to disk and can be crunched out-of-browser — no video.
  *
  * Activated by ?track=1 on SheetWebKeyboardCase. onLayout is fed in from the
- * fixture's <Sheet.Frame>/<Sheet.ScrollView> via reportSheetLayout(); everything
+ * fixture's <Sheet.Container>/<Sheet.ScrollView> via reportSheetLayout(); everything
  * else is wired here.
  *
  * Sample kinds (short keys keep the JSONL small):

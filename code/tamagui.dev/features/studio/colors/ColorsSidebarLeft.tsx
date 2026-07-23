@@ -1,16 +1,8 @@
 'use client'
 
 import { memo } from 'react'
-import {
-  Button,
-  Label,
-  Separator,
-  SizableText,
-  Spacer,
-  Tabs,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Label, Separator, SizableText, Spacer, Tabs, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { SidebarLeft, SidebarPanel, SidebarPanelUnpad } from '../components/Sidebar'
 import { colorsStore } from '../state/ColorsStore'
@@ -66,7 +58,7 @@ const ColorsSidebarPalettes = () => {
         </YStack>
       </SidebarPanelUnpad>
       <Button
-        size="$3"
+        size="medium"
         style={{ marginTop: 16, width: '100%' }}
         onPress={() => {
           state.colors.createScale()

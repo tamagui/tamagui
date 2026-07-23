@@ -6,13 +6,17 @@ import {
   SizableText,
   Square,
   Switch,
-  ToggleGroup,
   Tooltip,
   TooltipGroup,
   XGroup,
   XStack,
   styled,
 } from 'tamagui'
+// Re-style the UNSTYLED ToggleGroup primitive: the studio fully custom-styles the
+// item, and re-styling the styled tamagui ToggleGroup.Item overflows TS's union
+// limit (TS2590). The tamagui ToggleGroup root is already the unstyled primitive,
+// so this is behavior-preserving at runtime.
+import { ToggleGroup } from 'tamagui/unstyled'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { optionValues } from './demoOptions'
 
@@ -169,7 +173,7 @@ export function BorderRadiusInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -265,7 +269,7 @@ export function BorderWidthInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -332,7 +336,7 @@ export function FontFamilyInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -406,7 +410,7 @@ export function FillStyleInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -505,7 +509,7 @@ export function ElevationInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -611,7 +615,7 @@ export function SpacingInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -683,7 +687,7 @@ export function TextAccentInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -755,7 +759,7 @@ export function BackgroundAccentInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"

@@ -28,11 +28,12 @@ export function DialogSheetAdaptResizeCase() {
         {/* adapt to sheet on narrow viewports */}
         <Dialog.Adapt when="maxMd">
           <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-            <Sheet.Frame padding="$4" gap="$4">
+            <Sheet.Container testID="dialog-sheet-frame" padding="$4" gap="$4">
+              <Sheet.Background />
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               bg="$shadow4"
               transition="lazy"

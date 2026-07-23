@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@tamagui/core": "workspace:*",
+    "@tamagui/focusable": "workspace:*",
     "@tamagui/helpers": "workspace:*"
   },
   "devDependencies": {

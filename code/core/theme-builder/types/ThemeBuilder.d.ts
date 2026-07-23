@@ -50,7 +50,7 @@ export declare class ThemeBuilder<State extends ThemeBuilderInternalState = Them
         type: 'themes' | 'childThemes';
         args: any;
     }[];
-    addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<Omit<State, "themes"> & {
+    addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<Omit<State, 'themes'> & {
         themes: T;
     }, FinalTheme>;
     addComponentThemes<CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>>(childThemeDefinition: CTD, options?: {

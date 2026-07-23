@@ -5,8 +5,7 @@
   "files": [
     "src",
     "types",
-    "dist",
-    "motion.cjs"
+    "dist"
   ],
   "type": "module",
   "main": "dist/cjs",
@@ -21,13 +20,6 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
-    },
-    "./motion": {
-      "types": "./src/animations.motion.ts",
-      "browser": "./dist/esm/animations.motion.mjs",
-      "module": "./dist/esm/animations.motion.mjs",
-      "import": "./dist/esm/animations.motion.mjs",
-      "require": "./dist/cjs/animations.motion.cjs"
     }
   },
   "publishConfig": {
@@ -41,7 +33,6 @@
   },
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",
-    "@tamagui/animations-moti": "workspace:*",
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/animations-reanimated": "workspace:*",
     "@tamagui/colors": "workspace:*",

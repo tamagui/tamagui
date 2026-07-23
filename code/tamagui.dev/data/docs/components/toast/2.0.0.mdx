@@ -4,16 +4,14 @@ description: Use to show feedback to user interactions.
 name: toast
 component: Toast
 package: toast
-demoName: ToastV1
 ---
 
-<HeroContainer showAnimationDriverControl>
-  <ToastV1Demo />
-</HeroContainer>
-
-```tsx hero template=Toast
-
-```
+<Notice theme="yellow">
+  This page documents the v2 imperative Toast API (`ToastProvider`,
+  `ToastViewport`, `useToastController`, `useToastState`), which was removed in
+  v3. Use the composable [Toast](/ui/toast) and the `toast()` function instead.
+  See the [upgrade guide](/docs/guides/how-to-upgrade) for the migration.
+</Notice>
 
 <Highlights
   features={[

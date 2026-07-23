@@ -1,7 +1,8 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, H1, Paragraph, Text, YStack } from 'tamagui'
+import { H1, Paragraph, Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu Submenu Test Case
@@ -35,7 +36,7 @@ export function MenuSubCase() {
       <YStack alignItems="flex-start" gap="$4">
         <Menu allowFlip placement="bottom-start" offset={8}>
           <Menu.Trigger asChild>
-            <Button id="menu-trigger" size="$4">
+            <Button id="menu-trigger" size="medium">
               Open Menu
             </Button>
           </Menu.Trigger>
@@ -48,7 +49,7 @@ export function MenuSubCase() {
               borderWidth={1}
               borderColor="$borderColor"
               bg="$background"
-              elevation="$3"
+              boxShadow="0 4px 12px $shadowColor"
             >
               <Menu.Item
                 key="menu-item-1"
@@ -98,7 +99,7 @@ export function MenuSubCase() {
                     minW={180}
                     borderWidth={1}
                     borderColor="$borderColor"
-                    elevation="$3"
+                    boxShadow="0 4px 12px $shadowColor"
                   >
                     <Menu.Item
                       key="submenu-item-1"
@@ -160,7 +161,7 @@ export function MenuSubCase() {
                           minW={160}
                           borderWidth={1}
                           borderColor="$borderColor"
-                          elevation="$3"
+                          boxShadow="0 4px 12px $shadowColor"
                         >
                           <Menu.Item
                             key="nested-submenu-item-1"

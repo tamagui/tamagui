@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Button, ToggleGroup, XGroup, YStack, Text } from 'tamagui'
+import { ToggleGroup, XGroup, YStack, Text } from 'tamagui'
+import { Button } from '../components/Button'
 import { AlignLeft, AlignCenter, AlignRight } from '@tamagui/lucide-icons-2'
 
 /**
@@ -83,17 +84,17 @@ export function ToggleGroupXGroupCase() {
           <XGroup rounded="$10" testID="pattern-b-xgroup">
             <ToggleGroup.Item value="left" aria-label="Left" asChild>
               <XGroup.Item>
-                <Button testID="pattern-b-left" size="$3" icon={AlignLeft} />
+                <Button testID="pattern-b-left" size="medium" icon={AlignLeft} />
               </XGroup.Item>
             </ToggleGroup.Item>
             <ToggleGroup.Item value="center" aria-label="Center" asChild>
               <XGroup.Item>
-                <Button testID="pattern-b-center" size="$3" icon={AlignCenter} />
+                <Button testID="pattern-b-center" size="medium" icon={AlignCenter} />
               </XGroup.Item>
             </ToggleGroup.Item>
             <ToggleGroup.Item value="right" aria-label="Right" asChild>
               <XGroup.Item>
-                <Button testID="pattern-b-right" size="$3" icon={AlignRight} />
+                <Button testID="pattern-b-right" size="medium" icon={AlignRight} />
               </XGroup.Item>
             </ToggleGroup.Item>
           </XGroup>

@@ -1,6 +1,7 @@
 import { router, useLinkTo, type LinkProps as OneLinkProps } from 'one'
-import type { ButtonProps, ViewProps } from 'tamagui'
-import { Button, Paragraph, Text } from 'tamagui'
+import type { ViewProps } from 'tamagui'
+import { Paragraph, Text } from 'tamagui'
+import { Button, type ButtonProps } from './Button'
 
 export type LinkProps = ViewProps &
   OneLinkProps<any> & {

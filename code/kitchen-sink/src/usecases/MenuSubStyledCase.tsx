@@ -1,7 +1,8 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, H1, Paragraph, styled, Text, YStack } from 'tamagui'
+import { H1, Paragraph, styled, Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu Submenu Styled Test Case
@@ -18,7 +19,7 @@ const StyledSubContent = styled(Menu.SubContent, {
   minW: 180,
   borderWidth: 1,
   borderColor: '$borderColor',
-  elevation: '$3',
+  boxShadow: '0 4px 12px $shadowColor',
   // these used to break positioning:
   scale: 1,
   opacity: 1,
@@ -49,7 +50,7 @@ export function MenuSubStyledCase() {
       <YStack alignItems="flex-start" gap="$4">
         <Menu allowFlip placement="bottom-start" offset={8}>
           <Menu.Trigger asChild>
-            <Button id="menu-trigger" size="$4">
+            <Button id="menu-trigger" size="medium">
               Open Menu
             </Button>
           </Menu.Trigger>
@@ -62,7 +63,7 @@ export function MenuSubStyledCase() {
               borderWidth={1}
               borderColor="$borderColor"
               bg="$background"
-              elevation="$3"
+              boxShadow="0 4px 12px $shadowColor"
             >
               <Menu.Item
                 key="menu-item-1"

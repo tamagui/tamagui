@@ -90,7 +90,15 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   })
   const componentContext = React.useContext(ComponentContext)
   const groupContext = React.useContext(GroupContext)
-  const { state, disabled, setStateShallow } = useComponentState(
+  // useComponentState injects enter/exit presence variants onto a fresh copy
+  // (it no longer mutates our `props` in place), so use the returned object for
+  // style resolution below to keep those variants applied
+  const {
+    props: statefulProps,
+    state,
+    disabled,
+    setStateShallow,
+  } = useComponentState(
     props,
     componentContext.animationDriver,
     staticConfig,
@@ -103,7 +111,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     : useMedia()
 
   const splitStyles = useSplitStyles(
-    props,
+    statefulProps,
     staticConfig,
     theme,
     themeState?.name || '',

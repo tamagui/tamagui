@@ -1,15 +1,6 @@
 import { memo, useEffect } from 'react'
-import {
-  Button,
-  H4,
-  H6,
-  ListItem,
-  Paragraph,
-  SizableText,
-  XStack,
-  YGroup,
-  YStack,
-} from 'tamagui'
+import { H4, H6, ListItem, Paragraph, SizableText, XStack, YGroup, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { NoticeParagraph, StudioNotice } from '../../../StudioNotice'
@@ -109,7 +100,7 @@ export const Themes = memo(() => {
           <Paragraph color="$color10">Add a theme to get started</Paragraph>
           <Button
             theme="accent"
-            size="$4"
+            size="medium"
             onPress={() => {
               store.showAddThemeMenu = true
             }}

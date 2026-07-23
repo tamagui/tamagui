@@ -623,6 +623,26 @@ even `light_alert_subtle` is possible.
 For more on themes, see the [themes docs](/docs/core/themes), and more
 [advanced theme building library](/docs/guides/theme-builder).
 
+### Variables
+
+Custom variables sit alongside your themes: they merge into every base theme,
+resolve like theme keys in style props and `useTheme()`, and can be redefined
+for any subtree with the [Variables component](/docs/core/variables).
+
+```tsx
+const config = createTamagui({
+  // ...
+  variables: {
+    surfaceBorder: '$borderColor',
+    disabledOpacity: 0.5,
+    accent: { light: '#005ac8', dark: '#78b4ff' },
+  },
+})
+```
+
+Values can be literals, references to theme keys or tokens (`'$borderColor'`,
+`'$size.4'`), or per-scheme `{ light, dark }` pairs.
+
 ### Media
 
 For more full docs on media queries, see the
@@ -777,6 +797,13 @@ You can pass a `settings` object to `createTamagui`:
       type: 'boolean',
       default: false,
       description: `On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. Note: When enabled you must make sure the defaultTheme you set on TamaguiProvider matches the current system color scheme.`,
+    },
+    {
+      name: 'optimizeFor',
+      required: false,
+      type: `'updates' | 'first-render'`,
+      default: `'updates' on web, 'first-render' on native`,
+      description: `Chooses the render performance tradeoff. "updates" tracks which theme and media keys each component reads so changes re-render only their consumers, at a small per-component first-render cost. "first-render" skips per-key tracking for the fastest initial render; theme and media changes still apply but re-render coarsely. This is a startup-level setting, don't change it at runtime.`,
     },
     {
       name: 'webContainerType',

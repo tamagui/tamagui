@@ -1,6 +1,6 @@
 /**
  * Test case: Tabs onInteraction fires with layout on native
- * Verifies that createTabs TabsTrigger reports layout measurements
+ * Verifies that the public Tabs trigger reports layout measurements
  * via onInteraction when a tab is selected.
  */
 
@@ -13,7 +13,7 @@ export function TabsOnInteraction() {
   const [layout, setLayout] = React.useState<TabLayout | null>(null)
 
   return (
-    <YStack padding="$4" gap="$4" flex={1}>
+    <YStack padding="$4" paddingTop="$8" gap="$4" flex={1}>
       <Tabs
         defaultValue="tab1"
         orientation="horizontal"

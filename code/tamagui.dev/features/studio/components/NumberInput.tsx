@@ -1,10 +1,6 @@
 import { Minus, Plus } from '@tamagui/lucide-icons-2'
-import {
-  Button,
-  Input,
-  type SizeTokens,
-  type InputProps as TamaguiInputProps,
-} from 'tamagui'
+import { Input, type SizeTokens, type InputProps as TamaguiInputProps } from 'tamagui'
+import { Button, type ButtonSize } from '~/components/Button'
 
 export type NumberInputProps = {
   size: SizeTokens
@@ -13,6 +9,15 @@ export type NumberInputProps = {
   min?: number
   max?: number
 } & Omit<TamaguiInputProps, 'value' | 'onValueChange'>
+
+const getButtonSize = (size: SizeTokens): ButtonSize => {
+  if (typeof size === 'number') {
+    return size <= 30 ? 'small' : size <= 40 ? 'medium' : 'large'
+  }
+
+  const token = Number.parseFloat(String(size).replace('$', ''))
+  return token <= 2 ? 'small' : token <= 4 ? 'medium' : 'large'
+}
 
 export function NumberInput({
   size,
@@ -44,7 +49,7 @@ export function NumberInput({
       <Button
         disabled={!canDecrease}
         variant="outlined"
-        size={size}
+        size={getButtonSize(size)}
         icon={Minus}
         onPress={() => {
           handleUpdate(value - 1)
@@ -64,7 +69,7 @@ export function NumberInput({
       <Button
         disabled={!canIncrease}
         variant="outlined"
-        size={size}
+        size={getButtonSize(size)}
         icon={Plus}
         onPress={() => {
           handleUpdate(value + 1)

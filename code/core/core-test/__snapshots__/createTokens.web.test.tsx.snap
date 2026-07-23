@@ -343,13 +343,6 @@ exports[`snapshot 1`] = `
       "val": 99,
       "variable": "var(--t-size-9--5)",
     },
-    "true": {
-      "isVar": true,
-      "key": "$true",
-      "name": "t-size-true",
-      "val": 44,
-      "variable": "var(--t-size-true)",
-    },
   },
   "space": {
     "-0.25": {
@@ -575,13 +568,6 @@ exports[`snapshot 1`] = `
       "name": "t-space--9--5",
       "val": -57,
       "variable": "var(--t-space--9--5)",
-    },
-    "-true": {
-      "isVar": true,
-      "key": "$-true",
-      "name": "t-space--true",
-      "val": -18,
-      "variable": "var(--t-space--true)",
     },
     "0": {
       "isVar": true,
@@ -813,13 +799,6 @@ exports[`snapshot 1`] = `
       "name": "t-space-9--5",
       "val": 57,
       "variable": "var(--t-space-9--5)",
-    },
-    "true": {
-      "isVar": true,
-      "key": "$true",
-      "name": "t-space-true",
-      "val": 18,
-      "variable": "var(--t-space-true)",
     },
   },
   "zIndex": {

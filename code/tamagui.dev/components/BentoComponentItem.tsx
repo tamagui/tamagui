@@ -77,11 +77,19 @@ export function ComponentItem({
             bg: '$color3',
           }}
         >
-          <YStack fullscreen pointerEvents="none" justify="center" items="center" p="$6">
+          <YStack
+            position="absolute"
+            inset={0}
+            pointerEvents="none"
+            justify="center"
+            items="center"
+            p="$6"
+          >
             <Preview />
           </YStack>
           <LinearGradient
-            fullscreen
+            position="absolute"
+            inset={0}
             start={[0, 0.5]}
             end={[0.5, 0]}
             colors={['transparent', '$background04']}

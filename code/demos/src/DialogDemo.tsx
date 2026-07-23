@@ -2,7 +2,6 @@ import { ChevronDown, X } from '@tamagui/lucide-icons-2'
 import { useState } from 'react'
 import {
   Adapt,
-  Button,
   Dialog,
   Fieldset,
   Input,
@@ -16,6 +15,7 @@ import {
   XGroup,
   XStack,
 } from 'tamagui'
+import { Button } from './Button'
 import { SelectDemoContents } from './SelectDemo'
 
 type DialogMode = 'plain' | 'adapt' | 'keepMounted'
@@ -28,7 +28,7 @@ export function DialogDemo() {
       <XGroup>
         <XGroup.Item>
           <Button
-            size="$3"
+            size="medium"
             theme={mode === 'plain' ? 'accent' : undefined}
             onPress={() => setMode('plain')}
           >
@@ -37,7 +37,7 @@ export function DialogDemo() {
         </XGroup.Item>
         <XGroup.Item>
           <Button
-            size="$3"
+            size="medium"
             theme={mode === 'adapt' ? 'accent' : undefined}
             onPress={() => setMode('adapt')}
           >
@@ -46,7 +46,7 @@ export function DialogDemo() {
         </XGroup.Item>
         <XGroup.Item>
           <Button
-            size="$3"
+            size="medium"
             theme={mode === 'keepMounted' ? 'accent' : undefined}
             onPress={() => setMode('keepMounted')}
           >
@@ -85,9 +85,10 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
             dismissOnSnapToBottom
             unmountChildrenWhenHidden
           >
-            <Sheet.Frame p="$4" gap="$4">
+            <Sheet.Container p="$4" gap="$4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               bg="$background"
               opacity={0.5}
@@ -151,8 +152,11 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
               <XStack flex={1}>
                 <SelectDemoContents
                   trigger={
-                    <Select.Trigger flex={1} iconAfter={ChevronDown} borderRadius="$4">
+                    <Select.Trigger flex={1} borderRadius="$4">
                       <Select.Value placeholder="Something" />
+                      <Select.Icon>
+                        <ChevronDown />
+                      </Select.Icon>
                     </Select.Trigger>
                   }
                 />
@@ -169,7 +173,7 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button position="absolute" r="$3" size="$2" circular icon={X} />
+                <Button position="absolute" r="$3" size="small" circular icon={X} />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>

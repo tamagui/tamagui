@@ -34,7 +34,7 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
                 </Paragraph>
               </YStack>
 
-              <Avatar rounded="$true" size="$3" p="$3" bg="$color6">
+              <Avatar rounded="$4" size="$3" p="$3" bg="$color6">
                 <Avatar.Image scale={0.6} src={img} />
                 <Avatar.Fallback bg="$color6" borderColor="$color8" />
               </Avatar>

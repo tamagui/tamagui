@@ -1,5 +1,6 @@
 import { Dices } from '@tamagui/lucide-icons-2'
-import { Button, TooltipSimple } from 'tamagui'
+import { TooltipSimple } from 'tamagui'
+import { Button } from '~/components/Button'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
 
 export function RandomizeButton() {
@@ -11,7 +12,7 @@ export function RandomizeButton() {
           themeBuilderStore.randomizeDemoOptions()
         }}
         icon={Dices}
-        size="$2"
+        size="small"
         rounded="$8"
         circular
         scaleIcon={1.3}

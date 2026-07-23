@@ -8,7 +8,6 @@ import { useState } from 'react'
 import type { PopoverProps } from 'tamagui'
 import {
   Adapt,
-  Button,
   Input,
   isWeb,
   Label,
@@ -18,6 +17,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from './Button'
 
 export function PopoverDemo() {
   const [shouldAdapt, setShouldAdapt] = useState(true)
@@ -75,9 +75,10 @@ export function Demo({
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame p="$4">
+            <Sheet.Container p="$4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               bg="$shadowColor"
               transition="lazy"
@@ -89,6 +90,7 @@ export function Demo({
       )}
 
       <Popover.Content
+        backgroundColor="$background"
         borderWidth={1}
         borderColor="$borderColor"
         width={300}
@@ -105,7 +107,11 @@ export function Demo({
           },
         ]}
       >
-        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+        <Popover.Arrow
+          backgroundColor="$background"
+          borderWidth={1}
+          borderColor="$borderColor"
+        />
 
         <XStack gap="$3" mb="$3">
           <Label size="$3" htmlFor={Name}>
@@ -116,7 +122,7 @@ export function Demo({
 
         <Popover.Close asChild>
           <Button
-            size="$3"
+            size="medium"
             onPress={() => {
               /* Custom code goes here, does not interfere with popover closure */
             }}

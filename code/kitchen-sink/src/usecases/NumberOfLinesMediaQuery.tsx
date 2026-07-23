@@ -4,23 +4,23 @@ import { SizableText, Text } from 'tamagui'
 export function NumberOfLinesMediaQuery() {
   return (
     <>
-      {/* Test 1: numberOfLines in $platform-web */}
+      {/* Test 1: numberOfLines in $web */}
       <SizableText
         testID="platform-web-nol"
         size="$4"
         width={200}
-        $platform-web={{ numberOfLines: 1 }}
+        $web={{ numberOfLines: 1 }}
       >
         This text should be truncated to one line on web via platform prop. It needs to be
         long enough to actually trigger truncation behavior.
       </SizableText>
 
-      {/* Test 2: numberOfLines=2 in $platform-web */}
+      {/* Test 2: numberOfLines=2 in $web */}
       <SizableText
         testID="platform-web-nol-2"
         size="$4"
         width={200}
-        $platform-web={{ numberOfLines: 2 }}
+        $web={{ numberOfLines: 2 }}
       >
         This text should be clamped to two lines on web via platform prop. It needs to be
         long enough to actually trigger multi-line truncation behavior and overflow.

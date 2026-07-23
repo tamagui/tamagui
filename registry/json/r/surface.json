@@ -1,0 +1,43 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "surface",
+  "type": "registry:ui",
+  "title": "Surface",
+  "description": "Surface: a copied panel/well/toolbar fixture — a YStack + the composable chrome/interaction facets (filled, outlined, elevated, rounded, interactive) + a `level` prop that shifts the subtree to the surface1-3 sub-theme. Nothing on by default; every facet is opt-in. Generics-only, so it restyles under any re-bound level.",
+  "files": [
+    {
+      "path": "components/tamagui/Surface.tsx",
+      "content": "// Surface — a copied panel / well / toolbar fixture, not a framework component.\n// It is a YStack + the composable chrome/interaction facets + a `level` prop that\n// shifts the subtree to the surface1-3 sub-theme. Nothing is on by default: a bare\n// <Surface /> renders no chrome and no interaction styling; every facet is opt-in\n// at the use site:\n//\n//   <Surface level={2} filled outlined rounded interactive />\n//\n// `level` sets `theme=\"surfaceN\"` (a theme boundary can only be created by the\n// prop, not by a variant), and because the facets read generics and the surface\n// theme re-binds those generics, facets are level-aware with zero cooperation.\n// Component skins do NOT extend Surface — they get their similarity by styling\n// against the same generics. Fork the copy for CardSurface vs ListSurface and\n// nothing in the framework cares.\n//\n// Generics-only: never references the color scale ($colorN) directly, so it\n// restyles under any re-bound level. Single definition; the registry item is\n// generated from this file.\nimport { type GetProps, styled, Theme, YStack } from '@tamagui/ui'\nimport { forwardRef } from 'react'\n\nimport { elevated, filled, interactive, outlined, rounded } from './facets'\n\nexport const SurfaceFrame = styled(YStack, {\n  name: 'Surface',\n\n  variants: {\n    filled,\n    outlined,\n    elevated,\n    rounded,\n    interactive,\n  } as const,\n})\n\nexport type SurfaceProps = GetProps<typeof SurfaceFrame> & {\n  /** shift the subtree to a surface sub-theme (surface1-3). */\n  level?: 1 | 2 | 3\n}\n\nexport const Surface = forwardRef<any, SurfaceProps>(function Surface(\n  { level, ...props },\n  ref\n) {\n  const frame = <SurfaceFrame ref={ref} {...props} />\n  if (!level) return frame\n  return <Theme name={`surface${level}` as any}>{frame}</Theme>\n})\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Surface.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "registryDependencies": [
+    "facets"
+  ],
+  "categories": [
+    "layout"
+  ],
+  "meta": {
+    "tokens": [
+      "$background",
+      "$backgroundHover",
+      "$backgroundPress",
+      "$borderColor",
+      "$borderColorHover",
+      "$borderColorPress",
+      "$shadowColor",
+      "$outlineColor",
+      "$radius",
+      "$pressScale"
+    ],
+    "themes": [
+      "surface1",
+      "surface2",
+      "surface3"
+    ]
+  }
+}

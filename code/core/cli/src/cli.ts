@@ -3,13 +3,7 @@ import chalk from 'chalk'
 
 import { disposeAll, getOptions } from './utils'
 
-// exit handlers
-;['exit', 'SIGINT'].forEach((_) => {
-  process.on(_, () => {
-    disposeAll()
-    process.exit()
-  })
-})
+process.on('exit', disposeAll)
 
 const COMMAND_MAP = {
   check: {
@@ -227,6 +221,55 @@ const COMMAND_MAP = {
     },
   },
 
+  migrate: {
+    shorthands: [],
+    description: `Print an AI-agent prompt for migrating a Tamagui app to v3`,
+    usage: `$ tamagui migrate --from v2
+$ tamagui migrate --from v1`,
+    flags: {
+      '--help': Boolean,
+      '--from': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const [_cmd, fromArg] = _
+      const { printMigrationPrompt } = require('./migrate')
+
+      printMigrationPrompt({
+        from: flags['--from'] || fromArg,
+      })
+    },
+  },
+
+  'to-tailwind': {
+    shorthands: [],
+    description: `Convert Tamagui JSX props in files or globs to Tailwind className syntax`,
+    flags: {
+      '--help': Boolean,
+      '--write': Boolean,
+      // path to the app's tamagui config so token/media/shorthand resolution uses the app's
+      // ACTUAL scales, not the bundled default fallback.
+      '--config': String,
+      // acknowledge use of the bundled default scales (required for --write without --config).
+      '--use-default-config': Boolean,
+      // opt in to DOM renaming (View→div). default: preserve Tamagui components (RN-safe).
+      '--rename-dom': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { toTailwind } = require('./to-tailwind')
+      const [_cmd, ...patterns] = _
+
+      await toTailwind({
+        patterns,
+        write: flags['--write'],
+        configPath: flags['--config'],
+        useDefaultConfig: flags['--use-default-config'],
+        renameDom: flags['--rename-dom'],
+      })
+    },
+  },
+
   'update-template': {
     shorthands: ['ut'],
     description: `Used to update your git repo with the source template. (e.g. Takeout)`,
@@ -332,8 +375,13 @@ main()
 async function main() {
   if (flags['--help']) {
     console.info(`\n$ tamagui ${command}: ${definition.description}\n`)
+    if ('usage' in definition && definition.usage) {
+      console.info(`Usage:\n${definition.usage}\n`)
+    }
     console.info(
-      `Flags: ${Object.entries(definition.flags).map(([k, v]) => `${k} (${v.name})`)}`
+      `Flags:\n${Object.entries(definition.flags)
+        .map(([k, v]) => `  ${k} (${v.name})`)
+        .join('\n')}`
     )
     process.exit(0)
   }
@@ -354,6 +402,7 @@ async function main() {
     await definition.run()
   } catch (err: any) {
     console.error(`Error running command: ${err.message}`)
+    process.exit(1) // a thrown command error must be a NON-ZERO exit (safety: --write aborts)
   }
 
   process.exit(0)

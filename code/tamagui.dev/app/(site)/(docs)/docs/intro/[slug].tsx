@@ -20,20 +20,25 @@ export async function generateStaticParams() {
   return paths
 }
 
-export async function loader({ params }) {
+export async function loader({ params, search, request }) {
   const { getMDXBySlug, getCompilationExamples } =
     await import('~/features/mdx/getMDXBySlug')
-  const { frontmatter, code } = await getMDXBySlug(`data/docs/intro`, params.slug)
+  const { getDocsMode } = await import('~/features/docs/isTailwindMode')
+  const mode = getDocsMode({ search, request })
+  const { frontmatter, code } = await getMDXBySlug(`data/docs/intro`, params.slug, {
+    mode,
+  })
   return {
     frontmatter,
     code,
     examples: getCompilationExamples(),
+    search,
   }
 }
 
 export default function DocIntroPage() {
-  const { code, frontmatter, examples } = useLoader(loader)
-  const { next, previous, currentPath, documentVersionPath } = useDocsMenu()
+  const { code, frontmatter, examples, search } = useLoader(loader)
+  const { next, previous } = useDocsMenu()
 
   if (!frontmatter || !code) {
     console.warn(`No frontmatter/code?`)
@@ -44,7 +49,7 @@ export default function DocIntroPage() {
 
   const GITHUB_URL = 'https://github.com'
   const REPO_NAME = 'tamagui/tamagui'
-  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${currentPath}${documentVersionPath}.mdx`
+  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/${frontmatter.slug}.mdx`
 
   return (
     <DocsPageFrame
@@ -52,6 +57,8 @@ export default function DocIntroPage() {
       editUrl={editUrl}
       next={next}
       previous={previous}
+      frontmatter={frontmatter}
+      initialSearch={search}
     >
       <HeadInfo
         title={`${frontmatter.title} — Tamagui`}

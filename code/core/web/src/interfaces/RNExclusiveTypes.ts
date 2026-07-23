@@ -44,6 +44,7 @@ export type RNOnlyProps =
   | 'rel'
   | 'download'
   | 'dir'
+  | 'focusable'
   // GestureResponderHandlers
   | 'onStartShouldSetResponder'
   | 'onMoveShouldSetResponder'

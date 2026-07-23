@@ -7,6 +7,8 @@
 import type { ComponentType } from 'react'
 
 const loaders: Record<string, () => ComponentType<any>> = {
+  VariablesCase: () => require('./VariablesCase').VariablesCase,
+  VariablesNativeCase: () => require('./VariablesNativeCase').VariablesNativeCase,
   AccordionDefaultOpenCase: () =>
     require('./AccordionDefaultOpenCase').AccordionDefaultOpenCase,
   ActionsSheetComparison: () =>
@@ -16,12 +18,15 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AnimatePresenceExitTest').AnimatePresenceExitTest,
   AnimationComprehensiveCase: () =>
     require('./AnimationComprehensiveCase').AnimationComprehensiveCase,
+  PublicAnimatedNumberCase: () =>
+    require('./PublicAnimatedNumberCase').PublicAnimatedNumberCase,
   Benchmark: () => require('./Benchmark').Benchmark,
   ButtonCircular: () => require('./ButtonCircular').ButtonCircular,
   GroupDisabledStyleLatchCase: () =>
     require('./GroupDisabledStyleLatchCase').GroupDisabledStyleLatchCase,
   ButtonCustom: () => require('./ButtonCustom').ButtonCustom,
   ButtonInverse: () => require('./ButtonInverse').ButtonInverse,
+  ButtonSkin: () => require('./ButtonSkin').ButtonSkin,
   ButtonUnstyled: () => require('./ButtonUnstyled').ButtonUnstyled,
   CheckboxDisabledOnPress: () =>
     require('./CheckboxDisabledOnPress').CheckboxDisabledOnPress,
@@ -43,13 +48,21 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./DialogPointerEventsCase').DialogPointerEventsCase,
   DialogScopedCase: () => require('./DialogScopedCase').DialogScopedCase,
   DialogSheetAdaptCase: () => require('./DialogSheetAdaptCase').DialogSheetAdaptCase,
+  DialogSheetAdaptHandoffCase: () =>
+    require('./DialogSheetAdaptHandoffCase').DialogSheetAdaptHandoffCase,
+  AdaptLiveSlotSpikeCase: () =>
+    require('./AdaptLiveSlotSpikeCase').AdaptLiveSlotSpikeCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
+  OnTransitionCase: () => require('./OnTransitionCase').OnTransitionCase,
+  FocusScopeNoFocusCase: () => require('./FocusScopeNoFocusCase').FocusScopeNoFocusCase,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,
   FocusVisibleButtonPointer: () =>
     require('./FocusVisibleButtonPointer').FocusVisibleButtonPointer,
   FocusVisibleButtonWithFocusStyle: () =>
     require('./FocusVisibleButtonWithFocusStyle').FocusVisibleButtonWithFocusStyle,
+  FieldValidatedSignupCase: () =>
+    require('./FieldValidatedSignupCase').FieldValidatedSignupCase,
   FontTokensInVariants: () => require('./FontTokensInVariants').FontTokensInVariants,
   GroupHoverMobile: () => require('./GroupHoverMobile').GroupHoverMobile,
   GroupPressInVariant: () => require('./GroupPressInVariant').GroupPressInVariant,
@@ -61,6 +74,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   GroupProp: () => require('./GroupProp').GroupProp,
   MediaQueryGtMd: () => require('./MediaQueryGtMd').MediaQueryGtMd,
   MediaQueriesV5: () => require('./MediaQueriesV5').MediaQueriesV5,
+  MotionReduceCase: () => require('./MotionReduceCase').MotionReduceCase,
   MenuAccessibilityCase: () => require('./MenuAccessibilityCase').MenuAccessibilityCase,
   MenuAsChildPositionCase: () =>
     require('./MenuAsChildPositionCase').MenuAsChildPositionCase,
@@ -71,7 +85,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
   NativeMixedDriverCase: () => require('./NativeMixedDriverCase').NativeMixedDriverCase,
   NativePortalTest: () => require('./NativePortalTest').NativePortalTest,
   GroupUseCases: () => require('./GroupUseCases').GroupUseCases,
+  IconFillStroke: () => require('./IconFillStroke').IconFillStroke,
+  ImageObjectFit: () => require('./ImageObjectFit').ImageObjectFit,
   ImageTokenStyle: () => require('./ImageTokenStyle').ImageTokenStyle,
+  InputRefCase: () => require('./InputRefCase').InputRefCase,
   ThemedListItem: () => require('./ListItem').ThemedListItem,
   NewInputBasic: () => require('./NewInputBasic').NewInputBasic,
   InputTextShorthand: () => require('./InputTextShorthand').InputTextShorthand,
@@ -91,11 +108,14 @@ const loaders: Record<string, () => ComponentType<any>> = {
   PseudoStyleMerge: () => require('./PseudoStyleMerge').PseudoStyleMerge,
   PseudoTransitionCase: () => require('./PseudoTransitionCase').PseudoTransitionCase,
   RenderPropCase: () => require('./RenderPropCase').RenderPropCase,
+  SafeAreaValue: () => require('./SafeAreaValue').SafeAreaValue,
   ScrollViewRefCase: () => require('./ScrollViewRefCase').ScrollViewRefCase,
   SecondPage: () => require('./SecondPage').SecondPage,
   SelectAndroidOnPress: () => require('./SelectAndroidOnPress').SelectAndroidOnPress,
   SelectFocusScopeCase: () => require('./SelectFocusScopeCase').SelectFocusScopeCase,
+  SelectMultipleCase: () => require('./SelectMultipleCase').SelectMultipleCase,
   SelectRemount: () => require('./SelectRemount').SelectRemount,
+  SelectSkin: () => require('./SelectSkin').SelectSkin,
   Shadows: () => require('./Shadows').Shadows,
   ShorthandVariables: () => require('./ShorthandVariables').ShorthandVariables,
   SheetAnimationCase: () => require('./SheetAnimationCase').SheetAnimationCase,
@@ -130,6 +150,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyledContextTokens: () => require('./StyledContextTokens').StyledContextTokens,
   StyledHOCNamed: () => require('./StyledHOCNamed').StyledHOCNamed,
   StyledIconColor: () => require('./StyledIconColor').StyledIconColor,
+  IconFontSizing: () => require('./IconFontSizing').IconFontSizing,
   StyledInputFocusStyle: () => require('./StyledInputFocusStyle').StyledInputFocusStyle,
   StyledInputOnFocus: () => require('./StyledInputOnFocus').StyledInputOnFocus,
   StyledMediaQueryMerge: () => require('./StyledMediaQueryMerge').StyledMediaQueryMerge,
@@ -148,6 +169,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyleProp: () => require('./StyleProp').StyleProp,
   TabsOnInteraction: () => require('./TabsOnInteraction').TabsOnInteraction,
   TextNestedInheritance: () => require('./TextNestedInheritance').TextNestedInheritance,
+  TextOverflowEllipsis: () => require('./TextOverflowEllipsis').TextOverflowEllipsis,
   ThemeChange: () => require('./ThemeChange').ThemeChange,
   ThemeChangeBasic: () => require('./ThemeChangeBasic').ThemeChangeBasic,
   ThemeComponentResolution: () =>
@@ -174,6 +196,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   V5ThemeBuilderOutput: () => require('./V5ThemeBuilderOutput').V5ThemeBuilderOutput,
   VariantFontFamily: () => require('./VariantFontFamily').VariantFontFamily,
   VariantsOrder: () => require('./VariantsOrder').VariantsOrder,
+  VisibilityCase: () => require('./VisibilityCase').VisibilityCase,
   ZIndex: () => require('./ZIndex').ZIndex,
   NestedPressExclusive: () => require('./NestedPressExclusive').NestedPressExclusive,
 }

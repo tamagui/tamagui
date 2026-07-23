@@ -42,7 +42,6 @@ import { Info, X } from '@tamagui/lucide-icons-2'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { useEffect, useMemo, useState } from 'react'
 import {
-  Button,
   Dialog,
   H3,
   Input,
@@ -61,6 +60,7 @@ import {
   useTheme,
   useThemeName,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { z } from 'zod'
 import { authFetch } from '~/features/api/authFetch'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
@@ -758,7 +758,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           </Paragraph>
 
           <Button
-            size="$4"
+            size="medium"
             theme="accent"
             onPress={handleLogin}
             icon={GithubIcon}
@@ -891,7 +891,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       setCouponCode(text)
                     }}
                   />
-                  <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                  <Button size="medium" theme="accent" onPress={handleApplyCoupon}>
                     <Button.Text>Apply</Button.Text>
                   </Button>
                 </XStack>
@@ -1082,7 +1082,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       setCouponCode(text)
                     }}
                   />
-                  <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                  <Button size="medium" theme="accent" onPress={handleApplyCoupon}>
                     <Button.Text>Apply</Button.Text>
                   </Button>
                 </XStack>
@@ -1303,7 +1303,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                     setCouponCode(text)
                   }}
                 />
-                <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                <Button size="medium" theme="accent" onPress={handleApplyCoupon}>
                   <Button.Text>Apply</Button.Text>
                 </Button>
               </XStack>
@@ -1401,11 +1401,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     >
       <Dialog.Adapt when="maxMd">
         <Sheet zIndex={1_000_001} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame bg="$color1" p={0} gap="$4">
+          <Sheet.Container p={0} gap="$4">
+            <Sheet.Background bg="$color1" />
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$shadow4"
             transition="lazy"
@@ -1448,7 +1449,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+              <Button position="absolute" t="$2" r="$2" size="small" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

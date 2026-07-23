@@ -2,7 +2,6 @@ import { Input as TamaguiInput, styled } from 'tamagui'
 
 // Input accepts text styles at runtime via validStyles but TS doesn't know
 const TextInput2 = styled(TamaguiInput, {
-  unstyled: true,
   name: 'bla',
   height: '$5',
   borderRadius: '$1',

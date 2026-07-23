@@ -49,7 +49,7 @@ function DelayDemoContent({
         {driverName}
       </Text>
 
-      <Button onPress={onToggle} size="$3">
+      <Button onPress={onToggle} size="small">
         {show ? 'Hide' : 'Show'}
       </Button>
 

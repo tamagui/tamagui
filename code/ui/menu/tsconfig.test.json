@@ -1,0 +1,13 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true,
+    "paths": {
+      "@tamagui/create-menu": ["code/ui/create-menu/src/index.tsx"],
+      "@tamagui/*": ["code/core/*", "code/ui/*", "code/packages/*"]
+    }
+  },
+  "include": ["test/Menu.test-d.tsx"],
+  "exclude": ["types", "dist"]
+}

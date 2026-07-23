@@ -25,7 +25,7 @@ export function MenuAnimatePositionCase() {
             minWidth={180}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
           >
             <Menu.Item data-testid="menu-item-1" key="i1" textValue="Alpha">
               <Menu.ItemTitle>Alpha</Menu.ItemTitle>

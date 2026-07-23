@@ -1,15 +1,7 @@
 import { Paintbrush, X } from '@tamagui/lucide-icons-2'
 import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  Dialog,
-  H2,
-  Paragraph,
-  ScrollView,
-  Theme,
-  TooltipSimple,
-  YStack,
-} from 'tamagui'
+import { Dialog, H2, Paragraph, ScrollView, Theme, TooltipSimple, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Features } from '~/components/Features'
 import { Code, CodeInline } from '~/components/Code'
 import { useLocalStorageWatcher } from '~/hooks/useLocalStorageWatcher'
@@ -78,8 +70,8 @@ export const DropTamaguiConfig = () => {
             self="flex-end"
             rounded="$10"
             onPress={() => setShow(true)}
-            size="$3"
-            chromeless
+            size="medium"
+            variant="quiet"
             $sm={{
               display: 'none',
             }}
@@ -128,7 +120,7 @@ export const DropTamaguiConfig = () => {
                 position="absolute"
                 t="$4"
                 r="$4"
-                size="$2"
+                size="small"
                 circular
                 z={1000}
                 icon={X}
@@ -136,7 +128,8 @@ export const DropTamaguiConfig = () => {
             </Dialog.Close>
 
             <YStack
-              fullscreen
+              position="absolute"
+              inset={0}
               pointerEvents="none"
               opacity={dragging ? 1 : 0}
               bg="$background06"

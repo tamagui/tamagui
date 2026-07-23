@@ -14,7 +14,7 @@
     "build": "tamagui generate-css || true",
     "build:prod": "one build",
     "prod": "bun run build:prod && bun run serve",
-    "serve:railway": "one serve --host 0.0.0.0",
+    "serve:railway": "one serve --host 0.0.0.0 --port ${PORT:-3000}",
     "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 bun run build:prod && bun run serve",
     "test": "vitest run",
     "test:watch": "vitest"

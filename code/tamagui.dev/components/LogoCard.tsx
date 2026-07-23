@@ -41,12 +41,12 @@ export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...pro
                 height="$3"
                 width="$3"
                 bg="$color6"
-                rounded="$true"
+                rounded="$4"
               >
                 {icon}
               </View>
             ) : (
-              <Avatar rounded="$true" size="$3" p="$3" bg="$color6">
+              <Avatar rounded="$4" size="$3" p="$3" bg="$color6">
                 <Avatar.Image scale={0.6} src={img} />
                 <Avatar.Fallback bg="$color6" borderColor="$color8" />
               </Avatar>

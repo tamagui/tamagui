@@ -1,16 +1,14 @@
 import { dirname, join } from 'node:path'
+import { createRequire } from 'node:module'
 
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import type { TamaguiOptions } from '@tamagui/types'
-import * as FS from 'fs-extra'
+import FS from 'fs-extra'
 
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { TamaguiPlatform } from '../types'
 import type { BundledConfig } from './bundleConfig'
 import { getBundledConfig } from './bundleConfig'
-
-const tamaguiDir = join(process.cwd(), '.tamagui')
-const confFile = join(tamaguiDir, 'tamagui.config.json')
 
 /**
  * Sort of a super-set of bundleConfig(), this code needs some refactoring ideally
@@ -27,6 +25,7 @@ export async function regenerateConfig(
     const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
     if (!config) return
     const out = transformConfig(config, tamaguiOptions.platform || 'web')
+    const confFile = getConfigFile(tamaguiOptions)
 
     await FS.ensureDir(dirname(confFile))
     await FS.writeJSON(confFile, out, {
@@ -41,14 +40,15 @@ export async function regenerateConfig(
 }
 
 export function regenerateConfigSync(
-  _tamaguiOptions: TamaguiOptions,
+  tamaguiOptions: TamaguiOptions,
   config: BundledConfig
 ) {
   try {
+    const confFile = getConfigFile(tamaguiOptions)
     FS.ensureDirSync(dirname(confFile))
     FS.writeJSONSync(
       confFile,
-      transformConfig(config, _tamaguiOptions.platform || 'web'),
+      transformConfig(config, tamaguiOptions.platform || 'web'),
       {
         spaces: 2,
       }
@@ -70,8 +70,11 @@ export async function generateTamaguiThemes(
   }
 
   const { input, output } = tamaguiOptions.themeBuilder
-  const inPath = resolveRelativePath(input)
-  const outPath = resolveRelativePath(output)
+  const root = tamaguiOptions.root || process.cwd()
+  const tamaguiDir = join(root, '.tamagui')
+  const projectRequire = createRequire(join(root, 'package.json'))
+  const inPath = resolveRelativePath(input, root, projectRequire)
+  const outPath = resolveRelativePath(output, root, projectRequire)
   const generatedOutput = await generateThemes(inPath)
 
   // because this runs in parallel (its cheap) lets avoid logging a bunch, so check to see if changed:
@@ -96,8 +99,15 @@ export async function generateTamaguiThemes(
   return hasChanged
 }
 
-const resolveRelativePath = (inputPath: string) =>
-  inputPath.startsWith('.') ? join(process.cwd(), inputPath) : require.resolve(inputPath)
+const getConfigFile = (options: TamaguiOptions) =>
+  join(options.root || process.cwd(), '.tamagui', 'tamagui.config.json')
+
+const resolveRelativePath = (
+  inputPath: string,
+  root: string,
+  projectRequire: NodeRequire
+) =>
+  inputPath.startsWith('.') ? join(root, inputPath) : projectRequire.resolve(inputPath)
 
 function cloneDeepSafe(x: any, excludeKeys = {}) {
   if (!x) return x

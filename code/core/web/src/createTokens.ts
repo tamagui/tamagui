@@ -2,7 +2,25 @@ import { createVariables } from './createVariables'
 import type { CreateTokens, Variable } from './types'
 
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
+  if (process.env.NODE_ENV !== 'production') {
+    validateNoTrueTokenKeys(tokens)
+  }
   return createVariables(tokens, process.env.TAMAGUI_TOKEN_PREFIX ?? 't') as any
+}
+
+function validateNoTrueTokenKeys(tokens: CreateTokens) {
+  for (const category in tokens) {
+    const tokenSet = tokens[category]
+    if (!tokenSet || typeof tokenSet !== 'object') continue
+
+    for (const key of ['true', `$${'true'}`]) {
+      if (Object.prototype.hasOwnProperty.call(tokenSet, key)) {
+        throw new Error(
+          `tokens.${category}.${key} is reserved. Remove the true token key and set settings.defaultSize instead.`
+        )
+      }
+    }
+  }
 }
 
 type NormalizeTokens<A, Type = A[keyof A]> = {

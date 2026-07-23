@@ -5,7 +5,6 @@ import { useObserve } from '@tamagui/use-store'
 import { getContrast, readableColor } from 'color2k'
 import React, { memo } from 'react'
 import {
-  Button,
   Paragraph,
   Spacer,
   Theme,
@@ -15,6 +14,7 @@ import {
   YStack,
   ZStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { Canvas } from '../components/Canvas'
 import { colorsStore } from '../state/ColorsStore'
@@ -63,7 +63,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
     <ColorCanvasFrame>
       <XStack p="$2" gap="$4" position="relative">
         <Unspaced>
-          <YStack fullscreen z={0} bg="$background" opacity={0.5} />
+          <YStack position="absolute" inset={0} z={0} bg="$background" opacity={0.5} />
         </Unspaced>
 
         <XGroup>
@@ -71,7 +71,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
             return (
               <Theme key={`${type}${i}`} name={isVisible ? 'accent' : undefined}>
                 <Button
-                  size="$2"
+                  size="small"
                   px="$3"
                   aria-label={`Toggle ${type} curve visibility`}
                   aria-pressed={isVisible}
@@ -91,14 +91,14 @@ export const ColorCanvas = memo(function ColorCanvas() {
 
         <XGroup>
           <Button
-            size="$2"
+            size="small"
             px="$3"
             icon={Minus}
             aria-label="Remove color from end of scale"
             onPress={() => state.colors.popColor()}
           />
           <Button
-            size="$2"
+            size="small"
             px="$3"
             icon={Plus}
             aria-label="Add color to end of scale"
@@ -119,7 +119,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
             return (
               <YStack
                 key={`${color}${i}`}
-                focusable
+                tabIndex={0}
                 onFocus={() => state.colors.setColorIndex(String(i))}
                 flex={1}
                 width={barWidth as any}
@@ -153,7 +153,8 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 >
                   <YStack
                     z={-1}
-                    fullscreen
+                    position="absolute"
+                    inset={0}
                     bg={
                       isActive
                         ? color.lightness > 50

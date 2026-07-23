@@ -2,7 +2,8 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import type { SheetProps } from '@tamagui/sheet'
 import { Sheet } from '@tamagui/sheet'
 import React, { memo } from 'react'
-import { Button, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+import { H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+import { Button } from './Button'
 
 const spModes = ['percent', 'constant', 'fit', 'mixed'] as const
 
@@ -84,9 +85,10 @@ export const SheetDemo = () => {
         />
 
         <Sheet.Handle />
-        <Sheet.Frame p="$4" justify="center" items="center" gap="$5">
+        <Sheet.Container p="$4" justify="center" items="center" gap="$5">
+          <Sheet.Background />
           <SheetContents {...{ modal, isPercent, innerOpen, setInnerOpen, setOpen }} />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )
@@ -97,13 +99,13 @@ const SheetContents = memo(
   ({ modal, isPercent, innerOpen, setInnerOpen, setOpen }: any) => {
     return (
       <>
-        <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
+        <Button size="large" circular icon={ChevronDown} onPress={() => setOpen(false)} />
         <Input width={200} />
         {modal && isPercent && (
           <>
             <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
             <Button
-              size="$6"
+              size="large"
               circular
               icon={ChevronUp}
               onPress={() => setInnerOpen(true)}
@@ -126,11 +128,12 @@ function InnerSheet(props: SheetProps) {
       />
 
       <Sheet.Handle />
-      <Sheet.Frame flex={1} justify="center" items="center" gap="$5">
+      <Sheet.Container flex={1} justify="center" items="center" gap="$5">
+        <Sheet.Background />
         <Sheet.ScrollView>
           <YStack p="$5" gap="$8">
             <Button
-              size="$6"
+              size="large"
               circular
               self="center"
               icon={ChevronDown}
@@ -150,7 +153,7 @@ function InnerSheet(props: SheetProps) {
             ))}
           </YStack>
         </Sheet.ScrollView>
-      </Sheet.Frame>
+      </Sheet.Container>
     </Sheet>
   )
 }

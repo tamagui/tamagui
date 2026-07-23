@@ -1,40 +1,122 @@
+import { type GetProps } from '@tamagui/core';
+import type { ScrollViewRef } from '@tamagui/scroll-view';
+import { ScrollView } from '@tamagui/scroll-view';
 import React from 'react';
-import type { ScrollView as RNScrollView } from 'react-native';
-export declare const SheetScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof RNScrollView, {
+type SheetScrollViewBaseProps = GetProps<typeof ScrollView>;
+export declare const SheetScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<ScrollViewRef>, import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
         accept: {
-            readonly contentContainerStyle: "style";
+            readonly contentContainerStyle: 'style';
         };
     }>> | undefined;
-}> & {
-    fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof RNScrollView, {
+}, {}>, string | number | symbol> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<ScrollViewRef>, "contentContainerStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
         accept: {
-            readonly contentContainerStyle: "style";
+            readonly contentContainerStyle: 'style';
+        };
+    }>> | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
+        accept: {
+            readonly contentContainerStyle: 'style';
         };
     }>> | undefined;
 }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof RNScrollView, {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
         accept: {
-            readonly contentContainerStyle: "style";
+            readonly contentContainerStyle: 'style';
         };
     }>> | undefined;
-}> & {
-    fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof RNScrollView, {
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
         accept: {
-            readonly contentContainerStyle: "style";
+            readonly contentContainerStyle: 'style';
         };
     }>> | undefined;
 }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
-    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof RNScrollView, {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
         accept: {
-            readonly contentContainerStyle: "style";
+            readonly contentContainerStyle: 'style';
         };
     }>> | undefined;
-}, {
-    fullscreen?: boolean | undefined;
-}>> & React.RefAttributes<RNScrollView>>;
+}, {}>> & {
+    h?: SheetScrollViewBaseProps['height'];
+    o?: SheetScrollViewBaseProps['opacity'];
+    pos?: SheetScrollViewBaseProps['position'];
+}, "scope"> & {
+    scope?: import("./types").SheetScopes;
+}, ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<ScrollViewRef>, "contentContainerStyle" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
+        accept: {
+            readonly contentContainerStyle: 'style';
+        };
+    }>> | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
+        accept: {
+            readonly contentContainerStyle: 'style';
+        };
+    }>> | undefined;
+}>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
+        accept: {
+            readonly contentContainerStyle: 'style';
+        };
+    }>> | undefined;
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
+        accept: {
+            readonly contentContainerStyle: 'style';
+        };
+    }>> | undefined;
+}>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
+        accept: {
+            readonly contentContainerStyle: 'style';
+        };
+    }>> | undefined;
+}, {}>> & {
+    h?: SheetScrollViewBaseProps['height'];
+    o?: SheetScrollViewBaseProps['opacity'];
+    pos?: SheetScrollViewBaseProps['position'];
+}, "scope"> & {
+    scope?: import("./types").SheetScopes;
+}, import("@tamagui/core").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view/types/WebScrollView").ScrollViewRef>>, {
+        acceptsClassName: true;
+        neverFlatten: true;
+        accept: {
+            readonly contentContainerStyle: 'style';
+        };
+    }>> | undefined;
+}, {}, {
+    acceptsClassName: true;
+    neverFlatten: true;
+    accept: {
+        readonly contentContainerStyle: 'style';
+    };
+}>;
+export {};
 //# sourceMappingURL=SheetScrollView.d.ts.map

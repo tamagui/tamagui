@@ -289,7 +289,137 @@ Priority follows CSS specificity intuition: press > hover > focus. This works wi
 The `animateOnly` prop will limit your animation config to certain keys. It
 accepts an array of strings that correspond to style property names.
 
+## The onTransition lifecycle
+
+Every animated component accepts `onTransition`, a typed callback that fires at
+the start and end of a transition. It replaces the untyped, enter-only
+`onDidAnimate` from v2.
+
+```tsx
+type TransitionEvent = {
+  phase: 'start' | 'end'
+  cause: 'enter' | 'exit' | 'update' // update = style change while mounted
+  finished?: boolean                 // on 'end': false when interrupted
+}
+
+<View transition="quick" onTransition={(e) => { ... }} />
+```
+
+`cause` is `enter` when the component mounts into an [AnimatePresence](/docs/core/animate-presence),
+`exit` when it unmounts, and `update` for any style change while it stays
+mounted. On the `end` phase, `finished` is `false` when the transition was
+interrupted, for example an exit canceled by a re-enter, or an update
+superseded by another before it settled.
+
+```tsx
+import { View } from 'tamagui'
+
+export default ({ on }) => (
+  <View
+    transition="300ms"
+    opacity={on ? 0.5 : 1}
+    onTransition={(e) => {
+      if (e.phase === 'end' && e.finished) {
+        // the style change finished without being interrupted
+      }
+    }}
+  />
+)
+```
+
+A driver may coalesce a multi-property update into one start/end pair per batch,
+but it never skips the end event. Exit `end` fires before or with presence
+removal, so you can observe exit completion without reaching into presence
+internals. There is a single callback rather than separate
+`onTransitionStart`/`onTransitionEnd` props because those names collide with the
+React DOM event props on web.
+
+## Imperative animation hooks
+
+The same animated-number primitives the drivers use internally are exported from
+`tamagui` (and `@tamagui/core`). Use them to drive an effect from a value you
+control instead of from style props, for example a drag-linked overlay fade.
+
+```tsx
+import {
+  useAnimationDriver,        // resolved driver from config, throws helpfully on the stub
+  useAnimatedNumber,         // (initial: number) => UniversalAnimatedNumber
+  useAnimatedNumberStyle,    // (value, worklet getStyle) => a style object
+  useAnimatedNumbersStyle,   // multiple values, one style
+  useAnimatedNumberReaction, // observe the value on the JS thread
+} from 'tamagui'
+```
+
+Each hook is a thin delegation to the configured driver, so first-party code and
+your code exercise the same surface. In development they throw a helpful error
+if no `animations` config is set. The resolved driver must not change identity
+mid-lifecycle, which is only a concern with `animatedBy` multi-driver setups.
+
+`useAnimatedNumberStyle` takes a value and a worklet that maps it to a style
+object. Spread that style onto the driver's animated view; on the CSS driver a
+plain Tamagui view with a `transition` prop interpolates the change.
+
+```tsx
+import { useRef } from 'react'
+import type { Animated } from 'react-native'
+import {
+  Button,
+  View as TamaguiView,
+  YStack,
+  useAnimatedNumber,
+  useAnimatedNumberStyle,
+  useAnimationDriver,
+} from 'tamagui'
+
+export function Toggle() {
+  const driver = useAnimationDriver()
+  // the driver's animated view consumes the returned style; on the css driver
+  // there is no driver View, so fall back to a Tamagui view + transition prop
+  const AnimatedView = (driver.View ?? TamaguiView) as typeof Animated.View
+
+  const x = useAnimatedNumber(0)
+  const openRef = useRef(false)
+
+  const style = useAnimatedNumberStyle(x, (value: number) => {
+    'worklet'
+    return { transform: [{ translateX: value }] }
+  })
+
+  const toggle = () => {
+    openRef.current = !openRef.current
+    x.setValue(openRef.current ? 200 : 0, { type: 'spring', damping: 20, stiffness: 90 })
+  }
+
+  return (
+    <YStack gap="$4" padding="$4">
+      <Button onPress={toggle}>Toggle</Button>
+      <AnimatedView
+        transition="slow"
+        style={[{ width: 60, height: 60, backgroundColor: 'royalblue' }, style]}
+      />
+    </YStack>
+  )
+}
+```
+
+`setValue(next, config, onFinished)` accepts an optional completion callback that
+fires once, with the value settled on the target. `useAnimatedNumberReaction`
+observes intermediate values on the JS thread.
+
+`UniversalAnimatedNumber`, `AnimatedNumberStrategy`, and the hook types are
+public API.
+
 ## What to know when animating
+
+### Driver completion
+
+Every driver reports real completion. The CSS driver drives its animated numbers
+with a `requestAnimationFrame` ticker and fires completion once when the value
+settles, so `onTransition` end events and `setValue` completion callbacks are
+accurate on web without an estimated-duration timer. Web completion detection
+uses the element's running animations rather than a guessed duration.
+
+
 
 ### Conditional animations and HMR
 

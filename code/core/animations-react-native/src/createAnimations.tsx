@@ -204,7 +204,33 @@ export const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum> = (
   value,
   getStyle
 ) => {
-  return getStyle(value.getInstance())
+  const instance = value.getInstance()
+  const animatedStyle = getStyle(instance)
+  const usesAnimatedNode = hasAnimatedNode(animatedStyle)
+  const [current, setCurrent] = React.useState(value.getValue())
+
+  // preserve the native animated-node path for direct mappings. callbacks
+  // that do arithmetic require numeric values, so drive those through the
+  // value listener and render the computed style.
+  React.useEffect(() => {
+    if (usesAnimatedNode) return
+
+    const id = instance.addListener(({ value: next }) => {
+      setCurrent(next)
+    })
+    return () => {
+      instance.removeListener(id)
+    }
+  }, [instance, usesAnimatedNode])
+
+  return usesAnimatedNode ? animatedStyle : getStyle(current)
+}
+
+function hasAnimatedNode(value: unknown): boolean {
+  if (!value || typeof value !== 'object') return false
+  if (typeof (value as any).__getValue === 'function') return true
+  if (Array.isArray(value)) return value.some(hasAnimatedNode)
+  return Object.values(value).some(hasAnimatedNode)
 }
 
 export const useAnimatedNumbersStyle = (
@@ -237,7 +263,7 @@ export function createAnimations<A extends AnimationsConfig>(
     ResetPresence,
     useAnimations: ({
       props,
-      onDidAnimate,
+      onTransition,
       style,
       componentState,
       presence,
@@ -247,6 +273,17 @@ export function createAnimations<A extends AnimationsConfig>(
       const isDisabled = isWeb && componentState.unmounted === true
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+      const onTransitionRef = React.useRef(onTransition)
+      onTransitionRef.current = onTransition
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        onTransitionRef.current?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
+      }
       const [, themeState] = useThemeWithState({})
       // Check scheme first, then fall back to checking theme name for 'dark'
       const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
@@ -271,6 +308,13 @@ export function createAnimations<A extends AnimationsConfig>(
       const exitCycleIdRef = React.useRef(0)
       const exitCompletedRef = React.useRef(false)
       const wasExitingRef = React.useRef(false)
+
+      // onTransition lifecycle bookkeeping
+      const enterStartedRef = React.useRef(false)
+      const exitStartedRef = React.useRef(false)
+      const updateInFlightRef = React.useRef(false)
+      const updateCycleIdRef = React.useRef(0)
+      const prevStyleSigRef = React.useRef<string | null>(null)
 
       // detect transition into/out of exiting state
       const justStartedExiting = isExiting && !wasExitingRef.current
@@ -302,7 +346,7 @@ export function createAnimations<A extends AnimationsConfig>(
         JSON.stringify(style),
         componentState,
         isExiting,
-        !!onDidAnimate,
+        !!onTransition,
         isDark,
         justFinishedEntering,
         hasTransitionOnly,
@@ -556,15 +600,74 @@ export function createAnimations<A extends AnimationsConfig>(
         wasExitingRef.current = isExiting
       })
 
+      // exit interrupted by a re-enter: report the exit as finished:false
+      useIsomorphicLayoutEffect(() => {
+        if (justStoppedExiting && exitStartedRef.current && !exitCompletedRef.current) {
+          exitStartedRef.current = false
+          emit('end', 'exit', false)
+        }
+      }, [justStoppedExiting])
+
       useIsomorphicLayoutEffect(() => {
         res.runners.forEach((r) => r())
 
         // capture current cycle id
         const cycleId = exitCycleIdRef.current
 
-        // handle zero-completion case immediately
+        const cause: 'enter' | 'exit' | 'update' = isExiting
+          ? 'exit'
+          : isEntering || justFinishedEntering
+            ? 'enter'
+            : 'update'
+
+        // interruptions: an enter or update still in flight when exit begins is
+        // reported as finished:false (its own completion promise won't resolve
+        // because the animation was stopped, not finished).
+        if (cause === 'exit') {
+          if (enterStartedRef.current) {
+            enterStartedRef.current = false
+            emit('end', 'enter', false)
+          }
+          if (updateInFlightRef.current) {
+            updateInFlightRef.current = false
+            updateCycleIdRef.current++
+            emit('end', 'update', false)
+          }
+        }
+
+        // in-place update: a genuine style change while mounted (not entering or
+        // exiting). guard on the style signature so lifecycle-only re-renders
+        // don't register as updates.
+        if (cause === 'update') {
+          const sig = args[0] as string
+          if (prevStyleSigRef.current === null || prevStyleSigRef.current === sig) {
+            prevStyleSigRef.current = sig
+            return
+          }
+          prevStyleSigRef.current = sig
+          if (res.completions.length === 0) return
+          if (updateInFlightRef.current) {
+            // superseded before finishing
+            emit('end', 'update', false)
+          }
+          updateInFlightRef.current = true
+          const uid = ++updateCycleIdRef.current
+          emit('start', 'update')
+          Promise.all(res.completions).then(() => {
+            if (uid !== updateCycleIdRef.current) return
+            updateInFlightRef.current = false
+            emit('end', 'update', true)
+          })
+          return
+        }
+
+        // keep the update signature current while entering/exiting
+        prevStyleSigRef.current = args[0] as string
+
+        // handle zero-completion case immediately (enter/exit report a pair)
         if (res.completions.length === 0) {
-          onDidAnimate?.()
+          emit('start', cause)
+          emit('end', cause, true)
           if (isExiting && !exitCompletedRef.current) {
             exitCompletedRef.current = true
             sendExitComplete?.()
@@ -572,22 +675,34 @@ export function createAnimations<A extends AnimationsConfig>(
           return
         }
 
-        let cancel = false
+        // enter/exit start (once per cycle; re-runs continue the same animation)
+        if (cause === 'enter' && !enterStartedRef.current) {
+          enterStartedRef.current = true
+          emit('start', 'enter')
+        }
+        if (cause === 'exit' && !exitStartedRef.current) {
+          exitStartedRef.current = true
+          emit('start', 'exit')
+        }
+
         Promise.all(res.completions).then(() => {
-          if (cancel) return
           // guard against stale cycle completion
           if (isExiting && cycleId !== exitCycleIdRef.current) return
           if (isExiting && exitCompletedRef.current) return
 
-          onDidAnimate?.()
           if (isExiting) {
+            if (exitStartedRef.current) {
+              exitStartedRef.current = false
+              // exit 'end' fires immediately before presence safeToRemove
+              emit('end', 'exit', true)
+            }
             exitCompletedRef.current = true
             sendExitComplete?.()
+          } else if (enterStartedRef.current) {
+            enterStartedRef.current = false
+            emit('end', 'enter', true)
           }
         })
-        return () => {
-          cancel = true
-        }
       }, args)
 
       // avoidReRenders: receive style changes imperatively from tamagui

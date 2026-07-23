@@ -2,7 +2,11 @@
   "name": "@tamagui/test-design-system",
   "version": "2.5.1",
   "source": "src/index.ts",
-  "files": [],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "sideEffects": false,
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",

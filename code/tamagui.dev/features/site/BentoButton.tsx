@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from 'tamagui'
+import { Button, type ButtonProps } from '~/components/Button'
 import { BentoIcon } from '../icons/BentoIcon'
 import { Span } from 'tamagui'
 
@@ -7,8 +7,8 @@ export const BentoButton = (props: ButtonProps) => {
     <Button
       theme="green"
       borderColor="$color6"
-      elevation="$2"
-      size="$3"
+      boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
+      size="medium"
       rounded="$10"
       hoverStyle={{
         z: 100,

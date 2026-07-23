@@ -4,7 +4,8 @@ import ActionSheet, {
   type ActionSheetRef,
   ScrollView as ActionScrollView,
 } from 'react-native-actions-sheet'
-import { Button, Sheet, Text, YStack } from 'tamagui'
+import { Sheet, Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Side-by-side comparison of Tamagui Sheet vs react-native-actions-sheet
@@ -26,11 +27,11 @@ export function ActionsSheetComparison() {
       </Text>
 
       <YStack gap="$3">
-        <Button onPress={() => actionsSheetRef.current?.show()} theme="blue" size="$5">
+        <Button onPress={() => actionsSheetRef.current?.show()} theme="blue" size="large">
           Open Actions Sheet (Reference)
         </Button>
 
-        <Button onPress={() => setTamaguiOpen(true)} theme="green" size="$5">
+        <Button onPress={() => setTamaguiOpen(true)} theme="green" size="large">
           Open Tamagui Sheet
         </Button>
       </YStack>
@@ -59,7 +60,8 @@ export function ActionsSheetComparison() {
       >
         <Sheet.Overlay bg="$color" opacity={0.5} />
         <Sheet.Handle />
-        <Sheet.Frame>
+        <Sheet.Container>
+          <Sheet.Background />
           <Sheet.ScrollView>
             <YStack gap="$3" padding="$4">
               <Text fontSize="$5" fontWeight="bold">
@@ -85,7 +87,7 @@ export function ActionsSheetComparison() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
 
       {/* Actions Sheet - using their ScrollView component */}

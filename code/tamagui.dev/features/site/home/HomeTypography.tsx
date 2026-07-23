@@ -47,7 +47,7 @@ export const HomeTypography = memo(() => {
 
   return (
     <>
-      <YStack fullscreen className="" opacity={0.1} />
+      <YStack position="absolute" inset={0} className="" opacity={0.1} />
       {/* -5 my to fit grid nicely */}
       <ContainerLarge my={-5} position="relative" gap="$8">
         <YStack ref={ref} items="center" gap="$3">
@@ -80,7 +80,7 @@ export const HomeTypography = memo(() => {
             $sm={{ y: 0, minW: '110%', items: 'center', x: 0, scale: 0.9 }}
           >
             <YStack items="flex-end" contain="paint layout" height={270}>
-              <AnimatePresence exitBeforeEnter>
+              <AnimatePresence mode="wait">
                 <AnimatedHeading
                   disableAnimation={!isIntersecting}
                   key={`${family}1`}

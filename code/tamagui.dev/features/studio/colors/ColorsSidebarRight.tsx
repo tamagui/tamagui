@@ -2,7 +2,6 @@ import { CheckCircle, XCircle } from '@tamagui/lucide-icons-2'
 import { getContrast } from 'color2k'
 import { memo } from 'react'
 import {
-  Button,
   Input,
   Label,
   Paragraph,
@@ -12,6 +11,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { SidebarPanel, SidebarRight } from '../components/Sidebar'
 import { colorsStore } from '../state/ColorsStore'
@@ -133,7 +133,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
             />
           </YStack>
           <Button
-            size="$2"
+            size="small"
             onPress={async () => {
               const confirmed = await rootStore.confirmDialog('confirm-delete', {
                 thingName: `palette`,

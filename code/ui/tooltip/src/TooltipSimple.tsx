@@ -1,5 +1,6 @@
-import { getSpace } from '@tamagui/get-token'
-import type { SizableStackProps } from '@tamagui/stacks'
+import { createRefComponent, getVariableValue } from '@tamagui/core'
+import { getSize } from '@tamagui/get-token'
+import type { YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
 
@@ -10,10 +11,10 @@ export type TooltipSimpleProps = TooltipProps & {
   disabled?: boolean
   label?: React.ReactNode
   children?: React.ReactNode
-  contentProps?: SizableStackProps
+  contentProps?: YStackProps
 }
 
-export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
+export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
   ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
     'use no memo'
 
@@ -52,9 +53,12 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           elevation="$0.5"
           opacity={1}
           pointerEvents="none"
-          paddingVertical={getSpace(tooltipProps.size || '$true', {
-            shift: -4,
-          })}
+          paddingVertical={Math.max(
+            0,
+            Math.round(
+              (getVariableValue(getSize(tooltipProps.size ?? true)) as number) * 0.36 - 9
+            )
+          )}
           animateOnly={['transform', 'opacity']}
           transition={[
             'quicker',
@@ -72,7 +76,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
             overflow="hidden"
             size="$3"
             textAlign="center"
-            $platform-web={{
+            $web={{
               textWrap: 'balance',
             }}
           >

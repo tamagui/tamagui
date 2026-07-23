@@ -2,7 +2,8 @@ import { Image } from '@tamagui/image'
 import { FastForward, Pause, Rewind } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
 import type { ThemeName, YStackProps } from 'tamagui'
-import { Button, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
+import { Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import image from './tame-impala.jpg'
 
@@ -75,14 +76,14 @@ export const MediaPlayer = memo(
                 bg="$background"
                 hoverStyle={{
                   bg: '$backgroundHover',
-                  elevation: '$6',
+                  boxShadow: '0 8px 20px rgba(0, 0, 0, 0.24)',
                   scale: 1.025,
                 }}
                 my="$-7"
                 icon={Pause}
-                size="$8"
+                size="large"
                 circular
-                elevation="$2"
+                boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
                 aria-label="Pause"
                 pointerEvents={pointerEventsControls}
               />

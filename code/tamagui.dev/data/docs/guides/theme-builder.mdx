@@ -32,7 +32,7 @@ We've also released [Theme](/theme), a free visual tool to create themes.
 The simplest way to get a complete theme suite. Call it with no arguments for production-ready defaults, or pass options to customize.
 
 ```tsx
-import { createV5Theme } from '@tamagui/themes/v5'
+import { createV5Theme } from '@tamagui/themes/v5-builder'
 
 // zero-config - includes light, dark, accent, and color themes
 export const themes = createV5Theme()
@@ -41,7 +41,7 @@ export const themes = createV5Theme()
 ### Customizing
 
 ```tsx
-import { createV5Theme, defaultChildrenThemes } from '@tamagui/themes/v5'
+import { createV5Theme, defaultChildrenThemes } from '@tamagui/themes/v5-builder'
 import { orange, orangeDark } from '@tamagui/colors'
 
 export const themes = createV5Theme({
@@ -350,32 +350,28 @@ Add values that don't cascade to child themes:
 
 ### Inverse Themes
 
-In v2, the `<Theme inverse />` prop and `themeInverse` prop were removed. To
-create inverse-like themes, follow the pattern used by the v5 config's `accent`
-theme: swap your light and dark palettes.
+Use the `inverse` sub-theme when you want a subtree to use the opposite light or
+dark palette:
 
 ```tsx
-// with createThemes - swap palettes for inverse effect
-accent: {
-  palette: {
-    light: darkPalette,  // use dark colors in light mode
-    dark: lightPalette,  // use light colors in dark mode
-  },
-},
+<Button theme="inverse">Inverted colors</Button>
+
+<Theme name="inverse">
+  <Card>Inverted colors</Card>
+</Theme>
 ```
 
-This gives you an "inverted" theme where light mode shows dark colors and vice
-versa - commonly used for accent buttons or cards that should stand out. This
-approach is also SSR-safe.
+The default v3 config generates concrete inverse sub-themes from the same model
+as `accent`: light parents use the dark palette, and dark parents use the light
+palette. Because `inverse` is a real named sub-theme, the server can render the
+final theme class and hydrate it without a client-only theme swap.
 
-Use it in your components:
+If you are building custom themes, generate inverse sub-themes by swapping the
+palettes in your theme definition:
 
 ```tsx
-<Theme name="accent">
-  <Button>Inverted colors</Button>
-</Theme>
-
-// or use activeTheme on supported components
-<Switch activeTheme="accent" />
-<Checkbox activeTheme="accent" />
+inverse: [
+  { parent: 'light', palette: 'dark', template: 'base' },
+  { parent: 'dark', palette: 'light', template: 'base' },
+]
 ```

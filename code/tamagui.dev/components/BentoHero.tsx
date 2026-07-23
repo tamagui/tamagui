@@ -1,7 +1,8 @@
 // @ts-expect-error - bento component wildcard import
 import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Button, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { BentoLogo } from '../features/bento/BentoLogo'
 import { LoadCherryBomb } from '../features/site/fonts/LoadFonts'
 import { useSubscriptionModal } from '../features/site/purchase/useSubscriptionModal'
@@ -100,7 +101,7 @@ export const BentoHero = () => {
                   <Theme name="green">
                     <Button
                       className="box-3d all ease-in-out ms100"
-                      size="$4"
+                      size="medium"
                       self="flex-end"
                       mr="$4"
                       bg="$color9"
@@ -121,7 +122,7 @@ export const BentoHero = () => {
                         showAppropriateModal()
                       }}
                     >
-                      <Button.Text fontFamily="$mono" size="$7" color="$color1">
+                      <Button.Text fontFamily="$mono" size="large" color="$color1">
                         Pro
                       </Button.Text>
                     </Button>

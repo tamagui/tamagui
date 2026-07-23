@@ -1,7 +1,6 @@
-import { Dialog } from '@tamagui/dialog'
-import { toast, Toast, useToasts, type ToastPosition } from '@tamagui/toast/v2'
+import { toast, Toast, useToasts, type ToastPosition } from '@tamagui/toast'
 import { useRef, useState } from 'react'
-import { Button, H4, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, Dialog, H4, Paragraph, XStack, YStack } from 'tamagui'
 
 export function ToastAboveDialogCase() {
   const [dialogOpen, setDialogOpen] = useState(false)

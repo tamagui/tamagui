@@ -1,5 +1,6 @@
 import { memo, useRef, useState } from 'react'
-import { Button, Paragraph, Popover, XStack, YStack, Text, View } from 'tamagui'
+import { Paragraph, Popover, XStack, YStack, Text, View } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Test case for Popover trigger render isolation
@@ -69,7 +70,7 @@ export function PopoverTriggerIsolationCase() {
           <Popover.Arrow scope="isolated" />
           <Paragraph>Shared popover content</Paragraph>
           <Popover.Close scope="isolated" asChild>
-            <Button data-testid="isolated-close" size="$2" mt="$2">
+            <Button data-testid="isolated-close" size="small" mt="$2">
               Close
             </Button>
           </Popover.Close>

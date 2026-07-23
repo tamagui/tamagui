@@ -2,6 +2,23 @@ import { defineConfig, devices } from '@playwright/test'
 import { ANIMATION_DRIVERS } from './tests/test-utils'
 
 const port = process.env.PORT || '9000'
+const browserChannel = process.env.PLAYWRIGHT_CHANNEL
+const chromiumUse = browserChannel
+  ? {
+      channel: browserChannel,
+      launchOptions: {
+        args: ['--use-angle=metal'],
+      },
+    }
+  : undefined
+const animatedChromiumUse =
+  chromiumUse ??
+  ({
+    channel: 'chromium',
+    launchOptions: {
+      args: ['--use-angle=metal'],
+    },
+  } as const)
 
 // Support both single-driver mode (via env var) and multi-driver parallel mode
 const singleDriver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER
@@ -33,12 +50,19 @@ export default defineConfig({
       name: 'default',
       testIgnore: '**/*.animated.test.{ts,tsx}',
       metadata: { animationDriver: 'native' },
+      ...(chromiumUse && { use: chromiumUse }),
     },
     // WebKit project scoped to RemoveScroll tests (scroll restoration)
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
       testMatch: '**/RemoveScroll.test.{ts,tsx}',
+      metadata: { animationDriver: 'native' },
+    },
+    {
+      name: 'webkit-select-native',
+      use: { ...devices['Desktop Safari'] },
+      testMatch: '**/SelectMultipleNativeWeb.test.{ts,tsx}',
       metadata: { animationDriver: 'native' },
     },
     // mobile WebKit (Safari engine + touch) for sheet keyboard/gesture tests —
@@ -53,6 +77,7 @@ export default defineConfig({
     ...drivers.map((driver) => ({
       name: `animated-${driver}`,
       testMatch: '**/*.animated.test.{ts,tsx}',
+      use: animatedChromiumUse,
       // AnimationsWithMediaQueries only passes with css and motion drivers for now
       ...(driver !== 'motion' &&
         driver !== 'css' && {

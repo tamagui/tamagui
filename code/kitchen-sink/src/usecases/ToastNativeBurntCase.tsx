@@ -1,6 +1,7 @@
 import { useRef } from 'react'
-import { Button, YStack, Text } from 'tamagui'
-import { toast, Toast, type ToastT } from '@tamagui/toast/v2'
+import { YStack, Text } from 'tamagui'
+import { Button } from '../components/Button'
+import { toast, Toast, type ToastT } from '@tamagui/toast'
 import { XStack } from 'tamagui'
 
 export function ToastNativeBurntCase() {
@@ -26,7 +27,7 @@ export function ToastNativeBurntCase() {
         <YStack gap="$3" width={280}>
           <Button
             testID="burnt-toast-default"
-            size="$5"
+            size="large"
             onPress={() => {
               count.current++
               toast(`Toast #${count.current}`, {
@@ -39,7 +40,7 @@ export function ToastNativeBurntCase() {
 
           <Button
             testID="burnt-toast-success"
-            size="$5"
+            size="large"
             theme="green"
             onPress={() =>
               toast.success('Success!', {
@@ -53,7 +54,7 @@ export function ToastNativeBurntCase() {
 
           <Button
             testID="burnt-toast-error"
-            size="$5"
+            size="large"
             theme="red"
             onPress={() =>
               toast.error('Error', {

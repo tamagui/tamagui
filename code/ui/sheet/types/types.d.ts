@@ -1,10 +1,13 @@
 import type { AnimatedNumberStrategy, TransitionProp } from '@tamagui/core';
-import type { ScopedProps } from '@tamagui/create-context';
 import type { PortalProps } from '@tamagui/portal';
 import type { RemoveScroll } from '@tamagui/remove-scroll';
 import type { ReactNode } from 'react';
 import type React from 'react';
-export type SheetProps = ScopedProps<{
+export type SheetScopes = string;
+export type SheetScopedProps<P> = Omit<P, 'scope'> & {
+    scope?: SheetScopes;
+};
+export type SheetProps = SheetScopedProps<{
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: OpenChangeHandler;
@@ -31,11 +34,6 @@ export type SheetProps = ScopedProps<{
      * By default, RemoveScroll is enabled when the sheet is open and modal.
      */
     disableRemoveScroll?: boolean;
-    /**
-     * @deprecated Use `disableRemoveScroll` instead. This prop will be removed in a future version.
-     * Note: `disableRemoveScroll={true}` is equivalent to `forceRemoveScrollEnabled={false}`
-     */
-    forceRemoveScrollEnabled?: boolean;
     transitionConfig?: AnimatedNumberStrategy;
     /**
      * By default Sheet will prefer the open prop over a parent component that is
@@ -49,12 +47,20 @@ export type SheetProps = ScopedProps<{
      */
     unmountChildrenWhenHidden?: boolean;
     /**
-     * Keep the sheet content wrapper opaque while the sheet is hidden.
-     * Useful for native visual effects that cannot initialize below a transparent ancestor.
+     * By default a fully-closed sheet wrapper is hidden with `display: 'none'`.
+     * Set this to keep the closed wrapper laid out (e.g. for native visual effects
+     * that cannot initialize below a hidden ancestor). `pointerEvents` still gates
+     * interaction while closed.
+     */
+    disableHideWhenClosed?: boolean;
+    /**
+     * @deprecated use `disableHideWhenClosed` instead.
      */
     disableTransparencyHide?: boolean;
     /**
      * Adapts the sheet to use native sheet on the given platform (if available)
+     * The iOS system sheet does not expose continuous position, so
+     * `Sheet.useAnimatedPosition` and `onTransition` are unavailable in this mode.
      */
     native?: 'ios'[] | boolean;
     /**
@@ -73,17 +79,26 @@ export type SheetProps = ScopedProps<{
     moveOnKeyboardChange?: boolean;
     containerComponent?: React.ComponentType<any>;
     /**
-     * Called when the sheet open/close animation completes.
+     * Fires at the start and end of the sheet's position transition. `cause` is
+     * `open` when moving from closed, `close` when moving off screen, and `snap`
+     * when moving between snap points while open. On the `end` phase, `finished`
+     * is `false` when the transition was interrupted (e.g. a close canceled by a
+     * re-open). `position` is the resolved translateY (px from screen top) target.
+     * Available on Tamagui's custom Sheet, not the native iOS system sheet.
      */
-    onAnimationComplete?: (info: {
-        open: boolean;
-    }) => void;
-}, 'Sheet'>;
+    onTransition?: (e: SheetTransitionEvent) => void;
+}>;
+export type SheetTransitionCause = 'open' | 'close' | 'snap';
+export type SheetTransitionEvent = {
+    phase: 'start' | 'end';
+    cause: SheetTransitionCause;
+    position: number;
+    finished?: boolean;
+};
 export type PositionChangeHandler = (position: number) => void;
 type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
 export type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 export type SnapPointsMode = 'percent' | 'constant' | 'fit' | 'mixed';
-export type SheetScopedProps<A> = ScopedProps<A, 'Sheet'>;
 export type ScrollBridge = {
     enabled: boolean;
     y: number;

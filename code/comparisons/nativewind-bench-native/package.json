@@ -1,0 +1,21 @@
+{
+  "name": "@tamagui/comparison-nativewind-bench-native",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start --port 8102"
+  },
+  "dependencies": {
+    "expo": "~55.0.28",
+    "expo-linking": "~55.0.7",
+    "nativewind": "5.0.0-preview.4",
+    "react": ">=19",
+    "react-native": "0.83.2",
+    "react-native-reanimated": "~4.2.2",
+    "react-native-safe-area-context": "~5.7.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.11"
+  }
+}

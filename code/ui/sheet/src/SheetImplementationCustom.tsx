@@ -5,10 +5,13 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
-  useConfiguration,
+  useAnimationDriver,
+  useAnimatedNumber,
+  useAnimatedNumberStyle,
   useDidFinishSSR,
   useEvent,
   useThemeName,
+  createRefComponent,
 } from '@tamagui/core'
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
@@ -20,6 +23,7 @@ import type {
 } from 'react-native'
 import { Dimensions, PanResponder, View } from 'react-native'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
+import { SHEET_OVERLAY_NAME } from './constants'
 import { GestureDetectorWrapper } from './GestureDetectorWrapper'
 import { getGestureHandlerState } from './gestureState'
 import { GestureSheetProvider } from './GestureSheetContext'
@@ -36,8 +40,17 @@ import {
   getWebVisualViewportOffsetTop,
   MIN_KEYBOARD_HEIGHT,
 } from './webViewport'
-import { SheetProvider } from './SheetContext'
-import type { SheetProps, SnapPointsMode } from './types'
+import {
+  SheetAnimatedPositionContext,
+  SheetOverlayLayerContext,
+  SheetProvider,
+} from './SheetContext'
+import type {
+  SheetProps,
+  SheetTransitionCause,
+  SheetTransitionEvent,
+  SnapPointsMode,
+} from './types'
 import { useGestureHandlerPan } from './useGestureHandlerPan'
 import { useKeyboardControllerSheet } from './useKeyboardControllerSheet'
 import { SafeAreaInsetsContext, useSafeAreaInsets } from './useSafeAreaInsets'
@@ -45,6 +58,9 @@ import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
 const hiddenSize = 10_000.1
+
+// dev-only: warn once about the deprecated disableTransparencyHide alias
+let warnedDisableTransparencyHide = false
 
 // the re-established rngh root for a modal sheet (see modal branch below).
 // GestureHandlerRootView does its own native touch interception and ignores
@@ -55,6 +71,11 @@ const rnghRootStyleOpen = { width: '100%', height: '100%' } as const
 const rnghRootStyleClosed = { width: '100%', height: 0 } as const
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
+
+// stack of open modal sheets on web so escape only closes the top-most one.
+// pushed on open (child sheets mount their effect after the parent, so the
+// deepest sheet sits last), popped on close/unmount.
+const sheetEscapeLayers: object[] = []
 
 // on web we are always relative to window, on to screen
 const relativeDimensionTo = isWeb ? 'window' : 'screen'
@@ -72,7 +93,7 @@ function getStableViewportHeight(): number {
   return Dimensions.get(relativeDimensionTo).height
 }
 
-export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
+export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
   function SheetImplementationCustom(props, forwardedRef) {
     const parentSheet = React.useContext(ParentSheetContext)
 
@@ -93,18 +114,32 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
       unmountChildrenWhenHidden = false,
-      disableTransparencyHide = false,
+      disableHideWhenClosed: disableHideWhenClosedProp,
+      disableTransparencyHide,
       portalProps,
       containerComponent: ContainerComponent = React.Fragment,
-      onAnimationComplete,
+      onTransition,
     } = props
 
-    const state = useSheetOpenState(props)
-    const [overlayComponent, setOverlayComponent] = React.useState<React.ReactNode>(null)
+    // disableTransparencyHide shipped in stable 2.4.x; it is now an alias for
+    // disableHideWhenClosed (v3 hides the closed wrapper with display:none, not
+    // opacity). warn once in dev and map it through.
+    if (
+      process.env.NODE_ENV === 'development' &&
+      disableTransparencyHide !== undefined &&
+      !warnedDisableTransparencyHide
+    ) {
+      warnedDisableTransparencyHide = true
+      console.warn(
+        '⚠️ Sheet `disableTransparencyHide` is deprecated, use `disableHideWhenClosed` instead.'
+      )
+    }
+    const disableHideWhenClosed =
+      disableHideWhenClosedProp ?? disableTransparencyHide ?? false
 
-    const providerProps = useSheetProviderProps(props, state, {
-      onOverlayComponent: setOverlayComponent,
-    })
+    const state = useSheetOpenState(props)
+
+    const providerProps = useSheetProviderProps(props, state)
     const {
       frameSize,
       setFrameSize,
@@ -126,12 +161,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const sheetRef = React.useRef<View>(undefined as unknown as View)
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
 
-    // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
-    const { animationDriver } = useConfiguration()
-
-    if (!animationDriver) {
-      throw new Error(`Sheet requires an animation driver to be set`)
-    }
+    const animationDriver = useAnimationDriver()
 
     const transitionConfig = (() => {
       // explicit transitionConfig prop always takes precedence
@@ -146,9 +176,17 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           : ([transition] as const)
 
       // look up named animation config from driver if available
-      if (animationProp && animationDriver.animations?.[animationProp as string]) {
+      const namedConfig =
+        animationProp && animationDriver.animations?.[animationProp as string]
+      if (namedConfig) {
+        // css stores string configs (e.g. '150ms ease-out'); object-spreading a
+        // string produces char-indexed junk. the css visual is driven by the DOM
+        // `transition` prop, so pass only any explicit override object through.
+        if (typeof namedConfig === 'string') {
+          return animationPropConfig ?? null
+        }
         return {
-          ...animationDriver.animations[animationProp as string],
+          ...namedConfig,
           ...animationPropConfig,
         }
       }
@@ -334,7 +372,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           ? preKeyboardFrameSize.current
           : 0
 
-    const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
     const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
@@ -367,8 +404,31 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     const hasScrollView = React.useRef(false)
 
-    // safety fallback timer for sheet close opacity
-    const opacityFallbackTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+    // snap index of the last animated move, so a transition can be classified
+    // as open (from closed), snap (between snap points), or close.
+    const lastPositionIndexRef = React.useRef(-1)
+    // the in-flight transition, so a superseding move reports it interrupted.
+    const pendingTransitionRef = React.useRef<{
+      cause: SheetTransitionCause
+      position: number
+    } | null>(null)
+
+    const emitTransition = useEvent(
+      (
+        phase: 'start' | 'end',
+        event: { cause: SheetTransitionCause; position: number },
+        finished?: boolean
+      ) => {
+        const e: SheetTransitionEvent = {
+          phase,
+          cause: event.cause,
+          position: event.position,
+        }
+        if (phase === 'end') e.finished = finished
+        onTransition?.(e)
+        controller?.onTransition?.(e)
+      }
+    )
 
     const syncAnimatedPosition = useEvent((value: number) => {
       at.current = value
@@ -440,49 +500,68 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       const closeTarget = isWeb
         ? Math.max(effScreenSize, getMaxViewportHeight())
         : effScreenSize
-      let toValue = isHidden || position === -1 ? closeTarget : activePositions[position]
+      // dismissOnSnapToBottom appends an offscreen snap point. Gesture release
+      // calls setPosition(dismissIndex) and animateTo(dismissIndex) in the same
+      // event, before React commits open=false and turns the provider position
+      // into -1. Treat that synthetic snap as close here so its in-flight
+      // callback owns display-none hiding and the Adapt presence handoff.
+      const isDismissPosition =
+        dismissOnSnapToBottom && position === activePositions.length - 1
+      const isOpenAnimation = position !== -1 && !isHidden && !isDismissPosition
+      const toValue = isOpenAnimation ? activePositions[position] : closeTarget
 
-      if (at.current === toValue) return
+      if (at.current === toValue) {
+        // a drag can land exactly on the synthetic dismiss point. there is no
+        // remaining distance to animate, but it is still a completed close and
+        // must release the same lifecycle consumers as an animated dismissal.
+        if (isDismissPosition) {
+          if (pendingTransitionRef.current) {
+            emitTransition('end', pendingTransitionRef.current, false)
+            pendingTransitionRef.current = null
+          }
+          stopSpring()
+          const event = { cause: 'close' as const, position: toValue }
+          lastPositionIndexRef.current = -1
+          emitTransition('start', event)
+          syncAnimatedPosition(toValue)
+          setIsFullyClosed(true)
+          emitTransition('end', event, true)
+        }
+        return
+      }
 
       at.current = toValue
-      stopSpring()
 
-      const isOpenAnimation = position !== -1 && !isHidden
+      const cause: SheetTransitionCause = !isOpenAnimation
+        ? 'close'
+        : lastPositionIndexRef.current < 0
+          ? 'open'
+          : 'snap'
+      lastPositionIndexRef.current = isOpenAnimation ? position : -1
+      const event = { cause, position: toValue }
 
-      // clear any pending fallback timer
-      if (opacityFallbackTimer.current) {
-        clearTimeout(opacityFallbackTimer.current)
-        opacityFallbackTimer.current = null
+      // a new move supersedes any in-flight one: report it interrupted
+      if (pendingTransitionRef.current) {
+        emitTransition('end', pendingTransitionRef.current, false)
+        pendingTransitionRef.current = null
       }
+
+      stopSpring()
 
       const animationCompleteCallback = () => {
         syncAnimatedPosition(toValue)
-        if (opacityFallbackTimer.current) {
-          clearTimeout(opacityFallbackTimer.current)
-          opacityFallbackTimer.current = null
-        }
-        // use openRef (live) not open (stale closure) — if the sheet
-        // was reopened before this callback fires (e.g. cancelled close
-        // animation), we must not hide it
+        pendingTransitionRef.current = null
+        // use openRef (live) not open (stale closure) — if the sheet was
+        // reopened before this callback fires (e.g. cancelled close animation),
+        // we must not hide it
         if (!isOpenAnimation && !openRef.current) {
-          setOpacity(0)
+          setIsFullyClosed(true)
         }
-        onAnimationComplete?.({ open: isOpenAnimation })
-        // also notify the SheetController so a parent (e.g. Dialog adapt)
-        // can hold the sheet's children mounted until the slide-out is done
-        controller?.onAnimationComplete?.({ open: isOpenAnimation })
+        emitTransition('end', event, true)
       }
 
-      // safety fallback: if animation callback never fires, still hide the sheet
-      if (!isOpenAnimation) {
-        opacityFallbackTimer.current = setTimeout(() => {
-          opacityFallbackTimer.current = null
-          // check live open state via ref — sheet may have reopened (e.g. adapt handoff)
-          if (!openRef.current) {
-            setOpacity(0)
-          }
-        }, 1000)
-      }
+      pendingTransitionRef.current = event
+      emitTransition('start', event)
 
       // skip animation when adapting from dialog to sheet
       if (skipAdaptAnimation.current) {
@@ -495,14 +574,32 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         return
       }
 
-      animatedNumber.setValue(
-        toValue,
-        animationOverride || {
-          type: 'spring',
-          ...transitionConfig,
-        },
-        animationCompleteCallback
-      )
+      const resolvedConfig = animationOverride || {
+        type: 'spring',
+        ...transitionConfig,
+      }
+
+      // the sheet position spring moves hundreds of px. the spring drivers'
+      // default rest detection is tuned for tiny values (react-native Animated:
+      // 0.001px thresholds; reanimated 4: relative energyThreshold 6e-9), so for
+      // a sheet-sized move completion would fire 1.4-1.7s after the animation is
+      // visually done. these px-sized rest thresholds make close-complete prompt
+      // (~0.5-0.8s), which is what now drives display:none hiding and the Adapt
+      // presence release (no timers). user config still wins via spread order;
+      // each driver ignores the other driver's keys.
+      const springConfig =
+        !resolvedConfig.type || resolvedConfig.type === 'spring'
+          ? {
+              // react-native Animated (absolute px)
+              restDisplacementThreshold: 1,
+              restSpeedThreshold: 10,
+              // reanimated 4 (relative energy): ~0.3% of travel amplitude
+              energyThreshold: 1e-5,
+              ...resolvedConfig,
+            }
+          : resolvedConfig
+
+      animatedNumber.setValue(toValue, springConfig, animationCompleteCallback)
     })
 
     useIsomorphicLayoutEffect(() => {
@@ -826,6 +923,32 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
     }, [open])
 
+    React.useEffect(() => {
+      if (!isWeb || !modal || !open || shouldHideParentSheet) return
+
+      const layer = {}
+      sheetEscapeLayers.push(layer)
+
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          // only the top-most open modal sheet responds so a nested sheet
+          // doesn't take its parent down with it
+          if (sheetEscapeLayers[sheetEscapeLayers.length - 1] === layer) {
+            state.setOpen(false)
+          }
+        }
+      }
+
+      document.addEventListener('keydown', onKeyDown)
+      return () => {
+        const index = sheetEscapeLayers.indexOf(layer)
+        if (index > -1) {
+          sheetEscapeLayers.splice(index, 1)
+        }
+        document.removeEventListener('keydown', onKeyDown)
+      }
+    }, [modal, open, shouldHideParentSheet, state.setOpen])
+
     // gesture handler hook for RNGH-based gesture coordination
     const { panGesture, panGestureRef, gestureHandlerEnabled } = useGestureHandlerPan({
       positions: activePositions,
@@ -916,17 +1039,22 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, getAnimatedNumberStyle)
 
-    // we need to set this *after* fully closed to 0, to avoid it overlapping
-    // the page when resizing quickly on web for example
-    const [opacity, setOpacity] = React.useState(open ? 1 : 0)
-    if (open && opacity === 0) {
-      setOpacity(1)
-      // cancel any pending close fallback — sheet is reopening
-      if (opacityFallbackTimer.current) {
-        clearTimeout(opacityFallbackTimer.current)
-        opacityFallbackTimer.current = null
-      }
+    // a fully-closed sheet is hidden with display:none (set from the
+    // close-complete transition event) so it never overlaps the page when
+    // resizing quickly on web. it starts NOT hidden — the frame must be laid
+    // out to measure its size (display:none has no layout box, so hiding before
+    // the first measurement would leave frameSize/screenSize at 0). it un-hides
+    // synchronously in render on re-open, before layout, keeping the retained
+    // frame size. the closed-but-never-opened frame stays off screen via its
+    // translateY, so leaving it laid out is not visible.
+    const [isFullyClosed, setIsFullyClosed] = React.useState(false)
+    if (open && isFullyClosed) {
+      setIsFullyClosed(false)
     }
+    // shouldHideParentSheet (a nested sheet on native gorhom) hides the parent
+    // immediately; disableHideWhenClosed opts the closed wrapper out of hiding
+    // but never overrides the nested-sheet hide.
+    const applyHidden = shouldHideParentSheet || (isFullyClosed && !disableHideWhenClosed)
 
     const forcedContentHeight = hasFit
       ? undefined
@@ -938,12 +1066,25 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const setHasScrollView = React.useCallback((val: boolean) => {
       hasScrollView.current = val
     }, [])
-    // const id = useId()
-    // const { AdaptProvider, when, children } = useAdaptParent({
-    //   scope: `${id}Sheet`,
-    //   portal: true,
-    // })
 
+    // publish the live animated position so user code can build drag-linked
+    // effects (e.g. an overlay fade) via Sheet.useAnimatedPosition(). positions
+    // are the resolved px offsets matching snapPoints order; minY is topmost.
+    const animatedPositionValue = React.useMemo(
+      () => ({
+        value: animatedNumber,
+        screenSize: effScreenSize,
+        frameSize,
+        snapOffsets: activePositions,
+        minY: activePositions[0] ?? 0,
+      }),
+      [animatedNumber, effScreenSize, frameSize, activePositions]
+    )
+
+    const { overlayChildren, animatedChildren } = React.useMemo(
+      () => partitionSheetChildren(props.children),
+      [props.children]
+    )
     let contents = (
       <LayoutMeasurementController disable={!open}>
         <ParentSheetContext.Provider value={nextParentContext}>
@@ -961,66 +1102,66 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
               panGesture={panGesture}
               panGestureRef={panGestureRef}
             >
-              <AnimatePresence custom={{ open }}>
-                {shouldHideParentSheet || !open ? null : overlayComponent}
-              </AnimatePresence>
+              <SheetAnimatedPositionContext.Provider value={animatedPositionValue}>
+                <SheetOverlayLayerContext.Provider value>
+                  <AnimatePresence custom={{ open }}>
+                    {shouldHideParentSheet || !open ? null : overlayChildren}
+                  </AnimatePresence>
+                </SheetOverlayLayerContext.Provider>
 
-              {snapPointsMode !== 'percent' && (
-                <View
-                  style={{
-                    opacity: 0,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    pointerEvents: 'none',
-                  }}
-                  onLayout={handleMaxContentViewLayout}
-                />
-              )}
-
-              <AnimatedView
-                ref={ref}
-                onLayout={handleAnimationViewLayout}
-                // @ts-ignore for CSS driver this is necessary to attach the transition
-                // also motion driver at least though i suspect all drivers?
-                transition={isDragging || disableAnimation ? null : transition}
-                // @ts-ignore
-                disableClassName
-                style={[
-                  {
-                    position: 'absolute',
-                    zIndex,
-                    width: '100%',
-                    height: forcedContentHeight,
-                    minHeight: forcedContentHeight,
-                    opacity: shouldHideParentSheet
-                      ? 0
-                      : disableTransparencyHide
-                        ? 1
-                        : opacity,
-                    ...((shouldHideParentSheet || !open) && {
-                      pointerEvents: 'none',
-                    }),
-                  },
-                  animatedStyle,
-                ]}
-              >
-                {/* wrap children with plain RN View for panResponder - tamagui views no longer handle responder events on web */}
-                {gestureHandlerEnabled && panGesture ? (
-                  <GestureDetectorWrapper gesture={panGesture} style={{ flex: 1 }}>
-                    {props.children}
-                  </GestureDetectorWrapper>
-                ) : (
+                {snapPointsMode !== 'percent' && (
                   <View
-                    {...panResponder?.panHandlers}
-                    style={{ flex: 1, width: '100%', height: '100%' }}
-                  >
-                    {props.children}
-                  </View>
+                    style={{
+                      opacity: 0,
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      pointerEvents: 'none',
+                    }}
+                    onLayout={handleMaxContentViewLayout}
+                  />
                 )}
-              </AnimatedView>
+
+                <AnimatedView
+                  ref={ref}
+                  onLayout={handleAnimationViewLayout}
+                  // @ts-ignore for CSS driver this is necessary to attach the transition
+                  // also motion driver at least though i suspect all drivers?
+                  transition={isDragging || disableAnimation ? null : transition}
+                  // @ts-ignore
+                  disableClassName
+                  style={[
+                    {
+                      position: 'absolute',
+                      zIndex,
+                      width: '100%',
+                      height: forcedContentHeight,
+                      minHeight: forcedContentHeight,
+                      ...(applyHidden && { display: 'none' }),
+                      ...((shouldHideParentSheet || !open) && {
+                        pointerEvents: 'none',
+                      }),
+                    },
+                    animatedStyle,
+                  ]}
+                >
+                  {/* wrap children with plain RN View for panResponder - tamagui views no longer handle responder events on web */}
+                  {gestureHandlerEnabled && panGesture ? (
+                    <GestureDetectorWrapper gesture={panGesture} style={{ flex: 1 }}>
+                      {animatedChildren}
+                    </GestureDetectorWrapper>
+                  ) : (
+                    <View
+                      {...panResponder?.panHandlers}
+                      style={{ flex: 1, width: '100%', height: '100%' }}
+                    >
+                      {animatedChildren}
+                    </View>
+                  )}
+                </AnimatedView>
+              </SheetAnimatedPositionContext.Provider>
             </GestureSheetProvider>
           </SheetProvider>
         </ParentSheetContext.Provider>
@@ -1028,7 +1169,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     )
 
     if (process.env.TAMAGUI_TARGET === 'native' && needsPortalRepropagation()) {
-      // TODO alongside sheet scope="" need to pass scope here
       const adaptContext = useAdaptContext()
       contents = (
         <ProvideAdaptContext {...adaptContext}>
@@ -1044,7 +1184,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     }
 
     // start mounted so we get an accurate measurement the first time
-    const shouldMountChildren = unmountChildrenWhenHidden ? !!opacity : true
+    const shouldMountChildren = unmountChildrenWhenHidden ? !isFullyClosed : true
 
     if (modal) {
       // a modal sheet is teleported through <Portal> to the root portal host.
@@ -1090,6 +1230,49 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     return contents
   }
 )
+
+type SheetPartStaticConfig = {
+  componentName?: string
+  parentStaticConfig?: SheetPartStaticConfig
+}
+
+export function isSheetOverlayComponent(type: unknown) {
+  let staticConfig = (type as { staticConfig?: SheetPartStaticConfig } | null)
+    ?.staticConfig
+
+  while (staticConfig) {
+    if (staticConfig.componentName === SHEET_OVERLAY_NAME) {
+      return true
+    }
+    staticConfig = staticConfig.parentStaticConfig
+  }
+
+  return false
+}
+
+function partitionSheetChildren(children: React.ReactNode) {
+  const overlayChildren: React.ReactNode[] = []
+  const animatedChildren: React.ReactNode[] = []
+
+  React.Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) {
+      animatedChildren.push(child)
+      return
+    }
+
+    if (isSheetOverlayComponent(child.type)) {
+      overlayChildren.push(child)
+      return
+    }
+
+    animatedChildren.push(child)
+  })
+
+  return {
+    overlayChildren,
+    animatedChildren,
+  }
+}
 
 function getYPositions(
   mode: SnapPointsMode,

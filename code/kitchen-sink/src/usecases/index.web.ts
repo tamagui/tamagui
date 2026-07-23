@@ -8,6 +8,9 @@
 import type { ComponentType } from 'react'
 
 const loaders: Record<string, () => ComponentType<any>> = {
+  SurfaceCase: () => require('./SurfaceCase').SurfaceCase,
+  VariablesNativeCase: () => require('./VariablesNativeCase').VariablesNativeCase,
+  VariablesCase: () => require('./VariablesCase').VariablesCase,
   AnimatedByProp: () => require('./AnimatedByProp').AnimatedByProp,
   LogoDotInterruptCase: () => require('./LogoDotInterruptCase').LogoDotInterruptCase,
   MotionSSRHydrationCase: () =>
@@ -28,16 +31,27 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AnimatePresenceExitTest').AnimatePresenceExitTest,
   AnimationComprehensiveCase: () =>
     require('./AnimationComprehensiveCase').AnimationComprehensiveCase,
+  PublicAnimatedNumberCase: () =>
+    require('./PublicAnimatedNumberCase').PublicAnimatedNumberCase,
   RawAnimatedValueCase: () => require('./RawAnimatedValueCase').RawAnimatedValueCase,
+  CSSAnimatedNumberCompletionCase: () =>
+    require('./CSSAnimatedNumberCompletionCase').CSSAnimatedNumberCompletionCase,
+  CSSAnimationLifecycleCase: () =>
+    require('./CSSAnimationLifecycleCase').CSSAnimationLifecycleCase,
+  MotionLinkedBenchmarkCase: () =>
+    require('./MotionLinkedBenchmarkCase').MotionLinkedBenchmarkCase,
   AnimationsWithMediaQueriesCase: () =>
     require('./AnimationsWithMediaQueriesCase').AnimationsWithMediaQueriesCase,
+  AnimatedDOMPropsCase: () => require('./AnimatedDOMPropsCase').AnimatedDOMPropsCase,
   ThemeMediaAnimationCase: () =>
     require('./ThemeMediaAnimationCase').ThemeMediaAnimationCase,
   Benchmark: () => require('./Benchmark').Benchmark,
   ButtonCircular: () => require('./ButtonCircular').ButtonCircular,
   ButtonCustom: () => require('./ButtonCustom').ButtonCustom,
   ButtonIconColor: () => require('./ButtonIconColor').ButtonIconColor,
+  IconFontSizing: () => require('./IconFontSizing').IconFontSizing,
   ButtonInverse: () => require('./ButtonInverse').ButtonInverse,
+  ButtonSkin: () => require('./ButtonSkin').ButtonSkin,
   ButtonUnstyled: () => require('./ButtonUnstyled').ButtonUnstyled,
   CheckboxDisabledOnPress: () =>
     require('./CheckboxDisabledOnPress').CheckboxDisabledOnPress,
@@ -60,17 +74,31 @@ const loaders: Record<string, () => ComponentType<any>> = {
   DialogNestedCase: () => require('./DialogNestedCase').DialogNestedCase,
   DismissLayerStackingCase: () =>
     require('./DismissLayerStackingCase').DismissLayerStackingCase,
+  DismissableLayerToggleCase: () =>
+    require('./DismissableLayerToggleCase').DismissableLayerToggleCase,
+  PopoverAriaControlsCase: () =>
+    require('./PopoverAriaControlsCase').PopoverAriaControlsCase,
   DialogOpenControlled: () => require('./DialogOpenControlled').DialogOpenControlled,
+  DialogPresenceCompletionCase: () =>
+    require('./DialogPresenceCompletionCase').DialogPresenceCompletionCase,
   DialogPointerEventsCase: () =>
     require('./DialogPointerEventsCase').DialogPointerEventsCase,
+  PopupConformanceCase: () => require('./PopupConformanceCase').PopupConformanceCase,
   DialogScopedCase: () => require('./DialogScopedCase').DialogScopedCase,
   DialogSheetAdaptCase: () => require('./DialogSheetAdaptCase').DialogSheetAdaptCase,
+  DialogSheetAdaptHandoffCase: () =>
+    require('./DialogSheetAdaptHandoffCase').DialogSheetAdaptHandoffCase,
   DialogSheetAdaptResizeCase: () =>
     require('./DialogSheetAdaptResizeCase').DialogSheetAdaptResizeCase,
   DialogSheetAdaptUnmountCase: () =>
     require('./DialogSheetAdaptUnmountCase').DialogSheetAdaptUnmountCase,
+  AdaptLiveSlotSpikeCase: () =>
+    require('./AdaptLiveSlotSpikeCase').AdaptLiveSlotSpikeCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
+  OnTransitionCase: () => require('./OnTransitionCase').OnTransitionCase,
+  StyleValidation: () => require('./StyleValidation').StyleValidation,
+  FocusScopeNoFocusCase: () => require('./FocusScopeNoFocusCase').FocusScopeNoFocusCase,
   ExitStyleNewKeyCase: () => require('./ExitStyleNewKeyCase').ExitStyleNewKeyCase,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,
   FocusVisibleButtonPointer: () =>
@@ -79,6 +107,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./FocusVisibleButtonWithFocusStyle').FocusVisibleButtonWithFocusStyle,
   FontTokensInVariants: () => require('./FontTokensInVariants').FontTokensInVariants,
   FocusWithinCase: () => require('./FocusWithinCase').FocusWithinCase,
+  FieldReactHookFormBridgeCase: () =>
+    require('./FieldReactHookFormBridgeCase').FieldReactHookFormBridgeCase,
+  FieldValidatedSignupCase: () =>
+    require('./FieldValidatedSignupCase').FieldValidatedSignupCase,
   FormButtonTypeCase: () => require('./FormButtonTypeCase').FormButtonTypeCase,
   GroupHoverMobile: () => require('./GroupHoverMobile').GroupHoverMobile,
   GroupPressInVariant: () => require('./GroupPressInVariant').GroupPressInVariant,
@@ -92,6 +124,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./GlobalScopedTriggerIsolationCase').GlobalScopedTriggerIsolationCase,
   MediaQueryGtMd: () => require('./MediaQueryGtMd').MediaQueryGtMd,
   MediaQueriesV5: () => require('./MediaQueriesV5').MediaQueriesV5,
+  MotionReduceCase: () => require('./MotionReduceCase').MotionReduceCase,
   MenuAboveDialogCase: () => require('./MenuAboveDialogCase').MenuAboveDialogCase,
   MenuAnimatePositionCase: () =>
     require('./MenuAnimatePositionCase').MenuAnimatePositionCase,
@@ -122,15 +155,17 @@ const loaders: Record<string, () => ComponentType<any>> = {
   NativeMixedDriverCase: () => require('./NativeMixedDriverCase').NativeMixedDriverCase,
   MenuSubStyledCase: () => require('./MenuSubStyledCase').MenuSubStyledCase,
   MenuThemeCase: () => require('./MenuThemeCase').MenuThemeCase,
-  MenuUnstyledCase: () => require('./MenuUnstyledCase').MenuUnstyledCase,
   GroupUseCases: () => require('./GroupUseCases').GroupUseCases,
   HeightMediaQueryOverrideCase: () =>
     require('./HeightMediaQueryOverrideCase').HeightMediaQueryOverrideCase,
+  IconFillStroke: () => require('./IconFillStroke').IconFillStroke,
+  ImageObjectFit: () => require('./ImageObjectFit').ImageObjectFit,
   ImageTokenStyle: () => require('./ImageTokenStyle').ImageTokenStyle,
   InputAutoFocusAfterMenuCase: () =>
     require('./InputAutoFocusAfterMenuCase').InputAutoFocusAfterMenuCase,
   InputAutoFocusStyledCase: () =>
     require('./InputAutoFocusStyledCase').InputAutoFocusStyledCase,
+  InputRefCase: () => require('./InputRefCase').InputRefCase,
   ThemedListItem: () => require('./ListItem').ThemedListItem,
   NewInputBasic: () => require('./NewInputBasic').NewInputBasic,
   InputTextShorthand: () => require('./InputTextShorthand').InputTextShorthand,
@@ -177,21 +212,28 @@ const loaders: Record<string, () => ComponentType<any>> = {
   PseudoTransitionCase: () => require('./PseudoTransitionCase').PseudoTransitionCase,
   RemoveScrollCase: () => require('./RemoveScrollCase').RemoveScrollCase,
   RenderPropCase: () => require('./RenderPropCase').RenderPropCase,
+  SafeAreaValue: () => require('./SafeAreaValue').SafeAreaValue,
   ScrollViewRefCase: () => require('./ScrollViewRefCase').ScrollViewRefCase,
   SecondPage: () => require('./SecondPage').SecondPage,
+  SelectAdaptSheetUnmountCase: () =>
+    require('./SelectAdaptSheetUnmountCase').SelectAdaptSheetUnmountCase,
   SelectAndroidOnPress: () => require('./SelectAndroidOnPress').SelectAndroidOnPress,
   SelectFocusScopeCase: () => require('./SelectFocusScopeCase').SelectFocusScopeCase,
+  SelectMultipleCase: () => require('./SelectMultipleCase').SelectMultipleCase,
   SelectRemount: () => require('./SelectRemount').SelectRemount,
+  SelectSkin: () => require('./SelectSkin').SelectSkin,
   Shadows: () => require('./Shadows').Shadows,
   ShorthandVariables: () => require('./ShorthandVariables').ShorthandVariables,
   SheetAnimationCase: () => require('./SheetAnimationCase').SheetAnimationCase,
   SheetOnAnimationCompleteCase: () =>
     require('./SheetOnAnimationCompleteCase').SheetOnAnimationCompleteCase,
   SheetDragCase: () => require('./SheetDragCase').SheetDragCase,
+  SheetDragFadeCase: () => require('./SheetDragFadeCase').SheetDragFadeCase,
   SheetDragResistCase: () => require('./SheetDragResistCase.web').SheetDragResistCase,
   SheetOverlayStyleCase: () => require('./SheetOverlayStyleCase').SheetOverlayStyleCase,
   SheetScrollableDrag: () => require('./SheetScrollableDrag').SheetScrollableDrag,
   SheetScrollLockCase: () => require('./SheetScrollLockCase').SheetScrollLockCase,
+  SheetSkin: () => require('./SheetSkin').SheetSkin,
   SheetSnapPointsFitCase: () =>
     require('./SheetSnapPointsFitCase').SheetSnapPointsFitCase,
   SheetWebKeyboardCase: () => require('./SheetWebKeyboardCase').SheetWebKeyboardCase,
@@ -232,8 +274,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyleCompatCase: () => require('./StyleCompatCase').StyleCompatCase,
   StylePlatform: () => require('./StylePlatform').StylePlatform,
   StyleProp: () => require('./StyleProp').StyleProp,
+  SliderFormCase: () => require('./SliderFormCase').SliderFormCase,
   TabsOnInteraction: () => require('./TabsOnInteraction').TabsOnInteraction,
   TextNestedInheritance: () => require('./TextNestedInheritance').TextNestedInheritance,
+  TextOverflowEllipsis: () => require('./TextOverflowEllipsis').TextOverflowEllipsis,
   TabHoverAnimationCase: () => require('./TabHoverAnimationCase').TabHoverAnimationCase,
   ThemeChange: () => require('./ThemeChange').ThemeChange,
   ThemeConditionalName: () => require('./ThemeConditionalName').ThemeConditionalName,
@@ -277,6 +321,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   V5ThemeBuilderOutput: () => require('./V5ThemeBuilderOutput').V5ThemeBuilderOutput,
   VariantFontFamily: () => require('./VariantFontFamily').VariantFontFamily,
   VariantsOrder: () => require('./VariantsOrder').VariantsOrder,
+  VisibilityCase: () => require('./VisibilityCase').VisibilityCase,
   ZIndex: () => require('./ZIndex').ZIndex,
   NestedPressExclusive: () => require('./NestedPressExclusive').NestedPressExclusive,
 }

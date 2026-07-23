@@ -1,7 +1,14 @@
-import { getConfigMaybe, setConfig, setTokens } from './config'
+import {
+  DEFAULT_SIZE_TOKEN,
+  getConfigMaybe,
+  getDefaultToken,
+  setConfig,
+  setTokens,
+} from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
+import { isTailwindStyleMode } from './helpers/hybridStyle'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import {
   buildCSSRuleSets,
@@ -13,11 +20,13 @@ import {
 import { scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
 import { ensureThemeVariable } from './helpers/themes'
+import { mergeConfigVariablesIntoTheme } from './helpers/variables'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
 import type {
   CreateTamaguiProps,
+  DefaultTokens,
   DedupedTheme,
   DedupedThemes,
   GenericFont,
@@ -51,6 +60,89 @@ function shouldTokenCategoryHaveUnits(category: string): boolean {
 function initializeTamaguiConfig(config: TamaguiInternalConfig) {
   setConfig(config)
   configureMedia(config)
+}
+
+export function installTamaguiConfig(config: TamaguiInternalConfig) {
+  const tokens = config.tokens as Record<string, Record<string, Variable>>
+  const tokensParsed = config.tokensParsed as Record<string, Record<string, Variable>>
+  const tokensMerged: TokensMerged = {} as any
+  const categories = new Set([
+    ...Object.keys(tokens || {}),
+    ...Object.keys(tokensParsed || {}),
+  ])
+
+  for (const category of categories) {
+    const categoryTokens = tokens?.[category] || {}
+    const categoryTokensParsed = tokensParsed?.[category] || {}
+    const categoryTokensMerged = (tokensMerged[category] = {})
+
+    for (const name in categoryTokens) {
+      const unprefixedName = name[0] === '$' ? name.slice(1) : name
+      const prefixedName = `$${unprefixedName}`
+      categoryTokensMerged[unprefixedName] = categoryTokens[name]
+      categoryTokensMerged[prefixedName] =
+        categoryTokensParsed[prefixedName] ?? categoryTokens[name]
+    }
+
+    for (const name in categoryTokensParsed) {
+      const unprefixedName = name[0] === '$' ? name.slice(1) : name
+      const prefixedName = `$${unprefixedName}`
+      categoryTokensMerged[unprefixedName] ??=
+        categoryTokens[unprefixedName] ?? categoryTokensParsed[name]
+      categoryTokensMerged[prefixedName] = categoryTokensParsed[name]
+    }
+  }
+
+  setTokens(tokensMerged)
+  initializeTamaguiConfig(config)
+  return config
+}
+
+function normalizeDefaultToken(defaultToken: string | undefined) {
+  if (!defaultToken) return
+  return defaultToken[0] === '$' ? defaultToken : `$${defaultToken}`
+}
+
+function validateDefaultTokens(config: TamaguiInternalConfig) {
+  const missing: string[] = []
+  const overrides = config.settings.defaultTokens
+  const defaultSize = getDefaultToken('size', config)
+  const defaultSpace = getDefaultToken('space', config)
+  const defaultFontSize = getDefaultToken('fontSize', config)
+
+  if (!config.tokensParsed.size?.[defaultSize]) {
+    missing.push(`settings.defaultSize -> tokens.size.${defaultSize}`)
+  }
+  if (!config.tokensParsed.space?.[defaultSpace]) {
+    const setting = overrides?.space
+      ? 'settings.defaultTokens.space'
+      : 'settings.defaultSize'
+    missing.push(`${setting} -> tokens.space.${defaultSpace}`)
+  }
+
+  for (const fontName in config.fontsParsed) {
+    if (!config.fontsParsed[fontName]?.size?.[defaultFontSize]) {
+      const setting = overrides?.fontSize
+        ? 'settings.defaultTokens.fontSize'
+        : 'settings.defaultSize'
+      missing.push(`${setting} -> fonts.${fontName}.size.${defaultFontSize}`)
+    }
+  }
+
+  for (const category of ['radius', 'zIndex'] as const) {
+    const configured = overrides?.[category]
+    if (configured && !config.tokensParsed[category]?.[configured]) {
+      missing.push(
+        `settings.defaultTokens.${category} -> tokens.${category}.${configured}`
+      )
+    }
+  }
+
+  if (missing.length) {
+    throw new Error(
+      `Default token settings point to missing tokens: ${missing.join(', ')}`
+    )
+  }
 }
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
@@ -124,6 +216,16 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   const specificTokens = {}
+  const defaultSize =
+    normalizeDefaultToken(configIn.settings?.defaultSize) || DEFAULT_SIZE_TOKEN
+  const defaultTokens = configIn.settings?.defaultTokens
+    ? (Object.fromEntries(
+        Object.entries(configIn.settings.defaultTokens).map(([category, token]) => [
+          category,
+          normalizeDefaultToken(token),
+        ])
+      ) as DefaultTokens)
+    : undefined
 
   const themeConfig = (() => {
     // populate specificTokens (needed for runtime)
@@ -147,10 +249,18 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // CSS generation (tree-shaken when TAMAGUI_DID_OUTPUT_CSS is set)
     const declarations = createTokenCSS(tokens as any, shouldTokenCategoryHaveUnits)
     const fontDeclarations = createFontCSS(fontsParsed, registerFontVariables)
-    const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations)
+    const defaultFontSize = getDefaultToken('fontSize', {
+      settings: { defaultSize, defaultTokens },
+    })
+    const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations, defaultFontSize)
 
     const themesIn = configIn.themes as ThemesLikeObject
-    const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn, tokens.color)
+    const dedupedThemes =
+      foundThemes ??
+      getThemesDeduped(themesIn, tokens.color, configIn.variables, {
+        specificTokens,
+        tokensParsed,
+      })
     const themes = proxyThemesToParents(dedupedThemes)
 
     return {
@@ -171,7 +281,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const lastCSSIndex = { value: -1 }
 
   const getCSS: GetCSS = (opts = {}) => {
-    return getCSSHelper(themeConfig, opts, lastCSSIndex)
+    return getCSSHelper(
+      themeConfig,
+      opts,
+      lastCSSIndex,
+      isTailwindStyleMode(configIn as any)
+    )
   }
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
@@ -228,6 +343,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     settings: {
       webContainerType: 'inline-size',
       ...configIn.settings,
+      defaultSize,
+      ...(defaultTokens && { defaultTokens }),
     },
     tokens: tokens as any,
     // vite made this into a function if it wasn't set
@@ -251,6 +368,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }
 
+  if (process.env.NODE_ENV === 'development') {
+    validateDefaultTokens(config)
+  }
+
   initializeTamaguiConfig(config)
 
   if (process.env.NODE_ENV !== 'development') {
@@ -270,7 +391,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 // dedupes the themes if given them via JS config
 function getThemesDeduped(
   themes: ThemesLikeObject,
-  colorTokens?: Record<string, any>
+  colorTokens?: Record<string, any>,
+  variables?: CreateTamaguiProps['variables'],
+  variablesCtx?: {
+    specificTokens: Record<string, Variable>
+    tokensParsed: TokensParsed
+  }
 ): DedupedThemes {
   const dedupedThemes: DedupedThemes = []
   const existing = new Map<string, DedupedTheme>()
@@ -309,6 +435,19 @@ function getThemesDeduped(
     for (const key in theme) {
       // make sure properly names theme variables
       ensureThemeVariable(theme, key)
+    }
+
+    // custom variables merge into base themes only; sub-themes inherit them
+    // via proxyThemesToParents (native) and the CSS cascade (web), so a
+    // <Variables> patch survives sub-theme switches below it
+    if (variables && variablesCtx && !themeName.includes('_')) {
+      mergeConfigVariablesIntoTheme(
+        theme as any,
+        themeName,
+        variables,
+        variablesCtx.specificTokens,
+        variablesCtx.tokensParsed
+      )
     }
 
     // set deduped

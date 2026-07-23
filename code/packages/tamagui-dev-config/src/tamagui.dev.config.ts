@@ -1,10 +1,7 @@
 import { animationsCSS } from '@tamagui/config/v5-css'
 import { animationsMotion } from '@tamagui/config/v5-motion'
-import {
-  createV5Theme,
-  defaultConfig,
-  subtleChildrenThemes,
-} from '@tamagui/config/v5-subtle'
+import { defaultConfig } from '@tamagui/config/v5-subtle'
+import { createV5Theme, subtleChildrenThemes } from '@tamagui/themes/v5-subtle-builder'
 
 // only generate the accent themes the site actually uses: red/green/blue/gray/yellow
 // (the @tamagui/logo tint family). dropping orange/pink/purple/teal/neutral roughly

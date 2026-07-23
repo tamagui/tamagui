@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "rootDir": ".",
     "paths": {
+      "@tamagui/colors/legacy": [
+        "./code/core/colors/types/legacy.d.ts"
+      ],
       "tamagui": [
-        "code/ui/tamagui"
+        "./code/ui/tamagui"
       ],
       "@tamagui/*": [
-        "code/core/*",
-        "code/ui/*",
-        "code/packages/*"
+        "./code/core/*",
+        "./code/ui/*",
+        "./code/packages/*"
       ],
       "@tamagui/demos": [
-        "code/demos"
+        "./code/demos"
       ]
     },
     "outDir": "dist",
@@ -24,14 +26,13 @@
     "declaration": true,
     "experimentalDecorators": false,
     "emitDecoratorMetadata": false,
-    "downlevelIteration": true,
     "strict": true,
     "esModuleInterop": true,
     "inlineSourceMap": true,
     "preserveSymlinks": true,
     "jsx": "react-jsx",
-    "module": "System",
-    "moduleResolution": "node",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
     "noEmitOnError": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
@@ -64,7 +65,7 @@
   },
   "references": [
     {
-      "path": "code/compiler/babel-plugin"
+      "path": "code/compiler/compiler-core"
     },
     {
       "path": "code/compiler/loader"
@@ -86,9 +87,6 @@
     },
     {
       "path": "code/core/animations-css"
-    },
-    {
-      "path": "code/core/animations-moti"
     },
     {
       "path": "code/core/animations-react-native"
@@ -125,6 +123,9 @@
     },
     {
       "path": "code/core/create-context"
+    },
+    {
+      "path": "code/core/create-system-font"
     },
     {
       "path": "code/core/create-theme"
@@ -193,6 +194,9 @@
       "path": "code/core/helpers"
     },
     {
+      "path": "code/core/size"
+    },
+    {
       "path": "code/core/normalize-css-color"
     },
     {
@@ -209,6 +213,9 @@
     },
     {
       "path": "code/core/shorthands"
+    },
+    {
+      "path": "code/core/style-grammar"
     },
     {
       "path": "code/core/simple-hash"
@@ -365,6 +372,9 @@
     },
     {
       "path": "code/ui/elements"
+    },
+    {
+      "path": "code/ui/field"
     },
     {
       "path": "code/ui/focus-scope"

@@ -40,7 +40,6 @@ export const Text = createComponent<
           suppressHighlighting: true,
         },
 
-  inlineWhenUnflattened: new Set(['fontFamily']),
   inlineProps: new Set(['maxFontSizeMultiplier']),
 
   variants: {
@@ -48,7 +47,7 @@ export const Text = createComponent<
       numberOfLines: {
         1: ellipsisStyle,
 
-        ':number': (numberOfLines) =>
+        number: (numberOfLines) =>
           numberOfLines >= 1
             ? {
                 maxWidth: '100%',

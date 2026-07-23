@@ -20,6 +20,10 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test('Text does not register inlineWhenUnflattened', () => {
+    expect((Text as any).staticConfig.inlineWhenUnflattened).toBeUndefined()
+  })
+
   test(`styled with variants`, () => {
     const ViewVariants = styled(Text, {
       color: 'blue',
@@ -38,6 +42,89 @@ describe('getSplitStyles', () => {
     })
 
     expect(styles.classNames).toEqual({ color: '_col-red' })
+  })
+
+  test(`Size variants resolve true through settings.defaultSize`, () => {
+    let seenSize: unknown
+    const SizedView = styled(View, {
+      variants: {
+        size: {
+          Size: (val) => {
+            seenSize = val
+            return {
+              width: val,
+            }
+          },
+        },
+      } as const,
+    })
+
+    simplifiedGetSplitStyles(SizedView, {
+      size: true,
+    })
+
+    expect(seenSize).toBe('$4')
+  })
+
+  test(`direct true style tokens resolve through settings.defaultSize`, () => {
+    const out = simplifiedGetSplitStyles(View, {
+      padding: true,
+      borderRadius: true,
+    })
+
+    const byProp: Record<string, string> = {}
+    for (const rule of Object.values(out.rulesToInsert)) {
+      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
+    }
+
+    expect(byProp.paddingTop).toBe('var(--t-space-4)')
+    expect(byProp.paddingRight).toBe('var(--t-space-4)')
+    expect(byProp.paddingBottom).toBe('var(--t-space-4)')
+    expect(byProp.paddingLeft).toBe('var(--t-space-4)')
+    expect(byProp.borderTopLeftRadius).toBe('var(--t-radius-4)')
+    expect(byProp.borderTopRightRadius).toBe('var(--t-radius-4)')
+    expect(byProp.borderBottomRightRadius).toBe('var(--t-radius-4)')
+    expect(byProp.borderBottomLeftRadius).toBe('var(--t-radius-4)')
+  })
+
+  test(`direct true style tokens resolve through their category defaults`, () => {
+    const next = config.getDefaultTamaguiConfig()
+    createTamagui({
+      ...next,
+      settings: {
+        ...next.settings,
+        defaultSize: '$5',
+        defaultTokens: {
+          space: '$3',
+          radius: '$2',
+          zIndex: '$1',
+          fontSize: '$1',
+        },
+      },
+    })
+
+    try {
+      const out = simplifiedGetSplitStyles(Text, {
+        height: true,
+        padding: true,
+        borderRadius: true,
+        zIndex: true,
+        fontSize: true,
+      })
+
+      const byProp: Record<string, string> = {}
+      for (const rule of Object.values(out.rulesToInsert)) {
+        byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
+      }
+
+      expect(byProp.height).toBe('var(--t-size-5)')
+      expect(byProp.paddingTop).toBe('var(--t-space-3)')
+      expect(byProp.borderTopLeftRadius).toBe('var(--t-radius-2)')
+      expect(byProp.zIndex).toBe('var(--t-zIndex-1)')
+      expect(byProp.fontSize).toBe('var(--f-size-1)')
+    } finally {
+      createTamagui(config.getDefaultTamaguiConfig())
+    }
   })
 
   test(`prop "aria-required" is passed through`, () => {
@@ -65,6 +152,58 @@ describe('getSplitStyles', () => {
       }
     )
     expect(Object.values(out.rulesToInsert)[0]?.[StyleObjectValue]).toEqual('10px')
+  })
+
+  test(`prop "paddingTop" value "safe" becomes env(safe-area-inset-top)`, () => {
+    const out = simplifiedGetSplitStyles(View, { paddingTop: 'safe' })
+    const rule = Object.values(out.rulesToInsert).find(
+      (r) => r[StyleObjectProperty] === 'paddingTop'
+    )
+    expect(rule?.[StyleObjectValue]).toEqual('env(safe-area-inset-top)')
+  })
+
+  test(`prop "padding" value "safe" expands to 4 per-side env() values`, () => {
+    const out = simplifiedGetSplitStyles(View, { padding: 'safe' })
+    const byProp: Record<string, string> = {}
+    for (const rule of Object.values(out.rulesToInsert)) {
+      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
+    }
+    expect(byProp.paddingTop).toEqual('env(safe-area-inset-top)')
+    expect(byProp.paddingRight).toEqual('env(safe-area-inset-right)')
+    expect(byProp.paddingBottom).toEqual('env(safe-area-inset-bottom)')
+    expect(byProp.paddingLeft).toEqual('env(safe-area-inset-left)')
+  })
+
+  test(`prop "inset" value "safe" expands to top/right/bottom/left env() values`, () => {
+    const out = simplifiedGetSplitStyles(View, { inset: 'safe' })
+    const byProp: Record<string, string> = {}
+    for (const rule of Object.values(out.rulesToInsert)) {
+      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
+    }
+    expect(byProp.top).toEqual('env(safe-area-inset-top)')
+    expect(byProp.right).toEqual('env(safe-area-inset-right)')
+    expect(byProp.bottom).toEqual('env(safe-area-inset-bottom)')
+    expect(byProp.left).toEqual('env(safe-area-inset-left)')
+  })
+
+  test(`shorthand "pt" value "safe" becomes paddingTop env(safe-area-inset-top)`, () => {
+    const out = simplifiedGetSplitStyles(View, { pt: 'safe' })
+    const rule = Object.values(out.rulesToInsert).find(
+      (r) => r[StyleObjectProperty] === 'paddingTop'
+    )
+    expect(rule?.[StyleObjectValue]).toEqual('env(safe-area-inset-top)')
+  })
+
+  test(`prop "paddingHorizontal" value "safe" only emits left+right`, () => {
+    const out = simplifiedGetSplitStyles(View, { paddingHorizontal: 'safe' })
+    const byProp: Record<string, string> = {}
+    for (const rule of Object.values(out.rulesToInsert)) {
+      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
+    }
+    expect(byProp.paddingLeft).toEqual('env(safe-area-inset-left)')
+    expect(byProp.paddingRight).toEqual('env(safe-area-inset-right)')
+    expect(byProp.paddingTop).toBeUndefined()
+    expect(byProp.paddingBottom).toBeUndefined()
   })
 
   test(`font props get the font family, regardless of the order`, () => {
@@ -574,26 +713,6 @@ describe('getSplitStyles', () => {
   //   )
 
   //   expect(fontSizeRule?.rules[0].includes('font-size:var(--f-size-1)')).toBeTruthy()
-  // })
-
-  // test(`prop "tabIndex" defaults to "0", overrides to "-1" when tag = button`, () => {
-  //   expect(
-  //     getSplitStylesStack(
-  //       {
-  //         focusable: true,
-  //       },
-  //       'button'
-  //     )['tabIndex']
-  //   ).toEqual('0')
-
-  //   expect(
-  //     getSplitStylesStack(
-  //       {
-  //         tabIndex: '-1',
-  //       },
-  //       'button'
-  //     )['tabIndex']
-  //   ).toEqual('-1')
   // })
 })
 

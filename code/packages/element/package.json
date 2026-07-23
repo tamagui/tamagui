@@ -10,15 +10,15 @@
   "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
-  "types": "./src",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "react-native": {
-        "types": "./src/index.native.ts",
+        "types": "./types/index.native.d.ts",
         "default": "./dist/esm/index.native.js"
       },
-      "types": "./src/index.ts",
+      "types": "./types/index.d.ts",
       "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
@@ -30,8 +30,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tamagui-build --skip-types",
-    "watch": "tamagui-build --skip-types --watch",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

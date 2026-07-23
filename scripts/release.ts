@@ -1,5 +1,7 @@
 import fs, { ensureDir, writeJSON } from 'fs-extra'
 import * as proc from 'node:child_process'
+import { mkdtemp } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
 import path, { join } from 'node:path'
 import { promisify } from 'node:util'
 import pMap from 'p-map'
@@ -8,6 +10,12 @@ import prompts from 'prompts'
 import { ensureNpmAuthentication } from './release-npm-auth'
 import { computePublishTag } from './release-publish-tag'
 import { spawnify } from './spawnify'
+import {
+  publishCommand,
+  sha256File,
+  type PackedArtifact,
+  type ReleasePreviewReport,
+} from './v3-release-dry-run-lib'
 
 process.setMaxListeners(50)
 process.stdout.setMaxListeners(50)
@@ -38,6 +46,18 @@ const requestedChannel = isBeta ? 'beta' : isRC ? 'rc' : null
 const explicitTagIdx = process.argv.indexOf('--tag')
 const explicitTag =
   explicitTagIdx !== -1 ? (process.argv[explicitTagIdx + 1] || '').trim() : undefined
+const explicitVersionIdx = process.argv.indexOf('--version')
+const explicitVersion =
+  explicitVersionIdx !== -1
+    ? (process.argv[explicitVersionIdx + 1] || '').trim()
+    : undefined
+
+if (
+  explicitVersion !== undefined &&
+  !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(explicitVersion)
+) {
+  throw new Error(`Invalid release version: ${explicitVersion || '(empty)'}`)
+}
 
 const skipStarters = canary || skipAll || process.argv.includes('--skip-starters')
 const skipVersion = shouldFinish || rePublish || process.argv.includes('--skip-version')
@@ -125,6 +145,10 @@ const nextVersion = (() => {
     return curVersion
   }
 
+  if (explicitVersion) {
+    return explicitVersion
+  }
+
   if (canary) {
     return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
   }
@@ -182,7 +206,8 @@ if (!skipVersion) {
   console.info(`Re-releasing ${curVersion}`)
 }
 
-const isMain = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() === 'main'
+const currentBranch = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim()
+const isMain = currentBranch === 'main'
 
 async function getWorkspacePackages() {
   const rootPkg = await fs.readJSON('package.json')
@@ -255,14 +280,16 @@ async function run() {
     let version = curVersion
 
     // ensure we are up to date
-    // ensure we are on main (skip branch check for canary releases and dry runs)
-    if (!canary && !rePublish && !dryRun && !process.env.CI) {
+    // ensure we are on main (skip branch check for canary releases, channel
+    // prereleases like --beta/--rc which cut from their own branch, dry runs,
+    // and CI where the workflow already checked out the intended ref)
+    if (!canary && !rePublish && !dryRun && !requestedChannel && !process.env.CI) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
     }
     if (!dirty && !rePublish && !shouldFinish && !canary && !dryRun) {
-      await spawnify(`git pull --rebase origin main`)
+      await spawnify(`git pull --rebase origin ${currentBranch}`)
     }
 
     const packagePaths = await getWorkspacePackages()
@@ -346,7 +373,7 @@ async function run() {
     if (!shouldFinish) {
       let answer: { version: string }
 
-      if (isCI || skipVersion) {
+      if (explicitVersion || isCI || skipVersion) {
         if (!nextVersion) {
           throw new Error(
             `Cannot compute a ${requestedChannel} version from a stable base (${curVersion}) non-interactively.\n` +
@@ -512,7 +539,7 @@ async function run() {
     }
 
     const lastTag = await getLastReleaseRef()
-    const skippedPackages: typeof packageJsons = []
+    let skippedPackages: typeof packageJsons = []
     let packagesToPublish = packageJsons
 
     if (lastTag && !forcePublishAll) {
@@ -563,6 +590,7 @@ async function run() {
       console.info(
         `Resolving last published versions for skipped packages (tag: ${distTag})...`
       )
+      const forcePublish = new Set<string>()
       await pMap(
         skippedPackages,
         async ({ name }) => {
@@ -573,16 +601,22 @@ async function run() {
               skippedVersions.set(name, lastVersion)
               console.info(`  ${name}: ${lastVersion}`)
             } else {
-              // no published version, will use new version (force publish)
-              skippedVersions.set(name, version)
+              forcePublish.add(name)
             }
           } catch {
-            // never published, use new version
-            skippedVersions.set(name, version)
+            forcePublish.add(name)
           }
         },
         { concurrency: 10 }
       )
+      if (forcePublish.size > 0) {
+        console.info(
+          `Publishing ${[...forcePublish].join(', ')} because no ${distTag} version could be resolved`
+        )
+        skippedPackages = skippedPackages.filter(({ name }) => !forcePublish.has(name))
+        const skippedNames = new Set(skippedPackages.map(({ name }) => name))
+        packagesToPublish = packageJsons.filter(({ name }) => !skippedNames.has(name))
+      }
     }
 
     if (!shouldFinish && dryRun) {
@@ -608,6 +642,74 @@ async function run() {
       return
     }
 
+    const stagedReleaseArtifacts = new Map<string, PackedArtifact>()
+    if (!shouldFinish && !skipPublish) {
+      const g1Root = await mkdtemp(join(tmpdir(), 'tamagui-release-g1-'))
+      const g1Output = join(g1Root, 'preview')
+      const packageList = join(g1Root, 'publish-packages.json')
+      const versionOverrides = join(g1Root, 'version-overrides.json')
+      await writeJSON(
+        packageList,
+        packagesToPublish.map(({ name }) => name),
+        { spaces: 2 }
+      )
+      await writeJSON(versionOverrides, Object.fromEntries(skippedVersions), {
+        spaces: 2,
+      })
+
+      await spawnify(
+        `bun scripts/v3-release-dry-run.ts --package-list ${packageList} --canary code/tests/v3-canary --packer npm --out-dir ${g1Output} --release-preview --version ${version} --version-overrides ${versionOverrides} --tag ${publishTag} --skip-build`
+      )
+
+      const reportPath = join(g1Output, 'release-preview.json')
+      const report = (await fs.readJSON(reportPath)) as ReleasePreviewReport
+      const expectedNames = packagesToPublish.map(({ name }) => name).sort()
+      const requestedNames = [...report.requestedPackages].sort()
+      if (JSON.stringify(requestedNames) !== JSON.stringify(expectedNames)) {
+        throw new Error(
+          `G1 requested package mismatch:\nexpected ${expectedNames.join(', ')}\nreceived ${requestedNames.join(', ')}`
+        )
+      }
+
+      for (const artifact of report.artifacts) {
+        const expectedSource = skippedVersions.has(artifact.name)
+          ? 'registry'
+          : 'workspace'
+        if (artifact.source !== expectedSource) {
+          throw new Error(
+            `G1 staged ${artifact.name} from ${artifact.source}, expected ${expectedSource}`
+          )
+        }
+        if (!expectedNames.includes(artifact.name)) continue
+        if (artifact.version !== version) {
+          throw new Error(
+            `G1 staged ${artifact.name}@${artifact.version}, expected ${version}`
+          )
+        }
+        if (stagedReleaseArtifacts.has(artifact.name)) {
+          throw new Error(`G1 staged duplicate artifact for ${artifact.name}`)
+        }
+        stagedReleaseArtifacts.set(artifact.name, artifact)
+      }
+      for (const name of expectedNames) {
+        if (!stagedReleaseArtifacts.has(name)) {
+          throw new Error(`G1 did not stage publish artifact for ${name}`)
+        }
+      }
+      const expectedPublishCommands = expectedNames
+        .map((name) => publishCommand(stagedReleaseArtifacts.get(name)!, publishTag))
+        .sort()
+      const reportPublishCommands = [...report.publishCommands].sort()
+      if (
+        JSON.stringify(reportPublishCommands) !== JSON.stringify(expectedPublishCommands)
+      ) {
+        throw new Error(
+          `G1 publish command mismatch:\nexpected ${expectedPublishCommands.join('\n')}\nreceived ${reportPublishCommands.join('\n')}`
+        )
+      }
+      console.info(`G1 certified publish bytes: ${reportPath}`)
+    }
+
     if (!shouldFinish && !rePublish) {
       await spawnify(`git diff`)
     }
@@ -628,9 +730,6 @@ async function run() {
       const tmpDir = `/tmp/tamagui-publish`
       await fs.remove(tmpDir)
       await ensureDir(tmpDir)
-
-      // publishTag was resolved + validated up front (single source of truth)
-      const publishOptions = `--tag ${publishTag}`
 
       const isPublished = async ({ name }: { name: string }) => {
         try {
@@ -662,55 +761,22 @@ async function run() {
         })
         .map(({ pkg }) => pkg)
 
-      const prepareOne = async ({ name, cwd }: { name: string; cwd: string }) => {
-        // Copy to temp directory and replace workspace:* with versions
-        const tmpPackageDir = join(tmpDir, name.replace('/', '_'))
-        await fs.copy(cwd, tmpPackageDir, {
-          filter: (src) => {
-            // exclude node_modules to avoid symlink issues
-            return !src.includes('node_modules')
-          },
-        })
-
-        // replace workspace:* with version in temp copy
-        const pkgJsonPath = join(tmpPackageDir, 'package.json')
-        const pkgJson = await fs.readJSON(pkgJsonPath)
-        pkgJson.repository = {
-          type: 'git',
-          url: 'https://github.com/tamagui/tamagui.git',
-          directory: path.relative(process.cwd(), cwd),
+      // publish the exact G1-certified bytes: each staged tarball is re-hashed
+      // immediately before publish so nothing can change between certification
+      // and the registry upload.
+      const publishOne = async ({ name }: { name: string }, interactive = false) => {
+        const artifact = stagedReleaseArtifacts.get(name)
+        if (!artifact) throw new Error(`Missing G1 artifact for ${name}`)
+        const actualHash = await sha256File(artifact.tarball)
+        if (actualHash !== artifact.sha256) {
+          throw new Error(
+            `G1 artifact changed before publish for ${name}: expected ${artifact.sha256}, received ${actualHash}`
+          )
         }
-        for (const field of [
-          'dependencies',
-          'devDependencies',
-          'optionalDependencies',
-          'peerDependencies',
-        ]) {
-          if (!pkgJson[field]) continue
-          for (const depName in pkgJson[field]) {
-            if (pkgJson[field][depName].startsWith('workspace:')) {
-              // use the skipped package's last published version if it won't be published
-              pkgJson[field][depName] = skippedVersions.get(depName) || version
-            }
-          }
-        }
-        await writeJSON(pkgJsonPath, pkgJson, { spaces: 2 })
 
-        await spawnify(`npm pack --pack-destination ${tmpDir}`, {
-          cwd: tmpPackageDir,
-          avoidLog: true,
-        })
-
-        const npmFilename = `${name.replace('@', '').replace('/', '-')}-${version}.tgz`
-        const tarballPath = join(tmpDir, npmFilename)
-        const workspaceDir = join(tmpDir, 'workspaces', name.replace('/', '_'))
-        await ensureDir(workspaceDir)
-        await spawnify(
-          `tar -xzf ${JSON.stringify(tarballPath)} -C ${JSON.stringify(workspaceDir)} --strip-components=1`,
-          { avoidLog: true }
-        )
-
-        return path.relative(tmpDir, workspaceDir)
+        const command = publishCommand(artifact, publishTag)
+        console.info(`Publishing ${name}: ${command}`)
+        await spawnify(command, { cwd: tmpDir, interactive })
       }
 
       if (pendingPackages.length > 0) {
@@ -720,31 +786,18 @@ async function run() {
           )
         }
 
-        const workspaces = await pMap(pendingPackages, prepareOne, { concurrency: 8 })
-        await writeJSON(
-          join(tmpDir, 'package.json'),
-          {
-            name: 'tamagui-release',
-            private: true,
-            workspaces,
-          },
-          { spaces: 2 }
-        )
-
-        const webAuthCache = join(process.cwd(), 'scripts/cache-npm-webauth.cjs')
-        const nodeOptions = [process.env.NODE_OPTIONS, `--require=${webAuthCache}`]
-          .filter(Boolean)
-          .join(' ')
-
         try {
-          await spawnify(
-            `npm publish --workspaces --ignore-scripts --access public ${publishOptions}`,
-            {
-              cwd: tmpDir,
-              env: { ...process.env, NODE_OPTIONS: nodeOptions },
-              interactive: true,
-            }
-          )
+          // the first publish runs alone and interactively so a single web-auth
+          // approval (passkey) or CI OIDC exchange completes before fanning out;
+          // the rest ride npm's no-challenge window in throttled chunks.
+          const [firstPkg, ...restPkgs] = pendingPackages
+          await publishOne(firstPkg, true)
+          for (let index = 0; index < restPkgs.length; index += 6) {
+            await sleep(1000)
+            await Promise.all(
+              restPkgs.slice(index, index + 6).map((pkg) => publishOne(pkg))
+            )
+          }
         } catch (error) {
           const postflight = await pMap(
             pendingPackages,

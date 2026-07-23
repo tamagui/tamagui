@@ -143,19 +143,60 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@tamagui/compose-refs": "workspace:*"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "burnt": "^0.12.2",
+    "expo-linear-gradient": "~55.0.8",
     "react": ">=19",
     "react-native": "0.83.2",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-keyboard-controller": "1.20.7",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-teleport": "^1.0.0",
+    "react-native-web": "^0.21.0",
     "react-native-worklets-core": "^1.0.0",
     "zeego": "^3.0.0"
   },
   "peerDependencies": {
-    "react": "*"
+    "burnt": "*",
+    "expo-linear-gradient": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-keyboard-controller": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-teleport": "*",
+    "react-native-web": "*",
+    "react-native-worklets-core": "*",
+    "zeego": "*"
+  },
+  "peerDependenciesMeta": {
+    "burnt": {
+      "optional": true
+    },
+    "expo-linear-gradient": {
+      "optional": true
+    },
+    "react-native-gesture-handler": {
+      "optional": true
+    },
+    "react-native-keyboard-controller": {
+      "optional": true
+    },
+    "react-native-safe-area-context": {
+      "optional": true
+    },
+    "react-native-teleport": {
+      "optional": true
+    },
+    "react-native-worklets-core": {
+      "optional": true
+    },
+    "zeego": {
+      "optional": true
+    }
   }
 }

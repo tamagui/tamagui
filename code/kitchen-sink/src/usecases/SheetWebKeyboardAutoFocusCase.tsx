@@ -4,6 +4,16 @@ import { useWindowDimensions } from 'react-native'
 import { Button, Input, Sheet, Text, TextArea, XStack, YStack } from 'tamagui'
 import { reportSheetLayout, startSheetTracker } from './sheetFrameTracker'
 
+function SheetGeometryProbe() {
+  const { screenSize, snapOffsets, minY } = Sheet.useAnimatedPosition()
+
+  return (
+    <Text display="none" testID="sheet-web-kb-af-public-geometry">
+      {JSON.stringify({ screenSize, snapOffset: snapOffsets[0], minY })}
+    </Text>
+  )
+}
+
 /**
  * Fixture for the mobile-web Sheet + soft-keyboard AUTOFOCUS bug.
  *
@@ -92,11 +102,13 @@ export function SheetWebKeyboardAutoFocusCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame
+        <Sheet.Container
           testID="sheet-web-kb-af-frame"
           rounded="$6"
           onLayout={track ? (e) => reportSheetLayout('frame', e) : undefined}
         >
+          <Sheet.Background />
+          <SheetGeometryProbe />
           <Sheet.ScrollView
             testID="sheet-web-kb-af-scrollview"
             maxHeight={maxHeight}
@@ -146,7 +158,7 @@ export function SheetWebKeyboardAutoFocusCase() {
               </XStack>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

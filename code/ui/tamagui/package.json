@@ -27,15 +27,6 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     },
-    "./react-native-web": {
-      "types": "./types/index.d.ts",
-      "react-native": "./dist/esm/react-native-web.native.js",
-      "browser": "./dist/esm/react-native-web.mjs",
-      "module": "./dist/esm/react-native-web.mjs",
-      "import": "./dist/esm/react-native-web.mjs",
-      "require": "./dist/cjs/react-native-web.cjs",
-      "default": "./dist/esm/react-native-web.mjs"
-    },
     "./web": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
@@ -53,7 +44,7 @@
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "react-native": "./dist/test.native.js",
+      "react-native": "./dist/test.cjs",
       "require": "./dist/test.cjs",
       "default": "./dist/test.cjs"
     },
@@ -65,6 +56,24 @@
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs",
       "default": "./dist/esm/linear-gradient.mjs"
+    },
+    "./unstyled": {
+      "types": "./types/unstyled.d.ts",
+      "react-native": "./dist/esm/unstyled.native.js",
+      "browser": "./dist/esm/unstyled.mjs",
+      "module": "./dist/esm/unstyled.mjs",
+      "import": "./dist/esm/unstyled.mjs",
+      "require": "./dist/cjs/unstyled.cjs",
+      "default": "./dist/esm/unstyled.mjs"
+    },
+    "./toast": {
+      "types": "./types/toast.d.ts",
+      "react-native": "./dist/esm/toast.native.js",
+      "browser": "./dist/esm/toast.mjs",
+      "module": "./dist/esm/toast.mjs",
+      "import": "./dist/esm/toast.mjs",
+      "require": "./dist/cjs/toast.cjs",
+      "default": "./dist/esm/toast.mjs"
     }
   },
   "scripts": {
@@ -97,6 +106,7 @@
     "@tamagui/element": "workspace:*",
     "@tamagui/elements": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
+    "@tamagui/field": "workspace:*",
     "@tamagui/focusable": "workspace:*",
     "@tamagui/form": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
@@ -133,6 +143,7 @@
     "@tamagui/toast": "workspace:*",
     "@tamagui/toggle-group": "workspace:*",
     "@tamagui/tooltip": "workspace:*",
+    "@tamagui/ui": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",
     "@tamagui/use-force-update": "workspace:*",
@@ -148,7 +159,13 @@
     "react-native-web": "^0.21.0"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=19",
+    "react-native-safe-area-context": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native-safe-area-context": {
+      "optional": true
+    }
   },
   "alsoPublishAs_disabled": [
     "@tamagui/ui"

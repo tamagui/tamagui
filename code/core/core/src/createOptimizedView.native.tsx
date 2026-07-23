@@ -37,7 +37,6 @@ export function createOptimizedView(
     'aria-valuemin': ariaValueMin,
     'aria-valuenow': ariaValueNow,
     'aria-valuetext': ariaValueText,
-    focusable,
     id,
     role,
     tabIndex,
@@ -114,9 +113,10 @@ export function createOptimizedView(
     viewProps.accessibilityLabel = al
   }
 
-  const f = tabIndex !== undefined ? !tabIndex : focusable
-  if (f != null) {
-    viewProps.focusable = f
+  delete viewProps.focusable
+
+  if (tabIndex !== undefined) {
+    viewProps.focusable = Number(tabIndex) >= 0
   }
 
   if (_accessibilityState != null) {

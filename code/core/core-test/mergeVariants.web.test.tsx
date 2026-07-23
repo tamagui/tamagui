@@ -317,4 +317,42 @@ describe('mergeVariants', () => {
       },
     })
   })
+
+  test('only merges plain objects and replaces arrays strings and functions', () => {
+    const parentVariants = {
+      tone: {
+        active: {
+          hoverStyle: {
+            opacity: 0.2,
+          },
+          transform: [{ scale: 1 }],
+          className: 'parent-class',
+          onPress: () => 'parent',
+        },
+      },
+    } as any
+
+    const childPress = () => 'child'
+    const ourVariants = {
+      tone: {
+        active: {
+          hoverStyle: [{ opacity: 0.5 }],
+          transform: [{ scale: 2 }],
+          className: 'child-class',
+          onPress: childPress,
+        },
+      },
+    } as any
+
+    expect(mergeVariants(parentVariants, ourVariants)).toEqual({
+      tone: {
+        active: {
+          hoverStyle: [{ opacity: 0.5 }],
+          transform: [{ scale: 2 }],
+          className: 'child-class',
+          onPress: childPress,
+        },
+      },
+    })
+  })
 })

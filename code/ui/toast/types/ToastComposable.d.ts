@@ -1,6 +1,6 @@
 import type { GetProps, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
-import type { SwipeDirection } from './ToastProvider';
+import type { SwipeDirection } from './types';
 import type { ExternalToast, ToastT } from './ToastState';
 import type { BurntToastOptions } from './types';
 import { ToastItemFrame } from './ToastItemFrame';
@@ -91,10 +91,12 @@ export interface ToastRootProps {
      */
     icons?: ToastIcons;
 }
-declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
-export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> {
+declare const ToastViewportFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+    ref?: React.Ref<TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic];
+};
+export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
     /**
      * Offset from screen edge
      * @default 24
@@ -124,7 +126,7 @@ export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> 
      * @default Number.MAX_SAFE_INTEGER
      */
     portalZIndex?: number;
-}
+};
 export interface ToastItemRenderProps {
     toast: ToastT;
     index: number;
@@ -137,11 +139,11 @@ export interface ToastListProps {
     renderItem?: (props: ToastItemRenderProps) => React.ReactNode;
 }
 declare function ToastList({ renderItem }: ToastListProps): import("react/jsx-runtime").JSX.Element;
-export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
+export type ToastItemProps = GetProps<typeof ToastItemFrame> & {
     toast: ToastT;
     index: number;
     children: React.ReactNode;
-}
+};
 declare function ToastIcon(props: {
     children?: React.ReactNode;
 }): import("react/jsx-runtime").JSX.Element | null;
@@ -149,49 +151,141 @@ export declare function useToasts(): {
     toasts: ToastT[];
     expanded: boolean;
     position: ToastPosition;
+    closeButton: boolean;
 };
 export declare function useToastItem(): ToastItemContextValue;
-export declare const Toast: React.ForwardRefExoticComponent<ToastRootProps & React.RefAttributes<TamaguiElement>> & {
-    Viewport: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, keyof ToastViewportProps> & ToastViewportProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastViewportProps, import("@tamagui/core").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+export declare const Toast: ((props: ToastRootProps & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
+    Viewport: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "$android" | "$androidtv" | "$ios" | "$native" | "$tv" | "$tvos" | "$web" | "hotkey" | "label" | "offset" | "portalToRoot" | "portalZIndex" | import("@tamagui/core").GroupMediaKeys | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>>> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+        /**
+         * Offset from screen edge
+         * @default 24
+         */
+        offset?: number | {
+            top?: number;
+            right?: number;
+            bottom?: number;
+            left?: number;
+        };
+        /**
+         * Hotkey to focus viewport
+         */
+        hotkey?: string[];
+        /**
+         * Aria label
+         * @default 'Notifications'
+         */
+        label?: string;
+        /**
+         * Portal to root
+         * @default true
+         */
+        portalToRoot?: boolean;
+        /**
+         * z-index for the portal container when portalToRoot is true
+         * @default Number.MAX_SAFE_INTEGER
+         */
+        portalZIndex?: number;
+    }, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+        /**
+         * Offset from screen edge
+         * @default 24
+         */
+        offset?: number | {
+            top?: number;
+            right?: number;
+            bottom?: number;
+            left?: number;
+        };
+        /**
+         * Hotkey to focus viewport
+         */
+        hotkey?: string[];
+        /**
+         * Aria label
+         * @default 'Notifications'
+         */
+        label?: string;
+        /**
+         * Portal to root
+         * @default true
+         */
+        portalToRoot?: boolean;
+        /**
+         * z-index for the portal container when portalToRoot is true
+         * @default Number.MAX_SAFE_INTEGER
+         */
+        portalZIndex?: number;
+    }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     List: typeof ToastList;
     Item: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, keyof ToastItemProps> & ToastItemProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastItemProps, import("@tamagui/core").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }>, "$android" | "$androidtv" | "$ios" | "$native" | "$tv" | "$tvos" | "$web" | "elevation" | "index" | "toast" | import("@tamagui/core").GroupMediaKeys | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").StackStyleBase | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>>> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }>> & {
+        toast: ToastT;
+        index: number;
+        children: React.ReactNode;
+    }, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }>> & {
+        toast: ToastT;
+        index: number;
+        children: React.ReactNode;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Title: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
-    Description: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    Title: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
+        size?: import("@tamagui/core").FontSize | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
+        size?: import("@tamagui/core").FontSize | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").TextStylePropsBase, {
+        size?: import("@tamagui/core").FontSize | undefined;
+    }>> & {
+        ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: import("@tamagui/core").FontSize | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+            size?: import("@tamagui/core").FontSize | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
+    };
+    Description: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
+        size?: import("@tamagui/core").FontSize | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
+        size?: import("@tamagui/core").FontSize | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").TextStylePropsBase, {
+        size?: import("@tamagui/core").FontSize | undefined;
+    }>> & {
+        ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+    }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: import("@tamagui/core").FontSize | undefined;
+    }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+        __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+            size?: import("@tamagui/core").FontSize | undefined;
+        }, import("@tamagui/core").StaticConfigPublic];
+    };
     Close: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }>, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Action: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }>, import("react-native").View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Icon: typeof ToastIcon;
 };

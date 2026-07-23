@@ -35,11 +35,12 @@ export default function TestSelectAdapt(props: SelectProps) {
             stiffness: 250,
           }}
         >
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             transition="quick"
             enterStyle={{ opacity: 0 }}
@@ -104,9 +105,7 @@ export default function TestSelectAdapt(props: SelectProps) {
               width="$4"
               pointerEvents="none"
             >
-              <ChevronDown
-                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
-              />
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </YStack>
           )}
         </Select.Viewport>

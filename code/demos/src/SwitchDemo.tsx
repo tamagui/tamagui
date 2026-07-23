@@ -1,5 +1,6 @@
 import type { SizeTokens } from 'tamagui'
-import { Label, Separator, Switch, Theme, XStack, YStack } from 'tamagui'
+import { Label, Separator, XStack, YStack } from 'tamagui'
+import { Switch } from './ControlSkins'
 
 export function SwitchDemo() {
   return (
@@ -39,8 +40,7 @@ export function SwitchWithLabel(props: {
         transition="300ms"
         size={props.size}
         defaultChecked={props.defaultChecked}
-        // use activeStyle to choose youra active color
-        // default to $backgroundActive unless "unstyled" boolean prop is on
+        // use activeStyle to choose your checked-state color
         activeStyle={{
           backgroundColor: '$color6',
         }}

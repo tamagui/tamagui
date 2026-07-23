@@ -4,7 +4,8 @@
  * Works with CSS driver but not Motion driver
  */
 import { Menu } from '@tamagui/menu'
-import { AnimatePresence, Button, Paragraph, Popover, YStack } from 'tamagui'
+import { AnimatePresence, Paragraph, Popover, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 // Reproduce the pattern from ~/chat where arrow is wrapped in AnimatePresence
 const PopoverWithAnimatePresenceArrow = () => {
@@ -35,8 +36,8 @@ const PopoverWithAnimatePresenceArrow = () => {
           />
         </AnimatePresence>
         <YStack gap="$2">
-          <Button size="$2">Item 1</Button>
-          <Button size="$2">Item 2</Button>
+          <Button size="small">Item 1</Button>
+          <Button size="small">Item 2</Button>
         </YStack>
       </Popover.Content>
     </Popover>

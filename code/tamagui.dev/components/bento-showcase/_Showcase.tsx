@@ -1,27 +1,27 @@
 import { Code, Eye, Info, Link, Lock, Minus, Plus } from '@tamagui/lucide-icons-2'
-import { useToastController } from '@tamagui/toast'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { SizeTokens, ThemeName } from 'tamagui'
 
 import useSWR from 'swr'
 import {
-  Button,
   H2,
   Image,
   ScrollView,
   SizableText,
   Spinner,
   Text,
-  ThemeableStack,
+  toast,
   ToggleGroup,
   View,
   XGroup,
   XStack,
   YStack,
   createStyledContext,
+  createStyledHOC,
   useEvent,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 // @ts-ignore - bento component wildcard import
 import { useCurrentRouteParams } from '@tamagui/bento'
 // @ts-ignore - bento component wildcard import
@@ -69,7 +69,6 @@ const ShowcaseView = forwardRef<any, Props>(
     ref
   ) => {
     const [view, setView] = useState<'code' | 'preview'>('preview')
-    const toast = useToastController()
 
     const { section, part } = useCurrentRouteParams()
 
@@ -137,13 +136,13 @@ const ShowcaseView = forwardRef<any, Props>(
                 title="copy link"
                 id={fileName}
                 circular
-                chromeless
-                size="$3"
+                variant="quiet"
+                size="medium"
                 onPress={() => {
                   navigator?.clipboard?.writeText?.(
                     window.location.href.split('#')[0] + `#${fileName}`
                   )
-                  toast.show('Link copied to clipboard')
+                  toast('Link copied to clipboard')
                 }}
               >
                 <Button.Icon>
@@ -161,7 +160,7 @@ const ShowcaseView = forwardRef<any, Props>(
                     <XGroup.Item>
                       <Button
                         theme={view === 'preview' ? 'accent' : null}
-                        size="$3"
+                        size="medium"
                         icon={Eye}
                       />
                     </XGroup.Item>
@@ -169,7 +168,7 @@ const ShowcaseView = forwardRef<any, Props>(
                   <ToggleGroup.Item value="code" aria-label="Code" asChild>
                     <XGroup.Item>
                       <Button
-                        size="$3"
+                        size="medium"
                         icon={approved ? <Code size={16} /> : <Lock size={16} />}
                         theme={view === 'code' ? 'accent' : null}
                       >
@@ -310,7 +309,7 @@ const PhoneFrame = (props: any) => {
     <YStack
       // @ts-expect-error - window group name
       group="window"
-      focusable
+      tabIndex={0}
       className="ms300 all ease-out"
       borderRadius={43}
       height={600}
@@ -339,7 +338,7 @@ const PhoneFrame = (props: any) => {
         props.setPhoneFocused(false)
       }}
     >
-      <YStack fullscreen>
+      <YStack position="absolute" inset={0}>
         <PhoneSVG />
       </YStack>
       <YStack
@@ -368,7 +367,7 @@ export const { Provider: PhoneScaleProvider, useStyledContext: usePhoneScale } =
     invertScale: 1.464,
   })
 
-export const ShowcaseChildWrapper = ScrollView.styleable((props, ref) => {
+export const ShowcaseChildWrapper = createStyledHOC(ScrollView)((props, ref) => {
   const { sm } = useGroupMedia('window')
 
   return (
@@ -391,7 +390,7 @@ export const ShowcaseChildWrapper = ScrollView.styleable((props, ref) => {
 type ResizableBoxExtraProps = {
   hideDragHandle?: boolean
 }
-const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
+const ResizableBox = createStyledHOC(XStack)<ResizableBoxExtraProps>(
   ({ children, hideDragHandle, ...rest }, ref) => {
     const [width, setWidth] = useState<number | string>('100%')
     const startX = useRef(null)
@@ -492,11 +491,12 @@ const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
 
 export function Hint({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeableStack
+    <View
       position="absolute"
       b={12}
       l={12}
-      bordered
+      borderWidth={1}
+      borderColor="$borderColor"
       bg="$color1"
       theme="green"
       p="$2"
@@ -510,7 +510,7 @@ export function Hint({ children }: { children: React.ReactNode }) {
     >
       <Info color="$color" size={18} />
       <SizableText size="$4">{children}</SizableText>
-    </ThemeableStack>
+    </View>
   )
 }
 
@@ -522,8 +522,8 @@ export const { Provider: RawSizeProvider, useStyledContext: useSize } =
   createStyledContext({
     sizes: [] as SizeTokens[],
     setSizes: (sizes: SizeTokens[]) => {},
-    size: '$true' as SizeTokens,
-    setSize: (size: SizeTokens) => {},
+    size: true as SizeTokens | true,
+    setSize: (size: SizeTokens | true) => {},
     showController: false,
     setShowController: (val: boolean) => {},
   })
@@ -565,7 +565,7 @@ export const WithSize = ({ children }: { children: any }) => {
   return React.cloneElement(children, { size })
 }
 
-export const SizeController = XGroup.styleable((props, ref) => {
+export const SizeController = createStyledHOC(XGroup)((props, ref) => {
   const { size, sizes, setSize, showController } = useSize()
 
   if (!showController) return null
@@ -585,8 +585,8 @@ export const SizeController = XGroup.styleable((props, ref) => {
     >
       <XGroup.Item>
         <Button
-          size="$3"
-          chromeless
+          size="medium"
+          variant="quiet"
           py="$2"
           onPress={() => {
             const index = sizes.indexOf(size)
@@ -601,8 +601,8 @@ export const SizeController = XGroup.styleable((props, ref) => {
 
       <XGroup.Item>
         <Button
-          size="$3"
-          chromeless
+          size="medium"
+          variant="quiet"
           py="$2"
           onPress={() => {
             const index = sizes.indexOf(size)

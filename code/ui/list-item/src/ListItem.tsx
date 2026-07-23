@@ -1,12 +1,25 @@
-import { getFontSize } from '@tamagui/font-size'
 import { getFontSized } from '@tamagui/get-font-sized'
-import { getSize, getSpace } from '@tamagui/get-token'
+import { oneSizeTokenSmaller } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { getIcon, useCurrentColor } from '@tamagui/helpers-tamagui'
+import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
-import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
-import { createStyledContext, styled, View } from '@tamagui/web'
+import type {
+  ColorTokens,
+  FontSizeTokens,
+  GetProps,
+  SizeTokens,
+  VariantSpreadExtras,
+} from '@tamagui/web'
+import {
+  createStyledContext,
+  createStyledHOC,
+  getVariableValue,
+  resolveDefaultToken,
+  styled,
+  useProps,
+  View,
+} from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
@@ -19,7 +32,8 @@ export type ListItemExtraProps = {
   scaleIcon?: number
   title?: ReactNode
   subTitle?: ReactNode
-  iconSize?: SizeTokens
+  iconSize?: SizeTokens | true
+  color?: ColorTokens | string
 }
 
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
@@ -27,7 +41,7 @@ export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
 const NAME = 'ListItem'
 
 const context = createStyledContext<{
-  size?: SizeTokens
+  size?: SizeTokens | true
   variant?: ListItemVariant
   color?: ColorTokens | string
 }>({
@@ -36,160 +50,96 @@ const context = createStyledContext<{
   color: undefined,
 })
 
+const listItemSizeVariant = (
+  val: SizeTokens | true,
+  { tokens }: VariantSpreadExtras<any>
+) => {
+  const sizeToken = resolveDefaultToken(val, 'size')
+  const spaceToken = resolveDefaultToken(val, 'space')
+  const sizeVal = getVariableValue(tokens.size[sizeToken]) as number
+  return {
+    minHeight: tokens.size[sizeToken],
+    paddingHorizontal: tokens.space[spaceToken],
+    paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
+    gap: getThemedIconSize(sizeToken, 0.4),
+  }
+}
+
+const listItemSubtitleSizeVariant = (
+  val: SizeTokens | true,
+  extras: VariantSpreadExtras<any>
+) => {
+  const fontSizeToken = resolveDefaultToken(val, 'fontSize')
+  const oneSmaller = oneSizeTokenSmaller(fontSizeToken)
+  return getFontSized(oneSmaller as FontSizeTokens, extras as any)
+}
+
+// Unstyled ListItem frame: structural layout + the size mechanism + the
+// disabled pointer-event block only. Theme decoration (palette, border, cursor,
+// hover/press color styling, the outlined/active appearance, disabled dimming)
+// lives in the tamagui skin (code/ui/tamagui/src/components/ListItem.tsx).
 const ListItemFrame = styled(View, {
   context,
   name: NAME,
   render: 'li',
   role: 'listitem',
+  size: true,
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  flexWrap: 'nowrap',
+  width: '100%',
+  maxWidth: '100%',
+  overflow: 'hidden',
+  flexDirection: 'row',
 
   variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'nowrap',
-        borderColor: '$borderColor',
-        width: '100%',
-        maxWidth: '100%',
-        overflow: 'hidden',
-        flexDirection: 'row',
-        backgroundColor: '$background',
-        cursor: 'default',
-
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-          borderColor: '$borderColorHover',
-        },
-
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-          borderColor: '$borderColorPress',
-        },
-      },
-    },
-
-    variant: {
-      outlined:
-        process.env.TAMAGUI_HEADLESS === '1'
-          ? {}
-          : {
-              backgroundColor: 'transparent',
-              borderWidth: 1,
-              borderColor: '$borderColor',
-
-              hoverStyle: {
-                backgroundColor: 'transparent',
-                borderColor: '$borderColorHover',
-              },
-
-              pressStyle: {
-                backgroundColor: 'transparent',
-                borderColor: '$borderColorPress',
-              },
-            },
-    },
-
     size: {
-      '...size': (val: SizeTokens, { tokens }) => {
-        return {
-          minHeight: tokens.size[val],
-          paddingHorizontal: tokens.space[val],
-          paddingVertical: getSpace(tokens.space[val], {
-            shift: -4,
-          }),
-        }
-      },
-    },
-
-    active: {
-      true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-      },
+      true: listItemSizeVariant,
+      Size: listItemSizeVariant,
     },
 
     disabled: {
       true: {
-        opacity: 0.5,
         pointerEvents: 'none',
       },
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
+// text color comes from the styled context (the tamagui skin sets a default
+// `color` on ListItem, which flows through as context.color); unstyled it
+// inherits.
 const ListItemText = styled(SizableText, {
   context,
   name: 'ListItemText',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color',
-        size: '$true',
-        flexGrow: 1,
-        flexShrink: 1,
-        ellipsis: true,
-        cursor: 'inherit',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  size: true,
+  flexGrow: 1,
+  flexShrink: 1,
+  ellipsis: true,
+  cursor: 'inherit',
 })
 
 const ListItemSubtitle = styled(ListItemText, {
   name: 'ListItemSubtitle',
   context,
+  opacity: 0.6,
+  maxWidth: '100%',
   variants: {
-    unstyled: {
-      false: {
-        opacity: 0.6,
-        maxWidth: '100%',
-        color: '$color',
-      },
-    },
-
     size: {
-      '...size': (val, extras) => {
-        const oneSmaller = getSize(val, {
-          shift: -1,
-          excludeHalfSteps: true,
-        })
-        const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras as any)
-        return fontStyle
-      },
+      true: listItemSubtitleSizeVariant,
+      Size: listItemSubtitleSizeVariant,
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 const ListItemTitle = styled(ListItemText, {
   name: 'ListItemTitle',
   context,
-  variants: {
-    unstyled: {
-      false: {},
-    },
-  } as const,
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 const ListItemIcon = (props: {
   children: React.ReactNode
-  size?: SizeTokens
+  size?: SizeTokens | true
   scaleIcon?: number
 }) => {
   const { children, size, scaleIcon = 1 } = props
@@ -198,91 +148,105 @@ const ListItemIcon = (props: {
     throw new Error('ListItem.Icon must be used within a ListItem')
   }
 
-  const sizeToken = size ?? styledContext.size ?? '$true'
-  const iconColor = useCurrentColor(styledContext.color)
+  const sizeToken = size ?? styledContext.size ?? true
+  const contextColor = styledContext.color
+  const iconColorProp =
+    contextColor === 'unset' || typeof contextColor === 'number'
+      ? undefined
+      : contextColor
 
-  const iconSize = getFontSize(sizeToken as any) * scaleIcon
-
-  return getIcon(children, {
+  const iconSize = getThemedIconSize(sizeToken, scaleIcon)
+  const getThemedIcon = useGetThemedIcon({
     size: iconSize,
-    color: iconColor,
+    color: iconColorProp,
   })
+
+  return getThemedIcon(children)
 }
 
-const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
+const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
   function ListItem(propsIn, ref) {
+    const processedProps = useProps(propsIn, {
+      noNormalize: true,
+      noExpand: true,
+    })
+
     const {
       children,
       icon,
       iconAfter,
       scaleIcon = 1,
-      unstyled = false,
       subTitle,
       title,
       iconSize,
+      color,
       ...rest
-    } = propsIn
+    } = processedProps
 
-    const size = propsIn.size || '$true'
     const styledContext = context.useStyledContext()
-    const iconColor = useCurrentColor(styledContext?.color)
-    const iconSizeNumber = getFontSize(iconSize || (size as any)) * scaleIcon
+    const size = rest.size ?? propsIn.size ?? styledContext?.size ?? true
+    const contextColor = color ?? propsIn.color ?? styledContext?.color
+    const iconColorProp =
+      contextColor === 'unset' || typeof contextColor === 'number'
+        ? undefined
+        : contextColor
+    const iconSizeNumber = getThemedIconSize(iconSize ?? (size as any), scaleIcon)
+    const getThemedIcon = useGetThemedIcon({
+      size: iconSizeNumber,
+      color: iconColorProp,
+    })
 
-    const iconSpacing = iconSizeNumber * 0.4
-    const themedIcon = icon ? (
-      <View marginRight={iconSpacing}>
-        {getIcon(icon, { size: iconSizeNumber, color: iconColor })}
-      </View>
-    ) : null
-    const themedIconAfter = iconAfter ? (
-      <View marginLeft={iconSpacing}>
-        {getIcon(iconAfter, { size: iconSizeNumber, color: iconColor })}
-      </View>
-    ) : null
+    const themedIcon = icon ? getThemedIcon(icon) : null
+    const themedIconAfter = iconAfter ? getThemedIcon(iconAfter) : null
 
-    const wrappedChildren = wrapChildrenInText(
-      ListItemText,
-      { children },
-      propsIn.unstyled !== true
-        ? {
-            unstyled: process.env.TAMAGUI_HEADLESS === '1',
-            fontSize: propsIn.size,
-          }
-        : undefined
-    )
+    const wrappedChildren = wrapChildrenInText(ListItemText, { children }, { size })
+
+    const listItemContext = {
+      ...styledContext,
+      color: contextColor,
+      size: size as SizeTokens,
+      variant: (rest.variant ?? propsIn.variant ?? styledContext?.variant) as
+        | ListItemVariant
+        | undefined,
+    }
+    const frameProps = {
+      ...rest,
+      size,
+      variant: listItemContext.variant,
+    }
 
     return (
-      <ListItemFrame ref={ref} {...rest}>
-        {themedIcon}
-        {title || subTitle ? (
-          <YStack flex={1}>
-            {title ? (
-              typeof title === 'string' ? (
-                <ListItemTitle unstyled={unstyled} size={size as any}>
-                  {title}
-                </ListItemTitle>
-              ) : (
-                title
-              )
-            ) : null}
-            {subTitle ? (
-              <>
-                {typeof subTitle === 'string' ? (
-                  <ListItemSubtitle unstyled={unstyled} size={size}>
-                    {subTitle}
-                  </ListItemSubtitle>
-                ) : (
-                  subTitle
-                )}
-              </>
-            ) : null}
-            {wrappedChildren}
-          </YStack>
-        ) : (
-          wrappedChildren
-        )}
-        {themedIconAfter}
-      </ListItemFrame>
+      <context.Provider {...listItemContext}>
+        <ListItemFrame ref={ref} {...(frameProps as any)}>
+          <context.Provider {...listItemContext}>
+            {themedIcon}
+            {title || subTitle ? (
+              <YStack flex={1}>
+                {title ? (
+                  typeof title === 'string' ? (
+                    <ListItemTitle size={size as any}>{title}</ListItemTitle>
+                  ) : (
+                    title
+                  )
+                ) : null}
+                {subTitle ? (
+                  <>
+                    {typeof subTitle === 'string' ? (
+                      <ListItemSubtitle size={size}>{subTitle}</ListItemSubtitle>
+                    ) : (
+                      subTitle
+                    )}
+                  </>
+                ) : null}
+                {wrappedChildren}
+              </YStack>
+            ) : (
+              wrappedChildren
+            )}
+            {themedIconAfter}
+          </context.Provider>
+        </ListItemFrame>
+      </context.Provider>
     )
   }
 )

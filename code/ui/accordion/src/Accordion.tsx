@@ -1,3 +1,4 @@
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -34,7 +35,7 @@ interface AccordionMultipleProps extends AccordionImplMultipleProps {
 
 const ACCORDION_CONTEXT = 'Accordion'
 
-const AccordionComponent = React.forwardRef<
+const AccordionComponent = createRefComponent<
   AccordionElement,
   ScopedProps<AccordionSingleProps | AccordionMultipleProps>
 >((props: ScopedProps<AccordionSingleProps | AccordionMultipleProps>, forwardedRef) => {
@@ -116,7 +117,7 @@ interface AccordionImplSingleProps extends AccordionImplProps {
   collapsible?: boolean
 }
 
-const AccordionImplSingle = React.forwardRef<
+const AccordionImplSingle = createRefComponent<
   AccordionImplSingleElement,
   ScopedProps<AccordionImplSingleProps>
 >((props: ScopedProps<AccordionImplSingleProps>, forwardedRef) => {
@@ -173,7 +174,7 @@ interface AccordionImplMultipleProps extends AccordionImplProps {
   onValueChange?(value: string[]): void
 }
 
-const AccordionImplMultiple = React.forwardRef<
+const AccordionImplMultiple = createRefComponent<
   AccordionImplMultipleElement,
   ScopedProps<AccordionImplMultipleProps>
 >((props: ScopedProps<AccordionImplMultipleProps>, forwardedRef) => {
@@ -251,7 +252,7 @@ interface AccordionImplProps extends PrimitiveDivProps {
   control?(selected: string[]): void
 }
 
-const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>(
+const AccordionImpl = createRefComponent<AccordionImplElement, AccordionImplProps>(
   (props: ScopedProps<AccordionImplProps>, forwardedRef) => {
     const {
       __scopeAccordion,
@@ -377,7 +378,7 @@ type AccordionItemContextValue = {
 }
 const { Provider: AccordionItemProvider, useStyledContext: useAccordionItemContext } =
   createStyledContext<AccordionItemContextValue>()
-type AccordionItemElement = React.ElementRef<typeof Collapsible>
+type AccordionItemElement = GetRef<typeof Collapsible>
 type CollapsibleProps = React.ComponentPropsWithoutRef<typeof Collapsible>
 interface AccordionItemProps extends Omit<
   CollapsibleProps,
@@ -399,7 +400,7 @@ interface AccordionItemProps extends Omit<
  * `AccordionItem` contains all of the parts of a collapsible section inside of an `Accordion`.
  */
 
-const AccordionItem = React.forwardRef<AccordionItemElement, AccordionItemProps>(
+const AccordionItem = createRefComponent<AccordionItemElement, AccordionItemProps>(
   (props: ScopedProps<AccordionItemProps>, forwardedRef) => {
     const { __scopeAccordion, value, ...accordionItemProps } = props
     const accordionContext = useAccordionContext(__scopeAccordion)
@@ -444,7 +445,7 @@ AccordionItem.displayName = ITEM_NAME
 
 const HEADER_NAME = 'AccordionHeader'
 
-type AccordionHeaderElement = React.ElementRef<typeof H1>
+type AccordionHeaderElement = GetRef<typeof H1>
 type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H1>
 type AccordionHeaderProps = PrimitiveHeading3Props
 
@@ -452,7 +453,7 @@ type AccordionHeaderProps = PrimitiveHeading3Props
  * `AccordionHeader` contains the content for the parts of an `AccordionItem` that will be visible
  * whether or not its content is collapsed.
  */
-const AccordionHeader = React.forwardRef<AccordionHeaderElement, AccordionHeaderProps>(
+const AccordionHeader = createRefComponent<AccordionHeaderElement, AccordionHeaderProps>(
   (props: ScopedProps<AccordionHeaderProps>, forwardedRef) => {
     const { __scopeAccordion, ...headerProps } = props
     const accordionContext = useAccordionContext(__scopeAccordion)
@@ -475,32 +476,11 @@ AccordionHeader.displayName = HEADER_NAME
  * AccordionTrigger
  * -----------------------------------------------------------------------------------------------*/
 
+// Unstyled trigger frame: the Collapsible.Trigger behavior only. Theme
+// decoration (cursor, background, padding, hover/focus/press color styling)
+// lives in the tamagui skin (code/ui/tamagui/src/components/Accordion.tsx).
 const AccordionTriggerFrame = styled(Collapsible.Trigger, {
-  variants: {
-    unstyled: {
-      false: {
-        cursor: 'pointer',
-        backgroundColor: '$background',
-        padding: '$true',
-
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-        },
-
-        focusStyle: {
-          backgroundColor: '$backgroundFocus',
-        },
-
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-        },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  name: 'AccordionTrigger',
 })
 
 type AccordionTrigger = GetRef<typeof AccordionTriggerFrame>
@@ -510,7 +490,7 @@ type AccordionTriggerProps = GetProps<typeof AccordionTriggerFrame>
  * `AccordionTrigger` is the trigger that toggles the collapsed state of an `AccordionItem`. It
  * should always be nested inside of an `AccordionHeader`.
  */
-const AccordionTrigger = AccordionTriggerFrame.styleable(function AccordionTrigger(
+const AccordionTrigger = createStyledHOC(AccordionTriggerFrame)(function AccordionTrigger(
   props: ScopedProps<AccordionTriggerProps>,
   forwardedRef
 ) {
@@ -538,19 +518,10 @@ const AccordionTrigger = AccordionTriggerFrame.styleable(function AccordionTrigg
  * AccordionContent
  * -----------------------------------------------------------------------------------------------*/
 
+// Unstyled content frame: the Collapsible.Content behavior only. Padding and
+// background live in the tamagui skin.
 const AccordionContentFrame = styled(Collapsible.Content, {
-  variants: {
-    unstyled: {
-      false: {
-        padding: '$true',
-        backgroundColor: '$background',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  name: 'AccordionContent',
 })
 
 type AccordionContentProps = GetProps<typeof AccordionContentFrame>
@@ -560,7 +531,7 @@ const AccordionHeightAnimatorContext = React.createContext(false)
 /**
  * `AccordionContent` contains the collapsible content for an `AccordionItem`.
  */
-const AccordionContent = AccordionContentFrame.styleable(function AccordionContent(
+const AccordionContent = createStyledHOC(AccordionContentFrame)(function AccordionContent(
   props: ScopedProps<AccordionContentProps>,
   forwardedRef
 ) {
@@ -582,7 +553,7 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
   )
 })
 
-const HeightAnimator = View.styleable((props, ref) => {
+const HeightAnimator = createStyledHOC(View)((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, transition, ...rest } = props
   const open = !!itemContext.open
@@ -682,8 +653,10 @@ const HeightAnimator = View.styleable((props, ref) => {
           }
         }
       }}
-      // @ts-expect-error internal animation-driver completion hook
-      onDidAnimate={() => {
+      onTransition={(event) => {
+        // the close transition is an in-place minHeight update; drop the
+        // content only once it fully finished so the collapse stays animated
+        if (event.phase !== 'end' || event.cause !== 'update' || !event.finished) return
         if (!prevOpenRef.current && !pinned) {
           setContentPresent(false)
         }

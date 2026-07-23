@@ -18,10 +18,10 @@ describe('custom color tokens', () => {
     const config = {
       tokens: {
         color: customColors,
-        space: { true: 10 },
-        size: { true: 10 },
-        radius: { true: 10 },
-        zIndex: { true: 10 },
+        space: { 4: 10 },
+        size: { 4: 10 },
+        radius: { 4: 10 },
+        zIndex: { 4: 10 },
       },
       themes: {
         light: {
@@ -86,10 +86,10 @@ describe('custom color tokens', () => {
     const config = {
       tokens: {
         color: customColors,
-        space: { true: 10 },
-        size: { true: 10 },
-        radius: { true: 10 },
-        zIndex: { true: 10 },
+        space: { 4: 10 },
+        size: { 4: 10 },
+        radius: { 4: 10 },
+        zIndex: { 4: 10 },
       },
       themes: {
         light: {

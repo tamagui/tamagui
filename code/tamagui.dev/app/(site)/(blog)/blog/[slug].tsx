@@ -18,8 +18,12 @@ export async function generateStaticParams() {
 export async function loader(props: LoaderProps) {
   const { getCompilationExamples, getMDXBySlug } =
     await import('~/features/mdx/getMDXBySlug')
+  const { getDocsMode } = await import('~/features/docs/isTailwindMode')
+  const mode = getDocsMode(props)
   const { slug } = props.params
-  const { frontmatter, code } = await getMDXBySlug('data/blog', slug as string)
+  const { frontmatter, code } = await getMDXBySlug('data/blog', slug as string, {
+    mode,
+  })
   const relatedPosts = frontmatter.relatedIds
     ? await Promise.all(
         frontmatter.relatedIds.map(async (id) => {

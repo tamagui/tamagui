@@ -1,19 +1,8 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
 import type { Href } from 'one'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  Image,
-  Paragraph,
-  Spacer,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { H1, H2, H3, H4, H5, Image, Paragraph, Spacer, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Card } from '~/components/Card'
 import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'
@@ -55,7 +44,7 @@ export default function Community() {
                 borderColor="$borderColor"
                 borderWidth={1}
                 mt="$-3"
-                size="$6"
+                size="large"
                 iconAfter={ChevronRight}
                 rounded="$10"
               >

@@ -8,6 +8,7 @@ export interface IconStyleProps extends StackStyleBase {
 export type NonStyleProps = Omit<SvgProps, keyof IconStyleProps> & {
     disableTheme?: boolean;
     style?: SvgProps['style'];
+    className?: string;
 };
 export type IconProps = GetFinalProps<NonStyleProps, IconStyleProps, {}>;
 //# sourceMappingURL=IconProps.d.ts.map

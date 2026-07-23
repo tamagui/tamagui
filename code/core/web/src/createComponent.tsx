@@ -21,7 +21,11 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
-import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import {
+  getSplitStyles,
+  preprocessStyleModeProps,
+  useSplitStyles,
+} from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
@@ -33,7 +37,6 @@ import {
 } from './helpers/pseudoTransitions'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
-import { themeable } from './helpers/themeable'
 import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
@@ -49,7 +52,6 @@ import type {
   PseudoGroupState,
   SingleGroupContext,
   StaticConfig,
-  StyleableOptions,
   TamaguiComponent,
   TamaguiComponentState,
   TamaguiElement,
@@ -95,6 +97,25 @@ const groupPseudoKeys = [
   'focusVisible',
   'focusWithin',
 ] as const satisfies readonly (keyof PseudoGroupState)[]
+
+function getStyledContextKeys(
+  staticConfig: StaticConfig,
+  styledContextValue: GenericProps | undefined
+) {
+  const propKeys = staticConfig.contextProps || staticConfig.context?.propKeys
+  if (!propKeys) {
+    return styledContextValue
+  }
+
+  const out: GenericProps = {}
+  for (const key of propKeys) {
+    out[key] = true
+  }
+  if (styledContextValue) {
+    Object.assign(out, styledContextValue)
+  }
+  return out
+}
 
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelPresses = () => {
@@ -252,8 +273,16 @@ export function createComponent<
 
   const { Component, isText, isHOC } = staticConfig
 
-  const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+  const component = (propsInWithRef: ComponentPropTypes & { ref?: React.Ref<Ref> }) => {
     'use no memo'
+
+    // read the forwarded ref directly off the incoming props — do NOT clone the
+    // whole object every render just to strip `ref`. the original props object is
+    // passed straight through; `ref` is skipped in the getSplitStyles pass (so it
+    // never forwards onto the host) and the composed ref is assigned explicitly
+    // onto viewProps below.
+    const forwardedRef = propsInWithRef.ref
+    const propsIn = propsInWithRef as Omit<typeof propsInWithRef, 'ref'>
 
     config = config || getConfig()
 
@@ -351,6 +380,12 @@ export function createComponent<
 
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
+
+    // styleMode single pass (hoisted): tokenize className + flatten props ONCE here, so the
+    // reconstructed enterStyle/exitStyle/size/animation props are in place before the state
+    // machine / variant / animation driver below read them. getSplitStyles then skips its own
+    // preprocess for these (marked) props. No-op with zero cost when styleMode is off.
+    props = preprocessStyleModeProps(props, config) as ViewProps | TextProps
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
@@ -469,6 +504,11 @@ export function createComponent<
       platformPseudo,
       startedUnhydrated,
     } = componentState
+
+    // adopt the props object useComponentState resolved: on the enter/exit presence
+    // path it injects presence variants onto a fresh copy instead of mutating our
+    // input (which, with no clone above, would be React's own props object)
+    props = componentState.props as typeof props
 
     if (animationDriver?.avoidReRenders) {
       // post-commit reconciliation of `nextState` with the committed React state.
@@ -612,7 +652,6 @@ export function createComponent<
       disable: disableTheme,
       shallow: props.themeShallow,
       debug: debugProp,
-      unstyled: props.unstyled,
     }
 
     // this is set conditionally if existing in props because we wrap children with
@@ -620,10 +659,14 @@ export function createComponent<
     if ('theme' in props) {
       themeStateProps.name = props.theme
     }
-    // Always set needsUpdate callback so it can check the ref's latest value
-    // This ensures components with $theme-dark/$theme-light re-render on theme change
-    // even when using raw colors (not tokens) since isListeningToTheme is set after useSplitStyles
-    themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
+    if (!stateRef.current.optimizeForFirstRender) {
+      // this ensures components with $theme-dark/$theme-light re-render on
+      // theme change even when using raw colors (not tokens), since
+      // isListeningToTheme is set after useSplitStyles.
+      themeStateProps.needsUpdate =
+        stateRef.current.themeNeedsUpdate ||
+        (stateRef.current.themeNeedsUpdate = () => !!stateRef.current.isListeningToTheme)
+    }
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
     if (process.env.TAMAGUI_TARGET === 'native') {
       themeStateProps.deopt = willBeAnimated
@@ -696,7 +739,11 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    elementType = element || elementType
+    // don't replace the animated driver component (set above) with the base element,
+    // the render string is forwarded to it via viewProps.render instead
+    if (!isAnimatedCustomComponent) {
+      elementType = element || elementType
+    }
     const isStringElement = typeof elementType === 'string'
 
     const mediaState = useMedia(componentContext, debugProp)
@@ -719,7 +766,7 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
-      styledContext: styledContextValue,
+      styledContext: getStyledContextKeys(staticConfig, styledContextValue),
     } as const
 
     const themeName = themeState?.name || ''
@@ -1006,7 +1053,12 @@ export function createComponent<
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
 
-    setMediaShouldUpdate(componentContext, shouldListenForMedia, mediaListeningKeys)
+    setMediaShouldUpdate(
+      componentContext,
+      shouldListenForMedia,
+      mediaListeningKeys,
+      stateRef.current.optimizeForFirstRender
+    )
 
     const {
       viewProps: viewPropsIn,
@@ -1036,7 +1088,7 @@ export function createComponent<
       onMouseLeave,
       onFocus,
       onBlur,
-      onDidAnimate,
+      onTransition,
       separator,
       // ignore from here on out
       passThrough,
@@ -1061,6 +1113,23 @@ export function createComponent<
       }
       if (typeof passThrough !== 'undefined') {
         viewProps.passThrough = passThrough
+      }
+      // an HOC only wraps another component - its inner render produces the real
+      // styled frame that owns behavior (press handlers, aria/data-state). forward
+      // asChild to that inner frame so IT becomes the slot boundary, instead of the
+      // wrapper consuming asChild here and forwarding only its own (often
+      // behavior-less) props. fixes asChild items whose interaction is injected
+      // below the wrapper (e.g. ToggleGroup.Item asChild -> XGroup.Item -> Button).
+      if (typeof asChild !== 'undefined') {
+        viewProps.asChild = asChild
+      }
+      // an HOC layer doesn't animate itself (shouldUseAnimation is false for
+      // isHOC); forward the animation lifecycle callback to the inner component
+      // that does, so a user onTransition on a styled/HOC-wrapped animated
+      // component (e.g. a skinned Dialog.Content) still reaches the driver and
+      // composes with the component's own onTransition.
+      if (typeof onTransition !== 'undefined') {
+        viewProps.onTransition = onTransition
       }
     }
 
@@ -1117,7 +1186,7 @@ export function createComponent<
         pseudos: pseudos || null,
         staticConfig,
         stateRef,
-        onDidAnimate,
+        onTransition,
       })
 
       if (animations) {
@@ -1501,7 +1570,6 @@ export function createComponent<
         delayLongPress: viewProps.delayLongPress,
         delayPressIn: viewProps.delayPressIn,
         delayPressOut: viewProps.delayPressOut,
-        focusable: viewProps.focusable ?? true,
         minPressDuration: 0,
       })
     }
@@ -1551,7 +1619,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    if (asChild) {
+    if (asChild && !isHOC) {
       elementType = Slot
       // on native this is already merged into viewProps in useEvents
       if (process.env.TAMAGUI_TARGET === 'web') {
@@ -1610,14 +1678,28 @@ export function createComponent<
         )
         if (out) {
           viewProps = out.viewProps
-          elementType = out.elementType
+          if (
+            isAnimatedCustomComponent &&
+            (elementType as any)['acceptRenderProp'] &&
+            typeof out.elementType === 'string'
+          ) {
+            // an animated driver view is active and owns the (possibly array)
+            // style; forward the render tag so the view renders the element
+            // itself (see acceptRenderProp) instead of us swapping in a raw DOM
+            // tag, which would leak the animated style array onto a plain element
+            // (React DOM throws setting an array on a CSSStyleDeclaration).
+            viewProps.render = out.elementType
+          } else {
+            elementType = out.elementType
+          }
         }
       }
 
       if (!content) {
-        // web-only, handle render === string passing to custom animated component
-        if (isRenderPropString) {
-          viewProps.render === renderProp
+        // web-only, forward render string to custom animated driver components
+        // (they render the tag themselves, see acceptRenderProp in drivers)
+        if (isRenderPropString && elementType['acceptRenderProp']) {
+          viewProps.render = renderProp
         }
 
         content = React.createElement(elementType, viewProps, content || children)
@@ -1821,7 +1903,7 @@ export function createComponent<
     }
 
     return content
-  })
+  }
 
   function notifyGroupSubscribers(
     groupContext: SingleGroupContext | null,
@@ -1885,36 +1967,6 @@ export function createComponent<
   res = React.memo(res) as any
 
   res.staticConfig = staticConfig
-
-  function extendStyledConfig(extended?: Partial<StaticConfig>) {
-    return {
-      ...staticConfig,
-      ...extended,
-      neverFlatten: true,
-      isHOC: true,
-      isStyledHOC: false,
-    }
-  }
-
-  function styleable(Component: any, options?: StyleableOptions) {
-    const skipForwardRef = typeof Component === 'function' && Component.length === 1
-
-    let out = skipForwardRef ? Component : React.forwardRef(Component)
-
-    const extendedConfig = extendStyledConfig(options?.staticConfig)
-
-    out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
-
-    if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
-      out = React.memo(out)
-    }
-
-    out.staticConfig = extendedConfig
-    out.styleable = styleable
-    return out
-  }
-
-  res.styleable = styleable
 
   return res
 }

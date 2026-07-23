@@ -1,0 +1,630 @@
+---
+title: Tamagui 3
+publishedAt: '2026-07-10'
+description: Simpler APIs, a web-first core, stronger composition, and Tailwind syntax on the same compiler.
+by: nate
+---
+
+<IntroParagraph large>
+  Tamagui 3 is the simplification release: fewer legacy aliases, fewer hidden
+  wrappers, more web-standard APIs, and a cleaner path between Tamagui props,
+  composable UI, and Tailwind utility syntax.
+</IntroParagraph>
+
+Tamagui has always been about one source of UI truth across React Native and
+the web. Version 3 keeps that promise, but removes a lot of the compatibility
+layers that made the internals harder to reason about.
+
+The result is a smaller public surface, more predictable tokens, better overlay
+composition, and a new Tailwind mode that lets teams use utility classes without
+leaving Tamagui's compiler, theme system, or native output behind.
+
+<Notice>Give this blog post and the upgrade guide to your coding agent before migrating.</Notice>
+
+## The theme of v3
+
+Version 3 has three goals:
+
+- **Simplify the core.** Deprecated props and compatibility helpers are gone,
+  so component behavior is easier to type, inspect, and optimize.
+- **Make web the public API language.** Prefer `tabIndex`, ARIA props, CSS-like
+  style names, and explicit layout props, while Tamagui maps what it can to
+  native.
+- **Unify syntax choices.** Tamagui props and Tailwind classes now flow through
+  one compiler and one token system instead of competing styling stacks.
+
+## Tailwind mode
+
+The headline new feature is Tailwind mode. Turn it on in config and write
+utility classes in `className`:
+
+```tsx
+import { createTamagui } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v5'
+
+export default createTamagui({
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    styleMode: 'tailwind',
+  },
+})
+```
+
+```tsx
+import { View } from 'tamagui'
+
+export function Card() {
+  return (
+    <View className="flex flex-row items-center gap-3 p-4 rounded-lg bg-slate-100">
+      <View className="w-10 h-10 rounded-full bg-blue-500" />
+      <View className="flex-1 h-2 rounded-md bg-slate-300" />
+    </View>
+  )
+}
+```
+
+On web, the compiler extracts those utilities to atomic CSS. On iOS and Android,
+the same string resolves to React Native styles. You can also use
+`styleMode: 'tamagui-and-tailwind'` when you want utilities next to Tamagui
+props, tokens, media queries, and animations.
+
+Read the full [Tailwind mode post](/blog/tailwind-mode) for the compiler details
+and current utility coverage.
+
+## Style precedence is authored order
+
+Because Tamagui props, `style`, `className`, and Tailwind utilities all flow
+through one compiler now, they resolve under one rule: every contribution
+participates in a single forward pass, and later output wins per property.
+
+Base `styled()` values come first, then variants, then call-site props, `style`,
+and `className`. Matched compound variants run immediately after their last
+selector at that authored position. Neither `style` nor `className` is a
+privileged tier that always wins.
+
+The practical consequence is that attribute order matters. Reordering authored
+props can change the result, including in the Tailwind class pipeline.
+
+```tsx
+// bg-blue-500 wins: it is authored after backgroundColor
+<View backgroundColor="$red9" className="bg-blue-500" />
+
+// $red9 wins: it is authored after the class
+<View className="bg-blue-500" backgroundColor="$red9" />
+```
+
+## Removed deprecated APIs
+
+v3 removes APIs that already had clearer replacements.
+
+```tsx
+// before
+<View focusable fullscreen />
+<Button themeInverse />
+<Theme inverse>
+  <Card />
+</Theme>
+```
+
+```tsx
+// after
+<View tabIndex={0} position="absolute" inset={0} />
+<Button theme="inverse" />
+<Theme name="inverse">
+  <Card />
+</Theme>
+```
+
+The removed set includes `focusable`, `fullscreen`, the `styleable` static,
+forwardRef component wrappers, `inlineWhenUnflattened`, deprecated UI kit
+aliases, old platform style keys, and true token keys.
+
+If your code still uses `focusable`, move to `tabIndex`. If it uses
+`fullscreen`, write the layout explicitly with `position` and `inset`. If it
+relies on Tamagui forwarding through wrapper statics, move to ordinary React
+composition and refs.
+
+`.styleable()` is the one case that is a rename rather than a removal. It moved
+off the component and became a standalone factory with the same behavior, so a
+wrapper still keeps its `staticConfig` and still accepts pseudo styles, media
+props, and parent variants through `styled()`:
+
+```tsx
+// before
+const MyInput = StyledInput.styleable<Props>((props, ref) => ...)
+
+// after
+const MyInput = createStyledHOC(StyledInput)<Props>((props, ref) => ...)
+```
+
+## True tokens are gone
+
+The old `$true` token aliases have been removed from v3 configs. Component
+defaults still resolve to the default size, which is `$4`.
+
+```tsx
+// before
+<Button size="$true" />
+<YStack gap="$true" />
+```
+
+```tsx
+// after
+<Button size="$4" />
+<YStack gap="$4" />
+```
+
+Boolean size shorthands in component variants still resolve through the default
+size path, but authored token keys should use real token names.
+
+## Token stepping is removed
+
+`@tamagui/get-token` no longer sorts a token scale at runtime to find a nearby
+token. `getSize`, `getSpace`, and `getRadius` now resolve the same key you pass
+in, and `stepTokenUpOrDown` / `getTokenRelative` are gone.
+
+```tsx
+// before
+const padding = getSize(size, { shift: -2 })
+const radius = getRadius(radiusToken, { shift: 1 })
+```
+
+```tsx
+// after
+import { getVariableValue } from 'tamagui'
+
+const padding = getVariableValue(getSize(size)) * 0.6
+const radius = getVariableValue(getRadius(radiusToken)) * 1.2
+```
+
+This makes custom configs more predictable. Components that previously stepped
+tokens now multiply the resolved numeric value with tuned constants.
+
+## Exact pixel font values
+
+Font sizes now distinguish numeric values from exact pixel strings. A raw number
+keeps the platform-default line-height path. A string like `"17px"` means the
+literal pixel value.
+
+```tsx
+// platform-default line height behavior
+<Paragraph fontSize={17} />
+
+// exact CSS/native pixel value
+<Paragraph fontSize="17px" />
+```
+
+The v5 config font `size` and `lineHeight` scales are pinned to px strings so v3
+keeps v2 visual output. Future config versions can redefine numeric font scales
+without changing what exact px strings mean.
+
+## Inverse themes are SSR-safe
+
+`inverse` is now a built-in sub-theme. The old `themeInverse` path is gone.
+
+```tsx
+// before
+<Button themeInverse>Save</Button>
+<Theme inverse>
+  <Card />
+</Theme>
+```
+
+```tsx
+// after
+<Button theme="inverse">Save</Button>
+<Theme name="inverse">
+  <Card />
+</Theme>
+```
+
+The new path works with SSR and avoids the forced nested light/dark inversion
+behavior that made theme output harder to predict.
+
+## Sheet anatomy is explicit
+
+`Sheet.Frame` has split into `Sheet.Container` and `Sheet.Background`.
+`Sheet.Container` owns layout. `Sheet.Background` owns the visual surface.
+`Sheet.Overlay` must be a direct child of `Sheet`.
+
+```tsx
+// before
+<Sheet>
+  <Sheet.Overlay />
+  <Sheet.Frame padding="$4" bg="$background" borderTopRadius="$6">
+    <Sheet.ScrollView>{children}</Sheet.ScrollView>
+  </Sheet.Frame>
+</Sheet>
+```
+
+```tsx
+// after
+<Sheet>
+  <Sheet.Overlay />
+  <Sheet.Container padding="$4">
+    <Sheet.Background bg="$background" borderTopRadius="$6" />
+    <Sheet.ScrollView>{children}</Sheet.ScrollView>
+  </Sheet.Container>
+</Sheet>
+```
+
+Run the codemod to do the mechanical part:
+
+```bash
+node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+```
+
+or from a local checkout:
+
+```bash
+node ./scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+```
+
+## Adapt handoff is unified
+
+Dialog, Popover, and Select now share the same Adapt handoff model. Open state
+lives above the Adapt parent, adapted Sheet content remains mounted through the
+slide-out, and parts own their presence animation lifecycles.
+
+```tsx
+<Popover>
+  <Popover.Trigger />
+  <Popover.Content forceMount>
+    <Popover.Arrow />
+    <Adapt.Contents />
+  </Popover.Content>
+
+  <Adapt when="max-md" platform="touch">
+    <Sheet modal dismissOnSnapToBottom>
+      <Sheet.Container padding="$4">
+        <Sheet.Background />
+        <Adapt.Contents />
+      </Sheet.Container>
+      <Sheet.Overlay />
+    </Sheet>
+  </Adapt>
+</Popover>
+```
+
+The practical effect: media flips no longer tear content out mid-exit, overlay
+pointer locks are released correctly, and animation drivers report transition
+completion at the part level through the new typed `onTransition` lifecycle.
+
+## A first-class animation API
+
+v3 stops shipping framework-owned fades and other baked-in animation, so it also
+gives you first-class ways to drive those effects yourself. The animation surface
+that used to live inside the drivers is now public.
+
+The same animated-number primitives the drivers use are exported from `tamagui`:
+
+```tsx
+import {
+  useAnimationDriver,
+  useAnimatedNumber,
+  useAnimatedNumberStyle,
+  useAnimatedNumbersStyle,
+  useAnimatedNumberReaction,
+} from 'tamagui'
+```
+
+Each is a thin delegation to the configured driver, so your code exercises the
+same surface first-party components do. On the CSS driver, animated numbers now
+run on a `requestAnimationFrame` ticker with real completion callbacks instead of
+an estimated-duration timer, so completion is accurate on the web.
+
+There is also a typed transition lifecycle on every animated component. It
+replaces the untyped, enter-only `onDidAnimate`:
+
+```tsx
+<View
+  transition="quick"
+  onTransition={(e) => {
+    // e: { phase: 'start' | 'end', cause: 'enter' | 'exit' | 'update', finished?: boolean }
+  }}
+/>
+```
+
+Sheet publishes its live position through the same hooks, so drag-linked effects
+are ordinary user code:
+
+```tsx
+import { Sheet, useAnimatedNumberStyle } from 'tamagui'
+
+function Backdrop() {
+  const { value, screenSize } = Sheet.useAnimatedPosition()
+  const style = useAnimatedNumberStyle(value, (y) => {
+    'worklet'
+    return { opacity: Math.max(0, 0.5 * (1 - y / screenSize)) }
+  })
+  return <Sheet.Overlay style={style} />
+}
+```
+
+See the [animations docs](/docs/core/animations) for the full hook family and the
+[Sheet docs](/ui/sheet#overlay-fades) for both overlay fade patterns.
+
+## FocusScope has a zero-focus mode
+
+FocusScope now renders a `display: contents` wrapper and no longer supports
+function-as-children. Pass children directly.
+
+```tsx
+// before
+<FocusScope loop>
+  {({ ref, onKeyDown, tabIndex }) => (
+    <View ref={ref} onKeyDown={onKeyDown} tabIndex={tabIndex} />
+  )}
+</FocusScope>
+```
+
+```tsx
+// after
+<FocusScope loop>
+  <View />
+</FocusScope>
+```
+
+The new `noFocus` mode makes the active scope focus-inert. Anything that
+receives focus is immediately blurred, which is useful during handoffs and
+transitions where focus should be temporarily impossible.
+
+```tsx
+<FocusScope noFocus>
+  <Input placeholder="Cannot receive focus" />
+</FocusScope>
+```
+
+## More consistent component state
+
+v3 tightens component parity across Dialog, Popover, Select, and Sheet:
+
+- `data-state="open" | "closed"` is available on more trigger/content parts.
+- `Select.Trigger` and the web Select viewport expose `data-state`.
+- `Select.Content` accepts `onEscapeKeyDown` and `onInteractOutside`.
+- `Select.Separator` is available for grouped option lists.
+- `Popover.Content` supports `forceMount` with Dialog-style semantics.
+- Non-modal Dialog content no longer enables RemoveScroll while open.
+- `Dialog.Content` no longer accepts the no-op `size` variant.
+
+```tsx
+<Select.Content
+  onEscapeKeyDown={(event) => {
+    console.log('escape', event)
+  }}
+  onInteractOutside={(event) => {
+    console.log('outside', event)
+  }}
+>
+  <Select.Viewport>
+    <Select.Group>
+      <Select.Label>Fruit</Select.Label>
+      <Select.Item value="apple">
+        <Select.ItemText>Apple</Select.ItemText>
+      </Select.Item>
+      <Select.Separator />
+      <Select.Item value="orange">
+        <Select.ItemText>Orange</Select.ItemText>
+      </Select.Item>
+    </Select.Group>
+  </Select.Viewport>
+</Select.Content>
+```
+
+## Select multiple across web and native
+
+Select now accepts `multiple`, with an ordered `string[]` value on every custom
+and native path. Selecting an option appends it, selecting it again removes it,
+and the remaining order stays intact. Custom lists remain open while values are
+toggled, including Select content adapted into a Sheet.
+
+```tsx
+const [fruit, setFruit] = useState<string[]>([])
+
+<Select
+  multiple
+  name="fruit"
+  value={fruit}
+  onValueChange={setFruit}
+  renderValue={(values) => values.join(' + ')}
+>
+  {/* trigger, content, and registered items */}
+</Select>
+```
+
+On web, custom Selects submit one repeated form entry per selected value.
+`form` associates them with an external form even when the visible list moves
+through `Adapt.Contents`. `native="web"` uses a real `<select multiple>` and
+keeps the browser's own interaction and submission behavior. Plain React Native
+content uses checkbox-style selected accessibility state. An adapted Sheet owns
+its dismissal through the overlay, drag-to-bottom, platform back, or controlled
+state. Select does not inject a completion row.
+
+`Select.Value` uses registered item labels and separates them with `, ` by
+default. `renderValue` remains the escape hatch for SSR, lazy mounting, chips,
+localized separators, or count summaries. `Select.Item` no longer needs an
+`index`; the old prop is accepted as an inert migration aid during the v3 beta.
+
+## Field and Form handle validation together
+
+v3 adds a behavior-only `Field` primitive and upgrades `Form` into a
+cross-platform field coordinator. Labels, descriptions, errors, and controls
+associate automatically. Validation can be a function or a Standard Schema
+from Zod 4, Valibot, or ArkType.
+
+```tsx
+<Form onSubmit={(values, details) => save(values)}>
+  <Field name="email" validationMode="onBlur" validate={emailSchema}>
+    <Field.Label>Email</Field.Label>
+    <EmailInput required />
+    <Field.Description>Used for account recovery.</Field.Description>
+    <Field.Error />
+  </Field>
+
+  <Form.Trigger asChild>
+    <Button>Continue</Button>
+  </Form.Trigger>
+</Form>
+```
+
+Field validity starts at `null`, so pristine controls are not announced or
+styled as valid or invalid. Async checks never delay submit, and stale results
+cannot replace validation for a newer value. Form collects named values,
+accepts server or React Hook Form errors, and focuses the first invalid control
+on web and native.
+
+The package has no built-in aesthetic styles. Field state is available through
+data attributes on web and styled context on every platform, so copied skins
+can respond to `invalid`, `dirty`, `filled`, `focused`, and the other field
+flags.
+
+## Forms and accessibility fixes
+
+A few smaller components caught up with their documented behavior:
+
+- **Tabs** now default `activationMode` to `automatic`, matching the docs and
+  the ARIA authoring guidance. If you relied on the old manual-by-default
+  behavior, set `activationMode="manual"` explicitly. Automatic activation is
+  web-only; native always activates on press.
+- **Slider** finally participates in forms: passing `name` renders one hidden
+  input per thumb, so a range slider submits repeated entries readable via
+  `FormData.getAll(name)`.
+- **Separator** renders `role="separator"` with the correct
+  `aria-orientation` on web.
+- **Avatar.Fallback** takes `delay` (the old `delayMs` still works but is
+  deprecated).
+
+## Icons size like text
+
+Themed icons now resolve token sizes through the current font size scale. This
+means `<Icon size="$4" />` aligns with `$4` text instead of using the space/size
+token scale.
+
+```tsx
+// before: size="$4" followed the size token scale
+<Button icon={<Search size="$4" />}>Search</Button>
+
+// after: size="$4" follows the current font.size.$4 scale
+<Button icon={<Search size="$4" />}>Search</Button>
+```
+
+Raw numeric icon sizes are unchanged. Media and pseudo props are no longer
+accepted directly on themed icons because icons no longer run full Tamagui style
+resolution. Wrap the icon when you need responsive or pseudo styling:
+
+```tsx
+const ResponsiveIcon = styled(View, {
+  $sm: { opacity: 0.6 },
+  hoverStyle: { scale: 1.05 },
+})
+
+<ResponsiveIcon>
+  <Search size="$4" color="$color" />
+</ResponsiveIcon>
+```
+
+## ScrollView no longer pulls in react-native on web
+
+`@tamagui/scroll-view` now ships a clean web implementation instead of routing
+through `react-native-web`. It covers the ScrollView surface Tamagui uses:
+`scrollTo`, `scrollToEnd`, `getScrollableNode`, RN-shaped `onScroll`,
+`contentContainerStyle`, horizontal scrolling, and indicator props.
+
+If you relied on unsupported web-only props through the old lite re-export, like
+momentum events, `snapTo*`, or `keyboardDismissMode`, replace them with direct
+web behavior or a custom wrapper.
+
+## Pick your render tradeoff with optimizeFor
+
+Tamagui tracks exactly which theme and media values each component reads, so a
+theme or breakpoint change re-renders only the components that used the changed
+values. That granularity is the right default on web, but the bookkeeping isn't
+free: every component pays a small tracking cost on its first render.
+
+v3 adds a setting that makes the tradeoff explicit:
+
+```tsx
+export const config = createTamagui({
+  settings: {
+    // "updates": granular theme/media tracking, minimal re-renders on change
+    // "first-render": skip tracking for the fastest initial render
+    optimizeFor: 'first-render',
+  },
+})
+```
+
+The defaults now differ per platform: web optimizes for `updates`, native
+optimizes for `first-render`. On native, initial render speed dominates the
+user experience and full-tree re-renders are cheaper without the DOM, so
+skipping per-key tracking is close to free. Theme and media changes still
+apply correctly in both modes, they just re-render more coarsely under
+`first-render`.
+
+## Variables: inline theme patches
+
+Themes are tables keyed by name, which made one common thing harder than it
+should be: changing a couple of values for one part of the tree. In v2 that
+meant defining another named theme, or passing override props down manually.
+
+v3 adds `Variables`, an anonymous patch on the nearest theme:
+
+```tsx
+<Variables values={{ backgroundHover: '$blue4' }} dark={{ backgroundHover: '$blue2' }}>
+  <SettingsPanel />
+</Variables>
+```
+
+Listed keys override, everything else inherits. On web this compiles to CSS
+custom properties, so the entire subtree restyles with zero re-renders — the
+same trick your compiled styles already use, exposed as a component.
+`dark` and `light` values compile under scheme selectors, so color-scheme
+flips are also render-free. On native, the patch rides the existing granular
+theme system, and JavaScript readers like `useTheme()` see the same values on
+both platforms.
+
+You can also declare your own variables in config:
+
+```tsx
+createTamagui({
+  variables: {
+    focusRingColor: '$blue10',
+    focusRingWidth: 2,
+    disabledOpacity: 0.5,
+    pressScale: 0.97,
+  },
+})
+```
+
+These behave like theme keys everywhere — style props, `useTheme()`, and
+`Variables` redefinition — and they are the intended replacement for
+convention-by-copy-paste: define your focus ring once, read `$focusRingColor`
+in the components you own, and redefine it per section when a screen wants a
+different accent. Together with the component changes above, this also
+replaces `createTamagui({ defaultProps })`, which is deprecated in v3.
+
+## Migrating
+
+Start with the [v3 upgrade guide](/docs/guides/how-to-upgrade). It includes the
+breaking change checklist, codemod commands, and verification steps.
+
+The short version:
+
+```bash
+npx tamagui check
+node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+```
+
+Then search for removed APIs:
+
+```bash
+rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown"
+```
+
+Finally, validate at the layer you changed: typecheck, build, run your web app,
+and exercise Dialog, Popover, Select, and Sheet flows on the breakpoints where
+you use Adapt.
+
+## Credits
+
+Placeholder: credits for the v3 launch contributors and reviewers will go here.

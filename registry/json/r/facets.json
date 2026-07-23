@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "facets",
+  "type": "registry:lib",
+  "title": "facets",
+  "description": "Composable Surface facets: filled, outlined, elevated, rounded (chrome, static styles only) and interactive (hover/press/focus pseudos). Canonical boolean variants, pure functions of theme generics + conventional variables, spreadable into any styled() variants block. Nothing on by default.",
+  "files": [
+    {
+      "path": "components/tamagui/facets.tsx",
+      "content": "// Facets — the composable Surface chrome + interaction variants, shipped in the\n// copied layer beside the skins (registry item `facets`). Imported by Surface and\n// any skin that wants them; forkable like every copy. Core contributes only the\n// existing variant machinery.\n//\n// Each facet is a canonical boolean variant that is a pure function of generics +\n// conventional variables. Two composition rules keep this from becoming a second\n// variant system:\n//\n//   1. Family ownership. Chrome facets (filled/outlined/elevated/rounded) set\n//      static styles only and never touch pseudos. The interaction facet only\n//      touches pseudos and never sets static styles. An interaction facet may\n//      state-shift ANY family's generic (borderColorPress) because the value is\n//      inert when that chrome is absent (no borderWidth -> borderColor does\n//      nothing). So `interactive + outlined` composes with zero coordination.\n//   2. Generics-only. Facets read theme GENERICS ($background, $borderColor,\n//      $backgroundHover, …) and conventional custom variables ($radius,\n//      $pressScale), never the color scale ($colorN). That makes them\n//      level-aware for free: <Surface level={2} filled interactive> needs no\n//      facet cooperation — the level re-bound the generics the facets read.\n//\n// Nothing is on by default: every facet is opt-in at the use site.\n\n// chrome facets — one property family each, static styles only.\n\nexport const filled = {\n  true: {\n    backgroundColor: '$background',\n  },\n} as const\n\nexport const outlined = {\n  true: {\n    borderWidth: 1,\n    borderColor: '$borderColor',\n  },\n} as const\n\nexport const elevated = {\n  true: {\n    shadowColor: '$shadowColor',\n    shadowRadius: 8,\n    shadowOffset: { width: 0, height: 2 },\n  },\n} as const\n\nexport const rounded = {\n  true: {\n    borderRadius: '$radius',\n  },\n} as const\n\n// interaction facet — pseudos only. state-shifts every family's generic; each is\n// inert until the matching chrome facet turns its property family on.\n\nexport const interactive = {\n  true: {\n    hoverStyle: {\n      backgroundColor: '$backgroundHover',\n      borderColor: '$borderColorHover',\n    },\n    pressStyle: {\n      backgroundColor: '$backgroundPress',\n      borderColor: '$borderColorPress',\n      scale: '$pressScale',\n    },\n    focusVisibleStyle: {\n      outlineColor: '$outlineColor',\n      outlineWidth: 2,\n      outlineStyle: 'solid',\n    },\n  },\n} as const\n\n// the full facet set, spreadable into a styled() `variants` block.\nexport const facets = {\n  filled,\n  outlined,\n  elevated,\n  rounded,\n  interactive,\n} as const\n",
+      "type": "registry:lib",
+      "target": "components/tamagui/facets.tsx"
+    }
+  ],
+  "categories": [
+    "layout"
+  ],
+  "meta": {
+    "tokens": [
+      "$background",
+      "$backgroundHover",
+      "$backgroundPress",
+      "$borderColor",
+      "$borderColorHover",
+      "$borderColorPress",
+      "$shadowColor",
+      "$outlineColor",
+      "$radius",
+      "$pressScale"
+    ],
+    "states": [
+      "pressed"
+    ]
+  }
+}

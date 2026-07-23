@@ -1,6 +1,7 @@
-import { isServer, isWeb } from '@tamagui/constants'
+import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEffect, useReducer, useRef } from 'react'
 import { getSetting } from '../config'
+import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import { resetMediaStyleCache } from '../helpers/createMediaStyle'
 import { matchMedia } from '../helpers/matchMedia'
 import { mediaObjectToString } from '../helpers/mediaObjectToString'
@@ -22,11 +23,22 @@ import type {
 } from '../types'
 import { defaultMediaImportance } from '../helpers/pseudoDescriptors'
 
-const mediaKeyRegex = /\$(platform|theme|group)-/
+export const platformMediaKeys = new Set([
+  '$web',
+  '$native',
+  '$android',
+  '$ios',
+  '$tv',
+  '$androidtv',
+  '$tvos',
+])
+
+const mediaKeyRegex = /\$(theme|group)-/
 
 export const isMediaKey = (key: string): boolean => {
   if (key[0] !== '$') return false
   if (mediaKeys.has(key)) return true
+  if (platformMediaKeys.has(key)) return true
   if (mediaKeyRegex.test(key)) return true
   return false
 }
@@ -34,8 +46,10 @@ export const isMediaKey = (key: string): boolean => {
 export const getMediaKey = (key: string): IsMediaType => {
   if (key[0] !== '$') return false
   if (mediaKeys.has(key)) return true
-  const match = key.match(mediaKeyRegex)
-  if (match) return match[1] as 'platform' | 'theme' | 'group'
+  if (platformMediaKeys.has(key)) return 'platform'
+  // startsWith avoids the regex + match array allocation on this hot path
+  if (key.startsWith('$theme-')) return 'theme'
+  if (key.startsWith('$group-')) return 'group'
   return false
 }
 
@@ -43,16 +57,17 @@ export const getMediaKey = (key: string): IsMediaType => {
 let initState: MediaQueryState
 
 let mediaKeysOrdered: string[]
+let mediaKeyImportance: Record<string, number> = {}
 
 export const getMediaKeyImportance = (key: string) => {
   if (process.env.NODE_ENV === 'development' && key[0] === '$') {
     throw new Error('use short key')
   }
 
-  // + 100 because we set base usedKeys=1, pseudos are 2-N (however many we have)
-  // all media go above all pseudos so we need to pad it based on that
-  // right now theres 5 pseudos but in the future could be a few more
-  return mediaKeysOrdered.indexOf(key) + 100
+  // precomputed in configureMedia: index + 100 because we set base usedKeys=1,
+  // pseudos are 2-N (however many we have), all media go above all pseudos so
+  // we need to pad it based on that
+  return mediaKeyImportance[key] ?? 99
 }
 
 const dispose = new Set<Function>()
@@ -75,6 +90,10 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   Object.assign(mediaQueryConfig, media)
   initState = { ...getMedia() }
   mediaKeysOrdered = Object.keys(media)
+  mediaKeyImportance = {}
+  for (let i = 0; i < mediaKeysOrdered.length; i++) {
+    mediaKeyImportance[mediaKeysOrdered[i]] = i + 100
+  }
   setupMediaListeners()
 }
 
@@ -182,8 +201,11 @@ function resetMediaTouchTracker() {
 export function setMediaShouldUpdate(
   ref: any,
   enabled?: boolean,
-  keys?: MediaState['keys']
+  keys?: MediaState['keys'],
+  optimizeForFirstRender = false
 ) {
+  if (optimizeForFirstRender) return
+
   const cur = States.get(ref)
 
   if (!cur || cur.enabled !== enabled || keys) {
@@ -209,7 +231,7 @@ export function useMedia(
   'use no memo'
 
   type MediaRef = {
-    keys: Set<string>
+    keys: Set<string> | null
     lastState: MediaQueryState
     pendingState?: MediaQueryState
     renderVersion: number
@@ -223,13 +245,20 @@ export function useMedia(
     getSnapshot: () => MediaQueryState
     componentContext?: ComponentContextI
     debug?: DebugProp
+    optimizeForFirstRender: boolean
   }
 
   const internalRef = useRef<MediaRef | null>(null)
   if (!internalRef.current) {
-    const initial = getMedia()
+    // SSR contract (see settings.disableSSR docs): every first render uses
+    // mediaQueryDefaultActive so hydration matches the server — including
+    // lazily-hydrated boundaries that mount long after the initial pass.
+    // a pre-paint layout effect then corrects to the real matchMedia values,
+    // so fresh client-only mounts never paint a wrong frame.
+    const initial = !isServer && !getSetting('disableSSR') ? initState : getMedia()
+    const optimizeForFirstRender = isOptimizedForFirstRender()
     const r: MediaRef = {
-      keys: new Set<string>(),
+      keys: optimizeForFirstRender ? null : new Set<string>(),
       lastState: initial,
       renderVersion: 0,
       proxyTarget: initial,
@@ -237,16 +266,40 @@ export function useMedia(
       getSnapshot: undefined as unknown as () => MediaQueryState,
       componentContext,
       debug,
+      optimizeForFirstRender,
     }
-    // proxy → Object.create(getterProto) with a Symbol slot. Per-key get is a
-    // monomorphic getter call (Hermes-fast) instead of a Proxy trap.
-    const tracker = Object.create(getTouchTrackerProto())
-    tracker[refSlot] = { proxyTarget: initial, keys: r.keys } as MediaRefSlot
-    r.proxy = tracker as UseMediaState
+    if (optimizeForFirstRender) {
+      r.proxy = initial as UseMediaState
+    } else {
+      // proxy → Object.create(getterProto) with a Symbol slot. Per-key get is a
+      // monomorphic getter call (Hermes-fast) instead of a Proxy trap.
+      const tracker = Object.create(getTouchTrackerProto())
+      tracker[refSlot] = {
+        proxyTarget: initial,
+        keys: r.keys!,
+      } as MediaRefSlot
+      r.proxy = tracker as UseMediaState
+    }
     r.getSnapshot = () => {
+      if (r.optimizeForFirstRender) {
+        const ms = getMedia()
+        if (ms === r.lastState) {
+          return r.lastState
+        }
+
+        if (r.componentContext?.mediaEmit) {
+          r.componentContext.mediaEmit(ms)
+          r.pendingState = ms
+          return r.lastState
+        }
+
+        r.lastState = ms
+        return ms
+      }
+
       const curKeys = r.componentContext
-        ? States.get(r.componentContext)?.keys || r.keys
-        : r.keys
+        ? States.get(r.componentContext)?.keys || r.keys!
+        : r.keys!
       const { lastState, pendingState } = r
 
       if (!curKeys.size) {
@@ -292,7 +345,7 @@ export function useMedia(
   }
 
   // clear each render to track only rendered touched keys
-  if (ref.keys.size) {
+  if (ref.keys?.size) {
     ref.keys.clear()
   }
 
@@ -301,14 +354,34 @@ export function useMedia(
   // when none of the component's touched keys changed, but fewer
   // React-internal hook slots on Hermes than useSyncExternalStore.
   const [, forceUpdate] = useReducer(incReducer, 0)
-  const state = isServer ? initState : ref.getSnapshot()
+  const state = isServer
+    ? initState
+    : ref.optimizeForFirstRender && ref.renderVersion === 1
+      ? ref.lastState
+      : ref.getSnapshot()
   ref.proxyTarget = state
-  ;(ref.proxy as any)[refSlot].proxyTarget = state
+  if (!ref.optimizeForFirstRender) {
+    ;(ref.proxy as any)[refSlot].proxyTarget = state
+  }
+
+  // correct the defaults-first render to real matchMedia values before paint
+  useIsomorphicLayoutEffect(() => {
+    const synced = ref.getSnapshot()
+    if (synced !== ref.proxyTarget) {
+      ref.proxyTarget = synced
+      if (!ref.optimizeForFirstRender) {
+        ;(ref.proxy as any)[refSlot].proxyTarget = synced
+      }
+      forceUpdate()
+    }
+  }, [])
 
   useEffect(() => {
     const renderVersion = ref.renderVersion
     const shouldSubscribe =
-      !ref.componentContext || !!States.get(ref.componentContext)?.enabled
+      ref.optimizeForFirstRender ||
+      !ref.componentContext ||
+      !!States.get(ref.componentContext)?.enabled
 
     if (shouldSubscribe) {
       if (!ref.unsubscribe) {
@@ -316,7 +389,9 @@ export function useMedia(
           const next = ref.getSnapshot()
           if (next !== ref.proxyTarget) {
             ref.proxyTarget = next
-            ;(ref.proxy as any)[refSlot].proxyTarget = next
+            if (!ref.optimizeForFirstRender) {
+              ;(ref.proxy as any)[refSlot].proxyTarget = next
+            }
             forceUpdate()
           }
         })
@@ -337,7 +412,7 @@ export function useMedia(
     }
   })
 
-  return ref.proxy
+  return ref.optimizeForFirstRender ? (state as UseMediaState) : ref.proxy
 }
 
 const incReducer = (c: number): number => c + 1
@@ -391,13 +466,15 @@ export function mediaKeyMatch(
   dimensions: { width: number; height: number }
 ) {
   const mediaQueries = mediaQueryConfig[key]
-  const result = Object.keys(mediaQueries).every((query) => {
+  for (const query in mediaQueries) {
     const expectedVal = +mediaQueries[query]
     const isMax = query.startsWith('max')
     const isWidth = query.endsWith('Width')
     const givenVal = dimensions[isWidth ? 'width' : 'height']
     // if not max then min
-    return isMax ? givenVal < expectedVal : givenVal > expectedVal
-  })
-  return result
+    if (isMax ? givenVal >= expectedVal : givenVal <= expectedVal) {
+      return false
+    }
+  }
+  return true
 }

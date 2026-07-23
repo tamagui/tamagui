@@ -1,0 +1,427 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "tamagui",
+  "homepage": "https://tamagui.dev",
+  "items": [
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "v2-look Accordion: theme background, padding, cursor, and hover/focus/press color styling on the unstyled @tamagui/ui Accordion Trigger and Content. The behavior keeps only the Collapsible trigger/content behavior.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "disclosure"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundFocus",
+          "$backgroundPress"
+        ],
+        "states": [
+          "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "v2-look Button: named sizes (small/medium/large/wide), circular and variant (outlined/quiet) skins, icon + text composition on the unstyled @tamagui/ui Button behavior.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "form",
+        "buttons"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$borderColor",
+          "$borderColorHover",
+          "$outlineColor",
+          "$color"
+        ],
+        "states": [
+          "disabled",
+          "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "v2-look Card: theme background over the unstyled @tamagui/ui Card behavior (structural layout + the size mechanism for size-derived radius and Header/Footer padding). Statics: Card.Header, Card.Footer, Card.Background.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "tokens": [
+          "$background"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "v2-look Dialog: scrim background on the Overlay and background/border/padding/radius/elevation on the Content, over the unstyled @tamagui/ui Dialog behavior (which keeps only positioning + pointer-event bookkeeping).",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "native": [
+          "requires a Portal provider at the app root for the dialog to mount above content"
+        ],
+        "tokens": [
+          "$background",
+          "$borderColor"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "v2-look Input and TextArea: theme palette, border, background, body font, and hover/focus color styling on the unstyled @tamagui/ui Input/TextArea behavior (which keeps only structural sizing + the native outline reset).",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$borderColor",
+          "$borderColorHover",
+          "$borderColorFocus",
+          "$outlineColor",
+          "$color"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "v2-look Label: theme text color + press color feedback, over the unstyled @tamagui/ui Label behavior (label element, flex alignment, selection/cursor resets, the size-derived font mechanism, and the htmlFor/aria wiring).",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "tokens": [
+          "$color",
+          "$colorPress"
+        ],
+        "states": [
+          "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "listitem",
+      "type": "registry:ui",
+      "title": "ListItem",
+      "description": "v2-look ListItem: theme palette, border, cursor, hover/press color styling, text color, the outlined/active appearance, and disabled dimming, over the unstyled @tamagui/ui ListItem behavior (which keeps structural layout + the size mechanism + the disabled pointer-event block).",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "data-display"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$borderColor",
+          "$borderColorHover",
+          "$borderColorPress",
+          "$color"
+        ],
+        "states": [
+          "disabled",
+          "pressed",
+          "selected"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "v2-look Progress: theme background on the track and indicator + pill radius on the track, over the unstyled @tamagui/ui Progress behavior (clip, size-derived track height, and the indeterminate/complete/loading state machine). Static: Progress.Indicator.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "feedback"
+      ],
+      "meta": {
+        "tokens": [
+          "$background"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "v2-look Select: styled trigger/value/icon, viewport with elevation, items with highlight + check indicator, scroll buttons and separators, over the unstyled @tamagui/ui Select behavior. Adapts to a Sheet on native.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "form",
+        "overlay"
+      ],
+      "meta": {
+        "native": [
+          "requires a Portal/Adapt provider at the app root; on native the Select adapts to a Sheet, so the Sheet native peer requirements apply when adaptation is used"
+        ],
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$backgroundFocus",
+          "$borderColor",
+          "$borderColorHover",
+          "$outlineColor",
+          "$color",
+          "$color10"
+        ],
+        "states": [
+          "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "v2-look Separator: theme line color over the unstyled @tamagui/ui Separator behavior (orientation + layout + the collapsed 1px rule, transparent by default). Supports the vertical variant.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "tokens": [
+          "$backgroundFocus"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "v2-look Sheet: styled handle (open/closed opacity), dimmed overlay, rounded background, padded container and scroll view, plus the controlled composition, over the unstyled @tamagui/ui Sheet behavior.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "native": [
+          "requires a Portal provider at the app root for the sheet to mount above content",
+          "react-native-safe-area-context is used for safe-area insets on native (optional peer)"
+        ],
+        "peerDependencies": [
+          "react-native-safe-area-context"
+        ],
+        "tokens": [
+          "$background",
+          "$color5",
+          "$shadowColor"
+        ],
+        "states": [
+          "open"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "v2-look Slider: track color + radius, active-range fill color + radius, and thumb border/background/hover/press/focus color styling, over the unstyled @tamagui/ui Slider behavior (which keeps fill/clip/positioning + the thumb size mechanism).",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$color",
+          "$borderColor",
+          "$borderColorHover",
+          "$borderColorPress",
+          "$outlineColor"
+        ],
+        "states": [
+          "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "surface",
+      "type": "registry:ui",
+      "title": "Surface",
+      "description": "Surface: a copied panel/well/toolbar fixture — a YStack + the composable chrome/interaction facets (filled, outlined, elevated, rounded, interactive) + a `level` prop that shifts the subtree to the surface1-3 sub-theme. Nothing on by default; every facet is opt-in. Generics-only, so it restyles under any re-bound level.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "registryDependencies": [
+        "facets"
+      ],
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$borderColor",
+          "$borderColorHover",
+          "$borderColorPress",
+          "$shadowColor",
+          "$outlineColor",
+          "$radius",
+          "$pressScale"
+        ],
+        "themes": [
+          "surface1",
+          "surface2",
+          "surface3"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "v2-look Toast (v2 composable API): card background/border/radius/padding/shadow/focus outline, styled title/description text, rounded close button, action/cancel buttons, and the styled default toast content wired through Toast.List renderItem, over the unstyled @tamagui/toast behavior (state engine, stacking, drag-to-dismiss, timers).",
+      "dependencies": [
+        "@tamagui/toast",
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "feedback"
+      ],
+      "meta": {
+        "native": [
+          "requires a Portal provider at the app root for the toast viewport to mount above content"
+        ],
+        "tokens": [
+          "$background",
+          "$borderColor",
+          "$color",
+          "$color3",
+          "$color4",
+          "$color5",
+          "$color6",
+          "$color7",
+          "$color8",
+          "$color10",
+          "$color11",
+          "$color12"
+        ],
+        "states": [
+          "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "togglegroup",
+      "type": "registry:ui",
+      "title": "ToggleGroup",
+      "description": "v2-look ToggleGroup: theme palette, border, hover/press/focus color styling, and the default active (pressed-on) appearance on the unstyled @tamagui/ui ToggleGroup Item. The behavior keeps only structural layout + the size mechanism and emits aria-pressed/data-state.",
+      "dependencies": [
+        "@tamagui/ui"
+      ],
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$borderColor",
+          "$borderColorHover",
+          "$borderColorPress",
+          "$outlineColor"
+        ],
+        "states": [
+          "checked",
+          "pressed"
+        ]
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "facets",
+      "type": "registry:lib",
+      "title": "facets",
+      "description": "Composable Surface facets: filled, outlined, elevated, rounded (chrome, static styles only) and interactive (hover/press/focus pseudos). Canonical boolean variants, pure functions of theme generics + conventional variables, spreadable into any styled() variants block. Nothing on by default.",
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$borderColor",
+          "$borderColorHover",
+          "$borderColorPress",
+          "$shadowColor",
+          "$outlineColor",
+          "$radius",
+          "$pressScale"
+        ],
+        "states": [
+          "pressed"
+        ]
+      }
+    }
+  ]
+}

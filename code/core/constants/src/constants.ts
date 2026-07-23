@@ -24,7 +24,7 @@ export const isWebTouchable: boolean =
 
 export const isNativeDesktop: boolean = false
 export const isTouchable: boolean = !isWeb || isWebTouchable
-// set :boolean to avoid inferring type to false
+// annotate as boolean to avoid inferring the type as false
 // On web, isAndroid/isIos are always false in production.
 // TEST_NATIVE_PLATFORM is only set by the test runner (vitest) to simulate native
 // environments (e.g. androidtv, tvos) from a web/jsdom test context.

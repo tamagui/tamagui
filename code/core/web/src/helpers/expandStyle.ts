@@ -113,6 +113,18 @@ export function expandStyle(
         }
         return
       }
+      case 'visibility': {
+        // native has no visibility; map hidden -> opacity:0 + pointerEvents:none
+        // visible/collapse are dropped (collapse is web-only via CSS)
+        if (value === 'hidden') {
+          return [
+            ['opacity', 0],
+            ['pointerEvents', 'none'],
+          ]
+        }
+        // strip the prop entirely on native (returning [] iterates 0 times in normalizeStyle)
+        return []
+      }
       case 'backgroundImage': {
         // RN 0.76+ uses experimental_backgroundImage
         // value may be a parsed array (from parseNativeStyle) or a plain string

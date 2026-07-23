@@ -3,6 +3,6 @@ export declare function memoize(func?: Function, resolver?: any): {
     cache: Map<any, any>;
 };
 export declare namespace memoize {
-    var Cache: MapConstructor;
+    export { Map as Cache };
 }
 //# sourceMappingURL=memoize.d.ts.map

@@ -2,28 +2,13 @@
   "name": "bento-get",
   "version": "2.5.1",
   "license": "MIT",
-  "bin": "dist/cli.js",
+  "bin": "dist/cli.mjs",
   "source": "src/cli.tsx",
   "files": [
-    "source",
-    "types",
-    "dist"
+    "dist",
+    "readme.md"
   ],
   "type": "module",
-  "module": "dist",
-  "types": "./types/cli.d.ts",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./types/index.d.ts",
-      "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/esm/index.mjs"
-    }
-  },
   "publishConfig": {
     "access": "public"
   },

@@ -133,7 +133,7 @@ export const highlightPlugin = {
   element: {
     filter: ['code'],
     visit(node: any, ctx: any) {
-      const props: any = { ...(node.properties || {}) }
+      const props: any = { ...node.properties }
 
       // meta attribute: surface fence meta as props for <DocCodeBlock>
       const meta: string = node.data?.meta || ''

@@ -1,99 +1,118 @@
 import type { AnimatedNumberStrategy, TransitionProp } from '@tamagui/core'
-import type { ScopedProps } from '@tamagui/create-context'
 import type { PortalProps } from '@tamagui/portal'
 import type { RemoveScroll } from '@tamagui/remove-scroll'
 import type { ReactNode } from 'react'
 import type React from 'react'
 
-export type SheetProps = ScopedProps<
-  {
-    open?: boolean
-    defaultOpen?: boolean
-    onOpenChange?: OpenChangeHandler
+export type SheetScopes = string
 
-    /**
-     * Control the index of the position in the `snapPoints` array
-     */
-    position?: number
+export type SheetScopedProps<P> = Omit<P, 'scope'> & {
+  scope?: SheetScopes
+}
 
-    /**
-     * Initial position from the `snapPoints` array
-     */
-    defaultPosition?: number
+export type SheetProps = SheetScopedProps<{
+  open?: boolean
+  defaultOpen?: boolean
+  onOpenChange?: OpenChangeHandler
 
-    /**
-     * Array of pixels or percents the Sheet will attempt to move to when dragged.
-     * The first is the topmost and default when first opened via open prop.
-     */
-    snapPoints?: (string | number)[]
+  /**
+   * Control the index of the position in the `snapPoints` array
+   */
+  position?: number
 
-    snapPointsMode?: SnapPointsMode
-    onPositionChange?: PositionChangeHandler
-    children?: ReactNode
-    dismissOnOverlayPress?: boolean
-    dismissOnSnapToBottom?: boolean
+  /**
+   * Initial position from the `snapPoints` array
+   */
+  defaultPosition?: number
 
-    /**
-     * Disables the RemoveScroll behavior that prevents body scrolling while sheet is open.
-     * By default, RemoveScroll is enabled when the sheet is open and modal.
-     */
-    disableRemoveScroll?: boolean
+  /**
+   * Array of pixels or percents the Sheet will attempt to move to when dragged.
+   * The first is the topmost and default when first opened via open prop.
+   */
+  snapPoints?: (string | number)[]
 
-    /**
-     * @deprecated Use `disableRemoveScroll` instead. This prop will be removed in a future version.
-     * Note: `disableRemoveScroll={true}` is equivalent to `forceRemoveScrollEnabled={false}`
-     */
-    forceRemoveScrollEnabled?: boolean
+  snapPointsMode?: SnapPointsMode
+  onPositionChange?: PositionChangeHandler
+  children?: ReactNode
+  dismissOnOverlayPress?: boolean
+  dismissOnSnapToBottom?: boolean
 
-    transitionConfig?: AnimatedNumberStrategy
+  /**
+   * Disables the RemoveScroll behavior that prevents body scrolling while sheet is open.
+   * By default, RemoveScroll is enabled when the sheet is open and modal.
+   */
+  disableRemoveScroll?: boolean
 
-    /**
-     * By default Sheet will prefer the open prop over a parent component that is
-     * controlling it via Adapt. In general if you want to Adapt to a sheet, you'd
-     * leave the open prop undefined. If you'd like to have the parent override the
-     * prop you've set manually on Sheet, set this to true.
-     */
-    preferAdaptParentOpenState?: boolean
+  transitionConfig?: AnimatedNumberStrategy
 
-    /**
-     * (experimental) Remove the children while hidden (to save some performance, but can cause issues with animations)
-     */
-    unmountChildrenWhenHidden?: boolean
+  /**
+   * By default Sheet will prefer the open prop over a parent component that is
+   * controlling it via Adapt. In general if you want to Adapt to a sheet, you'd
+   * leave the open prop undefined. If you'd like to have the parent override the
+   * prop you've set manually on Sheet, set this to true.
+   */
+  preferAdaptParentOpenState?: boolean
 
-    /**
-     * Keep the sheet content wrapper opaque while the sheet is hidden.
-     * Useful for native visual effects that cannot initialize below a transparent ancestor.
-     */
-    disableTransparencyHide?: boolean
+  /**
+   * (experimental) Remove the children while hidden (to save some performance, but can cause issues with animations)
+   */
+  unmountChildrenWhenHidden?: boolean
 
-    /**
-     * Adapts the sheet to use native sheet on the given platform (if available)
-     */
-    native?: 'ios'[] | boolean
+  /**
+   * By default a fully-closed sheet wrapper is hidden with `display: 'none'`.
+   * Set this to keep the closed wrapper laid out (e.g. for native visual effects
+   * that cannot initialize below a hidden ancestor). `pointerEvents` still gates
+   * interaction while closed.
+   */
+  disableHideWhenClosed?: boolean
 
-    /**
-     * Pass if you're using the CSS animation driver
-     */
-    transition?: TransitionProp
-    handleDisableScroll?: boolean
-    disableDrag?: boolean
-    modal?: boolean
-    zIndex?: number
-    portalProps?: PortalProps
-    /**
-     * Makes the sheet move up when the mobile keyboard opens so the focused input remains visible.
-     * Works on native (via keyboard events) and on mobile web (via the VisualViewport API).
-     */
-    moveOnKeyboardChange?: boolean
-    containerComponent?: React.ComponentType<any>
+  /**
+   * @deprecated use `disableHideWhenClosed` instead.
+   */
+  disableTransparencyHide?: boolean
 
-    /**
-     * Called when the sheet open/close animation completes.
-     */
-    onAnimationComplete?: (info: { open: boolean }) => void
-  },
-  'Sheet'
->
+  /**
+   * Adapts the sheet to use native sheet on the given platform (if available)
+   * The iOS system sheet does not expose continuous position, so
+   * `Sheet.useAnimatedPosition` and `onTransition` are unavailable in this mode.
+   */
+  native?: 'ios'[] | boolean
+
+  /**
+   * Pass if you're using the CSS animation driver
+   */
+  transition?: TransitionProp
+  handleDisableScroll?: boolean
+  disableDrag?: boolean
+  modal?: boolean
+  zIndex?: number
+  portalProps?: PortalProps
+  /**
+   * Makes the sheet move up when the mobile keyboard opens so the focused input remains visible.
+   * Works on native (via keyboard events) and on mobile web (via the VisualViewport API).
+   */
+  moveOnKeyboardChange?: boolean
+  containerComponent?: React.ComponentType<any>
+
+  /**
+   * Fires at the start and end of the sheet's position transition. `cause` is
+   * `open` when moving from closed, `close` when moving off screen, and `snap`
+   * when moving between snap points while open. On the `end` phase, `finished`
+   * is `false` when the transition was interrupted (e.g. a close canceled by a
+   * re-open). `position` is the resolved translateY (px from screen top) target.
+   * Available on Tamagui's custom Sheet, not the native iOS system sheet.
+   */
+  onTransition?: (e: SheetTransitionEvent) => void
+}>
+
+export type SheetTransitionCause = 'open' | 'close' | 'snap'
+
+export type SheetTransitionEvent = {
+  phase: 'start' | 'end'
+  cause: SheetTransitionCause
+  position: number
+  finished?: boolean
+}
 
 export type PositionChangeHandler = (position: number) => void
 
@@ -104,8 +123,6 @@ type OpenChangeHandler =
 export type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 
 export type SnapPointsMode = 'percent' | 'constant' | 'fit' | 'mixed'
-
-export type SheetScopedProps<A> = ScopedProps<A, 'Sheet'>
 
 export type ScrollBridge = {
   enabled: boolean

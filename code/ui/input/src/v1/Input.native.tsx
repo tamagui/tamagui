@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from '@tamagui/core'
+import { createStyledHOC, styled } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { useNativeInputRef } from '@tamagui/element'
 
@@ -13,7 +13,7 @@ const StyledInput = styled(TextInput, styledBody[0], styledBody[1])
 /**
  * @deprecated Use the new Input from '@tamagui/input' instead
  */
-export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) => {
+export const Input = createStyledHOC(StyledInput)<InputProps>((inProps, forwardedRef) => {
   const {
     // some of destructed props are just to avoid passing them to ...rest because they are not in native.
     type,
@@ -46,7 +46,10 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
   // TODO: later move most of the logic to the core package
 
   let secureTextEntry = false
-  let cursorColor = caretColor
+  // $caretColor maps to cursorColor (Android) + selectionColor (iOS+Android
+  // caret) on native; preserve caller-provided values.
+  let cursorColor = (inProps as any).cursorColor ?? caretColor
+  let selectionColor = (inProps as any).selectionColor ?? caretColor
   let _returnKeyType = returnKeyType
   let _enterKeyHint = enterKeyHint
   if (enterKeyHint === 'go') {
@@ -84,6 +87,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     disabled,
     id,
     cursorColor,
+    selectionColor,
     enterKeyHint: _enterKeyHint,
     returnKeyType: _returnKeyType,
     secureTextEntry,

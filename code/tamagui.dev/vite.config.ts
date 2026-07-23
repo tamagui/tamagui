@@ -20,7 +20,10 @@ const vitePluginDist = pathResolve(
   import.meta.dirname,
   '../compiler/vite-plugin/dist/esm/index.mjs'
 )
-const staticDist = pathResolve(import.meta.dirname, '../compiler/static/dist/index.cjs')
+const staticDist = pathResolve(
+  import.meta.dirname,
+  '../compiler/static/dist/cjs/index.cjs'
+)
 
 if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
   console.info('')
@@ -331,6 +334,13 @@ export const LocationNotification = BentoComponentStub
           {
             source: '/vite',
             destination: 'https://vxrn.dev',
+            permanent: true,
+          },
+          // the v3 composable toast replaced the old imperative one, so the
+          // temporary "toast-2" page folded back into /ui/toast
+          {
+            source: '/ui/toast-2',
+            destination: '/ui/toast',
             permanent: true,
           },
           {

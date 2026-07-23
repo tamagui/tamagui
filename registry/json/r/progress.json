@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress",
+  "type": "registry:ui",
+  "title": "Progress",
+  "description": "v2-look Progress: theme background on the track and indicator + pill radius on the track, over the unstyled @tamagui/ui Progress behavior (clip, size-derived track height, and the indeterminate/complete/loading state machine). Static: Progress.Indicator.",
+  "files": [
+    {
+      "path": "components/tamagui/Progress.tsx",
+      "content": "// Styled Progress = the unstyled @tamagui/ui Progress behavior (the clip + the\n// size-derived track height + the indeterminate/complete/loading state machine)\n// + the default v2-look skin (theme background on the track and indicator, pill\n// radius on the track). Single skin definition; the shadcn registry item is\n// generated from this file.\nimport {\n  type GetProps,\n  Progress as UiProgress,\n  ProgressIndicator as UiProgressIndicator,\n  type ProgressExtraProps,\n  styled,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nexport const ProgressIndicator = styled(UiProgressIndicator, {\n  name: 'ProgressIndicator',\n  backgroundColor: '$background',\n})\n\nconst ProgressFrame = styled(UiProgress, {\n  name: 'Progress',\n  backgroundColor: '$background',\n  borderRadius: 100_000,\n})\n\nexport const Progress = withStaticProperties(ProgressFrame, {\n  Indicator: ProgressIndicator,\n})\n\nexport type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Progress.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "feedback"
+  ],
+  "meta": {
+    "tokens": [
+      "$background"
+    ]
+  }
+}

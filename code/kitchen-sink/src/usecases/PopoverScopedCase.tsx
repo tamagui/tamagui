@@ -1,4 +1,5 @@
-import { Adapt, Button, Paragraph, Popover, Sheet, XStack, YStack } from 'tamagui'
+import { Adapt, Paragraph, Popover, Sheet, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 export function PopoverScopedCase() {
   const shouldAdapt = window.location.search.includes('adapt=true')
@@ -37,9 +38,10 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
+        backgroundColor="$background"
+        boxShadow="0 4px 12px $shadowColor"
         width={300}
         height={300}
-        elevate
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
@@ -49,7 +51,7 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
           </XStack>
 
           <Popover.Close asChild>
-            <Button size="$3" data-testid={`popover-close`}>
+            <Button size="medium" data-testid={`popover-close`}>
               Close
             </Button>
           </Popover.Close>
@@ -59,9 +61,10 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
       {shouldAdapt && (
         <Adapt when={true}>
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame data-testid={`${name}-sheet-contents`} padding="$4">
+            <Sheet.Container data-testid={`${name}-sheet-contents`} padding="$4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               backgroundColor="$shadowColor"
               transition="lazy"

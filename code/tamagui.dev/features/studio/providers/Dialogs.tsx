@@ -2,7 +2,8 @@ import { X } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
 import { useWindowDimensions } from 'react-native'
 import type { DialogCloseProps } from 'tamagui'
-import { Button, Dialog, Fieldset, Input, Label, Unspaced, XStack, YStack } from 'tamagui'
+import { Dialog, Fieldset, Input, Label, Unspaced, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { rootStore } from '../state/RootStore'
 import type {
   ConfirmDeleteDialogProps,
@@ -15,7 +16,15 @@ import { useGlobalState } from '../state/useGlobalState'
 const DialogCloseButton = () => (
   <Unspaced>
     <Dialog.Close asChild="except-style">
-      <Button size="$3" position="absolute" t="$3" r="$3" circular icon={X} z={1000} />
+      <Button
+        size="medium"
+        position="absolute"
+        t="$3"
+        r="$3"
+        circular
+        icon={X}
+        z={1000}
+      />
     </Dialog.Close>
   </Unspaced>
 )

@@ -1,7 +1,7 @@
 // forked from radix https://github.com/radix-ui/primitives/blob/main/packages/react/avatar/src/Avatar.tsx
 
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
-import { styled } from '@tamagui/core'
+import { createStyledHOC, styled, createRefComponent } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -19,7 +19,7 @@ const [createAvatarContext, createAvatarScope] = createContextScope(AVATAR_NAME)
 type ImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error'
 
 type AvatarContextValue = {
-  size: SizeTokens
+  size: SizeTokens | true
   imageLoadingStatus: ImageLoadingStatus
   onImageLoadingStatusChange(status: ImageLoadingStatus): void
 }
@@ -37,7 +37,7 @@ type AvatarImageProps = Partial<ImageProps> & {
   onLoadingStatusChange?: (status: ImageLoadingStatus) => void
 }
 
-const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
+const AvatarImage = createRefComponent<TamaguiElement, AvatarImageProps>(
   (props: ScopedProps<AvatarImageProps>, forwardedRef) => {
     const {
       __scopeAvatar,
@@ -74,7 +74,7 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
     }
 
     return (
-      <YStack fullscreen zIndex={1}>
+      <YStack position="absolute" inset={0} zIndex={1}>
         <Image
           position="absolute"
           top={0}
@@ -122,28 +122,32 @@ const FALLBACK_NAME = 'AvatarFallback'
 export const AvatarFallbackFrame = styled(YStack, {
   name: FALLBACK_NAME,
   position: 'absolute',
-  fullscreen: true,
+  inset: 0,
   zIndex: 0,
 })
 
 type AvatarFallbackExtraProps = {
+  /** The delay in milliseconds before the fallback renders. */
+  delay?: number
+  /** @deprecated Use `delay` instead. */
   delayMs?: number
 }
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps
 
-const AvatarFallback = AvatarFallbackFrame.styleable<
+const AvatarFallback = createStyledHOC(AvatarFallbackFrame)<
   ScopedProps<AvatarFallbackExtraProps>
 >((props, forwardedRef) => {
-  const { __scopeAvatar, delayMs, ...fallbackProps } = props
+  const { __scopeAvatar, delay: delayProp, delayMs, ...fallbackProps } = props
   const context = useAvatarContext(FALLBACK_NAME, __scopeAvatar)
-  const [canRender, setCanRender] = React.useState(delayMs === undefined)
+  const delay = delayProp ?? delayMs
+  const [canRender, setCanRender] = React.useState(delay === undefined)
 
   React.useEffect(() => {
-    if (delayMs !== undefined) {
-      const timerId = setTimeout(() => setCanRender(true), delayMs)
+    if (delay !== undefined) {
+      const timerId = setTimeout(() => setCanRender(true), delay)
       return () => clearTimeout(timerId)
     }
-  }, [delayMs])
+  }, [delay])
 
   return canRender && context.imageLoadingStatus !== 'loaded' ? (
     <AvatarFallbackFrame {...fallbackProps} ref={forwardedRef} />
@@ -180,9 +184,9 @@ type AvatarProps = GetProps<typeof AvatarFrame>
  * ```
  */
 const Avatar = withStaticProperties(
-  React.forwardRef<TamaguiElement, AvatarProps>(
+  createRefComponent<TamaguiElement, AvatarProps>(
     (props: ScopedProps<AvatarProps>, forwardedRef) => {
-      const { __scopeAvatar, size = '$true', ...avatarProps } = props
+      const { __scopeAvatar, size = true, ...avatarProps } = props
       const [imageLoadingStatus, setImageLoadingStatus] =
         React.useState<ImageLoadingStatus>('idle')
       return (

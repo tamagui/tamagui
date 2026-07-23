@@ -1,0 +1,6 @@
+# metro log temp files written by run-benchmarks-native.ts
+.metro-*.log
+
+# Expo auto-generates these on first metro start
+*-bench-native/tsconfig.json
+nativewind-bench-native/nativewind-env.d.ts

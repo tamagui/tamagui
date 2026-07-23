@@ -6,7 +6,7 @@ import { config } from '@tamagui/config/v3'
 import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
 import { defaultConfig } from '@tamagui/config/v5'
 import { tamaguiThemes } from '@tamagui/themes/v4'
-import { createTamagui, type CreateTamaguiProps } from 'tamagui'
+import { createTamagui } from 'tamagui'
 // TODO just move this into this folder
 import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
 import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
@@ -393,6 +393,7 @@ const tamaConf = createTamagui({
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
     fastSchemeChange: true,
+    styleMode: 'tamagui',
   },
   tokens,
   media: {
@@ -400,6 +401,13 @@ const tamaConf = createTamagui({
     ...config.media,
   },
   animations, // default reanimated
+
+  // custom variables for VariablesCase (plans/variables.md)
+  variables: {
+    caseAccent: { light: 'rgb(0, 90, 200)', dark: 'rgb(90, 90, 255)' },
+    caseSurface: '$background',
+    caseRadius: 4,
+  },
 
   defaultProps: {
     Square: {

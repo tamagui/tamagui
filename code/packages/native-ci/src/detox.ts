@@ -142,6 +142,7 @@ const CONNECT_FLAKE_SIGNATURES: RegExp[] = [
   /skipping reload:/,
   /FBSOpenApplicationServiceErrorDomain/,
   /FBSOpenApplicationErrorDomain/,
+  /Waited for the root of the view hierarchy to have window focus/,
   /Detox worker instance has not been installed/,
 ]
 // Signatures that indicate a real test failure (assertion/logic error). When present,

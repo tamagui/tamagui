@@ -1,7 +1,8 @@
 import { ChevronRight, FilePlus, Settings, Trash2 } from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu accessibility test case
@@ -23,7 +24,7 @@ export function MenuAccessibilityCase() {
 
       <Menu placement="bottom-start">
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="$4">
+          <Button data-testid="menu-trigger" size="medium">
             Open Menu
           </Button>
         </Menu.Trigger>
@@ -35,7 +36,7 @@ export function MenuAccessibilityCase() {
             minW={200}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
           >
             <Menu.Item
               data-testid="menu-item-1"
@@ -91,7 +92,7 @@ export function MenuAccessibilityCase() {
               <Menu.Portal zIndex={200}>
                 <Menu.SubContent
                   data-testid="submenu-content"
-                  elevation="$3"
+                  boxShadow="0 4px 12px $shadowColor"
                   minW={160}
                   bg="$background"
                   p="$2"

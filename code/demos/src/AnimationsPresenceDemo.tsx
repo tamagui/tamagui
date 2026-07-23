@@ -2,7 +2,8 @@ import React from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons-2'
 
-import { Button, Image, XStack, YStack, styled } from 'tamagui'
+import { Image, XStack, YStack, styled } from 'tamagui'
+import { Button } from './Button'
 
 // @ts-ignore
 import photo1 from '../../public/photo1.jpg'
@@ -17,12 +18,13 @@ const GalleryItem = styled(YStack, {
   z: 1,
   x: 0,
   opacity: 1,
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
 
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
-      ':number': (going) => ({
+      number: (going) => ({
         enterStyle: {
           x: going > 0 ? 1000 : -1000,
           opacity: 0,
@@ -68,7 +70,7 @@ export function AnimationsPresenceDemo() {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="$5"
+        size="large"
         position="absolute"
         l="$4"
         circular
@@ -80,7 +82,7 @@ export function AnimationsPresenceDemo() {
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="$5"
+        size="large"
         position="absolute"
         r="$4"
         circular

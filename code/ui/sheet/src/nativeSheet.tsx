@@ -2,12 +2,10 @@ import { YStack } from '@tamagui/stacks'
 import type { FunctionComponent } from 'react'
 import { useEffect, useRef } from 'react'
 import { View } from 'react-native'
-import { SheetProvider } from './SheetContext'
+import { SheetNativeSystemContext, SheetProvider } from './SheetContext'
 import type { SheetProps } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
-
-// import { useSheetSnapPoints } from './useSheetSnapPoints'
 
 type SheetNativePlatforms = 'ios'
 
@@ -29,8 +27,6 @@ export function setupNativeSheet(
     nativeSheets[platform] = (props: SheetProps) => {
       const state = useSheetOpenState(props)
       const providerProps = useSheetProviderProps(props, state)
-      // const { position } = providerProps
-      // const { positions } = useSheetSnapPoints(providerProps)
 
       const { open, setOpen } = state
       const ref = useRef<{
@@ -51,21 +47,15 @@ export function setupNativeSheet(
         setOpen(next)
       }
 
-      // modalContentPreferredContentSize={{
-      //   mode: 'percent',
-      //   percentWidth: '100%',
-      //   percentHeight:
-      // }}
-
       return (
-        <>
+        <SheetNativeSystemContext.Provider value>
           <SheetProvider
             setHasScrollView={emptyFn}
             keyboardOccludedHeight={0}
             isKeyboardVisible={false}
             keyboardStableFrameHeight={0}
             {...providerProps}
-            onlyShowFrame
+            onlyShowContainer
           >
             <ModalSheetView ref={ref} onModalDidDismiss={() => setOpenInternal(false)}>
               <ModalSheetViewMainContent>
@@ -77,7 +67,7 @@ export function setupNativeSheet(
             {/* so just hiding it here for now... not great... */}
             <YStack
               position="absolute"
-              opacity={0}
+              display="none"
               pointerEvents="none"
               width={0}
               height={0}
@@ -85,7 +75,7 @@ export function setupNativeSheet(
               {props.children}
             </YStack>
           </SheetProvider>
-        </>
+        </SheetNativeSystemContext.Provider>
       )
     }
   }

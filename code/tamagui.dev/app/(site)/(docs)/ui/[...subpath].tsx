@@ -40,12 +40,16 @@ export async function generateStaticParams() {
 export async function loader(props: LoaderProps) {
   const { getMDXBySlug, getAllVersionsFromPath } =
     await import('~/features/mdx/getMDXBySlug')
+  const { getDocsMode } = await import('~/features/docs/isTailwindMode')
+  const mode = getDocsMode(props)
 
   const subpath = Array.isArray(props.params.subpath)
-    ? props.params.subpath[0]
+    ? props.params.subpath.join('/')
     : props.params.subpath
 
-  const { frontmatter, code } = await getMDXBySlug('data/docs/components', subpath)
+  const { frontmatter, code } = await getMDXBySlug('data/docs/components', subpath, {
+    mode,
+  })
   const [componentName, componentVersion] = subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
   return {
@@ -54,27 +58,19 @@ export async function loader(props: LoaderProps) {
       version: componentVersion || versions[0],
       versions: versions,
     },
+    search: props.search,
     code,
   }
 }
 
 export function DocComponentsPage() {
-  const { frontmatter, code } = useLoader(loader)
-  const { next, previous, currentPath, documentVersionPath } = useDocsMenu()
+  const { frontmatter, code, search } = useLoader(loader)
+  const { next, previous } = useDocsMenu()
   const Component = React.useMemo(() => getMDXComponent(code), [code])
-
-  const getMDXPath = (path: string) => {
-    if (path.startsWith('/ui/')) {
-      const parts = path.split('/')
-      const componentName = parts[2]
-      return `/docs/components/${componentName}`
-    }
-    return `${path}${documentVersionPath}`
-  }
 
   const GITHUB_URL = 'https://github.com'
   const REPO_NAME = 'tamagui/tamagui'
-  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${getMDXPath(currentPath)}.mdx`
+  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/${frontmatter.slug}.mdx`
 
   return (
     <DocsPageFrame
@@ -82,6 +78,8 @@ export function DocComponentsPage() {
       editUrl={editUrl}
       next={next}
       previous={previous}
+      frontmatter={frontmatter}
+      initialSearch={search}
     >
       <HeadInfo
         title={`${frontmatter.title} | Tamagui — React Native UI kit with copy-paste composable components`}

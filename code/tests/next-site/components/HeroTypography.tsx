@@ -28,7 +28,7 @@ export const HeroTypography = memo(() => {
 
   return (
     <>
-      <YStack fullscreen className="" o={0.1} />
+      <YStack position="absolute" inset={0} className="" o={0.1} />
       {/* -5 my to fir grid nicely */}
       <YStack my={-5} position="relative" gap="$8">
         <YStack ref={ref} ai="center" gap="$3">
@@ -61,7 +61,7 @@ export const HeroTypography = memo(() => {
             $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
             <YStack ai="flex-end" h={270}>
-              <AnimatePresence exitBeforeEnter>
+              <AnimatePresence mode="wait">
                 <AnimatedHeading
                   debug
                   key={`${family}1`}

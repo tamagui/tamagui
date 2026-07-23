@@ -1,4 +1,5 @@
-import { Adapt, Button, Dialog, Input, Label, Sheet, XStack, YStack } from 'tamagui'
+import { Adapt, Dialog, Input, Label, Sheet, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 export function DialogScopedCase() {
   const shouldAdapt = window.location.search.includes('adapt=true')
@@ -88,9 +89,10 @@ const TestDialogContent = ({ name, shouldAdapt }) => {
       {shouldAdapt && (
         <Adapt when={true}>
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame data-testid={`${name}-sheet-contents`} padding="$4">
+            <Sheet.Container data-testid={`${name}-sheet-contents`} padding="$4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               id={`${name}-sheet-overlay`}
               backgroundColor="$shadowColor"

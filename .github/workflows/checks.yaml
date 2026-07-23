@@ -11,6 +11,8 @@ on:
       - main
       - v2
       - 'v2-*'
+      - v3
+      - 'v3-*'
 
 permissions:
   contents: read
@@ -75,6 +77,12 @@ jobs:
       - name: Install playwright
         run: bunx playwright install
 
+      - name: Check v6 Tailwind defaults
+        working-directory: code/core/config
+        run: |
+          bun run check:v6-tailwind-defaults
+          bun run test:v6-tailwind-defaults
+
       - name: Restore Turbo cache
         uses: actions/cache@v4
         with:
@@ -111,6 +119,14 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             BASE="${{ github.event.pull_request.base.sha }}"
+            BASE_REF="${{ github.base_ref }}"
+            HEAD_REF="${{ github.head_ref }}"
+
+            if [ "$BASE_REF" = "v3-beta" ] || [[ "$BASE_REF" == v3-* ]] || [[ "$HEAD_REF" == v3-* ]]; then
+              echo "relevant=true" >> $GITHUB_OUTPUT
+              echo "::notice::Kitchen-sink integration forced for v3 PR ($HEAD_REF -> $BASE_REF)"
+              exit 0
+            fi
           else
             BASE="HEAD~1"
           fi
@@ -155,6 +171,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-')) && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
 
       - name: Install
@@ -181,6 +198,116 @@ jobs:
           restore-keys: |
             turbo-${{ runner.os }}-
 
-      - name: Run integration tests (shard ${{ matrix.shard }})
+      - name: Run kitchen-sink web + render-count tests (shard ${{ matrix.shard }})
         run: cd code/kitchen-sink && NODE_ENV=test npx playwright test --shard=${{ matrix.shard }}
         timeout-minutes: 20
+
+  v3-ssr-hydration:
+    if: github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Get Playwright version
+        id: pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
+
+      - name: Install Playwright Chromium
+        run: bunx playwright install --with-deps chromium
+
+      - name: Run SSR hydration checks
+        run: |
+          cd code/sandbox
+          TEST_MODE=prod NODE_ENV=test bunx playwright test \
+            hydration-drivers.test.ts \
+            motion-hydration.test.ts \
+            ssr-theme.test.ts \
+            tooltip-ssr.test.ts \
+            tooltip-heavy-ssr.test.ts
+        timeout-minutes: 20
+
+      - name: Upload SSR artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v3-ssr-hydration-artifacts
+          path: |
+            code/sandbox/.playwright-report
+            code/sandbox/.playwright-results
+          retention-days: 7
+          include-hidden-files: true
+
+  v3-bundle-delta:
+    if: github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Install head dependencies
+        uses: ./.github/actions/install
+
+      - name: Capture head bundle stats
+        run: |
+          rm -rf code/kitchen-sink/dist /tmp/tamagui-head-dist
+          cd code/kitchen-sink
+          NODE_ENV=production bun run prod:web
+          cp -R dist /tmp/tamagui-head-dist
+
+      - name: Add base worktree
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: git worktree add /tmp/tamagui-base "$BASE_SHA"
+
+      - name: Install base dependencies
+        working-directory: /tmp/tamagui-base
+        run: bun install --frozen-lockfile
+
+      - name: Capture base bundle stats
+        working-directory: /tmp/tamagui-base/code/kitchen-sink
+        run: |
+          rm -rf dist
+          NODE_ENV=production bun run prod:web
+
+      - name: Compare bundle stats
+        run: |
+          node .github/scripts/compare-webpack-stats.mjs \
+            --base /tmp/tamagui-base/code/kitchen-sink/dist/compilation-stats.json \
+            --base-dist /tmp/tamagui-base/code/kitchen-sink/dist \
+            --head /tmp/tamagui-head-dist/compilation-stats.json \
+            --head-dist /tmp/tamagui-head-dist \
+            --out /tmp/v3-bundle-delta.md
+
+          mkdir -p bundle-delta-artifacts
+          cp /tmp/v3-bundle-delta.md bundle-delta-artifacts/v3-bundle-delta.md
+          cp /tmp/tamagui-head-dist/compilation-stats.json bundle-delta-artifacts/head-compilation-stats.json
+          cp /tmp/tamagui-base/code/kitchen-sink/dist/compilation-stats.json bundle-delta-artifacts/base-compilation-stats.json
+          cat /tmp/v3-bundle-delta.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload bundle delta
+        uses: actions/upload-artifact@v4
+        with:
+          name: v3-bundle-delta
+          path: bundle-delta-artifacts
+          retention-days: 14

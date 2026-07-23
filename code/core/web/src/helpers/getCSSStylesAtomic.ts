@@ -31,7 +31,7 @@ export function getCSSStylesAtomic(style: ViewStyleWithPseudos) {
       for (const subKey in val) {
         const so = getStyleObject(val, subKey)
         if (so) {
-          so[0] = key // set the property to be eg $platform-web so we can use it above
+          so[0] = key // set the property to be eg $web so we can use it above
           out.push(so)
         }
       }

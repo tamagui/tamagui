@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'StyledStyleableInputVariant', type: 'useCase' })
 })
 
-test(`styled(styleable(styled(RNView))) applies proper variant overrides`, async ({
+test(`styled(createStyledHOC(styled(RNView))) applies proper variant overrides`, async ({
   page,
 }) => {
   const styles = await getStyles(page.locator('#input').first())

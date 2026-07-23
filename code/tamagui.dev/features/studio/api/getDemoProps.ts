@@ -1,8 +1,13 @@
-import type { ButtonProps } from 'tamagui'
+import type { ButtonProps } from '~/components/Button'
 
-import { getTokenRelative } from '@tamagui/get-token'
 import { accentTokenName } from '~/features/studio/accentThemeName'
 import type { DemoOptions } from '../theme/demoOptions'
+
+// the outer border radius is one radius token larger than the inner one
+const oneRadiusLarger = (radius: DemoOptions['borderRadius']) => {
+  const n = Number(String(radius).replace('$', ''))
+  return (Number.isNaN(n) ? radius : `$${n + 1}`) as DemoOptions['borderRadius']
+}
 
 export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
   const accentToken = hasAccent ? accentTokenName : '$color9'
@@ -28,9 +33,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     } as const,
 
     borderRadiusOuterProps: {
-      borderRadius: getTokenRelative('radius', demosOptions.borderRadius as any, {
-        shift: 1,
-      }),
+      borderRadius: oneRadiusLarger(demosOptions.borderRadius),
       borderWidth: demosOptions.borderWidth,
     } as const,
 

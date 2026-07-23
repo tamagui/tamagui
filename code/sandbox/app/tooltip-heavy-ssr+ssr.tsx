@@ -124,7 +124,7 @@ export default function TooltipHeavySSRTest() {
               onMouseEnter={() => setLabel(LABELS.a)}
             >
               <XStack id="tip-trigger-a">
-                <Button size="$3">Starter Kit</Button>
+                <Button size="small">Starter Kit</Button>
               </XStack>
             </Tooltip.Trigger>
 
@@ -134,7 +134,7 @@ export default function TooltipHeavySSRTest() {
               onMouseEnter={() => setLabel(LABELS.b)}
             >
               <XStack id="tip-trigger-b">
-                <Button size="$3">Copy-Paste UI</Button>
+                <Button size="small">Copy-Paste UI</Button>
               </XStack>
             </Tooltip.Trigger>
 
@@ -144,7 +144,7 @@ export default function TooltipHeavySSRTest() {
               onMouseEnter={() => setLabel(LABELS.c)}
             >
               <XStack id="tip-trigger-c">
-                <Button size="$3">Hire Us</Button>
+                <Button size="small">Hire Us</Button>
               </XStack>
             </Tooltip.Trigger>
           </XStack>

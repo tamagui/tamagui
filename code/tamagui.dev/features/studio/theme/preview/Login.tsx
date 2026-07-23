@@ -1,5 +1,4 @@
 import {
-  Button,
   Fieldset,
   Form,
   H4,
@@ -13,6 +12,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 import { IconGithub } from '~/features/studio/theme/icons/icon-github'
@@ -54,7 +54,7 @@ export const LoginScreen = () => {
             <>
               <Button
                 flex={1}
-                size="$3"
+                size="medium"
                 icon={IconGitlab}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
@@ -63,7 +63,7 @@ export const LoginScreen = () => {
               </Button>
               <Button
                 flex={1}
-                size="$3"
+                size="medium"
                 icon={IconGithub}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
@@ -112,7 +112,7 @@ export const LoginScreen = () => {
         <YStack mt="$4">
           <Theme name="accent">
             <Button
-              size="$5"
+              size="large"
               {...demoProps.borderRadiusProps}
               {...demoProps.buttonOutlineProps}
             >

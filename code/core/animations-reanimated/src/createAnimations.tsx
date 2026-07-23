@@ -11,10 +11,11 @@ import {
   View,
   type AnimationDriver,
   type UniversalAnimatedNumber,
+  createRefComponent,
 } from '@tamagui/core'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import normalizeColor from '@react-native/normalize-colors'
-import React, { forwardRef, useMemo, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated_, {
   cancelAnimation,
@@ -444,15 +445,19 @@ const animateSnapshotValue = (
   gated: boolean,
   currentlyExiting: boolean,
   exitCycleId: number,
-  currentlyCompletingAnimation: boolean,
-  didAnimateCycleId: number,
+  currentlyCompletingEnter: boolean,
+  enterCycleId: number,
+  currentlyCompletingUpdate: boolean,
+  updateCycleId: number,
   markExitKeyDone: (key: string, cycleId: number, finished: boolean) => void,
-  markDidAnimateKeyDone: (key: string, cycleId: number, finished: boolean) => void,
+  markEnterKeyDone: (key: string, cycleId: number) => void,
+  markUpdateKeyDone: (key: string, cycleId: number, finished: boolean) => void,
   validateStartAsColor = false
 ): number | string => {
   'worklet'
 
-  const cycleGated = gated && (currentlyExiting || currentlyCompletingAnimation)
+  const cycleGated =
+    gated && (currentlyExiting || currentlyCompletingEnter || currentlyCompletingUpdate)
   if (!previouslyEmitted && seedValue === undefined && !cycleGated) {
     return targetValue
   }
@@ -463,10 +468,15 @@ const animateSnapshotValue = (
       'worklet'
       runOnJS(markExitKeyDone)(key, exitCycleId, finished ?? false)
     }
-  } else if (gated && currentlyCompletingAnimation) {
+  } else if (gated && currentlyCompletingEnter) {
+    callback = () => {
+      'worklet'
+      runOnJS(markEnterKeyDone)(key, enterCycleId)
+    }
+  } else if (gated && currentlyCompletingUpdate) {
     callback = (finished) => {
       'worklet'
-      runOnJS(markDidAnimateKeyDone)(key, didAnimateCycleId, finished ?? false)
+      runOnJS(markUpdateKeyDone)(key, updateCycleId, finished ?? false)
     }
   }
 
@@ -603,7 +613,7 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
   const isText = defaultTag === 'span'
 
   const Component = Animated.createAnimatedComponent(
-    forwardRef((propsIn: any, ref) => {
+    createRefComponent((propsIn: any, ref) => {
       const { forwardedRef, render = defaultTag, ...rest } = propsIn
       const hostRef = useRef<HTMLElement>(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
@@ -633,8 +643,9 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
         stateRef as any,
         false
       )
+      const { nativeID, ...webProps } = transformedProps ?? viewProps
 
-      return <Element {...transformedProps} ref={composedRefs} />
+      return <Element {...webProps} ref={composedRefs} />
     })
   )
   ;(Component as any).acceptRenderProp = true
@@ -914,7 +925,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         themeName,
         stateRef,
         styleState,
-        onDidAnimate,
+        onTransition,
       } = animationProps
 
       // State flags
@@ -950,25 +961,46 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // Get sendExitComplete callback from presence
       const sendExitComplete = presence?.[1]
-      const onDidAnimateRef = useRef(onDidAnimate)
-      useIsomorphicLayoutEffect(() => {
-        onDidAnimateRef.current = onDidAnimate
-      }, [onDidAnimate])
+      const onTransitionRef = useRef(onTransition)
+      onTransitionRef.current = onTransition
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        onTransitionRef.current?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
+      }
+      const enterStartedRef = useRef(false)
+      const exitStartedRef = useRef(false)
+      const updateStartedRef = useRef(false)
+      const isExitingJSRef = useRef(false)
+      isExitingJSRef.current = isExiting
 
-      const didAnimateCycleIdRef = useRef(0)
-      const pendingDidAnimateKeysRef = useRef<Set<string>>(new Set())
-      const didAnimateCompletedRef = useRef(false)
-      const isCompletingAnimationRef = useSharedValue(false)
-      const didAnimateCycleIdShared = useSharedValue(0)
-      const markDidAnimateKeyDone = useEvent(
+      // =========================================================================
+      // Update cycle state: an in-place style transition while mounted (not
+      // enter/exit). drives the onTransition 'update' lifecycle events and the
+      // components (e.g. accordion HeightAnimator) that retain content through
+      // an in-place transition.
+      // =========================================================================
+      const updateCycleIdRef = useRef(0)
+      const pendingUpdateKeysRef = useRef<Set<string>>(new Set())
+      const updateCompletedRef = useRef(false)
+      const isCompletingUpdateRef = useSharedValue(false)
+      const updateCycleIdShared = useSharedValue(0)
+      const markUpdateKeyDone = useEvent(
         (key: string, cycleId: number, finished: boolean) => {
-          if (!finished || cycleId !== didAnimateCycleIdRef.current) return
-          if (didAnimateCompletedRef.current) return
-          pendingDidAnimateKeysRef.current.delete(key)
-          if (pendingDidAnimateKeysRef.current.size === 0) {
-            didAnimateCompletedRef.current = true
-            isCompletingAnimationRef.value = false
-            onDidAnimateRef.current?.()
+          if (!finished || cycleId !== updateCycleIdRef.current) return
+          if (updateCompletedRef.current) return
+          pendingUpdateKeysRef.current.delete(key)
+          if (pendingUpdateKeysRef.current.size === 0) {
+            updateCompletedRef.current = true
+            isCompletingUpdateRef.value = false
+            if (updateStartedRef.current) {
+              updateStartedRef.current = false
+              emit('end', 'update', true)
+            }
           }
         }
       )
@@ -1000,23 +1032,55 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // check if all exit animations are done
           if (pendingExitKeysRef.current.size === 0) {
             exitCompletedRef.current = true
+            if (exitStartedRef.current) {
+              exitStartedRef.current = false
+              // exit 'end' fires immediately before presence safeToRemove
+              emit('end', 'exit', true)
+            }
             sendExitComplete?.()
           }
         }
       )
 
+      // =========================================================================
+      // Enter cycle state for the onTransition enter 'end' event
+      // =========================================================================
+      const enterCycleIdRef = useRef(0)
+      const pendingEnterKeysRef = useRef<Set<string>>(new Set())
+      const enterCompletedRef = useRef(false)
+
+      const markEnterKeyDone = useEvent((key: string, cycleId: number) => {
+        if (cycleId !== enterCycleIdRef.current) return
+        if (enterCompletedRef.current) return
+        if (isExitingJSRef.current) return
+
+        pendingEnterKeysRef.current.delete(key)
+
+        if (pendingEnterKeysRef.current.size === 0) {
+          enterCompletedRef.current = true
+          if (enterStartedRef.current) {
+            enterStartedRef.current = false
+            emit('end', 'enter', true)
+          }
+        }
+      })
+
       // SharedValue to pass exit state into worklet
       const isExitingRef = useSharedValue(isExiting)
       const exitCycleIdShared = useSharedValue(exitCycleIdRef.current)
+      const isCompletingEnterRef = useSharedValue(false)
+      const enterCycleIdShared = useSharedValue(enterCycleIdRef.current)
 
       // start new exit cycle only on transition INTO exiting (not every render while exiting)
       if (justStartedExiting) {
         exitCycleIdRef.current++
         exitCompletedRef.current = false
         pendingExitKeysRef.current.clear()
-        didAnimateCycleIdRef.current++
-        pendingDidAnimateKeysRef.current.clear()
-        didAnimateCompletedRef.current = true
+        enterCycleIdRef.current++
+        pendingEnterKeysRef.current.clear()
+        updateCycleIdRef.current++
+        pendingUpdateKeysRef.current.clear()
+        updateCompletedRef.current = true
       }
       // invalidate pending callbacks when exit is canceled/interrupted
       if (justStoppedExiting) {
@@ -1028,11 +1092,28 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       useIsomorphicLayoutEffect(() => {
         isExitingRef.value = isExiting
         exitCycleIdShared.value = exitCycleIdRef.current
+        isCompletingEnterRef.value =
+          !isExiting && justFinishedEntering && Boolean(onTransitionRef.current)
+        enterCycleIdShared.value = enterCycleIdRef.current
         if (justStartedExiting) {
-          isCompletingAnimationRef.value = false
-          didAnimateCycleIdShared.value = didAnimateCycleIdRef.current
+          isCompletingUpdateRef.value = false
+          updateCycleIdShared.value = updateCycleIdRef.current
         }
-      }, [isExiting, exitCycleIdRef.current, justStartedExiting])
+      }, [
+        isExiting,
+        justFinishedEntering,
+        exitCycleIdRef.current,
+        enterCycleIdRef.current,
+        justStartedExiting,
+      ])
+
+      // exit interrupted by a re-enter: report the exit as finished:false
+      useIsomorphicLayoutEffect(() => {
+        if (justStoppedExiting && exitStartedRef.current && !exitCompletedRef.current) {
+          exitStartedRef.current = false
+          emit('end', 'exit', false)
+        }
+      }, [justStoppedExiting])
 
       // track previous exiting state
       React.useEffect(() => {
@@ -1145,8 +1226,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // unmounts immediately (the dialog-exit-snap). mirrored into a plain ref so the
       // emitter callback (which runs outside render) can read it.
       const pseudoActiveRef = useRef(false)
-      const isExitingJSRef = useRef(false)
-      isExitingJSRef.current = isExiting
       // the committed render is the worklet's source of truth whenever the emitter is not
       // latched, so every render must publish its snapshot — not just the renders that drop
       // a latch. animated keys live only in this snapshot after mount (staticStyles carries
@@ -1292,35 +1371,42 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // Compute and register exit keys synchronously during render to avoid race conditions
       // This must happen BEFORE useAnimatedStyle runs so callbacks have a populated set
       const exitKeysRegistered = useRef(false)
+      const enterKeysRegistered = useRef(false)
+
+      if (!isExiting && justFinishedEntering && onTransition) {
+        const enterKeys = getGatedKeys(renderSnapshot.value)
+        enterCycleIdRef.current++
+        enterCompletedRef.current = false
+        pendingEnterKeysRef.current = new Set(enterKeys)
+        enterKeysRegistered.current = enterKeys.length > 0
+      }
+
       if (justStartedExiting && sendExitComplete) {
         const exitKeys = getGatedKeys(renderSnapshot.value)
         pendingExitKeysRef.current = new Set(exitKeys)
         exitKeysRegistered.current = exitKeys.length > 0
       }
 
-      // onDidAnimate is an internal completion hook used by components that
-      // need to retain content through an in-place style transition. register
-      // the exact keys that can animate before publishing the cycle to the
-      // worklet; shared values are only written from the layout effect, never
-      // from the mapper that reads them.
-      const previousDidAnimateStyleRef = useRef<string | null>(null)
-      const didAnimateStyle = onDidAnimate ? JSON.stringify(style) : null
-      const previousDidAnimateStyle = previousDidAnimateStyleRef.current
-      const shouldRegisterDidAnimate =
-        didAnimateStyle !== null &&
-        previousDidAnimateStyle !== null &&
-        previousDidAnimateStyle !== didAnimateStyle &&
+      // update cycle: a genuine in-place style change while mounted (not
+      // entering or exiting). register the exact keys that can animate before
+      // publishing the cycle to the worklet; shared values are only written
+      // from the layout effect, never from the mapper that reads them.
+      const previousUpdateStyleRef = useRef<string | null>(null)
+      const updateStyle = onTransition ? JSON.stringify(style) : null
+      const previousUpdateStyle = previousUpdateStyleRef.current
+      const shouldRegisterUpdate =
+        updateStyle !== null &&
+        previousUpdateStyle !== null &&
+        previousUpdateStyle !== updateStyle &&
         !isExiting &&
         !isEntering &&
         !justFinishedEntering
-      const didAnimateKeys = shouldRegisterDidAnimate
-        ? getGatedKeys(renderSnapshot.value)
-        : []
+      const updateKeys = shouldRegisterUpdate ? getGatedKeys(renderSnapshot.value) : []
 
       useIsomorphicLayoutEffect(() => {
-        if (didAnimateStyle === null) {
-          previousDidAnimateStyleRef.current = null
-          isCompletingAnimationRef.value = false
+        if (updateStyle === null) {
+          previousUpdateStyleRef.current = null
+          isCompletingUpdateRef.value = false
           return
         }
 
@@ -1328,32 +1414,81 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // captured previous value prevents StrictMode's repeated effect from
         // registering the same transition twice.
         const previousStyleStillCurrent =
-          previousDidAnimateStyleRef.current === previousDidAnimateStyle
-        previousDidAnimateStyleRef.current = didAnimateStyle
-        if (!shouldRegisterDidAnimate || !previousStyleStillCurrent) return
+          previousUpdateStyleRef.current === previousUpdateStyle
+        previousUpdateStyleRef.current = updateStyle
+        if (!shouldRegisterUpdate || !previousStyleStillCurrent) return
 
-        const cycleId = ++didAnimateCycleIdRef.current
-        pendingDidAnimateKeysRef.current = new Set(didAnimateKeys)
-        didAnimateCompletedRef.current = didAnimateKeys.length === 0
-        isCompletingAnimationRef.value = didAnimateKeys.length > 0
-        didAnimateCycleIdShared.value = cycleId
-        if (didAnimateKeys.length === 0) {
-          onDidAnimateRef.current?.()
+        const cycleId = ++updateCycleIdRef.current
+        pendingUpdateKeysRef.current = new Set(updateKeys)
+        updateCompletedRef.current = updateKeys.length === 0
+        isCompletingUpdateRef.value = updateKeys.length > 0
+        updateCycleIdShared.value = cycleId
+
+        // a superseded in-flight update reports finished:false before the new
+        // cycle starts; a zero-key cycle reports an immediate start/end pair
+        if (updateStartedRef.current) {
+          emit('end', 'update', false)
         }
-      }, [didAnimateStyle, shouldRegisterDidAnimate])
+        updateStartedRef.current = true
+        emit('start', 'update')
+        if (updateKeys.length === 0) {
+          updateStartedRef.current = false
+          emit('end', 'update', true)
+        }
+      }, [updateStyle, shouldRegisterUpdate])
 
       // handle zero-animation case in effect (after render commit)
       React.useEffect(() => {
         if (!justStartedExiting || !sendExitComplete) return
 
+        // enter or update still in flight when exit begins is reported as finished:false
+        if (enterStartedRef.current) {
+          enterStartedRef.current = false
+          emit('end', 'enter', false)
+        }
+        if (updateStartedRef.current) {
+          updateStartedRef.current = false
+          emit('end', 'update', false)
+        }
+
+        // emit exit start once per exit cycle
+        if (onTransitionRef.current && !exitStartedRef.current) {
+          exitStartedRef.current = true
+          emit('start', 'exit')
+        }
+
         // if no keys were registered, complete immediately
         if (!exitKeysRegistered.current && pendingExitKeysRef.current.size === 0) {
           if (!exitCompletedRef.current) {
             exitCompletedRef.current = true
+            if (exitStartedRef.current) {
+              exitStartedRef.current = false
+              emit('end', 'exit', true)
+            }
             sendExitComplete()
           }
         }
       }, [justStartedExiting, sendExitComplete])
+
+      React.useEffect(() => {
+        if (isExiting || !justFinishedEntering || !onTransition) return
+
+        // emit enter start once per enter cycle
+        if (!enterStartedRef.current) {
+          enterStartedRef.current = true
+          emit('start', 'enter')
+        }
+
+        if (!enterKeysRegistered.current && pendingEnterKeysRef.current.size === 0) {
+          if (!enterCompletedRef.current) {
+            enterCompletedRef.current = true
+            if (enterStartedRef.current) {
+              enterStartedRef.current = false
+              emit('end', 'enter', true)
+            }
+          }
+        }
+      }, [isExiting, justFinishedEntering, onTransition])
 
       // the worklet's own record of which animated keys it has emitted (mirrors
       // reanimated's per-view style history, which resets whenever a key leaves
@@ -1396,11 +1531,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           const animatedValues = snapshot.animated
           const staticValues = snapshot.statics
 
-          // read exit state from shared values
+          // read lifecycle state from shared values
           const currentlyExiting = isExitingRef.value
           const currentCycleId = exitCycleIdShared.value
-          const currentlyCompletingAnimation = isCompletingAnimationRef.value
-          const currentDidAnimateCycleId = didAnimateCycleIdShared.value
+          const currentlyCompletingEnter = isCompletingEnterRef.value
+          const currentEnterCycleId = enterCycleIdShared.value
+          const currentlyCompletingUpdate = isCompletingUpdateRef.value
+          const currentUpdateCycleId = updateCycleIdShared.value
 
           // Include static values from emitter (for hover/press style changes)
           for (const key in staticValues) {
@@ -1432,10 +1569,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               !!snapshot.gatedKeys[key],
               currentlyExiting,
               currentCycleId,
-              currentlyCompletingAnimation,
-              currentDidAnimateCycleId,
+              currentlyCompletingEnter,
+              currentEnterCycleId,
+              currentlyCompletingUpdate,
+              currentUpdateCycleId,
               markExitKeyDone,
-              markDidAnimateKeyDone,
+              markEnterKeyDone,
+              markUpdateKeyDone,
               !!COLOR_STYLE_KEYS[key]
             )
           }
@@ -1470,10 +1610,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                     !!snapshot.gatedKeys[subKey],
                     currentlyExiting,
                     currentCycleId,
-                    currentlyCompletingAnimation,
-                    currentDidAnimateCycleId,
+                    currentlyCompletingEnter,
+                    currentEnterCycleId,
+                    currentlyCompletingUpdate,
+                    currentUpdateCycleId,
                     markExitKeyDone,
-                    markDidAnimateKeyDone
+                    markEnterKeyDone,
+                    markUpdateKeyDone
                   ),
                 })
               } else {
@@ -1499,9 +1642,12 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               isExitingRef,
               exitCycleIdShared,
               markExitKeyDone,
-              isCompletingAnimationRef,
-              didAnimateCycleIdShared,
-              markDidAnimateKeyDone,
+              isCompletingEnterRef,
+              enterCycleIdShared,
+              markEnterKeyDone,
+              isCompletingUpdateRef,
+              updateCycleIdShared,
+              markUpdateKeyDone,
             ]
           : undefined
       )

@@ -27,7 +27,10 @@ describe('flatten-tests', () => {
       }
     `)
 
-    expect(output?.code).toContain(`<__ReactNativeView style={_sheet["0"]} />`)
+    expect(output?.code).toContain('<__TamaguiNativeView')
+    expect(output?.code).toContain(
+      '"transform":[{"translateY":10},{"translateX":20},{"rotate":"10deg"}]'
+    )
   })
 
   test('flattened media queries', async () => {
@@ -57,46 +60,9 @@ describe('flatten-tests', () => {
 
     expect(code).toMatchSnapshot()
 
-    const startStr = `ReactNativeStyleSheet.create(`
-    const start = code.indexOf(startStr)
-    const end = code.indexOf(`});`)
-    const defs = code.slice(start + startStr.length, end + 1)
-    const sheetStyles = JSON.parse(defs)
-
-    expect(sheetStyles['0']).toEqual({
-      transform: [
-        {
-          translateY: 10,
-        },
-        {
-          translateX: 20,
-        },
-        {
-          rotate: '10deg',
-        },
-      ],
-      flexDirection: 'column',
-    })
-
-    expect(sheetStyles['1']).toEqual({
-      borderTopLeftRadius: 10,
-      borderTopRightRadius: 10,
-      borderBottomRightRadius: 10,
-      borderBottomLeftRadius: 10,
-      transform: [
-        {
-          scale: 2,
-        },
-      ],
-    })
-
-    expect(sheetStyles['2']).toEqual({
-      backgroundColor: 'red',
-    })
-
-    expect(sheetStyles['3']).toEqual({
-      backgroundColor: 'blue',
-    })
+    expect(code).toContain('...media.sm &&')
+    expect(code).toContain("backgroundColor: isLoading ? 'red' : 'blue'")
+    expect(code).toContain('<YStack')
   })
 
   test(`work with experimentalFlattenThemesOnNative`, async () => {
@@ -142,13 +108,29 @@ describe('flatten-tests', () => {
         }
       `)
 
-    expect(output?.code).contains('theme["invalid-identifier"].get()')
+    expect(output?.code).contains("backgroundColor='$invalid-identifier'")
   })
 
-  // partial-flatten on native deopt: a component that must stay on the runtime path
-  // (pressStyle) still gets its pure-static props pre-merged into one `style={…}`,
-  // skipping the runtime per-prop loop. dead native hoverStyle is dropped.
-  test(`partial-flattens static props on pressStyle deopt`, async () => {
+  test(`bails on runtime event handlers — a bare RN View ignores onPress`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test() {
+        return (
+          <View
+            width={60}
+            backgroundColor="rgb(1,2,3)"
+            onPress={() => console.info('pressed')}
+          />
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    expect(code).toContain('onPress')
+    expect(code).toContain('<View')
+    expect(code).not.toContain('__TamaguiNativeView')
+  })
+
+  test(`preserves the complete runtime candidate on pressStyle bailout`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'
       export function Test() {
@@ -164,20 +146,15 @@ describe('flatten-tests', () => {
       }
     `)
     const code = output?.code ?? ''
-    // static props merged into a single style object
-    expect(code).toContain('"width": 60')
-    expect(code).toContain('"backgroundColor": "rgb(1,2,3)"')
-    // pseudo stays on the runtime component
+    expect(code).toContain('width={60}')
+    expect(code).toContain('backgroundColor="rgb(1,2,3)"')
     expect(code).toContain('pressStyle')
-    // dead native hover is dropped entirely
-    expect(code).not.toContain('hoverStyle')
-    // still the runtime tamagui View (deopted), not folded to a raw RN view
-    expect(code).toContain('<View style=')
+    expect(code).toContain('hoverStyle')
+    expect(code).toContain('<View')
+    expect(code).not.toContain('__TamaguiNativeView')
   })
 
-  // theme tokens must NOT be baked into the flattened static style — they stay inline
-  // so the runtime resolves them per-theme (theme switching keeps working).
-  test(`keeps theme tokens inline when partial-flattening`, async () => {
+  test(`keeps theme tokens inline on a pseudo-style bailout`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'
       export function Test() {
@@ -192,12 +169,10 @@ describe('flatten-tests', () => {
       }
     `)
     const code = output?.code ?? ''
-    // static numeric props flatten
-    expect(code).toContain('"width": 60')
-    // the theme token is NOT hardcoded into the static style object
-    expect(code).not.toContain('"backgroundColor": "$gray2"')
-    // it remains an inline prop the runtime resolves per-theme
+    expect(code).toContain('width={60}')
     expect(code).toContain('backgroundColor="$gray2"')
+    expect(code).toContain('pressStyle')
+    expect(code).not.toContain('__TamaguiNativeView')
   })
 
   // TODO make this work:

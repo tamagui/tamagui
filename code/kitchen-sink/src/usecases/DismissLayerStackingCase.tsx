@@ -4,13 +4,12 @@ import {
   Input,
   Paragraph,
   Popover,
-  Select,
   Tooltip,
   XStack,
   YStack,
 } from 'tamagui'
 import { useState, useRef, useEffect } from 'react'
-import { ChevronDown } from '@tamagui/lucide-icons-2'
+import { Select } from '../components/Select'
 import {
   useHasDismissableLayers,
   useIsInsideDismissable,
@@ -40,15 +39,23 @@ export function DismissLayerStackingCase() {
               <Button testID="popover-trigger">Open Popover</Button>
             </Popover.Trigger>
 
-            <Popover.Content testID="popover-content" padding="$4" elevate bordered>
+            <Popover.Content
+              testID="popover-content"
+              padding="$4"
+              backgroundColor="$background"
+              borderWidth={1}
+              borderColor="$borderColor"
+              boxShadow="0 4px 12px $shadowColor"
+            >
               <YStack gap="$3" width={280}>
                 <Paragraph>Popover Content</Paragraph>
                 <Input testID="popover-input" placeholder="Popover input" />
 
                 {/* select inside popover */}
                 <Select value={selectValue} onValueChange={setSelectValue}>
-                  <Select.Trigger testID="popover-select-trigger" iconAfter={ChevronDown}>
+                  <Select.Trigger testID="popover-select-trigger">
                     <Select.Value placeholder="Select fruit" />
+                    <Select.Icon />
                   </Select.Trigger>
                   <Select.Content>
                     <Select.Viewport testID="popover-select-viewport">
@@ -92,11 +99,9 @@ export function DismissLayerStackingCase() {
 
                         {/* select inside dialog */}
                         <Select value={selectValue2} onValueChange={setSelectValue2}>
-                          <Select.Trigger
-                            testID="dialog-select-trigger"
-                            iconAfter={ChevronDown}
-                          >
+                          <Select.Trigger testID="dialog-select-trigger">
                             <Select.Value placeholder="Select color" />
+                            <Select.Icon />
                           </Select.Trigger>
                           <Select.Content>
                             <Select.Viewport testID="dialog-select-viewport">

@@ -1,4 +1,5 @@
-import { Button, Card, H2, H3, H4, Paragraph, Text, Theme, XStack, YStack } from 'tamagui'
+import { Card, H2, H3, H4, Paragraph, Text, Theme, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 import { TEST_IDS } from '../constants/test-ids'
 
@@ -87,11 +88,11 @@ export function V5ThemeBuilderOutput() {
         </Paragraph>
 
         <XStack gap="$3">
-          <Button testID={TEST_IDS.baseButton} size="$4">
+          <Button testID={TEST_IDS.baseButton} size="medium">
             Base Button
           </Button>
 
-          <Button testID={TEST_IDS.accentPropButton} theme="accent" size="$4">
+          <Button testID={TEST_IDS.accentPropButton} theme="accent" size="medium">
             Accent Button
           </Button>
         </XStack>
@@ -172,7 +173,7 @@ export function V5ThemeBuilderOutput() {
         <XStack gap="$3" flexWrap="wrap">
           <Theme name="yellow">
             <Card padding="$3" backgroundColor="$background" minWidth={140}>
-              <Button testID="button-yellow" size="$3">
+              <Button testID="button-yellow" size="medium">
                 Yellow
               </Button>
             </Card>
@@ -184,7 +185,7 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="$background"
               minWidth={140}
             >
-              <Button testID="button-red" size="$3">
+              <Button testID="button-red" size="medium">
                 Red
               </Button>
             </Card>
@@ -196,7 +197,7 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="$background"
               minWidth={140}
             >
-              <Button testID="button-green" size="$3">
+              <Button testID="button-green" size="medium">
                 Green
               </Button>
             </Card>
@@ -208,7 +209,7 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="$background"
               minWidth={140}
             >
-              <Button testID="button-blue" size="$3">
+              <Button testID="button-blue" size="medium">
                 Blue
               </Button>
             </Card>

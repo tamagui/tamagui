@@ -22,7 +22,13 @@ import { styled } from './styled'
 import { createStyledContext } from './helpers/createStyledContext'
 import { View } from './views/View'
 import { Text } from './views/Text'
-import type { GetProps, ThemeMediaKeys } from './types'
+import type {
+  GetProps,
+  MediaPropKeys,
+  PlatformMediaKeys,
+  ThemeMediaKeys,
+  ThemeName,
+} from './types'
 
 // builds a mapped type from a key union, mirroring how WithMediaProps maps over its keys
 type IndexedBy<K extends PropertyKey> = { [P in K]?: number }
@@ -45,6 +51,34 @@ describe('issue #4010 - ThemeMediaKeys must not collapse to a string index', () 
     expectTypeOf<ThemeMediaKeys<'light' | 'dark' | 'light_red'>>().toEqualTypeOf<
       '$theme-light' | '$theme-dark'
     >()
+  })
+})
+
+describe('platform media keys', () => {
+  test('a loose Media (keyof = string) yields no media keys', () => {
+    expectTypeOf<MediaPropKeys>().toEqualTypeOf<never>()
+  })
+
+  test('platform props use short keys', () => {
+    expectTypeOf<PlatformMediaKeys>().toEqualTypeOf<
+      '$web' | '$native' | '$android' | '$ios' | '$tv' | '$androidtv' | '$tvos'
+    >()
+  })
+
+  test('$web accepts web-only style props', () => {
+    type PlainProps = GetProps<typeof View>
+    const webProps: PlainProps['$web'] = {
+      position: 'fixed',
+      touchAction: 'none',
+      textWrap: 'balance',
+    }
+    expectTypeOf(webProps).toMatchTypeOf<PlainProps['$web']>()
+  })
+})
+
+describe('built-in sub-theme names', () => {
+  test('inverse is accepted as a public sub-theme name', () => {
+    expectTypeOf<'inverse'>().toMatchTypeOf<ThemeName>()
   })
 })
 

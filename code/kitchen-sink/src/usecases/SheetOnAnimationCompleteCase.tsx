@@ -1,13 +1,15 @@
 import { useState, useCallback } from 'react'
 import { Button, Paragraph, Sheet, YStack } from 'tamagui'
+import type { SheetTransitionEvent } from '@tamagui/sheet'
 
 export function SheetOnAnimationCompleteCase() {
   const [open, setOpen] = useState(false)
   const [lastEvent, setLastEvent] = useState('')
   const [eventCount, setEventCount] = useState(0)
 
-  const handleAnimationComplete = useCallback((info: { open: boolean }) => {
-    setLastEvent(info.open ? 'opened' : 'closed')
+  const handleTransition = useCallback((e: SheetTransitionEvent) => {
+    if (e.phase !== 'end' || e.finished === false) return
+    setLastEvent(e.cause === 'close' ? 'closed' : 'opened')
     setEventCount((c) => c + 1)
   }, [])
 
@@ -27,10 +29,11 @@ export function SheetOnAnimationCompleteCase() {
       <Sheet
         open={open}
         onOpenChange={setOpen}
-        onAnimationComplete={handleAnimationComplete}
+        onTransition={handleTransition}
         transition="quick"
         modal
         dismissOnSnapToBottom
+        unmountChildrenWhenHidden
         snapPoints={[40]}
       >
         <Sheet.Overlay
@@ -38,7 +41,9 @@ export function SheetOnAnimationCompleteCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame padding="$4" bg="$background" data-testid="sheet-frame">
+        <Sheet.Handle data-testid="sheet-handle" height={24} />
+        <Sheet.Container padding="$4" data-testid="sheet-frame">
+          <Sheet.Background bg="$background" />
           <Paragraph>Sheet content</Paragraph>
           <Button
             onPress={() => setOpen(false)}
@@ -47,7 +52,7 @@ export function SheetOnAnimationCompleteCase() {
           >
             Close
           </Button>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

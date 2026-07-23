@@ -80,9 +80,10 @@ function TakeoutStyleDialog({
           dismissOnSnapToBottom
           unmountChildrenWhenHidden
         >
-          <Sheet.Frame p="$4" gap="$4">
+          <Sheet.Container p="$4" gap="$4">
+            <Sheet.Background />
             <Adapt.Contents />
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$background"
             opacity={0.5}
@@ -148,7 +149,6 @@ const DialogOverlay = styled(Dialog.Overlay, {
 })
 
 const DialogContent = styled(Dialog.Content, {
-  unstyled: true,
   z: 1000000,
   transition: '200ms',
   bg: 'transparent',

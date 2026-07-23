@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { getGestureHandler } from '@tamagui/native'
-import { unstable_isSheetGestureHandlerEnabled } from '@tamagui/sheet'
-import { Button, Input, Sheet, Text, View, XStack, YStack } from 'tamagui'
+import { getGestureHandlerConfig } from '@tamagui/native/setup-gesture-handler'
+import { Input, Sheet, Text, View, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * regression repro for 2ce98f604a (rngh press tap maxDistance).
@@ -20,7 +21,7 @@ export function SheetPressRegressionCase() {
   const [open, setOpen] = useState(false)
   const [caption, setCaption] = useState('')
   const pressRnghEnabled = getGestureHandler().isEnabled
-  const sheetRnghEnabled = unstable_isSheetGestureHandlerEnabled()
+  const sheetRnghEnabled = getGestureHandlerConfig().sheet !== false
 
   const [postCount, setPostCount] = useState(0)
   const [cancelCount, setCancelCount] = useState(0)
@@ -79,7 +80,8 @@ export function SheetPressRegressionCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame testID="sheet-press-frame" bg="$background">
+        <Sheet.Container testID="sheet-press-frame">
+          <Sheet.Background bg="$background" />
           <Sheet.ScrollView
             testID="sheet-press-scrollview"
             maxHeight={520}
@@ -176,7 +178,7 @@ export function SheetPressRegressionCase() {
               </Button>
             </XStack>
           </YStack>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
 
       {/* counters mirrored outside the sheet so they're readable after close */}

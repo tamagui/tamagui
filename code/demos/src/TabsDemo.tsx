@@ -1,16 +1,16 @@
 import React from 'react'
 import type { TabsContentProps } from 'tamagui'
 import {
-  Button,
   H5,
   Separator,
   SizableText,
-  Tabs,
   XStack,
   YStack,
   isWeb,
   useWindowDimensions,
 } from 'tamagui'
+import { Button } from './Button'
+import { Tabs } from './ControlSkins'
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -39,7 +39,7 @@ export function TabsDemo() {
         l="$4"
         $maxXs={{ display: 'none' }}
       >
-        <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button size="small" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
       </XStack>

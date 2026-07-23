@@ -1,7 +1,8 @@
+import { createRefComponent } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps, TamaguiElement, ViewStyle } from '@tamagui/web'
-import { styled, View } from '@tamagui/web'
+import { resolveDefaultSizeToken, styled, View } from '@tamagui/web'
 import * as React from 'react'
 import { context } from './context'
 
@@ -11,71 +12,46 @@ import { context } from './context'
 
 const NAME = 'Toggle'
 
+// Unstyled Toggle behavior frame: structural layout, the size mechanism
+// (hit-target dimensions), the native button render, and focus reset only. All
+// theme decoration (palette, border, hover/press/focus color styling) and the
+// default "active" appearance live in the tamagui skin
+// (code/ui/tamagui/src/components/ToggleGroup.tsx). The frame still emits the
+// discrete state (aria-pressed / data-state) via the Toggle component below; the
+// skin styles that state through the `activeStyle` prop.
 export const ToggleFrame = styled(
   View,
   {
     name: NAME,
     render: 'button',
     context,
+    size: true,
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
 
     variants: {
-      unstyled: {
-        false: {
-          size: '$true',
-          alignItems: 'center',
-          justifyContent: 'center',
-          display: 'flex',
-          backgroundColor: '$background',
-          borderColor: '$borderColor',
-          borderWidth: 1,
-          margin: -1,
-          hoverStyle: {
-            backgroundColor: '$backgroundHover',
-            borderColor: '$borderColorHover',
-          },
-          pressStyle: {
-            backgroundColor: '$backgroundPress',
-            borderColor: '$borderColorPress',
-          },
-          focusVisibleStyle: {
-            outlineColor: '$outlineColor',
-            outlineWidth: 2,
-            outlineStyle: 'solid',
-            zIndex: 10,
-          },
-        },
-      },
-
       size: {
-        '...size': (val, { tokens }) => {
-          if (!val) return
-          return {
-            width: tokens.size[val],
-            height: tokens.size[val],
-          }
-        },
-        ':number': (val) => ({
+        number: (val) => ({
           width: val,
           height: val,
         }),
-      },
-
-      defaultActiveStyle: {
-        true: {
-          backgroundColor: '$backgroundActive',
-          hoverStyle: {
-            backgroundColor: '$backgroundActive',
-          },
-          focusStyle: {
-            backgroundColor: '$backgroundActive',
-          },
+        Size: (val, { tokens }) => {
+          if (!val) return
+          const sizeToken = resolveDefaultSizeToken(val)
+          return {
+            width: tokens.size[sizeToken],
+            height: tokens.size[sizeToken],
+          }
         },
       },
-    } as const,
 
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1',
-    },
+      // structural placeholder for the default-active appearance; the skin fills
+      // it in (or the `activeStyle` prop overrides it).
+      defaultActiveStyle: {
+        true: {},
+      },
+    } as const,
   },
   {
     accept: {
@@ -99,7 +75,7 @@ type ToggleItemExtraProps = {
 
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
 
-export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
+export const Toggle = createRefComponent<TamaguiElement, ToggleProps>(
   function Toggle(props, forwardedRef) {
     const {
       active: activeProp,
@@ -107,7 +83,6 @@ export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
       defaultActive = false,
       onActiveChange,
       activeTheme,
-      unstyled = false,
       ...buttonProps
     } = props
 
@@ -123,12 +98,7 @@ export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
         aria-pressed={active}
         data-state={active ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}
-        unstyled={unstyled}
-        {...(active &&
-          !activeStyle &&
-          !unstyled && {
-            defaultActiveStyle: true,
-          })}
+        {...(active && !activeStyle && { defaultActiveStyle: true })}
         {...buttonProps}
         // spread activeStyle after buttonProps so it wins when active: a styled()
         // variant (e.g. a resting `backgroundColor`) forwards that value as a plain
