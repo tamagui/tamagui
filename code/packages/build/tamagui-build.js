@@ -284,7 +284,15 @@ function resolveOutputModuleSpecifier(specifier, filePath, outputExtension) {
 
   const targetPath = path.resolve(path.dirname(filePath), pathname)
   if (FSE.existsSync(`${targetPath}.js`)) {
-    return `${pathname}${outputExtension}${suffix}`
+    const platformExtension = outputExtension.match(/^\.(native|web|ios|android)\./)?.[1]
+    const explicitPlatformExtension = pathname.match(/\.(native|web|ios|android)$/)?.[1]
+    let extension = outputExtension
+    if (explicitPlatformExtension && outputExtension === '.mjs') {
+      extension = '.js'
+    } else if (platformExtension && pathname.endsWith(`.${platformExtension}`)) {
+      extension = outputExtension.replace(`.${platformExtension}`, '')
+    }
+    return `${pathname}${extension}${suffix}`
   }
 
   if (path.extname(pathname)) {
@@ -1451,6 +1459,10 @@ async function esbuildWriteIfChanged(
 
       if (platform === 'native' && isESM) {
         result.code = result.code.replace(/\b__require(?:\$\d+)?\(/g, 'require(')
+      }
+
+      if (platform === 'native' && !isESM && !avoidCJS) {
+        await flush(path.replace(/\.js$/, '.cjs'), result.code)
       }
 
       const shouldPreserveJsAlias =
