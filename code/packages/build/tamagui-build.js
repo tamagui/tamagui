@@ -273,7 +273,12 @@ async function pruneUnusedImports(contents, filePath) {
   }
 }
 
-function resolveOutputModuleSpecifier(specifier, filePath, outputExtension) {
+function resolveOutputModuleSpecifier(
+  specifier,
+  filePath,
+  outputExtension,
+  outputPaths = new Set()
+) {
   if (!specifier.startsWith('.') && !specifier.startsWith('/')) {
     return specifier
   }
@@ -283,7 +288,17 @@ function resolveOutputModuleSpecifier(specifier, filePath, outputExtension) {
   const pathname = suffixIndex === -1 ? specifier : specifier.slice(0, suffixIndex)
 
   const targetPath = path.resolve(path.dirname(filePath), pathname)
-  if (FSE.existsSync(`${targetPath}.js`)) {
+  if (
+    pathname.endsWith('.js') &&
+    (outputPaths.has(targetPath) || FSE.existsSync(targetPath))
+  ) {
+    const base = pathname.slice(0, -3)
+    const platformExtension = outputExtension.match(/^\.(native|web|ios|android)\./)?.[1]
+    return platformExtension && base.endsWith(`.${platformExtension}`)
+      ? `${base}.js${suffix}`
+      : `${base}${outputExtension}${suffix}`
+  }
+  if (outputPaths.has(`${targetPath}.js`) || FSE.existsSync(`${targetPath}.js`)) {
     const platformExtension = outputExtension.match(/^\.(native|web|ios|android)\./)?.[1]
     const explicitPlatformExtension = pathname.match(/\.(native|web|ios|android)$/)?.[1]
     let extension = outputExtension
@@ -316,6 +331,7 @@ async function fullySpecifyOutputs(outputs, { format, outputExtension }) {
     return new Map()
   }
 
+  const outputPaths = new Set(jsOutputs.map((file) => path.resolve(file.path)))
   const transformed = new Map()
 
   await Promise.all(
@@ -329,8 +345,14 @@ async function fullySpecifyOutputs(outputs, { format, outputExtension }) {
             name: 'tamagui-build-fully-specified',
             resolveId(id, importer) {
               if (!importer) return id
+              const resolved = resolveOutputModuleSpecifier(
+                id,
+                file.path,
+                outputExtension,
+                outputPaths
+              )
               return {
-                id: resolveOutputModuleSpecifier(id, file.path, outputExtension),
+                id: resolved,
                 external: true,
               }
             },
@@ -493,6 +515,7 @@ const pkgMain = pkg.main
 const pkgSource = pkg.source
 const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
+const pkgBin = pkg.bin
 const pkgTypes = Boolean(pkg.types || pkg.typings)
 
 // build config from package.json
@@ -503,7 +526,8 @@ const bundleOnly = buildConfig.bundleOnly || null
 // if bundleExternal is set, always keep those packages external
 const bundleExternal = buildConfig.bundleExternal || null
 
-const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
+const shouldBuildESM = Boolean(pkgModule || (!pkgMain && !pkgModuleJSX && pkgBin))
+const flatOut = [pkgMain, shouldBuildESM, pkgModuleJSX].filter(Boolean).length === 1
 
 const avoidCJS = pkgMain?.endsWith('.js')
 const getJsEntryAliasPath = (entry) => {
@@ -855,10 +879,24 @@ async function buildTsc(allFiles) {
 
 async function emitDeclarationsWithTsgo(targetDir, allFiles) {
   const tsgoPath = getTypeScriptNativePath()
+  const declarationProject = `.tamagui-build-tsconfig-${process.pid}.json`
+  const sourceProject = path
+    .relative(process.cwd(), path.resolve(tsProject || 'tsconfig.json'))
+    .replaceAll(path.sep, '/')
+  await FSE.writeJSON(
+    declarationProject,
+    {
+      extends: sourceProject.startsWith('.') ? sourceProject : `./${sourceProject}`,
+      files: allFiles,
+      include: [],
+      exclude: [],
+    },
+    { spaces: 2 }
+  )
   await FSE.remove('tsconfig.tsbuildinfo')
   const args = [
     '--project',
-    tsProject || 'tsconfig.json',
+    declarationProject,
     '--declaration',
     '--emitDeclarationOnly',
     '--declarationMap',
@@ -878,23 +916,27 @@ async function emitDeclarationsWithTsgo(targetDir, allFiles) {
     args.push('--baseUrl', path.resolve(baseUrl))
   }
 
-  await new Promise((resolve, reject) => {
-    const child = childProcess.spawn(tsgoPath, args, { stdio: 'inherit' })
-    child.once('error', reject)
-    child.once('exit', (code, signal) => {
-      if (code === 0) {
-        resolve()
-        return
-      }
-      reject(
-        new Error(
-          signal
-            ? `TypeScript native declaration emit stopped by ${signal}`
-            : `TypeScript native declaration emit exited with code ${code}`
+  try {
+    await new Promise((resolve, reject) => {
+      const child = childProcess.spawn(tsgoPath, args, { stdio: 'inherit' })
+      child.once('error', reject)
+      child.once('exit', (code, signal) => {
+        if (code === 0) {
+          resolve()
+          return
+        }
+        reject(
+          new Error(
+            signal
+              ? `TypeScript native declaration emit stopped by ${signal}`
+              : `TypeScript native declaration emit exited with code ${code}`
+          )
         )
-      )
+      })
     })
-  })
+  } finally {
+    await FSE.remove(declarationProject)
+  }
 
   const declarationRoot = declarationToRoot ? '.' : targetDir
   await Promise.all(
@@ -1057,7 +1099,7 @@ async function buildJs(allFiles) {
       : null,
 
     // web output to esm
-    pkgModule
+    shouldBuildESM
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'web',
           bundle: shouldBundleFlag,
@@ -1066,7 +1108,7 @@ async function buildJs(allFiles) {
       : null,
 
     // native output to esm
-    pkgModule && !shouldSkipNative
+    shouldBuildESM && !shouldSkipNative
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'native',
         })

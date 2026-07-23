@@ -4,6 +4,7 @@
   "source": "src/index.ts",
   "files": [
     "src",
+    "!src/**/*.test.*",
     "types",
     "dist"
   ],

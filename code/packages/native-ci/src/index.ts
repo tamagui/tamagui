@@ -75,10 +75,10 @@ export {
   setupAdbReverse,
   setupAndroidDevice,
   ensureAndroidFolder,
-} from './android'
+} from './android-utils'
 
 // iOS utilities
-export { ensureIOSFolder, ensureIOSApp, cleanupSimulators } from './ios'
+export { ensureIOSFolder, ensureIOSApp, cleanupSimulators } from './ios-utils'
 
 // Dependency management
 export {

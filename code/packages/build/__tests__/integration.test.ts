@@ -60,6 +60,9 @@ describe('tamagui-build integration test', () => {
     expect(esmOutput).toContain('./star.mjs')
     expect(esmOutput).toContain('import("./lazy.mjs")')
     expect(esmOutput).toContain('./common.mjs')
+    expect(readFileSync(join(distPath, 'esm', 'index.native.js'), 'utf-8')).toContain(
+      './nativeOnly.native.js'
+    )
     expect(cjsOutput).toContain('require("./star.cjs")')
     expect(cjsOutput).toContain('import("./lazy.cjs")')
     expect(cjsOutput).toContain('require("./common.cjs")')
@@ -88,6 +91,9 @@ describe('tamagui-build integration test', () => {
     expect(existsSync(join(distPath, 'jsx', 'index.js'))).toBe(true)
     expect(existsSync(join(distPath, 'cjs', 'ignored.test-d.cjs'))).toBe(false)
     expect(existsSync(join(distPath, 'esm', 'ignored.test-d.mjs'))).toBe(false)
+    expect(existsSync(join(simplePackagePath, 'types', 'ignored.test-d.d.ts'))).toBe(
+      false
+    )
   })
 
   it('rebuilds declarations when incremental state outlives the output', () => {

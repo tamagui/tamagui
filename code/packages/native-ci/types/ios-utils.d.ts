@@ -60,4 +60,4 @@ export declare function ensureIOSFolder(): Promise<void>;
  * Set SKIP_IOS_REBUILD=1 to skip rebuild even when fingerprint changes.
  */
 export declare function ensureIOSApp(config?: string): Promise<void>;
-//# sourceMappingURL=ios.d.ts.map
+//# sourceMappingURL=ios-utils.d.ts.map

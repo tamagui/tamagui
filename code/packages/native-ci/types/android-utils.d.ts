@@ -29,4 +29,4 @@ export declare function setupAndroidDevice(): Promise<void>;
  * Only regenerate if the folder is missing or incomplete.
  */
 export declare function ensureAndroidFolder(): Promise<void>;
-//# sourceMappingURL=android.d.ts.map
+//# sourceMappingURL=android-utils.d.ts.map

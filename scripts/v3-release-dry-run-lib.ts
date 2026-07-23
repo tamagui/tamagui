@@ -44,6 +44,15 @@ export interface PackedArtifact {
   files: string[]
 }
 
+export function npmPackFilename(stdout: string): string | undefined {
+  const output = JSON.parse(stdout) as unknown
+  if (!output || typeof output !== 'object') return
+  const artifact = Object.values(output)[0]
+  if (!artifact || typeof artifact !== 'object') return
+  const filename = (artifact as { filename?: unknown }).filename
+  return typeof filename === 'string' ? filename : undefined
+}
+
 export interface ReleasePreviewReport {
   createdAt: string
   repoRoot: string
@@ -412,7 +421,7 @@ export function assertSafeTarInventory(entries: readonly string[]): string[] {
     const forbidden = segments.find((segment) => forbiddenInventorySegments.has(segment))
     if (forbidden)
       throw new Error(`Tarball contains forbidden ${forbidden} path: ${entry}`)
-    if (/\.(?:test-d|test|spec)\.[cm]?[jt]s(?:x)?(?:\.map)?$/i.test(entry)) {
+    if (/\.(?:test-d|test|spec)(?:\.d)?\.[cm]?[jt]s(?:x)?(?:\.map)?$/i.test(entry)) {
       throw new Error(`Tarball contains test artifact ${entry}`)
     }
     if (entry.endsWith('.tsbuildinfo'))

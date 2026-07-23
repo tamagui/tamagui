@@ -1,6 +1,5 @@
 #!/usr/bin/env bun
 
-import { spawn } from 'node:child_process'
 import { tmpdir } from 'node:os'
 import { cp, mkdir, mkdtemp, rename, writeFile } from 'node:fs/promises'
 import { basename, isAbsolute, join, relative, resolve, sep } from 'node:path'
@@ -19,6 +18,7 @@ import {
   hasRuntimeExport,
   hasExportCondition,
   installedPackageRealPaths,
+  npmPackFilename,
   packagesForChangedPaths,
   publishCommandsForRequested,
   readJson,
@@ -170,31 +170,26 @@ async function runCommand(
   args: readonly string[],
   { cwd, env = process.env, quiet = false }: RunCommandOptions
 ): Promise<CommandResult> {
-  return await new Promise((resolvePromise, reject) => {
-    const child = spawn(command, [...args], {
-      cwd,
-      env,
-      stdio: ['ignore', 'pipe', 'pipe'],
-    })
-    let stdout = ''
-    let stderr = ''
-    child.stdout.on('data', (chunk: Buffer) => {
-      stdout += chunk
-      if (!quiet) process.stdout.write(chunk)
-    })
-    child.stderr.on('data', (chunk: Buffer) => {
-      stderr += chunk
-      if (!quiet) process.stderr.write(chunk)
-    })
-    child.on('error', reject)
-    child.on('exit', (code, signal) => {
-      if (code === 0) resolvePromise({ stdout, stderr })
-      else
-        reject(
-          new Error(`${command} ${args.join(' ')} failed (${signal ?? code})\n${stderr}`)
-        )
-    })
+  const child = Bun.spawn([command, ...args], {
+    cwd,
+    env,
+    stdin: 'ignore',
+    stdout: 'pipe',
+    stderr: 'pipe',
   })
+  const [code, stdout, stderr] = await Promise.all([
+    child.exited,
+    new Response(child.stdout).text(),
+    new Response(child.stderr).text(),
+  ])
+  if (!quiet) {
+    process.stdout.write(stdout)
+    process.stderr.write(stderr)
+  }
+  if (code !== 0) {
+    throw new Error(`${command} ${args.join(' ')} failed (${code})\n${stderr}`)
+  }
+  return { stdout, stderr }
 }
 
 async function changedPaths(repoRoot: string, base: string): Promise<string[]> {
@@ -314,8 +309,7 @@ async function packOne(
       ['pack', '--json', '--ignore-scripts', '--pack-destination', artifactDir],
       { cwd: stagingDir, quiet: true }
     )
-    const packed = JSON.parse(result.stdout) as Array<{ filename: string }>
-    const npmTarball = packed[0]?.filename
+    const npmTarball = npmPackFilename(result.stdout)
     if (!npmTarball)
       throw new Error(`npm pack did not report an artifact for ${pkg.name}`)
     const produced = join(artifactDir, npmTarball)
@@ -351,8 +345,7 @@ async function packRegistryOne(
     ],
     { cwd: artifactDir, quiet: true }
   )
-  const packed = JSON.parse(result.stdout) as Array<{ filename: string }>
-  const npmTarball = packed[0]?.filename
+  const npmTarball = npmPackFilename(result.stdout)
   if (!npmTarball) throw new Error(`npm pack did not download ${registrySpecifier}`)
   const produced = join(artifactDir, npmTarball)
   if (produced !== finalTarball) await rename(produced, finalTarball)
@@ -706,11 +699,10 @@ async function main(): Promise<void> {
     const specifiers = exportSpecifiers(manifest)
     await runProbe(consumerDir, 'esm', pkg.name)
     probes.push({ package: pkg.name, condition: 'esm', specifier: pkg.name })
-    if (!manifest.main && !hasExportCondition(manifest.exports, 'require')) {
-      throw new Error(`${pkg.name} has no CommonJS export to probe`)
+    if (manifest.main || hasExportCondition(manifest.exports, 'require')) {
+      await runProbe(consumerDir, 'cjs', pkg.name)
+      probes.push({ package: pkg.name, condition: 'cjs', specifier: pkg.name })
     }
-    await runProbe(consumerDir, 'cjs', pkg.name)
-    probes.push({ package: pkg.name, condition: 'cjs', specifier: pkg.name })
     for (const condition of ['browser', 'react-native'] as const) {
       for (const specifier of specifiers) {
         await runProbe(consumerDir, condition, specifier)

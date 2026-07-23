@@ -1,4 +1,4 @@
-import { getNativeOnlyMarker } from './nativeOnly'
+import { getNativeOnlyMarker } from './nativeOnly.js'
 import { explicitNativeMarker } from './explicit.native'
 
 export { nestedHello } from './nested'

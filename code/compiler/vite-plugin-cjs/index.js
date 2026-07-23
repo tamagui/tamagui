@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs')
+module.exports = require('@tamagui/vite-plugin')

@@ -16,6 +16,7 @@ import {
   expandInternalPackageClosure,
   exportSpecifiers,
   hasRuntimeExport,
+  npmPackFilename,
   packagesForChangedPaths,
   publishCommand,
   publishCommandsForRequested,
@@ -326,6 +327,7 @@ describe('G1 tarball audits', () => {
     for (const entry of [
       'package/tests/a.test.ts',
       'package/dist/fixture.test-d.mjs',
+      'package/types/component.test.d.ts',
       'package/fixtures/app.tsx',
       'package/.turbo/cache.bin',
       '/absolute/package.json',
@@ -411,6 +413,15 @@ describe('G1 tarball audits', () => {
 })
 
 describe('G1 isolation and preview', () => {
+  test('reads npm pack artifacts from npm 11 and npm 12 output', () => {
+    expect(npmPackFilename(JSON.stringify([{ filename: 'package-1.0.0.tgz' }]))).toBe(
+      'package-1.0.0.tgz'
+    )
+    expect(
+      npmPackFilename(JSON.stringify({ package: { filename: 'package-1.0.0.tgz' } }))
+    ).toBe('package-1.0.0.tgz')
+  })
+
   test('rejects installed packages resolving to the workspace', () => {
     expect(() =>
       assertInstalledPackagesAreIsolated(
