@@ -564,7 +564,7 @@ async function clean() {
       //
       FSE.remove('.turbo'),
       FSE.remove('node_modules'),
-      FSE.remove('types'),
+      shouldSkipTypes ? null : FSE.remove('types'),
       FSE.remove('dist'),
     ])
   } catch {

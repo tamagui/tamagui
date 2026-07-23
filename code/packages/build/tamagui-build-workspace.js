@@ -12,6 +12,7 @@ const args = process.argv.slice(2)
 const root = path.resolve(readOption('--root') || process.cwd())
 const shouldWatch = args.includes('--watch')
 const shouldList = args.includes('--list')
+const requestedScript = readOption('--script')
 const skipInitialBuild = Boolean(process.env.SKIP_INITIAL_BUILD)
 const requestedConcurrency = Number(readOption('--concurrency'))
 const concurrency =
@@ -72,19 +73,30 @@ function getWorkspacePackages() {
     .map((packageJsonPath) => {
       const packageRoot = path.dirname(packageJsonPath)
       const packageJson = FSE.readJSONSync(packageJsonPath)
-      const selectedScript = shouldWatch
-        ? packageJson.scripts?.watch
-          ? 'watch'
-          : packageJson.scripts?.['build:watch']
-            ? 'build:watch'
-            : null
-        : packageJson.scripts?.build
-          ? 'build'
+      const selectedScript = requestedScript
+        ? packageJson.scripts?.[requestedScript]
+          ? requestedScript
           : null
+        : shouldWatch
+          ? packageJson.scripts?.watch
+            ? 'watch'
+            : packageJson.scripts?.['build:watch']
+              ? 'build:watch'
+              : null
+          : packageJson.scripts?.build
+            ? 'build'
+            : null
       const selectedCommand = selectedScript ? packageJson.scripts[selectedScript] : null
       if (!selectedCommand) return null
 
       const packageArgs = getBuildArgs(selectedCommand)
+      if (
+        requestedScript === 'clean:build' &&
+        packageArgs &&
+        getBuildArgs(packageJson.scripts?.build || '')?.includes('--skip-types')
+      ) {
+        packageArgs.push('--skip-types')
+      }
 
       if (filters.length && !filters.includes(packageJson.name)) return null
 
@@ -185,9 +197,9 @@ function scheduleWorkspaceBuilds() {
   for (const item of packages) {
     if (scheduledBuilds.has(item.name)) continue
 
-    const workspaceDependencies = item.dependencies.filter((dependency) =>
-      packageNames.has(dependency)
-    )
+    const workspaceDependencies = requestedScript
+      ? []
+      : item.dependencies.filter((dependency) => packageNames.has(dependency))
     const failedDependency = workspaceDependencies.find((dependency) =>
       failedBuilds.has(dependency)
     )
