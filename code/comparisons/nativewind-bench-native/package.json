@@ -7,7 +7,7 @@
     "start": "expo start --port 8102"
   },
   "dependencies": {
-    "expo": "~55.0.6",
+    "expo": "~55.0.28",
     "expo-linking": "~55.0.7",
     "nativewind": "5.0.0-preview.4",
     "react": ">=19",

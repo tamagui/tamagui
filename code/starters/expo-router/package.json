@@ -21,7 +21,7 @@
     "@tamagui/toast": "workspace:*",
     "babel-preset-expo": "~55.0.0",
     "burnt": "^0.12.2",
-    "expo": "~55.0.6",
+    "expo": "~55.0.28",
     "expo-build-properties": "~55.0.9",
     "expo-font": "~55.0.4",
     "expo-linking": "~55.0.7",

@@ -19,7 +19,7 @@
     "@tamagui/config": "workspace:*",
     "@tamagui/select": "workspace:*",
     "@tamagui/sheet": "workspace:*",
-    "expo": "~55.0.6",
+    "expo": "~55.0.28",
     "react": ">=19",
     "react-dom": "*",
     "react-native": "0.83.2",
