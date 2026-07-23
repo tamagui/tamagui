@@ -70,8 +70,8 @@ copied fixture, and one documented rule.
 
 ## Facets: the variant-system piece (owner addition, 2026-07-18)
 
-The owner's addition: v3 has typed resolver-name variant keys (the `Size:` /
-`Color:` machinery), so surfaces should get composable capability variants. This is
+The owner's addition: v3 has a typed variant helper (`createVariantResolver`
+machinery), so surfaces should get composable capability variants. This is
 ThemeableStack's one good idea (`bordered`, `elevate`, `outlined`,
 hover/press/focus theming) reborn in the right layer with the right inputs.
 

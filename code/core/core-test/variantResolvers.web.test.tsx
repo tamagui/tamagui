@@ -2,7 +2,14 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
 import { StyleObjectProperty, StyleObjectValue } from '../web/src'
-import { createFont, createTamagui, createVariable, styled, View } from '../web/src'
+import {
+  createFont,
+  createTamagui,
+  createVariable,
+  createVariantResolver,
+  styled,
+  View,
+} from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 function findRuleValue(rulesToInsert: Record<string, any>, property: string): any {
@@ -90,9 +97,9 @@ describe('TS-style variant resolvers', () => {
     const Comp = styled(View, {
       variants: {
         kind: {
-          [resolverKey]: () => ({
+          [resolverKey]: createVariantResolver(resolverKey, () => ({
             opacity: 0.42,
-          }),
+          })),
         },
       } as const,
     })
@@ -107,9 +114,9 @@ describe('TS-style variant resolvers', () => {
           $4: {
             opacity: 0.2,
           },
-          Size: () => ({
+          Size: createVariantResolver('Size', () => ({
             opacity: 0.8,
-          }),
+          })),
         },
       } as const,
     })
@@ -130,9 +137,9 @@ describe('TS-style variant resolvers', () => {
           null: {
             opacity: 0.13,
           },
-          any: () => ({
+          any: createVariantResolver('any', () => ({
             opacity: 0.9,
-          }),
+          })),
         },
       } as const,
     })
@@ -146,12 +153,12 @@ describe('TS-style variant resolvers', () => {
     const StringFirst = styled(View, {
       variants: {
         kind: {
-          string: () => ({
+          string: createVariantResolver('string', () => ({
             opacity: 0.3,
-          }),
-          'Size | string': () => ({
+          })),
+          'Size | string': createVariantResolver('Size | string', () => ({
             opacity: 0.7,
-          }),
+          })),
         },
       } as const,
     })
@@ -159,12 +166,12 @@ describe('TS-style variant resolvers', () => {
     const SizeFirst = styled(View, {
       variants: {
         kind: {
-          'Size | string': () => ({
+          'Size | string': createVariantResolver('Size | string', () => ({
             opacity: 0.7,
-          }),
-          string: () => ({
+          })),
+          string: createVariantResolver('string', () => ({
             opacity: 0.3,
-          }),
+          })),
         },
       } as const,
     })
@@ -177,18 +184,18 @@ describe('TS-style variant resolvers', () => {
     const Comp = styled(View, {
       variants: {
         kind: {
-          number: () => ({
+          number: createVariantResolver('number', () => ({
             opacity: 0.1,
-          }),
-          string: () => ({
+          })),
+          string: createVariantResolver('string', () => ({
             opacity: 0.2,
-          }),
-          boolean: () => ({
+          })),
+          boolean: createVariantResolver('boolean', () => ({
             opacity: 0.3,
-          }),
-          any: () => ({
+          })),
+          any: createVariantResolver('any', () => ({
             opacity: 0.4,
-          }),
+          })),
         },
       } as const,
     })
@@ -206,12 +213,12 @@ describe('TS-style variant resolvers', () => {
     const BooleanFirst = styled(View, {
       variants: {
         kind: {
-          boolean: () => ({
+          boolean: createVariantResolver('boolean', () => ({
             opacity: 0.31,
-          }),
-          Size: (value) => ({
+          })),
+          Size: createVariantResolver('Size', (value) => ({
             opacity: value === '$4' ? 0.41 : 0.91,
-          }),
+          })),
         },
       } as const,
     })
@@ -219,15 +226,15 @@ describe('TS-style variant resolvers', () => {
     const SizeFirst = styled(View, {
       variants: {
         kind: {
-          Size: (value) => {
+          Size: createVariantResolver('Size', (value) => {
             sizeFirstSeen = value
             return {
               opacity: value === '$4' ? 0.41 : 0.91,
             }
-          },
-          boolean: () => ({
-            opacity: 0.31,
           }),
+          boolean: createVariantResolver('boolean', () => ({
+            opacity: 0.31,
+          })),
         },
       } as const,
     })
@@ -241,78 +248,78 @@ describe('TS-style variant resolvers', () => {
     const ColorFirst = styled(View, {
       variants: {
         kind: {
-          Color: () => ({
+          Color: createVariantResolver('Color', () => ({
             opacity: 0.21,
-          }),
-          string: () => ({
+          })),
+          string: createVariantResolver('string', () => ({
             opacity: 0.22,
-          }),
+          })),
         },
       } as const,
     })
     const StringFirst = styled(View, {
       variants: {
         kind: {
-          string: () => ({
+          string: createVariantResolver('string', () => ({
             opacity: 0.22,
-          }),
-          Color: () => ({
+          })),
+          Color: createVariantResolver('Color', () => ({
             opacity: 0.21,
-          }),
+          })),
         },
       } as const,
     })
     const SizeFirst = styled(View, {
       variants: {
         kind: {
-          Size: () => ({
+          Size: createVariantResolver('Size', () => ({
             opacity: 0.23,
-          }),
-          Space: () => ({
+          })),
+          Space: createVariantResolver('Space', () => ({
             opacity: 0.24,
-          }),
+          })),
         },
       } as const,
     })
     const SpaceFirst = styled(View, {
       variants: {
         kind: {
-          Space: () => ({
+          Space: createVariantResolver('Space', () => ({
             opacity: 0.24,
-          }),
-          Size: () => ({
+          })),
+          Size: createVariantResolver('Size', () => ({
             opacity: 0.23,
-          }),
+          })),
         },
       } as const,
     })
     const CategoryNumberAny = styled(View, {
       variants: {
         kind: {
-          ZIndex: () => ({
+          ZIndex: createVariantResolver('ZIndex', () => ({
             opacity: 0.25,
-          }),
-          number: () => ({
+          })),
+          number: createVariantResolver('number', () => ({
             opacity: 0.26,
-          }),
-          any: () => ({
+          })),
+          any: createVariantResolver('any', () => ({
             opacity: 0.27,
-          }),
+          })),
         },
       } as const,
     })
     const NumberCategoryAny = styled(View, {
       variants: {
         kind: {
-          number: () => ({
+          number: createVariantResolver('number', () => ({
             opacity: 0.26,
-          }),
-          ZIndex: () => ({
+          })),
+          ZIndex: createVariantResolver('ZIndex', () => ({
             opacity: 0.25,
-          }),
-          any: () => ({
+          })),
+          any: createVariantResolver('any', () => ({
             opacity: 0.27,
-          }),
+          })),
         },
       } as const,
     })
@@ -331,24 +338,24 @@ describe('TS-style variant resolvers', () => {
     const SizeFirst = styled(View, {
       variants: {
         kind: {
-          'Size | boolean': (value) => {
+          'Size | boolean': createVariantResolver('Size | boolean', (value) => {
             sizeFirstSeen = value
             return {
               opacity: 0.28,
             }
-          },
+          }),
         },
       } as const,
     })
     const BooleanFirst = styled(View, {
       variants: {
         kind: {
-          'boolean | Size': (value) => {
+          'boolean | Size': createVariantResolver('boolean | Size', (value) => {
             booleanFirstSeen = value
             return {
               opacity: 0.29,
             }
-          },
+          }),
         },
       } as const,
     })
@@ -476,9 +483,9 @@ describe('TS-style variant resolvers', () => {
       const Comp = styled(View, {
         variants: {
           kind: {
-            [resolverKey]: () => ({
+            [resolverKey]: createVariantResolver(resolverKey, () => ({
               opacity: 0.62,
-            }),
+            })),
           },
         } as const,
       })
@@ -507,9 +514,9 @@ describe('TS-style variant resolvers', () => {
       const Comp = styled(View, {
         variants: {
           kind: {
-            [resolverKey]: () => ({
+            [resolverKey]: createVariantResolver(resolverKey, () => ({
               opacity: 0.62,
-            }),
+            })),
           },
         } as const,
       })
@@ -522,8 +529,8 @@ describe('TS-style variant resolvers', () => {
     const Comp = styled(View, {
       variants: {
         kind: {
-          Size: () => ({ opacity: 0.44 }),
-          Space: () => ({ opacity: 0.45 }),
+          Size: createVariantResolver('Size', () => ({ opacity: 0.44 })),
+          Space: createVariantResolver('Space', () => ({ opacity: 0.45 })),
         },
       } as const,
     })
@@ -559,7 +566,7 @@ describe('TS-style variant resolvers', () => {
     const SizeOnly = styled(View, {
       variants: {
         kind: {
-          Size: () => ({ opacity: 0.44 }),
+          Size: createVariantResolver('Size', () => ({ opacity: 0.44 })),
         },
       } as const,
     })
@@ -571,8 +578,8 @@ describe('TS-style variant resolvers', () => {
     const Universal = styled(View, {
       variants: {
         kind: {
-          Radius: () => ({ opacity: 0.53 }),
-          ZIndex: () => ({ opacity: 0.54 }),
+          Radius: createVariantResolver('Radius', () => ({ opacity: 0.53 })),
+          ZIndex: createVariantResolver('ZIndex', () => ({ opacity: 0.54 })),
         },
       } as const,
     })
@@ -590,14 +597,14 @@ describe('TS-style variant resolvers', () => {
     const RadiusOnly = styled(View, {
       variants: {
         kind: {
-          Radius: () => ({ opacity: 0.56 }),
+          Radius: createVariantResolver('Radius', () => ({ opacity: 0.56 })),
         },
       } as const,
     })
     const ZIndexOnly = styled(View, {
       variants: {
         kind: {
-          ZIndex: () => ({ opacity: 0.57 }),
+          ZIndex: createVariantResolver('ZIndex', () => ({ opacity: 0.57 })),
         },
       } as const,
     })
@@ -618,9 +625,9 @@ describe('TS-style variant resolvers', () => {
     const Comp = styled(View, {
       variants: {
         kind: {
-          Color: () => ({
+          Color: createVariantResolver('Color', () => ({
             opacity: 0.46,
-          }),
+          })),
         },
       } as const,
     })
@@ -646,11 +653,11 @@ describe('TS-style variant resolvers', () => {
     const Comp = styled(View, {
       variants: {
         kind: {
-          Size: () => ({ opacity: 0.47 }),
-          Space: () => ({ opacity: 0.48 }),
-          Radius: () => ({ opacity: 0.49 }),
-          ZIndex: () => ({ opacity: 0.5 }),
-          Color: () => ({ opacity: 0.51 }),
+          Size: createVariantResolver('Size', () => ({ opacity: 0.47 })),
+          Space: createVariantResolver('Space', () => ({ opacity: 0.48 })),
+          Radius: createVariantResolver('Radius', () => ({ opacity: 0.49 })),
+          ZIndex: createVariantResolver('ZIndex', () => ({ opacity: 0.5 })),
+          Color: createVariantResolver('Color', () => ({ opacity: 0.51 })),
         },
       } as const,
     })
@@ -659,7 +666,7 @@ describe('TS-style variant resolvers', () => {
     const SizeOnly = styled(View, {
       variants: {
         kind: {
-          Size: () => ({ opacity: 0.47 }),
+          Size: createVariantResolver('Size', () => ({ opacity: 0.47 })),
         },
       } as const,
     })
@@ -667,8 +674,8 @@ describe('TS-style variant resolvers', () => {
     const SpaceFirst = styled(View, {
       variants: {
         kind: {
-          Space: () => ({ opacity: 0.48 }),
-          Color: () => ({ opacity: 0.51 }),
+          Space: createVariantResolver('Space', () => ({ opacity: 0.48 })),
+          Color: createVariantResolver('Color', () => ({ opacity: 0.51 })),
         },
       } as const,
     })
@@ -676,8 +683,8 @@ describe('TS-style variant resolvers', () => {
     const RadiusFirst = styled(View, {
       variants: {
         kind: {
-          Radius: () => ({ opacity: 0.49 }),
-          ZIndex: () => ({ opacity: 0.5 }),
+          Radius: createVariantResolver('Radius', () => ({ opacity: 0.49 })),
+          ZIndex: createVariantResolver('ZIndex', () => ({ opacity: 0.5 })),
         },
       } as const,
     })
@@ -688,9 +695,9 @@ describe('TS-style variant resolvers', () => {
     let ownKeysCount = 0
     const kind = new Proxy(
       {
-        Size: () => ({
+        Size: createVariantResolver('Size', () => ({
           opacity: 0.52,
-        }),
+        })),
       },
       {
         ownKeys(target) {
@@ -715,9 +722,9 @@ describe('TS-style variant resolvers', () => {
     const Comp = styled(View, {
       variants: {
         kind: {
-          ' Size | number ': () => ({
+          ' Size | number ': createVariantResolver(' Size | number ', () => ({
             opacity: 0.55,
-          }),
+          })),
         },
       } as const,
     })
@@ -726,7 +733,7 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(Comp, 4)).toBe(0.55)
   })
 
-  test('plain functional resolver entries are matched by key', () => {
+  test('raw functional resolver entries are matched without createVariantResolver', () => {
     const Comp = styled(View, {
       variants: {
         kind: {

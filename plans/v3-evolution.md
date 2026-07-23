@@ -105,9 +105,9 @@ Variant maps accept exact values and closed TS-style resolver keys:
 variants: {
   size: {
     sm: { minHeight: 32 },
-    'Size | number': (value: Size | number, extras) => ({
+    'Size | number': createVariantResolver('Size | number', (value, extras) => ({
       minHeight: value,
-    }),
+    })),
   },
 }
 ```
@@ -120,9 +120,8 @@ Rules:
    `Radius`, `ZIndex`, `Theme`, `FontSize`, `FontStyle`, `FontTransform`,
    `FontLineHeight`, `FontLetterSpacing`, `number`, `string`, `boolean`, and
    `any`.
-4. Runtime matching is owned by the variant engine from the key alone; plain
-   functions annotate their own value types. (A `createVariantResolver()`
-   identity helper shipped briefly and was removed as pure typing sugar.)
+4. `createVariantResolver()` is a typing helper only. Runtime matching is owned
+   by the variant engine whether the helper is used or not.
 5. Functional variants may return style objects and may remain runtime. Static
    class strings are accepted only as static values, not dynamically assembled
    by a resolver.
@@ -360,8 +359,7 @@ type/runtime tests.
    keys from it.
 3. Parse trimmed `|` unions, exact-match first, then declaration-order resolver
    matching. `any` is the explicit replacement for global `...`.
-4. ~~Add the typed `createVariantResolver()` identity helper.~~ (Shipped, then
-   removed: plain annotated functions plus resolver-name keys are the API.)
+4. Add the typed `createVariantResolver()` identity helper.
 5. Preserve functional-variant bailout semantics; do not add static-mode
    enforcement machinery.
 

@@ -3271,6 +3271,18 @@ export type VariantResolverValue<Key extends string> =
     ? VariantResolverValueForName<Trim<Left>> | VariantResolverValue<Right>
     : VariantResolverValueForName<Trim<Key>>
 
+export function createVariantResolver<
+  Key extends string,
+  Props extends PropLike = PropLike,
+  Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> =
+    VariantSpreadFunction<Props, VariantResolverValue<Key>>,
+>(
+  key: string extends Key ? never : Key & VariantResolverKey<Key>,
+  resolver: Resolver
+): Resolver {
+  return resolver
+}
+
 export type VariantDefinitions<
   Parent extends StylableComponent = TamaguiComponent,
   StaticConfig extends StaticConfigPublic = Parent extends {
