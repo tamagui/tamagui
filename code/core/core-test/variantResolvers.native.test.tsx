@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { createTamagui, createVariantResolver, styled, View } from '../web/src'
+import { createTamagui, styled, View } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 function getOpacity(component: any, value: any) {
@@ -38,9 +38,9 @@ describe('TS-style variant resolvers - native', () => {
           null: {
             opacity: 0.63,
           },
-          any: createVariantResolver('any', () => ({
+          any: () => ({
             opacity: 0.64,
-          })),
+          }),
         },
       } as const,
     })

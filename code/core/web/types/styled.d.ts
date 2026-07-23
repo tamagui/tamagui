@@ -2,7 +2,6 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, FormHTMLAttributes, HT
 import type { GetRef } from './interfaces/GetRef';
 import type { CompoundVariantDefinition, GetBaseStyles, GetFinalProps, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StackStyle, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
 import type { Text } from './views/Text';
-export { createVariantResolver } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
     _isEmpty: 1;
 } ? true : false;
