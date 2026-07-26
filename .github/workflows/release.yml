@@ -121,7 +121,12 @@ jobs:
       actions: write
       contents: read
     steps:
+      # a canary is a throwaway version on its own dist-tag that nothing installs
+      # unless asked for by name, so it is cuttable from any branch and does not
+      # wait on a full CI run. requiring current main meant merging a change just
+      # to test it. a stable release still needs both.
       - name: Require current main and successful full CI
+        if: inputs.release != 'canary'
         env:
           GH_TOKEN: ${{ github.token }}
           TARGET_SHA: ${{ github.sha }}
@@ -206,12 +211,18 @@ jobs:
 
       - name: Validate release source and select baseline
         id: source
+        env:
+          RELEASE_KIND: ${{ inputs.release }}
         shell: bash
         run: |
           set -euo pipefail
           git fetch --no-tags origin main
-          [[ "$GITHUB_REF" == "refs/heads/main" ]]
-          [[ "$(git rev-parse HEAD)" == "$(git rev-parse origin/main)" ]]
+          # baseline selection below is needed for every release kind; only the
+          # must-be-current-main assertion is stable-only (see ensure-ci).
+          if [[ "$RELEASE_KIND" != 'canary' ]]; then
+            [[ "$GITHUB_REF" == "refs/heads/main" ]]
+            [[ "$(git rev-parse HEAD)" == "$(git rev-parse origin/main)" ]]
+          fi
 
           tag_ref=$(git describe --tags --match 'v*' --abbrev=0 2>/dev/null || true)
           canary_ref=$(git log --grep='^canary' --format='%H' -1)
@@ -256,7 +267,13 @@ jobs:
           git config user.email 'tamagui@users.noreply.github.com'
           bun scripts/release.ts "--$RELEASE_KIND" --ci --dirty --skip-publish --skip-push --skip-tests --skip-native-tests --skip-checks
 
+      # a canary mutates no git at all, matching orez and takeout. pushing a
+      # throwaway version commit to main is what wedged the one repo: main
+      # requires a pull request and a merge queue there, so the push is rejected
+      # with GH006 and the publish step below never runs. the bump only has to
+      # exist in the tree for npm.
       - name: Push release commit
+        if: inputs.release != 'canary'
         env:
           GH_TOKEN: ${{ github.token }}
           TARGET_SHA: ${{ github.sha }}
