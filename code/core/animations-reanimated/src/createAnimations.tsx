@@ -1374,7 +1374,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           if (config.disableAnimation || config.isHydrating) {
             // the empty return wipes reanimated's per-key history, so ours
             // resets with it
-            if (isWeb || globalThis._WORKLET) {
+            if (isWeb || _WORKLET) {
               mapperState.emitted = {}
             }
             return {}
@@ -1488,7 +1488,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             }
           }
 
-          if (isWeb || globalThis._WORKLET) {
+          if (isWeb || _WORKLET) {
             mapperState.emitted = emitted
           }
 
