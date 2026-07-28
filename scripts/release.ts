@@ -6,6 +6,10 @@ import pMap from 'p-map'
 import prompts from 'prompts'
 
 import { ensureNpmAuthentication } from './release-npm-auth'
+import {
+  getPublishArtifactPaths,
+  getReusablePublishWorkspace,
+} from './release-publish-cache'
 import { computePublishTag } from './release-publish-tag'
 import { spawnify } from './spawnify'
 
@@ -626,7 +630,9 @@ async function run() {
 
     if (!shouldFinish && !skipPublish) {
       const tmpDir = `/tmp/tamagui-publish`
-      await fs.remove(tmpDir)
+      if (!rePublish) {
+        await fs.remove(tmpDir)
+      }
       await ensureDir(tmpDir)
 
       // publishTag was resolved + validated up front (single source of truth)
@@ -663,8 +669,43 @@ async function run() {
         .map(({ pkg }) => pkg)
 
       const prepareOne = async ({ name, cwd }: { name: string; cwd: string }) => {
+        if (rePublish) {
+          const cachedWorkspace = await getReusablePublishWorkspace(tmpDir, name, version)
+          if (cachedWorkspace) {
+            console.info(`Reusing packed ${name}@${version}`)
+            return cachedWorkspace
+          }
+        }
+
+        const { tarballPath, workspaceDir } = getPublishArtifactPaths(
+          tmpDir,
+          name,
+          version
+        )
+
+        if (rePublish && (await fs.pathExists(tarballPath))) {
+          try {
+            await fs.remove(workspaceDir)
+            await ensureDir(workspaceDir)
+            await spawnify(
+              `tar -xzf ${JSON.stringify(tarballPath)} -C ${JSON.stringify(workspaceDir)} --strip-components=1`,
+              { avoidLog: true }
+            )
+            const manifest = await fs.readJSON(join(workspaceDir, 'package.json'))
+            if (manifest.name === name && manifest.version === version) {
+              console.info(`Reusing tarball ${name}@${version}`)
+              return path.relative(tmpDir, workspaceDir)
+            }
+          } catch {
+            console.warn(`Could not reuse cached tarball for ${name}@${version}`)
+          }
+        }
+
         // Copy to temp directory and replace workspace:* with versions
         const tmpPackageDir = join(tmpDir, name.replace('/', '_'))
+        await fs.remove(tmpPackageDir)
+        await fs.remove(workspaceDir)
+        await fs.remove(tarballPath)
         await fs.copy(cwd, tmpPackageDir, {
           filter: (src) => {
             // exclude node_modules to avoid symlink issues
@@ -701,9 +742,6 @@ async function run() {
           avoidLog: true,
         })
 
-        const npmFilename = `${name.replace('@', '').replace('/', '-')}-${version}.tgz`
-        const tarballPath = join(tmpDir, npmFilename)
-        const workspaceDir = join(tmpDir, 'workspaces', name.replace('/', '_'))
         await ensureDir(workspaceDir)
         await spawnify(
           `tar -xzf ${JSON.stringify(tarballPath)} -C ${JSON.stringify(workspaceDir)} --strip-components=1`,
