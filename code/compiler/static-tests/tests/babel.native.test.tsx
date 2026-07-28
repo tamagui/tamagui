@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as t from '@babel/types'
 import { expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
@@ -287,6 +288,97 @@ test('string ternary test should not be confused with media key', async () => {
   // the media key should remain a plain string literal
   expect(code).toContain('"sm"')
   expect(code).toMatchSnapshot()
+})
+
+test('dynamic values in media props require both media and runtime conditions', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test({ fillContainer }) {
+      return (
+        <YStack
+          $gtLg={{
+            width: fillContainer ? '100%' : '50%',
+            pb: '$4',
+          }}
+        />
+      )
+    }
+  `)
+
+  let expressions: t.ArrayExpression | null = null
+  t.traverseFast(output?.ast, (node) => {
+    if (
+      t.isJSXAttribute(node) &&
+      t.isJSXIdentifier(node.name, { name: '_expressions' }) &&
+      t.isJSXExpressionContainer(node.value) &&
+      t.isArrayExpression(node.value.expression)
+    ) {
+      expressions = node.value.expression
+    }
+  })
+
+  expect(expressions).not.toBeNull()
+  expect(expressions!.elements).toHaveLength(3)
+
+  const [whenFill, whenNotFill, staticPadding] = expressions!.elements
+  expect(t.isArrayExpression(whenFill)).toBe(true)
+  expect(t.isArrayExpression(whenNotFill)).toBe(true)
+
+  const [fillMediaKey, fillCondition] = (whenFill as t.ArrayExpression).elements
+  expect(t.isStringLiteral(fillMediaKey, { value: 'gtLg' })).toBe(true)
+  expect(t.isUnaryExpression(fillCondition, { operator: '!' })).toBe(true)
+  expect(
+    t.isUnaryExpression((fillCondition as t.UnaryExpression).argument, {
+      operator: '!',
+    })
+  ).toBe(true)
+  expect(
+    t.isIdentifier(
+      ((fillCondition as t.UnaryExpression).argument as t.UnaryExpression).argument,
+      { name: 'fillContainer' }
+    )
+  ).toBe(true)
+
+  const [notFillMediaKey, notFillCondition] = (whenNotFill as t.ArrayExpression).elements
+  expect(t.isStringLiteral(notFillMediaKey, { value: 'gtLg' })).toBe(true)
+  expect(t.isUnaryExpression(notFillCondition, { operator: '!' })).toBe(true)
+  expect(
+    t.isUnaryExpression((notFillCondition as t.UnaryExpression).argument, {
+      operator: '!',
+    })
+  ).toBe(true)
+  expect(
+    t.isUnaryExpression(
+      ((notFillCondition as t.UnaryExpression).argument as t.UnaryExpression).argument,
+      { operator: '!' }
+    )
+  ).toBe(true)
+  expect(t.isStringLiteral(staticPadding, { value: 'gtLg' })).toBe(true)
+})
+
+test('a single media style uses the media-aware wrapper', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return <YStack $gtLg={{ pb: '$4' }} />
+    }
+  `)
+
+  let expressions: t.ArrayExpression | null = null
+  t.traverseFast(output?.ast, (node) => {
+    if (
+      t.isJSXAttribute(node) &&
+      t.isJSXIdentifier(node.name, { name: '_expressions' }) &&
+      t.isJSXExpressionContainer(node.value) &&
+      t.isArrayExpression(node.value.expression)
+    ) {
+      expressions = node.value.expression
+    }
+  })
+
+  expect(expressions).not.toBeNull()
+  expect(expressions!.elements).toHaveLength(1)
+  expect(t.isStringLiteral(expressions!.elements[0], { value: 'gtLg' })).toBe(true)
 })
 
 // native has no hover state, so hoverStyle should be dropped instead of
