@@ -1,5 +1,3 @@
-process.env.TAMAGUI_TARGET = 'native'
-
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
@@ -18,6 +16,7 @@ vi.mock('react-native-reanimated', async (importOriginal) => {
         typeof initialValue === 'object' &&
         Object.hasOwn(initialValue, 'emitted')
       ) {
+        // mirrors Worklets' serializable-object write guard during the JS initial run
         Object.freeze(sharedValue.value)
       }
       return sharedValue

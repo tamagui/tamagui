@@ -144,7 +144,7 @@ const updateMapperState = isWeb
     }
   : (state: SharedValue<MapperState>, emitted: Record<string, boolean>) => {
       'worklet'
-      if (!_WORKLET) return
+      if (!globalThis._WORKLET) return
       state.modify((current) => {
         current.emitted = emitted
         return current
