@@ -358,9 +358,9 @@ test('dynamic values in media props require both media and runtime conditions', 
 
 test('a single media style uses the media-aware wrapper', async () => {
   const output = await extractForNative(`
-    import { YStack } from 'tamagui'
+    import { View } from 'tamagui'
     export function Test() {
-      return <YStack $gtLg={{ pb: '$4' }} />
+      return <View $gtLg={{ width: 100 }} />
     }
   `)
 
