@@ -207,6 +207,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                 const stylesExpr = t.arrayExpression([])
                 const hocStylesExpr = t.arrayExpression([])
                 const expressions: t.Expression[] = []
+                const mediaExpressionIndexes = new Set<number>()
                 const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
                 const themeKeysUsed = new Set<string>()
 
@@ -299,7 +300,22 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                         hasMediaKeys = true
                       }
 
-                      expressions.push(attr.value.test)
+                      let expression = attr.value.test
+                      if (
+                        attr.value.inlineMediaQuery &&
+                        t.isLogicalExpression(attr.value.test, { operator: '&&' }) &&
+                        t.isStringLiteral(attr.value.test.left)
+                      ) {
+                        expression = t.arrayExpression([
+                          t.stringLiteral(attr.value.inlineMediaQuery),
+                          t.unaryExpression(
+                            '!',
+                            t.unaryExpression('!', attr.value.test.right)
+                          ),
+                        ])
+                        mediaExpressionIndexes.add(expressions.length)
+                      }
+                      expressions.push(expression)
                       addStyleExpression(
                         t.conditionalExpression(
                           t.identifier(`_expressions[${expressions.length - 1}]`),
@@ -340,7 +356,8 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                 if (
                   themeKeysUsed.size ||
                   hocStylesExpr.elements.length > 1 ||
-                  hasDynamicStyle
+                  hasDynamicStyle ||
+                  hasMediaKeys
                 ) {
                   if (!hasImportedViewWrapper) {
                     root.unshiftContainer('body', importWithStyle)
@@ -386,8 +403,8 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   if (expressions.length) {
                     // coerce runtime expressions to boolean so they can't be
                     // confused with string media keys at runtime
-                    const safeExpressions = expressions.map((expr) =>
-                      t.isStringLiteral(expr)
+                    const safeExpressions = expressions.map((expr, index) =>
+                      t.isStringLiteral(expr) || mediaExpressionIndexes.has(index)
                         ? expr
                         : t.unaryExpression('!', t.unaryExpression('!', expr))
                     )
