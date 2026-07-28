@@ -5,11 +5,15 @@ const originalRequire = Module.prototype.require
 
 // Mock for usePressability - returns empty event handlers object
 const usePressabilityMock = { default: () => ({}) }
+const codegenNativeComponentMock = (name) => name
 
 Module.prototype.require = function (id) {
   // Handle specific react-native subpaths that need special mocking
   if (id === 'react-native/Libraries/Pressability/usePressability') {
     return usePressabilityMock
+  }
+  if (id === 'react-native/Libraries/Utilities/codegenNativeComponent') {
+    return codegenNativeComponentMock
   }
   // Redirect all other react-native requires to fake-react-native
   if (id === 'react-native' || id.startsWith('react-native/')) {
