@@ -86,6 +86,30 @@ jobs:
       - name: Run unit tests
         run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=1
 
+  native-unit-tests:
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-native-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-native-${{ runner.os }}-
+
+      - name: Run native unit tests
+        run: bun turbo run test:native --filter=@tamagui/static-tests --filter=@tamagui/core-test --filter=@tamagui/components-test --concurrency=1
+
   changes:
     runs-on: ubuntu-latest
     outputs:
