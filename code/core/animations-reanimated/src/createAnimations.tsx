@@ -134,6 +134,23 @@ const resolveDynamicValue = (value: unknown, isDark: boolean): unknown => {
 /** Animation completion callback type */
 type AnimationCallback = (finished?: boolean) => void
 
+type MapperState = {
+  emitted: Record<string, boolean>
+}
+
+const updateMapperState = isWeb
+  ? (state: SharedValue<MapperState>, emitted: Record<string, boolean>) => {
+      state.value.emitted = emitted
+    }
+  : (state: SharedValue<MapperState>, emitted: Record<string, boolean>) => {
+      'worklet'
+      if (!_WORKLET) return
+      state.modify((current) => {
+        current.emitted = emitted
+        return current
+      }, false)
+    }
+
 const cloneAnimationValue = (value: unknown): unknown => {
   if (Array.isArray(value)) {
     return value.map(cloneAnimationValue)
@@ -1359,9 +1376,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // reanimated's per-view style history, which resets whenever a key leaves
       // the output). a key not in here is fresh to the mapper no matter what
       // React has committed — several renders can coalesce into one mapper run.
-      // mutated in place only from the UI worklet; never watched, so writes
-      // don't retrigger the mapper.
-      const mapperStateRef = useSharedValue<{ emitted: Record<string, boolean> }>({
+      // native updates use modify with the same object and no forced update, so
+      // the mapper doesn't react to its own history write.
+      const mapperStateRef = useSharedValue<MapperState>({
         emitted: {},
       })
       // Create animated style
@@ -1374,9 +1391,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           if (config.disableAnimation || config.isHydrating) {
             // the empty return wipes reanimated's per-key history, so ours
             // resets with it
-            if (isWeb || _WORKLET) {
-              mapperState.emitted = {}
-            }
+            updateMapperState(mapperStateRef, {})
             return {}
           }
 
@@ -1488,9 +1503,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             }
           }
 
-          if (isWeb || _WORKLET) {
-            mapperState.emitted = emitted
-          }
+          updateMapperState(mapperStateRef, emitted)
 
           return result
         },
