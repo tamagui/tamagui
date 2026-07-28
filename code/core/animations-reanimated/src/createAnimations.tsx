@@ -1359,8 +1359,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // reanimated's per-view style history, which resets whenever a key leaves
       // the output). a key not in here is fresh to the mapper no matter what
       // React has committed — several renders can coalesce into one mapper run.
-      // mutated in place from the worklet; never watched, so writes don't
-      // retrigger the mapper.
+      // mutated in place only from the UI worklet; never watched, so writes
+      // don't retrigger the mapper.
       const mapperStateRef = useSharedValue<{ emitted: Record<string, boolean> }>({
         emitted: {},
       })
@@ -1374,7 +1374,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           if (config.disableAnimation || config.isHydrating) {
             // the empty return wipes reanimated's per-key history, so ours
             // resets with it
-            mapperState.emitted = {}
+            if (isWeb || globalThis._WORKLET) {
+              mapperState.emitted = {}
+            }
             return {}
           }
 
@@ -1486,7 +1488,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             }
           }
 
-          mapperState.emitted = emitted
+          if (isWeb || globalThis._WORKLET) {
+            mapperState.emitted = emitted
+          }
 
           return result
         },
