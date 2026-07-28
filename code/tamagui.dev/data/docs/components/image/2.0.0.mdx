@@ -50,6 +50,27 @@ You can also use `objectFit` to control how the image fits its container:
 <Image src="https://example.com/photo.jpg" width="100%" height={300} objectFit="cover" />
 ```
 
+### Sizing on native
+
+`width` and `height` are Tamagui layout props. On native, they become React Native
+Image styles. Remote images must resolve to a nonzero layout size, so use fixed
+dimensions or place percentage-sized images inside a parent with defined dimensions:
+
+```tsx
+<View width={320} height={200}>
+  <Image
+    src="https://example.com/photo.jpg"
+    width="100%"
+    height="100%"
+    objectFit="cover"
+  />
+</View>
+```
+
+Tamagui converts a string `src` to `source={{ uri: src }}` on native. Layout
+dimensions stay in `style`; they are not copied into the native source metadata.
+React Native `source` objects remain supported for migration, but `src` is preferred.
+
 ## Using with expo-image
 
 For better performance and features like blurhash placeholders and transitions,
@@ -165,8 +186,9 @@ Extends View with [Tamagui props](/docs/intro/props), plus:
   data={[
     {
       name: 'src',
-      type: 'string',
-      description: 'The image URL. Preferred over `source` for better web alignment.',
+      type: 'string | number',
+      description:
+        'The image URL or native require() result. Preferred over `source` for better web alignment.',
     },
     {
       name: 'alt',
@@ -189,7 +211,8 @@ Extends View with [Tamagui props](/docs/intro/props), plus:
     {
       name: 'source',
       type: 'ImageSourcePropType',
-      description: 'Deprecated. Use `src` instead.',
+      description:
+        'Deprecated React Native source prop. It remains supported during migration; prefer `src`.',
     },
     {
       name: 'resizeMode',
