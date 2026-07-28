@@ -118,3 +118,49 @@ test('Image prefers src when both source props are provided', async () => {
     rendered!.unmount()
   })
 })
+
+test('Image keeps layout dimensions out of native source metadata', async () => {
+  let rendered: TestRenderer.ReactTestRenderer
+
+  await act(async () => {
+    rendered = TestRenderer.create(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <>
+          <Image
+            testID="numeric"
+            src="https://example.com/numeric.png"
+            width={120}
+            height={80}
+          />
+          <Image
+            testID="percentage"
+            src="https://example.com/percentage.png"
+            width="100%"
+            height="50%"
+          />
+        </>
+      </TamaguiProvider>
+    )
+  })
+
+  const [numericImage, percentageImage] = rendered!.root.findAllByType('image-host')
+  expect(flattenStyle(numericImage.props.style)).toMatchObject({
+    width: 120,
+    height: 80,
+  })
+  expect(numericImage.props.source).toEqual({
+    uri: 'https://example.com/numeric.png',
+  })
+
+  expect(flattenStyle(percentageImage.props.style)).toMatchObject({
+    width: '100%',
+    height: '50%',
+  })
+  expect(percentageImage.props.source).toEqual({
+    uri: 'https://example.com/percentage.png',
+  })
+
+  await act(async () => {
+    rendered!.unmount()
+  })
+})

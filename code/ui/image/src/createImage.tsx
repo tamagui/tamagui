@@ -61,20 +61,16 @@ const defaultTransformSource = (props: {
   width?: any
   height?: any
 }) => {
-  const { src, source, width, height } = props
+  const { src, source } = props
   if (typeof src === 'string') {
     return {
       uri: src,
-      width,
-      height,
     }
   }
   if (source !== undefined && source !== null) return source
   if (src !== undefined && src !== null) return src
   return {
     uri: src,
-    width,
-    height,
   }
 }
 
