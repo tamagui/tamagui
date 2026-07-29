@@ -86,6 +86,12 @@ boundaries.
     element and skips the runtime component path entirely. Closing the
     rendering-cost gap to plain CSS is a stated deliverable of the flat-value
     work, not an optimization afterthought.
+25. Safe-area insets are built-in variables: `safe-area-top`,
+    `safe-area-right`, `safe-area-bottom`, `safe-area-left`, usable anywhere
+    a length is. Web lowers to `env(safe-area-inset-*)`. Native resolves
+    through the existing `@tamagui/native` safe-area state fed by
+    `react-native-safe-area-context`; using them without that setup is a
+    one-time development diagnostic, never a silent zero.
 
 ## Product shape
 
@@ -709,6 +715,36 @@ A variable holds one property's value. Multi-property presets (a named look
 combining shadow, border, and scale) are never value-grammar expansions; they
 remain variants and `styled()`. Expanding several properties from inside one
 prop's program would break per-longhand merging.
+
+### Safe-area variables
+
+Four built-in variables cover device safe areas:
+
+```tsx
+<View pt="safe-area-top" pb="safe-area-bottom sm:0" />
+```
+
+On web they lower to `env(safe-area-inset-top)` and friends: pure CSS, always
+available, and composable with literal CSS math
+(`pt="calc(env(safe-area-inset-top) + 16px)"` stays valid as a plain value).
+
+On native they resolve through the existing `@tamagui/native` safe-area state
+(`import '@tamagui/native/setup-safe-area'` plus the user's
+`SafeAreaProvider`), which is fed by `react-native-safe-area-context`. Two
+requirements on that path:
+
+- resolution must be reactive: insets change on rotation and on foldables,
+  so style values subscribe like theme values. The current `getInsets()`
+  accessor is documented non-reactive and Sheet has already hit it being
+  unexpectedly disabled; the variable path needs the granular-subscription
+  treatment, not that accessor.
+- using a safe-area variable without the native setup emits a one-time
+  development diagnostic naming the setup import. It never silently
+  resolves to zero.
+
+The Tailwind frontend gets `pt-safe-area-top` automatically through token
+naming. Tailwind core has no safe-area utilities (community plugins use
+`pt-safe`); the explicit names are the one spelling here.
 
 ## Relationship to Tailwind
 
@@ -1518,6 +1554,9 @@ locked:
 11. The variables unification: one configured namespace covering today's
     tokens and theme values, composite values included, designed together
     with the grammar's identifier resolution.
+12. Reactive native safe-area resolution: subscription-based inset updates
+    (rotation, foldables) replacing the non-reactive `getInsets()` accessor,
+    plus the not-set-up diagnostic.
 
 Each prototype must end with one chosen path. The implementation must not ship
 multiple equivalent syntaxes or runtime fallback paths.

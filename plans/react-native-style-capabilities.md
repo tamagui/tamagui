@@ -136,5 +136,21 @@ Synthesize in the grammar (RN will not):
 
 - `textShadow` as a CSS string: the family expansion lowers it to the three
   legacy props on native.
+- Safe-area insets as built-in variables (`safe-area-top` …): web is
+  `env(safe-area-inset-*)`, native rides the existing `@tamagui/native`
+  safe-area state over `react-native-safe-area-context`. See the main plan's
+  "Safe-area variables" section.
 - Anything needing `calc()`, wide keywords, logical properties, or CSS
   variables on native stays a compile diagnostic per the main plan.
+
+Needs testing before the grammar or types claim it:
+
+- `fontVariant` stylistic sets (`ss01`–`ss20`, added 0.79, propagation fixed
+  0.85): verify on both platforms with a real font carrying stylistic sets
+  before exposing in completions or docs.
+
+Type-surface check (2026-07-29): `mixBlendMode` and `isolation` types come
+from RN's own `ViewStyle` in `code/core/web/src/types.tsx`, so new enum
+values like `plus-lighter` arrive with the app's RN version; no Tamagui type
+change is needed. `filter` is a Tamagui-owned string type and already covers
+the syntax.
