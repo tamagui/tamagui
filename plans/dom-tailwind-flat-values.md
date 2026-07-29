@@ -361,6 +361,13 @@ A payload extends until the next top-level modifier chain. Because valid CSS
 cannot contain a bare top-level colon, an unregistered modifier such as
 `hver:` is a hard parse error, never silent passthrough.
 
+Parsing follows CSS component-value rules: track balanced functions, blocks,
+strings, URLs, and escapes; preserve whitespace inside base and payload;
+recognize modifiers only at the top level. An empty payload is a parse error;
+clearing uses property values with defined semantics (`none`, `transparent`,
+`initial`, `unset` where supported). The compiler and the runtime share one
+parser implementation and one test corpus.
+
 Identifiers resolve config-first: an identifier or number token that names a
 configured token or variable resolves through the config; anything else is
 literal CSS, exactly as bare `bg="red"` has worked since v1. Removing `$`
@@ -477,6 +484,57 @@ documented rule and a lint-rule target, since on the aligned v6 config the two
 differ by 4x. Conditional raw values are plain CSS lengths, for example
 `p="4 hover:18px"`.
 
+### Conditions
+
+Modifiers form one registry assembled from built-ins and Tamagui config:
+
+- state: `hover:`, `press:`, `focus:`, `focus-visible:`, `focus-within:`,
+  `disabled:`, `checked:`, `selected:`, `open:`, `invalid:`, plus `enter:`
+  and `exit:` for presence;
+- themes: `dark:`, `light:`, and configured theme conditions;
+- media: configured media names such as `sm:`;
+- platform: `web:`, `native:`, `ios:`, `android:`;
+- group and container modifiers as specified above.
+
+Modifiers chain as an AND: `dark:hover:blue-500` applies when both hold.
+
+There is one global condition namespace. Duplicate configured names are
+reported when the config is created; the implementation must not silently
+choose between a theme, media, platform, or state condition sharing a name.
+Theme modifiers reuse Tamagui's established theme inheritance rules for
+matching. The flat syntax does not invent a second definition of whether a
+parent theme condition matches a child theme.
+
+### Color opacity
+
+Color values take a slash opacity suffix, matching Tailwind:
+
+```tsx
+bg="green/50 hover:green/80"
+```
+
+Rules:
+
+- the suffix is an integer percentage from 0 through 100;
+- it is recognized only directly after a resolved color token;
+- applying it to a non-color token is a compiler diagnostic;
+- token alpha composition must behave identically on web and native.
+
+### Non-string and dynamic values
+
+Unconditional values keep their natural representation (`opacity={0.5}`,
+`zIndex={2}`); conditional values use a string program
+(`opacity="0.5 disabled:0.4 hover:1"`). React Native object and array values
+that lack a faithful CSS-shaped replacement require the explicit migration
+table; legacy structured values are never converted by guesswork.
+
+Literal programs compile completely. Dynamic programs built from template
+strings use the shared runtime parser unless the surrounding entrypoint is
+compile-only. Runtime parsing is cached by property, program, and config, and
+dynamic values receive the same validation and injection protections as
+existing dynamic styles. Standalone DOM is compile-only and reports dynamic
+structures that cannot be lowered safely.
+
 ### V6 candidate naming
 
 The Tailwind-derived V6 palette already uses kebab-case names such as
@@ -558,6 +616,10 @@ Merging preserves the v1 model: shorthands expand to longhands and
 contributions merge forward in authored order. The flat grammar generalizes
 the unit of contribution from a value to a program.
 
+Within one program, clauses evaluate left to right and the last matching
+clause wins: in `bg="red hover:green dark:gray dark:hover:blue"`, dark mode
+plus hover yields `blue`.
+
 A prop's parsed value expands into one program per resolved CSS longhand.
 `bg="url(x.png) surface hover:surface-hover"` produces a `backgroundImage`
 program (`url(x.png)`) and a `backgroundColor` program
@@ -583,10 +645,32 @@ merge knowledge in the system, and it lives in the shared grammar package.
 This is also why `tailwind-merge` is removable: for owned values, per-longhand
 forward merging reproduces everything it did.
 
+### Web lowering
+
+Independent atomic classes cannot represent authored clause order by
+themselves: HTML class order does not control the cascade, and selector
+specificity can override source order. The compiler therefore lowers a
+complete program together. Fixed requirements, whatever the exact CSS
+encoding turns out to be:
+
+- all clauses of one program have equal effective specificity;
+- emitted rule order preserves program order;
+- identical programs deduplicate through a hash covering the property,
+  program, and relevant config identity;
+- server and client hashing is deterministic;
+- native evaluation uses the same last-matching-clause rule.
+
+The encoding itself, across runtime insertion, streaming SSR, and code
+splitting, is remaining design work item 2.
+
 ## Value variables
 
-Config-first resolution makes named values work for any property, including
-composite values:
+This is not a new system. It is the existing V3 variables system, reached
+through the grammar's config-first identifier resolution: theme keys are
+already CSS custom properties on web, the config declares custom variables,
+the `<Variables>` primitive patches them inline per subtree, and native rides
+the granular theme subscription. The grammar's identifier lookup resolves
+into that one system:
 
 ```tsx
 boxShadow="glow hover:glow-strong"
@@ -594,346 +678,30 @@ transition="quick"
 bg="surface"
 ```
 
-Tailwind v4 reaches this through `@theme` namespaces (`--shadow-glow`
+Tailwind v4 reaches the same idea through `@theme` namespaces (`--shadow-glow`
 generating `shadow-glow`). Here the prop already supplies the family, so the
 bare name is enough, and the Tailwind frontend surfaces the same configured
-value as `hover:shadow-glow` for Tailwind muscle memory.
+value as `hover:shadow-glow`.
 
-Composite variable definitions are parsed at config time by the same value
-parser, never stored as opaque strings. Web lowers them to CSS custom
-properties (`box-shadow: var(--shadow-glow)`) so theme switches stay dynamic;
-native consumes the parsed representation (`shadowOffset`, `shadowRadius`,
-`shadowColor`). Config-time parsing also validates every variable value.
+The one extension is that a variable may hold a composite value such as a
+full box-shadow list. Composite definitions are parsed at config time for
+validation and to find embedded variable references (a shadow whose color is
+a theme value); they are not decomposed into legacy per-part props. Web emits
+nested custom properties (`--shadow-glow: 0 0 20px var(--accent)`), so theme
+switches stay zero-re-render. Native passes the composed value straight
+through: React Native supports `boxShadow`, `textShadow`, and
+`backgroundImage` directly, and the platform resolve path already handles
+them; embedded references resolve through the same granular theme
+subscription as every other native value.
 
-This is the themes-and-tokens-to-variables unification arriving with the
-grammar rather than after it: the grammar's identifier resolution is the
-variables lookup, and the two must be designed as one system.
+The themes-and-tokens-to-variables unification (remaining design work item
+11) and the grammar are one design: the grammar's identifier resolution is
+the variables lookup.
 
 A variable holds one property's value. Multi-property presets (a named look
 combining shadow, border, and scale) are never value-grammar expansions; they
 remain variants and `styled()`. Expanding several properties from inside one
 prop's program would break per-longhand merging.
-
-## Rejected condition-call proposal
-
-The earlier condition-call proposal was:
-
-```tsx
-bg="$red :hover($green) :light($color1/50) :dark:hover($color2/20)"
-```
-
-Compact input may be accepted:
-
-```tsx
-bg="$red:hover($green):dark:hover($blue)"
-```
-
-Documentation and formatting always use one space before each conditional
-clause:
-
-```tsx
-bg="$red :hover($green) :dark:hover($blue)"
-```
-
-This is a property-centered conditional program. It reaches a similar
-intermediate representation to StyleX and React Strict DOM conditional value
-objects, with a surface that composes naturally through JSX props.
-
-The rest of this section records that earlier proposal so its cascade,
-condition, native, and validation requirements are not lost. The chosen public
-grammar is the universal value grammar above, and no condition-call
-implementation path remains. The condition-call proposal's CSS-aware parser
-rules (component-value tracking, balanced functions, strings, URLs, escapes)
-are adopted wholesale by the universal grammar; the parentheses it needed to
-delimit payloads are unnecessary once clause boundaries come from top-level
-colons.
-
-### Grammar
-
-```txt
-program   = base-value? clause*
-clause    = condition+ "(" property-value ")"
-condition = ":" registered-condition
-```
-
-Example parse:
-
-```ts
-[
-  { when: [], value: '$red' },
-  { when: ['hover'], value: '$green' },
-  { when: ['light'], value: '$color1/50' },
-  { when: ['dark', 'hover'], value: '$color2/20' },
-]
-```
-
-A program may omit its base:
-
-```tsx
-bg=":hover($green)"
-```
-
-Empty clauses are invalid:
-
-```tsx
-// compile error
-bg="$red :hover()"
-```
-
-Property values with defined semantics handle clearing. Examples include
-`none`, `transparent`, `initial`, or `unset` where supported. Empty
-parentheses do not mean deletion.
-
-### CSS-aware parser
-
-The parser cannot split on colons, whitespace, commas, slashes, or
-parentheses. All appear in valid CSS values:
-
-```tsx
-background="linear-gradient(to right, red 0%, blue 100%)"
-shadow="0 2px 8px rgb(0 0 0 / 20%) :hover(0 4px 16px rgb(0 0 0 / 30%))"
-backgroundImage="url(https://example.com/a:b)"
-width="calc(100% - var(--sidebar-width))"
-fontFamily="'IBM Plex Sans', sans-serif"
-```
-
-Parsing follows CSS component-value rules:
-
-1. Track balanced functions, blocks, strings, URLs, and escapes.
-2. Preserve whitespace inside property values.
-3. Recognize a clause only at the top level.
-4. Require `:<registered-condition>(` before interpreting text as a clause.
-5. Validate the payload according to the owning style property.
-
-The compiler and runtime parser share one implementation and one test corpus.
-
-### Conditions
-
-Conditions form one registry assembled from built-ins and Tamagui config.
-
-Initial categories:
-
-- state: `hover`, `press`, `active`, `focus`, `focusVisible`,
-  `focusWithin`, `disabled`, `checked`, `selected`, `open`, `invalid`;
-- themes: `light`, `dark`, and configured theme conditions;
-- media: configured media names;
-- platform: `web`, `native`, `ios`, and `android`;
-- group and container conditions.
-
-Simple conditions use bare registered names:
-
-```tsx
-opacity="1 :disabled(0.5)"
-display="flex :sm(grid)"
-bg="$surface :dark($surfaceDark)"
-```
-
-Conditions compose as an AND chain:
-
-```tsx
-bg="$surface :dark:hover($surfaceDarkHover)"
-```
-
-Parameterized group or container conditions need one canonical form. The
-condition-call proposal used:
-
-```tsx
-bg="$surface :group[card]:hover($surfaceHover)"
-```
-
-That spelling does not carry into the property-scoped candidate direction.
-The selected candidate spelling is `group-hover/card:surface-hover`, matching
-Tailwind's named-group grammar. Container queries use `@sm:` or the named
-`@sm/card:` form and stack independently with group state.
-
-There is one global condition namespace. Duplicate configured names are
-reported when the config is created. The implementation must not silently
-choose between a theme, media, platform, or state condition with the same
-name.
-
-Exact theme matching semantics must reuse Tamagui's established theme
-inheritance rules. The flat syntax must not invent a second definition of
-whether a parent theme condition matches a child theme.
-
-### Ordering and replacement
-
-Within one property program, clauses are evaluated left to right. The last
-matching clause wins:
-
-```tsx
-bg="$red :hover($green) :dark($gray) :dark:hover($blue)"
-```
-
-When dark mode and hover are active, `$blue` wins.
-
-A later property contribution replaces the entire earlier property program.
-It does not recursively merge clauses:
-
-```tsx
-const Card = styled(View, {
-  bg: '$surface :hover($surfaceHover)',
-
-  variants: {
-    danger: {
-      true: {
-        bg: '$red',
-      },
-    },
-  },
-})
-```
-
-The `danger` variant removes the earlier hover behavior. Preserving a
-conditional behavior requires restating the complete property program:
-
-```tsx
-bg="$red :hover($redHover)"
-```
-
-This atomic property replacement is intentional. It makes component props,
-variants, spreads, and overrides predictable without recursive object merging.
-
-### Web lowering
-
-Ordinary independent atomic classes cannot represent authored clause order.
-The order of class names in HTML does not control the CSS cascade, and selector
-specificity can override source order.
-
-The compiler therefore lowers a complete property program together. One
-possible output is a hash shared by identical property programs:
-
-```css
-._bg_ab12 {
-  background: var(--red);
-}
-
-._bg_ab12:where(:hover) {
-  background: var(--green);
-}
-
-:where(.dark) ._bg_ab12 {
-  background: var(--gray);
-}
-
-:where(.dark) ._bg_ab12:where(:hover) {
-  background: var(--blue);
-}
-```
-
-Requirements:
-
-- all clauses for one property program have equal effective specificity;
-- emitted rule order preserves the program order;
-- identical property programs deduplicate;
-- the hash includes the property, program, and relevant config identity;
-- server and client hashing is deterministic;
-- native evaluation uses the same last-matching-clause rule.
-
-The exact CSS encoding may differ, but these semantics are fixed.
-
-### Tokens and opacity
-
-Tamagui tokens keep `$`:
-
-```tsx
-bg="$green"
-```
-
-Real CSS custom properties retain CSS syntax:
-
-```tsx
-bg="var(--green)"
-```
-
-Bare `--green` is not the token syntax. In CSS, `--green` names a custom
-property declaration and is not itself a value. Keeping `$` makes the
-cross-platform Tamagui token distinct from a web-only CSS variable.
-
-Color-token opacity uses:
-
-```tsx
-bg="$green/50"
-```
-
-Initial rule:
-
-- the suffix is an integer percentage from 0 through 100;
-- it is recognized only directly after a color token;
-- applying it to a non-color token is a compiler diagnostic;
-- token alpha composition must behave identically on web and native.
-
-### Non-string values
-
-Unconditional values keep their natural representation:
-
-```tsx
-opacity={0.5}
-zIndex={2}
-```
-
-Conditional values use a string program:
-
-```tsx
-opacity="0.5 :hover(1)"
-zIndex="2 :focus(3)"
-```
-
-The v4 direction prefers CSS-shaped strings for structured styles:
-
-```tsx
-transform="scale(1) :hover(scale(1.05))"
-boxShadow="0 2px 8px #0003 :hover(0 4px 16px #0004)"
-```
-
-React Native object and array values that lack a faithful CSS-shaped
-replacement require an explicit migration table. Legacy structured values
-must not be converted by guesswork.
-
-### Dynamic programs
-
-Literal programs compile completely:
-
-```tsx
-bg="$surface :hover($surfaceHover)"
-```
-
-Dynamic programs require the shared runtime parser unless the surrounding
-entrypoint is compile-only:
-
-```tsx
-bg={`${base} :hover(${hover})`}
-```
-
-Runtime parsing is cached by property, program, and config. Dynamic values
-receive the same validation and injection protections as existing dynamic
-styles.
-
-Standalone DOM is compile-only and reports dynamic structures that cannot be
-lowered safely. Existing regular Tamagui components remain runtime-correct
-during the v3 migration. Whether ordinary v4 components require compilation
-is a separate release-level decision.
-
-### Types and tooling
-
-The full grammar must not be modeled as a recursive TypeScript template
-literal union. That would recreate the styled type-performance problem.
-
-The public property type remains broad:
-
-```ts
-type ConditionalStyleValue<T> = T | (string & {})
-```
-
-Validation belongs in:
-
-- compiler diagnostics;
-- config validation;
-- an editor language service;
-- a formatter that emits the canonical spaced form;
-- development-only diagnostics for runtime-parsed values.
-
-TypeScript may provide lightweight token or condition suggestions, but type
-performance takes priority over exhaustive validation.
 
 ## Relationship to Tailwind
 
