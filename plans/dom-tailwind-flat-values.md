@@ -10,8 +10,9 @@ Design plan, July 2026. This consolidates the current direction for:
 - the standalone `tamagui/dom` entry;
 - compiler, runtime, type, bundle, and migration boundaries.
 
-The design is intentionally compiler-led. Existing Tamagui remains compatible,
-while new DOM and Tailwind authoring get strict package and compiler boundaries.
+The design is intentionally compiler-led. V2 applications receive an explicit
+V3 codemod, while DOM and Tailwind authoring get strict package and compiler
+boundaries.
 
 ## Decisions
 
@@ -30,15 +31,20 @@ while new DOM and Tailwind authoring get strict package and compiler boundaries.
 10. `tailwind-merge` is removed from Tamagui.
 11. New DOM authoring always requires the compiler. It cannot bail to an
     untransformed runtime path.
-12. Conditional styling moves into individual property values. It is opt-in
-    during v3 and planned as the default style syntax in v4. The exact flat
-    value grammar is still under evaluation.
-13. Existing regular Tamagui keeps the `$` sigil during compatibility. Whether
-    the new flat value grammar removes it is part of the syntax prototype.
+12. Conditional styling moves into individual property values in v3. The
+    property supplies the utility family and its value uses exact Tailwind
+    candidate suffixes and modifiers.
+13. The new flat value grammar does not use `$`. The V3 migration codemod
+    removes it from statically known token values. Raw numeric JSX values keep
+    their existing pixel behavior.
 14. In v3, `bg` stops being a fixed alias for `backgroundColor` and becomes the
     complete background candidate family. A resolved color candidate still
     writes only `backgroundColor`; it does not lower blindly to the resetting
     CSS `background` shorthand.
+15. Built-in names in the V6 default config use kebab-case wherever a name has
+    multiple parts. The flat authoring syntax uses those names without `$`.
+16. Group variants use Tailwind's exact modifier spelling: `group-hover:` for
+    an unnamed group and `group-hover/card:` for a named group.
 
 ## Product shape
 
@@ -48,14 +54,14 @@ while new DOM and Tailwind authoring get strict package and compiler boundaries.
 import { View, Text, html, styled } from 'tamagui'
 
 const Card = styled(View, {
-  p: '$4',
-  bg: '$surface :hover($surfaceHover)',
+  p: '4',
+  bg: 'surface hover:surface-hover',
 })
 
 export function Example() {
   return (
-    <html.main p="$4">
-      <html.h1 color="$color">Account</html.h1>
+    <html.main p="4">
+      <html.h1 color="color">Account</html.h1>
       <Card>Content</Card>
     </html.main>
   )
@@ -76,7 +82,7 @@ Regular Tamagui retains:
 - existing `View`, `Text`, and component behavior;
 - runtime correctness for existing non-DOM components.
 
-The v4 style direction changes how conditions are written, while the package
+The V3 style direction changes how conditions are written, while the package
 and component model remain familiar.
 
 ### Tailwind Tamagui
@@ -115,11 +121,11 @@ import { html, style } from 'tamagui/dom'
 const root = style({
   display: 'flex',
   padding: 16,
-  backgroundColor: '$surface :hover($surfaceHover)',
+  backgroundColor: 'surface hover:surface-hover',
 })
 
 const heading = style({
-  color: '$color',
+  color: 'color',
   fontSize: 24,
 })
 
@@ -196,7 +202,7 @@ Examples:
 
 ```tsx
 // regular Tamagui
-<html.div p="$4" bg="$surface :hover($surfaceHover)" />
+<html.div p="4" bg="surface hover:surface-hover" />
 
 // Tailwind
 <html.div className="p-4 bg-surface hover:bg-surface-hover" />
@@ -213,6 +219,66 @@ Ordinary Tamagui components may retain raw `className` and `style` where needed
 for existing web and React Native interoperability. Core never interprets a
 raw `className` as Tamagui Tailwind syntax.
 
+## Web-aligned transitions
+
+V3 should align timing-transition authoring with the CSS `transition` shorthand
+and its five longhands:
+
+- `transitionProperty`;
+- `transitionDuration`;
+- `transitionTimingFunction`;
+- `transitionDelay`;
+- `transitionBehavior`.
+
+The leading shorthand direction is:
+
+```tsx
+// CSS defaults fill in property=all, timing=ease, delay=0s, behavior=normal
+transition="200ms"
+
+// complete CSS shorthand, including per-property transitions
+transition="opacity 150ms ease-out, transform 250ms cubic-bezier(0.2, 0, 0, 1) 50ms"
+```
+
+The expanded form uses the real web longhands rather than a second
+Tamagui-specific object:
+
+```tsx
+transitionProperty="opacity, transform"
+transitionDuration="150ms, 250ms"
+transitionTimingFunction="ease-out, cubic-bezier(0.2, 0, 0, 1)"
+transitionDelay="0ms, 50ms"
+transitionBehavior="normal"
+```
+
+Configured animation-driver presets remain useful for springs and shared
+product motion:
+
+```tsx
+transition="quick"
+transition="bouncy"
+```
+
+The parser needs one deterministic resolution rule. The proposed rule is that
+an exact single identifier matching a configured animation key is a preset.
+Every other string follows the CSS transition grammar. CSS global values and
+reserved transition keywords cannot be animation preset names. Duration-shaped
+values such as `200ms` always use CSS semantics, even if a legacy config has a
+same-named preset. The V3 codemod must rename or expand a colliding preset when
+its configured easing differs from the CSS default.
+
+Both forms lower into one transition IR containing property, duration, timing
+function, delay, and behavior. The CSS driver serializes that IR without
+changing supported web semantics. Native timing drivers translate supported
+durations and easing functions. Spring presets remain driver configuration
+rather than pretending to be CSS.
+
+Native does not silently approximate unsupported web behavior. Examples that
+need capability diagnostics include unsupported properties, `steps()`, and
+`allow-discrete`. The native capability table and the migration of the existing
+array and per-property preset object forms require a focused prototype before
+the V3 contract is locked.
+
 ## Flat conditional values
 
 ### Goal
@@ -228,10 +294,10 @@ The new form replaces:
 - media, group, and container sub-objects;
 - recursively nested combinations of those objects.
 
-### Property-scoped candidate direction
+### Property-scoped candidate grammar
 
-A newer direction under evaluation uses Tailwind candidate suffixes inside
-each style prop. The prop supplies the utility family:
+The V3 grammar uses Tailwind candidate suffixes inside each style prop. The
+prop supplies the utility family:
 
 ```tsx
 <View
@@ -252,6 +318,25 @@ The implementation does not need to construct class-name strings. It binds the
 candidate family before sending each suffix through the same candidate parser
 and ordered style IR used by `@tamagui/tailwind`.
 
+Group state uses Tailwind's modifier grammar unchanged:
+
+```tsx
+// unnamed group
+<View group>
+  <Text color="muted group-hover:foreground" />
+</View>
+
+// named group
+<View group="card">
+  <Text color="muted group-hover/card:foreground" />
+</View>
+```
+
+The equivalent Tailwind frontend marks the named parent with `group/card` and
+uses the same `group-hover/card:` modifier on descendants. Tamagui-specific
+native states extend the same shape, for example `group-press/card:`. Variants
+remain stackable, such as `sm:dark:group-hover/card:foreground`.
+
 Tailwind arbitrary values are the literal escape hatch:
 
 ```tsx
@@ -264,6 +349,47 @@ Using this exact spelling lets regular and Tailwind Tamagui share one parser.
 The brackets also give whitespace, functions, slashes, and modifier boundaries
 one unambiguous representation.
 
+Raw JSX numbers remain raw platform values, including the existing numeric
+pixel behavior:
+
+```tsx
+p={16}
+w={117}
+```
+
+A numeric string is a candidate, so `p="4"` resolves the configured `4` token.
+Conditional raw values use brackets, for example `p="4 hover:[18px]"`.
+
+### V6 candidate naming
+
+The Tailwind-derived V6 palette already uses kebab-case names such as
+`slate-500`. The remaining inherited semantic theme and token names should
+follow the same convention:
+
+```txt
+backgroundHover  -> background-hover
+backgroundPress  -> background-press
+borderColorHover -> border-color-hover
+placeholderColor -> placeholder-color
+```
+
+This makes the same configured value read consistently in both frontends:
+
+```tsx
+// regular Tamagui
+bg="background hover:background-hover"
+
+// Tailwind Tamagui
+className="bg-background hover:bg-background-hover"
+```
+
+Underlying config storage may still use `$` until the token representation is
+migrated, but `$` is absent from the new flat candidate syntax. The V3 codemod
+converts built-in camelCase names to their V6 kebab-case replacements.
+User-defined names retain their authored spelling, with kebab-case recommended
+for new configuration. The parser must not guess camelCase-to-kebab-case
+aliases at runtime because two configured names could collide.
+
 `bg` is a candidate family, not a direct alias for the CSS `background`
 shorthand. The candidate resolver determines whether a value contributes
 `backgroundColor`, `backgroundImage`, `backgroundPosition`, or another
@@ -275,44 +401,35 @@ Overloaded Tailwind families require property validation. For example,
 verify that the resolved candidate contributes to the property named by the
 prop. A mismatched candidate is a compiler diagnostic.
 
-Three syntax variants are plausible:
+The selected syntax is exact scoped Tailwind:
 
-1. Exact scoped Tailwind:
+```tsx
+bg="red-500 hover:blue-500"
+bg="[linear-gradient(135deg,_#f00,_#00f)]"
+```
 
-   ```tsx
-   bg="red-500 hover:blue-500"
-   bg="[linear-gradient(135deg,_#f00,_#00f)]"
-   ```
+This removes `$`, uses one parser, and gives arbitrary values one explicit
+form. Keeping `$` in candidate atoms and interpreting unknown function-shaped
+tokens as bare CSS were considered and rejected. Both would create a second
+permanent value path.
 
-   This removes `$`, uses one parser, and gives arbitrary values one explicit
-   form. It has the largest source migration but the smallest permanent
-   language.
+### Types and editor tooling
 
-2. Scoped Tailwind with the Tamagui token sigil:
+The candidate grammar must not become an exhaustive TypeScript template
+literal union. Property types retain their existing raw value type plus a broad
+string:
 
-   ```tsx
-   bg="$red hover:$blue"
-   bg="[linear-gradient(135deg,_#f00,_#00f)]"
-   ```
+```ts
+type FlatStyleValue<T> = T | (string & {})
+```
 
-   This reduces token migration, but keeps a Tamagui-only candidate atom and
-   postpones the `$` decision.
+Candidate, token, modifier, arbitrary-value, and target validation live in the
+compiler and a Tamagui language server backed by the same candidate engine.
+Thin editor integrations launch that server through the Language Server
+Protocol. TypeScript can expose small finite unions where they remain cheap,
+but type performance takes priority over exhaustive string validation.
 
-3. Bare one-token CSS literals:
-
-   ```tsx
-   bg="linear-gradient(135deg,#f00,#00f)"
-   bg="hover:[linear-gradient(135deg,_#00f,_#f00)]"
-   ```
-
-   The parser would try known candidates first and reinterpret an unknown
-   function-shaped token as CSS. This saves brackets in a narrow case but adds
-   contextual fallback behavior, ambiguous errors, and a second value path.
-
-The leading direction is option 1. Option 2 is the credible migration
-compromise. Option 3 should be rejected unless a prototype finds a single
-deterministic parse rule that does not fall back between candidate and CSS
-grammars.
+## Rejected condition-call proposal
 
 The earlier condition-call proposal was:
 
@@ -338,9 +455,9 @@ intermediate representation to StyleX and React Strict DOM conditional value
 objects, with a surface that composes naturally through JSX props.
 
 The rest of this section records that earlier proposal so its cascade,
-condition, native, and validation requirements are not lost. The syntax
-prototype must choose one public grammar and delete the other implementation
-path.
+condition, native, and validation requirements are not lost. The chosen public
+grammar is property-scoped Tailwind candidates, and no condition-call
+implementation path remains.
 
 ### Grammar
 
@@ -429,11 +546,16 @@ bg="$surface :dark:hover($surfaceDarkHover)"
 ```
 
 Parameterized group or container conditions need one canonical form. The
-current proposed spelling is:
+condition-call proposal used:
 
 ```tsx
 bg="$surface :group[card]:hover($surfaceHover)"
 ```
+
+That spelling does not carry into the property-scoped candidate direction.
+The selected candidate spelling is `group-hover/card:surface-hover`, matching
+Tailwind's named-group grammar. Container condition spelling remains a focused
+design item.
 
 There is one global condition namespace. Duplicate configured names are
 reported when the config is created. The implementation must not silently
@@ -626,11 +748,11 @@ performance takes priority over exhaustive validation.
 
 ## Relationship to Tailwind
 
-The inline conditional language and Tailwind lower into the same ordered IR:
+Property-scoped candidates and Tailwind classes lower into the same ordered IR:
 
 ```tsx
 // regular Tamagui
-bg="$red :hover($green) :dark:hover($blue)"
+bg="red hover:green dark:hover:blue"
 
 // Tailwind Tamagui
 className="bg-red hover:bg-green dark:hover:bg-blue"
@@ -1075,9 +1197,8 @@ There is no global switch and no combined mode.
 
 ### Conditional objects to flat values
 
-V3 introduces an explicit opt-in. The opt-in applies coherently to a package
-or compiler configuration so a component does not have two competing
-condition systems.
+V3 makes the flat candidate grammar canonical. A component does not carry two
+competing condition systems.
 
 Examples:
 
@@ -1091,7 +1212,7 @@ Examples:
 
 // flat values
 <View
-  bg="$surface :hover($surfaceHover) :dark($surfaceDark)"
+  bg="surface hover:surface-hover dark:surface-dark"
 />
 ```
 
@@ -1103,9 +1224,8 @@ The codemod can convert statically local cases. It must report cases where:
 - dynamic theme, platform, media, or group objects cannot be resolved;
 - structured React Native values lack a CSS-shaped equivalent.
 
-V3 documentation marks conditional objects as legacy after the new syntax is
-proven. V4 plans to make flat values the canonical syntax and remove the old
-condition object path on a release schedule with a codemod and diagnostics.
+V3 removes the old condition object path on a release schedule with a codemod
+and diagnostics.
 
 ### Background shorthand migration
 
@@ -1148,12 +1268,13 @@ declare that consumers must compile the dependency.
 
 ### Phase 1: lock the shared IR
 
-1. Define the property/condition/value IR.
-2. Implement the CSS-aware conditional-value parser.
-3. Define the condition registry and duplicate-name diagnostics.
+1. Define the property/candidate/condition/value IR.
+2. Implement property-scoped parsing through the shared Tailwind candidate
+   engine.
+3. Define the modifier registry and duplicate-name diagnostics.
 4. Prove identical ordering on web and native.
-5. Add parser fuzz cases for CSS punctuation, nesting, strings, URLs, and
-   escapes.
+5. Add parser fuzz cases for arbitrary values, CSS punctuation, nesting,
+   strings, URLs, and escapes.
 
 ### Phase 2: isolate Tailwind
 
@@ -1190,20 +1311,22 @@ declare that consumers must compile the dependency.
 
 ### Phase 5: introduce flat values
 
-1. Add the v3 opt-in.
-2. Parse and lower literal conditional programs.
-3. Cache runtime parsing for regular Tamagui migration cases.
-4. Add compiler diagnostics and canonical formatting.
-5. Build the static codemod.
+1. Make property-scoped candidates the V3 regular Tamagui grammar.
+2. Parse and lower literal candidate programs.
+3. Define and cache runtime parsing for permitted dynamic strings.
+4. Add compiler diagnostics, canonical formatting, and language-service
+   completions.
+5. Build the static codemod for `$`, camelCase V6 built-ins, and conditional
+   objects.
 6. Migrate representative internal components.
 7. Measure type, runtime, CSS, and bundle effects.
 
-### Phase 6: prepare v4
+### Phase 6: complete the V3 migration
 
-1. Publish the conditional-object deprecation schedule.
+1. Publish the V3 breaking-change and codemod guide.
 2. Finish structured native value migration rules.
 3. Remove old recursive condition paths after repository migration.
-4. Make flat conditional values canonical.
+4. Align transition shorthand and longhand behavior.
 5. Re-run all prop, style, DOM, bundle, and type conformance gates.
 
 ## Validation
@@ -1272,6 +1395,37 @@ Repeat the established minified gzip probes for:
 
 Record module graphs with every number.
 
+### Native runtime performance
+
+Native RSD and DOM-polyfill work is sensitive to small amounts of per-element
+overhead. React Strict DOM PR #512 reports roughly a five percent improvement
+in its benchmark from changes that appear locally small:
+
+- do not create or attach a callback ref when no ref was passed;
+- replace stacked callback/ref hooks with one memoized callback;
+- reuse default image props when no aspect-ratio style must be added.
+
+Final passes over Tamagui DOM and RSD-aligned code must treat every hook,
+callback ref, wrapper object, style array, default-prop object, context read,
+and tag-specific polyfill on the generic native host path as a measured cost.
+Optional behavior must not allocate or subscribe when the corresponding prop
+or feature is absent.
+
+The native benchmark gate covers:
+
+- mount and update time for large `html.div`, `html.span`, `View`, and `Text`
+  trees;
+- retained memory after mount, update, unmount, and remount;
+- components with and without refs, styles, events, inheritance, and
+  tag-specific polyfills;
+- Hermes or a documented jitless proxy in addition to ordinary Node.js;
+- comparison with the pinned RSD fixture and with Tamagui's direct native
+  primitives.
+
+Record the benchmark command, device or runtime, sample size, variance, and
+before/after numbers. Bundle size alone cannot approve a native DOM-path
+change.
+
 ## Explicit exclusions
 
 - no React Strict DOM runtime dependency;
@@ -1292,17 +1446,20 @@ Record module graphs with every number.
 These decisions need focused prototypes before implementation is considered
 locked:
 
-1. Exact scoped Tailwind candidates versus preserving `$` in the new flat
-   value grammar.
-2. The exact group and container condition spelling.
-3. The complete built-in condition list and collision policy for common
+1. The runtime and compiler boundary for dynamic candidate strings, including
+   the cache key and development diagnostics.
+2. The CSS transition shorthand, configured-preset resolution, expanded
+   longhands, and native capability matrix.
+3. The exact container condition spelling and its interaction with stacked
+   Tailwind variants.
+4. The complete built-in condition list and collision policy for common
    configs.
-4. How `style()` conditionally composes multiple handles while preserving
+5. How `style()` conditionally composes multiple handles while preserving
    whole-property replacement.
-5. The structured React Native value migration table.
-6. The minimum native DOM ref API.
-7. The exact dependency-precompilation metadata and error experience.
-8. Whether ordinary regular Tamagui requires compilation in v4.
+6. The structured React Native value migration table.
+7. The minimum native DOM ref API.
+8. The exact dependency-precompilation metadata and error experience.
+9. Which dynamic regular Tamagui cases require the compiler in V3.
 
 Each prototype must end with one chosen path. The implementation must not ship
 multiple equivalent syntaxes or runtime fallback paths.
@@ -1315,4 +1472,7 @@ multiple equivalent syntaxes or runtime fallback paths.
 - [React Strict DOM component guide](https://facebook.github.io/react-strict-dom/learn/components/)
 - [Tailwind state variants](https://tailwindcss.com/docs/hover-focus-and-other-states)
 - [CSS Syntax Module Level 3](https://www.w3.org/TR/css-syntax-3/)
+- [CSS transition shorthand](https://developer.mozilla.org/en-US/docs/Web/CSS/transition)
+- [CSS Transitions Level 2](https://www.w3.org/TR/css-transitions-2/)
+- [React Strict DOM PR #512: avoid ref overhead when not needed](https://github.com/react/react-strict-dom/pull/512)
 - `styledHtml` introduction: commit `ab8517c5e4`
