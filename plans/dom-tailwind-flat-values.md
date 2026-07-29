@@ -31,8 +31,14 @@ while new DOM and Tailwind authoring get strict package and compiler boundaries.
 11. New DOM authoring always requires the compiler. It cannot bail to an
     untransformed runtime path.
 12. Conditional styling moves into individual property values. It is opt-in
-    during v3 and planned as the default style syntax in v4.
-13. Tamagui tokens keep the `$` sigil.
+    during v3 and planned as the default style syntax in v4. The exact flat
+    value grammar is still under evaluation.
+13. Existing regular Tamagui keeps the `$` sigil during compatibility. Whether
+    the new flat value grammar removes it is part of the syntax prototype.
+14. In v3, `bg` stops being a fixed alias for `backgroundColor` and becomes the
+    complete background candidate family. A resolved color candidate still
+    writes only `backgroundColor`; it does not lower blindly to the resetting
+    CSS `background` shorthand.
 
 ## Product shape
 
@@ -222,7 +228,93 @@ The new form replaces:
 - media, group, and container sub-objects;
 - recursively nested combinations of those objects.
 
-Canonical form:
+### Property-scoped candidate direction
+
+A newer direction under evaluation uses Tailwind candidate suffixes inside
+each style prop. The prop supplies the utility family:
+
+```tsx
+<View
+  p="4 sm:6"
+  bg="red-500 hover:blue-500 dark:hover:blue-700"
+  w="full md:[42rem]"
+/>
+```
+
+Conceptually:
+
+```txt
+bg="red-500 hover:blue-500"
+-> bg-red-500 hover:bg-blue-500
+```
+
+The implementation does not need to construct class-name strings. It binds the
+candidate family before sending each suffix through the same candidate parser
+and ordered style IR used by `@tamagui/tailwind`.
+
+Tailwind arbitrary values are the literal escape hatch:
+
+```tsx
+bg="[linear-gradient(135deg,_#f00,_#00f)]"
+w="[117px] md:[344px]"
+bg="(--my-background)"
+```
+
+Using this exact spelling lets regular and Tailwind Tamagui share one parser.
+The brackets also give whitespace, functions, slashes, and modifier boundaries
+one unambiguous representation.
+
+`bg` is a candidate family, not a direct alias for the CSS `background`
+shorthand. The candidate resolver determines whether a value contributes
+`backgroundColor`, `backgroundImage`, `backgroundPosition`, or another
+background property. This avoids the reset behavior of emitting
+`background: ...` for every ordinary color.
+
+Overloaded Tailwind families require property validation. For example,
+`fontSize="xl"` and `color="red-500"` both bind to the `text-*` family, then
+verify that the resolved candidate contributes to the property named by the
+prop. A mismatched candidate is a compiler diagnostic.
+
+Three syntax variants are plausible:
+
+1. Exact scoped Tailwind:
+
+   ```tsx
+   bg="red-500 hover:blue-500"
+   bg="[linear-gradient(135deg,_#f00,_#00f)]"
+   ```
+
+   This removes `$`, uses one parser, and gives arbitrary values one explicit
+   form. It has the largest source migration but the smallest permanent
+   language.
+
+2. Scoped Tailwind with the Tamagui token sigil:
+
+   ```tsx
+   bg="$red hover:$blue"
+   bg="[linear-gradient(135deg,_#f00,_#00f)]"
+   ```
+
+   This reduces token migration, but keeps a Tamagui-only candidate atom and
+   postpones the `$` decision.
+
+3. Bare one-token CSS literals:
+
+   ```tsx
+   bg="linear-gradient(135deg,#f00,#00f)"
+   bg="hover:[linear-gradient(135deg,_#00f,_#f00)]"
+   ```
+
+   The parser would try known candidates first and reinterpret an unknown
+   function-shaped token as CSS. This saves brackets in a narrow case but adds
+   contextual fallback behavior, ambiguous errors, and a second value path.
+
+The leading direction is option 1. Option 2 is the credible migration
+compromise. Option 3 should be rejected unless a prototype finds a single
+deterministic parse rule that does not fall back between candidate and CSS
+grammars.
+
+The earlier condition-call proposal was:
 
 ```tsx
 bg="$red :hover($green) :light($color1/50) :dark:hover($color2/20)"
@@ -244,6 +336,11 @@ bg="$red :hover($green) :dark:hover($blue)"
 This is a property-centered conditional program. It reaches a similar
 intermediate representation to StyleX and React Strict DOM conditional value
 objects, with a surface that composes naturally through JSX props.
+
+The rest of this section records that earlier proposal so its cascade,
+condition, native, and validation requirements are not lost. The syntax
+prototype must choose one public grammar and delete the other implementation
+path.
 
 ### Grammar
 
@@ -1010,6 +1107,30 @@ V3 documentation marks conditional objects as legacy after the new syntax is
 proven. V4 plans to make flat values the canonical syntax and remove the old
 condition object path on a release schedule with a codemod and diagnostics.
 
+### Background shorthand migration
+
+In v3, `bg` changes from an alias for `backgroundColor` to the complete
+background candidate family. Ordinary color uses remain mechanically
+migratable:
+
+```tsx
+// current
+bg="$surface"
+
+// exact scoped-candidate direction
+bg="surface"
+```
+
+The compiler resolves each candidate to its actual background contribution. It
+must not emit the CSS `background` shorthand for every value because that would
+reset separately authored background image, position, size, repeat, attachment,
+origin, and clip values.
+
+The migration tool can remove `$` from statically known token values, convert
+conditional objects into modifiers, and wrap raw literals in Tailwind arbitrary
+value brackets. It reports dynamic strings and spreads whose meaning cannot be
+resolved locally.
+
 ### DOM adoption
 
 Existing `View` and `Text` code does not need to migrate.
@@ -1171,15 +1292,17 @@ Record module graphs with every number.
 These decisions need focused prototypes before implementation is considered
 locked:
 
-1. The exact group and container condition spelling.
-2. The complete built-in condition list and collision policy for common
+1. Exact scoped Tailwind candidates versus preserving `$` in the new flat
+   value grammar.
+2. The exact group and container condition spelling.
+3. The complete built-in condition list and collision policy for common
    configs.
-3. How `style()` conditionally composes multiple handles while preserving
+4. How `style()` conditionally composes multiple handles while preserving
    whole-property replacement.
-4. The structured React Native value migration table.
-5. The minimum native DOM ref API.
-6. The exact dependency-precompilation metadata and error experience.
-7. Whether ordinary regular Tamagui requires compilation in v4.
+5. The structured React Native value migration table.
+6. The minimum native DOM ref API.
+7. The exact dependency-precompilation metadata and error experience.
+8. Whether ordinary regular Tamagui requires compilation in v4.
 
 Each prototype must end with one chosen path. The implementation must not ship
 multiple equivalent syntaxes or runtime fallback paths.
