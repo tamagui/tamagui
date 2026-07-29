@@ -32,8 +32,15 @@ boundaries.
 9. `style(definition)` uses the same style-definition grammar as
    `styled(Component, definition)`, with the component argument removed.
 10. `tailwind-merge` is removed from Tamagui.
-11. New DOM authoring always requires the compiler. It cannot bail to an
-    untransformed runtime path.
+11. The compiler requirement for DOM authoring is platform-scoped. On web,
+    `html.*` from regular Tamagui renders the literal tag at runtime like any
+    Tamagui component, with the compiler as the usual optimizer. On native,
+    the compiler is required: tag classification, primitive injection, and
+    literal text wrapping are build-time structural rewrites, and a missing
+    compiler is an explicit native build failure (native always runs through
+    a bundler, so this costs nothing in practice). Standalone `tamagui/dom`
+    with `style()` is compile-only on both platforms; zero-runtime output is
+    its identity. There is no runtime child scan on native in any mode.
 12. Conditional styling moves into individual property values in v3. The
     property supplies the utility family. Values use one universal grammar for
     every property: a CSS-shaped base plus top-level `modifier:` clauses.
@@ -967,19 +974,25 @@ Approximate native output:
 
 Rules:
 
-- any `html.*` usage requires the DOM compiler;
-- the compiler cannot bail to an untransformed DOM runtime;
-- a missing compiler produces an explicit development or build failure;
-- published libraries using DOM mode must be precompiled or included in
-  dependency compilation;
+- on web, regular-Tamagui `html.*` is runtime-correct; the compiler is the
+  usual optimizer, never a gate;
+- on native, any `html.*` usage requires the DOM compiler, which cannot bail
+  to an untransformed runtime: a missing compiler is an explicit native build
+  failure;
+- standalone `tamagui/dom` is compile-only on both platforms;
+- published libraries using DOM mode on native must be precompiled or
+  included in dependency compilation;
 - literal text wrapping happens at compile time;
 - unsupported native semantics produce actionable diagnostics;
 - ordinary `View` and `Text` retain their established runtime path.
 
-`@tamagui/tailwind` is also compiler-led. It does not ship the Tailwind parser
-inside every rendered component. Dynamic class values require a statically
-bounded compiler representation or a documented Tailwind-package runtime
-cost. Core never pays that cost.
+`@tamagui/tailwind` is compiler-led on both platforms. On web, compilation is
+inherent: unclaimed classes only become CSS through the official Tailwind
+engine at build time. On native, the bundler plugin (Metro, One) claims and
+filters candidates at build time, and native builds always run through a
+bundler. Dynamic class values require a statically bounded compiler
+representation or the documented runtime parser owned by the Tailwind
+package. Core never pays that cost in either case.
 
 ## Package and export boundaries
 
@@ -1257,6 +1270,20 @@ The migration tool can remove `$` from statically known token values, convert
 conditional objects into modifier clauses, and emit raw literals as plain CSS
 values. It reports dynamic strings and spreads whose meaning cannot be
 resolved locally.
+
+### Skins and the registry
+
+Canonical skins are single-sourced in regular Tamagui flat-value syntax. The
+Tailwind-syntax rendering of a skin is derived, never hand-maintained: both
+frontends lower to the same IR, so the shared grammar converts a flat-value
+definition to className candidates deterministically (the existing
+`to-tailwind` converter is the starting point). The registry generator and
+the docs mode toggle both render from the one source file.
+
+The current object-syntax skins migrate through the standard V3 codemod. They
+are statically local by construction (no spreads, no dynamic condition
+objects), which makes them the ideal first codemod corpus and its acceptance
+fixture.
 
 ### DOM adoption
 
