@@ -873,7 +873,10 @@ The flat conditional-value syntax brings Tamagui closer to RSD's
 property-centered model without adopting StyleX handles as the regular
 Tamagui authoring syntax.
 
-Native cannot promise every CSS behavior. Known difficult areas include:
+Native cannot promise every CSS behavior. See
+`plans/react-native-style-capabilities.md` for the current per-version and
+per-platform survey (targeting RN ≥ 0.82 removes all New Architecture
+branching). Known difficult areas include:
 
 - grid and general inline layout;
 - fixed and sticky positioning;
@@ -1521,6 +1524,8 @@ multiple equivalent syntaxes or runtime fallback paths.
 
 ## References
 
+- `plans/react-native-style-capabilities.md` — RN 0.78→0.87 style-prop survey
+  (2026-07): what the flat grammar can claim natively, per-platform gaps
 - [React Strict DOM common props](https://facebook.github.io/react-strict-dom/api/html/common/)
 - [React Strict DOM HTML compatibility](https://facebook.github.io/react-strict-dom/api/html/)
 - [React Strict DOM CSS compatibility](https://facebook.github.io/react-strict-dom/api/css/)
