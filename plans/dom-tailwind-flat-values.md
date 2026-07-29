@@ -46,8 +46,10 @@ boundaries.
 16. Group variants use Tailwind's exact modifier spelling: `group-hover:` for
     an unnamed group and `group-hover/card:` for a named group.
 17. Groups and query containers are independent. `group` exposes parent state
-    and does not establish a size container. Container queries use explicit
-    `containerName` and `containerType` props.
+    and does not establish a size container. On regular Tamagui components,
+    boolean `container` is the shorthand for an unnamed
+    `containerType="inline-size"` container. Named and full-size containers use
+    `containerName` and `containerType`.
 18. Plain responsive modifiers such as `sm:` are viewport media queries. The
     `@` prefix is reserved for container queries: `@sm:` targets the nearest
     container and `@sm/card:` targets a named container.
@@ -353,8 +355,8 @@ color="muted sm:group-hover/card:foreground"
 // nearest container sm plus parent hover
 color="muted @sm:group-hover:foreground"
 
-// named card container sm plus named card group hover
-color="muted @sm/card:group-hover/card:foreground"
+// named layout container sm plus named card group hover
+color="muted @sm/layout:group-hover/card:foreground"
 ```
 
 The `@` prefix does not mean media in general. Tailwind uses ordinary `sm:`,
@@ -365,19 +367,35 @@ The parent capabilities are explicit and can be combined on one element:
 
 ```tsx
 // regular Tamagui
-<View
-  group="card"
-  containerName="card"
-  containerType="inline-size"
-/>
+<View group="card" container />
 
 // Tailwind Tamagui
-<View className="group/card @container/card" />
+<View className="group/card @container" />
 ```
 
-`containerType="size"` corresponds to Tailwind's `@container-size/card`.
-Regular Tamagui adds `containerName` to its web-aligned style surface. Native
-uses the same props as semantic query-container configuration.
+On regular Tamagui base components, `container` is boolean-only:
+
+```tsx
+// nearest unnamed inline-size container
+<View container />
+
+// named inline-size container
+<View container containerName="layout" />
+
+// named container that queries both axes
+<View containerName="layout" containerType="size" />
+```
+
+`container` lowers to `containerType="inline-size"` and does not create a
+container name. An explicit `containerType` replaces the shorthand and cannot
+be supplied together with `container`. `containerType="size"` corresponds to
+Tailwind's `@container-size`; adding `containerName="layout"` corresponds to
+the `/layout` modifier.
+
+The boolean shorthand belongs only to regular Tamagui components. Tailwind
+Tamagui uses `@container`, and standalone `style()` retains the actual CSS
+`container`, `containerName`, and `containerType` properties. Native treats the
+regular props as semantic query-container configuration.
 
 This changes current Tamagui behavior, where `group="card"` also emits
 `container-name: card` and defaults `container-type` to `inline-size`. V3
@@ -1277,25 +1295,28 @@ queries:
   <Text color="group-hover/card:foreground" />
 </View>
 
-// existing: named group container size plus hover
-<View group="card">
-  <Text $group-card-sm-hover={{ color: '$foreground' }} />
+// existing: nearest group container size plus hover
+<View group>
+  <Text $group-sm-hover={{ color: '$foreground' }} />
 </View>
 
 // V3
-<View
-  group="card"
-  containerName="card"
-  containerType="inline-size"
->
-  <Text color="@sm/card:group-hover/card:foreground" />
+<View group container>
+  <Text color="@sm:group-hover:foreground" />
 </View>
 ```
 
-The codemod adds container props only when descendants use a group size
-condition. Pure `$group-hover` and `$group-card-hover` cases remain groups
-without containers. Existing viewport media combined with group state becomes
-`sm:group-hover/card:`, without `@`.
+The codemod adds the boolean `container` prop only when descendants use a group
+size condition. Pure `$group-hover` and `$group-card-hover` cases remain
+groups without containers. Existing viewport media combined with group state
+becomes `sm:group-hover/card:`, without `@`.
+
+Named legacy group-container queries preserve their name during migration:
+`$group-card-sm-hover` becomes
+`@sm/card:group-hover/card:foreground`, and the parent receives
+`group="card" container containerName="card"`. New code should normally use
+the nearest unnamed container and reserve the repeated named form for cases
+that require disambiguation.
 
 The codemod can convert statically local cases. It must report cases where:
 
