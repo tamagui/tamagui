@@ -2,7 +2,10 @@
 
 ## Status
 
-Design plan, July 2026. This consolidates the current direction for:
+Design plan, July 2026. Revised 2026-07-29: universal value grammar (colon
+clause detection over CSS component values), per-longhand program merging,
+value variables, migration compat setting, and the compiled static fast path.
+This consolidates the current direction for:
 
 - regular Tamagui and its future inline style syntax;
 - the separate `@tamagui/tailwind` frontend;
@@ -32,8 +35,9 @@ boundaries.
 11. New DOM authoring always requires the compiler. It cannot bail to an
     untransformed runtime path.
 12. Conditional styling moves into individual property values in v3. The
-    property supplies the utility family and its value uses exact Tailwind
-    candidate suffixes and modifiers.
+    property supplies the utility family. Values use one universal grammar for
+    every property: a CSS-shaped base plus top-level `modifier:` clauses.
+    Modifier spellings match Tailwind exactly.
 13. The new flat value grammar does not use `$`. The V3 migration codemod
     removes it from statically known token values. Raw numeric JSX values keep
     their existing pixel behavior.
@@ -53,6 +57,28 @@ boundaries.
 18. Plain responsive modifiers such as `sm:` are viewport media queries. The
     `@` prefix is reserved for container queries: `@sm:` targets the nearest
     container and `@sm/card:` targets a named container.
+19. Style prop values need no bracket or underscore escaping. A top-level
+    colon is never valid inside a CSS value, so conditional clauses are
+    detectable unambiguously and the base/payload segments are plain CSS
+    component values. Bracketed arbitrary values belong to the Tailwind
+    className frontend only, where class names cannot contain spaces.
+20. Identifiers inside values resolve config-first: a configured
+    token/variable name wins, otherwise the identifier is literal CSS.
+    CSS-wide keywords are reserved and cannot be configured names.
+21. Merging preserves the v1 model, generalized from values to programs. A
+    prop's value expands to one program per contributed CSS longhand; a later
+    contribution to the same longhand replaces that whole program. Clause-level
+    deep merging never happens.
+22. Configured variables may hold composite values (a full box-shadow list),
+    parsed at config time by the same value parser. A variable covers one
+    property's value; multi-property presets remain variants and `styled()`.
+23. V3 ships a `legacyConditionObjects` compatibility setting. Old condition
+    objects parse into the same IR with a development warning. The setting
+    gates input parsing only, and v4 removes it together with the old parsers.
+24. When every contribution is statically known, the compiler emits a plain
+    element and skips the runtime component path entirely. Closing the
+    rendering-cost gap to plain CSS is a stated deliverable of the flat-value
+    work, not an optimization afterthought.
 
 ## Product shape
 
@@ -267,13 +293,14 @@ transition="quick"
 transition="bouncy"
 ```
 
-The parser needs one deterministic resolution rule. The proposed rule is that
-an exact single identifier matching a configured animation key is a preset.
-Every other string follows the CSS transition grammar. CSS global values and
-reserved transition keywords cannot be animation preset names. Duration-shaped
-values such as `200ms` always use CSS semantics, even if a legacy config has a
-same-named preset. The V3 codemod must rename or expand a colliding preset when
-its configured easing differs from the CSS default.
+Preset resolution is the universal config-first identifier rule, not a
+transition-specific mechanism: an exact single identifier matching a
+configured animation key is a preset. Every other string follows the CSS
+transition grammar. CSS global values and reserved transition keywords cannot
+be animation preset names. Duration-shaped values such as `200ms` always use
+CSS semantics, even if a legacy config has a same-named preset. The V3 codemod
+must rename or expand a colliding preset when its configured easing differs
+from the CSS default.
 
 Both forms lower into one transition IR containing property, duration, timing
 function, delay, and behavior. The CSS driver serializes that IR without
@@ -302,29 +329,56 @@ The new form replaces:
 - media, group, and container sub-objects;
 - recursively nested combinations of those objects.
 
-### Property-scoped candidate grammar
+### The universal value grammar
 
-The V3 grammar uses Tailwind candidate suffixes inside each style prop. The
-prop supplies the utility family:
+Every style prop value parses with one grammar:
+
+```txt
+value  := base? clause*
+clause := modifier (":" modifier)* ":" payload
+```
+
+`base` and `payload` are ordinary CSS component-value sequences: spaces,
+commas, functions, strings, and slashes are all legal. The parser recognizes a
+clause boundary only at a top-level `modifier:` (or `@modifier:`) chain. This
+is unambiguous because a top-level colon is never valid inside a CSS value;
+colons only occur inside strings, `url()`, and function parentheses. No
+bracket or underscore escaping exists in this frontend:
 
 ```tsx
 <View
   p="4 sm:6"
   bg="red-500 hover:blue-500 dark:hover:blue-700"
-  w="full md:[42rem]"
+  w="full md:42rem"
+  boxShadow="0 2px 8px #0003 hover:0 4px 16px #0004, 0 0 2px red"
+  transform="scale(1) hover:scale(1.05)"
 />
+
+<View bg="linear-gradient(135deg, red, blue) hover:linear-gradient(135deg, pink, cyan)" />
 ```
 
-Conceptually:
+A payload extends until the next top-level modifier chain. Because valid CSS
+cannot contain a bare top-level colon, an unregistered modifier such as
+`hver:` is a hard parse error, never silent passthrough.
 
-```txt
-bg="red-500 hover:blue-500"
--> bg-red-500 hover:bg-blue-500
-```
+Identifiers resolve config-first: an identifier or number token that names a
+configured token or variable resolves through the config; anything else is
+literal CSS, exactly as bare `bg="red"` has worked since v1. Removing `$`
+changes the lookup from prefixed to config-first, not the model. Two rules
+keep resolution deterministic:
 
-The implementation does not need to construct class-name strings. It binds the
-candidate family before sending each suffix through the same candidate parser
-and ordered style IR used by `@tamagui/tailwind`.
+- CSS-wide keywords (`inherit`, `initial`, `unset`, `revert`, `none`, `auto`,
+  `transparent`, `currentColor`) are reserved: configuring a token with one of
+  these names is a config-time error.
+- A configured name always wins over a same-spelled CSS literal. Config
+  creation warns when a token shadows a property-relevant CSS keyword.
+
+The prop binds the candidate family before resolution, so values share the
+modifier registry, token resolution, family tables, and ordered style IR with
+`@tamagui/tailwind`. The two frontends deliberately differ in value spelling:
+className values cannot contain spaces, so the Tailwind frontend keeps
+Tailwind's bracket-and-underscore arbitrary-value rules
+(`shadow-[0_2px_8px_#0003]`), while this frontend takes plain CSS.
 
 Group state uses Tailwind's modifier grammar unchanged. A group exposes parent
 state and does not make the parent a size container:
@@ -402,17 +456,12 @@ This changes current Tamagui behavior, where `group="card"` also emits
 removes that coupling so hover-only groups do not pay container setup or native
 measurement costs.
 
-Tailwind arbitrary values are the literal escape hatch:
-
-```tsx
-bg="[linear-gradient(135deg,_#f00,_#00f)]"
-w="[117px] md:[344px]"
-bg="(--my-background)"
-```
-
-Using this exact spelling lets regular and Tailwind Tamagui share one parser.
-The brackets also give whitespace, functions, slashes, and modifier boundaries
-one unambiguous representation.
+Raw CSS needs no escape hatch in this frontend: `w="117px md:344px"` and full
+gradient values are plain values under the universal grammar. Bracketed
+arbitrary values (`w-[117px]`, `bg-[linear-gradient(...)]`) remain the escape
+hatch of the Tailwind className frontend, where whitespace cannot appear
+inside a class. CSS custom properties keep CSS syntax:
+`bg="var(--my-background)"`.
 
 Raw JSX numbers remain raw platform values, including the existing numeric
 pixel behavior:
@@ -422,8 +471,11 @@ p={16}
 w={117}
 ```
 
-A numeric string is a candidate, so `p="4"` resolves the configured `4` token.
-Conditional raw values use brackets, for example `p="4 hover:[18px]"`.
+A numeric string resolves config-first, so `p="4"` resolves the configured `4`
+token while `p={4}` stays 4 pixels. That quoted-versus-raw distinction is a
+documented rule and a lint-rule target, since on the aligned v6 config the two
+differ by 4x. Conditional raw values are plain CSS lengths, for example
+`p="4 hover:18px"`.
 
 ### V6 candidate naming
 
@@ -459,24 +511,27 @@ aliases at runtime because two configured names could collide.
 shorthand. The candidate resolver determines whether a value contributes
 `backgroundColor`, `backgroundImage`, `backgroundPosition`, or another
 background property. This avoids the reset behavior of emitting
-`background: ...` for every ordinary color.
+`background: ...` for every ordinary color. Family expansion feeds the
+per-longhand program model described in "Programs and merging".
 
 Overloaded Tailwind families require property validation. For example,
 `fontSize="xl"` and `color="red-500"` both bind to the `text-*` family, then
 verify that the resolved candidate contributes to the property named by the
 prop. A mismatched candidate is a compiler diagnostic.
 
-The selected syntax is exact scoped Tailwind:
+The selected syntax is the universal value grammar:
 
 ```tsx
 bg="red-500 hover:blue-500"
-bg="[linear-gradient(135deg,_#f00,_#00f)]"
+bg="linear-gradient(135deg, #f00, #00f) hover:linear-gradient(135deg, #00f, #f00)"
 ```
 
-This removes `$`, uses one parser, and gives arbitrary values one explicit
-form. Keeping `$` in candidate atoms and interpreting unknown function-shaped
-tokens as bare CSS were considered and rejected. Both would create a second
-permanent value path.
+This removes `$` and uses one parser for every property. Two earlier
+directions are rejected: keeping `$` in candidate atoms, and requiring
+bracketed Tailwind arbitrary-value spellings inside prop values. The bracket
+requirement fell to the colon observation: since clause boundaries are
+detectable in plain CSS without escaping, CSS-shaped values are the one
+primary spelling rather than a fallback beside a candidate grammar.
 
 ### Types and editor tooling
 
@@ -488,11 +543,76 @@ string:
 type FlatStyleValue<T> = T | (string & {})
 ```
 
-Candidate, token, modifier, arbitrary-value, and target validation live in the
-compiler and a Tamagui language server backed by the same candidate engine.
-Thin editor integrations launch that server through the Language Server
-Protocol. TypeScript can expose small finite unions where they remain cheap,
-but type performance takes priority over exhaustive string validation.
+Candidate, token, modifier, and target validation live in the compiler and a
+Tamagui language service backed by the same value-grammar engine. A TypeScript
+language-service plugin riding tsserver is an acceptable first delivery
+vehicle before a standalone LSP server. The same engine also backs an ESLint
+rule, so validation reaches lint-driven workflows (CI and agent loops) that
+never see editor diagnostics. TypeScript can expose small finite unions where
+they remain cheap, but type performance takes priority over exhaustive string
+validation.
+
+## Programs and merging
+
+Merging preserves the v1 model: shorthands expand to longhands and
+contributions merge forward in authored order. The flat grammar generalizes
+the unit of contribution from a value to a program.
+
+A prop's parsed value expands into one program per resolved CSS longhand.
+`bg="url(x.png) surface hover:surface-hover"` produces a `backgroundImage`
+program (`url(x.png)`) and a `backgroundColor` program
+(`surface hover:surface-hover`). The established forward pass then applies
+unchanged, over programs:
+
+- A later `backgroundColor="red"` replaces the `backgroundColor` program
+  wholesale, hover clause included, while the `backgroundImage` program
+  survives.
+- A variant's `bg: 'red'` contributes a new `backgroundColor` program at its
+  position in the forward pass and replaces the earlier one.
+- `p="4 sm:6"` followed by `px="2"` expands to four padding longhand
+  programs, and `px` replaces the left and right ones.
+
+Replacement is always whole-program per longhand. Clause-level deep merging
+never happens: preserving a base program's hover behavior under an override
+requires restating the complete program. This keeps styled bases, variants,
+spreads, and JSX overrides predictable.
+
+The family expansion table, which records the longhand each kind of value
+contributes to for `bg` and the other multi-property families, is the only
+merge knowledge in the system, and it lives in the shared grammar package.
+This is also why `tailwind-merge` is removable: for owned values, per-longhand
+forward merging reproduces everything it did.
+
+## Value variables
+
+Config-first resolution makes named values work for any property, including
+composite values:
+
+```tsx
+boxShadow="glow hover:glow-strong"
+transition="quick"
+bg="surface"
+```
+
+Tailwind v4 reaches this through `@theme` namespaces (`--shadow-glow`
+generating `shadow-glow`). Here the prop already supplies the family, so the
+bare name is enough, and the Tailwind frontend surfaces the same configured
+value as `hover:shadow-glow` for Tailwind muscle memory.
+
+Composite variable definitions are parsed at config time by the same value
+parser, never stored as opaque strings. Web lowers them to CSS custom
+properties (`box-shadow: var(--shadow-glow)`) so theme switches stay dynamic;
+native consumes the parsed representation (`shadowOffset`, `shadowRadius`,
+`shadowColor`). Config-time parsing also validates every variable value.
+
+This is the themes-and-tokens-to-variables unification arriving with the
+grammar rather than after it: the grammar's identifier resolution is the
+variables lookup, and the two must be designed as one system.
+
+A variable holds one property's value. Multi-property presets (a named look
+combining shadow, border, and scale) are never value-grammar expansions; they
+remain variants and `styled()`. Expanding several properties from inside one
+prop's program would break per-longhand merging.
 
 ## Rejected condition-call proposal
 
@@ -521,8 +641,12 @@ objects, with a surface that composes naturally through JSX props.
 
 The rest of this section records that earlier proposal so its cascade,
 condition, native, and validation requirements are not lost. The chosen public
-grammar is property-scoped Tailwind candidates, and no condition-call
-implementation path remains.
+grammar is the universal value grammar above, and no condition-call
+implementation path remains. The condition-call proposal's CSS-aware parser
+rules (component-value tracking, balanced functions, strings, URLs, escapes)
+are adopted wholesale by the universal grammar; the parentheses it needed to
+delimit payloads are unnecessary once clause boundaries come from top-level
+colons.
 
 ### Grammar
 
@@ -1211,7 +1335,10 @@ implementation gets fresh repeatable probes.
 
 Required gates:
 
-- core `View` contains zero Tailwind grammar, parser, merger, or build modules;
+- core `View` contains zero className-frontend modules: no candidate-class
+  parsing, no `tailwind-merge`, no Tailwind build integration. The shared
+  value parser and modifier registry are core modules with their own measured
+  budget, since regular Tamagui parses dynamic flat values at runtime;
 - Tailwind `View` contains zero regular inline-style frontend modules;
 - standalone DOM contains neither frontend;
 - compiled DOM web output has effectively zero general style runtime;
@@ -1262,8 +1389,18 @@ There is no global switch and no combined mode.
 
 ### Conditional objects to flat values
 
-V3 makes the flat candidate grammar canonical. A component does not carry two
-competing condition systems.
+V3 makes the flat value grammar canonical. There is one resolution engine and
+one IR; during migration there are two accepted input spellings, one of them
+deprecated.
+
+The `legacyConditionObjects` setting keeps the old condition objects
+(`hoverStyle`, `pressStyle`, `$theme-*`, `$platform-*`, media and group
+objects) parsing into the same IR with a development warning. The setting
+gates input parsing only; it never forks resolution, ordering, or output. New
+apps default to off. The migration guide enables it for incremental
+migration, the final codemod step turns it off, and v4 removes it together
+with the old parsers. The compiler understands both spellings for as long as
+the setting exists.
 
 Examples:
 
@@ -1326,8 +1463,8 @@ The codemod can convert statically local cases. It must report cases where:
 - dynamic theme, platform, media, or group objects cannot be resolved;
 - structured React Native values lack a CSS-shaped equivalent.
 
-V3 removes the old condition object path on a release schedule with a codemod
-and diagnostics.
+V3 deprecates the old condition-object path behind `legacyConditionObjects`
+with a codemod and diagnostics; v4 removes it.
 
 ### Background shorthand migration
 
@@ -1349,8 +1486,8 @@ reset separately authored background image, position, size, repeat, attachment,
 origin, and clip values.
 
 The migration tool can remove `$` from statically known token values, convert
-conditional objects into modifiers, and wrap raw literals in Tailwind arbitrary
-value brackets. It reports dynamic strings and spreads whose meaning cannot be
+conditional objects into modifier clauses, and emit raw literals as plain CSS
+values. It reports dynamic strings and spreads whose meaning cannot be
 resolved locally.
 
 ### DOM adoption
@@ -1413,15 +1550,23 @@ declare that consumers must compile the dependency.
 
 ### Phase 5: introduce flat values
 
-1. Make property-scoped candidates the V3 regular Tamagui grammar.
-2. Parse and lower literal candidate programs.
-3. Define and cache runtime parsing for permitted dynamic strings.
-4. Add compiler diagnostics, canonical formatting, and language-service
-   completions.
-5. Build the static codemod for `$`, camelCase V6 built-ins, and conditional
-   objects.
-6. Migrate representative internal components.
-7. Measure type, runtime, CSS, and bundle effects.
+1. Implement the universal value parser: CSS component values, top-level
+   clause detection, config-first identifier resolution, reserved words.
+2. Implement per-longhand program expansion and the forward program merge.
+3. Parse and lower literal programs; define and cache runtime parsing for
+   permitted dynamic strings.
+4. Land `legacyConditionObjects`, lowering the old condition objects into the
+   same IR with deprecation diagnostics.
+5. Make the compiler emit plain elements, skipping the runtime component
+   path, when every contribution is static. Track the bailout rate on
+   kitchen-sink as a standing metric; the group-workload benchmark gap is the
+   target evidence.
+6. Add compiler diagnostics, canonical formatting, the ESLint rule, and
+   language-service completions backed by the same engine.
+7. Build the static codemod for `$`, camelCase V6 built-ins, and conditional
+   objects; its final step disables `legacyConditionObjects`.
+8. Migrate representative internal components.
+9. Measure type, runtime, CSS, and bundle effects.
 
 ### Phase 6: complete the V3 migration
 
@@ -1446,10 +1591,13 @@ declare that consumers must compile the dependency.
 
 - CSS component values containing colons, spaces, commas, slashes, strings,
   URLs, functions, and nested parentheses;
+- multi-word base and payload boundary detection against adjacent clauses;
 - chained conditions;
 - condition namespace collisions;
+- reserved CSS-wide keywords and token-shadowing config diagnostics;
 - last-matching-clause behavior;
-- whole-property replacement through styled bases, variants, and JSX props;
+- whole-program per-longhand replacement through styled bases, variants,
+  spreads, and JSX props, including family props overridden by longhand props;
 - web and native parity;
 - color token opacity and invalid non-color opacity;
 - dynamic parsing cache behavior;
@@ -1541,6 +1689,9 @@ change.
 - no silent native approximation for unsupported DOM or CSS behavior;
 - no exhaustive conditional grammar encoded in TypeScript;
 - no dual `$token` and `--token` syntax;
+- no bracket or underscore escaping in style prop values;
+- no multi-property expansion inside the value grammar;
+- no clause-level deep merging of property programs;
 - no public `strict-dom` product or entrypoint name.
 
 ## Remaining design work
@@ -1548,20 +1699,27 @@ change.
 These decisions need focused prototypes before implementation is considered
 locked:
 
-1. The runtime and compiler boundary for dynamic candidate strings, including
+1. The runtime and compiler boundary for dynamic value strings, including
    the cache key and development diagnostics.
-2. The CSS transition shorthand, configured-preset resolution, expanded
-   longhands, and native capability matrix.
-3. Native container-query measurement timing, initial render behavior, and
+2. The web CSS encoding for per-longhand programs: equal effective
+   specificity, preserved program order across runtime insertion, streaming
+   SSR, and code splitting, with deterministic server/client hashing.
+3. The CSS transition native capability matrix and the migration of the
+   existing array and per-property preset object forms (preset resolution
+   itself is decided: config-first identifiers).
+4. Native container-query measurement timing, initial render behavior, and
    performance gates for explicit query containers.
-4. The complete built-in condition list and collision policy for common
+5. The complete built-in condition list and collision policy for common
    configs.
-5. How `style()` conditionally composes multiple handles while preserving
-   whole-property replacement.
-6. The structured React Native value migration table.
-7. The minimum native DOM ref API.
-8. The exact dependency-precompilation metadata and error experience.
-9. Which dynamic regular Tamagui cases require the compiler in V3.
+6. How `style()` conditionally composes multiple handles while preserving
+   whole-program replacement.
+7. The structured React Native value migration table.
+8. The minimum native DOM ref API.
+9. The exact dependency-precompilation metadata and error experience.
+10. Which dynamic regular Tamagui cases require the compiler in V3.
+11. The variables unification: one configured namespace covering today's
+    tokens and theme values, composite values included, designed together
+    with the grammar's identifier resolution.
 
 Each prototype must end with one chosen path. The implementation must not ship
 multiple equivalent syntaxes or runtime fallback paths.
