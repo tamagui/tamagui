@@ -45,6 +45,12 @@ boundaries.
     multiple parts. The flat authoring syntax uses those names without `$`.
 16. Group variants use Tailwind's exact modifier spelling: `group-hover:` for
     an unnamed group and `group-hover/card:` for a named group.
+17. Groups and query containers are independent. `group` exposes parent state
+    and does not establish a size container. Container queries use explicit
+    `containerName` and `containerType` props.
+18. Plain responsive modifiers such as `sm:` are viewport media queries. The
+    `@` prefix is reserved for container queries: `@sm:` targets the nearest
+    container and `@sm/card:` targets a named container.
 
 ## Product shape
 
@@ -318,7 +324,8 @@ The implementation does not need to construct class-name strings. It binds the
 candidate family before sending each suffix through the same candidate parser
 and ordered style IR used by `@tamagui/tailwind`.
 
-Group state uses Tailwind's modifier grammar unchanged:
+Group state uses Tailwind's modifier grammar unchanged. A group exposes parent
+state and does not make the parent a size container:
 
 ```tsx
 // unnamed group
@@ -336,6 +343,46 @@ The equivalent Tailwind frontend marks the named parent with `group/card` and
 uses the same `group-hover/card:` modifier on descendants. Tamagui-specific
 native states extend the same shape, for example `group-press/card:`. Variants
 remain stackable, such as `sm:dark:group-hover/card:foreground`.
+
+Viewport and container conditions have different spellings:
+
+```tsx
+// viewport sm plus card hover
+color="muted sm:group-hover/card:foreground"
+
+// nearest container sm plus parent hover
+color="muted @sm:group-hover:foreground"
+
+// named card container sm plus named card group hover
+color="muted @sm/card:group-hover/card:foreground"
+```
+
+The `@` prefix does not mean media in general. Tailwind uses ordinary `sm:`,
+`md:`, and related modifiers for viewport media. Only container query variants
+use `@sm:`, `@md:`, `@max-md:`, and their named forms.
+
+The parent capabilities are explicit and can be combined on one element:
+
+```tsx
+// regular Tamagui
+<View
+  group="card"
+  containerName="card"
+  containerType="inline-size"
+/>
+
+// Tailwind Tamagui
+<View className="group/card @container/card" />
+```
+
+`containerType="size"` corresponds to Tailwind's `@container-size/card`.
+Regular Tamagui adds `containerName` to its web-aligned style surface. Native
+uses the same props as semantic query-container configuration.
+
+This changes current Tamagui behavior, where `group="card"` also emits
+`container-name: card` and defaults `container-type` to `inline-size`. V3
+removes that coupling so hover-only groups do not pay container setup or native
+measurement costs.
 
 Tailwind arbitrary values are the literal escape hatch:
 
@@ -554,8 +601,8 @@ bg="$surface :group[card]:hover($surfaceHover)"
 
 That spelling does not carry into the property-scoped candidate direction.
 The selected candidate spelling is `group-hover/card:surface-hover`, matching
-Tailwind's named-group grammar. Container condition spelling remains a focused
-design item.
+Tailwind's named-group grammar. Container queries use `@sm:` or the named
+`@sm/card:` form and stack independently with group state.
 
 There is one global condition namespace. Duplicate configured names are
 reported when the config is created. The implementation must not silently
@@ -1216,6 +1263,40 @@ Examples:
 />
 ```
 
+Group migration distinguishes parent state, viewport media, and container
+queries:
+
+```tsx
+// existing: group hover only
+<View group="card">
+  <Text $group-card-hover={{ color: '$foreground' }} />
+</View>
+
+// V3
+<View group="card">
+  <Text color="group-hover/card:foreground" />
+</View>
+
+// existing: named group container size plus hover
+<View group="card">
+  <Text $group-card-sm-hover={{ color: '$foreground' }} />
+</View>
+
+// V3
+<View
+  group="card"
+  containerName="card"
+  containerType="inline-size"
+>
+  <Text color="@sm/card:group-hover/card:foreground" />
+</View>
+```
+
+The codemod adds container props only when descendants use a group size
+condition. Pure `$group-hover` and `$group-card-hover` cases remain groups
+without containers. Existing viewport media combined with group state becomes
+`sm:group-hover/card:`, without `@`.
+
 The codemod can convert statically local cases. It must report cases where:
 
 - base and conditional values are spread from different objects;
@@ -1450,8 +1531,8 @@ locked:
    the cache key and development diagnostics.
 2. The CSS transition shorthand, configured-preset resolution, expanded
    longhands, and native capability matrix.
-3. The exact container condition spelling and its interaction with stacked
-   Tailwind variants.
+3. Native container-query measurement timing, initial render behavior, and
+   performance gates for explicit query containers.
 4. The complete built-in condition list and collision policy for common
    configs.
 5. How `style()` conditionally composes multiple handles while preserving
@@ -1471,6 +1552,7 @@ multiple equivalent syntaxes or runtime fallback paths.
 - [React Strict DOM CSS compatibility](https://facebook.github.io/react-strict-dom/api/css/)
 - [React Strict DOM component guide](https://facebook.github.io/react-strict-dom/learn/components/)
 - [Tailwind state variants](https://tailwindcss.com/docs/hover-focus-and-other-states)
+- [Tailwind responsive and container-query variants](https://tailwindcss.com/docs/responsive-design#container-queries)
 - [CSS Syntax Module Level 3](https://www.w3.org/TR/css-syntax-3/)
 - [CSS transition shorthand](https://developer.mozilla.org/en-US/docs/Web/CSS/transition)
 - [CSS Transitions Level 2](https://www.w3.org/TR/css-transitions-2/)
