@@ -43,5 +43,5 @@ export declare function getCSS(themeConfig: ThemeConfig, opts: {
     exclude?: 'themes' | 'design-system' | string | null;
 } | undefined, lastIndex: {
     value: number;
-}, hybrid?: boolean): string;
+}): string;
 //# sourceMappingURL=createDesignSystem.d.ts.map

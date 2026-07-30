@@ -1,6 +1,5 @@
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import { createVariable } from '../createVariable'
-import { getConfigMaybe } from '../config'
 import type {
   DedupedTheme,
   DedupedThemes,
@@ -8,7 +7,6 @@ import type {
   ThemeParsed,
   TokensParsed,
 } from '../types'
-import { isTailwindStyleMode, wrapWithTamaguiLayer } from './hybridStyle'
 
 // only cache tamagui styles
 // TODO merge totalSelectorsInserted and allSelectors?
@@ -347,10 +345,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 
     try {
       for (const rule of rules) {
-        sheet.insertRule(
-          isTailwindStyleMode(getConfigMaybe()) ? wrapWithTamaguiLayer(rule) : rule,
-          sheet.cssRules.length
-        )
+        sheet.insertRule(rule, sheet.cssRules.length)
       }
     } catch (err) {
       if (process.env.NODE_ENV === 'production') {

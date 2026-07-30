@@ -8,7 +8,6 @@ import {
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
-import { isTailwindStyleMode } from './helpers/hybridStyle'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import {
   buildCSSRuleSets,
@@ -281,12 +280,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const lastCSSIndex = { value: -1 }
 
   const getCSS: GetCSS = (opts = {}) => {
-    return getCSSHelper(
-      themeConfig,
-      opts,
-      lastCSSIndex,
-      isTailwindStyleMode(configIn as any)
-    )
+    return getCSSHelper(themeConfig, opts, lastCSSIndex)
   }
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
