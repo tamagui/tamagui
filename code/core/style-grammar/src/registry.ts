@@ -1,3 +1,7 @@
+import { modifierAliases, pseudoToModifier } from './stateModifiers'
+
+export { modifierAliases, pseudoToModifier }
+
 export type TokenCategory =
   | 'space'
   | 'size'
@@ -328,21 +332,6 @@ export const wholeClassConveniences: Readonly<Record<string, Convenience>> =
     'border-y': 'bare-border',
     'inset-0': 'sizing-keyword',
   })
-
-export const pseudoToModifier: Readonly<Record<string, string>> = Object.freeze({
-  hoverStyle: 'hover',
-  pressStyle: 'press',
-  focusStyle: 'focus',
-  focusVisibleStyle: 'focus-visible',
-  focusWithinStyle: 'focus-within',
-  disabledStyle: 'disabled',
-  enterStyle: 'enter',
-  exitStyle: 'exit',
-})
-
-export const modifierAliases: Readonly<Record<string, string>> = Object.freeze({
-  active: 'press',
-})
 
 export const modifierToPseudo: Readonly<Record<string, string>> = Object.freeze(
   Object.fromEntries(

@@ -11,7 +11,7 @@
 
 import type { GrammarConfigView } from './candidate'
 import { grammarPlatformNames } from './config'
-import { modifierAliases, pseudoToModifier } from './registry'
+import { modifierAliases, pseudoToModifier } from './stateModifiers'
 import { componentStateNames } from './states'
 import type { ModifierKind, ModifierRegistryView } from './valueTypes'
 
