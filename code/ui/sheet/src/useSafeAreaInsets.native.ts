@@ -11,7 +11,6 @@ export const SafeAreaInsetsContext =
   RNSafeAreaInsetsContext as unknown as React.Context<SafeAreaInsets | null>
 
 const safeArea = getSafeArea()
-const useStoreFeed = safeArea.state.useSafeAreaInsets
 
 function useContextInsets(): SafeAreaInsets | null {
   return React.useContext(SafeAreaInsetsContext)
@@ -25,12 +24,13 @@ function useContextInsets(): SafeAreaInsets | null {
  * lets Sheet work independently.
  */
 export function useSafeAreaInsets(): SafeAreaInsets | null {
-  const contextInsets = (useStoreFeed || useContextInsets)()
+  const [useFeed] = React.useState(() => safeArea.state.useSafeAreaInsets)
+  const contextInsets = (useFeed || useContextInsets)()
   const storeInsets = React.useSyncExternalStore(
     safeArea.subscribe,
     safeArea.getInsets,
     safeArea.getInsets
   )
 
-  return useStoreFeed ? storeInsets : contextInsets
+  return useFeed ? storeInsets : contextInsets
 }
