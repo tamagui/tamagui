@@ -1802,8 +1802,23 @@ The one native divergence is designed: legacy media-object importance
 ordered by config media-key position; programs are last-match-wins in
 authored order (the web cascade rule), so `$sm` beating a later `$lg` via
 config order does not survive conversion. The codemod orders clauses to
-preserve behavior; flag as a migration note. Deleting the legacy machinery
-awaits the user's review of this evidence plus the deletion diff.
+preserve behavior; flag as a migration note.
+
+Landed on the back of that evidence (2026-07-29, v3-beta): the
+noClass/animated-inline web path now evaluates programs at the end of the
+pass exactly like native (platform containment answers `web:`, inline
+values serialize as numbers like native — React and RNW re-suffix px), and
+`legacyConditionObjects` defaults ON, so condition objects convert to
+programs everywhere by default with `false` as the legacy escape hatch.
+Suite assertions that encoded legacy shapes were migrated to program
+shapes with per-case behavioral verification; the media-ordering tests now
+pin the authored-order rule by name. Still legacy behind fallbacks: exotic
+transform parts (skews, 3D), resetting composite shorthands
+(border/outline/font/textDecoration, until their family splits), nested
+platform chains that refuse conversion, and base (unconditional) styles,
+which never went through this machinery. The physical deletion of the
+legacy condition paths comes once those fallback categories are converted
+or codemod-eliminated; the bundle/branch-count numbers gate stays.
 
 1. Implement the universal value parser: CSS component values, top-level
    clause detection, config-first identifier resolution, reserved words.
