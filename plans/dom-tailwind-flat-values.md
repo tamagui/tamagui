@@ -1780,6 +1780,31 @@ expands to `backgroundColor` before the program hook, so the background
 family split (url + color in one value) currently requires authoring
 `background` — the v6 config makes `bg` the family prop itself.
 
+A/B evidence (2026-07-29, `TAMAGUI_AB_LEGACY_PROGRAMS=1` forces the gate
+suite-wide; test-only, deleted with the contraction): with every legacy
+condition object routed through the program engine, the full web suite runs
+755/769 and native 408/409. Every web failure is an assertion-shape
+mismatch, none behavioral: legacy per-value atomic class names
+(`_bg-0active-red`) become program-hash classes whose rules were verified
+equivalent (`abProbe.web.test.tsx` pins inline-restates-variant pressStyle
+through conversion), and legacy group container queries lose their
+`@supports (contain: inline-size)` wrapper, `:root:root:root` ladder, and
+group-descendant selector hop — `@container testy (max-width: 800px)
+{ ._c-… {color:red} }` replaces the whole legacy sandwich. Conversion
+hardening from the sweep: legacy `$group-name-media(-state)` keys now split
+into a container query plus group state on one clause (longest registered
+container-size suffix wins, mirroring the legacy two-part-first parse), and
+resetting composite shorthands (`border`, `outline`, `font`,
+`textDecoration`) refuse conversion with `legacy-composite-shorthand` and
+stay on the legacy path until their family split is designed — a program on
+a resetting shorthand would break the order-free cross-program encoding.
+The one native divergence is designed: legacy media-object importance
+ordered by config media-key position; programs are last-match-wins in
+authored order (the web cascade rule), so `$sm` beating a later `$lg` via
+config order does not survive conversion. The codemod orders clauses to
+preserve behavior; flag as a migration note. Deleting the legacy machinery
+awaits the user's review of this evidence plus the deletion diff.
+
 1. Implement the universal value parser: CSS component values, top-level
    clause detection, config-first identifier resolution, reserved words.
 2. Implement per-longhand program expansion and the forward program merge.
