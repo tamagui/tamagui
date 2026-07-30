@@ -26,6 +26,7 @@ import {
 } from '@tamagui/style-grammar'
 
 import type { GetStyleState } from '../types'
+import { resetLoweredProgramCache } from './lowerAccumulatedPrograms'
 import { getCachedPrograms, setProgramCacheContext } from './programCache'
 import { createGrammarRuntimeContext, type GrammarRuntimeContext } from './grammarConfig'
 
@@ -77,6 +78,8 @@ export function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeC
       configRevision: context.configRevision,
       colorTokens: context.colorTokens,
     })
+    // stale lowered entries are unreachable (revision-keyed) — clear for memory
+    resetLoweredProgramCache()
   }
   return context
 }

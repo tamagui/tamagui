@@ -5,18 +5,27 @@
 // class name is the identifier, so a repeat name skips insertion the same way
 // atomic styles do. Cross-program stylesheet order is irrelevant by design
 // (plans/dom-tailwind-flat-values.md, "The program block encoding").
+//
+// Hot path: the resolved+lowered result memoizes on the program's normalized
+// identity (config revision included), so a stable program costs one string
+// build and one Map hit per render — the resolve/serialize/lower pipeline runs
+// once per distinct program per config. Cap-and-reset like the parse cache,
+// no LRU bookkeeping.
 
 import type { StyleObject } from '@tamagui/helpers'
 import {
   lowerProgram,
+  normalizeProgramKey,
   resolvePayload,
   serializePayloadWeb,
+  type LonghandProgram,
   type ParsedClause,
   type ParsedValue,
 } from '@tamagui/style-grammar'
 
 import type { GetStyleState } from '../types'
 import { ensureGrammarContext } from './contributePrograms'
+import type { GrammarRuntimeContext } from './grammarConfig'
 
 const warned = new Set<string>()
 
@@ -35,7 +44,99 @@ function warnOnce(key: string, message: string) {
 function hasBareTokenPrefix(serialized: string): boolean {
   const index = serialized.indexOf('$')
   if (index === -1) return false
-  return !serialized.includes('"') && !serialized.includes("'") && !serialized.includes('url(')
+  return (
+    !serialized.includes('"') && !serialized.includes("'") && !serialized.includes('url(')
+  )
+}
+
+type LoweredResult = ReturnType<typeof lowerProgram> | null
+
+const loweredCache = new Map<string, LoweredResult>()
+
+function resolveProgramPayload(
+  context: GrammarRuntimeContext,
+  lookup: (name: string) => any,
+  resolveNumbers: boolean,
+  longhand: string,
+  sourceProp: string,
+  payload: string
+): string | null {
+  const resolved = resolvePayload(payload, { lookup, resolveNumbers })
+  if (resolved.errors?.length) {
+    warnOnce(
+      `${longhand}\0${payload}`,
+      `[tamagui] ${sourceProp}: "${payload}" — ${resolved.errors[0].code}; dropping this program`
+    )
+    return null
+  }
+  const serialized = serializePayloadWeb(resolved, context.toVar)
+  if (hasBareTokenPrefix(serialized)) {
+    warnOnce(
+      `${longhand}\0${payload}\0$`,
+      `[tamagui] ${sourceProp}: "${payload}" — flat clause values use config-first names without "$"; dropping this program`
+    )
+    return null
+  }
+  return serialized
+}
+
+function lowerOneProgram(
+  context: GrammarRuntimeContext,
+  program: LonghandProgram,
+  fontFamily: string | undefined
+): LoweredResult {
+  const longhand = program.property
+  const lookup = context.getLookup(longhand, fontFamily)
+  const resolveNumbers = context.resolvesNumbers(longhand)
+
+  let base: string | null = null
+  if (program.value.base !== null) {
+    base = resolveProgramPayload(
+      context,
+      lookup,
+      resolveNumbers,
+      longhand,
+      program.sourceProp,
+      program.value.base
+    )
+    if (base === null) return null
+  }
+
+  const clauses: ParsedClause[] = []
+  for (const clause of program.value.clauses) {
+    const payload = resolveProgramPayload(
+      context,
+      lookup,
+      resolveNumbers,
+      longhand,
+      program.sourceProp,
+      clause.payload
+    )
+    if (payload === null) return null
+    clauses.push({ modifiers: clause.modifiers, payload })
+  }
+
+  const resolvedValue: ParsedValue = { base, clauses }
+
+  try {
+    return lowerProgram(
+      { property: longhand, value: resolvedValue, sourceProp: program.sourceProp },
+      {
+        registry: context.registry,
+        configRevision: context.configRevision,
+        mediaQueries: context.mediaQueries,
+        containerQueries: context.containerQueries,
+      }
+    )
+  } catch (error) {
+    // a clause that cannot become CSS (exit:, unknown media key) drops the
+    // whole program with one warning; native evaluation is unaffected
+    warnOnce(
+      `${longhand}\0${program.sourceProp}\0lower`,
+      `[tamagui] ${program.sourceProp}: ${error instanceof Error ? error.message : String(error)}`
+    )
+    return null
+  }
 }
 
 export function lowerAccumulatedPrograms(
@@ -46,74 +147,27 @@ export function lowerAccumulatedPrograms(
   if (!programs || !programs.size) return
 
   const context = ensureGrammarContext(styleState)
+  const fontFamily = styleState.fontFamily
 
   for (const program of programs.values()) {
-    const longhand = program.property
-    const lookup = context.getLookup(longhand, styleState.fontFamily)
-    const resolveNumbers = context.resolvesNumbers(longhand)
+    // identity covers property, merged program, config revision, and the
+    // font-scope, which is the full input space of resolution and lowering
+    const memoKey =
+      normalizeProgramKey(program.property, program.value, context.configRevision) +
+      (fontFamily ? `\0${fontFamily}` : '')
 
-    const resolveOne = (payload: string): string | null => {
-      const resolved = resolvePayload(payload, { lookup, resolveNumbers })
-      if (resolved.errors?.length) {
-        warnOnce(
-          `${longhand}\0${payload}`,
-          `[tamagui] ${program.sourceProp}: "${payload}" — ${resolved.errors[0].code}; dropping this program`
-        )
-        return null
-      }
-      const serialized = serializePayloadWeb(resolved, context.toVar)
-      if (hasBareTokenPrefix(serialized)) {
-        warnOnce(
-          `${longhand}\0${payload}\0$`,
-          `[tamagui] ${program.sourceProp}: "${payload}" — flat clause values use config-first names without "$"; dropping this program`
-        )
-        return null
-      }
-      return serialized
+    let lowered: LoweredResult
+    if (loweredCache.has(memoKey)) {
+      lowered = loweredCache.get(memoKey)!
+    } else {
+      lowered = lowerOneProgram(context, program, fontFamily)
+      if (loweredCache.size > 10000) loweredCache.clear()
+      loweredCache.set(memoKey, lowered)
     }
+    if (!lowered) continue
 
-    let failed = false
-    const base = program.value.base === null ? null : resolveOne(program.value.base)
-    if (program.value.base !== null && base === null) failed = true
-
-    const clauses: ParsedClause[] = []
-    if (!failed) {
-      for (const clause of program.value.clauses) {
-        const payload = resolveOne(clause.payload)
-        if (payload === null) {
-          failed = true
-          break
-        }
-        clauses.push({ modifiers: clause.modifiers, payload })
-      }
-    }
-    if (failed) continue
-
-    const resolvedValue: ParsedValue = { base, clauses }
-
-    let lowered: ReturnType<typeof lowerProgram>
-    try {
-      lowered = lowerProgram(
-        { property: longhand, value: resolvedValue, sourceProp: program.sourceProp },
-        {
-          registry: context.registry,
-          configRevision: context.configRevision,
-          mediaQueries: context.mediaQueries,
-          containerQueries: context.containerQueries,
-        }
-      )
-    } catch (error) {
-      // a clause that cannot become CSS (exit:, unknown media key) drops the
-      // whole program with one warning; native evaluation is unaffected
-      warnOnce(
-        `${longhand}\0${program.sourceProp}\0lower`,
-        `[tamagui] ${program.sourceProp}: ${error instanceof Error ? error.message : String(error)}`
-      )
-      continue
-    }
-
-    styleState.classNames[longhand] = lowered.className
-    addStyleObject([longhand, null, lowered.className, undefined, lowered.rules])
+    styleState.classNames[program.property] = lowered.className
+    addStyleObject([program.property, null, lowered.className, undefined, lowered.rules])
 
     // an axis-variable program (x/y/scaleX/scaleY) only sets a custom property;
     // the rule turning those variables into `translate`/`scale` is identical for
@@ -126,4 +180,13 @@ export function lowerAccumulatedPrograms(
       addStyleObject([property, null, className, undefined, rules])
     }
   }
+}
+
+/** test-only: the lowered-program memo, for cache behavior assertions */
+export function getLoweredProgramCacheSize(): number {
+  return loweredCache.size
+}
+
+export function resetLoweredProgramCache(): void {
+  loweredCache.clear()
 }

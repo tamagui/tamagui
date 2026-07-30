@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import {
   expandToLonghands,
   longhandExpansionTable,
+  mergeProgramValues,
   mergePrograms,
   type ParsedValue,
 } from '..'
@@ -168,5 +169,30 @@ describe('per-longhand programs', () => {
     expect(program?.value.clauses).toEqual([
       { modifiers: ['hover', 'dark'], payload: 'blue' },
     ])
+  })
+
+  test('merging never mutates its inputs — program values may alias the parse cache', () => {
+    const earlier: ParsedValue = {
+      base: 'red',
+      clauses: [
+        { modifiers: ['dark', 'hover'], payload: 'a' },
+        { modifiers: ['sm'], payload: 'b' },
+      ],
+    }
+    const later: ParsedValue = {
+      base: 'blue',
+      clauses: [{ modifiers: ['hover', 'dark'], payload: 'c' }],
+    }
+    const earlierSnapshot = JSON.parse(JSON.stringify(earlier))
+    const laterSnapshot = JSON.parse(JSON.stringify(later))
+
+    mergeProgramValues(earlier, later)
+
+    // the load-bearing invariant: inputs are never mutated, including the
+    // modifiers arrays clauseSetKey sorts (it must sort a copy)
+    expect(earlier).toEqual(earlierSnapshot)
+    expect(later).toEqual(laterSnapshot)
+    expect(earlier.clauses[0].modifiers).toEqual(['dark', 'hover'])
+    expect(later.clauses[0].modifiers).toEqual(['hover', 'dark'])
   })
 })
