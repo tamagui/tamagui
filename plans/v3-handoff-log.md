@@ -93,6 +93,16 @@ Status: in progress.
   `numberOfLines` entries, and the dynamic `focusStyle` spread. It must rerun
   the corpus and preserve each use case at runtime before those flags can be
   called closed.
+- Manual migration of those 12 use cases landed in `bed9c8cb73`. The
+  coordinator reran the default corpus at 1,758 sites: 323 converted proposals,
+  1,435 waiting on runtime support, and zero flagged. Focused kitchen-sink
+  validation passed 19 default Playwright tests and five motion-driver tests;
+  the layout stress fixture reported zero event-loop delay warnings. Direct
+  runtime probes verified all four height-breakpoint colors, the legacy
+  `$1.5`/`$2.5` spacing values, focused-input margin, and resolved theme colors.
+  The changed lines pass oxlint and the isolated typecheck comparison; the
+  project-wide kitchen-sink typecheck still has 147 pre-existing theme-name and
+  missing-build-output errors outside this packet.
 - The reviewed guide correction landed in `275894d208`. It now separates
   current beta behavior from the V3 target, documents every open runtime gate,
   matches the final report-only CLI and flag table, removes fixed corpus
