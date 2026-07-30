@@ -12,10 +12,11 @@ import {
 } from '..'
 
 // The program block encoding. These tests run real parser output through
-// lowering, and they pin two things that are load-bearing for correctness rather
-// than cosmetics: every rule's specificity is exactly the subject class (0,1,0),
-// and rule order is authored clause order, because equal specificity means
-// source order inside the block decides the winner.
+// lowering, and they pin what is load-bearing for correctness rather than
+// cosmetics: every condition anchors on the subject class so a clause is exactly
+// one selector, every rule's specificity is exactly (0,1,0), and rule order is
+// authored clause order, because equal specificity means source order inside the
+// block decides the winner.
 
 const { registry } = createModifierRegistry({
   mediaNames: ['sm', 'md'],
@@ -45,29 +46,30 @@ function lower(property: string, source: string): LoweredProgram {
   })
 }
 
-// every selector in a rule, with any @media wrappers removed
-function selectorsOf(rule: string): string[] {
+// the selector of a rule, with any @media wrappers removed
+function selectorOf(rule: string): string {
   let inner = rule
   while (inner.startsWith('@media ')) {
     inner = inner.slice(inner.indexOf('{') + 1, inner.lastIndexOf('}')).trim()
   }
-  return inner
-    .slice(0, inner.lastIndexOf('{'))
-    .trim()
-    .split(', ')
+  return inner.slice(0, inner.lastIndexOf('{')).trim()
 }
 
 // what is left once every zero-specificity :where() is removed
 const bareSelector = (selector: string): string =>
   selector.replace(/:where\([^)]*\)/g, '').trim()
 
-function expectFlatSpecificity({ className, rules }: LoweredProgram): void {
+function expectSubjectAnchored({ className, rules }: LoweredProgram): void {
   for (const rule of rules) {
-    for (const selector of selectorsOf(rule)) {
-      expect(bareSelector(selector), rule).toBe(`.${className}`)
-      expect(selector).not.toContain('#')
-      expect(selector).not.toContain('!important')
-    }
+    const selector = selectorOf(rule)
+    // specificity is exactly the subject class, (0,1,0)
+    expect(bareSelector(selector), rule).toBe(`.${className}`)
+    // the subject leads: no ancestor prefix, so no descendant combinator and no
+    // selector list survive outside a :where()
+    expect(selector.startsWith(`.${className}`), rule).toBe(true)
+    expect(bareSelector(selector)).not.toContain(',')
+    expect(selector).not.toContain('#')
+    expect(selector).not.toContain('!important')
   }
 }
 
@@ -78,10 +80,10 @@ describe("the plan's example program", () => {
 
   test('emits exactly the four-rule block from the design plan', () => {
     expect(lowered.rules).toEqual([
-      `.${cls} { background-color: red }`,
-      `.${cls}:where(:hover) { background-color: green }`,
-      `:where(.t_dark) .${cls}, .${cls}:where(.t_dark) { background-color: gray }`,
-      `:where(.t_dark) .${cls}:where(:hover), .${cls}:where(.t_dark):where(:hover) { background-color: blue }`,
+      `.${cls}{background-color:red}`,
+      `.${cls}:where(:hover){background-color:green}`,
+      `.${cls}:where(.t_dark, .t_dark *){background-color:gray}`,
+      `.${cls}:where(.t_dark, .t_dark *):where(:hover){background-color:blue}`,
     ])
   })
 
@@ -90,8 +92,8 @@ describe("the plan's example program", () => {
     expect(propertyAbbreviation('backgroundColor')).toBe('bc')
   })
 
-  test('every rule has specificity (0,1,0)', () => {
-    expectFlatSpecificity(lowered)
+  test('every rule is one subject-anchored selector at specificity (0,1,0)', () => {
+    expectSubjectAnchored(lowered)
   })
 })
 
@@ -100,15 +102,15 @@ describe('rule order is authored clause order', () => {
     const lowered = lower('color', 'red sm:blue hover:green')
     const cls = lowered.className
     expect(lowered.rules).toEqual([
-      `.${cls} { color: red }`,
-      `@media (max-width: 860px) { .${cls} { color: blue } }`,
-      `.${cls}:where(:hover) { color: green }`,
+      `.${cls}{color:red}`,
+      `@media (max-width: 860px) {.${cls}{color:blue}}`,
+      `.${cls}:where(:hover){color:green}`,
     ])
   })
 
   test('a program with no base emits no base rule', () => {
     const lowered = lower('color', 'hover:green')
-    expect(lowered.rules).toEqual([`.${lowered.className}:where(:hover) { color: green }`])
+    expect(lowered.rules).toEqual([`.${lowered.className}:where(:hover){color:green}`])
   })
 
   test('repeated conditions keep both rules so the later one wins', () => {
@@ -123,9 +125,9 @@ describe('media conditions', () => {
     const lowered = lower('color', 'sm:md:hover:red')
     const cls = lowered.className
     expect(lowered.rules).toEqual([
-      `@media (max-width: 860px) { @media (max-width: 1020px) { .${cls}:where(:hover) { color: red } } }`,
+      `@media (max-width: 860px) {@media (max-width: 1020px) {.${cls}:where(:hover){color:red}}}`,
     ])
-    expectFlatSpecificity(lowered)
+    expectSubjectAnchored(lowered)
   })
 
   test('a media key with no provided query cannot be lowered', () => {
@@ -135,39 +137,59 @@ describe('media conditions', () => {
   })
 })
 
-describe('group and state chains', () => {
-  test('a named group is an ancestor condition on the group class', () => {
-    const lowered = lower('color', 'muted group-hover/card:foreground')
-    const cls = lowered.className
+describe('ancestor-scoped conditions are within tests on the subject', () => {
+  test('a theme is is-or-within, so it matches on the subject or above it', () => {
+    const lowered = lower('color', 'red dark:blue')
     expect(lowered.rules[1]).toBe(
-      `:where(.t_group_card:hover) .${cls} { color: foreground }`
+      `.${lowered.className}:where(.t_dark, .t_dark *){color:blue}`
     )
-    expectFlatSpecificity(lowered)
+    expectSubjectAnchored(lowered)
+  })
+
+  test('a named group is within-only, since a group is never the subject', () => {
+    const lowered = lower('color', 'muted group-hover/card:foreground')
+    expect(lowered.rules[1]).toBe(
+      `.${lowered.className}:where(.t_group_card:hover *){color:foreground}`
+    )
+    expectSubjectAnchored(lowered)
   })
 
   test('an unnamed group uses the boolean group class', () => {
     const lowered = lower('color', 'group-press:red')
     expect(lowered.rules[0]).toBe(
-      `:where(.t_group_true:active) .${lowered.className} { color: red }`
+      `.${lowered.className}:where(.t_group_true:active *){color:red}`
     )
   })
 
   test('a group state with an attribute selector composes onto the group class', () => {
     const lowered = lower('color', 'group-open/card:red')
     expect(lowered.rules[0]).toBe(
-      `:where(.t_group_card[data-state="open"]) .${lowered.className} { color: red }`
+      `.${lowered.className}:where(.t_group_card[data-state="open"] *){color:red}`
     )
-    expectFlatSpecificity(lowered)
+    expectSubjectAnchored(lowered)
+  })
+
+  test('theme and group are independent within tests, so a theme between the group and the subject still matches', () => {
+    const lowered = lower('color', 'dark:group-hover/card:foreground')
+    const selector = selectorOf(lowered.rules[0])
+    // both conditions chain onto one subject and neither constrains the other's
+    // depth, which is what makes theme-between-group work with no permutations
+    expect(selector).toBe(
+      `.${lowered.className}:where(.t_dark, .t_dark *):where(.t_group_card:hover *)`
+    )
+    expect(selector).toContain(':where(.t_group_card:hover *)')
+    expect(selector).toContain(':where(.t_dark, .t_dark *)')
+    expectSubjectAnchored(lowered)
   })
 
   test('media, theme, group, and state compose without moving specificity', () => {
-    const lowered = lower('color', 'sm:dark:group-hover/card:foreground')
+    const lowered = lower('color', 'sm:dark:group-hover/card:hover:foreground')
     const cls = lowered.className
     expect(lowered.rules).toEqual([
-      `@media (max-width: 860px) { :where(.t_dark) :where(.t_group_card:hover) .${cls}, ` +
-        `:where(.t_group_card:hover) .${cls}:where(.t_dark) { color: foreground } }`,
+      `@media (max-width: 860px) {.${cls}:where(.t_dark, .t_dark *)` +
+        `:where(.t_group_card:hover *):where(:hover){color:foreground}}`,
     ])
-    expectFlatSpecificity(lowered)
+    expectSubjectAnchored(lowered)
   })
 })
 
@@ -175,17 +197,16 @@ describe('states', () => {
   test('disabled is an attribute, matching the existing core spelling', () => {
     const lowered = lower('opacity', 'disabled:0.5')
     expect(lowered.rules[0]).toBe(
-      `.${lowered.className}:where([aria-disabled]) { opacity: 0.5 }`
+      `.${lowered.className}:where([aria-disabled]){opacity:0.5}`
     )
   })
 
-  test('enter emits the dual unmounted selector', () => {
+  test('enter is is-or-within on the unmounted class', () => {
     const lowered = lower('opacity', 'enter:0')
-    const cls = lowered.className
     expect(lowered.rules[0]).toBe(
-      `:where(.t_unmounted) .${cls}, .${cls}:where(.t_unmounted) { opacity: 0 }`
+      `.${lowered.className}:where(.t_unmounted, .t_unmounted *){opacity:0}`
     )
-    expectFlatSpecificity(lowered)
+    expectSubjectAnchored(lowered)
   })
 
   test('component states use the shared vocabulary selectors', () => {
@@ -206,30 +227,24 @@ describe('platform clauses', () => {
   test('web applies unconditionally at its position, native platforms are skipped', () => {
     const lowered = lower('color', 'red native:blue web:green ios:pink android:teal')
     const cls = lowered.className
-    expect(lowered.rules).toEqual([
-      `.${cls} { color: red }`,
-      `.${cls} { color: green }`,
-    ])
+    expect(lowered.rules).toEqual([`.${cls}{color:red}`, `.${cls}{color:green}`])
   })
 
   test('a chained clause is skipped whole when any platform is not web', () => {
     const lowered = lower('color', 'red native:hover:blue')
-    expect(lowered.rules).toEqual([`.${lowered.className} { color: red }`])
+    expect(lowered.rules).toEqual([`.${lowered.className}{color:red}`])
   })
 
   test('web composes with other conditions', () => {
     const lowered = lower('color', 'web:hover:blue')
-    expect(lowered.rules[0]).toBe(
-      `.${lowered.className}:where(:hover) { color: blue }`
-    )
+    expect(lowered.rules[0]).toBe(`.${lowered.className}:where(:hover){color:blue}`)
   })
 })
 
 describe('declarations', () => {
-  test('camelCase longhands hyphenate', () => {
-    expect(lower('borderTopLeftRadius', '4px').rules[0]).toContain(
-      'border-top-left-radius: 4px'
-    )
+  test('camelCase longhands hyphenate, and declarations are compact', () => {
+    const lowered = lower('borderTopLeftRadius', '4px')
+    expect(lowered.rules[0]).toBe(`.${lowered.className}{border-top-left-radius:4px}`)
     expect(propertyAbbreviation('borderTopLeftRadius')).toBe('btlr')
   })
 
@@ -237,11 +252,11 @@ describe('declarations', () => {
     const source =
       'linear-gradient(135deg, red, blue) hover:url("http://x.com/a:b.png?q=1&r=2")'
     const lowered = lower('backgroundImage', source)
-    expect(lowered.rules[0]).toContain(
-      'background-image: linear-gradient(135deg, red, blue)'
+    expect(lowered.rules[0]).toBe(
+      `.${lowered.className}{background-image:linear-gradient(135deg, red, blue)}`
     )
     expect(lowered.rules[1]).toContain(
-      'background-image: url("http://x.com/a:b.png?q=1&r=2")'
+      'background-image:url("http://x.com/a:b.png?q=1&r=2")'
     )
   })
 
@@ -316,7 +331,7 @@ describe('program hashing', () => {
     expect(a).not.toBe(b)
   })
 
-  test('class names stay css-safe for hostile payloads', () => {
+  test('class names stay css-safe even for payloads the parser would reject', () => {
     const payloads = [
       'url("http://x.com/a:b.png")',
       "url('a b/c:d')",

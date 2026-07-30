@@ -12,6 +12,12 @@
 // other function. A top-level colon is never valid inside a CSS value, so an
 // unregistered modifier is a hard error rather than silent value content.
 //
+// A top-level `{`, `}`, or `;` is rejected for the same reason: those tokens are
+// never valid in a CSS component value, and refusing them here is what makes
+// rule and selector injection through a payload structurally impossible in the
+// web lowering, which emits payloads verbatim by contract. Inside strings and
+// inside parens they stay ordinary content.
+//
 // This runs at runtime on native, so it is one left-to-right pass with no
 // regexes and no substrings beyond the slices it returns.
 
@@ -32,8 +38,11 @@ const CHAR_DOUBLE_QUOTE = 34
 const CHAR_SINGLE_QUOTE = 39
 const CHAR_PAREN_OPEN = 40
 const CHAR_PAREN_CLOSE = 41
+const CHAR_SEMICOLON = 59
 const CHAR_COLON = 58
 const CHAR_BACKSLASH = 92
+const CHAR_BRACE_OPEN = 123
+const CHAR_BRACE_CLOSE = 125
 
 const noClauses: readonly ParsedClause[] = Object.freeze([])
 
@@ -163,7 +172,17 @@ export function parseValue(
     // any other top-level character starts or continues a word
     if (wordStart === -1) wordStart = index
 
-    if (code === CHAR_BACKSLASH) index++
+    if (
+      code === CHAR_BRACE_OPEN ||
+      code === CHAR_BRACE_CLOSE ||
+      code === CHAR_SEMICOLON
+    ) {
+      addError(
+        'invalid-character',
+        index,
+        `"${input[index]}" cannot appear in a value: it would end the declaration or rule`
+      )
+    } else if (code === CHAR_BACKSLASH) index++
     else if (code === CHAR_DOUBLE_QUOTE || code === CHAR_SINGLE_QUOTE) {
       quote = code
       quoteStart = index

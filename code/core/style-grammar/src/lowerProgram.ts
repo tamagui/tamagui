@@ -3,8 +3,14 @@
 // See plans/dom-tailwind-flat-values.md — "The program block encoding". The
 // invariants this file exists to hold:
 //
+// - every condition anchors on the subject class, Tailwind-group style, so a
+//   clause is exactly ONE selector: conditions chain as `:where()` on the
+//   subject in authored modifier order. Ancestor-scoped conditions become a
+//   descendant test inside their own `:where()` (`.t_dark *`), which makes each
+//   one independent, so nesting order between them never matters and no
+//   ancestor-permutation selectors exist;
 // - every rule has specificity exactly (0,1,0), the subject class alone, because
-//   every condition is wrapped in `:where()` and media conditions add nothing;
+//   every condition sits inside `:where()` and media conditions add nothing;
 // - `rules` is authored clause order with the base first, and that order IS the
 //   semantics: equal specificity reduces the cascade to source order inside the
 //   block, so the last matching clause wins, exactly as native evaluates it;
@@ -14,33 +20,38 @@
 // Payloads are emitted verbatim. Token resolution, opacity composition, and
 // value validation all happen upstream: this layer receives CSS-ready payloads,
 // and the same resolved program is what the class name hashes, so a program has
-// exactly one identity.
+// exactly one identity. Rule injection through a payload is structurally
+// impossible because the parser rejects a top-level `{`, `}`, or `;`.
 
 import { parseGroupModifier } from './modifierRegistry'
 import { programClassName } from './programHash'
 import { stateToSelector } from './states'
 import type { LonghandProgram, ModifierRegistryView } from './valueTypes'
 
+/**
+ * Where a condition's selector fragment is matched, relative to the subject: on
+ * the subject itself, strictly above it, or either.
+ */
+export type ConditionScope = 'self' | 'within' | 'is-or-within'
+
 export interface ConditionSelector {
-  /** compound selector piece appended to the element the condition applies to */
+  /** compound selector piece, eg `:hover`, `.t_dark`, `[aria-disabled]` */
   fragment: string
-  /**
-   * the condition can also sit on an ancestor, so the rule emits both an
-   * ancestor form and a same-element form (themes, and the enter state's
-   * unmounted class)
-   */
-  dual?: boolean
+  /** defaults to `self` */
+  scope?: ConditionScope
 }
 
 /**
  * Interaction-state selector spellings, mirroring
  * `code/core/web/src/helpers/pseudoDescriptors.ts` and the two special cases in
  * `getCSSStylesAtomic.createAtomicRules`: `disabled` is an attribute rather than
- * `:disabled`, and enter is the dual `.t_unmounted` selector. Mirrored as data
- * instead of imported because this package must not depend on @tamagui/web.
+ * `:disabled`, and enter matches the unmounted class on the subject or above it.
+ * Mirrored as data instead of imported because this package must not depend on
+ * @tamagui/web.
  *
- * `exit` is deliberately absent: core has no CSS selector for it (the animation
- * driver owns exit), so an `exit:` clause cannot lower to CSS and says so.
+ * `exit` is deliberately absent. Exit is animation-driver territory — there is
+ * no exited-state class in the DOM to select — so a web `exit:` clause cannot
+ * lower and says so instead of inventing an approximation.
  */
 export const defaultStateSelectors: Readonly<Record<string, ConditionSelector>> =
   Object.freeze({
@@ -53,10 +64,13 @@ export const defaultStateSelectors: Readonly<Record<string, ConditionSelector>> 
     'focus-visible': { fragment: ':focus-visible' },
     'focus-within': { fragment: ':focus-within' },
     disabled: { fragment: '[aria-disabled]' },
-    enter: { fragment: '.t_unmounted', dual: true },
+    enter: { fragment: '.t_unmounted', scope: 'is-or-within' },
     // component-tier states, from the shared state vocabulary's web selectors
     ...(Object.fromEntries(
-      Object.entries(stateToSelector).map(([state, selector]) => [state, { fragment: selector }])
+      Object.entries(stateToSelector).map(([state, selector]) => [
+        state,
+        { fragment: selector },
+      ])
     ) as Record<string, ConditionSelector>),
   })
 
@@ -69,7 +83,7 @@ export interface LowerProgramOptions {
   registry: ModifierRegistryView
   /** opaque stamp for the resolved config that produced these payloads */
   configRevision: string
-  /** media key -> the `@media` condition text, eg `(max-width: 800px)` */
+  /** media key -> the `@media` condition text, eg `(max-width: 860px)` */
   mediaQueries?: Readonly<Record<string, string>>
   /** modifier -> selector, defaults to `defaultStateSelectors` */
   stateSelectors?: Readonly<Record<string, ConditionSelector>>
@@ -85,22 +99,20 @@ export interface LoweredProgram {
   rules: string[]
 }
 
-type Slot =
-  /** must match an ancestor of the subject */
-  | { placement: 'ancestor'; fragment: string }
-  /** must match the subject itself */
-  | { placement: 'same'; fragment: string }
-  /** may match either, so the rule emits both forms */
-  | { placement: 'dual'; fragment: string }
-
 function hyphenate(property: string): string {
   let out = ''
   for (let index = 0; index < property.length; index++) {
     const code = property.charCodeAt(index)
-    out +=
-      code >= 65 && code <= 90 ? `-${property[index].toLowerCase()}` : property[index]
+    out += code >= 65 && code <= 90 ? `-${property[index].toLowerCase()}` : property[index]
   }
   return out
+}
+
+/** one zero-specificity condition, anchored on the subject */
+function conditionSelector(fragment: string, scope: ConditionScope): string {
+  if (scope === 'within') return `:where(${fragment} *)`
+  if (scope === 'is-or-within') return `:where(${fragment}, ${fragment} *)`
+  return `:where(${fragment})`
 }
 
 export function lowerProgram(
@@ -121,11 +133,11 @@ export function lowerProgram(
   const rules: string[] = []
 
   if (program.value.base !== null) {
-    rules.push(`.${className} { ${declaration}: ${program.value.base} }`)
+    rules.push(`.${className}{${declaration}:${program.value.base}}`)
   }
 
   for (const clause of program.value.clauses) {
-    const slots: Slot[] = []
+    let selector = `.${className}`
     const medias: string[] = []
     let skip = false
 
@@ -151,22 +163,19 @@ export function lowerProgram(
       }
 
       if (kind === 'state') {
-        const selector = stateSelectors[modifier]
-        if (!selector) {
+        const state = stateSelectors[modifier]
+        if (!state) {
           throw new Error(
             `cannot lower "${modifier}:" — the state has no web selector, so it cannot become CSS`
           )
         }
-        slots.push({
-          placement: selector.dual ? 'dual' : 'same',
-          fragment: selector.fragment,
-        })
+        selector += conditionSelector(state.fragment, state.scope ?? 'self')
         continue
       }
 
       if (kind === 'theme') {
-        // a theme class sits on an ancestor or on the subject itself
-        slots.push({ placement: 'dual', fragment: `.${themeClassPrefix}${modifier}` })
+        // the theme class is on the subject or anywhere above it
+        selector += conditionSelector(`.${themeClassPrefix}${modifier}`, 'is-or-within')
         continue
       }
 
@@ -178,10 +187,11 @@ export function lowerProgram(
             `cannot lower "${modifier}:" — the group state "${group.state}" has no web selector`
           )
         }
-        slots.push({
-          placement: 'ancestor',
-          fragment: `.${groupClassPrefix}${group.group ?? unnamedGroup}${state.fragment}`,
-        })
+        // a group is always a parent, never the subject itself
+        selector += conditionSelector(
+          `.${groupClassPrefix}${group.group ?? unnamedGroup}${state.fragment}`,
+          'within'
+        )
         continue
       }
 
@@ -192,51 +202,21 @@ export function lowerProgram(
 
     if (skip) continue
 
-    rules.push(
-      wrapMedia(
-        `${buildSelectors(className, slots)} { ${declaration}: ${clause.payload} }`,
-        medias
-      )
-    )
+    rules.push(wrapMedia(`${selector}{${declaration}:${clause.payload}}`, medias))
   }
 
   return { className, rules }
 }
 
 /**
- * One selector per dual-placement combination, comma joined. Dual conditions
- * take their ancestor form first, so a theme reads
- * `:where(.t_dark) .cls, .cls:where(.t_dark)`. Every fragment is wrapped in
- * `:where()`, so specificity stays exactly the subject class.
+ * Media conditions wrap outermost, first authored outermost. Nesting is AND for
+ * arbitrary query texts, where joining with ` and ` would break on query lists
+ * and on `screen and (…)` forms. Specificity is unmoved either way.
  */
-function buildSelectors(className: string, slots: readonly Slot[]): string {
-  let dualCount = 0
-  for (const slot of slots) if (slot.placement === 'dual') dualCount++
-
-  const selectors: string[] = []
-  for (let variant = 0; variant < 1 << dualCount; variant++) {
-    let ancestors = ''
-    let subject = `.${className}`
-    let dualIndex = 0
-    for (const slot of slots) {
-      let placement = slot.placement
-      if (placement === 'dual') {
-        // bit clear picks the ancestor form, so variant 0 is all-ancestor
-        placement = (variant >> dualIndex++) & 1 ? 'same' : 'ancestor'
-      }
-      if (placement === 'ancestor') ancestors += `:where(${slot.fragment}) `
-      else subject += `:where(${slot.fragment})`
-    }
-    selectors.push(ancestors + subject)
-  }
-  return selectors.join(', ')
-}
-
-/** media conditions wrap outermost, first authored outermost; specificity unmoved */
 function wrapMedia(rule: string, medias: readonly string[]): string {
   let out = rule
   for (let index = medias.length - 1; index >= 0; index--) {
-    out = `@media ${medias[index]} { ${out} }`
+    out = `@media ${medias[index]} {${out}}`
   }
   return out
 }

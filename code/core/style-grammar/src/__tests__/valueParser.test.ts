@@ -356,3 +356,66 @@ describe('unterminated strings and functions', () => {
     ])
   })
 })
+
+// A top-level `{`, `}`, or `;` is never valid in a CSS component value.
+// Rejecting them here is what makes rule and selector injection through a
+// payload structurally impossible in the web lowering, which emits payloads
+// verbatim by contract.
+describe('rule-breaking characters are rejected at the top level', () => {
+  test('a payload that closes the rule and opens another is rejected', () => {
+    const found = errors('red } .x { color: blue')
+    expect(found[0]).toEqual({
+      code: 'invalid-character',
+      index: 4,
+      message: '"}" cannot appear in a value: it would end the declaration or rule',
+    })
+    expect(found.map((error) => error.code)).toEqual([
+      'invalid-character',
+      'invalid-character',
+      // `color:` is read as a clause, and `color` is not a modifier
+      'unregistered-modifier',
+    ])
+  })
+
+  test('a payload that ends the declaration and adds another is rejected', () => {
+    const found = errors('red; position: fixed')
+    expect(found[0]).toMatchObject({ code: 'invalid-character', index: 3 })
+    expect(found.map((error) => error.code)).toContain('unregistered-modifier')
+  })
+
+  test('a bare brace anywhere at the top level is rejected', () => {
+    expect(errors('a{b')).toEqual([
+      {
+        code: 'invalid-character',
+        index: 1,
+        message: '"{" cannot appear in a value: it would end the declaration or rule',
+      },
+    ])
+    expect(codes('a}b')).toEqual(['invalid-character'])
+    expect(codes('0 2px 8px #0003;')).toEqual(['invalid-character'])
+  })
+
+  test('a clause payload is checked too, not just the base', () => {
+    expect(codes('red hover:blue; z-index: 9')).toContain('invalid-character')
+  })
+
+  test('inside parens they are ordinary content, so the parser does not object', () => {
+    expect(value('rgb(1;2)')).toEqual({ base: 'rgb(1;2)', clauses: [] })
+    expect(value('url(a;b)').base).toBe('url(a;b)')
+    expect(value('calc({)').base).toBe('calc({)')
+    expect(value('hover:rgb(1;2)').clauses[0].payload).toBe('rgb(1;2)')
+  })
+
+  test('inside quoted strings they are ordinary content', () => {
+    expect(value('"a{b};c" red').base).toBe('"a{b};c" red')
+    expect(value("'};'").base).toBe("'};'")
+    expect(value('hover:"a;b"').clauses[0].payload).toBe('"a;b"')
+  })
+
+  test('an escaped brace or semicolon is a literal character, not a rule break', () => {
+    // CSS escapes make these ordinary ident characters, so they cannot terminate
+    // a declaration or a block
+    expect(value('a\\;b').base).toBe('a\\;b')
+    expect(value('a\\{b').base).toBe('a\\{b')
+  })
+})
