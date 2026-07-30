@@ -17,6 +17,8 @@
     "src/programHash.ts",
     "src/programs.ts",
     "src/registry.ts",
+    "src/resolvePayload.ts",
+    "src/serializePayload.ts",
     "src/stateModifiers.ts",
     "src/states.ts",
     "src/table.ts",
