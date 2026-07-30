@@ -1825,7 +1825,12 @@ spellings and across the compile/runtime boundary, pinned in
 `static-tests/tests/flatValues.web.test.tsx`: media+token, theme,
 transform-axis-with-composition, legacy-object parity, dynamic bailout).
 Webpack end-to-end render snapshots show program classes in real DOM.
-Remaining in the lane: the standing kitchen-sink bailout-rate metric.
+The standing bailout metric
+(`static-tests/tests/bailoutMetric.web.test.tsx`, run with
+`BAILOUT_METRIC=1`) reads the compiler's own LoweredModuleStats over every
+kitchen-sink usecase. First number, 2026-07-29: 248 usecases, 0 compile
+failures, 2,556 candidate elements, 2,033 lowered, 2,020 flattened to
+plain elements, 523 bailed — a 20.5% bailout rate to drive down.
 
 Landed on the back of that evidence (2026-07-29, v3-beta): the
 noClass/animated-inline web path now evaluates programs at the end of the
