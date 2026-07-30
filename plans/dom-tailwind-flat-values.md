@@ -738,6 +738,42 @@ merge knowledge in the system, and it lives in the shared grammar package.
 This is also why `tailwind-merge` is removable: for owned values, per-longhand
 forward merging reproduces everything it did.
 
+### The transform family
+
+Designed against the RN survey's Transforms section
+(`plans/react-native-style-capabilities.md`); this was the codemod dry-run's
+top migration blocker (259 flags, mostly `enterStyle.scale`/`y`).
+
+`x`, `y`, `scale`, and `rotate` stay first-class props, each one program
+with independent clause replacement: `scale="1 enter:0.9"` is the flat
+spelling of today's `enterStyle={{ scale: 0.9 }}`. On web they lower to the
+CSS individual transform properties. Where two programs share one CSS
+property — `x` and `y` both feed `translate` — the programs own per-axis
+custom properties and one static rule composes them
+(`translate: var(--t-x, 0) var(--t-y, 0)`; the clause rules set `--t-x`
+per state). Transitions keep working because changing a custom property
+triggers transitions on the property consuming it, so
+`transition: translate 200ms` animates a hover-driven `--t-x` flip; no
+`@property` registration is required for that path. `scaleX`/`scaleY` ride
+the same trick on `scale`.
+
+Everything else — skews, 3D rotations, `perspective`, `matrix` — belongs to
+the raw `transform` property as one ordinary program. Composition order is
+CSS's: translate, rotate, scale, then `transform`, and native composes one
+array in exactly that fixed order from each program's evaluation (never
+sorted, never derived from object iteration). A raw transform string parses
+once into the supported array representation; Animated and Reanimated
+always receive arrays. Unsupported functions and units (`turn`, `matrix3d`,
+`translateZ`, six-number `matrix()`, relative units) are diagnostics, never
+forwarded to RN's lossy string parser, and axis-percentage strings like
+`translateX(10%)` are never emitted as RN strings because stable RN parses
+them to points. `transformOrigin` stays independent of family ordering on
+both platforms.
+
+Validation before this locks: a browser probe of the var-composed
+`translate` transition claim, and a native fixture proving the composed
+array matches today's v1 output for the common `x`/`y`/`scale` cases.
+
 Runtime integration shape (the getSplitStyles wiring): the forward pass
 accumulates programs in one Map keyed by longhand, delete-then-set per
 contribution, in exactly the order it already walks styled bases, variants,
