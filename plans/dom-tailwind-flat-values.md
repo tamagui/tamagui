@@ -1639,6 +1639,33 @@ with raw values in place of parsed programs.
 W1 and W2 are hot-path core surgery and get the closest review; W4 is
 self-contained and precedes them.
 
+### The engine contraction
+
+The program model is not a layer beside the engine; at cutover it deletes a
+large slice of it, in V3, not v4. Because `legacyConditionObjects` gates
+input parsing only (decision 23) and old condition objects convert to
+program clauses at the loop entry, the condition machinery inside
+getSplitStyles dies even while the compat setting exists:
+
+- the pseudo-object blocks and `getSubStyle` recursion;
+- the media-object sub-style path and media importance ordering;
+- `usedKeys` importance tiers (base-only remains, which is a seen-check);
+- the `:root`-repetition specificity ladders, pseudo `!important`, and
+  `.cls.cls` doubling in `getCSSStylesAtomic`;
+- `$theme-*` / `$platform-*` / `$group-*` prop-key parsing.
+
+Two unifications complete it: a clause-less value is a base-only program
+and a base-only program block IS an atomic class, so `getCSSStylesAtomic`
+and `lowerProgram` become one emitter; and the payload identifier lookup
+absorbs `getTokenForKey`, so resolution happens in exactly one place. The
+loop contracts to: expand shorthand, parse (cached), contribute program,
+lower or evaluate once after the pass.
+
+Gate: the contraction must show up as a measured reduction in
+`@tamagui/web` bundle size and in getSplitStyles branch count, reported
+beside the existing bundle gate — the flat-value engine plus deletions must
+net smaller than today's core, not larger.
+
 W1+W2 landed 2026-07-29 (adversarially reviewed, fixes applied same day).
 Staging contract while the migration runs: only clause-bearing string values
 divert to programs, and only where the class flush can express them —
@@ -1675,7 +1702,11 @@ family split (url + color in one value) currently requires authoring
 
 1. Publish the V3 breaking-change and codemod guide.
 2. Finish structured native value migration rules.
-3. Remove old recursive condition paths after repository migration.
+3. Execute the engine contraction (see "The engine contraction" under
+   Programs and merging): delete the recursive condition paths, unify the
+   two CSS emitters and the two resolvers, and report the bundle and
+   branch-count reduction. Legacy objects keep working through input
+   conversion, never through the old machinery.
 4. Align transition shorthand and longhand behavior.
 5. Re-run all prop, style, DOM, bundle, and type conformance gates.
 
