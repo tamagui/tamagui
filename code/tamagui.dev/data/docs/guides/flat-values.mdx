@@ -1,0 +1,506 @@
+---
+title: Flat Conditional Values
+description: The v3 breaking change that moves conditional styling into property values, with the codemod and the incremental migration path.
+---
+
+In v3 a condition belongs to the value of the property it changes. `hoverStyle`,
+`pressStyle`, `focusStyle`, `enterStyle`, `$theme-dark`, `$platform-ios`, `$sm`,
+and `$group-card-hover` objects all collapse into one string per property.
+
+```tsx
+// v2
+<View
+  bg="$surface"
+  hoverStyle={{ bg: '$surfaceHover' }}
+  $theme-dark={{ bg: '$surfaceDark' }}
+  $sm={{ p: '$6' }}
+  p="$4"
+/>
+```
+
+```tsx
+// v3
+<View bg="surface hover:surface-hover dark:surface-dark" p="4 sm:6" />
+```
+
+Nothing about styled components, variants, themes, tokens, media, or animations
+changes shape. What changes is where a condition is written, how token names are
+spelled inside a value, and how two contributions to the same property merge.
+
+<Notice theme="blue">
+  Flat values land across the v3 betas. Old condition objects keep working
+  behind the `legacyConditionObjects` setting until v4, so you can migrate a
+  file at a time. Section 13 lists what is not wired up yet.
+</Notice>
+
+## 1. The value grammar
+
+Every style prop parses with one grammar:
+
+```txt
+value  := base? clause*
+clause := modifier (":" modifier)* ":" payload
+```
+
+`base` and every `payload` are ordinary CSS component values. Spaces, commas,
+functions, strings, and slashes are all legal, because a clause boundary is
+recognized only at a top-level `modifier:` chain and a top-level colon is never
+valid inside a CSS value.
+
+```tsx
+<View
+  p="4 sm:6"
+  bg="red-500 hover:blue-500 dark:hover:blue-700"
+  w="full md:42rem"
+  boxShadow="0 2px 8px #0003 hover:0 4px 16px #0004, 0 0 2px red"
+  transform="scale(1) hover:scale(1.05)"
+/>
+
+<View bg="linear-gradient(135deg, red, blue) hover:linear-gradient(135deg, pink, cyan)" />
+```
+
+Rules that follow from the grammar:
+
+- a payload runs until the next top-level modifier chain, so multi-word values
+  need no quoting or wrapping;
+- an unregistered modifier is a parse error rather than value content, so
+  `hver:red` reports `unregistered-modifier`. Section 13 covers what the runtime
+  does with a value that fails to parse during the betas;
+- an empty payload is an error. Clear a property with a value that has defined
+  semantics (`none`, `transparent`, `initial`, `unset`);
+- there is no bracket or underscore escaping here. `w="117px md:344px"` is the
+  spelling. Bracketed arbitrary values (`w-[117px]`) belong to the
+  `@tamagui/tailwind` className frontend, where a class cannot contain spaces;
+- within one program the last matching clause wins. In
+  `bg="red hover:green dark:gray dark:hover:blue"`, dark plus hover is blue.
+
+## 2. Quoted values resolve tokens, raw numbers do not
+
+A quoted number resolves config-first. A raw JSX number keeps its existing
+platform-pixel behavior.
+
+```tsx
+p="4"   // the configured space token 4
+p={4}   // 4 pixels
+```
+
+On the aligned v6 config those two differ by 4x, so check every prop the codemod
+rewrites from a number to a string. Conditional raw values are plain CSS
+lengths:
+
+```tsx
+p="4 hover:18px"
+```
+
+## 3. Values drop `$`
+
+The flat grammar has no `$`. An identifier or bare number inside a value
+resolves config-first: a configured token or variable name wins, and anything
+else is literal CSS, exactly as bare `bg="red"` has always worked.
+
+```tsx
+// v2
+bg="$surface"
+hoverStyle={{ bg: '$surfaceHover' }}
+
+// v3
+bg="surface hover:surface-hover"
+```
+
+Two rules keep resolution deterministic:
+
+- CSS-wide keywords (`inherit`, `initial`, `unset`, `revert`, `none`, `auto`,
+  `transparent`, `currentColor`) are reserved. Configuring a token with one of
+  those names is a config-time error.
+- A configured name wins over a same-spelled CSS literal, and config creation
+  warns when a token shadows a property-relevant CSS keyword.
+
+Lookup order is the property's bound token categories first, then the variables
+namespace. A miss is literal CSS.
+
+A leftover `$` inside a clause-bearing value is the most common migration
+mistake. On web the runtime warns in development and drops that property's
+program, so the symptom is a hover or media state that does nothing:
+
+```txt
+[tamagui] backgroundColor: "$surfaceHover" — flat clause values use
+config-first names without "$"; dropping this program
+```
+
+A clause-free value like `bg="$blue10"` still resolves the old way in v3, so
+existing code keeps rendering. Run the codemod anyway so one spelling survives.
+
+### Color opacity
+
+A resolved color name takes a slash opacity suffix, matching Tailwind:
+
+```tsx
+bg="green/50 hover:green/80"
+```
+
+The suffix is an integer percentage from 0 through 100 and it composes with the
+color's existing alpha rather than replacing it (`#00000033` at `/50` ends at
+alpha 0.1, which is what web's `color-mix` produces). It applies only directly
+after a configured color name: `sp4/50` reports `opacity-on-non-color`, and a
+literal `#00ff00/50` is not a suffix at all, it is literal text that no browser
+will accept.
+
+## 4. Modifiers
+
+Modifiers form one registry built from built-ins plus your config. They chain as
+an AND, in any order (`dark:hover:` and `hover:dark:` are the same clause).
+
+| Kind | Spellings |
+| --- | --- |
+| interaction | `hover:` `press:` (alias `active:`) `focus:` `focus-visible:` `focus-within:` `disabled:` |
+| presence | `enter:` `exit:` |
+| component state | `open:` `checked:` `selected:` `highlighted:` `invalid:` |
+| theme | `dark:` `light:` and every configured theme name |
+| media | every configured media key, for example `sm:` `md:` `max-md:` |
+| platform | `web:` `native:` `ios:` `android:` `tv:` `androidtv:` `tvos:` |
+| group | `group-hover:` for the nearest unnamed group, `group-hover/card:` for a named one |
+| container | `@sm:` for the nearest container, `@sm/layout:` for a named one |
+
+There is one global condition namespace. Duplicate configured names are reported
+when the config is created rather than silently resolved in favor of one kind.
+
+### Theme matching changed
+
+A theme modifier matches when it is a name-boundary prefix of the active theme:
+`dark:` matches an active `dark_blue`, and `dark_blue:` does not match an active
+`dark`. The v2 `$theme-*` check was inverted and had no name boundary, so
+`darkish` matched `dark`. If you relied on that, a converted `$theme-*` object
+can change meaning. Check theme conditions on custom sub-themes after
+converting.
+
+Web and native still differ on nested schemes: web's descendant selectors match
+an outer `dark` through an inner `light` wrapper, while native matches the
+component's resolved nearest theme. That difference predates flat values and is
+unchanged.
+
+## 5. Merging replaces clauses, not whole values
+
+A prop's value expands to one program per CSS longhand, and within a longhand
+the merge unit is the clause, keyed by its exact modifier set (base is the empty
+set). A later contribution replaces only the clauses it restates.
+
+```tsx
+const Card = styled(View, { bg: 'gray hover:blue' })
+
+// base becomes red, the inherited hover:blue survives
+<Card bg="red" />
+
+// restating the condition replaces it
+<Card bg="red hover:red" />
+```
+
+This is what v2 already did with a separate `hoverStyle` prop: a call-site `bg`
+never killed a styled component's hover. Merging is per longhand, so shorthands
+expand first:
+
+```tsx
+// four padding programs; px replaces only the left and right base clauses,
+// and their sm: clauses survive
+<View p="4 sm:6" px="2" />
+```
+
+A new condition set appends after the survivors, so a later `dark:hover:` beats
+an inherited `hover:` when both match. Wiping inherited conditions means
+restating them, or exposing a variant that does.
+
+## 6. `bg` is the background family
+
+In v3 `bg` stops being a fixed alias for `backgroundColor` and becomes the whole
+background candidate family. A resolved color still writes only
+`backgroundColor`, so a plain color value never resets a separately authored
+background image, position, size, repeat, or clip.
+
+```tsx
+// two programs from one value: backgroundImage and backgroundColor
+bg="url(hero.png) surface hover:surface-hover"
+```
+
+Ordinary color uses migrate mechanically (`bg="$surface"` to `bg="surface"`).
+
+## 7. Groups and containers are independent
+
+A group exposes parent state. A container establishes a size query context. In
+v2 `group="card"` did both, which made every hover-only group pay container
+setup and native measurement. v3 separates them.
+
+```tsx
+// parent state only
+<View group>
+  <Text color="muted group-hover:foreground" />
+</View>
+
+// named group
+<View group="card">
+  <Text color="muted group-hover/card:foreground" />
+</View>
+
+// a size container, and both on one element
+<View container />
+<View group="card" container />
+```
+
+`container` is the boolean shorthand for an unnamed
+`containerType="inline-size"` container. Named or two-axis containers use
+`containerName` and `containerType`, and an explicit `containerType` replaces
+the shorthand rather than combining with it.
+
+Plain `sm:` is a viewport media query. The `@` prefix means container query:
+
+```tsx
+// viewport sm plus a named card group's hover
+color="muted sm:group-hover/card:foreground"
+
+// nearest container's sm plus the parent group's hover
+color="muted @sm:group-hover:foreground"
+
+// named container plus named group
+color="muted @sm/layout:group-hover/card:foreground"
+```
+
+Container sizes are the size-measuring subset of your media keys. Interaction
+keys such as `hoverNone` or `pointerCoarse` register no `@` form, because
+`@container (hover: none)` measures nothing.
+
+Migration mapping:
+
+| v2 | v3 |
+| --- | --- |
+| `$group-hover={{ … }}` | `group-hover:` on the value, parent keeps `group` |
+| `$group-card-hover={{ … }}` | `group-hover/card:`, parent keeps `group="card"` |
+| `$group-sm-hover={{ … }}` | `@sm:group-hover:`, parent becomes `<View group container />` |
+| `$group-card-sm-hover={{ … }}` | `@sm/card:group-hover/card:`, parent becomes `<View group="card" container containerName="card" />` |
+
+The codemod adds `container` only when a descendant actually uses a group size
+condition. Pure state groups stay groups.
+
+## 8. Transforms
+
+`x`, `y`, `scale`, and `rotate` stay first-class props, each its own program
+with independent clause replacement. That makes the presence animation pattern a
+one-line value:
+
+```tsx
+// v2
+<View enterStyle={{ scale: 0.9, y: 10 }} exitStyle={{ scale: 0.9 }} />
+
+// v3
+<View scale="1 enter:0.9 exit:0.9" y="0 enter:10px" />
+```
+
+Details worth knowing:
+
+- `x` and `y` bind the space token category, so `x="4"` is the space token
+  exactly like `p="4"`. A bare non-token number is a diagnostic on both
+  platforms rather than a silent coercion to points or degrees.
+- `scale` expands to both axis programs the way `padding` expands to four sides,
+  so a later `scaleX` replaces only its axis.
+- On web these lower to the CSS individual transform properties, with per-axis
+  custom properties where two programs share one property. Transitions still
+  work through that indirection.
+- Everything else (skews, 3D rotations, `perspective`, `matrix`) belongs to the
+  raw `transform` property as one ordinary program. Composition order is CSS's:
+  translate, rotate, scale, then `transform`.
+- Unsupported functions and units (`turn`, `matrix3d`, `translateZ`,
+  six-number `matrix()`, percentage axis strings) are diagnostics instead of
+  being handed to React Native's lossy string parser.
+
+Legacy transform parts inside condition objects (`skewX`, `rotateX`,
+`perspective`) have no flat spelling yet and stay flagged for hand migration.
+
+## 9. Built-in names are kebab-case
+
+The v6 config spells multi-part built-in names with dashes, so the same
+configured value reads the same in both frontends.
+
+| v2 | v3 |
+| --- | --- |
+| `backgroundHover` | `background-hover` |
+| `backgroundPress` | `background-press` |
+| `borderColorHover` | `border-color-hover` |
+| `placeholderColor` | `placeholder-color` |
+
+```tsx
+// regular Tamagui
+bg="background hover:background-hover"
+
+// Tailwind
+className="bg-background hover:bg-background-hover"
+```
+
+The codemod converts built-in camelCase names to their kebab-case replacements.
+Your own token names keep their authored spelling: the parser never guesses a
+camelCase-to-kebab alias at runtime, because two configured names could collide.
+Kebab-case is the recommendation for new configuration.
+
+## 10. Migrate incrementally with `legacyConditionObjects`
+
+`legacyConditionObjects` accepts the old condition objects and converts them
+into the same flat programs, with a development warning. It gates input parsing
+only. It never forks resolution, ordering, or output, so a converted
+`hoverStyle` produces the same class as the flat spelling.
+
+```tsx
+import { createTamagui } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v6'
+
+export default createTamagui({
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    // migration only; the default is false
+    legacyConditionObjects: true,
+  },
+})
+```
+
+The migration loop:
+
+1. Turn `legacyConditionObjects` on. Existing condition objects keep working.
+2. Run the codemod over one area and apply its conversions.
+3. Verify that area on web and native.
+4. Repeat until nothing in the report needs hands.
+5. Remove the setting, which restores the `false` default. This is the codemod's
+   final step, and it is what proves no legacy objects are left.
+
+v4 removes the setting together with the old parsers, so anything still relying
+on it at that point breaks then.
+
+## 11. The codemod
+
+The flat-values codemod runs from a Tamagui checkout. It is not published as an
+`npx` command yet.
+
+```bash
+cd code/core/codemod-flat-values
+bun run dry-run
+```
+
+It never writes source files. It writes one Markdown report with a before and
+after block per conversion site, plus the flags that block a site.
+
+```bash
+# scan your own sources instead of the default corpus
+bun run dry-run ~/my-app/src ~/my-app/app
+
+# also convert legacy scale, scaleX, scaleY, x, y, and rotate condition entries
+bun run dry-run --transforms
+
+# choose where the report lands
+bun run dry-run --transforms --report ./flat-values-report.md
+```
+
+Pass `--report` every time, since the default destination is a scratch path.
+`--transforms` is off by default so transform migration stays an explicit
+choice; leave it off if the transform family is not wired up in your app yet.
+
+The package's other scripts:
+
+```bash
+bun run test       # the codemod's own conversion tests
+bun run typecheck  # tsc --noEmit
+```
+
+On the repo's own corpus (`code/kitchen-sink/src/usecases` plus the canonical
+`Button.tsx`) the current numbers are 1703 conversion sites, 1483 clean and 220
+flagged with `--transforms`, and 1476 clean with 227 flagged without it.
+
+## 12. What the codemod flags
+
+Everything statically local converts. These flag codes mean a human decides:
+
+| Flag | What it means |
+| --- | --- |
+| `dynamic-style-value` | the prop's value is a dynamic expression, so it stays authored. The codemod emits a template-literal base only when the expression's units are provable and a condition needs it |
+| `condition-targets-unconvertible-prop` | a condition targets a longhand whose base value must stay authored |
+| `nested-styled-style` | legacy tokens or condition objects inside a `styled()` config's `variants` or `compoundVariants`, where each branch needs its own conversion |
+| `jsx-spread` | a spread may hide style props or their authored order |
+| `unknown-legacy-condition` | the prop is not a registered legacy condition spelling |
+| `unregistered-legacy-condition` | the condition names a theme, platform, media key, or state that the registry does not have |
+| `dynamic-condition-value` | a condition object leaf holds a dynamic value |
+| `dynamic-legacy-condition` | the condition prop is not an inline object literal |
+| `unsupported-legacy-value` | the value cannot become a CSS payload (empty string, non-finite number, non-primitive) |
+| `legacy-transform-part` | a transform part with no flat spelling yet, or `--transforms` was off |
+| `legacy-token-dot-path` | a `$a.b` dot-path token; rename it to one flat configured name first |
+| `non-style-condition-entry` | the entry is not a registered style property |
+| `ambiguous-legacy-group` | a `$group-*` name has more than one equally specific state suffix |
+
+Cases that stay manual by design: base and conditional values spread from
+different objects, variants that partially modify an inherited program, computed
+property names, dynamic condition objects, and structured React Native values
+with no CSS-shaped equivalent.
+
+Conversion is mechanical where it happens. A legacy entry becomes a clause on
+the longhand's program, and raw numbers spell as CSS lengths, so
+`hoverStyle={{ p: 4 }}` becomes `hover:4px` and unitless properties keep their
+bare number. The native serializer lowers plain CSS lengths back to React Native
+numbers, so the px-vs-unitless table is shared rather than converter-specific.
+
+## 13. Beta status and diagnostics
+
+Diagnostics you will see while migrating:
+
+- a value that does not parse as a program passes through unchanged, and
+  development logs it once per property and input:
+  `[tamagui] p="4 hver:6" is not a flat value program (unregistered-modifier); passing through unchanged. The V3 flat-value cutover will make this an error.`
+  Treat every one of those as work to do, since the cutover turns it into a
+  throw;
+- a clause that cannot become CSS drops that property's program with one
+  warning. `exit:` is the main case: exit is animation-driver territory and has
+  no DOM state to select, so it lowers to nothing on web while still evaluating
+  on native. `enter:` does lower, through the unmounted class;
+- component-tier states (`open:`, `checked:`, `selected:`, `highlighted:`,
+  `invalid:`) have no native source yet. On native those clauses are skipped
+  with a development note. They work on web through their data and ARIA
+  attribute selectors;
+- a group or container clause with no matching parent notes it once, naming the
+  group or container it wanted.
+
+Not wired up yet in the beta:
+
+- On web, flat conditional values need class output. A component using a
+  non-CSS animation driver after hydration takes the inline-style path, where a
+  clause-bearing value is passed through raw and its conditions do not apply.
+  Keep those components on condition objects with `legacyConditionObjects: true`
+  until the cutover lands.
+- `bg` still expands to `backgroundColor` before the program hook, so the
+  background family split (an image and a color in one value) currently requires
+  authoring `background`. The v6 config makes `bg` the family prop.
+- The boolean `container` prop and the group/container decoupling are still
+  landing. Today `group="card"` also emits `container-name` and
+  `container-type`, which is the v2 coupling described in section 7.
+- Kebab-case built-in theme and token names arrive with the v6 default config.
+- Do not mix a program and a legacy condition object on the same longhand
+  (`backgroundColor="red hover:blue"` beside `$sm={{ backgroundColor }}`). The
+  legacy class wins through its old specificity ladder. The codemod never
+  produces that mix.
+
+## 14. Checklist
+
+```bash
+# report what converts and what needs hands
+cd code/core/codemod-flat-values
+bun run dry-run --transforms --report ./flat-values-report.md
+
+# leftover token prefixes inside a conditional value
+rg '"[^"]*:[^"]*\$' src app
+
+# condition objects still in the tree
+rg 'hoverStyle|pressStyle|focusStyle|enterStyle|exitStyle|\$theme-|\$platform-|\$group-'
+```
+
+Then verify by layer:
+
+- typecheck and build;
+- open the screens whose hover, press, focus, and media states you converted,
+  on web and on native;
+- check custom sub-themes against the theme-matching rule in section 4;
+- check presence animations that used `enterStyle` or `exitStyle` transforms;
+- check any place a number changed from `{4}` to `"4"`;
+- watch the development console for `is not a flat value program` and for
+  dropped-program warnings, and drive both to zero;
+- remove `legacyConditionObjects` when the report and the console are clean.

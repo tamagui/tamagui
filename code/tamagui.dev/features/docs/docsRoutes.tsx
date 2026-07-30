@@ -103,6 +103,7 @@ export const docsRoutes = [
     section: 'core',
     pages: [
       { title: 'Upgrading to v3', route: '/docs/guides/how-to-upgrade' },
+      { title: 'Flat Conditional Values', route: '/docs/guides/flat-values' },
       { title: 'Custom UI Package', route: '/docs/guides/design-systems' },
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       {
