@@ -21,6 +21,7 @@ import type {
   ViewStyle,
 } from 'react-native'
 
+import type { StyleFrontend } from './helpers/styleFrontend'
 import type { CSSColorNames } from './interfaces/CSSColorNames'
 import type { RNOnlyProps } from './interfaces/RNExclusiveTypes'
 
@@ -837,31 +838,16 @@ export type OnlyShorthandStylePropsSetting = TamaguiConfig['settings'] extends {
   ? X
   : false
 
-// StyleMode setting extraction
-export type StyleModeSetting = TamaguiConfig['settings'] extends {
-  styleMode: infer X
-}
-  ? X
-  : 'tamagui' // default is tamagui (classic only)
-
 // StyleMode: available modes for different prop styles
 // - 'tamagui': Classic style props only (default)
 // - 'tailwind': className only, no style props
 // - 'tamagui-and-tailwind': Classic style props + className processing
+/**
+ * @deprecated V3 selects the authoring syntax by package import, not by a global
+ * setting: Tailwind authoring lives in `@tamagui/tailwind`. This setting and the
+ * runtime branches reading it are removed once every caller has migrated.
+ */
 export type StyleMode = 'tamagui' | 'tailwind' | 'tamagui-and-tailwind'
-
-// Helper types to check which modes are enabled
-export type IncludesClassicMode = StyleModeSetting extends
-  | 'tamagui'
-  | 'tamagui-and-tailwind'
-  ? true
-  : false
-
-export type IncludesTailwindMode = StyleModeSetting extends
-  | 'tailwind'
-  | 'tamagui-and-tailwind'
-  ? true
-  : false
 
 export type CreateTamaguiConfig<
   A extends GenericTokens,
@@ -1314,6 +1300,11 @@ export interface GenericTamaguiSettings {
    * - 'tamagui': Default - classic style props (backgroundColor, hoverStyle: {}, $sm: {})
    * - 'tailwind': className only, no style props (for Tailwind CSS users)
    * - 'tamagui-and-tailwind': Classic style props + className processing
+   *
+   * @deprecated Import components from `@tamagui/tailwind` instead. A component's
+   * authoring syntax is fixed by its package, so core no longer branches on a
+   * global mode for types. This setting is removed once the remaining runtime
+   * branches move into the Tailwind frontend.
    */
   styleMode?: StyleMode
 
@@ -2825,10 +2816,7 @@ export interface StackNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
 }
 
-// Conditionally include style props based on styleMode setting
-export type StackStyle = IncludesClassicMode extends true
-  ? WithThemeShorthandsPseudosMedia<StackStyleBase>
-  : {}
+export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
 
 //
 // Text props
@@ -2851,10 +2839,7 @@ export interface TextNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>
 }
 
-// Conditionally include style props based on styleMode setting
-export type TextStyle = IncludesClassicMode extends true
-  ? WithThemeShorthandsPseudosMedia<TextStylePropsBase>
-  : {}
+export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
 
 export type TextProps = TextNonStyleProps & TextStyle
 
@@ -2903,9 +2888,7 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   keyof StylePropsBase | keyof Variants
 > &
   (StylePropsBase extends object
-    ? IncludesClassicMode extends true
-      ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
-      : {}
+    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
     : {})
 
 export type TamaguiComponent<
@@ -3211,6 +3194,13 @@ type StaticConfigBase = StaticConfigPublic & {
 
   // Tracks when styled() wraps a HOC that already wraps styled().
   isStyledHOC?: boolean
+
+  /**
+   * The immutable authoring syntax of this component, set by the package that
+   * created it and inherited by styled() descendants. Absent means the regular
+   * Tamagui frontend (see `regularStyleFrontend`).
+   */
+  styleFrontend?: StyleFrontend
 }
 
 export type StaticConfig = StaticConfigBase & {

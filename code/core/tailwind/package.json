@@ -1,0 +1,91 @@
+{
+  "name": "@tamagui/tailwind",
+  "version": "2.5.1",
+  "license": "MIT",
+  "author": {
+    "name": "Nate Wienert"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "code/core/tailwind"
+  },
+  "source": "src/index.tsx",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    },
+    "./vite": {
+      "types": "./types/vite.d.ts",
+      "react-native": "./dist/esm/vite.mjs",
+      "browser": "./dist/esm/vite.mjs",
+      "module": "./dist/esm/vite.mjs",
+      "import": "./dist/esm/vite.mjs",
+      "require": "./dist/cjs/vite.cjs",
+      "default": "./dist/esm/vite.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build --exclude __tests__",
+    "watch": "tamagui-build --exclude __tests__ --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "test:web": "vitest --run --config ./vitest.config.ts",
+    "test:native": "vitest --run --config ./vitest.native.config.ts",
+    "test:types": "vitest --typecheck --run --config ./vitest.config.ts",
+    "test": "bun run test:web && bun run test:native"
+  },
+  "dependencies": {
+    "@tailwindcss/node": "4.3.0",
+    "@tailwindcss/oxide": "4.3.0",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*",
+    "@tamagui/vite-plugin": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "@tamagui/config-default": "workspace:*",
+    "@tamagui/fake-react-native": "workspace:*",
+    "@tamagui/react-native-web-lite": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "react": ">=19",
+    "typescript": "~5.9.2",
+    "vite": "^8.0.3",
+    "vitest": "4.0.4"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "tailwindcss": "4.3.0",
+    "vite": "^8.0.3"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    },
+    "vite": {
+      "optional": true
+    }
+  }
+}

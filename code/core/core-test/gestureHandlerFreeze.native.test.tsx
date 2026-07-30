@@ -1,10 +1,9 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { View, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { TamaguiProvider } from '../core/src/index'
 import { getGestureHandler } from '../native/src/gestureState'
 
 const config = createTamagui(getDefaultTamaguiConfig('native'))

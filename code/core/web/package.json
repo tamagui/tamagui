@@ -30,6 +30,15 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     },
+    "./internal-runtime": {
+      "types": "./types/internal-runtime.d.ts",
+      "react-native": "./dist/esm/internal-runtime.native.js",
+      "browser": "./dist/esm/internal-runtime.mjs",
+      "module": "./dist/esm/internal-runtime.mjs",
+      "import": "./dist/esm/internal-runtime.mjs",
+      "require": "./dist/cjs/internal-runtime.cjs",
+      "default": "./dist/esm/internal-runtime.mjs"
+    },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
       "react-native": "./dist/esm/inject-styles.mjs",

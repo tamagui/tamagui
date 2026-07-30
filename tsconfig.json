@@ -218,6 +218,9 @@
       "path": "code/core/style-grammar"
     },
     {
+      "path": "code/core/tailwind"
+    },
+    {
       "path": "code/core/simple-hash"
     },
     {

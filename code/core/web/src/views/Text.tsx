@@ -2,6 +2,7 @@ import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
 import type {
+  StaticConfig,
   TamaguiTextElement,
   TextNonStyleProps,
   TextProps,
@@ -23,12 +24,10 @@ const ellipsisStyle =
         lineBreakMode: 'clip',
       }
 
-export const Text = createComponent<
-  TextProps,
-  Text,
-  TextNonStyleProps,
-  TextStylePropsBase
->({
+/**
+ * Shared by every frontend's Text — see the note on `viewStaticConfig`.
+ */
+export const textStaticConfig: StaticConfig = {
   componentName: 'Text',
   acceptsClassName: true,
   isText: true,
@@ -69,4 +68,11 @@ export const Text = createComponent<
     ...validStyles,
     ...stylePropsTextOnly,
   },
-})
+}
+
+export const Text = createComponent<
+  TextProps,
+  Text,
+  TextNonStyleProps,
+  TextStylePropsBase
+>(textStaticConfig)

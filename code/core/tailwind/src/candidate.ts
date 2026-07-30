@@ -1,0 +1,481 @@
+import { isWeb } from '@tamagui/constants'
+import type { TamaguiInternalConfig } from '@tamagui/core/internal-runtime'
+import { tokenCategories } from '@tamagui/helpers'
+import {
+  borderSideSuffix,
+  classifyCandidate,
+  createGrammarConfigView,
+  decodeArbitrary,
+  getTokenCategory,
+  hasTokenName,
+  percentUtilityProps,
+  radiusCornerProps,
+  type GrammarConfigView,
+  type ParsedCandidate,
+} from '@tamagui/style-grammar'
+
+/**
+ * Class-string tokenization and candidate adaptation. This is the Tailwind
+ * frontend's private half of the pipeline: everything here is about how a
+ * candidate is SPELLED (brackets, slashes, fractions, keywords, negatives).
+ *
+ * The semantic parser itself stays in `@tamagui/style-grammar`, shared with the
+ * converter and build tooling, and everything downstream of the props this module
+ * produces — value programs, merging, lowering, evaluation — is core's shared
+ * renderer.
+ */
+
+const styleGrammarConfigCache = new WeakMap<TamaguiInternalConfig, GrammarConfigView>()
+
+export function getStyleGrammarConfig(config: TamaguiInternalConfig): GrammarConfigView {
+  const cached = styleGrammarConfigCache.get(config)
+  if (cached) return cached
+  const view = createGrammarConfigView(config)
+  styleGrammarConfigCache.set(config, view)
+  return view
+}
+
+// theme value names (color1-12, background, borderColor, shadow*, …) are not tokens but
+// resolve to their theme CSS var (var(--color5)) via the theme lookup props already use.
+// keys are uniform across a config's themes, so compute the set once per config.
+const themeValueKeysCache = new WeakMap<TamaguiInternalConfig, Set<string>>()
+
+function getThemeValueKeys(config: TamaguiInternalConfig): Set<string> {
+  let set = themeValueKeysCache.get(config)
+  if (!set) {
+    set = new Set<string>()
+    const themes = config.themes as Record<string, any>
+    // union keys across all themes: base themes hold the full palette while sub-themes
+    // may override a subset, and theme iteration order isn't guaranteed.
+    for (const name in themes) {
+      const t = themes[name]
+      if (t && typeof t === 'object' && !Array.isArray(t)) {
+        for (const k in t) set.add(k)
+      }
+    }
+    themeValueKeysCache.set(config, set)
+  }
+  return set
+}
+
+/**
+ * Check if a value matches a token name (without $ prefix).
+ * Returns the token value prefixed with $ if found, otherwise returns the original value.
+ */
+export function resolveTokenValue(
+  value: string,
+  config: TamaguiInternalConfig,
+  prop?: string
+): string {
+  // already a token reference
+  if (value.startsWith('$')) return value
+
+  // Token lookup is category-specific: p-red must not borrow a color token for padding.
+  const category = prop ? getTokenCategory(prop) : null
+  if (category && hasTokenName(getStyleGrammarConfig(config), category, value)) {
+    return `$${value}`
+  }
+
+  // theme-value color names (bg-color5, text-color10, border-borderColor) aren't tokens
+  // but resolve to their theme var; prefix so the value routes through the same theme
+  // resolution props use (var(--color5), theme-aware) instead of a dead literal 'color5'.
+  if (prop && prop in tokenCategories.color && getThemeValueKeys(config).has(value)) {
+    return `$${value}`
+  }
+
+  return value
+}
+
+export function isTokenValueProp(prop: string): boolean {
+  return getTokenCategory(prop) !== null
+}
+
+// CANONICAL arbitrary-value coercion. an arbitrary `[..]` whose inner is a UNITLESS number
+// (z-[400], aspect-[1.5], leading-[1.25]) or a PX length (p-[18px], text-[14px], border-[0.5px])
+// resolves to a NUMBER: React Native REQUIRES numbers for dimensional + typography props and
+// silently DROPS "Npx"/"400" strings (Yoga parseCSSProperty<CSSNumber,CSSPercentage> rejects px;
+// StyleSheetTypes types fontSize/lineHeight/letterSpacing as number). web accepts the number and
+// re-adds px via CSS. anything carrying a real unit/function (%, rem, vh, deg, calc(), var(),
+// #hex, colors) stays a STRING.
+function arbitraryValue(inner: string): number | string {
+  const px = /^(-?\d*\.?\d+)px$/.exec(inner)
+  if (px) return Number(px[1])
+  if (/^-?\d*\.?\d+$/.test(inner)) return Number(inner)
+  return inner
+}
+
+// tailwind sizing keywords / fractions for width/height/min/max props.
+// returns a CSS value, or null if `value` isn't a sizing keyword (falls through to normal parse).
+function tailwindSizingValue(prop: string, value: string): string | null {
+  if (value === 'full') return '100%'
+  if (value === 'auto') return 'auto'
+  if (value === 'screen') return /[Hh]eight/.test(prop) ? '100vh' : '100vw'
+  if (value === 'min') return 'min-content'
+  if (value === 'max') return 'max-content'
+  if (value === 'fit') return 'fit-content'
+  const frac = /^(\d+)\/(\d+)$/.exec(value)
+  if (frac && Number(frac[2]) !== 0) {
+    return `${(Number(frac[1]) / Number(frac[2])) * 100}%`
+  }
+  return null
+}
+
+// unwrap a possibly-arbitrary value ([2px] → "2px") and coerce a bare number / px length to
+// a NUMBER (2px → 2, 0.5 → 0.5) so borderWidth/radius match tamagui's numeric props; other
+// units (1em, calc(…)) stay strings.
+function borderDimValue(raw: string): number | string {
+  let inner = raw
+  if (raw.length > 1 && raw[0] === '[' && raw[raw.length - 1] === ']') {
+    inner = decodeArbitrary(raw.slice(1, -1))
+  }
+  const px = /^(-?\d*\.?\d+)px$/.exec(inner)
+  if (px) return Number.parseFloat(px[1])
+  if (/^-?\d*\.?\d+$/.test(inner)) return Number(inner)
+  return inner
+}
+
+/**
+ * Expand a registry-parsed directional border/radius into all affected props. The registry
+ * already selected the token category and width-vs-color meaning; this function only expands
+ * that semantic result across sides/corners.
+ */
+function expandBorderCandidate(
+  parsed: ParsedCandidate,
+  value: any
+): Record<string, any> | null {
+  const prefix = parsed.prefix
+  if (!prefix) return null
+  if (prefix.startsWith('rounded-')) {
+    const props = radiusCornerProps[prefix.slice('rounded-'.length)]
+    if (!props || props.length === 1) return null
+    const out: Record<string, any> = {}
+    for (const p of props) out[p] = value
+    return out
+  }
+
+  const m = /^border-([trblxy])$/.exec(prefix)
+  if (!m) return null
+  const sides = borderSideSuffix[m[1]]
+  const suffix = parsed.entry?.prop.endsWith('Width') ? 'Width' : 'Color'
+  const out: Record<string, any> = {}
+  for (const side of sides) out[`border${side}${suffix}`] = value
+  return out
+}
+
+/**
+ * Resolve a registry-parsed candidate through the active Tamagui config.
+ * Examples:
+ *   "hover:bg-blue5" → { key: "$hover:backgroundColor", value: "$blue5" } (if blue5 is a token)
+ *   "sm:p-4" → { key: "$sm:padding", value: "$4" } (if 4 is a space token)
+ *   "bg-[red]" → { key: "$backgroundColor", value: "red" } (raw CSS value)
+ *   "w-100" → { key: "$width", value: 100 }
+ *   "opacity-50" → { key: "$opacity", value: 0.5 }
+ * Note: $ prefix in values (e.g., "m-$spacing") is invalid and will warn.
+ */
+function tailwindClassToFlatProp(
+  parsed: ParsedCandidate,
+  config: TamaguiInternalConfig
+): { key: string; value: any } | null {
+  if (parsed.kind !== 'dynamic' || !parsed.entry || parsed.rawValue === undefined) {
+    return null
+  }
+  const modifiers = parsed.modifiers
+  const prop = parsed.entry.prop
+  const category = parsed.entry.tokenCategory
+  let value: any = parsed.rawValue
+
+  if (prop.endsWith('Width') && parsed.prefix?.startsWith('border')) {
+    if (parsed.valueKind === 'token') {
+      value = `$${parsed.negative ? '-' : ''}${value}`
+    } else if (parsed.valueKind === 'arbitrary') {
+      value = borderDimValue(value)
+    } else {
+      return null
+    }
+    const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
+    return { key, value }
+  }
+
+  if (prop === 'fontFamily') {
+    let famValue: string
+    if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+      famValue = decodeArbitrary(value.slice(1, -1))
+    } else {
+      const generic: Record<string, string> = {
+        sans: 'sans-serif',
+        serif: 'serif',
+        mono: 'monospace',
+      }
+      famValue =
+        parsed.valueKind === 'token' ? `$${value}` : generic[value] || `$${value}`
+    }
+    return {
+      key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontFamily` : `$fontFamily`,
+      value: famValue,
+    }
+  }
+
+  if (prop === 'fontSize') {
+    let fsValue: any
+    if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+      // fontSize is number-only on native: text-[14px] → 14 (arbitraryValue drops px)
+      fsValue = arbitraryValue(decodeArbitrary(value.slice(1, -1)))
+    } else {
+      fsValue = `$${value}`
+    }
+    return {
+      key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontSize` : `$fontSize`,
+      value: fsValue,
+    }
+  }
+
+  if (prop === 'lineHeight') {
+    let lhValue: any
+    if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+      const inner = decodeArbitrary(value.slice(1, -1))
+      // px length → NUMBER (native-valid: leading-[20px] → 20). a UNITLESS value is a web
+      // lineHeight MULTIPLIER and MUST stay a string (a number would be px-ified to "1.25px"
+      // on web, breaking the multiplier). RN has no unitless multiplier, so this is web-only.
+      lhValue = /^-?\d*\.?\d+px$/.test(inner) ? Number.parseFloat(inner) : inner
+    } else {
+      lhValue = `$${value}`
+    }
+    return {
+      key: modifiers.length > 0 ? `$${modifiers.join(':')}:lineHeight` : `$lineHeight`,
+      value: lhValue,
+    }
+  }
+
+  if (prop === 'letterSpacing') {
+    let lsValue: any
+    if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+      lsValue = arbitraryValue(decodeArbitrary(value.slice(1, -1)))
+    } else {
+      lsValue = `$${value}`
+    }
+    return {
+      key:
+        modifiers.length > 0 ? `$${modifiers.join(':')}:letterSpacing` : `$letterSpacing`,
+      value: lsValue,
+    }
+  }
+
+  if (prop === 'boxShadow' && value[0] === '[' && value[value.length - 1] === ']') {
+    return {
+      key: modifiers.length > 0 ? `$${modifiers.join(':')}:boxShadow` : `$boxShadow`,
+      value: decodeArbitrary(value.slice(1, -1)),
+    }
+  }
+
+  // arbitrary values: p-[4px], w-[100px], rounded-[8px], min-h-[100vh], rotate-[-8deg],
+  // h-[calc(100%-2px)], bg-[var(--color5)], bg-[#fff]. use the bracketed value directly as
+  // CSS — no scaling/token resolution. tailwind encodes spaces inside [] as underscores.
+  if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+    const inner = decodeArbitrary(value.slice(1, -1))
+    if (inner === '') return null
+    const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
+    // px-length + unitless arbitraries become NUMBERS (native requires numbers, drops "Npx"
+    // strings); unit/function values stay strings. one canonical rule (arbitraryValue).
+    return { key, value: arbitraryValue(inner) }
+  }
+
+  // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).
+  // handled before isValidTailwindValue since fractions/keywords aren't plain CSS values. An
+  // exact configured size token with the same spelling stays a token.
+  if (category === 'size' && parsed.valueKind !== 'token') {
+    const sized = tailwindSizingValue(prop, value)
+    if (sized != null) {
+      const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
+      return { key, value: sized }
+    }
+  }
+
+  // color opacity modifier: bg-blue-500/50 → split value into base + /N suffix,
+  // re-attached after token resolution so getTokenForKey applies it via color-mix
+  // (web) / rgba (native). only for color props; for non-color props a "/" in the
+  // value is left intact (e.g. fraction sizing handled above).
+  let opacitySuffix = ''
+  if (category === 'color' && typeof value === 'string') {
+    const slashIdx = value.lastIndexOf('/')
+    if (slashIdx > 0) {
+      const tail = value.slice(slashIdx + 1)
+      if (tail.length > 0 && /^\d+(\.\d+)?$/.test(tail)) {
+        opacitySuffix = `/${tail}`
+        value = value.slice(0, slashIdx)
+      }
+    }
+  }
+
+  // handle special value patterns
+  if (percentUtilityProps.has(prop) && /^\d+$/.test(value)) {
+    // tailwind percentage utilities: opacity-50 → 0.5, scale-95 → 0.95, scale-100 → 1
+    value = Number(value) / 100
+  } else if (/^\d+(\.\d+)?$/.test(value) && !value.startsWith('$')) {
+    if (category) {
+      value = `$${parsed.negative ? '-' : ''}${value}`
+    } else {
+      value = Number(value)
+    }
+  } else if (typeof value === 'string') {
+    if (category) {
+      value = `$${parsed.negative ? '-' : ''}${value}`
+    } else {
+      // check if value matches a token name and resolve it
+      // e.g., "blue5" → "$blue5" if $blue5 token exists, or a theme color name
+      value = resolveTokenValue(value, config, prop)
+    }
+  }
+
+  // re-attach the color opacity suffix (bg-blue-500/50). getTokenForKey parses
+  // the trailing /N and applies it via normalizeColor (color-mix on web, rgba
+  // on native), matching the flat-styles "$blue10/50" path exactly.
+  if (opacitySuffix && typeof value === 'string') {
+    value = `${value}${opacitySuffix}`
+  }
+
+  if (parsed.negative && !category) {
+    if (typeof value === 'number') value = -value
+    else if (typeof value === 'string' && value[0] !== '-') value = `-${value}`
+  }
+
+  const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
+
+  return { key, value }
+}
+
+// Parsing a Tailwind candidate depends only on the class string and the grammar
+// config, never on the surrounding props, so the decision is cached per class.
+// Without this the full parse (split + classify + resolve + border expansion) ran
+// on every render of every component carrying a className — measured at ~18µs per
+// call for a 4-class string, a 1.53x tax over writing the same styles as props.
+// The plan is a flat [key, value][] applied in order, so the authored ordering
+// between classes and ordinary props is unchanged.
+//
+// null = web-only candidate dropped on native. 'raw' = not claimed by the
+// grammar, caller preserves the class string. An array (which may legitimately be
+// empty) = claimed, apply these entries.
+type TailwindClassPlan = [string, any][] | null | 'raw'
+
+const classPlanCache = new WeakMap<object, Map<string, TailwindClassPlan>>()
+
+function getClassPlanCache(grammarConfig: object) {
+  let cache = classPlanCache.get(grammarConfig)
+  if (!cache) {
+    cache = new Map()
+    classPlanCache.set(grammarConfig, cache)
+  }
+  return cache
+}
+
+function computeClassPlan(
+  cls: string,
+  grammarConfig: GrammarConfigView,
+  config: TamaguiInternalConfig
+): TailwindClassPlan {
+  const classification = classifyCandidate(cls, grammarConfig)
+  if (classification.kind === 'passthrough') {
+    return isWeb ? 'raw' : null
+  }
+  const parsed = classification.parsed
+  // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
+  // these may emit multiple props and may have no dash, so handle before the generic parse.
+  const mods = parsed.modifiers.join(':')
+  const util = parsed.kind === 'utility' ? parsed.properties : null
+  if (util) {
+    const entries: [string, any][] = []
+    for (const p in util) {
+      // BASE (unmodified) util props are set DIRECTLY as props so they flow through the normal
+      // resolution — critical for props routed to viewProps (pointerEvents) or expanded (flex),
+      // which the `$prop` flat form doesn't convert for non-style keys. MODIFIED util props
+      // (hover:/md:) still use the `$mods:prop` flat form the modifier pass understands.
+      entries.push([mods ? `$${mods}:${p}` : p, util[p]])
+    }
+    return entries
+  }
+  // Resolve only after the registry has claimed the candidate. Directional border/radius
+  // expansion below consumes that parsed decision instead of re-parsing width vs color.
+  const flatProp = tailwindClassToFlatProp(parsed, config)
+  if (flatProp) {
+    const expanded = expandBorderCandidate(parsed, flatProp.value)
+    if (expanded) {
+      const entries: [string, any][] = []
+      for (const p in expanded) {
+        entries.push([mods ? `$${mods}:${p}` : `$${p}`, expanded[p]])
+      }
+      return entries
+    }
+    return [[flatProp.key, flatProp.value]]
+  }
+  // not claimed: caller preserves the raw class
+  return 'raw'
+}
+
+const warnedNativePassthroughCandidates = new Set<string>()
+
+/**
+ * Tokenize a className into flat `$mods:prop` props, once per class per config.
+ * User-defined tokens drive resolution; Tailwind's color/spacing scales are never
+ * hardcoded. Classes the grammar does not claim stay in `className` verbatim, in
+ * author order, so official Tailwind CSS still applies them on web.
+ */
+export function preprocessTailwindClassName(
+  props: Record<string, any>,
+  config: TamaguiInternalConfig
+): Record<string, any> {
+  const className = props.className
+  if (!className || typeof className !== 'string') {
+    return props
+  }
+
+  const classes = className.split(/\s+/).filter(Boolean)
+  const regularClasses: string[] = []
+  const result: Record<string, any> = {}
+  const grammarConfig = getStyleGrammarConfig(config)
+  const plans = getClassPlanCache(grammarConfig)
+
+  const applyClass = (cls: string) => {
+    let plan = plans.get(cls)
+    if (plan === undefined) {
+      plan = computeClassPlan(cls, grammarConfig, config)
+      plans.set(cls, plan)
+    }
+    if (plan === null) {
+      // web-only candidate on native: dropped, warned once
+      if (
+        process.env.NODE_ENV !== 'production' &&
+        !warnedNativePassthroughCandidates.has(cls)
+      ) {
+        warnedNativePassthroughCandidates.add(cls)
+        console.warn(
+          `[tamagui] Tailwind candidate "${cls}" is web-only and was dropped on native. Use a Tamagui grammar candidate or a native style prop for cross-platform output.`
+        )
+      }
+      return
+    }
+    if (plan === 'raw') {
+      // not claimed by the grammar: preserve the class as-is
+      regularClasses.push(cls)
+      return
+    }
+    for (let i = 0; i < plan.length; i++) {
+      result[plan[i][0]] = plan[i][1]
+    }
+  }
+
+  // Expand the className exactly where it was authored. Claimed classes and
+  // ordinary props therefore share one forward pass: whichever contribution is
+  // encountered later wins. Classes within the string are likewise applied in
+  // their own left-to-right order.
+  for (const key in props) {
+    if (key !== 'className') {
+      result[key] = props[key]
+      continue
+    }
+    for (const cls of classes) applyClass(cls)
+    if (regularClasses.length > 0) {
+      result.className = regularClasses.join(' ')
+    }
+  }
+
+  return result
+}

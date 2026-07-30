@@ -36,7 +36,7 @@ const buttonVariants = {
 type ButtonStyledOptions = StyledOptions<typeof Button, {}, typeof buttonVariants>
 
 describe('styled v3 overloads', () => {
-  test('object-first and class-first keep equivalent custom component inference', () => {
+  test('custom component inference survives options plus static config', () => {
     const ObjectFirst = styled(
       Button,
       {
@@ -51,43 +51,19 @@ describe('styled v3 overloads', () => {
       }
     )
 
-    const ClassFirst = styled(
-      Button,
-      'inline-flex items-center',
-      {
-        variants: buttonVariants,
-        defaultVariants: {
-          tone: 'neutral',
-          emphasis: 'low',
-        },
-      } as const,
-      {
-        acceptsClassName: true,
-      }
-    )
-
     type ObjectProps = GetProps<typeof ObjectFirst>
-    type ClassProps = GetProps<typeof ClassFirst>
 
     expectTypeOf<ObjectProps['label']>().toEqualTypeOf<string | undefined>()
-    expectTypeOf<ClassProps['label']>().toEqualTypeOf<string | undefined>()
     expectTypeOf<ObjectProps['disabled']>().toEqualTypeOf<boolean | undefined>()
-    expectTypeOf<ClassProps['disabled']>().toEqualTypeOf<boolean | undefined>()
     expectTypeOf<ObjectProps['ref']>().toEqualTypeOf<
       ReactRef<HTMLButtonElement> | undefined
     >()
-    expectTypeOf<ClassProps['ref']>().toEqualTypeOf<
-      ReactRef<HTMLButtonElement> | undefined
-    >()
     expectTypeOf<ObjectProps['tone']>().toEqualTypeOf<'neutral' | 'active' | undefined>()
-    expectTypeOf<ClassProps['tone']>().toEqualTypeOf<'neutral' | 'active' | undefined>()
     expectTypeOf<ObjectProps['emphasis']>().toEqualTypeOf<'low' | 'high' | undefined>()
-    expectTypeOf<ClassProps['emphasis']>().toEqualTypeOf<'low' | 'high' | undefined>()
     expectTypeOf<HasStringIndex<ObjectProps>>().toEqualTypeOf<false>()
-    expectTypeOf<HasStringIndex<ClassProps>>().toEqualTypeOf<false>()
   })
 
-  test('defaultVariants reject invalid values and keys in both overloads', () => {
+  test('defaultVariants reject invalid values and keys', () => {
     const validDefaults = {
       variants: buttonVariants,
       defaultVariants: {
@@ -96,7 +72,6 @@ describe('styled v3 overloads', () => {
     } as const satisfies ButtonStyledOptions
 
     styled(Button, validDefaults)
-    styled(Button, 'inline-flex', validDefaults)
 
     const invalidDefaultValue: ButtonStyledOptions = {
       variants: buttonVariants,
@@ -115,9 +90,7 @@ describe('styled v3 overloads', () => {
     }
 
     styled(Button, invalidDefaultValue)
-    styled(Button, 'inline-flex', invalidDefaultValue)
     styled(Button, invalidDefaultKey)
-    styled(Button, 'inline-flex', invalidDefaultKey)
   })
 
   test('options accept own variant and consumed context defaults only', () => {
@@ -152,21 +125,14 @@ describe('styled v3 overloads', () => {
       density: 'compact',
     } as const satisfies Options
     const ObjectFirst = styled(View, validOptions)
-    const ClassFirst = styled(View, 'items-center', validOptions)
 
     type ObjectProps = GetProps<typeof ObjectFirst>
-    type ClassProps = GetProps<typeof ClassFirst>
     expectTypeOf<ObjectProps['tone']>().toEqualTypeOf<'quiet' | 'strong' | undefined>()
-    expectTypeOf<ClassProps['tone']>().toEqualTypeOf<'quiet' | 'strong' | undefined>()
     expectTypeOf<ObjectProps['density']>().toEqualTypeOf<
-      'compact' | 'spacious' | undefined
-    >()
-    expectTypeOf<ClassProps['density']>().toEqualTypeOf<
       'compact' | 'spacious' | undefined
     >()
     expectTypeOf<HasStringIndex<Options>>().toEqualTypeOf<false>()
     expectTypeOf<HasStringIndex<ObjectProps>>().toEqualTypeOf<false>()
-    expectTypeOf<HasStringIndex<ClassProps>>().toEqualTypeOf<false>()
 
     const invalidVariantValue: Options = {
       context: DefaultsContext,
@@ -202,71 +168,44 @@ describe('styled v3 overloads', () => {
     styled(View, invalidUnconsumedContext)
     styled(View, invalidUnknownProp)
 
-    // @ts-expect-error direct calls keep own variant defaults closed
     styled(View, {
       variants: ownVariants,
+      // @ts-expect-error direct calls keep own variant defaults closed
       tone: 'missing',
     } as const)
 
-    // @ts-expect-error direct calls do not infer arbitrary default props
     styled(View, {
       variants: ownVariants,
+      // @ts-expect-error direct calls do not infer arbitrary default props
       unknownDefault: true,
     } as const)
   })
 
-  test('baseClassName metadata inherits parent first', () => {
-    const ParentClass = styled(
-      Button,
-      'parent-class',
-      {
-        variants: buttonVariants,
-      } as const,
-      {
-        acceptsClassName: true,
-      }
-    )
-    const ChildObject = styled(ParentClass, {
-      variants: {
-        shape: {
-          pill: 'rounded-full',
-        },
-      },
-    } as const)
-    const ChildClass = styled(ParentClass, 'child-class', {
-      variants: {
-        shape: {
-          pill: 'rounded-full',
-        },
-      },
-    } as const)
-
-    expectTypeOf(ChildObject.staticConfig.baseClassName).toEqualTypeOf<
-      StaticStyleInput | undefined
-    >()
-    expectTypeOf(ChildClass.staticConfig.baseClassName).toEqualTypeOf<
-      StaticStyleInput | undefined
-    >()
-    expect(ParentClass.staticConfig.baseClassName).toBe('parent-class')
-    expect(ChildObject.staticConfig.baseClassName).toBe('parent-class')
-    expect(ChildClass.staticConfig.baseClassName).toBe('parent-class child-class')
-  })
-
-  test('unknown variant props are rejected', () => {
-    const ClassFirst = styled(Button, 'inline-flex', {
+  test('baseClassName metadata is still typed static style input', () => {
+    const Child = styled(Button, {
       variants: buttonVariants,
     } as const)
 
-    type Props = GetProps<typeof ClassFirst>
+    expectTypeOf(Child.staticConfig.baseClassName).toEqualTypeOf<
+      StaticStyleInput | undefined
+    >()
+    expect(Child.staticConfig.baseClassName).toBe(undefined)
+  })
+
+  test('unknown variant props are rejected', () => {
+    const Frame = styled(Button, {
+      variants: buttonVariants,
+    } as const)
+
+    type Props = GetProps<typeof Frame>
     // @ts-expect-error unknown variant prop
     const invalid: Props['intent'] = 'neutral'
     expectTypeOf(invalid).toEqualTypeOf<any>()
   })
 
-  test('fourth advanced static config is preserved for class-first overload', () => {
+  test('third advanced static config is preserved', () => {
     const Advanced = styled(
       View,
-      'items-center',
       {
         variants: {
           tone: {
@@ -292,14 +231,6 @@ describe('styled v3 overloads', () => {
     expectTypeOf(leaf).toEqualTypeOf<StaticStyleInput>()
 
     styled(View, {
-      variants: {
-        tone: {
-          quiet: leaf,
-        },
-      },
-    } as const)
-
-    styled(View, 'p-4', {
       variants: {
         tone: {
           quiet: leaf,
@@ -456,7 +387,7 @@ describe('styled v3 overloads', () => {
     }
 
     styled(View, invalidTone)
-    styled(View, 'items-center', staticStyle)
+    styled(View, staticStyle)
 
     const ContextOnly = styled(View, {
       context: FrameContext,
@@ -602,13 +533,13 @@ describe('styled v3 overloads', () => {
     >()
     expectTypeOf<ChildProps['state']>().toEqualTypeOf<'active' | 'selected' | undefined>()
 
-    // @ts-expect-error direct styled calls keep inherited variant values closed
     styled(Parent, {
       context: FrameContext,
       contextProps: ['density'] as const,
       variants: frameVariants,
       compoundVariants: [
         {
+          // @ts-expect-error direct styled calls keep inherited variant values closed
           tone: 'missing',
           density: 'compact',
           state: 'active',
@@ -619,7 +550,6 @@ describe('styled v3 overloads', () => {
       ],
     })
 
-    // @ts-expect-error direct styled calls keep new variant values closed
     styled(Parent, {
       context: FrameContext,
       contextProps: ['density'] as const,
@@ -628,6 +558,7 @@ describe('styled v3 overloads', () => {
         {
           tone: 'critical',
           density: 'compact',
+          // @ts-expect-error direct styled calls keep new variant values closed
           state: 'missing',
           style: {
             opacity: 0.7,
@@ -636,7 +567,6 @@ describe('styled v3 overloads', () => {
       ],
     })
 
-    // @ts-expect-error direct styled calls keep context keys closed
     styled(Parent, {
       context: FrameContext,
       contextProps: ['density'] as const,
@@ -645,6 +575,7 @@ describe('styled v3 overloads', () => {
         {
           tone: 'critical',
           density: 'compact',
+          // @ts-expect-error direct styled calls keep context keys closed
           mood: 'serious',
           state: 'active',
           style: {

@@ -10,6 +10,7 @@ import type {
 } from 'react'
 import { createComponent } from './createComponent'
 import { mergeVariants } from './helpers/mergeVariants'
+import type { StyleFrontend } from './helpers/styleFrontend'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
@@ -409,6 +410,10 @@ export function styledHtml<
 
 /**
  * styled() for creating Tamagui components from other components.
+ *
+ * Core's public overload is object-only. The class-string form belongs to
+ * `@tamagui/tailwind`, which reaches this implementation through
+ * `createFrontendStyled`.
  */
 function styled<
   ParentComponent extends StylableComponent,
@@ -433,37 +438,41 @@ function styled<
   Context,
   ContextPropKeys
 >
-function styled<
-  ParentComponent extends StylableComponent,
-  StyledConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
-  Context extends StyledContext<any> | undefined = undefined,
-  ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
->(
-  ComponentIn: ParentComponent,
-  baseClassName: string,
-  options?: StyledOptions<
-    ParentComponent,
-    StyledConfig,
-    Variants,
-    Context,
-    ContextPropKeys
-  >,
-  config?: StyledConfig
-): StyledComponentResult<
-  ParentComponent,
-  StyledConfig,
-  Variants,
-  Context,
-  ContextPropKeys
->
-function styled<
+function styled(...args: any[]) {
+  return (styledImpl as any)(undefined, ...args)
+}
+
+/**
+ * Builds a `styled()` bound to one frontend descriptor. Components it creates carry
+ * that descriptor immutably, so behavior follows import provenance instead of any
+ * global setting.
+ */
+export function createFrontendStyled(frontend: StyleFrontend) {
+  return (
+    ComponentIn: any,
+    optionsOrBaseClassName?: any,
+    configOrOptions?: any,
+    maybeConfig?: any
+  ) =>
+    styledImpl(
+      frontend,
+      ComponentIn,
+      optionsOrBaseClassName,
+      configOrOptions,
+      maybeConfig
+    )
+}
+
+function styledImpl<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
   Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context extends StyledContext<any> | undefined,
   ContextPropKeys extends string,
 >(
+  // undefined keeps whatever the parent static config already carries, so a
+  // styled() chain never switches frontends halfway
+  frontend: StyleFrontend | undefined,
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
   optionsOrBaseClassName?:
@@ -674,6 +683,8 @@ function styled<
       ...reactNativeConfig,
       isStyledHOC: Boolean(parentStaticConfig?.isHOC),
       parentStaticConfig,
+      // only an explicitly bound frontend overrides the one inherited from the parent
+      ...(frontend && { styleFrontend: frontend }),
     }
 
     // bail on non className views as well
