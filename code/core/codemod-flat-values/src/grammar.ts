@@ -6,7 +6,10 @@
 
 import { stylePropsAll } from '@tamagui/helpers'
 import { shorthands } from '@tamagui/shorthands/v6'
-import * as styleGrammarRuntime from '@tamagui/style-grammar'
+// the source, not the package entry: the package entry resolves to `dist`, and a
+// codemod that reads a stale build of the grammar would emit values the current
+// grammar does not agree with
+import * as styleGrammarRuntime from '../../style-grammar/src/index'
 import type { LegacyConditionError } from '../../style-grammar/src/legacyConditions'
 import type {
   ModifierRegistryView,
@@ -14,9 +17,7 @@ import type {
   ParsedValue,
 } from '../../style-grammar/src/valueTypes'
 
-// the published entry resolves to built types, so the source types are the ones
-// worth checking against
-const grammar = styleGrammarRuntime as typeof import('../../style-grammar/src/index')
+const grammar = styleGrammarRuntime
 
 export const {
   convertLegacyConditionProp,
@@ -79,7 +80,9 @@ export function sharedPayload(
     { registry }
   )
   if (converted === null) {
-    throw new Error(`the payload probe condition "${payloadProbeCondition}" is unregistered`)
+    throw new Error(
+      `the payload probe condition "${payloadProbeCondition}" is unregistered`
+    )
   }
   return {
     payload: converted.contributions[0]?.clause.payload ?? null,

@@ -140,7 +140,8 @@ export function renderReport(
       }
       if (site.inventory.length) {
         lines.push('', 'Left authored:', '')
-        for (const flag of site.inventory) lines.push(`- **${flag.code}**: ${flag.detail}`)
+        for (const flag of site.inventory)
+          lines.push(`- **${flag.code}**: ${flag.detail}`)
       }
       if (site.pending.length) {
         lines.push('', 'Waiting on runtime support:', '')

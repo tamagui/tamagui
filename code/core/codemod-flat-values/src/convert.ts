@@ -212,7 +212,12 @@ const empty: Classification = {
   inventory: null,
 }
 
-function interpolate(prop: string, text: string, kind: 'number' | 'string', registry: ModifierRegistryView): string {
+function interpolate(
+  prop: string,
+  text: string,
+  kind: 'number' | 'string',
+  registry: ModifierRegistryView
+): string {
   return `\${${text}}${kind === 'number' ? unitSuffix(resolveProp(prop), registry) : ''}`
 }
 
@@ -244,7 +249,9 @@ function classifyStatic(
  */
 function reparsesAsBase(value: string, registry: ModifierRegistryView): boolean {
   const parsed = parseValue(value, registry)
-  return parsed.ok && parsed.value.clauses.length === 0 && parsed.value.base === value.trim()
+  return (
+    parsed.ok && parsed.value.clauses.length === 0 && parsed.value.base === value.trim()
+  )
 }
 
 function classifyDynamic(
@@ -356,7 +363,9 @@ function pushBase(
             code: 'legacy-token-dot-path',
             detail: `${prop}: legacy token ${stripped.errors
               .map((token) => `"${token}"`)
-              .join(', ')} uses dot-path naming; rename it to one configured flat token name before conversion`,
+              .join(
+                ', '
+              )} uses dot-path naming; rename it to one configured flat token name before conversion`,
           }
         : !stripped.converted
           ? {
@@ -848,7 +857,11 @@ function barriers(site: Site): Barrier[] {
  * of the same kind breaks that, so the contributions after it go back to being
  * authored: partial conversion in authored order beats a reordered whole one.
  */
-function resolveBarriers(site: Site, ordered: readonly Entry[], slots: Map<string, Slot>): boolean {
+function resolveBarriers(
+  site: Site,
+  ordered: readonly Entry[],
+  slots: Map<string, Slot>
+): boolean {
   let changed = false
 
   for (const slot of slots.values()) {
@@ -876,7 +889,9 @@ function resolveBarriers(site: Site, ordered: readonly Entry[], slots: Map<strin
           if (!entry.base || entry.index < barrier.index) continue
           const authored = site.members.find(
             (member) =>
-              member.type === 'authored' && member.index === entry.index && member.activated
+              member.type === 'authored' &&
+              member.index === entry.index &&
+              member.activated
           )
           if (authored && authored.type === 'authored') {
             authored.payload = null
@@ -932,7 +947,8 @@ function assemble(site: Site): {
         site.flags,
         blocked?.code ?? 'unprovable-dynamic-value',
         `a legacy condition targets "${member.prop}": ${
-          blocked?.detail ?? `its base value "${compact(member.text)}" cannot join a program`
+          blocked?.detail ??
+          `its base value "${compact(member.text)}" cannot join a program`
         }`
       )
       member.activated = false
@@ -1012,7 +1028,11 @@ function printSlots(
     })
   }
 
-  verify(site, slots, [...output].sort((left, right) => left.index - right.index))
+  verify(
+    site,
+    slots,
+    [...output].sort((left, right) => left.index - right.index)
+  )
   return { output, programs }
 }
 
@@ -1097,8 +1117,7 @@ function jsxLiteralString(attribute: JsxAttribute): string | null {
   const expression = jsxExpression(attribute)
   if (
     expression &&
-    (Node.isStringLiteral(expression) ||
-      Node.isNoSubstitutionTemplateLiteral(expression))
+    (Node.isStringLiteral(expression) || Node.isNoSubstitutionTemplateLiteral(expression))
   ) {
     return expression.getLiteralValue()
   }
@@ -1199,7 +1218,13 @@ export function convertJsxSite(
     before.push(text)
 
     const literal = jsxLiteralString(attribute)
-    pushBase(site, name, text, literal === null ? jsxExpression(attribute) : null, literal)
+    pushBase(
+      site,
+      name,
+      text,
+      literal === null ? jsxExpression(attribute) : null,
+      literal
+    )
   }
 
   if (!site.legacy) return null
@@ -1217,19 +1242,23 @@ export function convertJsxSite(
     inventory: site.inventory,
     pending: site.pending,
     notes: site.notes,
-    legacyLeft: site.members.filter(
-      (member) => member.type === 'legacy' && member.failed
-    ).length,
+    legacyLeft: site.members.filter((member) => member.type === 'legacy' && member.failed)
+      .length,
   }
 }
 
-function pushStyledProperty(site: Site, name: string, property: PropertyAssignment): void {
+function pushStyledProperty(
+  site: Site,
+  name: string,
+  property: PropertyAssignment
+): void {
   const text = compact(property.getText())
   const initializer = unwrapExpression(property.getInitializerOrThrow())
 
   if (name === 'group') {
     const declared =
-      Node.isStringLiteral(initializer) || Node.isNoSubstitutionTemplateLiteral(initializer)
+      Node.isStringLiteral(initializer) ||
+      Node.isNoSubstitutionTemplateLiteral(initializer)
         ? initializer.getLiteralValue()
         : initializer.getKind() === SyntaxKind.TrueKeyword
           ? ''
@@ -1295,7 +1324,8 @@ export function convertStyleObject(
     }
     const name = propertyName(nameNode)
     if (name === null) continue
-    if (!styleProps.has(name) && !isLegacyConditionName(name) && name !== 'group') continue
+    if (!styleProps.has(name) && !isLegacyConditionName(name) && name !== 'group')
+      continue
     before.push(compact(property.getText()))
     pushStyledProperty(site, name, property)
   }
@@ -1315,8 +1345,7 @@ export function convertStyleObject(
     inventory: site.inventory,
     pending: site.pending,
     notes: site.notes,
-    legacyLeft: site.members.filter(
-      (member) => member.type === 'legacy' && member.failed
-    ).length,
+    legacyLeft: site.members.filter((member) => member.type === 'legacy' && member.failed)
+      .length,
   }
 }

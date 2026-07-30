@@ -12,11 +12,7 @@ import {
   type ObjectLiteralExpression,
   type SourceFile,
 } from 'ts-morph'
-import {
-  convertJsxSite,
-  convertStyleObject,
-  type SiteReport,
-} from './convert'
+import { convertJsxSite, convertStyleObject, type SiteReport } from './convert'
 import { compact, unwrapExpression } from './expressions'
 import {
   codemodMediaNames,
@@ -205,7 +201,9 @@ function inspectFile(sourceFile: SourceFile, registry: ModifierRegistryView): Fi
 
   for (const call of sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression)) {
     if (call.getExpression().getText() !== 'styled') continue
-    const config = unwrapExpression(call.getArguments()[1] as Expression | undefined ?? call)
+    const config = unwrapExpression(
+      (call.getArguments()[1] as Expression | undefined) ?? call
+    )
     if (!Node.isObjectLiteralExpression(config)) continue
     const label = `styled(${compact(call.getArguments()[0]?.getText() ?? 'unknown')}, …)`
     const site = convertStyleObject(config, 'styled', label, registry, groups)

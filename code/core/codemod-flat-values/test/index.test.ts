@@ -209,7 +209,9 @@ describe('base values', () => {
     expect(withClause.after).toContain('gap="$1.5"')
 
     const clauseFree = only(
-      run(`export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 'red' }} />`)
+      run(
+        `export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 'red' }} />`
+      )
     )
     expect(codes(clauseFree)).toContain('legacy-token-dot-path')
   })
@@ -277,9 +279,9 @@ describe('conditions', () => {
 
     expect(codes(site)).toEqual([])
     expect(programs(site)).toEqual({ color: 'black group-hover/card:red' })
-    expect(
-      resolve1('black group-hover/card:red', { groups: ['group-hover/card'] })
-    ).toBe('red')
+    expect(resolve1('black group-hover/card:red', { groups: ['group-hover/card'] })).toBe(
+      'red'
+    )
   })
 
   test('a group container size condition splits into a container query and adds the container', () => {
@@ -492,7 +494,7 @@ describe('authored order', () => {
 
     expect(codes(site)).toContain('condition-order-not-preservable')
     expect(programs(site)).toEqual({ bg: 'blue10 press:black' })
-    expect(site.after).toContain('hoverStyle={{ bg: \'yellow\' }}')
+    expect(site.after).toContain("hoverStyle={{ bg: 'yellow' }}")
   })
 })
 

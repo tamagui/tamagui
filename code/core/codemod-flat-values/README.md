@@ -14,7 +14,9 @@ bun src/index.ts --help
 
 The default corpus is `code/kitchen-sink/src/usecases` plus the canonical
 `Button.tsx` skin, which is also the acceptance fixture: 1775 conversion sites, 320
-converted, 1435 waiting on runtime support, 20 flagged.
+converted, 1435 waiting on runtime support, 20 flagged. The counts track
+`@tamagui/style-grammar`, which this package imports from source rather than from its
+build, so a change to the shared converter moves them.
 
 ## What it converts
 

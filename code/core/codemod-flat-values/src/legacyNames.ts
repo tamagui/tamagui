@@ -8,7 +8,11 @@
 // into a container query plus a group state (`$group-card-sm-hover` becomes
 // `@sm/card:group-hover/card:`).
 
-import { grammarPlatformNames, pseudoToModifier, type ModifierRegistryView } from './grammar'
+import {
+  grammarPlatformNames,
+  pseudoToModifier,
+  type ModifierRegistryView,
+} from './grammar'
 
 export interface ContainerRequest {
   /** the media key the container measures */
@@ -99,7 +103,9 @@ function resolveGroupName(
     ok: true,
     resolved: {
       // any registered root works: `replaceRoot` substitutes the whole chain
-      canonical: state ? `$group-${group === null ? '' : `${group}-`}${state.value}` : `$${size.value}`,
+      canonical: state
+        ? `$group-${group === null ? '' : `${group}-`}${state.value}`
+        : `$${size.value}`,
       replaceRoot: modifiers,
       container: { size: size.value, group },
     },
