@@ -267,10 +267,11 @@ Diagnose:
   relative or physical length units, `matrix3d`, `rotate3d`, `scale3d`,
   `translateZ`, `skew()`, and six-number CSS `matrix()` until Tamagui has a
   faithful native lowering.
-- Reject percentage translation when targeting RN < 0.75 or Paper. Never
-  emit axis percentage strings such as `translateX(10%)` as a whole RN
-  transform string, because stable RN 0.86 silently changes that value to
-  10 points.
+- Reject percentage translation when targeting RN < 0.75 or Paper. The
+  string-forwarding hazard (stable RN 0.86 parses `translateX(10%)` in a
+  transform STRING to 10 points) is moot in the chosen design: the grammar
+  parses strings to arrays once, and array percentage entries are correct on
+  RN >= 0.75, so percentage authoring is claimed, not diagnosed.
 - A dynamic raw transform whose operation structure changes across states
   cannot be safely merged or animated as an opaque string. Require a
   statically parseable operation list or report a transform-family
