@@ -22,6 +22,7 @@
     "src/stateModifiers.ts",
     "src/states.ts",
     "src/table.ts",
+    "src/transformFamily.ts",
     "src/valueParser.ts",
     "src/valueTypes.ts",
     "types",

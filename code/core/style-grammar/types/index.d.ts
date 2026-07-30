@@ -12,6 +12,7 @@ export * from "./resolvePayload";
 export * from "./serializePayload";
 export * from "./states";
 export * from "./table";
+export * from "./transformFamily";
 export * from "./valueParser";
 export * from "./valueTypes";
 

@@ -96,10 +96,14 @@ export function propertyAbbreviation(property: string): string {
   let out = ''
   for (let index = 0; index < property.length; index++) {
     const code = property.charCodeAt(index)
-    if (index === 0 || (code >= 65 && code <= 90)) {
-      if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
-        out += property[index].toLowerCase()
-      }
+    const isWordStart =
+      index === 0 ||
+      (code >= 65 && code <= 90) ||
+      // a dash also starts a word, so the transform family's custom properties
+      // read as `--t-x` -> `tx` rather than collapsing to the fallback
+      property.charCodeAt(index - 1) === 45
+    if (isWordStart && ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))) {
+      out += property[index].toLowerCase()
     }
   }
   return out || 'x'

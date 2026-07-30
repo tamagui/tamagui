@@ -25,6 +25,7 @@
 // impossible because the parser rejects a top-level `{`, `}`, or `;`.
 
 import { parseContainerModifier, parseGroupModifier } from './modifierRegistry'
+import { transformAxisCompositions } from './transformFamily'
 import { programClassName } from './programHash'
 import { stateToSelector } from './states'
 import type { LonghandProgram, ModifierRegistryView } from './valueTypes'
@@ -105,6 +106,20 @@ export interface LoweredProgram {
   className: string
   /** base rule first, then one rule per emitted clause in authored order */
   rules: string[]
+  /**
+   * Present when the program writes a per-axis custom property (`x`, `y`,
+   * `scaleX`, `scaleY`). The composing rule turns the axis variables into the
+   * real CSS property and is identical for every element using that axis group,
+   * so it carries its own class name and hash: the caller adds this class too and
+   * insertion dedups it to one rule per sheet. Its specificity is the same
+   * (0,1,0) as every other rule here.
+   */
+  composition?: {
+    /** the CSS property being composed, and the classNames key to store it under */
+    property: string
+    className: string
+    rules: string[]
+  }
 }
 
 function hyphenate(property: string): string {
@@ -231,7 +246,24 @@ export function lowerProgram(
     rules.push(wrapAtRules(`${selector}{${declaration}:${clause.payload}}`, wrappers))
   }
 
-  return { className, rules }
+  const composition = transformAxisCompositions[program.property]
+  if (!composition) return { className, rules }
+
+  // one shared rule per axis group: same text, same hash, inserted once
+  const compositionClassName = programClassName(
+    composition.property,
+    { base: composition.value, clauses: [] },
+    configRevision
+  )
+  return {
+    className,
+    rules,
+    composition: {
+      property: composition.property,
+      className: compositionClassName,
+      rules: [`.${compositionClassName}{${composition.property}:${composition.value}}`],
+    },
+  }
 }
 
 /**
