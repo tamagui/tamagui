@@ -723,6 +723,19 @@ merge knowledge in the system, and it lives in the shared grammar package.
 This is also why `tailwind-merge` is removable: for owned values, per-longhand
 forward merging reproduces everything it did.
 
+Runtime integration shape (the getSplitStyles wiring): the forward pass
+accumulates programs in one Map keyed by longhand, delete-then-set per
+contribution, in exactly the order it already walks styled bases, variants,
+and authored props. At the end of the pass, web asks each program for its
+class name and inserts the block only when that name is new — lowering is
+skipped entirely on repeat names, so the steady-state cost per program is
+one hash plus one Set check. Native evaluates each program against active
+conditions. A parsed program's clause modifiers are an exact dependency
+list, so native subscribes only to the media keys, theme scopes, and group
+states its programs actually reference — the generalization of the "group
+props require a stable prop key" optimization, derived per element from
+data instead of per component from heuristics.
+
 ### Web lowering
 
 Independent atomic classes cannot represent authored clause order by
