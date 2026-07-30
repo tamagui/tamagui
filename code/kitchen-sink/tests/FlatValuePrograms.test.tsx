@@ -35,13 +35,17 @@ test('matches a dark theme clause under a dark theme wrapper', async ({ page }) 
   await expect(page.getByTestId('flat-theme')).toHaveCSS('color', 'rgb(0, 0, 255)')
 })
 
-test('lets a later plain shorthand replace an earlier program', async ({ page }) => {
+test('a later plain shorthand restates the base; the hover clause survives', async ({
+  page,
+}) => {
+  // decision 21: the merge unit is the clause — bg="green" restates only the
+  // base, the styled hover keeps working
   const merged = page.getByTestId('flat-forward-merge')
 
   await expect(merged).toHaveCSS('background-color', 'rgb(0, 128, 0)')
   await merged.hover()
   await page.waitForTimeout(100)
-  await expect(merged).toHaveCSS('background-color', 'rgb(0, 128, 0)')
+  await expect(merged).toHaveCSS('background-color', 'rgb(0, 0, 255)')
 })
 
 test('applies opacity base and hover clause values', async ({ page }) => {
