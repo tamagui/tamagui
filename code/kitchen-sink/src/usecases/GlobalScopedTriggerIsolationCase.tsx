@@ -28,7 +28,7 @@ const SharedPopoverTrigger = memo(function SharedPopoverTrigger({
   renderCountRef.current++
 
   return (
-    <View gap="$1.5" items="center">
+    <View gap={4} items="center">
       <Popover.Trigger scope={scope} asChild onMouseEnter={() => setActiveLabel(label)}>
         <Button data-testid={triggerTestId}>{label}</Button>
       </Popover.Trigger>
@@ -52,7 +52,7 @@ const SharedMenuTrigger = memo(function SharedMenuTrigger({
   renderCountRef.current++
 
   return (
-    <View gap="$1.5" items="center">
+    <View gap={4} items="center">
       <Menu.Trigger asChild>
         <Button data-testid={triggerTestId}>{label}</Button>
       </Menu.Trigger>

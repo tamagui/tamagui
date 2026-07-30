@@ -9,7 +9,7 @@ import {
   YStack,
 } from 'tamagui'
 
-const CONTENT_RADIUS = '$6' as const
+const CONTENT_RADIUS = 16
 
 /**
  * Repro for the "content removes before animation on close" bug.

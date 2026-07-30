@@ -1,3 +1,5 @@
+import { breakpoints } from '@tamagui/config/v5'
+import { useWindowDimensions } from 'react-native'
 import { Text, useMedia, YStack, XStack } from 'tamagui'
 
 /**
@@ -21,6 +23,7 @@ import { Text, useMedia, YStack, XStack } from 'tamagui'
  */
 export const MediaQueriesV5 = () => {
   const media = useMedia()
+  const { height: viewportHeight } = useWindowDimensions()
 
   return (
     <YStack p="$4" gap="$4">
@@ -73,7 +76,7 @@ export const MediaQueriesV5 = () => {
         />
       </YStack>
 
-      {/* Test 3: Height queries */}
+      {/* Test 3: Height breakpoints resolved at runtime because v5 has no height-xs media key */}
       <YStack gap="$2">
         <Text fontWeight="bold">Test 3: Height queries</Text>
         <Text fontSize={12}>Taller screens get larger breakpoints</Text>
@@ -81,12 +84,15 @@ export const MediaQueriesV5 = () => {
           testID="test-height"
           height={60}
           width={100}
-          backgroundColor="red"
-          {...{
-            '$height-xs': { backgroundColor: 'yellow' },
-            '$height-sm': { backgroundColor: 'orange' },
-            '$height-md': { backgroundColor: 'green' },
-          }}
+          backgroundColor={
+            viewportHeight >= breakpoints.md
+              ? 'green'
+              : viewportHeight >= breakpoints.sm
+                ? 'orange'
+                : viewportHeight >= breakpoints.xs
+                  ? 'yellow'
+                  : 'red'
+          }
         />
       </YStack>
 

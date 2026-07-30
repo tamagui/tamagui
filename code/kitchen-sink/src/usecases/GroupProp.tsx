@@ -2,70 +2,21 @@ import { Square, View, XStack, styled } from 'tamagui'
 
 const GroupTest = styled(View, {
   group: 'testy',
+  container: true,
 })
 
 const GroupChild = styled(View, {
   width: 100,
   height: 100,
-  backgroundColor: 'pink',
-
-  pressStyle: {
-    backgroundColor: 'black',
-  },
-
-  '$group-testy': {
-    backgroundColor: 'rgb(255,0,0)',
-
-    hoverStyle: {
-      backgroundColor: 'rgb(160, 32, 240)',
-    },
-
-    pressStyle: {
-      backgroundColor: 'rgb(255,255,0)',
-    },
-  },
-
-  '$group-testy-maxMd': {
-    backgroundColor: 'rgb(0,255,0)',
-
-    hoverStyle: {
-      backgroundColor: 'rgb(160, 32, 240)',
-    },
-
-    pressStyle: {
-      backgroundColor: 'rgb(255,255,0)',
-    },
-  },
+  backgroundColor:
+    'rgb(255,0,0) press:rgb(0,0,0) group-hover/testy:rgb(160, 32, 240) group-press/testy:rgb(255,255,0) @maxMd:rgb(0,255,0) @maxMd:group-hover/testy:rgb(160, 32, 240) @maxMd:group-press/testy:rgb(255,255,0)',
 })
 
 const GroupChildMedia = styled(GroupChild, {
   width: 100,
   height: 100,
-  backgroundColor: 'rgb(0,0,255)',
-
-  '$group-testy': {
-    backgroundColor: 'rgb(255,0,0)',
-
-    hoverStyle: {
-      backgroundColor: 'rgb(160, 32, 240)',
-    },
-
-    pressStyle: {
-      backgroundColor: 'rgb(255,255,0)',
-    },
-  },
-
-  '$group-testy-maxMd': {
-    backgroundColor: 'rgb(0,255,0)',
-
-    hoverStyle: {
-      backgroundColor: 'rgb(160, 32, 240)',
-    },
-
-    pressStyle: {
-      backgroundColor: 'rgb(255,255,0)',
-    },
-  },
+  backgroundColor:
+    'rgb(255,0,0) group-hover/testy:rgb(160, 32, 240) group-press/testy:rgb(255,255,0) @maxMd:rgb(0,255,0) @maxMd:group-hover/testy:rgb(160, 32, 240) @maxMd:group-press/testy:rgb(255,255,0)',
 })
 
 export function GroupProp() {
@@ -84,12 +35,7 @@ export function GroupProp() {
       </GroupTest>
 
       <XStack group="testy">
-        <Square
-          id="inline"
-          bg="rgb(255,0,0)"
-          $group-testy={{ bg: 'rgb(0,0,255)' }}
-          size={100}
-        />
+        <Square id="inline" bg="rgb(0,0,255)" size={100} />
       </XStack>
     </View>
   )

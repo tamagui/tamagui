@@ -64,7 +64,7 @@ export function TooltipPositionJumpCase() {
             bg="$background"
             boxShadow="0 4px 12px $shadowColor"
             rounded="$4"
-            px="$2.5"
+            px={10}
             py="$1"
             enterStyle={{ y: -4, opacity: 0 }}
             exitStyle={{ y: -4, opacity: 0 }}

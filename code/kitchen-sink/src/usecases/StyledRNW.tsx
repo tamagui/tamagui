@@ -15,6 +15,9 @@ const TextInput = styled(
     minWidth: 0,
     borderWidth: 0,
     borderColor: 'transparent',
+    focusStyle: {
+      margin: 0,
+    },
 
     variants: {
       unset: {
@@ -23,11 +26,7 @@ const TextInput = styled(
           py: 12,
           px: 14,
           borderRadius: 6,
-          bg: '$color3',
-          focusStyle: {
-            bg: '$color4',
-            margin: 0,
-          },
+          bg: 'color3 focus:color4',
         },
       },
     } as const,
@@ -49,7 +48,6 @@ export const Input = createStyledHOC(TamaguiInput)(function MyInput({ ...props }
     <TextInput
       keyboardAppearance={parentTheme?.includes('dark') ? 'dark' : 'default'}
       {...props}
-      focusStyle={{ margin: 0, ...props.focusStyle }}
       id={Platform.select({
         // on native, this leads to duplicates?
         web: props.id,

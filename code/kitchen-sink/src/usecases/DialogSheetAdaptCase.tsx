@@ -11,7 +11,7 @@ import {
   YStack,
 } from 'tamagui'
 
-const CONTENT_RADIUS = '$6' as const
+const CONTENT_RADIUS = 16
 
 /**
  * Test case for Dialog with onPress on Overlay - Android crash reproduction

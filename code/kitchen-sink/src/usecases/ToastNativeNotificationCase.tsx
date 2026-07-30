@@ -103,7 +103,7 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
   return (
     <XStack gap="$3" alignItems="flex-start">
       <Toast.Icon />
-      <YStack flex={1} gap="$0.5">
+      <YStack flex={1} gap={1}>
         {title && (
           <Toast.Title fontWeight="600" size="$3">
             {title}

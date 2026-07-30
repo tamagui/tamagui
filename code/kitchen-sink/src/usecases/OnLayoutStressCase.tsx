@@ -1,6 +1,8 @@
 import { memo, useCallback, useRef, useState, useMemo } from 'react'
-import { Text, View, XStack, YStack, ScrollView } from 'tamagui'
+import { Text, View, XStack, YStack, ScrollView, useTheme, type GetProps } from 'tamagui'
 import { Button } from '../components/Button'
+
+type BackgroundColor = GetProps<typeof View>['backgroundColor']
 
 type Stats = {
   totalCallbacks: number
@@ -11,18 +13,20 @@ type Stats = {
 }
 
 // deeply nested component tree
-const GRAY_COLORS = ['$gray2', '$gray3', '$gray4', '$gray5', '$gray6', '$gray7'] as const
-const GRID_COLORS = ['$red5', '$green5', '$blue5', '$purple5', '$orange5'] as const
-const SIBLING_COLORS = ['$red4', '$green4', '$blue4'] as const
+const GRAY_COLORS = ['gray2', 'gray3', 'gray4', 'gray5', 'gray6', 'gray7'] as const
+const GRID_COLORS = ['red5', 'green5', 'blue5', 'purple5', 'orange5'] as const
+const SIBLING_COLORS = ['red4', 'green4', 'blue4'] as const
 
 const DeepChild = memo(
   ({
     depth,
     id,
+    colors,
     onLayoutFired,
   }: {
     depth: number
     id: string
+    colors: readonly BackgroundColor[]
     onLayoutFired: () => void
   }) => {
     const handleLayout = useCallback(() => {
@@ -46,9 +50,14 @@ const DeepChild = memo(
         testID={`deep-wrapper-${id}-${depth}`}
         onLayout={handleLayout}
         padding={2}
-        backgroundColor={GRAY_COLORS[Math.min(5, depth)] || '$gray5'}
+        backgroundColor={colors[Math.min(5, depth)]}
       >
-        <DeepChild depth={depth - 1} id={id} onLayoutFired={onLayoutFired} />
+        <DeepChild
+          depth={depth - 1}
+          id={id}
+          colors={colors}
+          onLayoutFired={onLayoutFired}
+        />
       </View>
     )
   }
@@ -59,10 +68,12 @@ const GridItem = memo(
   ({
     id,
     sizeMultiplier,
+    colors,
     onLayoutFired,
   }: {
     id: number
     sizeMultiplier: number
+    colors: readonly BackgroundColor[]
     onLayoutFired: () => void
   }) => {
     const handleLayout = useCallback(() => {
@@ -78,7 +89,7 @@ const GridItem = memo(
         onLayout={handleLayout}
         width={size}
         height={size * 0.6}
-        backgroundColor={GRID_COLORS[id % 5]}
+        backgroundColor={colors[id % 5]}
         margin={2}
       />
     )
@@ -123,11 +134,13 @@ const SiblingGroup = memo(
     groupId,
     count,
     widthMultiplier,
+    colors,
     onLayoutFired,
   }: {
     groupId: number
     count: number
     widthMultiplier: number
+    colors: readonly BackgroundColor[]
     onLayoutFired: () => void
   }) => {
     return (
@@ -139,7 +152,7 @@ const SiblingGroup = memo(
             onLayout={onLayoutFired}
             width={25 * widthMultiplier}
             height={20}
-            backgroundColor={SIBLING_COLORS[i % 3]}
+            backgroundColor={colors[i % 3]}
             margin={1}
           />
         ))}
@@ -149,6 +162,33 @@ const SiblingGroup = memo(
 )
 
 export function OnLayoutStressCase() {
+  const theme = useTheme()
+  const gray2 = theme[GRAY_COLORS[0]]!.get()
+  const gray3 = theme[GRAY_COLORS[1]]!.get()
+  const gray4 = theme[GRAY_COLORS[2]]!.get()
+  const gray5 = theme[GRAY_COLORS[3]]!.get()
+  const gray6 = theme[GRAY_COLORS[4]]!.get()
+  const gray7 = theme[GRAY_COLORS[5]]!.get()
+  const red5 = theme[GRID_COLORS[0]]!.get()
+  const green5 = theme[GRID_COLORS[1]]!.get()
+  const blue5 = theme[GRID_COLORS[2]]!.get()
+  const purple5 = theme[GRID_COLORS[3]]!.get()
+  const orange5 = theme[GRID_COLORS[4]]!.get()
+  const red4 = theme[SIBLING_COLORS[0]]!.get()
+  const green4 = theme[SIBLING_COLORS[1]]!.get()
+  const blue4 = theme[SIBLING_COLORS[2]]!.get()
+  const grayColors = useMemo(
+    () => [gray2, gray3, gray4, gray5, gray6, gray7] as readonly BackgroundColor[],
+    [gray2, gray3, gray4, gray5, gray6, gray7]
+  )
+  const gridColors = useMemo(
+    () => [red5, green5, blue5, purple5, orange5] as readonly BackgroundColor[],
+    [red5, green5, blue5, purple5, orange5]
+  )
+  const siblingColors = useMemo(
+    () => [red4, green4, blue4] as readonly BackgroundColor[],
+    [red4, green4, blue4]
+  )
   const [stats, setStats] = useState<Stats>({
     totalCallbacks: 0,
     totalTime: 0,
@@ -208,9 +248,15 @@ export function OnLayoutStressCase() {
   const deepItems = useMemo(
     () =>
       Array.from({ length: 10 }, (_, i) => (
-        <DeepChild key={i} depth={5} id={`deep-${i}`} onLayoutFired={onLayoutFired} />
+        <DeepChild
+          key={i}
+          depth={5}
+          id={`deep-${i}`}
+          colors={grayColors}
+          onLayoutFired={onLayoutFired}
+        />
       )),
-    [onLayoutFired]
+    [grayColors, onLayoutFired]
   )
 
   // create grid items (40 items)
@@ -221,10 +267,11 @@ export function OnLayoutStressCase() {
           key={i}
           id={i}
           sizeMultiplier={gridSize}
+          colors={gridColors}
           onLayoutFired={onLayoutFired}
         />
       )),
-    [gridSize, onLayoutFired]
+    [gridColors, gridSize, onLayoutFired]
   )
 
   // create list items (20 items)
@@ -245,10 +292,11 @@ export function OnLayoutStressCase() {
           groupId={i}
           count={10}
           widthMultiplier={widthMultiplier}
+          colors={siblingColors}
           onLayoutFired={onLayoutFired}
         />
       )),
-    [widthMultiplier, onLayoutFired]
+    [onLayoutFired, siblingColors, widthMultiplier]
   )
 
   return (
