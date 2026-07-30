@@ -62,6 +62,8 @@ for (const prefix of ['ms', 'Moz', 'O', 'Webkit']) {
 }
 export const unitlessNumberProperties: ReadonlySet<string> = unitlessNumbers
 
+import { transformFamilyProps } from './transformFamily'
+
 const transformPartProperties: ReadonlySet<string> = new Set([
   'scale',
   'scaleX',
@@ -216,13 +218,23 @@ function convertStyleValue(
   path: string,
   errors: LegacyConditionError[]
 ): string | null {
-  if (transformPartProperties.has(prop)) {
+  if (transformPartProperties.has(prop) && !transformFamilyProps.has(prop)) {
+    // skews, 3D rotations, perspective, and matrix still belong to the raw
+    // `transform` property, which has no flat spelling yet
     errors.push({
       code: 'legacy-transform-part',
       path,
-      message: `legacy transform part "${prop}" cannot be converted until the transform family is defined`,
+      message: `legacy transform part "${prop}" has no flat spelling yet; only x, y, scale, scaleX, scaleY, and rotate convert`,
     })
     return null
+  }
+
+  // the transform family carries units the generic number path does not: x and y
+  // are lengths, scale is unitless, rotate is an angle
+  if (typeof value === 'number' && Number.isFinite(value) && transformFamilyProps.has(prop)) {
+    if (prop === 'rotate') return value === 0 ? '0deg' : `${value}deg`
+    if (prop === 'x' || prop === 'y') return value === 0 ? '0' : `${value}px`
+    return String(value)
   }
 
   if (typeof value === 'string') {

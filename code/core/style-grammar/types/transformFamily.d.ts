@@ -16,10 +16,34 @@ export interface TransformTarget {
 	/** present for `axis-variable` targets */
 	composition?: TransformComposition;
 }
+/**
+* One entry per program TARGET. Uniform `scale` is absent on purpose: it expands
+* to both axis targets the way `padding` expands to four sides, so no two
+* mechanisms ever write the CSS `scale` property and a later `scaleX` replaces
+* just its axis through the ordinary forward merge.
+*/
 export declare const transformFamilyTargets: Readonly<Record<string, TransformTarget>>;
 /** the authored props that lower through the transform family */
 export declare const transformFamilyProps: ReadonlySet<string>;
-export declare function getTransformTarget(prop: string): TransformTarget | undefined;
+/** the targets an authored transform prop contributes; empty when not in the family */
+export declare function getTransformTargets(prop: string): readonly TransformTarget[];
+/** the declarations an authored transform prop owns; empty when not in the family */
+export declare function transformDeclarationsFor(prop: string): readonly string[];
+/**
+* Declaration -> the authored prop it evaluates as on native, so the evaluator
+* can turn program results back into `composeTransformArray` input.
+*/
+export declare const transformPropForDeclaration: Readonly<Record<string, string>>;
+/**
+* The unit a bare legacy number carries for each declaration, so a displaced
+* plain value lifts into a program base with the right spelling: lengths take
+* px, scale is unitless, rotate takes deg.
+*/
+export declare const transformDeclarationUnit: Readonly<Record<string, "px" | "none" | "deg">>;
+/** legacy flat transform keys that write a declaration, uniform parent last */
+export declare const legacyTransformKeysFor: Readonly<Record<string, readonly string[]>>;
+/** the sibling axis a uniform legacy `scale` also covers */
+export declare const uniformLegacySiblings: Readonly<Record<string, string>>;
 /**
 * Custom property -> the rule composing its axis group, so the web lowering can
 * emit the composing rule alongside an axis program without knowing the family.
@@ -27,7 +51,7 @@ export declare function getTransformTarget(prop: string): TransformTarget | unde
 export declare const transformAxisCompositions: Readonly<Record<string, TransformComposition>>;
 /** one React Native transform array entry */
 export type TransformEntry = Readonly<Record<string, string | number | readonly number[]>>;
-export type TransformDiagnosticCode = "unsupported-transform-function" | "unsupported-transform-unit" | "unsupported-matrix-length" | "unitless-transform-value" | "transform-scale-conflict" | "malformed-transform";
+export type TransformDiagnosticCode = "unsupported-transform-function" | "unsupported-transform-unit" | "unsupported-matrix-length" | "unitless-transform-value" | "malformed-transform";
 export interface TransformDiagnostic {
 	code: TransformDiagnosticCode;
 	/** the offending function, prop, or fragment */

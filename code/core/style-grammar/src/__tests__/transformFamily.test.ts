@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest'
 import {
   composeTransformArray,
   createModifierRegistry,
-  getTransformTarget,
+  getTransformTargets,
   lowerProgram,
   parseTransformString,
   parseValue,
@@ -62,33 +62,39 @@ describe('the family table', () => {
     })
   })
 
-  test('uniform scale and rotate write the individual properties directly', () => {
-    expect(transformFamilyTargets.scale).toEqual({
-      prop: 'scale',
+  test('rotate writes its individual property directly', () => {
+    expect(transformFamilyTargets.rotate).toEqual({
+      prop: 'rotate',
       kind: 'property',
-      declaration: 'scale',
-      effectiveProperty: 'scale',
+      declaration: 'rotate',
+      effectiveProperty: 'rotate',
     })
-    expect(transformFamilyTargets.rotate.declaration).toBe('rotate')
     expect(transformFamilyTargets.rotate.composition).toBeUndefined()
   })
 
-  test('effectiveProperty exposes the pairs that would fight for one declaration', () => {
-    // a caller can group by effectiveProperty and see that uniform scale and the
-    // axis props target the same CSS property with different mechanisms
-    const byProperty = new Map<string, string[]>()
-    for (const prop of transformFamilyProps) {
-      const target = getTransformTarget(prop)!
-      const list = byProperty.get(target.effectiveProperty) ?? []
-      list.push(`${prop}:${target.kind}`)
-      byProperty.set(target.effectiveProperty, list)
-    }
-    expect(byProperty.get('translate')).toEqual(['x:axis-variable', 'y:axis-variable'])
-    expect(byProperty.get('scale')).toEqual([
-      'scaleX:axis-variable',
-      'scaleY:axis-variable',
-      'scale:property',
+  test('uniform scale expands to both axis targets, like padding to four sides', () => {
+    expect(getTransformTargets('scale').map((target) => target.declaration)).toEqual([
+      '--t-scale-x',
+      '--t-scale-y',
     ])
+    // there is no direct `scale` target, so two mechanisms can never write the
+    // CSS scale property and the collision is impossible by construction
+    expect(transformFamilyTargets.scale).toBeUndefined()
+  })
+
+  test('every CSS property is written by exactly one mechanism', () => {
+    const kindsByProperty = new Map<string, Set<string>>()
+    for (const target of Object.values(transformFamilyTargets)) {
+      const kinds = kindsByProperty.get(target.effectiveProperty) ?? new Set()
+      kinds.add(target.kind)
+      kindsByProperty.set(target.effectiveProperty, kinds)
+    }
+    for (const [property, kinds] of kindsByProperty) {
+      expect([...kinds], property).toHaveLength(1)
+    }
+    expect(kindsByProperty.get('translate')).toEqual(new Set(['axis-variable']))
+    expect(kindsByProperty.get('scale')).toEqual(new Set(['axis-variable']))
+    expect(kindsByProperty.get('rotate')).toEqual(new Set(['property']))
   })
 
   test('the family is exactly x, y, scaleX, scaleY, scale, rotate', () => {
@@ -100,8 +106,8 @@ describe('the family table', () => {
       'x',
       'y',
     ])
-    expect(getTransformTarget('skewX')).toBeUndefined()
-    expect(getTransformTarget('transform')).toBeUndefined()
+    expect(getTransformTargets('skewX')).toEqual([])
+    expect(getTransformTargets('transform')).toEqual([])
   })
 })
 
@@ -173,7 +179,7 @@ describe('native composition order', () => {
 
   test('the array is translate, rotate, scale, transform regardless of authored order', () => {
     const forward = composeTransformArray(
-      { x: 10, y: 20, rotate: '45deg', scale: 2 },
+      { x: 10, y: 20, rotate: '45deg', scaleX: 2, scaleY: 2 },
       'skewX(10deg)'
     )
     expect(forward.errors).toEqual([])
@@ -188,14 +194,14 @@ describe('native composition order', () => {
     // the same results built in the opposite key order compose identically:
     // nothing here depends on object iteration
     const reversed = composeTransformArray(
-      { scale: 2, rotate: '45deg', y: 20, x: 10 },
+      { scaleY: 2, scaleX: 2, rotate: '45deg', y: 20, x: 10 },
       'skewX(10deg)'
     )
     expect(reversed.transform).toEqual(forward.transform)
   })
 
   test('missing props collapse without reordering the rest', () => {
-    expect(keysOf(composeTransformArray({ y: 4, scale: 1 }).transform)).toEqual([
+    expect(keysOf(composeTransformArray({ y: 4, scaleX: 1, scaleY: 1 }).transform)).toEqual([
       'translateY',
       'scale',
     ])
@@ -203,11 +209,16 @@ describe('native composition order', () => {
     expect(composeTransformArray({}).transform).toEqual([])
   })
 
-  test('axis scale emits both entries in x then y order', () => {
+  test('equal axes collapse to one scale entry, unequal axes stay per-axis', () => {
+    // the collapse keeps the common uniform case identical to the v1 array
+    expect(composeTransformArray({ scaleX: 2, scaleY: 2 }).transform).toEqual([
+      { scale: 2 },
+    ])
     expect(composeTransformArray({ scaleX: 2, scaleY: 3 }).transform).toEqual([
       { scaleX: 2 },
       { scaleY: 3 },
     ])
+    expect(composeTransformArray({ scaleX: 2 }).transform).toEqual([{ scaleX: 2 }])
   })
 
   test('raw transform entries always come last, in their authored order', () => {
@@ -259,11 +270,10 @@ describe('native value handling', () => {
     expect(composeTransformArray({ rotate: 0 }).transform).toEqual([{ rotate: '0deg' }])
   })
 
-  test('uniform scale with axis scale is a conflict diagnostic', () => {
-    const composed = composeTransformArray({ scale: 2, scaleX: 3 })
-    expect(composed.errors[0]).toMatchObject({ code: 'transform-scale-conflict' })
-    // uniform wins deterministically rather than emitting two scales
-    expect(composed.transform).toEqual([{ scale: 2 }])
+  test('a non-numeric scale is diagnosed rather than forwarded', () => {
+    const composed = composeTransformArray({ scaleX: '50%' })
+    expect(composed.transform).toEqual([])
+    expect(composed.errors[0]).toMatchObject({ code: 'unsupported-transform-unit' })
   })
 })
 
@@ -378,25 +388,42 @@ describe("the codemod's scale shape end to end", () => {
       clauses: [{ modifiers: ['enter'], payload: '0.9' }],
     })
 
-    const target = getTransformTarget('scale')!
-    const lowered = lowerProgram(
-      { property: target.declaration, value: parsed.value, sourceProp: 'scale' },
-      { registry, configRevision }
+    // uniform scale expands to both axis programs
+    const targets = getTransformTargets('scale')
+    expect(targets.map((target) => target.declaration)).toEqual([
+      '--t-scale-x',
+      '--t-scale-y',
+    ])
+    const lowered = targets.map((target) =>
+      lowerProgram(
+        { property: target.declaration, value: parsed.value, sourceProp: 'scale' },
+        { registry, configRevision }
+      )
     )
-    expect(lowered.rules).toEqual([
-      `.${lowered.className}{scale:1}`,
-      `.${lowered.className}:where(.t_unmounted, .t_unmounted *){scale:0.9}`,
+    expect(lowered[0].rules).toEqual([
+      `.${lowered[0].className}{--t-scale-x:1}`,
+      `.${lowered[0].className}:where(.t_unmounted, .t_unmounted *){--t-scale-x:0.9}`,
+    ])
+    expect(lowered[1].rules[0]).toBe(`.${lowered[1].className}{--t-scale-y:1}`)
+    // one composing rule serves both axes
+    expect(lowered[0].composition!.className).toBe(lowered[1].composition!.className)
+    expect(lowered[0].composition!.rules).toEqual([
+      `.${lowered[0].composition!.className}{scale:var(--t-scale-x, 1) var(--t-scale-y, 1)}`,
     ])
 
-    // native evaluates the clause and composes the array
-    expect(composeTransformArray({ scale: 0.9 }).transform).toEqual([{ scale: 0.9 }])
-    expect(composeTransformArray({ scale: 1 }).transform).toEqual([{ scale: 1 }])
+    // native evaluates both axes and collapses them back to one entry
+    expect(composeTransformArray({ scaleX: 0.9, scaleY: 0.9 }).transform).toEqual([
+      { scale: 0.9 },
+    ])
+    expect(composeTransformArray({ scaleX: 1, scaleY: 1 }).transform).toEqual([
+      { scale: 1 },
+    ])
   })
 
   test('y="0 enter:10px" round-trips through the axis variable path', () => {
     const parsed = parseValue('0px enter:10px', registry)
     if (!parsed.ok) throw new Error('did not parse')
-    const target = getTransformTarget('y')!
+    const target = getTransformTargets('y')[0]
     const lowered = lowerProgram(
       { property: target.declaration, value: parsed.value, sourceProp: 'y' },
       { registry, configRevision }

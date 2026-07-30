@@ -11,11 +11,14 @@
 
 import { isAndroid, isIos, isTV } from '@tamagui/constants'
 import {
+  composeTransformArray,
   evaluateProgram,
   resolvePayload,
   serializePayloadNative,
+  transformPropForDeclaration,
   unitlessNumberProperties,
   type ActiveConditions,
+  type TransformEntry,
 } from '@tamagui/style-grammar'
 
 import type { GetStyleState } from '../types'
@@ -126,6 +129,7 @@ export function evaluateAccumulatedPrograms(
 
   let usedMediaKeys: string[] | null = null
   let usedStates: Set<string> | null = null
+  let transformResults: Record<string, string | number> | null = null
 
   for (const program of programs.values()) {
     const longhand = program.property
@@ -186,9 +190,86 @@ export function evaluateAccumulatedPrograms(
       continue
     }
 
+    // the transform family composes into one array below rather than writing a
+    // style key of its own
+    const transformProp = transformPropForDeclaration[longhand]
+    if (transformProp) {
+      transformResults ||= {}
+      transformResults[transformProp] = value
+      continue
+    }
+
     styleState.style ||= {}
     styleState.style[longhand] = value
   }
 
+  if (transformResults) {
+    styleState.style ||= {}
+    composeNativeTransform(styleState, transformResults)
+  }
+
   return { usedMediaKeys, usedStates }
+}
+
+/**
+ * Interleaving with the legacy transform path, which matters because evaluation
+ * now runs before `mergeFlatTransforms`:
+ *
+ * the family owns its six props, so by this point contribution has already
+ * displaced their `flatTransforms` entries. What can still be in flight is
+ * (a) legacy parts the family does not own yet — skews, perspective, 3D
+ * rotations, matrix — and (b) a raw `transform` prop already sitting in
+ * `style.transform`. Both are the "raw tail" in the plan's fixed order, so this
+ * consumes them here and clears `flatTransforms`, which makes the later
+ * `mergeFlatTransforms` a no-op instead of unshifting legacy parts in front of
+ * the composed family entries.
+ *
+ * Legacy `mergeFlatTransforms` sorts its keys and unshifts, so it produced
+ * reverse-alphabetical order. The composed order is the CSS one the plan
+ * mandates — translate, rotate, scale, then the tail — which is identical for
+ * the common x/y/uniform-scale cases and deliberately different once rotate and
+ * a non-uniform scale are combined.
+ */
+function composeNativeTransform(
+  styleState: GetStyleState,
+  results: Record<string, string | number>
+): void {
+  const style = styleState.style!
+  const tail: TransformEntry[] = []
+
+  const flatTransforms = styleState.flatTransforms
+  if (flatTransforms) {
+    // preserve legacy relative order among the parts the family does not own
+    const keys: string[] = []
+    for (const key in flatTransforms) keys.push(key)
+    keys.sort()
+    for (let index = keys.length - 1; index >= 0; index--) {
+      const key = keys[index]
+      tail.push({ [key]: flatTransforms[key] } as TransformEntry)
+    }
+    styleState.flatTransforms = undefined
+  }
+
+  if (Array.isArray(style.transform)) {
+    for (const entry of style.transform) tail.push(entry as TransformEntry)
+  } else if (typeof style.transform === 'string') {
+    // a raw transform string parses once, inside composeTransformArray
+    const composed = composeTransformArray(results, style.transform)
+    reportTransformErrors(composed.errors, styleState)
+    style.transform = composed.transform.concat(tail) as any
+    return
+  }
+
+  const composed = composeTransformArray(results, tail)
+  reportTransformErrors(composed.errors, styleState)
+  style.transform = composed.transform as any
+}
+
+function reportTransformErrors(
+  errors: readonly { code: string; source: string; message: string }[],
+  styleState: GetStyleState
+): void {
+  for (const error of errors) {
+    noteOnce(`transform\0${error.code}\0${error.source}`, `[tamagui] ${error.message}`)
+  }
 }

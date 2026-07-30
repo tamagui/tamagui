@@ -57,6 +57,12 @@ const scaleComposition: TransformComposition = Object.freeze({
   value: 'var(--t-scale-x, 1) var(--t-scale-y, 1)',
 })
 
+/**
+ * One entry per program TARGET. Uniform `scale` is absent on purpose: it expands
+ * to both axis targets the way `padding` expands to four sides, so no two
+ * mechanisms ever write the CSS `scale` property and a later `scaleX` replaces
+ * just its axis through the ordinary forward merge.
+ */
 export const transformFamilyTargets: Readonly<Record<string, TransformTarget>> =
   Object.freeze({
     x: {
@@ -87,12 +93,6 @@ export const transformFamilyTargets: Readonly<Record<string, TransformTarget>> =
       effectiveProperty: 'scale',
       composition: scaleComposition,
     },
-    scale: {
-      prop: 'scale',
-      kind: 'property',
-      declaration: 'scale',
-      effectiveProperty: 'scale',
-    },
     rotate: {
       prop: 'rotate',
       kind: 'property',
@@ -101,14 +101,88 @@ export const transformFamilyTargets: Readonly<Record<string, TransformTarget>> =
     },
   })
 
+/** authored prop -> the targets it contributes, uniform `scale` expanding to both axes */
+const transformPropTargets: Readonly<Record<string, readonly TransformTarget[]>> =
+  Object.freeze({
+    x: [transformFamilyTargets.x],
+    y: [transformFamilyTargets.y],
+    rotate: [transformFamilyTargets.rotate],
+    scaleX: [transformFamilyTargets.scaleX],
+    scaleY: [transformFamilyTargets.scaleY],
+    scale: [transformFamilyTargets.scaleX, transformFamilyTargets.scaleY],
+  })
+
 /** the authored props that lower through the transform family */
 export const transformFamilyProps: ReadonlySet<string> = new Set(
-  Object.keys(transformFamilyTargets)
+  Object.keys(transformPropTargets)
 )
 
-export function getTransformTarget(prop: string): TransformTarget | undefined {
-  return transformFamilyTargets[prop]
+const noTargets: readonly TransformTarget[] = Object.freeze([])
+
+/** the targets an authored transform prop contributes; empty when not in the family */
+export function getTransformTargets(prop: string): readonly TransformTarget[] {
+  return transformPropTargets[prop] ?? noTargets
 }
+
+/** the declarations an authored transform prop owns; empty when not in the family */
+export function transformDeclarationsFor(prop: string): readonly string[] {
+  return transformDeclarations[prop] ?? noDeclarations
+}
+
+const noDeclarations: readonly string[] = Object.freeze([])
+
+const transformDeclarations: Readonly<Record<string, readonly string[]>> = Object.freeze({
+  x: ['--t-x'],
+  y: ['--t-y'],
+  rotate: ['rotate'],
+  scaleX: ['--t-scale-x'],
+  scaleY: ['--t-scale-y'],
+  scale: ['--t-scale-x', '--t-scale-y'],
+})
+
+/**
+ * Declaration -> the authored prop it evaluates as on native, so the evaluator
+ * can turn program results back into `composeTransformArray` input.
+ */
+export const transformPropForDeclaration: Readonly<Record<string, string>> = Object.freeze(
+  {
+    '--t-x': 'x',
+    '--t-y': 'y',
+    '--t-scale-x': 'scaleX',
+    '--t-scale-y': 'scaleY',
+    rotate: 'rotate',
+  }
+)
+
+/**
+ * The unit a bare legacy number carries for each declaration, so a displaced
+ * plain value lifts into a program base with the right spelling: lengths take
+ * px, scale is unitless, rotate takes deg.
+ */
+export const transformDeclarationUnit: Readonly<Record<string, 'px' | 'none' | 'deg'>> =
+  Object.freeze({
+    '--t-x': 'px',
+    '--t-y': 'px',
+    '--t-scale-x': 'none',
+    '--t-scale-y': 'none',
+    rotate: 'deg',
+  })
+
+/** legacy flat transform keys that write a declaration, uniform parent last */
+export const legacyTransformKeysFor: Readonly<Record<string, readonly string[]>> =
+  Object.freeze({
+    '--t-x': ['x'],
+    '--t-y': ['y'],
+    '--t-scale-x': ['scaleX', 'scale'],
+    '--t-scale-y': ['scaleY', 'scale'],
+    rotate: ['rotate'],
+  })
+
+/** the sibling axis a uniform legacy `scale` also covers */
+export const uniformLegacySiblings: Readonly<Record<string, string>> = Object.freeze({
+  '--t-scale-x': 'scaleY',
+  '--t-scale-y': 'scaleX',
+})
 
 /**
  * Custom property -> the rule composing its axis group, so the web lowering can
@@ -138,8 +212,6 @@ export type TransformDiagnosticCode =
   | 'unsupported-matrix-length'
   /** a value that is invalid CSS without a unit, so web would drop it too */
   | 'unitless-transform-value'
-  /** uniform `scale` authored together with `scaleX`/`scaleY` */
-  | 'transform-scale-conflict'
   /** the raw transform string could not be tokenized */
   | 'malformed-transform'
 
@@ -190,29 +262,16 @@ export function composeTransformArray(
     if (angle !== null) transform.push({ rotate: angle })
   }
 
-  // 3. scale — uniform wins over the axes, and the pair is a diagnostic because
-  // on web the two would write one `scale` declaration from two programs
-  const hasAxisScale = results.scaleX != null || results.scaleY != null
-  if (results.scale != null) {
-    if (hasAxisScale) {
-      errors.push({
-        code: 'transform-scale-conflict',
-        source: 'scale',
-        message:
-          'scale cannot be combined with scaleX/scaleY: both write the CSS scale property, so the result depends on rule order. Use either the uniform prop or the axis props.',
-      })
-    }
-    const scale = readNumber(results.scale, 'scale', errors)
-    if (scale !== null) transform.push({ scale })
-  } else if (hasAxisScale) {
-    if (results.scaleX != null) {
-      const scaleX = readNumber(results.scaleX, 'scaleX', errors)
-      if (scaleX !== null) transform.push({ scaleX })
-    }
-    if (results.scaleY != null) {
-      const scaleY = readNumber(results.scaleY, 'scaleY', errors)
-      if (scaleY !== null) transform.push({ scaleY })
-    }
+  // 3. scale — always per-axis, because uniform `scale` expanded to both axes at
+  // contribution. Equal axes collapse back to one `scale` entry so the common
+  // uniform case matches the v1 array byte for byte
+  const scaleX = results.scaleX == null ? null : readNumber(results.scaleX, 'scaleX', errors)
+  const scaleY = results.scaleY == null ? null : readNumber(results.scaleY, 'scaleY', errors)
+  if (scaleX !== null && scaleX === scaleY) {
+    transform.push({ scale: scaleX })
+  } else {
+    if (scaleX !== null) transform.push({ scaleX })
+    if (scaleY !== null) transform.push({ scaleY })
   }
 
   // 4. the raw transform property, last

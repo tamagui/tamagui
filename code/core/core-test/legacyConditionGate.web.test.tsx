@@ -103,8 +103,10 @@ test('conversion errors note once per key and fall through to legacy handling', 
   process.env.NODE_ENV = 'development'
 
   try {
-    const result = split({ hoverStyle: { scale: 2 } })
-    split({ hoverStyle: { scale: 3 } })
+    // skewX still has no flat spelling (the transform family covers x, y, scale,
+    // scaleX, scaleY, rotate), so its conversion still errors and falls through
+    const result = split({ hoverStyle: { skewX: '10deg' } })
+    split({ hoverStyle: { skewX: '20deg' } })
 
     expect(info).toHaveBeenCalledTimes(1)
     expect(info).toHaveBeenCalledWith(expect.stringContaining('legacy-transform-part'))

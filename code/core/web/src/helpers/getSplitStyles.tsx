@@ -2889,6 +2889,12 @@ function mergeStyle(
   if (key in stylePropsTransform) {
     styleState.flatTransforms ||= {}
     usedKeys[key] = importance
+    if (styleState.programs && importance <= 1) {
+      // the transform family's legacy store is flatTransforms, so a later BASE
+      // transform value replaces the program on every declaration it covers,
+      // same rule as the plain-style branch below
+      deleteProgramsForStyleKey(styleState.programs, key)
+    }
     styleState.flatTransforms[key] = val
   } else {
     const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize

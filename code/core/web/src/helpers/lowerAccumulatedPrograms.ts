@@ -114,5 +114,16 @@ export function lowerAccumulatedPrograms(
 
     styleState.classNames[longhand] = lowered.className
     addStyleObject([longhand, null, lowered.className, undefined, lowered.rules])
+
+    // an axis-variable program (x/y/scaleX/scaleY) only sets a custom property;
+    // the rule turning those variables into `translate`/`scale` is identical for
+    // every element using that axis group, so it carries its own class and hash
+    // and the insert path dedupes it to one rule per sheet. Both classes have to
+    // land on the element or the variable is set and nothing consumes it.
+    if (lowered.composition) {
+      const { property, className, rules } = lowered.composition
+      styleState.classNames[property] = className
+      addStyleObject([property, null, className, undefined, rules])
+    }
   }
 }

@@ -13,9 +13,14 @@
 import { stylePropsTransform } from '@tamagui/helpers'
 import {
   expandToLonghands,
+  legacyTransformKeysFor,
   longhandExpansionTable,
   type LonghandProgram,
   type ParsedValue,
+  transformDeclarationUnit,
+  transformDeclarationsFor,
+  transformFamilyProps,
+  uniformLegacySiblings,
   unitlessNumberProperties,
 } from '@tamagui/style-grammar'
 
@@ -130,12 +135,62 @@ function displacePlainStyles(
 function plainValueToPayload(value: unknown, longhand: string): string | null {
   if (typeof value === 'string') return value
   if (typeof value !== 'number' || !Number.isFinite(value)) return null
+  const transformUnit = transformDeclarationUnit[longhand]
+  if (transformUnit) {
+    if (transformUnit === 'none') return String(value)
+    return value === 0 ? '0' : `${value}${transformUnit}`
+  }
   return unitlessNumberProperties.has(longhand) ? String(value) : `${value}px`
 }
 
+function longhandsFor(prop: string, styleState: GetStyleState): readonly string[] {
+  const declarations = transformDeclarationsFor(prop)
+  return declarations.length
+    ? declarations
+    : expandToLonghands(prop, styleState.conf.shorthands)
+}
+
+function isTransformDeclaration(longhand: string): boolean {
+  return transformDeclarationUnit[longhand] !== undefined
+}
+
+/**
+ * The transform family's legacy store is `flatTransforms`, not `style`, so a
+ * transform program displaces there. A uniform legacy `scale` covers both axes:
+ * it expands onto the sibling axis first (always uniform, so never ambiguous)
+ * before being deleted, exactly like a uniform `padding` expanding to the sides.
+ */
+function displaceFlatTransforms(
+  styleState: GetStyleState,
+  declaration: string,
+  programs: Map<string, LonghandProgram>
+): unknown {
+  const flatTransforms = styleState.flatTransforms
+  if (!flatTransforms) return noPlainValue
+  let displaced: unknown = noPlainValue
+  for (const legacyKey of legacyTransformKeysFor[declaration] ?? []) {
+    if (!(legacyKey in flatTransforms)) continue
+    if (displaced === noPlainValue) displaced = flatTransforms[legacyKey]
+    if (legacyKey === 'scale') {
+      // the uniform parent still owes the other axis its value
+      const sibling = uniformLegacySiblings[declaration]
+      const siblingDeclaration = sibling === 'scaleX' ? '--t-scale-x' : '--t-scale-y'
+      if (sibling && !programs.has(siblingDeclaration) && !(sibling in flatTransforms)) {
+        flatTransforms[sibling] = flatTransforms[legacyKey]
+      }
+    }
+    delete flatTransforms[legacyKey]
+    delete styleState.usedKeys[legacyKey]
+  }
+  return displaced
+}
+
 export function canAppendParsedProgram(styleState: GetStyleState, prop: string): boolean {
-  for (const longhand of expandToLonghands(prop, styleState.conf.shorthands)) {
+  for (const longhand of longhandsFor(prop, styleState)) {
     if (styleState.programs?.has(longhand)) continue
+    // a legacy flat transform value is always a number or a unit string, so it
+    // always lifts into a base
+    if (isTransformDeclaration(longhand)) continue
     if (
       styleState.style &&
       longhand in styleState.style &&
@@ -161,9 +216,11 @@ export function contributeParsedProgram(
 ): void {
   const programs = (styleState.programs ||= new Map<string, LonghandProgram>())
 
-  for (const longhand of expandToLonghands(prop, styleState.conf.shorthands)) {
+  for (const longhand of longhandsFor(prop, styleState)) {
     const existing = appendClauses ? programs.get(longhand) : undefined
-    const displaced = displacePlainStyles(styleState, longhand, programs, sourceProp)
+    const displaced = isTransformDeclaration(longhand)
+      ? displaceFlatTransforms(styleState, longhand, programs)
+      : displacePlainStyles(styleState, longhand, programs, sourceProp)
 
     let nextValue = value
     if (appendClauses) {
@@ -192,9 +249,16 @@ export function contributeStylePrograms(
   key: string,
   val: string
 ): boolean {
-  // transform parts stay legacy until the transform family is designed
-  // (plan remaining design work item 7)
-  if (key in stylePropsTransform || key === 'transform') return false
+  // the transform family (x, y, scale, scaleX, scaleY, rotate) routes through
+  // programs; every other transform part and the raw `transform` string stay
+  // legacy this round, so skews, perspective, 3D rotations, and matrix keep
+  // their flatTransforms path untouched
+  if (
+    !transformFamilyProps.has(key) &&
+    (key in stylePropsTransform || key === 'transform')
+  ) {
+    return false
+  }
 
   // accept-keys are props, not styles (Input's placeholderTextColor): they
   // must reach the host through mergeStyle's viewProps branch, never CSS
@@ -242,6 +306,11 @@ export function deleteProgramsForStyleKey(
   programs: Map<string, LonghandProgram>,
   key: string
 ): void {
+  const declarations = transformDeclarationsFor(key)
+  if (declarations.length) {
+    for (const declaration of declarations) programs.delete(declaration)
+    return
+  }
   const longhands = longhandExpansionTable[key]
   if (longhands) {
     for (const longhand of longhands) programs.delete(longhand)

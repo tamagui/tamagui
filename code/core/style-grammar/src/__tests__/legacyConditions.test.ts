@@ -184,17 +184,33 @@ describe('legacy style values', () => {
     })
   })
 
-  test('rejects transform parts with the required diagnostic code', () => {
+  test('converts the transform family, carrying each prop its unit', () => {
+    // the family exists now, which is what unblocks the codemod's transform flags
     expect(convert('hoverStyle', { scale: 1 })).toEqual({
-      contributions: [],
-      errors: [
-        {
-          code: 'legacy-transform-part',
-          path: 'hoverStyle.scale',
-          message:
-            'legacy transform part "scale" cannot be converted until the transform family is defined',
-        },
-      ],
+      contributions: [{ prop: 'scale', clause: { modifiers: ['hover'], payload: '1' } }],
+      errors: [],
+    })
+    expect(convert('enterStyle', { scale: 0.9 }).contributions).toEqual([
+      { prop: 'scale', clause: { modifiers: ['enter'], payload: '0.9' } },
+    ])
+    // x/y are lengths, rotate is an angle, scale is unitless
+    expect(convert('enterStyle', { y: 10 }).contributions).toEqual([
+      { prop: 'y', clause: { modifiers: ['enter'], payload: '10px' } },
+    ])
+    expect(convert('hoverStyle', { rotate: 45 }).contributions).toEqual([
+      { prop: 'rotate', clause: { modifiers: ['hover'], payload: '45deg' } },
+    ])
+    expect(convert('enterStyle', { y: 0 }).contributions).toEqual([
+      { prop: 'y', clause: { modifiers: ['enter'], payload: '0' } },
+    ])
+  })
+
+  test('transform parts outside the family still reject', () => {
+    const result = convert('hoverStyle', { skewX: '10deg' })
+    expect(result.contributions).toEqual([])
+    expect(result.errors[0]).toMatchObject({
+      code: 'legacy-transform-part',
+      path: 'hoverStyle.skewX',
     })
   })
 
