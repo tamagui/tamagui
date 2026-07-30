@@ -101,7 +101,9 @@ export interface LegacyConditionResult {
 
 type ConditionResolution =
   | { recognized: false }
-  | { recognized: true; modifier: string }
+  // one condition key can carry several modifiers: a legacy group key with a
+  // media segment splits into a container query plus (optionally) a group state
+  | { recognized: true; modifiers: readonly string[] }
   | { recognized: true; error: Omit<LegacyConditionError, 'path'> }
 
 function resolveLegacyCondition(
@@ -111,7 +113,7 @@ function resolveLegacyCondition(
   const pseudoModifier = pseudoToModifier[propName]
   if (pseudoModifier !== undefined) {
     if (registry.get(pseudoModifier) === 'state') {
-      return { recognized: true, modifier: pseudoModifier }
+      return { recognized: true, modifiers: [pseudoModifier] }
     }
     return {
       recognized: true,
@@ -125,7 +127,7 @@ function resolveLegacyCondition(
   if (propName.startsWith('$theme-')) {
     const modifier = propName.slice('$theme-'.length)
     if (modifier && registry.get(modifier) === 'theme') {
-      return { recognized: true, modifier }
+      return { recognized: true, modifiers: [modifier] }
     }
     return {
       recognized: true,
@@ -139,7 +141,7 @@ function resolveLegacyCondition(
   if (propName.startsWith('$platform-')) {
     const modifier = propName.slice('$platform-'.length)
     if (modifier && registry.get(modifier) === 'platform') {
-      return { recognized: true, modifier }
+      return { recognized: true, modifiers: [modifier] }
     }
     return {
       recognized: true,
@@ -176,7 +178,46 @@ function resolveLegacyCondition(
         },
       }
     }
-    if (longest.length === 0) {
+    const state = longest.length === 1 ? longest[0] : null
+    let namePart =
+      state === null
+        ? remainder
+        : state.length === remainder.length
+          ? ''
+          : remainder.slice(0, -(state.length + 1))
+
+    // v2 groups are containers: a media segment after the name measures the
+    // group's size, which the grammar spells as a container query on the named
+    // group. longest registered container size wins (`max-md` over `md`),
+    // matching the legacy two-part-first parse
+    let media: string | null = null
+    if (namePart) {
+      let scanStart = 0
+      while (scanStart < namePart.length) {
+        const suffix = namePart.slice(scanStart)
+        if (registry.get(`@${suffix}`) === 'container') {
+          media = suffix
+          break
+        }
+        const dash = namePart.indexOf('-', scanStart)
+        if (dash === -1) break
+        scanStart = dash + 1
+      }
+      if (media !== null) {
+        namePart =
+          media.length === namePart.length ? '' : namePart.slice(0, -(media.length + 1))
+      } else if (state === null) {
+        // no state and no measurable size: either an unregistered suffix or a
+        // media key with no container form (hoverNone-style interaction keys)
+        return {
+          recognized: true,
+          error: {
+            code: 'unregistered-legacy-condition',
+            message: `legacy group condition "${propName}" has no registered state or container-size suffix`,
+          },
+        }
+      }
+    } else if (state === null) {
       return {
         recognized: true,
         error: {
@@ -186,18 +227,17 @@ function resolveLegacyCondition(
       }
     }
 
-    const state = longest[0]
-    if (state.length === remainder.length) {
-      return { recognized: true, modifier: `group-${state}` }
-    }
-    const name = remainder.slice(0, -(state.length + 1))
-    return { recognized: true, modifier: `group-${state}/${name}` }
+    const suffix = namePart ? `/${namePart}` : ''
+    const modifiers: string[] = []
+    if (media !== null) modifiers.push(`@${media}${suffix}`)
+    if (state !== null) modifiers.push(`group-${state}${suffix}`)
+    return { recognized: true, modifiers }
   }
 
   if (propName[0] === '$') {
     const modifier = propName.slice(1)
     if (registry.get(modifier) === 'media') {
-      return { recognized: true, modifier }
+      return { recognized: true, modifiers: [modifier] }
     }
   }
 
@@ -212,12 +252,39 @@ function isConditionObject(value: unknown): value is Record<string, unknown> {
   return prototype === Object.prototype || prototype === null
 }
 
+// CSS shorthands that RESET sibling longhands (border: 2px solid green) have
+// no per-longhand family split yet. A program on the resetting shorthand would
+// break the order-free cross-program encoding — a later borderColor program
+// could not reliably win — so these stay on the legacy path until their family
+// split is designed (the background family is the model)
+const unsplitCompositeShorthands: ReadonlySet<string> = new Set([
+  'border',
+  'borderTop',
+  'borderRight',
+  'borderBottom',
+  'borderLeft',
+  'borderBlock',
+  'borderInline',
+  'outline',
+  'textDecoration',
+  'font',
+])
+
 function convertStyleValue(
   prop: string,
   value: unknown,
   path: string,
   errors: LegacyConditionError[]
 ): string | null {
+  if (unsplitCompositeShorthands.has(prop)) {
+    errors.push({
+      code: 'legacy-composite-shorthand',
+      path,
+      message: `"${prop}" is a resetting CSS shorthand with no per-longhand family split yet; the condition object stays on the legacy path`,
+    })
+    return null
+  }
+
   if (transformPartProperties.has(prop) && !transformFamilyProps.has(prop)) {
     // skews, 3D rotations, perspective, and matrix still belong to the raw
     // `transform` property, which has no flat spelling yet
@@ -310,7 +377,7 @@ export function convertLegacyConditionProp(
     return result
   }
 
-  const modifiers = [root.modifier]
+  const modifiers = root.modifiers.slice()
 
   const visit = (object: Record<string, unknown>, objectPath: string): void => {
     for (const childProp in object) {
@@ -332,9 +399,11 @@ export function convertLegacyConditionProp(
           })
           continue
         }
-        modifiers.push(condition.modifier)
+        for (let index = 0; index < condition.modifiers.length; index++) {
+          modifiers.push(condition.modifiers[index])
+        }
         visit(childValue, childPath)
-        modifiers.pop()
+        modifiers.length -= condition.modifiers.length
         continue
       }
 

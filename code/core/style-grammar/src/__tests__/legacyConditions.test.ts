@@ -66,6 +66,37 @@ describe('legacy condition names', () => {
     })
   })
 
+  test('a legacy group media segment becomes a container query on the group', () => {
+    // v2 groups are containers; `$group-frame-sm` measured the frame group
+    expect(convert('$group-frame-sm', { color: 'red' })?.contributions[0].clause).toEqual(
+      {
+        modifiers: ['@sm/frame'],
+        payload: 'red',
+      }
+    )
+    // media plus state splits into both conditions on one clause
+    expect(
+      convert('$group-frame-sm-hover', { color: 'red' })?.contributions[0].clause
+    ).toEqual({
+      modifiers: ['@sm/frame', 'group-hover/frame'],
+      payload: 'red',
+    })
+    // the normalized unnamed group keeps its `true` name so the container
+    // query matches the `t_group_true` container-name legacy CSS still sets
+    expect(
+      convert('$group-true-sm', { color: 'red' })?.contributions[0].clause
+    ).toEqual({
+      modifiers: ['@sm/true'],
+      payload: 'red',
+    })
+  })
+
+  test('a group media key with no container form is an error, not a wrong query', () => {
+    const result = convert('$group-frame-hoverNone', { color: 'red' })
+    expect(result?.contributions).toEqual([])
+    expect(result?.errors[0]?.code).toBe('unregistered-legacy-condition')
+  })
+
   test('unknown dollar and ordinary props fall through to normal handling', () => {
     expect(convert('$whatever', { color: 'red' })).toBeNull()
     expect(convert('color', 'red')).toBeNull()

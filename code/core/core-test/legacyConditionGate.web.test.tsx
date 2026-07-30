@@ -141,6 +141,9 @@ test('noClass web configurations stay on legacy condition handling', () => {
 })
 
 test('the setting defaults off and preserves legacy condition handling', () => {
+  // the engine-contraction A/B bed forces the gate on suite-wide; this test
+  // asserts the shipped default, so it clears the override
+  delete process.env.TAMAGUI_AB_LEGACY_PROGRAMS
   createTamagui(defaultConfig)
   try {
     const result = split({

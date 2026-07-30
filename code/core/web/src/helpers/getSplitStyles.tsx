@@ -1357,7 +1357,12 @@ export const getSplitStyles: StyleSplitter = (
   }
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-  const legacyConditionObjects = getSetting('legacyConditionObjects') === true
+  // the A/B bed for the engine contraction: forcing the gate on across the
+  // whole existing suite measures exactly which legacy-condition behavior the
+  // program engine reproduces. test-only, deleted with the contraction
+  const legacyConditionObjects =
+    getSetting('legacyConditionObjects') === true ||
+    (process.env.NODE_ENV === 'test' && !!process.env.TAMAGUI_AB_LEGACY_PROGRAMS)
   const orderedProcessedProps = getPropEntriesInForwardOrder(
     processedProps,
     staticConfig.baseStyle,
