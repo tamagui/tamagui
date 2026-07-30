@@ -154,3 +154,124 @@ from RN's own `ViewStyle` in `code/core/web/src/types.tsx`, so new enum
 values like `plus-lighter` arrive with the app's RN version; no Tamagui type
 change is needed. `filter` is a Tamagui-owned string type and already covers
 the syntax.
+
+## Transforms
+
+### 0.71: CSS-string input
+
+- RN 0.71 added `transform: 'scaleX(2) translateX(20px)'`. The
+  [web-styles umbrella](https://github.com/react/react-native/issues/34425)
+  records it as available in 0.71, and the implementation landed in
+  [PR 34660](https://github.com/react/react-native/pull/34660).
+- This works on Paper and Fabric. In the normal path,
+  `ReactNativeStyleAttributes` runs the same JS
+  [`processTransform`](https://github.com/react/react-native/blob/v0.86.0/packages/react-native/Libraries/StyleSheet/processTransform.js)
+  preprocessor for either renderer, turning the string into the existing
+  transform array before it reaches native.
+- The stable parser through 0.86 is a small RN-specific parser, not the CSS
+  transform grammar. It recognizes `matrix`, `perspective`, `rotate`,
+  `rotateX/Y/Z`, `scale`, `scaleX/Y`, `translate`, `translate3d`,
+  `translateX/Y`, and `skewX/Y`. It does not recognize `matrix3d`,
+  `rotate3d`, `scale3d`, `scaleZ`, `translateZ`, or two-axis `skew`.
+  Standard six-number CSS `matrix()` is also rejected because this parser
+  requires 9 or 16 numbers. `translate3d` is accepted by the JS parser but
+  is not portable to Fabric's processed-transform reader in 0.86, which
+  accepts two entries for its internal `translate` operation.
+- Nonzero string translations require a unit. `px` is converted to RN
+  density-independent points; the parser actually accepts and discards any
+  alphabetic unit, so accepting `em`, `rem`, or physical CSS units would
+  silently give the wrong result. Scale is unitless. Rotate and skew require
+  `deg` or `rad`; CSS `turn` is unsupported.
+
+### 0.73 and 0.75: origin and percentage translation
+
+- `transformOrigin` is present from 0.73. Its default is the view center.
+  RN first composes the transform list, then applies the origin around that
+  complete matrix as `T(origin - center) * M * T(center - origin)`.
+  Changing the origin does not reorder transform entries.
+- RN 0.75 added percentage values for transform-array `translateX` and
+  `translateY`, resolving X against the view's own width and Y against its
+  own height. It was
+  [New Architecture only](https://reactnative.dev/blog/2024/08/12/release-0.75#percentage-values-in-translation);
+  Paper never gained the capability. This distinction disappears for the
+  v3 RN >= 0.82 target because RN itself is New Architecture only.
+- String and array percentages are not equivalent in stable RN 0.86.
+  `transform: [{translateX: '10%'}]` works, and the string parser preserves
+  percentages inside `translate(10%, 20%)`. However,
+  `translateX(10%)` and `translateY(10%)` are parsed as the point value
+  `10`, losing `%`. The existing RN test checks only that the string does
+  not throw, not the parsed result.
+
+### Ordering and current type surface
+
+- Array entries are matrix-multiplied in authored order, exactly as string
+  functions are emitted by the parser. Their geometric effect on a point is
+  right-to-left. For example, `[{scale: 2}, {translateX: 30}]` produces a
+  60-point translation because the translation affects the point before
+  the scale. Reordering the entries changes the result.
+- Through RN 0.86, the
+  [`TransformsStyle`](https://github.com/react/react-native/blob/v0.86.0/packages/react-native/Libraries/StyleSheet/StyleSheetTypes.d.ts)
+  surface has one `transform` property plus `transformOrigin`. There are no
+  CSS individual `translate`, `rotate`, or `scale` style properties.
+  Deprecated top-level `scaleX`, `scaleY`, `translateX`, `translateY`, and
+  `rotation` fields are old RN compatibility fields, not the CSS individual
+  properties. A current source, issue, and pull-request search found no open
+  RFC or implementation for adding the CSS individual properties.
+
+### Animated and Reanimated
+
+- Core `Animated`, including `useNativeDriver: true`, animates transforms as
+  an array. Its
+  [`AnimatedTransform`](https://github.com/react/react-native/blob/v0.86.0/packages/react-native/Libraries/Animated/nodes/AnimatedTransform.js)
+  explicitly scans an array for animated nodes; a whole transform string is
+  only a static style value. An `Animated.Value` cannot be embedded inside a
+  string, and interpolating the entire string does not create a native
+  transform node.
+- Reanimated 4.2.3 has a narrower exception: a worklet may return a
+  freshly-computed CSS transform string on each frame, and its
+  [`processTransform`](https://github.com/software-mansion/react-native-reanimated/blob/4.2.3/packages/react-native-reanimated/src/common/style/processors/transform.ts)
+  processor converts that string to an array before the native update.
+  Reanimated does not interpolate a compound transform string as a native
+  transform value, and its native CSS keyframe types explicitly disallow
+  string transforms. Its documented and composable animation form remains
+  the transform array.
+
+### Consequences for the v3 grammar
+
+Claim:
+
+- Keep `x`, `y`, `rotate`, and `scale` as independent flat-value programs.
+  On web, lower them to the CSS individual properties `translate`, `rotate`,
+  and `scale`. This preserves independent clause replacement and lets the
+  browser apply the CSS-defined family order.
+- Claim percentage `x`/`y` on native for the RN >= 0.82 target, emitting
+  percentage strings only in transform-array `translateX`/`translateY`
+  entries.
+- Keep `transformOrigin` independent. It applies to the final composed
+  transform and does not participate in family ordering.
+
+Synthesize:
+
+- Native must evaluate each program independently and build one transform
+  array in CSS individual-property order: translate (`x`, then `y`), rotate,
+  scale, then the entries from the raw `transform` property. The array order
+  is semantic and must never be sorted or derived from object iteration.
+- Parse a raw transform string once into the supported array representation
+  before composing it. Always hand Animated and Reanimated the array form;
+  do not depend on per-frame string parsing.
+
+Diagnose:
+
+- Reject unsupported CSS functions and units instead of forwarding them to
+  RN's permissive, lossy string parser. In particular, diagnose `turn`,
+  relative or physical length units, `matrix3d`, `rotate3d`, `scale3d`,
+  `translateZ`, `skew()`, and six-number CSS `matrix()` until Tamagui has a
+  faithful native lowering.
+- Reject percentage translation when targeting RN < 0.75 or Paper. Never
+  emit axis percentage strings such as `translateX(10%)` as a whole RN
+  transform string, because stable RN 0.86 silently changes that value to
+  10 points.
+- A dynamic raw transform whose operation structure changes across states
+  cannot be safely merged or animated as an opaque string. Require a
+  statically parseable operation list or report a transform-family
+  diagnostic.
