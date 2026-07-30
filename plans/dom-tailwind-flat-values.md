@@ -1670,8 +1670,12 @@ locked:
 1. The runtime and compiler boundary for dynamic value strings is designed
    (see "Non-string and dynamic values": one pipeline two hosts, post-split
    cache keyed by property+input, config-revision invalidation only,
-   cap-and-reset overflow, throw-in-dev/drop-once-in-prod). Remaining:
-   validate the cache-hit rate and parse cost on the T7 native benchmark
+   cap-and-reset overflow, throw-in-dev/drop-once-in-prod). First numbers
+   (2026-07-29, M-series laptop, `style-grammar/bench/parse-cost.mjs`):
+   cached path ~71ns, plain parse ~47ns, six-clause worst-case parse
+   ~844ns, evaluate 45-107ns — sub-microsecond everywhere, so the
+   per-render-behind-cache model holds with wide margin even at 5-10x
+   device slowdown. Remaining: confirm cache-hit rate on the T7 native
    harness once the pipeline is wired into getSplitStyles.
 2. The web CSS encoding for per-longhand programs is drafted (see "The
    program block encoding"): equal specificity via `:where()`, source-order
