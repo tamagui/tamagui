@@ -393,6 +393,32 @@ keep resolution deterministic:
 - A configured name always wins over a same-spelled CSS literal. Config
   creation warns when a token shadows a property-relevant CSS keyword.
 
+The resolver's mechanical contract, so one implementation serves both
+platforms:
+
+- A payload is scanned as CSS tokens. Candidate identifiers are ident tokens
+  anywhere in the payload, including inside function arguments
+  (`linear-gradient(135deg, accent, blue)` resolves `accent`), but never
+  inside strings, never inside an unquoted `url()` body, never a function
+  name, and never a `--*` custom-property reference, which stays literal.
+- Bare numbers resolve config-first only for properties bound to a numeric
+  token category (space, size, radius, z-index), and per component value:
+  `p="4 8"` resolves both, `boxShadow="0 2px"` resolves neither because
+  box-shadow binds no numeric category. Numbers with units are always
+  literal.
+- Lookup order is the property's bound categories first, then the unified
+  variables namespace (design item 11). A miss is literal CSS; typos in
+  literal positions are the compiler's and language service's job, never a
+  runtime guess.
+- Resolution produces one segmented representation — static text runs plus
+  reference nodes — with two serializers: web joins references as
+  `var(--name)` so theme switches stay zero-re-render, native looks
+  references up through the granular theme subscription at evaluate time.
+- The opacity suffix on a resolved color reference serializes on web as
+  `color-mix(in srgb, var(--name) NN%, transparent)`, and on native as an
+  alpha-composed color computed at lookup. On web this keeps opacity
+  variants theme-reactive without generating per-alpha variables.
+
 The prop binds the candidate family before resolution, so values share the
 modifier registry, token resolution, family tables, and ordered style IR with
 `@tamagui/tailwind`. The two frontends deliberately differ in value spelling:
