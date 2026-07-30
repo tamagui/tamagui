@@ -33,9 +33,14 @@ const {
   mergePrograms,
   pseudoToModifier,
   standaloneValueProps,
+  unitlessNumberProperties,
 } = styleGrammarRuntime as typeof import('../../style-grammar/src/index')
 
 type SiteKind = 'jsx' | 'styled'
+
+interface CodemodOptions {
+  transforms: boolean
+}
 
 interface Flag {
   code: string
@@ -60,8 +65,16 @@ interface FileReport {
 interface Accumulator {
   programs: Map<string, LonghandProgram>
   blocked: Set<string>
+  dynamicBases: Map<string, DynamicBase>
+  dynamicProgramProperties: Set<string>
   untouched: string[]
   flags: Flag[]
+}
+
+interface DynamicBase {
+  properties: readonly string[]
+  source: string
+  flagDetail: string
 }
 
 interface LegacyObjectResult {
@@ -92,6 +105,24 @@ const defaultCorpus = [
 
 const extraMediaNames = ['motionReduce', 'motionSafe']
 const nestedStyledContainers = new Set(['variants', 'compoundVariants'])
+const transformProgramProps = new Set(['scale', 'x', 'y', 'rotate'])
+const transformDefaults: Readonly<Record<string, string>> = {
+  scale: '1',
+  x: '0',
+  y: '0',
+  rotate: '0deg',
+}
+const lengthTokenCategories = new Set([
+  'space',
+  'size',
+  'radius',
+  'fontSize',
+  'lineHeight',
+  'letterSpacing',
+])
+const tokenCategoryByProp = new Map(
+  grammarEntries.map((entry) => [entry.prop, entry.tokenCategory])
+)
 
 function compact(text: string): string {
   return text.replace(/\s+/g, ' ').trim()
@@ -240,10 +271,73 @@ function tokenPayload(value: string): { payload: string; error: string | null } 
   return { payload: token, error: null }
 }
 
+function isPlainDynamicExpression(expression: Expression): boolean {
+  const current = unwrapExpression(expression)
+  return (
+    Node.isIdentifier(current) ||
+    Node.isPropertyAccessExpression(current) ||
+    Node.isElementAccessExpression(current) ||
+    Node.isConditionalExpression(current) ||
+    Node.isCallExpression(current)
+  )
+}
+
+function isProvablyNumeric(expression: Expression): boolean {
+  const current = unwrapExpression(expression)
+  if (numericValue(current) !== null) return true
+  return (
+    Node.isConditionalExpression(current) &&
+    isProvablyNumeric(current.getWhenTrue()) &&
+    isProvablyNumeric(current.getWhenFalse())
+  )
+}
+
+function isProvablyString(expression: Expression): boolean {
+  const current = unwrapExpression(expression)
+  if (Node.isStringLiteral(current) || Node.isNoSubstitutionTemplateLiteral(current)) {
+    return true
+  }
+  return (
+    Node.isConditionalExpression(current) &&
+    isProvablyString(current.getWhenTrue()) &&
+    isProvablyString(current.getWhenFalse())
+  )
+}
+
+function dynamicExpressionSource(expression: Expression): string {
+  const current = unwrapExpression(expression)
+  if (Node.isStringLiteral(current) || Node.isNoSubstitutionTemplateLiteral(current)) {
+    const token = tokenPayload(current.getLiteralValue())
+    return JSON.stringify(token.error ? current.getLiteralValue() : token.payload)
+  }
+  if (Node.isConditionalExpression(current)) {
+    return `${current.getCondition().getText().trim()} ? ${dynamicExpressionSource(
+      current.getWhenTrue()
+    )} : ${dynamicExpressionSource(current.getWhenFalse())}`
+  }
+  return current.getText().trim()
+}
+
+function dynamicBasePayload(prop: string, expression: Expression): string | null {
+  if (!isPlainDynamicExpression(expression)) return null
+
+  const resolvedProp = shorthands[prop] ?? prop
+  const category = tokenCategoryByProp.get(resolvedProp)
+  const expectsLength = category !== undefined && lengthTokenCategories.has(category)
+  const numeric = isProvablyNumeric(expression)
+  const string = isProvablyString(expression)
+  if (expectsLength && !numeric && !string) return null
+
+  const suffix = numeric && !unitlessNumberProperties.has(resolvedProp) ? 'px' : ''
+  return `\${${dynamicExpressionSource(expression)}}${suffix}`
+}
+
 function emptyAccumulator(): Accumulator {
   return {
     programs: new Map(),
     blocked: new Set(),
+    dynamicBases: new Map(),
+    dynamicProgramProperties: new Set(),
     untouched: [],
     flags: [],
   }
@@ -262,6 +356,55 @@ function touchProgram(
   programs.set(property, program)
 }
 
+function activateDynamicBase(accumulator: Accumulator, dynamic: DynamicBase): void {
+  for (const property of dynamic.properties) {
+    if (accumulator.dynamicBases.get(property) !== dynamic) continue
+    accumulator.blocked.delete(property)
+    accumulator.dynamicProgramProperties.add(property)
+  }
+  const untouchedIndex = accumulator.untouched.indexOf(dynamic.source)
+  if (untouchedIndex !== -1) accumulator.untouched.splice(untouchedIndex, 1)
+  const flagIndex = accumulator.flags.findIndex(
+    (flag) => flag.code === 'dynamic-style-value' && flag.detail === dynamic.flagDetail
+  )
+  if (flagIndex !== -1) accumulator.flags.splice(flagIndex, 1)
+}
+
+function addDynamicBase(
+  accumulator: Accumulator,
+  prop: string,
+  payload: string,
+  source: string,
+  flagDetail: string
+): void {
+  const value: ParsedValue = { base: payload, clauses: [] }
+  const expanded = [...expansion(prop, value)]
+  const dynamic: DynamicBase = {
+    properties: expanded.map(([property]) => property),
+    source,
+    flagDetail,
+  }
+  let hasClauses = false
+
+  for (const [property, next] of expanded) {
+    const previous = accumulator.programs.get(property)
+    if (previous?.value.clauses.length) hasClauses = true
+    touchProgram(accumulator.programs, property, {
+      ...next,
+      value: {
+        base: payload,
+        clauses: previous?.value.clauses ?? [],
+      },
+    })
+    accumulator.dynamicBases.set(property, dynamic)
+    accumulator.blocked.add(property)
+  }
+
+  accumulator.untouched.push(source)
+  addFlag(accumulator, 'dynamic-style-value', flagDetail)
+  if (hasClauses) activateDynamicBase(accumulator, dynamic)
+}
+
 function addBase(accumulator: Accumulator, prop: string, payload: string): void {
   const value: ParsedValue = { base: payload, clauses: [] }
   for (const [property, next] of expansion(prop, value)) {
@@ -274,6 +417,8 @@ function addBase(accumulator: Accumulator, prop: string, payload: string): void 
       },
     })
     accumulator.blocked.delete(property)
+    accumulator.dynamicBases.delete(property)
+    accumulator.dynamicProgramProperties.delete(property)
   }
 }
 
@@ -289,6 +434,8 @@ function blockBase(accumulator: Accumulator, prop: string, source: string): void
       },
     })
     accumulator.blocked.add(property)
+    accumulator.dynamicBases.delete(property)
+    accumulator.dynamicProgramProperties.delete(property)
   }
   accumulator.untouched.push(source)
 }
@@ -302,13 +449,18 @@ function addClause(
   let complete = true
   for (const [property, next] of expansion(prop, clauseValue)) {
     if (accumulator.blocked.has(property)) {
-      addFlag(
-        accumulator,
-        'condition-targets-unconvertible-prop',
-        `"${prop}" contributes to "${property}", whose base value must remain authored`
-      )
-      complete = false
-      continue
+      const dynamic = accumulator.dynamicBases.get(property)
+      if (dynamic) {
+        activateDynamicBase(accumulator, dynamic)
+      } else {
+        addFlag(
+          accumulator,
+          'condition-targets-unconvertible-prop',
+          `"${prop}" contributes to "${property}", whose base value must remain authored`
+        )
+        complete = false
+        continue
+      }
     }
     const previous = accumulator.programs.get(property)
     touchProgram(accumulator.programs, property, {
@@ -340,6 +492,7 @@ function printAfter(accumulator: Accumulator, kind: SiteKind): string {
 
     const sourceExpansion = [...expansion(program.sourceProp, program.value).keys()]
     const serialized = printProgram(program.value)
+    const isDynamic = accumulator.dynamicProgramProperties.has(property)
     const canUseSourceProp =
       sourceExpansion.length > 0 &&
       sourceExpansion.every((expanded) => {
@@ -348,23 +501,25 @@ function printAfter(accumulator: Accumulator, kind: SiteKind): string {
           candidate !== undefined &&
           !accumulator.blocked.has(expanded) &&
           candidate.sourceProp === program.sourceProp &&
-          printProgram(candidate.value) === serialized
+          printProgram(candidate.value) === serialized &&
+          accumulator.dynamicProgramProperties.has(expanded) === isDynamic
         )
       })
 
+    const valueSource = isDynamic ? `\`${serialized}\`` : JSON.stringify(serialized)
     if (canUseSourceProp) {
       for (const expanded of sourceExpansion) printed.add(expanded)
       output.push(
         kind === 'styled'
-          ? `${program.sourceProp}: ${JSON.stringify(serialized)}`
-          : `${program.sourceProp}=${JSON.stringify(serialized)}`
+          ? `${program.sourceProp}: ${valueSource}`
+          : `${program.sourceProp}=${isDynamic ? `{${valueSource}}` : valueSource}`
       )
     } else {
       printed.add(property)
       output.push(
         kind === 'styled'
-          ? `${property}: ${JSON.stringify(serialized)}`
-          : `${property}=${JSON.stringify(serialized)}`
+          ? `${property}: ${valueSource}`
+          : `${property}=${isDynamic ? `{${valueSource}}` : valueSource}`
       )
     }
   }
@@ -380,6 +535,56 @@ function printAfter(accumulator: Accumulator, kind: SiteKind): string {
 
 function isLegacyName(name: string): boolean {
   return name.startsWith('$') || pseudoToModifier[name] !== undefined
+}
+
+function transformPayload(prop: string, value: unknown): string | null {
+  if (typeof value === 'string') {
+    const token = tokenPayload(value)
+    return token.error ? null : token.payload
+  }
+  if (typeof value !== 'number' || !Number.isFinite(value) || prop === 'rotate') {
+    return null
+  }
+  if (prop === 'scale') return String(value)
+  return value === 0 ? '0' : `${value}px`
+}
+
+function legacyValueAtPath(
+  rootName: string,
+  value: Record<string, unknown>,
+  path: string
+): unknown {
+  if (!path.startsWith(`${rootName}.`)) return undefined
+  const parts = path.slice(rootName.length + 1).split('.')
+  let current: unknown = value
+  for (const part of parts) {
+    if (current === null || typeof current !== 'object') return undefined
+    current = (current as Record<string, unknown>)[part]
+  }
+  return current
+}
+
+function transformClause(
+  rootName: string,
+  path: string,
+  payload: string,
+  registry: ModifierRegistryView
+): ParsedClause | null {
+  if (!path.startsWith(`${rootName}.`)) return null
+  const parts = path.slice(rootName.length + 1).split('.')
+  parts.pop()
+  const probe: Record<string, unknown> = {}
+  let current = probe
+  for (const condition of parts) {
+    const nested: Record<string, unknown> = {}
+    current[condition] = nested
+    current = nested
+  }
+  current.opacity = payload
+  const converted = convertLegacyConditionProp(rootName, probe, { registry })
+  return converted?.errors.length === 0
+    ? (converted.contributions[0]?.clause ?? null)
+    : null
 }
 
 function jsxAttributeName(attribute: JsxAttribute): string | null {
@@ -421,7 +626,8 @@ function convertLegacy(
   accumulator: Accumulator,
   name: string,
   object: ObjectLiteralExpression,
-  registry: ModifierRegistryView
+  registry: ModifierRegistryView,
+  options: CodemodOptions
 ): boolean {
   const evaluated = evaluateLegacyObject(object, name)
   if (evaluated.fatal) {
@@ -447,9 +653,29 @@ function convertLegacy(
     return true
   }
 
-  let needsManual = converted.errors.length > 0
+  let needsManual = false
   for (const error of converted.errors) {
+    if (options.transforms && error.code === 'legacy-transform-part') {
+      const prop = error.path.slice(error.path.lastIndexOf('.') + 1)
+      if (transformProgramProps.has(prop)) {
+        const payload = transformPayload(
+          prop,
+          legacyValueAtPath(name, evaluated.value!, error.path)
+        )
+        const clause =
+          payload === null ? null : transformClause(name, error.path, payload, registry)
+        if (payload !== null && clause !== null) {
+          const hasProgram = [
+            ...expansion(prop, { base: null, clauses: [] }).keys(),
+          ].some((property) => accumulator.programs.has(property))
+          if (!hasProgram) addBase(accumulator, prop, transformDefaults[prop])
+          if (!addClause(accumulator, prop, clause)) needsManual = true
+          continue
+        }
+      }
+    }
     addFlag(accumulator, error.code, `${error.path}: ${error.message}`)
+    needsManual = true
   }
   for (const contribution of converted.contributions) {
     if (!styleProps.has(contribution.prop)) {
@@ -473,7 +699,8 @@ function convertLegacy(
 
 function convertJsx(
   opening: JsxElementWithAttributes,
-  registry: ModifierRegistryView
+  registry: ModifierRegistryView,
+  options: CodemodOptions
 ): SiteReport | null {
   if (!hasOldJsxSyntax(opening)) return null
 
@@ -507,7 +734,9 @@ function convertJsx(
         skipped = true
         continue
       }
-      if (!convertLegacy(accumulator, name, expression, registry)) skipped = true
+      if (!convertLegacy(accumulator, name, expression, registry, options)) {
+        skipped = true
+      }
       continue
     }
 
@@ -524,22 +753,40 @@ function convertJsx(
     }
 
     const expression = jsxExpression(attribute)
+    const number = expression ? numericValue(expression) : null
+    const transformBase =
+      options.transforms && transformProgramProps.has(name) && number !== null
+        ? transformPayload(name, number)
+        : null
+    if (transformBase !== null) {
+      addBase(accumulator, name, transformBase)
+      continue
+    }
     if (
       !attribute.getInitializer() ||
       expression?.getKind() === SyntaxKind.TrueKeyword ||
       expression?.getKind() === SyntaxKind.FalseKeyword ||
       expression?.getKind() === SyntaxKind.NullKeyword ||
-      (expression && numericValue(expression) !== null)
+      number !== null
     ) {
       blockBase(accumulator, name, compact(attribute.getText()))
       continue
     }
 
-    addFlag(
-      accumulator,
-      'dynamic-style-value',
-      `"${name}" uses dynamic value "${compact(attribute.getText())}"`
-    )
+    const detail = `"${name}" uses dynamic value "${compact(attribute.getText())}"`
+    const dynamicPayload = expression ? dynamicBasePayload(name, expression) : null
+    if (dynamicPayload !== null) {
+      addDynamicBase(
+        accumulator,
+        name,
+        dynamicPayload,
+        compact(attribute.getText()),
+        detail
+      )
+      continue
+    }
+
+    addFlag(accumulator, 'dynamic-style-value', detail)
     blockBase(accumulator, name, compact(attribute.getText()))
   }
 
@@ -606,7 +853,8 @@ function hasOldStyledSyntax(object: ObjectLiteralExpression): boolean {
 function convertStyled(
   call: CallExpression,
   object: ObjectLiteralExpression,
-  registry: ModifierRegistryView
+  registry: ModifierRegistryView,
+  options: CodemodOptions
 ): SiteReport | null {
   if (!hasOldStyledSyntax(object)) return null
 
@@ -662,7 +910,9 @@ function convertStyled(
         skipped = true
         continue
       }
-      if (!convertLegacy(accumulator, name, initializer, registry)) skipped = true
+      if (!convertLegacy(accumulator, name, initializer, registry, options)) {
+        skipped = true
+      }
       continue
     }
 
@@ -681,8 +931,17 @@ function convertStyled(
       continue
     }
 
+    const number = numericValue(initializer)
+    const transformBase =
+      options.transforms && transformProgramProps.has(name) && number !== null
+        ? transformPayload(name, number)
+        : null
+    if (transformBase !== null) {
+      addBase(accumulator, name, transformBase)
+      continue
+    }
     if (
-      numericValue(initializer) !== null ||
+      number !== null ||
       initializer.getKind() === SyntaxKind.TrueKeyword ||
       initializer.getKind() === SyntaxKind.FalseKeyword ||
       initializer.getKind() === SyntaxKind.NullKeyword
@@ -691,11 +950,20 @@ function convertStyled(
       continue
     }
 
-    addFlag(
-      accumulator,
-      'dynamic-style-value',
-      `"${name}" uses dynamic value "${compact(initializer.getText())}"`
-    )
+    const detail = `"${name}" uses dynamic value "${compact(initializer.getText())}"`
+    const dynamicPayload = dynamicBasePayload(name, initializer)
+    if (dynamicPayload !== null) {
+      addDynamicBase(
+        accumulator,
+        name,
+        dynamicPayload,
+        compact(property.getText()),
+        detail
+      )
+      continue
+    }
+
+    addFlag(accumulator, 'dynamic-style-value', detail)
     blockBase(accumulator, name, compact(property.getText()))
   }
 
@@ -751,24 +1019,28 @@ function collectFiles(inputs: string[]): SourceFile[] {
     .sort((left, right) => left.getFilePath().localeCompare(right.getFilePath()))
 }
 
-function inspectFile(sourceFile: SourceFile, registry: ModifierRegistryView): FileReport {
+function inspectFile(
+  sourceFile: SourceFile,
+  registry: ModifierRegistryView,
+  options: CodemodOptions
+): FileReport {
   const sites: SiteReport[] = []
 
   for (const opening of sourceFile.getDescendantsOfKind(SyntaxKind.JsxOpeningElement)) {
-    const converted = convertJsx(opening, registry)
+    const converted = convertJsx(opening, registry, options)
     if (converted) sites.push(converted)
   }
   for (const opening of sourceFile.getDescendantsOfKind(
     SyntaxKind.JsxSelfClosingElement
   )) {
-    const converted = convertJsx(opening, registry)
+    const converted = convertJsx(opening, registry, options)
     if (converted) sites.push(converted)
   }
   for (const call of sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression)) {
     if (call.getExpression().getText() !== 'styled') continue
     const config = call.getArguments()[1]
     if (!Node.isObjectLiteralExpression(config)) continue
-    const converted = convertStyled(call, config, registry)
+    const converted = convertStyled(call, config, registry, options)
     if (converted) sites.push(converted)
   }
 
@@ -783,7 +1055,8 @@ function inspectFile(sourceFile: SourceFile, registry: ModifierRegistryView): Fi
 
 function renderReport(
   files: FileReport[],
-  registryDiagnostics: readonly string[]
+  registryDiagnostics: readonly string[],
+  options: CodemodOptions
 ): string {
   const sites = files.flatMap((file) => file.sites)
   const clean = sites.filter((site) => site.flags.length === 0 && !site.skipped)
@@ -808,6 +1081,7 @@ function renderReport(
     `Corpus: \`code/kitchen-sink/src/usecases\` and \`code/ui/tamagui/src/components/Button.tsx\`.`,
     '',
     'No source files were written.',
+    `Transform-part conversion: ${options.transforms ? 'enabled' : 'disabled'}.`,
     '',
     '## Summary',
     '',
@@ -861,11 +1135,20 @@ function renderReport(
   return `${lines.join('\n')}\n`
 }
 
-function parseArguments(argv: string[]): { reportPath: string; inputs: string[] } {
+function parseArguments(argv: string[]): {
+  reportPath: string
+  inputs: string[]
+  options: CodemodOptions
+} {
   const inputs: string[] = []
   let reportPath = defaultReportPath
+  let transforms = false
 
   for (let index = 0; index < argv.length; index++) {
+    if (argv[index] === '--transforms') {
+      transforms = true
+      continue
+    }
     if (argv[index] === '--report') {
       const next = argv[index + 1]
       if (!next) throw new Error('--report requires a path')
@@ -879,10 +1162,11 @@ function parseArguments(argv: string[]): { reportPath: string; inputs: string[] 
   return {
     reportPath,
     inputs: inputs.length ? inputs : defaultCorpus,
+    options: { transforms },
   }
 }
 
-const { reportPath, inputs } = parseArguments(process.argv.slice(2))
+const { reportPath, inputs, options } = parseArguments(process.argv.slice(2))
 const sourceFiles = collectFiles(inputs)
 const themes = explicitThemeNames(sourceFiles)
 const modifierRegistry = createModifierRegistry({
@@ -890,9 +1174,9 @@ const modifierRegistry = createModifierRegistry({
   themeNames: themes,
 })
 const files = sourceFiles.map((sourceFile) =>
-  inspectFile(sourceFile, modifierRegistry.registry)
+  inspectFile(sourceFile, modifierRegistry.registry, options)
 )
-const report = renderReport(files, modifierRegistry.diagnostics)
+const report = renderReport(files, modifierRegistry.diagnostics, options)
 mkdirSync(dirname(reportPath), { recursive: true })
 writeFileSync(reportPath, report)
 

@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dry-run": "bun src/index.ts",
+    "test": "bun test test",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
