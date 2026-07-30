@@ -484,7 +484,9 @@ function mapDefaultTokenCategory(
   return Object.fromEntries(Object.keys(keys).map((key) => [key, category]))
 }
 
-const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
+// exported so the flat-value grammar adapter binds props to the same token
+// categories the `$token` path already uses, rather than keeping a second table
+export const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
   ...mapDefaultTokenCategory(tokenCategories.size, 'size'),
   ...mapDefaultTokenCategory(tokenCategories.radius, 'radius'),
   ...mapDefaultTokenCategory(tokenCategories.zIndex, 'zIndex'),

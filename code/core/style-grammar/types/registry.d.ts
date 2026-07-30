@@ -1,3 +1,5 @@
+import { modifierAliases, pseudoToModifier } from "./stateModifiers";
+export { modifierAliases, pseudoToModifier };
 export type TokenCategory = "space" | "size" | "radius" | "zIndex" | "color" | "fontFamily" | "fontSize" | "lineHeight" | "letterSpacing";
 export type Convenience = "alignment-alias" | "bare-border" | "flex-bundle" | "font-generic" | "percentage" | "sizing-keyword";
 export type GrammarDecision = {
@@ -20,8 +22,6 @@ export declare const standaloneValueProps: Readonly<Record<string, Readonly<Reco
 export declare const fontWeightNames: Readonly<Record<string, string>>;
 export declare const wholeClassUtilities: Readonly<Record<string, Readonly<Record<string, string | number>>>>;
 export declare const wholeClassConveniences: Readonly<Record<string, Convenience>>;
-export declare const pseudoToModifier: Readonly<Record<string, string>>;
-export declare const modifierAliases: Readonly<Record<string, string>>;
 export declare const modifierToPseudo: Readonly<Record<string, string>>;
 export declare const defaultMediaKeys: readonly string[];
 export declare const borderSideSuffix: Readonly<Record<string, readonly string[]>>;
