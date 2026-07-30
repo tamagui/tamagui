@@ -770,6 +770,16 @@ merged clause list, one contiguous block, one native evaluation. Only the
 merge rule is finer than whole-program; the encoding, hashing, and
 evaluator are untouched.
 
+Two invariants the implementation depends on, found load-bearing under
+adversarial review: the class name hashes the RESOLVED program, which is
+what makes a legacy `hoverStyle` conversion emit the identical class to the
+flat spelling even when token spellings differ en route — the hash must
+never move earlier in the pipeline; and program values are immutable — a
+`ParsedValue` can alias the shared parse cache, so any future in-place
+clause mutation would corrupt every element using that (property, input).
+Clause condition sets hash order-insensitively (`dark:hover:` and
+`hover:dark:` are one clause and one class), matching the merge rule.
+
 The family expansion table, which records the longhand each kind of value
 contributes to for `bg` and the other multi-property families, is the only
 merge knowledge in the system, and it lives in the shared grammar package.
