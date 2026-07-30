@@ -16,6 +16,7 @@ import {
   legacyTransformKeysFor,
   longhandExpansionTable,
   type LonghandProgram,
+  mergeProgramValues,
   type ParsedValue,
   transformDeclarationUnit,
   transformDeclarationsFor,
@@ -211,28 +212,30 @@ export function contributeParsedProgram(
   styleState: GetStyleState,
   prop: string,
   value: ParsedValue,
-  sourceProp = prop,
-  appendClauses = false
+  sourceProp = prop
 ): void {
   const programs = (styleState.programs ||= new Map<string, LonghandProgram>())
 
   for (const longhand of longhandsFor(prop, styleState)) {
-    const existing = appendClauses ? programs.get(longhand) : undefined
+    const existing = programs.get(longhand)
     const displaced = isTransformDeclaration(longhand)
       ? displaceFlatTransforms(styleState, longhand, programs)
       : displacePlainStyles(styleState, longhand, programs, sourceProp)
 
-    let nextValue = value
-    if (appendClauses) {
-      let base = existing?.value.base ?? value.base
-      if (base === null && displaced !== noPlainValue) {
-        base = plainValueToPayload(displaced, longhand)
-      }
-      nextValue = {
-        base,
-        clauses: existing ? [...existing.value.clauses, ...value.clauses] : value.clauses,
+    // the merge unit is the clause (decision 21): the later contribution
+    // replaces the base and the condition sets it restates; everything else
+    // survives, and an earlier plain value lifts into the base when neither
+    // side states one
+    let earlier = existing?.value ?? null
+    if (displaced !== noPlainValue && (earlier?.base ?? null) === null) {
+      const displacedBase = plainValueToPayload(displaced, longhand)
+      if (displacedBase !== null) {
+        earlier = earlier
+          ? { base: displacedBase, clauses: earlier.clauses }
+          : { base: displacedBase, clauses: [] }
       }
     }
+    const nextValue = earlier ? mergeProgramValues(earlier, value) : value
 
     programs.delete(longhand)
     programs.set(longhand, { property: longhand, value: nextValue, sourceProp })
@@ -302,19 +305,113 @@ export function contributeStylePrograms(
 }
 
 /** mergeStyle calls this so a later plain value replaces any program it covers */
-export function deleteProgramsForStyleKey(
-  programs: Map<string, LonghandProgram>,
-  key: string
-): void {
+/**
+ * A later plain BASE write on a program-owned longhand restates the program's
+ * base clause instead of destroying the program (decision 21): the styled
+ * hover survives a call-site `bg="red"`, whether that override arrives as a
+ * flat value, a plain prop, or a `style` object. Returns true when the value
+ * was fully absorbed and the caller must skip its own store write. Values
+ * that cannot become a payload fall back to wholesale replacement so nothing
+ * mixes stores.
+ */
+export function absorbPlainIntoPrograms(
+  styleState: GetStyleState,
+  key: string,
+  val: unknown
+): boolean {
+  const programs = styleState.programs
+  if (!programs || !programs.size) return false
+
   const declarations = transformDeclarationsFor(key)
-  if (declarations.length) {
-    for (const declaration of declarations) programs.delete(declaration)
-    return
+  const isTransform = declarations.length > 0
+  const longhands: readonly string[] = isTransform
+    ? declarations
+    : (longhandExpansionTable[key] ?? singleKey(key))
+
+  let anyProgram = false
+  for (let index = 0; index < longhands.length; index++) {
+    if (programs.has(longhands[index])) {
+      anyProgram = true
+      break
+    }
   }
-  const longhands = longhandExpansionTable[key]
-  if (longhands) {
-    for (const longhand of longhands) programs.delete(longhand)
+  if (!anyProgram) return false
+
+  // per-slot values: transforms cover their axes uniformly, geometric
+  // shorthands expand by the CSS slot pattern, single keys pass through
+  let perSlot: readonly unknown[] | null
+  if (longhands.length === 1 || isTransform) {
+    perSlot = longhands.length === 1 ? singleValue(val) : [val, val]
   } else {
-    programs.delete(key)
+    perSlot = expandShorthandValue(val, longhands)
   }
+  if (!perSlot) {
+    // unexpandable shorthand over programs: wholesale replacement, caller
+    // writes its store
+    for (let index = 0; index < longhands.length; index++) {
+      programs.delete(longhands[index])
+    }
+    return false
+  }
+
+  for (let index = 0; index < longhands.length; index++) {
+    const longhand = longhands[index]
+    const existing = programs.get(longhand)
+    if (existing) {
+      const payload = plainValueToPayload(perSlot[index], longhand)
+      if (payload === null) {
+        // not expressible as a payload: this longhand reverts to plain
+        programs.delete(longhand)
+        if (!isTransform) writePlainSlot(styleState, longhand, perSlot[index])
+        continue
+      }
+      programs.delete(longhand)
+      programs.set(longhand, {
+        property: longhand,
+        value: mergeProgramValues(existing.value, { base: payload, clauses: emptyClauses }),
+        sourceProp: key,
+      })
+      styleState.usedKeys[longhand] = 1
+    } else if (longhands.length > 1) {
+      if (isTransform) {
+        // a uniform transform value covers every axis: the sibling axis gets a
+        // base-only program so nothing is dropped (`scale: 2` beside a scaleX
+        // program still scales y)
+        const payload = plainValueToPayload(perSlot[index], longhand)
+        if (payload !== null) {
+          programs.set(longhand, {
+            property: longhand,
+            value: { base: payload, clauses: emptyClauses },
+            sourceProp: key,
+          })
+          styleState.usedKeys[longhand] = 1
+        }
+      } else {
+        writePlainSlot(styleState, longhand, perSlot[index])
+      }
+    }
+  }
+  return true
 }
+
+const emptyClauses: readonly never[] = []
+const singleKeyCache: Record<string, [string]> = {}
+function singleKey(key: string): readonly string[] {
+  return (singleKeyCache[key] ||= [key])
+}
+const singleValueBox: [unknown] = [null]
+function singleValue(val: unknown): readonly unknown[] {
+  singleValueBox[0] = val
+  return singleValueBox
+}
+
+function writePlainSlot(
+  styleState: GetStyleState,
+  longhand: string,
+  value: unknown
+): void {
+  styleState.style ||= {}
+  styleState.style[longhand] = value
+  styleState.usedKeys[longhand] = 1
+}
+

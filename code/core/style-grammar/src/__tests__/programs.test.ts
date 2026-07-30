@@ -24,9 +24,10 @@ describe('per-longhand programs', () => {
     ])
 
     expect([...programs.keys()]).toEqual(['backgroundImage', 'backgroundColor'])
+    // the later base replaces the base clause; the hover clause survives
     expect(programs.get('backgroundColor')).toEqual({
       property: 'backgroundColor',
-      value: color,
+      value: { base: 'red', clauses: bgColor.clauses },
       sourceProp: 'backgroundColor',
     })
     expect(programs.get('backgroundImage')).toEqual({
@@ -113,7 +114,7 @@ describe('per-longhand programs', () => {
     ])
   })
 
-  test('replacement drops the earlier program and all of its clauses', () => {
+  test('a later base replaces only the base clause; conditions survive (decision 21)', () => {
     const earlier = value('red', [
       { modifiers: ['hover'], payload: 'green' },
       { modifiers: ['dark'], payload: 'gray' },
@@ -125,8 +126,47 @@ describe('per-longhand programs', () => {
       { prop: 'backgroundColor', value: replacement },
     ]).get('backgroundColor')
 
-    expect(program?.value).toBe(replacement)
-    expect(program?.value.clauses).toEqual([])
-    expect(program?.value).not.toBe(earlier)
+    expect(program?.value.base).toBe('blue')
+    expect(program?.value.clauses).toEqual(earlier.clauses)
+  })
+
+  test('a restated condition set replaces its clause and appends after survivors', () => {
+    const earlier = value('red', [
+      { modifiers: ['dark'], payload: 'gray' },
+      { modifiers: ['hover'], payload: 'green' },
+    ])
+    const later: ParsedValue = { base: null, clauses: [{ modifiers: ['dark'], payload: 'black' }] }
+
+    const program = mergePrograms([
+      { prop: 'backgroundColor', value: earlier },
+      { prop: 'backgroundColor', value: later },
+    ]).get('backgroundColor')
+
+    expect(program?.value.base).toBe('red')
+    // dark was restated: its old clause is gone, the new one appends LAST so
+    // it beats the surviving hover when both match
+    expect(program?.value.clauses).toEqual([
+      { modifiers: ['hover'], payload: 'green' },
+      { modifiers: ['dark'], payload: 'black' },
+    ])
+  })
+
+  test('condition-set equality is order-insensitive', () => {
+    const earlier = value('red', [
+      { modifiers: ['dark', 'hover'], payload: 'green' },
+    ])
+    const later: ParsedValue = {
+      base: null,
+      clauses: [{ modifiers: ['hover', 'dark'], payload: 'blue' }],
+    }
+
+    const program = mergePrograms([
+      { prop: 'backgroundColor', value: earlier },
+      { prop: 'backgroundColor', value: later },
+    ]).get('backgroundColor')
+
+    expect(program?.value.clauses).toEqual([
+      { modifiers: ['hover', 'dark'], payload: 'blue' },
+    ])
   })
 })

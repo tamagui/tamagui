@@ -83,10 +83,10 @@ import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { propMapper } from './propMapper'
 import {
+  absorbPlainIntoPrograms,
   canAppendParsedProgram,
   contributeParsedProgram,
   contributeStylePrograms,
-  deleteProgramsForStyleKey,
   ensureGrammarContext,
 } from './contributePrograms'
 import { evaluateAccumulatedPrograms } from './evaluateAccumulatedPrograms'
@@ -1400,8 +1400,7 @@ export const getSplitStyles: StyleSplitter = (
             styleState,
             contribution.prop,
             { base: null, clauses: [contribution.clause] },
-            key,
-            true
+            key
           )
         }
         return true
@@ -1429,15 +1428,18 @@ export const getSplitStyles: StyleSplitter = (
         ? styleOriginalValues.get(normalized)
         : undefined
       for (const key in normalized) {
+        if (
+          styleState.programs?.size &&
+          absorbPlainIntoPrograms(styleState, key, normalized[key])
+        ) {
+          // a later style-prop value restates the program's base; the
+          // program's conditions survive (decision 21)
+          continue
+        }
         styleState.style[key] = normalized[key]
         // An authored style object is one ordinary contribution, not a permanent
         // higher-precedence tier. Reset the key so any later contribution can win.
         styleState.usedKeys[key] = 1
-        if (styleState.programs) {
-          // a later style-prop value replaces any program it covers, same as
-          // mergeStyle
-          deleteProgramsForStyleKey(styleState.programs, key)
-        }
         if (shouldTrackStyleTokenProvenance) {
           // the literal style prop wins at its position: carry its own token
           // provenance forward, and clear a prior token wherever it supplies a
@@ -2890,10 +2892,9 @@ function mergeStyle(
     styleState.flatTransforms ||= {}
     usedKeys[key] = importance
     if (styleState.programs && importance <= 1) {
-      // the transform family's legacy store is flatTransforms, so a later BASE
-      // transform value replaces the program on every declaration it covers,
-      // same rule as the plain-style branch below
-      deleteProgramsForStyleKey(styleState.programs, key)
+      // a later BASE transform value restates the covered programs' bases;
+      // their conditions survive (decision 21)
+      if (absorbPlainIntoPrograms(styleState, key, val)) return
     }
     styleState.flatTransforms[key] = val
   } else {
@@ -2909,11 +2910,10 @@ function mergeStyle(
       styleState.style ||= {}
       usedKeys[key] = importance
       if (styleState.programs && importance <= 1) {
-        // a later BASE value replaces the whole program on every longhand this
-        // key covers, so one longhand never carries both systems. narrower-
-        // scope writes (pseudo/media importance) are contributions beside the
-        // program, not replacements of it
-        deleteProgramsForStyleKey(styleState.programs, key)
+        // a later BASE value restates the program's base clause; the
+        // program's conditions survive (decision 21). narrower-scope writes
+        // (pseudo/media importance) are contributions beside the program
+        if (absorbPlainIntoPrograms(styleState, key, out)) return
       }
       styleState.style[key] =
         // if you dont do this you'll be passing props.transform arrays directly here and then mutating them

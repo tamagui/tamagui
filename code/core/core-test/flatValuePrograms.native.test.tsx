@@ -106,7 +106,10 @@ test('program values run through native fixStyles like plain values', () => {
   expect(result.style?.borderStyle).toBe('solid')
 })
 
-test('a later plain value still replaces the program on native', () => {
-  const result = split({ backgroundColor: 'red hover:blue', bg: 'green' }, { hover: true })
-  expect(result.style?.backgroundColor).toBe('green')
+test('a later plain value restates the base on native; the hover survives', () => {
+  const idle = split({ backgroundColor: 'red hover:blue', bg: 'green' })
+  expect(idle.style?.backgroundColor).toBe('green')
+
+  const hovered = split({ backgroundColor: 'red hover:blue', bg: 'green' }, { hover: true })
+  expect(hovered.style?.backgroundColor).toBe('blue')
 })

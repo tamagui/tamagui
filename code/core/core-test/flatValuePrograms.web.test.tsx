@@ -50,13 +50,13 @@ test('tokens resolve to variables and media clauses wrap', () => {
   }
 })
 
-test('a later plain value replaces the program wholesale', () => {
+test('a later plain value restates the base; the hover survives (decision 21)', () => {
   const result = split({ backgroundColor: 'red hover:blue', bg: 'green' })
-  // bg is the later contribution and expands to backgroundColor: plain path
-  expect(result.classNames.backgroundColor ?? '').not.toMatch(/^_bc-/)
-  expect(Object.keys(result.rulesToInsert).some((id) => id.startsWith('_bc-'))).toBe(
-    false
-  )
+  const className = result.classNames.backgroundColor
+  expect(className).toMatch(/^_bc-/)
+  const rules = rulesFor(result, className)
+  expect(rules[0]).toBe(`.${className}{background-color:green}`)
+  expect(rules[1]).toBe(`.${className}:where(:hover){background-color:blue}`)
 })
 
 test('a later program replaces the plain value wholesale', () => {
@@ -106,16 +106,16 @@ test('noClass configurations keep the legacy path instead of dropping the value'
   )
 })
 
-test('a later style prop replaces an earlier program', () => {
-  // S2: the style attribute is an ordinary later contribution and must win
+test('a later style prop restates the base; the hover survives (decision 21)', () => {
   const result = split({
     backgroundColor: 'red hover:blue',
     style: { backgroundColor: 'green' },
   })
-  expect(String(result.classNames.backgroundColor ?? '')).not.toMatch(/^_bc-/)
-  expect(Object.keys(result.rulesToInsert).some((id) => id.startsWith('_bc-'))).toBe(
-    false
-  )
+  const className = result.classNames.backgroundColor
+  expect(className).toMatch(/^_bc-/)
+  const rules = rulesFor(result, className)
+  expect(rules[0]).toContain('green')
+  expect(rules[1]).toContain(':where(:hover)')
 })
 
 test('animatable defaults do not displace a program', () => {

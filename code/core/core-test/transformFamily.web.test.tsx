@@ -130,13 +130,15 @@ test('a program displaces a legacy uniform scale onto the other axis', () => {
   expect(JSON.stringify(rulesFor(result, transformClass))).toContain('scaleY(2)')
 })
 
-test('a later plain transform value replaces the program', () => {
-  // the plain uniform scale covers both axis declarations, so both programs go
+test('a later plain transform value restates the base; the hover survives', () => {
+  // the plain uniform scale restates both axis bases (decision 21)
   const result = split({ scaleX: '1 hover:3', scale: 2 })
-  expect(result.classNames['--t-scale-x']).toBeUndefined()
-  expect(result.classNames['--t-scale-y']).toBeUndefined()
-  expect(result.classNames.scale).toBeUndefined()
-  expect(result.classNames.transform).toBeTruthy()
+  const xClass = result.classNames['--t-scale-x']
+  expect(xClass).toBeTruthy()
+  const rules = result.rulesToInsert[xClass]?.[4] ?? []
+  expect(rules[0]).toContain('2')
+  expect(rules[1]).toContain(':where(:hover)')
+  expect(result.classNames['--t-scale-y']).toBeTruthy()
 })
 
 test('non-family transform parts stay legacy', () => {
