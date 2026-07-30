@@ -156,6 +156,26 @@ describe('background family splitting', () => {
     })
   })
 
+  test('reports every image after the first in one segment', () => {
+    expect(
+      splitBackgroundValue({ base: 'url(a.png) url(b.png)', clauses: [] }, new Set())
+    ).toEqual({
+      entries: [
+        {
+          property: 'backgroundImage',
+          value: { base: 'url(a.png)', clauses: [] },
+        },
+      ],
+      errors: [
+        {
+          code: 'unsupported-bg-component',
+          component: 'url(b.png)',
+          where: 'base',
+        },
+      ],
+    })
+  })
+
   test('recognizes image-set and repeating gradients as image functions', () => {
     const value: ParsedValue = {
       base: 'image-set(url(a.png) 1x, url(b.png) 2x)',

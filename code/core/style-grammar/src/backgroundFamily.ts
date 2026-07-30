@@ -132,13 +132,13 @@ export function splitBackgroundValue(
     if (payload === null) continue
 
     let colorComponent: string | null = null
-    const imageComponents: string[] = []
+    let imageComponent: string | null = null
     const where = isBase ? 'base' : clauseIndex
 
     for (const component of splitTopLevelComponents(payload)) {
       const kind = classifyComponent(component, colorTokens)
-      if (kind === 'image') {
-        imageComponents.push(component)
+      if (kind === 'image' && imageComponent === null) {
+        imageComponent = component
       } else if (kind === 'color' && colorComponent === null) {
         colorComponent = component
       } else {
@@ -158,15 +158,14 @@ export function splitBackgroundValue(
       }
     }
 
-    if (imageComponents.length) {
+    if (imageComponent !== null) {
       hasImage = true
-      const imagePayload = imageComponents.join(' ')
       if (isBase) {
-        imageProgram.base = imagePayload
+        imageProgram.base = imageComponent
       } else {
         imageProgram.clauses.push({
           modifiers: value.clauses[clauseIndex].modifiers,
-          payload: imagePayload,
+          payload: imageComponent,
         })
       }
     }

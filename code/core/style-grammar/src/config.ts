@@ -36,6 +36,11 @@ export const grammarPlatformNames: ReadonlySet<string> = new Set([
   'tvos',
 ])
 
+export const grammarPlatformGroups: ReadonlyMap<string, ReadonlySet<string>> = new Map([
+  ['native', new Set(['android', 'ios'])],
+  ['tv', new Set(['androidtv', 'tvos'])],
+])
+
 function addNames(target: Set<string>, source: Names | undefined): void {
   if (!source) return
   if (Array.isArray(source)) {

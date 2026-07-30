@@ -1,6 +1,7 @@
 export * from './backgroundFamily'
 export * from './candidate'
 export * from './config'
+export * from './evaluateProgram'
 export * from './modifierRegistry'
 export * from './programs'
 export * from './registry'

@@ -10,6 +10,7 @@
     "src/backgroundFamily.ts",
     "src/candidate.ts",
     "src/config.ts",
+    "src/evaluateProgram.ts",
     "src/modifierRegistry.ts",
     "src/programs.ts",
     "src/registry.ts",
