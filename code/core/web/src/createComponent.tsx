@@ -1373,14 +1373,26 @@ export function createComponent<
 
     // if its a group its gotta listen for pseudos to emit them to children
 
-    const runtimePressStyle = !disabled && noClass && pseudos?.pressStyle
-    const runtimeFocusStyle = !disabled && noClass && pseudos?.focusStyle
-    const runtimeFocusVisibleStyle = !disabled && noClass && pseudos?.focusVisibleStyle
+    // native flat-value programs surface the interaction states their clauses
+    // reference; they need the same event attachment as pseudo-style objects
+    const programStates = !disabled ? splitStyles?.programStates : undefined
+
+    const runtimePressStyle =
+      !disabled &&
+      ((noClass && pseudos?.pressStyle) ||
+        programStates?.has('press') ||
+        programStates?.has('active'))
+    const runtimeFocusStyle =
+      !disabled && ((noClass && pseudos?.focusStyle) || programStates?.has('focus'))
+    const runtimeFocusVisibleStyle =
+      !disabled &&
+      ((noClass && pseudos?.focusVisibleStyle) || programStates?.has('focus-visible'))
 
     const attachFocus = Boolean(
       runtimePressStyle ||
       runtimeFocusStyle ||
       runtimeFocusVisibleStyle ||
+      programStates?.has('focus-within') ||
       onFocus ||
       onBlur ||
       !!componentContext.setParentFocusState
@@ -1401,7 +1413,8 @@ export function createComponent<
       pseudos?.focusVisibleStyle
     )
 
-    const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
+    const runtimeHoverStyle =
+      !disabled && ((noClass && pseudos?.hoverStyle) || programStates?.has('hover'))
     // with a platform pseudo driver the hover STATE is driver-sourced; only keep
     // the JS hover listeners when something else needs them (dynamic group
     // children, or the user's own onMouseEnter/Leave handlers below).

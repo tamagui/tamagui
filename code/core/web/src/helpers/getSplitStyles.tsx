@@ -82,6 +82,7 @@ import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { propMapper } from './propMapper'
 import { contributeStylePrograms, deleteProgramsForStyleKey } from './contributePrograms'
+import { evaluateAccumulatedPrograms } from './evaluateAccumulatedPrograms'
 import { lowerAccumulatedPrograms } from './lowerAccumulatedPrograms'
 import {
   type PseudoDescriptorKey,
@@ -1820,12 +1821,13 @@ export const getSplitStyles: StyleSplitter = (
         // per-longhand programs instead of one plain value. the indexOf check
         // is exact — every clause contains a colon — and keeps colon-free
         // values (the overwhelming majority) off the parse cache entirely.
-        // gated on shouldDoClasses because only the class flush can express a
-        // program: noClass/animated-inline configurations keep the legacy path
-        // until native evaluation (lane W3) lands
+        // on web, gated on shouldDoClasses because only the class flush can
+        // express a program (noClass/animated-inline web configurations keep
+        // the legacy path); on native, evaluation at the end of the pass
+        // always applies
         if (
-          process.env.TAMAGUI_TARGET === 'web' &&
-          shouldDoClasses &&
+          (process.env.TAMAGUI_TARGET === 'native' ||
+            (process.env.TAMAGUI_TARGET === 'web' && shouldDoClasses)) &&
           typeof val === 'string' &&
           val.indexOf(':') !== -1 &&
           contributeStylePrograms(styleState, key, val)
@@ -2607,6 +2609,23 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  // lane W3: native programs evaluate last-matching-clause against the live
+  // conditions; referenced media keys ride the hasMedia subscription and
+  // referenced states surface for event attachment in createComponent
+  let programStates: Set<string> | null = null
+  if (process.env.TAMAGUI_TARGET === 'native' && styleState.programs?.size) {
+    const info = evaluateAccumulatedPrograms(styleState, themeName, mediaState)
+    programStates = info.usedStates
+    if (info.usedMediaKeys) {
+      if (!hasMedia || typeof hasMedia === 'boolean') {
+        hasMedia = new Set()
+      }
+      for (const usedKey of info.usedMediaKeys) {
+        ;(hasMedia as Set<string>).add(usedKey)
+      }
+    }
+  }
+
   const result: GetStyleResult = {
     hasMedia,
     fontFamily: styleState.fontFamily,
@@ -2620,6 +2639,7 @@ export const getSplitStyles: StyleSplitter = (
     mediaGroups,
     overriddenContextProps: styleState.overriddenContextProps,
     pseudoTransitions: styleState.pseudoTransitions,
+    ...(programStates && { programStates }),
   }
 
   const asChildExceptStyleLike =

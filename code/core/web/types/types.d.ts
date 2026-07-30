@@ -2027,6 +2027,7 @@ export type GetStyleResult = {
     mediaGroups?: Set<string>;
     overriddenContextProps?: Record<string, any>;
     pseudoTransitions?: PseudoTransitions | null;
+    programStates?: Set<string>;
     effectiveTransition?: TransitionProp | null;
 };
 export type ClassNamesObject = Record<string, string>;

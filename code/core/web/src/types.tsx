@@ -3620,6 +3620,9 @@ export type GetStyleResult = {
   overriddenContextProps?: Record<string, any>
   // Transitions extracted from pseudo-style props (e.g., hoverStyle.transition)
   pseudoTransitions?: PseudoTransitions | null
+  // native flat-value programs: interaction states referenced by any clause,
+  // so createComponent attaches the matching event handlers (lane W3)
+  programStates?: Set<string>
   // Effective transition to use (accounts for entering pseudo states)
   effectiveTransition?: TransitionProp | null
 }
