@@ -1595,6 +1595,21 @@ export const getSplitStyles: StyleSplitter = (
           addStyleToInsertRules(rulesToInsert, containerCSS)
         }
       }
+      if (keyInit === 'container' && valInit) {
+        if (process.env.TAMAGUI_TARGET === 'web') {
+          // the boolean container shorthand: establish an unnamed inline-size
+          // query container (decision 17); `@sm:` clauses target it as the
+          // nearest container. named containers author container-name /
+          // container-type as regular style props instead
+          addStyleToInsertRules(rulesToInsert, [
+            'container',
+            undefined,
+            't_container',
+            undefined,
+            [`.t_container { container-type: ${webContainerType || 'inline-size'}; }`],
+          ] satisfies StyleObject)
+        }
+      }
       if (keyInit === 'transition' && typeof valInit === 'string') {
         const animationConfig = driver?.animations?.[valInit]
         if (
@@ -2478,7 +2493,7 @@ export const getSplitStyles: StyleSplitter = (
   // subscription; referenced states surface for event attachment
   let programStates: Set<string> | null = null
   if (process.env.TAMAGUI_TARGET === 'native' && styleState.programs?.size) {
-    const info = evaluateAccumulatedPrograms(styleState, themeName, mediaState)
+    const info = evaluateAccumulatedPrograms(styleState, themeName, mediaState, groupContext)
     programStates = info.usedStates
     if (info.usedMediaKeys) {
       if (!hasMedia) {
@@ -2491,6 +2506,28 @@ export const getSplitStyles: StyleSplitter = (
       }
       // hasMedia === true means subscribe-to-all and already covers the keys
     }
+    // group/container clauses subscribe through the same context channel the
+    // legacy $group styles use: keys feed the per-name listeners, sizes feed
+    // the layout-to-media math inside subscribeToContextGroup
+    if (info.usedGroupKeys) {
+      pseudoGroups ||= new Set()
+      for (const groupKey of info.usedGroupKeys) {
+        pseudoGroups.add(groupKey)
+      }
+    }
+    if (info.usedGroupSizes) {
+      mediaGroups ||= new Set()
+      for (const sizeKey of info.usedGroupSizes) {
+        mediaGroups.add(sizeKey)
+      }
+    }
+  }
+
+  // on native, container config is context + layout measurement, never a
+  // react-native style key
+  if (process.env.TAMAGUI_TARGET === 'native' && styleState.style) {
+    if ('containerType' in styleState.style) delete styleState.style.containerType
+    if ('containerName' in styleState.style) delete styleState.style.containerName
   }
 
   // style prop after:
@@ -2740,6 +2777,7 @@ export const getSplitStyles: StyleSplitter = (
         }
         const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
         const groupClassName = props.group ? `t_group_${props.group}` : ''
+        const containerClassName = props.container ? 't_container' : ''
         const componentNameFinal = props.componentName || staticConfig.componentName
         const componentNameClassName =
           props.asChild || !componentNameFinal || componentNameFinal === 'Text'
@@ -2758,6 +2796,7 @@ export const getSplitStyles: StyleSplitter = (
           }
         }
         if (groupClassName) classList.push(groupClassName)
+        if (containerClassName) classList.push(containerClassName)
         // use className variable which may have been updated by tailwind preprocessing
         if (className) classList.push(className)
         const finalClassName = classList.join(' ')

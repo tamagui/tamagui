@@ -179,6 +179,24 @@ test('sibling expansion never clobbers a later authored longhand', () => {
   expect(String(left)).toContain('100')
 })
 
+test('container clauses lower to @container queries', () => {
+  const result = split({ backgroundColor: 'red @sm:blue' })
+  const className = result.classNames.backgroundColor
+  const rules = rulesFor(result, className)
+  expect(rules[1]).toMatch(/^@container \(/)
+
+  const named = split({ backgroundColor: 'red @sm/card:blue' })
+  const namedRules = rulesFor(named, named.classNames.backgroundColor)
+  expect(namedRules[1]).toMatch(/^@container card \(/)
+})
+
+test('the boolean container prop establishes an inline-size container', () => {
+  const result = split({ container: true, backgroundColor: 'red' })
+  const rules = rulesFor(result, 't_container')
+  expect(rules[0]).toBe('.t_container { container-type: inline-size; }')
+  expect(String(result.viewProps.className)).toContain('t_container')
+})
+
 test('theme clause lowers to the is-or-within selector', () => {
   const result = split({ backgroundColor: 'red dark:blue' })
   const className = result.classNames.backgroundColor

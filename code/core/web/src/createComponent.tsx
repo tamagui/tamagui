@@ -565,9 +565,18 @@ export function createComponent<
       })
     }, [platformPseudo, props.disabled])
 
+    // a component is a query container when any container prop says so; the
+    // boolean `container` is the unnamed inline-size shorthand (decision 17)
+    const containerName = props.containerName as string | undefined
+    const isContainer = !!(
+      props.container ||
+      containerName ||
+      (props.containerType && props.containerType !== 'normal')
+    )
+
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
-      if (!groupName || props.passThrough) {
+      if ((!groupName && !isContainer) || props.passThrough) {
         return groupContextParent
       }
 
@@ -592,21 +601,35 @@ export function createComponent<
         },
       }
 
-      return {
-        ...groupContextParent,
-        [groupName]: {
-          state: {
-            pseudo: defaultComponentStateMounted,
-          },
-          subscribe: (listener) => {
-            const dispose = stateRef.current.group?.subscribe(listener)
-            return () => {
-              dispose?.()
-            }
-          },
+      // one entry object serves every key this component provides: the group
+      // name and the container keys share the same state and emitter
+      const entry: SingleGroupContext = {
+        state: {
+          pseudo: defaultComponentStateMounted,
+        },
+        subscribe: (listener) => {
+          const dispose = stateRef.current.group?.subscribe(listener)
+          return () => {
+            dispose?.()
+          }
         },
       }
-    }, [stateRef, groupName, groupContextParent])
+
+      const next: AllGroupContexts = { ...groupContextParent }
+      if (groupName) {
+        next[groupName] = entry
+      }
+      if (isContainer) {
+        // `@sm:` reads the nearest container of any name, so every container
+        // writes the `@` key; a named one also writes `@name`. group names
+        // cannot contain `@`, so the namespaces never collide
+        next['@'] = entry
+        if (containerName) {
+          next[`@${containerName}`] = entry
+        }
+      }
+      return next
+    }, [stateRef, groupName, containerName, isContainer, groupContextParent])
 
     // if our animation driver supports avoidReRenders, we'll replace this below with
     // a version that essentially uses an internall emitter rather than setting state
@@ -813,7 +836,9 @@ export function createComponent<
       }
     }
 
-    const groupContext = groupName ? allGroupContexts?.[groupName] || null : null
+    // this component's own entry: same object under every key it provides
+    const groupContext =
+      groupName || isContainer ? allGroupContexts?.[groupName ?? '@'] || null : null
 
     // one tiny mutation 🙏 get width/height optimistically from raw values if possible
     // if set hardcoded it avoids extra renders

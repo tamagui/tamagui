@@ -308,6 +308,14 @@ export type TamaguiComponentPropsBaseBase = {
   group?: GroupNames | boolean
 
   /**
+   * Marks this component as a query container: the shorthand for an unnamed
+   * `containerType="inline-size"` container that `@sm:`-style clauses in
+   * children measure against. Use the `containerName` / `containerType` style
+   * properties for named or full-size containers.
+   */
+  container?: boolean
+
+  /**
    * Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
    * See: https://tamagui.dev/docs/intro/props
    */
@@ -2620,6 +2628,12 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   containerType?: Properties['containerType']
+  /**
+   * Names this element as a query container for `@sm/name:`-style clauses.
+   * Lowers to CSS `container-name` on web; on native it configures the
+   * container context instead of emitting a style.
+   */
+  containerName?: string
   /**
    * Web-only style property. Will be omitted on native.
    */

@@ -5,23 +5,31 @@
 // states re-evaluate through the normal componentState re-render loop, media
 // through the same hasMedia subscription legacy media objects use.
 //
-// W3 v1 scope: state, theme, media, and platform clauses. Group and container
-// clauses need the component-tree wiring (group emitters, container
-// measurement) and are skipped with one development note each.
+// Group clauses read the parent group's pseudo state and container clauses the
+// parent container's measured layout, both through the same GroupContext
+// channel legacy `$group-*` styles use: registration rides pseudoGroups /
+// mediaGroups so `subscribeToContextGroup` feeds `componentState.group`, and
+// container context entries are keyed `@` / `@name` — group names cannot
+// contain `@`, so the two namespaces share one context without collisions.
 
 import { isAndroid, isIos, isTV } from '@tamagui/constants'
 import {
   composeTransformArray,
   evaluateProgram,
+  parseContainerModifier,
+  parseGroupModifier,
   resolvePayload,
   serializePayloadNative,
   transformPropForDeclaration,
   unitlessNumberProperties,
   type ActiveConditions,
+  type ContainerModifier,
+  type GroupModifier,
   type TransformEntry,
 } from '@tamagui/style-grammar'
 
-import type { GetStyleState } from '../types'
+import { mediaKeyMatch } from '../hooks/useMedia'
+import type { AllGroupContexts, GetStyleState, TamaguiComponentState } from '../types'
 import { ensureGrammarContext } from './contributePrograms'
 
 const platformName = isIos
@@ -33,8 +41,6 @@ const platformName = isIos
       ? 'androidtv'
       : 'android'
     : 'native'
-
-const noMatch = () => false
 
 // the states this platform can actually source right now: componentState
 // fields plus enter/exit from the lifecycle. component-tier states (checked,
@@ -62,6 +68,79 @@ const nativeLengthOverrides: ReadonlySet<string> = new Set([
   'gridColumnGap',
 ])
 
+// grammar group states map to the camelCase keys `subscribeToContextGroup`
+// writes into componentState.group[name].pseudo; press and active share a
+// source exactly like the subject-state set above
+const groupStateKeys: Readonly<Record<string, string>> = {
+  hover: 'hover',
+  press: 'press',
+  active: 'press',
+  focus: 'focus',
+  'focus-visible': 'focusVisible',
+  'focus-within': 'focusWithin',
+  disabled: 'disabled',
+}
+
+// modifier spellings are interned by the parse cache, so parsing each distinct
+// group/container modifier once is stable; cap-and-clear like the other caches
+const groupModifierCache = new Map<string, GroupModifier | null>()
+const containerModifierCache = new Map<string, ContainerModifier | null>()
+
+function cachedGroupModifier(modifier: string): GroupModifier | null {
+  let parsed = groupModifierCache.get(modifier)
+  if (parsed === undefined) {
+    if (groupModifierCache.size > 1000) groupModifierCache.clear()
+    parsed = parseGroupModifier(modifier)
+    groupModifierCache.set(modifier, parsed)
+  }
+  return parsed
+}
+
+function cachedContainerModifier(modifier: string): ContainerModifier | null {
+  let parsed = containerModifierCache.get(modifier)
+  if (parsed === undefined) {
+    if (containerModifierCache.size > 1000) containerModifierCache.clear()
+    parsed = parseContainerModifier(modifier)
+    containerModifierCache.set(modifier, parsed)
+  }
+  return parsed
+}
+
+function containerContextKey(parsed: ContainerModifier): string {
+  return parsed.container === null ? '@' : `@${parsed.container}`
+}
+
+// evaluateProgram's group/container callbacks run synchronously inside one
+// evaluate call, so the current component's sources live in module state
+// instead of per-call closures (hot-path rules)
+let activeGroupState: TamaguiComponentState['group'] | undefined
+let activeGroupContext: AllGroupContexts | null | undefined
+
+function matchGroupModifier(modifier: string): boolean {
+  const parsed = cachedGroupModifier(modifier)
+  if (!parsed) return false
+  const stateKey = groupStateKeys[parsed.state]
+  if (!stateKey) return false
+  const key = parsed.group ?? 'true'
+  // componentState carries the subscribed updates; the context's own state is
+  // the initial snapshot before the first emit, same as the legacy path
+  const pseudo =
+    activeGroupState?.[key]?.pseudo ?? activeGroupContext?.[key]?.state.pseudo
+  return !!pseudo?.[stateKey]
+}
+
+function matchContainerModifier(modifier: string): boolean {
+  const parsed = cachedContainerModifier(modifier)
+  if (!parsed) return false
+  const key = containerContextKey(parsed)
+  const media = activeGroupState?.[key]?.media
+  if (media && parsed.size in media) return !!media[parsed.size]
+  // before the first subscribed update, measure directly against the
+  // container's last known layout (also covers hardcoded width/height parents)
+  const layout = activeGroupContext?.[key]?.state.layout
+  return layout ? mediaKeyMatch(parsed.size, layout) : false
+}
+
 const noted = new Set<string>()
 function noteOnce(key: string, message: string) {
   if (process.env.NODE_ENV === 'development' && !noted.has(key)) {
@@ -76,12 +155,20 @@ export interface EvaluatedProgramsInfo {
   usedMediaKeys: string[] | null
   /** interaction states any clause referenced, for event attachment */
   usedStates: Set<string> | null
+  /**
+   * group-context keys any group/container clause referenced (`true`, `card`,
+   * `@`, `@card`), for the pseudoGroups subscription set
+   */
+  usedGroupKeys: Set<string> | null
+  /** container sizes any clause referenced, for the mediaGroups layout math */
+  usedGroupSizes: string[] | null
 }
 
 export function evaluateAccumulatedPrograms(
   styleState: GetStyleState,
   themeName: string,
-  mediaState: Record<string, boolean | undefined>
+  mediaState: Record<string, boolean | undefined>,
+  groupContext: AllGroupContexts | null | undefined
 ): EvaluatedProgramsInfo {
   const programs = styleState.programs!
   const context = ensureGrammarContext(styleState)
@@ -116,19 +203,24 @@ export function evaluateAccumulatedPrograms(
     if (mediaState[key]) media.add(key)
   }
 
+  activeGroupState = componentState.group
+  activeGroupContext = groupContext
+
   const active: ActiveConditions = {
     states,
     themes,
     media,
     platform: platformName,
-    groups: noMatch,
-    containers: noMatch,
+    groups: matchGroupModifier,
+    containers: matchContainerModifier,
   }
 
   const getValue = context.createNativeValueGetter(styleState.theme)
 
   let usedMediaKeys: string[] | null = null
   let usedStates: Set<string> | null = null
+  let usedGroupKeys: Set<string> | null = null
+  let usedGroupSizes: string[] | null = null
   let transformResults: Record<string, string | number> | null = null
 
   for (const program of programs.values()) {
@@ -150,11 +242,36 @@ export function evaluateAccumulatedPrograms(
               `[tamagui] ${program.sourceProp}: "${modifier}:" is a component-tier state with no native source yet; the clause is skipped`
             )
           }
-        } else if (kind === 'group' || kind === 'container') {
-          noteOnce(
-            `${kind}\0${modifier}`,
-            `[tamagui] ${program.sourceProp}: "${modifier}:" ${kind} clauses are not evaluated on native yet; the clause is skipped`
-          )
+        } else if (kind === 'group') {
+          const parsed = cachedGroupModifier(modifier)
+          if (parsed && groupStateKeys[parsed.state]) {
+            const key = parsed.group ?? 'true'
+            ;(usedGroupKeys ||= new Set()).add(key)
+            if (!groupContext?.[key]) {
+              noteOnce(
+                `group\0${key}`,
+                `[tamagui] ${program.sourceProp}: "${modifier}:" has no parent providing group "${key === 'true' ? '' : key}"`
+              )
+            }
+          } else {
+            noteOnce(
+              `group\0${modifier}`,
+              `[tamagui] ${program.sourceProp}: "${modifier}:" group state has no native source; the clause is skipped`
+            )
+          }
+        } else if (kind === 'container') {
+          const parsed = cachedContainerModifier(modifier)
+          if (parsed) {
+            const key = containerContextKey(parsed)
+            ;(usedGroupKeys ||= new Set()).add(key)
+            ;(usedGroupSizes ||= []).push(parsed.size)
+            if (!groupContext?.[key]) {
+              noteOnce(
+                `container\0${key}`,
+                `[tamagui] ${program.sourceProp}: "${modifier}:" has no parent container${parsed.container ? ` named "${parsed.container}"` : ''}`
+              )
+            }
+          }
         }
       }
     }
@@ -203,12 +320,16 @@ export function evaluateAccumulatedPrograms(
     styleState.style[longhand] = value
   }
 
+  // module state must not retain the component past this call
+  activeGroupState = undefined
+  activeGroupContext = undefined
+
   if (transformResults) {
     styleState.style ||= {}
     composeNativeTransform(styleState, transformResults)
   }
 
-  return { usedMediaKeys, usedStates }
+  return { usedMediaKeys, usedStates, usedGroupKeys, usedGroupSizes }
 }
 
 /**
