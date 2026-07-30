@@ -63,11 +63,15 @@ boundaries.
     `containerName` and `containerType`.
 18. Plain responsive modifiers such as `sm:` are viewport media queries. The
     `@` prefix is reserved for container queries: `@sm:` targets the nearest
-    container and `@sm/card:` targets a named container. Container sizes
-    share the media size-key namespace but need their own query table (the
-    comparison direction differs); config creation derives both and
-    validates every size key exists in each, so a missing container query
-    is a config-time error, never a lowering-time throw.
+    container and `@sm/card:` targets a named container. `@sm:` applies the
+    same condition the `sm` media key describes, measured against the
+    container instead of the viewport — same comparison direction, no
+    inversion, matching what `@container` emission already does today.
+    Container sizes are the size-measuring subset of the media keys:
+    interaction keys like `hoverNone`/`pointerCoarse` register no `@` form.
+    Config creation derives the subset and the query tables, so a
+    meaningless or missing container query is a config-time error, never a
+    lowering-time throw.
 19. Style prop values need no bracket or underscore escaping. A top-level
     colon is never valid inside a CSS value, so conditional clauses are
     detectable unambiguously and the base/payload segments are plain CSS
