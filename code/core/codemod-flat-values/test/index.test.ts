@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, test } from 'bun:test'
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { SiteReport } from '../src/convert'
+import { sanitize, type SiteReport } from '../src/convert'
 import {
   codemodMediaNames,
   createModifierRegistry,
@@ -44,11 +44,37 @@ function runOn(inputs: readonly string[]): Result {
 }
 
 function run(source: string): Result {
+  return runOn([fixture(source)])
+}
+
+function fixture(source: string): string {
   const directory = mkdtempSync(join(tmpdir(), 'flat-values-fixture-'))
   temporaryDirectories.push(directory)
   const sourcePath = join(directory, 'fixture.tsx')
   writeFileSync(sourcePath, source)
-  return runOn([sourcePath])
+  return sourcePath
+}
+
+/** the run itself is the subject: what it exits with and what it leaves behind */
+function runRaw(inputs: readonly string[]): {
+  exitCode: number
+  stderr: string
+  reportPath: string
+} {
+  const directory = mkdtempSync(join(tmpdir(), 'flat-values-codemod-'))
+  temporaryDirectories.push(directory)
+  const reportPath = join(directory, 'report.md')
+  const result = Bun.spawnSync({
+    cmd: [process.execPath, 'src/index.ts', '--report', reportPath, ...inputs],
+    cwd: packageDir,
+    stderr: 'pipe',
+    stdout: 'pipe',
+  })
+  return {
+    exitCode: result.exitCode,
+    stderr: result.stderr.toString(),
+    reportPath,
+  }
 }
 
 function sites(result: Result): SiteReport[] {
@@ -124,7 +150,8 @@ afterEach(() => {
 describe('base values', () => {
   test('a numeric base a condition targets folds into the program', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View opacity={0.5} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
       )`)
     )
@@ -138,7 +165,8 @@ describe('base values', () => {
 
   test('a numeric shorthand base folds once for every longhand it expands to', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View borderWidth={1} focusStyle={{ borderWidth: 2 }} />
       )`)
     )
@@ -151,7 +179,8 @@ describe('base values', () => {
 
   test('a base no condition targets stays exactly as authored', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View width={100} bg="$blue10" hoverStyle={{ bg: 'red' }} />
       )`)
     )
@@ -165,7 +194,8 @@ describe('base values', () => {
 
   test('a token inside a composite value loses its prefix when the program has clauses', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View boxShadow="0 4px 12px $shadowColor" hoverStyle={{ boxShadow: 'none' }} />
       )`)
     )
@@ -176,7 +206,8 @@ describe('base values', () => {
 
   test('a clause-free token keeps its "$" until the runtime can read the flat spelling', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View padding="$4" bg="$blue10" hoverStyle={{ bg: 'red' }} />
       )`)
     )
@@ -189,7 +220,8 @@ describe('base values', () => {
 
   test('a rewritable token expression also waits for the clause-free cutover', () => {
     const site = only(
-      run(`export const Fixture = ({ active }) => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = ({ active }) => (
         <View color={active ? '$red10' : '$blue10'} />
       )`)
     )
@@ -201,7 +233,8 @@ describe('base values', () => {
 
   test('a dot-path token is reported instead of renamed, clauses or not', () => {
     const withClause = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View gap="$1.5" hoverStyle={{ gap: '$2' }} />
       )`)
     )
@@ -209,24 +242,28 @@ describe('base values', () => {
     expect(withClause.after).toContain('gap="$1.5"')
 
     const clauseFree = only(
-      run(
-        `export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 'red' }} />`
-      )
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 'red' }} />`)
     )
     expect(codes(clauseFree)).toContain('legacy-token-dot-path')
-  })
+    // two runs in one test: each spawns the CLI over a fresh ts-morph project
+  }, 30_000)
 
   test('a site with no v1 syntax is not a conversion site', () => {
-    expect(sites(run(`export const Fixture = () => <View width={10} m={2} />`))).toEqual(
-      []
-    )
+    expect(
+      sites(
+        run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => <View width={10} m={2} />`)
+      )
+    ).toEqual([])
   })
 })
 
 describe('conditions', () => {
   test('state, theme, and media conditions become one ordered program', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View
           bg="$surface"
           hoverStyle={{ bg: '$surfaceHover' }}
@@ -249,7 +286,8 @@ describe('conditions', () => {
 
   test('nested condition objects become one clause per condition set', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View backgroundColor="blue" $web={{ my: 10, hoverStyle: { backgroundColor: 'green' } }} />
       )`)
     )
@@ -270,7 +308,8 @@ describe('conditions', () => {
 
   test('a named group state condition keeps its group name', () => {
     const site = labeled(
-      run(`const Inner = styled(View, {
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+const Inner = styled(View, {
         color: 'black',
         '$group-card-hover': { color: 'red' },
       })`),
@@ -285,7 +324,8 @@ describe('conditions', () => {
   })
 
   test('a group container size condition splits into a container query and adds the container', () => {
-    const result = run(`const Card = styled(View, { group: 'card' })
+    const result = run(`import { Text, TextInput, View, styled } from 'tamagui'
+const Card = styled(View, { group: 'card' })
       const Inner = styled(View, {
         color: 'black',
         '$group-card-maxMd': { color: 'red' },
@@ -297,6 +337,9 @@ describe('conditions', () => {
     const [card, inner] = found
     expect(card.after).toBe(`group: 'card', container: true, containerName: "card"`)
     expect(card.notes.length).toBe(1)
+    // this is the only declaration of the group in the file, but no JSX ancestry
+    // shows it wrapping the consumer, so the placement is the human's call
+    expect(codes(card)).toEqual(['unproven-container-group'])
     // core does not forward containerName yet, so the named query is not silently
     // presented as working
     expect(pendingCodes(card)).toEqual(['container-name-not-wired'])
@@ -318,7 +361,8 @@ describe('conditions', () => {
 
   test('a group condition with no state and no size is reported', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View bg="red" $group-card={{ bg: 'blue' }} />
       )`)
     )
@@ -330,7 +374,8 @@ describe('conditions', () => {
 
   test('a conditional non-style prop is reported, never dropped', () => {
     const site = only(
-      run(`export const Fixture = () => <Text $sm={{ numberOfLines: 2 }} width={200} />`)
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => <Text $sm={{ numberOfLines: 2 }} width={200} />`)
     )
 
     expect(codes(site)).toEqual(['non-style-condition-entry'])
@@ -339,7 +384,8 @@ describe('conditions', () => {
 
   test('a runtime spread inside a condition object is reported', () => {
     const site = only(
-      run(`export const Fixture = (props) => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = (props) => (
         <TextInput bg="$blue10" focusStyle={{ margin: 0, ...props.focusStyle }} />
       )`)
     )
@@ -352,7 +398,8 @@ describe('conditions', () => {
 describe('dynamic values', () => {
   test('token spellings inside a conditional expression are rewritten in place', () => {
     const site = only(
-      run(`export const Fixture = ({ active }) => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = ({ active }) => (
         <View color={active ? '$red10' : '$blue10'} hoverStyle={{ color: '$green10' }} />
       )`)
     )
@@ -366,7 +413,8 @@ describe('dynamic values', () => {
 
   test('a provable dynamic leaf becomes an interpolated clause payload', () => {
     const site = only(
-      run(`const GREEN = 'rgb(27, 122, 61)'
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+const GREEN = 'rgb(27, 122, 61)'
       const GREY = 'rgb(217, 215, 210)'
       export const Fixture = () => (
         <View backgroundColor={GREEN} disabledStyle={{ backgroundColor: GREY }} />
@@ -383,7 +431,8 @@ describe('dynamic values', () => {
 
   test('a numeric dynamic leaf carries the property unit', () => {
     const site = only(
-      run(`export const Fixture = ({ going }) => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = ({ going }) => (
         <View enterStyle={{ x: going > 0 ? 80 : -80, opacity: 0 }} />
       )`)
     )
@@ -397,7 +446,8 @@ describe('dynamic values', () => {
 
   test('a legacy token reached through a constant is reported, not guessed', () => {
     const site = only(
-      run(`const RADIUS = '$6'
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+const RADIUS = '$6'
       export const Fixture = () => (
         <View rounded={RADIUS} hoverStyle={{ rounded: '$4' }} />
       )`)
@@ -410,7 +460,8 @@ describe('dynamic values', () => {
 
   test('a value with no provable type keeps its condition object authored', () => {
     const site = only(
-      run(`export const Fixture = ({ anything }) => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = ({ anything }) => (
         <View opacity={anything} hoverStyle={{ opacity: 1 }} />
       )`)
     )
@@ -422,7 +473,8 @@ describe('dynamic values', () => {
 
   test('values belonging to another migration stay authored and are inventoried', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View
           bg="$blue10"
           transition={['quick', { opacity: 'lazy' }]}
@@ -444,7 +496,8 @@ describe('dynamic values', () => {
 describe('authored order', () => {
   test('a program merges across a spread it never crosses', () => {
     const site = only(
-      run(`export const Fixture = (props) => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = (props) => (
         <View {...props} bg="$blue10" hoverStyle={{ bg: 'red' }} />
       )`)
     )
@@ -455,7 +508,8 @@ describe('authored order', () => {
 
   test('a condition after a spread stays authored rather than moving before it', () => {
     const site = only(
-      run(`export const Fixture = (props) => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = (props) => (
         <View bg="$blue10" {...props} hoverStyle={{ bg: 'red' }} />
       )`)
     )
@@ -468,7 +522,8 @@ describe('authored order', () => {
 
   test('an object literal spread is the same thing as writing its properties', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View {...{ '$sm': { bg: 'blue' } }} bg="$red10" />
       )`)
     )
@@ -482,7 +537,8 @@ describe('authored order', () => {
 
   test('a condition object left authored blocks merging the conditions after it', () => {
     const site = only(
-      run(`export const Fixture = () => (
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
         <View
           bg="$blue10"
           pressStyle={{ bg: 'black' }}
@@ -500,7 +556,8 @@ describe('authored order', () => {
 
 describe('styled variants', () => {
   test('each static variant branch converts as its own style object', () => {
-    const result = run(`const Frame = styled(View, {
+    const result = run(`import { Text, TextInput, View, styled } from 'tamagui'
+const Frame = styled(View, {
       color: 'black',
       variants: {
         size: {
@@ -520,7 +577,8 @@ describe('styled variants', () => {
 
   test('a variant branch does not invent a base for the outer program', () => {
     const site = labeled(
-      run(`const Frame = styled(View, {
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+const Frame = styled(View, {
         x: 0,
         variants: {
           going: { number: (going: number) => ({ exitStyle: { x: going < 0 ? 100 : -100 } }) },
@@ -536,7 +594,8 @@ describe('styled variants', () => {
 
   test('compound variant styles convert too', () => {
     const site = labeled(
-      run(`const Frame = styled(View, {
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+const Frame = styled(View, {
         compoundVariants: [{ size: 'small', style: { padding: '$2' } }],
       })`),
       'compoundVariants[0]'
@@ -544,6 +603,311 @@ describe('styled variants', () => {
 
     expect(programs(site)).toEqual({})
     expect(pendingCodes(site)).toEqual(['clause-free-token'])
+  })
+})
+
+describe('token context', () => {
+  test('a "$" inside an unquoted url() body is literal CSS and is never rewritten', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = () => (
+          <View backgroundImage="url($asset)" hoverStyle={{ backgroundImage: 'none' }} />
+        )`)
+    )
+
+    // the url body is not a token candidate, so there is nothing to convert here
+    // and the value has to survive the pass byte for byte
+    expect(site.after).toContain('backgroundImage="url($asset)"')
+    expect(programs(site)).toEqual({})
+    expect(codes(site)).toContain('unsupported-legacy-value')
+  })
+
+  test('a "$" inside a quoted string is left alone too', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = () => (
+          <View content="'$4'" hoverStyle={{ content: "''" }} />
+        )`)
+    )
+
+    expect(site.after).toContain(`content="'$4'"`)
+    expect(programs(site)).toEqual({})
+    expect(codes(site)).toContain('unsupported-legacy-value')
+  })
+
+  test('a token candidate outside those contexts still converts', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = () => (
+          <View
+            backgroundImage="linear-gradient(135deg, $accent, blue)"
+            hoverStyle={{ backgroundImage: 'none' }}
+          />
+        )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      backgroundImage: 'linear-gradient(135deg, accent, blue) hover:none',
+    })
+  })
+
+  test('a rewritten expression obeys the same contexts', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = ({ active }) => (
+          <View
+            backgroundImage={active ? 'url($a)' : 'url($b)'}
+            hoverStyle={{ backgroundImage: 'none' }}
+          />
+        )`)
+    )
+
+    expect(codes(site)).toContain('unsupported-legacy-value')
+    expect(site.after).toContain(`active ? 'url($a)' : 'url($b)'`)
+    expect(programs(site)).toEqual({})
+  })
+
+  test('a template literal converts its own chunks, not just the head', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = ({ n }) => (
+          <View color={\`$accent\${n}\`} hoverStyle={{ color: 'red' }} />
+        )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site).color).toBe('${`accent${n}`} hover:red')
+  })
+})
+
+describe('authored order across an inline object spread', () => {
+  test('a nested spread is preserved and blocks the merge across it', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = (props) => (
+          <View
+            {...{
+              bg: '$blue10',
+              ...props,
+              hoverStyle: { bg: 'red' },
+            }}
+          />
+        )`)
+    )
+
+    // `...props` can set bg, so merging hover onto the base would let the spread
+    // lose where it used to win
+    expect(codes(site)).toEqual(['condition-order-not-preservable'])
+    expect(site.after).toContain('{...props}')
+    expect(site.after).toContain(`hoverStyle={{ bg: 'red' }}`)
+    expect(programs(site)).toEqual({})
+  })
+
+  test('a nested spread inside a styled config is preserved too', () => {
+    const site = labeled(
+      run(`import { View, styled } from 'tamagui'
+        const base = { bg: 'gray' }
+        const Frame = styled(View, {
+          ...{
+            bg: '$blue10',
+            ...base,
+            hoverStyle: { bg: 'red' },
+          },
+        })`),
+      'styled(View'
+    )
+
+    expect(codes(site)).toEqual(['condition-order-not-preservable'])
+    expect(site.after).toContain('...base')
+    expect(site.after).toContain(`hoverStyle: { bg: 'red' }`)
+  })
+
+  test('a member whose key is not statically known is kept as a barrier', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = ({ key }) => (
+          <View {...{ bg: '$blue10', [key]: 1, hoverStyle: { bg: 'red' } }} />
+        )`)
+    )
+
+    expect(codes(site)).toEqual(['condition-order-not-preservable'])
+    expect(site.after).toContain('[key]: 1')
+  })
+})
+
+describe('unconvertible nested conditions', () => {
+  test('an unknown nested condition still barriers what it can set', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = () => (
+          <View
+            bg="$blue10"
+            $sm={{ '$future-condition': { bg: 'red' } }}
+            hoverStyle={{ bg: 'yellow' }}
+          />
+        )`)
+    )
+
+    // $sm keeps a nested condition that can set bg, so hover cannot move in front
+    // of it: it stays exactly where it was authored
+    expect(codes(site)).toContain('condition-order-not-preservable')
+    expect(programs(site)).toEqual({})
+    expect(site.after).toBe(
+      `bg="$blue10" $sm={{ '$future-condition': { bg: 'red' } }} hoverStyle={{ bg: 'yellow' }}`
+    )
+  })
+
+  test('an unknown nested condition does not barrier a property it cannot set', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+        export const Fixture = () => (
+          <View
+            opacity={0.5}
+            $sm={{ '$future-condition': { bg: 'red' } }}
+            hoverStyle={{ opacity: 1 }}
+          />
+        )`)
+    )
+
+    // the shared converter refuses the nested condition, but it cannot set opacity
+    expect(codes(site)).toEqual(['unsupported-legacy-value'])
+    expect(programs(site)).toEqual({ opacity: '0.5 hover:1' })
+    expect(resolve1('0.5 hover:1', { states: ['hover'] })).toBe('1')
+  })
+})
+
+describe('group containers', () => {
+  test('only the tree that actually wraps the consumer declares the container', () => {
+    const result = run(`import { View } from 'tamagui'
+      export const One = () => (
+        <View group="card">
+          <View bg="red" />
+        </View>
+      )
+      export const Two = () => (
+        <View group="card">
+          <View bg="red" $group-card-maxMd={{ bg: 'blue' }} />
+        </View>
+      )`)
+
+    const found = sites(result)
+    expect(found.length).toBe(2)
+    const [card, inner] = found
+    // the unrelated tree is not a conversion site at all: nothing there changes
+    expect(card.line).toBe(8)
+    expect(card.after).toBe(`group="card" container containerName="card"`)
+    expect(codes(card)).toEqual([])
+
+    expect(codes(inner)).toEqual([])
+    expect(programs(inner)).toEqual({ bg: 'red @max-md/card:blue' })
+    expect(resolve1('red @max-md/card:blue', { containers: ['@max-md/card'] })).toBe(
+      'blue'
+    )
+  })
+
+  test('two candidate declarations leave the condition authored', () => {
+    const result = run(`import { View, styled } from 'tamagui'
+      const Card = styled(View, { group: 'card' })
+      const Inner = styled(View, {
+        color: 'black',
+        '$group-card-maxMd': { color: 'red' },
+      })
+      export const Fixture = () => (
+        <View group="card">
+          <Card>
+            <Inner />
+          </Card>
+        </View>
+      )`)
+
+    const inner = labeled(result, 'styled(View, …)')
+    expect(codes(inner)).toEqual(['ambiguous-container-group'])
+    // converting would emit a container query with no container this pass can place
+    expect(programs(inner)).toEqual({})
+    expect(inner.after).toContain(`'$group-card-maxMd': { color: 'red' }`)
+    // and no element silently grows a container
+    for (const site of sites(result)) expect(site.after).not.toContain('container')
+  })
+
+  test('a group nobody declares in the file is reported, not converted', () => {
+    const site = labeled(
+      run(`import { View, styled } from 'tamagui'
+        const Inner = styled(View, {
+          color: 'black',
+          '$group-card-maxMd': { color: 'red' },
+        })`),
+      'styled(View'
+    )
+
+    expect(codes(site)).toEqual(['container-group-not-declared'])
+    expect(programs(site)).toEqual({})
+  })
+})
+
+describe('Tamagui provenance', () => {
+  test('another library’s styled and a non-Tamagui tag are left alone', () => {
+    const result = run(`import styled from '@emotion/styled'
+      import { View as RNView } from 'react-native'
+      import { View } from 'tamagui'
+
+      const localStyled = (component: any, config: any) => component
+
+      export const Emotion = styled(View, {
+        color: '$brand',
+        hoverStyle: { color: '$brandHover' },
+      })
+      export const Local = localStyled(View, {
+        color: '$brand',
+        hoverStyle: { color: '$brandHover' },
+      })
+      export const Native = () => <RNView bg="$blue10" hoverStyle={{ bg: 'red' }} />
+      export const Intrinsic = () => <div bg="$blue10" hoverStyle={{ bg: 'red' }} />
+      export const Real = () => <View bg="$blue10" hoverStyle={{ bg: 'red' }} />`)
+
+    const found = sites(result)
+    expect(found.map((site) => site.label)).toEqual(['<View>'])
+    expect(programs(found[0])).toEqual({ bg: 'blue10 hover:red' })
+  })
+
+  test('provenance follows a re-export chain and a local alias', () => {
+    const directory = dirname(
+      fixture(`import { View } from 'tamagui'
+        export { View }`)
+    )
+    const barrel = join(directory, 'barrel.tsx')
+    writeFileSync(barrel, `export { View } from './fixture'\n`)
+    const consumer = join(directory, 'consumer.tsx')
+    writeFileSync(
+      consumer,
+      `import { View as Raw } from './barrel'
+      const Box = Raw as any
+      export const Fixture = () => <Box bg="$blue10" hoverStyle={{ bg: 'red' }} />\n`
+    )
+
+    const site = only(runOn([consumer]))
+    expect(programs(site)).toEqual({ bg: 'blue10 hover:red' })
+  })
+})
+
+describe('inputs', () => {
+  test('an input that matches no file exits nonzero and writes no report', () => {
+    const result = runRaw([join(tmpdir(), 'flat-values-does-not-exist.tsx')])
+
+    expect(result.exitCode).toBe(2)
+    expect(result.stderr).toContain('no source file matched')
+    // a typo must never render as "every file in this corpus is ready"
+    expect(existsSync(result.reportPath)).toBe(false)
+  })
+
+  test('a real input still writes its report', () => {
+    const result = runRaw([
+      fixture(`import { View } from 'tamagui'
+        export const Fixture = () => <View bg="$blue10" hoverStyle={{ bg: 'red' }} />`),
+    ])
+
+    expect(result.exitCode).toBe(0)
+    expect(readFileSync(result.reportPath, 'utf8')).toContain('bg="blue10 hover:red"')
   })
 })
 
@@ -574,7 +938,7 @@ describe('the kitchen-sink corpus', () => {
           expect(flag.code).not.toBe('emitted-value-invalid')
         }
         for (const program of site.programs) {
-          const text = program.value.replace(/\$\{[\s\S]*?\}/g, 'zz')
+          const text = sanitize(program.value)
           if (!parseValue(text, registry).ok) {
             offenders.push(`${file.file}:${site.line} ${program.name}="${text}"`)
           }

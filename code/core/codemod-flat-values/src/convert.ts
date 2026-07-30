@@ -24,18 +24,19 @@ import {
   type ObjectLiteralExpression,
   type PropertyAssignment,
 } from 'ts-morph'
+import type { ContainerPlan } from './containers'
 import {
   compact,
   literalTree,
   numericValue,
   runtimeType,
   staticLeafValue,
-  stripTokenPrefixes,
   unwrapExpression,
 } from './expressions'
 import {
   convertLegacyConditionProp,
   expandToLonghands,
+  flatStringValue,
   mergeProgramValues,
   parseValue,
   printProgram,
@@ -143,8 +144,8 @@ interface Slot {
 export interface Site {
   kind: SiteKind
   registry: ModifierRegistryView
-  /** group names whose descendants use a legacy container-size condition */
-  containerGroups: ReadonlySet<string>
+  /** which `group` declarations have a proven descendant needing a query container */
+  containers: ContainerPlan
   members: Member[]
   extras: Array<{ index: number; text: string }>
   flags: Flag[]
@@ -159,12 +160,12 @@ export interface Site {
 function createSite(
   kind: SiteKind,
   registry: ModifierRegistryView,
-  containerGroups: ReadonlySet<string>
+  containers: ContainerPlan
 ): Site {
   return {
     kind,
     registry,
-    containerGroups,
+    containers,
     members: [],
     extras: [],
     flags: [],
@@ -278,9 +279,12 @@ function classifyDynamic(
     return { ...empty, inventory: flag, blocked: flag }
   }
 
-  const tree = literalTree(current)
+  const tree = literalTree(current, registry)
   if (tree && tree.error) {
-    const flag: Flag = { code: 'legacy-token-name', detail: `${prop}: ${tree.error}` }
+    const flag: Flag = {
+      code: tree.error.code,
+      detail: `${prop}: ${tree.error.message}`,
+    }
     return { ...empty, problem: flag, blocked: flag }
   }
   if (tree && tree.kind !== 'nullish') {
@@ -357,25 +361,20 @@ function pushBase(
   if (literalString !== null) {
     if (literalString.includes('$')) {
       site.legacy = true
-      const stripped = stripTokenPrefixes(literalString)
-      const problem: Flag | null = stripped.errors.length
-        ? {
-            code: 'legacy-token-dot-path',
-            detail: `${prop}: legacy token ${stripped.errors
-              .map((token) => `"${token}"`)
-              .join(
-                ', '
-              )} uses dot-path naming; rename it to one configured flat token name before conversion`,
-          }
-        : !stripped.converted
+      // the same converter a clause payload goes through, so a base and a clause
+      // for one property agree on which `$` is a token candidate at all: one
+      // inside a quoted string or an unquoted url() body is literal CSS
+      const flat = flatStringValue(literalString, site.registry)
+      const problem: Flag | null =
+        flat.text === null
           ? {
-              code: 'legacy-token-name',
-              detail: `${prop} value ${JSON.stringify(literalString)} spells "$" where V3 expects a token name`,
+              code: flat.error?.code ?? 'unsupported-legacy-value',
+              detail: `${prop}: ${flat.error?.message ?? `${JSON.stringify(literalString)} has no flat spelling`}`,
             }
-          : !reparsesAsBase(stripped.text, site.registry)
+          : !reparsesAsBase(flat.text, site.registry)
             ? {
                 code: 'value-reparses-as-program',
-                detail: `${prop} value ${JSON.stringify(stripped.text)} does not read back as one flat base value`,
+                detail: `${prop} value ${JSON.stringify(flat.text)} does not read back as one flat base value`,
               }
             : null
 
@@ -389,7 +388,7 @@ function pushBase(
         index,
         prop,
         text,
-        payload: problem === null ? stripped.text : null,
+        payload: problem === null ? flat.text : null,
         dynamic: false,
         blocked: problem,
         token: true,
@@ -578,21 +577,18 @@ function evaluateLegacyObject(
   return { ...result, leaves }
 }
 
-/** every longhand a legacy condition object sets, at any condition depth */
-function conditionProperties(
-  value: Record<string, unknown>,
-  registry: ModifierRegistryView
-): Set<string> {
+/**
+ * Every longhand a legacy condition object sets, at any condition depth. A nested
+ * condition this pass cannot resolve still sets its descendants under some
+ * condition, so they all belong here: this set is the member's barrier, and
+ * leaving them out lets a later clause move across a value that can beat it.
+ */
+function conditionProperties(value: Record<string, unknown>): Set<string> {
   const properties = new Set<string>()
   const visit = (object: Record<string, unknown>): void => {
     for (const key in object) {
       const child = object[key]
-      if (
-        child !== null &&
-        typeof child === 'object' &&
-        isLegacyConditionName(key) &&
-        resolveLegacyName(key, registry).ok
-      ) {
+      if (child !== null && typeof child === 'object' && isLegacyConditionName(key)) {
         visit(child as Record<string, unknown>)
         continue
       }
@@ -608,10 +604,12 @@ function pushLegacy(
   site: Site,
   name: string,
   text: string,
-  initializer: Expression | null
+  initializer: Expression | null,
+  node: Node
 ): void {
   const index = site.index++
   site.legacy = true
+
   const keep = (properties: ReadonlySet<string> | null): void => {
     site.members.push({
       type: 'legacy',
@@ -644,7 +642,17 @@ function pushLegacy(
   // what this object sets, whether or not it converts: an object left authored
   // still contributes at its position, which is what decides whether a program can
   // merge across it
-  const properties = conditionProperties(evaluated.value, site.registry)
+  const properties = conditionProperties(evaluated.value)
+
+  // the condition would convert, but the query it becomes needs a container this
+  // pass cannot place, so the whole object stays authored rather than converting
+  // into a query nothing matches
+  const unresolved = site.containers.unresolved.get(node)
+  if (unresolved !== undefined) {
+    addFlag(site.flags, unresolved.code, unresolved.detail)
+    keep(properties)
+    return
+  }
 
   const resolution = resolveLegacyName(name, site.registry)
   if (!resolution.ok) {
@@ -1039,10 +1047,28 @@ function printSlots(
   return { output, programs }
 }
 
-const interpolation = /\$\{[\s\S]*?\}/g
-
-function sanitize(text: string): string {
-  return text.replace(interpolation, 'zz')
+/**
+ * Every `${...}` hole replaced by one opaque word, so a printed program can be
+ * re-parsed as a program. Brace matching, not a regex: an interpolated expression
+ * can hold braces of its own (`${`accent${n}`}`).
+ */
+export function sanitize(text: string): string {
+  let result = ''
+  for (let index = 0; index < text.length; index++) {
+    if (text[index] !== '$' || text[index + 1] !== '{') {
+      result += text[index]
+      continue
+    }
+    let depth = 0
+    let end = index + 1
+    for (; end < text.length; end++) {
+      if (text[end] === '{') depth++
+      else if (text[end] === '}' && --depth === 0) break
+    }
+    result += 'zz'
+    index = end
+  }
+  return result
 }
 
 /**
@@ -1139,28 +1165,31 @@ type JsxElementWithAttributes = JsxOpeningElement | JsxSelfClosingElement
 /**
  * V3 separates the group from the query container, so a legacy group condition
  * carrying a container size (`$group-card-sm-hover`) needs the element that
- * declares the group to declare the container too. `group` is the group name, or
- * the empty string for the unnamed nearest group.
+ * declares the group to declare the container too. `declaration` is the node that
+ * declares `group`; the plan decided which declarations a container belongs on.
  */
-function containerExtras(site: Site, group: string, index: number): void {
-  if (!site.containerGroups.has(group)) return
+function containerExtras(site: Site, declaration: Node, index: number): void {
+  const target = site.containers.targets.get(declaration)
+  if (target === undefined) return
+  const name = target.named && target.group !== '' ? target.group : null
   const text =
     site.kind === 'styled'
-      ? group === ''
+      ? name === null
         ? 'container: true'
-        : `container: true, containerName: ${JSON.stringify(group)}`
-      : group === ''
+        : `container: true, containerName: ${JSON.stringify(name)}`
+      : name === null
         ? 'container'
-        : `container containerName=${JSON.stringify(group)}`
+        : `container containerName=${JSON.stringify(name)}`
   // adding the container is itself a migration edit, so this element is a site even
   // when it has no other v1 syntax
   site.legacy = true
   site.extras.push({ index, text })
-  if (group !== '') {
+  if (target.flag !== null) addFlag(site.flags, target.flag.code, target.flag.detail)
+  if (name !== null) {
     addFlag(
       site.pending,
       'container-name-not-wired',
-      `the "@…/${group}" query this migration emits needs containerName to reach the host, which core does not do yet`
+      `the "@…/${name}" query this migration emits needs containerName to reach the host, which core does not do yet`
     )
   }
   addNote(
@@ -1172,9 +1201,9 @@ function containerExtras(site: Site, group: string, index: number): void {
 export function convertJsxSite(
   opening: JsxElementWithAttributes,
   registry: ModifierRegistryView,
-  containerGroups: ReadonlySet<string>
+  containers: ContainerPlan
 ): SiteReport | null {
-  const site = createSite('jsx', registry, containerGroups)
+  const site = createSite('jsx', registry, containers)
   const before: string[] = []
 
   for (const attribute of opening.getAttributes()) {
@@ -1184,10 +1213,29 @@ export function convertJsxSite(
       if (Node.isObjectLiteralExpression(expression)) {
         before.push(compact(attribute.getText()))
         for (const property of expression.getProperties()) {
-          if (!Node.isPropertyAssignment(property)) continue
-          const name = propertyName(property.getNameNode())
-          if (name === null) continue
-          pushStyledProperty(site, name, property)
+          if (Node.isPropertyAssignment(property)) {
+            const name = propertyName(property.getNameNode())
+            if (name !== null) {
+              // a member the conversion leaves authored has to print as the JSX
+              // attribute it becomes here, not as the object member it was
+              pushStyledProperty(
+                site,
+                name,
+                property,
+                `${name}={${compact(property.getInitializerOrThrow().getText())}}`
+              )
+              continue
+            }
+          }
+          // a nested spread or a member whose key is not statically known can set
+          // anything, so it stays where it was authored and orders the merge
+          site.members.push({
+            type: 'spread',
+            index: site.index++,
+            text: Node.isSpreadAssignment(property)
+              ? `{${compact(property.getText())}}`
+              : `{...{ ${compact(property.getText())} }}`,
+          })
         }
         continue
       }
@@ -1206,15 +1254,14 @@ export function convertJsxSite(
 
     if (name === 'group') {
       before.push(text)
-      const declared = attribute.getInitializer() ? jsxLiteralString(attribute) : ''
-      if (declared !== null) containerExtras(site, declared, site.index)
+      containerExtras(site, attribute, site.index)
       site.members.push({ type: 'passthrough', index: site.index++, text })
       continue
     }
 
     if (isLegacyConditionName(name)) {
       before.push(text)
-      pushLegacy(site, name, text, jsxExpression(attribute))
+      pushLegacy(site, name, text, jsxExpression(attribute), attribute)
       continue
     }
     if (!styleProps.has(name)) continue
@@ -1253,26 +1300,20 @@ export function convertJsxSite(
 function pushStyledProperty(
   site: Site,
   name: string,
-  property: PropertyAssignment
+  property: PropertyAssignment,
+  authoredText?: string
 ): void {
-  const text = compact(property.getText())
+  const text = authoredText ?? compact(property.getText())
   const initializer = unwrapExpression(property.getInitializerOrThrow())
 
   if (name === 'group') {
-    const declared =
-      Node.isStringLiteral(initializer) ||
-      Node.isNoSubstitutionTemplateLiteral(initializer)
-        ? initializer.getLiteralValue()
-        : initializer.getKind() === SyntaxKind.TrueKeyword
-          ? ''
-          : null
-    if (declared !== null) containerExtras(site, declared, site.index)
+    containerExtras(site, property, site.index)
     site.members.push({ type: 'passthrough', index: site.index++, text })
     return
   }
 
   if (isLegacyConditionName(name)) {
-    pushLegacy(site, name, text, initializer)
+    pushLegacy(site, name, text, initializer, property)
     return
   }
   if (!styleProps.has(name)) return
@@ -1289,9 +1330,9 @@ export function convertStyleObject(
   kind: SiteKind,
   label: string,
   registry: ModifierRegistryView,
-  containerGroups: ReadonlySet<string>
+  containers: ContainerPlan
 ): SiteReport | null {
-  const site = createSite(kind, registry, containerGroups)
+  const site = createSite(kind, registry, containers)
   const before: string[] = []
 
   for (const property of object.getProperties()) {
@@ -1300,10 +1341,20 @@ export function convertStyleObject(
       before.push(compact(property.getText()))
       if (Node.isObjectLiteralExpression(expression)) {
         for (const nested of expression.getProperties()) {
-          if (!Node.isPropertyAssignment(nested)) continue
-          const name = propertyName(nested.getNameNode())
-          if (name === null) continue
-          pushStyledProperty(site, name, nested)
+          if (Node.isPropertyAssignment(nested)) {
+            const name = propertyName(nested.getNameNode())
+            if (name !== null) {
+              pushStyledProperty(site, name, nested)
+              continue
+            }
+          }
+          // a nested spread or a member whose key is not statically known can set
+          // anything, so it stays where it was authored and orders the merge
+          site.members.push({
+            type: 'spread',
+            index: site.index++,
+            text: compact(nested.getText()),
+          })
         }
         continue
       }

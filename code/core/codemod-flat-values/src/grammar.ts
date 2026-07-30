@@ -90,6 +90,34 @@ export function sharedPayload(
   }
 }
 
+/**
+ * A property with no family split, no unit table entry, and no transform part, so
+ * the shared converter's answer for a string value is exactly its token rule and
+ * nothing else.
+ */
+const stringProbeProp = 'color'
+
+export interface FlatString {
+  /** the flat spelling, or null when the shared converter refused the value */
+  text: string | null
+  error: LegacyConditionError | null
+}
+
+/**
+ * The flat spelling of a legacy string, taken from the shared converter rather
+ * than re-derived. That converter drops `$` from token spellings anywhere in a
+ * composite value and refuses a value that mixes `$` with quoted or unquoted
+ * `url()` content, where a `$` is literal CSS the resolver never reads as a
+ * token candidate.
+ */
+export function flatStringValue(
+  value: string,
+  registry: ModifierRegistryView
+): FlatString {
+  const probe = sharedPayload(stringProbeProp, value, registry)
+  return { text: probe.payload, error: probe.errors[0] ?? null }
+}
+
 const unitSuffixes = new Map<string, string>()
 
 /**

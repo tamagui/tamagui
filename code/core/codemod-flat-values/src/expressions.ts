@@ -11,6 +11,7 @@
 //    identifier is not.
 
 import { Node, SyntaxKind, type Expression, type TemplateExpression } from 'ts-morph'
+import { flatStringValue, type ModifierRegistryView } from './grammar'
 
 export function unwrapExpression(expression: Expression): Expression {
   let current = expression
@@ -57,54 +58,74 @@ export function staticLeafValue(
 
 export type LiteralKind = 'number' | 'string' | 'nullish'
 
+export interface TreeError {
+  code: string
+  message: string
+}
+
 export interface LiteralTree {
   kind: LiteralKind
   /** the expression source with legacy token spellings rewritten */
   text: string
   /** set when a token spelling in the tree has no flat name */
-  error: string | null
+  error: TreeError | null
 }
 
-function tokenText(value: string): { text: string; error: string | null } {
-  if (!value.startsWith('$')) return { text: JSON.stringify(value), error: null }
-  const token = value.slice(1)
-  if (!token) {
-    return { text: JSON.stringify(value), error: 'a bare "$" is not a token name' }
-  }
-  if (token.includes('.')) {
+/**
+ * One literal chunk's flat spelling. A chunk with no `$` is already flat, and one
+ * that has a `$` goes through the shared converter, so the same value refused as
+ * a clause payload (`url($asset)`) is refused here instead of being rewritten.
+ */
+function literalText(
+  value: string,
+  registry: ModifierRegistryView
+): { text: string; error: TreeError | null } {
+  if (!value.includes('$')) return { text: value, error: null }
+  const flat = flatStringValue(value, registry)
+  if (flat.text === null) {
     return {
-      text: JSON.stringify(value),
-      error: `token "${value}" uses dot-path naming and needs an explicit flat name`,
+      text: value,
+      error: {
+        code: flat.error?.code ?? 'unsupported-legacy-value',
+        message: flat.error?.message ?? `"${value}" has no flat spelling`,
+      },
     }
   }
-  return { text: JSON.stringify(token), error: null }
+  return { text: flat.text, error: null }
 }
 
-function templateTree(template: TemplateExpression): LiteralTree {
-  const head = template.getHead()
-  // `\`$accent${i}\`` names one token whose tail is computed, so only the `$`
-  // prefix is legacy syntax
-  const headText = head.getLiteralText()
-  const rewritten = headText.startsWith('$') ? headText.slice(1) : headText
-  let text = `\`${rewritten}`
+function templateTree(
+  template: TemplateExpression,
+  registry: ModifierRegistryView
+): LiteralTree {
+  // every literal chunk converts on its own: `\`$accent${i}\`` names one token
+  // whose tail is computed, and a chunk holding quoted or url() content is refused
+  const head = literalText(template.getHead().getLiteralText(), registry)
+  let error = head.error
+  let text = `\`${head.text}`
   for (const span of template.getTemplateSpans()) {
-    text += `\${${span.getExpression().getText().trim()}}${span.getLiteral().getLiteralText()}`
+    const tail = literalText(span.getLiteral().getLiteralText(), registry)
+    error ??= tail.error
+    text += `\${${span.getExpression().getText().trim()}}${tail.text}`
   }
-  return { kind: 'string', text: `${text}\``, error: null }
+  return { kind: 'string', text: `${text}\``, error }
 }
 
 /**
  * The expression as a tree of literals, or null when any leaf is computed. Every
  * literal is reprinted, which is what strips `$` from token spellings.
  */
-export function literalTree(expression: Expression): LiteralTree | null {
+export function literalTree(
+  expression: Expression,
+  registry: ModifierRegistryView
+): LiteralTree | null {
   const current = unwrapExpression(expression)
 
   if (Node.isStringLiteral(current) || Node.isNoSubstitutionTemplateLiteral(current)) {
-    const token = tokenText(current.getLiteralValue())
-    return { kind: 'string', text: token.text, error: token.error }
+    const literal = literalText(current.getLiteralValue(), registry)
+    return { kind: 'string', text: JSON.stringify(literal.text), error: literal.error }
   }
-  if (Node.isTemplateExpression(current)) return templateTree(current)
+  if (Node.isTemplateExpression(current)) return templateTree(current, registry)
 
   const number = numericValue(current)
   if (number !== null) return { kind: 'number', text: String(number), error: null }
@@ -118,8 +139,8 @@ export function literalTree(expression: Expression): LiteralTree | null {
   }
 
   if (Node.isConditionalExpression(current)) {
-    const whenTrue = literalTree(current.getWhenTrue())
-    const whenFalse = literalTree(current.getWhenFalse())
+    const whenTrue = literalTree(current.getWhenTrue(), registry)
+    const whenFalse = literalTree(current.getWhenFalse(), registry)
     if (!whenTrue || !whenFalse) return null
     if (
       whenTrue.kind !== whenFalse.kind &&
@@ -182,34 +203,4 @@ export function runtimeType(expression: Expression): RuntimeType {
 
 export function compact(text: string): string {
   return text.replace(/\s+/g, ' ').trim()
-}
-
-export interface StrippedTokens {
-  text: string
-  /** token spellings that have no flat name */
-  errors: string[]
-  converted: boolean
-}
-
-/**
- * V3 values do not use `$`, and a token can appear anywhere inside a composite
- * value: `boxShadow="0 4px 12px $shadowColor"` names one token in the middle of a
- * shadow. Every component-leading `$identifier` loses its prefix, and a dot-path
- * name is reported instead, because `$1.5` would silently become the number 1.5.
- */
-export function stripTokenPrefixes(value: string): StrippedTokens {
-  const errors: string[] = []
-  let converted = false
-  const text = value.replace(
-    /(^|[\s(,/])\$([A-Za-z0-9_][A-Za-z0-9_.-]*)/g,
-    (whole, boundary: string, name: string) => {
-      if (name.includes('.')) {
-        errors.push(`$${name}`)
-        return whole
-      }
-      converted = true
-      return `${boundary}${name}`
-    }
-  )
-  return { text, errors, converted }
 }

@@ -12,6 +12,7 @@ import {
   type ObjectLiteralExpression,
   type SourceFile,
 } from 'ts-morph'
+import { planContainers, type ContainerPlan } from './containers'
 import { convertJsxSite, convertStyleObject, type SiteReport } from './convert'
 import { compact, unwrapExpression } from './expressions'
 import {
@@ -19,8 +20,10 @@ import {
   createModifierRegistry,
   type ModifierRegistryView,
 } from './grammar'
-import { isLegacyConditionName, resolveLegacyName } from './legacyNames'
+import { createProvenance } from './provenance'
 import { renderReport, type FileReport } from './report'
+
+type Provenance = ReturnType<typeof createProvenance>
 
 const packageDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const repoRoot = resolve(packageDir, '../../..')
@@ -46,13 +49,28 @@ function collectFiles(inputs: readonly string[]): SourceFile[] {
     },
   })
 
-  const patterns = inputs.map((input) => {
+  const files = new Map<string, SourceFile>()
+  const missing: string[] = []
+  for (const input of inputs) {
     const path = resolve(repoRoot, input)
-    return /\.[cm]?[jt]sx?$/.test(path) ? path : `${path}/**/*.{ts,tsx}`
-  })
-  return project
-    .addSourceFilesAtPaths(patterns)
-    .sort((left, right) => left.getFilePath().localeCompare(right.getFilePath()))
+    const pattern = /\.[cm]?[jt]sx?$/.test(path) ? path : `${path}/**/*.{ts,tsx}`
+    const matched = project.addSourceFilesAtPaths(pattern)
+    // an input that matches nothing must never reach the report: a typo in a
+    // migration path would otherwise render an empty corpus as ready to cut over
+    if (!matched.length) missing.push(input)
+    for (const file of matched) files.set(file.getFilePath(), file)
+  }
+
+  if (missing.length) {
+    console.error(
+      `no source file matched ${missing.map((input) => `"${input}"`).join(', ')}`
+    )
+    process.exit(2)
+  }
+
+  return [...files.values()].sort((left, right) =>
+    left.getFilePath().localeCompare(right.getFilePath())
+  )
 }
 
 /** every `$theme-*` spelling the corpus uses, so its themes resolve as modifiers */
@@ -78,25 +96,6 @@ function conditionNames(sourceFile: SourceFile): string[] {
     names.push(name.getText().replace(/^['"]|['"]$/g, ''))
   }
   return names
-}
-
-/**
- * The group names whose descendants use a legacy container-size condition. V3
- * splits the group from the query container, so those groups have to declare one.
- */
-function containerGroups(
-  sourceFile: SourceFile,
-  registry: ModifierRegistryView
-): Set<string> {
-  const groups = new Set<string>()
-  for (const name of conditionNames(sourceFile)) {
-    if (!isLegacyConditionName(name)) continue
-    const resolution = resolveLegacyName(name, registry)
-    if (resolution.ok && resolution.resolved.container) {
-      groups.add(resolution.resolved.container.group ?? '')
-    }
-  }
-  return groups
 }
 
 /** every style object a variant value can be: one literal, or one per return */
@@ -128,7 +127,7 @@ function variantSites(
   config: ObjectLiteralExpression,
   label: string,
   registry: ModifierRegistryView,
-  groups: ReadonlySet<string>
+  containers: ContainerPlan
 ): SiteReport[] {
   const sites: SiteReport[] = []
 
@@ -150,7 +149,7 @@ function variantSites(
               'styled',
               `${label} variants.${variantName}.${branchName}`,
               registry,
-              groups
+              containers
             )
             if (site) sites.push(site)
           }
@@ -174,7 +173,7 @@ function variantSites(
             'styled',
             `${label} compoundVariants[${index}]`,
             registry,
-            groups
+            containers
           )
           if (site) sites.push(site)
         }
@@ -185,8 +184,12 @@ function variantSites(
   return sites
 }
 
-function inspectFile(sourceFile: SourceFile, registry: ModifierRegistryView): FileReport {
-  const groups = containerGroups(sourceFile, registry)
+function inspectFile(
+  sourceFile: SourceFile,
+  registry: ModifierRegistryView,
+  provenance: Provenance
+): FileReport {
+  const containers = planContainers(sourceFile, registry)
   const sites: SiteReport[] = []
 
   for (const kind of [
@@ -194,21 +197,22 @@ function inspectFile(sourceFile: SourceFile, registry: ModifierRegistryView): Fi
     SyntaxKind.JsxSelfClosingElement,
   ] as const) {
     for (const opening of sourceFile.getDescendantsOfKind(kind)) {
-      const site = convertJsxSite(opening, registry, groups)
+      if (!provenance.isTamaguiElement(opening)) continue
+      const site = convertJsxSite(opening, registry, containers)
       if (site) sites.push(site)
     }
   }
 
   for (const call of sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression)) {
-    if (call.getExpression().getText() !== 'styled') continue
+    if (!provenance.isTamaguiStyledCall(call)) continue
     const config = unwrapExpression(
       (call.getArguments()[1] as Expression | undefined) ?? call
     )
     if (!Node.isObjectLiteralExpression(config)) continue
     const label = `styled(${compact(call.getArguments()[0]?.getText() ?? 'unknown')}, …)`
-    const site = convertStyleObject(config, 'styled', label, registry, groups)
+    const site = convertStyleObject(config, 'styled', label, registry, containers)
     if (site) sites.push(site)
-    sites.push(...variantSites(config, label, registry, groups))
+    sites.push(...variantSites(config, label, registry, containers))
   }
 
   sites.sort(
@@ -248,7 +252,10 @@ function parseArguments(argv: readonly string[]): {
     }
     if (argument === '--report' || argument === '--json') {
       const next = argv[index + 1]
-      if (!next) throw new Error(`${argument} requires a path`)
+      if (!next) {
+        console.error(`${argument} requires a path\n\n${usage}`)
+        process.exit(2)
+      }
       if (argument === '--report') reportPath = resolve(next)
       else jsonPath = resolve(next)
       index++
@@ -272,8 +279,9 @@ const modifierRegistry = createModifierRegistry({
   mediaNames: codemodMediaNames,
   themeNames: themeNames(sourceFiles),
 })
+const provenance = createProvenance()
 const files = sourceFiles.map((sourceFile) =>
-  inspectFile(sourceFile, modifierRegistry.registry)
+  inspectFile(sourceFile, modifierRegistry.registry, provenance)
 )
 const { text, summary } = renderReport(
   files,

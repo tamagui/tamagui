@@ -13,10 +13,13 @@ bun src/index.ts --help
 ```
 
 The default corpus is `code/kitchen-sink/src/usecases` plus the canonical
-`Button.tsx` skin, which is also the acceptance fixture: 1775 conversion sites, 320
-converted, 1435 waiting on runtime support, 20 flagged. The counts track
+`Button.tsx` skin, which is also the acceptance fixture: 1773 conversion sites, 320
+converted, 1433 waiting on runtime support, 20 flagged. The counts track
 `@tamagui/style-grammar`, which this package imports from source rather than from its
 build, so a change to the shared converter moves them.
+
+A positional argument that matches no file exits 2 with no report, so a typo in a
+migration path can never read as a clean corpus.
 
 ## What it converts
 
@@ -25,6 +28,12 @@ a single variant branch. Everything comes from `@tamagui/style-grammar` — the 
 parser, the legacy condition converter, the clause merge, and the property/unit
 tables — so a converted program is spelled exactly the way the runtime and the
 compiler read it back.
+
+Only Tamagui bindings convert. A JSX tag or a `styled` callee has to resolve, through
+module specifiers, to an import from `tamagui`/`@tamagui/*`, a re-export chain ending
+in one, or a value built by a Tamagui factory. Emotion's `styled`, a local `styled`
+helper, a `react-native` component, and an intrinsic tag are all left alone —
+`hoverStyle` and `$token` mean nothing to them.
 
 - Condition objects become clauses on the longhand's program:
   `bg="$surface" hoverStyle={{ bg: '$surfaceHover' }}` becomes
@@ -35,7 +44,12 @@ compiler read it back.
 - Group conditions split the way V3 splits them: `$group-card-hover` becomes
   `group-hover/card:`, and a container size (`$group-card-maxMd`) becomes
   `@max-md/card:` plus `container containerName="card"` on the element that declares
-  the group.
+  the group. That element has to be proven, never inferred: a JSX ancestor declaring
+  the group takes the container silently, a single declaration elsewhere in the file
+  takes it under `unproven-container-group`, and anything else stays authored
+  (`ambiguous-container-group`, `container-group-not-declared`). Declaring a
+  container changes containment, so it never lands on a `group` this pass cannot tie
+  to the condition.
 - A base value only folds into a program when a clause would otherwise need a second
   attribute of the same name. `opacity={0.5}` plus `enterStyle={{ opacity: 0 }}`
   becomes `opacity="0.5 enter:0"`, while a numeric or dynamic value nothing conditions
@@ -58,7 +72,11 @@ of suggested.
 Ordering is never traded for a bigger diff. A program merges only when every
 contribution still beats and loses to the same things it did, so an opaque spread or
 an unconverted condition object between two contributions leaves the later ones
-authored (`condition-order-not-preservable`, `base-order-not-preservable`).
+authored (`condition-order-not-preservable`, `base-order-not-preservable`). Spreading
+an object literal writes its members out, and a nested spread or an unreadable key
+inside it stays exactly where it was authored and orders the merge like any other
+spread. An unconvertible nested condition counts every longhand under it, at any
+depth, as something its member can still set.
 
 ## What it will not convert yet
 
@@ -92,8 +110,8 @@ A flag means a human decides. Every code the tool can emit:
 | code | meaning |
 | --- | --- |
 | `legacy-token-dot-path` | `$1.5` and friends need one flat token name |
-| `legacy-token-name` | a `$` that names no token |
 | `legacy-token-constant` | the token lives in a module constant (`const RADIUS = '$6'`), so the constant is what migrates |
+| `unproven-container-group`, `ambiguous-container-group`, `container-group-not-declared` | the element that has to declare the query container is not provable from this file |
 | `value-reparses-as-program` | the converted string would read back as something other than one base value |
 | `legacy-group-presence` | `$group-card` with no state or size styles every descendant unconditionally and has no flat spelling |
 | `unknown-legacy-condition` | the condition name is not a registered spelling (a media key missing from the V6 defaults, for one) |
@@ -109,6 +127,11 @@ A flag means a human decides. Every code the tool can emit:
 | `computed-property` | a computed key hides the affected style property |
 | `emitted-program-mismatch`, `emitted-value-invalid` | the printer failed its own re-parse; this is a codemod bug |
 | plus any code from the shared converter | `legacy-transform-part`, `unsupported-legacy-value`, `legacy-condition-object`, `ambiguous-legacy-group`, `legacy-composite-shorthand` |
+
+`unsupported-legacy-value` covers the token-context refusals: a `$` mixed with quoted
+or unquoted `url()` content is literal CSS the resolver never reads as a token
+candidate, so the value is reported rather than rewritten. Base values and clause
+payloads go through the same shared converter, so they always agree on that.
 
 ## `legacyConditionObjects`
 
