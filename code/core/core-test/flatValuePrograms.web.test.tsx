@@ -4,7 +4,8 @@
 
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
-import { View, createTamagui, getSplitStyles } from '../web/src'
+import { View, createTamagui, getSplitStyles, styled } from '../web/src'
+import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
@@ -151,6 +152,65 @@ test('a later style prop restates the base; the hover survives (decision 21)', (
   const rules = rulesFor(result, className)
   expect(rules[0]).toContain('green')
   expect(rules[1]).toContain(':where(:hover)')
+})
+
+test('styled same-key programs survive call-site props and retain authored order', () => {
+  const Frame = styled(View, {
+    bg: 'gray hover:blue',
+    p: '4 sm:6',
+    variants: {
+      tone: {
+        danger: {
+          bg: 'orange focus:yellow',
+        },
+      },
+    } as const,
+  })
+
+  const spread = { bg: 'red', p: '2' } as const
+  const callSite = <Frame tone="danger" {...spread} pl="1" />
+  const callSiteLast = simplifiedGetSplitStyles(Frame, callSite.props, {
+    mergeDefaultProps: true,
+  })
+  const backgroundClass = callSiteLast.classNames.backgroundColor
+  const backgroundRules = rulesFor(callSiteLast, backgroundClass)
+  expect(backgroundRules[0]).toContain('background-color:red')
+  expect(
+    backgroundRules.some(
+      (rule) => rule.includes(':where(:focus)') && rule.includes('yellow')
+    )
+  ).toBe(true)
+  expect(
+    backgroundRules.some(
+      (rule) => rule.includes(':where(:hover)') && rule.includes('blue')
+    )
+  ).toBe(true)
+
+  const paddingLeftClass = callSiteLast.classNames.paddingLeft
+  const paddingLeftRules = rulesFor(callSiteLast, paddingLeftClass)
+  expect(paddingLeftRules[0]).toContain('var(--t-space-1)')
+  expect(
+    paddingLeftRules.some(
+      (rule) => rule.startsWith('@media ') && rule.includes('var(--t-space-6)')
+    )
+  ).toBe(true)
+
+  const variantLastCallSite = <Frame {...{ bg: 'red' }} tone="danger" />
+  const variantLast = simplifiedGetSplitStyles(Frame, variantLastCallSite.props, {
+    mergeDefaultProps: true,
+  })
+  const variantLastRules = rulesFor(variantLast, variantLast.classNames.backgroundColor)
+  expect(variantLastRules[0]).toContain('background-color:orange')
+  expect(
+    variantLastRules.some(
+      (rule) => rule.includes(':where(:hover)') && rule.includes('blue')
+    )
+  ).toBe(true)
+  expect(
+    variantLastRules.some(
+      (rule) => rule.includes(':where(:focus)') && rule.includes('yellow')
+    )
+  ).toBe(true)
 })
 
 test('animatable defaults do not displace a program', () => {

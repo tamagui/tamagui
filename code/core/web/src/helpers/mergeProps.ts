@@ -15,9 +15,21 @@
  *
  */
 
+import { stylePropsAll, stylePropsTransform } from '@tamagui/helpers'
+import {
+  mergePrograms,
+  transformFamilyProps,
+  type ParsedValue,
+} from '@tamagui/style-grammar'
+
+import { getConfigMaybe } from '../config'
+import { createGrammarRuntimeContext, type GrammarRuntimeContext } from './grammarConfig'
 import { pseudoDescriptors } from './pseudoDescriptors'
+import { getCachedPrograms, setProgramCacheContext } from './programCache'
 
 export type GenericProps = Record<string, any>
+
+let grammarContext: GrammarRuntimeContext | null = null
 
 export const mergeProps = (defaultProps: object, props: object) => {
   const out: GenericProps = {}
@@ -95,12 +107,81 @@ export const mergeComponentProps = (
 }
 
 function mergeProp(
-  out: object,
+  out: GenericProps,
   defaultProps: object | undefined | null,
   props: object,
   key: string
 ) {
   let val = props[key]
+
+  if (
+    defaultProps &&
+    key in defaultProps &&
+    typeof defaultProps[key] === 'string' &&
+    typeof val === 'string' &&
+    (defaultProps[key].indexOf(':') !== -1 || val.indexOf(':') !== -1)
+  ) {
+    const config = getConfigMaybe()
+    const property = config?.shorthands[key] || key
+    if (
+      config &&
+      property in stylePropsAll &&
+      (!(property in stylePropsTransform) || transformFamilyProps.has(property))
+    ) {
+      const context = createGrammarRuntimeContext(config)
+      if (context !== grammarContext) {
+        grammarContext = context
+        setProgramCacheContext({
+          registry: context.registry,
+          configRevision: context.configRevision,
+          colorTokens: context.colorTokens,
+        })
+      }
+
+      const earlier = getCachedPrograms(property, defaultProps[key])
+      const later = getCachedPrograms(property, val)
+      if (earlier.programs && later.programs) {
+        let hasClauses = false
+        for (const entry of earlier.programs) {
+          if (entry.value.clauses.length) {
+            hasClauses = true
+            break
+          }
+        }
+        if (!hasClauses) {
+          for (const entry of later.programs) {
+            if (entry.value.clauses.length) {
+              hasClauses = true
+              break
+            }
+          }
+        }
+
+        if (hasClauses) {
+          const entries: Array<{ prop: string; value: ParsedValue }> = []
+          for (const entry of earlier.programs) {
+            entries.push({ prop: entry.property, value: entry.value })
+          }
+          for (const entry of later.programs) {
+            entries.push({ prop: entry.property, value: entry.value })
+          }
+
+          for (const program of mergePrograms(entries).values()) {
+            const parts: string[] = []
+            if (program.value.base !== null) {
+              parts.push(program.value.base)
+            }
+            for (const clause of program.value.clauses) {
+              parts.push(`${clause.modifiers.join(':')}:${clause.payload}`)
+            }
+            delete out[program.property]
+            out[program.property] = parts.join(' ')
+          }
+          return
+        }
+      }
+    }
+  }
 
   // one special case - we merge tamagui style sub-objects
   if (

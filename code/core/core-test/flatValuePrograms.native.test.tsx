@@ -3,7 +3,8 @@
 
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
-import { View, createTamagui, getSplitStyles } from '../web/src'
+import { View, createTamagui, getSplitStyles, styled } from '../web/src'
+import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
@@ -204,4 +205,56 @@ test('a later plain value restates the base on native; the hover survives', () =
 
   const hovered = split({ backgroundColor: 'red hover:blue', bg: 'green' }, { hover: true })
   expect(hovered.style?.backgroundColor).toBe('blue')
+})
+
+test('styled same-key programs survive call-site props and retain authored order', () => {
+  const Frame = styled(View, {
+    bg: 'gray hover:blue',
+    p: '4 sm:6',
+    variants: {
+      tone: {
+        danger: {
+          bg: 'orange focus:yellow',
+        },
+      },
+    } as const,
+  })
+
+  const spread = { bg: 'red', p: '2' } as const
+  const callSite = <Frame tone="danger" {...spread} pl="1" />
+  const idle = simplifiedGetSplitStyles(Frame, callSite.props, {
+    mergeDefaultProps: true,
+  })
+  expect(idle.style?.backgroundColor).toBe('red')
+  expect(idle.style?.paddingLeft).toBe(2)
+
+  const hovered = simplifiedGetSplitStyles(Frame, callSite.props, {
+    componentState: { hover: true },
+    mergeDefaultProps: true,
+  })
+  expect(hovered.style?.backgroundColor).toBe('blue')
+
+  const focused = simplifiedGetSplitStyles(Frame, callSite.props, {
+    componentState: { focus: true },
+    mergeDefaultProps: true,
+  })
+  expect(focused.style?.backgroundColor).toBe('yellow')
+
+  const responsive = simplifiedGetSplitStyles(Frame, callSite.props, {
+    mediaState: { sm: true },
+    mergeDefaultProps: true,
+  })
+  expect(responsive.style?.paddingLeft).toBe(32)
+
+  const variantLastCallSite = <Frame {...{ bg: 'red' }} tone="danger" />
+  const variantIdle = simplifiedGetSplitStyles(Frame, variantLastCallSite.props, {
+    mergeDefaultProps: true,
+  })
+  expect(variantIdle.style?.backgroundColor).toBe('orange')
+
+  const variantHovered = simplifiedGetSplitStyles(Frame, variantLastCallSite.props, {
+    componentState: { hover: true },
+    mergeDefaultProps: true,
+  })
+  expect(variantHovered.style?.backgroundColor).toBe('blue')
 })
