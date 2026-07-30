@@ -1,4 +1,5 @@
 export * from './backgroundFamily'
+export * from './borderFamily'
 export * from './candidate'
 export * from './config'
 export * from './evaluateProgram'

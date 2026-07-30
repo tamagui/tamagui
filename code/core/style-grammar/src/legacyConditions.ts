@@ -252,20 +252,14 @@ function isConditionObject(value: unknown): value is Record<string, unknown> {
   return prototype === Object.prototype || prototype === null
 }
 
-// CSS shorthands that RESET sibling longhands (border: 2px solid green) have
-// no per-longhand family split yet. A program on the resetting shorthand would
-// break the order-free cross-program encoding — a later borderColor program
-// could not reliably win — so these stay on the legacy path until their family
-// split is designed (the background family is the model)
+// CSS shorthands that RESET sibling longhands and have no per-longhand family
+// split yet. A program on a resetting shorthand would break the order-free
+// cross-program encoding, so these stay on the legacy path. border, the four
+// sides, and outline split through the border family; background through the
+// background family
 const unsplitCompositeShorthands: ReadonlySet<string> = new Set([
-  'border',
-  'borderTop',
-  'borderRight',
-  'borderBottom',
-  'borderLeft',
   'borderBlock',
   'borderInline',
-  'outline',
   'textDecoration',
   'font',
 ])

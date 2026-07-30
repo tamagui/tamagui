@@ -12,12 +12,15 @@
 
 import { stylePropsTransform } from '@tamagui/helpers'
 import {
+  borderFamilyTargets,
   expandToLonghands,
   legacyTransformKeysFor,
   longhandExpansionTable,
   type LonghandProgram,
   mergeProgramValues,
   type ParsedValue,
+  splitBackgroundValue,
+  splitBorderValue,
   transformDeclarationUnit,
   transformDeclarationsFor,
   transformFamilyProps,
@@ -148,9 +151,12 @@ function plainValueToPayload(value: unknown, longhand: string): string | null {
 
 function longhandsFor(prop: string, styleState: GetStyleState): readonly string[] {
   const declarations = transformDeclarationsFor(prop)
-  return declarations.length
-    ? declarations
-    : expandToLonghands(prop, styleState.conf.shorthands)
+  if (declarations.length) return declarations
+  // a border-family prop enumerates every longhand it could touch; the
+  // value-dependent split narrows this before contribution
+  const family = borderFamilyTargets[prop]
+  if (family) return [...family.width, ...family.style, ...family.color]
+  return expandToLonghands(prop, styleState.conf.shorthands)
 }
 
 function isTransformDeclaration(longhand: string): boolean {
@@ -243,6 +249,58 @@ export function contributeParsedProgram(
     programs.set(longhand, { property: longhand, value: nextValue, sourceProp })
     styleState.usedKeys[longhand] = 1
   }
+}
+
+/**
+ * Converted legacy contributions may land on a family shorthand (`border`,
+ * `background`), whose value-dependent split runs here — uncached, since the
+ * conversion path is the compat path. Returns false when the value cannot
+ * split, which sends the whole condition prop back to the legacy handling.
+ */
+export function contributeConvertedProgram(
+  styleState: GetStyleState,
+  prop: string,
+  value: ParsedValue,
+  sourceProp: string
+): boolean {
+  if (borderFamilyTargets[prop]) {
+    const context = ensureGrammarContext(styleState)
+    const split = splitBorderValue(prop, value, context.colorTokens)
+    if (split.errors.length) return false
+    for (const entry of split.entries) {
+      contributeParsedProgram(styleState, entry.property, entry.value, sourceProp)
+    }
+    return true
+  }
+  if (prop === 'background') {
+    const context = ensureGrammarContext(styleState)
+    const split = splitBackgroundValue(value, context.colorTokens)
+    if (split.errors.length) return false
+    for (const entry of split.entries) {
+      contributeParsedProgram(styleState, entry.property, entry.value, sourceProp)
+    }
+    return true
+  }
+  contributeParsedProgram(styleState, prop, value, sourceProp)
+  return true
+}
+
+/** validation half of contributeConvertedProgram, run before any contribution */
+export function canContributeConvertedProgram(
+  styleState: GetStyleState,
+  prop: string,
+  value: ParsedValue
+): boolean {
+  if (!canAppendParsedProgram(styleState, prop)) return false
+  if (borderFamilyTargets[prop]) {
+    const context = ensureGrammarContext(styleState)
+    return splitBorderValue(prop, value, context.colorTokens).errors.length === 0
+  }
+  if (prop === 'background') {
+    const context = ensureGrammarContext(styleState)
+    return splitBackgroundValue(value, context.colorTokens).errors.length === 0
+  }
+  return true
 }
 
 /**

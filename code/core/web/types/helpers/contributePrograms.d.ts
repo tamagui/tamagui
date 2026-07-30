@@ -10,6 +10,15 @@ export declare function canAppendParsedProgram(styleState: GetStyleState, prop: 
  */
 export declare function contributeParsedProgram(styleState: GetStyleState, prop: string, value: ParsedValue, sourceProp?: string): void;
 /**
+ * Converted legacy contributions may land on a family shorthand (`border`,
+ * `background`), whose value-dependent split runs here — uncached, since the
+ * conversion path is the compat path. Returns false when the value cannot
+ * split, which sends the whole condition prop back to the legacy handling.
+ */
+export declare function contributeConvertedProgram(styleState: GetStyleState, prop: string, value: ParsedValue, sourceProp: string): boolean;
+/** validation half of contributeConvertedProgram, run before any contribution */
+export declare function canContributeConvertedProgram(styleState: GetStyleState, prop: string, value: ParsedValue): boolean;
+/**
  * Returns true when the value was consumed as programs. False means the caller
  * proceeds down the existing plain-value path.
  */

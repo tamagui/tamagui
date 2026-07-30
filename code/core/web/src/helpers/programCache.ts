@@ -20,8 +20,11 @@
 // prop in production) belongs to the caller, not here.
 
 import {
+  borderFamilyTargets,
   parseValue,
   splitBackgroundValue,
+  splitBorderValue,
+  type BorderFamilyError,
   type ModifierRegistryView,
   type ParsedValue,
   type ValueParseError,
@@ -40,7 +43,7 @@ export interface BackgroundFamilyError {
   where: 'base' | number
 }
 
-export type ProgramError = ValueParseError | BackgroundFamilyError
+export type ProgramError = ValueParseError | BackgroundFamilyError | BorderFamilyError
 
 export type CachedEntry =
   | { programs: readonly ProgramEntry[]; errors?: undefined }
@@ -113,13 +116,21 @@ function computeEntry(property: string, input: string): CachedEntry {
     return { errors: parsed.errors }
   }
 
-  if (!backgroundFamilyProps.has(property)) {
-    return { programs: [{ property, value: parsed.value }] }
+  if (backgroundFamilyProps.has(property)) {
+    const split = splitBackgroundValue(parsed.value, context.colorTokens)
+    if (split.errors.length > 0) {
+      return { errors: split.errors }
+    }
+    return { programs: split.entries }
   }
 
-  const split = splitBackgroundValue(parsed.value, context.colorTokens)
-  if (split.errors.length > 0) {
-    return { errors: split.errors }
+  if (borderFamilyTargets[property]) {
+    const split = splitBorderValue(property, parsed.value, context.colorTokens)
+    if (split.errors.length > 0) {
+      return { errors: split.errors }
+    }
+    return { programs: split.entries }
   }
-  return { programs: split.entries }
+
+  return { programs: [{ property, value: parsed.value }] }
 }

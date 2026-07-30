@@ -259,24 +259,38 @@ describe('tokens in variant styles - web', () => {
 })
 
 describe('border shorthand with media queries - web', () => {
-  test('border in $sm generates className with media key', () => {
+  test('border in $sm splits into per-longhand media programs', () => {
     const styles = simplifiedGetSplitStyles(View, {
       $sm: { border: '2px solid green' },
     })
 
-    // on web, $sm should generate a className with media key
-    expect(styles.hasMedia).toBe(true)
-    expect(styles.classNames?.['border-sm']).toBeDefined()
-    // classname contains _sm_ marker
-    expect(styles.classNames?.['border-sm']).toContain('_sm_')
+    // the border family splits the composite into width/style/color programs
+    const widthClass = styles.classNames?.borderTopWidth
+    expect(widthClass).toMatch(/^_btw-/)
+    const widthRules = (styles.rulesToInsert?.[widthClass]?.[4] ?? []).join('')
+    expect(widthRules).toContain('@media')
+    expect(widthRules).toContain('border-top-width:2px')
+
+    const styleRules = (
+      styles.rulesToInsert?.[styles.classNames?.borderTopStyle]?.[4] ?? []
+    ).join('')
+    expect(styleRules).toContain('border-top-style:solid')
+
+    const colorRules = (
+      styles.rulesToInsert?.[styles.classNames?.borderTopColor]?.[4] ?? []
+    ).join('')
+    expect(colorRules).toContain('border-top-color:green')
   })
 
-  test('border in $sm with token generates className', () => {
+  test('border in $sm with token resolves through the variable', () => {
     const styles = simplifiedGetSplitStyles(View, {
       $sm: { border: '1px dashed $white' },
     })
 
-    expect(styles.hasMedia).toBe(true)
-    expect(styles.classNames?.['border-sm']).toBeDefined()
+    const colorRules = (
+      styles.rulesToInsert?.[styles.classNames?.borderTopColor]?.[4] ?? []
+    ).join('')
+    expect(colorRules).toContain('@media')
+    expect(colorRules).toContain('var(--')
   })
 })

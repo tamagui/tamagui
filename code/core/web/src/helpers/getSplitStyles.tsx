@@ -84,8 +84,8 @@ import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { propMapper } from './propMapper'
 import {
   absorbPlainIntoPrograms,
-  canAppendParsedProgram,
-  contributeParsedProgram,
+  canContributeConvertedProgram,
+  contributeConvertedProgram,
   contributeStylePrograms,
   ensureGrammarContext,
 } from './contributePrograms'
@@ -1390,7 +1390,12 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         for (const contribution of converted.contributions) {
-          if (!canAppendParsedProgram(styleState, contribution.prop)) {
+          if (
+            !canContributeConvertedProgram(styleState, contribution.prop, {
+              base: null,
+              clauses: [contribution.clause],
+            })
+          ) {
             noteLegacyConditionFallback(
               key,
               'unsupported-legacy-base',
@@ -1401,7 +1406,7 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         for (const contribution of converted.contributions) {
-          contributeParsedProgram(
+          contributeConvertedProgram(
             styleState,
             contribution.prop,
             { base: null, clauses: [contribution.clause] },

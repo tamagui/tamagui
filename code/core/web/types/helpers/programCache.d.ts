@@ -1,4 +1,4 @@
-import { type ModifierRegistryView, type ParsedValue, type ValueParseError } from '@tamagui/style-grammar';
+import { type BorderFamilyError, type ModifierRegistryView, type ParsedValue, type ValueParseError } from '@tamagui/style-grammar';
 /** one authored prop's contribution to one CSS longhand, pre-resolution */
 export interface ProgramEntry {
     property: string;
@@ -10,7 +10,7 @@ export interface BackgroundFamilyError {
     component: string;
     where: 'base' | number;
 }
-export type ProgramError = ValueParseError | BackgroundFamilyError;
+export type ProgramError = ValueParseError | BackgroundFamilyError | BorderFamilyError;
 export type CachedEntry = {
     programs: readonly ProgramEntry[];
     errors?: undefined;

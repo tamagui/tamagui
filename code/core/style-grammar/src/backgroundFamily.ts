@@ -19,7 +19,7 @@ const colorFunctions = new Set([
   'color',
 ])
 
-function splitTopLevelComponents(value: string): string[] {
+export function splitTopLevelComponents(value: string): string[] {
   const components: string[] = []
   let current = ''
   let depth = 0
@@ -68,7 +68,7 @@ function splitTopLevelComponents(value: string): string[] {
   return components
 }
 
-function classifyComponent(
+export function classifyComponent(
   component: string,
   colorTokens: ReadonlySet<string>
 ): 'color' | 'image' | null {
