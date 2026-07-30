@@ -134,6 +134,34 @@ Status: in progress.
   declarations, and graph proof. The first packet is active. Its protected-file
   handoff will name the descriptor and preprocessing hook required from the
   reserving agent without editing either exclusive file.
+- Lane A landed in `0f3fb09a9c`: the neutral descriptor/internal entries,
+  distinct frontend View/Text factories, object-only regular `styled()`,
+  class-first Tailwind `styled()`, className-only Tailwind style types, candidate
+  adaptation backed by `style-grammar`, and web/native/type tests. Its
+  adversarial review returned changes required. The blocking findings are a
+  built-ESM setup import that was elided while CJS retained it, missing tracked
+  declarations and internal-subpath fallback files, and incorrect last-authored
+  ordering when a later candidate restates a shorthand. A dedicated Lane A
+  repair packet also owns narrowing the internal declaration graph and keeping
+  passthrough classes out of normalized `baseStyle`.
+- Exact protected-file handoff for item 2: in `createComponent.tsx`, remove the
+  global style-mode preprocessor, read the immutable descriptor from static
+  config, and call `preprocessProps` once at the existing hoisted location
+  before `useComponentState`. Unify the descriptor's
+  `STYLE_FRONTEND_PREPROCESSED` marker with the private
+  `STYLE_MODE_PREPROCESSED` check so props cannot be tokenized twice. In
+  `getSplitStyles.tsx`, remove the embedded Tailwind
+  candidate/cache/static-normalization code and `tailwind-merge`, then dispatch
+  static normalization and the preprocessed marker through the descriptor
+  while retaining the shared value-program engine. The unknown-class path must
+  also run `flushForwardStylesToClasses()` and set `shouldDoClasses = false`
+  for descriptor-selected components; that cascade-preserving switch is
+  currently gated only by the global mode. Core `className` becomes raw
+  interoperability only.
+- Lane B is active with non-overlapping ownership of
+  `@tamagui/tailwind/vite`, the base Vite-plugin extraction, shared config
+  loader, compiler/static callers, and integration fixtures. It cannot edit
+  the Lane A manifest/runtime/type paths or any protected file.
 
 ## 3. DOM contract
 
