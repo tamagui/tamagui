@@ -732,17 +732,35 @@ class, `(0,1,0)`:
 
 ```css
 /* bg="red hover:green dark:gray dark:hover:blue" — backgroundColor program */
-._bc-x1a2b3 { background-color: red }
-._bc-x1a2b3:where(:hover) { background-color: green }
-:where(.t_dark) ._bc-x1a2b3, ._bc-x1a2b3:where(.t_dark) { background-color: gray }
-:where(.t_dark) ._bc-x1a2b3:where(:hover), ._bc-x1a2b3:where(.t_dark):where(:hover) { background-color: blue }
+._bc-x1a2b3{background-color:red}
+._bc-x1a2b3:where(:hover){background-color:green}
+._bc-x1a2b3:where(.t_dark, .t_dark *){background-color:gray}
+._bc-x1a2b3:where(.t_dark, .t_dark *):where(:hover){background-color:blue}
 ```
 
-- State modifiers become `:where(:hover)` etc. on the subject; theme and
-  group modifiers become `:where(.t_dark)` / `:where(.t_group_x:hover)`
-  ancestor (plus same-element for themes) prefixes; media modifiers wrap the
-  rule in `@media`, which adds no specificity. Modifier chains compose these
-  wrappers; specificity never moves.
+- Every condition anchors on the subject, Tailwind-group style. State
+  modifiers are `:where(:hover)` on the subject; ancestor-scoped conditions
+  use the descendant form inside the subject's `:where()`: themes are
+  `:where(.t_dark, .t_dark *)` (is-or-within), groups are
+  `:where(.t_group_card:hover *)`, enter is
+  `:where(.t_unmounted, .t_unmounted *)`. Because each ancestor condition is
+  an independent "within" test, nesting order between them never matters and
+  no ancestor-permutation selectors exist (a theme class strictly between a
+  group and the subject just works). Media modifiers wrap the rule in
+  `@media`; chained media modifiers nest (`@media A { @media B { … } }`),
+  which is AND for arbitrary query texts. Specificity never moves.
+- Declarations are compact (`{background-color:red}`), matching the
+  existing emitter's byte-lean output.
+- `exit:` never lowers to CSS: exit is animation-driver territory (there is
+  no exited-state class in the DOM to select), so a web `exit:` clause is a
+  compiler/runtime diagnostic naming the driver, exactly like other
+  cannot-lower conditions. `enter:` lowers through the `.t_unmounted`
+  scheme.
+- Rule/selector injection through payloads is structurally impossible at
+  this layer because the parser rejects a top-level `{`, `}`, or `;` — those
+  tokens are never valid in a CSS component value. Value-level validation of
+  resolved payloads has exactly one owner, the resolution step, same as
+  today's dynamic styles; lowering emits verbatim by contract.
 - With equal specificity everywhere, the cascade reduces to source order
   inside the block, which is authored clause order, so the last matching
   clause wins — the exact program semantics native evaluates in JS.
