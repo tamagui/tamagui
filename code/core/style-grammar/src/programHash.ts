@@ -79,7 +79,12 @@ export function normalizeProgramKey(
   let key = `${configRevision.length}:${configRevision}${property.length}:${property}`
   key += value.base === null ? 'n' : `b${value.base.length}:${value.base}`
   for (const clause of value.clauses) {
-    const modifiers = clause.modifiers.join(',')
+    // condition sets are conjunctions: `dark:hover:` and `hover:dark:` are one
+    // clause, so the hash sorts a copy to agree with the merge rule and dedup
+    const modifiers =
+      clause.modifiers.length > 1
+        ? clause.modifiers.slice().sort().join(',')
+        : clause.modifiers.join(',')
     key += `c${modifiers.length}:${modifiers}${clause.payload.length}:${clause.payload}`
   }
   return key

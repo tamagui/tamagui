@@ -337,6 +337,17 @@ export function absorbPlainIntoPrograms(
   }
   if (!anyProgram) return false
 
+  // a transform value that cannot become a payload (NaN, `cond && 2` false)
+  // bails wholesale: covered programs go, the caller writes the raw value to
+  // flatTransforms exactly as legacy did — never silently drop both (M1)
+  if (isTransform && plainValueToPayload(val, longhands[0]) === null) {
+    for (let index = 0; index < longhands.length; index++) {
+      programs.delete(longhands[index])
+      delete styleState.usedKeys[longhands[index]]
+    }
+    return false
+  }
+
   // per-slot values: transforms cover their axes uniformly, geometric
   // shorthands expand by the CSS slot pattern, single keys pass through
   let perSlot: readonly unknown[] | null
@@ -347,9 +358,11 @@ export function absorbPlainIntoPrograms(
   }
   if (!perSlot) {
     // unexpandable shorthand over programs: wholesale replacement, caller
-    // writes its store
+    // writes its store. usedKeys entries the programs installed go too, so a
+    // later shorthand expansion is not suppressed by a stale mark (M5)
     for (let index = 0; index < longhands.length; index++) {
       programs.delete(longhands[index])
+      delete styleState.usedKeys[longhands[index]]
     }
     return false
   }
@@ -405,6 +418,10 @@ function singleValue(val: unknown): readonly unknown[] {
   return singleValueBox
 }
 
+// writes at fixed base importance with no normalization: reachable only from
+// mergeStylePropAtCurrentPosition (importance 1) because geometric shorthands
+// are pre-expanded before mergeStyle. revisit if absorb ever runs for a
+// shorthand at importance >= 2 (M4)
 function writePlainSlot(
   styleState: GetStyleState,
   longhand: string,
