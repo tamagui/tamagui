@@ -5,5 +5,14 @@
     "noEmit": true
   },
   "include": ["src/**/*.test-d.ts", "src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["types", "dist", "node_modules"]
+  // `*.native.*` sources belong to the native run, which resolves react-native rather
+  // than react-native-web-lite and defines TAMAGUI_TARGET as native. Checking them in
+  // the web run typechecks native tests against the wrong module resolution.
+  "exclude": [
+    "types",
+    "dist",
+    "node_modules",
+    "src/**/*.native.ts",
+    "src/**/*.native.tsx"
+  ]
 }

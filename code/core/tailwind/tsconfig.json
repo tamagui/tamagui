@@ -13,6 +13,9 @@
   ],
   "references": [
     {
+      "path": "../constants"
+    },
+    {
       "path": "../core"
     },
     {

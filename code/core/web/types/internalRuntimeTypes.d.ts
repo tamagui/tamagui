@@ -16,16 +16,6 @@
  * are declared in; splitting that module so the declaration graph stops reaching it
  * at all is tracked with the frontend isolation bundle/type gates.
  */
-export type {
-  FrontendComponent,
-  FrontendStaticConfig,
-  StyleFrontend,
-  StyleFrontendConfig,
-} from './helpers/styleFrontend'
-
-export type {
-  StackNonStyleProps,
-  TamaguiElement,
-  TamaguiTextElement,
-  TextNonStyleProps,
-} from './types'
+export type { FrontendComponent, FrontendStaticConfig, StyleFrontend, StyleFrontendConfig, } from './helpers/styleFrontend';
+export type { StackNonStyleProps, TamaguiElement, TamaguiTextElement, TextNonStyleProps, } from './types';
+//# sourceMappingURL=internalRuntimeTypes.d.ts.map

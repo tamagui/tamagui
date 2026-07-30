@@ -1,4 +1,5 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, FormHTMLAttributes, HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { GetRef } from './interfaces/GetRef';
 import type { CompoundVariantDefinition, GetBaseStyles, GetFinalProps, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StackStyle, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
 import type { Text } from './views/Text';
@@ -64,9 +65,18 @@ export declare function styledHtml<Tag extends keyof HTMLElementTagNameMap, Vari
 }): TamaguiComponent<TamaDefer, HTMLElementTagNameMap[Tag], TamaguiComponentPropsBase & HTMLElementSpecificProps<Tag>, HTMLElementStyleBase<Tag>, Variants extends undefined ? {} : AreVariantsUndefined<NonNullable<Variants>> extends true ? {} : GetVariantAcceptedValues<NonNullable<Variants>>, {}>;
 /**
  * styled() for creating Tamagui components from other components.
+ *
+ * Core's public overload is object-only. The class-string form belongs to
+ * `@tamagui/tailwind`, which reaches this implementation through
+ * `createFrontendStyled`.
  */
 declare function styled<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>>(ComponentIn: ParentComponent, options?: StyledOptions<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>, config?: StyledConfig): StyledComponentResult<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>;
-declare function styled<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>>(ComponentIn: ParentComponent, baseClassName: string, options?: StyledOptions<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>, config?: StyledConfig): StyledComponentResult<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys>;
+/**
+ * Builds a `styled()` bound to one frontend descriptor. Components it creates carry
+ * that descriptor immutably, so behavior follows import provenance instead of any
+ * global setting.
+ */
+export declare function createFrontendStyled(frontend: StyleFrontend): (ComponentIn: any, optionsOrBaseClassName?: any, configOrOptions?: any, maybeConfig?: any) => FrontendComponent;
 type StyledHtmlFactory<Tag extends keyof HTMLElementTagNameMap> = <Variants extends VariantDefinitions<any, any> | undefined = undefined>(options?: Partial<HTMLElementStyleBase<Tag>> & {
     name?: string;
     variants?: Variants;

@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import type { TamaguiInternalConfig } from '@tamagui/core/internal-runtime'
+import type { StyleFrontendConfig } from '@tamagui/core/internal-runtime'
 import { tokenCategories } from '@tamagui/helpers'
 import {
   borderSideSuffix,
@@ -25,9 +25,9 @@ import {
  * renderer.
  */
 
-const styleGrammarConfigCache = new WeakMap<TamaguiInternalConfig, GrammarConfigView>()
+const styleGrammarConfigCache = new WeakMap<StyleFrontendConfig, GrammarConfigView>()
 
-export function getStyleGrammarConfig(config: TamaguiInternalConfig): GrammarConfigView {
+export function getStyleGrammarConfig(config: StyleFrontendConfig): GrammarConfigView {
   const cached = styleGrammarConfigCache.get(config)
   if (cached) return cached
   const view = createGrammarConfigView(config)
@@ -38,9 +38,9 @@ export function getStyleGrammarConfig(config: TamaguiInternalConfig): GrammarCon
 // theme value names (color1-12, background, borderColor, shadow*, …) are not tokens but
 // resolve to their theme CSS var (var(--color5)) via the theme lookup props already use.
 // keys are uniform across a config's themes, so compute the set once per config.
-const themeValueKeysCache = new WeakMap<TamaguiInternalConfig, Set<string>>()
+const themeValueKeysCache = new WeakMap<StyleFrontendConfig, Set<string>>()
 
-function getThemeValueKeys(config: TamaguiInternalConfig): Set<string> {
+function getThemeValueKeys(config: StyleFrontendConfig): Set<string> {
   let set = themeValueKeysCache.get(config)
   if (!set) {
     set = new Set<string>()
@@ -64,7 +64,7 @@ function getThemeValueKeys(config: TamaguiInternalConfig): Set<string> {
  */
 export function resolveTokenValue(
   value: string,
-  config: TamaguiInternalConfig,
+  config: StyleFrontendConfig,
   prop?: string
 ): string {
   // already a token reference
@@ -174,7 +174,7 @@ function expandBorderCandidate(
  */
 function tailwindClassToFlatProp(
   parsed: ParsedCandidate,
-  config: TamaguiInternalConfig
+  config: StyleFrontendConfig
 ): { key: string; value: any } | null {
   if (parsed.kind !== 'dynamic' || !parsed.entry || parsed.rawValue === undefined) {
     return null
@@ -370,7 +370,7 @@ function getClassPlanCache(grammarConfig: object) {
 function computeClassPlan(
   cls: string,
   grammarConfig: GrammarConfigView,
-  config: TamaguiInternalConfig
+  config: StyleFrontendConfig
 ): TailwindClassPlan {
   const classification = classifyCandidate(cls, grammarConfig)
   if (classification.kind === 'passthrough') {
@@ -413,6 +413,24 @@ function computeClassPlan(
 const warnedNativePassthroughCandidates = new Set<string>()
 
 /**
+ * Append a contribution at the end of the forward pass.
+ *
+ * Plain re-assignment keeps a key's FIRST insertion position, so a restated
+ * shorthand would stay behind a longhand authored between the two occurrences:
+ * `p-4 px-2 p-6` has to resolve `paddingLeft` from `p-6`, and `pt-2 p-4 pt-8` has to
+ * resolve `paddingTop` from `pt-8`. Deleting the key first moves it to the end,
+ * which is the authored order the shared per-longhand merge reads.
+ */
+export function setInAuthoredOrder(
+  target: Record<string, any>,
+  key: string,
+  value: any
+): void {
+  if (key in target) delete target[key]
+  target[key] = value
+}
+
+/**
  * Tokenize a className into flat `$mods:prop` props, once per class per config.
  * User-defined tokens drive resolution; Tailwind's color/spacing scales are never
  * hardcoded. Classes the grammar does not claim stay in `className` verbatim, in
@@ -420,7 +438,7 @@ const warnedNativePassthroughCandidates = new Set<string>()
  */
 export function preprocessTailwindClassName(
   props: Record<string, any>,
-  config: TamaguiInternalConfig
+  config: StyleFrontendConfig
 ): Record<string, any> {
   const className = props.className
   if (!className || typeof className !== 'string') {
@@ -433,45 +451,43 @@ export function preprocessTailwindClassName(
   const grammarConfig = getStyleGrammarConfig(config)
   const plans = getClassPlanCache(grammarConfig)
 
-  const applyClass = (cls: string) => {
-    let plan = plans.get(cls)
-    if (plan === undefined) {
-      plan = computeClassPlan(cls, grammarConfig, config)
-      plans.set(cls, plan)
-    }
-    if (plan === null) {
-      // web-only candidate on native: dropped, warned once
-      if (
-        process.env.NODE_ENV !== 'production' &&
-        !warnedNativePassthroughCandidates.has(cls)
-      ) {
-        warnedNativePassthroughCandidates.add(cls)
-        console.warn(
-          `[tamagui] Tailwind candidate "${cls}" is web-only and was dropped on native. Use a Tamagui grammar candidate or a native style prop for cross-platform output.`
-        )
-      }
-      return
-    }
-    if (plan === 'raw') {
-      // not claimed by the grammar: preserve the class as-is
-      regularClasses.push(cls)
-      return
-    }
-    for (let i = 0; i < plan.length; i++) {
-      result[plan[i][0]] = plan[i][1]
-    }
-  }
-
   // Expand the className exactly where it was authored. Claimed classes and
   // ordinary props therefore share one forward pass: whichever contribution is
   // encountered later wins. Classes within the string are likewise applied in
   // their own left-to-right order.
   for (const key in props) {
     if (key !== 'className') {
-      result[key] = props[key]
+      setInAuthoredOrder(result, key, props[key])
       continue
     }
-    for (const cls of classes) applyClass(cls)
+    for (const cls of classes) {
+      let plan = plans.get(cls)
+      if (plan === undefined) {
+        plan = computeClassPlan(cls, grammarConfig, config)
+        plans.set(cls, plan)
+      }
+      if (plan === null) {
+        // web-only candidate on native: dropped, warned once
+        if (
+          process.env.NODE_ENV !== 'production' &&
+          !warnedNativePassthroughCandidates.has(cls)
+        ) {
+          warnedNativePassthroughCandidates.add(cls)
+          console.warn(
+            `[tamagui] Tailwind candidate "${cls}" is web-only and was dropped on native. Use a Tamagui grammar candidate or a native style prop for cross-platform output.`
+          )
+        }
+        continue
+      }
+      if (plan === 'raw') {
+        // not claimed by the grammar: preserve the class as-is
+        regularClasses.push(cls)
+        continue
+      }
+      for (let i = 0; i < plan.length; i++) {
+        setInAuthoredOrder(result, plan[i][0], plan[i][1])
+      }
+    }
     if (regularClasses.length > 0) {
       result.className = regularClasses.join(' ')
     }

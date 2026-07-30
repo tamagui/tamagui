@@ -12,23 +12,7 @@
  * platform setup while CJS ran it. `runtime.*` is declared side-effectful in
  * `package.json` so downstream bundlers keep it too.
  */
-export { TamaguiProvider, createTamagui } from './runtime'
-
-export {
-  STYLE_FRONTEND_PREPROCESSED,
-  createFrontendStyled,
-  createFrontendViews,
-  regularStyleFrontend,
-  setupHooks,
-} from '@tamagui/web/internal-runtime'
-export type {
-  FrontendComponent,
-  FrontendStaticConfig,
-  StackNonStyleProps,
-  StyleFrontend,
-  StyleFrontendConfig,
-  TamaguiElement,
-  TamaguiProviderProps,
-  TamaguiTextElement,
-  TextNonStyleProps,
-} from '@tamagui/web/internal-runtime'
+export { TamaguiProvider, createTamagui } from './runtime';
+export { STYLE_FRONTEND_PREPROCESSED, createFrontendStyled, createFrontendViews, regularStyleFrontend, setupHooks, } from '@tamagui/web/internal-runtime';
+export type { FrontendComponent, FrontendStaticConfig, StackNonStyleProps, StyleFrontend, StyleFrontendConfig, TamaguiElement, TamaguiProviderProps, TamaguiTextElement, TextNonStyleProps, } from '@tamagui/web/internal-runtime';
+//# sourceMappingURL=internal-runtime.d.ts.map

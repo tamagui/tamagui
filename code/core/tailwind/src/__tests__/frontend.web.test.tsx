@@ -83,6 +83,65 @@ describe('tailwind components render through the shared renderer', () => {
   })
 })
 
+// A restated shorthand has to land at its authored position, not at the position of
+// its first occurrence, or a longhand written between the two occurrences wins.
+describe('authored ordering across shorthand and longhand candidates', () => {
+  const space = (name: string) => getConfig().tokensParsed.space[name].variable
+
+  test('a restated shorthand overrides an earlier horizontal longhand', () => {
+    const styles = splitTailwindStyles(View, { className: 'p-4 px-2 p-6' })
+
+    expect(findRule(styles.rulesToInsert, 'paddingLeft')[StyleObjectValue]).toBe(
+      space('$6')
+    )
+  })
+
+  test('a restated longhand overrides a later shorthand', () => {
+    const styles = splitTailwindStyles(View, { className: 'pt-2 p-4 pt-8' })
+
+    expect(findRule(styles.rulesToInsert, 'paddingTop')[StyleObjectValue]).toBe(
+      space('$8')
+    )
+  })
+
+  test('margin follows the same rule', () => {
+    const styles = splitTailwindStyles(View, { className: 'm-4 mx-2 m-6' })
+
+    expect(findRule(styles.rulesToInsert, 'marginLeft')[StyleObjectValue]).toBe(
+      space('$6')
+    )
+  })
+
+  test('radius corners follow the same rule', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'rounded-[4px] rounded-t-[2px] rounded-[6px]',
+    })
+
+    expect(findRule(styles.rulesToInsert, 'borderTopLeftRadius')[StyleObjectValue]).toBe(
+      '6px'
+    )
+  })
+
+  test('border sides follow the same rule', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'border-[4px] border-x-[2px] border-[6px]',
+    })
+
+    expect(findRule(styles.rulesToInsert, 'borderLeftWidth')[StyleObjectValue]).toBe('6px')
+  })
+
+  test('a class restated after an ordinary prop still wins', () => {
+    const styles = splitTailwindStyles(View, {
+      paddingLeft: 2,
+      className: 'p-6',
+    })
+
+    expect(findRule(styles.rulesToInsert, 'paddingLeft')[StyleObjectValue]).toBe(
+      space('$6')
+    )
+  })
+})
+
 describe('class-first styled()', () => {
   test('the class base resolves once into the static config', () => {
     const Frame = styled(View, 'bg-[red] p-4')
@@ -95,6 +154,27 @@ describe('class-first styled()', () => {
       backgroundColor: 'red',
       padding: '$4',
     })
+  })
+
+  test('unclaimed base classes are partitioned out of baseStyle', () => {
+    const Frame = styled(View, 'grid-cols-3 p-4 shadow-none')
+    const normalized = tailwindStyleFrontend.normalizeStaticConfig!(
+      Frame.staticConfig,
+      getConfig()
+    )
+
+    expect(normalized.baseStyle).toEqual({ padding: '$4' })
+    expect(normalized.passthroughClassName).toBe('grid-cols-3 shadow-none')
+  })
+
+  test('a base with no unclaimed classes carries no passthrough', () => {
+    const Frame = styled(View, 'p-4')
+    const normalized = tailwindStyleFrontend.normalizeStaticConfig!(
+      Frame.staticConfig,
+      getConfig()
+    )
+
+    expect(normalized.passthroughClassName).toBeUndefined()
   })
 
   test('the normalized static config is memoized per config', () => {

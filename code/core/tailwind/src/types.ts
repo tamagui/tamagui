@@ -1,6 +1,6 @@
 import type {
+  FrontendStaticConfig,
   StackNonStyleProps,
-  StaticConfig,
   TamaguiElement,
   TamaguiTextElement,
   TextNonStyleProps,
@@ -56,7 +56,7 @@ export interface TailwindComponent<
 > extends FunctionComponent<
   NonStyleProps & TailwindStyleProps & VariantProps & { ref?: ReactRef<Ref> }
 > {
-  staticConfig: StaticConfig
+  staticConfig: FrontendStaticConfig
   /** phantom carrier so `styled()` can recover the parts of a parent component */
   __tailwind?: { ref: Ref; props: NonStyleProps; variants: VariantProps }
 }

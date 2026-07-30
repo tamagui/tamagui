@@ -10,7 +10,7 @@ import type {
 } from 'react'
 import { createComponent } from './createComponent'
 import { mergeVariants } from './helpers/mergeVariants'
-import type { StyleFrontend } from './helpers/styleFrontend'
+import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
 import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
@@ -447,20 +447,22 @@ function styled(...args: any[]) {
  * that descriptor immutably, so behavior follows import provenance instead of any
  * global setting.
  */
-export function createFrontendStyled(frontend: StyleFrontend) {
-  return (
-    ComponentIn: any,
-    optionsOrBaseClassName?: any,
-    configOrOptions?: any,
-    maybeConfig?: any
-  ) =>
+export function createFrontendStyled(
+  frontend: StyleFrontend
+): (
+  ComponentIn: any,
+  optionsOrBaseClassName?: any,
+  configOrOptions?: any,
+  maybeConfig?: any
+) => FrontendComponent {
+  return (ComponentIn, optionsOrBaseClassName, configOrOptions, maybeConfig) =>
     styledImpl(
       frontend,
       ComponentIn,
       optionsOrBaseClassName,
       configOrOptions,
       maybeConfig
-    )
+    ) as any
 }
 
 function styledImpl<

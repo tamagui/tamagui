@@ -1,8 +1,8 @@
 import {
   STYLE_FRONTEND_PREPROCESSED,
-  type StaticConfig,
+  type FrontendStaticConfig,
   type StyleFrontend,
-  type TamaguiInternalConfig,
+  type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
 import { stylePropsAll } from '@tamagui/helpers'
 import { grammarPlatformNames, modifierToPseudo } from '@tamagui/style-grammar'
@@ -10,6 +10,7 @@ import {
   isTokenValueProp,
   preprocessTailwindClassName,
   resolveTokenValue,
+  setInAuthoredOrder,
 } from './candidate'
 
 /**
@@ -41,7 +42,7 @@ function parseFlatModifierProp(
   key: string,
   value: any,
   shorthands: Record<string, string>,
-  config: TamaguiInternalConfig
+  config: StyleFrontendConfig
 ): FlatParsedProp | null {
   // key is like $hover:bg or $sm:hover:bg or $sm:dark:hover:bg
   // also supports embedded value: $hover:bg-blue or $sm:p-10
@@ -158,7 +159,7 @@ function mergeDeep(target: any, source: any): any {
 function preprocessFlatProps(
   props: Record<string, any>,
   shorthands: Record<string, string>,
-  config: TamaguiInternalConfig
+  config: StyleFrontendConfig
 ): Record<string, any> {
   let hasFlat = false
 
@@ -314,7 +315,7 @@ function preprocessFlatProps(
             propName in stylePropsAll ||
             expandedProp in stylePropsAll
           ) {
-            result[expandedProp] = finalValue
+            setInAuthoredOrder(result, expandedProp, finalValue)
             continue
           }
         }
@@ -331,7 +332,7 @@ function preprocessFlatProps(
     ) {
       result[key] = mergeDeep(result[key], value)
     } else {
-      result[key] = value
+      setInAuthoredOrder(result, key, value)
     }
   }
 
@@ -344,7 +345,7 @@ function preprocessFlatProps(
  */
 export function parseStaticStyle(
   input: string,
-  config: TamaguiInternalConfig
+  config: StyleFrontendConfig
 ): Record<string, any> {
   return preprocessFlatProps(
     preprocessTailwindClassName({ className: input }, config),
@@ -354,21 +355,21 @@ export function parseStaticStyle(
 }
 
 const normalizedStaticConfigCache = new WeakMap<
-  StaticConfig,
-  WeakMap<TamaguiInternalConfig, StaticConfig>
+  FrontendStaticConfig,
+  WeakMap<StyleFrontendConfig, FrontendStaticConfig>
 >()
-const normalizedStaticConfigs = new WeakSet<StaticConfig>()
+const normalizedStaticConfigs = new WeakSet<FrontendStaticConfig>()
 
-function normalizeTailwindStaticConfig(
-  staticConfig: StaticConfig,
-  config: TamaguiInternalConfig
-): StaticConfig {
+function normalizeTailwindStaticConfig<Config extends FrontendStaticConfig>(
+  staticConfig: Config,
+  config: StyleFrontendConfig
+): Config {
   if (normalizedStaticConfigs.has(staticConfig)) {
     return staticConfig
   }
   let configCache = normalizedStaticConfigCache.get(staticConfig)
   const cached = configCache?.get(config)
-  if (cached) return cached
+  if (cached) return cached as Config
 
   let variants = staticConfig.variants
   if (variants) {
@@ -395,21 +396,29 @@ function normalizeTailwindStaticConfig(
         : compoundVariant.style,
   }))
 
-  const normalized: StaticConfig = {
+  // A class base is the one class string with no authored position, so its unclaimed
+  // classes cannot ride the forward pass the way a call-site className does. Partition
+  // them out: `baseStyle` holds styles only, and the raw remainder goes to
+  // `passthroughClassName` for the renderer to prepend.
+  let baseStyle = staticConfig.baseStyle
+  let passthroughClassName = staticConfig.passthroughClassName
+  if (staticConfig.baseClassName) {
+    const { className, ...styles } = parseStaticStyle(staticConfig.baseClassName, config)
+    baseStyle = styles
+    passthroughClassName = className
+  }
+
+  const normalized = {
     ...staticConfig,
-    baseStyle: staticConfig.baseClassName
-      ? parseStaticStyle(staticConfig.baseClassName as string, config)
-      : staticConfig.baseStyle,
+    baseStyle,
+    passthroughClassName,
     variants,
     compoundVariants,
-  }
+  } as Config
   normalizedStaticConfigs.add(normalized)
   configCache ||= new WeakMap()
   configCache.set(config, normalized)
   normalizedStaticConfigCache.set(staticConfig, configCache)
-  const normalizedConfigCache = new WeakMap<TamaguiInternalConfig, StaticConfig>()
-  normalizedConfigCache.set(config, normalized)
-  normalizedStaticConfigCache.set(normalized, normalizedConfigCache)
   return normalized
 }
 

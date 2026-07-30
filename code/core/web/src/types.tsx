@@ -3201,6 +3201,14 @@ type StaticConfigBase = StaticConfigPublic & {
    * Tamagui frontend (see `regularStyleFrontend`).
    */
   styleFrontend?: StyleFrontend
+
+  /**
+   * Raw classes from `baseClassName` that the frontend did not claim, produced by
+   * the descriptor's `normalizeStaticConfig`. They stay a class string so the app's
+   * own CSS still applies them, and stay out of `baseStyle` because that object
+   * holds styles only.
+   */
+  passthroughClassName?: string
 }
 
 export type StaticConfig = StaticConfigBase & {

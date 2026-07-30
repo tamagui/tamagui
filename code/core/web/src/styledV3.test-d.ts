@@ -192,6 +192,15 @@ describe('styled v3 overloads', () => {
     expect(Child.staticConfig.baseClassName).toBe(undefined)
   })
 
+  test('core styled() has no class-first overload', () => {
+    // the class-string base belongs to @tamagui/tailwind's styled(), which reaches this
+    // implementation through createFrontendStyled
+    // @ts-expect-error a class string is not a styled() options object
+    styled(View, 'p-4')
+    // @ts-expect-error and not with options after it either
+    styled(View, 'p-4', { variants: buttonVariants } as const)
+  })
+
   test('unknown variant props are rejected', () => {
     const Frame = styled(Button, {
       variants: buttonVariants,

@@ -14,7 +14,8 @@
   "source": "src/index.tsx",
   "type": "module",
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "**/runtime.*"
   ],
   "main": "dist/cjs",
   "module": "dist/esm",
