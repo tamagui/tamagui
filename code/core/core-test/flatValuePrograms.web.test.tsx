@@ -152,6 +152,33 @@ test('accept props never route into CSS', () => {
   expect(result.viewProps.placeholderTextColor).toBeTruthy()
 })
 
+test('a multi-value shorthand expands per side when a program takes one side', () => {
+  // S9a: style={{padding:'10px 20px'}} + paddingTop program must keep the
+  // other three sides
+  const result = split({
+    style: { padding: '10px 20px' },
+    paddingTop: '4 hover:8',
+  })
+  expect(result.classNames.paddingTop).toMatch(/^_pt-/)
+  const flat = { ...result.style }
+  const lookup = (k: string) => flat[k] ?? result.classNames[k]
+  expect(lookup('paddingRight')).toBeTruthy()
+  expect(lookup('paddingBottom')).toBeTruthy()
+  expect(lookup('paddingLeft')).toBeTruthy()
+  expect(lookup('padding')).toBeFalsy()
+})
+
+test('sibling expansion never clobbers a later authored longhand', () => {
+  // S9b: paddingLeft was authored after the style prop and must win
+  const result = split({
+    style: { padding: 10 },
+    paddingLeft: 100,
+    paddingTop: '4 hover:8',
+  })
+  const left = result.style?.paddingLeft ?? result.classNames.paddingLeft
+  expect(String(left)).toContain('100')
+})
+
 test('theme clause lowers to the is-or-within selector', () => {
   const result = split({ backgroundColor: 'red dark:blue' })
   const className = result.classNames.backgroundColor

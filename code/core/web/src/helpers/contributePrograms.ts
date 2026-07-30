@@ -30,6 +30,31 @@ for (const shorthand in longhandExpansionTable) {
   }
 }
 
+// CSS geometric shorthand slot patterns by value count. The index pattern is
+// identical for box sides (top/right/bottom/left) and radius corners
+// (TL/TR/BR/BL): 2 values alternate, 3 values mirror the second.
+const slotPatterns: Record<number, Record<number, readonly number[]>> = {
+  4: { 1: [0, 0, 0, 0], 2: [0, 1, 0, 1], 3: [0, 1, 2, 1], 4: [0, 1, 2, 3] },
+  2: { 1: [0, 0], 2: [0, 1] },
+}
+
+/**
+ * Expands a plain geometric shorthand value to its per-longhand values, or
+ * null when it cannot be done faithfully (function values, slash syntax).
+ */
+function expandShorthandValue(value: unknown, longhands: readonly string[]): unknown[] | null {
+  if (typeof value === 'number') {
+    return longhands.map(() => value)
+  }
+  if (typeof value !== 'string') return null
+  const text = value.trim()
+  if (text.includes('(') || text.includes('/')) return null
+  const parts = text.split(/\s+/)
+  const pattern = slotPatterns[longhands.length]?.[parts.length]
+  if (!pattern) return null
+  return pattern.map((index) => parts[index])
+}
+
 let activeContext: GrammarRuntimeContext | null = null
 
 export function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeContext {
@@ -115,21 +140,28 @@ export function contributeStylePrograms(
         for (const parent of parents) {
           if (!(parent in styleState.style)) continue
           const parentValue = styleState.style[parent]
-          // a single-component shorthand value is uniform: expand it so the
-          // program can own just its longhand
-          const isUniform =
-            typeof parentValue === 'number' ||
-            (typeof parentValue === 'string' && !String(parentValue).trim().includes(' '))
-          if (isUniform) {
-            for (const sibling of longhandExpansionTable[parent]) {
-              if (sibling === longhand || programs.has(sibling)) continue
-              styleState.style[sibling] = parentValue
-              styleState.usedKeys[sibling] = styleState.usedKeys[parent] || 1
+          const perSide = expandShorthandValue(parentValue, longhandExpansionTable[parent])
+          if (!perSide) {
+            // cannot expand faithfully (calc(), slash syntax): leave the
+            // shorthand in place — unordered against the program beats
+            // silently dropping the other sides
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(
+                `[tamagui] ${key} program on "${longhand}" beside the unexpandable "${parent}" style value "${parentValue}": ordering between them is undefined until both use flat values`
+              )
             }
-          } else if (process.env.NODE_ENV === 'development') {
-            console.warn(
-              `[tamagui] ${key} program on "${longhand}" cannot displace the multi-value "${parent}" style; the result is unordered until both use flat values`
-            )
+            continue
+          }
+          const siblings = longhandExpansionTable[parent]
+          const parentImportance = styleState.usedKeys[parent] || 1
+          for (let index = 0; index < siblings.length; index++) {
+            const sibling = siblings[index]
+            // a sibling that any contribution already wrote (or a program
+            // owns) keeps its value: the parent was authored earlier
+            if (sibling === longhand || programs.has(sibling)) continue
+            if (sibling in styleState.usedKeys) continue
+            styleState.style[sibling] = perSide[index]
+            styleState.usedKeys[sibling] = parentImportance
           }
           delete styleState.style[parent]
           delete styleState.usedKeys[parent]
