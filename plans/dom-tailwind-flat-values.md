@@ -543,10 +543,49 @@ table; legacy structured values are never converted by guesswork.
 
 Literal programs compile completely. Dynamic programs built from template
 strings use the shared runtime parser unless the surrounding entrypoint is
-compile-only. Runtime parsing is cached by property, program, and config, and
-dynamic values receive the same validation and injection protections as
-existing dynamic styles. Standalone DOM is compile-only and reports dynamic
-structures that cannot be lowered safely.
+compile-only. Standalone DOM is compile-only and reports dynamic structures
+that cannot be lowered safely.
+
+The boundary in detail. The compiler and the runtime host the same
+`@tamagui/style-grammar` functions; there is one pipeline, two hosts:
+
+1. `parseValue` splits the string;
+2. family props split per-longhand (`splitBackgroundValue`);
+3. clause payloads resolve config-first (token/variable names to `var()`
+   references on web, to subscription lookups on native), color opacity
+   applies;
+4. contributions merge (`mergePrograms`);
+5. web lowers to a program block (`lowerProgram` + hash); native evaluates
+   (`evaluateProgram`).
+
+The compiler runs 1-5 for everything it can prove static and emits the CSS
+and class names at build time, culminating in the plain-element fast path
+(decision 24). A prop whose string is not statically known bails to the
+runtime for that prop as a whole: there is no partial compilation of one
+program, so a template string with a dynamic payload makes the entire prop
+runtime-parsed.
+
+The runtime cache sits after step 2 and covers steps 1-2: one map keyed by
+`property + '\\0' + input` holding the per-longhand `ParsedValue`s or the
+parse error. Two facts make this cache immortal per config: theme switching
+never invalidates it, because web resolution produces variable references
+and native resolves through the granular theme subscription at evaluate
+time, and state/media changes never invalidate it, because clauses are data,
+not resolved branches. Config creation stamps a revision; the revision is
+part of the program hash and a config swap resets the cache wholesale.
+Template strings that embed changing values produce new keys each render, so
+the cache has a size cap and resets completely when it overflows — a reset
+re-parses on demand and changes nothing observable. No LRU bookkeeping.
+
+Diagnostics: in development a parse error throws at the component, naming
+the prop, the full authored string, and the caret index from
+`ValueParseError`. In production the prop is dropped and one `console.error`
+is emitted per cached key, so a render loop cannot spam. Payloads emitted
+into CSS at runtime pass the same value sanitization as today's dynamic
+styles; hashed class names are css-safe by construction. The compiler
+records the config revision it compiled against, and the runtime warns in
+development when its config revision differs from a precompiled module's —
+an integrity check, not a fallback path.
 
 ### V6 candidate naming
 
@@ -1584,8 +1623,12 @@ change.
 These decisions need focused prototypes before implementation is considered
 locked:
 
-1. The runtime and compiler boundary for dynamic value strings, including
-   the cache key and development diagnostics.
+1. The runtime and compiler boundary for dynamic value strings is designed
+   (see "Non-string and dynamic values": one pipeline two hosts, post-split
+   cache keyed by property+input, config-revision invalidation only,
+   cap-and-reset overflow, throw-in-dev/drop-once-in-prod). Remaining:
+   validate the cache-hit rate and parse cost on the T7 native benchmark
+   harness once the pipeline is wired into getSplitStyles.
 2. The web CSS encoding for per-longhand programs is drafted (see "The
    program block encoding"): equal specificity via `:where()`, source-order
    cascade within an atomically inserted block, order-free cross-program
