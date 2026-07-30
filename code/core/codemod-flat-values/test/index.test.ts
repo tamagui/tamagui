@@ -3,32 +3,116 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import type { SiteReport } from '../src/convert'
+import {
+  codemodMediaNames,
+  createModifierRegistry,
+  evaluateProgram,
+  parseValue,
+  type ModifierRegistryView,
+} from '../src/grammar'
 
 const packageDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const temporaryDirectories: string[] = []
 
-function runCodemod(source: string, transforms = false): string {
+interface Result {
+  files: Array<{ file: string; sites: SiteReport[] }>
+  summary: { sites: number; clean: number; flagged: number; waiting: number }
+}
+
+function runOn(inputs: readonly string[]): Result {
   const directory = mkdtempSync(join(tmpdir(), 'flat-values-codemod-'))
   temporaryDirectories.push(directory)
-  const sourcePath = join(directory, 'fixture.tsx')
-  const reportPath = join(directory, 'report.md')
-  writeFileSync(sourcePath, source)
+  const jsonPath = join(directory, 'report.json')
 
   const result = Bun.spawnSync({
     cmd: [
       process.execPath,
       'src/index.ts',
-      ...(transforms ? ['--transforms'] : []),
       '--report',
-      reportPath,
-      sourcePath,
+      join(directory, 'report.md'),
+      '--json',
+      jsonPath,
+      ...inputs,
     ],
     cwd: packageDir,
     stderr: 'pipe',
     stdout: 'pipe',
   })
   expect(result.exitCode, result.stderr.toString()).toBe(0)
-  return readFileSync(reportPath, 'utf8')
+  return JSON.parse(readFileSync(jsonPath, 'utf8')) as Result
+}
+
+function run(source: string): Result {
+  const directory = mkdtempSync(join(tmpdir(), 'flat-values-fixture-'))
+  temporaryDirectories.push(directory)
+  const sourcePath = join(directory, 'fixture.tsx')
+  writeFileSync(sourcePath, source)
+  return runOn([sourcePath])
+}
+
+function sites(result: Result): SiteReport[] {
+  return result.files.flatMap((file) => file.sites)
+}
+
+function only(result: Result): SiteReport {
+  const found = sites(result)
+  expect(found.length, JSON.stringify(found, null, 2)).toBe(1)
+  return found[0]
+}
+
+function labeled(result: Result, label: string): SiteReport {
+  const found = sites(result).filter((site) => site.label.includes(label))
+  expect(found.length, JSON.stringify(sites(result).map((site) => site.label))).toBe(1)
+  return found[0]
+}
+
+function programs(site: SiteReport): Record<string, string> {
+  const map: Record<string, string> = {}
+  for (const program of site.programs) map[program.name] = program.value
+  return map
+}
+
+function codes(site: SiteReport): string[] {
+  return site.flags.map((flag) => flag.code)
+}
+
+function pendingCodes(site: SiteReport): string[] {
+  return [...new Set(site.pending.map((flag) => flag.code))]
+}
+
+const { registry } = createModifierRegistry({
+  mediaNames: codemodMediaNames,
+  themeNames: new Set(['light', 'dark']),
+})
+
+interface Active {
+  states?: readonly string[]
+  themes?: readonly string[]
+  media?: readonly string[]
+  platform?: string
+  groups?: readonly string[]
+  containers?: readonly string[]
+}
+
+/** what the converted program resolves to under one set of active conditions */
+function resolve1(
+  value: string,
+  active: Active,
+  view: ModifierRegistryView = registry
+): string | null {
+  const parsed = parseValue(value, view)
+  if (!parsed.ok) {
+    throw new Error(`"${value}" does not parse: ${JSON.stringify(parsed.errors)}`)
+  }
+  return evaluateProgram(parsed.value, view, {
+    states: new Set(active.states ?? []),
+    themes: new Set(active.themes ?? []),
+    media: new Set(active.media ?? []),
+    platform: active.platform ?? 'web',
+    groups: (modifier) => (active.groups ?? []).includes(modifier),
+    containers: (modifier) => (active.containers ?? []).includes(modifier),
+  })
 }
 
 afterEach(() => {
@@ -37,52 +121,474 @@ afterEach(() => {
   }
 })
 
-describe('flat-values codemod', () => {
-  test('emits template literals for safe dynamic bases with legacy clauses', () => {
-    const report = runCodemod(`
-      export function Fixture({ active, state, getOpacity }) {
-        return <>
-          <View opacity={active ? 0.5 : 1} hoverStyle={{ opacity: 1 }} />
-          <View width={active ? 10 : 20} hoverStyle={{ width: 30 }} />
-          <View opacity={state.opacity} hoverStyle={{ opacity: 1 }} />
-          <View opacity={getOpacity("a  b")} hoverStyle={{ opacity: 1 }} />
-          <View width={state.width} hoverStyle={{ width: 30 }} />
-          <View p={active ? 4 : 8} paddingTop={2} hoverStyle={{ paddingRight: 3 }} />
-        </>
-      }
-    `)
-
-    expect(report).toContain('opacity={`${active ? 0.5 : 1} hover:1`}')
-    expect(report).toContain('width={`${active ? 10 : 20}px hover:30px`}')
-    expect(report).toContain('opacity={`${state.opacity} hover:1`}')
-    expect(report).toContain('opacity={`${getOpacity("a  b")} hover:1`}')
-    expect(report).toContain(
-      '**condition-targets-unconvertible-prop**: "width" contributes to "width"'
+describe('base values', () => {
+  test('a numeric base a condition targets folds into the program', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View opacity={0.5} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+      )`)
     )
-    expect(report).toContain('paddingTop={2}')
-    expect(report).not.toContain('paddingTop={`${active ? 4 : 8}px')
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({ opacity: '0.5 enter:0 exit:0' })
+    expect(resolve1('0.5 enter:0 exit:0', {})).toBe('0.5')
+    expect(resolve1('0.5 enter:0 exit:0', { states: ['enter'] })).toBe('0')
+    expect(resolve1('0.5 enter:0 exit:0', { states: ['exit'] })).toBe('0')
   })
 
-  test('keeps transform conversion opt-in', () => {
-    const source = `
-      export function Fixture() {
-        return <View
-          enterStyle={{ scale: 0.9, scaleX: 0.8 }}
-          exitStyle={{ scaleY: 0.7 }}
-          hoverStyle={{ x: 4 }}
+  test('a numeric shorthand base folds once for every longhand it expands to', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View borderWidth={1} focusStyle={{ borderWidth: 2 }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({ borderWidth: '1px focus:2px' })
+    expect(resolve1('1px focus:2px', {})).toBe('1px')
+    expect(resolve1('1px focus:2px', { states: ['focus'] })).toBe('2px')
+  })
+
+  test('a base no condition targets stays exactly as authored', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View width={100} bg="$blue10" hoverStyle={{ bg: 'red' }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    // the authored shorthand is kept: it is the smallest edit that still reads back
+    // as the same program
+    expect(programs(site)).toEqual({ bg: 'blue10 hover:red' })
+    expect(site.after).toBe('width={100} bg="blue10 hover:red"')
+  })
+
+  test('a token inside a composite value loses its prefix when the program has clauses', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View boxShadow="0 4px 12px $shadowColor" hoverStyle={{ boxShadow: 'none' }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({ boxShadow: '0 4px 12px shadowColor hover:none' })
+  })
+
+  test('a clause-free token keeps its "$" until the runtime can read the flat spelling', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View padding="$4" bg="$blue10" hoverStyle={{ bg: 'red' }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    // padding has no clause, so it never reaches the flat engine and keeps its token
+    expect(pendingCodes(site)).toEqual(['clause-free-token'])
+    expect(site.after).toBe('padding="$4" bg="blue10 hover:red"')
+  })
+
+  test('a rewritable token expression also waits for the clause-free cutover', () => {
+    const site = only(
+      run(`export const Fixture = ({ active }) => (
+        <View color={active ? '$red10' : '$blue10'} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(pendingCodes(site)).toEqual(['clause-free-token'])
+    expect(site.after).toBe(`color={active ? '$red10' : '$blue10'}`)
+  })
+
+  test('a dot-path token is reported instead of renamed, clauses or not', () => {
+    const withClause = only(
+      run(`export const Fixture = () => (
+        <View gap="$1.5" hoverStyle={{ gap: '$2' }} />
+      )`)
+    )
+    expect(codes(withClause)).toContain('legacy-token-dot-path')
+    expect(withClause.after).toContain('gap="$1.5"')
+
+    const clauseFree = only(
+      run(`export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 'red' }} />`)
+    )
+    expect(codes(clauseFree)).toContain('legacy-token-dot-path')
+  })
+
+  test('a site with no v1 syntax is not a conversion site', () => {
+    expect(sites(run(`export const Fixture = () => <View width={10} m={2} />`))).toEqual(
+      []
+    )
+  })
+})
+
+describe('conditions', () => {
+  test('state, theme, and media conditions become one ordered program', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View
+          bg="$surface"
+          hoverStyle={{ bg: '$surfaceHover' }}
+          $theme-dark={{ bg: '$surfaceDark' }}
+          $sm={{ bg: '$surfaceSmall' }}
         />
-      }
-    `
-    const defaultReport = runCodemod(source)
-    const transformReport = runCodemod(source, true)
+      )`)
+    )
 
-    expect(defaultReport).toContain('Transform-part conversion: disabled.')
-    expect(defaultReport).toContain('**legacy-transform-part**')
-    expect(transformReport).toContain('Transform-part conversion: enabled.')
-    expect(transformReport).toContain('scale="1 enter:0.9"')
-    expect(transformReport).toContain('scaleX="1 enter:0.8"')
-    expect(transformReport).toContain('scaleY="1 exit:0.7"')
-    expect(transformReport).toContain('x="0 hover:4px"')
-    expect(transformReport).not.toContain('**legacy-transform-part**')
+    expect(codes(site)).toEqual([])
+    const value = programs(site).bg
+    expect(value).toBe('surface hover:surfaceHover dark:surfaceDark sm:surfaceSmall')
+    expect(resolve1(value, {})).toBe('surface')
+    expect(resolve1(value, { states: ['hover'] })).toBe('surfaceHover')
+    expect(resolve1(value, { themes: ['dark'] })).toBe('surfaceDark')
+    // last matching clause wins, so the later theme clause beats the hover one
+    expect(resolve1(value, { states: ['hover'], themes: ['dark'] })).toBe('surfaceDark')
+    expect(resolve1(value, { media: ['sm'], themes: ['dark'] })).toBe('surfaceSmall')
   })
+
+  test('nested condition objects become one clause per condition set', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View backgroundColor="blue" $web={{ my: 10, hoverStyle: { backgroundColor: 'green' } }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      backgroundColor: 'blue web:hover:green',
+      my: 'web:10px',
+    })
+    expect(resolve1('blue web:hover:green', { states: ['hover'], platform: 'web' })).toBe(
+      'green'
+    )
+    expect(resolve1('blue web:hover:green', { states: ['hover'], platform: 'ios' })).toBe(
+      'blue'
+    )
+    expect(resolve1('web:10px', { platform: 'ios' })).toBe(null)
+  })
+
+  test('a named group state condition keeps its group name', () => {
+    const site = labeled(
+      run(`const Inner = styled(View, {
+        color: 'black',
+        '$group-card-hover': { color: 'red' },
+      })`),
+      'styled(View'
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({ color: 'black group-hover/card:red' })
+    expect(
+      resolve1('black group-hover/card:red', { groups: ['group-hover/card'] })
+    ).toBe('red')
+  })
+
+  test('a group container size condition splits into a container query and adds the container', () => {
+    const result = run(`const Card = styled(View, { group: 'card' })
+      const Inner = styled(View, {
+        color: 'black',
+        '$group-card-maxMd': { color: 'red' },
+        '$group-card-maxMd-hover': { color: 'blue' },
+      })`)
+
+    const found = sites(result)
+    expect(found.length).toBe(2)
+    const [card, inner] = found
+    expect(card.after).toBe(`group: 'card', container: true, containerName: "card"`)
+    expect(card.notes.length).toBe(1)
+    // core does not forward containerName yet, so the named query is not silently
+    // presented as working
+    expect(pendingCodes(card)).toEqual(['container-name-not-wired'])
+
+    expect(codes(inner)).toEqual([])
+    expect(programs(inner)).toEqual({
+      color: 'black @max-md/card:red @max-md/card:group-hover/card:blue',
+    })
+    const value = programs(inner).color
+    expect(resolve1(value, { containers: ['@max-md/card'] })).toBe('red')
+    expect(
+      resolve1(value, {
+        containers: ['@max-md/card'],
+        groups: ['group-hover/card'],
+      })
+    ).toBe('blue')
+    expect(resolve1(value, { groups: ['group-hover/card'] })).toBe('black')
+  })
+
+  test('a group condition with no state and no size is reported', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View bg="red" $group-card={{ bg: 'blue' }} />
+      )`)
+    )
+
+    expect(codes(site)).toContain('legacy-group-presence')
+    expect(site.after).toContain('$group-card=')
+    expect(site.legacyLeft).toBe(1)
+  })
+
+  test('a conditional non-style prop is reported, never dropped', () => {
+    const site = only(
+      run(`export const Fixture = () => <Text $sm={{ numberOfLines: 2 }} width={200} />`)
+    )
+
+    expect(codes(site)).toEqual(['non-style-condition-entry'])
+    expect(site.after).toContain('$sm={{ numberOfLines: 2 }}')
+  })
+
+  test('a runtime spread inside a condition object is reported', () => {
+    const site = only(
+      run(`export const Fixture = (props) => (
+        <TextInput bg="$blue10" focusStyle={{ margin: 0, ...props.focusStyle }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual(['dynamic-legacy-condition'])
+    expect(site.after).toContain('...props.focusStyle')
+  })
+})
+
+describe('dynamic values', () => {
+  test('token spellings inside a conditional expression are rewritten in place', () => {
+    const site = only(
+      run(`export const Fixture = ({ active }) => (
+        <View color={active ? '$red10' : '$blue10'} hoverStyle={{ color: '$green10' }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      color: '${active ? "red10" : "blue10"} hover:green10',
+    })
+    expect(site.programs[0].dynamic).toBe(true)
+  })
+
+  test('a provable dynamic leaf becomes an interpolated clause payload', () => {
+    const site = only(
+      run(`const GREEN = 'rgb(27, 122, 61)'
+      const GREY = 'rgb(217, 215, 210)'
+      export const Fixture = () => (
+        <View backgroundColor={GREEN} disabledStyle={{ backgroundColor: GREY }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({ backgroundColor: '${GREEN} disabled:${GREY}' })
+    // the parser is paren aware, so a color function with spaces stays one payload
+    expect(
+      resolve1('rgb(27, 122, 61) disabled:rgb(217, 215, 210)', { states: ['disabled'] })
+    ).toBe('rgb(217, 215, 210)')
+  })
+
+  test('a numeric dynamic leaf carries the property unit', () => {
+    const site = only(
+      run(`export const Fixture = ({ going }) => (
+        <View enterStyle={{ x: going > 0 ? 80 : -80, opacity: 0 }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      x: 'enter:${going > 0 ? 80 : -80}px',
+      opacity: 'enter:0',
+    })
+  })
+
+  test('a legacy token reached through a constant is reported, not guessed', () => {
+    const site = only(
+      run(`const RADIUS = '$6'
+      export const Fixture = () => (
+        <View rounded={RADIUS} hoverStyle={{ rounded: '$4' }} />
+      )`)
+    )
+
+    expect(codes(site)).toContain('legacy-token-constant')
+    expect(site.after).toContain('rounded={RADIUS}')
+    expect(site.after).toContain('hoverStyle=')
+  })
+
+  test('a value with no provable type keeps its condition object authored', () => {
+    const site = only(
+      run(`export const Fixture = ({ anything }) => (
+        <View opacity={anything} hoverStyle={{ opacity: 1 }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual(['unprovable-dynamic-value'])
+    expect(site.after).toContain('opacity={anything}')
+    expect(site.after).toContain('hoverStyle={{ opacity: 1 }}')
+  })
+
+  test('values belonging to another migration stay authored and are inventoried', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View
+          bg="$blue10"
+          transition={['quick', { opacity: 'lazy' }]}
+          shadowOffset={{ width: 0, height: 20 }}
+        />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(site.inventory.map((flag) => flag.code).sort()).toEqual([
+      'legacy-transition-value',
+      'structured-native-value',
+    ])
+    expect(site.after).toContain(`transition={['quick', { opacity: 'lazy' }]}`)
+    expect(site.after).toContain('shadowOffset={{ width: 0, height: 20 }}')
+  })
+})
+
+describe('authored order', () => {
+  test('a program merges across a spread it never crosses', () => {
+    const site = only(
+      run(`export const Fixture = (props) => (
+        <View {...props} bg="$blue10" hoverStyle={{ bg: 'red' }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(site.after).toBe('{...props} bg="blue10 hover:red"')
+  })
+
+  test('a condition after a spread stays authored rather than moving before it', () => {
+    const site = only(
+      run(`export const Fixture = (props) => (
+        <View bg="$blue10" {...props} hoverStyle={{ bg: 'red' }} />
+      )`)
+    )
+
+    expect(codes(site)).toEqual(['condition-order-not-preservable'])
+    // nothing moves: the condition stays put and the base keeps its token, since a
+    // clause-free value still needs it
+    expect(site.after).toBe(`bg="$blue10" {...props} hoverStyle={{ bg: 'red' }}`)
+  })
+
+  test('an object literal spread is the same thing as writing its properties', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View {...{ '$sm': { bg: 'blue' } }} bg="$red10" />
+      )`)
+    )
+
+    expect(codes(site)).toEqual([])
+    // one program, printed base first, evaluated by clause order
+    expect(programs(site)).toEqual({ bg: 'red10 sm:blue' })
+    expect(resolve1('red10 sm:blue', {})).toBe('red10')
+    expect(resolve1('red10 sm:blue', { media: ['sm'] })).toBe('blue')
+  })
+
+  test('a condition object left authored blocks merging the conditions after it', () => {
+    const site = only(
+      run(`export const Fixture = () => (
+        <View
+          bg="$blue10"
+          pressStyle={{ bg: 'black' }}
+          $group-card={{ bg: 'red' }}
+          hoverStyle={{ bg: 'yellow' }}
+        />
+      )`)
+    )
+
+    expect(codes(site)).toContain('condition-order-not-preservable')
+    expect(programs(site)).toEqual({ bg: 'blue10 press:black' })
+    expect(site.after).toContain('hoverStyle={{ bg: \'yellow\' }}')
+  })
+})
+
+describe('styled variants', () => {
+  test('each static variant branch converts as its own style object', () => {
+    const result = run(`const Frame = styled(View, {
+      color: 'black',
+      variants: {
+        size: {
+          small: { color: '$red10', hoverStyle: { color: '$blue10' } },
+          large: { padding: '$4' },
+        },
+      } as const,
+    })`)
+
+    const small = labeled(result, 'variants.size.small')
+    expect(codes(small)).toEqual([])
+    expect(programs(small)).toEqual({ color: 'red10 hover:blue10' })
+    const large = labeled(result, 'variants.size.large')
+    expect(programs(large)).toEqual({})
+    expect(pendingCodes(large)).toEqual(['clause-free-token'])
+  })
+
+  test('a variant branch does not invent a base for the outer program', () => {
+    const site = labeled(
+      run(`const Frame = styled(View, {
+        x: 0,
+        variants: {
+          going: { number: (going: number) => ({ exitStyle: { x: going < 0 ? 100 : -100 } }) },
+        } as const,
+      })`),
+      'variants.going.number'
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({ x: 'exit:${going < 0 ? 100 : -100}px' })
+    expect(resolve1('exit:100px', {})).toBe(null)
+  })
+
+  test('compound variant styles convert too', () => {
+    const site = labeled(
+      run(`const Frame = styled(View, {
+        compoundVariants: [{ size: 'small', style: { padding: '$2' } }],
+      })`),
+      'compoundVariants[0]'
+    )
+
+    expect(programs(site)).toEqual({})
+    expect(pendingCodes(site)).toEqual(['clause-free-token'])
+  })
+})
+
+describe('the kitchen-sink corpus', () => {
+  test('every clean site emits programs that parse and keep no v1 syntax', () => {
+    const result = runOn([])
+    expect(result.summary.sites).toBeGreaterThan(1500)
+
+    const legacyNames = [
+      'hoverStyle',
+      'pressStyle',
+      'focusStyle',
+      'focusVisibleStyle',
+      'enterStyle',
+      'exitStyle',
+      'disabledStyle',
+      '$theme-',
+      '$web=',
+      '$group-',
+    ]
+    const offenders: string[] = []
+
+    for (const file of result.files) {
+      for (const site of file.sites) {
+        for (const flag of site.flags) {
+          // the printer verifies itself by re-parsing; these two can never be real
+          expect(flag.code).not.toBe('emitted-program-mismatch')
+          expect(flag.code).not.toBe('emitted-value-invalid')
+        }
+        for (const program of site.programs) {
+          const text = program.value.replace(/\$\{[\s\S]*?\}/g, 'zz')
+          if (!parseValue(text, registry).ok) {
+            offenders.push(`${file.file}:${site.line} ${program.name}="${text}"`)
+          }
+          if (/(^|[\s(,/])\$/.test(text)) {
+            offenders.push(`${file.file}:${site.line} kept a token: ${program.value}`)
+          }
+        }
+        if (site.flags.length) continue
+        for (const name of legacyNames) {
+          if (site.after.includes(name)) {
+            offenders.push(`${file.file}:${site.line} kept ${name}: ${site.after}`)
+          }
+        }
+      }
+    }
+
+    expect(offenders).toEqual([])
+  }, 180_000)
 })
