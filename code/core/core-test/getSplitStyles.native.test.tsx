@@ -241,7 +241,10 @@ describe('getSplitStyles', () => {
     )
 
     expect(groupHover.style?.backgroundColor).toBeUndefined()
-    expect(groupHover.pseudoGroups).toBeUndefined()
+    // the program engine registers the subscription — hover-capable native
+    // devices (pointer on iPad) can now source group hover; without a
+    // hovering parent nothing applies
+    expect(groupHover.pseudoGroups?.has('row')).toBe(true)
 
     const groupMedia = getSplitStylesFor(
       {
@@ -380,18 +383,15 @@ describe('getSplitStyles', () => {
     // Test with light theme
     const lightResult = getThemeStylesView(themeProps, 'light')
 
-    // Check if light theme values are present in the result
-    const lightResultStr = JSON.stringify(lightResult)
-    expect(lightResultStr).toContain('white')
-    expect(lightResultStr).toContain('black')
+    // white/black are configured color tokens, so the program engine
+    // resolves them config-first to their values
+    expect(lightResult.style?.backgroundColor).toBe('#fff')
+    expect(lightResult.style?.color).toBe('#000')
 
     // Test with dark theme
     const darkResult = getThemeStylesView(themeProps, 'dark')
-
-    // Check if dark theme values are present in the result
-    const darkResultStr = JSON.stringify(darkResult)
-    expect(darkResultStr).toContain('black')
-    expect(darkResultStr).toContain('white')
+    expect(darkResult.style?.backgroundColor).toBe('#000')
+    expect(darkResult.style?.color).toBe('#fff')
   })
 
   test(`$theme-light and $theme-dark styles don't apply if theme doesn't match`, () => {

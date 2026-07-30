@@ -34,7 +34,7 @@ test('a clause value lowers to one program block', () => {
   const rules = rulesFor(result, className)
   expect(rules).toHaveLength(2)
   expect(rules[0]).toBe(`.${className}{background-color:red}`)
-  expect(rules[1]).toBe(`.${className}:where(:hover){background-color:blue}`)
+  expect(rules[1]).toBe(`@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`)
 })
 
 test('tokens resolve to variables and media clauses wrap', () => {
@@ -56,7 +56,7 @@ test('a later plain value restates the base; the hover survives (decision 21)', 
   expect(className).toMatch(/^_bc-/)
   const rules = rulesFor(result, className)
   expect(rules[0]).toBe(`.${className}{background-color:green}`)
-  expect(rules[1]).toBe(`.${className}:where(:hover){background-color:blue}`)
+  expect(rules[1]).toBe(`@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`)
 })
 
 test('a later program replaces the plain value wholesale', () => {

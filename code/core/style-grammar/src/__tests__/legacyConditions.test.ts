@@ -209,7 +209,7 @@ describe('legacy style values', () => {
           code: 'legacy-token-dot-path',
           path: 'hoverStyle.color',
           message:
-            'legacy token "$color.red" uses dot-path naming; rename it to one configured flat token name before conversion',
+            'legacy token in "$color.red" uses dot-path naming; rename it to one configured flat token name before conversion',
         },
       ],
     })

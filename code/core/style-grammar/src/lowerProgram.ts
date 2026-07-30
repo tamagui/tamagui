@@ -41,6 +41,11 @@ export interface ConditionSelector {
   fragment: string
   /** defaults to `self` */
   scope?: ConditionScope
+  /**
+   * capability guard the rule must nest in, eg `(hover: hover)` so touch
+   * devices never sticky-trigger hover styles
+   */
+  media?: string
 }
 
 /**
@@ -57,7 +62,7 @@ export interface ConditionSelector {
  */
 export const defaultStateSelectors: Readonly<Record<string, ConditionSelector>> =
   Object.freeze({
-    hover: { fragment: ':hover' },
+    hover: { fragment: ':hover', media: '(hover: hover)' },
     // pressStyle's CSS pseudo name is `active`
     press: { fragment: ':active' },
     // the registered alias of press
@@ -79,6 +84,16 @@ export const defaultStateSelectors: Readonly<Record<string, ConditionSelector>> 
 // core writes the unnamed group's class as `t_group_true`, from the boolean
 // `group` prop (see getSplitStyles' group class name construction)
 const unnamedGroup = 'true'
+
+// a capability guard (hover: hover) wraps once even when the subject and a
+// group both carry the hover state in one clause
+function pushCapabilityGuard(wrappers: string[], media: string): void {
+  const guard = `@media ${media}`
+  for (let index = 0; index < wrappers.length; index++) {
+    if (wrappers[index] === guard) return
+  }
+  wrappers.push(guard)
+}
 
 export interface LowerProgramOptions {
   /** classifies each modifier; the same registry the value was parsed against */
@@ -211,6 +226,7 @@ export function lowerProgram(
           )
         }
         selector += conditionSelector(state.fragment, state.scope ?? 'self')
+        if (state.media) pushCapabilityGuard(wrappers, state.media)
         continue
       }
 
@@ -233,6 +249,7 @@ export function lowerProgram(
           `.${groupClassPrefix}${group.group ?? unnamedGroup}${state.fragment}`,
           'within'
         )
+        if (state.media) pushCapabilityGuard(wrappers, state.media)
         continue
       }
 

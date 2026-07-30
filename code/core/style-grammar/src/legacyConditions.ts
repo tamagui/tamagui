@@ -305,8 +305,7 @@ function convertStyleValue(
   }
 
   if (typeof value === 'string') {
-    if (!value.startsWith('$')) {
-      if (value.length) return value
+    if (!value.length) {
       errors.push({
         code: 'unsupported-legacy-value',
         path,
@@ -314,25 +313,40 @@ function convertStyleValue(
       })
       return null
     }
+    if (value.indexOf('$') === -1) return value
 
-    const tokenName = value.slice(1)
-    if (tokenName.includes('.')) {
-      errors.push({
-        code: 'legacy-token-dot-path',
-        path,
-        message: `legacy token "${value}" uses dot-path naming; rename it to one configured flat token name before conversion`,
-      })
-      return null
-    }
-    if (!tokenName) {
+    // legacy strings may embed `$token` spellings anywhere in the value
+    // (`0 4px 8px $color5`); the flat grammar drops the `$`, and configured
+    // names win over identical literal CSS idents (config-first resolution).
+    // quoted or url() content must never be rewritten, and those never held
+    // legacy tokens, so the whole value falls back instead
+    if (value.includes('"') || value.includes("'") || value.includes('url(')) {
       errors.push({
         code: 'unsupported-legacy-value',
         path,
-        message: 'a bare "$" is not a token name',
+        message: `"${value}" mixes "$" with quoted or url() content; migrate the token spelling by hand`,
       })
       return null
     }
-    return tokenName
+    if (/\$[\w-]*\./.test(value)) {
+      errors.push({
+        code: 'legacy-token-dot-path',
+        path,
+        message: `legacy token in "${value}" uses dot-path naming; rename it to one configured flat token name before conversion`,
+      })
+      return null
+    }
+    // token names include numeric spellings ($4, $-2), so any word char or
+    // dash can follow the prefix
+    if (/\$(?![\w-])/.test(value)) {
+      errors.push({
+        code: 'unsupported-legacy-value',
+        path,
+        message: `"$" in "${value}" is not followed by a token name`,
+      })
+      return null
+    }
+    return value.replace(/\$([\w-]+)/g, '$1')
   }
 
   if (typeof value === 'number') {

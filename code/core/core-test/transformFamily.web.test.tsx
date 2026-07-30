@@ -32,7 +32,7 @@ test('an x program writes its axis variable and ships the composing rule', () =>
   expect(axisClass).toBeTruthy()
   expect(rulesFor(result, axisClass)).toEqual([
     `.${axisClass}{--t-x:0px}`,
-    `.${axisClass}:where(:hover){--t-x:4px}`,
+    `@media (hover: hover) {.${axisClass}:where(:hover){--t-x:4px}}`,
   ])
 
   // the composing rule is its own class, keyed under the property it composes
@@ -83,8 +83,8 @@ test('scale then scaleX replaces only its axis through the forward merge', () =>
   const x = result.classNames['--t-scale-x']
   const y = result.classNames['--t-scale-y']
   // the later scaleX owns X; the uniform scale still owns Y
-  expect(rulesFor(result, x)[1]).toBe(`.${x}:where(:hover){--t-scale-x:3}`)
-  expect(rulesFor(result, y)[1]).toBe(`.${y}:where(:hover){--t-scale-y:2}`)
+  expect(rulesFor(result, x)[1]).toBe(`@media (hover: hover) {.${x}:where(:hover){--t-scale-x:3}}`)
+  expect(rulesFor(result, y)[1]).toBe(`@media (hover: hover) {.${y}:where(:hover){--t-scale-y:2}}`)
 })
 
 test('rotate lowers to the individual property with no composition', () => {
@@ -92,7 +92,7 @@ test('rotate lowers to the individual property with no composition', () => {
   const rotateClass = result.classNames.rotate
   expect(rulesFor(result, rotateClass)).toEqual([
     `.${rotateClass}{rotate:0deg}`,
-    `.${rotateClass}:where(:hover){rotate:45deg}`,
+    `@media (hover: hover) {.${rotateClass}:where(:hover){rotate:45deg}}`,
   ])
   expect(result.classNames.translate).toBeUndefined()
 })
@@ -122,7 +122,7 @@ test('a program displaces a legacy uniform scale onto the other axis', () => {
   const result = split({ scale: 2, scaleX: '1 hover:3' })
   const x = result.classNames['--t-scale-x']
   expect(x).toBeTruthy()
-  expect(rulesFor(result, x)[1]).toBe(`.${x}:where(:hover){--t-scale-x:3}`)
+  expect(rulesFor(result, x)[1]).toBe(`@media (hover: hover) {.${x}:where(:hover){--t-scale-x:3}}`)
   // the displaced uniform value survives on the sibling axis, through the legacy
   // transform path this round keeps for non-program parts
   const transformClass = result.classNames.transform

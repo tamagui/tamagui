@@ -88,9 +88,9 @@ describe("the plan's example program", () => {
   test('emits exactly the four-rule block from the design plan', () => {
     expect(lowered.rules).toEqual([
       `.${cls}{background-color:red}`,
-      `.${cls}:where(:hover){background-color:green}`,
+      `@media (hover: hover) {.${cls}:where(:hover){background-color:green}}`,
       `.${cls}:where(.t_dark, .t_dark *){background-color:gray}`,
-      `.${cls}:where(.t_dark, .t_dark *):where(:hover){background-color:blue}`,
+      `@media (hover: hover) {.${cls}:where(.t_dark, .t_dark *):where(:hover){background-color:blue}}`,
     ])
   })
 
@@ -111,13 +111,15 @@ describe('rule order is authored clause order', () => {
     expect(lowered.rules).toEqual([
       `.${cls}{color:red}`,
       `@media (max-width: 860px) {.${cls}{color:blue}}`,
-      `.${cls}:where(:hover){color:green}`,
+      `@media (hover: hover) {.${cls}:where(:hover){color:green}}`,
     ])
   })
 
   test('a program with no base emits no base rule', () => {
     const lowered = lower('color', 'hover:green')
-    expect(lowered.rules).toEqual([`.${lowered.className}:where(:hover){color:green}`])
+    expect(lowered.rules).toEqual([
+      `@media (hover: hover) {.${lowered.className}:where(:hover){color:green}}`,
+    ])
   })
 
   test('repeated conditions keep both rules so the later one wins', () => {
@@ -132,7 +134,7 @@ describe('media conditions', () => {
     const lowered = lower('color', 'sm:md:hover:red')
     const cls = lowered.className
     expect(lowered.rules).toEqual([
-      `@media (max-width: 860px) {@media (max-width: 1020px) {.${cls}:where(:hover){color:red}}}`,
+      `@media (max-width: 860px) {@media (max-width: 1020px) {@media (hover: hover) {.${cls}:where(:hover){color:red}}}}`,
     ])
     expectSubjectAnchored(lowered)
   })
@@ -197,8 +199,8 @@ describe('container conditions', () => {
     const lowered = lower('color', '@sm:dark:hover:a')
     const cls = lowered.className
     expect(lowered.rules[0]).toBe(
-      `@container (min-width: 24rem) {.${cls}:where(.t_dark, .t_dark *)` +
-        `:where(:hover){color:a}}`
+      `@container (min-width: 24rem) {@media (hover: hover) ` +
+        `{.${cls}:where(.t_dark, .t_dark *):where(:hover){color:a}}}`
     )
     expectSubjectAnchored(lowered)
   })
@@ -209,8 +211,8 @@ describe('container conditions', () => {
     const cls = lowered.className
     expect(lowered.rules).toEqual([
       `.${cls}{color:muted}`,
-      `@container layout (min-width: 24rem) ` +
-        `{.${cls}:where(.t_group_card:hover *){color:foreground}}`,
+      `@container layout (min-width: 24rem) {@media (hover: hover) ` +
+        `{.${cls}:where(.t_group_card:hover *){color:foreground}}}`,
     ])
     // the container is an at-rule and the group is a subject condition, so the
     // two never interfere
@@ -231,7 +233,8 @@ describe('ancestor-scoped conditions are within tests on the subject', () => {
   test('a named group is within-only, since a group is never the subject', () => {
     const lowered = lower('color', 'muted group-hover/card:foreground')
     expect(lowered.rules[1]).toBe(
-      `.${lowered.className}:where(.t_group_card:hover *){color:foreground}`
+      `@media (hover: hover) ` +
+        `{.${lowered.className}:where(.t_group_card:hover *){color:foreground}}`
     )
     expectSubjectAnchored(lowered)
   })
@@ -268,8 +271,9 @@ describe('ancestor-scoped conditions are within tests on the subject', () => {
     const lowered = lower('color', 'sm:dark:group-hover/card:hover:foreground')
     const cls = lowered.className
     expect(lowered.rules).toEqual([
-      `@media (max-width: 860px) {.${cls}:where(.t_dark, .t_dark *)` +
-        `:where(.t_group_card:hover *):where(:hover){color:foreground}}`,
+      `@media (max-width: 860px) {@media (hover: hover) ` +
+        `{.${cls}:where(.t_dark, .t_dark *)` +
+        `:where(.t_group_card:hover *):where(:hover){color:foreground}}}`,
     ])
     expectSubjectAnchored(lowered)
   })
@@ -319,7 +323,9 @@ describe('platform clauses', () => {
 
   test('web composes with other conditions', () => {
     const lowered = lower('color', 'web:hover:blue')
-    expect(lowered.rules[0]).toBe(`.${lowered.className}:where(:hover){color:blue}`)
+    expect(lowered.rules[0]).toBe(
+      `@media (hover: hover) {.${lowered.className}:where(:hover){color:blue}}`
+    )
   })
 })
 

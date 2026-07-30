@@ -387,8 +387,8 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
   )
 
   // fb: 0 should extract as 0px, not auto
-  expect(output?.styles).toContain('_fb-_gtXs_0px')
-  expect(output?.styles).not.toContain('_fb-_gtXs_auto')
+  expect(output?.styles).toMatch(/@media \(min-width: 661px\) \{\._fb-\d+\{flex-basis:0px\}\}/)
+  expect(output?.styles).not.toContain('auto')
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })
@@ -447,7 +447,7 @@ test('$group- styles with pseudo extract to parent-hover selector', async () => 
   // hover pseudo is matched off the parent's `.t_group_row` class — wrapped in
   // @media (hover:hover) so touch devices don't sticky-trigger.
   expect(output?.styles).toContain('.t_group_row:hover')
-  expect(output?.styles).toContain('@media (hover:hover)')
+  expect(output?.styles).toContain('@media (hover: hover)')
   expect(output?.styles).toContain('background-color')
 })
 

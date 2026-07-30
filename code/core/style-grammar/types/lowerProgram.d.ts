@@ -9,6 +9,11 @@ export interface ConditionSelector {
 	fragment: string;
 	/** defaults to `self` */
 	scope?: ConditionScope;
+	/**
+	* capability guard the rule must nest in, eg `(hover: hover)` so touch
+	* devices never sticky-trigger hover styles
+	*/
+	media?: string;
 }
 /**
 * Interaction-state selector spellings, mirroring

@@ -118,7 +118,7 @@ describe('web lowering', () => {
     expect(cls.startsWith('_tx-')).toBe(true)
     expect(lowered.rules).toEqual([
       `.${cls}{--t-x:0px}`,
-      `.${cls}:where(:hover){--t-x:10px}`,
+      `@media (hover: hover) {.${cls}:where(:hover){--t-x:10px}}`,
     ])
     expect(lowered.composition).toBeDefined()
     expect(lowered.composition!.property).toBe('translate')
@@ -157,7 +157,7 @@ describe('web lowering', () => {
     const lowered = lower('rotate', '0deg hover:45deg')
     expect(lowered.composition).toBeUndefined()
     expect(lowered.rules[1]).toBe(
-      `.${lowered.className}:where(:hover){rotate:45deg}`
+      `@media (hover: hover) {.${lowered.className}:where(:hover){rotate:45deg}}`
     )
   })
 
