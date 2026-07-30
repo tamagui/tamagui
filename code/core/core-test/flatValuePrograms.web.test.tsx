@@ -72,13 +72,24 @@ test('clause-less strings keep the existing path byte for byte', () => {
   expect(Object.keys(program.classNames).every((k) => !String(program.classNames[k]).startsWith('_bc-'))).toBe(true)
 })
 
-test('a colon value that is not a program passes through unchanged', () => {
-  // RN accepts aspectRatio="16:9"; it must keep working until the V3 cutover
+test('aspectRatio colon values pass through; other parse failures throw in dev', () => {
+  // RN accepts aspectRatio="16:9"; it is the one legitimate colon value
   const result = split({ aspectRatio: '16:9' })
   const hasProgram = Object.values(result.classNames).some((v) =>
     String(v).startsWith('_ar-')
   )
   expect(hasProgram).toBe(false)
+
+  // v3 cutover: a clause-shaped typo is loud where the author can see it
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  try {
+    expect(() => split({ backgroundColor: 'red hver:blue' })).toThrow(
+      /does not parse/
+    )
+  } finally {
+    process.env.NODE_ENV = previousNodeEnv
+  }
 })
 
 test('a program displaces a uniform geometric shorthand per longhand', () => {

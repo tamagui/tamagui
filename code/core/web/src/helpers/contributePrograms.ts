@@ -1,14 +1,14 @@
 // Lane W1: flat value programs entering the forward pass.
 //
 // A style prop whose string value carries clauses (`bg="red hover:blue"`)
-// contributes per-longhand programs instead of a plain style value. During the
-// staging phase only clause-bearing values divert: a clause-less string keeps
-// the existing token-resolution path, which produces identical output, and a
-// string that fails to parse falls back to the legacy path with a one-time
-// development note instead of an error — real values like RN's
-// `aspectRatio="16:9"` must keep working until the V3 cutover makes the
-// grammar the one parser. See plans/dom-tailwind-flat-values.md, "Programs and
-// merging" and the phase 5 wiring lanes.
+// contributes per-longhand programs instead of a plain style value. Only
+// clause-bearing values divert: a clause-less string keeps the existing
+// token-resolution path, which produces identical output. A clause-shaped
+// string that fails to parse throws in development (v3 cutover) — a top-level
+// colon is never valid CSS, so it can only be a typo — except on aspectRatio,
+// whose RN value space legitimately holds "16:9". Production falls through.
+// See plans/dom-tailwind-flat-values.md, "Programs and merging" and the phase
+// 5 wiring lanes.
 
 import { stylePropsTransform } from '@tamagui/helpers'
 import {
@@ -84,7 +84,6 @@ export function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeC
   return context
 }
 
-const notedFallbacks = new Set<string>()
 
 const noPlainValue = Symbol()
 
@@ -278,13 +277,14 @@ export function contributeStylePrograms(
 
   if (cached.errors) {
     if (process.env.NODE_ENV === 'development') {
-      const noteKey = `${key}\0${val}`
-      if (!notedFallbacks.has(noteKey)) {
-        // dynamic colon-bearing values would grow this without bound
-        if (notedFallbacks.size > 1000) notedFallbacks.clear()
-        notedFallbacks.add(noteKey)
-        console.info(
-          `[tamagui] ${key}="${val}" is not a flat value program (${cached.errors[0].code}); passing through unchanged. The V3 flat-value cutover will make this an error.`
+      // v3 cutover: a top-level colon is never valid CSS, so a clause-shaped
+      // string that fails to parse is a typo (`hver:blue`) and hides broken
+      // styling if it passes through — throw where the author can see it.
+      // aspectRatio is the one RN value space that legitimately holds a colon
+      // ("16:9"), so it stays a silent fallthrough. production never throws
+      if (key !== 'aspectRatio') {
+        throw new Error(
+          `[tamagui] ${key}="${val}" looks like a flat value program but does not parse (${cached.errors[0].code}). Fix the value, or if this is intentional CSS, remove the top-level ":".`
         )
       }
     }
