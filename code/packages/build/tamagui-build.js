@@ -751,11 +751,13 @@ async function build({ skipTypes, cleanOutput = !shouldWatch } = {}) {
     const start = Date.now()
     const isSkippingTypesForBuild = Boolean(skipTypes || shouldSkipTypes || !pkgTypes)
 
+    // types/ is tracked build output in this repo and declarations are written
+    // through writeIfUnchanged, so it is never wiped here: removing it would
+    // delete every declaration for the length of a build, which breaks any
+    // concurrent typecheck, and would dirty every tracked .d.ts on every build.
+    // Stale declarations are pruned after emit instead.
     if (cleanOutput) {
-      await Promise.allSettled([
-        FSE.remove('dist'),
-        isSkippingTypesForBuild ? null : FSE.remove('types'),
-      ])
+      await FSE.remove('dist')
     }
 
     const allFiles = (await fastGlob(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
@@ -863,10 +865,12 @@ async function buildTsc(allFiles) {
         }
       }
 
+      await pruneStaleDeclarations(targetDir, allFiles)
       return
     }
 
     await emitDeclarationsWithTsgo(targetDir, allFiles)
+    await pruneStaleDeclarations(targetDir, allFiles)
   } catch (err) {
     printTypescriptCompilationError(err, pkg.name)
     if (!shouldWatch) {
@@ -874,6 +878,30 @@ async function buildTsc(allFiles) {
     }
   } finally {
     await FSE.remove('tsconfig.tsbuildinfo')
+  }
+}
+
+// types/ is no longer wiped before a build, so drop declarations whose source
+// file is gone. Both emit paths map src/x.tsx -> types/x.d.ts, so the expected
+// set is derivable from allFiles.
+async function pruneStaleDeclarations(targetDir, allFiles) {
+  if (declarationToRoot) return
+  // fast-glob echoes the pattern's leading "./" back in its results, so both
+  // sides are normalized before comparison — mismatched prefixes here would
+  // prune every declaration in the package.
+  const normalize = (p) => p.replace(/^\.\//, '')
+  const dir = normalize(targetDir)
+  const expected = new Set()
+  for (const file of allFiles) {
+    const base = path.join(dir, ...file.split('/').slice(1)).replace(/\.tsx?$/, '')
+    expected.add(`${base}.d.ts`)
+    expected.add(`${base}.d.ts.map`)
+  }
+  const existing = await fastGlob([`${dir}/**/*.d.ts`, `${dir}/**/*.d.ts.map`])
+  for (const file of existing) {
+    if (!expected.has(normalize(file))) {
+      await FSE.remove(file)
+    }
   }
 }
 
