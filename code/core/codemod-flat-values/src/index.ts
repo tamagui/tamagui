@@ -105,9 +105,11 @@ const defaultCorpus = [
 
 const extraMediaNames = ['motionReduce', 'motionSafe']
 const nestedStyledContainers = new Set(['variants', 'compoundVariants'])
-const transformProgramProps = new Set(['scale', 'x', 'y', 'rotate'])
+const transformProgramProps = new Set(['scale', 'scaleX', 'scaleY', 'x', 'y', 'rotate'])
 const transformDefaults: Readonly<Record<string, string>> = {
   scale: '1',
+  scaleX: '1',
+  scaleY: '1',
   x: '0',
   y: '0',
   rotate: '0deg',
@@ -545,7 +547,9 @@ function transformPayload(prop: string, value: unknown): string | null {
   if (typeof value !== 'number' || !Number.isFinite(value) || prop === 'rotate') {
     return null
   }
-  if (prop === 'scale') return String(value)
+  if (prop === 'scale' || prop === 'scaleX' || prop === 'scaleY') {
+    return String(value)
+  }
   return value === 0 ? '0' : `${value}px`
 }
 

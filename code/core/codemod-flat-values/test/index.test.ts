@@ -66,7 +66,11 @@ describe('flat-values codemod', () => {
   test('keeps transform conversion opt-in', () => {
     const source = `
       export function Fixture() {
-        return <View enterStyle={{ scale: 0.9 }} hoverStyle={{ x: 4 }} />
+        return <View
+          enterStyle={{ scale: 0.9, scaleX: 0.8 }}
+          exitStyle={{ scaleY: 0.7 }}
+          hoverStyle={{ x: 4 }}
+        />
       }
     `
     const defaultReport = runCodemod(source)
@@ -76,6 +80,8 @@ describe('flat-values codemod', () => {
     expect(defaultReport).toContain('**legacy-transform-part**')
     expect(transformReport).toContain('Transform-part conversion: enabled.')
     expect(transformReport).toContain('scale="1 enter:0.9"')
+    expect(transformReport).toContain('scaleX="1 enter:0.8"')
+    expect(transformReport).toContain('scaleY="1 exit:0.7"')
     expect(transformReport).toContain('x="0 hover:4px"')
     expect(transformReport).not.toContain('**legacy-transform-part**')
   })
