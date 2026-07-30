@@ -1,6 +1,10 @@
 // v6 is the opt-in home for breaking Tailwind-compatible defaults, so v5 stays stable.
 import { shorthands } from '@tamagui/shorthands/v6'
-import { themes, tokens as v5tokens } from '@tamagui/themes/v5'
+import {
+  themes as v5themes,
+  tokens as v5tokens,
+  type V5Themes,
+} from '@tamagui/themes/v5'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { fonts as v5fonts } from './v5-fonts'
 import { media, mediaQueryDefaultActive } from './v5-media'
@@ -18,6 +22,47 @@ import {
 // inherit all v5 helpers/types/theme re-exports, then override shorthands + defaultConfig
 export * from './v5-base'
 export { shorthands }
+
+export const v6ThemeNameReplacements = {
+  accentBackground: 'accent-background',
+  accentColor: 'accent-color',
+  colorHover: 'color-hover',
+  colorPress: 'color-press',
+  colorFocus: 'color-focus',
+  backgroundHover: 'background-hover',
+  backgroundPress: 'background-press',
+  backgroundFocus: 'background-focus',
+  backgroundActive: 'background-active',
+  borderColor: 'border-color',
+  borderColorHover: 'border-color-hover',
+  borderColorFocus: 'border-color-focus',
+  borderColorPress: 'border-color-press',
+  placeholderColor: 'placeholder-color',
+  colorTransparent: 'color-transparent',
+  shadowColor: 'shadow-color',
+} as const
+
+type V6Theme<Theme> = {
+  [Name in keyof Theme as Name extends keyof typeof v6ThemeNameReplacements
+    ? (typeof v6ThemeNameReplacements)[Name]
+    : Name]: Theme[Name]
+}
+
+export type V6Themes = {
+  [Name in keyof V5Themes]: V6Theme<V5Themes[Name]>
+}
+
+export const themes = Object.fromEntries(
+  Object.entries(v5themes).map(([themeName, theme]) => [
+    themeName,
+    Object.fromEntries(
+      Object.entries(theme).map(([name, value]) => [
+        v6ThemeNameReplacements[name as keyof typeof v6ThemeNameReplacements] ?? name,
+        value,
+      ])
+    ),
+  ])
+) as V6Themes
 
 // Space and size deliberately remain separate configured domains even though their default
 // values coincide. Radius keeps v5's numeric component scale while adding Tailwind's named

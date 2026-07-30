@@ -1,14 +1,13 @@
 import type { TextStyle } from '@tamagui/web'
 
-// v6 = v4/v5 shorthands + Tailwind-style `w`/`h` (Tailwind uses w-*/h-* for width/height).
-// this is the first step toward making styleMode:'tailwind' a real Tailwind drop-in.
+// v6 = v4/v5 shorthands with the flat-value family and Tailwind-aligned names.
 export const shorthands = createShorthands({
   // text
   text: 'textAlign',
 
   // view
   b: 'bottom',
-  bg: 'backgroundColor',
+  bg: 'background',
   content: 'alignContent',
   grow: 'flexGrow',
   h: 'height',

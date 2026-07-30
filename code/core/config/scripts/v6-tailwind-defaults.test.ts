@@ -10,7 +10,7 @@ import {
   tailwindSpace,
   tailwindZIndex,
 } from '../src/v6-tailwind-defaults.generated'
-import { settings } from '../src/v6-base'
+import { shorthands, settings, themes, v6ThemeNameReplacements } from '../src/v6-base'
 import {
   PLAYWRIGHT_VERSION,
   TAILWIND_VERSION,
@@ -20,6 +20,17 @@ import {
 } from './generate-v6-tailwind-defaults'
 
 describe('v6 Tailwind defaults provenance', () => {
+  test('v6 binds bg to the background family and exposes only kebab-case theme names', () => {
+    expect(shorthands.bg).toBe('background')
+
+    const light = themes.light
+    for (const [legacyName, v6Name] of Object.entries(v6ThemeNameReplacements)) {
+      expect(light).not.toHaveProperty(legacyName)
+      expect(light).toHaveProperty(v6Name)
+    }
+    expect(Object.keys(light).filter((name) => /[A-Z]/.test(name))).toEqual([])
+  })
+
   test('component and category defaults preserve the v5 control geometry', () => {
     expect(settings).toMatchObject({
       defaultSize: '$11',

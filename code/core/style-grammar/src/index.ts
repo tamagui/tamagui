@@ -1,6 +1,7 @@
 export * from './backgroundFamily'
 export * from './borderFamily'
 export * from './candidate'
+export * from './candidateTarget'
 export * from './config'
 export * from './evaluateProgram'
 export * from './legacyConditions'
