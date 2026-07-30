@@ -673,8 +673,59 @@ encoding turns out to be:
 - server and client hashing is deterministic;
 - native evaluation uses the same last-matching-clause rule.
 
-The encoding itself, across runtime insertion, streaming SSR, and code
-splitting, is remaining design work item 2.
+The encoding itself is drafted below as the program block encoding; the
+streaming/code-splitting prototype is remaining design work item 2.
+
+#### The program block encoding
+
+One invariant makes the encoding simple: after per-longhand merging, an
+element carries exactly one program per CSS longhand, and lowering never
+emits a CSS shorthand property (families expand before lowering). Two
+distinct program classes on one element therefore never target the same
+longhand, so stylesheet order BETWEEN programs is semantically irrelevant.
+Order only matters WITHIN a program, and a program always lowers as one
+contiguous block.
+
+Each (longhand, program, config revision) hashes to one deterministic class
+name. The block emits the clauses in authored order, with every condition
+wrapped in `:where()` so each rule's specificity is exactly the subject
+class, `(0,1,0)`:
+
+```css
+/* bg="red hover:green dark:gray dark:hover:blue" — backgroundColor program */
+._bc-x1a2b3 { background-color: red }
+._bc-x1a2b3:where(:hover) { background-color: green }
+:where(.t_dark) ._bc-x1a2b3, ._bc-x1a2b3:where(.t_dark) { background-color: gray }
+:where(.t_dark) ._bc-x1a2b3:where(:hover), ._bc-x1a2b3:where(.t_dark):where(:hover) { background-color: blue }
+```
+
+- State modifiers become `:where(:hover)` etc. on the subject; theme and
+  group modifiers become `:where(.t_dark)` / `:where(.t_group_x:hover)`
+  ancestor (plus same-element for themes) prefixes; media modifiers wrap the
+  rule in `@media`, which adds no specificity. Modifier chains compose these
+  wrappers; specificity never moves.
+- With equal specificity everywhere, the cascade reduces to source order
+  inside the block, which is authored clause order, so the last matching
+  clause wins — the exact program semantics native evaluates in JS.
+- The block inserts atomically: printed contiguously in SSR output, inserted
+  as a run of `insertRule` calls appended at the sheet end on the client.
+  Because cross-program order is irrelevant, append-at-end is always safe,
+  and any interleaving of streaming chunks or code-split bundles is safe:
+  a class name fully determines its block, so duplicate arrival is
+  idempotent and dedup is a name check.
+
+This deletes the current encoding's entire specificity apparatus:
+`:root`-repetition priority ladders and pseudo-rule `!important` in
+`getCSSStylesAtomic`, and `.cls.cls` doubling for longhand-over-shorthand
+precedence (impossible by construction once shorthand properties are never
+emitted). Interop with non-Tamagui CSS (Tailwind passthrough layer, app
+stylesheets, any remaining react-native-web output) is ordered by cascade
+layers, one `@layer` statement instead of per-rule specificity tricks —
+extending the layer wrapping that tailwind mode already uses today.
+
+Inline `style` and dynamic non-string values keep their existing paths: the
+style attribute outranks any class, and dynamic payloads resolve through the
+runtime parser cache, not through new CSS.
 
 ## Value variables
 
@@ -1535,9 +1586,16 @@ locked:
 
 1. The runtime and compiler boundary for dynamic value strings, including
    the cache key and development diagnostics.
-2. The web CSS encoding for per-longhand programs: equal effective
-   specificity, preserved program order across runtime insertion, streaming
-   SSR, and code splitting, with deterministic server/client hashing.
+2. The web CSS encoding for per-longhand programs is drafted (see "The
+   program block encoding"): equal specificity via `:where()`, source-order
+   cascade within an atomically inserted block, order-free cross-program
+   dedup by hashed class name. Browser-validated 2026-07-29 in headless
+   Chromium: theme+state chains resolve by last-matching-clause, a plain
+   clause after an `@media` block wins at equal specificity, and
+   runtime-appended blocks behave identically regardless of cross-program
+   insertion order (7/7 probe assertions). WebKit re-check rides the
+   kitchen-sink webkit CI project when this lands as tests. Remaining:
+   prototype streaming SSR and code splitting in a real app.
 3. The CSS transition native capability matrix and the migration of the
    existing array and per-property preset object forms (preset resolution
    itself is decided: config-first identifiers).
