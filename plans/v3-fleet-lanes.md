@@ -22,6 +22,8 @@ in `code/core/web/src/helpers/` the contraction touches:
 - `code/core/web/src/helpers/evaluateAccumulatedPrograms.ts`
 - `code/core/web/src/helpers/grammarConfig.ts`
 - `code/core/web/src/helpers/getCSSStylesAtomic.tsx`
+- `code/core/web/src/helpers/propMapper.ts` (added 2026-07-30: the clause-free
+  cutover lands in value resolution, so it needs one author)
 
 Owns: clause-free config-first cutover, remaining fallback-category conversion,
 physical deletion of the legacy condition machinery, the bundle/branch-count
@@ -104,4 +106,21 @@ the older numbers in `plans/v3-handoff.md`:
   1 todo / 55 files
 - native: `cd code/core/core-test && bun run test:native` — 411 passed,
   7 expected fail, 11 skipped / 21 files
+- static-tests: `tests/*.web.test.tsx` — 104 passed, 2 skipped / 12 files;
+  webpack — 18 passed
 - codemod corpus: `code/core/codemod-flat-values/`
+
+## The decision-24 metric is a tuple, not a rate
+
+Gate on `found / lowered / flattened / styled / bailed`, never on the
+percentage. Three ways the rate improves while nothing gets better:
+
+- `found` only increments when `host.resolveComponent` returns non-null, so
+  narrowing component recognition shrinks numerator and denominator together.
+  `found` must never decrease.
+- Decision 24 is the plain-element fast path, which is `flattened`, a subset of
+  `lowered` (2016 of 2029 today). Raising `lowered` without raising `flattened`
+  delivers nothing.
+- `compilerHost.ts` `canLowerDynamicStyleProp` is a return-true-to-improve-the-
+  number switch suppressing the `lower.ts` dynamic-style-value bailout. Widening
+  it needs output tests and real DOM snapshots, never a metric delta.
