@@ -38,12 +38,16 @@ describe('styleMode transform utilities', () => {
   })
 
   test('hover:translate-y-[2px] applies under the hover pseudo', () => {
-    const list = Object.values(
-      simplifiedGetSplitStyles(View, { className: 'hover:translate-y-[2px]' } as any)
-        .rulesToInsert || {}
-    ) as any[]
-    const hoverRule = list.find((r) => r[StyleObjectPseudo] === 'hover')
-    expect(hoverRule).toBeTruthy()
-    expect(hoverRule[StyleObjectValue]).toBe('translateY(2px)')
+    // the transform family: y sets the --t-y axis variable under hover and a
+    // shared composition rule turns the axis variables into `translate`
+    const styles = simplifiedGetSplitStyles(View, {
+      className: 'hover:translate-y-[2px]',
+    } as any)
+    const allRules = (Object.values(styles.rulesToInsert || {}) as any[])
+      .flatMap((r) => r[4] ?? [])
+      .join('')
+    expect(allRules).toContain(':hover')
+    expect(allRules).toContain('--t-y:2px')
+    expect(allRules).toContain('translate:')
   })
 })

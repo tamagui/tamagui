@@ -67,8 +67,11 @@ describe('styleMode arbitrary values', () => {
         theme,
       }
     )
-    const rules = Object.values(styles.rulesToInsert || {}) as any[]
-    expect(rules.some((r) => r[StyleObjectValue] === '42px')).toBe(true)
+    const allRules = (Object.values(styles.rulesToInsert || {}) as any[])
+      .flatMap((r) => r[4] ?? [])
+      .join('')
+    expect(allRules).toContain(':hover')
+    expect(allRules).toContain('42px')
   })
 })
 

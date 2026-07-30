@@ -531,9 +531,10 @@ describe('getSplitStyles', () => {
     })
     const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
 
-    expect(rule).toMatchInlineSnapshot(
-      '"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"'
-    )
+    // the program engine lowers the converted legacy group media straight to a
+    // container query on the group name: no @supports wrapper, no :root
+    // ladder, no group-descendant selector hop
+    expect(rule).toMatch(/^@container testy \(max-width: 800px\) \{\._c-\d+\{color:red\}\}$/)
   })
 
   test(`group container queries with single-part media keys`, () => {
@@ -545,9 +546,10 @@ describe('getSplitStyles', () => {
     })
     const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
 
-    // should generate valid selector with t_group_frame
+    // converted to a program: a container query on the frame group, anchored
+    // on the subject's program class
     expect(rule).toContain('@container frame')
-    expect(rule).toContain('.t_group_frame')
+    expect(rule).toMatch(/\._pr-\d+/)
     // should not have the media key as a pseudo selector
     expect(rule).not.toContain(':sm')
   })
@@ -819,18 +821,29 @@ describe('getSplitStyles - pseudo prop merging', () => {
   })
 
   test('inline pressStyle should override variant pressStyle', () => {
-    const { viewProps } = simplifiedGetSplitStyles(StyledButton, {
+    const styles = simplifiedGetSplitStyles(StyledButton, {
       variant: 'prim',
       pressStyle: { backgroundColor: 'red' },
     })
-    expect(viewProps.className).toContain('_bg-0active-red')
+    // pressStyle converts to a press clause on the backgroundColor program;
+    // the inline restatement replaces the variant's clause (decision 21)
+    const className = styles.classNames.backgroundColor
+    expect(className).toMatch(/^_bc-/)
+    const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
+    expect(rules).toContain(':active')
+    expect(rules).toContain('red')
+    expect(rules).not.toContain('blue')
   })
 
   test('variant pressStyle should be used if no inline pressStyle', () => {
-    const { viewProps } = simplifiedGetSplitStyles(StyledButton, {
+    const styles = simplifiedGetSplitStyles(StyledButton, {
       variant: 'prim',
     })
-    expect(viewProps.className).toContain('_bg-0active-blue')
+    const className = styles.classNames.backgroundColor
+    expect(className).toMatch(/^_bc-/)
+    const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
+    expect(rules).toContain(':active')
+    expect(rules).toContain('blue')
   })
 
   test('default pressStyle should not generate a class if not used', () => {
@@ -862,9 +875,9 @@ describe('getSplitStyles - kebab-case media keys', () => {
     })
     const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
 
-    // should generate valid @container query with frame container name
+    // converted to a program: a pure container query needs no group selector
     expect(rule).toContain('@container frame')
-    expect(rule).toContain('.t_group_frame')
+    expect(rule).toMatch(/\._pr-\d+/)
     // should NOT have :max as a pseudo selector - this was the bug
     expect(rule).not.toContain(':max')
     expect(rule).not.toContain(':max-md')

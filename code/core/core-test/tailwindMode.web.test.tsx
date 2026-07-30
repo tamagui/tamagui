@@ -8,7 +8,7 @@ import {
   StyleObjectProperty,
   StyleObjectValue,
 } from '../web/src'
-import { StyleObjectPseudo, StyleObjectIdentifier } from '@tamagui/helpers'
+import { StyleObjectRules } from '@tamagui/helpers'
 import { simplifiedGetSplitStyles, findRule, findAnyRule } from './utils'
 
 beforeAll(() => {
@@ -79,14 +79,12 @@ describe('tailwind mode - modifiers', () => {
       className: 'hover:bg-[blue]',
     } as any)
 
-    // verify the actual rule: backgroundColor=blue with hover pseudo
-    const rules = Object.values(styles.rulesToInsert || {}) as any[]
-    const hoverRule = rules.find(
-      (r) =>
-        r[StyleObjectProperty] === 'backgroundColor' && r[StyleObjectPseudo] === 'hover'
-    )
-    expect(hoverRule).toBeTruthy()
-    expect(hoverRule[StyleObjectValue]).toBe('blue')
+    // the hover clause becomes a backgroundColor program block
+    const className = styles.classNames.backgroundColor
+    expect(className).toMatch(/^_bc-/)
+    const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
+    expect(rules).toContain(':hover')
+    expect(rules).toContain('background-color:blue')
   })
 
   test('className="sm:p-[80px]" preserves a raw media-query value', () => {
@@ -94,14 +92,11 @@ describe('tailwind mode - modifiers', () => {
       className: 'sm:p-[80px]',
     } as any)
 
-    const rules = Object.values(styles.rulesToInsert || {}) as any[]
-    const smPadRule = rules.find(
-      (r) =>
-        r[StyleObjectProperty] === 'paddingTop' &&
-        r[StyleObjectIdentifier]?.includes('_sm')
-    )
-    expect(smPadRule).toBeTruthy()
-    expect(smPadRule[StyleObjectIdentifier]).toContain('80px')
+    const className = styles.classNames.paddingTop
+    expect(className).toMatch(/^_pt-/)
+    const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
+    expect(rules).toContain('@media')
+    expect(rules).toContain('80px')
   })
 
   test('className="sm:hover:bg-purple" generates combined modifier class', () => {
@@ -109,16 +104,14 @@ describe('tailwind mode - modifiers', () => {
       className: 'sm:hover:bg-[purple]',
     } as any)
 
-    // combined modifier rules encode value/media/pseudo in identifier
-    const rules = Object.values(styles.rulesToInsert || {}) as any[]
-    const combinedRule = rules.find(
-      (r) =>
-        r[StyleObjectProperty] === 'backgroundColor' &&
-        r[StyleObjectIdentifier]?.includes('_sm') &&
-        r[StyleObjectIdentifier]?.includes('hover')
-    )
-    expect(combinedRule).toBeTruthy()
-    expect(combinedRule[StyleObjectIdentifier]).toContain('purple')
+    // combined modifiers nest the media query around the hover selector in
+    // one program block
+    const className = styles.classNames.backgroundColor
+    expect(className).toMatch(/^_bc-/)
+    const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
+    expect(rules).toContain('@media')
+    expect(rules).toContain(':hover')
+    expect(rules).toContain('purple')
   })
 })
 
@@ -148,14 +141,13 @@ describe('tailwind mode - token values', () => {
       className: 'hover:bg-black',
     } as any)
 
-    // black is a token - verify rule resolves to CSS variable with hover pseudo
-    const rules = Object.values(styles.rulesToInsert || {}) as any[]
-    const hoverRule = rules.find(
-      (r) =>
-        r[StyleObjectProperty] === 'backgroundColor' && r[StyleObjectPseudo] === 'hover'
-    )
-    expect(hoverRule).toBeTruthy()
-    expect(hoverRule[StyleObjectValue]).toContain('var(--')
+    // black is a token - the hover clause resolves to a CSS variable inside
+    // the program block
+    const className = styles.classNames.backgroundColor
+    expect(className).toMatch(/^_bc-/)
+    const rules = (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
+    expect(rules).toContain(':hover')
+    expect(rules).toContain('var(--')
   })
 
   test('className="bg-[purple]" uses a raw value', () => {

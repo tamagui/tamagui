@@ -1357,12 +1357,11 @@ export const getSplitStyles: StyleSplitter = (
   }
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-  // the A/B bed for the engine contraction: forcing the gate on across the
-  // whole existing suite measures exactly which legacy-condition behavior the
-  // program engine reproduces. test-only, deleted with the contraction
-  const legacyConditionObjects =
-    getSetting('legacyConditionObjects') === true ||
-    (process.env.NODE_ENV === 'test' && !!process.env.TAMAGUI_AB_LEGACY_PROGRAMS)
+  // decision 23: legacy condition objects convert into program clauses at the
+  // loop entry, on by default in v3 (set legacyConditionObjects: false to keep
+  // the old machinery). unconvertible categories (resetting composite
+  // shorthands, exotic transform parts) still fall through to the legacy path
+  const legacyConditionObjects = getSetting('legacyConditionObjects') !== false
   const orderedProcessedProps = getPropEntriesInForwardOrder(
     processedProps,
     staticConfig.baseStyle,

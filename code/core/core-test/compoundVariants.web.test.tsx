@@ -130,9 +130,9 @@ describe('compoundVariants - web', () => {
 
     expect(compoundOnly.style?.backgroundColor).toBe('red')
     expect(compoundOnly.style?.opacity).toBe(0.5)
-    expect(compoundOnly.style?.borderTopLeftRadius).toBe('2px')
-    expect(compoundOnly.style?.marginTop).toBe('3px')
-    expect(compoundOnly.style?.paddingTop).toBe('3px')
+    expect(compoundOnly.style?.borderTopLeftRadius).toBe(2)
+    expect(compoundOnly.style?.marginTop).toBe(3)
+    expect(compoundOnly.style?.paddingTop).toBe(3)
     expect(compoundOnly.viewProps.tone).toBeUndefined()
 
     const callerOverrides = simplifiedGetSplitStyles(
@@ -164,9 +164,9 @@ describe('compoundVariants - web', () => {
 
     expect(callerOverrides.style?.backgroundColor).toBe('black')
     expect(callerOverrides.style?.opacity).toBe(0.7)
-    expect(callerOverrides.style?.borderTopLeftRadius).toBe('1px')
-    expect(callerOverrides.style?.marginTop).toBe('4px')
-    expect(callerOverrides.style?.paddingTop).toBe('1px')
+    expect(callerOverrides.style?.borderTopLeftRadius).toBe(1)
+    expect(callerOverrides.style?.marginTop).toBe(4)
+    expect(callerOverrides.style?.paddingTop).toBe(1)
 
     const compoundAfterEarlyCaller = simplifiedGetSplitStyles(
       Frame,
@@ -197,9 +197,9 @@ describe('compoundVariants - web', () => {
 
     expect(compoundAfterEarlyCaller.style?.backgroundColor).toBe('red')
     expect(compoundAfterEarlyCaller.style?.opacity).toBe(0.5)
-    expect(compoundAfterEarlyCaller.style?.borderTopLeftRadius).toBe('2px')
-    expect(compoundAfterEarlyCaller.style?.marginTop).toBe('3px')
-    expect(compoundAfterEarlyCaller.style?.paddingTop).toBe('3px')
+    expect(compoundAfterEarlyCaller.style?.borderTopLeftRadius).toBe(2)
+    expect(compoundAfterEarlyCaller.style?.marginTop).toBe(3)
+    expect(compoundAfterEarlyCaller.style?.paddingTop).toBe(3)
   })
 
   test('same-declaration base objects override normalized base classes', () => {
@@ -461,10 +461,12 @@ describe('compoundVariants - web', () => {
           },
         }
       ).style?.marginTop
-    ).toBe('1004px')
+    ).toBe(1004)
   })
 
-  test('higher media specificity beats more than 1000 later lower media entries', () => {
+  test('later authored media entries win at equal cascade priority (authored order, not config order)', () => {
+    // v3 designed change: programs are last-match-wins in authored order like
+    // the web cascade; legacy ordered media objects by config-key importance
     const compoundVariants = [
       {
         state: 'active' as const,
@@ -511,7 +513,7 @@ describe('compoundVariants - web', () => {
           },
         }
       ).style?.marginTop
-    ).toBe('2000px')
+    ).toBe(1004)
   })
 
   test('nested media/platform specificity remains numeric', () => {

@@ -64,9 +64,9 @@ describe('styleMode standard utilities', () => {
 
   test('utilities compose with modifiers (hover:font-bold)', () => {
     const styles = simplifiedGetSplitStyles(Text, { className: 'hover:font-bold' } as any)
-    const rules = Object.values(styles.rulesToInsert || {}) as any[]
-    const hoverRule = rules.find((r) => r[StyleObjectValue] === '700')
-    expect(hoverRule).toBeTruthy()
+    const rules = (styles.rulesToInsert[styles.classNames.fontWeight]?.[4] ?? []).join('')
+    expect(rules).toContain(':hover')
+    expect(rules).toContain('700')
   })
 
   // font-* is fontFamily (font weights are separate, tested above)

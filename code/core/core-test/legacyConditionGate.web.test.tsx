@@ -140,12 +140,23 @@ test('noClass web configurations stay on legacy condition handling', () => {
   ).toBe(false)
 })
 
-test('the setting defaults off and preserves legacy condition handling', () => {
-  // the engine-contraction A/B bed forces the gate on suite-wide; this test
-  // asserts the shipped default, so it clears the override
-  delete process.env.TAMAGUI_AB_LEGACY_PROGRAMS
+test('the setting defaults ON in v3; explicit false preserves legacy handling', () => {
+  // decision 23: v3 converts legacy condition objects by default
   createTamagui(defaultConfig)
   try {
+    const converted = split({
+      backgroundColor: 'red',
+      hoverStyle: { backgroundColor: 'blue' },
+    })
+    expect(converted.classNames.backgroundColor).toMatch(/^_bc-/)
+
+    createTamagui({
+      ...defaultConfig,
+      settings: {
+        ...defaultConfig.settings,
+        legacyConditionObjects: false,
+      },
+    } as any)
     const result = split({
       backgroundColor: 'red',
       hoverStyle: { backgroundColor: 'blue' },

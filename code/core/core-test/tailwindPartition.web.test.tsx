@@ -50,14 +50,13 @@ describe('partition — pseudo/media objects: convert supported, RETAIN dynamic 
       className: 'hover:opacity-50',
       hoverStyle: { backgroundColor: 'blue' },
     } as any)
-    const hover = (Object.values(s.rulesToInsert || {}) as any[]).filter(
-      (r) => r[StyleObjectPseudo] === 'hover'
-    )
-    const byProp = Object.fromEntries(
-      hover.map((r) => [r[StyleObjectProperty], r[StyleObjectValue]])
-    )
-    expect(byProp.opacity).toBe(0.5) // from the className
-    expect(byProp.backgroundColor).toBe('blue') // from the retained hoverStyle — BOTH present
+    // both convert to programs on their own longhands — BOTH hover branches present
+    const opacityRules = (s.rulesToInsert[s.classNames.opacity]?.[4] ?? []).join('')
+    expect(opacityRules).toContain(':hover')
+    expect(opacityRules).toContain('opacity:0.5')
+    const bgRules = (s.rulesToInsert[s.classNames.backgroundColor]?.[4] ?? []).join('')
+    expect(bgRules).toContain(':hover')
+    expect(bgRules).toContain('background-color:blue')
   })
 
   test('nested media+pseudo converts recursively (partition, not drop)', () => {

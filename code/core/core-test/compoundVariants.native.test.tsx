@@ -393,7 +393,9 @@ describe('compoundVariants - native', () => {
     expect(nan.style?.transform).toEqual([{ scale: 2 }])
   })
 
-  test('higher media specificity beats more than 1000 later lower media entries', () => {
+  test('later authored media entries win at equal cascade priority (authored order, not config order)', () => {
+    // v3 designed change: programs are last-match-wins in authored order like
+    // the web cascade; legacy ordered media objects by config-key importance
     const compoundVariants = [
       {
         state: 'active' as const,
@@ -440,7 +442,7 @@ describe('compoundVariants - native', () => {
           },
         }
       ).style?.marginTop
-    ).toBe(2000)
+    ).toBe(1004)
   })
 
   test('nested platform matrices preserve equal-specificity later-order behavior', () => {

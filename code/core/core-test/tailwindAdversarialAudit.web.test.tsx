@@ -90,24 +90,26 @@ describe('3 — XStack className="flex-col": flexDirection COLUMN (not the defau
 
 describe('4 — existing raw hover color + hoverStyle follow authored order', () => {
   test('the later hover contribution wins', () => {
-    const hoverColors = (props: Record<string, any>) => {
-      const rules = Object.values(
-        simplifiedGetSplitStyles(View, props as any).rulesToInsert || {}
-      ) as any[]
-      return rules
-        .filter((rule) => rule[StyleObjectProperty] === 'backgroundColor')
-        .map((rule) => rule[StyleObjectValue])
+    // both contributions land in one backgroundColor program; the later
+    // authored one restates the hover clause and wins (decision 21)
+    const hoverColor = (props: Record<string, any>) => {
+      const styles = simplifiedGetSplitStyles(View, props as any)
+      const className = styles.classNames.backgroundColor
+      const rules = (styles.rulesToInsert[className]?.[4] ?? []).join('')
+      return rules.match(/:where\(:hover\)\{background-color:([^}]+)\}/)?.[1] ?? null
     }
-    const classThenProp = hoverColors({
-      className: 'hover:bg-[red]',
-      hoverStyle: { backgroundColor: 'blue' },
-    })
-    const propThenClass = hoverColors({
-      hoverStyle: { backgroundColor: 'blue' },
-      className: 'hover:bg-[red]',
-    })
-    expect(classThenProp[classThenProp.length - 1]).toBe('blue')
-    expect(propThenClass[propThenClass.length - 1]).toBe('red')
+    expect(
+      hoverColor({
+        className: 'hover:bg-[red]',
+        hoverStyle: { backgroundColor: 'blue' },
+      })
+    ).toBe('blue')
+    expect(
+      hoverColor({
+        hoverStyle: { backgroundColor: 'blue' },
+        className: 'hover:bg-[red]',
+      })
+    ).toBe('red')
     expect(
       convert(
         `<View className="hover:bg-[red]" hoverStyle={{ backgroundColor: "blue" }} />`
