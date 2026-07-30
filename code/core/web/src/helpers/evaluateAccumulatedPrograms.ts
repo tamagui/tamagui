@@ -12,7 +12,7 @@
 // container context entries are keyed `@` / `@name` — group names cannot
 // contain `@`, so the two namespaces share one context without collisions.
 
-import { isAndroid, isIos, isTV } from '@tamagui/constants'
+import { isAndroid, isIos, isTV, isWeb } from '@tamagui/constants'
 import {
   composeTransformArray,
   evaluateProgram,
@@ -32,15 +32,19 @@ import { mediaKeyMatch } from '../hooks/useMedia'
 import type { AllGroupContexts, GetStyleState, TamaguiComponentState } from '../types'
 import { ensureGrammarContext } from './contributePrograms'
 
-const platformName = isIos
-  ? isTV
-    ? 'tvos'
-    : 'ios'
-  : isAndroid
+// the noClass/animated-inline web path evaluates here too, so the platform
+// containment must answer `web:` on web, never the native fallback
+const platformName = isWeb
+  ? 'web'
+  : isIos
     ? isTV
-      ? 'androidtv'
-      : 'android'
-    : 'native'
+      ? 'tvos'
+      : 'ios'
+    : isAndroid
+      ? isTV
+        ? 'androidtv'
+        : 'android'
+      : 'native'
 
 // the states this platform can actually source right now: componentState
 // fields plus enter/exit from the lifecycle. component-tier states (checked,

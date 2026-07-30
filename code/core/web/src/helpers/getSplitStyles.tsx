@@ -1373,7 +1373,8 @@ export const getSplitStyles: StyleSplitter = (
     ? (key: string, value: unknown): boolean => {
         if (!(
           process.env.TAMAGUI_TARGET === 'native' ||
-          (process.env.TAMAGUI_TARGET === 'web' && shouldDoClasses)
+          (process.env.TAMAGUI_TARGET === 'web' &&
+            (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))
         )) {
           return false
         }
@@ -1914,13 +1915,13 @@ export const getSplitStyles: StyleSplitter = (
         // per-longhand programs instead of one plain value. the indexOf check
         // is exact — every clause contains a colon — and keeps colon-free
         // values (the overwhelming majority) off the parse cache entirely.
-        // on web, gated on shouldDoClasses because only the class flush can
-        // express a program (noClass/animated-inline web configurations keep
-        // the legacy path); on native, evaluation at the end of the pass
-        // always applies
+        // on web, classes express programs when shouldDoClasses; the
+        // noClass/animated-inline path evaluates them at the end of the pass
+        // exactly like native. static extraction keeps its own path
         if (
           (process.env.TAMAGUI_TARGET === 'native' ||
-            (process.env.TAMAGUI_TARGET === 'web' && shouldDoClasses)) &&
+            (process.env.TAMAGUI_TARGET === 'web' &&
+              (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))) &&
           typeof val === 'string' &&
           val.indexOf(':') !== -1 &&
           contributeStylePrograms(styleState, key, val)
@@ -2497,7 +2498,11 @@ export const getSplitStyles: StyleSplitter = (
   // finishing as plain values. referenced media keys ride the hasMedia
   // subscription; referenced states surface for event attachment
   let programStates: Set<string> | null = null
-  if (process.env.TAMAGUI_TARGET === 'native' && styleState.programs?.size) {
+  if (
+    styleState.programs?.size &&
+    (process.env.TAMAGUI_TARGET === 'native' ||
+      (!shouldDoClasses && process.env.IS_STATIC !== 'is_static'))
+  ) {
     const info = evaluateAccumulatedPrograms(styleState, themeName, mediaState, groupContext)
     programStates = info.usedStates
     if (info.usedMediaKeys) {

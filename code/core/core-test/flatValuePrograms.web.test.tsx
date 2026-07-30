@@ -89,9 +89,10 @@ test('a program displaces a uniform geometric shorthand per longhand', () => {
   expect(result.style?.paddingTop).toBeUndefined()
 })
 
-test('noClass configurations keep the legacy path instead of dropping the value', () => {
-  // S1: only the class flush can express a program; inline/animated drivers
-  // must see the same (raw) value they saw before W1
+test('noClass configurations evaluate programs inline like native', () => {
+  // the animated-inline path runs the same last-matching-clause evaluation
+  // native uses: the base applies now, states re-evaluate through re-renders,
+  // and no program classes are inserted
   const result = getSplitStyles(
     { backgroundColor: 'red hover:blue' },
     View.staticConfig,
@@ -100,10 +101,33 @@ test('noClass configurations keep the legacy path instead of dropping the value'
     { unmounted: false } as any,
     { ...opts, noClass: true }
   )
-  expect(result.style?.backgroundColor).toBeTruthy()
+  expect(result.style?.backgroundColor).toBe('red')
+  expect(result.programStates?.has('hover')).toBe(true)
   expect(Object.keys(result.rulesToInsert).some((id) => id.startsWith('_bc-'))).toBe(
     false
   )
+
+  const hovered = getSplitStyles(
+    { backgroundColor: 'red hover:blue' },
+    View.staticConfig,
+    undefined as any,
+    'light',
+    { unmounted: false, hover: true } as any,
+    { ...opts, noClass: true }
+  )
+  expect(hovered.style?.backgroundColor).toBe('blue')
+})
+
+test('web platform clauses apply on the inline path; native ones do not', () => {
+  const result = getSplitStyles(
+    { backgroundColor: 'red native:green web:blue' },
+    View.staticConfig,
+    undefined as any,
+    'light',
+    { unmounted: false } as any,
+    { ...opts, noClass: true }
+  )
+  expect(result.style?.backgroundColor).toBe('blue')
 })
 
 test('a later style prop restates the base; the hover survives (decision 21)', () => {
