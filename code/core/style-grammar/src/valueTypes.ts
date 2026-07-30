@@ -31,7 +31,14 @@
 //   authored order, whole-program replacement — clause-level deep merging
 //   never happens.
 
-export type ModifierKind = 'state' | 'theme' | 'media' | 'platform' | 'group'
+export type ModifierKind =
+  | 'state'
+  | 'theme'
+  | 'media'
+  | 'platform'
+  | 'group'
+  /** container queries: `@sm:` nearest container, `@sm/card:` named */
+  | 'container'
 
 /**
  * What the parser needs to know about registered modifiers. Implementations
