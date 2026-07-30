@@ -1389,6 +1389,18 @@ migration, the final codemod step turns it off, and v4 removes it together
 with the old parsers. The compiler understands both spellings for as long as
 the setting exists.
 
+First corpus numbers (2026-07-29 dry-run spike over kitchen-sink usecases
+plus the Button skin): 1702 conversion sites, 1411 clean (83%), 291
+flagged. The flag distribution reorders priorities: `legacy-transform-part`
+dominates at 259 (presence animations lean on `enterStyle.scale`/`y`
+everywhere), making the transform family design the single biggest
+migration blocker. Next largest real pattern: a static conditional merging
+onto a dynamic base (`opacity={active ? 0.5 : 1}` plus a hover object) —
+convertible in principle as a template literal, since dynamic strings are a
+designed runtime path; the codemod should learn that emission. Spreads,
+nested styled styles, and dynamic condition shapes are correctly
+unconvertible and stay flagged for hands.
+
 Conversion is purely mechanical, with no second value representation: a
 legacy object entry becomes a clause on the longhand's program, and raw
 numeric values spell as CSS lengths (`hoverStyle={{ p: 4 }}` contributes
@@ -1763,7 +1775,10 @@ locked:
    configs.
 6. How `style()` conditionally composes multiple handles while preserving
    whole-program replacement.
-7. The structured React Native value migration table.
+7. The structured React Native value migration table — led by the transform
+   family (`scale`/`rotate`/`x`/`y` as flat `transform` values plus their
+   condition behavior), which the 2026-07-29 codemod dry-run measured as
+   the largest migration blocker by far (259 of 291 flags).
 8. The minimum native DOM ref API.
 9. The exact dependency-precompilation metadata and error experience.
 10. Which dynamic regular Tamagui cases require the compiler in V3.
