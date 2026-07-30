@@ -183,6 +183,21 @@ test('named container clauses target the named entry and prefer subscribed state
   expect(subscribed.style?.backgroundColor).toBe('red')
 })
 
+test('converted legacy group media measures the group as a container', () => {
+  // $group-frame-sm converts to @sm/frame; the v2 group IS the container, so
+  // its entry answers the @frame key while the compat setting is on
+  const value = { '$group-frame-sm': { opacity: 0.5 }, opacity: 1 }
+  const narrow = split(value, {}, 'light', {}, {
+    '@frame': groupEntry({}, { width: 400, height: 100 }),
+  })
+  expect(narrow.style?.opacity).toBe(0.5)
+
+  const wide = split(value, {}, 'light', {}, {
+    '@frame': groupEntry({}, { width: 1000, height: 100 }),
+  })
+  expect(wide.style?.opacity).toBe(1)
+})
+
 test('a later plain value restates the base on native; the hover survives', () => {
   const idle = split({ backgroundColor: 'red hover:blue', bg: 'green' })
   expect(idle.style?.backgroundColor).toBe('green')

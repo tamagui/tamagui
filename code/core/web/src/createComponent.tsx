@@ -618,6 +618,14 @@ export function createComponent<
       const next: AllGroupContexts = { ...groupContextParent }
       if (groupName) {
         next[groupName] = entry
+        // v2 groups are containers: converted legacy `$group-name-media`
+        // conditions measure the group as a container query, so while the
+        // compat setting is on the group also answers the container keys.
+        // v4 removes the setting and groups become state-only (decision 17)
+        if (getConfig().settings.legacyConditionObjects !== false) {
+          next['@'] = entry
+          next[`@${groupName}`] = entry
+        }
       }
       if (isContainer) {
         // `@sm:` reads the nearest container of any name, so every container

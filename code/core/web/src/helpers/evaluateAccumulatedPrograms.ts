@@ -62,6 +62,16 @@ const sourceableStates: ReadonlySet<string> = new Set([
   'exit',
 ])
 
+// react-native has no per-side border style, so the border family's style
+// longhands collapse onto the uniform key (the last side written wins, and a
+// split from one composite value writes the same style to every side)
+const nativeKeyAliases: Readonly<Record<string, string>> = {
+  borderTopStyle: 'borderStyle',
+  borderRightStyle: 'borderStyle',
+  borderBottomStyle: 'borderStyle',
+  borderLeftStyle: 'borderStyle',
+}
+
 // react-native-web's unitless list is CSS-truth; on native the gap family is
 // a real length wanting numbers
 const nativeLengthOverrides: ReadonlySet<string> = new Set([
@@ -321,7 +331,7 @@ export function evaluateAccumulatedPrograms(
     }
 
     styleState.style ||= {}
-    styleState.style[longhand] = value
+    styleState.style[nativeKeyAliases[longhand] ?? longhand] = value
   }
 
   // module state must not retain the component past this call
