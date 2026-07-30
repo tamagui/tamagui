@@ -3,6 +3,18 @@
 Research and implementation detail for `v3-evolution.md`. The master plan owns
 sequencing and acceptance. This file owns the hybrid boundary.
 
+> **2026-07-29 supersession notice.** The flat-value grammar plan
+> (`plans/dom-tailwind-flat-values.md`, currently on `main`) reverses this
+> file's core premise: Tamagui core no longer claims utility classes and
+> `styleMode` does not exist. Tailwind support moves to a separate
+> `@tamagui/tailwind` frontend that derives class handling from the shared
+> grammar and is compiler-led on both platforms. The candidate classification
+> machinery, the claimed-vs-passthrough filtering design, and the Vite
+> official-engine integration described below remain useful background for
+> that frontend, but do not implement them inside `@tamagui/web` or core
+> `styled`. Where this file conflicts with the flat-value plan, the flat-value
+> plan wins.
+
 ## Product contract
 
 Tamagui parses the Tamagui grammar first. Any class it can prove is a

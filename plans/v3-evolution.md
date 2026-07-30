@@ -8,6 +8,33 @@ when they conflict with this file, this file wins.
 The work targets `v3-beta`. It does not authorize an npm publish, tag, release,
 or direct push to `v3-beta`/`main`.
 
+> **2026-07-29 supersession notice.** The flat-value grammar plan
+> (`plans/dom-tailwind-flat-values.md`, currently on `main`) now owns the
+> styling-syntax direction and reverses several contracts below. Where the two
+> conflict, the flat-value plan wins. Specifically superseded here:
+>
+> - `styleMode` and class-first authoring in core. There are no style modes:
+>   flat value props (`bg="red hover:blue"`) are the one authoring syntax in
+>   `@tamagui/web`. Tailwind classes become a separate derived frontend
+>   (`@tamagui/tailwind`) built on the shared grammar, not a claiming pipeline
+>   inside core, and the class-string `styled(View, 'p-4', ...)` overload does
+>   not ship in core `styled`.
+> - Modifier-prop syntax (`$hover:bg`) and condition objects (`hoverStyle`,
+>   `$theme-dark`, media/group objects) are replaced by modifiers inside the
+>   value (`bg="red hover:blue"`), with a `legacyConditionObjects` setting
+>   during migration.
+> - The `tailwind-merge` dependency in `@tamagui/web` is removed; per-longhand
+>   program merging replaces it.
+> - Bracket arbitrary-value syntax (`p-[16px]`) applies only to the Tailwind
+>   class frontend; style props take raw CSS values directly, no brackets.
+> - "Compile-only DOM out of scope" is revised to a platform-scoped contract:
+>   web `html.*` is runtime-correct (the compiler is an optimizer there);
+>   native requires the compiler.
+>
+> Still authoritative here: the component/skins contract, the variant engine,
+> `@tamagui/style-grammar` as shared owner, v6 token alignment, compiler
+> milestones, and the CI gates.
+
 ## Outcome
 
 V3 is done when all of the following are true on one integrated `v3-beta`
@@ -70,6 +97,9 @@ encountered before lighter child and call-site values; matched compound variants
 run immediately after their last selector at that authored position. `style` and
 `className` are not privileged tiers. Reordering authored props may therefore
 change the result, including in the Tailwind class pipeline.
+
+> Superseded: `styleMode` is removed by the flat-value plan — see the notice at
+> the top. The table below is historical.
 
 The three type modes remain one implementation:
 
@@ -145,6 +175,10 @@ last matching selector in the forward pass; any later authored contribution may
 override them.
 
 ### Static class strings in `styled()`
+
+> Superseded: class strings in core `styled` are removed by the flat-value
+> plan — skins are single-sourced in flat value syntax and the Tailwind
+> frontend derives class output. See the notice at the top.
 
 The preferred form gives the base class string its own argument and keeps
 variants/config in the following object. All strings remain scanner-visible:

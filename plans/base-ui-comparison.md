@@ -45,6 +45,12 @@ The skins the C lanes produce should be writable as class strings
 (`plans/v3-evolution.md` already requires static class strings in `styled()`),
 and class strings need state selectors.
 
+> 2026-07-29: `styleMode` and class strings in core `styled` were since
+> superseded by the flat-value plan (`plans/dom-tailwind-flat-values.md` on
+> `main`). The argument here still holds and gets stronger: component states
+> become value modifiers (`bg="red open:blue"`), so state styling composes in
+> the one authoring syntax instead of needing a class frontend.
+
 Tamagui can actually beat Base UI here, because our grammar is a compiler and
 runtime, not just CSS:
 
