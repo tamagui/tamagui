@@ -176,7 +176,22 @@ Status: pending.
 
 ## 4. Cutover config
 
-Status: pending.
+Status: in progress.
+
+- Lane V config packet landed in `d1e39772e5`: v6 `bg` expands to the
+  `background` family, the inherited v5 semantic theme names are replaced by
+  one explicit 16-entry kebab-case table, and the old camelCase keys are absent
+  from the resulting v6 themes. User-defined config names are untouched and no
+  runtime casing alias exists.
+- The shared overloaded-family target validator is exported from
+  `@tamagui/style-grammar`; a resolved candidate must contribute to the authored
+  property or returns a `candidate-property-mismatch` diagnostic consumable by
+  both compiler and runtime. Style-grammar passes 322/322 and its package build
+  passes.
+- Lane E owns the remaining protected-file wiring: `x`/`y` must override
+  `defaultTokenCategories` to `space`, and the runtime/compiler candidate
+  resolver must call the shared target validator. The manager routed both exact
+  changes.
 
 ## 5. Lint and editor tooling
 
