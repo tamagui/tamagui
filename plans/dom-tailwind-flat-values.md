@@ -559,6 +559,13 @@ Rules:
 - applying it to a non-color token is a compiler diagnostic;
 - token alpha composition must behave identically on web and native.
 
+Composition SCALES existing alpha, because that is what web's
+`color-mix(in srgb, var(--x) NN%, transparent)` does (browser-verified:
+`#00000033` at 50% computes to alpha 0.1). Known adoption-time fix: core's
+current `normalizeColor.native.ts` REPLACES alpha (`opacity ?? rgbaVal.a`),
+so it diverges from web for any color that already carries alpha; the native
+adoption of the grammar serializers must land the scale behavior there.
+
 ### Non-string and dynamic values
 
 Unconditional values keep their natural representation (`opacity={0.5}`,
