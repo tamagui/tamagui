@@ -96,7 +96,12 @@ immediate so they do not conflict.
 
 Gates, from the worktree root:
 
-- grammar: `cd code/core/style-grammar && bun run test` (baseline 319/319)
-- web: `cd code/core/core-test && bun run test:web` (baseline 770 passed)
-- native: `cd code/core/core-test && bun run test:native` (baseline 409 passed)
+Baselines measured by the manager at `e43e37c917` on 2026-07-30 — use these, not
+the older numbers in `plans/v3-handoff.md`:
+
+- grammar: `cd code/core/style-grammar && bun run test` — 319 passed / 16 files
+- web: `cd code/core/core-test && bun run test:web` — 771 passed, 1 skipped,
+  1 todo / 55 files
+- native: `cd code/core/core-test && bun run test:native` — 411 passed,
+  7 expected fail, 11 skipped / 21 files
 - codemod corpus: `code/core/codemod-flat-values/`
