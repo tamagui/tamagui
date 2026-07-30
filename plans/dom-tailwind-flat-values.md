@@ -1667,6 +1667,16 @@ beside the existing bundle gate — the flat-value engine plus deletions must
 net smaller than today's core, not larger.
 
 W1+W2 landed 2026-07-29 (adversarially reviewed, fixes applied same day).
+W3 landed the same day: native evaluation with the last-matching-clause
+rule, interaction states surfaced through `programStates` so createComponent
+attaches the right events, referenced media keys riding the existing
+`hasMedia` subscription, and the theme chain matched by progressive
+underscore prefixes. W3 v1 skips group and container clauses on native with
+a development note each (component-tree wiring and measurement are plan
+item 4). W5 is in progress as the engine-contraction test bed: with
+`legacyConditionObjects` on, old condition objects convert to clauses and
+run through the program engine instead of the legacy machinery, so the two
+engines can be A/B-compared on the same test suites before the deletion.
 Staging contract while the migration runs: only clause-bearing string values
 divert to programs, and only where the class flush can express them —
 noClass/animated-inline configurations keep the legacy path untouched until
