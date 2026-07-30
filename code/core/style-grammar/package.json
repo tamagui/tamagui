@@ -11,6 +11,7 @@
     "src/candidate.ts",
     "src/config.ts",
     "src/evaluateProgram.ts",
+    "src/legacyConditions.ts",
     "src/lowerProgram.ts",
     "src/modifierRegistry.ts",
     "src/programHash.ts",
