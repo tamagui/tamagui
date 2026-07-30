@@ -770,9 +770,11 @@ forwarded to RN's lossy string parser, and axis-percentage strings like
 them to points. `transformOrigin` stays independent of family ordering on
 both platforms.
 
-Validation before this locks: a browser probe of the var-composed
-`translate` transition claim, and a native fixture proving the composed
-array matches today's v1 output for the common `x`/`y`/`scale` cases.
+Validation: the var-composed transition claim is browser-verified
+(2026-07-29, Chromium: a hover-driven `--t-x` flip reads ~50px at the
+midpoint of a 400ms linear `transition: translate`). Remaining before this
+locks: a native fixture proving the composed array matches today's v1
+output for the common `x`/`y`/`scale` cases.
 
 Runtime integration shape (the getSplitStyles wiring): the forward pass
 accumulates programs in one Map keyed by longhand, delete-then-set per
