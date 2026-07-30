@@ -111,6 +111,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./FieldReactHookFormBridgeCase').FieldReactHookFormBridgeCase,
   FieldValidatedSignupCase: () =>
     require('./FieldValidatedSignupCase').FieldValidatedSignupCase,
+  FlatValueProgramsCase: () => require('./FlatValueProgramsCase').FlatValueProgramsCase,
   FormButtonTypeCase: () => require('./FormButtonTypeCase').FormButtonTypeCase,
   GroupHoverMobile: () => require('./GroupHoverMobile').GroupHoverMobile,
   GroupPressInVariant: () => require('./GroupPressInVariant').GroupPressInVariant,
