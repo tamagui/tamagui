@@ -7,6 +7,13 @@ export interface ActiveConditions {
   media: ReadonlySet<string>
   platform: string
   groups: (modifier: string) => boolean
+  /**
+   * whether a container query modifier (`@sm`, `@sm/card`) currently holds.
+   * Like groups, this is a callback because the answer lives with the component
+   * tree: resolving it needs the measured size of the nearest or named
+   * container, whose measurement timing is its own design item.
+   */
+  containers: (modifier: string) => boolean
 }
 
 export function evaluateProgram(
@@ -38,6 +45,8 @@ export function evaluateProgram(
           (grammarPlatformGroups.get(modifier)?.has(active.platform) ?? false)
       } else if (kind === 'group') {
         matches = active.groups(modifier)
+      } else if (kind === 'container') {
+        matches = active.containers(modifier)
       } else {
         matches = false
       }

@@ -15,6 +15,7 @@ const modifierKinds: Readonly<Record<string, ModifierKind>> = {
   native: 'platform',
   ios: 'platform',
   'group-hover': 'group',
+  '@sm/layout': 'container',
 }
 
 const registry: ModifierRegistryView = {
@@ -29,6 +30,7 @@ const active = (conditions: Partial<ActiveConditions> = {}): ActiveConditions =>
   media: new Set(),
   platform: 'web',
   groups: () => false,
+  containers: () => false,
   ...conditions,
 })
 
@@ -99,6 +101,42 @@ describe('runtime program evaluation', () => {
         active({ groups: (modifier) => modifier === 'group-hover' })
       )
     ).toBe('hovered')
+  })
+
+  test('asks the host whether a container query holds', () => {
+    const value: ParsedValue = {
+      base: 'rest',
+      clauses: [{ modifiers: ['@sm/layout'], payload: 'wide' }],
+    }
+    expect(
+      evaluateProgram(
+        value,
+        registry,
+        active({ containers: (modifier) => modifier === '@sm/layout' })
+      )
+    ).toBe('wide')
+    expect(evaluateProgram(value, registry, active())).toBe('rest')
+  })
+
+  test('a container chains with a group as an AND', () => {
+    const value: ParsedValue = {
+      base: 'rest',
+      clauses: [{ modifiers: ['@sm/layout', 'group-hover'], payload: 'both' }],
+    }
+    expect(
+      evaluateProgram(
+        value,
+        registry,
+        active({ containers: () => true, groups: () => true })
+      )
+    ).toBe('both')
+    expect(
+      evaluateProgram(
+        value,
+        registry,
+        active({ containers: () => true, groups: () => false })
+      )
+    ).toBe('rest')
   })
 
   test('requires every modifier in a clause to match', () => {

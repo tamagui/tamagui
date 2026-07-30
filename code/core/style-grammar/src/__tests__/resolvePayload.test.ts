@@ -267,17 +267,87 @@ describe('color opacity suffix', () => {
     expect(resolve('0 2px 8px glow/50').errors[0].index).toBe(10)
   })
 
-  test('a suffix that is not an integer 0-100 is not a suffix', () => {
-    // the ident still resolves; the rest is literal text
-    expect(shape(resolve('accent/101'))).toEqual([
-      { name: 'accent', kind: 'color' },
-      '/101',
+  test('a malformed percentage on a color token is a structured error', () => {
+    for (const [payload, authored] of [
+      ['accent/101', '/101'],
+      ['accent/1000', '/1000'],
+      ['accent/5.5', '/5.5'],
+      ['accent/-1', '/-1'],
+      ['accent/+50', '/+50'],
+    ]) {
+      const resolved = resolve(payload)
+      expect(resolved.errors.length, payload).toBe(1)
+      expect(resolved.errors[0], payload).toMatchObject({
+        code: 'opacity-out-of-range',
+        index: 0,
+        name: 'accent',
+      })
+      expect(resolved.errors[0].message, payload).toContain(`"accent${authored}"`)
+      // never emitted as broken CSS: the text stays literal and no reference forms
+      expect(resolved.segments, payload).toEqual([payload])
+      expect(resolved.references, payload).toEqual([])
+    }
+  })
+
+  test('the boundaries of the range are in range', () => {
+    expect(resolve('accent/0').errors).toEqual([])
+    expect(resolve('accent/100').errors).toEqual([])
+    expect(resolve('accent/050').references[0]).toEqual({
+      name: 'accent',
+      kind: 'color',
+      opacity: 50,
+    })
+  })
+
+  test('a malformed percentage after a non-token ident is ordinary css', () => {
+    // `font: bold small/1.2 serif` is valid CSS: with no resolved color there is
+    // no evidence anyone reached for opacity, so it stays literal and silent
+    expect(resolve('bold small/1.2 serif').errors).toEqual([])
+    expect(shape(resolve('bold small/1.2 serif'))).toEqual(['bold small/1.2 serif'])
+    expect(resolve('red/101').errors).toEqual([])
+  })
+
+  test('slash forms that are not percentages are never suffix attempts', () => {
+    // background position/size, and a slash before a keyword
+    expect(resolve('center/cover').errors).toEqual([])
+    expect(resolve('center/50%').errors).toEqual([])
+    expect(shape(resolve('surface center/50%'))).toEqual([
+      { name: 'surface', kind: 'color' },
+      ' center/50%',
     ])
-    expect(shape(resolve('accent/5.5'))).toEqual([
-      { name: 'accent', kind: 'color' },
-      '/5.5',
+  })
+})
+
+describe('reserved idents are case-insensitive', () => {
+  // CSS-wide keywords are case-insensitive, so the gate folds; token names
+  // themselves stay case-sensitive
+  const always = (name: string): ResolvedReference => ({ name, kind: 'color' })
+
+  test('any casing of a css-wide keyword is never looked up', () => {
+    for (const spelling of [
+      'INHERIT',
+      'Inherit',
+      'iNiTiAl',
+      'NONE',
+      'Transparent',
+      'CURRENTCOLOR',
+      'currentcolor',
+      'CurrentColor',
+    ]) {
+      const resolved = resolvePayload(spelling, { lookup: always })
+      expect(resolved.references, spelling).toEqual([])
+      expect(resolved.segments, spelling).toEqual([spelling])
+    }
+  })
+
+  test('a token whose name only differs by case is still looked up', () => {
+    const resolved = resolvePayload('Accent', { lookup: (name) => tokens[name] })
+    // `Accent` is not configured, so it stays literal — folding the reserved gate
+    // does not fold token lookup
+    expect(resolved.references).toEqual([])
+    expect(resolvePayload('Accent', { lookup: always }).references).toEqual([
+      { name: 'Accent', kind: 'color' },
     ])
-    expect(resolve('accent/101').errors).toEqual([])
   })
 })
 

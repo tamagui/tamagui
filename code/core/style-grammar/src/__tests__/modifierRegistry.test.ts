@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { createModifierRegistry, stateModifierNames } from '..'
+import { createModifierRegistry, parseContainerModifier, stateModifierNames } from '..'
 
 // One global modifier namespace. These tests pin which spellings resolve to
 // which kind, that registration order is state -> media -> platform -> theme
@@ -60,8 +60,6 @@ describe('registered kinds', () => {
     expect(full.registry.get('hver')).toBeUndefined()
     expect(full.registry.get('xl')).toBeUndefined()
     expect(full.registry.get('')).toBeUndefined()
-    // container query variants are not registered yet
-    expect(full.registry.get('@sm')).toBeUndefined()
   })
 
   test('object prototype keys are not modifiers', () => {
@@ -88,6 +86,77 @@ describe('parameterized group modifiers', () => {
     expect(full.registry.get('group-hover/')).toBeUndefined()
     expect(full.registry.get('group-hover/a b')).toBeUndefined()
     expect(full.registry.get('group-hover/a/b')).toBeUndefined()
+  })
+})
+
+describe('parameterized container modifiers', () => {
+  test('a registered media size resolves, nearest or named', () => {
+    expect(full.registry.get('@sm')).toBe('container')
+    expect(full.registry.get('@md')).toBe('container')
+    expect(full.registry.get('@sm/layout')).toBe('container')
+    expect(full.registry.get('@lg/side_bar-2')).toBe('container')
+  })
+
+  test('the size must be a registered media name', () => {
+    expect(full.registry.get('@xl')).toBeUndefined()
+    expect(full.registry.get('@hover')).toBeUndefined()
+    expect(full.registry.get('@dark')).toBeUndefined()
+    expect(full.registry.get('@web')).toBeUndefined()
+  })
+
+  test('malformed container spellings are unregistered', () => {
+    expect(full.registry.get('@')).toBeUndefined()
+    expect(full.registry.get('@/layout')).toBeUndefined()
+    expect(full.registry.get('@sm/')).toBeUndefined()
+    expect(full.registry.get('@sm/a b')).toBeUndefined()
+    expect(full.registry.get('@sm/a/b')).toBeUndefined()
+    expect(full.registry.get('sm@')).toBeUndefined()
+  })
+
+  test('a media size shadowed by another kind has no container form', () => {
+    // `hover` registers as a state, so the media key named hover is ignored and
+    // `@hover` cannot mean a container either
+    const { registry } = createModifierRegistry({ mediaNames: ['hover', 'sm'] })
+    expect(registry.get('@hover')).toBeUndefined()
+    expect(registry.get('@sm')).toBe('container')
+  })
+
+  test('parseContainerModifier reports the spelling parts', () => {
+    expect(parseContainerModifier('@sm')).toEqual({ size: 'sm', container: null })
+    expect(parseContainerModifier('@sm/layout')).toEqual({
+      size: 'sm',
+      container: 'layout',
+    })
+    // spelling only: whether the size is a registered media key is the
+    // registry's call, so an unknown size still parses
+    expect(parseContainerModifier('@xl')).toEqual({ size: 'xl', container: null })
+    expect(parseContainerModifier('sm')).toBeNull()
+    expect(parseContainerModifier('@sm/')).toBeNull()
+  })
+})
+
+describe('the @ prefix is reserved', () => {
+  test('a configured name starting with @ is refused with a diagnostic', () => {
+    const { registry, diagnostics } = createModifierRegistry({
+      mediaNames: ['@sm', 'sm'],
+    })
+    expect(diagnostics).toEqual([
+      'modifier "@sm" is not registered: the "@" prefix is reserved for container query modifiers, so it cannot be a media name',
+    ])
+    // and it did not become a media modifier, so `@sm` still means the container
+    expect(registry.get('@sm')).toBe('container')
+  })
+
+  test('a configured theme or platform name starting with @ is refused too', () => {
+    const { diagnostics } = createModifierRegistry({
+      themeNames: ['@dark'],
+      platformNames: ['@web'],
+    })
+    expect(diagnostics).toHaveLength(2)
+    expect(diagnostics[0]).toContain('"@web"')
+    expect(diagnostics[0]).toContain('platform name')
+    expect(diagnostics[1]).toContain('"@dark"')
+    expect(diagnostics[1]).toContain('theme name')
   })
 })
 

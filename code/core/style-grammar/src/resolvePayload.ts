@@ -44,7 +44,11 @@ export type PayloadReference = ResolvedReference & {
 
 export type PayloadSegment = string | PayloadReference
 
-export type PayloadResolveErrorCode = 'opacity-on-non-color'
+export type PayloadResolveErrorCode =
+  /** the suffix is recognized only directly after a resolved color token */
+  | 'opacity-on-non-color'
+  /** a suffix on a resolved color token that is not an integer 0 through 100 */
+  | 'opacity-out-of-range'
 
 export interface PayloadResolveError {
   code: PayloadResolveErrorCode
@@ -53,7 +57,15 @@ export interface PayloadResolveError {
   message: string
   /** the identifier the suffix was applied to, without the suffix */
   name: string
+  /** the percentage as authored, which may be out of range or fractional */
   opacity: number
+}
+
+interface OpacitySuffix {
+  /** index just past the suffix */
+  end: number
+  /** the percentage, or null when it is not a valid integer 0 through 100 */
+  percentage: number | null
 }
 
 export interface ResolvedPayload {
@@ -73,6 +85,12 @@ export interface ResolvePayloadOptions {
    */
   resolveNumbers?: boolean
 }
+
+// CSS-wide keywords are case-insensitive, and the shared set spells one of them
+// camelCase (`currentColor`), so both sides of the comparison have to fold
+const reservedFolded: ReadonlySet<string> = new Set(
+  Array.from(reservedCssIdents, (ident) => ident.toLowerCase())
+)
 
 const noReferences: readonly PayloadReference[] = Object.freeze([])
 const noErrors: readonly PayloadResolveError[] = Object.freeze([])
@@ -212,54 +230,67 @@ export function resolvePayload(
         continue
       }
 
-      // an integer percentage directly on the ident is the opacity suffix
-      let consumedEnd = end
-      let opacity: number | undefined
-      if (codeAt(end) === CHAR_SLASH) {
-        let digitsEnd = end + 1
-        while (digitsEnd < length && isDigit(payload.charCodeAt(digitsEnd))) digitsEnd++
-        const digits = digitsEnd - (end + 1)
-        if (digits > 0 && digits <= 3 && isBoundary(codeAt(digitsEnd))) {
-          const percentage = Number(payload.slice(end + 1, digitsEnd))
-          if (percentage >= 0 && percentage <= 100) {
-            opacity = percentage
-            consumedEnd = digitsEnd
-          }
+      // CSS-wide keywords are case-insensitive, so the reserved gate is folded.
+      // Token names themselves stay case-sensitive: only the gate folds.
+      const resolved = reservedFolded.has(name.toLowerCase()) ? undefined : lookup(name)
+
+      // a numeric run directly after the ident, ending at a component boundary,
+      // is an opacity suffix attempt. `center/50%` and `center/cover` are not
+      // attempts at all, so ordinary CSS slash forms never come near this.
+      const suffix = readOpacitySuffix(payload, end, codeAt)
+
+      if (suffix !== null && resolved?.kind === 'color') {
+        if (suffix.percentage === null) {
+          // a malformed percentage on a real color token is the user reaching for
+          // opacity and missing, so it is reported rather than emitted as text
+          ;(errors ||= []).push({
+            code: 'opacity-out-of-range',
+            index: start,
+            message: `"${name}${payload.slice(end, suffix.end)}" is not an opacity suffix: it must be an integer percentage from 0 through 100`,
+            name,
+            opacity: Number(payload.slice(end + 1, suffix.end)),
+          })
+          index = suffix.end
+          continue
         }
+        pushReference(
+          start,
+          suffix.end,
+          // 100% is the identity, so it never reaches a serializer
+          suffix.percentage === 100
+            ? { ...resolved }
+            : { ...resolved, opacity: suffix.percentage }
+        )
+        index = suffix.end
+        continue
       }
 
-      const resolved = reservedCssIdents.has(name) ? undefined : lookup(name)
-
-      if (opacity !== undefined && (!resolved || resolved.kind !== 'color')) {
-        // the suffix is recognized only directly after a resolved color token;
-        // the text stays literal so the payload still round-trips
+      if (suffix !== null && suffix.percentage !== null) {
+        // a well-formed suffix somewhere it cannot apply: the suffix is
+        // recognized only directly after a resolved color token. The text stays
+        // literal so the payload still round-trips.
         ;(errors ||= []).push({
           code: 'opacity-on-non-color',
           index: start,
           message: resolved
-            ? `"${name}" is not a color token (kind: ${resolved.kind}), so the /${opacity} opacity suffix does not apply`
-            : `"${name}" is not a resolved color token, so the /${opacity} opacity suffix does not apply`,
+            ? `"${name}" is not a color token (kind: ${resolved.kind}), so the /${suffix.percentage} opacity suffix does not apply`
+            : `"${name}" is not a resolved color token, so the /${suffix.percentage} opacity suffix does not apply`,
           name,
-          opacity,
+          opacity: suffix.percentage,
         })
-        index = consumedEnd
+        index = suffix.end
         continue
       }
 
+      // no suffix, or a malformed one after an ident that is not a color token,
+      // which is ordinary CSS such as `font: bold small/1.2 serif`
       if (!resolved) {
         index = end
         continue
       }
 
-      pushReference(
-        start,
-        consumedEnd,
-        // 100% is the identity, so it never reaches a serializer
-        opacity === undefined || opacity === 100
-          ? { ...resolved }
-          : { ...resolved, opacity }
-      )
-      index = consumedEnd
+      pushReference(start, end, { ...resolved })
+      index = end
       continue
     }
 
@@ -325,6 +356,39 @@ export function resolvePayload(
     references: references ?? noReferences,
     errors: errors ?? noErrors,
   }
+}
+
+/**
+ * Reads a `/NN` opacity suffix attempt sitting directly on an ident. An attempt
+ * is a numeric run that ends at a component boundary, so `center/cover` and
+ * `center/50%` are not attempts and stay ordinary CSS. `percentage` is null when
+ * the number is signed, fractional, or outside 0 through 100.
+ */
+function readOpacitySuffix(
+  payload: string,
+  identEnd: number,
+  codeAt: (index: number) => number
+): OpacitySuffix | null {
+  if (codeAt(identEnd) !== CHAR_SLASH) return null
+  let cursor = identEnd + 1
+  let signed = false
+  if (codeAt(cursor) === CHAR_MINUS || codeAt(cursor) === CHAR_PLUS) {
+    signed = true
+    cursor++
+  }
+  const digitsStart = cursor
+  while (isDigit(codeAt(cursor))) cursor++
+  if (cursor === digitsStart) return null
+  let fractional = false
+  if (codeAt(cursor) === CHAR_DOT && isDigit(codeAt(cursor + 1))) {
+    fractional = true
+    cursor++
+    while (isDigit(codeAt(cursor))) cursor++
+  }
+  if (!isBoundary(codeAt(cursor))) return null
+  const value = Number(payload.slice(identEnd + 1, cursor))
+  const valid = !signed && !fractional && value >= 0 && value <= 100
+  return { end: cursor, percentage: valid ? value : null }
 }
 
 /** index just past the `)` matching the `(` at `open` */

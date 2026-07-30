@@ -59,9 +59,44 @@ export function parseGroupModifier(name: string): GroupModifier | null {
     const state = name.slice(groupPrefixLength)
     return stateModifierSet.has(state) ? { state, group: null } : null
   }
-  if (slash + 1 >= name.length) return null
-  for (let index = slash + 1; index < name.length; index++) {
-    const code = name.charCodeAt(index)
+  if (!isModifierName(name, slash + 1, name.length)) return null
+  const state = name.slice(groupPrefixLength, slash)
+  return stateModifierSet.has(state) ? { state, group: name.slice(slash + 1) } : null
+}
+
+export interface ContainerModifier {
+  /** the size condition; the registry only accepts a registered media name here */
+  size: string
+  /** the container name, or null for the nearest container */
+  container: string | null
+}
+
+/**
+ * Container query modifiers own the `@` prefix: `@sm` targets the nearest
+ * container and `@sm/card` a named one (plan decisions 17-18). Plain `sm:` stays
+ * a viewport media query, which is why the prefix is reserved.
+ *
+ * This parses the spelling only. Whether `size` names a registered media key is
+ * config-dependent, so the registry checks that on lookup and lowering resolves
+ * the query text — the same split groups use for their state part.
+ */
+export function parseContainerModifier(name: string): ContainerModifier | null {
+  if (name.charCodeAt(0) !== 64 /* @ */) return null
+  const slash = name.indexOf('/')
+  if (slash === -1) {
+    return isModifierName(name, 1, name.length) ? { size: name.slice(1), container: null } : null
+  }
+  if (!isModifierName(name, 1, slash) || !isModifierName(name, slash + 1, name.length)) {
+    return null
+  }
+  return { size: name.slice(1, slash), container: name.slice(slash + 1) }
+}
+
+/** the shared identifier rule for the parameterized parts of a modifier */
+function isModifierName(text: string, start: number, end: number): boolean {
+  if (start >= end) return false
+  for (let index = start; index < end; index++) {
+    const code = text.charCodeAt(index)
     if (
       !(code >= 97 && code <= 122) && // a-z
       !(code >= 65 && code <= 90) && // A-Z
@@ -69,11 +104,10 @@ export function parseGroupModifier(name: string): GroupModifier | null {
       code !== 45 && // -
       code !== 95 // _
     ) {
-      return null
+      return false
     }
   }
-  const state = name.slice(groupPrefixLength, slash)
-  return stateModifierSet.has(state) ? { state, group: name.slice(slash + 1) } : null
+  return true
 }
 
 function forEachName(source: Names | undefined, visit: (name: string) => void): void {
@@ -94,6 +128,14 @@ export function createModifierRegistry(view: GrammarConfigView): ModifierRegistr
   const diagnostics: string[] = []
 
   const register = (name: string, kind: ModifierKind): void => {
+    if (name.charCodeAt(0) === 64 /* @ */) {
+      // the `@` prefix belongs to container queries, so no configured name may
+      // take it; otherwise `@sm:` would mean two things
+      diagnostics.push(
+        `modifier "${name}" is not registered: the "@" prefix is reserved for container query modifiers, so it cannot be a ${kind} name`
+      )
+      return
+    }
     const existing = names.get(name)
     if (existing !== undefined) {
       if (existing !== kind) {
@@ -123,7 +165,14 @@ export function createModifierRegistry(view: GrammarConfigView): ModifierRegistr
       get(name: string): ModifierKind | undefined {
         const kind = names.get(name)
         if (kind !== undefined) return kind
-        return parseGroupModifier(name) !== null ? 'group' : undefined
+        if (parseGroupModifier(name) !== null) return 'group'
+        const container = parseContainerModifier(name)
+        // a container's size must name a registered media key; first
+        // registration wins there too, so a shadowed media name has no `@` form
+        if (container !== null && names.get(container.size) === 'media') {
+          return 'container'
+        }
+        return undefined
       },
     },
     diagnostics,

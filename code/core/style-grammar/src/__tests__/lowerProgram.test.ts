@@ -28,6 +28,12 @@ const mediaQueries = {
   md: '(max-width: 1020px)',
 }
 
+// same sizes, different measurement subject, so the caller derives both
+const containerQueries = {
+  sm: '(min-width: 24rem)',
+  md: '(min-width: 48rem)',
+}
+
 const configRevision = 'rev1'
 
 function program(property: string, source: string): LonghandProgram {
@@ -43,13 +49,14 @@ function lower(property: string, source: string): LoweredProgram {
     registry,
     configRevision,
     mediaQueries,
+    containerQueries,
   })
 }
 
-// the selector of a rule, with any @media wrappers removed
+// the selector of a rule, with any @media or @container wrappers removed
 function selectorOf(rule: string): string {
   let inner = rule
-  while (inner.startsWith('@media ')) {
+  while (inner.startsWith('@')) {
     inner = inner.slice(inner.indexOf('{') + 1, inner.lastIndexOf('}')).trim()
   }
   return inner.slice(0, inner.lastIndexOf('{')).trim()
@@ -134,6 +141,81 @@ describe('media conditions', () => {
     expect(() =>
       lowerProgram(program('color', 'sm:red'), { registry, configRevision })
     ).toThrow(/no media query was provided for media key "sm"/)
+  })
+})
+
+describe('container conditions', () => {
+  test('a nearest-container size wraps in @container', () => {
+    const lowered = lower('color', 'muted @sm:foreground')
+    const cls = lowered.className
+    expect(lowered.rules).toEqual([
+      `.${cls}{color:muted}`,
+      `@container (min-width: 24rem) {.${cls}{color:foreground}}`,
+    ])
+    expectSubjectAnchored(lowered)
+  })
+
+  test('a named container names the query', () => {
+    const lowered = lower('color', '@md/layout:accent')
+    expect(lowered.rules).toEqual([
+      `@container layout (min-width: 48rem) {.${lowered.className}{color:accent}}`,
+    ])
+    expectSubjectAnchored(lowered)
+  })
+
+  test('a container query uses container sizes, never the media query text', () => {
+    // `sm:` and `@sm:` share a size name but measure different things
+    expect(lower('color', 'sm:a').rules[0]).toContain('@media (max-width: 860px)')
+    expect(lower('color', '@sm:a').rules[0]).toContain('@container (min-width: 24rem)')
+  })
+
+  test('a size with no provided container query cannot be lowered', () => {
+    expect(() =>
+      lowerProgram(program('color', '@sm:red'), {
+        registry,
+        configRevision,
+        mediaQueries,
+      })
+    ).toThrow(/no container query was provided for size "sm"/)
+  })
+
+  test('media and container wrappers nest in authored order', () => {
+    const mediaFirst = lower('color', 'sm:@md/layout:a')
+    expect(mediaFirst.rules[0]).toBe(
+      `@media (max-width: 860px) {@container layout (min-width: 48rem) ` +
+        `{.${mediaFirst.className}{color:a}}}`
+    )
+
+    const containerFirst = lower('color', '@md/layout:sm:a')
+    expect(containerFirst.rules[0]).toBe(
+      `@container layout (min-width: 48rem) {@media (max-width: 860px) ` +
+        `{.${containerFirst.className}{color:a}}}`
+    )
+  })
+
+  test('a container composes with subject conditions without moving specificity', () => {
+    const lowered = lower('color', '@sm:dark:hover:a')
+    const cls = lowered.className
+    expect(lowered.rules[0]).toBe(
+      `@container (min-width: 24rem) {.${cls}:where(.t_dark, .t_dark *)` +
+        `:where(:hover){color:a}}`
+    )
+    expectSubjectAnchored(lowered)
+  })
+
+  test('the plan example round-trips from parse to a lowered block', () => {
+    // color="muted @sm/layout:group-hover/card:foreground"
+    const lowered = lower('color', 'muted @sm/layout:group-hover/card:foreground')
+    const cls = lowered.className
+    expect(lowered.rules).toEqual([
+      `.${cls}{color:muted}`,
+      `@container layout (min-width: 24rem) ` +
+        `{.${cls}:where(.t_group_card:hover *){color:foreground}}`,
+    ])
+    // the container is an at-rule and the group is a subject condition, so the
+    // two never interfere
+    expect(selectorOf(lowered.rules[1])).toBe(`.${cls}:where(.t_group_card:hover *)`)
+    expectSubjectAnchored(lowered)
   })
 })
 

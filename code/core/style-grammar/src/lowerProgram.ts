@@ -10,7 +10,8 @@
 //   one independent, so nesting order between them never matters and no
 //   ancestor-permutation selectors exist;
 // - every rule has specificity exactly (0,1,0), the subject class alone, because
-//   every condition sits inside `:where()` and media conditions add nothing;
+//   every condition sits inside `:where()`, and the `@media`/`@container`
+//   wrappers add nothing;
 // - `rules` is authored clause order with the base first, and that order IS the
 //   semantics: equal specificity reduces the cascade to source order inside the
 //   block, so the last matching clause wins, exactly as native evaluates it;
@@ -23,7 +24,7 @@
 // exactly one identity. Rule injection through a payload is structurally
 // impossible because the parser rejects a top-level `{`, `}`, or `;`.
 
-import { parseGroupModifier } from './modifierRegistry'
+import { parseContainerModifier, parseGroupModifier } from './modifierRegistry'
 import { programClassName } from './programHash'
 import { stateToSelector } from './states'
 import type { LonghandProgram, ModifierRegistryView } from './valueTypes'
@@ -85,6 +86,13 @@ export interface LowerProgramOptions {
   configRevision: string
   /** media key -> the `@media` condition text, eg `(max-width: 860px)` */
   mediaQueries?: Readonly<Record<string, string>>
+  /**
+   * media key -> the `@container` condition text, eg `(min-width: 24rem)`. Sizes
+   * are the same keys as `mediaQueries`, but the query text differs: container
+   * queries measure the container, not the viewport, so the caller derives both
+   * from config.
+   */
+  containerQueries?: Readonly<Record<string, string>>
   /** modifier -> selector, defaults to `defaultStateSelectors` */
   stateSelectors?: Readonly<Record<string, ConditionSelector>>
   /** theme class prefix; `t_` gives `.t_dark` */
@@ -123,6 +131,7 @@ export function lowerProgram(
     registry,
     configRevision,
     mediaQueries,
+    containerQueries,
     stateSelectors = defaultStateSelectors,
     themeClassPrefix = 't_',
     groupClassPrefix = 't_group_',
@@ -138,7 +147,8 @@ export function lowerProgram(
 
   for (const clause of program.value.clauses) {
     let selector = `.${className}`
-    const medias: string[] = []
+    // at-rule preludes wrapping this clause, outermost first in authored order
+    const wrappers: string[] = []
     let skip = false
 
     for (const modifier of clause.modifiers) {
@@ -158,7 +168,23 @@ export function lowerProgram(
             `cannot lower "${modifier}:" — no media query was provided for media key "${modifier}"`
           )
         }
-        medias.push(query)
+        wrappers.push(`@media ${query}`)
+        continue
+      }
+
+      if (kind === 'container') {
+        const container = parseContainerModifier(modifier)!
+        const query = containerQueries?.[container.size]
+        if (!query) {
+          throw new Error(
+            `cannot lower "${modifier}:" — no container query was provided for size "${container.size}"`
+          )
+        }
+        wrappers.push(
+          container.container === null
+            ? `@container ${query}`
+            : `@container ${container.container} ${query}`
+        )
         continue
       }
 
@@ -202,21 +228,22 @@ export function lowerProgram(
 
     if (skip) continue
 
-    rules.push(wrapMedia(`${selector}{${declaration}:${clause.payload}}`, medias))
+    rules.push(wrapAtRules(`${selector}{${declaration}:${clause.payload}}`, wrappers))
   }
 
   return { className, rules }
 }
 
 /**
- * Media conditions wrap outermost, first authored outermost. Nesting is AND for
- * arbitrary query texts, where joining with ` and ` would break on query lists
- * and on `screen and (…)` forms. Specificity is unmoved either way.
+ * Media and container conditions wrap outermost, first authored outermost, and
+ * both share one list so a chain mixing them keeps authored order. Nesting is
+ * AND for arbitrary query texts, where joining with ` and ` would break on query
+ * lists and on `screen and (…)` forms. Specificity is unmoved either way.
  */
-function wrapMedia(rule: string, medias: readonly string[]): string {
+function wrapAtRules(rule: string, wrappers: readonly string[]): string {
   let out = rule
-  for (let index = medias.length - 1; index >= 0; index--) {
-    out = `@media ${medias[index]} {${out}}`
+  for (let index = wrappers.length - 1; index >= 0; index--) {
+    out = `${wrappers[index]} {${out}}`
   }
   return out
 }

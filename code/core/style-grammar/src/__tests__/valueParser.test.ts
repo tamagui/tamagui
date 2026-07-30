@@ -211,6 +211,26 @@ describe('clauses', () => {
     )
   })
 
+  test('container modifiers are ordinary clause words to the scanner', () => {
+    // `@` is just a word character here; the registry gives it meaning
+    expect(value('muted @sm:foreground @md/layout:accent').clauses).toEqual([
+      { modifiers: ['@sm'], payload: 'foreground' },
+      { modifiers: ['@md/layout'], payload: 'accent' },
+    ])
+  })
+
+  test('the plan example mixing a container and a group parses', () => {
+    expect(value('muted @sm/layout:group-hover/card:foreground')).toEqual({
+      base: 'muted',
+      clauses: [
+        {
+          modifiers: ['@sm/layout', 'group-hover/card'],
+          payload: 'foreground',
+        },
+      ],
+    })
+  })
+
   test('group modifiers parse named and unnamed', () => {
     expect(value('muted group-hover:foreground group-press/card:accent').clauses).toEqual([
       { modifiers: ['group-hover'], payload: 'foreground' },
@@ -263,10 +283,11 @@ describe('unregistered modifiers are hard errors', () => {
     ])
   })
 
-  test('container query modifiers are not registered yet', () => {
-    expect(errors('@sm:red')[0]).toMatchObject({
+  test('an unregistered container size is still a hard error', () => {
+    // `@xl` has no matching media key, so it is not a container modifier
+    expect(errors('@xl:red')[0]).toMatchObject({
       code: 'unregistered-modifier',
-      modifier: '@sm',
+      modifier: '@xl',
     })
   })
 
