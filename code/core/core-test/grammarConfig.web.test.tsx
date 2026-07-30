@@ -6,7 +6,12 @@ import config from '../config-default'
 import { createTamagui } from '../web/src'
 import { createGrammarRuntimeContext } from '../web/src/helpers/grammarConfig'
 import { createMediaStyle } from '../web/src/helpers/createMediaStyle'
-import { resolvePayload, serializePayloadWeb } from '@tamagui/style-grammar'
+import {
+  lowerProgram,
+  parseValue,
+  resolvePayload,
+  serializePayloadWeb,
+} from '@tamagui/style-grammar'
 import type { StyleObject } from '@tamagui/helpers'
 
 // The resolver view adapter (lane W4). What matters here is that it agrees with
@@ -172,9 +177,13 @@ describe('media and container query text', () => {
     expect(rules[0]).toContain(`@media ${context.mediaQueries.sm}`)
   })
 
-  test('every media key has a container query, so lowering never throws', () => {
-    for (const key of Object.keys(tamaguiConfig.media)) {
+  test('every container size has query text, so lowering never throws', () => {
+    expect(context.containerSizes.length).toBeGreaterThan(0)
+    for (const key of context.containerSizes) {
       expect(context.containerQueries[key], key).toBeTruthy()
+      // `@sm:` applies the same condition the media key describes, measured
+      // against the container rather than the viewport
+      expect(context.containerQueries[key], key).toBe(context.mediaQueries[key])
     }
   })
 
@@ -182,12 +191,47 @@ describe('media and container query text', () => {
     expect(context.containerSizes).toContain('sm')
     expect(context.containerSizes).toContain('gtSm')
     expect(context.containerSizes).toContain('short')
-    // hover and pointer queries measure no size, so `@container (hover: none)`
-    // would be nonsense — the registry still accepts `@hoverNone`, which is the
-    // gap reported with this lane
+    // hover and pointer queries measure no size, so they have no `@` form at all
     expect(context.containerSizes).not.toContain('hoverNone')
     expect(context.containerSizes).not.toContain('pointerCoarse')
-    expect(context.registry.get('@hoverNone')).toBe('container')
+    expect(context.containerQueries.hoverNone).toBeUndefined()
+    expect(context.containerQueries.pointerCoarse).toBeUndefined()
+  })
+
+  test('a non-size media key has no container modifier, it is a parse error', () => {
+    expect(context.registry.get('@hoverNone')).toBeUndefined()
+    expect(context.registry.get('@pointerCoarse')).toBeUndefined()
+    // the media key itself is still a perfectly good viewport query
+    expect(context.registry.get('hoverNone')).toBe('media')
+
+    const result = parseValue('red @hoverNone:blue', context.registry)
+    expect(result.ok).toBe(false)
+    expect(result.ok === false && result.errors[0]).toMatchObject({
+      code: 'unregistered-modifier',
+      modifier: '@hoverNone',
+    })
+  })
+
+  test('a size-measuring media key still lowers, wrapper text included', () => {
+    const lowered = lowerProgram(
+      {
+        property: 'color',
+        value: {
+          base: 'red',
+          clauses: [{ modifiers: ['@sm/layout'], payload: 'blue' }],
+        },
+        sourceProp: 'color',
+      },
+      {
+        registry: context.registry,
+        configRevision: context.configRevision,
+        mediaQueries: context.mediaQueries,
+        containerQueries: context.containerQueries,
+      }
+    )
+    expect(lowered.rules[1]).toContain(
+      `@container layout ${context.containerQueries.sm} {`
+    )
   })
 
   test('a container query table missing a size is a config-time error', () => {

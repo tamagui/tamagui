@@ -113,6 +113,37 @@ describe('parameterized container modifiers', () => {
     expect(full.registry.get('sm@')).toBeUndefined()
   })
 
+  test('declared container sizes are the whole rule when provided', () => {
+    // a hover or pointer media key measures nothing a container has
+    const { registry } = createModifierRegistry(
+      { mediaNames: ['sm', 'md', 'hoverNone'] },
+      { containerSizeNames: ['sm', 'md'] }
+    )
+    expect(registry.get('@sm')).toBe('container')
+    expect(registry.get('@md/layout')).toBe('container')
+    expect(registry.get('@hoverNone')).toBeUndefined()
+    // the media key itself still works as a viewport query
+    expect(registry.get('hoverNone')).toBe('media')
+  })
+
+  test('an empty container size list turns off every @ form', () => {
+    const { registry } = createModifierRegistry(
+      { mediaNames: ['sm'] },
+      { containerSizeNames: [] }
+    )
+    expect(registry.get('sm')).toBe('media')
+    expect(registry.get('@sm')).toBeUndefined()
+  })
+
+  test('a declared size that is not a media key still resolves, since the caller declared it', () => {
+    const { registry } = createModifierRegistry(
+      { mediaNames: ['sm'] },
+      { containerSizeNames: ['wide'] }
+    )
+    expect(registry.get('@wide')).toBe('container')
+    expect(registry.get('@sm')).toBeUndefined()
+  })
+
   test('a media size shadowed by another kind has no container form', () => {
     // `hover` registers as a state, so the media key named hover is ignored and
     // `@hover` cannot mean a container either

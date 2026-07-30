@@ -78,9 +78,9 @@ export interface GrammarRuntimeContext {
   configRevision: string
   /** media key -> `@media` condition text */
   mediaQueries: Readonly<Record<string, string>>
-  /** media key -> `@container` condition text */
+  /** container size -> `@container` condition text; size keys only */
   containerQueries: Readonly<Record<string, string>>
-  /** the media keys whose query actually measures a size */
+  /** the media keys that measure a size, and so have an `@` form */
   containerSizes: readonly string[]
   /** color token names, for the background family split */
   colorTokens: ReadonlySet<string>
@@ -107,8 +107,9 @@ export interface GrammarRuntimeContext {
 
 export interface CreateGrammarRuntimeContextOptions {
   /**
-   * overrides the derived container query text. Every media key must be present:
-   * a missing size is a config-time error, never a lowering-time throw.
+   * Overrides the derived container query table. Every size-measuring media key
+   * must be present, and extra keys are allowed for sizes the derivation misses.
+   * A missing size is a config-time error, never a lowering-time throw.
    */
   containerQueries?: Readonly<Record<string, string>>
 }
@@ -122,8 +123,23 @@ export function createGrammarRuntimeContext(
   const existing = contexts.get(config)
   if (existing && !options.containerQueries) return existing
 
+  const mediaQueries: Record<string, string> = {}
+  const media = (config.media ?? {}) as Record<string, Record<string, unknown>>
+  for (const key in media) {
+    mediaQueries[key] = mediaObjectToString(media[key] as any)
+  }
+
+  const { containerQueries, containerSizes } = resolveContainerQueries(
+    mediaQueries,
+    options.containerQueries
+  )
+
   const view = createGrammarConfigView(config)
-  const { registry, diagnostics } = createModifierRegistry(view)
+  // only size-measuring media keys get an `@` form, so `@hoverNone:` stays an
+  // unregistered modifier rather than lowering to a meaningless container query
+  const { registry, diagnostics } = createModifierRegistry(view, {
+    containerSizeNames: containerSizes,
+  })
 
   // reference name -> the Variable the config already built. Keyed by the
   // variable's own name, which is unique per token because it is hashed from the
@@ -185,17 +201,6 @@ export function createGrammarRuntimeContext(
     ...(tokensByCategory.get('color')?.keys() ?? []),
     ...themeVariables.keys(),
   ])
-
-  const mediaQueries: Record<string, string> = {}
-  const media = (config.media ?? {}) as Record<string, Record<string, unknown>>
-  for (const key in media) {
-    mediaQueries[key] = mediaObjectToString(media[key] as any)
-  }
-
-  const containerQueries = resolveContainerQueries(mediaQueries, options.containerQueries)
-  const containerSizes = Object.keys(containerQueries).filter((key) =>
-    isSizeQuery(containerQueries[key])
-  )
 
   const lookupCache = new Map<string, (name: string) => ResolvedReference | undefined>()
 
@@ -310,24 +315,45 @@ function getFontSubMap(
     : undefined
 }
 
+/**
+ * Container sizes are the media keys that measure a size. A `hover` or `pointer`
+ * media key measures nothing a container has, so it gets no `@` form at all.
+ *
+ * `@sm:` applies the same condition the media key describes, measured against the
+ * container instead of the viewport, so the derived text is the config's own query
+ * text — which is also what createMediaStyle already emits after `@container`. A
+ * caller may override the table, including adding a size the heuristic misses
+ * (`aspect-ratio`, say), and every size must end up with query text: decision 18
+ * makes that a config-creation error rather than a lowering-time throw.
+ */
 function resolveContainerQueries(
   mediaQueries: Readonly<Record<string, string>>,
   override: Readonly<Record<string, string>> | undefined
-): Readonly<Record<string, string>> {
-  if (!override) {
-    // the size thresholds are the config's, and this is the same query text
-    // createMediaStyle already emits after `@container`
-    return { ...mediaQueries }
+): {
+  containerQueries: Readonly<Record<string, string>>
+  containerSizes: readonly string[]
+} {
+  const derived: Record<string, string> = {}
+  for (const key in mediaQueries) {
+    if (isSizeQuery(mediaQueries[key])) derived[key] = mediaQueries[key]
   }
-  const missing = Object.keys(mediaQueries).filter((key) => !override[key])
-  if (missing.length > 0) {
+
+  const containerQueries: Record<string, string> = override ? { ...override } : derived
+
+  const incomplete = [
+    ...new Set([...Object.keys(derived), ...Object.keys(containerQueries)]),
+  ].filter((key) => !containerQueries[key])
+  if (incomplete.length > 0) {
     throw new Error(
-      `@tamagui/web: createTamagui is missing container queries for media ${missing
+      `@tamagui/web: createTamagui is missing container queries for media ${incomplete
         .map((key) => `"${key}"`)
-        .join(', ')}. Container sizes share the media size-key namespace, so every media key needs a container query (see plan decision 18).`
+        .join(
+          ', '
+        )}. Every container size needs query text, so a size that cannot derive it is a config error (see plan decision 18).`
     )
   }
-  return { ...override }
+
+  return { containerQueries, containerSizes: Object.keys(containerQueries) }
 }
 
 function isSizeQuery(query: string): boolean {

@@ -1,9 +1,22 @@
 import type { GrammarConfigView } from "./candidate";
 import type { ModifierRegistryView } from "./valueTypes";
+type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>;
 export interface ModifierRegistryResult {
 	registry: ModifierRegistryView;
 	/** one human-readable line per name collision, in registration order */
 	diagnostics: string[];
+}
+export interface CreateModifierRegistryOptions {
+	/**
+	* The media keys that measure a size, so `@key` is a meaningful container
+	* query. A `hover` or `pointer` media key measures nothing a container has, and
+	* `@container (hover: none)` is valid syntax with no meaning, so those keys have
+	* no `@` form.
+	*
+	* Omit it and every media name stays eligible, which is what callers relied on
+	* before container narrowing. The web adapter always provides it.
+	*/
+	containerSizeNames?: Names;
 }
 /**
 * Every built-in interaction/state modifier spelling: the modifiers of the core
@@ -41,6 +54,7 @@ export interface ContainerModifier {
 * the query text — the same split groups use for their state part.
 */
 export declare function parseContainerModifier(name: string): ContainerModifier | null;
-export declare function createModifierRegistry(view: GrammarConfigView): ModifierRegistryResult;
+export declare function createModifierRegistry(view: GrammarConfigView, options?: CreateModifierRegistryOptions): ModifierRegistryResult;
+export {};
 
 //# sourceMappingURL=modifierRegistry.d.ts.map

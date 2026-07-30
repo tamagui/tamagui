@@ -9,9 +9,9 @@ export interface GrammarRuntimeContext {
     configRevision: string;
     /** media key -> `@media` condition text */
     mediaQueries: Readonly<Record<string, string>>;
-    /** media key -> `@container` condition text */
+    /** container size -> `@container` condition text; size keys only */
     containerQueries: Readonly<Record<string, string>>;
-    /** the media keys whose query actually measures a size */
+    /** the media keys that measure a size, and so have an `@` form */
     containerSizes: readonly string[];
     /** color token names, for the background family split */
     colorTokens: ReadonlySet<string>;
@@ -34,8 +34,9 @@ export interface GrammarRuntimeContext {
 }
 export interface CreateGrammarRuntimeContextOptions {
     /**
-     * overrides the derived container query text. Every media key must be present:
-     * a missing size is a config-time error, never a lowering-time throw.
+     * Overrides the derived container query table. Every size-measuring media key
+     * must be present, and extra keys are allowed for sizes the derivation misses.
+     * A missing size is a config-time error, never a lowering-time throw.
      */
     containerQueries?: Readonly<Record<string, string>>;
 }

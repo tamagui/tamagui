@@ -23,6 +23,19 @@ export interface ModifierRegistryResult {
   diagnostics: string[]
 }
 
+export interface CreateModifierRegistryOptions {
+  /**
+   * The media keys that measure a size, so `@key` is a meaningful container
+   * query. A `hover` or `pointer` media key measures nothing a container has, and
+   * `@container (hover: none)` is valid syntax with no meaning, so those keys have
+   * no `@` form.
+   *
+   * Omit it and every media name stays eligible, which is what callers relied on
+   * before container narrowing. The web adapter always provides it.
+   */
+  containerSizeNames?: Names
+}
+
 /**
  * Every built-in interaction/state modifier spelling: the modifiers of the core
  * pseudo-style props, their aliases, and the component-tier state words the
@@ -123,9 +136,18 @@ function forEachName(source: Names | undefined, visit: (name: string) => void): 
   for (const name in source as Readonly<Record<string, unknown>>) visit(name)
 }
 
-export function createModifierRegistry(view: GrammarConfigView): ModifierRegistryResult {
+export function createModifierRegistry(
+  view: GrammarConfigView,
+  options: CreateModifierRegistryOptions = {}
+): ModifierRegistryResult {
   const names = new Map<string, ModifierKind>()
   const diagnostics: string[] = []
+
+  let containerSizes: Set<string> | null = null
+  if (options.containerSizeNames) {
+    containerSizes = new Set()
+    forEachName(options.containerSizeNames, (name) => containerSizes!.add(name))
+  }
 
   const register = (name: string, kind: ModifierKind): void => {
     if (name.charCodeAt(0) === 64 /* @ */) {
@@ -153,6 +175,12 @@ export function createModifierRegistry(view: GrammarConfigView): ModifierRegistr
     names.set(name, kind)
   }
 
+  // when the caller declares which sizes a container can measure, that list is
+  // the whole rule. Otherwise any registered media name works, and first
+  // registration still wins, so a media name shadowed by a state has no `@` form
+  const isContainerSize = (size: string): boolean =>
+    containerSizes ? containerSizes.has(size) : names.get(size) === 'media'
+
   for (const name of stateModifierNames) register(name, 'state')
   forEachName(view.mediaNames, (name) => register(name, 'media'))
   forEachName(view.platformNames ?? grammarPlatformNames, (name) =>
@@ -167,11 +195,7 @@ export function createModifierRegistry(view: GrammarConfigView): ModifierRegistr
         if (kind !== undefined) return kind
         if (parseGroupModifier(name) !== null) return 'group'
         const container = parseContainerModifier(name)
-        // a container's size must name a registered media key; first
-        // registration wins there too, so a shadowed media name has no `@` form
-        if (container !== null && names.get(container.size) === 'media') {
-          return 'container'
-        }
+        if (container !== null && isContainerSize(container.size)) return 'container'
         return undefined
       },
     },
