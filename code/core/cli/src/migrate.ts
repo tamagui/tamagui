@@ -219,21 +219,17 @@ After:
 
 Replace unsupported old web/lite usage such as momentum events, \`snapTo*\`, and \`keyboardDismissMode\`.
 
-### 12. Optional Tailwind mode
+### 12. Optional Tailwind frontend
 
-Tailwind mode is optional. Use it only if the app wants utility syntax:
+Tailwind authoring is selected by the component package, with no global config:
 
 \`\`\`tsx
-createTamagui({
-  ...defaultConfig,
-  settings: {
-    ...defaultConfig.settings,
-    styleMode: 'tailwind',
-  },
-})
+import { View, Text, styled } from '@tamagui/tailwind'
 \`\`\`
 
-Use \`styleMode: 'tamagui-and-tailwind'\` to mix \`className\` utilities with Tamagui props during migration.
+Keep importing regular Tamagui components from \`tamagui\` or
+\`@tamagui/core\`. Do not mix utility classes and Tamagui style props on the
+same component; choose the import whose styling language that component uses.
 
 ### 13. Verification
 
@@ -243,7 +239,7 @@ Use \`styleMode: 'tamagui-and-tailwind'\` to mix \`className\` utilities with Ta
 - Test Adapt breakpoints where popovers/selects/dialogs become sheets.
 - Verify keyboard focus, Escape, outside click, scroll locking, and close animations.
 - Inspect icon alignment next to text at each app size token.
-- If Tailwind mode is enabled, compare web and native output for the classes used.`
+- If the Tailwind frontend is used, compare web and native output for the classes used.`
 
 const v1ToV2Prompt = `## v1 -> v2 migration pass
 

@@ -4,8 +4,8 @@ import type { ReactNode } from 'react'
 //
 // Each case is authored ONCE using real Tailwind utility classes and rendered three ways:
 //   - real Tailwind (oracle): leaf = DOM 'div'/'span' + tailwind CDN/local JIT
-//   - tamagui web:            leaf = tamagui View/Text, styleMode: 'tailwind'
-//   - tamagui native:         leaf = tamagui View/Text on real iOS (same className)
+//   - tamagui web:            leaf = @tamagui/tailwind View/Text
+//   - tamagui native:         same frontend components on real iOS
 //
 // The harness screenshots each, crops to #cfm-root, and pixel-diffs tamagui-vs-tailwind.
 // A passing case means tamagui's className → pixels matches real Tailwind's className → pixels.

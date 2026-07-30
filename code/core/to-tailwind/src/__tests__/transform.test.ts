@@ -282,7 +282,7 @@ describe('tamaguiToTailwind', () => {
   })
 
   describe('media queries', () => {
-    // media keys are emitted VERBATIM (identity): the styleMode runtime resolves a class
+    // media keys are emitted verbatim: the Tailwind frontend resolves a class
     // modifier by looking the string up directly in config.media, so the only round-trip-
     // correct modifier for `$key` is `key`. the old inverting map (`$md → max-md`) either
     // hit a different breakpoint or, when the mapped name wasn't a config key, was dropped.

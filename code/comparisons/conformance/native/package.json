@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
+    "@tamagui/tailwind": "workspace:*",
     "expo": "~55.0.28",
     "expo-linking": "*",
     "react": ">=19",

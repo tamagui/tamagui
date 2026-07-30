@@ -16,7 +16,7 @@ the web. Version 3 keeps that promise, but removes a lot of the compatibility
 layers that made the internals harder to reason about.
 
 The result is a smaller public surface, more predictable tokens, better overlay
-composition, and a new Tailwind mode that lets teams use utility classes without
+composition, and a Tailwind frontend that lets teams use utility classes without
 leaving Tamagui's compiler, theme system, or native output behind.
 
 <Notice>Give this blog post and the upgrade guide to your coding agent before migrating.</Notice>
@@ -33,26 +33,13 @@ Version 3 has three goals:
 - **Unify syntax choices.** Tamagui props and Tailwind classes now flow through
   one compiler and one token system instead of competing styling stacks.
 
-## Tailwind mode
+## Tailwind frontend
 
-The headline new feature is Tailwind mode. Turn it on in config and write
-utility classes in `className`:
-
-```tsx
-import { createTamagui } from 'tamagui'
-import { defaultConfig } from '@tamagui/config/v5'
-
-export default createTamagui({
-  ...defaultConfig,
-  settings: {
-    ...defaultConfig.settings,
-    styleMode: 'tailwind',
-  },
-})
-```
+The headline new feature is a package-selected Tailwind frontend. Import its
+components and write utility classes in `className`:
 
 ```tsx
-import { View } from 'tamagui'
+import { View } from '@tamagui/tailwind'
 
 export function Card() {
   return (
@@ -65,11 +52,11 @@ export function Card() {
 ```
 
 On web, the compiler extracts those utilities to atomic CSS. On iOS and Android,
-the same string resolves to React Native styles. You can also use
-`styleMode: 'tamagui-and-tailwind'` when you want utilities next to Tamagui
-props, tokens, media queries, and animations.
+the same string resolves to React Native styles. Components imported from
+`tamagui` keep the regular prop frontend, so both authoring styles can share a
+tree without a global mode.
 
-Read the full [Tailwind mode post](/blog/tailwind-mode) for the compiler details
+Read the full [Tailwind post](/blog/tailwind-mode) for the compiler details
 and current utility coverage.
 
 ## Style precedence is authored order

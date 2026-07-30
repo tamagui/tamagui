@@ -104,7 +104,7 @@ function createTransformGrammarConfig(
 
 export interface TransformOptions {
   // rename View→div, Text→span, etc. DEFAULT true for the library (tamagui.dev doc snippets);
-  // the CLI/styleMode path passes FALSE so cross-platform Tamagui components are preserved.
+  // the CLI path passes false so cross-platform Tamagui components are preserved.
   renameComponents?: boolean
   // the app config's `media` (object or key list). ANY configured media key round-trips as an
   // identity modifier ($tablet → `tablet:`). when omitted, a default key set is the fallback.
@@ -339,7 +339,7 @@ export function tamaguiToTailwind(
         if (existingClassName) {
           const existingVal = getStringValue(existingClassName.value)
           if (existingVal !== null) {
-            // the EXISTING (user) className must WIN in styleMode, so it goes LAST (later classes
+            // the existing user className must win in the Tailwind frontend, so it goes last (later classes
             // override earlier for the same prop). generated classes — including the implicit
             // XStack `flex-row` default — come FIRST so an explicit user class overrides them.
             existingClassName.value = t.stringLiteral(
@@ -351,7 +351,7 @@ export function tamaguiToTailwind(
             !t.isJSXEmptyExpression(existingClassName.value.expression)
           ) {
             // DYNAMIC className expression → COMBINE via template literal `classes ${expr}` with
-            // the expression LAST so it WINS (can't inspect it; className-wins is the styleMode
+            // the expression last so it wins (can't inspect it; className-wins is the Tailwind
             // rule). never overwrite (the old code silently replaced it with a static string).
             const expr = existingClassName.value.expression as t.Expression
             existingClassName.value = t.jsxExpressionContainer(
@@ -488,7 +488,7 @@ function resolveTamaguiComponent(
         const imported = bnode.imported
         tamaguiBase = t.isIdentifier(imported) ? imported.name : String(imported.value)
       } else {
-        return null // default import from tamagui isn't a named styleMode component
+        return null // default import from tamagui isn't a named component
       }
     } else {
       return null // LOCAL binding (const/let/function/param) → not tamagui
@@ -523,7 +523,7 @@ function classPrefixOf(token: string): string {
 // ── overlap detection (shorthand ↔ longhand ↔ axis ↔ corner) ──
 // the LEAF style keys a prop resolves to. two props "overlap" if these intersect. used so a
 // converted class never overrides a RETAINED (dynamic) prop that shares a key (className always
-// beats props in styleMode, so overlap can only be avoided, not ordered around).
+// beats converted props, so overlap can only be avoided, not ordered around).
 const leafExpansion: Record<string, string[]> = {
   padding: ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'],
   paddingHorizontal: ['paddingLeft', 'paddingRight'],
@@ -857,7 +857,7 @@ function formatStringValue(prop: string, value: string): FormattedValue | null {
   // treats it as a literal family (font-<name> would be read as the $<name> font token).
   if (prop === 'fontFamily') return { value, valueKind: 'arbitrary' }
 
-  // arbitrary CSS values → bracket so styleMode's `[..]` parser resolves them
+  // arbitrary CSS values → bracket so the Tailwind frontend's `[..]` parser resolves them
   if (
     value.includes('(') ||
     value.includes(' ') ||

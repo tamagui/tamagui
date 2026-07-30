@@ -519,37 +519,30 @@ last. Override the active color per-instance with `activeStyle`:
 If a custom theme defined `$backgroundActive` to color these states, move that
 color to `$backgroundPress` or pass it through `activeStyle`.
 
-## 14. Optional: adopt Tailwind mode
+## 14. Optional: adopt the Tailwind frontend
 
-Tailwind mode is optional for v3. It lets you write supported Tailwind utilities
-in `className` while Tamagui still handles compilation, tokens, themes, and
-native style output.
-
-```tsx
-import { createTamagui } from 'tamagui'
-import { defaultConfig } from '@tamagui/config/v5'
-
-export default createTamagui({
-  ...defaultConfig,
-  settings: {
-    ...defaultConfig.settings,
-    styleMode: 'tailwind',
-  },
-})
-```
-
-Use `styleMode: 'tamagui-and-tailwind'` if you want to mix utility classes with
-Tamagui props during migration.
+Tailwind authoring is optional for v3. Select it by importing components from
+`@tamagui/tailwind`; there is no global config mode.
 
 ```tsx
-<View
-  className="rounded-lg p-4"
-  backgroundColor="$blue5"
-  hoverStyle={{ backgroundColor: '$blue6' }}
-/>
+import { Text, View, styled } from '@tamagui/tailwind'
 ```
 
-Read [Tailwind mode for Tamagui](/blog/tailwind-mode) for current utility
+Regular Tamagui components and Tailwind components can share a tree. Each
+component has one styling language: Tailwind components accept `className`,
+while components imported from `tamagui` or `@tamagui/core` accept Tamagui
+style props.
+
+```tsx
+import { View as TamaguiView } from 'tamagui'
+import { View as TailwindView } from '@tamagui/tailwind'
+
+<TamaguiView backgroundColor="$blue5">
+  <TailwindView className="rounded-lg p-4" />
+</TamaguiView>
+```
+
+Read [Tailwind for Tamagui](/blog/tailwind-mode) for current utility
 coverage and known gaps.
 
 ## 15. Migrate createTamagui defaultProps

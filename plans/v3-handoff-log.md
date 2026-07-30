@@ -179,6 +179,16 @@ Status: in progress.
   pass 70 web/type tests and 13 native tests. Core native passes 411 with 7
   expected failures and 11 skips; the shared core web gate currently has one
   Lane V config/theme mismatch in `tailwindThemeColor.web.test.tsx`.
+- Lane T removed the remaining global-mode CSS generation/insertion branches,
+  the icon-only reconstruction path, mode settings from owned fixtures, and the
+  three obsolete mode test workspaces. Conformance now imports `View` and
+  `Text` from `@tamagui/tailwind`, and the migration/docs surfaces describe
+  package-selected frontends. The public `StyleMode` setting and core tests
+  that exercise `preprocessStyleModeProps` remain until Lane E lands the
+  protected `createComponent`/`getSplitStyles` descriptor cut; removing them
+  earlier makes the protected source fail to build. The unconditional
+  `tailwind-merge` import and `@tamagui/web` dependency are blocked on the same
+  protected cut.
 
 ## 3. DOM contract
 

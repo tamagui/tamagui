@@ -1,7 +1,7 @@
 # Tailwind conformance — status & what's left
 
-Goal: make tamagui's `styleMode:'tailwind'` (shipped via **v6 config**, releasing on the next
-tamagui major) a real **Tailwind v4** drop-in, proven by pixel conformance on web AND native iOS.
+Goal: make the `@tamagui/tailwind` frontend a real **Tailwind v4** drop-in,
+proven by pixel conformance on web and native iOS.
 
 ## Current status (honest)
 
@@ -57,10 +57,10 @@ registry data rather than a parallel numeric scale.
 
 ## Real conversion gaps — the frontier (close via CONFIG, not carve-outs)
 
-Direction (per design discussion): do NOT add tailwind-only special-case branches in getSplitStyles.
-Keep the tailwind→tamagui map 1-to-1 and CONFIG-driven. The clean mechanism is **multi-target
+Direction (per design discussion): do not add Tailwind-only special-case branches in the shared
+renderer. Keep the Tailwind-to-Tamagui map 1-to-1 and config-driven. The clean mechanism is **multi-target
 shorthands** — a general tamagui feature (a shorthand maps to one OR an array of props) that tailwind
-mode rides on, plus making the generic tailwind parser match the LONGEST shorthand prefix (kebab→camel)
+frontend uses, plus making the generic Tailwind parser match the longest shorthand prefix (kebab→camel)
 so `rounded-t-xl` parses as prop `rounded-t` (→shorthand `roundedT`) + value `xl` (→`$xl` token),
 instead of `rounded` + `t-xl`. This also REPLACES the existing `tailwindPropPrefixes` (min-w/max-h)
 special-case, so it's a cleanup, not a new carve-out.

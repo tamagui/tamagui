@@ -190,14 +190,11 @@
       "name": "@tamagui/vite-plugin",
       "version": "2.5.1",
       "dependencies": {
-        "@tailwindcss/node": "4.3.0",
-        "@tailwindcss/oxide": "4.3.0",
         "@tamagui/fake-react-native": "workspace:*",
         "@tamagui/proxy-worm": "workspace:*",
         "@tamagui/react-native-svg": "workspace:*",
         "@tamagui/react-native-web-lite": "workspace:*",
         "@tamagui/static": "workspace:*",
-        "@tamagui/style-grammar": "workspace:*",
         "@tamagui/types": "workspace:*",
         "esm-resolve": "^1.0.8",
         "fs-extra": "^11.2.0",
@@ -210,12 +207,8 @@
         "vitest": "4.0.4",
       },
       "peerDependencies": {
-        "tailwindcss": "4.3.0",
         "vite": "^8.0.3",
       },
-      "optionalPeers": [
-        "tailwindcss",
-      ],
     },
     "code/compiler/vite-plugin-cjs": {
       "name": "@tamagui/vite-plugin-cjs",
@@ -797,7 +790,6 @@
         "@tamagui/core": "workspace:*",
         "@tamagui/font-size": "workspace:*",
         "@tamagui/size": "workspace:*",
-        "@tamagui/style-grammar": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -1016,6 +1008,39 @@
         "@tamagui/build": "workspace:*",
         "vitest": "4.0.4",
       },
+    },
+    "code/core/tailwind": {
+      "name": "@tamagui/tailwind",
+      "version": "2.5.1",
+      "dependencies": {
+        "@tailwindcss/node": "4.3.0",
+        "@tailwindcss/oxide": "4.3.0",
+        "@tamagui/constants": "workspace:*",
+        "@tamagui/core": "workspace:*",
+        "@tamagui/helpers": "workspace:*",
+        "@tamagui/style-grammar": "workspace:*",
+        "@tamagui/vite-plugin": "workspace:*",
+      },
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "@tamagui/config-default": "workspace:*",
+        "@tamagui/fake-react-native": "workspace:*",
+        "@tamagui/react-native-web-lite": "workspace:*",
+        "@tamagui/web": "workspace:*",
+        "react": ">=19",
+        "typescript": "~5.9.2",
+        "vite": "^8.0.3",
+        "vitest": "4.0.4",
+      },
+      "peerDependencies": {
+        "react": ">=19",
+        "tailwindcss": "4.3.0",
+        "vite": "^8.0.3",
+      },
+      "optionalPeers": [
+        "tailwindcss",
+        "vite",
+      ],
     },
     "code/core/test-design-system": {
       "name": "@tamagui/test-design-system",
@@ -2074,6 +2099,7 @@
         "@tamagui/react-native-svg": "workspace:*",
         "@tamagui/react-native-web-lite": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
+        "@tamagui/tailwind": "workspace:*",
         "tamagui": "workspace:*",
       },
       "devDependencies": {
@@ -2195,36 +2221,6 @@
         "react": ">=19",
       },
     },
-    "code/tests/style-mode-tailwind-only": {
-      "name": "@tamagui/style-mode-tailwind-only-tests",
-      "version": "0.0.0",
-      "devDependencies": {
-        "@tamagui/shorthands": "workspace:*",
-        "@tamagui/web": "workspace:*",
-        "typescript": "~5.9.2",
-        "vitest": "4.0.4",
-      },
-    },
-    "code/tests/style-mode-tamagui-and-tailwind": {
-      "name": "@tamagui/style-mode-tamagui-and-tailwind-tests",
-      "version": "0.0.0",
-      "devDependencies": {
-        "@tamagui/shorthands": "workspace:*",
-        "@tamagui/web": "workspace:*",
-        "typescript": "~5.9.2",
-        "vitest": "4.0.4",
-      },
-    },
-    "code/tests/style-mode-tamagui-only": {
-      "name": "@tamagui/style-mode-tamagui-only-tests",
-      "version": "0.0.0",
-      "devDependencies": {
-        "@tamagui/shorthands": "workspace:*",
-        "@tamagui/web": "workspace:*",
-        "typescript": "~5.9.2",
-        "vitest": "4.0.4",
-      },
-    },
     "code/tests/v3-canary": {
       "name": "@tamagui/v3-canary",
       "version": "0.0.0",
@@ -2232,6 +2228,7 @@
         "@tamagui/config": "workspace:*",
         "@tamagui/select": "workspace:*",
         "@tamagui/sheet": "workspace:*",
+        "@tamagui/tailwind": "workspace:*",
         "expo": "~55.0.28",
         "react": ">=19",
         "react-dom": "*",
@@ -5534,12 +5531,6 @@
 
     "@tamagui/style-grammar": ["@tamagui/style-grammar@workspace:code/core/style-grammar"],
 
-    "@tamagui/style-mode-tailwind-only-tests": ["@tamagui/style-mode-tailwind-only-tests@workspace:code/tests/style-mode-tailwind-only"],
-
-    "@tamagui/style-mode-tamagui-and-tailwind-tests": ["@tamagui/style-mode-tamagui-and-tailwind-tests@workspace:code/tests/style-mode-tamagui-and-tailwind"],
-
-    "@tamagui/style-mode-tamagui-only-tests": ["@tamagui/style-mode-tamagui-only-tests@workspace:code/tests/style-mode-tamagui-only"],
-
     "@tamagui/switch": ["@tamagui/switch@workspace:code/ui/switch"],
 
     "@tamagui/switch-headless": ["@tamagui/switch-headless@workspace:code/ui/switch-headless"],
@@ -5547,6 +5538,8 @@
     "@tamagui/tabs": ["@tamagui/tabs@workspace:code/ui/tabs"],
 
     "@tamagui/tabs-headless": ["@tamagui/tabs-headless@workspace:code/ui/tabs-headless"],
+
+    "@tamagui/tailwind": ["@tamagui/tailwind@workspace:code/core/tailwind"],
 
     "@tamagui/tamagui-dev-config": ["@tamagui/tamagui-dev-config@workspace:code/packages/tamagui-dev-config"],
 

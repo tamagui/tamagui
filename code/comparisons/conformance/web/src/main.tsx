@@ -58,10 +58,13 @@ if (!found) {
     signalReady()
   })
 } else {
-  // tamagui tailwind mode: same className through tamagui's runtime conversion, with NO tailwind
-  // CSS on the page — so only what tamagui actually converts can style the element.
-  Promise.all([import('tamagui'), import('./tamagui.config')]).then(
-    ([{ TamaguiProvider, View, Text }, { default: config }]) => {
+  // package-selected Tailwind frontend, with no Tailwind CSS on the page, so only
+  // candidates Tamagui owns can style the element.
+  Promise.all([
+    import('tamagui'),
+    import('@tamagui/tailwind'),
+    import('./tamagui.config'),
+  ]).then(([{ TamaguiProvider }, { View, Text }, { default: config }]) => {
       createRoot(rootEl).render(
         <StrictMode>
           <TamaguiProvider config={config} defaultTheme="light">
@@ -70,6 +73,5 @@ if (!found) {
         </StrictMode>
       )
       signalReady()
-    }
-  )
+  })
 }

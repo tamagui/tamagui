@@ -8,7 +8,6 @@ type Options = {
     fallbackColor?: string;
     resolveValues?: ResolveVariableAs;
 };
-export declare function reconstructIconStyleModeProps(props: IconProps, theme: any): IconProps;
 export declare function themed(Component: FC<IconProps>, optsIn?: Options): {
     (propsIn: IconProps): import("react/jsx-runtime").JSX.Element;
     staticConfig: {

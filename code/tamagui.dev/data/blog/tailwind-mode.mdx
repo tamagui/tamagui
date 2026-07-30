@@ -1,5 +1,5 @@
 ---
-title: Tailwind mode for Tamagui
+title: Tailwind for Tamagui
 publishedAt: '2026-06-20'
 description: Write Tailwind utility classes in className. The Tamagui compiler turns them into atomic CSS at build time, and the same string works on web and React Native.
 by: nate
@@ -12,26 +12,16 @@ image: /blog/tailwind-mode.jpg
   on web and React Native from one source file.
 </IntroParagraph>
 
-Turn it on with one config setting:
+Choose the Tailwind frontend by import:
 
 ```tsx
-// tamagui.config.ts
-import { createTamagui } from 'tamagui'
-import { defaultConfig } from '@tamagui/config/v6'
-
-export default createTamagui({
-  ...defaultConfig,
-  settings: {
-    ...defaultConfig.settings,
-    styleMode: 'tailwind',
-  },
-})
+import { Text, View, styled } from '@tamagui/tailwind'
 ```
 
 Then write components with utility classes:
 
 ```tsx
-import { View } from 'tamagui'
+import { View } from '@tamagui/tailwind'
 
 export function Card() {
   return (
@@ -53,7 +43,10 @@ The first is teams who built a web app in Tailwind and now want to ship a React 
 
 The second is developers who already know Tailwind and would rather not learn a new prop API to get cross-platform output. Muscle memory for `flex-row items-center gap-3` is real. Asking someone to relearn it as a different set of props is friction with no payoff for them.
 
-Tamagui already solves the cross-platform styling problem. What it did not have was the Tailwind syntax on the front of it. `styleMode: 'tailwind'` adds that syntax without giving up the compiler, the theme system, or the component library underneath.
+Tamagui already solves the cross-platform styling problem. What it did not have
+was the Tailwind syntax on the front of it. `@tamagui/tailwind` adds that syntax
+without giving up the compiler, the theme system, or the component library
+underneath.
 
 ### How the compiler works
 
@@ -127,7 +120,7 @@ For web-specific CSS that does not translate to a native layout engine, `float`,
 This renders on web and native from the same file. No platform branches, no second stylesheet.
 
 ```tsx
-import { View } from 'tamagui'
+import { View } from '@tamagui/tailwind'
 
 export function ListItem() {
   return (
@@ -145,54 +138,45 @@ export function ListItem() {
 
 On web that compiles to atomic CSS classes in the bundle. On iOS and Android the same string resolves to React Native styles. The visual output matches pixel for pixel against real Tailwind for the utilities in our conformance suite, which is how we verify the native mapping rather than trusting a screenshot.
 
-You can also keep the rest of Tamagui in the same tree. Switch to `styleMode: 'tamagui-and-tailwind'` and you can mix utility classes with Tamagui's prop API, theme tokens, and animation props on the same element:
+Regular Tamagui and Tailwind components can share the same tree. Each component
+keeps one styling language, selected by its import:
 
 ```tsx
-import { View } from 'tamagui'
+import { View as TamaguiView } from 'tamagui'
+import { View as TailwindView } from '@tamagui/tailwind'
 
 export function Highlight() {
   return (
-    <View
-      className="rounded-lg p-4"
-      backgroundColor="$blue5"
-      hoverStyle={{ backgroundColor: '$blue6' }}
-      animation="bouncy"
-      enterStyle={{ opacity: 0, scale: 0.95 }}
-    />
+    <TamaguiView backgroundColor="$blue5" hoverStyle={{ backgroundColor: '$blue6' }}>
+      <TailwindView className="rounded-lg p-4" />
+    </TamaguiView>
   )
 }
 ```
 
-Theme tokens like `$blue5` respond to light and dark mode the way they always have. The spring animation and enter transition run through the same drivers as the rest of your app.
+Theme tokens like `$blue5` respond to light and dark mode the way they always
+have. Both components still use the shared renderer, themes, and platform
+behavior.
 
 ### Getting started
 
 Install the latest Tamagui and the v6 config, which ships the Tailwind palette, the named radii, and the `w`/`h` shorthands the utility parser needs:
 
 ```bash
-npm install tamagui@latest @tamagui/config@latest
+npm install tamagui@latest @tamagui/tailwind@latest @tamagui/config@latest
 ```
 
-Turn on the mode:
+Keep your ordinary Tamagui config and import the Tailwind components where you
+want utility authoring:
 
 ```tsx
-// tamagui.config.ts
-import { createTamagui } from 'tamagui'
-import { defaultConfig } from '@tamagui/config/v6'
-
-export default createTamagui({
-  ...defaultConfig,
-  settings: {
-    ...defaultConfig.settings,
-    styleMode: 'tailwind',
-  },
-})
+import { View } from '@tamagui/tailwind'
 ```
 
 Write a component:
 
 ```tsx
-import { View } from 'tamagui'
+import { View } from '@tamagui/tailwind'
 
 export function Badge() {
   return (
