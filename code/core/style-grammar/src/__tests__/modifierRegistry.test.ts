@@ -1,0 +1,161 @@
+import { describe, expect, test } from 'vitest'
+import { createModifierRegistry, stateModifierNames } from '..'
+
+// One global modifier namespace. These tests pin which spellings resolve to
+// which kind, that registration order is state -> media -> platform -> theme
+// with first registration winning, and that every cross-kind collision produces
+// a diagnostic instead of a silent choice.
+
+const full = createModifierRegistry({
+  mediaNames: ['sm', 'md', 'lg'],
+  themeNames: { light: {}, dark: {}, dark_blue: {} },
+})
+
+describe('registered kinds', () => {
+  test('built-in interaction and component states are state modifiers', () => {
+    for (const name of [
+      'hover',
+      'press',
+      'focus',
+      'focus-visible',
+      'focus-within',
+      'disabled',
+      'enter',
+      'exit',
+      'active',
+      'open',
+      'checked',
+      'highlighted',
+      'selected',
+      'invalid',
+    ]) {
+      expect(full.registry.get(name), name).toBe('state')
+    }
+    expect(stateModifierNames).toContain('hover')
+    expect(stateModifierNames).toContain('open')
+  })
+
+  test('config media keys are media modifiers', () => {
+    expect(full.registry.get('sm')).toBe('media')
+    expect(full.registry.get('lg')).toBe('media')
+  })
+
+  test('platform names default to the shared grammar list', () => {
+    expect(full.registry.get('web')).toBe('platform')
+    expect(full.registry.get('native')).toBe('platform')
+    expect(full.registry.get('ios')).toBe('platform')
+    expect(full.registry.get('android')).toBe('platform')
+  })
+
+  test('config themes and sub-themes are theme modifiers', () => {
+    expect(full.registry.get('dark')).toBe('theme')
+    expect(full.registry.get('dark_blue')).toBe('theme')
+  })
+
+  test('a clean config produces no diagnostics', () => {
+    expect(full.diagnostics).toEqual([])
+  })
+
+  test('unknown names are undefined, never guessed', () => {
+    expect(full.registry.get('hver')).toBeUndefined()
+    expect(full.registry.get('xl')).toBeUndefined()
+    expect(full.registry.get('')).toBeUndefined()
+    // container query variants are not registered yet
+    expect(full.registry.get('@sm')).toBeUndefined()
+  })
+
+  test('object prototype keys are not modifiers', () => {
+    expect(full.registry.get('__proto__')).toBeUndefined()
+    expect(full.registry.get('constructor')).toBeUndefined()
+    expect(full.registry.get('toString')).toBeUndefined()
+  })
+})
+
+describe('parameterized group modifiers', () => {
+  test('a state suffix resolves, named or unnamed', () => {
+    expect(full.registry.get('group-hover')).toBe('group')
+    expect(full.registry.get('group-press')).toBe('group')
+    expect(full.registry.get('group-focus-visible')).toBe('group')
+    expect(full.registry.get('group-hover/card')).toBe('group')
+    expect(full.registry.get('group-press/side_bar-2')).toBe('group')
+  })
+
+  test('anything that is not a state suffix is unregistered', () => {
+    expect(full.registry.get('group')).toBeUndefined()
+    expect(full.registry.get('group-')).toBeUndefined()
+    expect(full.registry.get('group-sm')).toBeUndefined()
+    expect(full.registry.get('group-card-hover')).toBeUndefined()
+    expect(full.registry.get('group-hover/')).toBeUndefined()
+    expect(full.registry.get('group-hover/a b')).toBeUndefined()
+    expect(full.registry.get('group-hover/a/b')).toBeUndefined()
+  })
+})
+
+describe('collisions are reported, first registration wins', () => {
+  test('a media key named like a state keeps the state meaning', () => {
+    const { registry, diagnostics } = createModifierRegistry({ mediaNames: ['hover'] })
+    expect(registry.get('hover')).toBe('state')
+    expect(diagnostics).toEqual([
+      'modifier "hover" is already registered as a state modifier, so the media name is ignored',
+    ])
+  })
+
+  test('media wins over a same-named platform', () => {
+    const { registry, diagnostics } = createModifierRegistry({ mediaNames: ['web'] })
+    expect(registry.get('web')).toBe('media')
+    expect(diagnostics).toEqual([
+      'modifier "web" is already registered as a media modifier, so the platform name is ignored',
+    ])
+  })
+
+  test('media wins over a same-named theme', () => {
+    const { registry, diagnostics } = createModifierRegistry({
+      mediaNames: ['sm'],
+      themeNames: ['sm'],
+    })
+    expect(registry.get('sm')).toBe('media')
+    expect(diagnostics).toEqual([
+      'modifier "sm" is already registered as a media modifier, so the theme name is ignored',
+    ])
+  })
+
+  test('a config name shadowing a group modifier is reported', () => {
+    const { registry, diagnostics } = createModifierRegistry({
+      mediaNames: ['group-hover'],
+    })
+    expect(registry.get('group-hover')).toBe('media')
+    expect(diagnostics).toEqual([
+      'modifier "group-hover" shadows the group modifier of the same spelling, which can no longer be used as a media name',
+    ])
+  })
+
+  test('a repeated name within one kind is not a collision', () => {
+    const { diagnostics } = createModifierRegistry({ mediaNames: ['sm', 'sm'] })
+    expect(diagnostics).toEqual([])
+  })
+})
+
+describe('config name sources', () => {
+  test('arrays, sets, and objects all register', () => {
+    const fromSet = createModifierRegistry({ mediaNames: new Set(['sm']) })
+    const fromObject = createModifierRegistry({ mediaNames: { sm: {} } })
+    const fromArray = createModifierRegistry({ mediaNames: ['sm'] })
+    for (const created of [fromSet, fromObject, fromArray]) {
+      expect(created.registry.get('sm')).toBe('media')
+    }
+  })
+
+  test('explicit platform names replace the defaults', () => {
+    const { registry } = createModifierRegistry({ platformNames: ['web'] })
+    expect(registry.get('web')).toBe('platform')
+    expect(registry.get('ios')).toBeUndefined()
+  })
+
+  test('an empty config still has the built-in states and platforms', () => {
+    const { registry, diagnostics } = createModifierRegistry({})
+    expect(registry.get('hover')).toBe('state')
+    expect(registry.get('ios')).toBe('platform')
+    expect(registry.get('sm')).toBeUndefined()
+    expect(diagnostics).toEqual([])
+  })
+})

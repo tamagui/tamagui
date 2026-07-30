@@ -9,8 +9,13 @@
     "src/index.ts",
     "src/candidate.ts",
     "src/config.ts",
+    "src/modifierRegistry.ts",
+    "src/programs.ts",
     "src/registry.ts",
+    "src/states.ts",
     "src/table.ts",
+    "src/valueParser.ts",
+    "src/valueTypes.ts",
     "types",
     "dist"
   ],
