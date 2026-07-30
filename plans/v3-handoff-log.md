@@ -235,3 +235,9 @@ Status: in progress.
   animated candidates, 26 dynamic style values unsafe to extract, 21 runtime
   event mappings, 16 non-evaluable style values, six unevaluated spreads, and
   five theme boundaries.
+- The styled-context investigation disproved the initial high-volume
+  hypothesis. `Button`, `Input`, `Label`, `ListItem`, and `XGroup` are behavior
+  HOCs whose runtime work exceeds context resolution. The seven Card-family
+  cases do not justify context-island transactions. Both the context-island
+  design and the larger explicit component-lowering descriptor are parked in
+  `plans/decision-24-component-lowering.md` pending an architecture decision.
