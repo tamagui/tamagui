@@ -2469,6 +2469,28 @@ export const getSplitStyles: StyleSplitter = (
     time`split-styles-propsend`
   }
 
+  // lane W3: native programs evaluate last-matching-clause against the live
+  // conditions, BEFORE the native post-processing below (fixStyles defaults,
+  // the per-weight font-face swap) so program values go through the same
+  // finishing as plain values. referenced media keys ride the hasMedia
+  // subscription; referenced states surface for event attachment
+  let programStates: Set<string> | null = null
+  if (process.env.TAMAGUI_TARGET === 'native' && styleState.programs?.size) {
+    const info = evaluateAccumulatedPrograms(styleState, themeName, mediaState)
+    programStates = info.usedStates
+    if (info.usedMediaKeys) {
+      if (!hasMedia) {
+        hasMedia = new Set()
+      }
+      if (typeof hasMedia !== 'boolean') {
+        for (const usedKey of info.usedMediaKeys) {
+          hasMedia.add(usedKey)
+        }
+      }
+      // hasMedia === true means subscribe-to-all and already covers the keys
+    }
+  }
+
   // style prop after:
 
   const avoidNormalize = styleProps.noNormalize === false
@@ -2681,23 +2703,6 @@ export const getSplitStyles: StyleSplitter = (
     }
     if (hasProvenance) {
       setStyleTokenProvenance(styleState.style, provenance)
-    }
-  }
-
-  // lane W3: native programs evaluate last-matching-clause against the live
-  // conditions; referenced media keys ride the hasMedia subscription and
-  // referenced states surface for event attachment in createComponent
-  let programStates: Set<string> | null = null
-  if (process.env.TAMAGUI_TARGET === 'native' && styleState.programs?.size) {
-    const info = evaluateAccumulatedPrograms(styleState, themeName, mediaState)
-    programStates = info.usedStates
-    if (info.usedMediaKeys) {
-      if (!hasMedia || typeof hasMedia === 'boolean') {
-        hasMedia = new Set()
-      }
-      for (const usedKey of info.usedMediaKeys) {
-        ;(hasMedia as Set<string>).add(usedKey)
-      }
     }
   }
 

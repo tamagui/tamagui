@@ -33,6 +33,32 @@ const platformName = isIos
 
 const noMatch = () => false
 
+// the states this platform can actually source right now: componentState
+// fields plus enter/exit from the lifecycle. component-tier states (checked,
+// open, selected, highlighted, invalid) need the behavior packages to feed
+// componentState and are diagnosed, never silent, until that lands
+const sourceableStates: ReadonlySet<string> = new Set([
+  'hover',
+  'press',
+  'active',
+  'focus',
+  'focus-visible',
+  'focus-within',
+  'disabled',
+  'enter',
+  'exit',
+])
+
+// react-native-web's unitless list is CSS-truth; on native the gap family is
+// a real length wanting numbers
+const nativeLengthOverrides: ReadonlySet<string> = new Set([
+  'gap',
+  'rowGap',
+  'columnGap',
+  'gridRowGap',
+  'gridColumnGap',
+])
+
 const noted = new Set<string>()
 function noteOnce(key: string, message: string) {
   if (process.env.NODE_ENV === 'development' && !noted.has(key)) {
@@ -80,6 +106,7 @@ export function evaluateAccumulatedPrograms(
   if (componentState.focusWithin) states.add('focus-within')
   if (componentState.disabled || props.disabled) states.add('disabled')
   if (componentState.unmounted) states.add('enter')
+  if (styleState.styleProps.isExiting) states.add('exit')
 
   const media = new Set<string>()
   for (const key in mediaState) {
@@ -111,7 +138,14 @@ export function evaluateAccumulatedPrograms(
         if (kind === 'media') {
           ;(usedMediaKeys ||= []).push(modifier)
         } else if (kind === 'state') {
-          ;(usedStates ||= new Set()).add(modifier)
+          if (sourceableStates.has(modifier)) {
+            ;(usedStates ||= new Set()).add(modifier)
+          } else {
+            noteOnce(
+              `state\0${modifier}`,
+              `[tamagui] ${program.sourceProp}: "${modifier}:" is a component-tier state with no native source yet; the clause is skipped`
+            )
+          }
         } else if (kind === 'group' || kind === 'container') {
           noteOnce(
             `${kind}\0${modifier}`,
@@ -139,7 +173,10 @@ export function evaluateAccumulatedPrograms(
     let value: string | number
     try {
       value = serializePayloadNative(resolved, getValue, {
-        unit: unitlessNumberProperties.has(longhand) ? undefined : 'px-to-number',
+        unit:
+          unitlessNumberProperties.has(longhand) && !nativeLengthOverrides.has(longhand)
+            ? undefined
+            : 'px-to-number',
       })
     } catch (error) {
       noteOnce(

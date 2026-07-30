@@ -1392,7 +1392,6 @@ export function createComponent<
       runtimePressStyle ||
       runtimeFocusStyle ||
       runtimeFocusVisibleStyle ||
-      programStates?.has('focus-within') ||
       onFocus ||
       onBlur ||
       !!componentContext.setParentFocusState
@@ -1547,7 +1546,7 @@ export function createComponent<
                 componentContext.setParentFocusState({ focusWithin: true })
                 next.focusWithin = true
               }
-              if (pseudos?.focusVisibleStyle) {
+              if (pseudos?.focusVisibleStyle || programStates?.has('focus-visible')) {
                 if (lastInteractionWasKeyboard.value) {
                   next.focusVisible = true
                 } else {
@@ -1761,7 +1760,11 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    if ('focusWithinStyle' in propsIn || pseudos?.focusWithinStyle) {
+    if (
+      'focusWithinStyle' in propsIn ||
+      pseudos?.focusWithinStyle ||
+      programStates?.has('focus-within')
+    ) {
       content = (
         <ComponentContext.Provider
           {...componentContext}

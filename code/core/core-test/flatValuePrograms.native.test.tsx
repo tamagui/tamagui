@@ -79,6 +79,33 @@ test('px payloads become unitless numbers', () => {
   expect(result.style?.marginTop).toBe(10)
 })
 
+test('exit clauses source from isExiting', () => {
+  const normal = split({ opacity: '1 exit:0' })
+  expect(normal.style?.opacity).toBe(1)
+
+  const exiting = split({ opacity: '1 exit:0' }, {}, 'light', { isExiting: true })
+  expect(exiting.style?.opacity).toBe(0)
+})
+
+test('component-tier states are skipped, not phantom-attached', () => {
+  const result = split({ backgroundColor: 'gray checked:blue' })
+  expect(result.style?.backgroundColor).toBe('gray')
+  expect(result.programStates?.has('checked') ?? false).toBe(false)
+})
+
+test('the gap family resolves to native numbers', () => {
+  const result = split({ gap: '16px hover:24px' })
+  expect(result.style?.rowGap).toBe(16)
+  expect(result.style?.columnGap).toBe(16)
+})
+
+test('program values run through native fixStyles like plain values', () => {
+  // borderWidth programs must receive the borderStyle default
+  const result = split({ borderWidth: '1 hover:2' })
+  expect(result.style?.borderTopWidth ?? result.style?.borderWidth).toBeTruthy()
+  expect(result.style?.borderStyle).toBe('solid')
+})
+
 test('a later plain value still replaces the program on native', () => {
   const result = split({ backgroundColor: 'red hover:blue', bg: 'green' }, { hover: true })
   expect(result.style?.backgroundColor).toBe('green')
