@@ -63,6 +63,12 @@ export type ValueParseErrorCode =
   | 'empty-modifier'
   | 'unterminated-string'
   | 'unterminated-function'
+  /**
+   * a top-level `{`, `}`, or `;` — never valid in a CSS component value, and
+   * rejecting them here is what makes rule/selector injection through a
+   * payload structurally impossible in the web lowering
+   */
+  | 'invalid-character'
 
 export interface ValueParseError {
   code: ValueParseErrorCode
