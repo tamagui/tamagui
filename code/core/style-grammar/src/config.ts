@@ -37,7 +37,7 @@ export const grammarPlatformNames: ReadonlySet<string> = new Set([
 ])
 
 export const grammarPlatformGroups: ReadonlyMap<string, ReadonlySet<string>> = new Map([
-  ['native', new Set(['android', 'ios'])],
+  ['native', new Set(['android', 'ios', 'androidtv', 'tvos'])],
   ['tv', new Set(['androidtv', 'tvos'])],
 ])
 

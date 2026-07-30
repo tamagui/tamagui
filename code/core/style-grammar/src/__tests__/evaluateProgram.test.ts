@@ -68,6 +68,7 @@ describe('runtime program evaluation', () => {
 
   test.each([
     ['native', 'ios'],
+    ['native', 'tvos'],
     ['tv', 'tvos'],
     ['ios', 'ios'],
   ])('matches the %s modifier on %s', (modifier, platform) => {
