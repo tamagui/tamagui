@@ -1804,6 +1804,29 @@ authored order (the web cascade rule), so `$sm` beating a later `$lg` via
 config order does not survive conversion. The codemod orders clauses to
 preserve behavior; flag as a migration note.
 
+Two rulings from the sweep's follow-through. Hover-bearing clauses (subject
+`hover:` and `group-hover`) lower inside an `@media (hover: hover)`
+capability guard, matching both the legacy encoding and Tailwind v4's
+default hover variant, so touch devices never sticky-trigger; the guard is
+a wrapper, so specificity stays (0,1,0), and native evaluation is
+unaffected. And legacy strings that embed `$token` spellings mid-value
+(`0 4px 8px $color5`) rewrite to config-first names during conversion —
+numeric token names (`$4`, `$-2`) included — with quoted/url content and
+dot-path names refusing conversion instead of guessing.
+
+Decision 24 status (2026-07-29): the compiled static fast path holds
+through the shared pipeline with no extractor-specific program code — the
+extractor calls the same getSplitStyles, so `<View width={10}
+backgroundColor="red hover:blue" />` compiles to a literal
+`<div className="is_View _w-10px _bc-…">` with the program block in the
+extracted CSS, and a converted `hoverStyle` object compiles to the
+IDENTICAL program class as its flat spelling (class identity across
+spellings and across the compile/runtime boundary, pinned in
+`static-tests/tests/flatValues.web.test.tsx`: media+token, theme,
+transform-axis-with-composition, legacy-object parity, dynamic bailout).
+Webpack end-to-end render snapshots show program classes in real DOM.
+Remaining in the lane: the standing kitchen-sink bailout-rate metric.
+
 Landed on the back of that evidence (2026-07-29, v3-beta): the
 noClass/animated-inline web path now evaluates programs at the end of the
 pass exactly like native (platform containment answers `web:`, inline
