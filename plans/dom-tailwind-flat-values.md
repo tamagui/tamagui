@@ -1751,9 +1751,19 @@ W3 landed the same day: native evaluation with the last-matching-clause
 rule, interaction states surfaced through `programStates` so createComponent
 attaches the right events, referenced media keys riding the existing
 `hasMedia` subscription, and the theme chain matched by progressive
-underscore prefixes. W3 v1 skips group and container clauses on native with
-a development note each (component-tree wiring and measurement are plan
-item 4). W5 is in progress as the engine-contraction test bed: with
+underscore prefixes. Group and container clauses landed on native
+2026-07-29 through the existing GroupContext channel: group clauses read the
+parent's pseudo state (componentState first, context snapshot before the
+first emit), container clauses measure the parent container's layout with
+the same media math the viewport uses, and registration rides the existing
+pseudoGroups/mediaGroups subscription sets, so no new machinery attaches.
+Container context entries are keyed `@` and `@name` — group names cannot
+contain `@`, so both namespaces share one context, and nested providers give
+nearest-container semantics by shadowing. The boolean `container` prop is
+the unnamed inline-size shorthand (decision 17): on web it emits one shared
+`.t_container { container-type: inline-size }` rule, on native it provides
+the measured context; `containerName`/`containerType` stay CSS props on web
+and are stripped from native styles. W5 is in progress as the engine-contraction test bed: with
 `legacyConditionObjects` on, old condition objects convert to clauses and
 run through the program engine instead of the legacy machinery, so the two
 engines can be A/B-compared on the same test suites before the deletion.
@@ -1946,8 +1956,12 @@ locked:
 3. The CSS transition native capability matrix and the migration of the
    existing array and per-property preset object forms (preset resolution
    itself is decided: config-first identifiers).
-4. Native container-query measurement timing, initial render behavior, and
-   performance gates for explicit query containers.
+4. Native container-query measurement rides the group onLayout channel as of
+   2026-07-29: first render evaluates against the context's layout snapshot
+   (hardcoded width/height parents resolve with zero extra renders, the
+   optimistic path createComponent already had), and measured parents emit
+   one layout update. Remaining: performance gates on the T7 harness and the
+   `untilMeasured` interaction for program children.
 5. The complete built-in condition list and collision policy for common
    configs.
 6. How `style()` conditionally composes multiple handles while preserving
