@@ -1356,6 +1356,17 @@ migration, the final codemod step turns it off, and v4 removes it together
 with the old parsers. The compiler understands both spellings for as long as
 the setting exists.
 
+Conversion is purely mechanical, with no second value representation: a
+legacy object entry becomes a clause on the longhand's program, and raw
+numeric values spell as CSS lengths (`hoverStyle={{ p: 4 }}` contributes
+`hover:4px`, unitless properties contribute `String(n)`). This is faithful
+because the native serializer already lowers plain CSS lengths to unitless
+React Native numbers — `p="4 hover:18px"` requires that regardless — so the
+px-vs-unitless property table is shared, not converter-specific. Legacy
+transform-part entries (`scale`, `rotate` inside condition objects) are
+excluded from v1 conversion with a diagnostic until the transform family
+design lands.
+
 Examples:
 
 ```tsx
