@@ -5,6 +5,10 @@ import { createTamagui } from 'tamagui'
 const config = createTamagui({
   ...v6,
   animations,
+  // TRANSITIONAL: the Vite integration and the component packages already select the
+  // Tailwind frontend by import, but `getSplitStyles`/`createComponent` still read this
+  // global setting to tokenize a call-site `className`. It comes out with the reserved
+  // two-file descriptor cut.
   settings: {
     ...v6.settings,
     styleMode: 'tamagui-and-tailwind',

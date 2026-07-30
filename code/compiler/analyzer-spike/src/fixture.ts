@@ -64,7 +64,9 @@ export async function loadFixtureProject(): Promise<ProjectInput> {
       resolutionKey('/src/Parity.create-element.ts', '@fixture/ui'),
       '/packages/ui/src/index.ts',
     ],
-    [resolutionKey('/src/Styled.tsx', '@fixture/ui'), '/packages/ui/src/index.ts'],
+    // class-string styled() is the Tailwind frontend's surface, so the fixture carries
+    // Tailwind provenance; compiler-core itself stays package-neutral
+    [resolutionKey('/src/Styled.tsx', '@tamagui/tailwind'), '/packages/ui/src/index.ts'],
     [resolutionKey('/src/Lower.tsx', '@fixture/ui'), '/packages/ui/src/index.ts'],
     [resolutionKey('/src/bailouts.ts', '#missing'), '/external/missing.ts'],
     [resolutionKey('/src/bailouts.ts', '@fixture/ui'), '/packages/ui/src/index.ts'],

@@ -7,15 +7,13 @@ import { media } from './media'
 import { themes } from './themes'
 import { tokens } from './tokens'
 
-const integrationStyleMode =
-  (process.env.TAMAGUI_INTEGRATION_STYLE_MODE as
-    | 'tamagui'
-    | 'tailwind'
-    | 'tamagui-and-tailwind') || 'tamagui-and-tailwind'
-
 const config = createTamagui({
+  // TRANSITIONAL: the Vite integration and the component packages already select the
+  // Tailwind frontend by import, but `getSplitStyles`/`createComponent` still read this
+  // global setting to tokenize a call-site `className`. It comes out with the reserved
+  // two-file descriptor cut.
   settings: {
-    styleMode: integrationStyleMode,
+    styleMode: 'tamagui-and-tailwind',
   },
   defaultFont: 'body',
   animations,

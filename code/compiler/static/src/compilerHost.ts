@@ -544,6 +544,19 @@ export function createTamaguiCompilerHost(
     options.components.map((component) => [component.moduleName, component])
   )
 
+  // A component's import provenance chose its authoring syntax, and the frontend
+  // descriptor frozen onto its static config is the only thing that knows how to
+  // resolve that syntax's static input (a class-string base, string variants, string
+  // compound variants) into styles. Regular Tamagui components carry no descriptor
+  // because their static config is already the renderer's input shape. The compiler
+  // must never import a frontend package: `@tamagui/tailwind/vite` already depends on
+  // the static compiler, so reaching the other way would be a cycle.
+  const normalizeStaticConfig = (staticConfig: StaticConfig): StaticConfig =>
+    (staticConfig as any).styleFrontend?.normalizeStaticConfig?.(
+      staticConfig,
+      options.tamaguiConfig
+    ) ?? staticConfig
+
   const directStaticConfig = (
     element: MaterializedElement
   ): { key: string; staticConfig: StaticConfig } | null => {
@@ -555,10 +568,7 @@ export function createTamaguiCompilerHost(
     return info
       ? {
           key: componentKey(identity.resolvedId, identity.importedName),
-          staticConfig: core.normalizeStaticConfigStyles(
-            info.staticConfig,
-            options.tamaguiConfig
-          ),
+          staticConfig: normalizeStaticConfig(info.staticConfig),
         }
       : null
   }
@@ -595,35 +605,32 @@ export function createTamaguiCompilerHost(
         : undefined
     return {
       key: componentKey(definition.id, definition.name),
-      staticConfig: core.normalizeStaticConfigStyles(
-        {
-          ...base.staticConfig,
-          variants: {
-            ...base.staticConfig.variants,
-            ...(variants as object | undefined),
-          },
-          compoundVariants: [
-            ...(base.staticConfig.compoundVariants ?? []),
-            ...(compoundVariants ?? []),
-          ],
-          defaultProps: {
-            ...base.staticConfig.defaultProps,
-            ...defaultProps,
-            ...(defaultVariants as object | undefined),
-          },
-          defaultVariants,
-          baseClassName: [base.staticConfig.baseClassName, baseClassName]
-            .filter(Boolean)
-            .join(' '),
-          context: context ?? base.staticConfig.context,
-          contextProps: context
-            ? contextProps
-            : (contextProps ?? base.staticConfig.contextProps),
-          componentName: definition.name,
-          ...(name && { componentName: name }),
+      staticConfig: normalizeStaticConfig({
+        ...base.staticConfig,
+        variants: {
+          ...base.staticConfig.variants,
+          ...(variants as object | undefined),
         },
-        options.tamaguiConfig
-      ),
+        compoundVariants: [
+          ...(base.staticConfig.compoundVariants ?? []),
+          ...(compoundVariants ?? []),
+        ],
+        defaultProps: {
+          ...base.staticConfig.defaultProps,
+          ...defaultProps,
+          ...(defaultVariants as object | undefined),
+        },
+        defaultVariants,
+        baseClassName: [base.staticConfig.baseClassName, baseClassName]
+          .filter(Boolean)
+          .join(' '),
+        context: context ?? base.staticConfig.context,
+        contextProps: context
+          ? contextProps
+          : (contextProps ?? base.staticConfig.contextProps),
+        componentName: definition.name,
+        ...(name && { componentName: name }),
+      }),
     }
   }
 

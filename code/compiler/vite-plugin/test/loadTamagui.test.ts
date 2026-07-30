@@ -28,7 +28,6 @@ import { tamaguiNativePlugin, tamaguiPlugin } from '../src/plugin'
 const execFileAsync = promisify(execFile)
 const fixtureRoot = path.resolve(__dirname, 'fixtures/module-runner')
 const fixtureRequire = createRequire(path.join(fixtureRoot, 'package.json'))
-const coreResetPath = fixtureRequire.resolve('@tamagui/core/reset.css')
 const appPath = path.join(fixtureRoot, 'src/App.tsx')
 const resolutionPath = path.join(fixtureRoot, 'packages/workspace/src/resolution.ts')
 const configSpacePath = path.join(fixtureRoot, 'packages/workspace/src/config-space.ts')
@@ -426,7 +425,6 @@ afterEach(async () => {
     delete (globalThis as any).__tamaguiFixtureOneTsconfigPathsOrder
     delete (globalThis as any).__tamaguiFixtureOneConfigLifecycles
     delete (globalThis as any).__tamaguiFixtureOneTransformEnvironments
-    delete (globalThis as any).__tamaguiFixtureStyleMode
     await rm(path.join(fixtureRoot, 'node_modules'), { force: true, recursive: true })
     await rm(evaluationFixturePhysicalRuntimePath, { force: true, recursive: true })
     await rm(watchOutputRoot, { force: true, recursive: true })
@@ -626,60 +624,6 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
       'react-native',
       'react-native-web',
     ])
-  )
-})
-
-test('layers the core reset only in hybrid style modes', async () => {
-  const transformReset = async (styleMode: 'tamagui' | 'tamagui-and-tailwind') => {
-    ;(globalThis as any).__tamaguiFixtureStyleMode = styleMode
-    let capturedReset = ''
-    const captureResetPlugin: Plugin = {
-      name: `fixture-capture-reset-${styleMode}`,
-      enforce: 'pre',
-      transform: {
-        order: 'post',
-        handler(code, id) {
-          if (path.resolve(id.split('?')[0]) === path.resolve(coreResetPath)) {
-            capturedReset = code
-          }
-        },
-      },
-    }
-    const server = await createServer({
-      configFile: false,
-      root: fixtureRoot,
-      logLevel: 'silent',
-      server: {
-        middlewareMode: true,
-        fs: {
-          allow: [path.dirname(coreResetPath)],
-        },
-      },
-      resolve: {
-        alias: fixtureAliases,
-      },
-      plugins: [
-        ...environmentSpecificCompilerPlugins('serve'),
-        ...fixturePlugins(undefined, true),
-        tamaguiPlugin({
-          components: directPackageFixtureComponents,
-          enableDynamicEvaluation: true,
-        }),
-        captureResetPlugin,
-      ],
-    })
-    servers.push(server)
-
-    const clientEnvironment = server.environments.client
-    await clientEnvironment.transformRequest(`/@fs${coreResetPath}`)
-    expect(capturedReset).toBeTruthy()
-    return capturedReset
-  }
-
-  const originalReset = await readFile(coreResetPath, 'utf8')
-  expect(await transformReset('tamagui')).toBe(originalReset)
-  expect(await transformReset('tamagui-and-tailwind')).toBe(
-    `@layer tamagui {\n${originalReset}\n}`
   )
 })
 

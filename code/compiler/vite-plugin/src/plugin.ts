@@ -23,16 +23,8 @@ import type {
   ViteDevServer,
 } from 'vite'
 import type { Environment } from 'vite'
+import type { ViteTamaguiLoader } from './loadTamagui'
 import { createViteTamaguiLoader, TAMAGUI_EVALUATION_ENVIRONMENT } from './loadTamagui'
-import {
-  createTailwindHybridState,
-  isTamaguiCoreResetCSS,
-  layerTamaguiCoreResetCSS,
-  TAILWIND_RESOLVED_ID,
-  TAILWIND_VIRTUAL_ID,
-  updateTailwindForWatchChange,
-  wrapWithTamaguiLayer,
-} from './tailwind'
 
 const environmentSpecificTransformPluginNames = new Set([
   'one:compiler',
@@ -624,12 +616,33 @@ export function tamaguiNativePlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plug
   }
 }
 
-export function tamaguiPlugin({
-  disableResolveConfig,
-  ...tamaguiOptionsIn
-}: TamaguiOptions & {
+export type TamaguiVitePluginOptions = TamaguiOptions & {
   disableResolveConfig?: boolean
-} = {}): PluginOption {
+}
+
+export type TamaguiInternalPluginOptions = TamaguiVitePluginOptions & {
+  /**
+   * Wraps compiler-extracted Tamagui CSS before it is served.
+   * `@tamagui/tailwind/vite` uses it to put those rules in `@layer tamagui`, which is
+   * what orders them against official Tailwind's `theme`/`utilities` layers.
+   */
+  wrapExtractedCSS?: (css: string) => string
+}
+
+/**
+ * The base Tamagui Vite plugins plus the one config loader they evaluate through.
+ *
+ * `@tamagui/tailwind/vite` wraps this: it reuses the returned loader for its own
+ * scanner plugin, so the Tamagui config is evaluated exactly once for both.
+ */
+export function createTamaguiPlugins({
+  disableResolveConfig,
+  wrapExtractedCSS = (css) => css,
+  ...tamaguiOptionsIn
+}: TamaguiInternalPluginOptions = {}): {
+  plugins: PluginOption[]
+  loader: ViteTamaguiLoader
+} {
   // extraction ON by default, set disableExtraction: true to opt out
   let shouldExtract = !tamaguiOptionsIn.disableExtraction
 
@@ -637,7 +650,6 @@ export function tamaguiPlugin({
   const enableNativeEnv = !!globalThis.__vxrnEnableNativeEnv
   const tamaguiLoader = createViteTamaguiLoader(tamaguiOptionsIn)
   const compilerFrontend = new Static.CompilerFrontend()
-  const tailwindState = createTailwindHybridState()
   const pluginInstanceId = getNextPluginInstanceId()
   const configuredEvaluationPackages = new Set<string>()
   let buildEnvironmentPromise: Promise<void> | null = null
@@ -735,16 +747,6 @@ export function tamaguiPlugin({
   let server: ViteDevServer
   const virtualExt = `.tamagui.css`
 
-  const configureTailwind = async (addWatchFile: (file: string) => void) => {
-    return tailwindState.configure(
-      config.root,
-      tamaguiLoader.getGeneration(),
-      await tamaguiLoader.getTamaguiConfig(),
-      addWatchFile,
-      (glob) => server?.watcher.add(glob)
-    )
-  }
-
   const getAbsoluteVirtualFileId = (filePath: string) => {
     if (filePath.startsWith(config.root)) {
       return filePath
@@ -777,7 +779,6 @@ export function tamaguiPlugin({
   }
 
   function invalidateCompilerModules() {
-    tailwindState.clear()
     if (server) {
       const ids = new Set([...transformedModuleIds, ...cssMap.keys()])
       for (const environment of Object.values(server.environments)) {
@@ -792,19 +793,6 @@ export function tamaguiPlugin({
       }
     }
     cssMap.clear()
-  }
-
-  function invalidateTailwindModule() {
-    if (!server) return
-    for (const environment of Object.values(server.environments)) {
-      if (environment.name !== 'client') continue
-      const module = environment.moduleGraph.getModuleById(TAILWIND_RESOLVED_ID)
-      if (module) environment.moduleGraph.invalidateModule(module)
-    }
-  }
-
-  function getClientTailwindModule() {
-    return server?.environments.client?.moduleGraph.getModuleById(TAILWIND_RESOLVED_ID)
   }
 
   const basePlugin: Plugin = {
@@ -1103,21 +1091,7 @@ export function tamaguiPlugin({
               }
             }
           }
-          if (!(await configureTailwind(() => {}))) {
-            return affectedModules.size ? [...affectedModules] : undefined
-          }
-          const changed =
-            options.type === 'delete'
-              ? await tailwindState.removeSource(options.file)
-              : await tailwindState.scanSource(options.file, source!)
-          if (!changed) return affectedModules.size ? [...affectedModules] : undefined
-          const virtualModule = getClientTailwindModule()
-          if (!virtualModule)
-            return affectedModules.size ? [...affectedModules] : undefined
-          this.environment.moduleGraph.invalidateModule(virtualModule)
-          affectedModules.add(virtualModule)
-          for (const module of options.modules) affectedModules.add(module)
-          return [...affectedModules]
+          return affectedModules.size ? [...affectedModules] : undefined
         }
 
         const signature = await (async () => {
@@ -1151,18 +1125,14 @@ export function tamaguiPlugin({
       },
     },
 
-    async watchChange(id, change) {
+    async watchChange(id) {
       if (config.command !== 'build') {
         return
       }
       if (tamaguiLoader.isEvaluationDependency(id)) {
         tamaguiLoader.invalidate(id)
         invalidateCompilerModules()
-        return
       }
-      await updateTailwindForWatchChange(tailwindState, id, change.event, () =>
-        configureTailwind((file) => this.addWatchFile(file))
-      )
     },
 
     async resolveId(source) {
@@ -1172,10 +1142,6 @@ export function tamaguiPlugin({
 
       if (isNotClient(this.environment)) {
         return
-      }
-
-      if (source === TAILWIND_VIRTUAL_ID) {
-        return TAILWIND_RESOLVED_ID
       }
 
       if (!shouldExtract) return
@@ -1209,78 +1175,10 @@ export function tamaguiPlugin({
         return
       }
 
-      if (id === TAILWIND_RESOLVED_ID) {
-        if (!(await configureTailwind((file) => this.addWatchFile(file)))) {
-          return ''
-        }
-        return tailwindState.css
-      }
-
       if (!shouldExtract) return
 
       const [validId] = id.split('?')
       return cssMap.get(validId)
-    },
-
-    transform: {
-      order: 'pre',
-      async handler(code, id) {
-        // Config/component evaluation must run through user plugins without
-        // recursively invoking Tamagui extraction inside its own ModuleRunner.
-        if (this.environment?.name === TAMAGUI_EVALUATION_ENVIRONMENT) {
-          return
-        }
-
-        // Frameworks may run route-analysis transforms before Vite starts the
-        // build environment. The real module transform runs again after
-        // buildStart installs the owned Tamagui evaluation runner.
-        if (!tamaguiLoader.getEnvironment()) return
-
-        if (isNative(this.environment)) {
-          return
-        }
-
-        const [validId] = id.split('?')
-        if (isTamaguiCoreResetCSS(validId)) {
-          const layeredResetCSS = layerTamaguiCoreResetCSS(
-            validId,
-            code,
-            await configureTailwind((file) => this.addWatchFile(file))
-          )
-          if (layeredResetCSS) {
-            return { code: layeredResetCSS, map: null }
-          }
-        }
-        if (isFrameworkAnalysisRequest(id) || !isAppJSXSource(validId)) {
-          return
-        }
-
-        // ensure tamagui is loaded only for application JSX candidates
-        const options = await ensureLoaded()
-
-        // fully disabled = no extraction AND no debug attrs
-        if (options?.disable) {
-          return
-        }
-
-        const isSSR = isNotClient(this.environment)
-        const tailwindEnabled = await configureTailwind((file) => this.addWatchFile(file))
-        if (tailwindEnabled && (await tailwindState.scanSource(validId, code))) {
-          invalidateTailwindModule()
-        }
-        const tailwindImport =
-          tailwindEnabled && !isSSR ? `import "${TAILWIND_VIRTUAL_ID}";` : null
-        if (tailwindEnabled) {
-          transformedModuleIds.add(validId)
-          for (const dependency of tamaguiLoader.getEvaluationDependencies()) {
-            this.addWatchFile(dependency)
-          }
-        }
-
-        return tailwindImport
-          ? { code: `${code}\n${tailwindImport}`, map: null }
-          : undefined
-      },
     },
   }
 
@@ -1350,10 +1248,7 @@ export function tamaguiPlugin({
         if (result.plan.css) {
           const rootRelativeId = `${validId}${virtualExt}`
           const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
-          const css = tailwindState.layerTamagui
-            ? wrapWithTamaguiLayer(result.plan.css)
-            : result.plan.css
-          cssMap.set(absoluteId, css)
+          cssMap.set(absoluteId, wrapExtractedCSS(result.plan.css))
           this.addWatchFile(rootRelativeId)
           if (!isSSR) cssImport = `import "${rootRelativeId}";`
         }
@@ -1367,11 +1262,18 @@ export function tamaguiPlugin({
     },
   }
 
-  return [
-    basePlugin,
-    rnwLitePlugin,
-    extractPlugin,
-    sharedCompilerPlugin,
-    tamaguiNativePlugin(tamaguiOptionsIn),
-  ]
+  return {
+    plugins: [
+      basePlugin,
+      rnwLitePlugin,
+      extractPlugin,
+      sharedCompilerPlugin,
+      tamaguiNativePlugin(tamaguiOptionsIn),
+    ],
+    loader: tamaguiLoader,
+  }
+}
+
+export function tamaguiPlugin(options: TamaguiVitePluginOptions = {}): PluginOption {
+  return createTamaguiPlugins(options).plugins
 }

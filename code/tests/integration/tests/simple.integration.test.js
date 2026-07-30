@@ -143,10 +143,8 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
 test(`updates passthrough candidates on add, remove, and re-add`, async ({ page }) => {
   const fixturePath = path.resolve('src/HmrCandidate.jsx')
   const tokensPath = path.resolve('src/tokens.ts')
-  const configPath = path.resolve('src/tamagui.config.ts')
   const original = readFileSync(fixturePath, 'utf8')
   const originalTokens = readFileSync(tokensPath, 'utf8')
-  const originalConfig = readFileSync(configPath, 'utf8')
   const server = spawnServer('bun', ['run', 'dev', '--port', String(hmrPort)])
   try {
     await waitPort({ port: hmrPort, host: 'localhost' })
@@ -166,34 +164,19 @@ test(`updates passthrough candidates on add, remove, and re-add`, async ({ page 
     await expect(page.locator('#hybrid-cascade')).toHaveCSS('padding', '21px')
     writeFileSync(tokensPath, originalTokens)
     await expect(page.locator('#hybrid-cascade')).toHaveCSS('padding', '18px')
-
-    const pureTailwindReload = page.waitForEvent('load')
-    writeFileSync(
-      configPath,
-      originalConfig.replace("|| 'tamagui-and-tailwind'", "|| 'tailwind'")
-    )
-    await pureTailwindReload
-    await expect(page.locator('#hybrid-cascade')).toHaveCSS(
-      'background-color',
-      'oklch(0.623 0.214 259.815)'
-    )
-    await expect(page.locator('#hybrid-grid')).toHaveCSS('display', 'grid')
-    const hybridReload = page.waitForEvent('load')
-    writeFileSync(configPath, originalConfig)
-    await hybridReload
   } finally {
     writeFileSync(fixturePath, original)
     writeFileSync(tokensPath, originalTokens)
-    writeFileSync(configPath, originalConfig)
     await killServer(server)
   }
 })
 
 test(`builds to prod same thing`, async ({ page }) => {
-  execSync(
-    'TAMAGUI_INTEGRATION_STYLE_MODE=tamagui bunx vite build --outDir dist-tamagui',
-    { stdio: 'pipe' }
-  )
+  // the same app built through the regular @tamagui/vite-plugin: the CSS difference
+  // below is exactly what @tamagui/tailwind/vite's official Tailwind engine adds
+  execSync('bunx vite build --config vite.config.tamagui.mts --outDir dist-tamagui', {
+    stdio: 'pipe',
+  })
   execSync('bun run build:prod', { stdio: 'pipe' })
   const server = spawnServer('bun', ['run', 'preview', '--port', String(prodPort)])
 

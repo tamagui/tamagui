@@ -22,6 +22,7 @@
     "@tamagui/react-native-svg": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/react-native-web-lite": "workspace:*",
+    "@tamagui/tailwind": "workspace:*",
     "tamagui": "workspace:*"
   },
   "devDependencies": {

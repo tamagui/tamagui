@@ -1,4 +1,4 @@
-import { styled, View } from '@fixture/ui'
+import { styled, View } from '@tamagui/tailwind'
 
 export const StyledFrame = styled(View, 'fixture-base', {
   padding: 8,

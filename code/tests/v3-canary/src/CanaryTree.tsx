@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { TamaguiProvider, Text, View, XStack, YStack } from 'tamagui'
+import { View as TailwindView } from '@tamagui/tailwind'
+import { TamaguiProvider, Text, XStack, YStack } from 'tamagui'
 
 import config from '../tamagui.config'
 import { Button } from './components/Button'
 import { Select } from './components/Select'
 import { Sheet } from './components/Sheet'
-import { CanaryVariantContext } from './imported/CanaryVariantContext'
 import { CrossFileFrame } from './imported/CrossFileFrame'
 
 const fruits = ['apple', 'banana'] as const
@@ -28,33 +28,38 @@ export function CanaryTree() {
           Tamagui v3 integrated canary
         </Text>
 
-        <View testID="canary-claimed" className="bg-canary-token p-4 rounded-4">
+        <TailwindView testID="canary-claimed" className="bg-canary-token p-4 rounded-4">
           <Text color="$white">Claimed Tamagui token classes</Text>
-        </View>
+        </TailwindView>
 
-        <View
+        {/* the claimed candidate becomes a Tamagui atom in @layer tamagui, the
+            passthrough one an official Tailwind utility in @layer utilities, so the
+            Tailwind utility wins the cascade regardless of authored order */}
+        <TailwindView
           testID="canary-cascade"
-          background="$canaryTheme"
-          className="supports-[display:grid]:bg-blue-500"
+          className="bg-canary-token supports-[display:grid]:bg-blue-500"
         >
-          <Text color="$white">Tailwind call-site utility wins the cascade</Text>
-        </View>
+          <Text color="$white">Tailwind passthrough utility wins the cascade</Text>
+        </TailwindView>
 
-        <View
+        <TailwindView
           testID="canary-tailwind"
           data-state="open"
           className="@container grid w-[400px] grid-cols-2 gap-3 data-[state=open]:opacity-75"
         >
           <Text>Tailwind passthrough one</Text>
-          <View
+          <TailwindView
             testID="canary-tailwind-child"
             className="grid grid-cols-1 @[320px]:grid-cols-3"
           />
-        </View>
+        </TailwindView>
 
-        <CanaryVariantContext.Provider tone="accent">
-          <CrossFileFrame testID="canary-cross-file" emphasis="strong" selected />
-        </CanaryVariantContext.Provider>
+        <CrossFileFrame
+          testID="canary-cross-file"
+          tone="accent"
+          emphasis="strong"
+          selected
+        />
 
         <XStack gap="$3" flexWrap="wrap">
           <Button testID="canary-button" onPress={() => setPresses((value) => value + 1)}>

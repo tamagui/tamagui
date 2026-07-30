@@ -1,4 +1,4 @@
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/tailwind/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 

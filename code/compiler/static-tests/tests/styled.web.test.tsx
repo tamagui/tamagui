@@ -39,10 +39,13 @@ describe('styled() tests', () => {
     expect(output.js).toContain('className')
   })
 
+  // the class-string base, string variants, and string compound variants are the
+  // Tailwind frontend's surface: core `styled()` is object-only, and it is the import
+  // that selects which frontend interprets the base
   test('extracts styled static strings with runtime precedence', async () => {
     const output = await extractForWeb(
       dedent`
-      import { styled, View } from '@tamagui/core'
+      import { styled, View } from '@tamagui/tailwind'
 
       const InlineStyled = styled(View, 'p-4 rounded-4', {
         variants: {
@@ -65,7 +68,7 @@ describe('styled() tests', () => {
       {
         options: {
           enableDynamicEvaluation: true,
-          components: ['@tamagui/core'],
+          components: ['@tamagui/core', '@tamagui/tailwind'],
         },
       }
     )

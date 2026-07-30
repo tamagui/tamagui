@@ -373,13 +373,13 @@ export function assertCandidateCorrectness(
     'fixture-base'
   )
   assert.deepEqual(styledDefinition.factory, {
-    specifier: '@fixture/ui',
+    specifier: '@tamagui/tailwind',
     importedName: 'styled',
     resolvedId: '/packages/ui/src/index.ts',
     external: false,
   })
   assert.deepEqual(styledDefinition.base.provenance, {
-    specifier: '@fixture/ui',
+    specifier: '@tamagui/tailwind',
     importedName: 'View',
     resolvedId: '/packages/ui/src/index.ts',
     external: false,

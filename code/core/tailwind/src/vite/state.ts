@@ -25,28 +25,13 @@ export function isTamaguiCoreResetCSS(id: string): boolean {
   )
 }
 
-export function layerTamaguiCoreResetCSS(
-  id: string,
-  css: string,
-  hybridEnabled: boolean
-): string | null {
-  if (!hybridEnabled || !isTamaguiCoreResetCSS(id)) return null
-  return wrapWithTamaguiLayer(css)
-}
-
 const TAILWIND_INPUT = `@layer tamagui, theme, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);`
 
 type TailwindCompiler = Awaited<ReturnType<typeof compile>>
 
-type HybridConfig = GrammarSourceConfig & {
-  settings?: {
-    styleMode?: string
-  }
-}
-
-export type TailwindHybridState = ReturnType<typeof createTailwindHybridState>
+export type TailwindScannerState = ReturnType<typeof createTailwindScannerState>
 
 export type TailwindWatchEvent = 'create' | 'update' | 'delete'
 
@@ -61,7 +46,7 @@ async function assertHostTailwind(root: string): Promise<void> {
     packagePath = requireFromRoot.resolve('tailwindcss/package.json')
   } catch {
     throw new Error(
-      `[tamagui] Hybrid Tailwind mode requires tailwindcss@${TAILWIND_VERSION} in the app. Install it with \`bun add -D tailwindcss@${TAILWIND_VERSION}\` (resolved from ${root}).`
+      `[tamagui] @tamagui/tailwind/vite requires tailwindcss@${TAILWIND_VERSION} in the app. Install it with \`bun add -D tailwindcss@${TAILWIND_VERSION}\` (resolved from ${root}).`
     )
   }
 
@@ -70,16 +55,24 @@ async function assertHostTailwind(root: string): Promise<void> {
   }
   if (packageJSON.version !== TAILWIND_VERSION) {
     throw new Error(
-      `[tamagui] Hybrid Tailwind mode requires tailwindcss@${TAILWIND_VERSION}, but ${packageJSON.version || 'an unknown version'} was resolved from ${packagePath}. Align the app dependency before starting Vite.`
+      `[tamagui] @tamagui/tailwind/vite requires tailwindcss@${TAILWIND_VERSION}, but ${packageJSON.version || 'an unknown version'} was resolved from ${packagePath}. Align the app dependency before starting Vite.`
     )
   }
 }
 
-export function createTailwindHybridState() {
+/**
+ * The official Tailwind scanner and compiler, owned by `@tamagui/tailwind/vite`.
+ *
+ * It compiles only the candidates Tamagui's own grammar does not claim: claimed
+ * candidates already became Tamagui atoms through the shared renderer, so emitting
+ * them again would duplicate the rules and hand the cascade to whichever landed
+ * last. There is no style-mode gate here — the state exists because the app
+ * imported the Tailwind plugin.
+ */
+export function createTailwindScannerState() {
   let root = ''
   let generation = -1
   let enabled = false
-  let layerTamagui = false
   let scanner: Scanner | null = null
   let compiler: TailwindCompiler | null = null
   let grammarConfig = createGrammarConfigView({})
@@ -92,7 +85,6 @@ export function createTailwindHybridState() {
     root = ''
     generation = -1
     enabled = false
-    layerTamagui = false
     scanner = null
     compiler = null
     grammarConfig = createGrammarConfigView({})
@@ -105,14 +97,13 @@ export function createTailwindHybridState() {
   async function configure(
     nextRoot: string,
     nextGeneration: number,
-    config: HybridConfig | null | undefined,
+    config: GrammarSourceConfig | null | undefined,
     onDependency: (file: string) => void,
     onSourceGlob: (glob: string) => void = () => {}
   ): Promise<boolean> {
-    const nextEnabled =
-      config?.settings?.styleMode === 'tailwind' ||
-      config?.settings?.styleMode === 'tamagui-and-tailwind'
-    if (!nextEnabled) {
+    // a null config means Tamagui itself is disabled for this build, and without a
+    // config there is no grammar view to decide which candidates Tamagui owns
+    if (!config) {
       clear()
       generation = nextGeneration
       return false
@@ -131,7 +122,6 @@ export function createTailwindHybridState() {
     root = nextRoot
     generation = nextGeneration
     enabled = true
-    layerTamagui = nextEnabled
     grammarConfig = createGrammarConfigView(config)
     addDependency = onDependency
     scanner = new Scanner({
@@ -220,9 +210,6 @@ export function createTailwindHybridState() {
     get enabled() {
       return enabled
     },
-    get layerTamagui() {
-      return layerTamagui
-    },
     get css() {
       return css
     },
@@ -233,7 +220,7 @@ export function createTailwindHybridState() {
 }
 
 export async function updateTailwindForWatchChange(
-  state: TailwindHybridState,
+  state: TailwindScannerState,
   id: string,
   event: TailwindWatchEvent,
   configure: () => Promise<boolean>

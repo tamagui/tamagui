@@ -1,14 +1,25 @@
-import { afterEach, describe, expect, test } from 'vitest'
-import { mkdir, mkdtemp, realpath, rm, symlink, writeFile } from 'node:fs/promises'
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  realpath,
+  rm,
+  symlink,
+  writeFile,
+} from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
+import { afterEach, describe, expect, test } from 'vitest'
 
+import { tamaguiPlugin } from '../vite'
 import {
-  createTailwindHybridState,
-  layerTamaguiCoreResetCSS,
+  createTailwindScannerState,
+  isTamaguiCoreResetCSS,
+  TAILWIND_RESOLVED_ID,
+  TAILWIND_VIRTUAL_ID,
   updateTailwindForWatchChange,
-} from '../src/tailwind'
+} from '../vite/state'
 
 const temporaryRoots: string[] = []
 const require = createRequire(import.meta.url)
@@ -42,37 +53,14 @@ afterEach(async () => {
   await Promise.all(temporaryRoots.splice(0).map((root) => rm(root, { recursive: true })))
 })
 
-describe('hybrid Tailwind compiler state', () => {
-  test('layers the Tamagui core reset only in hybrid mode', () => {
-    const css = 'button { all: unset; }'
-
-    expect(
-      layerTamaguiCoreResetCSS('/repo/node_modules/@tamagui/core/reset.css', css, true)
-    ).toBe(`@layer tamagui {\n${css}\n}`)
-    expect(
-      layerTamaguiCoreResetCSS('/repo/code/core/core/reset.css?direct', css, true)
-    ).toBe(`@layer tamagui {\n${css}\n}`)
-    expect(
-      layerTamaguiCoreResetCSS('/repo/node_modules/@tamagui/core/reset.css', css, false)
-    ).toBeNull()
-    expect(layerTamaguiCoreResetCSS('/repo/src/reset.css', css, true)).toBeNull()
-  })
-
+describe('the official Tailwind scanner state', () => {
   test('builds only current unclaimed candidates without preflight', async () => {
     const root = await createRoot()
     const sourcePath = path.join(root, 'App.tsx')
     await writeFile(sourcePath, '<View className="p-4 grid grid-cols-2" />')
 
-    const state = createTailwindHybridState()
-    await state.configure(
-      root,
-      0,
-      {
-        settings: { styleMode: 'tamagui-and-tailwind' },
-        tokensParsed: { space: { $4: 16 } },
-      },
-      () => {}
-    )
+    const state = createTailwindScannerState()
+    await state.configure(root, 0, { tokensParsed: { space: { $4: 16 } } }, () => {})
 
     expect(state.css).toContain('.grid')
     expect(state.css).toContain('.grid-cols-2')
@@ -102,30 +90,24 @@ describe('hybrid Tailwind compiler state', () => {
     await writeFile(sourcePath, '<div class="grid-cols-2" />')
     const dependencies: string[] = []
     const sourceGlobs: string[] = []
-    const state = createTailwindHybridState()
+    const state = createTailwindScannerState()
 
-    await state.configure(
-      root,
-      0,
-      { settings: { styleMode: 'tailwind' } },
-      (file) => dependencies.push(file),
-      (glob) => sourceGlobs.push(glob)
-    )
+    const configure = () =>
+      state.configure(
+        root,
+        0,
+        {},
+        (file) => dependencies.push(file),
+        (glob) => sourceGlobs.push(glob)
+      )
+
+    await configure()
 
     expect(dependencies).toContain(await realpath(sourcePath))
     expect(sourceGlobs.length).toBeGreaterThan(0)
     expect(state.css).toContain('.grid-cols-2')
     const normalizedSourcePath = await realpath(sourcePath)
     const registeredGlobCount = sourceGlobs.length
-
-    const configure = () =>
-      state.configure(
-        root,
-        0,
-        { settings: { styleMode: 'tailwind' } },
-        (file) => dependencies.push(file),
-        (glob) => sourceGlobs.push(glob)
-      )
 
     await writeFile(sourcePath, '<div class="grid-cols-3" />')
     expect(
@@ -143,17 +125,60 @@ describe('hybrid Tailwind compiler state', () => {
     expect(state.css).not.toContain('.grid-cols-3')
   })
 
+  test('stays off when Tamagui itself is disabled for the build', async () => {
+    const root = await createRoot()
+    await writeFile(path.join(root, 'App.tsx'), '<View className="grid-cols-2" />')
+    const state = createTailwindScannerState()
+
+    expect(await state.configure(root, 0, null, () => {})).toBe(false)
+    expect(state.enabled).toBe(false)
+    expect(state.css).toBe('')
+  })
+
   test('reports an actionable host Tailwind version mismatch', async () => {
     const root = await createRoot('4.2.0')
-    const state = createTailwindHybridState()
+    const state = createTailwindScannerState()
 
-    await expect(
-      state.configure(
-        root,
-        0,
-        { settings: { styleMode: 'tamagui-and-tailwind' } },
-        () => {}
-      )
-    ).rejects.toThrow(/requires tailwindcss@4\.3\.0.*4\.2\.0/)
+    await expect(state.configure(root, 0, {}, () => {})).rejects.toThrow(
+      /requires tailwindcss@4\.3\.0.*4\.2\.0/
+    )
+  })
+})
+
+describe('the Tailwind Vite plugin', () => {
+  const plugins = tamaguiPlugin() as any[]
+  const plugin = plugins.find((entry) => entry?.name === 'tamagui-tailwind')
+  const clientContext = { environment: { name: 'client' }, addWatchFile() {} }
+
+  test('is added after the base Tamagui compiler plugins', () => {
+    const names = plugins.map((entry) => entry?.name)
+    expect(names).toContain('tamagui')
+    expect(names).toContain('tamagui-compiler')
+    expect(names.indexOf('tamagui-tailwind')).toBe(names.length - 1)
+  })
+
+  test('layers the Tamagui core reset so Tailwind theme and utilities order after it', async () => {
+    const resetPath = require.resolve('@tamagui/core/reset.css')
+    const reset = await readFile(resetPath, 'utf8')
+
+    expect(isTamaguiCoreResetCSS(resetPath)).toBe(true)
+    const transformed = await plugin.transform.handler.call(
+      clientContext,
+      reset,
+      resetPath
+    )
+    expect(transformed.code).toBe(`@layer tamagui {\n${reset}\n}`)
+  })
+
+  test('owns the virtual stylesheet id on the client only', () => {
+    expect(plugin.resolveId.call(clientContext, TAILWIND_VIRTUAL_ID)).toBe(
+      TAILWIND_RESOLVED_ID
+    )
+    expect(
+      plugin.resolveId.call({ environment: { name: 'ssr' } }, TAILWIND_VIRTUAL_ID)
+    ).toBeUndefined()
+    expect(
+      plugin.resolveId.call({ environment: { name: 'ios' } }, TAILWIND_VIRTUAL_ID)
+    ).toBeUndefined()
   })
 })
