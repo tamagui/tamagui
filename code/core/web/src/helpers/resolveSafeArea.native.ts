@@ -1,7 +1,7 @@
 // safe-area value resolution (native).
 //
 // reads insets from the global state set up by @tamagui/native/setup-safe-area
-// (which wires react-native-safe-area-context's initialWindowMetrics into
+// (which keeps react-native-safe-area-context's provider snapshot in
 // globalThis.__tamagui_safe_area__).
 //
 // access is via the global rather than a direct import to avoid a circular

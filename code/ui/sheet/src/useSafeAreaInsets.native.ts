@@ -1,3 +1,4 @@
+import { getSafeArea } from '@tamagui/native'
 import * as React from 'react'
 import { SafeAreaInsetsContext as RNSafeAreaInsetsContext } from 'react-native-safe-area-context'
 
@@ -9,21 +10,27 @@ import type { SafeAreaInsets } from './useSafeAreaInsets'
 export const SafeAreaInsetsContext =
   RNSafeAreaInsetsContext as unknown as React.Context<SafeAreaInsets | null>
 
+const safeArea = getSafeArea()
+const useStoreFeed = safeArea.state.useSafeAreaInsets
+
+function useContextInsets(): SafeAreaInsets | null {
+  return React.useContext(SafeAreaInsetsContext)
+}
+
 /**
- * Live safe-area insets (notch / status bar / home indicator) read from the
- * context the app's SafeAreaProvider provides.
+ * live safe-area insets (notch / status bar / home indicator).
  *
- * Read this in a component BODY that renders inside the provider. The Sheet does
- * exactly that — only its modal CONTENT is teleported out through the portal, so
- * the body still sees the real insets. This is the one read that works in real
- * native bundles:
- *  - `getSafeArea()` (the @tamagui/native abstraction) is frequently NOT enabled
- *    against the instance a component reads, so it returns 0.
- *  - a dynamic `require('react-native-safe-area-context')` throws "Unknown named
- *    module" in metro/rolldown bundles where the package isn't in the importing
- *    module's graph.
- * A static import + context read avoids both.
+ * setup-safe-area installs a context-to-store feed so every store subscriber
+ * sees provider updates. Without that setup, keep the direct context read that
+ * lets Sheet work independently.
  */
 export function useSafeAreaInsets(): SafeAreaInsets | null {
-  return React.useContext(SafeAreaInsetsContext)
+  const contextInsets = (useStoreFeed || useContextInsets)()
+  const storeInsets = React.useSyncExternalStore(
+    safeArea.subscribe,
+    safeArea.getInsets,
+    safeArea.getInsets
+  )
+
+  return useStoreFeed ? storeInsets : contextInsets
 }
