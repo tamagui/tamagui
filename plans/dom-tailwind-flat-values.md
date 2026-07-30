@@ -1549,6 +1549,29 @@ declare that consumers must compile the dependency.
 
 ### Phase 5: introduce flat values
 
+The getSplitStyles wiring decomposes into five lanes, in order (the grammar
+package side of each is already landed on `v3-beta` as of 2026-07-29). The
+existing structure maps cleanly: `classNames` is already keyed per property,
+and the `styleState.style` accumulation with `usedKeys` is the program Map
+with raw values in place of parsed programs.
+
+- W4 first, the bridge: the runtime parse cache module
+  (property+input keyed, cap-and-reset) and the resolver view adapter from
+  `createTamagui` output (token maps and theme keys to one `lookup(name)`
+  with `var()` names for web).
+- W1: program accumulation in styleState — one `contributeProgram` path fed
+  by styled bases, variants, and authored props in the existing forward
+  order; families split before accumulation.
+- W2: web flush — new class names lower and insert as contiguous blocks,
+  repeat names skip lowering entirely; `classNames[longhand] = programClass`.
+- W3: native evaluation with granular subscriptions derived from the union
+  of clause modifiers across accumulated programs.
+- W5: the `legacyConditionObjects` gate in the prop loop, feeding converted
+  clauses through the same `contributeProgram` path.
+
+W1 and W2 are hot-path core surgery and get the closest review; W4 is
+self-contained and precedes them.
+
 1. Implement the universal value parser: CSS component values, top-level
    clause detection, config-first identifier resolution, reserved words.
 2. Implement per-longhand program expansion and the forward program merge.
