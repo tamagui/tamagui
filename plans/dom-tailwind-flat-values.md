@@ -1840,11 +1840,16 @@ values serialize as numbers like native — React and RNW re-suffix px), and
 programs everywhere by default with `false` as the legacy escape hatch.
 Suite assertions that encoded legacy shapes were migrated to program
 shapes with per-case behavioral verification; the media-ordering tests now
-pin the authored-order rule by name. Still legacy behind fallbacks: exotic
-transform parts (skews, 3D), resetting composite shorthands
-(border/outline/font/textDecoration, until their family splits), nested
-platform chains that refuse conversion, and base (unconditional) styles,
-which never went through this machinery. The physical deletion of the
+pin the authored-order rule by name. The border family landed the same
+day (`style-grammar/borderFamily.ts`, the background family's model):
+`border`, the four side shorthands, and `outline` split value-dependently
+into width/style/color true-longhand programs — `border` fans out to all
+twelve side longhands so a later `borderColor` restates exactly the color
+clauses — wired into both the authoring parse cache and the conversion
+path (uncached there; conversion is the compat path). Still legacy behind
+fallbacks: exotic transform parts (skews, 3D), `borderBlock`/`borderInline`
+/`font`/`textDecoration`, nested platform chains that refuse conversion,
+and base (unconditional) styles, which never went through this machinery. The physical deletion of the
 legacy condition paths comes once those fallback categories are converted
 or codemod-eliminated; the bundle/branch-count numbers gate stays.
 
