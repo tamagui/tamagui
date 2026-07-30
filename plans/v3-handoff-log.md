@@ -223,3 +223,15 @@ Status: pending.
 
 Status: pending. These remain proposals until the user approves decisions that
 the design record marks open.
+
+## 10. Decision-24 static fast path
+
+Status: in progress.
+
+- The reproducible per-reason metric landed in `5116482928`. The 2026-07-30
+  kitchen-sink tuple is 2,556 found / 2,029 lowered / 2,016 flattened / 55
+  styled / 527 bailed over 248 usecases with zero compile failures. The 527
+  reasons are 337 components that cannot accept the plain-element path, 116
+  animated candidates, 26 dynamic style values unsafe to extract, 21 runtime
+  event mappings, 16 non-evaluable style values, six unevaluated spreads, and
+  five theme boundaries.
