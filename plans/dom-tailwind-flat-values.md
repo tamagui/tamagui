@@ -896,6 +896,15 @@ requirements on that path:
   development diagnostic naming the setup import. It never silently
   resolves to zero.
 
+Landed 2026-07-29 on `v3-beta`: the safe-area state is a subscribable store
+(`subscribe`/`getInsets`/`hasSafeAreaSetup`), fed by a tracked hook that
+pushes provider context changes into the store, with Sheet consuming it via
+`useSyncExternalStore`. One wiring fact for the variables adoption:
+`react-native-safe-area-context` has no out-of-React subscription, so the
+store only receives rotation updates while some component renders the
+tracked hook — the variables layer must mount one tracker (in the Tamagui
+provider when safe-area setup ran), not assume the store self-updates.
+
 The Tailwind frontend gets `pt-safe-area-top` automatically through token
 naming. Tailwind core has no safe-area utilities (community plugins use
 `pt-safe`); the explicit names are the one spelling here.
