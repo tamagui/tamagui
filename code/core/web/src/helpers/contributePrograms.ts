@@ -15,6 +15,8 @@ import {
   expandToLonghands,
   longhandExpansionTable,
   type LonghandProgram,
+  type ParsedValue,
+  unitlessNumberProperties,
 } from '@tamagui/style-grammar'
 
 import type { GetStyleState } from '../types'
@@ -42,7 +44,10 @@ const slotPatterns: Record<number, Record<number, readonly number[]>> = {
  * Expands a plain geometric shorthand value to its per-longhand values, or
  * null when it cannot be done faithfully (function values, slash syntax).
  */
-function expandShorthandValue(value: unknown, longhands: readonly string[]): unknown[] | null {
+function expandShorthandValue(
+  value: unknown,
+  longhands: readonly string[]
+): unknown[] | null {
   if (typeof value === 'number') {
     return longhands.map(() => value)
   }
@@ -71,6 +76,112 @@ export function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeC
 }
 
 const notedFallbacks = new Set<string>()
+
+const noPlainValue = Symbol()
+
+function displacePlainStyles(
+  styleState: GetStyleState,
+  longhand: string,
+  programs: Map<string, LonghandProgram>,
+  sourceProp: string
+): unknown | typeof noPlainValue {
+  let displaced: unknown | typeof noPlainValue = noPlainValue
+  const style = styleState.style
+  if (style && longhand in style) {
+    displaced = style[longhand]
+    delete style[longhand]
+  }
+
+  const parents = shorthandsContaining[longhand]
+  if (!parents || !style) return displaced
+
+  for (const parent of parents) {
+    if (!(parent in style)) continue
+    const parentValue = style[parent]
+    const siblings = longhandExpansionTable[parent]
+    const perSide = expandShorthandValue(parentValue, siblings)
+    if (!perSide) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          `[tamagui] ${sourceProp} program on "${longhand}" beside the unexpandable "${parent}" style value "${parentValue}": ordering between them is undefined until both use flat values`
+        )
+      }
+      continue
+    }
+
+    const parentImportance = styleState.usedKeys[parent] || 1
+    for (let index = 0; index < siblings.length; index++) {
+      const sibling = siblings[index]
+      if (sibling === longhand) {
+        if (displaced === noPlainValue) displaced = perSide[index]
+        continue
+      }
+      if (programs.has(sibling) || sibling in styleState.usedKeys) continue
+      style[sibling] = perSide[index]
+      styleState.usedKeys[sibling] = parentImportance
+    }
+    delete style[parent]
+    delete styleState.usedKeys[parent]
+  }
+
+  return displaced
+}
+
+function plainValueToPayload(value: unknown, longhand: string): string | null {
+  if (typeof value === 'string') return value
+  if (typeof value !== 'number' || !Number.isFinite(value)) return null
+  return unitlessNumberProperties.has(longhand) ? String(value) : `${value}px`
+}
+
+export function canAppendParsedProgram(styleState: GetStyleState, prop: string): boolean {
+  for (const longhand of expandToLonghands(prop, styleState.conf.shorthands)) {
+    if (styleState.programs?.has(longhand)) continue
+    if (
+      styleState.style &&
+      longhand in styleState.style &&
+      plainValueToPayload(styleState.style[longhand], longhand) === null
+    ) {
+      return false
+    }
+  }
+  return true
+}
+
+/**
+ * Claims every longhand for one parsed contribution. Ordinary flat values
+ * replace the whole program. Converted legacy condition props append clauses
+ * at their authored position and lift an earlier plain value into the base.
+ */
+export function contributeParsedProgram(
+  styleState: GetStyleState,
+  prop: string,
+  value: ParsedValue,
+  sourceProp = prop,
+  appendClauses = false
+): void {
+  const programs = (styleState.programs ||= new Map<string, LonghandProgram>())
+
+  for (const longhand of expandToLonghands(prop, styleState.conf.shorthands)) {
+    const existing = appendClauses ? programs.get(longhand) : undefined
+    const displaced = displacePlainStyles(styleState, longhand, programs, sourceProp)
+
+    let nextValue = value
+    if (appendClauses) {
+      let base = existing?.value.base ?? value.base
+      if (base === null && displaced !== noPlainValue) {
+        base = plainValueToPayload(displaced, longhand)
+      }
+      nextValue = {
+        base,
+        clauses: existing ? [...existing.value.clauses, ...value.clauses] : value.clauses,
+      }
+    }
+
+    programs.delete(longhand)
+    programs.set(longhand, { property: longhand, value: nextValue, sourceProp })
+    styleState.usedKeys[longhand] = 1
+  }
+}
 
 /**
  * Returns true when the value was consumed as programs. False means the caller
@@ -119,55 +230,8 @@ export function contributeStylePrograms(
   }
   if (!hasClauses) return false
 
-  const programs = (styleState.programs ||= new Map<string, LonghandProgram>())
-
   for (const entry of cached.programs) {
-    for (const longhand of expandToLonghands(entry.property)) {
-      // a later contribution replaces the whole program; re-set for map order
-      programs.delete(longhand)
-      programs.set(longhand, { property: longhand, value: entry.value, sourceProp: key })
-
-      // displace the legacy store so one longhand never carries both systems.
-      // usedKeys stays SET at base importance: it marks the program's
-      // ownership, so applyDefaultStyle skips the key and a later equal-
-      // importance write still replaces the program through mergeStyle
-      if (styleState.style && longhand in styleState.style) {
-        delete styleState.style[longhand]
-      }
-      styleState.usedKeys[longhand] = 1
-      const parents = shorthandsContaining[longhand]
-      if (parents && styleState.style) {
-        for (const parent of parents) {
-          if (!(parent in styleState.style)) continue
-          const parentValue = styleState.style[parent]
-          const perSide = expandShorthandValue(parentValue, longhandExpansionTable[parent])
-          if (!perSide) {
-            // cannot expand faithfully (calc(), slash syntax): leave the
-            // shorthand in place — unordered against the program beats
-            // silently dropping the other sides
-            if (process.env.NODE_ENV === 'development') {
-              console.warn(
-                `[tamagui] ${key} program on "${longhand}" beside the unexpandable "${parent}" style value "${parentValue}": ordering between them is undefined until both use flat values`
-              )
-            }
-            continue
-          }
-          const siblings = longhandExpansionTable[parent]
-          const parentImportance = styleState.usedKeys[parent] || 1
-          for (let index = 0; index < siblings.length; index++) {
-            const sibling = siblings[index]
-            // a sibling that any contribution already wrote (or a program
-            // owns) keeps its value: the parent was authored earlier
-            if (sibling === longhand || programs.has(sibling)) continue
-            if (sibling in styleState.usedKeys) continue
-            styleState.style[sibling] = perSide[index]
-            styleState.usedKeys[sibling] = parentImportance
-          }
-          delete styleState.style[parent]
-          delete styleState.usedKeys[parent]
-        }
-      }
-    }
+    contributeParsedProgram(styleState, entry.property, entry.value, key)
   }
 
   return true

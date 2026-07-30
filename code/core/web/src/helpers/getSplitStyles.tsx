@@ -22,6 +22,7 @@ import {
 import {
   borderSideSuffix,
   classifyCandidate,
+  convertLegacyConditionProp,
   createGrammarConfigView,
   decodeArbitrary,
   getTokenCategory,
@@ -81,7 +82,13 @@ import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { propMapper } from './propMapper'
-import { contributeStylePrograms, deleteProgramsForStyleKey } from './contributePrograms'
+import {
+  canAppendParsedProgram,
+  contributeParsedProgram,
+  contributeStylePrograms,
+  deleteProgramsForStyleKey,
+  ensureGrammarContext,
+} from './contributePrograms'
 import { evaluateAccumulatedPrograms } from './evaluateAccumulatedPrograms'
 import { lowerAccumulatedPrograms } from './lowerAccumulatedPrograms'
 import {
@@ -105,6 +112,21 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 const shouldTrackStyleTokenProvenance =
   process.env.NODE_ENV === 'development' &&
   process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
+
+const notedLegacyConditionFallbacks = new Set<string>()
+
+function noteLegacyConditionFallback(key: string, code: string, path: string) {
+  if (process.env.NODE_ENV !== 'development' || notedLegacyConditionFallbacks.has(key)) {
+    return
+  }
+  if (notedLegacyConditionFallbacks.size > 1000) {
+    notedLegacyConditionFallbacks.clear()
+  }
+  notedLegacyConditionFallbacks.add(key)
+  console.info(
+    `[tamagui] ${key} could not be converted to flat value programs (${code} at ${path}); using legacy condition handling`
+  )
+}
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
@@ -1335,11 +1357,56 @@ export const getSplitStyles: StyleSplitter = (
   }
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
+  const legacyConditionObjects = getSetting('legacyConditionObjects') === true
   const orderedProcessedProps = getPropEntriesInForwardOrder(
     processedProps,
     staticConfig.baseStyle,
     staticConfig.compoundVariants
   )
+
+  const contributeLegacyCondition = legacyConditionObjects
+    ? (key: string, value: unknown): boolean => {
+        if (!(
+          process.env.TAMAGUI_TARGET === 'native' ||
+          (process.env.TAMAGUI_TARGET === 'web' && shouldDoClasses)
+        )) {
+          return false
+        }
+
+        const converted = convertLegacyConditionProp(key, value, {
+          registry: ensureGrammarContext(styleState).registry,
+        })
+        if (converted === null) return false
+
+        if (converted.errors.length) {
+          const error = converted.errors[0]
+          noteLegacyConditionFallback(key, error.code, error.path)
+          return false
+        }
+
+        for (const contribution of converted.contributions) {
+          if (!canAppendParsedProgram(styleState, contribution.prop)) {
+            noteLegacyConditionFallback(
+              key,
+              'unsupported-legacy-base',
+              `${key}.${contribution.prop}`
+            )
+            return false
+          }
+        }
+
+        for (const contribution of converted.contributions) {
+          contributeParsedProgram(
+            styleState,
+            contribution.prop,
+            { base: null, clauses: [contribution.clause] },
+            key,
+            true
+          )
+        }
+        return true
+      }
+    : null
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
     if (styleProps.noMergeStyle || !styleProp) return
@@ -1650,6 +1717,10 @@ export const getSplitStyles: StyleSplitter = (
      * for if there's a pseudo/media returned from it.
      */
 
+    if (contributeLegacyCondition?.(keyInit, valInit)) {
+      continue
+    }
+
     let isVariant = !isValidStyleKeyInit && variants && keyInit in variants
 
     const isStyleLikeKey = isValidStyleKeyInit || isVariant
@@ -1835,6 +1906,10 @@ export const getSplitStyles: StyleSplitter = (
           return
         }
         mergeStyle(styleState, key, val, 1, false, originalVal)
+        return
+      }
+
+      if (contributeLegacyCondition?.(key, val)) {
         return
       }
 

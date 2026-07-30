@@ -1310,6 +1310,14 @@ export interface GenericTamaguiSettings {
   styleMode?: StyleMode
 
   /**
+   * Accept deprecated pseudo, theme, platform, media, and group condition
+   * objects by converting them to flat value programs.
+   *
+   * @default false
+   */
+  legacyConditionObjects?: boolean
+
+  /**
    * Define a default font, for better types and default font on Text
    */
   defaultFont?: string

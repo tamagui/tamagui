@@ -341,6 +341,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animationDrivers,
     defaultProps,
     settings: {
+      legacyConditionObjects: false,
       webContainerType: 'inline-size',
       ...configIn.settings,
       defaultSize,
