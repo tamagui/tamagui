@@ -1656,6 +1656,26 @@ with raw values in place of parsed programs.
 W1 and W2 are hot-path core surgery and get the closest review; W4 is
 self-contained and precedes them.
 
+### Hot-path code rules
+
+Everything under getSplitStyles, createComponent, the parser, and the
+evaluators is hot-path and written to these rules, reviewed as part of every
+change there:
+
+- plain `for` loops over iterator methods; no `.map`/`.forEach`/spread in
+  per-render code;
+- no closures allocated per call — module-level functions taking explicit
+  arguments;
+- no fresh objects/Sets per render for data that is static per program or
+  per config: classification, dependency lists, and resolved+lowered output
+  memoize on the program identity and config revision, so a stable program
+  costs one Map hit per render;
+- zero cost when the feature is unused: a component with no flat values
+  pays one property read.
+
+The parse-cost benchmark plus a render-loop benchmark referee changes here;
+claims are measured, never asserted.
+
 ### The engine contraction
 
 The program model is not a layer beside the engine; at cutover it deletes a
