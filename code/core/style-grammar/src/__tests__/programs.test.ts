@@ -12,22 +12,18 @@ const value = (base: string, clauses: ParsedValue['clauses'] = []): ParsedValue 
 })
 
 describe('per-longhand programs', () => {
-  test('a later backgroundColor replaces only the bg color program', () => {
-    const bg = value('surface', [{ modifiers: ['hover'], payload: 'surface-hover' }])
+  test('a later backgroundColor replaces only the pre-split color program', () => {
+    const bgColor = value('surface', [{ modifiers: ['hover'], payload: 'surface-hover' }])
+    const bgImage = value('url(x.png)')
     const color = value('red')
 
     const programs = mergePrograms([
-      { prop: 'bg', value: bg },
+      { prop: 'backgroundColor', value: bgColor },
+      { prop: 'backgroundImage', value: bgImage },
       { prop: 'backgroundColor', value: color },
     ])
 
-    expect([...programs.keys()]).toEqual([
-      'backgroundImage',
-      'backgroundPosition',
-      'backgroundSize',
-      'backgroundRepeat',
-      'backgroundColor',
-    ])
+    expect([...programs.keys()]).toEqual(['backgroundImage', 'backgroundColor'])
     expect(programs.get('backgroundColor')).toEqual({
       property: 'backgroundColor',
       value: color,
@@ -35,8 +31,8 @@ describe('per-longhand programs', () => {
     })
     expect(programs.get('backgroundImage')).toEqual({
       property: 'backgroundImage',
-      value: bg,
-      sourceProp: 'bg',
+      value: bgImage,
+      sourceProp: 'backgroundImage',
     })
   })
 

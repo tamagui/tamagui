@@ -1,3 +1,4 @@
+export * from './backgroundFamily'
 export * from './candidate'
 export * from './config'
 export * from './modifierRegistry'

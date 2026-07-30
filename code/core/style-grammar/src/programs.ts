@@ -8,20 +8,6 @@ export const longhandExpansionTable: Readonly<Record<string, readonly string[]>>
   marginHorizontal: ['marginLeft', 'marginRight'],
   marginVertical: ['marginTop', 'marginBottom'],
   inset: ['top', 'right', 'bottom', 'left'],
-  background: [
-    'backgroundColor',
-    'backgroundImage',
-    'backgroundPosition',
-    'backgroundSize',
-    'backgroundRepeat',
-  ],
-  bg: [
-    'backgroundColor',
-    'backgroundImage',
-    'backgroundPosition',
-    'backgroundSize',
-    'backgroundRepeat',
-  ],
   borderWidth: [
     'borderTopWidth',
     'borderRightWidth',
