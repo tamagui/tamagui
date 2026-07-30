@@ -1639,6 +1639,20 @@ with raw values in place of parsed programs.
 W1 and W2 are hot-path core surgery and get the closest review; W4 is
 self-contained and precedes them.
 
+W1+W2 landed 2026-07-29 (adversarially reviewed, fixes applied same day).
+Staging contract while the migration runs: only clause-bearing string values
+divert to programs, and only where the class flush can express them —
+noClass/animated-inline configurations keep the legacy path untouched until
+W3. Two accepted staging limitations, both resolved by the cutover rather
+than by more machinery: mixing a program with a legacy condition object on
+the SAME longhand (`backgroundColor="red hover:blue"` plus
+`$sm={{ backgroundColor }}`) gives the legacy class the win through its old
+specificity ladder — the codemod never produces that mix, and W5's
+`legacyConditionObjects` gate will warn on it; and the `bg` config shorthand
+expands to `backgroundColor` before the program hook, so the background
+family split (url + color in one value) currently requires authoring
+`background` — the v6 config makes `bg` the family prop itself.
+
 1. Implement the universal value parser: CSS component values, top-level
    clause detection, config-first identifier resolution, reserved words.
 2. Implement per-longhand program expansion and the forward program merge.
