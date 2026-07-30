@@ -3025,6 +3025,12 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
+  // flat value programs accumulated per CSS longhand during the forward pass
+  // (plans/dom-tailwind-flat-values.md "Programs and merging"); lowered to
+  // program-block CSS on web after the pass. later plain-value writes to the
+  // same longhand delete the program and vice versa, so one longhand never has
+  // both systems' output on one element.
+  programs?: Map<string, import('@tamagui/style-grammar').LonghandProgram>
   // Track style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
   // Track original token values (like '$8') before they get resolved to CSS vars

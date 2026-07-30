@@ -81,6 +81,8 @@ import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { propMapper } from './propMapper'
+import { contributeStylePrograms, deleteProgramsForStyleKey } from './contributePrograms'
+import { lowerAccumulatedPrograms } from './lowerAccumulatedPrograms'
 import {
   type PseudoDescriptorKey,
   pseudoDescriptors,
@@ -1785,6 +1787,17 @@ export const getSplitStyles: StyleSplitter = (
         (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
       ) {
+        // flat value programs: a string with a top-level clause contributes
+        // per-longhand programs instead of one plain value. the indexOf check
+        // is exact — every clause contains a colon — and keeps colon-free
+        // values (the overwhelming majority) off the parse cache entirely
+        if (
+          typeof val === 'string' &&
+          val.indexOf(':') !== -1 &&
+          contributeStylePrograms(styleState, key, val)
+        ) {
+          return
+        }
         mergeStyle(styleState, key, val, 1, false, originalVal)
         return
       }
@@ -2468,6 +2481,14 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
+    // flat value programs lower to program-block CSS; insertion dedups by the
+    // hashed class name, and cross-program order is irrelevant by design
+    if (!styleProps.noMergeStyle && shouldDoClasses && styleState.programs?.size) {
+      lowerAccumulatedPrograms(styleState, (styleObject) => {
+        addStyleToInsertRules(rulesToInsert, styleObject)
+      })
+    }
+
     // when noClass is true (inline animation driver) extract non-animatable
     // base styles to atomic CSS classNames so the driver doesn't manage them
     // skip for RNW animation drivers since their AnimatedView doesn't forward classNames
@@ -2747,6 +2768,11 @@ function mergeStyle(
     } else {
       styleState.style ||= {}
       usedKeys[key] = importance
+      if (styleState.programs) {
+        // a later plain value replaces the whole program on every longhand
+        // this key covers, so one longhand never carries both systems
+        deleteProgramsForStyleKey(styleState.programs, key)
+      }
       styleState.style[key] =
         // if you dont do this you'll be passing props.transform arrays directly here and then mutating them
         // if theres any flatTransforms later, causing issues (mutating props is bad, in strict mode styles get borked)

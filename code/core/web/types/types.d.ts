@@ -1712,6 +1712,7 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
+    programs?: Map<string, import('@tamagui/style-grammar').LonghandProgram>;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
     tokenProvenance?: Record<string, string>;
