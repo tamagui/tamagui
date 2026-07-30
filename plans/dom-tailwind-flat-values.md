@@ -772,7 +772,19 @@ per state). Transitions keep working because changing a custom property
 triggers transitions on the property consuming it, so
 `transition: translate 200ms` animates a hover-driven `--t-x` flip; no
 `@property` registration is required for that path. `scaleX`/`scaleY` ride
-the same trick on `scale`.
+the same trick on `scale`, and `scale` itself EXPANDS to both axis programs
+exactly like `padding` expands to four sides: uniform scale is both axes at
+one value, a later `scaleX` replaces just its axis program, and no two
+mechanisms ever write the CSS `scale` property — the collision is
+impossible by construction and forward merge composes correctly. The
+uniform case pays the var indirection; the compiler may emit the direct
+property when it can prove no axis program coexists.
+
+`x` and `y` bind the space token category (numeric config-first resolution,
+`x="4"` is the space token exactly like `p="4"`); a bare non-token number
+is a diagnostic on both platforms, never silently coerced to points or
+degrees, keeping web/native parity. `translate3d` with zero Z decomposes;
+non-zero Z is a diagnostic naming the missing `translateZ`.
 
 Everything else — skews, 3D rotations, `perspective`, `matrix` — belongs to
 the raw `transform` property as one ordinary program. Composition order is
