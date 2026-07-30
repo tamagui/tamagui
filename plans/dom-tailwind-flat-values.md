@@ -81,9 +81,16 @@ boundaries.
     token/variable name wins, otherwise the identifier is literal CSS.
     CSS-wide keywords are reserved and cannot be configured names.
 21. Merging preserves the v1 model, generalized from values to programs. A
-    prop's value expands to one program per contributed CSS longhand; a later
-    contribution to the same longhand replaces that whole program. Clause-level
-    deep merging never happens.
+    prop's value expands to one program per contributed CSS longhand, and
+    within a longhand the merge unit is the CLAUSE, keyed by its exact
+    modifier set (base is the empty set). A later contribution replaces only
+    the clauses whose condition sets it restates; other clauses survive, and
+    new condition sets append after survivors so last-match-wins holds. This
+    is v1's true semantics (`hoverStyle` was a separate prop, so a JSX `bg`
+    override never killed the styled hover) and matches tailwind-merge
+    (`hover:bg-*` is its own conflict group). Revised 2026-07-29 from
+    whole-program replacement, which would have made every call-site base
+    override silently destroy a styled component's state styling.
 22. Configured variables may hold composite values (a full box-shadow list),
     parsed at config time by the same value parser. A variable covers one
     property's value; multi-property presets remain variants and `styled()`.
@@ -736,18 +743,32 @@ program (`url(x.png)`) and a `backgroundColor` program
 (`surface hover:surface-hover`). The established forward pass then applies
 unchanged, over programs:
 
-- A later `backgroundColor="red"` replaces the `backgroundColor` program
-  wholesale, hover clause included, while the `backgroundImage` program
-  survives.
-- A variant's `bg: 'red'` contributes a new `backgroundColor` program at its
-  position in the forward pass and replaces the earlier one.
+- A later `backgroundColor="red"` replaces the `backgroundColor` program's
+  BASE clause; its `hover:` clause and the `backgroundImage` program both
+  survive.
+- A variant's `bg: 'red'` contributes at its position in the forward pass
+  and replaces the clauses it restates, base here.
 - `p="4 sm:6"` followed by `px="2"` expands to four padding longhand
-  programs, and `px` replaces the left and right ones.
+  programs, and `px` replaces the left and right BASE clauses; their `sm:`
+  clauses survive.
 
-Replacement is always whole-program per longhand. Clause-level deep merging
-never happens: preserving a base program's hover behavior under an override
-requires restating the complete program. This keeps styled bases, variants,
-spreads, and JSX overrides predictable.
+Within a longhand, replacement is per clause, keyed by the exact modifier
+set: `styled(View, { bg: 'gray hover:blue' })` overridden at the call site
+with `bg="red"` replaces the base clause and keeps the hover — exactly what
+v1 did with its separate `hoverStyle` prop, and what tailwind-merge does by
+giving `hover:bg-*` its own conflict group. Restating a condition set
+replaces that clause (`bg="red hover:red"` replaces both); a new condition
+set appends after the survivors, so `dark:hover:` authored later beats an
+inherited `hover:` when both match. Wiping inherited conditions requires
+restating them; that is the same trade Tailwind users live with, and design
+systems that need a hard reset expose a variant. The rule is uniform at
+every level — styled base, variant, spread, JSX, `style` prop — no
+level-boundary special cases.
+
+The merged program is still ONE program: one class name hashed from the
+merged clause list, one contiguous block, one native evaluation. Only the
+merge rule is finer than whole-program; the encoding, hashing, and
+evaluator are untouched.
 
 The family expansion table, which records the longhand each kind of value
 contributes to for `bg` and the other multi-property families, is the only
