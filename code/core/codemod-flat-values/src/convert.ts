@@ -587,10 +587,13 @@ function conditionProperties(
   const visit = (object: Record<string, unknown>): void => {
     for (const key in object) {
       const child = object[key]
-      if (child !== null && typeof child === 'object' && !Array.isArray(child)) {
-        if (isLegacyConditionName(key) && resolveLegacyName(key, registry).ok) {
-          visit(child as Record<string, unknown>)
-        }
+      if (
+        child !== null &&
+        typeof child === 'object' &&
+        isLegacyConditionName(key) &&
+        resolveLegacyName(key, registry).ok
+      ) {
+        visit(child as Record<string, unknown>)
         continue
       }
       if (!styleProps.has(key)) continue
