@@ -89,6 +89,69 @@ test('a program displaces a uniform geometric shorthand per longhand', () => {
   expect(result.style?.paddingTop).toBeUndefined()
 })
 
+test('noClass configurations keep the legacy path instead of dropping the value', () => {
+  // S1: only the class flush can express a program; inline/animated drivers
+  // must see the same (raw) value they saw before W1
+  const result = getSplitStyles(
+    { backgroundColor: 'red hover:blue' },
+    View.staticConfig,
+    undefined as any,
+    'light',
+    { unmounted: false } as any,
+    { ...opts, noClass: true }
+  )
+  expect(result.style?.backgroundColor).toBeTruthy()
+  expect(Object.keys(result.rulesToInsert).some((id) => id.startsWith('_bc-'))).toBe(
+    false
+  )
+})
+
+test('a later style prop replaces an earlier program', () => {
+  // S2: the style attribute is an ordinary later contribution and must win
+  const result = split({
+    backgroundColor: 'red hover:blue',
+    style: { backgroundColor: 'green' },
+  })
+  expect(String(result.classNames.backgroundColor ?? '')).not.toMatch(/^_bc-/)
+  expect(Object.keys(result.rulesToInsert).some((id) => id.startsWith('_bc-'))).toBe(
+    false
+  )
+})
+
+test('animatable defaults do not displace a program', () => {
+  // S3: the program marks usedKeys ownership, so applyDefaultStyle skips it
+  const result = getSplitStyles(
+    { opacity: '0.5 hover:1', enterStyle: { opacity: 0 } },
+    View.staticConfig,
+    undefined as any,
+    'light',
+    { unmounted: false } as any,
+    { ...opts, isAnimated: true }
+  )
+  expect(result.classNames.opacity).toMatch(/^_o-/)
+  const rules = rulesFor(result, result.classNames.opacity)
+  expect(rules[0]).toContain('0.5')
+})
+
+test('accept props never route into CSS', () => {
+  // S6: placeholderTextColor-style accept keys are props, not styles
+  const result = getSplitStyles(
+    { placeholderTextColor: 'gray hover:blue' },
+    {
+      ...View.staticConfig,
+      accept: { placeholderTextColor: 'color' },
+    } as any,
+    undefined as any,
+    'light',
+    { unmounted: false } as any,
+    opts
+  )
+  expect(
+    Object.values(result.classNames).some((v) => String(v).startsWith('_ptc-'))
+  ).toBe(false)
+  expect(result.viewProps.placeholderTextColor).toBeTruthy()
+})
+
 test('theme clause lowers to the is-or-within selector', () => {
   const result = split({ backgroundColor: 'red dark:blue' })
   const className = result.classNames.backgroundColor

@@ -1365,6 +1365,11 @@ export const getSplitStyles: StyleSplitter = (
         // An authored style object is one ordinary contribution, not a permanent
         // higher-precedence tier. Reset the key so any later contribution can win.
         styleState.usedKeys[key] = 1
+        if (styleState.programs) {
+          // a later style-prop value replaces any program it covers, same as
+          // mergeStyle
+          deleteProgramsForStyleKey(styleState.programs, key)
+        }
         if (shouldTrackStyleTokenProvenance) {
           // the literal style prop wins at its position: carry its own token
           // provenance forward, and clear a prior token wherever it supplies a
@@ -1397,6 +1402,15 @@ export const getSplitStyles: StyleSplitter = (
     styleState.style = {}
     for (const key of flushedKeys) {
       delete styleState.usedKeys[key]
+    }
+    // programs flush here too: this early flush can be followed by
+    // shouldDoClasses turning off (tailwind className path), which would
+    // otherwise drop them
+    if (styleState.programs?.size) {
+      lowerAccumulatedPrograms(styleState, (styleObject) => {
+        addStyleToInsertRules(rulesToInsert, styleObject)
+      })
+      styleState.programs.clear()
     }
   }
 
@@ -1774,7 +1788,22 @@ export const getSplitStyles: StyleSplitter = (
         console.groupEnd()
       }
 
-      if (val == null) return
+      if (val == null) {
+        if (
+          process.env.NODE_ENV === 'development' &&
+          typeof valInit === 'string' &&
+          valInit[0] === '$' &&
+          valInit.indexOf(':') !== -1
+        ) {
+          // `color="$color hover:blue"` dies in token resolution before the
+          // program hook can see it; the whole-string token lookup fails.
+          // flat clause values use config-first names with no `$`.
+          console.warn(
+            `[tamagui] ${keyInit}="${valInit}" resolved to nothing — flat clause values use config-first names without "$" (try "${valInit.replace(/\$/g, '')}")`
+          )
+        }
+        return
+      }
 
       if (process.env.TAMAGUI_TARGET === 'native') {
         if (key === 'pointerEvents') {
@@ -1790,8 +1819,13 @@ export const getSplitStyles: StyleSplitter = (
         // flat value programs: a string with a top-level clause contributes
         // per-longhand programs instead of one plain value. the indexOf check
         // is exact — every clause contains a colon — and keeps colon-free
-        // values (the overwhelming majority) off the parse cache entirely
+        // values (the overwhelming majority) off the parse cache entirely.
+        // gated on shouldDoClasses because only the class flush can express a
+        // program: noClass/animated-inline configurations keep the legacy path
+        // until native evaluation (lane W3) lands
         if (
+          process.env.TAMAGUI_TARGET === 'web' &&
+          shouldDoClasses &&
           typeof val === 'string' &&
           val.indexOf(':') !== -1 &&
           contributeStylePrograms(styleState, key, val)
@@ -2768,9 +2802,11 @@ function mergeStyle(
     } else {
       styleState.style ||= {}
       usedKeys[key] = importance
-      if (styleState.programs) {
-        // a later plain value replaces the whole program on every longhand
-        // this key covers, so one longhand never carries both systems
+      if (styleState.programs && importance <= 1) {
+        // a later BASE value replaces the whole program on every longhand this
+        // key covers, so one longhand never carries both systems. narrower-
+        // scope writes (pseudo/media importance) are contributions beside the
+        // program, not replacements of it
         deleteProgramsForStyleKey(styleState.programs, key)
       }
       styleState.style[key] =

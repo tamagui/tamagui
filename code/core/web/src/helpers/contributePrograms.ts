@@ -60,6 +60,12 @@ export function contributeStylePrograms(
   // (plan remaining design work item 7)
   if (key in stylePropsTransform || key === 'transform') return false
 
+  // accept-keys are props, not styles (Input's placeholderTextColor): they
+  // must reach the host through mergeStyle's viewProps branch, never CSS
+  if (styleState.staticConfig.accept && key in styleState.staticConfig.accept) {
+    return false
+  }
+
   ensureGrammarContext(styleState)
 
   const cached = getCachedPrograms(key, val)
@@ -68,6 +74,8 @@ export function contributeStylePrograms(
     if (process.env.NODE_ENV === 'development') {
       const noteKey = `${key}\0${val}`
       if (!notedFallbacks.has(noteKey)) {
+        // dynamic colon-bearing values would grow this without bound
+        if (notedFallbacks.size > 1000) notedFallbacks.clear()
         notedFallbacks.add(noteKey)
         console.info(
           `[tamagui] ${key}="${val}" is not a flat value program (${cached.errors[0].code}); passing through unchanged. The V3 flat-value cutover will make this an error.`
@@ -94,11 +102,14 @@ export function contributeStylePrograms(
       programs.delete(longhand)
       programs.set(longhand, { property: longhand, value: entry.value, sourceProp: key })
 
-      // displace the legacy store so one longhand never carries both systems
+      // displace the legacy store so one longhand never carries both systems.
+      // usedKeys stays SET at base importance: it marks the program's
+      // ownership, so applyDefaultStyle skips the key and a later equal-
+      // importance write still replaces the program through mergeStyle
       if (styleState.style && longhand in styleState.style) {
         delete styleState.style[longhand]
-        delete styleState.usedKeys[longhand]
       }
+      styleState.usedKeys[longhand] = 1
       const parents = shorthandsContaining[longhand]
       if (parents && styleState.style) {
         for (const parent of parents) {

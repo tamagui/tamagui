@@ -22,9 +22,20 @@ const warned = new Set<string>()
 
 function warnOnce(key: string, message: string) {
   if (process.env.NODE_ENV === 'development' && !warned.has(key)) {
+    if (warned.size > 1000) warned.clear()
     warned.add(key)
     console.warn(message)
   }
+}
+
+// `$` survives resolution only when the author mixed the legacy token
+// spelling into a clause payload (`hover:$color10`); a `$` in real CSS lives
+// inside strings or urls, which resolution never touches, so a bare one here
+// means invalid CSS is about to ship
+function hasBareTokenPrefix(serialized: string): boolean {
+  const index = serialized.indexOf('$')
+  if (index === -1) return false
+  return !serialized.includes('"') && !serialized.includes("'") && !serialized.includes('url(')
 }
 
 export function lowerAccumulatedPrograms(
@@ -50,7 +61,15 @@ export function lowerAccumulatedPrograms(
         )
         return null
       }
-      return serializePayloadWeb(resolved, context.toVar)
+      const serialized = serializePayloadWeb(resolved, context.toVar)
+      if (hasBareTokenPrefix(serialized)) {
+        warnOnce(
+          `${longhand}\0${payload}\0$`,
+          `[tamagui] ${program.sourceProp}: "${payload}" — flat clause values use config-first names without "$"; dropping this program`
+        )
+        return null
+      }
+      return serialized
     }
 
     let failed = false
