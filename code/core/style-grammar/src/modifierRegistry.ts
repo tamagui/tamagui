@@ -38,16 +38,28 @@ const stateModifierSet: ReadonlySet<string> = new Set(stateModifierNames)
 
 const groupPrefixLength = 'group-'.length
 
+export interface GroupModifier {
+  /** the state the parent group must be in, always a built-in state modifier */
+  state: string
+  /** the group name, or null for the nearest unnamed group */
+  group: string | null
+}
+
 /**
  * Parameterized group modifiers use Tailwind's spelling: `group-hover` for the
  * nearest unnamed group and `group-hover/card` for a named one. The state part
- * must be a built-in state modifier; the name part is an identifier.
+ * must be a built-in state modifier; the name part is an identifier. Returns
+ * null for anything else, which is what makes the spelling a single source of
+ * truth for both registration and lowering.
  */
-function isGroupModifier(name: string): boolean {
-  if (!name.startsWith('group-')) return false
+export function parseGroupModifier(name: string): GroupModifier | null {
+  if (!name.startsWith('group-')) return null
   const slash = name.indexOf('/')
-  if (slash === -1) return stateModifierSet.has(name.slice(groupPrefixLength))
-  if (slash + 1 >= name.length) return false
+  if (slash === -1) {
+    const state = name.slice(groupPrefixLength)
+    return stateModifierSet.has(state) ? { state, group: null } : null
+  }
+  if (slash + 1 >= name.length) return null
   for (let index = slash + 1; index < name.length; index++) {
     const code = name.charCodeAt(index)
     if (
@@ -57,10 +69,11 @@ function isGroupModifier(name: string): boolean {
       code !== 45 && // -
       code !== 95 // _
     ) {
-      return false
+      return null
     }
   }
-  return stateModifierSet.has(name.slice(groupPrefixLength, slash))
+  const state = name.slice(groupPrefixLength, slash)
+  return stateModifierSet.has(state) ? { state, group: name.slice(slash + 1) } : null
 }
 
 function forEachName(source: Names | undefined, visit: (name: string) => void): void {
@@ -90,7 +103,7 @@ export function createModifierRegistry(view: GrammarConfigView): ModifierRegistr
       }
       return
     }
-    if (isGroupModifier(name)) {
+    if (parseGroupModifier(name) !== null) {
       diagnostics.push(
         `modifier "${name}" shadows the group modifier of the same spelling, which can no longer be used as a ${kind} name`
       )
@@ -110,7 +123,7 @@ export function createModifierRegistry(view: GrammarConfigView): ModifierRegistr
       get(name: string): ModifierKind | undefined {
         const kind = names.get(name)
         if (kind !== undefined) return kind
-        return isGroupModifier(name) ? 'group' : undefined
+        return parseGroupModifier(name) !== null ? 'group' : undefined
       },
     },
     diagnostics,
