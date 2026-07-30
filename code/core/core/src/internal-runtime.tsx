@@ -4,31 +4,25 @@
  * applied. Not public API — never reexport it from `@tamagui/core`, `tamagui`, or
  * `@tamagui/tailwind` roots.
  *
- * `TamaguiProvider` and `createTamagui` come from `./runtime`, the module that calls
- * `setupHooks`, and they are the platform-aware versions rather than the shared
- * runtime's raw ones. That real binding is also what keeps the setup module in the
- * built artifact: a bare `import './runtime'` is pruned from the ESM output (every
- * JS module is declared side-effect free), which left the ESM entry running no
- * platform setup while CJS ran it. `runtime.*` is declared side-effectful in
- * `package.json` so downstream bundlers keep it too.
+ * Reading a real binding from `./runtime` keeps the one platform setup module in
+ * the built artifact. A bare side-effect import was pruned from ESM while CJS kept
+ * it. `runtime.*` is also declared side-effectful so downstream bundlers retain it.
+ * The binding stays private so this declaration entry does not pull the regular
+ * provider/config type graph into another frontend.
  */
-export { TamaguiProvider, createTamagui } from './runtime'
+import { createTamagui as platformSetup } from './runtime'
+
+void platformSetup
 
 export {
   STYLE_FRONTEND_PREPROCESSED,
   createFrontendStyled,
   createFrontendViews,
   regularStyleFrontend,
-  setupHooks,
 } from '@tamagui/web/internal-runtime'
 export type {
   FrontendComponent,
   FrontendStaticConfig,
-  StackNonStyleProps,
   StyleFrontend,
   StyleFrontendConfig,
-  TamaguiElement,
-  TamaguiProviderProps,
-  TamaguiTextElement,
-  TextNonStyleProps,
 } from '@tamagui/web/internal-runtime'

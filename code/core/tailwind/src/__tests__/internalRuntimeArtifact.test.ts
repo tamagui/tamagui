@@ -20,6 +20,8 @@ const probe = (kind: 'module' | 'commonjs', source: string) =>
   }).trim()
 
 const expectedHooks = ['getBaseViews', 'setElementProps', 'usePropsTransform']
+const fallbackESM = new URL('../../../core/internal-runtime/index.js', import.meta.url)
+const fallbackCJS = new URL('../../../core/internal-runtime/index.cjs', import.meta.url)
 
 describe('the built @tamagui/core/internal-runtime entry applies platform setup', () => {
   test('the ESM artifact a bundler resolves', () => {
@@ -37,6 +39,28 @@ describe('the built @tamagui/core/internal-runtime entry applies platform setup'
     const installed = probe(
       'commonjs',
       `require('@tamagui/core/internal-runtime')
+       const { hooks } = require('@tamagui/web')
+       console.log(JSON.stringify(Object.keys(hooks).sort()))`
+    )
+
+    expect(JSON.parse(installed)).toEqual(expectedHooks)
+  })
+
+  test('the tracked ESM fallback entry runs the same artifact', () => {
+    const installed = probe(
+      'module',
+      `await import(${JSON.stringify(fallbackESM.href)})
+       const { hooks } = await import('@tamagui/web')
+       console.log(JSON.stringify(Object.keys(hooks).sort()))`
+    )
+
+    expect(JSON.parse(installed)).toEqual(expectedHooks)
+  })
+
+  test('the tracked CJS fallback entry runs the same artifact', () => {
+    const installed = probe(
+      'commonjs',
+      `require(${JSON.stringify(fallbackCJS.pathname)})
        const { hooks } = require('@tamagui/web')
        console.log(JSON.stringify(Object.keys(hooks).sort()))`
     )

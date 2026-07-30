@@ -1,8 +1,8 @@
-import type { TamaguiElement } from '@tamagui/core/internal-runtime'
 import { useRef } from 'react'
 import { describe, test } from 'vitest'
 
 import { Text, View, styled } from '../index'
+import type { TailwindViewElement } from '../types'
 
 /**
  * The `styled.test-d.ts` cases check props by calling components as functions, which
@@ -11,7 +11,7 @@ import { Text, View, styled } from '../index'
  */
 describe('tailwind components in JSX', () => {
   test('className, children, behavior props and refs type', () => {
-    const ref = useRef<TamaguiElement>(null)
+    const ref = useRef<TailwindViewElement>(null)
 
     return (
       <View ref={ref} className="p-4 grid-cols-3" id="account" onPress={() => {}}>

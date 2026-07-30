@@ -20,11 +20,14 @@ import {
   useElementLayout,
 } from '@tamagui/use-element-layout'
 import { createMedia } from '@tamagui/react-native-media-driver'
+import type {
+  TamaguiProviderProps,
+  createTamagui as createTamaguiWebType,
+} from '@tamagui/web'
 import {
   TamaguiProvider as WebTamaguiProvider,
   createTamagui as createTamaguiWeb,
   setupHooks,
-  type TamaguiProviderProps,
 } from '@tamagui/web/internal-runtime'
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
@@ -73,7 +76,7 @@ export const TamaguiProvider = (props: TamaguiProviderProps) => {
 }
 
 // automate using the react native media driver
-export const createTamagui: typeof createTamaguiWeb = (conf) => {
+export const createTamagui: typeof createTamaguiWebType = (conf) => {
   if (!isWeb) {
     if (conf.media) {
       conf.media = createMedia(conf.media)

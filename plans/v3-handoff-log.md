@@ -169,6 +169,16 @@ Status: in progress.
   `@tamagui/tailwind/vite`, the base Vite-plugin extraction, shared config
   loader, compiler/static callers, and integration fixtures. It cannot edit
   the Lane A manifest/runtime/type paths or any protected file.
+- Lane T runtime verification proved the ESM/CJS setup, tracked fallback
+  entries, authored shorthand ordering, and passthrough partition fixes. The
+  declaration-width finding remained open: resolving the shipped Tailwind type
+  entry still loaded regular web `types`, `styled`, `View`, and `Text`
+  declarations. The follow-up narrows the private wrappers and gives the
+  Tailwind frontend its own non-style component surface; a resolver-level graph
+  test now proves those regular declarations are absent. Rebuilt Tailwind gates
+  pass 70 web/type tests and 13 native tests. Core native passes 411 with 7
+  expected failures and 11 skips; the shared core web gate currently has one
+  Lane V config/theme mismatch in `tailwindThemeColor.web.test.tsx`.
 
 ## 3. DOM contract
 
