@@ -70,6 +70,13 @@ Status: in progress.
   reaching the host; and same-key styled/call-site clause merging before
   `mergeComponentProps` discards the styled value. The codemod preserves and
   reports those cases instead of emitting broken source.
+- Exact clause-free handoff for the reserved runtime: once the regular value
+  path is ready to use the universal resolver, remove the
+  `hasClauses`/`return false` short-circuit in `contributePrograms.ts` so a
+  parsed clause-free string contributes its base and resolves configured bare
+  names and numeric strings config-first. This is the gate behind the 1,435
+  waiting corpus sites; changing only `propMapper` would leave two value
+  pipelines and would not satisfy the design.
 - The shared-grammar numeric-token dependency closed in `2dba8e410f`:
   `legacyConditions.ts` now accepts numeric token names such as `$6`, `$8`, and
   `$10`. The corpus is back to 20 genuinely flagged sites rather than the 23
