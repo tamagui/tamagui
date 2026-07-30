@@ -552,6 +552,23 @@ Theme modifiers reuse Tamagui's established theme inheritance rules for
 matching. The flat syntax does not invent a second definition of whether a
 parent theme condition matches a child theme.
 
+Two theme-matching rulings from the W3 review (2026-07-29):
+
+- A theme modifier matches when it is a name-boundary prefix of the active
+  theme: `dark:` matches active `dark_blue`, `dark_blue:` does not match
+  active `dark`. The legacy `$theme-*` check was exactly inverted (clause
+  startsWith active theme, no name boundary, so `darkish` matched `dark`);
+  that was a bug, the new rule is authoritative on both platforms, and the
+  migration guide must note that converted `$theme-*` objects can change
+  meaning in those edge cases.
+- Scheme nesting divergence is pre-existing and accepted: web's descendant
+  matching (legacy `.t_dark .x` and the program encoding's
+  `:where(.t_dark *)` alike) matches an outer `dark` through an inner
+  `light` wrapper, while native matches the component's resolved nearest
+  theme. CSS cannot express nearest-ancestor-wins with classes alone;
+  revisit only if container style queries become baseline enough to carry
+  theme names.
+
 ### Color opacity
 
 Color values take a slash opacity suffix, matching Tailwind:
