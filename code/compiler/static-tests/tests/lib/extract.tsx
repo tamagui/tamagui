@@ -118,5 +118,6 @@ export async function extractForWeb(source: string, opts: ExtractOptions = {}) {
     styles: result.plan.css,
     map: result.output.map,
     stats: result.plan.stats,
+    diagnostics: result.plan.diagnostics,
   }
 }
