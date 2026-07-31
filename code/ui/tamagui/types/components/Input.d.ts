@@ -1,13 +1,13 @@
 import { type GetProps } from '@tamagui/ui';
 export declare const Input: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "autoCapitalize" | "autoCorrect" | "children" | "className" | "color" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "size" | "spellCheck" | "style" | "textAlign" | "textTransform"> & {
-    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    fontStyle?: "italic" | "normal" | "unset" | undefined;
-    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
-    letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
-    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
-    textTransform?: "capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined;
+    color?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
 } & Omit<import("@tamagui/ui").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
     autoCorrect?: boolean | 'on' | 'off';
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
@@ -76,14 +76,14 @@ export declare const Input: import("react").FunctionComponent<Omit<import("@tama
 }>> & {
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "autoCapitalize" | "autoCorrect" | "children" | "className" | "color" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "size" | "spellCheck" | "style" | "textAlign" | "textTransform"> & {
-    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    fontStyle?: "italic" | "normal" | "unset" | undefined;
-    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
-    letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
-    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
-    textTransform?: "capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined;
+    color?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
 } & Omit<import("@tamagui/ui").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
     autoCorrect?: boolean | 'on' | 'off';
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
@@ -145,14 +145,14 @@ export declare const Input: import("react").FunctionComponent<Omit<import("@tama
     } | undefined;
 } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "autoCapitalize" | "autoCorrect" | "children" | "className" | "color" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "size" | "spellCheck" | "style" | "textAlign" | "textTransform"> & {
-        color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-        fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-        fontStyle?: "italic" | "normal" | "unset" | undefined;
-        fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
-        letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
-        textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
-        textTransform?: "capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined;
+        color?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
+        fontFamily?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+        fontSize?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+        textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
     } & Omit<import("@tamagui/ui").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
         autoCorrect?: boolean | 'on' | 'off';
         autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
@@ -203,14 +203,14 @@ export declare const Input: import("react").FunctionComponent<Omit<import("@tama
     } & import("@tamagui/web").StaticConfigPublic];
 };
 export declare const TextArea: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "autoCapitalize" | "autoCorrect" | "children" | "className" | "color" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "size" | "spellCheck" | "style" | "textAlign" | "textTransform"> & {
-    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    fontStyle?: "italic" | "normal" | "unset" | undefined;
-    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
-    letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
-    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
-    textTransform?: "capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined;
+    color?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
 } & Omit<import("@tamagui/ui").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
     autoCorrect?: boolean | 'on' | 'off';
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
@@ -279,14 +279,14 @@ export declare const TextArea: import("react").FunctionComponent<Omit<import("@t
 }>> & {
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "autoCapitalize" | "autoCorrect" | "children" | "className" | "color" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "size" | "spellCheck" | "style" | "textAlign" | "textTransform"> & {
-    color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-    fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-    fontStyle?: "italic" | "normal" | "unset" | undefined;
-    fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
-    letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
-    textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
-    textTransform?: "capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined;
+    color?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
+    fontFamily?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+    fontSize?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+    fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+    fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+    letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+    textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+    textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
 } & Omit<import("@tamagui/ui").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
     autoCorrect?: boolean | 'on' | 'off';
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';
@@ -348,14 +348,14 @@ export declare const TextArea: import("react").FunctionComponent<Omit<import("@t
     } | undefined;
 } & import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("react").InputHTMLAttributes<HTMLInputElement>, "autoCapitalize" | "autoCorrect" | "children" | "className" | "color" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "size" | "spellCheck" | "style" | "textAlign" | "textTransform"> & {
-        color?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-        fontFamily?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined;
-        fontSize?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined;
-        fontStyle?: "italic" | "normal" | "unset" | undefined;
-        fontWeight?: "unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined;
-        letterSpacing?: "unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined;
-        textAlign?: "auto" | "center" | "justify" | "left" | "right" | "unset" | undefined;
-        textTransform?: "capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined;
+        color?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
+        fontFamily?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
+        fontSize?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"fontSize"> | undefined>;
+        fontStyle?: import("@tamagui/web").FlatStyleValue<"italic" | "normal" | "unset" | undefined>;
+        fontWeight?: import("@tamagui/web").FlatStyleValue<"unset" | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | import("@tamagui/ui").GetThemeValueForKey<"fontWeight"> | undefined>;
+        letterSpacing?: import("@tamagui/web").FlatStyleValue<"unset" | import("@tamagui/ui").GetThemeValueForKey<"letterSpacing"> | undefined>;
+        textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
+        textTransform?: import("@tamagui/web").FlatStyleValue<"capitalize" | "lowercase" | "none" | "unset" | "uppercase" | undefined>;
     } & Omit<import("@tamagui/ui").InputNativeProps, "autoCapitalize" | "autoCorrect" | "spellCheck"> & {
         autoCorrect?: boolean | 'on' | 'off';
         autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'off' | 'on';

@@ -13,6 +13,7 @@ export declare const webPropsToSkip: {
     borderTopStyle: boolean;
     contain: boolean;
     containerType: boolean;
+    containerName: boolean;
     content: boolean;
     float: boolean;
     maskBorderMode: boolean;
@@ -58,6 +59,8 @@ export declare const webPropsToSkip: {
     objectPosition: boolean;
     textEmphasis: boolean;
     userSelect: boolean;
+    overflowWrap: boolean;
+    resize: boolean;
     whiteSpace: boolean;
     wordWrap: boolean;
     WebkitBoxOrient: boolean;

@@ -32,6 +32,7 @@ export declare const nonAnimatableStyleProps: {
     borderTopStyle?: boolean | undefined;
     contain?: boolean | undefined;
     containerType?: boolean | undefined;
+    containerName?: boolean | undefined;
     content?: boolean | undefined;
     float?: boolean | undefined;
     maskBorderMode?: boolean | undefined;
@@ -198,6 +199,7 @@ export declare const stylePropsView: {
     borderTopStyle?: boolean | undefined;
     contain?: boolean | undefined;
     containerType?: boolean | undefined;
+    containerName?: boolean | undefined;
     content?: boolean | undefined;
     float?: boolean | undefined;
     maskBorderMode?: boolean | undefined;
@@ -476,6 +478,7 @@ export declare const stylePropsText: {
     borderTopStyle?: boolean | undefined;
     contain?: boolean | undefined;
     containerType?: boolean | undefined;
+    containerName?: boolean | undefined;
     content?: boolean | undefined;
     float?: boolean | undefined;
     maskBorderMode?: boolean | undefined;
@@ -748,6 +751,7 @@ export declare const stylePropsAll: {
     borderTopStyle?: boolean | undefined;
     contain?: boolean | undefined;
     containerType?: boolean | undefined;
+    containerName?: boolean | undefined;
     content?: boolean | undefined;
     float?: boolean | undefined;
     maskBorderMode?: boolean | undefined;
@@ -1030,6 +1034,7 @@ export declare const validStyles: {
     borderTopStyle?: boolean | undefined;
     contain?: boolean | undefined;
     containerType?: boolean | undefined;
+    containerName?: boolean | undefined;
     content?: boolean | undefined;
     float?: boolean | undefined;
     maskBorderMode?: boolean | undefined;
