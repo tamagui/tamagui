@@ -238,6 +238,38 @@ Status: in progress.
   asserted here. Both fixes are pinned against the oracle, not just applied:
   re-adding the reset on native, or dropping the `1em`, each fails the
   conformance suite.
+- The generated strict prop interfaces landed in `22a38e7258`.
+  `scripts/generate-props.ts` emits `src/props.ts` from the tables: one
+  `StrictDOMPropsBase` with everything every tag accepts, eleven element
+  interfaces extending it, a `data-*` index signature, the `AriaRole`,
+  `AutoComplete` and `InputType` unions, and a `StrictDOMPropsByTag` map. A test
+  regenerates the file and fails if the checked-in copy is stale, so it cannot
+  be hand-edited into drift.
+- Two table columns were needed and are additive: `AttributeRow.perTag` carries
+  the per-element type and note for the props that genuinely differ by element
+  (`type` on a button is not `type` on an input; `value` on `li` is a number),
+  and `HTML_INPUT_TYPES` sits beside `NATIVE_INPUT_TYPES` because web accepts
+  all nineteen while native renders nine. Nothing renamed.
+- Type behavior is tested by `tsc`, not asserted: `src/__tests__/props.test-d.ts`
+  runs under `bun run test:types` and every negative case is a
+  `@ts-expect-error`, so the build breaks the moment an error it expects stops
+  happening. It covers element-specific props reaching only their own element,
+  the per-element `value`/`type` narrowings, aria value sets, `data-*`
+  passthrough, capture-phase props being rejected, event payload shapes, and
+  the content model deciding children. Six mutations of `props.ts` were each
+  caught. Note for anyone adding type tests elsewhere: the root `tsconfig.json`
+  excludes `**/__tests__`, and `extends` inherits `exclude`, so a type-test
+  project has to clear it or tsc silently checks nothing. This suite did exactly
+  that for its first run.
+- Type performance, measured rather than assumed, since the plan makes it an
+  acceptance criterion and rejects intersecting React's `HTMLAttributes`.
+  430 typed element usages (43 tags x 10), `tsc --noEmit --diagnostics`,
+  7 runs each: the DOM contract checks in 0.06-0.07s with 1,810 types and
+  **0** generic instantiations; the same file written against React's
+  `JSX.IntrinsicElements` checks in 0.10s flat with 1,580 types and 274
+  instantiations. So the explicit interfaces check about 1.4x faster and
+  instantiate nothing, at the cost of 230 more declared types. Declaration
+  emit is 17.9 KB for `props.d.ts`, 20.5 KB for the package.
 - Open, and blocking nothing yet: `bun.lock` at HEAD does not register
   `code/core/codemod-flat-values`, which is already committed, so
   `bun install --frozen-lockfile` fails at HEAD. The working tree also carries
