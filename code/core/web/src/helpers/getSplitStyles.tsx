@@ -1056,6 +1056,18 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (!isHOC && disablePropMap && !isStyledContextProp && !isMediaOrPseudo) {
+        // a text-only style prop on a non-text host must not leak to the DOM
+        // as an unknown attribute (and RN would silently ignore it). every key
+        // here already failed this host's validity table, so the extra check
+        // only runs on that cold path
+        if (key in stylePropsAll && !isValidStyleKey(key, validStyles, accept)) {
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(
+              `[tamagui] "${key}" is a text style prop and this component is not text — it would render on neither platform. Use a Text-based component, or html.* for raw web elements.`
+            )
+          }
+          return
+        }
         viewProps[key] = val
         return
       }
