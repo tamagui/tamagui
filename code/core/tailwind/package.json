@@ -66,9 +66,11 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "@tamagui/config": "workspace:*",
     "@tamagui/config-default": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/react-native-web-lite": "workspace:*",
+    "@tamagui/to-tailwind": "workspace:*",
     "@tamagui/web": "workspace:*",
     "react": ">=19",
     "typescript": "~5.9.2",

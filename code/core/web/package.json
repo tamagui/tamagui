@@ -72,8 +72,7 @@
     "@tamagui/types": "workspace:*",
     "@tamagui/use-did-finish-ssr": "workspace:*",
     "@tamagui/use-event": "workspace:*",
-    "@tamagui/use-force-update": "workspace:*",
-    "tailwind-merge": "3.6.0"
+    "@tamagui/use-force-update": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
