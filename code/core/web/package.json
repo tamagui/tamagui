@@ -62,6 +62,7 @@
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
+    "@tamagui/dom": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/is-equal-shallow": "workspace:*",
     "@tamagui/native": "workspace:*",

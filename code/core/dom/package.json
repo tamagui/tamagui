@@ -43,6 +43,7 @@
     "clean:build": "tamagui-build clean:build",
     "snapshot:rsd": "bun scripts/extract-rsd-snapshot.ts",
     "generate:props": "bun scripts/generate-props.ts",
+    "bench:native": "bun --preload ./bench/stub-react-native.mjs bench/native-element-cost.mjs",
     "test": "vitest --run src && bun run test:types",
     "test:types": "tsc -p tsconfig.test.json"
   },
