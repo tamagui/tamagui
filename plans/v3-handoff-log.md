@@ -323,11 +323,12 @@ Status: in progress.
   `2e47f650ea` net-added one, so 771 - 9 + 1 = 763 and 55 - 1 = 54. The
   baseline is stale, nothing regressed. Native is 427 passed / 22 files,
   which is the 411 / 21 baseline plus this lane's 16 tests in one new file.
-- Open, and blocking nothing yet: `bun.lock` at HEAD does not register
-  `code/core/codemod-flat-values`, which is already committed, so
-  `bun install --frozen-lockfile` fails at HEAD. The working tree also carries
-  the `@tamagui/config` -> `@tamagui/style-grammar` edge and `@tamagui/dom`.
-  Three lanes, one file: it needs a single coordinated commit.
+- Closed: the `bun.lock` gap this lane raised is fixed. HEAD had no entry for
+  `code/core/codemod-flat-values` despite that package.json being committed, so
+  `bun install --frozen-lockfile` had been failing at HEAD for two days.
+  `46126a42d1` registered the workspace edges, including
+  `@tamagui/web` -> `@tamagui/dom` and the compiler's own edge; verified with
+  `bun install --frozen-lockfile --dry-run`, which now exits 0.
 
 ## 4. Cutover config
 
