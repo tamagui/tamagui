@@ -1,3 +1,4 @@
+import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar'
 import { describe, expect, test } from 'vitest'
 import { tamaguiToTailwind } from '../transform'
 
@@ -513,11 +514,27 @@ describe('tamaguiToTailwind', () => {
       expect(output).toContain('bg-background')
       expect(output).toContain('rounded-[12px]')
       expect(output).toContain('gap-[8px]')
-      expect(output).toContain('hover:bg-backgroundHover')
+      expect(output).toContain('hover:bg-background-hover')
       expect(output).toContain('text-[18px]')
       expect(output).toContain('font-bold')
       // text color maps to the `color-*` utility (v6 `text` is textAlign)
       expect(output).toContain('color-color')
+    })
+
+    test('maps every renamed v6 theme token and retains removed names', () => {
+      for (const [legacyName, v6Name] of Object.entries(v6ThemeNameReplacements)) {
+        expect(tamaguiToTailwind(`<View backgroundColor="$${legacyName}" />`)).toContain(
+          `className="bg-${v6Name}"`
+        )
+        expect(
+          tamaguiToTailwind(`<View backgroundColor="$${legacyName}/50" />`)
+        ).toContain(`className="bg-${v6Name}/50"`)
+      }
+
+      for (const removedName of v6RemovedThemeNames) {
+        const input = `<View backgroundColor="$${removedName}" />`
+        expect(tamaguiToTailwind(input, { renameComponents: false })).toBe(input)
+      }
     })
 
     test('preserves non-tamagui elements', () => {

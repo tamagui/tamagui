@@ -12,6 +12,8 @@ import {
   standaloneValueProps,
   type GrammarConfigView,
   type TokenCategory,
+  v6RemovedThemeNames,
+  v6ThemeNameReplacements,
 } from '@tamagui/style-grammar'
 import { componentToTag } from './maps/componentToTag'
 // CANONICAL default shorthands — a STATIC import (declared dep), ESM+CJS-safe, single owner.
@@ -23,6 +25,16 @@ const traverse = (_traverse as any).default ?? _traverse
 const generate = (_generate as any).default ?? _generate
 
 const defaultShorthands = canonicalShorthands as Record<string, string>
+const removedV6ThemeNames = new Set<string>(v6RemovedThemeNames)
+
+function getV6ThemeName(name: string): string | null {
+  const opacityIndex = name.indexOf('/')
+  const baseName = opacityIndex === -1 ? name : name.slice(0, opacityIndex)
+  if (removedV6ThemeNames.has(baseName)) return null
+  const mapped =
+    v6ThemeNameReplacements[baseName as keyof typeof v6ThemeNameReplacements] ?? baseName
+  return opacityIndex === -1 ? mapped : `${mapped}${name.slice(opacityIndex)}`
+}
 
 function namesToSet(names: GrammarConfigView['mediaNames']): Set<string> {
   if (!names) return new Set()
@@ -91,7 +103,10 @@ function createTransformGrammarConfig(
     tokenNames.color ||= new Set<string>()
     for (const themeName in options.themes) {
       themeNames.add(themeName)
-      addConfigNames(tokenNames.color, options.themes[themeName])
+      for (const name in options.themes[themeName]) {
+        const mapped = getV6ThemeName(name[0] === '$' ? name.slice(1) : name)
+        if (mapped) tokenNames.color.add(mapped)
+      }
     }
   }
   return {
@@ -820,7 +835,12 @@ function formatStringValue(prop: string, value: string): FormattedValue | null {
   // No converter-time token data is needed: padding="$4" → p-4 for every app config.
   if (value.startsWith('$')) {
     if (prop === 'fontWeight') return null
-    return { value: value.slice(1), valueKind: 'token' }
+    const tokenName = value.slice(1)
+    if (getTokenCategory(prop) === 'color') {
+      const mapped = getV6ThemeName(tokenName)
+      return mapped ? { value: mapped, valueKind: 'token' } : null
+    }
+    return { value: tokenName, valueKind: 'token' }
   }
 
   // named font weight (fontWeight only). an unknown weight ("450") → retain (not font-[450]).
