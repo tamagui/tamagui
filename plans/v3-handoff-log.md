@@ -494,3 +494,16 @@ runs): web 763 passed / 1 skipped / 1 todo / 54 files; native 411 passed /
 `e43e37c917` baselines are prior committed cross-lane changes (Lane T removed a
 mode-test workspace file) plus test consolidations above, not silent losses.
 Parse-cost and render-loop benchmarks follow as their own commit.
+
+### Lane E owed follow-ups (recorded 2026-07-31)
+
+- Mixed legacy-vs-program kitchen-sink fixture: one element carrying a program
+  base plus a `legacyConditionObjects: false` pseudo object, computed-style
+  asserted in a real browser. The structural argument for why the cascade
+  cannot flip is in the specificity ruling (legacy tiers all sit above
+  (0,1,0)); this fixture pins it.
+- v3 release notes MUST call out the base-specificity drop: Tamagui base rules
+  fell from `:root .cls` (0,1,1) to `.cls` (0,1,0), so consumer single-class
+  overrides now tie and resolve by stylesheet order (design record, "The
+  program block encoding", consumer-visible consequence note).
+- Parse-cost + render-loop benchmark for the cutover (own commit).

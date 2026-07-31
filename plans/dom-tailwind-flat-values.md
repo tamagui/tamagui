@@ -932,6 +932,19 @@ stylesheets, any remaining react-native-web output) is ordered by cascade
 layers, one `@layer` statement instead of per-rule specificity tricks —
 extending the layer wrapping that tailwind mode already uses today.
 
+Consumer-visible consequence of the flat encoding (landed with the clause-free
+cutover, 2026-07-31): the base rule's specificity dropped from the legacy
+`:root .cls` `(0,1,1)` to `(0,1,0)`, so a consumer's own single-class rule
+(`.my-override { color: red }`) now ties with a Tamagui base rule and resolves
+by stylesheet order instead of always losing. This is deliberate — less
+specificity aggression is the v3 direction, and the end state above (`@layer`
+interop, not yet implemented in the runtime) goes further: layered Tamagui
+rules will lose to unlayered consumer CSS consistently. Until the layer lands,
+the tie is deterministic per app: client-inserted Tamagui rules append to
+Tamagui's own sheet (typically after app stylesheets, so Tamagui wins runtime
+ties), and SSR output order follows the app's CSS import order. This must be
+called out in the v3 release notes as a behavior change.
+
 Inline `style` and dynamic non-string values keep their existing paths: the
 style attribute outranks any class, and dynamic payloads resolve through the
 runtime parser cache, not through new CSS.
