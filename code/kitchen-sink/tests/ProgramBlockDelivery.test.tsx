@@ -77,14 +77,14 @@ test('the shared program is one class, carrying one block, after both arrivals',
     const early = document.querySelector('[data-testid="early-shared"]')!
     const late = document.querySelector('[data-testid="late-shared"]')!
     const classOf = (element: Element) =>
-      [...element.classList].filter((name) => name.startsWith('_bc-'))
+      Array.from(element.classList).filter((name) => name.startsWith('_bc-'))
     const background = classOf(early)
     // count how many rules in the document target that class, across every
     // sheet, so a re-inserted duplicate block would show up as extra rules
-    const ruleCount = [...document.styleSheets]
+    const ruleCount = Array.from(document.styleSheets)
       .flatMap((sheet) => {
         try {
-          return [...sheet.cssRules]
+          return Array.from(sheet.cssRules)
         } catch {
           return []
         }

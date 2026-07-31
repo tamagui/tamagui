@@ -1,5 +1,5 @@
 import { type ComponentType, useState } from 'react'
-import { Button, View, YStack } from 'tamagui'
+import { Button, Text, View, YStack } from 'tamagui'
 
 /**
  * Program block delivery under code splitting.
@@ -26,13 +26,16 @@ export function ProgramBlockDeliveryCase() {
         height={80}
         backgroundColor="rgb(10, 20, 30) hover:rgb(40, 50, 60)"
       />
-      <View
+      {/* a second early element carrying a different program, so the test can
+          tell "nothing moved" from "the one thing I looked at did not move".
+          Text rather than View because color is a text style prop */}
+      <Text
         data-testid="early-only"
-        width={80}
-        height={80}
         backgroundColor="rgb(150, 150, 150)"
         color="rgb(70, 80, 90) hover:rgb(100, 110, 120)"
-      />
+      >
+        early
+      </Text>
 
       <Button
         data-testid="load-late"
