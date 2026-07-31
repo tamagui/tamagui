@@ -5,6 +5,7 @@ import {
   diagnoseStyleValue,
   grammarEntries,
   parseValue,
+  splitGeometricShorthandValue,
   type GrammarConfigView,
   validatePayloadShape,
 } from '@tamagui/style-grammar'
@@ -133,35 +134,61 @@ export const validFlatValues: Rule.RuleModule = {
       const parsed = parseValue(value, registry)
       if (!parsed.ok) return
       const targetProperty = config.shorthands?.[property] || property
-      const { base, clauses } = parsed.value
-      let hasPayloadShapeDiagnostic = false
-      if (base !== null) {
-        const diagnostic = validatePayloadShape(targetProperty, base, true)
-        if (diagnostic) {
-          hasPayloadShapeDiagnostic = true
-          context.report({
-            node,
-            messageId: 'invalidFlatValue',
-            data: { message: diagnostic.message },
+      const geometric = splitGeometricShorthandValue(targetProperty, parsed.value)
+      const programs =
+        geometric && geometric.errors.length === 0
+          ? geometric.entries
+          : [{ property: targetProperty, value: parsed.value }]
+      let hasProgramDiagnostic = false
+      for (const program of programs) {
+        const { base, clauses } = program.value
+        for (const payload of [
+          ...(base === null ? [] : [base]),
+          ...clauses.map((clause) => clause.payload),
+        ]) {
+          const slotDiagnostics = diagnoseStyleValue(program.property, payload, {
+            config,
+            registry,
+            candidates,
           })
+          for (const diagnostic of slotDiagnostics) {
+            if (diagnostic.code !== 'candidate-property-mismatch') continue
+            hasProgramDiagnostic = true
+            context.report({
+              node,
+              messageId: 'invalidFlatValue',
+              data: { message: diagnostic.message },
+            })
+          }
+        }
+        if (base !== null) {
+          const diagnostic = validatePayloadShape(program.property, base, true)
+          if (diagnostic) {
+            hasProgramDiagnostic = true
+            context.report({
+              node,
+              messageId: 'invalidFlatValue',
+              data: { message: diagnostic.message },
+            })
+          }
+        }
+        for (const clause of clauses) {
+          const diagnostic = validatePayloadShape(
+            program.property,
+            clause.payload,
+            base !== null
+          )
+          if (diagnostic) {
+            hasProgramDiagnostic = true
+            context.report({
+              node,
+              messageId: 'invalidFlatValue',
+              data: { message: diagnostic.message },
+            })
+          }
         }
       }
-      for (const clause of clauses) {
-        const diagnostic = validatePayloadShape(
-          targetProperty,
-          clause.payload,
-          base !== null
-        )
-        if (diagnostic) {
-          hasPayloadShapeDiagnostic = true
-          context.report({
-            node,
-            messageId: 'invalidFlatValue',
-            data: { message: diagnostic.message },
-          })
-        }
-      }
-      if (hasPayloadShapeDiagnostic) return
+      if (hasProgramDiagnostic) return
 
       const formatted = canonicalizeStyleValue(value, registry)
       if (!formatted.ok || formatted.value === value) return

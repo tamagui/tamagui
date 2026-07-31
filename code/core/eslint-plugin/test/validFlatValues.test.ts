@@ -64,6 +64,8 @@ describe('valid-flat-values', () => {
       '"backgroundHover" is not a v6 built-in name; use "background-hover"',
       '"backgroundActive" was removed from the v6 built-in theme vocabulary',
       '"green red" holds 2 values but "backgroundColor" takes one. A value written after a conditional joins that conditional\'s payload — write the base value before the first conditional.',
+      '"red" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "color", not "paddingRight"',
+      '"red" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "color", not "paddingLeft"',
     ])
     expect(result.messages.every(({ fix }) => fix === undefined)).toBe(true)
   })

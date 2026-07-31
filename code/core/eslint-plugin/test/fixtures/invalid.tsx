@@ -12,6 +12,7 @@ export function InvalidFlatValues() {
       <Text color="$backgroundHover" />
       <View bg="$backgroundActive" />
       <View bg="sm:green red" />
+      <View p="4 red" />
       <Frame />
     </>
   )
