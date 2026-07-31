@@ -137,11 +137,9 @@ function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
 
   // reduce down to usable, smaller json
 
-  // slim themes, add name
+  // slim themes
   for (const key in themes) {
     const theme = themes[key]
-    // @ts-ignore
-    theme.id = key
     for (const tkey in theme) {
       theme[tkey] = getVariableValue(theme[tkey])
     }
