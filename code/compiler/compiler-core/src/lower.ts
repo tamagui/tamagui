@@ -54,6 +54,7 @@ export type LoweringCandidateResult =
       css: string[]
       imports: CandidateImport[]
       dependencies?: ResolvedModuleId[]
+      diagnostics?: BailoutReason[]
       flattened?: boolean
     }
   | { ok: false; bailout: BailoutReason }
@@ -326,6 +327,7 @@ export function lowerModule({
       continue
     }
 
+    diagnostics.push(...(result.diagnostics ?? []))
     edits.push(...result.edits)
     css.push(...result.css)
     for (const candidateImport of result.imports) {

@@ -36,6 +36,7 @@ export type LoweringCandidateResult = {
     css: string[];
     imports: CandidateImport[];
     dependencies?: ResolvedModuleId[];
+    diagnostics?: BailoutReason[];
     flattened?: boolean;
 } | {
     ok: false;
