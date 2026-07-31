@@ -601,3 +601,34 @@ Status: complete; report-only posture unchanged.
   typecheck green, and the default corpus 1,753/1,753/0/0 with 38 legacy
   transition values and two structured-native values retained only in the
   separate migration inventory.
+
+## 12. Tailwind descriptor cut, protected-file half (Lane E)
+
+Status: landed (this commit). `createComponent` reads the immutable
+`styleFrontend` descriptor from static config and calls its `preprocessProps`
+once at the hoisted location before `useComponentState`; components without a
+descriptor pay one property read. `getSplitStyles` dispatches static
+normalization through `styleFrontend.normalizeStaticConfig`, honors the
+unified `STYLE_FRONTEND_PREPROCESSED` marker (the old `STYLE_MODE_PREPROCESSED`
+is gone, so props cannot be tokenized twice), and the unknown-class
+cascade-preserving switch (`flushForwardStylesToClasses()` +
+`shouldDoClasses = false`) is now gated on the descriptor instead of the
+global mode. Physically deleted from `getSplitStyles`: `isTailwindModeEnabled`,
+the class-plan cache, `preprocessTailwindClassName`, `parseStaticStyle`,
+`normalizeStaticConfigStyles`, `preprocessStyleModeProps`,
+`preprocessFlatProps`, `parseFlatModifierProp`, `tailwindClassToFlatProp`,
+`tailwindSizingValue`, and the `tailwind-merge` import. Core `className` is
+raw interop only.
+
+Expected red until the Tailwind-isolation remainder lands (routed to that
+lane, same window): the styleMode-era core-test files
+(`tailwind*.web/native.test.tsx`, `flatGroupSyntax.web.test.tsx`, the
+class-string-styled tests inside `compoundVariants.*.test.tsx` which also
+import the deleted `normalizeStaticConfigStyles`), the
+`settings.styleMode` public type, the `tailwind-merge` dependency entry in
+`@tamagui/web`, and one assertion in the tailwind package's
+`frontend.web.test.tsx` ("unknown class passed through verbatim") that pinned
+the pre-cut gap where package components missed the cascade switch. Suites
+outside that set: web 501 passed with all 262 failures inside the named
+files; native 266 passed with all 161 failures inside the named files;
+tailwind package 73/74 with the one named assertion.
