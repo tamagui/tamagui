@@ -376,9 +376,7 @@ const Card = styled(View, { group: 'card' })
     // this is the only declaration of the group in the file, but no JSX ancestry
     // shows it wrapping the consumer, so the placement is the human's call
     expect(codes(card)).toEqual(['unproven-container-group'])
-    // core does not forward containerName yet, so the named query is not silently
-    // presented as working
-    expect(pendingCodes(card)).toEqual(['container-name-not-wired'])
+    expect(pendingCodes(card)).toEqual([])
 
     expect(codes(inner)).toEqual([])
     expect(programs(inner)).toEqual({

@@ -1177,13 +1177,6 @@ function containerExtras(site: Site, declaration: Node, index: number): void {
   site.legacy = true
   site.extras.push({ index, text })
   if (target.flag !== null) addFlag(site.flags, target.flag.code, target.flag.detail)
-  if (name !== null) {
-    addFlag(
-      site.pending,
-      'container-name-not-wired',
-      `the "@…/${name}" query this migration emits needs containerName to reach the host, which core does not do yet`
-    )
-  }
   addNote(
     site,
     `a descendant uses a legacy container-size condition on this group, so it declares a query container`

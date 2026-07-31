@@ -81,7 +81,7 @@ inside it stays exactly where it was authored and orders the merge like any othe
 spread. An unconvertible nested condition counts every longhand under it, at any
 depth, as something its member can still set.
 
-## What it will not convert yet
+## Apply mode
 
 Clause-free tokens now become base-only programs: `p="$4"` becomes `p="4"` and
 resolves config-first through the same flat engine as a value with modifiers.
@@ -90,14 +90,8 @@ resolved through the size scale, while flat `4` resolves through the space scale
 If a custom config gives those scales different values, the rendered offset changes
 by design and those rows need review during migration.
 
-`containerName` does not reach the host yet, so the named container query this
-migration emits (`@max-md/card:`) has nothing to match. Those sites carry
-`container-name-not-wired`.
-
-This tool still has no apply/write mode. Applying today's output requires the
-container-name host wiring above, plus same-key clause merge across `mergeComponentProps`
-(a call-site `bg="red"` currently replaces a styled `bg: 'gray hover:blue'` whole,
-which decision 21 says it must not).
+All three runtime gates are closed. This tool remains report-only until users approve
+an apply/write mode; runtime support no longer blocks it.
 
 Values belonging to another migration are listed separately and left untouched:
 `legacy-transition-value` (the v1 animation config shapes), `structured-native-value`
