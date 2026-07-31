@@ -249,6 +249,8 @@ export const LocationNotification = BentoComponentStub
     }),
 
     one({
+      native: false,
+
       setupFile: {
         server: './setup.server.ts',
       },
