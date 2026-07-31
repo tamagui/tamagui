@@ -992,6 +992,17 @@ renamed RN keys itself. A new native structured form (an RN object format, a
 renamed key) gets its parse added at the evaluator's post-evaluation step,
 not at whatever call site first needs it.
 
+Companion rule for what those parsers accept (2026-07-31): **match RN exactly
+where we parse, and where we decline, decline into RN's hands rather than
+into garbage.** The authority is React Native's own parsing code at the
+pinned version, never the CSS spec and never intuition — being looser than
+the platform is the same error as being tighter, inverted. Where our parser
+is narrower than RN, the decline path must land somewhere that can still
+handle the value (the raw string passing through to RN's own parser), never
+in a half-parsed shape RN reads wrong. parseNativeStyle carries RN's literal
+regexes with citations so an RN upgrade updates them by diff, not by
+paraphrase.
+
 ## Value variables
 
 This is not a new system. It is the existing V3 variables system, reached

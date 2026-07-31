@@ -67,9 +67,23 @@ function parseBackgroundImage(css: string, tokenMap?: TokenMap): any[] | undefin
     if (!stopParts) continue
     const colorRaw = stopParts[0]
     const color = resolveColor(colorRaw, tokenMap)
-    const positions = stopParts.slice(1)
     const stop: any = { color }
-    if (positions.length > 0) {
+    if (stopParts.length > 1) {
+      // RN's object path accepts a position as a NUMBER (points) or a string
+      // ending in % — mirroring its own getPositionFromCSSValue: px becomes
+      // parseFloat points, % stays a string, and any other unit invalidates
+      // the whole parse so the string declines into RN's own parser
+      const positions: (number | string)[] = []
+      for (let p = 1; p < stopParts.length; p++) {
+        const raw = stopParts[p]
+        if (/px$/i.test(raw)) {
+          positions.push(Number.parseFloat(raw))
+        } else if (raw.endsWith('%')) {
+          positions.push(raw)
+        } else {
+          return undefined
+        }
+      }
       stop.positions = positions
     }
     colorStops.push(stop)

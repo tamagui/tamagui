@@ -1513,3 +1513,17 @@ spans, `compilerHost.ts:195`) is scoped, not fixed, per the manager:
   found/lowered/flattened, bailed unchanged) — the pinned totals in
   `bailoutMetric.web.test.tsx` need that rebaseline from whoever added the
   usecase; my changes moved nothing (bailed identical, no new reason lines).
+
+### RN-internals pins to re-check on any React Native upgrade (Lane E)
+
+`code/core/web/src/helpers/parseNativeStyle.ts` now carries React Native's
+OWN acceptance grammar, copied verbatim with citations, at the pinned 0.83.2:
+the linear-gradient angle and direction regexes and the position rule
+(px -> numeric points, % -> string, anything else invalidates) from
+`react-native/Libraries/StyleSheet/processBackgroundImage.js`, and the
+deliberate lowercase-exact `inset` match agreeing with `processBoxShadow.js`.
+Matching the platform exactly beats approximating it, and it makes these a
+pinned dependency on RN internals: whoever bumps React Native diffs those two
+files against our copies. The decline rule (design record, parse-order
+section): where we decline, the raw string flows through to RN's own parser —
+verify that fallthrough still exists after any parser change.

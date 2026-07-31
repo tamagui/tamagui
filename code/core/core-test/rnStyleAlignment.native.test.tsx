@@ -212,6 +212,31 @@ describe('conditional (program) values reach the same RN formats', () => {
   })
 })
 
+describe('gradient position grammar', () => {
+  test('px positions normalize to numeric points, percents stay strings', () => {
+    // sourced from RN's own getPositionFromCSSValue (processBackgroundImage.js):
+    // px -> parseFloat number; % -> string; anything else invalidates the
+    // gradient. RN's object path accepts numbers or %-strings only
+    const result = getSplitStylesFor({
+      backgroundImage: 'linear-gradient(to bottom, red 100px, blue 50%)',
+    })
+    const gradient = (result.style as any)?.experimental_backgroundImage?.[0]
+    expect(gradient?.colorStops).toEqual([
+      { color: 'red', positions: [100] },
+      { color: 'blue', positions: ['50%'] },
+    ])
+  })
+
+  test('a position unit RN cannot read declines the parse into RN\'s hands', () => {
+    const result = getSplitStylesFor({
+      backgroundImage: 'linear-gradient(to bottom, red 2em, blue)',
+    })
+    // no half-parsed object: the string passes through untouched for RN's own
+    // parser to reject, never a shape RN reads wrong
+    expect((result.style as any)?.experimental_backgroundImage).toBeUndefined()
+  })
+})
+
 describe('gradient direction grammar', () => {
   test('gradient directions accept the forms RN 0.83 accepts', () => {
     // sourced from react-native/Libraries/StyleSheet/processBackgroundImage.js:
