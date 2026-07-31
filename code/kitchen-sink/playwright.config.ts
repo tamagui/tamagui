@@ -59,6 +59,16 @@ export default defineConfig({
       testMatch: '**/RemoveScroll.test.{ts,tsx}',
       metadata: { animationDriver: 'native' },
     },
+    // the program block encoding rests on equal specificity through `:where()`
+    // and source order deciding the cascade. That was only ever validated in
+    // Chromium, and it is exactly the kind of thing a second engine can differ
+    // on, so the program tests run under WebKit too.
+    {
+      name: 'webkit-programs',
+      use: { ...devices['Desktop Safari'] },
+      testMatch: '**/{ProgramCascade,ProgramBlockDelivery}.test.{ts,tsx}',
+      metadata: { animationDriver: 'native' },
+    },
     {
       name: 'webkit-select-native',
       use: { ...devices['Desktop Safari'] },

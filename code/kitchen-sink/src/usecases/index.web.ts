@@ -113,6 +113,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./FieldValidatedSignupCase').FieldValidatedSignupCase,
   FlatValueProgramsCase: () => require('./FlatValueProgramsCase').FlatValueProgramsCase,
   FontLanguageSwapCase: () => require('./FontLanguageSwapCase').FontLanguageSwapCase,
+  ProgramCascadeCase: () => require('./ProgramCascadeCase').ProgramCascadeCase,
   ProgramBlockDeliveryCase: () =>
     require('./ProgramBlockDeliveryCase').ProgramBlockDeliveryCase,
   FormButtonTypeCase: () => require('./FormButtonTypeCase').FormButtonTypeCase,
