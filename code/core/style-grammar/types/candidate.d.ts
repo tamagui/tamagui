@@ -6,6 +6,13 @@ export interface GrammarConfigView {
 	themeNames?: Names;
 	platformNames?: Names;
 	tokenNames?: Partial<Record<TokenCategory, Names>>;
+	/**
+	* the media keys that measure a size, so `@key:` is a meaningful container
+	* query. derived by createGrammarConfigView when the media input carries
+	* query information; absent means UNKNOWN, and the modifier registry then
+	* refuses container claims with a diagnostic rather than over-claiming
+	*/
+	containerSizeNames?: readonly string[];
 }
 export interface ParsedCandidate {
 	candidate: string;

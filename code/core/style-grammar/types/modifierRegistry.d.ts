@@ -13,8 +13,10 @@ export interface CreateModifierRegistryOptions {
 	* `@container (hover: none)` is valid syntax with no meaning, so those keys have
 	* no `@` form.
 	*
-	* Omit it and every media name stays eligible, which is what callers relied on
-	* before container narrowing. The web adapter always provides it.
+	* Overrides the view's derived `containerSizeNames`. When NEITHER is
+	* supplied the sizes are unknown: no container modifier registers and a
+	* diagnostic says so — an unknowable set refuses rather than over-claims.
+	* A caller with genuinely no container concept passes `[]` explicitly.
 	*/
 	containerSizeNames?: Names;
 }

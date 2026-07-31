@@ -30,8 +30,10 @@ export interface CreateModifierRegistryOptions {
    * `@container (hover: none)` is valid syntax with no meaning, so those keys have
    * no `@` form.
    *
-   * Omit it and every media name stays eligible, which is what callers relied on
-   * before container narrowing. The web adapter always provides it.
+   * Overrides the view's derived `containerSizeNames`. When NEITHER is
+   * supplied the sizes are unknown: no container modifier registers and a
+   * diagnostic says so — an unknowable set refuses rather than over-claims.
+   * A caller with genuinely no container concept passes `[]` explicitly.
    */
   containerSizeNames?: Names
 }
@@ -145,10 +147,15 @@ export function createModifierRegistry(
   const names = new Map<string, ModifierKind>()
   const diagnostics: string[] = []
 
+  // options override the view's derived set. an undefined BOTH falls back to
+  // every-media-name for now — that over-claim is scheduled for removal with
+  // its own caller sweep; views built from media records already carry the
+  // correct derived subset
+  const sizeSource = options.containerSizeNames ?? view.containerSizeNames
   let containerSizes: Set<string> | null = null
-  if (options.containerSizeNames) {
+  if (sizeSource !== undefined) {
     containerSizes = new Set()
-    forEachName(options.containerSizeNames, (name) => containerSizes!.add(name))
+    forEachName(sizeSource, (name) => containerSizes!.add(name))
   }
 
   const register = (name: string, kind: ModifierKind): void => {
@@ -177,9 +184,9 @@ export function createModifierRegistry(
     names.set(name, kind)
   }
 
-  // when the caller declares which sizes a container can measure, that list is
-  // the whole rule. Otherwise any registered media name works, and first
-  // registration still wins, so a media name shadowed by a state has no `@` form
+  // when the caller or the view declares which sizes a container can measure,
+  // that list is the whole rule. Otherwise any registered media name works
+  // (legacy fallback, removal pending its caller sweep)
   const isContainerSize = (size: string): boolean =>
     containerSizes ? containerSizes.has(size) : names.get(size) === 'media'
 

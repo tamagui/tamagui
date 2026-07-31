@@ -25,6 +25,31 @@ export type GrammarSourceConfig = {
 
 export type CreateGrammarConfigViewOptions = {
   platformNames?: Names
+  /** overrides the derived container size set (the web adapter's resolved set) */
+  containerSizeNames?: readonly string[]
+}
+
+/**
+ * The one owner of "does this media query measure a size". A `hover` or
+ * `pointer` key measures nothing a container has, so it gets no `@` form.
+ * Accepts the query TEXT (`(min-width: 900px)`) or the config's media OBJECT
+ * (`{ minWidth: 900 }`) — both spellings of the same fact.
+ */
+export function isContainerSizeQuery(query: unknown): boolean {
+  if (typeof query === 'string') {
+    return (
+      query.includes('width') ||
+      query.includes('height') ||
+      query.includes('inline-size') ||
+      query.includes('block-size')
+    )
+  }
+  if (query && typeof query === 'object') {
+    for (const key in query as Readonly<Record<string, unknown>>) {
+      if (/width|height|size/i.test(key)) return true
+    }
+  }
+  return false
 }
 
 export const grammarPlatformNames: ReadonlySet<string> = new Set([
@@ -101,11 +126,31 @@ export function createGrammarConfigView(
     addNames(tokenNames.letterSpacing, font?.letterSpacing)
   }
 
+  // container size derivation needs query information, which only the
+  // record form of `media` carries (values are media objects or query text).
+  // a bare name list stays undefined = unknown, and the modifier registry
+  // refuses container claims for it rather than guessing
+  let containerSizeNames = options.containerSizeNames
+  if (
+    containerSizeNames === undefined &&
+    config.media &&
+    !Array.isArray(config.media) &&
+    !(config.media instanceof Set)
+  ) {
+    const derived: string[] = []
+    const media = config.media as Readonly<Record<string, unknown>>
+    for (const key in media) {
+      if (isContainerSizeQuery(media[key])) derived.push(key)
+    }
+    containerSizeNames = derived
+  }
+
   return {
     shorthands: config.shorthands,
     mediaNames: config.media,
     themeNames: config.themes,
     platformNames: options.platformNames ?? grammarPlatformNames,
     tokenNames,
+    containerSizeNames,
   }
 }

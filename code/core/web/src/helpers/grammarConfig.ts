@@ -23,6 +23,7 @@ import {
   createGrammarConfigView,
   createModifierRegistry,
   getTokenCategory,
+  isContainerSizeQuery,
   resolveCandidateTarget,
   type ModifierRegistryView,
   type ReferenceKind,
@@ -479,7 +480,7 @@ function resolveContainerQueries(
 } {
   const derived: Record<string, string> = {}
   for (const key in mediaQueries) {
-    if (isSizeQuery(mediaQueries[key])) derived[key] = mediaQueries[key]
+    if (isContainerSizeQuery(mediaQueries[key])) derived[key] = mediaQueries[key]
   }
 
   const containerQueries: Record<string, string> = override ? { ...override } : derived
@@ -500,14 +501,6 @@ function resolveContainerQueries(
   return { containerQueries, containerSizes: Object.keys(containerQueries) }
 }
 
-function isSizeQuery(query: string): boolean {
-  return (
-    query.includes('width') ||
-    query.includes('height') ||
-    query.includes('inline-size') ||
-    query.includes('block-size')
-  )
-}
 
 const revisions = new WeakMap<TamaguiInternalConfig, string>()
 

@@ -15,7 +15,16 @@ export type GrammarSourceConfig = {
 };
 export type CreateGrammarConfigViewOptions = {
 	platformNames?: Names;
+	/** overrides the derived container size set (the web adapter's resolved set) */
+	containerSizeNames?: readonly string[];
 };
+/**
+* The one owner of "does this media query measure a size". A `hover` or
+* `pointer` key measures nothing a container has, so it gets no `@` form.
+* Accepts the query TEXT (`(min-width: 900px)`) or the config's media OBJECT
+* (`{ minWidth: 900 }`) — both spellings of the same fact.
+*/
+export declare function isContainerSizeQuery(query: unknown): boolean;
 export declare const grammarPlatformNames: ReadonlySet<string>;
 export declare const grammarPlatformGroups: ReadonlyMap<string, ReadonlySet<string>>;
 /**

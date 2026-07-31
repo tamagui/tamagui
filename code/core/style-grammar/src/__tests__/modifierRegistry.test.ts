@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { createModifierRegistry, parseContainerModifier, stateModifierNames } from '..'
+import { createGrammarConfigView, createModifierRegistry, parseContainerModifier, stateModifierNames } from '..'
 
 // One global modifier namespace. These tests pin which spellings resolve to
 // which kind, that registration order is state -> media -> platform -> theme
@@ -256,6 +256,28 @@ describe('config name sources', () => {
     expect(registry.get('hover')).toBe('state')
     expect(registry.get('ios')).toBe('platform')
     expect(registry.get('sm')).toBeUndefined()
+    expect(diagnostics).toEqual([])
+  })
+})
+
+describe('container size projection', () => {
+  test('a media record derives its size subset into the view', () => {
+    const view = createGrammarConfigView({
+      media: { sm: { maxWidth: 800 }, hoverNone: { hover: 'none' } },
+    })
+    expect(view.containerSizeNames).toEqual(['sm'])
+    const { registry, diagnostics } = createModifierRegistry(view)
+    expect(registry.get('@sm')).toBe('container')
+    expect(registry.get('@hoverNone')).toBeUndefined()
+    expect(diagnostics).toEqual([])
+  })
+
+  test('an explicit empty set means known-none, silently', () => {
+    const { registry, diagnostics } = createModifierRegistry(
+      { mediaNames: ['tablet'] },
+      { containerSizeNames: [] }
+    )
+    expect(registry.get('@tablet')).toBeUndefined()
     expect(diagnostics).toEqual([])
   })
 })
