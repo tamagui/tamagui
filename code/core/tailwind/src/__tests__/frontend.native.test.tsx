@@ -170,7 +170,6 @@ describe('class-first styled()', () => {
     expect(styleOf(result).paddingTop).toBe(0)
     expect(styleOf(result).width).toBe(84)
   })
-
 })
 
 describe('frontend isolation', () => {

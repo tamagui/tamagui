@@ -61,13 +61,9 @@ describe('tailwind arbitrary values', () => {
     const rule = ruleFor('hover:w-[42px]', 'width')
     // hover rule stores width under the hover pseudo
     const theme = (getConfig() as any).themes.light
-    const styles = splitTailwindStyles(
-      View,
-      { className: 'hover:w-[42px]' } as any,
-      {
-        theme,
-      }
-    )
+    const styles = splitTailwindStyles(View, { className: 'hover:w-[42px]' } as any, {
+      theme,
+    })
     const allRules = (Object.values(styles.rulesToInsert || {}) as any[])
       .flatMap((r) => r[4] ?? [])
       .join('')

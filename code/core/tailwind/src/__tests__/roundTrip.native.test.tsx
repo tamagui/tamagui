@@ -43,10 +43,12 @@ function toClass(sourceJSX: string): string {
 
 // props → resolved FULL native style object
 function nativeStyleOf(Comp: any, props: Record<string, any>): Record<string, any> {
-  return splitTailwindStyles(Comp, props, {
-    theme: THEME,
-    themeName: 'light',
-  }).style || {}
+  return (
+    splitTailwindStyles(Comp, props, {
+      theme: THEME,
+      themeName: 'light',
+    }).style || {}
+  )
 }
 
 function nativeStyle(Comp: any, className: string): Record<string, any> {

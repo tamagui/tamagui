@@ -46,10 +46,12 @@ function flat(cls: string): Record<string, any> {
   return tailwindStyleFrontend.preprocessProps({ className: cls }, CFG)
 }
 function style(props: Record<string, any>): Record<string, any> {
-  return splitTailwindStyles(View, props, {
-    theme: (CFG.themes as any).light,
-    themeName: 'light',
-  }).style || {}
+  return (
+    splitTailwindStyles(View, props, {
+      theme: (CFG.themes as any).light,
+      themeName: 'light',
+    }).style || {}
+  )
 }
 describe('config-aware tokens (NATIVE) — class names follow runtime-owned values', () => {
   test('space.$4 = 20: padding="$4" → p-4 → runtime 20', () => {

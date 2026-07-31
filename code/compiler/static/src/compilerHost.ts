@@ -892,8 +892,7 @@ export function createTamaguiCompilerHost(
               name === 'onTransition')
         )
       if (
-        (animationProp &&
-          (animationProp !== 'animatedBy' || animatedByHasRuntimeWork)) ||
+        (animationProp && (animationProp !== 'animatedBy' || animatedByHasRuntimeWork)) ||
         'enterStyle' in props ||
         'exitStyle' in props
       ) {

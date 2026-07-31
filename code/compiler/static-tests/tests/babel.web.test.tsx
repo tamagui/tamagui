@@ -387,7 +387,9 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
   )
 
   // fb: 0 should extract as 0px, not auto
-  expect(output?.styles).toMatch(/@media \(min-width: 661px\) \{\._fb-\d+\{flex-basis:0px\}\}/)
+  expect(output?.styles).toMatch(
+    /@media \(min-width: 661px\) \{\._fb-\d+\{flex-basis:0px\}\}/
+  )
   expect(output?.styles).not.toContain('auto')
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()

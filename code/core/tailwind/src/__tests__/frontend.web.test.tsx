@@ -125,7 +125,9 @@ describe('authored ordering across shorthand and longhand candidates', () => {
       className: 'border-[4px] border-x-[2px] border-[6px]',
     })
 
-    expect(findRule(styles.rulesToInsert, 'borderLeftWidth')[StyleObjectValue]).toBe('6px')
+    expect(findRule(styles.rulesToInsert, 'borderLeftWidth')[StyleObjectValue]).toBe(
+      '6px'
+    )
   })
 
   test('a class restated after an ordinary prop still wins', () => {
@@ -263,10 +265,7 @@ describe('class-first styled()', () => {
       }
     )
     const authored = Frame.staticConfig
-    const resolved = tailwindStyleFrontend.normalizeStaticConfig!(
-      authored,
-      getConfig()
-    )
+    const resolved = tailwindStyleFrontend.normalizeStaticConfig!(authored, getConfig())
 
     expect(authored.baseClassName).toContain('p-4')
     expect(authored.variants?.size?.sm).toContain('h-8')
@@ -307,7 +306,6 @@ describe('class-first styled()', () => {
       /base-user.*simple-user.*compound-user.*caller-user/
     )
   })
-
 })
 
 describe('frontend isolation', () => {
