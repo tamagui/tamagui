@@ -86,6 +86,10 @@ test('ordinary components never read or subscribe to the safe-area store', () =>
     }
   }
   const state = globalState.__tamagui_safe_area__
+  // subscription storage is intentionally lazy; initialize it through the
+  // public accessor before measuring that ordinary components add nothing.
+  const disposeProbe = safeArea.subscribe(() => {})
+  disposeProbe()
   let reads = 0
   globalState.__tamagui_safe_area__ = new Proxy(state, {
     get(target, property, receiver) {
