@@ -37,9 +37,11 @@ import {
   convertLegacyConditionProp,
   expandToLonghands,
   flatStringValue,
+  legacyPartComposite,
   mergeProgramValues,
   parseValue,
   printProgram,
+  programEligibility,
   resolveProp,
   sharedPayload,
   shorthands,
@@ -643,6 +645,49 @@ function pushLegacy(
   // still contributes at its position, which is what decides whether a program can
   // merge across it
   const properties = conditionProperties(evaluated.value)
+
+  const eligibilityStack: Array<{
+    object: Record<string, unknown>
+    path: string
+  }> = [{ object: evaluated.value, path: name }]
+  let hasLegacyPart = false
+  while (eligibilityStack.length > 0) {
+    const current = eligibilityStack.pop()!
+    for (const prop in current.object) {
+      const value = current.object[prop]
+      const path = `${current.path}.${prop}`
+      const targetProp = resolveProp(prop)
+      if (programEligibility(targetProp) === 'legacy-part') {
+        const composite = legacyPartComposite[targetProp]
+        addFlag(
+          site.flags,
+          composite === 'transform' ? 'legacy-transform-part' : 'legacy-shadow-part',
+          `${path}: conditional values on legacy part "${targetProp}" have no flat spelling; move the condition onto a flat \`${composite}\` value`
+        )
+        addNote(
+          site,
+          `Migrate the conditional ${targetProp} value to \`${composite}\`; per-part clauses are not evaluated by the runtime.`
+        )
+        hasLegacyPart = true
+        continue
+      }
+      if (
+        value !== null &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        isLegacyConditionName(prop)
+      ) {
+        eligibilityStack.push({
+          object: value as Record<string, unknown>,
+          path,
+        })
+      }
+    }
+  }
+  if (hasLegacyPart) {
+    keep(properties)
+    return
+  }
 
   // the condition would convert, but the query it becomes needs a container this
   // pass cannot place, so the whole object stays authored rather than converting

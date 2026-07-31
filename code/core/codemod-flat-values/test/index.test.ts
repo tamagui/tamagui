@@ -8,7 +8,9 @@ import {
   codemodMediaNames,
   createModifierRegistry,
   evaluateProgram,
+  legacyPartComposite,
   parseValue,
+  programEligibility,
   type ModifierRegistryView,
 } from '../src/grammar'
 
@@ -524,6 +526,39 @@ export const Fixture = () => (
     ])
     expect(site.after).toContain(`transition={['quick', { opacity: 'lazy' }]}`)
     expect(site.after).toContain('shadowOffset={{ width: 0, height: 20 }}')
+  })
+})
+
+describe('program eligibility parity', () => {
+  test('refuses every part prop the runtime contract keeps on the legacy path', () => {
+    const entries = Object.entries(legacyPartComposite)
+    const result = run(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <>
+    ${entries
+      .map(([prop]) => `<View hoverStyle={{ ${prop}: 'blocked' }} />`)
+      .join('\n    ')}
+  </>
+)`)
+    const reports = sites(result)
+
+    expect(reports).toHaveLength(entries.length)
+    for (const [prop, composite] of entries) {
+      expect(programEligibility(prop)).toBe('legacy-part')
+      const site = reports.find((candidate) =>
+        candidate.before.includes(`${prop}: 'blocked'`)
+      )
+      expect(site, prop).toBeDefined()
+      expect(programs(site!)).toEqual({})
+      expect(site!.after).toContain('hoverStyle=')
+      expect(site!.flags).toContainEqual({
+        code: composite === 'transform' ? 'legacy-transform-part' : 'legacy-shadow-part',
+        detail: expect.stringContaining(`\`${composite}\``),
+      })
+      expect(site!.notes).toContain(
+        `Migrate the conditional ${prop} value to \`${composite}\`; per-part clauses are not evaluated by the runtime.`
+      )
+    }
   })
 })
 

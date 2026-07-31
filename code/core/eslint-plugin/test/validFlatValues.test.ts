@@ -1,4 +1,5 @@
 import parser from '@typescript-eslint/parser'
+import { legacyPartComposite, programEligibility } from '@tamagui/style-grammar'
 import { ESLint } from 'eslint'
 import { describe, expect, test } from 'vitest'
 import plugin from '../src'
@@ -67,6 +68,29 @@ describe('valid-flat-values', () => {
       '"red" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "color", not "paddingRight"',
       '"red" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "color", not "paddingLeft"',
     ])
+    expect(result.messages.every(({ fix }) => fix === undefined)).toBe(true)
+  })
+
+  test('reports every clause-bearing prop the runtime keeps on the legacy path', async () => {
+    const entries = Object.entries(legacyPartComposite)
+    const source = `import { View } from 'tamagui'
+export const Fixture = () => (
+  <View
+    ${entries.map(([prop]) => `${prop}="base hover:next"`).join('\n    ')}
+  />
+)
+`
+    const [result] = await eslint.lintText(source, { filePath: 'eligibility.tsx' })
+
+    for (const [prop] of entries) {
+      expect(programEligibility(prop)).toBe('legacy-part')
+    }
+    expect(result.messages.map(({ message }) => message)).toEqual(
+      entries.map(
+        ([prop, composite]) =>
+          `conditional values are not supported on part prop "${prop}"; move the condition onto \`${composite}\``
+      )
+    )
     expect(result.messages.every(({ fix }) => fix === undefined)).toBe(true)
   })
 

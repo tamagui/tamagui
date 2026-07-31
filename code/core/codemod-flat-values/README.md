@@ -121,6 +121,7 @@ A flag means a human decides. Every code the tool can emit:
 | `condition-order-not-preservable`, `base-order-not-preservable` | merging would move a value past something that can also set it |
 | `computed-property` | a computed key hides the affected style property |
 | `emitted-program-mismatch`, `emitted-value-invalid` | the printer failed its own re-parse; this is a codemod bug |
+| `legacy-shadow-part` | RN shadow part conditions stay authored; move the condition to `boxShadow` or `textShadow` |
 | plus any code from the shared converter | `legacy-transform-part`, `unsupported-legacy-value`, `legacy-condition-object`, `ambiguous-legacy-group`, `legacy-composite-shorthand` |
 
 `unsupported-legacy-value` covers the token-context refusals: a `$` mixed with quoted

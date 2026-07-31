@@ -7,6 +7,7 @@ declare module 'tamagui' {
     bg?: string
     display?: 'flex'
     padding?: string
+    shadowColor?: string
   }
 
   type TextProps = ViewProps & {

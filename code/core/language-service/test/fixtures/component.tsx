@@ -31,6 +31,7 @@ export function CompletionFixture() {
       <Text fontSize="" />
       <View display="" />
       <View fontSize="" />
+      <View shadowColor="hover:" />
       <LogoIcon color="" />
       <div color="" />
     </>

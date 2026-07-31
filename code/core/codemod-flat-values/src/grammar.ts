@@ -31,8 +31,10 @@ export const {
   expandToLonghands,
   grammarEntries,
   grammarPlatformNames,
+  legacyPartComposite,
   mergeProgramValues,
   parseValue,
+  programEligibility,
   pseudoToModifier,
   standaloneValueProps,
 } = grammar

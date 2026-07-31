@@ -6,6 +6,8 @@ import {
   createGrammarConfigViewFromSerializedConfig,
   createModifierRegistry,
   grammarEntries,
+  legacyPartComposite,
+  programEligibility,
   type DiagnoseStyleValueOptions,
   type SerializedGrammarSourceConfig,
 } from '@tamagui/style-grammar'
@@ -55,7 +57,10 @@ function loadCompletionState(
       serialized.tamaguiConfigMetadata
     )
     const registry = createModifierRegistry(config).registry
-    const styleProps = new Set(grammarEntries.map((entry) => entry.prop))
+    const styleProps = new Set([
+      ...grammarEntries.map((entry) => entry.prop),
+      ...Object.keys(legacyPartComposite),
+    ])
     for (const shorthand in config.shorthands) {
       styleProps.add(shorthand)
       styleProps.add(config.shorthands[shorthand])
@@ -226,6 +231,9 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
       }
       const site = completionProperty(typescript, literal, state, checker, bindings)
       if (!site) return base
+      const targetProperty =
+        state.options.config.shorthands?.[site.property] || site.property
+      if (programEligibility(targetProperty) === 'legacy-part') return base
 
       const contentStart = literal.getStart(sourceFile) + 1
       const contentEnd = literal.getEnd() - 1

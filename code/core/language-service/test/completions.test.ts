@@ -110,6 +110,7 @@ describe('@tamagui/language-service', () => {
     expect(namesAt('<Text fontSize=""')).toEqual(['xl'])
     expect(namesAt('<View display=""')).toEqual(['flex'])
     expect(namesAt('<View fontSize=""')).toEqual([])
+    expect(namesAt('<View shadowColor="hover:"')).toEqual([])
     expect(namesAt("padding: ''")).toEqual(['4'])
     expect(namesAt("roomy: {\n      padding: ''")).toEqual([])
     expect(namesAt("fontSize: ''")).toEqual([])

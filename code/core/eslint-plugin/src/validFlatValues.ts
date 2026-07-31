@@ -4,7 +4,9 @@ import {
   createModifierRegistry,
   diagnoseStyleValue,
   grammarEntries,
+  legacyPartComposite,
   parseValue,
+  programEligibility,
   splitGeometricShorthandValue,
   type GrammarConfigView,
   validatePayloadShape,
@@ -105,7 +107,10 @@ export const validFlatValues: Rule.RuleModule = {
     const config = option?.config || {}
     const registry = createModifierRegistry(config).registry
     const candidates = createCandidatePropertyVocabulary(config)
-    const styleProps = new Set(grammarEntries.map((entry) => entry.prop))
+    const styleProps = new Set([
+      ...grammarEntries.map((entry) => entry.prop),
+      ...Object.keys(legacyPartComposite),
+    ])
     for (const shorthand in config.shorthands) {
       styleProps.add(shorthand)
       styleProps.add(config.shorthands[shorthand])
@@ -134,6 +139,19 @@ export const validFlatValues: Rule.RuleModule = {
       const parsed = parseValue(value, registry)
       if (!parsed.ok) return
       const targetProperty = config.shorthands?.[property] || property
+      if (
+        parsed.value.clauses.length > 0 &&
+        programEligibility(targetProperty) === 'legacy-part'
+      ) {
+        context.report({
+          node,
+          messageId: 'invalidFlatValue',
+          data: {
+            message: `conditional values are not supported on part prop "${targetProperty}"; move the condition onto \`${legacyPartComposite[targetProperty]}\``,
+          },
+        })
+        return
+      }
       const geometric = splitGeometricShorthandValue(targetProperty, parsed.value)
       const programs =
         geometric && geometric.errors.length === 0
