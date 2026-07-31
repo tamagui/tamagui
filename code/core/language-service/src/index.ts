@@ -12,6 +12,7 @@ import {
   type SerializedGrammarSourceConfig,
 } from '@tamagui/style-grammar'
 import type ts from 'typescript'
+import { resolveTamaguiHost } from './host'
 
 const completionSource = '@tamagui/language-service'
 const defaultConfigPath = '.tamagui/tamagui.config.json'
@@ -152,8 +153,8 @@ function completionProperty(
     if (!state.styleProps.has(property)) return null
     const opening = parent.parent.parent
     if (!typescript.isJsxOpeningLikeElement(opening)) return null
-    const tagType = checker.getTypeAtLocation(opening.tagName)
-    if (!checker.getPropertyOfType(tagType, 'staticConfig')) return null
+    const host = resolveTamaguiHost(checker, opening.tagName)
+    if (!host?.accepts(property)) return null
     return { property, contextualType }
   }
 
@@ -174,6 +175,9 @@ function completionProperty(
   ) {
     return null
   }
+  const component = call.arguments[0]
+  const host = component && resolveTamaguiHost(checker, component)
+  if (!host?.accepts(property)) return null
   return { property, contextualType }
 }
 

@@ -19,7 +19,15 @@ const temporaryDirectories: string[] = []
 
 interface Result {
   files: Array<{ file: string; sites: SiteReport[] }>
-  summary: { sites: number; clean: number; flagged: number; waiting: number }
+  summary: {
+    sites: number
+    clean: number
+    needsRelocation: number
+    unknownHost: number
+    ineligible: number
+    flagged: number
+    waiting: number
+  }
 }
 
 function runOn(inputs: readonly string[]): Result {
@@ -49,10 +57,10 @@ function run(source: string): Result {
   return runOn([fixture(source)])
 }
 
-function fixture(source: string): string {
+function fixture(source: string, fileName = 'fixture.tsx'): string {
   const directory = mkdtempSync(join(tmpdir(), 'flat-values-fixture-'))
   temporaryDirectories.push(directory)
-  const sourcePath = join(directory, 'fixture.tsx')
+  const sourcePath = join(directory, fileName)
   writeFileSync(sourcePath, source)
   return sourcePath
 }
@@ -109,6 +117,10 @@ function pendingCodes(site: SiteReport): string[] {
   return [...new Set(site.pending.map((flag) => flag.code))]
 }
 
+function assessmentVerdicts(site: SiteReport): string[] {
+  return [...new Set(site.assessments.map((assessment) => assessment.verdict))]
+}
+
 const { registry } = createModifierRegistry({
   mediaNames: codemodMediaNames,
   themeNames: new Set(['light', 'dark']),
@@ -152,10 +164,15 @@ afterEach(() => {
 describe('base values', () => {
   test('a numeric base a condition targets folds into the program', () => {
     const site = only(
-      run(`import { Text, TextInput, View, styled } from 'tamagui'
+      runOn([
+        fixture(
+          `import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = () => (
         <View opacity={0.5} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
-      )`)
+      )`,
+          'fixture.native.tsx'
+        ),
+      ])
     )
 
     expect(codes(site)).toEqual([])
@@ -245,7 +262,7 @@ export const Fixture = () => (
     const site = only(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = ({ active }) => (
-        <View color={active ? '$red10' : '$blue10'} />
+        <Text color={active ? '$red10' : '$blue10'} />
       )`)
     )
 
@@ -347,11 +364,11 @@ export const Fixture = () => (
   test('a named group state condition keeps its group name', () => {
     const site = labeled(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
-const Inner = styled(View, {
+	const Inner = styled(Text, {
         color: 'black',
         '$group-card-hover': { color: 'red' },
       })`),
-      'styled(View'
+      'styled(Text'
     )
 
     expect(codes(site)).toEqual([])
@@ -364,7 +381,7 @@ const Inner = styled(View, {
   test('a group container size condition splits into a container query and adds the container', () => {
     const result = run(`import { Text, TextInput, View, styled } from 'tamagui'
 const Card = styled(View, { group: 'card' })
-      const Inner = styled(View, {
+      const Inner = styled(Text, {
         color: 'black',
         '$group-card-maxMd': { color: 'red' },
         '$group-card-maxMd-hover': { color: 'blue' },
@@ -436,7 +453,7 @@ describe('dynamic values', () => {
     const site = only(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = ({ active }) => (
-        <View color={active ? '$red10' : '$blue10'} hoverStyle={{ color: '$green10' }} />
+        <Text color={active ? '$red10' : '$blue10'} hoverStyle={{ color: '$green10' }} />
       )`)
     )
 
@@ -551,14 +568,144 @@ export const Fixture = () => (
       expect(site, prop).toBeDefined()
       expect(programs(site!)).toEqual({})
       expect(site!.after).toContain('hoverStyle=')
-      expect(site!.flags).toContainEqual({
-        code: composite === 'transform' ? 'legacy-transform-part' : 'legacy-shadow-part',
-        detail: expect.stringContaining(`\`${composite}\``),
+      expect(site!.flags).toEqual([])
+      expect(site!.assessmentVerdict).toBe('ineligible')
+      expect(site!.assessments).toContainEqual({
+        property: prop,
+        verdict: 'ineligible',
+        reasons: expect.arrayContaining([
+          expect.objectContaining({
+            dimension: 'property',
+            remedy: expect.stringContaining(`\`${composite}\``),
+          }),
+        ]),
       })
-      expect(site!.notes).toContain(
-        `Migrate the conditional ${prop} value to \`${composite}\`; per-part clauses are not evaluated by the runtime.`
-      )
     }
+  })
+})
+
+describe('conversion assessment', () => {
+  test('keeps a web-working exitStyle authored in a shared file', () => {
+    const result = run(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View opacity={0.5} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+)`)
+    const site = only(result)
+
+    expect(programs(site)).toEqual({ opacity: '0.5 enter:0' })
+    expect(site.after).toContain('exitStyle=')
+    expect(assessmentVerdicts(site)).toContain('needs-relocation')
+    expect(result.summary).toMatchObject({
+      sites: 1,
+      clean: 0,
+      needsRelocation: 1,
+      unknownHost: 0,
+      ineligible: 0,
+    })
+    expect(site.assessments).toContainEqual({
+      property: 'opacity',
+      verdict: 'needs-relocation',
+      reasons: expect.arrayContaining([
+        expect.objectContaining({ dimension: 'clause', modifier: 'exit' }),
+      ]),
+    })
+  })
+
+  test('allows exit in a native file when the host type accepts the property', () => {
+    const sourcePath = fixture(
+      `import { View } from 'tamagui'
+export const Fixture = () => <View exitStyle={{ opacity: 0 }} />`,
+      'fixture.native.tsx'
+    )
+    const site = only(runOn([sourcePath]))
+
+    expect(programs(site)).toEqual({ opacity: 'exit:0' })
+    expect(site.assessments).toEqual([])
+  })
+
+  test('reports text-only styles on View while accepting them on Text', () => {
+    const result = run(`import { Text, View } from 'tamagui'
+export const Fixture = () => (
+  <>
+    <View hoverStyle={{ color: '$red10' }} />
+    <Text hoverStyle={{ color: '$red10' }} />
+  </>
+)`)
+    const view = labeled(result, '<View>')
+    const text = labeled(result, '<Text>')
+
+    expect(programs(view)).toEqual({})
+    expect(view.after).toContain('hoverStyle=')
+    expect(view.assessments).toContainEqual({
+      property: 'color',
+      verdict: 'needs-relocation',
+      reasons: expect.arrayContaining([
+        expect.objectContaining({
+          dimension: 'host',
+          message: expect.stringContaining('View'),
+        }),
+      ]),
+    })
+    expect(programs(text)).toEqual({ color: 'hover:red10' })
+    expect(text.assessments).toEqual([])
+  })
+
+  test('requires web-only group states to move out of shared files', () => {
+    const source = `import { View } from 'tamagui'
+export const Fixture = () => (
+  <View group="card">
+    <View bg="$red10" $group-card-open={{ bg: '$blue10' }} />
+  </View>
+)`
+    const shared = only(run(source))
+    const web = only(runOn([fixture(source, 'fixture.web.tsx')]))
+
+    expect(programs(shared)).toEqual({ bg: 'red10' })
+    expect(shared.after).toContain('$group-card-open=')
+    expect(shared.assessments).toContainEqual({
+      property: 'background',
+      verdict: 'needs-relocation',
+      reasons: expect.arrayContaining([
+        expect.objectContaining({
+          dimension: 'clause',
+          modifier: 'group-open/card',
+          remedy: expect.stringContaining('.web.tsx'),
+        }),
+      ]),
+    })
+    expect(programs(web)).toEqual({ bg: 'red10 group-open/card:blue10' })
+    expect(web.assessments).toEqual([])
+  })
+
+  test('keeps an erased component type in the unknown-host review list', () => {
+    const site = only(
+      run(`import type React from 'react'
+import { View as Raw } from 'tamagui'
+const Box = Raw as React.ComponentType<any>
+export const Fixture = () => <Box bg="$red10" hoverStyle={{ bg: '$blue10' }} />`)
+    )
+
+    expect(programs(site)).toEqual({})
+    expect(site.after).toContain('hoverStyle=')
+    expect(site.assessmentVerdict).toBe('unknown-host')
+  })
+
+  test('a determined clause failure outranks an unknown host', () => {
+    const site = only(
+      run(`import type React from 'react'
+import { View as Raw } from 'tamagui'
+const Box = Raw as React.ComponentType<any>
+export const Fixture = () => <Box exitStyle={{ opacity: 0 }} />`)
+    )
+
+    expect(site.assessmentVerdict).toBe('needs-relocation')
+    expect(site.assessments).toContainEqual({
+      property: 'opacity',
+      verdict: 'needs-relocation',
+      reasons: expect.arrayContaining([
+        expect.objectContaining({ dimension: 'clause', modifier: 'exit' }),
+      ]),
+    })
   })
 })
 
@@ -625,7 +772,7 @@ export const Fixture = () => (
 describe('styled variants', () => {
   test('each static variant branch converts as its own style object', () => {
     const result = run(`import { Text, TextInput, View, styled } from 'tamagui'
-const Frame = styled(View, {
+	const Frame = styled(Text, {
       color: 'black',
       variants: {
         size: {
@@ -645,13 +792,18 @@ const Frame = styled(View, {
 
   test('a variant branch does not invent a base for the outer program', () => {
     const site = labeled(
-      run(`import { Text, TextInput, View, styled } from 'tamagui'
-const Frame = styled(View, {
+      runOn([
+        fixture(
+          `import { Text, TextInput, View, styled } from 'tamagui'
+	const Frame = styled(View, {
         x: 0,
         variants: {
           going: { number: (going: number) => ({ exitStyle: { x: going < 0 ? 100 : -100 } }) },
         } as const,
-      })`),
+      })`,
+          'fixture.native.tsx'
+        ),
+      ]),
       'variants.going.number'
     )
 
@@ -738,9 +890,9 @@ describe('token context', () => {
 
   test('a template literal converts its own chunks, not just the head', () => {
     const site = only(
-      run(`import { View } from 'tamagui'
+      run(`import { Text } from 'tamagui'
         export const Fixture = ({ n }) => (
-          <View color={\`$accent\${n}\`} hoverStyle={{ color: 'red' }} />
+          <Text color={\`$accent\${n}\`} hoverStyle={{ color: 'red' }} />
         )`)
     )
 
@@ -875,9 +1027,9 @@ describe('group containers', () => {
   })
 
   test('two candidate declarations leave the condition authored', () => {
-    const result = run(`import { View, styled } from 'tamagui'
+    const result = run(`import { Text, View, styled } from 'tamagui'
       const Card = styled(View, { group: 'card' })
-      const Inner = styled(View, {
+      const Inner = styled(Text, {
         color: 'black',
         '$group-card-maxMd': { color: 'red' },
       })
@@ -889,7 +1041,7 @@ describe('group containers', () => {
         </View>
       )`)
 
-    const inner = labeled(result, 'styled(View, …)')
+    const inner = labeled(result, 'styled(Text, …)')
     expect(codes(inner)).toEqual(['ambiguous-container-group'])
     // converting would emit a container query with no container this pass can place
     expect(programs(inner)).toEqual({})
@@ -900,12 +1052,12 @@ describe('group containers', () => {
 
   test('a group nobody declares in the file is reported, not converted', () => {
     const site = labeled(
-      run(`import { View, styled } from 'tamagui'
-        const Inner = styled(View, {
+      run(`import { Text, View, styled } from 'tamagui'
+        const Inner = styled(Text, {
           color: 'black',
           '$group-card-maxMd': { color: 'red' },
         })`),
-      'styled(View'
+      'styled(Text'
     )
 
     expect(codes(site)).toEqual(['container-group-not-declared'])
@@ -949,7 +1101,7 @@ describe('Tamagui provenance', () => {
     writeFileSync(
       consumer,
       `import { View as Raw } from './barrel'
-      const Box = Raw as any
+      const Box = Raw
       export const Fixture = () => <Box bg="$blue10" hoverStyle={{ bg: 'red' }} />\n`
     )
 
@@ -1014,7 +1166,7 @@ describe('the kitchen-sink corpus', () => {
             offenders.push(`${file.file}:${site.line} kept a token: ${program.value}`)
           }
         }
-        if (site.flags.length) continue
+        if (site.flags.length || site.assessmentVerdict !== 'clean') continue
         for (const name of legacyNames) {
           if (site.after.includes(name)) {
             offenders.push(`${file.file}:${site.line} kept ${name}: ${site.after}`)

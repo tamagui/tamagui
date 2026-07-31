@@ -16,6 +16,11 @@
   "types": "types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
+    "./host": {
+      "types": "./types/host.d.ts",
+      "import": "./dist/esm/host.mjs",
+      "default": "./dist/esm/host.mjs"
+    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",

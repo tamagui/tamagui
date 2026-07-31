@@ -34,19 +34,21 @@ import {
   unwrapExpression,
 } from './expressions'
 import {
+  assessFlatConversion,
   convertLegacyConditionProp,
   expandToLonghands,
   flatStringValue,
-  legacyPartComposite,
   mergeProgramValues,
   parseValue,
   printProgram,
-  programEligibility,
   resolveProp,
   sharedPayload,
   shorthands,
   styleProps,
   unitSuffix,
+  type ConversionReason,
+  type ConversionTargets,
+  type HostView,
   type ModifierRegistryView,
   type ParsedClause,
   type ParsedValue,
@@ -68,6 +70,12 @@ export interface EmittedProgram {
   dynamic: boolean
 }
 
+export interface ConversionFinding {
+  property: string
+  verdict: 'needs-relocation' | 'unknown-host' | 'ineligible'
+  reasons: readonly ConversionReason[]
+}
+
 export interface SiteReport {
   kind: SiteKind
   label: string
@@ -75,6 +83,9 @@ export interface SiteReport {
   before: string
   after: string
   programs: EmittedProgram[]
+  /** semantic or host constraints that make an otherwise valid rewrite unsafe */
+  assessments: ConversionFinding[]
+  assessmentVerdict: 'clean' | ConversionFinding['verdict']
   /** the site cannot be converted correctly without a human */
   flags: Flag[]
   /** values left authored because they belong to another migration */
@@ -84,6 +95,18 @@ export interface SiteReport {
   notes: string[]
   /** legacy condition props the conversion could not remove */
   legacyLeft: number
+}
+
+function assessmentVerdict(
+  assessments: readonly ConversionFinding[]
+): SiteReport['assessmentVerdict'] {
+  if (assessments.some((assessment) => assessment.verdict === 'ineligible')) {
+    return 'ineligible'
+  }
+  if (assessments.some((assessment) => assessment.verdict === 'needs-relocation')) {
+    return 'needs-relocation'
+  }
+  return assessments.length ? 'unknown-host' : 'clean'
 }
 
 interface Contribution {
@@ -148,11 +171,14 @@ export interface Site {
   registry: ModifierRegistryView
   /** which `group` declarations have a proven descendant needing a query container */
   containers: ContainerPlan
+  targets: ConversionTargets
+  host: HostView | undefined
   members: Member[]
   extras: Array<{ index: number; text: string }>
   flags: Flag[]
   inventory: Flag[]
   pending: Flag[]
+  assessments: ConversionFinding[]
   notes: string[]
   /** the site contains v1-only syntax, so it is a conversion site at all */
   legacy: boolean
@@ -162,20 +188,68 @@ export interface Site {
 function createSite(
   kind: SiteKind,
   registry: ModifierRegistryView,
-  containers: ContainerPlan
+  containers: ContainerPlan,
+  targets: ConversionTargets,
+  host: HostView | undefined
 ): Site {
   return {
     kind,
     registry,
     containers,
+    targets,
+    host,
     members: [],
     extras: [],
     flags: [],
     inventory: [],
     pending: [],
+    assessments: [],
     notes: [],
     legacy: false,
     index: 0,
+  }
+}
+
+function assessProgram(
+  site: Site,
+  property: string,
+  modifiers: readonly string[]
+): boolean {
+  const targetProperty = resolveProp(property)
+  const assessment = assessFlatConversion(
+    {
+      property: targetProperty,
+      modifiers,
+      targets: site.targets,
+      host: site.host,
+    },
+    site.registry
+  )
+  if (assessment.verdict === 'clean') return true
+
+  addAssessment(site, targetProperty, assessment)
+  return false
+}
+
+function addAssessment(
+  site: Site,
+  property: string,
+  assessment: ReturnType<typeof assessFlatConversion>
+): void {
+  if (assessment.verdict === 'clean') return
+  if (
+    !site.assessments.some(
+      (finding) =>
+        finding.property === property &&
+        finding.verdict === assessment.verdict &&
+        JSON.stringify(finding.reasons) === JSON.stringify(assessment.reasons)
+    )
+  ) {
+    site.assessments.push({
+      property,
+      verdict: assessment.verdict,
+      reasons: assessment.reasons,
+    })
   }
 }
 
@@ -365,6 +439,7 @@ function pushBase(
   if (literalString !== null) {
     if (literalString.includes('$')) {
       site.legacy = true
+      const allowed = assessProgram(site, prop, [])
       // the same converter a clause payload goes through, so a base and a clause
       // for one property agree on which `$` is a token candidate at all: one
       // inside a quoted string or an unquoted url() body is literal CSS
@@ -390,10 +465,10 @@ function pushBase(
         index,
         prop,
         text,
-        payload: problem === null ? flat.text : null,
+        payload: allowed && problem === null ? flat.text : null,
         dynamic: false,
         blocked: problem,
-        token: true,
+        token: allowed,
         activated: false,
       })
       return
@@ -485,15 +560,16 @@ function pushBase(
   // a rewritten expression (`active ? '$red10' : '$blue10'`) also becomes a
   // base-only program when no legacy condition targets it
   if (classified.text !== null) site.legacy = true
+  const allowed = classified.text === null || assessProgram(site, prop, [])
   site.members.push({
     type: 'authored',
     index,
     prop,
     text,
-    payload: classified.payload,
+    payload: allowed ? classified.payload : null,
     dynamic: classified.dynamic,
     blocked: classified.blocked,
-    token: classified.text !== null,
+    token: allowed && classified.text !== null,
     activated: false,
   })
 }
@@ -650,25 +726,25 @@ function pushLegacy(
     object: Record<string, unknown>
     path: string
   }> = [{ object: evaluated.value, path: name }]
-  let hasLegacyPart = false
+  let hasRejectedProperty = false
   while (eligibilityStack.length > 0) {
     const current = eligibilityStack.pop()!
     for (const prop in current.object) {
       const value = current.object[prop]
-      const path = `${current.path}.${prop}`
       const targetProp = resolveProp(prop)
-      if (programEligibility(targetProp) === 'legacy-part') {
-        const composite = legacyPartComposite[targetProp]
-        addFlag(
-          site.flags,
-          composite === 'transform' ? 'legacy-transform-part' : 'legacy-shadow-part',
-          `${path}: conditional values on legacy part "${targetProp}" have no flat spelling; move the condition onto a flat \`${composite}\` value`
+      if (styleProps.has(targetProp) && !isLegacyConditionName(prop)) {
+        const assessment = assessFlatConversion(
+          {
+            property: targetProp,
+            targets: site.targets,
+            host: site.host,
+          },
+          site.registry
         )
-        addNote(
-          site,
-          `Migrate the conditional ${targetProp} value to \`${composite}\`; per-part clauses are not evaluated by the runtime.`
-        )
-        hasLegacyPart = true
+        if (assessment.verdict === 'ineligible') {
+          addAssessment(site, targetProp, assessment)
+          hasRejectedProperty = true
+        }
         continue
       }
       if (
@@ -679,12 +755,12 @@ function pushLegacy(
       ) {
         eligibilityStack.push({
           object: value as Record<string, unknown>,
-          path,
+          path: `${current.path}.${prop}`,
         })
       }
     }
   }
-  if (hasLegacyPart) {
+  if (hasRejectedProperty) {
     keep(properties)
     return
   }
@@ -773,6 +849,7 @@ function pushLegacy(
       },
       dynamic: dynamicPayload !== undefined,
     })
+    if (!assessProgram(site, contribution.prop, modifiers)) failed = true
   }
 
   if (failed) {
@@ -1231,9 +1308,11 @@ function containerExtras(site: Site, declaration: Node, index: number): void {
 export function convertJsxSite(
   opening: JsxElementWithAttributes,
   registry: ModifierRegistryView,
-  containers: ContainerPlan
+  containers: ContainerPlan,
+  targets: ConversionTargets,
+  host: HostView | undefined
 ): SiteReport | null {
-  const site = createSite('jsx', registry, containers)
+  const site = createSite('jsx', registry, containers, targets, host)
   const before: string[] = []
 
   for (const attribute of opening.getAttributes()) {
@@ -1318,6 +1397,8 @@ export function convertJsxSite(
     before: before.join(' '),
     after: entries.map((entry) => entry.text).join(' ') || '(no style props left)',
     programs,
+    assessments: site.assessments,
+    assessmentVerdict: assessmentVerdict(site.assessments),
     flags: site.flags,
     inventory: site.inventory,
     pending: site.pending,
@@ -1360,9 +1441,11 @@ export function convertStyleObject(
   kind: SiteKind,
   label: string,
   registry: ModifierRegistryView,
-  containers: ContainerPlan
+  containers: ContainerPlan,
+  targets: ConversionTargets,
+  host: HostView | undefined
 ): SiteReport | null {
-  const site = createSite(kind, registry, containers)
+  const site = createSite(kind, registry, containers, targets, host)
   const before: string[] = []
 
   for (const property of object.getProperties()) {
@@ -1425,6 +1508,8 @@ export function convertStyleObject(
     before: before.join(', '),
     after: entries.map((entry) => entry.text).join(', ') || '(no style props left)',
     programs,
+    assessments: site.assessments,
+    assessmentVerdict: assessmentVerdict(site.assessments),
     flags: site.flags,
     inventory: site.inventory,
     pending: site.pending,

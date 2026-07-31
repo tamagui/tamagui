@@ -378,6 +378,7 @@
       "name": "@tamagui/codemod-flat-values",
       "dependencies": {
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/language-service": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
         "@tamagui/style-grammar": "workspace:*",
         "ts-morph": "^15.1.0",

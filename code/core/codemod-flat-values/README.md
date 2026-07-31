@@ -13,10 +13,9 @@ bun src/index.ts --help
 ```
 
 The default corpus is `code/kitchen-sink/src/usecases` plus the canonical
-`Button.tsx` skin, which is also the acceptance fixture: 1753 conversion sites, all
-1753 converted, 0 waiting on runtime support, 0 flagged. The counts track
-`@tamagui/style-grammar`, which this package imports from source rather than from its
-build, so a change to the shared converter moves them.
+`Button.tsx` skin. Its acceptance test checks every clean program by parsing it back
+through `@tamagui/style-grammar`; outcome counts deliberately move when the grammar,
+platform capabilities, or component types change.
 
 A positional argument that matches no file exits 2 with no report, so a typo in a
 migration path can never read as a clean corpus.
@@ -72,6 +71,30 @@ with the real clause merge before it is printed. A program that does not read ba
 identically is reported (`emitted-program-mismatch`, `emitted-value-invalid`) instead
 of suggested.
 
+## Conversion assessment
+
+Syntax alone cannot make a conversion safe. Before suggesting a program, the codemod
+asks the shared conversion contract whether the property can carry clauses, whether
+every clause evaluates on every target implied by the file name, and whether the
+component's TypeScript prop type accepts the style.
+
+- **clean** means all three checks passed. A shared `.tsx` file must work on web and
+  native; `.web.tsx` and `.native.tsx` require only their named target.
+- **needs-relocation** means the syntax is valid but the authored target or host cannot
+  evaluate it. The report keeps the legacy condition authored and prints the contract's
+  remedy. For example, `exitStyle` stays driver-evaluated in a shared file because
+  `exit:` has no web selector, while text-only styles on a View move to Text or
+  `html.*`.
+- **unknown-host** means the component is provably Tamagui but its TypeScript type does
+  not expose enough component identity and style-prop information to verify the host.
+  The report keeps the source authored for review instead of calling it clean.
+- **ineligible** means the property has no flat clause spelling. Transform and React
+  Native shadow part props stay authored, with a remedy that points to the `transform`,
+  `boxShadow`, or `textShadow` composite.
+
+The type-aware host lookup is shared with `@tamagui/language-service`; the codemod does
+not import or evaluate an app's runtime config.
+
 Ordering is never traded for a bigger diff. A program merges only when every
 contribution still beats and loses to the same things it did, so an opaque spread or
 an unconverted condition object between two contributions leaves the later ones
@@ -121,8 +144,7 @@ A flag means a human decides. Every code the tool can emit:
 | `condition-order-not-preservable`, `base-order-not-preservable` | merging would move a value past something that can also set it |
 | `computed-property` | a computed key hides the affected style property |
 | `emitted-program-mismatch`, `emitted-value-invalid` | the printer failed its own re-parse; this is a codemod bug |
-| `legacy-shadow-part` | RN shadow part conditions stay authored; move the condition to `boxShadow` or `textShadow` |
-| plus any code from the shared converter | `legacy-transform-part`, `unsupported-legacy-value`, `legacy-condition-object`, `ambiguous-legacy-group`, `legacy-composite-shorthand` |
+| plus any code from the shared converter | `unsupported-legacy-value`, `legacy-condition-object`, `ambiguous-legacy-group`, `legacy-composite-shorthand` |
 
 `unsupported-legacy-value` covers the token-context refusals: a `$` mixed with quoted
 or unquoted `url()` content is literal CSS the resolver never reads as a token

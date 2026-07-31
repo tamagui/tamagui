@@ -17,6 +17,9 @@ function countCodes(flags: Iterable<Flag>): Array<[string, number]> {
 export interface ReportSummary {
   sites: number
   clean: number
+  needsRelocation: number
+  unknownHost: number
+  ineligible: number
   flagged: number
   /** sites with nothing to convert until the runtime catches up */
   waiting: number
@@ -28,13 +31,24 @@ export function renderReport(
   registryDiagnostics: readonly string[]
 ): { text: string; summary: ReportSummary } {
   const sites = files.flatMap((file) => file.sites)
-  const clean = sites.filter((site) => site.flags.length === 0)
+  const clean = sites.filter(
+    (site) => site.flags.length === 0 && site.assessmentVerdict === 'clean'
+  )
   const flagged = sites.filter((site) => site.flags.length > 0)
+  const needsRelocation = sites.filter(
+    (site) => site.assessmentVerdict === 'needs-relocation'
+  )
+  const unknownHost = sites.filter((site) => site.assessmentVerdict === 'unknown-host')
+  const ineligible = sites.filter((site) => site.assessmentVerdict === 'ineligible')
   const waiting = clean.filter((site) => site.programs.length === 0)
   const jsx = sites.filter((site) => site.kind === 'jsx')
   const styled = sites.filter((site) => site.kind === 'styled')
-  const cleanJsx = jsx.filter((site) => site.flags.length === 0).length
-  const cleanStyled = styled.filter((site) => site.flags.length === 0).length
+  const cleanJsx = jsx.filter(
+    (site) => site.flags.length === 0 && site.assessmentVerdict === 'clean'
+  ).length
+  const cleanStyled = styled.filter(
+    (site) => site.flags.length === 0 && site.assessmentVerdict === 'clean'
+  ).length
   const readyFiles = files.filter(
     (file) => file.sites.length > 0 && file.sites.every((site) => site.legacyLeft === 0)
   )
@@ -55,10 +69,13 @@ export function renderReport(
     '',
     `- ${sites.length} conversion sites found`,
     `- ${clean.length - waiting.length} converted with no open questions`,
+    `- ${needsRelocation.length} need relocation because the authored target or host cannot evaluate the conversion`,
+    `- ${unknownHost.length} have an unverified host type`,
+    `- ${ineligible.length} use properties that cannot carry flat clauses`,
     `- ${waiting.length} have nothing to convert until the runtime catches up (see below)`,
-    `- ${flagged.length} flagged for manual work`,
-    `- ${jsx.length} JSX sites: ${cleanJsx} clean, ${jsx.length - cleanJsx} flagged`,
-    `- ${styled.length} styled config sites: ${cleanStyled} clean, ${styled.length - cleanStyled} flagged`,
+    `- ${flagged.length} have syntax or ordering flags for manual work`,
+    `- ${jsx.length} JSX sites: ${cleanJsx} clean, ${jsx.length - cleanJsx} need review`,
+    `- ${styled.length} styled config sites: ${cleanStyled} clean, ${styled.length - cleanStyled} need review`,
     '',
     '### Turning off `legacyConditionObjects`',
     '',
@@ -118,8 +135,14 @@ export function renderReport(
     if (!file.sites.length) continue
     lines.push('', `## \`${file.file}\``, '')
     for (const site of file.sites) {
+      const status = [
+        site.assessmentVerdict === 'clean' ? null : site.assessmentVerdict,
+        site.flags.length ? 'syntax-blocked' : null,
+      ]
+        .filter(Boolean)
+        .join(', ')
       lines.push(
-        `### ${site.label} at line ${site.line} (${site.flags.length ? 'flagged' : 'clean'})`,
+        `### ${site.label} at line ${site.line} (${status || 'clean'})`,
         '',
         'Before:',
         '',
@@ -136,6 +159,16 @@ export function renderReport(
       if (site.flags.length) {
         lines.push('', 'Flags:', '')
         for (const flag of site.flags) lines.push(`- **${flag.code}**: ${flag.detail}`)
+      }
+      if (site.assessments.length) {
+        lines.push('', 'Conversion assessment:', '')
+        for (const assessment of site.assessments) {
+          for (const reason of assessment.reasons) {
+            lines.push(
+              `- **${assessment.verdict}: ${assessment.property}**: ${reason.message}. Remedy: ${reason.remedy}.`
+            )
+          }
+        }
       }
       if (site.inventory.length) {
         lines.push('', 'Left authored:', '')
@@ -159,6 +192,9 @@ export function renderReport(
     summary: {
       sites: sites.length,
       clean: clean.length,
+      needsRelocation: needsRelocation.length,
+      unknownHost: unknownHost.length,
+      ineligible: ineligible.length,
       flagged: flagged.length,
       waiting: waiting.length,
     },

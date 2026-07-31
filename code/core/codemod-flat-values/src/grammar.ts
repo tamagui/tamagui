@@ -16,6 +16,11 @@ import type {
   LegacyConditionResult,
 } from '../../style-grammar/src/legacyConditions'
 import type {
+  ConversionReason,
+  ConversionTargets,
+  HostView,
+} from '../../style-grammar/src/clauseCapability'
+import type {
   ModifierRegistryView,
   ParsedClause,
   ParsedValue,
@@ -25,6 +30,7 @@ import { replaceV6BuiltInTokens } from './builtInNames'
 const grammar = styleGrammarRuntime
 
 export const {
+  assessFlatConversion,
   createModifierRegistry,
   defaultMediaKeys,
   evaluateProgram,
@@ -39,7 +45,15 @@ export const {
   standaloneValueProps,
 } = grammar
 
-export type { LegacyConditionError, ModifierRegistryView, ParsedClause, ParsedValue }
+export type {
+  ConversionReason,
+  ConversionTargets,
+  HostView,
+  LegacyConditionError,
+  ModifierRegistryView,
+  ParsedClause,
+  ParsedValue,
+}
 
 export { shorthands }
 

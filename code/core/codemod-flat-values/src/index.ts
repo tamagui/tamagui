@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { resolveTamaguiHost } from '@tamagui/language-service/host'
 import {
   ModuleKind,
   ModuleResolutionKind,
@@ -18,6 +19,8 @@ import { compact, unwrapExpression } from './expressions'
 import {
   codemodMediaNames,
   createModifierRegistry,
+  type ConversionTargets,
+  type HostView,
   type ModifierRegistryView,
 } from './grammar'
 import { createProvenance } from './provenance'
@@ -36,6 +39,7 @@ const defaultCorpus = [
 
 function collectFiles(inputs: readonly string[]): SourceFile[] {
   const project = new Project({
+    tsConfigFilePath: resolve(repoRoot, 'tsconfig.json'),
     skipAddingFilesFromTsConfig: true,
     compilerOptions: {
       allowJs: false,
@@ -127,7 +131,9 @@ function variantSites(
   config: ObjectLiteralExpression,
   label: string,
   registry: ModifierRegistryView,
-  containers: ContainerPlan
+  containers: ContainerPlan,
+  targets: ConversionTargets,
+  host: HostView | undefined
 ): SiteReport[] {
   const sites: SiteReport[] = []
 
@@ -149,7 +155,9 @@ function variantSites(
               'styled',
               `${label} variants.${variantName}.${branchName}`,
               registry,
-              containers
+              containers,
+              targets,
+              host
             )
             if (site) sites.push(site)
           }
@@ -173,7 +181,9 @@ function variantSites(
             'styled',
             `${label} compoundVariants[${index}]`,
             registry,
-            containers
+            containers,
+            targets,
+            host
           )
           if (site) sites.push(site)
         }
@@ -184,12 +194,27 @@ function variantSites(
   return sites
 }
 
+function conversionTargets(filePath: string): ConversionTargets {
+  if (/\.web\.[cm]?[jt]sx?$/.test(filePath)) return 'web'
+  if (/\.native\.[cm]?[jt]sx?$/.test(filePath)) return 'native'
+  return 'shared'
+}
+
+function typeAwareHost(node: Node): HostView | undefined {
+  const checker = node.getProject().getTypeChecker().compilerObject
+  return resolveTamaguiHost(
+    checker as unknown as Parameters<typeof resolveTamaguiHost>[0],
+    node.compilerNode as unknown as Parameters<typeof resolveTamaguiHost>[1]
+  )
+}
+
 function inspectFile(
   sourceFile: SourceFile,
   registry: ModifierRegistryView,
   provenance: Provenance
 ): FileReport {
   const containers = planContainers(sourceFile, registry)
+  const targets = conversionTargets(sourceFile.getFilePath())
   const sites: SiteReport[] = []
 
   for (const kind of [
@@ -198,21 +223,37 @@ function inspectFile(
   ] as const) {
     for (const opening of sourceFile.getDescendantsOfKind(kind)) {
       if (!provenance.isTamaguiElement(opening)) continue
-      const site = convertJsxSite(opening, registry, containers)
+      const site = convertJsxSite(
+        opening,
+        registry,
+        containers,
+        targets,
+        typeAwareHost(opening.getTagNameNode())
+      )
       if (site) sites.push(site)
     }
   }
 
   for (const call of sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression)) {
     if (!provenance.isTamaguiStyledCall(call)) continue
+    const component = call.getArguments()[0]
+    const host = component ? typeAwareHost(component) : undefined
     const config = unwrapExpression(
       (call.getArguments()[1] as Expression | undefined) ?? call
     )
     if (!Node.isObjectLiteralExpression(config)) continue
     const label = `styled(${compact(call.getArguments()[0]?.getText() ?? 'unknown')}, …)`
-    const site = convertStyleObject(config, 'styled', label, registry, containers)
+    const site = convertStyleObject(
+      config,
+      'styled',
+      label,
+      registry,
+      containers,
+      targets,
+      host
+    )
     if (site) sites.push(site)
-    sites.push(...variantSites(config, label, registry, containers))
+    sites.push(...variantSites(config, label, registry, containers, targets, host))
   }
 
   sites.sort(
@@ -297,5 +338,5 @@ if (jsonPath !== null) {
 
 console.log(`wrote ${reportPath}`)
 console.log(
-  `${summary.sites} sites: ${summary.clean - summary.waiting} converted, ${summary.waiting} waiting on runtime support, ${summary.flagged} flagged`
+  `${summary.sites} sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged`
 )
