@@ -121,22 +121,20 @@ describe('webpack-tests', () => {
     const { container: containerOn } = renderOn()
     const { container: containerOff } = renderOff()
 
-    // Find the div with is_MyComponent class which has the padding classes
     const divOn = containerOn.querySelector('.is_MyComponent')
     const divOff = containerOff.querySelector('.is_MyComponent')
 
-    const outCn = divOn?.className
-    const out2Cn = divOff?.className
-
-    expect(outCn).not.toContain(`_pl-t-space-4`)
-    expect(out2Cn).toContain(`_pl-t-space-4`)
+    expect(divOn).toBeTruthy()
+    expect(divOff).toBeTruthy()
+    expect(window.getComputedStyle(divOn!).paddingLeft).toBe('')
+    expect(window.getComputedStyle(divOff!).paddingLeft).toBe('var(--t-space-4)')
   })
 
   test('18. extracts flexWrap property', () => {
     const { renderTrue } = getTest('TestFlexWrap')
     const { container } = renderTrue()
 
-    const element = container.querySelector('div[class*="_fwr-"]')
+    const element = container.querySelector('span.is_Theme div')
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)
@@ -151,8 +149,8 @@ describe('webpack-tests', () => {
     const { container: containerTrue } = renderTrue()
     const { container: containerFalse } = renderFalse()
 
-    const elementTrue = containerTrue.querySelector('div[class*="_fwr-"]')
-    const elementFalse = containerFalse.querySelector('div[class*="_fwr-"]')
+    const elementTrue = containerTrue.querySelector('span.is_Theme div')
+    const elementFalse = containerFalse.querySelector('span.is_Theme div')
 
     expect(elementTrue).toBeTruthy()
     expect(elementFalse).toBeTruthy()

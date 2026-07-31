@@ -238,7 +238,7 @@ exports[`fontFamily shorthand + styled + flatten works 1`] = `
     export function Test(props) {
       return (
         <span
-          className="is_MySizableText is_Text font_mono _bg-green _ff-f-family"
+          className="is_MySizableText is_Text font_mono _bc-1389700636 _ff-1556374084"
         />
       )
     }
@@ -323,7 +323,7 @@ exports[`ternary with mixed theme-token and non-token values retains dynamic pro
     export function Test({ isActive, label }) {
       return (
         <Text
-          className="_fos-f-size-3"
+          className="_fs-837447699"
           fontWeight={isActive ? '600' : '400'}
           color={isActive ? '$color12' : '$color11'}
         >
@@ -334,7 +334,7 @@ exports[`ternary with mixed theme-token and non-token values retains dynamic pro
 "
 `;
 
-exports[`ternary with mixed theme-token and non-token values retains dynamic props 2`] = `":root ._fos-f-size-3{font-size:var(--f-size-3);}"`;
+exports[`ternary with mixed theme-token and non-token values retains dynamic props 2`] = `"._fs-837447699{font-size:var(--f-size-3)}"`;
 
 exports[`theme + media queries + conditionals extract 1`] = `
 "

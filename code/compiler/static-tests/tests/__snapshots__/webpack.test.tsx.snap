@@ -13,11 +13,11 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _fg-1 _fs-1 _fb-0px _bg-red _bxsh-0px0px10px0946673987 _tsx-1883057750 _s-1183657447 _tsy-2118506539 test1"
+          class="is_View _fg-1 _fs-1 _fb-0px _bxsh-0px0px10px0946673987 _fd-525695443 _bc-804859160 _tsx-1883057750 _s-1183657447 _tsy-2118506539 test1"
           rounded="100"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
@@ -44,13 +44,13 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-row _ox-hidden _oy-hidden who"
+          class="is_View _fd-1686130279 _ox-2097820587 _oy-2000633204 who"
         />
         <div
-          class="is_View _fd-row _bg-fff35 _pt-2px _pb-2px _t--14px ease-in-out-top"
+          class="is_View _pt-2px _pb-2px _t--14px _fd-1686130279 _bc-10341746 ease-in-out-top"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
@@ -77,13 +77,13 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-row _ox-hidden _oy-hidden who"
+          class="is_View _fd-1686130279 _ox-2097820587 _oy-2000633204 who"
         />
         <div
-          class="is_View _fd-row _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top"
+          class="is_View _pt-2px _pb-2px _t-0px _fd-1686130279 _bc-10288124 ease-in-out-top"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
@@ -110,10 +110,10 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _ox-hidden _oy-hidden _bg-blue"
+          class="is_View _fd-1360800300 _ox-2097820587 _oy-2000633204 _bc-12224809"
         >
           <div
-            class="is_View _fd-column _ox-hidden _oy-hidden _bg-blue hello-world"
+            class="is_View _fd-1360800300 _ox-2097820587 _oy-2000633204 _bc-12224809 hello-world"
           />
         </div>
         <div
@@ -138,10 +138,10 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _ox-hidden _oy-hidden _bg-blue"
+          class="is_View _fd-1360800300 _ox-2097820587 _oy-2000633204 _bc-12224809"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
@@ -168,10 +168,10 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _ox-hidden _oy-hidden _bg-red"
+          class="is_View _fd-1360800300 _ox-2097820587 _oy-2000633204 _bc-1524534687"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
@@ -198,12 +198,12 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _pr-11px _pl-11px _pb-10px _w-6637"
+          class="is_View _pr-11px _pl-11px _pb-10px _fd-1360800300 _w-1488715325"
           maxw="30%"
           minw="500"
         >
           <div
-            class="is_View _fd-column _w-10px _h-10px"
+            class="is_View _w-10px _h-10px _fd-1360800300"
           />
         </div>
         <div
@@ -228,13 +228,13 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _t-0px _r-0px _b-0px _l-0px _pos-relative"
+          class="is_View _t-0px _r-0px _b-0px _l-0px _fd-525695443 _p-1686201532"
         >
           <div
-            class="is_View _fd-column _bg-red"
+            class="is_View _fd-525695443 _bc-804859160"
           >
             <div
-              class="is_View _fd-column _t-0px _r-0px _b-0px _l-0px _pos-relative _bg-white _col-blue"
+              class="is_View _t-0px _r-0px _b-0px _l-0px _fd-525695443 _p-1686201532 _bc-1404183362 _c-564548965"
             />
           </div>
         </div>
@@ -260,7 +260,7 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _pt-15px _pb-15px home-top-dish"
+          class="is_View _pt-15px _pb-15px _fd-525695443 home-top-dish"
         />
         <div
           style="display: contents;"
@@ -284,14 +284,14 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
         class="_dsp_contents  font_body"
       >
         <span
-          class="is_Text _col-color _fos-10px"
+          class="is_Text _fos-10px _c-930348155"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
             select="auto"
           >
             <span
-              class="is_Text _col-00035 _fos-15px _fow-600"
+              class="is_Text _fos-15px _c-232473871 _fw-1787079307"
             >
               hello
             </span>
@@ -319,7 +319,7 @@ exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _o-1 _tr-"
+          class="is_View _o-1 _tr- _fd-1360800300"
         />
         <div
           style="display: contents;"
@@ -343,7 +343,7 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _bc-518987389"
+          class="is_View _fd-525695443 _bc-518987389"
         />
         <div
           style="display: contents;"
@@ -367,10 +367,10 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
         class="_dsp_contents  font_body"
       >
         <span
-          class="is_Spacer is_View _pe-none _w-t-space-4 _h-t-space-4 _miw-t-space-4 _mih-t-space-4"
+          class="is_Spacer is_View _pe-836242017 _w-1822269961 _h-1340170027 _mw-339465280 _mh-971050720"
         />
         <span
-          class="is_Spacer is_View _pe-none _fg-1 _fs-1 _fb-0px _w-10px _h-10px _miw-10px _mih-10px"
+          class="is_Spacer is_View _fg-1 _fs-1 _fb-0px _pe-836242017 _w-1918028207 _h-1604300643 _mw-777765528 _mh-1888728200"
         />
         <div
           style="display: contents;"
@@ -394,7 +394,7 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _fg-1 _fs-1 _fb-0px _bg-red"
+          class="is_View _fg-1 _fs-1 _fb-0px _fd-1360800300 _bc-1524534687"
         />
         <div
           style="display: contents;"
@@ -418,10 +418,10 @@ exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fwr-wrap _fd-row _gap-t-space-2"
+          class="is_View _fw-474340940 _fd-1082030112 _rg-1906992756 _cg-159703721"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
@@ -448,12 +448,12 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fwr-wrap _fd-row"
+          class="is_View _fw-807453939 _fd-1686130279"
           items="center"
           justify="space-between"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
@@ -480,12 +480,12 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fwr-nowrap _fd-row"
+          class="is_View _fw-1800002994 _fd-1686130279"
           items="center"
           justify="space-between"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
@@ -512,10 +512,10 @@ exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _fwr-wrap _fg-1 _fs-0 _fb-auto _ai-stretch _jc-flex-start _ac-flex-start"
+          class="is_View _fg-1 _fs-0 _fd-525695443 _fw-474340940 _fb-625134996 _ai-825617931 _jc-1478849670 _ac-713818611"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
@@ -542,16 +542,16 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-row _fb-10037 _ox-hidden _oy-hidden _pt-4px _pb-4px _w-10037 _pl-182025707 _pr-1386582983 _c-553726572 _bc-329008467"
+          class="is_View _pt-4px _pb-4px _fd-1686130279 _fb-1934762382 _ox-2097820587 _oy-2000633204 _pl-182025707 _pr-1386582983 _w-1122939989 _c-553726572 _bc-329008467"
           maxw="100%"
           rounded="$0"
         >
           <div
-            class="is_View _fd-column _fwr-wrap _gap-0px"
+            class="is_View _gap-0px _fd-1360800300 _fw-807453939"
             justify="flex-start"
           >
             <span
-              class="is_Text _col-color"
+              class="is_Text _c-930348155"
             >
               hello world
             </span>
@@ -579,16 +579,16 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-row _fb-auto _ox-hidden _oy-hidden _pt-4px _pb-4px _w-10037 _pl-182025707 _pr-1386582983 _c-553726572 _bc-329008467"
+          class="is_View _pt-4px _pb-4px _fd-1686130279 _fb-1933263923 _ox-2097820587 _oy-2000633204 _pl-182025707 _pr-1386582983 _w-1122939989 _c-553726572 _bc-329008467"
           maxw="100%"
           rounded="$0"
         >
           <div
-            class="is_View _fd-column _fwr-wrap _gap-0px"
+            class="is_View _gap-0px _fd-1360800300 _fw-807453939"
             justify="center"
           >
             <span
-              class="is_Text _col-color"
+              class="is_Text _c-930348155"
             >
               hello world
             </span>
@@ -616,10 +616,10 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-row _gap-t-space-2 _fw-918911937 _pt-1831002991 _pr-1700477706 _pb-874247254 _pl-1389761532"
+          class="is_View _fd-1686130279 _rg-229758085 _cg-393713936 _fw-918911937 _pt-1831002991 _pr-1700477706 _pb-874247254 _pl-1389761532"
         >
           <span
-            class="is_Text _col-color"
+            class="is_Text _c-930348155"
           >
             hello world
           </span>
