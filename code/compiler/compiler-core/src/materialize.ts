@@ -16,6 +16,13 @@ export type MaterializedValue =
       value: StaticEvaluationValue
       dependencies: ResolvedModuleId[]
       span: SourceSpan
+      /**
+       * Present only when normalization received syntax-level literal input:
+       * a string, number, boolean, or null AST literal, or JSXText. Template
+       * literals, constant-folded expressions, and values reached through a
+       * binding are evaluated static values but do not have literal origin.
+       */
+      literalOrigin?: true
     }
   | {
       kind: 'bailout'
@@ -89,7 +96,13 @@ function materializeValue(
   value: Extract<ElementEntryIR, { kind: 'prop' }>['value']
 ): MaterializedValue {
   if (value.kind === 'static') {
-    return { kind: 'static', value: value.value, dependencies: [], span: value.span }
+    return {
+      kind: 'static',
+      value: value.value,
+      dependencies: [],
+      span: value.span,
+      literalOrigin: true,
+    }
   }
   const result = graph.evaluate(value)
   return result.ok
