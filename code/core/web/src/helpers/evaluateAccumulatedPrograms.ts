@@ -365,6 +365,11 @@ export function evaluateAccumulatedPrograms(
  * the common x/y/uniform-scale cases and deliberately different once rotate and
  * a non-uniform scale are combined.
  */
+const legacyTransformAliases: Record<string, string> = {
+  x: 'translateX',
+  y: 'translateY',
+}
+
 function composeNativeTransform(
   styleState: GetStyleState,
   results: Record<string, string | number>
@@ -374,13 +379,16 @@ function composeNativeTransform(
 
   const flatTransforms = styleState.flatTransforms
   if (flatTransforms) {
-    // preserve legacy relative order among the parts the family does not own
+    // preserve legacy relative order among the parts the family does not own,
+    // and the legacy alias mapping (x/y are Tamagui names, not RN transforms)
     const keys: string[] = []
     for (const key in flatTransforms) keys.push(key)
     keys.sort()
     for (let index = keys.length - 1; index >= 0; index--) {
       const key = keys[index]
-      tail.push({ [key]: flatTransforms[key] } as TransformEntry)
+      tail.push({
+        [legacyTransformAliases[key] || key]: flatTransforms[key],
+      } as TransformEntry)
     }
     styleState.flatTransforms = undefined
   }

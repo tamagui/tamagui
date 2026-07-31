@@ -1,6 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
+import { StyleObjectRules } from '@tamagui/helpers'
 import { View, Text, createTamagui, getConfig, StyleObjectValue } from '../web/src'
 import { simplifiedGetSplitStyles, findRule } from './utils'
 
@@ -50,10 +51,15 @@ describe('styleMode arbitrary values', () => {
     expect(rule[StyleObjectValue]).toBe('calc(100% - 2px)')
   })
 
-  test('rotate-[-8deg] → transform rotate', () => {
-    const rule = ruleFor('rotate-[-8deg]', 'transform')
+  test('rotate-[-8deg] → rotate program', () => {
+    // the transform family lowers rotate to the CSS `rotate` property
+    const theme = (getConfig() as any).themes.light
+    const styles = simplifiedGetSplitStyles(View, { className: 'rotate-[-8deg]' } as any, {
+      theme,
+    })
+    const rule = findRule(styles.rulesToInsert, 'rotate')
     expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toContain('rotate(-8deg)')
+    expect((rule[StyleObjectRules] ?? []).join('')).toContain('rotate:-8deg')
   })
 
   test('arbitrary value composes with a modifier', () => {
@@ -112,17 +118,23 @@ describe('styleMode letterSpacing / boxShadow / scale', () => {
     ).toBe('0 8px 18px rgba(0,0,0,0.1)')
   })
 
-  test('scale-95 → scale(0.95) (percentage utility, /100 like opacity)', () => {
-    expect(ruleFor('scale-95', 'transform')[StyleObjectValue]).toContain('scale(0.95)')
+  // scale lowers to --t-scale-* axis programs plus the shared composition rule
+  function scaleAxisText(className: string): string {
+    const theme = (getConfig() as any).themes.light
+    const styles = simplifiedGetSplitStyles(View, { className } as any, { theme })
+    const axisClass = styles.classNames['--t-scale-x']
+    return (styles.rulesToInsert[axisClass]?.[StyleObjectRules] ?? []).join('')
+  }
+
+  test('scale-95 → axis programs at 0.95 (percentage utility, /100 like opacity)', () => {
+    expect(scaleAxisText('scale-95')).toContain('--t-scale-x:0.95')
   })
 
-  test('scale-100 → scale(1)', () => {
-    expect(ruleFor('scale-100', 'transform')[StyleObjectValue]).toContain('scale(1)')
+  test('scale-100 → axis programs at 1', () => {
+    expect(scaleAxisText('scale-100')).toContain('--t-scale-x:1')
   })
 
   test('scale-[0.95] arbitrary is unchanged', () => {
-    expect(ruleFor('scale-[0.95]', 'transform')[StyleObjectValue]).toContain(
-      'scale(0.95)'
-    )
+    expect(scaleAxisText('scale-[0.95]')).toContain('--t-scale-x:0.95')
   })
 })

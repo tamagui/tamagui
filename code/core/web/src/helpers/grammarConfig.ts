@@ -279,13 +279,10 @@ export function createGrammarRuntimeContext(
 }
 
 /**
- * Props the shared `$token` table does not bind but the flat grammar must:
- * `x`/`y` are lengths from the space scale, so `x="4"` resolves like `p="4"`, and
- * the transform family's axis custom properties inherit that binding.
+ * The transform family's axis custom properties inherit x/y's space binding
+ * (x/y themselves bind through `defaultTokenCategories`).
  */
 const flatValueCategories: Readonly<Record<string, TokenCategoryName>> = {
-  x: 'space',
-  y: 'space',
   '--t-x': 'space',
   '--t-y': 'space',
 }

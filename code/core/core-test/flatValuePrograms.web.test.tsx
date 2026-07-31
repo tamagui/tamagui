@@ -1,6 +1,7 @@
-// Lanes W1 + W2: clause-bearing string values accumulate per-longhand programs
-// through the forward pass and lower to program-block CSS. Staging contract:
-// clause-less strings and unparseable strings keep the existing path untouched.
+// Lanes W1 + W2: string style values accumulate per-longhand programs through
+// the forward pass and lower to program-block CSS. v3 cutover contract: a
+// clause-free string is a base-only program resolving config-first; only
+// unparseable colon-free strings keep the legacy path.
 
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
@@ -66,11 +67,39 @@ test('a later program replaces the plain value wholesale', () => {
   expect(result.style?.backgroundColor).toBeUndefined()
 })
 
-test('clause-less strings keep the existing path byte for byte', () => {
-  const program = split({ backgroundColor: 'red' })
-  const baseline = split({ backgroundColor: 'red' })
-  expect(program.classNames).toEqual(baseline.classNames)
-  expect(Object.keys(program.classNames).every((k) => !String(program.classNames[k]).startsWith('_bc-'))).toBe(true)
+test('clause-free strings are base-only programs resolving config-first', () => {
+  // a plain CSS value becomes a base-only program block
+  const result = split({ backgroundColor: 'red' })
+  const className = result.classNames.backgroundColor
+  expect(className).toMatch(/^_bc-/)
+  expect(rulesFor(result, className)).toEqual([`.${className}{background-color:red}`])
+
+  // a configured bare numeric string resolves through the token category
+  // (`p="4"` is the space token exactly like `p="$4"` was)
+  const tokens = split({ p: '4' })
+  for (const longhand of [
+    'paddingTop',
+    'paddingRight',
+    'paddingBottom',
+    'paddingLeft',
+  ]) {
+    const tokenClass = tokens.classNames[longhand]
+    expect(tokenClass, longhand).toBeTruthy()
+    expect(rulesFor(tokens, tokenClass)[0]).toContain('var(--')
+  }
+})
+
+test('a configured name wins over the same-spelled CSS literal', () => {
+  // the design of record's collision rule ("V6 candidate naming" /
+  // config-first resolution): `black` is a configured color token in the
+  // default config, so it resolves to the token variable, not the CSS keyword.
+  // CSS-wide keywords (none, auto, transparent, ...) are reserved at config
+  // creation and can never collide.
+  const result = split({ backgroundColor: 'black' })
+  const className = result.classNames.backgroundColor
+  expect(rulesFor(result, className)[0]).toBe(
+    `.${className}{background-color:var(--c-black)}`
+  )
 })
 
 test('aspectRatio colon values pass through; other parse failures throw in dev', () => {

@@ -28,10 +28,11 @@ describe('tailwind mode - basic className', () => {
       className: 'bg-[red]',
     } as any)
 
-    expect(styles.classNames.backgroundColor).toMatch(/_bg-/)
-    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
-    expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toBe('red')
+    const className = styles.classNames.backgroundColor
+    expect(className).toMatch(/^_bc-/)
+    expect(
+      (styles.rulesToInsert[className]?.[StyleObjectRules] ?? []).join('')
+    ).toContain('background-color:red')
   })
 
   test('bracketed width and height preserve raw pixels', () => {
@@ -167,10 +168,9 @@ describe('tailwind mode - class preservation', () => {
       className: 'my-custom-class bg-[red] another-class',
     } as any)
 
-    // tailwind class should produce a rule
-    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
-    expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toBe('red')
+    // unknown classes flip the cascade-preserving switch: candidates evaluate
+    // to inline style so author CSS classes keep their cascade position
+    expect(styles.style?.backgroundColor).toBe('red')
 
     // regular classes preserved in viewProps.className
     const finalClassName = styles.viewProps?.className || ''
@@ -203,9 +203,8 @@ describe('tailwind mode - class preservation', () => {
       className: 'foo-bar baz-qux bg-[blue]',
     } as any)
 
-    const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
-    expect(bgRule).toBeTruthy()
-    expect(bgRule[StyleObjectValue]).toBe('blue')
+    // unknown classes present: candidate evaluates to inline style
+    expect(styles.style?.backgroundColor).toBe('blue')
 
     const finalClassName = styles.viewProps?.className || ''
     expect(finalClassName).toContain('foo-bar')
@@ -217,9 +216,8 @@ describe('tailwind mode - class preservation', () => {
       className: 'dark:my-theme bg-[red]',
     } as any)
 
-    const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
-    expect(bgRule).toBeTruthy()
-    expect(bgRule[StyleObjectValue]).toBe('red')
+    // unknown class present: candidate evaluates to inline style
+    expect(styles.style?.backgroundColor).toBe('red')
 
     const finalClassName = styles.viewProps?.className || ''
     expect(finalClassName).toContain('dark:my-theme')

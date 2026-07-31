@@ -30,6 +30,7 @@ import {
   modifierToPseudo,
   percentUtilityProps,
   radiusCornerProps,
+  transformFamilyProps,
   type GrammarConfigView,
   type ParsedCandidate,
 } from '@tamagui/style-grammar'
@@ -87,6 +88,7 @@ import {
   canContributeConvertedProgram,
   contributeConvertedProgram,
   contributeStylePrograms,
+  contributeTransformNumber,
   ensureGrammarContext,
 } from './contributePrograms'
 import { evaluateAccumulatedPrograms } from './evaluateAccumulatedPrograms'
@@ -1915,20 +1917,21 @@ export const getSplitStyles: StyleSplitter = (
         (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
       ) {
-        // flat value programs: a string with a top-level clause contributes
-        // per-longhand programs instead of one plain value. the indexOf check
-        // is exact — every clause contains a colon — and keeps colon-free
-        // values (the overwhelming majority) off the parse cache entirely.
-        // on web, classes express programs when shouldDoClasses; the
-        // noClass/animated-inline path evaluates them at the end of the pass
-        // exactly like native. static extraction keeps its own path
+        // flat value programs: every string value contributes per-longhand
+        // programs — clause-free strings are base-only programs, which is what
+        // resolves configured bare names and numeric strings config-first
+        // (`p="4"` is the space token). on web, classes express programs when
+        // shouldDoClasses; the noClass/animated-inline path evaluates them at
+        // the end of the pass exactly like native. static extraction keeps its
+        // own path
         if (
           (process.env.TAMAGUI_TARGET === 'native' ||
             (process.env.TAMAGUI_TARGET === 'web' &&
               (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))) &&
-          typeof val === 'string' &&
-          val.indexOf(':') !== -1 &&
-          contributeStylePrograms(styleState, key, val)
+          ((typeof val === 'string' && contributeStylePrograms(styleState, key, val)) ||
+            (typeof val === 'number' &&
+              transformFamilyProps.has(key) &&
+              contributeTransformNumber(styleState, key, val)))
         ) {
           return
         }

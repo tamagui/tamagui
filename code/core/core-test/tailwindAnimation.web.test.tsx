@@ -24,17 +24,25 @@ function transformRule(className: string) {
   )
 }
 
+// the transform family lowers axis values to --t-* variable programs plus a
+// shared composition rule, replacing the legacy atomic `transform` rule
+function axisRuleText(className: string, axis: string): string {
+  const styles = simplifiedGetSplitStyles(View, { className } as any)
+  const axisClass = styles.classNames[axis]
+  return (styles.rulesToInsert[axisClass]?.[4] ?? []).join('')
+}
+
 describe('styleMode transform utilities', () => {
-  test('translate-y-[10px] → translateY(10px)', () => {
-    expect(transformRule('translate-y-[10px]')[StyleObjectValue]).toBe('translateY(10px)')
+  test('translate-y-[10px] → --t-y axis program', () => {
+    expect(axisRuleText('translate-y-[10px]', '--t-y')).toContain('--t-y:10px')
   })
 
-  test('translate-x-[4px] → translateX(4px)', () => {
-    expect(transformRule('translate-x-[4px]')[StyleObjectValue]).toBe('translateX(4px)')
+  test('translate-x-[4px] → --t-x axis program', () => {
+    expect(axisRuleText('translate-x-[4px]', '--t-x')).toContain('--t-x:4px')
   })
 
   test('negative translate-y-[-2px] resolves', () => {
-    expect(transformRule('translate-y-[-2px]')[StyleObjectValue]).toBe('translateY(-2px)')
+    expect(axisRuleText('translate-y-[-2px]', '--t-y')).toContain('--t-y:-2px')
   })
 
   test('hover:translate-y-[2px] applies under the hover pseudo', () => {

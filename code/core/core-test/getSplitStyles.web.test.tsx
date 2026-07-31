@@ -41,7 +41,13 @@ describe('getSplitStyles', () => {
       test: true,
     })
 
-    expect(styles.classNames).toEqual({ color: '_col-red' })
+    // variant strings run through the program engine: hashed program class,
+    // same declaration
+    const className = styles.classNames.color
+    expect(className).toMatch(/^_c-/)
+    expect((styles.rulesToInsert[className]?.[4] ?? []).join('')).toContain(
+      'color:red'
+    )
   })
 
   test(`Size variants resolve true through settings.defaultSize`, () => {

@@ -49,7 +49,13 @@ function hasBareTokenPrefix(serialized: string): boolean {
   )
 }
 
-type LoweredResult = ReturnType<typeof lowerProgram> | null
+type LoweredResult =
+  | (ReturnType<typeof lowerProgram> & {
+      /** resolved base payload, riding the StyleObject value slot like the
+       * legacy atomic emitter did (informational: devtools and tests) */
+      baseValue: string | null
+    })
+  | null
 
 const loweredCache = new Map<string, LoweredResult>()
 
@@ -99,7 +105,11 @@ function lowerOneProgram(
       program.sourceProp,
       program.value.base
     )
-    if (base === null) return null
+    // an unresolvable base ships raw (with the warning above), matching what
+    // the legacy value path did — dropping it would silently erase the style
+    if (base === null) {
+      base = program.value.base
+    }
   }
 
   const clauses: ParsedClause[] = []
@@ -119,7 +129,7 @@ function lowerOneProgram(
   const resolvedValue: ParsedValue = { base, clauses }
 
   try {
-    return lowerProgram(
+    const lowered = lowerProgram(
       { property: longhand, value: resolvedValue, sourceProp: program.sourceProp },
       {
         registry: context.registry,
@@ -127,7 +137,9 @@ function lowerOneProgram(
         mediaQueries: context.mediaQueries,
         containerQueries: context.containerQueries,
       }
-    )
+    ) as NonNullable<LoweredResult>
+    lowered.baseValue = base
+    return lowered
   } catch (error) {
     // a clause that cannot become CSS (exit:, unknown media key) drops the
     // whole program with one warning; native evaluation is unaffected
@@ -167,7 +179,13 @@ export function lowerAccumulatedPrograms(
     if (!lowered) continue
 
     styleState.classNames[program.property] = lowered.className
-    addStyleObject([program.property, null, lowered.className, undefined, lowered.rules])
+    addStyleObject([
+      program.property,
+      lowered.baseValue,
+      lowered.className,
+      undefined,
+      lowered.rules,
+    ])
 
     // an axis-variable program (x/y/scaleX/scaleY) only sets a custom property;
     // the rule turning those variables into `translate`/`scale` is identical for

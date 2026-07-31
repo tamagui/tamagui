@@ -23,6 +23,14 @@ export declare function canContributeConvertedProgram(styleState: GetStyleState,
  * proceeds down the existing plain-value path.
  */
 export declare function contributeStylePrograms(styleState: GetStyleState, key: string, val: string): boolean;
+/**
+ * Numeric values on the transform family contribute base-only programs so the
+ * family always composes in the canonical CSS order (translate, rotate,
+ * scale). Without this, a numeric x beside a string rotate falls into the
+ * legacy tail and its order against the family entries flips. Numbers stay
+ * literal (px/deg by declaration unit), never config-resolved.
+ */
+export declare function contributeTransformNumber(styleState: GetStyleState, key: string, val: number): boolean;
 /** mergeStyle calls this so a later plain value replaces any program it covers */
 /**
  * A later plain BASE write on a program-owned longhand restates the program's

@@ -107,27 +107,27 @@ test('x resolves space tokens like padding does', () => {
   expect(rules[1]).toContain(conf.tokensParsed.space['$8'].variable)
 })
 
-test('a clause-less transform value keeps the legacy path untouched', () => {
+test('clause-free transform values are base-only axis programs', () => {
+  // v3 cutover: family numerics contribute programs too, so nothing is left
+  // for the legacy atomic transform class
   const result = split({ scale: 2, x: 10 })
-  expect(result.classNames['--t-scale-x']).toBeUndefined()
-  expect(result.classNames['--t-x']).toBeUndefined()
-  // still the legacy atomic transform class
-  expect(Object.keys(result.classNames).some((key) => key === 'transform')).toBe(true)
+  const scaleX = result.classNames['--t-scale-x']
+  const x = result.classNames['--t-x']
+  expect(rulesFor(result, scaleX)[0]).toBe(`.${scaleX}{--t-scale-x:2}`)
+  expect(rulesFor(result, x)[0]).toBe(`.${x}{--t-x:10px}`)
+  expect(result.classNames.transform).toBeUndefined()
 })
 
-test('a program displaces a legacy uniform scale onto the other axis', () => {
-  // plain scale: 2 lands in the legacy flatTransforms store, then the later
-  // scaleX program takes the X axis. Y must keep the base value rather than
-  // being dropped with its uniform parent.
+test('a scaleX program merges over an earlier plain uniform scale', () => {
+  // plain scale: 2 contributes base programs on both axes; the later scaleX
+  // restates the X base (decision 21) while Y keeps the uniform value
   const result = split({ scale: 2, scaleX: '1 hover:3' })
   const x = result.classNames['--t-scale-x']
   expect(x).toBeTruthy()
+  expect(rulesFor(result, x)[0]).toBe(`.${x}{--t-scale-x:1}`)
   expect(rulesFor(result, x)[1]).toBe(`@media (hover: hover) {.${x}:where(:hover){--t-scale-x:3}}`)
-  // the displaced uniform value survives on the sibling axis, through the legacy
-  // transform path this round keeps for non-program parts
-  const transformClass = result.classNames.transform
-  expect(transformClass).toBeTruthy()
-  expect(JSON.stringify(rulesFor(result, transformClass))).toContain('scaleY(2)')
+  const y = result.classNames['--t-scale-y']
+  expect(rulesFor(result, y)[0]).toBe(`.${y}{--t-scale-y:2}`)
 })
 
 test('a later plain transform value restates the base; the hover survives', () => {

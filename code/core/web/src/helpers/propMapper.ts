@@ -490,6 +490,10 @@ export const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
   ...mapDefaultTokenCategory(tokenCategories.size, 'size'),
   ...mapDefaultTokenCategory(tokenCategories.radius, 'radius'),
   ...mapDefaultTokenCategory(tokenCategories.zIndex, 'zIndex'),
+  // the transform family's x/y are lengths from the space scale (v6 decision:
+  // `x="4"` resolves like `p="4"`), never the size category
+  x: 'space',
+  y: 'space',
   fontSize: 'fontSize',
   gap: 'space',
   rowGap: 'space',

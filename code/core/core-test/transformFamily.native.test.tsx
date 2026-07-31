@@ -113,15 +113,18 @@ test('equal axes collapse to one scale entry, matching the v1 array', () => {
   ])
 })
 
-test('clause-less transform values keep the legacy path and its order', () => {
-  // the staging rule: only clause-bearing values divert, so a plain transform
-  // prop still composes through mergeFlatTransforms (reverse-alphabetical unshift)
+test('clause-free transform values compose through the family in CSS order', () => {
+  // v3 cutover: clause-free strings and family numerics are base-only
+  // programs, so the whole family composes in the canonical CSS order —
+  // translate, rotate, scale — regardless of authored order or value type.
+  // (translateX/translateY commute, and uniform scale commutes with rotate,
+  // so rendering matches the legacy reverse-alphabetical output here.)
   const result = split({ scale: 2, rotate: '45deg', y: 20, x: 10 })
-  expect(keysOf(result.style?.transform)).toEqual([
-    'translateY',
-    'translateX',
-    'scale',
-    'rotate',
+  expect(result.style?.transform).toEqual([
+    { translateX: 10 },
+    { translateY: 20 },
+    { rotate: '45deg' },
+    { scale: 2 },
   ])
 })
 

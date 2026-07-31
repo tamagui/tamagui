@@ -180,9 +180,11 @@ describe('native — unitless props', () => {
 })
 
 describe('native — named enum: fontWeight', () => {
-  test('fontWeight={700} → font-bold → RN weight "700"; unknown weight retained', () => {
+  test('fontWeight={700} → font-bold → RN numeric weight 700; unknown weight retained', () => {
     expect(toClass(`<Text fontWeight={700} />`)).toContain('font-bold')
-    expect(resolved(Text, `<Text fontWeight={700} />`, 'fontWeight')).toBe('700')
+    // program evaluation canonicalizes unitless numeric strings to numbers;
+    // RN >= 0.76 accepts numeric fontWeight (repo pins 0.83)
+    expect(resolved(Text, `<Text fontWeight={700} />`, 'fontWeight')).toBe(700)
     // a non-standard weight is NOT mis-emitted as font-[450] (would set fontFamily) — retained
     const out = tamaguiToTailwind(`<Text fontWeight="450" />`, {
       renameComponents: false,

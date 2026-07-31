@@ -60,7 +60,8 @@ describe('RN 0.76+ Style Alignment - Web', () => {
         boxShadow: 'inset 0 2px 4px black',
       })
       const value = getStyleValue(styles, 'boxShadow')
-      expect(value).toBe('inset 0 2px 4px black')
+      // config-first: 'black' resolves through the configured color token
+      expect(value).toBe('inset 0 2px 4px var(--black)')
     })
 
     test('boxShadow with multiple tokens resolves all', () => {

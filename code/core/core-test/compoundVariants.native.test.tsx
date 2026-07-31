@@ -151,7 +151,8 @@ describe('compoundVariants - native', () => {
       }
     )
 
-    expect(callerOverrides.style?.backgroundColor).toBe('black')
+    // config-first: 'black' resolves through the configured color token
+    expect(callerOverrides.style?.backgroundColor).toBe('#000')
     expect(callerOverrides.style?.marginTop).toBe(4)
     expect(callerOverrides.style?.paddingTop).toBe(1)
 

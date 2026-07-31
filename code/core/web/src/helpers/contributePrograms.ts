@@ -1,12 +1,13 @@
 // Lane W1: flat value programs entering the forward pass.
 //
-// A style prop whose string value carries clauses (`bg="red hover:blue"`)
-// contributes per-longhand programs instead of a plain style value. Only
-// clause-bearing values divert: a clause-less string keeps the existing
-// token-resolution path, which produces identical output. A clause-shaped
-// string that fails to parse throws in development (v3 cutover) — a top-level
-// colon is never valid CSS, so it can only be a typo — except on aspectRatio,
-// whose RN value space legitimately holds "16:9". Production falls through.
+// Every string style value contributes per-longhand programs: a clause-free
+// string is a base-only program, so configured bare names and numeric strings
+// resolve config-first through the payload identifier lookup (`p="4"` is the
+// space token exactly like `p="$4"` was). A clause-shaped string that fails to
+// parse throws in development (v3 cutover) — a top-level colon is never valid
+// CSS, so it can only be a typo — except on aspectRatio, whose RN value space
+// legitimately holds "16:9". Colon-free strings that fail to parse fall
+// through to the plain-value path in every mode.
 // See plans/dom-tailwind-flat-values.md, "Programs and merging" and the phase
 // 5 wiring lanes.
 
@@ -87,6 +88,19 @@ export function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeC
   return context
 }
 
+
+// the web atomic emitter translates these into boxShadow/textShadow
+// (styleToCSS) and native passes them straight to RN — neither side can
+// express them as per-longhand CSS programs
+const rnTranslatedShadowProps = new Set([
+  'shadowColor',
+  'shadowOffset',
+  'shadowOpacity',
+  'shadowRadius',
+  'textShadowColor',
+  'textShadowOffset',
+  'textShadowRadius',
+])
 
 const noPlainValue = Symbol()
 
@@ -329,6 +343,12 @@ export function contributeStylePrograms(
     return false
   }
 
+  // RN shadow props are not CSS longhands: styleToCSS combines them into
+  // boxShadow/textShadow from plain style values, so they must never divert
+  if (rnTranslatedShadowProps.has(key)) {
+    return false
+  }
+
   ensureGrammarContext(styleState)
 
   const cached = getCachedPrograms(key, val)
@@ -339,8 +359,10 @@ export function contributeStylePrograms(
       // string that fails to parse is a typo (`hver:blue`) and hides broken
       // styling if it passes through — throw where the author can see it.
       // aspectRatio is the one RN value space that legitimately holds a colon
-      // ("16:9"), so it stays a silent fallthrough. production never throws
-      if (key !== 'aspectRatio') {
+      // ("16:9"), so it stays a silent fallthrough, as does any colon-free
+      // string (unterminated or invalid CSS the author wrote as a plain
+      // value). production never throws
+      if (key !== 'aspectRatio' && val.indexOf(':') !== -1) {
         throw new Error(
           `[tamagui] ${key}="${val}" looks like a flat value program but does not parse (${cached.errors[0].code}). Fix the value, or if this is intentional CSS, remove the top-level ":".`
         )
@@ -349,19 +371,32 @@ export function contributeStylePrograms(
     return false
   }
 
-  let hasClauses = false
-  for (const entry of cached.programs) {
-    if (entry.value.clauses.length) {
-      hasClauses = true
-      break
-    }
-  }
-  if (!hasClauses) return false
-
   for (const entry of cached.programs) {
     contributeParsedProgram(styleState, entry.property, entry.value, key)
   }
 
+  return true
+}
+
+/**
+ * Numeric values on the transform family contribute base-only programs so the
+ * family always composes in the canonical CSS order (translate, rotate,
+ * scale). Without this, a numeric x beside a string rotate falls into the
+ * legacy tail and its order against the family entries flips. Numbers stay
+ * literal (px/deg by declaration unit), never config-resolved.
+ */
+export function contributeTransformNumber(
+  styleState: GetStyleState,
+  key: string,
+  val: number
+): boolean {
+  if (!Number.isFinite(val)) return false
+  const declarations = transformDeclarationsFor(key)
+  if (!declarations.length) return false
+  const payload = plainValueToPayload(val, declarations[0])
+  if (payload === null) return false
+  ensureGrammarContext(styleState)
+  contributeParsedProgram(styleState, key, { base: payload, clauses: [] }, key)
   return true
 }
 

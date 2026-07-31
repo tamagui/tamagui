@@ -162,7 +162,13 @@ test('the setting defaults ON in v3; explicit false preserves legacy handling', 
       hoverStyle: { backgroundColor: 'blue' },
     })
 
-    expect(result.classNames.backgroundColor).not.toMatch(/^_bc-/)
+    // the gate covers condition objects only: the clause-free base is still a
+    // program class, but its program block must not contain the hover clause —
+    // that has to come from the legacy pseudo machinery
+    const baseClass = result.classNames.backgroundColor
+    expect((result.rulesToInsert[baseClass]?.[4] ?? []).join('')).not.toContain(
+      ':hover'
+    )
     expect(
       Object.values(result.rulesToInsert)
         .flatMap((rule: any) => rule[4])

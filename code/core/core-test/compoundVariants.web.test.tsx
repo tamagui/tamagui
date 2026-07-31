@@ -162,7 +162,8 @@ describe('compoundVariants - web', () => {
       }
     )
 
-    expect(callerOverrides.style?.backgroundColor).toBe('black')
+    // config-first: 'black' resolves through the configured color token
+    expect(callerOverrides.style?.backgroundColor).toBe('#000')
     expect(callerOverrides.style?.opacity).toBe(0.7)
     expect(callerOverrides.style?.borderTopLeftRadius).toBe(1)
     expect(callerOverrides.style?.marginTop).toBe(4)
@@ -210,8 +211,9 @@ describe('compoundVariants - web', () => {
       { acceptsClassName: false }
     )
     const result = simplifiedGetSplitStyles(Frame, {}, { mergeDefaultProps: true })
-    expect(result.style?.paddingTop).toBe('8px')
-    expect(result.style?.borderTopLeftRadius).toBe('2px')
+    // noClass program evaluation writes native-parity numeric values
+    expect(result.style?.paddingTop).toBe(8)
+    expect(result.style?.borderTopLeftRadius).toBe(2)
   })
 
   test('static strings share runtime precedence with objects and functions', () => {
@@ -276,11 +278,13 @@ describe('compoundVariants - web', () => {
     expect(result.style).toMatchObject({
       paddingTop: '4px',
       minWidth: '2px',
-      width: '20px',
-      height: '10px',
+      // variant contributions run through the program engine, whose noClass
+      // evaluation writes native-parity numeric values
+      width: 20,
+      height: 10,
       opacity: 0.5,
       backgroundColor: 'blue',
-      borderTopWidth: '1px',
+      borderTopWidth: 1,
       borderTopColor: 'green',
     })
   })

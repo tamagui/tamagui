@@ -136,15 +136,17 @@ describe('shorthand variables - web', () => {
 })
 
 describe('border shorthand - web', () => {
-  // border shorthand passed through as CSS string on web
+  // the border family splits the composite value into per-longhand programs
 
   test('border with width, style and color', () => {
     const styles = simplifiedGetSplitStyles(View, {
       border: '1px solid red',
     })
-    const value = getStyleValue(styles, 'border')
 
-    expect(value).toBe('1px solid red')
+    expect(getStyleValue(styles, 'borderTopWidth')).toBe('1px')
+    expect(getStyleValue(styles, 'borderTopStyle')).toBe('solid')
+    expect(getStyleValue(styles, 'borderTopColor')).toBe('red')
+    expect(getStyleValue(styles, 'borderLeftColor')).toBe('red')
   })
 
   test('border with $variable color resolves to CSS var', () => {
@@ -156,35 +158,36 @@ describe('border shorthand - web', () => {
     expect(value).toMatch(/2px dashed var\(--.*white.*\)/)
   })
 
-  test('border without variables passed through unchanged', () => {
+  test('border without variables splits into longhands unchanged', () => {
     const styles = simplifiedGetSplitStyles(View, {
       border: '1px solid blue',
     })
-    const value = getStyleValue(styles, 'border')
 
-    expect(value).toBe('1px solid blue')
+    expect(getStyleValue(styles, 'borderTopWidth')).toBe('1px')
+    expect(getStyleValue(styles, 'borderTopColor')).toBe('blue')
   })
 
-  test('border "none" passed through', () => {
+  test('border "none" becomes border-style none per side', () => {
     const styles = simplifiedGetSplitStyles(View, {
       border: 'none',
     })
-    const value = getStyleValue(styles, 'border')
 
-    expect(value).toBe('none')
+    expect(getStyleValue(styles, 'borderTopStyle')).toBe('none')
+    expect(getStyleValue(styles, 'borderBottomStyle')).toBe('none')
   })
 })
 
 describe('outline shorthand - web', () => {
-  // outline passes through as CSS string on web (like border)
+  // outline splits into width/style/color programs (like border)
 
   test('outline with width, style and color', () => {
     const styles = simplifiedGetSplitStyles(View, {
       outline: '2px solid red',
     })
-    const value = getStyleValue(styles, 'outline')
 
-    expect(value).toBe('2px solid red')
+    expect(getStyleValue(styles, 'outlineWidth')).toBe('2px')
+    expect(getStyleValue(styles, 'outlineStyle')).toBe('solid')
+    expect(getStyleValue(styles, 'outlineColor')).toBe('red')
   })
 
   test('outline with $variable color resolves to CSS var', () => {
@@ -196,13 +199,12 @@ describe('outline shorthand - web', () => {
     expect(value).toMatch(/2px solid var\(--.*white.*\)/)
   })
 
-  test('outline "none" passed through', () => {
+  test('outline "none" becomes outline-style none', () => {
     const styles = simplifiedGetSplitStyles(View, {
       outline: 'none',
     })
-    const value = getStyleValue(styles, 'outline')
 
-    expect(value).toBe('none')
+    expect(getStyleValue(styles, 'outlineStyle')).toBe('none')
   })
 })
 
