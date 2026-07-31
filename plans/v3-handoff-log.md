@@ -1071,7 +1071,7 @@ Parse-cost and render-loop benchmarks follow as their own commit.
   cannot flip is in the specificity ruling (legacy tiers all sit above
   (0,1,0)); this fixture pins it.
 - v3 release notes MUST call out the base-specificity drop: Tamagui base rules
-  fell from `:root .cls` (0,1,1) to `.cls` (0,1,0), so consumer single-class
+  fell from `:root .cls` (0,2,0) to `.cls` (0,1,0), so consumer single-class
   overrides now tie and resolve by stylesheet order (design record, "The
   program block encoding", consumer-visible consequence note).
 - Parse-cost + render-loop benchmark for the cutover (own commit).
