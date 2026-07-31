@@ -1,4 +1,5 @@
 import { tokenCategories } from '@tamagui/helpers'
+import { splitColorOpacitySuffix } from '@tamagui/style-grammar'
 import { getConfig } from '../config'
 import { isVariable } from '../createVariable'
 import type {
@@ -55,20 +56,22 @@ export const getTokenForKey = (
     return value
   }
 
-  // parse opacity modifier: $token/50 → base token + 50% opacity
-  // only for color-related style properties
+  // opacity modifier: $token/50 → base token + 50% opacity, colors only.
+  // one owner for the rule (style-grammar): valid is an unsigned integer 0
+  // through 100; an invalid attempt is a diagnostic and never clamps — the
+  // whole value falls through unresolved so the breakage is visible, exactly
+  // like the flat path
   let opacityModifier: number | undefined
   if (key in colorKeys) {
-    const slashIdx = value.indexOf('/')
-    if (slashIdx > 0) {
-      const raw = value.slice(slashIdx + 1)
-      // reject empty string after slash ($color/) to avoid Number("") === 0
-      if (raw.length > 0) {
-        const num = Number(raw)
-        if (!Number.isNaN(num)) {
-          opacityModifier = Math.max(0, Math.min(1, num / 100))
-          value = value.slice(0, slashIdx)
-        }
+    const suffix = splitColorOpacitySuffix(value)
+    if (suffix.kind === 'valid') {
+      opacityModifier = suffix.opacity / 100
+      value = suffix.name
+    } else if (suffix.kind === 'invalid') {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          `[tamagui] ${key}="${value}": opacity suffix "/${suffix.raw}" must be an integer 0-100`
+        )
       }
     }
   }

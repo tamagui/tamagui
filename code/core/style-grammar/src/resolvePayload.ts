@@ -358,6 +358,37 @@ export function resolvePayload(
   }
 }
 
+export type ColorOpacitySuffix =
+  /** no suffix attempt: `center/cover` and `x/50%` are ordinary CSS */
+  | { kind: 'none' }
+  /** a valid suffix: unsigned integer 0 through 100 */
+  | { kind: 'valid'; name: string; opacity: number }
+  /** an attempt that is signed, fractional, or out of range — a diagnostic, never a clamp */
+  | { kind: 'invalid'; name: string; raw: string }
+
+const opacityAttempt = /^[+-]?\d+(?:\.\d+)?$/
+const opacityValid = /^\d+$/
+
+/**
+ * The one owner of the color opacity suffix rule for WHOLE names
+ * (`slate-500/50`). Every layer — flat payloads (via `readOpacitySuffix`
+ * below, same rules anchored mid-payload), Tailwind candidates, and the
+ * legacy `$token/NN` path — must agree: valid means an unsigned integer 0
+ * through 100; an invalid attempt is a diagnostic and is never clamped or
+ * partially applied (review divergence 2).
+ */
+export function splitColorOpacitySuffix(value: string): ColorOpacitySuffix {
+  const slash = value.lastIndexOf('/')
+  if (slash <= 0 || slash === value.length - 1) return { kind: 'none' }
+  const raw = value.slice(slash + 1)
+  if (!opacityAttempt.test(raw)) return { kind: 'none' }
+  const name = value.slice(0, slash)
+  if (opacityValid.test(raw) && Number(raw) <= 100) {
+    return { kind: 'valid', name, opacity: Number(raw) }
+  }
+  return { kind: 'invalid', name, raw }
+}
+
 /**
  * Reads a `/NN` opacity suffix attempt sitting directly on an ident. An attempt
  * is a numeric run that ends at a component boundary, so `center/cover` and

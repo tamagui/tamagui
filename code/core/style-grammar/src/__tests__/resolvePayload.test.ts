@@ -390,3 +390,36 @@ describe('literal payloads are provably untouched', () => {
     }
   })
 })
+
+describe('splitColorOpacitySuffix', () => {
+  // the whole-name rule must agree with the mid-payload readOpacitySuffix rule
+  // for every input shape, so the two spellings of one owner cannot drift
+  test('agrees with payload resolution case by case', async () => {
+    const { splitColorOpacitySuffix } = await import('../resolvePayload')
+    const lookup = (name: string) =>
+      name === 'accent' ? ({ name: 'c-accent', kind: 'color' } as const) : undefined
+
+    const payloadOpacity = (value: string): number | 'literal' => {
+      const resolved = resolvePayload(value, { lookup })
+      const reference = resolved.references[0]
+      if (!reference) return 'literal'
+      return reference.opacity ?? 'literal'
+    }
+
+    expect(splitColorOpacitySuffix('accent/50')).toEqual({
+      kind: 'valid',
+      name: 'accent',
+      opacity: 50,
+    })
+    expect(payloadOpacity('accent/50')).toBe(50)
+
+    for (const invalid of ['accent/50.5', 'accent/150', 'accent/-1', 'accent/+3']) {
+      expect(splitColorOpacitySuffix(invalid).kind, invalid).toBe('invalid')
+      expect(payloadOpacity(invalid), invalid).toBe('literal')
+    }
+
+    for (const notAttempt of ['accent/cover', 'accent/50%', 'accent', 'accent/']) {
+      expect(splitColorOpacitySuffix(notAttempt).kind, notAttempt).toBe('none')
+    }
+  })
+})
