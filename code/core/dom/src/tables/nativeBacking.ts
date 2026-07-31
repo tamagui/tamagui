@@ -9,8 +9,11 @@ import type { DefaultStyle, NativeBacking, NativeBackingRow, TagName } from './t
  * native build failure.
  *
  * The block and flex constants below are the browser layout defaults React
- * Native does not have. They are applied by the primitives, not by the tag
- * table, because they depend on the parent's resolved display value.
+ * Native does not have. The COMPILER applies them while flattening styles —
+ * they depend on the parent's resolved display, which the compiler resolves
+ * statically (same-module parent) or by the defined block-flow boundary rule
+ * (component root). The primitives are hookless and apply nothing; see
+ * `contract.ts` and plans/v3-dom-native-lowering-design.md.
  */
 
 /** the module the compiler injects primitive imports from */
