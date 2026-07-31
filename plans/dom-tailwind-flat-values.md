@@ -1960,17 +1960,23 @@ locked:
    written after a conditional is absorbed into it — see item 8 of the handoff
    log), and
    runtime-appended blocks behave identically regardless of cross-program
-   insertion order (7/7 probe assertions). WebKit re-check rides the
-   kitchen-sink webkit CI project when this lands as tests. Streaming and
-   code splitting are now covered (2026-07-30): `flatValueProgramsStreaming`
+   insertion order (7/7 probe assertions). WebKit re-check done
+   (2026-07-30): the `webkit-programs` playwright project runs the cascade and
+   code-split delivery tests under Safari's engine, 6 passing, so the encoding
+   is no longer single-engine evidence. Streaming and code splitting are
+   covered (2026-07-30): `flatValueProgramsStreaming`
    checks the stream's own chunks rather than the joined document and shows a
    block is never delivered in pieces, and a kitchen-sink fixture loads a real
    code-split chunk in a browser and shows that blocks arriving after render
    leave already-resolved computed styles untouched, that a late program
    resolves the same as an early one, and that a duplicate arrival stays one
-   class carrying one block. Remaining: a streamed HTTP response hydrating in
-   a real browser, which neither half covers on its own — the node half proves
-   the bytes, the browser half proves the resolution.
+   class carrying one block. The end-to-end half is covered too: a small
+   streaming server in `code/tests/integration` drives a genuinely chunked
+   response into a browser (shell bytes at ~9ms, suspended content at ~540ms on
+   the same response) and the test asserts the shell is painted and resolved
+   while the late content does not yet exist, then that the late content
+   resolves without moving the shell, then that hydration keeps both. **This
+   item is closed.**
 3. The CSS transition native capability matrix and the migration of the
    existing array and per-property preset object forms (preset resolution
    itself is decided: config-first identifiers).

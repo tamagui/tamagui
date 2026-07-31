@@ -594,7 +594,8 @@ Status: pending.
 
 ## 8. Validation debt
 
-Status: in progress.
+Status: complete. All four items closed — streaming SSR and code splitting,
+the end-to-end streamed response, font-face swap, and the WebKit re-check.
 
 - Streaming SSR and code splitting, design item 2's remaining half, landed in
   `a67adb6250` (`flatValueProgramsStreaming.web.test.tsx` plus a kitchen-sink
@@ -687,8 +688,35 @@ Status: in progress.
   unsupported input is a diagnostic, never silence, so this is a gap rather than
   a documented limitation. Grammar is not this lane's, so it is routed rather
   than fixed here.
-- Honestly remaining on this item: a streamed HTTP response hydrating in a
-  real browser. The node half proves the bytes are right and the browser half
+- The streaming server landed, so the gap this lane wrote down is closed rather
+  than carried. `code/tests/integration` now has a small SSR server that streams
+  `renderToPipeableStream` output into a real response, a `streaming.html` build
+  input so the streamed document hydrates from a real client bundle, and three
+  playwright tests. Measured, not assumed: shell bytes arrive at ~9ms and the
+  suspended content at ~540ms **on the same response**.
+- The load-bearing assertion is that the shell is painted and resolved while the
+  late content **does not yet exist**. Everything else here would still pass
+  against a buffered document, because buffering produces a byte-identical
+  result — so that one assertion is the only thing standing between this and a
+  test that silently stops testing streaming. Proved by mutation: swapping
+  `onShellReady` for `onAllReady` fails exactly it, with `late-shared` counting
+  1 where 0 was expected, and nothing else.
+- The other two mutations (changing the shared program's value, changing the
+  late-only program's value) each fail too, and all three restore green.
+- One bug of my own found while building it, worth noting because it would have
+  been intermittent and blamed on the product: the server wrote 200 headers
+  before opening the static file, so any 404 threw `ERR_HTTP_HEADERS_SENT` out
+  of the stream's error handler and killed the server mid-suite. Later tests
+  then failed with connection-refused, which looks nothing like the real cause.
+  Fixed by resolving the file before writing any header.
+- Also added `dist-ssr-streaming/` to that package's `.gitignore` alongside the
+  existing entries, so the new build output cannot be read as source by tools
+  that walk the tree — the same thing that had `dist-ssr` being linted.
+- Not caused by this lane, verified by reverting to HEAD and re-running: the
+  existing `simple.integration.test.js` dev-mode test fails on a Tailwind
+  `@container grid` element computing `display: flex` instead of `grid`. It
+  fails identically with this lane's edits removed, so it is pre-existing and
+  belongs to the Tailwind isolation work. The node half proves the bytes are right and the browser half
   proves late insertion resolves right, but nothing yet drives a real streamed
   response into a real browser end to end. Font-face swap E2E and the WebKit
   program-block re-check are also still open.
