@@ -119,7 +119,8 @@ export function buildCSSRuleSets(
     string,
     { name: string; declarations: string[]; language?: string; fontParsed: any }
   >,
-  defaultFontSizeToken: string = DEFAULT_SIZE_TOKEN
+  defaultFontSizeToken: string = DEFAULT_SIZE_TOKEN,
+  defaultFontToken = ''
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const cssRuleSets: string[] = []
@@ -149,12 +150,13 @@ export function buildCSSRuleSets(
     }
 
     // shared rule: all font_* classes + is_View apply font properties
-    // this resets fonts on Views like React Native does
+    // this resets fonts on Views like React Native does; the declarations must
+    // follow settings.defaultFont, never the sorted selector order
     if (fontSelectors.length) {
-      const firstFont = fontDeclarations[sortedFontDeclarationKeys[0]]
-      if (firstFont?.fontParsed) {
+      const defaultFont = fontDeclarations[defaultFontToken]
+      if (defaultFont?.fontParsed) {
         const fontProps = getFontPropertyDeclarations(
-          firstFont.fontParsed,
+          defaultFont.fontParsed,
           defaultFontSizeToken
         )
         const sharedSelectors = [...fontSelectors, '.is_View'].join(', ')

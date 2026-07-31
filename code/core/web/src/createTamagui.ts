@@ -225,6 +225,15 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         ])
       ) as DefaultTokens)
     : undefined
+  const defaultFontSetting = configIn.settings?.defaultFont
+  const defaultFont =
+    defaultFontSetting?.[0] === '$' ? defaultFontSetting.slice(1) : defaultFontSetting
+  const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
+  if (defaultFontToken && !fontsParsed?.[defaultFontToken]) {
+    throw new Error(
+      `settings.defaultFont points to missing font "${defaultFontToken}". Configure fonts.${defaultFont} or choose an existing default.`
+    )
+  }
 
   const themeConfig = (() => {
     // populate specificTokens (needed for runtime)
@@ -251,7 +260,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const defaultFontSize = getDefaultToken('fontSize', {
       settings: { defaultSize, defaultTokens },
     })
-    const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations, defaultFontSize)
+    const cssRuleSets = buildCSSRuleSets(
+      declarations,
+      fontDeclarations,
+      defaultFontSize,
+      defaultFontToken
+    )
 
     const themesIn = configIn.themes as ThemesLikeObject
     const dedupedThemes =
@@ -285,16 +299,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
-  const defaultFontSetting = configIn.settings?.defaultFont
-
-  const defaultFont = (() => {
-    let val = defaultFontSetting
-    if (val?.[0] === '$') {
-      val = val.slice(1)
-    }
-    return val
-  })()
-
   const defaultPositionSetting = configIn.settings?.defaultPosition || 'static'
 
   const defaultProps = configIn.defaultProps || {}
@@ -305,9 +309,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       position: defaultPositionSetting,
     }
   }
-
-  // ensure prefixed with $
-  const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
 
   // Text inherits font from root via CSS, no need for default fontFamily
   // only explicit fontFamily prop should add font_* class

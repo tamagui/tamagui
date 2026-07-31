@@ -34,6 +34,51 @@ describe('createTamagui', () => {
     expect(theme.settings.defaultSize).toBe('$5')
   })
 
+  test(`font reset uses the configured default when another font sorts first`, () => {
+    const baseConfig = config.getDefaultTamaguiConfig()
+    const alternate = {
+      ...baseConfig.fonts.body,
+      family: 'AlphabeticallyFirst',
+      lineHeight: {
+        3: 111,
+      },
+    }
+    const theme = createTamagui({
+      ...baseConfig,
+      fonts: {
+        aaa: alternate,
+        ...baseConfig.fonts,
+      },
+      settings: {
+        ...baseConfig.settings,
+        defaultFont: 'body',
+      },
+    })
+
+    const rootFontRule = theme.themeConfig.cssRuleSets.find((rule) =>
+      rule.includes('.is_View')
+    )
+    expect(rootFontRule).toContain(theme.fontsParsed.$body.family.variable)
+    expect(rootFontRule).toContain(theme.fontsParsed.$body.lineHeight.$4.variable)
+    expect(rootFontRule).not.toContain(theme.fontsParsed.$aaa.lineHeight.$3.variable)
+  })
+
+  test(`settings.defaultFont must name a configured font`, () => {
+    const baseConfig = config.getDefaultTamaguiConfig()
+
+    expect(() =>
+      createTamagui({
+        ...baseConfig,
+        settings: {
+          ...baseConfig.settings,
+          defaultFont: 'missing',
+        },
+      })
+    ).toThrow(
+      'settings.defaultFont points to missing font "$missing". Configure fonts.missing or choose an existing default.'
+    )
+  })
+
   test(`settings.defaultTokens normalize and resolve each category independently`, () => {
     const baseConfig = config.getDefaultTamaguiConfig()
     const theme = createTamagui({
