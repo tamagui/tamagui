@@ -203,6 +203,30 @@ Status: in progress.
   runtime; platform-splitting that setup removed 24 modules from the Tailwind
   web graph while preserving the `.native` setup path. Tailwind web/type gates
   pass 74 tests across eight files.
+- The descriptor-cut remainder landed in `1242a90d00`, `43053d812c`,
+  `9e4e03e74e`, and `4d89c707f4`. `@tamagui/web` no longer exposes
+  `settings.styleMode` or depends on `tailwind-merge`; config and to-tailwind
+  are test-only dev dependencies of `@tamagui/tailwind`. Of the 423 failures
+  exposed by the protected cut, 418 moved to the Tailwind package. Five
+  specifications were deliberately retired: one required `tailwind-merge` to
+  delete an earlier unknown class instead of preserving authored order, and
+  four mixed a class-string base with object/function styles even though core
+  `styled()` is now object-only and Tailwind `styled()` is class-only. Two
+  additional global mode-toggle tests left with the setting. Whole behavior
+  files moved, so the package also gained their already-green converter and
+  retention tests; its final gates are 458 web/type and 270 native tests.
+- Icon reconstruction did not move: `helpers-icon` no longer accepts or
+  reconstructs `className`, `@tamagui/tailwind` exports no icon wrapper, and no
+  reconstruction caller remains. The nine deleted icon assertions therefore
+  described behavior that is genuinely gone.
+- With the new dev dependencies installed, the focused runtime, declaration,
+  and built-artifact isolation gate passes 9/9. The shipped Tailwind graph
+  contains neither dev dependency and still excludes the regular core/web
+  roots, native media driver, Vite frontend, `tailwindcss`, and
+  `@tailwindcss`. After deliberate web/core rebuilds, the reduced core suites
+  pass 391 web tests (2 skipped, 1 todo) and 168 native tests (7 expected
+  failures, 11 skipped); their removed population now lives in the package
+  gates above.
 
 ## 3. DOM contract
 
