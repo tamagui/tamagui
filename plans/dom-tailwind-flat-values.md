@@ -330,11 +330,29 @@ CSS semantics, even if a legacy config has a same-named preset. The V3 codemod
 must rename or expand a colliding preset when its configured easing differs
 from the CSS default.
 
-Both forms lower into one transition IR containing property, duration, timing
-function, delay, and behavior. The CSS driver serializes that IR without
-changing supported web semantics. Native timing drivers translate supported
-durations and easing functions. Spring presets remain driver configuration
-rather than pretending to be CSS.
+Both forms — the shorthand and the five longhands — lower into one transition
+IR containing property, duration, timing function, delay, and behavior;
+Phase 6 item 4's alignment path fulfils this at runtime. Clarified 2026-07-31
+after the 39-row legacy audit, because "both forms" was being read as
+CSS-plus-legacy: the legacy array and per-property object forms deliberately
+do NOT route through the IR at runtime in v3. They carry spring and driver
+configuration the IR does not pretend is CSS (consistent with the spring rule
+below), all four drivers consume them through the animation-helpers
+normalizer, and `migrateLegacyTransition` is the migration PROTOTYPE for
+codemod-side reasoning, not a runtime path — it has no caller by design. Any
+future routing of legacy values through the IR must handle the compat edge
+the audit pinned: `{ default: '100ms', duration: 50 }` is accepted by the
+public driver normalizer and rejected by the IR. The CSS driver serializes
+the IR without changing supported web semantics. Native timing drivers
+translate supported durations and easing functions. Spring presets remain
+driver configuration rather than pretending to be CSS.
+
+Named as a pattern after its third instance (this sentence, the Tailwind
+group/container modifiers, the DOM native lowering): **a written commitment
+with no caller is indistinguishable from a plan until someone probes it.**
+When a record sentence describes runtime behavior, it names the code path
+that performs it or it is marked as intended; a reviewer finding neither
+treats the sentence as unfulfilled, not as ambiguous.
 
 Native does not silently approximate unsupported web behavior. Examples that
 need capability diagnostics include unsupported properties, `steps()`, and

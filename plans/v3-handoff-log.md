@@ -1547,3 +1547,27 @@ statement of where our parser stands relative to the platform:
   processBoxShadow is lowercase-exact, and being looser than the platform is
   the tighter error inverted.
 - COLORS: verbatim passthrough; `processColor` is the authority.
+
+### Transition record clarified; two open items from the 39-row audit (Lane E)
+
+Decision, made deliberately per the manager: the record's "both forms lower
+into one IR" meant shorthand + longhands (its surrounding context) and item
+4's alignment path fulfils it at runtime — but three readers took it as
+CSS-plus-legacy, so the record now says explicitly that legacy array and
+per-property forms stay driver-consumed in v3 (they carry spring/driver
+configuration the IR deliberately does not model), with
+`migrateLegacyTransition` a codemod-side prototype, no runtime caller by
+design. The commitment-without-caller pattern is named in the record after
+its third instance.
+
+Open items this leaves, neither urgent:
+- `{ default: '100ms', duration: 50 }` — accepted by the public driver
+  normalizer, rejected by the IR. Recorded as the compat edge any future
+  legacy-through-IR routing must handle first; one row, exactly the shape
+  that becomes a bug report.
+- transitionProperty naming a Tamagui-only spelling (`y`, other transform
+  family props): the CSS emission would produce a `transition` on a property
+  name CSS does not know, so it silently never fires. The transition wiring
+  (held for the animations review) needs property normalization to the CSS
+  targets (the `--t-*` axis variables or `transform`) or a diagnostic — added
+  to that review's scope rather than patched mid-hold.
