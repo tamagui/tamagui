@@ -102,6 +102,30 @@ test('a configured name wins over the same-spelled CSS literal', () => {
   )
 })
 
+test('an overloaded-family mismatch is a diagnostic, never a silent bind', () => {
+  // `width="black"`: 'black' lives in the color category, width binds size.
+  // the shared candidate-target validator diagnoses the mismatch; the value
+  // ships raw (visible breakage) instead of binding the color variable
+  const warnings: string[] = []
+  const original = console.warn
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  console.warn = (message: string) => warnings.push(String(message))
+  try {
+    const result = split({ width: 'black' })
+    const className = result.classNames.width
+    expect(rulesFor(result, className)[0]).toBe(`.${className}{width:black}`)
+    expect(
+      warnings.some((warning) =>
+        warning.includes('"black" contributes to "color", not "width"')
+      )
+    ).toBe(true)
+  } finally {
+    console.warn = original
+    process.env.NODE_ENV = previousNodeEnv
+  }
+})
+
 test('aspectRatio colon values pass through; other parse failures throw in dev', () => {
   // RN accepts aspectRatio="16:9"; it is the one legitimate colon value
   const result = split({ aspectRatio: '16:9' })

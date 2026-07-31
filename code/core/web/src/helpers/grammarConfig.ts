@@ -22,6 +22,7 @@ import { simpleHash, tokenCategories } from '@tamagui/helpers'
 import {
   createGrammarConfigView,
   createModifierRegistry,
+  resolveCandidateTarget,
   type ModifierRegistryView,
   type ReferenceKind,
   type ResolvedReference,
@@ -47,6 +48,23 @@ const tokenCategoryNames: readonly TokenCategoryName[] = [
   'radius',
   'zIndex',
 ]
+
+// numeric-looking names ('4', '1.5', '-2', '10px') are always literal CSS on a
+// property whose bound category does not define them (design: bare numbers
+// resolve config-first only for bound numeric categories)
+function isNumericName(name: string): boolean {
+  const code = name.charCodeAt(0)
+  return (code >= 48 && code <= 57) || code === 45 || code === 46
+}
+
+const warnedMismatches = new Set<string>()
+function warnMismatchOnce(key: string, message: string) {
+  if (!warnedMismatches.has(key)) {
+    if (warnedMismatches.size > 1000) warnedMismatches.clear()
+    warnedMismatches.add(key)
+    console.warn(message)
+  }
+}
 
 /**
  * Props whose token lives in a font's sub-map rather than in `tokens`. Mirrors
@@ -204,6 +222,26 @@ export function createGrammarRuntimeContext(
 
   const lookupCache = new Map<string, (name: string) => ResolvedReference | undefined>()
 
+  // name -> the categories defining it, built on the first bound-category miss
+  // for an identifier-shaped name. contribution entries carry the category
+  // name, which reads correctly in the mismatch diagnostic ('"xl" contributes
+  // to "size", not "color"'). only consulted for properties with a bound
+  // category — an unbound property legitimately reads the unified namespace
+  let tokenNameOwners: Map<string, { property: string }[]> | null = null
+  const siblingCategoriesFor = (name: string): { property: string }[] | null => {
+    if (!tokenNameOwners) {
+      tokenNameOwners = new Map()
+      for (const [categoryName, byName] of tokensByCategory) {
+        for (const tokenName of byName.keys()) {
+          let owners = tokenNameOwners.get(tokenName)
+          if (!owners) tokenNameOwners.set(tokenName, (owners = []))
+          owners.push({ property: categoryName })
+        }
+      }
+    }
+    return tokenNameOwners.get(name) ?? null
+  }
+
   const context: GrammarRuntimeContext = {
     registry,
     modifierDiagnostics: diagnostics,
@@ -227,6 +265,26 @@ export function createGrammarRuntimeContext(
         // the property's bound category first
         const token = tokenNames?.get(name) ?? fontMap?.[`$${name}`]
         if (isVariable(token)) return { name: token.name, kind }
+        // an identifier-shaped name that lives in a SIBLING category is an
+        // overloaded-family mismatch (`fontSize="red-500"`): diagnose and miss
+        // rather than silently binding another category's value or shipping
+        // literal CSS. bare numbers stay literal on unbound properties by
+        // design, so they never reach this check
+        if (category !== undefined && !isNumericName(name)) {
+          const owners = siblingCategoriesFor(name)
+          if (owners) {
+            if (process.env.NODE_ENV === 'development') {
+              const verdict = resolveCandidateTarget(property, name, owners)
+              if (!verdict.ok) {
+                warnMismatchOnce(
+                  `${property}\0${name}`,
+                  `[tamagui] ${verdict.diagnostic.message}`
+                )
+              }
+            }
+            return undefined
+          }
+        }
         // then the variables namespace
         const themeVariable = themeVariables.get(name)
         if (themeVariable) return { name: themeVariable.name, kind }

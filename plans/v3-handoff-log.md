@@ -832,3 +832,15 @@ reading meaning into typecheck errors after a type-surface change, rebuild the
 downstream packages and commit their regenerated declarations. Same shape as
 the stale-dist runtime confound: the artifact you are measuring must be built
 from the source you are reasoning about.
+
+### Candidate-target validator wired into the runtime resolver (Lane E)
+
+The shared `resolveCandidateTarget` from `@tamagui/style-grammar` now backs the
+payload identifier lookup: on a bound-category miss, an identifier-shaped name
+found in a sibling token category is an overloaded-family mismatch — a dev
+`candidate-property-mismatch` diagnostic plus a resolution miss (the value
+ships as visible literal CSS), never a silent bind through the variables
+namespace. Bare numeric names stay literal on unbound categories per the
+design, and properties with no bound category keep full access to the unified
+variables namespace. Pinned by the flatValuePrograms test "an
+overloaded-family mismatch is a diagnostic, never a silent bind".
