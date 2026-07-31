@@ -34,6 +34,25 @@ describe('tailwind components render through the shared renderer', () => {
     )
   })
 
+  test('an arbitrary value reaches the shared swallowed-base diagnostic', () => {
+    const warnings: string[] = []
+    const original = console.warn
+    const previousNodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+    console.warn = (message: string) => warnings.push(String(message))
+    try {
+      // underscores encode the space, so this is one Tailwind candidate whose
+      // decoded value has the same conditional-then-base shape as a style prop.
+      splitTailwindStyles(View, { className: 'bg-[sm:green_red]' })
+      expect(
+        warnings.some((warning) => warning.includes('before the first conditional'))
+      ).toBe(true)
+    } finally {
+      console.warn = original
+      process.env.NODE_ENV = previousNodeEnv
+    }
+  })
+
   test('a modifier joins the same per-longhand program, not a second class string', () => {
     const styles = splitTailwindStyles(View, {
       className: 'bg-[red] hover:bg-[blue]',
