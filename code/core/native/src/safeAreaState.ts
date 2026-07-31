@@ -43,7 +43,10 @@ const safeArea: SafeAreaAccessor = {
     const current = state.get()
     const previousMetrics = current.initialMetrics
     Object.assign(current, updates)
-    if (updates.initialMetrics !== undefined && current.initialMetrics !== previousMetrics) {
+    if (
+      updates.initialMetrics !== undefined &&
+      current.initialMetrics !== previousMetrics
+    ) {
       subscriptions.get().listeners.forEach((listener) => listener())
     }
   },
