@@ -27,6 +27,7 @@
     "src/transition.ts",
     "src/transitionLegacy.ts",
     "src/transitionNative.ts",
+    "src/toolingDiagnostics.ts",
     "src/valueParser.ts",
     "src/valueTypes.ts",
     "src/v6ThemeNames.ts",

@@ -18,6 +18,7 @@ export * from "./transformFamily";
 export * from "./transition";
 export * from "./transitionLegacy";
 export * from "./transitionNative";
+export * from "./toolingDiagnostics";
 export * from "./valueParser";
 export * from "./valueTypes";
 export * from "./v6ThemeNames";
