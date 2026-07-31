@@ -59,6 +59,18 @@ You can run `bun run sandbox` or `bun run dev` (the tamagui website).
 
 ### Local Testing Setup
 
+#### Rebuild before package tests
+
+Test files often run from source while their workspace dependencies resolve
+through built package exports. Native core tests also alias `@tamagui/core` to
+the built `@tamagui/core/native-test` entry. After changing a package, run
+`bun run build` in that package before trusting a dependent suite, or keep
+`bun run watch` running at the repository root while you work. Otherwise the
+test can exercise stale `dist` output instead of the source you just changed.
+
+The [V3 final conformance matrix](./plans/v3-final-conformance-matrix.md)
+records the source, dist, mixed, or artifact topology for each release gate.
+
 #### Playwright (web integration tests)
 
 Install browser binaries before first run:
