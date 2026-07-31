@@ -112,6 +112,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   FieldValidatedSignupCase: () =>
     require('./FieldValidatedSignupCase').FieldValidatedSignupCase,
   FlatValueProgramsCase: () => require('./FlatValueProgramsCase').FlatValueProgramsCase,
+  ProgramBlockDeliveryCase: () =>
+    require('./ProgramBlockDeliveryCase').ProgramBlockDeliveryCase,
   FormButtonTypeCase: () => require('./FormButtonTypeCase').FormButtonTypeCase,
   MixedCascadeCase: () => require('./MixedCascadeCase').MixedCascadeCase,
   GroupHoverMobile: () => require('./GroupHoverMobile').GroupHoverMobile,
