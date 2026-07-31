@@ -216,6 +216,14 @@ Status: in progress.
   display reset (`margin`, `padding`, `borderStyle`, `textDecorationLine`) was
   being applied on native, where there is no browser stylesheet to undo and
   every key is a per-element cost for nothing. It is `DISPLAY_WEB_RESET` now.
+  Counted, not estimated: the reset added 2 style keys on 29 tags and 3 on the
+  other 20, so 118 across the 49-tag surface, mean 2.41 per element — keys
+  React Native would carry through style resolution and the props diff while
+  restating a value that is already its default. The per-key runtime cost needs
+  the native primitives to exist, so it is benchmarked with item 3 rather than
+  asserted here. Both fixes are pinned against the oracle, not just applied:
+  re-adding the reset on native, or dropping the `1em`, each fails the
+  conformance suite.
 - Open, and blocking nothing yet: `bun.lock` at HEAD does not register
   `code/core/codemod-flat-values`, which is already committed, so
   `bun install --frozen-lockfile` fails at HEAD. The working tree also carries
