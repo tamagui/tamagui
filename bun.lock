@@ -373,6 +373,18 @@
         "vitest": "4.0.4",
       },
     },
+    "code/core/codemod-flat-values": {
+      "name": "@tamagui/codemod-flat-values",
+      "dependencies": {
+        "@tamagui/helpers": "workspace:*",
+        "@tamagui/shorthands": "workspace:*",
+        "@tamagui/style-grammar": "workspace:*",
+        "ts-morph": "^15.1.0",
+      },
+      "devDependencies": {
+        "typescript": "~5.9.2",
+      },
+    },
     "code/core/colors": {
       "name": "@tamagui/colors",
       "version": "2.5.1",
@@ -406,6 +418,7 @@
         "@tamagui/font-silkscreen": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
+        "@tamagui/style-grammar": "workspace:*",
         "@tamagui/theme-builder": "workspace:*",
         "@tamagui/themes": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -565,6 +578,14 @@
       "version": "2.5.1",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
+      },
+    },
+    "code/core/dom": {
+      "name": "@tamagui/dom",
+      "version": "2.5.1",
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "vitest": "4.0.4",
       },
     },
     "code/core/floating": {
@@ -5307,6 +5328,8 @@
 
     "@tamagui/code-to-html": ["@tamagui/code-to-html@workspace:code/packages/code-to-html"],
 
+    "@tamagui/codemod-flat-values": ["@tamagui/codemod-flat-values@workspace:code/core/codemod-flat-values"],
+
     "@tamagui/collapsible": ["@tamagui/collapsible@workspace:code/ui/collapsible"],
 
     "@tamagui/collection": ["@tamagui/collection@workspace:code/ui/collection"],
@@ -5352,6 +5375,8 @@
     "@tamagui/dialog": ["@tamagui/dialog@workspace:code/ui/dialog"],
 
     "@tamagui/dismissable": ["@tamagui/dismissable@workspace:code/ui/dismissable"],
+
+    "@tamagui/dom": ["@tamagui/dom@workspace:code/core/dom"],
 
     "@tamagui/dot-dev": ["@tamagui/dot-dev@workspace:code/tamagui.dev"],
 
