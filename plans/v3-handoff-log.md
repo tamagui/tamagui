@@ -578,16 +578,21 @@ Status: complete; report-only posture unchanged.
 - The default corpus moved from 1,758 sites / 323 converted / 1,435 waiting /
   0 flagged to 1,753 sites / 1,753 converted / 0 waiting / 0 flagged. Of the
   former 1,435 waiting sites, 1,430 now convert. The other five were not legacy
-  syntax: quote normalization had incorrectly listed two Accordion rotations,
-  one MediaQueriesV5 responsive color, one ReanimatedEmitterLatchCase color,
-  and one StyleProp pointer-events expression. Classification now requires an
-  actual `$token` candidate, so those five are correctly absent rather than
-  counted as conversions.
+  syntax. The dynamic classifier previously treated any printed-text difference
+  as a token rewrite. Its printer normalizes quote style, so five token-free
+  expressions acquired rewrite text, marked their sites as legacy, and then
+  entered the old `clause-free-token` waiting bucket despite consuming no
+  `$token`. They were two Accordion rotations, one MediaQueriesV5 responsive
+  color, one ReanimatedEmitterLatchCase color, and one StyleProp pointer-events
+  expression. Classification now requires an actual `$token` candidate, so
+  those five are correctly absent rather than counted as conversions.
 - This corpus contains zero `container-name-not-wired` sites after the earlier
-  manual container migration. The zero waiting count therefore did not discard
-  a pending container diagnostic. Apply mode remains blocked on Lane E items 6
-  and 7: same-key clause merging across `mergeComponentProps` and
-  `containerName` reaching the host. Enabling writes remains a user decision.
+  manual container migration. That is a statement about these 234 fixture
+  files, not evidence that the runtime gate is closed. User code needing
+  same-key clause merging across `mergeComponentProps` or `containerName` on
+  the host would still receive an unsafe suggestion today. Those capabilities
+  remain Lane E items 6 and 7, so a fully converted corpus does not authorize
+  apply mode. Enabling writes remains a user decision.
 - `x`/`y` token rewrites also apply the v3 category change by design: legacy
   `x="$4"` and `y="$4"` resolved through size, while flat `x="4"` and `y="4"`
   resolve through space. Custom configs whose size and space scales differ must
