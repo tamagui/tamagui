@@ -630,7 +630,26 @@ Status: prototype complete.
 
 ## 7. Reactive safe-area on native
 
-Status: pending.
+Status: landed. Corrected 2026-07-30 by the verification lane — this said
+"pending" with no body while the seam was already in the tree, and a plan
+status was reported to the user off that line.
+
+- The subscribable inset store landed in `62e8541d22`, replacing the
+  module-eval capture. `code/ui/sheet/src/useSafeAreaInsets.native.ts` reads
+  it rather than a snapshot.
+- The style seam completed in `b2e0a5c084` (27 files): `SafeAreaTracker.tsx`
+  and `SafeAreaTracker.native.tsx`, `resolveSafeArea{,.native}.ts` and
+  `resolveSafeAreaVariable{,.native}.ts`, wired through `TamaguiProvider`,
+  `createComponent`, `getSplitStyles`, `propMapper` and `useProps`.
+- `925e338d2f` moved setup out of module load, and `0cca09f47e` added the
+  lazy-subscription probe.
+- Verified: `safeAreaVariables.native.test.tsx` 3 passed.
+- One open caveat, recorded in `plans/v3-pre-push-gate-audit.md`: that suite is
+  order-dependent under `--sequence.shuffle`, failing intermittently with
+  `Cannot read properties of undefined (reading 'listeners')`. The trigger is
+  environment-dependent rather than seed-deterministic. Whether the test's
+  assumption that the subscription global already exists is stale, or the
+  runtime should create it lazily, is still undecided.
 
 ## 8. Validation debt
 
