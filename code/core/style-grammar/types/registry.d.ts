@@ -1,6 +1,6 @@
 import { modifierAliases, pseudoToModifier } from "./stateModifiers";
 export { modifierAliases, pseudoToModifier };
-export type TokenCategory = "space" | "size" | "radius" | "zIndex" | "color" | "fontFamily" | "fontSize" | "lineHeight" | "letterSpacing";
+export type TokenCategory = "space" | "size" | "radius" | "zIndex" | "color" | "fontFamily" | "fontSize" | "fontWeight" | "lineHeight" | "letterSpacing";
 export type Convenience = "alignment-alias" | "bare-border" | "flex-bundle" | "font-generic" | "percentage" | "sizing-keyword";
 export type GrammarDecision = {
 	syntax: string;

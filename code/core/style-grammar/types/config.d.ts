@@ -2,6 +2,7 @@ import type { GrammarConfigView } from "./candidate";
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>;
 type GrammarFontConfig = {
 	size?: Readonly<Record<string, unknown>>;
+	weight?: Readonly<Record<string, unknown>>;
 	lineHeight?: Readonly<Record<string, unknown>>;
 	letterSpacing?: Readonly<Record<string, unknown>>;
 };

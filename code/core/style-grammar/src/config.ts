@@ -5,6 +5,7 @@ type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, u
 
 type GrammarFontConfig = {
   size?: Readonly<Record<string, unknown>>
+  weight?: Readonly<Record<string, unknown>>
   lineHeight?: Readonly<Record<string, unknown>>
   letterSpacing?: Readonly<Record<string, unknown>>
 }
@@ -75,6 +76,7 @@ export function createGrammarConfigView(
     color: new Set(),
     fontFamily: new Set(),
     fontSize: new Set(),
+    fontWeight: new Set(),
     lineHeight: new Set(),
     letterSpacing: new Set(),
   }
@@ -94,6 +96,7 @@ export function createGrammarConfigView(
     tokenNames.fontFamily.add(stripTokenPrefix(familyName))
     const font = config.fontsParsed[familyName]
     addNames(tokenNames.fontSize, font?.size)
+    addNames(tokenNames.fontWeight, font?.weight)
     addNames(tokenNames.lineHeight, font?.lineHeight)
     addNames(tokenNames.letterSpacing, font?.letterSpacing)
   }

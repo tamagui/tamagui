@@ -420,6 +420,15 @@ LAYER conveniences mapping to their CSS meaning, never token lookups. A config
 token cannot override what `auto`/`none` mean. The configAware tests that
 pinned the opposite (`size.$auto` beating `w-auto`) predate this ruling.
 
+Also ruled 2026-07-31: **fontWeight binds** — it is a real per-family token
+category like fontSize/lineHeight/letterSpacing (the codemod already emits
+flat weight names and `FontWeightTokens` is public type surface; the unbound
+registry row was an omission). Names aggregate across families for tooling
+and resolve against the active or default family at runtime. Outside the
+reserved set, a configured weight name wins over a same-spelled generated
+utility (`font-semibold` resolves the configured token when one exists,
+the literal 600 utility otherwise).
+
 The resolver's mechanical contract, so one implementation serves both
 platforms:
 

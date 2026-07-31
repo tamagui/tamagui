@@ -10,6 +10,7 @@ export type TokenCategory =
   | 'color'
   | 'fontFamily'
   | 'fontSize'
+  | 'fontWeight'
   | 'lineHeight'
   | 'letterSpacing'
 
@@ -100,7 +101,10 @@ export const grammarEntries: readonly GrammarEntry[] = [
   { prop: 'borderStyle', prefix: 'border' },
   { prop: 'color', prefix: 'color', tokenCategory: 'color' },
   { prop: 'fontSize', prefix: 'text', tokenCategory: 'fontSize' },
-  { prop: 'fontWeight', prefix: 'font' },
+  // bound (2026-07-31 adjudication): the runtime resolves fontWeight through
+  // the active family's weight sub-map and the codemod already emits flat
+  // weight names, so an unbound registry row was an omission, not a decision
+  { prop: 'fontWeight', prefix: 'font', tokenCategory: 'fontWeight' },
   {
     prop: 'fontFamily',
     prefix: 'font',

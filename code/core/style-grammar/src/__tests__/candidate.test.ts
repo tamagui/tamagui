@@ -19,8 +19,12 @@ const tokenNames: Record<TokenCategory, readonly string[]> = {
   radius: ['0', '4', '8', 'radiusOnly'],
   zIndex: ['0', '4', 'zOnly'],
   color: ['color5', 'red-9', 'colorOnly'],
-  fontFamily: ['body', 'heading', 'familyOnly'],
+  fontFamily: ['body', 'heading', 'familyOnly', 'bothNamed'],
   fontSize: ['4', '5', 'fontSizeOnly'],
+  // 'strong' not 'semibold': a configured weight sharing a generated
+  // font-* utility name is a real collision the candidate layer resolves
+  // config-first, pinned separately below the whole-class test
+  fontWeight: ['4', 'strong', 'bothNamed'],
   lineHeight: ['4', '8', 'lineOnly'],
   letterSpacing: ['1', '4', 'letterOnly'],
 }
@@ -43,6 +47,8 @@ describe('candidate grammar', () => {
     ['border-color5', 'borderColor', 'color5'],
     ['bg-color5', 'backgroundColor', 'color5'],
     ['text-5', 'fontSize', '5'],
+    ['font-strong', 'fontWeight', 'strong'],
+    ['font-4', 'fontWeight', '4'],
     ['leading-8', 'lineHeight', '8'],
     ['tracking-1', 'letterSpacing', '1'],
     ['z-4', 'zIndex', '4'],
@@ -210,6 +216,9 @@ describe('candidate grammar', () => {
         color: ['2'],
         fontSize: ['center'],
         fontFamily: ['bold', 'sans'],
+        // present-and-empty: the formatter requires the sibling domain to be
+        // known before it can prove 'bold' is not also a weight token
+        fontWeight: [],
       },
     }
     expect(
@@ -376,6 +385,21 @@ describe('candidate grammar', () => {
       )
       expect(grammarTable).toContain(`| \`${candidate}\` |`)
     }
+  })
+
+  test('a configured weight sharing a generated utility name resolves config-first', () => {
+    // fontWeight adjudication 2026-07-31: a config that names a weight
+    // 'semibold' resolves font-semibold through the active family's weight
+    // map, not the generated literal utility — configured names win over
+    // same-spelled conveniences everywhere except the reserved set
+    const collide: GrammarConfigView = {
+      ...config,
+      tokenNames: { ...tokenNames, fontWeight: ['semibold'] },
+    }
+    const parsed = parseCandidate('font-semibold', collide)
+    expect(parsed?.entry?.prop).toBe('fontWeight')
+    expect(parsed?.valueKind).toBe('token')
+    expect(parsed?.rawValue).toBe('semibold')
   })
 
   test('the table is generated from every registered prefix and documents conveniences', () => {

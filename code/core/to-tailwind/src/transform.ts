@@ -64,6 +64,7 @@ function createTransformGrammarConfig(
   const fontCategories = [
     'fontFamily',
     'fontSize',
+    'fontWeight',
     'lineHeight',
     'letterSpacing',
   ] as const
@@ -88,12 +89,14 @@ function createTransformGrammarConfig(
   if (options.fonts) {
     tokenNames.fontFamily ||= new Set<string>()
     tokenNames.fontSize ||= new Set<string>()
+    tokenNames.fontWeight ||= new Set<string>()
     tokenNames.lineHeight ||= new Set<string>()
     tokenNames.letterSpacing ||= new Set<string>()
     for (const familyName in options.fonts) {
       tokenNames.fontFamily.add(familyName[0] === '$' ? familyName.slice(1) : familyName)
       const font = options.fonts[familyName]
       addConfigNames(tokenNames.fontSize, font?.size)
+      addConfigNames(tokenNames.fontWeight, font?.weight)
       addConfigNames(tokenNames.lineHeight, font?.lineHeight)
       addConfigNames(tokenNames.letterSpacing, font?.letterSpacing)
     }

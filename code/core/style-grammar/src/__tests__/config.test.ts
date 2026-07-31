@@ -21,6 +21,7 @@ describe('createGrammarConfigView', () => {
         fontsParsed: {
           $body: {
             size: { $4: 16 },
+            weight: { $4: '400', $semibold: '600' },
             lineHeight: { $4: 20 },
             letterSpacing: { $tight: -0.2 },
           },
@@ -42,6 +43,7 @@ describe('createGrammarConfigView', () => {
     )
     expect(view.tokenNames?.fontFamily).toEqual(new Set(['body']))
     expect(view.tokenNames?.fontSize).toEqual(new Set(['4']))
+    expect(view.tokenNames?.fontWeight).toEqual(new Set(['4', 'semibold']))
     expect(view.tokenNames?.lineHeight).toEqual(new Set(['4']))
     expect(view.tokenNames?.letterSpacing).toEqual(new Set(['tight']))
   })

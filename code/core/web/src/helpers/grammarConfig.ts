@@ -417,6 +417,7 @@ export function categoryForProperty(
     if (fromRegistry === 'fontFamily') return 'fontFamily'
     if (
       fromRegistry === 'fontSize' ||
+      fromRegistry === 'fontWeight' ||
       fromRegistry === 'lineHeight' ||
       fromRegistry === 'letterSpacing'
     ) {

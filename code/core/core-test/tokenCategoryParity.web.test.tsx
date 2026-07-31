@@ -71,6 +71,7 @@ test('every property the grammar registry binds, the runtime binds identically',
   // names are font families, not sub-map entries
   const runtimeCategoryFor = (registryCategory: string) =>
     registryCategory === 'fontSize' ||
+    registryCategory === 'fontWeight' ||
     registryCategory === 'lineHeight' ||
     registryCategory === 'letterSpacing'
       ? 'font'

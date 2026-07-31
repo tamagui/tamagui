@@ -340,9 +340,18 @@ function chooseEntry(
 
   if (prefix === 'font') {
     const fontFamily = entries.find((entry) => entry.prop === 'fontFamily')
+    const fontWeight = entries.find((entry) => entry.prop === 'fontWeight')
     if (!fontFamily) return null
-    if (hasTokenName(config, 'fontFamily', rawValue)) {
+    const matchesFamily = hasTokenName(config, 'fontFamily', rawValue)
+    const matchesWeight = fontWeight && hasTokenName(config, 'fontWeight', rawValue)
+    // a name configured as both a family and a weight is ambiguous, like the
+    // border width/color rule above
+    if (matchesFamily && matchesWeight) return null
+    if (matchesFamily) {
       return { entry: fontFamily, valueKind: 'token' }
+    }
+    if (matchesWeight) {
+      return { entry: fontWeight, valueKind: 'token' }
     }
     return fontGenerics.has(rawValue)
       ? { entry: fontFamily, valueKind: 'convenience', convenience: 'font-generic' }
