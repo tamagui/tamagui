@@ -1092,9 +1092,18 @@ export function createTamaguiCompilerHost(
           )
         }
       }
+      const defaultProps = core.getDefaultProps(component.staticConfig) ?? {}
+      const completeProps = core.mergeProps(defaultProps, props)
+      // against completeProps, not props: media and pseudo also arrive from a
+      // styled() definition's defaults, and resolveSplitStyles below evaluates
+      // media against the BUILD machine's getMedia(). checking only the JSX
+      // attributes let those flatten, freezing the build host's viewport into
+      // the bundle and dropping every block it read as inactive.
       if (
         platform === 'native' &&
-        Object.keys(props).some((name) => name.startsWith('$') || name.endsWith('Style'))
+        Object.keys(completeProps).some(
+          (name) => name.startsWith('$') || name.endsWith('Style')
+        )
       ) {
         return bailout(
           input,
@@ -1102,9 +1111,6 @@ export function createTamaguiCompilerHost(
           'Native pseudo, media, and theme variants remain on the runtime path'
         )
       }
-
-      const defaultProps = core.getDefaultProps(component.staticConfig) ?? {}
-      const completeProps = core.mergeProps(defaultProps, props)
       const split = resolveSplitStyles(completeProps, component.staticConfig)
       if (!split) {
         return bailout(
