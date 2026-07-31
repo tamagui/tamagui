@@ -4,7 +4,9 @@ import {
   createModifierRegistry,
   diagnoseStyleValue,
   grammarEntries,
+  parseValue,
   type GrammarConfigView,
+  validatePayloadShape,
 } from '@tamagui/style-grammar'
 import type { Rule } from 'eslint'
 
@@ -127,6 +129,39 @@ export const validFlatValues: Rule.RuleModule = {
         })
       }
       if (diagnostics.length > 0) return
+
+      const parsed = parseValue(value, registry)
+      if (!parsed.ok) return
+      const targetProperty = config.shorthands?.[property] || property
+      const { base, clauses } = parsed.value
+      let hasPayloadShapeDiagnostic = false
+      if (base !== null) {
+        const diagnostic = validatePayloadShape(targetProperty, base, true)
+        if (diagnostic) {
+          hasPayloadShapeDiagnostic = true
+          context.report({
+            node,
+            messageId: 'invalidFlatValue',
+            data: { message: diagnostic.message },
+          })
+        }
+      }
+      for (const clause of clauses) {
+        const diagnostic = validatePayloadShape(
+          targetProperty,
+          clause.payload,
+          base !== null
+        )
+        if (diagnostic) {
+          hasPayloadShapeDiagnostic = true
+          context.report({
+            node,
+            messageId: 'invalidFlatValue',
+            data: { message: diagnostic.message },
+          })
+        }
+      }
+      if (hasPayloadShapeDiagnostic) return
 
       const formatted = canonicalizeStyleValue(value, registry)
       if (!formatted.ok || formatted.value === value) return
