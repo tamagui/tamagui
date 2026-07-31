@@ -346,7 +346,10 @@ function normalizeGroupKey(
 //   dynamicThemeAccess,
 // }
 
-function isValidStyleKey(
+// exported so the compiler applies the SAME host-validity decision when it
+// flattens: a style-shaped key that fails this check must be dropped with a
+// diagnostic, never kept as a DOM attribute (one predicate, two hosts)
+export function isValidStyleKey(
   key: string,
   validStyles: Record<string, boolean>,
   accept?: Record<string, any>
