@@ -453,6 +453,28 @@ Status: in progress.
   compile-time resolution per contested property with a build error when the
   handle list is not literal. `compatibility.ts` now describes the ref
   behaviour that ships today rather than the proposed one.
+- Compiler Phase 3 landed in `a2f8b5a31e`, `9a6e6861a5`, `151310f38a`, and
+  `6cc3d8961f`. An imported `html` binding now retains its provenance through
+  JSX, `jsx`/`jsxs`, and both `createElement` forms; unrelated member targets
+  keep the previous rejection. The structural pass reads the one
+  `@tamagui/dom` table set, rewrites web elements to literal semantic tags, and
+  injects the selected `DOMView`/`DOMText`/`DOMImage`/`DOMTextInput` primitive
+  on native.
+- Literal text wrapping uses an additive `literalOrigin` bit preserved by
+  compiler-core. Its predicate is intentionally narrow: string, number,
+  boolean, or null AST literals and JSXText have literal origin; template
+  literals, constant-folded expressions, and values reached through bindings
+  do not. View-backed tags wrap direct string and number literals in
+  `DOMText`; a child that might render unwrapped text produces the native
+  unsupported-child diagnostic instead of passing through.
+- The proof is at the output and runtime boundaries rather than by source
+  inspection. Exact output snapshots cover web and native forms, diagnostics
+  cover an unsupported prop, tag, dynamic text child, and invalid nesting, and
+  the webpack fixture renders `main`, `h1`, `nav`, and `a` in the DOM. Esbuild
+  metafiles for both transformed fixtures show the real native
+  `@tamagui/core/dom` entry and no React Strict DOM or StyleX module. After a
+  deliberate web/core rebuild, static web passes 110 tests with two skips and
+  webpack passes 20/20; the focused web/native/normalization set passes 8/8.
 
 ## 4. Cutover config
 
@@ -501,12 +523,12 @@ Status: in progress.
 
 ## 5. Lint and editor tooling
 
-Status: in progress; ESLint diagnostics complete.
+Status: in progress; ESLint diagnostics and canonical formatting complete.
 
-- `@tamagui/eslint-plugin` exposes `valid-flat-values`, a diagnostic-only rule
-  for static strings on imported Tamagui components and `styled()` configs. The
-  source bridge performs provenance and AST location only. It contains no value
-  parser, candidate heuristic, or built-in-name table.
+- `@tamagui/eslint-plugin` exposes `valid-flat-values` for static strings on
+  imported Tamagui components and `styled()` configs. The source bridge
+  performs provenance and AST location only. It contains no value parser,
+  candidate heuristic, built-in-name table, or local formatter.
 - A new style-grammar tooling diagnostic composes the universal parser, shared
   payload scanner, config-derived candidate vocabulary, candidate-target
   validator, and v6 replacement/removal tables. Target validation runs only
@@ -525,9 +547,17 @@ Status: in progress; ESLint diagnostics complete.
   built-in name uses and six config-sensitive `@maxMd` spellings. The source
   corpus has not had the report-only codemod applied, so these migration
   findings do not contradict the codemod's 1,753 clean converted suggestions.
-- Validation: style-grammar 340/340 and package build green; the ESLint package
-  build and two behavioral tests over real `.tsx` fixture files pass. The rule
-  emits no fixes. Canonical formatting and language-service completions remain.
+- Canonical formatting prints the parser's IR without changing payload text,
+  modifier order, or clause order. Every test parses the authored and canonical
+  strings and requires identical IR, then requires the canonical result to be
+  idempotent. The ESLint rule autofixes only that proven spelling difference;
+  grammar, target, and obsolete-name diagnostics remain fix-free. The codemod's
+  existing `printProgram` export now delegates to the same formatter rather than
+  retaining a second printer.
+- Validation: style-grammar 355/355 and package build green; the ESLint package
+  build and three behavioral tests over real `.tsx` fixture files pass; the
+  codemod remains 47/47 with typecheck green. Language-service completions
+  remain.
 
 ## 6. Transitions
 
@@ -707,14 +737,19 @@ first rejected option describes.
 Status: complete for the current corpus. The component-lowering designs remain
 parked for an explicit architecture decision.
 
-- The classification is the headline: zero recoverable / 526 structurally
-  retained. The raw tuple remains directly underneath and is pinned as 2,556
-  found / 2,030 lowered / 2,017 flattened / 55 styled / 526 bailed over 248
+- The classification is the headline: zero recoverable / 527 structurally
+  retained. The raw tuple remains directly underneath and is pinned as 2,565
+  found / 2,038 lowered / 2,025 flattened / 55 styled / 527 bailed over 251
   usecases with zero compile failures. `found` cannot fall, and only an increase
   in `flattened` counts as progress for decision 24.
+- The tuple moved only because three committed browser-delivery fixtures joined
+  the measured corpus: `MixedCascadeCase`, `ProgramBlockDeliveryCase`, and
+  `ProgramBlockDeliveryLate`. Together they add nine found elements, eight
+  flattened elements, and one structurally retained Button. No existing
+  candidate disappeared or changed classification.
 - The initial audits found one recoverable element out of 2,556, the inert
   `animatedBy` selector fixed in `299fe97fbb`. The remaining structural classes
-  are 337 component runtime contracts, 115 animation runtimes, 42 dynamic
+  are now 338 component runtime contracts, 115 animation runtimes, 42 dynamic
   values, 21 runtime event mappings, six unevaluated spreads, and five theme
   boundaries.
 - The animation audit covered every original candidate: 39 enter, exit, or
