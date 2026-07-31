@@ -63,34 +63,61 @@ import type { ReactNode, Ref } from 'react'
  * cannot happen at runtime. If the compiler is ever made optional on native,
  * none of this design survives. Do not weaken this.
  *
- * ## The intended end state, for whoever implements the rest
+ * ## The contract as it stands
  *
- * By the time a primitive renders, the compiler should have done all of this:
+ * A primitive receives: the props the author wrote, with unsupported ones
+ * already rejected at build time; children, with literal text inside a
+ * View-backed tag already wrapped. It owns adapting an event payload and
+ * passing the ref through. That is all it can rely on today.
  *
- * - chosen the primitive from the tag's native backing;
- * - flattened the tag defaults and the author's styles into one style object,
- *   with `display: block` already emulated and `display: flex` already filled
- *   in, because it knows each element's own display and its parent's;
- *   see `NATIVE_BLOCK_DEFAULTS` and `NATIVE_FLEX_DEFAULTS`;
- * - renamed every supported prop to the react native prop in the attribute
- *   table, including the nested `accessibilityState` and `accessibilityValue`
- *   objects;
- * - applied the tag's implicit aria role;
- * - wrapped direct literal text inside a View-backed tag in a `DOMText`;
- * - failed the build on an unsupported tag, prop, style or nesting.
+ * Everything a primitive accepts below is therefore one of three things: an
+ * event handler it adapts, a ref, or a prop it forwards to the react native
+ * host untouched. Note "untouched" — the props are NOT pre-renamed, so an
+ * author's `aria-label` currently reaches the host as `aria-label` rather than
+ * as `accessibilityLabel`. React Native happens to accept several of those
+ * directly, which is why anything works at all; the rest are dropped.
  *
- * So a primitive owns only what cannot be known before the event or the
- * instance exists: adapting an event payload, and augmenting a ref. Everything
- * a primitive accepts below is one of those two things, or a react native prop
- * passed straight through.
+ * ## Remaining work: the native lowering pass
  *
- * This is deliberately less than React Strict DOM's native runtime does per
- * element. RSD resolves props, styles, display context and text inheritance on
- * every render behind several hooks, because it has no compiler; the DOM
- * contract has one and spends the work there instead.
+ * The rest of the design needs a compiler pass that does not exist, and the
+ * blocking problem is pass ordering rather than any individual rewrite.
+ * `domStructuralPass` removes DOM elements from `module.elements` once it has
+ * rewritten them, and style lowering runs after that, so DOM elements never
+ * reach it. Style lowering has to see them before they are removed.
+ *
+ * Once it does, the pass must:
+ *
+ * - flatten the tag defaults and the author's styles into one style object,
+ *   with `display: block` emulated and `display: flex` filled in, which needs
+ *   each element's own display AND its parent's resolved display
+ *   (`NATIVE_BLOCK_DEFAULTS`, `NATIVE_FLEX_DEFAULTS`, `NATIVE_ELEMENT_DEFAULTS`);
+ * - rename supported props to `attribute.nativeProp`, including building the
+ *   nested `accessibilityState` and `accessibilityValue` objects, which the
+ *   current `AttributeRow` shape cannot express for the cases needing
+ *   inversion, fan-out or per-tag branching;
+ * - apply the tag's implicit `role`;
+ * - reject unsupported *values* (an unsupported tag, prop and nesting are
+ *   already rejected).
+ *
+ * Until that exists, **native DOM mode is not functional** — not partially
+ * shipped. Block emulation and element defaults never reach the element, so a
+ * DOM element does not render correctly on native.
+ *
+ * The comparison with React Strict DOM is worth keeping honest here. RSD
+ * resolves props, styles, display context and text inheritance on every render
+ * behind several hooks. Doing that work at build time instead is the design,
+ * and it is why these primitives need no hooks — but the work has to actually
+ * happen somewhere, and right now it happens in neither place.
  */
 
-/** react native props the compiler already resolved, passed through untouched */
+/**
+ * Props forwarded to the react native host untouched.
+ *
+ * The name is aspirational: the intended design is that the compiler has
+ * resolved and renamed these. It has not (see the remaining-work note above),
+ * so today this is the author's props passed straight through, and only the
+ * ones react native happens to accept under their DOM spelling take effect.
+ */
 export type ResolvedNativeProps = Readonly<Record<string, unknown>>
 
 export type DOMViewProps = ResolvedNativeProps & {
