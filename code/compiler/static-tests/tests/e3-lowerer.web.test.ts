@@ -216,6 +216,7 @@ export const Card = ({ width }) => (
 import { View } from '@tamagui/core'
 export const Card = () => (
   <View
+    animatedBy="css"
     transition="fast"
     animateOnly={['padding']}
     padding={12}
@@ -230,6 +231,40 @@ export const Card = () => (
     expect(output.changed).toBe(false)
     expect(output.code).toBe(source)
     expect(plan.css).toBe('')
+  })
+
+  test('flattens an inert animatedBy selector with its static group styles', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = () => (
+  <View group="card" animatedBy="css" data-group="parent">
+    <View
+      width={100}
+      $group-card-hover={{ backgroundColor: 'red' }}
+      data-group="child"
+    />
+  </View>
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toEqual({
+      found: 2,
+      lowered: 2,
+      flattened: 2,
+      styled: 0,
+      bailed: 0,
+    })
+    expect(output.code).not.toContain('animatedBy')
+    expect(output.code).not.toContain('$group-card-hover')
+    const [parentClassName, childClassName] = loweredClassNames(output.code)
+    expect(parentClassName).toContain('t_group_card')
+    const childHoverClass = plan.css.match(
+      /\.([^.:]+):where\(\.t_group_card:hover \*\)\{background-color:red\}/
+    )?.[1]
+    expect(childHoverClass).toBeTruthy()
+    expect(childClassName).toContain(childHoverClass)
   })
 
   test('keeps a dynamic transition candidate byte-identical', () => {

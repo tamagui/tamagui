@@ -221,4 +221,17 @@ describe('webpack-tests', () => {
 
     expect(container).toMatchSnapshot()
   })
+
+  test('23. inert animatedBy selector flattens with group styles', () => {
+    const { renderTrue } = getTest('TestAnimatedByWithoutAnimation')
+    const { container } = renderTrue()
+    const parent = container.querySelector('[data-testid="animated-group"]')
+    const child = container.querySelector('[data-testid="animated-group-child"]')
+
+    expect(parent).toBeTruthy()
+    expect(parent?.hasAttribute('animatedby')).toBe(false)
+    expect(parent?.className).toContain('t_group_animated')
+    expect(child?.className).toContain('_bc-')
+    expect(container).toMatchSnapshot()
+  })
 })

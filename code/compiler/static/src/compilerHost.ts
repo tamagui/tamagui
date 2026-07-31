@@ -879,7 +879,24 @@ export function createTamaguiCompilerHost(
         animationEntry?.kind === 'prop'
           ? animationEntry.name
           : Object.keys(props).find((name) => runtimeAnimationProps.has(name))
-      if (animationProp || 'enterStyle' in props || 'exitStyle' in props) {
+      const animatedByHasRuntimeWork =
+        animationProp === 'animatedBy' &&
+        Object.keys(props).some(
+          (name) =>
+            name !== 'animatedBy' &&
+            (runtimeAnimationProps.has(name) ||
+              name.endsWith('Style') ||
+              name.startsWith('$') ||
+              name === 'animationConfig' ||
+              name === 'forceStyle' ||
+              name === 'onTransition')
+        )
+      if (
+        (animationProp &&
+          (animationProp !== 'animatedBy' || animatedByHasRuntimeWork)) ||
+        'enterStyle' in props ||
+        'exitStyle' in props
+      ) {
         return bailout(
           input,
           'local/unsupported-target',

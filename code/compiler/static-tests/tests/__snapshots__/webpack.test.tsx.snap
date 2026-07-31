@@ -632,3 +632,33 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
   </span>
 </div>
 `;
+
+exports[`webpack-tests > 23. inert animatedBy selector flattens with group styles 1`] = `
+<div>
+  <span
+    class="t_dark _dsp_contents"
+  >
+    <span
+      class=" t_dark is_Theme"
+      style="color: var(--color); display: contents;"
+    >
+      <span
+        class="_dsp_contents  font_body"
+      >
+        <div
+          class="is_View t_group_animated _fd-525695443"
+          data-testid="animated-group"
+        >
+          <div
+            class="is_View _w-100px _fd-525695443 _bc-645827489"
+            data-testid="animated-group-child"
+          />
+        </div>
+        <div
+          style="display: contents;"
+        />
+      </span>
+    </span>
+  </span>
+</div>
+`;

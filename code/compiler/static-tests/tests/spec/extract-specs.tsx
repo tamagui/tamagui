@@ -459,3 +459,15 @@ export function TestAriaPropsConditional(props: TestProps) {
     </YStack>
   )
 }
+
+export function TestAnimatedByWithoutAnimation() {
+  return (
+    <YStack group="animated" animatedBy="css" data-testid="animated-group">
+      <YStack
+        width={100}
+        $group-animated-hover={{ backgroundColor: 'red' }}
+        data-testid="animated-group-child"
+      />
+    </YStack>
+  )
+}
