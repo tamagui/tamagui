@@ -905,3 +905,12 @@ describe('getSplitStyles - kebab-case media keys', () => {
     expect(rule).not.toContain(':max')
   })
 })
+
+test('containerName establishes a named query container on web', () => {
+  const out = simplifiedGetSplitStyles(View, { containerName: 'card' })
+  const rules = Object.values(out.rulesToInsert)
+    .flatMap((rule: any) => rule[StyleObjectRules] ?? [])
+    .join('\n')
+  expect(rules).toContain('container-name:card')
+  expect(rules).toContain('container-type:inline-size')
+})

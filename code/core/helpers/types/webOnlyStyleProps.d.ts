@@ -10,6 +10,7 @@ export declare const nonAnimatableWebViewProps: {
     borderTopStyle: boolean;
     contain: boolean;
     containerType: boolean;
+    containerName: boolean;
     content: boolean;
     float: boolean;
     maskBorderMode: boolean;
@@ -50,6 +51,7 @@ export declare const webOnlyStylePropsView: {
     borderTopStyle: boolean;
     contain: boolean;
     containerType: boolean;
+    containerName: boolean;
     content: boolean;
     float: boolean;
     maskBorderMode: boolean;

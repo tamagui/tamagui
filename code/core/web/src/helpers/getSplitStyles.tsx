@@ -1647,6 +1647,7 @@ export const getSplitStyles: StyleSplitter = (
   // finishing as plain values. referenced media keys ride the hasMedia
   // subscription; referenced states surface for event attachment
   let programStates: Set<string> | null = null
+  let usesSafeArea = false
   if (
     styleState.programs?.size &&
     (process.env.TAMAGUI_TARGET === 'native' ||
@@ -1659,6 +1660,7 @@ export const getSplitStyles: StyleSplitter = (
       groupContext
     )
     programStates = info.usedStates
+    usesSafeArea = info.usesSafeArea
     if (info.usedMediaKeys) {
       if (!hasMedia) {
         hasMedia = new Set()
@@ -1692,6 +1694,21 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.TAMAGUI_TARGET === 'native' && styleState.style) {
     if ('containerType' in styleState.style) delete styleState.style.containerType
     if ('containerName' in styleState.style) delete styleState.style.containerName
+  }
+
+  // a named container must also establish containment or its size queries
+  // match nothing: `containerName` alone pairs with the default container type
+  // (mirroring `isContainer` in createComponent, decision 17). the name may
+  // sit in plain style or as a base-only program
+  if (
+    process.env.TAMAGUI_TARGET === 'web' &&
+    (styleState.style?.containerName != null ||
+      styleState.programs?.has('containerName')) &&
+    !(styleState.style && 'containerType' in styleState.style) &&
+    !styleState.programs?.has('containerType')
+  ) {
+    styleState.style ||= {}
+    styleState.style.containerType = webContainerType || 'inline-size'
   }
 
   // style prop after:
@@ -1923,6 +1940,7 @@ export const getSplitStyles: StyleSplitter = (
     overriddenContextProps: styleState.overriddenContextProps,
     pseudoTransitions: styleState.pseudoTransitions,
     ...(programStates && { programStates }),
+    ...(usesSafeArea && { usesSafeArea: true }),
   }
 
   const asChildExceptStyleLike =

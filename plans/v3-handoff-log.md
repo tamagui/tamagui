@@ -1157,3 +1157,15 @@ engine tests that used `color` on View as a convenience moved to Text or
 `backgroundColor` — including one mechanical host switch in
 `tailwindThemeColor.web.test.tsx` (CODEX-1's file, flagged). The type surface
 is unchanged: it was already right.
+
+### `containerName` reaches the host (Lane E, codemod apply gate 3)
+
+`containerName` is a web style key now, so `containerName="card"` emits
+`container-name: card` (through the program path like any string value), and
+a named container pairs with the default `container-type` (settings
+`webContainerType`, else `inline-size`) whenever no explicit type is
+authored — a name without containment matches no size queries. The boolean
+`container` shorthand and the context/native measurement side were already
+wired. This clears the codemod's `container-name-not-wired` pending: the
+`@…/name` queries the migration emits now have a real container to match.
+Remaining apply gate: same-key styled/call-site clause merging (Lane E item 6).

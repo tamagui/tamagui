@@ -16,6 +16,7 @@ export const nonAnimatableWebViewProps = {
   borderTopStyle: true,
   contain: true,
   containerType: true,
+  containerName: true,
   content: true,
   float: true,
   maskBorderMode: true,
