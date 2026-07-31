@@ -42,6 +42,15 @@ function resolveColor(raw: string, tokenMap?: TokenMap): any {
 const gradientAngle = /^([+-]?\d*\.?\d+)(deg|grad|rad|turn)$/i
 const gradientKeyword = /^to\s+(?:top|bottom|left|right)(?:\s+(?:top|bottom|left|right))?$/i
 
+// RN's object path accepts a position as a NUMBER (points) or a string
+// ending in % — mirroring its own getPositionFromCSSValue: px becomes
+// parseFloat points, % stays a string, anything else is not a position
+function gradientPosition(token: string): number | string | undefined {
+  if (/px$/i.test(token)) return Number.parseFloat(token)
+  if (token.endsWith('%')) return token
+  return undefined
+}
+
 // parse "linear-gradient(direction, color1 pos1, color2 pos2, ...)"
 function parseBackgroundImage(css: string, tokenMap?: TokenMap): any[] | undefined {
   const match = css.match(/^linear-gradient\((.+)\)$/s)
@@ -61,28 +70,38 @@ function parseBackgroundImage(css: string, tokenMap?: TokenMap): any[] | undefin
     startIdx = 1
   }
 
+  // tokens classify by what they ARE, never by falling through to the color
+  // slot — the direction, position, and transition-hint misreads were all one
+  // assumption ("any unrecognized token is a color") wearing three costumes
   const colorStops: any[] = []
-  for (let i = startIdx; i < parts.length; i++) {
-    const stopParts = parts[i].trim().match(/\S+\([^)]*\)|\S+/g)
+  const stops = parts.slice(startIdx)
+  let prevWasHint = false
+  for (let i = 0; i < stops.length; i++) {
+    const stopParts = stops[i].trim().match(/\S+\([^)]*\)|\S+/g)
     if (!stopParts) continue
-    const colorRaw = stopParts[0]
-    const color = resolveColor(colorRaw, tokenMap)
+
+    // a lone position is a transition hint (RN string parser case 4):
+    // {color:null, positions:[n]} — invalid first, last, or after another
+    // hint, which invalidates the gradient exactly as RN and the web do
+    if (stopParts.length === 1) {
+      const hint = gradientPosition(stopParts[0])
+      if (hint !== undefined) {
+        if (i === 0 || i === stops.length - 1 || prevWasHint) return undefined
+        colorStops.push({ color: null, positions: [hint] })
+        prevWasHint = true
+        continue
+      }
+    }
+    prevWasHint = false
+
+    const color = resolveColor(stopParts[0], tokenMap)
     const stop: any = { color }
     if (stopParts.length > 1) {
-      // RN's object path accepts a position as a NUMBER (points) or a string
-      // ending in % — mirroring its own getPositionFromCSSValue: px becomes
-      // parseFloat points, % stays a string, and any other unit invalidates
-      // the whole parse so the string declines into RN's own parser
       const positions: (number | string)[] = []
       for (let p = 1; p < stopParts.length; p++) {
-        const raw = stopParts[p]
-        if (/px$/i.test(raw)) {
-          positions.push(Number.parseFloat(raw))
-        } else if (raw.endsWith('%')) {
-          positions.push(raw)
-        } else {
-          return undefined
-        }
+        const position = gradientPosition(stopParts[p])
+        if (position === undefined) return undefined
+        positions.push(position)
       }
       stop.positions = positions
     }

@@ -237,6 +237,41 @@ describe('gradient position grammar', () => {
   })
 })
 
+describe('gradient transition hints', () => {
+  // sourced from RN's string parser (processBackgroundImage.js case 4): a
+  // single position between two color stops is a transition hint,
+  // {color:null, positions:[n]}; a hint first, last, or adjacent to another
+  // hint invalidates the gradient
+  test('a bare position between stops becomes a color:null hint, never a color', () => {
+    const result = getSplitStylesFor({
+      backgroundImage: 'linear-gradient(red, 50px, blue)',
+    })
+    const gradient = (result.style as any)?.experimental_backgroundImage?.[0]
+    expect(gradient?.colorStops).toEqual([
+      { color: 'red' },
+      { color: null, positions: [50] },
+      { color: 'blue' },
+    ])
+    const percent = getSplitStylesFor({
+      backgroundImage: 'linear-gradient(red, 50%, blue)',
+    })
+    expect(
+      (percent.style as any)?.experimental_backgroundImage?.[0]?.colorStops[1]
+    ).toEqual({ color: null, positions: ['50%'] })
+  })
+
+  test('an invalid hint placement declines the parse into RN\'s hands', () => {
+    for (const css of [
+      'linear-gradient(50px, red, blue)',
+      'linear-gradient(red, blue, 50px)',
+      'linear-gradient(red, 20%, 50%, blue)',
+    ]) {
+      const result = getSplitStylesFor({ backgroundImage: css })
+      expect((result.style as any)?.experimental_backgroundImage, css).toBeUndefined()
+    }
+  })
+})
+
 describe('gradient direction grammar', () => {
   test('gradient directions accept the forms RN 0.83 accepts', () => {
     // sourced from react-native/Libraries/StyleSheet/processBackgroundImage.js:
