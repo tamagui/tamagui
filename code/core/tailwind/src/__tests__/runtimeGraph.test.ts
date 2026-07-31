@@ -39,7 +39,9 @@ describe('the shipped frontend runtime graphs', () => {
         (file) =>
           file.endsWith('/core/core/dist/esm/index.mjs') ||
           file.endsWith('/core/web/dist/esm/index.js') ||
+          file.includes('/core/config/') ||
           file.includes('/core/react-native-media-driver/') ||
+          file.includes('/core/to-tailwind/') ||
           file.includes('/core/tailwind/dist/esm/vite') ||
           file.includes('/node_modules/@tailwindcss/') ||
           file.includes('/node_modules/tailwindcss/')

@@ -1,11 +1,10 @@
 import type { SplitStyleProps, TamaguiComponentState } from '@tamagui/web'
-import { getConfig, getSplitStyles } from '@tamagui/web'
+import { getSplitStyles } from '@tamagui/web'
 import {
   StyleObjectIdentifier,
   StyleObjectProperty,
   StyleObjectPseudo,
 } from '@tamagui/helpers'
-import { tailwindStyleFrontend } from '../frontend'
 
 const emptyObj = {} as any
 
@@ -21,9 +20,9 @@ const mountedState: TamaguiComponentState = {
 }
 
 /**
- * Runs the two steps a Tailwind component performs: the frontend descriptor's
- * static-config normalization and prop preprocessing, then the shared renderer's
- * style split. Everything after `preprocessProps` is core, unchanged.
+ * Runs the shared renderer with a Tailwind component. `getSplitStyles` follows
+ * the component's descriptor for static-config normalization and direct-caller
+ * preprocessing, which is the same package-selected path production uses.
  */
 export function splitTailwindStyles(
   component: { staticConfig: any },
@@ -36,13 +35,6 @@ export function splitTailwindStyles(
     groupContext?: any
   } = {}
 ) {
-  const config = getConfig()
-  const staticConfig = tailwindStyleFrontend.normalizeStaticConfig!(
-    component.staticConfig,
-    config
-  )
-  const preprocessed = tailwindStyleFrontend.preprocessProps(props, config)
-
   const styleProps = {
     mediaState: options.mediaState,
     isAnimated: false,
@@ -50,8 +42,8 @@ export function splitTailwindStyles(
   } satisfies SplitStyleProps
 
   return getSplitStyles(
-    preprocessed,
-    staticConfig,
+    props,
+    component.staticConfig,
     options.theme ?? emptyObj,
     options.themeName ?? '',
     {
