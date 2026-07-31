@@ -21,12 +21,15 @@
 
 import {
   borderFamilyTargets,
+  fontShorthandTargets,
   parseValue,
   splitBackgroundValue,
   splitBorderValue,
+  splitFontValue,
   splitTextDecorationValue,
   textDecorationFamilyTargets,
   type BorderFamilyError,
+  type FontShorthandError,
   type ModifierRegistryView,
   type ParsedValue,
   type TextDecorationFamilyError,
@@ -51,6 +54,7 @@ export type ProgramError =
   | BackgroundFamilyError
   | BorderFamilyError
   | TextDecorationFamilyError
+  | FontShorthandError
 
 export type CachedEntry =
   | { programs: readonly ProgramEntry[]; errors?: undefined }
@@ -141,6 +145,14 @@ function computeEntry(property: string, input: string): CachedEntry {
 
   if (textDecorationFamilyTargets[property]) {
     const split = splitTextDecorationValue(parsed.value, context.colorTokens)
+    if (split.errors.length > 0) {
+      return { errors: split.errors }
+    }
+    return { programs: split.entries }
+  }
+
+  if (fontShorthandTargets[property]) {
+    const split = splitFontValue(parsed.value)
     if (split.errors.length > 0) {
       return { errors: split.errors }
     }

@@ -279,9 +279,10 @@ export const stylePropsTextOnly = {
   textShadow: true,
   textShadowOffset: true,
   textShadowRadius: true,
-  // resetting composite: the text-decoration family splits it into
-  // line/style/color programs, which RN supports individually
+  // resetting composites: the family splits turn these into per-longhand
+  // programs, which RN supports individually
   textDecoration: true,
+  font: true,
   verticalAlign: true,
 
   // web-only text props - tree-shaken on native

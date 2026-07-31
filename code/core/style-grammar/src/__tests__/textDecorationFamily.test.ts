@@ -3,6 +3,7 @@ import {
   createModifierRegistry,
   parseValue,
   splitBorderValue,
+  splitFontValue,
   splitTextDecorationValue,
 } from '..'
 
@@ -103,5 +104,51 @@ describe('logical border shorthands', () => {
       'borderInlineStartColor',
       'borderInlineEndColor',
     ])
+  })
+})
+
+describe('font shorthand', () => {
+  const parsedFont = (input: string) => parsed(input)
+
+  test('splits style, weight, size, line-height and family', () => {
+    const split = splitFontValue(parsedFont('italic bold 16px/1.4 Arial, sans-serif'))
+    expect(split.errors).toEqual([])
+    expect(split.entries).toEqual([
+      { property: 'fontStyle', value: { base: 'italic', clauses: [] } },
+      { property: 'fontWeight', value: { base: 'bold', clauses: [] } },
+      { property: 'fontSize', value: { base: '16px', clauses: [] } },
+      { property: 'lineHeight', value: { base: '1.4', clauses: [] } },
+      { property: 'fontFamily', value: { base: 'Arial, sans-serif', clauses: [] } },
+    ])
+  })
+
+  test('size and family alone split without the optional heads', () => {
+    const split = splitFontValue(parsedFont('14px serif'))
+    expect(split.errors).toEqual([])
+    expect(split.entries).toEqual([
+      { property: 'fontSize', value: { base: '14px', clauses: [] } },
+      { property: 'fontFamily', value: { base: 'serif', clauses: [] } },
+    ])
+  })
+
+  test('quoted family names survive verbatim', () => {
+    const split = splitFontValue(parsedFont('12px "Helvetica Neue", serif'))
+    expect(split.errors).toEqual([])
+    expect(split.entries).toEqual([
+      { property: 'fontSize', value: { base: '12px', clauses: [] } },
+      {
+        property: 'fontFamily',
+        value: { base: '"Helvetica Neue", serif', clauses: [] },
+      },
+    ])
+  })
+
+  test('ambiguous and system keywords error so the value stays legacy', () => {
+    expect(splitFontValue(parsedFont('normal 12px serif')).errors).toEqual([
+      { code: 'unsupported-font-component', component: 'normal', where: 'base' },
+    ])
+    expect(
+      splitFontValue(parsedFont('caption')).errors.map((error) => error.code)
+    ).toContain('unsupported-font-component')
   })
 })

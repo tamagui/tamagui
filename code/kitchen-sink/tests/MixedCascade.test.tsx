@@ -10,12 +10,12 @@ test.beforeEach(async ({ page }) => {
 // computed property, so mixing the two engines on one element cannot flip
 // the cascade
 test('a legacy pseudo rule still beats a program base rule', async ({ page }) => {
-  const text = page.getByTestId('mixed-font')
+  const text = page.getByTestId('mixed-legacy')
 
-  await expect(text).toHaveCSS('font-size', '20px')
+  await expect(text).toHaveCSS('background-color', 'rgb(0, 0, 255)')
   await text.hover()
   await page.waitForTimeout(100)
-  await expect(text).toHaveCSS('font-size', '12px')
+  await expect(text).toHaveCSS('background-color', 'rgb(255, 0, 0)')
 })
 
 // the text-decoration family converts the condition object into a program

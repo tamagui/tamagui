@@ -4,6 +4,7 @@ export * from "./candidate";
 export * from "./candidateTarget";
 export * from "./config";
 export * from "./evaluateProgram";
+export * from "./fontShorthand";
 export * from "./legacyConditions";
 export * from "./lowerProgram";
 export * from "./modifierRegistry";

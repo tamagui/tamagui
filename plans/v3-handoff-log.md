@@ -564,7 +564,40 @@ Status: pending.
 
 ## 8. Validation debt
 
-Status: pending.
+Status: in progress.
+
+- Streaming SSR and code splitting, design item 2's remaining half, landed in
+  `d8f5a5b1` (`flatValueProgramsStreaming.web.test.tsx` plus a kitchen-sink
+  fixture). The design record is updated.
+- The gap that made this worth doing: `flatValueProgramsSSR.web.test.tsx`
+  already collects the stream's chunks, then asserts against
+  `chunks.join('')`. A block split across a chunk boundary joins back
+  together, so that assertion passes either way and the contiguity claim was
+  never actually tested. What a browser cares about is that a block never
+  arrives in pieces, because a half-applied program is a visibly wrong style
+  until the rest lands. The new test checks the chunks themselves, and because
+  a check for something that never happens proves nothing, its detector is
+  first run against a synthetic split so it is shown to notice.
+- The browser half is the part that could not be faked in node. The encoding's
+  claim is that cross-program order is irrelevant, so appending at the end of
+  the sheet is safe and interleaving code-split bundles is safe — that is a
+  claim about what a browser *resolves*, and rule text cannot check it.
+  `ProgramBlockDeliveryCase` loads a genuine webpack chunk on click, bringing
+  one program the page already had and one it had never seen. The test reads
+  computed styles before and after and pins three things: already-resolved
+  elements do not move when late blocks append, a late-arriving program
+  resolves identically to an early one at base and hover, and the shared
+  program stays one class carrying exactly two rules rather than a re-inserted
+  duplicate.
+- Verified by mutation, per the standard: giving the late chunk a different
+  shared program fails two tests, changing its hover value fails one, and a
+  wrong rule count fails the counter. All green again after restore, and the
+  neighbouring `FlatValuePrograms` and `MixedCascade` suites still pass.
+- Honestly remaining on this item: a streamed HTTP response hydrating in a
+  real browser. The node half proves the bytes are right and the browser half
+  proves late insertion resolves right, but nothing yet drives a real streamed
+  response into a real browser end to end. Font-face swap E2E and the WebKit
+  program-block re-check are also still open.
 
 ## 9. Open design drafts
 
@@ -950,3 +983,36 @@ logical border properties — no silent physical approximation). `font` remains
 the one unsplit composite; its micro-syntax split is the next tranche along
 with the exotic transform parts. Gates: grammar 346, web 395 + web-package
 type tests 90/90 (the tsconfig-excluded suite), native 170, all green.
+
+### Fallback-category conversion, tranche 2 (Lane E item 4)
+
+The raw `transform` property is now one ordinary program — the design's home
+for skews, 3D rotations, perspective, and matrix
+(`transform="skewX(10deg) hover:skewX(20deg)"` lowers to transform rules on
+web and parses once into the RN array on native, family entries composing
+first). A legacy transform PART prop beside a transform program is a dev
+diagnostic and drops — the `transform` property replaces its whole function
+list, so composing the two would invent an order CSS does not define. Part
+props alone keep their legacy flatTransforms path (they have no per-part flat
+spelling by design).
+
+The `font` shorthand split landed as the new `fontShorthand` style-grammar
+module (positional micro-syntax: optional style/weight heads, `size/line-
+height`, verbatim family tail; ambiguous `normal`, small-caps, stretch and
+system keywords error so those values stay legacy). The
+`unsplitCompositeShorthands` refusal set is GONE — every resetting composite
+now has a family split. `font` is a valid text style key.
+
+FIXTURE-EROSION RULING (per the manager's question): decision (a). Mixed
+legacy-vs-program cascade is a transitional scenario that ends when the
+contraction physically deletes the legacy condition machinery; the
+kitchen-sink `MixedCascadeCase` pin now stands on a legacy transform PART
+prop inside `hoverStyle` — a source that never converts by design, so it
+cannot erode from further family work. When the contraction lands, that test
+failing is the designed signal to retire the fixture, not a regression.
+
+Still owed on this lane's queue: overflowWrap/resize as style keys (OPUS's
+leak-to-DOM set), nested platform chains, then the contraction (item 5).
+
+Gates: grammar 350, core web 403 / 46 files, core native 172, kitchen-sink
+MixedCascade 2/2 in a real browser, all green with fresh package builds.

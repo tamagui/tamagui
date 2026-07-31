@@ -150,3 +150,31 @@ test('non-family transform parts stay legacy', () => {
   expect(result.classNames['--t-x']).toBeUndefined()
   expect(result.classNames.translate).toBeUndefined()
 })
+
+test('a raw transform value is one ordinary program', () => {
+  const result = split({ transform: 'skewX(10deg) hover:skewX(20deg)' })
+  const className = result.classNames.transform
+  expect(className).toBeTruthy()
+  const rules = rulesFor(result, className)
+  expect(rules[0]).toBe(`.${className}{transform:skewX(10deg)}`)
+  expect(rules[1]).toContain(':where(:hover){transform:skewX(20deg)}')
+})
+
+test('a legacy part prop beside a transform program drops with a diagnostic', () => {
+  const warnings: string[] = []
+  const original = console.warn
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  console.warn = (message: string) => warnings.push(String(message))
+  try {
+    const result = split({ skewY: '3deg', transform: 'skewX(10deg) hover:skewX(20deg)' })
+    // the program owns the transform property wholesale
+    expect(result.classNames.transform).toMatch(/^_t/)
+    expect(
+      warnings.some((warning) => warning.includes('legacy transform part "skewY"'))
+    ).toBe(true)
+  } finally {
+    console.warn = original
+    process.env.NODE_ENV = previousNodeEnv
+  }
+})

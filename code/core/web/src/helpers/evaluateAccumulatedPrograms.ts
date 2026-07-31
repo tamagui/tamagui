@@ -341,6 +341,16 @@ export function evaluateAccumulatedPrograms(
       continue
     }
 
+    // a raw `transform` program evaluates to a CSS function string; it parses
+    // once into the RN array inside composeNativeTransform, so mark the
+    // composition as required even when no family program exists
+    if (longhand === 'transform') {
+      styleState.style ||= {}
+      styleState.style.transform = value as any
+      transformResults ||= {}
+      continue
+    }
+
     if (nativeUnsupportedLogicalLonghands.has(longhand)) {
       noteOnce(
         `${longhand}\0logical`,

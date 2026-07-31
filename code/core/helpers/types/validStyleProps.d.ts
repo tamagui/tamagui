@@ -424,6 +424,7 @@ export declare const stylePropsTextOnly: {
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     textDecoration: boolean;
+    font: boolean;
     verticalAlign: boolean;
 };
 export declare const stylePropsText: {
@@ -693,6 +694,7 @@ export declare const stylePropsText: {
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     textDecoration: boolean;
+    font: boolean;
     verticalAlign: boolean;
 };
 export declare const stylePropsAll: {
@@ -962,6 +964,7 @@ export declare const stylePropsAll: {
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     textDecoration: boolean;
+    font: boolean;
     verticalAlign: boolean;
 };
 export declare const validPseudoKeys: {

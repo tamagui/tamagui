@@ -15,6 +15,8 @@ import { stylePropsTransform } from '@tamagui/helpers'
 import {
   borderFamilyTargets,
   expandToLonghands,
+  fontShorthandTargets,
+  splitFontValue,
   legacyTransformKeysFor,
   longhandExpansionTable,
   type LonghandProgram,
@@ -173,6 +175,15 @@ function longhandsFor(prop: string, styleState: GetStyleState): readonly string[
   if (family) return [...family.width, ...family.style, ...family.color]
   const decoration = textDecorationFamilyTargets[prop]
   if (decoration) return [...decoration.line, ...decoration.style, ...decoration.color]
+  const font = fontShorthandTargets[prop]
+  if (font)
+    return [
+      ...font.style,
+      ...font.weight,
+      ...font.size,
+      ...font.lineHeight,
+      ...font.family,
+    ]
   return expandToLonghands(prop, styleState.conf.shorthands)
 }
 
@@ -307,6 +318,14 @@ export function contributeConvertedProgram(
     }
     return true
   }
+  if (fontShorthandTargets[prop]) {
+    const split = splitFontValue(value)
+    if (split.errors.length) return false
+    for (const entry of split.entries) {
+      contributeParsedProgram(styleState, entry.property, entry.value, sourceProp)
+    }
+    return true
+  }
   contributeParsedProgram(styleState, prop, value, sourceProp)
   return true
 }
@@ -330,6 +349,9 @@ export function canContributeConvertedProgram(
     const context = ensureGrammarContext(styleState)
     return splitTextDecorationValue(value, context.colorTokens).errors.length === 0
   }
+  if (fontShorthandTargets[prop]) {
+    return splitFontValue(value).errors.length === 0
+  }
   return true
 }
 
@@ -343,14 +365,31 @@ export function contributeStylePrograms(
   val: string
 ): boolean {
   // the transform family (x, y, scale, scaleX, scaleY, rotate) routes through
-  // programs; every other transform part and the raw `transform` string stay
-  // legacy this round, so skews, perspective, 3D rotations, and matrix keep
-  // their flatTransforms path untouched
+  // programs, and the raw `transform` property is one ordinary program (the
+  // design's home for skews, 3D rotations, perspective, and matrix). authored
+  // PART props (skewX={..}) stay on the legacy flatTransforms path
   if (
+    key !== 'transform' &&
     !transformFamilyProps.has(key) &&
-    (key in stylePropsTransform || key === 'transform')
+    key in stylePropsTransform
   ) {
     return false
+  }
+
+  // the `transform` property replaces its whole function list, so legacy part
+  // props cannot compose with a transform program on one element — the
+  // program wins and the mix is a dev diagnostic, never an undefined order
+  if (key === 'transform' && styleState.flatTransforms) {
+    for (const legacyKey in styleState.flatTransforms) {
+      if (transformFamilyProps.has(legacyKey)) continue
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          `[tamagui] legacy transform part "${legacyKey}" beside a flat \`transform\` value: the transform program replaces the whole function list. Move "${legacyKey}" into the transform value.`
+        )
+      }
+      delete styleState.flatTransforms[legacyKey]
+      delete styleState.usedKeys[legacyKey]
+    }
   }
 
   // accept-keys are props, not styles (Input's placeholderTextColor): they

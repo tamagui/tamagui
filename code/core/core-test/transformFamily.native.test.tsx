@@ -155,3 +155,16 @@ test('a component with no transform props pays nothing new', () => {
   const result = split({ backgroundColor: 'red' })
   expect(result.style?.transform).toBeUndefined()
 })
+
+test('a raw transform program parses once into the RN array', () => {
+  const result = split({ transform: 'skewX(10deg)' })
+  expect(result.style?.transform).toEqual([{ skewX: '10deg' }])
+
+  const hovered = split({ transform: 'skewX(10deg) hover:skewX(20deg)' }, { hover: true })
+  expect(hovered.style?.transform).toEqual([{ skewX: '20deg' }])
+})
+
+test('family programs compose before the raw transform program', () => {
+  const result = split({ x: 10, transform: 'skewX(10deg)' })
+  expect(result.style?.transform).toEqual([{ translateX: 10 }, { skewX: '10deg' }])
+})

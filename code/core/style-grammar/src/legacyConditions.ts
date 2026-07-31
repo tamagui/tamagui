@@ -257,10 +257,6 @@ function isConditionObject(value: unknown): value is Record<string, unknown> {
 // cross-program encoding, so these stay on the legacy path. border, the four
 // sides, and outline split through the border family; background through the
 // background family
-// `font` is the one resetting composite left without a family split: its
-// micro-syntax (optional style/variant/weight, size/line-height, ordered
-// family tail) has no unambiguous component classification yet
-const unsplitCompositeShorthands: ReadonlySet<string> = new Set(['font'])
 
 function convertStyleValue(
   prop: string,
@@ -268,22 +264,14 @@ function convertStyleValue(
   path: string,
   errors: LegacyConditionError[]
 ): string | null {
-  if (unsplitCompositeShorthands.has(prop)) {
-    errors.push({
-      code: 'legacy-composite-shorthand',
-      path,
-      message: `"${prop}" is a resetting CSS shorthand with no per-longhand family split yet; the condition object stays on the legacy path`,
-    })
-    return null
-  }
-
   if (transformPartProperties.has(prop) && !transformFamilyProps.has(prop)) {
-    // skews, 3D rotations, perspective, and matrix still belong to the raw
-    // `transform` property, which has no flat spelling yet
+    // skews, 3D rotations, perspective, and matrix belong to the raw
+    // `transform` property (one ordinary program); a legacy PART prop has no
+    // per-part flat spelling
     errors.push({
       code: 'legacy-transform-part',
       path,
-      message: `legacy transform part "${prop}" has no flat spelling yet; only x, y, scale, scaleX, scaleY, and rotate convert`,
+      message: `legacy transform part "${prop}" has no flat spelling; author it inside a flat \`transform\` value (only x, y, scale, scaleX, scaleY, and rotate are first-class)`,
     })
     return null
   }
