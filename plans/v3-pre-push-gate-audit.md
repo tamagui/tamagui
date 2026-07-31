@@ -233,6 +233,74 @@ fixed. Worth recording because a gate that exits non-zero for a harness reason
 is the same class of problem this whole audit is about — it was only obvious
 because 1 second is impossibly fast for that suite.
 
+## Re-run at the tip — `4fdcd94500`
+
+Four commits past the first audited SHA, taken with the shared tree fully clean
+for the first time all session. Same script, same isolation.
+
+**All eleven gates green. One number moved.**
+
+| Gate | `09e25611ca` | `4fdcd94500` |
+|---|---|---|
+| post-build dirty | 1 (postinstall CSS only) | 1 (postinstall CSS only) |
+| frozen-lockfile / lint / typecheck | 0 / 0 / 0 | 0 / 0 / 0 |
+| grammar | 369 / 21 files | 369 / 21 files |
+| core web | 414 / 47 files | 414 / 47 files |
+| core native | 177 + 7 expected fail | 177 + 7 expected fail |
+| static | 110 / 14 files | 110 / 14 files |
+| webpack | 20 / 20 | 20 / 20 |
+| tailwind web | 459 / 20 files | **460** / 20 files |
+| tailwind native | 271 / 4 files | 271 / 4 files |
+| web package types | 90 / 8 files | 90 / 8 files |
+
+The single delta is tailwind web +1, which is `9a3895e635` adding the
+malformed-arbitrary diagnostic test. Everything else is byte-identical across
+four commits. Nothing regressed.
+
+### But the native suite is order-dependent, and the gate cannot see it
+
+Core native reads 177 green in the fixed order, which is what was asked. That
+answer is true and it is not sufficient, because the suite runs in one order
+every time and an order-dependent failure is invisible to it by construction.
+
+Running the same suite with `--sequence.shuffle`:
+
+- **1 failure in 8 shuffled runs**, plus another in an earlier set of 3.
+- The failure is
+  `safeAreaVariables.native.test.tsx > ordinary components never read or
+  subscribe to the safe-area store`.
+- `TypeError: Cannot read properties of undefined (reading 'listeners')` —
+  the test reads `globalState.__tamagui_safe_area_subscription` and it does not
+  exist yet.
+- The file **passes alone** (3 passed) and **passes in the default order**. So
+  it is not a broken test in isolation; it is a specific interaction with what
+  runs before it.
+
+**It reproduces deterministically.** Seed `1785470380788` fails on every
+attempt:
+
+```
+cd code/core/core-test
+TAMAGUI_TARGET=native npx vitest --run \
+  --config ../../packages/vite-plugin-internal/src/vite.config.ts \
+  --sequence.shuffle --sequence.seed=1785470380788 *.native.test.tsx
+```
+
+That turns a flake into something fixable.
+
+This lands in `925e338d2f`, the safe-area commit that moved setup out of module
+load and removed two production module-load captures. Removing those captures
+is the right change. The open question, which is not this lane's to settle, is
+whether the test's assumption that the subscription global already exists is
+now stale, or whether the runtime should be creating it lazily and is not.
+Either way the evidence for that commit was a working-tree reading in fixed
+order, which is exactly the reading that cannot show this.
+
+**The general point for the gate set:** every suite here runs in one fixed
+order. That makes them reproducible, which is good, and blind to ordering bugs,
+which is not. A periodic shuffled run is cheap — three seconds for core native
+— and is the only thing that would have surfaced this.
+
 ## Replacement baseline set
 
 The numbers every lane has been quoting are obsolete, and obsolete in the
