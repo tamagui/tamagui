@@ -139,3 +139,27 @@ own.
 
 Steps 1 and 2 are small and close the live bug class. Step 3 is the deletion
 the V3 intent asks for and can follow independently.
+
+## Addendum (2026-07-31): the authored error that never fires
+
+Found by CODEX-1 during the Adapt fix, folded in here because it is the read-
+side half of this design. `getSetting` defines both the detailed development
+error and the compact production `Error 001` for the config-is-null case, but
+only throws under `NODE_ENV === 'development'`; every other mode falls through
+to `config!.settings` and leaks `Cannot read properties of null`.
+
+**Posture decision: throw the authored message in every mode.** The
+dev-throws / prod-degrades-loudly posture applies where a degraded output
+exists — drop one style, keep rendering. Here there is nothing to degrade to:
+the next line dereferences null, so production already crashes, just with the
+useless message. Wiring the guard unconditionally changes the crash's message,
+not the crash. It is not a new production hard-stop.
+
+**The sweep the manager asked for**: the shape (dev-only throw immediately
+followed by an unconditional `config!.` dereference) occurs exactly three
+times, all in `code/core/web/src/config.ts` — `getSetting` (line 72),
+`setConfigFont` (line 128), and the token getter at line 165. `getConfig`
+already throws unconditionally and is the model. All three get the
+unconditional guard when this design lands; with the global fallback deleted
+(section 3), the message these paths throw is also where the duplicate-copy
+diagnosis lives.
