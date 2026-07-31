@@ -1024,9 +1024,12 @@ store only receives rotation updates while some component renders the
 tracked hook — the variables layer must mount one tracker (in the Tamagui
 provider when safe-area setup ran), not assume the store self-updates.
 
-The Tailwind frontend gets `pt-safe-area-top` automatically through token
-naming. Tailwind core has no safe-area utilities (community plugins use
-`pt-safe`); the explicit names are the one spelling here.
+The Tailwind candidate path consumes the same shared safe-area vocabulary module
+as the resolver, so `pt-safe-area-top` reaches the built-in namespace without a
+second spelling table. This is explicit rather than automatic token naming:
+ordinary space-category candidates add a `$` prefix, which would route this name
+into the legacy token path. Tailwind core has no safe-area utilities (community
+plugins use `pt-safe`); the explicit names are the one spelling here.
 
 ## Relationship to Tailwind
 
@@ -1951,7 +1954,11 @@ locked:
    cascade within an atomically inserted block, order-free cross-program
    dedup by hashed class name. Browser-validated 2026-07-29 in headless
    Chromium: theme+state chains resolve by last-matching-clause, a plain
-   clause after an `@media` block wins at equal specificity, and
+   clause after an `@media` block wins at equal specificity (true of the CSS
+   encoding, which is what that probe inserted; it is NOT reachable from the
+   authored syntax, where a clause payload is space-greedy and a base clause
+   written after a conditional is absorbed into it — see item 8 of the handoff
+   log), and
    runtime-appended blocks behave identically regardless of cross-program
    insertion order (7/7 probe assertions). WebKit re-check rides the
    kitchen-sink webkit CI project when this lands as tests. Streaming and

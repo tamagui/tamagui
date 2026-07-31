@@ -658,6 +658,35 @@ Status: in progress.
   admit it, or it should not and the runtime should diagnose instead of quietly
   resolving. Routed to Lane E behind the contraction; the fixture now uses a
   `Text`, which is the honest host for the prop.
+- The WebKit program-block re-check landed. `ProgramCascadeCase` plus a
+  `webkit-programs` playwright project matching `ProgramCascade` and
+  `ProgramBlockDelivery`, so both files now run under Safari's engine as well as
+  Chromium. **6 passed under WebKit**, so the encoding resolves identically in a
+  second engine: equal specificity through `:where()`, source order deciding,
+  and a late code-split block not disturbing what is already resolved. WebKit
+  had to be installed locally to run it (`npx playwright install webkit`); it
+  was absent, which is worth knowing before anyone claims this ran.
+- The mutation that matters: reshuffling the clause order in the program —
+  moving `hover:` after `dark:hover:` without changing any value — fails under
+  WebKit. Source order is the entire claim of the encoding, so a test that
+  passed under a reshuffle would prove nothing about it.
+- **A design-record claim needs correcting.** Item 2 lists "a plain clause after
+  an `@media` block wins at equal specificity" among the validated probe
+  assertions. That is true of the CSS encoding, and the original probe was raw
+  CSS, but it is **not reachable from the authored flat syntax**: a clause
+  payload is space-greedy, so a base clause written after a conditional is
+  absorbed into that conditional's payload rather than becoming its own clause.
+  Verified at the grammar rather than inferred — `parseValue('hover:blue red')`
+  returns `ok: true` with `base: null` and `payload: 'blue red'`.
+- That failure is silent, which is the part worth acting on.
+  `backgroundColor="sm:green red"` parses clean, emits a program class, and the
+  element renders **transparent at every viewport**: the payload `green red` is
+  invalid for `background-color` so the browser drops the declaration, and there
+  is no base rule because `base` is null. No diagnostic at parse, lowering or
+  runtime — checked the browser console. The design record's own rule is that
+  unsupported input is a diagnostic, never silence, so this is a gap rather than
+  a documented limitation. Grammar is not this lane's, so it is routed rather
+  than fixed here.
 - Honestly remaining on this item: a streamed HTTP response hydrating in a
   real browser. The node half proves the bytes are right and the browser half
   proves late insertion resolves right, but nothing yet drives a real streamed
