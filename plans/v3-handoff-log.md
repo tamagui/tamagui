@@ -189,6 +189,20 @@ Status: in progress.
   earlier makes the protected source fail to build. The unconditional
   `tailwind-merge` import and `@tamagui/web` dependency are blocked on the same
   protected cut.
+- The private runtime subpaths now have separate proof for both real resolution
+  routes. `5ef3a87b6e` removed `.d.ts`-only tsconfig mappings that Bun tried to
+  execute. `d3362dfd6a` pins the monorepo's tracked compatibility shims and the
+  ESM/CJS package-export artifacts independently, including their exact
+  resolved paths and installed platform hooks.
+- Runtime and declaration graphs are pinned in `d18a70fa1d` and `9fe56b609e`.
+  The Tailwind web graph has 152 modules and reaches only the private core/web
+  runtime entries. It excludes the regular core root, the web root, the native
+  media driver, Tailwind Vite, `tailwindcss`, and `@tailwindcss`. The regular
+  core runtime and type entries cannot reach `@tamagui/tailwind`. The graph
+  probe exposed an unconditional native media-driver import in the shared web
+  runtime; platform-splitting that setup removed 24 modules from the Tailwind
+  web graph while preserving the `.native` setup path. Tailwind web/type gates
+  pass 74 tests across eight files.
 
 ## 3. DOM contract
 
