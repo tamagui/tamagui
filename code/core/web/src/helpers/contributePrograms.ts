@@ -11,7 +11,6 @@
 // See plans/dom-tailwind-flat-values.md, "Programs and merging" and the phase
 // 5 wiring lanes.
 
-import { stylePropsTransform } from '@tamagui/helpers'
 import {
   borderFamilyTargets,
   expandToLonghands,
@@ -22,6 +21,8 @@ import {
   type LonghandProgram,
   mergeProgramValues,
   type ParsedValue,
+  legacyPartComposite,
+  programEligibility,
   splitBackgroundValue,
   splitBorderValue,
   splitTextDecorationValue,
@@ -91,19 +92,6 @@ export function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeC
   }
   return context
 }
-
-// the web atomic emitter translates these into boxShadow/textShadow
-// (styleToCSS) and native passes them straight to RN — neither side can
-// express them as per-longhand CSS programs
-const rnTranslatedShadowProps = new Set([
-  'shadowColor',
-  'shadowOffset',
-  'shadowOpacity',
-  'shadowRadius',
-  'textShadowColor',
-  'textShadowOffset',
-  'textShadowRadius',
-])
 
 const noPlainValue = Symbol()
 
@@ -372,15 +360,20 @@ export function contributeStylePrograms(
   key: string,
   val: string
 ): boolean {
-  // the transform family (x, y, scale, scaleX, scaleY, rotate) routes through
-  // programs, and the raw `transform` property is one ordinary program (the
-  // design's home for skews, 3D rotations, perspective, and matrix). authored
-  // PART props (skewX={..}) stay on the legacy flatTransforms path
-  if (
-    key !== 'transform' &&
-    !transformFamilyProps.has(key) &&
-    key in stylePropsTransform
-  ) {
+  // program eligibility has one owner (style-grammar): RN shadow parts and
+  // non-family transform parts have no per-part clause spelling by design —
+  // the composite property owns it. plain values keep their legacy pipeline;
+  // a clause-shaped value drops with a diagnostic naming the migration, so
+  // it can never forward into malformed CSS or a mangled native string
+  if (programEligibility(key) === 'legacy-part') {
+    if (val.indexOf(':') !== -1) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          `[tamagui] ${key}="${val}": conditional values are not supported on part props — move the condition onto \`${legacyPartComposite[key]}\``
+        )
+      }
+      return true
+    }
     return false
   }
 
@@ -403,12 +396,6 @@ export function contributeStylePrograms(
   // accept-keys are props, not styles (Input's placeholderTextColor): they
   // must reach the host through mergeStyle's viewProps branch, never CSS
   if (styleState.staticConfig.accept && key in styleState.staticConfig.accept) {
-    return false
-  }
-
-  // RN shadow props are not CSS longhands: styleToCSS combines them into
-  // boxShadow/textShadow from plain style values, so they must never divert
-  if (rnTranslatedShadowProps.has(key)) {
     return false
   }
 
