@@ -179,6 +179,7 @@ describe('G1 temporary manifests', () => {
       dependencies: { '@tamagui/core': 'workspace:^' },
       peerDependencies: { '@tamagui/web': 'workspace:*' },
     }
+    const original = structuredClone(source)
     const output = createTemporaryPackManifest(
       source,
       new Map([
@@ -192,11 +193,51 @@ describe('G1 temporary manifests', () => {
     expect(output.peerDependencies).toEqual({ '@tamagui/web': '3.0.0-beta.0' })
     expect(output.repository).toEqual({
       type: 'git',
-      url: 'https://github.com/tamagui/tamagui.git',
+      url: 'git+https://github.com/tamagui/tamagui.git',
       directory: 'code/example',
     })
-    expect(source.dependencies).toEqual({ '@tamagui/core': 'workspace:^' })
+    expect(source).toEqual(original)
     expect(JSON.stringify(output)).not.toContain('workspace:')
+  })
+
+  test('normalizes bin metadata while preserving V3 executable targets', () => {
+    const bentoSource: PackageManifest = {
+      name: 'bento-get',
+      version: '3.0.0-beta.0',
+      bin: 'dist/cli.mjs',
+    }
+    const nativeCiSource: PackageManifest = {
+      name: '@tamagui/native-ci',
+      version: '3.0.0-beta.0',
+      bin: './dist/cli.mjs',
+    }
+    const cliSource: PackageManifest = {
+      name: '@tamagui/cli',
+      version: '3.0.0-beta.0',
+      bin: {
+        tama: './dist/index.cjs',
+        tamagui: './dist/index.cjs',
+      },
+    }
+    const bentoOriginal = structuredClone(bentoSource)
+    const nativeCiOriginal = structuredClone(nativeCiSource)
+    const cliOriginal = structuredClone(cliSource)
+    const normalize = (source: PackageManifest, directory: string) =>
+      createTemporaryPackManifest(source, new Map(), '/repo', directory)
+
+    expect(normalize(bentoSource, 'code/packages/bento-get').bin).toEqual({
+      'bento-get': 'dist/cli.mjs',
+    })
+    expect(normalize(nativeCiSource, 'code/packages/native-ci').bin).toEqual({
+      'native-ci': 'dist/cli.mjs',
+    })
+    expect(normalize(cliSource, 'code/core/cli').bin).toEqual({
+      tama: 'dist/index.cjs',
+      tamagui: 'dist/index.cjs',
+    })
+    expect(bentoSource).toEqual(bentoOriginal)
+    expect(nativeCiSource).toEqual(nativeCiOriginal)
+    expect(cliSource).toEqual(cliOriginal)
   })
 
   test('does not confuse a removed package with a longer live package name', () => {

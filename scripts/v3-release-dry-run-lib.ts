@@ -14,6 +14,7 @@ export interface PackageManifest extends JsonObject {
   main?: string
   module?: string
   types?: string
+  bin?: string | Record<string, string>
   exports?: unknown
   scripts?: Record<string, string>
   dependencies?: Record<string, string>
@@ -357,8 +358,21 @@ export function createTemporaryPackManifest(
   // matches the GitHub repo, so stamp it on every published manifest.
   output.repository = {
     type: 'git',
-    url: 'https://github.com/tamagui/tamagui.git',
+    url: 'git+https://github.com/tamagui/tamagui.git',
     directory: packageDirectory,
+  }
+  if (typeof output.bin === 'string') {
+    if (!output.name) throw new Error('Package with string bin is missing name')
+    output.bin = {
+      [output.name.replace(/^@[^/]+\//, '')]: output.bin.replace(/^\.\//, ''),
+    }
+  } else if (output.bin) {
+    output.bin = Object.fromEntries(
+      Object.entries(output.bin).map(([name, target]) => [
+        name,
+        target.replace(/^\.\//, ''),
+      ])
+    )
   }
   for (const field of DEPENDENCY_FIELDS) {
     const dependencies = output[field]
