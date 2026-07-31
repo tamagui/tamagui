@@ -56,7 +56,8 @@
   "scripts": {
     "bench": "bun bench/parse-cost.mjs",
     "build": "tamagui-build --exclude __tests__",
-    "test": "vitest --run src"
+    "test": "vitest --run src",
+    "test:web": "vitest --run src"
   },
   "dependencies": {},
   "devDependencies": {

@@ -27,7 +27,8 @@
   },
   "scripts": {
     "build": "tamagui-build --exclude test",
-    "test": "vitest --run test"
+    "test": "vitest --run test",
+    "test:web": "vitest --run test"
   },
   "dependencies": {
     "@tamagui/style-grammar": "workspace:*"
