@@ -567,7 +567,7 @@ Status: pending.
 Status: in progress.
 
 - Streaming SSR and code splitting, design item 2's remaining half, landed in
-  `d8f5a5b1` (`flatValueProgramsStreaming.web.test.tsx` plus a kitchen-sink
+  `a67adb6250` (`flatValueProgramsStreaming.web.test.tsx` plus a kitchen-sink
   fixture). The design record is updated.
 - The gap that made this worth doing: `flatValueProgramsSSR.web.test.tsx`
   already collects the stream's chunks, then asserts against

@@ -1954,8 +1954,16 @@ locked:
    clause after an `@media` block wins at equal specificity, and
    runtime-appended blocks behave identically regardless of cross-program
    insertion order (7/7 probe assertions). WebKit re-check rides the
-   kitchen-sink webkit CI project when this lands as tests. Remaining:
-   prototype streaming SSR and code splitting in a real app.
+   kitchen-sink webkit CI project when this lands as tests. Streaming and
+   code splitting are now covered (2026-07-30): `flatValueProgramsStreaming`
+   checks the stream's own chunks rather than the joined document and shows a
+   block is never delivered in pieces, and a kitchen-sink fixture loads a real
+   code-split chunk in a browser and shows that blocks arriving after render
+   leave already-resolved computed styles untouched, that a late program
+   resolves the same as an early one, and that a duplicate arrival stays one
+   class carrying one block. Remaining: a streamed HTTP response hydrating in
+   a real browser, which neither half covers on its own — the node half proves
+   the bytes, the browser half proves the resolution.
 3. The CSS transition native capability matrix and the migration of the
    existing array and per-property preset object forms (preset resolution
    itself is decided: config-first identifiers).
