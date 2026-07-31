@@ -414,7 +414,33 @@ Status: in progress.
 
 ## 5. Lint and editor tooling
 
-Status: pending.
+Status: in progress; ESLint diagnostics complete.
+
+- `@tamagui/eslint-plugin` exposes `valid-flat-values`, a diagnostic-only rule
+  for static strings on imported Tamagui components and `styled()` configs. The
+  source bridge performs provenance and AST location only. It contains no value
+  parser, candidate heuristic, or built-in-name table.
+- A new style-grammar tooling diagnostic composes the universal parser, shared
+  payload scanner, config-derived candidate vocabulary, candidate-target
+  validator, and v6 replacement/removal tables. Target validation runs only
+  when the scanner proves the whole payload is one candidate atom, so a color
+  reference embedded in a composite box-shadow is not mistaken for a
+  box-shadow candidate.
+- The rule requires the actual grammar config projection. A configured user
+  name that matches an old built-in remains valid, and config-specific media
+  names remain registered. This keeps the rule aligned with the broad
+  `FlatStyleValue<T>` type contract: parseable raw strings are admitted, while
+  grammar errors and configured candidate mismatches are diagnosed by the same
+  engine the runtime consumes.
+- The first v6-config corpus pass covered 250 real source files and reported
+  `Button.tsx`'s `$borderColor` at line 82 as the first real finding, followed
+  by its other unconverted v6 built-in names. The full pass found 141 obsolete
+  built-in name uses and six config-sensitive `@maxMd` spellings. The source
+  corpus has not had the report-only codemod applied, so these migration
+  findings do not contradict the codemod's 1,753 clean converted suggestions.
+- Validation: style-grammar 340/340 and package build green; the ESLint package
+  build and two behavioral tests over real `.tsx` fixture files pass. The rule
+  emits no fixes. Canonical formatting and language-service completions remain.
 
 ## 6. Transitions
 
@@ -793,3 +819,16 @@ slightly below the numeric case); the transform-family numeric case carries
 ~10% over plain numerics for the axis-variable composition, on the same order
 as the values it replaced. Numbers are from one machine in jsdom and referee
 relative cost, not absolute browser cost.
+
+### Rule: rebuild downstream declarations after a public type-surface change
+
+Downstream packages (`code/ui/text`, `code/ui/button`, `code/ui/tamagui`,
+`code/demos`, and anything else emitting tracked `types/`) bake RESOLVED prop
+unions into their declaration output. A change to a public prop type surface
+(e.g. the `FlatStyleValue` widening in `WithThemeValues`) leaves those baked
+unions stale until each package rebuilds, and the resulting TS2322 errors
+point at the consumer (Button) rather than the surface that moved. Before
+reading meaning into typecheck errors after a type-surface change, rebuild the
+downstream packages and commit their regenerated declarations. Same shape as
+the stale-dist runtime confound: the artifact you are measuring must be built
+from the source you are reasoning about.
