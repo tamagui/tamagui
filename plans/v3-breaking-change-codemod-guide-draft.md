@@ -453,6 +453,27 @@ Audit custom CSS that depended on Tamagui base rules winning regardless of
 source order. Doubled longhand-over-shorthand selectors remain in place, and
 the legacy pseudo and media specificity ladders have not been removed.
 
+## Generated class names for alias modifiers
+
+V3 hashes the canonical modifier spelling when it generates a program class.
+Aliases still author and lower the same way, but they now share the canonical
+spelling's class name. In particular, `active:` hashes as `press:`, and an
+alias inside a group modifier canonicalizes too:
+
+```txt
+backgroundColor="red active:blue"           -> _bc-1119250615
+backgroundColor="red press:blue"            -> _bc-1119250615
+backgroundColor="red group-active/card:blue" -> _bc-1493322902
+backgroundColor="red group-press/card:blue"  -> _bc-1493322902
+```
+
+Those concrete names come from the `r1` test config revision; application
+names also include their own config revision. The emitted rule text and
+rendered behavior are unchanged. Snapshot tests that pin generated class names
+must rebaseline once. Custom CSS keyed directly to a generated Tamagui class
+must update too, though generated names are private implementation details and
+consumer CSS should prefer a stable authored class or selector.
+
 ## Migration checklist
 
 1. Import the v6 config and rename custom references to the 16 built-in names.
@@ -469,10 +490,12 @@ the legacy pseudo and media specificity ladders have not been removed.
    web DOM behavior.
 9. Typecheck and build.
 10. Exercise states, media, themes, groups, containers, transforms, and
-   presence behavior on every platform the code supports.
+    presence behavior on every platform the code supports.
 11. Re-run the report and resolve every remaining outcome, flag, and inventory
     row.
 12. Audit consumer CSS for the base-specificity change.
+13. Rebaseline snapshots or consumer CSS that pins generated classes for
+    `active:` or `group-active/*` aliases.
 
 ## Proposed only: engine contraction
 
@@ -513,6 +536,9 @@ contracts:
 - a rebuilt real-browser CSS-driver presence test proving that legacy
   `exitStyle` keeps the element mounted, transitions opacity, and unmounts only
   after the web transition;
+- a direct style-grammar lowering probe showing that `active:` and `press:`
+  emit `_bc-1119250615`, while `group-active/card:` and `group-press/card:`
+  emit `_bc-1493322902`, with identical rule text in each pair;
 - the default-corpus host coverage and outcome measurement above.
 
 The web verification passed 46 tests in five files. The native verification
