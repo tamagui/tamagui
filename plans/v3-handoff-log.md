@@ -323,6 +323,43 @@ Status: in progress.
   `2e47f650ea` net-added one, so 771 - 9 + 1 = 763 and 55 - 1 = 54. The
   baseline is stale, nothing regressed. Native is 427 passed / 22 files,
   which is the 411 / 21 baseline plus this lane's 16 tests in one new file.
+- `html.*` landed in `9d763fb3a9`, exported from `@tamagui/core`. On web each of
+  the 49 tags is an ordinary Tamagui component rendering the literal element,
+  so it takes the regular Tamagui style props plus the strict DOM props for
+  that tag; on native every member throws a message naming the tag and saying
+  the compiler did not run, which is the specified missing-compiler failure
+  rather than a silent approximation.
+- It is generated into `code/core/web/src/dom/html.tsx` by
+  `@tamagui/dom scripts/generate-html.ts`, not written by hand and not reading
+  the tables at runtime. Reading them at runtime would put `@tamagui/dom` in
+  `@tamagui/web`'s runtime graph for every app that imports `html`, which is
+  exactly the boundary CODEX-2's graph tests are meant to prove. A test
+  regenerates both files and a second one asserts every `@tamagui/dom` import
+  in them is `import type`.
+- Nine web render tests in `code/core/core-test/domHtml.web.test.tsx` cover it
+  end to end: the real semantic tags reach the document, text nests inside a
+  block element, the element defaults apply, an author's style prop beats them,
+  element-specific props reach the DOM node, and a button click fires.
+- A real gap found while wiring the defaults, worth Lane E's attention because
+  it is in the style surface rather than in this lane: **Tamagui resolves no
+  style property named `wordWrap`/`overflowWrap`, `listStyle` or `resize`**.
+  Verified through `getSplitStyles`, not by reading the allowlist — `objectFit`
+  is absent from `validStyles` and still resolves, so the allowlist is not the
+  authority. An unresolved style prop is not a silent no-op: it falls through
+  to `viewProps` and reaches the element as an attribute, which is a react
+  warning and still no styling. RSD sets all three, so they came out of the
+  table and are recorded in `compatibility.ts` with the reason. `listStyle`
+  turned out not to matter — every view-backed element carries
+  `.is_View { display: flex }`, so an `li` is never `display: list-item` and no
+  marker is generated — but the other two are genuine cosmetic gaps that only
+  close by teaching the style pipeline the property names.
+- Gate baselines moved again, and again not from this lane: 15 Tailwind suites
+  are staged for deletion out of `core-test` as CODEX-2 isolates the package's
+  test dependencies, which is why the web file count fell to 45. Separately,
+  four web tests and one native test in `compoundVariants` and
+  `flatGroupSyntax` now fail; they passed in this lane's full run earlier and
+  the failures arrived with `3eb37b44b4`, the descriptor-dispatch commit. Both
+  belong to their own lanes; this lane's own suites are green.
 - Closed: the `bun.lock` gap this lane raised is fixed. HEAD had no entry for
   `code/core/codemod-flat-values` despite that package.json being committed, so
   `bun install --frozen-lockfile` had been failing at HEAD for two days.
