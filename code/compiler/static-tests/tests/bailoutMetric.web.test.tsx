@@ -187,13 +187,13 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
     writeFileSync('/tmp/tamagui-bailout-details.txt', details.join('\n'))
 
     expect(totals).toEqual({
-      files: 248,
+      files: 251,
       failed: 0,
-      found: 2556,
-      lowered: 2030,
-      flattened: 2017,
+      found: 2565,
+      lowered: 2038,
+      flattened: 2025,
       styled: 55,
-      bailed: 526,
+      bailed: 527,
     })
     expect([...unexpectedStructuralComponents].sort()).toEqual([])
     expect([...structuralClasses.keys()].sort()).toEqual(
