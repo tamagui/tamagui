@@ -524,7 +524,7 @@ export const Fixture = ({ anything }) => (
     expect(site.after).toContain('hoverStyle={{ opacity: 1 }}')
   })
 
-  test('only values that need migration are inventoried', () => {
+  test('keeps supported transition structures authored without inventory', () => {
     const site = only(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = () => (
@@ -538,10 +538,28 @@ export const Fixture = () => (
     )
 
     expect(codes(site)).toEqual([])
-    expect(site.inventory.map((flag) => flag.code)).toEqual(['legacy-transition-value'])
+    expect(site.inventory).toEqual([])
     expect(site.after).toContain(`transition={['quick', { opacity: 'lazy' }]}`)
     expect(site.after).toContain('shadowOffset={{ width: 0, height: 20 }}')
     expect(site.after).toContain('transform={[{ translateX: 20 }]}')
+  })
+
+  test('keeps transition objects and dynamic references byte-identical', () => {
+    const result = run(`import { View } from 'tamagui'
+export const ObjectFixture = () => (
+  <View bg="$blue10" transition={{ opacity: '500ms', default: 'quick' }} />
+)
+export const DynamicFixture = ({ transition }) => (
+  <View bg="$blue10" transition={transition} />
+)`)
+    const found = sites(result)
+
+    expect(found).toHaveLength(2)
+    expect(found.every((site) => site.inventory.length === 0)).toBe(true)
+    expect(found.map((site) => site.after)).toEqual([
+      `bg="blue10" transition={{ opacity: '500ms', default: 'quick' }}`,
+      'bg="blue10" transition={transition}',
+    ])
   })
 })
 

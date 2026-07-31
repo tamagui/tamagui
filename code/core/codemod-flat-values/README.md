@@ -139,10 +139,10 @@ inventory. If a condition targets one, the shared eligibility contract reports i
 ineligible and points to the complete `boxShadow` or `textShadow` composite. The
 codemod never guesses the missing color, radius, opacity, or sibling offset.
 
-Values belonging to another migration are listed separately and left untouched:
-`legacy-transition-value` (the v1 animation config shapes) and
-`dynamic-string-value` (an open string type that could still hold a `$token` at
-runtime, which only a human can confirm).
+Transition arrays, per-property objects, and dynamic references remain authored
+because they are supported animation-driver configuration, not flat-value
+migration work. An open string type that could still hold a `$token` at runtime
+is listed separately as `dynamic-string-value`, which only a human can confirm.
 
 ## Flag codes
 
@@ -166,7 +166,6 @@ A flag means a human decides. Every code the tool can emit:
 | `structured-transform-*` | a transform array is dynamic or has no faithful static function-list spelling; matrix arrays are intentionally included |
 | `structured-font-variant-*`, `structured-background-image-*` | a font-variant or gradient structure is dynamic, empty, layered, or unsupported |
 | `structured-<property>` | a condition needs an object or array with no verified CSS-shaped migration rule |
-| `legacy-transition-value` | a condition needs the separate transition migration |
 | `condition-order-not-preservable`, `base-order-not-preservable` | merging would move a value past something that can also set it |
 | `computed-property` | a computed key hides the affected style property |
 | `emitted-program-mismatch`, `emitted-value-invalid` | the printer failed its own re-parse; this is a codemod bug |

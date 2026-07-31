@@ -324,8 +324,9 @@ diagnostic. A structure with no verified rule uses a property-specific
 
 The rebuilt default corpus contains two unconditional structured values, one
 `shadowOffset` object and one raw transform array. Both remain authored and
-neither is inventory. The only remaining separate-migration inventory is 39
-`legacy-transition-value` rows.
+neither is inventory. Transition arrays, per-property objects, and dynamic
+references also remain authored without inventory because the public
+animation-driver API continues to support those forms.
 
 ## Move part-prop conditions to their composite
 
@@ -472,15 +473,16 @@ The tool deliberately does not:
   held behind an unproven module constant;
 - flatten a dynamic, Animated, matrix, or otherwise unsupported structured
   value;
-- migrate legacy transition configuration shapes;
+- rewrite legacy transition configuration shapes, which remain supported and
+  authored without a report flag;
 - guess whether an open `string` type contains a token at runtime;
 - convert group-presence conditions that name neither a state nor a size;
 - convert the shadow and transform part conditions listed above;
 - claim a clean host when TypeScript cannot establish the component prop
   surface.
 
-The report separates manual flags from inventory that belongs to another
-migration. Preserve authored code until each flagged decision is made.
+The report separates manual flags from review-only inventory. Preserve
+authored code until each flagged decision is made.
 
 `legacyConditionObjects` defaults to `true` in the current beta, which converts
 eligible legacy condition objects at the style loop entry. Setting it to
@@ -598,9 +600,10 @@ contracts:
 - a Chromium `CSS.supports` probe for the generated transform, font-variant,
   and repeated-stop plus transition-hint gradient spellings;
 - the default-corpus host coverage and outcome measurement above, rerun after
-  rebuilding the language service, with no structured-value inventory.
+  rebuilding the language service, with no structured-value or legacy
+  transition inventory.
 
 The web verification passed 46 tests in five files. The native verification
-passed 43 tests in three files. The codemod verification passed 65 tests,
+passed 43 tests in three files. The codemod verification passed 66 tests,
 including the default corpus. The probe logs record their UTC start and finish
 times and exact branch heads.

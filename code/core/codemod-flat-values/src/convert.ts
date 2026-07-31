@@ -340,14 +340,6 @@ function classifyDynamic(
   const current = unwrapExpression(expression)
   const source = compact(current.getText())
 
-  if (resolveProp(prop) === 'transition') {
-    const flag: Flag = {
-      code: 'legacy-transition-value',
-      detail: `transition value "${source}" uses the v1 animation config shape; the flat transition migration is still open in the plan`,
-    }
-    return { ...empty, inventory: flag, blocked: flag }
-  }
-
   const structured = classifyStructuredNativeValue(
     resolveProp(prop),
     current,
