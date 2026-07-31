@@ -17,5 +17,6 @@ export * from "./table";
 export * from "./transformFamily";
 export * from "./valueParser";
 export * from "./valueTypes";
+export * from "./v6ThemeNames";
 
 //# sourceMappingURL=index.d.ts.map

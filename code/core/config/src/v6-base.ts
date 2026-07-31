@@ -10,6 +10,10 @@ import { fonts as v5fonts } from './v5-fonts'
 import { media, mediaQueryDefaultActive } from './v5-media'
 import { selectionStyles, settings as v5Settings } from './v5-base'
 import {
+  v6RemovedThemeNames,
+  v6ThemeNameReplacements,
+} from '@tamagui/style-grammar'
+import {
   tailwindColors,
   tailwindFontSize,
   tailwindLineHeight,
@@ -21,31 +25,15 @@ import {
 
 // inherit all v5 helpers/types/theme re-exports, then override shorthands + defaultConfig
 export * from './v5-base'
+export { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar'
 export { shorthands }
 
-export const v6ThemeNameReplacements = {
-  accentBackground: 'accent-background',
-  accentColor: 'accent-color',
-  colorHover: 'color-hover',
-  colorPress: 'color-press',
-  colorFocus: 'color-focus',
-  backgroundHover: 'background-hover',
-  backgroundPress: 'background-press',
-  backgroundFocus: 'background-focus',
-  backgroundActive: 'background-active',
-  borderColor: 'border-color',
-  borderColorHover: 'border-color-hover',
-  borderColorFocus: 'border-color-focus',
-  borderColorPress: 'border-color-press',
-  placeholderColor: 'placeholder-color',
-  colorTransparent: 'color-transparent',
-  shadowColor: 'shadow-color',
-} as const
-
 type V6Theme<Theme> = {
-  [Name in keyof Theme as Name extends keyof typeof v6ThemeNameReplacements
-    ? (typeof v6ThemeNameReplacements)[Name]
-    : Name]: Theme[Name]
+  [Name in keyof Theme as Name extends (typeof v6RemovedThemeNames)[number]
+    ? never
+    : Name extends keyof typeof v6ThemeNameReplacements
+      ? (typeof v6ThemeNameReplacements)[Name]
+      : Name]: Theme[Name]
 }
 
 export type V6Themes = {
@@ -56,15 +44,19 @@ export const themes = Object.fromEntries(
   Object.entries(v5themes).map(([themeName, theme]) => [
     themeName,
     Object.fromEntries(
-      Object.entries(theme).map(([name, value]) => [
-        v6ThemeNameReplacements[name as keyof typeof v6ThemeNameReplacements] ?? name,
-        value,
-      ])
+      Object.entries(theme)
+        .filter(([name]) => !(v6RemovedThemeNames as readonly string[]).includes(name))
+        .map(([name, value]) => [
+          v6ThemeNameReplacements[
+            name as keyof typeof v6ThemeNameReplacements
+          ] ?? name,
+          value,
+        ])
     ),
   ])
 ) as V6Themes
 
-// Space and size deliberately remain separate configured domains even though their default
+// space and size deliberately remain separate configured domains even though their default
 // values coincide. Radius keeps v5's numeric component scale while adding Tailwind's named
 // border-radius scale; v6's z-index names resolve to their direct CSS values.
 export const tokens = {
@@ -75,7 +67,7 @@ export const tokens = {
   zIndex: tailwindZIndex,
 } as const
 
-// Font px strings are normalized to numeric Variable values by createVariable. Keep the same
+// font px strings are normalized to numeric Variable values by createVariable. keep the same
 // public numeric type contract as v5's pinFontToPx while retaining the generated map's exact keys.
 type NormalizedPxScale<T extends Record<string, string>> = {
   [Key in keyof T]: number

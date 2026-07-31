@@ -1,20 +1,15 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
-import { View, createTamagui, getConfig, StyleObjectValue } from '../web/src'
-import { simplifiedGetSplitStyles, findRule } from './utils'
+import { createTamagui, getConfig, StyleObjectValue } from '../web/src'
+import { View } from '../tailwind/src'
+import { findRule, splitTailwindStyles } from '../tailwind/src/__tests__/utils'
 
-// styleMode tailwind should resolve semantic THEME-value color names (color1-12,
-// background, borderColor, …) to their theme CSS var (var(--color5)) — theme-aware —
-// not a dead literal. see getSplitStyles resolveTokenValue.
+// the tailwind frontend should resolve semantic theme-value color names (color1-12,
+// background, border-color, …) to their theme css var (var(--color5)), theme-aware
+// and never as a dead literal. see candidate resolveTokenValue.
 beforeAll(() => {
-  createTamagui({
-    ...(defaultConfig as any),
-    settings: {
-      ...(defaultConfig as any).settings,
-      styleMode: 'tamagui-and-tailwind',
-    },
-  })
+  createTamagui(defaultConfig as any)
 })
 
 function theme() {
@@ -22,11 +17,11 @@ function theme() {
 }
 
 function colorRule(className: string, prop: string) {
-  const styles = simplifiedGetSplitStyles(View, { className } as any, { theme: theme() })
+  const styles = splitTailwindStyles(View, { className }, { theme: theme() })
   return findRule(styles.rulesToInsert, prop)
 }
 
-describe('styleMode theme-value color classes', () => {
+describe('tailwind theme-value color classes', () => {
   test('bg-color5 resolves to var(--color5) (theme-aware, not literal)', () => {
     const rule = colorRule('bg-color5', 'backgroundColor')
     expect(rule).toBeTruthy()
@@ -39,10 +34,10 @@ describe('styleMode theme-value color classes', () => {
     expect(rule[StyleObjectValue]).toBe('var(--color10)')
   })
 
-  test('border-borderColor resolves to var(--borderColor)', () => {
-    const rule = colorRule('border-borderColor', 'borderTopColor')
+  test('border-border-color resolves to var(--border-color)', () => {
+    const rule = colorRule('border-border-color', 'borderTopColor')
     expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toBe('var(--borderColor)')
+    expect(rule[StyleObjectValue]).toBe('var(--border-color)')
   })
 
   test('bg-background resolves to var(--background)', () => {
@@ -70,7 +65,7 @@ describe('styleMode theme-value color classes', () => {
   })
 
   test('non-color arbitrary width is unaffected', () => {
-    const styles = simplifiedGetSplitStyles(View, { className: 'w-[400px]' } as any, {
+    const styles = splitTailwindStyles(View, { className: 'w-[400px]' }, {
       theme: theme(),
     })
     const rule = findRule(styles.rulesToInsert, 'width')

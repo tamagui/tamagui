@@ -13,8 +13,8 @@ bun src/index.ts --help
 ```
 
 The default corpus is `code/kitchen-sink/src/usecases` plus the canonical
-`Button.tsx` skin, which is also the acceptance fixture: 1773 conversion sites, 320
-converted, 1433 waiting on runtime support, 20 flagged. The counts track
+`Button.tsx` skin, which is also the acceptance fixture: 1758 conversion sites, 323
+converted, 1435 waiting on runtime support, 0 flagged. The counts track
 `@tamagui/style-grammar`, which this package imports from source rather than from its
 build, so a change to the shared converter moves them.
 
@@ -39,8 +39,11 @@ helper, a `react-native` component, and an intrinsic tag are all left alone —
   `bg="$surface" hoverStyle={{ bg: '$surfaceHover' }}` becomes
   `bg="surface hover:surfaceHover"`.
 - v1 platform conditions (`$web`, `$ios`, …) become platform modifiers, and v1
-  camelCase media keys resolve to their V6 kebab-case names. Token names are emitted
-  verbatim: no shipped config has kebab-case built-in token names yet.
+  camelCase media keys resolve to their V6 kebab-case names. The V6 built-in theme
+  names use one explicit rename table, so `$backgroundHover` becomes
+  `background-hover`. User-defined names keep their authored spelling.
+  `$backgroundActive` is the one non-mechanical migration: v3 removed it, so it
+  becomes `background-press`, matching the corrected active-state component defaults.
 - Group conditions split the way V3 splits them: `$group-card-hover` becomes
   `group-hover/card:`, and a container size (`$group-card-maxMd`) becomes
   `@max-md/card:` plus `container containerName="card"` on the element that declares

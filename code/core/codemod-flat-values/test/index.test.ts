@@ -201,7 +201,25 @@ export const Fixture = () => (
     )
 
     expect(codes(site)).toEqual([])
-    expect(programs(site)).toEqual({ boxShadow: '0 4px 12px shadowColor hover:none' })
+    expect(programs(site)).toEqual({ boxShadow: '0 4px 12px shadow-color hover:none' })
+  })
+
+  test('built-in theme names migrate explicitly and removed backgroundActive uses press', () => {
+    const site = only(
+      run(`import { Text, TextInput, View, styled } from 'tamagui'
+export const Fixture = () => (
+  <View
+    boxShadow="0 0 1px $accentBackground, 0 0 1px $accentColor, 0 0 1px $colorHover, 0 0 1px $colorPress, 0 0 1px $colorFocus, 0 0 1px $backgroundHover, 0 0 1px $backgroundPress, 0 0 1px $backgroundFocus, 0 0 1px $borderColor, 0 0 1px $borderColorHover, 0 0 1px $borderColorFocus, 0 0 1px $borderColorPress, 0 0 1px $outlineColor, 0 0 1px $placeholderColor, 0 0 1px $colorTransparent, 0 0 1px $shadowColor"
+    hoverStyle={{ boxShadow: '0 0 1px $backgroundActive' }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      boxShadow:
+        '0 0 1px accent-background, 0 0 1px accent-color, 0 0 1px color-hover, 0 0 1px color-press, 0 0 1px color-focus, 0 0 1px background-hover, 0 0 1px background-press, 0 0 1px background-focus, 0 0 1px border-color, 0 0 1px border-color-hover, 0 0 1px border-color-focus, 0 0 1px border-color-press, 0 0 1px outline-color, 0 0 1px placeholder-color, 0 0 1px color-transparent, 0 0 1px shadow-color hover:0 0 1px background-press',
+    })
   })
 
   test('a clause-free token keeps its "$" until the runtime can read the flat spelling', () => {

@@ -48,8 +48,8 @@ const SelectItem = styled(SelectBehavior.Item, {
   name: 'CanarySelectItem',
   rounded: 6,
   px: 10,
-  hoverStyle: { background: '$backgroundHover' },
-  focusStyle: { background: '$backgroundFocus' },
+  hoverStyle: { background: '$background-hover' },
+  focusStyle: { background: '$background-focus' },
   variants: { size: selectSizes.frame } as const,
   defaultVariants: { size: 'medium' },
 })

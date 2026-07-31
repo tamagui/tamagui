@@ -20,7 +20,7 @@ ordered program per property.
 
 // flat values
 <View
-  bg="background hover:backgroundHover dark:blue10"
+  bg="background hover:background-hover dark:blue10"
   p="4 sm:6"
 />
 ```
@@ -130,7 +130,7 @@ Remove `$` only when the value has at least one clause:
 
 ```tsx
 // safe in the current beta
-bg="background hover:backgroundHover"
+bg="background hover:background-hover"
 
 // keep the prefix for now
 bg="$background"
@@ -140,7 +140,7 @@ A bare `$` in a web flat program drops the entire longhand program, including
 its base, and logs a development warning:
 
 ```txt
-[tamagui] bg: "$backgroundHover" — flat clause values use config-first
+[tamagui] bg: "$background-hover" — flat clause values use config-first
 names without "$"; dropping this program
 ```
 

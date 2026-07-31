@@ -1,28 +1,12 @@
 import { shorthands } from '@tamagui/shorthands/v6';
 import { type V5Themes } from '@tamagui/themes/v5';
 import { selectionStyles } from './v5-base';
+import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar';
 export * from './v5-base';
+export { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar';
 export { shorthands };
-export declare const v6ThemeNameReplacements: {
-    readonly accentBackground: 'accent-background';
-    readonly accentColor: 'accent-color';
-    readonly colorHover: 'color-hover';
-    readonly colorPress: 'color-press';
-    readonly colorFocus: 'color-focus';
-    readonly backgroundHover: 'background-hover';
-    readonly backgroundPress: 'background-press';
-    readonly backgroundFocus: 'background-focus';
-    readonly backgroundActive: 'background-active';
-    readonly borderColor: 'border-color';
-    readonly borderColorHover: 'border-color-hover';
-    readonly borderColorFocus: 'border-color-focus';
-    readonly borderColorPress: 'border-color-press';
-    readonly placeholderColor: 'placeholder-color';
-    readonly colorTransparent: 'color-transparent';
-    readonly shadowColor: 'shadow-color';
-};
 type V6Theme<Theme> = {
-    [Name in keyof Theme as Name extends keyof typeof v6ThemeNameReplacements ? (typeof v6ThemeNameReplacements)[Name] : Name]: Theme[Name];
+    [Name in keyof Theme as Name extends (typeof v6RemovedThemeNames)[number] ? never : Name extends keyof typeof v6ThemeNameReplacements ? (typeof v6ThemeNameReplacements)[Name] : Name]: Theme[Name];
 };
 export type V6Themes = {
     [Name in keyof V5Themes]: V6Theme<V5Themes[Name]>;

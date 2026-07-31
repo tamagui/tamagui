@@ -10,17 +10,21 @@ import { shorthands } from '@tamagui/shorthands/v6'
 // codemod that reads a stale build of the grammar would emit values the current
 // grammar does not agree with
 import * as styleGrammarRuntime from '../../style-grammar/src/index'
-import type { LegacyConditionError } from '../../style-grammar/src/legacyConditions'
+import type {
+  ConvertLegacyConditionOptions,
+  LegacyConditionError,
+  LegacyConditionResult,
+} from '../../style-grammar/src/legacyConditions'
 import type {
   ModifierRegistryView,
   ParsedClause,
   ParsedValue,
 } from '../../style-grammar/src/valueTypes'
+import { replaceV6BuiltInTokens } from './builtInNames'
 
 const grammar = styleGrammarRuntime
 
 export const {
-  convertLegacyConditionProp,
   createModifierRegistry,
   defaultMediaKeys,
   evaluateProgram,
@@ -36,6 +40,30 @@ export const {
 export type { LegacyConditionError, ModifierRegistryView, ParsedClause, ParsedValue }
 
 export { shorthands }
+
+function renameBuiltInTokens(value: unknown): unknown {
+  if (typeof value === 'string') return replaceV6BuiltInTokens(value)
+  if (Array.isArray(value)) return value.map(renameBuiltInTokens)
+  if (value === null || typeof value !== 'object') return value
+
+  const renamed: Record<string, unknown> = {}
+  for (const key in value) {
+    renamed[key] = renameBuiltInTokens((value as Record<string, unknown>)[key])
+  }
+  return renamed
+}
+
+export function convertLegacyConditionProp(
+  propName: string,
+  value: unknown,
+  options: ConvertLegacyConditionOptions
+): LegacyConditionResult | null {
+  return grammar.convertLegacyConditionProp(
+    propName,
+    renameBuiltInTokens(value),
+    options
+  )
+}
 
 /** every prop spelling the codemod treats as carrying a style value */
 export const styleProps: ReadonlySet<string> = new Set<string>([

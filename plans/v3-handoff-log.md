@@ -262,6 +262,31 @@ Status: in progress.
   `defaultTokenCategories` to `space`, and the runtime/compiler candidate
   resolver must call the shared target validator. The manager routed both exact
   changes.
+- Lane V's follow-up derives the authoritative surface by taking the runtime
+  union of uppercase keys across every v5 theme: 17 source names, comprising 16
+  mechanical kebab-case replacements and removed `backgroundActive`. The shared
+  zero-dependency table contains the 16 replacements; the config test compares
+  every row and value against every v5 theme, rejects every remaining uppercase
+  key, and confirms both `backgroundActive` and `background-active` are absent.
+  The codemod has 17 rows because it maps legacy `backgroundActive` directly to
+  `background-press`.
+- The consumer sweep used exact per-name and Tailwind-candidate `rg -P` searches
+  across the repository, then reviewed every hit in theme templates, component
+  defaults, tests, fixtures, and docs. Generated v5 theme files were inspected
+  as derived legacy surfaces; `code/tamagui.dev/tamagui.generated.css` was
+  deliberately excluded and never staged. The live misses were the v3 canary
+  Select and flat-values guide, fixed in Lane V, plus `to-tailwind`, routed to
+  CODEX-2. The guide's legacy input remains intentional. No other source
+  consumer surface was left uncovered.
+- Item-1 gates: config 5/5 with 18,387 exhaustive assertions, focused theme-color
+  web regression 8/8, codemod 47/47, package builds and codemod typecheck green;
+  corpus 1,758 total / 323 converted / 1,435 waiting / 0 flagged. Full web is
+  temporarily blocked on the active style-mode cleanup in
+  `tailwindMode.web.test.tsx` and `tailwindArbitrary.web.test.tsx`.
+  `componentProps.web.test.tsx` was separately reproduced with all uncommitted
+  Lane V config/theme files absent in a detached HEAD worktree and failed with
+  the identical `_bc-1418911449` output; it uses `config-default` and the v5
+  shorthands, so the v6 `bg` family change is not on its import path.
 
 ## 5. Lint and editor tooling
 
