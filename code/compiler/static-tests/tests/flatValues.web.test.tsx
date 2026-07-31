@@ -3,11 +3,15 @@
 // extractor rides the same getSplitStyles pipeline as the runtime, so program
 // lowering and class identity come from one implementation.
 import * as React from 'react'
+import { createRequire } from 'node:module'
 import { expect, test } from 'vitest'
 
 import { extractForWeb } from './lib/extract'
 
 window['React'] = React
+const hostCore = createRequire(import.meta.url)(
+  '@tamagui/core'
+) as typeof import('@tamagui/core')
 
 const extract = (jsx: string) =>
   extractForWeb(
@@ -30,10 +34,42 @@ const extract = (jsx: string) =>
 test('a clause-bearing string flattens to a plain element with a program class', async () => {
   const output = await extract(`<View width={10} backgroundColor="red hover:blue" />`)
   expect(output?.js).toContain('<div')
-  expect(output?.js).toMatch(/_bc-\d+/)
+  const compilerClass = output?.js.match(/_bc-\d+/)?.[0]
+  expect(compilerClass).toBeTruthy()
   expect(output?.js).not.toContain('<View')
   expect(output?.styles).toContain('background-color:red')
   expect(output?.styles).toMatch(/_bc-\d+:where\(:hover\)\{background-color:blue\}/)
+
+  const config = hostCore.getConfig()
+  const themeName = Object.keys(config.themes)[0] ?? ''
+  const runtime = hostCore.getSplitStyles(
+    { width: 10, backgroundColor: 'red hover:blue' },
+    hostCore.View.staticConfig,
+    hostCore.proxyThemeVariables(config.themes[themeName] ?? {}),
+    themeName,
+    {
+      focus: false,
+      focusVisible: false,
+      focusWithin: false,
+      hover: false,
+      unmounted: true,
+      press: false,
+      pressIn: false,
+      disabled: false,
+    },
+    {
+      resolveValues: 'variable',
+      noClass: false,
+      isAnimated: false,
+    }
+  )
+  const runtimeClass = runtime.classNames.backgroundColor
+  expect(compilerClass).toBe(runtimeClass)
+  const runtimeRules = runtime.rulesToInsert[runtimeClass]?.[4] ?? []
+  expect(runtimeRules).toHaveLength(2)
+  for (const rule of runtimeRules) {
+    expect(output?.styles).toContain(rule)
+  }
 })
 
 test('token payloads and media clauses lower statically', async () => {
