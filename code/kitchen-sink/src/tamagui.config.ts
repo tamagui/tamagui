@@ -378,8 +378,32 @@ const animations = search.includes('animationDriver=css')
         ? animationsMultiDriver
         : animationsReanimated
 
+/**
+ * A language variant of the body font, for FontLanguageSwapCase.
+ *
+ * A font key of `name_language` is what `createDesignSystem` reads to emit
+ * `:root .t_lang-body-ja .font_body { … }`, so this only ever applies inside a
+ * `<FontLanguage body="ja">` and cannot move default rendering. The family and
+ * the metrics differ from `body` on purpose: swapping the face has to carry the
+ * face's own sizes and line heights with it, not just its family name.
+ *
+ * It sorts after `body`, which matters — the shared `.font_*, .is_View` rule is
+ * built from the alphabetically first font, so a variant sorting before `body`
+ * would change the font reset for every View on the page.
+ */
+const bodyJa = {
+  ...config.fonts.body,
+  family: 'KitchenSinkJA, sans-serif',
+  size: { ...config.fonts.body.size, 3: 20 },
+  lineHeight: { ...config.fonts.body.lineHeight, 3: 30 },
+}
+
 const tamaConf = createTamagui({
   ...config,
+  fonts: {
+    ...config.fonts,
+    body_ja: bodyJa,
+  },
   // Use v4 themes when ?v4theme=true is in the URL
   themes: useV4Themes
     ? tamaguiThemes
