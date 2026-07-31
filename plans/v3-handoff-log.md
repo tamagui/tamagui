@@ -716,9 +716,28 @@ the end-to-end streamed response, font-face swap, and the WebKit re-check.
   existing `simple.integration.test.js` dev-mode test fails on a Tailwind
   `@container grid` element computing `display: flex` instead of `grid`. It
   fails identically with this lane's edits removed, so it is pre-existing and
-  belongs to the Tailwind isolation work. The node half proves the bytes are right and the browser half
-  proves late insertion resolves right, but nothing yet drives a real streamed
-  response into a real browser end to end. Font-face swap E2E and the WebKit
+  belongs to the Tailwind isolation work.
+- Tailwind isolation reproduced the same result in both Vite development and
+  production builds and traced the browser cascade. `TamaguiProvider` injects
+  `config.getCSS()` unlayered, including `.is_View { display: flex }`, while
+  the compiler correctly emits the grammar-owned `display: grid` atom inside
+  `@layer tamagui`. An unlayered normal rule wins over every layered normal
+  rule regardless of selector specificity. The Tailwind scanner is correct to
+  withhold a duplicate `.grid`, and removing the compiler layer would violate
+  the intended cascade.
+- The same missing layer interop affects authored order when a raw Tailwind
+  utility follows a Tamagui prop: the unlayered Tamagui background rule beats
+  the later `bg-blue-500` utility in Tailwind's layer. Both computed-style
+  assertions live in the D3 `fixme`; the rest of each integration path remains
+  active.
+- This is the runtime layer interop explicitly left unimplemented at
+  `plans/dom-tailwind-flat-values.md:940-951`, so it remains blocked on D3
+  rather than receiving a fixture-only workaround. The integration assertion
+  is a named `fixme` with D3 as its unblocker; the rest of the development,
+  production, HMR, and hydration coverage still runs.
+- The node half proves the bytes are right and the browser half proves late
+  insertion resolves right, but nothing yet drives a real streamed response
+  into a real browser end to end. Font-face swap E2E and the WebKit
   program-block re-check are also still open.
 
 ## 9. Open design drafts
