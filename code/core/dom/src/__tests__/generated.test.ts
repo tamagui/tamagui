@@ -33,9 +33,10 @@ describe('the generated prop interfaces', () => {
   test('narrow a prop only on tags that accept it', () => {
     for (const [name, row] of Object.entries(ATTRIBUTES)) {
       for (const tag of Object.keys(row.perTag ?? {})) {
-        expect(row.tags === '*' || row.tags.includes(tag as never), `${name} on <${tag}>`).toBe(
-          true
-        )
+        expect(
+          row.tags === '*' || row.tags.includes(tag as never),
+          `${name} on <${tag}>`
+        ).toBe(true)
       }
     }
   })

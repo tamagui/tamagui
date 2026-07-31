@@ -35,14 +35,20 @@ export const html = {
   b: requireCompiler('b') as (props: StrictDOMProps & DOMStyleProps) => never,
   bdi: requireCompiler('bdi') as (props: StrictDOMProps & DOMStyleProps) => never,
   bdo: requireCompiler('bdo') as (props: StrictDOMProps & DOMStyleProps) => never,
-  blockquote: requireCompiler('blockquote') as (props: StrictDOMProps & DOMStyleProps) => never,
+  blockquote: requireCompiler('blockquote') as (
+    props: StrictDOMProps & DOMStyleProps
+  ) => never,
   br: requireCompiler('br') as (props: StrictDOMVoidProps & DOMStyleProps) => never,
-  button: requireCompiler('button') as (props: StrictDOMButtonProps & DOMStyleProps) => never,
+  button: requireCompiler('button') as (
+    props: StrictDOMButtonProps & DOMStyleProps
+  ) => never,
   code: requireCompiler('code') as (props: StrictDOMProps & DOMStyleProps) => never,
   del: requireCompiler('del') as (props: StrictDOMProps & DOMStyleProps) => never,
   div: requireCompiler('div') as (props: StrictDOMProps & DOMStyleProps) => never,
   em: requireCompiler('em') as (props: StrictDOMProps & DOMStyleProps) => never,
-  fieldset: requireCompiler('fieldset') as (props: StrictDOMProps & DOMStyleProps) => never,
+  fieldset: requireCompiler('fieldset') as (
+    props: StrictDOMProps & DOMStyleProps
+  ) => never,
   footer: requireCompiler('footer') as (props: StrictDOMProps & DOMStyleProps) => never,
   form: requireCompiler('form') as (props: StrictDOMProps & DOMStyleProps) => never,
   h1: requireCompiler('h1') as (props: StrictDOMProps & DOMStyleProps) => never,
@@ -55,27 +61,39 @@ export const html = {
   hr: requireCompiler('hr') as (props: StrictDOMVoidProps & DOMStyleProps) => never,
   i: requireCompiler('i') as (props: StrictDOMProps & DOMStyleProps) => never,
   img: requireCompiler('img') as (props: StrictDOMImageProps & DOMStyleProps) => never,
-  input: requireCompiler('input') as (props: StrictDOMInputProps & DOMStyleProps) => never,
+  input: requireCompiler('input') as (
+    props: StrictDOMInputProps & DOMStyleProps
+  ) => never,
   ins: requireCompiler('ins') as (props: StrictDOMProps & DOMStyleProps) => never,
   kbd: requireCompiler('kbd') as (props: StrictDOMProps & DOMStyleProps) => never,
-  label: requireCompiler('label') as (props: StrictDOMLabelProps & DOMStyleProps) => never,
+  label: requireCompiler('label') as (
+    props: StrictDOMLabelProps & DOMStyleProps
+  ) => never,
   li: requireCompiler('li') as (props: StrictDOMListItemProps & DOMStyleProps) => never,
   main: requireCompiler('main') as (props: StrictDOMProps & DOMStyleProps) => never,
   mark: requireCompiler('mark') as (props: StrictDOMProps & DOMStyleProps) => never,
   nav: requireCompiler('nav') as (props: StrictDOMProps & DOMStyleProps) => never,
   ol: requireCompiler('ol') as (props: StrictDOMProps & DOMStyleProps) => never,
-  optgroup: requireCompiler('optgroup') as (props: StrictDOMOptionGroupProps & DOMStyleProps) => never,
-  option: requireCompiler('option') as (props: StrictDOMOptionProps & DOMStyleProps) => never,
+  optgroup: requireCompiler('optgroup') as (
+    props: StrictDOMOptionGroupProps & DOMStyleProps
+  ) => never,
+  option: requireCompiler('option') as (
+    props: StrictDOMOptionProps & DOMStyleProps
+  ) => never,
   p: requireCompiler('p') as (props: StrictDOMProps & DOMStyleProps) => never,
   pre: requireCompiler('pre') as (props: StrictDOMProps & DOMStyleProps) => never,
   s: requireCompiler('s') as (props: StrictDOMProps & DOMStyleProps) => never,
   section: requireCompiler('section') as (props: StrictDOMProps & DOMStyleProps) => never,
-  select: requireCompiler('select') as (props: StrictDOMSelectProps & DOMStyleProps) => never,
+  select: requireCompiler('select') as (
+    props: StrictDOMSelectProps & DOMStyleProps
+  ) => never,
   span: requireCompiler('span') as (props: StrictDOMProps & DOMStyleProps) => never,
   strong: requireCompiler('strong') as (props: StrictDOMProps & DOMStyleProps) => never,
   sub: requireCompiler('sub') as (props: StrictDOMProps & DOMStyleProps) => never,
   sup: requireCompiler('sup') as (props: StrictDOMProps & DOMStyleProps) => never,
-  textarea: requireCompiler('textarea') as (props: StrictDOMTextAreaProps & DOMStyleProps) => never,
+  textarea: requireCompiler('textarea') as (
+    props: StrictDOMTextAreaProps & DOMStyleProps
+  ) => never,
   u: requireCompiler('u') as (props: StrictDOMProps & DOMStyleProps) => never,
   ul: requireCompiler('ul') as (props: StrictDOMProps & DOMStyleProps) => never,
 }

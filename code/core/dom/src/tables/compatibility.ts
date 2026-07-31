@@ -118,7 +118,8 @@ export const COMPATIBILITY: readonly CompatibilityRow[] = [
     subject: 'onSelectionChange',
     keys: ['onSelectionChange'],
     rsd: 'allowlisted and typed on input and textarea, then warned about as unsupported',
-    tamagui: 'not part of the contract; the selection cache behind the ref polyfill stays internal',
+    tamagui:
+      'not part of the contract; the selection cache behind the ref polyfill stays internal',
     reason:
       'it is not a React DOM prop, so it does nothing on web and warns on native: no platform supports it',
   },
@@ -258,7 +259,8 @@ export const COMPATIBILITY: readonly CompatibilityRow[] = [
       'native.pre.fontFamily',
     ],
     rsd: 'writes monospace, "monospace" on web to cancel the browser size quirk, and picks Menlo on ios',
-    tamagui: 'writes monospace on both platforms and cancels the size quirk with fontSize: 1em instead',
+    tamagui:
+      'writes monospace on both platforms and cancels the size quirk with fontSize: 1em instead',
     reason:
       'the duplicated family name only exists to defeat the size quirk, which 1em does directly; the font family itself belongs to the theme, not to the tag',
   },

@@ -424,7 +424,15 @@ export interface StrictDOMAnchorProps extends StrictDOMPropsBase {
    */
   href?: string
   /** native honours it for image requests only */
-  referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
+  referrerPolicy?:
+    | 'no-referrer'
+    | 'no-referrer-when-downgrade'
+    | 'origin'
+    | 'origin-when-cross-origin'
+    | 'same-origin'
+    | 'strict-origin'
+    | 'strict-origin-when-cross-origin'
+    | 'unsafe-url'
   /** @platform web */
   rel?: string
   /** @platform web */
@@ -461,7 +469,15 @@ export interface StrictDOMImageProps extends StrictDOMPropsBase {
   /** @platform web */
   loading?: 'eager' | 'lazy'
   /** native honours it for image requests only */
-  referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
+  referrerPolicy?:
+    | 'no-referrer'
+    | 'no-referrer-when-downgrade'
+    | 'origin'
+    | 'origin-when-cross-origin'
+    | 'same-origin'
+    | 'strict-origin'
+    | 'strict-origin-when-cross-origin'
+    | 'unsafe-url'
   src?: string
   srcSet?: string
   width?: number

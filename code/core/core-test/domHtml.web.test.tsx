@@ -105,7 +105,12 @@ describe('element defaults from the tag table', () => {
 describe('element-specific props', () => {
   test('reach the dom element they belong to', () => {
     const { container } = show(
-      <html.a data-testid="link" href="https://tamagui.dev" target="_blank" rel="noreferrer">
+      <html.a
+        data-testid="link"
+        href="https://tamagui.dev"
+        target="_blank"
+        rel="noreferrer"
+      >
         go
       </html.a>
     )
@@ -152,7 +157,17 @@ describe('the namespace', () => {
   test('exposes every tag in the contract', () => {
     // 49 semantic elements, the same set react strict dom exposes
     expect(Object.keys(html)).toHaveLength(49)
-    for (const tag of ['div', 'span', 'a', 'img', 'input', 'textarea', 'select', 'br', 'hr']) {
+    for (const tag of [
+      'div',
+      'span',
+      'a',
+      'img',
+      'input',
+      'textarea',
+      'select',
+      'br',
+      'hr',
+    ]) {
       expect(typeof html[tag], tag).toBe('object')
     }
   })

@@ -106,7 +106,9 @@ describe('a text with a click handler', () => {
 describe('an image', () => {
   test('reports the decoded size on load', () => {
     const onLoad = vi.fn()
-    DOMImage({ onLoad }).props.onLoad({ nativeEvent: { source: { width: 3, height: 5 } } })
+    DOMImage({ onLoad }).props.onLoad({
+      nativeEvent: { source: { width: 3, height: 5 } },
+    })
     expect(onLoad).toHaveBeenCalledWith({
       target: { naturalWidth: 3, naturalHeight: 5 },
       type: 'load',

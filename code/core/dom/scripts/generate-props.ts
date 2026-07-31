@@ -12,6 +12,8 @@
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
+import { format } from './format'
+
 import {
   ARIA_ROLES,
   ATTRIBUTES,
@@ -86,10 +88,19 @@ const attributeMembers = (names: string[], tag: TagName) =>
 
 const eventMembers = (names: string[]) =>
   names.map((name) =>
-    member(name, `(event: ${EVENTS[name].payload}) => void`, EVENTS[name], EVENTS[name].note)
+    member(
+      name,
+      `(event: ${EVENTS[name].payload}) => void`,
+      EVENTS[name],
+      EVENTS[name].note
+    )
   )
 
 export function generateProps(): string {
+  return format(propsSource(), 'props.ts')
+}
+
+function propsSource(): string {
   // the base carries everything every tag accepts, so each element interface is
   // one `extends` away from the whole shared surface
   const shared = Object.keys(ATTRIBUTES).filter(
@@ -112,7 +123,9 @@ export function generateProps(): string {
 
   const scopedFor = (tag: TagName) => ({
     attributes: Object.keys(ATTRIBUTES)
-      .filter((name) => scoped(ATTRIBUTES[name].tags) && ATTRIBUTES[name].tags.includes(tag))
+      .filter(
+        (name) => scoped(ATTRIBUTES[name].tags) && ATTRIBUTES[name].tags.includes(tag)
+      )
       .sort(),
     events: Object.keys(EVENTS)
       .filter((name) => scoped(EVENTS[name].tags) && EVENTS[name].tags.includes(tag))
@@ -135,13 +148,19 @@ export function generateProps(): string {
     if (group !== 'common' && children.length > 1) {
       throw new Error(`the ${group} prop group spans ${children.length} content models`)
     }
-    if (group === 'common' && JSON.stringify(children.sort()) !== '["ReactNode","never"]') {
+    if (
+      group === 'common' &&
+      JSON.stringify(children.sort()) !== '["ReactNode","never"]'
+    ) {
       throw new Error(`the common prop group no longer spans exactly ReactNode and never`)
     }
 
     const body = (childrenSource: string) =>
-      [...attributeMembers(attributes, tags[0]), ...eventMembers(events), `  children?: ${childrenSource}`]
-        .join('\n')
+      [
+        ...attributeMembers(attributes, tags[0]),
+        ...eventMembers(events),
+        `  children?: ${childrenSource}`,
+      ].join('\n')
 
     if (group === 'common') {
       const voidTags = tags.filter((tag) => childrenType(tag) === 'never')
@@ -164,9 +183,7 @@ export function generateProps(): string {
 
   const byTag = TAG_NAMES.map((tag) => `  ${tag}: ${interfaceFor(tag)}`).join('\n')
 
-  const payloads = [
-    ...new Set(Object.values(EVENTS).map((row) => row.payload)),
-  ]
+  const payloads = [...new Set(Object.values(EVENTS).map((row) => row.payload))]
     .filter((payload) => payload !== 'unknown')
     .sort()
 

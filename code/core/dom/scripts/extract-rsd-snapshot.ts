@@ -28,10 +28,7 @@ const backings: Record<string, string> = {
 
 // tags, their native backing, their ref element and their props type
 const nativeHtml = read('packages/react-strict-dom/src/native/html.js')
-const tags: Record<
-  string,
-  { backing: string; element: string; props: string }
-> = {}
+const tags: Record<string, { backing: string; element: string; props: string }> = {}
 const tagRe =
   /export const (\w+): component\(\s*ref\?: React\.RefSetter<(\w+)>,\s*\.\.\.(\w+)\s*\) = (createStrict\w*)\(/g
 for (const match of nativeHtml.matchAll(tagRe)) {
@@ -106,7 +103,9 @@ for (const line of docs.split('\n')) {
 
 // the string unions the prop types reference by name
 const propsSource = read('packages/react-strict-dom/src/types/StrictReactDOMProps.js')
-const inputSource = read('packages/react-strict-dom/src/types/StrictReactDOMInputProps.js')
+const inputSource = read(
+  'packages/react-strict-dom/src/types/StrictReactDOMInputProps.js'
+)
 const union = (source: string, declaration: string) => {
   const start = source.indexOf(declaration)
   if (start === -1) throw new Error(`no ${declaration}`)
@@ -124,7 +123,10 @@ const unions = {
  * them. `create()` takes a plain object literal in both files, so evaluating it
  * is both simpler and more faithful than parsing each rule.
  */
-const evalCreate = (source: string, call: string): Record<string, Record<string, unknown>> => {
+const evalCreate = (
+  source: string,
+  call: string
+): Record<string, Record<string, unknown>> => {
   const open = source.indexOf('(', source.indexOf(call))
   let depth = 0
   let end = open
@@ -148,7 +150,10 @@ const headingRefs = styleRefs(
 )
 const nativeStyles: Record<string, Record<string, unknown>> = {}
 for (const tag of Object.keys(tags)) {
-  const start = nativeHtml.indexOf(`createStrict`, nativeHtml.indexOf(`export const ${tag}:`))
+  const start = nativeHtml.indexOf(
+    `createStrict`,
+    nativeHtml.indexOf(`export const ${tag}:`)
+  )
   const args = nativeHtml.slice(start, nativeHtml.indexOf(';', start))
   const refs = args.includes('headingProps') ? headingRefs : styleRefs(args)
   nativeStyles[tag] = flatten(nativeRules, refs)
@@ -171,7 +176,10 @@ for (const tag of Object.keys(tags)) {
 }
 
 const version = JSON.parse(readFileSync(join(pkg, 'package.json'), 'utf8')).version
-const commit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim()
+const commit = execFileSync('git', ['rev-parse', 'HEAD'], {
+  cwd: root,
+  encoding: 'utf8',
+}).trim()
 const date = execFileSync('git', ['log', '-1', '--format=%cs'], {
   cwd: root,
   encoding: 'utf8',

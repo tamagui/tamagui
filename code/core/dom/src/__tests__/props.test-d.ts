@@ -28,10 +28,25 @@ import type {
 declare const accept: <T>(props: T) => void
 
 // element-specific props reach the element that owns them
-accept<StrictDOMAnchorProps>({ href: 'https://tamagui.dev', target: '_blank', rel: 'noreferrer' })
+accept<StrictDOMAnchorProps>({
+  href: 'https://tamagui.dev',
+  target: '_blank',
+  rel: 'noreferrer',
+})
 accept<StrictDOMButtonProps>({ type: 'submit', disabled: true })
-accept<StrictDOMImageProps>({ src: 'a.png', alt: 'a', width: 10, height: 10, loading: 'lazy' })
-accept<StrictDOMInputProps>({ type: 'password', value: 'x', placeholder: 'p', maxLength: 3 })
+accept<StrictDOMImageProps>({
+  src: 'a.png',
+  alt: 'a',
+  width: 10,
+  height: 10,
+  loading: 'lazy',
+})
+accept<StrictDOMInputProps>({
+  type: 'password',
+  value: 'x',
+  placeholder: 'p',
+  maxLength: 3,
+})
 accept<StrictDOMLabelProps>({ for: 'field' })
 accept<StrictDOMListItemProps>({ value: 3 })
 accept<StrictDOMOptionProps>({ value: 'a', label: 'A' })

@@ -58,7 +58,12 @@ const a = createComponent<
   ...textStaticConfig,
   Component: tag('a'),
   componentName: 'a',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+  },
 })
 
 const article = createComponent<
@@ -94,7 +99,13 @@ const b = createComponent<
   ...textStaticConfig,
   Component: tag('b'),
   componentName: 'b',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none', fontWeight: 'bold' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+    fontWeight: 'bold',
+  },
 })
 
 const bdi = createComponent<
@@ -106,7 +117,12 @@ const bdi = createComponent<
   ...textStaticConfig,
   Component: tag('bdi'),
   componentName: 'bdi',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+  },
 })
 
 const bdo = createComponent<
@@ -118,7 +134,12 @@ const bdo = createComponent<
   ...textStaticConfig,
   Component: tag('bdo'),
   componentName: 'bdo',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+  },
 })
 
 const blockquote = createComponent<
@@ -142,7 +163,12 @@ const br = createComponent<
   ...textStaticConfig,
   Component: tag('br'),
   componentName: 'br',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+  },
 })
 
 const button = createComponent<
@@ -154,7 +180,13 @@ const button = createComponent<
   ...viewStaticConfig,
   Component: tag('button'),
   componentName: 'button',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0, borderStyle: 'solid', borderWidth: 1 },
+  defaultProps: {
+    ...viewStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    borderStyle: 'solid',
+    borderWidth: 1,
+  },
 })
 
 const code = createComponent<
@@ -166,7 +198,14 @@ const code = createComponent<
   ...textStaticConfig,
   Component: tag('code'),
   componentName: 'code',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none', fontFamily: 'monospace', fontSize: '1em' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+    fontFamily: 'monospace',
+    fontSize: '1em',
+  },
 })
 
 const del = createComponent<
@@ -178,7 +217,12 @@ const del = createComponent<
   ...textStaticConfig,
   Component: tag('del'),
   componentName: 'del',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'line-through' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'line-through',
+  },
 })
 
 const div = createComponent<
@@ -202,7 +246,13 @@ const em = createComponent<
   ...textStaticConfig,
   Component: tag('em'),
   componentName: 'em',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none', fontStyle: 'italic' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+    fontStyle: 'italic',
+  },
 })
 
 const fieldset = createComponent<
@@ -250,7 +300,13 @@ const h1 = createComponent<
   ...textStaticConfig,
   Component: tag('h1'),
   componentName: 'h1',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, fontSize: '1.5rem', fontWeight: 'bold' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+  },
 })
 
 const h2 = createComponent<
@@ -262,7 +318,13 @@ const h2 = createComponent<
   ...textStaticConfig,
   Component: tag('h2'),
   componentName: 'h2',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, fontSize: '1.5rem', fontWeight: 'bold' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+  },
 })
 
 const h3 = createComponent<
@@ -274,7 +336,13 @@ const h3 = createComponent<
   ...textStaticConfig,
   Component: tag('h3'),
   componentName: 'h3',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, fontSize: '1.5rem', fontWeight: 'bold' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+  },
 })
 
 const h4 = createComponent<
@@ -286,7 +354,13 @@ const h4 = createComponent<
   ...textStaticConfig,
   Component: tag('h4'),
   componentName: 'h4',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, fontSize: '1.5rem', fontWeight: 'bold' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+  },
 })
 
 const h5 = createComponent<
@@ -298,7 +372,13 @@ const h5 = createComponent<
   ...textStaticConfig,
   Component: tag('h5'),
   componentName: 'h5',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, fontSize: '1.5rem', fontWeight: 'bold' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+  },
 })
 
 const h6 = createComponent<
@@ -310,7 +390,13 @@ const h6 = createComponent<
   ...textStaticConfig,
   Component: tag('h6'),
   componentName: 'h6',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, fontSize: '1.5rem', fontWeight: 'bold' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+  },
 })
 
 const header = createComponent<
@@ -334,7 +420,16 @@ const hr = createComponent<
   ...viewStaticConfig,
   Component: tag('hr'),
   componentName: 'hr',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0, backgroundColor: 'black', height: 1, borderStyle: 'none', borderWidth: 0, boxSizing: 'border-box' },
+  defaultProps: {
+    ...viewStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    backgroundColor: 'black',
+    height: 1,
+    borderStyle: 'none',
+    borderWidth: 0,
+    boxSizing: 'border-box',
+  },
 })
 
 const i = createComponent<
@@ -346,7 +441,13 @@ const i = createComponent<
   ...textStaticConfig,
   Component: tag('i'),
   componentName: 'i',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none', fontStyle: 'italic' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+    fontStyle: 'italic',
+  },
 })
 
 const img = createComponent<
@@ -358,7 +459,15 @@ const img = createComponent<
   ...viewStaticConfig,
   Component: tag('img'),
   componentName: 'img',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none', objectFit: 'fill', height: 'auto', maxWidth: '100%' },
+  defaultProps: {
+    ...viewStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+    objectFit: 'fill',
+    height: 'auto',
+    maxWidth: '100%',
+  },
 })
 
 const input = createComponent<
@@ -371,7 +480,13 @@ const input = createComponent<
   Component: tag('input'),
   componentName: 'input',
   isInput: true,
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, borderStyle: 'solid', borderWidth: 1 },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    borderStyle: 'solid',
+    borderWidth: 1,
+  },
 })
 
 const ins = createComponent<
@@ -383,7 +498,12 @@ const ins = createComponent<
   ...textStaticConfig,
   Component: tag('ins'),
   componentName: 'ins',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'underline' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'underline',
+  },
 })
 
 const kbd = createComponent<
@@ -395,7 +515,14 @@ const kbd = createComponent<
   ...textStaticConfig,
   Component: tag('kbd'),
   componentName: 'kbd',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none', fontFamily: 'monospace', fontSize: '1em' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+    fontFamily: 'monospace',
+    fontSize: '1em',
+  },
 })
 
 const label = createComponent<
@@ -407,7 +534,12 @@ const label = createComponent<
   ...textStaticConfig,
   Component: tag('label'),
   componentName: 'label',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+  },
 })
 
 const li = createComponent<
@@ -443,7 +575,14 @@ const mark = createComponent<
   ...textStaticConfig,
   Component: tag('mark'),
   componentName: 'mark',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none', backgroundColor: 'yellow', color: 'black' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+    backgroundColor: 'yellow',
+    color: 'black',
+  },
 })
 
 const nav = createComponent<
@@ -515,7 +654,14 @@ const pre = createComponent<
   ...textStaticConfig,
   Component: tag('pre'),
   componentName: 'pre',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, fontFamily: 'monospace', fontSize: '1em', overflow: 'auto' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    fontFamily: 'monospace',
+    fontSize: '1em',
+    overflow: 'auto',
+  },
 })
 
 const s = createComponent<
@@ -527,7 +673,12 @@ const s = createComponent<
   ...textStaticConfig,
   Component: tag('s'),
   componentName: 's',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'line-through' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'line-through',
+  },
 })
 
 const section = createComponent<
@@ -551,7 +702,12 @@ const select = createComponent<
   ...viewStaticConfig,
   Component: tag('select'),
   componentName: 'select',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0, borderStyle: 'solid' },
+  defaultProps: {
+    ...viewStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    borderStyle: 'solid',
+  },
 })
 
 const span = createComponent<
@@ -563,7 +719,12 @@ const span = createComponent<
   ...textStaticConfig,
   Component: tag('span'),
   componentName: 'span',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+  },
 })
 
 const strong = createComponent<
@@ -575,7 +736,13 @@ const strong = createComponent<
   ...textStaticConfig,
   Component: tag('strong'),
   componentName: 'strong',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none', fontWeight: 'bold' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+    fontWeight: 'bold',
+  },
 })
 
 const sub = createComponent<
@@ -587,7 +754,12 @@ const sub = createComponent<
   ...textStaticConfig,
   Component: tag('sub'),
   componentName: 'sub',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+  },
 })
 
 const sup = createComponent<
@@ -599,7 +771,12 @@ const sup = createComponent<
   ...textStaticConfig,
   Component: tag('sup'),
   componentName: 'sup',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'none' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'none',
+  },
 })
 
 const textarea = createComponent<
@@ -612,7 +789,13 @@ const textarea = createComponent<
   Component: tag('textarea'),
   componentName: 'textarea',
   isInput: true,
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, borderStyle: 'solid', borderWidth: 1 },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    borderStyle: 'solid',
+    borderWidth: 1,
+  },
 })
 
 const u = createComponent<
@@ -624,7 +807,12 @@ const u = createComponent<
   ...textStaticConfig,
   Component: tag('u'),
   componentName: 'u',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0, textDecorationLine: 'underline' },
+  defaultProps: {
+    ...textStaticConfig.defaultProps,
+    margin: 0,
+    padding: 0,
+    textDecorationLine: 'underline',
+  },
 })
 
 const ul = createComponent<

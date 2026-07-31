@@ -39,9 +39,15 @@ const RSD_PROPS_TYPE: Readonly<Record<string, string>> = {
   textarea: 'StrictReactDOMTextAreaProps',
 }
 
-const rsdTags = snapshot.tags as Record<string, { backing: string; element: string; props: string }>
+const rsdTags = snapshot.tags as Record<
+  string,
+  { backing: string; element: string; props: string }
+>
 const rsdPropTypes = snapshot.propTypes as Record<string, string[]>
-const rsdStyles = snapshot.styles as Record<string, Record<string, Record<string, unknown>>>
+const rsdStyles = snapshot.styles as Record<
+  string,
+  Record<string, Record<string, unknown>>
+>
 
 const accepts = (tags: PropTags, tag: TagName) => tags === '*' || tags.includes(tag)
 
@@ -53,10 +59,7 @@ const propsFor = (tag: TagName) => [
 const symmetricDifference = (ours: Iterable<string>, theirs: Iterable<string>) => {
   const a = new Set(ours)
   const b = new Set(theirs)
-  return [
-    ...[...a].filter((key) => !b.has(key)),
-    ...[...b].filter((key) => !a.has(key)),
-  ]
+  return [...[...a].filter((key) => !b.has(key)), ...[...b].filter((key) => !a.has(key))]
 }
 
 const declaredKeys = (...areas: string[]) =>
@@ -146,14 +149,20 @@ describe('props and events', () => {
   })
 
   test('are scoped to tags that exist', () => {
-    for (const [name, row] of [...Object.entries(ATTRIBUTES), ...Object.entries(EVENTS)]) {
+    for (const [name, row] of [
+      ...Object.entries(ATTRIBUTES),
+      ...Object.entries(EVENTS),
+    ]) {
       if (row.tags === '*') continue
       for (const tag of row.tags) expect(TAG_NAMES, name).toContain(tag)
     }
   })
 
   test('name a native prop exactly when one carries the value', () => {
-    for (const [name, row] of [...Object.entries(ATTRIBUTES), ...Object.entries(EVENTS)]) {
+    for (const [name, row] of [
+      ...Object.entries(ATTRIBUTES),
+      ...Object.entries(EVENTS),
+    ]) {
       // a polyfill may spread across several native props, so it names none
       if (row.native === 'none') expect(row.nativeProp, name).toBe(null)
       if (row.native === 'host') expect(row.nativeProp, name).not.toBe(null)
@@ -167,7 +176,9 @@ describe('value unions', () => {
   })
 
   test('accept the same autofill hints', () => {
-    expect([...AUTO_COMPLETE_VALUES].sort()).toEqual([...snapshot.unions.AutoComplete].sort())
+    expect([...AUTO_COMPLETE_VALUES].sort()).toEqual(
+      [...snapshot.unions.AutoComplete].sort()
+    )
   })
 
   test('render only input types html defines', () => {
@@ -197,7 +208,8 @@ describe('element default styles', () => {
       return symmetricDifference(Object.keys(mine), Object.keys(theirs))
         .concat(
           Object.keys(mine).filter(
-            (key) => key in theirs && JSON.stringify(mine[key]) !== JSON.stringify(theirs[key])
+            (key) =>
+              key in theirs && JSON.stringify(mine[key]) !== JSON.stringify(theirs[key])
           )
         )
         .map((key) => `${platform}.${tag}.${key}`)
