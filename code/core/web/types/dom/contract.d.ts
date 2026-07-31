@@ -3,9 +3,18 @@ import type { ReactNode, Ref } from 'react';
 /**
  * What the compiler emits for a DOM element on native.
  *
- * On native the compiler is required, so almost nothing about a DOM element is
- * a runtime decision. By the time a primitive renders, the compiler has already
- * done all of this:
+ * PRECONDITION, and the reason everything below holds: **on native the Tamagui
+ * compiler is required**, and a build without it is an explicit build failure,
+ * never a runtime fallback. Tag classification, primitive injection and literal
+ * text wrapping are structural rewrites that cannot happen at runtime, and the
+ * primitives are built on the assumption that they already happened. If the
+ * compiler is ever made optional on native, none of this design survives: the
+ * primitives would have to resolve the tag, emulate `display` from a context
+ * and read a text-ancestor context per element, which is exactly the
+ * per-element cost this contract exists to avoid. Do not weaken this.
+ *
+ * So almost nothing about a DOM element is a runtime decision. By the time a
+ * primitive renders, the compiler has already done all of this:
  *
  * - chosen the primitive from the tag's native backing;
  * - flattened the tag defaults and the author's styles into one style object,

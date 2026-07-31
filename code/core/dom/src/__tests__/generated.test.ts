@@ -3,6 +3,7 @@ import { join } from 'node:path'
 
 import { describe, expect, test } from 'vitest'
 
+import { generateHtml, generateHtmlNative } from '../../scripts/generate-html'
 import { generateProps } from '../../scripts/generate-props'
 import { ATTRIBUTES } from '../tables/attributes'
 import { TAGS, TAG_NAMES } from '../tables/tags'
@@ -42,5 +43,39 @@ describe('the generated prop interfaces', () => {
   test('reject children on exactly the tags whose content model is void', () => {
     const noChildren = TAG_NAMES.filter((tag) => TAGS[tag].content === 'void')
     expect(noChildren).toEqual(['br', 'hr', 'img', 'input', 'textarea'])
+  })
+})
+
+/**
+ * `html` is generated into `@tamagui/web` for the same reason `props.ts` is
+ * generated here: reading the tag tables at runtime would put `@tamagui/dom` in
+ * the web runtime graph of every app that imports `html`.
+ */
+describe('the generated html namespace', () => {
+  const read = (name: string) =>
+    readFileSync(
+      join(import.meta.dirname, '..', '..', '..', 'web', 'src', 'dom', name),
+      'utf8'
+    )
+
+  test('is what the tables produce right now, on both platforms', () => {
+    expect(generateHtml()).toBe(read('html.tsx'))
+    expect(generateHtmlNative()).toBe(read('html.native.tsx'))
+  })
+
+  test('covers every tag on both platforms', () => {
+    for (const source of [read('html.tsx'), read('html.native.tsx')]) {
+      const exported = source.slice(source.indexOf('export const html = {'))
+      for (const tag of TAG_NAMES) expect(exported, tag).toContain(`\n  ${tag}`)
+    }
+  })
+
+  test('reads the tables only at build time, never at runtime', () => {
+    // a value import of @tamagui/dom here is the thing this file exists to
+    // avoid; type imports are erased and are fine
+    for (const name of ['html.tsx', 'html.native.tsx']) {
+      const imports = read(name).match(/^import .*from '@tamagui\/dom'/gm) ?? []
+      for (const line of imports) expect(line, name).toContain('import type')
+    }
   })
 })

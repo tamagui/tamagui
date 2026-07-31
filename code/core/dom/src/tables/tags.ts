@@ -20,7 +20,7 @@ import type { DefaultStyle, TagName, TagRow } from './types'
  */
 export const DISPLAY_WEB_RESET: Readonly<Record<TagRow['display'], DefaultStyle>> = {
   block: { margin: 0, padding: 0 },
-  inline: { margin: 0, padding: 0, textDecorationLine: 'none', wordWrap: 'break-word' },
+  inline: { margin: 0, padding: 0, textDecorationLine: 'none' },
   'inline-block': { margin: 0, padding: 0, borderStyle: 'solid' },
 }
 
@@ -539,16 +539,19 @@ export const TAGS: Readonly<Record<TagName, TagRow>> = {
  * cross-platform spelling. `fontSize: 1em` cancels the browser's smaller
  * default size for monospace text, which is the whole reason the browser
  * renders `code`, `kbd` and `pre` at a different size from their surroundings.
+ *
+ * Everything here has to be a style property Tamagui actually resolves. A key
+ * Tamagui does not know is not a silent no-op — it falls through to the element
+ * as an attribute, which is a react warning and no styling. `list-style`,
+ * `resize` and `overflow-wrap` are all in that category today, which is why
+ * they are absent and recorded in `compatibility.ts` instead.
  */
 export const TAG_WEB_DEFAULTS: Readonly<Partial<Record<TagName, DefaultStyle>>> = {
   code: { fontSize: '1em' },
   hr: { borderStyle: 'none', borderWidth: 0, boxSizing: 'border-box' },
   img: { height: 'auto', maxWidth: '100%' },
   kbd: { fontSize: '1em' },
-  ol: { listStyle: 'none' },
   pre: { fontSize: '1em', overflow: 'auto' },
-  textarea: { resize: 'vertical' },
-  ul: { listStyle: 'none' },
 }
 
 export const TAG_NAMES: readonly TagName[] = Object.keys(TAGS) as TagName[]
