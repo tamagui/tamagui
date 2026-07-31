@@ -37,7 +37,6 @@ import { lastInserted } from '~/features/studio/theme/updatePreviewTheme'
 import { weakKey } from '~/helpers/weakKey'
 import { type ThemePageProps, themePageStore, ThemePageStore } from './themePageStore'
 import { router, useRouter } from 'one'
-import { useBannerHeight } from '~/components/PromoBanner'
 
 // TO avoid changing the entire React tree we can do this, better perf
 
@@ -128,7 +127,6 @@ const ThemeBuilderModal = memo(() => {
   const ref = useRef<TamaguiElement>(null)
   const [hide, setHide] = useState(false)
   const { gtLg } = useMedia()
-  const bannerHeight = useBannerHeight()
 
   useEffect(() => {
     if (gtLg) {
@@ -139,7 +137,7 @@ const ThemeBuilderModal = memo(() => {
   return (
     <YStack
       position="fixed"
-      t={70 + bannerHeight}
+      t={70}
       r={0}
       b={0}
       width={530}
