@@ -1169,3 +1169,16 @@ authored — a name without containment matches no size queries. The boolean
 wired. This clears the codemod's `container-name-not-wired` pending: the
 `@…/name` queries the migration emits now have a real container to match.
 Remaining apply gate: same-key styled/call-site clause merging (Lane E item 6).
+
+### Same-key styled/call-site clause merging (Lane E, codemod apply gate 2 — the last one)
+
+`styled(View, { bg: 'gray hover:blue' })` overridden by a call-site
+`bg="red"` now keeps the styled hover: clause-bearing string defaults are
+computed once per static config (WeakMap, null for the common no-clause case,
+one map hit per render), and when a call-site value displaced one at the
+`mergeComponentProps` level, the styled value re-enters the forward pass at
+the styled-base position where the ordinary decision-21 program merge
+restates only the base. Pinned web (rule content) and native (state
+evaluation) in the flatValuePrograms tests. With `containerName` landed
+earlier, ALL THREE runtime gates on the codemod apply mode are now closed —
+flipping apply on is purely the user's call.

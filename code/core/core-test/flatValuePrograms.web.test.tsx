@@ -348,3 +348,19 @@ test('theme clause lowers to the is-or-within selector', () => {
   const rules = rulesFor(result, className)
   expect(rules[1]).toContain(':where(.t_dark, .t_dark *)')
 })
+
+test('a styled clause default survives a call-site override (decision 21)', () => {
+  const Frame = styled(View, {
+    backgroundColor: 'gray hover:blue',
+  })
+  const result = simplifiedGetSplitStyles(
+    Frame,
+    { backgroundColor: 'red' },
+    { mergeDefaultProps: true }
+  )
+  const className = result.classNames.backgroundColor
+  const rules = result.rulesToInsert[className]?.[4] ?? []
+  // the call-site value restates the base; the styled hover clause survives
+  expect(rules[0]).toBe(`.${className}{background-color:red}`)
+  expect(rules[1]).toContain(':where(:hover){background-color:blue}')
+})

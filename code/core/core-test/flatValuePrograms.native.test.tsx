@@ -313,3 +313,22 @@ test('logical border shorthands are diagnosed and dropped on native', () => {
   expect(result?.style?.borderBlockStartWidth).toBeUndefined()
   expect(result?.style?.borderTopWidth).toBeUndefined()
 })
+
+test('a styled clause default survives a call-site override on native', () => {
+  const Frame = styled(View, {
+    backgroundColor: 'gray hover:blue',
+  })
+  const rest = simplifiedGetSplitStyles(
+    Frame,
+    { backgroundColor: 'red' },
+    { mergeDefaultProps: true }
+  )
+  expect(rest.style?.backgroundColor).toBe('red')
+
+  const hovered = simplifiedGetSplitStyles(
+    Frame,
+    { backgroundColor: 'red' },
+    { componentState: { hover: true }, mergeDefaultProps: true }
+  )
+  expect(hovered.style?.backgroundColor).toBe('blue')
+})
