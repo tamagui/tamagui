@@ -152,6 +152,30 @@ Examples:
 </Theme>
 ```
 
+### Image source compatibility
+
+Image prefers web-standard `src` for URLs and native `require()` results.
+React Native's `source` remains supported during migration, but is deprecated:
+
+```tsx
+// before
+<Image
+  source={{ uri: 'https://example.com/photo.jpg', width: 200, height: 200 }}
+  resizeMode="cover"
+/>
+
+// after
+<Image
+  src="https://example.com/photo.jpg"
+  width={200}
+  height={200}
+  objectFit="cover"
+/>
+```
+
+The `width` and `height` props control layout. Percentage dimensions also work
+when the parent has defined dimensions.
+
 ## 4. Remove true token references
 
 The default v3 configs no longer export `$true` token keys. Where you passed

@@ -61,13 +61,16 @@ const defaultTransformSource = (props: {
   width?: any
   height?: any
 }) => {
-  const { src, source, width, height } = props
-  if (source) return source
-  if (src && typeof src !== 'string') return src
+  const { src, source } = props
+  if (typeof src === 'string') {
+    return {
+      uri: src,
+    }
+  }
+  if (source !== undefined && source !== null) return source
+  if (src !== undefined && src !== null) return src
   return {
     uri: src,
-    width,
-    height,
   }
 }
 
@@ -143,6 +146,7 @@ export function createImage<C extends ComponentType<any>>(
       const props = incomingProps as any
       const {
         src,
+        source,
         width,
         height,
         borderRadius,
@@ -172,6 +176,7 @@ export function createImage<C extends ComponentType<any>>(
 
       const finalSource = transformSource({
         src,
+        source,
         width: resolvedWidth,
         height: resolvedHeight,
       })
@@ -238,8 +243,7 @@ export function createImage<C extends ComponentType<any>>(
         }
       }
 
-      // Render the underlying Component directly to ensure all props pass through
-      return <Component ref={ref} {...finalProps} />
+      return <StyledImage ref={ref} {...finalProps} />
     }
   ) as unknown as ImageType & React.FC<CombinedProps>
 
