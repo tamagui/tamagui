@@ -630,6 +630,22 @@ lets you target exactly what you mean.
 V5 includes Tailwind-aligned shorthands. With `onlyAllowShorthands: true` (the
 default), only the short forms are available in types.
 
+To restore longhand props while extending `defaultConfig`, override
+`onlyAllowShorthands`:
+
+```tsx
+const config = createTamagui({
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    onlyAllowShorthands: false,
+  },
+})
+```
+
+`onlyShorthandStyleProps` is a separate, narrower setting for border, outline, and
+shadow style props. Setting it to `false` does not override `onlyAllowShorthands`.
+
 ### Text
 
 <PropsTable data={[{ name: 'text', description: 'textAlign' }]} />
