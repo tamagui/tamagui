@@ -1322,6 +1322,30 @@ interface ExtraStyleProps {
      */
     border?: BorderValue;
     /**
+     * CSS logical border shorthand string, like `border` for the block axis.
+     * Splits to the CSS logical longhands on web; native has no logical border
+     * properties, so it is diagnosed and dropped there rather than approximated.
+     */
+    borderBlock?: BorderValue;
+    /**
+     * CSS logical border shorthand string, like `border` for the inline axis.
+     * Splits to the CSS logical longhands on web; native has no logical border
+     * properties, so it is diagnosed and dropped there rather than approximated.
+     */
+    borderInline?: BorderValue;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    overflowWrap?: Properties['overflowWrap'];
+    /**
+     * Web-only legacy alias of overflowWrap. Will be omitted on native.
+     */
+    wordWrap?: Properties['wordWrap'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    resize?: Properties['resize'];
+    /**
      * Web-only style property. Will be omitted on native.
      */
     overflowX?: Properties['overflowX'];
@@ -1632,6 +1656,16 @@ export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBase
      * On native, only a single shadow is supported.
      */
     textShadow?: string;
+    /**
+     * CSS text-decoration shorthand string ("underline dotted red").
+     * Splits to line/style/color; on native the three RN longhand props.
+     */
+    textDecoration?: string;
+    /**
+     * CSS font shorthand string ("italic bold 16px/1.5 Inter").
+     * Splits by the CSS micro-syntax; ambiguous forms stay unparsed.
+     */
+    font?: string;
 }
 type LooseCombinedObjects<A extends object, B extends object> = A | B | (A & B);
 export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
@@ -1734,6 +1768,8 @@ export type GetStyleState = {
     tokenProvenance?: Record<string, string>;
     pseudoTransitions?: PseudoTransitions | null;
     animationDriver?: AnimationDriver | null;
+    transitionContributions?: import('@tamagui/style-grammar').TransitionContribution[];
+    sawTransitionPreset?: string;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any, originalVal?: any) => void) => void;

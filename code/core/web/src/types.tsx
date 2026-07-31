@@ -2413,6 +2413,30 @@ interface ExtraStyleProps {
    */
   border?: BorderValue
   /**
+   * CSS logical border shorthand string, like `border` for the block axis.
+   * Splits to the CSS logical longhands on web; native has no logical border
+   * properties, so it is diagnosed and dropped there rather than approximated.
+   */
+  borderBlock?: BorderValue
+  /**
+   * CSS logical border shorthand string, like `border` for the inline axis.
+   * Splits to the CSS logical longhands on web; native has no logical border
+   * properties, so it is diagnosed and dropped there rather than approximated.
+   */
+  borderInline?: BorderValue
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  overflowWrap?: Properties['overflowWrap']
+  /**
+   * Web-only legacy alias of overflowWrap. Will be omitted on native.
+   */
+  wordWrap?: Properties['wordWrap']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  resize?: Properties['resize']
+  /**
    * Web-only style property. Will be omitted on native.
    */
   overflowX?: Properties['overflowX']
@@ -2754,6 +2778,16 @@ export interface TextStylePropsBase
    * On native, only a single shadow is supported.
    */
   textShadow?: string
+  /**
+   * CSS text-decoration shorthand string ("underline dotted red").
+   * Splits to line/style/color; on native the three RN longhand props.
+   */
+  textDecoration?: string
+  /**
+   * CSS font shorthand string ("italic bold 16px/1.5 Inter").
+   * Splits by the CSS micro-syntax; ambiguous forms stay unparsed.
+   */
+  font?: string
 }
 
 //
@@ -3034,6 +3068,12 @@ export type GetStyleState = {
   pseudoTransitions?: PseudoTransitions | null
   // Resolved animation driver (respects animatedBy prop)
   animationDriver?: AnimationDriver | null
+  // the six transition props in authored order, merged once at pass end
+  // (helpers/alignTransitions)
+  transitionContributions?: import('@tamagui/style-grammar').TransitionContribution[]
+  // the driver preset name that short-circuited, so a longhand beside it can
+  // diagnose instead of composing with something drivers cannot consume
+  sawTransitionPreset?: string
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
