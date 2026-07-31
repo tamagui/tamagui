@@ -1,0 +1,12 @@
+/**
+ * `@tamagui/core/dom` and `tamagui/dom` on native.
+ *
+ * Same compile-only surface as web, plus the DOM primitives. Those are not for
+ * user code: the compiler injects imports of them when it lowers a tag, which
+ * is why `NATIVE_PRIMITIVE_MODULE` in `@tamagui/dom` names this entry.
+ */
+export { DOMImage, DOMText, DOMTextInput, DOMView } from './primitives.native';
+export type { CompiledStyle, ConditionalCompiledStyle, DOMStyleProps, StyleDefinition, } from './standalone';
+export { style } from './standalone';
+export { html } from './standaloneHtml';
+//# sourceMappingURL=index.native.d.ts.map

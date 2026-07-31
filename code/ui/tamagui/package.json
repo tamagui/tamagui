@@ -27,6 +27,15 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     },
+    "./dom": {
+      "types": "./types/dom.d.ts",
+      "react-native": "./dist/esm/dom.native.js",
+      "browser": "./dist/esm/dom.mjs",
+      "module": "./dist/esm/dom.mjs",
+      "import": "./dist/esm/dom.mjs",
+      "require": "./dist/cjs/dom.cjs",
+      "default": "./dist/esm/dom.mjs"
+    },
     "./web": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
