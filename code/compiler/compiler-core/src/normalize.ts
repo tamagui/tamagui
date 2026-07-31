@@ -193,6 +193,28 @@ function componentFromNode(
     }
   }
 
+  if (
+    (node.type === 'MemberExpression' || node.type === 'JSXMemberExpression') &&
+    node.computed !== true
+  ) {
+    const objectName = identifierName(childNode(node, 'object'))
+    const memberName = identifierName(childNode(node, 'property'))
+    const binding = objectName ? importBinding(program, objectName) : null
+    if (memberName && binding?.imported === 'html') {
+      const provenance = hostImportProvenance(imports, binding.source, binding.imported)
+      if (provenance) {
+        return {
+          kind: 'binding',
+          name: memberName,
+          span: spanOf(id, node),
+          closingSpan: null,
+          definition: null,
+          provenance,
+        }
+      }
+    }
+  }
+
   const name = identifierName(node)
   if (!name) {
     bailouts.push(
