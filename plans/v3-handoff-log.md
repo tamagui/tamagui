@@ -1571,3 +1571,25 @@ Open items this leaves, neither urgent:
   (held for the animations review) needs property normalization to the CSS
   targets (the `--t-*` axis variables or `transform`) or a diagnostic — added
   to that review's scope rather than patched mid-hold.
+
+### Transition wiring rework after the animations review (Lane E, held tree)
+
+The review's blocker was real and its premise correction accepted: conditional
+transition clauses SHIP at HEAD through the program engine, so the wiring's
+scope fence rested on a false assumption. Rework, in the held (uncommitted)
+tree: clause-bearing `transition` strings keep the shipped program path
+byte-identically (regression-guarded — the review's own HEAD hash
+`_t-1443386560` re-emits); the alignment accumulator owns only clause-free
+contributions and YIELDS with a note when a program owns the property;
+clause-bearing longhands diagnose and drop; the longhand intercept carries
+the same `!noSkip && !isHOC` gate as the shorthand block (the review's
+775/837 asymmetry — one element never gets two transition owners);
+`transitionProperty` spellings normalize (transform family ->
+`effectiveProperty`, camelCase -> kebab) per the reviewer's
+normalize-not-diagnose recommendation.
+
+NAMED FOLLOW-UP (v1 limit, documented in alignTransitions' header): base
+transitions parse through the transition IR while conditional and pseudo-prop
+transitions parse through the value grammar and pseudo extraction — two
+parsing rules for one property. The follow-up is one grammar owning both;
+neither side gets quietly extended to cover the other.
