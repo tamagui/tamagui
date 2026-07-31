@@ -165,7 +165,7 @@ import { View } from '@tamagui/core'
 "
 `;
 
-exports[`conditional styles extract disjoint static siblings 2`] = `":root ._w-10px{width:10px;}"`;
+exports[`conditional styles extract disjoint static siblings 2`] = `"._w-10px{width:10px;}"`;
 
 exports[`double ternary + spread 1`] = `
 "
