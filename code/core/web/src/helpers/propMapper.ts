@@ -133,23 +133,19 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     }
   }
 
-  // on native, parse string backgroundImage/boxShadow/textShadow to RN object format
-  // this handles both token-resolved strings and plain strings without tokens
+  // on native, parse string backgroundImage to RN object format. boxShadow
+  // and textShadow strings flow WHOLE into the program engine (clause-free
+  // strings are base-only programs), and native evaluation parses the
+  // resolved payload to RN format — parsing here would mangle clause text
+  // into the color component (review P0-2)
   if (
     process.env.TAMAGUI_TARGET === 'native' &&
     value != null &&
     typeof value === 'string' &&
-    (key === 'backgroundImage' || key === 'boxShadow' || key === 'textShadow')
+    key === 'backgroundImage'
   ) {
     const parsed = parseNativeStyle(key, value)
     if (parsed) {
-      // textShadow returns [key, value] pairs to expand into separate properties
-      if (key === 'textShadow' && Array.isArray(parsed) && Array.isArray(parsed[0])) {
-        for (const [nkey, nvalue] of parsed) {
-          map(nkey, nvalue, originalValue)
-        }
-        return
-      }
       value = parsed
     }
   }

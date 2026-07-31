@@ -1062,6 +1062,16 @@ plugins use `pt-safe`); the explicit names are the one spelling here.
 
 ## Relationship to Tailwind
 
+Ruled 2026-07-31, the boundary for every candidate-layer decision: **the
+candidate layer may decide WHICH property and WHICH name a class spelling
+means; it may never decide what a name RESOLVES TO or which kind a modifier
+IS.** Spelling (prefixes, arbitrary brackets and their coercion,
+sizing/fraction conveniences, whole utilities, negative spellings,
+ambiguous-prefix refusal) is candidate-owned. Resolution (name lookup order,
+opacity-suffix validation, modifier kind and collision priority) comes from
+the shared style-grammar contracts, and a place where the same input yields a
+different value than the flat path is a defect, never a designed difference.
+
 Property-scoped candidates and Tailwind classes lower into the same ordered IR:
 
 ```tsx

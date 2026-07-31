@@ -32,6 +32,7 @@ import {
 import { mediaKeyMatch } from '../hooks/useMedia'
 import type { AllGroupContexts, GetStyleState, TamaguiComponentState } from '../types'
 import { ensureGrammarContext } from './contributePrograms'
+import { parseNativeStyle } from './parseNativeStyle'
 
 // the noClass/animated-inline web path evaluates here too, so the platform
 // containment must answer `web:` on web, never the native fallback
@@ -372,6 +373,29 @@ export function evaluateAccumulatedPrograms(
         `[tamagui] ${program.sourceProp}: RN has no logical border properties; "${longhand}" is dropped on native`
       )
       continue
+    }
+
+    // shadow programs resolve to CSS strings; RN wants its object format.
+    // parsing happens here, after clause evaluation, so conditional payloads
+    // can never leak into the color component
+    if (longhand === 'boxShadow' || longhand === 'textShadow') {
+      const parsed = parseNativeStyle(longhand, String(value))
+      if (parsed) {
+        styleState.style ||= {}
+        if (
+          longhand === 'textShadow' &&
+          Array.isArray(parsed) &&
+          Array.isArray(parsed[0])
+        ) {
+          // textShadow expands into the RN longhand props
+          for (const [nkey, nvalue] of parsed as [string, unknown][]) {
+            styleState.style[nkey] = nvalue
+          }
+        } else {
+          styleState.style[longhand] = parsed
+        }
+        continue
+      }
     }
 
     styleState.style ||= {}

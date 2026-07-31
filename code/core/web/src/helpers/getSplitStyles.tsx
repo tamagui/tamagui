@@ -1095,13 +1095,6 @@ export const getSplitStyles: StyleSplitter = (
         return
       }
 
-      if (process.env.TAMAGUI_TARGET === 'native') {
-        if (key === 'pointerEvents') {
-          viewProps[key] = val
-          return
-        }
-      }
-
       if (
         (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')

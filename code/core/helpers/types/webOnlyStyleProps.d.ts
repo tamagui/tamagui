@@ -26,7 +26,6 @@ export declare const nonAnimatableWebViewProps: {
     overflowInline: boolean;
     overflowX: boolean;
     overflowY: boolean;
-    pointerEvents: boolean;
     scrollbarWidth: boolean;
     textWrap: boolean;
     touchAction: boolean;
@@ -67,7 +66,6 @@ export declare const webOnlyStylePropsView: {
     overflowInline: boolean;
     overflowX: boolean;
     overflowY: boolean;
-    pointerEvents: boolean;
     scrollbarWidth: boolean;
     textWrap: boolean;
     touchAction: boolean;

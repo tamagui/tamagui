@@ -80,6 +80,10 @@ const nonAnimatableViewProps = {
   mixBlendMode: true,
   outlineStyle: true,
   overflow: true,
+  // a style on both platforms: CSS pointer-events on web, style.pointerEvents
+  // on RN (>= 0.71; repo pins 0.83) — the deprecated View prop spelling is
+  // not used, so flat clause values evaluate through the program engine
+  pointerEvents: true,
   position: true,
   // visibility: native maps "hidden" -> opacity:0 + pointerEvents:none via expandStyle;
   // on web passes through as CSS visibility (visible | hidden | collapse).

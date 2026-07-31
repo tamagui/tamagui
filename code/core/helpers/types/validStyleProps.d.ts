@@ -48,7 +48,6 @@ export declare const nonAnimatableStyleProps: {
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
-    pointerEvents?: boolean | undefined;
     scrollbarWidth?: boolean | undefined;
     textWrap?: boolean | undefined;
     touchAction?: boolean | undefined;
@@ -81,6 +80,7 @@ export declare const nonAnimatableStyleProps: {
     mixBlendMode: boolean;
     outlineStyle: boolean;
     overflow: boolean;
+    pointerEvents: boolean;
     position: boolean;
     visibility: boolean;
     fontFamily: boolean;
@@ -215,7 +215,6 @@ export declare const stylePropsView: {
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
-    pointerEvents?: boolean | undefined;
     scrollbarWidth?: boolean | undefined;
     textWrap?: boolean | undefined;
     touchAction?: boolean | undefined;
@@ -271,6 +270,7 @@ export declare const stylePropsView: {
     mixBlendMode: boolean;
     outlineStyle: boolean;
     overflow: boolean;
+    pointerEvents: boolean;
     position: boolean;
     visibility: boolean;
     WebkitLineClamp: boolean;
@@ -494,7 +494,6 @@ export declare const stylePropsText: {
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
-    pointerEvents?: boolean | undefined;
     scrollbarWidth?: boolean | undefined;
     textWrap?: boolean | undefined;
     touchAction?: boolean | undefined;
@@ -556,6 +555,7 @@ export declare const stylePropsText: {
     mixBlendMode: boolean;
     outlineStyle: boolean;
     overflow: boolean;
+    pointerEvents: boolean;
     position: boolean;
     visibility: boolean;
     fontFamily: boolean;
@@ -767,7 +767,6 @@ export declare const stylePropsAll: {
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
-    pointerEvents?: boolean | undefined;
     scrollbarWidth?: boolean | undefined;
     textWrap?: boolean | undefined;
     touchAction?: boolean | undefined;
@@ -829,6 +828,7 @@ export declare const stylePropsAll: {
     mixBlendMode: boolean;
     outlineStyle: boolean;
     overflow: boolean;
+    pointerEvents: boolean;
     position: boolean;
     visibility: boolean;
     fontFamily: boolean;
@@ -1050,7 +1050,6 @@ export declare const validStyles: {
     overflowInline?: boolean | undefined;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
-    pointerEvents?: boolean | undefined;
     scrollbarWidth?: boolean | undefined;
     textWrap?: boolean | undefined;
     touchAction?: boolean | undefined;
@@ -1106,6 +1105,7 @@ export declare const validStyles: {
     mixBlendMode: boolean;
     outlineStyle: boolean;
     overflow: boolean;
+    pointerEvents: boolean;
     position: boolean;
     visibility: boolean;
     WebkitLineClamp: boolean;

@@ -32,8 +32,6 @@ export const nonAnimatableWebViewProps = {
   overflowInline: true,
   overflowX: true,
   overflowY: true,
-  // NOTE: pointerEvents is NOT web-only - it's a core React Native View prop (not a style)
-  pointerEvents: true,
   scrollbarWidth: true,
   textWrap: true,
   touchAction: true,

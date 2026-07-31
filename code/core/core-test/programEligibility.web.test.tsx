@@ -42,3 +42,12 @@ test('plain shadow part values keep the legacy composition', () => {
   // styleToCSS combines the parts into a box-shadow rule
   expect(JSON.stringify(result.rulesToInsert)).toContain('box-shadow')
 })
+
+test('pointerEvents lowers as a program on web', () => {
+  const result = split({ pointerEvents: 'auto hover:none' })
+  const className = result.classNames?.pointerEvents
+  expect(className).toBeTruthy()
+  const rules = result.rulesToInsert[className]?.[4] ?? []
+  expect(rules.join('')).toContain('pointer-events:auto')
+  expect(rules.join('')).toContain(':where(:hover){pointer-events:none}')
+})
