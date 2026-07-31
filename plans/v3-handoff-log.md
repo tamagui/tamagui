@@ -264,15 +264,33 @@ the design record marks open.
 
 ## 10. Decision-24 static fast path
 
-Status: in progress.
+Status: complete for the current corpus. The component-lowering designs remain
+parked for an explicit architecture decision.
 
-- The reproducible per-reason metric landed in `5116482928`. The 2026-07-30
-  kitchen-sink tuple is 2,556 found / 2,029 lowered / 2,016 flattened / 55
-  styled / 527 bailed over 248 usecases with zero compile failures. The 527
-  reasons are 337 components that cannot accept the plain-element path, 116
-  animated candidates, 26 dynamic style values unsafe to extract, 21 runtime
-  event mappings, 16 non-evaluable style values, six unevaluated spreads, and
-  five theme boundaries.
+- The classification is the headline: zero recoverable / 526 structurally
+  retained. The raw tuple remains directly underneath and is pinned as 2,556
+  found / 2,030 lowered / 2,017 flattened / 55 styled / 526 bailed over 248
+  usecases with zero compile failures. `found` cannot fall, and only an increase
+  in `flattened` counts as progress for decision 24.
+- The initial audits found one recoverable element out of 2,556, the inert
+  `animatedBy` selector fixed in `299fe97fbb`. The remaining structural classes
+  are 337 component runtime contracts, 115 animation runtimes, 42 dynamic
+  values, 21 runtime event mappings, six unevaluated spreads, and five theme
+  boundaries.
+- The animation audit covered every original candidate: 39 enter, exit, or
+  presence lifecycles; 53 dynamic animation targets; 19 pseudo, media, theme,
+  or group-driven targets; two `onTransition` callbacks; two static-looking
+  elements whose theme, hydration, Configuration, or Presence inputs are
+  runtime-observable; and the one inert selector now fixed.
+- Dynamic values and unevaluated spreads retain runtime resolution and authored
+  duplicate-prop precedence. Press events retain Tamagui responder mapping.
+  Theme boundaries retain provider state. These are runtime contracts rather
+  than compiler opportunities.
+- The metric pins both the six structural classes and the complete component
+  allowlist. A new `does not accept className` component is classified as
+  recoverable and fails the test instead of silently entering the structural
+  denominator. Each pinned component carries its specific HOC, custom-host, or
+  styled-context justification in the report.
 - The styled-context investigation disproved the initial high-volume
   hypothesis. `Button`, `Input`, `Label`, `ListItem`, and `XGroup` are behavior
   HOCs whose runtime work exceeds context resolution. The seven Card-family

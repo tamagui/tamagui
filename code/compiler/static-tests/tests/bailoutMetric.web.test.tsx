@@ -43,6 +43,20 @@ const structurallyRetainedComponents: Record<string, string> = {
   XGroup: 'behavior HOC: orientation, child indexing, and group context',
 }
 
+const structuralClassJustifications = {
+  'component runtime contract':
+    'behavior HOCs, custom hosts, and styled-context frames cannot be erased by the plain-element path',
+  'animation runtime':
+    'animation lifecycles, dynamic targets, conditional targets, callbacks, and runtime theme or presence inputs require the selected driver',
+  'dynamic value':
+    'a value the compiler cannot evaluate or safely extract must retain runtime prop and token resolution',
+  'runtime event mapping':
+    'React Native press events require Tamagui responder mapping and are not equivalent to bare DOM props',
+  'unevaluated spread':
+    'an unknown spread may change style values and duplicate-prop precedence',
+  'theme boundary': 'theme selection and inversion depend on runtime provider state',
+} as const
+
 test.skipIf(!process.env.BAILOUT_METRIC)(
   'kitchen-sink usecase bailout rate',
   { timeout: 300_000 },
@@ -59,6 +73,10 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
       bailed: 0,
     }
     const reasons = new Map<string, number>()
+    const structuralClasses = new Map<
+      keyof typeof structuralClassJustifications,
+      number
+    >()
     const structuralComponents = new Map<string, number>()
     const unexpectedStructuralComponents = new Set<string>()
     const details: string[] = []
@@ -91,16 +109,42 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
           const isStructuralCandidate =
             diagnostic.code === 'local/unsupported-target' &&
             diagnostic.message.endsWith(' does not accept className')
-          const classification =
-            isStructuralCandidate && component in structurallyRetainedComponents
-              ? 'STRUCTURALLY RETAINED'
-              : 'RECOVERABLE'
-          if (classification === 'STRUCTURALLY RETAINED') {
+          let structuralClass: keyof typeof structuralClassJustifications | undefined
+          if (isStructuralCandidate && component in structurallyRetainedComponents) {
+            structuralClass = 'component runtime contract'
+          } else if (
+            diagnostic.code === 'local/unsupported-target' &&
+            diagnostic.message === 'Animated candidates remain on the runtime path'
+          ) {
+            structuralClass = 'animation runtime'
+          } else if (diagnostic.code === 'local/dynamic-style-value') {
+            structuralClass = 'dynamic value'
+          } else if (
+            diagnostic.code === 'local/unsupported-target' &&
+            diagnostic.message.endsWith(' requires Tamagui runtime event mapping')
+          ) {
+            structuralClass = 'runtime event mapping'
+          } else if (diagnostic.code === 'local/unsafe-style-spread') {
+            structuralClass = 'unevaluated spread'
+          } else if (
+            diagnostic.code === 'local/unsupported-target' &&
+            diagnostic.message === 'Theme boundary candidates remain on the runtime path'
+          ) {
+            structuralClass = 'theme boundary'
+          }
+          const classification = structuralClass ? 'STRUCTURALLY RETAINED' : 'RECOVERABLE'
+          if (structuralClass) {
             structurallyRetained++
-            structuralComponents.set(
-              component,
-              (structuralComponents.get(component) ?? 0) + 1
+            structuralClasses.set(
+              structuralClass,
+              (structuralClasses.get(structuralClass) ?? 0) + 1
             )
+            if (structuralClass === 'component runtime contract') {
+              structuralComponents.set(
+                component,
+                (structuralComponents.get(component) ?? 0) + 1
+              )
+            }
           } else {
             recoverable++
             if (isStructuralCandidate) unexpectedStructuralComponents.add(component)
@@ -129,14 +173,32 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
           `${count}\t${component}\t${structurallyRetainedComponents[component]}`
       )
       .join('\n')
-    const classificationReport = `classification: RECOVERABLE ${recoverable}, STRUCTURALLY RETAINED ${structurallyRetained}\n\nstructurally retained components:\n${structuralReport}`
-    const completeReport = `${report}\n${classificationReport}\n\nall reasons:\n${reasonReport}`
+    const structuralClassReport = [...structuralClasses]
+      .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+      .map(
+        ([structuralClass, count]) =>
+          `${count}\t${structuralClass}\t${structuralClassJustifications[structuralClass]}`
+      )
+      .join('\n')
+    const classificationReport = `classification: RECOVERABLE ${recoverable}, STRUCTURALLY RETAINED ${structurallyRetained}`
+    const completeReport = `${classificationReport}\n${report}\n\nstructural classes:\n${structuralClassReport}\n\nstructurally retained components:\n${structuralReport}\n\nall reasons:\n${reasonReport}`
     process.stdout.write(`\n${completeReport}\n`)
     writeFileSync('/tmp/tamagui-bailout-metric.txt', completeReport)
     writeFileSync('/tmp/tamagui-bailout-details.txt', details.join('\n'))
 
-    expect(totals.found).toBeGreaterThan(0)
+    expect(totals).toEqual({
+      files: 248,
+      failed: 0,
+      found: 2556,
+      lowered: 2030,
+      flattened: 2017,
+      styled: 55,
+      bailed: 526,
+    })
     expect([...unexpectedStructuralComponents].sort()).toEqual([])
+    expect([...structuralClasses.keys()].sort()).toEqual(
+      Object.keys(structuralClassJustifications).sort()
+    )
     expect([...structuralComponents.keys()].sort()).toEqual(
       Object.keys(structurallyRetainedComponents).sort()
     )
