@@ -7,12 +7,16 @@ import {
   useAdaptTarget,
   useAdaptedCapabilities,
 } from '@tamagui/adapt'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
+import { createTamagui } from '@tamagui/core'
 import { getPortal } from '@tamagui/native'
 import React from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 import { afterEach, describe, expect, test } from 'vitest'
 
 const scope = 'AdaptTeleportTest'
+
+createTamagui(getDefaultTamaguiConfig('native'))
 
 function enableTeleport() {
   getPortal().set({ enabled: true, type: 'teleport' })
