@@ -118,6 +118,7 @@
         "@tamagui/compiler-core": "workspace:*",
         "@tamagui/config-default": "workspace:*",
         "@tamagui/core": "workspace:*",
+        "@tamagui/dom": "workspace:*",
         "@tamagui/fake-react-native": "workspace:*",
         "@tamagui/generate-themes": "workspace:*",
         "@tamagui/helpers": "workspace:*",
@@ -585,7 +586,11 @@
       "version": "2.5.1",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
+        "react": ">=19",
         "vitest": "4.0.4",
+      },
+      "peerDependencies": {
+        "react": ">=19",
       },
     },
     "code/core/floating": {
@@ -1325,6 +1330,7 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
+        "@tamagui/dom": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/is-equal-shallow": "workspace:*",
         "@tamagui/native": "workspace:*",
