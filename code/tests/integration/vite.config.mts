@@ -6,6 +6,16 @@ export default defineConfig({
   server: {
     port: 5008,
   },
+  build: {
+    rollupOptions: {
+      // streaming.html is the program-block streaming fixture; it needs a real
+      // built client bundle so the streamed document can hydrate
+      input: {
+        index: 'index.html',
+        streaming: 'streaming.html',
+      },
+    },
+  },
   clearScreen: false,
   plugins: [
     react(),
