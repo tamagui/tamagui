@@ -11,7 +11,10 @@ export function MixedCascadeCase() {
       <Text
         data-testid="mixed-decoration"
         textDecorationLine="underline"
-        hoverStyle={{ textDecoration: 'none' }}
+        // the composite shorthand is deliberately absent from the v3 type
+        // surface; authoring it here is the point — it must refuse conversion
+        // and ride the legacy pseudo path until the textDecoration family lands
+        hoverStyle={{ textDecoration: 'none' } as any}
       >
         Hover removes the underline
       </Text>

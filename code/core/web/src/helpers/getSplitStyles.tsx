@@ -388,7 +388,16 @@ export const getSplitStyles: StyleSplitter = (
   let dynamicThemeAccess: boolean | undefined
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
-  let className = ''
+  // the frontend's normalizeStaticConfig partitions unclaimed styled-base
+  // classes into passthroughClassName (baseStyle holds styles only). they are
+  // the base's raw-interop className at the earliest forward position:
+  // prepend them and flip the cascade-preserving switch so every later
+  // Tamagui contribution keeps its last-wins position inline, exactly as a
+  // className prop does mid-loop
+  let className = staticConfig.passthroughClassName || ''
+  if (className) {
+    shouldDoClasses = false
+  }
   let mediaStylesSeen = 0
 
   const validStyles =
