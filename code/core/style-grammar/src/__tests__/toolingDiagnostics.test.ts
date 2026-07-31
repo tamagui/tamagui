@@ -1,7 +1,10 @@
 import { describe, expect, test } from 'vitest'
 import {
   canonicalizeStyleValue,
+  completeStyleValue,
+  completeStyleValueAtCursor,
   createCandidatePropertyVocabulary,
+  createGrammarConfigViewFromSerializedConfig,
   createModifierRegistry,
   diagnoseStyleValue,
   parseValue,
@@ -119,5 +122,174 @@ describe('tooling diagnostics', () => {
         registry: customRegistry,
       })
     ).toEqual([])
+  })
+
+  test('completes only configured candidates that target the authored property', () => {
+    expect(completeStyleValue('bg', { config, registry, candidates })).toEqual([
+      { value: 'blue', kind: 'configured' },
+      { value: 'red', kind: 'configured' },
+      { value: 'red-500', kind: 'configured' },
+    ])
+    expect(completeStyleValue('fontSize', { config, registry, candidates })).toEqual([
+      { value: 'xl', kind: 'configured' },
+    ])
+    expect(completeStyleValue('display', { config, registry, candidates })).toEqual([
+      { value: 'block', kind: 'keyword' },
+      { value: 'flex', kind: 'keyword' },
+      { value: 'grid', kind: 'keyword' },
+      { value: 'inline', kind: 'keyword' },
+      { value: 'inline-flex', kind: 'keyword' },
+      { value: 'none', kind: 'keyword' },
+    ])
+
+    for (const property of ['bg', 'fontSize', 'display']) {
+      for (const completion of completeStyleValue(property, {
+        config,
+        registry,
+        candidates,
+      })) {
+        expect(diagnose(property, completion.value)).toEqual([])
+      }
+    }
+  })
+
+  test('projects completions from a legacy compiler artifact without metadata fields', () => {
+    const serialized = createGrammarConfigViewFromSerializedConfig({
+      shorthands: { bg: 'backgroundColor' },
+      media: { sm: { maxWidth: 800 } },
+      themes: {
+        dark: {
+          id: 'dark',
+          surface: '#111',
+        },
+        light: {
+          id: 'light',
+          surface: '#fff',
+        },
+      },
+      tokens: {
+        color: {
+          blue: '#00f',
+        },
+        space: {
+          4: 16,
+        },
+      },
+      fonts: {
+        body: {
+          size: {
+            xl: 20,
+          },
+          lineHeight: {
+            xl: 24,
+          },
+        },
+      },
+    })
+    const serializedRegistry = createModifierRegistry(serialized).registry
+    const options = { config: serialized, registry: serializedRegistry }
+
+    expect(completeStyleValue('bg', options)).toEqual([
+      { value: 'blue', kind: 'configured' },
+      { value: 'surface', kind: 'configured' },
+    ])
+    expect(completeStyleValue('padding', options)).toEqual([
+      { value: '4', kind: 'configured' },
+    ])
+    expect(completeStyleValue('fontSize', options)).toEqual([
+      { value: 'xl', kind: 'configured' },
+    ])
+  })
+
+  test('preserves legitimate theme names in a versioned values-only artifact', () => {
+    const serialized = createGrammarConfigViewFromSerializedConfig(
+      {
+        shorthands: { bg: 'backgroundColor' },
+        themes: {
+          dark: {
+            mode: 'dark',
+          },
+          light: {
+            mode: 'light',
+          },
+        },
+      },
+      { themeFields: 'values-only' }
+    )
+    const serializedRegistry = createModifierRegistry(serialized).registry
+
+    expect(
+      completeStyleValue('bg', {
+        config: serialized,
+        registry: serializedRegistry,
+      })
+    ).toEqual([{ value: 'mode', kind: 'configured' }])
+  })
+
+  test('rejects a serialized theme format it does not understand', () => {
+    expect(() =>
+      createGrammarConfigViewFromSerializedConfig(
+        {
+          themes: {
+            dark: {
+              surface: '#111',
+            },
+          },
+        },
+        { themeFields: 'future-format' }
+      )
+    ).toThrow('unsupported serialized config themeFields format')
+  })
+
+  test('uses parser source spans for base, clause, and modifier completions', () => {
+    const options = { config, registry, candidates }
+
+    expect(completeStyleValueAtCursor('bg', '', 0, options)).toMatchObject({
+      replaceStart: 0,
+      replaceLength: 0,
+      completions: [
+        { value: 'blue', kind: 'configured' },
+        { value: 'red', kind: 'configured' },
+        { value: 'red-500', kind: 'configured' },
+      ],
+    })
+    expect(completeStyleValueAtCursor('bg', 'red hover:b', 11, options)).toMatchObject({
+      replaceStart: 10,
+      replaceLength: 1,
+      completions: expect.arrayContaining([{ value: 'blue', kind: 'configured' }]),
+    })
+    expect(completeStyleValueAtCursor('bg', 'red hover:', 10, options)).toMatchObject({
+      replaceStart: 10,
+      replaceLength: 0,
+      completions: expect.arrayContaining([{ value: 'blue', kind: 'configured' }]),
+    })
+
+    const partialModifier = completeStyleValueAtCursor('bg', 'red hov:blue', 7, options)
+    expect(partialModifier).toMatchObject({
+      replaceStart: 4,
+      replaceLength: 3,
+      completions: expect.arrayContaining([
+        { value: 'hover', kind: 'modifier', insertText: 'hover' },
+        { value: 'sm', kind: 'modifier', insertText: 'sm' },
+        { value: 'dark', kind: 'modifier', insertText: 'dark' },
+      ]),
+    })
+
+    expect(completeStyleValueAtCursor('bg', 'red hov:', 7, options)).toMatchObject({
+      replaceStart: 4,
+      replaceLength: 3,
+      completions: expect.arrayContaining([
+        { value: 'hover', kind: 'modifier', insertText: 'hover' },
+      ]),
+    })
+
+    const appendedModifier = completeStyleValueAtCursor('bg', 'red ', 4, options)
+    expect(appendedModifier).toMatchObject({
+      replaceStart: 4,
+      replaceLength: 0,
+      completions: expect.arrayContaining([
+        { value: 'hover', kind: 'modifier', insertText: 'hover:' },
+      ]),
+    })
   })
 })

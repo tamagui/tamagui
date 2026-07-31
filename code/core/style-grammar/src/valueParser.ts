@@ -46,6 +46,17 @@ const CHAR_BRACE_CLOSE = 125
 
 const noClauses: readonly ParsedClause[] = Object.freeze([])
 
+export interface ValueSourceSpan {
+  kind: 'base' | 'payload' | 'modifier'
+  start: number
+  end: number
+}
+
+export interface ValueParseWithSourceSpans {
+  result: ValueParseResult
+  spans: readonly ValueSourceSpan[]
+}
+
 function isWhitespace(code: number): boolean {
   return (
     code === CHAR_SPACE ||
@@ -59,6 +70,29 @@ function isWhitespace(code: number): boolean {
 export function parseValue(
   input: string,
   registry: ModifierRegistryView
+): ValueParseResult {
+  return parseValueInternal(input, registry)
+}
+
+/**
+ * Parses through the runtime scanner while also retaining source boundaries for
+ * editor tooling. The ordinary runtime path does not allocate these spans.
+ */
+export function parseValueWithSourceSpans(
+  input: string,
+  registry: ModifierRegistryView
+): ValueParseWithSourceSpans {
+  const spans: ValueSourceSpan[] = []
+  return {
+    result: parseValueInternal(input, registry, spans),
+    spans,
+  }
+}
+
+function parseValueInternal(
+  input: string,
+  registry: ModifierRegistryView,
+  sourceSpans?: ValueSourceSpan[]
 ): ValueParseResult {
   const length = input.length
 
@@ -98,6 +132,11 @@ export function parseValue(
     let stop = end
     while (start < stop && isWhitespace(input.charCodeAt(start))) start++
     while (stop > start && isWhitespace(input.charCodeAt(stop - 1))) stop--
+    sourceSpans?.push({
+      kind: pending === null ? 'base' : 'payload',
+      start,
+      end: stop,
+    })
     if (pending === null) {
       base = start < stop ? input.slice(start, stop) : null
       return
@@ -125,6 +164,11 @@ export function parseValue(
         addError('empty-modifier', index, 'a modifier chain has an empty segment')
       } else {
         const name = input.slice(nameStart, index)
+        sourceSpans?.push({
+          kind: 'modifier',
+          start: nameStart,
+          end: index,
+        })
         if (registry.get(name) === undefined) {
           addError(
             'unregistered-modifier',

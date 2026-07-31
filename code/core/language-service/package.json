@@ -6,11 +6,12 @@
   "sideEffects": false,
   "source": "src/index.ts",
   "files": [
+    "index.cjs",
     "src",
     "types",
     "dist"
   ],
-  "main": "dist/cjs/index.cjs",
+  "main": "index.cjs",
   "module": "dist/esm/index.mjs",
   "types": "types/index.d.ts",
   "exports": {
@@ -18,7 +19,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
+      "require": "./index.cjs",
       "default": "./dist/esm/index.mjs"
     }
   },
@@ -27,7 +28,7 @@
   },
   "scripts": {
     "build": "tamagui-build --exclude test",
-    "test": "vitest --run test"
+    "test": "bun run build && vitest --run test"
   },
   "dependencies": {
     "@tamagui/style-grammar": "workspace:*"

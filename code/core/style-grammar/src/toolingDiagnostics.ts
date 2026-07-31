@@ -4,9 +4,16 @@ import {
   type CandidateContribution,
   type CandidatePropertyMismatch,
 } from './candidateTarget'
+import { createGrammarConfigView, type GrammarSourceConfig } from './config'
+import { stateModifierNames } from './modifierRegistry'
 import { resolvePayload } from './resolvePayload'
-import { grammarEntries, type TokenCategory } from './registry'
-import { parseValue } from './valueParser'
+import {
+  fontWeightNames,
+  grammarEntries,
+  standaloneValueProps,
+  type TokenCategory,
+} from './registry'
+import { parseValue, parseValueWithSourceSpans } from './valueParser'
 import type {
   ModifierRegistryView,
   ParsedValue,
@@ -42,6 +49,32 @@ export interface DiagnoseStyleValueOptions {
   config: GrammarConfigView
   registry: ModifierRegistryView
   candidates?: CandidatePropertyVocabulary
+}
+
+export interface SerializedGrammarSourceConfig {
+  shorthands?: GrammarSourceConfig['shorthands']
+  media?: GrammarSourceConfig['media']
+  themes?: GrammarSourceConfig['themes']
+  tokens?: GrammarSourceConfig['tokensParsed']
+  fonts?: GrammarSourceConfig['fontsParsed']
+}
+
+export interface SerializedGrammarConfigMetadata {
+  themeFields: 'values-only'
+}
+
+export type StyleValueCompletionKind = 'configured' | 'keyword' | 'modifier'
+
+export interface StyleValueCompletion {
+  value: string
+  kind: StyleValueCompletionKind
+  insertText?: string
+}
+
+export interface StyleValueCursorCompletions {
+  replaceStart: number
+  replaceLength: number
+  completions: readonly StyleValueCompletion[]
 }
 
 export type CanonicalStyleValueResult =
@@ -118,6 +151,48 @@ export function createCandidatePropertyVocabulary(
   }
 
   return byName
+}
+
+/**
+ * Projects the JSON config emitted by Tamagui's compiler into the same grammar
+ * view the runtime creates from its live config.
+ */
+export function createGrammarConfigViewFromSerializedConfig(
+  config: SerializedGrammarSourceConfig,
+  metadata?: unknown
+): GrammarConfigView {
+  const isVersioned =
+    typeof metadata === 'object' &&
+    metadata !== null &&
+    (metadata as { themeFields?: unknown }).themeFields === 'values-only'
+  if (metadata !== undefined && !isVersioned) {
+    throw new Error(
+      '@tamagui/style-grammar: unsupported serialized config themeFields format'
+    )
+  }
+
+  const themes: Record<string, Readonly<Record<string, unknown>>> = {}
+  for (const themeName in config.themes) {
+    const serializedTheme = config.themes[themeName]
+    if (!serializedTheme || typeof serializedTheme !== 'object') continue
+    const runtimeTheme: Record<string, unknown> = {}
+    for (const key in serializedTheme) {
+      // Unversioned compiler artifacts injected `id` into the theme value
+      // namespace and overwrote any user value with that name. Keep this exact
+      // legacy cleanup only until stale artifacts have been regenerated.
+      if (isVersioned || key !== 'id') {
+        runtimeTheme[key] = (serializedTheme as Readonly<Record<string, unknown>>)[key]
+      }
+    }
+    themes[themeName] = runtimeTheme
+  }
+  return createGrammarConfigView({
+    shorthands: config.shorthands,
+    media: config.media,
+    themes,
+    tokensParsed: config.tokens,
+    fontsParsed: config.fonts,
+  })
 }
 
 const removedThemeNames: ReadonlySet<string> = new Set(v6RemovedThemeNames)
@@ -213,4 +288,141 @@ export function diagnoseStyleValue(
   for (const clause of parsed.value.clauses) diagnosePayload(clause.payload)
 
   return diagnostics
+}
+
+/**
+ * Returns the finite configured and keyword values that are valid for one
+ * property. Every result passes through the same parser, config lookup, and
+ * target validator used by diagnostics.
+ */
+export function completeStyleValue(
+  property: string,
+  options: DiagnoseStyleValueOptions
+): readonly StyleValueCompletion[] {
+  const candidates =
+    options.candidates || createCandidatePropertyVocabulary(options.config)
+  const targetProperty = options.config.shorthands?.[property] || property
+  if (!grammarProperties.has(targetProperty)) return []
+
+  const byValue = new Map<string, StyleValueCompletionKind>()
+  for (const [value, contributions] of candidates) {
+    if (resolveCandidateTarget(targetProperty, value, contributions).ok) {
+      byValue.set(value, 'configured')
+    }
+  }
+
+  const standalone = standaloneValueProps[targetProperty]
+  if (standalone) {
+    for (const value in standalone) {
+      if (!byValue.has(value)) byValue.set(value, 'keyword')
+    }
+  }
+  if (targetProperty === 'fontWeight') {
+    for (const value in fontWeightNames) {
+      if (!byValue.has(value)) byValue.set(value, 'keyword')
+    }
+  }
+
+  const completions: StyleValueCompletion[] = []
+  for (const [value, kind] of byValue) {
+    if (
+      diagnoseStyleValue(property, value, {
+        ...options,
+        candidates,
+      }).length === 0
+    ) {
+      completions.push({ value, kind })
+    }
+  }
+
+  completions.sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0))
+  return completions
+}
+
+/**
+ * Returns completions and a replacement span for one cursor position. Source
+ * boundaries come from the runtime value scanner, including incomplete clause
+ * payloads and modifier chains.
+ */
+export function completeStyleValueAtCursor(
+  property: string,
+  input: string,
+  cursor: number,
+  options: DiagnoseStyleValueOptions
+): StyleValueCursorCompletions | null {
+  if (cursor < 0 || cursor > input.length) return null
+  const parsed = parseValueWithSourceSpans(input, options.registry)
+  const active =
+    parsed.spans.find(
+      (span) => cursor >= span.start && cursor <= span.end && span.kind === 'modifier'
+    ) ??
+    parsed.spans.find(
+      (span) => cursor >= span.start && cursor <= span.end && span.kind !== 'modifier'
+    )
+
+  if (active?.kind === 'modifier') {
+    if (
+      !parsed.result.ok &&
+      parsed.result.errors.some(
+        (error) =>
+          error.code !== 'unregistered-modifier' &&
+          error.code !== 'empty-modifier' &&
+          error.code !== 'empty-payload'
+      )
+    ) {
+      return null
+    }
+    return {
+      replaceStart: active.start,
+      replaceLength: active.end - active.start,
+      completions: completeModifiers(options, false),
+    }
+  }
+
+  if (active) {
+    if (
+      !parsed.result.ok &&
+      parsed.result.errors.some((error) => error.code !== 'empty-payload')
+    ) {
+      return null
+    }
+    return {
+      replaceStart: active.start,
+      replaceLength: active.end - active.start,
+      completions: completeStyleValue(property, options),
+    }
+  }
+
+  if (parsed.result.ok && cursor === input.length) {
+    return {
+      replaceStart: cursor,
+      replaceLength: 0,
+      completions: completeModifiers(options, true),
+    }
+  }
+
+  return null
+}
+
+function completeModifiers(
+  options: DiagnoseStyleValueOptions,
+  appendColon: boolean
+): readonly StyleValueCompletion[] {
+  const names = new Set<string>()
+  for (const name of stateModifierNames) names.add(name)
+  forEachName(options.config.mediaNames, (name) => names.add(name))
+  forEachName(options.config.themeNames, (name) => names.add(name))
+  forEachName(options.config.platformNames, (name) => names.add(name))
+
+  const completions: StyleValueCompletion[] = []
+  for (const name of names) {
+    if (options.registry.get(name) === undefined) continue
+    completions.push({
+      value: name,
+      kind: 'modifier',
+      insertText: appendColon ? `${name}:` : name,
+    })
+  }
+  completions.sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0))
+  return completions
 }

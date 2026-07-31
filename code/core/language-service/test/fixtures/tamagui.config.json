@@ -1,0 +1,38 @@
+{
+  "tamaguiConfigMetadata": {
+    "themeFields": "values-only"
+  },
+  "tamaguiConfig": {
+    "shorthands": {
+      "bg": "backgroundColor"
+    },
+    "media": {
+      "sm": {
+        "maxWidth": 800
+      }
+    },
+    "themes": {
+      "dark": {
+        "surface": "#111111"
+      }
+    },
+    "tokens": {
+      "color": {
+        "blue": "#0000ff"
+      },
+      "space": {
+        "4": 16
+      }
+    },
+    "fonts": {
+      "body": {
+        "size": {
+          "xl": 20
+        },
+        "lineHeight": {
+          "xl": 24
+        }
+      }
+    }
+  }
+}
