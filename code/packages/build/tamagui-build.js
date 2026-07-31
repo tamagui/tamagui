@@ -969,15 +969,22 @@ async function pruneStaleOutputs(targetDir, expected, patterns) {
   const normalizedExpected = new Set(Array.from(expected, normalize))
   const existing = await fastGlob(
     patterns.map((pattern) => `${dir}/${pattern}`),
-    { dot: true, followSymbolicLinks: false, onlyFiles: true }
+    {
+      dot: true,
+      followSymbolicLinks: false,
+      objectMode: true,
+      onlyFiles: false,
+    }
   )
-  for (const file of existing) {
+  for (const entry of existing) {
+    if (!entry.dirent.isFile() && !entry.dirent.isSymbolicLink()) continue
+    const file = entry.path
     if (!normalizedExpected.has(normalize(file))) {
       const candidate = path.resolve(file)
       if (candidate !== targetRoot && !candidate.startsWith(`${targetRoot}${path.sep}`)) {
         throw new Error(`refusing to prune output outside ${targetDir}: ${file}`)
       }
-      await FSE.remove(candidate)
+      await FSE.unlink(candidate)
     }
   }
 }

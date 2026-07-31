@@ -10,6 +10,7 @@ import {
   readdirSync,
   rmSync,
   symlinkSync,
+  unlinkSync,
 } from 'node:fs'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { join } from 'node:path'
@@ -509,8 +510,13 @@ describe('tamagui-build integration test', () => {
       execSync('bun run build', { cwd: simplePackagePath })
 
       expect(readFileSync(outsideFile, 'utf-8')).toBe('keep\n')
+      expect(existsSync(linkedDir)).toBe(false)
     } finally {
-      rmSync(linkedDir, { force: true })
+      try {
+        unlinkSync(linkedDir)
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
+      }
       rmSync(outsideDir, { force: true, recursive: true })
     }
   })
