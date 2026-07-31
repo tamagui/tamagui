@@ -17,6 +17,9 @@ import {
   composeTransformArray,
   evaluateProgram,
   getSafeAreaEdge,
+  modifierAliases,
+  nativeGroupSourceableStates,
+  nativeSourceableStates,
   parseContainerModifier,
   parseGroupModifier,
   resolvePayload,
@@ -48,21 +51,12 @@ const platformName = isWeb
         : 'android'
       : 'native'
 
-// the states this platform can actually source right now: componentState
-// fields plus enter/exit from the lifecycle. component-tier states (checked,
-// open, selected, highlighted, invalid) need the behavior packages to feed
-// componentState and are diagnosed, never silent, until that lands
-const sourceableStates: ReadonlySet<string> = new Set([
-  'hover',
-  'press',
-  'active',
-  'focus',
-  'focus-visible',
-  'focus-within',
-  'disabled',
-  'enter',
-  'exit',
-])
+// the states this platform can source come from the shared clause-capability
+// contract (style-grammar), so what the codemod and lint claim about native
+// evaluability cannot drift from what actually runs here. component-tier
+// states (checked, open, selected, highlighted, invalid) are absent from the
+// contract set until the behavior packages feed componentState, and are
+// diagnosed below, never silent
 
 // react-native has no per-side border style, so the border family's style
 // longhands collapse onto the uniform key (the last side written wins, and a
@@ -96,17 +90,17 @@ const nativeLengthOverrides: ReadonlySet<string> = new Set([
 ])
 
 // grammar group states map to the camelCase keys `subscribeToContextGroup`
-// writes into componentState.group[name].pseudo; press and active share a
-// source exactly like the subject-state set above
-const groupStateKeys: Readonly<Record<string, string>> = {
-  hover: 'hover',
-  press: 'press',
-  active: 'press',
-  focus: 'focus',
-  'focus-visible': 'focusVisible',
-  'focus-within': 'focusWithin',
-  disabled: 'disabled',
-}
+// writes into componentState.group[name].pseudo. membership is DERIVED from
+// the shared contract's group source set (press/active share a source via
+// the registered alias); only the camelCase spelling is runtime-local
+const groupStateKeys: Readonly<Record<string, string>> = Object.fromEntries(
+  nativeGroupSourceableStates.map((state) => [
+    state,
+    (modifierAliases[state] ?? state).replace(/-([a-z])/g, (_, letter) =>
+      letter.toUpperCase()
+    ),
+  ])
+)
 
 // modifier spellings are interned by the parse cache, so parsing each distinct
 // group/container modifier once is stable; cap-and-clear like the other caches
@@ -267,7 +261,7 @@ export function evaluateAccumulatedPrograms(
         if (kind === 'media') {
           ;(usedMediaKeys ||= []).push(modifier)
         } else if (kind === 'state') {
-          if (sourceableStates.has(modifier)) {
+          if (nativeSourceableStates.has(modifier)) {
             ;(usedStates ||= new Set()).add(modifier)
           } else {
             noteOnce(

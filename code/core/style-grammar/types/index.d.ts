@@ -2,6 +2,7 @@ export * from "./backgroundFamily";
 export * from "./borderFamily";
 export * from "./candidate";
 export * from "./candidateTarget";
+export * from "./clauseCapability";
 export * from "./config";
 export * from "./evaluateProgram";
 export * from "./fontShorthand";
