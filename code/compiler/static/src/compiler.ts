@@ -7,11 +7,11 @@ import {
   type HostModuleInput,
   type LoweredModulePlan,
   type ResolvedModuleId,
-  type StructuralModulePass,
 } from '@tamagui/compiler-core'
 import path from 'node:path'
 
 import { createTamaguiCompilerHost } from './compilerHost'
+import { domStructuralPass } from './domStructuralPass'
 import type { TamaguiProjectInfo } from './extractor/bundleConfig'
 
 export interface CompilerProjectComponentModule {
@@ -38,10 +38,9 @@ export interface CompilerInput {
   project: CompilerProject
   resolve(specifier: string, importer: string): Promise<CompilerResolution | null>
   load(id: string): Promise<string | null>
-  structuralPass?: StructuralModulePass
 }
 
-export type CompilerUpdateInput = Omit<CompilerInput, 'structuralPass' | 'target'>
+export type CompilerUpdateInput = Omit<CompilerInput, 'target'>
 
 export interface CompilerResult {
   plan: LoweredModulePlan
@@ -141,7 +140,7 @@ export class CompilerFrontend {
           return modules.get(id) ?? null
         },
       },
-      structuralPass: input.structuralPass,
+      structuralPass: domStructuralPass,
     })
     for (const id of result.invalidatedIds) invalidated.add(id)
     return {

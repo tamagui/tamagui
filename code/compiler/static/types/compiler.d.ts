@@ -1,4 +1,4 @@
-import { type AppliedLoweredModule, type CompilerTarget, type LoweredModulePlan, type ResolvedModuleId, type StructuralModulePass } from '@tamagui/compiler-core';
+import { type AppliedLoweredModule, type CompilerTarget, type LoweredModulePlan, type ResolvedModuleId } from '@tamagui/compiler-core';
 import type { TamaguiProjectInfo } from './extractor/bundleConfig';
 export interface CompilerProjectComponentModule {
     moduleName: string;
@@ -21,9 +21,8 @@ export interface CompilerInput {
     project: CompilerProject;
     resolve(specifier: string, importer: string): Promise<CompilerResolution | null>;
     load(id: string): Promise<string | null>;
-    structuralPass?: StructuralModulePass;
 }
-export type CompilerUpdateInput = Omit<CompilerInput, 'structuralPass' | 'target'>;
+export type CompilerUpdateInput = Omit<CompilerInput, 'target'>;
 export interface CompilerResult {
     plan: LoweredModulePlan;
     output: AppliedLoweredModule;
