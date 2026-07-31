@@ -68,7 +68,9 @@ for (let i = 0; i < 600; i++) {
   }
   await page.waitForTimeout(16)
 }
-console.log(`tooltip first mounted after ${Date.now() - tJiggle}ms of jiggling, hydrated=${hydrated}`)
+console.log(
+  `tooltip first mounted after ${Date.now() - tJiggle}ms of jiggling, hydrated=${hydrated}`
+)
 if (!hydrated) {
   console.log('tooltip never appeared — abort')
   await browser.close()
