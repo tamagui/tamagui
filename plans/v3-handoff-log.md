@@ -393,6 +393,47 @@ Status: in progress.
   `46126a42d1` registered the workspace edges, including
   `@tamagui/web` -> `@tamagui/dom` and the compiler's own edge; verified with
   `bun install --frozen-lockfile --dry-run`, which now exits 0.
+- The `tamagui/dom` and `@tamagui/core/dom` entries landed in `150dae7259`,
+  with `@tamagui/web/dom` underneath them. Both resolve and export exactly
+  `html` and `style` — the compiler needs these specifiers to exist because
+  import provenance is how it tells the three frontends apart, and two of the
+  three did not exist before this.
+- The standalone entry is **compile-only on both platforms**, so every member
+  throws. That is not a stub standing in for a runtime: a `style()` handle is
+  an opaque compiled value with no runtime form, and the tags carry no style
+  props to resolve, so there is nothing for a runtime to do. Reaching one means
+  the compiler did not run, and the error says so and names the tag or the
+  call. This is the second missing-compiler failure, alongside `html.*` on
+  native from item 4.
+- `style()` (design item 6's implementable half) takes the same
+  style-definition grammar as `styled()` with the component argument removed,
+  and returns one opaque handle per call rather than a namespace of named
+  sub-objects. The design record's own example — including
+  `backgroundColor: 'surface hover:surface-hover'` — typechecks against it.
+- Seven behaviour tests in `domEntries.web.test.tsx` and 27 type assertions in
+  `code/core/web/src/dom/standalone.test-d.ts` pin it. The type file carries
+  the isolation property, which is the one worth keeping: a standalone tag
+  rejects `backgroundColor`, the `bg` shorthand, `hoverStyle` and `className`,
+  so the separate entry cannot quietly regrow the regular style surface. The
+  behaviour file separately asserts the entry re-exports no `createComponent`,
+  `styled`, `getSplitStyles`, `View` or `Text`, since a barrel that did would
+  reconnect the frontend graphs the design record keeps apart.
+- Worth knowing for anyone adding type tests to `@tamagui/web`: its
+  `tsconfig.json` excludes `**/*.test-d.ts`, so `tsc -p` does not check them
+  and a broken assertion there looks green. They are checked by the package's
+  own `bun run test:web` (`vitest --typecheck`, 8 files / 90 tests including
+  this lane's), which is not in the fleet gate list but should be. Verified by
+  mutation both ways — this is the second time in this lane that a type-test
+  file silently was not being checked, and both times only a deliberate error
+  found it.
+- Design items 6 and 8 are the two the design record marks open and the fleet
+  plan marks a user decision. Both proposals are written up in item 9 below:
+  the native ref API recommends the React Native public instance plus the HTML
+  tag name and two per-tag polyfills, built only when a ref was passed, and
+  rejects RSD's viewport-scaled metrics; the `style()` composition recommends
+  compile-time resolution per contested property with a build error when the
+  handle list is not literal. `compatibility.ts` now describes the ref
+  behaviour that ships today rather than the proposed one.
 
 ## 4. Cutover config
 
