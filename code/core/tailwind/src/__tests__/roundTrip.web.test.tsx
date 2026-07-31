@@ -225,8 +225,7 @@ describe('PASS 2 — directional borders + corner radius', () => {
     const cls = convertedClassName(`<View borderRightColor="$color2" />`)
     const f = flat(cls)
     expect(typeof f.borderRightColor).toBe('string')
-    expect(f.borderRightColor).not.toBe('color2') // resolved token ref, not the literal name
-    expect(String(f.borderRightColor)).toContain('color2')
+    expect(f.borderRightColor).toBe('color2')
     expect(f.borderRightWidth).toBeUndefined()
     // and it resolves to the same theme var as the source prop through the full pipeline
     expect(classStyle(cls).borderRightColor).toBe('var(--color2)')
@@ -247,7 +246,7 @@ describe('PASS 2 — directional borders + corner radius', () => {
     const cls = convertedClassName(`<View borderTopLeftRadius="$8" />`)
     const f = flat(cls)
     expect(cls).toContain('rounded-tl-8')
-    expect(f.borderTopLeftRadius).toBe('$8')
+    expect(f.borderTopLeftRadius).toBe('8')
     expect(typeof f.borderTopLeftRadius).toBe('string')
     expect(f.borderBottomRightRadius).toBeUndefined()
   })
@@ -259,7 +258,7 @@ describe('token category system — zIndex sentinel (default config)', () => {
     expect(cls).toContain('z-10')
     expect((v6 as any).tokens.zIndex.$10).toBe(10)
     expect((v6 as any).tokens.zIndex.$4).toBe(4)
-    expect(flat(cls).zIndex).toBe('$10')
+    expect(flat(cls).zIndex).toBe('10')
     expect(classStyle(cls).zIndex).toBe(styleOf({ zIndex: '$10' }).zIndex)
   })
 })

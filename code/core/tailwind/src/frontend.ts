@@ -5,11 +5,16 @@ import {
   type StyleFrontendConfig,
 } from '@tamagui/core/internal-runtime'
 import { stylePropsAll } from '@tamagui/helpers'
-import { grammarPlatformNames, modifierToPseudo } from '@tamagui/style-grammar'
 import {
+  createModifierRegistry,
+  modifierAliases,
+  modifierToPseudo,
+  type ModifierRegistryView,
+} from '@tamagui/style-grammar'
+import {
+  getStyleGrammarConfig,
   isTokenValueProp,
   preprocessTailwindClassName,
-  resolveTokenValue,
   setInAuthoredOrder,
 } from './candidate'
 
@@ -36,6 +41,18 @@ interface FlatParsedProp {
   groupKey?: string
   prop: string
   value: any
+}
+
+const modifierRegistryCache = new WeakMap<object, ModifierRegistryView>()
+
+function getModifierRegistry(config: StyleFrontendConfig): ModifierRegistryView {
+  const grammarConfig = getStyleGrammarConfig(config)
+  let registry = modifierRegistryCache.get(grammarConfig)
+  if (!registry) {
+    registry = createModifierRegistry(grammarConfig).registry
+    modifierRegistryCache.set(grammarConfig, registry)
+  }
+  return registry
 }
 
 function parseFlatModifierProp(
@@ -80,16 +97,9 @@ function parseFlatModifierProp(
       // resolve the embedded value (numeric, token, etc.)
       if (/^\d+(\.\d+)?$/.test(embeddedValue)) {
         const expanded = shorthands[foundProp] || foundProp
-        finalValue = isTokenValueProp(expanded)
-          ? `$${embeddedValue}`
-          : Number(embeddedValue)
+        finalValue = isTokenValueProp(expanded) ? embeddedValue : Number(embeddedValue)
       } else {
-        // try to resolve as token (handles "blue", "some-token", etc.)
-        finalValue = resolveTokenValue(
-          embeddedValue,
-          config,
-          shorthands[foundProp] || foundProp
-        )
+        finalValue = embeddedValue
       }
     }
   }
@@ -97,36 +107,36 @@ function parseFlatModifierProp(
   const prop = shorthands[propShort] || propShort
 
   const result: FlatParsedProp = { prop, value: finalValue }
+  const registry = getModifierRegistry(config)
 
   // parse modifiers (order doesn't matter)
   for (const mod of parts) {
-    // check pseudo
-    if (mod in modifierToPseudo) {
-      result.pseudoKey = modifierToPseudo[mod]
+    const canonical = modifierAliases[mod] || mod
+    const kind = registry.get(canonical)
+    if (kind === 'state') {
+      const pseudoKey = modifierToPseudo[canonical]
+      if (!pseudoKey) return null
+      result.pseudoKey = pseudoKey
+      continue
+    }
+    if (kind === 'media') {
+      result.mediaKey = canonical
+      continue
+    }
+    if (kind === 'platform') {
+      result.platformKey = canonical
+      continue
+    }
+    if (kind === 'theme') {
+      result.themeKey = canonical
       continue
     }
 
-    // check media (registered in config)
-    if (config.media && mod in config.media) {
-      result.mediaKey = mod
-      continue
-    }
-
-    // check theme
-    if (config.themes && mod in config.themes) {
-      result.themeKey = mod
-      continue
-    }
-
-    // check platform
-    if (grammarPlatformNames.has(mod)) {
-      result.platformKey = mod
-      continue
-    }
-
-    // group: keep the modifier verbatim, it becomes the object-form key
+    // legacy flat group spelling predates the candidate modifier grammar. Keep
+    // adapting it until the group/container candidate work moves both forms
+    // onto the shared program representation.
     // ($group-card-hover:opacity → '$group-card-hover': { opacity })
-    if (mod === 'group' || mod.startsWith('group-')) {
+    if (kind === 'group' || (!kind && (mod === 'group' || mod.startsWith('group-')))) {
       result.groupKey = mod
       continue
     }
@@ -240,7 +250,7 @@ function preprocessFlatProps(
 
           // wrap with platform if present
           if (platformKey) {
-            styleObj = { [`$${platformKey}`]: styleObj }
+            styleObj = { [`$platform-${platformKey}`]: styleObj }
           }
 
           // determine outermost key or merge directly
@@ -257,7 +267,7 @@ function preprocessFlatProps(
             }
           } else if (platformKey && !themeKey) {
             // just platform, no media
-            const injectKey = `$${platformKey}`
+            const injectKey = `$platform-${platformKey}`
             result[injectKey] = result[injectKey]
               ? mergeDeep(result[injectKey], styleObj[injectKey])
               : styleObj[injectKey]
@@ -299,7 +309,7 @@ function preprocessFlatProps(
                   if (/^\d+(\.\d+)?$/.test(embeddedValue)) {
                     finalValue = Number(embeddedValue)
                   } else {
-                    finalValue = resolveTokenValue(embeddedValue, config)
+                    finalValue = embeddedValue
                   }
                 }
                 break

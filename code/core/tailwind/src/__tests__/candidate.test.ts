@@ -13,7 +13,7 @@ const tokenize = (className: string, rest?: Record<string, any>) =>
 
 describe('claimed candidates become flat props', () => {
   test('a base candidate resolves through the config', () => {
-    expect(tokenize('p-4')).toEqual({ $padding: '$4' })
+    expect(tokenize('p-4')).toEqual({ $padding: '4' })
   })
 
   test('modifiers are preserved on the flat key', () => {
@@ -51,19 +51,28 @@ describe('claimed candidates become flat props', () => {
 
   test('a directional border expands to every affected longhand', () => {
     expect(tokenize('border-x-2')).toEqual({
-      $borderLeftWidth: '$2',
-      $borderRightWidth: '$2',
+      $borderLeftWidth: '2',
+      $borderRightWidth: '2',
     })
   })
 
   test('color opacity rides along as a suffix for the shared resolver', () => {
     // the suffix survives tokenization untouched; alpha composition happens once,
     // in core's color resolution, identically on web and native
-    expect(tokenize('bg-white/50')).toEqual({ $backgroundColor: '$white/50' })
+    expect(tokenize('bg-white/50')).toEqual({ $backgroundColor: 'white/50' })
+  })
+
+  test('invalid color opacity stays bare for the shared resolver diagnostic', () => {
+    expect(tokenize('bg-white/50.5')).toEqual({
+      $backgroundColor: 'white/50.5',
+    })
+    expect(tokenize('bg-white/150')).toEqual({
+      $backgroundColor: 'white/150',
+    })
   })
 
   test('a theme value name resolves like a token so it stays theme-reactive', () => {
-    expect(tokenize('bg-background')).toEqual({ $backgroundColor: '$background' })
+    expect(tokenize('bg-background')).toEqual({ $backgroundColor: 'background' })
   })
 
   test('a whole-class utility sets its props directly when unmodified', () => {
@@ -84,14 +93,14 @@ describe('unclaimed candidates', () => {
   test('unknown classes keep author order and claimed ones are removed', () => {
     expect(tokenize('grid-cols-2 p-4 grid-cols-3')).toEqual({
       className: 'grid-cols-2 grid-cols-3',
-      $padding: '$4',
+      $padding: '4',
     })
   })
 
   test('tamagui never string-merges its own candidates: the last one wins', () => {
     // two paddings collapse to one flat prop; the shared resolver never sees a
     // conflicting pair, so no tailwind-merge equivalent is needed
-    expect(tokenize('p-2 p-4')).toEqual({ $padding: '$4' })
+    expect(tokenize('p-2 p-4')).toEqual({ $padding: '4' })
   })
 })
 

@@ -182,7 +182,7 @@ describe('class-first styled()', () => {
 
     expect(normalized.baseStyle).toEqual({
       backgroundColor: 'red',
-      padding: '$4',
+      padding: '4',
     })
   })
 
@@ -193,7 +193,7 @@ describe('class-first styled()', () => {
       getConfig()
     )
 
-    expect(normalized.baseStyle).toEqual({ padding: '$4' })
+    expect(normalized.baseStyle).toEqual({ padding: '4' })
     expect(normalized.passthroughClassName).toBe('grid-cols-3 shadow-none')
   })
 
@@ -304,26 +304,26 @@ describe('class-first styled()', () => {
       resolved
     )
     expect(resolved.baseStyle).toMatchObject({
-      padding: '$4',
-      borderRadius: '$4',
+      padding: '4',
+      borderRadius: '4',
       hoverStyle: { backgroundColor: 'red' },
-      $sm: { margin: '$4' },
+      $sm: { margin: '4' },
       enterStyle: { opacity: 0 },
     })
     expect(resolved.passthroughClassName).toBe('base-user')
     expect(resolved.variants?.size?.sm).toMatchObject({
-      height: '$8',
-      paddingHorizontal: '$3',
+      height: '8',
+      paddingHorizontal: '3',
       hoverStyle: { opacity: 0.5 },
-      $sm: { marginTop: '$4' },
+      $sm: { marginTop: '4' },
       enterStyle: { scale: 0.95 },
       className: 'simple-user',
     })
     expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
-      width: '$8',
-      padding: '$0',
+      width: '8',
+      padding: '0',
       hoverStyle: { backgroundColor: 'blue' },
-      $sm: { marginBottom: '$4' },
+      $sm: { marginBottom: '4' },
       enterStyle: { opacity: 0.5 },
       className: 'compound-user',
     })

@@ -3,7 +3,6 @@ import {
   fontWeightNames,
   modifierAliases,
   prefixToEntries,
-  pseudoToModifier,
   radiusCornerProps,
   standaloneValueProps,
   textAlignKeywords,
@@ -12,7 +11,10 @@ import {
   type GrammarEntry,
   type TokenCategory,
 } from './registry'
+import { createModifierRegistry } from './modifierRegistry'
+import { splitColorOpacitySuffix } from './resolvePayload'
 import { getSafeAreaEdge } from './safeAreaVariables'
+import type { ModifierKind, ModifierRegistryView } from './valueTypes'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
 
@@ -43,7 +45,6 @@ export type CandidateClassification =
   | { kind: 'tamagui'; parsed: ParsedCandidate }
   | { kind: 'passthrough'; reason: string }
 
-const defaultModifiers = new Set(Object.values(pseudoToModifier))
 const sizingConveniences = new Set(['full', 'auto', 'screen', 'min', 'max', 'fit'])
 const fontGenerics = new Set(['sans', 'serif', 'mono'])
 const numericPattern = /^\d+(?:\.\d+)?$/
@@ -132,22 +133,33 @@ function splitCandidate(candidate: string): { modifiers: string[]; base: string 
   return { modifiers: parts, base: current }
 }
 
-type ModifierKind = 'pseudo' | 'media' | 'theme' | 'platform'
+type CandidateModifierKind = Exclude<ModifierKind, 'group' | 'container'>
 
-function modifierKind(modifier: string, config: GrammarConfigView): ModifierKind | null {
+const modifierRegistryCache = new WeakMap<GrammarConfigView, ModifierRegistryView>()
+
+function getModifierRegistry(config: GrammarConfigView): ModifierRegistryView {
+  let registry = modifierRegistryCache.get(config)
+  if (!registry) {
+    registry = createModifierRegistry(config).registry
+    modifierRegistryCache.set(config, registry)
+  }
+  return registry
+}
+
+function modifierKind(
+  modifier: string,
+  config: GrammarConfigView
+): CandidateModifierKind | null {
   const canonical = modifierAliases[modifier] || modifier
-  if (defaultModifiers.has(canonical)) return 'pseudo'
-  if (hasName(config.mediaNames, modifier)) return 'media'
-  if (hasName(config.themeNames, modifier)) return 'theme'
-  if (hasName(config.platformNames, modifier)) return 'platform'
-  return null
+  const kind = getModifierRegistry(config).get(canonical)
+  return kind === 'group' || kind === 'container' ? null : kind || null
 }
 
 function modifiersAreKnown(
   modifiers: readonly string[],
   config: GrammarConfigView
 ): boolean {
-  const seen = new Set<ModifierKind>()
+  const seen = new Set<CandidateModifierKind>()
   for (const modifier of modifiers) {
     const kind = modifierKind(modifier, config)
     if (!kind || seen.has(kind)) return false
@@ -267,7 +279,9 @@ function arbitraryBorderKind(value: string): 'width' | 'color' | null {
 }
 
 function tokenLookupName(category: TokenCategory, value: string): string {
-  return category === 'color' ? value.replace(/\/\d+(?:\.\d+)?$/, '') : value
+  if (category !== 'color') return value
+  const suffix = splitColorOpacitySuffix(value)
+  return suffix.kind === 'none' ? value : suffix.name
 }
 
 function chooseEntry(
@@ -363,7 +377,7 @@ function chooseEntry(
     const color = entries.find((entry) => entry.prop.endsWith('Color'))
     const token = negative ? `-${rawValue}` : rawValue
     const matchesWidth = width && hasTokenName(config, 'space', token)
-    const colorName = rawValue.replace(/\/\d+(?:\.\d+)?$/, '')
+    const colorName = tokenLookupName('color', rawValue)
     const matchesColor = color && hasTokenName(config, 'color', colorName)
     if (matchesWidth && matchesColor) return null
     if (matchesWidth) {
@@ -378,8 +392,7 @@ function chooseEntry(
   for (const entry of entries) {
     if (entry.tokenCategory) {
       const name = negative ? `-${rawValue}` : rawValue
-      const tokenName =
-        entry.tokenCategory === 'color' ? name.replace(/\/\d+(?:\.\d+)?$/, '') : name
+      const tokenName = tokenLookupName(entry.tokenCategory, name)
       if (hasTokenName(config, entry.tokenCategory, tokenName)) {
         return { entry, valueKind: 'token' }
       }

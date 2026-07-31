@@ -96,7 +96,7 @@ describe('config-aware tokens (WEB) — class names follow runtime-owned values'
   test('fontFamily.$sans wins font-sans and resolves the configured token', () => {
     const cls = className(`<View fontFamily="$sans" />`)
     expect(cls).toContain('font-sans')
-    expect(flat(cls).fontFamily).toBe('$sans')
+    expect(flat(cls).fontFamily).toBe('sans')
     expect(styleFlat({ className: cls }).fontFamily).toBe(
       styleFlat({ fontFamily: '$sans' }).fontFamily
     )

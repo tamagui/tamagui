@@ -23,6 +23,7 @@ const tokens = {
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
 const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
+const themes = { ...(v6 as any).themes, web: { ...(v6 as any).themes.light } }
 const convertOpts = { renameComponents: false as const, tokens, fonts, media }
 
 let CFG: any
@@ -33,6 +34,7 @@ beforeAll(() => {
     tokens,
     fonts,
     media,
+    themes,
   } as any)
 })
 
@@ -44,11 +46,11 @@ function className(sourceJSX: string): string {
 function flat(cls: string): Record<string, any> {
   return tailwindStyleFrontend.preprocessProps({ className: cls }, CFG)
 }
-function style(props: Record<string, any>): Record<string, any> {
+function style(props: Record<string, any>, themeName = 'light'): Record<string, any> {
   return (
     splitTailwindStyles(View, props, {
-      theme: (CFG.themes as any).light,
-      themeName: 'light',
+      theme: (CFG.themes as any)[themeName],
+      themeName,
     }).style || {}
   )
 }
@@ -87,9 +89,26 @@ describe('config-aware tokens (NATIVE) — class names follow runtime-owned valu
   test('fontFamily.$sans wins font-sans and resolves the configured token', () => {
     const cls = className(`<View fontFamily="$sans" />`)
     expect(cls).toContain('font-sans')
-    expect(flat(cls).fontFamily).toBe('$sans')
+    expect(flat(cls).fontFamily).toBe('sans')
     expect(style({ className: cls }).fontFamily).toBe(
       style({ fontFamily: '$sans' }).fontFamily
+    )
+  })
+})
+
+describe('shared candidate semantics (NATIVE)', () => {
+  test('invalid color opacity stays literal like the flat value', () => {
+    expect(style({ className: 'bg-black/50.5' }).backgroundColor).toBe(
+      style({ backgroundColor: 'black/50.5' }).backgroundColor
+    )
+    expect(style({ className: 'bg-black/150' }).backgroundColor).toBe(
+      style({ backgroundColor: 'black/150' }).backgroundColor
+    )
+  })
+
+  test('a platform and theme name collision keeps the registry platform meaning', () => {
+    expect(style({ className: 'web:bg-black' }, 'web').backgroundColor).toBe(
+      style({ backgroundColor: 'web:black' }, 'web').backgroundColor
     )
   })
 })

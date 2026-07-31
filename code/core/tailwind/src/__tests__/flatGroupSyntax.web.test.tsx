@@ -22,6 +22,16 @@ test('flat $group-name-pseudo:prop matches object form output', () => {
   expect(Object.keys(flat?.classNames || {}).length).toBeGreaterThan(0)
 })
 
+test('the shared group-hover kind still reaches the legacy flat adapter', () => {
+  const flat = split({ '$group-hover:opacity': 0.5 })
+  const obj = split({ '$group-hover': { opacity: 0.5 } })
+  expect(flat?.classNames).toEqual(obj?.classNames)
+  expect(Object.keys(flat?.rulesToInsert || {})).toEqual(
+    Object.keys(obj?.rulesToInsert || {})
+  )
+  expect(Object.keys(flat?.classNames || {}).length).toBeGreaterThan(0)
+})
+
 test('flat $group-name:prop (no pseudo) matches object form output', () => {
   const flat = split({ '$group-card:backgroundColor': 'red' })
   const obj = split({ '$group-card': { backgroundColor: 'red' } })

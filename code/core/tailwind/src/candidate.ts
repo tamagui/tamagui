@@ -1,6 +1,5 @@
 import { isWeb } from '@tamagui/constants'
 import type { StyleFrontendConfig } from '@tamagui/core/internal-runtime'
-import { tokenCategories } from '@tamagui/helpers'
 import {
   borderSideSuffix,
   classifyCandidate,
@@ -8,9 +7,9 @@ import {
   decodeArbitrary,
   getTokenCategory,
   getSafeAreaEdge,
-  hasTokenName,
   percentUtilityProps,
   radiusCornerProps,
+  splitColorOpacitySuffix,
   type GrammarConfigView,
   type ParsedCandidate,
 } from '@tamagui/style-grammar'
@@ -34,57 +33,6 @@ export function getStyleGrammarConfig(config: StyleFrontendConfig): GrammarConfi
   const view = createGrammarConfigView(config)
   styleGrammarConfigCache.set(config, view)
   return view
-}
-
-// theme value names (color1-12, background, borderColor, shadow*, …) are not tokens but
-// resolve to their theme CSS var (var(--color5)) via the theme lookup props already use.
-// keys are uniform across a config's themes, so compute the set once per config.
-const themeValueKeysCache = new WeakMap<StyleFrontendConfig, Set<string>>()
-
-function getThemeValueKeys(config: StyleFrontendConfig): Set<string> {
-  let set = themeValueKeysCache.get(config)
-  if (!set) {
-    set = new Set<string>()
-    const themes = config.themes as Record<string, any>
-    // union keys across all themes: base themes hold the full palette while sub-themes
-    // may override a subset, and theme iteration order isn't guaranteed.
-    for (const name in themes) {
-      const t = themes[name]
-      if (t && typeof t === 'object' && !Array.isArray(t)) {
-        for (const k in t) set.add(k)
-      }
-    }
-    themeValueKeysCache.set(config, set)
-  }
-  return set
-}
-
-/**
- * Check if a value matches a token name (without $ prefix).
- * Returns the token value prefixed with $ if found, otherwise returns the original value.
- */
-export function resolveTokenValue(
-  value: string,
-  config: StyleFrontendConfig,
-  prop?: string
-): string {
-  // already a token reference
-  if (value.startsWith('$')) return value
-
-  // Token lookup is category-specific: p-red must not borrow a color token for padding.
-  const category = prop ? getTokenCategory(prop) : null
-  if (category && hasTokenName(getStyleGrammarConfig(config), category, value)) {
-    return `$${value}`
-  }
-
-  // theme-value color names (bg-color5, text-color10, border-borderColor) aren't tokens
-  // but resolve to their theme var; prefix so the value routes through the same theme
-  // resolution props use (var(--color5), theme-aware) instead of a dead literal 'color5'.
-  if (prop && prop in tokenCategories.color && getThemeValueKeys(config).has(value)) {
-    return `$${value}`
-  }
-
-  return value
 }
 
 export function isTokenValueProp(prop: string): boolean {
@@ -164,18 +112,17 @@ function expandBorderCandidate(
 }
 
 /**
- * Resolve a registry-parsed candidate through the active Tamagui config.
+ * Adapt a registry-parsed candidate into the flat props shared rendering consumes.
  * Examples:
- *   "hover:bg-blue5" → { key: "$hover:backgroundColor", value: "$blue5" } (if blue5 is a token)
- *   "sm:p-4" → { key: "$sm:padding", value: "$4" } (if 4 is a space token)
+ *   "hover:bg-blue5" → { key: "$hover:backgroundColor", value: "blue5" } (if blue5 is a token)
+ *   "sm:p-4" → { key: "$sm:padding", value: "4" } (if 4 is a space token)
  *   "bg-[red]" → { key: "$backgroundColor", value: "red" } (raw CSS value)
  *   "w-100" → { key: "$width", value: 100 }
  *   "opacity-50" → { key: "$opacity", value: 0.5 }
  * Note: $ prefix in values (e.g., "m-$spacing") is invalid and will warn.
  */
 function tailwindClassToFlatProp(
-  parsed: ParsedCandidate,
-  config: StyleFrontendConfig
+  parsed: ParsedCandidate
 ): { key: string; value: any } | null {
   if (parsed.kind !== 'dynamic' || !parsed.entry || parsed.rawValue === undefined) {
     return null
@@ -187,7 +134,7 @@ function tailwindClassToFlatProp(
 
   if (prop.endsWith('Width') && parsed.prefix?.startsWith('border')) {
     if (parsed.valueKind === 'token') {
-      value = `$${parsed.negative ? '-' : ''}${value}`
+      value = `${parsed.negative ? '-' : ''}${value}`
     } else if (parsed.valueKind === 'arbitrary') {
       value = borderDimValue(value)
     } else {
@@ -207,8 +154,7 @@ function tailwindClassToFlatProp(
         serif: 'serif',
         mono: 'monospace',
       }
-      famValue =
-        parsed.valueKind === 'token' ? `$${value}` : generic[value] || `$${value}`
+      famValue = parsed.valueKind === 'token' ? value : generic[value] || value
     }
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontFamily` : `$fontFamily`,
@@ -222,7 +168,7 @@ function tailwindClassToFlatProp(
       // fontSize is number-only on native: text-[14px] → 14 (arbitraryValue drops px)
       fsValue = arbitraryValue(decodeArbitrary(value.slice(1, -1)))
     } else {
-      fsValue = `$${value}`
+      fsValue = value
     }
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontSize` : `$fontSize`,
@@ -239,7 +185,7 @@ function tailwindClassToFlatProp(
       // on web, breaking the multiplier). RN has no unitless multiplier, so this is web-only.
       lhValue = /^-?\d*\.?\d+px$/.test(inner) ? Number.parseFloat(inner) : inner
     } else {
-      lhValue = `$${value}`
+      lhValue = value
     }
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:lineHeight` : `$lineHeight`,
@@ -252,7 +198,7 @@ function tailwindClassToFlatProp(
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
       lsValue = arbitraryValue(decodeArbitrary(value.slice(1, -1)))
     } else {
-      lsValue = `$${value}`
+      lsValue = value
     }
     return {
       key:
@@ -297,13 +243,14 @@ function tailwindClassToFlatProp(
   // value is left intact (e.g. fraction sizing handled above).
   let opacitySuffix = ''
   if (category === 'color' && typeof value === 'string') {
-    const slashIdx = value.lastIndexOf('/')
-    if (slashIdx > 0) {
-      const tail = value.slice(slashIdx + 1)
-      if (tail.length > 0 && /^\d+(\.\d+)?$/.test(tail)) {
-        opacitySuffix = `/${tail}`
-        value = value.slice(0, slashIdx)
-      }
+    const suffix = splitColorOpacitySuffix(value)
+    if (suffix.kind === 'invalid') {
+      const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
+      return { key, value }
+    }
+    if (suffix.kind === 'valid') {
+      opacitySuffix = value.slice(suffix.name.length)
+      value = suffix.name
     }
   }
 
@@ -313,7 +260,7 @@ function tailwindClassToFlatProp(
     value = Number(value) / 100
   } else if (/^\d+(\.\d+)?$/.test(value) && !value.startsWith('$')) {
     if (category) {
-      value = `$${parsed.negative ? '-' : ''}${value}`
+      value = `${parsed.negative ? '-' : ''}${value}`
     } else {
       value = Number(value)
     }
@@ -325,17 +272,12 @@ function tailwindClassToFlatProp(
         getSafeAreaEdge(value)
       )
     ) {
-      value = `$${parsed.negative ? '-' : ''}${value}`
-    } else {
-      // check if value matches a token name and resolve it
-      // e.g., "blue5" → "$blue5" if $blue5 token exists, or a theme color name
-      value = resolveTokenValue(value, config, prop)
+      value = `${parsed.negative ? '-' : ''}${value}`
     }
   }
 
-  // re-attach the color opacity suffix (bg-blue-500/50). getTokenForKey parses
-  // the trailing /N and applies it via normalizeColor (color-mix on web, rgba
-  // on native), matching the flat-styles "$blue10/50" path exactly.
+  // re-attach the color opacity suffix (bg-blue-500/50). the shared flat-value
+  // resolver parses the trailing /N after its property-scoped name lookup.
   if (opacitySuffix && typeof value === 'string') {
     value = `${value}${opacitySuffix}`
   }
@@ -376,8 +318,7 @@ function getClassPlanCache(grammarConfig: object) {
 
 function computeClassPlan(
   cls: string,
-  grammarConfig: GrammarConfigView,
-  config: StyleFrontendConfig
+  grammarConfig: GrammarConfigView
 ): TailwindClassPlan {
   const classification = classifyCandidate(cls, grammarConfig)
   if (classification.kind === 'passthrough') {
@@ -401,7 +342,7 @@ function computeClassPlan(
   }
   // Resolve only after the registry has claimed the candidate. Directional border/radius
   // expansion below consumes that parsed decision instead of re-parsing width vs color.
-  const flatProp = tailwindClassToFlatProp(parsed, config)
+  const flatProp = tailwindClassToFlatProp(parsed)
   if (flatProp) {
     const expanded = expandBorderCandidate(parsed, flatProp.value)
     if (expanded) {
@@ -470,7 +411,7 @@ export function preprocessTailwindClassName(
     for (const cls of classes) {
       let plan = plans.get(cls)
       if (plan === undefined) {
-        plan = computeClassPlan(cls, grammarConfig, config)
+        plan = computeClassPlan(cls, grammarConfig)
         plans.set(cls, plan)
       }
       if (plan === null) {

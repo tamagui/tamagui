@@ -7,7 +7,7 @@ import { findRule, splitTailwindStyles } from '../tailwind/src/__tests__/utils'
 
 // the tailwind frontend should resolve semantic theme-value color names (color1-12,
 // background, border-color, …) to their theme css var (var(--color5)), theme-aware
-// and never as a dead literal. see candidate resolveTokenValue.
+// and never as a dead literal through the shared property-scoped lookup.
 beforeAll(() => {
   createTamagui(defaultConfig as any)
 })
@@ -58,7 +58,7 @@ describe('tailwind theme-value color classes', () => {
     expect((getConfig() as any).tokensParsed.color).toHaveProperty('$blue-500')
     const rule = colorRule('bg-blue-500', 'backgroundColor')
     expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toBe('var(--blue-500)')
+    expect(rule[StyleObjectValue]).toBe('var(--c-color-blue-500)')
   })
 
   test('an unconfigured palette name passes through', () => {

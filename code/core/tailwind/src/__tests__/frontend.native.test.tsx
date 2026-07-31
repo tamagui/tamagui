@@ -173,26 +173,26 @@ describe('class-first styled()', () => {
     )
 
     expect(resolved.baseStyle).toMatchObject({
-      padding: '$4',
-      borderRadius: '$4',
+      padding: '4',
+      borderRadius: '4',
       hoverStyle: { backgroundColor: 'red' },
-      $sm: { margin: '$4' },
+      $sm: { margin: '4' },
       enterStyle: { opacity: 0 },
     })
     expect(resolved.passthroughClassName).toBeUndefined()
     expect(resolved.variants?.size?.sm).toMatchObject({
-      height: '$8',
-      paddingHorizontal: '$3',
+      height: '8',
+      paddingHorizontal: '3',
       hoverStyle: { opacity: 0.5 },
-      $sm: { marginTop: '$4' },
+      $sm: { marginTop: '4' },
       enterStyle: { scale: 0.95 },
     })
     expect(resolved.variants?.size?.sm).not.toHaveProperty('className')
     expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
-      width: '$8',
-      padding: '$0',
+      width: '8',
+      padding: '0',
       hoverStyle: { backgroundColor: 'blue' },
-      $sm: { marginBottom: '$4' },
+      $sm: { marginBottom: '4' },
       enterStyle: { opacity: 0.5 },
     })
     expect(resolved.compoundVariants?.[0]?.style).not.toHaveProperty('className')

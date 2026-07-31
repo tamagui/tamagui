@@ -1,11 +1,6 @@
 import type { StyleFrontendConfig } from '@tamagui/core/internal-runtime';
 import { type GrammarConfigView } from '@tamagui/style-grammar';
 export declare function getStyleGrammarConfig(config: StyleFrontendConfig): GrammarConfigView;
-/**
- * Check if a value matches a token name (without $ prefix).
- * Returns the token value prefixed with $ if found, otherwise returns the original value.
- */
-export declare function resolveTokenValue(value: string, config: StyleFrontendConfig, prop?: string): string;
 export declare function isTokenValueProp(prop: string): boolean;
 /**
  * Append a contribution at the end of the forward pass.

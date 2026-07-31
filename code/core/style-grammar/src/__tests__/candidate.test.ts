@@ -206,6 +206,13 @@ describe('candidate grammar', () => {
       rawValue: 'color5/50',
       entry: { prop: 'color', tokenCategory: 'color' },
     })
+    for (const invalid of ['50.5', '150', '-1', '+3']) {
+      expect(parseCandidate(`color-color5/${invalid}`, config)).toMatchObject({
+        valueKind: 'token',
+        rawValue: `color5/${invalid}`,
+        entry: { prop: 'color', tokenCategory: 'color' },
+      })
+    }
   })
 
   test('formatter resolves collisions and covers arbitrary, whole, empty-prefix, and modifiers', () => {
