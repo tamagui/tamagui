@@ -120,6 +120,26 @@ describe('legacy object traversal', () => {
     ])
   })
 
+  test('composes nested platform chains outer to inner', () => {
+    expect(
+      convert('$platform-ios', {
+        $sm: {
+          hoverStyle: {
+            padding: 4,
+          },
+        },
+      })
+    ).toEqual({
+      contributions: [
+        {
+          prop: 'padding',
+          clause: { modifiers: ['ios', 'sm', 'hover'], payload: '4px' },
+        },
+      ],
+      errors: [],
+    })
+  })
+
   test('composes nested media and pseudo modifiers outer to inner', () => {
     expect(
       convert('$sm', {

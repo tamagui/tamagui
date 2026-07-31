@@ -75,6 +75,11 @@ export const webOnlyStylePropsView = {
   objectPosition: true,
   textEmphasis: true,
   userSelect: true,
+  // real style keys, not DOM attributes: without these an authored value falls
+  // through to viewProps and reaches the element as an unknown attribute
+  overflowWrap: true,
+  wordWrap: true,
+  resize: true,
 }
 
 export const webOnlyStylePropsText = {

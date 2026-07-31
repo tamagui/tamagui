@@ -96,6 +96,9 @@ export declare const webOnlyStylePropsView: {
     objectPosition: boolean;
     textEmphasis: boolean;
     userSelect: boolean;
+    overflowWrap: boolean;
+    wordWrap: boolean;
+    resize: boolean;
 };
 export declare const webOnlyStylePropsText: {
     whiteSpace: boolean;

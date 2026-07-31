@@ -1016,3 +1016,20 @@ leak-to-DOM set), nested platform chains, then the contraction (item 5).
 
 Gates: grammar 350, core web 403 / 46 files, core native 172, kitchen-sink
 MixedCascade 2/2 in a real browser, all green with fresh package builds.
+
+### Item 4 close-out: platform chains pinned, leak-to-DOM keys closed (Lane E)
+
+Nested platform chains already convert — the `visit` recursion in
+`convertLegacyConditionProp` composes `$platform-ios > $sm > hoverStyle` into
+one multi-modifier clause; the brief's "refuses conversion" claim was stale.
+Now pinned by "composes nested platform chains outer to inner" in the
+legacyConditions grammar tests. With that, item 4's category list is done:
+every fallback category either converts (families, transform program, platform
+chains) or is a deliberate legacy remainder with a diagnostic (transform part
+props, unconvertible values).
+
+OPUS's leak-to-DOM set: `overflowWrap`, `wordWrap` (its legacy alias), and
+`resize` are now web view style keys, so authored values become styles instead
+of unknown DOM attributes. `listStyle` deliberately skipped per OPUS's finding
+(`.is_View` forces `display:flex`, no marker ever renders); if a plain-list
+use case appears it belongs with the DOM contract's `html.*` work.
