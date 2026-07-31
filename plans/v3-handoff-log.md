@@ -192,7 +192,35 @@ Status: in progress.
 
 ## 3. DOM contract
 
-Status: pending.
+Status: in progress.
+
+- Lane D landed the `@tamagui/dom` package in `0c82653e85`: the tag, attribute,
+  event, native-backing and compatibility tables, plus the pinned React Strict
+  DOM snapshot they are checked against. RSD stays a conformance oracle, never a
+  dependency. Package builds, typechecks under `isolatedDeclarations`, and its
+  17 conformance tests pass.
+- `scripts/extract-rsd-snapshot.ts` regenerates the pin
+  (react-strict-dom 0.0.55 @ `c877f5c19b`) from a checkout. It captures the tag
+  set with each tag's native backing, ref element and props type, the runtime
+  prop allowlist, every strict props type, the `AriaRole`/`AutoComplete`/input
+  `type` unions, and RSD's own default element styles for web and native.
+- The conformance test compares the tables against that snapshot and requires
+  `COMPATIBILITY` to claim exactly the differences it finds: an unclaimed
+  difference and a claim that is no longer true both fail. So the compatibility
+  record cannot drift in either direction, and moving the pin reports what
+  changed by name. Verified by mutation: eleven separate corruptions of the
+  tables and of the compatibility record each produce a failure.
+- Every structural column matched the oracle already. Two style gaps were real
+  and are fixed: `code`, `kbd` and `pre` were missing the `fontSize: 1em` that
+  cancels the browser's smaller default size for monospace text, and the
+  display reset (`margin`, `padding`, `borderStyle`, `textDecorationLine`) was
+  being applied on native, where there is no browser stylesheet to undo and
+  every key is a per-element cost for nothing. It is `DISPLAY_WEB_RESET` now.
+- Open, and blocking nothing yet: `bun.lock` at HEAD does not register
+  `code/core/codemod-flat-values`, which is already committed, so
+  `bun install --frozen-lockfile` fails at HEAD. The working tree also carries
+  the `@tamagui/config` -> `@tamagui/style-grammar` edge and `@tamagui/dom`.
+  Three lanes, one file: it needs a single coordinated commit.
 
 ## 4. Cutover config
 
