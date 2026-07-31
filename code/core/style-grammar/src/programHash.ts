@@ -10,7 +10,31 @@
 // config object identity, or insertion history. The config revision is the
 // caller's opaque stamp for "the resolved config that produced these payloads".
 
+import { parseGroupModifier } from './modifierRegistry'
+import { modifierAliases } from './stateModifiers'
 import type { ParsedValue } from './valueTypes'
+
+/**
+ * Alias spellings are one identity: `active:` and `press:` (and the group
+ * forms embedding them) lower to IDENTICAL rule text, so hashing the authored
+ * spelling would mint two class names for one block — a duplicate rule and a
+ * dedup failure. The hash canonicalizes each modifier first; lowering keeps
+ * receiving the authored spelling untouched.
+ */
+function canonicalModifier(name: string): string {
+  const direct = modifierAliases[name]
+  if (direct) return direct
+  if (name.startsWith('group-')) {
+    const parsed = parseGroupModifier(name)
+    if (parsed) {
+      const state = modifierAliases[parsed.state] ?? parsed.state
+      if (state !== parsed.state) {
+        return parsed.group === null ? `group-${state}` : `group-${state}/${parsed.group}`
+      }
+    }
+  }
+  return name
+}
 
 // The hash is the algorithm from @tamagui/simple-hash
 // (code/core/simple-hash/src/index.ts), copied rather than imported because this
@@ -80,11 +104,11 @@ export function normalizeProgramKey(
   key += value.base === null ? 'n' : `b${value.base.length}:${value.base}`
   for (const clause of value.clauses) {
     // condition sets are conjunctions: `dark:hover:` and `hover:dark:` are one
-    // clause, so the hash sorts a copy to agree with the merge rule and dedup
+    // clause, so the hash sorts a copy to agree with the merge rule and dedup;
+    // alias spellings canonicalize first so `active:` and `press:` are one name
+    const canonical = clause.modifiers.map(canonicalModifier)
     const modifiers =
-      clause.modifiers.length > 1
-        ? clause.modifiers.slice().sort().join(',')
-        : clause.modifiers.join(',')
+      canonical.length > 1 ? canonical.sort().join(',') : canonical.join(',')
     key += `c${modifiers.length}:${modifiers}${clause.payload.length}:${clause.payload}`
   }
   return key
