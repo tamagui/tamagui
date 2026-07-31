@@ -104,6 +104,22 @@ the native context that has no CSS fallback. Descendant candidates carrying a
 Tamagui value cannot rely on raw passthrough and must enter the shared program
 path.
 
+The native parent-plus-descendant probe also exposed a pre-existing runtime
+gap. Container-only components created `@` and `@name` context entries but
+mounted `GroupContext.Provider` only when a `group` prop was present. A direct
+injected-context test could prove that a descendant evaluated `@size`; it could
+not prove that a real container parent provided or updated that context.
+`e41f60ff93` closes the provider guard for every container prop form.
+
+One separate no-op remains visible in the subscription bookkeeping and was not
+the cause of that gap. Container evaluation reports context keys such as
+`@layout` and referenced size names such as `sm` separately. The subscriber
+correctly attaches the `@layout` listener and uses the full size set for its
+layout calculation, then also attempts a listener lookup for `sm`. No provider
+publishes a context under that size name, so the second lookup cannot subscribe.
+This redundant iteration should not be mistaken for the provider bug when the
+subscription representation is simplified later.
+
 ## Paths compared
 
 ### Flat-value path
