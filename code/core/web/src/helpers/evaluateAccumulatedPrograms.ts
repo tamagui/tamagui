@@ -244,7 +244,10 @@ export function evaluateAccumulatedPrograms(
     containers: matchContainerModifier,
   }
 
-  const getValue = context.createNativeValueGetter(styleState.theme, styleState.fontFamily)
+  const getValue = context.createNativeValueGetter(
+    styleState.theme,
+    styleState.fontFamily
+  )
 
   let usedMediaKeys: string[] | null = null
   let usedStates: Set<string> | null = null
