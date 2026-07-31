@@ -1265,3 +1265,53 @@ should wire the lint rule to it rather than growing a second opinion. The
 runtime consumes it in the parse-cache compute step: once per distinct
 (property, input), both platforms, dev-only, zero hot-path cost. Pinned by
 grammar unit tests and a web integration test.
+
+### Lint and editor tooling complete (Lane V)
+
+- The ESLint rule now consumes `validatePayloadShape` after shorthand
+  expansion. `bg="sm:green red"` reports the same
+  `multi-component-single-value` diagnostic as the runtime, while the real
+  source fixture keeps a list-valued `boxShadow` clause clean. Shape,
+  grammar, target, and obsolete-name diagnostics remain fix-free.
+- `@tamagui/language-service` reads and watches the compiler-generated config;
+  it carries no fallback vocabulary. Candidate, target, modifier, and cursor
+  boundaries all come from `@tamagui/style-grammar`. The runtime scanner owns
+  optional source spans, while the ordinary render parse path allocates none.
+- JSX completion sites require the component type's existing `staticConfig`
+  marker, then TypeScript contextual assignability. Import spelling is not an
+  identity authority: a plain `@tamagui/logo` component with a string `color`
+  prop receives no Tamagui candidate completion, while View, Text, and styled
+  components do. Styled configuration sites additionally require `styled` from
+  the core flat-value export surfaces; `@tamagui/tailwind` variant matchers are
+  explicitly outside that set and receive no flat candidate completion.
+- TypeScript does not expose a cooked-to-authored offset map for string
+  escapes. The first delivery therefore declines escaped literals whenever
+  `literal.text` differs from the authored slice. This includes encoded clause
+  delimiters such as `hover\x3ared`, preventing a completion replacement from
+  deleting a runtime clause.
+- Serialized config format `themeFields: "values-only"` lives in the sibling
+  `tamaguiConfigMetadata` namespace. That exact version needs no theme cleanup;
+  a present unknown format is rejected. Unversioned legacy artifacts alone
+  drop the injected `id` field. Regressions pin both sides: stale `id` is absent
+  while `surface` survives, and a legitimate versioned theme key `mode` whose
+  values equal the containing theme names survives.
+- The package exposes the CommonJS factory shape tsserver loads, including a
+  root shim that unwraps the compiled default export. Its behavioral test
+  instantiates a real TypeScript language service through the packaged name,
+  exercises base, payload, modifier, host/type, escape, and config-reload
+  paths, then verifies the config watcher closes.
+- Final focused gates: style-grammar 369/369 plus package build, ESLint 3/3
+  plus package build, and language service 2/2 including its package build.
+
+### Font reset selects the explicit default (Lane V)
+
+- `createDesignSystem` now derives the shared `.font_*, .is_View` reset from
+  normalized `settings.defaultFont`, never alphabetic font-key order. An
+  explicit default that does not exist errors during config creation instead
+  of silently omitting the reset.
+- The regression adds an incomplete `aaa` font that sorts before `body`; it
+  failed before the fix and now leaves the reset unchanged. Browser probes
+  before and after were byte-identical for Text (Inter, 13px/22px) and View
+  (Inter, 16px/23px), `FontLanguageSwap` passed 4/4 at detached pre-fix HEAD
+  and 4/4 after, `createTamagui.web.test.tsx` passed 9/9, and the final web
+  package build passed.

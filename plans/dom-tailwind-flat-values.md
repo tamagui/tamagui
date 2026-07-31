@@ -727,6 +727,14 @@ never see editor diagnostics. TypeScript can expose small finite unions where
 they remain cheap, but type performance takes priority over exhaustive string
 validation.
 
+The generated editor vocabulary keeps serialization metadata outside
+`tamaguiConfig`, in the sibling
+`tamaguiConfigMetadata.themeFields: "values-only"` field. Future metadata must
+remain in that sibling namespace and must never become a theme field. Tooling
+accepts that exact format, rejects a present format it does not understand,
+and applies the old `id` field cleanup only to unversioned artifacts produced
+before the sibling marker existed.
+
 ## Programs and merging
 
 Merging preserves the v1 model: shorthands expand to longhands and
