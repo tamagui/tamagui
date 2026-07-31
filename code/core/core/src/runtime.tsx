@@ -19,7 +19,6 @@ import {
   enable,
   useElementLayout,
 } from '@tamagui/use-element-layout'
-import { createMedia } from '@tamagui/react-native-media-driver'
 import type {
   TamaguiProviderProps,
   createTamagui as createTamaguiWebType,
@@ -31,6 +30,7 @@ import {
 } from '@tamagui/web/internal-runtime'
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
+import { setupMedia } from './setupMedia'
 
 type GestureEnabledFreezeState = {
   frozen: boolean
@@ -77,10 +77,8 @@ export const TamaguiProvider = (props: TamaguiProviderProps) => {
 
 // automate using the react native media driver
 export const createTamagui: typeof createTamaguiWebType = (conf) => {
-  if (!isWeb) {
-    if (conf.media) {
-      conf.media = createMedia(conf.media)
-    }
+  if (conf.media) {
+    conf.media = setupMedia(conf.media)
   }
   return createTamaguiWeb(conf)
 }
