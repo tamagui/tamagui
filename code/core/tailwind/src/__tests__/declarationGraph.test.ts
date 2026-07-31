@@ -5,32 +5,36 @@ import { describe, expect, test } from 'vitest'
 const require = createRequire(import.meta.url)
 const packageDirectory = new URL('../..', import.meta.url).pathname
 
+function listDeclarationFiles(entry: string) {
+  return execFileSync(
+    process.execPath,
+    [
+      require.resolve('typescript/bin/tsc'),
+      entry,
+      '--noEmit',
+      '--skipLibCheck',
+      '--jsx',
+      'react-jsx',
+      '--moduleResolution',
+      'bundler',
+      '--module',
+      'esnext',
+      '--target',
+      'es2020',
+      '--listFiles',
+    ],
+    {
+      cwd: packageDirectory,
+      encoding: 'utf8',
+    }
+  )
+    .split(/\r?\n/)
+    .map((file) => file.replaceAll('\\', '/'))
+}
+
 describe('the shipped tailwind declaration graph', () => {
   test('stays on the private frontend seam', () => {
-    const files = execFileSync(
-      process.execPath,
-      [
-        require.resolve('typescript/bin/tsc'),
-        'types/index.d.ts',
-        '--noEmit',
-        '--skipLibCheck',
-        '--jsx',
-        'react-jsx',
-        '--moduleResolution',
-        'bundler',
-        '--module',
-        'esnext',
-        '--target',
-        'es2020',
-        '--listFiles',
-      ],
-      {
-        cwd: packageDirectory,
-        encoding: 'utf8',
-      }
-    )
-      .split(/\r?\n/)
-      .map((file) => file.replaceAll('\\', '/'))
+    const files = listDeclarationFiles('types/index.d.ts')
 
     expect(
       files.some((file) => file.endsWith('/core/core/types/internal-runtime.d.ts'))
@@ -49,5 +53,14 @@ describe('the shipped tailwind declaration graph', () => {
     )
 
     expect(regularFrontendDeclarations).toEqual([])
+  })
+
+  test('is unreachable from the regular core type entry', () => {
+    const files = listDeclarationFiles('../core/types/index.d.ts')
+
+    expect(files.some((file) => file.endsWith('/core/core/types/runtime.d.ts'))).toBe(
+      true
+    )
+    expect(files.filter((file) => file.includes('/core/tailwind/'))).toEqual([])
   })
 })
