@@ -66,6 +66,21 @@ values** — the headline v3 authoring feature is missing from their public type
 
 This is the one finding I would hold the push for.
 
+**Confirmed in a clean room, 2026-07-30.** The above was measured in the shared
+tree, where uncommitted work is a competing explanation. So it was re-run in an
+isolated worktree at `a37ac6b118` with its own `bun install --frozen-lockfile`
+and no uncommitted source at all. A build there rewrites **17 tracked
+declaration files**. There is nothing else it could be.
+
+Two of those 17 were listed in the first pass as another lane's uncommitted
+work, and that was wrong — they are stale committed declarations too:
+`code/core/helpers/types/validStyleProps.d.ts` and
+`code/core/web/types/helpers/webPropsToSkip.native.d.ts`.
+
+Separately observed in the clean room: `bun install`'s postinstall rewrites
+`code/tamagui.dev/tamagui.generated.css`, a tracked file. So a fresh install
+dirties the tree before anything is built. Same family, much smaller stakes.
+
 ### 2. Typecheck passes but is not checking what the source produces
 
 `bun run typecheck` exits 0 with zero errors, and I do not believe it. It
@@ -116,6 +131,36 @@ The silent-failure diagnostic this lane reported earlier —
 `bg="sm:green red"` parsing clean and rendering transparent with no diagnostic —
 is fixed in Lane V's **uncommitted** working tree. At HEAD the silent failure
 still ships.
+
+## Replacement baseline set
+
+The numbers every lane has been quoting are obsolete, and obsolete in the
+dangerous direction: they look like regressions when read against the current
+tree, so a lane that checks its work against them will either chase a
+regression that never happened or accept a real one as expected.
+
+Use these instead. They are working-tree readings taken 2026-07-30 with a fresh
+build, and they are **provisional** until the clean-checkout audit replaces
+them with numbers taken at a pinned SHA.
+
+| Gate | Command | Baseline |
+|---|---|---|
+| grammar | `code/core/style-grammar` `bun run test` | 369 passed / 21 files |
+| core web | `code/core/core-test` `bun run test:web` | 413 passed, 2 skipped, 1 todo / 47 files |
+| core native | `code/core/core-test` `bun run test:native` | 176 passed, 7 expected fail, 11 skipped / 21 files |
+| static | `code/compiler/static-tests` `bun run test:web` | 110 passed, 2 skipped / 14 files |
+| webpack | `code/compiler/static-tests` `bun run test:webpack` | 20 tests / 1 file |
+| tailwind web | `code/core/tailwind` `bun run test:web` | 459 passed / 20 files |
+| tailwind native | `code/core/tailwind` `bun run test:native` | 271 passed / 4 files |
+| web package types | `code/core/web` `bun run test:web` | 90 passed / 8 files, no type errors |
+| typecheck | root `bun run typecheck` | exit 0 — see finding 2 before trusting it |
+| lint | root `bun run lint` | exit 0, warnings only |
+| frozen-lockfile | root `bun install --frozen-lockfile --dry-run` | exit 0 |
+
+Superseded numbers, for anyone holding an old note: grammar 319/322, core web
+771 / 55 files, core native 411 / 21 files. The core-web and core-native drops
+are the Tailwind suites relocating into `code/core/tailwind` — 13 web files and
+4 native, 730 tests between them. Nothing regressed.
 
 ## What would make this answerable
 
