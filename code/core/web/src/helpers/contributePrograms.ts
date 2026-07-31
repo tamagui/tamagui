@@ -252,6 +252,14 @@ export function contributeParsedProgram(
 ): void {
   const programs = (styleState.programs ||= new Map<string, LonghandProgram>())
 
+  // mirror setLastFontFamilyToken: a base naming a configured family drives
+  // the font_* scope class on web and per-family variable resolution on native
+  if (prop === 'fontFamily' && value.base) {
+    if (styleState.conf.fontsParsed?.[`$${value.base}`]) {
+      styleState.fontFamily = `$${value.base}`
+    }
+  }
+
   for (const longhand of longhandsFor(prop, styleState)) {
     const existing = programs.get(longhand)
     const displaced = isTransformDeclaration(longhand)

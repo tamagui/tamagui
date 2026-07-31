@@ -1,5 +1,12 @@
 import { type ModifierRegistryView, type ResolvedReference } from '@tamagui/style-grammar';
 import type { TamaguiInternalConfig, ThemeParsed } from '../types';
+/** the token categories a bare name can resolve against */
+type TokenCategoryName = 'color' | 'space' | 'size' | 'radius' | 'zIndex';
+/**
+ * font sub-maps are keyed per family, so they resolve on a separate axis;
+ * `fontFamily` binds the families themselves rather than a sub-map
+ */
+type FontCategoryName = 'font' | 'fontFamily';
 export interface GrammarRuntimeContext {
     /** every modifier the config registers, plus parameterized group and container forms */
     registry: ModifierRegistryView;
@@ -28,9 +35,10 @@ export interface GrammarRuntimeContext {
     /**
      * native: the value for a reference name, resolved against one theme. Theme
      * values differ per theme, so this is built per render from the active theme,
-     * not once per config.
+     * not once per config. `fontFamily` is the active font token: font variable
+     * names are shared across families, so the active family resolves them.
      */
-    createNativeValueGetter(theme?: ThemeParsed): (name: string) => string | number;
+    createNativeValueGetter(theme?: ThemeParsed, fontFamily?: string): (name: string) => string | number;
 }
 export interface CreateGrammarRuntimeContextOptions {
     /**
@@ -41,4 +49,6 @@ export interface CreateGrammarRuntimeContextOptions {
     containerQueries?: Readonly<Record<string, string>>;
 }
 export declare function createGrammarRuntimeContext(config: TamaguiInternalConfig, options?: CreateGrammarRuntimeContextOptions): GrammarRuntimeContext;
+export declare function categoryForProperty(property: string): TokenCategoryName | FontCategoryName | undefined;
+export {};
 //# sourceMappingURL=grammarConfig.d.ts.map

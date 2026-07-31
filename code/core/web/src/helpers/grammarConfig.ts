@@ -22,6 +22,7 @@ import { simpleHash, tokenCategories } from '@tamagui/helpers'
 import {
   createGrammarConfigView,
   createModifierRegistry,
+  getTokenCategory,
   resolveCandidateTarget,
   type ModifierRegistryView,
   type ReferenceKind,
@@ -39,8 +40,11 @@ type TokenCategoryName = 'color' | 'space' | 'size' | 'radius' | 'zIndex'
 /** `fontsParsed` read structurally: family -> sub-map -> name -> Variable */
 type FontMaps = Record<string, Record<string, unknown> | undefined>
 
-/** font sub-maps are keyed per family, so they resolve on a separate axis */
-type FontCategoryName = 'font'
+/**
+ * font sub-maps are keyed per family, so they resolve on a separate axis;
+ * `fontFamily` binds the families themselves rather than a sub-map
+ */
+type FontCategoryName = 'font' | 'fontFamily'
 
 const tokenCategoryNames: readonly TokenCategoryName[] = [
   'color',
@@ -119,9 +123,13 @@ export interface GrammarRuntimeContext {
   /**
    * native: the value for a reference name, resolved against one theme. Theme
    * values differ per theme, so this is built per render from the active theme,
-   * not once per config.
+   * not once per config. `fontFamily` is the active font token: font variable
+   * names are shared across families, so the active family resolves them.
    */
-  createNativeValueGetter(theme?: ThemeParsed): (name: string) => string | number
+  createNativeValueGetter(
+    theme?: ThemeParsed,
+    fontFamily?: string
+  ): (name: string) => string | number
 }
 
 export interface CreateGrammarRuntimeContextOptions {
@@ -201,17 +209,32 @@ export function createGrammarRuntimeContext(
   }
 
   // fonts hold one Variable per size/lineHeight/letterSpacing/weight entry, plus
-  // a `family` that is a Variable rather than a sub-map, so each level is guarded
+  // a `family` that is a Variable rather than a sub-map, so each level is guarded.
+  // font variable names are SHARED across families ('f-family', 'f-size-4') —
+  // the web scopes them with font_* classes — so byVarName keeps one arbitrary
+  // winner for the var text, and native resolution goes through the per-family
+  // map below so the active family always wins
   const fonts = (config.fontsParsed ?? {}) as FontMaps
+  const fontVarsByFamily = new Map<string, Map<string, Variable>>()
   for (const family in fonts) {
     const font = fonts[family]
     if (!font) continue
+    const familyVars = new Map<string, Variable>()
+    fontVarsByFamily.set(family, familyVars)
     for (const subMap in font) {
       const entries = font[subMap]
-      if (!entries || typeof entries !== 'object' || isVariable(entries)) continue
+      if (isVariable(entries)) {
+        byVarName.set(entries.name, entries)
+        familyVars.set(entries.name, entries)
+        continue
+      }
+      if (!entries || typeof entries !== 'object') continue
       for (const name in entries as Record<string, unknown>) {
         const variable = (entries as Record<string, unknown>)[name]
-        if (isVariable(variable)) byVarName.set(variable.name, variable)
+        if (isVariable(variable)) {
+          byVarName.set(variable.name, variable)
+          familyVars.set(variable.name, variable)
+        }
       }
     }
   }
@@ -260,13 +283,25 @@ export function createGrammarRuntimeContext(
       const category = categoryForProperty(property)
       const kind = kindForCategory(category)
       const tokenNames =
-        category && category !== 'font' ? tokensByCategory.get(category) : undefined
+        category && category !== 'font' && category !== 'fontFamily'
+          ? tokensByCategory.get(category)
+          : undefined
       const fontMap =
         category === 'font'
           ? getFontSubMap(fonts, config, property, fontFamily)
           : undefined
 
       const lookup = (name: string): ResolvedReference | undefined => {
+        // fontFamily binds the configured families: the reference is the
+        // family Variable (var text is shared across fonts; the font_* scope
+        // class recorded at contribute time selects which family it resolves to)
+        if (category === 'fontFamily') {
+          const familyFont = fonts[`$${name}`] ?? fonts[name]
+          const familyVariable = familyFont?.family
+          if (isVariable(familyVariable)) {
+            return { name: familyVariable.name, kind }
+          }
+        }
         // the property's bound category first
         const token = tokenNames?.get(name) ?? fontMap?.[`$${name}`]
         if (isVariable(token)) return { name: token.name, kind }
@@ -320,10 +355,21 @@ export function createGrammarRuntimeContext(
       return variable.variable ?? ''
     },
 
-    createNativeValueGetter(theme) {
+    createNativeValueGetter(theme, fontFamily) {
+      const familyKey = fontFamily ?? config.defaultFontToken
+      const familyVars = familyKey
+        ? (fontVarsByFamily.get(familyKey) ??
+          fontVarsByFamily.get(`$${familyKey}`) ??
+          fontVarsByFamily.get(config.defaultFontToken))
+        : undefined
       return (name) => {
         const safeAreaValue = resolveSafeAreaVariable(name)
         if (safeAreaValue !== undefined) return safeAreaValue
+        // font variable names are shared across families (web scopes them with
+        // font_* classes), so the active family must win over byVarName's
+        // arbitrary last-registered font
+        const fontVariable = familyVars?.get(name)
+        if (fontVariable) return fontVariable.val as string | number
         const themeKey = themeKeyByVarName.get(name)
         if (themeKey !== undefined && theme) {
           const themeValue = (theme as Record<string, unknown>)[themeKey]
@@ -357,11 +403,27 @@ const flatValueCategories: Readonly<Record<string, TokenCategoryName>> = {
   '--t-y': 'space',
 }
 
-function categoryForProperty(
+export function categoryForProperty(
   property: string
 ): TokenCategoryName | FontCategoryName | undefined {
   const flatValueCategory = flatValueCategories[property]
   if (flatValueCategory) return flatValueCategory
+  // the style-grammar registry is the property-to-category contract the
+  // codemod and language service already consume; the runtime tables below
+  // only cover spellings the registry does not carry (logical and RN alias
+  // props), never a different answer for the same property
+  const fromRegistry = getTokenCategory(property)
+  if (fromRegistry) {
+    if (fromRegistry === 'fontFamily') return 'fontFamily'
+    if (
+      fromRegistry === 'fontSize' ||
+      fromRegistry === 'lineHeight' ||
+      fromRegistry === 'letterSpacing'
+    ) {
+      return 'font'
+    }
+    return fromRegistry
+  }
   if (property in tokenCategories.color) return 'color'
   if (property in fontSubMapByProp) return 'font'
   const fromDefaults = defaultTokenCategories[property]
@@ -375,7 +437,7 @@ function kindForCategory(
 ): ReferenceKind {
   if (category === 'color') return 'color'
   if (category === 'zIndex') return 'number'
-  if (category === undefined) return 'other'
+  if (category === undefined || category === 'fontFamily') return 'other'
   return 'length'
 }
 
