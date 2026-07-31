@@ -9,6 +9,7 @@
     "src/index.ts",
     "src/backgroundFamily.ts",
     "src/candidate.ts",
+    "src/candidateTarget.ts",
     "src/config.ts",
     "src/evaluateProgram.ts",
     "src/legacyConditions.ts",
@@ -25,6 +26,7 @@
     "src/transformFamily.ts",
     "src/valueParser.ts",
     "src/valueTypes.ts",
+    "src/v6ThemeNames.ts",
     "types",
     "dist"
   ],

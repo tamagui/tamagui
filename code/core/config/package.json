@@ -155,6 +155,7 @@
     "@tamagui/font-silkscreen": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*",
     "@tamagui/theme-builder": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "@tamagui/web": "workspace:*"
