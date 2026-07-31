@@ -23,6 +23,7 @@ export * from "./table";
 export * from "./textDecorationFamily";
 export * from "./transformFamily";
 export * from "./transition";
+export * from "./transitionAlign";
 export * from "./transitionLegacy";
 export * from "./transitionNative";
 export * from "./toolingDiagnostics";
