@@ -1432,3 +1432,32 @@ beating the `w-auto` convenience — the premise this ruling reverses. Both
 suites fail at their `beforeAll` createTamagui call until that lane lands the
 new premise (suites otherwise green: tailwind web 454/19 files pass beside it,
 native 265/3).
+
+### P0-2 closed: program eligibility is one contract, the widening landed (Lane E)
+
+The root fix: `programEligibility`/`legacyPartComposite` in style-grammar is
+the one owner of "does a flat clause value on this prop evaluate". The runtime
+consumes it in `contributeStylePrograms` (the private `rnTranslatedShadowProps`
+set and the inline transform-part check are deleted). The codemod and ESLint
+must consume the same export before converting/blessing a condition — routed
+to their lane; until then the codemod still emits clause spellings for part
+props that now diagnose.
+
+Behavior, all red-first tested and green on every gate (core web 430, native
+186, static native 47+1 expected fail, static web 110, webpack 20, tailwind
+460/271):
+
+- RN part props (shadow parts, non-family transform parts): a clause-shaped
+  string drops with a dev diagnostic naming the composite (`boxShadow`,
+  `textShadow`, `transform`); plain values keep their legacy pipelines.
+- `pointerEvents` is now a style key on BOTH platforms (RN >= 0.71 style
+  spelling; the native verbatim-forward fork at getSplitStyles and the
+  webOnlyStyleProps/webPropsToSkip special-casing are deleted). Clause values
+  evaluate via programStates on native and lower to pointer-events rules on
+  web. Consumer-visible: native hosts now receive `style.pointerEvents`
+  instead of the deprecated View prop.
+- Native `boxShadow`/`textShadow` strings flow WHOLE into the program engine
+  (the propMapper pre-parse that mangled clause text into the color component
+  is gone); evaluation parses the winning payload to RN object format, and
+  textShadow expands to its RN longhands post-evaluation. The pinned
+  rnStyleAlignment RN-format contract is unchanged.
