@@ -31,6 +31,9 @@ test('native diagnostics reject unsupported table semantics without inventing ou
     export const Invalid = () => (
       <>
         <html.div onScroll={() => {}} />
+        <html.div>{\`template literal\`}</html.div>
+        <html.div>{1 + 2}</html.div>
+        <html.div>{'a' + 'b'}</html.div>
         <html.div>{dynamicText}</html.div>
         <html.select />
       </>
@@ -46,7 +49,22 @@ test('native diagnostics reject unsupported table semantics without inventing ou
     {
       code: 'local/unsupported-child',
       message:
-        'html.div has a direct child that may render unwrapped native text; wrap it in html.span',
+        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
+    },
+    {
+      code: 'local/unsupported-child',
+      message:
+        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
+    },
+    {
+      code: 'local/unsupported-child',
+      message:
+        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
+    },
+    {
+      code: 'local/unsupported-child',
+      message:
+        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
     },
     {
       code: 'local/unsupported-target',

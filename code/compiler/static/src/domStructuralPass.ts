@@ -231,7 +231,7 @@ export const domStructuralPass: StructuralModulePass = {
             localBailout(
               'local/unsupported-child',
               entry.span,
-              `html.${tagName} has a direct child that may render unwrapped native text; wrap it in html.span`
+              `html.${tagName} has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span`
             )
           )
           continue
