@@ -1408,3 +1408,27 @@ STRING values whole into the program engine instead of pre-expanding them
 (numbers keep the legacy per-longhand expansion, `safe` keeps its earlier
 special case). Pinned by grammar unit tests plus web and native integration
 tests. Root lint is now clean repo-wide (payloadShape test formatted).
+
+### Reserved CSS idents rejected at config creation (Lane E, review P1)
+
+The determinism rule ("configuring a token with a reserved CSS-wide keyword
+name is a config-time error") is now enforced: `createTamagui` throws,
+case-insensitively, for any token named in `reservedCssIdents`
+(style-grammar). Unconditional, all modes — the token would be unreachable
+(the resolver short-circuits reserved idents before any lookup), so allowing
+it means silent misrender. Pinned by `reservedTokenNames.web.test.tsx`.
+
+The validation immediately caught the shipped v6 config: `color.$transparent`
+(removed — value-identical through the reserved-literal path) and
+`radius.$none` (removed — its flat spelling `radius="none"` was already
+emitting invalid `border-radius:none`). Generator updated with the generated
+file. Manager ruling recorded in the design record ("Identifiers resolve
+config-first"): reserved holds at every resolution layer; `rounded-none`,
+`w-auto`, `m-auto` become candidate-layer conveniences.
+
+EXPECTED RED, routed to the Tailwind lane by the manager: `configAware.web` /
+`configAware.native` construct a config with `size.$auto: 321` and pin it
+beating the `w-auto` convenience — the premise this ruling reverses. Both
+suites fail at their `beforeAll` createTamagui call until that lane lands the
+new premise (suites otherwise green: tailwind web 454/19 files pass beside it,
+native 265/3).

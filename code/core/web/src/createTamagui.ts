@@ -5,6 +5,7 @@ import {
   setConfig,
   setTokens,
 } from './config'
+import { reservedCssIdents } from '@tamagui/style-grammar'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
@@ -44,6 +45,11 @@ import type {
  * Following the principle: only add px to predefined categories that need them.
  * Custom categories default to unitless.
  */
+// css keywords are case-insensitive, so the rejection is too
+const reservedCssIdentsLower: ReadonlySet<string> = new Set(
+  Array.from(reservedCssIdents, (ident) => ident.toLowerCase())
+)
+
 function shouldTokenCategoryHaveUnits(category: string): boolean {
   // From TokenCategories type: 'color' | 'space' | 'size' | 'radius' | 'zIndex'
   // These are the only predefined categories that should get px units
@@ -168,6 +174,14 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       tokensMerged[cat] = {}
       const tokenCat = tokens[cat]
       for (const key in tokenCat) {
+        // determinism rule: CSS-wide keywords are reserved, so a token by one
+        // of these names is unreachable (the resolver short-circuits reserved
+        // idents before any lookup) and would silently render the CSS keyword
+        if (reservedCssIdentsLower.has(key.toLowerCase())) {
+          throw new Error(
+            `Token tokens.${cat}.${key} takes a reserved CSS-wide keyword name. These always resolve as literal CSS ("${key.toLowerCase()}"), so this token could never be referenced. Rename it.`
+          )
+        }
         const val = tokenCat[key]
         const prefixedKey = `$${key}`
         tokensParsed[cat][prefixedKey] = val as any

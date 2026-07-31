@@ -168,7 +168,9 @@ export function createDefaultTables(themeCss: string): V6TailwindDefaultTables {
     if (name !== '0') space[`-${name}`] = -Number(name) * spacing
   }
 
-  const radius: Table = { $none: 0 }
+  // no $none: reserved css-wide keyword names are rejected at config creation;
+  // tailwind's rounded-none is a candidate-layer spelling, not a token
+  const radius: Table = {}
   for (const name of RADIUS_NAMES) {
     radius[`$${name}`] = toPx(requiredVariable(variables, `radius-${name}`))
   }
@@ -240,10 +242,12 @@ async function convertColorsToSrgb(source: Record<string, unknown>): Promise<Tab
   try {
     const page = await browser.newPage()
     await page.setContent('<canvas id="c" width="1" height="1"></canvas>')
+    // no $transparent: 'transparent' is a reserved CSS-wide keyword — config
+    // creation rejects tokens by these names, and the value resolves
+    // byte-identically through the reserved-literal path without a token
     const out: Table = {
       $white: '#ffffff',
       $black: '#000000',
-      $transparent: 'transparent',
     }
 
     for (const [hue, shades] of Object.entries(normalizedColorSource(source))) {

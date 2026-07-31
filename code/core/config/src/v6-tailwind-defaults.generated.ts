@@ -9,7 +9,6 @@ export const tailwindSource = {
 export const tailwindColors = {
   $white: '#ffffff',
   $black: '#000000',
-  $transparent: 'transparent',
   '$slate-50': '#f8fafc',
   '$slate-100': '#f1f5f9',
   '$slate-200': '#e2e8f0',
@@ -409,7 +408,6 @@ export const tailwindSize = {
 } as const
 
 export const tailwindRadius = {
-  $none: 0,
   $xs: 2,
   $sm: 4,
   $md: 6,

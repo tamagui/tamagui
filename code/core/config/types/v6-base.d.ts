@@ -16,7 +16,6 @@ export declare const tokens: {
     readonly color: {
         $white: string;
         $black: string;
-        $transparent: string;
         '$slate-50': string;
         '$slate-100': string;
         '$slate-200': string;
@@ -426,7 +425,6 @@ export declare const tokens: {
         readonly 10: number;
         readonly 11: number;
         readonly 12: number;
-        readonly $none: 0;
         readonly $xs: 2;
         readonly $sm: 4;
         readonly $md: 6;
@@ -698,7 +696,6 @@ export declare const defaultConfig: {
         readonly color: {
             $white: string;
             $black: string;
-            $transparent: string;
             '$slate-50': string;
             '$slate-100': string;
             '$slate-200': string;
@@ -1108,7 +1105,6 @@ export declare const defaultConfig: {
             readonly 10: number;
             readonly 11: number;
             readonly 12: number;
-            readonly $none: 0;
             readonly $xs: 2;
             readonly $sm: 4;
             readonly $md: 6;

@@ -6,7 +6,6 @@ export declare const tailwindSource: {
 export declare const tailwindColors: {
     $white: string;
     $black: string;
-    $transparent: string;
     '$slate-50': string;
     '$slate-100': string;
     '$slate-200': string;
@@ -403,7 +402,6 @@ export declare const tailwindSize: {
     readonly $96: 384;
 };
 export declare const tailwindRadius: {
-    readonly $none: 0;
     readonly $xs: 2;
     readonly $sm: 4;
     readonly $md: 6;

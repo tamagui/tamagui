@@ -408,6 +408,18 @@ keep resolution deterministic:
 - A configured name always wins over a same-spelled CSS literal. Config
   creation warns when a token shadows a property-relevant CSS keyword.
 
+Ruled 2026-07-31 (manager adjudication after the reserved-ident validation
+landed and caught our own configs): the reserved rule holds at EVERY
+resolution layer — flat values, the legacy `$` path, and Tailwind candidates —
+never only where the resolver happens to check. Consequences: the v6 config
+ships no `$transparent` or `$none` tokens (`transparent` resolves value-
+identically through the reserved-literal path; `radius="none"` as a token was
+already emitting invalid `border-radius:none`), and Tailwind spellings whose
+tail is a reserved word (`rounded-none`, `w-auto`, `m-auto`) are CANDIDATE-
+LAYER conveniences mapping to their CSS meaning, never token lookups. A config
+token cannot override what `auto`/`none` mean. The configAware tests that
+pinned the opposite (`size.$auto` beating `w-auto`) predate this ruling.
+
 The resolver's mechanical contract, so one implementation serves both
 platforms:
 
