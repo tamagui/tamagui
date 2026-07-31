@@ -35,6 +35,13 @@ function resolveColor(raw: string, tokenMap?: TokenMap): any {
   return raw
 }
 
+// the direction grammar RN 0.83 itself accepts, sourced from
+// react-native/Libraries/StyleSheet/processBackgroundImage.js — signed and
+// leading-decimal angles, case-insensitive units and keywords. what matters
+// is what React Native reads, not what the CSS spec permits
+const gradientAngle = /^([+-]?\d*\.?\d+)(deg|grad|rad|turn)$/i
+const gradientKeyword = /^to\s+(?:top|bottom|left|right)(?:\s+(?:top|bottom|left|right))?$/i
+
 // parse "linear-gradient(direction, color1 pos1, color2 pos2, ...)"
 function parseBackgroundImage(css: string, tokenMap?: TokenMap): any[] | undefined {
   const match = css.match(/^linear-gradient\((.+)\)$/s)
@@ -49,8 +56,7 @@ function parseBackgroundImage(css: string, tokenMap?: TokenMap): any[] | undefin
   let startIdx = 0
 
   const firstPart = parts[0].trim()
-  // check if first part is a direction (starts with "to " or ends with "deg/rad/turn/grad")
-  if (firstPart.startsWith('to ') || /^\d+(\.\d+)?(deg|rad|turn|grad)$/.test(firstPart)) {
+  if (gradientAngle.test(firstPart) || gradientKeyword.test(firstPart)) {
     direction = firstPart
     startIdx = 1
   }
@@ -168,8 +174,8 @@ function parseTextShadow(css: string, tokenMap?: TokenMap): [string, any][] | un
 }
 
 function parseDimension(s: string): number | undefined {
-  // strip px/dp suffix
-  const cleaned = s.replace(/px$|dp$/, '')
+  // strip px/dp suffix (css units are case-insensitive)
+  const cleaned = s.replace(/px$|dp$/i, '')
   const n = Number(cleaned)
   return Number.isFinite(n) ? n : undefined
 }

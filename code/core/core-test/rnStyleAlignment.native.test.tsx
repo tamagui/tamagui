@@ -211,3 +211,22 @@ describe('conditional (program) values reach the same RN formats', () => {
     ])
   })
 })
+
+describe('gradient direction grammar', () => {
+  test('gradient directions accept the forms RN 0.83 accepts', () => {
+    // sourced from react-native/Libraries/StyleSheet/processBackgroundImage.js:
+    // LINEAR_GRADIENT_ANGLE_UNIT_REGEX = /^([+-]?\d*\.?\d+)(deg|grad|rad|turn)$/i
+    // LINEAR_GRADIENT_DIRECTION_REGEX = /^to\s+(top|bottom|left|right).../i
+    for (const direction of ['-45deg', '+45deg', '.5turn', 'TO BOTTOM', 'to Right']) {
+      const result = getSplitStylesFor({
+        backgroundImage: `linear-gradient(${direction}, red, blue)`,
+      })
+      const gradient = (result.style as any)?.experimental_backgroundImage?.[0]
+      expect(gradient?.direction, direction).toBe(direction)
+      expect(gradient?.colorStops, direction).toEqual([
+        { color: 'red' },
+        { color: 'blue' },
+      ])
+    }
+  })
+})
