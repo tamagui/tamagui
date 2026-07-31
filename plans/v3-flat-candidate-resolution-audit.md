@@ -83,6 +83,27 @@ activates its named theme and compares the full emitted rules, inline style, and
 view props byte for byte. A collision test must put both meanings in scope; a
 parity test must compare the whole observable result.
 
+## Parent-marker forms verified against Tailwind 4.3
+
+The parent spellings were checked against the installed Tailwind 4.3 compiler
+before defining the Tamagui projection:
+
+| Tailwind spelling | Tailwind capability | Tamagui projection |
+| --- | --- | --- |
+| `group` | unnamed group marker | `group={true}` |
+| `group/card` | group marker named `card` | `group="card"` |
+| `@container` | unnamed `inline-size` container | `container={true}` |
+| `@container/layout` | `inline-size` container named `layout` | `containerName="layout"` and `containerType="inline-size"` |
+| `@container-size` | unnamed `size` container | `containerType="size"` |
+| `@container-size/layout` | `size` container named `layout` | `containerName="layout"` and `containerType="size"` |
+
+All six forms project without losing a name or container type. On web the raw
+class remains so Tailwind can emit its selectors and container declarations.
+The projected props establish the Tamagui group or container context, including
+the native context that has no CSS fallback. Descendant candidates carrying a
+Tamagui value cannot rely on raw passthrough and must enter the shared program
+path.
+
 ## Paths compared
 
 ### Flat-value path
