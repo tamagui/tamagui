@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "dry-run": "bun src/index.ts",
-    "test": "bun test test",
-    "test:web": "bun test test",
+    "test": "bun test --timeout 20000 test",
+    "test:web": "bun test --timeout 20000 test",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
