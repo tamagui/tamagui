@@ -1,4 +1,5 @@
 import {
+  canonicalizeStyleValue,
   createCandidatePropertyVocabulary,
   createModifierRegistry,
   diagnoseStyleValue,
@@ -74,6 +75,7 @@ function importedName(node: Rule.Node): string | null {
 export const validFlatValues: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description: 'validate static Tamagui flat values with @tamagui/style-grammar',
     },
@@ -91,6 +93,7 @@ export const validFlatValues: Rule.RuleModule = {
     ],
     messages: {
       invalidFlatValue: '{{message}}',
+      nonCanonicalFlatValue: 'use the canonical flat value "{{canonical}}"',
     },
   },
 
@@ -111,17 +114,31 @@ export const validFlatValues: Rule.RuleModule = {
 
     const report = (node: Rule.Node, property: string, value: string): void => {
       if (!styleProps.has(property)) return
-      for (const diagnostic of diagnoseStyleValue(property, value, {
+      const diagnostics = diagnoseStyleValue(property, value, {
         config,
         registry,
         candidates,
-      })) {
+      })
+      for (const diagnostic of diagnostics) {
         context.report({
           node,
           messageId: 'invalidFlatValue',
           data: { message: diagnostic.message },
         })
       }
+      if (diagnostics.length > 0) return
+
+      const formatted = canonicalizeStyleValue(value, registry)
+      if (!formatted.ok || formatted.value === value) return
+      const canonical = formatted.value
+      context.report({
+        node,
+        messageId: 'nonCanonicalFlatValue',
+        data: { canonical },
+        fix(fixer) {
+          return fixer.replaceText(node, JSON.stringify(canonical))
+        },
+      })
     }
 
     const visitStyleObject = (object: ObjectExpressionNode): void => {

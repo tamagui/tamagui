@@ -160,11 +160,4 @@ export function unitSuffix(prop: string, registry: ModifierRegistryView): string
   return suffix
 }
 
-export function printProgram(value: ParsedValue): string {
-  const parts: string[] = []
-  if (value.base !== null) parts.push(value.base)
-  for (const clause of value.clauses) {
-    parts.push(`${clause.modifiers.join(':')}:${clause.payload}`)
-  }
-  return parts.join(' ')
-}
+export const printProgram = grammar.formatParsedValue

@@ -7,7 +7,12 @@ import {
 import { resolvePayload } from './resolvePayload'
 import { grammarEntries, type TokenCategory } from './registry'
 import { parseValue } from './valueParser'
-import type { ModifierRegistryView, ValueParseErrorCode } from './valueTypes'
+import type {
+  ModifierRegistryView,
+  ParsedValue,
+  ValueParseError,
+  ValueParseErrorCode,
+} from './valueTypes'
 import { v6RemovedThemeNames, v6ThemeNameReplacements } from './v6ThemeNames'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
@@ -37,6 +42,34 @@ export interface DiagnoseStyleValueOptions {
   config: GrammarConfigView
   registry: ModifierRegistryView
   candidates?: CandidatePropertyVocabulary
+}
+
+export type CanonicalStyleValueResult =
+  | { ok: true; value: string; parsed: ParsedValue }
+  | { ok: false; errors: readonly ValueParseError[] }
+
+/** Prints one parsed value without changing payloads, modifier order, or clause order. */
+export function formatParsedValue(value: ParsedValue): string {
+  const parts: string[] = []
+  if (value.base !== null) parts.push(value.base)
+  for (const clause of value.clauses) {
+    parts.push(`${clause.modifiers.join(':')}:${clause.payload}`)
+  }
+  return parts.join(' ')
+}
+
+/** Parses and prints the canonical surface spelling for the same value IR. */
+export function canonicalizeStyleValue(
+  input: string,
+  registry: ModifierRegistryView
+): CanonicalStyleValueResult {
+  const parsed = parseValue(input, registry)
+  if (!parsed.ok) return parsed
+  return {
+    ok: true,
+    value: formatParsedValue(parsed.value),
+    parsed: parsed.value,
+  }
 }
 
 function forEachName(names: Names | undefined, visit: (name: string) => void): void {

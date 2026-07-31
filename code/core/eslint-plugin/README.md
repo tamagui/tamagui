@@ -27,5 +27,7 @@ export default [
 
 `valid-flat-values` checks static string values on imported Tamagui components
 and `styled()` configs. It reports invalid clause grammar, configured
-candidate/property mismatches, and obsolete v6 built-in names. It does not
-autofix; canonical formatting is a separate meaning-preserving rule.
+candidate/property mismatches, and obsolete v6 built-in names. It never fixes
+those diagnostics. When a valid value differs only from style-grammar's
+canonical print of the same parsed IR, the rule can safely collapse boundary
+whitespace with ESLint's normal autofix.

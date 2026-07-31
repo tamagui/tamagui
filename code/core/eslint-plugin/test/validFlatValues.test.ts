@@ -17,27 +17,31 @@ const config = {
   },
 }
 
-const eslint = new ESLint({
-  overrideConfigFile: true,
-  overrideConfig: [
-    {
-      files: ['**/*.tsx'],
-      languageOptions: {
-        parser,
-        parserOptions: {
-          ecmaFeatures: { jsx: true },
-          sourceType: 'module',
+const createEslint = (fix = false) =>
+  new ESLint({
+    fix,
+    overrideConfigFile: true,
+    overrideConfig: [
+      {
+        files: ['**/*.tsx'],
+        languageOptions: {
+          parser,
+          parserOptions: {
+            ecmaFeatures: { jsx: true },
+            sourceType: 'module',
+          },
+        },
+        plugins: {
+          tamagui: plugin,
+        },
+        rules: {
+          'tamagui/valid-flat-values': ['error', { config }],
         },
       },
-      plugins: {
-        tamagui: plugin,
-      },
-      rules: {
-        'tamagui/valid-flat-values': ['error', { config }],
-      },
-    },
-  ],
-})
+    ],
+  })
+
+const eslint = createEslint()
 
 describe('valid-flat-values', () => {
   test('accepts real source whose static values match the configured grammar', async () => {
@@ -61,5 +65,34 @@ describe('valid-flat-values', () => {
       '"backgroundActive" was removed from the v6 built-in theme vocabulary',
     ])
     expect(result.messages.every(({ fix }) => fix === undefined)).toBe(true)
+  })
+
+  test('autofixes only the grammar-canonical spelling and becomes idempotent', async () => {
+    const fixturePath = new URL('./fixtures/noncanonical.tsx', import.meta.url).pathname
+    const [unfixed] = await eslint.lintFiles([fixturePath])
+
+    expect(unfixed.messages.map(({ message }) => message)).toEqual([
+      'use the canonical flat value "red hover:blue"',
+      'use the canonical flat value "red dark:blue"',
+      'use the canonical flat value "4 sm:6"',
+    ])
+    expect(unfixed.messages.every(({ fix }) => fix !== undefined)).toBe(true)
+
+    const [fixed] = await createEslint(true).lintFiles([fixturePath])
+    expect(fixed.messages).toEqual([])
+    expect(fixed.output).toBe(`import { styled, View } from 'tamagui'
+
+const Frame = styled(View, {
+  backgroundColor: "red hover:blue",
+})
+
+export function NoncanonicalFlatValues() {
+  return <Frame bg="red dark:blue" p={"4 sm:6"} />
+}
+`)
+
+    if (fixed.output === undefined) throw new Error('expected ESLint autofix output')
+    const [rechecked] = await eslint.lintText(fixed.output, { filePath: fixturePath })
+    expect(rechecked.messages).toEqual([])
   })
 })

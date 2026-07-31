@@ -1,8 +1,10 @@
 import { describe, expect, test } from 'vitest'
 import {
+  canonicalizeStyleValue,
   createCandidatePropertyVocabulary,
   createModifierRegistry,
   diagnoseStyleValue,
+  parseValue,
   type GrammarConfigView,
 } from '..'
 
@@ -26,6 +28,36 @@ const diagnose = (property: string, value: string) =>
   diagnoseStyleValue(property, value, { config, registry, candidates })
 
 describe('tooling diagnostics', () => {
+  test.each([
+    [
+      '  red   hover:blue  sm:dark:calc(1px + 2px)  ',
+      'red hover:blue sm:dark:calc(1px + 2px)',
+    ],
+    [' hover:red   sm:blue ', 'hover:red sm:blue'],
+    ['active:red   hover:rgb(1, 2, 3)', 'active:red hover:rgb(1, 2, 3)'],
+  ])('canonical formatting round-trips the same IR', (input, canonical) => {
+    const before = parseValue(input, registry)
+    const formatted = canonicalizeStyleValue(input, registry)
+
+    expect(before.ok).toBe(true)
+    expect(formatted).toMatchObject({
+      ok: true,
+      value: canonical,
+    })
+    if (!before.ok || !formatted.ok) return
+
+    const after = parseValue(formatted.value, registry)
+    expect(after).toEqual(before)
+    expect(formatted.parsed).toEqual(before.value)
+    expect(canonicalizeStyleValue(formatted.value, registry)).toEqual(formatted)
+  })
+
+  test('canonical formatting refuses invalid grammar', () => {
+    expect(canonicalizeStyleValue('red hver:blue', registry)).toEqual(
+      parseValue('red hver:blue', registry)
+    )
+  })
+
   test('accepts the same configured program the runtime parser accepts', () => {
     expect(diagnose('bg', 'red hover:blue')).toEqual([])
     expect(diagnose('p', '4 sm:6')).toEqual([])
