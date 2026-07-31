@@ -19,7 +19,6 @@ import { splitTailwindStyles } from './utils'
 const tokens = {
   ...(v6 as any).tokens,
   space: { ...(v6 as any).tokens.space, $4: 20 },
-  size: { ...(v6 as any).tokens.size, $auto: 321 },
   zIndex: { ...(v6 as any).tokens.zIndex, $4: 40 },
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
@@ -77,11 +76,12 @@ describe('config-aware tokens (NATIVE) — class names follow runtime-owned valu
     expect(typeof style({ className: cls }).zIndex).toBe('number')
   })
 
-  test('size.$auto wins w-auto and resolves the configured token, not the convenience', () => {
-    const cls = className(`<View width="$auto" />`)
+  test('auto stays a flat literal while w-auto is a candidate-layer convenience', () => {
+    const cls = className(`<View width="auto" />`)
     expect(cls).toContain('w-auto')
-    expect(style({ className: cls }).width).toBe(style({ width: '$auto' }).width)
-    expect(style({ className: cls }).width).not.toBe('auto')
+    expect(flat(cls).width).toBe('auto')
+    expect(style({ width: 'auto' }).width).toBe('auto')
+    expect(style({ className: cls }).width).toBe('auto')
   })
 
   test('fontFamily.$sans wins font-sans and resolves the configured token', () => {
