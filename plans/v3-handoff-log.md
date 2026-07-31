@@ -824,9 +824,9 @@ first rejected option describes.
 Status: complete for the current corpus. The component-lowering designs remain
 parked for an explicit architecture decision.
 
-- The classification is the headline: zero recoverable / 527 structurally
-  retained. The raw tuple remains directly underneath and is pinned as 2,565
-  found / 2,038 lowered / 2,025 flattened / 55 styled / 527 bailed over 251
+- The classification is the headline: zero recoverable / 528 structurally
+  retained. The raw tuple remains directly underneath and is pinned as 2,575
+  found / 2,047 lowered / 2,032 flattened / 55 styled / 528 bailed over 253
   usecases with zero compile failures. `found` cannot fall, and only an increase
   in `flattened` counts as progress for decision 24.
 - The tuple moved only because three committed browser-delivery fixtures joined
@@ -834,9 +834,14 @@ parked for an explicit architecture decision.
   `ProgramBlockDeliveryLate`. Together they add nine found elements, eight
   flattened elements, and one structurally retained Button. No existing
   candidate disappeared or changed classification.
+- Two later browser fixtures account exactly for the next corpus-only move:
+  `FontLanguageSwapCase` adds six found, five lowered, five flattened, and one
+  structurally retained Button; `ProgramCascadeCase` adds four found, four
+  lowered, and two flattened. No existing candidate disappeared or changed
+  classification.
 - The initial audits found one recoverable element out of 2,556, the inert
   `animatedBy` selector fixed in `299fe97fbb`. The remaining structural classes
-  are now 338 component runtime contracts, 115 animation runtimes, 42 dynamic
+  are now 339 component runtime contracts, 115 animation runtimes, 42 dynamic
   values, 21 runtime event mappings, six unevaluated spreads, and five theme
   boundaries.
 - The animation audit covered every original candidate: 39 enter, exit, or

@@ -186,14 +186,16 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
     writeFileSync('/tmp/tamagui-bailout-metric.txt', completeReport)
     writeFileSync('/tmp/tamagui-bailout-details.txt', details.join('\n'))
 
+    // Two new files joined the corpus: FontLanguageSwapCase adds 6/5/5/0/1
+    // and ProgramCascadeCase adds 4/4/2/0/0 to found/lowered/flattened/styled/bailed.
     expect(totals).toEqual({
-      files: 251,
+      files: 253,
       failed: 0,
-      found: 2565,
-      lowered: 2038,
-      flattened: 2025,
+      found: 2575,
+      lowered: 2047,
+      flattened: 2032,
       styled: 55,
-      bailed: 527,
+      bailed: 528,
     })
     expect([...unexpectedStructuralComponents].sort()).toEqual([])
     expect([...structuralClasses.keys()].sort()).toEqual(
