@@ -61,7 +61,6 @@ export function TooltipToolbarRowCase() {
 
         <Tooltip.Content
           data-testid="toolbar-tip-content"
-          unstyled
           animatePosition
           animateOnly={['transform', 'opacity', 'width', 'height']}
           transition={{
