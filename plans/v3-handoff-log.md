@@ -283,10 +283,11 @@ Status: in progress.
   corpus 1,758 total / 323 converted / 1,435 waiting / 0 flagged. Full web is
   temporarily blocked on the active style-mode cleanup in
   `tailwindMode.web.test.tsx` and `tailwindArbitrary.web.test.tsx`.
-  `componentProps.web.test.tsx` was separately reproduced with all uncommitted
-  Lane V config/theme files absent in a detached HEAD worktree and failed with
-  the identical `_bc-1418911449` output; it uses `config-default` and the v5
-  shorthands, so the v6 `bg` family change is not on its import path.
+  The initial `componentProps.web.test.tsx` attribution probe was invalid
+  because core-test loads package build output rather than the reverted source;
+  its `_bg-red` to `_bc-1418911449` expectation belongs to Lane E's designed
+  config-first cutover. The focused theme-color regression imports web and
+  Tailwind source directly and ran after a deliberate config rebuild.
 
 ## 5. Lint and editor tooling
 
