@@ -310,6 +310,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   TooltipGlobalPatternCase: () =>
     require('./TooltipGlobalPatternCase').TooltipGlobalPatternCase,
   TooltipGroupCase: () => require('./TooltipGroupCase').TooltipGroupCase,
+  TooltipToolbarRowCase: () => require('./TooltipToolbarRowCase').TooltipToolbarRowCase,
   TooltipPositionJumpCase: () =>
     require('./TooltipPositionJumpCase').TooltipPositionJumpCase,
   TooltipTriggerInlineCase: () =>
