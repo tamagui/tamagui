@@ -24,6 +24,31 @@ const fallbackESM = new URL('../../../core/internal-runtime/index.js', import.me
 const fallbackCJS = new URL('../../../core/internal-runtime/index.cjs', import.meta.url)
 
 describe('the built @tamagui/core/internal-runtime entry applies platform setup', () => {
+  test('Bun resolves private specifiers to runtime exports', () => {
+    const installed = execFileSync(
+      'bun',
+      [
+        '-e',
+        `const webRuntime = require('@tamagui/web/internal-runtime')
+         require('@tamagui/core/internal-runtime')
+         const { hooks } = require('@tamagui/web')
+         console.log(JSON.stringify({
+           hasFrontendFactory: typeof webRuntime.createFrontendViews === 'function',
+           hooks: Object.keys(hooks).sort(),
+         }))`,
+      ],
+      {
+        cwd: new URL('../..', import.meta.url).pathname,
+        encoding: 'utf8',
+      }
+    ).trim()
+
+    expect(JSON.parse(installed)).toEqual({
+      hasFrontendFactory: true,
+      hooks: expectedHooks,
+    })
+  })
+
   test('the ESM artifact a bundler resolves', () => {
     const installed = probe(
       'module',

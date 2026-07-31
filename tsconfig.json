@@ -5,12 +5,6 @@
       "@tamagui/colors/legacy": [
         "./code/core/colors/types/legacy.d.ts"
       ],
-      "@tamagui/core/internal-runtime": [
-        "./code/core/core/types/internal-runtime.d.ts"
-      ],
-      "@tamagui/web/internal-runtime": [
-        "./code/core/web/types/internal-runtime.d.ts"
-      ],
       "tamagui": [
         "./code/ui/tamagui"
       ],
