@@ -387,6 +387,25 @@ Status: in progress.
   `flatGroupSyntax` now fail; they passed in this lane's full run earlier and
   the failures arrived with `3eb37b44b4`, the descriptor-dispatch commit. Both
   belong to their own lanes; this lane's own suites are green.
+- `id` no longer renames, fixed in `c3e76f8e02`. Reading CODEX-2's new
+  `domLowering.native.test.tsx` against the contract showed its lowering
+  matching the tables everywhere — the right primitives, literal text wrapped
+  only inside View-backed tags, diagnostics on `onScroll` and `select` — except
+  that it passes `id` straight through where the table said to rename it to
+  `nativeID`. The compiler was right and the table was wrong: react-native
+  0.83.2's `View.js`, `Text.js` and `TextInput.js` all accept `id` and assign it
+  to `nativeID` themselves, checked in the source rather than in the types.
+- The obvious follow-on is wrong and the table now says so. React Native also
+  accepts many `aria-*` props directly, which makes fourteen rows look like
+  redundant renames that could stop building nested `accessibilityState` and
+  `accessibilityValue` objects. But it accepts them **inconsistently per host**:
+  `View.js` translates thirteen, `Text.js` only seven, and neither handles
+  `aria-modal`, `aria-posinset` or `aria-setsize`. One attribute row has to hold
+  for every backing a tag can lower to, so the legacy mapping every host accepts
+  unconditionally is the correct one and stays. Recorded in the attributes
+  header with the verification method, because the aliases existing makes the
+  mapping look redundant on inspection and the failure mode is quietly breaking
+  text-backed tags.
 - Closed: the `bun.lock` gap this lane raised is fixed. HEAD had no entry for
   `code/core/codemod-flat-values` despite that package.json being committed, so
   `bun install --frozen-lockfile` had been failing at HEAD for two days.
