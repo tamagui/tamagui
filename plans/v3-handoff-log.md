@@ -270,6 +270,59 @@ Status: in progress.
   instantiations. So the explicit interfaces check about 1.4x faster and
   instantiate nothing, at the cost of 230 more declared types. Declaration
   emit is 17.9 KB for `props.d.ts`, 20.5 KB for the package.
+- The native primitives landed in `70f670c1ba`: `DOMView`, `DOMText`,
+  `DOMImage` and `DOMTextInput` in `code/core/web/src/dom/`, with
+  `contract.ts` stating exactly what the compiler must emit for each. That
+  contract is what CODEX-2's native fixture targets.
+- The design point: because the compiler is required on native, almost nothing
+  about a DOM element is a runtime decision. The compiler picks the primitive,
+  flattens the styles with the `display: block`/`flex` emulation already
+  applied, renames every prop to its react native name, applies the implicit
+  role and wraps literal text. So a primitive owns only what cannot exist
+  before the event or the instance does: adapting an event payload, and the
+  ref. That leaves **no hooks and no context reads on any path**. React Strict
+  DOM reads a display-inside context and a text-ancestor context per element
+  behind several hooks because it has no compiler to ask; nested react native
+  Text already inherits text styles on its own, and the display emulation is
+  known statically, so neither context has to exist here.
+- The tests call the primitives as plain functions rather than rendering them.
+  Two reasons: the fake react native the native suite runs against renders
+  every host to null, so a render tree would assert nothing; and a component
+  that used a hook would throw when called outside a renderer, which makes all
+  16 tests a standing proof of the hook-free property.
+- Per-element cost, measured (`cd code/core/dom && bun run bench:native`,
+  bun 1.3.14, darwin arm64, 10,000 elements per sample, 15 samples after 5
+  warmup). Read the heap columns, not the nanoseconds: the timing spread
+  between samples is larger than the gap between the cases, so the medians rank
+  nothing and are reported with their deviation rather than dressed up. The JSC
+  heap counters repeat to two decimals across runs:
+
+  | case | objects/element | bytes/element |
+  |---|---:|---:|
+  | `DOMView`, no handlers (ships) | 4.03 | 236 B |
+  | `DOMText`, no handlers (ships) | 4.03 | 235 B |
+  | bare `jsx(View, props)` | 4.03 | 235 B |
+  | `jsx(View, { ...props })` | 7.03 | 347 B |
+  | `createElement(View, props)` | 7.03 | 363 B |
+  | `DOMView`, with `onClick` | 9.04 | 444 B |
+
+  So the primitive costs exactly what the bare react element costs — the
+  wrapper is free — and writing it the obvious way, `<View {...props} />`,
+  would add 3 objects and about 112 B to every element on screen. That is why
+  the primitives call `jsx` with the props object they were handed instead of
+  spreading it; a test asserts the identity, which is what caught the
+  `createElement` copy in the first place.
+- `@tamagui/web` now depends on `@tamagui/dom`. The imports are type-only so
+  nothing enters the runtime graph, but the emitted declarations reference it,
+  so a consumer resolving `@tamagui/web`'s types needs it present. One line in
+  `code/core/web/package.json`; it needs a `bun.lock` entry in the coordinated
+  lockfile commit below.
+- Gate note, not caused by this lane: web reads 763 passed / 54 files, against
+  the 771 / 55 baseline. `98d743b29f` deleted `iconStyleMode.web.test.tsx`
+  (9 tests) as part of removing the global style-mode callers, and
+  `2e47f650ea` net-added one, so 771 - 9 + 1 = 763 and 55 - 1 = 54. The
+  baseline is stale, nothing regressed. Native is 427 passed / 22 files,
+  which is the 411 / 21 baseline plus this lane's 16 tests in one new file.
 - Open, and blocking nothing yet: `bun.lock` at HEAD does not register
   `code/core/codemod-flat-values`, which is already committed, so
   `bun install --frozen-lockfile` fails at HEAD. The working tree also carries
@@ -507,3 +560,38 @@ Parse-cost and render-loop benchmarks follow as their own commit.
   overrides now tie and resolve by stylesheet order (design record, "The
   program block encoding", consumer-visible consequence note).
 - Parse-cost + render-loop benchmark for the cutover (own commit).
+
+## 12. Clause-free codemod finalization (Lane V)
+
+Status: complete; report-only posture unchanged.
+
+- The codemod now emits authored `$token` bases as base-only programs under
+  Lane E's landed config-first semantics. A clause no longer has to activate the
+  rewrite. Base and clause payloads still use the same shared converter, and
+  ordering barriers continue to keep same-property conditions on their authored
+  side of a spread.
+- Lane E reviewed and approved the conversion semantics against commit
+  `2e47f650ea`: clause-free strings always contribute programs, base and clause
+  payloads resolve through the same runtime path, and independently ordered
+  properties may migrate without moving a blocked condition.
+- The default corpus moved from 1,758 sites / 323 converted / 1,435 waiting /
+  0 flagged to 1,753 sites / 1,753 converted / 0 waiting / 0 flagged. Of the
+  former 1,435 waiting sites, 1,430 now convert. The other five were not legacy
+  syntax: quote normalization had incorrectly listed two Accordion rotations,
+  one MediaQueriesV5 responsive color, one ReanimatedEmitterLatchCase color,
+  and one StyleProp pointer-events expression. Classification now requires an
+  actual `$token` candidate, so those five are correctly absent rather than
+  counted as conversions.
+- This corpus contains zero `container-name-not-wired` sites after the earlier
+  manual container migration. The zero waiting count therefore did not discard
+  a pending container diagnostic. Apply mode remains blocked on Lane E items 6
+  and 7: same-key clause merging across `mergeComponentProps` and
+  `containerName` reaching the host. Enabling writes remains a user decision.
+- `x`/`y` token rewrites also apply the v3 category change by design: legacy
+  `x="$4"` and `y="$4"` resolved through size, while flat `x="4"` and `y="4"`
+  resolve through space. Custom configs whose size and space scales differ must
+  review those migrated offsets.
+- Validation from the final source state: codemod 47/47 with 241 assertions,
+  typecheck green, and the default corpus 1,753/1,753/0/0 with 38 legacy
+  transition values and two structured-native values retained only in the
+  separate migration inventory.

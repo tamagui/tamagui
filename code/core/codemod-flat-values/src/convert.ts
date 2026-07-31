@@ -114,7 +114,7 @@ interface AuthoredMember {
   dynamic: boolean
   /** why it cannot fold, raised only if a clause forces it */
   blocked: Flag | null
-  /** the authored value still spells a `$token`, so it waits for the cutover */
+  /** the authored value contains a `$token` spelling that v3 must rewrite */
   token: boolean
   activated: boolean
 }
@@ -288,10 +288,12 @@ function classifyDynamic(
     return { ...empty, problem: flag, blocked: flag }
   }
   if (tree && tree.kind !== 'nullish') {
+    const rewrittenTokenText =
+      /\$(?=[\w-])/.test(source) && tree.text !== source ? tree.text : null
     return {
       ...empty,
       payload: interpolate(prop, tree.text, tree.kind, registry),
-      text: tree.text === source ? null : tree.text,
+      text: rewrittenTokenText,
       dynamic: true,
     }
   }
@@ -379,10 +381,8 @@ function pushBase(
             : null
 
       if (problem !== null) addFlag(site.flags, problem.code, problem.detail)
-      // a token base only loses its `$` when it joins a program that has clauses:
-      // that is the exact condition under which the value reaches the flat engine
-      // and resolves config-first (contributePrograms bails when a value has no
-      // clauses, and the legacy resolver only resolves `$`-prefixed strings)
+      // v3 sends clause-free strings through the flat engine too, so a token base
+      // becomes a base-only program even when no legacy condition targets it
       site.members.push({
         type: 'authored',
         index,
@@ -480,8 +480,8 @@ function pushBase(
   if (classified.inventory) {
     addFlag(site.inventory, classified.inventory.code, classified.inventory.detail)
   }
-  // a rewritten expression (`active ? '$red10' : '$blue10'`) is a token strip too, so
-  // it also waits until the value joins a clause-bearing program
+  // a rewritten expression (`active ? '$red10' : '$blue10'`) also becomes a
+  // base-only program when no legacy condition targets it
   if (classified.text !== null) site.legacy = true
   site.members.push({
     type: 'authored',
@@ -949,7 +949,8 @@ function assemble(site: Site): {
     for (const member of site.members) {
       if (member.type !== 'authored') continue
       const name = activationName(member.prop)
-      member.activated = contributed.has(name)
+      member.activated =
+        (member.token && member.payload !== null) || contributed.has(name)
       if (!member.activated || member.payload !== null) continue
 
       // one root reason: the base a condition needs cannot become a flat payload
@@ -976,15 +977,6 @@ function assemble(site: Site): {
     const ordered = orderedEntries(site)
     slots = buildSlots(ordered)
     if (!resolveBarriers(site, ordered, slots)) break
-  }
-
-  for (const member of site.members) {
-    if (member.type !== 'authored' || member.activated || !member.token) continue
-    addFlag(
-      site.pending,
-      'clause-free-token',
-      `${compact(member.text)} still needs its "$": the value has no clauses, so it never reaches the flat engine`
-    )
   }
 
   const entries: Array<{ index: number; text: string }> = []

@@ -222,7 +222,7 @@ export const Fixture = () => (
     })
   })
 
-  test('a clause-free token keeps its "$" until the runtime can read the flat spelling', () => {
+  test('a clause-free token becomes a base-only program', () => {
     const site = only(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = () => (
@@ -231,12 +231,15 @@ export const Fixture = () => (
     )
 
     expect(codes(site)).toEqual([])
-    // padding has no clause, so it never reaches the flat engine and keeps its token
-    expect(pendingCodes(site)).toEqual(['clause-free-token'])
-    expect(site.after).toBe('padding="$4" bg="blue10 hover:red"')
+    expect(pendingCodes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      padding: '4',
+      bg: 'blue10 hover:red',
+    })
+    expect(site.after).toBe('padding="4" bg="blue10 hover:red"')
   })
 
-  test('a rewritable token expression also waits for the clause-free cutover', () => {
+  test('a rewritable token expression becomes a dynamic base-only program', () => {
     const site = only(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = ({ active }) => (
@@ -245,8 +248,11 @@ export const Fixture = ({ active }) => (
     )
 
     expect(codes(site)).toEqual([])
-    expect(pendingCodes(site)).toEqual(['clause-free-token'])
-    expect(site.after).toBe(`color={active ? '$red10' : '$blue10'}`)
+    expect(pendingCodes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      color: '${active ? "red10" : "blue10"}',
+    })
+    expect(site.after).toBe('color={`${active ? "red10" : "blue10"}`}')
   })
 
   test('a dot-path token is reported instead of renamed, clauses or not', () => {
@@ -272,6 +278,18 @@ export const Fixture = () => <View gap="$1.5" bg="$blue10" hoverStyle={{ bg: 're
       sites(
         run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = () => <View width={10} m={2} />`)
+      )
+    ).toEqual([])
+    expect(
+      sites(
+        run(`import { View } from 'tamagui'
+export const Fixture = ({ active }) => <View rotate={active ? '180deg' : '0deg'} />`)
+      )
+    ).toEqual([])
+    expect(
+      sites(
+        run(`import { View } from 'tamagui'
+export const Fixture = ({ active }) => <View rotate={\`\${active ? '180deg' : '0deg'}\`} />`)
       )
     ).toEqual([])
   })
@@ -533,9 +551,8 @@ export const Fixture = (props) => (
     )
 
     expect(codes(site)).toEqual(['condition-order-not-preservable'])
-    // nothing moves: the condition stays put and the base keeps its token, since a
-    // clause-free value still needs it
-    expect(site.after).toBe(`bg="$blue10" {...props} hoverStyle={{ bg: 'red' }}`)
+    // the condition stays after the spread while the base-only program can migrate
+    expect(site.after).toBe(`bg="blue10" {...props} hoverStyle={{ bg: 'red' }}`)
   })
 
   test('an object literal spread is the same thing as writing its properties', () => {
@@ -589,8 +606,8 @@ const Frame = styled(View, {
     expect(codes(small)).toEqual([])
     expect(programs(small)).toEqual({ color: 'red10 hover:blue10' })
     const large = labeled(result, 'variants.size.large')
-    expect(programs(large)).toEqual({})
-    expect(pendingCodes(large)).toEqual(['clause-free-token'])
+    expect(programs(large)).toEqual({ padding: '4' })
+    expect(pendingCodes(large)).toEqual([])
   })
 
   test('a variant branch does not invent a base for the outer program', () => {
@@ -619,8 +636,8 @@ const Frame = styled(View, {
       'compoundVariants[0]'
     )
 
-    expect(programs(site)).toEqual({})
-    expect(pendingCodes(site)).toEqual(['clause-free-token'])
+    expect(programs(site)).toEqual({ padding: '2' })
+    expect(pendingCodes(site)).toEqual([])
   })
 })
 
@@ -719,7 +736,7 @@ describe('authored order across an inline object spread', () => {
     expect(codes(site)).toEqual(['condition-order-not-preservable'])
     expect(site.after).toContain('{...props}')
     expect(site.after).toContain(`hoverStyle={{ bg: 'red' }}`)
-    expect(programs(site)).toEqual({})
+    expect(programs(site)).toEqual({ bg: 'blue10' })
   })
 
   test('a nested spread inside a styled config is preserved too', () => {
@@ -768,11 +785,11 @@ describe('unconvertible nested conditions', () => {
     )
 
     // $sm keeps a nested condition that can set bg, so hover cannot move in front
-    // of it: it stays exactly where it was authored
+    // of it: the condition stays authored while the base-only program migrates
     expect(codes(site)).toContain('condition-order-not-preservable')
-    expect(programs(site)).toEqual({})
+    expect(programs(site)).toEqual({ bg: 'blue10' })
     expect(site.after).toBe(
-      `bg="$blue10" $sm={{ '$future-condition': { bg: 'red' } }} hoverStyle={{ bg: 'yellow' }}`
+      `bg="blue10" $sm={{ '$future-condition': { bg: 'red' } }} hoverStyle={{ bg: 'yellow' }}`
     )
   })
 

@@ -13,8 +13,8 @@ bun src/index.ts --help
 ```
 
 The default corpus is `code/kitchen-sink/src/usecases` plus the canonical
-`Button.tsx` skin, which is also the acceptance fixture: 1758 conversion sites, 323
-converted, 1435 waiting on runtime support, 0 flagged. The counts track
+`Button.tsx` skin, which is also the acceptance fixture: 1753 conversion sites, all
+1753 converted, 0 waiting on runtime support, 0 flagged. The counts track
 `@tamagui/style-grammar`, which this package imports from source rather than from its
 build, so a change to the shared converter moves them.
 
@@ -83,21 +83,19 @@ depth, as something its member can still set.
 
 ## What it will not convert yet
 
-**A `$token` only loses its `$` when its program has at least one clause.** That is
-exactly the condition under which the value reaches the flat engine and resolves
-config-first: `contributePrograms` returns early when a value has no clauses, and the
-legacy resolver only resolves `$`-prefixed strings. Stripping a clause-free `p="$4"`
-to `p="4"` today produces `padding-top: 4` on web (invalid, dropped) and
-`paddingTop: "4"` on native (a string). Those values stay authored and are counted
-under `clause-free-token`; they convert in one more pass once config-first resolution
-covers the clause-free path.
+Clause-free tokens now become base-only programs: `p="$4"` becomes `p="4"` and
+resolves config-first through the same flat engine as a value with modifiers.
+For `x` and `y`, this also applies the v3 category cutover: the legacy `$4`
+resolved through the size scale, while flat `4` resolves through the space scale.
+If a custom config gives those scales different values, the rendered offset changes
+by design and those rows need review during migration.
 
 `containerName` does not reach the host yet, so the named container query this
 migration emits (`@max-md/card:`) has nothing to match. Those sites carry
 `container-name-not-wired`.
 
-For the same reason this tool has no apply/write mode. Applying today's output would
-require both of the above, plus same-key clause merge across `mergeComponentProps`
+This tool still has no apply/write mode. Applying today's output requires the
+container-name host wiring above, plus same-key clause merge across `mergeComponentProps`
 (a call-site `bg="red"` currently replaces a styled `bg: 'gray hover:blue'` whole,
 which decision 21 says it must not).
 

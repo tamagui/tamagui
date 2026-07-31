@@ -101,10 +101,8 @@ export function renderReport(
       '### Waiting on runtime support',
       '',
       'The conversion is known but not offered, because the runtime cannot read it yet.',
-      'A value with no clauses never reaches the flat engine (`contributePrograms` returns',
-      'early without clauses) and the legacy resolver only resolves `$`-prefixed strings, so',
-      'a clause-free `p="$4"` still needs its `$`. These convert in one more pass once',
-      'config-first resolution covers the clause-free path.',
+      'Each pending reason below names the exact host or merge contract that must land',
+      'before the suggested source is safe to apply.',
       '',
       ...pendingCounts.map(([code, count]) => `- ${code}: ${count}`)
     )
