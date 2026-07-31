@@ -623,6 +623,41 @@ Status: in progress.
   shared program fails two tests, changing its hover value fails one, and a
   wrong rule count fails the counter. All green again after restore, and the
   neighbouring `FlatValuePrograms` and `MixedCascade` suites still pass.
+- Font-face swap E2E landed in `63daa99aee`. `FontLanguageSwapCase` plus four
+  playwright tests. The mechanism is `FontLanguage`, which puts a
+  `t_lang-<name>-<language>` class on a wrapper against the per-language font
+  rules `createDesignSystem` emits from a `name_language` font key. Kitchen-sink
+  had no language variants at all, so the fixture adds a `body_ja` whose family
+  *and* metrics differ from `body`.
+- The claim under test is deliberately not "the family name changes", which a
+  swap carrying none of the face with it would also satisfy. It is that `$3`
+  means the ja face's own size and line height inside the wrapper: 20/30 where
+  the default face is 13/22. Also pinned: the swap works at runtime on the same
+  element, and it is scoped — an element outside the wrapper does not move.
+- Adding to the shared kitchen-sink config was proven safe rather than argued.
+  Ran `FlatValuePrograms`, `MixedCascade`, `ProgramBlockDelivery`,
+  `VariantFontFamily` and `ParagraphSpanFontInheritance` at HEAD and again with
+  the variant: 18 passed both times, and a direct probe of a default Text and
+  View returned byte-identical family, size and line height. One real hazard was
+  checked on the way: the shared `.font_*, .is_View` reset is built from the
+  alphabetically *first* font key, so a variant sorting before `body` would have
+  changed the font reset for every View on the page. `body_ja` sorts after.
+- A trap for the next person writing a font fixture, which cost a detour here:
+  setting `fontSize="$3"` alone does not derive a line height from the face's
+  mapping. The first version of this fixture read the same line height for both
+  faces and looked exactly like a swap bug; asking for `lineHeight="$3"`
+  explicitly showed the swap was correct all along. A fixture that omits it
+  produces a convincing false positive.
+- Unrelated divergence surfaced while fixing the program-block fixture, recorded
+  here because it is a real inconsistency rather than a test problem: **`View`
+  accepts `color` at runtime and resolves it, but the type surface rejects it.**
+  Evidence: `<View color="rgb(70, 80, 90) hover:rgb(100, 110, 120)">` renders a
+  div carrying `_c-1418528521` with computed `color: rgb(70, 80, 90)`, while the
+  same line fails the root typecheck because `color` is a text style prop. One
+  of the two is wrong — either View should carry `color` and the types should
+  admit it, or it should not and the runtime should diagnose instead of quietly
+  resolving. Routed to Lane E behind the contraction; the fixture now uses a
+  `Text`, which is the honest host for the prop.
 - Honestly remaining on this item: a streamed HTTP response hydrating in a
   real browser. The node half proves the bytes are right and the browser half
   proves late insertion resolves right, but nothing yet drives a real streamed
