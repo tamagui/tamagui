@@ -543,6 +543,33 @@ export const Card = ({ width }) => <View width={width} padding={12} />
     expect(output.map?.sourcesContent).toEqual([source])
   })
 
+  test('drops a text-only style prop while preserving a successful View flatten', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = () => (
+  <View backgroundColor="white" color="blue" data-invalid-host-style="yes" />
+)
+`
+    const { plan } = compile(source)
+
+    expect(plan.stats).toEqual({
+      found: 1,
+      lowered: 1,
+      flattened: 1,
+      styled: 0,
+      bailed: 0,
+    })
+    expect(plan.diagnostics).toMatchObject([
+      {
+        code: 'local/unsupported-target',
+        kind: 'local',
+        message:
+          '"color" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.',
+        component: 'View',
+      },
+    ])
+  })
+
   test('keeps an opaque dynamic style object byte-identical', () => {
     const source = `
 import { View } from '@tamagui/core'

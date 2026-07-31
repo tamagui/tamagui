@@ -11,7 +11,11 @@ import {
   StyleObjectIdentifier,
   StyleObjectProperty,
   StyleObjectRules,
+  stylePropsAll,
+  stylePropsText,
+  validStyles as validStylesView,
 } from '@tamagui/helpers'
+import { isValidStyleKey } from '@tamagui/web'
 import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 
 import type { LoadedComponents } from './extractor/bundleConfig'
@@ -673,6 +677,19 @@ export function createTamaguiCompilerHost(
     )
   }
 
+  const isInvalidHostStyleProp = (
+    name: string,
+    component: LoweringComponent
+  ): boolean => {
+    const staticConfig = component.staticConfig as StaticConfig
+    const validStyles =
+      staticConfig.validStyles ||
+      (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
+    return (
+      name in stylePropsAll && !isValidStyleKey(name, validStyles, staticConfig.accept)
+    )
+  }
+
   const directStyleName = (name: string, component: LoweringComponent): string | null => {
     if (
       compilerStyleProps.has(name) ||
@@ -1116,12 +1133,31 @@ export function createTamaguiCompilerHost(
 
       const styleEntries = input.element.entries.filter(
         (entry) =>
-          (entry.kind === 'prop' && isStyleProp(entry.name, component)) ||
+          (entry.kind === 'prop' &&
+            (isStyleProp(entry.name, component) ||
+              isInvalidHostStyleProp(entry.name, component))) ||
           (entry.kind === 'spread' &&
             entry.value.kind === 'static' &&
             staticObject(entry.value.value) &&
-            Object.keys(entry.value.value).every((name) => isStyleProp(name, component)))
+            Object.keys(entry.value.value).every(
+              (name) =>
+                isStyleProp(name, component) || isInvalidHostStyleProp(name, component)
+            ))
       )
+      const invalidHostStyleDiagnostics = input.element.entries.flatMap((entry) => {
+        if (entry.kind !== 'prop' || !isInvalidHostStyleProp(entry.name, component)) {
+          return []
+        }
+        return [
+          {
+            code: 'local/unsupported-target' as const,
+            kind: 'local' as const,
+            message: `"${entry.name}" is a text style prop and this component is not text. Use a Text-based component, or html.* for raw web elements.`,
+            span: entry.span,
+            component: input.element.component.name,
+          },
+        ]
+      })
       const webPropEdits =
         platform === 'web'
           ? input.element.entries.flatMap((entry) => {
@@ -1207,6 +1243,7 @@ export function createTamaguiCompilerHost(
                 origin: input.element.component.span,
               },
             ],
+            diagnostics: invalidHostStyleDiagnostics,
             flattened: true,
           }
         }
@@ -1229,6 +1266,7 @@ export function createTamaguiCompilerHost(
                 origin: input.element.component.span,
               },
             ],
+            diagnostics: invalidHostStyleDiagnostics,
             flattened: true,
           }
         }
@@ -1258,6 +1296,7 @@ export function createTamaguiCompilerHost(
               origin: input.element.component.span,
             },
           ],
+          diagnostics: invalidHostStyleDiagnostics,
           flattened: true,
         }
       }
@@ -1303,6 +1342,7 @@ export function createTamaguiCompilerHost(
           ],
           css: artifacts.css,
           imports: [],
+          diagnostics: invalidHostStyleDiagnostics,
           flattened: true,
         }
       }
@@ -1324,6 +1364,7 @@ export function createTamaguiCompilerHost(
             : [...tagEdits, ...webPropEdits],
           css: artifacts.css,
           imports: [],
+          diagnostics: invalidHostStyleDiagnostics,
           flattened: true,
         }
       }
@@ -1349,6 +1390,7 @@ export function createTamaguiCompilerHost(
         ],
         css: artifacts.css,
         imports: [],
+        diagnostics: invalidHostStyleDiagnostics,
         flattened: true,
       }
     },

@@ -234,7 +234,7 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
             class="is_View _fd-525695443 _bc-804859160"
           >
             <div
-              class="is_View _t-0px _r-0px _b-0px _l-0px _fd-525695443 _p-1686201532 _bc-1404183362 _c-564548965"
+              class="is_View _t-0px _r-0px _b-0px _l-0px _fd-525695443 _p-1686201532 _bc-1404183362"
             />
           </div>
         </div>
