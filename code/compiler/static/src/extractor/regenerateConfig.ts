@@ -185,6 +185,9 @@ function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
   return {
     components,
     nameToPaths,
+    tamaguiConfigMetadata: {
+      themeFields: 'values-only',
+    },
     tamaguiConfig: {
       ...cleanedConfig,
       // Output userShorthands as shorthands (excludes built-ins)
