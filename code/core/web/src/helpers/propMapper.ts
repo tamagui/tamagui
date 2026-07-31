@@ -1,5 +1,6 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
+import { longhandExpansionTable } from '@tamagui/style-grammar'
 import { resolveDefaultToken } from '../config'
 import { getVariableValue, isVariable } from '../createVariable'
 import type {
@@ -159,9 +160,15 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
       styleState.fontFamily = fontToken
     }
 
-    const expanded = styleProps.noExpand
-      ? null
-      : expandStyle(key, value, conf.settings.styleCompat || 'web')
+    // a geometric shorthand STRING flows whole into the program engine, which
+    // distributes multi-component payloads by CSS slot per longhand
+    // (grammar `geometricShorthand`); pre-expanding here would hand every
+    // side the full multi-value payload. numbers and other values keep the
+    // legacy per-longhand expansion.
+    const expanded =
+      styleProps.noExpand || (typeof value === 'string' && key in longhandExpansionTable)
+        ? null
+        : expandStyle(key, value, conf.settings.styleCompat || 'web')
 
     if (expanded) {
       const max = expanded.length

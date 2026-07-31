@@ -332,3 +332,12 @@ test('a styled clause default survives a call-site override on native', () => {
   )
   expect(hovered.style?.backgroundColor).toBe('blue')
 })
+
+test('geometric shorthand payloads distribute by slot on native', () => {
+  const result = split({ p: '4 8' })
+  // space tokens: $4 = 18, $8 = 46 in the default test config
+  expect(result.style?.paddingTop).toBe(18)
+  expect(result.style?.paddingRight).toBe(46)
+  expect(result.style?.paddingBottom).toBe(18)
+  expect(result.style?.paddingLeft).toBe(46)
+})

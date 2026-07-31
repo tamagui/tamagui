@@ -26,11 +26,13 @@ import {
   splitBackgroundValue,
   splitBorderValue,
   splitFontValue,
+  splitGeometricShorthandValue,
   splitTextDecorationValue,
   textDecorationFamilyTargets,
   validatePayloadShape,
   type BorderFamilyError,
   type FontShorthandError,
+  type GeometricShorthandError,
   type ModifierRegistryView,
   type ParsedValue,
   type TextDecorationFamilyError,
@@ -56,6 +58,7 @@ export type ProgramError =
   | BorderFamilyError
   | TextDecorationFamilyError
   | FontShorthandError
+  | GeometricShorthandError
 
 export type CachedEntry =
   | { programs: readonly ProgramEntry[]; errors?: undefined }
@@ -181,6 +184,17 @@ function computeEntry(property: string, input: string): CachedEntry {
       return { errors: split.errors }
     }
     return { programs: split.entries }
+  }
+
+  // geometric shorthands distribute multi-component payloads by CSS slot
+  // (`p="4 8"` is vertical/horizontal); single-component values fall through
+  // to the ordinary expansion, which produces the identical result
+  const geometric = splitGeometricShorthandValue(property, parsed.value)
+  if (geometric) {
+    if (geometric.errors.length > 0) {
+      return { errors: geometric.errors }
+    }
+    return { programs: geometric.entries }
   }
 
   return { programs: [{ property, value: parsed.value }] }

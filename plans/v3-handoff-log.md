@@ -1315,3 +1315,20 @@ grammar unit tests and a web integration test.
   (Inter, 16px/23px), `FontLanguageSwap` passed 4/4 at detached pre-fix HEAD
   and 4/4 after, `createTamagui.web.test.tsx` passed 9/9, and the final web
   package build passed.
+
+### Geometric shorthand slot semantics implemented (Lane E, review finding)
+
+The adversarial pass found a design-vs-implementation gap in the value
+pipeline: the design promises `p="4 8"` distributes per CSS slot
+("per component value: p='4 8' resolves both"), but every side received the
+whole payload and the browser silently dropped the invalid declaration —
+broken BEFORE the cutover too (the legacy expansion mapped the full string to
+every longhand). Fix at two coordinated points sharing one algorithm: new
+grammar module `geometricShorthand` (slot patterns over the PARSED value, so
+bases and clause payloads distribute independently and `p="4 8 sm:6"` is
+correct; slash syntax and oversized payloads error rather than misassign),
+wired in the parse cache; and `propMapper` now routes geometric-shorthand
+STRING values whole into the program engine instead of pre-expanding them
+(numbers keep the legacy per-longhand expansion, `safe` keeps its earlier
+special case). Pinned by grammar unit tests plus web and native integration
+tests. Root lint is now clean repo-wide (payloadShape test formatted).

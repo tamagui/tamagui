@@ -383,3 +383,17 @@ test('a base swallowed by a conditional payload is a diagnostic, not silence', (
     process.env.NODE_ENV = previousNodeEnv
   }
 })
+
+test('geometric shorthand payloads distribute by slot (p="4 8")', () => {
+  const result = split({ p: '4 8' })
+  const top = result.classNames.paddingTop
+  const right = result.classNames.paddingRight
+  expect(rulesFor(result, top)[0]).toContain('padding-top:var(--t-space-4)')
+  expect(rulesFor(result, right)[0]).toContain('padding-right:var(--t-space-8)')
+  expect(rulesFor(result, result.classNames.paddingBottom)[0]).toContain(
+    'padding-bottom:var(--t-space-4)'
+  )
+  expect(rulesFor(result, result.classNames.paddingLeft)[0]).toContain(
+    'padding-left:var(--t-space-8)'
+  )
+})
