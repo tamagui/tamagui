@@ -26,17 +26,40 @@ Module._load = function (request, parent, isMain) {
   if (request.endsWith('/commands/publish.js')) {
     loaded.prototype.execWorkspaces = async function () {
       await this.setWorkspaces()
-      for (const workspace of this.workspaces.values()) {
-        try {
-          await this.exec([workspace])
-        } catch (error) {
-          if (!isAuthFailure(error)) {
-            throw error
+      const workspaces = [...this.workspaces.values()]
+      const failures = []
+
+      for (let index = 0; index < workspaces.length; index += 6) {
+        let pending = workspaces.slice(index, index + 6)
+
+        for (let attempt = 0; pending.length > 0 && attempt < 2; attempt++) {
+          const results = await Promise.allSettled(
+            pending.map((workspace) => this.exec([workspace]))
+          )
+          const rejected = results.flatMap((result, resultIndex) =>
+            result.status === 'rejected' ? [pending[resultIndex]] : []
+          )
+
+          if (
+            rejected.length > 0 &&
+            results.some((result) => {
+              return result.status === 'rejected' && isAuthFailure(result.reason)
+            })
+          ) {
+            resetApproval()
           }
 
-          resetApproval()
-          await this.exec([workspace])
+          pending = rejected
         }
+
+        failures.push(...pending)
+      }
+
+      if (failures.length > 0) {
+        throw new AggregateError(
+          failures.map((workspace) => new Error(`Failed to publish ${workspace}`)),
+          `${failures.length} workspace publish${failures.length === 1 ? '' : 'es'} failed`
+        )
       }
     }
   }
@@ -49,13 +72,14 @@ Module._load = function (request, parent, isMain) {
     ...loaded,
     webAuthOpener: (...args) => {
       if (!approval) {
-        approval = loaded.webAuthOpener(...args).catch((error) => {
-          resetApproval()
-          throw error
-        })
+        approval = Promise.resolve()
+          .then(() => loaded.webAuthOpener(...args))
+          .catch((error) => {
+            resetApproval()
+            throw error
+          })
       }
       return approval
     },
   }
-
 }
