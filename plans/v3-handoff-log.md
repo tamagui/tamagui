@@ -669,6 +669,29 @@ Status: in progress.
 Status: pending. These remain proposals until the user approves decisions that
 the design record marks open.
 
+### Open question — should `fontSize` derive line height from the face? (Lane D, found 2026-07-30)
+
+Not part of this campaign and not proposed for change here; recorded so it is a
+decision someone makes rather than a surprise someone hits.
+
+Setting `fontSize="$3"` alone does not take the line height from the font face's
+own mapping. Evidence, from building the font-face swap fixture: with only
+`fontSize="$3"`, the default face and the `ja` face both computed
+`line-height: 23px` while their families and font sizes swapped correctly
+(13px vs 20px). Adding `lineHeight="$3"` produced 22px and 30px, the two faces'
+own values, and the swap was correct all along.
+
+So a caller who sets only `fontSize` and swaps faces gets **the new face's
+glyphs at the previous face's metrics**. That is a plausible-looking wrong
+result rather than an obviously broken one, which is the bad kind: it cost this
+lane a detour and nearly produced a false bug report against the swap itself.
+
+The argument against changing it is real too — it is long-standing behaviour,
+`fontSize` and `lineHeight` are independent style props everywhere else, and
+making one imply the other is breaking. The decision is whether the ergonomic
+trap is worse than the inconsistency. Whoever takes it should know the failure
+mode is silent.
+
 ### Design item 8 — the minimum native DOM ref API (Lane D proposal)
 
 **Recommendation: expose the React Native public instance, add the HTML tag
