@@ -277,7 +277,7 @@ exports[`theme value extraction should work when no theme variables used 1`] = `
     import { Paragraph } from 'tamagui'
     export function Test() {
       return (
-        <__TamaguiNativeText style={{"fontFamily":"Inter","letterSpacing":0,"fontSize":14,"lineHeight":23,"color":"red"}}>hello world</__TamaguiNativeText>
+        <__TamaguiNativeText style={{"letterSpacing":0,"fontSize":14,"lineHeight":23,"fontFamily":"Inter","color":"red"}}>hello world</__TamaguiNativeText>
       )
     }
 

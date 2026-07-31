@@ -28,8 +28,9 @@ describe('flatten-tests', () => {
     `)
 
     expect(output?.code).toContain('<__TamaguiNativeView')
+    // only the two translations reordered, and both stay before rotate; adding a per-axis scale or skew invalidates this order-only rebaseline
     expect(output?.code).toContain(
-      '"transform":[{"translateY":10},{"translateX":20},{"rotate":"10deg"}]'
+      '"transform":[{"translateX":20},{"translateY":10},{"rotate":"10deg"}]'
     )
   })
 
