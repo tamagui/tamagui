@@ -524,7 +524,7 @@ export const Fixture = ({ anything }) => (
     expect(site.after).toContain('hoverStyle={{ opacity: 1 }}')
   })
 
-  test('values belonging to another migration stay authored and are inventoried', () => {
+  test('only values that need migration are inventoried', () => {
     const site = only(
       run(`import { Text, TextInput, View, styled } from 'tamagui'
 export const Fixture = () => (
@@ -532,17 +532,254 @@ export const Fixture = () => (
           bg="$blue10"
           transition={['quick', { opacity: 'lazy' }]}
           shadowOffset={{ width: 0, height: 20 }}
+          transform={[{ translateX: 20 }]}
         />
       )`)
     )
 
     expect(codes(site)).toEqual([])
-    expect(site.inventory.map((flag) => flag.code).sort()).toEqual([
-      'legacy-transition-value',
-      'structured-native-value',
-    ])
+    expect(site.inventory.map((flag) => flag.code)).toEqual(['legacy-transition-value'])
     expect(site.after).toContain(`transition={['quick', { opacity: 'lazy' }]}`)
     expect(site.after).toContain('shadowOffset={{ width: 0, height: 20 }}')
+    expect(site.after).toContain('transform={[{ translateX: 20 }]}')
+  })
+})
+
+describe('structured native values', () => {
+  test('converts static transform arrays when a condition needs one program', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View
+    transform={[{ translateX: 0 }, { rotate: '0deg' }, { scale: 1 }]}
+    hoverStyle={{
+      transform: [{ translateX: 10 }, { rotate: '45deg' }, { scale: 2 }],
+    }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(site.inventory).toEqual([])
+    expect(programs(site)).toEqual({
+      transform:
+        'translateX(0px) rotate(0deg) scale(1) hover:translateX(10px) rotate(45deg) scale(2)',
+    })
+  })
+
+  test('refuses a unitless string length instead of guessing points', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View
+    transform={[{ translateY: '20' }]}
+    hoverStyle={{ transform: [{ translateY: '-5' }] }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual(['structured-transform-unitless-transform-value'])
+    expect(site.inventory).toEqual([])
+    expect(site.after).toContain(`transform={[{ translateY: '20' }]}`)
+    expect(site.after).toContain('hoverStyle=')
+  })
+
+  test('retains a dynamic transform array with a specific diagnostic', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = ({ x }) => (
+  <View
+    transform={[{ translateX: x }]}
+    hoverStyle={{ transform: [{ translateX: 10 }] }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual(['structured-transform-dynamic'])
+    expect(site.inventory).toEqual([])
+    expect(site.after).toContain('transform={[{ translateX: x }]}')
+    expect(site.after).toContain('hoverStyle=')
+  })
+
+  test('recognizes a referenced transform array as structured before type fallback', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+declare function getTransform(): Array<{ translateX: number }>
+const transform = getTransform()
+export const Fixture = () => (
+  <View
+    transform={transform}
+    hoverStyle={{ transform: [{ translateX: 10 }] }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual(['structured-transform-dynamic'])
+    expect(site.inventory).toEqual([])
+    expect(site.after).toContain('transform={transform}')
+    expect(site.after).toContain('hoverStyle=')
+  })
+
+  test('keeps ordinary string payloads on structured-capable properties', () => {
+    const site = only(
+      run(`import { Text } from 'tamagui'
+export const Fixture = () => (
+  <Text
+    transform="scale(1)"
+    fontVariant="small-caps"
+    backgroundImage="linear-gradient(red, blue)"
+    hoverStyle={{
+      transform: 'scale(2)',
+      fontVariant: 'tabular-nums',
+      backgroundImage: 'linear-gradient(blue, red)',
+    }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      backgroundImage: 'linear-gradient(red, blue) hover:linear-gradient(blue, red)',
+      fontVariant: 'small-caps hover:tabular-nums',
+      transform: 'scale(1) hover:scale(2)',
+    })
+  })
+
+  test('keeps a referenced CSS transform string on the string path', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+declare const transform: string
+export const Fixture = () => (
+  <View transform={transform} hoverStyle={{ transform: 'scale(2)' }} />
+)`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      transform: '${transform} hover:scale(2)',
+    })
+  })
+
+  test('retains matrix arrays with a portability diagnostic', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View
+    transform={[{ matrix: [1, 0, 0, 1, 0, 0] }]}
+    hoverStyle={{ transform: [{ matrix: [1, 0, 0, 1, 10, 0] }] }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual(['structured-transform-matrix'])
+    expect(site.inventory).toEqual([])
+    expect(site.after).toContain('matrix: [1, 0, 0, 1, 0, 0]')
+    expect(site.after).toContain('hoverStyle=')
+  })
+
+  test('converts static font variant arrays to the CSS token-list spelling', () => {
+    const site = only(
+      run(`import { Text } from 'tamagui'
+export const Fixture = () => (
+  <Text
+    fontVariant={['small-caps', 'tabular-nums']}
+    hoverStyle={{ fontVariant: ['oldstyle-nums'] }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(site.inventory).toEqual([])
+    expect(programs(site)).toEqual({
+      fontVariant: 'small-caps tabular-nums hover:oldstyle-nums',
+    })
+  })
+
+  test('converts a static native linear-gradient object to its CSS spelling', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View
+    backgroundImage={[{
+      type: 'linear-gradient',
+      direction: '45deg',
+      colorStops: [
+        { color: '$red10', positions: [0, 25, 40] },
+        { color: null, positions: [50] },
+        { color: '#00f', positions: [100] },
+      ],
+    }]}
+    hoverStyle={{
+      backgroundImage: [{
+        type: 'linear-gradient',
+        direction: 'to bottom',
+        colorStops: [
+          { color: '$blue10', positions: ['0%'] },
+          { color: 'white', positions: ['100%'] },
+        ],
+      }],
+    }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(site.inventory).toEqual([])
+    expect(programs(site)).toEqual({
+      backgroundImage:
+        'linear-gradient(45deg, red10 0px, red10 25px, red10 40px, 50px, #00f 100px) hover:linear-gradient(to bottom, blue10 0%, white 100%)',
+    })
+  })
+
+  test('retains a dynamic gradient with a shape-specific diagnostic', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = ({ color }) => (
+  <View
+    backgroundImage={[{
+      type: 'linear-gradient',
+      colorStops: [{ color }, { color: 'white' }],
+    }]}
+    hoverStyle={{
+      backgroundImage: [{
+        type: 'linear-gradient',
+        colorStops: [{ color: 'black' }, { color: 'white' }],
+      }],
+    }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual(['structured-background-image-dynamic'])
+    expect(site.inventory).toEqual([])
+    expect(site.after).toContain('backgroundImage={[')
+    expect(site.after).toContain('hoverStyle=')
+  })
+
+  test('keeps standalone shadow offsets natural and uses the part-prop contract when conditional', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View
+    shadowOffset={{ width: 0, height: 2 }}
+    hoverStyle={{ shadowOffset: { width: 0, height: 4 } }}
+  />
+)`)
+    )
+
+    expect(codes(site)).toEqual([])
+    expect(site.inventory).toEqual([])
+    expect(site.assessmentVerdict).toBe('ineligible')
+    expect(site.assessments).toContainEqual({
+      property: 'shadowOffset',
+      verdict: 'ineligible',
+      reasons: expect.arrayContaining([
+        expect.objectContaining({
+          dimension: 'property',
+          remedy: expect.stringContaining('boxShadow'),
+        }),
+      ]),
+    })
   })
 })
 

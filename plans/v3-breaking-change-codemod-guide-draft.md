@@ -281,6 +281,52 @@ follow-up target. An `unknown-host` result on a component such as `Menu.Item`
 means the codemod could not follow that member access to its host type; it does
 not imply the component itself is invalid.
 
+## Convert supported native structures
+
+Unconditional React Native objects and arrays keep their natural
+representation. The codemod leaves them byte-for-byte authored and does not
+list them as migration work. When a condition needs the same property in one
+flat string program, the tool converts only three verified static shapes:
+
+- a `transform` array becomes an ordered CSS transform function list;
+- a `fontVariant` string array becomes a space-separated token list;
+- one React Native `linear-gradient` object becomes
+  `linear-gradient(...)`.
+
+For example:
+
+```tsx
+// before
+<View
+  transform={[{ translateX: 0 }, { rotate: '0deg' }, { scale: 1 }]}
+  hoverStyle={{
+    transform: [{ translateX: 10 }, { rotate: '45deg' }, { scale: 2 }],
+  }}
+/>
+
+// report suggestion
+<View transform="translateX(0px) rotate(0deg) scale(1) hover:translateX(10px) rotate(45deg) scale(2)" />
+```
+
+The native evaluator turns the transform string back into its ordered array,
+turns a conditional `fontVariant` token list back into the React Native
+string array, and parses the winning conditional gradient before assigning
+`experimental_backgroundImage`.
+
+This is an explicit shape table, not a generic object serializer. Dynamic or
+Animated transform entries stay authored with
+`structured-transform-dynamic`. Matrix arrays stay authored with
+`structured-transform-matrix`, because the React Native matrix array and
+portable CSS matrix forms do not match. Dynamic gradients and unsupported
+gradient shapes also stay authored with a `structured-background-image-*`
+diagnostic. A structure with no verified rule uses a property-specific
+`structured-<property>` code.
+
+The rebuilt default corpus contains two unconditional structured values, one
+`shadowOffset` object and one raw transform array. Both remain authored and
+neither is inventory. The only remaining separate-migration inventory is 39
+`legacy-transition-value` rows.
+
 ## Move part-prop conditions to their composite
 
 Some React Native part props keep their plain legacy value path, but they have
@@ -424,8 +470,8 @@ The tool deliberately does not:
   ambiguous;
 - invent a flat name for a dot-path token such as `$1.5` or rewrite a token
   held behind an unproven module constant;
-- flatten raw structured values such as a transform array or `shadowOffset`
-  object;
+- flatten a dynamic, Animated, matrix, or otherwise unsupported structured
+  value;
 - migrate legacy transition configuration shapes;
 - guess whether an open `string` type contains a token at runtime;
 - convert group-presence conditions that name neither a state nor a size;
@@ -486,15 +532,17 @@ consumer CSS should prefer a stable authored class or selector.
    `.web.tsx`, and move text-only View styles to a text or DOM host.
 6. Review `unknown-host` sites before changing them.
 7. Rebuild shadow and transform part conditions as complete composites.
-8. Move text-only styles from `View` to `Text`, or use `html.*` for deliberate
+8. Review property-specific structured-value diagnostics. Keep dynamic,
+   Animated, and matrix values authored or rewrite them manually.
+9. Move text-only styles from `View` to `Text`, or use `html.*` for deliberate
    web DOM behavior.
-9. Typecheck and build.
-10. Exercise states, media, themes, groups, containers, transforms, and
+10. Typecheck and build.
+11. Exercise states, media, themes, groups, containers, transforms, and
     presence behavior on every platform the code supports.
-11. Re-run the report and resolve every remaining outcome, flag, and inventory
+12. Re-run the report and resolve every remaining outcome, flag, and inventory
     row.
-12. Audit consumer CSS for the base-specificity change.
-13. Rebaseline snapshots or consumer CSS that pins generated classes for
+13. Audit consumer CSS for the base-specificity change.
+14. Rebaseline snapshots or consumer CSS that pins generated classes for
     `active:` or `group-active/*` aliases.
 
 ## Proposed only: engine contraction
@@ -521,6 +569,14 @@ contracts:
   platform/theme/group conditions, and refused part props;
 - `code/core/style-grammar/src/programEligibility.ts` for the complete
   part-to-composite table;
+- `code/core/codemod-flat-values/src/structuredNative.ts` for the static
+  transform, font-variant, and gradient serializers, plus focused red-first
+  conversion and refusal cases;
+- `code/core/web/src/helpers/evaluateAccumulatedPrograms.ts` for the native
+  conditional gradient and font-variant output shapes;
+- a rebuilt `@tamagui/web` parser round trip showing numeric gradient
+  positions return as React Native point numbers and a middle transition hint
+  returns as `{ color: null, positions: [50] }`;
 - `code/core/style-grammar/src/clauseCapability.ts` and the codemod's
   type-aware language-service host lookup for every clean, relocation,
   unknown-host, and ineligible outcome;
@@ -539,8 +595,12 @@ contracts:
 - a direct style-grammar lowering probe showing that `active:` and `press:`
   emit `_bc-1119250615`, while `group-active/card:` and `group-press/card:`
   emit `_bc-1493322902`, with identical rule text in each pair;
-- the default-corpus host coverage and outcome measurement above.
+- a Chromium `CSS.supports` probe for the generated transform, font-variant,
+  and repeated-stop plus transition-hint gradient spellings;
+- the default-corpus host coverage and outcome measurement above, rerun after
+  rebuilding the language service, with no structured-value inventory.
 
 The web verification passed 46 tests in five files. The native verification
-passed 43 tests in three files. The probe logs record their UTC start and
-finish times and exact branch heads.
+passed 43 tests in three files. The codemod verification passed 65 tests,
+including the default corpus. The probe logs record their UTC start and finish
+times and exact branch heads.

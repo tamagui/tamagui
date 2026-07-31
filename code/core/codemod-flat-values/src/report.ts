@@ -105,8 +105,7 @@ export function renderReport(
       '### Values left authored for another migration',
       '',
       'These are not flat-value migration work. The conversion keeps them exactly as',
-      'authored and records them so the transition and structured-native designs have',
-      'a corpus inventory.',
+      'authored and records them so their follow-up migrations have a corpus inventory.',
       '',
       ...inventoryCounts.map(([code, count]) => `- ${code}: ${count}`)
     )

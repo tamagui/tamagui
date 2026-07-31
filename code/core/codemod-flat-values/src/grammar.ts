@@ -43,6 +43,7 @@ export const {
   programEligibility,
   pseudoToModifier,
   standaloneValueProps,
+  parseTransformString,
 } = grammar
 
 export type {

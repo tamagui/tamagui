@@ -54,6 +54,7 @@ import {
   type ParsedValue,
 } from './grammar'
 import { isLegacyConditionName, resolveLegacyName } from './legacyNames'
+import { classifyStructuredNativeValue } from './structuredNative'
 
 export type SiteKind = 'jsx' | 'styled'
 
@@ -347,12 +348,18 @@ function classifyDynamic(
     return { ...empty, inventory: flag, blocked: flag }
   }
 
-  if (Node.isObjectLiteralExpression(current) || Node.isArrayLiteralExpression(current)) {
-    const flag: Flag = {
-      code: 'structured-native-value',
-      detail: `${prop} value "${source}" is a structured React Native value with no flat spelling yet`,
+  const structured = classifyStructuredNativeValue(
+    resolveProp(prop),
+    current,
+    source,
+    registry
+  )
+  if (structured) {
+    return {
+      ...empty,
+      payload: structured.payload,
+      blocked: structured.blocked,
     }
-    return { ...empty, inventory: flag, blocked: flag }
   }
 
   const tree = literalTree(current, registry)

@@ -116,10 +116,33 @@ by design and those rows need review during migration.
 All three runtime gates are closed. This tool remains report-only until users approve
 an apply/write mode; runtime support no longer blocks it.
 
+## Structured native values
+
+Unconditional React Native objects and arrays keep their authored representation and
+do not appear as migration work. When a condition needs the same property in one
+string program, the codemod converts only the structures with an explicit,
+round-trippable CSS spelling:
+
+- a static `transform` array becomes an ordered CSS transform function list;
+- a static `fontVariant` string array becomes a space-separated token list;
+- one static React Native `linear-gradient` object becomes `linear-gradient(...)`.
+
+Dynamic and Animated transform entries stay authored under
+`structured-transform-dynamic`. Matrix arrays stay authored under
+`structured-transform-matrix`, because React Native's matrix array and portable CSS
+matrix forms do not have the same shape. A dynamic gradient gets
+`structured-background-image-dynamic`; unsupported structured properties use a
+property-specific `structured-<property>` code.
+
+Plain `shadowOffset` and `textShadowOffset` objects also stay natural and are not
+inventory. If a condition targets one, the shared eligibility contract reports it as
+ineligible and points to the complete `boxShadow` or `textShadow` composite. The
+codemod never guesses the missing color, radius, opacity, or sibling offset.
+
 Values belonging to another migration are listed separately and left untouched:
-`legacy-transition-value` (the v1 animation config shapes), `structured-native-value`
-(`shadowOffset`, raw `transform` arrays), and `dynamic-string-value` (an open string
-type that could still hold a `$token` at runtime, which only a human can confirm).
+`legacy-transition-value` (the v1 animation config shapes) and
+`dynamic-string-value` (an open string type that could still hold a `$token` at
+runtime, which only a human can confirm).
 
 ## Flag codes
 
@@ -140,7 +163,10 @@ A flag means a human decides. Every code the tool can emit:
 | `dynamic-condition-value` | a value inside the condition object is not statically known |
 | `non-css-style-value` | a condition needs a base that is `true`, `false`, or `null` |
 | `empty-style-value` | a condition needs a base that is always nullish |
-| `structured-native-value`, `legacy-transition-value` | a condition needs a value from another migration |
+| `structured-transform-*` | a transform array is dynamic or has no faithful static function-list spelling; matrix arrays are intentionally included |
+| `structured-font-variant-*`, `structured-background-image-*` | a font-variant or gradient structure is dynamic, empty, layered, or unsupported |
+| `structured-<property>` | a condition needs an object or array with no verified CSS-shaped migration rule |
+| `legacy-transition-value` | a condition needs the separate transition migration |
 | `condition-order-not-preservable`, `base-order-not-preservable` | merging would move a value past something that can also set it |
 | `computed-property` | a computed key hides the affected style property |
 | `emitted-program-mismatch`, `emitted-value-invalid` | the printer failed its own re-parse; this is a codemod bug |
