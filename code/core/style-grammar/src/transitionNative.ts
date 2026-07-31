@@ -29,7 +29,8 @@ export interface NativeTransitionDiagnostic {
 }
 
 export type NativeTransitionValidationResult =
-  { ok: true } | { ok: false; diagnostics: readonly NativeTransitionDiagnostic[] }
+  | { ok: true }
+  | { ok: false; diagnostics: readonly NativeTransitionDiagnostic[] }
 
 const bothPlatforms: readonly NativeTransitionPlatform[] = ['android', 'ios']
 const iosPlatform: readonly NativeTransitionPlatform[] = ['ios']

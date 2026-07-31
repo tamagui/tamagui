@@ -65,9 +65,13 @@ describe('tailwind theme-value color classes', () => {
   })
 
   test('non-color arbitrary width is unaffected', () => {
-    const styles = splitTailwindStyles(View, { className: 'w-[400px]' }, {
-      theme: theme(),
-    })
+    const styles = splitTailwindStyles(
+      View,
+      { className: 'w-[400px]' },
+      {
+        theme: theme(),
+      }
+    )
     const rule = findRule(styles.rulesToInsert, 'width')
     expect(rule).toBeTruthy()
     expect(rule[StyleObjectValue]).toBe('400px')

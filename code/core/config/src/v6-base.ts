@@ -1,18 +1,11 @@
 // v6 is the opt-in home for breaking Tailwind-compatible defaults, so v5 stays stable.
 import { shorthands } from '@tamagui/shorthands/v6'
-import {
-  themes as v5themes,
-  tokens as v5tokens,
-  type V5Themes,
-} from '@tamagui/themes/v5'
+import { themes as v5themes, tokens as v5tokens, type V5Themes } from '@tamagui/themes/v5'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { fonts as v5fonts } from './v5-fonts'
 import { media, mediaQueryDefaultActive } from './v5-media'
 import { selectionStyles, settings as v5Settings } from './v5-base'
-import {
-  v6RemovedThemeNames,
-  v6ThemeNameReplacements,
-} from '@tamagui/style-grammar'
+import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar'
 import {
   tailwindColors,
   tailwindFontSize,
@@ -47,9 +40,7 @@ export const themes = Object.fromEntries(
       Object.entries(theme)
         .filter(([name]) => !(v6RemovedThemeNames as readonly string[]).includes(name))
         .map(([name, value]) => [
-          v6ThemeNameReplacements[
-            name as keyof typeof v6ThemeNameReplacements
-          ] ?? name,
+          v6ThemeNameReplacements[name as keyof typeof v6ThemeNameReplacements] ?? name,
           value,
         ])
     ),

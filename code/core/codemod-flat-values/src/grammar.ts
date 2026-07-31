@@ -58,11 +58,7 @@ export function convertLegacyConditionProp(
   value: unknown,
   options: ConvertLegacyConditionOptions
 ): LegacyConditionResult | null {
-  return grammar.convertLegacyConditionProp(
-    propName,
-    renameBuiltInTokens(value),
-    options
-  )
+  return grammar.convertLegacyConditionProp(propName, renameBuiltInTokens(value), options)
 }
 
 /** every prop spelling the codemod treats as carrying a style value */
