@@ -207,14 +207,17 @@ Status: in progress.
   `9e4e03e74e`, and `4d89c707f4`. `@tamagui/web` no longer exposes
   `settings.styleMode` or depends on `tailwind-merge`; config and to-tailwind
   are test-only dev dependencies of `@tamagui/tailwind`. Of the 423 failures
-  exposed by the protected cut, 418 moved to the Tailwind package. Five
+  exposed by the protected cut, 419 moved to the Tailwind package. Four
   specifications were deliberately retired: one required `tailwind-merge` to
   delete an earlier unknown class instead of preserving authored order, and
-  four mixed a class-string base with object/function styles even though core
+  three mixed a class-string base with object/function styles even though core
   `styled()` is now object-only and Tailwind `styled()` is class-only. Two
-  additional global mode-toggle tests left with the setting. Whole behavior
-  files moved, so the package also gained their already-green converter and
-  retention tests; its final gates are 458 web/type and 270 native tests.
+  additional global mode-toggle tests left with the setting. A fourth native
+  hybrid test was green before removal, so it was not part of the 423.
+  Whole behavior files moved, producing 641 package-owned tests including
+  their already-green converter and retention siblings; together with the
+  package's existing 87 tests, its final gates are 458 web/type and 270 native
+  tests (728 total).
 - Icon reconstruction did not move: `helpers-icon` no longer accepts or
   reconstructs `className`, `@tamagui/tailwind` exports no icon wrapper, and no
   reconstruction caller remains. The nine deleted icon assertions therefore
