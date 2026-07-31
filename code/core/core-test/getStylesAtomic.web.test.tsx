@@ -36,7 +36,7 @@ test(`should expand webkit user-select`, () => {
         "_ussel-none",
         undefined,
         [
-          ":root ._ussel-none{user-select:none;-webkit-user-select:none;}",
+          "._ussel-none{user-select:none;-webkit-user-select:none;}",
         ],
       ],
     ]
@@ -76,8 +76,8 @@ test(`shorthand border prop gets single selector`, () => {
     border: '1px solid red',
   })
   const rule = out[0][StyleObjectRules][0]
-  // should have single .cls selector
-  expect(rule).toMatch(/:root \._[^\s.]+\{/)
+  // should have single flat .cls selector (no doubling for the shorthand key)
+  expect(rule).toMatch(/^\._[^\s.]+\{/)
 })
 
 test(`outline longhands get doubled selector`, () => {

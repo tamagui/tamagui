@@ -81,9 +81,7 @@ describe('functions, commas, and url()', () => {
       )
     ).toEqual({
       base: 'linear-gradient(135deg, red, blue)',
-      clauses: [
-        { modifiers: ['hover'], payload: 'linear-gradient(135deg, pink, cyan)' },
-      ],
+      clauses: [{ modifiers: ['hover'], payload: 'linear-gradient(135deg, pink, cyan)' }],
     })
   })
 
@@ -198,17 +196,17 @@ describe('clauses', () => {
   })
 
   test('every registered modifier kind is accepted', () => {
-    expect(value('a press:b open:c active:d md:e dark_blue:f ios:g native:h').clauses).toEqual(
-      [
-        { modifiers: ['press'], payload: 'b' },
-        { modifiers: ['open'], payload: 'c' },
-        { modifiers: ['active'], payload: 'd' },
-        { modifiers: ['md'], payload: 'e' },
-        { modifiers: ['dark_blue'], payload: 'f' },
-        { modifiers: ['ios'], payload: 'g' },
-        { modifiers: ['native'], payload: 'h' },
-      ]
-    )
+    expect(
+      value('a press:b open:c active:d md:e dark_blue:f ios:g native:h').clauses
+    ).toEqual([
+      { modifiers: ['press'], payload: 'b' },
+      { modifiers: ['open'], payload: 'c' },
+      { modifiers: ['active'], payload: 'd' },
+      { modifiers: ['md'], payload: 'e' },
+      { modifiers: ['dark_blue'], payload: 'f' },
+      { modifiers: ['ios'], payload: 'g' },
+      { modifiers: ['native'], payload: 'h' },
+    ])
   })
 
   test('container modifiers are ordinary clause words to the scanner', () => {
@@ -232,10 +230,12 @@ describe('clauses', () => {
   })
 
   test('group modifiers parse named and unnamed', () => {
-    expect(value('muted group-hover:foreground group-press/card:accent').clauses).toEqual([
-      { modifiers: ['group-hover'], payload: 'foreground' },
-      { modifiers: ['group-press/card'], payload: 'accent' },
-    ])
+    expect(value('muted group-hover:foreground group-press/card:accent').clauses).toEqual(
+      [
+        { modifiers: ['group-hover'], payload: 'foreground' },
+        { modifiers: ['group-press/card'], payload: 'accent' },
+      ]
+    )
   })
 
   test('whitespace after the colon still belongs to the clause', () => {

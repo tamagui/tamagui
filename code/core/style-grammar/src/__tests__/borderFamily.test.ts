@@ -3,7 +3,10 @@ import { splitBorderValue, type ParsedValue } from '..'
 
 const colorTokens = new Set(['primary', 'color5'])
 
-const value = (base: string | null, clauses: ParsedValue['clauses'] = []): ParsedValue => ({
+const value = (
+  base: string | null,
+  clauses: ParsedValue['clauses'] = []
+): ParsedValue => ({
   base,
   clauses,
 })
@@ -36,11 +39,7 @@ describe('the border family', () => {
   })
 
   test('component order is free and missing components emit no program', () => {
-    const { entries, errors } = splitBorderValue(
-      'border',
-      value('dashed 1'),
-      colorTokens
-    )
+    const { entries, errors } = splitBorderValue('border', value('dashed 1'), colorTokens)
     expect(errors).toEqual([])
     // bare numbers are the RN spelling of a width
     expect(entries.map((entry) => entry.property)).toEqual([

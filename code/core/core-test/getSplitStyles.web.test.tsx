@@ -45,9 +45,7 @@ describe('getSplitStyles', () => {
     // same declaration
     const className = styles.classNames.color
     expect(className).toMatch(/^_c-/)
-    expect((styles.rulesToInsert[className]?.[4] ?? []).join('')).toContain(
-      'color:red'
-    )
+    expect((styles.rulesToInsert[className]?.[4] ?? []).join('')).toContain('color:red')
   })
 
   test(`Size variants resolve true through settings.defaultSize`, () => {
@@ -494,7 +492,7 @@ describe('getSplitStyles', () => {
           "_tr-perspective1343953606",
           undefined,
           [
-            ":root ._tr-perspective1343953606{transform:perspective(1000px);}",
+            "._tr-perspective1343953606{transform:perspective(1000px);}",
           ],
         ],
       ]
@@ -540,7 +538,9 @@ describe('getSplitStyles', () => {
     // the program engine lowers the converted legacy group media straight to a
     // container query on the group name: no @supports wrapper, no :root
     // ladder, no group-descendant selector hop
-    expect(rule).toMatch(/^@container testy \(max-width: 800px\) \{\._c-\d+\{color:red\}\}$/)
+    expect(rule).toMatch(
+      /^@container testy \(max-width: 800px\) \{\._c-\d+\{color:red\}\}$/
+    )
   })
 
   test(`group container queries with single-part media keys`, () => {

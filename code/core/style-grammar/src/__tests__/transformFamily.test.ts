@@ -50,7 +50,9 @@ describe('the family table', () => {
       },
     })
     // both axes share one composition object, so one rule serves both
-    expect(transformFamilyTargets.y.composition).toBe(transformFamilyTargets.x.composition)
+    expect(transformFamilyTargets.y.composition).toBe(
+      transformFamilyTargets.x.composition
+    )
   })
 
   test('scaleX and scaleY ride the same trick on scale', () => {
@@ -201,11 +203,12 @@ describe('native composition order', () => {
   })
 
   test('missing props collapse without reordering the rest', () => {
-    expect(keysOf(composeTransformArray({ y: 4, scaleX: 1, scaleY: 1 }).transform)).toEqual([
-      'translateY',
-      'scale',
+    expect(
+      keysOf(composeTransformArray({ y: 4, scaleX: 1, scaleY: 1 }).transform)
+    ).toEqual(['translateY', 'scale'])
+    expect(keysOf(composeTransformArray({ rotate: '1rad' }).transform)).toEqual([
+      'rotate',
     ])
-    expect(keysOf(composeTransformArray({ rotate: '1rad' }).transform)).toEqual(['rotate'])
     expect(composeTransformArray({}).transform).toEqual([])
   })
 
@@ -223,11 +226,7 @@ describe('native composition order', () => {
 
   test('raw transform entries always come last, in their authored order', () => {
     const composed = composeTransformArray({ x: 1 }, 'perspective(100px) rotateZ(90deg)')
-    expect(keysOf(composed.transform)).toEqual([
-      'translateX',
-      'perspective',
-      'rotateZ',
-    ])
+    expect(keysOf(composed.transform)).toEqual(['translateX', 'perspective', 'rotateZ'])
   })
 
   test('an already-parsed raw array passes through untouched', () => {
@@ -307,9 +306,10 @@ describe('raw transform string parsing', () => {
   })
 
   test('commas between functions and irregular whitespace are tolerated', () => {
-    expect(
-      parseTransformString('  translateX(1px) ,\n  scale(2)  ').transform
-    ).toEqual([{ translateX: 1 }, { scale: 2 }])
+    expect(parseTransformString('  translateX(1px) ,\n  scale(2)  ').transform).toEqual([
+      { translateX: 1 },
+      { scale: 2 },
+    ])
   })
 
   test('axis percentages survive because we emit array entries, never a string', () => {

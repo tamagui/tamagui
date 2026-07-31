@@ -63,7 +63,10 @@ function clauseSetKey(modifiers: readonly string[]): string {
  * hover — v1's `hoverStyle`-as-separate-prop semantics and tailwind-merge's
  * per-variant conflict groups.
  */
-export function mergeProgramValues(earlier: ParsedValue, later: ParsedValue): ParsedValue {
+export function mergeProgramValues(
+  earlier: ParsedValue,
+  later: ParsedValue
+): ParsedValue {
   const base = later.base ?? earlier.base
   if (!earlier.clauses.length) {
     return base === later.base ? later : { base, clauses: later.clauses }

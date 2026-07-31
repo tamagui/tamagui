@@ -144,15 +144,14 @@ const transformDeclarations: Readonly<Record<string, readonly string[]>> = Objec
  * Declaration -> the authored prop it evaluates as on native, so the evaluator
  * can turn program results back into `composeTransformArray` input.
  */
-export const transformPropForDeclaration: Readonly<Record<string, string>> = Object.freeze(
-  {
+export const transformPropForDeclaration: Readonly<Record<string, string>> =
+  Object.freeze({
     '--t-x': 'x',
     '--t-y': 'y',
     '--t-scale-x': 'scaleX',
     '--t-scale-y': 'scaleY',
     rotate: 'rotate',
-  }
-)
+  })
 
 /**
  * The unit a bare legacy number carries for each declaration, so a displaced
@@ -265,8 +264,10 @@ export function composeTransformArray(
   // 3. scale — always per-axis, because uniform `scale` expanded to both axes at
   // contribution. Equal axes collapse back to one `scale` entry so the common
   // uniform case matches the v1 array byte for byte
-  const scaleX = results.scaleX == null ? null : readNumber(results.scaleX, 'scaleX', errors)
-  const scaleY = results.scaleY == null ? null : readNumber(results.scaleY, 'scaleY', errors)
+  const scaleX =
+    results.scaleX == null ? null : readNumber(results.scaleX, 'scaleX', errors)
+  const scaleY =
+    results.scaleY == null ? null : readNumber(results.scaleY, 'scaleY', errors)
   if (scaleX !== null && scaleX === scaleY) {
     transform.push({ scale: scaleX })
   } else {
@@ -303,7 +304,14 @@ export function parseTransformString(input: string): ComposedTransform {
   while (index < length) {
     const code = input.charCodeAt(index)
     // whitespace and commas separate functions
-    if (code === 32 || code === 9 || code === 10 || code === 13 || code === 12 || code === 44) {
+    if (
+      code === 32 ||
+      code === 9 ||
+      code === 10 ||
+      code === 13 ||
+      code === 12 ||
+      code === 44
+    ) {
       index++
       continue
     }

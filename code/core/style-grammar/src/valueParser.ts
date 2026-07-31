@@ -86,7 +86,9 @@ export function parseValue(
     modifier?: string
   ): void => {
     ;(errors ||= []).push(
-      modifier === undefined ? { code, index, message } : { code, index, message, modifier }
+      modifier === undefined
+        ? { code, index, message }
+        : { code, index, message, modifier }
     )
   }
 

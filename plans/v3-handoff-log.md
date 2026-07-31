@@ -1068,3 +1068,16 @@ OPUS's leak-to-DOM set: `overflowWrap`, `wordWrap` (its legacy alias), and
 of unknown DOM attributes. `listStyle` deliberately skipped per OPUS's finding
 (`.is_View` forces `display:flex`, no marker ever renders); if a plain-list
 use case appears it belongs with the DOM contract's `html.*` work.
+
+### Contraction stage 1: base atomic rules at flat specificity (Lane E)
+
+The legacy base atomic selector dropped its `:root` prefix: base rules from
+the plain-value path now sit at the same flat class specificity as program
+blocks (the `.cls.cls` doubling for longhand-over-shorthand keys is retained
+— its impossible-by-construction precondition only holds once the style prop
+stops carrying CSS shorthand properties). The SSR sheet scanner is
+unaffected: it identifies theme rules by the `.tm_xxt` marker, not the atomic
+prefix. This extends the already-ruled consumer-visible base-specificity drop
+(design record note + release-notes item) to the plain-value rules. The
+pseudo `!important` tier and media ladders are untouched — they are legacy
+condition machinery, held for the user decision.

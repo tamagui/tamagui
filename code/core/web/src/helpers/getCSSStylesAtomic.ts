@@ -181,11 +181,15 @@ function createAtomicRules(
   const cls =
     property in cssShorthandLonghands ? `.${identifier}.${identifier}` : `.${identifier}`
 
+  // base rules sit at flat class specificity, matching the program block
+  // encoding (design record: "This deletes the current encoding's entire
+  // specificity apparatus"); the pseudo/media tiers keep their ladders until
+  // the legacy condition machinery is deleted with them
   let selector = pseudo
     ? pseudoSelector
       ? `${pseudoSelector} ${cls}`
       : `${selectorPriority[pseudo.name]} ${cls}${pseudoIdPostfix}`
-    : `:root ${cls}`
+    : cls
 
   // enter style on css driver needs both:
   //   .t_unmounted .selector

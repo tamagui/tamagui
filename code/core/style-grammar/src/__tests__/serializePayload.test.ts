@@ -63,9 +63,7 @@ describe('web serialization', () => {
   })
 
   test('a color opacity suffix becomes color-mix, matching the existing emitter', () => {
-    expect(web('accent/50')).toBe(
-      'color-mix(in srgb, var(--accent) 50%, transparent)'
-    )
+    expect(web('accent/50')).toBe('color-mix(in srgb, var(--accent) 50%, transparent)')
     expect(web('0 2px 8px accent/80')).toBe(
       '0 2px 8px color-mix(in srgb, var(--accent) 80%, transparent)'
     )
@@ -107,9 +105,7 @@ describe('native serialization', () => {
   })
 
   test('a color form that cannot be composed reports instead of guessing', () => {
-    expect(() => native('named/50')).toThrow(
-      /not a #hex, rgb\(\), or rgba\(\) color/
-    )
+    expect(() => native('named/50')).toThrow(/not a #hex, rgb\(\), or rgba\(\) color/)
     expect(() => native('named/50')).toThrow(/"named"/)
   })
 })
@@ -173,8 +169,14 @@ describe('literal payloads round-trip byte for byte', () => {
       'var(--accent, accent)',
     ]) {
       const resolved = resolve(payload)
-      expect(serializePayloadWeb(resolved, (name) => name), payload).toBe(payload)
-      expect(serializePayloadNative(resolved, (name) => name), payload).toBe(payload)
+      expect(
+        serializePayloadWeb(resolved, (name) => name),
+        payload
+      ).toBe(payload)
+      expect(
+        serializePayloadNative(resolved, (name) => name),
+        payload
+      ).toBe(payload)
     }
   })
 })

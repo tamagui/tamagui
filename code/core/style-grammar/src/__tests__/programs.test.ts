@@ -136,7 +136,10 @@ describe('per-longhand programs', () => {
       { modifiers: ['dark'], payload: 'gray' },
       { modifiers: ['hover'], payload: 'green' },
     ])
-    const later: ParsedValue = { base: null, clauses: [{ modifiers: ['dark'], payload: 'black' }] }
+    const later: ParsedValue = {
+      base: null,
+      clauses: [{ modifiers: ['dark'], payload: 'black' }],
+    }
 
     const program = mergePrograms([
       { prop: 'backgroundColor', value: earlier },
@@ -153,9 +156,7 @@ describe('per-longhand programs', () => {
   })
 
   test('condition-set equality is order-insensitive', () => {
-    const earlier = value('red', [
-      { modifiers: ['dark', 'hover'], payload: 'green' },
-    ])
+    const earlier = value('red', [{ modifiers: ['dark', 'hover'], payload: 'green' }])
     const later: ParsedValue = {
       base: null,
       clauses: [{ modifiers: ['hover', 'dark'], payload: 'blue' }],

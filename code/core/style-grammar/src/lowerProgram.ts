@@ -141,7 +141,8 @@ function hyphenate(property: string): string {
   let out = ''
   for (let index = 0; index < property.length; index++) {
     const code = property.charCodeAt(index)
-    out += code >= 65 && code <= 90 ? `-${property[index].toLowerCase()}` : property[index]
+    out +=
+      code >= 65 && code <= 90 ? `-${property[index].toLowerCase()}` : property[index]
   }
   return out
 }

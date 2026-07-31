@@ -83,9 +83,7 @@ describe('legacy condition names', () => {
     })
     // the normalized unnamed group keeps its `true` name so the container
     // query matches the `t_group_true` container-name legacy CSS still sets
-    expect(
-      convert('$group-true-sm', { color: 'red' })?.contributions[0].clause
-    ).toEqual({
+    expect(convert('$group-true-sm', { color: 'red' })?.contributions[0].clause).toEqual({
       modifiers: ['@sm/true'],
       payload: 'red',
     })

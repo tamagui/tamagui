@@ -97,7 +97,9 @@ export function parseContainerModifier(name: string): ContainerModifier | null {
   if (name.charCodeAt(0) !== 64 /* @ */) return null
   const slash = name.indexOf('/')
   if (slash === -1) {
-    return isModifierName(name, 1, name.length) ? { size: name.slice(1), container: null } : null
+    return isModifierName(name, 1, name.length)
+      ? { size: name.slice(1), container: null }
+      : null
   }
   if (!isModifierName(name, 1, slash) || !isModifierName(name, slash + 1, name.length)) {
     return null

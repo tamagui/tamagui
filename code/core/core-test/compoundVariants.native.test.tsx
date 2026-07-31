@@ -11,12 +11,7 @@ import {
 import { getDefaultTamaguiConfig as getPackageDefaultTamaguiConfig } from '@tamagui/config-default'
 import { describe, expect, test } from 'vitest'
 
-import {
-  View,
-  createStyledContext,
-  createTamagui,
-  styled,
-} from '../web/src'
+import { View, createStyledContext, createTamagui, styled } from '../web/src'
 import { getDefaultTamaguiConfig } from '../config-default'
 import { simplifiedGetSplitStyles } from './utils'
 

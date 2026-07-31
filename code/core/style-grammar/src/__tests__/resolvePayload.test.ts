@@ -105,9 +105,7 @@ describe('identifiers', () => {
 
 describe('positions that never resolve', () => {
   test('an unquoted url() body is never resolved', () => {
-    expect(shape(resolve('url(accent/surface.png)'))).toEqual([
-      'url(accent/surface.png)',
-    ])
+    expect(shape(resolve('url(accent/surface.png)'))).toEqual(['url(accent/surface.png)'])
     expect(shape(resolve('url(http://x.com/accent.png) accent'))).toEqual([
       'url(http://x.com/accent.png) ',
       { name: 'accent', kind: 'color' },
