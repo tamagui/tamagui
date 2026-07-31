@@ -295,7 +295,26 @@ Status: pending.
 
 ## 6. Transitions
 
-Status: pending.
+Status: prototype complete.
+
+- New style-grammar modules lower the CSS shorthand and all five longhands into
+  one transition IR with CSS defaults, exact config-first preset resolution,
+  and diagnostics for malformed or unrepresentable input. Duration-shaped
+  values keep CSS semantics even when a legacy config has a same-named preset.
+  Legacy array, per-property object, enter/exit, delay, and spring-override
+  forms migrate into the same IR; CSS serialization returns no value for
+  preset/lifecycle state rather than dropping driver configuration.
+- The native matrix is conservative and sourced from
+  `plans/react-native-style-capabilities.md`: RN 0.82 covers the baseline
+  transform/opacity and filter path; RN 0.84 adds only the explicitly recorded
+  continuous and discrete backend properties, with cursor limited to iOS; RN
+  0.85 claims only the verified representative layout property, `width`.
+  Filter functions are platform-, RN-, and Android-API-gated. CSS globals,
+  custom properties, step/linear-stop timing, negative delays,
+  `allow-discrete`, unsupported/discrete properties, and `all` without concrete
+  changed properties produce diagnostics instead of native approximations.
+- Validation: focused transition tests 13/13, full style-grammar 335/335, and
+  the style-grammar package build passes with rebuilt declarations.
 
 ## 7. Reactive safe-area on native
 
