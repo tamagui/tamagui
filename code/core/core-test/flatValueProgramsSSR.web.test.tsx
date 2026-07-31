@@ -6,14 +6,14 @@ import { hydrateRoot } from 'react-dom/client'
 import { renderToPipeableStream, renderToString } from 'react-dom/server'
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 import config from '../config-default'
-import { TamaguiProvider, View, createTamagui, getSplitStyles } from '../web/src'
+import { TamaguiProvider, Text, View, createTamagui, getSplitStyles } from '../web/src'
 
 const opts = { isAnimated: false, noClass: false, resolveValues: 'auto' } as any
 
 const split = (props: Record<string, any>) =>
   getSplitStyles(
     props,
-    View.staticConfig,
+    Text.staticConfig,
     undefined as any,
     'light',
     { unmounted: false } as any,
@@ -124,7 +124,7 @@ describe('flat value program SSR', () => {
       root.render(
         <TamaguiProvider config={clientConfig} defaultTheme="light" disableInjectCSS>
           <View data-testid="initial" {...initialProps} />
-          <View data-testid="late" {...lateProps} />
+          <Text data-testid="late" {...lateProps} />
         </TamaguiProvider>
       )
       await new Promise((resolve) => setTimeout(resolve, 0))
@@ -163,7 +163,7 @@ describe('flat value program SSR', () => {
 
     function LateComponent() {
       if (!ready) throw waiting
-      return <View data-testid="stream-late" {...lateProps} />
+      return <Text data-testid="stream-late" {...lateProps} />
     }
 
     const chunks: string[] = []
@@ -175,7 +175,7 @@ describe('flat value program SSR', () => {
 
       const stream = renderToPipeableStream(
         <TamaguiProvider config={streamConfig} defaultTheme="light" disableInjectCSS>
-          <View data-testid="stream-initial" {...sharedProps} />
+          <Text data-testid="stream-initial" {...sharedProps} />
           <Suspense fallback={<div data-testid="stream-fallback" />}>
             <LateComponent />
           </Suspense>

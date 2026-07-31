@@ -186,9 +186,6 @@ export declare const stylePropsView: {
     borderEndColor: boolean;
     borderStartColor: boolean;
     shadowColor: boolean;
-    color: boolean;
-    textDecorationColor: boolean;
-    textShadowColor: boolean;
     caretColor?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
@@ -246,6 +243,9 @@ export declare const stylePropsView: {
     objectPosition?: boolean | undefined;
     textEmphasis?: boolean | undefined;
     userSelect?: boolean | undefined;
+    overflowWrap?: boolean | undefined;
+    wordWrap?: boolean | undefined;
+    resize?: boolean | undefined;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;
@@ -498,7 +498,6 @@ export declare const stylePropsText: {
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
     whiteSpace?: boolean | undefined;
-    wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     WebkitBoxOrient?: boolean | undefined;
     transition?: boolean | undefined;
@@ -524,6 +523,9 @@ export declare const stylePropsText: {
     maskSize?: boolean | undefined;
     objectPosition?: boolean | undefined;
     textEmphasis?: boolean | undefined;
+    overflowWrap?: boolean | undefined;
+    wordWrap?: boolean | undefined;
+    resize?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
     color: boolean;
     textDecorationColor: boolean;
@@ -768,7 +770,6 @@ export declare const stylePropsAll: {
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
     whiteSpace?: boolean | undefined;
-    wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     WebkitBoxOrient?: boolean | undefined;
     transition?: boolean | undefined;
@@ -794,6 +795,9 @@ export declare const stylePropsAll: {
     maskSize?: boolean | undefined;
     objectPosition?: boolean | undefined;
     textEmphasis?: boolean | undefined;
+    overflowWrap?: boolean | undefined;
+    wordWrap?: boolean | undefined;
+    resize?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
     color: boolean;
     textDecorationColor: boolean;
@@ -1014,9 +1018,6 @@ export declare const validStyles: {
     borderEndColor: boolean;
     borderStartColor: boolean;
     shadowColor: boolean;
-    color: boolean;
-    textDecorationColor: boolean;
-    textShadowColor: boolean;
     caretColor?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
     backgroundBlendMode?: boolean | undefined;
@@ -1074,6 +1075,9 @@ export declare const validStyles: {
     objectPosition?: boolean | undefined;
     textEmphasis?: boolean | undefined;
     userSelect?: boolean | undefined;
+    overflowWrap?: boolean | undefined;
+    wordWrap?: boolean | undefined;
+    resize?: boolean | undefined;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;

@@ -1139,3 +1139,21 @@ prefix. This extends the already-ruled consumer-visible base-specificity drop
 (design record note + release-notes item) to the plain-value rules. The
 pseudo `!important` tier and media ladders are untouched — they are legacy
 condition machinery, held for the user decision.
+
+### Ruling: `color` does not belong to View (Lane E)
+
+OPUS's type/runtime divergence resolved in the TYPES' favor. The runtime
+admission was an accident of table reuse: `stylePropsView` spread
+`tokenCategories.color` — a VALUE-binding table — into the host-validity
+table, dragging in the three text-only props (`color`,
+`textDecorationColor`, `textShadowColor`). RN has no View color and no CSS
+inheritance, so a View `color` renders on web only — the silent per-platform
+divergence shape. The web-inheritance use case belongs to the DOM contract's
+`html.*`. Fix: the View table now spreads the color category minus the three
+text-only props, and a text-only style prop on a non-text host is a dev
+diagnostic + drop instead of leaking to the DOM as an unknown attribute
+(cold path, two `in` checks only after a key already failed validity). Five
+engine tests that used `color` on View as a convenience moved to Text or
+`backgroundColor` — including one mechanical host switch in
+`tailwindThemeColor.web.test.tsx` (CODEX-1's file, flagged). The type surface
+is unchanged: it was already right.

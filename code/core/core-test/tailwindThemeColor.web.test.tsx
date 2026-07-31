@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
 import { createTamagui, getConfig, StyleObjectValue } from '../web/src'
-import { View } from '../tailwind/src'
+import { Text, View } from '../tailwind/src'
 import { findRule, splitTailwindStyles } from '../tailwind/src/__tests__/utils'
 
 // the tailwind frontend should resolve semantic theme-value color names (color1-12,
@@ -17,7 +17,9 @@ function theme() {
 }
 
 function colorRule(className: string, prop: string) {
-  const styles = splitTailwindStyles(View, { className }, { theme: theme() })
+  // `color` is a text style prop, so text-family classes split against Text
+  const host = prop === 'color' ? Text : View
+  const styles = splitTailwindStyles(host, { className }, { theme: theme() })
   return findRule(styles.rulesToInsert, prop)
 }
 

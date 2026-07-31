@@ -43,6 +43,17 @@ const textColors = {
   textShadowColor: true,
 }
 
+// tokenCategories.color is a VALUE-binding table (which props resolve color
+// tokens); three of its members are text-only PROPS, so the View host's
+// validity table must not inherit them — `color` on a View resolves on
+// neither platform (RN has no View color; a web div would only inherit it)
+const {
+  color: _textOnlyColor,
+  textDecorationColor: _textOnlyDecoration,
+  textShadowColor: _textOnlyShadow,
+  ...viewColorCategoryProps
+} = tokenCategories.color
+
 // discrete (non-animatable) view style properties - keyword-based, no interpolation
 // defined above stylePropsView so it can be spread in without duplication
 const nonAnimatableViewProps = {
@@ -235,7 +246,7 @@ export const stylePropsView = {
   insetInlineStart: true,
   shadowOffset: true,
   shadowRadius: true,
-  ...tokenCategories.color,
+  ...viewColorCategoryProps,
   ...tokenCategories.radius,
   ...tokenCategories.size,
   ...stylePropsTransform,

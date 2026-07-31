@@ -1603,6 +1603,19 @@ export const getSplitStyles: StyleSplitter = (
           return
         }
 
+        // a text-only style prop on a non-text host must not leak to the DOM
+        // as an unknown attribute (and RN would silently ignore it): drop it
+        // with a dev diagnostic naming the fix. cold path — only keys that
+        // already failed this host's validity table get here
+        if (key in stylePropsAll && !isValidStyleKey(key, validStyles, accept)) {
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(
+              `[tamagui] "${key}" is a text style prop and this component is not text — it would render on neither platform. Use a Text-based component, or html.* for raw web elements.`
+            )
+          }
+          return
+        }
+
         viewProps[key] = val
       }
     })

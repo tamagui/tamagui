@@ -6,7 +6,7 @@ import { renderToPipeableStream } from 'react-dom/server'
 import { describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { TamaguiProvider, View, createTamagui, getSplitStyles } from '../web/src'
+import { TamaguiProvider, Text, View, createTamagui, getSplitStyles } from '../web/src'
 
 /**
  * Program blocks under streaming SSR.
@@ -27,7 +27,7 @@ import { TamaguiProvider, View, createTamagui, getSplitStyles } from '../web/src
 const split = (props: Record<string, any>) =>
   getSplitStyles(
     props,
-    View.staticConfig,
+    Text.staticConfig,
     undefined as any,
     'light',
     { unmounted: false } as any,
@@ -74,7 +74,7 @@ async function streamWithSuspense(shellProps: object, lateProps: object) {
 
   function Late() {
     if (!ready) throw waiting
-    return <View data-testid="late" {...lateProps} />
+    return <Text data-testid="late" {...lateProps} />
   }
 
   const chunks: string[] = []
@@ -86,7 +86,7 @@ async function streamWithSuspense(shellProps: object, lateProps: object) {
 
     const stream = renderToPipeableStream(
       <TamaguiProvider config={streamConfig} defaultTheme="light" disableInjectCSS>
-        <View data-testid="shell" {...shellProps} />
+        <Text data-testid="shell" {...shellProps} />
         <Suspense fallback={<div data-testid="fallback" />}>
           <Late />
         </Suspense>

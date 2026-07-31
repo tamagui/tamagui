@@ -69,11 +69,16 @@ test('legacy clause without an earlier value stays a clause-only program', () =>
 })
 
 test('legacy theme object produces the same program block as a theme clause', () => {
-  const flat = split({ color: 'red dark:blue' })
-  const legacy = split({ color: 'red', '$theme-dark': { color: 'blue' } })
+  const flat = split({ backgroundColor: 'red dark:blue' })
+  const legacy = split({
+    backgroundColor: 'red',
+    '$theme-dark': { backgroundColor: 'blue' },
+  })
 
-  expect(legacy.classNames.color).toBe(flat.classNames.color)
-  expect(programRules(legacy, 'color')).toEqual(programRules(flat, 'color'))
+  expect(legacy.classNames.backgroundColor).toBe(flat.classNames.backgroundColor)
+  expect(programRules(legacy, 'backgroundColor')).toEqual(
+    programRules(flat, 'backgroundColor')
+  )
 })
 
 test('legacy media object produces the same program block as a media clause', () => {
