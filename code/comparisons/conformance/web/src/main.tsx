@@ -65,13 +65,13 @@ if (!found) {
     import('@tamagui/tailwind'),
     import('./tamagui.config'),
   ]).then(([{ TamaguiProvider }, { View, Text }, { default: config }]) => {
-      createRoot(rootEl).render(
-        <StrictMode>
-          <TamaguiProvider config={config} defaultTheme="light">
-            {found.render({ Box: View, Text })}
-          </TamaguiProvider>
-        </StrictMode>
-      )
-      signalReady()
+    createRoot(rootEl).render(
+      <StrictMode>
+        <TamaguiProvider config={config} defaultTheme="light">
+          {found.render({ Box: View, Text })}
+        </TamaguiProvider>
+      </StrictMode>
+    )
+    signalReady()
   })
 }
