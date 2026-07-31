@@ -7,6 +7,7 @@ import {
   createGrammarConfigView,
   decodeArbitrary,
   getTokenCategory,
+  getSafeAreaEdge,
   hasTokenName,
   percentUtilityProps,
   radiusCornerProps,
@@ -317,7 +318,13 @@ function tailwindClassToFlatProp(
       value = Number(value)
     }
   } else if (typeof value === 'string') {
-    if (category) {
+    if (
+      category &&
+      !(
+        (category === 'space' || category === 'size' || category === 'radius') &&
+        getSafeAreaEdge(value)
+      )
+    ) {
       value = `$${parsed.negative ? '-' : ''}${value}`
     } else {
       // check if value matches a token name and resolve it

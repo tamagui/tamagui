@@ -4,6 +4,7 @@ import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { GroupContext } from '../contexts/GroupContext'
 import { useSplitStyles } from '../helpers/getSplitStyles'
+import { subscribeToSafeArea } from '../helpers/resolveSafeAreaVariable'
 import { subscribeToContextGroup } from '../helpers/subscribeToContextGroup'
 import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import type { ViewProps, ViewStyle } from '../views/View'
@@ -97,6 +98,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     props: statefulProps,
     state,
     disabled,
+    setState,
     setStateShallow,
   } = useComponentState(
     props,
@@ -133,26 +135,44 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   const { mediaGroups, pseudoGroups } = splitStyles || {}
 
   useIsomorphicLayoutEffect(() => {
+    let disposeSafeArea: (() => void) | undefined
+    if (splitStyles?.usesSafeArea) {
+      const updateSafeArea = () => {
+        setState((previous) => ({ ...previous }))
+      }
+      disposeSafeArea = subscribeToSafeArea(updateSafeArea)
+      // close the render-to-subscribe race: the provider tracker may have
+      // published new insets after this hook evaluated its styles.
+      updateSafeArea()
+    }
+
     if (disabled) {
-      return
+      return disposeSafeArea
     }
 
     if (state.unmounted) {
       setStateShallow({ unmounted: false })
-      return
+      return disposeSafeArea
     }
 
     if (groupContext) {
-      return subscribeToContextGroup({
+      const disposeGroup = subscribeToContextGroup({
         groupContext,
         setStateShallow,
         mediaGroups,
         pseudoGroups,
       })
+      if (!disposeSafeArea) return disposeGroup
+      return () => {
+        disposeSafeArea()
+        disposeGroup?.()
+      }
     }
+    return disposeSafeArea
   }, [
     disabled,
     groupContext,
+    splitStyles?.usesSafeArea,
     pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
     mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
   ])

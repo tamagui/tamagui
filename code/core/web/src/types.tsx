@@ -3628,6 +3628,8 @@ export type GetStyleResult = {
   // native flat-value programs: interaction states referenced by any clause,
   // so createComponent attaches the matching event handlers (lane W3)
   programStates?: Set<string>
+  // native flat-value programs: subscribe this component to live safe-area insets
+  usesSafeArea?: true
   // Effective transition to use (accounts for entering pseudo states)
   effectiveTransition?: TransitionProp | null
 }

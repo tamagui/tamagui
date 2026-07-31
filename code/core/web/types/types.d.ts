@@ -2057,6 +2057,7 @@ export type GetStyleResult = {
     overriddenContextProps?: Record<string, any>;
     pseudoTransitions?: PseudoTransitions | null;
     programStates?: Set<string>;
+    usesSafeArea?: true;
     effectiveTransition?: TransitionProp | null;
 };
 export type ClassNamesObject = Record<string, string>;

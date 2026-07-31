@@ -2,6 +2,7 @@ import { getDefaultTamaguiConfig } from '../../../config-default/src'
 import { STYLE_FRONTEND_PREPROCESSED } from '@tamagui/core/internal-runtime'
 import { View as CoreView, createTamagui, getConfig } from '@tamagui/web'
 import { StyleObjectRules, StyleObjectValue } from '@tamagui/helpers'
+import { safeAreaVariableNames } from '@tamagui/style-grammar'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { tailwindStyleFrontend } from '../frontend'
@@ -20,6 +21,16 @@ describe('tailwind components render through the shared renderer', () => {
     expect(styles.classNames.backgroundColor).toBeTruthy()
     expect(findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectValue]).toBe(
       'red'
+    )
+  })
+
+  test('safe-area length candidates use the built-in platform env', () => {
+    const styles = splitTailwindStyles(View, {
+      className: `pt-${safeAreaVariableNames.top}`,
+    })
+
+    expect(findRule(styles.rulesToInsert, 'paddingTop')[StyleObjectValue]).toBe(
+      'env(safe-area-inset-top)'
     )
   })
 

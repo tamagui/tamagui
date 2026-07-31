@@ -12,6 +12,7 @@ import {
   type GrammarEntry,
   type TokenCategory,
 } from './registry'
+import { getSafeAreaEdge } from './safeAreaVariables'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
 
@@ -280,6 +281,21 @@ function chooseEntry(
   valueKind: ParsedCandidate['valueKind']
   convenience?: string
 } | null {
+  if (getSafeAreaEdge(rawValue)) {
+    const entry = entries.find(
+      ({ tokenCategory }) =>
+        tokenCategory === 'space' ||
+        tokenCategory === 'size' ||
+        tokenCategory === 'radius' ||
+        tokenCategory === 'fontSize' ||
+        tokenCategory === 'lineHeight' ||
+        tokenCategory === 'letterSpacing'
+    )
+    if (entry) {
+      return { entry, valueKind: 'convenience', convenience: 'safe-area' }
+    }
+  }
+
   const arbitrary = arbitraryInner(rawValue)
   if (arbitrary !== null) {
     if (!arbitrary) return null

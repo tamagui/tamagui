@@ -1,4 +1,5 @@
 import { getDefaultTamaguiConfig } from '../../../config-default/src'
+import { safeAreaVariableNames } from '@tamagui/style-grammar'
 import { View as CoreView, createTamagui, getConfig } from '@tamagui/web'
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 
@@ -34,6 +35,36 @@ describe('claimed candidates resolve to native style values', () => {
     const styles = splitTailwindStyles(Text, { className: 'text-[14px]' })
 
     expect(styleOf(styles).fontSize).toBe(14)
+  })
+
+  test('safe-area length candidates use the live native value', () => {
+    const globalState = globalThis as typeof globalThis & {
+      __tamagui_safe_area__?: {
+        didSetup: boolean
+        enabled: boolean
+        initialMetrics: {
+          insets: { top: number; right: number; bottom: number; left: number }
+          frame: { x: number; y: number; width: number; height: number }
+        }
+      }
+    }
+    const previousState = globalState.__tamagui_safe_area__
+    globalState.__tamagui_safe_area__ = {
+      didSetup: true,
+      enabled: true,
+      initialMetrics: {
+        insets: { top: 31, right: 0, bottom: 0, left: 0 },
+        frame: { x: 0, y: 0, width: 390, height: 844 },
+      },
+    }
+
+    const styles = splitTailwindStyles(View, {
+      className: `pt-${safeAreaVariableNames.top}`,
+    })
+    globalState.__tamagui_safe_area__ = previousState
+
+    expect(styleOf(styles).paddingTop).toBe(31)
+    expect(styles.usesSafeArea).toBe(true)
   })
 
   test('a whole-class utility applies as an ordinary prop', () => {

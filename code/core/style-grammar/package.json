@@ -19,6 +19,7 @@
     "src/programs.ts",
     "src/registry.ts",
     "src/resolvePayload.ts",
+    "src/safeAreaVariables.ts",
     "src/serializePayload.ts",
     "src/stateModifiers.ts",
     "src/states.ts",

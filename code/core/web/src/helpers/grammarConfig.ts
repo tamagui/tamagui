@@ -31,6 +31,7 @@ import { isVariable } from '../createVariable'
 import type { TamaguiInternalConfig, ThemeParsed, Variable } from '../types'
 import { mediaObjectToString } from './mediaObjectToString'
 import { defaultTokenCategories } from './propMapper'
+import { resolveSafeAreaVariable } from './resolveSafeAreaVariable'
 
 /** the token categories a bare name can resolve against */
 type TokenCategoryName = 'color' | 'space' | 'size' | 'radius' | 'zIndex'
@@ -269,6 +270,9 @@ export function createGrammarRuntimeContext(
         // the property's bound category first
         const token = tokenNames?.get(name) ?? fontMap?.[`$${name}`]
         if (isVariable(token)) return { name: token.name, kind }
+        if (kind === 'length' && resolveSafeAreaVariable(name) !== undefined) {
+          return { name, kind }
+        }
         // an identifier-shaped name that lives in a SIBLING category is an
         // overloaded-family mismatch (`fontSize="red-500"`): diagnose and miss
         // rather than silently binding another category's value or shipping
@@ -304,6 +308,8 @@ export function createGrammarRuntimeContext(
     },
 
     toVar(name) {
+      const safeAreaValue = resolveSafeAreaVariable(name)
+      if (safeAreaValue !== undefined) return safeAreaValue
       const variable = byVarName.get(name)
       if (!variable) {
         throw new Error(
@@ -316,6 +322,8 @@ export function createGrammarRuntimeContext(
 
     createNativeValueGetter(theme) {
       return (name) => {
+        const safeAreaValue = resolveSafeAreaVariable(name)
+        if (safeAreaValue !== undefined) return safeAreaValue
         const themeKey = themeKeyByVarName.get(name)
         if (themeKey !== undefined && theme) {
           const themeValue = (theme as Record<string, unknown>)[themeKey]

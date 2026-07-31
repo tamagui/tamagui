@@ -16,6 +16,7 @@ import { isAndroid, isIos, isTV, isWeb } from '@tamagui/constants'
 import {
   composeTransformArray,
   evaluateProgram,
+  getSafeAreaEdge,
   parseContainerModifier,
   parseGroupModifier,
   resolvePayload,
@@ -187,6 +188,8 @@ export interface EvaluatedProgramsInfo {
   usedGroupKeys: Set<string> | null
   /** container sizes any clause referenced, for the mediaGroups layout math */
   usedGroupSizes: string[] | null
+  /** whether a resolved length references one of the built-in safe-area variables */
+  usesSafeArea: boolean
 }
 
 export function evaluateAccumulatedPrograms(
@@ -246,6 +249,7 @@ export function evaluateAccumulatedPrograms(
   let usedStates: Set<string> | null = null
   let usedGroupKeys: Set<string> | null = null
   let usedGroupSizes: string[] | null = null
+  let usesSafeArea = false
   let transformResults: Record<string, string | number> | null = null
 
   for (const program of programs.values()) {
@@ -315,6 +319,17 @@ export function evaluateAccumulatedPrograms(
       )
       continue
     }
+    // only the currently matching payload is resolved. if a conditional
+    // safe-area value activates later, that condition's normal re-render sets
+    // the flag and attaches the inset subscription then.
+    if (process.env.TAMAGUI_TARGET === 'native' && !usesSafeArea) {
+      for (const reference of resolved.references) {
+        if (getSafeAreaEdge(reference.name)) {
+          usesSafeArea = true
+          break
+        }
+      }
+    }
 
     let value: string | number
     try {
@@ -372,7 +387,7 @@ export function evaluateAccumulatedPrograms(
     composeNativeTransform(styleState, transformResults)
   }
 
-  return { usedMediaKeys, usedStates, usedGroupKeys, usedGroupSizes }
+  return { usedMediaKeys, usedStates, usedGroupKeys, usedGroupSizes, usesSafeArea }
 }
 
 /**

@@ -31,6 +31,7 @@ import {
   extractPseudoState,
   resolveEffectivePseudoTransition,
 } from './helpers/pseudoTransitions'
+import { subscribeToSafeArea } from './helpers/resolveSafeAreaVariable'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
 import { getStyleTags } from './helpers/wrapStyleTags'
@@ -1381,19 +1382,36 @@ export function createComponent<
     }, [state.unmounted, inputStyle])
 
     useIsomorphicLayoutEffect(() => {
-      if (disabled) return
+      let disposeSafeArea: (() => void) | undefined
+      if (splitStyles?.usesSafeArea) {
+        const updateSafeArea = () => {
+          setState((previous) => ({ ...previous }))
+        }
+        disposeSafeArea = subscribeToSafeArea(updateSafeArea)
+        // close the render-to-subscribe race: the provider tracker may have
+        // published new insets after this component evaluated its styles.
+        updateSafeArea()
+      }
 
-      if (!pseudoGroups && !mediaGroups) return
-      if (!allGroupContexts) return
-      return subscribeToContextGroup({
+      if (disabled) return disposeSafeArea
+
+      if (!pseudoGroups && !mediaGroups) return disposeSafeArea
+      if (!allGroupContexts) return disposeSafeArea
+      const disposeGroup = subscribeToContextGroup({
         groupContext: allGroupContexts,
         setStateShallow,
         mediaGroups,
         pseudoGroups,
       })
+      if (!disposeSafeArea) return disposeGroup
+      return () => {
+        disposeSafeArea()
+        disposeGroup?.()
+      }
     }, [
       allGroupContexts,
       disabled,
+      splitStyles?.usesSafeArea,
       pseudoGroups ? objectIdentityKey(pseudoGroups) : 0,
       mediaGroups ? objectIdentityKey(mediaGroups) : 0,
     ])

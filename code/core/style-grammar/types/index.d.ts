@@ -12,6 +12,7 @@ export * from "./programHash";
 export * from "./programs";
 export * from "./registry";
 export * from "./resolvePayload";
+export * from "./safeAreaVariables";
 export * from "./serializePayload";
 export * from "./states";
 export * from "./table";

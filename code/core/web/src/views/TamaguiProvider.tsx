@@ -7,6 +7,7 @@ import { stopAccumulatingRules } from '../helpers/insertStyleRule'
 import { updateMediaListeners } from '../hooks/useMedia'
 import { resolveAnimationDriver } from '../helpers/resolveAnimationDriver'
 import type { AnimationDriver, TamaguiProviderProps } from '../types'
+import { hasSafeAreaTracker, SafeAreaTracker } from './SafeAreaTracker'
 import { TamaguiRoot } from './TamaguiRoot'
 import { ThemeProvider } from './ThemeProvider'
 
@@ -76,6 +77,7 @@ export function TamaguiProvider({
 
   return (
     <>
+      {hasSafeAreaTracker() && <SafeAreaTracker />}
       {contents}
 
       {process.env.TAMAGUI_TARGET !== 'native' && config && !disableInjectCSS && (
