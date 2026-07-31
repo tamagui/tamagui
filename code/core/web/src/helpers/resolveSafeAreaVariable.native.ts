@@ -1,13 +1,13 @@
 import { getSafeArea } from '@tamagui/native'
 import { getSafeAreaEdge } from '@tamagui/style-grammar'
 
-const safeArea = getSafeArea()
 let didWarnMissingSetup = false
 
 export function resolveSafeAreaVariable(name: string): number | undefined {
   const edge = getSafeAreaEdge(name)
   if (!edge) return undefined
 
+  const safeArea = getSafeArea()
   const state = safeArea.state
   if (!state.didSetup) {
     if (process.env.NODE_ENV !== 'production' && !didWarnMissingSetup) {
@@ -23,5 +23,5 @@ export function resolveSafeAreaVariable(name: string): number | undefined {
 }
 
 export function subscribeToSafeArea(listener: () => void): () => void {
-  return safeArea.subscribe(listener)
+  return getSafeArea().subscribe(listener)
 }

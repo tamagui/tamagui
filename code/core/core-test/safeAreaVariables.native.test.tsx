@@ -10,6 +10,8 @@ import {
 } from 'react-native-safe-area-context'
 import { afterEach, expect, test, vi } from 'vitest'
 
+// keep the built runtime import before setup: the resolver and tracker must observe
+// setup performed after their modules were first evaluated.
 import * as NativeCore from '../core/dist/test.native.cjs'
 import { getSafeArea } from '../native/src/safeAreaState'
 import '../native/src/setup-safe-area.ts'
