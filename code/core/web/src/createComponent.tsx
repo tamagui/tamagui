@@ -1827,7 +1827,12 @@ export function createComponent<
       )
     }
 
-    if ('group' in props) {
+    // containers provide the same context channel groups do: a container-only
+    // parent (`container`, `containerName`, `containerType`) must mount the
+    // provider or its descendants' `@size:` clauses can never subscribe —
+    // the context entry existed but was never provided (found 2026-07-31 by
+    // real parent/descendant integration; injected-context tests masked it)
+    if ('group' in props || isContainer) {
       content = (
         <GroupContext.Provider value={allGroupContexts}>{content}</GroupContext.Provider>
       )

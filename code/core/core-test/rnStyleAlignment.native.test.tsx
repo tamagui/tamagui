@@ -75,8 +75,12 @@ describe('RN 0.76+ Style Alignment - Native', () => {
       const { style } = getSplitStylesFor({
         boxShadow: 'inset 0 2px 4px black',
       })
+      // config-first resolution reaches the shadow path since the program
+      // engine owns native boxShadow strings (0b3b28cde9): `black` is a
+      // configured color token and resolves to its native value, matching
+      // the item-11 pins for every other value position
       expect(style?.boxShadow).toEqual([
-        { inset: true, offsetX: 0, offsetY: 2, blurRadius: 4, color: 'black' },
+        { inset: true, offsetX: 0, offsetY: 2, blurRadius: 4, color: '#000' },
       ])
     })
   })

@@ -367,7 +367,9 @@ describe('compoundVariants - native', () => {
 
     const frame = findByTestID(tree.toJSON(), 'compound-provider-frame')
     expect(frame).toBeTruthy()
-    expect(frame.props.pointerEvents).toBe('box-none')
+    // pointerEvents is a style on RN >= 0.71 (0b3b28cde9): the host receives
+    // style.pointerEvents, not the deprecated View prop
+    expect(flattenStyle(frame.props.style).pointerEvents).toBe('box-none')
     expect(frame.props.tone).toBeUndefined()
     expect(flattenStyle(frame.props.style).backgroundColor).toBe('red')
   })

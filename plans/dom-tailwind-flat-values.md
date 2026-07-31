@@ -963,7 +963,7 @@ extending the layer wrapping that tailwind mode already uses today.
 
 Consumer-visible consequence of the flat encoding (landed with the clause-free
 cutover, 2026-07-31): the base rule's specificity dropped from the legacy
-`:root .cls` `(0,1,1)` to `(0,1,0)`, so a consumer's own single-class rule
+`:root .cls` `(0,2,0)` to `(0,1,0)`, so a consumer's own single-class rule
 (`.my-override { color: red }`) now ties with a Tamagui base rule and resolves
 by stylesheet order instead of always losing. This is deliberate — less
 specificity aggression is the v3 direction, and the end state above (`@layer`
@@ -1071,6 +1071,29 @@ ambiguous-prefix refusal) is candidate-owned. Resolution (name lookup order,
 opacity-suffix validation, modifier kind and collision priority) comes from
 the shared style-grammar contracts, and a place where the same input yields a
 different value than the flat path is a defect, never a designed difference.
+
+Parent capability markers such as `group/card` and `@container` carry no
+Tamagui property or value, so they remain eligible for official Tailwind
+passthrough. The frontend also projects their runtime capability:
+`group[/name]` becomes `group={true|name}`, while `@container[-size][/name]`
+becomes the corresponding `container`, `containerName`, and `containerType`
+props. Keeping the raw class preserves official Tailwind CSS on web; projecting
+the props creates the same group and container context on native. Descendant
+modifiers such as `group-hover/card:bg-accent` and `@sm/layout:p-4` do carry a
+Tamagui value and must be claimed and resolved through the shared contracts.
+The rule is not that Tailwind cannot handle groups or containers; anything
+carrying a Tamagui value must resolve through Tamagui.
+
+The conversion-assessment guarantee, stated accurately (2026-07-31): the
+composed contract (`assessFlatConversion`) returns the pinned
+property/clause/host precedence whenever it is given the complete site. Its
+input shape cannot prevent a consumer from omitting dimensions or
+pre-filtering before it calls — `modifiers: []` legitimately means "no
+modifiers", so it cannot be distinguished from "not supplied". Consumers do
+not get the composition wrong; they can fail to ask it completely, and each
+consumer therefore carries a parity regression over its full pipeline. A
+ParsedValue-accepting surface would close even that gap and is deliberately
+deferred while both consumers are in-repo and pinned.
 
 Property-scoped candidates and Tailwind classes lower into the same ordered IR:
 
