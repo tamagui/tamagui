@@ -978,6 +978,20 @@ Inline `style` and dynamic non-string values keep their existing paths: the
 style attribute outranks any class, and dynamic payloads resolve through the
 runtime parser cache, not through new CSS.
 
+Parse-order rule, named as a class after its third occurrence (2026-07-31):
+**any path that eagerly parses a string value into a structured native form
+must run AFTER program contribution, never before.** A pre-contribution parse
+cannot know where the clauses are, so it mangles clause text into the last
+component of whatever it parses — boxShadow and textShadow in propMapper
+(P0-2), then backgroundImage/boxShadow/textShadow again in
+platformResolveValue's token resolution, plus expandStyle renaming
+`backgroundImage` away before the hook could see the property. The one
+sanctioned order: strings flow WHOLE into the program engine, and the native
+evaluator parses the winning payload after clause evaluation, writing any
+renamed RN keys itself. A new native structured form (an RN object format, a
+renamed key) gets its parse added at the evaluator's post-evaluation step,
+not at whatever call site first needs it.
+
 ## Value variables
 
 This is not a new system. It is the existing V3 variables system, reached
