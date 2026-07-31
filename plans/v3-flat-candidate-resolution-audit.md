@@ -6,8 +6,8 @@ Branch: `v3-beta`
 
 Audit baseline: `3c94f0bbb98e`
 
-Status: findings reported, shared-contract ruling settled, implementation waiting
-for the contracts to land
+Status: wrong-value findings closed by `114a015a73`; group and container
+implementation remains open
 
 ## Conclusion
 
@@ -39,7 +39,7 @@ its prefix and a name from its class spelling. From that point onward, the
 property-scoped lookup owns the reference, the shared opacity parser owns the
 suffix, and the shared modifier registry owns every modifier kind.
 
-Three style-grammar contracts will land before candidate work starts:
+The follow-up consumed three style-grammar contracts:
 
 1. **Name resolution:** candidates use the property-scoped lookup already used
    by flat payloads. Reconstructing a legacy `$name` is removed because it sends
@@ -53,7 +53,35 @@ Three style-grammar contracts will land before candidate work starts:
 3. **Modifier kinds:** candidate classification and frontend reconstruction use
    `registry.get()`. Their private kind tables and ordering are removed.
 
-Candidate-side implementation must wait until those contracts are present.
+## What mismatched package versions look like
+
+The original token/theme probe mixed the Tailwind frontend source at
+`3c94f0bbb9` with `@tamagui/web` and `@tamagui/style-grammar` dist built two
+minutes earlier. That made version skew a plausible explanation, but a coherent
+rebuild reproduced the difference. The actual cause was the candidate's legacy
+`$name` reconstruction under an active theme.
+
+An installed app can still produce this general symptom when its lockfile
+resolves the Tailwind frontend, web runtime, and style grammar to mismatched
+versions. A shared contract cannot prevent two versions of its implementation
+from being installed, but it reduces the seams where skew can change meaning.
+When a user reports a class and an equivalent flat prop resolving differently,
+package-version alignment and lockfile state still belong in the diagnostic
+pass. They were not the cause of this finding.
+
+## What a false parity guarantee looks like
+
+The first parity test configured both `tokens.color.collision` and
+`themes.light.collision`, named the active theme `light`, but passed
+`undefined` as the theme object to `getSplitStyles()`. The colliding theme value
+was therefore never in scope. Candidate and flat output agreed only because the
+test did not activate the collision it claimed to exercise.
+
+The valid-opacity case also compared only whether both rules contained `50%`.
+It stayed green while the rules mixed over different variables. The suite now
+activates its named theme and compares the full emitted rules, inline style, and
+view props byte for byte. A collision test must put both meanings in scope; a
+parity test must compare the whole observable result.
 
 ## Paths compared
 
@@ -77,10 +105,9 @@ Candidate-side implementation must wait until those contracts are present.
    modifiers, chooses a property entry, and decides whether the value is a token,
    arbitrary value, enum, or convenience.
 3. `code/core/tailwind/src/candidate.ts` converts the parsed candidate to flat
-   `$modifier:prop` keys and usually converts configured tokens back to legacy
-   `$token` values.
-4. `code/core/tailwind/src/frontend.ts` classifies the modifiers again and
-   reconstructs legacy pseudo, media, theme, platform, or group objects.
+   `$modifier:prop` keys while keeping the selected config-first name bare.
+4. `code/core/tailwind/src/frontend.ts` reads modifier kinds from the shared
+   registry and reconstructs the corresponding condition object.
 5. Those reconstructed props enter the shared renderer.
 
 ## Resolution matrix
@@ -89,9 +116,9 @@ Candidate-side implementation must wait until those contracts are present.
 | --- | --- | --- | --- |
 | Property to token category | Uses the style-grammar registry first, with runtime-only aliases only for spellings absent from the registry | Uses the same style-grammar registry entries and config view | Agree |
 | Reserved CSS ident | `resolvePayload()` keeps it literal before lookup | Config creation rejects a token with that name, so a candidate convenience cannot be overridden | Agree after `0f330bb77e` and `5590190a81` |
-| Exact token versus same-named theme key | Bound token category wins, then the unified theme namespace | Candidate emits `$name`; legacy `getTokenForKey()` checks theme first | Wrong-value divergence |
-| Color `/NN` opacity | One parser accepts an integer from 0 through 100 | Candidate accepts decimals and unbounded numbers, then legacy lookup clamps | Wrong-value divergence |
-| State, media, platform, and theme modifier name | Shared registry priority is state, media, platform, theme | Candidate parser and frontend each use state, media, theme, platform | Wrong-kind divergence on platform/theme collisions |
+| Exact token versus same-named theme key | Bound token category wins, then the unified theme namespace | Candidate emits the bare name into the same property-scoped lookup | Agree after `114a015a73` |
+| Color `/NN` opacity | One parser accepts an integer from 0 through 100 | Candidate consumes the same parser and leaves invalid attempts unresolved | Agree after `114a015a73` |
+| State, media, platform, and theme modifier name | Shared registry priority is state, media, platform, theme | Candidate parser and frontend call the same registry | Agree after `114a015a73` |
 | Group and container modifier | Shared registry recognizes `group-*` and `@size[/name]` | Candidate parser recognizes neither; group reconstruction code is unreachable from a class and no container branch exists | Missing candidate implementation |
 | Config shorthand | Config view carries the shorthand; program contribution expands through shared longhand tables | Candidate finds the configured prefix, reconstructs the expanded prop, then enters shared contribution | Agree |
 | Directional border and radius | Shared border and longhand family tables | Candidate imports `borderSideSuffix` and `radiusCornerProps` from style-grammar | Agree |
@@ -104,7 +131,7 @@ Candidate-side implementation must wait until those contracts are present.
 | Unknown or wrong-category candidate | Flat runtime keeps a literal miss and tooling diagnoses it | Candidate passes the class through instead of guessing | Designed ownership boundary |
 | Theme key outside a color candidate family | Unified namespace can resolve after a bound-category miss | Candidate only admits theme keys as color names | Deliberate safe claim restriction in current code |
 
-## Open wrong-value findings
+## Wrong-value findings and closures
 
 ### 1. Exact token and theme key use opposite precedence
 
@@ -132,6 +159,11 @@ candidate bg-collision           -> var(--collision)
 The same precedence applies beyond color. Any candidate that reconstructs a
 bound token as a legacy `$name` can encounter a same-named theme key.
 
+Closure: candidate reconstruction now keeps config-first names bare. The shared
+property lookup selects the bound category before the theme namespace. Authored
+legacy `$name` values intentionally retain their theme-first behavior until the
+contraction's D4 resolver unification removes `getTokenForKey()`.
+
 ### 2. Candidate opacity is a second parser
 
 `resolvePayload()` recognizes `/NN` only after a resolved color and accepts only
@@ -158,6 +190,10 @@ slate-500/150
 
 The valid case agrees. Invalid input silently changes value only through the
 candidate path.
+
+Closure: candidate classification and adaptation consume
+`splitColorOpacitySuffix()`. Invalid attempts remain literal, and valid suffixes
+enter the same property-scoped color lookup as flat values.
 
 ### 3. Candidate modifier parsing bypasses the global registry twice
 
@@ -187,6 +223,10 @@ reports that the theme name was ignored. The candidate parser accepts
 
 The parser and frontend therefore agree with each other while disagreeing with
 the authoritative registry.
+
+Closure: both candidate classification and frontend reconstruction call
+`registry.get()`. Platform/theme collisions now retain the registry's platform
+meaning.
 
 ## Group and container ruling
 
@@ -450,7 +490,8 @@ The durable fix should preserve this division:
   modifier's kind before the prop reaches shared contribution.
 - Behavior tests should compare final web and native values from flat props and
   equivalent candidates, including invalid inputs and namespace collisions.
-- Candidate consumption work begins only after the three shared contracts above
-  land. Piecemeal fixes before that point would preserve the duplicated paths.
+- The three shared contracts landed before candidate consumption changed.
 
-No source fix was made during this audit.
+The original audit made no source fix. The follow-up closed the three
+wrong-value findings while leaving the separately ruled group/container work
+open.
