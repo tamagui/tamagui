@@ -1527,3 +1527,23 @@ pinned dependency on RN internals: whoever bumps React Native diffs those two
 files against our copies. The decline rule (design record, parse-order
 section): where we decline, the raw string flows through to RN's own parser —
 verify that fallthrough still exists after any parser change.
+
+The audited surface, property by property, as of `5f34f18f70` — a complete
+statement of where our parser stands relative to the platform:
+
+- gradient DIRECTION: RN's `LINEAR_GRADIENT_ANGLE_UNIT_REGEX` and
+  `LINEAR_GRADIENT_DIRECTION_REGEX` verbatim (signed/leading-decimal angles,
+  case-insensitive keywords).
+- gradient POSITIONS and TRANSITION HINTS: a `getPositionFromCSSValue` mirror
+  (px -> parseFloat points, % -> string, else invalid) plus RN's case-4 hint
+  rule (a lone position between stops is `{color:null, positions:[n]}`; a
+  hint first, last, or adjacent to another hint declines the whole parse).
+  Stops classify each token by what it IS — the three fixed misreads
+  (direction, position, hint) were one assumption, "any unrecognized token
+  is a color", in three costumes.
+- shadow DIMENSIONS: signed and leading-decimal already handled by Number;
+  px/dp unit strip case-insensitive.
+- `inset`: RN-exact lowercase match, DELIBERATELY unwidened — RN's own
+  processBoxShadow is lowercase-exact, and being looser than the platform is
+  the tighter error inverted.
+- COLORS: verbatim passthrough; `processColor` is the authority.
