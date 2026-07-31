@@ -1480,3 +1480,36 @@ Behavior, all red-first tested and green on every gate (core web 430, native
   is gone); evaluation parses the winning payload to RN object format, and
   textShadow expands to its RN longhands post-evaluation. The pinned
   rnStyleAlignment RN-format contract is unchanged.
+
+### Web html.* style props fixed; compiled-form nesting scoped (Lane E)
+
+Finding 1 (from the DOM design read) landed at `5e59fea19b`, red-first: the
+structural pass no longer rewrites an html.* element to a literal tag on web
+when it carries anything outside the strict DOM prop tables (a style prop, or
+a spread the pass cannot see through) — those elements keep the runtime
+component path, which renders the element resets and style props correctly.
+Strict-DOM-only elements still rewrite (pinned). Kept elements stay in
+`module.elements` for the future DOM candidate lowering; the pass versionHash
+bumped to v2 so no stale plan survives.
+
+Finding 2 (compiled-form whole-props replacement swallowing nested candidate
+spans, `compilerHost.ts:195`) is scoped, not fixed, per the manager:
+
+- **Forfeit, never corruption — confirmed structurally.** Whichever of the
+  two candidates commits first wins; the second bails on `overlapsCommitted`
+  transactionally, and if overlapped edits ever reached the final plan,
+  `validateSourceEdits` throws at apply time (build error, not bad output).
+  Either order the emitted source stays valid with the losing element simply
+  un-lowered.
+- **Share of the bailed population: zero.** The full 254-usecase metric run
+  (found 2,580 / bailed 528, RECOVERABLE 0) contains no
+  `local/overlapping-edit` at all — the forfeit needs compiled
+  jsx/jsxs/createElement form with a nested candidate inside `propsSpan`, and
+  the corpus is authored JSX with per-entry spans. Latent hazard for
+  post-transpile pipelines only; the strengthened `editsAreCandidateLocal`
+  (DOM design doc, Decision 1) removes even that, scheduled with the DOM
+  candidate work.
+- Metric note for the tuple owner: the corpus grew a file (253 -> 254, +5
+  found/lowered/flattened, bailed unchanged) — the pinned totals in
+  `bailoutMetric.web.test.tsx` need that rebaseline from whoever added the
+  usecase; my changes moved nothing (bailed identical, no new reason lines).
