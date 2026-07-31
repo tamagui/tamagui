@@ -228,8 +228,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const defaultFontSetting = configIn.settings?.defaultFont
   const defaultFont =
     defaultFontSetting?.[0] === '$' ? defaultFontSetting.slice(1) : defaultFontSetting
-  const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
-  if (defaultFontToken && !fontsParsed?.[defaultFontToken]) {
+  const defaultFontToken =
+    (defaultFont
+      ? `$${defaultFont}`
+      : fontsParsed?.$body
+        ? '$body'
+        : Object.keys(fontsParsed || {})[0]) || ''
+  if (defaultFont && !fontsParsed?.[defaultFontToken]) {
     throw new Error(
       `settings.defaultFont points to missing font "${defaultFontToken}". Configure fonts.${defaultFont} or choose an existing default.`
     )

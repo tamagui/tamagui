@@ -63,6 +63,39 @@ describe('createTamagui', () => {
     expect(rootFontRule).not.toContain(theme.fontsParsed.$aaa.lineHeight.$3.variable)
   })
 
+  test(`font reset uses body without depending on sort order when defaultFont is omitted`, () => {
+    const baseConfig = config.getDefaultTamaguiConfig()
+    const fonts = {
+      ...baseConfig.fonts,
+      aaa: {
+        ...baseConfig.fonts.body,
+        family: 'AlphabeticallyFirst',
+        lineHeight: {
+          3: 111,
+        },
+      },
+    }
+    const { defaultFont: _, ...settingsWithoutDefaultFont } = baseConfig.settings
+    const withoutDefaultFont = createTamagui({
+      ...baseConfig,
+      fonts,
+      settings: settingsWithoutDefaultFont,
+    })
+    const withExplicitDefault = createTamagui({
+      ...baseConfig,
+      fonts,
+      settings: {
+        ...settingsWithoutDefaultFont,
+        defaultFont: 'body',
+      },
+    })
+
+    expect(withoutDefaultFont.defaultFontToken).toBe('$body')
+    expect(withoutDefaultFont.themeConfig.cssRuleSets).toEqual(
+      withExplicitDefault.themeConfig.cssRuleSets
+    )
+  })
+
   test(`settings.defaultFont must name a configured font`, () => {
     const baseConfig = config.getDefaultTamaguiConfig()
 
