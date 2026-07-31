@@ -20,7 +20,14 @@ async function getIconCenter(page, i: number) {
 const CONTENT_SEL = '[data-popper-animate-position]'
 
 test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    // the react-native web driver can't drive the shared-tooltip animatePosition
+    // pattern (same skip as TooltipGlobalPattern/TooltipPositionJump, which
+    // restrict further to motion-only — css and reanimated pass here)
+    const driver = (testInfo.project?.metadata as any)?.animationDriver
+    if (driver === 'native') {
+      test.skip()
+    }
     await setupPage(page, { name: 'TooltipToolbarRowCase', type: 'useCase' })
     await page.waitForSelector('[data-testid="icon-0"]', { timeout: 15000 })
   })
