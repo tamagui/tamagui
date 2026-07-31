@@ -10,6 +10,17 @@ test.beforeEach(async ({ page }) => {
 // computed property, so mixing the two engines on one element cannot flip
 // the cascade
 test('a legacy pseudo rule still beats a program base rule', async ({ page }) => {
+  const text = page.getByTestId('mixed-font')
+
+  await expect(text).toHaveCSS('font-size', '20px')
+  await text.hover()
+  await page.waitForTimeout(100)
+  await expect(text).toHaveCSS('font-size', '12px')
+})
+
+// the text-decoration family converts the condition object into a program
+// clause; the converted clause overrides the base program
+test('a converted condition object overrides the program base', async ({ page }) => {
   const text = page.getByTestId('mixed-decoration')
 
   await expect(text).toHaveCSS('text-decoration-line', 'underline')
