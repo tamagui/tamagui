@@ -1108,6 +1108,23 @@ downstream packages and commit their regenerated declarations. Same shape as
 the stale-dist runtime confound: the artifact you are measuring must be built
 from the source you are reasoning about.
 
+AMENDED 2026-07-31 (the half-lesson): the first application of this rule only
+rebuilt the four packages whose staleness ERRORED (the Button TS2322s). But a
+widening leaves an INCOMPLETE stale declaration that compiles fine — it just
+silently omits the new capability. That is worse than an error, because it
+does not surface. A sweep found 17 tracked `code/ui/*/types/*.d.ts` +
+`code/core` declarations where `FlatStyleValue` was absent from Input,
+TextArea, Sheet, Checkbox, Switch, RadioGroup, Spinner, Tooltip, Field,
+AlertDialog and Dialog — the headline v3 authoring feature missing from most
+of the component library's public types, while root typecheck exited 0 by
+resolving cross-package types THROUGH those stale declarations. So the rule is:
+a public type-surface change requires rebuilding EVERY downstream package that
+bakes the resolved union, not only the ones whose staleness happens to error;
+find the set by rebuilding and letting git show it, never by guessing which
+packages error. And a green typecheck run against unrebuilt declarations is not
+evidence — it is validating the code against declarations the code no longer
+generates.
+
 ### Candidate-target validator wired into the runtime resolver (Lane E)
 
 The shared `resolveCandidateTarget` from `@tamagui/style-grammar` now backs the
