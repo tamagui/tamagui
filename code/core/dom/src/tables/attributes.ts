@@ -164,6 +164,29 @@ export const AUTO_COMPLETE_VALUES: readonly string[] = [
   'off',
 ]
 
+/** every html input type; the ones native cannot render are a native build error */
+export const HTML_INPUT_TYPES: readonly string[] = [
+  'checkbox',
+  'color',
+  'date',
+  'datetime-local',
+  'email',
+  'file',
+  'hidden',
+  'month',
+  'number',
+  'password',
+  'radio',
+  'range',
+  'search',
+  'submit',
+  'tel',
+  'text',
+  'time',
+  'url',
+  'week',
+]
+
 /** input types react native can render with a text-entry control */
 export const NATIVE_INPUT_TYPES: readonly string[] = [
   'email',
@@ -431,19 +454,19 @@ export const ATTRIBUTES: Readonly<Record<string, AttributeRow>> = {
     native: 'none',
   },
 
-  // supplied by the styling frontend, never generated as an attribute
   children: {
-    group: 'frontend',
+    group: 'react',
     tags: '*',
-    type: 'ReactNode',
     nativeProp: 'children',
     web: 'host',
     native: 'host',
+    note: 'the content model in the tag table decides the type: no children on a void tag, text only inside an option',
   },
+
+  // supplied by the styling frontend, never generated as a prop here
   style: {
     group: 'frontend',
     tags: '*',
-    type: 'never',
     nativeProp: 'style',
     web: 'host',
     native: 'host',
@@ -567,11 +590,16 @@ export const ATTRIBUTES: Readonly<Record<string, AttributeRow>> = {
   type: {
     group: 'element',
     tags: ['button', 'input'],
-    type: 'never',
+    perTag: {
+      button: { type: `'button' | 'submit'` },
+      input: {
+        type: 'InputType',
+        note: 'on native the type selects the keyboard and secure entry rather than reaching one prop, and the types with no text-entry control are a build error',
+      },
+    },
     nativeProp: null,
     web: 'host',
     native: 'polyfill',
-    note: 'the generated interfaces narrow this per tag: button takes button or submit, input takes the html input types',
   },
 
   // image
@@ -679,6 +707,7 @@ export const ATTRIBUTES: Readonly<Record<string, AttributeRow>> = {
     group: 'element',
     tags: ['input', 'select', 'textarea'],
     type: 'string',
+    perTag: { select: { type: 'string | readonly string[]' } },
     nativeProp: 'defaultValue',
     web: 'host',
     native: 'host',
@@ -793,15 +822,21 @@ export const ATTRIBUTES: Readonly<Record<string, AttributeRow>> = {
   value: {
     group: 'element',
     tags: ['input', 'li', 'option', 'select', 'textarea'],
-    type: 'never',
+    type: 'string',
+    perTag: {
+      li: {
+        type: 'number',
+        note: 'the list counter is not rendered on either platform, matching the list-style reset',
+      },
+      select: { type: 'string | readonly string[]' },
+    },
     nativeProp: 'value',
     web: 'host',
     native: 'polyfill',
-    note: 'the generated interfaces narrow this per tag: li takes a number, select takes a string or string array, the rest take a string',
   },
 }
 
 export const ATTRIBUTE_NAMES: readonly string[] = Object.keys(ATTRIBUTES)
 
-/** props that only exist so the frontend can supply them, never emitted as attributes */
-export const FRONTEND_PROPS: readonly string[] = ['children', 'style']
+/** props the styling frontend supplies, so the DOM contract does not generate them */
+export const FRONTEND_PROPS: readonly string[] = ['style']

@@ -138,8 +138,15 @@ export type AttributeRow = {
    */
   group: 'aria' | 'global' | 'element' | 'data' | 'frontend' | 'react'
   tags: PropTags
-  /** typescript source for the generated prop type */
-  type: string
+  /** typescript source for the generated prop type, for every tag `perTag` omits */
+  type?: string
+  /**
+   * Per-tag overrides, for props that genuinely differ by element: `type` on a
+   * button is not `type` on an input, and the `value` counter note is about
+   * `li` alone. Every tag the row accepts has to end up with a type, from here
+   * or from `type`; an override with no `type` just narrows the note.
+   */
+  perTag?: Readonly<Partial<Record<TagName, { type?: string; note?: string }>>>
   /** react native prop this lowers to, null when nothing carries it */
   nativeProp: string | null
   web: Support

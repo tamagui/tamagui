@@ -9,6 +9,8 @@
  * (see `compatibility.ts`), never a dependency.
  */
 
+export * from './events'
+export * from './props'
 export * from './tables/attributes'
 export * from './tables/compatibility'
 export * from './tables/events'

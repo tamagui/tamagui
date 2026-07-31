@@ -7,6 +7,8 @@
   "source": "src/index.ts",
   "files": [
     "src/index.ts",
+    "src/events.ts",
+    "src/props.ts",
     "src/tables/attributes.ts",
     "src/tables/compatibility.ts",
     "src/tables/events.ts",
@@ -40,11 +42,17 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "snapshot:rsd": "bun scripts/extract-rsd-snapshot.ts",
-    "test": "vitest --run src"
+    "generate:props": "bun scripts/generate-props.ts",
+    "test": "vitest --run src && bun run test:types",
+    "test:types": "tsc -p tsconfig.test.json"
   },
   "dependencies": {},
+  "peerDependencies": {
+    "react": ">=19"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "react": ">=19",
     "vitest": "4.0.4"
   }
 }

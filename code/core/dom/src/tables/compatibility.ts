@@ -104,6 +104,16 @@ export const COMPATIBILITY: readonly CompatibilityRow[] = [
       'react warns on it and steers to value or defaultValue on the select, and select has no native rendering anyway',
   },
   {
+    area: 'prop',
+    subject: 'children on a void or text-only element',
+    keys: [],
+    rsd: 'types children as a react node on every element, including br, hr, img, input, textarea and option',
+    tamagui:
+      'types it as never on the five void elements and as string or number inside an option, from the content model in the tag table',
+    reason:
+      'the compiler already reports this nesting as a build error, and the same rule stated in the types reports it in the editor instead of at build time',
+  },
+  {
     area: 'event',
     subject: 'onSelectionChange',
     keys: ['onSelectionChange'],
