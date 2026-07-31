@@ -838,17 +838,6 @@ export type OnlyShorthandStylePropsSetting = TamaguiConfig['settings'] extends {
   ? X
   : false
 
-// StyleMode: available modes for different prop styles
-// - 'tamagui': Classic style props only (default)
-// - 'tailwind': className only, no style props
-// - 'tamagui-and-tailwind': Classic style props + className processing
-/**
- * @deprecated V3 selects the authoring syntax by package import, not by a global
- * setting: Tailwind authoring lives in `@tamagui/tailwind`. This setting and the
- * runtime branches reading it are removed once every caller has migrated.
- */
-export type StyleMode = 'tamagui' | 'tailwind' | 'tamagui-and-tailwind'
-
 export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
@@ -1293,20 +1282,6 @@ export interface GenericTamaguiSettings {
    * two ways to style the same property.
    */
   onlyAllowShorthands?: boolean | undefined
-
-  /**
-   * Enable different style modes for prop syntax.
-   *
-   * - 'tamagui': Default - classic style props (backgroundColor, hoverStyle: {}, $sm: {})
-   * - 'tailwind': className only, no style props (for Tailwind CSS users)
-   * - 'tamagui-and-tailwind': Classic style props + className processing
-   *
-   * @deprecated Import components from `@tamagui/tailwind` instead. A component's
-   * authoring syntax is fixed by its package, so core no longer branches on a
-   * global mode for types. This setting is removed once the remaining runtime
-   * branches move into the Tailwind frontend.
-   */
-  styleMode?: StyleMode
 
   /**
    * Accept deprecated pseudo, theme, platform, media, and group condition
@@ -2130,13 +2105,23 @@ export type SafeAreaValueKeys =
   | 'start'
   | 'end'
 
+/**
+ * Flat value programs: every style prop accepts a clause-bearing string
+ * (`bg="red hover:blue"`, `p="4 sm:6"`). `(string & {})` admits the broad
+ * string without collapsing the token/literal unions, so autocomplete
+ * survives (design record, "Types and editor tooling"). Candidate and
+ * modifier validation is the compiler's and language service's job, never
+ * an exhaustive template-literal union.
+ */
+export type FlatStyleValue<T> = T | (string & {})
+
 export type WithThemeValues<T extends object> = {
   [K in keyof T]:
     | (ThemeValueGet<K> extends never
         ? K extends keyof ExtraBaseProps
           ? T[K]
-          : T[K] | 'unset'
-        : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset')
+          : FlatStyleValue<T[K] | 'unset'>
+        : FlatStyleValue<GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'>)
     | (K extends SafeAreaValueKeys ? 'safe' : never)
 }
 
