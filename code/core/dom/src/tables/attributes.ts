@@ -198,14 +198,18 @@ export const HTML_INPUT_TYPES: readonly string[] = [
   'week',
 ]
 
-/** input types react native can render with a text-entry control */
+/**
+ * Input types react native can render with a text-entry control.
+ *
+ * `hidden` and `submit` were here and should not have been: hidden renders
+ * nothing at all and submit is a button, so neither is a text-entry control and
+ * claiming native support for them would pass a build that cannot render.
+ */
 export const NATIVE_INPUT_TYPES: readonly string[] = [
   'email',
-  'hidden',
   'number',
   'password',
   'search',
-  'submit',
   'tel',
   'text',
   'url',
@@ -347,7 +351,10 @@ export const ATTRIBUTES: Readonly<Record<string, AttributeRow>> = {
   },
   'aria-owns': ariaRef(),
   'aria-placeholder': ariaText(),
-  'aria-posinset': ariaNumber('accessibilityPosInSet'),
+  // react-native 0.83.2 has no accessibilityPosInSet — checked View.js and
+  // ViewAccessibility.d.ts, it exists in neither. Mapping to it would have the
+  // prop silently dropped at the host, which is worse than declaring it web-only
+  'aria-posinset': ariaNumber(),
   'aria-pressed': {
     group: 'aria',
     tags: '*',
@@ -364,7 +371,8 @@ export const ATTRIBUTES: Readonly<Record<string, AttributeRow>> = {
   'aria-rowindextext': ariaText(),
   'aria-rowspan': ariaNumber(),
   'aria-selected': ariaState('aria-selected', 'accessibilityState.selected'),
-  'aria-setsize': ariaNumber('accessibilitySetSize'),
+  // same: no accessibilitySetSize anywhere in react-native 0.83.2
+  'aria-setsize': ariaNumber(),
   'aria-sort': {
     group: 'aria',
     tags: '*',

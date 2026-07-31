@@ -5,7 +5,13 @@ export declare const ARIA_ROLES: readonly string[];
 export declare const AUTO_COMPLETE_VALUES: readonly string[];
 /** every html input type; the ones native cannot render are a native build error */
 export declare const HTML_INPUT_TYPES: readonly string[];
-/** input types react native can render with a text-entry control */
+/**
+* Input types react native can render with a text-entry control.
+*
+* `hidden` and `submit` were here and should not have been: hidden renders
+* nothing at all and submit is a button, so neither is a text-entry control and
+* claiming native support for them would pass a build that cannot render.
+*/
 export declare const NATIVE_INPUT_TYPES: readonly string[];
 export declare const ATTRIBUTES: Readonly<Record<string, AttributeRow>>;
 export declare const ATTRIBUTE_NAMES: readonly string[];

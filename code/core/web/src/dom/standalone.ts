@@ -52,8 +52,16 @@ const compileOnly = (what: string) =>
   )
 
 /**
- * One style handle per call, never a namespace of named sub-objects. The
- * compiler replaces the whole call, so this body only runs when it did not.
+ * One style handle per call, never a namespace of named sub-objects.
+ *
+ * **NOT IMPLEMENTED (2026-07-31).** This throws because the compiler is meant
+ * to replace the call — but no compiler pass recognises it. `domStructuralPass`
+ * matches imported `html` only, so a `tamagui/dom` module keeps its `style()`
+ * calls through lowering and throws when the module is evaluated. The entry is
+ * importable and its types are real; the frontend does not function end to end.
+ *
+ * The tests around this assert the throw and the types, both of which pass and
+ * neither of which would notice the missing pass. Phase 4 item 7 is not shipped.
  */
 export function style(_definition: StyleDefinition): CompiledStyle {
   throw compileOnly('style()')

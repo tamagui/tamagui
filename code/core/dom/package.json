@@ -46,6 +46,7 @@
     "generate:html": "bun scripts/generate-html.ts",
     "bench:native": "bun --preload ./bench/stub-react-native.mjs bench/native-element-cost.mjs",
     "test": "vitest --run src && bun run test:types",
+    "test:web": "vitest --run src && bun run test:types",
     "test:types": "tsc -p tsconfig.test.json"
   },
   "dependencies": {},

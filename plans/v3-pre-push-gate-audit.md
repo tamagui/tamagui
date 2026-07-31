@@ -276,8 +276,18 @@ Running the same suite with `--sequence.shuffle`:
   it is not a broken test in isolation; it is a specific interaction with what
   runs before it.
 
-**It reproduces deterministically.** Seed `1785470380788` fails on every
-attempt:
+**Correction (2026-07-31): it is not seed-deterministic, and I reported that it
+was.** The seed failed on both attempts in the audit worktree, and I generalised
+from two consecutive reproductions in one environment. It does not hold: in the
+shared checkout at the same source, after a fresh build, that seed passes 3 of 3
+and six further random shuffles also pass — nine clean runs against eleven runs
+in the worktree that produced two failures.
+
+So the ordering failure is real and was observed with a concrete, specific
+error, but the trigger is not the shuffle seed. Something environment-dependent
+— worker scheduling or which files share a worker — decides it, which is why a
+seed reproduces within one checkout and not across them. Treat the command below
+as the shape of the reproduction rather than a guaranteed one:
 
 ```
 cd code/core/core-test
@@ -286,7 +296,8 @@ TAMAGUI_TARGET=native npx vitest --run \
   --sequence.shuffle --sequence.seed=1785470380788 *.native.test.tsx
 ```
 
-That turns a flake into something fixable.
+That makes it investigable, not guaranteed. Whoever picks it up should expect to
+have to hunt for the ordering rather than replay a seed.
 
 This lands in `925e338d2f`, the safe-area commit that moved setup out of module
 load and removed two production module-load captures. Removing those captures

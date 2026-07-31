@@ -75,6 +75,7 @@ export interface StrictDOMPropsBase extends StrictDOMDataProps {
 	"aria-owns"?: string;
 	/** @platform web */
 	"aria-placeholder"?: string;
+	/** @platform web */
 	"aria-posinset"?: number;
 	/** @platform web */
 	"aria-pressed"?: boolean | "mixed";
@@ -93,6 +94,7 @@ export interface StrictDOMPropsBase extends StrictDOMDataProps {
 	/** @platform web */
 	"aria-rowspan"?: number;
 	"aria-selected"?: boolean;
+	/** @platform web */
 	"aria-setsize"?: number;
 	/** @platform web */
 	"aria-sort"?: "none" | "ascending" | "descending" | "other";

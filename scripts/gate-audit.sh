@@ -74,6 +74,57 @@ run_gate "tailwind web"      "code/core/tailwind"           "bun run test:web"
 run_gate "tailwind native"   "code/core/tailwind"           "bun run test:native"
 run_gate "web package types" "code/core/web"                "bun run test:web"
 
+# The gates above each run in one fixed order. That makes them reproducible and
+# blind to ordering bugs by construction, so this runs the same suites in
+# randomised order as a SEPARATE gate. A failure here means one test depends on
+# another having run first — it is not a behaviour regression, and conflating
+# the two would make every ordering flake look like broken code.
+#
+# Each iteration's seed is recorded and printed, so a red is reproducible
+# immediately. A shuffle gate that only says "failed sometimes" is worse than
+# none.
+SHUFFLE_ITERATIONS="${SHUFFLE_ITERATIONS:-5}"
+
+run_shuffle_gate() {
+  local label="$1" dir="$2" env="$3" glob="$4"
+  local log="$LOGS/ordering-${label// /-}.log"
+  local started=$SECONDS
+  local failures=0 seeds_failed=""
+  : > "$log"
+
+  for i in $(seq 1 "$SHUFFLE_ITERATIONS"); do
+    # a fresh seed per iteration explores new orderings; recording it is what
+    # makes any red actionable
+    local seed=$(( (RANDOM << 15 | RANDOM) + i ))
+    local cmd="$env npx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts --sequence.shuffle --sequence.seed=$seed $glob"
+    echo "=== iteration $i, seed $seed ===" >> "$log"
+    ( cd "$TREE/$dir" && eval "$cmd" ) >> "$log" 2>&1
+    if [ $? -ne 0 ]; then
+      failures=$((failures + 1))
+      seeds_failed="$seeds_failed $seed"
+    fi
+  done
+
+  if [ "$failures" -eq 0 ]; then
+    printf '%-22s exit=0   %ss  %s shuffled runs, no ordering dependency\n' \
+      "$label" "$((SECONDS - started))" "$SHUFFLE_ITERATIONS"
+  else
+    printf '%-22s exit=1   %ss  ORDERING FAILURE in %s of %s runs\n' \
+      "$label" "$((SECONDS - started))" "$failures" "$SHUFFLE_ITERATIONS"
+    echo "    a test here depends on another having run first; this is not a behaviour regression"
+    for seed in $seeds_failed; do
+      echo "    reproduce: cd $dir && $env npx vitest --run \\"
+      echo "                 --config ../../packages/vite-plugin-internal/src/vite.config.ts \\"
+      echo "                 --sequence.shuffle --sequence.seed=$seed $glob"
+    done
+  fi
+}
+
+echo
+echo "--- ordering gates (shuffled; a red here is test order, not behaviour) ---"
+run_shuffle_gate "core native order" "code/core/core-test" "TAMAGUI_TARGET=native" "*.native.test.tsx"
+run_shuffle_gate "core web order"    "code/core/core-test" "TAMAGUI_TARGET=web"    "*.web.test.tsx"
+
 echo
 echo "logs in $LOGS"
 echo "remove with: git -C $REPO worktree remove --force $TREE"

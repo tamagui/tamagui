@@ -476,6 +476,46 @@ Status: in progress.
   deliberate web/core rebuild, static web passes 110 tests with two skips and
   webpack passes 20/20; the focused web/native/normalization set passes 8/8.
 
+### CORRECTION (2026-07-31): item 3 overstated what is shipped
+
+CODEX-2's independent review of this lane found two P0s. I verified both in the
+compiler source and the pinned snapshots rather than taking the report, and
+**both are correct**. What follows above them in this item is accurate about
+design and inaccurate about status; these two entries govern.
+
+**P0-1 — `style()` has no compiler implementation, so Phase 4 item 7 is NOT
+shipped.** `domStructuralPass` matches `provenance.importedName === 'html'` and
+nothing else, so an imported `style()` call is never recognised. A valid
+`tamagui/dom` module keeps its top-level `style()` call through lowering and
+throws when evaluated. The tests I wrote assert the runtime throw and the types.
+Both pass. Neither would notice the missing pass, because nothing asserts
+transformed output. The entry is importable, its types are real, and the
+frontend does not function end to end.
+
+**P0-2 — the native contract described lowering that does not happen.** Verified
+in `domLowering.native.test.tsx`'s pinned snapshot: a lowered element is
+`<__TamaguiDOMView id="main">` with **no style prop at all**. No tag defaults,
+no `display: block` emulation, no prop renames, no implicit role. The mechanism
+is that `domStructuralPass` removes DOM elements from `module.elements` at the
+end of its run and style lowering executes after that, so DOM elements never
+reach it. `NATIVE_ELEMENT_DEFAULTS`, `NATIVE_BLOCK_DEFAULTS`,
+`NATIVE_FLEX_DEFAULTS`, `tag.role` and `attribute.nativeProp` have **no compiler
+consumer at all**.
+
+**Why P0-2 is the serious one, stated plainly against my own earlier claim.**
+The primitives use no hooks and read no context, and I reported that as a
+structural advantage over React Strict DOM, which reads a display-inside and a
+text-ancestor context per element. That design is correct *only behind the
+precondition that the compiler resolved the work statically*. It does not. So
+today a DOM element on native renders with React Native's own defaults instead
+of block-flow semantics, and the advantage is unproven rather than won. The
+per-element measurement (4.03 objects, 236 B, identical to a bare React
+element) remains a true measurement of the wrapper; the justification I attached
+to it does not currently hold.
+
+`contract.ts` and `standalone.ts` now carry this status at the top, because the
+source is where the next reader looks.
+
 ## 4. Cutover config
 
 Status: in progress.
