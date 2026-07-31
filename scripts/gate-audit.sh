@@ -66,7 +66,9 @@ run_gate "typecheck"         "."                            "bun run typecheck"
 run_gate "grammar"           "code/core/style-grammar"      "bun run test"
 run_gate "core web"          "code/core/core-test"          "bun run test:web"
 run_gate "core native"       "code/core/core-test"          "bun run test:native"
-run_gate "static"            "code/compiler/static-tests"   "bun run test:run:web -- 'tests/*.web.test.tsx'"
+# the glob must reach the shell unquoted, the way the package script writes it;
+# quoted, it arrives at vitest as a literal filter and matches nothing
+run_gate "static"            "code/compiler/static-tests"   "bun run test:run:web -- tests/*.web.test.tsx"
 run_gate "webpack"           "code/compiler/static-tests"   "bun run test:webpack"
 run_gate "tailwind web"      "code/core/tailwind"           "bun run test:web"
 run_gate "tailwind native"   "code/core/tailwind"           "bun run test:native"
