@@ -108,7 +108,12 @@ function normalizeSnapshotCode(code: string) {
 
 export async function extractForNative(source: string) {
   const result = await compile(source, 'native')
-  return { code: normalizeSnapshotCode(result.output.code), map: result.output.map }
+  return {
+    code: normalizeSnapshotCode(result.output.code),
+    map: result.output.map,
+    stats: result.plan.stats,
+    diagnostics: result.plan.diagnostics,
+  }
 }
 
 export async function extractForWeb(source: string, opts: ExtractOptions = {}) {

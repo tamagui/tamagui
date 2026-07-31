@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`native DOM elements lower to backing primitives and wrap literal text 1`] = `
+"
+    import { jsx, jsxs } from 'react/jsx-runtime'
+    import { html as h } from '@tamagui/core'
+
+    export const JSXElement = (
+      <__TamaguiDOMView id="main"><__TamaguiDOMText>
+        Hello </__TamaguiDOMText><__TamaguiDOMText>{7}</__TamaguiDOMText>
+        <__TamaguiDOMText>world</__TamaguiDOMText>
+      </__TamaguiDOMView>
+    )
+    export const JSXCall = jsx(__TamaguiDOMView, { children: __TamaguiCreateElement(__TamaguiDOMText, null, 'jsx') })
+    export const JSXSCall = jsxs(__TamaguiDOMView, { children: [__TamaguiCreateElement(__TamaguiDOMText, null, 'one'), jsx(__TamaguiDOMText, { children: 'two' })] })
+
+import { DOMText as __TamaguiDOMText, DOMView as __TamaguiDOMView } from "@tamagui/core/dom"
+
+import { createElement as __TamaguiCreateElement } from "react"
+"
+`;

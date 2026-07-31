@@ -1,4 +1,5 @@
 import { config } from '@tamagui/config'
+import { html } from '@tamagui/core'
 import {
   Spacer,
   TamaguiProvider,
@@ -469,5 +470,16 @@ export function TestAnimatedByWithoutAnimation() {
         data-testid="animated-group-child"
       />
     </YStack>
+  )
+}
+
+export function TestDOMSemanticTags() {
+  return (
+    <html.main data-testid="dom-main">
+      <html.h1>DOM heading</html.h1>
+      <html.nav aria-label="DOM navigation">
+        <html.a href="/dom-link">DOM link</html.a>
+      </html.nav>
+    </html.main>
   )
 }

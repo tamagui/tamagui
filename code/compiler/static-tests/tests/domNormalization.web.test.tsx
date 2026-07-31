@@ -1,5 +1,6 @@
 import {
   ProjectGraph,
+  materializeModule,
   resolvedModuleId,
   textOfSpan,
   yukuFactory,
@@ -153,5 +154,50 @@ export const unrelated = <html.div />
       message:
         'Element target JSXMemberExpression is not a stable identifier or intrinsic tag',
     },
+  ])
+})
+
+test('materialization preserves syntax-level literal origin', () => {
+  const source = `
+import { html } from '@tamagui/core'
+const bound = 'bound'
+export const fixture = (
+  <html.div>
+    jsx text
+    {'expression literal'}
+    {\`template literal\`}
+    {'a' + 'b'}
+    {bound}
+  </html.div>
+)
+`
+  const graph = new ProjectGraph(yukuFactory, {
+    modules: [
+      {
+        id: sourceId,
+        source,
+        imports: [{ specifier: '@tamagui/core', resolvedId: coreId, external: true }],
+      },
+    ],
+  })
+  const children = materializeModule(graph, sourceId).elements[0]!.entries.filter(
+    (entry) => entry.kind === 'child' && entry.value.kind === 'static'
+  )
+
+  expect(
+    children.map((entry) =>
+      entry.kind === 'child' && entry.value.kind === 'static'
+        ? {
+            value: entry.value.value,
+            literalOrigin: entry.value.literalOrigin === true,
+          }
+        : null
+    )
+  ).toEqual([
+    { value: '\n    jsx text\n    ', literalOrigin: true },
+    { value: 'expression literal', literalOrigin: true },
+    { value: 'template literal', literalOrigin: false },
+    { value: 'ab', literalOrigin: false },
+    { value: 'bound', literalOrigin: false },
   ])
 })

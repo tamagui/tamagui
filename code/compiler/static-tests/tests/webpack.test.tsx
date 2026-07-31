@@ -232,4 +232,19 @@ describe('webpack-tests', () => {
     expect(child?.className).toContain('_bc-')
     expect(container).toMatchSnapshot()
   })
+
+  test('24. DOM frontend lowers to semantic host elements', () => {
+    const { renderTrue } = getTest('TestDOMSemanticTags')
+    const { container } = renderTrue()
+    const main = container.querySelector('[data-testid="dom-main"]')
+    const heading = main?.querySelector('h1')
+    const navigation = main?.querySelector('nav')
+    const link = navigation?.querySelector('a')
+
+    expect(main?.tagName).toBe('MAIN')
+    expect(heading?.textContent).toBe('DOM heading')
+    expect(navigation?.getAttribute('aria-label')).toBe('DOM navigation')
+    expect(link?.getAttribute('href')).toBe('/dom-link')
+    expect(link?.textContent).toBe('DOM link')
+  })
 })
