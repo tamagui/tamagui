@@ -12,6 +12,17 @@ import type { AttributeRow, TagName } from './types'
  * `enterKeyHint`, `inputMode`, `spellCheck`) are scoped to input and textarea
  * here even though React Strict DOM declares them globally. See
  * `compatibility.ts`.
+ *
+ * The `aria-*` rows map to the legacy accessibility props on purpose, and it is
+ * worth knowing why before anyone simplifies them. React Native does accept
+ * some `aria-*` props directly and translates them itself, so those mappings
+ * look redundant — but the set differs per host. `View` handles thirteen of
+ * them, `Text` handles seven, and neither handles `aria-modal`, `aria-posinset`
+ * or `aria-setsize`. Since one row has to be right for every backing a tag can
+ * lower to, the mapping that every host accepts unconditionally is the correct
+ * one. Verified against react-native 0.83.2's `View.js` and `Text.js`, not
+ * against its types. `id` is the exception: View, Text and TextInput all take
+ * it, so that row passes it straight through.
  */
 
 const TEXT_ENTRY: readonly TagName[] = ['input', 'textarea']
@@ -407,7 +418,9 @@ export const ATTRIBUTES: Readonly<Record<string, AttributeRow>> = {
     group: 'global',
     tags: '*',
     type: 'string',
-    nativeProp: 'nativeID',
+    // react native takes `id` itself on View, Text and TextInput and assigns it
+    // to nativeID, so there is nothing to rename
+    nativeProp: 'id',
     web: 'host',
     native: 'polyfill',
   },
