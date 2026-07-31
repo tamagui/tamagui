@@ -345,6 +345,12 @@ Status: prototype complete.
   custom properties, step/linear-stop timing, negative delays,
   `allow-discrete`, unsupported/discrete properties, and `all` without concrete
   changed properties produce diagnostics instead of native approximations.
+- Native wiring has a hard precondition: the caller must pass a configured or
+  detected React Native minor. `reactNativeMinor` is required and has no
+  default; wiring must never add a literal fallback just to satisfy the type. An
+  unknown version is a diagnostic, not a guess. At the repository's RN 0.83
+  baseline, a runtime probe of `backgroundColor 200ms` returns
+  `native-transition-property` with “requires React Native 0.84 or newer.”
 - Validation: focused transition tests 13/13, full style-grammar 335/335, and
   the style-grammar package build passes with rebuilt declarations.
 
@@ -396,3 +402,95 @@ parked for an explicit architecture decision.
   cases do not justify context-island transactions. Both the context-island
   design and the larger explicit component-lowering descriptor are parked in
   `plans/decision-24-component-lowering.md` pending an architecture decision.
+
+## 11. Clause-free config-first cutover (Lane E)
+
+Status: landed (this commit). The `hasClauses` short-circuit in
+`contributePrograms.ts` and the `indexOf(':')` gate in `getSplitStyles.tsx` are
+gone: every string style value contributes per-longhand base-only programs, and
+numeric values on the six transform-family props do too (canonical
+translate/rotate/scale composition). x/y bind the space token category via
+`defaultTokenCategories`; the grammarConfig x/y workaround is deleted.
+
+Two regressions the orphaned diff carried, fixed at the source:
+
+- RN shadow props (`shadowColor`, `shadowOffset`, `shadowOpacity`,
+  `shadowRadius`, `textShadowColor`, `textShadowOffset`, `textShadowRadius`)
+  are excluded from program contribution: they are not CSS longhands, and
+  `styleToCSS` combines them from plain style values.
+- An unresolvable base payload (`boxShadow="0 0 10px $nonexistent"`) ships raw
+  with the dev warning instead of silently dropping the whole value.
+
+The collision-precedence rule for config-first resolution is already in the
+design record ("Identifiers resolve config-first", the two determinism rules:
+CSS-wide keywords are reserved at config creation; a configured name always
+wins over a same-spelled CSS literal). It is now pinned by
+`flatValuePrograms.web.test.tsx` "a configured name wins over the same-spelled
+CSS literal".
+
+### Updated test expectations, before -> after, with the decision
+
+All follow from three decisions: (a) config-first resolution of clause-free
+strings (design record, "Identifiers resolve config-first"); (b) a clause-free
+value is a base-only program, so class names are hashed program classes and
+noClass/native evaluation writes resolved native-parity values; (c) the v6
+x/y-bind-space decision routed 2026-07-30.
+
+- `flatValuePrograms.web` "clause-less strings keep the existing path byte for
+  byte" -> "clause-free strings are base-only programs resolving config-first"
+  (decision b; the old test pinned the pre-cutover staging rule).
+- `compoundVariants.web` caller override `backgroundColor 'black'` -> `'#000'`
+  (decision a: `black` is a configured color token).
+- `compoundVariants.web` base-object overrides `paddingTop '8px'`/`radius
+  '2px'` -> `8`/`2`; variant values `width '20px'`/`height '10px'`/
+  `borderTopWidth '1px'` -> `20`/`10`/`1` (decision b: noClass evaluation
+  writes numeric values; React DOM px-ifies at render).
+- `compoundVariants.native` caller override `'black'` -> `'#000'` (decision a).
+- `getSplitStyles.web` "styled with variants" `classNames { color: '_col-red' }`
+  -> program class `/^_c-/` plus rule-content assertion `color:red`
+  (decision b, naming only).
+- `getSplitStyles.web` "shadowColor + shadowOpacity": unchanged — restored by
+  the shadow-prop exclusion fix.
+- `legacyConditionGate.web`: base class regex `not /^_bc-/` -> base program
+  class allowed, with a stronger assertion that the base program block contains
+  no `:hover` clause when `legacyConditionObjects: false` (the gate covers
+  condition objects only, decision b).
+- `rnStyleAlignment.web` boxShadow inset `'inset 0 2px 4px black'` ->
+  `'inset 0 2px 4px var(--black)'` (decision a).
+- `shorthandVariables.web` border/outline passthrough (`'1px solid red'`,
+  `'none'` as whole strings) -> per-longhand program values
+  (`borderTopWidth '1px'`, `borderTopStyle 'solid'`, `outlineStyle 'none'`),
+  matching the already-green `$sm` media split tests in the same file
+  (decision b; the border family splits composite values).
+- `shorthandVariables.web` `$nonexistent` cases: unchanged — restored by the
+  raw-base-payload fix.
+- `componentProps.web` snapshot `_bg-red` -> `_bc-1418911449`, and
+  `_tr-translateX01303033` -> `_tx-…` + `_t-…` axis/composition classes
+  (decision b, naming only; rule bodies are `background-color:red` and the
+  `--t-x` axis variable + shared `translate` composition).
+- `transformFamily.web`/`transformFamily.native` "clause-less keeps legacy
+  path" -> clause-free values compose through the family in canonical CSS
+  order (decision b; translateX/translateY commute and uniform scale commutes
+  with rotate, so rendering matches legacy for the common cases).
+- `transformFamily.web` "program displaces legacy uniform scale" -> "scaleX
+  program merges over an earlier plain uniform scale" (decision b: the plain
+  uniform scale is now a base program on both axes; decision-21 merge
+  restates the X base).
+- `tailwindRoundTrip.native` fontWeight `'700'` -> `700` (decision b; RN >=
+  0.76 accepts numeric fontWeight, repo pins RN 0.83).
+- `tailwindAnimation.web` translate-x/y and `tailwindArbitrary.web` scale/rotate
+  utilities: legacy atomic `transform` rule -> `--t-*` axis programs plus the
+  shared composition rule (decision b, styleMode-era files slated for removal
+  in Tailwind isolation item 4).
+- `tailwindMode.web` (styleMode-era, slated for deletion in Tailwind isolation
+  item 4): `_bg-` prefix -> `_bc-` program class with rule-content assertion;
+  the three unknown-class tests now assert the evaluated inline
+  `style.backgroundColor` (the cascade-preserving switch flips classes off when
+  unknown classes are present) — value assertions, not weakened.
+
+Gate numbers after this commit (rebuilt @tamagui/web immediately before both
+runs): web 763 passed / 1 skipped / 1 todo / 54 files; native 411 passed /
+7 expected fail / 11 skipped / 21 files. The population deltas vs the
+`e43e37c917` baselines are prior committed cross-lane changes (Lane T removed a
+mode-test workspace file) plus test consolidations above, not silent losses.
+Parse-cost and render-loop benchmarks follow as their own commit.
