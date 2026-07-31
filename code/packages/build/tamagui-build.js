@@ -315,9 +315,10 @@ function resolveOutputModuleSpecifier(
   }
 
   if (
-    FSE.existsSync(targetPath) &&
-    FSE.lstatSync(targetPath).isDirectory() &&
-    FSE.existsSync(path.join(targetPath, 'index.js'))
+    outputPaths.has(path.join(targetPath, 'index.js')) ||
+    (FSE.existsSync(targetPath) &&
+      FSE.lstatSync(targetPath).isDirectory() &&
+      FSE.existsSync(path.join(targetPath, 'index.js')))
   ) {
     return `${pathname.replace(/\/$/, '')}/index${outputExtension}${suffix}`
   }
@@ -325,13 +326,19 @@ function resolveOutputModuleSpecifier(
   return specifier
 }
 
-async function fullySpecifyOutputs(outputs, { format, outputExtension }) {
+async function fullySpecifyOutputs(
+  outputs,
+  { format, outputExtension, availableOutputPaths }
+) {
   const jsOutputs = outputs.filter((file) => file?.path.endsWith('.js'))
   if (!jsOutputs.length) {
     return new Map()
   }
 
-  const outputPaths = new Set(jsOutputs.map((file) => path.resolve(file.path)))
+  const outputPaths = new Set([
+    ...Array.from(availableOutputPaths || [], (file) => path.resolve(file)),
+    ...jsOutputs.map((file) => path.resolve(file.path)),
+  ])
   const transformed = new Map()
 
   await Promise.all(
@@ -486,6 +493,7 @@ const shouldBundleNodeModules = hasFlag('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = hasFlag('--watch')
+const packageBuildLock = '.tamagui-build-lock'
 
 // get command after "--" to run with swapped exports
 const dashDashIndex = process.argv.indexOf('--')
@@ -615,12 +623,17 @@ if (shouldClean || shouldCleanBuildOnly) {
   if (shouldWatch) {
     process.env.IS_WATCHING = true
     process.env.DISABLE_AUTORUN = true
-    const rebuild = debounce(() => build({ cleanOutput: false }), 100)
+    let buildQueue = Promise.resolve()
+    const queueBuild = (options) => {
+      buildQueue = buildQueue.then(() => build(options))
+      return buildQueue
+    }
+    const rebuild = debounce(() => void queueBuild({ cleanOutput: false }), 100)
     const chokidar = require('chokidar')
 
     if (!process.env.SKIP_INITIAL_BUILD) {
       // do one js build but not types
-      build({
+      void queueBuild({
         skipTypes: true,
         cleanOutput: true,
       })
@@ -745,20 +758,66 @@ function swapExportsTypes(pkg, direction) {
   return swapped
 }
 
-async function build({ skipTypes, cleanOutput = !shouldWatch } = {}) {
+function processIsRunning(pid) {
+  try {
+    process.kill(pid, 0)
+    return true
+  } catch (error) {
+    return error?.code !== 'ESRCH'
+  }
+}
+
+async function withPackageBuildLock(run) {
+  while (true) {
+    try {
+      await FSE.mkdir(packageBuildLock)
+      await FSE.writeJSON(path.join(packageBuildLock, 'owner.json'), {
+        pid: process.pid,
+      })
+      break
+    } catch (error) {
+      if (error?.code !== 'EEXIST') throw error
+      const owner = await FSE.readJSON(path.join(packageBuildLock, 'owner.json')).catch(
+        () => null
+      )
+      if (owner?.pid && !processIsRunning(owner.pid)) {
+        await FSE.remove(packageBuildLock)
+        continue
+      }
+      const stat = await FSE.stat(packageBuildLock).catch(() => null)
+      if (!owner && stat && Date.now() - stat.mtimeMs > 30_000) {
+        await FSE.remove(packageBuildLock)
+        continue
+      }
+      await new Promise((resolve) => setTimeout(resolve, 25))
+    }
+  }
+
+  try {
+    return await run()
+  } finally {
+    await FSE.remove(packageBuildLock)
+  }
+}
+
+async function build(options) {
+  return withPackageBuildLock(() => buildUnlocked(options))
+}
+
+async function buildUnlocked({ skipTypes, cleanOutput = !shouldWatch } = {}) {
   if (process.env.DEBUG) console.info('🔹', pkg.name)
   try {
     const start = Date.now()
-    const isSkippingTypesForBuild = Boolean(skipTypes || shouldSkipTypes || !pkgTypes)
-
-    // types/ is tracked build output in this repo and declarations are written
-    // through writeIfUnchanged, so it is never wiped here: removing it would
-    // delete every declaration for the length of a build, which breaks any
-    // concurrent typecheck, and would dirty every tracked .d.ts on every build.
-    // Stale declarations are pruned after emit instead.
-    if (cleanOutput) {
-      await FSE.remove('dist')
+    const distBuild = {
+      available: new Set(),
+      outputs: new Set(),
+      removals: new Set(),
+      writes: new Map(),
     }
+
+    // dist/ and types/ stay available while a build runs. Removing either up
+    // front breaks every concurrent consumer when an emit fails. Successful
+    // emits record their complete output set and prune stale files below.
 
     const allFiles = (await fastGlob(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
       (x) =>
@@ -768,20 +827,43 @@ async function build({ skipTypes, cleanOutput = !shouldWatch } = {}) {
         (exclude ? !x.match(exclude) : true)
     )
 
-    await Promise.all([
+    const results = await Promise.allSettled([
       //
       skipTypes ? null : buildTsc(allFiles.filter((x) => /\.tsx?$/.test(x))),
-      buildJs(allFiles),
+      buildJs(allFiles, distBuild),
     ])
-
-    console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
+    const failure = results.find((result) => result.status === 'rejected')
+    if (failure) {
+      throw failure.reason
+    }
 
     // Run afterBuild script if defined
     await runAfterBuild()
+
+    if (!skipJS) {
+      await Promise.all(
+        Array.from(distBuild.writes, ([filePath, contents]) =>
+          writeIfUnchanged(filePath, contents)
+        )
+      )
+      await Promise.all(
+        Array.from(distBuild.removals, (filePath) => FSE.remove(filePath))
+      )
+    }
+
+    if (cleanOutput && !skipJS) {
+      await pruneStaleOutputs(
+        'dist',
+        distBuild.outputs,
+        flatOut ? ['**/*'] : ['cjs/**/*', 'esm/**/*', 'jsx/**/*']
+      )
+    }
+
+    console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
     printBuildError(error, pkg.name, process.cwd())
     if (!shouldWatch) {
-      process.exit(1)
+      throw error
     }
   }
 }
@@ -860,9 +942,7 @@ async function buildTsc(allFiles) {
 
       if (allErrors.length > 0) {
         printOxcErrors(allErrors)
-        if (!shouldWatch) {
-          process.exit(1)
-        }
+        throw new Error('isolated declaration emit failed')
       }
 
       await pruneStaleDeclarations(targetDir, allFiles)
@@ -873,17 +953,35 @@ async function buildTsc(allFiles) {
     await pruneStaleDeclarations(targetDir, allFiles)
   } catch (err) {
     printTypescriptCompilationError(err, pkg.name)
-    if (!shouldWatch) {
-      process.exit(1)
-    }
+    throw err
   } finally {
     await FSE.remove('tsconfig.tsbuildinfo')
   }
 }
 
-// types/ is no longer wiped before a build, so drop declarations whose source
-// file is gone. Both emit paths map src/x.tsx -> types/x.d.ts, so the expected
-// set is derivable from allFiles.
+// dist/ and types/ are never wiped before a build, so successful emits prune
+// files that no longer belong to the source-derived output set.
+async function pruneStaleOutputs(targetDir, expected, patterns) {
+  const targetRoot = path.resolve(targetDir)
+  const normalize = (file) =>
+    path.relative(process.cwd(), path.resolve(file)).split(path.sep).join('/')
+  const dir = normalize(targetDir)
+  const normalizedExpected = new Set(Array.from(expected, normalize))
+  const existing = await fastGlob(
+    patterns.map((pattern) => `${dir}/${pattern}`),
+    { dot: true, followSymbolicLinks: false, onlyFiles: true }
+  )
+  for (const file of existing) {
+    if (!normalizedExpected.has(normalize(file))) {
+      const candidate = path.resolve(file)
+      if (candidate !== targetRoot && !candidate.startsWith(`${targetRoot}${path.sep}`)) {
+        throw new Error(`refusing to prune output outside ${targetDir}: ${file}`)
+      }
+      await FSE.remove(candidate)
+    }
+  }
+}
+
 async function pruneStaleDeclarations(targetDir, allFiles) {
   if (declarationToRoot) return
   // fast-glob echoes the pattern's leading "./" back in its results, so both
@@ -897,12 +995,7 @@ async function pruneStaleDeclarations(targetDir, allFiles) {
     expected.add(`${base}.d.ts`)
     expected.add(`${base}.d.ts.map`)
   }
-  const existing = await fastGlob([`${dir}/**/*.d.ts`, `${dir}/**/*.d.ts.map`])
-  for (const file of existing) {
-    if (!expected.has(normalize(file))) {
-      await FSE.remove(file)
-    }
-  }
+  await pruneStaleOutputs(dir, expected, ['**/*.d.ts', '**/*.d.ts.map'])
 }
 
 async function emitDeclarationsWithTsgo(targetDir, allFiles) {
@@ -999,7 +1092,7 @@ async function loadTsConfig() {
   return cachedConfig
 }
 
-async function buildJs(allFiles) {
+async function buildJs(allFiles, distBuild) {
   if (skipJS) {
     return
   }
@@ -1107,7 +1200,7 @@ async function buildJs(allFiles) {
     }
   }
 
-  return await Promise.all([
+  const results = await Promise.allSettled([
     // web output to cjs
     pkgMain
       ? esbuildWriteIfChanged(cjsConfigWeb, {
@@ -1116,6 +1209,7 @@ async function buildJs(allFiles) {
           specifyCJS: !avoidCJS,
           keepJsOutput: avoidCJS,
           preserveJsPaths: [],
+          distBuild,
         })
       : null,
 
@@ -1123,6 +1217,7 @@ async function buildJs(allFiles) {
     pkgMain && !shouldSkipNative
       ? esbuildWriteIfChanged(cjsConfig, {
           platform: 'native',
+          distBuild,
         })
       : null,
 
@@ -1132,6 +1227,7 @@ async function buildJs(allFiles) {
           platform: 'web',
           bundle: shouldBundleFlag,
           preserveJsPaths: esmAliasPaths,
+          distBuild,
         })
       : null,
 
@@ -1139,6 +1235,7 @@ async function buildJs(allFiles) {
     shouldBuildESM && !shouldSkipNative
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'native',
+          distBuild,
         })
       : null,
 
@@ -1160,6 +1257,7 @@ async function buildJs(allFiles) {
           {
             platform: 'web',
             preserveJsPaths: esmAliasPaths,
+            distBuild,
           }
         )
       : null,
@@ -1181,16 +1279,20 @@ async function buildJs(allFiles) {
           },
           {
             platform: 'native',
+            distBuild,
           }
         )
       : null,
-  ]).then(() => {
-    if (process.env.DEBUG) {
-      console.info(`built js in ${Date.now() - start}ms`)
-    }
+  ])
 
-    void esbuild.stop()
-  })
+  void esbuild.stop()
+  const failure = results.find((result) => result.status === 'rejected')
+  if (failure) {
+    throw failure.reason
+  }
+  if (process.env.DEBUG) {
+    console.info(`built js in ${Date.now() - start}ms`)
+  }
 }
 
 /**
@@ -1201,12 +1303,18 @@ async function buildJs(allFiles) {
 async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   opts,
-  { platform, env, specifyCJS, keepJsOutput, preserveJsPaths } = {
+  { platform, env, specifyCJS, keepJsOutput, preserveJsPaths, distBuild } = {
     platform: '',
     specifyCJS: false,
     keepJsOutput: false,
     preserveJsPaths: [],
     env: '',
+    distBuild: {
+      available: new Set(),
+      outputs: new Set(),
+      removals: new Set(),
+      writes: new Map(),
+    },
   }
 ) {
   if (!platform) {
@@ -1304,9 +1412,7 @@ async function esbuildWriteIfChanged(
     built = await esbuild.build(buildSettings)
   } catch (err) {
     printEsbuildError(err)
-    if (!shouldWatch) {
-      process.exit(1)
-    }
+    throw err
   }
 
   if (!built.outputFiles) {
@@ -1317,6 +1423,7 @@ async function esbuildWriteIfChanged(
   const webFilesMap = {}
 
   for (const p of built.outputFiles) {
+    distBuild.available.add(p.path)
     if (p.path.includes('.native.js')) {
       nativeFilesMap[p.path] = true
     } else if (p.path.includes('.web.js')) {
@@ -1327,7 +1434,15 @@ async function esbuildWriteIfChanged(
   const cleanupNonMjsFiles = []
   const cleanupNonCjsFiles = []
 
-  const flush = writeIfUnchanged
+  const flush = (filePath, contents) => {
+    distBuild.outputs.add(filePath)
+    distBuild.removals.delete(filePath)
+    distBuild.writes.set(filePath, contents)
+  }
+  const remove = (filePath) => {
+    distBuild.writes.delete(filePath)
+    distBuild.removals.add(filePath)
+  }
 
   const outputs = (
     await Promise.all(
@@ -1461,6 +1576,7 @@ async function esbuildWriteIfChanged(
       : await fullySpecifyOutputs(outputs, {
           format: 'cjs',
           outputExtension: platform === 'native' ? '.native.cjs' : '.cjs',
+          availableOutputPaths: distBuild.available,
         })
 
     await Promise.all(
@@ -1489,7 +1605,7 @@ async function esbuildWriteIfChanged(
       })
     )
     if (cleanupNonCjsFiles.length) {
-      await Promise.all(cleanupNonCjsFiles.map(async (file) => FSE.remove(file)))
+      for (const file of cleanupNonCjsFiles) remove(file)
     }
     return
   }
@@ -1508,6 +1624,7 @@ async function esbuildWriteIfChanged(
     : await fullySpecifyOutputs(outputs, {
         format: isESM ? 'esm' : 'cjs',
         outputExtension: platform === 'native' ? '.native.js' : '.mjs',
+        availableOutputPaths: distBuild.available,
       })
 
   await Promise.all(
@@ -1554,7 +1671,7 @@ async function esbuildWriteIfChanged(
       if (result.map && !shouldSkipSourceMaps) {
         await flush(newOutPath + '.map', JSON.stringify(result.map))
       } else {
-        await FSE.remove(newOutPath + '.map')
+        remove(newOutPath + '.map')
       }
 
       if (shouldPreserveJsAlias) {
@@ -1568,7 +1685,7 @@ async function esbuildWriteIfChanged(
         if (result.map && !shouldSkipSourceMaps) {
           await flush(path + '.map', JSON.stringify(result.map))
         } else {
-          await FSE.remove(path + '.map')
+          remove(path + '.map')
         }
       }
     })
@@ -1576,10 +1693,6 @@ async function esbuildWriteIfChanged(
 
   // remove intermediary .js files once the final .mjs/.cjs outputs exist
   if (cleanupNonMjsFiles.length || cleanupNonCjsFiles.length) {
-    await Promise.all(
-      [...cleanupNonMjsFiles, ...cleanupNonCjsFiles].map(async (file) => {
-        await FSE.remove(file)
-      })
-    )
+    for (const file of [...cleanupNonMjsFiles, ...cleanupNonCjsFiles]) remove(file)
   }
 }

@@ -1,12 +1,15 @@
 import { execSync, spawn } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { createRequire } from 'node:module'
 import {
   existsSync,
+  mkdirSync,
   readFileSync,
   writeFileSync,
   statSync,
   readdirSync,
   rmSync,
+  symlinkSync,
 } from 'node:fs'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { join } from 'node:path'
@@ -18,12 +21,15 @@ const watchDistPath = join(watchPackagePath, 'dist')
 const watchSrcFilePath = join(watchPackagePath, 'src', 'watch.ts')
 
 const simplePackagePath = join(__dirname, 'fixtures', 'simple-package')
+const simplePackageJsonPath = join(simplePackagePath, 'package.json')
 const distPath = join(simplePackagePath, 'dist')
 const srcFilePath = join(simplePackagePath, 'src', 'index.ts')
 const distCjsFilePath = join(distPath, 'cjs', 'index.cjs')
 const watchDistCjsFilePath = join(watchDistPath, 'cjs', 'watch.cjs')
 const distEsmFilePath = join(distPath, 'esm', 'index.mjs')
 const distTypesFilePath = join(simplePackagePath, 'types', 'index.d.ts')
+const temporaryFailureSourcePath = join(simplePackagePath, 'src', 'build-failure.ts')
+const temporaryStaleSourcePath = join(simplePackagePath, 'src', 'stale-output.ts')
 const jsMainPackagePath = join(__dirname, 'fixtures', 'js-main-package')
 const jsMainDistPath = join(jsMainPackagePath, 'dist')
 const repositoryRoot = join(__dirname, '../../../..')
@@ -35,6 +41,23 @@ const repositoryRoot = join(__dirname, '../../../..')
 //   simplePackagePath,
 //   distPath,
 // })
+
+function outputManifest(root: string, prefix = ''): Record<string, string> {
+  const manifest: Record<string, string> = {}
+  for (const entry of readdirSync(join(root, prefix), { withFileTypes: true }).sort(
+    (left, right) => left.name.localeCompare(right.name)
+  )) {
+    const relativePath = join(prefix, entry.name)
+    if (entry.isDirectory()) {
+      Object.assign(manifest, outputManifest(root, relativePath))
+    } else if (entry.isFile()) {
+      manifest[relativePath] = createHash('sha256')
+        .update(readFileSync(join(root, relativePath)))
+        .digest('hex')
+    }
+  }
+  return manifest
+}
 
 describe('tamagui-build integration test', () => {
   beforeAll(() => {
@@ -355,22 +378,141 @@ describe('tamagui-build integration test', () => {
     )
   })
 
-  it('should clean stale outputs before building', () => {
-    execSync('bun run build', { cwd: simplePackagePath })
-
-    const staleFilePath = join(distPath, 'esm', 'stale.mjs')
+  it('prunes stale outputs only after a successful build', () => {
     const staleTypesPath = join(simplePackagePath, 'types', 'stale.d.ts')
-    writeFileSync(staleFilePath, 'stale')
-    writeFileSync(staleTypesPath, 'stale')
+    const staleCjsPath = join(distPath, 'cjs', 'stale-output.cjs')
+    const staleEsmPath = join(distPath, 'esm', 'stale-output.mjs')
 
-    expect(existsSync(staleFilePath)).toBe(true)
-    expect(existsSync(staleTypesPath)).toBe(true)
+    try {
+      writeFileSync(temporaryStaleSourcePath, 'export const staleOutput = true\n')
+      execSync('bun run build', { cwd: simplePackagePath })
 
+      expect(existsSync(staleCjsPath)).toBe(true)
+      expect(existsSync(staleEsmPath)).toBe(true)
+
+      writeFileSync(staleTypesPath, 'stale')
+      rmSync(temporaryStaleSourcePath)
+      execSync('bun run build', { cwd: simplePackagePath })
+
+      expect(existsSync(staleCjsPath)).toBe(false)
+      expect(existsSync(staleEsmPath)).toBe(false)
+      expect(existsSync(staleTypesPath)).toBe(false)
+      expect(readdirSync(join(distPath, 'esm'))).not.toContain('stale-output.mjs')
+    } finally {
+      rmSync(temporaryStaleSourcePath, { force: true })
+    }
+  })
+
+  it('keeps the previous dist loadable when a build fails', async () => {
     execSync('bun run build', { cwd: simplePackagePath })
+    const distBefore = outputManifest(distPath)
+    const cjsBefore = readFileSync(distCjsFilePath, 'utf-8')
+    const esmBefore = readFileSync(distEsmFilePath, 'utf-8')
+    let failed = false
 
-    expect(existsSync(staleFilePath)).toBe(false)
-    expect(existsSync(staleTypesPath)).toBe(false)
-    expect(readdirSync(join(distPath, 'esm'))).not.toContain('stale.mjs')
+    try {
+      writeFileSync(temporaryFailureSourcePath, 'export const buildFailure: string = 1\n')
+      try {
+        execSync('bun run build', {
+          cwd: simplePackagePath,
+          stdio: 'pipe',
+        })
+      } catch {
+        failed = true
+      }
+    } finally {
+      rmSync(temporaryFailureSourcePath, { force: true })
+    }
+
+    expect(failed).toBe(true)
+    expect(outputManifest(distPath)).toEqual(distBefore)
+    expect(
+      readdirSync(simplePackagePath).filter((file) =>
+        file.startsWith('.tamagui-build-tsconfig-')
+      )
+    ).toEqual([])
+    expect(existsSync(join(simplePackagePath, '.tamagui-build-lock'))).toBe(false)
+    expect(readFileSync(distCjsFilePath, 'utf-8')).toBe(cjsBefore)
+    expect(readFileSync(distEsmFilePath, 'utf-8')).toBe(esmBefore)
+
+    const require = createRequire(import.meta.url)
+    const resolvedCjs = require.resolve(distCjsFilePath)
+    delete require.cache[resolvedCjs]
+    expect(require(resolvedCjs).greet('failure')).toBe('Hello, failure!')
+
+    const cacheKey = `failed-build-${Date.now()}`
+    const esmModule = await import(`${pathToFileURL(distEsmFilePath).href}?${cacheKey}`)
+    expect(esmModule.greet('failure')).toBe('Hello, failure!')
+  })
+
+  it('keeps dist unchanged during a types-only build', () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+    const cjsBefore = readFileSync(distCjsFilePath, 'utf-8')
+    const esmBefore = readFileSync(distEsmFilePath, 'utf-8')
+
+    execSync('bun run build', {
+      cwd: simplePackagePath,
+      env: { ...process.env, SKIP_JS: '1' },
+    })
+
+    expect(readFileSync(distCjsFilePath, 'utf-8')).toBe(cjsBefore)
+    expect(readFileSync(distEsmFilePath, 'utf-8')).toBe(esmBefore)
+  })
+
+  it('does not prune prior afterBuild artifacts when afterBuild fails', () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+    const originalPackageJson = readFileSync(simplePackageJsonPath, 'utf-8')
+    const originalSource = readFileSync(srcFilePath, 'utf-8')
+    const afterBuildArtifact = join(distPath, 'after-build-marker.cjs')
+    writeFileSync(afterBuildArtifact, 'previous afterBuild output\n')
+    const distBefore = outputManifest(distPath)
+
+    try {
+      const packageJson = JSON.parse(originalPackageJson)
+      packageJson.scripts.afterBuild = 'node -e "process.exit(1)"'
+      writeFileSync(simplePackageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`)
+      writeFileSync(
+        srcFilePath,
+        originalSource.replace('Hello, ${name}!', 'Changed, ${name}!')
+      )
+
+      let failed = false
+      try {
+        execSync('bun run build', { cwd: simplePackagePath, stdio: 'pipe' })
+      } catch {
+        failed = true
+      }
+
+      expect(failed).toBe(true)
+      expect(outputManifest(distPath)).toEqual(distBefore)
+      expect(readFileSync(afterBuildArtifact, 'utf-8')).toBe(
+        'previous afterBuild output\n'
+      )
+    } finally {
+      writeFileSync(simplePackageJsonPath, originalPackageJson)
+      writeFileSync(srcFilePath, originalSource)
+      rmSync(afterBuildArtifact, { force: true })
+    }
+  })
+
+  it('does not follow symlinked directories while pruning dist', () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+    const outsideDir = join(simplePackagePath, 'outside-dist-marker')
+    const outsideFile = join(outsideDir, 'keep.js')
+    const linkedDir = join(distPath, 'esm', 'linked-outside')
+
+    try {
+      mkdirSync(outsideDir)
+      writeFileSync(outsideFile, 'keep\n')
+      symlinkSync('../../outside-dist-marker', linkedDir, 'dir')
+
+      execSync('bun run build', { cwd: simplePackagePath })
+
+      expect(readFileSync(outsideFile, 'utf-8')).toBe('keep\n')
+    } finally {
+      rmSync(linkedDir, { force: true })
+      rmSync(outsideDir, { force: true, recursive: true })
+    }
   })
 
   it('should keep only the required js aliases after postprocessing', () => {
