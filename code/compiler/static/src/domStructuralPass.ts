@@ -68,7 +68,7 @@ const versionHash = createHash('sha256')
   .digest('hex')
 
 export const domStructuralPass: StructuralModulePass = {
-  versionHash: `dom-structural-v1-${versionHash}`,
+  versionHash: `dom-structural-v2-${versionHash}`,
   transform({ module, source, target }) {
     const edits: SourceEdit[] = []
     const imports: CandidateImport[] = []
@@ -90,6 +90,8 @@ export const domStructuralPass: StructuralModulePass = {
 
     const usedPrimitives = new Set<string>()
     const primitiveLocals = new Map<string, string>()
+    // web elements left on the runtime component path stay in module.elements
+    const keptForRuntime = new Set<number>()
     let reactCreateElement = ''
     if (target === 'native') {
       const primitives = new Set(
@@ -201,6 +203,27 @@ export const domStructuralPass: StructuralModulePass = {
       }
 
       if (target === 'web') {
+        // generated html.* on web are full Tamagui components that also accept
+        // regular style props. an element carrying anything outside the strict
+        // DOM prop tables — a style prop, or a spread this pass cannot see
+        // through — must keep the runtime component path: a literal-tag
+        // rewrite would strip the element resets and leak style props onto
+        // the DOM as junk attributes
+        const keepsRuntimePath = element.entries.some((entry) => {
+          if (entry.kind === 'spread') return true
+          if (entry.kind !== 'prop') return false
+          // className is valid on a literal tag and carries no runtime work
+          if (entry.name === 'className') return false
+          return (
+            !Object.hasOwn(ATTRIBUTES, entry.name) &&
+            !entry.name.startsWith('data-') &&
+            !Object.hasOwn(EVENTS, entry.name)
+          )
+        })
+        if (keepsRuntimePath) {
+          keptForRuntime.add(element.span.start)
+          continue
+        }
         const targetName = element.form === 'jsx' ? tagName : JSON.stringify(tagName)
         replaceTarget(edits, element, targetName)
         continue
@@ -280,7 +303,10 @@ export const domStructuralPass: StructuralModulePass = {
     const domSpans = new Set(domElements.map((element) => element.span.start))
     const nextModule: MaterializedModule = {
       ...module,
-      elements: module.elements.filter((element) => !domSpans.has(element.span.start)),
+      elements: module.elements.filter(
+        (element) =>
+          !domSpans.has(element.span.start) || keptForRuntime.has(element.span.start)
+      ),
     }
     return {
       module: nextModule,
