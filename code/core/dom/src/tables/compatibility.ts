@@ -352,8 +352,8 @@ export const COMPATIBILITY: readonly CompatibilityRow[] = [
     keys: [],
     rsd: 'wraps every ref-ed host node in an Object.create view adding nodeName, viewport-scaled metrics and the tag polyfills',
     tamagui:
-      'exposes the react native public instance, augmented lazily with nodeName plus the img and text-entry polyfills, and only when a ref was passed',
+      'exposes the react native public instance untouched, so tagName reports the native view name rather than the html tag, and neither the image nor the text-entry polyfill exists',
     reason:
-      'the react native host instance already implements the documented Node and Element subset; viewport scaling belongs to the app, not the element',
+      'react native already implements the whole documented Node and Element subset on its own instance, so the wrapper only buys the tag name and two polyfills. Whether to add those back is design item 8, a user decision; the proposal is in `plans/v3-handoff-log.md` item 9 and this row describes what ships until it is picked',
   },
 ]

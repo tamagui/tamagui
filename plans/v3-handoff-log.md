@@ -458,6 +458,104 @@ Status: pending.
 Status: pending. These remain proposals until the user approves decisions that
 the design record marks open.
 
+### Design item 8 — the minimum native DOM ref API (Lane D proposal)
+
+**Recommendation: expose the React Native public instance, add the HTML tag
+name and two per-tag polyfills, and only when a ref was passed. Do not scale
+metrics.**
+
+The facts first, because they narrow the decision a lot. React Native 0.83.2
+ships `ReactNativeElement extends ReadOnlyElement extends ReadOnlyNode`, and
+between them they already implement every member React Strict DOM's own
+compatibility table marks as natively supported: `childNodes`, `firstChild`,
+`lastChild`, `nextSibling`, `previousSibling`, `parentNode`, `parentElement`,
+`ownerDocument`, `nodeType`, `nodeValue`, `textContent`, `isConnected`,
+`contains()`, `compareDocumentPosition()`, `getRootNode()`, `hasChildNodes()`,
+`children`, `childElementCount`, `firstElementChild`, `lastElementChild`,
+`nextElementSibling`, `previousElementSibling`, `id`, `clientWidth/Height/
+Left/Top`, `scrollWidth/Height/Left/Top`, `getBoundingClientRect()`,
+`setPointerCapture()`, `hasPointerCapture()`, `releasePointerCapture()`,
+`focus()`, `blur()`, and `offsetWidth/Height/Left/Top/Parent`. Read from the
+installed source, not from the table.
+
+So the documented subset is nearly free. What RSD's per-element wrapper adds on
+top is only three things, and they should be judged separately:
+
+1. **The HTML tag name.** `ReadOnlyElement.tagName` returns
+   `NativeDOM.getTagName(node)`, which is the native view name — `RCTView`, not
+   `DIV`. This is the one thing the instance genuinely cannot know, because the
+   tag is compile-time information. It is also the cheapest and most common way
+   to assert what you got hold of. **Take it.**
+2. **Two per-tag polyfills.** `HTMLImageElement.complete`, and
+   `selectionStart` / `selectionEnd` / `setSelectionRange()` on an input or
+   textarea. Both are cases where a documented DOM property has a real React
+   Native equivalent under a different name. **Take them**, on those tags only.
+3. **Viewport-scaled metrics.** RSD multiplies its measurements by a viewport
+   scale factor. **Reject.** It bakes an app-level concern into every element,
+   and a rect in React Native units is honest — converting is the app's job,
+   and an app that wants RSD's behaviour can do it at the call site.
+
+Shape and cost: one `Object.create(instance)` carrying the tag name and, for
+`img`/`input`/`textarea`, the polyfill accessors. It is built in the ref
+callback, so an element with no ref allocates nothing — the same rule the
+primitives already follow, and the reason `DOMView` with no handlers measures
+identical to a bare React element. Before this lands it needs the same
+objects-per-element measurement the primitives got; the claim above is a design
+argument, not a number.
+
+What ships today is the pass-through: the ref reaches the host untouched, so
+`tagName` reports the native view name and neither polyfill exists.
+`compatibility.ts` describes that, not this proposal.
+
+### Design item 6 — conditional composition of `style()` handles (Lane D proposal)
+
+**Recommendation: resolve composition at compile time, per contested property,
+and make a handle list the compiler cannot see a build error.**
+
+The problem is narrow but real. A handle holds one compiled program per
+property, and the design record excludes clause-level deep merging: a later
+program replaces an earlier one whole. On web a handle is class names, and two
+handles that both set `color` produce two classes whose winner is decided by
+stylesheet source order, not by the order they appear in `style={[a, b]}`. So
+array order and cascade order disagree, and the guarantee breaks exactly where
+authors expect it to hold — a conditional override.
+
+Three approaches were considered and rejected:
+
+- **Runtime property-keyed replacement.** Walk the handles per render, last
+  write wins per property, emit the surviving classes. This is what
+  `tailwind-merge` does, which the design record already refuses as a
+  dependency, and it puts a per-element object walk on the render path for a
+  question that is fully answerable at build time.
+- **Forbid overlap.** Reject any array where two handles set the same property.
+  Zero runtime cost and trivially correct, but conditional override is the
+  entire point of composing handles, so it removes the feature rather than
+  designing it.
+- **Precompute every combination.** Emit one merged handle per subset of the
+  conditional handles. Correct, and fine at two handles, but it is `2^N` whole
+  handles for a feature whose whole appeal is stacking a few more.
+
+The proposal is the third one restricted to where it is actually needed. The
+compiler sees the array literal and knows which properties each handle sets:
+
+- a property only one handle sets is emitted as an unconditional class, with no
+  lookup at all — the common case, and free;
+- a property more than one handle sets is **contested**, and gets a small table
+  indexed by which conditional handles are enabled, holding the whole winning
+  program class for each combination.
+
+So the runtime cost is proportional to the number of contested properties
+rather than to the number of properties, it is zero when handles do not
+overlap, and whole-program replacement is preserved exactly because the table
+stores whole program classes and never merges clauses. The combinatorics stay
+small because they only cover contested properties.
+
+The degenerate case has a clean answer: if the handle list is not a literal the
+compiler can read, that is a build error on both platforms. Standalone
+`tamagui/dom` is already specified as compile-only on web and native, so this
+adds no new constraint — and the alternative is exactly the runtime walk the
+first rejected option describes.
+
 ## 10. Decision-24 static fast path
 
 Status: complete for the current corpus. The component-lowering designs remain
