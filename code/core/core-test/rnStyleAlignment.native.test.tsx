@@ -1,4 +1,4 @@
-import { View, createTamagui, getSplitStyles } from '@tamagui/core'
+import { Text, View, createTamagui, getSplitStyles } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -181,5 +181,33 @@ describe('RN 0.76+ Style Alignment - Native', () => {
       })
       expect(style?.display).toBe('contents')
     })
+  })
+})
+
+describe('conditional (program) values reach the same RN formats', () => {
+  // review Phase-6-item-2 gaps: the program evaluator's generic fallback
+  // bypassed the renames/parses the unconditional path performs
+  test('a backgroundImage program parses and renames like the unconditional path', () => {
+    const value = 'linear-gradient(to right, red, blue)'
+    const unconditional = getSplitStylesFor({ backgroundImage: value })
+    const conditional = getSplitStylesFor({
+      backgroundImage: `${value} hover:linear-gradient(to left, red, blue)`,
+    })
+    expect((unconditional.style as any)?.experimental_backgroundImage).toBeDefined()
+    expect((conditional.style as any)?.experimental_backgroundImage).toEqual(
+      (unconditional.style as any)?.experimental_backgroundImage
+    )
+    expect((conditional.style as any)?.backgroundImage).toBeUndefined()
+  })
+
+  test('a fontVariant program produces the RN array, not a CSS list string', () => {
+    const conditional = getSplitStylesFor(
+      { fontVariant: 'small-caps tabular-nums hover:oldstyle-nums' },
+      Text
+    )
+    expect((conditional.style as any)?.fontVariant).toEqual([
+      'small-caps',
+      'tabular-nums',
+    ])
   })
 })

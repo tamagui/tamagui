@@ -126,8 +126,11 @@ export function expandStyle(
         return []
       }
       case 'backgroundImage': {
-        // RN 0.76+ uses experimental_backgroundImage
-        // value may be a parsed array (from parseNativeStyle) or a plain string
+        // RN 0.76+ uses experimental_backgroundImage. a STRING stays on the
+        // `backgroundImage` key so it flows whole into the program engine —
+        // the evaluator parses the winning payload and writes the renamed key
+        // itself. only already-parsed arrays rename here
+        if (typeof value === 'string') return
         return [['experimental_backgroundImage', value]]
       }
       case 'border': {

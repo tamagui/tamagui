@@ -25,7 +25,6 @@ import {
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { normalizeStyle } from './normalizeStyle'
-import { parseNativeStyle } from './parseNativeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { resolveCompoundTokens } from './resolveCompoundTokens'
 import { isRemValue, resolveRem } from './resolveRem'
@@ -133,22 +132,11 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     }
   }
 
-  // on native, parse string backgroundImage to RN object format. boxShadow
-  // and textShadow strings flow WHOLE into the program engine (clause-free
-  // strings are base-only programs), and native evaluation parses the
-  // resolved payload to RN format — parsing here would mangle clause text
-  // into the color component (review P0-2)
-  if (
-    process.env.TAMAGUI_TARGET === 'native' &&
-    value != null &&
-    typeof value === 'string' &&
-    key === 'backgroundImage'
-  ) {
-    const parsed = parseNativeStyle(key, value)
-    if (parsed) {
-      value = parsed
-    }
-  }
+  // on native, backgroundImage/boxShadow/textShadow strings flow WHOLE into
+  // the program engine (clause-free strings are base-only programs), and
+  // native evaluation parses the resolved payload to RN format — parsing here
+  // would mangle clause text into the last component (review P0-2 and the
+  // Phase-6-item-2 backgroundImage gap)
 
   if (value != null) {
     const fontToken = getLastFontFamilyToken()

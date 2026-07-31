@@ -372,10 +372,15 @@ export function evaluateAccumulatedPrograms(
       continue
     }
 
-    // shadow programs resolve to CSS strings; RN wants its object format.
-    // parsing happens here, after clause evaluation, so conditional payloads
-    // can never leak into the color component
-    if (longhand === 'boxShadow' || longhand === 'textShadow') {
+    // shadow and gradient programs resolve to CSS strings; RN wants its
+    // object formats and its renamed keys. parsing happens here, after clause
+    // evaluation, so conditional payloads reach the exact same RN shape the
+    // unconditional path produces
+    if (
+      longhand === 'boxShadow' ||
+      longhand === 'textShadow' ||
+      longhand === 'backgroundImage'
+    ) {
       const parsed = parseNativeStyle(longhand, String(value))
       if (parsed) {
         styleState.style ||= {}
@@ -388,11 +393,23 @@ export function evaluateAccumulatedPrograms(
           for (const [nkey, nvalue] of parsed as [string, unknown][]) {
             styleState.style[nkey] = nvalue
           }
+        } else if (longhand === 'backgroundImage') {
+          // RN 0.76+ spells it experimental_backgroundImage
+          styleState.style.experimental_backgroundImage = parsed
         } else {
           styleState.style[longhand] = parsed
         }
         continue
       }
+    }
+
+    // RN reads fontVariant as an array; the CSS spelling is a token list
+    if (longhand === 'fontVariant') {
+      styleState.style ||= {}
+      styleState.style.fontVariant = String(value)
+        .split(/[,\s]+/)
+        .filter(Boolean) as any
+      continue
     }
 
     styleState.style ||= {}
