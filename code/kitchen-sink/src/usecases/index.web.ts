@@ -113,6 +113,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./FieldValidatedSignupCase').FieldValidatedSignupCase,
   FlatValueProgramsCase: () => require('./FlatValueProgramsCase').FlatValueProgramsCase,
   FormButtonTypeCase: () => require('./FormButtonTypeCase').FormButtonTypeCase,
+  MixedCascadeCase: () => require('./MixedCascadeCase').MixedCascadeCase,
   GroupHoverMobile: () => require('./GroupHoverMobile').GroupHoverMobile,
   GroupPressInVariant: () => require('./GroupPressInVariant').GroupPressInVariant,
   GroupPseudoVariantOverride: () =>
