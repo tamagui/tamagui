@@ -166,9 +166,7 @@ test('the setting defaults ON in v3; explicit false preserves legacy handling', 
     // program class, but its program block must not contain the hover clause —
     // that has to come from the legacy pseudo machinery
     const baseClass = result.classNames.backgroundColor
-    expect((result.rulesToInsert[baseClass]?.[4] ?? []).join('')).not.toContain(
-      ':hover'
-    )
+    expect((result.rulesToInsert[baseClass]?.[4] ?? []).join('')).not.toContain(':hover')
     expect(
       Object.values(result.rulesToInsert)
         .flatMap((rule: any) => rule[4])

@@ -83,8 +83,12 @@ test('scale then scaleX replaces only its axis through the forward merge', () =>
   const x = result.classNames['--t-scale-x']
   const y = result.classNames['--t-scale-y']
   // the later scaleX owns X; the uniform scale still owns Y
-  expect(rulesFor(result, x)[1]).toBe(`@media (hover: hover) {.${x}:where(:hover){--t-scale-x:3}}`)
-  expect(rulesFor(result, y)[1]).toBe(`@media (hover: hover) {.${y}:where(:hover){--t-scale-y:2}}`)
+  expect(rulesFor(result, x)[1]).toBe(
+    `@media (hover: hover) {.${x}:where(:hover){--t-scale-x:3}}`
+  )
+  expect(rulesFor(result, y)[1]).toBe(
+    `@media (hover: hover) {.${y}:where(:hover){--t-scale-y:2}}`
+  )
 })
 
 test('rotate lowers to the individual property with no composition', () => {
@@ -101,9 +105,7 @@ test('x resolves space tokens like padding does', () => {
   const result = split({ x: '4 hover:8' })
   const axisClass = result.classNames['--t-x']
   const rules = rulesFor(result, axisClass)
-  expect(rules[0]).toBe(
-    `.${axisClass}{--t-x:${conf.tokensParsed.space['$4'].variable}}`
-  )
+  expect(rules[0]).toBe(`.${axisClass}{--t-x:${conf.tokensParsed.space['$4'].variable}}`)
   expect(rules[1]).toContain(conf.tokensParsed.space['$8'].variable)
 })
 
@@ -125,7 +127,9 @@ test('a scaleX program merges over an earlier plain uniform scale', () => {
   const x = result.classNames['--t-scale-x']
   expect(x).toBeTruthy()
   expect(rulesFor(result, x)[0]).toBe(`.${x}{--t-scale-x:1}`)
-  expect(rulesFor(result, x)[1]).toBe(`@media (hover: hover) {.${x}:where(:hover){--t-scale-x:3}}`)
+  expect(rulesFor(result, x)[1]).toBe(
+    `@media (hover: hover) {.${x}:where(:hover){--t-scale-x:3}}`
+  )
   const y = result.classNames['--t-scale-y']
   expect(rulesFor(result, y)[0]).toBe(`.${y}{--t-scale-y:2}`)
 })

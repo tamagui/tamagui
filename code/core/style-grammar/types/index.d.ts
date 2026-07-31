@@ -14,6 +14,7 @@ export * from "./resolvePayload";
 export * from "./serializePayload";
 export * from "./states";
 export * from "./table";
+export * from "./textDecorationFamily";
 export * from "./transformFamily";
 export * from "./transition";
 export * from "./transitionLegacy";

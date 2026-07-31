@@ -257,12 +257,10 @@ function isConditionObject(value: unknown): value is Record<string, unknown> {
 // cross-program encoding, so these stay on the legacy path. border, the four
 // sides, and outline split through the border family; background through the
 // background family
-const unsplitCompositeShorthands: ReadonlySet<string> = new Set([
-  'borderBlock',
-  'borderInline',
-  'textDecoration',
-  'font',
-])
+// `font` is the one resetting composite left without a family split: its
+// micro-syntax (optional style/variant/weight, size/line-height, ordered
+// family tail) has no unambiguous component classification yet
+const unsplitCompositeShorthands: ReadonlySet<string> = new Set(['font'])
 
 function convertStyleValue(
   prop: string,
@@ -292,7 +290,11 @@ function convertStyleValue(
 
   // the transform family carries units the generic number path does not: x and y
   // are lengths, scale is unitless, rotate is an angle
-  if (typeof value === 'number' && Number.isFinite(value) && transformFamilyProps.has(prop)) {
+  if (
+    typeof value === 'number' &&
+    Number.isFinite(value) &&
+    transformFamilyProps.has(prop)
+  ) {
     if (prop === 'rotate') return value === 0 ? '0deg' : `${value}deg`
     if (prop === 'x' || prop === 'y') return value === 0 ? '0' : `${value}px`
     return String(value)

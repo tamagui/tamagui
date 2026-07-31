@@ -388,6 +388,8 @@ export declare const stylePropsView: {
     elevationAndroid?: boolean | undefined;
     boxShadow: boolean;
     border: boolean;
+    borderBlock: boolean;
+    borderInline: boolean;
     filter: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
@@ -421,6 +423,7 @@ export declare const stylePropsTextOnly: {
     textShadow: boolean;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+    textDecoration: boolean;
     verticalAlign: boolean;
 };
 export declare const stylePropsText: {
@@ -673,6 +676,8 @@ export declare const stylePropsText: {
     elevationAndroid?: boolean | undefined;
     boxShadow: boolean;
     border: boolean;
+    borderBlock: boolean;
+    borderInline: boolean;
     filter: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
@@ -687,6 +692,7 @@ export declare const stylePropsText: {
     textShadow: boolean;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+    textDecoration: boolean;
     verticalAlign: boolean;
 };
 export declare const stylePropsAll: {
@@ -939,6 +945,8 @@ export declare const stylePropsAll: {
     elevationAndroid?: boolean | undefined;
     boxShadow: boolean;
     border: boolean;
+    borderBlock: boolean;
+    borderInline: boolean;
     filter: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
@@ -953,6 +961,7 @@ export declare const stylePropsAll: {
     textShadow: boolean;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+    textDecoration: boolean;
     verticalAlign: boolean;
 };
 export declare const validPseudoKeys: {
@@ -1204,6 +1213,8 @@ export declare const validStyles: {
     elevationAndroid?: boolean | undefined;
     boxShadow: boolean;
     border: boolean;
+    borderBlock: boolean;
+    borderInline: boolean;
     filter: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;

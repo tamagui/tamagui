@@ -72,6 +72,17 @@ const nativeKeyAliases: Readonly<Record<string, string>> = {
   borderLeftStyle: 'borderStyle',
 }
 
+// RN has no CSS logical properties, and the physical mapping depends on
+// writing mode, so these longhands are a development diagnostic on native
+// rather than a silent approximation (plans/react-native-style-capabilities.md)
+const nativeUnsupportedLogicalLonghands: ReadonlySet<string> = new Set(
+  ['Block', 'Inline'].flatMap((axis) =>
+    ['Start', 'End'].flatMap((edge) =>
+      ['Width', 'Style', 'Color'].map((kind) => `border${axis}${edge}${kind}`)
+    )
+  )
+)
+
 // react-native-web's unitless list is CSS-truth; on native the gap family is
 // a real length wanting numbers
 const nativeLengthOverrides: ReadonlySet<string> = new Set([
@@ -327,6 +338,14 @@ export function evaluateAccumulatedPrograms(
     if (transformProp) {
       transformResults ||= {}
       transformResults[transformProp] = value
+      continue
+    }
+
+    if (nativeUnsupportedLogicalLonghands.has(longhand)) {
+      noteOnce(
+        `${longhand}\0logical`,
+        `[tamagui] ${program.sourceProp}: RN has no logical border properties; "${longhand}" is dropped on native`
+      )
       continue
     }
 

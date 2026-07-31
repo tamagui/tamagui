@@ -3,7 +3,7 @@
 
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
-import { View, createTamagui, getSplitStyles, styled } from '../web/src'
+import { Text, View, createTamagui, getSplitStyles, styled } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -153,10 +153,22 @@ test('container clauses measure the nearest container layout', () => {
   const value = { backgroundColor: 'red @sm:blue' }
 
   // sm is maxWidth 800 in the default config; the container, not the viewport
-  const narrow = split(value, {}, 'light', {}, { '@': groupEntry({}, { width: 400, height: 100 }) })
+  const narrow = split(
+    value,
+    {},
+    'light',
+    {},
+    { '@': groupEntry({}, { width: 400, height: 100 }) }
+  )
   expect(narrow.style?.backgroundColor).toBe('blue')
 
-  const wide = split(value, {}, 'light', {}, { '@': groupEntry({}, { width: 1000, height: 100 }) })
+  const wide = split(
+    value,
+    {},
+    'light',
+    {},
+    { '@': groupEntry({}, { width: 1000, height: 100 }) }
+  )
   expect(wide.style?.backgroundColor).toBe('red')
 
   // registration: the context key subscribes, the size feeds the layout math
@@ -167,9 +179,15 @@ test('container clauses measure the nearest container layout', () => {
 test('named container clauses target the named entry and prefer subscribed state', () => {
   const value = { backgroundColor: 'red @sm/card:blue' }
 
-  const byLayout = split(value, {}, 'light', {}, {
-    '@card': groupEntry({}, { width: 500, height: 100 }),
-  })
+  const byLayout = split(
+    value,
+    {},
+    'light',
+    {},
+    {
+      '@card': groupEntry({}, { width: 500, height: 100 }),
+    }
+  )
   expect(byLayout.style?.backgroundColor).toBe('blue')
   expect(byLayout.pseudoGroups?.has('@card')).toBe(true)
 
@@ -188,14 +206,26 @@ test('converted legacy group media measures the group as a container', () => {
   // $group-frame-sm converts to @sm/frame; the v2 group IS the container, so
   // its entry answers the @frame key while the compat setting is on
   const value = { '$group-frame-sm': { opacity: 0.5 }, opacity: 1 }
-  const narrow = split(value, {}, 'light', {}, {
-    '@frame': groupEntry({}, { width: 400, height: 100 }),
-  })
+  const narrow = split(
+    value,
+    {},
+    'light',
+    {},
+    {
+      '@frame': groupEntry({}, { width: 400, height: 100 }),
+    }
+  )
   expect(narrow.style?.opacity).toBe(0.5)
 
-  const wide = split(value, {}, 'light', {}, {
-    '@frame': groupEntry({}, { width: 1000, height: 100 }),
-  })
+  const wide = split(
+    value,
+    {},
+    'light',
+    {},
+    {
+      '@frame': groupEntry({}, { width: 1000, height: 100 }),
+    }
+  )
   expect(wide.style?.opacity).toBe(1)
 })
 
@@ -203,7 +233,10 @@ test('a later plain value restates the base on native; the hover survives', () =
   const idle = split({ backgroundColor: 'red hover:blue', bg: 'green' })
   expect(idle.style?.backgroundColor).toBe('green')
 
-  const hovered = split({ backgroundColor: 'red hover:blue', bg: 'green' }, { hover: true })
+  const hovered = split(
+    { backgroundColor: 'red hover:blue', bg: 'green' },
+    { hover: true }
+  )
   expect(hovered.style?.backgroundColor).toBe('blue')
 })
 
@@ -257,4 +290,26 @@ test('styled same-key programs survive call-site props and retain authored order
     mergeDefaultProps: true,
   })
   expect(variantHovered.style?.backgroundColor).toBe('blue')
+})
+
+test('textDecoration splits into the three RN longhand props on native', () => {
+  const result = getSplitStyles(
+    { textDecoration: 'underline dotted red' },
+    Text.staticConfig,
+    undefined as any,
+    'light',
+    { unmounted: false } as any,
+    { isAnimated: false, noClass: true, resolveValues: 'auto' } as any
+  )
+  expect(result?.style?.textDecorationLine).toBe('underline')
+  expect(result?.style?.textDecorationStyle).toBe('dotted')
+  expect(result?.style?.textDecorationColor).toBe('red')
+})
+
+test('logical border shorthands are diagnosed and dropped on native', () => {
+  // RN has no logical border properties; the physical mapping depends on
+  // writing mode, so nothing is silently approximated
+  const result = split({ borderBlock: '1px solid green' })
+  expect(result?.style?.borderBlockStartWidth).toBeUndefined()
+  expect(result?.style?.borderTopWidth).toBeUndefined()
 })

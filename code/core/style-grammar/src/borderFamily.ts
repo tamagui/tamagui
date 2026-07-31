@@ -39,6 +39,20 @@ export const borderFamilyTargets: Readonly<Record<string, BorderFamilyTargets>> 
     style: ['outlineStyle'],
     color: ['outlineColor'],
   },
+  // logical shorthands split into CSS logical longhands. web lowers them
+  // verbatim; RN has no logical block/inline border properties, so native
+  // evaluation diagnoses and drops these longhands (no silent physical
+  // approximation — the mapping depends on writing mode)
+  borderBlock: {
+    width: ['borderBlockStartWidth', 'borderBlockEndWidth'],
+    style: ['borderBlockStartStyle', 'borderBlockEndStyle'],
+    color: ['borderBlockStartColor', 'borderBlockEndColor'],
+  },
+  borderInline: {
+    width: ['borderInlineStartWidth', 'borderInlineEndWidth'],
+    style: ['borderInlineStartStyle', 'borderInlineEndStyle'],
+    color: ['borderInlineStartColor', 'borderInlineEndColor'],
+  },
 }
 
 const lineStyles = new Set([

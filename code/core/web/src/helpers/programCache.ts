@@ -24,9 +24,12 @@ import {
   parseValue,
   splitBackgroundValue,
   splitBorderValue,
+  splitTextDecorationValue,
+  textDecorationFamilyTargets,
   type BorderFamilyError,
   type ModifierRegistryView,
   type ParsedValue,
+  type TextDecorationFamilyError,
   type ValueParseError,
 } from '@tamagui/style-grammar'
 
@@ -43,7 +46,11 @@ export interface BackgroundFamilyError {
   where: 'base' | number
 }
 
-export type ProgramError = ValueParseError | BackgroundFamilyError | BorderFamilyError
+export type ProgramError =
+  | ValueParseError
+  | BackgroundFamilyError
+  | BorderFamilyError
+  | TextDecorationFamilyError
 
 export type CachedEntry =
   | { programs: readonly ProgramEntry[]; errors?: undefined }
@@ -126,6 +133,14 @@ function computeEntry(property: string, input: string): CachedEntry {
 
   if (borderFamilyTargets[property]) {
     const split = splitBorderValue(property, parsed.value, context.colorTokens)
+    if (split.errors.length > 0) {
+      return { errors: split.errors }
+    }
+    return { programs: split.entries }
+  }
+
+  if (textDecorationFamilyTargets[property]) {
+    const split = splitTextDecorationValue(parsed.value, context.colorTokens)
     if (split.errors.length > 0) {
       return { errors: split.errors }
     }

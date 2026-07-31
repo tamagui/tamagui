@@ -244,6 +244,11 @@ export const stylePropsView = {
 
   boxShadow: true,
   border: true,
+  // logical shorthands: the border family splits them into CSS logical
+  // longhands on web; native evaluation diagnoses and drops them (RN has no
+  // logical border properties)
+  borderBlock: true,
+  borderInline: true,
   filter: true,
   // RN 0.76+ supports linear-gradient via backgroundImage
   backgroundImage: true,
@@ -274,6 +279,9 @@ export const stylePropsTextOnly = {
   textShadow: true,
   textShadowOffset: true,
   textShadowRadius: true,
+  // resetting composite: the text-decoration family splits it into
+  // line/style/color programs, which RN supports individually
+  textDecoration: true,
   verticalAlign: true,
 
   // web-only text props - tree-shaken on native

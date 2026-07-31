@@ -22,6 +22,8 @@ import {
   type ParsedValue,
   splitBackgroundValue,
   splitBorderValue,
+  splitTextDecorationValue,
+  textDecorationFamilyTargets,
   transformDeclarationUnit,
   transformDeclarationsFor,
   transformFamilyProps,
@@ -87,7 +89,6 @@ export function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeC
   }
   return context
 }
-
 
 // the web atomic emitter translates these into boxShadow/textShadow
 // (styleToCSS) and native passes them straight to RN — neither side can
@@ -166,10 +167,12 @@ function plainValueToPayload(value: unknown, longhand: string): string | null {
 function longhandsFor(prop: string, styleState: GetStyleState): readonly string[] {
   const declarations = transformDeclarationsFor(prop)
   if (declarations.length) return declarations
-  // a border-family prop enumerates every longhand it could touch; the
+  // a family prop enumerates every longhand it could touch; the
   // value-dependent split narrows this before contribution
   const family = borderFamilyTargets[prop]
   if (family) return [...family.width, ...family.style, ...family.color]
+  const decoration = textDecorationFamilyTargets[prop]
+  if (decoration) return [...decoration.line, ...decoration.style, ...decoration.color]
   return expandToLonghands(prop, styleState.conf.shorthands)
 }
 
@@ -295,6 +298,15 @@ export function contributeConvertedProgram(
     }
     return true
   }
+  if (textDecorationFamilyTargets[prop]) {
+    const context = ensureGrammarContext(styleState)
+    const split = splitTextDecorationValue(value, context.colorTokens)
+    if (split.errors.length) return false
+    for (const entry of split.entries) {
+      contributeParsedProgram(styleState, entry.property, entry.value, sourceProp)
+    }
+    return true
+  }
   contributeParsedProgram(styleState, prop, value, sourceProp)
   return true
 }
@@ -313,6 +325,10 @@ export function canContributeConvertedProgram(
   if (prop === 'background') {
     const context = ensureGrammarContext(styleState)
     return splitBackgroundValue(value, context.colorTokens).errors.length === 0
+  }
+  if (textDecorationFamilyTargets[prop]) {
+    const context = ensureGrammarContext(styleState)
+    return splitTextDecorationValue(value, context.colorTokens).errors.length === 0
   }
   return true
 }
@@ -477,7 +493,10 @@ export function absorbPlainIntoPrograms(
       programs.delete(longhand)
       programs.set(longhand, {
         property: longhand,
-        value: mergeProgramValues(existing.value, { base: payload, clauses: emptyClauses }),
+        value: mergeProgramValues(existing.value, {
+          base: payload,
+          clauses: emptyClauses,
+        }),
         sourceProp: key,
       })
       styleState.usedKeys[longhand] = 1
@@ -527,4 +546,3 @@ function writePlainSlot(
   styleState.style[longhand] = value
   styleState.usedKeys[longhand] = 1
 }
-

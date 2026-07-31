@@ -156,7 +156,6 @@ type StyleSplitter = (
 
 export const PROP_SPLIT = '-'
 
-
 function isPlainObject(value: unknown): value is Record<string, any> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     return false
@@ -500,11 +499,13 @@ export const getSplitStyles: StyleSplitter = (
 
   const contributeLegacyCondition = legacyConditionObjects
     ? (key: string, value: unknown): boolean => {
-        if (!(
-          process.env.TAMAGUI_TARGET === 'native' ||
-          (process.env.TAMAGUI_TARGET === 'web' &&
-            (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))
-        )) {
+        if (
+          !(
+            process.env.TAMAGUI_TARGET === 'native' ||
+            (process.env.TAMAGUI_TARGET === 'web' &&
+              (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))
+          )
+        ) {
           return false
         }
 
@@ -1638,7 +1639,12 @@ export const getSplitStyles: StyleSplitter = (
     (process.env.TAMAGUI_TARGET === 'native' ||
       (!shouldDoClasses && process.env.IS_STATIC !== 'is_static'))
   ) {
-    const info = evaluateAccumulatedPrograms(styleState, themeName, mediaState, groupContext)
+    const info = evaluateAccumulatedPrograms(
+      styleState,
+      themeName,
+      mediaState,
+      groupContext
+    )
     programStates = info.usedStates
     if (info.usedMediaKeys) {
       if (!hasMedia) {

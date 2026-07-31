@@ -36,7 +36,9 @@ test('a clause value lowers to one program block', () => {
   const rules = rulesFor(result, className)
   expect(rules).toHaveLength(2)
   expect(rules[0]).toBe(`.${className}{background-color:red}`)
-  expect(rules[1]).toBe(`@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`)
+  expect(rules[1]).toBe(
+    `@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`
+  )
 })
 
 test('tokens resolve to variables and media clauses wrap', () => {
@@ -58,7 +60,9 @@ test('a later plain value restates the base; the hover survives (decision 21)', 
   expect(className).toMatch(/^_bc-/)
   const rules = rulesFor(result, className)
   expect(rules[0]).toBe(`.${className}{background-color:green}`)
-  expect(rules[1]).toBe(`@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`)
+  expect(rules[1]).toBe(
+    `@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`
+  )
 })
 
 test('a later program replaces the plain value wholesale', () => {
@@ -77,12 +81,7 @@ test('clause-free strings are base-only programs resolving config-first', () => 
   // a configured bare numeric string resolves through the token category
   // (`p="4"` is the space token exactly like `p="$4"` was)
   const tokens = split({ p: '4' })
-  for (const longhand of [
-    'paddingTop',
-    'paddingRight',
-    'paddingBottom',
-    'paddingLeft',
-  ]) {
+  for (const longhand of ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']) {
     const tokenClass = tokens.classNames[longhand]
     expect(tokenClass, longhand).toBeTruthy()
     expect(rulesFor(tokens, tokenClass)[0]).toContain('var(--')
@@ -138,9 +137,7 @@ test('aspectRatio colon values pass through; other parse failures throw in dev',
   const previousNodeEnv = process.env.NODE_ENV
   process.env.NODE_ENV = 'development'
   try {
-    expect(() => split({ backgroundColor: 'red hver:blue' })).toThrow(
-      /does not parse/
-    )
+    expect(() => split({ backgroundColor: 'red hver:blue' })).toThrow(/does not parse/)
   } finally {
     process.env.NODE_ENV = previousNodeEnv
   }

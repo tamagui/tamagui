@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
 import {
+  Text,
   View,
   createTamagui,
   styled,
@@ -205,6 +206,49 @@ describe('outline shorthand - web', () => {
     })
 
     expect(getStyleValue(styles, 'outlineStyle')).toBe('none')
+  })
+})
+
+describe('text-decoration shorthand - web', () => {
+  test('textDecoration splits into line, style and color programs', () => {
+    const styles = simplifiedGetSplitStyles(Text, {
+      textDecoration: 'underline dotted red',
+    })
+
+    expect(getStyleValue(styles, 'textDecorationLine')).toBe('underline')
+    expect(getStyleValue(styles, 'textDecorationStyle')).toBe('dotted')
+    expect(getStyleValue(styles, 'textDecorationColor')).toBe('red')
+  })
+
+  test('a hover clause lands on the line program', () => {
+    const styles = simplifiedGetSplitStyles(Text, {
+      textDecoration: 'underline hover:none',
+    })
+    const className = styles.classNames?.textDecorationLine
+    const rules = (styles.rulesToInsert?.[className]?.[StyleObjectRules] ?? []).join('')
+    expect(rules).toContain('text-decoration-line:underline')
+    expect(rules).toContain(':where(:hover){text-decoration-line:none}')
+  })
+})
+
+describe('logical border shorthands - web', () => {
+  test('borderBlock splits into logical start/end longhand programs', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      borderBlock: '1px solid green',
+    })
+
+    expect(getStyleValue(styles, 'borderBlockStartWidth')).toBe('1px')
+    expect(getStyleValue(styles, 'borderBlockEndStyle')).toBe('solid')
+    expect(getStyleValue(styles, 'borderBlockStartColor')).toBe('green')
+  })
+
+  test('borderInline splits into logical start/end longhand programs', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      borderInline: '2px dashed blue',
+    })
+
+    expect(getStyleValue(styles, 'borderInlineStartWidth')).toBe('2px')
+    expect(getStyleValue(styles, 'borderInlineEndColor')).toBe('blue')
   })
 })
 

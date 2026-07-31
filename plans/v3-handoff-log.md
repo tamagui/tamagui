@@ -912,3 +912,22 @@ namespace. Bare numeric names stay literal on unbound categories per the
 design, and properties with no bound category keep full access to the unified
 variables namespace. Pinned by the flatValuePrograms test "an
 overloaded-family mismatch is a diagnostic, never a silent bind".
+
+### Fallback-category conversion, tranche 1 (Lane E item 4)
+
+`textDecoration` and the logical `borderBlock`/`borderInline` shorthands left
+the legacy refusal set. New style-grammar module `textDecorationFamily`
+(line/style/color split; line keywords accumulate as a list; thickness
+lengths error so the value stays legacy). `borderFamilyTargets` gained the
+two logical rows splitting into CSS logical longhands. Additive edits to
+existing style-grammar files (`borderFamily.ts` table rows,
+`legacyConditions.ts` refusal set now `font` only, `index.ts` export line) —
+flagging per the shared-file rule. `textDecoration`, `borderBlock`,
+`borderInline` are now valid style keys (`@tamagui/helpers`
+`validStyleProps`), so they route through the engine instead of leaking to
+the DOM as attributes. Native: textDecoration evaluates to the three RN
+longhand props; logical border longhands are diagnosed and dropped (RN has no
+logical border properties — no silent physical approximation). `font` remains
+the one unsplit composite; its micro-syntax split is the next tranche along
+with the exotic transform parts. Gates: grammar 346, web 395 + web-package
+type tests 90/90 (the tsconfig-excluded suite), native 170, all green.

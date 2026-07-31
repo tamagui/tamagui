@@ -147,12 +147,8 @@ test('the plan example: enterStyle scale converts and evaluates end to end', () 
 
 test('the plan example with y, the other common codemod flag', () => {
   const props = { y: 0, enterStyle: { y: 10 } }
-  expect(split(props, { unmounted: true }).style?.transform).toEqual([
-    { translateY: 10 },
-  ])
-  expect(split(props, { unmounted: false }).style?.transform).toEqual([
-    { translateY: 0 },
-  ])
+  expect(split(props, { unmounted: true }).style?.transform).toEqual([{ translateY: 10 }])
+  expect(split(props, { unmounted: false }).style?.transform).toEqual([{ translateY: 0 }])
 })
 
 test('a component with no transform props pays nothing new', () => {

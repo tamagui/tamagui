@@ -258,8 +258,12 @@ export function createGrammarRuntimeContext(
 
       const category = categoryForProperty(property)
       const kind = kindForCategory(category)
-      const tokenNames = category && category !== 'font' ? tokensByCategory.get(category) : undefined
-      const fontMap = category === 'font' ? getFontSubMap(fonts, config, property, fontFamily) : undefined
+      const tokenNames =
+        category && category !== 'font' ? tokensByCategory.get(category) : undefined
+      const fontMap =
+        category === 'font'
+          ? getFontSubMap(fonts, config, property, fontFamily)
+          : undefined
 
       const lookup = (name: string): ResolvedReference | undefined => {
         // the property's bound category first
@@ -455,11 +459,17 @@ function getConfigRevision(
   for (const key of Object.keys(mediaQueries).sort()) {
     parts.push(`m:${key}=${mediaQueries[key]}`)
   }
-  parts.push(`t:${Object.keys(config.themes ?? {}).sort().join(',')}`)
+  parts.push(
+    `t:${Object.keys(config.themes ?? {})
+      .sort()
+      .join(',')}`
+  )
   parts.push(`v:${[...themeVariables.keys()].sort().join(',')}`)
   for (const category of tokenCategoryNames) {
     const categoryTokens = tokens[category]
-    parts.push(`${category}:${categoryTokens ? Object.keys(categoryTokens).sort().join(',') : ''}`)
+    parts.push(
+      `${category}:${categoryTokens ? Object.keys(categoryTokens).sort().join(',') : ''}`
+    )
   }
   for (const family of Object.keys(config.fontsParsed ?? {}).sort()) {
     const font = (config.fontsParsed as Record<string, Record<string, unknown>>)[family]
