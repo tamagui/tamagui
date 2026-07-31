@@ -364,3 +364,22 @@ test('a styled clause default survives a call-site override (decision 21)', () =
   expect(rules[0]).toBe(`.${className}{background-color:red}`)
   expect(rules[1]).toContain(':where(:hover){background-color:blue}')
 })
+
+test('a base swallowed by a conditional payload is a diagnostic, not silence', () => {
+  const warnings: string[] = []
+  const original = console.warn
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  console.warn = (message: string) => warnings.push(String(message))
+  try {
+    // 'red' after 'sm:green' joins the clause payload; the program has no
+    // base and the browser drops the two-color declaration entirely
+    split({ backgroundColor: 'sm:green red' })
+    expect(
+      warnings.some((warning) => warning.includes('before the first conditional'))
+    ).toBe(true)
+  } finally {
+    console.warn = original
+    process.env.NODE_ENV = previousNodeEnv
+  }
+})

@@ -8,6 +8,7 @@ export * from "./fontShorthand";
 export * from "./legacyConditions";
 export * from "./lowerProgram";
 export * from "./modifierRegistry";
+export * from "./payloadShape";
 export * from "./programHash";
 export * from "./programs";
 export * from "./registry";

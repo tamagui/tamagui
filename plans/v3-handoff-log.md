@@ -1211,3 +1211,24 @@ restates only the base. Pinned web (rule content) and native (state
 evaluation) in the flatValuePrograms tests. With `containerName` landed
 earlier, ALL THREE runtime gates on the codemod apply mode are now closed —
 flipping apply on is purely the user's call.
+
+### Diagnostic: base swallowed by a space-greedy clause payload (Lane E)
+
+OPUS's WebKit re-check found `backgroundColor="sm:green red"` rendering
+transparent at every viewport with no diagnostic: the clause payload is
+space-greedy by design, so a base written AFTER a conditional joins that
+conditional's payload (base stays null), and the browser drops the resulting
+two-color declaration. RULING: the greedy absorption STAYS — payload
+component lists (`boxShadow="inset 0 2px red"`) depend on it and the parser
+cannot know per-property component grammars — the silence goes. New
+style-grammar module `payloadShape` (`validatePayloadShape`): a
+multi-component payload on a single-value longhand is a
+`multi-component-single-value` diagnostic, with the base-after-conditional
+hint when the program has no base; an explicit list-valued-longhand set
+(boxShadow, transform, fontFamily, …) keeps legitimate component lists
+clean. Per the design's one-owner rule the validator lives in the resolution
+layer for the runtime, the compiler, and the ESLint rule to share — CODEX-1
+should wire the lint rule to it rather than growing a second opinion. The
+runtime consumes it in the parse-cache compute step: once per distinct
+(property, input), both platforms, dev-only, zero hot-path cost. Pinned by
+grammar unit tests and a web integration test.

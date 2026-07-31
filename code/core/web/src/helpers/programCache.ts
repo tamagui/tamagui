@@ -28,6 +28,7 @@ import {
   splitFontValue,
   splitTextDecorationValue,
   textDecorationFamilyTargets,
+  validatePayloadShape,
   type BorderFamilyError,
   type FontShorthandError,
   type ModifierRegistryView,
@@ -108,6 +109,29 @@ export function getCachedPrograms(property: string, input: string): CachedEntry 
   if (hit !== undefined) return hit
 
   const entry = computeEntry(property, input)
+
+  // payload-shape diagnostics fire here, once per distinct (property, input),
+  // on both platforms: a multi-component payload on a single-value longhand
+  // renders nothing in the browser (`backgroundColor="sm:green red"` — the
+  // base after the conditional was absorbed into its space-greedy payload),
+  // and the design record forbids silence for unsupported input
+  if (process.env.NODE_ENV === 'development' && entry.programs) {
+    for (const program of entry.programs) {
+      const { base, clauses } = program.value
+      if (base !== null) {
+        const diagnostic = validatePayloadShape(program.property, base, true)
+        if (diagnostic) console.warn(`[tamagui] ${property}: ${diagnostic.message}`)
+      }
+      for (const clause of clauses) {
+        const diagnostic = validatePayloadShape(
+          program.property,
+          clause.payload,
+          base !== null
+        )
+        if (diagnostic) console.warn(`[tamagui] ${property}: ${diagnostic.message}`)
+      }
+    }
+  }
 
   // cap and reset wholesale, no LRU bookkeeping
   if (cache.size >= CACHE_LIMIT) cache.clear()
