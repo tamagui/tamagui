@@ -871,6 +871,21 @@
         "react": ">=19",
       },
     },
+    "code/core/language-service": {
+      "name": "@tamagui/language-service",
+      "version": "2.5.1",
+      "dependencies": {
+        "@tamagui/style-grammar": "workspace:*",
+      },
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "typescript": "~5.9.2",
+        "vitest": "4.0.4",
+      },
+      "peerDependencies": {
+        "typescript": ">=5.7",
+      },
+    },
     "code/core/monorepo-test": {
       "name": "@tamagui/monorepo-test",
       "version": "2.5.1",
@@ -5502,6 +5517,8 @@
     "@tamagui/kitchen-sink-shared": ["@tamagui/kitchen-sink-shared@workspace:code/kitchen-sink-shared"],
 
     "@tamagui/label": ["@tamagui/label@workspace:code/ui/label"],
+
+    "@tamagui/language-service": ["@tamagui/language-service@workspace:code/core/language-service"],
 
     "@tamagui/linear-gradient": ["@tamagui/linear-gradient@workspace:code/ui/linear-gradient"],
 
