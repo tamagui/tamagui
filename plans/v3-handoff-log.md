@@ -632,3 +632,29 @@ the pre-cut gap where package components missed the cascade switch. Suites
 outside that set: web 501 passed with all 262 failures inside the named
 files; native 266 passed with all 161 failures inside the named files;
 tailwind package 73/74 with the one named assertion.
+
+### Cutover performance measurement (Lane E, own commit as agreed)
+
+Parse cost (`cd code/core/style-grammar && bun run bench`, Bun 1.3.14
+darwin/arm64): plain value parse 48.1 ns; two-clause 364 ns; six-clause
+870 ns; steady-state cache hit (key build + Map.get) 72.2 ns. A clause-free
+string parses once per distinct (property, value) and then pays the 72 ns
+cache hit per render.
+
+Render loop (`RENDER_BENCH=1 TAMAGUI_TARGET=web npx vitest --run
+--disable-console-intercept --config
+../../packages/vite-plugin-internal/src/vite.config.ts
+renderLoopBench.web.test.tsx` in `code/core/core-test`; jsdom, 20,000
+iterations after 2,000 warmup, three runs, spread under 4%):
+
+- numbers only, 3 props (plain path): 17.3–17.9 µs/op
+- clause-free strings, 3 props (base-only programs): 16.9–17.3 µs/op
+- one clause program (hover): 7.8–8.0 µs/op
+- transform numerics, 3 props (family programs + composition): 19.5–20.2 µs/op
+
+Steady-state, routing clause-free strings through programs costs no more than
+the legacy plain path for the same prop count (the string case measures at or
+slightly below the numeric case); the transform-family numeric case carries
+~10% over plain numerics for the axis-variable composition, on the same order
+as the values it replaced. Numbers are from one machine in jsdom and referee
+relative cost, not absolute browser cost.
