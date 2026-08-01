@@ -37,8 +37,8 @@ function DefaultControls() {
 describe('v6 default component size on web', () => {
   test('keeps Tailwind numeric tokens without changing the component default', () => {
     expect({
-      size4: config.tokensParsed..val,
-      space4: config.tokensParsed..val,
+      size4: config.tokensParsed.size['4'].val,
+      space4: config.tokensParsed.space['4'].val,
     }).toEqual({
       size4: 16,
       space4: 16,
@@ -152,11 +152,11 @@ describe('v6 default component size on web', () => {
         config.fontsParsed.body.size
       ),
     }).toEqual({
-      buttonPadding: config.tokensParsed..val,
-      buttonRadius: config.tokensParsed..val,
-      buttonFontSize: config.fontsParsed.body..val,
-      inputRadius: config.tokensParsed..val,
-      inputFontSize: config.fontsParsed.body..val,
+      buttonPadding: config.tokensParsed.space['11'].val,
+      buttonRadius: config.tokensParsed.radius['11'].val,
+      buttonFontSize: config.fontsParsed.body.size['11'].val,
+      inputRadius: config.tokensParsed.radius['11'].val,
+      inputFontSize: config.fontsParsed.body.size['11'].val,
     })
   })
 })

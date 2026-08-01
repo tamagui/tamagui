@@ -128,15 +128,15 @@ describe('opt-in size primitives on web', () => {
     )
     expect(resolveTokenSize('4', extras)).toEqual({
       frame: {
-        size: config.tokensParsed.,
-        space: config.tokensParsed.,
-        radius: config.tokensParsed.,
+        size: config.tokensParsed.size['4'],
+        space: config.tokensParsed.space['4'],
+        radius: config.tokensParsed.radius['4'],
       },
       text: {
-        fontSize: config.fontsParsed.body.,
-        lineHeight: config.fontsParsed.body.,
+        fontSize: config.fontsParsed.body.size['4'],
+        lineHeight: config.fontsParsed.body.lineHeight['4'],
       },
-      icon: config.fontsParsed.body.,
+      icon: config.fontsParsed.body.size['4'],
     })
     expect(resolveTokenSize(24, extras)).toEqual({
       frame: { size: 24, space: 24, radius: 24 },
@@ -161,7 +161,7 @@ describe('opt-in size primitives on web', () => {
 
     expect(rendered.getByTestId('tabs-icon')).toHaveAttribute(
       'data-size',
-      `${config.fontsParsed.body..val}`
+      `${config.fontsParsed.body.size['4'].val}`
     )
   })
 })
