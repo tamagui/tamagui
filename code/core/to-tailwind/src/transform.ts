@@ -609,12 +609,7 @@ function propValueToClass(
       classes.push(base)
     }
     for (const clause of parsed.value.clauses) {
-      const conditional = payloadToClass(
-        ctx,
-        fullProp,
-        clause.payload,
-        clause.modifiers
-      )
+      const conditional = payloadToClass(ctx, fullProp, clause.payload, clause.modifiers)
       if (conditional === null) return null
       classes.push(conditional)
     }
@@ -717,11 +712,7 @@ function hasConfiguredName(
   return Object.prototype.hasOwnProperty.call(names, value)
 }
 
-function formatStringValue(
-  ctx: Ctx,
-  prop: string,
-  value: string
-): FormattedValue | null {
+function formatStringValue(ctx: Ctx, prop: string, value: string): FormattedValue | null {
   const category = getTokenCategory(prop)
   if (
     prop !== 'fontWeight' &&

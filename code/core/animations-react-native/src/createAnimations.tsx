@@ -11,7 +11,13 @@ import type {
 } from '@tamagui/web'
 import { useEvent, useThemeWithState } from '@tamagui/web'
 import React from 'react'
-import { Animated, processColor, type ColorValue, type Text, type View } from 'react-native'
+import {
+  Animated,
+  processColor,
+  type ColorValue,
+  type Text,
+  type View,
+} from 'react-native'
 
 // detect Fabric (New Architecture) — Paper doesn't support native driver for all style keys
 const isFabric =

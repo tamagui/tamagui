@@ -109,9 +109,7 @@ describe('4 — existing raw hover color + flat hover clause follow authored ord
       })
     ).toBe('red')
     expect(
-      convert(
-        `<View className="hover:bg-[red]" backgroundColor="hover:blue" />`
-      )
+      convert(`<View className="hover:bg-[red]" backgroundColor="hover:blue" />`)
     ).toBe(`<View className="hover:bg-[red]" backgroundColor="hover:blue" />`)
   })
 })

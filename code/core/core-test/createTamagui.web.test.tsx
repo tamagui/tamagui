@@ -58,9 +58,9 @@ describe('createTamagui', () => {
     const rootFontRule = theme.themeConfig.cssRuleSets.find((rule) =>
       rule.includes('.is_View')
     )
-    expect(rootFontRule).toContain(theme.fontsParsed["body"].family.variable)
-    expect(rootFontRule).toContain(theme.fontsParsed["body"].lineHeight["4"].variable)
-    expect(rootFontRule).not.toContain(theme.fontsParsed["aaa"].lineHeight["3"].variable)
+    expect(rootFontRule).toContain(theme.fontsParsed['body'].family.variable)
+    expect(rootFontRule).toContain(theme.fontsParsed['body'].lineHeight['4'].variable)
+    expect(rootFontRule).not.toContain(theme.fontsParsed['aaa'].lineHeight['3'].variable)
   })
 
   test(`font reset uses body without depending on sort order when defaultFont is omitted`, () => {
@@ -151,7 +151,7 @@ describe('createTamagui', () => {
     const rootFontRule = theme.themeConfig.cssRuleSets.find((rule) =>
       rule.includes('.is_View')
     )
-    expect(rootFontRule).toContain(theme.fontsParsed["body"].lineHeight["4"].variable)
+    expect(rootFontRule).toContain(theme.fontsParsed['body'].lineHeight['4'].variable)
     expect(rootFontRule).not.toContain('var(--f-lineHeight-5)')
   })
 

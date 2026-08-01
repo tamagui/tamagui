@@ -80,8 +80,11 @@ export const MultipleSelectTypeTest = () => (
     }}
     onOpenChange={(_open, details) => {
       const reason:
-        'trigger-press' | 'keyboard' | 'outside-press' | 'escape-key' | 'item-press' =
-        details.reason
+        | 'trigger-press'
+        | 'keyboard'
+        | 'outside-press'
+        | 'escape-key'
+        | 'item-press' = details.reason
       void reason
     }}
     onActiveChange={(_value, details) => {

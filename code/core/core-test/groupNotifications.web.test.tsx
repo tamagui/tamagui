@@ -37,8 +37,12 @@ function NestedGroupCase() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
       <View
-                  testID="nested-group-root" disableClassName group="root" opacity="press:0.9" onPress={() => setActive((x) => !x)}
-                >
+        testID="nested-group-root"
+        disableClassName
+        group="root"
+        opacity="press:0.9"
+        onPress={() => setActive((x) => !x)}
+      >
         <NestedGroup index={0} active={active} />
       </View>
     </TamaguiProvider>

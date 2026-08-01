@@ -281,124 +281,124 @@ export function createNonNativeMenu() {
 
   const MenuTriggerFrame = Menu.Anchor
 
-  const MenuTrigger = createStyledHOC(View)<ScopedProps<MenuTriggerProps>>((
-    props,
-    forwardedRef
-  ) => {
-    const {
-      scope,
-      asChild,
-      children,
-      disabled = false,
-      onKeydown,
-      ...triggerProps
-    } = props
-    const context = useMenuContext(scope)
-    const popperCtx = usePopperContextSlow(scope || DROPDOWN_MENU_CONTEXT)
-    const Comp = asChild ? Slot : View
-    const isTouchDevice = useIsTouchDevice()
-    const triggerElRef = React.useRef<TamaguiElement>(null)
+  const MenuTrigger = createStyledHOC(View)<ScopedProps<MenuTriggerProps>>(
+    (props, forwardedRef) => {
+      const {
+        scope,
+        asChild,
+        children,
+        disabled = false,
+        onKeydown,
+        ...triggerProps
+      } = props
+      const context = useMenuContext(scope)
+      const popperCtx = usePopperContextSlow(scope || DROPDOWN_MENU_CONTEXT)
+      const Comp = asChild ? Slot : View
+      const isTouchDevice = useIsTouchDevice()
+      const triggerElRef = React.useRef<TamaguiElement>(null)
 
-    // multi-trigger: per-trigger open state
-    const triggerId = React.useId()
-    const [triggerOpen, setTriggerOpen] = React.useState(false)
+      // multi-trigger: per-trigger open state
+      const triggerId = React.useId()
+      const [triggerOpen, setTriggerOpen] = React.useState(false)
 
-    // extract stable refs so re-registration doesn't happen when context object changes
-    const { registerTrigger, unregisterTrigger } = context
-    React.useEffect(() => {
-      registerTrigger(triggerId, setTriggerOpen)
-      return () => unregisterTrigger(triggerId)
-    }, [registerTrigger, unregisterTrigger, triggerId])
+      // extract stable refs so re-registration doesn't happen when context object changes
+      const { registerTrigger, unregisterTrigger } = context
+      React.useEffect(() => {
+        registerTrigger(triggerId, setTriggerOpen)
+        return () => unregisterTrigger(triggerId)
+      }, [registerTrigger, unregisterTrigger, triggerId])
 
-    // activate this trigger: set popper reference and update shared triggerRef for close-auto-focus
-    const activateSelf = React.useCallback(() => {
-      context.setActiveTrigger(triggerId)
-      const el = triggerElRef.current
-      if (el) {
-        // update shared ref so close-auto-focus returns to the active trigger
-        context.triggerRef.current = el
-        if (el instanceof HTMLElement) {
-          popperCtx.refs?.setReference(el)
-          requestAnimationFrame(() => popperCtx.update?.())
+      // activate this trigger: set popper reference and update shared triggerRef for close-auto-focus
+      const activateSelf = React.useCallback(() => {
+        context.setActiveTrigger(triggerId)
+        const el = triggerElRef.current
+        if (el) {
+          // update shared ref so close-auto-focus returns to the active trigger
+          context.triggerRef.current = el
+          if (el instanceof HTMLElement) {
+            popperCtx.refs?.setReference(el)
+            requestAnimationFrame(() => popperCtx.update?.())
+          }
         }
-      }
-    }, [context, triggerId, popperCtx])
+      }, [context, triggerId, popperCtx])
 
-    // Use onClick for touch devices to avoid race condition with Dismissable
-    // Use onPointerDown for mouse for faster feedback
-    const pressEvent = isWeb ? (isTouchDevice ? 'onClick' : 'onPointerDown') : 'onPress'
+      // Use onClick for touch devices to avoid race condition with Dismissable
+      // Use onPointerDown for mouse for faster feedback
+      const pressEvent = isWeb ? (isTouchDevice ? 'onClick' : 'onPointerDown') : 'onPress'
 
-    return (
-      <MenuTriggerFrame
-        asChild
-        componentName={TRIGGER_NAME}
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-      >
-        <Comp
-          role="button"
-          id={context.triggerId}
-          aria-haspopup="menu"
-          aria-expanded={triggerOpen}
-          aria-controls={triggerOpen ? context.contentId : undefined}
-          data-state={triggerOpen ? 'open' : 'closed'}
-          data-disabled={disabled ? '' : undefined}
-          aria-disabled={disabled || undefined}
-          ref={composeRefs(forwardedRef, context.triggerRef, triggerElRef)}
-          {...{
-            [pressEvent]: composeEventHandlers(
-              //@ts-ignore
-              props[pressEvent],
-              (event) => {
-                // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
-                // but not when the control key is pressed (avoiding MacOS right click)
-                if (!disabled) {
-                  if (
-                    isWeb &&
-                    event instanceof PointerEvent &&
-                    event.button !== 0 &&
-                    event.ctrlKey === true
-                  )
-                    return
+      return (
+        <MenuTriggerFrame
+          asChild
+          componentName={TRIGGER_NAME}
+          scope={scope || DROPDOWN_MENU_CONTEXT}
+        >
+          <Comp
+            role="button"
+            id={context.triggerId}
+            aria-haspopup="menu"
+            aria-expanded={triggerOpen}
+            aria-controls={triggerOpen ? context.contentId : undefined}
+            data-state={triggerOpen ? 'open' : 'closed'}
+            data-disabled={disabled ? '' : undefined}
+            aria-disabled={disabled || undefined}
+            ref={composeRefs(forwardedRef, context.triggerRef, triggerElRef)}
+            {...{
+              [pressEvent]: composeEventHandlers(
+                //@ts-ignore
+                props[pressEvent],
+                (event) => {
+                  // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
+                  // but not when the control key is pressed (avoiding MacOS right click)
+                  if (!disabled) {
+                    if (
+                      isWeb &&
+                      event instanceof PointerEvent &&
+                      event.button !== 0 &&
+                      event.ctrlKey === true
+                    )
+                      return
+                    if (context.openRef.current) {
+                      context.setActiveTrigger(null)
+                    } else {
+                      activateSelf()
+                    }
+                    context.onOpenToggle()
+                    // prevent trigger focusing when opening
+                    // this allows the content to be given focus without competition
+                    if (!context.openRef.current) event.preventDefault()
+                  }
+                }
+              ),
+            }}
+            {...(isWeb && {
+              onKeyDown: composeEventHandlers(onKeydown, (event) => {
+                if (disabled) return
+                if (['Enter', ' '].includes(event.key)) {
                   if (context.openRef.current) {
                     context.setActiveTrigger(null)
                   } else {
                     activateSelf()
                   }
                   context.onOpenToggle()
-                  // prevent trigger focusing when opening
-                  // this allows the content to be given focus without competition
-                  if (!context.openRef.current) event.preventDefault()
                 }
-              }
-            ),
-          }}
-          {...(isWeb && {
-            onKeyDown: composeEventHandlers(onKeydown, (event) => {
-              if (disabled) return
-              if (['Enter', ' '].includes(event.key)) {
-                if (context.openRef.current) {
-                  context.setActiveTrigger(null)
-                } else {
+                if (event.key === 'ArrowDown') {
                   activateSelf()
+                  context.onOpenChange(true)
                 }
-                context.onOpenToggle()
-              }
-              if (event.key === 'ArrowDown') {
-                activateSelf()
-                context.onOpenChange(true)
-              }
-              // prevent keydown from scrolling window / first focused item to execute
-              // that keydown (inadvertently closing the menu)
-              if (['Enter', ' ', 'ArrowDown'].includes(event.key)) event.preventDefault()
-            }),
-          })}
-          {...triggerProps}
-        >
-          {children}
-        </Comp>
-      </MenuTriggerFrame>
-    )
-  })
+                // prevent keydown from scrolling window / first focused item to execute
+                // that keydown (inadvertently closing the menu)
+                if (['Enter', ' ', 'ArrowDown'].includes(event.key))
+                  event.preventDefault()
+              }),
+            })}
+            {...triggerProps}
+          >
+            {children}
+          </Comp>
+        </MenuTriggerFrame>
+      )
+    }
+  )
 
   MenuTrigger.displayName = TRIGGER_NAME
 

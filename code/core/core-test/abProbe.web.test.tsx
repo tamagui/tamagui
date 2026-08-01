@@ -14,7 +14,7 @@ test('a variant press clause converts to :active; inline restates it', () => {
     variants: {
       variant: {
         prim: {
-        backgroundColor: "press:blue"
+          backgroundColor: 'press:blue',
         },
       },
     } as const,

@@ -971,8 +971,7 @@ function orderedEntries(site: Site): Entry[] {
     .filter((entry) => entry.legacyStatePriority !== null)
     .sort(
       (left, right) =>
-        left.legacyStatePriority! - right.legacyStatePriority! ||
-        left.index - right.index
+        left.legacyStatePriority! - right.legacyStatePriority! || left.index - right.index
     )
   if (ranked.length < 2) return ordered
 

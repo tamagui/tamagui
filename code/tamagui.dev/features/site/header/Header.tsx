@@ -401,74 +401,73 @@ const SlidingPopoverContext = React.createContext({
   close() {},
 })
 
-export const SlidingPopoverTarget = createStyledHOC(YStack)<{ id: ID }>((
-  { id, ...props },
-  ref
-) => {
-  const context = React.useContext(SlidingPopoverContext)
-  const [layout, setLayout] = React.useState<LayoutRectangle | undefined>()
-  const triggerRef = React.useRef<HTMLElement>(null)
-  const combinedRef = useComposedRefs(ref)
-  const [hovered, setHovered] = React.useState(false)
-  const getLayout = useGet(layout)
+export const SlidingPopoverTarget = createStyledHOC(YStack)<{ id: ID }>(
+  ({ id, ...props }, ref) => {
+    const context = React.useContext(SlidingPopoverContext)
+    const [layout, setLayout] = React.useState<LayoutRectangle | undefined>()
+    const triggerRef = React.useRef<HTMLElement>(null)
+    const combinedRef = useComposedRefs(ref)
+    const [hovered, setHovered] = React.useState(false)
+    const getLayout = useGet(layout)
 
-  React.useEffect(() => {
-    if (!hovered) return
+    React.useEffect(() => {
+      if (!hovered) return
 
-    const handleMove = debounce(() => {
-      const layout = triggerRef.current?.getBoundingClientRect()
-      if (layout) {
-        setLayout(layout as any)
+      const handleMove = debounce(() => {
+        const layout = triggerRef.current?.getBoundingClientRect()
+        if (layout) {
+          setLayout(layout as any)
+        }
+      }, 32)
+      window.addEventListener('resize', handleMove)
+      return () => {
+        window.removeEventListener('resize', handleMove)
       }
-    }, 32)
-    window.addEventListener('resize', handleMove)
-    return () => {
-      window.removeEventListener('resize', handleMove)
+    }, [hovered])
+
+    const setActive = () => {
+      const layout = getLayout()
+      if (layout) {
+        isOnLink.add(id)
+        context.setActive(id, layout)
+      }
+      setHovered(true)
     }
-  }, [hovered])
 
-  const setActive = () => {
-    const layout = getLayout()
-    if (layout) {
-      isOnLink.add(id)
-      context.setActive(id, layout)
-    }
-    setHovered(true)
-  }
+    const setActiveDebounced = useDebounce(setActive, 100)
 
-  const setActiveDebounced = useDebounce(setActive, 100)
-
-  return (
-    <YStack
-      onMouseEnter={setActiveDebounced}
-      onMouseLeave={() => {
-        setActiveDebounced.cancel()
-        isOnLink.delete(id)
-        setHovered(false)
-      }}
-      onPress={() => {
-        if (isTouchable) return
-        setActiveDebounced.cancel()
-        setTimeout(() => {
-          context.close()
-        }, 400)
-      }}
-      onLayout={(e) => {
-        React.startTransition(() => {
-          setLayout({
-            ...e.nativeEvent.layout,
-            // @ts-ignore
-            x: e.nativeEvent.layout.pageX,
-            // @ts-ignore
-            y: e.nativeEvent.layout.pageY,
+    return (
+      <YStack
+        onMouseEnter={setActiveDebounced}
+        onMouseLeave={() => {
+          setActiveDebounced.cancel()
+          isOnLink.delete(id)
+          setHovered(false)
+        }}
+        onPress={() => {
+          if (isTouchable) return
+          setActiveDebounced.cancel()
+          setTimeout(() => {
+            context.close()
+          }, 400)
+        }}
+        onLayout={(e) => {
+          React.startTransition(() => {
+            setLayout({
+              ...e.nativeEvent.layout,
+              // @ts-ignore
+              x: e.nativeEvent.layout.pageX,
+              // @ts-ignore
+              y: e.nativeEvent.layout.pageY,
+            })
           })
-        })
-      }}
-      ref={combinedRef}
-      {...props}
-    />
-  )
-})
+        }}
+        ref={combinedRef}
+        {...props}
+      />
+    )
+  }
+)
 
 const order = ['', 'core', 'ui', 'theme', 'menu']
 

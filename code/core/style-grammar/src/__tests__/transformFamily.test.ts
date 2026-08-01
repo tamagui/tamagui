@@ -160,9 +160,9 @@ describe('web lowering', () => {
         `:where(.${lowered.composition!.className}){`
       )
     ).toBe(true)
-    expect(lowered.composition!.rules[1].startsWith(
-      `.${lowered.composition!.className}{`
-    )).toBe(true)
+    expect(
+      lowered.composition!.rules[1].startsWith(`.${lowered.composition!.className}{`)
+    ).toBe(true)
   })
 
   test('an individual-property program carries no composing rule', () => {

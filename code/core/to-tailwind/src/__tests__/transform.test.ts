@@ -96,14 +96,10 @@ describe('tamaguiToTailwind', () => {
     })
 
     test('enter and exit clauses become enter:/exit: classes', () => {
-      const out = tamaguiToTailwind(
-        `<View opacity="enter:0" scale="enter:0.95" />`
-      )
+      const out = tamaguiToTailwind(`<View opacity="enter:0" scale="enter:0.95" />`)
       expect(out).toContain('enter:opacity-0')
       expect(out).toContain('enter:scale-[0.95]')
-      expect(tamaguiToTailwind(`<View opacity="exit:0" />`)).toContain(
-        'exit:opacity-0'
-      )
+      expect(tamaguiToTailwind(`<View opacity="exit:0" />`)).toContain('exit:opacity-0')
     })
 
     test('size and animation remain component props', () => {
@@ -124,9 +120,7 @@ describe('tamaguiToTailwind', () => {
     })
 
     test('negative values in flat clauses are not dropped', () => {
-      const out = tamaguiToTailwind(
-        `<View opacity="hover:0.5" y="hover:-2px" />`
-      )
+      const out = tamaguiToTailwind(`<View opacity="hover:0.5" y="hover:-2px" />`)
       expect(out).toContain('hover:opacity-50')
       expect(out).toContain('hover:translate-y-[-2px]')
     })
@@ -342,28 +336,25 @@ describe('tamaguiToTailwind', () => {
 
   describe('config-aware token resolution (mirrors the runtime token categories)', () => {
     test('a precomputed names-only grammar view is authoritative', () => {
-      const output = tamaguiToTailwind(
-        `<View padding="4 tablet:4" width="missing" />`,
-        {
-          renameComponents: false,
-          grammarConfig: {
-            shorthands: { p: 'padding' },
-            mediaNames: ['tablet'],
-            themeNames: ['dark'],
-            tokenNames: {
-              space: ['4'],
-              size: [],
-              radius: [],
-              zIndex: [],
-              color: [],
-              fontFamily: [],
-              fontSize: [],
-              lineHeight: [],
-              letterSpacing: [],
-            },
+      const output = tamaguiToTailwind(`<View padding="4 tablet:4" width="missing" />`, {
+        renameComponents: false,
+        grammarConfig: {
+          shorthands: { p: 'padding' },
+          mediaNames: ['tablet'],
+          themeNames: ['dark'],
+          tokenNames: {
+            space: ['4'],
+            size: [],
+            radius: [],
+            zIndex: [],
+            color: [],
+            fontFamily: [],
+            fontSize: [],
+            lineHeight: [],
+            letterSpacing: [],
           },
-        }
-      )
+        },
+      })
       expect(output).toContain('p-4')
       expect(output).toContain('tablet:p-4')
       expect(output).toContain('w-[missing]')
@@ -397,12 +388,10 @@ describe('tamaguiToTailwind', () => {
         tokens: { color: { color5: '#fff' } },
         fonts: { body: { size: { 5: 16 } } },
       }
-      expect(
-        tamaguiToTailwind(`<View backgroundColor="color5" />`, options)
-      ).toContain('bg-color5')
-      expect(tamaguiToTailwind(`<Text fontSize="5" />`, options)).toContain(
-        'text-5'
+      expect(tamaguiToTailwind(`<View backgroundColor="color5" />`, options)).toContain(
+        'bg-color5'
       )
+      expect(tamaguiToTailwind(`<Text fontSize="5" />`, options)).toContain('text-5')
     })
 
     test('missing and wrong-category names lower as literal arbitrary values', () => {
@@ -493,9 +482,9 @@ describe('tamaguiToTailwind', () => {
       expect(tamaguiToTailwind(`<Text lineHeight="lineOnly" />`, options)).toContain(
         'leading-lineOnly'
       )
-      expect(
-        tamaguiToTailwind(`<Text letterSpacing="letterOnly" />`, options)
-      ).toContain('tracking-letterOnly')
+      expect(tamaguiToTailwind(`<Text letterSpacing="letterOnly" />`, options)).toContain(
+        'tracking-letterOnly'
+      )
       expect(tamaguiToTailwind(`<Text fontSize="body" />`, options)).toContain(
         'text-[body]'
       )

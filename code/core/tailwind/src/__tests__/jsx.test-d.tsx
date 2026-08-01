@@ -35,13 +35,13 @@ describe('tailwind components in JSX', () => {
     return (
       <>
         <View
-                      // @ts-expect-error state clauses belong to @tamagui/core authoring
-                      backgroundColor="hover:red"
-                    />
+          // @ts-expect-error state clauses belong to @tamagui/core authoring
+          backgroundColor="hover:red"
+        />
         <View
-                      // @ts-expect-error media clauses belong to @tamagui/core authoring
-                      padding="sm:4px"
-                    />
+          // @ts-expect-error media clauses belong to @tamagui/core authoring
+          padding="sm:4px"
+        />
       </>
     )
   })

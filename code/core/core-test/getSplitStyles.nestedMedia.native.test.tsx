@@ -150,8 +150,7 @@ describe('Nested media + platform queries', () => {
     test('the last equally specific clause wins when both conditions are met', () => {
       const result = getSplitStylesFor(
         {
-          backgroundColor:
-            'xs:orange xs:android:yellow android:green android:xs:red',
+          backgroundColor: 'xs:orange xs:android:yellow android:green android:xs:red',
         },
         View,
         { xs: true }

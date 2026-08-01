@@ -31,10 +31,7 @@ export function getCSSStylesAtomic(style: ViewStyleObject) {
 let conf: TamaguiInternalConfig | null = null
 
 // this could be cached for performance?
-const getStyleObject = (
-  style: ViewStyleObject,
-  key: string
-): StyleObject | undefined => {
+const getStyleObject = (style: ViewStyleObject, key: string): StyleObject | undefined => {
   let val = style[key]
   if (val == null) return
   // transform
@@ -120,11 +117,7 @@ const hyphenateStyleName = (key: string) => {
   return val
 }
 
-function createAtomicRules(
-  identifier: string,
-  property: string,
-  value: any
-): string[] {
+function createAtomicRules(identifier: string, property: string, value: any): string[] {
   // longhands get .cls.cls for higher specificity over shorthands
   const cls =
     property in cssShorthandLonghands ? `.${identifier}.${identifier}` : `.${identifier}`

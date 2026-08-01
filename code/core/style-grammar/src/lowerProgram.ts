@@ -155,7 +155,9 @@ function conditionSelector(fragment: string, scope: ConditionScope): string {
 type PointerEventsMode = 'auto' | 'none' | 'box-none' | 'box-only'
 
 function isPointerEventsMode(value: string): value is PointerEventsMode {
-  return value === 'auto' || value === 'none' || value === 'box-none' || value === 'box-only'
+  return (
+    value === 'auto' || value === 'none' || value === 'box-none' || value === 'box-only'
+  )
 }
 
 function pointerEventsCSS(mode: PointerEventsMode): {

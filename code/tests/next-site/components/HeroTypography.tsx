@@ -39,8 +39,12 @@ export const HeroTypography = memo(() => {
         </YStack>
 
         <XStack
-                                      ai="center" jc="center" pos="relative" gap="8" flexDirection="row-reverse sm:column-reverse"
-                                    >
+          ai="center"
+          jc="center"
+          pos="relative"
+          gap="8"
+          flexDirection="row-reverse sm:column-reverse"
+        >
           <OverlayCard />
 
           <YStack

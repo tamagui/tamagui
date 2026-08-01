@@ -1,9 +1,4 @@
-import {
-  isAndroid,
-  isClient,
-  isWeb,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/constants'
+import { isAndroid, isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
   StyleObjectProperty,
@@ -864,8 +859,7 @@ export const getSplitStyles: StyleSplitter = (
 
     const parentVariant = parentVariants?.[keyInit]
     const isHOCShouldPassThrough = Boolean(
-      isHOC &&
-      (isValidStyleKeyInit || parentVariant || keyInit in skipProps)
+      isHOC && (isValidStyleKeyInit || parentVariant || keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
@@ -1010,8 +1004,7 @@ export const getSplitStyles: StyleSplitter = (
         viewProps[key] = props[key] ?? val
       }
 
-      const shouldPassThrough =
-        isHOC && Boolean(parentStaticConfig?.variants?.[keyInit])
+      const shouldPassThrough = isHOC && Boolean(parentStaticConfig?.variants?.[keyInit])
 
       if (shouldPassThrough) {
         passDownProp(viewProps, key, val)

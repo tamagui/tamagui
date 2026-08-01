@@ -26,9 +26,7 @@ const convert = (s: string) => tamaguiToTailwind(s, { renameComponents: false })
 
 describe('flat clauses', () => {
   test('a static chained clause converts to one class candidate', () => {
-    expect(convert(`<View opacity="md:hover:0.5" />`)).toContain(
-      'md:hover:opacity-50'
-    )
+    expect(convert(`<View opacity="md:hover:0.5" />`)).toContain('md:hover:opacity-50')
   })
 
   test('runtime merge keeps className and prop contributions in the same hover branch', () => {

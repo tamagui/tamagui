@@ -8,17 +8,11 @@ import { defaultConfig as configV5 } from '@tamagui/config/v5'
 import { shorthands } from '@tamagui/config/v6'
 import { tamaguiThemes } from '@tamagui/themes/v4'
 import type { InferTamaguiConfig } from '@tamagui/web'
-import {
-  createTamagui,
-  type TamaguiInternalConfig,
-} from 'tamagui'
+import { createTamagui, type TamaguiInternalConfig } from 'tamagui'
 // TODO just move this into this folder
 import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
 import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
-import {
-  toV6Themes,
-  type V6Themes,
-} from '../../packages/tamagui-dev-config/src/v6Themes'
+import { toV6Themes, type V6Themes } from '../../packages/tamagui-dev-config/src/v6Themes'
 // Generated theme from v5 theme builder for testing
 import { themes as generatedV5Themes } from './generatedV5Theme'
 
@@ -482,33 +476,34 @@ type KitchenConfigInput = Omit<
   variables: typeof variables
 }
 
-const tamaConf: InferTamaguiConfig<KitchenConfigInput> = createTamagui<KitchenConfigInput>({
-  ...config,
-  fonts: {
-    ...config.fonts,
-    body_ja: bodyJa,
-  },
-  // Use v4 themes when ?v4theme=true is in the URL
-  themes,
-  shorthands: shorthands,
-  settings: {
-    ...config.settings,
-    defaultFont: 'body',
-    allowedStyleValues: 'somewhat-strict',
-    fastSchemeChange: true,
-  },
-  tokens,
-  media: {
-    ...v4MaxMedia,
-    ...config.media,
-  },
-  animations, // default reanimated
+const tamaConf: InferTamaguiConfig<KitchenConfigInput> =
+  createTamagui<KitchenConfigInput>({
+    ...config,
+    fonts: {
+      ...config.fonts,
+      body_ja: bodyJa,
+    },
+    // Use v4 themes when ?v4theme=true is in the URL
+    themes,
+    shorthands: shorthands,
+    settings: {
+      ...config.settings,
+      defaultFont: 'body',
+      allowedStyleValues: 'somewhat-strict',
+      fastSchemeChange: true,
+    },
+    tokens,
+    media: {
+      ...v4MaxMedia,
+      ...config.media,
+    },
+    animations, // default reanimated
 
-  // custom variables for VariablesCase (plans/variables.md)
-  variables,
+    // custom variables for VariablesCase (plans/variables.md)
+    variables,
 
-  defaultProps,
-})
+    defaultProps,
+  })
 
 export type Conf = typeof tamaConf
 

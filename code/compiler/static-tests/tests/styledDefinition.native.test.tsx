@@ -35,9 +35,7 @@ const isFolded = (code: string) => code.includes('__TamaguiNativeView')
 test.each(MEDIA_KEYS)(
   'a styled definition carrying %s stays on the runtime path',
   async (mediaKey) => {
-    const output = await extractForNative(
-      styledWith(`width: '${mediaKey}:999px'`)
-    )
+    const output = await extractForNative(styledWith(`width: '${mediaKey}:999px'`))
     const code = output?.code ?? ''
 
     // the media value must never reach a flat style — that would freeze the

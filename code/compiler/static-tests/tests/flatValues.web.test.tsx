@@ -97,7 +97,6 @@ test('transform axis programs carry their composition class', async () => {
   expect(output?.styles).toContain('translate:')
 })
 
-
 test('a dynamic clause string bails to the runtime component', async () => {
   const output = await extractForWeb(
     `

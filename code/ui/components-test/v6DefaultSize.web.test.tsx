@@ -11,7 +11,8 @@ import { V6DefaultSizeButton as Button } from './v6DefaultSizeButton'
 const config = createTamagui(v6)
 const defaultToken = config.settings.defaultSize
 const categoryDefaults = (config.settings as any).defaultTokens as
-  Record<string, string> | undefined
+  | Record<string, string>
+  | undefined
 const defaultFor = (category: string) => categoryDefaults?.[category] ?? defaultToken
 
 function resolveRenderedValue(

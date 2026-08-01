@@ -35,8 +35,8 @@ describe('px string font values', () => {
       ) as any
     )
 
-    const numFont = numeric.fontsParsed["body"]
-    const pxFont = pxStrings.fontsParsed["body"]
+    const numFont = numeric.fontsParsed['body']
+    const pxFont = pxStrings.fontsParsed['body']
 
     // values match exactly as numbers
     expect(pxFont.size['4'].val).toBe(15)

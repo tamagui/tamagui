@@ -310,7 +310,7 @@ describe('first-render optimization mode', () => {
       const theme = useTheme()
       const media = useMedia()
       const background = theme.background.val
-      const backgroundAlias = theme["background"]
+      const backgroundAlias = theme['background']
 
       return (
         <span

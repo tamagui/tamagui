@@ -38,8 +38,13 @@ function DelayDemoContent({
 }) {
   return (
     <YStack
-                  gap="3" p="4" bg="background" borderWidth={1} borderColor="border-color" width={260}
-                >
+      gap="3"
+      p="4"
+      bg="background"
+      borderWidth={1}
+      borderColor="border-color"
+      width={260}
+    >
       <Text fontWeight="bold" fontSize="5">
         {driverName}
       </Text>
@@ -53,8 +58,14 @@ function DelayDemoContent({
           {show &&
             delayColors.map((color, i) => (
               <Square
-                                key={color} transition={['medium', { delay: i * 100 }]} bg={color} opacity="enter:0 exit:0" scale="enter:0.5 exit:0.5" y="enter:10px exit:-10px" size={40}
-                              />
+                key={color}
+                transition={['medium', { delay: i * 100 }]}
+                bg={color}
+                opacity="enter:0 exit:0"
+                scale="enter:0.5 exit:0.5"
+                y="enter:10px exit:-10px"
+                size={40}
+              />
             ))}
         </AnimatePresence>
       </XStack>
@@ -156,8 +167,13 @@ const ThemeAccent = () => {
       </YStack>
       <XStack gap="4">
         <YStack
-                                      gap="2" bg="background" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                    >
+          gap="2"
+          bg="background"
+          p="4"
+          borderWidth={2}
+          borderColor="border-color"
+          flex={1}
+        >
           <ThemeDebug />
           <Text fontWeight="bold">Normal (Light)</Text>
           <Text fontSize="2" color="color10">
@@ -171,8 +187,13 @@ const ThemeAccent = () => {
 
         <Theme name="dark">
           <YStack
-                                                gap="2" bg="red" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                              >
+            gap="2"
+            bg="red"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            flex={1}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Accent (Dark)</Text>
             <Text fontSize="2" color="color10">
@@ -202,8 +223,13 @@ const ThemeAccent = () => {
       <XStack gap="4">
         <Theme name="light">
           <YStack
-                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                              >
+            gap="2"
+            bg="background02"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            flex={1}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Light Theme</Text>
             <Text fontSize="2" color="color10">
@@ -215,8 +241,13 @@ const ThemeAccent = () => {
 
         <Theme name="light">
           <YStack
-                                                gap="2" bg="background" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                              >
+            gap="2"
+            bg="background"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            flex={1}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Light + Accent</Text>
             <Text fontSize="2" color="color10">
@@ -243,8 +274,13 @@ const ThemeAccent = () => {
       <XStack gap="4">
         <Theme name="dark">
           <YStack
-                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                              >
+            gap="2"
+            bg="background02"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            flex={1}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Dark Theme</Text>
             <Text fontSize="2" color="color10">
@@ -257,8 +293,13 @@ const ThemeAccent = () => {
         <Theme name="dark">
           <Theme name="accent">
             <YStack
-                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                                        >
+              gap="2"
+              bg="background02"
+              p="4"
+              borderWidth={2}
+              borderColor="border-color"
+              flex={1}
+            >
               <ThemeDebug />
               <Text fontWeight="bold">Dark + Accent</Text>
               <Text fontSize="2" color="color10">
@@ -284,8 +325,13 @@ const ThemeAccent = () => {
       <XStack gap="4">
         <Theme name="red">
           <YStack
-                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                              >
+            gap="2"
+            bg="background02"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            flex={1}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Red Theme</Text>
             <Text fontSize="2" color="color10">
@@ -302,8 +348,13 @@ const ThemeAccent = () => {
           <Theme name="red">
             <Theme name="accent">
               <YStack
-                                                                    gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                                                  >
+                gap="2"
+                bg="background02"
+                p="4"
+                borderWidth={2}
+                borderColor="border-color"
+                flex={1}
+              >
                 <ThemeDebug />
                 <Text fontWeight="bold">Red + Accent</Text>
                 <Text fontSize="2" color="color10">
@@ -333,8 +384,13 @@ const ThemeAccent = () => {
       <XStack gap="4">
         <Theme name="blue">
           <YStack
-                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                              >
+            gap="2"
+            bg="background02"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            flex={1}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Blue Theme</Text>
             <Text fontSize="2" color="color10">
@@ -350,8 +406,13 @@ const ThemeAccent = () => {
         <Theme name="blue">
           <Theme name="accent">
             <YStack
-                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                                        >
+              gap="2"
+              bg="background02"
+              p="4"
+              borderWidth={2}
+              borderColor="border-color"
+              flex={1}
+            >
               <ThemeDebug />
               <Text fontWeight="bold">Blue + Accent</Text>
               <Text fontSize="2" color="color10">
@@ -380,8 +441,13 @@ const ThemeAccent = () => {
       <XStack gap="4">
         <Theme name="green">
           <YStack
-                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                              >
+            gap="2"
+            bg="background02"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            flex={1}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Green Theme</Text>
             <Text fontSize="2" color="color10">
@@ -397,8 +463,13 @@ const ThemeAccent = () => {
         <Theme name="green">
           <Theme name="accent">
             <YStack
-                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                                        >
+              gap="2"
+              bg="background02"
+              p="4"
+              borderWidth={2}
+              borderColor="border-color"
+              flex={1}
+            >
               <ThemeDebug />
               <Text fontWeight="bold">Green + Accent</Text>
               <Text fontSize="2" color="color10">
@@ -427,8 +498,13 @@ const ThemeAccent = () => {
       <XStack gap="4">
         <Theme name="yellow">
           <YStack
-                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                              >
+            gap="2"
+            bg="background02"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            flex={1}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Yellow Theme</Text>
             <Text fontSize="2" color="color10">
@@ -444,8 +520,13 @@ const ThemeAccent = () => {
         <Theme name="yellow">
           <Theme name="accent">
             <YStack
-                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
-                                                        >
+              gap="2"
+              bg="background02"
+              p="4"
+              borderWidth={2}
+              borderColor="border-color"
+              flex={1}
+            >
               <ThemeDebug />
               <Text fontWeight="bold">Yellow + Accent</Text>
               <Text fontSize="2" color="color10">
@@ -474,8 +555,13 @@ const ThemeAccent = () => {
       <XStack gap="4" flexWrap="wrap">
         <Theme name="light">
           <YStack
-                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
-                                              >
+            gap="2"
+            bg="background02"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            minW={200}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Light</Text>
             <Text fontSize="2" color="color10">
@@ -488,8 +574,13 @@ const ThemeAccent = () => {
         <Theme name="light">
           <Theme name="accent">
             <YStack
-                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
-                                                        >
+              gap="2"
+              bg="background02"
+              p="4"
+              borderWidth={2}
+              borderColor="border-color"
+              minW={200}
+            >
               <ThemeDebug />
               <Text fontWeight="bold">Light + Accent</Text>
               <Text fontSize="2" color="color10">
@@ -504,8 +595,13 @@ const ThemeAccent = () => {
           <Theme name="accent">
             <Theme name="accent">
               <YStack
-                                                                    gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
-                                                                  >
+                gap="2"
+                bg="background02"
+                p="4"
+                borderWidth={2}
+                borderColor="border-color"
+                minW={200}
+              >
                 <ThemeDebug />
                 <Text fontWeight="bold">Light + Accent + Accent</Text>
                 <Text fontSize="2" color="color10">
@@ -524,8 +620,13 @@ const ThemeAccent = () => {
       <XStack gap="4" flexWrap="wrap" mt="2">
         <Theme name="red">
           <YStack
-                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
-                                              >
+            gap="2"
+            bg="background02"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            minW={200}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Red</Text>
             <Text fontSize="2" color="color10">
@@ -537,8 +638,13 @@ const ThemeAccent = () => {
 
         <Theme name="red">
           <YStack
-                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
-                                              >
+            gap="2"
+            bg="background02"
+            p="4"
+            borderWidth={2}
+            borderColor="border-color"
+            minW={200}
+          >
             <ThemeDebug />
             <Text fontWeight="bold">Red + Accent</Text>
             <Text fontSize="2" color="color10">
@@ -552,8 +658,13 @@ const ThemeAccent = () => {
           <Theme name="accent">
             <Theme name="accent">
               <YStack
-                                                                    gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
-                                                                  >
+                gap="2"
+                bg="background02"
+                p="4"
+                borderWidth={2}
+                borderColor="border-color"
+                minW={200}
+              >
                 <ThemeDebug />
                 <Text fontWeight="bold">Red + Accent + Accent</Text>
                 <Text fontSize="2" color="color10">
@@ -577,14 +688,29 @@ const Motion = () => {
   const squares = (
     <>
       <Square
-                  transition="lazy" bg="green group-hover/card:magenta group-hover:yellow group-press/other:rgba(255,255,0,0.5)" scale="group-hover/card:1.1" rotate="group-press/card:5deg" y="group-press/other:20px" size={50}
-                />
+        transition="lazy"
+        bg="green group-hover/card:magenta group-hover:yellow group-press/other:rgba(255,255,0,0.5)"
+        scale="group-hover/card:1.1"
+        rotate="group-press/card:5deg"
+        y="group-press/other:20px"
+        size={50}
+      />
       <Square
-                  transition="lazy" bg="yellow group-hover/card:magenta group-hover/other:black" scale="group-hover/card:1.1" rotate="group-press/card:5deg" x="group-hover/other:10px" size={50}
-                />
+        transition="lazy"
+        bg="yellow group-hover/card:magenta group-hover/other:black"
+        scale="group-hover/card:1.1"
+        rotate="group-press/card:5deg"
+        x="group-hover/other:10px"
+        size={50}
+      />
       <Square
-                  transition="lazy" bg="green group-hover/card:magenta group-hover:yellow group-press/other:rgba(255,255,0,0.5)" scale="group-hover/card:1.1" rotate="group-press/card:5deg" y="group-press/other:20px" size={50}
-                />
+        transition="lazy"
+        bg="green group-hover/card:magenta group-hover:yellow group-press/other:rgba(255,255,0,0.5)"
+        scale="group-hover/card:1.1"
+        rotate="group-press/card:5deg"
+        y="group-press/other:20px"
+        size={50}
+      />
     </>
   )
 
@@ -652,8 +778,13 @@ const Motion = () => {
         <AnimatePresence>
           {show && (
             <Square
-                                    transition="lazy" scale="group-hover/card:2 hover:1.1" bg="rgba(255,200,200) hover:rgba(200,200,200)" y="enter:-100px exit:100px" opacity="enter:0 exit:0" size={50}
-                                  />
+              transition="lazy"
+              scale="group-hover/card:2 hover:1.1"
+              bg="rgba(255,200,200) hover:rgba(200,200,200)"
+              y="enter:-100px exit:100px"
+              opacity="enter:0 exit:0"
+              size={50}
+            />
           )}
         </AnimatePresence>
       </YStack>
@@ -672,19 +803,31 @@ const Drivers = () => {
       <Configuration animationDriver={animationsMotion}>
         <YStack group="card" gap={50}>
           <XStack
-                                                transition={[ 'bouncy', { stiffness: 250, damping: 4, mass: 0.5, }, ]} width={100} height={100} bg="red" scale="1 group-hover/card:1.5"
-                                              />
+            transition={['bouncy', { stiffness: 250, damping: 4, mass: 0.5 }]}
+            width={100}
+            height={100}
+            bg="red"
+            scale="1 group-hover/card:1.5"
+          />
           <XStack
-                                                transition={'bouncy'} width={100} height={100} bg="blue" scale="1 group-hover/card:1.5"
-                                              />
+            transition={'bouncy'}
+            width={100}
+            height={100}
+            bg="blue"
+            scale="1 group-hover/card:1.5"
+          />
         </YStack>
       </Configuration>
       {/* because css here and below, this group YStack can avoid re-rendering */}
       <Configuration animationDriver={animationsCSS}>
         <YStack group="card">
           <XStack
-                              transition="bouncy" width={100} height={100} bg="red" scale="group-hover/card:1.5"
-                            />
+            transition="bouncy"
+            width={100}
+            height={100}
+            bg="red"
+            scale="group-hover/card:1.5"
+          />
         </YStack>
       </Configuration>
     </>
@@ -705,15 +848,17 @@ const Performance = () => {
         render
       </div>
 
-      <Circle
-                  size={36} borderWidth={2} bg="yellow" borderColor="red hover:green"
-                />
+      <Circle size={36} borderWidth={2} bg="yellow" borderColor="red hover:green" />
 
       {m && (
         <TimedRender key={k}>
           <Circle
-                              size={36} disableOptimization borderWidth={2} bg="yellow" borderColor="red hover:green"
-                            />
+            size={36}
+            disableOptimization
+            borderWidth={2}
+            bg="yellow"
+            borderColor="red hover:green"
+          />
         </TimedRender>
       )}
     </>

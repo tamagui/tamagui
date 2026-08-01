@@ -87,9 +87,7 @@ export function renderReport(
     `${readyFiles.length} of ${filesWithSites} files have no legacy condition object left after`,
     'conversion. V3 has no compatibility setting; finish the remaining files directly:',
     blockedFiles.length
-      ? blockedFiles
-          .map((file) => `\`${file}\``)
-          .join(', ')
+      ? blockedFiles.map((file) => `\`${file}\``).join(', ')
       : 'every file in this corpus is fully migrated.',
     '',
     '### Flag reasons',

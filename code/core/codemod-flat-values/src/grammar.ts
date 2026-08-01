@@ -80,11 +80,7 @@ export function convertLegacyConditionProp(
   value: unknown,
   options: ConvertLegacyConditionOptions
 ): LegacyConditionResult | null {
-  return convertLegacyConditionPropLocal(
-    propName,
-    renameBuiltInTokens(value),
-    options
-  )
+  return convertLegacyConditionPropLocal(propName, renameBuiltInTokens(value), options)
 }
 
 /** every prop spelling the codemod treats as carrying a style value */

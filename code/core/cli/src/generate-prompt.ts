@@ -360,9 +360,7 @@ function generateMarkdown(config: any): string {
 
   // Tokens
   sections.push('## Tokens\n\n')
-  sections.push(
-    'Tokens are design system values referenced by their bare names.\n\n'
-  )
+  sections.push('Tokens are design system values referenced by their bare names.\n\n')
 
   const tokens = config.tamaguiConfig?.tokens || {}
 
@@ -466,9 +464,7 @@ function generateMarkdown(config: any): string {
     `<View ${getPropName('padding')}="4" ${getPropName('gap')}="2" ${getPropName('margin')}="3" />\n\n`
   )
   sections.push('// Size tokens - for width, height, dimensions\n')
-  sections.push(
-    `<View ${getPropName('width')}="10" ${getPropName('height')}="6" />\n\n`
-  )
+  sections.push(`<View ${getPropName('width')}="10" ${getPropName('height')}="6" />\n\n`)
   sections.push('// Color tokens - for colors and backgrounds\n')
   sections.push(
     `<View ${getPropName('backgroundColor')}="blue5" ${getPropName('color')}="gray12" />\n\n`
@@ -500,9 +496,7 @@ function generateMarkdown(config: any): string {
     // Get first media query name as example
     const firstMediaName = mediaEntries[0]?.[0]
     if (firstMediaName) {
-      sections.push(
-        `<View ${getPropName('width')}="100% ${firstMediaName}:50%" />\n\n`
-      )
+      sections.push(`<View ${getPropName('width')}="100% ${firstMediaName}:50%" />\n\n`)
     }
 
     sections.push('// Using the useMedia hook\n')

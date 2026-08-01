@@ -776,15 +776,15 @@ describe('getSplitStyles - asChild default props skipping', () => {
 
 describe('getSplitStyles - flat clause merging', () => {
   const StyledButton = styled(View, {
-  name: 'StyledButton',
-  backgroundColor: "press:green",
-  variants: {
-        variant: {
-          prim: {
-          backgroundColor: "press:blue"
-          },
+    name: 'StyledButton',
+    backgroundColor: 'press:green',
+    variants: {
+      variant: {
+        prim: {
+          backgroundColor: 'press:blue',
         },
-      }
+      },
+    },
   })
 
   test('an inline press clause overrides the variant press clause', () => {

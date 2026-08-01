@@ -192,13 +192,10 @@ const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(
     // HOC-expanded style props would let the variant overwrite a direct
     // padding override from the caller.
     const sizedProps = { size, ...props }
-    const { props: buttonProps } = useButton(
-      sizedProps,
-      {
-        Text: ButtonText,
-        iconSize: buttonSizes.resolve(size).icon,
-      }
-    )
+    const { props: buttonProps } = useButton(sizedProps, {
+      Text: ButtonText,
+      iconSize: buttonSizes.resolve(size).icon,
+    })
 
     return (
       <buttonSizes.Context.Provider size={size}>

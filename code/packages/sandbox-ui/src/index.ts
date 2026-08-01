@@ -14,9 +14,9 @@ export * from './views'
 // export * from 'expo-constants'
 
 export const SimpleTest = styled(View, {
-width: 100,
-height: 100,
-backgroundColor: "blue press:red"
+  width: 100,
+  height: 100,
+  backgroundColor: 'blue press:red',
 })
 
 export const Test14Component = styled(YStack, {
@@ -26,7 +26,7 @@ export const Test14Component = styled(YStack, {
     fullbleed: {
       true: {},
       false: {
-      padding: "4"
+        padding: '4',
       },
     },
   } as const,
@@ -37,11 +37,11 @@ export const Test14Component = styled(YStack, {
 })
 
 export const TestBorderExtraction = styled(YStack, {
-theme: 'contentContainer',
-backgroundColor: "background",
-borderColor: "border-color",
-borderWidth: 1,
-borderRadius: "10",
-height: "10",
-width: "10"
+  theme: 'contentContainer',
+  backgroundColor: 'background',
+  borderColor: 'border-color',
+  borderWidth: 1,
+  borderRadius: '10',
+  height: '10',
+  width: '10',
 })

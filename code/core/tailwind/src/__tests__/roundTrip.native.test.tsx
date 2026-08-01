@@ -239,15 +239,11 @@ describe('native — responsive media (converter-driven, parser-level structure)
     const showProgram = Object.values(flat(showCls)).find(
       (value) => value?.property === 'display'
     )
-    expect(showProgram?.value.clauses).toEqual([
-      { modifiers: ['md'], payload: 'flex' },
-    ])
+    expect(showProgram?.value.clauses).toEqual([{ modifiers: ['md'], payload: 'flex' }])
     const hideCls = toClass(`<View display="flex md:none" />`)
     const hideProgram = Object.values(flat(hideCls)).find(
       (value) => value?.property === 'display'
     )
-    expect(hideProgram?.value.clauses).toEqual([
-      { modifiers: ['md'], payload: 'none' },
-    ])
+    expect(hideProgram?.value.clauses).toEqual([{ modifiers: ['md'], payload: 'none' }])
   })
 })

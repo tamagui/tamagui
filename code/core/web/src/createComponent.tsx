@@ -382,7 +382,8 @@ export function createComponent<
     // components without a descriptor pay one property read.
     if (staticConfig.styleFrontend) {
       props = staticConfig.styleFrontend.preprocessProps(props, config) as
-        ViewProps | TextProps
+        | ViewProps
+        | TextProps
     }
 
     if (process.env.NODE_ENV === 'development' && isClient) {
