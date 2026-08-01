@@ -35,6 +35,7 @@ const packageDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const repoRoot = resolve(packageDir, '../../..')
 const defaultReportPath = resolve(packageDir, 'dry-run-report.md')
 const ignoreMarker = '.tamagui-flat-values-ignore'
+const ignoredDirectories = new Map<string, boolean>()
 
 const defaultCorpus = [
   'code/kitchen-sink/src/usecases',
@@ -43,15 +44,31 @@ const defaultCorpus = [
 
 function isIgnored(filePath: string): boolean {
   let directory = dirname(filePath)
-  while (true) {
-    if (existsSync(resolve(directory, ignoreMarker))) return true
+  const visited: string[] = []
+  while (directory === repoRoot || !relative(repoRoot, directory).startsWith('..')) {
+    const cached = ignoredDirectories.get(directory)
+    if (cached !== undefined) {
+      for (const seen of visited) ignoredDirectories.set(seen, cached)
+      return cached
+    }
+    visited.push(directory)
+    if (existsSync(resolve(directory, ignoreMarker))) {
+      for (const seen of visited) ignoredDirectories.set(seen, true)
+      return true
+    }
+    if (directory === repoRoot) break
     const parent = dirname(directory)
-    if (parent === directory) return false
+    if (parent === directory) break
     directory = parent
   }
+  for (const seen of visited) ignoredDirectories.set(seen, false)
+  return false
 }
 
-function collectFiles(inputs: readonly string[]): SourceFile[] {
+function collectFiles(inputs: readonly string[]): {
+  sourceFiles: SourceFile[]
+  ignoredFiles: number
+} {
   const project = new Project({
     tsConfigFilePath: resolve(repoRoot, 'tsconfig.json'),
     skipAddingFilesFromTsConfig: true,
@@ -68,6 +85,7 @@ function collectFiles(inputs: readonly string[]): SourceFile[] {
   })
 
   const files = new Map<string, SourceFile>()
+  const ignored = new Set<string>()
   const missing: string[] = []
   for (const input of inputs) {
     const path = resolve(repoRoot, input)
@@ -81,7 +99,9 @@ function collectFiles(inputs: readonly string[]): SourceFile[] {
     // migration path would otherwise render an empty corpus as ready to cut over
     if (!matched.length) missing.push(input)
     for (const file of matched) {
-      if (!isIgnored(file.getFilePath())) files.set(file.getFilePath(), file)
+      const filePath = file.getFilePath()
+      if (isIgnored(filePath)) ignored.add(filePath)
+      else files.set(filePath, file)
     }
   }
 
@@ -92,9 +112,19 @@ function collectFiles(inputs: readonly string[]): SourceFile[] {
     process.exit(2)
   }
 
-  return [...files.values()].sort((left, right) =>
-    left.getFilePath().localeCompare(right.getFilePath())
-  )
+  if (files.size === 0 && ignored.size > 0) {
+    console.error(
+      `all ${ignored.size} matched source ${ignored.size === 1 ? 'file was' : 'files were'} skipped by ${ignoreMarker}; no migration report was written`
+    )
+    process.exit(2)
+  }
+
+  return {
+    sourceFiles: [...files.values()].sort((left, right) =>
+      left.getFilePath().localeCompare(right.getFilePath())
+    ),
+    ignoredFiles: ignored.size,
+  }
 }
 
 /** every `$theme-*` spelling the corpus uses, so its themes resolve as modifiers */
@@ -390,7 +420,7 @@ function parseArguments(argv: readonly string[]): {
 }
 
 const { reportPath, jsonPath, inputs, write } = parseArguments(process.argv.slice(2))
-const sourceFiles = collectFiles(inputs)
+const { sourceFiles, ignoredFiles } = collectFiles(inputs)
 for (const sourceFile of sourceFiles) {
   const diagnostics = (
     sourceFile.compilerNode as unknown as {
@@ -450,6 +480,7 @@ const { text, summary } = renderReport(
   files,
   inputs.map((input) => relative(repoRoot, resolve(repoRoot, input))),
   modifierRegistry.diagnostics,
+  ignoredFiles,
   write
 )
 mkdirSync(dirname(reportPath), { recursive: true })
@@ -472,5 +503,5 @@ if (write) {
 console.log(`wrote ${reportPath}`)
 if (write) console.log(`rewrote ${written} source files`)
 console.log(
-  `${summary.sites} sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged`
+  `${summary.sites} sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged; ${summary.ignoredFiles} source files ignored`
 )

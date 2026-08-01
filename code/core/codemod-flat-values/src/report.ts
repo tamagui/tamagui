@@ -23,12 +23,14 @@ export interface ReportSummary {
   flagged: number
   /** sites with nothing to convert until the runtime catches up */
   waiting: number
+  ignoredFiles: number
 }
 
 export function renderReport(
   files: readonly FileReport[],
   corpus: readonly string[],
   registryDiagnostics: readonly string[],
+  ignoredFiles = 0,
   write = false
 ): { text: string; summary: ReportSummary } {
   const sites = files.flatMap((file) => file.sites)
@@ -76,6 +78,7 @@ export function renderReport(
     `- ${ineligible.length} use properties that cannot carry flat clauses`,
     `- ${waiting.length} have nothing to convert until the runtime catches up (see below)`,
     `- ${flagged.length} have syntax or ordering flags for manual work`,
+    `- ${ignoredFiles} source files skipped by \`.tamagui-flat-values-ignore\` markers`,
     `- ${jsx.length} JSX sites: ${cleanJsx} clean, ${jsx.length - cleanJsx} need review`,
     `- ${styled.length} styled config sites: ${cleanStyled} clean, ${styled.length - cleanStyled} need review`,
     '',
@@ -198,6 +201,7 @@ export function renderReport(
       ineligible: ineligible.length,
       flagged: flagged.length,
       waiting: waiting.length,
+      ignoredFiles,
     },
   }
 }

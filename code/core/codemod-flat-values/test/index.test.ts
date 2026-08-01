@@ -1,5 +1,12 @@
 import { afterEach, describe, expect, test } from 'bun:test'
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -27,6 +34,7 @@ interface Result {
     ineligible: number
     flagged: number
     waiting: number
+    ignoredFiles: number
   }
 }
 
@@ -1430,9 +1438,38 @@ export const Fixture = () => <View bg="$blue10" hoverStyle={{ bg: '$blue11' }} /
       stdout: 'pipe',
     })
 
-    expect(result.exitCode, result.stderr.toString()).toBe(0)
-    expect(result.stdout.toString()).toContain('rewrote 0 source files')
+    expect(result.exitCode).toBe(2)
+    expect(result.stderr.toString()).toContain(
+      'all 1 matched source file was skipped by .tamagui-flat-values-ignore'
+    )
+    expect(existsSync(join(reportDirectory, 'report.md'))).toBe(false)
     expect(readFileSync(sourcePath, 'utf8')).toBe(source)
+  })
+
+  test('ignored files are counted when the corpus also has migration input', () => {
+    const directory = mkdtempSync(join(packageDir, 'test/.flat-values-fixture-'))
+    temporaryDirectories.push(directory)
+    const ignoredDirectory = join(directory, 'pinned-v2')
+    const includedDirectory = join(directory, 'app')
+    mkdirSync(ignoredDirectory, { recursive: true })
+    mkdirSync(includedDirectory, { recursive: true })
+    writeFileSync(
+      join(ignoredDirectory, '.tamagui-flat-values-ignore'),
+      'Pinned V2 fixture.\n'
+    )
+    writeFileSync(
+      join(ignoredDirectory, 'fixture.tsx'),
+      `import { View } from 'tamagui'\nexport const Fixture = () => <View bg="$blue10" />\n`
+    )
+    writeFileSync(
+      join(includedDirectory, 'fixture.tsx'),
+      `import { View } from 'tamagui'\nexport const Fixture = () => <View bg="$blue10" />\n`
+    )
+
+    const result = runOn([directory])
+
+    expect(result.summary.ignoredFiles).toBe(1)
+    expect(result.files).toHaveLength(1)
   })
 
   test('write mode preserves a line comment before JSX style attributes', () => {
