@@ -210,6 +210,14 @@ test('exit clauses source from isExiting', () => {
   expect(exiting.style?.opacity).toBe(0)
 })
 
+test('lifecycle-only programs expose numeric resting targets to inline drivers', () => {
+  const mounted = split({ opacity: 'enter:0', y: 'enter:-3px' })
+  expect(mounted.style).toEqual({
+    opacity: 1,
+    transform: [{ translateY: 0 }],
+  })
+})
+
 test('component-tier states are skipped, not phantom-attached', () => {
   const result = split({ backgroundColor: 'gray checked:blue' })
   expect(result.style?.backgroundColor).toBe('gray')

@@ -316,7 +316,26 @@ export function evaluateAccumulatedPrograms(
     }
 
     const payload = evaluateProgram(program.value, context.registry, active)
-    if (payload === null) continue
+    if (payload === null) {
+      // CSS naturally falls back to each property's initial value when an
+      // enter/exit-only rule stops matching. Inline animation drivers need the
+      // same resting target explicitly or React removes the key and the host
+      // snaps there without giving the driver anything to animate. Keep this
+      // deliberately limited to lifecycle properties with unambiguous numeric
+      // identities; other properties still require an authored base.
+      const lifecycle = styleState.programLifecycle?.get(longhand)
+      if (lifecycle) {
+        const transformProp = transformPropForDeclaration[longhand]
+        if (transformProp) {
+          transformResults ||= {}
+          transformResults[transformProp] = transformProp.startsWith('scale') ? 1 : 0
+        } else if (longhand === 'opacity') {
+          styleState.style ||= {}
+          styleState.style.opacity = 1
+        }
+      }
+      continue
+    }
 
     const resolved = resolvePayload(payload, {
       lookup: context.getLookup(longhand, styleState.fontFamily),
