@@ -6,7 +6,7 @@ const contentStyles = {
   name: 'KitchenSinkMenuContent',
   minWidth: 180,
   padding: '1-5',
-  backgroundColor: 'background focus:background-hover press:background-press',
+  backgroundColor: 'background',
   borderColor: 'border-color',
   borderRadius: '4',
   borderWidth: 1,
@@ -22,6 +22,7 @@ const itemStyles = {
   flexDirection: 'row',
   borderRadius: '2',
   cursor: 'pointer',
+  backgroundColor: 'focus:background-hover press:background-press',
 
   variants: {
     disabled: {

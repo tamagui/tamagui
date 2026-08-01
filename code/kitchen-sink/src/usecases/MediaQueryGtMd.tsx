@@ -59,7 +59,7 @@ export const MediaQueryGtMd = () => {
         testID="media-test-all"
         height={100}
         width={100}
-        backgroundColor="red sm:blue md:yellow gtMd:green"
+        backgroundColor="red md:yellow sm:blue gtMd:green"
       />
     </YStack>
   )
