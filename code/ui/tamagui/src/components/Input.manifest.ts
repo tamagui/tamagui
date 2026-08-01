@@ -5,11 +5,11 @@ export const manifest = {
     'v2-look Input and TextArea: theme palette, border, background, body font, and hover/focus color styling on the unstyled @tamagui/ui Input/TextArea behavior (which keeps only structural sizing + the native outline reset).',
   categories: ['form'],
   tokens: [
-    '$background',
-    '$borderColor',
-    '$borderColorHover',
-    '$borderColorFocus',
-    '$outlineColor',
-    '$color',
+    'background',
+    'border-color',
+    'border-color-hover',
+    'border-color-focus',
+    'outline-color',
+    'color',
   ],
 } satisfies SkinManifest

@@ -32,7 +32,7 @@ function ToggleGroupComponent(props: {
       justify="center"
       gap="4"
     >
-      <Label pr="0" justify="flex-end" size="$4" htmlFor={id}>
+      <Label pr="0" justify="flex-end" size="4" htmlFor={id}>
         {props.type === 'single' ? 'Single' : 'Multiple'}
       </Label>
 
@@ -48,7 +48,7 @@ function ToggleGroupComponent(props: {
               value="left"
               aria-label="Left aligned"
               borderRadius="4"
-              activeStyle={{ backgroundColor: '$color5' }}
+              activeStyle={{ backgroundColor: 'color5' }}
             >
               <AlignLeft size={16} />
             </ToggleGroup.Item>
@@ -59,7 +59,7 @@ function ToggleGroupComponent(props: {
               value="center"
               aria-label="Center aligned"
               borderRadius="4"
-              activeStyle={{ backgroundColor: '$color5' }}
+              activeStyle={{ backgroundColor: 'color5' }}
             >
               <AlignCenter size={16} />
             </ToggleGroup.Item>
@@ -70,7 +70,7 @@ function ToggleGroupComponent(props: {
               value="right"
               aria-label="Right aligned"
               borderRadius="4"
-              activeStyle={{ backgroundColor: '$color5' }}
+              activeStyle={{ backgroundColor: 'color5' }}
             >
               <AlignRight size={16} />
             </ToggleGroup.Item>

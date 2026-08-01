@@ -13,7 +13,7 @@ export const IconFillStroke = () => (
 
     <XStack gap="3" alignItems="center">
       <Text>themed stroke</Text>
-      <Heart stroke="$color10" testID="stroke-token" />
+      <Heart stroke="color10" testID="stroke-token" />
     </XStack>
 
     <XStack gap="3" alignItems="center">
@@ -23,7 +23,7 @@ export const IconFillStroke = () => (
 
     <XStack gap="3" alignItems="center">
       <Text>themed fill</Text>
-      <Star fill="$color10" stroke="$color10" testID="fill-token" />
+      <Star fill="color10" stroke="color10" testID="fill-token" />
     </XStack>
 
     <XStack gap="3" alignItems="center">
@@ -33,7 +33,7 @@ export const IconFillStroke = () => (
 
     <XStack gap="3" alignItems="center">
       <Text>strokeWidth (token)</Text>
-      <Heart strokeWidth="$1" testID="strokeWidth-token" />
+      <Heart strokeWidth="1" testID="strokeWidth-token" />
     </XStack>
   </YStack>
 )

@@ -7,9 +7,9 @@ export function RadioGroupDemo() {
     <Theme name="surface2">
       <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
         <YStack width={300} items="center" gap="2">
-          <RadioGroupItemWithLabel size="$3" value="2" label="Second value" />
-          <RadioGroupItemWithLabel size="$4" value="3" label="Third value" />
-          <RadioGroupItemWithLabel size="$5" value="4" label="Fourth value" />
+          <RadioGroupItemWithLabel size="3" value="2" label="Second value" />
+          <RadioGroupItemWithLabel size="4" value="3" label="Third value" />
+          <RadioGroupItemWithLabel size="5" value="4" label="Fourth value" />
         </YStack>
       </RadioGroup>
     </Theme>

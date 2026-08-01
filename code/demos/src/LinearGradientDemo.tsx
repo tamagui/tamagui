@@ -11,7 +11,7 @@ export function LinearGradientDemo() {
         rounded="4"
         start={[0, 1]}
         end={[0, 0]}
-        colors={['$red10', '$yellow10']}
+        colors={['red10', 'yellow10']}
       />
 
       {/* theme values */}
@@ -21,7 +21,7 @@ export function LinearGradientDemo() {
         rounded="4"
         start={[1, 1]}
         end={[0, 0]}
-        colors={['$background', '$color']}
+        colors={['background', 'color']}
       />
     </XStack>
   )

@@ -4,7 +4,7 @@ export function StackZIndex() {
   return (
     <>
       {/* hardcoded */}
-      <Popover open size="$5" allowFlip>
+      <Popover open size="5" allowFlip>
         <Popover.Trigger asChild>
           <Button>toggle</Button>
         </Popover.Trigger>
@@ -22,7 +22,7 @@ export function StackZIndex() {
             <Dialog.Title>hi</Dialog.Title>
             <Dialog.Description>ok</Dialog.Description>
 
-            <Popover open size="$5" allowFlip>
+            <Popover open size="5" allowFlip>
               <Popover.Trigger asChild>
                 <Button>toggle</Button>
               </Popover.Trigger>
@@ -41,7 +41,7 @@ export function StackZIndex() {
       </Dialog>
 
       {/* stacked */}
-      <Popover open size="$5" allowFlip>
+      <Popover open size="5" allowFlip>
         <Popover.Trigger asChild>
           <Button>toggle</Button>
         </Popover.Trigger>
@@ -65,7 +65,7 @@ export function StackZIndex() {
             <Dialog.Title>hi</Dialog.Title>
             <Dialog.Description>ok</Dialog.Description>
 
-            <Popover open size="$5" allowFlip>
+            <Popover open size="5" allowFlip>
               <Popover.Trigger asChild>
                 <Button>toggle</Button>
               </Popover.Trigger>

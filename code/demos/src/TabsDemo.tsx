@@ -52,13 +52,13 @@ const HorizontalTabs = () => {
       width={`400px max-md:${width - 32}px`}
       height={150}
       rounded="4"
-      borderWidth="$0.25"
+      borderWidth="0-25"
       borderColor="border-color"
     >
       <Tabs.List aria-label="Manage your account">
         <Tabs.Tab
           activeStyle={{
-            backgroundColor: '$color3',
+            backgroundColor: 'color3',
           }}
           flex={1}
           value="tab1"
@@ -69,7 +69,7 @@ const HorizontalTabs = () => {
         </Tabs.Tab>
         <Tabs.Tab
           activeStyle={{
-            backgroundColor: '$color3',
+            backgroundColor: 'color3',
           }}
           flex={1}
           value="tab2"
@@ -80,7 +80,7 @@ const HorizontalTabs = () => {
         </Tabs.Tab>
         <Tabs.Tab
           activeStyle={{
-            backgroundColor: '$color3',
+            backgroundColor: 'color3',
           }}
           flex={1}
           value="tab3"
@@ -113,19 +113,19 @@ const VerticalTabs = () => {
       flexDirection="row"
       width={400}
       rounded="4"
-      borderWidth="$0.25"
+      borderWidth="0-25"
       overflow="hidden"
       borderColor="border-color"
       orientation="vertical"
     >
       <Tabs.List aria-label="Manage your account">
-        <Tabs.Tab activeStyle={{ backgroundColor: '$color3' }} value="tab1">
+        <Tabs.Tab activeStyle={{ backgroundColor: 'color3' }} value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab activeStyle={{ backgroundColor: '$color3' }} value="tab2">
+        <Tabs.Tab activeStyle={{ backgroundColor: 'color3' }} value="tab2">
           <SizableText>Connections</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab activeStyle={{ backgroundColor: '$color3' }} value="tab3">
+        <Tabs.Tab activeStyle={{ backgroundColor: 'color3' }} value="tab3">
           <SizableText>Notifications</SizableText>
         </Tabs.Tab>
       </Tabs.List>

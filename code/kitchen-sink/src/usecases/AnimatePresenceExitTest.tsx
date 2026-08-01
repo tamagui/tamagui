@@ -29,7 +29,7 @@ export function AnimatePresenceExitTest() {
 
   return (
     <YStack flex={1} alignItems="center" justifyContent="center" gap="4" padding="4">
-      <Paragraph size="$6" fontWeight="bold">
+      <Paragraph size="6" fontWeight="bold">
         AnimatePresence Exit Test
       </Paragraph>
 

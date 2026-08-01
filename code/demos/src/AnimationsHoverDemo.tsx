@@ -9,7 +9,7 @@ export function AnimationsHoverDemo() {
       bg="color9"
       rounded="9"
       scale="hover:1.2 press:0.9"
-      elevation="$4"
+      elevation="4"
       size={104}
     >
       <LogoIcon downscale={0.75} />

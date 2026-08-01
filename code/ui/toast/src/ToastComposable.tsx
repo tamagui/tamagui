@@ -777,7 +777,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
                   handleClose()
                 }}
               >
-                <SizableText size="$2">{toast.cancel.label}</SizableText>
+                <SizableText size="2">{toast.cancel.label}</SizableText>
               </ToastActionFrame>
             )}
             {toast.action && (
@@ -789,7 +789,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
                   }
                 }}
               >
-                <SizableText size="$2">{toast.action.label}</SizableText>
+                <SizableText size="2">{toast.action.label}</SizableText>
               </ToastActionFrame>
             )}
           </XStack>
@@ -1141,9 +1141,15 @@ const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
         transition={
           isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
         }
-        y={stackY}
+        y={
+          ctx.reducedMotion
+            ? stackY
+            : `${stackY} enter:${isTop ? -80 : 80}px exit:${
+                swipeOut ? (swipeExitYRef.current ?? stackY) : stackY
+              }px`
+        }
         scale={stackScale}
-        opacity={computedOpacity}
+        opacity={`${computedOpacity} enter:0 exit:0`}
         zIndex={computedZIndex}
         height={computedHeight}
         overflow="visible"
@@ -1154,16 +1160,6 @@ const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
           !isFront && {
             style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
-        enterStyle={
-          ctx.reducedMotion ? { opacity: 0 } : { opacity: 0, y: isTop ? -80 : 80 }
-        }
-        exitStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : swipeOut
-              ? { opacity: 0, y: swipeExitYRef.current ?? stackY, scale: stackScale }
-              : { opacity: 0, y: stackY, scale: stackScale }
-        }
         animateOnly={
           isWeb ? ['transform', 'opacity', 'height'] : ['transform', 'opacity']
         }
@@ -1292,7 +1288,7 @@ function ToastIcon(props: { children?: React.ReactNode }) {
   // if custom icon provided on toast, use it
   if (toast.icon !== undefined) {
     return (
-      <View flexShrink={0} marginTop="$0.5">
+      <View flexShrink={0} marginTop="0-5">
         {toast.icon}
       </View>
     )
@@ -1305,7 +1301,7 @@ function ToastIcon(props: { children?: React.ReactNode }) {
   if (!icon) return null
 
   return (
-    <View flexShrink={0} marginTop="$0.5">
+    <View flexShrink={0} marginTop="0-5">
       {icon}
     </View>
   )

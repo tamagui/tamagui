@@ -5,31 +5,23 @@ import { styled, withStaticProperties } from 'tamagui'
 const contentStyles = {
   name: 'KitchenSinkMenuContent',
   minWidth: 180,
-  padding: '$1.5',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
-  borderRadius: '$4',
+  padding: '1-5',
+  backgroundColor: 'background focus:background-hover press:background-press',
+  borderColor: 'border-color',
+  borderRadius: '4',
   borderWidth: 1,
-  boxShadow: '0 4px 12px $shadowColor',
+  boxShadow: '0 4px 12px shadow-color',
 } as const
 
 const itemStyles = {
   name: 'KitchenSinkMenuItem',
   width: '100%',
-  paddingHorizontal: '$2.5',
-  paddingVertical: '$2',
+  paddingHorizontal: '2-5',
+  paddingVertical: '2',
   alignItems: 'center',
   flexDirection: 'row',
-  borderRadius: '$2',
+  borderRadius: '2',
   cursor: 'pointer',
-
-  focusStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
 
   variants: {
     disabled: {
@@ -80,8 +72,8 @@ const MenuGroup = styled(MenuBehavior.Group, {
 })
 const MenuLabel = styled(MenuBehavior.Label, {
   name: 'KitchenSinkMenuLabel',
-  paddingHorizontal: '$2.5',
-  paddingVertical: '$1.5',
+  paddingHorizontal: '2-5',
+  paddingVertical: '1-5',
   color: 'color',
   cursor: 'default',
   opacity: 0.6,

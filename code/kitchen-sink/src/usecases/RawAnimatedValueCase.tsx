@@ -120,7 +120,7 @@ export function RawAnimatedValueCase() {
   return (
     <YStack gap="4" padding="4" flex={1}>
       <Paragraph fontWeight="bold">Raw Animated.Value Test</Paragraph>
-      <Paragraph size="$2" color="color10">
+      <Paragraph size="2" color="color10">
         Tests Animated.createAnimatedComponent with AnimatedValue styles
       </Paragraph>
 
@@ -154,10 +154,10 @@ export function RawAnimatedValueCase() {
         borderWidth={1}
         borderColor="border-color"
       >
-        <Paragraph size="$1" fontFamily="mono">
+        <Paragraph size="1" fontFamily="mono">
           Debug Info:
         </Paragraph>
-        <Paragraph testID="debug-info" size="$1" fontFamily="mono" whiteSpace="pre">
+        <Paragraph testID="debug-info" size="1" fontFamily="mono" whiteSpace="pre">
           {debugInfo}
         </Paragraph>
       </YStack>
@@ -212,10 +212,10 @@ function ComputedStyleDisplay({ targetId }: { targetId: string }) {
 
   return (
     <YStack backgroundColor="background-hover" padding="2" borderRadius="2">
-      <Paragraph size="$1" fontFamily="mono">
+      <Paragraph size="1" fontFamily="mono">
         Computed Styles:
       </Paragraph>
-      <Paragraph testID="computed-styles" size="$1" fontFamily="mono" whiteSpace="pre">
+      <Paragraph testID="computed-styles" size="1" fontFamily="mono" whiteSpace="pre">
         {computedStyles}
       </Paragraph>
     </YStack>

@@ -72,7 +72,7 @@ export function ExitCompletionCase() {
       <Paragraph fontWeight="bold" fontSize="5">
         Exit Completion Test Suite
       </Paragraph>
-      <Paragraph size="$2" color="color10">
+      <Paragraph size="2" color="color10">
         Tests sendExitComplete invariants. Check console for [EXIT_COMPLETE] logs.
       </Paragraph>
 
@@ -143,7 +143,7 @@ function Scenario01_BasicExit() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1" testID="exit-01-status" data-testid="exit-01-status">
+      <Paragraph size="1" testID="exit-01-status" data-testid="exit-01-status">
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -184,7 +184,7 @@ function Scenario02_ZeroDuration() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -223,7 +223,7 @@ function Scenario03_VeryShortDuration() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -270,7 +270,7 @@ function Scenario04_RapidToggle() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1" testID="exit-04-status" data-testid="exit-04-status">
+      <Paragraph size="1" testID="exit-04-status" data-testid="exit-04-status">
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -319,7 +319,7 @@ function Scenario05_ReRenderDuringExit() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         counter: {counter} | {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -369,7 +369,7 @@ function Scenario06_MultipleChildren() {
           />
         ))}
       </AnimatePresence>
-      <Paragraph size="$1">count: {items.length}</Paragraph>
+      <Paragraph size="1">count: {items.length}</Paragraph>
     </XStack>
   )
 }
@@ -410,7 +410,7 @@ function Scenario07_LongAnimation() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -458,7 +458,7 @@ function Scenario08_InterruptedExit() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1" testID="exit-08-status" data-testid="exit-08-status">
+      <Paragraph size="1" testID="exit-08-status" data-testid="exit-08-status">
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -510,7 +510,7 @@ function Scenario09_CanceledAndRestarted() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1" testID="exit-09-status" data-testid="exit-09-status">
+      <Paragraph size="1" testID="exit-09-status" data-testid="exit-09-status">
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -553,7 +553,7 @@ function Scenario10_PerPropertyExit() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -595,7 +595,7 @@ function Scenario11_MixedDurationExit() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -638,7 +638,7 @@ function Scenario51_AnimateOnlyExclusion() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -679,7 +679,7 @@ function Scenario53_TransformSubKeySplitDurations() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -722,7 +722,7 @@ function Scenario55_ZeroAnimatableExitProps() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }

@@ -16,7 +16,7 @@ export function AccordionDemo() {
             <>
               <Paragraph>1. Take a cold shower</Paragraph>
               <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="$1" color="color" />
+                <ChevronDown size="1" color="color" />
               </Square>
             </>
           )}
@@ -48,7 +48,7 @@ export function AccordionDemo() {
             <>
               <Paragraph>2. Eat 4 eggs</Paragraph>
               <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="$1" color="color" />
+                <ChevronDown size="1" color="color" />
               </Square>
             </>
           )}

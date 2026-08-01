@@ -30,7 +30,7 @@ export function ContextMenuDemo() {
 
       <ContextMenu.Portal zIndex={100}>
         <ContextMenu.Content
-          p="$1.5"
+          p="1-5"
           minW={180}
           borderWidth={1}
           borderColor="border-color"
@@ -40,7 +40,7 @@ export function ContextMenuDemo() {
           y="enter:-5px exit:-3px"
           transition="100ms"
         >
-          <ContextMenu.Arrow size="$4" borderWidth={1} borderColor="border-color" />
+          <ContextMenu.Arrow size="4" borderWidth={1} borderColor="border-color" />
 
           <ContextMenu.Preview>
             {() => {
@@ -115,7 +115,7 @@ export function ContextMenuDemo() {
                 transformOrigin="left top"
                 minW={160}
                 bg="background"
-                p="$1.5"
+                p="1-5"
                 borderWidth={1}
                 borderColor="border-color"
               >

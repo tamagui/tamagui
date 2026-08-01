@@ -5,7 +5,7 @@ import { Popover, YStack, SizableText, XStack } from 'tamagui'
 export function PopoverHoverableDelayCase() {
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="$3" color="color9">
+      <SizableText size="3" color="color9">
         Hover delay: open should delay 400ms, close should delay 400ms
       </SizableText>
       <Popover placement="bottom" hoverable={{ delay: 400 }} offset={8}>
@@ -43,7 +43,7 @@ export function PopoverHoverableDelayCase() {
 export function PopoverHoverableRestMsCase() {
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="$3" color="color9">
+      <SizableText size="3" color="color9">
         restMs: opens after 400ms rest, exit should NOT have extra delay
       </SizableText>
       <Popover placement="bottom" hoverable={{ restMs: 400 }} offset={8}>
@@ -82,7 +82,7 @@ export function PopoverHoverableRestMsCase() {
 export function PopoverHoverableSafePolygonCase() {
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="$3" color="color9">
+      <SizableText size="3" color="color9">
         restMs: 60, offset: 20 - should be able to hover content through gap
       </SizableText>
       <Popover placement="bottom" hoverable={{ restMs: 260, delay: 0 }} offset={80}>
@@ -120,7 +120,7 @@ export function PopoverHoverableSafePolygonCase() {
 export function PopoverHoverableExitAnimCase() {
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="$3" color="color9">
+      <SizableText size="3" color="color9">
         Exit animation: should animate out (not instant disappear)
       </SizableText>
 

@@ -126,7 +126,7 @@ describe('opt-in size primitives on web', () => {
     expect(projected.icon).toBe(
       config.fontsParsed.$body.size[defaults?.fontSize ?? defaultSize]
     )
-    expect(resolveTokenSize('$4', extras)).toEqual({
+    expect(resolveTokenSize('4', extras)).toEqual({
       frame: {
         size: config.tokensParsed.size.$4,
         space: config.tokensParsed.space.$4,
@@ -153,7 +153,7 @@ describe('opt-in size primitives on web', () => {
   test('passes the Tabs size context to themed icons', () => {
     const rendered = render(
       <TamaguiProvider config={config} defaultTheme="light">
-        <Tabs value="tab" size="$4">
+        <Tabs value="tab" size="4">
           <CaptureIcon />
         </Tabs>
       </TamaguiProvider>

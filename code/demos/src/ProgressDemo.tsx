@@ -25,7 +25,7 @@ export function ProgressDemo() {
 
       <XStack items="center" gap="2" position="absolute" b="3" l="4" display="xxs:none">
         {/* <Slider
-          size="$2"
+          size="2"
           theme="surface2"
           width={130}
           value={slider}
@@ -37,7 +37,7 @@ export function ProgressDemo() {
             setSlider([val])
           }}
         >
-          <Slider.Track borderWidth={1} borderColor="$color5">
+          <Slider.Track borderWidth={1} borderColor="color5">
             <Slider.TrackActive />
           </Slider.Track>
           <Slider.Thumb theme="accent" circular index={0} />

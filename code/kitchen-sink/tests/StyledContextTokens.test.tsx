@@ -5,8 +5,8 @@ import { setupPage } from './test-utils'
 /**
  * Tests for styled context token preservation (issues #3670, #3676)
  *
- * When a parent component sets a context value via a variant (like gap: '$8'),
- * child components should receive the original token string ('$8') in their
+ * When a parent component sets a context value via a variant (like gap: '8'),
+ * child components should receive the original token string ('8') in their
  * functional variants, NOT the resolved CSS variable ('var(--t-space-8)').
  *
  * This is important because functional variants need the token string to
@@ -23,8 +23,8 @@ test('variant should pass token string to context, not CSS variable - small spac
   // The debug display shows what gap value the child received via context
   const gapValue = await page.locator('#debug-small-gap-value').textContent()
 
-  // Should be '$2' (the token string), not 'var(--t-space-2)' (the CSS variable)
-  expect(gapValue).toBe('$2')
+  // Should be '2' (the token string), not 'var(--t-space-2)' (the CSS variable)
+  expect(gapValue).toBe('2')
 })
 
 test('variant should pass token string to context, not CSS variable - large spacing', async ({
@@ -32,15 +32,15 @@ test('variant should pass token string to context, not CSS variable - large spac
 }) => {
   const gapValue = await page.locator('#debug-large-gap-value').textContent()
 
-  // Should be '$8' (the token string), not 'var(--t-space-8)' (the CSS variable)
-  expect(gapValue).toBe('$8')
+  // Should be '8' (the token string), not 'var(--t-space-8)' (the CSS variable)
+  expect(gapValue).toBe('8')
 })
 
 test('default context value should be preserved as token string', async ({ page }) => {
   const gapValue = await page.locator('#debug-default-gap-value').textContent()
 
   // Default context value should also be a token string
-  expect(gapValue).toBe('$4')
+  expect(gapValue).toBe('4')
 })
 
 test('debug display should show green background when token is preserved', async ({

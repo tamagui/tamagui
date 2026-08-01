@@ -11,8 +11,7 @@ import { V6DefaultSizeButton as Button } from './v6DefaultSizeButton'
 const config = createTamagui(v6)
 const defaultToken = config.settings.defaultSize
 const categoryDefaults = (config.settings as any).defaultTokens as
-  | Record<string, string>
-  | undefined
+  Record<string, string> | undefined
 const defaultFor = (category: string) => categoryDefaults?.[category] ?? defaultToken
 
 function resolveRenderedValue(
@@ -123,8 +122,8 @@ describe('v6 default component size on web', () => {
   test('keeps explicit size tokens coupled to the same key in every category', () => {
     const rendered = render(
       <TamaguiProvider config={config} defaultTheme="light">
-        <Button size="$11">Explicit</Button>
-        <Input aria-label="Explicit name" size="$11" />
+        <Button size="11">Explicit</Button>
+        <Input aria-label="Explicit name" size="11" />
       </TamaguiProvider>
     )
     const buttonStyle = getComputedStyle(rendered.getByRole('button'))

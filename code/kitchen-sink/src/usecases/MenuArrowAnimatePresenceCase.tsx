@@ -29,7 +29,7 @@ const PopoverWithAnimatePresenceArrow = () => {
         <AnimatePresence>
           <Popover.Arrow
             testID="popover-arrow"
-            size="$4"
+            size="4"
             borderWidth={1}
             borderColor="border-color"
             bg="background"
@@ -63,7 +63,7 @@ const MenuWithArrow = () => {
         >
           <Menu.Arrow
             testID="menu-arrow"
-            size="$4"
+            size="4"
             borderWidth={1}
             borderColor="border-color"
           />
@@ -84,14 +84,14 @@ export function MenuArrowAnimatePresenceCase() {
     <YStack gap="4" padding="4" alignItems="center" justifyContent="center" flex={1}>
       <YStack gap="2" alignItems="center">
         <MenuWithArrow />
-        <Paragraph opacity={0.5} size="$2">
+        <Paragraph opacity={0.5} size="2">
           Menu with Arrow (no AnimatePresence)
         </Paragraph>
       </YStack>
 
       <YStack gap="2" alignItems="center">
         <PopoverWithAnimatePresenceArrow />
-        <Paragraph opacity={0.5} size="$2">
+        <Paragraph opacity={0.5} size="2">
           Popover with Arrow in AnimatePresence
         </Paragraph>
       </YStack>

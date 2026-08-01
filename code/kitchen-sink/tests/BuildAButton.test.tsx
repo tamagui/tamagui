@@ -13,7 +13,7 @@ import {
 import { cloneElement, useContext } from 'react'
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
+  size: 'md' as SizeTokens,
 })
 
 export const ButtonFrame = styled(View, {

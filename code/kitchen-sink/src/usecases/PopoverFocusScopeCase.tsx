@@ -42,7 +42,7 @@ export function PopoverFocusScopeCase() {
               id="popover-notes"
               data-testid="popover-notes-textarea"
               placeholder="Add some notes..."
-              size="$4"
+              size="4"
             />
 
             <XStack gap="3" justifyContent="flex-end">

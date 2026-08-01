@@ -6,31 +6,23 @@ import { styled, withStaticProperties } from 'tamagui'
 const contentStyles = {
   name: 'DemoMenuContent',
   minWidth: 180,
-  padding: '$1.5',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
-  borderRadius: '$4',
+  padding: '1-5',
+  backgroundColor: 'background focus:background-hover press:background-press',
+  borderColor: 'border-color',
+  borderRadius: '4',
   borderWidth: 1,
-  boxShadow: '0 4px 12px $shadowColor',
+  boxShadow: '0 4px 12px shadow-color',
 } as const
 
 const itemStyles = {
   name: 'DemoMenuItem',
   width: '100%',
-  paddingHorizontal: '$2.5',
-  paddingVertical: '$2',
+  paddingHorizontal: '2-5',
+  paddingVertical: '2',
   alignItems: 'center',
   flexDirection: 'row',
-  borderRadius: '$2',
+  borderRadius: '2',
   cursor: 'pointer',
-
-  focusStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
 
   variants: {
     disabled: {
@@ -44,7 +36,7 @@ const itemStyles = {
 
 const titleStyles = {
   name: 'DemoMenuItemTitle',
-  color: '$color',
+  color: 'color',
   cursor: 'default',
   flexGrow: 1,
   flexShrink: 1,
@@ -52,7 +44,7 @@ const titleStyles = {
 
 const subtitleStyles = {
   name: 'DemoMenuItemSubtitle',
-  color: '$color',
+  color: 'color',
   opacity: 0.6,
   cursor: 'default',
 } as const
@@ -76,16 +68,16 @@ const indicatorStyles = {
 const separatorStyles = {
   name: 'DemoMenuSeparator',
   height: 1,
-  marginHorizontal: '$2',
-  marginVertical: '$1',
-  backgroundColor: '$borderColor',
+  marginHorizontal: '2',
+  marginVertical: '1',
+  backgroundColor: 'border-color',
 } as const
 
 const labelStyles = {
   name: 'DemoMenuLabel',
-  paddingHorizontal: '$2.5',
-  paddingVertical: '$1.5',
-  color: '$color',
+  paddingHorizontal: '2-5',
+  paddingVertical: '1-5',
+  color: 'color',
   opacity: 0.6,
   cursor: 'default',
 } as const

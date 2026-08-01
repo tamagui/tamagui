@@ -35,7 +35,7 @@ export function TooltipMultiTriggerCase() {
 
   return (
     <YStack padding="4" gap="4">
-      <SizableText size="$3" color="color9">
+      <SizableText size="3" color="color9">
         Tooltip multi-trigger rapid hover test
       </SizableText>
 
@@ -75,7 +75,7 @@ export function TooltipMultiTriggerCase() {
           >
             <Tooltip.Arrow scope="multi-tip" id="tip-arrow" />
             {displayId && (
-              <SizableText id="tip-label" size="$3">
+              <SizableText id="tip-label" size="3">
                 {LABELS[displayId || 'a']}
               </SizableText>
             )}

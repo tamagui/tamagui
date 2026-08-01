@@ -82,11 +82,11 @@ export function HomeScreen() {
   return (
     <ScrollView testID="home-scroll-view">
       <YStack bg="color2" paddingRight="3" paddingLeft="3" pt="6" pb="8" flex={1} gap="4">
-        <Paragraph testID="home-title" size="$1">
+        <Paragraph testID="home-title" size="1">
           Kitchen Sink
         </Paragraph>
 
-        <Paragraph size="$1" color={`${gestureHandlerEnabled ? 'green10' : 'red10'}`}>
+        <Paragraph size="1" color={`${gestureHandlerEnabled ? 'green10' : 'red10'}`}>
           RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
         </Paragraph>
 
@@ -94,13 +94,12 @@ export function HomeScreen() {
         <TestCasesSection />
 
         {/* Quick access to RNGH test case */}
-        <YGroup size="$4">
+        <YGroup size="4">
           <YGroup.Item>
             <LinkListItem
-              bg="$blue3"
+              bg="blue3 press:blue4"
               href="/test/SheetScrollableDrag"
-              pressStyle={{ backgroundColor: '$blue4' }}
-              size="$5"
+              size="5"
               testID="home-sheet-scroll-test"
             >
               🧪 Sheet + ScrollView Test (RNGH)
@@ -108,10 +107,9 @@ export function HomeScreen() {
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
-              bg="$green3"
+              bg="green3 press:green4"
               href="/test/SheetKeyboardDragCase"
-              pressStyle={{ backgroundColor: '$green4' }}
-              size="$5"
+              size="5"
               testID="home-sheet-keyboard-test"
             >
               ⌨️ Sheet + Keyboard Test
@@ -119,10 +117,9 @@ export function HomeScreen() {
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
-              bg="$green3"
+              bg="green3 press:green4"
               href="/test/SheetKeyboardFitContentCase"
-              pressStyle={{ backgroundColor: '$green4' }}
-              size="$5"
+              size="5"
               testID="home-sheet-keyboard-fit-test"
             >
               ⌨️ Sheet Keyboard Fit Test
@@ -130,20 +127,18 @@ export function HomeScreen() {
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
-              bg="$purple3"
+              bg="purple3 press:purple4"
               href="/test/ActionsSheetComparison"
-              pressStyle={{ backgroundColor: '$purple4' }}
-              size="$5"
+              size="5"
             >
               🔄 Actions Sheet Comparison
             </LinkListItem>
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
-              bg="$green3"
+              bg="green3 press:orange4"
               href="/test/ToastMultipleCase"
-              pressStyle={{ backgroundColor: '$orange4' }}
-              size="$5"
+              size="5"
             >
               🍞 Toast Multiple Case
             </LinkListItem>
@@ -153,7 +148,7 @@ export function HomeScreen() {
         <YStack gap="4" maxW={600}>
           {demos.map(({ pages }, i) => {
             return (
-              <YGroup key={i} size="$4">
+              <YGroup key={i} size="4">
                 {pages.map((page) => {
                   const route = page?.route
 
@@ -162,10 +157,9 @@ export function HomeScreen() {
                   return (
                     <YGroup.Item key={route}>
                       <LinkListItem
-                        bg="$color1"
+                        bg="color1 press:color2"
                         href={route}
-                        pressStyle={{ backgroundColor: '$color2' }}
-                        size="$4"
+                        size="4"
                         testID={(page as any).testID}
                       >
                         {page.title}

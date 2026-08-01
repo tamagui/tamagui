@@ -409,7 +409,7 @@ type DialogOverlayProps = YStackProps & DialogOverlayExtraProps
 const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProps>(
   function DialogOverlay({ scope, ...props }, forwardedRef) {
     const context = useDialogContext(scope)
-    const { forceMount = context.forceMount, exitStyle, ...overlayProps } = props
+    const { forceMount = context.forceMount, ...overlayProps } = props
     const isAdapted = useAdaptIsActive(context.adaptScope)
     const presence = useDialogPartPresence(context, {
       disabled: isAdapted,
@@ -439,7 +439,6 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
           key={`${context.contentId}-overlay`}
           data-state={getState(context.open)}
           pointerEvents={context.open ? 'auto' : 'none'}
-          exitStyle={{ pointerEvents: 'none', ...exitStyle }}
           {...overlayProps}
           ref={forwardedRef}
         />
@@ -470,7 +469,7 @@ const DialogContentFrame = styled(YStack, {
   variants: {
     elevate: {
       true: {
-        shadowColor: '$shadowColor',
+        shadowColor: 'shadow-color',
         shadowRadius: 12,
         shadowOffset: { width: 0, height: 4 },
       },

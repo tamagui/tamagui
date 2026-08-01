@@ -74,16 +74,16 @@ function SizeSection({ section }: { section: Section }) {
             return (
               <XStack width="100%" items="center" key={token}>
                 <YStack width="25%">
-                  <H3 size="$6">${token}</H3>
+                  <H3 size="6">${token}</H3>
                 </YStack>
                 <YStack width="20%">
-                  <H4 size="$5">{tokens[token]?.val}px</H4>
+                  <H4 size="5">{tokens[token]?.val}px</H4>
                 </YStack>
                 <Square
                   size={tokens[token]?.val as any}
                   backgroundColor="color5"
                   {...(section === 'spaceNegative' && {
-                    backgroundColor: '$red5',
+                    backgroundColor: 'red5',
                     size: -tokens[
                       spaceTokensNegative.find(
                         (t) => Number.parseFloat(t) === -Number.parseFloat(token)

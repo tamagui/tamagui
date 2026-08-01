@@ -59,7 +59,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
           )}
           transition={['quicker', { opacity: { overshootClamping: true } }]}
           {...contentProps}
-          elevation="$0.5"
+          elevation="0-5"
           animateOnly={['transform', 'opacity']}
         >
           <Tooltip.Arrow />
@@ -68,7 +68,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
             overflow="hidden"
             textAlign="center"
             textWrap="web:balance"
-            size="$3"
+            size="3"
           >
             {label}
           </Paragraph>

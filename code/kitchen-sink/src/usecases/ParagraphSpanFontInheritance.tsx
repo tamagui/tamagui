@@ -1,7 +1,7 @@
 import { Paragraph, SizableText, Span, Text } from 'tamagui'
 
 // Test case: Span inside Paragraph should inherit fontFamily
-// Issue: When Span is nested inside Paragraph with fontFamily="$mono",
+// Issue: When Span is nested inside Paragraph with fontFamily="mono",
 // the Span does not inherit the mono font family
 
 export function ParagraphSpanFontInheritance() {

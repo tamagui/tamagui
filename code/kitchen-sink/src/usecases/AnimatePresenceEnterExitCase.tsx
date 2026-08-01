@@ -82,7 +82,7 @@ function Scenario01_BasicEnterExit() {
 
   return (
     <YStack gap="2">
-      <Paragraph size="$2">Scenario 01: Basic enter/exit opacity</Paragraph>
+      <Paragraph size="2">Scenario 01: Basic enter/exit opacity</Paragraph>
       <Button testID="enter-exit-01-trigger" onPress={handleToggle}>
         Toggle
       </Button>
@@ -132,7 +132,7 @@ function Scenario03_InitialFalse() {
 
   return (
     <YStack gap="2">
-      <Paragraph size="$2">Scenario 03: initial=false (exact real-world case)</Paragraph>
+      <Paragraph size="2">Scenario 03: initial=false (exact real-world case)</Paragraph>
       <XStack gap="2">
         <Button testID="enter-exit-03-increment" onPress={handleIncrement}>
           Add
@@ -202,7 +202,7 @@ function Scenario02_CircleBadge() {
 
   return (
     <YStack gap="2">
-      <Paragraph size="$2">Scenario 02: Circle badge (real-world case)</Paragraph>
+      <Paragraph size="2">Scenario 02: Circle badge (real-world case)</Paragraph>
       <XStack gap="2">
         <Button testID="enter-exit-02-increment" onPress={handleIncrement}>
           Add

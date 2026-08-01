@@ -4,7 +4,7 @@ export const manifest = {
   description:
     'v2-look Sheet: styled handle (open/closed opacity), dimmed overlay, rounded background, padded container and scroll view, plus the controlled composition, over the unstyled @tamagui/ui Sheet behavior.',
   categories: ['overlay'],
-  tokens: ['$background', '$color5', '$shadowColor'],
+  tokens: ['background', 'color5', 'shadow-color'],
   // grandfathered: the handle uses a palette step ($color5) for its muted fill.
   genericsOnly: false,
   native: [

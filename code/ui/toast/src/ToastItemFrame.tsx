@@ -74,4 +74,4 @@ export const ToastActionFrame = styled(XStack, {
  * DefaultCloseIcon - dependency-free glyph (inherits color; the skin sets it).
  * -----------------------------------------------------------------------------------------------*/
 
-export const DefaultCloseIcon = () => <SizableText size="$1">✕</SizableText>
+export const DefaultCloseIcon = () => <SizableText size="1">✕</SizableText>

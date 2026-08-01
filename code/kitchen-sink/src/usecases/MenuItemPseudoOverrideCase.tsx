@@ -3,31 +3,26 @@ import { styled, YStack } from 'tamagui'
 import { Button } from '../components/Button'
 
 const menuItemStyle = {
-  gap: '$2.5',
-  px: '$2',
+  gap: '2-5',
+  px: '2',
   height: 36,
   alignItems: 'center',
   cursor: 'default',
   flexDirection: 'row',
-  borderRadius: '$2',
-  backgroundColor: 'rgba(0,0,0,0)',
-  hoverStyle: { backgroundColor: 'rgb(0, 0, 255)' },
-  pressStyle: { backgroundColor: 'rgb(0, 255, 0)' },
-  focusStyle: { backgroundColor: 'rgb(255, 0, 0)' },
+  borderRadius: '2',
+  backgroundColor:
+    'rgba(0,0,0,0) hover:rgb(0, 0, 255) press:rgb(0, 255, 0) focus:rgb(255, 0, 0)',
 } as const
 
 const menuItemStyleWithShorthands = {
-  gap: '$2.5',
-  px: '$2',
+  gap: '2-5',
+  px: '2',
   height: 36,
   alignItems: 'center',
   cursor: 'default',
   flexDirection: 'row',
-  borderRadius: '$2',
-  bg: 'rgba(0,0,0,0)',
-  hoverStyle: { bg: 'rgb(0, 0, 255)' },
-  pressStyle: { bg: 'rgb(0, 255, 0)' },
-  focusStyle: { bg: 'rgb(255, 0, 0)' },
+  borderRadius: '2',
+  bg: 'rgba(0,0,0,0) hover:rgb(0, 0, 255) press:rgb(0, 255, 0) focus:rgb(255, 0, 0)',
 } as const
 
 const StyledMenuItem = styled(Menu.Item, menuItemStyle)

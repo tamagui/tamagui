@@ -30,12 +30,12 @@ describe('ShorthandVariables', () => {
   })
 
   it('should render boxShadow with $variable without crashing', async () => {
-    // If this element is visible, the boxShadow="0px 0px 10px $shadowColor" was accepted
+    // If this element is visible, the boxShadow="0px 0px 10px shadow-color" was accepted
     await expect(element(by.id('boxshadow-var'))).toBeVisible()
   })
 
   it('should render boxShadow with multiple $variables', async () => {
-    // boxShadow="0px 0px 5px $shadowColor, 0px 0px 15px $color"
+    // boxShadow="0px 0px 5px shadow-color, 0px 0px 15px $color"
     await expect(element(by.id('boxshadow-multi'))).toBeVisible()
   })
 

@@ -20,7 +20,7 @@ export function CheckboxDisabledOnPress() {
         <Checkbox
           id="enabled-checkbox"
           testID="enabled-checkbox"
-          size="$5"
+          size="5"
           onPress={() => setPressCount((c) => c + 1)}
         >
           <Checkbox.Indicator>
@@ -38,7 +38,7 @@ export function CheckboxDisabledOnPress() {
         <Checkbox
           id="disabled-checkbox"
           testID="disabled-checkbox"
-          size="$5"
+          size="5"
           disabled
           onPress={() => setDisabledPressCount((c) => c + 1)}
         >

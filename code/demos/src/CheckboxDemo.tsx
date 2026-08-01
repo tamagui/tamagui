@@ -7,9 +7,9 @@ export function CheckboxDemo() {
   return (
     <Theme name="surface2">
       <YStack width={300} items="center" gap="2">
-        <CheckboxWithLabel size="$3" />
-        <CheckboxWithLabel size="$4" defaultChecked />
-        <CheckboxWithLabel size="$5" disabled label="Accept terms (disabled)" />
+        <CheckboxWithLabel size="3" />
+        <CheckboxWithLabel size="4" defaultChecked />
+        <CheckboxWithLabel size="5" disabled label="Accept terms (disabled)" />
       </YStack>
     </Theme>
   )
@@ -21,7 +21,7 @@ export function CheckboxWithLabel({
   disabled,
   ...checkboxProps
 }: CheckboxProps & { label?: string }) {
-  const id = `checkbox-${(size || '').toString().slice(1)}`
+  const id = `checkbox-${size || ''}`
   return (
     <Theme name={disabled ? 'gray' : null}>
       <XStack width={300} items="center" gap="4">
@@ -29,7 +29,7 @@ export function CheckboxWithLabel({
           id={id}
           size={size}
           disabled={disabled}
-          activeStyle={{ backgroundColor: '$backgroundPress' }}
+          activeStyle={{ backgroundColor: 'background-press' }}
           {...checkboxProps}
         >
           <Checkbox.Indicator>

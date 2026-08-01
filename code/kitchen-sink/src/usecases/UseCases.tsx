@@ -228,10 +228,10 @@ export const Sandbox = () => {
           {/* <SheetDemo /> */}
 
           {/* space */}
-          {/* <YStack  gap="$2" $gtSm={{ gap: '$10' }}>
-             <Circle bc="red" size="$10" />
-             <Circle bc="red" size="$10" />
-             <Circle bc="red" size="$10" />
+          {/* <YStack  gap="2" $gtSm={{ gap: '10' }}>
+             <Circle bc="red" size="10" />
+             <Circle bc="red" size="10" />
+             <Circle bc="red" size="10" />
             </YStack> */}
 
           {/* <LabelDemo /> */}
@@ -266,7 +266,7 @@ export const Sandbox = () => {
           {/* <DialogDemo /> */}
           {/* <InputsDemo /> */}
           {/* <SelectDemo /> */}
-          {/* <ScrollView bc="yellow" p="$1" $gtXs={{ bg: 'blue', p: '$4' }} maxHeight={200}>
+          {/* <ScrollView bc="yellow" p="1" $gtXs={{ bg: 'blue', p: '4' }} maxHeight={200}>
             <Square bc="red" size={100} />
             <Square bc="red" size={100} />
             <Square bc="red" size={100} />
@@ -280,7 +280,7 @@ export const Sandbox = () => {
           {/* <SheetDemo2 /> */}
           {/* <SheetDemo /> */}
           {/* <SwitchDemo /> */}
-          {/* <XStack gap="$4">
+          {/* <XStack gap="4">
             <Square size={50} bc="red" />
             <Square $sm={{ display: 'none' }} size={50} bc="red" />
             <Square size={50} bc="red" />
@@ -300,11 +300,11 @@ export const Sandbox = () => {
 // function FontLanguageDemo() {
 //   return (
 //     <FontLanguage heading="default" body="cn">
-//       <Paragraph fos="$4" fontFamily="$body">
+//       <Paragraph fos="4" fontFamily="body">
 //         hello 🇨🇳
 //       </Paragraph>
 //       <FontLanguage body="default">
-//         <Paragraph fos="$4" fontFamily="$body">
+//         <Paragraph fos="4" fontFamily="body">
 //           hi again
 //         </Paragraph>
 //       </FontLanguage>
@@ -332,7 +332,7 @@ export const Sandbox = () => {
 //           <Sheet.Background />
 //           <Sheet.Handle />
 //           <Button
-//             size="$6"
+//             size="6"
 //             circular
 //             onPress={() => {
 //               setOpen(false)
@@ -366,7 +366,7 @@ export const Sandbox = () => {
 // })
 
 // const StyledText = styled(Text, {
-//   fontFamily: '$alternative',
+//   fontFamily: 'alternative',
 
 //   variants: {
 //     cool: {

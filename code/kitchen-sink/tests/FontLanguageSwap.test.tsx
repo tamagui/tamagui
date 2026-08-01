@@ -11,7 +11,7 @@ import { setupPage } from './test-utils'
  * size and line height inside the wrapper. Those resolve through CSS variables,
  * so this needs a real browser.
  *
- * Note the fixture asks for `lineHeight="$3"` explicitly. Setting `fontSize`
+ * Note the fixture asks for `lineHeight="3"` explicitly. Setting `fontSize`
  * alone does not derive a line height from the face's mapping, so a fixture
  * that omitted it would read the same line height for both faces and look like
  * a swap bug when nothing is wrong.

@@ -114,7 +114,7 @@ export function TabHoverAnimationCase() {
             rounded="4"
             bg="color3"
             overflow="hidden"
-            elevation="$4"
+            elevation="4"
           >
             <AnimatePresence initial={false} custom={{ going }}>
               {open && !!displayTab && (
@@ -145,7 +145,7 @@ const TabContent = memo(({ tab }: { tab: string }) => (
     <SizableText fontWeight="bold" data-testid="tab-content-title">
       {tab}
     </SizableText>
-    <Paragraph size="$2">Preview content for {tab}</Paragraph>
+    <Paragraph size="2">Preview content for {tab}</Paragraph>
   </YStack>
 ))
 

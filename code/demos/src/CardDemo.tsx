@@ -7,14 +7,12 @@ export function CardDemo() {
       <XStack flexDirection="max-md:column" px="4" gap="4">
         <DemoCard
           transition="bouncy"
-          size="$4"
+          size="4"
           width={250}
           height={300}
-          scale={0.9}
-          hoverStyle={{ scale: 0.925 }}
-          pressStyle={{ scale: 0.875 }}
+          scale="0.9 hover:0.925 press:0.875"
         />
-        <DemoCard size="$5" width={250} height={300} />
+        <DemoCard size="5" width={250} height={300} />
       </XStack>
     </Theme>
   )
@@ -22,7 +20,7 @@ export function CardDemo() {
 
 export function DemoCard(props: CardProps) {
   return (
-    <Card size="$4" borderWidth={1} borderColor="border-color" {...props}>
+    <Card size="4" borderWidth={1} borderColor="border-color" {...props}>
       <Card.Header p="4">
         <H2>Sony A7IV</H2>
         <Paragraph>Now available</Paragraph>

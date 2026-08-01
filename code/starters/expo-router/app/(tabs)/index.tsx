@@ -13,7 +13,7 @@ export default function TabOneScreen() {
         items="center"
         justify="center"
         flexWrap="wrap"
-        gap="$1.5"
+        gap="1-5"
         position="absolute"
         b="8"
       >
@@ -27,7 +27,7 @@ export default function TabOneScreen() {
 
         <XStack
           items="center"
-          gap="$1.5"
+          gap="1-5"
           px="2"
           py="1"
           rounded="3"
@@ -41,7 +41,7 @@ export default function TabOneScreen() {
           >
             Configuration guide
           </Anchor>
-          <ExternalLink size="$1" color="green10" />
+          <ExternalLink size="1" color="green10" />
         </XStack>
 
         <Paragraph fontSize="5" text="center">

@@ -9,7 +9,7 @@ import { TEST_IDS } from '../constants/test-ids'
  * Tests the documented usage patterns from the docs:
  * 1. <Theme name="accent"> wrapping components (docs: theme-builder.mdx)
  * 2. <Button theme="accent"> component prop (docs: config-v5.mdx)
- * 3. $accentBackground / $accentColor tokens (docs: config-v5.mdx)
+ * 3. accent-background / accent-color tokens (docs: config-v5.mdx)
  * 4. $accent1-$accent12 raw tokens
  *
  * Open in browser: http://localhost:9000/?test=V5ThemeBuilderOutput&generatedV5=true
@@ -34,7 +34,7 @@ export function V5ThemeBuilderOutput() {
         borderColor="color7"
       >
         <H3 color="color11">{'<Theme name="accent">'}</H3>
-        <Paragraph size="$2" color="color11">
+        <Paragraph size="2" color="color11">
           Expected: first square is the base gray background. Second square should be DARK
           PURPLE (the accent palette inverted). Text below it should be light/readable
           against the accent background.
@@ -82,7 +82,7 @@ export function V5ThemeBuilderOutput() {
         borderColor="color7"
       >
         <H3 color="color11">{'<Button theme="accent">'}</H3>
-        <Paragraph size="$2" color="color11">
+        <Paragraph size="2" color="color11">
           Expected: first button is the default gray surface. Second button should have a
           PURPLE background with light text — visually distinct from the base button.
         </Paragraph>
@@ -98,7 +98,7 @@ export function V5ThemeBuilderOutput() {
         </XStack>
       </YStack>
 
-      {/* === SECTION 3: $accentBackground / $accentColor tokens === */}
+      {/* === SECTION 3: accent-background / accent-color tokens === */}
       <YStack
         gap="3"
         padding="4"
@@ -107,8 +107,8 @@ export function V5ThemeBuilderOutput() {
         borderWidth={2}
         borderColor="color7"
       >
-        <H3 color="color11">$accentBackground / $accentColor</H3>
-        <Paragraph size="$2" color="color11">
+        <H3 color="color11">accent-background / accent-color</H3>
+        <Paragraph size="2" color="color11">
           Expected: square should be a DARK PURPLE — same hue as the accent palette. This
           is the raw token, not a theme wrapper.
         </Paragraph>
@@ -132,7 +132,7 @@ export function V5ThemeBuilderOutput() {
         borderColor="border-color"
       >
         <H4>Accent Palette (accent1-12)</H4>
-        <Paragraph size="$2" color="color11">
+        <Paragraph size="2" color="color11">
           Expected: a gradient of 12 swatches going from dark purple to light purple. If
           these are all gray, the accent palette is broken.
         </Paragraph>
@@ -166,7 +166,7 @@ export function V5ThemeBuilderOutput() {
         borderColor="border-color"
       >
         <H4>Color Themes</H4>
-        <Paragraph size="$2" color="color11">
+        <Paragraph size="2" color="color11">
           Expected: each card and button should have a distinct tint matching its color
           name. Yellow should look warm, red should look red, etc.
         </Paragraph>

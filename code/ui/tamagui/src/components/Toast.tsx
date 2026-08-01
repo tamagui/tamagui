@@ -54,13 +54,13 @@ export const ToastTitle = styled(ToastBehavior.Title, {
   name: 'ToastTitle',
   color: 'color',
   fontWeight: '600',
-  size: '$4',
+  size: '4',
 })
 
 export const ToastDescription = styled(ToastBehavior.Description, {
   name: 'ToastDescription',
   color: 'color11',
-  size: '$2',
+  size: '2',
 })
 
 export const ToastClose = styled(ToastBehavior.Close, {
@@ -113,7 +113,7 @@ function ToastDefaultContent({ toast: t }: { toast: ToastT }) {
                   handleClose()
                 }}
               >
-                <SizableText size="$2" color="color11">
+                <SizableText size="2" color="color11">
                   {t.cancel.label}
                 </SizableText>
               </ToastAction>
@@ -128,7 +128,7 @@ function ToastDefaultContent({ toast: t }: { toast: ToastT }) {
                   }
                 }}
               >
-                <SizableText size="$2" fontWeight="600" color="background">
+                <SizableText size="2" fontWeight="600" color="background">
                   {t.action.label}
                 </SizableText>
               </ToastAction>

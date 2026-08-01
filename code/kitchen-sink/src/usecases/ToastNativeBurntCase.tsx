@@ -86,7 +86,7 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
       <YStack flex={1} gap={1}>
         {title && <Toast.Title fontWeight="600">{title}</Toast.Title>}
         {description && (
-          <Toast.Description color="color9" size="$2">
+          <Toast.Description color="color9" size="2">
             {description}
           </Toast.Description>
         )}

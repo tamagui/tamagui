@@ -52,7 +52,7 @@ export function TooltipToolbarRowCase() {
                 onMouseEnter={() => setActive(label)}
                 onMouseLeave={() => setActive((prev) => (prev === label ? null : prev))}
               >
-                <Paragraph size="$1">{i}</Paragraph>
+                <Paragraph size="1">{i}</Paragraph>
               </YStack>
             </Tooltip.Trigger>
           ))}
@@ -68,14 +68,14 @@ export function TooltipToolbarRowCase() {
           opacity="1 enter:0 exit:0"
           scale={1}
           pointerEvents="none"
-          py="$1.5"
+          py="1-5"
           px="2"
           rounded="2"
           bg="color2"
           borderWidth={0}
         >
-          <Tooltip.Arrow size="$3" bg="color2" />
-          <Paragraph pointerEvents="none" fontWeight="600" size="$2">
+          <Tooltip.Arrow size="3" bg="color2" />
+          <Paragraph pointerEvents="none" fontWeight="600" size="2">
             {active}
           </Paragraph>
         </Tooltip.Content>

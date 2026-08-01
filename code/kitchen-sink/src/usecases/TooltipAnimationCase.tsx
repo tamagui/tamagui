@@ -49,8 +49,8 @@ export function TooltipAnimationCase() {
           transition="lazy"
           animateOnly={['transform', 'opacity']}
         >
-          <Tooltip.Arrow data-testid="tooltip-arrow" size="$2" />
-          <Paragraph size="$2">Tooltip content</Paragraph>
+          <Tooltip.Arrow data-testid="tooltip-arrow" size="2" />
+          <Paragraph size="2">Tooltip content</Paragraph>
         </Tooltip.Content>
       </Tooltip>
 
@@ -67,8 +67,8 @@ export function TooltipAnimationCase() {
           transition="lazy"
           animateOnly={['transform', 'opacity']}
         >
-          <Tooltip.Arrow data-testid="tooltip-arrow-2" size="$2" />
-          <Paragraph size="$2">Second tooltip</Paragraph>
+          <Tooltip.Arrow data-testid="tooltip-arrow-2" size="2" />
+          <Paragraph size="2">Second tooltip</Paragraph>
         </Tooltip.Content>
       </Tooltip>
 
@@ -85,8 +85,8 @@ export function TooltipAnimationCase() {
           transition="100ms"
           animateOnly={['transform', 'opacity']}
         >
-          <Tooltip.Arrow data-testid="tooltip-arrow-quick" size="$3" />
-          <Paragraph size="$2">Quick tooltip</Paragraph>
+          <Tooltip.Arrow data-testid="tooltip-arrow-quick" size="3" />
+          <Paragraph size="2">Quick tooltip</Paragraph>
         </Tooltip.Content>
       </Tooltip>
     </YStack>

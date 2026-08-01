@@ -13,16 +13,10 @@ import {
 } from '@tamagui/ui'
 import type * as React from 'react'
 
-// default appearance for an active (pressed-on) item — applied by the Toggle
-// behavior through its `activeStyle` prop when the item is active.
+// This plain prop object is applied by Toggle while active; its interaction
+// overrides are flat clauses like every other authored style value.
 const activeAppearance = {
-  backgroundColor: '$backgroundPress',
-  hoverStyle: {
-    backgroundColor: '$backgroundPress',
-  },
-  focusStyle: {
-    backgroundColor: '$backgroundPress',
-  },
+  backgroundColor: 'background-press hover:background-press focus:background-press',
 } as const
 
 export const ToggleGroupItem = styled(UiToggleGroup.Item, {

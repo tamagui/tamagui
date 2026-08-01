@@ -4,7 +4,7 @@ import { Button } from './Button'
 
 import { useIsIntersecting } from './useOnIntersecting'
 
-const colors = ['$color9', '$color10', '$color11', '$color12'] as const
+const colors = ['color9', 'color10', 'color11', 'color12'] as const
 
 export function AnimationsDelayDemo() {
   const ref = React.useRef<HTMLElement>(null)

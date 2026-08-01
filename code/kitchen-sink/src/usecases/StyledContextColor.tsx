@@ -16,7 +16,7 @@ export const CustomButtonContext = createStyledContext<{
   size?: any
   color?: string
 }>({
-  size: '$4',
+  size: '4',
   color: undefined,
 })
 
@@ -94,7 +94,7 @@ const ContextRefButtonFrame = styled(YStack, {
 })
 
 // Child that references parent's context color using $color syntax
-// This pattern mimics ButtonText which uses `color: '$color'` to inherit from parent
+// This pattern mimics ButtonText which uses `color: 'color'` to inherit from parent
 const ContextRefButtonText = styled(SizableText, {
   name: 'ContextRefButtonText',
   context: CustomButtonContext,

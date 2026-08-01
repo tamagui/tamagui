@@ -57,7 +57,7 @@ export const SheetDemo = () => {
             {`Snap Points: ${JSON.stringify(snapPoints)}`}
           </Button>
         ) : (
-          <XStack py="$2.5" justify="center">
+          <XStack py="2-5" justify="center">
             <Paragraph>
               {`Snap Points: ${isFit ? '(none)' : JSON.stringify(snapPoints)}`}
             </Paragraph>
@@ -132,7 +132,7 @@ function InnerSheet(props: SheetProps) {
 
             <H2>Hello world</H2>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <Paragraph key={i} size="$8">
+              <Paragraph key={i} size="8">
                 Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
                 pariatur. Dolor excepteur esse deserunt voluptate labore ea. Exercitation
                 ipsum deserunt occaecat cupidatat consequat est adipisicing velit

@@ -25,7 +25,7 @@ export function PopoverHoverableRapidCase() {
 
   return (
     <YStack padding="4" gap="4">
-      <SizableText size="$3" color="color9">
+      <SizableText size="3" color="color9">
         Rapid hover across many triggers - should track current trigger
       </SizableText>
 
@@ -88,7 +88,7 @@ export function PopoverHoverableRapidCase() {
             justifyContent="center"
           >
             {displayId && (
-              <SizableText id="rapid-panel-label" size="$5" fontWeight="600">
+              <SizableText id="rapid-panel-label" size="5" fontWeight="600">
                 Panel {displayId.toUpperCase()}
               </SizableText>
             )}

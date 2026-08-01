@@ -36,7 +36,7 @@ export function LucideIconsDemo() {
               text="center"
               px="2"
               opacity={0.5}
-              size="$1"
+              size="1"
             >
               {name}
             </Paragraph>

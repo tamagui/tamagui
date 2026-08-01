@@ -81,7 +81,7 @@ export function AccordionDefaultOpenCase() {
               <>
                 <Paragraph>Open by default</Paragraph>
                 <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                  <ChevronDown size="$1" color="color" />
+                  <ChevronDown size="1" color="color" />
                 </Square>
               </>
             )}
@@ -124,7 +124,7 @@ export function AccordionDefaultOpenCase() {
               <>
                 <Paragraph>Closed by default</Paragraph>
                 <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                  <ChevronDown size="$1" color="color" />
+                  <ChevronDown size="1" color="color" />
                 </Square>
               </>
             )}

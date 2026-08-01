@@ -21,7 +21,7 @@ function ListItemDemo1() {
       rounded="4"
       overflow="hidden"
       width={240}
-      size="$4"
+      size="4"
     >
       <YGroup.Item>
         <ListItem
@@ -60,7 +60,7 @@ function ListItemDemo2() {
       rounded="4"
       overflow="hidden"
       width={240}
-      size="$5"
+      size="5"
     >
       <YGroup.Item>
         <ListItem

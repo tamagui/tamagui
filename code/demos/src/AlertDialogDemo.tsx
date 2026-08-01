@@ -15,7 +15,7 @@ export function AlertDialogDemo() {
           backgroundColor="background"
         />
         <AlertDialog.Content
-          elevation="$4"
+          elevation="4"
           key="content"
           transition={['quick', { opacity: { overshootClamping: true } }]}
           x="0 enter:0 exit:0"

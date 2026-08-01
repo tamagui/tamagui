@@ -25,25 +25,25 @@ styled(ContextMenu.Content, {
   borderWidth: 1,
 })
 
-;<Menu.Content backgroundColor="$background" borderRadius="$4" padding="$3" />
-;<Menu.Group gap="$2" />
-;<Menu.Label color="$color" />
-;<Menu.Item paddingHorizontal="$3" paddingVertical="$2" />
-;<Menu.ItemTitle color="$color" />
-;<Menu.ItemSubtitle color="$colorFaint" />
-;<Menu.ItemIcon width="$2" height="$2" />
+;<Menu.Content backgroundColor="background" borderRadius="4" padding="3" />
+;<Menu.Group gap="2" />
+;<Menu.Label color="color" />
+;<Menu.Item paddingHorizontal="3" paddingVertical="2" />
+;<Menu.ItemTitle color="color" />
+;<Menu.ItemSubtitle color="colorFaint" />
+;<Menu.ItemIcon width="2" height="2" />
 ;<Menu.ItemIndicator marginLeft="auto" />
-;<Menu.Separator height={1} backgroundColor="$borderColor" />
-;<Menu.Arrow backgroundColor="$background" />
+;<Menu.Separator height={1} backgroundColor="border-color" />
+;<Menu.Arrow backgroundColor="background" />
 ;<Menu.ScrollView maxHeight={300}>content</Menu.ScrollView>
 
-;<ContextMenu.Content backgroundColor="$background" borderRadius="$4" padding="$3" />
-;<ContextMenu.Group gap="$2" />
-;<ContextMenu.Label color="$color" />
-;<ContextMenu.Item paddingHorizontal="$3" paddingVertical="$2" />
-;<ContextMenu.ItemTitle color="$color" />
-;<ContextMenu.ItemSubtitle color="$colorFaint" />
-;<ContextMenu.ItemIcon width="$2" height="$2" />
+;<ContextMenu.Content backgroundColor="background" borderRadius="4" padding="3" />
+;<ContextMenu.Group gap="2" />
+;<ContextMenu.Label color="color" />
+;<ContextMenu.Item paddingHorizontal="3" paddingVertical="2" />
+;<ContextMenu.ItemTitle color="color" />
+;<ContextMenu.ItemSubtitle color="colorFaint" />
+;<ContextMenu.ItemIcon width="2" height="2" />
 ;<ContextMenu.ItemIndicator marginLeft="auto" />
-;<ContextMenu.Separator height={1} backgroundColor="$borderColor" />
-;<ContextMenu.Arrow backgroundColor="$background" />
+;<ContextMenu.Separator height={1} backgroundColor="border-color" />
+;<ContextMenu.Arrow backgroundColor="background" />

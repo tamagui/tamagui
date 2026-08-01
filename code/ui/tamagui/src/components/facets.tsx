@@ -13,8 +13,8 @@
 //      state-shift ANY family's generic (borderColorPress) because the value is
 //      inert when that chrome is absent (no borderWidth -> borderColor does
 //      nothing). So `interactive + outlined` composes with zero coordination.
-//   2. Generics-only. Facets read theme GENERICS ($background, $borderColor,
-//      $backgroundHover, …) and conventional custom variables ($radius,
+//   2. Generics-only. Facets read theme GENERICS ($background, border-color,
+//      background-hover, …) and conventional custom variables ($radius,
 //      $pressScale), never the color scale ($colorN). That makes them
 //      level-aware for free: <Surface level={2} filled interactive> needs no
 //      facet cooperation — the level re-bound the generics the facets read.
@@ -25,20 +25,20 @@
 
 export const filled = {
   true: {
-    backgroundColor: '$background',
+    backgroundColor: 'background',
   },
 } as const
 
 export const outlined = {
   true: {
     borderWidth: 1,
-    borderColor: '$borderColor',
+    borderColor: 'border-color',
   },
 } as const
 
 export const elevated = {
   true: {
-    shadowColor: '$shadowColor',
+    shadowColor: 'shadow-color',
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
   },
@@ -46,7 +46,7 @@ export const elevated = {
 
 export const rounded = {
   true: {
-    borderRadius: '$radius',
+    borderRadius: 'radius',
   },
 } as const
 
@@ -55,20 +55,12 @@ export const rounded = {
 
 export const interactive = {
   true: {
-    hoverStyle: {
-      backgroundColor: '$backgroundHover',
-      borderColor: '$borderColorHover',
-    },
-    pressStyle: {
-      backgroundColor: '$backgroundPress',
-      borderColor: '$borderColorPress',
-      scale: '$pressScale',
-    },
-    focusVisibleStyle: {
-      outlineColor: '$outlineColor',
-      outlineWidth: 2,
-      outlineStyle: 'solid',
-    },
+    backgroundColor: 'hover:background-hover press:background-press',
+    borderColor: 'hover:border-color-hover press:border-color-press',
+    scale: 'press:pressScale',
+    outlineColor: 'focus-visible:outline-color',
+    outlineWidth: 'focus-visible:2px',
+    outlineStyle: 'focus-visible:solid',
   },
 } as const
 

@@ -96,7 +96,7 @@ function Demo({
 }) {
   return (
     <Popover
-      size="$5"
+      size="5"
       allowFlip
       stayInFrame
       offset={15}
@@ -136,7 +136,7 @@ function Demo({
 
         <YStack gap="3">
           <XStack gap="3">
-            <Label size="$3" htmlFor={Name}>
+            <Label size="3" htmlFor={Name}>
               Name
             </Label>
           </XStack>

@@ -75,7 +75,7 @@ const TabsAdvancedBackground = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$4"
+      size="4"
       p="2"
       height={150}
       flexDirection="column"
@@ -86,7 +86,7 @@ const TabsAdvancedBackground = () => {
       <AnimatePresence>
         {intentAt && (
           <TabsRovingIndicator
-            rounded="$4"
+            rounded="4"
             width={intentAt.width}
             height={intentAt.height}
             x={intentAt.x}
@@ -98,7 +98,7 @@ const TabsAdvancedBackground = () => {
       <AnimatePresence>
         {activeAt && (
           <TabsRovingIndicator
-            rounded="$4"
+            rounded="4"
             theme="accent"
             width={activeAt.width}
             height={activeAt.height}
@@ -199,7 +199,7 @@ const TabsAdvancedUnderline = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$4"
+      size="4"
       height={150}
       flexDirection="column"
       bg="background"
@@ -211,7 +211,7 @@ const TabsAdvancedUnderline = () => {
           {intentAt && (
             <TabsRovingIndicator
               width={intentAt.width}
-              height="$0.5"
+              height="0-5"
               x={intentAt.x}
               b={0}
             />
@@ -223,7 +223,7 @@ const TabsAdvancedUnderline = () => {
               theme="accent"
               active
               width={activeAt.width}
-              height="$0.5"
+              height="0-5"
               x={activeAt.x}
               b={0}
             />
@@ -234,9 +234,9 @@ const TabsAdvancedUnderline = () => {
           aria-label="Manage your account"
           borderBottomLeftRadius={0}
           borderBottomRightRadius={0}
-          paddingBottom="$1.5"
+          paddingBottom="1-5"
           borderColor="color3"
-          borderBottomWidth="$0.5"
+          borderBottomWidth="0-5"
           backgroundColor="transparent"
         >
           <Tabs.Tab
@@ -293,7 +293,7 @@ const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & ViewPr
       backgroundColor="color5"
       opacity="0.7 enter:0 exit:0"
       transition="100ms"
-      {...(active && { backgroundColor: '$color5', opacity: 0.6 })}
+      {...(active && { backgroundColor: 'color5', opacity: 0.6 })}
       {...props}
     />
   )

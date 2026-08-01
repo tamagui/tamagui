@@ -4,16 +4,16 @@ import { View, Text, createStyledContext, styled, useMedia } from 'tamagui'
  * Test case for styled context token preservation (issues #3670, #3676)
  *
  * This tests that when a parent component sets a context value via a variant,
- * the child's functional variant receives the original token string (like '$4')
+ * the child's functional variant receives the original token string (like '4')
  * instead of the resolved CSS variable (like 'var(--t-space-4)').
  *
  * The child uses a functional variant that looks up the gap token value
- * to calculate width. If it receives 'var(--t-space-4)' instead of '$4',
+ * to calculate width. If it receives 'var(--t-space-4)' instead of '4',
  * the token lookup fails.
  */
 
 const GridContext = createStyledContext({
-  gap: '$4' as string,
+  gap: '4' as string,
   columns: 2 as number,
 })
 
@@ -49,19 +49,11 @@ const GridChild = styled(View, {
       number: (columns, { props, tokens }) => {
         const gapToken = props.gap as string
 
-        // Test: gapToken should be '$2', '$4', or '$8' - NOT 'var(--t-space-X)'
+        // Test: gapToken should be '2', '4', or '8' - NOT 'var(--t-space-X)'
         // If it's a CSS variable, the token lookup below will fail
-        const isTokenString = gapToken?.startsWith('$')
-
-        // Try to get the gap value from tokens
-        let gapValue = 0
-        if (isTokenString && gapToken) {
-          const tokenKey = gapToken.slice(1) // remove '$'
-          const spaceToken = tokens.space[`$${tokenKey}`]
-          if (spaceToken) {
-            gapValue = typeof spaceToken.val === 'number' ? spaceToken.val : 0
-          }
-        }
+        const spaceToken = gapToken ? tokens.space[gapToken] : undefined
+        const gapValue =
+          spaceToken && typeof spaceToken.val === 'number' ? spaceToken.val : 0
 
         // Calculate width based on columns and gap
         // width = (100% / columns) - (gap * (columns - 1) / columns)
@@ -107,7 +99,7 @@ export function StyledContextTokens() {
 
       {/* Test 1: Variant sets gap to $2 */}
       <View>
-        <Text>Test 1: spacing="small" should set gap="$2"</Text>
+        <Text>Test 1: spacing="small" should set gap="2"</Text>
         <GridParent spacing="small" id="test-small">
           <DebugDisplay id="debug-small" />
           <GridChild columns={2} id="child-small-1" />
@@ -117,7 +109,7 @@ export function StyledContextTokens() {
 
       {/* Test 2: Variant sets gap to $8 */}
       <View>
-        <Text>Test 2: spacing="large" should set gap="$8"</Text>
+        <Text>Test 2: spacing="large" should set gap="8"</Text>
         <GridParent spacing="large" id="test-large">
           <DebugDisplay id="debug-large" />
           <GridChild columns={2} id="child-large-1" />
@@ -127,7 +119,7 @@ export function StyledContextTokens() {
 
       {/* Test 3: Default gap (no variant) */}
       <View>
-        <Text>Test 3: no spacing prop, default gap="$4"</Text>
+        <Text>Test 3: no spacing prop, default gap="4"</Text>
         <GridParent id="test-default">
           <DebugDisplay id="debug-default" />
           <GridChild columns={2} id="child-default-1" />

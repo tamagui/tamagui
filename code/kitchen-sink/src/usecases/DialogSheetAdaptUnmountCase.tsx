@@ -15,7 +15,7 @@ const CONTENT_RADIUS = 16
  * Repro for the "content removes before animation on close" bug.
  *
  * Mirrors the three-punch-convo-app Dialog wrapper as closely as possible:
- * - Sheet.Container with bg="$backgroundSurface" and *no* inner overlay/blur layer
+ * - Sheet.Container with bg="backgroundSurface" and *no* inner overlay/blur layer
  *   painted on top of the contents (which is what masks the bug in takeout).
  * - Adapt.Contents nested inside Sheet.ScrollView in Sheet.Container.
  *
@@ -136,7 +136,7 @@ export function DialogSheetAdaptUnmountCase() {
 
       <ThreePunchDialog open={open} onOpenChange={setOpen}>
         <YStack gap="3">
-          <TamaguiDialog.Title size="$6">Three Punch Dialog</TamaguiDialog.Title>
+          <TamaguiDialog.Title size="6">Three Punch Dialog</TamaguiDialog.Title>
           <TamaguiDialog.Description>
             This body should remain visible while the sheet slides out.
           </TamaguiDialog.Description>

@@ -18,7 +18,7 @@ const SwitchSkin = withStaticProperties(SwitchSkinFrame, {
 })
 
 export const SwitchSkinTypeTest = () => (
-  <SwitchSkin size="$4" defaultChecked aria-label="Notifications">
+  <SwitchSkin size="4" defaultChecked aria-label="Notifications">
     <SwitchSkin.Thumb transition="quick" />
   </SwitchSkin>
 )

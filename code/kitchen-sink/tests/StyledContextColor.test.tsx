@@ -70,7 +70,7 @@ test(`$color reference in child variant gets parent color from Provider (issue #
 
   // Text should be green because:
   // 1. Provider sets color: 'green'
-  // 2. Child uses color: '$color' which should resolve to 'green' from context
+  // 2. Child uses color: 'color' which should resolve to 'green' from context
   expect(textStyles.color).toContain('0, 128, 0') // green in rgb
 })
 

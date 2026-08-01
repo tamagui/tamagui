@@ -22,7 +22,7 @@ export function PopoverHoverableDisableClickCase() {
 
   return (
     <YStack padding="10" alignItems="center" gap="4">
-      <SizableText size="$3" color="color9">
+      <SizableText size="3" color="color9">
         Hoverable popover with disablePressTrigger - clicking should dismiss via onPressIn
         only
       </SizableText>
@@ -106,7 +106,7 @@ export function PopoverHoverableDisableClickCase() {
 
       <YStack id="open-state-log" gap="1" mt="4">
         {log.map((entry, i) => (
-          <SizableText key={i} size="$2" color="color8" fontFamily="mono">
+          <SizableText key={i} size="2" color="color8" fontFamily="mono">
             {entry}
           </SizableText>
         ))}

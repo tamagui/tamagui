@@ -14,7 +14,7 @@ export function AnimationValueLoggingCase() {
   return (
     <YStack gap="4" padding="4" flex={1}>
       <Paragraph>Animation Value Logging Tests</Paragraph>
-      <Paragraph size="$2" color="color10">
+      <Paragraph size="2" color="color10">
         Open browser console to see [ANIM_LOG] entries
       </Paragraph>
 
@@ -106,7 +106,7 @@ function OpacityAnimationTest() {
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {faded ? 'faded' : 'visible'}
       </Paragraph>
     </XStack>
@@ -189,7 +189,7 @@ function ScaleAnimationTest() {
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {scaled ? 'scaled' : 'normal'}
       </Paragraph>
     </XStack>
@@ -274,7 +274,7 @@ function TranslateAnimationTest() {
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {moved ? 'moved' : 'normal'}
       </Paragraph>
     </XStack>
@@ -366,7 +366,7 @@ function EnterExitAnimationTest() {
           data-testid={`${testId}-square`}
         />
       )}
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {visible ? 'visible' : 'hidden'}
       </Paragraph>
     </XStack>
@@ -436,7 +436,7 @@ function ColorAnimationTest() {
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {active ? 'red' : 'blue'}
       </Paragraph>
     </XStack>
@@ -512,7 +512,7 @@ function AnimationConfigTest() {
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
-      <Paragraph size="$2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
+      <Paragraph size="2" testID={`${testId}-state`} data-testid={`${testId}-state`}>
         {expanded ? 'expanded' : 'collapsed'}
       </Paragraph>
     </XStack>

@@ -17,7 +17,7 @@ export function LabelDemo() {
         </Label>
         <Switch
           activeStyle={{
-            backgroundColor: '$color8',
+            backgroundColor: 'color8',
           }}
           id="notify"
         >

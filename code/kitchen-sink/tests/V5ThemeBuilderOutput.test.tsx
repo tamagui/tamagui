@@ -9,7 +9,7 @@ import { getStyles } from './utils'
  *
  * 1. <Theme name="accent"> - theme-builder.mdx, how-to-upgrade.mdx
  * 2. <Button theme="accent"> - config-v5.mdx, ButtonDemo.tsx
- * 3. $accentBackground / $accentColor - config-v5.mdx
+ * 3. accent-background / accent-color - config-v5.mdx
  * 4. $accent1-$accent12 raw tokens
  */
 
@@ -100,9 +100,9 @@ test('<Button theme="accent"> background is not gray', async ({ page }) => {
   }
 })
 
-// --- $accentBackground token ---
+// --- accent-background token ---
 
-test('$accentBackground token resolves to a non-gray color', async ({ page }) => {
+test('accent-background token resolves to a non-gray color', async ({ page }) => {
   const el = page.getByTestId(TEST_IDS.accentBgToken)
   await expect(el).toBeVisible()
 

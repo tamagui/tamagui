@@ -13,8 +13,8 @@ export function IconFontSizing() {
         Large
       </Button>
       {/* direct icon with a token size resolves via the font size scale */}
-      <Moon size="$2" testID="icon-2" />
-      <Moon size="$8" testID="icon-8" />
+      <Moon size="2" testID="icon-2" />
+      <Moon size="8" testID="icon-8" />
     </YStack>
   )
 }

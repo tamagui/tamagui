@@ -245,7 +245,7 @@ test.describe('Tooltip animation', () => {
     })
 
     expect(arrowSize.exists, 'Arrow element exists').toBe(true)
-    // Arrow should have reasonable size (size="$2" should be ~16px, not tiny)
+    // Arrow should have reasonable size (size="2" should be ~16px, not tiny)
     expect(arrowSize.width, 'Arrow width should not be tiny').toBeGreaterThan(8)
     expect(arrowSize.height, 'Arrow height should not be tiny').toBeGreaterThan(8)
   })

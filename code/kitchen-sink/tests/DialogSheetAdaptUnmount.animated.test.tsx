@@ -12,7 +12,7 @@ import { setupPage } from './test-utils'
  *
  *   In takeout this is masked by an opaque BlurView + $color5 layer painted on
  *   Sheet.Container itself, so the empty contents area still looks "full" until
- *   the slide finishes. The 3PC Dialog is just bg="$backgroundSurface" with no
+ *   the slide finishes. The 3PC Dialog is just bg="backgroundSurface" with no
  *   inner cover, so the unmount is visible.
  *
  * What this test asserts:

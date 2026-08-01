@@ -118,7 +118,7 @@ export function AnimationComprehensiveCase() {
       <Paragraph fontWeight="bold" fontSize="5">
         Comprehensive Animation Test Suite (30+ Scenarios)
       </Paragraph>
-      <Paragraph size="$2" color="color10">
+      <Paragraph size="2" color="color10">
         Open console to see [ANIM_FRAME] logs
       </Paragraph>
 
@@ -261,7 +261,7 @@ function Scenario01_OpacityBasic() {
         testID="scenario-01-target"
         data-testid="scenario-01-target"
       />
-      <Paragraph size="$1">{active ? '0.2' : '1'}</Paragraph>
+      <Paragraph size="1">{active ? '0.2' : '1'}</Paragraph>
     </XStack>
   )
 }
@@ -299,7 +299,7 @@ function Scenario02_ScaleBasic() {
         testID="scenario-02-target"
         data-testid="scenario-02-target"
       />
-      <Paragraph size="$1">{active ? '1.5' : '1'}</Paragraph>
+      <Paragraph size="1">{active ? '1.5' : '1'}</Paragraph>
     </XStack>
   )
 }
@@ -337,7 +337,7 @@ function Scenario03_TranslateX() {
         testID="scenario-03-target"
         data-testid="scenario-03-target"
       />
-      <Paragraph size="$1">{active ? '50px' : '0'}</Paragraph>
+      <Paragraph size="1">{active ? '50px' : '0'}</Paragraph>
     </XStack>
   )
 }
@@ -375,7 +375,7 @@ function Scenario04_TranslateY() {
         testID="scenario-04-target"
         data-testid="scenario-04-target"
       />
-      <Paragraph size="$1">{active ? '-30px' : '0'}</Paragraph>
+      <Paragraph size="1">{active ? '-30px' : '0'}</Paragraph>
     </XStack>
   )
 }
@@ -413,7 +413,7 @@ function Scenario05_Rotate() {
         testID="scenario-05-target"
         data-testid="scenario-05-target"
       />
-      <Paragraph size="$1">{active ? '45deg' : '0'}</Paragraph>
+      <Paragraph size="1">{active ? '45deg' : '0'}</Paragraph>
     </XStack>
   )
 }
@@ -455,7 +455,7 @@ function Scenario06_MultipleTransforms() {
         testID="scenario-06-target"
         data-testid="scenario-06-target"
       />
-      <Paragraph size="$1">{active ? 'active' : 'default'}</Paragraph>
+      <Paragraph size="1">{active ? 'active' : 'default'}</Paragraph>
     </XStack>
   )
 }
@@ -491,7 +491,7 @@ function Scenario07_Width() {
         testID="scenario-07-target"
         data-testid="scenario-07-target"
       />
-      <Paragraph size="$1">{active ? '150px' : '40px'}</Paragraph>
+      <Paragraph size="1">{active ? '150px' : '40px'}</Paragraph>
     </XStack>
   )
 }
@@ -527,7 +527,7 @@ function Scenario08_Height() {
         testID="scenario-08-target"
         data-testid="scenario-08-target"
       />
-      <Paragraph size="$1">{active ? '80px' : '40px'}</Paragraph>
+      <Paragraph size="1">{active ? '80px' : '40px'}</Paragraph>
     </XStack>
   )
 }
@@ -566,7 +566,7 @@ function Scenario09_WidthAndHeight() {
         testID="scenario-09-target"
         data-testid="scenario-09-target"
       />
-      <Paragraph size="$1">{active ? '100x60' : '40x40'}</Paragraph>
+      <Paragraph size="1">{active ? '100x60' : '40x40'}</Paragraph>
     </XStack>
   )
 }
@@ -605,7 +605,7 @@ function Scenario10_BorderRadius() {
         testID="scenario-10-target"
         data-testid="scenario-10-target"
       />
-      <Paragraph size="$1">{active ? '20px' : '0'}</Paragraph>
+      <Paragraph size="1">{active ? '20px' : '0'}</Paragraph>
     </XStack>
   )
 }
@@ -642,7 +642,7 @@ function Scenario11_BackgroundColor() {
         testID="scenario-11-target"
         data-testid="scenario-11-target"
       />
-      <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
+      <Paragraph size="1">{active ? 'red' : 'blue'}</Paragraph>
     </XStack>
   )
 }
@@ -682,7 +682,7 @@ function Scenario12_TextColor() {
       >
         ABC
       </Text>
-      <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
+      <Paragraph size="1">{active ? 'red' : 'blue'}</Paragraph>
     </XStack>
   )
 }
@@ -721,7 +721,7 @@ function Scenario13_BorderColor() {
         testID="scenario-13-target"
         data-testid="scenario-13-target"
       />
-      <Paragraph size="$1">{active ? 'red' : 'blue'}</Paragraph>
+      <Paragraph size="1">{active ? 'red' : 'blue'}</Paragraph>
     </XStack>
   )
 }
@@ -759,7 +759,7 @@ function Scenario14_SpringBouncy() {
         testID="scenario-14-target"
         data-testid="scenario-14-target"
       />
-      <Paragraph size="$1">bouncy spring</Paragraph>
+      <Paragraph size="1">bouncy spring</Paragraph>
     </XStack>
   )
 }
@@ -797,7 +797,7 @@ function Scenario15_SpringLazy() {
         testID="scenario-15-target"
         data-testid="scenario-15-target"
       />
-      <Paragraph size="$1">lazy spring</Paragraph>
+      <Paragraph size="1">lazy spring</Paragraph>
     </XStack>
   )
 }
@@ -835,7 +835,7 @@ function Scenario16_SpringQuick() {
         testID="scenario-16-target"
         data-testid="scenario-16-target"
       />
-      <Paragraph size="$1">quick spring</Paragraph>
+      <Paragraph size="1">quick spring</Paragraph>
     </XStack>
   )
 }
@@ -874,7 +874,7 @@ function Scenario17_SpringCustom() {
         testID="scenario-17-target"
         data-testid="scenario-17-target"
       />
-      <Paragraph size="$1">custom spring</Paragraph>
+      <Paragraph size="1">custom spring</Paragraph>
     </XStack>
   )
 }
@@ -912,7 +912,7 @@ function Scenario18_Timing100ms() {
         testID="scenario-18-target"
         data-testid="scenario-18-target"
       />
-      <Paragraph size="$1">timing 100ms</Paragraph>
+      <Paragraph size="1">timing 100ms</Paragraph>
     </XStack>
   )
 }
@@ -950,7 +950,7 @@ function Scenario19_Timing200ms() {
         testID="scenario-19-target"
         data-testid="scenario-19-target"
       />
-      <Paragraph size="$1">quick spring</Paragraph>
+      <Paragraph size="1">quick spring</Paragraph>
     </XStack>
   )
 }
@@ -988,7 +988,7 @@ function Scenario20_TimingWithDelay() {
         testID="scenario-20-target"
         data-testid="scenario-20-target"
       />
-      <Paragraph size="$1">300ms delay</Paragraph>
+      <Paragraph size="1">300ms delay</Paragraph>
     </XStack>
   )
 }
@@ -1030,7 +1030,7 @@ function Scenario21_EnterStyle() {
           data-testid="scenario-21-target"
         />
       )}
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -1075,7 +1075,7 @@ function Scenario22_ExitStyle() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -1121,7 +1121,7 @@ function Scenario23_EnterExitCombined() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -1169,7 +1169,7 @@ function Scenario24_RapidToggle() {
         testID="scenario-24-target"
         data-testid="scenario-24-target"
       />
-      <Paragraph size="$1">6 toggles @ 100ms</Paragraph>
+      <Paragraph size="1">6 toggles @ 100ms</Paragraph>
     </XStack>
   )
 }
@@ -1253,7 +1253,7 @@ function Scenario26_AnimateOnly() {
         testID="scenario-26-target"
         data-testid="scenario-26-target"
       />
-      <Paragraph size="$1">only opacity</Paragraph>
+      <Paragraph size="1">only opacity</Paragraph>
     </XStack>
   )
 }
@@ -1292,7 +1292,7 @@ function Scenario27_AnimationConfig() {
         testID="scenario-27-target"
         data-testid="scenario-27-target"
       />
-      <Paragraph size="$1">config override</Paragraph>
+      <Paragraph size="1">config override</Paragraph>
     </XStack>
   )
 }
@@ -1336,7 +1336,7 @@ function Scenario28_MultiProperty() {
         testID="scenario-28-target"
         data-testid="scenario-28-target"
       />
-      <Paragraph size="$1">4 props</Paragraph>
+      <Paragraph size="1">4 props</Paragraph>
     </XStack>
   )
 }
@@ -1396,7 +1396,7 @@ function Scenario29_NestedAnimations() {
           data-testid="scenario-29-inner"
         />
       </View>
-      <Paragraph size="$1">parent+child</Paragraph>
+      <Paragraph size="1">parent+child</Paragraph>
     </XStack>
   )
 }
@@ -1413,7 +1413,7 @@ function Scenario30_HoverAnimation() {
 
   return (
     <XStack gap="2" alignItems="center">
-      <Paragraph size="$1">30: Hover →</Paragraph>
+      <Paragraph size="1">30: Hover →</Paragraph>
       <View
         ref={ref as any}
         transition="quick"
@@ -1428,7 +1428,7 @@ function Scenario30_HoverAnimation() {
         testID="scenario-30-target"
         data-testid="scenario-30-target"
       />
-      <Paragraph size="$1">hover me</Paragraph>
+      <Paragraph size="1">hover me</Paragraph>
     </XStack>
   )
 }
@@ -1470,7 +1470,7 @@ function Scenario31_PerPropertyConfigs() {
         testID="scenario-31-target"
         data-testid="scenario-31-target"
       />
-      <Paragraph size="$1">opacity=lazy, scale=bouncy</Paragraph>
+      <Paragraph size="1">opacity=lazy, scale=bouncy</Paragraph>
     </XStack>
   )
 }
@@ -1519,7 +1519,7 @@ function Scenario32_PerPropertyWithInterruption() {
       <Button size="small" onPress={() => setState(0)}>
         Reset
       </Button>
-      <Paragraph size="$1">state={state}</Paragraph>
+      <Paragraph size="1">state={state}</Paragraph>
     </XStack>
   )
 }
@@ -1563,7 +1563,7 @@ function Scenario33_MixedSpringTiming() {
         testID="scenario-33-target"
         data-testid="scenario-33-target"
       />
-      <Paragraph size="$1">scale=bouncy, opacity=quick, radius=lazy</Paragraph>
+      <Paragraph size="1">scale=bouncy, opacity=quick, radius=lazy</Paragraph>
     </XStack>
   )
 }
@@ -1623,7 +1623,7 @@ function Scenario34_ComplexObjectManyProps() {
         testID="scenario-34-target"
         data-testid="scenario-34-target"
       />
-      <Paragraph size="$1">7 props, 4 configs</Paragraph>
+      <Paragraph size="1">7 props, 4 configs</Paragraph>
     </XStack>
   )
 }
@@ -1676,7 +1676,7 @@ function Scenario35_RapidPerPropertyChanges() {
         testID="scenario-35-target"
         data-testid="scenario-35-target"
       />
-      <Paragraph size="$1">8 toggles @ 150ms</Paragraph>
+      <Paragraph size="1">8 toggles @ 150ms</Paragraph>
     </XStack>
   )
 }
@@ -1717,7 +1717,7 @@ function Scenario36_TimingTest() {
         testID="scenario-36-target"
         data-testid="scenario-36-target"
       />
-      <Paragraph size="$1">1000ms timing</Paragraph>
+      <Paragraph size="1">1000ms timing</Paragraph>
     </XStack>
   )
 }
@@ -1761,7 +1761,7 @@ function Scenario37_EnterStyleScaleX() {
           data-testid="scenario-37-target"
         />
       )}
-      <Paragraph size="$1">{visible ? 'visible' : 'hidden'}</Paragraph>
+      <Paragraph size="1">{visible ? 'visible' : 'hidden'}</Paragraph>
     </XStack>
   )
 }
@@ -1806,7 +1806,7 @@ function Scenario38_PerPropertyWithTransform() {
         testID="scenario-38-target"
         data-testid="scenario-38-target"
       />
-      <Paragraph size="$1">opacity/bg=200ms, scale/y=quick</Paragraph>
+      <Paragraph size="1">opacity/bg=200ms, scale/y=quick</Paragraph>
     </XStack>
   )
 }
@@ -1852,7 +1852,7 @@ function Scenario39_ObjectFormatPerProperty() {
         testID="scenario-39-target"
         data-testid="scenario-39-target"
       />
-      <Paragraph size="$1">object: opacity/bg=200ms, default=quick</Paragraph>
+      <Paragraph size="1">object: opacity/bg=200ms, default=quick</Paragraph>
     </XStack>
   )
 }
@@ -1893,7 +1893,7 @@ function Scenario40_ObjectFormatNoDefault() {
         testID="scenario-40-target"
         data-testid="scenario-40-target"
       />
-      <Paragraph size="$1">only opacity animates (500ms)</Paragraph>
+      <Paragraph size="1">only opacity animates (500ms)</Paragraph>
     </XStack>
   )
 }
@@ -1935,7 +1935,7 @@ function Scenario41_PerPropertyWithDelay() {
         testID="scenario-41-target"
         data-testid="scenario-41-target"
       />
-      <Paragraph size="$1">300ms delay, opacity=500ms, scale=quick</Paragraph>
+      <Paragraph size="1">300ms delay, opacity=500ms, scale=quick</Paragraph>
     </XStack>
   )
 }
@@ -1983,7 +1983,7 @@ function Scenario42_TransitionEnterExit() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=500ms, exit=100ms)
       </Paragraph>
     </XStack>
@@ -2033,7 +2033,7 @@ function Scenario43_TransitionEnterOnly() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=500ms, default=100ms)
       </Paragraph>
     </XStack>
@@ -2083,7 +2083,7 @@ function Scenario44_TransitionExitOnly() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (exit=500ms, default=100ms)
       </Paragraph>
     </XStack>
@@ -2146,7 +2146,7 @@ function Scenario45_TransitionEnterExitWithDefault() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, default=500ms)
       </Paragraph>
     </XStack>
@@ -2197,7 +2197,7 @@ function Scenario46_TransitionEnterExitPerProperty() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, opacity=500ms)
       </Paragraph>
     </XStack>
@@ -2247,7 +2247,7 @@ function Scenario47_TransitionEnterExitWithDelay() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, delay=200ms)
       </Paragraph>
     </XStack>
@@ -2297,7 +2297,7 @@ function Scenario48_AnimateOnlyWithExitStyle() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (animateOnly=['opacity', 'transform'])
       </Paragraph>
     </XStack>
@@ -2349,7 +2349,7 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter+exit with animateOnly)
       </Paragraph>
     </XStack>
@@ -2399,7 +2399,7 @@ function Scenario50_EnterTimingVerification() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (enter=200ms, exit=1000ms)
       </Paragraph>
     </XStack>
@@ -2449,7 +2449,7 @@ function Scenario51_DurationNormalization() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (duration=1 should be 1ms)
       </Paragraph>
     </XStack>
@@ -2498,7 +2498,7 @@ function Scenario52_DurationNormalizationInlineConfig() {
           />
         )}
       </AnimatePresence>
-      <Paragraph size="$1">
+      <Paragraph size="1">
         {visible ? 'visible' : 'hidden'} (base=100ms, override=50ms)
       </Paragraph>
     </XStack>

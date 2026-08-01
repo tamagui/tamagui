@@ -12,7 +12,7 @@ import {
 } from '@tamagui/web'
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
+  size: 'md' as SizeTokens,
 })
 export const ButtonFrame = styled(View, {
   name: 'Button',
@@ -46,7 +46,7 @@ export const ButtonFrame = styled(View, {
     },
   } as const,
   defaultVariants: {
-    size: '$5',
+    size: '5',
   },
 })
 type ButtonProps = GetProps<typeof ButtonFrame>

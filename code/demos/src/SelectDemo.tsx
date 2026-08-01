@@ -85,7 +85,7 @@ export function SelectDemoContents(
             position="absolute"
             inset={0}
             rounded="4"
-            colors={['$background', 'transparent']}
+            colors={['background', 'transparent']}
           />
         </Select.ScrollUpButton>
         <Select.Viewport
@@ -149,7 +149,7 @@ export function SelectDemoContents(
             position="absolute"
             inset={0}
             rounded="4"
-            colors={['transparent', '$background']}
+            colors={['transparent', 'background']}
           />
         </Select.ScrollDownButton>
       </Select.Content>

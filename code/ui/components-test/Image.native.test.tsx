@@ -43,7 +43,7 @@ test('Image resolves Tamagui styles and preserves native image props', async () 
           bg="background"
           aspectRatio={2}
           opacity="sm:0.5"
-          br="$4"
+          br="4"
           accessibilityLabel="test image"
           onLoad={onLoad}
         />

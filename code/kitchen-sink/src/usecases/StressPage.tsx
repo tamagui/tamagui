@@ -54,7 +54,7 @@ const StyledCard = styled(Card, {
   backgroundColor: 'background',
   borderWidth: 1,
   borderColor: 'border-color',
-  elevation: '$2',
+  elevation: '2',
   variants: {
     highlighted: {
       true: {
@@ -124,7 +124,7 @@ function Header() {
       <H1 color="color" fontWeight="800">
         Dashboard
       </H1>
-      <Paragraph color="color8" size="$4">
+      <Paragraph color="color8" size="4">
         Overview of your application metrics and recent activity
       </Paragraph>
       <XStack gap="2" flexWrap="wrap">
@@ -147,10 +147,10 @@ function StatsRow() {
     <XStack gap="3" paddingHorizontal="4" flexWrap="wrap">
       {stats.map((s) => (
         <StatBox key={s.label}>
-          <SizableText size="$2" color="color8">
+          <SizableText size="2" color="color8">
             {s.label}
           </SizableText>
-          <SizableText size="$8" fontWeight="700" color="color">
+          <SizableText size="8" fontWeight="700" color="color">
             {s.value}
           </SizableText>
         </StatBox>
@@ -171,15 +171,15 @@ function ItemRow({ item }: { item: (typeof items)[0] }) {
     >
       <View width={40} height={40} borderRadius="10" backgroundColor="blue5" />
       <YStack flex={1} gap="1">
-        <SizableText fontWeight="600" size="$4">
+        <SizableText fontWeight="600" size="4">
           {item.title}
         </SizableText>
-        <SizableText size="$2" color="color8" numberOfLines={1}>
+        <SizableText size="2" color="color8" numberOfLines={1}>
           {item.desc}
         </SizableText>
       </YStack>
       <Badge color={item.badge}>
-        <SizableText size="$1" color="white">
+        <SizableText size="1" color="white">
           {item.badge}
         </SizableText>
       </Badge>
@@ -207,13 +207,13 @@ function FormSection() {
       <YStack gap="3">
         {['Name', 'Email', 'Company', 'Role'].map((field) => (
           <YStack key={field} gap="1">
-            <Label size="$3">{field}</Label>
-            <Input size="$3" placeholder={`Enter ${field.toLowerCase()}`} />
+            <Label size="3">{field}</Label>
+            <Input size="3" placeholder={`Enter ${field.toLowerCase()}`} />
           </YStack>
         ))}
         <XStack gap="3" alignItems="center">
-          <Switch size="$3" />
-          <SizableText size="$3">Enable notifications</SizableText>
+          <Switch size="3" />
+          <SizableText size="3">Enable notifications</SizableText>
         </XStack>
         <Button size="medium">Save Changes</Button>
       </YStack>
@@ -236,7 +236,7 @@ function ThemedSection() {
                 backgroundColor="background"
                 padding="2"
               >
-                <SizableText size="$1" color="color">
+                <SizableText size="1" color="color">
                   Card {i + 1}
                 </SizableText>
               </View>
@@ -258,7 +258,7 @@ function Footer() {
       borderTopWidth={1}
     >
       {['About', 'Privacy', 'Terms', 'Contact', 'Help', 'Status'].map((link) => (
-        <SizableText key={link} size="$2" color="color8" cursor="pointer">
+        <SizableText key={link} size="2" color="color8" cursor="pointer">
           {link}
         </SizableText>
       ))}

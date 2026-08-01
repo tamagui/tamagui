@@ -55,7 +55,7 @@ test(`SizableText keeps its explicit fontFamily (does not inherit)`, async ({ pa
   // parent should have mono font family
   expect(parentStyles.fontFamily).toContain('mono')
 
-  // SizableText has explicit fontFamily: '$body' in its static config,
+  // SizableText has explicit fontFamily: 'body' in its static config,
   // so it should NOT inherit mono but keep its body font
   expect(nestedStyles.fontFamily).not.toBe(parentStyles.fontFamily)
   expect(nestedStyles.fontFamily).toContain('Inter')

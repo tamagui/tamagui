@@ -29,7 +29,7 @@ export type SkinManifest = {
   categories?: string[]
   /**
    * theme token keys the skin assumes exist in the active Tamagui config
-   * (e.g. '$background', '$borderColor'). A consumer whose theme lacks these
+   * (e.g. 'background', 'border-color'). A consumer whose theme lacks these
    * renders without the intended appearance.
    */
   tokens?: string[]

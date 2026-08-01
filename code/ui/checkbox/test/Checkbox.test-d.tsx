@@ -31,7 +31,7 @@ export const CheckboxPartsTypeTest = () => (
     aria-label="type test"
     size="compact"
     backgroundColor="background"
-    activeStyle={{ backgroundColor: '$backgroundPress' }}
+    activeStyle={{ backgroundColor: 'background-press' }}
   >
     <CheckboxIndicatorSkin />
   </CheckboxSkin>

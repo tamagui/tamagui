@@ -149,7 +149,7 @@ export function FieldDemo() {
         </Button>
       </Form.Trigger>
 
-      <Paragraph color="color9" size="$2">
+      <Paragraph color="color9" size="2">
         {status}
       </Paragraph>
     </Form>

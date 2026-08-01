@@ -10,7 +10,7 @@ export const ThemedListItem = () => (
       title="Default"
       subTitle="Default list item"
       icon={ChevronRight}
-      size="$3"
+      size="3"
       borderRadius="3"
     />
 
@@ -20,7 +20,7 @@ export const ThemedListItem = () => (
         title="Accent"
         subTitle="Accent (contrasting) list item"
         icon={ChevronRight}
-        size="$3"
+        size="3"
         borderRadius="3"
       />
     </Theme>
@@ -35,7 +35,7 @@ export const ThemedListItem = () => (
         title='<Theme ="light"/>'
         subTitle="Forcing light theme"
         icon={ChevronRight}
-        size="$3"
+        size="3"
         borderRadius="3"
         onPress={() => console.info('Light theme list item pressed')}
       />
@@ -47,7 +47,7 @@ export const ThemedListItem = () => (
         title='<Theme ="dark"/>'
         subTitle="Forcing dark theme"
         icon={ChevronRight}
-        size="$3"
+        size="3"
         borderRadius="3"
         onPress={() => console.info('Dark theme list item pressed')}
       />
@@ -60,7 +60,7 @@ export const ThemedListItem = () => (
           title='<Theme name="accent">'
           subTitle="light + accent = light_accent (contrasting)"
           icon={ChevronRight}
-          size="$3"
+          size="3"
           borderRadius="3"
           onPress={() => console.info('Light theme accent list item pressed')}
         />
@@ -74,7 +74,7 @@ export const ThemedListItem = () => (
           title='<Theme name="accent">'
           subTitle="dark + accent = dark_accent (contrasting)"
           icon={ChevronRight}
-          size="$3"
+          size="3"
           borderRadius="3"
           onPress={() => console.info('Dark theme accent list item pressed')}
         />
@@ -91,7 +91,7 @@ export const ThemedListItem = () => (
       title="Outlined"
       subTitle="Using variant prop"
       icon={Star}
-      size="$3"
+      size="3"
       borderRadius="3"
     />
 
@@ -105,12 +105,12 @@ export const ThemedListItem = () => (
         title="With Apply color"
         subTitle="Icon inherits color from context"
         icon={Trash}
-        size="$3"
+        size="3"
         borderRadius="3"
       />
     </ListItem.Apply>
 
-    <ListItem.Apply variant="outlined" size="$2">
+    <ListItem.Apply variant="outlined" size="2">
       <ListItem
         id="themed-list-item-apply-variant"
         title="With Apply variant"
@@ -120,7 +120,7 @@ export const ThemedListItem = () => (
       />
     </ListItem.Apply>
 
-    <ListItem id="themed-list-item-child-icon" size="$10" color="red10" borderRadius="3">
+    <ListItem id="themed-list-item-child-icon" size="10" color="red10" borderRadius="3">
       <ListItem.Icon>
         <Star />
       </ListItem.Icon>

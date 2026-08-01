@@ -7,16 +7,16 @@ export function SwitchDemo() {
     <>
       <YStack width={200} items="center" gap="3">
         <XStack gap="3" flexDirection="xs:column">
-          <SwitchWithLabel size="$2" />
-          <SwitchWithLabel size="$2" defaultChecked />
+          <SwitchWithLabel size="2" />
+          <SwitchWithLabel size="2" defaultChecked />
         </XStack>
         <XStack gap="3" flexDirection="xs:column">
-          <SwitchWithLabel size="$3" />
-          <SwitchWithLabel size="$3" defaultChecked />
+          <SwitchWithLabel size="3" />
+          <SwitchWithLabel size="3" defaultChecked />
         </XStack>
         <XStack gap="3" flexDirection="xs:column">
-          <SwitchWithLabel size="$4" />
-          <SwitchWithLabel size="$4" defaultChecked />
+          <SwitchWithLabel size="4" />
+          <SwitchWithLabel size="4" defaultChecked />
         </XStack>
       </YStack>
     </>
@@ -28,7 +28,7 @@ export function SwitchWithLabel(props: {
   defaultChecked?: boolean
   activeStyle?: boolean
 }) {
-  const id = `switch-${props.size.toString().slice(1)}-${props.defaultChecked ?? ''}}`
+  const id = `switch-${props.size}-${props.defaultChecked ?? ''}}`
   return (
     <XStack width={200} items="center" gap="4">
       <Label pr="0" minW={90} justify="flex-end" size={props.size} htmlFor={id}>
@@ -42,7 +42,7 @@ export function SwitchWithLabel(props: {
         defaultChecked={props.defaultChecked}
         // use activeStyle to choose your checked-state color
         activeStyle={{
-          backgroundColor: '$color6',
+          backgroundColor: 'color6',
         }}
       >
         <Switch.Thumb transition="quickest" />

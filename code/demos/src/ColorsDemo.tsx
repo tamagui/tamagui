@@ -51,7 +51,7 @@ function ColorsRow({
 }) {
   return (
     <YStack gap="4 sm:2">
-      <H2 size="$2">{title}</H2>
+      <H2 size="2">{title}</H2>
 
       <XStack gap="4" self="center">
         <YStack gap="4 sm:2" self="center">
@@ -65,13 +65,11 @@ function ColorsRow({
                     <Square
                       key={`${groupName}${index}`}
                       rounded="2"
-                      height="4"
+                      width="4 sm:2 xs:1"
+                      height="4 sm:2 xs:1"
                       borderWidth={1}
                       bg={color as any}
                       borderColor="color7"
-                      $sm={{ size: '$2' }}
-                      $xs={{ size: '$1' }}
-                      size="$4"
                     />
                   )
                 })}

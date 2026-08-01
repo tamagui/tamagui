@@ -28,7 +28,7 @@ export const TestBuildAButton = () => {
 }
 
 export const ButtonContext = createStyledContext({
-  size: '$4' as SizeTokens,
+  size: '4' as SizeTokens,
 })
 
 export const ButtonFrame = styled(View, {
@@ -52,7 +52,7 @@ export const ButtonFrame = styled(View, {
     },
   } as const,
   defaultVariants: {
-    size: '$4',
+    size: '4',
   },
 })
 

@@ -15,27 +15,27 @@ const buttonSizes = createSizeTable(
   {
     default: {
       frame: {
-        borderRadius: '$4',
-        height: '$11',
-        paddingHorizontal: '$4',
+        borderRadius: '4',
+        height: '11',
+        paddingHorizontal: '4',
       },
       text: {
-        fontSize: '$4',
-        lineHeight: '$4',
+        fontSize: '4',
+        lineHeight: '4',
       },
-      icon: '$4',
+      icon: '4',
     },
-    $11: {
+    '11': {
       frame: {
-        borderRadius: '$11',
-        height: '$11',
-        paddingHorizontal: '$11',
+        borderRadius: '11',
+        height: '11',
+        paddingHorizontal: '11',
       },
       text: {
-        fontSize: '$11',
-        lineHeight: '$11',
+        fontSize: '11',
+        lineHeight: '11',
       },
-      icon: '$11',
+      icon: '11',
     },
   } as const,
   'default'

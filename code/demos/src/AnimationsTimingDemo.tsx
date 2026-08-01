@@ -8,7 +8,7 @@ export function AnimationsTimingDemo() {
       transition="100ms"
       rounded="9"
       scale="hover:1.2 press:0.9"
-      elevation="$4"
+      elevation="4"
       size={110}
     >
       <LogoIcon downscale={0.75} />

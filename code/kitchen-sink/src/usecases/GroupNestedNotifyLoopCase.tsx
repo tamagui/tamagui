@@ -10,9 +10,7 @@ function NestedGroup({ index, active }: { index: number; active: boolean }) {
     index === 0
       ? {}
       : {
-          [`$group-${parent}-press`]: {
-            opacity: active ? 0.96 : 0.95,
-          },
+          opacity: `group-press/${parent}:${active ? 0.96 : 0.95}`,
         }
 
   return (

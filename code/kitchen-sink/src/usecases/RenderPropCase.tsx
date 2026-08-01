@@ -13,7 +13,7 @@ const StyledButton = styled(View, {
 
 // Test: styled.a() - styled-components style API with proper href typing
 const StyledAnchor = styled.a({
-  color: '$blue10',
+  color: 'blue10',
   textDecorationLine: 'underline',
 })
 

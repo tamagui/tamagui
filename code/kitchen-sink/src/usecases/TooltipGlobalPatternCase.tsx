@@ -75,7 +75,7 @@ export function TooltipGlobalPatternCase() {
             opacity="enter:0 exit:0"
           >
             <Tooltip.Arrow />
-            <Paragraph size="$3">{label}</Paragraph>
+            <Paragraph size="3">{label}</Paragraph>
           </Tooltip.Content>
         </Tooltip>
       </TooltipGroup>

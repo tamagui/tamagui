@@ -51,7 +51,7 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         transition={['quick', { opacity: { overshootClamping: true } }]}
       >
         <Tooltip.Arrow />
-        <Paragraph size="$2" lineHeight="1">
+        <Paragraph size="2" lineHeight="1">
           Hello world
         </Paragraph>
       </Tooltip.Content>

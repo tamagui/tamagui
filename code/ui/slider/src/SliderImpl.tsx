@@ -108,7 +108,7 @@ export const SliderImpl = createRefComponent<View, SliderImplProps>(
       // wrap with plain RN View for responder events - tamagui views no longer handle responder events on web
 
       <SliderFrame
-        size="$4"
+        size="4"
         ref={forwardedRef as any}
         {...sliderProps}
         data-orientation={sliderProps.orientation}

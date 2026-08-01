@@ -33,7 +33,7 @@ export function TooltipPositionJumpCase() {
       justifyContent="center"
     >
       <SizableText fontWeight="bold">Tooltip Position Jump Test</SizableText>
-      <SizableText size="$2" color="gray11" textAlign="center">
+      <SizableText size="2" color="gray11" textAlign="center">
         1. Hover rightmost button, wait for tooltip{'\n'}
         2. Move mouse QUICKLY left across all buttons{'\n'}
         3. Watch for tooltip jumping to wrong position
@@ -70,12 +70,12 @@ export function TooltipPositionJumpCase() {
             opacity="enter:0 exit:0"
           >
             <Tooltip.Arrow />
-            <Paragraph size="$3">{label}</Paragraph>
+            <Paragraph size="3">{label}</Paragraph>
           </Tooltip.Content>
         </Tooltip>
       </TooltipGroup>
 
-      <SizableText size="$1" color="gray9" mt="8">
+      <SizableText size="1" color="gray9" mt="8">
         Tooltip content should animate smoothly between buttons.
         {'\n'}If it JUMPS to a wrong position first, the bug is present.
       </SizableText>

@@ -159,8 +159,8 @@ export function AdaptLiveSlotSpikeCase() {
     <ScrollView {...testProps('adapt-live-slot-scroll')} flex={1}>
       <YStack p="4" gap="5" maxW={760}>
         <YStack gap="3">
-          <H2 size="$7">Adapt live slot spike</H2>
-          <Paragraph size="$3">
+          <H2 size="7">Adapt live slot spike</H2>
+          <Paragraph size="3">
             Local PR-A proof harness. It does not change Adapt core.
           </Paragraph>
           <XStack gap="3" flexWrap="wrap">
@@ -182,8 +182,8 @@ export function AdaptLiveSlotSpikeCase() {
         <LiveSlotProof active={liveActive} revision={liveRevision} />
 
         <YStack gap="3">
-          <H2 size="$6">State preservation characterization</H2>
-          <Paragraph size="$3">
+          <H2 size="6">State preservation characterization</H2>
+          <Paragraph size="3">
             Measured v2 Adapt baseline vs the candidate live slot across inactive/active
             moves.
           </Paragraph>
@@ -229,7 +229,7 @@ function LiveSlotSheetTouchProof() {
           rounded="4"
           data-sheet-slot-target="true"
         >
-          <Paragraph size="$3" fontWeight="700">
+          <Paragraph size="3" fontWeight="700">
             No-portal Sheet target subtree
           </Paragraph>
           <Sheet
@@ -262,7 +262,7 @@ function LiveSlotSheetTouchProof() {
           rounded="4"
           data-sheet-slot-source="true"
         >
-          <Paragraph size="$3" fontWeight="700">
+          <Paragraph size="3" fontWeight="700">
             Sheet touch source branch
           </Paragraph>
           <LiveSlotPublisher active>
@@ -335,7 +335,7 @@ function LiveSlotProof({ active, revision }: { active: boolean; revision: number
           rounded="4"
           data-slot-target="true"
         >
-          <Paragraph size="$3" fontWeight="700">
+          <Paragraph size="3" fontWeight="700">
             Candidate target subtree
           </Paragraph>
           <TargetContext.Provider value="target-context-ok">
@@ -352,7 +352,7 @@ function LiveSlotProof({ active, revision }: { active: boolean; revision: number
           rounded="4"
           data-slot-source="true"
         >
-          <Paragraph size="$3" fontWeight="700">
+          <Paragraph size="3" fontWeight="700">
             Authored Dialog.Portal-like source
           </Paragraph>
           <LiveSlotPublisher active={active}>
@@ -400,10 +400,10 @@ function SlotProofContent({ revision }: { revision: number }) {
         accessibilityLabel="Live slot spike panel"
         accessibilityHint="Proof content rendered through the candidate live slot"
       >
-        <H2 id={titleId} {...testProps('live-slot-title')} size="$5">
+        <H2 id={titleId} {...testProps('live-slot-title')} size="5">
           Live slot spike panel
         </H2>
-        <Paragraph id={descriptionId} {...testProps('live-slot-description')} size="$3">
+        <Paragraph id={descriptionId} {...testProps('live-slot-description')} size="3">
           Content authored in the source branch and rendered once in the target branch.
         </Paragraph>
         <Text {...testProps('live-slot-context')}>{contextProof}</Text>

@@ -141,14 +141,14 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
     <>
       <XStack gap="3" alignItems="flex-start">
         <Toast.Icon />
-        <YStack flex={1} gap="$0.5">
+        <YStack flex={1} gap="0-5">
           {title && (
-            <Toast.Title fontWeight="600" size="$3">
+            <Toast.Title fontWeight="600" size="3">
               {title}
             </Toast.Title>
           )}
           {description && (
-            <Toast.Description color="color9" size="$2">
+            <Toast.Description color="color9" size="2">
               {description}
             </Toast.Description>
           )}
@@ -187,7 +187,7 @@ function DemoSlider({
 }) {
   return (
     <XStack gap="2" alignItems="center">
-      <Label size="$2" width={55}>
+      <Label size="2" width={55}>
         {label}
       </Label>
       <Slider
@@ -203,7 +203,7 @@ function DemoSlider({
         </Slider.Track>
         <Slider.Thumb theme="accent" size={16} borderRadius={100} index={0} />
       </Slider>
-      <SizableText userSelect="none" size="$2" width={35} textAlign="right">
+      <SizableText userSelect="none" size="2" width={35} textAlign="right">
         {format ? format(value) : Math.round(value)}
       </SizableText>
     </XStack>

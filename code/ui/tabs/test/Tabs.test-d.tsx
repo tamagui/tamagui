@@ -29,7 +29,7 @@ const TabsSkin = withStaticProperties(TabsSkinFrame, {
 })
 
 export const TabsSkinTypeTest = () => (
-  <TabsSkin defaultValue="one" size="$4">
+  <TabsSkin defaultValue="one" size="4">
     <TabsSkin.List loop>
       <TabsSkin.Tab value="one">One</TabsSkin.Tab>
       <TabsSkin.Tab value="two" disabled>

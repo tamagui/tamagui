@@ -23,7 +23,7 @@ export function TooltipGroupCase() {
               opacity="enter:0 exit:0"
             >
               <Tooltip.Arrow />
-              <Paragraph size="$2">Tooltip 1</Paragraph>
+              <Paragraph size="2">Tooltip 1</Paragraph>
             </Tooltip.Content>
           </Tooltip>
 
@@ -37,7 +37,7 @@ export function TooltipGroupCase() {
               opacity="enter:0 exit:0"
             >
               <Tooltip.Arrow />
-              <Paragraph size="$2">Tooltip 2</Paragraph>
+              <Paragraph size="2">Tooltip 2</Paragraph>
             </Tooltip.Content>
           </Tooltip>
 
@@ -51,7 +51,7 @@ export function TooltipGroupCase() {
               opacity="enter:0 exit:0"
             >
               <Tooltip.Arrow />
-              <Paragraph size="$2">Tooltip 3</Paragraph>
+              <Paragraph size="2">Tooltip 3</Paragraph>
             </Tooltip.Content>
           </Tooltip>
         </XStack>
@@ -71,7 +71,7 @@ export function TooltipGroupCase() {
             opacity="enter:0 exit:0"
           >
             <Tooltip.Arrow />
-            <Paragraph size="$2">Standalone A</Paragraph>
+            <Paragraph size="2">Standalone A</Paragraph>
           </Tooltip.Content>
         </Tooltip>
 
@@ -85,7 +85,7 @@ export function TooltipGroupCase() {
             opacity="enter:0 exit:0"
           >
             <Tooltip.Arrow />
-            <Paragraph size="$2">Standalone B</Paragraph>
+            <Paragraph size="2">Standalone B</Paragraph>
           </Tooltip.Content>
         </Tooltip>
       </XStack>

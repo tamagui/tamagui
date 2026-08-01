@@ -18,7 +18,7 @@ const NAME = 'Toggle'
 // default "active" appearance live in the tamagui skin
 // (code/ui/tamagui/src/components/ToggleGroup.tsx). The frame still emits the
 // discrete state (aria-pressed / data-state) via the Toggle component below; the
-// skin styles that state through the `activeStyle` prop.
+// skins can supply a plain style prop object that is applied while active.
 export const ToggleFrame = styled(
   View,
   {
@@ -46,8 +46,6 @@ export const ToggleFrame = styled(
         },
       },
 
-      // structural placeholder for the default-active appearance; the skin fills
-      // it in (or the `activeStyle` prop overrides it).
       defaultActiveStyle: {
         true: {},
       },
@@ -100,16 +98,7 @@ export const Toggle = createRefComponent<TamaguiElement, ToggleProps>(
         data-disabled={props.disabled ? '' : undefined}
         {...(active && !activeStyle && { defaultActiveStyle: true })}
         {...buttonProps}
-        // spread activeStyle after buttonProps so it wins when active: a styled()
-        // variant (e.g. a resting `backgroundColor`) forwards that value as a plain
-        // prop into buttonProps, which would otherwise clobber the activeStyle merge
-        // on overlapping keys and leave the active item stuck at its resting style.
-        {...(active &&
-          activeStyle && {
-            ...(activeStyle as any),
-            hoverStyle: activeStyle,
-            focusStyle: activeStyle,
-          })}
+        {...(active && activeStyle ? (activeStyle as any) : undefined)}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress ?? undefined, () => {
           if (!props.disabled) {

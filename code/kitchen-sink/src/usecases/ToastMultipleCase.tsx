@@ -364,7 +364,7 @@ function CustomToastContent({ toast: t }: { toast: ToastT }) {
                   if (!e.defaultPrevented) handleClose()
                 }}
               >
-                <SizableText size="$1" fontWeight="600" color="background">
+                <SizableText size="1" fontWeight="600" color="background">
                   {t.action.label}
                 </SizableText>
               </Toast.Action>
@@ -377,7 +377,7 @@ function CustomToastContent({ toast: t }: { toast: ToastT }) {
                   handleClose()
                 }}
               >
-                <SizableText size="$1" color="color11">
+                <SizableText size="1" color="color11">
                   {t.cancel.label}
                 </SizableText>
               </Toast.Action>

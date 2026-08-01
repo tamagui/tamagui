@@ -9,7 +9,7 @@ export const Heading = styled(Paragraph, {
   role: 'heading',
   fontFamily: 'heading',
   margin: 0,
-  size: '$8',
+  size: '8',
 })
 
 export type HeadingProps = GetProps<typeof Heading>
@@ -17,35 +17,35 @@ export type HeadingProps = GetProps<typeof Heading>
 export const H1 = styled(Heading, {
   name: 'H1',
   render: 'h1',
-  size: '$10',
+  size: '10',
 })
 
 export const H2 = styled(Heading, {
   name: 'H2',
   render: 'h2',
-  size: '$9',
+  size: '9',
 })
 
 export const H3 = styled(Heading, {
   name: 'H3',
   render: 'h3',
-  size: '$8',
+  size: '8',
 })
 
 export const H4 = styled(Heading, {
   name: 'H4',
   render: 'h4',
-  size: '$7',
+  size: '7',
 })
 
 export const H5 = styled(Heading, {
   name: 'H5',
   render: 'h5',
-  size: '$6',
+  size: '6',
 })
 
 export const H6 = styled(Heading, {
   name: 'H6',
   render: 'h6',
-  size: '$5',
+  size: '5',
 })

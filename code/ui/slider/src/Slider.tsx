@@ -450,7 +450,7 @@ export const SliderThumbFrame = styled(YStack, {
     // wrapper breaks the native animation driver's interpolation.
     elevate: {
       true: {
-        shadowColor: '$shadowColor',
+        shadowColor: 'shadow-color',
         shadowRadius: 4,
         shadowOffset: { width: 0, height: 2 },
       },

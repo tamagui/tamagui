@@ -237,7 +237,7 @@ function DialogContent({
                 id={`${testId}-checkbox`}
                 data-testid={`terms-checkbox`}
               />
-              <Label htmlFor={`${testId}-checkbox`} size="$3">
+              <Label htmlFor={`${testId}-checkbox`} size="3">
                 I agree to the terms and conditions
               </Label>
             </XStack>

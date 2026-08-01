@@ -56,7 +56,7 @@ export function FormsDemo() {
         {status === 'submitting' ? (
           <Spinner size="small" />
         ) : (
-          <Paragraph color="color9" size="$2">
+          <Paragraph color="color9" size="2">
             Ready
           </Paragraph>
         )}

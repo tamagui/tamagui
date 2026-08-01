@@ -9,7 +9,7 @@ export function NumberOfLinesMediaQuery() {
       {/* Test 1: numberOfLines on web */}
       <SizableText
         testID="platform-web-nol"
-        size="$4"
+        size="4"
         width={200}
         numberOfLines={isWeb ? 1 : undefined}
       >
@@ -20,7 +20,7 @@ export function NumberOfLinesMediaQuery() {
       {/* Test 2: numberOfLines=2 on web */}
       <SizableText
         testID="platform-web-nol-2"
-        size="$4"
+        size="4"
         width={200}
         numberOfLines={isWeb ? 2 : undefined}
       >
@@ -29,7 +29,7 @@ export function NumberOfLinesMediaQuery() {
       </SizableText>
 
       {/* Test 3: numberOfLines at top level (reference) */}
-      <SizableText testID="top-level-nol" size="$4" width={200} numberOfLines={1}>
+      <SizableText testID="top-level-nol" size="4" width={200} numberOfLines={1}>
         This text should be truncated to one line at top level. It needs to be long enough
         to actually trigger truncation behavior.
       </SizableText>
@@ -41,7 +41,7 @@ export function NumberOfLinesMediaQuery() {
       </Text>
 
       {/* Test 5: reference without any numberOfLines */}
-      <SizableText testID="no-nol" size="$4" width={200}>
+      <SizableText testID="no-nol" size="4" width={200}>
         This text has no numberOfLines set so it should wrap normally without any
         truncation behavior applied to it.
       </SizableText>

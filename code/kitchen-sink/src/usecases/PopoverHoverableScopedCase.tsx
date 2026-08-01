@@ -50,7 +50,7 @@ export function PopoverHoverableScopedCase() {
 
   return (
     <YStack padding="4" gap="4">
-      <SizableText size="$3" color="color9">
+      <SizableText size="3" color="color9">
         Scoped hoverable popover - mirrors WebsiteHeader pattern
       </SizableText>
 
@@ -115,10 +115,10 @@ export function PopoverHoverableScopedCase() {
             <AnimatePresence initial={false} custom={{ going }}>
               {displayId && (
                 <PanelFrame key={displayId} going={going}>
-                  <SizableText id={`nav-panel-${displayId}`} size="$5" fontWeight="600">
+                  <SizableText id={`nav-panel-${displayId}`} size="5" fontWeight="600">
                     {displayId.charAt(0).toUpperCase() + displayId.slice(1)} Panel
                   </SizableText>
-                  <SizableText size="$3" color="color9">
+                  <SizableText size="3" color="color9">
                     Content for {displayId}
                   </SizableText>
                 </PanelFrame>

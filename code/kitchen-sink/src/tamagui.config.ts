@@ -413,7 +413,7 @@ const tamaConf = createTamagui({
       },
   shorthands: shorthands,
   settings: {
-    defaultFont: '$body',
+    defaultFont: 'body',
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
     fastSchemeChange: true,
@@ -428,7 +428,7 @@ const tamaConf = createTamagui({
   // custom variables for VariablesCase (plans/variables.md)
   variables: {
     caseAccent: { light: 'rgb(0, 90, 200)', dark: 'rgb(90, 90, 255)' },
-    caseSurface: '$background',
+    caseSurface: 'background',
     caseRadius: 4,
   },
 

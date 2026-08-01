@@ -24,9 +24,9 @@ const testFont = createFont({
     10: '400',
   },
   color: {
-    1: '$color',
-    true: '$color',
-    10: '$color',
+    1: 'color',
+    true: 'color',
+    10: 'color',
   },
   letterSpacing: {
     1: 0,
@@ -67,7 +67,7 @@ describe('ListItem native composition', () => {
     }
 
     await renderListItem(
-      <ListItem size="$10" color="#ff0000">
+      <ListItem size="10" color="#ff0000">
         <ListItem.Icon>
           <ProbeIcon />
         </ListItem.Icon>

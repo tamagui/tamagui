@@ -57,25 +57,13 @@ export const positions = [
   {
     x: -50,
     y: -50,
-    scale: 0.5,
+    scale: '0.5 hover:0.6 press:0.4',
     rotate: '-45deg',
-    hoverStyle: {
-      scale: 0.6,
-    },
-    pressStyle: {
-      scale: 0.4,
-    },
   },
   {
     x: 50,
     y: 50,
-    scale: 1,
+    scale: '1 hover:1.1 press:0.9',
     rotate: '180deg',
-    hoverStyle: {
-      scale: 1.1,
-    },
-    pressStyle: {
-      scale: 0.9,
-    },
   },
 ]
