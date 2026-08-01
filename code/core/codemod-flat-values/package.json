@@ -14,7 +14,7 @@
     "@tamagui/language-service": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/style-grammar": "workspace:*",
-    "ts-morph": "^15.1.0"
+    "ts-morph": "^28.0.0"
   },
   "devDependencies": {
     "typescript": "~5.9.2"
