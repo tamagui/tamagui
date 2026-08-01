@@ -30,10 +30,26 @@ export const getVariantExtras = (styleState: GetStyleState) => {
       )
     },
     get font() {
-      return (
-        fonts[this.fontFamily] ||
-        (!props.fontFamily ? fonts[getSetting('defaultFont') || ''] : undefined)
-      )
+      const found = fonts[this.fontFamily]
+      if (found) return found
+
+      // When a component re-processes already-resolved props (useProps -> inner
+      // render), fontFamily arrives as the opaque var(--f-family) reference. The
+      // font identity survives in the font_<name> class.
+      const className = props.className
+      if (typeof className === 'string') {
+        const match = /(?:^|\s)font_([A-Za-z0-9_-]+)/.exec(className)
+        if (match && fonts[match[1]]) {
+          return fonts[match[1]]
+        }
+      }
+
+      // A bare var() reference without a font class is the root --f-family,
+      // which resolves to the normalized default font token.
+      return !props.fontFamily ||
+        (typeof props.fontFamily === 'string' && props.fontFamily.startsWith('var('))
+        ? fonts[conf.defaultFontToken]
+        : undefined
     },
     props,
   }

@@ -114,7 +114,7 @@ export function PopoverFocusScopeCase() {
             {/* Nested Popover */}
             <Popover>
               <Popover.Trigger asChild>
-                <Button data-testid="nested-popover-trigger" size="medium">
+                <Button data-testid="nested-popover-trigger" size="4">
                   Open Nested
                 </Button>
               </Popover.Trigger>
@@ -128,7 +128,7 @@ export function PopoverFocusScopeCase() {
                 <YStack gap="3" padding="3" data-testid="nested-popover-content">
                   <Input data-testid="nested-popover-input" placeholder="Nested input" />
                   <Popover.Close asChild>
-                    <Button data-testid="nested-popover-close" size="medium">
+                    <Button data-testid="nested-popover-close" size="4">
                       Close Nested
                     </Button>
                   </Popover.Close>

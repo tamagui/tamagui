@@ -305,33 +305,33 @@ export function OnLayoutStressCase() {
       <XStack gap="2" flexWrap="wrap" padding="2" backgroundColor="background">
         <Button
           testID="btn-resize-width"
-          size="small"
+          size="3"
           onPress={() => setWidthMultiplier((v) => (v === 1 ? 1.5 : 1))}
         >
           toggle width ({widthMultiplier}x)
         </Button>
         <Button
           testID="btn-toggle-expand"
-          size="small"
+          size="3"
           onPress={() => setExpanded((v) => !v)}
         >
           toggle expand ({expanded ? 'on' : 'off'})
         </Button>
         <Button
           testID="btn-resize-grid"
-          size="small"
+          size="3"
           onPress={() => setGridSize((v) => (v === 1 ? 1.3 : 1))}
         >
           toggle grid ({gridSize}x)
         </Button>
         <Button
           testID="btn-resize-container"
-          size="small"
+          size="3"
           onPress={() => setContainerWidth((v) => (v === 600 ? 400 : 600))}
         >
           container ({containerWidth}px)
         </Button>
-        <Button testID="btn-reset-stats" size="small" onPress={resetStats}>
+        <Button testID="btn-reset-stats" size="3" onPress={resetStats}>
           reset stats
         </Button>
       </XStack>

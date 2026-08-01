@@ -6,7 +6,6 @@ export {
   ButtonFrame,
   ButtonIcon,
   ButtonText,
-  buttonSizes,
   type ButtonProps,
   type ButtonSize,
 } from 'tamagui'

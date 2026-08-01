@@ -19,7 +19,7 @@ import { Button } from '../components/Button'
 const filler = (prefix: string) =>
   Array.from({ length: 30 }).map((_, i) => (
     <YStack key={`${prefix}-${i}`} height={40} justifyContent="center">
-      <Button size="small" variant="quiet">
+      <Button size="3" variant="quiet">
         {prefix} row {i + 1}
       </Button>
     </YStack>
@@ -48,7 +48,7 @@ export function MenuDismissOnScrollCase() {
       >
         <Menu>
           <Menu.Trigger asChild>
-            <Button data-testid="menu-trigger" size="medium">
+            <Button data-testid="menu-trigger" size="4">
               Open Menu
             </Button>
           </Menu.Trigger>

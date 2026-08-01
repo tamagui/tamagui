@@ -64,7 +64,6 @@
     "@tamagui/focusable": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/form": "workspace:*",
-    "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/group": "workspace:*",

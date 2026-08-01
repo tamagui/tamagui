@@ -73,7 +73,7 @@ export const PromoBanner = () => {
               <Link href="/">
                 <Button
                   variant="quiet"
-                  size="small"
+                  size="3"
                   circular
                   icon={HomeIcon}
                   scaleIcon={1.5}
@@ -163,7 +163,7 @@ const BannerThemes = memo(() => {
                   <Button
                     // theme={isActive ? 'white' : null}
                     bg="transparent hover:background02"
-                    size="small"
+                    size="3"
                     rounded="10"
                     borderWidth={0}
                     onPress={() => handleThemeClick(theme)}
@@ -181,7 +181,7 @@ const BannerThemes = memo(() => {
                 <Link href={`/theme/${theme.id}/${theme.slug}`}>
                   <XGroup.Item>
                     <Button
-                      size="small"
+                      size="3"
                       bg="transparent hover:background02"
                       rounded="10"
                       borderWidth={0}

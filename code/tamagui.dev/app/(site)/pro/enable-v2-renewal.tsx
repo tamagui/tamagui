@@ -38,7 +38,7 @@ export default function EnableV2RenewalPage() {
           </Paragraph>
 
           <Link href="/account">
-            <Button size="medium" theme="accent" mt="4">
+            <Button size="4" theme="accent" mt="4">
               Go to Account
             </Button>
           </Link>

@@ -3,17 +3,12 @@
   "compilerOptions": {
     "composite": true
   },
-  "references": [
-    {
-      "path": "../get-token"
-    },
-    {
-      "path": "../web"
-    }
+  "include": [
+    "*.ts",
+    "*.tsx"
   ],
   "exclude": [
     "types",
-    "dist",
-    "**/__tests__"
+    "dist"
   ]
 }

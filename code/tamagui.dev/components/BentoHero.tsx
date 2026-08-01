@@ -82,7 +82,7 @@ export const BentoHero = () => {
                   <Theme name="green">
                     <Button
                       className="box-3d all ease-in-out ms100"
-                      size="medium"
+                      size="4"
                       self="flex-end"
                       mr="4"
                       bg="color9 hover:color10 press:color9"
@@ -95,7 +95,7 @@ export const BentoHero = () => {
                         showAppropriateModal()
                       }}
                     >
-                      <Button.Text fontFamily="mono" size="large" color="color1">
+                      <Button.Text fontFamily="mono" size="5" color="color1">
                         Pro
                       </Button.Text>
                     </Button>

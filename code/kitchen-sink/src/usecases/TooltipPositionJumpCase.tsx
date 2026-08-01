@@ -50,7 +50,7 @@ export function TooltipPositionJumpCase() {
                 asChild
                 onMouseEnter={() => setLabel(btn.label)}
               >
-                <Button data-testid={`tooltip-trigger-${btn.id}`} size="medium">
+                <Button data-testid={`tooltip-trigger-${btn.id}`} size="4">
                   {btn.id.toUpperCase()}
                 </Button>
               </Tooltip.Trigger>

@@ -20,24 +20,12 @@ export function GroupDemo() {
       {/* responsive size - children control their own size/radius */}
       <XGroup>
         <XGroup.Item>
-          <Button
-            size="medium"
-            height="36 gtSm:44"
-            px="14px gtSm:18px"
-            gap="8px gtSm:10px"
-            icon={Activity}
-          >
+          <Button size="4 gtSm:5" icon={Activity}>
             First
           </Button>
         </XGroup.Item>
         <XGroup.Item>
-          <Button
-            size="medium"
-            height="36 gtSm:44"
-            px="14px gtSm:18px"
-            gap="8px gtSm:10px"
-            icon={Airplay}
-          >
+          <Button size="4 gtSm:5" icon={Airplay}>
             Second
           </Button>
         </XGroup.Item>

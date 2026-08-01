@@ -85,7 +85,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
                   position="absolute"
                   right="3"
                   top="3"
-                  size="small"
+                  size="3"
                   circular
                   icon={X}
                 />

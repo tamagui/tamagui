@@ -18,7 +18,7 @@ export const TabsAdvancedDemo = () => {
       {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
 
       <XStack items="center" gap="4" position="absolute" b="3" l="4" display="xxs:none">
-        <Button size="small" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button size="3" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
       </XStack>

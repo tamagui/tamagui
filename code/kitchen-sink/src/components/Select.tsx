@@ -20,7 +20,6 @@ import {
   SelectValue,
   SelectViewport,
   selectParts,
-  selectSizes,
   styled,
   withStaticProperties,
 } from 'tamagui'
@@ -41,7 +40,6 @@ export {
   SelectTrigger,
   SelectValue,
   SelectViewport,
-  selectSizes,
   type SelectSize,
 }
 

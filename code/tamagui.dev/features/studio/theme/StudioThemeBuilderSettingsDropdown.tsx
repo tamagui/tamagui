@@ -26,13 +26,7 @@ export const StudioThemeBuilderSettingsDropdown = () => {
       }}
     >
       <Popover.Trigger asChild>
-        <Button
-          size="small"
-          scaleIcon={1.5}
-          variant="quiet"
-          circular
-          icon={Menu}
-        ></Button>
+        <Button size="3" scaleIcon={1.5} variant="quiet" circular icon={Menu}></Button>
       </Popover.Trigger>
 
       <Popover.Content

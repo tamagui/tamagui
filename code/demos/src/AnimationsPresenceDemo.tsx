@@ -64,7 +64,7 @@ export function AnimationsPresenceDemo() {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="large"
+        size="5"
         position="absolute"
         l="4"
         boxShadow="0 0 10px rgba(0,0,0,0.5)"
@@ -76,7 +76,7 @@ export function AnimationsPresenceDemo() {
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="large"
+        size="5"
         position="absolute"
         r="4"
         boxShadow="0 0 10px rgba(0,0,0,0.5)"

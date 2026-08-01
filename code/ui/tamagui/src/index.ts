@@ -64,7 +64,6 @@ export {
   ButtonFrame,
   ButtonIcon,
   ButtonText,
-  buttonSizes,
   type ButtonProps,
   type ButtonSize,
 } from './components/Button'
@@ -86,7 +85,6 @@ export {
   SelectValue,
   SelectViewport,
   selectParts,
-  selectSizes,
   type SelectSize,
 } from './components/Select'
 export {

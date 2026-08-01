@@ -312,7 +312,7 @@ export const PaletteView = memo((props: Props) => {
                 <XStack width={50} overflow="hidden" items="center" justify="center">
                   <Button
                     variant="quiet"
-                    size="small"
+                    size="3"
                     scaleIcon={1.4}
                     circular
                     icon={anchor ? <Anchor /> : <ArrowLeftRight />}
@@ -324,7 +324,7 @@ export const PaletteView = memo((props: Props) => {
               }
             />
 
-            {/* {!anchor && <DataItem top="" bottom={<Button size="small">Edit</Button>} />} */}
+            {/* {!anchor && <DataItem top="" bottom={<Button size="3">Edit</Button>} />} */}
           </XStack>
         </YStack>
       </XLabeledItem>
@@ -381,7 +381,7 @@ const SyncButtons = memo(
         <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
             <Button
-              size="small"
+              size="3"
               width={16}
               height={16}
               minWidth={16}
@@ -417,7 +417,7 @@ const SyncButtons = memo(
         <Theme name={anchor?.[anchorKey].sync ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} light and dark`}>
             <Button
-              size="small"
+              size="3"
               width={16}
               height={16}
               minWidth={16}
@@ -447,7 +447,7 @@ const SyncButtons = memo(
         <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
             <Button
-              size="small"
+              size="3"
               width={16}
               height={16}
               minWidth={16}

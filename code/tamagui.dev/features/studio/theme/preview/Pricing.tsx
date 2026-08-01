@@ -91,14 +91,14 @@ export const PricingCards = () => {
           </Paragraph>
         </Paragraph>
         <XStack gap="2">
-          <Button flex={1} size="large" {...demoProps.borderRadiusProps}>
+          <Button flex={1} size="5" {...demoProps.borderRadiusProps}>
             Cancel
           </Button>
 
           <AccentTheme>
             <Button
               flex={1}
-              size="large"
+              size="5"
               {...demoProps.borderRadiusProps}
               {...demoProps.buttonOutlineProps}
             >

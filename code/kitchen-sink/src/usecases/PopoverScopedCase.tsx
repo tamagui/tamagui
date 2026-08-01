@@ -51,7 +51,7 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
           </XStack>
 
           <Popover.Close asChild>
-            <Button size="medium" data-testid={`popover-close`}>
+            <Button size="4" data-testid={`popover-close`}>
               Close
             </Button>
           </Popover.Close>

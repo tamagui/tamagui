@@ -255,7 +255,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
         <Button
           aria-label={`Responsive size ${name}`}
           borderWidth={1}
-          size="medium"
+          size="4"
           circular
           position="absolute"
           t={0}

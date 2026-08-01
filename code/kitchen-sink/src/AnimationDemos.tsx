@@ -84,7 +84,7 @@ export function Demo3() {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="large"
+        size="5"
         position="absolute"
         left="4"
         boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
@@ -96,7 +96,7 @@ export function Demo3() {
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="large"
+        size="5"
         position="absolute"
         right="4"
         boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"

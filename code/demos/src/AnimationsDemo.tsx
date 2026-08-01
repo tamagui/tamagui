@@ -38,7 +38,7 @@ export function AnimationsDemo(props) {
         l={20}
         icon={Play}
         theme={props.tint ?? 'surface2'}
-        size="large"
+        size="5"
         circular
         onPress={onPress}
       />

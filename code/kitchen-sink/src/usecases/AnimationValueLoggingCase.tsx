@@ -90,7 +90,7 @@ function OpacityAnimationTest() {
   return (
     <XStack gap="4" alignItems="center">
       <Button
-        size="medium"
+        size="4"
         onPress={() => setFaded(!faded)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -173,7 +173,7 @@ function ScaleAnimationTest() {
   return (
     <XStack gap="4" alignItems="center">
       <Button
-        size="medium"
+        size="4"
         onPress={() => setScaled(!scaled)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -258,7 +258,7 @@ function TranslateAnimationTest() {
   return (
     <XStack gap="4" alignItems="center">
       <Button
-        size="medium"
+        size="4"
         onPress={() => setMoved(!moved)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -347,7 +347,7 @@ function EnterExitAnimationTest() {
   return (
     <XStack gap="4" alignItems="center" height={80}>
       <Button
-        size="medium"
+        size="4"
         onPress={() => setVisible(!visible)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -421,7 +421,7 @@ function ColorAnimationTest() {
   return (
     <XStack gap="4" alignItems="center">
       <Button
-        size="medium"
+        size="4"
         onPress={() => setActive(!active)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -491,7 +491,7 @@ function AnimationConfigTest() {
   return (
     <XStack gap="4" alignItems="center">
       <Button
-        size="medium"
+        size="4"
         onPress={() => setExpanded(!expanded)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}

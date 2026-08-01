@@ -88,11 +88,11 @@ export function V5ThemeBuilderOutput() {
         </Paragraph>
 
         <XStack gap="3">
-          <Button testID={TEST_IDS.baseButton} size="medium">
+          <Button testID={TEST_IDS.baseButton} size="4">
             Base Button
           </Button>
 
-          <Button testID={TEST_IDS.accentPropButton} theme="accent" size="medium">
+          <Button testID={TEST_IDS.accentPropButton} theme="accent" size="4">
             Accent Button
           </Button>
         </XStack>
@@ -173,7 +173,7 @@ export function V5ThemeBuilderOutput() {
         <XStack gap="3" flexWrap="wrap">
           <Theme name="yellow">
             <Card padding="3" backgroundColor="background" minWidth={140}>
-              <Button testID="button-yellow" size="medium">
+              <Button testID="button-yellow" size="4">
                 Yellow
               </Button>
             </Card>
@@ -185,7 +185,7 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="background"
               minWidth={140}
             >
-              <Button testID="button-red" size="medium">
+              <Button testID="button-red" size="4">
                 Red
               </Button>
             </Card>
@@ -197,7 +197,7 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="background"
               minWidth={140}
             >
-              <Button testID="button-green" size="medium">
+              <Button testID="button-green" size="4">
                 Green
               </Button>
             </Card>
@@ -209,7 +209,7 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="background"
               minWidth={140}
             >
-              <Button testID="button-blue" size="medium">
+              <Button testID="button-blue" size="4">
                 Blue
               </Button>
             </Card>

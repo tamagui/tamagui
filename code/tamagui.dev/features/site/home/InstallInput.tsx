@@ -50,7 +50,7 @@ export const InstallInput = memo(() => {
         >
           <Button
             aria-label={installScript}
-            size="medium"
+            size="4"
             rounded="8"
             mr="-6"
             zIndex={1}

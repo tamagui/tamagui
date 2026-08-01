@@ -37,7 +37,7 @@ export const AddDropdown = withStaticProperties(
     return (
       <Popover size="5" allowFlip placement="top" {...props}>
         <Popover.Trigger asChild>
-          <Button size="medium" circular icon={Plus} />
+          <Button size="4" circular icon={Plus} />
         </Popover.Trigger>
 
         <Popover.Content

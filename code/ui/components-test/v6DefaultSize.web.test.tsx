@@ -4,9 +4,8 @@ import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { Input } from '@tamagui/input'
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react'
+import { Button } from 'tamagui'
 import { describe, expect, test } from 'vitest'
-
-import { V6DefaultSizeButton as Button } from './v6DefaultSizeButton'
 
 const config = createTamagui(v6)
 const defaultToken = config.settings.defaultSize

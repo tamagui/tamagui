@@ -70,7 +70,7 @@ export function PopoverTriggerIsolationCase() {
           <Popover.Arrow scope="isolated" />
           <Paragraph>Shared popover content</Paragraph>
           <Popover.Close scope="isolated" asChild>
-            <Button data-testid="isolated-close" size="small" mt="2">
+            <Button data-testid="isolated-close" size="3" mt="2">
               Close
             </Button>
           </Popover.Close>

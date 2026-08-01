@@ -197,7 +197,7 @@ const HeroContents = memo(function HeroContents() {
           <Link asChild href="/docs/intro/introduction">
             <Button
               aria-label="Get started (docs)"
-              size="large"
+              size="5"
               rounded={1000}
               variant="outlined"
               mx="2"
