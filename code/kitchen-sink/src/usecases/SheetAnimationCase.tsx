@@ -8,7 +8,7 @@ import { Button } from '../components/Button'
  */
 export function SheetAnimationCase() {
   return (
-    <YStack gap="$4" padding="$4" flex={1}>
+    <YStack gap="4" padding="4" flex={1}>
       {/* Test 1: animation prop only - "quick" */}
       <SheetTest testId="animation-quick" transition="quick" label='transition="quick"' />
 
@@ -92,7 +92,7 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
   }, [open])
 
   return (
-    <XStack gap="$2" alignItems="center" flexWrap="wrap">
+    <XStack gap="2" alignItems="center" flexWrap="wrap">
       <Button
         size="medium"
         onPress={handleOpen}
@@ -120,24 +120,19 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
         dismissOnSnapToBottom
         snapPoints={[40]}
       >
-        <Sheet.Overlay
-          transition={transition as any}
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Sheet.Overlay transition={transition as any} opacity="0.5 enter:0 exit:0" />
         <Sheet.Container
-          padding="$4"
+          padding="4"
           testID={`${testId}-frame`}
           data-testid={`${testId}-frame`}
           onLayout={handleFrameLayout}
         >
-          <Sheet.Background bg="$background" />
-          <YStack gap="$4">
+          <Sheet.Background bg="background" />
+          <YStack gap="4">
             <Paragraph testID={`${testId}-label`} data-testid={`${testId}-label`}>
               {label}
             </Paragraph>
-            <Paragraph size="$2" color="$color10">
+            <Paragraph size="$2" color="color10">
               Transition: {transition || 'none'}, Config:{' '}
               {transitionConfig ? JSON.stringify(transitionConfig) : 'none'}
             </Paragraph>

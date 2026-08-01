@@ -11,22 +11,22 @@ import {
 
 const StyledHandle = styled(Sheet.Handle, {
   name: 'TypeTestSheetHandle',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
 })
 
 const StyledOverlay = styled(Sheet.Overlay, {
   name: 'TypeTestSheetOverlay',
-  backgroundColor: '$shadowColor',
+  backgroundColor: 'shadow-color',
 })
 
 const StyledContainer = styled(Sheet.Container, {
   name: 'TypeTestSheetContainer',
-  padding: '$4',
+  padding: '4',
 })
 
 const StyledBackground = styled(Sheet.Background, {
   name: 'TypeTestSheetBackground',
-  borderTopLeftRadius: '$4',
+  borderTopLeftRadius: '4',
 })
 
 const StyledScrollView = styled(Sheet.ScrollView, {
@@ -61,11 +61,11 @@ export const SheetPartsTypeTest = () => (
 
 export const SheetDirectPartShorthandsTypeTest = () => (
   <Sheet defaultOpen>
-    <Sheet.Overlay bg="$shadowColor" o={0.45} />
-    <Sheet.Handle h={10} bg="$background" pos="absolute" t={-40} />
-    <Sheet.Container h={240} p="$4">
-      <Sheet.Background bg="$background" o={1} />
-      <Sheet.ScrollView h={200} p="$2" pos="relative" />
+    <Sheet.Overlay bg="shadow-color" o={0.45} />
+    <Sheet.Handle h={10} bg="background" t={-40} pos="absolute" />
+    <Sheet.Container h={240} p="4">
+      <Sheet.Background bg="background" o={1} />
+      <Sheet.ScrollView h={200} p="2" pos="relative" />
     </Sheet.Container>
   </Sheet>
 )

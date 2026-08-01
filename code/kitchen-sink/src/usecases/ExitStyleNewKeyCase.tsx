@@ -11,9 +11,9 @@ export function ExitStyleNewKeyCase() {
   const [show, setShow] = useState(true)
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Paragraph fontWeight="bold">ExitStyle-introduced key</Paragraph>
-      <XStack gap="$2">
+      <XStack gap="2">
         <Button testID="exit-new-key-show" onPress={() => setShow(true)}>
           Show
         </Button>
@@ -29,14 +29,12 @@ export function ExitStyleNewKeyCase() {
               id="exit-new-key-target"
               testID="exit-new-key-target"
               transition="300ms"
-              size={80}
-              bg="$blue10"
-              borderColor="$red10"
+              bg="blue10"
+              borderColor="red10"
               transform={[{ matrix: [1, 0, 0, 1, 0, 0] }]}
-              exitStyle={{
-                borderWidth: 10,
-                y: 40,
-              }}
+              borderWidth="exit:10px"
+              y="exit:40px"
+              size={80}
             />
           ) : null}
         </AnimatePresence>

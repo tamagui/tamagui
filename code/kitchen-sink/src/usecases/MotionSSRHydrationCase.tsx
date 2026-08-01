@@ -45,12 +45,11 @@ export function MotionSSRHydrationCase() {
         <View
           data-testid="ssr-enter-pill"
           transition="500ms"
-          enterStyle={{ opacity: 0 }}
+          opacity="1 enter:0"
           width={120}
           height={40}
           borderRadius={1000}
           backgroundColor="rgb(0, 128, 0)"
-          opacity={1}
         />
       </TamaguiProvider>
     )

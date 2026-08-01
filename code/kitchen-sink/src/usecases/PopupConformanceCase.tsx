@@ -14,7 +14,7 @@ type EventDetails = {
 
 export function PopupConformanceCase() {
   return (
-    <YStack padding="$4" gap="$6">
+    <YStack padding="4" gap="6">
       <PopupConformanceHarness id="dialog" Popup={DialogPopup} />
       <PopupConformanceHarness id="popover" Popup={PopoverPopup} />
     </YStack>
@@ -65,7 +65,7 @@ function PopupConformanceHarness({
   }
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Button
         data-testid={`${id}-cancel-escape`}
         onPress={() => setCancelReason('escape-key')}
@@ -108,7 +108,7 @@ function DialogPopup({ id, callbacks }: { id: string; callbacks: PopupCallbacks 
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Content trapFocus={false} {...callbacks}>
-          <YStack data-testid={`${id}-content`} padding="$4">
+          <YStack data-testid={`${id}-content`} padding="4">
             <Input data-testid={`${id}-input`} autoFocus />
           </YStack>
         </Dialog.Content>
@@ -126,7 +126,7 @@ function PopoverPopup({ id, callbacks }: { id: string; callbacks: PopupCallbacks
         <Button data-testid={`${id}-trigger`}>Open {id}</Button>
       </Popover.Trigger>
       <Popover.Content trapFocus={false} {...callbacks}>
-        <YStack data-testid={`${id}-content`} padding="$4">
+        <YStack data-testid={`${id}-content`} padding="4">
           <Input data-testid={`${id}-input`} autoFocus />
         </YStack>
       </Popover.Content>

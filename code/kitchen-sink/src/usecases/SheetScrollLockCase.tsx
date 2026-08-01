@@ -8,13 +8,7 @@ import { Button, H2, Paragraph, Sheet, YStack } from 'tamagui'
  */
 export function SheetScrollLockCase() {
   return (
-    <YStack
-      $web={{
-        minHeight: '200vh',
-      }}
-      padding="$4"
-      gap="$4"
-    >
+    <YStack minHeight="web:200vh" padding="4" gap="4">
       <H2>Sheet Scroll Lock Test</H2>
       <Paragraph data-testid="scroll-indicator">
         This page has a lot of content that makes the body scrollable. When the sheet is
@@ -73,13 +67,11 @@ function BasicScrollLockSheet() {
         <Sheet.Overlay
           data-testid="basic-scroll-lock-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="basic-scroll-lock-handle" />
-        <Sheet.Container data-testid="basic-scroll-lock-frame" padding="$4" gap="$4">
+        <Sheet.Container data-testid="basic-scroll-lock-frame" padding="4" gap="4">
           <Sheet.Background />
           <Paragraph data-testid="basic-scroll-lock-snap-indicator">
             Current snap point: {position}
@@ -129,19 +121,17 @@ function SheetWithScrollView() {
         <Sheet.Overlay
           data-testid="scrollview-sheet-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="scrollview-sheet-handle" />
-        <Sheet.Container data-testid="scrollview-sheet-frame" padding="$4">
+        <Sheet.Container data-testid="scrollview-sheet-frame" padding="4">
           <Sheet.Background />
           <Paragraph data-testid="scrollview-sheet-snap-indicator">
             Current snap point: {position}
           </Paragraph>
           <Sheet.ScrollView data-testid="scrollview-sheet-scrollview">
-            <YStack gap="$4" padding="$2">
+            <YStack gap="4" padding="2">
               <Paragraph fontWeight="bold">
                 This content is inside Sheet.ScrollView.
               </Paragraph>

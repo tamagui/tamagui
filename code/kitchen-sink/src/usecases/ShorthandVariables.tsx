@@ -2,15 +2,15 @@ import { View } from 'tamagui'
 
 export function ShorthandVariables() {
   return (
-    <View gap="$4" padding="$4">
+    <View gap="4" padding="4">
       {/* boxShadow with $variable - works on web and native (RN 0.76+) */}
       <View
         testID="boxshadow-var"
         id="boxshadow-var"
         width={100}
         height={100}
-        backgroundColor="$background"
-        boxShadow="0px 0px 10px $shadowColor"
+        backgroundColor="background"
+        boxShadow="0px 0px 10px shadow-color"
       />
 
       {/* boxShadow with multiple $variables */}
@@ -19,8 +19,8 @@ export function ShorthandVariables() {
         id="boxshadow-multi"
         width={100}
         height={100}
-        backgroundColor="$background"
-        boxShadow="0px 0px 5px $shadowColor, 0px 0px 15px $color"
+        backgroundColor="background"
+        boxShadow="0px 0px 5px shadow-color, 0px 0px 15px color"
       />
 
       {/* border with $variable - use individual props for cross-platform */}
@@ -29,10 +29,10 @@ export function ShorthandVariables() {
         id="border-var"
         width={100}
         height={100}
-        backgroundColor="$background"
+        backgroundColor="background"
         borderWidth={2}
         borderStyle="solid"
-        borderColor="$color"
+        borderColor="color"
       />
 
       {/* boxShadow without variables (passthrough) */}
@@ -41,7 +41,7 @@ export function ShorthandVariables() {
         id="boxshadow-plain"
         width={100}
         height={100}
-        backgroundColor="$background"
+        backgroundColor="background"
         boxShadow="0px 0px 10px rgba(0, 0, 0, 0.2)"
       />
     </View>

@@ -7,56 +7,26 @@ const RADIO_GROUP_ITEM_NAME = 'RadioGroupItem'
 const RadioGroupItemFrame = styled(RadioGroupBehavior.Item, {
   name: RADIO_GROUP_ITEM_NAME,
   render: 'button',
-
   rounded: 1000,
-  bg: '$background',
+  bg: 'background hover:background-hover focus:background-hover press:background-focus',
   items: 'center',
   justify: 'center',
   borderWidth: 1,
-  borderColor: '$borderColor',
+  borderColor:
+    'border-color hover:border-color-hover focus:border-color-hover press:border-color-focus',
   p: 0,
-
-  hoverStyle: {
-    borderColor: '$borderColorHover',
-    bg: '$backgroundHover',
-  },
-
-  focusStyle: {
-    borderColor: '$borderColorHover',
-    bg: '$backgroundHover',
-  },
-
-  focusVisibleStyle: {
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineColor: '$outlineColor',
-  },
-
-  pressStyle: {
-    borderColor: '$borderColorFocus',
-    bg: '$backgroundFocus',
-  },
-
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineColor: 'focus-visible:outline-color',
   variants: {
     disabled: {
       true: {
         pointerEvents: 'none',
         userSelect: 'none',
         cursor: 'not-allowed',
-
-        hoverStyle: {
-          borderColor: '$borderColor',
-          bg: '$background',
-        },
-
-        pressStyle: {
-          borderColor: '$borderColor',
-          bg: '$background',
-        },
-
-        focusVisibleStyle: {
-          outlineWidth: 0,
-        },
+        borderColor: 'hover:border-color press:border-color',
+        bg: 'hover:background press:background',
+        outlineWidth: 'focus-visible:0px',
       },
     },
   },
@@ -69,7 +39,7 @@ const RadioGroupIndicatorFrame = styled(RadioGroupBehavior.Indicator, {
   width: '53%',
   height: '53%',
   rounded: 1000,
-  bg: '$color',
+  bg: 'color',
 })
 
 const RADIO_GROUP_NAME = 'RadioGroup'
@@ -98,7 +68,7 @@ const RadioGroup = withStaticProperties(RadioGroupFrame, {
 export function RadioGroupCustomDemo() {
   return (
     <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
-      <YStack width={200} items="center" gap="$2">
+      <YStack width={200} items="center" gap="2">
         <RadioGroupItemWithLabel value="2" label="Option One" />
         <RadioGroupItemWithLabel value="3" label="Option Two" />
       </YStack>
@@ -109,7 +79,7 @@ export function RadioGroupCustomDemo() {
 function RadioGroupItemWithLabel(props: { value: string; label: string }) {
   const id = `radiogroup-${props.value}`
   return (
-    <XStack width={300} items="center" gap="$4">
+    <XStack width={300} items="center" gap="4">
       <RadioGroup.Item value={props.value} id={id}>
         <RadioGroup.Indicator />
       </RadioGroup.Item>

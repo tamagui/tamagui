@@ -23,8 +23,8 @@ export function PopoverDemo() {
   const [shouldAdapt, setShouldAdapt] = useState(true)
 
   return (
-    <YStack gap="$4">
-      <XStack gap="$2" flex={1} justify="center" items="center">
+    <YStack gap="4">
+      <XStack gap="2" flex={1} justify="center" items="center">
         <Demo
           shouldAdapt={shouldAdapt}
           placement="left"
@@ -75,45 +75,33 @@ export function Demo({
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Container p="$4">
+            <Sheet.Container p="4">
               <Sheet.Background />
               <Adapt.Contents />
             </Sheet.Container>
-            <Sheet.Overlay
-              bg="$shadowColor"
-              transition="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
-            />
+            <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
           </Sheet>
         </Adapt>
       )}
 
       <Popover.Content
-        backgroundColor="$background"
+        backgroundColor="background"
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
         width={300}
         height={200}
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
+        y="enter:-10px exit:-10px"
+        opacity="enter:0 exit:0"
         boxShadow="0px 4px 8px rgba(0,0,0,0.1), 0px 12px 32px rgba(0,0,0,0.08)"
-        transition={[
-          'quick',
-          {
-            opacity: {
-              overshootClamping: true,
-            },
-          },
-        ]}
+        transition={['quick', { opacity: { overshootClamping: true } }]}
       >
         <Popover.Arrow
-          backgroundColor="$background"
+          backgroundColor="background"
           borderWidth={1}
-          borderColor="$borderColor"
+          borderColor="border-color"
         />
 
-        <XStack gap="$3" mb="$3">
+        <XStack gap="3" mb="3">
           <Label size="$3" htmlFor={Name}>
             Name
           </Label>

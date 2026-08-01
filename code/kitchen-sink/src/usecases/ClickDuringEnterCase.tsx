@@ -13,12 +13,12 @@ export function ClickDuringEnterCase() {
   const [show, setShow] = useState(false)
 
   return (
-    <YStack gap="$4" padding="$4">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="4" padding="4">
+      <Paragraph fontWeight="bold" fontSize="5">
         Click During Enter Animation
       </Paragraph>
 
-      <XStack gap="$2">
+      <XStack gap="2">
         <Button testID="click-enter-show" onPress={() => setShow(true)}>
           Show
         </Button>
@@ -34,22 +34,12 @@ export function ClickDuringEnterCase() {
               key="click-enter-square"
               testID="click-enter-target"
               transition="medium"
+              bg="blue10"
+              opacity="1 enter:0 exit:0"
+              scale="1 enter:0.93 exit:0.93"
+              y="0 enter:-10px exit:5px"
               animateOnly={['transform', 'opacity']}
               size={80}
-              bg="$blue10"
-              opacity={1}
-              scale={1}
-              y={0}
-              enterStyle={{
-                opacity: 0,
-                y: -10,
-                scale: 0.93,
-              }}
-              exitStyle={{
-                opacity: 0,
-                y: 5,
-                scale: 0.93,
-              }}
             />
           ) : null}
         </AnimatePresence>

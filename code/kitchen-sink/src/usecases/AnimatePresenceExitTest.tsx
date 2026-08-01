@@ -28,7 +28,7 @@ export function AnimatePresenceExitTest() {
   const passed = exitTime !== null && exitTime < 100
 
   return (
-    <YStack flex={1} alignItems="center" justifyContent="center" gap="$4" padding="$4">
+    <YStack flex={1} alignItems="center" justifyContent="center" gap="4" padding="4">
       <Paragraph size="$6" fontWeight="bold">
         AnimatePresence Exit Test
       </Paragraph>
@@ -45,20 +45,21 @@ export function AnimatePresenceExitTest() {
             <Square
               key="test-square"
               transition="300ms"
+              bg="blue10"
+              opacity="exit:0"
+              scale="exit:0.5"
               animateOnly={[]}
               size={60}
-              bg="$blue10"
-              exitStyle={{ opacity: 0, scale: 0.5 }}
             />
           )}
         </AnimatePresence>
       </YStack>
 
-      <YStack gap="$2" alignItems="center">
+      <YStack gap="2" alignItems="center">
         <Paragraph>Exit count: {exitCount}</Paragraph>
         <Paragraph>Exit time: {exitTime !== null ? `${exitTime}ms` : 'N/A'}</Paragraph>
         <Paragraph
-          color={passed ? '$green10' : exitTime !== null ? '$red10' : '$gray10'}
+          color={`${passed ? 'green10' : exitTime !== null ? 'red10' : 'gray10'}`}
           fontWeight="bold"
         >
           {exitTime !== null ? (passed ? '✓ PASS' : '✗ FAIL') : 'Tap Hide to test'}

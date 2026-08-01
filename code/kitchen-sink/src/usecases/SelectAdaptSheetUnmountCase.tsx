@@ -29,7 +29,7 @@ export function SelectAdaptSheetUnmountCase() {
   }, [])
 
   return (
-    <YStack p="$4" gap="$4" items="center">
+    <YStack p="4" gap="4" items="center">
       <Select open={open} onOpenChange={setOpen} value={value} onValueChange={setValue}>
         <Select.Trigger testID="open-select" width={220}>
           <Select.Value placeholder="Select a fruit" />
@@ -45,18 +45,17 @@ export function SelectAdaptSheetUnmountCase() {
             dismissOnSnapToBottom
           >
             <Sheet.Overlay
-              bg="$shadow6"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
+              bg="shadow6"
+              opacity="enter:0 exit:0"
               onPress={() => setOpen(false)}
             />
-            <Sheet.Handle bg="$color5" />
-            <Sheet.Container testID="sheet-frame" padding="$4" gap="$4">
+            <Sheet.Handle bg="color5" />
+            <Sheet.Container testID="sheet-frame" padding="4" gap="4">
               <Sheet.Background
                 borderBottomRightRadius={0}
                 borderBottomLeftRadius={0}
-                bg="$background"
-                borderRadius="$6"
+                bg="background"
+                borderRadius="6"
               />
               <Sheet.ScrollView>
                 <Adapt.Contents />

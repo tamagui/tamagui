@@ -20,7 +20,7 @@ const RenderCountingPopoverTrigger = memo(function RenderCountingPopoverTrigger(
       <Popover.Trigger scope={scope} asChild>
         <Button data-testid={testId}>{label}</Button>
       </Popover.Trigger>
-      <Text data-testid={`${testId}-render-count`} fontSize="$1" textAlign="center">
+      <Text data-testid={`${testId}-render-count`} fontSize="1" textAlign="center">
         renders: {renderCountRef.current}
       </Text>
     </View>
@@ -41,7 +41,7 @@ const RenderCountingMenuTrigger = memo(function RenderCountingMenuTrigger({
       <Menu.Trigger asChild>
         <Button data-testid={testId}>{label}</Button>
       </Menu.Trigger>
-      <Text data-testid={`${testId}-render-count`} fontSize="$1" textAlign="center">
+      <Text data-testid={`${testId}-render-count`} fontSize="1" textAlign="center">
         renders: {renderCountRef.current}
       </Text>
     </View>
@@ -50,14 +50,14 @@ const RenderCountingMenuTrigger = memo(function RenderCountingMenuTrigger({
 
 export function PopoverAndMenuMultiTriggerCase() {
   return (
-    <YStack flex={1} gap="$8" p="$4" bg="$background">
+    <YStack flex={1} gap="8" p="4" bg="background">
       {/* popover section */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <SizableText fontWeight="bold" data-testid="popover-section-label">
           Popover multi-trigger
         </SizableText>
         <Popover scope="shared-pop" placement="bottom-start" offset={4}>
-          <XStack gap="$4">
+          <XStack gap="4">
             <RenderCountingPopoverTrigger
               testId="pop-trigger-1"
               label="Pop 1"
@@ -78,15 +78,15 @@ export function PopoverAndMenuMultiTriggerCase() {
           <Popover.Content
             scope="shared-pop"
             data-testid="pop-content"
-            p="$3"
+            p="3"
             minWidth={160}
-            enterStyle={{ y: -8, opacity: 0 }}
-            exitStyle={{ y: -8, opacity: 0 }}
+            y="enter:-8px exit:-8px"
+            opacity="enter:0 exit:0"
           >
             <Popover.Arrow scope="shared-pop" />
             <Paragraph data-testid="pop-content-text">Shared popover</Paragraph>
             <Popover.Close scope="shared-pop" asChild>
-              <Button data-testid="pop-close" size="small" mt="$2">
+              <Button data-testid="pop-close" size="small" mt="2">
                 Close
               </Button>
             </Popover.Close>
@@ -95,12 +95,12 @@ export function PopoverAndMenuMultiTriggerCase() {
       </YStack>
 
       {/* menu section */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <SizableText fontWeight="bold" data-testid="menu-section-label">
           Menu multi-trigger
         </SizableText>
         <Menu placement="bottom-start" offset={4}>
-          <XStack gap="$4">
+          <XStack gap="4">
             <RenderCountingMenuTrigger testId="menu-trigger-1" label="Menu 1" />
             <RenderCountingMenuTrigger testId="menu-trigger-2" label="Menu 2" />
             <RenderCountingMenuTrigger testId="menu-trigger-3" label="Menu 3" />
@@ -109,11 +109,11 @@ export function PopoverAndMenuMultiTriggerCase() {
           <Menu.Portal>
             <Menu.Content
               data-testid="menu-content"
-              p="$2"
+              p="2"
               minWidth={160}
               borderWidth={1}
-              borderColor="$borderColor"
-              boxShadow="0 4px 12px $shadowColor"
+              borderColor="border-color"
+              boxShadow="0 4px 12px shadow-color"
             >
               <Menu.Item data-testid="menu-item-a" key="a" textValue="Alpha">
                 <Menu.ItemTitle>Alpha</Menu.ItemTitle>

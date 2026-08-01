@@ -27,26 +27,15 @@ const activeAppearance = {
 
 export const ToggleGroupItem = styled(UiToggleGroup.Item, {
   name: 'ToggleGroupItem',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
   borderWidth: 1,
   margin: -1,
+  outlineColor: 'focus-visible:outline-color',
+  outlineWidth: 'focus-visible:2px',
+  outlineStyle: 'focus-visible:solid',
+  zIndex: 'focus-visible:10',
   activeStyle: activeAppearance,
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineWidth: 2,
-    outlineStyle: 'solid',
-    zIndex: 10,
-  },
 })
 
 // see Dialog.tsx: withStaticProperties assigns in place, so composing onto

@@ -4,17 +4,10 @@ const PlainButton = styled(Button, {
   variants: {
     plain: {
       true: {
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent hover:transparent press:transparent',
         padding: 0,
         borderWidth: 0,
-        hoverStyle: {
-          backgroundColor: 'transparent',
-          borderColor: 'transparent',
-        },
-        pressStyle: {
-          backgroundColor: 'transparent',
-          borderColor: 'transparent',
-        },
+        borderColor: 'hover:transparent press:transparent',
       },
     },
   } as const,

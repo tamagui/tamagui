@@ -24,8 +24,8 @@ export function PopoverHoverableRapidCase() {
   )
 
   return (
-    <YStack padding="$4" gap="$4">
-      <SizableText size="$3" color="$color9">
+    <YStack padding="4" gap="4">
+      <SizableText size="$3" color="color9">
         Rapid hover across many triggers - should track current trigger
       </SizableText>
 
@@ -40,7 +40,7 @@ export function PopoverHoverableRapidCase() {
         placement="bottom"
       >
         {/* larger gaps to expose the race condition - mouse must cross gap */}
-        <XStack gap="$6" id="rapid-triggers">
+        <XStack gap="6" id="rapid-triggers">
           {NAV_IDS.map((id) => (
             <Popover.Trigger
               key={id}
@@ -51,12 +51,11 @@ export function PopoverHoverableRapidCase() {
             >
               <XStack
                 id={`rapid-trigger-${id}`}
-                px="$4"
-                py="$2"
-                bg={open && displayId === id ? '$color5' : '$color3'}
-                rounded="$4"
+                px="4"
+                py="2"
+                bg={`${open && displayId === id ? 'color5' : 'color3'} hover:color4`}
+                rounded="4"
                 cursor="pointer"
-                hoverStyle={{ bg: '$color4' }}
               >
                 <SizableText>{id.toUpperCase()}</SizableText>
               </XStack>
@@ -69,17 +68,16 @@ export function PopoverHoverableRapidCase() {
           scope="rapid"
           disableFocusScope
           transition="100ms"
-          animateOnly={['transform', 'opacity']}
-          opacity={1}
-          enterStyle={{ y: -4, opacity: 0 }}
-          exitStyle={{ y: 4, opacity: 0 }}
+          opacity="1 enter:0 exit:0"
+          y="enter:-4px exit:4px"
           width={200}
           height={80}
+          animateOnly={['transform', 'opacity']}
         >
           <YStack
-            bg="$color2"
-            rounded="$5"
-            outlineColor="$color4"
+            bg="color2"
+            rounded="5"
+            outlineColor="color4"
             outlineWidth={1}
             outlineStyle="solid"
             width={200}

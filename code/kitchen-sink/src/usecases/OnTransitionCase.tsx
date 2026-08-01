@@ -50,8 +50,8 @@ function log(id: string, event: TransitionEvent) {
 
 export function OnTransitionCase() {
   return (
-    <YStack gap="$4" padding="$4">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="4" padding="4">
+      <Paragraph fontWeight="bold" fontSize="5">
         onTransition lifecycle
       </Paragraph>
       <EnterExitScenario />
@@ -66,7 +66,7 @@ function EnterExitScenario() {
   const [visible, setVisible] = useState(false)
 
   return (
-    <XStack gap="$3" alignItems="center" minHeight={80}>
+    <XStack gap="3" alignItems="center" minHeight={80}>
       <Button
         onPress={() => setVisible((v) => !v)}
         testID="enterexit-toggle"
@@ -81,11 +81,10 @@ function EnterExitScenario() {
             testID="enterexit-box"
             data-testid="enterexit-box"
             size={60}
-            bg="$blue10"
+            bg="blue10"
             transition="300ms"
-            opacity={1}
-            enterStyle={{ opacity: 0, scale: 0.8 }}
-            exitStyle={{ opacity: 0, scale: 0.8 }}
+            opacity="1 enter:0 exit:0"
+            scale="enter:0.8 exit:0.8"
             onTransition={(e) => log('enterexit', e)}
           />
         )}
@@ -99,7 +98,7 @@ function UpdateScenario() {
   const [on, setOn] = useState(false)
 
   return (
-    <XStack gap="$3" alignItems="center" minHeight={80}>
+    <XStack gap="3" alignItems="center" minHeight={80}>
       <Button
         onPress={() => setOn((v) => !v)}
         testID="update-toggle"
@@ -111,7 +110,7 @@ function UpdateScenario() {
         testID="update-box"
         data-testid="update-box"
         size={60}
-        bg="$green10"
+        bg="green10"
         transition="300ms"
         opacity={on ? 0.5 : 1}
         scale={on ? 0.8 : 1}
@@ -136,7 +135,7 @@ function InterruptScenario() {
   const scale = 1 - (step % 2) * 0.3
 
   return (
-    <XStack gap="$3" alignItems="center" minHeight={80}>
+    <XStack gap="3" alignItems="center" minHeight={80}>
       <Button
         onPress={handleInterrupt}
         testID="interrupt-trigger"
@@ -148,7 +147,7 @@ function InterruptScenario() {
         testID="interrupt-box"
         data-testid="interrupt-box"
         size={60}
-        bg="$red10"
+        bg="red10"
         transition="500ms"
         scale={scale}
         onTransition={(e) => log('interrupt', e)}

@@ -42,7 +42,7 @@ describe('Button with Button.Text for font styling', () => {
   beforeEach(() => {
     rendered = render(
       <ButtonTest>
-        <Button.Text fontFamily="$heading">Test</Button.Text>
+        <Button.Text fontFamily="heading">Test</Button.Text>
       </ButtonTest>
     )
     button = rendered.getByRole(BUTTON_ROLE)

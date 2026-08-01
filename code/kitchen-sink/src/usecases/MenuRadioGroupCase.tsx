@@ -20,22 +20,22 @@ export function MenuRadioGroupCase() {
   }, [])
 
   return (
-    <YStack gap="$4" padding="$4" maxWidth={800} margin="auto">
-      <YStack gap="$2" testID="menu-radio-group-case">
+    <YStack gap="4" padding="4" maxWidth={800} margin="auto">
+      <YStack gap="2" testID="menu-radio-group-case">
         <H1 testID="menu-radio-title">Menu RadioGroup</H1>
         <Paragraph>
           Verifies that Menu.RadioGroup/RadioItem enforces single-selection on both web
           and native (via zeego CheckboxItem mapping).
         </Paragraph>
-        <Text testID="menu-radio-selected-value" color="$color10">
+        <Text testID="menu-radio-selected-value" color="color10">
           Selected value: {color}
         </Text>
-        <Text testID="menu-radio-change-count" color="$color10">
+        <Text testID="menu-radio-change-count" color="color10">
           Change count: {changeCount}
         </Text>
       </YStack>
 
-      <YStack alignItems="flex-start" gap="$4">
+      <YStack alignItems="flex-start" gap="4">
         <Menu allowFlip placement="bottom-start" offset={8}>
           <Menu.Trigger asChild>
             <Button testID="menu-radio-trigger" size="medium">
@@ -46,12 +46,12 @@ export function MenuRadioGroupCase() {
           <Menu.Portal zIndex={100}>
             <Menu.Content
               testID="menu-radio-content"
-              p="$2"
+              p="2"
               minW={220}
               borderWidth={1}
-              borderColor="$borderColor"
-              bg="$background"
-              boxShadow="0 4px 12px $shadowColor"
+              borderColor="border-color"
+              bg="background"
+              boxShadow="0 4px 12px shadow-color"
             >
               <Menu.RadioGroup value={color} onValueChange={handleValueChange}>
                 {options.map((option) => (
@@ -64,7 +64,7 @@ export function MenuRadioGroupCase() {
                       paddingVertical: 8,
                       borderRadius: 4,
                     }}
-                    focusStyle={{ bg: '$backgroundHover' }}
+                    bg="focus:background-hover"
                   >
                     <Menu.ItemIndicator>
                       <Check size={14} />

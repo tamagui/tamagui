@@ -29,7 +29,7 @@ const CheckboxIndicator = styled(Checkbox.Indicator, {
   name: 'CheckboxTestIndicator',
   width: 10,
   height: 10,
-  backgroundColor: '$color',
+  backgroundColor: 'color',
 })
 
 const CheckboxSkin = withStaticProperties(CheckboxFrame, {

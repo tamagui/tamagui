@@ -13,7 +13,7 @@ export function TooltipGlobalPatternCase() {
   const [label, setLabel] = useState('')
 
   return (
-    <YStack flex={1} bg="$background" p="$4" minHeight={600} minWidth={800}>
+    <YStack flex={1} bg="background" p="4" minHeight={600} minWidth={800}>
       <TooltipGroup delay={{ open: 0, close: 150 }}>
         <Tooltip scope="global-tip" offset={12} placement="bottom">
           <YStack flex={1} justifyContent="space-between">
@@ -66,13 +66,13 @@ export function TooltipGlobalPatternCase() {
             data-testid="global-tip-content"
             animatePosition
             transition="200ms"
-            bg="$background"
-            boxShadow="0 4px 12px $shadowColor"
-            rounded="$4"
+            bg="background"
+            boxShadow="0 4px 12px shadow-color"
+            rounded="4"
             px={10}
-            py="$1"
-            enterStyle={{ y: -4, opacity: 0 }}
-            exitStyle={{ y: -4, opacity: 0 }}
+            py="1"
+            y="enter:-4px exit:-4px"
+            opacity="enter:0 exit:0"
           >
             <Tooltip.Arrow />
             <Paragraph size="$3">{label}</Paragraph>

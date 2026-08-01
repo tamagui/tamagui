@@ -24,15 +24,14 @@ export function LogoDotInterruptCase() {
   const ref = useRef<HTMLDivElement>(null)
 
   return (
-    <XStack padding="$8">
+    <XStack padding="8">
       <XStack
         ref={ref as any}
         data-testid="logo-strip"
         position="relative"
         width={(NUM - 1) * SECTION + 60}
         height={80}
-        backgroundColor="$color3"
-        // @ts-ignore - web onMouseMove
+        backgroundColor="color3"
         onMouseMove={(e: MouseEvent) => {
           const el = ref.current
           if (!el) return
@@ -50,8 +49,8 @@ export function LogoDotInterruptCase() {
           top={30}
           left={20}
           x={positions[index]}
+          backgroundColor="color12"
           size={16}
-          backgroundColor="$color12"
         />
         {positions.map((p, i) => (
           <XStack
@@ -61,7 +60,7 @@ export function LogoDotInterruptCase() {
             top={10}
             width={1}
             height={16}
-            backgroundColor="$color8"
+            backgroundColor="color8"
           />
         ))}
       </XStack>

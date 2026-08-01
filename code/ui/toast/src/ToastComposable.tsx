@@ -761,15 +761,15 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
     typeof toast.description === 'function' ? toast.description() : toast.description
 
   return (
-    <XStack alignItems="flex-start" gap="$3">
+    <XStack alignItems="flex-start" gap="3">
       <ToastIcon />
 
-      <YStack flex={1} gap="$1">
+      <YStack flex={1} gap="1">
         {title && <ToastTitle>{title}</ToastTitle>}
         {description && <ToastDescription>{description}</ToastDescription>}
 
         {(toast.action || toast.cancel) && (
-          <XStack gap="$2" marginTop="$2">
+          <XStack gap="2" marginTop="2">
             {toast.cancel && (
               <ToastActionFrame
                 onPress={(e: any) => {
@@ -1136,16 +1136,10 @@ const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
       <ToastPositionWrapper
         ref={ref}
         testID={rest.testID}
-        // v2 removed the deprecated a11y props in favour of web standards, so
-        // `accessibilityLabel` is no longer mapped and reaches the DOM verbatim —
-        // React then warns about an unrecognised prop on every toast.
         aria-label={rest['aria-label']}
         {...dataAttributes}
         transition={
           isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
-        }
-        animateOnly={
-          isWeb ? ['transform', 'opacity', 'height'] : ['transform', 'opacity']
         }
         y={stackY}
         scale={stackScale}
@@ -1169,6 +1163,9 @@ const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
             : swipeOut
               ? { opacity: 0, y: swipeExitYRef.current ?? stackY, scale: stackScale }
               : { opacity: 0, y: stackY, scale: stackScale }
+        }
+        animateOnly={
+          isWeb ? ['transform', 'opacity', 'height'] : ['transform', 'opacity']
         }
       >
         <DragWrapper

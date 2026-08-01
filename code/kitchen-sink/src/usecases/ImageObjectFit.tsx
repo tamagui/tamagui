@@ -14,16 +14,16 @@ const positions = ['center', 'top', 'bottom', 'left', 'right'] as const
 
 export function ImageObjectFit() {
   return (
-    <YStack gap="$4" padding="$4">
-      <Text fontWeight="bold" fontSize="$5">
+    <YStack gap="4" padding="4">
+      <Text fontWeight="bold" fontSize="5">
         Image objectFit
       </Text>
 
-      <XStack gap="$3" flexWrap="wrap">
+      <XStack gap="3" flexWrap="wrap">
         {fits.map((fit) => (
-          <YStack key={fit} width={140} alignItems="center" gap="$2">
-            <Text fontSize="$2">{fit}</Text>
-            <View width={140} height={140} backgroundColor="$gray5" overflow="hidden">
+          <YStack key={fit} width={140} alignItems="center" gap="2">
+            <Text fontSize="2">{fit}</Text>
+            <View width={140} height={140} backgroundColor="gray5" overflow="hidden">
               <Image
                 id={`fit-${fit}`}
                 src={IMG_SRC}
@@ -36,15 +36,15 @@ export function ImageObjectFit() {
         ))}
       </XStack>
 
-      <Text fontWeight="bold" fontSize="$5">
+      <Text fontWeight="bold" fontSize="5">
         Image objectPosition (objectFit=cover)
       </Text>
 
-      <XStack gap="$3" flexWrap="wrap">
+      <XStack gap="3" flexWrap="wrap">
         {positions.map((pos) => (
-          <YStack key={pos} width={140} alignItems="center" gap="$2">
-            <Text fontSize="$2">{pos}</Text>
-            <View width={140} height={140} backgroundColor="$gray5" overflow="hidden">
+          <YStack key={pos} width={140} alignItems="center" gap="2">
+            <Text fontSize="2">{pos}</Text>
+            <View width={140} height={140} backgroundColor="gray5" overflow="hidden">
               <Image
                 id={`pos-${pos}`}
                 src={IMG_SRC}

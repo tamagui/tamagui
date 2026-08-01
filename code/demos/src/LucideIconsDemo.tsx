@@ -30,13 +30,13 @@ export function LucideIconsDemo() {
             <Icon size={size * 0.25} />
             <Spacer />
             <Paragraph
-              height="$6"
+              height="6"
               wordWrap="break-word"
               maxW="100%"
               text="center"
-              px="$2"
-              size="$1"
+              px="2"
               opacity={0.5}
+              size="$1"
             >
               {name}
             </Paragraph>
@@ -46,7 +46,7 @@ export function LucideIconsDemo() {
   )
 
   return (
-    <YStack minW="100%" p="$4" pb="$0" gap="$4">
+    <YStack minW="100%" paddingTop="4" paddingRight="4" paddingLeft="4" pb="0" gap="4">
       <Input value={searchRaw} onChangeText={setSearch as any} placeholder="Search..." />
 
       <YStack height={420}>

@@ -39,7 +39,7 @@ function StateReadout({
   open?: boolean
 }) {
   return (
-    <YStack gap="$1">
+    <YStack gap="1">
       <Text testID={`${prefix}-value`}>{JSON.stringify(value)}</Text>
       <Text testID={`${prefix}-form-data`}>{JSON.stringify(entries)}</Text>
       {open === undefined ? null : <Text testID={`${prefix}-open`}>{String(open)}</Text>}
@@ -57,7 +57,7 @@ function FloatingMultiple() {
   const [openChangeCount, setOpenChangeCount] = React.useState(0)
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Paragraph>Floating custom web Select</Paragraph>
       {isWeb ? (
         <>
@@ -124,7 +124,7 @@ function NativeWebMultiple() {
   if (!isWeb) return null
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Paragraph>Browser-native multiple Select</Paragraph>
       <Select
         multiple
@@ -171,7 +171,7 @@ function AdaptedMultiple() {
   const [entries, setEntries] = React.useState<string[]>([])
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Paragraph>Adapt-to-Sheet multiple Select</Paragraph>
       {isWeb ? (
         <form
@@ -199,7 +199,7 @@ function AdaptedMultiple() {
               <Sheet modal snapPoints={[70]} dismissOnSnapToBottom zIndex={250_000}>
                 <Sheet.Overlay
                   testID="multiple-adapt-overlay"
-                  backgroundColor="$shadow6"
+                  backgroundColor="shadow6"
                 />
                 <Sheet.Handle testID="multiple-adapt-handle" />
                 <Sheet.Container testID="multiple-adapt-sheet">
@@ -263,7 +263,7 @@ function PlainNativeMultiple() {
   if (isWeb) return null
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Paragraph>Plain React Native multiple Select</Paragraph>
       <Select
         multiple
@@ -292,7 +292,7 @@ function PlainNativeMultiple() {
 
 export function SelectMultipleCase() {
   return (
-    <YStack padding="$4" gap="$6">
+    <YStack padding="4" gap="6">
       <FloatingMultiple />
       <NativeWebMultiple />
       <AdaptedMultiple />

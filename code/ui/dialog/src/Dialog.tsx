@@ -154,23 +154,20 @@ type DialogPortalProps = ScopedProps<
 
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
-  render: 'dialog',
   alignItems: 'center',
   justifyContent: 'center',
-  position: 'absolute',
+  position: 'absolute web:fixed',
   inset: 0,
-  $web: {
-    borderWidth: 0,
-    backgroundColor: 'transparent',
-    color: 'inherit',
-    maxInlineSize: 'none',
-    margin: 0,
-    width: 'auto',
-    height: 'auto',
-    maxHeight: '100vh',
-    position: 'fixed',
-    zIndex: 1,
-  },
+  borderWidth: 'web:0px',
+  backgroundColor: 'web:transparent',
+  color: 'web:inherit',
+  maxInlineSize: 'web:none',
+  margin: 'web:0px',
+  width: 'web:auto',
+  height: 'web:auto',
+  maxHeight: 'web:100vh',
+  zIndex: 'web:1',
+  render: 'dialog',
 })
 
 const needsRepropagation = needsPortalRepropagation()
@@ -441,11 +438,7 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
         <DialogOverlayFrame
           key={`${context.contentId}-overlay`}
           data-state={getState(context.open)}
-          // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
           pointerEvents={context.open ? 'auto' : 'none'}
-          // presence freezes the exiting clone with open=true props, so the
-          // open-keyed pointerEvents above stays "auto" during exit — exitStyle
-          // applies while exiting and lets clicks pass through immediately
           exitStyle={{ pointerEvents: 'none', ...exitStyle }}
           {...overlayProps}
           ref={forwardedRef}
@@ -485,7 +478,7 @@ const DialogContentFrame = styled(YStack, {
     bordered: {
       true: {
         borderWidth: 1,
-        borderColor: '$borderColor',
+        borderColor: 'border-color',
       },
     },
   } as const,
@@ -876,30 +869,31 @@ export type DialogCloseExtraProps = ScopedProps<{
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
 
-const DialogClose = createStyledHOC(DialogCloseFrame)<DialogCloseExtraProps>(
-  (props, forwardedRef) => {
-    const { scope, displayWhenAdapted, ...closeProps } = props
-    const context = useDialogContext(scope)
-    const isAdapted = useAdaptIsActive(context.adaptScope)
-    const isInsideButton = React.useContext(ButtonNestingContext)
+const DialogClose = createStyledHOC(DialogCloseFrame)<DialogCloseExtraProps>((
+  props,
+  forwardedRef
+) => {
+  const { scope, displayWhenAdapted, ...closeProps } = props
+  const context = useDialogContext(scope)
+  const isAdapted = useAdaptIsActive(context.adaptScope)
+  const isInsideButton = React.useContext(ButtonNestingContext)
 
-    if (isAdapted && !displayWhenAdapted) {
-      return null
-    }
-
-    return (
-      <DialogCloseFrame
-        aria-label="Dialog Close"
-        render={isInsideButton ? 'span' : 'button'}
-        {...closeProps}
-        ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress as any, () => {
-          context.onOpenChange(false)
-        })}
-      />
-    )
+  if (isAdapted && !displayWhenAdapted) {
+    return null
   }
-)
+
+  return (
+    <DialogCloseFrame
+      aria-label="Dialog Close"
+      render={isInsideButton ? 'span' : 'button'}
+      {...closeProps}
+      ref={forwardedRef}
+      onPress={composeEventHandlers(props.onPress as any, () => {
+        context.onOpenChange(false)
+      })}
+    />
+  )
+})
 
 /* -----------------------------------------------------------------------------------------------*/
 

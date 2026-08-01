@@ -114,11 +114,11 @@ const useAnimationLogger = (
 
 export function AnimationComprehensiveCase() {
   return (
-    <YStack gap="$2" padding="$2" flex={1} overflow="scroll">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="2" padding="2" flex={1} overflow="scroll">
+      <Paragraph fontWeight="bold" fontSize="5">
         Comprehensive Animation Test Suite (30+ Scenarios)
       </Paragraph>
-      <Paragraph size="$2" color="$color10">
+      <Paragraph size="$2" color="color10">
         Open console to see [ANIM_FRAME] logs
       </Paragraph>
 
@@ -223,7 +223,7 @@ export function AnimationComprehensiveCase() {
 }
 
 const SectionHeader = ({ children }: { children: string }) => (
-  <Paragraph fontWeight="bold" fontSize="$3" marginTop="$3" color="$blue10">
+  <Paragraph fontWeight="bold" fontSize="3" marginTop="3" color="blue10">
     {children}
   </Paragraph>
 )
@@ -239,7 +239,7 @@ function Scenario01_OpacityBasic() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -255,9 +255,9 @@ function Scenario01_OpacityBasic() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.2 : 1}
+        size={40}
         testID="scenario-01-target"
         data-testid="scenario-01-target"
       />
@@ -277,7 +277,7 @@ function Scenario02_ScaleBasic() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -293,9 +293,9 @@ function Scenario02_ScaleBasic() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$green10"
+        bg="green10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-02-target"
         data-testid="scenario-02-target"
       />
@@ -315,7 +315,7 @@ function Scenario03_TranslateX() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -331,9 +331,9 @@ function Scenario03_TranslateX() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         x={active ? 50 : 0}
+        size={40}
         testID="scenario-03-target"
         data-testid="scenario-03-target"
       />
@@ -353,7 +353,7 @@ function Scenario04_TranslateY() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -369,9 +369,9 @@ function Scenario04_TranslateY() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$yellow10"
+        bg="yellow10"
         y={active ? -30 : 0}
+        size={40}
         testID="scenario-04-target"
         data-testid="scenario-04-target"
       />
@@ -391,7 +391,7 @@ function Scenario05_Rotate() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -407,9 +407,9 @@ function Scenario05_Rotate() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$red10"
+        bg="red10"
         rotate={active ? '45deg' : '0deg'}
+        size={40}
         testID="scenario-05-target"
         data-testid="scenario-05-target"
       />
@@ -430,7 +430,7 @@ function Scenario06_MultipleTransforms() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -446,12 +446,12 @@ function Scenario06_MultipleTransforms() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$red10"
+        bg="red10"
         scale={active ? 1.2 : 1}
         x={active ? 20 : 0}
         rotate={active ? '15deg' : '0deg'}
         opacity={active ? 0.7 : 1}
+        size={40}
         testID="scenario-06-target"
         data-testid="scenario-06-target"
       />
@@ -469,7 +469,7 @@ function Scenario07_Width() {
   const { startLogging, stopLogging } = useAnimationLogger('07-width', ref, ['width'])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -487,7 +487,7 @@ function Scenario07_Width() {
         transition="quick"
         height={40}
         width={active ? 150 : 40}
-        bg="$blue10"
+        bg="blue10"
         testID="scenario-07-target"
         data-testid="scenario-07-target"
       />
@@ -505,7 +505,7 @@ function Scenario08_Height() {
   const { startLogging, stopLogging } = useAnimationLogger('08-height', ref, ['height'])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -523,7 +523,7 @@ function Scenario08_Height() {
         transition="quick"
         width={40}
         height={active ? 80 : 40}
-        bg="$green10"
+        bg="green10"
         testID="scenario-08-target"
         data-testid="scenario-08-target"
       />
@@ -544,7 +544,7 @@ function Scenario09_WidthAndHeight() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -562,7 +562,7 @@ function Scenario09_WidthAndHeight() {
         transition="quick"
         width={active ? 100 : 40}
         height={active ? 60 : 40}
-        bg="$blue10"
+        bg="blue10"
         testID="scenario-09-target"
         data-testid="scenario-09-target"
       />
@@ -582,7 +582,7 @@ function Scenario10_BorderRadius() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -600,7 +600,7 @@ function Scenario10_BorderRadius() {
         transition="quick"
         width={40}
         height={40}
-        bg="$yellow10"
+        bg="yellow10"
         borderRadius={active ? 20 : 0}
         testID="scenario-10-target"
         data-testid="scenario-10-target"
@@ -621,7 +621,7 @@ function Scenario11_BackgroundColor() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -637,8 +637,8 @@ function Scenario11_BackgroundColor() {
       <Square
         ref={ref as any}
         transition="quick"
+        backgroundColor={`${active ? 'red10' : 'blue10'}`}
         size={40}
-        backgroundColor={active ? '$red10' : '$blue10'}
         testID="scenario-11-target"
         data-testid="scenario-11-target"
       />
@@ -658,7 +658,7 @@ function Scenario12_TextColor() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -674,9 +674,9 @@ function Scenario12_TextColor() {
       <Text
         ref={ref as any}
         transition="quick"
-        fontSize="$5"
+        fontSize="5"
         fontWeight="bold"
-        color={active ? '$red10' : '$blue10'}
+        color={`${active ? 'red10' : 'blue10'}`}
         testID="scenario-12-target"
         data-testid="scenario-12-target"
       >
@@ -698,7 +698,7 @@ function Scenario13_BorderColor() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -714,10 +714,10 @@ function Scenario13_BorderColor() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
         bg="transparent"
         borderWidth={3}
-        borderColor={active ? '$red10' : '$blue10'}
+        borderColor={`${active ? 'red10' : 'blue10'}`}
+        size={40}
         testID="scenario-13-target"
         data-testid="scenario-13-target"
       />
@@ -737,7 +737,7 @@ function Scenario14_SpringBouncy() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -753,9 +753,9 @@ function Scenario14_SpringBouncy() {
       <Square
         ref={ref as any}
         transition="bouncy"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-14-target"
         data-testid="scenario-14-target"
       />
@@ -775,7 +775,7 @@ function Scenario15_SpringLazy() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -791,9 +791,9 @@ function Scenario15_SpringLazy() {
       <Square
         ref={ref as any}
         transition="lazy"
-        size={40}
-        bg="$green10"
+        bg="green10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-15-target"
         data-testid="scenario-15-target"
       />
@@ -813,7 +813,7 @@ function Scenario16_SpringQuick() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -829,9 +829,9 @@ function Scenario16_SpringQuick() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-16-target"
         data-testid="scenario-16-target"
       />
@@ -851,7 +851,7 @@ function Scenario17_SpringCustom() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -867,11 +867,10 @@ function Scenario17_SpringCustom() {
       <Square
         ref={ref as any}
         transition="quick"
-        // @ts-ignore
+        bg="yellow10"
+        scale={active ? 1.5 : 1}
         animationConfig={{ type: 'spring', damping: 5, stiffness: 100, mass: 0.5 }}
         size={40}
-        bg="$yellow10"
-        scale={active ? 1.5 : 1}
         testID="scenario-17-target"
         data-testid="scenario-17-target"
       />
@@ -891,7 +890,7 @@ function Scenario18_Timing100ms() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -907,9 +906,9 @@ function Scenario18_Timing100ms() {
       <Square
         ref={ref as any}
         transition="100ms"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.3 : 1}
+        size={40}
         testID="scenario-18-target"
         data-testid="scenario-18-target"
       />
@@ -929,7 +928,7 @@ function Scenario19_Timing200ms() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -945,9 +944,9 @@ function Scenario19_Timing200ms() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$green10"
+        bg="green10"
         opacity={active ? 0.3 : 1}
+        size={40}
         testID="scenario-19-target"
         data-testid="scenario-19-target"
       />
@@ -967,7 +966,7 @@ function Scenario20_TimingWithDelay() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -983,9 +982,9 @@ function Scenario20_TimingWithDelay() {
       <Square
         ref={ref as any}
         transition={['quick', { delay: 300 }]}
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.3 : 1}
+        size={40}
         testID="scenario-20-target"
         data-testid="scenario-20-target"
       />
@@ -1006,7 +1005,7 @@ function Scenario21_EnterStyle() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -1023,9 +1022,10 @@ function Scenario21_EnterStyle() {
         <Square
           ref={ref as any}
           transition="bouncy"
+          bg="blue10"
+          opacity="enter:0"
+          scale="enter:0.5"
           size={40}
-          bg="$blue10"
-          enterStyle={{ opacity: 0, scale: 0.5 }}
           testID="scenario-21-target"
           data-testid="scenario-21-target"
         />
@@ -1047,7 +1047,7 @@ function Scenario22_ExitStyle() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -1066,9 +1066,10 @@ function Scenario22_ExitStyle() {
             key="exit-square"
             ref={ref as any}
             transition="bouncy"
+            bg="green10"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$green10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-22-target"
             data-testid="scenario-22-target"
           />
@@ -1091,7 +1092,7 @@ function Scenario23_EnterExitCombined() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -1110,10 +1111,11 @@ function Scenario23_EnterExitCombined() {
             key="enter-exit-square"
             ref={ref as any}
             transition="bouncy"
+            bg="blue10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
+            y="enter:-20px exit:20px"
             size={40}
-            bg="$blue10"
-            enterStyle={{ opacity: 0, scale: 0.5, y: -20 }}
-            exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
             testID="scenario-23-target"
             data-testid="scenario-23-target"
           />
@@ -1149,7 +1151,7 @@ function Scenario24_RapidToggle() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={handleRapidToggle}
@@ -1161,9 +1163,9 @@ function Scenario24_RapidToggle() {
       <Square
         ref={ref as any}
         transition="quick"
-        size={40}
-        bg="$yellow10"
+        bg="yellow10"
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-24-target"
         data-testid="scenario-24-target"
       />
@@ -1190,7 +1192,7 @@ function Scenario25_Interruption() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={handleInterrupt}
@@ -1202,9 +1204,9 @@ function Scenario25_Interruption() {
       <Square
         ref={ref as any}
         transition="lazy"
-        size={40}
-        bg="$red10"
+        bg="red10"
         x={position === 0 ? 0 : position === 1 ? 50 : 100}
+        size={40}
         testID="scenario-25-target"
         data-testid="scenario-25-target"
       />
@@ -1227,7 +1229,7 @@ function Scenario26_AnimateOnly() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1243,11 +1245,11 @@ function Scenario26_AnimateOnly() {
       <Square
         ref={ref as any}
         transition="quick"
-        animateOnly={['opacity']}
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
+        animateOnly={['opacity']}
+        size={40}
         testID="scenario-26-target"
         data-testid="scenario-26-target"
       />
@@ -1267,7 +1269,7 @@ function Scenario27_AnimationConfig() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1283,11 +1285,10 @@ function Scenario27_AnimationConfig() {
       <Square
         ref={ref as any}
         transition="quick"
-        // @ts-ignore
+        bg="green10"
+        scale={active ? 1.5 : 1}
         animationConfig={{ type: 'spring', damping: 8, stiffness: 80 }}
         size={40}
-        bg="$green10"
-        scale={active ? 1.5 : 1}
         testID="scenario-27-target"
         data-testid="scenario-27-target"
       />
@@ -1309,7 +1310,7 @@ function Scenario28_MultiProperty() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1327,7 +1328,7 @@ function Scenario28_MultiProperty() {
         transition="bouncy"
         width={40}
         height={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         rotate={active ? '30deg' : '0deg'}
@@ -1359,7 +1360,7 @@ function Scenario29_NestedAnimations() {
   )
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1380,17 +1381,17 @@ function Scenario29_NestedAnimations() {
         ref={outerRef as any}
         transition="quick"
         scale={active ? 1.2 : 1}
-        padding="$1"
-        bg="$blue5"
+        padding="1"
+        bg="blue5"
         testID="scenario-29-outer"
         data-testid="scenario-29-outer"
       >
         <Square
           ref={innerRef as any}
           transition="bouncy"
-          size={30}
-          bg="$blue10"
+          bg="blue10"
           opacity={active ? 0.5 : 1}
+          size={30}
           testID="scenario-29-inner"
           data-testid="scenario-29-inner"
         />
@@ -1411,20 +1412,21 @@ function Scenario30_HoverAnimation() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Paragraph size="$1">30: Hover →</Paragraph>
       <View
         ref={ref as any}
         transition="quick"
         width={40}
         height={40}
-        bg="$blue10"
-        hoverStyle={{ scale: 1.2, backgroundColor: '$green10' }}
+        bg="blue10"
+        scale="hover:1.2"
+        backgroundColor="hover:green10"
+        cursor="pointer"
         onMouseEnter={startLogging}
         onMouseLeave={() => setTimeout(stopLogging, 500)}
         testID="scenario-30-target"
         data-testid="scenario-30-target"
-        cursor="pointer"
       />
       <Paragraph size="$1">hover me</Paragraph>
     </XStack>
@@ -1445,7 +1447,7 @@ function Scenario31_PerPropertyConfigs() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1461,10 +1463,10 @@ function Scenario31_PerPropertyConfigs() {
       <Square
         ref={ref as any}
         transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-31-target"
         data-testid="scenario-31-target"
       />
@@ -1494,7 +1496,7 @@ function Scenario32_PerPropertyWithInterruption() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={handleInterrupt}
@@ -1506,11 +1508,11 @@ function Scenario32_PerPropertyWithInterruption() {
       <Square
         ref={ref as any}
         transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
-        size={40}
-        bg="$green10"
+        bg="green10"
         opacity={state === 0 ? 1 : state === 1 ? 0.5 : 0.2}
         scale={state === 0 ? 1 : state === 1 ? 1.3 : 1.6}
         x={state === 0 ? 0 : state === 1 ? 30 : 60}
+        size={40}
         testID="scenario-32-target"
         data-testid="scenario-32-target"
       />
@@ -1536,7 +1538,7 @@ function Scenario33_MixedSpringTiming() {
   )
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1554,7 +1556,7 @@ function Scenario33_MixedSpringTiming() {
         transition={['bouncy', { opacity: 'quick', borderRadius: 'lazy' }] as any}
         width={40}
         height={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.4 : 1}
         scale={active ? 1.4 : 1}
         borderRadius={active ? 20 : 4}
@@ -1583,7 +1585,7 @@ function Scenario34_ComplexObjectManyProps() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1613,7 +1615,7 @@ function Scenario34_ComplexObjectManyProps() {
         }
         width={active ? 80 : 40}
         height={active ? 60 : 40}
-        backgroundColor={active ? '$red10' : '$blue10'}
+        backgroundColor={`${active ? 'red10' : 'blue10'}`}
         opacity={active ? 0.7 : 1}
         scale={active ? 1.2 : 1}
         rotate={active ? '15deg' : '0deg'}
@@ -1654,7 +1656,7 @@ function Scenario35_RapidPerPropertyChanges() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={handleRapid}
@@ -1666,11 +1668,11 @@ function Scenario35_RapidPerPropertyChanges() {
       <Square
         ref={ref as any}
         transition={['quick', { opacity: 'lazy', scale: 'bouncy' }] as any}
-        size={40}
-        bg="$yellow10"
+        bg="yellow10"
         opacity={active ? 0.3 : 1}
         scale={active ? 1.5 : 1}
         x={active ? 40 : 0}
+        size={40}
         testID="scenario-35-target"
         data-testid="scenario-35-target"
       />
@@ -1692,7 +1694,7 @@ function Scenario36_TimingTest() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1708,10 +1710,10 @@ function Scenario36_TimingTest() {
       <Square
         ref={ref as any}
         transition="500ms"
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.2 : 1}
         scale={active ? 1.5 : 1}
+        size={40}
         testID="scenario-36-target"
         data-testid="scenario-36-target"
       />
@@ -1733,7 +1735,7 @@ function Scenario37_EnterStyleScaleX() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -1752,8 +1754,9 @@ function Scenario37_EnterStyleScaleX() {
           transition="lazy"
           width={100}
           height={20}
-          bg="$red10"
-          enterStyle={{ opacity: 0, scaleX: 0 }}
+          bg="red10"
+          opacity="enter:0"
+          scaleX="enter:0"
           testID="scenario-37-target"
           data-testid="scenario-37-target"
         />
@@ -1779,7 +1782,7 @@ function Scenario38_PerPropertyWithTransform() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1794,14 +1797,12 @@ function Scenario38_PerPropertyWithTransform() {
       </Button>
       <Square
         ref={ref as any}
-        // this is the "animationClamped" pattern - opacity/backgroundColor have specific timing
-        // but scale/y should STILL animate with the default 'quick' animation
         transition={['quick', { opacity: '200ms', backgroundColor: '200ms' }] as any}
-        size={40}
-        bg={active ? '$red10' : '$blue10'}
+        bg={`${active ? 'red10' : 'blue10'}`}
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         y={active ? -10 : 0}
+        size={40}
         testID="scenario-38-target"
         data-testid="scenario-38-target"
       />
@@ -1825,7 +1826,7 @@ function Scenario39_ObjectFormatPerProperty() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1840,15 +1841,14 @@ function Scenario39_ObjectFormatPerProperty() {
       </Button>
       <Square
         ref={ref as any}
-        // object format - same as array but different syntax
         transition={
           { opacity: '200ms', backgroundColor: '200ms', default: 'quick' } as any
         }
-        size={40}
-        bg={active ? '$red10' : '$blue10'}
+        bg={`${active ? 'red10' : 'blue10'}`}
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
         y={active ? -10 : 0}
+        size={40}
         testID="scenario-39-target"
         data-testid="scenario-39-target"
       />
@@ -1870,7 +1870,7 @@ function Scenario40_ObjectFormatNoDefault() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1885,12 +1885,11 @@ function Scenario40_ObjectFormatNoDefault() {
       </Button>
       <Square
         ref={ref as any}
-        // NO default key - only opacity should animate, scale should snap instantly
         transition={{ opacity: '500ms' } as any}
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
+        size={40}
         testID="scenario-40-target"
         data-testid="scenario-40-target"
       />
@@ -1913,7 +1912,7 @@ function Scenario41_PerPropertyWithDelay() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center">
+    <XStack gap="2" alignItems="center">
       <Button
         size="small"
         onPress={() => {
@@ -1928,12 +1927,11 @@ function Scenario41_PerPropertyWithDelay() {
       </Button>
       <Square
         ref={ref as any}
-        // delay + per-property: 300ms delay, then opacity=500ms, scale=quick
         transition={['quick', { delay: 300, opacity: '500ms' }] as any}
-        size={40}
-        bg="$blue10"
+        bg="blue10"
         opacity={active ? 0.5 : 1}
         scale={active ? 1.3 : 1}
+        size={40}
         testID="scenario-41-target"
         data-testid="scenario-41-target"
       />
@@ -1957,7 +1955,7 @@ function Scenario42_TransitionEnterExit() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -1975,12 +1973,11 @@ function Scenario42_TransitionEnterExit() {
           <Square
             key="enter-exit-42"
             ref={ref as any}
-            // enter=500ms (slow), exit=100ms (fast)
             transition={{ enter: '500ms', exit: '100ms' } as any}
+            bg="blue10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$blue10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-42-target"
             data-testid="scenario-42-target"
           />
@@ -2008,7 +2005,7 @@ function Scenario43_TransitionEnterOnly() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2026,12 +2023,11 @@ function Scenario43_TransitionEnterOnly() {
           <Square
             key="enter-only-43"
             ref={ref as any}
-            // enter=500ms, exit falls back to default=100ms
             transition={{ enter: '500ms', default: '100ms' } as any}
+            bg="green10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$green10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-43-target"
             data-testid="scenario-43-target"
           />
@@ -2059,7 +2055,7 @@ function Scenario44_TransitionExitOnly() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2077,12 +2073,11 @@ function Scenario44_TransitionExitOnly() {
           <Square
             key="exit-only-44"
             ref={ref as any}
-            // exit=500ms (slow), enter falls back to default=100ms (fast)
             transition={{ exit: '500ms', default: '100ms' } as any}
+            bg="yellow10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$yellow10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-44-target"
             data-testid="scenario-44-target"
           />
@@ -2111,7 +2106,7 @@ function Scenario45_TransitionEnterExitWithDefault() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2141,13 +2136,11 @@ function Scenario45_TransitionEnterExitWithDefault() {
           <Square
             key="enter-exit-default-45"
             ref={ref as any}
-            // enter=300ms, exit=100ms, property changes while visible=500ms
             transition={{ enter: '300ms', exit: '100ms', default: '500ms' } as any}
+            bg="red10"
+            opacity={`${active ? 0.5 : 1} enter:0 exit:0`}
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$red10"
-            opacity={active ? 0.5 : 1}
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-45-target"
             data-testid="scenario-45-target"
           />
@@ -2176,7 +2169,7 @@ function Scenario46_TransitionEnterExitPerProperty() {
   )
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2194,12 +2187,11 @@ function Scenario46_TransitionEnterExitPerProperty() {
           <Square
             key="enter-exit-per-prop-46"
             ref={ref as any}
-            // enter=300ms for scale, exit=100ms for scale, but opacity always=500ms
             transition={{ enter: '300ms', exit: '100ms', opacity: '500ms' } as any}
+            bg="blue10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$blue10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-46-target"
             data-testid="scenario-46-target"
           />
@@ -2227,7 +2219,7 @@ function Scenario47_TransitionEnterExitWithDelay() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2246,10 +2238,10 @@ function Scenario47_TransitionEnterExitWithDelay() {
             key="enter-exit-delay-47"
             ref={ref as any}
             transition={{ enter: '300ms', exit: '100ms', delay: 200 } as any}
+            bg="color10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$color10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-47-target"
             data-testid="scenario-47-target"
           />
@@ -2276,7 +2268,7 @@ function Scenario48_AnimateOnlyWithExitStyle() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2295,10 +2287,11 @@ function Scenario48_AnimateOnlyWithExitStyle() {
             key="animate-only-exit-48"
             ref={ref as any}
             transition="500ms"
+            bg="blue10"
+            opacity="exit:0"
+            scale="exit:0.5"
             animateOnly={['opacity', 'transform']}
             size={40}
-            bg="$blue10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-48-target"
             data-testid="scenario-48-target"
           />
@@ -2326,7 +2319,7 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
   )
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2345,11 +2338,12 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
             key="animate-only-enter-exit-49"
             ref={ref as any}
             transition="500ms"
+            bg="green10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
+            y="exit:20px"
             animateOnly={['opacity', 'transform']}
             size={40}
-            bg="$green10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
             testID="scenario-49-target"
             data-testid="scenario-49-target"
           />
@@ -2377,7 +2371,7 @@ function Scenario50_EnterTimingVerification() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2395,12 +2389,11 @@ function Scenario50_EnterTimingVerification() {
           <Square
             key="enter-timing-50"
             ref={ref as any}
-            // enter should be 200ms (fast), exit should be 1000ms (slow)
             transition={{ enter: '200ms', exit: '1000ms' } as any}
+            bg="red10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$red10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-50-target"
             data-testid="scenario-50-target"
           />
@@ -2428,7 +2421,7 @@ function Scenario51_DurationNormalization() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2446,13 +2439,11 @@ function Scenario51_DurationNormalization() {
           <Square
             key="duration-norm-51"
             ref={ref as any}
-            // BUG: duration: 1 should mean 1ms (instant)
-            // but it's being treated as 1 second
             transition={{ duration: 1 } as any}
+            bg="orange10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$orange10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-51-target"
             data-testid="scenario-51-target"
           />
@@ -2479,7 +2470,7 @@ function Scenario52_DurationNormalizationInlineConfig() {
   ])
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -2497,12 +2488,11 @@ function Scenario52_DurationNormalizationInlineConfig() {
           <Square
             key="duration-inline-52"
             ref={ref as any}
-            // uses '100ms' base but overrides with duration: 50 (should be 50ms)
             transition={{ default: '100ms', duration: 50 } as any}
+            bg="purple10"
+            opacity="enter:0 exit:0"
+            scale="enter:0.5 exit:0.5"
             size={40}
-            bg="$purple10"
-            enterStyle={{ opacity: 0, scale: 0.5 }}
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-52-target"
             data-testid="scenario-52-target"
           />

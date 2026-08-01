@@ -7,7 +7,7 @@ export function SheetSkin() {
   const [open, setOpen] = useState(false)
 
   return (
-    <YStack padding="$4">
+    <YStack padding="4">
       <Button testID="sheet-skin-open" onPress={() => setOpen(true)}>
         Open copied Sheet skin
       </Button>
@@ -25,8 +25,8 @@ export function SheetSkin() {
         <Sheet.Container testID="sheet-skin-container">
           <Sheet.Background testID="sheet-skin-background" />
           <Sheet.ScrollView testID="sheet-skin-scroll-view">
-            <YStack gap="$3">
-              <Paragraph testID="sheet-skin-title" fontSize="$6" fontWeight="600">
+            <YStack gap="3">
+              <Paragraph testID="sheet-skin-title" fontSize="6" fontWeight="600">
                 Public behavior, copied aesthetics
               </Paragraph>
               <Paragraph>

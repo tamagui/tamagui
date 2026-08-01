@@ -39,12 +39,12 @@ export function ScrollViewRefCase() {
   }
 
   return (
-    <YStack gap="$2" padding="$2" height={400}>
+    <YStack gap="2" padding="2" height={400}>
       <Text id="status" testID="status">
         {status}
       </Text>
 
-      <YStack flexDirection="row" gap="$2">
+      <YStack flexDirection="row" gap="2">
         <Button
           id="scroll-to-btn"
           testID="scroll-to-btn"
@@ -76,10 +76,10 @@ export function ScrollViewRefCase() {
         id="test-scrollview"
         testID="test-scrollview"
         flex={1}
-        backgroundColor="$background"
+        backgroundColor="background"
       >
         {Array.from({ length: 50 }, (_, i) => (
-          <Text key={i} id={`item-${i}`} padding="$2">
+          <Text key={i} id={`item-${i}`} padding="2">
             Item {i}
           </Text>
         ))}

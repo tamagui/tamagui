@@ -49,12 +49,7 @@ function SelectComponent({ id }: { id: string }) {
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Container>
-          <Sheet.Overlay
-            bg="$shadowColor"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Adapt>
 
@@ -88,8 +83,8 @@ export function SelectRemount() {
   const [key, setKey] = React.useState(0)
 
   return (
-    <YStack padding="$4" gap="$4" flex={1}>
-      <XStack gap="$2">
+    <YStack padding="4" gap="4" flex={1}>
+      <XStack gap="2">
         <Button
           testID="toggle-mount-button"
           aria-label="toggle-mount-button"
@@ -115,7 +110,7 @@ export function SelectRemount() {
       </XStack>
 
       {mounted && (
-        <YStack key={key} gap="$4">
+        <YStack key={key} gap="4">
           <SelectComponent id="select-remount-test" />
 
           {/* Second select to test multiple on same screen */}
@@ -123,13 +118,13 @@ export function SelectRemount() {
         </YStack>
       )}
 
-      <YStack padding="$2" bg="$backgroundHover" borderRadius="$2">
-        <XStack gap="$2" width="100%">
+      <YStack padding="2" bg="background-hover" borderRadius="2">
+        <XStack gap="2" width="100%">
           <YStack
             width={10}
             height={10}
             borderRadius={5}
-            bg={mounted ? '$green10' : '$red10'}
+            bg={`${mounted ? 'green10' : 'red10'}`}
           />
           <Text>{mounted ? `Mounted (key: ${key})` : 'Unmounted'}</Text>
         </XStack>

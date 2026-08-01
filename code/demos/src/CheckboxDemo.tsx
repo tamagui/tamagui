@@ -6,7 +6,7 @@ import { Checkbox } from './ControlSkins'
 export function CheckboxDemo() {
   return (
     <Theme name="surface2">
-      <YStack width={300} items="center" gap="$2">
+      <YStack width={300} items="center" gap="2">
         <CheckboxWithLabel size="$3" />
         <CheckboxWithLabel size="$4" defaultChecked />
         <CheckboxWithLabel size="$5" disabled label="Accept terms (disabled)" />
@@ -24,7 +24,7 @@ export function CheckboxWithLabel({
   const id = `checkbox-${(size || '').toString().slice(1)}`
   return (
     <Theme name={disabled ? 'gray' : null}>
-      <XStack width={300} items="center" gap="$4">
+      <XStack width={300} items="center" gap="4">
         <Checkbox
           id={id}
           size={size}

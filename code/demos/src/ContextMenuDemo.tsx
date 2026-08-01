@@ -15,14 +15,14 @@ export function ContextMenuDemo() {
     <ContextMenu native={native}>
       <ContextMenu.Trigger asChild>
         <View
-          p="$4"
-          rounded="$4"
+          p="4"
+          rounded="4"
           borderWidth={1}
           borderStyle="dashed"
-          borderColor="$color6"
+          borderColor="color6"
           cursor="default"
         >
-          <Text text="center" select="none" color="$color10">
+          <Text text="center" select="none" color="color10">
             Right Click or Long Press
           </Text>
         </View>
@@ -33,13 +33,14 @@ export function ContextMenuDemo() {
           p="$1.5"
           minW={180}
           borderWidth={1}
-          borderColor="$borderColor"
+          borderColor="border-color"
           transformOrigin="left top"
-          enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
-          exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
+          scale="enter:0.9 exit:0.95"
+          opacity="enter:0 exit:0"
+          y="enter:-5px exit:-3px"
           transition="100ms"
         >
-          <ContextMenu.Arrow size="$4" borderWidth={1} borderColor="$borderColor" />
+          <ContextMenu.Arrow size="$4" borderWidth={1} borderColor="border-color" />
 
           <ContextMenu.Preview>
             {() => {
@@ -103,19 +104,20 @@ export function ContextMenuDemo() {
               textValue="Actions"
             >
               <ContextMenu.ItemTitle>Actions</ContextMenu.ItemTitle>
-              <ChevronRight size={12} color="$color10" />
+              <ChevronRight size={12} color="color10" />
             </ContextMenu.SubTrigger>
             <ContextMenu.Portal zIndex={200}>
               <ContextMenu.SubContent
-                enterStyle={{ scale: 0.9, opacity: 0, x: -5 }}
-                exitStyle={{ scale: 0.95, opacity: 0, x: -3 }}
+                scale="enter:0.9 exit:0.95"
+                opacity="enter:0 exit:0"
+                x="enter:-5px exit:-3px"
                 transition="100ms"
                 transformOrigin="left top"
                 minW={160}
-                bg="$background"
+                bg="background"
                 p="$1.5"
                 borderWidth={1}
-                borderColor="$borderColor"
+                borderColor="border-color"
               >
                 <ContextMenu.Label>Note settings</ContextMenu.Label>
                 <ContextMenu.Item
@@ -151,7 +153,7 @@ export function ContextMenuDemo() {
           >
             <ContextMenu.ItemTitle>Mark as read</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
-              <Check size={12} color="$color10" />
+              <Check size={12} color="color10" />
             </ContextMenu.ItemIndicator>
           </ContextMenu.CheckboxItem>
           <ContextMenu.CheckboxItem
@@ -162,7 +164,7 @@ export function ContextMenuDemo() {
           >
             <ContextMenu.ItemTitle>Enable Native</ContextMenu.ItemTitle>
             <ContextMenu.ItemIndicator>
-              <Check size={12} color="$color10" />
+              <Check size={12} color="color10" />
             </ContextMenu.ItemIndicator>
           </ContextMenu.CheckboxItem>
         </ContextMenu.Content>

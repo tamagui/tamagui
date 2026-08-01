@@ -3,14 +3,14 @@ import { Switch } from '../src'
 
 const SwitchSkinFrame = styled(Switch, {
   name: 'SwitchSkinFrame',
-  backgroundColor: '$background',
-  borderRadius: '$10',
+  backgroundColor: 'background',
+  borderRadius: '10',
 })
 
 const SwitchSkinThumb = styled(Switch.Thumb, {
   name: 'SwitchSkinThumb',
-  backgroundColor: '$color',
-  borderRadius: '$10',
+  backgroundColor: 'color',
+  borderRadius: '10',
 })
 
 const SwitchSkin = withStaticProperties(SwitchSkinFrame, {

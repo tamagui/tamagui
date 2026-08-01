@@ -39,10 +39,10 @@ export const ButtonSkin = () => {
   const [nestedInnerPresses, setNestedInnerPresses] = useState(0)
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Text testID="button-skin-press-count">presses:{presses}</Text>
 
-      <XStack flexWrap="wrap" gap="$3">
+      <XStack flexWrap="wrap" gap="3">
         <Button
           testID="button-skin-default"
           onPress={() => setPresses((value) => value + 1)}
@@ -85,7 +85,7 @@ export const ButtonSkin = () => {
         <Button.Text testID="button-skin-explicit-text">Explicit text part</Button.Text>
       </Button>
 
-      <XStack gap="$3">
+      <XStack gap="3">
         <Button testID="button-skin-nested-before">Before</Button>
         <Button
           testID="button-skin-nested-outer"

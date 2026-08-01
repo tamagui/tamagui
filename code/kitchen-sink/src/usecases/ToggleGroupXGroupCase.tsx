@@ -21,11 +21,11 @@ export function ToggleGroupXGroupCase() {
   const [patternBValue, setPatternBValue] = useState<string>('')
 
   return (
-    <YStack gap="$8" p="$4">
+    <YStack gap="8" p="4">
       {/* Pattern A: XGroup.Item > ToggleGroup.Item */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Text>Pattern A: XGroup.Item wraps ToggleGroup.Item</Text>
-        <Text fontSize="$2" color="$color10">
+        <Text fontSize="2" color="color10">
           value: {patternAValue || 'none'}
         </Text>
         <ToggleGroup
@@ -34,13 +34,13 @@ export function ToggleGroupXGroupCase() {
           onValueChange={setPatternAValue}
           testID="pattern-a-toggle-group"
         >
-          <XGroup rounded="$10" testID="pattern-a-xgroup">
+          <XGroup rounded="10" testID="pattern-a-xgroup">
             <XGroup.Item>
               <ToggleGroup.Item
                 value="left"
                 aria-label="Left"
                 testID="pattern-a-left"
-                borderRadius="$10"
+                borderRadius="10"
               >
                 <AlignLeft size={16} />
               </ToggleGroup.Item>
@@ -50,7 +50,7 @@ export function ToggleGroupXGroupCase() {
                 value="center"
                 aria-label="Center"
                 testID="pattern-a-center"
-                borderRadius="$10"
+                borderRadius="10"
               >
                 <AlignCenter size={16} />
               </ToggleGroup.Item>
@@ -60,7 +60,7 @@ export function ToggleGroupXGroupCase() {
                 value="right"
                 aria-label="Right"
                 testID="pattern-a-right"
-                borderRadius="$10"
+                borderRadius="10"
               >
                 <AlignRight size={16} />
               </ToggleGroup.Item>
@@ -70,9 +70,9 @@ export function ToggleGroupXGroupCase() {
       </YStack>
 
       {/* Pattern B: ToggleGroup.Item asChild > XGroup.Item > Button */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Text>Pattern B: ToggleGroup.Item asChild wraps XGroup.Item</Text>
-        <Text fontSize="$2" color="$color10">
+        <Text fontSize="2" color="color10">
           value: {patternBValue || 'none'}
         </Text>
         <ToggleGroup
@@ -81,7 +81,7 @@ export function ToggleGroupXGroupCase() {
           onValueChange={setPatternBValue}
           testID="pattern-b-toggle-group"
         >
-          <XGroup rounded="$10" testID="pattern-b-xgroup">
+          <XGroup rounded="10" testID="pattern-b-xgroup">
             <ToggleGroup.Item value="left" aria-label="Left" asChild>
               <XGroup.Item>
                 <Button testID="pattern-b-left" size="medium" icon={AlignLeft} />

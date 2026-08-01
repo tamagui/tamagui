@@ -2,9 +2,9 @@ import { Button, H4, XStack, YStack, toast } from 'tamagui'
 
 export function ToastControl() {
   return (
-    <YStack gap="$2" items="center">
+    <YStack gap="2" items="center">
       <H4>Toast demo</H4>
-      <XStack gap="$2" justify="center">
+      <XStack gap="2" justify="center">
         <Button
           testID="toast-show"
           onPress={() => {

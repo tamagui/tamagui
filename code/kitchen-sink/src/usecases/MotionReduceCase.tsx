@@ -16,7 +16,7 @@ export const MotionReduceCase = () => {
   const media = useMedia()
 
   return (
-    <YStack p="$4" gap="$4">
+    <YStack p="4" gap="4">
       <Text testID="motion-reduce-state">{`motionReduce: ${media.motionReduce}`}</Text>
       <Text testID="motion-safe-state">{`motionSafe: ${media.motionSafe}`}</Text>
 
@@ -25,8 +25,7 @@ export const MotionReduceCase = () => {
         testID="motion-swatch"
         height={100}
         width={100}
-        backgroundColor="yellow"
-        $motionReduce={{ backgroundColor: 'lime' }}
+        backgroundColor="yellow motionReduce:lime"
       />
 
       <YStack
@@ -34,8 +33,7 @@ export const MotionReduceCase = () => {
         testID="motion-safe-swatch"
         height={100}
         width={100}
-        backgroundColor="red"
-        $motionSafe={{ backgroundColor: 'blue' }}
+        backgroundColor="red motionSafe:blue"
       />
     </YStack>
   )

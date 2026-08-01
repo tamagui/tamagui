@@ -68,11 +68,11 @@ function useExitTracker(scenarioId: string) {
 
 export function ExitCompletionCase() {
   return (
-    <YStack gap="$2" padding="$2" flex={1} overflow="scroll">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="2" padding="2" flex={1} overflow="scroll">
+      <Paragraph fontWeight="bold" fontSize="5">
         Exit Completion Test Suite
       </Paragraph>
-      <Paragraph size="$2" color="$color10">
+      <Paragraph size="$2" color="color10">
         Tests sendExitComplete invariants. Check console for [EXIT_COMPLETE] logs.
       </Paragraph>
 
@@ -104,7 +104,7 @@ export function ExitCompletionCase() {
 }
 
 const SectionHeader = ({ children }: { children: string }) => (
-  <Paragraph fontWeight="bold" fontSize="$3" marginTop="$3" color="$blue10">
+  <Paragraph fontWeight="bold" fontSize="3" marginTop="3" color="blue10">
     {children}
   </Paragraph>
 )
@@ -117,7 +117,7 @@ function Scenario01_BasicExit() {
   const { startExit, onExitComplete } = useExitTracker('01-basic-exit')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -134,9 +134,10 @@ function Scenario01_BasicExit() {
           <Square
             key="basic-exit"
             transition="300ms"
+            bg="blue10"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$blue10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-01-target"
             data-testid="exit-01-target"
           />
@@ -158,7 +159,7 @@ function Scenario02_ZeroDuration() {
   const { startExit, onExitComplete } = useExitTracker('02-zero-duration')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -175,9 +176,9 @@ function Scenario02_ZeroDuration() {
           <Square
             key="zero-duration"
             transition="0ms"
+            bg="green10"
+            opacity="exit:0"
             size={40}
-            bg="$green10"
-            exitStyle={{ opacity: 0 }}
             testID="exit-02-target"
             data-testid="exit-02-target"
           />
@@ -196,7 +197,7 @@ function Scenario03_VeryShortDuration() {
   const { startExit, onExitComplete } = useExitTracker('03-short-duration')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -213,9 +214,10 @@ function Scenario03_VeryShortDuration() {
           <Square
             key="short-duration"
             transition="30ms"
+            bg="yellow10"
+            opacity="exit:0"
+            scale="exit:0.8"
             size={40}
-            bg="$yellow10"
-            exitStyle={{ opacity: 0, scale: 0.8 }}
             testID="exit-03-target"
             data-testid="exit-03-target"
           />
@@ -245,7 +247,7 @@ function Scenario04_RapidToggle() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={handleRapidToggle}
@@ -259,9 +261,10 @@ function Scenario04_RapidToggle() {
           <Square
             key="rapid-toggle"
             transition="200ms"
+            bg="red10"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$red10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-04-target"
             data-testid="exit-04-target"
           />
@@ -293,7 +296,7 @@ function Scenario05_ReRenderDuringExit() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={handleExitWithRerenders}
@@ -307,9 +310,10 @@ function Scenario05_ReRenderDuringExit() {
           <Square
             key="rerender-exit"
             transition="300ms"
+            bg="blue10"
+            opacity="exit:0"
+            y="exit:20px"
             size={40}
-            bg="$blue10"
-            exitStyle={{ opacity: 0, y: 20 }}
             testID="exit-05-target"
             data-testid="exit-05-target"
           />
@@ -339,7 +343,7 @@ function Scenario06_MultipleChildren() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={handleRemoveAll}
@@ -356,9 +360,10 @@ function Scenario06_MultipleChildren() {
           <Square
             key={`multi-${id}`}
             transition="200ms"
+            bg="green10"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={30}
-            bg="$green10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID={`exit-06-target-${id}`}
             data-testid={`exit-06-target-${id}`}
           />
@@ -378,7 +383,7 @@ function Scenario07_LongAnimation() {
   const { startExit, onExitComplete } = useExitTracker('07-long-animation')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -395,9 +400,11 @@ function Scenario07_LongAnimation() {
           <Square
             key="long-anim"
             transition="500ms"
+            bg="yellow10"
+            opacity="exit:0"
+            scale="exit:0.5"
+            y="exit:30px"
             size={40}
-            bg="$yellow10"
-            exitStyle={{ opacity: 0, scale: 0.5, y: 30 }}
             testID="exit-07-target"
             data-testid="exit-07-target"
           />
@@ -428,7 +435,7 @@ function Scenario08_InterruptedExit() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={handleInterruptedExit}
@@ -442,9 +449,10 @@ function Scenario08_InterruptedExit() {
           <Square
             key="interrupted"
             transition="300ms"
+            bg="red10"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$red10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-08-target"
             data-testid="exit-08-target"
           />
@@ -479,7 +487,7 @@ function Scenario09_CanceledAndRestarted() {
   }
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={handleStressTest}
@@ -493,9 +501,10 @@ function Scenario09_CanceledAndRestarted() {
           <Square
             key="stress"
             transition="200ms"
+            bg="blue10"
+            opacity="exit:0"
+            x="exit:-20px"
             size={40}
-            bg="$blue10"
-            exitStyle={{ opacity: 0, x: -20 }}
             testID="exit-09-target"
             data-testid="exit-09-target"
           />
@@ -518,7 +527,7 @@ function Scenario10_PerPropertyExit() {
   const { startExit, onExitComplete } = useExitTracker('10-per-property')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -534,11 +543,11 @@ function Scenario10_PerPropertyExit() {
         {visible && (
           <Square
             key="per-prop"
-            // opacity=100ms (fast), scale=500ms (slow)
             transition={['100ms', { scale: '500ms' }] as any}
+            bg="green10"
+            opacity="exit:0"
+            scale="exit:0.5"
             size={40}
-            bg="$green10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-10-target"
             data-testid="exit-10-target"
           />
@@ -559,7 +568,7 @@ function Scenario11_MixedDurationExit() {
   const { startExit, onExitComplete } = useExitTracker('11-mixed-duration')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -576,9 +585,11 @@ function Scenario11_MixedDurationExit() {
           <Square
             key="mixed"
             transition={{ opacity: '100ms', scale: '400ms', default: '400ms' } as any}
+            bg="yellow10"
+            opacity="exit:0"
+            scale="exit:0.5"
+            y="exit:20px"
             size={40}
-            bg="$yellow10"
-            exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
             testID="exit-11-target"
             data-testid="exit-11-target"
           />
@@ -600,7 +611,7 @@ function Scenario51_AnimateOnlyExclusion() {
   const { startExit, onExitComplete } = useExitTracker('51-animateonly-exclusion')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -617,10 +628,11 @@ function Scenario51_AnimateOnlyExclusion() {
           <Square
             key="animateonly-exclusion"
             transition={{ opacity: '100ms', scale: '500ms', default: '500ms' } as any}
+            bg="purple10"
+            opacity="exit:0"
+            scale="exit:0.5"
             animateOnly={['opacity']}
             size={40}
-            bg="$purple10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-51-target"
             data-testid="exit-51-target"
           />
@@ -641,7 +653,7 @@ function Scenario53_TransformSubKeySplitDurations() {
   const { startExit, onExitComplete } = useExitTracker('53-transform-subkeys')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -658,9 +670,10 @@ function Scenario53_TransformSubKeySplitDurations() {
           <Square
             key="transform-subkeys"
             transition={{ scale: '100ms', y: '500ms', default: '100ms' } as any}
+            bg="orange10"
+            scale="exit:0.5"
+            y="exit:50px"
             size={40}
-            bg="$orange10"
-            exitStyle={{ scale: 0.5, y: 50 }}
             testID="exit-53-target"
             data-testid="exit-53-target"
           />
@@ -682,7 +695,7 @@ function Scenario55_ZeroAnimatableExitProps() {
   const { startExit, onExitComplete } = useExitTracker('55-zero-animatable')
 
   return (
-    <XStack gap="$2" alignItems="center" minHeight={50}>
+    <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
         size="small"
         onPress={() => {
@@ -699,10 +712,11 @@ function Scenario55_ZeroAnimatableExitProps() {
           <Square
             key="zero-animatable"
             transition="300ms"
+            bg="gray10"
+            opacity="exit:0"
+            scale="exit:0.5"
             animateOnly={[]}
             size={40}
-            bg="$gray10"
-            exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="exit-55-target"
             data-testid="exit-55-target"
           />

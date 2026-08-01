@@ -12,9 +12,9 @@ import { Button } from '../components/Button'
 
 export function AnimationValueLoggingCase() {
   return (
-    <YStack gap="$4" padding="$4" flex={1}>
+    <YStack gap="4" padding="4" flex={1}>
       <Paragraph>Animation Value Logging Tests</Paragraph>
-      <Paragraph size="$2" color="$color10">
+      <Paragraph size="$2" color="color10">
         Open browser console to see [ANIM_LOG] entries
       </Paragraph>
 
@@ -88,7 +88,7 @@ function OpacityAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
         size="medium"
         onPress={() => setFaded(!faded)}
@@ -100,9 +100,9 @@ function OpacityAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        size={60}
-        backgroundColor="$blue10"
+        backgroundColor="blue10"
         opacity={faded ? 0.2 : 1}
+        size={60}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
@@ -171,7 +171,7 @@ function ScaleAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
         size="medium"
         onPress={() => setScaled(!scaled)}
@@ -183,9 +183,9 @@ function ScaleAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        size={60}
-        backgroundColor="$green10"
+        backgroundColor="green10"
         scale={scaled ? 1.5 : 1}
+        size={60}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
@@ -256,7 +256,7 @@ function TranslateAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
         size="medium"
         onPress={() => setMoved(!moved)}
@@ -268,9 +268,9 @@ function TranslateAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
-        size={60}
-        backgroundColor="$blue10"
+        backgroundColor="blue10"
         y={moved ? -30 : 0}
+        size={60}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
@@ -345,7 +345,7 @@ function EnterExitAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center" height={80}>
+    <XStack gap="4" alignItems="center" height={80}>
       <Button
         size="medium"
         onPress={() => setVisible(!visible)}
@@ -358,16 +358,10 @@ function EnterExitAnimationTest() {
         <Square
           ref={squareRef as any}
           transition="bouncy"
+          backgroundColor="yellow10"
+          opacity="enter:0 exit:0"
+          scale="enter:0.5 exit:0.5"
           size={60}
-          backgroundColor="$yellow10"
-          enterStyle={{
-            opacity: 0,
-            scale: 0.5,
-          }}
-          exitStyle={{
-            opacity: 0,
-            scale: 0.5,
-          }}
           testID={`${testId}-square`}
           data-testid={`${testId}-square`}
         />
@@ -425,7 +419,7 @@ function ColorAnimationTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
         size="medium"
         onPress={() => setActive(!active)}
@@ -437,8 +431,8 @@ function ColorAnimationTest() {
       <Square
         ref={squareRef as any}
         transition="quick"
+        backgroundColor={`${active ? 'red10' : 'blue10'}`}
         size={60}
-        backgroundColor={active ? '$red10' : '$blue10'}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />
@@ -495,7 +489,7 @@ function AnimationConfigTest() {
   }, [])
 
   return (
-    <XStack gap="$4" alignItems="center">
+    <XStack gap="4" alignItems="center">
       <Button
         size="medium"
         onPress={() => setExpanded(!expanded)}
@@ -507,15 +501,14 @@ function AnimationConfigTest() {
       <View
         ref={squareRef as any}
         transition="quick"
-        // @ts-ignore - animationConfig exists but may not be typed
+        height={60}
+        width={expanded ? 150 : 60}
+        backgroundColor="red10"
         animationConfig={{
           type: 'spring',
           damping: 15,
           stiffness: 40, // Slow spring - should take longer than default
         }}
-        height={60}
-        width={expanded ? 150 : 60}
-        backgroundColor="$red10"
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />

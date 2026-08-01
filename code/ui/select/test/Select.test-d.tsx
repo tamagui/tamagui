@@ -1,16 +1,30 @@
 import { Select } from '@tamagui/select'
 import { styled } from 'tamagui'
 
-const Trigger = styled(Select.Trigger, { padding: '$2' })
-const Value = styled(Select.Value, { color: '$color' })
+const Trigger = styled(Select.Trigger, {
+  padding: '2',
+})
+const Value = styled(Select.Value, {
+  color: 'color',
+})
 const Icon = styled(Select.Icon, { width: 16 })
-const Group = styled(Select.Group, { gap: '$1' })
+const Group = styled(Select.Group, {
+  gap: '1',
+})
 const Label = styled(Select.Label, { fontWeight: '600' })
-const Item = styled(Select.Item, { padding: '$2' })
-const ItemText = styled(Select.ItemText, { color: '$color' })
+const Item = styled(Select.Item, {
+  padding: '2',
+})
+const ItemText = styled(Select.ItemText, {
+  color: 'color',
+})
 const ItemIndicator = styled(Select.ItemIndicator, { marginLeft: 'auto' })
-const Indicator = styled(Select.Indicator, { backgroundColor: '$background' })
-const Viewport = styled(Select.Viewport, { backgroundColor: '$background' })
+const Indicator = styled(Select.Indicator, {
+  backgroundColor: 'background',
+})
+const Viewport = styled(Select.Viewport, {
+  backgroundColor: 'background',
+})
 const ScrollUp = styled(Select.ScrollUpButton, { height: 20 })
 const ScrollDown = styled(Select.ScrollDownButton, { height: 20 })
 const Separator = styled(Select.Separator, { height: 1 })
@@ -66,11 +80,8 @@ export const MultipleSelectTypeTest = () => (
     }}
     onOpenChange={(_open, details) => {
       const reason:
-        | 'trigger-press'
-        | 'keyboard'
-        | 'outside-press'
-        | 'escape-key'
-        | 'item-press' = details.reason
+        'trigger-press' | 'keyboard' | 'outside-press' | 'escape-key' | 'item-press' =
+        details.reason
       void reason
     }}
     onActiveChange={(_value, details) => {

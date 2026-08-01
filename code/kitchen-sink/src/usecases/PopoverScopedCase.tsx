@@ -5,7 +5,7 @@ export function PopoverScopedCase() {
   const shouldAdapt = window.location.search.includes('adapt=true')
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Popover size="$5" allowFlip stayInFrame offset={15} resize>
         <TestPopoverContent shouldAdapt={shouldAdapt} name="plain" />
         <Popover.Trigger asChild>
@@ -37,16 +37,16 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
     <>
       <Popover.Content
         borderWidth={1}
-        borderColor="$borderColor"
-        backgroundColor="$background"
-        boxShadow="0 4px 12px $shadowColor"
+        borderColor="border-color"
+        backgroundColor="background"
+        boxShadow="0 4px 12px shadow-color"
         width={300}
         height={300}
       >
-        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+        <Popover.Arrow borderWidth={1} borderColor="border-color" />
 
-        <YStack data-testid={`${name}-popover-content`} gap="$3">
-          <XStack gap="$3">
+        <YStack data-testid={`${name}-popover-content`} gap="3">
+          <XStack gap="3">
             <Paragraph size="$3">Popover {name}</Paragraph>
           </XStack>
 
@@ -61,15 +61,14 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
       {shouldAdapt && (
         <Adapt when={true}>
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Container data-testid={`${name}-sheet-contents`} padding="$4">
+            <Sheet.Container data-testid={`${name}-sheet-contents`} padding="4">
               <Sheet.Background />
               <Adapt.Contents />
             </Sheet.Container>
             <Sheet.Overlay
-              backgroundColor="$shadowColor"
+              backgroundColor="shadow-color"
               transition="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
+              opacity="enter:0 exit:0"
             />
           </Sheet>
         </Adapt>

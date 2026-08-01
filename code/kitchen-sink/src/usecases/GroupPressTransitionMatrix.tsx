@@ -14,7 +14,7 @@ const FramePlain = styled(View, {
   name: 'FramePlain',
   width: 80,
   height: 80,
-  backgroundColor: '$gray2', // ensures 100% visibility for detox
+  backgroundColor: 'gray2',
   alignItems: 'stretch',
 })
 
@@ -22,25 +22,23 @@ const FrameAnim = styled(View, {
   name: 'FrameAnim',
   width: 80,
   height: 80,
-  backgroundColor: '$gray2',
+  backgroundColor: 'gray2',
   alignItems: 'stretch',
   transition: 'quick',
-  pressStyle: { opacity: 0.95 },
+  opacity: 'press:0.95',
 })
 
 const ChildPlain = styled(View, {
   name: 'ChildPlain',
   flex: 1,
-  backgroundColor: '$blue10',
-  '$group-press': { backgroundColor: '$red10' },
+  backgroundColor: 'blue10 group-press:red10',
 })
 
 const ChildAnim = styled(View, {
   name: 'ChildAnim',
   flex: 1,
-  backgroundColor: '$blue10',
+  backgroundColor: 'blue10 group-press:red10',
   transition: 'quick',
-  '$group-press': { backgroundColor: '$red10' },
 })
 
 type CellSpec = {
@@ -97,12 +95,12 @@ export function GroupPressTransitionMatrix() {
   }
 
   return (
-    <YStack gap="$2" testID="group-press-transition-matrix-root">
-      <Text fontSize="$2" fontWeight="bold">
+    <YStack gap="2" testID="group-press-transition-matrix-root">
+      <Text fontSize="2" fontWeight="bold">
         Group Press × Transition
       </Text>
 
-      <XStack gap="$2">
+      <XStack gap="2">
         {CELLS.map((c) => (
           <Cell key={c.id} spec={c} onPressChange={bump(c.id)} />
         ))}
@@ -112,20 +110,20 @@ export function GroupPressTransitionMatrix() {
         testID="release-target"
         height={120}
         width={340}
-        backgroundColor="$gray4"
+        backgroundColor="gray4"
         alignItems="center"
         justifyContent="center"
       >
-        <Text fontSize="$1" color="$gray11">
+        <Text fontSize="1" color="gray11">
           release here
         </Text>
       </View>
 
-      <XStack gap="$2" flexWrap="wrap">
+      <XStack gap="2" flexWrap="wrap">
         {CELLS.map((c) => {
           const cur = counts[c.id] ?? { pressIn: 0, pressOut: 0 }
           return (
-            <Text key={c.id} fontSize="$1" testID={`cell-${c.id}-counts`}>
+            <Text key={c.id} fontSize="1" testID={`cell-${c.id}-counts`}>
               {c.label} in:{cur.pressIn} out:{cur.pressOut}
             </Text>
           )

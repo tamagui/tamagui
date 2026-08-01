@@ -17,14 +17,7 @@ export const TabsAdvancedDemo = () => {
     <>
       {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
 
-      <XStack
-        items="center"
-        gap="$4"
-        position="absolute"
-        b="$3"
-        l="$4"
-        $xxs={{ display: 'none' }}
-      >
+      <XStack items="center" gap="4" position="absolute" b="3" l="4" display="xxs:none">
         <Button size="small" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
@@ -83,12 +76,12 @@ const TabsAdvancedBackground = () => {
       onValueChange={setCurrentTab}
       orientation="horizontal"
       size="$4"
-      p="$2"
+      p="2"
       height={150}
       flexDirection="column"
+      bg="background"
+      rounded="4"
       activationMode="manual"
-      bg="$background"
-      rounded="$4"
     >
       <AnimatePresence>
         {intentAt && (
@@ -119,25 +112,25 @@ const TabsAdvancedBackground = () => {
         <Tabs.List
           loop={false}
           aria-label="Manage your account"
-          gap="$2"
+          gap="2"
           backgroundColor="transparent"
         >
           <Tabs.Tab
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab1"
             onInteraction={handleOnInteraction}
           >
             <SizableText>Profile</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab2"
             onInteraction={handleOnInteraction}
           >
             <SizableText>Connections</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab3"
             onInteraction={handleOnInteraction}
           >
@@ -209,9 +202,9 @@ const TabsAdvancedUnderline = () => {
       size="$4"
       height={150}
       flexDirection="column"
+      bg="background"
+      rounded="4"
       activationMode="manual"
-      bg="$background"
-      rounded="$4"
     >
       <YStack position="relative">
         <AnimatePresence>
@@ -242,12 +235,12 @@ const TabsAdvancedUnderline = () => {
           borderBottomLeftRadius={0}
           borderBottomRightRadius={0}
           paddingBottom="$1.5"
-          borderColor="$color3"
+          borderColor="color3"
           borderBottomWidth="$0.5"
           backgroundColor="transparent"
         >
           <Tabs.Tab
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab1"
             onInteraction={handleOnInteraction}
           >
@@ -256,7 +249,7 @@ const TabsAdvancedUnderline = () => {
             </SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab2"
             onInteraction={handleOnInteraction}
           >
@@ -265,7 +258,7 @@ const TabsAdvancedUnderline = () => {
             </SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab3"
             onInteraction={handleOnInteraction}
           >
@@ -297,19 +290,10 @@ const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & ViewPr
   return (
     <YStack
       position="absolute"
-      backgroundColor="$color5"
-      opacity={0.7}
+      backgroundColor="color5"
+      opacity="0.7 enter:0 exit:0"
       transition="100ms"
-      enterStyle={{
-        opacity: 0,
-      }}
-      exitStyle={{
-        opacity: 0,
-      }}
-      {...(active && {
-        backgroundColor: '$color5',
-        opacity: 0.6,
-      })}
+      {...(active && { backgroundColor: '$color5', opacity: 0.6 })}
       {...props}
     />
   )
@@ -325,15 +309,9 @@ const AnimatedYStack = styled(YStack, {
     // 1 = right, 0 = nowhere, -1 = left
     direction: {
       number: (direction) => ({
-        enterStyle: {
-          x: direction > 0 ? -25 : 25,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: direction < 0 ? -25 : 25,
-          opacity: 0,
-        },
+        x: `enter:${direction > 0 ? -25 : 25}px exit:${direction < 0 ? -25 : 25}px`,
+        opacity: 'enter:0 exit:0',
+        zIndex: 'exit:0',
       }),
     },
   } as const,

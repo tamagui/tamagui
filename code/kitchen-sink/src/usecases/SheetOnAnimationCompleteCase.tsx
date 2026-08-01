@@ -14,7 +14,7 @@ export function SheetOnAnimationCompleteCase() {
   }, [])
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Button
         onPress={() => setOpen(true)}
         testID="sheet-open-trigger"
@@ -36,14 +36,10 @@ export function SheetOnAnimationCompleteCase() {
         unmountChildrenWhenHidden
         snapPoints={[40]}
       >
-        <Sheet.Overlay
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Sheet.Overlay opacity="0.5 enter:0 exit:0" />
         <Sheet.Handle data-testid="sheet-handle" height={24} />
-        <Sheet.Container padding="$4" data-testid="sheet-frame">
-          <Sheet.Background bg="$background" />
+        <Sheet.Container padding="4" data-testid="sheet-frame">
+          <Sheet.Background bg="background" />
           <Paragraph>Sheet content</Paragraph>
           <Button
             onPress={() => setOpen(false)}

@@ -41,8 +41,8 @@ export function SelectSkin() {
   const [callerHandlers, setCallerHandlers] = useState({ trigger: 0, item: 0 })
 
   return (
-    <YStack padding="$4" gap="$5" items="center">
-      <XStack gap="$4" flexWrap="wrap" justify="center">
+    <YStack padding="4" gap="5" items="center">
+      <XStack gap="4" flexWrap="wrap" justify="center">
         <Select value={first} onValueChange={setFirst} size="small">
           <Select.Trigger
             testID="select-skin-default-trigger"

@@ -4,7 +4,7 @@ import { RadioGroup } from '../src'
 
 const RadioGroupRootSkin = styled(RadioGroup, {
   name: 'TypeTestRadioGroup',
-  gap: '$2',
+  gap: '2',
 })
 
 const RadioGroupItemSkin = styled(RadioGroup.Item, {
@@ -20,7 +20,7 @@ const RadioGroupIndicatorSkin = styled(RadioGroup.Indicator, {
   width: '50%',
   height: '50%',
   borderRadius: 10,
-  backgroundColor: '$color',
+  backgroundColor: 'color',
 })
 
 const RadioGroupSkin = withStaticProperties(RadioGroupRootSkin, {
@@ -37,7 +37,7 @@ export const RadioGroupPartsTypeTest = () => (
 )
 
 export const RadioGroupDirectStyleTypeTest = () => (
-  <RadioGroup gap="$2">
+  <RadioGroup gap="2">
     <RadioGroup.Item value="one" width={20} height={20} borderWidth={1}>
       <RadioGroup.Indicator opacity={0.5} />
     </RadioGroup.Item>

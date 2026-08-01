@@ -2,12 +2,12 @@ import { H1, Label, Text, styled } from 'tamagui'
 
 const X1 = styled(Label, {
   name: 'MyLabel',
-  color: '$color',
+  color: 'color',
 })
 
 const X2 = styled(Text, {
   name: 'MyLabel',
-  color: '$color',
+  color: 'color',
 })
 
 export const StyledHOCNamed = () => {

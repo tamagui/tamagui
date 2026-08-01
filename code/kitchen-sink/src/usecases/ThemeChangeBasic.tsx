@@ -18,7 +18,7 @@ export function ThemeChangeBasic() {
   const [themeName, setThemeName] = useState<'red' | 'blue'>('red')
 
   return (
-    <YStack padding="$4" gap="$4" alignItems="center" testID="theme-change-basic-root">
+    <YStack padding="4" gap="4" alignItems="center" testID="theme-change-basic-root">
       <Text testID="theme-change-basic-label">Current theme: {themeName}</Text>
 
       <Button
@@ -39,10 +39,10 @@ export function ThemeChangeBasic() {
           height={200}
           alignItems="center"
           justifyContent="center"
-          backgroundColor="$color4"
+          backgroundColor="color4"
           borderRadius={14}
         >
-          <Text color="$color12" fontWeight="bold">
+          <Text color="color12" fontWeight="bold">
             {themeName.toUpperCase()}
           </Text>
         </YStack>

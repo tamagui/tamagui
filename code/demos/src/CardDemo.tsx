@@ -4,7 +4,7 @@ import { Button, Card, H2, Image, Paragraph, Theme, XStack } from 'tamagui'
 export function CardDemo() {
   return (
     <Theme name="surface1">
-      <XStack $maxMd={{ flexDirection: 'column' }} px="$4" gap="$4">
+      <XStack flexDirection="max-md:column" px="4" gap="4">
         <DemoCard
           transition="bouncy"
           size="$4"
@@ -22,14 +22,14 @@ export function CardDemo() {
 
 export function DemoCard(props: CardProps) {
   return (
-    <Card size="$4" borderWidth={1} borderColor="$borderColor" {...props}>
-      <Card.Header p="$4">
+    <Card size="$4" borderWidth={1} borderColor="border-color" {...props}>
+      <Card.Header p="4">
         <H2>Sony A7IV</H2>
         <Paragraph>Now available</Paragraph>
       </Card.Header>
-      <Card.Footer p="$4">
+      <Card.Footer p="4">
         <XStack flex={1} />
-        <Button rounded="$10">Purchase</Button>
+        <Button rounded="10">Purchase</Button>
       </Card.Footer>
       <Card.Background items="center">
         <Image

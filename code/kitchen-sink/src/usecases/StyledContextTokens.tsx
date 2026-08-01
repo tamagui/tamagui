@@ -26,13 +26,13 @@ const GridParent = styled(View, {
   variants: {
     spacing: {
       small: {
-        gap: '$2',
+        gap: '2',
       },
       medium: {
-        gap: '$4',
+        gap: '4',
       },
       large: {
-        gap: '$8',
+        gap: '8',
       },
     },
   } as const,
@@ -42,8 +42,7 @@ const GridChild = styled(View, {
   name: 'GridChild',
   context: GridContext,
   height: 50,
-  backgroundColor: '$blue10',
-
+  backgroundColor: 'blue10',
   variants: {
     columns: {
       // Functional variant that uses context props
@@ -82,7 +81,7 @@ const DebugInfo = styled(Text, {
   name: 'DebugInfo',
   context: GridContext,
   fontSize: 12,
-  fontFamily: '$mono',
+  fontFamily: 'mono',
 })
 
 function DebugDisplay({ id }: { id: string }) {
@@ -91,7 +90,7 @@ function DebugDisplay({ id }: { id: string }) {
   const isToken = context.gap?.startsWith('$')
 
   return (
-    <View id={id} padding="$2" backgroundColor={isToken ? '$green5' : '$red5'}>
+    <View id={id} padding="2" backgroundColor={`${isToken ? 'green5' : 'red5'}`}>
       <DebugInfo>gap: {context.gap}</DebugInfo>
       <DebugInfo>isToken: {String(isToken)}</DebugInfo>
       <DebugInfo id={`${id}-gap-value`}>{context.gap}</DebugInfo>
@@ -103,7 +102,7 @@ export function StyledContextTokens() {
   const media = useMedia()
 
   return (
-    <View padding="$4" gap="$4">
+    <View padding="4" gap="4">
       <Text fontWeight="bold">Styled Context Token Preservation Test</Text>
 
       {/* Test 1: Variant sets gap to $2 */}
@@ -137,7 +136,7 @@ export function StyledContextTokens() {
       </View>
 
       {/* Show current media state for debugging */}
-      <View padding="$2" backgroundColor="$gray5">
+      <View padding="2" backgroundColor="gray5">
         <Text fontSize={10}>
           Media: sm={String(media.sm)} md={String(media.md)} lg={String(media.lg)}
         </Text>

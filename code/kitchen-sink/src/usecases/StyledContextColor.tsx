@@ -28,10 +28,9 @@ const CustomButtonFrame = styled(YStack, {
   alignItems: 'center',
   flexDirection: 'row',
   cursor: 'pointer',
-  padding: '$3',
-  borderRadius: '$4',
-  backgroundColor: '$background',
-
+  padding: '3',
+  borderRadius: '4',
+  backgroundColor: 'background',
   variants: {
     color: {
       green: {
@@ -77,17 +76,15 @@ const ContextRefButtonFrame = styled(YStack, {
   alignItems: 'center',
   flexDirection: 'row',
   cursor: 'pointer',
-  padding: '$3',
-  borderRadius: '$4',
-  backgroundColor: '$background',
-
+  padding: '3',
+  borderRadius: '4',
+  backgroundColor: 'background',
   variants: {
     variant: {
       link: {
         // Sets color in context via variant - this is the issue!
         // The variant's color should propagate to context and children should receive it
-        color: 'green',
-        hoverStyle: { color: 'red' },
+        color: 'green hover:red',
       },
       primary: {
         color: 'blue',
@@ -102,7 +99,7 @@ const ContextRefButtonText = styled(SizableText, {
   name: 'ContextRefButtonText',
   context: CustomButtonContext,
   // this $color should reference the parent's color value from context
-  color: '$color',
+  color: 'color',
 })
 
 type CustomButtonProps = GetProps<typeof CustomButtonFrame> & {
@@ -146,15 +143,11 @@ const PressStyleButtonFrame = styled(YStack, {
   alignItems: 'center',
   flexDirection: 'row',
   cursor: 'pointer',
-  padding: '$3',
-  borderRadius: '$4',
-  backgroundColor: '$background',
-  color: 'green',
-
-  pressStyle: {
-    // @ts-ignore TODO
-    color: 'red',
-  },
+  padding: '3',
+  borderRadius: '4',
+  backgroundColor: 'background',
+  // @ts-ignore TODO
+  color: 'green press:red',
 })
 
 const PressStyleButtonText = styled(SizableText, {

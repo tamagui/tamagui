@@ -17,18 +17,14 @@ export const ButtonContext = createStyledContext({
 export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   alignItems: 'center',
   flexDirection: 'row',
-
   // Here is the issue: <---------------------------------------------------
   height: 'auto',
   transition: 'bouncy',
-  pressStyle: {
-    scale: 0.97,
-    opacity: 0.9,
-  },
-
+  scale: 'press:0.97',
+  opacity: 'press:0.9',
   variants: {
     size: {
       Size: (name, { tokens }) => {
@@ -49,7 +45,6 @@ export const ButtonFrame = styled(View, {
       },
     },
   } as const,
-
   defaultVariants: {
     size: '$5',
   },
@@ -58,7 +53,7 @@ type ButtonProps = GetProps<typeof ButtonFrame>
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
   context: ButtonContext,
-  color: '$color',
+  color: 'color',
   userSelect: 'none',
   variants: {
     size: {

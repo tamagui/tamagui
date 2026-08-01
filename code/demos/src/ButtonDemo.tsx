@@ -4,12 +4,12 @@ import { Button } from './Button'
 
 export function ButtonDemo() {
   return (
-    <YStack p="$3" gap="$3">
+    <YStack p="3" gap="3">
       <Button>Plain</Button>
       <Button self="center" icon={Airplay} size="large">
         Large
       </Button>
-      <XStack gap="$2" justify="center">
+      <XStack gap="2" justify="center">
         <Button size="medium" theme="accent">
           Active
         </Button>
@@ -17,7 +17,7 @@ export function ButtonDemo() {
           Outlined
         </Button>
       </XStack>
-      <XStack gap="$2" justify="center">
+      <XStack gap="2" justify="center">
         <Theme name="accent">
           <Button size="medium">
             <Button.Icon>

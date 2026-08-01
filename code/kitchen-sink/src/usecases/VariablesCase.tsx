@@ -8,21 +8,21 @@ const counts = { child: 0 }
 const PatchedChild = React.memo(() => {
   counts.child++
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Text testID="vars-render-count">{counts.child}</Text>
-      <View testID="vars-square" width={80} height={40} backgroundColor="$caseAccent" />
+      <View testID="vars-square" width={80} height={40} backgroundColor="caseAccent" />
       <View
         testID="vars-inherit-square"
         width={80}
         height={40}
-        backgroundColor="$background"
+        backgroundColor="background"
       />
       <Variables values={{ caseAccent: 'rgb(1, 2, 3)' }}>
         <View
           testID="vars-nested-square"
           width={80}
           height={40}
-          backgroundColor="$caseAccent"
+          backgroundColor="caseAccent"
         />
       </Variables>
       <Theme name="dark">
@@ -30,7 +30,7 @@ const PatchedChild = React.memo(() => {
           testID="vars-reset-square"
           width={80}
           height={40}
-          backgroundColor="$background"
+          backgroundColor="background"
         />
       </Theme>
     </YStack>
@@ -42,7 +42,7 @@ export function VariablesCase() {
   const [scheme, setScheme] = React.useState<'light' | 'dark'>('light')
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Button testID="vars-toggle-patch" onPress={() => setPatched(!patched)}>
         toggle patch
       </Button>

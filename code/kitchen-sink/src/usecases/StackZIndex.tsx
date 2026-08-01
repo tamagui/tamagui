@@ -10,9 +10,9 @@ export function StackZIndex() {
         </Popover.Trigger>
 
         <Popover.Content zIndex={200_000} id="hardcoded-popover" bg="pink">
-          <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+          <Popover.Arrow borderWidth={1} borderColor="border-color" />
 
-          <YStack gap="$3"></YStack>
+          <YStack gap="3"></YStack>
         </Popover.Content>
       </Popover>
 
@@ -33,7 +33,7 @@ export function StackZIndex() {
                 width={100}
                 height={100}
               >
-                <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+                <Popover.Arrow borderWidth={1} borderColor="border-color" />
               </Popover.Content>
             </Popover>
           </Dialog.Content>
@@ -53,9 +53,9 @@ export function StackZIndex() {
           width={500}
           height={500}
         >
-          <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+          <Popover.Arrow borderWidth={1} borderColor="border-color" />
 
-          <YStack gap="$3"></YStack>
+          <YStack gap="3"></YStack>
         </Popover.Content>
       </Popover>
 
@@ -71,7 +71,7 @@ export function StackZIndex() {
               </Popover.Trigger>
 
               <Popover.Content id="top-popover" bg="green" width={500} height={500}>
-                <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+                <Popover.Arrow borderWidth={1} borderColor="border-color" />
               </Popover.Content>
             </Popover>
           </Dialog.Content>

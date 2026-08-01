@@ -3,23 +3,23 @@ import { Tabs } from '../src'
 
 const TabsSkinFrame = styled(Tabs, {
   name: 'TabsSkinFrame',
-  gap: '$2',
+  gap: '2',
 })
 
 const TabsSkinList = styled(Tabs.List, {
   name: 'TabsSkinList',
-  borderRadius: '$4',
+  borderRadius: '4',
 })
 
 const TabsSkinTab = styled(Tabs.Tab, {
   name: 'TabsSkinTab',
-  padding: '$3',
-  backgroundColor: '$background',
+  padding: '3',
+  backgroundColor: 'background',
 })
 
 const TabsSkinContent = styled(Tabs.Content, {
   name: 'TabsSkinContent',
-  padding: '$4',
+  padding: '4',
 })
 
 const TabsSkin = withStaticProperties(TabsSkinFrame, {
@@ -48,7 +48,7 @@ export const TabsPartsTypeTest = () => (
     <Tabs.List disabled width={180}>
       <Tabs.Tab
         value="one"
-        padding="$2"
+        padding="2"
         onInteraction={(_type, layout) => layout?.width}
       />
     </Tabs.List>

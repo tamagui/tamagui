@@ -8,8 +8,8 @@ import { Label, XStack, YStack } from 'tamagui'
 
 export function SwitchHeadlessDemo() {
   return (
-    <YStack width={200} items="center" gap="$3">
-      <XStack gap="$3" items="center">
+    <YStack width={200} items="center" gap="3">
+      <XStack gap="3" items="center">
         <Label htmlFor="headless">Headless</Label>
         <HeadlessSwitch defaultChecked id="headless" />
       </XStack>

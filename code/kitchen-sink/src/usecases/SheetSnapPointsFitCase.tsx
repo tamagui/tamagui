@@ -23,7 +23,7 @@ const sheetTopRadius = {
  */
 export function SheetSnapPointsFitCase() {
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <AdaptedDialogSheet />
       <StandaloneSheetFit />
       <StandaloneSheetPercent />
@@ -75,33 +75,31 @@ function Tall3pcDialogAdaptSheet() {
         >
           <Sheet.Overlay
             data-testid="repro-3pc-overlay"
-            bg="$color5"
-            opacity={0.5}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            bg="color5"
+            opacity="0.5 enter:0 exit:0"
           />
           <Sheet.Container data-testid="repro-3pc-frame" overflow="hidden">
             <Sheet.Background
               borderBottomRightRadius={0}
               borderBottomLeftRadius={0}
-              bg="$color2"
+              bg="color2"
               borderRadius={32}
             />
             <YStack
               {...sheetTopRadius}
               position="absolute"
               inset={0}
-              bg="$color12"
+              bg="color12"
               opacity={0.15}
               borderWidth={2}
               borderBottomWidth={0}
-              borderColor="$borderColor"
+              borderColor="border-color"
             />
             <View
               {...sheetTopRadius}
               position="absolute"
               inset={0}
-              bg="$color2"
+              bg="color2"
               opacity={0.5}
             />
             <YStack
@@ -111,7 +109,7 @@ function Tall3pcDialogAdaptSheet() {
               opacity={0.25}
               borderWidth={1}
               borderBottomWidth={0}
-              borderColor="$color12"
+              borderColor="color12"
             />
 
             <Sheet.ScrollView
@@ -119,7 +117,7 @@ function Tall3pcDialogAdaptSheet() {
               maxHeight={resolvedMaxHeight}
               keyboardShouldPersistTaps="handled"
             >
-              <YStack gap="$3" padding="$4">
+              <YStack gap="3" padding="4">
                 <Adapt.Contents />
               </YStack>
             </Sheet.ScrollView>
@@ -131,32 +129,32 @@ function Tall3pcDialogAdaptSheet() {
         <Dialog.Overlay
           key="overlay"
           transition="quick"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Dialog.Content
           bordered
           elevate
           key="content"
           transition="quick"
-          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          x="enter:0 exit:0"
+          y="enter:-20px exit:10px"
+          opacity="enter:0 exit:0"
+          scale="enter:0.9 exit:0.95"
           width={400}
-          padding="$6"
-          gap="$4"
+          padding="6"
+          gap="4"
         >
           <Dialog.Title>Events</Dialog.Title>
           {/* plain content-sized stack, not flex={1} (see note above) */}
-          <YStack gap="$3" paddingVertical="$2">
+          <YStack gap="3" paddingVertical="2">
             {Array.from({ length: 40 }).map((_, i) => (
               <View
                 key={i}
                 data-testid={`repro-3pc-item-${i}`}
-                padding="$3"
-                borderRadius="$3"
-                bg="$background"
+                padding="3"
+                borderRadius="3"
+                bg="background"
                 minHeight={60}
               >
                 <Paragraph>Event {i + 1} - Fight night card</Paragraph>
@@ -191,9 +189,9 @@ function AdaptedDialogSheet() {
           <Sheet.Handle data-testid="adapted-sheet-handle" />
           <Sheet.Container
             data-testid="adapted-sheet-frame"
-            padding="$4"
+            padding="4"
             justifyContent="center"
-            gap="$2"
+            gap="2"
           >
             <Sheet.Background />
             <Adapt.Contents />
@@ -201,10 +199,8 @@ function AdaptedDialogSheet() {
           <Sheet.Overlay
             data-testid="adapted-sheet-overlay"
             transition="lazy"
-            bg="$color"
-            opacity={0.5}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            bg="color"
+            opacity="0.5 enter:0 exit:0"
           />
         </Sheet>
       </Adapt>
@@ -213,10 +209,8 @@ function AdaptedDialogSheet() {
         <Dialog.Overlay
           key="overlay"
           transition="quick"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
 
         <Dialog.Content
@@ -224,13 +218,15 @@ function AdaptedDialogSheet() {
           elevate
           key="content"
           transition="quick"
-          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          x="enter:0 exit:0"
+          y="enter:-20px exit:10px"
+          opacity="enter:0 exit:0"
+          scale="enter:0.9 exit:0.95"
           width={400}
-          padding="$6"
-          gap="$4"
+          padding="6"
+          gap="4"
         >
-          <YStack data-testid="adapted-dialog-content" gap="$4">
+          <YStack data-testid="adapted-dialog-content" gap="4">
             <Dialog.Title>Adapted Dialog</Dialog.Title>
             <Dialog.Description>
               This dialog adapts to a sheet on small screens with snapPointsMode="fit".
@@ -271,18 +267,16 @@ function StandaloneSheetFit() {
         <Sheet.Overlay
           data-testid="standalone-fit-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="standalone-fit-handle" />
         <Sheet.Container
           data-testid="standalone-fit-frame"
-          padding="$4"
+          padding="4"
           justifyContent="center"
           alignItems="center"
-          gap="$5"
+          gap="5"
         >
           <Sheet.Background />
           <Paragraph>Standalone sheet with snapPointsMode="fit"</Paragraph>
@@ -320,18 +314,16 @@ function StandaloneSheetPercent() {
         <Sheet.Overlay
           data-testid="standalone-percent-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="standalone-percent-handle" />
         <Sheet.Container
           data-testid="standalone-percent-frame"
-          padding="$4"
+          padding="4"
           justifyContent="center"
           alignItems="center"
-          gap="$5"
+          gap="5"
         >
           <Sheet.Background />
           <Paragraph>Standalone sheet with snapPointsMode="percent" (50%, 25%)</Paragraph>
@@ -369,18 +361,16 @@ function StandaloneSheetConstant() {
         <Sheet.Overlay
           data-testid="standalone-constant-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="standalone-constant-handle" />
         <Sheet.Container
           data-testid="standalone-constant-frame"
-          padding="$4"
+          padding="4"
           justifyContent="center"
           alignItems="center"
-          gap="$5"
+          gap="5"
         >
           <Sheet.Background />
           <Paragraph>
@@ -424,18 +414,16 @@ function RapidOpenCloseSheet() {
         <Sheet.Overlay
           data-testid="rapid-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="rapid-handle" />
         <Sheet.Container
           data-testid="rapid-frame"
-          padding="$4"
+          padding="4"
           justifyContent="center"
           alignItems="center"
-          gap="$5"
+          gap="5"
         >
           <Sheet.Background />
           <Paragraph>Rapid open/close test - count: {clickCount}</Paragraph>
@@ -476,16 +464,14 @@ function ScrollViewInFitSheet() {
         <Sheet.Overlay
           data-testid="scrollview-fit-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="scrollview-fit-handle" />
-        <Sheet.Container data-testid="scrollview-fit-frame" padding="$4">
+        <Sheet.Container data-testid="scrollview-fit-frame" padding="4">
           <Sheet.Background />
           <Sheet.ScrollView data-testid="scrollview-fit-scrollview">
-            <YStack gap="$3" padding="$2">
+            <YStack gap="3" padding="2">
               <Paragraph fontWeight="bold">Fit mode + Sheet.ScrollView (short)</Paragraph>
               <Paragraph>
                 The sheet frame must size to content (this YStack), not collapse to 0.
@@ -530,16 +516,14 @@ function TallScrollViewInFitSheet() {
         <Sheet.Overlay
           data-testid="scrollview-fit-tall-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="scrollview-fit-tall-handle" />
-        <Sheet.Container data-testid="scrollview-fit-tall-frame" padding="$4">
+        <Sheet.Container data-testid="scrollview-fit-tall-frame" padding="4">
           <Sheet.Background />
           <Sheet.ScrollView data-testid="scrollview-fit-tall-scrollview">
-            <YStack gap="$2" padding="$2">
+            <YStack gap="2" padding="2">
               <Paragraph fontWeight="bold">
                 Fit mode + Sheet.ScrollView (tall, scrollable)
               </Paragraph>
@@ -551,9 +535,9 @@ function TallScrollViewInFitSheet() {
                 <View
                   key={i}
                   data-testid={`scrollview-fit-tall-item-${i}`}
-                  padding="$2"
-                  borderRadius="$2"
-                  bg="$background"
+                  padding="2"
+                  borderRadius="2"
+                  bg="background"
                 >
                   <Paragraph>Row {i + 1} — Lorem ipsum dolor sit amet.</Paragraph>
                 </View>
@@ -596,18 +580,16 @@ function DynamicContentSheet() {
         <Sheet.Overlay
           data-testid="dynamic-content-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="dynamic-content-handle" />
         <Sheet.Container
           data-testid="dynamic-content-frame"
-          padding="$4"
+          padding="4"
           justifyContent="center"
           alignItems="center"
-          gap="$4"
+          gap="4"
         >
           <Sheet.Background />
           <Paragraph data-testid="dynamic-content-size">
@@ -619,7 +601,7 @@ function DynamicContentSheet() {
           )}
 
           {contentSize === 'medium' && (
-            <YStack gap="$2">
+            <YStack gap="2">
               <Paragraph>Medium content with more text.</Paragraph>
               <Paragraph>This adds more height to the sheet.</Paragraph>
               <Paragraph>The sheet should adjust smoothly.</Paragraph>
@@ -627,7 +609,7 @@ function DynamicContentSheet() {
           )}
 
           {contentSize === 'large' && (
-            <YStack gap="$2">
+            <YStack gap="2">
               <Paragraph>Large content with lots of text.</Paragraph>
               <Paragraph>This is line 2 of the large content.</Paragraph>
               <Paragraph>This is line 3 of the large content.</Paragraph>
@@ -637,7 +619,7 @@ function DynamicContentSheet() {
             </YStack>
           )}
 
-          <YStack gap="$2" flexDirection="row" flexWrap="wrap" justifyContent="center">
+          <YStack gap="2" flexDirection="row" flexWrap="wrap" justifyContent="center">
             <Button
               data-testid="dynamic-content-small"
               size="medium"

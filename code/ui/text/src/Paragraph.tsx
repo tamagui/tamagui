@@ -7,9 +7,9 @@ export const Paragraph = styled(SizableText, {
   name: 'Paragraph',
   render: 'p',
   userSelect: 'auto',
-  color: '$color',
-  size: true,
+  color: 'color',
   whiteSpace: 'normal',
+  size: true,
 })
 
 export type ParagraphProps = GetProps<typeof Paragraph>

@@ -11,10 +11,10 @@ export function DismissableLayerToggleCase() {
   const [outsideClicks, setOutsideClicks] = useState(0)
 
   return (
-    <YStack gap="$3" padding="$4">
+    <YStack gap="3" padding="4">
       {/* the toggle controls sit in a pointerEvents=auto island so they stay
           clickable even while a layer disables outside pointer events */}
-      <YStack gap="$3" pointerEvents="auto">
+      <YStack gap="3" pointerEvents="auto">
         <Button
           id="toggle-layer1"
           onPress={() => setLayer1Disable((v) => !v)}
@@ -43,13 +43,13 @@ export function DismissableLayerToggleCase() {
       <Paragraph id="outside-clicks">{outsideClicks}</Paragraph>
 
       <Dismissable disableOutsidePointerEvents={layer1Disable}>
-        <YStack id="layer1" padding="$2" backgroundColor="$background">
+        <YStack id="layer1" padding="2" backgroundColor="background">
           <Paragraph>layer 1</Paragraph>
         </YStack>
       </Dismissable>
 
       <Dismissable disableOutsidePointerEvents={layer2Disable}>
-        <YStack id="layer2" padding="$2" backgroundColor="$background">
+        <YStack id="layer2" padding="2" backgroundColor="background">
           <Paragraph>layer 2</Paragraph>
         </YStack>
       </Dismissable>

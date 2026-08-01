@@ -19,7 +19,7 @@ export function DialogSheetAdaptResizeCase() {
   const [open, setOpen] = useState(false)
 
   return (
-    <YStack padding="$4" gap="$4" items="center">
+    <YStack padding="4" gap="4" items="center">
       <Button testID="open-dialog" onPress={() => setOpen(true)}>
         Open Dialog
       </Button>
@@ -28,41 +28,32 @@ export function DialogSheetAdaptResizeCase() {
         {/* adapt to sheet on narrow viewports */}
         <Dialog.Adapt when="maxMd">
           <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-            <Sheet.Container testID="dialog-sheet-frame" padding="$4" gap="$4">
+            <Sheet.Container testID="dialog-sheet-frame" padding="4" gap="4">
               <Sheet.Background />
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Container>
-            <Sheet.Overlay
-              bg="$shadow4"
-              transition="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
-            />
+            <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
           </Sheet>
         </Dialog.Adapt>
 
         <Dialog.Portal>
-          <Dialog.Overlay
-            key="overlay"
-            transition="medium"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          <Dialog.Overlay key="overlay" transition="medium" opacity="enter:0 exit:0" />
 
           <Dialog.Content
             bordered
             elevate
             key="content"
             transition="quick"
-            enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-            exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+            y="enter:-10px exit:10px"
+            opacity="enter:0 exit:0"
+            scale="enter:0.975 exit:0.975"
             width="90%"
             maxWidth={600}
           >
             <ScrollView>
-              <YStack gap="$4" padding="$2">
+              <YStack gap="4" padding="2">
                 <Dialog.Title testID="dialog-title">Dialog Title</Dialog.Title>
 
                 <Dialog.Description testID="dialog-description">
@@ -75,7 +66,7 @@ export function DialogSheetAdaptResizeCase() {
                   resizing, the portal logic is working correctly.
                 </Paragraph>
 
-                <YStack gap="$2">
+                <YStack gap="2">
                   <Paragraph>Additional content to make the test more robust:</Paragraph>
                   <Paragraph testID="extra-content-1">Extra content line 1</Paragraph>
                   <Paragraph testID="extra-content-2">Extra content line 2</Paragraph>
@@ -84,7 +75,7 @@ export function DialogSheetAdaptResizeCase() {
               </YStack>
             </ScrollView>
 
-            <XStack justify="flex-end" gap="$3" padding="$2">
+            <XStack justify="flex-end" gap="3" padding="2">
               <Dialog.Close asChild displayWhenAdapted>
                 <Button testID="close-dialog" theme="accent">
                   Close

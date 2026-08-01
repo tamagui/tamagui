@@ -7,9 +7,9 @@ export const Heading = styled(Paragraph, {
   render: 'span',
   name: 'Heading',
   role: 'heading',
-  fontFamily: '$heading',
-  size: '$8',
+  fontFamily: 'heading',
   margin: 0,
+  size: '$8',
 })
 
 export type HeadingProps = GetProps<typeof Heading>

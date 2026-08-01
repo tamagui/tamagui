@@ -21,9 +21,9 @@ function SimpleBox() {
       testID="compiler-simple-box"
       width={44}
       height={44}
-      padding="$4"
+      padding="4"
       borderRadius={8}
-      backgroundColor="$background"
+      backgroundColor="background"
     />
   )
 }
@@ -36,9 +36,9 @@ function SimpleBoxNoOpt() {
       testID="compiler-simple-box-noopt"
       width={44}
       height={44}
-      padding="$4"
+      padding="4"
       borderRadius={8}
-      backgroundColor="$background"
+      backgroundColor="background"
     />
   )
 }
@@ -50,13 +50,13 @@ function AdvancedBox() {
       testID="compiler-advanced-box"
       width={44}
       height={44}
-      padding="$4"
+      padding="4"
       borderRadius={8}
-      backgroundColor="$color4"
-      borderColor="$color8"
+      backgroundColor="color4"
+      borderColor="color8"
       borderWidth={2}
     >
-      <Text testID="compiler-advanced-text" color="$color12" fontSize="$3">
+      <Text testID="compiler-advanced-text" color="color12" fontSize="3">
         Token
       </Text>
     </YStack>
@@ -71,17 +71,17 @@ function AdvancedBoxNoOpt() {
       testID="compiler-advanced-box-noopt"
       width={44}
       height={44}
-      padding="$4"
+      padding="4"
       borderRadius={8}
-      backgroundColor="$color4"
-      borderColor="$color8"
+      backgroundColor="color4"
+      borderColor="color8"
       borderWidth={2}
     >
       <Text
         disableOptimization
         testID="compiler-advanced-text-noopt"
-        color="$color12"
-        fontSize="$3"
+        color="color12"
+        fontSize="3"
       >
         Token
       </Text>
@@ -97,11 +97,11 @@ function SubThemedBox({ themeName }: { themeName: string }) {
         testID="compiler-subtheme-box"
         width={44}
         height={44}
-        padding="$4"
+        padding="4"
         borderRadius={8}
-        backgroundColor="$color4"
+        backgroundColor="color4"
       >
-        <Text testID="compiler-subtheme-text" color="$color12" fontSize="$2">
+        <Text testID="compiler-subtheme-text" color="color12" fontSize="2">
           {themeName}
         </Text>
       </YStack>
@@ -118,15 +118,15 @@ function SubThemedBoxNoOpt({ themeName }: { themeName: string }) {
         testID="compiler-subtheme-box-noopt"
         width={44}
         height={44}
-        padding="$4"
+        padding="4"
         borderRadius={8}
-        backgroundColor="$color4"
+        backgroundColor="color4"
       >
         <Text
           disableOptimization
           testID="compiler-subtheme-text-noopt"
-          color="$color12"
-          fontSize="$2"
+          color="color12"
+          fontSize="2"
         >
           {themeName}
         </Text>
@@ -139,7 +139,7 @@ function SubThemedBoxNoOpt({ themeName }: { themeName: string }) {
 function ThemeInfo() {
   const themeName = useThemeName()
   return (
-    <Text testID="compiler-theme-name" fontSize="$4">
+    <Text testID="compiler-theme-name" fontSize="4">
       Theme: {themeName}
     </Text>
   )
@@ -156,8 +156,8 @@ function OptimizedSimpleBenchItem() {
     <YStack
       width={16}
       height={16}
-      backgroundColor="$color4"
-      borderColor="$color8"
+      backgroundColor="color4"
+      borderColor="color8"
       borderWidth={1}
       borderRadius={2}
     />
@@ -170,8 +170,8 @@ function UnoptimizedSimpleBenchItem() {
       disableOptimization
       width={16}
       height={16}
-      backgroundColor="$color4"
-      borderColor="$color8"
+      backgroundColor="color4"
+      borderColor="color8"
       borderWidth={1}
       borderRadius={2}
     />
@@ -184,12 +184,12 @@ function OptimizedNestedBenchItem({ index }: { index: number }) {
       <YStack
         width={16}
         height={16}
-        backgroundColor="$color4"
-        borderColor="$color8"
+        backgroundColor="color4"
+        borderColor="color8"
         borderWidth={1}
         borderRadius={2}
       />
-      <Text color="$color12" fontSize="$2">
+      <Text color="color12" fontSize="2">
         Row {index}
       </Text>
     </XStack>
@@ -203,12 +203,12 @@ function UnoptimizedNestedBenchItem({ index }: { index: number }) {
         disableOptimization
         width={16}
         height={16}
-        backgroundColor="$color4"
-        borderColor="$color8"
+        backgroundColor="color4"
+        borderColor="color8"
         borderWidth={1}
         borderRadius={2}
       />
-      <Text disableOptimization color="$color12" fontSize="$2">
+      <Text disableOptimization color="color12" fontSize="2">
         Row {index}
       </Text>
     </XStack>
@@ -321,12 +321,12 @@ function PerfBenchmark() {
   }
 
   return (
-    <YStack gap="$2" padding="$2" backgroundColor="$background" borderRadius={8}>
-      <Text fontSize="$3" fontWeight="bold">
+    <YStack gap="2" padding="2" backgroundColor="background" borderRadius={8}>
+      <Text fontSize="3" fontWeight="bold">
         Perf Benchmark (warmup + median of 7)
       </Text>
 
-      <XStack gap="$2" flexWrap="wrap">
+      <XStack gap="2" flexWrap="wrap">
         {(['simple', 'nested'] as const).flatMap((scenario) =>
           (['opt', 'noopt'] as const).map((mode) => (
             <Button
@@ -354,7 +354,7 @@ function PerfBenchmark() {
         />
       )}
 
-      <YStack gap="$1">
+      <YStack gap="1">
         {(['simple', 'nested'] as const).map((scenario) => {
           const optMedian = median(samples[scenario].opt)
           const noOptMedian = median(samples[scenario].noopt)
@@ -363,15 +363,15 @@ function PerfBenchmark() {
               ? ((noOptMedian - optMedian) / noOptMedian) * 100
               : null
           return (
-            <YStack key={scenario} gap="$1">
+            <YStack key={scenario} gap="1">
               {(['opt', 'noopt'] as const).map((mode) => {
                 const value = mode === 'opt' ? optMedian : noOptMedian
                 return (
-                  <YStack key={mode} gap="$1">
+                  <YStack key={mode} gap="1">
                     <Text
                       testID={`bench-${scenario}-${mode}-result`}
                       accessibilityLabel={`${scenario}:${mode}:${value?.toFixed(4) ?? 'pending'}`}
-                      fontSize="$2"
+                      fontSize="2"
                     >
                       {scenario} {mode} median:{' '}
                       {value !== null ? `${value.toFixed(2)}ms` : '-'} (
@@ -380,7 +380,7 @@ function PerfBenchmark() {
                     <Text
                       testID={`bench-${scenario}-${mode}-count`}
                       accessibilityLabel={`count:${samples[scenario][mode].length}`}
-                      fontSize="$2"
+                      fontSize="2"
                     >
                       {scenario} {mode} samples: {samples[scenario][mode].length}
                     </Text>
@@ -390,7 +390,7 @@ function PerfBenchmark() {
               <Text
                 testID={`bench-${scenario}-count`}
                 accessibilityLabel={`count:${Math.min(samples[scenario].opt.length, samples[scenario].noopt.length)}`}
-                fontSize="$2"
+                fontSize="2"
               >
                 {scenario} paired samples:{' '}
                 {Math.min(samples[scenario].opt.length, samples[scenario].noopt.length)}
@@ -399,9 +399,9 @@ function PerfBenchmark() {
                 <Text
                   testID={`bench-${scenario}-pct`}
                   accessibilityLabel={`${scenario}:pct:${pctDiff.toFixed(2)}`}
-                  fontSize="$2"
+                  fontSize="2"
                   fontWeight="bold"
-                  color={pctDiff > 0 ? '$green10' : '$red10'}
+                  color={`${pctDiff > 0 ? 'green10' : 'red10'}`}
                 >
                   {scenario}:{' '}
                   {pctDiff > 0
@@ -436,17 +436,17 @@ export function CompilerExtraction() {
       <YStack
         testID="compiler-extraction-root"
         flex={1}
-        padding="$4"
-        gap="$4"
-        backgroundColor="$background"
+        padding="4"
+        gap="4"
+        backgroundColor="background"
       >
         <ThemeInfo />
 
-        <Text testID="compiler-mode-label" fontSize="$3">
+        <Text testID="compiler-mode-label" fontSize="3">
           Mode: {isDark ? 'dark' : 'light'}
         </Text>
 
-        <XStack gap="$2" flexWrap="wrap">
+        <XStack gap="2" flexWrap="wrap">
           <Button size="small" testID="compiler-toggle-mode" onPress={toggleTheme}>
             Toggle Mode
           </Button>
@@ -462,26 +462,26 @@ export function CompilerExtraction() {
           </Button>
         </XStack>
 
-        <Text fontSize="$3" marginTop="$2">
+        <Text fontSize="3" marginTop="2">
           Simple (opt | no-opt):
         </Text>
-        <XStack gap="$2">
+        <XStack gap="2">
           <SimpleBox />
           <SimpleBoxNoOpt />
         </XStack>
 
-        <Text fontSize="$3" marginTop="$2">
+        <Text fontSize="3" marginTop="2">
           Advanced $colorN (opt | no-opt):
         </Text>
-        <XStack gap="$2">
+        <XStack gap="2">
           <AdvancedBox />
           <AdvancedBoxNoOpt />
         </XStack>
 
-        <Text testID="compiler-subtheme-label" fontSize="$3" marginTop="$2">
+        <Text testID="compiler-subtheme-label" fontSize="3" marginTop="2">
           Sub-theme {subTheme} (opt | no-opt):
         </Text>
-        <XStack gap="$2">
+        <XStack gap="2">
           <SubThemedBox themeName={subTheme} />
           <SubThemedBoxNoOpt themeName={subTheme} />
         </XStack>

@@ -9,13 +9,13 @@ export function AnimatedByProp() {
   const [active, setActive] = useState(false)
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       {/* Uses animatedBy="default" to explicitly select the default driver */}
       <Square
         testID="explicit-default"
         animatedBy="default"
         size={100}
-        backgroundColor={active ? '$blue10' : '$red10'}
+        backgroundColor={`${active ? 'blue10' : 'red10'}`}
         opacity={active ? 1 : 0.5}
         scale={active ? 1.2 : 1}
         transition="bouncy"
@@ -25,7 +25,7 @@ export function AnimatedByProp() {
       <Square
         testID="context-driver"
         size={100}
-        backgroundColor={active ? '$green10' : '$purple10'}
+        backgroundColor={`${active ? 'green10' : 'purple10'}`}
         opacity={active ? 1 : 0.5}
         scale={active ? 1.2 : 1}
         transition="bouncy"

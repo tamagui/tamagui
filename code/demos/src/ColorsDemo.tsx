@@ -32,7 +32,7 @@ const darkColors = {
 
 export function ColorsDemo() {
   return (
-    <YStack mt="$4" gap="$8">
+    <YStack mt="4" gap="8">
       <ColorsRow title="Light" colorSets={lightColors} />
       <Separator />
       <ColorsRow title="Dark" colorSets={darkColors} />
@@ -50,32 +50,28 @@ function ColorsRow({
   colorSets: Record<(typeof colorGroups)[number], ColorSet>
 }) {
   return (
-    <YStack gap="$4" $sm={{ gap: '$2' }}>
+    <YStack gap="4 sm:2">
       <H2 size="$2">{title}</H2>
 
-      <XStack gap="$4" self="center">
-        <YStack gap="$4" $sm={{ gap: '$2' }} self="center">
+      <XStack gap="4" self="center">
+        <YStack gap="4 sm:2" self="center">
           {colorGroups.map((groupName) => {
             const colorSet = colorSets[groupName]
             const colors = Object.values(colorSet)
             return (
-              <XStack gap="$2" key={groupName}>
+              <XStack gap="2" key={groupName}>
                 {colors.map((color, index) => {
                   return (
                     <Square
                       key={`${groupName}${index}`}
-                      rounded="$2"
-                      size="$4"
-                      height="$4"
+                      rounded="2"
+                      height="4"
                       borderWidth={1}
                       bg={color as any}
-                      borderColor="$color7"
-                      $sm={{
-                        size: '$2',
-                      }}
-                      $xs={{
-                        size: '$1',
-                      }}
+                      borderColor="color7"
+                      $sm={{ size: '$2' }}
+                      $xs={{ size: '$1' }}
+                      size="$4"
                     />
                   )
                 })}
@@ -83,22 +79,16 @@ function ColorsRow({
             )
           })}
 
-          <XStack gap="$2" self="center">
+          <XStack gap="2" self="center">
             {new Array(13)
               .fill(0)
               .slice(1)
               .map((_, index) => {
                 return (
                   <Paragraph
-                    color="$color10"
+                    color="color10"
                     text="center"
-                    width="$4"
-                    $sm={{
-                      width: '$2',
-                    }}
-                    $xs={{
-                      width: '$1',
-                    }}
+                    width="4 sm:2 xs:1"
                     key={index}
                   >
                     {index}
@@ -108,19 +98,13 @@ function ColorsRow({
           </XStack>
         </YStack>
 
-        <YStack gap="$4" mt="$2">
+        <YStack gap="4" mt="2">
           {colorGroups.map((name) => (
             <Paragraph
               theme={name as any}
-              color="$color10"
-              height="$4"
+              color="color10"
+              height="4 sm:2 xs:1"
               rotate="-10deg"
-              $sm={{
-                height: '$2',
-              }}
-              $xs={{
-                height: '$1',
-              }}
               key={name}
             >
               {name}

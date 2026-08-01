@@ -33,9 +33,9 @@ export function SelectFocusScopeCase() {
   const [value5, setValue5] = React.useState('')
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       {/* Basic Select with Focus Trap */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label htmlFor="basic-select">Basic Select (Focus Trapped)</Label>
         <Select
           id="basic-select"
@@ -85,7 +85,7 @@ export function SelectFocusScopeCase() {
       </YStack>
 
       {/* Select with Custom Content */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label htmlFor="custom-select">Select with Custom Content</Label>
         <Select
           id="custom-select"
@@ -100,38 +100,33 @@ export function SelectFocusScopeCase() {
 
           <Select.Content data-testid="custom-select-content">
             <Select.Viewport data-testid="custom-select-viewport">
-              <YStack padding="$2" gap="$2">
+              <YStack padding="2" gap="2">
                 <Select.Item data-testid="select-red" value="red" index={0}>
-                  <XStack gap="$2" alignItems="center">
-                    <View
-                      width={20}
-                      height={20}
-                      backgroundColor="red"
-                      borderRadius="$2"
-                    />
+                  <XStack gap="2" alignItems="center">
+                    <View width={20} height={20} backgroundColor="red" borderRadius="2" />
                     <Select.ItemText>Red</Select.ItemText>
                   </XStack>
                   <Select.ItemIndicator />
                 </Select.Item>
                 <Select.Item data-testid="select-green" value="green" index={1}>
-                  <XStack gap="$2" alignItems="center">
+                  <XStack gap="2" alignItems="center">
                     <View
                       width={20}
                       height={20}
                       backgroundColor="green"
-                      borderRadius="$2"
+                      borderRadius="2"
                     />
                     <Select.ItemText>Green</Select.ItemText>
                   </XStack>
                   <Select.ItemIndicator />
                 </Select.Item>
                 <Select.Item data-testid="select-blue" value="blue" index={2}>
-                  <XStack gap="$2" alignItems="center">
+                  <XStack gap="2" alignItems="center">
                     <View
                       width={20}
                       height={20}
                       backgroundColor="blue"
-                      borderRadius="$2"
+                      borderRadius="2"
                     />
                     <Select.ItemText>Blue</Select.ItemText>
                   </XStack>
@@ -144,9 +139,9 @@ export function SelectFocusScopeCase() {
       </YStack>
 
       {/* Multiple Selects for Tab Order Testing */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label>Multiple Selects</Label>
-        <XStack gap="$3" flexWrap="wrap">
+        <XStack gap="3" flexWrap="wrap">
           <Select
             value={value3}
             onValueChange={setValue3}
@@ -181,7 +176,7 @@ export function SelectFocusScopeCase() {
       </YStack>
 
       {/* Select with Default Value - tests keyboard nav with pre-selected item */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label htmlFor="default-value-select">Select with Default Value</Label>
         <Select
           id="default-value-select"
@@ -231,7 +226,7 @@ export function SelectFocusScopeCase() {
       </YStack>
 
       {/* Select with lazyMount - tests positioning with deferred rendering */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Label htmlFor="lazy-select">Lazy Mount Select</Label>
         <Select
           id="lazy-select"

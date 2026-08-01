@@ -39,12 +39,13 @@ export function MenuDemo() {
         <Menu.Portal zIndex={100}>
           <Menu.Content
             transition="100ms"
-            borderRadius="$4"
-            enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
-            exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
-            boxShadow="0 4px 5px $shadowColor"
+            borderRadius="4"
+            scale="enter:0.9 exit:0.95"
+            opacity="enter:0 exit:0"
+            y="enter:-5px exit:-3px"
+            boxShadow="0 4px 5px shadow-color"
           >
-            <Menu.Arrow size="$4" borderWidth={1} borderColor="$borderColor" />
+            <Menu.Arrow size="$4" borderWidth={1} borderColor="border-color" />
 
             <Menu.ScrollView padding={5}>
               <Menu.Item onSelect={onSelect} key="about-notes">
@@ -94,19 +95,20 @@ export function MenuDemo() {
                   textValue="Actions"
                 >
                   <Menu.ItemTitle>Actions</Menu.ItemTitle>
-                  <ChevronRight size={16} color="$color10" />
+                  <ChevronRight size={16} color="color10" />
                 </Menu.SubTrigger>
 
                 <Menu.Portal zIndex={200}>
                   <Menu.SubContent
                     transition="100ms"
-                    borderRadius="$4"
-                    enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
-                    exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
-                    boxShadow="0 4px 5px $shadowColor"
+                    borderRadius="4"
+                    scale="enter:0.9 exit:0.95"
+                    opacity="enter:0 exit:0"
+                    y="enter:-5px exit:-3px"
+                    boxShadow="0 4px 5px shadow-color"
                     padding={5}
                   >
-                    <Menu.Label padding={5} color="$color9" fontSize="$3" select="none">
+                    <Menu.Label padding={5} color="color9" fontSize="3" select="none">
                       Note settings
                     </Menu.Label>
                     <Menu.Item
@@ -117,7 +119,7 @@ export function MenuDemo() {
                     >
                       <Menu.ItemTitle>Create note</Menu.ItemTitle>
                       <Menu.ItemIcon>
-                        <FilePlus size={14} color="$color10" />
+                        <FilePlus size={14} color="color10" />
                       </Menu.ItemIcon>
                     </Menu.Item>
                     <Menu.Item
@@ -128,7 +130,7 @@ export function MenuDemo() {
                     >
                       <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
                       <Menu.ItemIcon>
-                        <Trash2 size={14} color="$color10" />
+                        <Trash2 size={14} color="color10" />
                       </Menu.ItemIcon>
                     </Menu.Item>
                     <Menu.Item
@@ -139,7 +141,7 @@ export function MenuDemo() {
                     >
                       <Menu.ItemTitle>Sync notes</Menu.ItemTitle>
                       <Menu.ItemIcon>
-                        <RefreshCw size={14} color="$color10" />
+                        <RefreshCw size={14} color="color10" />
                       </Menu.ItemIcon>
                     </Menu.Item>
                   </Menu.SubContent>
@@ -156,7 +158,7 @@ export function MenuDemo() {
               >
                 <Menu.ItemTitle>Mark as read</Menu.ItemTitle>
                 <Menu.ItemIndicator>
-                  <Check size={12} color="$color10" />
+                  <Check size={12} color="color10" />
                 </Menu.ItemIndicator>
               </Menu.CheckboxItem>
               <Menu.CheckboxItem
@@ -167,7 +169,7 @@ export function MenuDemo() {
               >
                 <Menu.ItemTitle>Enable Native</Menu.ItemTitle>
                 <Menu.ItemIndicator>
-                  <Check size={12} color="$color10" />
+                  <Check size={12} color="color10" />
                 </Menu.ItemIndicator>
               </Menu.CheckboxItem>
             </Menu.ScrollView>

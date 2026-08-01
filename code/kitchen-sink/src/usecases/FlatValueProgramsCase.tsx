@@ -2,7 +2,7 @@ import { Text, Theme, View, YStack } from 'tamagui'
 
 export function FlatValueProgramsCase() {
   return (
-    <YStack gap="$4" p="$4">
+    <YStack gap="4" p="4">
       <View
         data-testid="flat-background"
         width={100}

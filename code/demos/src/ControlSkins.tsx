@@ -9,25 +9,12 @@ export const CheckboxFrame = styled(CheckboxBehavior, {
   name: 'DemoCheckboxFrame',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background press:background-press',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
   borderWidth: 1,
-
-  hoverStyle: {
-    borderColor: '$borderColorHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-  },
-
+  outlineColor: 'focus-visible:outline-color',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
   variants: {
     size: {
       Size: (value, extras) => {
@@ -72,27 +59,13 @@ export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   name: 'DemoRadioGroupItem',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
   borderRadius: 1000,
   borderWidth: 1,
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-  },
-
+  outlineColor: 'focus-visible:outline-color',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
   variants: {
     size: {
       Size: (value, extras) => {
@@ -123,7 +96,7 @@ export const RadioGroupIndicator = styled(RadioGroupBehavior.Indicator, {
   width: '50%',
   height: '50%',
   borderRadius: 1000,
-  backgroundColor: '$color',
+  backgroundColor: 'color',
 })
 
 export const RadioGroup = withStaticProperties(RadioGroupFrame, {
@@ -133,15 +106,11 @@ export const RadioGroup = withStaticProperties(RadioGroupFrame, {
 
 export const SwitchFrame = styled(SwitchBehavior, {
   name: 'DemoSwitchFrame',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   borderRadius: 1000,
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-  },
-
+  outlineColor: 'focus-visible:outline-color',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
   variants: {
     size: {
       Size: (value, extras) => {
@@ -163,9 +132,8 @@ export const SwitchFrame = styled(SwitchBehavior, {
 
 export const SwitchThumb = styled(SwitchBehavior.Thumb, {
   name: 'DemoSwitchThumb',
-  backgroundColor: '$color',
+  backgroundColor: 'color',
   borderRadius: 1000,
-
   variants: {
     size: {
       Size: (value, extras) => {
@@ -200,28 +168,16 @@ export const TabsTab = styled(TabsBehavior.Tab, {
   name: 'DemoTabsTab',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: '$background',
+  backgroundColor: 'background hover:background-hover press:background-press',
   borderWidth: 0,
   cursor: 'pointer',
   flexDirection: 'row',
   flexWrap: 'nowrap',
   userSelect: 'none',
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    zIndex: 10,
-  },
-
+  outlineColor: 'focus-visible:outline-color',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  zIndex: 'focus-visible:10',
   variants: {
     size: {
       true: getButtonSized,

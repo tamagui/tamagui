@@ -8,13 +8,13 @@ import { Text, View } from 'tamagui'
 
 export function TextOverflowEllipsis() {
   return (
-    <View padding="$4" gap="$3" width={240}>
+    <View padding="4" gap="3" width={240}>
       <Text
         testID="text-overflow-ellipsis"
         textOverflow="ellipsis"
         overflow="hidden"
         whiteSpace="nowrap"
-        backgroundColor="$background"
+        backgroundColor="background"
       >
         this is a very long line of text that should truncate with an ellipsis on both web
         and native

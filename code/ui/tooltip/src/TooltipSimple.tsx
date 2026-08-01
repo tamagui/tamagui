@@ -47,11 +47,9 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
         </Tooltip.Trigger>
 
         <Tooltip.Content
-          enterStyle={{ y: -4, opacity: 0, scale: 0.96 }}
-          exitStyle={{ y: -4, opacity: 0, scale: 0.96 }}
-          scale={1}
-          elevation="$0.5"
-          opacity={1}
+          y="enter:-4px exit:-4px"
+          scale="1 enter:0.96 exit:0.96"
+          opacity="1 enter:0 exit:0"
           pointerEvents="none"
           paddingVertical={Math.max(
             0,
@@ -59,26 +57,18 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
               (getVariableValue(getSize(tooltipProps.size ?? true)) as number) * 0.36 - 9
             )
           )}
-          animateOnly={['transform', 'opacity']}
-          transition={[
-            'quicker',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          transition={['quicker', { opacity: { overshootClamping: true } }]}
           {...contentProps}
+          elevation="$0.5"
+          animateOnly={['transform', 'opacity']}
         >
           <Tooltip.Arrow />
           <Paragraph
             maxWidth={350}
             overflow="hidden"
-            size="$3"
             textAlign="center"
-            $web={{
-              textWrap: 'balance',
-            }}
+            textWrap="web:balance"
+            size="$3"
           >
             {label}
           </Paragraph>

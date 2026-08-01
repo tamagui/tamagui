@@ -33,7 +33,7 @@ export function GroupNestedNotifyLoopCase() {
     <YStack
       testID="nested-group-root"
       group="root"
-      pressStyle={{ opacity: 0.9 }}
+      opacity="press:0.9"
       onPress={() => setActive((x) => !x)}
     >
       <NestedGroup index={0} active={active} />

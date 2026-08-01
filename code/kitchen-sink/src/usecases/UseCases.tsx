@@ -28,7 +28,7 @@ if (typeof require !== 'undefined') {
 export function UseCases() {
   const [theme, setTheme] = React.useState('blue')
 
-  const memoized = React.useMemo(() => <Square size={100} bg="$background" />, [])
+  const memoized = React.useMemo(() => <Square size={100} bg="background" />, [])
 
   return (
     <Theme name={theme as any}>
@@ -54,7 +54,7 @@ const CustomButtonFrame = styled(Button.Frame, {
     backgrounded: {
       true: {
         // not intellisensing...
-        backgroundColor: '$background',
+        backgroundColor: 'background',
       },
     },
   } as const,
@@ -69,12 +69,7 @@ function AnimationChangeTest() {
   const [transition, setTransition] = React.useState<'lazy' | 'quick'>('lazy')
   return (
     <>
-      <Square
-        transition={transition}
-        size={100}
-        borderColor="red"
-        hoverStyle={{ scale: 2 }}
-      />
+      <Square transition={transition} borderColor="red" scale="hover:2" size={100} />
       <Button onPress={() => setTransition(transition === 'lazy' ? 'quick' : 'lazy')}>
         {transition}
       </Button>
@@ -386,7 +381,7 @@ function PerformanceTest() {
   const [t, setT] = React.useState('pink' as any)
   return (
     <YStack theme={t}>
-      <Square onPress={() => setT('blue')} size={100} bg="$color10" />
+      <Square onPress={() => setT('blue')} size={100} bg="color10" />
     </YStack>
   )
 }
@@ -397,7 +392,7 @@ function UseThemeNameTest() {
   return (
     <Theme name={name as any}>
       <Button onPress={() => setname('red')}>Change</Button>
-      <Square accessibilityElementsHidden bg="$background" />
+      <Square accessibilityElementsHidden bg="background" />
       <UseThemeNameChildTest />
     </Theme>
   )

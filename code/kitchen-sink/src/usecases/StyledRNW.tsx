@@ -10,15 +10,12 @@ const TextInput = styled(
   TamaguiInput,
   {
     fontSize: 16,
-    fontFamily: '$silkscreen',
-    color: '$color5',
+    fontFamily: 'silkscreen',
+    color: 'color5',
     minWidth: 0,
     borderWidth: 0,
     borderColor: 'transparent',
-    focusStyle: {
-      margin: 0,
-    },
-
+    margin: 'focus:0px',
     variants: {
       unset: {
         false: {
@@ -30,7 +27,6 @@ const TextInput = styled(
         },
       },
     } as const,
-
     defaultVariants: {
       unset: false,
     },

@@ -20,12 +20,12 @@ if (typeof window !== 'undefined') {
 
 export function DialogPresenceCompletionCase() {
   return (
-    <YStack gap="$4" padding="$4">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="4" padding="4">
+      <Paragraph fontWeight="bold" fontSize="5">
         Dialog presence completion
       </Paragraph>
 
-      <XStack gap="$6" items="flex-start">
+      <XStack gap="6" items="flex-start">
         <PresenceScenario id="portal" label="Portal" portal />
         <PresenceScenario id="inline" label="Inline" />
         <PresenceScenario id="nonmodal" label="Non-modal" modal={false} />
@@ -90,21 +90,20 @@ function PresenceScenario({
         key={`${id}-overlay`}
         testID={`${id}-overlay`}
         data-testid={`${id}-overlay`}
-        opacity={0.4}
+        opacity="0.4 enter:0 exit:0"
         transition="1000ms"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
       />
       <Dialog.Content
         key={`${id}-content`}
         testID={`${id}-content`}
         data-testid={`${id}-content`}
         width={320}
-        gap="$3"
-        padding="$4"
+        gap="3"
+        padding="4"
         transition="1000ms"
-        enterStyle={{ opacity: 0, y: -20, scale: 0.96 }}
-        exitStyle={{ opacity: 0, y: 20, scale: 0.96 }}
+        opacity="enter:0 exit:0"
+        y="enter:-20px exit:20px"
+        scale="enter:0.96 exit:0.96"
         onTransition={handleTransition}
       >
         <Dialog.Title>{label} dialog</Dialog.Title>
@@ -118,7 +117,7 @@ function PresenceScenario({
   )
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Dialog
         open={open}
         onOpenChange={handleOpenChange}

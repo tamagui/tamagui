@@ -20,7 +20,7 @@ export const MediaQueryGtMd = () => {
   const media = useMedia()
 
   return (
-    <YStack p="$4" gap="$4">
+    <YStack p="4" gap="4">
       {/* Display current media state for Detox verification */}
       <Text testID="media-state-sm">{`sm: ${media.sm}`}</Text>
       <Text testID="media-state-md">{`md: ${media.md}`}</Text>
@@ -32,9 +32,7 @@ export const MediaQueryGtMd = () => {
         testID="media-test-both"
         height={100}
         width={100}
-        backgroundColor="red"
-        $md={{ backgroundColor: 'yellow' }}
-        $gtMd={{ backgroundColor: 'green' }}
+        backgroundColor="red md:yellow gtMd:green"
       />
 
       {/* Test 2: Only $gtMd - should NOT apply on small screens */}
@@ -43,8 +41,7 @@ export const MediaQueryGtMd = () => {
         testID="media-test-gtmd-only"
         height={100}
         width={100}
-        backgroundColor="red"
-        $gtMd={{ backgroundColor: 'green' }}
+        backgroundColor="red gtMd:green"
       />
 
       {/* Test 3: Only $md - should apply on small screens */}
@@ -53,8 +50,7 @@ export const MediaQueryGtMd = () => {
         testID="media-test-md-only"
         height={100}
         width={100}
-        backgroundColor="red"
-        $md={{ backgroundColor: 'yellow' }}
+        backgroundColor="red md:yellow"
       />
 
       {/* Test 4: $sm, $md, and $gtMd together */}
@@ -63,10 +59,7 @@ export const MediaQueryGtMd = () => {
         testID="media-test-all"
         height={100}
         width={100}
-        backgroundColor="red"
-        $sm={{ backgroundColor: 'blue' }}
-        $md={{ backgroundColor: 'yellow' }}
-        $gtMd={{ backgroundColor: 'green' }}
+        backgroundColor="red sm:blue md:yellow gtMd:green"
       />
     </YStack>
   )

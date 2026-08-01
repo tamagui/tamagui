@@ -48,18 +48,17 @@ function ThreePunchDialog({
           dismissOnSnapToBottom
         >
           <Sheet.Overlay
-            bg="$shadow6"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            bg="shadow6"
+            opacity="enter:0 exit:0"
             onPress={() => onOpenChange?.(false)}
           />
-          <Sheet.Handle bg="$color5" />
-          <Sheet.Container testID="sheet-frame" padding="$4" gap="$4">
+          <Sheet.Handle bg="color5" />
+          <Sheet.Container testID="sheet-frame" padding="4" gap="4">
             <Sheet.Background
               borderBottomRightRadius={0}
               borderBottomLeftRadius={0}
-              bg="$background"
-              borderRadius="$6"
+              bg="background"
+              borderRadius="6"
             />
             <Sheet.ScrollView>
               <TamaguiDialog.Adapt.Contents />
@@ -84,7 +83,7 @@ function ThreePunchDialog({
           minWidth={400}
           borderRadius={CONTENT_RADIUS}
           overflow="hidden"
-          padding="$4"
+          padding="4"
         >
           {children}
         </DialogContent>
@@ -97,26 +96,23 @@ const DialogOverlay = styled(TamaguiDialog.Overlay, {
   transition: 'quick',
   position: 'absolute',
   inset: 0 as any,
-  opacity: 1,
-  bg: '$shadow6',
-  enterStyle: { opacity: 0 },
-  exitStyle: { opacity: 0 },
+  opacity: '1 enter:0 exit:0',
+  bg: 'shadow6',
 })
 
 const DialogContent = styled(TamaguiDialog.Content, {
   transition: 'quick',
   zIndex: 1_000_000,
-  bg: '$background',
+  bg: 'background',
   borderWidth: 0.5,
-  borderColor: '$color5',
+  borderColor: 'color5',
   position: 'relative',
   width: '90%',
   maxWidth: 550,
-  padding: '$4',
-  opacity: 1,
-  y: 0,
-  enterStyle: { y: -5, opacity: 0, scale: 0.985 },
-  exitStyle: { y: 5, opacity: 0 },
+  padding: '4',
+  opacity: '1 enter:0 exit:0',
+  y: '0 enter:-5px exit:5px',
+  scale: 'enter:0.985',
 })
 
 export function DialogSheetAdaptUnmountCase() {
@@ -133,19 +129,19 @@ export function DialogSheetAdaptUnmountCase() {
   }, [])
 
   return (
-    <YStack p="$4" gap="$4" items="center">
+    <YStack p="4" gap="4" items="center">
       <Button testID="open-dialog" onPress={() => setOpen(true)}>
         Open Dialog
       </Button>
 
       <ThreePunchDialog open={open} onOpenChange={setOpen}>
-        <YStack gap="$3">
+        <YStack gap="3">
           <TamaguiDialog.Title size="$6">Three Punch Dialog</TamaguiDialog.Title>
           <TamaguiDialog.Description>
             This body should remain visible while the sheet slides out.
           </TamaguiDialog.Description>
           <Paragraph testID="dialog-content-marker">unique-content-marker-3pc</Paragraph>
-          <XStack gap="$3" justify="flex-end">
+          <XStack gap="3" justify="flex-end">
             <TamaguiDialog.Close asChild displayWhenAdapted>
               <Button testID="close-dialog">Close</Button>
             </TamaguiDialog.Close>

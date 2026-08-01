@@ -16,27 +16,20 @@ export function AnimationsDelayDemo() {
   }
 
   return (
-    <YStack gap="$4" items="center">
-      <XStack gap="$3" height={100} items="center" justify="center">
+    <YStack gap="4" items="center">
+      <XStack gap="3" height={100} items="center" justify="center">
         <AnimatePresence>
           {show &&
             colors.map((color, i) => (
               <Square
                 key={color}
                 transition={['200ms', { delay: i * 100 }]}
-                enterStyle={{
-                  opacity: 0,
-                  scale: 0.5,
-                  y: 20,
-                }}
-                exitStyle={{
-                  opacity: 0,
-                  scale: 0,
-                  y: 20,
-                }}
-                size={60}
+                opacity="enter:0 exit:0"
+                scale="enter:0.5 exit:0"
+                y="enter:20px exit:20px"
                 bg={color}
-                rounded="$4"
+                rounded="4"
+                size={60}
               />
             ))}
         </AnimatePresence>

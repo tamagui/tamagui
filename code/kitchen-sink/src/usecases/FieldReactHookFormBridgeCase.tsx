@@ -25,9 +25,9 @@ export function FieldReactHookFormBridgeCase() {
     : undefined
 
   return (
-    <YStack p="$4" width="100%" maxW={480} self="center">
+    <YStack p="4" width="100%" maxW={480} self="center">
       <Form<Values>
-        gap="$4"
+        gap="4"
         errors={formErrors}
         onSubmit={() => {
           void handleSubmit(() => setStatus('submitted'))()

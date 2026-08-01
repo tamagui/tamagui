@@ -27,7 +27,7 @@ const RenderCountingTrigger = memo(function RenderCountingTrigger({
       <Popover.Trigger scope={scope} asChild>
         <Button data-testid={testId}>{label}</Button>
       </Popover.Trigger>
-      <Text data-testid={`${testId}-render-count`} fontSize="$1" textAlign="center">
+      <Text data-testid={`${testId}-render-count`} fontSize="1" textAlign="center">
         renders: {renderCountRef.current}
       </Text>
     </View>
@@ -38,11 +38,11 @@ export function PopoverTriggerIsolationCase() {
   const [open, setOpen] = useState(false)
 
   return (
-    <YStack flex={1} gap="$6" p="$4" bg="$background">
+    <YStack flex={1} gap="6" p="4" bg="background">
       <Text fontWeight="bold">Trigger isolation: only active trigger re-renders</Text>
 
       <Popover scope="isolated" open={open} onOpenChange={setOpen}>
-        <XStack gap="$4" justifyContent="center">
+        <XStack gap="4" justifyContent="center">
           <RenderCountingTrigger
             testId="isolated-trigger-1"
             label="Trigger 1"
@@ -63,14 +63,14 @@ export function PopoverTriggerIsolationCase() {
         <Popover.Content
           scope="isolated"
           data-testid="isolated-popover-content"
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
-          p="$4"
+          y="enter:-10px exit:-10px"
+          opacity="enter:0 exit:0"
+          p="4"
         >
           <Popover.Arrow scope="isolated" />
           <Paragraph>Shared popover content</Paragraph>
           <Popover.Close scope="isolated" asChild>
-            <Button data-testid="isolated-close" size="small" mt="$2">
+            <Button data-testid="isolated-close" size="small" mt="2">
               Close
             </Button>
           </Popover.Close>

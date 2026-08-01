@@ -69,8 +69,8 @@ export function SheetWebKeyboardAutoFocusCase() {
   }, [open, focusTarget])
 
   return (
-    <YStack padding="$4" gap="$4" testID="sheet-web-kb-af-screen">
-      <Text fontSize="$5" fontWeight="bold">
+    <YStack padding="4" gap="4" testID="sheet-web-kb-af-screen">
+      <Text fontSize="5" fontWeight="bold">
         Sheet + Web Keyboard (autofocus on open)
       </Text>
 
@@ -95,16 +95,10 @@ export function SheetWebKeyboardAutoFocusCase() {
         zIndex={100000}
         transition="medium"
       >
-        <Sheet.Overlay
-          transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Sheet.Overlay transition="lazy" bg="color" opacity="0.5 enter:0 exit:0" />
         <Sheet.Container
           testID="sheet-web-kb-af-frame"
-          rounded="$6"
+          rounded="6"
           onLayout={track ? (e) => reportSheetLayout('frame', e) : undefined}
         >
           <Sheet.Background />
@@ -115,8 +109,8 @@ export function SheetWebKeyboardAutoFocusCase() {
             keyboardShouldPersistTaps="handled"
             onLayout={track ? (e) => reportSheetLayout('scroll', e) : undefined}
           >
-            <YStack gap="$4" padding="$4">
-              <Text fontSize="$6" fontWeight="bold">
+            <YStack gap="4" padding="4">
+              <Text fontSize="6" fontWeight="bold">
                 New Thread
               </Text>
 
@@ -140,15 +134,15 @@ export function SheetWebKeyboardAutoFocusCase() {
               {/* spacer content to make the sheet tall */}
               <YStack
                 height={220}
-                bg="$backgroundHover"
-                rounded="$4"
+                bg="background-hover"
+                rounded="4"
                 items="center"
                 justify="center"
               >
-                <Text color="$gray11">filler content</Text>
+                <Text color="gray11">filler content</Text>
               </YStack>
 
-              <XStack gap="$3" justify="flex-end">
+              <XStack gap="3" justify="flex-end">
                 <Button testID="sheet-web-kb-af-cancel" onPress={() => setOpen(false)}>
                   Cancel
                 </Button>

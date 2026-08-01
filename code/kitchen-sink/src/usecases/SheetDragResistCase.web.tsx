@@ -13,8 +13,8 @@ import { Sheet } from '../components/Sheet'
  */
 export function SheetDragResistCase() {
   return (
-    <YStack padding="$4" gap="$4" data-testid="sheet-drag-resist-screen">
-      <Text fontSize="$5" fontWeight="bold">
+    <YStack padding="4" gap="4" data-testid="sheet-drag-resist-screen">
+      <Text fontSize="5" fontWeight="bold">
         Sheet Drag Resistance Tests (Web)
       </Text>
       <NoScrollViewSheet />
@@ -36,7 +36,7 @@ function NoScrollViewSheet() {
   const startY = useRef(0)
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Button data-testid="no-scroll-trigger" onPress={() => setOpen(true)}>
         Test 1: No ScrollView
       </Button>
@@ -62,16 +62,14 @@ function NoScrollViewSheet() {
         <Sheet.Overlay
           data-testid="no-scroll-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="no-scroll-handle" />
         <Sheet.Container
           data-testid="no-scroll-frame"
-          padding="$4"
-          gap="$4"
+          padding="4"
+          gap="4"
           onTouchStart={(e: any) => {
             startY.current = e.nativeEvent?.pageY ?? e.touches?.[0]?.pageY ?? 0
           }}
@@ -94,9 +92,9 @@ function NoScrollViewSheet() {
           </Paragraph>
           <Paragraph
             data-testid="no-scroll-drag-indicator"
-            bg="$blue3"
-            padding="$2"
-            borderRadius="$2"
+            bg="blue3"
+            padding="2"
+            borderRadius="2"
           >
             Max upward drag detected: {maxDragUp.toFixed(0)}px
           </Paragraph>
@@ -135,7 +133,7 @@ function NonScrollableContentSheet() {
   const [dragEventCount, setDragEventCount] = useState(0)
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Button data-testid="non-scrollable-trigger" onPress={() => setOpen(true)}>
         Test 2: Non-Scrollable ScrollView
       </Button>
@@ -167,10 +165,8 @@ function NonScrollableContentSheet() {
         <Sheet.Overlay
           data-testid="non-scrollable-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="non-scrollable-handle" />
         <Sheet.Container data-testid="non-scrollable-frame">
@@ -183,7 +179,7 @@ function NonScrollableContentSheet() {
             }}
             scrollEventThrottle={16}
           >
-            <YStack padding="$4" gap="$3">
+            <YStack padding="4" gap="3">
               <Paragraph data-testid="non-scrollable-snap-indicator">
                 Current snap point: {position}
               </Paragraph>
@@ -191,7 +187,7 @@ function NonScrollableContentSheet() {
                 This content FITS in the sheet (not scrollable). Dragging should move the
                 SHEET, not scroll.
               </Paragraph>
-              <YStack bg="$yellow3" padding="$3" borderRadius="$2">
+              <YStack bg="yellow3" padding="3" borderRadius="2">
                 <Text fontWeight="bold">Expected behavior:</Text>
                 <Text>• Dragging down: sheet moves to next snap point</Text>
                 <Text>• Dragging up: sheet resists at top</Text>
@@ -199,9 +195,9 @@ function NonScrollableContentSheet() {
               </YStack>
               <Paragraph
                 data-testid="non-scrollable-status"
-                bg="$blue3"
-                padding="$2"
-                borderRadius="$2"
+                bg="blue3"
+                padding="2"
+                borderRadius="2"
               >
                 Scroll events: {scrollEventCount} | Position changes: {dragEventCount}
               </Paragraph>
@@ -253,7 +249,7 @@ function ScrollableContentSheet() {
   )
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Button data-testid="scrollable-trigger" onPress={() => setOpen(true)}>
         Test 3: Scrollable ScrollView
       </Button>
@@ -282,10 +278,8 @@ function ScrollableContentSheet() {
         <Sheet.Overlay
           data-testid="scrollable-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="scrollable-handle" />
         <Sheet.Container data-testid="scrollable-frame">
@@ -306,15 +300,15 @@ function ScrollableContentSheet() {
               handleScrollViewTouch(pageY)
             }}
           >
-            <YStack padding="$4" gap="$3">
+            <YStack padding="4" gap="3">
               <Paragraph data-testid="scrollable-snap-indicator">
                 Position: {position} | Scroll Y: {scrollY.toFixed(0)}
               </Paragraph>
               <Paragraph
                 data-testid="scrollable-status"
-                bg="$blue3"
-                padding="$2"
-                borderRadius="$2"
+                bg="blue3"
+                padding="2"
+                borderRadius="2"
               >
                 Max upward drag (at top): {maxDragUp.toFixed(0)}px
               </Paragraph>
@@ -330,7 +324,7 @@ function ScrollableContentSheet() {
                 This content IS scrollable. When at the top of scroll and top snap point,
                 dragging UP should show resistance.
               </Paragraph>
-              <YStack bg="$green3" padding="$3" borderRadius="$2">
+              <YStack bg="green3" padding="3" borderRadius="2">
                 <Text fontWeight="bold">Expected behavior:</Text>
                 <Text>• Scroll down in content: normal scroll</Text>
                 <Text>• At scroll top, drag up: resistance effect</Text>
@@ -342,11 +336,11 @@ function ScrollableContentSheet() {
                 <YStack
                   key={i}
                   data-testid={`scrollable-item-${i}`}
-                  padding="$3"
-                  bg="$background"
-                  borderRadius="$2"
+                  padding="3"
+                  bg="background"
+                  borderRadius="2"
                   borderWidth={1}
-                  borderColor="$borderColor"
+                  borderColor="border-color"
                 >
                   <Text>Scrollable Item {i + 1}</Text>
                 </YStack>

@@ -2,10 +2,9 @@ import { useRef } from 'react'
 import { Input, Text, YStack, styled } from 'tamagui'
 
 const FocusWithinContainer = styled(YStack, {
-  borderColor: '#ddd',
-  borderWidth: 1,
+  borderColor: '#ddd focus-within:blue',
+  borderWidth: '1px focus-within:2px',
   padding: 20,
-  focusWithinStyle: { borderColor: 'blue', borderWidth: 2 },
 })
 
 function RenderCounter({ id }: { id: string }) {
@@ -20,10 +19,9 @@ export function FocusWithinCase() {
       {/* direct prop path */}
       <YStack
         data-testid="direct-parent"
-        focusWithinStyle={{ borderColor: 'red', borderWidth: 2 }}
+        borderColor="#ddd focus-within:red"
+        borderWidth="1px focus-within:2px"
         padding={20}
-        borderColor="#ddd"
-        borderWidth={1}
       >
         <RenderCounter id="direct" />
         <Text>Direct prop</Text>
@@ -40,10 +38,9 @@ export function FocusWithinCase() {
       {/* animated path — exercises JS state via animation driver */}
       <YStack
         data-testid="animated-parent"
-        focusWithinStyle={{ borderColor: 'green', borderWidth: 2 }}
+        borderColor="#ddd focus-within:green"
+        borderWidth="1px focus-within:2px"
         padding={20}
-        borderColor="#ddd"
-        borderWidth={1}
         transition="quick"
       >
         <RenderCounter id="animated" />

@@ -17,37 +17,36 @@ export function FormsDemo() {
     <Form
       width={350}
       maxW="90%"
-      gap="$4"
-      onSubmit={() => setStatus('submitting')}
+      gap="4"
       borderWidth={1}
-      rounded="$7"
-      bg="$color2"
-      borderColor="$borderColor"
-      p="$6"
+      rounded="7"
+      bg="color2"
+      borderColor="border-color"
+      p="6"
       boxShadow="0 2px 3px rgba(0, 0, 0, 0.06), 0 14px 30px rgba(0, 0, 0, 0.10), 0 36px 72px rgba(0, 0, 0, 0.12)"
+      onSubmit={() => setStatus('submitting')}
     >
-      <Field name="email" gap="$2">
-        <Field.Label color="$color11" fontWeight="500">
+      <Field name="email" gap="2">
+        <Field.Label color="color11" fontWeight="500">
           Email
         </Field.Label>
         <FieldInput type="email" placeholder="ada@example.com" required />
-        <Field.Description color="$color9" fontSize="$2">
+        <Field.Description color="color9" fontSize="2">
           Form collects this value by field name.
         </Field.Description>
-        <Field.Error color="$red10" fontSize="$2" />
+        <Field.Error color="red10" fontSize="2" />
       </Field>
 
       <Form.Trigger asChild disabled={status !== 'idle'}>
         <Button
           self="flex-end"
           height={40}
-          px="$5"
-          rounded="$5"
-          bg="$color12"
-          color="$color1"
-          fontSize="$2"
+          px="5"
+          rounded="5"
+          bg="color12 hover:color11"
+          color="color1"
+          fontSize="2"
           fontWeight="500"
-          hoverStyle={{ bg: '$color11' }}
         >
           Submit
         </Button>
@@ -57,7 +56,7 @@ export function FormsDemo() {
         {status === 'submitting' ? (
           <Spinner size="small" />
         ) : (
-          <Paragraph color="$color9" size="$2">
+          <Paragraph color="color9" size="$2">
             Ready
           </Paragraph>
         )}

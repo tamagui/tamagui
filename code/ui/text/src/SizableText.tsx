@@ -4,10 +4,9 @@ import { Text, styled } from '@tamagui/web'
 
 export const SizableText = styled(Text, {
   name: 'SizableText',
-  fontFamily: '$body',
+  fontFamily: 'body',
+  color: 'color',
   size: true,
-  color: '$color',
-
   variants: {
     size: getFontSized,
   },

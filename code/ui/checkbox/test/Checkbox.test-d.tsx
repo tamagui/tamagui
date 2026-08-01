@@ -23,14 +23,14 @@ const CheckboxIndicatorSkin = styled(Checkbox.Indicator, {
   name: 'TypeTestCheckboxIndicator',
   width: '50%',
   height: '50%',
-  backgroundColor: '$color',
+  backgroundColor: 'color',
 })
 
 export const CheckboxPartsTypeTest = () => (
   <CheckboxSkin
     aria-label="type test"
     size="compact"
-    backgroundColor="$background"
+    backgroundColor="background"
     activeStyle={{ backgroundColor: '$backgroundPress' }}
   >
     <CheckboxIndicatorSkin />
@@ -38,7 +38,7 @@ export const CheckboxPartsTypeTest = () => (
 )
 
 export const CheckboxDirectStyleTypeTest = () => (
-  <Checkbox width={20} height={20} borderRadius="$2">
+  <Checkbox width={20} height={20} borderRadius="2">
     <Checkbox.Indicator opacity={0.5} />
   </Checkbox>
 )

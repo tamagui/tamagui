@@ -41,18 +41,17 @@ function AdaptedPopover({
           dismissOnSnapToBottom
         >
           <Sheet.Overlay
-            bg="$shadow6"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            bg="shadow6"
+            opacity="enter:0 exit:0"
             onPress={() => onOpenChange?.(false)}
           />
-          <Sheet.Handle bg="$color5" />
-          <Sheet.Container testID="sheet-frame" padding="$4" gap="$4">
+          <Sheet.Handle bg="color5" />
+          <Sheet.Container testID="sheet-frame" padding="4" gap="4">
             <Sheet.Background
               borderBottomRightRadius={0}
               borderBottomLeftRadius={0}
-              bg="$background"
-              borderRadius="$6"
+              bg="background"
+              borderRadius="6"
             />
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -64,11 +63,11 @@ function AdaptedPopover({
       <Popover.Content
         key="content"
         borderWidth={0.5}
-        borderColor="$color5"
-        bg="$background"
-        padding="$4"
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
+        borderColor="color5"
+        bg="background"
+        padding="4"
+        y="enter:-10px exit:-10px"
+        opacity="enter:0 exit:0"
       >
         {children}
       </Popover.Content>
@@ -90,13 +89,13 @@ export function PopoverAdaptSheetUnmountCase() {
   }, [])
 
   return (
-    <YStack p="$4" gap="$4" items="center">
+    <YStack p="4" gap="4" items="center">
       <AdaptedPopover open={open} onOpenChange={setOpen}>
-        <YStack gap="$3">
+        <YStack gap="3">
           <Paragraph testID="popover-content-marker">
             unique-content-marker-popover
           </Paragraph>
-          <XStack gap="$3" justify="flex-end">
+          <XStack gap="3" justify="flex-end">
             <Button testID="close-popover" onPress={() => setOpen(false)}>
               Close
             </Button>

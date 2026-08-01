@@ -16,7 +16,7 @@ export function MotionLinkedBenchmarkCase() {
   }))
 
   return (
-    <YStack padding="$4" gap="$3">
+    <YStack padding="4" gap="3">
       <Button
         data-testid="motion-linked-trigger"
         onPress={() => {

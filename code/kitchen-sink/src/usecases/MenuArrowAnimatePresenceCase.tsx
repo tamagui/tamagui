@@ -16,14 +16,14 @@ const PopoverWithAnimatePresenceArrow = () => {
       </Popover.Trigger>
 
       <Popover.Content
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: 6, opacity: 0 }}
+        y="enter:-4px exit:6px"
+        opacity="enter:0 exit:0"
         transition="100ms"
-        bg="$background"
-        p="$4"
+        bg="background"
+        p="4"
         borderWidth={1}
-        borderColor="$borderColor"
-        borderRadius="$4"
+        borderColor="border-color"
+        borderRadius="4"
       >
         {/* This pattern causes the arrow to have opacity: 0 with Motion driver */}
         <AnimatePresence>
@@ -31,11 +31,11 @@ const PopoverWithAnimatePresenceArrow = () => {
             testID="popover-arrow"
             size="$4"
             borderWidth={1}
-            borderColor="$borderColor"
-            bg="$background"
+            borderColor="border-color"
+            bg="background"
           />
         </AnimatePresence>
-        <YStack gap="$2">
+        <YStack gap="2">
           <Button size="small">Item 1</Button>
           <Button size="small">Item 2</Button>
         </YStack>
@@ -55,16 +55,17 @@ const MenuWithArrow = () => {
       <Menu.Portal>
         <Menu.Content
           testID="menu-content"
-          enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
-          exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
+          scale="enter:0.9 exit:0.95"
+          opacity="enter:0 exit:0"
+          y="enter:-5px exit:-3px"
           transition="100ms"
-          borderRadius="$4"
+          borderRadius="4"
         >
           <Menu.Arrow
             testID="menu-arrow"
             size="$4"
             borderWidth={1}
-            borderColor="$borderColor"
+            borderColor="border-color"
           />
           <Menu.Item key="item1">
             <Menu.ItemTitle>Item 1</Menu.ItemTitle>
@@ -80,15 +81,15 @@ const MenuWithArrow = () => {
 
 export function MenuArrowAnimatePresenceCase() {
   return (
-    <YStack gap="$4" padding="$4" alignItems="center" justifyContent="center" flex={1}>
-      <YStack gap="$2" alignItems="center">
+    <YStack gap="4" padding="4" alignItems="center" justifyContent="center" flex={1}>
+      <YStack gap="2" alignItems="center">
         <MenuWithArrow />
         <Paragraph opacity={0.5} size="$2">
           Menu with Arrow (no AnimatePresence)
         </Paragraph>
       </YStack>
 
-      <YStack gap="$2" alignItems="center">
+      <YStack gap="2" alignItems="center">
         <PopoverWithAnimatePresenceArrow />
         <Paragraph opacity={0.5} size="$2">
           Popover with Arrow in AnimatePresence

@@ -29,20 +29,10 @@ const outlined = {
 
 const StyledListItem = styled(UiListItem, {
   name: 'ListItem',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
-  color: '$color',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
+  color: 'color',
   cursor: 'default',
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
-
   variants: {
     variant: {
       outlined,
@@ -50,9 +40,7 @@ const StyledListItem = styled(UiListItem, {
 
     active: {
       true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
+        backgroundColor: 'hover:background',
       },
     },
 

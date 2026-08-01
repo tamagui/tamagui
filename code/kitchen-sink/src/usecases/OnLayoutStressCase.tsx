@@ -40,7 +40,7 @@ const DeepChild = memo(
           onLayout={handleLayout}
           width={20 + (parseInt(id.split('-')[1] || '0') % 5) * 10}
           height={15}
-          backgroundColor="$blue5"
+          backgroundColor="blue5"
         />
       )
     }
@@ -117,10 +117,10 @@ const ListItem = memo(
         onLayout={handleLayout}
         width="100%"
         height={expanded ? 60 : 30}
-        backgroundColor={id % 2 === 0 ? '$background' : '$backgroundHover'}
+        backgroundColor={`${id % 2 === 0 ? 'background' : 'background-hover'}`}
         borderBottomWidth={1}
-        borderBottomColor="$borderColor"
-        padding="$2"
+        borderBottomColor="border-color"
+        padding="2"
       >
         <Text fontSize={12}>Item {id}</Text>
       </View>
@@ -300,9 +300,9 @@ export function OnLayoutStressCase() {
   )
 
   return (
-    <YStack flex={1} padding="$2">
+    <YStack flex={1} padding="2">
       {/* controls */}
-      <XStack gap="$2" flexWrap="wrap" padding="$2" backgroundColor="$background">
+      <XStack gap="2" flexWrap="wrap" padding="2" backgroundColor="background">
         <Button
           testID="btn-resize-width"
           size="small"
@@ -337,7 +337,7 @@ export function OnLayoutStressCase() {
       </XStack>
 
       {/* stats readout */}
-      <XStack gap="$3" padding="$2" backgroundColor="$backgroundHover" flexWrap="wrap">
+      <XStack gap="3" padding="2" backgroundColor="background-hover" flexWrap="wrap">
         <Text testID="stat-total" fontSize={11}>
           total: {stats.totalCallbacks}
         </Text>
@@ -361,13 +361,13 @@ export function OnLayoutStressCase() {
 
       {/* scrollable content */}
       <ScrollView flex={1}>
-        <YStack testID="stress-container" width={containerWidth} gap="$3">
+        <YStack testID="stress-container" width={containerWidth} gap="3">
           {/* section 1: deeply nested (10 items x 6 depth = ~60 onLayout nodes) */}
           <YStack testID="section-deep">
             <Text fontSize={12} fontWeight="bold">
               Deep Nesting (10x6 depth)
             </Text>
-            <XStack flexWrap="wrap" gap="$1">
+            <XStack flexWrap="wrap" gap="1">
               {deepItems}
             </XStack>
           </YStack>
@@ -393,7 +393,7 @@ export function OnLayoutStressCase() {
             <Text fontSize={12} fontWeight="bold">
               Sibling Groups (5x10)
             </Text>
-            <YStack gap="$2">{siblingGroups}</YStack>
+            <YStack gap="2">{siblingGroups}</YStack>
           </YStack>
         </YStack>
       </ScrollView>

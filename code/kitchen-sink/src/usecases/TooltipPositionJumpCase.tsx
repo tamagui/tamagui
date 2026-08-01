@@ -26,14 +26,14 @@ export function TooltipPositionJumpCase() {
   return (
     <YStack
       flex={1}
-      gap="$4"
-      p="$4"
-      bg="$background"
+      gap="4"
+      p="4"
+      bg="background"
       alignItems="center"
       justifyContent="center"
     >
       <SizableText fontWeight="bold">Tooltip Position Jump Test</SizableText>
-      <SizableText size="$2" color="$gray11" textAlign="center">
+      <SizableText size="$2" color="gray11" textAlign="center">
         1. Hover rightmost button, wait for tooltip{'\n'}
         2. Move mouse QUICKLY left across all buttons{'\n'}
         3. Watch for tooltip jumping to wrong position
@@ -42,7 +42,7 @@ export function TooltipPositionJumpCase() {
       {/* EXACT pattern from PromoLinksRow - scoped tooltip with animatePosition */}
       <TooltipGroup delay={{ open: 0, close: 150 }}>
         <Tooltip scope="promo-tooltip" offset={12} placement="bottom">
-          <XStack gap="$3" mt="$4">
+          <XStack gap="3" mt="4">
             {buttons.map((btn) => (
               <Tooltip.Trigger
                 key={btn.id}
@@ -61,13 +61,13 @@ export function TooltipPositionJumpCase() {
             data-testid="tooltip-jump-content"
             animatePosition
             transition="quick"
-            bg="$background"
-            boxShadow="0 4px 12px $shadowColor"
-            rounded="$4"
+            bg="background"
+            boxShadow="0 4px 12px shadow-color"
+            rounded="4"
             px={10}
-            py="$1"
-            enterStyle={{ y: -4, opacity: 0 }}
-            exitStyle={{ y: -4, opacity: 0 }}
+            py="1"
+            y="enter:-4px exit:-4px"
+            opacity="enter:0 exit:0"
           >
             <Tooltip.Arrow />
             <Paragraph size="$3">{label}</Paragraph>
@@ -75,7 +75,7 @@ export function TooltipPositionJumpCase() {
         </Tooltip>
       </TooltipGroup>
 
-      <SizableText size="$1" color="$gray9" mt="$8">
+      <SizableText size="$1" color="gray9" mt="8">
         Tooltip content should animate smoothly between buttons.
         {'\n'}If it JUMPS to a wrong position first, the bug is present.
       </SizableText>

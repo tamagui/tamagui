@@ -19,12 +19,12 @@ export function ToastNativeBurntCase() {
         />
       </Toast.Viewport>
 
-      <YStack flex={1} justifyContent="center" alignItems="center" gap="$4" padding="$4">
-        <Text fontWeight="700" fontSize="$6">
+      <YStack flex={1} justifyContent="center" alignItems="center" gap="4" padding="4">
+        <Text fontWeight="700" fontSize="6">
           Native Burnt Toasts
         </Text>
 
-        <YStack gap="$3" width={280}>
+        <YStack gap="3" width={280}>
           <Button
             testID="burnt-toast-default"
             size="large"
@@ -67,7 +67,7 @@ export function ToastNativeBurntCase() {
           </Button>
         </YStack>
 
-        <Text color="$color9" fontSize="$2" textAlign="center">
+        <Text color="color9" fontSize="2" textAlign="center">
           Uses Burnt for native OS toasts. Falls back to in-app if Burnt is unavailable.
         </Text>
       </YStack>
@@ -81,12 +81,12 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
     typeof t.description === 'function' ? t.description() : t.description
 
   return (
-    <XStack gap="$3" alignItems="flex-start">
+    <XStack gap="3" alignItems="flex-start">
       <Toast.Icon />
       <YStack flex={1} gap={1}>
         {title && <Toast.Title fontWeight="600">{title}</Toast.Title>}
         {description && (
-          <Toast.Description color="$color9" size="$2">
+          <Toast.Description color="color9" size="$2">
             {description}
           </Toast.Description>
         )}

@@ -13,7 +13,7 @@ import { Text, YStack } from 'tamagui'
 // designed signal to remove it (decision recorded in plans/v3-handoff-log.md).
 export function MixedCascadeCase() {
   return (
-    <YStack gap="$4" p="$4">
+    <YStack gap="4" p="4">
       <Text
         data-testid="mixed-legacy"
         backgroundColor="blue"
@@ -25,9 +25,7 @@ export function MixedCascadeCase() {
       <Text
         data-testid="mixed-decoration"
         textDecorationLine="underline"
-        // the text-decoration family converts this condition object into a
-        // program clause; the converted clause must override the base program
-        hoverStyle={{ textDecoration: 'none' } as any}
+        textDecoration="hover:none"
       >
         Hover removes the underline
       </Text>

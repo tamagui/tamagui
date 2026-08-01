@@ -4,7 +4,7 @@ import { Button } from './Button'
 
 export function GroupDemo() {
   return (
-    <YStack p="$3" gap="$2" items="center">
+    <YStack p="3" gap="2" items="center">
       <Group orientation="horizontal">
         <Group.Item>
           <Button>First</Button>
@@ -34,12 +34,12 @@ export function GroupDemo() {
       {/* with separators - add them between items */}
       <YGroup>
         <YGroup.Item>
-          <ListItem borderRadius="$6" theme="surface1" title="First" />
+          <ListItem borderRadius="6" theme="surface1" title="First" />
         </YGroup.Item>
         <Separator />
         <YGroup.Item>
           <ListItem
-            borderRadius="$6"
+            borderRadius="6"
             theme="surface1"
             title="Second"
             subTitle="Second subtitle"
@@ -47,7 +47,7 @@ export function GroupDemo() {
         </YGroup.Item>
         <Separator />
         <YGroup.Item>
-          <ListItem borderRadius="$6" theme="surface1">
+          <ListItem borderRadius="6" theme="surface1">
             Third
           </ListItem>
         </YGroup.Item>

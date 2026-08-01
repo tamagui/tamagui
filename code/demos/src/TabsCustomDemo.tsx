@@ -28,13 +28,7 @@ export const TabFrame = styled(TabsBehavior.Tab, {
 
     active: {
       true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-
-        focusStyle: {
-          backgroundColor: '$background',
-        },
+        backgroundColor: 'hover:background focus:background',
       },
     },
   } as const,
@@ -45,11 +39,11 @@ const CONTENT_NAME = 'TabsContent'
 export const ContentFrame = styled(TabsBehavior.Content, {
   name: CONTENT_NAME,
   flex: 1,
-  p: '$6',
+  p: '6',
   justify: 'center',
   items: 'center',
-  bg: '$color4',
-  rounded: '$4',
+  bg: 'color4',
+  rounded: '4',
 })
 
 export const CustomTabs = withStaticProperties(TabsFrame, {
@@ -63,22 +57,10 @@ export function TabsCustomDemo() {
 
   return (
     // web only fix for position relative
-    <YStack
-      px="$4"
-      {...(isWeb && {
-        position: 'static',
-      })}
-    >
+    <YStack px="4" {...(isWeb && { position: 'static' })}>
       <TabsView flexDirection={demo === 'horizontal' ? 'row' : 'column'} />
 
-      <XStack
-        items="center"
-        gap="$4"
-        position="absolute"
-        b="$3"
-        l="$4"
-        $xxs={{ display: 'none' }}
-      >
+      <XStack items="center" gap="4" position="absolute" b="3" l="4" display="xxs:none">
         <Button
           size="small"
           onPress={() => setDemo(demo === 'horizontal' ? 'vertical' : 'horizontal')}

@@ -12,7 +12,7 @@ const modeLabels: Record<ThemeMode, string> = {
 
 export const ColorSchemeListItem = (props: ListItemProps) => {
   return (
-    <ListItem {...props} bg="$color1" paddingVertical={0}>
+    <ListItem {...props} bg="color1" paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
       <View flex={1} />
       <ColorSchemeToggle />
@@ -31,7 +31,7 @@ export const ColorSchemeToggle = () => {
 
   return (
     <Pressable onPress={cycleMode}>
-      <XStack items="center" px="$2" py="$1" rounded="$2">
+      <XStack items="center" px="2" py="1" rounded="2">
         <SizableText size="$3" fontWeight="600">
           {modeLabels[mode]}
         </SizableText>

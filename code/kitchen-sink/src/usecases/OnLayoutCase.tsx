@@ -50,9 +50,9 @@ export function OnLayoutCase() {
   }, [])
 
   return (
-    <YStack padding="$4" gap="$3">
+    <YStack padding="4" gap="3">
       {/* controls */}
-      <XStack gap="$2" flexWrap="wrap">
+      <XStack gap="2" flexWrap="wrap">
         <Button testID="btn-move" size="small" onPress={() => setMoved((v) => !v)}>
           toggle move
         </Button>
@@ -91,7 +91,7 @@ export function OnLayoutCase() {
         testID="parent-a"
         width={parentResized ? 300 : 500}
         height={200}
-        backgroundColor="$backgroundHover"
+        backgroundColor="background-hover"
         position="relative"
       >
         {mounted &&
@@ -103,7 +103,7 @@ export function OnLayoutCase() {
               width={resized ? 180 : 120}
               height={resized ? 80 : 60}
               marginLeft={moved ? 100 : 0}
-              backgroundColor="$blue8"
+              backgroundColor="blue8"
             />
           ) : (
             <View
@@ -113,7 +113,7 @@ export function OnLayoutCase() {
               width={resized ? 180 : 120}
               height={resized ? 80 : 60}
               marginLeft={moved ? 100 : 0}
-              backgroundColor="$red8"
+              backgroundColor="red8"
             />
           ))}
       </View>
@@ -123,7 +123,7 @@ export function OnLayoutCase() {
         testID="parent-b"
         width={400}
         height={150}
-        backgroundColor="$backgroundHover"
+        backgroundColor="background-hover"
         position="relative"
       >
         <View
@@ -131,7 +131,7 @@ export function OnLayoutCase() {
           onLayout={handleLayoutB}
           width={200}
           height={50}
-          backgroundColor="$green8"
+          backgroundColor="green8"
         />
       </View>
     </YStack>

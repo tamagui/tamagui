@@ -29,7 +29,7 @@ export function TokensDemo() {
   const [section, setSection] = React.useState<Section>('size')
 
   return (
-    <YStack gap="$4">
+    <YStack gap="4">
       <XGroup items="center" self="center">
         {sections.map(({ name, key }) => {
           return (
@@ -66,9 +66,9 @@ function SizeSection({ section }: { section: Section }) {
     .sort((a, b) => (Number.parseFloat(a) > Number.parseFloat(b) ? -1 : 1))
 
   return (
-    <YStack flex={1} gap="$4">
+    <YStack flex={1} gap="4">
       <H2>Sizes</H2>
-      <YStack width="100%" gap="$2">
+      <YStack width="100%" gap="2">
         {(section === 'spaceNegative' ? spaceTokensNegative : spaceTokens).map(
           (token) => {
             return (
@@ -81,15 +81,14 @@ function SizeSection({ section }: { section: Section }) {
                 </YStack>
                 <Square
                   size={tokens[token]?.val as any}
-                  backgroundColor="$color5"
+                  backgroundColor="color5"
                   {...(section === 'spaceNegative' && {
                     backgroundColor: '$red5',
-                    size:
-                      -tokens[
-                        spaceTokensNegative.find(
-                          (t) => Number.parseFloat(t) === -Number.parseFloat(token)
-                        ) ?? token
-                      ]?.val,
+                    size: -tokens[
+                      spaceTokensNegative.find(
+                        (t) => Number.parseFloat(t) === -Number.parseFloat(token)
+                      ) ?? token
+                    ]?.val,
                   })}
                   {...(section === 'radius' && {
                     size: allTokens.size[token]?.val as any,

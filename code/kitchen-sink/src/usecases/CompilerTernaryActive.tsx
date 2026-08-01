@@ -15,16 +15,16 @@ function ActiveText({ isActive, label }: { isActive: boolean; label: string }) {
   return (
     <YStack
       testID="opt-color-box"
-      backgroundColor={isActive ? '$color12' : '$color11'}
+      backgroundColor={`${isActive ? 'color12' : 'color11'}`}
       height={60}
       justifyContent="center"
       alignItems="center"
     >
       <Text
         testID="active-text"
-        fontSize="$3"
+        fontSize="3"
         fontWeight={isActive ? '700' : '400'}
-        color={isActive ? '$color12' : '$color11'}
+        color={`${isActive ? 'color12' : 'color11'}`}
       >
         {label}
       </Text>
@@ -37,7 +37,7 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
     <YStack
       disableOptimization
       testID="noopt-color-box"
-      backgroundColor={isActive ? '$color12' : '$color11'}
+      backgroundColor={`${isActive ? 'color12' : 'color11'}`}
       height={60}
       justifyContent="center"
       alignItems="center"
@@ -45,9 +45,9 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
       <Text
         disableOptimization
         testID="active-text-noopt"
-        fontSize="$3"
+        fontSize="3"
         fontWeight={isActive ? '700' : '400'}
-        color={isActive ? '$color12' : '$color11'}
+        color={`${isActive ? 'color12' : 'color11'}`}
       >
         {label}
       </Text>
@@ -62,11 +62,11 @@ export function CompilerTernaryActive() {
     <YStack
       testID="compiler-ternary-active-root"
       flex={1}
-      padding="$4"
-      gap="$4"
-      backgroundColor="$background"
+      padding="4"
+      gap="4"
+      backgroundColor="background"
     >
-      <Text testID="active-state-label" fontSize="$3">
+      <Text testID="active-state-label" fontSize="3">
         Active: {isActive ? 'YES' : 'NO'}
       </Text>
 
@@ -74,13 +74,13 @@ export function CompilerTernaryActive() {
         Toggle Active
       </Button>
 
-      <YStack gap="$2">
-        <Text fontSize="$2">Optimized:</Text>
+      <YStack gap="2">
+        <Text fontSize="2">Optimized:</Text>
         <ActiveText isActive={isActive} label="Hello World" />
       </YStack>
 
-      <YStack gap="$2">
-        <Text fontSize="$2">Non-optimized:</Text>
+      <YStack gap="2">
+        <Text fontSize="2">Non-optimized:</Text>
         <ActiveTextNoOpt isActive={isActive} label="Hello World" />
       </YStack>
     </YStack>

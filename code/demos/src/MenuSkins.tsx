@@ -110,13 +110,13 @@ const MenuItemIndicator = styled(MenuBehavior.ItemIndicator, indicatorStyles)
 const MenuSeparator = styled(MenuBehavior.Separator, separatorStyles)
 const MenuArrow = styled(MenuBehavior.Arrow, {
   name: 'DemoMenuArrow',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background',
+  borderColor: 'border-color',
   borderWidth: 1,
 })
 const MenuScrollView = styled(MenuBehavior.ScrollView, {
   name: 'DemoMenuScrollView',
-  padding: '$1',
+  padding: '1',
 })
 
 const MenuRoot = (props: React.ComponentProps<typeof MenuBehavior>) => (
@@ -164,8 +164,8 @@ const ContextMenuItemIndicator = styled(
 const ContextMenuSeparator = styled(ContextMenuBehavior.Separator, separatorStyles)
 const ContextMenuArrow = styled(ContextMenuBehavior.Arrow, {
   name: 'DemoContextMenuArrow',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background',
+  borderColor: 'border-color',
   borderWidth: 1,
 })
 

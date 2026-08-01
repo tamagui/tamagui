@@ -2,32 +2,31 @@ import { Field, FieldStyledContext, Input, styled } from 'tamagui'
 import * as React from 'react'
 
 export const FixtureField = styled(Field, {
-  gap: '$2',
+  gap: '2',
 })
 
 export const FixtureFieldLabel = styled(Field.Label, {
   fontWeight: '600',
-  color: '$color11',
+  color: 'color11',
 })
 
 export const FixtureFieldDescription = styled(Field.Description, {
-  color: '$color10',
-  fontSize: '$2',
+  color: 'color10',
+  fontSize: '2',
 })
 
 export const FixtureFieldError = styled(Field.Error, {
-  color: '$red10',
-  fontSize: '$2',
+  color: 'red10',
+  fontSize: '2',
 })
 
 const FixtureInputFrame = styled(Input, {
   context: FieldStyledContext,
-  backgroundColor: '$background',
-
+  backgroundColor: 'background',
   variants: {
     invalid: {
       true: {
-        borderColor: '$red9',
+        borderColor: 'red9',
       },
     },
   } as const,

@@ -115,21 +115,21 @@ export function DOMNodeAPIs() {
   }, [])
 
   return (
-    <YStack padding="$4" gap="$2">
-      <View ref={parentRef as any} id="dom-node-parent" gap="$2">
+    <YStack padding="4" gap="2">
+      <View ref={parentRef as any} id="dom-node-parent" gap="2">
         <View
           ref={childARef as any}
           id="dom-node-childA"
           width={100}
           height={50}
-          backgroundColor="$blue5"
+          backgroundColor="blue5"
         />
         <View
           ref={childBRef as any}
           id="dom-node-childB"
           width={100}
           height={50}
-          backgroundColor="$red5"
+          backgroundColor="red5"
         />
         <Text ref={textRef as any} id="dom-node-text">
           hello dom
@@ -140,10 +140,10 @@ export function DOMNodeAPIs() {
         <Input ref={inputRef as any} id="dom-node-input" placeholder="focusable" />
       </View>
 
-      <YStack id="dom-node-results" gap="$1" paddingTop="$4">
+      <YStack id="dom-node-results" gap="1" paddingTop="4">
         {Object.entries(results).map(([key, value]) => (
-          <XStack key={key} gap="$2">
-            <Text fontSize="$2" fontFamily="$mono" data-testid={`result-${key}`}>
+          <XStack key={key} gap="2">
+            <Text fontSize="2" fontFamily="mono" data-testid={`result-${key}`}>
               {key}={value}
             </Text>
           </XStack>

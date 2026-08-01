@@ -94,7 +94,7 @@ const SandboxFrame = (props: { children: any; centered?: boolean }) => {
                     justify: 'center',
                     height: '100%',
                   })}
-                  bg={screenshot ? 'transparent' : '$background'}
+                  bg={`${screenshot ? 'transparent' : 'background'}`}
                 >
                   {props.children}
                 </YStack>

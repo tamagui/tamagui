@@ -9,8 +9,8 @@ import { Square, YStack, Text } from 'tamagui'
  */
 export function ThemeMediaAnimationCase() {
   return (
-    <YStack p="$4" gap="$4">
-      <Text fontSize="$5" fontWeight="bold">
+    <YStack p="4" gap="4">
+      <Text fontSize="5" fontWeight="bold">
         Theme Media + Animation
       </Text>
 
@@ -18,21 +18,15 @@ export function ThemeMediaAnimationCase() {
         testID="theme-media-animated"
         data-testid="theme-media-animated"
         size={100}
-        bg="$color1"
+        bg="color1 dark:color3"
         transition="quick"
-        $theme-dark={{
-          bg: '$color3',
-        }}
       />
 
       <Square
         testID="theme-media-static"
         data-testid="theme-media-static"
         size={100}
-        bg="$color1"
-        $theme-dark={{
-          bg: '$color3',
-        }}
+        bg="color1 dark:color3"
       />
     </YStack>
   )

@@ -5,7 +5,7 @@ import { Button } from '../components/Button'
 // The copied skin owns independent named text and icon projections.
 export function IconFontSizing() {
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Button size="small" icon={Moon} testID="btn-2">
         Small
       </Button>

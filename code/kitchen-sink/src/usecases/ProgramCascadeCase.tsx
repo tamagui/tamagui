@@ -14,7 +14,7 @@ export function ProgramCascadeCase() {
     'rgb(255, 0, 0) hover:rgb(0, 255, 0) dark:rgb(128, 128, 128) dark:hover:rgb(0, 0, 255)'
 
   return (
-    <YStack gap="$4" p="$4">
+    <YStack gap="4" p="4">
       {/* the same program in two themes: which clause is last-matching differs */}
       <View data-testid="chain-light" width={60} height={60} backgroundColor={chain} />
 

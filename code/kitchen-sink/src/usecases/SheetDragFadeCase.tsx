@@ -55,7 +55,7 @@ export function SheetDragFadeCase() {
   const [open, setOpen] = useState(false)
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Button testID="drag-fade-open" onPress={() => setOpen(true)}>
         Open drag-fade sheet
       </Button>
@@ -71,9 +71,9 @@ export function SheetDragFadeCase() {
         <Sheet.Overlay testID="drag-fade-overlay" backgroundColor="transparent">
           <DragLinkedBackdrop />
         </Sheet.Overlay>
-        <Sheet.Handle testID="drag-fade-handle" height={16} backgroundColor="$color8" />
-        <Sheet.Container testID="drag-fade-frame" padding="$4" gap="$4">
-          <Sheet.Background backgroundColor="$background" />
+        <Sheet.Handle testID="drag-fade-handle" height={16} backgroundColor="color8" />
+        <Sheet.Container testID="drag-fade-frame" padding="4" gap="4">
+          <Sheet.Background backgroundColor="background" />
           <Paragraph>Drag the handle to fade the backdrop.</Paragraph>
           <Button testID="drag-fade-close" onPress={() => setOpen(false)}>
             Close

@@ -8,15 +8,15 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 export function SelectDemo() {
   return (
     <Theme name="surface1">
-      <YStack gap="$4">
-        <XStack width="100%" items="center" gap="$4">
+      <YStack gap="4">
+        <XStack width="100%" items="center" gap="4">
           <Label htmlFor="select-demo-1" flex={1} minW={80}>
             Custom
           </Label>
           <SelectDemoContents id="select-demo-1" />
         </XStack>
 
-        <XStack width="100%" items="center" gap="$4">
+        <XStack width="100%" items="center" gap="4">
           <Label htmlFor="select-demo-2" flex={1} minW={80}>
             Native
           </Label>
@@ -48,7 +48,7 @@ export function SelectDemoContents(
       renderValue={getItemLabel}
     >
       {props?.trigger || (
-        <Select.Trigger maxWidth={220} borderRadius="$4" backgroundColor="$background">
+        <Select.Trigger maxWidth={220} borderRadius="4" backgroundColor="background">
           <Select.Value placeholder="Something" />
           <Select.Icon>
             <ChevronDown />
@@ -64,12 +64,7 @@ export function SelectDemoContents(
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Container>
-          <Sheet.Overlay
-            bg="$shadowColor"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Adapt>
 
@@ -79,7 +74,7 @@ export function SelectDemoContents(
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronUp size={20} />
@@ -89,16 +84,16 @@ export function SelectDemoContents(
             end={[0, 1]}
             position="absolute"
             inset={0}
+            rounded="4"
             colors={['$background', 'transparent']}
-            rounded="$4"
           />
         </Select.ScrollUpButton>
         <Select.Viewport
           minW={200}
-          bg="$background"
-          rounded="$4"
+          bg="background"
+          rounded="4"
           borderWidth={1}
-          borderColor="$borderColor"
+          borderColor="border-color"
         >
           <Select.Group>
             <Select.Label fontWeight="700">Fruits</Select.Label>
@@ -130,7 +125,7 @@ export function SelectDemoContents(
               t={16}
               items="center"
               justify="center"
-              width={'$4'}
+              width="4"
               pointerEvents="none"
             >
               <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
@@ -143,7 +138,7 @@ export function SelectDemoContents(
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronDown size={20} />
@@ -153,8 +148,8 @@ export function SelectDemoContents(
             end={[0, 1]}
             position="absolute"
             inset={0}
+            rounded="4"
             colors={['transparent', '$background']}
-            rounded="$4"
           />
         </Select.ScrollDownButton>
       </Select.Content>

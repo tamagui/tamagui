@@ -21,13 +21,13 @@ const sizes = ['$1', '$2', '$3', '$4', '$5', '$6', '$7', '$8', '$9', '$10'] as c
 export const Sandbox = () => {
   return (
     <ScrollView flex={1} width="100%" contentContainerStyle={{ padding: 20 }}>
-      <YStack gap="$6" maxWidth={800}>
-        <YStack gap="$4">
-          <Heading size="$8" marginBottom="$2">
+      <YStack gap="6" maxWidth={800}>
+        <YStack gap="4">
+          <Heading size="$8" marginBottom="2">
             SizableText Sizes
           </Heading>
           {sizes.map((size) => (
-            <YStack key={size} gap="$1">
+            <YStack key={size} gap="1">
               <SizableText size="$2" opacity={0.5}>
                 size="{size}"
               </SizableText>
@@ -36,12 +36,12 @@ export const Sandbox = () => {
           ))}
         </YStack>
 
-        <YStack gap="$4">
-          <Heading size="$8" marginBottom="$2">
+        <YStack gap="4">
+          <Heading size="$8" marginBottom="2">
             Heading Sizes
           </Heading>
           {sizes.map((size) => (
-            <YStack key={size} gap="$1">
+            <YStack key={size} gap="1">
               <SizableText size="$2" opacity={0.5}>
                 Heading size="{size}"
               </SizableText>
@@ -50,11 +50,11 @@ export const Sandbox = () => {
           ))}
         </YStack>
 
-        <YStack gap="$4">
-          <Heading size="$8" marginBottom="$2">
+        <YStack gap="4">
+          <Heading size="$8" marginBottom="2">
             H1-H6 Components
           </Heading>
-          <YStack gap="$3">
+          <YStack gap="3">
             <SizableText size="$2" opacity={0.5}>
               H1
             </SizableText>

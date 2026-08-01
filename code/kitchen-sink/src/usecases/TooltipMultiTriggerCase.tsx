@@ -34,8 +34,8 @@ export function TooltipMultiTriggerCase() {
   )
 
   return (
-    <YStack padding="$4" gap="$4">
-      <SizableText size="$3" color="$color9">
+    <YStack padding="4" gap="4">
+      <SizableText size="$3" color="color9">
         Tooltip multi-trigger rapid hover test
       </SizableText>
 
@@ -43,7 +43,7 @@ export function TooltipMultiTriggerCase() {
 
       <TooltipGroup delay={tooltipDelay}>
         <Tooltip scope="multi-tip" offset={20} placement="bottom">
-          <XStack gap="$6" id="tip-triggers">
+          <XStack gap="6" id="tip-triggers">
             {NAV_IDS.map((id) => (
               <Tooltip.Trigger
                 key={id}
@@ -53,12 +53,11 @@ export function TooltipMultiTriggerCase() {
               >
                 <XStack
                   id={`tip-trigger-${id}`}
-                  px="$6"
-                  py="$3"
-                  bg="$color3"
-                  rounded="$4"
+                  px="6"
+                  py="3"
+                  bg="color3 hover:color4"
+                  rounded="4"
                   cursor="pointer"
-                  hoverStyle={{ bg: '$color4' }}
                 >
                   <SizableText>{SHORT[id]}</SizableText>
                 </XStack>
@@ -71,8 +70,8 @@ export function TooltipMultiTriggerCase() {
             scope="multi-tip"
             animatePosition
             transition="medium"
-            enterStyle={{ y: -4, opacity: 0 }}
-            exitStyle={{ y: -4, opacity: 0 }}
+            y="enter:-4px exit:-4px"
+            opacity="enter:0 exit:0"
           >
             <Tooltip.Arrow scope="multi-tip" id="tip-arrow" />
             {displayId && (

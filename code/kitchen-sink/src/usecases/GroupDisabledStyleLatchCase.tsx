@@ -28,8 +28,8 @@ export function GroupDisabledStyleLatchCase() {
   const [disabled, setDisabled] = useState(false)
 
   return (
-    <YStack gap="$4" items="center" p="$4">
-      <XStack gap="$4">
+    <YStack gap="4" items="center" p="4">
+      <XStack gap="4">
         {/* minimized shape from the report: no press/hover styles. it never flips
             press state (no pressStyle, no group children) so the latch stays off —
             kept here as a sanity check that plain disabled toggles work */}
@@ -37,11 +37,10 @@ export function GroupDisabledStyleLatchCase() {
           testID="group-disabled-btn"
           group
           transition="quick"
+          backgroundColor={`${GREEN} disabled:${GREY}`}
+          borderColor={`${GREEN} disabled:${GREY}`}
           animateOnly={['backgroundColor', 'borderColor']}
           disabled={disabled}
-          backgroundColor={GREEN}
-          borderColor={GREEN}
-          disabledStyle={{ backgroundColor: GREY, borderColor: GREY }}
           onPress={() => setDisabled((d) => !d)}
         />
 
@@ -50,12 +49,10 @@ export function GroupDisabledStyleLatchCase() {
           testID="group-disabled-press-btn"
           group
           transition="quick"
+          backgroundColor={`${GREEN} press:${DARKGREEN} disabled:${GREY}`}
+          borderColor={`${GREEN} press:${DARKGREEN} disabled:${GREY}`}
           animateOnly={['backgroundColor', 'borderColor']}
           disabled={disabled}
-          backgroundColor={GREEN}
-          borderColor={GREEN}
-          pressStyle={{ backgroundColor: DARKGREEN, borderColor: DARKGREEN }}
-          disabledStyle={{ backgroundColor: GREY, borderColor: GREY }}
           onPress={() => setDisabled((d) => !d)}
         />
       </XStack>
@@ -65,8 +62,8 @@ export function GroupDisabledStyleLatchCase() {
       {/* external toggle to re-enable: the disabled circles no longer receive presses */}
       <View
         testID="group-disabled-toggle"
-        p="$3"
-        bg="$color5"
+        p="3"
+        bg="color5"
         onPress={() => setDisabled((d) => !d)}
       >
         <Text>Toggle disabled</Text>

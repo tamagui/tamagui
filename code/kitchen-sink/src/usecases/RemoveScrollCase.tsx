@@ -13,7 +13,7 @@ export function RemoveScrollCase() {
   const [value, setValue] = React.useState('')
 
   return (
-    <YStack $web={{ minHeight: '200vh' }} padding="$4" gap="$4">
+    <YStack minHeight="web:200vh" padding="4" gap="4">
       <H2>RemoveScroll Test</H2>
 
       <Paragraph data-testid="scroll-marker">

@@ -40,10 +40,10 @@ test('Image resolves Tamagui styles and preserves native image props', async () 
           l={2}
           r={3}
           b={4}
-          bg="$background"
-          br="$4"
+          bg="background"
           aspectRatio={2}
-          $sm={{ opacity: 0.5 }}
+          opacity="sm:0.5"
+          br="$4"
           accessibilityLabel="test image"
           onLoad={onLoad}
         />

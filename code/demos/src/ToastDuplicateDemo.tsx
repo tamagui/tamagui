@@ -34,7 +34,7 @@ const ToastList = () => {
     <>
       {toasts.map((t, index) => (
         <Toast.Item key={t.id} toast={t} index={index}>
-          <XStack gap="$4" items="center">
+          <XStack gap="4" items="center">
             <YStack>
               <CheckCircle2 />
             </YStack>

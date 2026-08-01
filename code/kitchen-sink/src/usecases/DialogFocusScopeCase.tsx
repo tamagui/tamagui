@@ -3,7 +3,7 @@ import { Button } from '../components/Button'
 
 export function DialogFocusScopeCase() {
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       {/* Modal Dialog - Should trap focus */}
       <Dialog modal>
         <Dialog.Trigger asChild>
@@ -39,35 +39,28 @@ export function DialogFocusScopeCase() {
           <Dialog.Overlay
             key="parent-overlay"
             transition="quick"
-            opacity={0.5}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            opacity="0.5 enter:0 exit:0"
           />
           <Dialog.Content
             key="parent-content"
             bordered
             elevate
-            transition={[
-              'quick',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-            enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-            exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+            transition={['quick', { opacity: { overshootClamping: true } }]}
+            x="enter:0 exit:0"
+            y="enter:-20px exit:10px"
+            opacity="enter:0 exit:0"
+            scale="enter:0.9 exit:0.95"
             width={500}
-            padding="$6"
-            gap="$4"
+            padding="6"
+            gap="4"
           >
-            <YStack data-testid="parent-dialog-content" gap="$4">
+            <YStack data-testid="parent-dialog-content" gap="4">
               <Dialog.Title>Parent Dialog</Dialog.Title>
               <Dialog.Description>
                 This dialog contains another dialog. Focus should be managed correctly.
               </Dialog.Description>
 
-              <YStack gap="$3">
+              <YStack gap="3">
                 <Label htmlFor="parent-input">Parent Input</Label>
                 <Input id="parent-input" placeholder="Type here..." />
               </YStack>
@@ -81,28 +74,28 @@ export function DialogFocusScopeCase() {
                   <Dialog.Overlay
                     key="nested-overlay"
                     transition="quick"
-                    opacity={0.5}
-                    enterStyle={{ opacity: 0 }}
-                    exitStyle={{ opacity: 0 }}
+                    opacity="0.5 enter:0 exit:0"
                   />
                   <Dialog.Content
                     key="nested-content"
                     bordered
                     elevate
                     transition="quick"
-                    enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-                    exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+                    x="enter:0 exit:0"
+                    y="enter:-20px exit:10px"
+                    opacity="enter:0 exit:0"
+                    scale="enter:0.9 exit:0.95"
                     width={400}
-                    padding="$6"
-                    gap="$4"
+                    padding="6"
+                    gap="4"
                   >
-                    <YStack data-testid="nested-dialog-content" gap="$4">
+                    <YStack data-testid="nested-dialog-content" gap="4">
                       <Dialog.Title>Nested Dialog</Dialog.Title>
                       <Dialog.Description>
                         Focus should be trapped in this nested dialog.
                       </Dialog.Description>
 
-                      <YStack gap="$3">
+                      <YStack gap="3">
                         <Label htmlFor="nested-input">Nested Input</Label>
                         <Input
                           id="nested-input"
@@ -111,7 +104,7 @@ export function DialogFocusScopeCase() {
                         />
                       </YStack>
 
-                      <XStack gap="$3" justifyContent="flex-end">
+                      <XStack gap="3" justifyContent="flex-end">
                         <Dialog.Close asChild>
                           <Button data-testid="nested-close-button">Close Nested</Button>
                         </Dialog.Close>
@@ -121,7 +114,7 @@ export function DialogFocusScopeCase() {
                 </Dialog.Portal>
               </Dialog>
 
-              <XStack gap="$3" justifyContent="flex-end">
+              <XStack gap="3" justifyContent="flex-end">
                 <Dialog.Close asChild>
                   <Button variant="outlined" data-testid="parent-close-button">
                     Close Parent
@@ -149,39 +142,28 @@ function DialogContent({
 }) {
   return (
     <Dialog.Portal>
-      <Dialog.Overlay
-        key="overlay"
-        transition="quick"
-        opacity={0.5}
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
+      <Dialog.Overlay key="overlay" transition="quick" opacity="0.5 enter:0 exit:0" />
       <Dialog.Content
         key="content"
         bordered
         elevate
         disableOutsidePointerEvents={disableOutsidePointerEvents}
-        transition={[
-          'quick',
-          {
-            opacity: {
-              overshootClamping: true,
-            },
-          },
-        ]}
-        enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-        exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+        transition={['quick', { opacity: { overshootClamping: true } }]}
+        x="enter:0 exit:0"
+        y="enter:-20px exit:10px"
+        opacity="enter:0 exit:0"
+        scale="enter:0.9 exit:0.95"
         width={450}
-        maxHeight="$20"
-        padding="$6"
-        gap="$4"
+        maxHeight="20"
+        padding="6"
+        gap="4"
       >
-        <YStack data-testid={`${testId}-dialog-content`} gap="$4">
+        <YStack data-testid={`${testId}-dialog-content`} gap="4">
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Description>{description}</Dialog.Description>
 
-          <YStack gap="$3" render="form">
-            <YStack gap="$3">
+          <YStack gap="3" render="form">
+            <YStack gap="3">
               <Label htmlFor={`${testId}-first`}>First Name</Label>
               <Input
                 id={`${testId}-first`}
@@ -191,7 +173,7 @@ function DialogContent({
               />
             </YStack>
 
-            <YStack gap="$3">
+            <YStack gap="3">
               <Label htmlFor={`${testId}-second`}>Last Name</Label>
               <Input
                 id={`${testId}-second`}
@@ -201,7 +183,7 @@ function DialogContent({
               />
             </YStack>
 
-            <YStack gap="$3">
+            <YStack gap="3">
               <Label htmlFor={`${testId}-email`}>Email</Label>
               <Input
                 id={`${testId}-email`}
@@ -211,7 +193,7 @@ function DialogContent({
               />
             </YStack>
 
-            <YStack gap="$3">
+            <YStack gap="3">
               <Label htmlFor={`${testId}-select`}>Country</Label>
               <select
                 id={`${testId}-select`}
@@ -231,7 +213,7 @@ function DialogContent({
               </select>
             </YStack>
 
-            <YStack gap="$3">
+            <YStack gap="3">
               <Label htmlFor={`${testId}-textarea`}>Comments</Label>
               <textarea
                 id={`${testId}-textarea`}
@@ -249,7 +231,7 @@ function DialogContent({
               />
             </YStack>
 
-            <XStack gap="$3" alignItems="center">
+            <XStack gap="3" alignItems="center">
               <input
                 type="checkbox"
                 id={`${testId}-checkbox`}
@@ -261,7 +243,7 @@ function DialogContent({
             </XStack>
           </YStack>
 
-          <XStack gap="$3" justifyContent="flex-end">
+          <XStack gap="3" justifyContent="flex-end">
             <Dialog.Close asChild>
               <Button variant="outlined" data-testid={`cancel-button`}>
                 Cancel

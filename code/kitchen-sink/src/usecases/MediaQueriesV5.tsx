@@ -26,14 +26,14 @@ export const MediaQueriesV5 = () => {
   const { height: viewportHeight } = useWindowDimensions()
 
   return (
-    <YStack p="$4" gap="$4">
+    <YStack p="4" gap="4">
       <Text fontWeight="bold">v5 Media Query Test</Text>
-      <Text fontSize={12} color="$color10">
+      <Text fontSize={12} color="color10">
         Use ?v5config in URL to test with v5 config
       </Text>
 
       {/* Display current media state */}
-      <YStack gap="$1">
+      <YStack gap="1">
         <Text testID="media-sm">{`sm (≥640): ${media.sm}`}</Text>
         <Text testID="media-md">{`md (≥768): ${media.md}`}</Text>
         <Text testID="media-lg">{`lg (≥1024): ${media.lg}`}</Text>
@@ -43,22 +43,19 @@ export const MediaQueriesV5 = () => {
       </YStack>
 
       {/* Test 1: Mobile-first (minWidth) - larger should win */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Text fontWeight="bold">Test 1: Mobile-first (larger wins)</Text>
         <Text fontSize={12}>On large screen: should be green ($lg wins over $sm)</Text>
         <YStack
           testID="test-mobile-first"
           height={60}
           width={100}
-          backgroundColor="red"
-          $sm={{ backgroundColor: 'yellow' }}
-          $md={{ backgroundColor: 'orange' }}
-          $lg={{ backgroundColor: 'green' }}
+          backgroundColor="red sm:yellow md:orange lg:green"
         />
       </YStack>
 
       {/* Test 2: Desktop-first (maxWidth) - smaller should win */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Text fontWeight="bold">Test 2: Desktop-first (smaller wins)</Text>
         <Text fontSize={12}>
           On small screen: should be yellow ($max-sm wins over $max-lg)
@@ -67,17 +64,12 @@ export const MediaQueriesV5 = () => {
           testID="test-desktop-first"
           height={60}
           width={100}
-          backgroundColor="red"
-          {...{
-            '$max-lg': { backgroundColor: 'green' },
-            '$max-md': { backgroundColor: 'orange' },
-            '$max-sm': { backgroundColor: 'yellow' },
-          }}
+          backgroundColor="red max-lg:green max-md:orange max-sm:yellow"
         />
       </YStack>
 
       {/* Test 3: Height breakpoints resolved at runtime because v5 has no height-xs media key */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Text fontWeight="bold">Test 3: Height queries</Text>
         <Text fontSize={12}>Taller screens get larger breakpoints</Text>
         <YStack
@@ -97,15 +89,14 @@ export const MediaQueriesV5 = () => {
       </YStack>
 
       {/* Test 4: Combined width queries */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Text fontWeight="bold">Test 4: All breakpoints</Text>
-        <XStack gap="$2" flexWrap="wrap">
+        <XStack gap="2" flexWrap="wrap">
           <YStack
             testID="test-sm-only"
             height={40}
             width={40}
-            backgroundColor="gray"
-            $sm={{ backgroundColor: 'green' }}
+            backgroundColor="gray sm:green"
           >
             <Text fontSize={10}>sm</Text>
           </YStack>
@@ -113,8 +104,7 @@ export const MediaQueriesV5 = () => {
             testID="test-md-only"
             height={40}
             width={40}
-            backgroundColor="gray"
-            $md={{ backgroundColor: 'green' }}
+            backgroundColor="gray md:green"
           >
             <Text fontSize={10}>md</Text>
           </YStack>
@@ -122,8 +112,7 @@ export const MediaQueriesV5 = () => {
             testID="test-lg-only"
             height={40}
             width={40}
-            backgroundColor="gray"
-            $lg={{ backgroundColor: 'green' }}
+            backgroundColor="gray lg:green"
           >
             <Text fontSize={10}>lg</Text>
           </YStack>
@@ -131,8 +120,7 @@ export const MediaQueriesV5 = () => {
             testID="test-xl-only"
             height={40}
             width={40}
-            backgroundColor="gray"
-            $xl={{ backgroundColor: 'green' }}
+            backgroundColor="gray xl:green"
           >
             <Text fontSize={10}>xl</Text>
           </YStack>

@@ -54,7 +54,7 @@ export function CSSAnimatedNumberCompletionCase() {
   }
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Paragraph fontWeight="bold">CSS Animated Number Completion</Paragraph>
 
       <Button onPress={run} testID="run-trigger" data-testid="run-trigger">

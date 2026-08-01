@@ -19,7 +19,7 @@ export function ProgramBlockDeliveryCase() {
   const [Late, setLate] = useState<ComponentType | null>(null)
 
   return (
-    <YStack gap="$4" p="$4">
+    <YStack gap="4" p="4">
       <View
         data-testid="early-shared"
         width={80}

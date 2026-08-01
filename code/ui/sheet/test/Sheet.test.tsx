@@ -17,7 +17,7 @@ describe('Sheet public behavior parts', () => {
   test('recognizes named styled overlays through their ancestry', () => {
     const NamedOverlay = styled(Sheet.Overlay, {
       name: 'NamedSheetOverlay',
-      backgroundColor: '$shadowColor',
+      backgroundColor: 'shadow-color',
     })
     const NestedNamedOverlay = styled(NamedOverlay, {
       name: 'NestedNamedSheetOverlay',

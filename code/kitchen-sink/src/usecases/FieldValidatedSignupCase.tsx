@@ -22,9 +22,9 @@ export function FieldValidatedSignupCase() {
   const [status, setStatus] = React.useState('idle')
 
   return (
-    <YStack p="$4" width="100%" maxW={560} self="center">
+    <YStack p="4" width="100%" maxW={560} self="center">
       <Form<SignupValues>
-        gap="$5"
+        gap="5"
         errors={serverErrors}
         onSubmit={(values, details) => {
           if (values.email === 'used@example.com') {
@@ -42,7 +42,7 @@ export function FieldValidatedSignupCase() {
       >
         <H2>Create an account</H2>
 
-        <XStack gap="$4" flexWrap="wrap">
+        <XStack gap="4" flexWrap="wrap">
           <FixtureField
             name="firstName"
             flex={1}

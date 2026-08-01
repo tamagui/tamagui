@@ -17,7 +17,7 @@ function AdaptedDialogContent({
   const instance = useRef(++contentInstanceId).current
 
   return (
-    <YStack testID="dialog-adapt-content" gap="$3">
+    <YStack testID="dialog-adapt-content" gap="3">
       <Dialog.Title testID="dialog-adapt-title">Adapt handoff dialog</Dialog.Title>
       <Dialog.Description testID="dialog-adapt-description">
         Dialog content rendered through Adapt.Contents.
@@ -25,7 +25,7 @@ function AdaptedDialogContent({
       <Paragraph testID="dialog-adapt-revision">revision: {revision}</Paragraph>
       <Paragraph testID="dialog-adapt-instance">instance: {instance}</Paragraph>
 
-      <XStack gap="$2" flexWrap="wrap">
+      <XStack gap="2" flexWrap="wrap">
         <Button testID="dialog-adapt-update" onPress={() => setRevision((x) => x + 1)}>
           Update
         </Button>
@@ -73,8 +73,8 @@ export function DialogSheetAdaptHandoffCase() {
   }, [])
 
   return (
-    <YStack p="$4" gap="$4" items="center">
-      <XStack gap="$2" flexWrap="wrap" justify="center">
+    <YStack p="4" gap="4" items="center">
+      <XStack gap="2" flexWrap="wrap" justify="center">
         <Button testID="dialog-adapt-open" onPress={() => setOpen(true)}>
           Open
         </Button>
@@ -113,20 +113,21 @@ export function DialogSheetAdaptHandoffCase() {
           >
             <Sheet.Overlay
               testID="dialog-adapt-sheet-overlay"
-              bg="$shadow6"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
+              bg="shadow6"
+              opacity="enter:0 exit:0"
             />
             <Sheet.Container
               testID="dialog-adapt-sheet-frame"
-              p="$4"
-              paddingBottom="$8"
-              gap="$4"
+              paddingTop="4"
+              paddingRight="4"
+              paddingLeft="4"
+              paddingBottom="8"
+              gap="4"
             >
               <Sheet.Background
-                borderTopLeftRadius="$6"
-                borderTopRightRadius="$6"
-                bg="$background"
+                borderTopLeftRadius="6"
+                borderTopRightRadius="6"
+                bg="background"
               />
               <YStack testID="dialog-adapt-target">
                 <Adapt.Contents />
@@ -139,21 +140,21 @@ export function DialogSheetAdaptHandoffCase() {
           <Dialog.Overlay
             key="overlay"
             testID="dialog-adapt-dialog-overlay"
-            bg="$shadow6"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            bg="shadow6"
+            opacity="enter:0 exit:0"
           />
           <Dialog.Content
             key="content"
             testID="dialog-adapt-dialog-content"
             width="90%"
             maxWidth={520}
-            p="$4"
-            gap="$3"
+            p="4"
+            gap="3"
+            y="enter:-8px exit:8px"
+            opacity="enter:0 exit:0"
+            scale="enter:0.98 exit:0.98"
             bordered
             elevate
-            enterStyle={{ y: -8, opacity: 0, scale: 0.98 }}
-            exitStyle={{ y: 8, opacity: 0, scale: 0.98 }}
           >
             <AdaptedDialogContent
               revision={revision}

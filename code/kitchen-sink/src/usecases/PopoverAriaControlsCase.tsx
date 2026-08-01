@@ -8,7 +8,7 @@ export function PopoverAriaControlsCase() {
   const [controlledOpen, setControlledOpen] = useState(false)
 
   return (
-    <YStack gap="$6" padding="$4">
+    <YStack gap="6" padding="4">
       {/* uncontrolled, content uses the generated content id */}
       <Popover>
         <Popover.Trigger asChild>

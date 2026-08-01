@@ -49,14 +49,14 @@ const MenuRadioItem = styled(MenuBehavior.RadioItem, itemStyles)
 const MenuSubTrigger = styled(MenuBehavior.SubTrigger, itemStyles)
 const MenuItemTitle = styled(MenuBehavior.ItemTitle, {
   name: 'KitchenSinkMenuItemTitle',
-  color: '$color',
+  color: 'color',
   cursor: 'default',
   flexGrow: 1,
   flexShrink: 1,
 })
 const MenuItemSubtitle = styled(MenuBehavior.ItemSubtitle, {
   name: 'KitchenSinkMenuItemSubtitle',
-  color: '$color',
+  color: 'color',
   cursor: 'default',
   opacity: 0.6,
 })
@@ -82,26 +82,26 @@ const MenuLabel = styled(MenuBehavior.Label, {
   name: 'KitchenSinkMenuLabel',
   paddingHorizontal: '$2.5',
   paddingVertical: '$1.5',
-  color: '$color',
+  color: 'color',
   cursor: 'default',
   opacity: 0.6,
 })
 const MenuSeparator = styled(MenuBehavior.Separator, {
   name: 'KitchenSinkMenuSeparator',
   height: 1,
-  marginHorizontal: '$2',
-  marginVertical: '$1',
-  backgroundColor: '$borderColor',
+  marginHorizontal: '2',
+  marginVertical: '1',
+  backgroundColor: 'border-color',
 })
 const MenuArrow = styled(MenuBehavior.Arrow, {
   name: 'KitchenSinkMenuArrow',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background',
+  borderColor: 'border-color',
   borderWidth: 1,
 })
 const MenuScrollView = styled(MenuBehavior.ScrollView, {
   name: 'KitchenSinkMenuScrollView',
-  padding: '$1',
+  padding: '1',
 })
 
 const MenuRoot = (props: ComponentProps<typeof MenuBehavior>) => (

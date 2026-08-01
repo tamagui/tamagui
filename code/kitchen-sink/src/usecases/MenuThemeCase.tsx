@@ -15,9 +15,9 @@ export function MenuThemeCase() {
     <Theme name="blue">
       <YStack
         data-testid="themed-container"
-        backgroundColor="$background"
-        padding="$4"
-        borderRadius="$4"
+        backgroundColor="background"
+        padding="4"
+        borderRadius="4"
         alignItems="flex-start"
       >
         <Menu placement="bottom-start" offset={8}>
@@ -30,11 +30,11 @@ export function MenuThemeCase() {
           <Menu.Portal>
             <Menu.Content
               data-testid="menu-content"
-              p="$2"
+              p="2"
               minW={180}
               borderWidth={1}
-              borderColor="$borderColor"
-              bg="$background"
+              borderColor="border-color"
+              bg="background"
             >
               <Menu.Item key="item-1" data-testid="menu-item-1">
                 <Menu.ItemTitle>Item 1</Menu.ItemTitle>

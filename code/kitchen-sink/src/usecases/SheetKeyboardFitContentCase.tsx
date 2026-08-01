@@ -89,7 +89,7 @@ function TestMetricsProbe() {
   )
 
   return (
-    <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
+    <YStack gap="2" padding="3" bg="background-hover" borderRadius="2">
       <Text testID="sheet-kb-fit-events">Events: {events.join(', ') || '(none)'}</Text>
       <Text testID="sheet-kb-fit-scroll-y">Scroll Y: {scrollY}</Text>
       <Text testID="sheet-kb-fit-max-scroll-y">Max scroll Y: {maxScrollY}</Text>
@@ -110,12 +110,12 @@ export function SheetKeyboardFitContentCase() {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   return (
-    <YStack padding="$4" gap="$4" testID="sheet-kb-fit-screen">
-      <Text fontSize="$5" fontWeight="bold">
+    <YStack padding="4" gap="4" testID="sheet-kb-fit-screen">
+      <Text fontSize="5" fontWeight="bold">
         Sheet + Keyboard + Fit Content
       </Text>
 
-      <Text fontSize="$3" color="$gray11">
+      <Text fontSize="3" color="gray11">
         Load a mock image URL to change content height while keyboard may be open.
       </Text>
 
@@ -142,13 +142,7 @@ export function SheetKeyboardFitContentCase() {
         zIndex={100000}
         transition="medium"
       >
-        <Sheet.Overlay
-          transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Sheet.Overlay transition="lazy" bg="color" opacity="0.5 enter:0 exit:0" />
         <Sheet.Container testID="sheet-kb-fit-frame">
           <Sheet.Background />
           <Sheet.ScrollView
@@ -158,8 +152,8 @@ export function SheetKeyboardFitContentCase() {
             scrollEventThrottle={16}
             onScroll={handleScrollMetrics}
           >
-            <YStack gap="$4" padding="$4">
-              <Text fontSize="$5" fontWeight="bold">
+            <YStack gap="4" padding="4">
+              <Text fontSize="5" fontWeight="bold">
                 Create Post
               </Text>
 
@@ -179,26 +173,26 @@ export function SheetKeyboardFitContentCase() {
                   source={{ uri: imageUrl }}
                   width="100%"
                   height={imageUrl === MOCK_URLS.tall ? 300 : 100}
-                  borderRadius="$4"
-                  bg="$backgroundHover"
+                  borderRadius="4"
+                  bg="background-hover"
                 />
               ) : (
                 <YStack
                   testID="sheet-kb-fit-placeholder"
                   height={150}
                   borderWidth={2}
-                  borderColor="$borderColor"
+                  borderColor="border-color"
                   borderStyle="dashed"
-                  borderRadius="$4"
+                  borderRadius="4"
                   alignItems="center"
                   justifyContent="center"
-                  bg="$backgroundHover"
+                  bg="background-hover"
                 >
-                  <Text color="$gray11">No image loaded</Text>
+                  <Text color="gray11">No image loaded</Text>
                 </YStack>
               )}
 
-              <XStack gap="$2">
+              <XStack gap="2">
                 <Button
                   testID="sheet-kb-fit-load-tall"
                   size="medium"

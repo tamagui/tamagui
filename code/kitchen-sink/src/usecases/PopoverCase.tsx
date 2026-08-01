@@ -24,18 +24,18 @@ export function PopoverCase() {
   const [shouldAdapt, setShouldAdapt] = useState(false)
 
   return (
-    <YStack gap="$4" padding="$4" maxWidth={1200} margin="auto">
-      <YStack gap="$2">
+    <YStack gap="4" padding="4" maxWidth={1200} margin="auto">
+      <YStack gap="2">
         <H1>Popover Component Tests</H1>
         <Paragraph>
           This page contains various Popover components for testing different scenarios.
         </Paragraph>
       </YStack>
 
-      <YStack gap="$4">
-        <YStack gap="$2">
+      <YStack gap="4">
+        <YStack gap="2">
           <h2>Basic Popover Tests</h2>
-          <XStack gap="$2" flex={1} justifyContent="center" alignItems="center">
+          <XStack gap="2" flex={1} justifyContent="center" alignItems="center">
             <Demo
               shouldAdapt={shouldAdapt}
               placement="left"
@@ -67,7 +67,7 @@ export function PopoverCase() {
           </XStack>
         </YStack>
 
-        <YStack gap="$2">
+        <YStack gap="2">
           <H2>Simple Popover Test</H2>
           <SimplePopoverTest />
         </YStack>
@@ -111,37 +111,31 @@ function Demo({
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet modal dismissOnSnapToBottom>
-            <Sheet.Container padding="$4">
+            <Sheet.Container padding="4">
               <Sheet.Background />
               <Adapt.Contents />
             </Sheet.Container>
-            <Sheet.Overlay backgroundColor="$shadowColor" />
+            <Sheet.Overlay backgroundColor="shadow-color" />
           </Sheet>
         </Adapt>
       )}
 
       <Popover.Content
         borderWidth={1}
-        borderColor="$borderColor"
-        backgroundColor="$background"
-        boxShadow="0 4px 12px $shadowColor"
+        borderColor="border-color"
+        backgroundColor="background"
+        boxShadow="0 4px 12px shadow-color"
         transition="100ms"
         width={300}
         height={300}
-        enterStyle={{
-          y: -10,
-          opacity: 0,
-        }}
-        exitStyle={{
-          y: -10,
-          opacity: 0,
-        }}
+        y="enter:-10px exit:-10px"
+        opacity="enter:0 exit:0"
         id={`${dataTestId}-content`}
       >
-        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+        <Popover.Arrow borderWidth={1} borderColor="border-color" />
 
-        <YStack gap="$3">
-          <XStack gap="$3">
+        <YStack gap="3">
+          <XStack gap="3">
             <Label size="$3" htmlFor={Name}>
               Name
             </Label>
@@ -171,7 +165,7 @@ function SimplePopoverTest() {
         <Button id="simple-popover-trigger">Simple Popover</Button>
       </Popover.Trigger>
       <Popover.Content id="simple-popover-content">
-        <YStack gap="$2">
+        <YStack gap="2">
           <Paragraph>This is a simple popover</Paragraph>
           <Popover.Close asChild>
             <Button size="small" id="simple-popover-close">
@@ -187,7 +181,7 @@ function SimplePopoverTest() {
 // test case for animatePosition - verifies position is correct on re-open
 export function PopoverAnimatePositionCase() {
   return (
-    <YStack padding="$4" gap="$4" alignItems="center">
+    <YStack padding="4" gap="4" alignItems="center">
       <H1>Popover animatePosition Test</H1>
       <Paragraph>
         Tests that popover with animatePosition shows at correct position on re-open
@@ -202,14 +196,14 @@ export function PopoverAnimatePositionCase() {
             id="animate-position-content"
             animatePosition
             transition="quick"
-            enterStyle={{ y: 5, opacity: 0 }}
-            exitStyle={{ y: 5, opacity: 0 }}
-            backgroundColor="$background"
-            boxShadow="0 4px 12px $shadowColor"
-            padding="$4"
+            y="enter:5px exit:5px"
+            opacity="enter:0 exit:0"
+            backgroundColor="background"
+            boxShadow="0 4px 12px shadow-color"
+            padding="4"
           >
             <Popover.Arrow />
-            <YStack gap="$2" width={200}>
+            <YStack gap="2" width={200}>
               <Paragraph>Popover with animatePosition</Paragraph>
               <Popover.Close asChild>
                 <Button size="small" id="animate-position-close">

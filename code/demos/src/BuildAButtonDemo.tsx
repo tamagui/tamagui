@@ -42,7 +42,7 @@ function ButtonCol(props: any) {
   const subThemeSuffix = subTheme ? `_${subTheme}` : ''
 
   return (
-    <YStack p="$2" gap="$3">
+    <YStack p="2" gap="3">
       <Button theme={subTheme} {...buttonProps}>
         Hello
       </Button>

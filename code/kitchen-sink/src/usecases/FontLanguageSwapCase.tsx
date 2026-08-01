@@ -16,13 +16,13 @@ export function FontLanguageSwapCase() {
   const [japanese, setJapanese] = useState(false)
 
   return (
-    <YStack gap="$4" p="$4">
-      <Text data-testid="default-face" fontFamily="$body" fontSize="$3" lineHeight="$3">
+    <YStack gap="4" p="4">
+      <Text data-testid="default-face" fontFamily="body" fontSize="3" lineHeight="3">
         default face
       </Text>
 
       <FontLanguage body="ja">
-        <Text data-testid="ja-face" fontFamily="$body" fontSize="$3" lineHeight="$3">
+        <Text data-testid="ja-face" fontFamily="body" fontSize="3" lineHeight="3">
           ja face
         </Text>
       </FontLanguage>
@@ -33,17 +33,12 @@ export function FontLanguageSwapCase() {
       </Button>
       {japanese ? (
         <FontLanguage body="ja">
-          <Text
-            data-testid="swapped-face"
-            fontFamily="$body"
-            fontSize="$3"
-            lineHeight="$3"
-          >
+          <Text data-testid="swapped-face" fontFamily="body" fontSize="3" lineHeight="3">
             swapped
           </Text>
         </FontLanguage>
       ) : (
-        <Text data-testid="swapped-face" fontFamily="$body" fontSize="$3" lineHeight="$3">
+        <Text data-testid="swapped-face" fontFamily="body" fontSize="3" lineHeight="3">
           swapped
         </Text>
       )}

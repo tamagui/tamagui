@@ -8,10 +8,8 @@ const StyledView = styled(View, {
   variants: {
     testVariant: {
       true: {
-        focusStyle: {
-          borderWidth: 10,
-          borderColor: 'blue',
-        },
+        borderWidth: 'focus:10px',
+        borderColor: 'focus:blue',
       },
     },
   } as const,

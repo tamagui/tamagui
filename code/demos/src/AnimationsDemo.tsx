@@ -20,20 +20,15 @@ export function AnimationsDemo(props) {
     <>
       <Square
         transition={props.animation ?? 'bouncy'}
+        borderColor="border-color"
+        borderWidth={1}
+        rounded="9"
+        bg="color9"
+        scale="hover:1.01 press:0.9"
+        {...position}
         animateOnly={['transform']}
         onPress={onPress}
         size={104}
-        borderColor="$borderColor"
-        borderWidth={1}
-        rounded="$9"
-        bg="$color9"
-        hoverStyle={{
-          scale: 1.01,
-        }}
-        pressStyle={{
-          scale: 0.9,
-        }}
-        {...position}
       >
         {isWeb && <LogoIcon downscale={0.75} />}
       </Square>

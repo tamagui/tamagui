@@ -7,7 +7,7 @@ export function MenuAboveDialogCase() {
   const [dialogOpen, setDialogOpen] = useState(false)
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Paragraph>
         Test: Open dialog, then open menu from inside. Menu should appear above dialog
         overlay.
@@ -21,7 +21,7 @@ export function MenuAboveDialogCase() {
         <Dialog.Portal>
           <Dialog.Overlay testID="dialog-overlay" key="overlay" opacity={0.5} />
           <Dialog.Content testID="dialog-content" bordered elevate key="content">
-            <YStack gap="$3" padding="$4" minWidth={300}>
+            <YStack gap="3" padding="4" minWidth={300}>
               <Dialog.Title>Dialog with Menu</Dialog.Title>
               <Dialog.Description>
                 Click the menu below. It should appear above this dialog.
@@ -35,12 +35,12 @@ export function MenuAboveDialogCase() {
                 <Menu.Portal>
                   <Menu.Content
                     testID="menu-content"
-                    p="$2"
+                    p="2"
                     minWidth={180}
-                    bg="$background"
+                    bg="background"
                     borderWidth={1}
-                    borderColor="$borderColor"
-                    boxShadow="0 4px 12px $shadowColor"
+                    borderColor="border-color"
+                    boxShadow="0 4px 12px shadow-color"
                   >
                     <Menu.Item testID="menu-item-1">
                       <Menu.ItemTitle>Item 1</Menu.ItemTitle>
@@ -55,7 +55,7 @@ export function MenuAboveDialogCase() {
                 </Menu.Portal>
               </Menu>
 
-              <XStack gap="$3" justifyContent="flex-end">
+              <XStack gap="3" justifyContent="flex-end">
                 <Dialog.Close asChild>
                   <Button testID="dialog-close">Close</Button>
                 </Dialog.Close>
@@ -65,7 +65,7 @@ export function MenuAboveDialogCase() {
         </Dialog.Portal>
       </Dialog>
 
-      <YStack gap="$2">
+      <YStack gap="2">
         <Paragraph testID="dialog-status">
           Dialog: {dialogOpen ? 'open' : 'closed'}
         </Paragraph>

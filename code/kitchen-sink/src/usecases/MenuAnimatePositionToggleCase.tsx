@@ -11,11 +11,11 @@ export function MenuAnimatePositionToggleCase() {
   const [animate, setAnimate] = useState<boolean | undefined>(undefined)
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Text>Test: toggle animatePosition on shared Menu.Content (no React error)</Text>
 
       <Menu placement="bottom-start">
-        <XStack gap="$4">
+        <XStack gap="4">
           <Menu.Trigger asChild>
             <Button
               data-testid="trigger-no-anim"
@@ -36,11 +36,11 @@ export function MenuAnimatePositionToggleCase() {
           <Menu.Content
             data-testid="menu-content"
             animatePosition={animate}
-            p="$2"
+            p="2"
             minWidth={180}
             borderWidth={1}
-            borderColor="$borderColor"
-            boxShadow="0 4px 12px $shadowColor"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
           >
             <Menu.Item key="i1" textValue="Alpha">
               <Menu.ItemTitle>Alpha</Menu.ItemTitle>

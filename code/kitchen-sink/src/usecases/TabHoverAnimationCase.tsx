@@ -65,7 +65,7 @@ export function TabHoverAnimationCase() {
   }
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <SizableText id="going-direction" data-going={going}>
         Direction: {going}
       </SizableText>
@@ -78,7 +78,7 @@ export function TabHoverAnimationCase() {
         placement="top"
         offset={8}
       >
-        <XStack gap="$2">
+        <XStack gap="2">
           {TABS.map((tab) => (
             <Popover.Trigger
               key={tab}
@@ -104,18 +104,17 @@ export function TabHoverAnimationCase() {
           animatePosition
           disableFocusScope
           animateOnly={['transform', 'opacity']}
-          opacity={1}
-          enterStyle={{ opacity: 0, y: -4 }}
-          exitStyle={{ opacity: 0, y: 6 }}
+          opacity="1 enter:0 exit:0"
+          y="enter:-4px exit:6px"
           transition="500ms"
         >
           <YStack
             width={250}
             height={120}
-            rounded="$4"
-            bg="$color3"
-            elevation="$4"
+            rounded="4"
+            bg="color3"
             overflow="hidden"
+            elevation="$4"
           >
             <AnimatePresence initial={false} custom={{ going }}>
               {open && !!displayTab && (
@@ -142,7 +141,7 @@ export function TabHoverAnimationCase() {
 }
 
 const TabContent = memo(({ tab }: { tab: string }) => (
-  <YStack gap="$2" padding="$2">
+  <YStack gap="2" padding="2">
     <SizableText fontWeight="bold" data-testid="tab-content-title">
       {tab}
     </SizableText>
@@ -160,14 +159,8 @@ const SlideFrame = styled(YStack, {
   variants: {
     going: {
       number: (going: number) => ({
-        enterStyle: {
-          x: going === 0 ? 0 : going > 0 ? 100 : -100,
-          opacity: 0,
-        },
-        exitStyle: {
-          x: going === 0 ? 0 : going < 0 ? 100 : -100,
-          opacity: 0,
-        },
+        x: `enter:${going === 0 ? 0 : going > 0 ? 100 : -100}px exit:${going === 0 ? 0 : going < 0 ? 100 : -100}px`,
+        opacity: 'enter:0 exit:0',
       }),
     },
   } as const,

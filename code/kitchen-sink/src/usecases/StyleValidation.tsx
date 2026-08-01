@@ -257,8 +257,8 @@ const InteractiveHover = () => (
     id="sv-hover"
     width={80}
     height={80}
-    backgroundColor="rgb(34,197,94)"
-    hoverStyle={{ backgroundColor: 'rgb(22,163,74)', scale: 1.05 }}
+    backgroundColor="rgb(34,197,94) hover:rgb(22,163,74)"
+    scale="hover:1.05"
   />
 )
 
@@ -267,8 +267,8 @@ const InteractivePress = () => (
     id="sv-press"
     width={80}
     height={80}
-    backgroundColor="rgb(59,130,246)"
-    pressStyle={{ backgroundColor: 'rgb(29,78,216)', opacity: 0.8 }}
+    backgroundColor="rgb(59,130,246) press:rgb(29,78,216)"
+    opacity="press:0.8"
   />
 )
 
@@ -278,13 +278,12 @@ const InteractiveFocus = () => (
     width={80}
     height={80}
     backgroundColor="rgb(200,200,200)"
+    borderWidth="focus:2px"
+    borderColor="focus:rgb(99,102,241)"
+    outlineWidth="focus-visible:2px"
+    outlineColor="focus-visible:rgb(99,102,241)"
+    outlineStyle="focus-visible:solid"
     tabIndex={0}
-    focusStyle={{ borderWidth: 2, borderColor: 'rgb(99,102,241)' }}
-    focusVisibleStyle={{
-      outlineWidth: 2,
-      outlineColor: 'rgb(99,102,241)',
-      outlineStyle: 'solid',
-    }}
   />
 )
 
@@ -295,9 +294,7 @@ const MediaQuery = () => (
     id="sv-media"
     width={80}
     height={80}
-    backgroundColor="rgb(255,0,0)"
-    $sm={{ backgroundColor: 'rgb(0,255,0)' }}
-    $md={{ backgroundColor: 'rgb(0,0,255)' }}
+    backgroundColor="rgb(255,0,0) sm:rgb(0,255,0) md:rgb(0,0,255)"
   />
 )
 
@@ -332,8 +329,8 @@ const StyledVariants = () => (
 
 export function StyleValidation() {
   return (
-    <YStack padding={20} gap={24} backgroundColor="$background" id="sv-root">
-      <Text fontSize={20} fontWeight="bold" color="$color">
+    <YStack padding={20} gap={24} backgroundColor="background" id="sv-root">
+      <Text fontSize={20} fontWeight="bold" color="color">
         Style Validation
       </Text>
 
@@ -397,7 +394,7 @@ export function StyleValidation() {
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <YStack gap={8}>
-      <Text fontSize={14} fontWeight="600" color="$color8">
+      <Text fontSize={14} fontWeight="600" color="color8">
         {label}
       </Text>
       <XStack gap={12} flexWrap="wrap" alignItems="flex-start">

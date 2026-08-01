@@ -32,8 +32,8 @@ export const SheetDemo = () => {
 
   return (
     <>
-      <YStack gap="$4">
-        <XStack gap="$4" $maxMd={{ flexDirection: 'column', items: 'center' }}>
+      <YStack gap="4">
+        <XStack gap="4" flexDirection="max-md:column" items="max-md:center">
           <Button onPress={() => setOpen(true)}>Open</Button>
           <Button onPress={() => setModal((x) => !x)}>
             {modal ? 'Type: Modal' : 'Type: Inline'}
@@ -77,15 +77,10 @@ export const SheetDemo = () => {
         zIndex={100_000}
         transition="medium"
       >
-        <Sheet.Overlay
-          transition="lazy"
-          bg="$shadow6"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Sheet.Overlay transition="lazy" bg="shadow6" opacity="enter:0 exit:0" />
 
         <Sheet.Handle />
-        <Sheet.Container p="$4" justify="center" items="center" gap="$5">
+        <Sheet.Container p="4" justify="center" items="center" gap="5">
           <Sheet.Background />
           <SheetContents {...{ modal, isPercent, innerOpen, setInnerOpen, setOpen }} />
         </Sheet.Container>
@@ -120,18 +115,13 @@ const SheetContents = memo(
 function InnerSheet(props: SheetProps) {
   return (
     <Sheet transition="medium" modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
-      <Sheet.Overlay
-        transition="medium"
-        bg="$shadow2"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
+      <Sheet.Overlay transition="medium" bg="shadow2" opacity="enter:0 exit:0" />
 
       <Sheet.Handle />
-      <Sheet.Container flex={1} justify="center" items="center" gap="$5">
+      <Sheet.Container flex={1} justify="center" items="center" gap="5">
         <Sheet.Background />
         <Sheet.ScrollView>
-          <YStack p="$5" gap="$8">
+          <YStack p="5" gap="8">
             <Button
               size="large"
               circular

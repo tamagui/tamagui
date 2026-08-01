@@ -6,7 +6,7 @@ export function FocusScopeNoFocusCase() {
   const [noFocus, setNoFocus] = React.useState(true)
 
   return (
-    <YStack padding="$4" gap="$4" maxWidth={400}>
+    <YStack padding="4" gap="4" maxWidth={400}>
       <Button data-testid="toggle-no-focus" onPress={() => setNoFocus((x) => !x)}>
         {noFocus ? 'noFocus: on' : 'noFocus: off'}
       </Button>
@@ -14,7 +14,7 @@ export function FocusScopeNoFocusCase() {
       <Input data-testid="outside-input" placeholder="Outside input" />
 
       <FocusScope noFocus={noFocus}>
-        <YStack gap="$3" data-testid="scope-content">
+        <YStack gap="3" data-testid="scope-content">
           <Input data-testid="inside-input" placeholder="Inside input" />
           <Button data-testid="inside-button">Inside button</Button>
         </YStack>

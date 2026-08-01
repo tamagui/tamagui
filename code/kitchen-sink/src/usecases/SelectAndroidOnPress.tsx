@@ -34,12 +34,12 @@ export function SelectAndroidOnPress() {
   }
 
   return (
-    <YStack padding="$4" gap="$4" flex={1}>
-      <Text testID="select-android-title" fontSize="$5" fontWeight="bold">
+    <YStack padding="4" gap="4" flex={1}>
+      <Text testID="select-android-title" fontSize="5" fontWeight="bold">
         Select Android onPress Test (#3436)
       </Text>
 
-      <Text testID="select-android-instructions" fontSize="$3" color="$gray11">
+      <Text testID="select-android-instructions" fontSize="3" color="gray11">
         Tap the select, then tap an item. On physical Android devices, the selection may
         not work due to onPress not firing.
       </Text>
@@ -64,12 +64,7 @@ export function SelectAndroidOnPress() {
                 <Adapt.Contents />
               </Sheet.ScrollView>
             </Sheet.Container>
-            <Sheet.Overlay
-              bg="$shadowColor"
-              transition="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
-            />
+            <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
           </Sheet>
         </Adapt>
 
@@ -96,7 +91,7 @@ export function SelectAndroidOnPress() {
       </Select>
 
       {/* status display for test verification */}
-      <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
+      <YStack gap="2" padding="3" bg="background-hover" borderRadius="2">
         <Text testID="select-android-selected-value">
           Selected value: {val || '(none)'}
         </Text>
@@ -104,21 +99,21 @@ export function SelectAndroidOnPress() {
         <Text testID="select-android-last-action">Last action: {lastAction}</Text>
       </YStack>
 
-      <YStack gap="$1" padding="$2" bg="$yellow3" borderRadius="$2">
-        <Text fontSize="$2" fontWeight="bold">
+      <YStack gap="1" padding="2" bg="yellow3" borderRadius="2">
+        <Text fontSize="2" fontWeight="bold">
           Expected behavior:
         </Text>
-        <Text fontSize="$2">
+        <Text fontSize="2">
           • Tap trigger → sheet opens{'\n'}• Tap item → sheet closes, value updates{'\n'}•
           Change count should increment
         </Text>
       </YStack>
 
-      <YStack gap="$1" padding="$2" bg="$red3" borderRadius="$2">
-        <Text fontSize="$2" fontWeight="bold">
+      <YStack gap="1" padding="2" bg="red3" borderRadius="2">
+        <Text fontSize="2" fontWeight="bold">
           Bug behavior (physical Android):
         </Text>
-        <Text fontSize="$2">
+        <Text fontSize="2">
           • Tap trigger → sheet opens{'\n'}• Tap item → nothing happens{'\n'}•
           onValueChange never fires
         </Text>

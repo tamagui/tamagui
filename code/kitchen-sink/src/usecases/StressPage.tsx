@@ -49,48 +49,58 @@ if (shouldProfile) {
 
 // styled components with variants
 const StyledCard = styled(Card, {
-  padding: '$4',
-  borderRadius: '$4',
-  backgroundColor: '$background',
+  padding: '4',
+  borderRadius: '4',
+  backgroundColor: 'background',
   borderWidth: 1,
-  borderColor: '$borderColor',
+  borderColor: 'border-color',
   elevation: '$2',
-
   variants: {
     highlighted: {
       true: {
-        backgroundColor: '$blue2',
-        borderColor: '$blue6',
+        backgroundColor: 'blue2',
+        borderColor: 'blue6',
       },
     },
     size: {
-      sm: { padding: '$2' },
-      md: { padding: '$4' },
-      lg: { padding: '$6' },
+      sm: {
+        padding: '2',
+      },
+      md: {
+        padding: '4',
+      },
+      lg: {
+        padding: '6',
+      },
     },
   } as const,
 })
 
 const Badge = styled(View, {
-  paddingHorizontal: '$2',
-  paddingVertical: '$1',
-  borderRadius: '$10',
-  backgroundColor: '$blue4',
-
+  paddingHorizontal: '2',
+  paddingVertical: '1',
+  borderRadius: '10',
+  backgroundColor: 'blue4',
   variants: {
     color: {
-      green: { backgroundColor: '$green4' },
-      red: { backgroundColor: '$red4' },
-      orange: { backgroundColor: '$orange4' },
+      green: {
+        backgroundColor: 'green4',
+      },
+      red: {
+        backgroundColor: 'red4',
+      },
+      orange: {
+        backgroundColor: 'orange4',
+      },
     },
   } as const,
 })
 
 const StatBox = styled(YStack, {
-  padding: '$3',
-  borderRadius: '$3',
-  backgroundColor: '$backgroundHover',
-  gap: '$1',
+  padding: '3',
+  borderRadius: '3',
+  backgroundColor: 'background-hover',
+  gap: '1',
   flex: 1,
 })
 
@@ -110,14 +120,14 @@ const stats = [
 
 function Header() {
   return (
-    <YStack gap="$2" padding="$4" backgroundColor="$background">
-      <H1 color="$color" fontWeight="800">
+    <YStack gap="2" padding="4" backgroundColor="background">
+      <H1 color="color" fontWeight="800">
         Dashboard
       </H1>
-      <Paragraph color="$color8" size="$4">
+      <Paragraph color="color8" size="$4">
         Overview of your application metrics and recent activity
       </Paragraph>
-      <XStack gap="$2" flexWrap="wrap">
+      <XStack gap="2" flexWrap="wrap">
         {['All', 'Active', 'Pending', 'Archived'].map((tab) => (
           <Button
             key={tab}
@@ -134,13 +144,13 @@ function Header() {
 
 function StatsRow() {
   return (
-    <XStack gap="$3" paddingHorizontal="$4" flexWrap="wrap">
+    <XStack gap="3" paddingHorizontal="4" flexWrap="wrap">
       {stats.map((s) => (
         <StatBox key={s.label}>
-          <SizableText size="$2" color="$color8">
+          <SizableText size="$2" color="color8">
             {s.label}
           </SizableText>
-          <SizableText size="$8" fontWeight="700" color="$color">
+          <SizableText size="$8" fontWeight="700" color="color">
             {s.value}
           </SizableText>
         </StatBox>
@@ -152,19 +162,19 @@ function StatsRow() {
 function ItemRow({ item }: { item: (typeof items)[0] }) {
   return (
     <XStack
-      padding="$3"
-      gap="$3"
+      padding="3"
+      gap="3"
       alignItems="center"
-      borderBottomColor="$borderColor"
+      borderBottomColor="border-color"
       borderBottomWidth={1}
-      hoverStyle={{ backgroundColor: '$backgroundHover' }}
+      backgroundColor="hover:background-hover"
     >
-      <View width={40} height={40} borderRadius="$10" backgroundColor="$blue5" />
-      <YStack flex={1} gap="$1">
+      <View width={40} height={40} borderRadius="10" backgroundColor="blue5" />
+      <YStack flex={1} gap="1">
         <SizableText fontWeight="600" size="$4">
           {item.title}
         </SizableText>
-        <SizableText size="$2" color="$color8" numberOfLines={1}>
+        <SizableText size="$2" color="color8" numberOfLines={1}>
           {item.desc}
         </SizableText>
       </YStack>
@@ -180,7 +190,7 @@ function ItemRow({ item }: { item: (typeof items)[0] }) {
 function ItemList() {
   return (
     <StyledCard size="md">
-      <H3 marginBottom="$2">Recent Activity</H3>
+      <H3 marginBottom="2">Recent Activity</H3>
       <YStack>
         {items.map((item) => (
           <ItemRow key={item.id} item={item} />
@@ -193,15 +203,15 @@ function ItemList() {
 function FormSection() {
   return (
     <StyledCard highlighted size="md">
-      <H3 marginBottom="$3">Settings</H3>
-      <YStack gap="$3">
+      <H3 marginBottom="3">Settings</H3>
+      <YStack gap="3">
         {['Name', 'Email', 'Company', 'Role'].map((field) => (
-          <YStack key={field} gap="$1">
+          <YStack key={field} gap="1">
             <Label size="$3">{field}</Label>
             <Input size="$3" placeholder={`Enter ${field.toLowerCase()}`} />
           </YStack>
         ))}
-        <XStack gap="$3" alignItems="center">
+        <XStack gap="3" alignItems="center">
           <Switch size="$3" />
           <SizableText size="$3">Enable notifications</SizableText>
         </XStack>
@@ -214,19 +224,19 @@ function FormSection() {
 function ThemedSection() {
   return (
     <Theme name="blue">
-      <YStack gap="$3" padding="$4" backgroundColor="$background" borderRadius="$4">
-        <H2 color="$color">Themed Section</H2>
-        <XStack gap="$2" flexWrap="wrap">
+      <YStack gap="3" padding="4" backgroundColor="background" borderRadius="4">
+        <H2 color="color">Themed Section</H2>
+        <XStack gap="2" flexWrap="wrap">
           {Array.from({ length: 12 }, (_, i) => (
             <Theme key={i} name={i % 2 === 0 ? 'surface1' : 'surface2'}>
               <View
                 width={80}
                 height={60}
-                borderRadius="$3"
-                backgroundColor="$background"
-                padding="$2"
+                borderRadius="3"
+                backgroundColor="background"
+                padding="2"
               >
-                <SizableText size="$1" color="$color">
+                <SizableText size="$1" color="color">
                   Card {i + 1}
                 </SizableText>
               </View>
@@ -241,14 +251,14 @@ function ThemedSection() {
 function Footer() {
   return (
     <XStack
-      padding="$4"
-      gap="$4"
+      padding="4"
+      gap="4"
       justifyContent="space-between"
-      borderTopColor="$borderColor"
+      borderTopColor="border-color"
       borderTopWidth={1}
     >
       {['About', 'Privacy', 'Terms', 'Contact', 'Help', 'Status'].map((link) => (
-        <SizableText key={link} size="$2" color="$color8" cursor="pointer">
+        <SizableText key={link} size="$2" color="color8" cursor="pointer">
           {link}
         </SizableText>
       ))}
@@ -288,16 +298,16 @@ export function StressPage() {
   }, [])
 
   return (
-    <YStack width="100%" maxWidth={900} gap="$4" paddingBottom="$6">
+    <YStack width="100%" maxWidth={900} gap="4" paddingBottom="6">
       <Header />
       <Separator />
       <StatsRow />
       <Separator />
-      <XStack gap="$4" paddingHorizontal="$4" flexWrap="wrap">
-        <YStack flex={2} minWidth={400} gap="$4">
+      <XStack gap="4" paddingHorizontal="4" flexWrap="wrap">
+        <YStack flex={2} minWidth={400} gap="4">
           <ItemList />
         </YStack>
-        <YStack flex={1} minWidth={280} gap="$4">
+        <YStack flex={1} minWidth={280} gap="4">
           <FormSection />
           <ThemedSection />
         </YStack>

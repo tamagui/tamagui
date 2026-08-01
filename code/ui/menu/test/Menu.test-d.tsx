@@ -10,20 +10,18 @@ createBaseMenu()
 createBaseMenu({ Item: Menu.Item })
 
 styled(Menu.Content, {
-  backgroundColor: '$background',
-  borderRadius: '$4',
-  padding: '$3',
+  backgroundColor: 'background',
+  borderRadius: '4',
+  padding: '3',
 })
 
 styled(Menu.Item, {
-  paddingHorizontal: '$3',
-  focusStyle: {
-    backgroundColor: '$backgroundFocus',
-  },
+  paddingHorizontal: '3',
+  backgroundColor: 'focus:background-focus',
 })
 
 styled(ContextMenu.Content, {
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   borderWidth: 1,
 })
 

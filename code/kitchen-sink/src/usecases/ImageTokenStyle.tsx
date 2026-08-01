@@ -19,12 +19,12 @@ const cases = [
 
 export function ImageTokenStyle() {
   return (
-    <YStack gap="$4" padding="$4">
-      <Text fontWeight="bold" fontSize="$5">
+    <YStack gap="4" padding="4">
+      <Text fontWeight="bold" fontSize="5">
         Image token styles
       </Text>
 
-      <XStack gap="$4">
+      <XStack gap="4">
         <View width={140} />
         <View width={130}>
           <Text fontWeight="bold" textAlign="center">
@@ -39,9 +39,9 @@ export function ImageTokenStyle() {
       </XStack>
 
       {cases.map((c, i) => (
-        <XStack key={i} gap="$4" alignItems="center">
+        <XStack key={i} gap="4" alignItems="center">
           <View width={140}>
-            <Text fontSize="$2">{c.label}</Text>
+            <Text fontSize="2">{c.label}</Text>
           </View>
 
           <YStack width={130} alignItems="center" overflow="hidden">
@@ -49,7 +49,7 @@ export function ImageTokenStyle() {
           </YStack>
 
           <YStack width={130} alignItems="center" overflow="hidden">
-            <View id={`view-ref-${i}`} backgroundColor="$blue10" {...c.props} />
+            <View id={`view-ref-${i}`} backgroundColor="blue10" {...c.props} />
           </YStack>
         </XStack>
       ))}

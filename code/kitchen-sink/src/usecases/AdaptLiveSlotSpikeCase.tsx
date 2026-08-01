@@ -157,13 +157,13 @@ export function AdaptLiveSlotSpikeCase() {
     // native Detox tests must be able to scroll each section into view (the
     // web tests get this for free via Playwright auto-scroll)
     <ScrollView {...testProps('adapt-live-slot-scroll')} flex={1}>
-      <YStack p="$4" gap="$5" maxW={760}>
-        <YStack gap="$3">
+      <YStack p="4" gap="5" maxW={760}>
+        <YStack gap="3">
           <H2 size="$7">Adapt live slot spike</H2>
           <Paragraph size="$3">
             Local PR-A proof harness. It does not change Adapt core.
           </Paragraph>
-          <XStack gap="$3" flexWrap="wrap">
+          <XStack gap="3" flexWrap="wrap">
             <Button
               {...testProps('live-slot-toggle')}
               onPress={() => setLiveActive((x) => !x)}
@@ -181,13 +181,13 @@ export function AdaptLiveSlotSpikeCase() {
 
         <LiveSlotProof active={liveActive} revision={liveRevision} />
 
-        <YStack gap="$3">
+        <YStack gap="3">
           <H2 size="$6">State preservation characterization</H2>
           <Paragraph size="$3">
             Measured v2 Adapt baseline vs the candidate live slot across inactive/active
             moves.
           </Paragraph>
-          <XStack gap="$3" flexWrap="wrap">
+          <XStack gap="3" flexWrap="wrap">
             <Button
               {...testProps('slot-state-toggle')}
               onPress={() => setSlotAdapted((x) => !x)}
@@ -196,7 +196,7 @@ export function AdaptLiveSlotSpikeCase() {
             </Button>
           </XStack>
 
-          <XStack gap="$4" flexWrap="wrap">
+          <XStack gap="4" flexWrap="wrap">
             <MeasuredV2StateBaselinePanel />
             <SlotStatePanel adapted={slotAdapted} />
           </XStack>
@@ -221,13 +221,13 @@ function LiveSlotSheetTouchProof() {
       <DialogContext.Provider value="sheet-dialog-parent-ok">
         <YStack
           {...testProps('sheet-live-slot-target')}
-          data-sheet-slot-target="true"
           height={360}
-          p="$3"
-          gap="$3"
+          p="3"
+          gap="3"
           borderWidth={1}
-          borderColor="$green8"
-          rounded="$4"
+          borderColor="green8"
+          rounded="4"
+          data-sheet-slot-target="true"
         >
           <Paragraph size="$3" fontWeight="700">
             No-portal Sheet target subtree
@@ -241,11 +241,11 @@ function LiveSlotSheetTouchProof() {
           >
             <Sheet.Container
               {...testProps('sheet-live-slot-frame')}
-              p="$4"
-              gap="$3"
+              p="4"
+              gap="3"
               data-sheet-live-slot-frame="no-portal-inline-sheet"
             >
-              <Sheet.Background bg="$background" />
+              <Sheet.Background bg="background" />
               <TargetContext.Provider value="sheet-target-ok">
                 <LiveSlotContents />
               </TargetContext.Provider>
@@ -255,12 +255,12 @@ function LiveSlotSheetTouchProof() {
 
         <YStack
           {...testProps('sheet-live-slot-source')}
-          data-sheet-slot-source="true"
-          p="$3"
-          gap="$3"
+          p="3"
+          gap="3"
           borderWidth={1}
-          borderColor="$blue8"
-          rounded="$4"
+          borderColor="blue8"
+          rounded="4"
+          data-sheet-slot-source="true"
         >
           <Paragraph size="$3" fontWeight="700">
             Sheet touch source branch
@@ -288,14 +288,14 @@ function SheetTouchProofContent() {
   return (
     <YStack
       {...testProps('sheet-live-slot-content')}
+      p="3"
+      gap="3"
+      rounded="3"
+      bg="background"
+      borderWidth={1}
+      borderColor="color8"
       accessibilityLabel="No portal sheet live slot panel"
       accessibilityHint="Proof content rendered as plain Sheet.Container children"
-      p="$3"
-      gap="$3"
-      rounded="$3"
-      bg="$background"
-      borderWidth={1}
-      borderColor="$color8"
     >
       <Text {...testProps('sheet-live-slot-context')}>{contextProof}</Text>
       <Input
@@ -328,12 +328,12 @@ function LiveSlotProof({ active, revision }: { active: boolean; revision: number
       <DialogContext.Provider value="dialog-parent-ok">
         <YStack
           {...testProps('live-slot-target')}
-          data-slot-target="true"
-          p="$3"
-          gap="$3"
+          p="3"
+          gap="3"
           borderWidth={1}
-          borderColor="$green8"
-          rounded="$4"
+          borderColor="green8"
+          rounded="4"
+          data-slot-target="true"
         >
           <Paragraph size="$3" fontWeight="700">
             Candidate target subtree
@@ -345,12 +345,12 @@ function LiveSlotProof({ active, revision }: { active: boolean; revision: number
 
         <YStack
           {...testProps('live-slot-source')}
-          data-slot-source="true"
-          p="$3"
-          gap="$3"
+          p="3"
+          gap="3"
           borderWidth={1}
-          borderColor="$blue8"
-          rounded="$4"
+          borderColor="blue8"
+          rounded="4"
+          data-slot-source="true"
         >
           <Paragraph size="$3" fontWeight="700">
             Authored Dialog.Portal-like source
@@ -387,18 +387,18 @@ function SlotProofContent({ revision }: { revision: number }) {
     <FocusScope enabled={isWeb} trapped={isWeb} loop focusOnIdle={16}>
       <YStack
         {...testProps('live-slot-content')}
+        p="3"
+        gap="3"
+        rounded="3"
+        bg="background"
+        borderWidth={1}
+        borderColor="color8"
         role={isWeb ? 'dialog' : undefined}
         aria-modal={isWeb ? true : undefined}
         aria-labelledby={isWeb ? titleId : undefined}
         aria-describedby={isWeb ? descriptionId : undefined}
         accessibilityLabel="Live slot spike panel"
         accessibilityHint="Proof content rendered through the candidate live slot"
-        p="$3"
-        gap="$3"
-        rounded="$3"
-        bg="$background"
-        borderWidth={1}
-        borderColor="$color8"
       >
         <H2 id={titleId} {...testProps('live-slot-title')} size="$5">
           Live slot spike panel
@@ -438,11 +438,11 @@ function MeasuredV2StateBaselinePanel() {
   return (
     <YStack
       {...testProps('v2-measured-baseline-panel')}
-      p="$3"
-      gap="$3"
+      p="3"
+      gap="3"
       borderWidth={1}
-      borderColor="$orange8"
-      rounded="$4"
+      borderColor="orange8"
+      rounded="4"
       flex={1}
       minW={140}
     >
@@ -463,11 +463,11 @@ function SlotStatePanel({ adapted }: { adapted: boolean }) {
   return (
     <YStack
       {...testProps('slot-state-panel')}
-      p="$3"
-      gap="$3"
+      p="3"
+      gap="3"
       borderWidth={1}
-      borderColor="$purple8"
-      rounded="$4"
+      borderColor="purple8"
+      rounded="4"
       flex={1}
       minW={140}
     >
@@ -496,7 +496,7 @@ function StateProbe({ name }: { name: 'slot' }) {
   }
 
   return (
-    <YStack {...testProps(`${name}-state-content`)} gap="$2">
+    <YStack {...testProps(`${name}-state-content`)} gap="2">
       <Text {...testProps(`${name}-state-count`)}>
         {name} count: {count}
       </Text>

@@ -27,13 +27,13 @@ const filler = (prefix: string) =>
 
 export function MenuDismissOnScrollCase() {
   return (
-    <YStack data-testid="page" padding="$4" gap="$4" minHeight={2000}>
+    <YStack data-testid="page" padding="4" gap="4" minHeight={2000}>
       {/* an unrelated scrollable subtree - scrolling this must NOT dismiss */}
       <ScrollView
         data-testid="unrelated-scroll"
         height={160}
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
       >
         {filler('unrelated')}
       </ScrollView>
@@ -44,7 +44,7 @@ export function MenuDismissOnScrollCase() {
         data-testid="trigger-scroll"
         height={160}
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
       >
         <Menu>
           <Menu.Trigger asChild>
@@ -58,9 +58,9 @@ export function MenuDismissOnScrollCase() {
               data-testid="menu-content"
               minWidth={200}
               borderWidth={1}
-              borderColor="$borderColor"
-              boxShadow="0 4px 12px $shadowColor"
-              padding="$2"
+              borderColor="border-color"
+              boxShadow="0 4px 12px shadow-color"
+              padding="2"
             >
               <Menu.Item
                 data-testid="menu-item-1"

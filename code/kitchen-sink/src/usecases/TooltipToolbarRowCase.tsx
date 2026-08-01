@@ -26,7 +26,7 @@ export function TooltipToolbarRowCase() {
   const [active, setActive] = useState<string | null>(null)
 
   return (
-    <YStack flex={1} bg="$background" p="$8" minWidth={700} minHeight={400}>
+    <YStack flex={1} bg="background" p="8" minWidth={700} minHeight={400}>
       <Tooltip
         scope="toolbar-tip"
         offset={16}
@@ -36,7 +36,7 @@ export function TooltipToolbarRowCase() {
         allowFlip
         stayInFrame={{ padding: 14 }}
       >
-        <XStack gap="$1" mt="$10" self="center">
+        <XStack gap="1" mt="10" self="center">
           {LABELS.map((label, i) => (
             <Tooltip.Trigger key={label} scope="toolbar-tip" asChild="except-style">
               <YStack
@@ -47,9 +47,8 @@ export function TooltipToolbarRowCase() {
                 height={26}
                 items="center"
                 justify="center"
-                rounded="$2"
-                bg="$color4"
-                hoverStyle={{ bg: '$color6' }}
+                rounded="2"
+                bg="color4 hover:color6"
                 onMouseEnter={() => setActive(label)}
                 onMouseLeave={() => setActive((prev) => (prev === label ? null : prev))}
               >
@@ -63,25 +62,19 @@ export function TooltipToolbarRowCase() {
           data-testid="toolbar-tip-content"
           animatePosition
           animateOnly={['transform', 'opacity', 'width', 'height']}
-          transition={{
-            default: 'quickest',
-            enter: 'quickest',
-            exit: '0ms',
-          }}
-          enterStyle={{ x: 0, y: -3, opacity: 0 }}
-          exitStyle={{ x: 0, y: -3, opacity: 0 }}
-          x={0}
-          y={0}
+          transition={{ default: 'quickest', enter: 'quickest', exit: '0ms' }}
+          x="0 enter:0 exit:0"
+          y="0 enter:-3px exit:-3px"
+          opacity="1 enter:0 exit:0"
           scale={1}
-          opacity={1}
           pointerEvents="none"
           py="$1.5"
-          px="$2"
-          rounded="$2"
-          bg="$color2"
+          px="2"
+          rounded="2"
+          bg="color2"
           borderWidth={0}
         >
-          <Tooltip.Arrow size="$3" bg="$color2" />
+          <Tooltip.Arrow size="$3" bg="color2" />
           <Paragraph pointerEvents="none" fontWeight="600" size="$2">
             {active}
           </Paragraph>

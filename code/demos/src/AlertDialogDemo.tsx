@@ -11,36 +11,25 @@ export function AlertDialogDemo() {
         <AlertDialog.Overlay
           key="overlay"
           transition="quick"
-          opacity={0.5}
-          backgroundColor="$background"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          opacity="0.5 enter:0 exit:0"
+          backgroundColor="background"
         />
         <AlertDialog.Content
           elevation="$4"
           key="content"
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-          x={0}
-          scale={1}
-          opacity={1}
-          y={0}
+          transition={['quick', { opacity: { overshootClamping: true } }]}
+          x="0 enter:0 exit:0"
+          scale="1 enter:0.9 exit:0.95"
+          opacity="1 enter:0 exit:0"
+          y="0 enter:-20px exit:10px"
         >
-          <YStack gap="$4">
+          <YStack gap="4">
             <AlertDialog.Title>Accept</AlertDialog.Title>
             <AlertDialog.Description>
               By pressing yes, you accept our terms and conditions.
             </AlertDialog.Description>
 
-            <XStack gap="$3" justify="flex-end">
+            <XStack gap="3" justify="flex-end">
               <AlertDialog.Cancel asChild>
                 <Button>Cancel</Button>
               </AlertDialog.Cancel>

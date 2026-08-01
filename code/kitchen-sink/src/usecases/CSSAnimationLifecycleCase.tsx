@@ -34,7 +34,7 @@ function AnimatedNumberLifecycle() {
   })
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Button
         data-testid="css-number-trigger"
         onPress={() => {
@@ -71,7 +71,7 @@ function ExitUsingBrowserAnimations() {
   }
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Button data-testid="css-waapi-exit-trigger" onPress={close}>
         Close
       </Button>
@@ -86,9 +86,8 @@ function ExitUsingBrowserAnimations() {
             key="waapi-exit"
             data-testid="css-waapi-exit-target"
             size={40}
-            opacity={1}
+            opacity="1 exit:1"
             transition="slow"
-            exitStyle={{ opacity: 1 }}
           />
         )}
       </AnimatePresence>
@@ -99,7 +98,7 @@ function ExitUsingBrowserAnimations() {
 
 export function CSSAnimationLifecycleCase() {
   return (
-    <YStack padding="$4" gap="$6">
+    <YStack padding="4" gap="6">
       <AnimatedNumberLifecycle />
       <ExitUsingBrowserAnimations />
     </YStack>

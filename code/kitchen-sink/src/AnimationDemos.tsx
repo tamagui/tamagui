@@ -4,15 +4,7 @@ import { Button } from './components/Button'
 
 function Demo1() {
   return (
-    <Square
-      size={200}
-      transition="bouncy"
-      bg="$red10"
-      pressStyle={{
-        bg: 'green',
-        scale: 1.2,
-      }}
-    />
+    <Square size={200} transition="bouncy" bg="red10 press:green" scale="press:1.2" />
   )
 }
 
@@ -25,17 +17,7 @@ function Demo2() {
     <>
       <Button onPress={() => setShow(!show)}>Toggle</Button>
       {show && (
-        <Square
-          size={200}
-          transition="bouncy"
-          bg="$red10"
-          enterStyle={{
-            opacity: 0,
-          }}
-          exitStyle={{
-            opacity: 0,
-          }}
-        />
+        <Square size={200} transition="bouncy" bg="red10" opacity="enter:0 exit:0" />
       )}
     </>
   )
@@ -57,15 +39,9 @@ const GalleryItem = styled(YStack, {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
       number: (going) => ({
-        enterStyle: {
-          x: going > 0 ? 1000 : -1000,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: going < 0 ? 1000 : -1000,
-          opacity: 0,
-        },
+        x: `enter:${going > 0 ? 1000 : -1000}px exit:${going < 0 ? 1000 : -1000}px`,
+        opacity: 'enter:0 exit:0',
+        zIndex: 'exit:0',
       }),
     },
   } as const,
@@ -110,11 +86,11 @@ export function Demo3() {
         icon={ArrowLeft}
         size="large"
         position="absolute"
-        left="$4"
-        circular
+        left="4"
         boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
-        onPress={() => paginate(-1)}
         z={100}
+        circular
+        onPress={() => paginate(-1)}
       />
 
       <Button
@@ -122,11 +98,11 @@ export function Demo3() {
         icon={ArrowRight}
         size="large"
         position="absolute"
-        right="$4"
-        circular
+        right="4"
         boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
-        onPress={() => paginate(1)}
         z={100}
+        circular
+        onPress={() => paginate(1)}
       />
     </XStack>
   )

@@ -12,8 +12,8 @@ export const NativeSheetDemo = () => {
 
   return (
     <>
-      <YStack gap="$4">
-        <XStack gap="$4" $sm={{ flexDirection: 'column', alignItems: 'center' }}>
+      <YStack gap="4">
+        <XStack gap="4" flexDirection="sm:column" alignItems="sm:center">
           <Button onPress={() => setOpen(true)}>Open</Button>
         </XStack>
       </YStack>
@@ -31,19 +31,10 @@ export const NativeSheetDemo = () => {
         zIndex={100_000}
         transition="medium"
       >
-        <Sheet.Overlay
-          transition="lazy"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Sheet.Overlay transition="lazy" opacity="enter:0 exit:0" />
 
         <Sheet.Handle />
-        <Sheet.Container
-          padding="$4"
-          justifyContent="center"
-          alignItems="center"
-          gap="$5"
-        >
+        <Sheet.Container padding="4" justifyContent="center" alignItems="center" gap="5">
           <Sheet.Background />
           <Button
             size="large"
@@ -75,17 +66,13 @@ function InnerSheet(props: SheetProps) {
       dismissOnSnapToBottom
       {...props}
     >
-      <Sheet.Overlay
-        transition="medium"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
+      <Sheet.Overlay transition="medium" opacity="enter:0 exit:0" />
 
       <Sheet.Handle />
-      <Sheet.Container flex={1} justifyContent="center" alignItems="center" gap="$5">
+      <Sheet.Container flex={1} justifyContent="center" alignItems="center" gap="5">
         <Sheet.Background />
         <Sheet.ScrollView>
-          <YStack p="$5" gap="$8">
+          <YStack p="5" gap="8">
             <Button
               size="large"
               circular

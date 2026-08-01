@@ -52,16 +52,13 @@ const TooltipContent = createStyledHOC(PopperContentFrame)<TooltipContentProps>(
       <PopoverContent
         scope={props.scope || TOOLTIP_SCOPE}
         alwaysDisable={ALWAYS_DISABLE_TOOLTIP}
-        backgroundColor="$background"
+        backgroundColor="background"
         alignItems="center"
         pointerEvents="none"
-        ref={ref}
-        // zIndex from root Tooltip prop flows to portal
         {...(zIndexFromContext !== undefined && { zIndex: zIndexFromContext })}
         {...props}
-        {...(preventAnimation && {
-          transition: null,
-        })}
+        {...(preventAnimation && { transition: null })}
+        ref={ref}
       />
     )
   },

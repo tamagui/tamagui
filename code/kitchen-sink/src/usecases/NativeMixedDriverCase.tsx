@@ -9,7 +9,7 @@ export function NativeMixedDriverCase() {
 
   return (
     <Configuration animationDriver={animationsNative}>
-      <YStack padding="$4" gap="$4" items="center">
+      <YStack padding="4" gap="4" items="center">
         <Button
           id="native-mixed-driver-toggle"
           testID="native-mixed-driver-toggle"
@@ -24,7 +24,7 @@ export function NativeMixedDriverCase() {
           width={120}
           height={expanded ? 160 : 40}
           opacity={expanded ? 0 : 1}
-          backgroundColor="$blue10"
+          backgroundColor="blue10"
           transition="300ms"
         />
 
@@ -42,9 +42,9 @@ export function NativeMixedDriverCase() {
           id="native-pseudo-only-node"
           width={80}
           height={80}
-          backgroundColor="$green10"
+          backgroundColor="green10"
           transition="300ms"
-          hoverStyle={{ opacity: 0.2 }}
+          opacity="hover:0.2"
         />
         <Paragraph id="native-pseudo-only-render-count">{renderCount}</Paragraph>
       </YStack>

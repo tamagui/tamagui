@@ -118,13 +118,13 @@ export function RawAnimatedValueCase() {
   })
 
   return (
-    <YStack gap="$4" padding="$4" flex={1}>
+    <YStack gap="4" padding="4" flex={1}>
       <Paragraph fontWeight="bold">Raw Animated.Value Test</Paragraph>
-      <Paragraph size="$2" color="$color10">
+      <Paragraph size="$2" color="color10">
         Tests Animated.createAnimatedComponent with AnimatedValue styles
       </Paragraph>
 
-      <XStack gap="$4">
+      <XStack gap="4">
         <Button testID="animate-in-trigger" onPress={animateIn} disabled={isAnimated}>
           Animate In
         </Button>
@@ -148,16 +148,16 @@ export function RawAnimatedValueCase() {
 
       {/* Debug info */}
       <YStack
-        backgroundColor="$background"
-        padding="$2"
-        borderRadius="$2"
+        backgroundColor="background"
+        padding="2"
+        borderRadius="2"
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
       >
-        <Paragraph size="$1" fontFamily="$mono">
+        <Paragraph size="$1" fontFamily="mono">
           Debug Info:
         </Paragraph>
-        <Paragraph testID="debug-info" size="$1" fontFamily="$mono" whiteSpace="pre">
+        <Paragraph testID="debug-info" size="$1" fontFamily="mono" whiteSpace="pre">
           {debugInfo}
         </Paragraph>
       </YStack>
@@ -211,11 +211,11 @@ function ComputedStyleDisplay({ targetId }: { targetId: string }) {
   }, [targetId])
 
   return (
-    <YStack backgroundColor="$backgroundHover" padding="$2" borderRadius="$2">
-      <Paragraph size="$1" fontFamily="$mono">
+    <YStack backgroundColor="background-hover" padding="2" borderRadius="2">
+      <Paragraph size="$1" fontFamily="mono">
         Computed Styles:
       </Paragraph>
-      <Paragraph testID="computed-styles" size="$1" fontFamily="$mono" whiteSpace="pre">
+      <Paragraph testID="computed-styles" size="$1" fontFamily="mono" whiteSpace="pre">
         {computedStyles}
       </Paragraph>
     </YStack>

@@ -18,13 +18,9 @@ const ColorTestPressable = styled(View, {
   name: 'ColorTestPressable',
   width: 200,
   height: 100,
-  backgroundColor: '$blue10',
+  backgroundColor: 'blue10 press:red10',
   alignItems: 'center',
   justifyContent: 'center',
-
-  pressStyle: {
-    backgroundColor: '$red10',
-  },
 })
 
 // pressStyle WITH transition - tests animation driver path
@@ -32,14 +28,10 @@ const ColorTestPressableAnimated = styled(View, {
   name: 'ColorTestPressableAnimated',
   width: 200,
   height: 100,
-  backgroundColor: '$blue10',
+  backgroundColor: 'blue10 press:red10',
   alignItems: 'center',
   justifyContent: 'center',
   transition: 'quick',
-
-  pressStyle: {
-    backgroundColor: '$red10',
-  },
 })
 
 export function PressStyleNative() {
@@ -56,15 +48,15 @@ export function PressStyleNative() {
   })
 
   return (
-    <YStack gap="$4" padding="$4" testID="press-style-native-root">
-      <Text fontSize="$5" fontWeight="bold">
+    <YStack gap="4" padding="4" testID="press-style-native-root">
+      <Text fontSize="5" fontWeight="bold">
         Press Style Tests
       </Text>
 
       {/* test 1: pressStyle WITHOUT transition */}
-      <YStack gap="$2">
-        <Text fontSize="$3">1. No Transition</Text>
-        <Text fontSize="$2" color="$gray11">
+      <YStack gap="2">
+        <Text fontSize="3">1. No Transition</Text>
+        <Text fontSize="2" color="gray11">
           Blue → Red (no animation)
         </Text>
         <ColorTestPressable
@@ -88,7 +80,7 @@ export function PressStyleNative() {
             PRESS ME
           </Text>
         </ColorTestPressable>
-        <XStack gap="$2">
+        <XStack gap="2">
           <Text testID="simple-press-in-count">In: {simplePressState.pressInCount}</Text>
           <Text testID="simple-press-out-count">
             Out: {simplePressState.pressOutCount}
@@ -100,9 +92,9 @@ export function PressStyleNative() {
       </YStack>
 
       {/* test 2: pressStyle WITH transition */}
-      <YStack gap="$2">
-        <Text fontSize="$3">2. With Transition</Text>
-        <Text fontSize="$2" color="$gray11">
+      <YStack gap="2">
+        <Text fontSize="3">2. With Transition</Text>
+        <Text fontSize="2" color="gray11">
           Blue → Red (animated)
         </Text>
         <ColorTestPressableAnimated
@@ -126,7 +118,7 @@ export function PressStyleNative() {
             ANIMATED
           </Text>
         </ColorTestPressableAnimated>
-        <XStack gap="$2">
+        <XStack gap="2">
           <Text testID="animated-press-in-count">
             In: {animatedPressState.pressInCount}
           </Text>

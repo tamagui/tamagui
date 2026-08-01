@@ -39,16 +39,11 @@ function Provider({ children }: { children: React.ReactNode }) {
 function InnerSheet() {
   return (
     <Sheet modal open={false} snapPoints={[90]} dismissOnSnapToBottom transition="medium">
-      <Sheet.Overlay
-        transition="medium"
-        bg="$shadow2"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
+      <Sheet.Overlay transition="medium" bg="shadow2" opacity="enter:0 exit:0" />
       <Sheet.Handle />
-      <Sheet.Container flex={1} justify="center" items="center" gap="$5">
+      <Sheet.Container flex={1} justify="center" items="center" gap="5">
         <Sheet.Background />
-        <YStack p="$5" gap="$8">
+        <YStack p="5" gap="8">
           <Paragraph>inner sheet</Paragraph>
         </YStack>
       </Sheet.Container>
@@ -67,14 +62,9 @@ function ReanimatedSheet({ modal }: { modal: boolean }) {
       zIndex={100_000}
       transition="medium"
     >
-      <Sheet.Overlay
-        transition="lazy"
-        bg="$shadow6"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
+      <Sheet.Overlay transition="lazy" bg="shadow6" opacity="enter:0 exit:0" />
       <Sheet.Handle />
-      <Sheet.Container p="$4" justify="center" items="center" gap="$5">
+      <Sheet.Container p="4" justify="center" items="center" gap="5">
         <Sheet.Background />
         <Button>close</Button>
         <Input width={200} />

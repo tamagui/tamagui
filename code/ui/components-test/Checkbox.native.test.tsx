@@ -18,7 +18,7 @@ const IndicatorSkin = styled(Checkbox.Indicator, {
   name: 'NativeCheckboxIndicatorTestSkin',
   width: 10,
   height: 10,
-  backgroundColor: '$color',
+  backgroundColor: 'color',
 })
 
 function hasHostTestID(

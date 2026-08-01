@@ -13,7 +13,7 @@ export function InputAutoFocusAfterMenuCase() {
   const customInputRef = useRef<HTMLInputElement>(null) as any
 
   return (
-    <YStack padding="$4" gap="$4" alignItems="flex-start">
+    <YStack padding="4" gap="4" alignItems="flex-start">
       {/* standalone autoFocus test */}
       <Input
         data-testid="autofocus-input"
@@ -30,11 +30,11 @@ export function InputAutoFocusAfterMenuCase() {
         <Menu.Portal zIndex={100}>
           <Menu.Content
             data-testid="menu-content"
-            p="$2"
+            p="2"
             minWidth={200}
             borderWidth={1}
-            borderColor="$borderColor"
-            boxShadow="0 4px 12px $shadowColor"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
           >
             <Menu.Item
               data-testid="menu-item-show-input"
@@ -73,11 +73,11 @@ export function InputAutoFocusAfterMenuCase() {
         <Menu.Portal zIndex={100}>
           <Menu.Content
             data-testid="prevent-default-menu-content"
-            p="$2"
+            p="2"
             minWidth={200}
             borderWidth={1}
-            borderColor="$borderColor"
-            boxShadow="0 4px 12px $shadowColor"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
             onCloseAutoFocus={(event) => {
               event.cancel()
               // manually focus a custom target instead of the trigger

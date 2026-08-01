@@ -34,7 +34,7 @@ const StyledMenuItem = styled(Menu.Item, menuItemStyle)
 
 export function MenuItemPseudoOverrideCase() {
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Menu placement="bottom-start" offset={8}>
         <Menu.Trigger asChild>
           <Button data-testid="spread-trigger" size="medium">
@@ -61,9 +61,7 @@ export function MenuItemPseudoOverrideCase() {
             <Menu.Item
               key="item-1"
               data-testid="custom-item"
-              focusStyle={{ backgroundColor: 'rgb(255, 0, 0)' }}
-              pressStyle={{ backgroundColor: 'rgb(0, 255, 0)' }}
-              hoverStyle={{ backgroundColor: 'rgb(0, 0, 255)' }}
+              backgroundColor="focus:rgb(255, 0, 0) press:rgb(0, 255, 0) hover:rgb(0, 0, 255)"
             >
               <Menu.ItemTitle>Custom Pseudo Item</Menu.ItemTitle>
             </Menu.Item>

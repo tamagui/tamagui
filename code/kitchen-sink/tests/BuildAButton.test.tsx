@@ -19,18 +19,9 @@ export const ButtonContext = createStyledContext({
 export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
-  backgroundColor: '$background',
+  backgroundColor: 'background hover:background-hover press:background-press',
   alignItems: 'center',
   flexDirection: 'row',
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
-
   variants: {
     size: {
       Size: (name, { tokens }) => {
@@ -47,7 +38,6 @@ export const ButtonFrame = styled(View, {
       },
     },
   } as const,
-
   defaultVariants: {
     size: true,
   },
@@ -56,9 +46,8 @@ export const ButtonFrame = styled(View, {
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
   context: ButtonContext,
-  color: '$color',
+  color: 'color',
   userSelect: 'none',
-
   variants: {
     size: {
       FontSize: (name, { font }) => {

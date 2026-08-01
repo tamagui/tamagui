@@ -6,8 +6,8 @@ export const FontTokensInVariants = styled(TamaguiText, {
   variants: {
     type: {
       H1: {
-        fontFamily: '$mono',
-        fontSize: '$1',
+        fontFamily: 'mono',
+        fontSize: '1',
       },
     },
   } as const,

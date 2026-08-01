@@ -7,7 +7,7 @@ import { Button, Paragraph, Sheet, YStack } from 'tamagui'
  */
 export function SheetDragCase() {
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <DraggableSheetPercent />
       <DraggableSheetConstant />
       <DismissOnDragSheet />
@@ -43,13 +43,11 @@ function DraggableSheetPercent() {
         <Sheet.Overlay
           data-testid="drag-percent-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="drag-percent-handle" />
-        <Sheet.Container data-testid="drag-percent-frame" padding="$4" gap="$4">
+        <Sheet.Container data-testid="drag-percent-frame" padding="4" gap="4">
           <Sheet.Background />
           <Paragraph data-testid="drag-percent-snap-indicator">
             Current snap point index: {position}
@@ -98,13 +96,11 @@ function DraggableSheetConstant() {
         <Sheet.Overlay
           data-testid="drag-constant-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="drag-constant-handle" />
-        <Sheet.Container data-testid="drag-constant-frame" padding="$4" gap="$4">
+        <Sheet.Container data-testid="drag-constant-frame" padding="4" gap="4">
           <Sheet.Background />
           <Paragraph data-testid="drag-constant-snap-indicator">
             Current snap point index: {position}
@@ -158,18 +154,16 @@ function DismissOnDragSheet() {
         <Sheet.Overlay
           data-testid="dismiss-drag-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle data-testid="dismiss-drag-handle" />
         <Sheet.Container
           data-testid="dismiss-drag-frame"
-          padding="$4"
+          padding="4"
           justifyContent="center"
           alignItems="center"
-          gap="$4"
+          gap="4"
         >
           <Sheet.Background />
           <Paragraph>Drag down on the handle to dismiss this sheet</Paragraph>

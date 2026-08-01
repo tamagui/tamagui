@@ -46,7 +46,7 @@ function TestCasesSection() {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Button
         testID="toggle-test-cases"
         size="medium"
@@ -81,12 +81,12 @@ export function HomeScreen() {
 
   return (
     <ScrollView testID="home-scroll-view">
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
+      <YStack bg="color2" paddingRight="3" paddingLeft="3" pt="6" pb="8" flex={1} gap="4">
         <Paragraph testID="home-title" size="$1">
           Kitchen Sink
         </Paragraph>
 
-        <Paragraph size="$1" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
+        <Paragraph size="$1" color={`${gestureHandlerEnabled ? 'green10' : 'red10'}`}>
           RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
         </Paragraph>
 
@@ -150,7 +150,7 @@ export function HomeScreen() {
           </YGroup.Item>
         </YGroup>
 
-        <YStack gap="$4" maxW={600}>
+        <YStack gap="4" maxW={600}>
           {demos.map(({ pages }, i) => {
             return (
               <YGroup key={i} size="$4">
@@ -207,7 +207,7 @@ const LinkListItem = ({
       {...linkProps}
       onPress={handlePress}
       {...props}
-      iconAfter={<ChevronRight color="$color10" />}
+      iconAfter={<ChevronRight color="color10" />}
     >
       {children}
     </ListItem>

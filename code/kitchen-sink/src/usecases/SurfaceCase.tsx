@@ -5,7 +5,7 @@ import { Surface, Text, YStack } from 'tamagui'
 // at different levels resolve to different backgrounds.
 export function SurfaceCase() {
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Surface testID="surface-bare" width={120} height={60}>
         <Text>bare</Text>
       </Surface>

@@ -10,7 +10,7 @@ export function SheetOverlayStyleCase() {
   const [nestedChildOpen, setNestedChildOpen] = useState(false)
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Button data-testid="sheet-overlay-style-open" onPress={() => setOpen(true)}>
         Open styled overlay sheet
       </Button>
@@ -30,16 +30,14 @@ export function SheetOverlayStyleCase() {
           backgroundColor={
             alternate ? 'rgba(10, 120, 80, 0.35)' : 'rgba(210, 40, 40, 0.35)'
           }
-          opacity={0.61}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          opacity="0.61 enter:0 exit:0"
         >
           <Paragraph data-testid="sheet-overlay-style-overlay-copy">
             {alternate ? 'alternate overlay props' : 'initial overlay props'}
           </Paragraph>
         </Sheet.Overlay>
 
-        <Sheet.Container data-testid="sheet-overlay-style-frame" padding="$4" gap="$4">
+        <Sheet.Container data-testid="sheet-overlay-style-frame" padding="4" gap="4">
           <Sheet.Background />
           <Paragraph>Overlay style regression</Paragraph>
           <Button
@@ -71,7 +69,7 @@ export function SheetOverlayStyleCase() {
         transition="quick"
       >
         <Sheet.Overlay />
-        <Sheet.Container data-testid="sheet-escape-modal-frame" padding="$4">
+        <Sheet.Container data-testid="sheet-escape-modal-frame" padding="4">
           <Sheet.Background />
           <Paragraph>Modal escape sheet</Paragraph>
         </Sheet.Container>
@@ -93,7 +91,7 @@ export function SheetOverlayStyleCase() {
         transition="quick"
       >
         <Sheet.Overlay />
-        <Sheet.Container data-testid="sheet-escape-nonmodal-frame" padding="$4">
+        <Sheet.Container data-testid="sheet-escape-nonmodal-frame" padding="4">
           <Sheet.Background />
           <Paragraph>Non-modal escape sheet</Paragraph>
         </Sheet.Container>
@@ -119,7 +117,7 @@ export function SheetOverlayStyleCase() {
         transition="quick"
       >
         <Sheet.Overlay />
-        <Sheet.Container data-testid="sheet-escape-nested-parent-frame" padding="$4">
+        <Sheet.Container data-testid="sheet-escape-nested-parent-frame" padding="4">
           <Sheet.Background />
           <Paragraph>Nested parent sheet</Paragraph>
           <Button
@@ -137,7 +135,7 @@ export function SheetOverlayStyleCase() {
             transition="quick"
           >
             <Sheet.Overlay />
-            <Sheet.Container data-testid="sheet-escape-nested-child-frame" padding="$4">
+            <Sheet.Container data-testid="sheet-escape-nested-child-frame" padding="4">
               <Sheet.Background />
               <Paragraph>Nested child sheet</Paragraph>
             </Sheet.Container>

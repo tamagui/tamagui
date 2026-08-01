@@ -12,12 +12,10 @@ export function MenuBottomCase() {
   return (
     <YStack
       data-testid="container"
-      $web={{
-        height: '100vh',
-      }}
+      height="web:100vh"
       justifyContent="flex-start"
       alignItems="center"
-      paddingTop="$8"
+      paddingTop="8"
     >
       <Menu placement="bottom-start" stayInFrame allowFlip={false}>
         <Menu.Trigger asChild>
@@ -31,9 +29,9 @@ export function MenuBottomCase() {
             data-testid="menu-content"
             minWidth={200}
             borderWidth={1}
-            borderColor="$borderColor"
-            boxShadow="0 4px 12px $shadowColor"
-            padding="$2"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
+            padding="2"
           >
             <Menu.ScrollView data-testid="menu-scroll-view">
               {Array.from({ length: ITEM_COUNT }).map((_, i) => (
@@ -42,7 +40,7 @@ export function MenuBottomCase() {
                   key={`item-${i}`}
                   textValue={`Item ${i + 1}`}
                   style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-                  focusStyle={{ backgroundColor: '$backgroundHover' }}
+                  backgroundColor="focus:background-hover"
                 >
                   <Menu.ItemTitle>Item {i + 1}</Menu.ItemTitle>
                 </Menu.Item>

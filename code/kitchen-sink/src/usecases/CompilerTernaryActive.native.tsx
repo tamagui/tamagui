@@ -71,7 +71,7 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
     <YStack
       disableOptimization
       testID="noopt-color-box"
-      backgroundColor={isActive ? '$color12' : '$color11'}
+      backgroundColor={`${isActive ? 'color12' : 'color11'}`}
       height={60}
       justifyContent="center"
       alignItems="center"
@@ -79,9 +79,9 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
       <Text
         disableOptimization
         testID="active-text-noopt"
-        fontSize="$3"
+        fontSize="3"
         fontWeight={isActive ? '700' : '400'}
-        color={isActive ? '$color12' : '$color11'}
+        color={`${isActive ? 'color12' : 'color11'}`}
       >
         {label}
       </Text>

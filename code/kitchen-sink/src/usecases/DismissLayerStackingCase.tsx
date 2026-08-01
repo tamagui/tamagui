@@ -25,15 +25,15 @@ export function DismissLayerStackingCase() {
   const [selectValue2, setSelectValue2] = useState('')
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Paragraph>
         Test: Open popover, then open dialog from inside popover. Press ESC - dialog
         should close first, not the popover.
       </Paragraph>
 
-      <XStack gap="$4" flexWrap="wrap">
+      <XStack gap="4" flexWrap="wrap">
         {/* left side: popover with dialog inside */}
-        <YStack gap="$3">
+        <YStack gap="3">
           <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <Popover.Trigger asChild>
               <Button testID="popover-trigger">Open Popover</Button>
@@ -41,13 +41,13 @@ export function DismissLayerStackingCase() {
 
             <Popover.Content
               testID="popover-content"
-              padding="$4"
-              backgroundColor="$background"
+              padding="4"
+              backgroundColor="background"
               borderWidth={1}
-              borderColor="$borderColor"
-              boxShadow="0 4px 12px $shadowColor"
+              borderColor="border-color"
+              boxShadow="0 4px 12px shadow-color"
             >
-              <YStack gap="$3" width={280}>
+              <YStack gap="3" width={280}>
                 <Paragraph>Popover Content</Paragraph>
                 <Input testID="popover-input" placeholder="Popover input" />
 
@@ -86,7 +86,7 @@ export function DismissLayerStackingCase() {
                       elevate
                       key="content"
                     >
-                      <YStack gap="$3" padding="$2">
+                      <YStack gap="3" padding="2">
                         <Dialog.Title>Dialog Title</Dialog.Title>
                         <Dialog.Description>
                           Press ESC to close this dialog. The popover should stay open.
@@ -132,14 +132,14 @@ export function DismissLayerStackingCase() {
                           </Tooltip.Trigger>
                           <Tooltip.Content
                             testID="dialog-tooltip-content"
-                            enterStyle={{ opacity: 0, y: -4 }}
-                            exitStyle={{ opacity: 0, y: -4 }}
+                            opacity="enter:0 exit:0"
+                            y="enter:-4px exit:-4px"
                           >
                             <Paragraph>Tooltip inside dialog</Paragraph>
                           </Tooltip.Content>
                         </Tooltip>
 
-                        <XStack gap="$3" justifyContent="flex-end">
+                        <XStack gap="3" justifyContent="flex-end">
                           <Dialog.Close asChild>
                             <Button testID="dialog-close">Close Dialog</Button>
                           </Dialog.Close>
@@ -158,7 +158,7 @@ export function DismissLayerStackingCase() {
         </YStack>
 
         {/* right side: standalone dialog */}
-        <YStack gap="$3">
+        <YStack gap="3">
           <Dialog open={dialog2Open} onOpenChange={setDialog2Open}>
             <Dialog.Trigger asChild>
               <Button testID="dialog2-trigger">Open Dialog 2</Button>
@@ -167,7 +167,7 @@ export function DismissLayerStackingCase() {
             <Dialog.Portal>
               <Dialog.Overlay testID="dialog2-overlay" key="overlay2" opacity={0.5} />
               <Dialog.Content testID="dialog2-content" bordered elevate key="content2">
-                <YStack gap="$3" padding="$2">
+                <YStack gap="3" padding="2">
                   <Dialog.Title>Dialog 2</Dialog.Title>
                   <Dialog.Description>This is a separate dialog.</Dialog.Description>
                   <Dialog.Close asChild>
@@ -181,7 +181,7 @@ export function DismissLayerStackingCase() {
       </XStack>
 
       {/* status display for tests */}
-      <YStack gap="$2">
+      <YStack gap="2">
         <Paragraph testID="popover-status">
           Popover: {popoverOpen ? 'open' : 'closed'}
         </Paragraph>
@@ -213,7 +213,7 @@ function HookTester() {
   }, [])
 
   return (
-    <YStack gap="$2" ref={ref as any} testID="hook-tester">
+    <YStack gap="2" ref={ref as any} testID="hook-tester">
       <Paragraph testID="has-layers-status">
         useHasDismissableLayers: {hasDismissableLayers ? 'true' : 'false'}
       </Paragraph>

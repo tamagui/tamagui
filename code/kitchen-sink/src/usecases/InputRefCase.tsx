@@ -70,7 +70,7 @@ function RefProbe({
   }, [callback, callbackNode, focusOnLayout])
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Component {...componentProps} id={id} ref={callback ? callbackRef : objectRef}>
         {children}
       </Component>
@@ -90,7 +90,7 @@ export function InputRefCase() {
   const [popoverOpen, setPopoverOpen] = React.useState(false)
 
   return (
-    <YStack gap="$3" padding="$4">
+    <YStack gap="3" padding="4">
       <RefProbe Component={Input} id="input-ref-plain" />
       <RefProbe Component={StyledInput} id="input-ref-styled" />
       <RefProbe

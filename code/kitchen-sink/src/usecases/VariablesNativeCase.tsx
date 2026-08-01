@@ -13,7 +13,7 @@ const ReadValues = () => {
   const isDynamic = (value: unknown) =>
     !!(value && typeof value === 'object' && 'dynamic' in (value as object))
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Text testID="vars-native-env">{`env:${themeName}/${String(Appearance.getColorScheme())}`}</Text>
       <Text testID="vars-native-val">{`val:${String(theme.caseAccent?.val)}`}</Text>
       <Text testID="vars-native-dynamic">{`dynamic:${isDynamic(accentDynamic)}`}</Text>
@@ -23,7 +23,7 @@ const ReadValues = () => {
         testID="vars-native-square"
         width={80}
         height={40}
-        backgroundColor="$caseAccent"
+        backgroundColor="caseAccent"
       />
     </YStack>
   )
@@ -32,11 +32,11 @@ const ReadValues = () => {
 export function VariablesNativeCase() {
   const [patched, setPatched] = React.useState(false)
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <View
         testID="vars-native-toggle"
         onPress={() => setPatched(!patched)}
-        padding="$3"
+        padding="3"
         backgroundColor="#ddd"
       >
         <Text color="#000">toggle patch</Text>

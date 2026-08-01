@@ -16,7 +16,7 @@ export function MenuSubNestedPositionCase() {
   const [nestedOpen, setNestedOpen] = React.useState(false)
 
   return (
-    <YStack padding="$4" minHeight={600}>
+    <YStack padding="4" minHeight={600}>
       <YStack alignItems="flex-end" paddingRight={100}>
         <Menu placement="bottom-start" offset={4}>
           <Menu.Trigger asChild>
@@ -28,18 +28,18 @@ export function MenuSubNestedPositionCase() {
           <Menu.Portal zIndex={100}>
             <Menu.Content
               id="menu-content"
-              p="$2"
+              p="2"
               minWidth={180}
               borderWidth={1}
-              borderColor="$borderColor"
-              bg="$background"
-              boxShadow="0 4px 12px $shadowColor"
+              borderColor="border-color"
+              bg="background"
+              boxShadow="0 4px 12px shadow-color"
             >
               <Menu.Item
                 key="item-1"
                 id="item-1"
                 style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
-                focusStyle={{ bg: '$backgroundHover' }}
+                bg="focus:background-hover"
               >
                 <Menu.ItemTitle>Item 1</Menu.ItemTitle>
               </Menu.Item>
@@ -49,23 +49,23 @@ export function MenuSubNestedPositionCase() {
                   key="sub-trigger"
                   id="sub-trigger"
                   justify="space-between"
+                  bg="focus:background-hover"
                   textValue="More"
                   style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
-                  focusStyle={{ bg: '$backgroundHover' }}
                 >
                   <Menu.ItemTitle>More</Menu.ItemTitle>
-                  <ChevronRight size={14} color="$color10" />
+                  <ChevronRight size={14} color="color10" />
                 </Menu.SubTrigger>
 
                 <Menu.Portal zIndex={200}>
                   <Menu.SubContent
                     id="sub-content"
-                    bg="$background"
-                    p="$2"
+                    bg="background"
+                    p="2"
                     minWidth={180}
                     borderWidth={1}
-                    borderColor="$borderColor"
-                    boxShadow="0 4px 12px $shadowColor"
+                    borderColor="border-color"
+                    boxShadow="0 4px 12px shadow-color"
                   >
                     <Menu.Item
                       key="sub-item-1"
@@ -75,7 +75,7 @@ export function MenuSubNestedPositionCase() {
                         paddingVertical: 8,
                         borderRadius: 4,
                       }}
-                      focusStyle={{ bg: '$backgroundHover' }}
+                      bg="focus:background-hover"
                     >
                       <Menu.ItemTitle>Sub Item 1</Menu.ItemTitle>
                     </Menu.Item>
@@ -85,27 +85,27 @@ export function MenuSubNestedPositionCase() {
                         key="nested-trigger"
                         id="nested-trigger"
                         justify="space-between"
+                        bg="focus:background-hover"
                         textValue="Even More"
                         style={{
                           paddingHorizontal: 12,
                           paddingVertical: 8,
                           borderRadius: 4,
                         }}
-                        focusStyle={{ bg: '$backgroundHover' }}
                       >
                         <Menu.ItemTitle>Even More</Menu.ItemTitle>
-                        <ChevronRight size={14} color="$color10" />
+                        <ChevronRight size={14} color="color10" />
                       </Menu.SubTrigger>
 
                       <Menu.Portal zIndex={300}>
                         <Menu.SubContent
                           id="nested-content"
-                          bg="$background"
-                          p="$2"
+                          bg="background"
+                          p="2"
                           minWidth={180}
                           borderWidth={1}
-                          borderColor="$borderColor"
-                          boxShadow="0 4px 12px $shadowColor"
+                          borderColor="border-color"
+                          boxShadow="0 4px 12px shadow-color"
                         >
                           <Menu.Item
                             key="nested-item-1"
@@ -115,7 +115,7 @@ export function MenuSubNestedPositionCase() {
                               paddingVertical: 8,
                               borderRadius: 4,
                             }}
-                            focusStyle={{ bg: '$backgroundHover' }}
+                            bg="focus:background-hover"
                           >
                             <Menu.ItemTitle>Nested Item 1</Menu.ItemTitle>
                           </Menu.Item>
@@ -127,7 +127,7 @@ export function MenuSubNestedPositionCase() {
                               paddingVertical: 8,
                               borderRadius: 4,
                             }}
-                            focusStyle={{ bg: '$backgroundHover' }}
+                            bg="focus:background-hover"
                           >
                             <Menu.ItemTitle>Nested Item 2</Menu.ItemTitle>
                           </Menu.Item>
@@ -143,7 +143,7 @@ export function MenuSubNestedPositionCase() {
                         paddingVertical: 8,
                         borderRadius: 4,
                       }}
-                      focusStyle={{ bg: '$backgroundHover' }}
+                      bg="focus:background-hover"
                     >
                       <Menu.ItemTitle>Sub Item 2</Menu.ItemTitle>
                     </Menu.Item>
@@ -155,7 +155,7 @@ export function MenuSubNestedPositionCase() {
                 key="item-2"
                 id="item-2"
                 style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 4 }}
-                focusStyle={{ bg: '$backgroundHover' }}
+                bg="focus:background-hover"
               >
                 <Menu.ItemTitle>Item 2</Menu.ItemTitle>
               </Menu.Item>
@@ -164,7 +164,7 @@ export function MenuSubNestedPositionCase() {
         </Menu>
       </YStack>
 
-      <Text id="sub-state" marginTop="$4">
+      <Text id="sub-state" marginTop="4">
         Sub: {subOpen ? 'open' : 'closed'} | Nested: {nestedOpen ? 'open' : 'closed'}
       </Text>
     </YStack>

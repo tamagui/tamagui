@@ -25,15 +25,9 @@ const GalleryItem = styled(YStack, {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
       number: (going) => ({
-        enterStyle: {
-          x: going > 0 ? 1000 : -1000,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: going < 0 ? 1000 : -1000,
-          opacity: 0,
-        },
+        x: `enter:${going > 0 ? 1000 : -1000}px exit:${going < 0 ? 1000 : -1000}px`,
+        opacity: 'enter:0 exit:0',
+        zIndex: 'exit:0',
       }),
     },
   } as const,
@@ -72,11 +66,11 @@ export function AnimationsPresenceDemo() {
         icon={ArrowLeft}
         size="large"
         position="absolute"
-        l="$4"
-        circular
-        onPress={() => paginate(-1)}
+        l="4"
         boxShadow="0 0 10px rgba(0,0,0,0.5)"
         z={100}
+        circular
+        onPress={() => paginate(-1)}
       />
 
       <Button
@@ -84,11 +78,11 @@ export function AnimationsPresenceDemo() {
         icon={ArrowRight}
         size="large"
         position="absolute"
-        r="$4"
-        circular
-        onPress={() => paginate(1)}
+        r="4"
         boxShadow="0 0 10px rgba(0,0,0,0.5)"
         z={100}
+        circular
+        onPress={() => paginate(1)}
       />
     </XStack>
   )

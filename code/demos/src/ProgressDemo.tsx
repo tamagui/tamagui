@@ -10,34 +10,20 @@ export function ProgressDemo() {
 
   return (
     <>
-      <YStack height={60} items="center" gap="$4">
+      <YStack height={60} items="center" gap="4">
         <Paragraph height={30} opacity={0.5}>
           Progress: {progress}
         </Paragraph>
 
         <Progress key={key} theme="surface2" value={progress}>
           <Progress.Indicator
-            backgroundColor="$color"
-            transition={[
-              'quicker',
-              {
-                transform: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
+            backgroundColor="color"
+            transition={['quicker', { transform: { overshootClamping: true } }]}
           />
         </Progress>
       </YStack>
 
-      <XStack
-        items="center"
-        gap="$2"
-        position="absolute"
-        b="$3"
-        l="$4"
-        $xxs={{ display: 'none' }}
-      >
+      <XStack items="center" gap="2" position="absolute" b="3" l="4" display="xxs:none">
         {/* <Slider
           size="$2"
           theme="surface2"

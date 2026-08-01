@@ -46,9 +46,9 @@ export function PublicAnimatedNumberCase() {
   }
 
   return (
-    <YStack gap="$4" padding="$4" flex={1}>
+    <YStack gap="4" padding="4" flex={1}>
       <Paragraph>Public useAnimatedNumber / useAnimatedNumberStyle</Paragraph>
-      <XStack gap="$4" alignItems="center">
+      <XStack gap="4" alignItems="center">
         <Button onPress={toggle} data-testid="animated-number-trigger">
           Toggle X
         </Button>
