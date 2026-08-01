@@ -426,8 +426,8 @@
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
+        "@csstools/color-helpers": "6.1.0",
         "@tamagui/build": "workspace:*",
-        "playwright": "1.58.2",
         "tailwindcss": "4.3.0",
       },
     },

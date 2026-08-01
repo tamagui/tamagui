@@ -1,3 +1,11 @@
+import {
+  OKLCH_to_OKLab,
+  OKLab_to_XYZ,
+  XYZ_to_lin_sRGB,
+  clip,
+  gam_sRGB,
+  type Color,
+} from '@csstools/color-helpers'
 import colors from 'tailwindcss/colors'
 import { createHash } from 'node:crypto'
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -5,7 +13,7 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 export const TAILWIND_VERSION = '4.3.0'
-export const PLAYWRIGHT_VERSION = '1.58.2'
+export const COLOR_HELPERS_VERSION = '6.1.0'
 
 // Tailwind v4 accepts arbitrary quarter-step multipliers, but token-first Tamagui needs a
 // finite configured domain. These are v4.3.0's DEFAULT_SPACING_SUGGESTIONS exactly.
@@ -82,9 +90,8 @@ type Scalar = number | string
 type Table = Record<string, Scalar>
 
 export type PinnedTailwindSource = {
+  colorHelpersVersion: string
   colors: Record<string, unknown>
-  packageRoot: string
-  playwrightVersion: string
   themeCss: string
 }
 
@@ -135,19 +142,20 @@ export function readPinnedTailwindSource(): PinnedTailwindSource {
       `Expected tailwindcss ${TAILWIND_VERSION}, resolved ${String(packageJson.version)}`
     )
   }
-  const playwrightPackagePath = fileURLToPath(
-    import.meta.resolve('playwright/package.json')
+  const colorHelpersPackageRoot = dirname(
+    dirname(fileURLToPath(import.meta.resolve('@csstools/color-helpers')))
   )
-  const playwrightPackageJson = JSON.parse(readFileSync(playwrightPackagePath, 'utf8'))
-  if (playwrightPackageJson.version !== PLAYWRIGHT_VERSION) {
+  const colorHelpersPackageJson = JSON.parse(
+    readFileSync(join(colorHelpersPackageRoot, 'package.json'), 'utf8')
+  )
+  if (colorHelpersPackageJson.version !== COLOR_HELPERS_VERSION) {
     throw new Error(
-      `Expected playwright ${PLAYWRIGHT_VERSION}, resolved ${String(playwrightPackageJson.version)}`
+      `Expected @csstools/color-helpers ${COLOR_HELPERS_VERSION}, resolved ${String(colorHelpersPackageJson.version)}`
     )
   }
   return {
+    colorHelpersVersion: colorHelpersPackageJson.version,
     colors: colors as Record<string, unknown>,
-    packageRoot,
-    playwrightVersion: playwrightPackageJson.version,
     themeCss: readFileSync(themePath, 'utf8'),
   }
 }
@@ -227,7 +235,7 @@ export function sourceChecksum(source: PinnedTailwindSource): string {
   ])
   const canonical = JSON.stringify({
     tailwindVersion: TAILWIND_VERSION,
-    playwrightVersion: source.playwrightVersion,
+    colorHelpersVersion: source.colorHelpersVersion,
     spacingSuggestions: DEFAULT_SPACING_SUGGESTIONS,
     zIndexNames: Z_INDEX_NAMES,
     relevantVariables,
@@ -236,41 +244,38 @@ export function sourceChecksum(source: PinnedTailwindSource): string {
   return createHash('sha256').update(canonical).digest('hex')
 }
 
-async function convertColorsToSrgb(source: Record<string, unknown>): Promise<Table> {
-  const { chromium } = await import('playwright')
-  const browser = await chromium.launch()
-  try {
-    const page = await browser.newPage()
-    await page.setContent('<canvas id="c" width="1" height="1"></canvas>')
-    // no $transparent: 'transparent' is a reserved CSS-wide keyword — config
-    // creation rejects tokens by these names, and the value resolves
-    // byte-identically through the reserved-literal path without a token
-    const out: Table = {
-      $white: '#ffffff',
-      $black: '#000000',
-    }
-
-    for (const [hue, shades] of Object.entries(normalizedColorSource(source))) {
-      for (const [shade, value] of Object.entries(shades as Record<string, string>)) {
-        const hex = await page.evaluate((color) => {
-          if (!CSS.supports('color', color)) return null
-          const canvas = document.getElementById('c') as HTMLCanvasElement
-          const context = canvas.getContext('2d')!
-          context.clearRect(0, 0, 1, 1)
-          context.fillStyle = color
-          context.fillRect(0, 0, 1, 1)
-          const [red, green, blue] = context.getImageData(0, 0, 1, 1).data
-          return `#${[red, green, blue]
-            .map((channel) => channel.toString(16).padStart(2, '0'))
-            .join('')}`
-        }, value)
-        if (hex) out[`$${hue}-${shade}`] = hex
-      }
-    }
-    return out
-  } finally {
-    await browser.close()
+export function convertColorsToSrgb(source: Record<string, unknown>): Table {
+  // tailwind publishes these colors as OKLCH. native needs sRGB, so use the
+  // pinned W3C conversion math, then clip and round each channel to 8-bit hex.
+  // no $transparent: 'transparent' is a reserved CSS-wide keyword — config
+  // creation rejects tokens by these names, and the value resolves
+  // byte-identically through the reserved-literal path without a token
+  const out: Table = {
+    $white: '#ffffff',
+    $black: '#000000',
   }
+
+  for (const [hue, shades] of Object.entries(normalizedColorSource(source))) {
+    for (const [shade, value] of Object.entries(shades as Record<string, string>)) {
+      const match =
+        /^oklch\(\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))%\s+([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s+([+-]?(?:\d+(?:\.\d*)?|\.\d+))(?:deg)?\s*\)$/.exec(
+          value
+        )
+      if (!match) {
+        throw new Error(`Unsupported Tailwind color: ${value}`)
+      }
+      const oklch: Color = [Number(match[1]) / 100, Number(match[2]), Number(match[3])]
+      const srgb = clip(gam_sRGB(XYZ_to_lin_sRGB(OKLab_to_XYZ(OKLCH_to_OKLab(oklch)))))
+      out[`$${hue}-${shade}`] = `#${srgb
+        .map((channel) =>
+          Math.round(channel * 255)
+            .toString(16)
+            .padStart(2, '0')
+        )
+        .join('')}`
+    }
+  }
+  return out
 }
 
 function stringLiteral(value: string): string {
@@ -291,16 +296,16 @@ function renderTable(name: string, table: Table, type = 'as const'): string {
   return `export const ${name} = {\n${entries}\n} ${type}`
 }
 
-export async function generateSource(): Promise<string> {
+export function generateSource(): string {
   const source = readPinnedTailwindSource()
   const tables = createDefaultTables(source.themeCss)
-  const convertedColors = await convertColorsToSrgb(source.colors)
+  const convertedColors = convertColorsToSrgb(source.colors)
   const checksum = sourceChecksum(source)
-  return `// AUTO-GENERATED from tailwindcss@${TAILWIND_VERSION} with playwright@${PLAYWRIGHT_VERSION}. Do not edit.
+  return `// AUTO-GENERATED from tailwindcss@${TAILWIND_VERSION} with @csstools/color-helpers@${COLOR_HELPERS_VERSION}. Do not edit.
 // Source checksum: ${checksum}
 export const tailwindSource = {
   tailwindVersion: '${TAILWIND_VERSION}',
-  colorConverter: 'playwright@${PLAYWRIGHT_VERSION}',
+  colorConverter: '@csstools/color-helpers@${COLOR_HELPERS_VERSION}',
   checksum: '${checksum}',
 } as const
 
@@ -320,12 +325,12 @@ ${renderTable('tailwindLineHeight', tables.lineHeight)}
 `
 }
 
-async function main(): Promise<void> {
+function main(): void {
   const outputPath = join(
     dirname(fileURLToPath(import.meta.url)),
     '../src/v6-tailwind-defaults.generated.ts'
   )
-  const generated = await generateSource()
+  const generated = generateSource()
   if (process.argv.includes('--check')) {
     const current = readFileSync(outputPath, 'utf8')
     if (current !== generated) {
@@ -333,7 +338,9 @@ async function main(): Promise<void> {
         'v6 Tailwind defaults drifted; run bun ./scripts/generate-v6-tailwind-defaults.ts'
       )
     }
-    console.info('v6 Tailwind defaults match tailwindcss@4.3.0 + playwright@1.58.2')
+    console.info(
+      'v6 Tailwind defaults match tailwindcss@4.3.0 + @csstools/color-helpers@6.1.0'
+    )
     return
   }
   writeFileSync(outputPath, generated)
@@ -341,5 +348,5 @@ async function main(): Promise<void> {
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
-  await main()
+  main()
 }

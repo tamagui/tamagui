@@ -19,8 +19,9 @@ import {
   v6ThemeNameReplacements,
 } from '../src/v6-base'
 import {
-  PLAYWRIGHT_VERSION,
+  COLOR_HELPERS_VERSION,
   TAILWIND_VERSION,
+  convertColorsToSrgb,
   createDefaultTables,
   readPinnedTailwindSource,
   sourceChecksum,
@@ -67,9 +68,14 @@ describe('v6 Tailwind defaults provenance', () => {
     const source = readPinnedTailwindSource()
     expect(tailwindSource).toEqual({
       tailwindVersion: TAILWIND_VERSION,
-      colorConverter: `playwright@${PLAYWRIGHT_VERSION}`,
+      colorConverter: `@csstools/color-helpers@${COLOR_HELPERS_VERSION}`,
       checksum: sourceChecksum(source),
     })
+  })
+
+  test('the generated palette is derived from the pinned color source', () => {
+    const source = readPinnedTailwindSource()
+    expect(tailwindColors).toEqual(convertColorsToSrgb(source.colors))
   })
 
   test('every scalar table is derived from the pinned theme source', () => {

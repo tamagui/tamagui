@@ -1,7 +1,7 @@
 export declare const tailwindSource: {
     readonly tailwindVersion: '4.3.0';
-    readonly colorConverter: 'playwright@1.58.2';
-    readonly checksum: 'a2856683c9a107e37bb9d06bc6d318ca729aeac4dad0b3077f5526303d5d8f88';
+    readonly colorConverter: '@csstools/color-helpers@6.1.0';
+    readonly checksum: '9cb34e0dbf707c82321163587a800da0bbabbc58d97e96464f5487478d3c50a4';
 };
 export declare const tailwindColors: {
     $white: string;
