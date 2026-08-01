@@ -105,7 +105,7 @@ describe('opt-in size primitives on web', () => {
   })
 
   test('projects true, explicit tokens, and raw numbers through active scales', () => {
-    const extras = { tokens: config.tokensParsed, font: config.fontsParsed.$body }
+    const extras = { tokens: config.tokensParsed, font: config.fontsParsed.body }
     const defaultSize = config.settings.defaultSize
     const defaults = config.settings.defaultTokens
     const projected = resolveTokenSize(true, extras)
@@ -118,25 +118,25 @@ describe('opt-in size primitives on web', () => {
       config.tokensParsed.radius[defaults?.radius ?? defaultSize]
     )
     expect(projected.text.fontSize).toBe(
-      config.fontsParsed.$body.size[defaults?.fontSize ?? defaultSize]
+      config.fontsParsed.body.size[defaults?.fontSize ?? defaultSize]
     )
     expect(projected.text.lineHeight).toBe(
-      config.fontsParsed.$body.lineHeight[defaults?.fontSize ?? defaultSize]
+      config.fontsParsed.body.lineHeight[defaults?.fontSize ?? defaultSize]
     )
     expect(projected.icon).toBe(
-      config.fontsParsed.$body.size[defaults?.fontSize ?? defaultSize]
+      config.fontsParsed.body.size[defaults?.fontSize ?? defaultSize]
     )
     expect(resolveTokenSize('4', extras)).toEqual({
       frame: {
-        size: config.tokensParsed.size.$4,
-        space: config.tokensParsed.space.$4,
-        radius: config.tokensParsed.radius.$4,
+        size: config.tokensParsed.size.4,
+        space: config.tokensParsed.space.4,
+        radius: config.tokensParsed.radius.4,
       },
       text: {
-        fontSize: config.fontsParsed.$body.size.$4,
-        lineHeight: config.fontsParsed.$body.lineHeight.$4,
+        fontSize: config.fontsParsed.body.size.4,
+        lineHeight: config.fontsParsed.body.lineHeight.4,
       },
-      icon: config.fontsParsed.$body.size.$4,
+      icon: config.fontsParsed.body.size.4,
     })
     expect(resolveTokenSize(24, extras)).toEqual({
       frame: { size: 24, space: 24, radius: 24 },
@@ -161,7 +161,7 @@ describe('opt-in size primitives on web', () => {
 
     expect(rendered.getByTestId('tabs-icon')).toHaveAttribute(
       'data-size',
-      `${config.fontsParsed.$body.size.$4.val}`
+      `${config.fontsParsed.body.size.4.val}`
     )
   })
 })

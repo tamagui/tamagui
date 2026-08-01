@@ -37,8 +37,8 @@ function DefaultControls() {
 describe('v6 default component size on web', () => {
   test('keeps Tailwind numeric tokens without changing the component default', () => {
     expect({
-      size4: config.tokensParsed.size.$4.val,
-      space4: config.tokensParsed.space.$4.val,
+      size4: config.tokensParsed.size.4.val,
+      space4: config.tokensParsed.space.4.val,
     }).toEqual({
       size4: 16,
       space4: 16,
@@ -49,8 +49,8 @@ describe('v6 default component size on web', () => {
       space: config.tokensParsed.space[defaultFor('space')].val,
       radius: config.tokensParsed.radius[defaultFor('radius')].val,
       zIndex: config.tokensParsed.zIndex[defaultFor('zIndex')].val,
-      fontSize: config.fontsParsed.$body.size[defaultFor('fontSize')].val,
-      lineHeight: config.fontsParsed.$body.lineHeight[defaultFor('fontSize')].val,
+      fontSize: config.fontsParsed.body.size[defaultFor('fontSize')].val,
+      lineHeight: config.fontsParsed.body.lineHeight[defaultFor('fontSize')].val,
     }).toEqual({
       size: 44,
       space: 16,
@@ -82,11 +82,11 @@ describe('v6 default component size on web', () => {
       ),
       buttonFontSize: resolveRenderedValue(
         buttonTextStyle.fontSize,
-        config.fontsParsed.$body.size
+        config.fontsParsed.body.size
       ),
       buttonLineHeight: resolveRenderedValue(
         buttonTextStyle.lineHeight,
-        config.fontsParsed.$body.lineHeight
+        config.fontsParsed.body.lineHeight
       ),
       inputHeight: resolveRenderedValue(inputStyle.height, config.tokensParsed.size),
       inputPadding: resolveRenderedValue(
@@ -99,11 +99,11 @@ describe('v6 default component size on web', () => {
       ),
       inputFontSize: resolveRenderedValue(
         inputStyle.fontSize,
-        config.fontsParsed.$body.size
+        config.fontsParsed.body.size
       ),
       inputLineHeight: resolveRenderedValue(
         inputStyle.lineHeight,
-        config.fontsParsed.$body.lineHeight
+        config.fontsParsed.body.lineHeight
       ),
     }).toEqual({
       buttonHeight: 44,
@@ -141,7 +141,7 @@ describe('v6 default component size on web', () => {
       ),
       buttonFontSize: resolveRenderedValue(
         buttonTextStyle.fontSize,
-        config.fontsParsed.$body.size
+        config.fontsParsed.body.size
       ),
       inputRadius: resolveRenderedValue(
         inputStyle.borderTopLeftRadius,
@@ -149,14 +149,14 @@ describe('v6 default component size on web', () => {
       ),
       inputFontSize: resolveRenderedValue(
         inputStyle.fontSize,
-        config.fontsParsed.$body.size
+        config.fontsParsed.body.size
       ),
     }).toEqual({
-      buttonPadding: config.tokensParsed.space.$11.val,
-      buttonRadius: config.tokensParsed.radius.$11.val,
-      buttonFontSize: config.fontsParsed.$body.size.$11.val,
-      inputRadius: config.tokensParsed.radius.$11.val,
-      inputFontSize: config.fontsParsed.$body.size.$11.val,
+      buttonPadding: config.tokensParsed.space.11.val,
+      buttonRadius: config.tokensParsed.radius.11.val,
+      buttonFontSize: config.fontsParsed.body.size.11.val,
+      inputRadius: config.tokensParsed.radius.11.val,
+      inputFontSize: config.fontsParsed.body.size.11.val,
     })
   })
 })

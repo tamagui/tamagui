@@ -2,7 +2,6 @@ export * from './AccordionDemo';
 export * from './AddThemeDemo';
 export * from './AlertDialogDemo';
 export * from './AnimationsDelayDemo';
-export * from './AnimationsDemo';
 export * from './AnimationsEnterDemo';
 export * from './AnimationsHoverDemo';
 export * from './AnimationsPresenceDemo';
@@ -58,5 +57,4 @@ export * from './TokensDemo';
 export * from './TooltipDemo';
 export * from './UpdateThemeDemo';
 export * from './useOnIntersecting';
-export * from './TabsCustomDemo';
 //# sourceMappingURL=index.d.ts.map

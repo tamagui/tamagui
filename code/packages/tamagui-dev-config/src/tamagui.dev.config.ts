@@ -47,7 +47,6 @@ export const config = {
     ...defaultConfig.settings,
     mediaQueryDefaultActive,
     allowedStyleValues: 'somewhat-strict-web',
-    autocompleteSpecificTokens: 'except-special',
     // Allow both shorthands and longhand names for flexibility
     onlyAllowShorthands: false,
   },
