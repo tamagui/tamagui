@@ -313,7 +313,7 @@ export type TamaguiComponentPropsBaseBase = {
    * Marks this component as a group for use in styling children based on parents named group
    * See: https://tamagui.dev/docs/intro/props
    */
-  group?: GroupNames | boolean
+  group?: GroupNames | (string & {}) | boolean
 
   /**
    * Marks this component as a query container: the shorthand for an unnamed
@@ -1750,14 +1750,12 @@ export type GetTokenString<A> = A extends string | number ? `${A}` : string
 export type Size =
   | ThemeValueFallbackSize
   | GetTokenString<keyof Tokens['size']>
+  | (string & {})
   | true
 
 export type SizeTokens = Size
 
-export type Space =
-  | GetTokenString<keyof Tokens['space']>
-  | ThemeValueFallbackSpace
-  | true
+export type Space = GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | true
 
 export type SpaceTokens = Space
 
@@ -2286,6 +2284,10 @@ interface ExtraStyleProps {
    * Web-only text wrapping strategy. Will be omitted on native.
    */
   textWrap?: Properties['textWrap']
+  /**
+   * Web visibility. Native lowers hidden visibility to opacity and pointer events.
+   */
+  visibility?: Properties['visibility']
 
   pointerEvents?: ViewProps['pointerEvents']
 
@@ -2744,9 +2746,7 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   NonStyleProps,
   keyof StylePropsBase | keyof Variants
 > &
-  (StylePropsBase extends object
-    ? WithThemeAndShorthands<StylePropsBase, Variants>
-    : {})
+  (StylePropsBase extends object ? WithThemeAndShorthands<StylePropsBase, Variants> : {})
 
 export type TamaguiComponent<
   Props = any,
@@ -3227,9 +3227,7 @@ export type GetVariantProps<
   ? Props extends TamaDefer
     ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
     : Props
-  : WithThemeAndShorthands<
-      IsText extends true ? TextStylePropsBase : StackStyleBase
-    >
+  : WithThemeAndShorthands<IsText extends true ? TextStylePropsBase : StackStyleBase>
 
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object
   ? {

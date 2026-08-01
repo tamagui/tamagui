@@ -32,7 +32,7 @@ export default function Community() {
         <Spacer />
 
         <XStack flexDirection="sm:column">
-          <FlatBubbleCard width="50%" width="sm:auto" items="center" borderWidth={0}>
+          <FlatBubbleCard width="50% sm:auto" items="center" borderWidth={0}>
             <Link href="/blog">
               <Button
                 bg="transparent"

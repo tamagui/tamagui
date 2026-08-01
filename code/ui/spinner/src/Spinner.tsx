@@ -4,12 +4,15 @@ import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { ActivityIndicator } from 'react-native'
 
-export type SpinnerProps = Omit<YStackProps, 'children'> & {
+type SpinnerExtraProps = {
   size?: 'small' | 'large'
   color?: (ColorTokens | ThemeTokens | (string & {})) | null
 }
 
-export const Spinner = createStyledHOC(YStack)<SpinnerProps>((props, ref) => {
+export type SpinnerProps = Omit<YStackProps, 'children' | keyof SpinnerExtraProps> &
+  SpinnerExtraProps
+
+export const Spinner = createStyledHOC(YStack)<SpinnerExtraProps>((props, ref) => {
   const { size, color: colorProp, ...stackProps } = props
   const theme = useTheme()
   let color = colorProp as string

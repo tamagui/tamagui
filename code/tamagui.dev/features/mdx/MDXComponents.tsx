@@ -974,9 +974,8 @@ export const components = Object.fromEntries(
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
-    render="a"
+    render={<a href={`#${id}`} />}
     data-heading
-    href={`#${id}`}
     id={id}
     data-id={id}
     display="inline-flex"

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { type MouseEvent as ReactMouseEvent, useRef, useState } from 'react'
 import { Circle, XStack } from 'tamagui'
 
 // faithful repro of the tamagui.dev LogoWords "dot" mechanism:
@@ -32,7 +32,7 @@ export function LogoDotInterruptCase() {
         width={(NUM - 1) * SECTION + 60}
         height={80}
         backgroundColor="color3"
-        onMouseMove={(e: MouseEvent) => {
+        onMouseMove={(e: ReactMouseEvent<HTMLDivElement>) => {
           const el = ref.current
           if (!el) return
           const rect = el.getBoundingClientRect()

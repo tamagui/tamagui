@@ -9,7 +9,6 @@ export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
       items="center"
       justify="center"
       rounded="10"
-      borderColor="transparent"
       borderWidth={1}
       mx="1"
       borderColor={isActive ? 'color' : 'transparent hover:color5'}

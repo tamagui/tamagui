@@ -866,10 +866,9 @@ function Scenario17_SpringCustom() {
       </Button>
       <Square
         ref={ref as any}
-        transition="quick"
+        transition={['quick', { damping: 5, stiffness: 100, mass: 0.5 }]}
         bg="yellow10"
         scale={active ? 1.5 : 1}
-        animationConfig={{ type: 'spring', damping: 5, stiffness: 100, mass: 0.5 }}
         size={40}
         testID="scenario-17-target"
         data-testid="scenario-17-target"
@@ -1284,10 +1283,9 @@ function Scenario27_AnimationConfig() {
       </Button>
       <Square
         ref={ref as any}
-        transition="quick"
+        transition={['quick', { damping: 8, stiffness: 80 }]}
         bg="green10"
         scale={active ? 1.5 : 1}
-        animationConfig={{ type: 'spring', damping: 8, stiffness: 80 }}
         size={40}
         testID="scenario-27-target"
         data-testid="scenario-27-target"

@@ -279,7 +279,6 @@ export function AnimationsDemoBase(props) {
         borderWidth={1}
         rounded="9"
         bg="color9"
-        scale="hover:1.5 press:0.9"
         {...position}
         animateOnly={['transform']}
         onPress={onPress}
@@ -306,7 +305,7 @@ export const positions = [
   {
     x: 0,
     y: 0,
-    scale: 1,
+    scale: '1 hover:1.5 press:0.9',
     rotate: '0deg',
   },
   {

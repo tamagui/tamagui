@@ -500,15 +500,10 @@ function AnimationConfigTest() {
       </Button>
       <View
         ref={squareRef as any}
-        transition="quick"
+        transition={['quick', { damping: 15, stiffness: 40 }]}
         height={60}
         width={expanded ? 150 : 60}
         backgroundColor="red10"
-        animationConfig={{
-          type: 'spring',
-          damping: 15,
-          stiffness: 40, // Slow spring - should take longer than default
-        }}
         testID={`${testId}-square`}
         data-testid={`${testId}-square`}
       />

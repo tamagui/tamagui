@@ -34,6 +34,15 @@ export const ComponentSection = () => {
 
   return (
     <YStack
+      render={
+        <div
+          onTransitionEnd={() => {
+            if (!store.heroVisible) {
+              inputRef.current?.focus()
+            }
+          }}
+        />
+      }
       bg="color2"
       position="relative"
       contain="paint"
@@ -47,11 +56,6 @@ export const ComponentSection = () => {
       })}
       z={10000}
       className="transform ease-in-out ms200"
-      onTransitionEnd={() => {
-        if (!store.heroVisible) {
-          inputRef.current?.focus()
-        }
-      }}
     >
       <YStack>
         <YStack gap="4">

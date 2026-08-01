@@ -87,7 +87,7 @@ export function OpacityModifierCase() {
       {/* animated color with opacity modifier */}
       <View
         data-testid={'opacity-animated'}
-        animation={'500ms'}
+        transition="500ms"
         backgroundColor={`${toggled ? 'customBlue/75' : 'customRed/50'}`}
         width={100}
         height={100}
