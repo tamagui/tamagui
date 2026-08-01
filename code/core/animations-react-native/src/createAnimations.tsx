@@ -386,7 +386,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
         for (const key in style) {
           const rawVal = style[key]
-          // Resolve dynamic theme values (like $theme-dark)
+          // Resolve dynamic theme values from flat theme clauses.
           const val = resolveDynamicValue(rawVal, isDark)
           if (val === undefined) continue
 

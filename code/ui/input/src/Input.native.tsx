@@ -97,7 +97,7 @@ export const Input = createStyledHOC(StyledInput)<InputExtraProps>(
       step,
       render,
 
-      // $caretColor is web-only as a CSS prop; on native forward to
+      // caretColor is web-only as a CSS prop; on native forward to
       // cursorColor (Android) + selectionColor (iOS+Android caret) unless
       // those are explicitly set.
       // @ts-ignore - caretColor is typed as web-only in core
@@ -292,7 +292,7 @@ export const Input = createStyledHOC(StyledInput)<InputExtraProps>(
       verticalAlign,
       showSoftInputOnFocus,
 
-      // $caretColor → cursorColor (Android) + selectionColor (iOS+Android),
+      // caretColor → cursorColor (Android) + selectionColor (iOS+Android),
       // unless the caller passed those explicitly.
       cursorColor: cursorColorProp ?? caretColor,
       selectionColor: selectionColorProp ?? caretColor,

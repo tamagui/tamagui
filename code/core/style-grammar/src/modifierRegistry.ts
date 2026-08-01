@@ -11,7 +11,7 @@
 
 import type { GrammarConfigView } from './candidate'
 import { grammarPlatformNames } from './config'
-import { modifierAliases, pseudoToModifier } from './stateModifiers'
+import { coreStateModifierNames, modifierAliases } from './stateModifiers'
 import { componentStateNames } from './states'
 import type { ModifierKind, ModifierRegistryView } from './valueTypes'
 
@@ -44,7 +44,7 @@ export interface CreateModifierRegistryOptions {
  * behavior packages expose through DOM attributes.
  */
 export const stateModifierNames: readonly string[] = Object.freeze([
-  ...Object.values(pseudoToModifier),
+  ...coreStateModifierNames,
   ...Object.keys(modifierAliases),
   ...componentStateNames,
 ])

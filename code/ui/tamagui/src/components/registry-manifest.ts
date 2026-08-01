@@ -59,7 +59,7 @@ export type SkinManifest = {
   extraRegistryDependencies?: string[]
   /**
    * enforce the generics-only rule on this skin: the generator fails if the skin
-   * source references the color scale ($colorN) directly (see plans/surface-levels.md).
+   * source references the color scale (colorN) directly (see plans/surface-levels.md).
    * defaults to true. the copied chrome layer (Surface, facets) MUST stay
    * generics-only so it restyles under any re-bound level. the v2-compat
    * component skins that still reference specific palette steps for their look

@@ -13,9 +13,9 @@
 //      state-shift ANY family's generic (borderColorPress) because the value is
 //      inert when that chrome is absent (no borderWidth -> borderColor does
 //      nothing). So `interactive + outlined` composes with zero coordination.
-//   2. Generics-only. Facets read theme GENERICS ($background, border-color,
-//      background-hover, …) and conventional custom variables ($radius,
-//      $pressScale), never the color scale ($colorN). That makes them
+//   2. Generics-only. Facets read theme GENERICS (background, border-color,
+//      background-hover, …) and conventional custom variables (radius,
+//      pressScale), never the color scale (colorN). That makes them
 //      level-aware for free: <Surface level={2} filled interactive> needs no
 //      facet cooperation — the level re-bound the generics the facets read.
 //

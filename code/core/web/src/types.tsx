@@ -2103,14 +2103,14 @@ type BoxShadowPreset =
   | '0 0' // offset only
   | '0 1px 2px' // offset + blur
   | '0 1px 2px 0' // offset + blur + spread
-  | '0 1px 2px $shadowColor' // offset + blur + color token
-  | '0 1px 3px 0 $shadowColor' // offset + blur + spread + color token
-  | '0 4px 6px -1px $shadowColor' // negative spread
-  | 'inset 0 2px 4px $shadowColor' // inset
+  | '0 1px 2px shadow-color' // offset + blur + color token
+  | '0 1px 3px 0 shadow-color' // offset + blur + spread + color token
+  | '0 4px 6px -1px shadow-color' // negative spread
+  | 'inset 0 2px 4px shadow-color' // inset
   | 'none'
 
-// Box Shadow - CSS string format (e.g. "0 4px 8px $shadowColor")
-// Supports embedded $tokens that get resolved at runtime
+// Box Shadow - CSS string format (e.g. "0 4px 8px shadow-color")
+// Supports embedded bare tokens that get resolved at runtime
 export type BoxShadowValue = BoxShadowPreset | (string & {})
 
 // filter presets - one example per function for autocomplete hints
@@ -2118,7 +2118,7 @@ type FilterPreset =
   | 'blur(4px)'
   | 'brightness(1.2)'
   | 'contrast(1.2)'
-  | 'drop-shadow(0 4px 8px $shadowColor)'
+  | 'drop-shadow(0 4px 8px shadow-color)'
   | 'grayscale(1)'
   | 'hue-rotate(90deg)'
   | 'invert(1)'
@@ -2128,18 +2128,18 @@ type FilterPreset =
   | 'none'
 
 // Filter - CSS string format (e.g. "blur(10px) brightness(1.2)")
-// Supports embedded $tokens that get resolved at runtime
+// Supports embedded bare tokens that get resolved at runtime
 export type FilterValue = FilterPreset | (string & {})
 
 // border shorthand presets - examples for autocomplete hints
 type BorderPreset =
   | '1px solid' // width + style
-  | '1px solid $borderColor' // width + style + color token
-  | '2px dashed $borderColor' // width + style + color
+  | '1px solid border-color' // width + style + color token
+  | '2px dashed border-color' // width + style + color
   | '1px dotted red' // width + style + color
   | 'none'
 
-// Border - CSS shorthand string format (e.g. "1px solid $borderColor")
+// Border - CSS shorthand string format (e.g. "1px solid border-color")
 // Expands to borderWidth, borderStyle, borderColor on web and native
 // Note: on native, only supports a single border (all sides)
 export type BorderValue = BorderPreset | (string & {})
@@ -2147,12 +2147,12 @@ export type BorderValue = BorderPreset | (string & {})
 // outline shorthand presets - examples for autocomplete hints
 type OutlinePreset =
   | '1px solid' // width + style
-  | '1px solid $outlineColor' // width + style + color token
-  | '2px dashed $outlineColor' // width + style + color
+  | '1px solid outline-color' // width + style + color token
+  | '2px dashed outline-color' // width + style + color
   | '1px dotted red' // width + style + color
   | 'none'
 
-// Outline - CSS shorthand string format (e.g. "2px solid $outlineColor")
+// Outline - CSS shorthand string format (e.g. "2px solid outline-color")
 // Expands to outlineWidth, outlineStyle, outlineColor on native
 export type OutlineValue = OutlinePreset | (string & {})
 
@@ -2194,7 +2194,7 @@ interface ExtraStyleProps {
    */
   outlineWidth?: SpaceValue
   /**
-   * CSS outline shorthand string. Supports tokens: "2px solid $outlineColor"
+   * CSS outline shorthand string. Supports tokens: "2px solid outline-color"
    * Expands to outlineWidth, outlineStyle, outlineColor on native.
    * Works on web and native.
    */
@@ -2211,7 +2211,7 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    *
    * The v6 shorthands map `bg` here rather than to `backgroundColor`, because
-   * the background family splits a value like `url(x.png) $color1` across
+   * the background family splits a value like `url(x.png) color1` across
    * backgroundImage and backgroundColor. Color tokens lead the union so `bg`
    * completes them; `Properties['background']` keeps the CSS shorthand
    * keywords. Adding this key to `ColorKeys` instead would erase that second
@@ -2240,12 +2240,12 @@ interface ExtraStyleProps {
   backgroundSize?: Properties['backgroundSize']
   // boxSizing - provided by RN's ViewStyle
   /**
-   * CSS box-shadow string. Supports tokens: "0 4px 8px $shadowColor"
+   * CSS box-shadow string. Supports tokens: "0 4px 8px shadow-color"
    * Works on web and native (RN 0.76+).
    */
   boxShadow?: BoxShadowValue
   /**
-   * CSS border shorthand string. Supports tokens: "1px solid $borderColor"
+   * CSS border shorthand string. Supports tokens: "1px solid border-color"
    * Expands to borderWidth, borderStyle, borderColor.
    * Works on web and native. On native, applies to all sides.
    */
@@ -2612,7 +2612,7 @@ export interface TextStylePropsBase
   whiteSpace?: Properties['whiteSpace']
   wordWrap?: Properties['wordWrap']
   /**
-   * CSS text-shadow string. Supports tokens: "2px 2px 4px $shadowColor"
+   * CSS text-shadow string. Supports tokens: "2px 2px 4px shadow-color"
    * On native, only a single shadow is supported.
    */
   textShadow?: string

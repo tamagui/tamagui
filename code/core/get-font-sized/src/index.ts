@@ -71,7 +71,7 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
 
 export const SizableText = styled(Text, {
   name: 'SizableText',
-  fontFamily: '$body',
+  fontFamily: 'body',
 
   variants: {
     size: {

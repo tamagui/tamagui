@@ -15,7 +15,7 @@ import { SizableText } from '@tamagui/text'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastPositionWrapper - handles absolute positioning and stacking animations
- * On web: uses Tamagui transition/enterStyle/exitStyle
+ * On web: uses Tamagui transition plus enter/exit clauses
  * On native: replaced by Animated.View with useAnimatedStyle
  * -----------------------------------------------------------------------------------------------*/
 

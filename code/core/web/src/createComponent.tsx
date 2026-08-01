@@ -681,7 +681,7 @@ export function createComponent<
       themeStateProps.name = props.theme
     }
     if (!stateRef.current.optimizeForFirstRender) {
-      // this ensures components with $theme-dark/$theme-light re-render on
+      // this ensures components with dark/light theme clauses re-render on
       // theme change even when using raw colors (not tokens), since
       // isListeningToTheme is set after useSplitStyles.
       themeStateProps.needsUpdate =
@@ -1221,7 +1221,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && props.untilMeasured && !props.group) {
       console.warn(
-        `You set the untilMeasured prop without setting group. This doesn't work, be sure to set untilMeasured on the parent that sets group, not the children that use the $group- prop.\n\nIf you meant to do this, you can disable this warning - either change untilMeasured and group at the same time, or do group={conditional ? 'name' : undefined}`
+        `You set the untilMeasured prop without setting group. This doesn't work, be sure to set untilMeasured on the parent that sets group, not the children that use a group clause.\n\nIf you meant to do this, you can disable this warning - either change untilMeasured and group at the same time, or do group={conditional ? 'name' : undefined}`
       )
     }
 

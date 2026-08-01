@@ -58,7 +58,35 @@ const v2ToV3Prompt = `## v2 -> v3 migration prompt
 npx tamagui check
 \`\`\`
 
-### 2. Run the Sheet codemod
+### 2. Migrate tokens and conditional styles
+
+V3 accepts bare token/theme names and flat clauses only. Run the transactional
+flat-values codemod across the whole app from a Tamagui checkout:
+
+\`\`\`bash
+cd code/core/codemod-flat-values
+bun src/index.ts --write \\
+  --report /tmp/flat-values-report.md \\
+  --json /tmp/flat-values-report.json \\
+  path/to/your/app
+\`\`\`
+
+For example, this V2 input:
+
+\`\`\`tsx
+<View bg="$background" hoverStyle={{ bg: '$backgroundHover' }} $sm={{ p: '$6' }} p="$4" />
+\`\`\`
+
+becomes:
+
+\`\`\`tsx
+<View bg="background hover:background-hover" p="4 sm:6" />
+\`\`\`
+
+Resolve every report row and rerun until the app has no V2 authoring. Do not
+add a compatibility setting or restore condition-object parsing.
+
+### 3. Run the Sheet codemod
 
 Run the codemod, then inspect every changed Sheet:
 
@@ -97,14 +125,14 @@ After:
 \`\`\`tsx
 <Sheet>
   <Sheet.Overlay />
-  <Sheet.Container padding="$4">
-    <Sheet.Background bg="$background" borderTopRadius="$6" />
+  <Sheet.Container padding="4">
+    <Sheet.Background bg="background" borderTopRadius="6" />
     <Sheet.ScrollView>{children}</Sheet.ScrollView>
   </Sheet.Container>
 </Sheet>
 \`\`\`
 
-### 3. Remove deprecated v2 APIs
+### 4. Remove deprecated v2 APIs
 
 Search:
 
@@ -123,18 +151,18 @@ Replace:
 - forwardRef wrapper statics -> direct refs and normal composition.
 - \`inlineWhenUnflattened\` -> remove it.
 - deprecated UI kit aliases -> current component names.
-- old platform style keys -> current \`$web\`, \`$native\`, \`$ios\`, \`$android\`, etc.
+- old platform style keys -> flat \`web:\`, \`native:\`, \`ios:\`, and \`android:\` clauses.
 - \`forceRemoveScrollEnabled\` -> \`disableRemoveScroll\` with inverted intent.
 - \`createCheckbox\` \`sizeAdjust\` -> explicit sizing math or component styles.
 
-### 4. Replace true tokens
+### 5. Replace true tokens
 
-- Default v3 configs no longer export \`$true\` token keys.
-- Component default size resolves to \`$4\`.
-- Replace authored \`$true\` tokens with real keys such as \`$4\`.
+- Default v3 configs no longer export the legacy \`$true\` token key.
+- Component default size resolves to bare \`4\`.
+- Replace authored \`$true\` tokens with real bare keys such as \`4\`.
 - Do not change unrelated boolean props or boolean variant values.
 
-### 5. Replace token stepping
+### 6. Replace token stepping
 
 Removed from \`@tamagui/get-token\`:
 
@@ -157,14 +185,14 @@ const padding = getVariableValue(getSize(size)) * 0.6
 
 Use explicit token keys when you need a named smaller or larger token. Use numeric multiplication when proportional sizing is intended.
 
-### 6. Audit font size values
+### 7. Audit font size values
 
 - \`fontSize={17}\` is a raw numeric platform value and keeps platform-default line-height behavior.
 - \`fontSize="17px"\` is an exact pixel value.
 - v5 config font \`size\` and \`lineHeight\` scales are pinned to px strings in v3.
 - Convert custom config font tokens to px strings if exact pixels were intended.
 
-### 7. Update FocusScope
+### 8. Update FocusScope
 
 - Function-as-children is removed. Pass JSX children directly.
 - FocusScope renders a \`display: contents\` wrapper.
@@ -188,7 +216,7 @@ After:
 </FocusScope>
 \`\`\`
 
-### 8. Update Dialog, Popover, Select, and Adapt flows
+### 9. Update Dialog, Popover, Select, and Adapt flows
 
 - Dialog, Popover, and Select use one Adapt handoff model.
 - Adapted Sheet content stays mounted through the sheet slide-out.
@@ -199,27 +227,27 @@ After:
 - Non-modal Dialog content no longer enables RemoveScroll while open.
 - Remove internal imports such as \`useShowPopoverSheet\`, \`PopoverAdaptHiddenContext\`, or \`useSelectBreakpointActive\` if the app used them.
 
-### 9. Update Select
+### 10. Update Select
 
 - Remove \`name\` and \`autoComplete\` from custom \`Select\` usage.
 - Use \`Select.Separator\` for visual grouping.
 - \`Select.Content\` accepts \`onEscapeKeyDown\` and \`onInteractOutside\`.
 - \`Select.Trigger\` and web \`Select.Viewport\` expose \`data-state="open" | "closed"\`.
 
-### 10. Update themed icons
+### 11. Update themed icons
 
-- \`<Icon size="$4" />\` now resolves through the current font's \`font.size.$4\` scale.
+- \`<Icon size="4" />\` now resolves through the current font's \`font.size['4']\` scale.
 - Raw numeric icon sizes are unchanged.
 - Themed icons no longer accept Tamagui media or pseudo props directly.
-- Wrap icons in a styled \`View\` for \`$sm\`, \`hoverStyle\`, \`pressStyle\`, etc.
+- Wrap icons in a styled \`View\` for media and state clauses.
 
-### 11. Check ScrollView web usage
+### 12. Check ScrollView web usage
 
 \`@tamagui/scroll-view\` now has its own web implementation. It supports \`scrollTo\`, \`scrollToEnd\`, \`getScrollableNode\`, RN-shaped \`onScroll\`, \`contentContainerStyle\`, \`horizontal\`, and indicator props.
 
 Replace unsupported old web/lite usage such as momentum events, \`snapTo*\`, and \`keyboardDismissMode\`.
 
-### 12. Optional Tailwind frontend
+### 13. Optional Tailwind frontend
 
 Tailwind authoring is selected by the component package, with no global config:
 
@@ -231,7 +259,7 @@ Keep importing regular Tamagui components from \`tamagui\` or
 \`@tamagui/core\`. Do not mix utility classes and Tamagui style props on the
 same component; choose the import whose styling language that component uses.
 
-### 13. Verification
+### 14. Verification
 
 - Run \`npx tamagui check\`.
 - Run typecheck and build.

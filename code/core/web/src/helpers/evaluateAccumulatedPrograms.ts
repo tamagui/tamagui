@@ -7,7 +7,7 @@
 //
 // Group clauses read the parent group's pseudo state and container clauses the
 // parent container's measured layout, both through the same GroupContext
-// channel legacy `$group-*` styles use: registration rides pseudoGroups /
+// channel flat group clauses use: registration rides pseudoGroups /
 // mediaGroups so `subscribeToContextGroup` feeds `componentState.group`, and
 // container context entries are keyed `@` / `@name` — group names cannot
 // contain `@`, so the two namespaces share one context without collisions.

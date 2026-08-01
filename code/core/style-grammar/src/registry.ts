@@ -1,6 +1,6 @@
-import { modifierAliases, pseudoToModifier } from './stateModifiers'
+import { modifierAliases } from './stateModifiers'
 
-export { modifierAliases, pseudoToModifier }
+export { modifierAliases }
 
 export type TokenCategory =
   | 'space'
@@ -336,12 +336,6 @@ export const wholeClassConveniences: Readonly<Record<string, Convenience>> =
     'border-y': 'bare-border',
     'inset-0': 'sizing-keyword',
   })
-
-export const modifierToPseudo: Readonly<Record<string, string>> = Object.freeze(
-  Object.fromEntries(
-    Object.entries(pseudoToModifier).map(([prop, modifier]) => [modifier, prop])
-  )
-)
 
 export const defaultMediaKeys: readonly string[] = [
   'touchable',

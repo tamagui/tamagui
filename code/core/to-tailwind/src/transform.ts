@@ -4,12 +4,15 @@ import _generate from '@babel/generator'
 import * as t from '@babel/types'
 import {
   defaultMediaKeys,
+  createModifierRegistry,
   fontWeightNames,
   formatCandidate,
   getTokenCategory,
   propToTailwindPrefix,
+  parseValue,
   standaloneValueProps,
   type GrammarConfigView,
+  type ModifierRegistryView,
   type TokenCategory,
   v6RemovedThemeNames,
   v6ThemeNameReplacements,
@@ -124,7 +127,7 @@ export interface TransformOptions {
   // the CLI path passes false so cross-platform Tamagui components are preserved.
   renameComponents?: boolean
   // the app config's `media` (object or key list). ANY configured media key round-trips as an
-  // identity modifier ($tablet → `tablet:`). when omitted, a default key set is the fallback.
+  // identity modifier (`tablet:` stays `tablet:`). when omitted, a default key set is the fallback.
   media?: Record<string, any> | string[]
   // extra component names (beyond the built-in Tamagui set) whose props may be converted, e.g.
   // an app's `styled()` outputs, or member paths like "Sheet.Container". arbitrary components
@@ -148,6 +151,7 @@ interface Ctx {
   componentAllow: Set<string>
   shorthands: Record<string, string>
   grammarConfig: GrammarConfigView
+  modifierRegistry: ModifierRegistryView
 }
 
 /**
@@ -193,11 +197,13 @@ export function tamaguiToTailwind(
       : new Set(defaultMediaKeys)
   const shorthands =
     options.grammarConfig?.shorthands ?? options.shorthands ?? defaultShorthands
+  const grammarConfig = createTransformGrammarConfig(options, mediaKeys, shorthands)
   const ctx: Ctx = {
     mediaKeys,
     componentAllow: new Set(options.components ?? []),
     shorthands,
-    grammarConfig: createTransformGrammarConfig(options, mediaKeys, shorthands),
+    grammarConfig,
+    modifierRegistry: createModifierRegistry(grammarConfig).registry,
   }
 
   let ast: t.File
@@ -584,8 +590,7 @@ function isConvertibleStyleProp(fullProp: string): boolean {
 function propValueToClass(
   ctx: Ctx,
   propName: string,
-  value: t.JSXAttribute['value'],
-  modifier = ''
+  value: t.JSXAttribute['value']
 ): string | null {
   const fullProp = resolveShorthand(ctx, propName)
 
@@ -594,13 +599,30 @@ function propValueToClass(
   const strVal = getStringValue(value)
   const numVal = getNumericValue(value)
 
-  let formatted: FormattedValue | null = null
-  if (strVal !== null && standaloneValueProps[fullProp]?.[strVal]) {
-    formatted = { value: strVal, valueKind: 'enum' }
-  } else if (strVal !== null) formatted = formatStringValue(ctx, fullProp, strVal)
-  else if (numVal !== null) formatted = formatNumericValue(fullProp, numVal)
-  else return null // dynamic expression → retain
+  if (strVal !== null) {
+    const parsed = parseValue(strVal, ctx.modifierRegistry)
+    if (!parsed.ok) return null
+    const classes: string[] = []
+    if (parsed.value.base !== null) {
+      const base = payloadToClass(ctx, fullProp, parsed.value.base, [])
+      if (base === null) return null
+      classes.push(base)
+    }
+    for (const clause of parsed.value.clauses) {
+      const conditional = payloadToClass(
+        ctx,
+        fullProp,
+        clause.payload,
+        clause.modifiers
+      )
+      if (conditional === null) return null
+      classes.push(conditional)
+    }
+    return classes.length ? classes.join(' ') : null
+  }
 
+  if (numVal === null) return null // dynamic expression → retain
+  const formatted = formatNumericValue(fullProp, numVal)
   if (formatted === null) return null
 
   return formatCandidate(
@@ -608,7 +630,37 @@ function propValueToClass(
       prop: fullProp,
       value: formatted.value,
       valueKind: formatted.valueKind,
-      modifiers: modifier ? modifier.split(':') : undefined,
+      modifiers: undefined,
+    },
+    ctx.grammarConfig
+  )
+}
+
+function payloadToClass(
+  ctx: Ctx,
+  fullProp: string,
+  payload: string,
+  modifiers: readonly string[]
+): string | null {
+  let formatted: FormattedValue | null
+  if (standaloneValueProps[fullProp]?.[payload]) {
+    formatted = { value: payload, valueKind: 'enum' }
+  } else {
+    formatted = formatStringValue(ctx, fullProp, payload)
+    if (formatted === null && /^-?\d+(?:\.\d+)?$/.test(payload)) {
+      const category = getTokenCategory(fullProp)
+      if (!category || ctx.grammarConfig.tokenNames?.[category] !== undefined) {
+        formatted = formatNumericValue(fullProp, Number(payload))
+      }
+    }
+  }
+  if (formatted === null) return null
+  return formatCandidate(
+    {
+      prop: fullProp,
+      value: formatted.value,
+      valueKind: formatted.valueKind,
+      modifiers: modifiers.length ? modifiers : undefined,
     },
     ctx.grammarConfig
   )

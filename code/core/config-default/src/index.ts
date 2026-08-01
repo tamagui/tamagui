@@ -20,7 +20,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
       1: '400',
     },
     color: {
-      1: '$color',
+      1: 'color',
     },
     letterSpacing: {
       1: 0,
@@ -42,7 +42,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
       1: '400',
     },
     color: {
-      1: '$color',
+      1: 'color',
     },
     letterSpacing: {
       1: 0,
@@ -228,7 +228,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     settings: {
       shouldAddPrefersColorThemes: true,
       defaultFont: 'body',
-      defaultSize: '$4',
+      defaultSize: '4',
     },
   }
 }

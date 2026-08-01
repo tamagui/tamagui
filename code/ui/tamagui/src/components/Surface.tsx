@@ -13,7 +13,7 @@
 // against the same generics. Fork the copy for CardSurface vs ListSurface and
 // nothing in the framework cares.
 //
-// Generics-only: never references the color scale ($colorN) directly, so it
+// Generics-only: never references the color scale (colorN) directly, so it
 // restyles under any re-bound level. Single definition; the registry item is
 // generated from this file.
 import { type GetProps, styled, Theme, YStack } from '@tamagui/ui'

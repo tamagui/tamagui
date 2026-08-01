@@ -329,7 +329,7 @@ const textLikeElements = new Set<string>([
  *
  * @example
  * const StyledAnchor = styledHtml('a', {
- *   color: '$blue10',
+ *   color: 'blue10',
  *   textDecorationLine: 'underline',
  * })
  * // StyledAnchor now accepts `href` prop with proper typing
@@ -688,61 +688,6 @@ function styledImpl<
   return component as any as StyledComponent
 }
 
-// // type variants = GetStyledVariants<typeof X>
-// const y = <X disabled size="$10" />
-
-// sanity check more complex types:
-
-// import { Paragraph } from '../../text/src/Paragraph'
-// import { Text } from './views/Text'
-// import { getFontSized } from '../../get-font-sized/src'
-// import { SizableText } from '../../text/src/SizableText'
-// const Text1 = styled(Text, {
-//   name: 'SizableText',
-//   fontFamily: '$body',
-
-//   variants: {
-//     size: getFontSized,
-//   } as const,
-
-//   defaultVariants: {
-//     size: true,
-//   },
-// })
-
-// const Test2 = styled(Text1, {
-//   render: 'p',
-//   userSelect: 'auto',
-//   color: '$color',
-// })
-
-// const Test3 = styled(Test2, {
-//   render: 'p',
-//   userSelect: 'auto',
-//   color: '$color',
-
-//   variants: {
-//     ork: {
-//       true: {}
-//     }
-//   }
-// })
-
-// const Test = styled(Paragraph, {
-//   render: 'p',
-//   userSelect: 'auto',
-//   color: '$color',
-
-//   variants: {
-//     someting: {
-//       true: {},
-//     },
-//   } as const,
-// })
-
-// type X = typeof Paragraph
-// type Props1 = GetProps<typeof Paragraph>
-// type z = typeof Text1
 // type ParentV = GetVariantProps<typeof Text1>
 // type Props = GetProps<typeof Test>
 

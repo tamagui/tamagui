@@ -46,7 +46,7 @@ export const Input = createStyledHOC(StyledInput)<InputProps>((inProps, forwarde
   // TODO: later move most of the logic to the core package
 
   let secureTextEntry = false
-  // $caretColor maps to cursorColor (Android) + selectionColor (iOS+Android
+  // caretColor maps to cursorColor (Android) + selectionColor (iOS+Android
   // caret) on native; preserve caller-provided values.
   let cursorColor = (inProps as any).cursorColor ?? caretColor
   let selectionColor = (inProps as any).selectionColor ?? caretColor

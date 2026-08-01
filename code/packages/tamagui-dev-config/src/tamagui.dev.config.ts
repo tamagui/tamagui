@@ -6,7 +6,7 @@ import { createV5Theme, subtleChildrenThemes } from '@tamagui/themes/v5-subtle-b
 // only generate the accent themes the site actually uses: red/green/blue/gray/yellow
 // (the @tamagui/logo tint family). dropping orange/pink/purple/teal/neutral roughly
 // halves the render-blocking theme css. note: dropping an accent also removes its
-// color tokens (--pink10 etc.), so all $pink/$purple/$orange/$teal/$neutral usages are
+// color tokens (--pink10 etc.), so all pink/purple/orange/teal/neutral usages are
 // collapsed to kept colors across the site. component themes are kept (they dedupe to
 // surfaces in css and the site shows them off). themes-as-js is still stripped to {}
 // on the client below and hydrated from css.
