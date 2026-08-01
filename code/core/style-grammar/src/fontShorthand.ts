@@ -55,7 +55,7 @@ const unsupportedKeywords = new Set([
   'status-bar',
 ])
 
-const sizePattern = /^-?(\d+\.?\d*|\.\d+)[a-z%]+$/i
+const sizePattern = /^-?(\d+\.?\d*|\.\d+)(?:[a-z%]+)?$/i
 const weightNumberPattern = /^[1-9]00$/
 
 export interface FontShorthandError {
@@ -122,7 +122,7 @@ export function splitFontValue(value: ParsedValue): {
       }
       const slash = component.indexOf('/')
       const sizePart = slash === -1 ? component : component.slice(0, slash)
-      if (sizePattern.test(sizePart) || (sizePart[0] === '$' && sizePart.length > 1)) {
+      if (sizePattern.test(sizePart)) {
         if (found.size !== undefined) {
           errors.push({ code: 'unsupported-font-component', component, where })
           continue

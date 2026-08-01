@@ -45,7 +45,7 @@ type SplitConditions = [
   groupContext?: Record<string, any>,
 ]
 
-const sigilClauseCases: {
+const tokenClauseCases: {
   name: string
   modifier: string
   active: SplitConditions
@@ -110,23 +110,23 @@ test('base applies and the hover clause waits for the state', () => {
   expect(hovered.style?.backgroundColor).toBe('blue')
 })
 
-test.each(sigilClauseCases)(
-  'legacy token sigils resolve in clause payloads on native: $name',
+test.each(tokenClauseCases)(
+  'bare tokens resolve in clause payloads on native: $name',
   ({ modifier, active }) => {
-    const clause = split({ backgroundColor: `white ${modifier}:$black` }, ...active)
+    const clause = split({ backgroundColor: `white ${modifier}:black` }, ...active)
     expect(clause.style?.backgroundColor).toBe('#000')
   }
 )
 
-test('qualified legacy token sigils resolve in both program positions on native', () => {
-  const base = split({ backgroundColor: '$color.white press:black' })
+test('bare configured tokens resolve in both program positions on native', () => {
+  const base = split({ backgroundColor: 'white press:black' })
   expect(base.style?.backgroundColor).toBe('#fff')
 
-  const clause = split({ backgroundColor: 'white press:$color.black' }, { press: true })
+  const clause = split({ backgroundColor: 'white press:black' }, { press: true })
   expect(clause.style?.backgroundColor).toBe('#000')
 })
 
-test('an unknown legacy token is dropped with an actionable native diagnostic', () => {
+test('an unknown bare lookup miss stays literal on native', () => {
   const warnings: string[] = []
   const original = console.warn
   const previousNodeEnv = process.env.NODE_ENV
@@ -134,33 +134,24 @@ test('an unknown legacy token is dropped with an actionable native diagnostic', 
   console.warn = (message: string) => warnings.push(String(message))
   try {
     const result = split(
-      { backgroundColor: 'white press:$missing-native-sigil' },
+      { backgroundColor: 'white press:missing-native' },
       { press: true }
     )
-    expect(result.style?.backgroundColor).toBeUndefined()
+    expect(result.style?.backgroundColor).toBe('missing-native')
 
-    const base = split({ backgroundColor: '$missing-native-base press:black' })
-    expect(base.style?.backgroundColor).toBeUndefined()
-    expect(warnings).toContainEqual(
-      expect.stringContaining(
-        '"$missing-native-sigil" is not a configured token; use a configured token name or remove "$" for a literal value'
-      )
-    )
-    expect(warnings).toContainEqual(
-      expect.stringContaining(
-        '"$missing-native-base" is not a configured token; use a configured token name or remove "$" for a literal value'
-      )
-    )
+    const base = split({ backgroundColor: 'missing-native-base press:black' })
+    expect(base.style?.backgroundColor).toBe('missing-native-base')
+    expect(warnings).toEqual([])
   } finally {
     console.warn = original
     process.env.NODE_ENV = previousNodeEnv
   }
 })
 
-test.each(sigilClauseCases)(
-  'legacy token sigils resolve in base payloads on native: $name',
+test.each(tokenClauseCases)(
+  'bare tokens resolve in base payloads on native: $name',
   ({ modifier, inactive }) => {
-    const base = split({ backgroundColor: `$white ${modifier}:black` }, ...inactive)
+    const base = split({ backgroundColor: `white ${modifier}:black` }, ...inactive)
     expect(base.style?.backgroundColor).toBe('#fff')
   }
 )

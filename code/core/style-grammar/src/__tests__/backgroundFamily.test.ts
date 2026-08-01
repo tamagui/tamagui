@@ -102,10 +102,10 @@ describe('background family splitting', () => {
     })
   })
 
-  test('legacy sigils classify bare and qualified color tokens before resolution', () => {
+  test('configured color tokens classify before resolution', () => {
     const value: ParsedValue = {
-      base: '$surface',
-      clauses: [{ modifiers: ['hover'], payload: '$color.surface-hover' }],
+      base: 'surface',
+      clauses: [{ modifiers: ['hover'], payload: 'surface-hover' }],
     }
     expect(splitBackgroundValue(value, new Set(['surface', 'surface-hover']))).toEqual({
       entries: [{ property: 'backgroundColor', value }],

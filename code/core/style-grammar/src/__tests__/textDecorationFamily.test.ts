@@ -131,22 +131,22 @@ describe('font shorthand', () => {
     ])
   })
 
-  test('legacy size and family sigils split before payload resolution', () => {
-    const split = splitFontValue(parsedFont('$4 $body hover:$6 $heading'))
+  test('bare size and family tokens split before payload resolution', () => {
+    const split = splitFontValue(parsedFont('4 body hover:6 heading'))
     expect(split.errors).toEqual([])
     expect(split.entries).toEqual([
       {
         property: 'fontSize',
         value: {
-          base: '$4',
-          clauses: [{ modifiers: ['hover'], payload: '$6' }],
+          base: '4',
+          clauses: [{ modifiers: ['hover'], payload: '6' }],
         },
       },
       {
         property: 'fontFamily',
         value: {
-          base: '$body',
-          clauses: [{ modifiers: ['hover'], payload: '$heading' }],
+          base: 'body',
+          clauses: [{ modifiers: ['hover'], payload: 'heading' }],
         },
       },
     ])

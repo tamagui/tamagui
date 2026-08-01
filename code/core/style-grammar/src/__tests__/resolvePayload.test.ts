@@ -15,15 +15,11 @@ const tokens: Record<string, ResolvedReference> = {
   accent: { name: 'accent', kind: 'color' },
   surface: { name: 'surface', kind: 'color' },
   'surface-hover': { name: 'surface-hover', kind: 'color' },
-  color: { name: 'color-category-name', kind: 'color' },
-  'color.white': { name: 'qualified-white', kind: 'color' },
   glow: { name: 'glow', kind: 'other' },
   4: { name: '4', kind: 'length' },
   8: { name: '8', kind: 'length' },
   0: { name: '0', kind: 'length' },
   2: { name: '2', kind: 'number' },
-  '2xl': { name: '2xl', kind: 'length' },
-  50: { name: '50', kind: 'color' },
   // a token that shares a spelling with a plain CSS color
   blue: { name: 'blue', kind: 'color' },
 }
@@ -104,70 +100,6 @@ describe('identifiers', () => {
       expect(resolved.references, reserved).toEqual([])
       expect(resolved.segments, reserved).toEqual([reserved])
     }
-  })
-})
-
-describe('legacy token sigils', () => {
-  test('a sigil canonicalizes before one configured-name lookup', () => {
-    const lookedUp: string[] = []
-    const resolved = resolvePayload('$surface $4 $2xl $missing', {
-      resolveNumbers: true,
-      lookup(name) {
-        lookedUp.push(name)
-        return tokens[name]
-      },
-    })
-
-    expect(lookedUp).toEqual(['surface', '4', '2xl', 'missing'])
-    expect(resolved.segments).toEqual([
-      { name: 'surface', kind: 'color' },
-      ' ',
-      { name: '4', kind: 'length' },
-      ' ',
-      { name: '2xl', kind: 'length' },
-      ' $missing',
-    ])
-    expect(resolved.errors).toEqual([
-      {
-        code: 'unresolved-token',
-        index: 17,
-        message:
-          '"$missing" is not a configured token; use a configured token name or remove "$" for a literal value',
-        name: 'missing',
-      },
-    ])
-  })
-
-  test('a color opacity suffix resolves after the compatibility sigil', () => {
-    expect(resolve('$surface/50').references).toEqual([
-      { name: 'surface', kind: 'color', opacity: 50 },
-    ])
-  })
-
-  test('a numeric-leading color token accepts an opacity suffix', () => {
-    expect(resolve('$50/50').references).toEqual([
-      { name: '50', kind: 'color', opacity: 50 },
-    ])
-  })
-
-  test('a dotted legacy token is one lookup and one reference', () => {
-    const lookedUp: string[] = []
-    const resolved = resolvePayload('$color.white', {
-      lookup(name) {
-        lookedUp.push(name)
-        return tokens[name]
-      },
-    })
-
-    expect(lookedUp).toEqual(['color.white'])
-    expect(resolved.segments).toEqual([{ name: 'qualified-white', kind: 'color' }])
-  })
-
-  test('sigils inside strings and url bodies stay literal', () => {
-    expect(shape(resolve('"$surface" url($surface) $surface'))).toEqual([
-      '"$surface" url($surface) ',
-      { name: 'surface', kind: 'color' },
-    ])
   })
 })
 

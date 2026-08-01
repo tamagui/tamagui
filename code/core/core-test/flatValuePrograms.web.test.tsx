@@ -54,15 +54,15 @@ test('tokens resolve to variables and media clauses wrap', () => {
   }
 })
 
-test('legacy token sigils resolve in conditional flat values', () => {
-  const colors = split({ backgroundColor: '$white hover:$black' })
+test('bare tokens resolve in conditional flat values', () => {
+  const colors = split({ backgroundColor: 'white hover:black' })
   const colorClass = colors.classNames.backgroundColor
   expect(rulesFor(colors, colorClass)).toEqual([
     `.${colorClass}{background-color:var(--c-white)}`,
     `@media (hover: hover) {.${colorClass}:where(:hover){background-color:var(--c-black)}}`,
   ])
 
-  const padding = split({ padding: '$4 hover:$8' })
+  const padding = split({ padding: '4 hover:8' })
   for (const [longhand, cssProperty] of [
     ['paddingTop', 'padding-top'],
     ['paddingRight', 'padding-right'],
@@ -76,14 +76,7 @@ test('legacy token sigils resolve in conditional flat values', () => {
     ])
   }
 
-  const qualified = split({ backgroundColor: '$color.white hover:$color.black' })
-  const qualifiedClass = qualified.classNames.backgroundColor
-  expect(rulesFor(qualified, qualifiedClass)).toEqual([
-    `.${qualifiedClass}{background-color:var(--c-white)}`,
-    `@media (hover: hover) {.${qualifiedClass}:where(:hover){background-color:var(--c-black)}}`,
-  ])
-
-  const background = split({ background: '$white hover:$black' })
+  const background = split({ background: 'white hover:black' })
   const backgroundClass = background.classNames.backgroundColor
   expect(rulesFor(background, backgroundClass)).toEqual([
     `.${backgroundClass}{background-color:var(--c-white)}`,
@@ -91,28 +84,28 @@ test('legacy token sigils resolve in conditional flat values', () => {
   ])
 })
 
-test('an unknown legacy base token drops the web program with a diagnostic', () => {
+test('an unknown bare lookup miss stays literal on web', () => {
   const warnings: string[] = []
   const original = console.warn
   const previousNodeEnv = process.env.NODE_ENV
   process.env.NODE_ENV = 'development'
   console.warn = (message: string) => warnings.push(String(message))
   try {
-    const result = split({ backgroundColor: '$missing-web-base hover:black' })
-    expect(result.classNames.backgroundColor).toBeUndefined()
-    expect(warnings).toContainEqual(
-      expect.stringContaining(
-        '"$missing-web-base" is not a configured token; use a configured token name or remove "$" for a literal value'
-      )
-    )
+    const result = split({ backgroundColor: 'missing-web-base hover:black' })
+    const className = result.classNames.backgroundColor
+    expect(rulesFor(result, className)).toEqual([
+      `.${className}{background-color:missing-web-base}`,
+      `@media (hover: hover) {.${className}:where(:hover){background-color:var(--c-black)}}`,
+    ])
+    expect(warnings).toEqual([])
   } finally {
     console.warn = original
     process.env.NODE_ENV = previousNodeEnv
   }
 })
 
-test('legacy token sigils reach conditional border-family splitting intact', () => {
-  const result = split({ border: '$4 solid $white hover:$8 dashed $black' })
+test('bare tokens reach conditional border-family splitting intact', () => {
+  const result = split({ border: '4 solid white hover:8 dashed black' })
 
   const widthClass = result.classNames.borderTopWidth
   expect(rulesFor(result, widthClass)).toEqual([

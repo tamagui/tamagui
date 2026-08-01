@@ -174,7 +174,6 @@ export function createGrammarRuntimeContext(
   // category path (`space-4` and `size-4` differ), so nothing collides.
   const byVarName = new Map<string, Variable>()
   const tokensByCategory = new Map<TokenCategoryName, Map<string, Variable>>()
-  const qualifiedTokens = new Map<string, ResolvedReference>()
   const themeVariables = new Map<string, Variable>()
   const themeKeyByVarName = new Map<string, string>()
 
@@ -189,10 +188,6 @@ export function createGrammarRuntimeContext(
       if (!isVariable(variable)) continue
       byName.set(name, variable)
       byVarName.set(variable.name, variable)
-      qualifiedTokens.set(`${category}.${name}`, {
-        name: variable.name,
-        kind: kindForCategory(category),
-      })
     }
   }
 
@@ -298,11 +293,6 @@ export function createGrammarRuntimeContext(
           : undefined
 
       const lookup = (name: string): ResolvedReference | undefined => {
-        // legacy `$category.name` authoring reaches the shared resolver as one
-        // bare lookup name. resolve that exact qualified name once, independent
-        // of the property's inferred category, matching specificTokens.
-        const qualified = qualifiedTokens.get(name)
-        if (qualified) return qualified
         // fontFamily binds the configured families: the reference is the
         // family Variable (var text is shared across fonts; the font_* scope
         // class recorded at contribute time selects which family it resolves to)

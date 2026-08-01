@@ -1880,9 +1880,7 @@ type StateTokenClause<Token extends string> = Token extends `$${infer Name}`
   ? `${FlatValueStateModifier}:${Name}`
   : never
 
-type SpaceTokenBase =
-  | SpecificTokensSpecial
-  | GetTokenString<keyof Tokens['space']>
+type SpaceTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']>
 
 export type Space =
   | SpaceTokenBase
@@ -2544,10 +2542,6 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   float?: Properties['float']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  content?: Properties['content']
   /**
    * Web-only style property. Will be omitted on native.
    */

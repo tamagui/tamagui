@@ -87,9 +87,8 @@ function lowerOneProgram(
       program.value.base
     )
     if (base === null) {
-      // clause-free compound values retain the legacy path's byte-for-byte
-      // handling of unknown embedded tokens. a conditional program cannot ship
-      // an unresolved sigil because native would receive it as an invalid value.
+      // Clause-free compound values retain byte-for-byte handling for invalid
+      // opacity suffixes. Conditional programs with resolver errors are dropped.
       if (program.value.clauses.length === 0) {
         base = program.value.base
       } else {

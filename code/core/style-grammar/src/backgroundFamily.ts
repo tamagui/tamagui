@@ -86,15 +86,7 @@ export function classifyComponent(
   }
 
   const tokenName = component.replace(/\/\d+$/, '')
-  const configuredName = tokenName[0] === '$' ? tokenName.slice(1) : tokenName
-  if (
-    colorTokens.has(configuredName) ||
-    (tokenName[0] === '$' &&
-      configuredName.startsWith('color.') &&
-      colorTokens.has(configuredName.slice(6)))
-  ) {
-    return 'color'
-  }
+  if (colorTokens.has(tokenName)) return 'color'
 
   const lower = component.toLowerCase()
   if (lower === 'transparent' || lower === 'currentcolor' || namedCssColors.has(lower)) {

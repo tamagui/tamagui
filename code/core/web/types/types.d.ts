@@ -1428,10 +1428,6 @@ interface ExtraStyleProps {
     /**
      * Web-only style property. Will be omitted on native.
      */
-    content?: Properties['content'];
-    /**
-     * Web-only style property. Will be omitted on native.
-     */
     overflowBlock?: Properties['overflowBlock'];
     /**
      * Web-only style property. Will be omitted on native.

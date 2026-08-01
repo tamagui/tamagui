@@ -92,12 +92,10 @@ describe('the border family', () => {
     expect(entries[2].value.base).toBe('primary')
   })
 
-  test('legacy sigils classify width and color tokens before resolution', () => {
+  test('bare width and color tokens classify before resolution', () => {
     const { entries, errors } = splitBorderValue(
       'borderTop',
-      value('$4 solid $primary', [
-        { modifiers: ['hover'], payload: '$8 dashed $color.color5' },
-      ]),
+      value('4 solid primary', [{ modifiers: ['hover'], payload: '8 dashed color5' }]),
       colorTokens
     )
     expect(errors).toEqual([])
@@ -105,12 +103,12 @@ describe('the border family', () => {
       entries.map((entry) => [entry.property, entry.value])
     )
     expect(byProp.borderTopWidth).toEqual({
-      base: '$4',
-      clauses: [{ modifiers: ['hover'], payload: '$8' }],
+      base: '4',
+      clauses: [{ modifiers: ['hover'], payload: '8' }],
     })
     expect(byProp.borderTopColor).toEqual({
-      base: '$primary',
-      clauses: [{ modifiers: ['hover'], payload: '$color.color5' }],
+      base: 'primary',
+      clauses: [{ modifiers: ['hover'], payload: 'color5' }],
     })
   })
 
