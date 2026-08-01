@@ -121,7 +121,7 @@ describe('shorthand variables - web', () => {
     })
     const value = getStyleValue(styles, 'backgroundImage')
 
-    expect(value).toMatch(/linear-gradient\(\nonexistent, var\(--.*white/)
+    expect(value).toMatch(/linear-gradient\(nonexistent, var\(--.*white/)
   })
 
   test('backgroundImage with token/NN opacity modifier resolves to color-mix', () => {
@@ -154,9 +154,9 @@ describe('border shorthand - web', () => {
     const styles = simplifiedGetSplitStyles(View, {
       border: '2px dashed white',
     })
-    const value = getStyleValue(styles, 'border')
-
-    expect(value).toMatch(/2px dashed var\(--.*white.*\)/)
+    expect(getStyleValue(styles, 'borderTopWidth')).toBe('2px')
+    expect(getStyleValue(styles, 'borderTopStyle')).toBe('dashed')
+    expect(getStyleValue(styles, 'borderTopColor')).toMatch(/var\(--.*white.*\)/)
   })
 
   test('border without variables splits into longhands unchanged', () => {
@@ -195,9 +195,9 @@ describe('outline shorthand - web', () => {
     const styles = simplifiedGetSplitStyles(View, {
       outline: '2px solid white',
     })
-    const value = getStyleValue(styles, 'outline')
-
-    expect(value).toMatch(/2px solid var\(--.*white.*\)/)
+    expect(getStyleValue(styles, 'outlineWidth')).toBe('2px')
+    expect(getStyleValue(styles, 'outlineStyle')).toBe('solid')
+    expect(getStyleValue(styles, 'outlineColor')).toMatch(/var\(--.*white.*\)/)
   })
 
   test('outline "none" becomes outline-style none', () => {
@@ -258,7 +258,7 @@ describe('tokens in variant styles - web', () => {
       variants: {
         floating: {
           true: {
-          boxShadow: "0 20px 40px white"
+            boxShadow: '0 20px 40px white',
           },
         },
       } as const,
@@ -275,15 +275,15 @@ describe('tokens in variant styles - web', () => {
       variants: {
         outlined: {
           true: {
-          border: "2px solid white"
+            border: '2px solid white',
           },
         },
       } as const,
     })
     const styles = simplifiedGetSplitStyles(Comp, { outlined: true })
-    const value = getStyleValue(styles, 'border')
-
-    expect(value).toMatch(/2px solid var\(--.*white/)
+    expect(getStyleValue(styles, 'borderTopWidth')).toBe('2px')
+    expect(getStyleValue(styles, 'borderTopStyle')).toBe('solid')
+    expect(getStyleValue(styles, 'borderTopColor')).toMatch(/var\(--.*white/)
   })
 
   test('backgroundImage with embedded tokens in variant resolves', () => {
@@ -291,7 +291,7 @@ describe('tokens in variant styles - web', () => {
       variants: {
         gradient: {
           true: {
-          backgroundImage: "linear-gradient(to bottom, white, black)"
+            backgroundImage: 'linear-gradient(to bottom, white, black)',
           },
         },
       } as const,

@@ -28,7 +28,7 @@ export type SkinManifest = {
     /**
      * A1 component-tier states the skin responds to that W5 CANNOT derive from a
      * canonical-named variant (see plans/v3-a1-state-vocabulary.md). Use for states
-     * styled through a v2-compat prop or a behavior mechanism instead of a
+     * styled through a compatibility prop or a behavior mechanism instead of a
      * `variants: { <state>: {...} }` block — e.g. ListItem's `active` prop
      * (`selected`), ToggleGroup's `activeStyle` (`checked`).
      */
@@ -39,9 +39,9 @@ export type SkinManifest = {
     extraRegistryDependencies?: string[];
     /**
      * enforce the generics-only rule on this skin: the generator fails if the skin
-     * source references the color scale ($colorN) directly (see plans/surface-levels.md).
+     * source references the color scale (colorN) directly (see plans/surface-levels.md).
      * defaults to true. the copied chrome layer (Surface, facets) MUST stay
-     * generics-only so it restyles under any re-bound level. the v2-compat
+     * generics-only so it restyles under any re-bound level. the legacy
      * component skins that still reference specific palette steps for their look
      * opt out with `genericsOnly: false`.
      */

@@ -73,7 +73,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
           accent: 'surfaceBorder',
           surfaceBorder: 'background',
           focusRingWidth: '10px',
-          disabledOpacity: 'color.white' as any,
+          disabledOpacity: 'white' as any,
           radius: px(6),
         } as any,
       },
@@ -85,7 +85,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
     expect(merged.surfaceBorder.val).toBe(lightTheme.background.val)
     // px string parses to number on native
     expect(merged.focusRingWidth.val).toBe(10)
-    // qualified token resolves through specificTokens
+    // bare token resolves through the configured token namespace
     expect(merged.disabledOpacity.val).toBe('#fff')
     // px() helper resolves to its numeric value
     expect(merged.radius?.val).toBe(6)

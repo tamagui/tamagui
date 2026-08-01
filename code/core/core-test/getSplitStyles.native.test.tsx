@@ -164,7 +164,7 @@ describe('getSplitStyles', () => {
       variants: {
         hoverable: {
           true: {
-          opacity: "hover:0.5"
+            opacity: 'hover:0.5',
           },
         },
       } as const,
@@ -451,7 +451,7 @@ function findLayoutValue(result: ReturnType<typeof getSplitStylesFor>, property:
 function getThemeStylesView(props: Record<string, any>, themeName: string, tag?: string) {
   return getSplitStyles(
     props,
-    View.staticConfig,
+    Text.staticConfig,
     {} as any,
     themeName,
     {

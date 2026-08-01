@@ -53,13 +53,12 @@ describe('shorthand variables - native', () => {
     ])
   })
 
-  test('filter with variable resolves space token', () => {
+  test('filter with a migrated token value stays literal CSS', () => {
     const { style } = getSplitStylesFor({
-      filter: 'blur(2)',
+      filter: 'blur(7px)',
     })
 
-    // 2 in space = 7 (size 28 * 0.333 rounded)
-    expect(style?.filter).toBe('blur(7)')
+    expect(style?.filter).toBe('blur(7px)')
   })
 
   test('filter without variables passed through unchanged', () => {

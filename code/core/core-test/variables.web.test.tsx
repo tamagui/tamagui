@@ -88,9 +88,9 @@ describe('getVariablesCSSRules', () => {
     expect(res.rules[0]).toContain('--disabledOpacity:0.25;')
   })
 
-  test('qualified token references resolve through specificTokens', () => {
-    const res = getVariablesCSSRules({ values: { surfaceBorder: 'color.white' } }, conf)!
-    expect(res.rules[0]).toContain('--surfaceBorder:var(--c-white);')
+  test('bare token references resolve through the configured token namespace', () => {
+    const res = getVariablesCSSRules({ values: { surfaceBorder: 'white' } }, conf)!
+    expect(res.rules[0]).toContain('--surfaceBorder:var(--white);')
   })
 
   test('dark values emit scheme-scoped selectors and media rules', () => {

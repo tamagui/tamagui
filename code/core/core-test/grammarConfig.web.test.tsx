@@ -32,9 +32,7 @@ describe('identifier lookup', () => {
     // `4` is a space token for padding and a size token for width
     const space = context.getLookup('padding')('4')!
     const size = context.getLookup('width')('4')!
-    expect(context.toVar(space.name)).toBe(
-      tamaguiConfig.tokensParsed.space['4'].variable
-    )
+    expect(context.toVar(space.name)).toBe(tamaguiConfig.tokensParsed.space['4'].variable)
     expect(context.toVar(size.name)).toBe(tamaguiConfig.tokensParsed.size['4'].variable)
     expect(context.toVar(space.name)).not.toBe(context.toVar(size.name))
   })
@@ -64,6 +62,11 @@ describe('identifier lookup', () => {
   test('a name that is not configured stays literal', () => {
     expect(context.getLookup('color')('cornflowerblue')).toBeUndefined()
     expect(context.getLookup('padding')('999')).toBeUndefined()
+  })
+
+  test('an unbound composite property reads the unified space and color scales', () => {
+    expect(context.getLookup('filter')('2')?.kind).toBe('length')
+    expect(context.getLookup('backgroundImage')('white')?.kind).toBe('color')
   })
 
   test('font-scoped props resolve against a font sub-map', () => {
@@ -144,7 +147,6 @@ describe('modifiers from the real config', () => {
     // unprefixed platform names, which is what the flat grammar spells
     expect(context.registry.get('web')).toBe('platform')
     expect(context.registry.get('ios')).toBe('platform')
-    expect(context.registry.get('web')).toBeUndefined()
   })
 
   test('container modifiers resolve for real media sizes', () => {

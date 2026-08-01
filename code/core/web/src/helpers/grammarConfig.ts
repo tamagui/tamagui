@@ -307,6 +307,19 @@ export function createGrammarRuntimeContext(
         if (kind === 'length' && resolveSafeAreaVariable(name) !== undefined) {
           return { name, kind }
         }
+        // Composite properties such as boxShadow and backgroundImage have no
+        // single bound category. They still read the unified namespaces the old
+        // explicit token spelling could address: the space and color scales,
+        // then theme values. The matched category supplies the reference
+        // kind, so color opacity remains valid without guessing from the text.
+        if (category === undefined) {
+          const spaceToken = tokensByCategory.get('space')?.get(name)
+          if (isVariable(spaceToken)) return { name: spaceToken.name, kind: 'length' }
+          const colorToken = tokensByCategory.get('color')?.get(name)
+          if (isVariable(colorToken)) return { name: colorToken.name, kind: 'color' }
+          const themeVariable = themeVariables.get(name)
+          if (themeVariable) return { name: themeVariable.name, kind: 'other' }
+        }
         // an identifier-shaped name that lives in a SIBLING category is an
         // overloaded-family mismatch (`fontSize="red-500"`): diagnose and miss
         // rather than silently binding another category's value or shipping

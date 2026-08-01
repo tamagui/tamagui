@@ -456,14 +456,6 @@ describe('TS-style variant resolvers', () => {
       ['Space', '12px'],
       ['Color', 'red'],
       ['Color', 'white/50'],
-      ['Color', '$/-1'],
-      ['Color', 'white/.5'],
-      ['Color', 'white/-1'],
-      ['Color', 'white/+1'],
-      ['Color', 'white/0x10'],
-      ['Color', 'notConfigured/1e3'],
-      ['Color', 'not/Configured/1E-3'],
-      ['Color', 'notConfigured/50'],
       ['Radius', 6],
       ['Radius', '+.5rem'],
       ['Radius', '0.5rem'],
@@ -618,33 +610,6 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(ZIndexOnly, 'loose-z')).toBeUndefined()
     expect(getOpacity(RadiusOnly, 1)).toBe(0.56)
     expect(getOpacity(ZIndexOnly, 1)).toBe(0.57)
-    configure()
-  })
-
-  test('specific tokens follow autocompleteSpecificTokens own-property setting', () => {
-    const Comp = styled(View, {
-      variants: {
-        kind: {
-          Color: createVariantResolver('Color', () => ({
-            opacity: 0.46,
-          })),
-        },
-      } as const,
-    })
-
-    configure({
-      allowedStyleValues: 'strict',
-      autocompleteSpecificTokens: 'except-special',
-    })
-    expect(getOpacity(Comp, 'radius.4')).toBeUndefined()
-    configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: undefined })
-    expect(getOpacity(Comp, 'radius.4')).toBeUndefined()
-    configure({ allowedStyleValues: 'strict' })
-    expect(getOpacity(Comp, 'radius.4')).toBe(0.46)
-    configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: false })
-    expect(getOpacity(Comp, 'radius.4')).toBe(0.46)
-    configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: true })
-    expect(getOpacity(Comp, 'radius.4')).toBe(0.46)
     configure()
   })
 

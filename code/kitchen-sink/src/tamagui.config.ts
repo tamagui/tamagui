@@ -415,7 +415,6 @@ const tamaConf = createTamagui({
   settings: {
     defaultFont: 'body',
     allowedStyleValues: 'somewhat-strict',
-    autocompleteSpecificTokens: 'except-special',
     fastSchemeChange: true,
   },
   tokens,

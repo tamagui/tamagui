@@ -51,46 +51,46 @@ describe('compoundVariants - native', () => {
     const Frame = styled(
       View,
       {
-      context: FrameContext,
-      contextProps: ['tone'],
-      backgroundColor: 'gray',
-      marginTop: "sm:1px",
-      paddingTop: "sm:1px",
-      variants: {
-                size: {
-                  sm: {
-                  backgroundColor: 'blue',
-                  marginTop: "sm:2px",
-                  paddingTop: "sm:2px"
-                  },
-                },
-                state: {
-                  active: {},
-                  selected: {},
-                },
-              } as const,
-      defaultVariants: {
-                size: 'sm',
-              },
-      compoundVariants: [
-                {
-                  size: 'sm',
-                  tone: 'critical',
-                  state: ['active', 'selected'],
-                  style: {
-                  paddingTop: "sm:3px"
-                  },
-                },
-                {
-                  size: 'sm',
-                  tone: 'critical',
-                  state: 'active',
-                  style: {
-                  backgroundColor: 'red',
-                  marginTop: "sm:3px"
-                  },
-                },
-              ]
+        context: FrameContext,
+        contextProps: ['tone'],
+        backgroundColor: 'gray',
+        marginTop: 'sm:1px',
+        paddingTop: 'sm:1px',
+        variants: {
+          size: {
+            sm: {
+              backgroundColor: 'blue',
+              marginTop: 'sm:2px',
+              paddingTop: 'sm:2px',
+            },
+          },
+          state: {
+            active: {},
+            selected: {},
+          },
+        } as const,
+        defaultVariants: {
+          size: 'sm',
+        },
+        compoundVariants: [
+          {
+            size: 'sm',
+            tone: 'critical',
+            state: ['active', 'selected'],
+            style: {
+              paddingTop: 'sm:3px',
+            },
+          },
+          {
+            size: 'sm',
+            tone: 'critical',
+            state: 'active',
+            style: {
+              backgroundColor: 'red',
+              marginTop: 'sm:3px',
+            },
+          },
+        ],
       } as const,
       {
         acceptsClassName: false,
@@ -138,7 +138,7 @@ describe('compoundVariants - native', () => {
     // config-first: 'black' resolves through the configured color token
     expect(callerOverrides.style?.backgroundColor).toBe('#000')
     expect(callerOverrides.style?.marginTop).toBe(4)
-    expect(callerOverrides.style?.paddingTop).toBe(1)
+    expect(callerOverrides.style?.paddingTop).toBe(3)
 
     const compoundAfterEarlyCaller = simplifiedGetSplitStyles(
       Frame,

@@ -1,5 +1,5 @@
 import { type GetProps } from '@tamagui/ui';
-declare const StyledListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, "active" | "color" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+declare const StyledListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     active?: boolean | undefined;
     color?: string | undefined;
     disabled?: boolean | undefined;
@@ -22,7 +22,7 @@ declare const StyledListItem: import("react").FunctionComponent<Omit<import("@ta
         variant?: "outlined" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const ListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, "active" | "color" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const ListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     active?: boolean | undefined;
     color?: string | undefined;
     disabled?: boolean | undefined;
@@ -57,7 +57,7 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
         children?: import("react").ReactNode;
         scope?: string;
     }>;
-    Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "color" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         color?: string | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;

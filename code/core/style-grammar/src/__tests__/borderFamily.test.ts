@@ -54,6 +54,17 @@ describe('the border family', () => {
     ])
   })
 
+  test('none carries the shorthand effective zero width', () => {
+    const { entries, errors } = splitBorderValue('border', value('none'), colorTokens)
+    expect(errors).toEqual([])
+    expect(entries.find((entry) => entry.property === 'borderTopWidth')?.value.base).toBe(
+      '0'
+    )
+    expect(entries.find((entry) => entry.property === 'borderTopStyle')?.value.base).toBe(
+      'none'
+    )
+  })
+
   test('clauses split by component kind onto their own programs', () => {
     // border="1px solid gray hover:blue sm:2px"
     const { entries, errors } = splitBorderValue(

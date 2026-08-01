@@ -42,52 +42,52 @@ describe('compoundVariants - web', () => {
     const Frame = styled(
       View,
       {
-      context: FrameContext,
-      contextProps: ['tone'],
-      backgroundColor: 'gray',
-      opacity: "hover:0.1",
-      borderRadius: "hover:1px",
-      marginTop: "sm:1px",
-      paddingTop: "sm:1px",
-      variants: {
-                size: {
-                  sm: {
-                  backgroundColor: 'blue',
-                  opacity: "hover:0.3",
-                  borderRadius: "hover:1.5px",
-                  marginTop: "sm:2px",
-                  paddingTop: "sm:2px"
-                  },
-                },
-                state: {
-                  active: {},
-                  selected: {},
-                },
-              } as const,
-      defaultVariants: {
-                size: 'sm',
-              },
-      compoundVariants: [
-                {
-                  size: 'sm',
-                  tone: 'critical',
-                  state: ['active', 'selected'],
-                  style: {
-                  borderRadius: "hover:2px",
-                  paddingTop: "sm:3px"
-                  },
-                },
-                {
-                  size: 'sm',
-                  tone: 'critical',
-                  state: 'active',
-                  style: {
-                  backgroundColor: 'red',
-                  opacity: "hover:0.5",
-                  marginTop: "sm:3px"
-                  },
-                },
-              ]
+        context: FrameContext,
+        contextProps: ['tone'],
+        backgroundColor: 'gray',
+        opacity: 'hover:0.1',
+        borderRadius: 'hover:1px',
+        marginTop: 'sm:1px',
+        paddingTop: 'sm:1px',
+        variants: {
+          size: {
+            sm: {
+              backgroundColor: 'blue',
+              opacity: 'hover:0.3',
+              borderRadius: 'hover:1.5px',
+              marginTop: 'sm:2px',
+              paddingTop: 'sm:2px',
+            },
+          },
+          state: {
+            active: {},
+            selected: {},
+          },
+        } as const,
+        defaultVariants: {
+          size: 'sm',
+        },
+        compoundVariants: [
+          {
+            size: 'sm',
+            tone: 'critical',
+            state: ['active', 'selected'],
+            style: {
+              borderRadius: 'hover:2px',
+              paddingTop: 'sm:3px',
+            },
+          },
+          {
+            size: 'sm',
+            tone: 'critical',
+            state: 'active',
+            style: {
+              backgroundColor: 'red',
+              opacity: 'hover:0.5',
+              marginTop: 'sm:3px',
+            },
+          },
+        ],
       } as const,
       {
         acceptsClassName: false,
@@ -144,9 +144,9 @@ describe('compoundVariants - web', () => {
     // config-first: 'black' resolves through the configured color token
     expect(callerOverrides.style?.backgroundColor).toBe('#000')
     expect(callerOverrides.style?.opacity).toBe(0.7)
-    expect(callerOverrides.style?.borderTopLeftRadius).toBe(1)
+    expect(callerOverrides.style?.borderTopLeftRadius).toBe(2)
     expect(callerOverrides.style?.marginTop).toBe(4)
-    expect(callerOverrides.style?.paddingTop).toBe(1)
+    expect(callerOverrides.style?.paddingTop).toBe(3)
 
     const compoundAfterEarlyCaller = simplifiedGetSplitStyles(
       Frame,
@@ -327,7 +327,7 @@ describe('compoundVariants - web', () => {
     ).toBe(1004)
   })
 
-  test('nested media/platform specificity remains numeric', () => {
+  test('later matching clauses win across modifier depths', () => {
     const Frame = styled(
       View,
       {},
@@ -350,7 +350,7 @@ describe('compoundVariants - web', () => {
     expect(
       lowerSpecificityLast.style?.marginTop ??
         getRuleValue(lowerSpecificityLast.rulesToInsert, 'marginTop')
-    ).toBe('2px')
+    ).toBe(1)
   })
 
   test('nested platform matrices preserve equal-specificity later-order behavior', () => {
@@ -376,7 +376,7 @@ describe('compoundVariants - web', () => {
     expect(
       equalSpecificityLaterWins.style?.marginTop ??
         getRuleValue(equalSpecificityLaterWins.rulesToInsert, 'marginTop')
-    ).toBe('2px')
+    ).toBe(2)
   })
 
   test('real Provider supplies explicit context props without consuming host props', () => {

@@ -51,7 +51,7 @@ export declare const buttonSizes: import("@tamagui/ui").CreatedSizeTable<{
     };
 }, "medium">;
 export type ButtonSize = keyof typeof buttonSizes.values;
-export declare const ButtonFrame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "color" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const ButtonFrame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     circular?: boolean | undefined;
     color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
     disabled?: boolean | undefined;
@@ -417,7 +417,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         variant?: "outlined" | "quiet" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "color" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         circular?: boolean | undefined;
         color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
         disabled?: boolean | undefined;

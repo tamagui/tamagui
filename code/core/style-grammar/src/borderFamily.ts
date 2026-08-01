@@ -134,6 +134,13 @@ export function splitBorderValue(
       found[kind] = component
     }
 
+    // Carry the shorthand's effective zero width explicitly. Web receives an
+    // equivalent reset, and native does not have to rely on style `none` alone
+    // to hide an edge whose width was supplied by another contribution.
+    if (found.style === 'none' && found.width === undefined) {
+      found.width = '0'
+    }
+
     for (const kind of kinds) {
       const component = found[kind]
       if (component === undefined) continue

@@ -158,7 +158,7 @@ export const getTokens = (): TokensParsed => {
   if (process.env.NODE_ENV === 'development') {
     if (!config) throw new Error(haventCalledErrorMessage)
   }
-  return tokens
+  return config?.tokensParsed ?? tokens
 }
 
 export const getTokenObject = (value: Token, group?: keyof Tokens) => {

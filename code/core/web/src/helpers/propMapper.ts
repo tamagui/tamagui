@@ -1,6 +1,10 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
-import { longhandExpansionTable, splitColorOpacitySuffix } from '@tamagui/style-grammar'
+import {
+  borderFamilyTargets,
+  longhandExpansionTable,
+  splitColorOpacitySuffix,
+} from '@tamagui/style-grammar'
 import { resolveDefaultToken } from '../config'
 import { isVariable } from '../createVariable'
 import type {
@@ -110,11 +114,9 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     }
   }
 
-  // on native, backgroundImage/boxShadow/textShadow strings flow WHOLE into
-  // the program engine (clause-free strings are base-only programs), and
-  // native evaluation parses the resolved payload to RN format — parsing here
-  // would mangle clause text into the last component (review P0-2 and the
-  // Phase-6-item-2 backgroundImage gap)
+  // String families flow WHOLE into the program engine (clause-free strings
+  // are base-only programs). Pre-expanding them here cannot distinguish a CSS
+  // component from a modifier clause and would make conditions unconditional.
 
   if (value != null) {
     if (key === 'fontFamily' && typeof originalValue === 'string') {
@@ -123,13 +125,12 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
       }
     }
 
-    // a geometric shorthand STRING flows whole into the program engine, which
-    // distributes multi-component payloads by CSS slot per longhand
-    // (grammar `geometricShorthand`); pre-expanding here would hand every
-    // side the full multi-value payload. numbers and other values keep the
-    // legacy per-longhand expansion.
+    // Geometric and border-family strings split after program parsing. Numbers
+    // and other values keep the ordinary per-longhand expansion.
     const expanded =
-      styleProps.noExpand || (typeof value === 'string' && key in longhandExpansionTable)
+      styleProps.noExpand ||
+      (typeof value === 'string' &&
+        (key in longhandExpansionTable || key in borderFamilyTargets))
         ? null
         : expandStyle(key, value, conf.settings.styleCompat || 'web')
 
@@ -394,7 +395,6 @@ const resolveTokensAndVariants: StyleResolver<object> = (
       // nullish values cant be tokens, need no extra parsing
       res[subKey] = val
     }
-
   }
 
   if (originalValues) {

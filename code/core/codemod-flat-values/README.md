@@ -152,6 +152,7 @@ A flag means a human decides. Every code the tool can emit:
 | code | meaning |
 | --- | --- |
 | `legacy-token-dot-path` | `$1.5` and friends need one flat token name |
+| `legacy-numeric-composite-token` | a numeric token embedded in a composite needs its resolved CSS value |
 | `legacy-token-constant` | the token lives in a module constant (`const RADIUS = '$6'`), so the constant is what migrates |
 | `unproven-container-group`, `ambiguous-container-group`, `container-group-not-declared` | the element that has to declare the query container is not provable from this file |
 | `value-reparses-as-program` | the converted string would read back as something other than one base value |

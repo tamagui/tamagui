@@ -786,12 +786,6 @@ You can pass a `settings` object to `createTamagui`:
       description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
     },
     {
-      name: `autocompleteSpecificTokens`,
-      required: false,
-      type: `boolean | 'except-special'`,
-      description: `Set up if "specific tokens" (color.name) are added to the types where tokens are allowed (see below).`,
-    },
-    {
       name: 'fastSchemeChange',
       required: false,
       type: 'boolean',
@@ -850,16 +844,6 @@ type AllowedStyleValuesSetting =
       color?: AllowedValueSetting
     }
 ```
-
-#### `autocompleteSpecificTokens`
-
-The VSCode autocomplete puts specific tokens above the regular ones, which leads
-to worse DX. If true this setting removes the specific token from types for the
-defined categories.
-
-If set to `except-special`, specific tokens will autocomplete only if they don't
-normally use one of the special token groups: space, size, radius, zIndex,
-color.
 
 ### Environment Settings
 

@@ -7,7 +7,6 @@ import { defaultConfig as v6Config } from '../config/src/v6-base'
 import { View, createTamagui, styled } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
-const prefixedTrueKey = `$${'true'}`
 const negativeTrueKey = `-${'true'}`
 
 const configs = [
@@ -23,13 +22,11 @@ describe('versioned token configs', () => {
 
     for (const category of tokenCategories) {
       expect(config.tokens[category]).not.toHaveProperty('true')
-      expect(config.tokens[category]).not.toHaveProperty(prefixedTrueKey)
       expect(config.tokens[category]).not.toHaveProperty(negativeTrueKey)
     }
 
     for (const font of Object.values(config.fonts)) {
       expect(font.size).not.toHaveProperty('true')
-      expect(font.size).not.toHaveProperty(prefixedTrueKey)
     }
   })
 

@@ -13,10 +13,9 @@
 // name-resolution divergences pass for the wrong reason.
 
 import { defaultConfig as v6 } from '@tamagui/config/v6'
-import { TamaguiProvider } from '@tamagui/core'
+import { TamaguiProvider, createTamagui, getSplitStyles } from '@tamagui/core'
 import { renderToString } from 'react-dom/server'
 import { beforeAll, expect, test } from 'vitest'
-import { createTamagui, getSplitStyles } from '../web/src'
 import { tailwindStyleFrontend } from '../tailwind/src/frontend'
 import { View as TailwindView } from '../tailwind/src'
 
@@ -75,16 +74,6 @@ const expectParity = (left: any, right: any) => {
 // property-scoped lookup, bound category first.
 test('a name in both the bound category and the active theme resolves identically', () => {
   expectParity(splitClass('bg-collision'), splitFlat({ backgroundColor: 'collision' }))
-})
-
-// authored legacy $ values retain their theme-first lookup until the later
-// getTokenForKey contraction. candidates must not reconstruct this spelling.
-test('an authored legacy $ value retains its theme-first lookup', () => {
-  const legacy = splitFlat({ backgroundColor: 'collision' })
-  const rules = (
-    legacy.rulesToInsert[legacy.classNames?.backgroundColor]?.[4] ?? []
-  ).join('')
-  expect(rules).toContain(CFG.themes.light.collision.variable)
 })
 
 // divergence 2 closed: the opacity suffix rule is an unsigned integer 0-100
@@ -171,7 +160,7 @@ test('parent markers establish the web capabilities their descendant program tar
 
 test('a bare token path never clamps an out-of-range opacity', () => {
   const result = splitFlat({ backgroundColor: 'black/150' })
-  const blackVar = CFG.tokensParsed.color["black"].variable
+  const blackVar = CFG.tokensParsed.color['black'].variable
   const rules = (
     result.rulesToInsert[result.classNames?.backgroundColor]?.[4] ?? []
   ).join('')

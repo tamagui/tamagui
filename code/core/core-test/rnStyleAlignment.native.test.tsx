@@ -93,12 +93,11 @@ describe('RN 0.76+ Style Alignment - Native', () => {
       expect(style?.filter).toBe('brightness(1.2)')
     })
 
-    test('filter with tokens resolves them', () => {
+    test('filter with a migrated token value stays literal CSS', () => {
       const { style } = getSplitStylesFor({
-        filter: 'blur(2)',
+        filter: 'blur(7px)',
       })
-      expect(style?.filter).toBeDefined()
-      expect(style?.filter).not.toContain('2')
+      expect(style?.filter).toBe('blur(7px)')
     })
 
     test('filter multiple functions', () => {

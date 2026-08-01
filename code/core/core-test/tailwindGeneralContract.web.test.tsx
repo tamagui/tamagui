@@ -32,9 +32,9 @@ describe('converter purity / reentrancy — no module-global config leakage', ()
     const A = { tokens: { space: { 4: 20 } } }
     const B = { tokens: { space: { 5: 99 } } }
     expect(convert(`<View padding="4" />`, A)).toBe('p-4')
-    expect(convert(`<View padding="4" />`, B)).toBe('')
+    expect(convert(`<View padding="4" />`, B)).toBe('p-[4px]')
     expect(convert(`<View padding="4" />`, A)).toBe('p-4')
-    expect(convert(`<View padding="4" />`)).toBe('p-4')
+    expect(convert(`<View padding="4" />`)).toBe('')
   })
 
   test('interleaved media configs each use their own key set', () => {

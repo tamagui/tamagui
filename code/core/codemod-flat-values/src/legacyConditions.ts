@@ -208,7 +208,11 @@ function convertStyleValue(
     return null
   }
 
-  if (typeof value === 'number' && Number.isFinite(value) && transformFamilyProps.has(prop)) {
+  if (
+    typeof value === 'number' &&
+    Number.isFinite(value) &&
+    transformFamilyProps.has(prop)
+  ) {
     if (prop === 'rotate') return value === 0 ? '0deg' : `${value}deg`
     if (prop === 'x' || prop === 'y') return value === 0 ? '0' : `${value}px`
     return String(value)
@@ -237,6 +241,14 @@ function convertStyleValue(
         code: 'legacy-token-dot-path',
         path,
         message: `legacy token in "${value}" uses dot-path naming; rename it to one configured flat token name before conversion`,
+      })
+      return null
+    }
+    if (/\$-?\d/.test(value) && !/^\$-?[\w-]+$/.test(value)) {
+      errors.push({
+        code: 'legacy-numeric-composite-token',
+        path,
+        message: `numeric token in "${value}" is embedded in a composite value; replace it with its resolved CSS value before conversion`,
       })
       return null
     }

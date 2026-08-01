@@ -1,9 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import { createModifierRegistry } from '../src/grammar'
-import {
-  convertLegacyConditionProp,
-  pseudoToModifier,
-} from '../src/legacyConditions'
+import { convertLegacyConditionProp, pseudoToModifier } from '../src/legacyConditions'
 
 const { registry } = createModifierRegistry({
   mediaNames: ['sm', 'md'],
@@ -39,8 +36,9 @@ describe('legacy condition names stay migration-only', () => {
   })
 
   test('maps named groups and their container sizes', () => {
-    expect(convert('$group-card-hover', { color: 'red' })?.contributions[0].clause)
-      .toEqual({ modifiers: ['group-hover/card'], payload: 'red' })
+    expect(
+      convert('$group-card-hover', { color: 'red' })?.contributions[0].clause
+    ).toEqual({ modifiers: ['group-hover/card'], payload: 'red' })
     expect(
       convert('$group-frame-sm-hover', { color: 'red' })?.contributions[0].clause
     ).toEqual({
@@ -91,6 +89,13 @@ describe('legacy condition payloads', () => {
     expect(convert('hoverStyle', { skewX: '10deg' })?.errors[0]).toMatchObject({
       code: 'legacy-transform-part',
       path: 'hoverStyle.skewX',
+    })
+  })
+
+  test('rejects numeric tokens embedded in composite values', () => {
+    expect(convert('hoverStyle', { filter: 'blur($2)' })?.errors[0]).toMatchObject({
+      code: 'legacy-numeric-composite-token',
+      path: 'hoverStyle.filter',
     })
   })
 

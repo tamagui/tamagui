@@ -27,7 +27,7 @@ describe('animation props', () => {
               class="_dsp_contents  font_body"
             >
               <div
-                class="is_View _mt-200px _mr-200px _mb-200px _ml-200px _tx-172466791 _t-1801717888 _bc-1418911449"
+                class="is_View _mt-200px _mr-200px _mb-200px _ml-200px _tx-927052474 _t-616221249 _bc-1124498088"
                 id="test-id"
                 style="transition: all cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms;"
               />
