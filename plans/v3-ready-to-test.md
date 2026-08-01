@@ -129,6 +129,27 @@ reachability:
 - a clean Debug build completed in 572 seconds, then installed and launched on
   an iPhone 16 simulator running iOS 26.5.
 
+Before any future native probe, prove that the rebuilt native artifact contains
+the current source change. A successful build exit code is insufficient because
+stale dist output can survive an exit-zero build. For a `propMapper.native`
+change, run this from the repository root and replace the example search term
+with a symbol or string unique to the source change under test:
+
+```sh
+(
+  cd code/core/web
+  bun run build
+)
+rg -n 'DISTINCTIVE_CURRENT_SOURCE_SYMBOL' code/core/web/dist/esm/helpers/propMapper.native.js
+```
+
+Run the native probe only after `rg` finds that symbol in the exact built file
+loaded by the native export condition. Web probes can import current source from
+`../web/src`, while a native import from `@tamagui/core` resolves to built dist.
+When web passes and native fails, check module resolution and built-artifact
+freshness first. Report a platform divergence only after proving the native
+artifact is current.
+
 No native behavioral assertion completed. The Detox run reached a launched app
 and was deliberately stopped before assertions to free the machine. The
 semantic UI snapshot helper daemon also failed to auto-start. These are resource
