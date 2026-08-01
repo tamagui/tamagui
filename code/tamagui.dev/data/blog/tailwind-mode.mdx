@@ -147,14 +147,14 @@ import { View as TailwindView } from '@tamagui/tailwind'
 
 export function Highlight() {
   return (
-    <TamaguiView backgroundColor="$blue5" hoverStyle={{ backgroundColor: '$blue6' }}>
+    <TamaguiView backgroundColor="blue5 hover:blue6">
       <TailwindView className="rounded-lg p-4" />
     </TamaguiView>
   )
 }
 ```
 
-Theme tokens like `$blue5` respond to light and dark mode the way they always
+Theme tokens like `blue5` respond to light and dark mode the way they always
 have. Both components still use the shared renderer, themes, and platform
 behavior.
 

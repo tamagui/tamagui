@@ -485,15 +485,15 @@ A few smaller components caught up with their documented behavior:
 ## Icons size like text
 
 Themed icons now resolve token sizes through the current font size scale. This
-means `<Icon size="$4" />` aligns with `$4` text instead of using the space/size
+means `<Icon size="4" />` aligns with `4` text instead of using the space/size
 token scale.
 
 ```tsx
-// before: size="$4" followed the size token scale
-<Button icon={<Search size="$4" />}>Search</Button>
+// before: size="4" followed the size token scale
+<Button icon={<Search size="4" />}>Search</Button>
 
-// after: size="$4" follows the current font.size.$4 scale
-<Button icon={<Search size="$4" />}>Search</Button>
+// after: size="4" follows the current font.size.4 scale
+<Button icon={<Search size="4" />}>Search</Button>
 ```
 
 Raw numeric icon sizes are unchanged. Media and pseudo props are no longer
@@ -502,12 +502,12 @@ resolution. Wrap the icon when you need responsive or pseudo styling:
 
 ```tsx
 const ResponsiveIcon = styled(View, {
-  $sm: { opacity: 0.6 },
-  hoverStyle: { scale: 1.05 },
+  opacity: '1 sm:0.6',
+  scale: '1 hover:1.05',
 })
 
 <ResponsiveIcon>
-  <Search size="$4" color="$color" />
+  <Search size="4" color="color" />
 </ResponsiveIcon>
 ```
 

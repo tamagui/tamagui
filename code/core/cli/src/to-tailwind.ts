@@ -89,9 +89,9 @@ export async function toTailwind({
     cwd
   )
   if (usedDefault && !useDefaultConfig) {
-    // Dry-run fallback: explicit token references emit their names; other config data defaults.
+    // Dry-run fallback: bare token names pass through; other config data defaults.
     console.warn(
-      '[to-tailwind] WARNING: no --config given — explicit token references emit their names ' +
+      '[to-tailwind] WARNING: no --config given — bare token names pass through ' +
         'and bundled media/shorthands are used. pass --config <path> to enforce app domains.'
     )
   }

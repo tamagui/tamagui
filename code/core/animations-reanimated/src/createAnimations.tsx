@@ -84,7 +84,7 @@ type AnimationSnapshot = {
    * for each animated key (transform sub-keys as `transform:key`), the value the
    * previous committed render painted for it, when one exists and is animatable.
    * the worklet animates a mapper-fresh key FROM its seed instead of snapping —
-   * this is how an enterStyle value painted statically during mount becomes the
+   * this is how an enter-clause value painted statically during mount becomes the
    * start point once the key turns animated. keys with no seed paint their target
    * directly (a key appearing from nothing has nothing to animate from).
    */
@@ -200,7 +200,7 @@ const getRemovedAnimatedKeys = (
 }
 
 // implicit start values for style keys that were never painted (e.g. a key
-// introduced by exitStyle with no base value). most numerics default to 0.
+// introduced by an exit clause with no base value). most numerics default to 0.
 const getImplicitDefault = (
   key: string,
   targetValue: number | string
@@ -1164,7 +1164,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // so React's per-key style diff never touches the key again and the
         // mapper's inline writes survive every commit — reanimated's Fabric
         // commit hook provides this guarantee on native, web has no equivalent.
-        // during enter the carry is the enterStyle (the mapper animates over it);
+        // during enter the carry is the enter-clause value (the mapper animates over it);
         // a key appearing post-mount (a just-measured height) paints its value in
         // the same commit the mapper first sees it, a frame before the mapper's
         // first write.

@@ -44,13 +44,13 @@ describe('tamagui to-tailwind CLI', () => {
     )
   })
 
-  it('dry-run with no config documents name-only fallback, PRESERVES components, shows output', async () => {
+  it('dry-run with no config documents bare-name fallback, PRESERVES components, shows output', async () => {
     const dir = await fixture({
       'Card.tsx': `import { Text, YStack } from 'tamagui'
 export function Card() {
   return (
-    <YStack padding={10} backgroundColor="$background" gap={4}>
-      <Text color="$color" fontWeight="700">Title</Text>
+    <YStack padding={10} backgroundColor="background" gap={4}>
+      <Text color="color" fontWeight="700">Title</Text>
     </YStack>
   )
 }
@@ -58,7 +58,7 @@ export function Card() {
     })
     const run = runCli([dir])
     expect(run.status).toBe(0)
-    expect(run.stderr + run.stdout).toMatch(/explicit token references emit their names/i)
+    expect(run.stderr + run.stdout).toMatch(/bare token names pass through/i)
     // components PRESERVED (not DOM-renamed) so the native app keeps working
     expect(run.stdout).toContain('flex flex-col p-[10px] bg-background gap-[4px]')
     expect(run.stdout).toContain('YStack') // NOT div
@@ -78,20 +78,20 @@ export function Card() {
 
   it('--write --use-default-config proceeds (defaults) and PRESERVES components', async () => {
     const dir = await fixture({
-      'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="$4" width="$definitelyAbsent" />\n`,
+      'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="4" width="definitelyAbsent" />\n`,
     })
     const run = runCli([join(dir, 'A.tsx'), '--write', '--use-default-config'])
     expect(run.status).toBe(0)
     const out = await readFile(join(dir, 'A.tsx'), 'utf8')
     expect(out).toContain('p-4')
-    expect(out).toContain('width="$definitelyAbsent"')
+    expect(out).toContain('w-[definitelyAbsent]')
     expect(out).toContain('<View') // preserved, not div
   })
 
   it('--write --config <good> uses the authoritative app domains', async () => {
     const dir = await fixture({
-      'tw.config.ts': `export const config = { tokens: { space: { $4: 20 } }, media: { tablet: { minWidth: 900 } } }\n`,
-      'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="$4" $tablet={{ padding: 10 }} />\n`,
+      'tw.config.ts': `export const config = { tokens: { space: { 4: 20 } }, media: { tablet: { minWidth: 900 } } }\n`,
+      'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="4 tablet:10px" />\n`,
     })
     const run = runCli([
       join(dir, 'A.tsx'),
@@ -129,7 +129,7 @@ export function Card() {
   it('--write --config {tokens:42} (malformed STRUCTURE) ABORTS, file byte-identical', async () => {
     const dir = await fixture({
       'c.config.ts': `export const config = { tokens: 42 }\n`,
-      'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="$4" />\n`,
+      'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="4" />\n`,
     })
     const before = await readFile(join(dir, 'A.tsx'), 'utf8')
     const run = runCli([

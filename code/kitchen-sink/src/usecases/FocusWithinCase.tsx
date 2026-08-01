@@ -28,7 +28,7 @@ export function FocusWithinCase() {
         <Input data-testid="direct-input" placeholder="Focus me" />
       </YStack>
 
-      {/* styled() path — exercises pseudos?.focusWithinStyle condition */}
+      {/* styled() path — exercises a focus-within clause in a styled definition */}
       <FocusWithinContainer data-testid="styled-parent">
         <RenderCounter id="styled" />
         <Text>Styled component</Text>

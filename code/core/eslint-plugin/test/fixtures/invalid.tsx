@@ -9,8 +9,8 @@ export function InvalidFlatValues() {
     <>
       <View bg="red hver:blue" />
       <Text fontSize="red-500" />
-      <Text color="$backgroundHover" />
-      <View bg="$backgroundActive" />
+      <Text color="backgroundHover" />
+      <View bg="backgroundActive" />
       <View bg="sm:green red" />
       <View p="4 red" />
       <Frame />

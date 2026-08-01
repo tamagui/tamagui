@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'FocusWithinCase', type: 'useCase' })
 })
 
-test('animated focusWithinStyle applies on focus', async ({ page }, testInfo) => {
+test('animated focus-within clause applies on focus', async ({ page }, testInfo) => {
   // native driver uses RN Animated API which can't animate CSS border colors on web
   test.skip(
     testInfo.project.name === 'animated-native',
@@ -23,7 +23,7 @@ test('animated focusWithinStyle applies on focus', async ({ page }, testInfo) =>
   expect(borderColor).toBe('rgb(0, 128, 0)')
 })
 
-test('animated focusWithinStyle removes on blur', async ({ page }, testInfo) => {
+test('animated focus-within clause removes on blur', async ({ page }, testInfo) => {
   test.skip(
     testInfo.project.name === 'animated-native',
     'Native driver cannot animate CSS properties on web'
@@ -41,7 +41,7 @@ test('animated focusWithinStyle removes on blur', async ({ page }, testInfo) => 
   expect(borderColor).not.toBe('rgb(0, 128, 0)')
 })
 
-test('animated focusWithinStyle does not cause React re-render (avoidReRenders)', async ({
+test('animated focus-within clause does not cause React re-render (avoidReRenders)', async ({
   page,
 }, testInfo) => {
   // native driver doesn't support avoidReRenders
