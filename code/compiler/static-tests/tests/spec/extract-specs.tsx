@@ -44,8 +44,8 @@ export function Test1() {
 
 export const Card = (props: any) => (
   <XStack
-        className="transition all ease-in ms100" borderRadius="$2" backgroundColor="$background" hoverStyle={{ backgroundColor: '$backgroundHover', shadowColor: '$shadowColor', shadowRadius: 20, shadowOffset: { height: 3, width: 0 }, y: -4, }} {...props}
-      />
+            className="transition all ease-in ms100" borderRadius="2" backgroundColor="background" hoverStyle={{ backgroundColor: '$backgroundHover', shadowColor: '$shadowColor', shadowRadius: 20, shadowOffset: { height: 3, width: 0 }, y: -4, }} {...props}
+          />
 )
 
 export function TestVariantDefaultFalseOn(props: TestProps) {
@@ -78,7 +78,7 @@ export function TestMediaQuery() {
       >
         {media3.lg && <div />}
       </YStack>
-      <YStack p="$2" $lg={{ bg: '$background', p: '$2' }} />
+      <YStack p="2 lg:2" bg="lg:background" />
     </>
   )
 }
@@ -309,7 +309,7 @@ export function Test16(props: TestProps) {
 // flexWrap and other flex properties
 export function TestFlexWrap() {
   return (
-    <XStack flexWrap="wrap" flexDirection="row" gap="$2">
+    <XStack flexWrap="wrap" flexDirection="row" gap="2">
       {child}
     </XStack>
   )
@@ -352,8 +352,8 @@ export function TestComplexFlexWithConditionals(props: TestProps) {
   const { sm } = useMedia()
   return (
     <YStack
-            rounded={sm ? '$0' : '$8'} flexDirection={sm ? 'row' : 'column'} flexBasis={props.conditional ? '100%' : 'auto'} maxW="100%" overflow="hidden" p={4} px="sm:0" width={sm ? '100%' : 260} bg={props.altConditional ? '$backgroundHover' : '$background'} hoverStyle={{ cursor: 'pointer', bg: '$backgroundHover', }}
-          >
+                  rounded={`${sm ? "0" : "8"}`} flexDirection={sm ? 'row' : 'column'} flexBasis={props.conditional ? '100%' : 'auto'} maxW="100%" overflow="hidden" p={4} px="sm:0" width={sm ? '100%' : 260} bg={`${props.altConditional ? "background-hover" : "background"} hover:background-hover`} cursor="hover:pointer"
+                >
       <XStack
         flexDirection={sm ? 'column' : 'row'}
         flexWrap="wrap"
@@ -371,8 +371,8 @@ export function TestFlexWrapWithMediaQuery() {
   const media = useMedia()
   return (
     <XStack
-            flexWrap="wrap sm:nowrap" flexDirection={media.sm ? 'row' : 'column'} gap="$2" padding="sm:4"
-          >
+                  flexWrap="wrap sm:nowrap" flexDirection={media.sm ? 'row' : 'column'} gap="2" padding="sm:4"
+                >
       {child}
     </XStack>
   )
@@ -382,8 +382,8 @@ export function TestFlexWrapWithMediaQuery() {
 export function TestAriaProps() {
   return (
     <YStack
-            render="nav" aria-labelledby="test-heading" aria-label="Navigation menu" p="$4"
-          >
+                  render="nav" aria-labelledby="test-heading" aria-label="Navigation menu" p="4"
+                >
       <Text id="test-heading">Navigation</Text>
       {child}
     </YStack>

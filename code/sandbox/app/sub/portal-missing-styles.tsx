@@ -3,7 +3,7 @@ import { Button, Dialog, H1, Paragraph, Sheet, YStack } from 'tamagui'
 export default function Test() {
   return (
     <>
-      <YStack id="test-sub-box" width={500} height={500} bg="$color10">
+      <YStack id="test-sub-box" width={500} height={500} bg="color10">
         <Paragraph size="$4">Test case</Paragraph>
       </YStack>
       <DialogTest />
@@ -20,8 +20,8 @@ export const DialogTest = () => {
 
       <Dialog.Adapt when="maxMd">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Container padding={0} gap="$4">
-            <Sheet.Background bg="$color2" />
+          <Sheet.Container padding={0} gap="4">
+            <Sheet.Background bg="color2" />
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
@@ -37,8 +37,8 @@ export const DialogTest = () => {
 
         <Dialog.Content key="content">
           <YStack
-                              bg="$red10" borderWidth={20} borderColor="$green10" width={350} height={350}
-                            >
+                                                bg="red10" borderWidth={20} borderColor="green10" width={350} height={350}
+                                              >
             <H1>ok ok</H1>
           </YStack>
         </Dialog.Content>

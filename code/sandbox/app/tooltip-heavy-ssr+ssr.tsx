@@ -46,8 +46,8 @@ function HeavyAnimatedContent() {
     <AnimatePresence>
       {items.map((item) => (
         <YStack
-                    key={item.id} data-testid={item.id} position="absolute" width={80} height={80} rounded="$10" bg="$color5" opacity={0.3} x={item.x} y={item.y} scale={item.scale} transition="slow" enterStyle={{ opacity: 0, scale: 0.5 }} exitStyle={{ opacity: 0, scale: 0.5 }}
-                  />
+                              key={item.id} data-testid={item.id} position="absolute" width={80} height={80} rounded="10" bg="color5" opacity="0.3 enter:0 exit:0" x={item.x} y={item.y} scale={`${item.scale} enter:0.5 exit:0.5`} transition="slow"
+                            />
       ))}
     </AnimatePresence>
   )
@@ -84,8 +84,8 @@ export default function TooltipHeavySSRTest() {
 
   return (
     <YStack
-            p="$4" gap="$4" height="100vh" position="relative" id="tooltip-heavy-ssr-root" data-hydrated={String(didHydrate)}
-          >
+                  p="4" gap="4" height="100vh" position="relative" id="tooltip-heavy-ssr-root" data-hydrated={String(didHydrate)}
+                >
       {/* heavy animated background elements */}
       <YStack position="absolute" inset={0} overflow="hidden" pointerEvents="none">
         <HeavyAnimatedContent />
@@ -99,7 +99,7 @@ export default function TooltipHeavySSRTest() {
       {/* promo links row tooltip pattern — the component under test */}
       <TooltipGroup delay={tooltipDelay}>
         <Tooltip scope="heavy-tip" offset={20} placement="bottom">
-          <XStack gap="$2" justifyContent="center" id="tip-triggers">
+          <XStack gap="2" justifyContent="center" id="tip-triggers">
             <Tooltip.Trigger
               scope="heavy-tip"
               asChild
@@ -132,8 +132,8 @@ export default function TooltipHeavySSRTest() {
           </XStack>
 
           <Tooltip.Content
-                              id="tip-content" scope="heavy-tip" animatePosition transition="medium" bg="$background" rounded="$4" px="$2.5" py="$1" y="enter:-4px exit:-4px" opacity="enter:0 exit:0" elevation="$2"
-                            >
+                                                id="tip-content" scope="heavy-tip" animatePosition transition="medium" bg="background" rounded="4" px="$2.5" py="1" y="enter:-4px exit:-4px" opacity="enter:0 exit:0" elevation="$2"
+                                              >
             <Tooltip.Arrow scope="heavy-tip" id="tip-arrow" />
             <Paragraph id="tip-label" size="$3">
               {label}

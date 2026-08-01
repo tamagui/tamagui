@@ -38,9 +38,9 @@ function DelayDemoContent({
 }) {
   return (
     <YStack
-            gap="$3" p="$4" bg="$background" borderWidth={1} borderColor="$borderColor" width={260}
-          >
-      <Text fontWeight="bold" fontSize="$5">
+                  gap="3" p="4" bg="background" borderWidth={1} borderColor="border-color" width={260}
+                >
+      <Text fontWeight="bold" fontSize="5">
         {driverName}
       </Text>
 
@@ -48,7 +48,7 @@ function DelayDemoContent({
         {show ? 'Hide' : 'Show'}
       </Button>
 
-      <XStack gap="$2" height={50}>
+      <XStack gap="2" height={50}>
         <AnimatePresence>
           {show &&
             delayColors.map((color, i) => (
@@ -59,7 +59,7 @@ function DelayDemoContent({
         </AnimatePresence>
       </XStack>
 
-      <Text fontSize="$1" opacity={0.5}>
+      <Text fontSize="1" opacity={0.5}>
         delays: 0ms, 100ms, 200ms, 300ms
       </Text>
     </YStack>
@@ -77,15 +77,15 @@ function AnimationDelayDemo() {
   const [showNative, setShowNative] = useState(false)
 
   return (
-    <YStack gap="$4" p="$4">
-      <Text fontWeight="bold" fontSize="$6">
+    <YStack gap="4" p="4">
+      <Text fontWeight="bold" fontSize="6">
         Animation Delay Test
       </Text>
-      <Text fontSize="$2" opacity={0.7}>
+      <Text fontSize="2" opacity={0.7}>
         {`transition={['medium', { delay: i * 100 }]}`}
       </Text>
 
-      <XStack flexWrap="wrap" gap="$4">
+      <XStack flexWrap="wrap" gap="4">
         <Configuration animationDriver={animationsCSS}>
           <DelayDemoContent
             show={showCSS}
@@ -145,25 +145,25 @@ export function SandboxSandbox() {
 
 const ThemeAccent = () => {
   return (
-    <YStack gap="$4" p="$4">
+    <YStack gap="4" p="4">
       {/* ================================ */}
       {/* Test 1: Base accent - should swap light to dark */}
       {/* ================================ */}
-      <YStack gap="$2" bg="$color3" p="$4">
-        <Text fontWeight="bold" fontSize="$6">
+      <YStack gap="2" bg="color3" p="4">
+        <Text fontWeight="bold" fontSize="6">
           Test 1: Base Accent
         </Text>
       </YStack>
-      <XStack gap="$4">
+      <XStack gap="4">
         <YStack
-                        gap="$2" bg="$background" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                      >
+                                      gap="2" bg="background" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                    >
           <ThemeDebug />
           <Text fontWeight="bold">Normal (Light)</Text>
-          <Text fontSize="$2" color="$color10">
+          <Text fontSize="2" color="color10">
             ✓ Expected: Light background
           </Text>
-          <Text fontSize="$2" color="$color10">
+          <Text fontSize="2" color="color10">
             ✓ Expected: Dark text
           </Text>
           <Button>Light Button</Button>
@@ -171,20 +171,20 @@ const ThemeAccent = () => {
 
         <Theme name="dark">
           <YStack
-                              gap="$2" bg="red" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                            >
+                                                gap="2" bg="red" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Accent (Dark)</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Dark background
             </Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Light text
             </Text>
             <Theme name="accent">
-              <YStack gap="$2">
+              <YStack gap="2">
                 <ThemeDebug />
-                <Button bg="$background02">Light Button</Button>
+                <Button bg="background02">Light Button</Button>
               </YStack>
             </Theme>
           </YStack>
@@ -194,19 +194,19 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 2: Explicit light + accent */}
       {/* ================================ */}
-      <YStack gap="$2" bg="$color3" p="$4" mt="$4">
-        <Text fontWeight="bold" fontSize="$6">
+      <YStack gap="2" bg="color3" p="4" mt="4">
+        <Text fontWeight="bold" fontSize="6">
           Test 2: Light + Accent
         </Text>
       </YStack>
-      <XStack gap="$4">
+      <XStack gap="4">
         <Theme name="light">
           <YStack
-                              gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                            >
+                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Light Theme</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Light gray background
             </Text>
             <Button>Light Button</Button>
@@ -215,14 +215,14 @@ const ThemeAccent = () => {
 
         <Theme name="light">
           <YStack
-                              gap="$2" bg="$background" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                            >
+                                                gap="2" bg="background" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Light + Accent</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Dark gray background
             </Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Palette swapped to dark
             </Text>
             <Theme name="accent">
@@ -235,19 +235,19 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 3: Explicit dark + accent */}
       {/* ================================ */}
-      <YStack gap="$2" bg="$color3" p="$4" mt="$4">
-        <Text fontWeight="bold" fontSize="$6">
+      <YStack gap="2" bg="color3" p="4" mt="4">
+        <Text fontWeight="bold" fontSize="6">
           Test 3: Dark + Accent
         </Text>
       </YStack>
-      <XStack gap="$4">
+      <XStack gap="4">
         <Theme name="dark">
           <YStack
-                              gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                            >
+                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Dark Theme</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Dark gray background
             </Text>
             <Button>Dark Button</Button>
@@ -257,14 +257,14 @@ const ThemeAccent = () => {
         <Theme name="dark">
           <Theme name="accent">
             <YStack
-                                    gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                                  >
+                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                                        >
               <ThemeDebug />
               <Text fontWeight="bold">Dark + Accent</Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: Light gray background
               </Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: Palette swapped to light
               </Text>
               <Button>Light Button</Button>
@@ -276,22 +276,22 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 4: RED color theme + accent */}
       {/* ================================ */}
-      <YStack gap="$2" bg="$color3" p="$4" mt="$4">
-        <Text fontWeight="bold" fontSize="$6">
+      <YStack gap="2" bg="color3" p="4" mt="4">
+        <Text fontWeight="bold" fontSize="6">
           Test 4: Red + Accent (CRITICAL TEST)
         </Text>
       </YStack>
-      <XStack gap="$4">
+      <XStack gap="4">
         <Theme name="red">
           <YStack
-                              gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                            >
+                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Red Theme</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Light red tones
             </Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Theme = light_red
             </Text>
             <Button>Red Button</Button>
@@ -302,17 +302,17 @@ const ThemeAccent = () => {
           <Theme name="red">
             <Theme name="accent">
               <YStack
-                                          gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                                        >
+                                                                    gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                                                  >
                 <ThemeDebug />
                 <Text fontWeight="bold">Red + Accent</Text>
-                <Text fontSize="$2" color="$color10">
+                <Text fontSize="2" color="color10">
                   ✓ Expected: Dark RED tones
                 </Text>
-                <Text fontSize="$2" color="$color10">
+                <Text fontSize="2" color="color10">
                   ✓ Expected: NOT black/gray!
                 </Text>
-                <Text fontSize="$2" color="$color10">
+                <Text fontSize="2" color="color10">
                   ✓ Expected: Theme = light_red_accent
                 </Text>
                 <Button>Dark Red Button</Button>
@@ -325,22 +325,22 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 5: BLUE color theme + accent */}
       {/* ================================ */}
-      <YStack gap="$2" bg="$color3" p="$4" mt="$4">
-        <Text fontWeight="bold" fontSize="$6">
+      <YStack gap="2" bg="color3" p="4" mt="4">
+        <Text fontWeight="bold" fontSize="6">
           Test 5: Blue + Accent
         </Text>
       </YStack>
-      <XStack gap="$4">
+      <XStack gap="4">
         <Theme name="blue">
           <YStack
-                              gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                            >
+                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Blue Theme</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Light blue tones
             </Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Theme = light_blue
             </Text>
             <Button>Blue Button</Button>
@@ -350,17 +350,17 @@ const ThemeAccent = () => {
         <Theme name="blue">
           <Theme name="accent">
             <YStack
-                                    gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                                  >
+                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                                        >
               <ThemeDebug />
               <Text fontWeight="bold">Blue + Accent</Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: Dark BLUE tones
               </Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: NOT black/gray!
               </Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: Theme = light_blue_accent
               </Text>
               <Button>Dark Blue Button</Button>
@@ -372,22 +372,22 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 6: GREEN color theme + accent */}
       {/* ================================ */}
-      <YStack gap="$2" bg="$color3" p="$4" mt="$4">
-        <Text fontWeight="bold" fontSize="$6">
+      <YStack gap="2" bg="color3" p="4" mt="4">
+        <Text fontWeight="bold" fontSize="6">
           Test 6: Green + Accent
         </Text>
       </YStack>
-      <XStack gap="$4">
+      <XStack gap="4">
         <Theme name="green">
           <YStack
-                              gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                            >
+                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Green Theme</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Light green tones
             </Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Theme = light_green
             </Text>
             <Button>Green Button</Button>
@@ -397,17 +397,17 @@ const ThemeAccent = () => {
         <Theme name="green">
           <Theme name="accent">
             <YStack
-                                    gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                                  >
+                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                                        >
               <ThemeDebug />
               <Text fontWeight="bold">Green + Accent</Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: Dark GREEN tones
               </Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: NOT black/gray!
               </Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: Theme = light_green_accent
               </Text>
               <Button>Dark Green Button</Button>
@@ -419,22 +419,22 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 7: YELLOW color theme + accent */}
       {/* ================================ */}
-      <YStack gap="$2" bg="$color3" p="$4" mt="$4">
-        <Text fontWeight="bold" fontSize="$6">
+      <YStack gap="2" bg="color3" p="4" mt="4">
+        <Text fontWeight="bold" fontSize="6">
           Test 7: Yellow + Accent
         </Text>
       </YStack>
-      <XStack gap="$4">
+      <XStack gap="4">
         <Theme name="yellow">
           <YStack
-                              gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                            >
+                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Yellow Theme</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Light yellow tones
             </Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Theme = light_yellow
             </Text>
             <Button>Yellow Button</Button>
@@ -444,17 +444,17 @@ const ThemeAccent = () => {
         <Theme name="yellow">
           <Theme name="accent">
             <YStack
-                                    gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" flex={1}
-                                  >
+                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" flex={1}
+                                                        >
               <ThemeDebug />
               <Text fontWeight="bold">Yellow + Accent</Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: Dark YELLOW tones
               </Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: NOT black/gray!
               </Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: Theme = light_yellow_accent
               </Text>
               <Button>Dark Yellow Button</Button>
@@ -466,19 +466,19 @@ const ThemeAccent = () => {
       {/* ================================ */}
       {/* Test 8: NESTED accent - double accent brings back original */}
       {/* ================================ */}
-      <YStack gap="$2" bg="$color3" p="$4" mt="$4">
-        <Text fontWeight="bold" fontSize="$6">
+      <YStack gap="2" bg="color3" p="4" mt="4">
+        <Text fontWeight="bold" fontSize="6">
           Test 8: Nested Accent (Double Accent)
         </Text>
       </YStack>
-      <XStack gap="$4" flexWrap="wrap">
+      <XStack gap="4" flexWrap="wrap">
         <Theme name="light">
           <YStack
-                              gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" minW={200}
-                            >
+                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Light</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Light theme
             </Text>
             <Button>Light</Button>
@@ -488,11 +488,11 @@ const ThemeAccent = () => {
         <Theme name="light">
           <Theme name="accent">
             <YStack
-                                    gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" minW={200}
-                                  >
+                                                          gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
+                                                        >
               <ThemeDebug />
               <Text fontWeight="bold">Light + Accent</Text>
-              <Text fontSize="$2" color="$color10">
+              <Text fontSize="2" color="color10">
                 ✓ Expected: Dark theme
               </Text>
               <Button>Dark</Button>
@@ -504,14 +504,14 @@ const ThemeAccent = () => {
           <Theme name="accent">
             <Theme name="accent">
               <YStack
-                                          gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" minW={200}
-                                        >
+                                                                    gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
+                                                                  >
                 <ThemeDebug />
                 <Text fontWeight="bold">Light + Accent + Accent</Text>
-                <Text fontSize="$2" color="$color10">
+                <Text fontSize="2" color="color10">
                   ✓ Expected: Light again!
                 </Text>
-                <Text fontSize="$2" color="$color10">
+                <Text fontSize="2" color="color10">
                   ✓ Double negative = positive
                 </Text>
                 <Button>Doesn't work!</Button>
@@ -521,14 +521,14 @@ const ThemeAccent = () => {
         </Theme>
       </XStack>
 
-      <XStack gap="$4" flexWrap="wrap" mt="$2">
+      <XStack gap="4" flexWrap="wrap" mt="2">
         <Theme name="red">
           <YStack
-                              gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" minW={200}
-                            >
+                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Red</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Light red
             </Text>
             <Button>Light Red</Button>
@@ -537,11 +537,11 @@ const ThemeAccent = () => {
 
         <Theme name="red">
           <YStack
-                              gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" minW={200}
-                            >
+                                                gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
+                                              >
             <ThemeDebug />
             <Text fontWeight="bold">Red + Accent</Text>
-            <Text fontSize="$2" color="$color10">
+            <Text fontSize="2" color="color10">
               ✓ Expected: Dark red
             </Text>
             <Button theme="accent">Dark Red</Button>
@@ -552,11 +552,11 @@ const ThemeAccent = () => {
           <Theme name="accent">
             <Theme name="accent">
               <YStack
-                                          gap="$2" bg="$background02" p="$4" borderWidth={2} borderColor="$borderColor" minW={200}
-                                        >
+                                                                    gap="2" bg="background02" p="4" borderWidth={2} borderColor="border-color" minW={200}
+                                                                  >
                 <ThemeDebug />
                 <Text fontWeight="bold">Red + Accent + Accent</Text>
-                <Text fontSize="$2" color="$color10">
+                <Text fontSize="2" color="color10">
                   ✓ Expected: Light red again!
                 </Text>
                 <Button>Doesn't work!</Button>
@@ -618,22 +618,22 @@ const Motion = () => {
 
       {/* animateOnly */}
       <Square
-                  transition={[ 'superBouncy', { opacity: '100ms', }, ]} bg="red maxMd:blue" opacity={0.25} borderWidth={2} hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }} scale="press:0.8" borderColor="press:red" x={x * 300} animateOnly={['transform', 'opacity']} size={50}
-                />
+                            transition={[ 'superBouncy', { opacity: '100ms', }, ]} bg="red maxMd:blue" opacity={0.25} borderWidth={2} hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }} scale="press:0.8" borderColor="press:red" x={x * 300} animateOnly={['transform', 'opacity']} size={50}
+                          />
 
       <Button onPress={() => setX(Math.random())}>asdasdas</Button>
 
       <Square
-                  transition={[ 'superBouncy', { opacity: '100ms', }, ]} bg="red" opacity={0.25} borderWidth={2} hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }} scale="press:0.8" borderColor="press:red" x={x * 300} size={50}
-                />
+                            transition={[ 'superBouncy', { opacity: '100ms', }, ]} bg="red" opacity={0.25} borderWidth={2} hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }} scale="press:0.8" borderColor="press:red" x={x * 300} size={50}
+                          />
 
       <Button onPress={() => setShow(!show)}>show</Button>
 
       <YStack width="100%" bg="yellow" group="card">
         {/* render during animate update */}
         <Square
-                        transition="lazy" y="group-hover/card:10px" scale="group-hover/card:1.1" $group-card-press={pressedStyle} {...(pressed && pressedStyle)} bg="red" size={50}
-                      />
+                                      transition="lazy" y="group-hover/card:10px" scale="group-hover/card:1.1" $group-card-press={pressedStyle} {...(pressed && pressedStyle)} bg="red" size={50}
+                                    />
 
         <AnimatePresence>
           {show && (
@@ -658,11 +658,11 @@ const Drivers = () => {
       <Configuration animationDriver={animationsMotion}>
         <YStack group="card" gap={50}>
           <XStack
-                              transition={[ 'bouncy', { stiffness: 250, damping: 4, mass: 0.5, }, ]} width={100} height={100} bg="red" scale={1} $group-card-hover={{ scale: 1.5 }}
-                            />
+                                                transition={[ 'bouncy', { stiffness: 250, damping: 4, mass: 0.5, }, ]} width={100} height={100} bg="red" scale="1 group-hover/card:1.5"
+                                              />
           <XStack
-                              transition={'bouncy'} width={100} height={100} bg="blue" scale={1} $group-card-hover={{ scale: 1.5 }}
-                            />
+                                                transition={'bouncy'} width={100} height={100} bg="blue" scale="1 group-hover/card:1.5"
+                                              />
         </YStack>
       </Configuration>
       {/* because css here and below, this group YStack can avoid re-rendering */}

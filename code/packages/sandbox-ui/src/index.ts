@@ -26,7 +26,7 @@ export const Test14Component = styled(YStack, {
     fullbleed: {
       true: {},
       false: {
-      padding: '$4'
+      padding: "4"
       },
     },
   } as const,
@@ -38,10 +38,10 @@ export const Test14Component = styled(YStack, {
 
 export const TestBorderExtraction = styled(YStack, {
 theme: 'contentContainer',
-backgroundColor: '$background',
-borderColor: '$borderColor',
+backgroundColor: "background",
+borderColor: "border-color",
 borderWidth: 1,
-borderRadius: '$10',
-height: '$10',
-width: '$10'
+borderRadius: "10",
+height: "10",
+width: "10"
 })

@@ -8,10 +8,10 @@ export function UserDetailScreen({ id }: { id: string }) {
     return null
   }
   return (
-    <YStack flex={1} justify="center" items="center" gap="$4" bg="$background">
+    <YStack flex={1} justify="center" items="center" gap="4" bg="background">
       <Paragraph
-                  text="center" fontWeight="700" color="$blue10"
-                >{`User ID: ${id}`}</Paragraph>
+                            text="center" fontWeight="700" color="blue10"
+                          >{`User ID: ${id}`}</Paragraph>
       <Button icon={ChevronLeft} onPress={() => router.back()}>
         Go Home
       </Button>

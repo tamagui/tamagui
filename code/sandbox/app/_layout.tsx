@@ -30,11 +30,11 @@ export default function Layout() {
 
         <SchemeProvider>
           <TamaguiRootProvider>
-            <YStack bg="$color1" minH="100%" gap="$4" flex={1}>
+            <YStack bg="color1" minH="100%" gap="4" flex={1}>
               <SafeAreaView>
                 {/* <Toaster position="top-center" /> */}
 
-                <XStack items="center" justify="center" gap="$4" py="$4">
+                <XStack items="center" justify="center" gap="4" py="4">
                   <Image src={oneBall} width={42} height={42} />
                   <ToggleThemeButton />
                 </XStack>

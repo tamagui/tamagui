@@ -52,8 +52,8 @@ const CustomSheet = ({ open, setOpen }) => {
         <Sheet.Overlay
                         transition="lazy" opacity="enter:0 exit:0"
                       />
-        <Sheet.Handle bg="$gray8" />
-        <Sheet.Container items="center" justify="center" gap="$10">
+        <Sheet.Handle bg="gray8" />
+        <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="rgba(255,0,0,0.5)" />
           <Button
             size="$6"

@@ -26,8 +26,8 @@ type SelectSize = keyof typeof selectSizes.values
 const SelectTrigger = styled(SelectBehavior.Trigger, {
 context: selectSizes.Context,
 name: 'CanarySelectTrigger',
-background: '$background',
-borderColor: '$canary-token',
+background: "background",
+borderColor: "canary-token",
 rounded: 8,
 borderWidth: 1,
 justify: 'space-between',
@@ -38,7 +38,7 @@ defaultVariants: { size: 'medium' }
 const SelectValue = styled(SelectBehavior.Value, {
 context: selectSizes.Context,
 name: 'CanarySelectValue',
-color: '$color',
+color: "color",
 variants: { size: selectSizes.text } as const,
 defaultVariants: { size: 'medium' }
 })
@@ -56,15 +56,15 @@ defaultVariants: { size: 'medium' }
 const SelectItemText = styled(SelectBehavior.ItemText, {
 context: selectSizes.Context,
 name: 'CanarySelectItemText',
-color: '$color',
+color: "color",
 variants: { size: selectSizes.text } as const,
 defaultVariants: { size: 'medium' }
 })
 
 const SelectViewport = styled(SelectBehavior.Viewport, {
 name: 'CanarySelectViewport',
-background: '$background',
-borderColor: '$canary-token',
+background: "background",
+borderColor: "canary-token",
 rounded: 10,
 borderWidth: 1,
 maxH: 240,

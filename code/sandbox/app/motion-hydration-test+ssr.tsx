@@ -29,14 +29,14 @@ export default function MotionHydrationTest() {
       { id: 'glow-3', x: 100, y: 100, scale: 3, color: '$green10' },
     ].map((glow, i) => (
       <YStack
-                // use stable key like HomeGlow does: key={`${i}${tint}${tintAlt}`}
-                key={`${i}${tint}`} data-testid={glow.id} transition="superLazy" enterStyle={{ opacity: 0, }} exitStyle={{ opacity: 0, }} opacity={0.8} position="absolute" width={200} height={200} t={100} l="calc(50vw - 100px)" x={glow.x} y={glow.y} scale={glow.scale} bg={glow.color} borderRadius={1000}
-              />
+                        // use stable key like HomeGlow does: key={`${i}${tint}${tintAlt}`}
+                        key={`${i}${tint}`} data-testid={glow.id} transition="superLazy" opacity="0.8 enter:0 exit:0" position="absolute" width={200} height={200} t={100} l="calc(50vw - 100px)" x={glow.x} y={glow.y} scale={glow.scale} bg={glow.color} borderRadius={1000}
+                      />
     ))
   }, [tint])
 
   return (
-    <YStack f={1} position="relative" bg="$background" height="100vh" overflow="hidden">
+    <YStack f={1} position="relative" bg="background" height="100vh" overflow="hidden">
       <AnimatePresence>{glows}</AnimatePresence>
     </YStack>
   )

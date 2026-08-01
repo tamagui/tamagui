@@ -1468,6 +1468,17 @@ export const Fixture = () => (
     expect(output).not.toContain('$gtSmall')
   })
 
+  test('bare legacy platform conditions are not discovered as custom media', () => {
+    const output = runWrite(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View display="flex" $web={{ display: 'none' }} />
+)
+`)
+
+    expect(output).toContain('display="flex web:none"')
+    expect(output).not.toContain('$web')
+  })
+
   test('an input that matches no file exits nonzero and writes no report', () => {
     const result = runRaw([join(tmpdir(), 'flat-values-does-not-exist.tsx')])
 

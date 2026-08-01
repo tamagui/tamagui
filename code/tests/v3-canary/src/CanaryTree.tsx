@@ -18,14 +18,14 @@ export function CanaryTree() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
       <YStack
-                  testID="canary-root" background="$background" gap="$4" minHeight="100%" padding="$4"
-                >
-        <Text testID="canary-heading" color="$canaryTheme" fontSize="$6">
+                            testID="canary-root" background="background" gap="4" minHeight="100%" padding="4"
+                          >
+        <Text testID="canary-heading" color="canaryTheme" fontSize="6">
           Tamagui v3 integrated canary
         </Text>
 
         <TailwindView testID="canary-claimed" className="bg-canary-token p-4 rounded-4">
-          <Text color="$white">Claimed Tamagui token classes</Text>
+          <Text color="white">Claimed Tamagui token classes</Text>
         </TailwindView>
 
         {/* the claimed candidate becomes a Tamagui atom in @layer tamagui, the
@@ -35,7 +35,7 @@ export function CanaryTree() {
           testID="canary-cascade"
           className="bg-canary-token supports-[display:grid]:bg-blue-500"
         >
-          <Text color="$white">Tailwind passthrough utility wins the cascade</Text>
+          <Text color="white">Tailwind passthrough utility wins the cascade</Text>
         </TailwindView>
 
         <TailwindView
@@ -57,7 +57,7 @@ export function CanaryTree() {
           selected
         />
 
-        <XStack gap="$3" flexWrap="wrap">
+        <XStack gap="3" flexWrap="wrap">
           <Button testID="canary-button" onPress={() => setPresses((value) => value + 1)}>
             presses:{presses}
           </Button>
@@ -121,7 +121,7 @@ export function CanaryTree() {
           <Sheet.Container testID="canary-sheet-container">
             <Sheet.Background testID="canary-sheet-background" />
             <Sheet.ScrollView testID="canary-sheet-scroll-view">
-              <YStack gap="$3">
+              <YStack gap="3">
                 <Text>Copied Sheet skin</Text>
                 <Button testID="canary-sheet-close" onPress={() => setSheetOpen(false)}>
                   Close sheet

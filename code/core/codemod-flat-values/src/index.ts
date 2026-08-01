@@ -20,6 +20,7 @@ import { compact, unwrapExpression } from './expressions'
 import {
   codemodMediaNames,
   createModifierRegistry,
+  grammarPlatformNames,
   type ConversionTargets,
   type HostView,
   type ModifierRegistryView,
@@ -106,7 +107,8 @@ function mediaNames(sourceFiles: readonly SourceFile[]): Set<string> {
       if (
         name.startsWith('$theme-') ||
         name.startsWith('$platform-') ||
-        name.startsWith('$group-')
+        name.startsWith('$group-') ||
+        grammarPlatformNames.has(name.slice(1))
       ) {
         continue
       }

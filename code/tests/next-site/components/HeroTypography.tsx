@@ -30,8 +30,8 @@ export const HeroTypography = memo(() => {
     <>
       <YStack position="absolute" inset={0} className="" o={0.1} />
       {/* -5 my to fir grid nicely */}
-      <YStack my={-5} position="relative" gap="$8">
-        <YStack ref={ref} ai="center" gap="$3">
+      <YStack my={-5} position="relative" gap="8">
+        <YStack ref={ref} ai="center" gap="3">
           <H2>
             Beautifully expressive font systems with{' '}
             <span className="clip-text rainbow">rhythm</span>.
@@ -39,13 +39,13 @@ export const HeroTypography = memo(() => {
         </YStack>
 
         <XStack
-                        ai="center" jc="center" pos="relative" gap="$8" flexDirection="row-reverse sm:column-reverse"
-                      >
+                                      ai="center" jc="center" pos="relative" gap="8" flexDirection="row-reverse sm:column-reverse"
+                                    >
           <OverlayCard />
 
           <YStack
-                              h={300} w="40%" gap="$0.5" scale={1.1} x={-20} y={5} $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }} jc="center"
-                            >
+                                                h={300} w="40%" gap="$0.5" scale={1.1} x={-20} y={5} $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }} jc="center"
+                                              >
             <YStack ai="flex-end" h={270}>
               <AnimatePresence mode="wait">
                 <AnimatedHeading
@@ -116,18 +116,18 @@ const OverlayCard = () => {
   // {/* TODO elevation not overriding? */}
   return (
     <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
-      <YStack jc="center" p="$6" gap="$5" $sm={{ p: '$5' }} maw="calc(min(90vw, 400px))">
+      <YStack jc="center" p="6 sm:5" gap="5" maw="calc(min(90vw, 400px))">
         <Paragraph ta="left" size="$8" fow="400" ls={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph ta="left" size="$6" color="$color8" fow="400">
+        <Paragraph ta="left" size="$6" color="color8" fow="400">
           Typed, sizable fonts with control over every facet - weight, spacing,
           line-height, letter-spacing, color and more.
         </Paragraph>
 
         <Button aria-label="Fonts docs" als="flex-end">
-          <Button.Text fontFamily="$silkscreen">Fonts &raquo;</Button.Text>
+          <Button.Text fontFamily="silkscreen">Fonts &raquo;</Button.Text>
         </Button>
       </YStack>
     </Card>

@@ -25,16 +25,16 @@ import { animationsMotion } from '../config/tamagui/animationMotion'
  */
 export function TestPopoverTransformOrigin() {
   return (
-    <YStack gap="$4" p="$4">
-      <Text fontWeight="bold" fontSize="$6">
+    <YStack gap="4" p="4">
+      <Text fontWeight="bold" fontSize="6">
         Popover transformOrigin Test
       </Text>
-      <Text fontSize="$2" opacity={0.7}>
+      <Text fontSize="2" opacity={0.7}>
         Scale animation should originate from the arrow/anchor point
       </Text>
 
       {/* CSS Driver Test */}
-      <YStack gap="$3" p="$4" bg="$background" borderWidth={1} borderColor="$borderColor">
+      <YStack gap="3" p="4" bg="background" borderWidth={1} borderColor="border-color">
         <Text fontWeight="bold">CSS Animation Driver</Text>
         <Configuration animationDriver={animationsCSS}>
           <PopoverPlacements />
@@ -42,7 +42,7 @@ export function TestPopoverTransformOrigin() {
       </YStack>
 
       {/* Motion Driver Test */}
-      <YStack gap="$3" p="$4" bg="$background" borderWidth={1} borderColor="$borderColor">
+      <YStack gap="3" p="4" bg="background" borderWidth={1} borderColor="border-color">
         <Text fontWeight="bold">Motion Animation Driver</Text>
         <Configuration animationDriver={animationsMotion}>
           <PopoverPlacements />
@@ -54,7 +54,7 @@ export function TestPopoverTransformOrigin() {
 
 function PopoverPlacements() {
   return (
-    <XStack gap="$4" justify="center" items="center" flexWrap="wrap">
+    <XStack gap="4" justify="center" items="center" flexWrap="wrap">
       <PopoverWithScale placement="bottom" Icon={ChevronDown} label="Bottom" />
       <PopoverWithScale placement="top" Icon={ChevronUp} label="Top" />
       <PopoverWithScale placement="left" Icon={ChevronLeft} label="Left" />
@@ -71,7 +71,7 @@ function PopoverWithScale({
   const [open, setOpen] = useState(false)
 
   return (
-    <YStack items="center" gap="$2">
+    <YStack items="center" gap="2">
       <Popover
         size="$4"
         allowFlip={false}
@@ -88,17 +88,17 @@ function PopoverWithScale({
         </Popover.Trigger>
 
         <Popover.Content
-                        borderWidth={1} borderColor="$borderColor" p="$4" transition={[ 'quick', { opacity: { overshootClamping: true, }, }, ]} scale="enter:0.5 exit:0.5" opacity="enter:0 exit:0" elevate
-                      >
-          <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+                                      borderWidth={1} borderColor="border-color" p="4" transition={[ 'quick', { opacity: { overshootClamping: true, }, }, ]} scale="enter:0.5 exit:0.5" opacity="enter:0 exit:0" elevate
+                                    >
+          <Popover.Arrow borderWidth={1} borderColor="border-color" />
 
-          <YStack gap="$2" width={150}>
+          <YStack gap="2" width={150}>
             <Text fontWeight="bold">Placement: {props.placement}</Text>
-            <Text fontSize="$2" opacity={0.7}>
+            <Text fontSize="2" opacity={0.7}>
               Scale animation should grow from the arrow point
             </Text>
             <Popover.Close asChild>
-              <Button size="$2" mt="$2">
+              <Button size="$2" mt="2">
                 Close
               </Button>
             </Popover.Close>
@@ -106,7 +106,7 @@ function PopoverWithScale({
         </Popover.Content>
       </Popover>
 
-      <Text fontSize="$1" opacity={0.5}>
+      <Text fontSize="1" opacity={0.5}>
         {props.placement}
       </Text>
     </YStack>
