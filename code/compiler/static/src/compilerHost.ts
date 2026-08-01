@@ -861,34 +861,6 @@ export function createTamaguiCompilerHost(
           )
         }
       }
-      if (platform === 'native') {
-        for (const name of Object.keys(props)) {
-          if (name === 'hoverStyle' || /^\$group-.+-hover$/.test(name)) {
-            delete props[name]
-          }
-        }
-        if (typeof props.group === 'string') {
-          const groupPrefix = `$group-${props.group}-`
-          const runtimeGroupDescendant = input.module.elements.find(
-            (candidate) =>
-              candidate.span.start > input.element.span.start &&
-              candidate.span.end < input.element.span.end &&
-              candidate.entries.some(
-                (entry) =>
-                  entry.kind === 'prop' &&
-                  entry.name.startsWith(groupPrefix) &&
-                  !entry.name.endsWith('-hover')
-              )
-          )
-          if (runtimeGroupDescendant) {
-            return bailout(
-              input,
-              'local/unsupported-target',
-              'A native group with runtime descendants remains on the runtime path'
-            )
-          }
-        }
-      }
       const animationEntry = input.element.entries.find(
         (entry) => entry.kind === 'prop' && runtimeAnimationProps.has(entry.name)
       )
@@ -902,16 +874,16 @@ export function createTamaguiCompilerHost(
           (name) =>
             name !== 'animatedBy' &&
             (runtimeAnimationProps.has(name) ||
-              name.endsWith('Style') ||
-              name.startsWith('$') ||
+              (isStyleProp(name, component) &&
+                typeof props[name] === 'string' &&
+                props[name].includes(':')) ||
               name === 'animationConfig' ||
               name === 'forceStyle' ||
               name === 'onTransition')
         )
       if (
-        (animationProp && (animationProp !== 'animatedBy' || animatedByHasRuntimeWork)) ||
-        'enterStyle' in props ||
-        'exitStyle' in props
+        animationProp &&
+        (animationProp !== 'animatedBy' || animatedByHasRuntimeWork)
       ) {
         return bailout(
           input,
@@ -925,20 +897,6 @@ export function createTamaguiCompilerHost(
           input,
           'local/unsupported-target',
           'Theme boundary candidates remain on the runtime path'
-        )
-      }
-      if (
-        Object.entries(props).some(
-          ([name, value]) =>
-            name.startsWith('$theme-') &&
-            staticObject(value) &&
-            Object.keys(value).some((nestedName) => nestedName.startsWith('$'))
-        )
-      ) {
-        return bailout(
-          input,
-          'local/unsupported-target',
-          'Nested media inside a theme style remains on the runtime path'
         )
       }
       if (
