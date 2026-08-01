@@ -13,12 +13,10 @@ function validateNoTrueTokenKeys(tokens: CreateTokens) {
     const tokenSet = tokens[category]
     if (!tokenSet || typeof tokenSet !== 'object') continue
 
-    for (const key of ['true', `$${'true'}`]) {
-      if (Object.prototype.hasOwnProperty.call(tokenSet, key)) {
-        throw new Error(
-          `tokens.${category}.${key} is reserved. Remove the true token key and set settings.defaultSize instead.`
-        )
-      }
+    if (Object.prototype.hasOwnProperty.call(tokenSet, 'true')) {
+      throw new Error(
+        `tokens.${category}.true is reserved. Remove the true token key and set settings.defaultSize instead.`
+      )
     }
   }
 }

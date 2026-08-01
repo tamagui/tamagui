@@ -28,12 +28,9 @@ export const createVariables = <A extends DeepTokenObject>(
 
   const res: any = {}
   let i = 0
-  for (let keyIn in tokens) {
+  for (const key in tokens) {
     i++
-    const val = tokens[keyIn]
-    const isPrefixed = keyIn[0] === '$'
-    const keyWithPrefix = isPrefixed ? keyIn : `$${keyIn}`
-    const key = isPrefixed ? keyWithPrefix.slice(1) : keyIn
+    const val = tokens[key]
 
     if (isVariable(val)) {
       res[key] = val
@@ -48,7 +45,7 @@ export const createVariables = <A extends DeepTokenObject>(
       const finalValue = createVariable({
         val: val.val,
         name,
-        key: keyWithPrefix,
+        key,
       })
       // Only set needsPx flag on web platform, avoid on native
       if (isWeb) {
@@ -69,7 +66,7 @@ export const createVariables = <A extends DeepTokenObject>(
     }
     const finalValue = isVariable(val)
       ? val
-      : createVariable({ val, name, key: keyWithPrefix })
+      : createVariable({ val, name, key })
     res[key] = finalValue
   }
 
