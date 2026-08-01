@@ -124,6 +124,27 @@ export type UseButtonOptions = {
   textProps?: Record<string, unknown>
 }
 
+const buttonInternalPropNames = [
+  'children',
+  'color',
+  'disabled',
+  'ellipsis',
+  'fontFamily',
+  'fontSize',
+  'fontStyle',
+  'fontWeight',
+  'icon',
+  'iconAfter',
+  'iconSize',
+  'letterSpacing',
+  'maxFontSizeMultiplier',
+  'noTextWrap',
+  'render',
+  'scaleIcon',
+  'textAlign',
+  'textProps',
+] as const
+
 export function useButton<Props extends ButtonBehaviorProps>(
   propsIn: Props,
   {
@@ -167,8 +188,15 @@ export function useButton<Props extends ButtonBehaviorProps>(
     scaleIcon = 1,
     textAlign,
     textProps,
-    ...restProps
   } = processedProps
+
+  // useProps resolves styles for the component running the hook. This behavior
+  // HOC renders a styled frame, so its frame styles must keep the raw flat
+  // programs for the frame's own hover/press/focus state and merge pass.
+  const frameProps = { ...propsIn }
+  for (const key of buttonInternalPropNames) {
+    delete (frameProps as Record<string, any>)[key]
+  }
 
   const contextColor = color ?? styledContext?.color
   const iconColor = iconColorOption ?? contextColor
@@ -216,7 +244,7 @@ export function useButton<Props extends ButtonBehaviorProps>(
     ) : undefined)
 
   const props = {
-    ...restProps,
+    ...frameProps,
     ...(disabled && {
       'aria-disabled': true,
       disabled: true,

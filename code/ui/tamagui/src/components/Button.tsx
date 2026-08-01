@@ -187,11 +187,12 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
 const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(
   function Button(props, ref) {
     const size = (props.size ?? buttonSizes.defaultSize) as ButtonSize
+    // Size is the frame's baseline contribution. Appending it after
+    // HOC-expanded style props would let the variant overwrite a direct
+    // padding override from the caller.
+    const sizedProps = { size, ...props }
     const { props: buttonProps } = useButton(
-      {
-        ...props,
-        size,
-      },
+      sizedProps,
       {
         Text: ButtonText,
         iconSize: buttonSizes.resolve(size).icon,

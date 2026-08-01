@@ -1,4 +1,5 @@
 import type { GenericVariantDefinitions } from '../types'
+import { mergeProps } from './mergeProps'
 
 function isPlainObject(value: unknown): value is Record<string, any> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -31,10 +32,10 @@ export const mergeVariants = (
       if (level === 0) {
         variants[key] = mergeVariants(parentVariant, ourVariant, level + 1)
       } else {
-        variants[key] = {
-          ...parentVariant,
-          ...ourVariant,
-        }
+        // A branch is a style object. Merge clause-bearing flat values at the
+        // same property granularity as ordinary default props so a child base
+        // can override the parent base without erasing parent state clauses.
+        variants[key] = mergeProps(parentVariant, ourVariant)
       }
     }
   }
