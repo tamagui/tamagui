@@ -45,7 +45,7 @@ export function VariablesNativeCase() {
         values={
           patched ? { caseAccent: 'rgb(200, 0, 0)', caseSurface: 'color' } : undefined
         }
-        dark={patched ? { caseAccent: 'rgb(200, 100, 100)' } : undefined}
+        themes={patched ? { dark: { caseAccent: 'rgb(200, 100, 100)' } } : undefined}
       >
         <ReadValues />
       </Variables>

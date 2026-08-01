@@ -357,7 +357,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     const merged = getMergedInlineTheme(
       parentTheme,
       props.inlineValues,
-      nextRaw.scheme,
+      nextRaw.name,
       getConfig()
     )
     if (merged !== nextRaw.theme) {

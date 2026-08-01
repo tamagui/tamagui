@@ -14,16 +14,23 @@ change, no re-renders on web.
 import { Variables, View } from 'tamagui' // or '@tamagui/core'
 
 export default () => (
-  <Variables values={{ 'background-hover': 'blue4' }} dark={{ 'background-hover': 'blue2' }}>
+  <Variables
+    values={{ 'background-hover': 'blue4' }}
+    themes={{ dark: { 'background-hover': 'blue2' } }}
+  >
     <View backgroundColor="background hover:background-hover" />
   </Variables>
 )
 ```
 
-`values` applies always, while `dark` and `light` merge on top when the
-subtree's color scheme matches. On web this compiles to CSS custom properties
-under scheme-scoped selectors, so switching between light and dark restyles
-the subtree without re-rendering it.
+`values` applies always, while each entry in the `themes` map merges on top
+when the subtree's resolved theme matches that name. `dark` and `light` follow
+the color scheme; any other name matches by theme-name segment, so
+`themes={{ blue: { ... } }}` applies under `dark_blue`, `light_blue`, or a
+theme named `blue`. On web this compiles to CSS custom properties under
+theme-class-scoped selectors, so switching themes restyles the subtree without
+re-rendering it. When a key appears in both a scheme entry and another theme
+entry that match at once, the scheme entry wins.
 
 Keys must be theme keys, or custom variables you declare in your config
 (below). Unknown keys warn in development and are dropped, which keeps web and
