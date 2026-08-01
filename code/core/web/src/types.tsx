@@ -643,6 +643,10 @@ export type TamaguiComponentStateRef = {
   nextState?: TamaguiComponentState
   nextMedia?: UseMediaState
 
+  // avoidReRenders latched on first render (animationDriver derives from the
+  // per-render animatedBy prop; hooks gated on it must keep a stable count)
+  avoidReRenders?: boolean
+
   // cleanup function for media emit listener
   mediaEmitCleanup?: () => void
 
