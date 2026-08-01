@@ -168,12 +168,16 @@ export function createDefaultTables(themeCss: string): V6TailwindDefaultTables {
 
   for (const name of DEFAULT_SPACING_SUGGESTIONS) {
     const value = Number(name) * spacing
-    size[name] = value
-    space[name] = value
+    const tokenName = name.replaceAll('.', '-')
+    size[tokenName] = value
+    space[tokenName] = value
   }
   space['-px'] = -1
   for (const name of DEFAULT_SPACING_SUGGESTIONS) {
-    if (name !== '0') space[`-${name}`] = -Number(name) * spacing
+    if (name !== '0') {
+      const tokenName = name.replaceAll('.', '-')
+      space[`-${tokenName}`] = -Number(name) * spacing
+    }
   }
 
   // no `none`: reserved css-wide keyword names are rejected at config creation;
