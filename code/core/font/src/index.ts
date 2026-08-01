@@ -39,7 +39,7 @@ export function addFont(props: {
   if (isWeb) {
     const fontFamilyToken = createVariables(fontFamilyIn, 'f', true)
     const parsedFontFamily = parseFont(fontFamilyToken)
-    const fontFamilyNameParsed = `$${fontFamilyNameIn}`
+    const fontFamilyNameParsed = fontFamilyNameIn
     config.fontsParsed[fontFamilyNameParsed] = parsedFontFamily
 
     if (props.insertCSS) {
@@ -49,7 +49,7 @@ export function addFont(props: {
       const fontVars = registerFontVariables(parsedFontFamily)
       const fontDeclaration = {
         [fontFamilyNameIn]: {
-          name: ff_name.slice(1),
+          name: ff_name,
           declarations: fontVars,
           language: ff_language,
         },

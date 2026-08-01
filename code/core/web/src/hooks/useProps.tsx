@@ -28,10 +28,7 @@ type UsePropsOptions = Pick<
   noMedia?: boolean
 }
 
-export type PropsWithoutMediaStyles<A> = {
-  // remove all media
-  [Key in keyof A as Key extends `$${string}` ? never : Key]?: A[Key]
-}
+export type PropsWithoutMediaStyles<A> = Partial<A>
 
 type PropsLikeObject = (ViewProps & Record<string, any>) | object
 type StyleLikeObject = (ViewStyle & Record<string, any>) | object
