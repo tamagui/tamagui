@@ -114,6 +114,34 @@ Stop the dev server with Ctrl-C. Record:
 - a screenshot at a wide viewport;
 - for a failure, the smallest reproduction plus the dev-server and browser logs.
 
+## Native validation status
+
+The acceptance page and the three behavior checks above are registered only for
+web. Run that web path when testing behavior, and treat native behavior as
+unverified for this cycle.
+
+The native evidence established this cycle is limited to build and unit-level
+reachability:
+
+- the native optimizer pre-step passes with 14 optimized modules against a
+  minimum of 8 after the export-resolution fix;
+- the core-test native unit suite passes all 198 tests;
+- a clean Debug build completed in 572 seconds, then installed and launched on
+  an iPhone 16 simulator running iOS 26.5.
+
+No native behavioral assertion completed. The Detox run reached a launched app
+and was deliberately stopped before assertions to free the machine. The
+semantic UI snapshot helper daemon also failed to auto-start. These are resource
+and test-reachability limits, not a failed assertion or a discovered native
+defect.
+
+Flat value strings, Tailwind class strings, container-only layout responses,
+and CSS transition-string motion therefore remain unproven on native. CSS
+transition values are checked against the native capability matrix and then
+dropped because no native driver consumes the transition IR yet; native apps
+must use an animation-driver preset. The flat-value defect currently under fix
+reproduces on native as well as web.
+
 ## Known limitations and scope
 
 - `bun run start:web` sets `DISABLE_EXTRACTION=true`. This page proves the web
@@ -133,10 +161,6 @@ Stop the dev server with Ctrl-C. Record:
 - `@tamagui/tailwind` currently exposes a plain `className?: string` type.
   Runtime correctness here does not imply complete static class-name
   autocomplete or rejection of every invalid candidate.
-- This is a web-only CSS-driver check. Native CSS transition values are
-  validated against the native capability matrix but are not driven directly
-  yet. Native applications must keep using an animation-driver preset for
-  motion.
 - A root install can rewrite the tracked
   `code/tamagui.dev/tamagui.generated.css` file during postinstall. The final
   conformance audit accepts that one generated rewrite and no declaration-file
