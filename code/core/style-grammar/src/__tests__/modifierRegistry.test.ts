@@ -1,5 +1,10 @@
 import { describe, expect, test } from 'vitest'
-import { createGrammarConfigView, createModifierRegistry, parseContainerModifier, stateModifierNames } from '..'
+import {
+  createGrammarConfigView,
+  createModifierRegistry,
+  parseContainerModifier,
+  stateModifierNames,
+} from '..'
 
 // One global modifier namespace. These tests pin which spellings resolve to
 // which kind, that registration order is state -> media -> platform -> theme

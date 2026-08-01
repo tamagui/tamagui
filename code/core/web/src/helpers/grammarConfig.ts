@@ -501,7 +501,6 @@ function resolveContainerQueries(
   return { containerQueries, containerSizes: Object.keys(containerQueries) }
 }
 
-
 const revisions = new WeakMap<TamaguiInternalConfig, string>()
 
 /**

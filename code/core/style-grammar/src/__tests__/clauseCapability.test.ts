@@ -130,7 +130,12 @@ describe('assessFlatConversion', () => {
 
   test('a part prop is ineligible regardless of clauses or host', () => {
     const assessment = assessFlatConversion(
-      { property: 'shadowColor', modifiers: ['hover'], targets: 'shared', host: textHost },
+      {
+        property: 'shadowColor',
+        modifiers: ['hover'],
+        targets: 'shared',
+        host: textHost,
+      },
       registry
     )
     expect(assessment.verdict).toBe('ineligible')

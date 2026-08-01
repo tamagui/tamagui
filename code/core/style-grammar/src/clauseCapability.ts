@@ -107,7 +107,8 @@ export function clauseCapability(
   }
   if (kind === 'group') {
     const parsed = parseGroupModifier(modifier)
-    if (!parsed) return { web: false, native: false, note: `"${modifier}:" is not a group modifier` }
+    if (!parsed)
+      return { web: false, native: false, note: `"${modifier}:" is not a group modifier` }
     const web = webLowerableStates.has(parsed.state)
     const native = nativeGroupSourceable.has(parsed.state)
     if (web && native) return bothTargets
@@ -206,8 +207,7 @@ export function assessFlatConversion(
       reasons.push({
         dimension: 'clause',
         modifier,
-        message:
-          capability.note ?? `"${modifier}:" is not supported on ${missing}`,
+        message: capability.note ?? `"${modifier}:" is not supported on ${missing}`,
         remedy:
           missing === 'web'
             ? `keep the driver-evaluated pseudo prop, or move this usage to a .native.tsx file`

@@ -138,9 +138,7 @@ describe('alignTransitionContributions', () => {
       expect(result.diagnostics[0].message).toContain('inherit')
     }
     // the global alone survives untouched
-    const alone = alignTransitionContributions([
-      { prop: 'transition', value: 'inherit' },
-    ])
+    const alone = alignTransitionContributions([{ prop: 'transition', value: 'inherit' }])
     expect(alone.ok && alone.value.kind === 'global' && alone.value.value).toBe('inherit')
   })
 
@@ -149,7 +147,9 @@ describe('alignTransitionContributions', () => {
       { prop: 'transitionDelay', value: '1s' },
       { prop: 'transition', value: 'unset' },
     ])
-    expect(result.ok && result.value.kind === 'global' && result.value.value).toBe('unset')
+    expect(result.ok && result.value.kind === 'global' && result.value.value).toBe(
+      'unset'
+    )
   })
 
   test('longhand validation flows through the one owner', () => {

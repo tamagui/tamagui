@@ -40,7 +40,8 @@ function resolveColor(raw: string, tokenMap?: TokenMap): any {
 // leading-decimal angles, case-insensitive units and keywords. what matters
 // is what React Native reads, not what the CSS spec permits
 const gradientAngle = /^([+-]?\d*\.?\d+)(deg|grad|rad|turn)$/i
-const gradientKeyword = /^to\s+(?:top|bottom|left|right)(?:\s+(?:top|bottom|left|right))?$/i
+const gradientKeyword =
+  /^to\s+(?:top|bottom|left|right)(?:\s+(?:top|bottom|left|right))?$/i
 
 // RN's object path accepts a position as a NUMBER (points) or a string
 // ending in % — mirroring its own getPositionFromCSSValue: px becomes

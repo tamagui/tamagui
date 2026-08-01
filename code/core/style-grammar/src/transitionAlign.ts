@@ -101,7 +101,9 @@ export function alignTransitionContributions(
         entries.map((entry) => (entry.timing as { duration: string }).duration)
       )
       state.lists.transitionTimingFunction = listText(
-        entries.map((entry) => (entry.timing as { timingFunction: string }).timingFunction)
+        entries.map(
+          (entry) => (entry.timing as { timingFunction: string }).timingFunction
+        )
       )
       state.lists.transitionDelay = listText(entries.map((entry) => entry.delay))
       state.lists.transitionBehavior = listText(entries.map((entry) => entry.behavior))

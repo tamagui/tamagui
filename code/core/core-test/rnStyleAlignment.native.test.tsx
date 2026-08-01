@@ -227,7 +227,7 @@ describe('gradient position grammar', () => {
     ])
   })
 
-  test('a position unit RN cannot read declines the parse into RN\'s hands', () => {
+  test("a position unit RN cannot read declines the parse into RN's hands", () => {
     const result = getSplitStylesFor({
       backgroundImage: 'linear-gradient(to bottom, red 2em, blue)',
     })
@@ -260,7 +260,7 @@ describe('gradient transition hints', () => {
     ).toEqual({ color: null, positions: ['50%'] })
   })
 
-  test('an invalid hint placement declines the parse into RN\'s hands', () => {
+  test("an invalid hint placement declines the parse into RN's hands", () => {
     for (const css of [
       'linear-gradient(50px, red, blue)',
       'linear-gradient(red, blue, 50px)',

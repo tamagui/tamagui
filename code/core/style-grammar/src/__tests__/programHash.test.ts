@@ -13,10 +13,9 @@ describe('alias spellings are one hash identity', () => {
         base: 'red',
         clauses: [{ modifiers: [modifier], payload: 'blue' }],
       })
-      expect(
-        programClassName('backgroundColor', value(alias), 'r1'),
-        alias
-      ).toBe(programClassName('backgroundColor', value(canonical), 'r1'))
+      expect(programClassName('backgroundColor', value(alias), 'r1'), alias).toBe(
+        programClassName('backgroundColor', value(canonical), 'r1')
+      )
 
       const chained = (modifier: string) => ({
         base: null,
