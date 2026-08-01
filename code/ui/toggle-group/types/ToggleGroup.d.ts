@@ -29,10 +29,9 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
         }>> | undefined;
     }, {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
-    }>, "__scopeToggleGroup" | "active" | "activeStyle" | "color" | "defaultActiveStyle" | "size" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "activeStyle" | "color" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }>, "__scopeToggleGroup" | "active" | "activeStyle" | "defaultActiveStyle" | "size" | "value" | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").StackStyleBase> & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "activeStyle" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
                 readonly activeStyle: 'style';
@@ -40,7 +39,6 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
         }>> | undefined;
     }> & {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -55,7 +53,7 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
         disabled?: boolean;
     } & {
         __scopeToggleGroup?: string;
-    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "activeStyle" | "color" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "active" | "activeStyle" | "defaultActiveStyle" | "size" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
                 readonly activeStyle: 'style';
@@ -63,7 +61,6 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
         }>> | undefined;
     }> & {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -86,7 +83,6 @@ declare const ToggleGroup: ((props: ScopedProps<ToggleGroupProps> & import("@tam
         }>> | undefined;
     }, {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
     }, {

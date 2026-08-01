@@ -15,21 +15,18 @@ export type ListItemExtraProps = {
     color?: ColorTokens | string;
 };
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps;
-declare const ListItemFrame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "color" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    color?: string | undefined;
+declare const ListItemFrame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
     ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    color?: string | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        color?: string | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
@@ -41,30 +38,25 @@ declare const ListItemIcon: (props: {
     scaleIcon?: number;
 }) => any;
 export declare const ListItem: FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    color?: string | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }>, keyof ListItemExtraProps> & ListItemExtraProps & {
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    color?: string | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }>, keyof ListItemExtraProps> & ListItemExtraProps, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").StackNonStyleProps & ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
-    color?: string | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        color?: string | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
     }>, keyof ListItemExtraProps> & ListItemExtraProps, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").StackNonStyleProps & ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
-        color?: string | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
@@ -82,21 +74,18 @@ export declare const ListItem: FunctionComponent<Omit<import("@tamagui/web").Get
         children?: ReactNode;
         scope?: string;
     }>;
-    Frame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "color" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        color?: string | undefined;
+    Frame: FunctionComponent<Omit<import("@tamagui/web").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        color?: string | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-            color?: string | undefined;
             disabled?: boolean | undefined;
             size?: false | import("@tamagui/web").Size | undefined;
             variant?: "outlined" | undefined;
