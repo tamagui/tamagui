@@ -172,10 +172,10 @@ describe('Nested media + platform queries', () => {
       )
       // All conditions met — all properties should apply
       expect(result.style?.opacity).toBe(0.5)
-      // zIndex is set in both a chained context (5) and an android clause (10).
-      // The chained value (5) has higher
-      // importance than the non-nested outer value, so 5 wins.
-      expect(result.style?.zIndex).toBe(5)
+      // zIndex matches in both a chained clause (5) and an android clause (10).
+      // Every clause of one program has equal specificity, so the last matching
+      // clause wins regardless of how many conditions it chains.
+      expect(result.style?.zIndex).toBe(10)
       expect(result.style?.flex).toBe(1)
     })
   })

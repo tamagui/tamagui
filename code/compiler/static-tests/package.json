@@ -22,7 +22,7 @@
     "test:babel:web": "bun run test:run -- tests/babel.web.test.tsx",
     "test:extract:web": "bun run test:run:web -- tests/extract.web.test.tsx",
     "test:styled:web": "bun run test:run -- tests/styled.web.test.tsx",
-    "test:web": "bun run test:run:web -- tests/*.web.test.tsx && bun run test:webpack",
+    "test:web": "bun run test:run:web -- tests/*.web.test.ts* && bun run test:webpack",
     "test:native": "bun run test:run -- tests/*.native.test.tsx"
   },
   "devDependencies": {
