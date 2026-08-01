@@ -63,9 +63,13 @@ test('Escape closes modal sheets only by default', async ({ page }) => {
   await expect(page.getByTestId('sheet-escape-modal-frame')).toBeVisible({
     timeout: 5000,
   })
+  // The controlled Sheet mirrors its open prop into local state in an effect;
+  // wait one frame so its document-level Escape listener is registered.
+  await page.waitForTimeout(50)
 
   await page.keyboard.press('Escape')
   await expect(page.getByTestId('sheet-escape-modal-state')).toHaveText('modal-closed')
+  await expect(page.getByTestId('sheet-escape-modal-frame')).toBeHidden()
 
   await page.getByTestId('sheet-escape-nonmodal-open').click()
   await expect(page.getByTestId('sheet-escape-nonmodal-state')).toHaveText(
@@ -93,6 +97,7 @@ test('Escape closes only the top-most nested modal sheet', async ({ page }) => {
   await expect(page.getByTestId('sheet-escape-nested-child-frame')).toBeVisible({
     timeout: 5000,
   })
+  await page.waitForTimeout(50)
 
   await page.keyboard.press('Escape')
   await expect(page.getByTestId('sheet-escape-nested-child-state')).toHaveText(
@@ -101,6 +106,7 @@ test('Escape closes only the top-most nested modal sheet', async ({ page }) => {
   await expect(page.getByTestId('sheet-escape-nested-parent-state')).toHaveText(
     'parent-open'
   )
+  await expect(page.getByTestId('sheet-escape-nested-child-frame')).toBeHidden()
 
   await page.keyboard.press('Escape')
   await expect(page.getByTestId('sheet-escape-nested-parent-state')).toHaveText(
