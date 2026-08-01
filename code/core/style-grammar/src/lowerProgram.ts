@@ -320,7 +320,8 @@ export function lowerProgram(
       property: composition.property,
       className: compositionClassName,
       rules: [
-        `:where(.${compositionClassName}){${localDefaults};${composition.property}:${composition.value}}`,
+        `:where(.${compositionClassName}){${localDefaults}}`,
+        `.${compositionClassName}{${composition.property}:${composition.value}}`,
       ],
     },
   }

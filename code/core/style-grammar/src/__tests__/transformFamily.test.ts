@@ -127,7 +127,8 @@ describe('web lowering', () => {
     expect(lowered.composition).toBeDefined()
     expect(lowered.composition!.property).toBe('translate')
     expect(lowered.composition!.rules).toEqual([
-      `:where(.${lowered.composition!.className}){--t-x:0px;--t-y:0px;translate:var(--t-x, 0px) var(--t-y, 0px)}`,
+      `:where(.${lowered.composition!.className}){--t-x:0px;--t-y:0px}`,
+      `.${lowered.composition!.className}{translate:var(--t-x, 0px) var(--t-y, 0px)}`,
     ])
   })
 
@@ -159,6 +160,9 @@ describe('web lowering', () => {
         `:where(.${lowered.composition!.className}){`
       )
     ).toBe(true)
+    expect(lowered.composition!.rules[1].startsWith(
+      `.${lowered.composition!.className}{`
+    )).toBe(true)
   })
 
   test('an individual-property program carries no composing rule', () => {
@@ -414,7 +418,8 @@ describe("the codemod's scale shape end to end", () => {
     // one composing rule serves both axes
     expect(lowered[0].composition!.className).toBe(lowered[1].composition!.className)
     expect(lowered[0].composition!.rules).toEqual([
-      `:where(.${lowered[0].composition!.className}){--t-scale-x:1;--t-scale-y:1;scale:var(--t-scale-x, 1) var(--t-scale-y, 1)}`,
+      `:where(.${lowered[0].composition!.className}){--t-scale-x:1;--t-scale-y:1}`,
+      `.${lowered[0].composition!.className}{scale:var(--t-scale-x, 1) var(--t-scale-y, 1)}`,
     ])
 
     // native evaluates both axes and collapses them back to one entry
