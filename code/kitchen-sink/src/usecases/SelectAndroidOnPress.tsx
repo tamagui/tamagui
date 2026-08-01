@@ -56,7 +56,7 @@ export function SelectAndroidOnPress() {
           <Select.Icon />
         </Select.Trigger>
 
-        <Adapt when="maxMd" platform="touch">
+        <Adapt when="max-md" platform="touch">
           <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Container>
               <Sheet.Background />

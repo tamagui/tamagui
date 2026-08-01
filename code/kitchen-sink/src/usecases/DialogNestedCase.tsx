@@ -21,7 +21,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
         </Button>
       </Dialog.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet
           transition="medium"
           zIndex={200000}

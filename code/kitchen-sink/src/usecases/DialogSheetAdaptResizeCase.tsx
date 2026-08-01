@@ -26,7 +26,7 @@ export function DialogSheetAdaptResizeCase() {
 
       <Dialog modal open={open} onOpenChange={setOpen}>
         {/* adapt to sheet on narrow viewports */}
-        <Dialog.Adapt when="maxMd">
+        <Dialog.Adapt when="max-md">
           <Sheet zIndex={200000} modal dismissOnSnapToBottom>
             <Sheet.Container testID="dialog-sheet-frame" padding="4" gap="4">
               <Sheet.Background />

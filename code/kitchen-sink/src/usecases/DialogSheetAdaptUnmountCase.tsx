@@ -20,7 +20,7 @@ const CONTENT_RADIUS = 16
  * - Adapt.Contents nested inside Sheet.ScrollView in Sheet.Container.
  *
  * Note: 3PC uses `Adapt platform="touch"`, but `isTouchable` is false on
- * desktop chromium (no `ontouchstart`), so we use `when="maxMd"` here so the
+ * desktop chromium (no `ontouchstart`), so we use `when="max-md"` here so the
  * adapted path activates on a narrow viewport. The bug is not specific to
  * touch detection — it's about Dialog.open vs Sheet.open lifecycle.
  *
@@ -39,7 +39,7 @@ function ThreePunchDialog({
 }) {
   return (
     <TamaguiDialog modal open={open} onOpenChange={onOpenChange}>
-      <TamaguiDialog.Adapt when="maxMd">
+      <TamaguiDialog.Adapt when="max-md">
         <Sheet
           transition="medium"
           zIndex={250_000}

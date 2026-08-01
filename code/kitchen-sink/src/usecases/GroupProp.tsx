@@ -9,14 +9,14 @@ const GroupChild = styled(View, {
   width: 100,
   height: 100,
   backgroundColor:
-    'rgb(255,0,0) press:rgb(0,0,0) group-hover/testy:rgb(160, 32, 240) group-press/testy:rgb(255,255,0) @maxMd:rgb(0,255,0) @maxMd:group-hover/testy:rgb(160, 32, 240) @maxMd:group-press/testy:rgb(255,255,0)',
+    'rgb(255,0,0) press:rgb(0,0,0) group-hover/testy:rgb(160, 32, 240) group-press/testy:rgb(255,255,0) @max-md:rgb(0,255,0) @max-md:group-hover/testy:rgb(160, 32, 240) @max-md:group-press/testy:rgb(255,255,0)',
 })
 
 const GroupChildMedia = styled(GroupChild, {
   width: 100,
   height: 100,
   backgroundColor:
-    'rgb(255,0,0) group-hover/testy:rgb(160, 32, 240) group-press/testy:rgb(255,255,0) @maxMd:rgb(0,255,0) @maxMd:group-hover/testy:rgb(160, 32, 240) @maxMd:group-press/testy:rgb(255,255,0)',
+    'rgb(255,0,0) group-hover/testy:rgb(160, 32, 240) group-press/testy:rgb(255,255,0) @max-md:rgb(0,255,0) @max-md:group-hover/testy:rgb(160, 32, 240) @max-md:group-press/testy:rgb(255,255,0)',
 })
 
 export function GroupProp() {

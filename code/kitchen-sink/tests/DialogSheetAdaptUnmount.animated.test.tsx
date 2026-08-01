@@ -16,7 +16,7 @@ import { setupPage } from './test-utils'
  *   inner cover, so the unmount is visible.
  *
  * What this test asserts:
- *   1. Open dialog at narrow viewport so Adapt platform="touch" + when="maxMd"
+ *   1. Open dialog at narrow viewport so Adapt platform="touch" + when="max-md"
  *      activates and Dialog.Adapt swaps in the Sheet.
  *   2. The marker text inside the body must be visible (it lives in the sheet).
  *   3. After clicking close, sample the marker for several frames during the
@@ -25,7 +25,7 @@ import { setupPage } from './test-utils'
  *   4. After the animation finishes, the marker should be gone.
  */
 test.describe('Dialog Sheet Adapt - body persists during exit animation', () => {
-  // narrow viewport so `when="maxMd"` triggers the adapted code path
+  // narrow viewport so `when="max-md"` triggers the adapted code path
   test.use({ viewport: { width: 600, height: 900 } })
 
   test.beforeEach(async ({ page }) => {

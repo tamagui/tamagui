@@ -31,6 +31,18 @@ const config = {
   themes: v3Themes,
 }
 
+// V4 predates the V6 multi-part-name ruling. Keep its breakpoint values while
+// exposing the max-query names in the sole supported kebab-case spelling.
+const v4MaxMedia = {
+  'max-2xs': configV4.media.max2xs,
+  'max-xs': configV4.media.maxXs,
+  'max-sm': configV4.media.maxSm,
+  'max-md': configV4.media.maxMd,
+  'max-lg': configV4.media.maxLg,
+  'max-xl': configV4.media.maxXl,
+  'max-2xl': configV4.media.max2Xl,
+} as const
+
 export const animationsCSS = createAnimationsCSS({
   '0ms': '0ms linear',
   '30ms': '30ms linear',
@@ -455,7 +467,7 @@ type KitchenConfigInput = Omit<
   animations: typeof animations
   defaultProps: typeof defaultProps
   fonts: Merge<typeof config.fonts, { body_ja: typeof bodyJa }>
-  media: Merge<typeof configV4.media, typeof config.media>
+  media: Merge<typeof v4MaxMedia, typeof config.media>
   settings: Merge<
     typeof config.settings,
     {
@@ -487,7 +499,7 @@ const tamaConf: InferTamaguiConfig<KitchenConfigInput> = createTamagui<KitchenCo
   },
   tokens,
   media: {
-    ...configV4.media, // adds max queries
+    ...v4MaxMedia,
     ...config.media,
   },
   animations, // default reanimated

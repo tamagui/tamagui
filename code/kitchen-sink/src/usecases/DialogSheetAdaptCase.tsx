@@ -72,7 +72,7 @@ function TakeoutStyleDialog({
   return (
     <Dialog modal open={open} onOpenChange={onOpenChange}>
       {/* Simplified to match DialogDemo exactly */}
-      <Adapt platform="touch" when="maxMd">
+      <Adapt platform="touch" when="max-md">
         <Sheet
           transition="medium"
           zIndex={200000}

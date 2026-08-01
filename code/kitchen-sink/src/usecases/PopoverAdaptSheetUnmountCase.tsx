@@ -12,7 +12,7 @@ import { Adapt, Button, Paragraph, Popover, Sheet, XStack, YStack } from 'tamagu
  * down on the first frame while the Sheet is still animating out, so the body
  * of the sheet vanishes mid-slide.
  *
- * Same harness shape as the Dialog case: narrow viewport so `when="maxMd"`
+ * Same harness shape as the Dialog case: narrow viewport so `when="max-md"`
  * activates the adapted Sheet path, and an imperative window hook to drive
  * close (the SheetOverlay covers the viewport and Pressable ignores synthetic
  * clicks).
@@ -32,7 +32,7 @@ function AdaptedPopover({
         <Button testID="open-popover">Open Popover</Button>
       </Popover.Trigger>
 
-      <Adapt when="maxMd">
+      <Adapt when="max-md">
         <Sheet
           transition="medium"
           zIndex={250_000}
