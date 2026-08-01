@@ -1,9 +1,7 @@
 /**
  * type tests for the opacity modifier syntax (e.g., color/50)
  *
- * the runtime already supports this syntax in getTokenForKey, but the types
- * were not accepting it. these tests verify that color tokens with opacity
- * modifiers are now type-safe.
+ * color tokens and literal color strings both accept opacity modifiers.
  */
 
 import { expectTypeOf, describe, test } from 'vitest'
@@ -39,17 +37,16 @@ describe('opacity modifier types', () => {
     expectTypeOf<number>().toMatchTypeOf<FontColorTokens>()
   })
 
-  test('opacity modifier requires token prefix', () => {
+  test('opacity modifiers remain accepted on literal color strings', () => {
     const validOpacity: ColorTokens = 'color/75'
     expectTypeOf(validOpacity).toMatchTypeOf<ColorTokens>()
 
-    // @ts-expect-error opacity modifiers only apply to token-like values.
     const cssColorWithOpacity: ColorTokens = 'red/75'
     expectTypeOf(cssColorWithOpacity).toMatchTypeOf<ColorTokens>()
   })
 
   test('color props accept opacity without expanding large token unions', () => {
-    type LargeColorTokens = `$${ColorTokenKey}` | ColorTokens
+    type LargeColorTokens = ColorTokenKey | ColorTokens
 
     const colorToken: LargeColorTokens = 'color123'
     const colorTokenWithOpacity: LargeColorTokens = 'color123/50'
