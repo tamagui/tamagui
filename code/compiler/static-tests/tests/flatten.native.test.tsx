@@ -109,7 +109,8 @@ describe('flatten-tests', () => {
         }
       `)
 
-    expect(output?.code).contains("backgroundColor='invalid-identifier'")
+    expect(output?.code).toContain('<__TamaguiNativeView')
+    expect(output?.code).toContain('"backgroundColor":')
   })
 
   test(`bails on runtime event handlers — a bare RN View ignores onPress`, async () => {

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Text with hoverStyle and conditional spread preserves ternary 1`] = `
+exports[`Text with a hover clause and conditional spread preserves ternary 1`] = `
 "// debug
     import { Text } from '@tamagui/core'
 
@@ -8,9 +8,9 @@ exports[`Text with hoverStyle and conditional spread preserves ternary 1`] = `
       return (
         <Text
           cursor="pointer"
-          hoverStyle={{ color: '$color12' }}
+          color="hover:color12"
           {...(isActive && {
-            color: '$color12',
+            color: 'color12',
             fontWeight: '800',
           })}
         >
@@ -70,7 +70,7 @@ exports[`conditional specific after generic style overrides 1`] = `
     export function Test(props) {
       return (
         <View
-          p="$2"                              // base padding
+          p="2"                              // base padding
           pb={floating ? 18 : 15}             // should override bottom
           mr={floating2 ? 2 : 1}              // unrelated ternary
           borderTopRightRadius={10}           // base tr radius
@@ -86,16 +86,15 @@ exports[`conditional specific after generic style overrides 1`] = `
 
 exports[`conditional specific after generic style overrides 2`] = `""`;
 
-exports[`conditional spread with hoverStyle preserves ternary 1`] = `
+exports[`conditional spread with a hover clause preserves ternary 1`] = `
 "
     import { View } from '@tamagui/core'
 
     export function Test({ isActive }) {
       return (
         <View
-          backgroundColor="red"
+          backgroundColor="red hover:green"
           cursor="pointer"
-          hoverStyle={{ backgroundColor: 'green' }}
           {...(isActive && {
             backgroundColor: 'blue',
           })}
@@ -195,15 +194,14 @@ exports[`flexBasis: 0 with responsive style extracts correctly 1`] = `
     export function Test() {
       return (
         <div
-          className="is_View _fb-589871123"
-
+          className="is_View _fb-2077061524"
         />
       )
     }
 "
 `;
 
-exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._fb-589871123{flex-basis:1px}@media (min-width: 661px) {._fb-589871123{flex-basis:0px}}"`;
+exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._fb-2077061524{flex-basis:1}@media (min-width: 661px) {._fb-2077061524{flex-basis:0px}}"`;
 
 exports[`font_body class is present in BOTH ternary branches 1`] = `
 "const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
@@ -224,7 +222,7 @@ exports[`fontFamily shorthand + styled + flatten + ternaries 1`] = `
     export function Test(props) {
       return (
         <MySizableText
-          ff="$mono"
+          ff="mono"
           opacity={active ? 1 : 0.65}
         />
       )
@@ -238,7 +236,7 @@ exports[`fontFamily shorthand + styled + flatten works 1`] = `
     export function Test(props) {
       return (
         <span
-          className="is_MySizableText is_Text font_mono _bc-1389700636 _ff-1556374084"
+          className="is_MySizableText is_Text font_mono _bc-795713679 _ff-220478639"
         />
       )
     }
@@ -253,9 +251,7 @@ exports[`non-flattened works 1`] = `
         <Text
           textAlign={inMenu ? props.hello : 'right'}
           width="100%"
-          hoverStyle={{
-            o: 0.85,
-          }}
+          opacity="hover:0.85"
           {...(active && {
             fow: '700',
             opacity: 1,
@@ -273,7 +269,7 @@ exports[`specific className + ternary 1`] = `
       return (
         <MySizableText
           className="test-class-name"
-          ff="$mono"
+          ff="mono"
           opacity={active ? 1 : 0.65}
         />
       )
@@ -309,7 +305,7 @@ exports[`ternaries + font families works 1`] = `
     import { Text } from '@tamagui/core'
     export function Test(props) {
       return (
-        <Text fontFamily={window ? "$body" : "$heading"} />
+        <Text fontFamily={window ? "body" : "heading"} />
       )
     }
 "
@@ -323,9 +319,9 @@ exports[`ternary with mixed theme-token and non-token values retains dynamic pro
     export function Test({ isActive, label }) {
       return (
         <Text
-          className="_fs-837447699"
+          className="_fs-1726137698"
           fontWeight={isActive ? '600' : '400'}
-          color={isActive ? '$color12' : '$color11'}
+          color={isActive ? 'color12' : 'color11'}
         >
           {label}
         </Text>
@@ -334,7 +330,7 @@ exports[`ternary with mixed theme-token and non-token values retains dynamic pro
 "
 `;
 
-exports[`ternary with mixed theme-token and non-token values retains dynamic props 2`] = `"._fs-837447699{font-size:var(--f-size-3)}"`;
+exports[`ternary with mixed theme-token and non-token values retains dynamic props 2`] = `"._fs-1726137698{font-size:var(--f-size-3)}"`;
 
 exports[`theme + media queries + conditionals extract 1`] = `
 "
@@ -343,7 +339,7 @@ exports[`theme + media queries + conditionals extract 1`] = `
       return (
         <View
           theme="surface1"
-          $sm={{ flexDirection: 'column' }}
+          flexDirection="sm:column"
           {...(onlyDemo && {
             flexDirection: 'column',
           })}

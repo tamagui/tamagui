@@ -376,7 +376,7 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
     export function Test() {
       return (
         <View
-          fb="1 gt-xs:0px"
+          fb="1 gtXs:0px"
         />
       )
     }

@@ -322,6 +322,7 @@ test('a named group hover clause on native stays on the runtime path', async () 
   `)
   const code = output?.code ?? ''
   expect(code).toContain('group-hover/row:green')
+  expect(code).toContain('group="row"')
   expect(code).toMatchSnapshot()
 })
 

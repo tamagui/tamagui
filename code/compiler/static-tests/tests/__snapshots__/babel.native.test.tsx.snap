@@ -1,14 +1,24 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`$group-* non-hover on native should de-opt (preserve as inline prop) 1`] = `
+exports[`a hover clause on native stays on the runtime path 1`] = `
+"
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack backgroundColor="red hover:green" />
+      )
+    }
+"
+`;
+
+exports[`a named group hover clause on native stays on the runtime path 1`] = `
 "
     import { YStack } from 'tamagui'
     export function Test() {
       return (
         <YStack group="row">
           <YStack
-            backgroundColor="red"
-            $group-row-press={{ backgroundColor: 'green' }}
+            backgroundColor="red group-hover/row:green"
           />
         </YStack>
       )
@@ -16,62 +26,27 @@ exports[`$group-* non-hover on native should de-opt (preserve as inline prop) 1`
 "
 `;
 
-exports[`$group-*-hover on native should drop dead hover work 1`] = `
+exports[`a named group press clause on native stays on the runtime path 1`] = `
 "
     import { YStack } from 'tamagui'
     export function Test() {
       return (
-        <__TamaguiNativeView style={{"flexDirection":"column"}}>
-          <__TamaguiNativeView
-            style={{"flexDirection":"column","backgroundColor":"red"}}
-
+        <YStack group="row">
+          <YStack
+            backgroundColor="red group-press/row:green"
           />
-        </__TamaguiNativeView>
-      )
-    }
-
-const __TamaguiNativeView = require('react-native').View;"
-`;
-
-exports[`$gtMd only should NOT apply on small screens 1`] = `
-"
-    import { YStack } from 'tamagui'
-    export function Test() {
-      return (
-        <YStack
-          h={100}
-          w={100}
-          bc="red"
-          $gtMd={{ bc: 'green' }}
-        />
+        </YStack>
       )
     }
 "
 `;
 
-exports[`$md and $gtMd media queries should respect breakpoint boundaries 1`] = `
+exports[`a theme clause on native de-opts to the runtime path 1`] = `
 "
     import { YStack } from 'tamagui'
     export function Test() {
       return (
-        <YStack
-          h={100}
-          w={100}
-          bc="red"
-          $md={{ bc: 'yellow' }}
-          $gtMd={{ bc: 'green' }}
-        />
-      )
-    }
-"
-`;
-
-exports[`$theme-* on native should de-opt (preserve as inline prop) 1`] = `
-"
-    import { YStack } from 'tamagui'
-    export function Test() {
-      return (
-        <YStack backgroundColor="red" $theme-dark={{ backgroundColor: 'green' }} />
+        <YStack backgroundColor="red dark:green" />
       )
     }
 "
@@ -109,7 +84,7 @@ exports[`do NOT flatten dynamic values with theme access 1`] = `
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg='$color' height={props.height}/>
+        <YStack bg='color' height={props.height}/>
       )
     }
 "
@@ -120,7 +95,7 @@ exports[`do NOT flatten dynamic values with theme access, dynamic values, and co
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg={props.isLoading ? '$color' : 'red'} height={props.height}/>
+        <YStack bg={props.isLoading ? 'color' : 'red'} height={props.height}/>
       )
     }
 "
@@ -131,7 +106,7 @@ exports[`do NOT flatten multiple dynamic values with theme access and conditiona
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg={props.isLoading ? '$color' : 'red'} height={props.height} width={props.width}/>
+        <YStack bg={props.isLoading ? 'color' : 'red'} height={props.height} width={props.width}/>
       )
     }
 "
@@ -164,6 +139,21 @@ exports[`flat transform props 1`] = `
 "
 `;
 
+exports[`gtMd only should NOT apply on small screens 1`] = `
+"
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack
+          h={100}
+          w={100}
+          bc="red gt-md:green"
+        />
+      )
+    }
+"
+`;
+
 exports[`handles style order merge properly 1`] = `
 "
     import { YStack } from 'tamagui'
@@ -180,16 +170,19 @@ exports[`handles style order merge properly 1`] = `
 "
 `;
 
-exports[`hoverStyle on native should drop dead hover work 1`] = `
+exports[`md and gt-md clauses should respect breakpoint boundaries 1`] = `
 "
     import { YStack } from 'tamagui'
     export function Test() {
       return (
-        <__TamaguiNativeView style={{"flexDirection":"column","backgroundColor":"red"}}  />
+        <YStack
+          h={100}
+          w={100}
+          bc="red md:yellow gt-md:green"
+        />
       )
     }
-
-const __TamaguiNativeView = require('react-native').View;"
+"
 `;
 
 exports[`multiple media query components should not conflict 1`] = `
@@ -198,9 +191,9 @@ exports[`multiple media query components should not conflict 1`] = `
     export function Test() {
       return (
         <>
-          <YStack bc="red" $md={{ bc: 'yellow' }} />
-          <XStack bc="blue" $gtMd={{ bc: 'green' }} />
-          <YStack bc="purple" $sm={{ bc: 'pink' }} />
+          <YStack bc="red md:yellow" />
+          <XStack bc="blue gt-md:green" />
+          <YStack bc="purple sm:pink" />
         </>
       )
     }
@@ -224,10 +217,11 @@ exports[`normalize dynamic values with theme access only 1`] = `
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg='$color'/>
+        <__TamaguiNativeView style={{"flexDirection":"column","backgroundColor":"#fff"}}/>
       )
     }
-"
+
+const __TamaguiNativeView = require('react-native').View;"
 `;
 
 exports[`normalize ternaries with the conditional dynamic values 1`] = `
@@ -248,7 +242,7 @@ exports[`string ternary and media prop remain distinct on the runtime component 
       return (
         <YStack
           width={someString ? 24 : 66}
-          $sm={{ height: 30 }}
+          height="sm:30px"
         />
       )
     }
@@ -261,9 +255,9 @@ exports[`ternary with mixed theme-token and non-token values preserves all props
     export function Test({ isActive, label }) {
       return (
         <Text
-          fontSize="$3"
+          fontSize="3"
           fontWeight={isActive ? '600' : '400'}
-          color={isActive ? '$color12' : '$color11'}
+          color={isActive ? 'color12' : 'color11'}
         >
           {label}
         </Text>
@@ -289,8 +283,9 @@ exports[`theme value extraction should work when theme variables used 1`] = `
     import { Paragraph } from 'tamagui'
     export function Test() {
       return (
-        <Paragraph>hello world</Paragraph>
+        <__TamaguiNativeText style={{"letterSpacing":0,"fontSize":14,"lineHeight":23,"fontFamily":"Inter","color":"#fff"}}>hello world</__TamaguiNativeText>
       )
     }
-"
+
+const __TamaguiNativeText = require('react-native').Text;"
 `;

@@ -58,6 +58,7 @@
     "@tamagui/react-native-web-internals": "workspace:*",
     "@tamagui/react-native-web-lite": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*",
     "@tamagui/types": "workspace:*",
     "@tamagui/web": "workspace:*",
     "browserslist": "^4.28.1",

@@ -30,7 +30,7 @@ exports[`flatten-tests > work with experimentalFlattenThemesOnNative + ternary 1
 
       export function Test() {
         return (
-          <View backgroundColor={showBackground ? '$color1' : '$color2'} />
+          <View backgroundColor={showBackground ? 'color1' : 'color2'} />
         )
       }
 "
@@ -42,13 +42,14 @@ exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
 
       export function Test(isLoading) {
         return (
-          <YStack
-            y={10}
-            x={20}
-            rotate="10deg"
-            backgroundColor="$background"
+          <__TamaguiNativeView
+            style={{"flexDirection":"column","backgroundColor":"#050505","transform":[{"translateX":20},{"translateY":10},{"rotate":"10deg"}]}}
+
+
+
           />
         )
       }
-"
+
+const __TamaguiNativeView = require('react-native').View;"
 `;

@@ -15,6 +15,11 @@ import {
   stylePropsText,
   validStyles as validStylesView,
 } from '@tamagui/helpers'
+import {
+  createModifierRegistry,
+  parseTransition,
+  parseValue,
+} from '@tamagui/style-grammar'
 import { isValidStyleKey } from '@tamagui/web'
 import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 
@@ -518,7 +523,7 @@ function isSerializableNativeStyle(value: unknown): boolean {
   if (value == null || typeof value === 'number' || typeof value === 'boolean') {
     return true
   }
-  if (typeof value === 'string') return !value.startsWith('$')
+  if (typeof value === 'string') return true
   if (Array.isArray(value)) return value.every(isSerializableNativeStyle)
   if (!staticObject(value)) return false
   const prototype = Object.getPrototypeOf(value)
@@ -543,6 +548,33 @@ export function createTamaguiCompilerHost(
   const firstThemeName = Object.keys(options.tamaguiConfig.themes ?? {})[0] ?? ''
   const firstTheme = options.tamaguiConfig.themes?.[firstThemeName] ?? {}
   const theme = firstTheme
+  const modifierRegistry = createModifierRegistry({
+    mediaNames: options.tamaguiConfig.media ?? {},
+    themeNames: options.tamaguiConfig.themes ?? {},
+  }).registry
+  const transitionPresetNames = new Set(
+    Object.keys((options.tamaguiConfig.animations as any)?.animations ?? {})
+  )
+  const isStaticCssTransition = (value: unknown): boolean => {
+    if (platform !== 'web' || typeof value !== 'string') return false
+    const program = parseValue(value, modifierRegistry)
+    if (!program.ok) return false
+    const payloads = [
+      program.value.base,
+      ...program.value.clauses.map((x) => x.payload),
+    ].filter((payload): payload is string => payload !== null)
+    return (
+      payloads.length > 0 &&
+      payloads.every((payload) => {
+        const transition = parseTransition(payload, transitionPresetNames)
+        return (
+          transition.ok &&
+          (transition.value.kind === 'global' ||
+            transition.value.entries.every((entry) => entry.timing.type === 'css'))
+        )
+      })
+    )
+  }
   const modulesById = new Map(
     options.componentModules.map((module) => [module.resolvedId, module.moduleName])
   )
@@ -691,9 +723,7 @@ export function createTamaguiCompilerHost(
   }
 
   const directStyleName = (name: string, component: LoweringComponent): string | null => {
-    if (
-      compilerStyleProps.has(name) || name === 'style'
-    ) {
+    if (compilerStyleProps.has(name) || name === 'style') {
       return null
     }
     const staticConfig = component.staticConfig as StaticConfig
@@ -880,6 +910,7 @@ export function createTamaguiCompilerHost(
         )
       if (
         animationProp &&
+        !(animationProp === 'transition' && isStaticCssTransition(props.transition)) &&
         (animationProp !== 'animatedBy' || animatedByHasRuntimeWork)
       ) {
         return bailout(
@@ -894,6 +925,13 @@ export function createTamaguiCompilerHost(
           input,
           'local/unsupported-target',
           'Theme boundary candidates remain on the runtime path'
+        )
+      }
+      if (platform === 'native' && 'group' in props) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Native group containers remain on the runtime path'
         )
       }
       if (
@@ -1051,6 +1089,16 @@ export function createTamaguiCompilerHost(
           input,
           'local/style-resolution-failed',
           'getSplitStyles returned no static result'
+        )
+      }
+      if (
+        split.programLifecycleStyleKeys?.enter?.size ||
+        split.programLifecycleStyleKeys?.exit?.size
+      ) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Lifecycle value programs remain on the runtime path'
         )
       }
 
