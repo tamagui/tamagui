@@ -1,7 +1,12 @@
 import { animationsCSS } from '@tamagui/config/v5-css'
 import { animationsMotion } from '@tamagui/config/v5-motion'
-import { defaultConfig } from '@tamagui/config/v5-subtle'
+import { defaultConfig } from '@tamagui/config/v6'
+import type { CreateTamaguiProps } from '@tamagui/core'
+import { setupDev } from '@tamagui/core'
 import { createV5Theme, subtleChildrenThemes } from '@tamagui/themes/v5-subtle-builder'
+import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
+import { media, mediaQueryDefaultActive } from './media'
+import { toV6Themes } from './v6Themes'
 
 // only generate the accent themes the site actually uses: red/green/blue/gray/yellow
 // (the @tamagui/logo tint family). dropping orange/pink/purple/teal/neutral roughly
@@ -11,13 +16,11 @@ import { createV5Theme, subtleChildrenThemes } from '@tamagui/themes/v5-subtle-b
 // surfaces in css and the site shows them off). themes-as-js is still stripped to {}
 // on the client below and hydrated from css.
 const { gray, blue, red, yellow, green } = subtleChildrenThemes
-const themes = createV5Theme({
-  childrenThemes: { gray, blue, red, yellow, green },
-})
-import type { CreateTamaguiProps } from '@tamagui/core'
-import { setupDev } from '@tamagui/core'
-import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
-import { media, mediaQueryDefaultActive } from './media'
+const themes = toV6Themes(
+  createV5Theme({
+    childrenThemes: { gray, blue, red, yellow, green },
+  })
+)
 
 setupDev({
   visualizer: true,
@@ -36,7 +39,7 @@ export const animations = {
   css: animationsCSS,
 }
 
-// Use v5 config as base, but with tamagui.dev custom themes
+// Use the V6 config as base, with tamagui.dev custom themes in the same namespace.
 export const config = {
   ...defaultConfig,
   themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,

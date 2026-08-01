@@ -2,9 +2,9 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
-import { config } from '@tamagui/config/v3'
-import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig as configV4 } from '@tamagui/config/v4'
+import { defaultConfig as configV5 } from '@tamagui/config/v5'
+import { defaultConfig as config, shorthands } from '@tamagui/config/v6'
 import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui } from 'tamagui'
 // TODO just move this into this folder
@@ -332,12 +332,12 @@ config.themes = {
     color: 'red',
   },
 
-  // Test theme for Issue #3620: color tokens should be fallbacks, not overrides
-  // This theme overrides customRed to be green, to verify theme values take precedence
+  // A same-named theme value used to win. Flat values bind the color category
+  // first, so customRed below deliberately loses to the configured color token.
   // @ts-ignore
   light_ColorTokenTest: {
     background: '#ffffff',
-    customRed: '#00ff00', // Override the color token (which is #ff0000) with green
+    customRed: '#00ff00',
   },
 }
 
@@ -413,6 +413,7 @@ const tamaConf = createTamagui({
       },
   shorthands: shorthands,
   settings: {
+    ...config.settings,
     defaultFont: 'body',
     allowedStyleValues: 'somewhat-strict',
     fastSchemeChange: true,
@@ -451,7 +452,7 @@ declare module 'tamagui' {
 export default tamav5Config
   ? createTamagui(tamaguiDevConfig)
   : generatedV5
-    ? createTamagui({ ...defaultConfig, themes: generatedV5Themes, animations })
+    ? createTamagui({ ...configV5, themes: generatedV5Themes, animations })
     : v5config
-      ? createTamagui({ ...defaultConfig, animations })
+      ? createTamagui({ ...configV5, animations })
       : tamaConf

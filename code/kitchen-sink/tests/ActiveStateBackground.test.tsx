@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
 
 // regression test: checkbox/switch/tabs/toggle-group checked+active states used
-// background-press which was removed from themes, silently no-oping — they now
+// backgroundActive which was removed from themes, silently no-oping — they now
 // use background-press (same migration as slider). verify the active state
 // actually changes the rendered background.
 

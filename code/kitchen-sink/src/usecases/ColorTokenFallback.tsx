@@ -5,11 +5,8 @@ import { TEST_IDS } from '../constants/test-ids'
 /**
  * Test case for GitHub issue #3620: Theme switching broken after v1.132.15
  *
- * Color tokens should act as fallbacks - if a theme defines a value for the same key,
- * the theme value should take precedence over the color token.
- *
- * The bug was that Object.assign(theme, colorTokens) was overwriting theme values
- * with color token values instead of the other way around.
+ * V3 flat values resolve the property's configured token category before the
+ * unified theme namespace, then use theme values as the fallback.
  */
 export function ColorTokenFallback() {
   return (
@@ -18,10 +15,10 @@ export function ColorTokenFallback() {
         Color Token Fallback Test (Issue #3620)
       </Text>
 
-      {/* Test Case 1: Theme overrides color token */}
+      {/* Test Case 1: the bound color category wins */}
       <YStack gap="2">
         <Text fontWeight="bold">
-          Theme value should override color token (customRed should be green #00ff00)
+          Color token overrides a same-named theme value (customRed is red #ff0000)
         </Text>
         {/* @ts-expect-error - custom test theme */}
         <Theme name="light_ColorTokenTest">

@@ -3,6 +3,7 @@
 import * as Colors from '@tamagui/colors'
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { desaturate } from 'color2k'
+import { toV6Themes } from './v6Themes'
 
 const desat = (colors: Record<string, string>, amount: number) => {
   return Object.fromEntries(
@@ -570,7 +571,9 @@ const themes = createThemes({
   },
 })
 
-export type TamaguiThemes = typeof themes
+const v6Themes = toV6Themes(themes)
+
+export type TamaguiThemes = typeof v6Themes
 
 /**
  * This is an optional production optimization: themes JS can get to 20Kb or more.
@@ -580,4 +583,4 @@ export type TamaguiThemes = typeof themes
 export const themeDev: TamaguiThemes =
   process.env.TAMAGUI_ENVIRONMENT === 'client' && process.env.NODE_ENV === 'production'
     ? ({} as any)
-    : (themes as any)
+    : (v6Themes as any)

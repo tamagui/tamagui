@@ -1,5 +1,5 @@
 import React from 'react'
-import { config } from '@tamagui/config/v3'
+import { defaultConfig as config } from '@tamagui/config/v6'
 import { addTheme, updateTheme } from '@tamagui/theme'
 
 import {
