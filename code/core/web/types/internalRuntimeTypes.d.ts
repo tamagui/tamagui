@@ -1,3 +1,4 @@
+import type { ParsedValue } from '@tamagui/style-grammar';
 /**
  * The narrow type surface another style frontend needs to build components on the
  * shared runtime.
@@ -8,4 +9,8 @@
  * this private construction entry never reaches `./types`.
  */
 export type { FrontendComponent, FrontendStaticConfig, StyleFrontend, StyleFrontendConfig, } from './helpers/styleFrontend';
+export interface FrontendProgramValue {
+    readonly property: string;
+    readonly value: ParsedValue;
+}
 //# sourceMappingURL=internalRuntimeTypes.d.ts.map

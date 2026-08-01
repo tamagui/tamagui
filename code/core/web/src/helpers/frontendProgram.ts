@@ -13,13 +13,11 @@
 
 import type { ParsedValue } from '@tamagui/style-grammar'
 
+import type { FrontendProgramValue } from '../internalRuntimeTypes'
 import type { GetStyleState } from '../types'
 import { contributeParsedProgram, ensureGrammarContext } from './contributePrograms'
 
-export interface FrontendProgramValue {
-  readonly property: string
-  readonly value: ParsedValue
-}
+export type { FrontendProgramValue } from '../internalRuntimeTypes'
 
 const minted = new WeakSet<FrontendProgramValue>()
 

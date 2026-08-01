@@ -10,8 +10,12 @@
  * styled, or inline style-prop declarations.
  */
 import type { FunctionComponent } from 'react'
+import type { ParsedValue } from '@tamagui/style-grammar'
 import { createComponent } from './createComponent'
+import { plainValueToPayload as plainValueToPayloadImpl } from './helpers/contributePrograms'
+import { createFrontendProgram as createFrontendProgramImpl } from './helpers/frontendProgram'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
+import type { FrontendProgramValue } from './internalRuntimeTypes'
 import { createTamagui as createTamaguiImpl } from './createTamagui'
 import { setupHooks as setupHooksImpl } from './setupHooks'
 import { createFrontendStyled as createFrontendStyledImpl } from './styled'
@@ -30,12 +34,15 @@ export type * from './internalRuntimeTypes'
 // forward-pass position of the equivalent authored string. values are only
 // recognized when minted by this factory (module-private WeakSet), so the
 // channel cannot become publicly authorable
-export { createFrontendProgram } from './helpers/frontendProgram'
-export type { FrontendProgramValue } from './helpers/frontendProgram'
+export const createFrontendProgram: (
+  property: string,
+  value: ParsedValue
+) => FrontendProgramValue = createFrontendProgramImpl
 
 // the one units heuristic for serializing plain values into payloads —
 // projected here so a frontend reuses it instead of copying it
-export { plainValueToPayload } from './helpers/contributePrograms'
+export const plainValueToPayload: (value: unknown, longhand: string) => string | null =
+  plainValueToPayloadImpl
 
 // shared-runtime pieces the platform setup module in `@tamagui/core` needs. They are
 // explicitly typed here rather than reexported from their source modules, so the
