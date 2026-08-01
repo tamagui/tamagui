@@ -6,7 +6,7 @@
  * are merging defaultProps, givenProps, but we started using it elsewhere and now its a bit confusing
  * Should look into refactoring this to match common usage
  *
- * Merges sub-objects if they start are pseudo-keys or media-key-like (start with "$")
+ * Merges pseudo sub-objects.
  *
  *    Given:
  *      mergeProps({ a: 1, b: 2 }, { b: 1, a: 2 })
@@ -187,7 +187,7 @@ function mergeProp(
   if (
     defaultProps &&
     key in defaultProps &&
-    (key in pseudoDescriptors || key[0] === '$') &&
+    key in pseudoDescriptors &&
     val &&
     typeof val === 'object'
   ) {

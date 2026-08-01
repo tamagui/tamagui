@@ -22,7 +22,7 @@ type Options = {
 
 export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   const opts: Options = {
-    defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
+    defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || 'color',
     defaultStrokeWidth: 2,
     fallbackColor: '#000',
     resolveValues: (process.env.TAMAGUI_ICON_COLOR_RESOLVE as any) || 'auto',
@@ -45,11 +45,9 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
       ...rest
     } = propsIn as any
 
-    // resolve theme tokens for color/fill/stroke (so users can do fill="$color10" etc).
-    // leave non-token strings (e.g. "red", "#abc", "none") untouched.
+    // Resolve theme and color tokens config-first; literal colors pass through.
     const resolveSvgColor = (val: unknown) => {
       if (typeof val !== 'string') return val
-      if (val[0] !== '$') return val
       const themed = (theme as any)?.[val]
       if (themed != null) return getVariable(themed)
       return getVariable(val, 'color' as any)

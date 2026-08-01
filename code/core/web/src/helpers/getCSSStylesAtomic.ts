@@ -6,13 +6,10 @@
 import type { StyleObject } from '@tamagui/helpers'
 import { cssShorthandLonghands, simpleHash } from '@tamagui/helpers'
 import { getConfigMaybe } from '../config'
-import { isMediaKey } from '../hooks/useMedia'
 import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
 import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import type { PseudoDescriptor } from './pseudoDescriptors'
-import { pseudoDescriptors } from './pseudoDescriptors'
 import { transformsToString } from './transformsToString'
 
 // refactor this file away next...
@@ -23,36 +20,7 @@ export function getCSSStylesAtomic(style: ViewStyleWithPseudos) {
   for (const key in style) {
     if (key === '$$css') continue
     const val = style[key]
-    if (key in pseudoDescriptors) {
-      if (val) {
-        out.push(...getStyleAtomic(val, pseudoDescriptors[key]))
-      }
-    } else if (isMediaKey(key)) {
-      for (const subKey in val) {
-        const so = getStyleObject(val, subKey)
-        if (so) {
-          so[0] = key // set the property to be eg $web so we can use it above
-          out.push(so)
-        }
-      }
-    } else {
-      const so = getStyleObject(style, key)
-      if (so) {
-        out.push(so)
-      }
-    }
-  }
-  return out
-}
-
-export const getStyleAtomic = (
-  style: ViewStyleWithPseudos,
-  pseudo?: PseudoDescriptor
-): StyleObject[] => {
-  styleToCSS(style)
-  const out: StyleObject[] = []
-  for (const key in style) {
-    const so = getStyleObject(style, key, pseudo)
+    const so = getStyleObject(style, key)
     if (so) {
       out.push(so)
     }

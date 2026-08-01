@@ -15,43 +15,12 @@ import type {
   ComponentContextI,
   DebugProp,
   GetStyleState,
-  IsMediaType,
   MediaQueryState,
   TamaguiInternalConfig,
   UseMediaState,
   WidthHeight,
 } from '../types'
 import { defaultMediaImportance } from '../helpers/pseudoDescriptors'
-
-export const platformMediaKeys = new Set([
-  '$web',
-  '$native',
-  '$android',
-  '$ios',
-  '$tv',
-  '$androidtv',
-  '$tvos',
-])
-
-const mediaKeyRegex = /\$(theme|group)-/
-
-export const isMediaKey = (key: string): boolean => {
-  if (key[0] !== '$') return false
-  if (mediaKeys.has(key)) return true
-  if (platformMediaKeys.has(key)) return true
-  if (mediaKeyRegex.test(key)) return true
-  return false
-}
-
-export const getMediaKey = (key: string): IsMediaType => {
-  if (key[0] !== '$') return false
-  if (mediaKeys.has(key)) return true
-  if (platformMediaKeys.has(key)) return 'platform'
-  // startsWith avoids the regex + match array allocation on this hot path
-  if (key.startsWith('$theme-')) return 'theme'
-  if (key.startsWith('$group-')) return 'group'
-  return false
-}
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
@@ -60,10 +29,6 @@ let mediaKeysOrdered: string[]
 let mediaKeyImportance: Record<string, number> = {}
 
 export const getMediaKeyImportance = (key: string) => {
-  if (process.env.NODE_ENV === 'development' && key[0] === '$') {
-    throw new Error('use short key')
-  }
-
   // precomputed in configureMedia: index + 100 because we set base usedKeys=1,
   // pseudos are 2-N (however many we have), all media go above all pseudos so
   // we need to pad it based on that
@@ -85,7 +50,7 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   resetMediaTouchTracker()
   for (const key in media) {
     getMedia()[key] = mediaQueryDefaultActive?.[key] || false
-    mediaKeys.add(`$${key}`)
+    mediaKeys.add(key)
   }
   Object.assign(mediaQueryConfig, media)
   initState = { ...getMedia() }
@@ -172,8 +137,7 @@ const refSlot = Symbol('mediaRefSlot')
 
 function buildTouchTrackerProto(): object {
   const proto: PropertyDescriptorMap = {}
-  for (const fullKey of mediaKeys) {
-    const key = fullKey[0] === '$' ? fullKey.slice(1) : fullKey
+  for (const key of mediaKeys) {
     proto[key] = {
       enumerable: true,
       configurable: true,

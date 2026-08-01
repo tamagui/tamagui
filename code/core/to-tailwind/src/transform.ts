@@ -260,7 +260,7 @@ export function tamaguiToTailwind(
         if (!t.isJSXAttribute(attr) || attr.name.name === 'className') return false
         const name = attr.name.name as string
         if (name in pseudoToModifier) return true
-        if (name[0] === '$' && ctx.mediaKeys.has(name.slice(1))) return true
+        if (ctx.mediaKeys.has(name)) return true
         return isConvertibleStyleProp(resolveShorthand(ctx, name))
       })
       if (hasClassName && hasNeighboringStyleProp) return
@@ -310,13 +310,8 @@ export function tamaguiToTailwind(
           partitionAttr(ctx, attr, pseudoToModifier[name], classes, keptAttrs)
           continue
         }
-        if (name[0] === '$') {
-          const mediaKey = name.slice(1)
-          if (ctx.mediaKeys.has(mediaKey)) {
-            partitionAttr(ctx, attr, mediaKey, classes, keptAttrs)
-            continue
-          }
-          keptAttrs.push(attr)
+        if (ctx.mediaKeys.has(name)) {
+          partitionAttr(ctx, attr, name, classes, keptAttrs)
           continue
         }
         // base style prop — defer
@@ -673,15 +668,7 @@ function partitionStyleObject(
     const propName = prop.key.name
     const value = prop.value
 
-    // nested pseudo (hoverStyle inside $md) or nested media ($md inside hoverStyle). media OBJECT
-    // KEYS carry the `$` prefix (`$md`), so strip it before the config.media lookup (the bug:
-    // comparing `$md` against the key `md` never matched → nested media was retained).
-    const mediaKey =
-      propName[0] === '$' && ctx.mediaKeys.has(propName.slice(1))
-        ? propName.slice(1)
-        : ctx.mediaKeys.has(propName)
-          ? propName
-          : null
+    const mediaKey = ctx.mediaKeys.has(propName) ? propName : null
     const nestedIsMedia = mediaKey !== null && !(propName in pseudoToModifier)
     const nestedMod = propName in pseudoToModifier ? pseudoToModifier[propName] : mediaKey
     if (nestedMod && t.isObjectExpression(value)) {

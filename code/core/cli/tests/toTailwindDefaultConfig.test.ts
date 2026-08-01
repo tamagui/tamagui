@@ -2,9 +2,7 @@ import { describe, expect, test } from 'vitest'
 import { defaultConfig } from '../../config/src/v5-base'
 import { bundledDefaultGrammarConfig } from '../src/to-tailwind-default-config'
 
-const stripDollar = (name: string) => (name[0] === '$' ? name.slice(1) : name)
-const namesOf = (source: Record<string, unknown> | undefined) =>
-  Object.keys(source || {}).map(stripDollar)
+const namesOf = (source: Record<string, unknown> | undefined) => Object.keys(source || {})
 const sortedUnique = (names: Iterable<string>) => [...new Set(names)].sort()
 
 describe('to-tailwind bundled default names', () => {
@@ -20,7 +18,7 @@ describe('to-tailwind bundled default names', () => {
     const lineHeight = new Set<string>()
     const letterSpacing = new Set<string>()
     for (const familyName in config.fonts) {
-      fontFamily.push(stripDollar(familyName))
+      fontFamily.push(familyName)
       const font = config.fonts[familyName]
       for (const name of namesOf(font?.size)) fontSize.add(name)
       for (const name of namesOf(font?.lineHeight)) lineHeight.add(name)

@@ -1,6 +1,5 @@
 import { expandStyle } from './expandStyle'
 import { fixStyles } from './expandStyles'
-import { isObj } from './isObj'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { styleOriginalValues } from './styleOriginalValues'
@@ -22,11 +21,7 @@ export function normalizeStyle(style: Record<string, any>, disableNormalize = fa
     const prop = style[key]
     if (prop == null) continue
     const originalValue = originalValues?.[key]
-    if (
-      key in pseudoDescriptors ||
-      // this should capture all parent-based styles like media, group, etc
-      (key[0] === '$' && isObj(prop))
-    ) {
+    if (key in pseudoDescriptors) {
       res[key] = normalizeStyle(prop, disableNormalize)
       if (originalValue !== undefined) {
         nextOriginalValues ||= {}
