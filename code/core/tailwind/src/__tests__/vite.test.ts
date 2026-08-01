@@ -60,7 +60,7 @@ describe('the official Tailwind scanner state', () => {
     await writeFile(sourcePath, '<View className="p-4 grid grid-cols-2" />')
 
     const state = createTailwindScannerState()
-    await state.configure(root, 0, { tokensParsed: { space: { $4: 16 } } }, () => {})
+    await state.configure(root, 0, { tokensParsed: { space: { 4: 16 } } }, () => {})
 
     expect(state.css).toContain('.grid')
     expect(state.css).toContain('.grid-cols-2')

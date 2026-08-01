@@ -9,6 +9,11 @@ import { tailwindStyleFrontend } from '../frontend'
 import { Text, View, styled } from '../index'
 import { findRule, splitTailwindStyles } from './utils'
 
+const programsOf = (style: Record<string, any>) =>
+  Object.values(style)
+    .filter((value) => value && typeof value === 'object' && 'property' in value)
+    .map(({ property, value }) => ({ property, value }))
+
 beforeAll(() => {
   // no styleMode: the frontend is selected by the package these components came from
   createTamagui(getDefaultTamaguiConfig() as any)
@@ -68,7 +73,7 @@ describe('tailwind components render through the shared renderer', () => {
   test('the last of two owned candidates wins with no string merging', () => {
     const styles = splitTailwindStyles(View, { className: 'p-2 p-4' })
 
-    const expected = getConfig().tokensParsed.space['$4']
+    const expected = getConfig().tokensParsed.space['4']
     expect(findRule(styles.rulesToInsert, 'paddingTop')[StyleObjectValue]).toBe(
       expected.variable
     )
@@ -120,7 +125,7 @@ describe('authored ordering across shorthand and longhand candidates', () => {
     const styles = splitTailwindStyles(View, { className: 'p-4 px-2 p-6' })
 
     expect(findRule(styles.rulesToInsert, 'paddingLeft')[StyleObjectValue]).toBe(
-      space('$6')
+      space('6')
     )
   })
 
@@ -128,7 +133,7 @@ describe('authored ordering across shorthand and longhand candidates', () => {
     const styles = splitTailwindStyles(View, { className: 'pt-2 p-4 pt-8' })
 
     expect(findRule(styles.rulesToInsert, 'paddingTop')[StyleObjectValue]).toBe(
-      space('$8')
+      space('8')
     )
   })
 
@@ -136,7 +141,7 @@ describe('authored ordering across shorthand and longhand candidates', () => {
     const styles = splitTailwindStyles(View, { className: 'm-4 mx-2 m-6' })
 
     expect(findRule(styles.rulesToInsert, 'marginLeft')[StyleObjectValue]).toBe(
-      space('$6')
+      space('6')
     )
   })
 
@@ -167,7 +172,7 @@ describe('authored ordering across shorthand and longhand candidates', () => {
     })
 
     expect(findRule(styles.rulesToInsert, 'paddingLeft')[StyleObjectValue]).toBe(
-      space('$6')
+      space('6')
     )
   })
 })
@@ -306,27 +311,34 @@ describe('class-first styled()', () => {
     expect(resolved.baseStyle).toMatchObject({
       padding: '4',
       borderRadius: '4',
-      hoverStyle: { backgroundColor: 'red' },
-      $sm: { margin: '4' },
-      enterStyle: { opacity: 0 },
     })
+    expect(programsOf(resolved.baseStyle)).toEqual([
+      {
+        property: 'backgroundColor',
+        value: { base: null, clauses: [{ modifiers: ['hover'], payload: 'red' }] },
+      },
+      {
+        property: 'margin',
+        value: { base: null, clauses: [{ modifiers: ['sm'], payload: '4' }] },
+      },
+      {
+        property: 'opacity',
+        value: { base: null, clauses: [{ modifiers: ['enter'], payload: '0' }] },
+      },
+    ])
     expect(resolved.passthroughClassName).toBe('base-user')
     expect(resolved.variants?.size?.sm).toMatchObject({
       height: '8',
       paddingHorizontal: '3',
-      hoverStyle: { opacity: 0.5 },
-      $sm: { marginTop: '4' },
-      enterStyle: { scale: 0.95 },
       className: 'simple-user',
     })
+    expect(programsOf(resolved.variants?.size?.sm as any)).toHaveLength(3)
     expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
       width: '8',
       padding: '0',
-      hoverStyle: { backgroundColor: 'blue' },
-      $sm: { marginBottom: '4' },
-      enterStyle: { opacity: 0.5 },
       className: 'compound-user',
     })
+    expect(programsOf(resolved.compoundVariants?.[0]?.style as any)).toHaveLength(3)
 
     const result = splitTailwindStyles(Frame, {
       size: 'sm',

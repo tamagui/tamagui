@@ -21,8 +21,8 @@ import { splitTailwindStyles } from './utils'
 // custom config: overridden token scales + an extra media key
 const tokens = {
   ...(v6 as any).tokens,
-  space: { ...(v6 as any).tokens.space, $4: 20 }, // default is 16 → prove we use 20
-  zIndex: { ...(v6 as any).tokens.zIndex, $4: 40 }, // default is 4 → prove we use 40
+  space: { ...(v6 as any).tokens.space, 4: 20 }, // default is 16 → prove we use 20
+  zIndex: { ...(v6 as any).tokens.zIndex, 4: 40 }, // default is 4 → prove we use 40
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
 const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
@@ -60,29 +60,29 @@ function styleFlat(props: Record<string, any>): Record<string, any> {
   return out
 }
 describe('config-aware tokens (WEB) — class names follow runtime-owned values', () => {
-  test('space.$4: padding="$4" → p-4 → direct-token parity', () => {
-    const cls = className(`<View padding="$4" />`)
+  test('space.4: padding="4" → p-4 → direct-token parity', () => {
+    const cls = className(`<View padding="4" />`)
     const fromClass = styleFlat({ className: cls }).paddingTop
-    const fromProp = styleFlat({ padding: '$4' }).paddingTop
+    const fromProp = styleFlat({ padding: '4' }).paddingTop
     expect(cls).toContain('p-4')
-    expect(tokens.space.$4).toBe(20)
-    expect(CFG.tokensParsed.space.$4.val).toBe(20)
+    expect(tokens.space['4']).toBe(20)
+    expect(CFG.tokensParsed.space['4'].val).toBe(20)
     expect(fromClass).toBe(fromProp)
     expect(typeof fromClass).toBe('string')
   })
 
-  test('overriding space.$4 does not mutate the distinct size.$4 domain', () => {
-    const cls = className(`<View width="$4" />`)
+  test('overriding space.4 does not mutate the distinct size.4 domain', () => {
+    const cls = className(`<View width="4" />`)
     expect(cls).toContain('w-4')
-    expect(tokens.size.$4).toBe(16)
-    expect(CFG.tokensParsed.size.$4.val).toBe(16)
-    expect(styleFlat({ className: cls }).width).toBe(styleFlat({ width: '$4' }).width)
+    expect(tokens.size['4']).toBe(16)
+    expect(CFG.tokensParsed.size['4'].val).toBe(16)
+    expect(styleFlat({ className: cls }).width).toBe(styleFlat({ width: '4' }).width)
   })
 
-  test('zIndex.$4: zIndex="$4" → z-4 → direct-token parity', () => {
-    const cls = className(`<View zIndex="$4" />`)
+  test('zIndex.4: zIndex="4" → z-4 → direct-token parity', () => {
+    const cls = className(`<View zIndex="4" />`)
     expect(cls).toContain('z-4')
-    expect(styleFlat({ className: cls }).zIndex).toBe(styleFlat({ zIndex: '$4' }).zIndex)
+    expect(styleFlat({ className: cls }).zIndex).toBe(styleFlat({ zIndex: '4' }).zIndex)
   })
 
   test('auto stays a flat literal while w-auto is a candidate-layer convenience', () => {
@@ -93,24 +93,26 @@ describe('config-aware tokens (WEB) — class names follow runtime-owned values'
     expect(styleFlat({ className: cls }).width).toBe('auto')
   })
 
-  test('fontFamily.$sans wins font-sans and resolves the configured token', () => {
-    const cls = className(`<View fontFamily="$sans" />`)
+  test('fontFamily.sans wins font-sans and resolves the configured token', () => {
+    const cls = className(`<View fontFamily="sans" />`)
     expect(cls).toContain('font-sans')
     expect(flat(cls).fontFamily).toBe('sans')
     expect(styleFlat({ className: cls }).fontFamily).toBe(
-      styleFlat({ fontFamily: '$sans' }).fontFamily
+      styleFlat({ fontFamily: 'sans' }).fontFamily
     )
   })
 })
 
 describe('config-aware media (WEB) — a custom breakpoint round-trips', () => {
-  test('$tablet={{padding:10}} → tablet:p-[10px] → reconstructs the $tablet media prop', () => {
-    const cls = className(`<View $tablet={{ padding: 10 }} />`)
+  test('a tablet clause becomes a frontend program', () => {
+    const cls = className(`<View padding="tablet:10px" />`)
     expect(cls).toContain('tablet:p-[10px]')
     expect(CFG.media.tablet).toEqual({ minWidth: 900 })
     const f = flat(cls)
-    expect(f.$tablet).toBeTruthy()
-    expect(f.$tablet.padding).toBe(10)
-    expect(typeof f.$tablet.padding).toBe('number')
+    const program = Object.values(f).find((value) => value?.property === 'padding')
+    expect(program?.value).toEqual({
+      base: null,
+      clauses: [{ modifiers: ['tablet'], payload: '10px' }],
+    })
   })
 })

@@ -99,7 +99,7 @@ describe('tailwind letterSpacing / boxShadow / scale', () => {
     expect(textRule('tracking-[-1px]', 'letterSpacing')[StyleObjectValue]).toBe('-1px')
   })
 
-  test('tracking-1 → the $1 letterSpacing token', () => {
+  test('tracking-1 → the 1 letterSpacing token', () => {
     expect(textRule('tracking-1', 'letterSpacing')[StyleObjectValue]).toContain('var(--')
   })
 

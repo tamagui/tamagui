@@ -6,9 +6,8 @@ import { tailwindStyleFrontend } from '../frontend'
 import { View } from '../index'
 import { findRule, splitTailwindStyles } from './utils'
 
-// the frontend's single pass reconstructs enter:/exit: into component-level props
-// (that createComponent consumes before the state/variant/animation machinery), and
-// getSplitStyles skips re-processing those marked props.
+// The frontend's single pass emits private value-program contributions. The shared
+// renderer consumes them directly, without rebuilding legacy condition objects.
 beforeAll(() => {
   createTamagui(defaultConfig as any)
 })
@@ -16,16 +15,38 @@ beforeAll(() => {
 const pre = (props: any) =>
   tailwindStyleFrontend.preprocessProps(props, getConfig() as any)
 
-describe('tailwind className→prop reconstruction (single pass)', () => {
-  test('enter:* → enterStyle prop object', () => {
+const programs = (props: Record<string, any>) =>
+  Object.values(props).filter(
+    (value) => value && typeof value === 'object' && 'property' in value
+  )
+
+describe('tailwind className→flat program conversion (single pass)', () => {
+  test('enter:* → enter clauses', () => {
     const out = pre({ className: 'enter:opacity-0 enter:scale-95' })
-    expect(out.enterStyle).toEqual({ opacity: 0, scale: 0.95 })
+    expect(programs(out)).toEqual([
+      {
+        property: 'opacity',
+        value: { base: null, clauses: [{ modifiers: ['enter'], payload: '0' }] },
+      },
+      {
+        property: 'scale',
+        value: { base: null, clauses: [{ modifiers: ['enter'], payload: '0.95' }] },
+      },
+    ])
   })
 
-  test('exit:* → exitStyle, translate reconstructs as y', () => {
+  test('exit:* → exit clauses, translate targets y', () => {
     const out = pre({ className: 'exit:opacity-0 exit:translate-y-[10px]' })
-    // translate y is a NUMBER (native-valid; web treats numeric translate as px) — [10px] → 10
-    expect(out.exitStyle).toEqual({ opacity: 0, y: 10 })
+    expect(programs(out)).toEqual([
+      {
+        property: 'opacity',
+        value: { base: null, clauses: [{ modifiers: ['exit'], payload: '0' }] },
+      },
+      {
+        property: 'y',
+        value: { base: null, clauses: [{ modifiers: ['exit'], payload: '10px' }] },
+      },
+    ])
   })
 
   test('size-*, animate-*, and animation-* remain passthrough classes', () => {
@@ -40,8 +61,8 @@ describe('tailwind className→prop reconstruction (single pass)', () => {
   })
 
   test('standard size-* never becomes or overwrites a Tamagui size variant', () => {
-    const out = pre({ className: 'size-2', size: '$8' })
-    expect(out.size).toBe('$8')
+    const out = pre({ className: 'size-2', size: '8' })
+    expect(out.size).toBe('8')
     expect(out.className).toBe('size-2')
   })
 

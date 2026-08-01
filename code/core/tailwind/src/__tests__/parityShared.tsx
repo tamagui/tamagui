@@ -141,12 +141,12 @@ export function runParityGate(label: string) {
         props: { padding: 10, paddingTop: 20 },
       },
       {
-        source: `<View hoverStyle={{ paddingTop: 20, padding: 10 }} />`,
-        props: { hoverStyle: { paddingTop: 20, padding: 10 } },
+        source: `<View pt="hover:20px" p="hover:10px" />`,
+        props: { paddingTop: 'hover:20px', padding: 'hover:10px' },
       },
       {
-        source: `<View hoverStyle={{ padding: 10, paddingTop: 20 }} />`,
-        props: { hoverStyle: { padding: 10, paddingTop: 20 } },
+        source: `<View p="hover:10px" pt="hover:20px" />`,
+        props: { padding: 'hover:10px', paddingTop: 'hover:20px' },
       },
     ]
     for (const { source, props } of cases) {

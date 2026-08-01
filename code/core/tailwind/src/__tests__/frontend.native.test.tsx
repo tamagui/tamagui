@@ -8,6 +8,11 @@ import { tailwindStyleFrontend } from '../frontend'
 import { Text, View, styled } from '../index'
 import { splitTailwindStyles, styleOf } from './utils'
 
+const programsOf = (style: Record<string, any>) =>
+  Object.values(style).filter(
+    (value) => value && typeof value === 'object' && 'property' in value
+  )
+
 beforeAll(() => {
   createTamagui(getDefaultTamaguiConfig('native') as any)
 })
@@ -19,7 +24,7 @@ afterEach(() => {
 describe('claimed candidates resolve to native style values', () => {
   test('a token candidate resolves through the config', () => {
     const styles = splitTailwindStyles(View, { className: 'p-4' })
-    const expected = getConfig().tokensParsed.space['$4'].val
+    const expected = getConfig().tokensParsed.space['4'].val
 
     expect(styleOf(styles).paddingTop).toBe(expected)
     expect(styleOf(styles).paddingLeft).toBe(expected)
@@ -82,19 +87,19 @@ describe('authored ordering across shorthand and longhand candidates', () => {
   test('a restated shorthand overrides an earlier horizontal longhand', () => {
     const styles = splitTailwindStyles(View, { className: 'p-4 px-2 p-6' })
 
-    expect(styleOf(styles).paddingLeft).toBe(space('$6'))
+    expect(styleOf(styles).paddingLeft).toBe(space('6'))
   })
 
   test('a restated longhand overrides a later shorthand', () => {
     const styles = splitTailwindStyles(View, { className: 'pt-2 p-4 pt-8' })
 
-    expect(styleOf(styles).paddingTop).toBe(space('$8'))
+    expect(styleOf(styles).paddingTop).toBe(space('8'))
   })
 
   test('margin follows the same rule', () => {
     const styles = splitTailwindStyles(View, { className: 'm-4 mx-2 m-6' })
 
-    expect(styleOf(styles).marginLeft).toBe(space('$6'))
+    expect(styleOf(styles).marginLeft).toBe(space('6'))
   })
 
   test('radius corners follow the same rule', () => {
@@ -175,26 +180,20 @@ describe('class-first styled()', () => {
     expect(resolved.baseStyle).toMatchObject({
       padding: '4',
       borderRadius: '4',
-      hoverStyle: { backgroundColor: 'red' },
-      $sm: { margin: '4' },
-      enterStyle: { opacity: 0 },
     })
+    expect(programsOf(resolved.baseStyle)).toHaveLength(3)
     expect(resolved.passthroughClassName).toBeUndefined()
     expect(resolved.variants?.size?.sm).toMatchObject({
       height: '8',
       paddingHorizontal: '3',
-      hoverStyle: { opacity: 0.5 },
-      $sm: { marginTop: '4' },
-      enterStyle: { scale: 0.95 },
     })
+    expect(programsOf(resolved.variants?.size?.sm as any)).toHaveLength(3)
     expect(resolved.variants?.size?.sm).not.toHaveProperty('className')
     expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
       width: '8',
       padding: '0',
-      hoverStyle: { backgroundColor: 'blue' },
-      $sm: { marginBottom: '4' },
-      enterStyle: { opacity: 0.5 },
     })
+    expect(programsOf(resolved.compoundVariants?.[0]?.style as any)).toHaveLength(3)
     expect(resolved.compoundVariants?.[0]?.style).not.toHaveProperty('className')
 
     const result = splitTailwindStyles(Frame, { size: 'sm' })

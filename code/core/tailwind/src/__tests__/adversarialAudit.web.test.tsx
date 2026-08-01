@@ -86,7 +86,7 @@ describe('3 — XStack className="flex-col": flexDirection COLUMN (not the defau
   })
 })
 
-describe('4 — existing raw hover color + hoverStyle follow authored order', () => {
+describe('4 — existing raw hover color + flat hover clause follow authored order', () => {
   test('the later hover contribution wins', () => {
     // both contributions land in one backgroundColor program; the later
     // authored one restates the hover clause and wins (decision 21)
@@ -99,53 +99,43 @@ describe('4 — existing raw hover color + hoverStyle follow authored order', ()
     expect(
       hoverColor({
         className: 'hover:bg-[red]',
-        hoverStyle: { backgroundColor: 'blue' },
+        backgroundColor: 'hover:blue',
       })
     ).toBe('blue')
     expect(
       hoverColor({
-        hoverStyle: { backgroundColor: 'blue' },
+        backgroundColor: 'hover:blue',
         className: 'hover:bg-[red]',
       })
     ).toBe('red')
     expect(
       convert(
-        `<View className="hover:bg-[red]" hoverStyle={{ backgroundColor: "blue" }} />`
+        `<View className="hover:bg-[red]" backgroundColor="hover:blue" />`
       )
-    ).toBe(`<View className="hover:bg-[red]" hoverStyle={{ backgroundColor: "blue" }} />`)
+    ).toBe(`<View className="hover:bg-[red]" backgroundColor="hover:blue" />`)
   })
 })
 
-describe('5 — spread inside a style object: retained + order-distinct', () => {
-  test('{opacity:.5, ...d} and {...d, opacity:.5} produce DISTINCT untouched output', () => {
-    const a = convert(`<View hoverStyle={{ opacity: 0.5, ...dynamic }} />`)
-    const b = convert(`<View hoverStyle={{ ...dynamic, opacity: 0.5 }} />`)
-    expect(a).not.toBe(b) // order preserved, never collapsed
-    expect(a).toContain('...dynamic')
-    expect(b).toContain('...dynamic')
-    expect(a).not.toContain('className')
-  })
-})
-
-describe('6 — nested media+pseudo (both directions) → md:hover:opacity-50', () => {
-  test('pseudo-containing-media and media-containing-pseudo both fully convert', () => {
-    const a = convert(`<View hoverStyle={{ $md: { opacity: 0.5 } }} />`)
-    const b = convert(`<View $md={{ hoverStyle: { opacity: 0.5 } }} />`)
+describe('5 — chained media and state clause → md:hover:opacity-50', () => {
+  test('the flat clause converts without rebuilding a condition object', () => {
+    const a = convert(`<View opacity="md:hover:0.5" />`)
     expect(classOf(a)).toBe('md:hover:opacity-50')
-    expect(classOf(b)).toBe('md:hover:opacity-50')
-    expect(a).not.toContain('hoverStyle') // no residual
     const flat = tailwindStyleFrontend.preprocessProps(
       { className: 'md:hover:opacity-50' },
       CFG
     )
-    expect(flat.$md?.hoverStyle?.opacity).toBe(0.5)
+    const program = Object.values(flat).find((value) => value?.property === 'opacity')
+    expect(program?.value).toEqual({
+      base: null,
+      clauses: [{ modifiers: ['md', 'hover'], payload: '0.5' }],
+    })
   })
 })
 
-describe('7 — unresolved token: RETAIN, no dead class', () => {
-  test('padding="$custom" with a config lacking it stays a prop', () => {
-    const out = convert(`<View padding="$custom" />`, { tokens: { space: { $4: 20 } } })
-    expect(out).toBe(`<View padding="$custom" />`)
+describe('6 — unresolved token: RETAIN, no dead class', () => {
+  test('padding="custom" with a config lacking it stays a prop', () => {
+    const out = convert(`<View padding="custom" />`, { tokens: { space: { 4: 20 } } })
+    expect(out).toBe(`<View padding="custom" />`)
     expect(out).not.toContain('p-custom')
   })
 })
@@ -171,7 +161,7 @@ describe('binding provenance', () => {
     )
     expect(out).toContain('<T.View className="p-[10px]"')
   })
-  test('bare unbound <View> keeps legacy behavior (converts)', () => {
+  test('bare unbound <View> keeps the default converter behavior', () => {
     expect(convert(`<View padding={10} />`)).toContain('className="p-[10px]"')
   })
 })
@@ -210,7 +200,7 @@ describe('value domain', () => {
   })
   test('string-valued custom token emits its name, never its current value', () => {
     const cls = classOf(
-      convert(`<View padding="$fluid" />`, { tokens: { space: { fluid: '10%' } } })
+      convert(`<View padding="fluid" />`, { tokens: { space: { fluid: '10%' } } })
     )
     expect(cls).toBe('p-fluid')
     expect(cls).not.toContain('10%')

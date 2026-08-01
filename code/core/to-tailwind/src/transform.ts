@@ -766,7 +766,7 @@ function formatStringValue(
   }
 
   // raw fontFamily ("Inter-Black", "My_Font") is NOT a token → emit an ARBITRARY so the parser
-  // treats it as a literal family (font-<name> would be read as the $<name> font token).
+  // treats it as a literal family (font-<name> would be read as the <name> font token).
   if (prop === 'fontFamily') return { value, valueKind: 'arbitrary' }
 
   // arbitrary CSS values → bracket so the Tailwind frontend's `[..]` parser resolves them

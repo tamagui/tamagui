@@ -5,13 +5,13 @@ import { describe, expect, test } from 'vitest'
 
 const pkgRoot = join(__dirname, '..', '..')
 const requireFromPackage = createRequire(join(pkgRoot, 'package.json'))
-const source = `<View padding="$4" zIndex="$4" borderRadius="$8" />`
+const source = `<View padding="4" zIndex="4" borderRadius="8" />`
 const options = {
   renameComponents: false,
   tokens: {
-    space: { $4: 20 },
-    zIndex: { $4: 40 },
-    radius: { $8: 24 },
+    space: { 4: 20 },
+    zIndex: { 4: 40 },
+    radius: { 8: 24 },
   },
 }
 

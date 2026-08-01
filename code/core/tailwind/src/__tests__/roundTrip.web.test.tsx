@@ -79,13 +79,17 @@ function flat(cls: string): Record<string, any> {
   return tailwindStyleFrontend.preprocessProps({ className: cls }, CFG)
 }
 
+function programFor(props: Record<string, any>, property: string): any {
+  return Object.values(props).find((value) => value?.property === property)
+}
+
 describe('PASS 1 — 1a: responsive media direction', () => {
-  test('converter emits $md verbatim as md:, never the inverted max-md:', () => {
-    const show = convertedClassName(`<View display="none" $md={{ display: 'flex' }} />`)
+  test('converter emits md verbatim, never the inverted max-md:', () => {
+    const show = convertedClassName(`<View display="none md:flex" />`)
     expect(show).toContain('hidden')
     expect(show).toContain('md:flex')
     expect(show).not.toMatch(/max-md/)
-    const hide = convertedClassName(`<View display="flex" $md={{ display: 'none' }} />`)
+    const hide = convertedClassName(`<View display="flex md:none" />`)
     expect(hide).toContain('md:hidden')
   })
 
@@ -96,25 +100,20 @@ describe('PASS 1 — 1a: responsive media direction', () => {
     expect(typeof CFG.media['max-md'].maxWidth).toBe('number')
   })
 
-  test('converted class resolves to the SAME media structure as the source $md prop', () => {
-    // base hidden + show at md — parser reconstructs the $md media prop with display:flex
-    const cls = convertedClassName(`<View display="none" $md={{ display: 'flex' }} />`)
+  test('converted class carries the same md clause as the source flat value', () => {
+    const cls = convertedClassName(`<View display="none md:flex" />`)
     const fromClass = tailwindStyleFrontend.preprocessProps({ className: cls }, CFG)
     expect(fromClass.display).toBe('none')
-    expect(fromClass.$md).toEqual({ display: 'flex' })
-    // identical to writing the source $md prop directly → round-trip
-    const fromProp = tailwindStyleFrontend.preprocessProps(
-      { display: 'none', $md: { display: 'flex' } },
-      CFG
-    )
-    expect(fromClass.$md).toEqual(fromProp.$md)
+    expect(programFor(fromClass, 'display')?.value).toEqual({
+      base: null,
+      clauses: [{ modifiers: ['md'], payload: 'flex' }],
+    })
 
-    // bottom-tabs: base flex + hide at md → $md:{display:none} (hidden on desktop, shown mobile)
-    const hideCls = convertedClassName(
-      `<View display="flex" $md={{ display: 'none' }} />`
-    )
+    const hideCls = convertedClassName(`<View display="flex md:none" />`)
     const hide = tailwindStyleFrontend.preprocessProps({ className: hideCls }, CFG)
-    expect(hide.$md).toEqual({ display: 'none' })
+    expect(programFor(hide, 'display')?.value.clauses).toEqual([
+      { modifiers: ['md'], payload: 'none' },
+    ])
   })
 
   test('bare flex class resolves to display:flex (was a no-op before)', () => {
@@ -123,59 +122,59 @@ describe('PASS 1 — 1a: responsive media direction', () => {
 })
 
 describe('PASS 1 — 1b: token-first config fidelity', () => {
-  test('spacing token padding="$4" emits p-4 and resolves exactly like the source prop', () => {
-    const cls = convertedClassName(`<View padding="$4" />`)
+  test('spacing token padding="4" emits p-4 and resolves exactly like the source prop', () => {
+    const cls = convertedClassName(`<View padding="4" />`)
     const fromClass = classStyle(cls).paddingTop
-    const fromProp = styleOf({ padding: '$4' }).paddingTop
+    const fromProp = styleOf({ padding: '4' }).paddingTop
     expect(cls).toContain('p-4')
-    expect((v6 as any).tokens.space.$4).toBe(16)
-    expect(CFG.tokensParsed.space.$4.val).toBe(16)
+    expect((v6 as any).tokens.space['4']).toBe(16)
+    expect(CFG.tokensParsed.space['4'].val).toBe(16)
     expect(fromClass).toBe(fromProp)
     expect(typeof fromClass).toBe('string')
     expect(typeof fromClass).toBe(typeof fromProp)
   })
 
-  test('gap="$6" emits gap-6 and follows the active space token', () => {
-    const cls = convertedClassName(`<View gap="$6" />`)
+  test('gap="6" emits gap-6 and follows the active space token', () => {
+    const cls = convertedClassName(`<View gap="6" />`)
     expect(cls).toContain('gap-6')
-    expect((v6 as any).tokens.space.$6).toBe(24)
-    expect(classStyle(cls).gap).toBe(styleOf({ gap: '$6' }).gap)
+    expect((v6 as any).tokens.space['6']).toBe(24)
+    expect(classStyle(cls).gap).toBe(styleOf({ gap: '6' }).gap)
   })
 
-  test('borderRadius="$8" emits rounded-8 and follows the active radius token', () => {
-    const cls = convertedClassName(`<View borderRadius="$8" />`)
+  test('borderRadius="8" emits rounded-8 and follows the active radius token', () => {
+    const cls = convertedClassName(`<View borderRadius="8" />`)
     expect(cls).toContain('rounded-8')
     expect(classStyle(cls).borderTopLeftRadius).toBe(
-      styleOf({ borderRadius: '$8' }).borderTopLeftRadius
+      styleOf({ borderRadius: '8' }).borderTopLeftRadius
     )
   })
 
-  test('width="$10" emits w-10 and follows the active size token', () => {
-    const cls = convertedClassName(`<View width="$10" />`)
+  test('width="10" emits w-10 and follows the active size token', () => {
+    const cls = convertedClassName(`<View width="10" />`)
     expect(cls).toContain('w-10')
-    expect((v6 as any).tokens.size.$10).toBe(40)
-    expect(classStyle(cls).width).toBe(styleOf({ width: '$10' }).width)
+    expect((v6 as any).tokens.size['10']).toBe(40)
+    expect(classStyle(cls).width).toBe(styleOf({ width: '10' }).width)
   })
 
   test('the configured named radius is the direct Tailwind value', () => {
-    const cls = convertedClassName(`<View borderRadius="$lg" />`)
+    const cls = convertedClassName(`<View borderRadius="lg" />`)
     expect(cls).toContain('rounded-lg')
-    expect((v6 as any).tokens.radius.$lg).toBe(8)
+    expect((v6 as any).tokens.radius.lg).toBe(8)
     expect(classStyle(cls).borderTopLeftRadius).toBe(
-      styleOf({ borderRadius: '$lg' }).borderTopLeftRadius
+      styleOf({ borderRadius: 'lg' }).borderTopLeftRadius
     )
   })
 })
 
 describe('PASS 1 — 1b: aligned named typography', () => {
   test('text-base and leading-base follow the paired default font tokens', () => {
-    const cls = convertedClassName(`<Text fontSize="$base" lineHeight="$base" />`)
+    const cls = convertedClassName(`<Text fontSize="base" lineHeight="base" />`)
     const fromClass = classStyle(cls, Text)
-    const fromProp = styleOf({ fontSize: '$base', lineHeight: '$base' }, Text)
+    const fromProp = styleOf({ fontSize: 'base', lineHeight: 'base' }, Text)
     expect(cls).toContain('text-base')
     expect(cls).toContain('leading-base')
-    expect((v6 as any).fonts.body.size.$base).toBe('16px')
-    expect((v6 as any).fonts.body.lineHeight.$base).toBe('24px')
+    expect((v6 as any).fonts.body.size.base).toBe('16px')
+    expect((v6 as any).fonts.body.lineHeight.base).toBe('24px')
     expect(fromClass.fontSize).toBe(fromProp.fontSize)
     expect(fromClass.lineHeight).toBe(fromProp.lineHeight)
     expect(typeof fromClass.fontSize).toBe('string')
@@ -222,7 +221,7 @@ describe('PASS 2 — directional borders + corner radius', () => {
   })
 
   test('border-r-color2 → borderRightColor resolved (string), no borderRightWidth', () => {
-    const cls = convertedClassName(`<View borderRightColor="$color2" />`)
+    const cls = convertedClassName(`<View borderRightColor="color2" />`)
     const f = flat(cls)
     expect(typeof f.borderRightColor).toBe('string')
     expect(f.borderRightColor).toBe('color2')
@@ -230,7 +229,7 @@ describe('PASS 2 — directional borders + corner radius', () => {
     // and it resolves to the same theme var as the source prop through the full pipeline
     expect(classStyle(cls).borderRightColor).toBe('var(--color2)')
     expect(classStyle(cls).borderRightColor).toBe(
-      styleOf({ borderRightColor: '$color2' }).borderRightColor
+      styleOf({ borderRightColor: 'color2' }).borderRightColor
     )
   })
 
@@ -243,7 +242,7 @@ describe('PASS 2 — directional borders + corner radius', () => {
   })
 
   test('corner radius token stays a token on the top-left corner only', () => {
-    const cls = convertedClassName(`<View borderTopLeftRadius="$8" />`)
+    const cls = convertedClassName(`<View borderTopLeftRadius="8" />`)
     const f = flat(cls)
     expect(cls).toContain('rounded-tl-8')
     expect(f.borderTopLeftRadius).toBe('8')
@@ -253,37 +252,40 @@ describe('PASS 2 — directional borders + corner radius', () => {
 })
 
 describe('token category system — zIndex sentinel (default config)', () => {
-  test('zIndex="$10" → z-10 → runtime uses the direct Tailwind value', () => {
-    const cls = convertedClassName(`<View zIndex="$10" />`)
+  test('zIndex="10" → z-10 → runtime uses the direct Tailwind value', () => {
+    const cls = convertedClassName(`<View zIndex="10" />`)
     expect(cls).toContain('z-10')
-    expect((v6 as any).tokens.zIndex.$10).toBe(10)
-    expect((v6 as any).tokens.zIndex.$4).toBe(4)
+    expect((v6 as any).tokens.zIndex['10']).toBe(10)
+    expect((v6 as any).tokens.zIndex['4']).toBe(4)
     expect(flat(cls).zIndex).toBe('10')
-    expect(classStyle(cls).zIndex).toBe(styleOf({ zIndex: '$10' }).zIndex)
+    expect(classStyle(cls).zIndex).toBe(styleOf({ zIndex: '10' }).zIndex)
   })
 })
 
 describe('nested modifier expansion — md:hover:border-x', () => {
   test('border-x-[0.5px] under md:hover: sets BOTH side widths (numbers), no colors', () => {
     const f = flat('md:hover:border-x-[0.5px]')
-    const inner = f.$md?.hoverStyle
-    expect(inner).toBeTruthy()
-    expect(inner.borderLeftWidth).toBe(0.5)
-    expect(typeof inner.borderLeftWidth).toBe('number')
-    expect(inner.borderRightWidth).toBe(0.5)
-    expect(typeof inner.borderRightWidth).toBe('number')
-    expect(inner.borderLeftColor).toBeUndefined()
-    expect(inner.borderRightColor).toBeUndefined()
+    const programs = Object.values(f).filter(
+      (value) => value?.value?.clauses?.[0]?.modifiers?.join(':') === 'md:hover'
+    )
+    expect(programs.map((program) => program.property)).toEqual([
+      'borderLeftWidth',
+      'borderRightWidth',
+    ])
+    expect(programs.map((program) => program.value.clauses[0].payload)).toEqual([
+      '0.5px',
+      '0.5px',
+    ])
   })
 })
 
 describe('PASS 2 — embedded shadow tokens', () => {
-  test('boxShadow="0 8px 18px $shadow5" resolves $shadow5 to the theme var, identical to the source prop', () => {
-    const cls = convertedClassName(`<View boxShadow="0 8px 18px $shadow5" />`)
+  test('boxShadow="0 8px 18px shadow5" resolves shadow5 to the theme var, identical to the source prop', () => {
+    const cls = convertedClassName(`<View boxShadow="0 8px 18px shadow5" />`)
     expect(cls).toContain('shadow-[')
     const fromClass = classStyle(cls).boxShadow
-    const fromProp = styleOf({ boxShadow: '0 8px 18px $shadow5' }).boxShadow
-    expect(String(fromClass)).not.toContain('$shadow5') // token must be resolved, not left dead
+    const fromProp = styleOf({ boxShadow: '0 8px 18px shadow5' }).boxShadow
+    expect(String(fromClass)).not.toContain('shadow5') // token must be resolved, not left dead
     expect(fromClass).toBe('0 8px 18px var(--shadow5)')
     expect(fromClass).toBe(fromProp)
   })

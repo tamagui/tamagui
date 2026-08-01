@@ -15,8 +15,6 @@ describe('the tailwind style surface is className only', () => {
     expectTypeOf<HasKey<TailwindViewProps, 'padding'>>().toEqualTypeOf<false>()
     expectTypeOf<HasKey<TailwindViewProps, 'backgroundColor'>>().toEqualTypeOf<false>()
     expectTypeOf<HasKey<TailwindViewProps, 'bg'>>().toEqualTypeOf<false>()
-    expectTypeOf<HasKey<TailwindViewProps, 'hoverStyle'>>().toEqualTypeOf<false>()
-    expectTypeOf<HasKey<TailwindViewProps, '$sm'>>().toEqualTypeOf<false>()
     expectTypeOf<HasKey<TailwindTextProps, 'fontSize'>>().toEqualTypeOf<false>()
   })
 
@@ -40,10 +38,6 @@ describe('components accept and reject the right props', () => {
     View({ padding: 4 })
     // @ts-expect-error bg belongs to @tamagui/core authoring
     View({ bg: 'red' })
-    // @ts-expect-error pseudo style objects belong to @tamagui/core authoring
-    View({ hoverStyle: { backgroundColor: 'red' } })
-    // @ts-expect-error media style objects belong to @tamagui/core authoring
-    View({ $sm: { padding: 4 } })
   })
 })
 

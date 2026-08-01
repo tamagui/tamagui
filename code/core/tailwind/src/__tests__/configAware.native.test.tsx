@@ -18,8 +18,8 @@ import { splitTailwindStyles } from './utils'
 
 const tokens = {
   ...(v6 as any).tokens,
-  space: { ...(v6 as any).tokens.space, $4: 20 },
-  zIndex: { ...(v6 as any).tokens.zIndex, $4: 40 },
+  space: { ...(v6 as any).tokens.space, 4: 20 },
+  zIndex: { ...(v6 as any).tokens.zIndex, 4: 40 },
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
 const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
@@ -87,24 +87,24 @@ function expectConditionalParity(
   )
 }
 describe('config-aware tokens (NATIVE) — class names follow runtime-owned values', () => {
-  test('space.$4 = 20: padding="$4" → p-4 → runtime 20', () => {
-    const cls = className(`<View padding="$4" />`)
+  test('space.4 = 20: padding="4" → p-4 → runtime 20', () => {
+    const cls = className(`<View padding="4" />`)
     expect(cls).toContain('p-4')
     expect(style({ className: cls }).paddingTop).toBe(20)
     expect(typeof style({ className: cls }).paddingTop).toBe('number')
   })
 
-  test('overriding space.$4 does not mutate the distinct size.$4 domain', () => {
-    const cls = className(`<View width="$4" />`)
+  test('overriding space.4 does not mutate the distinct size.4 domain', () => {
+    const cls = className(`<View width="4" />`)
     expect(cls).toContain('w-4')
-    expect(tokens.size.$4).toBe(16)
+    expect(tokens.size['4']).toBe(16)
     expect(style({ className: cls }).width).toBe(16)
-    expect(style({ className: cls }).width).toBe(style({ width: '$4' }).width)
+    expect(style({ className: cls }).width).toBe(style({ width: '4' }).width)
     expect(typeof style({ className: cls }).width).toBe('number')
   })
 
-  test('zIndex.$4 = 40: zIndex="$4" → z-4 → zIndex 40 (number)', () => {
-    const cls = className(`<View zIndex="$4" />`)
+  test('zIndex.4 = 40: zIndex="4" → z-4 → zIndex 40 (number)', () => {
+    const cls = className(`<View zIndex="4" />`)
     expect(cls).toContain('z-4')
     expect(style({ className: cls }).zIndex).toBe(40)
     expect(typeof style({ className: cls }).zIndex).toBe('number')
@@ -118,12 +118,12 @@ describe('config-aware tokens (NATIVE) — class names follow runtime-owned valu
     expect(style({ className: cls }).width).toBe('auto')
   })
 
-  test('fontFamily.$sans wins font-sans and resolves the configured token', () => {
-    const cls = className(`<View fontFamily="$sans" />`)
+  test('fontFamily.sans wins font-sans and resolves the configured token', () => {
+    const cls = className(`<View fontFamily="sans" />`)
     expect(cls).toContain('font-sans')
     expect(flat(cls).fontFamily).toBe('sans')
     expect(style({ className: cls }).fontFamily).toBe(
-      style({ fontFamily: '$sans' }).fontFamily
+      style({ fontFamily: 'sans' }).fontFamily
     )
   })
 })
@@ -160,13 +160,15 @@ describe('shared candidate semantics (NATIVE)', () => {
 })
 
 describe('config-aware media (NATIVE) — a custom breakpoint round-trips', () => {
-  test('$tablet={{padding:10}} → tablet:p-[10px] → reconstructs the $tablet media prop', () => {
-    const cls = className(`<View $tablet={{ padding: 10 }} />`)
+  test('a tablet clause becomes a frontend program', () => {
+    const cls = className(`<View padding="tablet:10px" />`)
     expect(cls).toContain('tablet:p-[10px]')
     expect(CFG.media.tablet).toEqual({ minWidth: 900 })
     const f = flat(cls)
-    expect(f.$tablet).toBeTruthy()
-    expect(f.$tablet.padding).toBe(10)
-    expect(typeof f.$tablet.padding).toBe('number')
+    const program = Object.values(f).find((value) => value?.property === 'padding')
+    expect(program?.value).toEqual({
+      base: null,
+      clauses: [{ modifiers: ['tablet'], payload: '10px' }],
+    })
   })
 })

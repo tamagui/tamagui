@@ -105,16 +105,6 @@ describe('tailwind package - modifiers', () => {
 })
 
 describe('tailwind package - token values', () => {
-  test('className="bg-$white" is rejected ($ prefix invalid in class mode)', () => {
-    const styles = splitTailwindStyles(View, {
-      className: 'bg-$white',
-    } as any)
-
-    // $ prefix in class values is invalid — should be preserved as regular class
-    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
-    expect(rule).toBeNull()
-  })
-
   test('className="bg-white" auto-resolves to CSS variable (token match)', () => {
     const styles = splitTailwindStyles(View, {
       className: 'bg-white',

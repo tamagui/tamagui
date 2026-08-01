@@ -1,9 +1,8 @@
 /**
- * P0 NO-DATA-LOSS PARTITION + precedence tests (converter-driven).
+ * P0 NO-DATA-LOSS + precedence tests (converter-driven).
  *
- * The converter must PARTITION media/pseudo objects into converted classes + a RETAINED residual
- * (dynamic members), COMBINE (not overwrite) an existing className, and RETAIN rather than flip
- * precedence on same-key/spread conflicts — never delete or mangle user code.
+ * The converter must convert flat clauses, COMBINE (not overwrite) an existing className,
+ * and RETAIN rather than flip precedence on same-key/spread conflicts.
  */
 
 import { beforeAll, describe, expect, test } from 'vitest'
@@ -25,28 +24,17 @@ beforeAll(() => {
 
 const convert = (s: string) => tamaguiToTailwind(s, { renameComponents: false })
 
-describe('partition — pseudo/media objects: convert supported, RETAIN dynamic (no drop)', () => {
-  test('hoverStyle mixed static+dynamic → class + retained residual', () => {
-    const out = convert(
-      `<View hoverStyle={{ opacity: 0.5, backgroundColor: dynamicColor }} />`
+describe('flat clauses', () => {
+  test('a static chained clause converts to one class candidate', () => {
+    expect(convert(`<View opacity="md:hover:0.5" />`)).toContain(
+      'md:hover:opacity-50'
     )
-    expect(out).toContain('hover:opacity-50') // converted
-    expect(out).toContain('hoverStyle={{') // residual retained
-    expect(out).toContain('backgroundColor: dynamicColor') // the dynamic member SURVIVES
   })
 
-  test('$md mixed static+dynamic → class + retained residual', () => {
-    const out = convert(`<View $md={{ padding: 10, width: dynamicWidth }} />`)
-    expect(out).toContain('md:p-[10px]')
-    expect(out).toContain('$md={{')
-    expect(out).toContain('width: dynamicWidth')
-  })
-
-  test('runtime MERGE: className-derived + retained residual COEXIST in the same hover branch', () => {
-    // this is what the partition output resolves to (dynamicColor → a concrete value)
+  test('runtime merge keeps className and prop contributions in the same hover branch', () => {
     const s = splitTailwindStyles(View, {
       className: 'hover:opacity-50',
-      hoverStyle: { backgroundColor: 'blue' },
+      backgroundColor: 'hover:blue',
     } as any)
     // both convert to programs on their own longhands — BOTH hover branches present
     const opacityRules = (s.rulesToInsert[s.classNames.opacity]?.[4] ?? []).join('')
@@ -57,10 +45,10 @@ describe('partition — pseudo/media objects: convert supported, RETAIN dynamic 
     expect(bgRules).toContain('background-color:blue')
   })
 
-  test('nested media+pseudo converts recursively (partition, not drop)', () => {
-    const out = convert(`<View $md={{ hoverStyle: { opacity: 0.5 } }} />`)
-    expect(out).toContain('md:hover:opacity-50')
-    expect(out).not.toContain('$md=') // fully converted, nothing left to retain
+  test('a dynamic property value is retained intact', () => {
+    const out = convert(`<View opacity={dynamicOpacity} />`)
+    expect(out).toContain('opacity={dynamicOpacity}')
+    expect(out).not.toContain('className')
   })
 })
 

@@ -31,17 +31,17 @@ describe('tailwind components in JSX', () => {
     )
   })
 
-  test('media and pseudo style objects are rejected in JSX', () => {
+  test('inline state and media clauses are rejected in JSX', () => {
     return (
       <>
         <View
-          // @ts-expect-error pseudo style objects belong to @tamagui/core authoring
-          hoverStyle={{ backgroundColor: 'red' }}
-        />
+                      // @ts-expect-error state clauses belong to @tamagui/core authoring
+                      backgroundColor="hover:red"
+                    />
         <View
-          // @ts-expect-error media style objects belong to @tamagui/core authoring
-          $sm={{ padding: 4 }}
-        />
+                      // @ts-expect-error media clauses belong to @tamagui/core authoring
+                      padding="sm:4px"
+                    />
       </>
     )
   })

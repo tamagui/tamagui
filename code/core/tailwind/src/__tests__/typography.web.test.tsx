@@ -20,7 +20,7 @@ describe('tailwind fontSize (text-*)', () => {
     expect(rule('text-[18px]', 'fontSize')[StyleObjectValue]).toBe('18px')
   })
 
-  test('text-5 → the $5 font-size token', () => {
+  test('text-5 → the 5 font-size token', () => {
     expect(rule('text-5', 'fontSize')[StyleObjectValue]).toContain('var(--')
   })
 

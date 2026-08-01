@@ -66,31 +66,31 @@ function flat(className: string): Record<string, any> {
 
 describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" strings)', () => {
   test('spacing/sizing tokens', () => {
-    const p = resolved(View, `<View padding="$4" />`, 'paddingTop')
-    expect((v6 as any).tokens.space.$4).toBe(16)
-    expect(p).toBe(nativeStyleOf(View, { padding: '$4' }).paddingTop)
+    const p = resolved(View, `<View padding="4" />`, 'paddingTop')
+    expect((v6 as any).tokens.space['4']).toBe(16)
+    expect(p).toBe(nativeStyleOf(View, { padding: '4' }).paddingTop)
     expect(p).toBe(16)
     expect(typeof p).toBe('number')
 
-    const gap = nativeStyle(View, toClass(`<View gap="$6" />`))
+    const gap = nativeStyle(View, toClass(`<View gap="6" />`))
     expect(gap.rowGap).toBe(24)
     expect(gap.columnGap).toBe(24)
     expect(typeof gap.rowGap).toBe('number')
     expect(typeof gap.columnGap).toBe('number')
 
-    const r = resolved(View, `<View borderRadius="$8" />`, 'borderTopLeftRadius')
+    const r = resolved(View, `<View borderRadius="8" />`, 'borderTopLeftRadius')
     expect(r).toBe(22)
     expect(typeof r).toBe('number')
 
-    const w = resolved(View, `<View width="$10" />`, 'width')
-    expect(w).toBe(nativeStyleOf(View, { width: '$10' }).width)
+    const w = resolved(View, `<View width="10" />`, 'width')
+    expect(w).toBe(nativeStyleOf(View, { width: '10' }).width)
     expect(w).toBe(40)
     expect(typeof w).toBe('number')
   })
 
   test('named radius token matches the direct Tailwind value', () => {
-    const radius = resolved(View, `<View borderRadius="$lg" />`, 'borderTopLeftRadius')
-    expect(radius).toBe(nativeStyleOf(View, { borderRadius: '$lg' }).borderTopLeftRadius)
+    const radius = resolved(View, `<View borderRadius="lg" />`, 'borderTopLeftRadius')
+    expect(radius).toBe(nativeStyleOf(View, { borderRadius: 'lg' }).borderTopLeftRadius)
     expect(radius).toBe(8)
     expect(typeof radius).toBe('number')
   })
@@ -108,9 +108,9 @@ describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" st
 
 describe('native — typography resolves to EXACT NUMBERS (RN StyleSheetTypes number-only)', () => {
   test('named text-base/leading-base use the paired Tailwind defaults', () => {
-    const className = toClass(`<Text fontSize="$base" lineHeight="$base" />`)
+    const className = toClass(`<Text fontSize="base" lineHeight="base" />`)
     const fromClass = nativeStyle(Text, className)
-    const fromProp = nativeStyleOf(Text, { fontSize: '$base', lineHeight: '$base' })
+    const fromProp = nativeStyleOf(Text, { fontSize: 'base', lineHeight: 'base' })
     expect(className).toContain('text-base')
     expect(className).toContain('leading-base')
     expect(fromClass.fontSize).toBe(fromProp.fontSize)
@@ -154,9 +154,9 @@ describe('native — unitless props', () => {
     expect(v).toBe(1.5)
     expect(typeof v).toBe('number')
   })
-  test('zIndex="$10" → 10 number', () => {
-    const v = resolved(View, `<View zIndex="$10" />`, 'zIndex')
-    expect(v).toBe(nativeStyleOf(View, { zIndex: '$10' }).zIndex)
+  test('zIndex="10" → 10 number', () => {
+    const v = resolved(View, `<View zIndex="10" />`, 'zIndex')
+    expect(v).toBe(nativeStyleOf(View, { zIndex: '10' }).zIndex)
     expect(v).toBe(10)
     expect(typeof v).toBe('number')
   })
@@ -184,10 +184,10 @@ describe('native — named enum: fontWeight', () => {
 })
 
 describe('native — directional borders + per-edge radii (converter-driven)', () => {
-  test('borderRightWidth={1} + borderRightColor="$color2"', () => {
+  test('borderRightWidth={1} + borderRightColor="color2"', () => {
     const s = nativeStyle(
       View,
-      toClass(`<View borderRightWidth={1} borderRightColor="$color2" />`)
+      toClass(`<View borderRightWidth={1} borderRightColor="color2" />`)
     )
     expect(s.borderRightWidth).toBe(1)
     expect(typeof s.borderRightWidth).toBe('number')
@@ -195,14 +195,14 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
     expect(s.borderRightColor).not.toBe('color2')
   })
   test('configured rounded-tl-lg radius token round-trips and is consumed', () => {
-    expect(CFG.tokensParsed.radius).toHaveProperty('$lg')
-    expect(toClass(`<View borderTopLeftRadius="$lg" />`)).toBe('rounded-tl-lg')
+    expect(CFG.tokensParsed.radius).toHaveProperty('lg')
+    expect(toClass(`<View borderTopLeftRadius="lg" />`)).toBe('rounded-tl-lg')
     expect(flat('rounded-tl-lg').className).toBeUndefined()
     expect(nativeStyle(View, 'rounded-tl-lg').borderTopLeftRadius).toBe(8)
   })
   test('parser: a missing radius token warns once and is dropped', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    expect(CFG.tokensParsed.radius).not.toHaveProperty('$missing-radius')
+    expect(CFG.tokensParsed.radius).not.toHaveProperty('missing-radius')
     expect(flat('rounded-tl-missing-radius').className).toBeUndefined()
     expect(flat('rounded-tl-missing-radius').className).toBeUndefined()
     expect(warn).toHaveBeenCalledTimes(1)
@@ -232,12 +232,22 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
 })
 
 describe('native — responsive media (converter-driven, parser-level structure)', () => {
-  test('$md show/hide reconstructs the correct media prop', () => {
-    const showCls = toClass(`<View display="none" $md={{ display: 'flex' }} />`)
+  test('md show/hide carries the correct flat program', () => {
+    const showCls = toClass(`<View display="none md:flex" />`)
     expect(showCls).toContain('md:flex')
     expect(showCls).not.toMatch(/max-md/)
-    expect(flat(showCls).$md).toEqual({ display: 'flex' })
-    const hideCls = toClass(`<View display="flex" $md={{ display: 'none' }} />`)
-    expect(flat(hideCls).$md).toEqual({ display: 'none' })
+    const showProgram = Object.values(flat(showCls)).find(
+      (value) => value?.property === 'display'
+    )
+    expect(showProgram?.value.clauses).toEqual([
+      { modifiers: ['md'], payload: 'flex' },
+    ])
+    const hideCls = toClass(`<View display="flex md:none" />`)
+    const hideProgram = Object.values(flat(hideCls)).find(
+      (value) => value?.property === 'display'
+    )
+    expect(hideProgram?.value.clauses).toEqual([
+      { modifiers: ['md'], payload: 'none' },
+    ])
   })
 })
