@@ -1,14 +1,15 @@
 # Flat-values codemod
 
-Converts existing Tamagui style syntax to V3 flat property values and reports what
-it cannot convert. It writes a Markdown report (and optionally JSON), and never
-touches the source files it scans or the config it talks about.
+Converts existing Tamagui style syntax to V3 flat property values. Dry-run mode
+reports every conversion; `--write` applies the statically safe subset and leaves
+flagged source authored for manual migration.
 
 ```sh
 cd code/core/codemod-flat-values
 bun run dry-run                              # the default corpus
 bun run dry-run --report /tmp/report.md path/to/src another/file.tsx
 bun run dry-run --json /tmp/report.json      # machine readable, used by the tests
+bun run write path/to/src                    # apply safe conversions in place
 bun src/index.ts --help
 ```
 
@@ -113,8 +114,8 @@ resolved through the size scale, while flat `4` resolves through the space scale
 If a custom config gives those scales different values, the rendered offset changes
 by design and those rows need review during migration.
 
-All three runtime gates are closed. This tool remains report-only until users approve
-an apply/write mode; runtime support no longer blocks it.
+All legacy runtime gates are closed. Apply mode is the migration path; there is no
+runtime compatibility setting or fallback parser.
 
 ## Structured native values
 
@@ -176,8 +177,8 @@ or unquoted `url()` content is literal CSS the resolver never reads as a token
 candidate, so the value is reported rather than rewritten. Base values and clause
 payloads go through the same shared converter, so they always agree on that.
 
-## `legacyConditionObjects`
+## Remaining manual migration
 
 The report counts the files whose sites all converted: those have no legacy condition
-object left. The setting lives in your own `createTamagui` call and this tool never
-edits it, so the report names the files still holding one instead.
+object left. V3 has no compatibility setting, so the report names every file that
+still needs a hand edit after `--write`.

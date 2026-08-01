@@ -28,7 +28,8 @@ export interface ReportSummary {
 export function renderReport(
   files: readonly FileReport[],
   corpus: readonly string[],
-  registryDiagnostics: readonly string[]
+  registryDiagnostics: readonly string[],
+  write = false
 ): { text: string; summary: ReportSummary } {
   const sites = files.flatMap((file) => file.sites)
   const clean = sites.filter(
@@ -62,8 +63,9 @@ export function renderReport(
     '',
     `Corpus: ${corpus.map((entry) => `\`${entry}\``).join(', ')}.`,
     '',
-    'No source files were written, and no config was edited. All runtime gates are',
-    'closed; enabling an apply/write mode requires explicit user approval.',
+    write
+      ? 'Statically safe conversions were written in place. Flagged legacy syntax remains for manual migration.'
+      : 'Dry run only: no source files were written. Pass `--write` to apply statically safe conversions.',
     '',
     '## Summary',
     '',
@@ -77,15 +79,15 @@ export function renderReport(
     `- ${jsx.length} JSX sites: ${cleanJsx} clean, ${jsx.length - cleanJsx} need review`,
     `- ${styled.length} styled config sites: ${cleanStyled} clean, ${styled.length - cleanStyled} need review`,
     '',
-    '### Turning off `legacyConditionObjects`',
+    '### Remaining manual migration',
     '',
     `${readyFiles.length} of ${filesWithSites} files have no legacy condition object left after`,
-    'conversion. The setting lives in your `createTamagui` call and this tool never edits it:',
+    'conversion. V3 has no compatibility setting; finish the remaining files directly:',
     blockedFiles.length
-      ? `remove it once these files are migrated by hand: ${blockedFiles
+      ? blockedFiles
           .map((file) => `\`${file}\``)
-          .join(', ')}.`
-      : 'every file in this corpus is ready, so the setting can be removed.',
+          .join(', ')
+      : 'every file in this corpus is fully migrated.',
     '',
     '### Flag reasons',
     '',

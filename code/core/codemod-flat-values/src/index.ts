@@ -133,7 +133,8 @@ function variantSites(
   registry: ModifierRegistryView,
   containers: ContainerPlan,
   targets: ConversionTargets,
-  host: HostView | undefined
+  host: HostView | undefined,
+  write: boolean
 ): SiteReport[] {
   const sites: SiteReport[] = []
 
@@ -157,7 +158,8 @@ function variantSites(
               registry,
               containers,
               targets,
-              host
+              host,
+              write
             )
             if (site) sites.push(site)
           }
@@ -183,7 +185,8 @@ function variantSites(
             registry,
             containers,
             targets,
-            host
+            host,
+            write
           )
           if (site) sites.push(site)
         }
@@ -211,7 +214,8 @@ function typeAwareHost(node: Node): HostView | undefined {
 function inspectFile(
   sourceFile: SourceFile,
   registry: ModifierRegistryView,
-  provenance: Provenance
+  provenance: Provenance,
+  write: boolean
 ): FileReport {
   const containers = planContainers(sourceFile, registry)
   const targets = conversionTargets(sourceFile.getFilePath())
@@ -228,7 +232,8 @@ function inspectFile(
         registry,
         containers,
         targets,
-        typeAwareHost(opening.getTagNameNode())
+        typeAwareHost(opening.getTagNameNode()),
+        write
       )
       if (site) sites.push(site)
     }
@@ -243,6 +248,9 @@ function inspectFile(
     )
     if (!Node.isObjectLiteralExpression(config)) continue
     const label = `styled(${compact(call.getArguments()[0]?.getText() ?? 'unknown')}, …)`
+    sites.push(
+      ...variantSites(config, label, registry, containers, targets, host, write)
+    )
     const site = convertStyleObject(
       config,
       'styled',
@@ -250,10 +258,10 @@ function inspectFile(
       registry,
       containers,
       targets,
-      host
+      host,
+      write
     )
     if (site) sites.push(site)
-    sites.push(...variantSites(config, label, registry, containers, targets, host))
   }
 
   sites.sort(
@@ -271,25 +279,32 @@ const usage = `Converts Tamagui style syntax to V3 flat property values and repo
     defaultReportPath
   )})
   --json <path>     also write the machine-readable report
+  --write           rewrite every statically safe conversion in place
   --help            print this
 
 With no positional arguments the default corpus is ${defaultCorpus.join(' and ')}.
-Source files are never written.`
+Source files are only written with --write.`
 
 function parseArguments(argv: readonly string[]): {
   reportPath: string
   jsonPath: string | null
   inputs: string[]
+  write: boolean
 } {
   const inputs: string[] = []
   let reportPath = defaultReportPath
   let jsonPath: string | null = null
+  let write = false
 
   for (let index = 0; index < argv.length; index++) {
     const argument = argv[index]
     if (argument === '--help' || argument === '-h') {
       console.log(usage)
       process.exit(0)
+    }
+    if (argument === '--write') {
+      write = true
+      continue
     }
     if (argument === '--report' || argument === '--json') {
       const next = argv[index + 1]
@@ -311,23 +326,43 @@ function parseArguments(argv: readonly string[]): {
     inputs.push(argument)
   }
 
-  return { reportPath, jsonPath, inputs: inputs.length ? inputs : defaultCorpus }
+  return {
+    reportPath,
+    jsonPath,
+    inputs: inputs.length ? inputs : defaultCorpus,
+    write,
+  }
 }
 
-const { reportPath, jsonPath, inputs } = parseArguments(process.argv.slice(2))
+const { reportPath, jsonPath, inputs, write } = parseArguments(process.argv.slice(2))
 const sourceFiles = collectFiles(inputs)
+for (const sourceFile of sourceFiles) {
+  const diagnostics = (sourceFile.compilerNode as unknown as {
+    parseDiagnostics?: readonly { messageText?: unknown }[]
+  }).parseDiagnostics
+  if (diagnostics?.length) {
+    console.error(
+      `${relative(repoRoot, sourceFile.getFilePath())}: source has parse errors; no files were written`
+    )
+    process.exit(2)
+  }
+}
+const originals = new Map(
+  sourceFiles.map((sourceFile) => [sourceFile.getFilePath(), sourceFile.getFullText()])
+)
 const modifierRegistry = createModifierRegistry({
   mediaNames: codemodMediaNames,
   themeNames: themeNames(sourceFiles),
 })
 const provenance = createProvenance()
 const files = sourceFiles.map((sourceFile) =>
-  inspectFile(sourceFile, modifierRegistry.registry, provenance)
+  inspectFile(sourceFile, modifierRegistry.registry, provenance, write)
 )
 const { text, summary } = renderReport(
   files,
   inputs.map((input) => relative(repoRoot, resolve(repoRoot, input))),
-  modifierRegistry.diagnostics
+  modifierRegistry.diagnostics,
+  write
 )
 mkdirSync(dirname(reportPath), { recursive: true })
 writeFileSync(reportPath, text)
@@ -336,7 +371,18 @@ if (jsonPath !== null) {
   writeFileSync(jsonPath, `${JSON.stringify({ files, summary }, null, 2)}\n`)
 }
 
+let written = 0
+if (write) {
+  for (const sourceFile of sourceFiles) {
+    const next = sourceFile.getFullText()
+    if (next === originals.get(sourceFile.getFilePath())) continue
+    writeFileSync(sourceFile.getFilePath(), next)
+    written++
+  }
+}
+
 console.log(`wrote ${reportPath}`)
+if (write) console.log(`rewrote ${written} source files`)
 console.log(
   `${summary.sites} sites: ${summary.clean - summary.waiting} clean, ${summary.needsRelocation} need relocation, ${summary.unknownHost} unknown host, ${summary.ineligible} ineligible, ${summary.waiting} waiting on runtime support, ${summary.flagged} syntax-flagged`
 )

@@ -14,7 +14,7 @@ import type {
   ConvertLegacyConditionOptions,
   LegacyConditionError,
   LegacyConditionResult,
-} from '../../style-grammar/src/legacyConditions'
+} from './legacyConditions'
 import type {
   ConversionReason,
   ConversionTargets,
@@ -26,6 +26,10 @@ import type {
   ParsedValue,
 } from '../../style-grammar/src/valueTypes'
 import { replaceV6BuiltInTokens } from './builtInNames'
+import {
+  convertLegacyConditionProp as convertLegacyConditionPropLocal,
+  pseudoToModifier,
+} from './legacyConditions'
 
 const grammar = styleGrammarRuntime
 
@@ -41,10 +45,11 @@ export const {
   mergeProgramValues,
   parseValue,
   programEligibility,
-  pseudoToModifier,
   standaloneValueProps,
   parseTransformString,
 } = grammar
+
+export { pseudoToModifier }
 
 export type {
   ConversionReason,
@@ -75,7 +80,11 @@ export function convertLegacyConditionProp(
   value: unknown,
   options: ConvertLegacyConditionOptions
 ): LegacyConditionResult | null {
-  return grammar.convertLegacyConditionProp(propName, renameBuiltInTokens(value), options)
+  return convertLegacyConditionPropLocal(
+    propName,
+    renameBuiltInTokens(value),
+    options
+  )
 }
 
 /** every prop spelling the codemod treats as carrying a style value */

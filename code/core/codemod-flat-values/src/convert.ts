@@ -1275,6 +1275,42 @@ function jsxExpression(attribute: JsxAttribute): Expression | null {
 
 type JsxElementWithAttributes = JsxOpeningElement | JsxSelfClosingElement
 
+function isConvertedJsxAttribute(attribute: Node): boolean {
+  if (Node.isJsxSpreadAttribute(attribute)) return true
+  if (!Node.isJsxAttribute(attribute)) return false
+  const name = jsxAttributeName(attribute)
+  return !!name && (name === 'group' || styleProps.has(name) || isLegacyConditionName(name))
+}
+
+function rewriteJsxSite(
+  opening: JsxElementWithAttributes,
+  entries: Array<{ index: number; text: string }>
+): void {
+  const attributes = opening.getAttributes()
+  const rendered: string[] = []
+  let inserted = false
+  for (const attribute of attributes) {
+    if (isConvertedJsxAttribute(attribute)) {
+      if (!inserted) {
+        rendered.push(...entries.map((entry) => entry.text))
+        inserted = true
+      }
+    } else {
+      rendered.push(attribute.getText())
+    }
+  }
+
+  const source = opening.getText()
+  const start = opening.getStart()
+  const first = attributes[0]
+  const last = attributes[attributes.length - 1]
+  const prefix = source.slice(0, first.getStart() - start).trimEnd()
+  const suffix = source.slice(last.getEnd() - start).trimStart()
+  opening.replaceWithText(
+    `${prefix}${rendered.length ? ` ${rendered.join(' ')}` : ''}${suffix}`
+  )
+}
+
 /**
  * V3 separates the group from the query container, so a legacy group condition
  * carrying a container size (`$group-card-sm-hover`) needs the element that
@@ -1309,7 +1345,8 @@ export function convertJsxSite(
   registry: ModifierRegistryView,
   containers: ContainerPlan,
   targets: ConversionTargets,
-  host: HostView | undefined
+  host: HostView | undefined,
+  write = false
 ): SiteReport | null {
   const site = createSite('jsx', registry, containers, targets, host)
   const before: string[] = []
@@ -1326,12 +1363,24 @@ export function convertJsxSite(
             if (name !== null) {
               // a member the conversion leaves authored has to print as the JSX
               // attribute it becomes here, not as the object member it was
-              pushStyledProperty(
-                site,
-                name,
-                property,
-                `${name}={${compact(property.getInitializerOrThrow().getText())}}`
-              )
+              if (
+                name === 'group' ||
+                styleProps.has(name) ||
+                isLegacyConditionName(name)
+              ) {
+                pushStyledProperty(
+                  site,
+                  name,
+                  property,
+                  `${name}={${compact(property.getInitializerOrThrow().getText())}}`
+                )
+              } else {
+                site.members.push({
+                  type: 'passthrough',
+                  index: site.index++,
+                  text: `${name}={${compact(property.getInitializerOrThrow().getText())}}`,
+                })
+              }
               continue
             }
           }
@@ -1389,7 +1438,7 @@ export function convertJsxSite(
 
   const { entries, programs } = assemble(site)
   const sourceFile = opening.getSourceFile()
-  return {
+  const report: SiteReport = {
     kind: 'jsx',
     label: `<${opening.getTagNameNode().getText()}>`,
     line: sourceFile.getLineAndColumnAtPos(opening.getStart()).line,
@@ -1405,6 +1454,17 @@ export function convertJsxSite(
     legacyLeft: site.members.filter((member) => member.type === 'legacy' && member.failed)
       .length,
   }
+  if (
+    write &&
+    !site.flags.some(
+      (flag) =>
+        flag.code === 'emitted-program-mismatch' ||
+        flag.code === 'emitted-value-invalid'
+    )
+  ) {
+    rewriteJsxSite(opening, entries)
+  }
+  return report
 }
 
 function pushStyledProperty(
@@ -1442,7 +1502,8 @@ export function convertStyleObject(
   registry: ModifierRegistryView,
   containers: ContainerPlan,
   targets: ConversionTargets,
-  host: HostView | undefined
+  host: HostView | undefined,
+  write = false
 ): SiteReport | null {
   const site = createSite(kind, registry, containers, targets, host)
   const before: string[] = []
@@ -1456,7 +1517,19 @@ export function convertStyleObject(
           if (Node.isPropertyAssignment(nested)) {
             const name = propertyName(nested.getNameNode())
             if (name !== null) {
-              pushStyledProperty(site, name, nested)
+              if (
+                name === 'group' ||
+                styleProps.has(name) ||
+                isLegacyConditionName(name)
+              ) {
+                pushStyledProperty(site, name, nested)
+              } else {
+                site.members.push({
+                  type: 'passthrough',
+                  index: site.index++,
+                  text: compact(nested.getText()),
+                })
+              }
               continue
             }
           }
@@ -1500,7 +1573,7 @@ export function convertStyleObject(
 
   const { entries, programs } = assemble(site)
   const sourceFile = object.getSourceFile()
-  return {
+  const report: SiteReport = {
     kind,
     label,
     line: sourceFile.getLineAndColumnAtPos(object.getStart()).line,
@@ -1516,4 +1589,45 @@ export function convertStyleObject(
     legacyLeft: site.members.filter((member) => member.type === 'legacy' && member.failed)
       .length,
   }
+  if (
+    write &&
+    !site.flags.some(
+      (flag) =>
+        flag.code === 'emitted-program-mismatch' ||
+        flag.code === 'emitted-value-invalid'
+    )
+  ) {
+    rewriteStyleObject(object, entries)
+  }
+  return report
+}
+
+function isConvertedStyledProperty(property: Node): boolean {
+  if (Node.isSpreadAssignment(property)) return true
+  if (!Node.isPropertyAssignment(property)) return false
+  const nameNode = property.getNameNode()
+  if (Node.isComputedPropertyName(nameNode)) return false
+  const name = propertyName(nameNode)
+  return !!name && (name === 'group' || styleProps.has(name) || isLegacyConditionName(name))
+}
+
+function rewriteStyleObject(
+  object: ObjectLiteralExpression,
+  entries: Array<{ index: number; text: string }>
+): void {
+  const rendered: string[] = []
+  let inserted = false
+  for (const property of object.getProperties()) {
+    if (isConvertedStyledProperty(property)) {
+      if (!inserted) {
+        rendered.push(...entries.map((entry) => entry.text))
+        inserted = true
+      }
+    } else {
+      rendered.push(property.getText())
+    }
+  }
+  object.replaceWithText(rendered.length ? `{
+${rendered.join(',\n')}
+}` : '{}')
 }

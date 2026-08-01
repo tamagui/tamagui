@@ -57,6 +57,27 @@ function run(source: string): Result {
   return runOn([fixture(source)])
 }
 
+function runWrite(source: string): string {
+  const sourcePath = fixture(source)
+  const directory = mkdtempSync(join(tmpdir(), 'flat-values-write-'))
+  temporaryDirectories.push(directory)
+  const result = Bun.spawnSync({
+    cmd: [
+      process.execPath,
+      'src/index.ts',
+      '--write',
+      '--report',
+      join(directory, 'report.md'),
+      sourcePath,
+    ],
+    cwd: packageDir,
+    stderr: 'pipe',
+    stdout: 'pipe',
+  })
+  expect(result.exitCode, result.stderr.toString()).toBe(0)
+  return readFileSync(sourcePath, 'utf8')
+}
+
 function fixture(source: string, fileName = 'fixture.tsx'): string {
   const directory = mkdtempSync(join(tmpdir(), 'flat-values-fixture-'))
   temporaryDirectories.push(directory)
@@ -1366,6 +1387,21 @@ describe('Tamagui provenance', () => {
 })
 
 describe('inputs', () => {
+  test('write mode applies safe JSX and styled conversions in place', () => {
+    const output = runWrite(`import { View, styled } from 'tamagui'
+export const Box = styled(View, {
+  bg: '$blue10',
+  hoverStyle: { bg: '$red10' },
+})
+export const Fixture = () => <Box opacity={1} pressStyle={{ opacity: 0.5 }} />
+`)
+
+    expect(output).toContain('bg: "blue10 hover:red10"')
+    expect(output).toContain('opacity="1 press:0.5"')
+    expect(output).not.toContain('hoverStyle')
+    expect(output).not.toContain('pressStyle')
+  })
+
   test('an input that matches no file exits nonzero and writes no report', () => {
     const result = runRaw([join(tmpdir(), 'flat-values-does-not-exist.tsx')])
 
