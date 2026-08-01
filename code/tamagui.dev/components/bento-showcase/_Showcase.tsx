@@ -297,7 +297,6 @@ const PHONE_SCALE = 0.75
 const PhoneFrame = (props: any) => {
   return (
     <YStack
-      // @ts-expect-error - window group name
       group="window"
       container
       containerName="window"
@@ -314,7 +313,7 @@ const PhoneFrame = (props: any) => {
       zIndex={0}
       tabIndex={0}
       className="ms300 all ease-out"
-      pe="auto"
+      pointerEvents="auto"
       onPress={() => {
         if (!props.phoneFocused) {
           props.setPhoneFocused(true)
@@ -376,94 +375,98 @@ export const ShowcaseChildWrapper = createStyledHOC(ScrollView)((props, ref) => 
 type ResizableBoxExtraProps = {
   hideDragHandle?: boolean
 }
-const ResizableBox = createStyledHOC(XStack)<ResizableBoxExtraProps>((
-  { children, hideDragHandle, ...rest },
-  ref
-) => {
-  const [width, setWidth] = useState<number | string>('100%')
-  const startX = useRef(null)
-  const initialWidth = useRef<number>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+const ResizableBox = createStyledHOC(XStack)<ResizableBoxExtraProps>(
+  ({ children, hideDragHandle, ...rest }, ref) => {
+    const [width, setWidth] = useState<number | string>('100%')
+    const startX = useRef(null)
+    const initialWidth = useRef<number>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
 
-  useIsomorphicLayoutEffect(() => {
-    initialWidth.current = containerRef.current?.getBoundingClientRect().width as number
-  }, [containerRef.current])
+    useIsomorphicLayoutEffect(() => {
+      initialWidth.current = containerRef.current?.getBoundingClientRect().width as number
+    }, [containerRef.current])
 
-  const handleMouseMove = useEvent((e) => {
-    if (startX.current !== null) {
-      let finalWidth = width
-      if (typeof finalWidth === 'string') {
-        finalWidth = containerRef.current?.getBoundingClientRect().width as number
-        initialWidth.current = finalWidth
-      }
-      if (finalWidth) {
-        const newWidth = finalWidth + e.clientX - startX.current
-        if (newWidth > initialWidth.current! + 10) {
-          handleMouseUp()
-          return
+    const handleMouseMove = useEvent((e) => {
+      if (startX.current !== null) {
+        let finalWidth = width
+        if (typeof finalWidth === 'string') {
+          finalWidth = containerRef.current?.getBoundingClientRect().width as number
+          initialWidth.current = finalWidth
         }
-        setWidth(Math.min(Math.max(newWidth, 320), initialWidth.current!))
-        startX.current = e.clientX
+        if (finalWidth) {
+          const newWidth = finalWidth + e.clientX - startX.current
+          if (newWidth > initialWidth.current! + 10) {
+            handleMouseUp()
+            return
+          }
+          setWidth(Math.min(Math.max(newWidth, 320), initialWidth.current!))
+          startX.current = e.clientX
+        }
       }
-    }
-  })
+    })
 
-  const handleMouseUp = useEvent(() => {
-    startX.current = null
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
-  })
+    const handleMouseUp = useEvent(() => {
+      startX.current = null
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    })
 
-  const handleDragStart = useEvent((e) => {
-    startX.current = e.clientX
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
-  })
+    const handleDragStart = useEvent((e) => {
+      startX.current = e.clientX
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+    })
 
-  return (
-    <XStack
-      flex={1}
-      flexBasis="auto"
-      items="stretch"
-      select="none"
-      gap="2"
-      {...rest}
-      ref={ref}
-    >
+    return (
       <XStack
-        items="center"
-        // @ts-expect-error - window group name
-        group="window"
-        container
-        containerName="window"
-        ref={containerRef as any}
-        width={width as any}
+        flex={1}
+        flexBasis="auto"
+        items="stretch"
+        select="none"
+        gap="2"
+        {...rest}
+        ref={ref}
       >
-        {children}
-        <YStack
-          display={hideDragHandle ? 'none' : 'flex'}
-          mr={-16}
-          width={20}
-          cursor="col-resize"
-          onMouseDown={handleDragStart}
-          height="100%"
+        <XStack
           items="center"
-          justify="center"
-          group
+          group="window"
+          container
+          containerName="window"
+          ref={containerRef as any}
+          width={width as any}
         >
-          <View
-            maxH="50%"
-            width={8}
-            bg="background04 hover:background06 press:background06"
-            self="center"
-            rounded={1000_000}
-          />
-          <View height="3 group-hover:4" width={8} l={-2} bg="background04" rounded="5" />
-        </YStack>
+          {children}
+          <YStack
+            display={hideDragHandle ? 'none' : 'flex'}
+            mr={-16}
+            width={20}
+            cursor="col-resize"
+            onMouseDown={handleDragStart}
+            height="100%"
+            items="center"
+            justify="center"
+            group
+          >
+            <View
+              maxH="50%"
+              width={8}
+              bg="background04 hover:background06 press:background06"
+              self="center"
+              rounded={1000_000}
+            />
+            <View
+              height="3 group-hover:4"
+              width={8}
+              l={-2}
+              bg="background04"
+              rounded="5"
+            />
+          </YStack>
+        </XStack>
       </XStack>
-    </XStack>
-  )
-})
+    )
+  }
+)
 
 export function Hint({ children }: { children: React.ReactNode }) {
   return (
