@@ -44,33 +44,25 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
     >
       <Popover.Anchor asChild="except-style">
         <XStack
-          rounded="$10"
-          px="$3"
+          rounded="10"
+          px="3"
           cursor="pointer"
           height={36}
           items="center"
           select="none"
           borderWidth={1}
-          borderColor="$black5"
-          bg="$black1"
-          shadowColor="$shadow1"
+          borderColor="black5 hover:black6 press:black2"
+          bg="black1 hover:black3 press:black2"
+          shadowColor="shadow1"
           shadowRadius={3}
           shadowOffset={{ height: 4, width: 0 }}
-          hoverStyle={{
-            borderColor: '$black6',
-            bg: '$black3',
-          }}
-          pressStyle={{
-            bg: '$black2',
-            borderColor: '$black2',
-          }}
           onPress={() => {
             sendEvent(`Pro: Modal Open`)
             showAppropriateModal()
             setOpen(false)
           }}
         >
-          <H2 fontFamily="$mono" flex={1} fontWeight="600" size="$4" color="$black12">
+          <H2 fontFamily="mono" flex={1} fontWeight="600" color="black12" size="4">
             Pro
           </H2>
         </XStack>
@@ -84,44 +76,32 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Container>
-          <Sheet.Overlay z={100} bg="$shadow4" />
+          <Sheet.Overlay z={100} bg="shadow4" />
         </Sheet>
       </Adapt>
 
       <Popover.Content
         animatePosition
         transition="quick"
-        bg="$background08"
+        bg="background08"
         backdropFilter="blur(40px)"
         shadowRadius={50}
-        shadowColor="$shadow4"
+        shadowColor="shadow4"
         shadowOffset={{ height: 30, width: 0 }}
         p={0}
-        rounded="$6"
+        rounded="6"
         borderWidth={0}
         z={10000}
-        enterStyle={{
-          y: 3,
-          opacity: 0,
-        }}
-        exitStyle={{
-          y: 5,
-          opacity: 0,
-        }}
+        y="enter:3px exit:5px"
+        opacity="enter:0 exit:0"
       >
-        <Popover.Arrow bg="$background08" size="$4" />
+        <Popover.Arrow bg="background08" size="4" />
 
-        <YStack maxH="90vh" p="$3" width={280} overflow="hidden" rounded="$6">
+        <YStack maxH="90vh" p="3" width={280} overflow="hidden" rounded="6">
           <Popover.ScrollView>
-            <YStack gap="$2">
+            <YStack gap="2">
               {!hasPro && (
-                <H5
-                  py="$2"
-                  pointerEvents="none"
-                  fontFamily="$mono"
-                  size="$5"
-                  text="center"
-                >
+                <H5 py="2" pointerEvents="none" fontFamily="mono" text="center" size="5">
                   Tamagui Pro
                 </H5>
               )}
@@ -131,14 +111,14 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
               {!hasPro && (
                 <Theme name="accent">
                   <Button
-                    rounded="$10"
-                    my="$3"
+                    rounded="10"
+                    my="3"
                     onPress={() => {
                       showAppropriateModal()
                       setOpen(false)
                     }}
                   >
-                    <Button.Text fontFamily="$mono">More info</Button.Text>
+                    <Button.Text fontFamily="mono">More info</Button.Text>
                   </Button>
                 </Theme>
               )}

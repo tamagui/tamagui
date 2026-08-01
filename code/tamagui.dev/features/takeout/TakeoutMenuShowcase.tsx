@@ -89,19 +89,19 @@ function FloatingWrapper({
 
 const FloatingCard = styled(YStack, {
   borderWidth: 0.5,
-  borderColor: '$color02',
-  rounded: '$6',
+  borderColor: 'color02',
+  rounded: '6',
   overflow: 'hidden',
-  elevation: '$3',
+  elevation: '3',
 })
 
 const GlassCard = styled(YStack, {
   borderWidth: 0.5,
-  borderColor: '$background02',
-  rounded: '$6',
+  borderColor: 'background02',
+  rounded: '6',
   overflow: 'hidden',
   className: 'blur-8',
-  elevation: '$3',
+  elevation: '3',
 })
 
 function ProfileCard() {
@@ -114,53 +114,53 @@ function ProfileCard() {
         style={{ transformStyle: 'preserve-3d' }}
       >
         <Card3D.Item translateZ={25}>
-          <YStack width={90} self="stretch" overflow="hidden" m="$2" rounded="$3">
+          <YStack width={90} self="stretch" overflow="hidden" m="2" rounded="3">
             <Image
               src="https://tamagui.dev/bento/images/wheel-list/wl_6.png"
               alt="Employee portrait"
               width="100%"
               height="100%"
               objectFit="cover"
-              rounded="$3"
+              rounded="3"
             />
           </YStack>
         </Card3D.Item>
-        <YStack flex={1} p="$3" gap="$3" justify="space-between">
-          <YStack gap="$2">
+        <YStack flex={1} p="3" gap="3" justify="space-between">
+          <YStack gap="2">
             <Card3D.Item translateZ={20}>
-              <YStack gap="$0.5">
+              <YStack gap="0.5">
                 <Paragraph
                   fontSize={10}
-                  color="$color9"
+                  color="color9"
                   fontWeight="600"
                   textTransform="uppercase"
                 >
                   Employee ID
                 </Paragraph>
-                <Paragraph fontWeight="700" fontSize={15} color="$color12">
+                <Paragraph fontWeight="700" fontSize={15} color="color12">
                   Sarah Chen
                 </Paragraph>
               </YStack>
             </Card3D.Item>
             <Card3D.Item translateZ={15}>
-              <YStack gap="$1.5">
-                <XStack gap="$2" items="center">
-                  <Paragraph fontSize={11} color="$color10" width={50}>
+              <YStack gap="1.5">
+                <XStack gap="2" items="center">
+                  <Paragraph fontSize={11} color="color10" width={50}>
                     Dept
                   </Paragraph>
-                  <Paragraph fontSize={11} color="$color12" fontWeight="500">
+                  <Paragraph fontSize={11} color="color12" fontWeight="500">
                     Engineering
                   </Paragraph>
                 </XStack>
-                <XStack gap="$2" items="center">
-                  <Paragraph fontSize={11} color="$color10" width={50}>
+                <XStack gap="2" items="center">
+                  <Paragraph fontSize={11} color="color10" width={50}>
                     ID
                   </Paragraph>
                   <Paragraph
                     fontSize={11}
-                    color="$color12"
+                    color="color12"
                     fontWeight="500"
-                    fontFamily="$mono"
+                    fontFamily="mono"
                   >
                     EMP-2847
                   </Paragraph>
@@ -169,9 +169,9 @@ function ProfileCard() {
             </Card3D.Item>
           </YStack>
           <Card3D.Item translateZ={30}>
-            <XStack gap="$2">
+            <XStack gap="2">
               <ThemeTintAlt>
-                <Button size="small" bg="$color9" flex={1} cursor="pointer">
+                <Button size="small" bg="color9" flex={1} cursor="pointer">
                   <Button.Text color="white" fontSize={11} fontWeight="600">
                     Message
                   </Button.Text>
@@ -198,7 +198,7 @@ function ProductCard() {
       overflow="hidden"
       position="relative"
       borderWidth={1}
-      borderColor="$color6"
+      borderColor="color6"
     >
       <Image
         src="https://tamagui.dev/bento/images/wheel-list/wl_2.png"
@@ -209,24 +209,24 @@ function ProductCard() {
       />
       <YStack position="absolute" inset={0} justify="flex-end">
         <YStack
-          p="$2.5"
-          gap="$1.5"
-          m="$2"
-          rounded="$6"
+          p="2.5"
+          gap="1.5"
+          m="2"
+          rounded="6"
           borderWidth={0.5}
-          borderColor="$color02"
+          borderColor="color02"
           overflow="hidden"
           className="blur-8"
-          elevation="$3"
+          elevation="3"
         >
-          <Paragraph size="$2" fontWeight="600" color="$white" fontFamily="$silkscreen">
+          <Paragraph size="2" fontWeight="600" color="white" fontFamily="silkscreen">
             Nova #2847
           </Paragraph>
           <XStack items="center" justify="space-between">
-            <Paragraph fontWeight="700" color="$white">
+            <Paragraph fontWeight="700" color="white">
               0.42 ETH
             </Paragraph>
-            <Paragraph size="$2" color="$yellow10" fontWeight="600">
+            <Paragraph size="2" color="yellow10" fontWeight="600">
               RARE
             </Paragraph>
           </XStack>
@@ -250,18 +250,18 @@ function TabsComponent() {
         if (index !== -1) setActiveIndex(index)
       }}
     >
-      <GlassCard p="$1.5" rounded="$5" position="relative">
+      <GlassCard p="1.5" rounded="5" position="relative">
         <Tabs.List flexDirection="row">
           <View
             position="absolute"
             t={0}
             b={0}
-            l="$1.5"
+            l="1.5"
             my="auto"
             width={tabWidth}
             height="80%"
-            bg="$background"
-            rounded="$4"
+            bg="background"
+            rounded="4"
             x={activeIndex * tabWidth}
             transition="medium"
             animateOnly={['transform']}
@@ -273,8 +273,8 @@ function TabsComponent() {
                 key={tab}
                 value={tab}
                 width={tabWidth}
-                py="$2"
-                rounded="$3"
+                py="2"
+                rounded="3"
                 cursor="pointer"
                 items="center"
                 z={1}
@@ -282,7 +282,7 @@ function TabsComponent() {
                 <Text
                   fontSize={13}
                   fontWeight={isActive ? '600' : '400'}
-                  color={isActive ? '$color12' : '$color10'}
+                  color={`${isActive ? 'color12' : 'color10'}`}
                   cursor="pointer"
                   select="none"
                 >
@@ -303,7 +303,7 @@ function IndicatorDot({ isActive }: { isActive: boolean }) {
       width={isActive ? 28 : 8}
       height={8}
       rounded={4}
-      bg={isActive ? '$color10' : '$color7'}
+      bg={`${isActive ? 'color10' : 'color7'}`}
       transition="medium"
       animateOnly={['width', 'backgroundColor']}
     />
@@ -324,7 +324,7 @@ function PaginationComponent() {
   return (
     <GlassCard>
       <ThemeTintAlt>
-        <XStack gap="$3" items="center" rounded="$6" p="$2">
+        <XStack gap="3" items="center" rounded="6" p="2">
           <Button
             size="medium"
             circular
@@ -332,7 +332,7 @@ function PaginationComponent() {
             scaleIcon={1.5}
             onPress={handlePrevClick}
             cursor="pointer"
-            bg="$color5"
+            bg="color5"
           />
           {tint.tints.map((_, idx) => (
             <IndicatorDot key={idx} isActive={idx === tint.tintIndex} />
@@ -344,7 +344,7 @@ function PaginationComponent() {
             scaleIcon={1.5}
             onPress={handleNextClick}
             cursor="pointer"
-            bg="$color5"
+            bg="color5"
           />
         </XStack>
       </ThemeTintAlt>
@@ -354,13 +354,13 @@ function PaginationComponent() {
 
 function InputComponent() {
   return (
-    <XStack items="center" gap="$2">
+    <XStack items="center" gap="2">
       <Input
-        backgroundColor="$color3"
+        backgroundColor="color3"
         flex={1}
-        size="$3"
-        placeholder="Search..."
         width={150}
+        size="3"
+        placeholder="Search..."
       />
       <Button theme="surface1" size="medium">
         Go
@@ -379,8 +379,8 @@ function ThemeToggle() {
     <Switch
       checked={checked}
       onCheckedChange={(isChecked) => setScheme(isChecked ? 'dark' : 'light')}
-      size="$5"
-      bg="$color3"
+      size="5"
+      bg="color3"
       justify="center"
       items="center"
       cursor="pointer"
@@ -402,41 +402,41 @@ function ThemeToggle() {
           transition="200ms"
           l={checked ? '55%' : 0}
           position="absolute"
-          bg="$color6"
+          bg="color6"
           width={checked ? 4 : 20}
           height={checked ? 4 : 4}
-          rounded="$10"
+          rounded="10"
         />
         <View
           t={checked ? '33%' : '45%'}
           l="28%"
           transition="200ms"
           position="absolute"
-          bg="$color6"
+          bg="color6"
           width={checked ? 3 : 14}
           height={checked ? 3 : 4}
-          rounded="$10"
+          rounded="10"
         />
         <View
           t="70%"
           l={checked ? '30%' : 0}
           transition="200ms"
           position="absolute"
-          bg="$color6"
+          bg="color6"
           width={checked ? 4 : 10}
           height={checked ? 4 : 4}
-          rounded="$10"
+          rounded="10"
         />
       </View>
-      <Switch.Thumb transition="medium" bg="$colorTransparent">
+      <Switch.Thumb transition="medium" bg="color-transparent">
         <View
-          m="$1"
+          m="1"
           flex={1}
           overflow="hidden"
-          rounded="$10"
+          rounded="10"
           items="center"
           justify="center"
-          bg="$color5"
+          bg="color5"
           transition="200ms"
         >
           <AnimatePresence mode="wait" custom={{ direction: -1 }}>
@@ -481,17 +481,17 @@ function ThemeToggle() {
 function LoaderComponent() {
   return (
     <YStack
-      bg="$color2"
+      bg="color2"
       width={60}
       height={60}
       items="center"
       justify="center"
       position="relative"
-      rounded="$4"
-      elevation="$3"
+      rounded="4"
+      elevation="3"
     >
       <ThemeTintAlt>
-        <Spinner size="large" color="$color9" />
+        <Spinner size="large" color="color9" />
       </ThemeTintAlt>
     </YStack>
   )
@@ -499,15 +499,15 @@ function LoaderComponent() {
 
 function NotificationBadge() {
   return (
-    <GlassCard p="$3" flexDirection="row" items="center" gap="$3">
+    <GlassCard p="3" flexDirection="row" items="center" gap="3">
       <YStack position="relative">
-        <Circle size={40} bg="$color4" items="center" justify="center">
-          <Bell size={20} color="$color11" />
+        <Circle size={40} bg="color4" items="center" justify="center">
+          <Bell size={20} color="color11" />
         </Circle>
         <ThemeTintAlt>
           <Circle
             size={18}
-            bg="$red9"
+            bg="red9"
             position="absolute"
             t={-4}
             r={-4}
@@ -520,11 +520,11 @@ function NotificationBadge() {
           </Circle>
         </ThemeTintAlt>
       </YStack>
-      <YStack gap="$1">
-        <Paragraph fontSize={13} fontWeight="600" color="$color12">
+      <YStack gap="1">
+        <Paragraph fontSize={13} fontWeight="600" color="color12">
           Notifications
         </Paragraph>
-        <Paragraph fontSize={11} color="$color10">
+        <Paragraph fontSize={11} color="color10">
           3 unread messages
         </Paragraph>
       </YStack>
@@ -537,7 +537,7 @@ function TooltipBadge() {
     <Tooltip placement="bottom" offset={12} delay={{ open: 0, close: 150 }}>
       <Tooltip.Trigger asChild>
         <Button theme="accent" size="medium" cursor="pointer">
-          <Button.Text fontSize={13} color="$color11">
+          <Button.Text fontSize={13} color="color11">
             Hover me
           </Button.Text>
         </Button>
@@ -545,16 +545,16 @@ function TooltipBadge() {
       <Tooltip.Content
         animatePosition
         transition="quick"
-        bg="$background"
-        boxShadow="0 4px 12px $shadowColor"
-        rounded="$4"
-        px="$2.5"
-        py="$1"
-        enterStyle={{ y: -4, opacity: 0 }}
-        exitStyle={{ y: -4, opacity: 0 }}
+        bg="background"
+        boxShadow="0 4px 12px shadow-color"
+        rounded="4"
+        px="2.5"
+        py="1"
+        y="enter:-4px exit:-4px"
+        opacity="enter:0 exit:0"
       >
         <Tooltip.Arrow />
-        <Paragraph size="$3">Nice tooltips</Paragraph>
+        <Paragraph size="3">Nice tooltips</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )
@@ -564,27 +564,27 @@ function SliderComponent() {
   const [value, setValue] = useState([75])
 
   return (
-    <GlassCard p="$3" width={140} gap="$2">
+    <GlassCard p="3" width={140} gap="2">
       <XStack justify="space-between" items="center">
-        <Paragraph fontSize={12} color="$color10">
+        <Paragraph fontSize={12} color="color10">
           Volume
         </Paragraph>
-        <Paragraph fontSize={12} fontWeight="600" color="$color12">
+        <Paragraph fontSize={12} fontWeight="600" color="color12">
           {value[0]}%
         </Paragraph>
       </XStack>
       <ThemeTintAlt>
         <Slider value={value} onValueChange={setValue} max={100} step={1} width="100%">
-          <Slider.Track bg="$color4" height={6}>
-            <Slider.TrackActive bg="$color9" />
+          <Slider.Track bg="color4" height={6}>
+            <Slider.TrackActive bg="color9" />
           </Slider.Track>
           <Slider.Thumb
             index={0}
             circular
             size={16}
-            bg="$color4"
+            bg="color4"
             cursor="pointer"
-            elevation="$1"
+            elevation="1"
           />
         </Slider>
       </ThemeTintAlt>
@@ -603,20 +603,19 @@ const chipData = [
 
 function ChipGroup() {
   return (
-    <XStack gap="$2" flexWrap="wrap" maxW={250}>
+    <XStack gap="2" flexWrap="wrap" maxW={250}>
       {chipData.map(({ label, color, Icon }) => (
         <Theme key={label} name={color}>
           <XStack
-            bg="$color4"
-            rounded="$10"
-            px="$2.5"
-            py="$1.5"
+            bg="color4 hover:color5"
+            rounded="10"
+            px="2.5"
+            py="1.5"
             items="center"
-            gap="$1.5"
-            hoverStyle={{ bg: '$color5' }}
+            gap="1.5"
           >
-            <Icon size={12} color="$color9" />
-            <Paragraph fontSize={11} fontWeight="500" color="$color9">
+            <Icon size={12} color="color9" />
+            <Paragraph fontSize={11} fontWeight="500" color="color9">
               {label}
             </Paragraph>
           </XStack>
@@ -636,52 +635,42 @@ const features = [
 ]
 
 const FeatureChip = styled(XStack, {
-  bg: '$color2',
-  rounded: '$4',
-  px: '$4',
-  py: '$3',
+  bg: 'color2',
+  rounded: '4',
+  px: '4',
+  py: '3',
   items: 'center',
-  gap: '$3',
+  gap: '3',
   borderWidth: 0.5,
-  borderColor: '$color4',
+  borderColor: 'color4',
 })
 
 const ChipIcon = styled(YStack, {
   width: 32,
   height: 32,
-  rounded: '$3',
+  rounded: '3',
   items: 'center',
   justify: 'center',
-  bg: '$color3',
+  bg: 'color3',
 })
 
 const StyledItem = styled(Menu.Item, {
-  px: '$3',
-  py: '$2',
-  mx: '$1',
-  rounded: '$3',
+  px: '3',
+  py: '2',
+  mx: '1',
+  rounded: '3',
   cursor: 'pointer',
-  hoverStyle: {
-    bg: '$color3',
-  },
-  pressStyle: {
-    bg: '$color4',
-  },
+  bg: 'hover:color3 press:color4',
 })
 
 const StyledSubTrigger = styled(Menu.SubTrigger, {
-  px: '$3',
-  py: '$2',
-  mx: '$1',
-  rounded: '$3',
+  px: '3',
+  py: '2',
+  mx: '1',
+  rounded: '3',
   cursor: 'pointer',
   justify: 'space-between',
-  hoverStyle: {
-    bg: '$color3',
-  },
-  pressStyle: {
-    bg: '$color4',
-  },
+  bg: 'hover:color3 press:color4',
 })
 
 function DemoMenu() {
@@ -689,16 +678,16 @@ function DemoMenu() {
     <Menu placement="bottom-start">
       <Menu.Trigger asChild>
         <XStack
-          px="$5"
-          py="$2.5"
-          rounded="$10"
+          px="5"
+          py="2.5"
+          rounded="10"
           items="center"
-          gap="$2"
+          gap="2"
           cursor="pointer"
-          bg="$background04"
+          bg="background04"
           borderWidth={0}
           transition="quick"
-          hoverStyle={{ opacity: 0.8 }}
+          opacity="hover:0.8"
           style={{
             backdropFilter: 'blur(12px)',
             WebkitBackdropFilter: 'blur(12px)',
@@ -713,25 +702,25 @@ function DemoMenu() {
 
       <Menu.Portal>
         <Menu.Content
-          bg="$background"
-          rounded="$4"
+          bg="background"
+          rounded="4"
           borderWidth={0.5}
-          borderColor="$color4"
+          borderColor="color4"
           overflow="hidden"
           minW={220}
-          p="$1.5"
-          boxShadow="0 4px 12px $shadowColor"
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
+          p="1.5"
+          boxShadow="0 4px 12px shadow-color"
+          y="enter:-10px exit:-10px"
+          opacity="enter:0 exit:0"
           transition={['quicker', { opacity: { overshootClamping: true } }]}
         >
           <Menu.Group>
             <Menu.Label
               fontSize={11}
               fontWeight="600"
-              color="$color9"
-              px="$3"
-              py="$1.5"
+              color="color9"
+              px="3"
+              py="1.5"
               textTransform="uppercase"
               letterSpacing={0.5}
             >
@@ -739,56 +728,56 @@ function DemoMenu() {
             </Menu.Label>
 
             <StyledItem key="new-file" textValue="New file">
-              <Menu.ItemTitle fontSize={14} color="$color12">
+              <Menu.ItemTitle fontSize={14} color="color12">
                 New file
               </Menu.ItemTitle>
             </StyledItem>
 
             <StyledItem key="edit-file" textValue="Edit file">
-              <Menu.ItemTitle fontSize={14} color="$color12">
+              <Menu.ItemTitle fontSize={14} color="color12">
                 Edit file
               </Menu.ItemTitle>
             </StyledItem>
           </Menu.Group>
 
-          <Menu.Separator mx="$2" my="$1.5" bg="$color4" />
+          <Menu.Separator mx="2" my="1.5" bg="color4" />
 
           <Menu.Sub placement="right-start">
             <StyledSubTrigger key="more-options" textValue="More options">
-              <Menu.ItemTitle fontSize={14} color="$color12">
+              <Menu.ItemTitle fontSize={14} color="color12">
                 More options
               </Menu.ItemTitle>
-              <ChevronRight size={14} color="$color9" />
+              <ChevronRight size={14} color="color9" />
             </StyledSubTrigger>
 
             <Menu.Portal>
               <Menu.SubContent
-                bg="$background"
-                rounded="$4"
+                bg="background"
+                rounded="4"
                 borderWidth={0.5}
-                borderColor="$color4"
+                borderColor="color4"
                 overflow="hidden"
                 minW={180}
-                p="$1.5"
-                boxShadow="0 4px 12px $shadowColor"
-                enterStyle={{ x: -10, opacity: 0 }}
-                exitStyle={{ x: -10, opacity: 0 }}
+                p="1.5"
+                boxShadow="0 4px 12px shadow-color"
+                x="enter:-10px exit:-10px"
+                opacity="enter:0 exit:0"
                 transition={['quicker', { opacity: { overshootClamping: true } }]}
               >
                 <StyledItem key="duplicate" textValue="Duplicate">
-                  <Menu.ItemTitle fontSize={14} color="$color12">
+                  <Menu.ItemTitle fontSize={14} color="color12">
                     Duplicate
                   </Menu.ItemTitle>
                 </StyledItem>
 
                 <StyledItem key="archive" textValue="Archive">
-                  <Menu.ItemTitle fontSize={14} color="$color12">
+                  <Menu.ItemTitle fontSize={14} color="color12">
                     Archive
                   </Menu.ItemTitle>
                 </StyledItem>
 
                 <StyledItem key="move" textValue="Move to folder">
-                  <Menu.ItemTitle fontSize={14} color="$color12">
+                  <Menu.ItemTitle fontSize={14} color="color12">
                     Move to folder
                   </Menu.ItemTitle>
                 </StyledItem>
@@ -796,15 +785,15 @@ function DemoMenu() {
             </Menu.Portal>
           </Menu.Sub>
 
-          <Menu.Separator mx="$2" my="$1.5" bg="$color4" />
+          <Menu.Separator mx="2" my="1.5" bg="color4" />
 
           <Menu.Group>
             <Menu.Label
               fontSize={11}
               fontWeight="600"
-              color="$color9"
-              px="$3"
-              py="$1.5"
+              color="color9"
+              px="3"
+              py="1.5"
               textTransform="uppercase"
               letterSpacing={0.5}
             >
@@ -812,9 +801,9 @@ function DemoMenu() {
             </Menu.Label>
 
             <StyledItem key="delete-file" textValue="Delete file" destructive>
-              <XStack items="center" gap="$2">
-                <Trash2 size={14} color="$red10" />
-                <Menu.ItemTitle fontSize={14} color="$red10">
+              <XStack items="center" gap="2">
+                <Trash2 size={14} color="red10" />
+                <Menu.ItemTitle fontSize={14} color="red10">
                   Delete file
                 </Menu.ItemTitle>
               </XStack>
@@ -828,15 +817,14 @@ function DemoMenu() {
 
 export function TakeoutMenuShowcase() {
   return (
-    <YStack gap="$6" py="$12" px="$4" maxW={1200} self="center" width="100%">
-      <XStack gap="$8" flexWrap="wrap" $lg={{ flexWrap: 'nowrap' }}>
-        <YStack flex={1} gap="$5" minW={300} width="100%" $gtMd={{ maxW: 440 }}>
+    <YStack gap="6" py="12" px="4" maxW={1200} self="center" width="100%">
+      <XStack gap="8" flexWrap="wrap lg:nowrap">
+        <YStack flex={1} gap="5" minW={300} width="100%" maxW="gtMd:440px">
           <H2
-            fontSize={36}
+            fontSize="36px sm:44px"
             fontWeight="700"
-            color="$color12"
+            color="color12"
             style={{ lineHeight: '1.1' }}
-            $sm={{ fontSize: 44 }}
           >
             <ThemeTintAlt>
               <HighlightText render="span">Native feel,</HighlightText>
@@ -849,16 +837,16 @@ export function TakeoutMenuShowcase() {
             and web. Write once, ship everywhere with true native performance.
           </SubTitle>
 
-          <XStack flexWrap="wrap" gap="$3" mt="$2">
+          <XStack flexWrap="wrap" gap="3" mt="2">
             {features.map((feature) => (
               <FeatureChip key={feature.label}>
                 <ChipIcon>
-                  <feature.Icon size={16} color="$color11" />
+                  <feature.Icon size={16} color="color11" />
                 </ChipIcon>
                 <Paragraph
                   pointerEvents="none"
                   fontSize={14}
-                  color="$color11"
+                  color="color11"
                   fontWeight="500"
                 >
                   {feature.label}
@@ -873,8 +861,7 @@ export function TakeoutMenuShowcase() {
           minW={360}
           height={600}
           position="relative"
-          display="none"
-          $gtMd={{ display: 'flex' }}
+          display="none gtMd:flex"
         >
           <YStack position="absolute" inset={0} pointerEvents="none" overflow="visible">
             <YStack position="absolute" t={-20} l="40%" pointerEvents="auto">

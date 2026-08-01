@@ -17,18 +17,13 @@ export const ProAgreementModal = () => {
     >
       <Dialog.Adapt when="maxMd">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Container p="$4" gap="$4">
+          <Sheet.Container p="4" gap="4">
             <Sheet.Background />
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Container>
-          <Sheet.Overlay
-            bg="$shadow4"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Dialog.Adapt>
 
@@ -36,30 +31,23 @@ export const ProAgreementModal = () => {
         <Dialog.Overlay
           key="overlay"
           transition="medium"
+          opacity="enter:0 exit:0"
           className="blur-medium"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
         />
 
         <Dialog.Content
           bordered
           elevate
           key="content"
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+          transition={['quick', { opacity: { overshootClamping: true } }]}
+          y="enter:-10px exit:10px"
+          opacity="enter:0 exit:0"
+          scale="enter:0.975 exit:0.975"
           width="90%"
           maxW={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxH: '90vh' }} gap="$4">
+            <YStack maxH="gtSm:90vh" gap="4">
               <Paragraph>
                 <Link href="/pro-license">Permalink to the license</Link>.
               </Paragraph>
@@ -69,7 +57,7 @@ export const ProAgreementModal = () => {
           </ScrollView>
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="$2" r="$2" size="small" circular icon={X} />
+              <Button position="absolute" t="2" r="2" size="small" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

@@ -5,16 +5,14 @@ export const TakeoutButton = (props: ButtonProps) => {
   return (
     <Button
       theme="red"
-      borderColor="$color6"
+      borderColor="color6"
       boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
       size="medium"
-      rounded="$10"
-      hoverStyle={{
-        z: 100,
-      }}
+      rounded="10"
+      z="hover:100"
       {...props}
     >
-      <Button.Text fontFamily="$silkscreen" fontSize={12}>
+      <Button.Text fontFamily="silkscreen" fontSize={12}>
         Starter Kit
       </Button.Text>
       <Button.Icon>

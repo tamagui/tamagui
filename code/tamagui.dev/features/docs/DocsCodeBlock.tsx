@@ -96,25 +96,22 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     <YStack
       ref={ref}
       position="relative"
-      mb="$4"
+      mb="4"
       {...(isHero && {
-        px: '$4',
-        mx: '$-4',
-        $gtMd: {
-          mx: '$-7',
-        },
+        px: '4',
+        mx: '-4 gtMd:-7',
       })}
     >
       <ErrorBoundary>
         {isCollapsible && (
           <XStack
-            gap="$2"
+            gap="2"
             position="absolute"
             display="inline-flex"
             items="center"
             justify="flex-end"
             t={-82}
-            r="$6"
+            r="6"
             z={0}
           >
             <Button
@@ -138,7 +135,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             {...(isCutoff && {
               maxHeight: 400,
               ov: 'hidden',
-              br: '$4',
+              br: '4',
             })}
           >
             {isCutoff && (
@@ -148,7 +145,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 l={0}
                 r={0}
                 height={200}
-                colors={['$background0', '$background']}
+                colors={['background0', 'background']}
                 z={1000}
               >
                 <Spacer flex={1} />
@@ -160,7 +157,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 >
                   Show more
                 </Button>
-                <Spacer size="$4" />
+                <Spacer size="4" />
               </LinearGradient>
             )}
 
@@ -173,25 +170,25 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               mb={0}
               id={id}
               justify="center"
-              bg="$color2"
+              bg="color2"
               position="relative"
             >
               {showFileName && (
                 <XStack
                   items="center"
-                  gap="$2"
-                  pl="$4"
-                  height="$5"
-                  py="$4"
-                  borderBottomWidth="$0.5"
-                  borderBottomColor="$color3"
+                  gap="2"
+                  pl="4"
+                  height="5"
+                  py="4"
+                  borderBottomWidth="0.5"
+                  borderBottomColor="color3"
                 >
                   {isTerminalCommand ? (
-                    <TerminalSquare size="$1" color="$color11" />
+                    <TerminalSquare size="1" color="color11" />
                   ) : (
-                    <FileCode2 size="$1" color="$color11" />
+                    <FileCode2 size="1" color="color11" />
                   )}
-                  <Paragraph color="$color11">
+                  <Paragraph color="color11">
                     {isTerminalCommand ? 'Terminal' : fileName}
                   </Paragraph>
                 </XStack>
@@ -214,8 +211,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                     position="absolute"
                     aria-label="Copy code to clipboard"
                     size="small"
-                    t={showFileName ? '$6' : '$3'}
-                    r="$3"
+                    t={showFileName ? '6' : '3'}
+                    r="3"
                     display="inline-flex"
                     icon={hasCopied ? CheckCircle : Copy}
                     onPress={() => {

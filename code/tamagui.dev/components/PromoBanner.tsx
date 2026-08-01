@@ -51,7 +51,7 @@ export const PromoBanner = () => {
 
   return (
     <XStack
-      bg="$background02"
+      bg="background02"
       width="100%"
       items="center"
       justify="center"
@@ -68,8 +68,8 @@ export const PromoBanner = () => {
             minW: '100%',
           }}
         >
-          <XStack flex={1} items="center" gap="$4" px="$4" py="$2">
-            <XStack items="center" gap="$2">
+          <XStack flex={1} items="center" gap="4" px="4" py="2">
+            <XStack items="center" gap="2">
               <Link href="/">
                 <Button
                   variant="quiet"
@@ -147,35 +147,32 @@ const BannerThemes = memo(() => {
 
   return (
     <>
-      <XStack items="center" gap="$4">
+      <XStack items="center" gap="4">
         <TooltipSimple label="To celebrate v2, here's some free themes!">
-          <Paragraph size="$2" select="none" color="$color9">
+          <Paragraph size="2" select="none" color="color9">
             Themes:
           </Paragraph>
         </TooltipSimple>
 
-        <XStack my={-3} items="center" gap="$2">
+        <XStack my={-3} items="center" gap="2">
           {featuredThemes.map((theme) => {
             const isActive = currentThemeId === String(theme.id)
             return (
-              <XGroup key={theme.id} size="$2" rounded="$10">
+              <XGroup key={theme.id} size="2" rounded="10">
                 <XGroup.Item>
                   <Button
                     // theme={isActive ? 'white' : null}
-                    bg="transparent"
-                    hoverStyle={{
-                      bg: '$background02',
-                    }}
+                    bg="transparent hover:background02"
                     size="small"
-                    rounded="$10"
+                    rounded="10"
                     borderWidth={0}
                     onPress={() => handleThemeClick(theme)}
                   >
                     <Paragraph
-                      size="$2"
+                      size="2"
                       fontWeight="500"
-                      fontFamily="$mono"
-                      color={isActive ? '$color12' : '$color9'}
+                      fontFamily="mono"
+                      color={`${isActive ? 'color12' : 'color9'}`}
                     >
                       {theme.name}
                     </Paragraph>
@@ -185,11 +182,8 @@ const BannerThemes = memo(() => {
                   <XGroup.Item>
                     <Button
                       size="small"
-                      bg="transparent"
-                      hoverStyle={{
-                        bg: '$background02',
-                      }}
-                      rounded="$10"
+                      bg="transparent hover:background02"
+                      rounded="10"
                       borderWidth={0}
                       icon={<ChevronRight mx={-3} ml={-6} size={12} opacity={0.15} />}
                       scaleIcon={0.8}
@@ -204,10 +198,10 @@ const BannerThemes = memo(() => {
 
       {/* <AnimatePresence>
         {recentThemes.length > 0 && (
-          <XStack key="recent-themes" items="center" gap="$2">
-            <Separator vertical height={16} bg="$color5" />
+          <XStack key="recent-themes" items="center" gap="2">
+            <Separator vertical height={16} bg="color5" />
 
-            <Paragraph size="$1" color="$color8">
+            <Paragraph size="1" color="color8">
               Recently:
             </Paragraph>
 
@@ -216,22 +210,24 @@ const BannerThemes = memo(() => {
               return (
                 <Theme key={`recent-${theme.id}`} name={isActive ? 'green' : null}>
                   <Button
-                    size="$2"
-                    rounded="$10"
+                    size="2"
+                    rounded="10"
                     borderWidth={0}
                     onPress={() => handleThemeClick(theme)}
-                    {...(isActive && { bg: '$color5' })}
-                    hoverStyle={{ bg: '$color4' }}
-                    pressStyle={{ bg: '$color5' }}
+                    bg={
+                      isActive
+                        ? 'color5 hover:color4 press:color5'
+                        : 'hover:color4 press:color5'
+                    }
                   >
                     <Paragraph
                       ellipsis
                       display="inline-flex"
                       overflow="hidden"
                       whiteSpace="nowrap"
-                      size="$2"
+                      size="2"
                       maxW={80}
-                      fontFamily="$mono"
+                      fontFamily="mono"
                       fontWeight="500"
                     >
                       {theme.search_query}

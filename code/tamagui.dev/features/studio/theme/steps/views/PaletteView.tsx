@@ -225,13 +225,7 @@ export const PaletteView = memo((props: Props) => {
   const lightDarkSynced = anchors.every((a) => a.hue.sync && a.sat.sync)
 
   const syncButtons = (
-    <XStack
-      opacity={0}
-      $group-content-hover={{ opacity: 1 }}
-      gap="$4"
-      items="center"
-      ml={60}
-    >
+    <XStack opacity="0 group-hover/content:1" gap="4" items="center" ml={60}>
       <XStack justify="space-between" width={160}>
         <SyncButtons
           anchorKey="hue"
@@ -254,8 +248,14 @@ export const PaletteView = memo((props: Props) => {
   )
 
   return (
-    <YStack contain="paint" p="$4" mx="$-4" mb="$0" flex={1} gap="$4">
-      <YStack group="content" containerType="normal" gap="$4">
+    <YStack contain="paint" p="4" mx="-4" mb="0" flex={1} gap="4">
+      <YStack
+        group="content"
+        container
+        containerName="content"
+        containerType="normal"
+        gap="4"
+      >
         {/* <Theme name="white"> */}
         <ColorPickerContents
           disabled={!anchor}
@@ -266,7 +266,7 @@ export const PaletteView = memo((props: Props) => {
 
         <YStack mt={-15}>{syncButtons}</YStack>
 
-        <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
+        <XLabeledItem label={<SizableText size="4">Light</SizableText>}>
           <StepThemeHoverablePalette
             palette={palette}
             colors={colors.light}
@@ -280,8 +280,8 @@ export const PaletteView = memo((props: Props) => {
       {/* </Theme> */}
 
       <XLabeledItem label="">
-        <YStack gap="$4">
-          <XStack gap="$4">
+        <YStack gap="4">
+          <XStack gap="4">
             <DataItem
               width={50}
               labelTop=""
@@ -290,10 +290,10 @@ export const PaletteView = memo((props: Props) => {
                   select="none"
                   text="right"
                   minW={60}
-                  px="$2"
+                  px="2"
                   display="block"
-                  size="$9"
                   fontWeight="bold"
+                  size="9"
                 >
                   {activeColor + 1}
                 </SizableText>
@@ -332,8 +332,14 @@ export const PaletteView = memo((props: Props) => {
       {/* <Theme name="black"> */}
       <PaletteIndices />
 
-      <YStack group="content" containerType="normal" gap="$4">
-        <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
+      <YStack
+        group="content"
+        container
+        containerName="content"
+        containerType="normal"
+        gap="4"
+      >
+        <XLabeledItem label={<SizableText size="4">Dark</SizableText>}>
           <StepThemeHoverablePalette
             palette={palette}
             colors={colors.dark}
@@ -490,7 +496,7 @@ const DataItem = ({
   return (
     <YStack width={width} maxW={width}>
       <SizableText select="none">{labelTop}</SizableText>
-      <SizableText select="none" size="$2">
+      <SizableText select="none" size="2">
         {labelBottom}
       </SizableText>
     </YStack>
@@ -518,7 +524,7 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
 
   return (
     <TooltipGroup delay={0}>
-      <XStack flex={1} rounded={borderRadius} borderWidth={1} borderColor="$color7">
+      <XStack flex={1} rounded={borderRadius} borderWidth={1} borderColor="color7">
         {colors.map((color, i) => {
           return <PaletteColor {...props} color={color} index={i} key={i} />
         })}
@@ -610,40 +616,38 @@ const PaletteColor = memo(
         overflow="hidden"
         borderWidth={2}
         borderColor={color as any}
-        onMouseEnter={() => {
-          mouseEnter(index, palette.name)
-        }}
-        hoverStyle={{
-          scale: 1.05,
-        }}
+        scale="hover:1.05"
         position="relative"
         {...(hoveredColor === index && {
           z: 10000,
-          outlineColor: '$accent10',
+          outlineColor: 'accent10',
           outlineStyle: 'solid',
           outlineWidth: 1.5,
-          shadowColor: '$blue10',
+          shadowColor: 'blue10',
           shadowRadius: 5,
           shadowOpacity: 1,
         })}
         {...((isAnchor || selectedColor === index) && {
           zi: 10000,
-          outlineColor: '$accent10',
+          outlineColor: 'accent10',
           outlineStyle: 'solid',
           outlineWidth: 2,
         })}
         {...(selectedColor === index && {
-          outlineColor: '$accent1',
+          outlineColor: 'accent1',
         })}
         {...(selectedColor === hoveredColor &&
           hoveredColor === index && {
-            shadowColor: '$blue10',
+            shadowColor: 'blue10',
             shadowRadius: 10,
             shadowOpacity: 1,
             zi: 100000,
           })}
         {...radiusStyle}
         {...doublePressProps}
+        onMouseEnter={() => {
+          mouseEnter(index, palette.name)
+        }}
         onMouseLeave={() => {
           mouseLeave(index)
           doublePressProps.onMouseLeave()
@@ -661,9 +665,9 @@ const PaletteColor = memo(
         >
           <SizableText
             select="none"
-            color={index > 4 ? '$background' : '$color'}
-            size="$1"
+            color={`${index > 4 ? 'background' : 'color'}`}
             scale={size === 'small' ? 0.8 : 1}
+            size="1"
           >
             {children?.(color, index)}
           </SizableText>
@@ -674,7 +678,7 @@ const PaletteColor = memo(
 )
 
 const PaletteIndices = () => (
-  <YStack my="$-3">
+  <YStack my="-3">
     <XLabeledItem label="">
       <XStack flex={1}>
         {new Array(12).fill(0).map((_, i) => {
@@ -682,12 +686,12 @@ const PaletteIndices = () => (
             <SizableText
               width={`${1 / 12}%`}
               flex={1}
-              key={i}
-              size="$1"
-              color="$color9"
-              fontFamily="$mono"
+              color="color9"
+              fontFamily="mono"
               self="center"
               text="center"
+              key={i}
+              size="1"
             >
               {i + 1}
             </SizableText>

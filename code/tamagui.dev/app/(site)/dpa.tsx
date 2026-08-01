@@ -29,7 +29,7 @@ export default function DPAPage() {
         description={frontmatter.description || ''}
       />
 
-      <Container py="$10">
+      <Container py="10">
         <MDXProvider frontmatter={frontmatter}>
           <ThemeTint>
             <MDXTabs id="type" defaultValue="styled">

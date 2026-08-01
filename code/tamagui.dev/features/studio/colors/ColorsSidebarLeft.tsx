@@ -21,12 +21,12 @@ const ColorsSidebarPalettes = () => {
           <Tabs
             value={state.colors.scheme}
             onValueChange={(v) => state.colors.setScheme(v)}
-            size="$3"
+            size="3"
           >
-            <Tabs.List bg="transparent" gap="$3">
+            <Tabs.List bg="transparent" gap="3">
               {Object.values(state.colors.palettesByScheme).map(({ id, name }) => (
-                <Tabs.Tab rounded="$2" value={id} key={id}>
-                  <SizableText size="$3" color="$color">
+                <Tabs.Tab rounded="2" value={id} key={id}>
+                  <SizableText size="3" color="color">
                     {name}
                   </SizableText>
                 </Tabs.Tab>
@@ -78,15 +78,15 @@ export const ColorsSidebarLeft = memo(function ColorsSidebarLeft() {
     <>
       <SidebarLeft>
         <SidebarPanel>
-          <YStack gap="$3">
-            <XStack gap="$2" items="center">
+          <YStack gap="3">
+            <XStack gap="2" items="center">
               <ColorPicker
                 value={palette?.backgroundColor}
                 onChange={(color) => {
                   state.colors.setBackgroundColor(color)
                 }}
               />
-              <Label ellipsis size="$3" htmlFor="bg-color">
+              <Label ellipsis size="3" htmlFor="bg-color">
                 Background
               </Label>
             </XStack>

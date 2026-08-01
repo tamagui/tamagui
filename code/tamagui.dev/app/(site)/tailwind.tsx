@@ -15,7 +15,7 @@ export default function TailwindPage() {
         description="Write Tailwind utility classes in Tamagui and render them on iOS and web, pixel-matched to Tailwind v4. Measured at 94% web, 97% iOS conformance."
         openGraph={{ url: '/tailwind' }}
       />
-      <ThemeNameEffect colorKey="$color1" />
+      <ThemeNameEffect colorKey="color1" />
 
       <TailwindHero />
       <TailwindConformance />

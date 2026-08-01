@@ -35,7 +35,7 @@ export type HSLA = {
 }
 
 export const ColorPicker = memo((props: ColorPickerProps) => {
-  // can't do the hover effect with hoverStyle - not sure why
+  // The hover effect is currently disabled because it did not render reliably.
   // const [hovered, setHovered] = useState(false)
   return <></>
 })
@@ -75,9 +75,9 @@ const HueSlider = memo(
         />
         <Slider.Thumb
           position="absolute"
+          bg="color1"
           index={0}
-          size="$1"
-          bg="$color1"
+          size="1"
           circular
           elevate
         />
@@ -118,9 +118,9 @@ const SatSlider = memo(
         />
         <Slider.Thumb
           position="absolute"
+          bg="color1"
           index={0}
-          size="$1"
-          bg="$color1"
+          size="1"
           circular
           elevate
         />
@@ -151,7 +151,7 @@ const LightSlider = memo(
       >
         <Slider.Track
           height={3}
-          rounded="$10"
+          rounded="10"
           width="100%"
           minWidth={80}
           style={{
@@ -160,9 +160,9 @@ const LightSlider = memo(
         />
         <Slider.Thumb
           position="absolute"
+          bg="color1"
           index={0}
-          size="$1"
-          bg="$color1"
+          size="1"
           circular
           elevate
         />
@@ -265,7 +265,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
   }
 
   return (
-    <XStack ml={20} gap="$4" items="center" flex={1}>
+    <XStack ml={20} gap="4" items="center" flex={1}>
       <Popover hoverable>
         <Popover.Trigger>
           <View
@@ -276,7 +276,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             rounded={100}
             rotateX="0.001deg"
             borderWidth={1}
-            borderColor="$color10"
+            borderColor="color10"
           >
             <YStack
               select="none"
@@ -294,25 +294,19 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
 
         <Popover.Content
           transition="quick"
-          backgroundColor="$background"
-          boxShadow="0 4px 12px $shadowColor"
+          backgroundColor="background"
+          boxShadow="0 4px 12px shadow-color"
           borderWidth={1}
-          borderColor="$color10"
+          borderColor="color10"
           p={0}
-          enterStyle={{
-            y: -10,
-            opacity: 0,
-          }}
-          exitStyle={{
-            y: -10,
-            opacity: 0,
-          }}
+          y="enter:-10px exit:-10px"
+          opacity="enter:0 exit:0"
         >
           <Popover.Arrow
-            backgroundColor="$background"
+            backgroundColor="background"
             borderWidth={1}
-            borderColor="$color10"
-            size="$4"
+            borderColor="color10"
+            size="4"
           />
           {!props.disableLightness && (
             <>
@@ -321,12 +315,12 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 disabled={props.disabled as boolean}
                 placeholder="Hex"
                 borderWidth={0}
-                size="$3"
+                size="3"
                 width={75}
                 self="center"
                 onFocus={(e) => e.currentTarget.select()}
                 style={{
-                  fontFamily: '$mono',
+                  fontFamily: 'mono',
                 }}
                 value={hexDisplay}
                 onChange={(e) => {
@@ -340,8 +334,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
 
       <XStack
         items="center"
-        gap="$4"
-        height="$3"
+        gap="4"
+        height="3"
         flex={1}
         {...(props.disabled && {
           opacity: 0.5,
@@ -352,11 +346,11 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           {...(props.shouldDim && {
             opacity: 0.5,
           })}
-          y="$-2"
-          gap="$1"
+          y="-2"
+          gap="1"
           flex={1}
         >
-          <SizableText size="$1" select="none" color="$color9">
+          <SizableText size="1" select="none" color="color9">
             Hue
           </SizableText>
           <HueSlider value={hue} onChange={updateHue} onSlideEnd={handleSlideEnd} />
@@ -366,11 +360,11 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           {...(props.shouldDim && {
             opacity: 0.5,
           })}
-          y="$-2"
-          gap="$1"
+          y="-2"
+          gap="1"
           flex={1}
         >
-          <SizableText size="$1" select="none" color="$color9">
+          <SizableText size="1" select="none" color="color9">
             Saturation
           </SizableText>
           <SatSlider
@@ -382,8 +376,8 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
         </YStack>
 
         {!props.disableLightness && (
-          <YStack y="$-2" gap="$1" flex={1}>
-            <SizableText size="$1" select="none" color="$color9">
+          <YStack y="-2" gap="1" flex={1}>
+            <SizableText size="1" select="none" color="color9">
               Lightness
             </SizableText>
             <LightSlider

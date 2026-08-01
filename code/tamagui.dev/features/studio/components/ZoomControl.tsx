@@ -15,8 +15,8 @@ export const ZoomControls = ({
   const handleResetZoom = () => onChange(1)
 
   return (
-    <XStack items="center" gap="$4">
-      <Group orientation="horizontal" size="$2">
+    <XStack items="center" gap="4">
+      <Group orientation="horizontal" size="2">
         <Group.Item>
           <Button size="small" icon={ZoomOut} onPress={handleZoomOut} />
         </Group.Item>
@@ -28,7 +28,7 @@ export const ZoomControls = ({
         </Group.Item>
       </Group>
 
-      <SizableText size="$2">{value * 100}%</SizableText>
+      <SizableText size="2">{value * 100}%</SizableText>
     </XStack>
   )
 }

@@ -48,8 +48,8 @@ export const ParagraphLink = ({
     <Paragraph
       render="a"
       cursor="pointer"
-      color="$color"
-      hoverStyle={{ color: '$color', outlineColor: 'red' }}
+      color="color hover:color"
+      outlineColor="hover:red"
       {...props}
       {...(linkProps as any)}
       {...(delayNavigate && {

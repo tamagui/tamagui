@@ -14,19 +14,19 @@ export const InstallInput = memo(() => {
     <ThemeTint>
       <XStack
         borderWidth={0.5}
-        borderColor="$color6"
+        borderColor="color6"
         overflow="hidden"
-        px="$7"
-        pl="$6"
+        paddingRight="7"
+        pl="6"
         height={48}
         items="center"
         self="center"
-        elevation="$3"
-        rounded="$10"
+        rounded="10"
         position="relative"
+        elevation="3"
       >
         <YStack
-          bg="$color9"
+          bg="color9"
           opacity={0.125}
           position="absolute"
           inset={0}
@@ -34,15 +34,16 @@ export const InstallInput = memo(() => {
         />
         <Paragraph
           text="center"
-          size="$5"
           fontWeight="500"
-          fontFamily="$mono"
+          fontFamily="mono"
           letterSpacing={1}
-          $sm={{ size: '$3' }}
+          fontSize="sm:3"
+          lineHeight="sm:3"
+          size="5"
         >
           {installScript}
         </Paragraph>
-        <Spacer size="$6" />
+        <Spacer size="6" />
         <TooltipSimple
           placement="right"
           label={hasCopied ? 'Copied' : 'Copy to clipboard'}
@@ -50,8 +51,8 @@ export const InstallInput = memo(() => {
           <Button
             aria-label={installScript}
             size="medium"
-            rounded="$8"
-            mr="$-6"
+            rounded="8"
+            mr="-6"
             zIndex={1}
             icon={hasCopied ? Check : Copy}
             onPress={onCopy}

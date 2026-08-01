@@ -7,14 +7,9 @@ export default () => {
       <Square
         transition="bouncy"
         size={110}
-        bg="$red10"
-        br="$9"
-        hoverStyle={{
-          scale: 1.1,
-        }}
-        pressStyle={{
-          scale: 0.9,
-        }}
+        bg="red10"
+        br="9"
+        scale="hover:1.1 press:0.9"
         {...positions[positionI]}
       >
         <LogoIcon />
@@ -25,7 +20,7 @@ export default () => {
         b={20}
         l={20}
         icon={require('@tamagui/lucide-icons-2').Play}
-        size="$6"
+        size="6"
         circular
         onPress={() => setPositionI(i => (i + 1) % positions.length)}
       />
@@ -43,26 +38,14 @@ export const positions = [
   {
     x: -50,
     y: -50,
-    scale: 0.5,
+    scale: '0.5 hover:0.6 press:0.4',
     rotate: '-45deg',
-    hoverStyle: {
-      scale: 0.6,
-    },
-    pressStyle: {
-      scale: 0.4,
-    },
   },
   {
     x: 50,
     y: 50,
-    scale: 1,
+    scale: '1 hover:1.1 press:0.9',
     rotate: '180deg',
-    hoverStyle: {
-      scale: 1.1,
-    },
-    pressStyle: {
-      scale: 0.9,
-    },
   },
 ]`
 
@@ -79,7 +62,7 @@ export const compilationCode = [
 import { Heading } from './Heading'
 
 const App = (props) => (
-  <View px={10} width={550} $gtSm={{ px: 30 }}>
+  <View px="10px gtSm:30px" width={550}>
     <Heading size={props.big ? 'large' : 'small'}>Lorem ipsum.</Heading>
   </View>
 )
@@ -87,7 +70,7 @@ const App = (props) => (
 const Heading = styled(Text, {
   render: 'h1',
   color: 'green',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
 
   variants: {
     size: {
@@ -171,12 +154,12 @@ const _cn = "  _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-au
 
 const App = (props) => (
   <View
-    padding={props.big ? '$5' : '$3'}
+    padding={props.big ? '5' : '3'}
     {...(props.colorful && {
       backgroundColor: 'green',
     })}
   >
-    <Paragraph size="$2">
+    <Paragraph size="2">
       Lorem ipsum.
     </Paragraph>
   </View>
@@ -244,16 +227,7 @@ const App = (props) => {
   const media = useMedia()
   return (
     <View
-      backgroundColor="red"
-      hoverStyle={{
-        backgroundColor: 'blue',
-      }}
-      $gtSm={{
-        backgroundColor: 'green',
-        pressStyle: {
-          backgroundColor: 'yellow',
-        }
-      }}
+      backgroundColor="red hover:blue gtSm:green gtSm:press:yellow"
       {...props.shrinks && media.sm && {
         scale: 0.5
       }}

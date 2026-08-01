@@ -8,7 +8,7 @@ export default function InvoicePage() {
       <YStack p={40}>
         <XStack justify="space-between" items="center">
           <H2>Invoice</H2>
-          <H2 color="$color9">Tamagui LLC</H2>
+          <H2 color="color9">Tamagui LLC</H2>
         </XStack>
         <YStack mt={20}>
           <Text fontWeight="bold">Invoice number: FE9BF9FB-DRAFT</Text>
@@ -90,7 +90,7 @@ export default function InvoicePage() {
             </Text>
           </XStack>
 
-          <Spacer size="$8" />
+          <Spacer size="8" />
 
           <XStack borderBottomColor="#ccc" borderBottomWidth={1}>
             <Text flex={3} p={8}></Text>
@@ -157,8 +157,8 @@ export default function InvoicePage() {
 //       <YStack pos="absolute" b={0} r={0}>
 //         <ThemeToggle />
 //       </YStack>
-//       <Container py="$6">
-//         <YStack gap="$6">
+//       <Container py="6">
+//         <YStack gap="6">
 //           <H1>Invoice: Tamagui</H1>
 
 //           <DT>
@@ -220,8 +220,8 @@ export default function InvoicePage() {
 //             <H3>Purchase</H3>
 //             <DT.Row>
 //               <DT.Col bold>Item:</DT.Col>
-//               <DT.Col gap="$4">
-//                 <XStack gap="$2">
+//               <DT.Col gap="4">
+//                 <XStack gap="2">
 //                   <Checkbox>
 //                     <Checkbox.Indicator>
 //                       <Check />
@@ -229,7 +229,7 @@ export default function InvoicePage() {
 //                   </Checkbox>
 //                   Tamagui Takeout
 //                 </XStack>
-//                 <XStack gap="$2">
+//                 <XStack gap="2">
 //                   <Checkbox>
 //                     <Checkbox.Indicator>
 //                       <Check />
@@ -278,12 +278,12 @@ export default function InvoicePage() {
 // const DT = withStaticProperties(
 //   styled(Stack, {
 //     borderWidth: 1,
-//     borderColor: '$borderColor',
-//     p: '$4',
+//     borderColor: 'border-color',
+//     p: '4',
 //   }),
 //   {
 //     Col: styled(Text, {
-//       p: '$4',
+//       p: '4',
 //       miw: '40%',
 
 //       variants: {
@@ -300,11 +300,11 @@ export default function InvoicePage() {
 //     }),
 
 //     Input: styled(Input, {
-//       fos: '$5',
+//       fos: '5',
 //       w: 300,
-//       p: '$4',
+//       p: '4',
 //       bbw: 1,
-//       bc: '$borderColor',
+//       bc: 'border-color',
 //     }),
 //   }
 // )

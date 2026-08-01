@@ -41,26 +41,26 @@ const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
 
   return (
     <>
-      <XStack position="absolute" t="$4" l={30} z={1000} gap="$4" scale={0.75}>
+      <XStack position="absolute" t="4" l={30} z={1000} gap="4" scale={0.75}>
         {procedureStore.loading.createStudioThemes ? <Spinner size="small" /> : null}
       </XStack>
 
-      <XStack position="absolute" t="$4" r="$4" z={1000}>
+      <XStack position="absolute" t="4" r="4" z={1000}>
         <XStack
           opacity={accentSetting === 'off' ? 0.5 : 1}
-          gap="$2"
+          gap="2"
           ml="auto"
           items="center"
-          height="$2"
+          height="2"
         >
-          <Label size="$3" color="$color">
+          <Label size="3" color="color">
             Accent
           </Label>
           <Switch
             disabled={accentSetting === 'off'}
             checked={showAccent}
             onCheckedChange={setShowAccent}
-            size="$1"
+            size="1"
           >
             <Switch.Thumb transition="quickest" />
           </Switch>
@@ -72,22 +72,15 @@ const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
         {schemes.light && (
           <Theme name="light">
             <Theme name={themeName}>
-              <YStack
-                height="50%"
-                gap="$3"
-                items="center"
-                justify="center"
-                px="$4"
-                pl={60}
-              >
-                <XStack items="center" gap="$4">
+              <YStack height="50%" gap="3" items="center" justify="center" px="4" pl={60}>
+                <XStack items="center" gap="4">
                   <Separator />
-                  <SizableText size="$2" color="$color10" select="none">
+                  <SizableText size="2" color="color10" select="none">
                     {showAccent ? 'Accent' : 'Base'} Light Theme
                   </SizableText>
                   <Separator />
                 </XStack>
-                <YStack rounded="$9" bg="$background" p="$4" mx="$-2">
+                <YStack rounded="9" bg="background" p="4" mx="-2">
                   <StudioThemesQuickPreviewSection
                     scheme="light"
                     hasAccent={accentSetting !== 'off'}
@@ -100,22 +93,15 @@ const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
         {schemes.dark && (
           <Theme name="dark">
             <Theme name={themeName}>
-              <YStack
-                height="50%"
-                gap="$3"
-                items="center"
-                justify="center"
-                px="$4"
-                pl={60}
-              >
-                <XStack items="center" gap="$4">
+              <YStack height="50%" gap="3" items="center" justify="center" px="4" pl={60}>
+                <XStack items="center" gap="4">
                   <Separator />
-                  <SizableText size="$2" color="$color10" select="none">
+                  <SizableText size="2" color="color10" select="none">
                     {showAccent ? 'Accent' : 'Base'} Dark Theme
                   </SizableText>
                   <Separator />
                 </XStack>
-                <YStack rounded="$9" bg="$background" p="$4" mx="$-2">
+                <YStack rounded="9" bg="background" p="4" mx="-2">
                   <StudioThemesQuickPreviewSection
                     scheme="dark"
                     hasAccent={accentSetting !== 'off'}

@@ -43,28 +43,20 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
   return (
     <Tabs.Tab
       // disableActiveTheme
-      size="$3"
+      size="3"
       flex={1}
-      ref={ref as any}
-      px="$5"
+      px="5"
       pointerEvents="auto"
       {...props}
-      focusStyle={{
-        outlineColor: '$outlineColor',
-        outlineWidth: 2,
-        outlineStyle: 'solid',
-      }}
+      outlineColor="focus:outline-color"
+      outlineWidth="focus:2px"
+      outlineStyle="focus:solid"
       {...(isActive && {
-        bg: '$color7',
-        hoverStyle: {
-          bg: '$color7',
-        },
-        focusStyle: {
-          bg: '$color7',
-        },
+        bg: 'color7 hover:color7 focus:color7',
       })}
+      ref={ref as any}
     >
-      <Paragraph size="$3">{props.children}</Paragraph>
+      <Paragraph size="3">{props.children}</Paragraph>
     </Tabs.Tab>
   )
 })
@@ -72,27 +64,22 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 const TabsListFrame = styled(XStack, {
   pointerEvents: 'none',
   maxW: '50%',
-  mt: -30,
+  mt: '-30px sm:0px',
   justify: 'flex-end',
-  self: 'flex-end',
+  self: 'flex-end sm:stretch',
   t: 70,
   mr: 0,
   mb: 0,
   z: 10000,
   position: 'sticky' as any,
   r: 0,
-
-  $sm: {
-    minW: '100%',
-    self: 'stretch',
-    mt: 0,
-  },
+  minW: 'sm:100%',
 })
 
 const TabsList = (props) => {
   return (
     <TabsListFrame className="sticky">
-      <Tabs.List size="$4" width="100%" {...props} />
+      <Tabs.List size="4" width="100%" {...props} />
     </TabsListFrame>
   )
 }

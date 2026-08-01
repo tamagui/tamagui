@@ -4,15 +4,13 @@ import { useFontLoaded } from '~/features/site/fonts/LoadFonts'
 export const TAKEOUT = ({ fontSize = 320, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
     select="none"
-    fontFamily="$cherryBomb"
+    fontFamily="cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}
     whiteSpace="nowrap"
     minW={900}
-    $sm={{
-      scale: 0.5,
-      m: -75,
-    }}
+    scale="sm:0.5"
+    m="sm:-75px"
     text="center"
     {...props}
   >
@@ -41,7 +39,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
         }}
       >
         <ThemeTintAlt offset={-2}>
-          <TAKEOUT className="text-3d" zi={1000} color="$color8" />
+          <TAKEOUT className="text-3d" zi={1000} color="color8" />
         </ThemeTintAlt>
       </YStack> */}
 

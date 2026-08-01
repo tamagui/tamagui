@@ -43,9 +43,9 @@ export const HomeExamples = memo(
 
     return (
       <ContainerLarge position="relative" flexBasis="auto">
-        <YStack z={1} gap="$6" mb="$4">
+        <YStack z={1} gap="6" mb="4">
           {!onlyDemo && (
-            <YStack items="center" gap="$3">
+            <YStack items="center" gap="3">
               <HomeH2>A powerful style system</HomeH2>
               <HomeH3 items="center" justify="center">
                 A multi-faceted optimizing compiler enables
@@ -58,13 +58,13 @@ export const HomeExamples = memo(
           <ThemeTint>
             <XGroup
               borderWidth={1}
-              borderColor="$borderColor"
-              bg="$color2"
+              borderColor="border-color"
+              bg="color2"
               maxW="100%"
               self="center"
               overflow="hidden"
               {...(onlyDemo && {
-                mt: '$-6',
+                mt: '-6',
               })}
             >
               {examples.map((example, i) => {
@@ -78,11 +78,7 @@ export const HomeExamples = memo(
                       rounded={0}
                       size="medium"
                     >
-                      <Button.Text
-                        fontFamily="$silkscreen"
-                        size="medium"
-                        fontWeight="600"
-                      >
+                      <Button.Text fontFamily="silkscreen" size="medium" fontWeight="600">
                         {example.name}
                       </Button.Text>
                     </Button>
@@ -95,7 +91,7 @@ export const HomeExamples = memo(
           <XStack
             position="relative"
             justify="space-between"
-            $sm={{ flexDirection: 'column' }}
+            flexDirection="sm:column"
             {...(onlyDemo && {
               flexDirection: 'column',
             })}
@@ -104,27 +100,18 @@ export const HomeExamples = memo(
               key={`input${activeIndex}`}
               flex={1}
               flexBasis="auto"
-              maxW="50%"
-              {...(onlyDemo && { maxW: '100%' })}
-              $sm={{ maxW: '100%' }}
-              px="$2"
-              gap="$4"
+              maxW={onlyDemo ? '100%' : '50% sm:100%'}
+              px="2"
+              gap="4"
             >
-              <Paragraph
-                maxW={480}
-                self="center"
-                size="$5"
-                minH={50}
-                text="center"
-                px="$6"
-              >
+              <Paragraph maxW={480} self="center" minH={50} text="center" px="6" size="5">
                 <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
               </Paragraph>
               <CodeExamples title="Input" {...activeExample.input} />
             </YStack>
 
             <YStack
-              $sm={{ display: 'none' }}
+              display="sm:none"
               {...(onlyDemo && { display: 'none' })}
               position="absolute"
               l={0}
@@ -135,28 +122,20 @@ export const HomeExamples = memo(
               z={1000}
               pointerEvents="none"
             >
-              <IconStack items="center" p="$2.5" mb={0} elevation="$2">
-                <FastForward color="var(--colorHover)" size="$1" />
+              <IconStack items="center" p="2.5" mb={0} elevation="2">
+                <FastForward color="var(--colorHover)" size="1" />
               </IconStack>
             </YStack>
             <YStack
               key={`output${activeIndex}`}
               flex={1}
               flexBasis="auto"
-              maxW="50%"
-              {...(onlyDemo && { maxW: '100%', mt: '$6' })}
-              $sm={{ maxW: '100%', mt: '$6' }}
-              px="$2"
-              gap="$4"
+              maxW={onlyDemo ? '100%' : '50% sm:100%'}
+              mt={onlyDemo ? '6' : 'sm:6'}
+              px="2"
+              gap="4"
             >
-              <Paragraph
-                maxW={480}
-                self="center"
-                size="$5"
-                minH={50}
-                text="center"
-                px="$6"
-              >
+              <Paragraph maxW={480} self="center" minH={50} text="center" px="6" size="5">
                 <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
               </Paragraph>
               <CodeExamples title="Output" {...activeExample.output} />
@@ -180,27 +159,27 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           self="center"
           items="center"
           z={10}
+          mb="-2.5"
+          maxW="100%"
           horizontal
           showsHorizontalScrollIndicator={false}
-          mb="$-2.5"
-          maxW="100%"
         >
-          <XStack px="$4" shrink={0} gap="$4">
+          <XStack px="4" shrink={0} gap="4">
             <Theme name="accent">
               <Heading
-                bg="$background"
-                color="$color"
-                py="$1"
-                size="$5"
-                px="$4"
-                rounded="$4"
+                bg="background"
+                color="color"
+                py="1"
+                px="4"
+                rounded="4"
+                size="5"
                 elevation={3}
               >
                 {title}
               </Heading>
             </Theme>
 
-            <XGroup size="$2" borderWidth={1} borderColor="$borderColor">
+            <XGroup size="2" borderWidth={1} borderColor="border-color">
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button
@@ -219,7 +198,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
         </ScrollView>
       </>
       <XStack maxW="100%" flex={1} flexBasis="auto">
-        <YStack flex={1} maxW="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+        <YStack flex={1} maxW="100%" opacity="0.9 hover:1">
           <CodeDemoPreParsed
             flexBasis="auto"
             height={325}

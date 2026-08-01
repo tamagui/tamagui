@@ -49,16 +49,16 @@ export const StepComponentThemes = memo(() => {
   }, [componentThemes.length, store.selectedComponentTheme])
 
   return (
-    <YStack mx="$-5" flex={1}>
+    <YStack mx="-5" flex={1}>
       <XStack
         pointerEvents="auto"
         z={100}
-        px="$4"
-        py="$2"
+        px="4"
+        py="2"
         items="center"
         justify="space-between"
       >
-        <H4 fontFamily="$mono" size="$5">
+        <H4 fontFamily="mono" size="5">
           Component: {selectedComponentTheme?.replace('Preview', '')}
         </H4>
         <SelectComponentTheme />
@@ -78,9 +78,9 @@ const SelectComponentTheme = () => {
   // const selected = store.selectedComponentTheme
 
   return (
-    <XStack items="center" gap="$3">
-      <Label fontFamily="$mono">Theme:</Label>
-      <Select size="$3" value="ok" width={200}>
+    <XStack items="center" gap="3">
+      <Label fontFamily="mono">Theme:</Label>
+      <Select size="3" value="ok" width={200}>
         <Select.Item index={0} value="" />
       </Select>
     </XStack>
@@ -91,7 +91,7 @@ export const Themes = memo(() => {
   // const store = useThemeBuilderStore()
 
   return (
-    <YStack gap="$4" py="$4" px="$2">
+    <YStack gap="4" py="4" px="2">
       {[]
         // .sort((a, b) => (a.id === store.selectedComponentTheme ? -1 : 1))
         .map(() => {
@@ -132,14 +132,14 @@ export function StepComponentThemesActions() {
   const setShow = (val: boolean) => (store.showAddThemeMenu = val)
 
   return (
-    <XStack items="center" gap="$4">
+    <XStack items="center" gap="4">
       <AddDropdown open={show} onOpenChange={setShow}>
         <YGroup>
           <AddDropdown.Title>Palette Themes</AddDropdown.Title>
           {[].map(
             () => null
             // <AddDropdown.Item
-            //   size="$3"
+            //   size="3"
             //   key={theme.name}
             //   onPress={() => {
             //     store.addPalette(palette)
@@ -160,7 +160,7 @@ export function StepComponentThemesActions() {
 
 export const StepComponentThemesPreview = () => {
   return (
-    <YStack mt="$-8" gap="$5">
+    <YStack mt="-8" gap="5">
       <SelectParentTheme />
       <PreviewGrid />
     </YStack>
@@ -170,7 +170,7 @@ export const StepComponentThemesPreview = () => {
 const PreviewGrid = memo(() => {
   return (
     <XStack
-      gap="$4"
+      gap="4"
       style={{
         display: 'grid',
         gridTemplateColumns: `repeat(auto-fit, minmax(350px, 1fr))`,
@@ -187,10 +187,10 @@ const SelectParentTheme = () => {
   const store = useThemeBuilderStore()
 
   return (
-    <XStack gap="$4">
+    <XStack gap="4">
       <Label>Parent Theme:</Label>
       <Select
-        size="$3"
+        size="3"
         width={200}
         value="base"
         onValueChange={(val) => {
@@ -225,15 +225,15 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
       minW={300}
       height={400}
       overflow="hidden"
-      elevation="$0.5"
-      rounded="$4"
+      rounded="4"
       borderWidth={1}
-      borderColor="$borderColor"
+      borderColor="border-color"
       {...(isActive && {
         outlineColor: 'blue',
         outlineWidth: 2,
         outlineStyle: 'solid',
       })}
+      elevation="0.5"
       onPress={() => {
         if (!isActive) {
           themeBuilderStore.setSelectedComponentTheme(name)
@@ -241,7 +241,7 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
       }}
     >
       <XStack position="absolute" t={0} l={0} r={0} items="center" justify="center">
-        <SizableText size="$5" py="$3" fontWeight="600">
+        <SizableText size="5" py="3" fontWeight="600">
           {name.replace('Preview', '')}
         </SizableText>
       </XStack>
@@ -251,8 +251,8 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
       </YStack>
 
       <YStack
-        bg="$color2"
-        py="$2"
+        bg="color2"
+        py="2"
         position="absolute"
         b={0}
         l={0}
@@ -260,13 +260,13 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
         items="center"
         justify="center"
       >
-        <SizableText size="$3" color="$color9">{`${parts.length} theme${
+        <SizableText size="3" color="color9">{`${parts.length} theme${
           parts.length === 1 ? '' : 's'
         }:`}</SizableText>
 
         <XStack maxW="100%" overflow="hidden">
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <XStack items="center" justify="center" gap="$2" px="$4" py="$2">
+            <XStack items="center" justify="center" gap="2" px="4" py="2">
               {parts.map((part: any) => {
                 return (
                   <YStack key={part.name}>

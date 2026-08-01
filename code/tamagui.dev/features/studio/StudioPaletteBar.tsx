@@ -15,13 +15,13 @@ export function StudioPaletteBar({
   colors: string[]
 }) {
   return (
-    <YStack mx="$2" select="none">
+    <YStack mx="2" select="none">
       {showIndices && (
         <XStack overflow="hidden">
           {new Array(colors.length).fill(0).map((_, i) => (
             <Paragraph
               opacity={0.7}
-              size="$1"
+              size="1"
               fontSize={11}
               lineHeight={18}
               letterSpacing={-1}
@@ -35,7 +35,7 @@ export function StudioPaletteBar({
           ))}
         </XStack>
       )}
-      <XStack overflow="hidden" rounded="$4" borderWidth={0.5} borderColor="$color3">
+      <XStack overflow="hidden" rounded="4" borderWidth={0.5} borderColor="color3">
         {colors.map((color, i) => (
           <XStack
             key={color + i}
@@ -45,7 +45,7 @@ export function StudioPaletteBar({
             position="relative"
             {...(i > 0 && {
               borderLeftWidth: 0.5,
-              borderLeftColor: '$background',
+              borderLeftColor: 'background',
             })}
           >
             <Checkerboard opacity={0.5} />
@@ -59,7 +59,7 @@ export function StudioPaletteBar({
                 pointerEvents="none"
               >
                 <Paragraph
-                  size="$1"
+                  size="1"
                   fontSize={11}
                   letterSpacing={-1}
                   color={readableColor(color) as any}
@@ -76,7 +76,7 @@ export function StudioPaletteBar({
           {new Array(colors.length).fill(0).map((_, i) => (
             <Paragraph
               opacity={0.7}
-              size="$1"
+              size="1"
               fontSize={11}
               lineHeight={18}
               letterSpacing={-1}

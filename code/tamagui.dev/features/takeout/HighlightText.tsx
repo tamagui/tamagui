@@ -1,7 +1,7 @@
 import { Paragraph, styled } from 'tamagui'
 
 export const HighlightText = styled(Paragraph, {
-  fontSize: 32,
+  fontSize: '32px sm:40px',
   fontWeight: '700',
   style: {
     lineHeight: '1.2',
@@ -9,9 +9,5 @@ export const HighlightText = styled(Paragraph, {
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
-  },
-
-  $sm: {
-    fontSize: 40,
   },
 })

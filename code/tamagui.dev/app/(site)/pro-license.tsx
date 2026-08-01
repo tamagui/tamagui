@@ -5,7 +5,7 @@ import { ProLicense } from '~/features/pro/ProLicense'
 export default () => (
   <>
     <HeadInfo title="Pro License" />
-    <YStack p="$8">
+    <YStack p="8">
       <ProLicense />
     </YStack>
   </>

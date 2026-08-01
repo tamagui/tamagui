@@ -52,7 +52,7 @@ export const Calendar = () => {
             flex={1}
             flexBasis="auto"
             width="100%"
-            px="$4"
+            px="4"
           >
             <Button
               size="small"
@@ -70,7 +70,7 @@ export const Calendar = () => {
               {...demoProps.borderRadiusProps}
             />
           </XStack>
-          <YStack mt="$2" p="$2" gap="$2">
+          <YStack mt="2" p="2" gap="2">
             <XStack>
               {weekdays.map((day) => (
                 <LabelCell key={day}>{day[0].toUpperCase() + day[1]}</LabelCell>
@@ -88,7 +88,7 @@ export const Calendar = () => {
           </YStack>
         </YStack>
       </YStack>
-      <YStack mt="$4">
+      <YStack mt="4">
         <>
           <Button
             size="large"
@@ -105,18 +105,8 @@ export const Calendar = () => {
 
 const LabelCell = ({ children }: { children: React.ReactNode }) => {
   return (
-    <YStack
-      width="$3"
-      height="$3"
-      $md={{
-        width: '$2',
-        height: '$2',
-      }}
-      select="none"
-      justify="center"
-      items="center"
-    >
-      <SizableText $md={{ size: '$2' }} size="$4" text="center">
+    <YStack width="3 md:2" height="3 md:2" select="none" justify="center" items="center">
+      <SizableText fontSize="md:2" lineHeight="md:2" text="center" size="4">
         {children}
       </SizableText>
     </YStack>
@@ -127,23 +117,19 @@ const DayCell = ({ day, isDisabled }: { day: number; isDisabled?: boolean }) => 
   const demoProps = useDemoProps()
   return (
     <YStack
-      width="$3"
-      height="$3"
-      $md={{
-        width: '$2',
-        height: '$2',
-      }}
+      width="3 md:2"
+      height="3 md:2"
       cursor={isDisabled ? 'default' : 'pointer'}
       select="none"
-      hoverStyle={isDisabled ? {} : { bg: '$backgroundHover' }}
-      disabled={!!isDisabled}
+      bg={isDisabled ? undefined : 'hover:background-hover'}
       opacity={isDisabled ? 0.5 : 1}
       justify="center"
       items="center"
       {...demoProps.borderRadiusProps}
       borderWidth={0}
+      disabled={!!isDisabled}
     >
-      <SizableText size="$2" text="center">
+      <SizableText size="2" text="center">
         {day}
       </SizableText>
     </YStack>

@@ -20,11 +20,12 @@ export function layouts({ isProUser, showAppropriateModal }: Props) {
       showAppropriateModal={showAppropriateModal}
     >
       <YStack
-        pb="$10"
-        gap="$12"
-        p="$2"
-        $gtLg={{ p: '$0' }}
-        $group-window-sm={{ marginHorizontal: '$2' }}
+        paddingBottom="2 gtLg:0"
+        gap="12"
+        paddingTop="2 gtLg:0"
+        paddingRight="2 gtLg:0"
+        paddingLeft="2 gtLg:0"
+        marginHorizontal="@sm/window:2"
       >
         <Showcase unlock fileName={Layouts.SignInScreen.fileName} title="Sign-in Form">
           <Wrapper>

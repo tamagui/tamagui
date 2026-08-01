@@ -32,21 +32,16 @@ export const SubTitle = ({ children, ...props }) => {
     <H3
       position="relative"
       maxW="100%"
-      color="$accent7"
-      width="100%"
-      fontFamily="$mono"
-      size="$7"
+      color="accent7"
+      width="100% gtSm:max-content"
+      fontFamily="mono"
       letterSpacing={-0.25}
-      render="p"
-      pb="$3"
-      mb="$3"
-      $web={{
-        textWrap: 'balance',
-      }}
-      $gtSm={{
-        width: 'max-content',
-      }}
+      pb="3"
+      mb="3"
+      textWrap="web:balance"
       {...props}
+      size="7"
+      render="p"
     >
       {nbspLastWord(childText)}
     </H3>

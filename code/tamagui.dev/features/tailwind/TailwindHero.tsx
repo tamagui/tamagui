@@ -12,29 +12,29 @@ function HeroCode() {
     <YStack
       self="center"
       maxW="100%"
-      rounded="$6"
+      rounded="6"
       borderWidth={1}
-      borderColor="$borderColor"
-      bg="$color1"
+      borderColor="border-color"
+      bg="color1"
       overflow="hidden"
     >
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <SizableText
-          fontFamily="$mono"
-          size="$4"
+          fontFamily="mono"
           whiteSpace="pre"
-          lineHeight="$6"
-          px="$5"
-          py="$4"
+          lineHeight="6"
+          px="5"
+          py="4"
+          size="4"
         >
-          <Text color="$color9">{'<'}</Text>
-          <Text color="$color11">View</Text>
-          <Text color="$blue10"> className</Text>
-          <Text color="$color9">=</Text>
-          <Text color="$green10">
+          <Text color="color9">{'<'}</Text>
+          <Text color="color11">View</Text>
+          <Text color="blue10"> className</Text>
+          <Text color="color9">=</Text>
+          <Text color="green10">
             "flex-row items-center gap-3 p-4 rounded-xl bg-indigo-500"
           </Text>
-          <Text color="$color9">{' />'}</Text>
+          <Text color="color9">{' />'}</Text>
         </SizableText>
       </ScrollView>
     </YStack>
@@ -51,17 +51,17 @@ export function TailwindHero() {
         b="auto"
         height={620}
         z={-1}
-        backgroundImage="linear-gradient($color3, $colorTransparent)"
+        backgroundImage="linear-gradient(color3, color-transparent)"
         opacity={0.6}
       />
 
-      <ContainerLarge pt="$13" pb="$8" gap="$6" items="center">
+      <ContainerLarge pt="13" pb="8" gap="6" items="center">
         <Paragraph
-          fontFamily="$mono"
-          size="$3"
-          color="$accent7"
+          fontFamily="mono"
+          color="accent7"
           letterSpacing={1}
           textTransform="uppercase"
+          size="3"
         >
           Tamagui v3
         </Paragraph>
@@ -74,9 +74,9 @@ export function TailwindHero() {
           text="center"
           self="center"
           maxW={680}
-          size="$6"
-          lineHeight="$8"
-          color="$color10"
+          lineHeight="8"
+          color="color10"
+          size="6"
         >
           Write Tailwind utility classes. The Tamagui compiler renders them on iOS and
           web, pixel-matched to Tailwind v4, in the same engine that gives you themes,
@@ -85,12 +85,12 @@ export function TailwindHero() {
 
         <HeroCode />
 
-        <XStack gap="$3" items="center" flexWrap="wrap" justify="center" pt="$2">
+        <XStack gap="3" items="center" flexWrap="wrap" justify="center" pt="2">
           <ButtonLink
             href={'/tailwind/intro/introduction' as Href}
             theme="accent"
             size="large"
-            fontFamily="$mono"
+            fontFamily="mono"
           >
             Read the docs
           </ButtonLink>
@@ -98,7 +98,7 @@ export function TailwindHero() {
             href={'/tailwind/intro/styles' as Href}
             variant="quiet"
             size="large"
-            fontFamily="$mono"
+            fontFamily="mono"
           >
             How it works
           </ButtonLink>

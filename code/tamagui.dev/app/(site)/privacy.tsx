@@ -29,7 +29,7 @@ export default function PrivacyPage() {
         description={frontmatter.description || ''}
       />
 
-      <Container py="$10">
+      <Container py="10">
         <MDXProvider frontmatter={frontmatter}>
           <MDXTabs id="type" defaultValue="styled">
             <Component components={components as any} />

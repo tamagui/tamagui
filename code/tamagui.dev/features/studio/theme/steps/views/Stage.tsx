@@ -23,7 +23,7 @@ export function Stage({ steps, current }: { current: number; steps: any[] }) {
 
 export function StageButtonBar({ steps }: { steps: UseSteps }) {
   return (
-    <XStack z={100} borderBottomWidth={1} borderColor="$color5">
+    <XStack z={100} borderBottomWidth={1} borderColor="color5">
       <ToggleButton active={steps.index === 0} onPress={() => steps.setPage(0)}>
         Palettes
       </ToggleButton>
@@ -37,10 +37,8 @@ export function StageButtonBar({ steps }: { steps: UseSteps }) {
 const Section = styled(YStack, {
   position: 'absolute',
   inset: 0,
-
   t: 33,
-  px: '$2',
-
+  px: '2',
   variants: {
     isLeft: { true: { x: -30, opacity: 0, pe: 'none' } },
     isRight: { true: { x: 30, opacity: 0, pe: 'none' } },

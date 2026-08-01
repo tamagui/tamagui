@@ -5,14 +5,13 @@ export const VideoSection = () => {
   const isDark = useThemeName().startsWith('dark')
 
   return (
-    <YStack py="$6" items="center" gap="$6" maxW={1000} mx="auto" width="100%">
+    <YStack py="6" items="center" gap="6" maxW={1000} mx="auto" width="100%">
       <H2
-        fontSize={32}
+        fontSize="32px sm:40px"
         fontWeight="700"
         text="center"
-        color="$color12"
+        color="color12"
         style={{ lineHeight: '1.2' }}
-        $sm={{ fontSize: 40 }}
       >
         More on{' '}
         <Theme name="yellow">
@@ -27,8 +26,8 @@ export const VideoSection = () => {
       <YStack position="relative" width="100%" maxW={800}>
         <YStack
           bg={isDark ? '#2a2a2a' : '#d4d0c8'}
-          rounded="$6"
-          p="$5"
+          rounded="6"
+          p="5"
           borderWidth={4}
           borderColor={isDark ? '#444' : '#a0a0a0'}
           style={{
@@ -39,8 +38,8 @@ export const VideoSection = () => {
         >
           <YStack
             bg={isDark ? '#1a1a1a' : '#333'}
-            rounded="$4"
-            p="$3"
+            rounded="4"
+            p="3"
             borderWidth={3}
             borderColor={isDark ? '#111' : '#222'}
             style={{
@@ -53,7 +52,7 @@ export const VideoSection = () => {
               l={12}
               r={12}
               b={12}
-              rounded="$3"
+              rounded="3"
               z={2}
               pointerEvents="none"
               opacity={0.03}
@@ -66,12 +65,12 @@ export const VideoSection = () => {
             <YStack
               position="relative"
               width="100%"
+              rounded="2"
+              overflow="hidden"
+              bg="#000"
               style={{
                 paddingBottom: '56.25%',
               }}
-              rounded="$2"
-              overflow="hidden"
-              bg="#000"
             >
               <iframe
                 style={{
@@ -90,20 +89,20 @@ export const VideoSection = () => {
             </YStack>
           </YStack>
 
-          <XStack mt="$4" justify="space-between" items="center" px="$2">
+          <XStack mt="4" justify="space-between" items="center" px="2">
             <YStack>
               <SizableText
-                fontFamily="$silkscreen"
-                size="$2"
+                fontFamily="silkscreen"
                 color={isDark ? '#666' : '#888'}
                 letterSpacing={2}
+                size="2"
               >
                 TAMAGUI
               </SizableText>
             </YStack>
 
-            <XStack gap="$4" items="center">
-              <YStack items="center" gap="$1">
+            <XStack gap="4" items="center">
+              <YStack items="center" gap="1">
                 <YStack
                   width={24}
                   height={24}
@@ -117,16 +116,12 @@ export const VideoSection = () => {
                       : 'inset 1px 1px 2px rgba(255,255,255,0.5), 1px 1px 2px rgba(0,0,0,0.2)',
                   }}
                 />
-                <SizableText
-                  size="$1"
-                  color={isDark ? '#555' : '#777'}
-                  fontFamily="$mono"
-                >
+                <SizableText size="1" color={isDark ? '#555' : '#777'} fontFamily="mono">
                   VOL
                 </SizableText>
               </YStack>
 
-              <YStack items="center" gap="$1">
+              <YStack items="center" gap="1">
                 <YStack
                   width={24}
                   height={24}
@@ -140,16 +135,12 @@ export const VideoSection = () => {
                       : 'inset 1px 1px 2px rgba(255,255,255,0.5), 1px 1px 2px rgba(0,0,0,0.2)',
                   }}
                 />
-                <SizableText
-                  size="$1"
-                  color={isDark ? '#555' : '#777'}
-                  fontFamily="$mono"
-                >
+                <SizableText size="1" color={isDark ? '#555' : '#777'} fontFamily="mono">
                   CH
                 </SizableText>
               </YStack>
 
-              <YStack items="center" gap="$1">
+              <YStack items="center" gap="1">
                 <YStack
                   width={8}
                   height={8}
@@ -159,11 +150,7 @@ export const VideoSection = () => {
                     boxShadow: '0 0 6px #00ff00, 0 0 12px #00ff0080',
                   }}
                 />
-                <SizableText
-                  size="$1"
-                  color={isDark ? '#555' : '#777'}
-                  fontFamily="$mono"
-                >
+                <SizableText size="1" color={isDark ? '#555' : '#777'} fontFamily="mono">
                   PWR
                 </SizableText>
               </YStack>
@@ -171,13 +158,13 @@ export const VideoSection = () => {
           </XStack>
         </YStack>
 
-        <XStack justify="center" gap="$10" mt={-2}>
+        <XStack justify="center" gap="10" mt={-2}>
           <YStack
             width={60}
             height={12}
             bg={isDark ? '#333' : '#bbb'}
-            borderBottomLeftRadius="$2"
-            borderBottomRightRadius="$2"
+            borderBottomLeftRadius="2"
+            borderBottomRightRadius="2"
             style={{
               boxShadow: isDark
                 ? '2px 2px 4px rgba(0,0,0,0.3)'
@@ -188,8 +175,8 @@ export const VideoSection = () => {
             width={60}
             height={12}
             bg={isDark ? '#333' : '#bbb'}
-            borderBottomLeftRadius="$2"
-            borderBottomRightRadius="$2"
+            borderBottomLeftRadius="2"
+            borderBottomRightRadius="2"
             style={{
               boxShadow: isDark
                 ? '2px 2px 4px rgba(0,0,0,0.3)'

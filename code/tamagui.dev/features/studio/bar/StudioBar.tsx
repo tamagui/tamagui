@@ -26,39 +26,39 @@ export const StudioBar = memo(function Header() {
       height={topBarHeight}
       z={100_000}
       justify="space-between"
-      data-tauri-drag-region
       position="fixed"
       self="center"
-      elevation="$2"
       items="center"
-      px="$5"
-      rounded="$10"
+      px="5"
+      rounded="10"
       overflow="hidden"
-      gap="$3"
+      gap="3"
       {...(themeBuilderStore.isCentered
         ? {
             mx: 'auto',
             left: 0,
             right: 0,
-            b: '$2.5',
+            b: '2.5',
           }
         : {
-            right: '$2',
-            top: '$2',
+            right: '2',
+            top: '2',
           })}
       maxW={192}
+      data-tauri-drag-region
+      elevation="2"
       className="all ease-in-out ms300"
     >
-      <YStack rounded="$10" position="absolute" inset={0} className="blur-medium" />
+      <YStack rounded="10" position="absolute" inset={0} className="blur-medium" />
       <YStack
-        rounded="$10"
+        rounded="10"
         position="absolute"
         inset={0}
-        bg="$background"
+        bg="background"
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
       />
-      <XStack mr="$2">
+      <XStack mr="2">
         <LogoIcon downscale={2.5} />
       </XStack>
 
@@ -76,12 +76,12 @@ export const ThemeSwitch = memo(() => {
   const isLight = rootStore.theme === 'light'
 
   return (
-    <Popover open={tipOpen} stayInFrame={{ padding: 10 }} size="$3">
+    <Popover open={tipOpen} stayInFrame={{ padding: 10 }} size="3">
       <Popover.Trigger>
-        <XStack mx="$2" items="center">
+        <XStack mx="2" items="center">
           <Switch
             checked={isLight}
-            size="$2"
+            size="2"
             y={0.5}
             onCheckedChange={(light) => {
               if (themeBuilderStore.schemes.dark && themeBuilderStore.schemes.light) {
@@ -101,7 +101,7 @@ export const ThemeSwitch = memo(() => {
                   opacity={0.44}
                   x={-1.5}
                   y={-1.5}
-                  icon={<Moon color="$color" />}
+                  icon={<Moon color="color" />}
                 />
               )}
             </XStack>
@@ -117,7 +117,7 @@ export const ThemeSwitch = memo(() => {
                   opacity={0.25}
                   x={-1.5}
                   y={-1.5}
-                  icon={<Sun color="$color" />}
+                  icon={<Sun color="color" />}
                 />
               )}
             </XStack>
@@ -133,7 +133,7 @@ export const ThemeSwitch = memo(() => {
                     scaleIcon={1.2}
                     opacity={0.8}
                     y={-0.75}
-                    icon={<Sun color="$background" />}
+                    icon={<Sun color="background" />}
                   />
                 )}
                 {!isLight && (
@@ -145,7 +145,7 @@ export const ThemeSwitch = memo(() => {
                     scaleIcon={1.2}
                     opacity={0.5}
                     y={-0.75}
-                    icon={<Moon color="$background" />}
+                    icon={<Moon color="background" />}
                   />
                 )}
               </YStack>
@@ -158,34 +158,27 @@ export const ThemeSwitch = memo(() => {
         theme="yellow"
         trapFocus={false}
         borderWidth={2}
-        borderColor="$borderColor"
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
-        backgroundColor="$background"
-        boxShadow="0 4px 12px $shadowColor"
-        transition={[
-          'quickest',
-          {
-            opacity: {
-              overshootClamping: true,
-            },
-          },
-        ]}
+        borderColor="border-color"
+        y="enter:-10px exit:-10px"
+        opacity="enter:0 exit:0"
+        backgroundColor="background"
+        boxShadow="0 4px 12px shadow-color"
+        transition={['quickest', { opacity: { overshootClamping: true } }]}
       >
         <Popover.Arrow
-          backgroundColor="$background"
-          size="$5"
+          backgroundColor="background"
           borderWidth={2}
-          borderColor="$borderColor"
+          borderColor="border-color"
+          size="5"
         />
 
-        <Paragraph size="$2">{tip}</Paragraph>
+        <Paragraph size="2">{tip}</Paragraph>
         <Button
           size="small"
           circular
           position="absolute"
-          t="$-2"
-          r="$-2"
+          t="-2"
+          r="-2"
           icon={X}
           onPress={() => {
             themeBuilderStore.themeSwitchOpen = false
@@ -207,7 +200,7 @@ const StudioTabs = memo(function StudioTabs() {
       tabs={[
         {
           component: (
-            <SizableText size="$2" fontWeight="500">
+            <SizableText size="2" fontWeight="500">
               Theme Studio
             </SizableText>
           ),
@@ -216,7 +209,7 @@ const StudioTabs = memo(function StudioTabs() {
         },
         {
           component: (
-            <SizableText size="$2" fontWeight="500">
+            <SizableText size="2" fontWeight="500">
               Config
             </SizableText>
           ),
@@ -226,7 +219,7 @@ const StudioTabs = memo(function StudioTabs() {
 
         {
           component: (
-            <SizableText size="$2" fontWeight="500">
+            <SizableText size="2" fontWeight="500">
               Themes
             </SizableText>
           ),

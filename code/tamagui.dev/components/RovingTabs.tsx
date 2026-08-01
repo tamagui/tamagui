@@ -52,16 +52,16 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
       showsHorizontalScrollIndicator={false}
     >
       <Code
-        p="$4"
+        p="4"
         bg="transparent"
         flex={1}
-        className={className}
-        size={size ?? '$4'}
-        lineHeight={size ?? '$4'}
+        lineHeight={size ?? '4'}
         {...(showTabs && {
           whiteSpace: 'nowrap',
         })}
         {...rest}
+        className={className}
+        size={size ?? '4'}
       >
         {showTabs ? transformedCommand : children}
       </Code>
@@ -74,16 +74,16 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
         <Tabs
           activationMode="manual"
           orientation="horizontal"
-          size="$4"
-          rounded="$4"
+          size="4"
+          rounded="4"
+          group
+          mt={1}
           value={selectedPackageManager}
           onPress={(e) => e.stopPropagation()}
           onValueChange={setPackageManager}
-          group
-          mt={1}
         >
           <YStack width="100%">
-            <YStack p="$1.5" m="$2" mb={0} rounded="$5">
+            <YStack p="1.5" m="2" mb={0} rounded="5">
               <AnimatePresence initial={false}>
                 {intentAt && (
                   <TabIndicator
@@ -98,7 +98,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
               <AnimatePresence initial={false}>
                 {activeAt && (
                   <TabIndicator
-                    bg="$color6"
+                    bg="color6"
                     width={activeAt.width}
                     height={activeAt.height}
                     x={activeAt.x}
@@ -107,7 +107,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 )}
               </AnimatePresence>
 
-              <Tabs.List loop={false} aria-label="package manager" gap="$2">
+              <Tabs.List loop={false} aria-label="package manager" gap="2">
                 <>
                   {PACKAGE_MANAGERS.map((pkgManager) => (
                     <Tab
@@ -154,16 +154,16 @@ export function Tab({
   const imageName = logo ?? pkgManager
   return (
     <Tabs.Tab
-      pl="$2"
-      pr="$2.5"
-      py="$1.5"
-      gap="$1.5"
+      pl="2"
+      pr="2.5"
+      py="1.5"
+      gap="1.5"
       bg="transparent"
-      value={pkgManager}
       {...(onInteraction && { onInteraction })}
       cursor="pointer"
+      value={pkgManager}
     >
-      <XStack gap="$1.5" items="center" justify="center">
+      <XStack gap="1.5" items="center" justify="center">
         <Image
           width={16}
           height={16}
@@ -171,7 +171,7 @@ export function Tab({
           y={imageName === 'pnpm' ? 0 : 0}
           src={`/logos/${imageName}.svg`}
         />
-        <SizableText y={-0.5} size="$2" color="$color11" opacity={active ? 1 : 0.5}>
+        <SizableText y={-0.5} color="color11" opacity={active ? 1 : 0.5} size="2">
           {pkgManager}
         </SizableText>
       </XStack>
@@ -186,18 +186,12 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
       pointerEvents="none"
       t={0}
       l={0}
-      bg="$color6"
-      opacity={0.7}
-      rounded="$4"
+      bg="color6"
+      opacity="0.7 enter:0 exit:0"
+      rounded="4"
       transition="quickest"
-      enterStyle={{
-        opacity: 0,
-      }}
-      exitStyle={{
-        opacity: 0,
-      }}
       {...(active && {
-        bg: '$color8',
+        bg: 'color8',
         opacity: 0.6,
       })}
       {...props}

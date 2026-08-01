@@ -5,27 +5,13 @@ const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   name: 'SiteRadioGroupItem',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
   borderRadius: 1000,
   borderWidth: 1,
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-  },
-
+  outlineColor: 'focus-visible:outline-color',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
   variants: {
     size: {
       Size: (value, extras) => {
@@ -56,7 +42,7 @@ const RadioGroupIndicator = styled(RadioGroupBehavior.Indicator, {
   width: '50%',
   height: '50%',
   borderRadius: 1000,
-  backgroundColor: '$color',
+  backgroundColor: 'color',
 })
 
 export const RadioGroup = withStaticProperties(RadioGroupBehavior, {

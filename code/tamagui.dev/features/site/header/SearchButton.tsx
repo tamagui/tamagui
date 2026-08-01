@@ -32,14 +32,15 @@ export const SearchButton = memo((props: ButtonProps) => {
         aria-label="Search docs"
         ref={ref as any}
         onPress={onOpen}
-        gap="$1"
+        gap="1"
         icon={SearchIcon}
         // dont hide this on touchables to avoid layout shifts...
         iconAfter={
           <SizableText
-            size="$1"
-            mx="$1"
-            $sm={{ maxW: 0, overflow: 'hidden', mx: -1 }}
+            size="1"
+            mx="1 sm:-1px"
+            maxW="sm:0px"
+            overflow="sm:hidden"
             opacity={0.25}
           >
             /

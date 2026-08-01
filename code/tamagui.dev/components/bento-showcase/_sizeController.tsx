@@ -8,14 +8,14 @@ export const SizeController = createStyledHOC(YGroup)<{
   size: SizeTokens
   setSize: (size: SizeTokens) => void
   sizes?: SizeTokens[]
-}>(({ size, setSize, sizes = ['$3', '$4', '$6', '$8', '$9'], ...props }, ref) => {
+}>(({ size, setSize, sizes = ['3', '4', '6', '8', '9'], ...props }, ref) => {
   const { width } = useContainerDim('window')
   if (!width || width < 400) {
     return null
   }
   return (
     <Theme name="accent">
-      <YGroup ref={ref} justify="center" items="center" r={0} b={0} gap="$1" {...props}>
+      <YGroup ref={ref} justify="center" items="center" r={0} b={0} gap="1" {...props}>
         <YGroup.Item>
           <Button
             size="medium"

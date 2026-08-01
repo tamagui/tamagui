@@ -16,7 +16,13 @@ export function productpage({ isProUser, showAppropriateModal }: BentoShowcaseCo
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack pb="$10" gap="$12" padding="$2" $gtLg={{ padding: '$0' }}>
+      <YStack
+        paddingBottom="2 gtLg:0"
+        gap="12"
+        paddingTop="2 gtLg:0"
+        paddingRight="2 gtLg:0"
+        paddingLeft="2 gtLg:0"
+      >
         <Showcase
           fileName={ProductPage.ProductWithReview.fileName}
           title="Product with Review"

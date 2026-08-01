@@ -8,22 +8,15 @@ export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
     <YStack
       items="center"
       justify="center"
-      rounded="$10"
+      rounded="10"
       borderColor="transparent"
       borderWidth={1}
-      mx="$1"
-      {...(isActive && {
-        borderColor: '$color',
-      })}
-      {...(!isActive && {
-        hoverStyle: {
-          borderColor: '$color5',
-        },
-      })}
+      mx="1"
+      borderColor={isActive ? 'color' : 'transparent hover:color5'}
       {...rest}
     >
       <YStack
-        rounded="$10"
+        rounded="10"
         width={22}
         height={22}
         items="center"

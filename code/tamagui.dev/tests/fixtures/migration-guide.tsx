@@ -45,8 +45,8 @@ export function SheetAnatomy({ children }: { children: React.ReactNode }) {
   return (
     <Sheet>
       <Sheet.Overlay />
-      <Sheet.Container padding="$4">
-        <Sheet.Background bg="$background" borderTopLeftRadius="$6" />
+      <Sheet.Container padding="4">
+        <Sheet.Background bg="background" borderTopLeftRadius="6" />
         <Sheet.ScrollView>{children}</Sheet.ScrollView>
       </Sheet.Container>
     </Sheet>
@@ -65,8 +65,8 @@ export const ThemeInverse = () => (
   </Theme>
 )
 
-// §4 — $true token removal: explicit tokens on space props
-export const TrueTokens = () => <XStack gap="$4" p="$4" />
+// §4 — legacy true-token removal: explicit tokens on space props
+export const TrueTokens = () => <XStack gap="4" p="4" />
 
 // §5 — token stepping replacement
 export function tokenStepping(sizeToken: any, radiusToken: any) {
@@ -100,7 +100,7 @@ export const AdaptAnatomy = () => (
         keeps this fixture config-agnostic */}
     <Adapt when={true} platform="touch">
       <Sheet modal dismissOnSnapToBottom>
-        <Sheet.Container padding="$4">
+        <Sheet.Container padding="4">
           <Sheet.Background />
           <Adapt.Contents />
         </Sheet.Container>
@@ -169,7 +169,7 @@ export const OnTransition = () => (
 )
 
 // §15 — defaultProps -> createStyledContext for prop propagation
-export const SquareContext = createStyledContext({ size: '$4' as const })
+export const SquareContext = createStyledContext({ size: '4' as const })
 
 // design-systems.mdx — Circle size variant with number/Size type keys
 const getCircleSize = (size: any, { tokens }: any) => {
@@ -193,7 +193,7 @@ export const Circle = styled(YStack, {
 
 export type CircleProps = GetProps<typeof Circle>
 
-export const CircleUsage = () => <Circle size="$10" />
+export const CircleUsage = () => <Circle size="10" />
 
 // §6 — numeric vs exact-px font size. the guide also shows fontSize="17px"
 // (an exact px passthrough valid under the v5 px-pinned font scale); the numeric
@@ -228,7 +228,7 @@ export const ToastTrigger = () => (
 // §17 — ThemeableStack removed: extend YStack, or copy the Surface fixture.
 export const Panel = styled(YStack, {
   borderWidth: 1,
-  borderColor: '$borderColor',
+  borderColor: 'border-color',
 })
 export const SurfaceUsage = () => (
   <Surface level={2} filled outlined rounded interactive />

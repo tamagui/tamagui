@@ -56,7 +56,7 @@ export function ThemePage() {
     <>
       <Dialogs />
 
-      <YStack shrink={0} flexBasis="auto" mb="$10">
+      <YStack shrink={0} flexBasis="auto" mb="10">
         <Suspense fallback={null}>
           <ThemeBuilderModal />
         </Suspense>
@@ -64,26 +64,23 @@ export function ThemePage() {
         <XStack
           width="100%"
           height="max-content"
-          pr={540}
+          pr="540px lg:0px"
           pt={10}
-          $lg={{ pr: 0 }}
           justify="flex-end"
           overflow="hidden"
           z={100}
         >
           <YStack
-            p="$4"
+            p="4 md:4"
             flex={1}
             flexBasis="auto"
-            maxW="calc(min(100vw, 1300px))"
+            maxW="calc(min(100vw, 1300px)) md:calc(min(100vw, 900px))"
             group="content"
-            $md={{
-              maxW: `calc(min(100vw, 900px))`,
-              p: '$4',
-            }}
+            container
+            containerName="content"
           >
             <PreviewTheme>
-              <YStack gap="$6">
+              <YStack gap="6">
                 <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
                 <StudioPreviewComponentsBar
                   scrollView={
@@ -153,30 +150,22 @@ const ThemeBuilderModal = memo(() => {
         position="absolute"
         inset={0}
         transition="medium"
-        animateOnly={['transform']}
-        ref={ref}
         x={0}
-        elevation="$5"
-        borderTopLeftRadius="$6"
-        borderBottomLeftRadius="$6"
+        borderTopLeftRadius="6"
+        borderBottomLeftRadius="6"
         borderWidth={0.5}
-        borderColor="$color6"
-        bg="$background06"
+        borderColor="color6"
+        bg="background06"
         backdropFilter="blur(60px)"
         {...(hide && {
-          borderColor: '$color0',
-          bg: '$color3',
+          borderColor: 'color0',
+          bg: 'color3',
         })}
+        animateOnly={['transform']}
+        ref={ref}
+        elevation="5"
       >
-        <XStack
-          position="absolute"
-          z={999}
-          t="$2"
-          l="$2"
-          $gtLg={{
-            display: 'none',
-          }}
-        >
+        <XStack position="absolute" z={999} t="2" l="2" display="gtLg:none">
           <Button
             size="small"
             circular
@@ -188,7 +177,7 @@ const ThemeBuilderModal = memo(() => {
         <YStack
           transition={['medium', { opacity: { overshootClamping: true } }]}
           opacity={hide ? 0 : 1}
-          gap="$4"
+          gap="4"
           flex={1}
         >
           <AnimatePresence mode="wait" custom={{ going: store.direction }}>
@@ -237,7 +226,14 @@ const StudioThemeBuilderTray = memo(() => {
 
 const StudioThemeBuilderBottomBar = memo(() => {
   return (
-    <XStack p="$4" py="$3" items="center" z={100} bg="$background02">
+    <XStack
+      paddingRight="4"
+      paddingLeft="4"
+      py="3"
+      items="center"
+      z={100}
+      bg="background02"
+    >
       <CurrentStepActionBar />
       <Spacer flex={1} />
       <ThemeStudioStepButtonsBar />
@@ -277,7 +273,7 @@ const ThemeStudioStepButtonsBar = () => {
   }
 
   return (
-    <XStack gap="$2">
+    <XStack gap="2">
       {typeof location !== 'undefined' &&
         location.host === 'localhost' &&
         lastInserted && (
@@ -335,23 +331,16 @@ const ThemeStudioStepButtonsBar = () => {
 }
 
 const Section = styled(YStack, {
-  gap: '$2',
+  gap: '2',
   x: 0,
   opacity: 1,
-
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
       number: (going) => ({
-        enterStyle: {
-          x: going > 0 ? 20 : -20,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: going < 0 ? 20 : -20,
-          opacity: 0,
-        },
+        x: `enter:${going > 0 ? 20 : -20}px exit:${going < 0 ? 20 : -20}px`,
+        opacity: 'enter:0 exit:0',
+        zIndex: 'exit:0',
       }),
     },
   } as const,

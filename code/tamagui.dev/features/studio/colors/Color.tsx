@@ -31,23 +31,23 @@ export function Color({
 
   return (
     <SidebarPanel title={`${scale.name}.${index}`}>
-      <YStack gap="$3">
+      <YStack gap="3">
         <YStack
           borderWidth={1}
-          borderColor="$borderColor"
+          borderColor="border-color"
           width="100%"
           height={48}
           bg={hex as any}
-          rounded="$2"
+          rounded="2"
         />
-        <XStack overflow="hidden" flex={1} gap="$2">
-          <XStack items="center" gap="$2">
-            <Label size="$2" htmlFor="color-hue">
+        <XStack overflow="hidden" flex={1} gap="2">
+          <XStack items="center" gap="2">
+            <Label size="2" htmlFor="color-hue">
               {scale.curves.hue ? 'H offset' : 'H'}
             </Label>
             <Input
               maxW={55}
-              size="$2"
+              size="2"
               id="color-hue"
               // type="number" // min={0} // max={360}
               value={color.hue as any}
@@ -62,13 +62,13 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack items="center" gap="$2">
-            <Label size="$2" htmlFor="color-saturation">
+          <XStack items="center" gap="2">
+            <Label size="2" htmlFor="color-saturation">
               {scale.curves.saturation ? 'S offset' : 'S'}
             </Label>
             <Input
               maxW={55}
-              size="$2"
+              size="2"
               id="color-saturation"
               // type="number" // min={0} // max={360}
               value={color.saturation as any}
@@ -83,13 +83,13 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack items="center" gap="$2">
-            <Label size="$2" htmlFor="color-lightness">
+          <XStack items="center" gap="2">
+            <Label size="2" htmlFor="color-lightness">
               {scale.curves.lightness ? 'L offset' : 'L'}
             </Label>
             <Input
               maxW={55}
-              size="$2"
+              size="2"
               id="color-lightness"
               // type="number" // min={0} // max={360}
               value={color.lightness as any}
@@ -131,6 +131,6 @@ export function Color({
 }
 
 const Code = styled(Paragraph, {
-  fontFamily: '$mono',
-  size: '$3',
+  fontFamily: 'mono',
+  size: '3',
 })

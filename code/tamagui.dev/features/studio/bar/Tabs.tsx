@@ -71,7 +71,7 @@ export const BarTabs = memo(function HeaderTabs({
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$2"
+      size="2"
       flexDirection="column"
       activationMode="manual"
       position="relative"
@@ -100,12 +100,12 @@ export const BarTabs = memo(function HeaderTabs({
         )}
       </AnimatePresence>
 
-      <Tabs.List loop={false} aria-label="Manage your account" gap="$2" bg="transparent">
+      <Tabs.List loop={false} aria-label="Manage your account" gap="2" bg="transparent">
         {tabs.map(({ component, value, hasChanges }) => (
           <Tabs.Tab
             key={value}
             borderColor="transparent"
-            px="$3"
+            px="3"
             value={value}
             onInteraction={handleOnInteraction}
           >
@@ -114,14 +114,12 @@ export const BarTabs = memo(function HeaderTabs({
                 <Circle
                   key={value}
                   transition="bouncy"
-                  opacity={1}
-                  scale={1}
-                  enterStyle={{ opacity: 0, scale: 0.4 }}
-                  exitStyle={{ opacity: 0, scale: 0.4 }}
+                  opacity="1 enter:0 exit:0"
+                  scale="1 enter:0.4 exit:0.4"
                   position="absolute"
                   r={2}
                   t={2}
-                  bg="$green8"
+                  bg="green8"
                   size={8}
                 />
               )}
@@ -140,19 +138,13 @@ const TabsRovingIndicator = ({
 }: { isActive?: boolean } & YStackProps) => {
   return (
     <YStack
-      rounded="$2"
+      rounded="2"
       position="absolute"
-      bg="$color6"
+      bg="color6"
       transition="quick"
-      enterStyle={{
-        opacity: 0,
-      }}
-      exitStyle={{
-        opacity: 0,
-      }}
-      opacity={0.5}
+      opacity="0.5 enter:0 exit:0"
       {...(isActive && {
-        backgroundColor: '$color8',
+        backgroundColor: 'color8',
         opacity: 0.6,
       })}
       {...props}

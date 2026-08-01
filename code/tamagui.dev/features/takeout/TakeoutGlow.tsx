@@ -65,13 +65,7 @@ export const TakeoutGlow = memo(() => {
         <YStack
           key={`${i}${tint}${tintAlt}`}
           transition="superLazy"
-          enterStyle={{
-            opacity: 0,
-          }}
-          exitStyle={{
-            opacity: 0,
-          }}
-          opacity={0.7}
+          opacity="0.7 enter:0 exit:0"
           mixBlendMode={
             i === 0
               ? 'hard-light'

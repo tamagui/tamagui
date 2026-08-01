@@ -16,7 +16,7 @@ export const Switch = memo((props: SwitchProps) => {
             },
           },
         ]}
-        size="$3"
+        size="3"
         {...props}
       >
         <TamaguiSwitch.Thumb

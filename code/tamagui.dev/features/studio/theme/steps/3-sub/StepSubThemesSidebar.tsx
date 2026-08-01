@@ -31,10 +31,10 @@ export function StepSubThemesSidebar() {
 
   return (
     <YStack flex={1} pl={20}>
-      <YStack p="$4" flex={1} gap="$4">
-        <XStack items="center" gap="$4">
+      <YStack p="4" flex={1} gap="4">
+        <XStack items="center" gap="4">
           <Separator />
-          <SizableText size="$4" select="none">
+          <SizableText size="4" select="none">
             Parent theme: {currentThemeName}
           </SizableText>
           <Separator />
@@ -44,9 +44,9 @@ export function StepSubThemesSidebar() {
           <StudioThemesQuickPreviewSection scheme="light" hasAccent={hasAccent} />
         </Theme>
 
-        <XStack items="center" gap="$4">
+        <XStack items="center" gap="4">
           <Separator />
-          <SizableText size="$4" select="none">
+          <SizableText size="4" select="none">
             Sub theme: {subThemeName}
           </SizableText>
           <Separator />

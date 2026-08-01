@@ -26,18 +26,13 @@ export const TakeoutFaqModal = () => {
     >
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Container p="$4" gap="$4">
+          <Sheet.Container p="4" gap="4">
             <Sheet.Background />
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Container>
-          <Sheet.Overlay
-            bg="$shadow4"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Dialog.Adapt>
 
@@ -45,35 +40,28 @@ export const TakeoutFaqModal = () => {
         <Dialog.Overlay
           key="overlay"
           transition="medium"
+          opacity="enter:0 exit:0"
           className="blur-medium"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
         />
 
         <Dialog.Content
           bordered
           elevate
           key="content"
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+          transition={['quick', { opacity: { overshootClamping: true } }]}
+          y="enter:-10px exit:10px"
+          opacity="enter:0 exit:0"
+          scale="enter:0.975 exit:0.975"
           width="90%"
           maxW={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxH: '90vh' }}>
-              <H1 px="$4" $sm={{ size: '$8' }}>
+            <YStack maxH="gtSm:90vh">
+              <H1 px="4" fontSize="sm:8" lineHeight="sm:8">
                 Frequently Asked Questions
               </H1>
-              <XStack mt="$4" flexWrap="wrap" gap="$6" p="$4">
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+              <XStack mt="4" flexWrap="wrap" gap="6" p="4">
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>How difficult is Takeout to develop on?</H5>
 
                   <Paragraph>
@@ -92,7 +80,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>What development platforms do you support?</H5>
 
                   <Paragraph>
@@ -102,7 +90,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>Can I still use the starter after my subscription has ended?</H5>
                   <Paragraph>
                     Of course! The subscription is only for the bot updates. If you cancel
@@ -111,7 +99,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>Can I suggest a feature for the upcoming updates?</H5>
                   <Paragraph>
                     Yes. You will have access to an exclusive Discord channel in which you
@@ -120,7 +108,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>Is there a refund policy?</H5>
                   <Paragraph>
                     No, to prevent abuse we have a no refund policy, but reach out to us
@@ -129,7 +117,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>
                     Can I use some of the features? What about merge conflicts with the
                     bot?
@@ -141,7 +129,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>How does the GitHub bot work?</H5>
                   <Paragraph>
                     Whenever we make changes to the starter, we may trigger the bot to
@@ -151,7 +139,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>How often does the bot trigger updates?</H5>
                   <Paragraph>
                     We do this manually to avoid constant PRs and try to schedule them at
@@ -160,7 +148,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>What are the next steps after I purchase the starter?</H5>
                   <Paragraph>
                     You will see the full instructions after purchase. You can gain access
@@ -170,7 +158,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>
                     What are the next steps after I purchase the font/icon packages?
                   </H5>
@@ -183,7 +171,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>Can I use the Takeout starter for an open-source project?</H5>
                   <Paragraph>
                     You aren't allowed to publish the source-code to the public. So no,
@@ -191,7 +179,7 @@ export const TakeoutFaqModal = () => {
                   </Paragraph>
                 </YStack>
 
-                <YStack gap="$4" flex={1} flexBasis={0} minW={300}>
+                <YStack gap="4" flex={1} flexBasis={0} minW={300}>
                   <H5>How many projects can I use this for?</H5>
                   <Paragraph
                     cursor="pointer"
@@ -208,7 +196,7 @@ export const TakeoutFaqModal = () => {
           </ScrollView>
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="$2" r="$2" size="small" circular icon={X} />
+              <Button position="absolute" t="2" r="2" size="small" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

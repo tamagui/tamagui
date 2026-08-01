@@ -44,7 +44,7 @@ export default function TamaguiHomePage() {
         description="React Native style library and UI kit with the best web performance"
       />
 
-      <ThemeNameEffect colorKey="$color3" />
+      <ThemeNameEffect colorKey="color3" />
 
       <HomeGlow />
 
@@ -120,7 +120,7 @@ export default function TamaguiHomePage() {
           }}
         />
       </TintSection>
-      <TintSection index={8} my="$-4" p={0} z={100}>
+      <TintSection index={8} my="-4" p={0} z={100}>
         <SectionTinted z={1000} bubble gradient>
           <HomeTypography />
         </SectionTinted>

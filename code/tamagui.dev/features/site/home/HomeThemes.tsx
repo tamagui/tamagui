@@ -157,7 +157,7 @@ export const HomeThemes = memo(function HomeThemes() {
     <YStack position="relative">
       {useMemo(() => {
         return (
-          <ContainerLarge position="relative" gap="$3">
+          <ContainerLarge position="relative" gap="3">
             <HomeH2>Smart themes and sub-themes down to the component.</HomeH2>
             <HomeH3>
               Themes that act like CSS variables, overriding as they descend and compiled
@@ -167,14 +167,14 @@ export const HomeThemes = memo(function HomeThemes() {
         )
       }, [])}
 
-      <YStack my="$8" items="center" justify="center">
+      <YStack my="8" items="center" justify="center">
         <XStack className="scroll-horizontal no-scrollbar">
-          <XStack px="$4" gap="$2">
+          <XStack px="4" gap="2">
             <XGroup
               borderWidth={1}
-              borderColor="$borderColor"
-              p="$2"
-              rounded="$10"
+              borderColor="border-color"
+              p="2"
+              rounded="10"
               self="center"
             >
               {(['light', 'dark'] as const).map((name, i) => {
@@ -193,9 +193,9 @@ export const HomeThemes = memo(function HomeThemes() {
 
             <XGroup
               borderWidth={1}
-              borderColor="$borderColor"
-              p="$2"
-              rounded="$10"
+              borderColor="border-color"
+              p="2"
+              rounded="10"
               self="center"
             >
               {themes[0].map((color, i) => {
@@ -206,7 +206,7 @@ export const HomeThemes = memo(function HomeThemes() {
                       <ActiveCircle
                         onPress={() => updateActiveI([i, curShadeI])}
                         isActive={isActive}
-                        bg="$color8"
+                        bg="color8"
                       />
                     </Theme>
                   </XGroup.Item>
@@ -217,7 +217,7 @@ export const HomeThemes = memo(function HomeThemes() {
         </XStack>
 
         <YStack
-          my="$3"
+          my="3"
           overflow="hidden"
           width="100%"
           position="relative"
@@ -250,9 +250,9 @@ export const HomeThemes = memo(function HomeThemes() {
           >
             <XStack
               items="center"
-              py="$6"
+              py="6"
               justify="center"
-              gap="$5"
+              gap="5"
               position="relative"
               px={`calc(50vw + 30px)`}
               x={-45 - 30}
@@ -265,19 +265,16 @@ export const HomeThemes = memo(function HomeThemes() {
                     <XStack
                       key={i}
                       width={width}
-                      scale={scale}
-                      className="all ease-in ms100"
+                      scale={`${scale} xs:${scale * 0.8}`}
                       cursor="pointer"
-                      $xs={{
-                        scale: scale * 0.8,
-                      }}
+                      className="all ease-in ms100"
                       onPress={() => {
                         updateActiveI([colorI, shadeI])
                       }}
                     >
                       <Theme name={color as any}>
                         <MediaPlayer
-                          elevation="$2"
+                          elevation="2"
                           pointerEvents="none"
                           alt={alt ? +alt.replace('alt', '') : null}
                         />
@@ -296,11 +293,11 @@ export const HomeThemes = memo(function HomeThemes() {
             inset={0}
             items="center"
             justify="center"
-            $xs={{ scale: 0.8 }}
+            scale="xs:0.8"
           >
             <Theme name={colorName}>
               <MediaPlayer
-                elevation="$3"
+                elevation="3"
                 pointerEvents="none"
                 pointerEventsControls="auto"
                 alt={curShadeI}

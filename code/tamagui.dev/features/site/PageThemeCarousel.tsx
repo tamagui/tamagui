@@ -11,8 +11,8 @@ export const PageThemeCarousel = () => {
       <XStack
         position="absolute"
         t={0}
-        l="$0"
-        r="$0"
+        l="0"
+        r="0"
         maxH={400}
         b={0}
         pointerEvents="none"
@@ -29,18 +29,11 @@ export const PageThemeCarousel = () => {
           maxW={1250}
         >
           <YStack
-            p="$3"
+            p="3"
             cursor="pointer"
             pointerEvents="auto"
-            opacity={0.4}
-            hoverStyle={{
-              opacity: 1,
-              scale: 1.1,
-            }}
-            pressStyle={{
-              opacity: 0.6,
-              scale: 0.95,
-            }}
+            opacity="0.4 hover:1 press:0.6"
+            scale="hover:1.1 press:0.95"
             onPress={() => {
               tint.setTintIndex(
                 tint.tintIndex - 1 < 0 ? tint.tints.length - 1 : tint.tintIndex - 1
@@ -48,27 +41,20 @@ export const PageThemeCarousel = () => {
             }}
             className="ease-out ms200 all"
           >
-            <ChevronLeft size={24} color="$color12" />
+            <ChevronLeft size={24} color="color12" />
           </YStack>
           <YStack
-            p="$3"
+            p="3"
             cursor="pointer"
             pointerEvents="auto"
-            opacity={0.4}
-            hoverStyle={{
-              opacity: 1,
-              scale: 1.1,
-            }}
-            pressStyle={{
-              opacity: 0.6,
-              scale: 0.95,
-            }}
+            opacity="0.4 hover:1 press:0.6"
+            scale="hover:1.1 press:0.95"
             onPress={() => {
               tint.setTintIndex((tint.tintIndex + 1) % tint.tints.length)
             }}
             className="ease-out ms200 all"
           >
-            <ChevronRight size={24} color="$color12" />
+            <ChevronRight size={24} color="color12" />
           </YStack>
         </XStack>
       </XStack>

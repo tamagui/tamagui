@@ -157,11 +157,11 @@ export const StepExportCodeSidebar = () => {
   }
 
   return (
-    <ScrollView py="$2" pt="$4">
-      <YStack gap="$8" pt="$1" pb="$6" px="$3">
+    <ScrollView paddingBottom="2" pt="4">
+      <YStack gap="8" pt="1" pb="6" px="3">
         <FieldsetWithLabel label="Options">
-          <YStack gap="$1" p="$4">
-            <Fieldset flexDirection="row" items="center" gap="$3">
+          <YStack gap="1" p="4">
+            <Fieldset flexDirection="row" items="center" gap="3">
               <YStack>
                 <Switch
                   id="include-component-themes-switch"
@@ -169,12 +169,12 @@ export const StepExportCodeSidebar = () => {
                   onCheckedChange={(newChecked) =>
                     store.setIncludeComponentThemes(!!newChecked)
                   }
-                  size="$2"
+                  size="2"
                 >
                   <Switch.Thumb transition="quickest" />
                 </Switch>
               </YStack>
-              <Label size="$3" htmlFor="include-component-themes-switch">
+              <Label size="3" htmlFor="include-component-themes-switch">
                 Include Component Themes
               </Label>
             </Fieldset>
@@ -182,29 +182,29 @@ export const StepExportCodeSidebar = () => {
         </FieldsetWithLabel>
 
         {platform.steps.map((step, idx) => (
-          <YStack key={idx} gap="$3">
-            <XStack gap="$3" items="center" ml="$3">
-              <Circle bg="$background" size={20} justify="center" items="center">
-                <SizableText text="center" fontFamily="$heading" size="$1" x={1}>
+          <YStack key={idx} gap="3">
+            <XStack gap="3" items="center" ml="3">
+              <Circle bg="background" justify="center" items="center" size={20}>
+                <SizableText text="center" fontFamily="heading" x={1} size="1">
                   {idx + 1}
                 </SizableText>
               </Circle>
               <SizableText
-                fontFamily="$heading"
-                size="$3"
-                color="$color11"
+                fontFamily="heading"
+                color="color11"
                 letterSpacing={1}
+                size="3"
               >
                 {step.name}
               </SizableText>
             </XStack>
 
-            <YStack gap="$4">
+            <YStack gap="4">
               {step.steps.map((subStep, _idx) => {
                 return (
-                  <XStack key={_idx} ml="$4" mr="$3">
+                  <XStack key={_idx} ml="4" mr="3">
                     {subStep.type === 'text' && (
-                      <Paragraph color="$color10" size="$4">
+                      <Paragraph color="color10" size="4">
                         {subStep.content}
                       </Paragraph>
                     )}
@@ -216,27 +216,27 @@ export const StepExportCodeSidebar = () => {
                         defaultValue={subStep.files[0].filename}
                         orientation="horizontal"
                         flexDirection="column"
-                        gap="$2"
+                        gap="2"
                         flex={1}
                       >
                         <Tabs.List
-                          bg="$color4"
+                          bg="color4"
                           self="flex-start"
-                          borderTopRightRadius="$3"
-                          borderTopLeftRadius="$3"
-                          mx="$3"
+                          borderTopRightRadius="3"
+                          borderTopLeftRadius="3"
+                          mx="3"
                         >
                           {subStep.files.map((file, i) => (
                             <Tabs.Tab
                               key={i}
-                              px="$3"
-                              pt="$2"
+                              px="3"
+                              pt="2"
                               mb={-22}
-                              pb="$4.5"
-                              bg="$color2"
+                              pb="4.5"
+                              bg="color2"
                               value={file.filename}
                             >
-                              <SizableText color="$color8" size="$2">
+                              <SizableText color="color8" size="2">
                                 {file.filename}
                               </SizableText>
                             </Tabs.Tab>
@@ -267,14 +267,14 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
       <ScrollView
         flex={1}
         flexBasis="auto"
-        horizontal
         maxH={maxHeight}
-        bg="$background"
-        py="$3"
-        px="$4"
-        rounded="$4"
+        bg="background"
+        py="3"
+        px="4"
+        rounded="4"
+        horizontal
       >
-        <Text fontFamily="$mono" fontSize="$2">
+        <Text fontFamily="mono" fontSize="2">
           {content}
         </Text>
       </ScrollView>
@@ -285,12 +285,12 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           r={0}
           b={0}
           height={maxHeight}
-          colors={['$background', 'transparent']}
+          colors={['background', 'transparent']}
           start={[0, 1]}
           end={[0, 0]}
         />
       )}
-      <XStack position="absolute" r="$2.5" t={10} gap="$2" flexDirection="row-reverse">
+      <XStack position="absolute" r="2.5" t={10} gap="2" flexDirection="row-reverse">
         <Button
           onPress={() => {
             copyText(content)

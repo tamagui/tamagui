@@ -46,10 +46,10 @@ export function HeroContainer({
   const contents = (
     <YStack
       className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
-      borderColor="$borderColor"
+      borderColor="border-color"
       borderWidth={0.5}
-      mt="$4"
-      mb="$4"
+      mt="4"
+      mb="4"
       position="relative"
       flexBasis="auto"
       display="flex"
@@ -58,13 +58,11 @@ export function HeroContainer({
       pt={60}
       pb={80}
       minH={300}
-      rounded="$4"
+      rounded="4"
       {...(noPad && {
         py: 0,
       })}
-      $gtMd={{
-        mx: smaller ? 0 : '$-4',
-      }}
+      mx={smaller ? 'gtMd:0' : 'gtMd:-4'}
       id="tamagui-demos-container"
     >
       <AnimationDriverTogglerContextProvider>
@@ -79,15 +77,11 @@ export function HeroContainer({
         {showAnimationDriverControl && (
           <XStack
             position="absolute"
-            display="inline-flex"
+            display="inline-flex xxs:none"
             items="center"
             justify="space-between"
             t={16}
-            l="$3"
-            $xxs={{ display: 'none' }}
-            $gtMd={{
-              l: '$4',
-            }}
+            l="3 gtMd:4"
           >
             <AnimationControl />
           </XStack>
@@ -114,13 +108,13 @@ const ThemeTintWithToggle = ({ children }: { children: ReactNode }) => {
 const Card = styled(YStack, {
   items: 'center',
   justify: 'center',
-  elevation: '$1',
   y: 0,
   overflow: 'hidden',
   minW: 180,
-  bg: '$background',
+  bg: 'background',
   minH: 220,
-  rounded: '$4',
+  rounded: '4',
+  elevation: '1',
 })
 
 const niceNames = {
@@ -136,16 +130,16 @@ const AnimationControl = () => {
       placement="top"
       label={`Animations: ${niceNames[animationDriverToggler.driverName]}`}
     >
-      <XStack gap="$2" items="center">
+      <XStack gap="2" items="center">
         <Timer size={14} opacity={0.6} />
         <Switch
-          size="$1"
+          size="1"
           checked={animationDriverToggler.driverName === 'motion'}
           onCheckedChange={(val) =>
             animationDriverToggler.setDriverName(val ? 'motion' : 'css')
           }
           activeStyle={{
-            backgroundColor: '$color8',
+            backgroundColor: 'color8',
           }}
         >
           <Switch.Thumb transition="medium" />
@@ -169,7 +163,7 @@ const HeroContainerInner = ({
     <Configuration animationDriver={driver} key={driverName}>
       <ErrorBoundary>
         {demoMultiple ? (
-          <XStack gap="$3" px="$8">
+          <XStack gap="3" px="8">
             <Theme name="gray">
               <Card>{children}</Card>
             </Theme>

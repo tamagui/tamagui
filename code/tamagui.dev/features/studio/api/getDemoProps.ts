@@ -5,25 +5,25 @@ import type { DemoOptions } from '../theme/demoOptions'
 
 // the outer border radius is one radius token larger than the inner one
 const oneRadiusLarger = (radius: DemoOptions['borderRadius']) => {
-  const n = Number(String(radius).replace('$', ''))
-  return (Number.isNaN(n) ? radius : `$${n + 1}`) as DemoOptions['borderRadius']
+  const n = Number(radius)
+  return (Number.isNaN(n) ? radius : `${n + 1}`) as DemoOptions['borderRadius']
 }
 
 export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
-  const accentToken = hasAccent ? accentTokenName : '$color9'
+  const accentToken = hasAccent ? accentTokenName : 'color9'
   const isOutlined = demosOptions.fillStyle === 'outlined'
 
-  const accentColor = hasAccent ? '$accentColor' : '$color1'
-  const accentBackground = hasAccent ? accentToken : ('$color11' as const)
+  const accentColor = hasAccent ? 'accent-color' : 'color1'
+  const accentBackground = hasAccent ? accentToken : ('color11' as const)
   const accentBorder = isOutlined
     ? hasAccent
       ? accentToken
-      : '$borderColor'
+      : 'border-color'
     : 'transparent'
 
   const accentStyle = {
     backgroundColor: isOutlined ? 'transparent' : accentToken,
-    color: isOutlined ? '$color2' : accentColor,
+    color: isOutlined ? 'color2' : accentColor,
   } as const
 
   return {
@@ -44,46 +44,46 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     headingFontFamilyProps: {
       fontFamily: demosOptions.headingFontFamily,
       fontWeight: '500',
-      size: '$4',
+      size: '4',
       fontSize: 25,
       color:
         demosOptions.textAccent === 'high'
-          ? '$color12'
+          ? 'color12'
           : demosOptions.textAccent === 'low'
-            ? '$color11'
-            : '$color',
+            ? 'color11'
+            : 'color',
 
-      ...(demosOptions.headingFontFamily == '$heading' && {
+      ...(demosOptions.headingFontFamily == 'heading' && {
         fontSize: 14,
       }),
 
-      ...(demosOptions.headingFontFamily == '$silkscreen' && {
+      ...(demosOptions.headingFontFamily == 'silkscreen' && {
         fontSize: 14,
       }),
 
-      ...(demosOptions.headingFontFamily === '$mono' && {
+      ...(demosOptions.headingFontFamily === 'mono' && {
         fontSize: 16,
       }),
     } as const,
 
     buttonOutlineProps: {
       variant: isOutlined ? ('outlined' as const) : (undefined as any),
-      color: isOutlined ? '$color10' : undefined,
+      color: isOutlined ? 'color10' : undefined,
       // ...(hasAccent && accentStyle),
-      borderColor: hasAccent ? accentBorder : '$borderColor',
+      borderColor: hasAccent ? accentBorder : 'border-color',
     } as ButtonProps,
 
     stackOutlineProps: {
-      backgroundColor: demosOptions.backgroundAccent === 'low' ? '$color1' : '$color2',
+      backgroundColor: demosOptions.backgroundAccent === 'low' ? 'color1' : 'color2',
     } as const,
 
     chatFrameProps: {
-      borderColor: isOutlined ? '$borderColor' : 'transparent',
+      borderColor: isOutlined ? 'border-color' : 'transparent',
       backgroundColor: isOutlined
         ? undefined
         : demosOptions.backgroundAccent === 'high'
-          ? '$color3'
-          : '$color2',
+          ? 'color3'
+          : 'color2',
     } as const,
 
     chatFrameActiveProps: {
@@ -94,11 +94,11 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     chatTextProps: {} as const,
 
     chatTextActiveProps: {
-      color: isOutlined ? '$color1' : '$color2',
+      color: isOutlined ? 'color1' : 'color2',
     } as const,
 
     outlineTextProps: {
-      color: isOutlined ? '$color11' : '$color1',
+      color: isOutlined ? 'color11' : 'color1',
     } as const,
 
     elevationProps: {
@@ -108,44 +108,44 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     panelPaddingProps: {
       padding:
         demosOptions.spacing === 'lg'
-          ? ('$7' as const)
+          ? ('7' as const)
           : demosOptions.spacing === 'md'
-            ? ('$5' as const)
-            : ('$4' as const),
+            ? ('5' as const)
+            : ('4' as const),
     } as const,
 
     gapPropsMd: {
       gap:
         demosOptions.spacing === 'lg'
-          ? ('$4' as const)
+          ? ('4' as const)
           : demosOptions.spacing === 'md'
-            ? ('$3' as const)
-            : ('$2' as const),
+            ? ('3' as const)
+            : ('2' as const),
     } as const,
 
     gapPropsLg: {
       gap:
         demosOptions.spacing === 'lg'
-          ? ('$5' as const)
+          ? ('5' as const)
           : demosOptions.spacing === 'md'
-            ? ('$4' as const)
-            : ('$3' as const),
+            ? ('4' as const)
+            : ('3' as const),
     } as const,
 
     // these ones are just common props - nothing to do with the demo options
     panelProps: {
       shadowColor: 'rgba(0,0,0,0.2)',
       borderWidth: 0.5,
-      borderColor: '$color3',
-      gap: '$3',
-      py: '$4',
+      borderColor: 'color3',
+      gap: '3',
+      py: '4',
       width: '100%',
       height: '100%',
     } as const,
 
     panelDescriptionProps: {
-      color: '$color10',
-      size: '$4',
+      color: 'color10',
+      size: '4',
     } as const,
   }
 }

@@ -14,7 +14,7 @@ export function StudioToggleThemeBuilderScheme() {
           rootStore.theme = 'light'
         }}
         size="medium"
-        rounded="$10"
+        rounded="10"
       >
         Light
       </Button>
@@ -24,7 +24,7 @@ export function StudioToggleThemeBuilderScheme() {
           rootStore.theme = 'dark'
         }}
         size="medium"
-        rounded="$10"
+        rounded="10"
       >
         Dark
       </Button>

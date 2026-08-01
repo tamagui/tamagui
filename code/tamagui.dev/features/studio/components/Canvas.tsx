@@ -8,7 +8,7 @@ import { sidebarWidth } from '../constants'
 export const CanvasFrame = styled(YStack, {
   position: 'absolute',
   inset: 0,
-  bg: '$background',
+  bg: 'background',
   items: 'center',
   justify: 'center',
   overflow: 'hidden',
@@ -35,7 +35,7 @@ export const Canvas = ({ children, ...props }: YStackProps) => {
 
 export const CanvasArtboard = styled(YStack, {
   borderWidth: 1,
-  borderColor: '$borderColor',
+  borderColor: 'border-color',
   width: '100%',
   height: '100%',
   overflow: 'hidden',

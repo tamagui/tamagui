@@ -122,9 +122,9 @@ export const exampleGroups: { title: string; lines: string[] }[] = [
 
 // the same class, as a prop. shows the two are one system, migrate a line at a time.
 export const classToProp: { cls: string; prop: string }[] = [
-  { cls: 'className="p-4 rounded-xl"', prop: 'p="$4" rounded="$xl"' },
-  { cls: 'className="bg-indigo-500"', prop: 'bg="$indigo-500"' },
-  { cls: 'className="flex-row gap-3"', prop: 'flexDirection="row" gap="$3"' },
+  { cls: 'className="p-4 rounded-xl"', prop: 'p="4" rounded="xl"' },
+  { cls: 'className="bg-indigo-500"', prop: 'bg="indigo-500"' },
+  { cls: 'className="flex-row gap-3"', prop: 'flexDirection="row" gap="3"' },
 ]
 
 // honest cross-framework coverage, straight from code/comparisons/output/coverage.md.

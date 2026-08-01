@@ -8,8 +8,9 @@ import {
 } from '~/components/bento-showcase/BentoProvider'
 
 const Wrapper = styled(XStack, {
-  p: '$4',
-  py: '$8',
+  paddingRight: '4',
+  paddingLeft: '4',
+  py: '8',
   width: '100%',
   justify: 'center',
   items: 'center',
@@ -21,7 +22,7 @@ export function pickers({ isProUser, showAppropriateModal }: BentoShowcaseContex
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack pb="$10" gap="$16">
+      <YStack pb="10" gap="16">
         <Showcase unlock fileName={Pickers.ImagePicker.fileName} title="Image Picker">
           <Wrapper>
             <Pickers.ImagePicker />

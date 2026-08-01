@@ -18,7 +18,13 @@ export function switches({ isProUser, showAppropriateModal }: BentoShowcaseConte
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack pb="$10" gap="$12" p="$2" $gtLg={{ p: '$0' }}>
+      <YStack
+        paddingBottom="2 gtLg:0"
+        gap="12"
+        paddingTop="2 gtLg:0"
+        paddingRight="2 gtLg:0"
+        paddingLeft="2 gtLg:0"
+      >
         <Showcase
           unlock
           fileName={Switches.SwitchCustomIcons.fileName}
@@ -42,7 +48,7 @@ export function switches({ isProUser, showAppropriateModal }: BentoShowcaseConte
         </Showcase>
 
         <Showcase
-          defaultSize="$7"
+          defaultSize="7"
           fileName={Switches.ThemeSwitch.fileName}
           title={Switches.ThemeSwitch.title}
         >

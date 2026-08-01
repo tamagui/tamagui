@@ -39,13 +39,13 @@ export default function TamaguiHomePage() {
   }
 
   return (
-    <YStack position="relative" top="$20" items="center" height={500}>
+    <YStack position="relative" top="20" items="center" height={500}>
       <PromoLinksRow />
     </YStack>
   )
 
   return (
-    <Button transition={'100ms'} pressStyle={{ scale: 2 }}>
+    <Button transition={'100ms'} scale="press:2">
       hi
     </Button>
   )
@@ -57,7 +57,7 @@ export default function TamaguiHomePage() {
         description="React Native style library and UI kit with the best web performance"
       />
 
-      <ThemeNameEffect colorKey="$color3" />
+      <ThemeNameEffect colorKey="color3" />
 
       <HomeGlow />
 
@@ -133,7 +133,7 @@ export default function TamaguiHomePage() {
           }}
         />
       </TintSection>
-      <TintSection index={8} my="$-4" p={0} z={100}>
+      <TintSection index={8} my="-4" p={0} z={100}>
         <SectionTinted z={1000} bubble gradient>
           <HomeTypography />
         </SectionTinted>

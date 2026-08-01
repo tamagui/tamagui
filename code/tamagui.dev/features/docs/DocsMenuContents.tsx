@@ -118,7 +118,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         aria-label="Docs Menu"
       >
         {!inMenu && (
-          <XStack justifyContent="flex-end" pr="$2" mb="$2">
+          <XStack justifyContent="flex-end" pr="2" mb="2">
             <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
           </XStack>
         )}
@@ -154,7 +154,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   return (
     <div style={{ width: '100%', paddingBottom: inMenu ? 0 : 80 }} aria-label="Docs Menu">
       {!inMenu && (
-        <XStack justifyContent="flex-end" pr="$2" mb="$2">
+        <XStack justifyContent="flex-end" pr="2" mb="2">
           <ToggleAllButton expanded={allExpanded} onPress={toggleAll} />
         </XStack>
       )}
@@ -189,17 +189,17 @@ const ToggleAllButton = ({
       <Button
         circular
         size="medium"
-        my="$-3"
+        my="-3"
         variant="quiet"
-        hoverStyle={{ opacity: 1, backgroundColor: '$color3' }}
-        pressStyle={{ opacity: 0.8, backgroundColor: '$color2' }}
+        opacity="hover:1 press:0.8"
+        backgroundColor="hover:color3 press:color2"
         onPress={onPress}
         aria-label={expanded ? 'Collapse all sections' : 'Expand all sections'}
       >
         {expanded ? (
-          <ChevronsDownUp size={14} color="$color10" />
+          <ChevronsDownUp size={14} color="color10" />
         ) : (
-          <ChevronsUpDown size={14} color="$color10" />
+          <ChevronsUpDown size={14} color="color10" />
         )}
       </Button>
     </TooltipSimple>
@@ -219,7 +219,7 @@ const AccordionSection = ({
   currentPath: string
 }) => {
   const content = (
-    <YStack paddingHorizontal="$2" paddingVertical="$2">
+    <YStack paddingHorizontal="2" paddingVertical="2">
       {items.map(({ page }, index) => {
         return (
           <DocsRouteNavItem
@@ -239,34 +239,28 @@ const AccordionSection = ({
 
   // no title = top-level items, render without accordion
   if (!section?.title) {
-    return <YStack marginBottom="$2">{content}</YStack>
+    return <YStack marginBottom="2">{content}</YStack>
   }
 
   return (
     <Accordion.Item value={section.title}>
       <Accordion.Trigger
         padding={0}
-        backgroundColor="transparent"
+        backgroundColor="transparent hover:color2 press:color1"
         borderWidth={0}
-        hoverStyle={{
-          backgroundColor: '$color2',
-        }}
-        pressStyle={{
-          backgroundColor: '$color1',
-        }}
-        borderRadius="$4"
-        marginHorizontal="$2"
+        borderRadius="4"
+        marginHorizontal="2"
       >
         {({ open }) => {
           return (
             <XStack
-              paddingVertical="$3"
-              paddingHorizontal="$3"
+              paddingVertical="3"
+              paddingHorizontal="3"
               justifyContent="space-between"
               alignItems="center"
               width="100%"
             >
-              <Paragraph size="$5" fontWeight="500" color="$color11">
+              <Paragraph size="5" fontWeight="500" color="color11">
                 {section.title}
               </Paragraph>
 
@@ -275,7 +269,7 @@ const AccordionSection = ({
                 rotate={open ? '180deg' : '0deg'}
                 animateOnly={['transform']}
               >
-                <ChevronDown color="$color8" size="$1" />
+                <ChevronDown color="color8" size="1" />
               </YStack>
             </XStack>
           )
@@ -287,7 +281,7 @@ const AccordionSection = ({
           padding={0}
           transition="200ms"
           backgroundColor="transparent"
-          exitStyle={{ opacity: 0 }}
+          opacity="exit:0"
         >
           {content}
         </Accordion.Content>

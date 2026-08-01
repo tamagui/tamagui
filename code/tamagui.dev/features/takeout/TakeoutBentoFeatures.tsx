@@ -17,10 +17,10 @@ import { SubTitle } from '../../components/SubTitle'
 const IconWrapper = styled(YStack, {
   width: 52,
   height: 52,
-  rounded: '$5',
+  rounded: '5',
   items: 'center',
   justify: 'center',
-  mb: '$3',
+  mb: '3',
   transition: 'medium',
 })
 
@@ -97,26 +97,26 @@ function BentoCard({
     <YStack
       ref={innerGlow.parentRef as any}
       height="100%"
-      gap="$3"
-      rounded="$6"
-      p="$5"
-      bg={isDark ? '$background02' : '$background04'}
+      gap="3"
+      rounded="6"
+      p="5"
+      bg={`${isDark ? 'background02' : 'background04'}`}
       borderWidth={1}
-      borderColor="$borderColor"
+      borderColor="border-color"
       overflow="hidden"
       position="relative"
       transition="medium"
     >
       {isHydrated && <innerGlow.Component />}
 
-      <IconWrapper bg="$color4" z={1} position="relative">
-        <Icon size={featured ? 26 : 24} color="$color11" transition="200ms" />
+      <IconWrapper bg="color4" z={1} position="relative">
+        <Icon size={featured ? 26 : 24} color="color11" transition="200ms" />
       </IconWrapper>
 
       <H3
         fontSize={featured ? 18 : 16}
         fontWeight="700"
-        color="$color12"
+        color="color12"
         z={1}
         position="relative"
         style={{ lineHeight: '1.3' }}
@@ -125,8 +125,8 @@ function BentoCard({
       </H3>
 
       <Paragraph
-        size={featured ? '$4' : '$3'}
-        color="$color11"
+        size={featured ? '4' : '3'}
+        color="color11"
         z={1}
         position="relative"
         transition="quick"
@@ -151,7 +151,7 @@ function BackgroundOrbs() {
           width={700}
           height={700}
           rounded={999}
-          bg="$color7"
+          bg="color7"
           opacity={0.06}
           pointerEvents="none"
           transition="superLazy"
@@ -170,7 +170,7 @@ function BackgroundOrbs() {
           width={500}
           height={500}
           rounded={999}
-          bg="$color8"
+          bg="color8"
           opacity={0.04}
           pointerEvents="none"
           transition="superLazy"
@@ -189,7 +189,7 @@ function BackgroundOrbs() {
           width={400}
           height={400}
           rounded={999}
-          bg="$color6"
+          bg="color6"
           opacity={0.05}
           pointerEvents="none"
           transition="superLazy"
@@ -212,27 +212,24 @@ export function TakeoutBentoFeatures() {
   return (
     <YStack
       id="features"
-      gap="$4"
-      py="$10"
-      px="$4"
+      gap="4 gtMd:6"
+      py="10"
+      px="4"
       maxW={1200}
       self="center"
       width="100%"
       position="relative"
-      $gtMd={{
-        gap: '$6',
-      }}
     >
       {isHydrated && <BackgroundOrbs />}
 
       {/* Header section */}
-      <YStack items="center" gap="$4" z={1}>
+      <YStack items="center" gap="4" z={1}>
         <ThemeTintAlt>
           <Paragraph
-            fontFamily="$mono"
+            fontFamily="mono"
             fontSize={12}
             fontWeight="600"
-            color="$color10"
+            color="color10"
             textTransform="uppercase"
             letterSpacing={2}
             opacity={0.8}
@@ -242,31 +239,28 @@ export function TakeoutBentoFeatures() {
         </ThemeTintAlt>
 
         <H2
-          fontSize={28}
+          fontSize="28px gtSm:44px"
           fontWeight="800"
           text="center"
-          color="$color12"
+          color="color12"
           style={{ lineHeight: '1.15' }}
-          $gtSm={{ fontSize: 44 }}
         >
           Modern, robust, maintained
         </H2>
 
-        <SubTitle maxW={680} text="center" size="$5" px="$2">
+        <SubTitle maxW={680} text="center" size="5" px="2">
           We get it, starter kits are a dime a dozen. Takeout is built by industry
           veterans, and extracted out of real-world large apps.
         </SubTitle>
       </YStack>
 
       {/* Featured cards - larger, 2 per row */}
-      <XStack flexWrap="wrap" gap="$4" justify="center" z={1}>
+      <XStack flexWrap="wrap" gap="4" justify="center" z={1}>
         {featuredFeatures.map((feature, index) => (
           <YStack
             key={feature.title}
-            width="calc(50% - 16px)"
+            width="calc(50% - 16px) md:calc(50% - 8px) sm:100%"
             minW={280}
-            $md={{ width: 'calc(50% - 8px)' }}
-            $sm={{ width: '100%' }}
           >
             <ThemeTintAlt offset={index}>
               <BentoCard
@@ -281,14 +275,12 @@ export function TakeoutBentoFeatures() {
       </XStack>
 
       {/* Regular cards - 3 per row on desktop */}
-      <XStack flexWrap="wrap" gap="$4" justify="center" z={1}>
+      <XStack flexWrap="wrap" gap="4" justify="center" z={1}>
         {regularFeatures.map((feature, index) => (
           <YStack
             key={feature.title}
-            width="calc(33.333% - 22px)"
+            width="calc(33.333% - 22px) md:calc(50% - 8px) sm:100%"
             minW={240}
-            $md={{ width: 'calc(50% - 8px)' }}
-            $sm={{ width: '100%' }}
           >
             <ThemeTintAlt offset={index + 2}>
               <BentoCard

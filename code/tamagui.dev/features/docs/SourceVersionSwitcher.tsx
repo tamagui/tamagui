@@ -46,14 +46,14 @@ export function SourceVersionSwitcher({
     >
       <Select.Trigger
         height={32}
-        paddingHorizontal="$3"
-        gap="$2"
-        backgroundColor="$background"
+        paddingHorizontal="3"
+        gap="2"
+        backgroundColor="background"
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
         borderRadius={8}
       >
-        <Select.Value placeholder={versions[0]} fontFamily="$mono" />
+        <Select.Value placeholder={versions[0]} fontFamily="mono" />
         <Select.Icon marginLeft="auto">
           <ChevronDown size={14} />
         </Select.Icon>
@@ -68,10 +68,9 @@ export function SourceVersionSwitcher({
             </Sheet.ScrollView>
           </Sheet.Container>
           <Sheet.Overlay
-            backgroundColor="$shadowColor"
+            backgroundColor="shadow-color"
             transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            opacity="enter:0 exit:0"
           />
         </Sheet>
       </Adapt>
@@ -82,7 +81,7 @@ export function SourceVersionSwitcher({
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronUp size={20} />
@@ -92,17 +91,17 @@ export function SourceVersionSwitcher({
             end={[0, 1]}
             position="absolute"
             inset={0}
-            colors={['$background', 'transparent']}
-            rounded="$4"
+            rounded="4"
+            colors={['background', 'transparent']}
           />
         </Select.ScrollUpButton>
 
         <Select.Viewport
           minW={200}
           borderWidth={1}
-          borderColor="$borderColor"
-          borderRadius="$4"
-          padding="$1"
+          borderColor="border-color"
+          borderRadius="4"
+          padding="1"
           boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
         >
           <Select.Group>
@@ -112,7 +111,7 @@ export function SourceVersionSwitcher({
                 versions.map((version, i) => {
                   return (
                     <Select.Item index={i} key={version} value={version}>
-                      <Select.ItemText fontFamily="$mono">{version}</Select.ItemText>
+                      <Select.ItemText fontFamily="mono">{version}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
@@ -129,7 +128,7 @@ export function SourceVersionSwitcher({
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronDown size={20} />
@@ -139,8 +138,8 @@ export function SourceVersionSwitcher({
             end={[0, 1]}
             position="absolute"
             inset={0}
-            colors={['transparent', '$background']}
-            rounded="$4"
+            rounded="4"
+            colors={['transparent', 'background']}
           />
         </Select.ScrollDownButton>
       </Select.Content>

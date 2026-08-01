@@ -45,37 +45,26 @@ export function ComponentItem({
     <Link href={href as any} asChild>
       <YStack
         render="a"
-        width={210}
+        width="210px gtMd:calc(25% - 20px)"
         cursor="pointer"
         position="relative"
-        bg="rgba(150,150,150,0.025)"
-        mt="$3"
-        $gtMd={{
-          bg: 'rgba(255,255,255,0)',
-          width: 'calc(25% - 20px)',
-          rounded: '$4',
-        }}
+        bg="rgba(150,150,150,0.025) gtMd:rgba(255,255,255,0)"
+        mt="3"
+        rounded="gtMd:4"
       >
         {/* Preview */}
         <YStack
           position="relative"
           height={192}
-          rounded="$8"
+          rounded="8"
           overflow="hidden"
-          className="relative"
-          shadowColor="$shadow2"
+          shadowColor="shadow2"
           shadowRadius={30}
           shadowOffset={{ height: 16, width: 0 }}
-          hoverStyle={{
-            bg: '$color4',
-          }}
-          pressStyle={{
-            y: 2,
-            scale: 0.99,
-          }}
-          $theme-dark={{
-            bg: '$color3',
-          }}
+          bg="hover:color4 dark:color3"
+          y="press:2px"
+          scale="press:0.99"
+          className="relative"
         >
           <YStack
             position="absolute"
@@ -83,7 +72,7 @@ export function ComponentItem({
             pointerEvents="none"
             justify="center"
             items="center"
-            p="$6"
+            p="6"
           >
             <Preview />
           </YStack>
@@ -92,22 +81,22 @@ export function ComponentItem({
             inset={0}
             start={[0, 0.5]}
             end={[0.5, 0]}
-            colors={['transparent', '$background04']}
+            colors={['transparent', 'background04']}
             z={1}
           />
         </YStack>
 
-        <YStack flex={1} flexBasis="auto" p="$4" position="relative">
-          <H4 fontFamily="$mono" size="$5" color="$color12">
+        <YStack flex={1} flexBasis="auto" p="4" position="relative">
+          <H4 fontFamily="mono" color="color12" size="5">
             {name}
           </H4>
 
-          <H5 opacity={0} fontFamily="$mono" color="$color10" size="$1" letterSpacing={1}>
+          <H5 opacity={0} fontFamily="mono" color="color10" letterSpacing={1} size="1">
             {numberOfComponents} components
           </H5>
 
-          <YStack position="absolute" t="$4" r="$4" rotate="20deg" p="$2" opacity={0.4}>
-            <Icon size={20} color="$color12" />
+          <YStack position="absolute" t="4" r="4" rotate="20deg" p="2" opacity={0.4}>
+            <Icon size={20} color="color12" />
           </YStack>
         </YStack>
       </YStack>

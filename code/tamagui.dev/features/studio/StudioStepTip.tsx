@@ -37,8 +37,8 @@ export function StudioStepTip() {
       scaleIcon={1.2}
       circular
       icon={Lightbulb}
-      my="$-1"
-      ml="$2"
+      my="-1"
+      ml="2"
       onPress={() => {
         setShow(!show)
       }}
@@ -50,32 +50,25 @@ export function StudioStepTip() {
   }
 
   return (
-    <Popover open={show} size="$5" allowFlip placement="bottom">
+    <Popover open={show} size="5" allowFlip placement="bottom">
       <Popover.Trigger asChild>{button}</Popover.Trigger>
 
       <Theme name="yellow">
         <Popover.Content
           trapFocus={false}
           borderWidth={2}
-          borderColor="$borderColor"
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
-          backgroundColor="$background"
-          boxShadow="0 4px 12px $shadowColor"
+          borderColor="border-color"
+          y="enter:-10px exit:-10px"
+          opacity="enter:0 exit:0"
+          backgroundColor="background"
+          boxShadow="0 4px 12px shadow-color"
           maxW={500}
-          transition={[
-            'quickest',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          transition={['quickest', { opacity: { overshootClamping: true } }]}
         >
           <Popover.Arrow
-            backgroundColor="$background"
+            backgroundColor="background"
             borderWidth={2}
-            borderColor="$borderColor"
+            borderColor="border-color"
           />
 
           <Tip />
@@ -84,8 +77,8 @@ export function StudioStepTip() {
             size="small"
             circular
             position="absolute"
-            t="$-3"
-            r="$-3"
+            t="-3"
+            r="-3"
             icon={X}
             onPress={() => {
               setShow(false)

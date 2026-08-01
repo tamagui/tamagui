@@ -232,8 +232,8 @@ export default function BentoComponentStub() {
     return null
   }
   return (
-    <YStack p="$4" bc="$borderColor" br="$4">
-      <Paragraph size="$2" color="$color10">
+    <YStack p="4" bc="border-color" br="4">
+      <Paragraph size="2" color="color10">
         Bento component not available
       </Paragraph>
     </YStack>

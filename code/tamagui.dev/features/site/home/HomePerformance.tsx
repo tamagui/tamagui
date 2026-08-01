@@ -22,9 +22,9 @@ export function HomePerformance() {
 
   return (
     <ContainerLarge position="relative">
-      <YStack items="center" z={1} gap="$4">
-        <YStack items="center" gap="$2">
-          <HomeH2 size="$10" maxW={500} ref={ref as any}>
+      <YStack items="center" z={1} gap="4">
+        <YStack items="center" gap="2">
+          <HomeH2 size="10" maxW={500} ref={ref as any}>
             Automatically fast
           </HomeH2>
           <HomeH3>
@@ -35,11 +35,11 @@ export function HomePerformance() {
 
         <YStack
           position="relative"
-          px="$2"
-          $sm={{ px: '$0', mx: -20, width: 'calc(100% + 40px)' }}
+          px="2 sm:0"
+          mx="sm:-20px"
+          width="100% sm:calc(100% + 40px)"
           height={131}
-          rounded="$8"
-          width="100%"
+          rounded="8"
           items="stretch"
           justify="center"
         >
@@ -48,9 +48,9 @@ export function HomePerformance() {
             b={-20}
             r={20}
             mt={-20}
-            color="$color9"
-            size="$2"
-            $sm={{ display: 'none' }}
+            color="color9"
+            display="sm:none"
+            size="2"
           >
             Lower is better.
           </Paragraph>
@@ -58,7 +58,7 @@ export function HomePerformance() {
           {show && <BenchmarkChartWeb />}
         </YStack>
 
-        <XStack gap="$4" flexWrap="wrap">
+        <XStack gap="4" flexWrap="wrap">
           <BenchmarksLink />
           <CompilerLink />
         </XStack>
@@ -72,7 +72,7 @@ const BenchmarksLink = () => {
   return (
     <Link href="/docs/intro/benchmarks">
       <Button aria-label="Performance benchmarks" theme={tint as any}>
-        <Button.Text fontFamily="$silkscreen">Benchmarks &raquo;</Button.Text>
+        <Button.Text fontFamily="silkscreen">Benchmarks &raquo;</Button.Text>
       </Button>
     </Link>
   )
@@ -83,7 +83,7 @@ const CompilerLink = () => {
   return (
     <Link href="/docs/intro/why-a-compiler">
       <Button aria-label="Compiler" theme={tint as any}>
-        <Button.Text fontFamily="$silkscreen">About &raquo;</Button.Text>
+        <Button.Text fontFamily="silkscreen">About &raquo;</Button.Text>
       </Button>
     </Link>
   )

@@ -23,9 +23,7 @@ export const ThemeToggle = memo((props: ButtonProps) => {
         {...props}
         aria-label="Toggle light/dark color scheme"
         icon={Icon}
-        hoverStyle={{
-          bg: 'rgba(0,0,0,0.15)',
-        }}
+        bg="hover:rgba(0,0,0,0.15)"
       />
     </TooltipSimple>
   )

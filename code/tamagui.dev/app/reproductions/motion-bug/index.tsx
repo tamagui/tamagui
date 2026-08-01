@@ -26,7 +26,7 @@ export default function MotionBugReproPage() {
         description="Reproduction page for motion animation driver bug"
       />
 
-      <ThemeNameEffectNoTheme disableTint={3} colorKey="$color3" />
+      <ThemeNameEffectNoTheme disableTint={3} colorKey="color3" />
 
       <HomeGlow />
       <YStack
@@ -77,7 +77,7 @@ export default function MotionBugReproPage() {
           }}
         />
       </TintSection>
-      <TintSection index={8} my="$-4" p={0} z={100}>
+      <TintSection index={8} my="-4" p={0} z={100}>
         <SectionTinted z={1000} bubble gradient>
           <HomeTypography />
         </SectionTinted>

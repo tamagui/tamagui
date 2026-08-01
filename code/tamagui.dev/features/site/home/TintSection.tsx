@@ -112,9 +112,8 @@ export const useTintSectionIndex = (cb: (index: number, str: number) => void) =>
 export const HomeSection = styled(YStack, {
   name: 'Section',
   position: 'relative',
-  py: '$14',
+  py: '14',
   z: 2,
-
   variants: {
     below: {
       true: {
@@ -142,31 +141,31 @@ export const SectionTinted = ({
       z={2}
       contain="paint"
       position="relative"
-      py="$14"
-      elevation="$2"
+      py="14"
       {...(bubble &&
         tint && {
           maxW: 1400,
-          rounded: '$6',
+          rounded: '6',
           borderWidth: 1,
-          borderColor: `$${tint}4`,
+          borderColor: `${tint}4`,
           self: 'center',
           width: '100%',
         })}
       {...props}
+      elevation="2"
     >
       <YStack
         position="absolute"
         inset={0}
-        className="all ease-in ms1000"
         z={-1}
         opacity={0.4}
-        bg={gradient && tint ? (`$${tint}2` as any) : null}
+        bg={gradient && tint ? (`${tint}2` as any) : null}
         {...(!bubble && {
           borderTopWidth: noBorderTop ? 0 : 1,
           borderBottomWidth: 1,
-          borderColor: tint ? (`$${tint}3` as any) : '$borderColor',
+          borderColor: tint ? (`${tint}3` as any) : 'border-color',
         })}
+        className="all ease-in ms1000"
       />
       {childrenMemo}
     </YStack>

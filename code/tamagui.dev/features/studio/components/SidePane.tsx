@@ -16,13 +16,9 @@ export const SidePane = ({
   controls?: React.ReactNode
 }) => {
   return (
-    <YStack
-      flex={1}
-      // space for floating menu:
-      mb="$14"
-    >
-      <XStack p="$8" pb="$4">
-        <H4 size="$10">{title}</H4>
+    <YStack flex={1} mb="14">
+      <XStack paddingTop="8" paddingRight="8" paddingLeft="8" pb="4">
+        <H4 size="10">{title}</H4>
         <Spacer flex={1} />
         {controls}
       </XStack>
@@ -30,7 +26,7 @@ export const SidePane = ({
       <YStack flex={1}>
         <ScrollView horizontal={false}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} flex={1}>
-            <YStack p="$6" flex={1}>
+            <YStack p="6" flex={1}>
               {children}
             </YStack>
           </ScrollView>
@@ -76,11 +72,10 @@ export const SidePaneHost = memo(() => {
         inset={0}
         transition="quick"
         l="15%"
-        bg="$background"
-        borderColor="$borderColor"
+        bg="background"
+        borderColor="border-color"
         borderLeftWidth={1}
         z={10000}
-        elevation="$8"
         x={20}
         opacity={0}
         pointerEvents="none"
@@ -89,13 +84,14 @@ export const SidePaneHost = memo(() => {
           x: 1,
           pointerEvents: 'auto',
         })}
+        elevation="8"
       >
         <Button
-          l="$-4"
-          t="$4"
+          l="-4"
+          t="4"
           boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
           borderWidth={2}
-          borderColor="$borderColor"
+          borderColor="border-color"
           size="medium"
           z={1000}
           circular

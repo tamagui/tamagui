@@ -122,7 +122,7 @@ export function DocsVersionPicker({
   }
 
   return (
-    <XStack gap="$2" items="center">
+    <XStack gap="2" items="center">
       <PickerSelect
         label="Version"
         value={state.productVersion}
@@ -182,17 +182,17 @@ function PickerSelect({
       <Select.Trigger
         testID={testID}
         height={28}
-        paddingHorizontal="$2"
-        gap="$1"
-        backgroundColor="$color2"
+        paddingHorizontal="2"
+        gap="1"
+        backgroundColor="color2"
         borderWidth={1}
-        borderColor="$borderColor"
-        borderRadius="$4"
+        borderColor="border-color"
+        borderRadius="4"
         minW={label === 'Version' ? 72 : 100}
       >
-        <Select.Value placeholder={label} fontSize="$1" />
+        <Select.Value placeholder={label} fontSize="1" />
         <Select.Icon marginLeft="auto">
-          <ChevronDown size={12} color="$color9" />
+          <ChevronDown size={12} color="color9" />
         </Select.Icon>
       </Select.Trigger>
 
@@ -200,14 +200,14 @@ function PickerSelect({
         <Select.Viewport
           minW={140}
           borderWidth={1}
-          borderColor="$borderColor"
-          borderRadius="$3"
-          bg="$background"
-          padding="$1"
+          borderColor="border-color"
+          borderRadius="3"
+          bg="background"
+          padding="1"
           boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
         >
           <Select.Group>
-            <Select.Label fontSize="$2" color="$color9">
+            <Select.Label fontSize="2" color="color9">
               {label}
             </Select.Label>
             {items.map((item, index) => (
@@ -217,7 +217,7 @@ function PickerSelect({
                 value={item.value}
                 testID={testID ? `${testID}-${item.value}` : undefined}
               >
-                <Select.ItemText fontSize="$2">{item.label}</Select.ItemText>
+                <Select.ItemText fontSize="2">{item.label}</Select.ItemText>
                 <Select.ItemIndicator marginLeft="auto">
                   <Check size={16} />
                 </Select.ItemIndicator>

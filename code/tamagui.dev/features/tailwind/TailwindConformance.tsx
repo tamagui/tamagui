@@ -18,10 +18,10 @@ function Specimen({ c, leg, scale }: { c: ProofCase; leg: string; scale: number 
       height={h + pad}
       items="center"
       justify="center"
-      rounded="$4"
-      bg="$color2"
+      rounded="4"
+      bg="color2"
       borderWidth={1}
-      borderColor="$color5"
+      borderColor="color5"
     >
       <YStack
         width={w}
@@ -39,17 +39,17 @@ function Specimen({ c, leg, scale }: { c: ProofCase; leg: string; scale: number 
 
 function ProofRow({ c, scale }: { c: ProofCase; scale: number }) {
   return (
-    <XStack items="center" justify="center" gap="$2" flexWrap="wrap">
+    <XStack items="center" justify="center" gap="2" flexWrap="wrap">
       {proofLegs.map((leg, i) => (
-        <XStack key={leg.key} items="center" gap="$2">
+        <XStack key={leg.key} items="center" gap="2">
           {i > 0 && (
-            <SizableText fontFamily="$mono" size="$5" color="$color8">
+            <SizableText fontFamily="mono" color="color8" size="5">
               =
             </SizableText>
           )}
-          <YStack items="center" gap="$2">
+          <YStack items="center" gap="2">
             <Specimen c={c} leg={leg.key} scale={scale} />
-            <Paragraph fontFamily="$mono" size="$1" color="$color9">
+            <Paragraph fontFamily="mono" color="color9" size="1">
               {leg.label}
             </Paragraph>
           </YStack>
@@ -61,9 +61,9 @@ function ProofRow({ c, scale }: { c: ProofCase; scale: number }) {
 
 function MatchChip({ diff }: { diff: number }) {
   return (
-    <XStack items="center" gap="$2" bg="$green3" rounded={100} px={12} py={5}>
-      <YStack width={7} height={7} rounded={100} bg="$green9" />
-      <Paragraph fontFamily="$mono" size="$1" color="$green11">
+    <XStack items="center" gap="2" bg="green3" rounded={100} px={12} py={5}>
+      <YStack width={7} height={7} rounded={100} bg="green9" />
+      <Paragraph fontFamily="mono" color="green11" size="1">
         {diff === 0 ? '0.0% diff' : `${diff}% diff`}
       </Paragraph>
     </XStack>
@@ -72,11 +72,11 @@ function MatchChip({ diff }: { diff: number }) {
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <YStack items="center" gap="$1" px="$6" py="$3">
-      <SizableText fontFamily="$mono" size="$10" color="$color12">
+    <YStack items="center" gap="1" px="6" py="3">
+      <SizableText fontFamily="mono" color="color12" size="10">
         {value}
       </SizableText>
-      <Paragraph size="$2" color="$color10">
+      <Paragraph size="2" color="color10">
         {label}
       </Paragraph>
     </YStack>
@@ -87,8 +87,8 @@ export function TailwindConformance() {
   const featured = proofCases.find((c) => c.featured) ?? proofCases[0]
   const rest = proofCases.filter((c) => c !== featured)
   return (
-    <ContainerLarge py="$12" gap="$8">
-      <YStack items="center" gap="$3">
+    <ContainerLarge py="12" gap="8">
+      <YStack items="center" gap="3">
         <HomeH2>Verified pixel by pixel</HomeH2>
         <HomeH3>
           Every utility renders the same className three ways, then the harness crops to
@@ -103,19 +103,19 @@ export function TailwindConformance() {
           width="100%"
           maxW={820}
           items="center"
-          gap="$5"
-          py="$9"
-          px="$4"
-          rounded="$8"
-          bg="$color2"
+          gap="5"
+          py="9"
+          px="4"
+          rounded="8"
+          bg="color2"
           borderWidth={1}
-          borderColor="$color5"
+          borderColor="color5"
         >
-          <XStack items="center" justify="center" flexWrap="wrap" gap="$3">
+          <XStack items="center" justify="center" flexWrap="wrap" gap="3">
             <ProofRow c={featured} scale={2.3} />
           </XStack>
-          <XStack items="center" justify="center" gap="$3" flexWrap="wrap">
-            <SizableText fontFamily="$mono" size="$3" color="$color11">
+          <XStack items="center" justify="center" gap="3" flexWrap="wrap">
+            <SizableText fontFamily="mono" color="color11" size="3">
               className=&quot;{featured.className}&quot;
             </SizableText>
             <MatchChip diff={featured.diff} />
@@ -137,10 +137,10 @@ export function TailwindConformance() {
         self="center"
         width="100%"
         maxW={980}
-        rounded="$6"
+        rounded="6"
         borderWidth={1}
-        borderColor="$borderColor"
-        bg="$color1"
+        borderColor="border-color"
+        bg="color1"
         overflow="hidden"
       >
         {rest.map((c, i) => (
@@ -149,13 +149,13 @@ export function TailwindConformance() {
             <XStack
               items="center"
               justify="space-between"
-              gap="$4"
-              px="$5"
-              py="$4"
+              gap="4"
+              px="5"
+              py="4"
               flexWrap="wrap"
             >
-              <YStack gap="$2" minWidth={220} flex={1} items="flex-start">
-                <SizableText fontFamily="$mono" size="$2" color="$color11">
+              <YStack gap="2" minWidth={220} flex={1} items="flex-start">
+                <SizableText fontFamily="mono" color="color11" size="2">
                   {c.className}
                 </SizableText>
                 <MatchChip diff={c.diff} />
@@ -166,8 +166,8 @@ export function TailwindConformance() {
         ))}
       </YStack>
 
-      <YStack self="center" maxW={720} items="center" gap="$3">
-        <Paragraph text="center" color="$color10" size="$3" lineHeight="$5">
+      <YStack self="center" maxW={720} items="center" gap="3">
+        <Paragraph text="center" color="color10" lineHeight="5" size="3">
           Method: each className is cropped to its element and diffed per pixel at{' '}
           {conformance.tolerance}% tolerance, on a real iOS render and a browser. The rest
           is {conformance.failing.join(', ')}: a few conversions still in progress, and
@@ -175,7 +175,7 @@ export function TailwindConformance() {
           No fallbacks.
         </Paragraph>
         <ParagraphLink href={'/tailwind/intro/introduction' as Href}>
-          <SizableText fontFamily="$mono" size="$2" color="$accent7">
+          <SizableText fontFamily="mono" color="accent7" size="2">
             Read the docs
           </SizableText>
         </ParagraphLink>

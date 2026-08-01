@@ -64,8 +64,8 @@ export default function SiteLayout() {
       <Modals />
       <LoadProgressBar />
       <Theme name={customThemeName}>
-        <YStack inset={0} position="absolute" bg="$color1" z={-1} pointerEvents="none" />
-        <ThemeNameEffect colorKey="$color1" disableTint={customThemeActive} />
+        <YStack inset={0} position="absolute" bg="color1" z={-1} pointerEvents="none" />
+        <ThemeNameEffect colorKey="color1" disableTint={customThemeActive} />
         <Slot />
       </Theme>
       {!hideFooter && <Footer />}

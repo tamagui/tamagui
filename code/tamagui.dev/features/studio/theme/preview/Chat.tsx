@@ -66,15 +66,15 @@ export const ChatScreen = () => {
         m={-30}
         mt={-30}
         px={30}
-        py="$5"
-        rounded="$4"
-        mb="$2"
-        borderBottomWidth="$0.25"
-        borderBottomColor="$borderColor"
+        py="5"
+        rounded="4"
+        mb="2"
+        borderBottomWidth="0.25"
+        borderBottomColor="border-color"
       >
         <XStack justify="space-between">
           <YStack>
-            <H4 {...demoProps.headingFontFamilyProps} size="$4">
+            <H4 {...demoProps.headingFontFamilyProps} size="4">
               Group Chat
             </H4>
             <Paragraph {...demoProps.panelDescriptionProps}>
@@ -93,7 +93,7 @@ export const ChatScreen = () => {
       </YStack>
 
       <YStack flex={1} flexBasis="auto">
-        <ScrollView m="$-4" p="$6">
+        <ScrollView m="-4" p="6">
           <YStack {...demoProps.gapPropsMd}>
             {messages.map((message, idx) => {
               const isLastFromUser =
@@ -107,7 +107,7 @@ export const ChatScreen = () => {
                     includeAvatar={isLastFromUser}
                   />
                   {/* this is nice to separate diff groups but commenting out for now: */}
-                  {/* {isLastFromUser && <Spacer size="$1" />} */}
+                  {/* {isLastFromUser && <Spacer size="1" />} */}
                 </React.Fragment>
               )
             })}
@@ -115,8 +115,8 @@ export const ChatScreen = () => {
         </ScrollView>
       </YStack>
 
-      <YStack mt="$4">
-        <Form flexDirection="row" onSubmit={() => sendMessage(input)} gap="$2">
+      <YStack mt="4">
+        <Form flexDirection="row" gap="2" onSubmit={() => sendMessage(input)}>
           <Input
             value={input}
             onChange={(e) => setInput(e.target?.value ?? '')}
@@ -157,12 +157,12 @@ const ChatMessage = memo(
 
     let contents = (
       <YStack
-        px="$2.5"
-        py="$2"
+        px="2.5"
+        py="2"
         {...demoProps.borderRadiusProps}
         {...(isUser ? demoProps.chatFrameActiveProps : demoProps.chatFrameProps)}
       >
-        <Paragraph lineHeight="$2" maxW={200} {...demoProps.chatTextProps}>
+        <Paragraph lineHeight="2" maxW={200} {...demoProps.chatTextProps}>
           {message}
         </Paragraph>
       </YStack>
@@ -176,16 +176,16 @@ const ChatMessage = memo(
       <XStack
         self={isUser ? 'flex-end' : 'flex-start'}
         flexDirection={isUser ? 'row-reverse' : 'row'}
-        gap="$2"
+        gap="2"
       >
         {includeAvatar ? (
-          <Avatar size="$2" mt="$1" {...demoProps.borderRadiusProps}>
+          <Avatar size="2" mt="1" {...demoProps.borderRadiusProps}>
             <Avatar.Image src={avatarSrc} />
           </Avatar>
         ) : (
-          <YStack width="$2" />
+          <YStack width="2" />
         )}
-        <XStack items="flex-end" mb="$1">
+        <XStack items="flex-end" mb="1">
           {contents}
         </XStack>
       </XStack>
