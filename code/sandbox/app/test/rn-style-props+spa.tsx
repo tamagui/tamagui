@@ -19,16 +19,8 @@ export default function RNStylePropsTest() {
           boxShadow (object)
         </Text>
         <Square
-          size={100}
-          bg="$green10"
-          boxShadow={{
-            offsetX: 0,
-            offsetY: 4,
-            blurRadius: 12,
-            spreadDistance: 0,
-            color: 'rgba(0,0,0,0.3)',
-          }}
-        />
+                        size={100} bg="$green10" boxShadow={{ offsetX: 0, offsetY: 4, blurRadius: 12, spreadDistance: 0, color: 'rgba(0,0,0,0.3)', }}
+                      />
       </YStack>
 
       <YStack gap="$2">
@@ -43,15 +35,8 @@ export default function RNStylePropsTest() {
           boxShadow object with tokens
         </Text>
         <Square
-          size={100}
-          bg="$blue10"
-          boxShadow={{
-            offsetX: '$2',
-            offsetY: '$4',
-            blurRadius: '$8',
-            color: '$shadowColor',
-          }}
-        />
+                        size={100} bg="$blue10" boxShadow={{ offsetX: '$2', offsetY: '$4', blurRadius: '$8', color: '$shadowColor', }}
+                      />
       </YStack>
 
       <YStack gap="$2">
@@ -59,16 +44,8 @@ export default function RNStylePropsTest() {
           boxShadow inset
         </Text>
         <Square
-          size={100}
-          bg="$yellow10"
-          boxShadow={{
-            offsetX: 0,
-            offsetY: 2,
-            blurRadius: 8,
-            color: 'rgba(0,0,0,0.5)',
-            inset: true,
-          }}
-        />
+                        size={100} bg="$yellow10" boxShadow={{ offsetX: 0, offsetY: 2, blurRadius: 8, color: 'rgba(0,0,0,0.5)', inset: true, }}
+                      />
       </YStack>
 
       <YStack gap="$2">
@@ -83,10 +60,8 @@ export default function RNStylePropsTest() {
           filter (multiple)
         </Text>
         <Square
-          size={100}
-          bg="$green10"
-          filter={[{ brightness: 1.2 }, { contrast: 1.1 }]}
-        />
+                        size={100} bg="$green10" filter={[{ brightness: 1.2 }, { contrast: 1.1 }]}
+                      />
       </YStack>
 
       <YStack gap="$2">
@@ -115,25 +90,13 @@ export default function RNStylePropsTest() {
         </Text>
         <XStack gap="$2">
           <Square
-            width={100}
-            height={100}
-            bg="$yellow10"
-            p="$2"
-            borderWidth={10}
-            borderColor="$gray10"
-            boxSizing="border-box"
-          >
+                              width={100} height={100} bg="$yellow10" p="$2" borderWidth={10} borderColor="$gray10" boxSizing="border-box"
+                            >
             <Text fontSize="$1">border-box</Text>
           </Square>
           <Square
-            width={100}
-            height={100}
-            bg="$yellow10"
-            p="$2"
-            borderWidth={10}
-            borderColor="$gray10"
-            boxSizing="content-box"
-          >
+                              width={100} height={100} bg="$yellow10" p="$2" borderWidth={10} borderColor="$gray10" boxSizing="content-box"
+                            >
             <Text fontSize="$1">content-box</Text>
           </Square>
         </XStack>
@@ -144,13 +107,8 @@ export default function RNStylePropsTest() {
           outline props
         </Text>
         <Square
-          size={100}
-          bg="$red10"
-          outlineWidth={2}
-          outlineStyle="solid"
-          outlineColor="$blue10"
-          outlineOffset={4}
-        />
+                        size={100} bg="$red10" outlineWidth={2} outlineStyle="solid" outlineColor="$blue10" outlineOffset={4}
+                      />
       </YStack>
 
       <YStack gap="$2">

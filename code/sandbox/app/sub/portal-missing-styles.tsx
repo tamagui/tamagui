@@ -27,10 +27,8 @@ export const DialogTest = () => {
             </Sheet.ScrollView>
           </Sheet.Container>
           <Sheet.Overlay
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+                              transition="lazy" opacity="enter:0 exit:0"
+                            />
         </Sheet>
       </Dialog.Adapt>
 
@@ -39,12 +37,8 @@ export const DialogTest = () => {
 
         <Dialog.Content key="content">
           <YStack
-            bg="$red10"
-            borderWidth={20}
-            borderColor="$green10"
-            width={350}
-            height={350}
-          >
+                              bg="$red10" borderWidth={20} borderColor="$green10" width={350} height={350}
+                            >
             <H1>ok ok</H1>
           </YStack>
         </Dialog.Content>

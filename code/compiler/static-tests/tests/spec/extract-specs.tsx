@@ -35,16 +35,8 @@ const child = <Text>hello world</Text>
 export function Test1() {
   return (
     <YStack
-      className="test1"
-      flex={1}
-      rounded={100}
-      bg="red"
-      shadowRadius={10}
-      shadowColor="#000"
-      hoverStyle={{
-        scale: 2,
-      }}
-    >
+            className="test1" flex={1} rounded={100} bg="red" shadowRadius={10} shadowColor="#000" scale="hover:2"
+          >
       {child}
     </YStack>
   )
@@ -52,18 +44,8 @@ export function Test1() {
 
 export const Card = (props: any) => (
   <XStack
-    className="transition all ease-in ms100"
-    borderRadius="$2"
-    backgroundColor="$background"
-    hoverStyle={{
-      backgroundColor: '$backgroundHover',
-      shadowColor: '$shadowColor',
-      shadowRadius: 20,
-      shadowOffset: { height: 3, width: 0 },
-      y: -4,
-    }}
-    {...props}
-  />
+        className="transition all ease-in ms100" borderRadius="$2" backgroundColor="$background" hoverStyle={{ backgroundColor: '$backgroundHover', shadowColor: '$shadowColor', shadowRadius: 20, shadowOffset: { height: 3, width: 0 }, y: -4, }} {...props}
+      />
 )
 
 export function TestVariantDefaultFalseOn(props: TestProps) {
@@ -82,18 +64,12 @@ export function TestMediaQuery() {
   return (
     <>
       <YStack
-        backgroundColor={!sm ? 'green' : 'red'}
-        paddingRight={media.sm ? 10 : 0}
-        {...(media.xs && { borderTopWidth: 1 })}
-        {...(media.sm && {
-          paddingRight: 4,
-          // nested conditional
-          backgroundColor: nonStaticInt ? 'red' : 'blue',
-        })}
-        hoverStyle={{
-          bg: 'yellow',
-        }}
-      >
+                  backgroundColor={!sm ? 'green' : 'red'} paddingRight={media.sm ? 10 : 0} {...(media.xs && { borderTopWidth: 1 })} {...(media.sm && {
+                    paddingRight: 4,
+                    // nested conditional
+                    backgroundColor: nonStaticInt ? 'red' : 'blue',
+                  })} bg="hover:yellow"
+                >
         {child}
       </YStack>
       <YStack
@@ -111,13 +87,8 @@ export function TestMediaQueryInline() {
   return (
     <>
       <YStack
-        $sm={{
-          bg: '$background',
-          hoverStyle: {
-            bg: 'red',
-          },
-        }}
-      >
+                  bg="sm:background sm:hover:red"
+                >
         {child}
       </YStack>
     </>
@@ -158,12 +129,8 @@ export function Test3(props: any) {
 export function Test4() {
   return (
     <YStack
-      height={200}
-      width={`calc(100% + ${nonStaticInt * 2}px)`}
-      hoverStyle={{
-        overflow: 'visible',
-      }}
-    />
+            height={200} width={`calc(100% + ${nonStaticInt * 2}px)`} overflow="hover:visible"
+          />
   )
 }
 
@@ -310,13 +277,8 @@ export function Test13(props: TestProps) {
 export function Test14() {
   return (
     <YStack
-      hoverStyle={{
-        bg: 'red',
-      }}
-      pressStyle={{
-        bg: testColor,
-      }}
-    />
+            bg={`hover:red press:${testColor}`}
+          />
   )
 }
 
@@ -390,20 +352,8 @@ export function TestComplexFlexWithConditionals(props: TestProps) {
   const { sm } = useMedia()
   return (
     <YStack
-      rounded={sm ? '$0' : '$8'}
-      flexDirection={sm ? 'row' : 'column'}
-      flexBasis={props.conditional ? '100%' : 'auto'}
-      maxW="100%"
-      overflow="hidden"
-      p={4}
-      $sm={{ px: '$0' }}
-      width={sm ? '100%' : 260}
-      bg={props.altConditional ? '$backgroundHover' : '$background'}
-      hoverStyle={{
-        cursor: 'pointer',
-        bg: '$backgroundHover',
-      }}
-    >
+            rounded={sm ? '$0' : '$8'} flexDirection={sm ? 'row' : 'column'} flexBasis={props.conditional ? '100%' : 'auto'} maxW="100%" overflow="hidden" p={4} px="sm:0" width={sm ? '100%' : 260} bg={props.altConditional ? '$backgroundHover' : '$background'} hoverStyle={{ cursor: 'pointer', bg: '$backgroundHover', }}
+          >
       <XStack
         flexDirection={sm ? 'column' : 'row'}
         flexWrap="wrap"
@@ -421,14 +371,8 @@ export function TestFlexWrapWithMediaQuery() {
   const media = useMedia()
   return (
     <XStack
-      flexWrap="wrap"
-      flexDirection={media.sm ? 'row' : 'column'}
-      gap="$2"
-      $sm={{
-        flexWrap: 'nowrap',
-        padding: '$4',
-      }}
-    >
+            flexWrap="wrap sm:nowrap" flexDirection={media.sm ? 'row' : 'column'} gap="$2" padding="sm:4"
+          >
       {child}
     </XStack>
   )
@@ -438,11 +382,8 @@ export function TestFlexWrapWithMediaQuery() {
 export function TestAriaProps() {
   return (
     <YStack
-      render="nav"
-      aria-labelledby="test-heading"
-      aria-label="Navigation menu"
-      p="$4"
-    >
+            render="nav" aria-labelledby="test-heading" aria-label="Navigation menu" p="$4"
+          >
       <Text id="test-heading">Navigation</Text>
       {child}
     </YStack>
@@ -465,10 +406,8 @@ export function TestAnimatedByWithoutAnimation() {
   return (
     <YStack group="animated" animatedBy="css" data-testid="animated-group">
       <YStack
-        width={100}
-        $group-animated-hover={{ backgroundColor: 'red' }}
-        data-testid="animated-group-child"
-      />
+                  width={100} backgroundColor="group-hover/animated:red" data-testid="animated-group-child"
+                />
     </YStack>
   )
 }

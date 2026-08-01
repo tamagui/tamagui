@@ -11,15 +11,8 @@ export const LogoIcon = ({
 }): JSX.Element => {
   return (
     <YStack
-      render="span"
-      className="unselectable"
-      alignSelf="center"
-      marginVertical={-10}
-      pressStyle={{
-        opacity: 0.7,
-        scaleX: -1,
-      }}
-    >
+            render="span" className="unselectable" alignSelf="center" marginVertical={-10} opacity="press:0.7" scaleX="press:-1"
+          >
       <TamaguiIconSvg
         className="tamagui-icon"
         width={450 / 8 / downscale}

@@ -84,40 +84,22 @@ export const LogoWords: React.MemoExoticComponent<
 
   return (
     <XStack
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      paddingVertical="$2"
-      data-tauri-drag-region
-      marginVertical="$-2"
-      position="relative"
-      className="logo-words"
-      onLayout={(e) => {
-        setLayout(e.nativeEvent.layout as any)
-      }}
-      // @ts-ignore
-      onMouseMove={(e: MouseEvent) => {
-        if (!layout) return
-        const x = e.clientX - layout.pageX
-        // Total width divided into 7 sections (one for each letter)
-        const sectionWidth = layout.width / 7
-        // Calculate which section we're in (0-6)
-        const section = Math.min(6, Math.floor(x / sectionWidth))
-        Tint.setTintIndex(section)
-      }}
-      {...props}
-    >
+            onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} paddingVertical="$2" marginVertical="$-2" position="relative" {...props} data-tauri-drag-region className="logo-words" onLayout={(e) => {
+              setLayout(e.nativeEvent.layout as any)
+            }} onMouseMove={(e: MouseEvent) => {
+              if (!layout) return
+              const x = e.clientX - layout.pageX
+              // Total width divided into 7 sections (one for each letter)
+              const sectionWidth = layout.width / 7
+              // Calculate which section we're in (0-6)
+              const section = Math.min(6, Math.floor(x / sectionWidth))
+              Tint.setTintIndex(section)
+            }}
+          >
       {animated && (
         <Circle
-          transition="medium"
-          position="absolute"
-          top={0}
-          left={0}
-          y={mounted === 'start' ? -30 : -4}
-          // the last i is less wide
-          x={x}
-          size={4}
-          backgroundColor="$color12"
-        />
+                        transition="medium" position="absolute" top={0} left={0} y={mounted === 'start' ? -30 : -4} x={x} backgroundColor="$color12" size={4}
+                      />
       )}
 
       <svg

@@ -40,18 +40,8 @@ function RichItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
-          width={60}
-          height={40}
-          borderRadius={6}
-          padding={4}
-          borderWidth={1}
-          borderColor="rgba(0,0,0,0.1)"
-          backgroundColor="rgb(99,102,241)"
-          margin={1}
-          hoverStyle={{ scale: 1.02, borderColor: 'rgba(0,0,0,0.3)' }}
-          pressStyle={{ scale: 0.98, opacity: 0.8 }}
-        />
+                    key={i + seed * ITEM_COUNT} width={60} height={40} borderRadius={6} padding={4} borderWidth={1} borderColor="rgba(0,0,0,0.1) hover:rgba(0,0,0,0.3)" backgroundColor="rgb(99,102,241)" margin={1} scale="hover:1.02 press:0.98" opacity="press:0.8"
+                  />
       )
     }
     return <>{arr}</>
@@ -66,31 +56,15 @@ function GroupItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
-          group={'row' as any}
-          flexDirection="row"
-          alignItems="center"
-          gap={8}
-          padding={8}
-          borderRadius={8}
-          backgroundColor="$gray2"
-          hoverStyle={{ backgroundColor: '$gray3' }}
-          margin={1}
-        >
+                    key={i + seed * ITEM_COUNT} group={'row' as any} flexDirection="row" alignItems="center" gap={8} padding={8} borderRadius={8} backgroundColor="$gray2" hoverStyle={{ backgroundColor: '$gray3' }} margin={1}
+                  >
           <View
-            width={32}
-            height={32}
-            borderRadius={16}
-            backgroundColor="$blue5"
-            $group-row-hover:backgroundColor="$blue7"
-          />
+                          width={32} height={32} borderRadius={16} backgroundColor="$blue5" $group-row-hover:backgroundColor="$blue7"
+                        />
           <View flex={1}>
             <View
-              height={10}
-              borderRadius={4}
-              backgroundColor="$gray8"
-              $group-row-hover:backgroundColor="$blue8"
-            />
+                                height={10} borderRadius={4} backgroundColor="$gray8" $group-row-hover:backgroundColor="$blue8"
+                              />
           </View>
         </View>
       )
@@ -110,19 +84,8 @@ function HeavyItems({ seed }: { seed: number }) {
       const color = CARD_COLORS[(i + seed) % 4]
       arr.push(
         <View
-          key={i + seed * HEAVY_COUNT}
-          group={'card' as any}
-          flexDirection="row"
-          alignItems="center"
-          gap={12}
-          padding={12}
-          borderRadius={10}
-          backgroundColor="$gray1"
-          borderWidth={1}
-          borderColor="$gray4"
-          marginBottom={4}
-          hoverStyle={{ backgroundColor: '$gray2', borderColor: '$gray6' }}
-        >
+                    key={i + seed * HEAVY_COUNT} group={'card' as any} flexDirection="row" alignItems="center" gap={12} padding={12} borderRadius={10} backgroundColor="$gray1" borderWidth={1} borderColor="$gray4" marginBottom={4} hoverStyle={{ backgroundColor: '$gray2', borderColor: '$gray6' }}
+                  >
           <View
             width={44}
             height={44}
@@ -132,26 +95,15 @@ function HeavyItems({ seed }: { seed: number }) {
           />
           <View flex={1} gap={4}>
             <View
-              height={12}
-              borderRadius={4}
-              backgroundColor="$gray11"
-              width={80 + ((i * 17) % 60)}
-              $group-card-hover:backgroundColor="$blue9"
-            />
+                                height={12} borderRadius={4} backgroundColor="$gray11" width={80 + ((i * 17) % 60)} $group-card-hover:backgroundColor="$blue9"
+                              />
             <View
-              height={10}
-              borderRadius={3}
-              backgroundColor="$gray8"
-              width={120 + ((i * 13) % 80)}
-            />
+                                height={10} borderRadius={3} backgroundColor="$gray8" width={120 + ((i * 13) % 80)}
+                              />
           </View>
           <View
-            paddingHorizontal={8}
-            paddingVertical={3}
-            borderRadius={6}
-            backgroundColor="$blue3"
-            $group-card-hover:backgroundColor="$blue5"
-          >
+                          paddingHorizontal={8} paddingVertical={3} borderRadius={6} backgroundColor="$blue3" $group-card-hover:backgroundColor="$blue5"
+                        >
             <View width={24} height={8} borderRadius={3} backgroundColor="$blue9" />
           </View>
         </View>
@@ -169,17 +121,8 @@ function AnimatedItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
-          transition="bouncy"
-          width={24}
-          height={24}
-          borderRadius={4}
-          backgroundColor="rgb(59,130,246)"
-          margin={1}
-          enterStyle={{ opacity: 0, scale: 0.5 }}
-          hoverStyle={{ scale: 1.1 }}
-          pressStyle={{ scale: 0.95 }}
-        />
+                    key={i + seed * ITEM_COUNT} transition="bouncy" width={24} height={24} borderRadius={4} backgroundColor="rgb(59,130,246)" margin={1} opacity="enter:0" scale="enter:0.5 hover:1.1 press:0.95"
+                  />
       )
     }
     return <>{arr}</>

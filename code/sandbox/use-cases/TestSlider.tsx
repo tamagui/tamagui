@@ -4,7 +4,7 @@ import { Slider, XStack, YStack, Label } from 'tamagui'
 export function SliderDemo() {
   return (
     <YStack gap="$8" style={{ alignItems: 'center' }}>
-      <XStack height={200} style={{ alignItems: 'center' }} gap="$8">
+      <XStack height={200} gap="$8" style={{ alignItems: 'center' }}>
         <YStack style={{ alignItems: 'center' }} gap="$4">
           <Label>Vertical (LTR)</Label>
           <SimpleSlider height={200} orientation="vertical" />

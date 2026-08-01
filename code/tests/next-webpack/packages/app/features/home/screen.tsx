@@ -69,22 +69,15 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
             </Sheet.ScrollView>
           </Sheet.Container>
           <Sheet.Overlay
-            backgroundColor="$shadowColor"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+                              backgroundColor="$shadowColor" transition="lazy" opacity="enter:0 exit:0"
+                            />
         </Sheet>
       </Adapt>
 
       <Select.Content>
         <Select.ScrollUpButton
-          items="center"
-          justify="center"
-          position="relative"
-          width="100%"
-          height="$3"
-        >
+                        items="center" justify="center" position="relative" width="100%" height="$3"
+                      >
           <YStack z={10}>
             <ChevronUp size={20} />
           </YStack>
@@ -130,27 +123,16 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <YStack
-              position="absolute"
-              r={0}
-              t={0}
-              b={0}
-              items="center"
-              justify="center"
-              width={'$4'}
-              pointerEvents="none"
-            >
+                                    position="absolute" r={0} t={0} b={0} items="center" justify="center" width={'$4'} pointerEvents="none"
+                                  >
               <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </YStack>
           )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
-          items="center"
-          justify="center"
-          position="relative"
-          width="100%"
-          height="$3"
-        >
+                        items="center" justify="center" position="relative" width="100%" height="$3"
+                      >
           <YStack z={10}>
             <ChevronDown size={20} />
           </YStack>
@@ -201,14 +183,8 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   return (
     <YStack flex={1} justify="center" items="center" gap="$8" p="$4" bg="$background">
       <XStack
-        position="absolute"
-        width="100%"
-        t="$6"
-        gap="$6"
-        justify="center"
-        flexWrap="wrap"
-        $sm={{ position: 'relative', t: 0 }}
-      >
+                  position="absolute" width="100%" t="$6" gap="$6" justify="center" flexWrap="wrap" $sm={{ position: 'relative', t: 0 }}
+                >
         {Platform.OS === 'web' && (
           <>
             <SwitchRouterButton pagesMode={pagesMode} />
@@ -277,29 +253,21 @@ function SheetDemo() {
         dismissOnSnapToBottom
       >
         <Sheet.Overlay
-          bg="$shadow4"
-          transition="lazy"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+                        bg="$shadow4" transition="lazy" opacity="enter:0 exit:0"
+                      />
         <Sheet.Handle bg="$color8" />
         <Sheet.Container items="center" justify="center" gap="$10">
           <Sheet.Background bg="$color2" />
           <XStack gap="$2">
             <Paragraph text="center">Made by</Paragraph>
             <Anchor
-              color="$blue10"
-              href="https://twitter.com/natebirdman"
-              target="_blank"
-            >
+                                    color="$blue10" href="https://twitter.com/natebirdman" target="_blank"
+                                  >
               @natebirdman,
             </Anchor>
             <Anchor
-              color="$blue10"
-              href="https://github.com/tamagui/tamagui"
-              target="_blank"
-              rel="noreferrer"
-            >
+                                    color="$blue10" href="https://github.com/tamagui/tamagui" target="_blank" rel="noreferrer"
+                                  >
               give it a ⭐️
             </Anchor>
           </XStack>

@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react'
 
 const XStack = styled(View, { flexDirection: 'row' })
 const Button = styled(View, {
-  render: 'button',
-  padding: '$3',
-  backgroundColor: '$blue10',
-  borderRadius: '$4',
-  cursor: 'pointer',
-  pressStyle: { opacity: 0.8 },
+render: 'button',
+padding: '$3',
+backgroundColor: '$blue10',
+borderRadius: '$4',
+cursor: 'pointer',
+opacity: "press:0.8"
 })
 
 export function ThemeButtons() {

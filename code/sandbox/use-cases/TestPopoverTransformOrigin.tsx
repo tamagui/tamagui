@@ -88,23 +88,8 @@ function PopoverWithScale({
         </Popover.Trigger>
 
         <Popover.Content
-          borderWidth={1}
-          borderColor="$borderColor"
-          p="$4"
-          elevate
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          // Key animation: scale from 0.5 to 1
-          // With transformOrigin, this should animate FROM the anchor point
-          enterStyle={{ scale: 0.5, opacity: 0 }}
-          exitStyle={{ scale: 0.5, opacity: 0 }}
-        >
+                        borderWidth={1} borderColor="$borderColor" p="$4" transition={[ 'quick', { opacity: { overshootClamping: true, }, }, ]} scale="enter:0.5 exit:0.5" opacity="enter:0 exit:0" elevate
+                      >
           <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
           <YStack gap="$2" width={150}>

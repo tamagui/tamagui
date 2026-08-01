@@ -48,16 +48,8 @@ export function MenuDemo() {
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
-            paddingHorizontal={0}
-            borderWidth={1}
-            items="flex-start"
-            borderColor="$borderColor"
-            backgroundColor="$color1"
-            enterStyle={{ scale: 0.4, opacity: 0, y: -10 }}
-            exitStyle={{ scale: 0.6, opacity: 0, y: -5 }}
-            animation="menu"
-            transformOrigin="top"
-          >
+                              paddingHorizontal={0} borderWidth={1} items="flex-start" borderColor="$borderColor" backgroundColor="$color1" scale="enter:0.4 exit:0.6" opacity="enter:0 exit:0" y="enter:-10px exit:-5px" transformOrigin="top" animation="menu"
+                            >
             <Menu.Item onSelect={onSelect} key="about-notes">
               <Menu.ItemTitle>About Notes</Menu.ItemTitle>
             </Menu.Item>
@@ -119,14 +111,8 @@ export function MenuDemo() {
 
               <Menu.Portal zIndex={200}>
                 <Menu.SubContent
-                  enterStyle={{ scale: 0.5, opacity: 0, y: -5 }}
-                  exitStyle={{ scale: 0.7, opacity: 0, y: -3 }}
-                  animation="menu"
-                  transformOrigin="top left"
-                  elevation="$5"
-                  scale={1.02}
-                  backgroundColor="$color1"
-                >
+                                                enterStyle={{ scale: 0.5, opacity: 0, y: -5 }} exitStyle={{ scale: 0.7, opacity: 0, y: -3 }} transformOrigin="top left" scale={1.02} backgroundColor="$color1" animation="menu" elevation="$5"
+                                              >
                   <Menu.Item
                     onSelect={onSelect}
                     key="create-note"
@@ -160,22 +146,16 @@ export function MenuDemo() {
             <Menu.Separator />
 
             <Menu.CheckboxItem
-              key="show-hidden"
-              checked={bookmarksChecked}
-              onCheckedChange={setBookmarksChecked}
-              gap={'$2'}
-            >
+                                    key="show-hidden" checked={bookmarksChecked} onCheckedChange={setBookmarksChecked} gap={'$2'}
+                                  >
               <Menu.ItemTitle>Mark as read</Menu.ItemTitle>
               <Menu.ItemIndicator>
                 <Check size={16} color="$color10" />
               </Menu.ItemIndicator>
             </Menu.CheckboxItem>
             <Menu.CheckboxItem
-              key="show-other-notes"
-              checked={native}
-              onCheckedChange={setNative}
-              gap={'$2'}
-            >
+                                    key="show-other-notes" checked={native} onCheckedChange={setNative} gap={'$2'}
+                                  >
               <Menu.ItemTitle>Enable Native</Menu.ItemTitle>
               <Menu.ItemIndicator>
                 <Check size={16} color="$color10" />

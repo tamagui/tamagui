@@ -27,7 +27,7 @@ export default function TooltipSSRTest() {
 
       <TooltipGroup delay={tooltipDelay}>
         <Tooltip scope="promo-tooltip" offset={20} placement="bottom">
-          <XStack gap="$2" id="tip-triggers" justifyContent="center">
+          <XStack gap="$2" justifyContent="center" id="tip-triggers">
             <Tooltip.Trigger
               scope="promo-tooltip"
               asChild
@@ -60,18 +60,8 @@ export default function TooltipSSRTest() {
           </XStack>
 
           <Tooltip.Content
-            id="tip-content"
-            scope="promo-tooltip"
-            animatePosition
-            transition="medium"
-            bg="$background"
-            elevation="$2"
-            rounded="$4"
-            px="$2.5"
-            py="$1"
-            enterStyle={{ y: -4, opacity: 0 }}
-            exitStyle={{ y: -4, opacity: 0 }}
-          >
+                              id="tip-content" scope="promo-tooltip" animatePosition transition="medium" bg="$background" rounded="$4" px="$2.5" py="$1" y="enter:-4px exit:-4px" opacity="enter:0 exit:0" elevation="$2"
+                            >
             <Tooltip.Arrow scope="promo-tooltip" id="tip-arrow" />
             <Paragraph id="tip-label" size="$3">
               {label}

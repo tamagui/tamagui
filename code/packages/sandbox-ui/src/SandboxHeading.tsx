@@ -1,15 +1,13 @@
 import { Text, styled } from '@tamagui/core'
 
 export const SandboxHeading = styled(Text, {
-  render: 'h1',
-  color: '$color',
-  backgroundColor: '$background',
-
-  pressStyle: {
+render: 'h1',
+color: '$color',
+backgroundColor: '$background',
+pressStyle: {
     backgroundColor: 'red',
   },
-
-  variants: {
+variants: {
     size: {
       large: {
         fontSize: 22,
@@ -18,5 +16,5 @@ export const SandboxHeading = styled(Text, {
         fontSize: 16,
       },
     },
-  },
+  }
 })

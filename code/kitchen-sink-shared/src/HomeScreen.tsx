@@ -16,12 +16,8 @@ export function HomeScreen({ onSelect }: { onSelect: (demoName: string) => void 
             {demos.map((demo) => (
               <YGroup.Item key={demo.key}>
                 <ListItem
-                  bg="$color1"
-                  pressStyle={{ backgroundColor: '$color2' }}
-                  size="$4"
-                  iconAfter={<ChevronRight color="$color10" />}
-                  onPress={() => onSelect(demo.key)}
-                >
+                                      bg="$color1" backgroundColor="press:color2" size="$4" iconAfter={<ChevronRight color="$color10" />} onPress={() => onSelect(demo.key)}
+                                    >
                   {demo.title}
                 </ListItem>
               </YGroup.Item>

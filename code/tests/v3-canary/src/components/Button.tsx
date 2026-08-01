@@ -28,21 +28,18 @@ export const buttonSizes = createSizeTable(
 type ButtonSize = keyof typeof buttonSizes.values
 
 export const ButtonFrame = styled(ButtonBehaviorFrame, {
-  context: buttonSizes.Context,
-  name: 'CanaryButtonFrame',
-  background: '$canaryTheme',
-  borderColor: '$canary-token',
-  rounded: 8,
-  borderWidth: 1,
-  $web: { cursor: 'pointer' },
-  hoverStyle: { opacity: 0.9 },
-  pressStyle: { opacity: 0.7 },
-  focusVisibleStyle: {
-    outlineColor: '$canary-token',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-  },
-  variants: {
+context: buttonSizes.Context,
+name: 'CanaryButtonFrame',
+background: '$canaryTheme',
+borderColor: '$canary-token',
+rounded: 8,
+borderWidth: 1,
+$web: { cursor: 'pointer' },
+opacity: "hover:0.9 press:0.7",
+outlineColor: "focus-visible:canary-token",
+outlineStyle: "focus-visible:solid",
+outlineWidth: "focus-visible:2px",
+variants: {
     size: buttonSizes.frame,
     circular: {
       true: { rounded: 1000, paddingHorizontal: 0 },
@@ -51,23 +48,23 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
       true: { opacity: 0.35 },
     },
   } as const,
-  defaultVariants: { size: 'medium' },
-  compoundVariants: [
+defaultVariants: { size: 'medium' },
+compoundVariants: [
     {
       size: 'small',
       circular: true,
       style: { maxH: 30, maxW: 30, minW: 30, w: 30 },
     },
-  ],
+  ]
 })
 
 export const ButtonText = styled(ButtonBehaviorText, {
-  context: buttonSizes.Context,
-  name: 'CanaryButtonText',
-  color: '$white',
-  fontWeight: '600',
-  variants: { size: buttonSizes.text } as const,
-  defaultVariants: { size: 'medium' },
+context: buttonSizes.Context,
+name: 'CanaryButtonText',
+color: '$white',
+fontWeight: '600',
+variants: { size: buttonSizes.text } as const,
+defaultVariants: { size: 'medium' }
 })
 
 const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(

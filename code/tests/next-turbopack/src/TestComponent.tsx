@@ -3,12 +3,12 @@ import { useState } from 'react'
 
 const YStack = styled(View, { flexDirection: 'column' })
 const Button = styled(View, {
-  render: 'button',
-  padding: '$3',
-  backgroundColor: '$blue10',
-  borderRadius: '$4',
-  cursor: 'pointer',
-  pressStyle: { opacity: 0.8 },
+render: 'button',
+padding: '$3',
+backgroundColor: '$blue10',
+borderRadius: '$4',
+cursor: 'pointer',
+opacity: "press:0.8"
 })
 
 export function TestComponent() {
@@ -16,13 +16,8 @@ export function TestComponent() {
 
   return (
     <YStack
-      flex={1}
-      justifyContent="center"
-      alignItems="center"
-      gap="$4"
-      padding="$4"
-      backgroundColor="$background"
-    >
+            flex={1} justifyContent="center" alignItems="center" gap="$4" padding="$4" backgroundColor="$background"
+          >
       <Text color="$color12" fontSize="$8" fontWeight="bold">
         Tamagui + Turbopack
       </Text>
@@ -31,11 +26,8 @@ export function TestComponent() {
         <Text color="white">Increment</Text>
       </Button>
       <YStack
-        padding="$4"
-        backgroundColor="$blue5"
-        borderRadius="$4"
-        $sm={{ backgroundColor: '$red5' }}
-      >
+                  padding="$4" backgroundColor="$blue5" borderRadius="$4" $sm={{ backgroundColor: '$red5' }}
+                >
         <Text>Media query test (blue on lg, red on sm)</Text>
       </YStack>
     </YStack>

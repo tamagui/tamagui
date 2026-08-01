@@ -42,21 +42,15 @@ export default function TestSelectAdapt(props: SelectProps) {
             </Sheet.ScrollView>
           </Sheet.Container>
           <Sheet.Overlay
-            transition="quick"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+                              transition="quick" opacity="enter:0 exit:0"
+                            />
         </Sheet>
       </Adapt>
 
       <Select.Content>
         <Select.ScrollUpButton
-          items="center"
-          justify="center"
-          position="relative"
-          width="100%"
-          height="$3"
-        >
+                        items="center" justify="center" position="relative" width="100%" height="$3"
+                      >
           <YStack z={10}>
             <ChevronUp size={20} />
           </YStack>
@@ -96,27 +90,16 @@ export default function TestSelectAdapt(props: SelectProps) {
           {/* Native gets an extra icon */}
           {props.native && (
             <YStack
-              position="absolute"
-              r={0}
-              t={0}
-              b={0}
-              items="center"
-              justify="center"
-              width="$4"
-              pointerEvents="none"
-            >
+                                    position="absolute" r={0} t={0} b={0} items="center" justify="center" width="$4" pointerEvents="none"
+                                  >
               <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </YStack>
           )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
-          items="center"
-          justify="center"
-          position="relative"
-          width="100%"
-          height="$3"
-        >
+                        items="center" justify="center" position="relative" width="100%" height="$3"
+                      >
           <YStack z={10}>
             <ChevronDown size={20} />
           </YStack>

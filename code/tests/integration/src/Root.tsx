@@ -17,17 +17,13 @@ export const Root = () => {
       <View flexDirection="column" flex={1} alignItems="center" justifyContent="center">
         <Text render="h1">Hello world</Text>
         <TailwindView
-          id="hybrid-cascade"
-          backgroundColor="$dark9"
-          className="bg-blue-500 p-4"
-        >
+                        id="hybrid-cascade" backgroundColor="$dark9" className="bg-blue-500 p-4"
+                      >
           <Text>Tailwind wins after Tamagui</Text>
         </TailwindView>
         <TailwindView
-          id="hybrid-forward-late-prop"
-          className="bg-blue-500"
-          backgroundColor="$dark9"
-        >
+                        id="hybrid-forward-late-prop" className="bg-blue-500" backgroundColor="$dark9"
+                      >
           <Text>Tamagui wins when authored later</Text>
         </TailwindView>
         <TailwindView

@@ -47,26 +47,12 @@ export default function TestAdaptDialogToSheet() {
 
         <Dialog.Portal>
           <Dialog.Overlay
-            key="overlay"
-            transition="quick"
-            opacity={0.9}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+                              key="overlay" transition="quick" opacity={0.9} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }}
+                            />
 
           <Dialog.Content
-            key="content"
-            p={0}
-            m="$0"
-            width="100%"
-            height="100%"
-            items="center"
-            rounded={0}
-            animateOnly={['transform', 'opacity']}
-            transition="quick"
-            enterStyle={{ x: '100%' }}
-            exitStyle={{ x: '100%' }}
-          >
+                              key="content" p={0} m="$0" width="100%" height="100%" items="center" rounded={0} transition="quick" x="enter:100% exit:100%" animateOnly={['transform', 'opacity']}
+                            >
             <ScrollView width="100%">
               <YStack items="center" justify="center">
                 <YStack gap={12}>

@@ -50,10 +50,8 @@ const CustomSheet = ({ open, setOpen }) => {
         zIndex={100_000_000}
       >
         <Sheet.Overlay
-          transition="lazy"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+                        transition="lazy" opacity="enter:0 exit:0"
+                      />
         <Sheet.Handle bg="$gray8" />
         <Sheet.Container items="center" justify="center" gap="$10">
           <Sheet.Background bg="rgba(255,0,0,0.5)" />

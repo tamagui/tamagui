@@ -39,27 +39,13 @@ export const HeroTypography = memo(() => {
         </YStack>
 
         <XStack
-          ai="center"
-          jc="center"
-          pos="relative"
-          gap="$8"
-          flexDirection="row-reverse"
-          $sm={{
-            flexDirection: 'column-reverse',
-          }}
-        >
+                        ai="center" jc="center" pos="relative" gap="$8" flexDirection="row-reverse sm:column-reverse"
+                      >
           <OverlayCard />
 
           <YStack
-            h={300}
-            w="40%"
-            gap="$0.5"
-            jc="center"
-            scale={1.1}
-            x={-20}
-            y={5}
-            $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
-          >
+                              h={300} w="40%" gap="$0.5" scale={1.1} x={-20} y={5} $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }} jc="center"
+                            >
             <YStack ai="flex-end" h={270}>
               <AnimatePresence mode="wait">
                 <AnimatedHeading
@@ -130,7 +116,7 @@ const OverlayCard = () => {
   // {/* TODO elevation not overriding? */}
   return (
     <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
-      <YStack jc="center" p="$6" gap="$5" maw="calc(min(90vw, 400px))" $sm={{ p: '$5' }}>
+      <YStack jc="center" p="$6" gap="$5" $sm={{ p: '$5' }} maw="calc(min(90vw, 400px))">
         <Paragraph ta="left" size="$8" fow="400" ls={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>

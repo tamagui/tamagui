@@ -24,52 +24,51 @@ const selectSizes = createSizeTable(
 type SelectSize = keyof typeof selectSizes.values
 
 const SelectTrigger = styled(SelectBehavior.Trigger, {
-  context: selectSizes.Context,
-  name: 'CanarySelectTrigger',
-  background: '$background',
-  borderColor: '$canary-token',
-  rounded: 8,
-  borderWidth: 1,
-  justify: 'space-between',
-  variants: { size: selectSizes.frame } as const,
-  defaultVariants: { size: 'medium' },
+context: selectSizes.Context,
+name: 'CanarySelectTrigger',
+background: '$background',
+borderColor: '$canary-token',
+rounded: 8,
+borderWidth: 1,
+justify: 'space-between',
+variants: { size: selectSizes.frame } as const,
+defaultVariants: { size: 'medium' }
 })
 
 const SelectValue = styled(SelectBehavior.Value, {
-  context: selectSizes.Context,
-  name: 'CanarySelectValue',
-  color: '$color',
-  variants: { size: selectSizes.text } as const,
-  defaultVariants: { size: 'medium' },
+context: selectSizes.Context,
+name: 'CanarySelectValue',
+color: '$color',
+variants: { size: selectSizes.text } as const,
+defaultVariants: { size: 'medium' }
 })
 
 const SelectItem = styled(SelectBehavior.Item, {
-  context: selectSizes.Context,
-  name: 'CanarySelectItem',
-  rounded: 6,
-  px: 10,
-  hoverStyle: { background: '$background-hover' },
-  focusStyle: { background: '$background-focus' },
-  variants: { size: selectSizes.frame } as const,
-  defaultVariants: { size: 'medium' },
+context: selectSizes.Context,
+name: 'CanarySelectItem',
+rounded: 6,
+px: 10,
+background: "hover:background-hover focus:background-focus",
+variants: { size: selectSizes.frame } as const,
+defaultVariants: { size: 'medium' }
 })
 
 const SelectItemText = styled(SelectBehavior.ItemText, {
-  context: selectSizes.Context,
-  name: 'CanarySelectItemText',
-  color: '$color',
-  variants: { size: selectSizes.text } as const,
-  defaultVariants: { size: 'medium' },
+context: selectSizes.Context,
+name: 'CanarySelectItemText',
+color: '$color',
+variants: { size: selectSizes.text } as const,
+defaultVariants: { size: 'medium' }
 })
 
 const SelectViewport = styled(SelectBehavior.Viewport, {
-  name: 'CanarySelectViewport',
-  background: '$background',
-  borderColor: '$canary-token',
-  rounded: 10,
-  borderWidth: 1,
-  maxH: 240,
-  p: 4,
+name: 'CanarySelectViewport',
+background: '$background',
+borderColor: '$canary-token',
+rounded: 10,
+borderWidth: 1,
+maxH: 240,
+p: 4
 })
 
 type SelectRootProps<
