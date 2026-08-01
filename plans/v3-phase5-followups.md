@@ -45,8 +45,27 @@ branch.
 
 5. **kitchen-sink native `TooltipToolbarRow`** — 2 tests time out waiting on
    `[data-popper-animate-position]`. Both fail at baseline, retry included.
-   These are the only kitchen-sink failures left after phase 5; the full matrix
-   went from 25 failures of 1669 scheduled down to these two.
+
+6. **kitchen-sink `PopoverHoverableReposition`** (default/WebKit) — initial-to-
+   final x drift exceeds the 20px threshold: 34.75px at the branch tip, 33.3px
+   at baseline. Fails both places, so the threshold is the thing to revisit.
+
+### Not pre-existing, not a regression either
+
+**kitchen-sink reanimated `TooltipToolbarRow` fast-sweep** fails only when three
+Playwright projects run concurrently. It was checked against baseline but the
+failure could not be reproduced there, and a focused repeat passes 10/10 at the
+tip and 10/10 at baseline. That is a load-dependent flake, and it is recorded
+that way deliberately: "could not reproduce it either way" is a different claim
+from "reproduced it at baseline", and flattening the two is how a flake becomes
+a fact.
+
+### Final kitchen-sink state
+
+1482 passed across five projects — 700 default/WebKit, 224 CSS, 141 native,
+197 reanimated, 220 motion — with 190 skipped. Down from 25 failures of 1669
+scheduled at the start of convergence. kitchen-sink `tsc` is green with zero
+TS7056.
 
 ## Tests that exist but nothing runs
 
