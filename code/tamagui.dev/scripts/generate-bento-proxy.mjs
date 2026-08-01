@@ -37,6 +37,11 @@ function pinBentoRef(bentoPath, silent) {
  * @returns {string | null} - Absolute path to the bento repo, or null
  */
 export function resolveBentoPath(basePath = __dirname) {
+  // TAMAGUI_BENTO_PATH=0 opts out of a sibling/home bento checkout entirely
+  // (build with stubs even when ~/bento exists)
+  if (process.env.TAMAGUI_BENTO_PATH === '0') {
+    return null
+  }
   const candidates = [
     process.env.TAMAGUI_BENTO_PATH,
     resolve(basePath, '../../../../bento'),

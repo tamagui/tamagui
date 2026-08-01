@@ -37,10 +37,14 @@ const nativeConfigPath = path.resolve(
 )
 const componentEntryPath = path.join(fixtureRoot, 'packages/components/src/index.ts')
 const evaluationFixturePackagePath = path.join(fixtureRoot, 'packages/evaluation-fixture')
-const evaluationFixturePhysicalRuntimePath = path.join(
+const evaluationFixtureRuntimeBasePath = path.join(
   fixtureRoot,
   '.evaluation-fixture-runtime'
 )
+// unique per test: the fixture package is imported natively (externalized), and a
+// stable file URL would hit node's ESM cache so its top-level globals never re-run
+let fixtureRuntimeGeneration = 0
+let evaluationFixturePhysicalRuntimePath = evaluationFixtureRuntimeBasePath
 const evaluationFixtureRuntimePath = path.join(
   fixtureRoot,
   'node_modules/@tamagui/evaluation-fixture'
@@ -389,6 +393,10 @@ beforeEach(async () => {
   const fixtureConditionalScope = path.join(fixtureRoot, 'node_modules/@fixture')
   await mkdir(fixturePackageScope, { recursive: true })
   await mkdir(fixtureConditionalScope, { recursive: true })
+  evaluationFixturePhysicalRuntimePath = path.join(
+    evaluationFixtureRuntimeBasePath,
+    String(++fixtureRuntimeGeneration)
+  )
   await cp(evaluationFixturePackagePath, evaluationFixturePhysicalRuntimePath, {
     recursive: true,
   })
@@ -426,7 +434,7 @@ afterEach(async () => {
     delete (globalThis as any).__tamaguiFixtureOneConfigLifecycles
     delete (globalThis as any).__tamaguiFixtureOneTransformEnvironments
     await rm(path.join(fixtureRoot, 'node_modules'), { force: true, recursive: true })
-    await rm(evaluationFixturePhysicalRuntimePath, { force: true, recursive: true })
+    await rm(evaluationFixtureRuntimeBasePath, { force: true, recursive: true })
     await rm(watchOutputRoot, { force: true, recursive: true })
     if (previousDisableSliderInterval === undefined) {
       delete process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL
@@ -627,6 +635,62 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
   )
 })
 
+test('layers the core reset only in hybrid style modes', async () => {
+  const transformReset = async (styleMode: 'tamagui' | 'tamagui-and-tailwind') => {
+    ;(globalThis as any).__tamaguiFixtureStyleMode = styleMode
+    let capturedReset = ''
+    // captures right after the tamagui plugins' pre-order transforms; by the
+    // post stage vite:css-post has already replaced the CSS with its JS proxy
+    const captureResetPlugin: Plugin = {
+      name: `fixture-capture-reset-${styleMode}`,
+      enforce: 'pre',
+      transform: {
+        order: 'pre',
+        handler(code, id) {
+          if (path.resolve(id.split('?')[0]) === path.resolve(coreResetPath)) {
+            capturedReset = code
+          }
+        },
+      },
+    }
+    const server = await createServer({
+      configFile: false,
+      root: fixtureRoot,
+      logLevel: 'silent',
+      server: {
+        middlewareMode: true,
+        fs: {
+          allow: [path.dirname(coreResetPath)],
+        },
+      },
+      resolve: {
+        alias: fixtureAliases,
+      },
+      plugins: [
+        ...environmentSpecificCompilerPlugins('serve'),
+        ...fixturePlugins(undefined, true),
+        tamaguiPlugin({
+          components: directPackageFixtureComponents,
+          enableDynamicEvaluation: true,
+        }),
+        captureResetPlugin,
+      ],
+    })
+    servers.push(server)
+
+    const clientEnvironment = server.environments.client
+    await clientEnvironment.transformRequest(`/@fs${coreResetPath}`)
+    expect(capturedReset).toBeTruthy()
+    return capturedReset
+  }
+
+  const originalReset = await readFile(coreResetPath, 'utf8')
+  expect(await transformReset('tamagui')).toBe(originalReset)
+  expect(await transformReset('tamagui-and-tailwind')).toBe(
+    `@layer tamagui {\n${originalReset}\n}`
+  )
+})
+
 test('evaluates config and components through the app resolver and invalidates HMR', async () => {
   ;(globalThis as any).__tamaguiFixtureOwnedEvaluation = []
   const server = await createServer({
@@ -738,7 +802,7 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(directConfigModule.oneTsconfigPathsOrder).toBe('pre')
   expect(directConfigModule.packageExportResolution).toBe('package-export-esm')
   expect(directConfigModule.packageExportPath).toMatch(
-    /\.evaluation-fixture-runtime\/esm\/value\.mjs$/
+    /\.evaluation-fixture-runtime\/\d+\/esm\/value\.mjs$/
   )
   expect(directConfigModule.sliderIntervalDisabled).toBe('1')
   expect(directConfigModule.sliderModuleLoaded).toBe(true)
@@ -753,7 +817,7 @@ test('evaluates config and components through the app resolver and invalidates H
   })
   expect(process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL).toBeUndefined()
   expect((globalThis as any).__tamaguiFixturePackageExportPath).toMatch(
-    /\.evaluation-fixture-runtime\/esm\/value\.mjs$/
+    /\.evaluation-fixture-runtime\/\d+\/esm\/value\.mjs$/
   )
   expect((globalThis as any).__tamaguiFixtureMetroFallbackUsed).toBeUndefined()
   expect((directConfigModule.default as any).media.sm).toEqual({ minWidth: 16 })
@@ -1091,7 +1155,7 @@ test('evaluates the same fixture during a production build without legacy bundle
   expect((globalThis as any).__tamaguiFixtureTsconfigPathsContext).toBe('tamagui')
   expect((globalThis as any).__tamaguiFixtureOneTsconfigPathsOrder).toBe('pre')
   expect((globalThis as any).__tamaguiFixturePackageExportPath).toMatch(
-    /\.evaluation-fixture-runtime\/esm\/value\.mjs$/
+    /\.evaluation-fixture-runtime\/\d+\/esm\/value\.mjs$/
   )
   expect((globalThis as any).__tamaguiFixturePackageExportResolution).toBe(
     'package-export-esm'
