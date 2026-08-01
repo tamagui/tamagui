@@ -64,6 +64,7 @@
     "@tamagui/scroll-view": "workspace:*",
     "@tamagui/sheet": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
+    "@tamagui/tailwind": "workspace:*",
     "@tamagui/theme": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "@tamagui/toast": "workspace:*",

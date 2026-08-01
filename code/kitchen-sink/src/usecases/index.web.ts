@@ -11,6 +11,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SurfaceCase: () => require('./SurfaceCase').SurfaceCase,
   VariablesNativeCase: () => require('./VariablesNativeCase').VariablesNativeCase,
   VariablesCase: () => require('./VariablesCase').VariablesCase,
+  V3BetaReadyToTestCase: () => require('./V3BetaReadyToTestCase').V3BetaReadyToTestCase,
   AnimatedByProp: () => require('./AnimatedByProp').AnimatedByProp,
   LogoDotInterruptCase: () => require('./LogoDotInterruptCase').LogoDotInterruptCase,
   MotionSSRHydrationCase: () =>
