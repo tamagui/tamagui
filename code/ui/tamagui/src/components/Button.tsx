@@ -81,6 +81,7 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover',
   borderRadius: 8,
+  borderStyle: 'solid',
   borderWidth: 1,
   cursor: 'web:pointer',
   opacity: 'press:0.7',
