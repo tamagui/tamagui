@@ -16,6 +16,7 @@ git status --short
 
 bun install --frozen-lockfile
 bun run build
+bunx tsc --noEmit -p code/kitchen-sink/tsconfig.json
 
 lsof -nP -iTCP:7979 -sTCP:LISTEN
 
@@ -26,6 +27,9 @@ bun run start:web
 The branch command must print `v3-beta`. Record the SHA and any status output.
 A dirty checkout tests its complete working tree, so it cannot be reported as a
 test of the printed SHA alone.
+
+The install, root build, and kitchen-sink typecheck must all exit zero. A
+successful typecheck normally prints no output.
 
 The `lsof` command should print nothing. If another process owns port 7979, stop
 that specific process before continuing. Leave `bun run start:web` running. It
@@ -147,9 +151,13 @@ Stop the dev server with Ctrl-C. Record:
 
 ## Verification record
 
-The focused page was exercised in headless Chromium from a fresh shell on
-2026-07-31. The root build completed 168 tasks in 20.5 seconds, then the server
-compiled in 11.6 seconds. Browser-computed results were:
+The focused page was exercised in headless Chromium 145.0.7632.6 from a fresh
+shell on 2026-07-31. Runtime code and package manifests matched candidate
+`8ebfb5abe01eeca85c2a99cb2b01b3791c70d76c`; only this procedure and unrelated
+untracked lane artifacts were present. The frozen install completed without
+lockfile changes, the root build completed 168 tasks in 31.9 seconds, and the
+kitchen-sink typecheck exited zero. A new server then compiled in 23.0 seconds.
+Browser-computed results were:
 
 - flat value: red to blue on hover, 18px padding, and a green base with its
   inherited blue hover clause retained;
@@ -160,6 +168,3 @@ compiled in 11.6 seconds. Browser-computed results were:
   radius;
 - zero browser console errors, zero page errors, and zero HTTP responses at
   status 400 or higher.
-
-Repeat the procedure after the final V3 fixes are committed. The verification
-record describes the tested working tree until its exact commit is recorded.
