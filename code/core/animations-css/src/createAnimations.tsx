@@ -113,11 +113,12 @@ const TRANSFORM_KEYS = new Set([
   'skewY',
 ])
 
-const getCSSProperty = (key: string) => {
-  if (key === 'x' || key === 'y') return 'translate'
-  if (key === 'scale' || key === 'scaleX' || key === 'scaleY') return 'scale'
-  if (key === 'rotate') return 'rotate'
-  return TRANSFORM_KEYS.has(key) ? 'transform' : key
+const getCSSProperties = (key: string) => {
+  if (key === 'transform') return ['translate', 'scale', 'rotate', 'transform']
+  if (key === 'x' || key === 'y') return ['translate']
+  if (key === 'scale' || key === 'scaleX' || key === 'scaleY') return ['scale']
+  if (key === 'rotate') return ['rotate']
+  return [TRANSFORM_KEYS.has(key) ? 'transform' : key]
 }
 
 /**
@@ -627,7 +628,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         const delayStr = normalized.delay ? ` ${normalized.delay}ms` : ''
         const durationOverride = normalized.config?.duration
         const exitTransitionString = keys
-          .map((key) => {
+          .flatMap((key) => {
             const propAnimation = normalized.properties[key]
             let animationValue: string | null = null
             if (typeof propAnimation === 'string') {
@@ -645,8 +646,10 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
               animationValue = applyDurationOverride(animationValue, durationOverride)
             }
             return animationValue
-              ? `${getCSSProperty(key)} ${animationValue}${delayStr}`
-              : null
+              ? getCSSProperties(key).map(
+                  (property) => `${property} ${animationValue}${delayStr}`
+                )
+              : []
           })
           .filter(Boolean)
           .join(', ')
@@ -862,7 +865,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       const delayStr = normalized.delay ? ` ${normalized.delay}ms` : ''
       const durationOverride = normalized.config?.duration
       style.transition = keys
-        .map((key) => {
+        .flatMap((key) => {
           // Check for property-specific animation, fall back to default
           const propAnimation = normalized.properties[key]
           let animationValue: string | null = null
@@ -885,8 +888,10 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           }
 
           return animationValue
-            ? `${getCSSProperty(key)} ${animationValue}${delayStr}`
-            : null
+            ? getCSSProperties(key).map(
+                (property) => `${property} ${animationValue}${delayStr}`
+              )
+            : []
         })
         .filter(Boolean)
         .join(', ')
