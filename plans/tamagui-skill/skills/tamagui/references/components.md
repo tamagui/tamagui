@@ -9,8 +9,8 @@ Quick reference for common Tamagui components. For full API, see https://tamagui
 ```tsx
 import { XStack, YStack, ZStack } from 'tamagui'
 
-<YStack gap="$4">        {/* column layout */}
-<XStack gap="$2">        {/* row layout */}
+<YStack gap="4">        {/* column layout */}
+<XStack gap="2">        {/* row layout */}
 <ZStack>                 {/* overlay/absolute positioning */}
 ```
 
@@ -23,8 +23,8 @@ Base components - all others extend these:
 ```tsx
 import { View, Text } from 'tamagui'
 
-<View padding="$4" backgroundColor="$background" />
-<Text color="$color" fontSize="$4">Hello</Text>
+<View padding="4" backgroundColor="background" />
+<Text color="color" fontSize="4">Hello</Text>
 ```
 
 ## Inputs
@@ -35,7 +35,7 @@ import { View, Text } from 'tamagui'
 import { Button } from 'tamagui'
 
 <Button>Default</Button>
-<Button size="$4">Sized</Button>
+<Button size="4">Sized</Button>
 <Button theme="blue">Themed</Button>
 <Button variant="outlined">Outlined</Button>
 <Button circular icon={Plus} />
@@ -48,7 +48,7 @@ import { Button } from 'tamagui'
 import { Input } from 'tamagui'
 
 <Input placeholder="Enter text" />
-<Input size="$4" />
+<Input size="4" />
 <Input secureTextEntry />  {/* password */}
 <Input keyboardType="email-address" />
 ```
@@ -142,7 +142,7 @@ import { Sheet } from 'tamagui'
 
 <Sheet open={open} onOpenChange={setOpen} snapPoints={[80]} dismissOnSnapToBottom>
   <Sheet.Overlay />
-  <Sheet.Frame padding="$4">
+  <Sheet.Frame padding="4">
     <Sheet.Handle />
     {/* content */}
   </Sheet.Frame>
@@ -245,7 +245,7 @@ import { Card } from 'tamagui'
 ```tsx
 import { Avatar } from 'tamagui'
 
-<Avatar circular size="$6">
+<Avatar circular size="6">
   <Avatar.Image src="..." />
   <Avatar.Fallback>AB</Avatar.Fallback>
 </Avatar>
@@ -266,7 +266,7 @@ import { Separator } from 'tamagui'
 import { Spinner } from 'tamagui'
 
 <Spinner />
-<Spinner size="large" color="$blue10" />
+<Spinner size="large" color="blue10" />
 ```
 
 ### Progress
@@ -286,7 +286,7 @@ import { H1, H2, H3, H4, H5, H6, Paragraph, Text } from 'tamagui'
 
 <H1>Heading 1</H1>
 <Paragraph>Body text paragraph</Paragraph>
-<Text fontSize="$4" color="$color11">Custom text</Text>
+<Text fontSize="4" color="color11">Custom text</Text>
 ```
 
 ## Utilities
@@ -311,7 +311,7 @@ import { Spacer } from 'tamagui'
   <Text>Right</Text>
 </XStack>
 
-<Spacer size="$4" />   {/* fixed size */}
+<Spacer size="4" />   {/* fixed size */}
 ```
 
 ### ScrollView

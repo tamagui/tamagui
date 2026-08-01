@@ -249,8 +249,8 @@ config:
 | `bg=""` | **216** | **0** |
 | `ColorTokens` directly | 1,098 | 950 |
 
-Neither prop validates: `<View bg="$nope-not-a-token" />` and
-`<View backgroundColor="$nope-not-a-token" />` both typecheck today, which is
+Neither prop validates: `<View bg="nope-not-a-token" />` and
+`<View backgroundColor="nope-not-a-token" />` both typecheck today, which is
 `(string & {})` working as designed.
 
 ### Why `bg` has no tokens
@@ -258,7 +258,7 @@ Neither prop validates: `<View bg="$nope-not-a-token" />` and
 Not a bug in the shorthand chain. v6 deliberately remaps it:
 `code/core/shorthands/src/v6.ts:10` is `bg: 'background'`, where v4 and v5 were
 `bg: 'backgroundColor'`. That is the flat-value background family doing its job,
-since `bg="url(x.png) $color1"` has to reach `backgroundImage` too.
+since `bg="url(x.png) color1"` has to reach `backgroundImage` too.
 
 The gap is that `background` never got a theme-aware value type to go with the
 remap. It is declared `background?: Properties['background']`
@@ -297,16 +297,16 @@ background?: ColorTokens | Properties['background']
 ```
 
 Measured by shadowing that prop onto the real component so the real config's
-token union is exercised, 1,000 `bg={'$token'}` sites:
+token union is exercised, 1,000 `bg={'token'}` sites:
 
 | `bg` type | completions | of which tokens | tsc check |
 | --- | --- | --- | --- |
 | `Properties['background']` (today) | 216 | 0 | 0.46s |
 | `ColorTokens \| Properties['background']` | **1,166** | **950** | **0.36s** |
 
-It is free, and slightly faster: with the tokens in the union a `$token` value
+It is free, and slightly faster: with the tokens in the union a `token` value
 now hits the literal-to-union fast path instead of scanning past
-`Properties['background']`. `no-repeat center` and `url(x.png) $color1` both
+`Properties['background']`. `no-repeat center` and `url(x.png) color1` both
 still typecheck.
 
 Do not do this by adding `'background'` to `ColorKeys`. That routes it through
@@ -327,10 +327,10 @@ the shadow prototype:
 
 - `<View bg="">` returns 1,166 completions, 950 of them theme tokens, up from
   216 and 0. `backgroundColor` (1,101) and `Text.color` (1,101) unchanged.
-- both arms survive in the entry list: `$color1`, `$background`, `no-repeat`,
+- both arms survive in the entry list: `color1`, `background`, `no-repeat`,
   `center`, `round`, `repeat-x`, `border-box`, `transparent`, `currentColor`.
-- `bg="no-repeat center"`, `bg="url(x.png) $color1"`, `bg="$color1"`,
-  `bg="$color1 hover:$color5"`, `bg="linear-gradient(red, blue)"` and
+- `bg="no-repeat center"`, `bg="url(x.png) color1"`, `bg="color1"`,
+  `bg="color1 hover:color5"`, `bg="linear-gradient(red, blue)"` and
   `bg="#ff0000"` all typecheck.
 - `@tamagui/web` type tests 93 passed / no type errors, core-test web 475
   passed, core-test native 198 passed, style-grammar 403 passed.
@@ -342,7 +342,7 @@ an oversight.
 
 The failure mode is "the token arm disappears from the prop's union". No
 assignability test can see it. Every style prop type ends in `| (string & {})`,
-so `expectTypeOf<'$color1'>().toExtend<BgType>()` passes whether or not the
+so `expectTypeOf<'color1'>().toExtend<BgType>()` passes whether or not the
 token literals are present, and the prop keeps typechecking while autocomplete
 is dead. That is a test that stays green while the thing is broken, which is
 worse than no test. It is also not hypothetical: this exact failure shipped
@@ -460,7 +460,7 @@ change and not theirs.
 - **composite CSS shorthands** (`border`, `borderBlock`, `borderInline`,
   `outline`, `boxShadow`, `filter`, `mask`, `backgroundImage`, `textEmphasis`,
   `borderImage`, `transformOrigin`) carry 6 to 33 preset literals and no tokens.
-  That is deliberate: they take composite values like `1px solid $borderColor`,
+  That is deliberate: they take composite values like `1px solid border-color`,
   where a token cross-product is exactly the combinatorial explosion this
   document argues against. Preset hints are the right design.
 - **enum and numeric shorthands** (`items`, `justify`, `self`, `select`,
@@ -577,7 +577,7 @@ single-token value. Measured at 1,000 sites, two props per site:
 | token + `` `${State}:${Token}` `` | two clauses | 0.50s |
 
 So adding state-modifier clause forms to the color and space props costs about
-0.22ms per prop instance and makes `bg="hover:$color5"` complete correctly. That
+0.22ms per prop instance and makes `bg="hover:color5"` complete correctly. That
 is affordable and it is a real gain over today.
 
 Two concrete follow-ups, in priority order:
@@ -586,13 +586,15 @@ Two concrete follow-ups, in priority order:
    (`ColorTokens | Properties['background']`, prototyped above). Users get less
    autocomplete for using the shorthand the docs recommend. It is worth more
    than anything else in this document and it measures free.
-2. If clause-level completion in Tamagui mode is wanted, add
-   `` `${StateModifier}:${Token}` `` to the color and space categories only, and
-   hold the line there. Media (14) and theme (294) modifiers multiply the same
-   union again, and theme alone would take the color prop to 39,000 members,
-   which is the 8MB payload region.
+2. **Final ruling: do not add clause-level token subsets.** Nate vetoed the
+   color/space-only `` `${StateModifier}:${Token}` `` follow-up. V3 keeps the
+   cheap bare-token unions for single values, while clause-bearing flat strings
+   intentionally fall through to `(string & {})`. State, media, theme, group,
+   platform, enter, and exit clauses therefore remain untyped authoring strings;
+   the language service owns token-scoped completion and validation.
 
-Neither of these is a className change, and neither needs codegen.
+The background fix is not a className change and needs no codegen. The former
+clause-subset proposal is closed and must not be reintroduced.
 
 ## What would need to be true to revisit
 

@@ -3,7 +3,7 @@ name: tamagui
 description: |
   Universal React UI framework for web and native. Use when building cross-platform apps with Tamagui,
   creating styled components with `styled()`, configuring design tokens/themes, using Tamagui UI components,
-  or working with animations. Triggers: "tamagui", "styled()", "$token", "XStack/YStack", "useTheme",
+  or working with animations. Triggers: "tamagui", "styled()", "flat value", "XStack/YStack", "useTheme",
   "@tamagui/*" imports, "createStyledContext", "variants".
 version: 1.0.0
 ---
@@ -42,18 +42,18 @@ Create components by extending existing ones:
 import { View, Text, styled } from '@tamagui/core'
 
 const Card = styled(View, {
-  padding: '$4',           // use tokens with $
-  backgroundColor: '$background',
-  borderRadius: '$4',
+  padding: '4',           // token names are bare
+  backgroundColor: 'background',
+  borderRadius: '4',
 
   variants: {
     size: {
-      small: { padding: '$2' },
-      large: { padding: '$6' },
+      small: { padding: '2' },
+      large: { padding: '6' },
     },
     elevated: {
       true: {
-        shadowColor: '$shadowColor',
+        shadowColor: 'shadow-color',
         shadowRadius: 10,
       },
     },
@@ -70,7 +70,9 @@ const Card = styled(View, {
 
 **Key rules:**
 - Always use `as const` on variants objects
-- Tokens use `$` prefix: `$4`, `$background`, `$color11`
+- Tokens and theme values are bare: `4`, `background`, `color11`
+- Conditions are clauses in the same value string: `bg="background hover:background-hover"`
+- Do not author pseudo, media, theme, platform, group, enter, or exit style objects
 - Prop order matters - later props override earlier ones
 - Variants defined later in the object override earlier ones
 
@@ -83,7 +85,7 @@ import { XStack, YStack, ZStack } from 'tamagui'
 // YStack = flexDirection: 'column'
 // ZStack = position: 'relative' with absolute children
 
-<YStack gap="$4" padding="$4">
+<YStack gap="4" padding="4">
   <XStack justifyContent="space-between" alignItems="center">
     <Text>Label</Text>
     <Button>Action</Button>
@@ -114,11 +116,11 @@ console.log(theme.color11.val)     // high contrast text
 ```
 
 **12-step color scale convention:**
-- `$color1-4`: backgrounds (subtle to emphasized)
-- `$color5-6`: borders, separators
-- `$color7-8`: hover/active states
-- `$color9-10`: solid backgrounds
-- `$color11-12`: text (low to high contrast)
+- `color1-4`: backgrounds (subtle to emphasized)
+- `color5-6`: borders, separators
+- `color7-8`: hover/active states
+- `color9-10`: solid backgrounds
+- `color11-12`: text (low to high contrast)
 
 ### Responsive Styles
 
@@ -126,11 +128,8 @@ Use media query props (check your `tamagui-prompt.md` for actual breakpoint name
 
 ```tsx
 <YStack
-  padding="$4"
-  $gtSm={{ padding: '$6' }}   // check your config for actual names
-  $gtMd={{ padding: '$8' }}
-  flexDirection="column"
-  $gtLg={{ flexDirection: 'row' }}
+  padding="4 gtSm:6 gtMd:8"
+  flexDirection="column gtLg:row"
 />
 
 // or with hook
@@ -150,10 +149,8 @@ import { AnimatePresence } from 'tamagui'
     <YStack
       key="modal"  // key required for exit animations
       animation="quick"
-      enterStyle={{ opacity: 0, y: -20 }}
-      exitStyle={{ opacity: 0, y: 20 }}
-      opacity={1}
-      y={0}
+      opacity="1 enter:0 exit:0"
+      y="0 enter:-20px exit:20px"
     />
   )}
 </AnimatePresence>
@@ -181,14 +178,14 @@ const CardContext = createStyledContext({ size: 'medium' as 'small' | 'medium' |
 
 const CardFrame = styled(View, {
   context: CardContext,
-  padding: '$4',
-  backgroundColor: '$background',
+  padding: '4',
+  backgroundColor: 'background',
 
   variants: {
     size: {
-      small: { padding: '$2' },
-      medium: { padding: '$4' },
-      large: { padding: '$6' },
+      small: { padding: '2' },
+      medium: { padding: '4' },
+      large: { padding: '6' },
     },
   } as const,
 })
@@ -199,9 +196,9 @@ const CardTitle = styled(Text, {
 
   variants: {
     size: {
-      small: { fontSize: '$4' },
-      medium: { fontSize: '$5' },
-      large: { fontSize: '$6' },
+      small: { fontSize: '4' },
+      medium: { fontSize: '5' },
+      large: { fontSize: '6' },
     },
   } as const,
 })
@@ -232,7 +229,7 @@ import { Dialog, Sheet, Adapt, Button } from 'tamagui'
 
   <Adapt when="sm" platform="touch">
     <Sheet modal dismissOnSnapToBottom>
-      <Sheet.Frame padding="$4">
+      <Sheet.Frame padding="4">
         <Adapt.Contents />
       </Sheet.Frame>
       <Sheet.Overlay />
@@ -243,15 +240,13 @@ import { Dialog, Sheet, Adapt, Button } from 'tamagui'
     <Dialog.Overlay
       key="overlay"
       animation="quick"
-      opacity={0.5}
-      enterStyle={{ opacity: 0 }}
-      exitStyle={{ opacity: 0 }}
+      opacity="0.5 enter:0 exit:0"
     />
     <Dialog.Content
       key="content"
       animation="quick"
-      enterStyle={{ opacity: 0, scale: 0.95 }}
-      exitStyle={{ opacity: 0, scale: 0.95 }}
+      opacity="1 enter:0 exit:0"
+      scale="1 enter:0.95 exit:0.95"
     >
       <Dialog.Title>Title</Dialog.Title>
       <Dialog.Description>Description</Dialog.Description>
@@ -268,8 +263,8 @@ import { Dialog, Sheet, Adapt, Button } from 'tamagui'
 ```tsx
 import { Input, Label, YStack, XStack, Button } from 'tamagui'
 
-<YStack gap="$4" padding="$4">
-  <YStack gap="$2">
+<YStack gap="4" padding="4">
+  <YStack gap="2">
     <Label htmlFor="email">Email</Label>
     <Input
       id="email"
@@ -279,7 +274,7 @@ import { Input, Label, YStack, XStack, Button } from 'tamagui'
     />
   </YStack>
 
-  <XStack gap="$2" justifyContent="flex-end">
+  <XStack gap="2" justifyContent="flex-end">
     <Button variant="outlined">Cancel</Button>
     <Button theme="blue">Submit</Button>
   </XStack>
@@ -297,7 +292,7 @@ import { Input, Label, YStack, XStack, Button } from 'tamagui'
 <View padding={16} backgroundColor="#fff" />
 
 // good - uses design tokens
-<View padding="$4" backgroundColor="$background" />
+<View padding="4" backgroundColor="background" />
 ```
 
 ### ❌ Missing `as const` on variants
@@ -324,20 +319,19 @@ const Box = styled(View, {
 
 // good - use platform modifiers
 const Box = styled(View, {
-  padding: 20,
-  '$web': { padding: 10 },
+  padding: '20px web:10px',
 })
 ```
 
-### ❌ exitStyle without AnimatePresence
+### ❌ Exit clause without AnimatePresence
 
 ```tsx
 // bad - exit animation won't work
-{show && <View exitStyle={{ opacity: 0 }} />}
+{show && <View opacity="1 exit:0" />}
 
 // good
 <AnimatePresence>
-  {show && <View key="box" exitStyle={{ opacity: 0 }} />}
+  {show && <View key="box" opacity="1 exit:0" />}
 </AnimatePresence>
 ```
 
@@ -345,21 +339,21 @@ const Box = styled(View, {
 
 ```tsx
 // bad - runtime variable prevents compiler extraction
-const dynamicPadding = isPremium ? '$6' : '$4'
+const dynamicPadding = isPremium ? '6' : '4'
 <View padding={dynamicPadding} />
 
 // good - inline ternary is extractable
-<View padding={isPremium ? '$6' : '$4'} />
+<View padding={isPremium ? '6' : '4'} />
 ```
 
 ### ❌ Wrong media query order
 
 ```tsx
 // bad - base value overrides responsive
-<View $gtMd={{ padding: '$8' }} padding="$4" />
+<View padding="gtMd:8 4" />
 
 // good - base first, then responsive overrides
-<View padding="$4" $gtMd={{ padding: '$8' }} />
+<View padding="4 gtMd:8" />
 ```
 
 ### ❌ Spring animations with CSS driver
@@ -383,8 +377,8 @@ const anims = createAnimations({
 
 The Tamagui compiler extracts static styles to CSS at build time. For styles to be extracted:
 
-1. **Use tokens** - `$4` extracts, `16` may not
-2. **Inline ternaries** - `padding={x ? '$4' : '$2'}` extracts
+1. **Use bare tokens** - `4` extracts, `16` may not
+2. **Inline ternaries** - `padding={x ? '4' : '2'}` extracts
 3. **Avoid runtime variables** - computed values don't extract
 4. **Use variants** - better than conditional props
 
@@ -421,14 +415,34 @@ interface ExtendedProps extends MyComponentProps {
 
 | Pattern | Example |
 |---------|---------|
-| Token | `padding="$4"` |
-| Theme value | `backgroundColor="$background"` |
-| Color scale | `color="$color11"` (high contrast text) |
-| Responsive | `$gtSm={{ padding: '$6' }}` |
+| Token | `padding="4"` |
+| Theme value | `backgroundColor="background"` |
+| Color scale | `color="color11"` (high contrast text) |
+| Responsive | `padding="4 gtSm:6"` |
 | Variant | `<Button size="large" variant="outlined" />` |
-| Animation | `animation="quick" enterStyle={{ opacity: 0 }}` |
+| Animation | `animation="quick" opacity="1 enter:0"` |
 | Theme switch | `<Theme name="dark"><Theme name="blue">` |
 | Compound | `<Card><Card.Title>` with `createStyledContext` |
+
+---
+
+## Migrating Existing Code
+
+Use the flat-values codemod; do not add compatibility settings or runtime
+fallbacks. Run it in report mode first, then write the full source corpus in one
+pass:
+
+```bash
+cd code/core/codemod-flat-values
+bun run dry-run --report /tmp/flat-values.md path/to/src
+bun run write --report /tmp/flat-values.md path/to/src
+```
+
+The tool removes legacy token prefixes, folds condition objects into value
+clauses, validates every emitted program, and reports the rows that need a hand
+edit. Resolve every report row, then search the migrated source for old pseudo
+property names and condition keys. V3 has no `legacyConditionObjects` setting,
+dual lookup path, or compatibility shim.
 
 ---
 

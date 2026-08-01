@@ -90,7 +90,7 @@ tokens: {
 
 Usage:
 ```tsx
-<View padding="$4" borderRadius="$2" />
+<View padding="4" borderRadius="2" />
 ```
 
 ## Themes
@@ -126,7 +126,7 @@ themes: {
 Usage:
 ```tsx
 <Theme name="dark">
-  <View backgroundColor="$background" />
+  <View backgroundColor="background" />
 </Theme>
 ```
 
@@ -176,7 +176,7 @@ fonts: {
 
 Usage:
 ```tsx
-<Text fontFamily="$body" fontSize="$4" />
+<Text fontFamily="body" fontSize="4" />
 ```
 
 ## Media Queries
@@ -201,9 +201,7 @@ media: {
 Usage:
 ```tsx
 <View
-  padding="$4"
-  $gtSm={{ padding: '$6' }}
-  $gtMd={{ padding: '$8' }}
+  padding="4 gtSm:6 gtMd:8"
 />
 ```
 
@@ -228,7 +226,7 @@ shorthands: {
 
 Usage:
 ```tsx
-<View p="$4" bg="$background" br="$2" />
+<View p="4" bg="background" br="2" />
 ```
 
 ## Settings
