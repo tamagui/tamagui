@@ -19,10 +19,7 @@ const StyledView = styled(View, {
 
 const MyView = () => (
   <StyledView
-    backgroundColor="red"
-    hoverStyle={{
-      backgroundColor: 'green',
-    }}
+    backgroundColor="red hover:green"
   />
 )
 ```
@@ -48,15 +45,15 @@ type BaseViewStyle = RNViewStyle & FlatTransformStyles & CrossPlatformStyles & W
 type CrossPlatformStyles = {
   boxShadow?: BoxShadowValue  // string, object, or array
   filter?: FilterValue        // brightness, opacity cross-platform; blur, contrast, etc. Android 12+
-  backgroundImage?: string    // linear-gradient, radial-gradient; supports $tokens
+  backgroundImage?: string    // linear-gradient, radial-gradient; supports tokens
   cursor?: Properties['cursor'] // web + iOS 17+ (trackpad/stylus/gaze)
   mixBlendMode?: 'normal' | 'multiply' | 'screen' | 'overlay' | ... // blend modes
   isolation?: 'auto' | 'isolate'
   boxSizing?: 'border-box' | 'content-box'
   display?: 'flex' | 'none' | 'contents' | ...
   position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky'  // 'fixed' converts to 'absolute' on native
-  border?: BorderValue         // shorthand: "1px solid $borderColor"; expands on native
-  outline?: OutlineValue       // shorthand: "2px solid $outlineColor"; expands on native
+  border?: BorderValue         // shorthand: "1px solid borderColor"; expands on native
+  outline?: OutlineValue       // shorthand: "2px solid outlineColor"; expands on native
   outlineColor?: ColorValue
   outlineOffset?: SpaceValue
   outlineStyle?: 'solid' | 'dotted' | 'dashed'
@@ -85,7 +82,6 @@ type WebOnlyStyles =  {
   textEmphasis: Properties['textEmphasis'],
   borderImage: Properties['borderImage'],
   float: Properties['float']
-  content: Properties['content']
   overflowBlock: Properties['overflowBlock']
   overflowInline: Properties['overflowInline']
   maskBorder: Properties['maskBorder']
@@ -122,55 +118,11 @@ type FlatTransformStyles = {
   rotateZ?: string
 }
 
-// add the pseudo and enter/exit style states
-type WithStates = BaseViewStyle & {
-  hoverStyle?: BaseViewStyle
-  pressStyle?: BaseViewStyle
-  focusStyle?: BaseViewStyle
-  focusVisibleStyle?: BaseViewStyle
-  focusWithinStyle?: BaseViewStyle
-  disabledStyle?: BaseViewStyle
-  enterStyle?: BaseViewStyle
-  exitStyle?: BaseViewStyle
-}
-
-// final View style props
-type ViewStyle = WithStates & {
-  // add media queries
-  $sm?: WithStates
-
-  // add group queries
-  $group-hover?: WithStates
-  $group-focus?: WithStates
-  $group-press?: WithStates
-
-  // add group + container queries
-  $group-sm-hover?: WithStates
-  $group-sm-focus?: WithStates
-  $group-sm-press?: WithStates
-
-  // add named group queries
-  $group-tabs?: WithStates
-  $group-tabs-hover?: WithStates
-  $group-tabs-focus?: WithStates
-  $group-tabs-press?: WithStates
-
-  // add named group + container queries
-  $group-tabs-sm?: WithStates
-  $group-tabs-sm-hover?: WithStates
-  $group-tabs-sm-focus?: WithStates
-  $group-tabs-sm-press?: WithStates
-
-  // add theme queries
-  $theme-light?: WithStates
-  $theme-dark?: WithStates
-
-  // add platform queries
-  $native?: WithStates
-  $ios?: WithStates
-  $android?: WithStates
-  $web?: WithStates
-}
+// Every style value may also be a flat program string. A program combines its
+// base value with state, viewport, theme, platform, group, or container clauses:
+//
+//   backgroundColor="background hover:background-hover dark:gray12"
+//   padding="2 sm:4"
 
 // Text style starts with this base but builds up the same:
 type TextStyleBase = BaseViewStyle & {
@@ -209,35 +161,35 @@ v3, preserving v2 visual output while making exact px intent explicit.
 <Text fontSize="17px">Exact px size</Text>
 ```
 
-## Pseudo States
+## State modifiers
 
-Tamagui supports several style states that apply based on interaction or focus:
+Add state clauses directly to the property they change:
 
-- **`hoverStyle`** - Styles applied when hovering over the element (web only, maps to CSS `:hover`)
-- **`pressStyle`** - Styles applied while the element is being pressed
-- **`focusStyle`** - Styles applied when the element has focus (maps to CSS `:focus`)
-- **`focusVisibleStyle`** - Styles applied when the element has keyboard focus (maps to CSS `:focus-visible`). Use this for keyboard navigation indicators.
-- **`focusWithinStyle`** - Styles applied when any child element has focus (maps to CSS `:focus-within`). Useful for styling containers when an input inside them is focused.
-- **`disabledStyle`** - Styles applied when `disabled={true}` is set
+- **`hover:`** - while hovering (web only, maps to CSS `:hover`)
+- **`press:`** - while pressing
+- **`focus:`** - while focused (maps to CSS `:focus`)
+- **`focus-visible:`** - while keyboard-focused (maps to CSS `:focus-visible`)
+- **`focus-within:`** - while a child has focus (maps to CSS `:focus-within`)
+- **`disabled:`** - while `disabled={true}`
 
 ```tsx
 <View
-  backgroundColor="$background"
-  hoverStyle={{ backgroundColor: '$backgroundHover' }}
-  pressStyle={{ backgroundColor: '$backgroundPress', scale: 0.98 }}
-  focusStyle={{ outlineColor: '$blue10', outlineWidth: 2, outlineStyle: 'solid' }}
-  focusVisibleStyle={{ outlineColor: '$blue10', outlineWidth: 2 }}
-  focusWithinStyle={{ borderColor: '$blue10' }}
-  disabledStyle={{ opacity: 0.5 }}
+  backgroundColor="background hover:background-hover press:background-press"
+  scale="press:0.98"
+  outlineColor="focus:blue10 focus-visible:blue10"
+  outlineWidth="focus:2px focus-visible:2px"
+  outlineStyle="focus:solid"
+  borderColor="focus-within:blue10"
+  opacity="disabled:0.5"
 />
 ```
 
 ### Enter and Exit Styles
 
-For mount/unmount animations, use:
+For mount/unmount animations, use clauses on each animated property:
 
-- **`enterStyle`** - Initial styles when the component mounts (animates _from_ these values)
-- **`exitStyle`** - Final styles when the component unmounts (animates _to_ these values)
+- **`enter:`** - Initial value when the component mounts (animates _from_ it)
+- **`exit:`** - Final value when the component unmounts (animates _to_ it)
 
 See [Animations](/docs/core/animations) for more details on enter/exit animations.
 
@@ -265,24 +217,24 @@ On native, `1rem` with a base of 16 equals `16 * PixelRatio.getFontScale()` pixe
 
 ## CSS Shorthand with Variables
 
-Tamagui supports using `$variables` directly inside CSS shorthand string values.
+Tamagui supports using `variables` directly inside CSS shorthand string values.
 This is particularly useful for `boxShadow` and `backgroundImage` where you want
 to reference theme colors:
 
 ```tsx
 // boxShadow with variables
-<View boxShadow="0 0 10px $shadowColor" />
-<View boxShadow="0 0 5px $shadowColor, 0 0 15px $color" />
+<View boxShadow="0 0 10px shadow-color" />
+<View boxShadow="0 0 5px shadow-color, 0 0 15px color" />
 
 // backgroundImage with linear-gradient (cross-platform, RN 0.76+)
-<View backgroundImage="linear-gradient(to bottom, $background, $color)" />
-<View backgroundImage="linear-gradient(45deg, $black 0%, $white 50%, $black 100%)" />
+<View backgroundImage="linear-gradient(to bottom, background, color)" />
+<View backgroundImage="linear-gradient(45deg, black 0%, white 50%, black 100%)" />
 
 // filter with variables
-<View filter="blur($2)" />
+<View filter="blur(2)" />
 
 // On web: resolves to CSS custom properties
-// boxShadow: "0 0 10px var(--t-shadow-shadowColor)"
+// boxShadow: "0 0 10px var(--t-shadow-shadow-color)"
 // backgroundImage: "linear-gradient(to bottom, var(--background), var(--color))"
 
 // On native: resolves to raw values
@@ -306,7 +258,7 @@ The `border` shorthand now works cross-platform:
 
 ```tsx
 // Works on both web and native
-<View border="1px solid $borderColor" />
+<View border="1px solid borderColor" />
 <View border="2px dashed red" />
 <View border="none" />
 ```
@@ -324,7 +276,7 @@ The `outline` shorthand works cross-platform, similar to `border`:
 
 ```tsx
 // Works on both web and native
-<View outline="2px solid $outlineColor" />
+<View outline="2px solid outline-color" />
 <View outline="1px dashed red" />
 <View outline="none" />
 ```
@@ -337,8 +289,8 @@ Supports `linear-gradient()` and `radial-gradient()` cross-platform. Does not
 support `url()` on native - use `<ImageBackground>` for images.
 
 ```tsx
-<View backgroundImage="linear-gradient(to bottom, $background, $color)" />
-<View backgroundImage="radial-gradient(circle, $white, $black)" />
+<View backgroundImage="linear-gradient(to bottom, background, color)" />
+<View backgroundImage="radial-gradient(circle, white, black)" />
 ```
 
 ### textShadow
@@ -349,12 +301,12 @@ Text shadows support CSS shorthand with token resolution, just like `boxShadow`:
 import { Text } from 'tamagui'
 
 // CSS shorthand with tokens
-<Text textShadow="2px 2px 4px $shadowColor">
+<Text textShadow="2px 2px 4px shadow-color">
   Shadowed Text
 </Text>
 
 // multiple shadows (web only)
-<Text textShadow="1px 1px 2px $shadowColor, 0 0 8px $color">
+<Text textShadow="1px 1px 2px shadow-color, 0 0 8px color">
   Glowing Text
 </Text>
 ```
@@ -363,7 +315,7 @@ You can also use the individual React Native props:
 
 ```tsx
 <Text
-  textShadowColor="$shadowColor"
+  textShadowColor="shadow-color"
   textShadowOffset={{ width: 2, height: 2 }}
   textShadowRadius={4}
 >
@@ -376,22 +328,16 @@ On native, only a single text shadow is supported (React Native limitation).
 ## Parent based styling
 
 Tamagui has a variety of ways to style a child based on the "parent", a parent
-being one of: platform, screen size, theme, or group. All of these styles use
-the same pattern, they use a `$` prefix for their styles, and they nest styles
-as a sub-object.
+being one of: platform, screen size, theme, or group. They are modifiers in the
+same flat value program as the base and state values.
 
-For example you can target `$theme-light`, `$ios`, or `$group-header`.
-For screen size, which we call media queries, they have no prefix. Instead you
-define media queries on `createTamagui`. For example, if you define a media
-query named `large`, then `$large` is the prop name.
-
-These parent style props accept all the Tamagui style props in their value
-object.
+For example you can target `dark:`, `ios:`, `group-hover/card:`, or a media
+query such as `large:`. Every clause controls just the property carrying it.
 
 #### Media query
 
-Based on whatever media queries you define in `createTamagui`, you can now use
-any of them to apply styling on native and web using the `$` prefix.
+Based on whatever media queries you define in `createTamagui`, use its name as
+a modifier on native and web.
 
 If you defined your media query like:
 
@@ -406,7 +352,7 @@ createTamagui({
 Then you can use it like:
 
 ```tsx
-<Text color="red" $sm={{ color: 'blue' }} />
+<Text color="red sm:blue" />
 ```
 
 ### Theme
@@ -418,7 +364,7 @@ they only can target your top level themes, so if you have `light`, and
 Use them like so:
 
 ```tsx
-<Text $theme-dark={{ color: 'white' }} />
+<Text color="dark:white" />
 ```
 
 ### Platform
@@ -430,31 +376,16 @@ Android).
 Use it like so:
 
 ```tsx
-<Text $ios={{ color: 'white' }} />
+<Text color="ios:white" />
 ```
 
 ### Group
 
-Groups are a new feature in beta that lets you define a named group, and then
-style children based whether they are inside a parent that is given that group
-name.
-
-A short example:
-
-```tsx
-<View group="header">
-  <Text $group-header={{ color: 'white' }} />
-</View>
-```
-
-This will make the Text turn white, as it's inside a parent item with `group`
-set to the matching `header` value.
-
-Group styles also allow for targeting the parent pseudo state:
+Groups let children target a parent interaction state:
 
 ```tsx
 <View group>
-  <Text $group-hover={{ color: 'white' }} />
+  <Text color="gray group-hover:white" />
 </View>
 ```
 
@@ -467,8 +398,8 @@ For more advanced use cases you can use named groups:
 <View group="card">
   <Text>Outer</Text>
   <View group>
-    <Text $group-card-hover={{ color: 'blue' }}>Inner</Text>
-    <Text $group-hover={{ color: 'green' }}>Sibling</Text>
+    <Text color="gray group-hover/card:blue">Inner</Text>
+    <Text color="gray group-hover:green">Sibling</Text>
   </View>
 </View>
 ```
@@ -483,7 +414,7 @@ set up your Tamagui types:
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
 
-  // if you want types for named group styling props (e.g. $group-card-hover),
+  // If you want completion for named groups such as group-hover/card,
   // define your group names here:
   interface TypeOverride {
     groupNames(): 'card' | 'header' | 'sidebar'
@@ -498,8 +429,8 @@ parent is of a certain size. On the web these are known as "container queries",
 which is what Tamagui outputs as CSS under the hood. They look like this:
 
 ```tsx
-<View group>
-  <Text $group-sm={{ color: 'white' }} $group-sm-hover={{ color: 'green' }} />
+<View group container>
+  <Text color="gray @sm:white @sm:group-hover:green" />
 </View>
 ```
 
@@ -510,10 +441,10 @@ This uses the same media query breakpoints you defined in
 For more advanced use cases, you can use named groups with container queries:
 
 ```tsx
-<View group="card">
+<View group="card" container containerName="card">
   <View group>
-    <Text $group-card-sm={{ color: 'white' }} $group-card-sm-hover={{ color: 'green' }} />
-    <Text $group-sm={{ color: 'white' }} $group-sm-hover={{ color: 'green' }} />
+    <Text color="gray @sm/card:white @sm/card:group-hover/card:green" />
+    <Text color="gray @sm:white @sm:group-hover:green" />
   </View>
 </View>
 ```
@@ -532,12 +463,8 @@ Because of this, we've done two things.
 First, there's a new property `untilMeasured`:
 
 ```tsx
-<View group untilMeasured="hide">
-  <Text
-    $group-sm={{
-      color: 'white',
-    }}
-  />
+<View group container untilMeasured="hide">
+  <Text color="gray @sm:white" />
 </View>
 ```
 

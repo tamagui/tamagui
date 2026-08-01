@@ -115,7 +115,7 @@ import { View, styled } from 'tamagui' // or '@tamagui/core'
 
 const Circle = styled(View, {
   name: 'Circle',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
 })
 ```
 
@@ -241,12 +241,12 @@ import { GetProps, View, Text, createStyledHOC, styled } from 'tamagui' // or '@
 
 const ButtonFrame = styled(View, {
   name: 'Button',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
 })
 
 const ButtonText = styled(Text, {
   name: 'ButtonText',
-  color: '$color',
+  color: 'color',
 })
 
 type ButtonProps = GetProps<typeof ButtonFrame>
@@ -297,9 +297,9 @@ const config = createTamagui({
 
 export const App = () => (
   <TamaguiProvider config={config} defaultTheme="light">
-    <View backgroundColor="$red" />
+    <View backgroundColor="red" />
     <Theme name="dark">
-      <View backgroundColor="$red" />
+      <View backgroundColor="red" />
     </Theme>
   </TamaguiProvider>
 )

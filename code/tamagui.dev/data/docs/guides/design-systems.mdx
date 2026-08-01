@@ -199,7 +199,7 @@ Anywhere in your app:
 ```tsx
 import { Circle } from '@ourapp/components'
 
-export default () => <Circle size="$10" />
+export default () => <Circle size="10" />
 ```
 
 When it compiles you should see something like:
@@ -215,7 +215,7 @@ To get more information on any extraction, use the `// debug` pragma:
 // ^ the above pragma will direct Tamagui to output a lot of information on the extraction
 import { Circle } from '@ourapp/components'
 
-export default () => <Circle size="$10" />
+export default () => <Circle size="10" />
 ```
 
 You should see much more log output with details on how it extracted, including

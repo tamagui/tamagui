@@ -41,7 +41,7 @@ import { Button, FocusScope, XStack } from 'tamagui'
 
 export default () => (
   <FocusScope loop trapped>
-    <XStack space="$4">
+    <XStack space="4">
       <Button>First</Button>
       <Button>Second</Button>
       <Button>Third</Button>
@@ -71,9 +71,9 @@ export default () => (
       {/* key used by AnimatePresence to animate */}
       <Dialog.Content key="content">
         <FocusScope trapped>
-          <YStack space="$4">
+          <YStack space="4">
             <Dialog.Title>Focused Content</Dialog.Title>
-            <XStack space="$2">
+            <XStack space="2">
               <Button>Cancel</Button>
               <Button>Confirm</Button>
             </XStack>
@@ -97,7 +97,7 @@ import { Button, FocusScope, Input, XStack } from 'tamagui'
 
 export default () => (
   <FocusScope noFocus>
-    <XStack space="$4">
+    <XStack space="4">
       <Input placeholder="Cannot be focused" />
       <Button>Cannot be focused either</Button>
     </XStack>
@@ -114,7 +114,7 @@ import { Button, FocusScope, XStack } from 'tamagui'
 
 export default () => (
   <FocusScope loop>
-    <XStack space="$4">
+    <XStack space="4">
       <Button>First</Button>
       <Button>Second</Button>
       <Button>Last</Button>
@@ -136,7 +136,7 @@ export default () => (
     focusOnIdle={true} // Wait for idle callback
     // or focusOnIdle={200} // Wait 200ms
   >
-    <XStack space="$4">
+    <XStack space="4">
       <Button>Animated</Button>
       <Button>Content</Button>
     </XStack>
@@ -156,14 +156,14 @@ export default () => {
   const [trapped, setTrapped] = useState(false)
 
   return (
-    <YStack space="$4">
+    <YStack space="4">
       <Button onPress={() => setTrapped(!trapped)}>
         {trapped ? 'Disable' : 'Enable'} Focus Trap
       </Button>
 
       <FocusScope.Controller trapped={trapped} loop>
         <FocusScope>
-          <XStack space="$4">
+          <XStack space="4">
             <Button>Controlled</Button>
             <Button>Focus</Button>
             <Button>Behavior</Button>
@@ -352,11 +352,11 @@ export default () => (
       <Dialog.Overlay />
       <Dialog.Content>
         <FocusScope trapped loop focusOnIdle={100}>
-          <YStack space="$4" padding="$4">
+          <YStack space="4" padding="4">
             <Dialog.Title>User Details</Dialog.Title>
             <Input placeholder="Name" />
             <Input placeholder="Email" />
-            <XStack space="$2">
+            <XStack space="2">
               <Dialog.Close asChild>
                 <Button variant="outlined">Cancel</Button>
               </Dialog.Close>

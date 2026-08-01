@@ -32,7 +32,7 @@ A single-line text input:
 ```tsx
 import { Input } from 'tamagui'
 
-export default () => <Input placeholder="Enter text..." size="$4" />
+export default () => <Input placeholder="Enter text..." size="4" />
 ```
 
 For multi-line text input, use `TextArea`:
@@ -160,20 +160,14 @@ Input accepts all Tamagui style props and supports the `size` prop for consisten
 
 ```tsx
 <Input
-  size="$4"
+  size="4"
   borderWidth={2}
-  borderColor="$borderColor"
-  borderRadius="$4"
-  backgroundColor="$background"
-  color="$color"
-  placeholderTextColor="$placeholderColor"
-  selectionColor="$accentColor"
-  hoverStyle={{
-    borderColor: '$borderColorHover',
-  }}
-  focusStyle={{
-    borderColor: '$borderColorFocus',
-  }}
+  borderColor="border-color hover:border-color-hover focus:border-color-focus"
+  borderRadius="4"
+  backgroundColor="background"
+  color="color"
+  placeholderTextColor="placeholder-color"
+  selectionColor="accent-color"
 />
 ```
 

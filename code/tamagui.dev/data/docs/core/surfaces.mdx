@@ -16,7 +16,7 @@ Keep raw material and styling keys separate:
 - **Generics** (`background`, `backgroundHover`, `backgroundPress`, `borderColor`,
   `color`, …) are the only keys a skin may style against.
 
-A skin never references `$color9` directly. This one rule is what makes everything
+A skin never references `color9` directly. This one rule is what makes everything
 below compose: anything that re-binds the generics restyles every skin beneath it,
 with no skin cooperation needed.
 
@@ -28,7 +28,7 @@ is just `theme="surface2"`:
 
 ```tsx
 <Theme name="surface2">
-  <YStack backgroundColor="$background" borderColor="$borderColor">
+  <YStack backgroundColor="background" borderColor="border-color">
     {/* every skin in here reads the surface2 generics */}
   </YStack>
 </Theme>
@@ -61,7 +61,7 @@ When a patch lives in exactly one place, use
 [`Variables`](/docs/core/variables) instead of naming a sub-theme:
 
 ```tsx
-<Variables values={{ backgroundHover: '$blue4' }}>
+<Variables values={{ backgroundHover: 'blue4' }}>
   {/* this panel's hover is blue4; everything else inherits */}
 </Variables>
 ```
@@ -73,13 +73,13 @@ name.
 ## Custom knobs go in config.variables
 
 Numbers that should cascade but are not part of the color palette —
-`$radius`, `$pressScale`, `$focusRingWidth`, `$disabledOpacity`, easings — are
+`radius`, `pressScale`, `focusRingWidth`, `disabledOpacity`, easings — are
 declared once in `config.variables`, typed through module augmentation, and read
-by skins the same way generics are. The facets read `$radius` and `$pressScale`
+by skins the same way generics are. The facets read `radius` and `pressScale`
 from here. This is also how you ship your own tokens.
 
-Do not reintroduce component-scoped tokens like `$surfaceBorder`. Inside a level
-the border already is `$borderColor`; the template re-bound it.
+Do not reintroduce component-scoped tokens like `surfaceBorder`. Inside a level
+the border already is `borderColor`; the template re-bound it.
 
 ## What to learn, in total
 

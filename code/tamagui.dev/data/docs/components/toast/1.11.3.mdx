@@ -417,8 +417,8 @@ export default () => {
         onOpenChange={setOpen}
         open={open}
         animation="100ms"
-        enterStyle={{ x: -20, opacity: 0 }}
-        exitStyle={{ x: -20, opacity: 0 }}
+        x="enter:-20px exit:-20px"
+        opacity="enter:0 exit:0"
         opacity={1}
         x={0}
       >
@@ -454,8 +454,8 @@ export default () => {
         <Toast
           key={index}
           animation="100ms"
-          enterStyle={{ x: -20, opacity: 0 }}
-          exitStyle={{ x: -20, opacity: 0 }}
+          x="enter:-20px exit:-20px"
+          opacity="enter:0 exit:0"
           opacity={1}
           x={0}
         >

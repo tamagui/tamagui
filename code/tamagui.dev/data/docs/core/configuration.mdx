@@ -51,11 +51,11 @@ export const config = createTamagui({
   // tokens work like CSS Variables (and compile to them on the web)
   // accessible from anywhere, never changing dynamically:
   tokens: {
-    // width="$sm"
+    // width="sm"
     size: { sm: 8, md: 12, lg: 20 },
-    // margin="$sm"
+    // margin="sm"
     space: { sm: 4, md: 8, lg: 12 },
-    // radius="$none"
+    // radius="none"
     radius: { none: 0, sm: 3 },
     color: { white: '#fff', black: '#000' },
   },
@@ -125,7 +125,7 @@ import { config } from './tamagui.config.ts'
 
 export default () => (
   <TamaguiProvider config={config}>
-    <View margin="$sm" />
+    <View margin="sm" />
   </TamaguiProvider>
 )
 ```
@@ -258,7 +258,7 @@ type AppConfig = typeof config
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
 
-  // if you want types for named group styling props (e.g. $group-card-hover),
+  // if you want types for named group styling props (e.g. group-card-hover),
   // define your group names here:
   interface TypeOverride {
     groupNames(): 'card' | 'header' | 'sidebar'
@@ -528,7 +528,7 @@ tokens to use based on the style property you use.
 
 ```tsx
 const App = () => (
-  <Text fontSize="$lg" lineHeight="$lg" fontFamily="$body" color="$white">
+  <Text fontSize="lg" lineHeight="lg" fontFamily="body" color="white">
     Hello world
   </Text>
 )
@@ -582,11 +582,11 @@ through a Styled Component like View or Text:
 
 ```tsx
 const P = styled(Text, {
-  color: '$color12'
+  color: 'color12'
 })
 
 // or directly
-<Text color="$color11" />
+<Text color="color11" />
 ```
 
 One of the more powerful features in Tamagui is nesting themes, you just define
@@ -633,15 +633,15 @@ for any subtree with the [Variables component](/docs/core/variables).
 const config = createTamagui({
   // ...
   variables: {
-    surfaceBorder: '$borderColor',
+    surfaceBorder: 'border-color',
     disabledOpacity: 0.5,
     accent: { light: '#005ac8', dark: '#78b4ff' },
   },
 })
 ```
 
-Values can be literals, references to theme keys or tokens (`'$borderColor'`,
-`'$size.4'`), or per-scheme `{ light, dark }` pairs.
+Values can be literals, references to theme keys or tokens (`'border-color'`,
+`'size.4'`), or per-scheme `{ light, dark }` pairs.
 
 ### Media
 
@@ -716,7 +716,7 @@ export default createTamagui({
 Which will enable usage like:
 
 ```tsx
-<View br="$myToken" />
+<View br="myToken" />
 ```
 
 where `br` expands into `borderRadius`.
@@ -789,7 +789,7 @@ You can pass a `settings` object to `createTamagui`:
       name: `autocompleteSpecificTokens`,
       required: false,
       type: `boolean | 'except-special'`,
-      description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
+      description: `Set up if "specific tokens" (color.name) are added to the types where tokens are allowed (see below).`,
     },
     {
       name: 'fastSchemeChange',

@@ -14,6 +14,41 @@ behavior should be verified in real screens.
   Config v5, React 19, React Native 0.81+, and TypeScript 5+ baseline.
 </Notice>
 
+## Required: migrate tokens and conditional styles
+
+V3 accepts bare token and theme names and flat property clauses only. There is
+no runtime compatibility path for sigil-prefixed values or condition objects.
+Run the repository codemod across your app before the API-specific steps below:
+
+```bash
+cd code/core/codemod-flat-values
+bun src/index.ts --write \
+  --report /tmp/flat-values-report.md \
+  --json /tmp/flat-values-report.json \
+  path/to/your/app
+```
+
+For example, this V2 migration input:
+
+```tsx
+<View
+  bg="$background"
+  hoverStyle={{ bg: '$backgroundHover' }}
+  $sm={{ p: '$6' }}
+  p="$4"
+/>
+```
+
+becomes:
+
+```tsx
+<View bg="background hover:background-hover" p="4 sm:6" />
+```
+
+Read and hand-fix every flagged report row, then rerun until the migrated path
+has no V2 authoring sites. See [Flat Conditional Values](/docs/guides/flat-values)
+for the grammar and full workflow.
+
 ## 1. Update packages
 
 Bump all `tamagui` and `@tamagui/*` packages together.
@@ -69,7 +104,7 @@ props.
 // before
 <Sheet>
   <Sheet.Overlay />
-  <Sheet.Frame padding="$4" bg="$background" borderTopRadius="$6">
+  <Sheet.Frame padding="4" bg="background" borderTopRadius="6">
     <Sheet.ScrollView>{children}</Sheet.ScrollView>
   </Sheet.Frame>
 </Sheet>
@@ -79,8 +114,8 @@ props.
 // after
 <Sheet>
   <Sheet.Overlay />
-  <Sheet.Container padding="$4">
-    <Sheet.Background bg="$background" borderTopRadius="$6" />
+  <Sheet.Container padding="4">
+    <Sheet.Background bg="background" borderTopRadius="6" />
     <Sheet.ScrollView>{children}</Sheet.ScrollView>
   </Sheet.Container>
 </Sheet>
@@ -118,7 +153,7 @@ Use these replacements:
 | forwardRef wrapper statics | direct refs and normal component composition |
 | `inlineWhenUnflattened` | remove it |
 | deprecated UI kit aliases | import the current component names |
-| old platform style keys | use the current `$web`, `$native`, `$ios`, `$android`, etc. keys |
+| old platform condition keys | use flat `web:`, `native:`, `ios:`, `android:`, etc. clauses |
 | `forceRemoveScrollEnabled` | `disableRemoveScroll` with inverted intent |
 | `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
 | `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
@@ -178,9 +213,8 @@ when the parent has defined dimensions.
 
 ## 4. Remove true token references
 
-The default v3 configs no longer export `$true` token keys. Where you passed
-`$true` to a space, size, radius, or color prop, pass the explicit token that
-`$true` aliased. In the default config that value is `$4`.
+The default v3 configs no longer export the legacy `$true` token key. Pass the
+explicit bare token that it aliased. In the default config that value is `4`.
 
 ```tsx
 // before
@@ -189,12 +223,12 @@ The default v3 configs no longer export `$true` token keys. Where you passed
 
 ```tsx
 // after
-<XStack gap="$4" p="$4" />
+<XStack gap="4" p="4" />
 ```
 
 Component `size` is different from a space token. A component's visual `size` is
 defined by its own styled variant, not by a global token, so do not assume the
-`$true` -> `$4` swap changes a component's rendered size. The styled `tamagui`
+`$true` -> `4` swap changes a component's rendered size. The styled `tamagui`
 components (`import { Button } from 'tamagui'`) carry their own size scale; after
 upgrading, use the size values your components actually expose rather than
 passing a raw space token:
@@ -242,7 +276,7 @@ const padding = getVariableValue(getSize(size)) * 0.6
 const radius = getVariableValue(getRadius(radiusToken)) * 1.2
 ```
 
-If you need to move from `$5` to `$4`, use explicit token keys or a helper that
+If you need to move from `5` to `4`, use explicit token keys or a helper that
 only handles numeric token names. Do not rebuild runtime scale sorting in app
 code.
 
@@ -319,7 +353,7 @@ Use the current Adapt anatomy:
 
   <Adapt when="max-md" platform="touch">
     <Sheet modal dismissOnSnapToBottom>
-      <Sheet.Container padding="$4">
+      <Sheet.Container padding="4">
         <Sheet.Background />
         <Adapt.Contents />
       </Sheet.Container>
@@ -415,8 +449,8 @@ Themed icons now size token values through the current font size scale, not the
 space/size token scale. Raw numeric sizes are unchanged.
 
 ```tsx
-// v3: aligns with font.size.$4
-<Search size="$4" />
+// v3: aligns with font.size.4
+<Search size="4" />
 
 // unchanged: exact numeric size
 <Search size={18} />
@@ -433,12 +467,12 @@ they no longer run full style resolution.
 ```tsx
 // after
 const IconFrame = styled(View, {
-  $sm: { opacity: 0.6 },
-  hoverStyle: { scale: 1.05 },
+  opacity: 'sm:0.6',
+  scale: 'hover:1.05',
 })
 
 <IconFrame>
-  <Search size="$4" />
+  <Search size="4" />
 </IconFrame>
 ```
 
@@ -526,22 +560,21 @@ own `Sheet.Handle`.
 
 ## 13. Update active-state background colors
 
-The `$backgroundActive` theme token was removed from v3 themes. Checkbox and
+The V2 `backgroundActive` theme token was removed from v3 themes. Checkbox and
 Switch checked states, Tabs active tab, and Toggle Group active toggle used to
-default to `$backgroundActive`, which silently did nothing once the token was
-gone. They now default to `$backgroundPress` (the same migration Slider used).
+default to it. They now use the V3 `background-press` name.
 
 Each of these components applies its default active background only when you do
 not pass `activeStyle`, and a supplied `activeStyle` wins because it is applied
 last. Override the active color per-instance with `activeStyle`:
 
 ```tsx
-<Checkbox activeStyle={{ backgroundColor: '$blue9' }} />
-<Tabs.Tab activeStyle={{ backgroundColor: '$blue9' }} />
+<Checkbox activeStyle={{ backgroundColor: 'blue9' }} />
+<Tabs.Tab activeStyle={{ backgroundColor: 'blue9' }} />
 ```
 
-If a custom theme defined `$backgroundActive` to color these states, move that
-color to `$backgroundPress` or pass it through `activeStyle`.
+If a custom theme defined `backgroundActive` to color these states, move that
+color to `background-press` or pass it through `activeStyle`.
 
 ## 14. Optional: adopt the Tailwind frontend
 
@@ -561,7 +594,7 @@ style props.
 import { View as TamaguiView } from 'tamagui'
 import { View as TailwindView } from '@tamagui/tailwind'
 
-<TamaguiView backgroundColor="$blue5">
+<TamaguiView backgroundColor="blue5">
   <TailwindView className="rounded-lg p-4" />
 </TamaguiView>
 ```
@@ -587,15 +620,15 @@ Each of its uses has a more direct replacement:
 ```tsx
 // before
 createTamagui({
-  defaultProps: { Square: { backgroundColor: '$violet6' } },
+  defaultProps: { Square: { backgroundColor: 'violet6' } },
 })
 
 // after
 createTamagui({
-  variables: { squareBackground: '$violet6' },
+  variables: { squareBackground: 'violet6' },
 })
 // in your Square styles
-styled(View, { backgroundColor: '$squareBackground' })
+styled(View, { backgroundColor: 'squareBackground' })
 ```
 
 ## 16. Migrate off the imperative Toast
@@ -667,11 +700,11 @@ are unchanged.
   // before
   const Panel = styled(ThemeableStack, { bordered: true })
   // after
-  const Panel = styled(YStack, { borderWidth: 1, borderColor: '$borderColor' })
+  const Panel = styled(YStack, { borderWidth: 1, borderColor: 'border-color' })
   ```
 
 - `elevate` → the base `elevation` prop, or a shadow read from generics.
-- `bordered` → `borderWidth` + `borderColor: '$borderColor'`.
+- `bordered` → `borderWidth` + `borderColor: 'border-color'`.
 - `circular` → `borderRadius: 100_000` (+ equal width/height for a circle).
 
 - For panels/wells/toolbars, copy the `Surface` fixture from the registry
@@ -683,7 +716,7 @@ are unchanged.
   <Surface level={2} filled rounded interactive />
   ```
 
-  Facets read theme generics (`$background`, `$borderColor`, …), never the color
+  Facets read theme generics (`background`, `border-color`, …), never the color
   scale, so they restyle for free under any `level` or `theme` change.
 
 ## 18. Verification checklist
@@ -714,11 +747,11 @@ Runtime checks:
   `onTransition` and fire as expected.
 - Verify sheet overlays still fade if you depended on the old built-in fade.
 - Verify Checkbox, Switch, Tabs, and Toggle Group active/checked states still
-  read the way you want after the `$backgroundActive` removal.
+  read the way you want after the `backgroundActive` removal.
 - Verify non-modal Dialogs do not lock page scroll.
 - Verify keyboard focus, Escape, outside click, and return focus behavior.
 - Inspect icons next to text at every app size token you use.
-- Check any custom config tokens that used `$true`, numeric font sizes, or token
+- Check any custom config tokens that used `true`, numeric font sizes, or token
   stepping.
 - If you use Tailwind mode, compare web and native output for your supported
   utility classes.

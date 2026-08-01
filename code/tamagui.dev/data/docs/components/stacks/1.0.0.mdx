@@ -41,7 +41,7 @@ npm install @tamagui/stacks
 import { XStack, YStack } from 'tamagui'
 
 export default () => (
-  <XStack gap="$2">
+  <XStack gap="2">
     <YStack />
     <YStack />
     <YStack />
@@ -62,17 +62,11 @@ export default () => (
   <XStack
     flex={1}
     flexWrap="wrap"
-    backgroundColor="#fff"
-    hoverStyle={{
-      backgroundColor: 'red',
-    }}
-    // media query
-    $gtSm={{
-      flexDirection: 'column',
-      flexWrap: 'nowrap',
-    }}
+    backgroundColor="#fff hover:red"
+    flexDirection="gtSm:column"
+    flexWrap="wrap gtSm:nowrap"
   >
-    <YStack gap="$3">
+    <YStack gap="3">
       <Text>Hello</Text>
       <Text>World</Text>
     </YStack>

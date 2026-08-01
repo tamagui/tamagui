@@ -1,38 +1,20 @@
 ---
 title: Flat Conditional Values
-description: The V3 flat-value syntax, the current beta limits, and the report-only migration workflow.
+description: The V3 flat-value syntax and migration workflow
 ---
 
-V3 moves a condition into the value of the property it changes. The intended
-end state replaces `hoverStyle`, `pressStyle`, `focusStyle`, `enterStyle`,
-`$theme-dark`, `$platform-ios`, `$sm`, and `$group-card-hover` objects with one
-ordered program per property.
+V3 puts every condition in the value of the property it changes. Tokens and
+theme values are bare names, and condition-object styling has no runtime path.
 
 ```tsx
-// legacy condition objects
-<View
-  bg="$background"
-  hoverStyle={{ bg: '$backgroundHover' }}
-  $theme-dark={{ bg: '$blue10' }}
-  $sm={{ p: '$6' }}
-  p="$4"
-/>
-
-// flat values
 <View
   bg="background hover:background-hover dark:blue10"
   p="4 sm:6"
+  opacity="disabled:0.5"
 />
 ```
 
-<Notice theme="blue">
-  Flat values are still a beta feature. The syntax above works because both
-  values contain clauses. A clause-free token still needs its `$` today, and
-  several parts of the final V3 contract are not wired yet. This guide labels
-  current beta behavior separately from the intended V3 behavior.
-</Notice>
-
-## 1. The value grammar
+## Value grammar
 
 Every conditional style value uses one grammar:
 
@@ -41,236 +23,103 @@ value  := base? clause*
 clause := modifier (":" modifier)* ":" payload
 ```
 
-The base and each payload are ordinary CSS component values. Spaces, commas,
-functions, strings, and slashes are legal. A clause begins only at a registered,
-top-level `modifier:` chain.
-
-These examples work in the current beta:
+The base and each payload are ordinary property values. A registered modifier
+chain starts a new clause; the last matching clause wins.
 
 ```tsx
 <View
   p="4 sm:6"
   backgroundColor="red hover:blue dark:hover:navy"
   width="100% md:42rem"
-  boxShadow="0 2px 8px #0003 hover:0 4px 16px #0004, 0 0 2px red"
-  scale="1 enter:0.9"
+  boxShadow="(0 2px 8px #0003) hover:(0 4px 16px #0004)"
+  scale="1 enter:0.9 exit:0.9"
 />
+```
 
+Use parentheses when a payload contains spaces and another clause follows it.
+An empty payload is invalid; clear a property with a real value such as `none`,
+`transparent`, `initial`, or `unset`.
+
+Do not put clauses in the raw `transform` prop. Use the flattened transform
+family instead:
+
+```tsx
+<View scale="1 hover:1.05" rotate="0deg hover:5deg" />
+```
+
+## Token and theme lookup
+
+Quoted identifiers resolve config-first. A configured token, theme key, or
+variable wins; a miss remains literal text so CSS keywords and custom values
+pass through.
+
+```tsx
 <View
-  backgroundImage="linear-gradient(135deg, red, blue) hover:linear-gradient(135deg, pink, cyan)"
+  p="4"
+  bg="background"
+  borderColor="border-color"
+  width="max-content"
 />
 ```
 
-The grammar has a few direct consequences:
-
-- A payload runs until the next registered top-level modifier chain, so
-  multi-word CSS values need no brackets or underscore escaping.
-- An empty payload is an error. Clear a property with a value that has defined
-  semantics, such as `none`, `transparent`, `initial`, or `unset`.
-- An unknown modifier such as `hver:` is an error, not literal value content.
-- Modifiers in one clause are an AND. `dark:hover:` applies only when both
-  conditions match.
-- Within one program, the last matching clause wins.
-- Bracketed values such as `w-[117px]` belong to the
-  `@tamagui/tailwind` `className` frontend. A regular style prop uses
-  `width="117px md:344px"`.
-
-Do not put clauses in the raw `transform` prop. It does not enter the flat
-program engine yet:
+Use a qualified token when the same name exists in more than one category:
 
 ```tsx
-// broken in the current beta
-<View transform="scale(1) hover:scale(1.05)" />
-
-// supported transform-family spelling
-<View scale="1 hover:1.05" />
+<View width="size.4" color="color.blue10" />
 ```
 
-## 2. Token resolution during the beta
-
-A clause-bearing value enters the flat engine. Identifiers and eligible bare
-numbers inside that program resolve config-first: a configured token or
-variable wins, and a miss stays literal CSS.
+A raw number remains a platform value:
 
 ```tsx
-p="4 sm:6"                         // configured space tokens
-backgroundColor="background hover:backgroundHover"
-width="117px md:42rem"             // literal CSS lengths
+<View p="4" />  // configured space token
+<View p={4} />   // 4 CSS pixels on web, 4 points on native
 ```
 
-A clause-free string still follows the legacy resolver today. Keep `$` on a
-clause-free token:
+Built-in multi-part V3 names are kebab-case. The runtime does not guess aliases:
 
-```tsx
-p="$4"   // current beta: configured space token
-p={4}    // raw platform value, 4 CSS pixels on web and 4 points on native
-```
+| V2 name | V3 name |
+| --- | --- |
+| `backgroundHover` | `background-hover` |
+| `backgroundPress` | `background-press` |
+| `borderColor` | `border-color` |
+| `borderColorHover` | `border-color-hover` |
+| `placeholderColor` | `placeholder-color` |
+| `shadowColor` | `shadow-color` |
 
-Do not change the first line to `p="4"` yet. On web it emits
-`padding: 4`, which the browser ignores, and on native it produces the string
-`"4"`. The codemod now preserves this spelling and records
-`clause-free-token` under “Waiting on runtime support.”
+## Modifiers
 
-The intended V3 behavior is for every quoted value, including a clause-free
-one, to use config-first resolution:
-
-```tsx
-// V3 target, not the current beta
-p="4"   // configured space token
-p={4}   // raw platform value
-```
-
-CSS-wide keywords such as `inherit`, `initial`, `unset`, `revert`, `none`,
-`auto`, `transparent`, and `currentColor` are reserved. A configured name wins
-over another same-spelled CSS identifier.
-
-### Removing `$` safely
-
-Remove `$` only when the value has at least one clause:
-
-```tsx
-// safe in the current beta
-bg="background hover:background-hover"
-
-// keep the prefix for now
-bg="$background"
-```
-
-A bare `$` in a web flat program drops the entire longhand program, including
-its base, and logs a development warning:
-
-```txt
-[tamagui] bg: "$background-hover" — flat clause values use config-first
-names without "$"; dropping this program
-```
-
-The prefix in the message is the prop you authored, so it may be `bg`,
-`backgroundColor`, or another source prop. Native evaluates the selected
-payload separately and does not fail in the same way. Treat a `$` anywhere in
-a clause-bearing value as invalid on both platforms.
-
-### Color opacity
-
-A resolved color name accepts an integer slash opacity from 0 through 100:
-
-```tsx
-bg="background/50 hover:backgroundHover/80"
-```
-
-Opacity scales the color’s existing alpha. For example, `#00000033` at `/50`
-ends at alpha 0.1.
-
-`opacity-on-non-color` is reported for an identifier suffix such as
-`spacing/50` or `red/50` when that identifier does not resolve to a configured
-color. `opacity-out-of-range` covers a resolved color with a fractional,
-signed, or out-of-range suffix. A numeric string such as `4/50` is ordinary
-literal text to the current resolver and may become invalid CSS without this
-diagnostic, so do not use slash opacity on numbers or literal colors.
-
-## 3. Modifiers
-
-The modifier registry combines built-ins with names from your config.
+The registry combines built-ins with names from your config.
 
 | Kind | Spellings |
 | --- | --- |
-| interaction | `hover:` `press:` (alias `active:`) `focus:` `focus-visible:` `focus-within:` `disabled:` |
+| interaction | `hover:` `press:` `focus:` `focus-visible:` `focus-within:` `disabled:` |
 | presence | `enter:` `exit:` |
 | component state | `open:` `checked:` `selected:` `highlighted:` `invalid:` |
 | theme | `dark:` `light:` and configured theme names |
-| media | configured media keys such as `sm:` `md:` `max-md:` |
+| media | configured keys such as `sm:` `md:` `max-md:` |
 | platform | `web:` `native:` `ios:` `android:` `tv:` `androidtv:` `tvos:` |
 | group | `group-hover:` and named forms such as `group-hover/card:` |
 | container | `@sm:` and named forms such as `@sm/layout:` |
 
-There is one condition namespace. Duplicate configured names are config
-diagnostics rather than an implicit choice between a state, theme, media, or
-platform condition.
+Modifiers in one clause are an AND. For example, `dark:hover:` applies only
+while both conditions match.
 
-### Theme matching
+## Merging
 
-The intended V3 rule is name-boundary prefix matching. For example, `dark:`
-matches `dark_blue`, while `dark_blue:` does not match `dark`.
-
-Native implements that rule in the current beta. Web lowers `dark:` to a
-selector that needs an actual `.t_dark` ancestor. A `<Theme name="dark_blue">`
-currently emits its derived theme class without also emitting `.t_dark`, so
-`dark:` alone does not match that wrapper on web. Use an explicit
-`<Theme name="dark">` ancestor when you need the same result on both platforms,
-and verify custom sub-themes after conversion.
-
-Web and native also retain their existing nested-scheme difference. Web
-descendant selectors can match an outer dark wrapper through an inner light
-wrapper, while native uses the component’s resolved nearest theme.
-
-## 4. Merging
-
-Inside the flat engine, a property expands to one program per longhand. A later
-contribution replaces only the clauses whose exact modifier set it restates.
-
-This works in the current beta because the two contributions use different prop
-keys that target the same longhand:
+Shorthands and longhands merge one property program at a time. A later base
+replaces the earlier base without erasing unrelated clauses:
 
 ```tsx
 <View backgroundColor="gray hover:blue" bg="red" />
-```
+// backgroundColor is red; hover is blue
 
-The base becomes red and the hover clause survives. Shorthand expansion also
-merges per longhand:
-
-```tsx
-// px replaces the left and right bases; their sm clauses survive
 <View p="4 sm:6" px="2" />
+// left and right bases are 2; their sm clauses remain 6
 ```
 
-The same-key styled-component gate is not finished. `mergeComponentProps`
-currently replaces a styled default before the flat engine sees both values:
+## Groups and containers
 
-```tsx
-const Card = styled(View, {
-  backgroundColor: 'gray hover:blue',
-})
-
-// current beta: this loses the inherited hover clause
-<Card backgroundColor="red" />
-
-// safe today: restate the clause or expose a variant
-<Card backgroundColor="red hover:blue" />
-```
-
-The V3 target is clause-level merge at every boundary, including that same-key
-case. The report-only codemod has no apply mode partly because this runtime gate
-is still open.
-
-## 5. Background values
-
-In the current beta, `bg` is still a shorthand for `backgroundColor`. It works
-for color programs:
-
-```tsx
-bg="background hover:backgroundHover"
-```
-
-It does not split an image and a color. Use the full `background` family prop
-when one conditional value must contribute both:
-
-```tsx
-background="url(hero.png) red hover:blue"
-```
-
-The intended V3 config changes `bg` into the complete background candidate
-family. At that point a color candidate will still write only
-`backgroundColor`, while a composite value can split into image, color, and
-other background longhands. Until that config lands, do not write this:
-
-```tsx
-// broken in the current beta
-bg="url(hero.png) red hover:blue"
-```
-
-## 6. Groups and containers
-
-A group exposes parent state. A query container supplies dimensions. New flat
-code can use an unnamed group, an unnamed container, or both:
+A group exposes parent state. A query container supplies dimensions.
 
 ```tsx
 <View group>
@@ -281,278 +130,88 @@ code can use an unnamed group, an unnamed container, or both:
   <Text width="100% @sm:50%" />
 </View>
 
-<View group container>
-  <Text color="gray @sm:group-hover:black" />
+<View group="card" container containerName="card">
+  <Text color="gray @sm/card:group-hover/card:black" />
 </View>
 ```
 
 Plain `sm:` is a viewport query. `@sm:` measures the nearest query container.
 Only size-measuring media keys register a container form.
 
-The boolean `container` prop works on web and native. Full V3 separates groups
-from containers, but the beta still emits container CSS for every web `group`.
-While `legacyConditionObjects` is enabled, a native `group` also answers legacy
-group-size queries.
+## Migrate an existing app
 
-Named containers are not ready cross-platform. Native can establish the named
-container context, but `containerName` does not emit `container-name` on web,
-so an `@sm/card:` rule has no matching named web container. Do not migrate a
-named group-size condition yet.
+The codemod in the Tamagui repository is the migration path. It recognizes old
+token spellings and condition objects, rewrites every statically eligible site,
+and reports anything that still needs a human decision.
 
-The report suggests these conversions when it can prove the parent declaration:
-
-| Legacy input | Suggested flat result | Current status |
-| --- | --- | --- |
-| `$group-hover={{ … }}` | `group-hover:`; parent keeps `group` | supported |
-| `$group-card-hover={{ … }}` | `group-hover/card:`; parent keeps `group="card"` | supported |
-| `$group-sm-hover={{ … }}` | `@sm:group-hover:`; parent adds `container` | unnamed container supported |
-| `$group-card-sm-hover={{ … }}` | `@sm/card:group-hover/card:`; parent adds `container containerName="card"` | waits on web `containerName` |
-
-The tool never guesses an ancestor. A proven JSX ancestor gets the proposed
-`container`; a single unproven declaration is flagged
-`unproven-container-group`; ambiguous or missing declarations remain authored.
-Because the tool only writes a report, you still make and verify the source
-edit yourself.
-
-## 7. Transforms and presence
-
-The transform family currently supports conditional `x`, `y`, `scale`,
-`scaleX`, `scaleY`, and `rotate`. These examples work on web and native:
+For example, this V2 source is migration input only:
 
 ```tsx
-<View scale="1 enter:0.9" y="0 enter:10px" />
-<View x="0 hover:8" rotate="0deg hover:5deg" />
+<View
+  bg="$background"
+  hoverStyle={{ bg: '$backgroundHover' }}
+  $theme-dark={{ bg: '$blue10' }}
+  $sm={{ p: '$6' }}
+  p="$4"
+/>
 ```
 
-`x` and `y` bind the space token category inside a clause-bearing program.
-`scale` expands to both axes, so a later `scaleX` can replace only its axis.
-
-Do not add `exit:` to a web flat program yet. Web has no exit selector, and one
-unlowerable clause drops that property’s whole program, including its base and
-`enter:` clauses:
+It becomes:
 
 ```tsx
-// broken on web in the current beta: the entire scale program is dropped
-<View scale="1 enter:0.9 exit:0.9" />
+<View
+  bg="background hover:background-hover dark:blue10"
+  p="4 sm:6"
+/>
 ```
 
-Native can evaluate `exit:` from the animation state. Keep existing
-cross-platform exit behavior on its tested legacy path until the web animation
-driver integration lands, and do not mix a flat program with a legacy condition
-object on the same longhand.
-
-Raw `transform` strings and arrays, skews, 3D rotations, `perspective`, and
-`matrix` remain outside the flat program path. The codemod inventories raw
-structured values as `structured-native-value` and flags conditional unsupported
-parts as `legacy-transform-part`.
-
-## 8. Built-in names
-
-Current V6 themes still expose inherited camelCase names such as
-`backgroundHover` and `borderColorHover`. The codemod preserves token names
-verbatim. It only converts a legacy camelCase media key when the modifier
-registry proves its V6 kebab-case media name.
-
-Use names that actually exist in your config:
-
-```tsx
-// current beta defaults
-bg="background hover:backgroundHover"
-```
-
-The intended V3 defaults will use kebab-case multi-part built-in names:
-
-| Current inherited name | V3 target |
-| --- | --- |
-| `backgroundHover` | `background-hover` |
-| `backgroundPress` | `background-press` |
-| `borderColorHover` | `border-color-hover` |
-| `placeholderColor` | `placeholder-color` |
-
-Do not author a target name until your config defines it. The runtime does not
-guess camelCase-to-kebab aliases because two configured names could collide.
-
-## 9. `legacyConditionObjects` in the beta
-
-The current beta defaults `legacyConditionObjects` to `true`. Convertible
-condition objects enter the flat engine silently. There is no warning on a
-successful conversion.
-
-If conversion fails, development logs one fallback note per condition key and
-uses legacy handling:
-
-```txt
-[tamagui] hoverStyle could not be converted to flat value programs
-(legacy-transform-part at hoverStyle.skewX); using legacy condition handling
-```
-
-Explicitly setting `legacyConditionObjects: false` currently keeps the legacy
-condition path rather than proving that no old objects remain. The codemod
-never edits this setting.
-
-The intended V3 cutover makes the compatibility setting an input gate, with new
-apps off, and V4 removes the setting and legacy parsers. For this beta, use the
-generated report, a source search, and runtime verification to prove migration
-progress. Do not use the setting value as proof.
-
-## 10. Run the report-only codemod
-
-The codemod lives in a Tamagui checkout and is not published as an `npx`
-command. It never writes the source files or config it scans.
+Run write mode against one or more repo-relative files or directories:
 
 ```bash
 cd code/core/codemod-flat-values
 
-# default acceptance corpus; write the report outside the worktree
-bun run dry-run --report /tmp/flat-values-report.md
-
-# one or more repo-relative files or directories
-bun run dry-run --report /tmp/flat-values-report.md path/to/src path/to/app.tsx
-
-# optional machine-readable report
-bun run dry-run \
+bun src/index.ts --write \
   --report /tmp/flat-values-report.md \
   --json /tmp/flat-values-report.json \
-  path/to/src
-
-bun src/index.ts --help
+  path/to/src path/to/app.tsx
 ```
 
-There is no `--transforms` option. Unknown options, a missing `--report` or
-`--json` value, and any positional path that matches no source file exit with
-status 2. A completed report exits successfully even when it contains waiting
-or flagged sites, so always read its summary and per-site sections.
+The write is transactional. A source or generated parse error means no files
+are written. A path that matches no source file exits with status 2, so a typo
+cannot look like a clean migration.
 
-With no `--report`, the default is
-`code/core/codemod-flat-values/dry-run-report.md`. Passing `/tmp` avoids adding
-a generated report to your working tree.
+The report records host capability checks, values that require relocation, and
+syntax the tool cannot safely infer. Common manual cases include:
 
-The report has four useful outcomes:
+- a condition that changes a component variant rather than a style property;
+- a dynamic condition object or value whose type is not provable;
+- a named container whose declaring parent is outside the scanned file;
+- a transform array or other structured native value;
+- ordering across an opaque spread that may set the same property.
 
-- **converted**: a proposed before/after edit that reparses through the real
-  grammar;
-- **waiting on runtime support**: a known edit the tool deliberately does not
-  offer yet;
-- **flagged**: a human must decide;
-- **left authored**: a value belongs to another migration.
+Fix those rows directly in flat syntax. Do not add a compatibility setting or
+restore a condition-object parser.
 
-Corpus totals change as the runtime and converter improve. Use the totals in
-your generated report rather than comparing against a fixed number in this
-guide.
+After the write, search the migrated source for old authoring:
 
-The package also has:
+```bash
+rg -n --glob '*.{ts,tsx,js,jsx}' \
+  'hoverStyle|pressStyle|focusStyle|focusVisibleStyle|focusWithinStyle|disabledStyle|enterStyle|exitStyle|\$[A-Za-z][A-Za-z0-9-]*\s*[:=]' \
+  path/to/src
+
+rg -n --glob '*.{ts,tsx,js,jsx}' \
+  '\$[A-Za-z0-9_.-]+' \
+  path/to/src
+```
+
+Legacy spellings should remain only in explicit migration fixtures or tooling
+that reads V2 source. Then typecheck, build, and exercise state, media, theme,
+group, container, platform, and presence behavior on every target your app
+ships.
+
+The codemod package itself can be checked with:
 
 ```bash
 bun run test
 bun run typecheck
 ```
-
-## 11. Report codes
-
-Waiting codes:
-
-| Code | Meaning |
-| --- | --- |
-| `clause-free-token` | A clause-free `$token` must keep its prefix until the legacy path uses config-first resolution |
-| `container-name-not-wired` | A proposed named query cannot work on web until `containerName` reaches the host |
-
-Values listed separately for another migration:
-
-| Code | Meaning |
-| --- | --- |
-| `legacy-transition-value` | A V2 animation-config transition shape needs the transition migration |
-| `structured-native-value` | A raw object or array, such as a transform array, has no flat CSS-shaped conversion yet |
-| `dynamic-string-value` | An open string type could still contain a `$token`; confirm or migrate its source |
-
-Manual flag codes:
-
-| Code | Meaning |
-| --- | --- |
-| `legacy-token-dot-path` | A token such as `$1.5` needs one unambiguous flat configured name |
-| `legacy-token-constant` | A module constant holds the legacy token spelling, so migrate the constant |
-| `unproven-container-group` | One possible group declaration exists, but JSX ancestry does not prove it is the parent |
-| `ambiguous-container-group` | More than one declaration could own the required container |
-| `container-group-not-declared` | The file does not declare the group that must become a container |
-| `value-reparses-as-program` | A converted base string would parse as clauses instead of one base value |
-| `legacy-group-presence` | A group-presence condition has no state or size and has no flat modifier |
-| `unknown-legacy-condition` | The condition name is not a recognized legacy spelling |
-| `unregistered-legacy-condition` | The shape is recognized, but its theme, media, group, or state modifier is not registered |
-| `non-style-condition-entry` | A condition changes a non-style prop, which a property value cannot carry |
-| `dynamic-legacy-condition` | The condition object is computed, spread, or otherwise not statically readable |
-| `unprovable-dynamic-value` | A required dynamic base has no provable number or string type |
-| `dynamic-condition-value` | A condition leaf is not statically known |
-| `non-css-style-value` | A required base is `true`, `false`, or `null` |
-| `empty-style-value` | A required base is always nullish |
-| `condition-order-not-preservable` | Converting a clause would move it across another contribution that can set the same longhand |
-| `base-order-not-preservable` | Converting a base would move it across another contribution that can set the same longhand |
-| `computed-property` | A computed key hides which style property it can set |
-| `emitted-program-mismatch` | The printed suggestion does not merge back to the intended program; this is a codemod bug |
-| `emitted-value-invalid` | The printed suggestion does not parse; this is a codemod bug |
-| `legacy-transform-part` | A conditional transform part is outside the supported `x`/`y`/`scale`/`scaleX`/`scaleY`/`rotate` family |
-| `unsupported-legacy-value` | A legacy value has no safe flat payload, including token-like text in literal URL content |
-| `legacy-condition-object` | A nested condition object cannot flatten to one clause |
-| `ambiguous-legacy-group` | A legacy group name has more than one equally specific state suffix |
-| `legacy-composite-shorthand` | A resetting composite shorthand cannot be converted safely as one clause |
-
-The report can add a code from the shared legacy converter. The list above
-matches the current converter and codemod; use the per-site detail as the
-source of truth when a newer report introduces a code.
-
-## 12. Runtime diagnostics
-
-During migration, fix these messages at their source:
-
-- A clause-shaped value that fails to parse throws in development:
-  `[tamagui] p="4 hver:6" looks like a flat value program but does not parse (unregistered-modifier). Fix the value, or if this is intentional CSS, remove the top-level ":".`
-  `aspectRatio="16:9"` is the one colon-bearing exception. Production falls
-  through to the existing path, so a production build is not a substitute for
-  fixing the error.
-- A payload resolution error, a leftover bare `$`, or an unlowerable web
-  condition drops the entire web longhand program. `exit:` is the common
-  unlowerable condition.
-- On native, `open:`, `checked:`, `selected:`, `highlighted:`, and `invalid:`
-  currently have no component-state source. Their clauses are skipped with a
-  development note.
-- A native group or container modifier with no matching parent notes the
-  missing group or container once.
-- A legacy condition that cannot convert logs
-  `could not be converted to flat value programs (...); using legacy condition handling`.
-
-## 13. Migration checklist
-
-Generate the report for one real source directory:
-
-```bash
-cd code/core/codemod-flat-values
-bun run dry-run --report /tmp/flat-values-report.md path/to/src
-```
-
-Search only a path that exists in your project. These searches cover both
-single-quoted and double-quoted code because they look for syntax rather than
-one quote style:
-
-```bash
-# inspect every remaining legacy token prefix; clause-free uses are expected today
-rg -n --glob '*.{ts,tsx,js,jsx}' '\$[A-Za-z0-9_.-]+' path/to/src
-
-# legacy pseudo condition objects and config-specific `$sm`-style condition keys
-rg -n --glob '*.{ts,tsx,js,jsx}' \
-  'hoverStyle|pressStyle|focusStyle|focusVisibleStyle|focusWithinStyle|disabledStyle|enterStyle|exitStyle|\$[A-Za-z][A-Za-z0-9-]*\s*[:=]' \
-  path/to/src
-```
-
-Then:
-
-1. Apply only report suggestions that the current-status sections above mark
-   as supported. The codemod does not edit for you.
-2. Keep clause-free `$tokens`, named container migrations, web `exit:`, raw
-   conditional transforms, same-key styled overrides, and target kebab-case
-   built-ins on their current working paths.
-3. Typecheck and build.
-4. Exercise hover, press, focus, media, themes, groups, containers, and presence
-   behavior on web and native.
-5. Check custom sub-themes against the web/native theme rule.
-6. Drive parse, dropped-program, missing-parent, and legacy-fallback diagnostics
-   to zero in the migrated area.
-7. Re-run the report and use its file list to decide what remains. Do not remove
-   or flip `legacyConditionObjects` as an automated final step in this beta.

@@ -14,8 +14,8 @@ change, no re-renders on web.
 import { Variables, View } from 'tamagui' // or '@tamagui/core'
 
 export default () => (
-  <Variables values={{ backgroundHover: '$blue4' }} dark={{ backgroundHover: '$blue2' }}>
-    <View backgroundColor="$background" hoverStyle={{ backgroundColor: '$backgroundHover' }} />
+  <Variables values={{ 'background-hover': 'blue4' }} dark={{ 'background-hover': 'blue2' }}>
+    <View backgroundColor="background hover:background-hover" />
   </Variables>
 )
 ```
@@ -39,9 +39,9 @@ and `Variables` redefinition.
 const config = createTamagui({
   // ...tokens, themes
   variables: {
-    surfaceBorder: '$borderColor', // reference a theme key
+    surfaceBorder: 'border-color', // reference a theme key
     disabledOpacity: 0.5,
-    focusRingColor: '$blue10',
+    focusRingColor: 'blue10',
     focusRingWidth: 2,
     pressScale: 0.97,
     // per-scheme values
@@ -53,9 +53,9 @@ const config = createTamagui({
 Then use them like any theme value, and redefine them per area:
 
 ```tsx
-<View borderColor="$surfaceBorder" />
+<View borderColor="surfaceBorder" />
 
-<Variables values={{ surfaceBorder: '$red8' }}>
+<Variables values={{ surfaceBorder: 'red8' }}>
   {/* everything here sees the red surface border */}
 </Variables>
 ```
@@ -70,16 +70,16 @@ or a dense settings panel wants a different feel.
 
 Values can reference theme keys and tokens:
 
-- `$background` finds the theme key (or custom variable) visible at the
+- `background` finds the theme key (or custom variable) visible at the
   `Variables` node.
-- `$size.4` and `$color.blue10` reference tokens by category.
-- A bare token name like `$blue10` checks theme keys first, then scans token
+- `size.4` and `color.blue10` reference tokens by category.
+- A bare token name like `blue10` checks theme keys first, then scans token
   categories in a fixed order: color, space, size, radius, zIndex. Use the
   qualified form if a name exists in more than one category.
 
 References resolve at the `Variables` node and descendants inherit the
 resolved value, matching how CSS computes custom properties. Chains are fine
-(`a: '$b'` where `b: '$c'`), but there is no `calc()`-style computation, and a
+(`a: 'b'` where `b: 'c'`), but there is no `calc()`-style computation, and a
 reference cycle drops the involved keys entirely on both platforms with a
 development warning.
 

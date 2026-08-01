@@ -42,7 +42,7 @@ npx shadcn add surface
 ## Levels
 
 `level` shifts the subtree to the `surface1`, `surface2`, or `surface3`
-sub-theme. Because facets read theme generics (`$background`, `$borderColor`, …)
+sub-theme. Because facets read theme generics (`background`, `borderColor`, …)
 and the surface theme re-binds those generics, a level restyles every facet
 beneath it with no cooperation. Read [Surfaces and
 levels](/docs/core/surfaces) for the full theming model.
@@ -76,31 +76,31 @@ keeps them from colliding, any combination composes with zero coordination.
       name: 'filled',
       required: false,
       type: 'boolean',
-      description: `Chrome: backgroundColor from $background.`,
+      description: `Chrome: backgroundColor from background.`,
     },
     {
       name: 'outlined',
       required: false,
       type: 'boolean',
-      description: `Chrome: 1px borderWidth with borderColor from $borderColor.`,
+      description: `Chrome: 1px borderWidth with borderColor from borderColor.`,
     },
     {
       name: 'elevated',
       required: false,
       type: 'boolean',
-      description: `Chrome: a shadow read from $shadowColor.`,
+      description: `Chrome: a shadow read from shadowColor.`,
     },
     {
       name: 'rounded',
       required: false,
       type: 'boolean',
-      description: `Chrome: borderRadius from the $radius conventional variable.`,
+      description: `Chrome: borderRadius from the radius conventional variable.`,
     },
     {
       name: 'interactive',
       required: false,
       type: 'boolean',
-      description: `Interaction: hover, press, and focus-visible feedback read from the generics ($backgroundHover, $backgroundPress, $borderColor* and $outlineColor).`,
+      description: `Interaction: hover, press, and focus-visible feedback read from the generics (backgroundHover, backgroundPress, borderColor* and outlineColor).`,
     },
   ]}
 />
@@ -149,38 +149,33 @@ The facets live in a sibling `facets.ts` so any skin can compose the same chrome
 
 ```tsx
 export const filled = {
-  true: { backgroundColor: '$background' },
+  true: { backgroundColor: 'background' },
 } as const
 
 export const outlined = {
-  true: { borderWidth: 1, borderColor: '$borderColor' },
+  true: { borderWidth: 1, borderColor: 'border-color' },
 } as const
 
 export const elevated = {
   true: {
-    shadowColor: '$shadowColor',
+    shadowColor: 'shadow-color',
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
   },
 } as const
 
 export const rounded = {
-  true: { borderRadius: '$radius' },
+  true: { borderRadius: 'radius' },
 } as const
 
 export const interactive = {
   true: {
-    hoverStyle: { backgroundColor: '$backgroundHover', borderColor: '$borderColorHover' },
-    pressStyle: {
-      backgroundColor: '$backgroundPress',
-      borderColor: '$borderColorPress',
-      scale: '$pressScale',
-    },
-    focusVisibleStyle: {
-      outlineColor: '$outlineColor',
-      outlineWidth: 2,
-      outlineStyle: 'solid',
-    },
+    backgroundColor: 'hover:background-hover press:background-press',
+    borderColor: 'hover:border-color-hover press:border-color-press',
+    scale: 'press:press-scale',
+    outlineColor: 'focus-visible:outline-color',
+    outlineWidth: 'focus-visible:2px',
+    outlineStyle: 'focus-visible:solid',
   },
 } as const
 ```

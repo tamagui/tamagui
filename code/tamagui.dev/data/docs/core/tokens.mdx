@@ -28,7 +28,7 @@ getTokens().size.small
 or
 
 ```tsx
-getTokens().size['$small']
+getTokens().size['small']
 ```
 
 If you'd like just an object containing the prefixed (starting with `$`) or non-prefixed values, you can use the `prefixed` option:
@@ -37,7 +37,7 @@ If you'd like just an object containing the prefixed (starting with `$`) or non-
 // only non-$
 getTokens({ prefixed: false }).size.small
 // only $
-getTokens({ prefixed: true })['$size'].small
+getTokens({ prefixed: true })['size'].small
 ```
 
 What is returned is of type `Variable`, which is what Tamagui turns all tokens and theme values into internally in order to give them CSS variable names, as well as other things:
@@ -51,15 +51,15 @@ Tamagui has some helpers that make working with variables easier, which are docu
 
 ## v3 token behavior
 
-The default v3 configs do not export `$true` token keys. Component defaults still
-resolve to the default size, and that default size is `$4`.
+The default v3 configs do not export `true` token keys. Component defaults still
+resolve to the default size, and that default size is `4`.
 
 ```tsx
 // before v3
-<Button size="$true" />
+<Button size="true" />
 
 // v3
-<Button size="$4" />
+<Button size="4" />
 ```
 
 `@tamagui/get-token` also no longer performs runtime token stepping. `getSize`,
@@ -146,7 +146,7 @@ And then access them using the new "specific tokens" syntax:
 export default () => (
   <Stack
     // access with the category first:
-    width="$icon.small"
+    width="icon.small"
   />
 )
 ```
@@ -157,7 +157,7 @@ This, like all token values, works the same with `styled`:
 import { styled, View } from '@tamagui/core'
 
 export const MyView = styled(View, {
-  width: '$icon.small',
+  width: 'icon.small',
 })
 ```
 

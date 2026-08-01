@@ -64,7 +64,7 @@ export default createTamagui({
 The `transition` prop accepts the name of an animation you've configured. By default, animations will
 apply to all animatable styles, similar to setting `all` in a CSS `transition`.
 
-Here's an example animating `hoverStyle`:
+Here's an example animating a `hover:` clause:
 
 <HeroContainer>
   <AnimationsHoverDemo />
@@ -89,10 +89,10 @@ So, `<Square transition={isActive ? 'bouncy' : null} />` rather than
 If you'd like to remove or add a transition prop after a component has already rendered, you'd have
 to change the key.
 
-### enterStyle
+### Enter clauses
 
-Setting `enterStyle` on a component tells it to start with those styles,
-then animate to the base styles after mount:
+Setting an `enter:` clause tells a property to start at that value, then
+animate to its base value after mount:
 
 <HeroContainer>
   <AnimationsEnterDemo />
@@ -161,14 +161,16 @@ You can add a delay before animations start using the array syntax with a `delay
 import { Square, XStack } from 'tamagui'
 
 export default () => (
-  <XStack gap="$2">
+  <XStack gap="2">
     {[0, 1, 2, 3].map((i) => (
       <Square
         key={i}
         transition={['bouncy', { delay: i * 100 }]}
-        enterStyle={{ opacity: 0, scale: 0.5, y: 20 }}
+        opacity="enter:0"
+        scale="enter:0.5"
+        y="enter:20px"
         size={50}
-        bg="$color10"
+        bg="color10"
       />
     ))}
   </XStack>
@@ -190,8 +192,8 @@ export default ({ show }) => (
       <View
         key="panel"
         transition={{ enter: 'lazy', exit: 'quick' }}
-        enterStyle={{ opacity: 0, y: 20 }}
-        exitStyle={{ opacity: 0, y: -20 }}
+        opacity="enter:0 exit:0"
+        y="enter:20px exit:-20px"
       />
     )}
   </AnimatePresence>
@@ -204,8 +206,7 @@ The `enter` and `exit` keys accept any animation name from your config. You can 
 // enter slowly, exit quickly, property changes use medium speed
 <View
   transition={{ enter: 'lazy', exit: 'quick', default: 'bouncy' }}
-  enterStyle={{ opacity: 0 }}
-  exitStyle={{ opacity: 0 }}
+  opacity="enter:0 exit:0"
 />
 ```
 
@@ -215,8 +216,8 @@ Or use enter/exit with the array syntax to include delay and per-property animat
 // enter with lazy, exit with quick, delay 200ms, x uses its own animation
 <View
   transition={['bouncy', { enter: 'lazy', exit: 'quick', delay: 200, x: 'slow' }]}
-  enterStyle={{ opacity: 0, x: -100 }}
-  exitStyle={{ opacity: 0, x: 100 }}
+  opacity="enter:0 exit:0"
+  x="enter:-100px exit:100px"
 />
 ```
 
@@ -232,12 +233,8 @@ import { Square } from 'tamagui'
 export default () => (
   <Square
     size={100}
-    bg="$color5"
-    transition="1000ms"  // slow exit (returning to base)
-    hoverStyle={{
-      transition: '200ms',  // fast enter (going to hover)
-      bg: '$color10',
-    }}
+    bg="color5 hover:color10"
+    transition="1000ms hover:200ms"
   />
 )
 ```
@@ -250,19 +247,9 @@ This works with all pseudo styles:
 
 ```tsx
 <View
-  transition="slow"
-  hoverStyle={{
-    transition: 'quick',
-    scale: 1.1,
-  }}
-  pressStyle={{
-    transition: 'bouncy',
-    scale: 0.95,
-  }}
-  focusStyle={{
-    transition: 'quick',
-    borderColor: '$blue10',
-  }}
+  transition="slow hover:quick press:bouncy focus:quick"
+  scale="hover:1.1 press:0.95"
+  borderColor="focus:blue10"
 />
 ```
 
@@ -272,12 +259,8 @@ And with group pseudo states:
 <View group="card">
   <Square
     size={50}
-    bg="$color5"
-    transition="1000ms"
-    $group-card-hover={{
-      transition: '200ms',
-      bg: '$color10',
-    }}
+    bg="color5 group-hover/card:color10"
+    transition="1000ms group-hover/card:200ms"
   />
 </View>
 ```
@@ -391,7 +374,7 @@ export function Toggle() {
   }
 
   return (
-    <YStack gap="$4" padding="$4">
+    <YStack gap="4" padding="4">
       <Button onPress={toggle}>Toggle</Button>
       <AnimatedView
         transition="slow"

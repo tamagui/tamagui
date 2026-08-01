@@ -52,7 +52,7 @@ export const Circle = styled(View, {
 We can use this styled component like so:
 
 ```tsx
-<Circle pin="top" centered size="$lg" />
+<Circle pin="top" centered size="lg" />
 ```
 
 This component uses a few different types of variants. Below we'll expand on
@@ -186,7 +186,7 @@ const MyButton = styled(View, {
 })
 
 // now you can
-<MyButton pad="$lg" />
+<MyButton pad="lg" />
 ```
 
 This is verbose, and only gets more verbose if you add more sizes. It would
@@ -222,7 +222,7 @@ const MyButton = styled(View, {
 })
 
 // now you can
-<MyButton pad="$lg" />
+<MyButton pad="lg" />
 ```
 
 Spread variants save you from having to define hardcoded styles for every key
@@ -257,11 +257,11 @@ const SizableText = styled(Text, {
 Which you can use:
 
 ```tsx
-<SizableText size="$md">Hello world</SizableText>
+<SizableText size="md">Hello world</SizableText>
 ```
 
 The Spread variant function will receive two arguments: the first is the value
-given to the property (`"$lg"`), and the second is an object with
+given to the property (`"lg"`), and the second is an object with
 `{ theme, tokens, props, font, context }`.
 
 <PropsTable
@@ -363,8 +363,8 @@ const Square = styled(View, {
   variants: {
     size: {
       '...size': (size, { tokens }) => {
-        // size === '$lg'
-        // tokens.size.$lg === 25
+        // size === 'lg'
+        // tokens.size.lg === 25
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
@@ -373,32 +373,23 @@ const Square = styled(View, {
     },
   } as const,
 
-  // <Square /> will get size '$10' from size tokens automatically
+  // <Square /> will get size '10' from size tokens automatically
   defaultVariants: {
-    size: '$10',
+    size: '10',
   },
 })
 ```
 
-### Variants and Pseudos, Media Queries
+### Variants and Flat Clauses
 
-Variants have the full power of the Tamagui styling system, including pseudo and
-media styles:
+Variant branches can use the same state and media clauses as any other style value:
 
 ```tsx
 const SizedText = styled(Text, {
   variants: {
     size: {
       md: {
-        fontSize: '$sm',
-
-        $gtMd: {
-          fontSize: '$md',
-        },
-
-        $gt2xl: {
-          fontSize: '$lg',
-        },
+        fontSize: 'sm gtMd:md gt2xl:lg',
       },
     },
   } as const,
@@ -415,13 +406,13 @@ const ColorfulText = styled(Text, {
   variants: {
     colored: {
       true: {
-        color: '$color',
+        color: 'color',
       },
     },
 
     large: {
       true: {
-        fontSize: '$8',
+        fontSize: '8',
       },
     },
   } as const,

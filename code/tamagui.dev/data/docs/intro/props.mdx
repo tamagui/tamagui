@@ -21,8 +21,8 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
 <View
   onPress={() => console.log('pressed')}
   onPointerEnter={() => console.log('hovered')}
-  pressStyle={{ opacity: 0.8 }}
-  hoverStyle={{ backgroundColor: '$backgroundHover' }}
+  opacity="press:0.8"
+  backgroundColor="hover:background-hover"
 />
 ```
 
@@ -145,7 +145,7 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
   ]}
 />
 
-Use these events alongside style states like `pressStyle`, `hoverStyle`, and `focusStyle` to create interactive components. See the [Style API](/docs/intro/styles) for styling on interaction states.
+Use these events alongside `press:`, `hover:`, and `focus:` clauses to create interactive components. See the [Style API](/docs/intro/styles) for interaction styling.
 
 ## Other Props
 

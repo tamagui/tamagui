@@ -8,7 +8,7 @@ description: Why Tamagui uses an optimizing compiler
   development trilemma**, a choose-two-of-three best shown as a diagram:
 </IntroParagraph>
 
-<YStack w="100%" mih={500} als="center" $gtMd={{ my: '$4' }}>
+<YStack w="100%" mih={500} als="center" my="gtMd:4">
   <Image
     title="The Frontend Trilemma: Choose two of: A native-feeling app, Deploying to native and web, and share code between the two apps."
     src="/trilemma.svg"
@@ -46,7 +46,7 @@ second one [Tamagui UI](/docs/components/stacks) is working towards slowly.
 **The idea is to make another "bump" towards properly native-experience apps
 with shared code, much like how React Native Web made one:**
 
-<YStack w="100%" mih={220} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
+<YStack w="100%" mih={220} my="4 gtMd:100px" als="center" scale="gtMd:1.5">
   <Image
     title="How possible it is to share more code: a lot more with React Native, and again with React Native Web"
     src="/code-sharing2.svg"
@@ -126,9 +126,9 @@ styles in JS, it's hard to make ambitious apps that don't feel janky.
 `@tamagui/static` is an optimizing compiler for React Native with four main
 features:
 
-<YStack py="$4">
+<YStack py="4">
   <Features
-    size="$5"
+    size="5"
     items={[
       `Extracts all types of styling syntax into atomic CSS.`,
       `Removes a high % of inline styles with partial evaluation and hoisting.`,
@@ -155,7 +155,7 @@ render performance.
 This is a typical performance improvement, where much of the gains come from
 flattening:
 
-<YStack my="$2">
+<YStack my="2">
   <BenchmarkChartWeb />
 </YStack>
 
@@ -169,7 +169,7 @@ Native code, the gains are less. Still, the results are impressive given you now
 have performance within 5% of hand-optimizing React Native code, except you get
 a whole suite of features for free.
 
-<YStack my="$2">
+<YStack my="2">
   <BenchmarkChartNative />
 </YStack>
 
@@ -187,7 +187,7 @@ middle to bottom of the render tree in apps.
 It gives us a new choice, "Universal + Compiler" that lets us ship fast while
 still feeling native:
 
-<Table my="$6">
+<Table my="6">
   <TableCol>
     <TableCell head></TableCell>
     <TableCell>4</TableCell>

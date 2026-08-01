@@ -40,7 +40,7 @@ Slider comes as multiple components that ship with default styles and are sizabl
 import { Slider } from 'tamagui'
 
 export default () => (
-  <Slider size="$4" width={200} defaultValue={[50]} max={100} step={1}>
+  <Slider size="4" width={200} defaultValue={[50]} max={100} step={1}>
     <Slider.Track>
       <Slider.TrackActive />
     </Slider.Track>
@@ -59,7 +59,7 @@ const CustomSliderTrack = styled(Slider.Track, {
 })
 
 export default () => (
-  <Slider size="$4" width={200} defaultValue={[50]} max={100} step={1}>
+  <Slider size="4" width={200} defaultValue={[50]} max={100} step={1}>
     <CustomSliderTrack>
       <Slider.TrackActive />
     </CustomSliderTrack>
@@ -94,12 +94,12 @@ Then you can use vertical sliders normally:
 import { Slider, XStack } from 'tamagui'
 
 export default () => (
-  <XStack height={200} alignItems="center" gap="$8">
+  <XStack height={200} alignItems="center" gap="8">
     <Slider height={200} orientation="vertical" defaultValue={[50]} max={100} step={1}>
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb size="$2" index={0} circular />
+      <Slider.Thumb size="2" index={0} circular />
     </Slider>
   </XStack>
 )

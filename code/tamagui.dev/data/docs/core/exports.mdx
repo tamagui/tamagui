@@ -85,8 +85,8 @@ either a variable on the web, or raw value on native. So if you define a size
 token with key `small` and value of `14`:
 
 ```tsx
-getToken('$size.small') // returns on web var(--size-small), native 14
-getToken('$small', 'size') // returns on web var(--size-small), native 14
+getToken('size.small') // returns on web var(--size-small), native 14
+getToken('small', 'size') // returns on web var(--size-small), native 14
 ```
 
 ### getTokenValue
@@ -99,8 +99,8 @@ Similar to getToken, but always returns the raw value rather than the variable
 name. If you define a size token with key `small` and value of `14`:
 
 ```tsx
-getTokenValue('$size.small') // returns 14
-getTokenValue('$small', 'size') // returns 14
+getTokenValue('size.small') // returns 14
+getTokenValue('small', 'size') // returns 14
 ```
 
 ### themeable
@@ -159,9 +159,9 @@ the `size` prop, if it's controlling children that also accept size).
 
 ```tsx
 // if props is:
-//   { size: '$2', $sm: { size: '$4' } }
-// and $sm is active, activeProps will be:
-//   { size: '$4' }
+//   { opacity: '1 sm:0.5' }
+// and sm is active, activeProps will be:
+//   { opacity: 0.5 }
 
 // if shorthands like m => margin, then m always expands to margin
 function MyButton(props) {
@@ -191,8 +191,8 @@ all variants and resolve all values.
 
 ```tsx
 // if props is:
-//   { color: '$background', $sm: { color: '$color' } }
-// and $sm is active, activeProps will be on web:
+//   { color: 'background sm:color' }
+// and sm is active, activeProps will be on web:
 //   { color: 'var(--color)' }
 // and on native will resolve to the actual theme or token value:
 //   { color: '#fff' }

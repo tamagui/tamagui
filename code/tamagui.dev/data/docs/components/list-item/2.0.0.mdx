@@ -45,10 +45,10 @@ export default () => (
   <YGroup
     self="center"
     borderWidth={1}
-    borderColor="$borderColor"
-    rounded="$4"
+    borderColor="border-color"
+    rounded="4"
     width={240}
-    size="$4"
+    size="4"
   >
     <YGroup.Item>
       <ListItem title="Star" icon={ChevronRight} />
@@ -65,12 +65,12 @@ export default () => (
 
 ## Sizing
 
-The `size` prop adjusts various properties of the ListItem, including padding, minimum height, and the default size for text elements within it. It accepts theme size tokens (e.g., `"$3"`, `"$4"`).
+The `size` prop adjusts various properties of the ListItem, including padding, minimum height, and the default size for text elements within it. It accepts theme size tokens (e.g., `"3"`, `"4"`).
 
 ```tsx
 import { ListItem } from 'tamagui'
 
-export default () => <ListItem size="$5" title="Large List Item" />
+export default () => <ListItem size="5" title="Large List Item" />
 ```
 
 ## Title and SubTitle
@@ -87,15 +87,15 @@ import { User } from '@tamagui/lucide-icons-2'
 export default () => (
   <ListItem
     icon={
-      <Avatar circular size="$3">
+      <Avatar circular size="3">
         <Avatar.Image src="/placeholder.png" />
-        <Avatar.Fallback bc="$backgroundFocus" />
+        <Avatar.Fallback bc="background-focus" />
       </Avatar>
     }
     title="User Profile"
     subTitle="View and edit your profile details."
     iconAfter={User}
-    size="$4"
+    size="4"
   />
 )
 ```
@@ -114,20 +114,20 @@ import { Star, Settings } from '@tamagui/lucide-icons-2'
 
 export default () => (
   <>
-    <ListItem icon={Star} title="Default Icon Size" size="$4" />
+    <ListItem icon={Star} title="Default Icon Size" size="4" />
     <ListItem
       icon={Settings}
-      iconSize="$2"
+      iconSize="2"
       title="Explicit Icon Size"
-      subTitle="iconSize='$2'"
-      size="$5"
+      subTitle="iconSize='2'"
+      size="5"
     />
     <ListItem
       icon={Star}
       scaleIcon={1.5}
       title="Scaled Icon"
       subTitle="scaleIcon={1.5}"
-      size="$4"
+      size="4"
     />
   </>
 )
@@ -155,7 +155,7 @@ import { Trash } from '@tamagui/lucide-icons-2'
 
 export default () => (
   <YGroup>
-    <ListItem.Apply color="$red10">
+    <ListItem.Apply color="red10">
       <YGroup.Item>
         <ListItem icon={Trash} title="Delete item" />
       </YGroup.Item>
@@ -178,17 +178,17 @@ import { YStack, ListItem as TamaguiListItem } from 'tamagui'
 import { GetProps, styled } from '@tamagui/web'
 
 const CustomFrame = styled(TamaguiListItem.Frame, {
-  padding: '$5',
-  backgroundColor: '$backgroundHover',
+  padding: '5',
+  backgroundColor: 'background-hover',
 })
 
 const CustomTitle = styled(TamaguiListItem.Title, {
-  color: '$red10',
+  color: 'red10',
   fontWeight: 'bold',
 })
 
 const CustomSubtitle = styled(TamaguiListItem.Subtitle, {
-  color: '$gray10',
+  color: 'gray10',
   fontStyle: 'italic',
 })
 
@@ -240,7 +240,7 @@ ListItems extend Stack views, inheriting all the [Tamagui standard props](/docs/
       required: false,
       type: 'SizeTokens',
       description:
-        'Adjusts padding, min-height, and default font/icon sizes. Uses theme size tokens (e.g., "$3", "$4").',
+        'Adjusts padding, min-height, and default font/icon sizes. Uses theme size tokens (e.g., "3", "4").',
     },
     {
       name: 'color',
@@ -275,7 +275,7 @@ ListItems extend Stack views, inheriting all the [Tamagui standard props](/docs/
       required: false,
       type: 'SizeTokens',
       description:
-        'Explicitly set the size of the icon, overriding the default size derived from the ListItem\'s `size` prop. Uses theme size tokens (e.g., "$2").',
+        'Explicitly set the size of the icon, overriding the default size derived from the ListItem\'s `size` prop. Uses theme size tokens (e.g., "2").',
     },
     {
       name: 'scaleIcon',

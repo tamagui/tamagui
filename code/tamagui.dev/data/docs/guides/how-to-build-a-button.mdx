@@ -65,23 +65,15 @@ import {
 import { cloneElement, isValidElement, useContext } from 'react'
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
+  size: 'md' as SizeTokens,
 })
 
 export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
-  backgroundColor: '$background',
+  backgroundColor: 'background hover:background-hover press:background-press',
   alignItems: 'center',
   flexDirection: 'row',
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
 
   variants: {
     size: {
@@ -102,7 +94,7 @@ export const ButtonFrame = styled(View, {
   } as const,
 
   defaultVariants: {
-    size: '$md',
+    size: 'md',
   },
 })
 
@@ -111,7 +103,7 @@ type ButtonProps = GetProps<typeof ButtonFrame>
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
   context: ButtonContext,
-  color: '$color',
+  color: 'color',
   userSelect: 'none',
 
   variants: {
@@ -179,7 +171,7 @@ Tamagui's `group` prop to coordinate styles between parent and child:
 ```tsx
 export default () => (
   <Button group="btn" bg="pink">
-    <Button.Text color="blue" $group-btn-hover={{ color: 'red' }}>
+    <Button.Text color="blue group-hover/btn:red">
       Hello world
     </Button.Text>
   </Button>
@@ -187,7 +179,7 @@ export default () => (
 ```
 
 By setting `group="btn"` on the Button frame, any child can reference that group
-for interactive styles using `$group-btn-hover`, `$group-btn-press`, and so on.
+with modifiers such as `group-hover/btn:` and `group-press/btn:`.
 This is more flexible and explicit than passing `color` directly, as it lets you
 independently control text, icon, and frame styles for every interaction state.
 
@@ -263,25 +255,20 @@ const ButtonFrame = styled(View, {
   alignItems: 'center',
   flexDirection: 'row',
 
-  // our $ prefixed values look for theme first, then fallback to tokens
-  backgroundColor: '$background', // #ccc
-  hoverStyle: {
-    backgroundColor: '$backgroundHover', // #ddd
-  },
-  pressStyle: {
-    backgroundColor: '$backgroundPress', // #bbb
-  },
+  // bare values look for theme first, then fall back to tokens
+  backgroundColor:
+    'background hover:background-hover press:background-press',
 
   // these all use tokens
   // note that size tokens are used only for these properties:
   //   width, height, minWidth, minHeight, maxWidth and maxHeight
-  height: '$md', // 46
+  height: 'md', // 46
 
   // meanwhile our radius token is used here
-  borderRadius: '$md', // 8
+  borderRadius: 'md', // 8
 
   // and space tokens are used for all others
-  paddingHorizontal: '$sm', // 25
+  paddingHorizontal: 'sm', // 25
 })
 ```
 
@@ -294,8 +281,7 @@ sub-theme `Button` that extends the current one. So since we have a theme
 `light_Button` and apply it to this component, getting the `background` value
 from that theme (assuming we have our base theme set to light).
 
-Finally we set the `hoverStyle` and `pressStyle` so our button frame looks nice
-when hovered or pressed.
+Finally, the `hover:` and `press:` clauses make the frame respond to interaction.
 
 Next we'll want a Text component to go inside:
 
@@ -304,10 +290,10 @@ import { Text, styled } from '@tamagui/core'
 
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
-  color: '$color',
-  fontFamily: '$body',
-  fontSize: '$md',
-  lineHeight: '$md',
+  color: 'color',
+  fontFamily: 'body',
+  fontSize: 'md',
+  lineHeight: 'md',
   userSelect: 'none',
 })
 ```
@@ -335,25 +321,25 @@ We can add some variants:
 ```tsx
 const ButtonFrame = styled(View, {
   name: 'Button',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   alignItems: 'center',
   flexDirection: 'row',
 
   variants: {
     size: {
       sm: {
-        height: '$sm',
-        borderRadius: '$sm',
+        height: 'sm',
+        borderRadius: 'sm',
         gap: 4,
       },
       md: {
-        height: '$md',
-        borderRadius: '$md',
+        height: 'md',
+        borderRadius: 'md',
         gap: 6,
       },
       lg: {
-        height: '$lg',
-        borderRadius: '$lg',
+        height: 'lg',
+        borderRadius: 'lg',
         gap: 8,
       },
     },
@@ -370,7 +356,7 @@ import { View, styled } from '@tamagui/core'
 
 const ButtonFrame = styled(View, {
   name: 'Button',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   alignItems: 'center',
   flexDirection: 'row',
 
@@ -389,7 +375,7 @@ const ButtonFrame = styled(View, {
 
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
-  color: '$color',
+  color: 'color',
   userSelect: 'none',
 
   variants: {
@@ -410,8 +396,8 @@ export const ButtonText = styled(Text, {
 So now we can pass in our new `size` property:
 
 ```tsx
-<ButtonFrame size="$md">
-  <ButtonText size="$md" />
+<ButtonFrame size="md">
+  <ButtonText size="md" />
 </ButtonFrame>
 ```
 
@@ -444,8 +430,8 @@ Which is functionally the same as the above. So, now our users can do:
 import { Button } from './OurButton'
 
 export default () => (
-  <Button size="$md">
-    <Button.Text size="$md">Hello world</Button.Text>
+  <Button size="md">
+    <Button.Text size="md">Hello world</Button.Text>
   </Button>
 )
 ```
@@ -511,7 +497,7 @@ export const CustomButton = withStaticProperties(CustomButtonFrame, {
 export default () => (
   <CustomButton>
     <CustomButton.Text>Hello world</CustomButton.Text>
-    <CustomButton.Text size="$sm">(Smaller text)</CustomButton.Text>
+    <CustomButton.Text size="sm">(Smaller text)</CustomButton.Text>
   </CustomButton>
 )
 ```
@@ -538,10 +524,10 @@ import { createContext } from 'react'
 import { SizeTokens, GetProps, createStyledHOC, withStaticProperties } from '@tamagui/core'
 import { Button } from './OurButton'
 
-const SizeContext = createContext<SizeTokens>('$md')
+const SizeContext = createContext<SizeTokens>('md')
 
 const ButtonFrame = createStyledHOC(Button)(
-  ({ size = '$md', ...props }: GetProps<typeof OGB.ButtonFrame>) => {
+  ({ size = 'md', ...props }: GetProps<typeof OGB.ButtonFrame>) => {
     return (
       <SizeContext.Provider value={size}>
         <Button size={size} {...props} />
@@ -586,7 +572,7 @@ to:
 import { createStyledContext } from '@tamagui/core'
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
+  size: 'md' as SizeTokens,
 })
 ```
 
@@ -602,13 +588,13 @@ And now, bringing back the full example, we add an extra property to each
 import { View, styled, createStyledContext } from '@tamagui/core'
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
+  size: 'md' as SizeTokens,
 })
 
 const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   alignItems: 'center',
   flexDirection: 'row',
 
@@ -628,7 +614,7 @@ const ButtonFrame = styled(View, {
 const ButtonText = styled(Text, {
   name: 'ButtonText',
   context: ButtonContext,
-  color: '$color',
+  color: 'color',
   userSelect: 'none',
 
   variants: {
@@ -652,7 +638,7 @@ export const Button = withStaticProperties(ButtonFrame, {
 import { Button } from './OurButton'
 
 export default () => (
-  <Button size="$md">
+  <Button size="md">
     <Button.Text>Hello world</Button.Text>
   </Button>
 )
@@ -675,7 +661,7 @@ anywhere above in the React tree:
 import { Button } from './OurButton'
 
 export default () => (
-  <Button.Props size="$md">
+  <Button.Props size="md">
     <Button>
       <Button.Text>Hello world</Button.Text>
     </Button>
@@ -733,7 +719,7 @@ Now we can use it like this, assuming your Icon accepts `width`, `height`, and
 import { MyIcon } from 'some-icon-library'
 
 export default () => (
-  <Button size="$lg">
+  <Button size="lg">
     <Button.Icon>
       <MyIcon />
     </Button.Icon>
