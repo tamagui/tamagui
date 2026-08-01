@@ -554,6 +554,16 @@ export const getSplitStyles: StyleSplitter = (
 
   const contributeLegacyCondition = legacyConditionObjects
     ? (key: string, value: unknown): boolean => {
+        // these layers pass condition objects to the inner frame that owns styles.
+        // web exit styles remain runtime state because CSS has no exit selector.
+        if (
+          isHOC ||
+          styleProps.noMergeStyle ||
+          (process.env.TAMAGUI_TARGET === 'web' && key === 'exitStyle')
+        ) {
+          return false
+        }
+
         if (
           !(
             process.env.TAMAGUI_TARGET === 'native' ||
