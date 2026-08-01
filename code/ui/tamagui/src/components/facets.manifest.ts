@@ -14,9 +14,5 @@ export const manifest = {
     'border-color-press',
     'shadow-color',
     'outline-color',
-    // conventional custom variables (config.variables): a consumer whose config
-    // omits these renders that facet inert (no radius / no press scale).
-    'radius',
-    'pressScale',
   ],
 } satisfies SkinManifest

@@ -147,7 +147,7 @@ Replace:
 - \`themeInverse\` -> \`theme="inverse"\`.
 - \`<Theme inverse>\` -> \`<Theme name="inverse">\`.
 - \`Sheet.Frame\` -> \`Sheet.Container\` plus \`Sheet.Background\`.
-- \`Component.styleable(fn)\` -> \`createStyledHOC(Component)(fn)\` (same behavior, standalone factory).
+- \`Component.styleable(fn)\` -> \`createStyledHOC(Component, fn)\` (same behavior, standalone function).
 - forwardRef wrapper statics -> direct refs and normal composition.
 - \`inlineWhenUnflattened\` -> remove it.
 - deprecated UI kit aliases -> current component names.

@@ -27,47 +27,52 @@ const LinearGradientFrame = styled(YStack, {
 })
 
 export const LinearGradient = createStyledHOC(
-  LinearGradientFrame
-)<LinearGradientExtraProps>((propsIn, ref) => {
-  const props = useProps(propsIn)
+  LinearGradientFrame,
+  (
+    propsIn: Omit<GetProps<typeof LinearGradientFrame>, keyof LinearGradientExtraProps> &
+      LinearGradientExtraProps,
+    ref
+  ) => {
+    const props = useProps(propsIn)
 
-  const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
-  const theme = useTheme()
+    const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
+    const theme = useTheme()
 
-  let colors =
-    props.colors?.map((c) => {
-      return (theme[c]?.get('web') as string) ?? c
-    }) || []
+    let colors =
+      props.colors?.map((c) => {
+        return (theme[c]?.get('web') as string) ?? c
+      }) || []
 
-  if (process.env.NODE_ENV !== 'production') {
-    if (
-      colors.some((c) => {
-        const normalized = normalizeColor(c)
-        if (!normalized) {
-          return true
-        }
-      })
-    ) {
-      console.error(
-        `LinearGradient: "colors" prop contains invalid color tokens: ${colors} fallback to default colors: ["#000", "#fff"]`
-      )
-      colors = ['#000', '#fff']
+    if (process.env.NODE_ENV !== 'production') {
+      if (
+        colors.some((c) => {
+          const normalized = normalizeColor(c)
+          if (!normalized) {
+            return true
+          }
+        })
+      ) {
+        console.error(
+          `LinearGradient: "colors" prop contains invalid color tokens: ${colors} fallback to default colors: ["#000", "#fff"]`
+        )
+        colors = ['#000', '#fff']
+      }
     }
-  }
 
-  return (
-    <LinearGradientFrame ref={ref as any} {...stackProps}>
-      <ExpoLinearGradient
-        start={start}
-        end={end}
-        colors={colors as any}
-        locations={locations as any}
-        style={gradientStyle}
-      />
-      {children}
-    </LinearGradientFrame>
-  )
-})
+    return (
+      <LinearGradientFrame ref={ref as any} {...stackProps}>
+        <ExpoLinearGradient
+          start={start}
+          end={end}
+          colors={colors as any}
+          locations={locations as any}
+          style={gradientStyle}
+        />
+        {children}
+      </LinearGradientFrame>
+    )
+  }
+)
 
 export type LinearGradientProps = GetProps<typeof LinearGradient>
 

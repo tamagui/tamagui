@@ -185,8 +185,9 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
   )
 }
 
-const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(
-  function Button(props, ref) {
+const ButtonComponent = createStyledHOC(
+  ButtonFrame,
+  function Button(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
     const size = (props.size ?? buttonSizes.defaultSize) as ButtonSize
     // Size is the frame's baseline contribution. Appending it after
     // HOC-expanded style props would let the variant overwrite a direct

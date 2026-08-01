@@ -77,7 +77,7 @@ export const ButtonFrame = styled(View, {
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      Size: (name, { tokens }) => {
         return {
           height: tokens.size[name],
           borderRadius: tokens.radius[name],
@@ -108,7 +108,7 @@ export const ButtonText = styled(Text, {
 
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
+      FontSize: (name, { font }) => ({
         fontSize: font?.size[name],
       }),
     },
@@ -362,7 +362,7 @@ const ButtonFrame = styled(View, {
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      Size: (name, { tokens }) => {
         return {
           height: tokens.size[name],
           borderRadius: tokens.radius[name],
@@ -380,7 +380,7 @@ export const ButtonText = styled(Text, {
 
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
+      FontSize: (name, { font }) => ({
         fontSize: font?.size[name],
       }),
     },
@@ -389,8 +389,9 @@ export const ButtonText = styled(Text, {
 ```
 
 <Notice>
-  The `...size` spread variant `name` defaults to implicit any. Update `tsconfig.json`'s
-  `"noImplicitAny": false` to avoid TypeScript errors.
+  Resolver variant callbacks are not contextually typed, so `name` defaults to implicit
+  any. Annotate it yourself — `Size: (name: SizeTokens, { tokens }) => ...` — or set
+  `"noImplicitAny": false` in `tsconfig.json`.
 </Notice>
 
 So now we can pass in our new `size` property:
@@ -526,7 +527,8 @@ import { Button } from './OurButton'
 
 const SizeContext = createContext<SizeTokens>('md')
 
-const ButtonFrame = createStyledHOC(Button)(
+const ButtonFrame = createStyledHOC(
+  Button,
   ({ size = 'md', ...props }: GetProps<typeof OGB.ButtonFrame>) => {
     return (
       <SizeContext.Provider value={size}>
@@ -536,7 +538,7 @@ const ButtonFrame = createStyledHOC(Button)(
   }
 )
 
-const ButtonText = createStyledHOC(Button.Text)((props: GetProps<typeof OGB.ButtonText>) => {
+const ButtonText = createStyledHOC(Button.Text, (props: GetProps<typeof OGB.ButtonText>) => {
   const size = useContext(SizeContext)
   return <Button.Text size={size} {...props} />
 })
@@ -600,7 +602,7 @@ const ButtonFrame = styled(View, {
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      Size: (name, { tokens }) => {
         return {
           height: tokens.size[name],
           borderRadius: tokens.radius[name],
@@ -619,7 +621,7 @@ const ButtonText = styled(Text, {
 
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
+      FontSize: (name, { font }) => ({
         fontSize: font?.size[name],
       }),
     },

@@ -401,8 +401,9 @@ const SlidingPopoverContext = React.createContext({
   close() {},
 })
 
-export const SlidingPopoverTarget = createStyledHOC(YStack)<{ id: ID }>(
-  ({ id, ...props }, ref) => {
+export const SlidingPopoverTarget = createStyledHOC(
+  YStack,
+  ({ id, ...props }: { id: ID }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
     const [layout, setLayout] = React.useState<LayoutRectangle | undefined>()
     const triggerRef = React.useRef<HTMLElement>(null)

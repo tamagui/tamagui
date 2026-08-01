@@ -67,8 +67,9 @@ export const ButtonText = styled(ButtonBehaviorText, {
   defaultVariants: { size: 'medium' },
 })
 
-const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(
-  function CanaryButton(props, ref) {
+const ButtonComponent = createStyledHOC(
+  ButtonFrame,
+  function CanaryButton(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
     const size = (props.size ?? buttonSizes.defaultSize) as ButtonSize
     const { props: buttonProps } = useButton(
       { ...props, size },

@@ -1,3 +1,4 @@
+import type { GetProps } from '@tamagui/core'
 import {
   composeEventHandlers,
   createStyledHOC,
@@ -28,8 +29,13 @@ export const SwitchFrame = styled(View, {
   tabIndex: 0,
 })
 
-export const SwitchThumb = createStyledHOC(SwitchThumbFrame)<SwitchThumbProps>(
-  function SwitchThumb(props, forwardedRef) {
+export const SwitchThumb = createStyledHOC(
+  SwitchThumbFrame,
+  function SwitchThumb(
+    props: Omit<GetProps<typeof SwitchThumbFrame>, keyof SwitchThumbProps> &
+      SwitchThumbProps,
+    forwardedRef
+  ) {
     const { size: sizeProp, activeStyle, ...thumbProps } = props
     const resolvedActiveStyle = useStyle(activeStyle ?? {}, { resolveValues: 'value' })
     const styledContext = SwitchStyledContext.useStyledContext()
@@ -60,8 +66,9 @@ export const SwitchThumb = createStyledHOC(SwitchThumbFrame)<SwitchThumbProps>(
   }
 )
 
-const SwitchComponent = createStyledHOC(SwitchFrame)<SwitchProps>(
-  function Switch(_props, forwardedRef) {
+const SwitchComponent = createStyledHOC(
+  SwitchFrame,
+  function Switch(_props: SwitchProps, forwardedRef) {
     const {
       native,
       nativeProps,

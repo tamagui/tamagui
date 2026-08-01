@@ -16,7 +16,7 @@ export const AccordionTrigger = styled(UiAccordion.Trigger, {
   name: 'AccordionTrigger',
   cursor: 'pointer',
   backgroundColor:
-    'background hover:background-hover focus:background-focus press:background-press',
+    'background hover:background-hover press:background-press focus:background-focus',
   padding: true,
 })
 

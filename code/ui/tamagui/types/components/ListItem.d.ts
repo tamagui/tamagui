@@ -1,38 +1,62 @@
 import { type GetProps } from '@tamagui/ui';
-declare const StyledListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+declare const StyledListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    disabled?: boolean | undefined;
+    size?: false | import("@tamagui/web").Size | undefined;
+    variant?: "outlined" | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    disabled?: boolean | undefined;
+    size?: false | import("@tamagui/web").Size | undefined;
+    variant?: "outlined" | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
+    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        disabled?: boolean | undefined;
+        size?: false | import("@tamagui/web").Size | undefined;
+        variant?: "outlined" | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const ListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const ListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    disabled?: boolean | undefined;
+    size?: false | import("@tamagui/web").Size | undefined;
+    variant?: "outlined" | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    disabled?: boolean | undefined;
+    size?: false | import("@tamagui/web").Size | undefined;
+    variant?: "outlined" | undefined;
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
     active?: boolean | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
+    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        disabled?: boolean | undefined;
+        size?: false | import("@tamagui/web").Size | undefined;
+        variant?: "outlined" | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;

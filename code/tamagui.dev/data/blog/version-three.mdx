@@ -122,7 +122,7 @@ props, and parent variants through `styled()`:
 const MyInput = StyledInput.styleable<Props>((props, ref) => ...)
 
 // after
-const MyInput = createStyledHOC(StyledInput)<Props>((props, ref) => ...)
+const MyInput = createStyledHOC(StyledInput, (props: Props, ref) => ...)
 ```
 
 ## True tokens are gone

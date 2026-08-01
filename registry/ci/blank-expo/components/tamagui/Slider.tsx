@@ -27,8 +27,8 @@ export const SliderActive = styled(UiSlider.TrackActive, {
 export const SliderThumb = styled(UiSlider.Thumb, {
   name: 'SliderThumb',
   borderWidth: 2,
-  borderColor: 'border-color press:border-color-press hover:border-color-hover',
-  backgroundColor: 'background press:background-press hover:background-hover',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
+  backgroundColor: 'background hover:background-hover press:background-press',
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   outlineColor: 'focus-visible:outline-color',

@@ -37,7 +37,8 @@ export const ProgressIndicatorFrame = styled(YStack, {
 
 export type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
 
-const ProgressIndicator = createStyledHOC(ProgressIndicatorFrame)(
+const ProgressIndicator = createStyledHOC(
+  ProgressIndicatorFrame,
   function ProgressIndicator(props: ScopedProps<ProgressIndicatorProps>, forwardedRef) {
     const { __scopeProgress, transition, ...indicatorProps } = props
     const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
@@ -143,54 +144,52 @@ export interface ProgressExtraProps {
 export type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps
 
 const Progress = withStaticProperties(
-  createStyledHOC(ProgressFrame)<ProgressExtraProps>(
-    function Progress(props, forwardedRef) {
-      const {
-        // @ts-expect-error
-        __scopeProgress,
-        value: valueProp,
-        max: maxProp,
-        getValueLabel = defaultGetValueLabel,
-        size = true,
-        ...progressProps
-      } = props
+  createStyledHOC(ProgressFrame, function Progress(props: ProgressProps, forwardedRef) {
+    const {
+      // @ts-expect-error
+      __scopeProgress,
+      value: valueProp,
+      max: maxProp,
+      getValueLabel = defaultGetValueLabel,
+      size = true,
+      ...progressProps
+    } = props
 
-      const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX
-      const value = isValidValueNumber(valueProp, max) ? Math.round(valueProp) : null
-      const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
+    const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX
+    const value = isValidValueNumber(valueProp, max) ? Math.round(valueProp) : null
+    const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
 
-      // only needed for native where we can't use percentage-based transforms
-      const [width, setWidth] = useState(0)
+    // only needed for native where we can't use percentage-based transforms
+    const [width, setWidth] = useState(0)
 
-      return (
-        <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
-          <ProgressFrame
-            aria-valuemax={max}
-            aria-valuemin={0}
-            aria-valuenow={isNumber(value) ? value : undefined}
-            aria-valuetext={valueLabel}
-            // @ts-ignore
-            role="progressbar"
-            data-state={getProgressState(value, max)}
-            data-value={value ?? undefined}
-            data-max={max}
-            size={size}
-            {...progressProps}
-            {...(!isWeb && {
-              onLayout: (e) => {
-                const newWidth = Math.round(e.nativeEvent.layout.width)
-                if (newWidth !== width) {
-                  setWidth(newWidth)
-                }
-                progressProps.onLayout?.(e)
-              },
-            })}
-            ref={forwardedRef}
-          />
-        </ProgressProvider>
-      )
-    }
-  ),
+    return (
+      <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
+        <ProgressFrame
+          aria-valuemax={max}
+          aria-valuemin={0}
+          aria-valuenow={isNumber(value) ? value : undefined}
+          aria-valuetext={valueLabel}
+          // @ts-ignore
+          role="progressbar"
+          data-state={getProgressState(value, max)}
+          data-value={value ?? undefined}
+          data-max={max}
+          size={size}
+          {...progressProps}
+          {...(!isWeb && {
+            onLayout: (e) => {
+              const newWidth = Math.round(e.nativeEvent.layout.width)
+              if (newWidth !== width) {
+                setWidth(newWidth)
+              }
+              progressProps.onLayout?.(e)
+            },
+          })}
+          ref={forwardedRef}
+        />
+      </ProgressProvider>
+    )
+  }),
   {
     Indicator: ProgressIndicator,
   }

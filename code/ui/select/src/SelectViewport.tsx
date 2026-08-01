@@ -13,7 +13,7 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import type { SelectViewportExtraProps } from './types'
+import type { SelectViewportProps } from './types'
 import { getSelectListboxProps } from './selectionController'
 
 /* -------------------------------------------------------------------------------------------------
@@ -28,141 +28,144 @@ export const SelectViewportFrame = styled(View, {
 const needsRepropagation = needsPortalRepropagation()
 
 export const SelectViewport = createStyledHOC(
-  SelectViewportFrame
-)<SelectViewportExtraProps>(function SelectViewport(props, forwardedRef) {
-  const { scope, children, disableScroll, ...viewportProps } = props
-  const context = useSelectContext(scope)
-  const itemContext = useSelectItemParentContext(scope)
-  const isAdapted = useAdaptIsActive(context.adaptScope)
-  const viewportRef = React.useRef<any>(null)
-  const registeredItemCount = itemContext.registry.getItems().length
+  SelectViewportFrame,
+  function SelectViewport(props: SelectViewportProps, forwardedRef) {
+    const { scope, children, disableScroll, ...viewportProps } = props
+    const context = useSelectContext(scope)
+    const itemContext = useSelectItemParentContext(scope)
+    const isAdapted = useAdaptIsActive(context.adaptScope)
+    const viewportRef = React.useRef<any>(null)
+    const registeredItemCount = itemContext.registry.getItems().length
 
-  // lazy mount: defer mounting children until first open using startTransition
-  const [lazyMounted, setLazyMounted] = React.useState(context.lazyMount ? false : true)
+    // lazy mount: defer mounting children until first open using startTransition
+    const [lazyMounted, setLazyMounted] = React.useState(context.lazyMount ? false : true)
 
-  React.useEffect(() => {
-    if (!context.lazyMount) return
-    if (!context.open) return
-    if (lazyMounted) return
-    startTransition(() => {
-      setLazyMounted(true)
-    })
-  }, [context.lazyMount, context.open, lazyMounted])
+    React.useEffect(() => {
+      if (!context.lazyMount) return
+      if (!context.open) return
+      if (lazyMounted) return
+      startTransition(() => {
+        setLazyMounted(true)
+      })
+    }, [context.lazyMount, context.open, lazyMounted])
 
-  React.useEffect(() => {
-    if (!isWeb || !isAdapted || !context.open) return
-    const frame = requestAnimationFrame(() => {
-      const index =
-        context.activeIndexRef.current ?? itemContext.registry.firstEnabledIndex()
-      const activeItem =
-        (viewportRef.current?.querySelector(
-          '[role="option"][tabindex="0"]'
-        ) as HTMLElement | null) ??
-        (index >= 0 ? itemContext.listRef?.current[index] : null)
-      activeItem?.focus()
-    })
-    return () => cancelAnimationFrame(frame)
-  }, [context.activeIndex, context.open, isAdapted, registeredItemCount])
-
-  const composedRefs = useComposedRefs(
-    // @ts-ignore react 19 ref type mismatch
-    forwardedRef,
-    viewportRef,
-    context.floatingContext?.refs.setFloating as any
-  )
-
-  useIsomorphicLayoutEffect(() => {
-    if (context.update) {
-      context.update()
-    }
-  }, [isAdapted])
-
-  // after lazy children mount, force floating-ui to recompute so inner middleware
-  // can position using the now-present list items
-  React.useEffect(() => {
-    if (context.lazyMount && lazyMounted && context.open && context.update) {
-      const frame = requestAnimationFrame(context.update)
+    React.useEffect(() => {
+      if (!isWeb || !isAdapted || !context.open) return
+      const frame = requestAnimationFrame(() => {
+        const index =
+          context.activeIndexRef.current ?? itemContext.registry.firstEnabledIndex()
+        const activeItem =
+          (viewportRef.current?.querySelector(
+            '[role="option"][tabindex="0"]'
+          ) as HTMLElement | null) ??
+          (index >= 0 ? itemContext.listRef?.current[index] : null)
+        activeItem?.focus()
+      })
       return () => cancelAnimationFrame(frame)
-    }
-  }, [lazyMounted, registeredItemCount])
+    }, [context.activeIndex, context.open, isAdapted, registeredItemCount])
 
-  if (itemContext.shouldRenderWebNative) {
-    return <YStack position="relative">{children}</YStack>
-  }
-
-  if (isAdapted || !isWeb) {
-    let content = (
-      <SelectViewportFrame
-        {...viewportProps}
-        {...(isWeb ? (getSelectListboxProps(itemContext.mode) as any) : {})}
-        data-select-viewport=""
-        ref={composedRefs}
-      >
-        {lazyMounted ? children : null}
-      </SelectViewportFrame>
+    const composedRefs = useComposedRefs(
+      // @ts-ignore react 19 ref type mismatch
+      forwardedRef,
+      viewportRef,
+      context.floatingContext?.refs.setFloating as any
     )
 
-    if (needsRepropagation) {
-      content = (
-        <ForwardSelectContext itemContext={itemContext} context={context}>
-          {content}
-        </ForwardSelectContext>
+    useIsomorphicLayoutEffect(() => {
+      if (context.update) {
+        context.update()
+      }
+    }, [isAdapted])
+
+    // after lazy children mount, force floating-ui to recompute so inner middleware
+    // can position using the now-present list items
+    React.useEffect(() => {
+      if (context.lazyMount && lazyMounted && context.open && context.update) {
+        const frame = requestAnimationFrame(context.update)
+        return () => cancelAnimationFrame(frame)
+      }
+    }, [lazyMounted, registeredItemCount])
+
+    if (itemContext.shouldRenderWebNative) {
+      return <YStack position="relative">{children}</YStack>
+    }
+
+    if (isAdapted || !isWeb) {
+      let content = (
+        <SelectViewportFrame
+          {...viewportProps}
+          {...(isWeb ? (getSelectListboxProps(itemContext.mode) as any) : {})}
+          data-select-viewport=""
+          ref={composedRefs}
+        >
+          {lazyMounted ? children : null}
+        </SelectViewportFrame>
+      )
+
+      if (needsRepropagation) {
+        content = (
+          <ForwardSelectContext itemContext={itemContext} context={context}>
+            {content}
+          </ForwardSelectContext>
+        )
+      }
+
+      return (
+        <AdaptPortalContents scope={context.adaptScope}>{content}</AdaptPortalContents>
       )
     }
 
-    return <AdaptPortalContents scope={context.adaptScope}>{content}</AdaptPortalContents>
+    if (!itemContext.interactions) {
+      return null
+    }
+
+    const {
+      style,
+      // remove this, it was set to "Select" always
+      className,
+      ...floatingProps
+    } = itemContext.interactions.getFloatingProps()
+
+    // FloatingFocusManager removed — SelectContent already wraps with FocusScope
+    // that handles focus trapping and auto-focus
+    return (
+      <>
+        {!disableScroll && (
+          <style
+            dangerouslySetInnerHTML={{
+              __html: selectViewportCSS,
+            }}
+          />
+        )}
+        <AnimatePresence>
+          {context.open ? (
+            <SelectViewportFrame
+              key="select-viewport"
+              data-select-viewport=""
+              {...(isWeb && {
+                'data-state': context.open ? 'open' : 'closed',
+              })}
+              {...viewportProps}
+              {...style}
+              {...floatingProps}
+              {...getSelectListboxProps(itemContext.mode)}
+              overflowY={disableScroll ? undefined : (style.overflow ?? 'auto')}
+              ref={composedRefs}
+            >
+              {lazyMounted ? children : null}
+            </SelectViewportFrame>
+          ) : null}
+        </AnimatePresence>
+
+        {/* keep in dom to allow for portal to the trigger when renderValue isn't provided */}
+        {/* when lazyMount is enabled and renderValue is provided, skip this entirely for performance */}
+        {!context.open && !(context.lazyMount && context.renderValue) && lazyMounted && (
+          <div style={{ display: 'none' }}>{children}</div>
+        )}
+      </>
+    )
   }
-
-  if (!itemContext.interactions) {
-    return null
-  }
-
-  const {
-    style,
-    // remove this, it was set to "Select" always
-    className,
-    ...floatingProps
-  } = itemContext.interactions.getFloatingProps()
-
-  // FloatingFocusManager removed — SelectContent already wraps with FocusScope
-  // that handles focus trapping and auto-focus
-  return (
-    <>
-      {!disableScroll && (
-        <style
-          dangerouslySetInnerHTML={{
-            __html: selectViewportCSS,
-          }}
-        />
-      )}
-      <AnimatePresence>
-        {context.open ? (
-          <SelectViewportFrame
-            key="select-viewport"
-            data-select-viewport=""
-            {...(isWeb && {
-              'data-state': context.open ? 'open' : 'closed',
-            })}
-            {...viewportProps}
-            {...style}
-            {...floatingProps}
-            {...getSelectListboxProps(itemContext.mode)}
-            overflowY={disableScroll ? undefined : (style.overflow ?? 'auto')}
-            ref={composedRefs}
-          >
-            {lazyMounted ? children : null}
-          </SelectViewportFrame>
-        ) : null}
-      </AnimatePresence>
-
-      {/* keep in dom to allow for portal to the trigger when renderValue isn't provided */}
-      {/* when lazyMount is enabled and renderValue is provided, skip this entirely for performance */}
-      {!context.open && !(context.lazyMount && context.renderValue) && lazyMounted && (
-        <div style={{ display: 'none' }}>{children}</div>
-      )}
-    </>
-  )
-})
+)
 
 const selectViewportCSS = `
 [data-select-viewport] {

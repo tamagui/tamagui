@@ -395,532 +395,544 @@ type FieldExtraProps = {
 export type FieldProps = Omit<GetProps<typeof FieldFrame>, keyof FieldExtraProps> &
   FieldExtraProps
 
-const FieldComponent = createStyledHOC(FieldFrame)<FieldExtraProps>(function Field(
-  {
-    name: nameProp,
-    disabled: disabledProp = false,
-    invalid = false,
-    validate,
-    validationMode: validationModeProp,
-    validationDebounceTime = 0,
-    children,
-    ...fieldProps
-  },
-  forwardedRef
-) {
-  const form = useFormRegistryContext()
-  const {
-    clearErrors: clearFormErrors,
-    errors: formErrors,
-    formElementRef,
-    getValues: getFormValues,
-    registerField: registerFormField,
-    submitAttemptedRef,
-    validationMode: formValidationMode,
-  } = form
-  const reactId = React.useId().replace(/:/g, '')
-  const association = useAssociation(`field-${reactId}`)
-  const fieldId = `field-${reactId}`
-  const controlsRef = React.useRef(new Map<symbol, FieldControlRegistration>())
-  const reportsDisabledRef = React.useRef(
-    new WeakMap<FieldControlRegistration, boolean>()
-  )
-  const activeControlRef = React.useRef<FieldControlRegistration | undefined>(undefined)
-  const activeValidationControlRef = React.useRef<FieldControlRegistration | undefined>(
-    undefined
-  )
-  const formControlRef = React.useRef<any>(null)
-  const formValidityDataRef = React.useRef({
-    state: {
-      valid: null as boolean | null,
-    },
-  })
-  const initialValueRef = React.useRef<unknown>(undefined)
-  const hasInitialValueRef = React.useRef(false)
-  const valueRef = React.useRef<unknown>(undefined)
-  const dirtyRef = React.useRef(false)
-  const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
-  const [registeredName, setRegisteredName] = React.useState<string>()
-  const [controlDisabled, setControlDisabled] = React.useState(false)
-  const [touched, setTouched] = React.useState(false)
-  const [dirty, setDirty] = React.useState(false)
-  const [filled, setFilled] = React.useState(false)
-  const [focused, setFocused] = React.useState(false)
-  const [currentValue, setCurrentValue] = React.useState<unknown>(undefined)
-  const [validityData, setValidityData] = React.useState<FieldValidityData>({
-    state: createDefaultValidityState(),
-    error: '',
-    errors: [],
-    value: undefined,
-    initialValue: undefined,
-  })
-  const validityDataRef = React.useRef(validityData)
-  validityDataRef.current = validityData
-  const effectiveName = nameProp ?? registeredName
-  const effectiveNameRef = React.useRef(effectiveName)
-  effectiveNameRef.current = effectiveName
-  const disabled = disabledProp || controlDisabled
-  const disabledRef = React.useRef(disabled)
-  disabledRef.current = disabled
-  const validationMode = validationModeProp ?? formValidationMode
-  const externalError =
-    effectiveName && Object.hasOwn(formErrors, effectiveName)
-      ? formErrors[effectiveName]
-      : undefined
-  const externalErrors = Array.isArray(externalError)
-    ? externalError
-    : externalError
-      ? [externalError]
-      : []
-  const externallyInvalid = invalid || hasError(externalError)
-  const externallyInvalidRef = React.useRef(externallyInvalid)
-  externallyInvalidRef.current = externallyInvalid
-  const valid = externallyInvalid ? false : disabled ? null : validityData.state.valid
-  formValidityDataRef.current.state.valid = disabled
-    ? null
-    : externallyInvalid
-      ? false
-      : validityData.state.valid
-  const errors = externalErrors.length ? externalErrors : validityData.errors
-  const error = errors[0] ?? ''
-
-  const state = React.useMemo<FieldState>(
-    () => ({
-      name: effectiveName,
-      value: currentValue,
-      error,
-      errors,
-      validity: validityData.state,
-      valid,
-      touched,
-      dirty,
-      filled,
-      focused,
-      disabled,
-    }),
-    [
-      dirty,
-      disabled,
-      currentValue,
-      effectiveName,
-      error,
-      errors,
-      filled,
-      focused,
-      touched,
-      valid,
-      validityData.state,
-    ]
-  )
-  const stateRef = React.useRef(state)
-  stateRef.current = state
-
-  const publishValidityRef = React.useRef<(data: FieldValidityData) => void>(() => {})
-  const validationCommitterRef = React.useRef<
-    ReturnType<typeof createValidationCommitter<FieldValidityData>> | undefined
-  >(undefined)
-  if (!validationCommitterRef.current) {
-    validationCommitterRef.current = createValidationCommitter((data) => {
-      publishValidityRef.current(data)
+const FieldComponent = createStyledHOC(
+  FieldFrame,
+  function Field(
+    {
+      name: nameProp,
+      disabled: disabledProp = false,
+      invalid = false,
+      validate,
+      validationMode: validationModeProp,
+      validationDebounceTime = 0,
+      children,
+      ...fieldProps
+    }: FieldProps,
+    forwardedRef
+  ) {
+    const form = useFormRegistryContext()
+    const {
+      clearErrors: clearFormErrors,
+      errors: formErrors,
+      formElementRef,
+      getValues: getFormValues,
+      registerField: registerFormField,
+      submitAttemptedRef,
+      validationMode: formValidationMode,
+    } = form
+    const reactId = React.useId().replace(/:/g, '')
+    const association = useAssociation(`field-${reactId}`)
+    const fieldId = `field-${reactId}`
+    const controlsRef = React.useRef(new Map<symbol, FieldControlRegistration>())
+    const reportsDisabledRef = React.useRef(
+      new WeakMap<FieldControlRegistration, boolean>()
+    )
+    const activeControlRef = React.useRef<FieldControlRegistration | undefined>(undefined)
+    const activeValidationControlRef = React.useRef<FieldControlRegistration | undefined>(
+      undefined
+    )
+    const formControlRef = React.useRef<any>(null)
+    const formValidityDataRef = React.useRef({
+      state: {
+        valid: null as boolean | null,
+      },
     })
-  }
+    const initialValueRef = React.useRef<unknown>(undefined)
+    const hasInitialValueRef = React.useRef(false)
+    const valueRef = React.useRef<unknown>(undefined)
+    const dirtyRef = React.useRef(false)
+    const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+    const [registeredName, setRegisteredName] = React.useState<string>()
+    const [controlDisabled, setControlDisabled] = React.useState(false)
+    const [touched, setTouched] = React.useState(false)
+    const [dirty, setDirty] = React.useState(false)
+    const [filled, setFilled] = React.useState(false)
+    const [focused, setFocused] = React.useState(false)
+    const [currentValue, setCurrentValue] = React.useState<unknown>(undefined)
+    const [validityData, setValidityData] = React.useState<FieldValidityData>({
+      state: createDefaultValidityState(),
+      error: '',
+      errors: [],
+      value: undefined,
+      initialValue: undefined,
+    })
+    const validityDataRef = React.useRef(validityData)
+    validityDataRef.current = validityData
+    const effectiveName = nameProp ?? registeredName
+    const effectiveNameRef = React.useRef(effectiveName)
+    effectiveNameRef.current = effectiveName
+    const disabled = disabledProp || controlDisabled
+    const disabledRef = React.useRef(disabled)
+    disabledRef.current = disabled
+    const validationMode = validationModeProp ?? formValidationMode
+    const externalError =
+      effectiveName && Object.hasOwn(formErrors, effectiveName)
+        ? formErrors[effectiveName]
+        : undefined
+    const externalErrors = Array.isArray(externalError)
+      ? externalError
+      : externalError
+        ? [externalError]
+        : []
+    const externallyInvalid = invalid || hasError(externalError)
+    const externallyInvalidRef = React.useRef(externallyInvalid)
+    externallyInvalidRef.current = externallyInvalid
+    const valid = externallyInvalid ? false : disabled ? null : validityData.state.valid
+    formValidityDataRef.current.state.valid = disabled
+      ? null
+      : externallyInvalid
+        ? false
+        : validityData.state.valid
+    const errors = externalErrors.length ? externalErrors : validityData.errors
+    const error = errors[0] ?? ''
 
-  const getActiveControl = React.useCallback(() => {
-    let active: FieldControlRegistration | undefined
-    for (const registration of controlsRef.current.values()) {
-      if (!isEligibleRegistration(registration, formElementRef.current)) {
-        continue
-      }
-      active = registration
+    const state = React.useMemo<FieldState>(
+      () => ({
+        name: effectiveName,
+        value: currentValue,
+        error,
+        errors,
+        validity: validityData.state,
+        valid,
+        touched,
+        dirty,
+        filled,
+        focused,
+        disabled,
+      }),
+      [
+        dirty,
+        disabled,
+        currentValue,
+        effectiveName,
+        error,
+        errors,
+        filled,
+        focused,
+        touched,
+        valid,
+        validityData.state,
+      ]
+    )
+    const stateRef = React.useRef(state)
+    stateRef.current = state
+
+    const publishValidityRef = React.useRef<(data: FieldValidityData) => void>(() => {})
+    const validationCommitterRef = React.useRef<
+      ReturnType<typeof createValidationCommitter<FieldValidityData>> | undefined
+    >(undefined)
+    if (!validationCommitterRef.current) {
+      validationCommitterRef.current = createValidationCommitter((data) => {
+        publishValidityRef.current(data)
+      })
     }
-    return active
-  }, [formElementRef])
 
-  const syncControlDisabled = React.useCallback(() => {
-    let nextDisabled = false
-    for (const registration of controlsRef.current.values()) {
-      if (reportsDisabledRef.current.get(registration)) {
-        nextDisabled = Boolean(registration.disabled)
-      }
-    }
-    setControlDisabled(nextDisabled)
-  }, [])
-
-  const getRepresentativeControl = React.useCallback(() => {
-    let fallback: FieldControlRegistration | undefined
-
-    for (const registration of controlsRef.current.values()) {
-      const input = getInput(registration)
-      if (!isEligibleRegistration(registration, formElementRef.current)) {
-        continue
-      }
-      fallback ??= registration
-      if (canValidateInput(input) && !input.validity.valid) {
-        return registration
-      }
-    }
-
-    return fallback ?? getActiveControl()
-  }, [formElementRef, getActiveControl])
-
-  const clearCustomValidity = React.useCallback(() => {
-    for (const registration of controlsRef.current.values()) {
-      const input = getInput(registration)
-      if (canValidateInput(input)) {
-        input.setCustomValidity('')
-      }
-    }
-  }, [])
-
-  const setCustomValidity = React.useCallback(
-    (message: string) => {
+    const getActiveControl = React.useCallback(() => {
+      let active: FieldControlRegistration | undefined
       for (const registration of controlsRef.current.values()) {
         if (!isEligibleRegistration(registration, formElementRef.current)) {
           continue
         }
+        active = registration
+      }
+      return active
+    }, [formElementRef])
+
+    const syncControlDisabled = React.useCallback(() => {
+      let nextDisabled = false
+      for (const registration of controlsRef.current.values()) {
+        if (reportsDisabledRef.current.get(registration)) {
+          nextDisabled = Boolean(registration.disabled)
+        }
+      }
+      setControlDisabled(nextDisabled)
+    }, [])
+
+    const getRepresentativeControl = React.useCallback(() => {
+      let fallback: FieldControlRegistration | undefined
+
+      for (const registration of controlsRef.current.values()) {
+        const input = getInput(registration)
+        if (!isEligibleRegistration(registration, formElementRef.current)) {
+          continue
+        }
+        fallback ??= registration
+        if (canValidateInput(input) && !input.validity.valid) {
+          return registration
+        }
+      }
+
+      return fallback ?? getActiveControl()
+    }, [formElementRef, getActiveControl])
+
+    const clearCustomValidity = React.useCallback(() => {
+      for (const registration of controlsRef.current.values()) {
         const input = getInput(registration)
         if (canValidateInput(input)) {
-          input.setCustomValidity(message)
+          input.setCustomValidity('')
         }
       }
-    },
-    [formElementRef]
-  )
+    }, [])
 
-  const publishValidity = React.useCallback(
-    (data: FieldValidityData) => {
-      if (data.state.customError) {
-        setCustomValidity(data.errors.join('\n'))
-      } else {
-        clearCustomValidity()
-      }
-      formValidityDataRef.current.state.valid = disabledRef.current
-        ? null
-        : externallyInvalidRef.current
-          ? false
-          : data.state.valid
-      validityDataRef.current = data
-      setCurrentValue(data.value)
-      setValidityData(data)
-    },
-    [clearCustomValidity, setCustomValidity]
-  )
-  publishValidityRef.current = publishValidity
-
-  const validateValue = React.useCallback(
-    (value: unknown, submit = false, fromChange = false) => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current)
-        debounceRef.current = undefined
-      }
-
-      const showValueMissing = dirtyRef.current || submit || submitAttemptedRef.current
-
-      if (fromChange) {
-        clearCustomValidity()
-      }
-
-      const representative = getRepresentativeControl()
-      activeValidationControlRef.current = representative
-      formControlRef.current = representative?.controlRef.current ?? null
-      const input = representative && getInput(representative)
-      let nativeState = createDefaultValidityState(true)
-      let nativeMessage = ''
-
-      if (canValidateInput(input)) {
-        nativeState = getNativeValidity(input, showValueMissing)
-        nativeMessage = nativeState.valid === false ? input.validationMessage : ''
-      } else {
-        const required = Array.from(controlsRef.current.values()).some(
-          (registration) =>
-            registration.required &&
-            isEligibleRegistration(registration, formElementRef.current)
-        )
-        if (required && !isFilled(value) && showValueMissing) {
-          nativeState = {
-            ...createDefaultValidityState(false),
-            valueMissing: true,
+    const setCustomValidity = React.useCallback(
+      (message: string) => {
+        for (const registration of controlsRef.current.values()) {
+          if (!isEligibleRegistration(registration, formElementRef.current)) {
+            continue
           }
-          nativeMessage = 'Please fill out this field.'
-        }
-      }
-
-      const initialValue = initialValueRef.current
-      const makeValidityData = (customErrors: string[]): FieldValidityData => {
-        if (customErrors.length) {
-          return {
-            state: {
-              ...nativeState,
-              valid: false,
-              customError: true,
-            },
-            error: customErrors[0] ?? '',
-            errors: customErrors,
-            value,
-            initialValue,
+          const input = getInput(registration)
+          if (canValidateInput(input)) {
+            input.setCustomValidity(message)
           }
         }
+      },
+      [formElementRef]
+    )
 
-        if (hasValidityError(nativeState)) {
-          return {
-            state: nativeState,
-            error: nativeMessage,
-            errors: nativeMessage ? [nativeMessage] : [],
-            value,
-            initialValue,
-          }
-        }
-
-        return {
-          state: createDefaultValidityState(true),
-          error: '',
-          errors: [],
-          value,
-          initialValue,
-        }
-      }
-
-      if (nativeMessage && !fromChange) {
-        validationCommitterRef.current!.run(makeValidityData([]))
-        return
-      }
-
-      const result = validate ? getValidationResult(validate, value, getFormValues()) : []
-
-      if (result instanceof Promise) {
-        void validationCommitterRef.current!.run(
-          result.then((customErrors) => makeValidityData(customErrors))
-        )
-      } else {
-        validationCommitterRef.current!.run(makeValidityData(result))
-      }
-    },
-    [
-      clearCustomValidity,
-      formElementRef,
-      getFormValues,
-      getRepresentativeControl,
-      submitAttemptedRef,
-      validate,
-    ]
-  )
-
-  const registerControl = React.useCallback(
-    (registration: FieldControlRegistration, reportDisabled = true) => {
-      const source = Symbol()
-      controlsRef.current.set(source, registration)
-      reportsDisabledRef.current.set(registration, reportDisabled)
-      activeControlRef.current = getActiveControl()
-      formControlRef.current = activeControlRef.current?.controlRef.current ?? null
-      const value = getRegistrationValue(registration)
-      valueRef.current = value
-      setCurrentValue(value)
-
-      if (!hasInitialValueRef.current) {
-        hasInitialValueRef.current = true
-        initialValueRef.current = value
-        validityDataRef.current = {
-          ...validityDataRef.current,
-          initialValue: value,
-        }
-        setValidityData(validityDataRef.current)
-      }
-
-      if (!nameProp && registration.name) {
-        setRegisteredName(registration.name)
-      }
-      setFilled(isFilled(value))
-      syncControlDisabled()
-
-      return () => {
-        controlsRef.current.delete(source)
-        activeControlRef.current = getActiveControl()
-        activeValidationControlRef.current = undefined
-        formControlRef.current = activeControlRef.current?.controlRef.current ?? null
-        const next = activeControlRef.current
-        const nextValue = getRegistrationValue(next)
-        valueRef.current = nextValue
-        setCurrentValue(nextValue)
-        setFilled(isFilled(nextValue))
-        if (!nameProp) {
-          setRegisteredName(next?.name)
-        }
-        syncControlDisabled()
-      }
-    },
-    [getActiveControl, nameProp, syncControlDisabled]
-  )
-
-  const onFocus = React.useCallback(() => {
-    setFocused(true)
-  }, [])
-
-  const onBlur = React.useCallback(
-    (value = valueRef.current) => {
-      valueRef.current = value
-      setCurrentValue(value)
-      setTouched(true)
-      setFocused(false)
-      if (validationMode === 'onBlur') {
-        validateValue(value)
-      }
-    },
-    [validateValue, validationMode]
-  )
-
-  const onChange = React.useCallback(
-    (value: unknown) => {
-      valueRef.current = value
-      setCurrentValue(value)
-      validationCommitterRef.current!.invalidate()
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current)
-        debounceRef.current = undefined
-      }
-      const nextDirty = !Object.is(value, initialValueRef.current)
-      dirtyRef.current = nextDirty
-      setDirty(nextDirty)
-      setFilled(isFilled(value))
-      clearFormErrors(effectiveNameRef.current)
-
-      const validateOnChange = shouldValidateOnChange(
-        validationMode,
-        submitAttemptedRef.current
-      )
-
-      if (validateOnChange) {
-        if (validationMode === 'onChange' && validationDebounceTime > 0 && value !== '') {
-          debounceRef.current = setTimeout(() => {
-            validateValue(value, false, true)
-          }, validationDebounceTime)
+    const publishValidity = React.useCallback(
+      (data: FieldValidityData) => {
+        if (data.state.customError) {
+          setCustomValidity(data.errors.join('\n'))
         } else {
-          validateValue(value, false, true)
+          clearCustomValidity()
         }
-        return
-      }
+        formValidityDataRef.current.state.valid = disabledRef.current
+          ? null
+          : externallyInvalidRef.current
+            ? false
+            : data.state.valid
+        validityDataRef.current = data
+        setCurrentValue(data.value)
+        setValidityData(data)
+      },
+      [clearCustomValidity, setCustomValidity]
+    )
+    publishValidityRef.current = publishValidity
 
-      if (stateRef.current.valid === false) {
-        const required = Array.from(controlsRef.current.values()).some(
-          (registration) =>
-            registration.required &&
-            isEligibleRegistration(registration, formElementRef.current)
-        )
-        if (required && !isFilled(value) && dirtyRef.current) {
-          validateValue(value)
+    const validateValue = React.useCallback(
+      (value: unknown, submit = false, fromChange = false) => {
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current)
+          debounceRef.current = undefined
+        }
+
+        const showValueMissing = dirtyRef.current || submit || submitAttemptedRef.current
+
+        if (fromChange) {
+          clearCustomValidity()
+        }
+
+        const representative = getRepresentativeControl()
+        activeValidationControlRef.current = representative
+        formControlRef.current = representative?.controlRef.current ?? null
+        const input = representative && getInput(representative)
+        let nativeState = createDefaultValidityState(true)
+        let nativeMessage = ''
+
+        if (canValidateInput(input)) {
+          nativeState = getNativeValidity(input, showValueMissing)
+          nativeMessage = nativeState.valid === false ? input.validationMessage : ''
+        } else {
+          const required = Array.from(controlsRef.current.values()).some(
+            (registration) =>
+              registration.required &&
+              isEligibleRegistration(registration, formElementRef.current)
+          )
+          if (required && !isFilled(value) && showValueMissing) {
+            nativeState = {
+              ...createDefaultValidityState(false),
+              valueMissing: true,
+            }
+            nativeMessage = 'Please fill out this field.'
+          }
+        }
+
+        const initialValue = initialValueRef.current
+        const makeValidityData = (customErrors: string[]): FieldValidityData => {
+          if (customErrors.length) {
+            return {
+              state: {
+                ...nativeState,
+                valid: false,
+                customError: true,
+              },
+              error: customErrors[0] ?? '',
+              errors: customErrors,
+              value,
+              initialValue,
+            }
+          }
+
+          if (hasValidityError(nativeState)) {
+            return {
+              state: nativeState,
+              error: nativeMessage,
+              errors: nativeMessage ? [nativeMessage] : [],
+              value,
+              initialValue,
+            }
+          }
+
+          return {
+            state: createDefaultValidityState(true),
+            error: '',
+            errors: [],
+            value,
+            initialValue,
+          }
+        }
+
+        if (nativeMessage && !fromChange) {
+          validationCommitterRef.current!.run(makeValidityData([]))
           return
         }
 
-        clearCustomValidity()
-        publishValidity({
-          state: createDefaultValidityState(true),
-          error: '',
-          errors: [],
-          value,
-          initialValue: initialValueRef.current,
-        })
-      }
-    },
-    [
-      clearFormErrors,
-      clearCustomValidity,
-      formElementRef,
-      publishValidity,
-      submitAttemptedRef,
-      validateValue,
-      validationDebounceTime,
-      validationMode,
-    ]
-  )
+        const result = validate
+          ? getValidationResult(validate, value, getFormValues())
+          : []
 
-  const onDisabledChange = React.useCallback((nextDisabled: boolean) => {
-    setControlDisabled(nextDisabled)
-  }, [])
-
-  React.useEffect(() => {
-    return () => {
-      validationCommitterRef.current?.invalidate()
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current)
-      }
-    }
-  }, [])
-
-  const formRegistration = React.useMemo<FormFieldRegistration>(
-    () => ({
-      controlRef: formControlRef,
-      validityData: formValidityDataRef.current,
-      get name() {
-        return stateRef.current.disabled ? undefined : effectiveNameRef.current
+        if (result instanceof Promise) {
+          void validationCommitterRef.current!.run(
+            result.then((customErrors) => makeValidityData(customErrors))
+          )
+        } else {
+          validationCommitterRef.current!.run(makeValidityData(result))
+        }
       },
-      get controlId() {
-        return (
-          activeValidationControlRef.current?.id ??
-          getRepresentativeControl()?.id ??
-          association.controlId
+      [
+        clearCustomValidity,
+        formElementRef,
+        getFormValues,
+        getRepresentativeControl,
+        submitAttemptedRef,
+        validate,
+      ]
+    )
+
+    const registerControl = React.useCallback(
+      (registration: FieldControlRegistration, reportDisabled = true) => {
+        const source = Symbol()
+        controlsRef.current.set(source, registration)
+        reportsDisabledRef.current.set(registration, reportDisabled)
+        activeControlRef.current = getActiveControl()
+        formControlRef.current = activeControlRef.current?.controlRef.current ?? null
+        const value = getRegistrationValue(registration)
+        valueRef.current = value
+        setCurrentValue(value)
+
+        if (!hasInitialValueRef.current) {
+          hasInitialValueRef.current = true
+          initialValueRef.current = value
+          validityDataRef.current = {
+            ...validityDataRef.current,
+            initialValue: value,
+          }
+          setValidityData(validityDataRef.current)
+        }
+
+        if (!nameProp && registration.name) {
+          setRegisteredName(registration.name)
+        }
+        setFilled(isFilled(value))
+        syncControlDisabled()
+
+        return () => {
+          controlsRef.current.delete(source)
+          activeControlRef.current = getActiveControl()
+          activeValidationControlRef.current = undefined
+          formControlRef.current = activeControlRef.current?.controlRef.current ?? null
+          const next = activeControlRef.current
+          const nextValue = getRegistrationValue(next)
+          valueRef.current = nextValue
+          setCurrentValue(nextValue)
+          setFilled(isFilled(nextValue))
+          if (!nameProp) {
+            setRegisteredName(next?.name)
+          }
+          syncControlDisabled()
+        }
+      },
+      [getActiveControl, nameProp, syncControlDisabled]
+    )
+
+    const onFocus = React.useCallback(() => {
+      setFocused(true)
+    }, [])
+
+    const onBlur = React.useCallback(
+      (value = valueRef.current) => {
+        valueRef.current = value
+        setCurrentValue(value)
+        setTouched(true)
+        setFocused(false)
+        if (validationMode === 'onBlur') {
+          validateValue(value)
+        }
+      },
+      [validateValue, validationMode]
+    )
+
+    const onChange = React.useCallback(
+      (value: unknown) => {
+        valueRef.current = value
+        setCurrentValue(value)
+        validationCommitterRef.current!.invalidate()
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current)
+          debounceRef.current = undefined
+        }
+        const nextDirty = !Object.is(value, initialValueRef.current)
+        dirtyRef.current = nextDirty
+        setDirty(nextDirty)
+        setFilled(isFilled(value))
+        clearFormErrors(effectiveNameRef.current)
+
+        const validateOnChange = shouldValidateOnChange(
+          validationMode,
+          submitAttemptedRef.current
         )
-      },
-      getValue() {
-        return getRegistrationValue(getActiveControl()) ?? valueRef.current
-      },
-      validate() {
-        validateValue(getRegistrationValue(getActiveControl()) ?? valueRef.current, true)
-      },
-    }),
-    [association.controlId, getActiveControl, getRepresentativeControl, validateValue]
-  )
 
-  React.useEffect(() => {
-    return registerFormField(fieldId, formRegistration)
-  }, [fieldId, formRegistration, registerFormField])
+        if (validateOnChange) {
+          if (
+            validationMode === 'onChange' &&
+            validationDebounceTime > 0 &&
+            value !== ''
+          ) {
+            debounceRef.current = setTimeout(() => {
+              validateValue(value, false, true)
+            }, validationDebounceTime)
+          } else {
+            validateValue(value, false, true)
+          }
+          return
+        }
 
-  const rootContext = React.useMemo<FieldRootContextValue>(
-    () => ({
-      state,
-      validityData,
-      name: effectiveName,
-      rootDisabled: disabledProp,
-      registerControl,
-      onFocus,
-      onBlur,
-      onChange,
-      onDisabledChange,
-    }),
-    [
-      disabledProp,
-      effectiveName,
-      onBlur,
-      onChange,
-      onDisabledChange,
-      onFocus,
-      registerControl,
-      state,
-      validityData,
-    ]
-  )
-  const controlContext = useControlContext(rootContext, association)
-  const styleState = getStyleState(state)
+        if (stateRef.current.valid === false) {
+          const required = Array.from(controlsRef.current.values()).some(
+            (registration) =>
+              registration.required &&
+              isEligibleRegistration(registration, formElementRef.current)
+          )
+          if (required && !isFilled(value) && dirtyRef.current) {
+            validateValue(value)
+            return
+          }
 
-  return (
-    <FieldStateContext.Provider value={state}>
-      <FieldRootContext.Provider value={rootContext}>
-        <AssociationContext.Provider value={association}>
-          <FieldControlContext.Provider value={controlContext}>
-            <FieldStyledContext.Provider {...styleState}>
-              <FieldFrame
-                {...fieldProps}
-                {...getDataProps(state)}
-                disabled={disabled}
-                ref={forwardedRef}
-              >
-                {children}
-              </FieldFrame>
-            </FieldStyledContext.Provider>
-          </FieldControlContext.Provider>
-        </AssociationContext.Provider>
-      </FieldRootContext.Provider>
-    </FieldStateContext.Provider>
-  )
-})
+          clearCustomValidity()
+          publishValidity({
+            state: createDefaultValidityState(true),
+            error: '',
+            errors: [],
+            value,
+            initialValue: initialValueRef.current,
+          })
+        }
+      },
+      [
+        clearFormErrors,
+        clearCustomValidity,
+        formElementRef,
+        publishValidity,
+        submitAttemptedRef,
+        validateValue,
+        validationDebounceTime,
+        validationMode,
+      ]
+    )
+
+    const onDisabledChange = React.useCallback((nextDisabled: boolean) => {
+      setControlDisabled(nextDisabled)
+    }, [])
+
+    React.useEffect(() => {
+      return () => {
+        validationCommitterRef.current?.invalidate()
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current)
+        }
+      }
+    }, [])
+
+    const formRegistration = React.useMemo<FormFieldRegistration>(
+      () => ({
+        controlRef: formControlRef,
+        validityData: formValidityDataRef.current,
+        get name() {
+          return stateRef.current.disabled ? undefined : effectiveNameRef.current
+        },
+        get controlId() {
+          return (
+            activeValidationControlRef.current?.id ??
+            getRepresentativeControl()?.id ??
+            association.controlId
+          )
+        },
+        getValue() {
+          return getRegistrationValue(getActiveControl()) ?? valueRef.current
+        },
+        validate() {
+          validateValue(
+            getRegistrationValue(getActiveControl()) ?? valueRef.current,
+            true
+          )
+        },
+      }),
+      [association.controlId, getActiveControl, getRepresentativeControl, validateValue]
+    )
+
+    React.useEffect(() => {
+      return registerFormField(fieldId, formRegistration)
+    }, [fieldId, formRegistration, registerFormField])
+
+    const rootContext = React.useMemo<FieldRootContextValue>(
+      () => ({
+        state,
+        validityData,
+        name: effectiveName,
+        rootDisabled: disabledProp,
+        registerControl,
+        onFocus,
+        onBlur,
+        onChange,
+        onDisabledChange,
+      }),
+      [
+        disabledProp,
+        effectiveName,
+        onBlur,
+        onChange,
+        onDisabledChange,
+        onFocus,
+        registerControl,
+        state,
+        validityData,
+      ]
+    )
+    const controlContext = useControlContext(rootContext, association)
+    const styleState = getStyleState(state)
+
+    return (
+      <FieldStateContext.Provider value={state}>
+        <FieldRootContext.Provider value={rootContext}>
+          <AssociationContext.Provider value={association}>
+            <FieldControlContext.Provider value={controlContext}>
+              <FieldStyledContext.Provider {...styleState}>
+                <FieldFrame
+                  {...fieldProps}
+                  {...getDataProps(state)}
+                  disabled={disabled}
+                  ref={forwardedRef}
+                >
+                  {children}
+                </FieldFrame>
+              </FieldStyledContext.Provider>
+            </FieldControlContext.Provider>
+          </AssociationContext.Provider>
+        </FieldRootContext.Provider>
+      </FieldStateContext.Provider>
+    )
+  }
+)
 
 function usePartContexts() {
   const root = React.useContext(FieldRootContext)
@@ -936,50 +948,57 @@ function usePartContexts() {
 
 export type FieldLabelProps = GetProps<typeof FieldLabelFrame>
 
-const FieldLabel = createStyledHOC(FieldLabelFrame)<FieldLabelProps>(function FieldLabel(
-  { id: idProp, children, onPress, onMouseDown, ...labelProps },
-  forwardedRef
-) {
-  const { root, association, itemDisabled } = usePartContexts()
-  const generatedId = React.useId().replace(/:/g, '')
-  const id = idProp ?? `field-label-${generatedId}`
-  const text = getText(children)
-  const disabled = root.state.disabled || itemDisabled
+const FieldLabel = createStyledHOC(
+  FieldLabelFrame,
+  function FieldLabel(
+    { id: idProp, children, onPress, onMouseDown, ...labelProps }: FieldLabelProps,
+    forwardedRef
+  ) {
+    const { root, association, itemDisabled } = usePartContexts()
+    const generatedId = React.useId().replace(/:/g, '')
+    const id = idProp ?? `field-label-${generatedId}`
+    const text = getText(children)
+    const disabled = root.state.disabled || itemDisabled
 
-  useIsomorphicLayoutEffect(() => {
-    return association.registerLabel(id, text)
-  }, [association.registerLabel, id, text])
+    useIsomorphicLayoutEffect(() => {
+      return association.registerLabel(id, text)
+    }, [association.registerLabel, id, text])
 
-  return (
-    <FieldLabelFrame
-      {...labelProps}
-      {...getDataProps(root.state, disabled)}
-      id={id}
-      ref={forwardedRef}
-      {...(isWeb ? { htmlFor: association.controlId } : undefined)}
-      {...(!isWeb && disabled ? { accessibilityState: { disabled: true } } : undefined)}
-      onMouseDown={(event: any) => {
-        onMouseDown?.(event)
-        if (!event.defaultPrevented && event.detail > 1) {
-          event.preventDefault()
-        }
-      }}
-      onPress={(event: any) => {
-        onPress?.(event)
-        if (!isWeb && !event?.defaultPrevented) {
-          focusFocusable(association.controlId)
-        }
-      }}
-    >
-      {children}
-    </FieldLabelFrame>
-  )
-})
+    return (
+      <FieldLabelFrame
+        {...labelProps}
+        {...getDataProps(root.state, disabled)}
+        id={id}
+        ref={forwardedRef}
+        {...(isWeb ? { htmlFor: association.controlId } : undefined)}
+        {...(!isWeb && disabled ? { accessibilityState: { disabled: true } } : undefined)}
+        onMouseDown={(event: any) => {
+          onMouseDown?.(event)
+          if (!event.defaultPrevented && event.detail > 1) {
+            event.preventDefault()
+          }
+        }}
+        onPress={(event: any) => {
+          onPress?.(event)
+          if (!isWeb && !event?.defaultPrevented) {
+            focusFocusable(association.controlId)
+          }
+        }}
+      >
+        {children}
+      </FieldLabelFrame>
+    )
+  }
+)
 
 export type FieldDescriptionProps = GetProps<typeof FieldDescriptionFrame>
 
-const FieldDescription = createStyledHOC(FieldDescriptionFrame)<FieldDescriptionProps>(
-  function FieldDescription({ id: idProp, children, ...descriptionProps }, forwardedRef) {
+const FieldDescription = createStyledHOC(
+  FieldDescriptionFrame,
+  function FieldDescription(
+    { id: idProp, children, ...descriptionProps }: FieldDescriptionProps,
+    forwardedRef
+  ) {
     const { root, association, itemDisabled } = usePartContexts()
     const generatedId = React.useId().replace(/:/g, '')
     const id = idProp ?? `field-description-${generatedId}`
@@ -1007,86 +1026,92 @@ export type FieldErrorProps = GetProps<typeof FieldErrorFrame> & {
   match?: boolean | keyof FieldValidityState
 }
 
-const FieldError = createStyledHOC(FieldErrorFrame)<FieldErrorProps>(function FieldError(
-  { id: idProp, children, match, ...errorProps },
-  forwardedRef
-) {
-  const { root, association, itemDisabled } = usePartContexts()
-  const generatedId = React.useId().replace(/:/g, '')
-  const id = idProp ?? `field-error-${generatedId}`
-  const disabled = root.state.disabled || itemDisabled
-  const rendered =
-    match === true ||
-    (!disabled &&
-      (typeof match === 'string'
-        ? Boolean(root.validityData.state[match])
-        : root.state.valid === false))
-  const message = children ?? root.state.errors.join('\n')
-  const text = getText(message)
+const FieldError = createStyledHOC(
+  FieldErrorFrame,
+  function FieldError(
+    { id: idProp, children, match, ...errorProps }: FieldErrorProps,
+    forwardedRef
+  ) {
+    const { root, association, itemDisabled } = usePartContexts()
+    const generatedId = React.useId().replace(/:/g, '')
+    const id = idProp ?? `field-error-${generatedId}`
+    const disabled = root.state.disabled || itemDisabled
+    const rendered =
+      match === true ||
+      (!disabled &&
+        (typeof match === 'string'
+          ? Boolean(root.validityData.state[match])
+          : root.state.valid === false))
+    const message = children ?? root.state.errors.join('\n')
+    const text = getText(message)
 
-  useIsomorphicLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
+      if (!rendered) {
+        return
+      }
+      return association.registerMessage(id, text)
+    }, [association.registerMessage, id, rendered, text])
+
     if (!rendered) {
-      return
+      return null
     }
-    return association.registerMessage(id, text)
-  }, [association.registerMessage, id, rendered, text])
 
-  if (!rendered) {
-    return null
+    return (
+      <FieldErrorFrame
+        {...errorProps}
+        {...getDataProps(root.state, disabled)}
+        id={id}
+        ref={forwardedRef}
+      >
+        {message}
+      </FieldErrorFrame>
+    )
   }
-
-  return (
-    <FieldErrorFrame
-      {...errorProps}
-      {...getDataProps(root.state, disabled)}
-      id={id}
-      ref={forwardedRef}
-    >
-      {message}
-    </FieldErrorFrame>
-  )
-})
+)
 
 export type FieldItemProps = GetProps<typeof FieldItemFrame> & {
   disabled?: boolean
 }
 
-const FieldItem = createStyledHOC(FieldItemFrame)<FieldItemProps>(function FieldItem(
-  { disabled: disabledProp = false, children, ...itemProps },
-  forwardedRef
-) {
-  const root = React.useContext(FieldRootContext)
-  const parentAssociation = React.useContext(AssociationContext)
-  const reactId = React.useId().replace(/:/g, '')
-  const association = useAssociation(`field-item-${reactId}`, parentAssociation)
+const FieldItem = createStyledHOC(
+  FieldItemFrame,
+  function FieldItem(
+    { disabled: disabledProp = false, children, ...itemProps }: FieldItemProps,
+    forwardedRef
+  ) {
+    const root = React.useContext(FieldRootContext)
+    const parentAssociation = React.useContext(AssociationContext)
+    const reactId = React.useId().replace(/:/g, '')
+    const association = useAssociation(`field-item-${reactId}`, parentAssociation)
 
-  if (!root || !parentAssociation) {
-    throw new Error('Field.Item must be rendered inside <Field>.')
+    if (!root || !parentAssociation) {
+      throw new Error('Field.Item must be rendered inside <Field>.')
+    }
+
+    const disabled = root.state.disabled || disabledProp
+    const controlContext = useControlContext(root, association, disabledProp, true)
+    const styleState = getStyleState(root.state, disabled)
+
+    return (
+      <FieldItemContext.Provider value={disabledProp}>
+        <AssociationContext.Provider value={association}>
+          <FieldControlContext.Provider value={controlContext}>
+            <FieldStyledContext.Provider {...styleState}>
+              <FieldItemFrame
+                {...itemProps}
+                {...getDataProps(root.state, disabled)}
+                disabled={disabled}
+                ref={forwardedRef}
+              >
+                {children}
+              </FieldItemFrame>
+            </FieldStyledContext.Provider>
+          </FieldControlContext.Provider>
+        </AssociationContext.Provider>
+      </FieldItemContext.Provider>
+    )
   }
-
-  const disabled = root.state.disabled || disabledProp
-  const controlContext = useControlContext(root, association, disabledProp, true)
-  const styleState = getStyleState(root.state, disabled)
-
-  return (
-    <FieldItemContext.Provider value={disabledProp}>
-      <AssociationContext.Provider value={association}>
-        <FieldControlContext.Provider value={controlContext}>
-          <FieldStyledContext.Provider {...styleState}>
-            <FieldItemFrame
-              {...itemProps}
-              {...getDataProps(root.state, disabled)}
-              disabled={disabled}
-              ref={forwardedRef}
-            >
-              {children}
-            </FieldItemFrame>
-          </FieldStyledContext.Provider>
-        </FieldControlContext.Provider>
-      </AssociationContext.Provider>
-    </FieldItemContext.Provider>
-  )
-})
+)
 
 export const Field = withStaticProperties(FieldComponent, {
   Label: FieldLabel,

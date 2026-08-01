@@ -14,7 +14,7 @@ import { expect, test } from 'vitest'
 
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 
-const Custom = createStyledHOC(View)((props, ref) => <View ref={ref} {...props} />)
+const Custom = createStyledHOC(View, (props, ref) => <View ref={ref} {...props} />)
 
 const findBg = (node: any): any => {
   if (!node) return undefined

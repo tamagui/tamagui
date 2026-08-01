@@ -23,18 +23,19 @@ export const SelectScrollButtonFrame = styled(View, {
   name: 'SelectScrollButton',
 })
 
-export const SelectScrollUpButton = createStyledHOC(SelectScrollButtonFrame)<{
-  scope?: string
-}>((props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
-  return (
-    <SelectScrollButtonImpl
-      componentName={SCROLL_UP_BUTTON_NAME}
-      {...props}
-      dir="up"
-      ref={forwardedRef}
-    />
-  )
-})
+export const SelectScrollUpButton = createStyledHOC(
+  SelectScrollButtonFrame,
+  (props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+    return (
+      <SelectScrollButtonImpl
+        componentName={SCROLL_UP_BUTTON_NAME}
+        {...props}
+        dir="up"
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
@@ -44,24 +45,26 @@ SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
 const SCROLL_DOWN_BUTTON_NAME = 'SelectScrollDownButton'
 
-export const SelectScrollDownButton = createStyledHOC(SelectScrollButtonFrame)<{
-  scope?: string
-}>((props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
-  return (
-    <SelectScrollButtonImpl
-      componentName={SCROLL_DOWN_BUTTON_NAME}
-      {...props}
-      dir="down"
-      ref={forwardedRef}
-    />
-  )
-})
+export const SelectScrollDownButton = createStyledHOC(
+  SelectScrollButtonFrame,
+  (props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+    return (
+      <SelectScrollButtonImpl
+        componentName={SCROLL_DOWN_BUTTON_NAME}
+        {...props}
+        dir="down"
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 SelectScrollDownButton.displayName = SCROLL_DOWN_BUTTON_NAME
 
 const SelectScrollButtonImpl = React.memo(
-  createStyledHOC(SelectScrollButtonFrame)<SelectScrollButtonImplProps>(
-    (props, forwardedRef) => {
+  createStyledHOC(
+    SelectScrollButtonFrame,
+    (props: SelectScrollButtonImplProps, forwardedRef) => {
       const { scope, dir, componentName, ...scrollIndicatorProps } = props
       const { onPointerEnter, onPointerLeave, ...frameProps } = scrollIndicatorProps
       const { open, fallback, setScrollTop, setInnerOffset, ...context } =

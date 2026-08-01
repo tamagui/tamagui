@@ -29,7 +29,8 @@ type SheetScrollViewProps = SheetScopedProps<
   }
 >
 
-export const SheetScrollView = createStyledHOC(ScrollView)<SheetScrollViewProps>(
+export const SheetScrollView = createStyledHOC(
+  ScrollView,
   (
     {
       scope,

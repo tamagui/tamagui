@@ -32,7 +32,7 @@ export const Circle = styled(View, {
     },
 
     size: {
-      '...size': (size, { tokens }) => {
+      Size: (size, { tokens }) => {
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
@@ -119,11 +119,12 @@ export const MyView = styled(View, {
 
 #### String, Boolean, Number Variants
 
-You can use a pseudo Typescript syntax for other variants:
+Beyond exact keys, a variant object can use type keys that match by the type of
+the incoming value:
 
-- `:string` - Accepts a `string`
-- `:boolean` - Accepts a `boolean` (less precedence than `true` or `false`)
-- `:number` - Accepts a `number`
+- `string` - Accepts a `string`
+- `boolean` - Accepts a `boolean` (less precedence than `true` or `false`)
+- `number` - Accepts a `number`
 
 ```tsx
 import { View, styled } from 'tamagui' // or '@tamagui/core'
@@ -131,8 +132,7 @@ import { View, styled } from 'tamagui' // or '@tamagui/core'
 export const ColorfulView = styled(View, {
   variants: {
     color: {
-      ':string': (color) => {
-        // color is of type "string"
+      string: (color: string) => {
         return {
           color,
           borderColor: color,
@@ -143,13 +143,17 @@ export const ColorfulView = styled(View, {
 })
 ```
 
-### Spread Variants
+Exact keys always win: if a variant defines both `small: {...}` and
+`string: (val) => ...`, passing `"small"` matches the exact key and any other
+string falls through to the `string` resolver.
+
+### Resolver Variants
 
 When you write variants, you have to be explicit so TypeScript and the runtime
 know exactly which props you accept. This can be especially cumbersome when you
-want to "gather" all the values of a specific token. For example, without spread
-variants, if you wanted to have a `pad` property that accepted all the keys from
-`tokens.size`, you'd have to write this:
+want to "gather" all the values of a specific token scale. For example, without
+resolver variants, if you wanted to have a `pad` property that accepted all the
+keys from `tokens.size`, you'd have to write this:
 
 ```tsx
 // in your tamagui.config.ts:
@@ -192,7 +196,7 @@ const MyButton = styled(View, {
 This is verbose, and only gets more verbose if you add more sizes. It would
 require always updating every component every time you change the tokens.
 
-Spread variants solve this problem. Instead, we can write:
+Resolver variants solve this problem. Instead, we can write:
 
 ```tsx
 // in your tamagui.config.ts:
@@ -214,7 +218,7 @@ export default createTamagui({
 const MyButton = styled(View, {
   variants: {
     pad: {
-      '...size': (val, { tokens }) => ({
+      Size: (val, { tokens }) => ({
         padding: tokens.size[val]
       }),
     }
@@ -225,12 +229,35 @@ const MyButton = styled(View, {
 <MyButton pad="lg" />
 ```
 
-Spread variants save you from having to define hardcoded styles for every key
-(`sm`, `md`, `lg`) in your token object. They collect values from any of your
-top level token categories. So you can only use `...color`, `...size`,
-`...space`, `...font`, `...fontSize`, `...lineHeight`, `...radius`,
-`...letterSpace`, or `...zIndex`. They must be prefixed with `...` as that is
-how they are typed properly and assembled for runtime.
+Resolver variants save you from having to define hardcoded styles for every key
+(`sm`, `md`, `lg`) in your token object. A resolver key matches every value in
+its token scale, and props are typed from the key. The available names are:
+
+- Token scales: `Size`, `Space`, `Color`, `Radius`, `ZIndex`
+- Fonts: `FontSize`, `FontStyle`, `FontTransform`, `FontLineHeight`,
+  `FontLetterSpacing`
+- Themes: `Theme`
+- Plain types: `number`, `string`, `boolean`, `any`
+
+You can also combine names with `|` to accept several kinds of values with one
+function:
+
+```tsx
+const Square = styled(View, {
+  variants: {
+    size: {
+      'Size | number': (val, { tokens }) => {
+        const value = tokens.size[val] ?? val
+        return { width: value, height: value }
+      },
+    },
+  } as const,
+})
+
+// both work:
+<Square size="lg" />
+<Square size={100} />
+```
 
 #### Extra properties passed to functional variants
 
@@ -242,7 +269,7 @@ easily.
 const SizableText = styled(Text, {
   variants: {
     size: {
-      '...size': (size, { tokens, font }) => {
+      Size: (size, { tokens, font }) => {
         return {
           fontSize: font?.size,
           lineHeight: font?.lineHeight,
@@ -260,8 +287,8 @@ Which you can use:
 <SizableText size="md">Hello world</SizableText>
 ```
 
-The Spread variant function will receive two arguments: the first is the value
-given to the property (`"lg"`), and the second is an object with
+Every functional variant receives two arguments: the first is the value given
+to the property (`"lg"`), and the second is an object with
 `{ theme, tokens, props, font, context }`.
 
 <PropsTable
@@ -307,7 +334,8 @@ given to the property (`"lg"`), and the second is an object with
 #### Catch-all variants
 
 Much like a dynamic variant, except it lets you use it alongside the other typed
-variants you need. Use '...' and it will grab all variants that don't match:
+variants you need. Use the `any` key and it will grab all values that don't
+match another key:
 
 ```tsx
 import { View, styled } from 'tamagui' // or '@tamagui/core'
@@ -318,7 +346,7 @@ export const ColorfulView = styled(View, {
       true: {
         color: 'red',
       },
-      '...': (val: string) => {
+      any: (val: string) => {
         // this will catch any other values that don't match
         return {
           color: val,
@@ -362,7 +390,7 @@ The `defaultVariants` option allows you to set these, properly typed:
 const Square = styled(View, {
   variants: {
     size: {
-      '...size': (size, { tokens }) => {
+      Size: (size, { tokens }) => {
         // size === 'lg'
         // tokens.size.lg === 25
         return {

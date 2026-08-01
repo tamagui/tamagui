@@ -1625,7 +1625,7 @@ export type StyledHOCOptions = {
     disableTheme?: boolean;
     staticConfig?: Partial<StaticConfig>;
 };
-export type StyledHOCFactory<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties> = <CustomProps extends object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends (props: MergedProps, ref?: ReactRef<Ref>) => ReactNode = (props: MergedProps, ref?: ReactRef<Ref>) => ReactNode>(a: FunctionDef, options?: StyledHOCOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
+export type StyledHOCMergedProps<Props, CustomProps> = keyof CustomProps extends never ? Props : Omit<Props, keyof CustomProps> & CustomProps;
 export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeAndShorthands<StylePropsBase, Variants> : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends object = {}, Variants = {}, ParentStaticProperties = {}> = FunctionComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & {
     ref?: ReactRef<Ref>;
