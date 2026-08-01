@@ -2387,8 +2387,15 @@ interface ExtraStyleProps {
   backdropFilter?: Properties['backdropFilter']
   /**
    * Web-only style property. Will be omitted on native.
+   *
+   * The v6 shorthands map `bg` here rather than to `backgroundColor`, because
+   * the background family splits a value like `url(x.png) $color1` across
+   * backgroundImage and backgroundColor. Color tokens lead the union so `bg`
+   * completes them; `Properties['background']` keeps the CSS shorthand
+   * keywords. Adding this key to `ColorKeys` instead would erase that second
+   * arm, since that path runs the value type through `Exclude<T[K], string>`.
    */
-  background?: Properties['background']
+  background?: ColorTokens | Properties['background']
   /**
    * Web-only style property. Will be omitted on native.
    */
