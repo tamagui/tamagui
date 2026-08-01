@@ -175,6 +175,7 @@ export interface Site {
   targets: ConversionTargets
   host: HostView | undefined
   members: Member[]
+  comments: Map<number, readonly string[]>
   extras: Array<{ index: number; text: string }>
   flags: Flag[]
   inventory: Flag[]
@@ -200,6 +201,7 @@ function createSite(
     targets,
     host,
     members: [],
+    comments: new Map(),
     extras: [],
     flags: [],
     inventory: [],
@@ -226,10 +228,13 @@ function assessProgram(
     },
     site.registry
   )
-  if (assessment.verdict === 'clean') return true
+  if (assessment.verdict !== 'clean') addAssessment(site, targetProperty, assessment)
 
-  addAssessment(site, targetProperty, assessment)
-  return false
+  // A host warning or platform relocation was useful while this tool was only a
+  // report, but V3 has no legacy syntax to leave behind. Only a property family
+  // with no flat spelling can block the rewrite; every other assessment remains
+  // visible in the report for review while the migration proceeds.
+  return assessment.verdict !== 'ineligible'
 }
 
 function addAssessment(
@@ -1120,6 +1125,8 @@ function printSlots(
   const printed = new Set<string>()
   const output: Array<{ index: number; text: string }> = []
   const programs: EmittedProgram[] = []
+  const outputCommentRanges: Array<{ outputIndex: number; first: number; last: number }> =
+    []
 
   for (const [property, slot] of slots) {
     if (printed.has(property)) continue
@@ -1143,12 +1150,18 @@ function printSlots(
 
     const value = slot.dynamic ? `\`${serialized}\`` : JSON.stringify(serialized)
     programs.push({ name, value: serialized, dynamic: slot.dynamic })
+    const propertyText =
+      site.kind === 'styled'
+        ? `${name}: ${value}`
+        : `${name}=${slot.dynamic ? `{${value}}` : value}`
     output.push({
       index: slot.anchor,
-      text:
-        site.kind === 'styled'
-          ? `${name}: ${value}`
-          : `${name}=${slot.dynamic ? `{${value}}` : value}`,
+      text: propertyText,
+    })
+    outputCommentRanges.push({
+      outputIndex: output.length - 1,
+      first: slot.anchor,
+      last: slot.last,
     })
   }
 
@@ -1157,6 +1170,24 @@ function printSlots(
     slots,
     [...output].sort((left, right) => left.index - right.index)
   )
+  if (site.kind === 'styled') {
+    const commentedIndexes = new Set<number>()
+    for (const range of outputCommentRanges) {
+      const comments: string[] = []
+      for (const [index, texts] of site.comments) {
+        if (index < range.first || index > range.last || commentedIndexes.has(index)) {
+          continue
+        }
+        comments.push(...texts)
+        commentedIndexes.add(index)
+      }
+      if (comments.length) {
+        output[range.outputIndex].text = `${comments.join('\n')}\n${
+          output[range.outputIndex].text
+        }`
+      }
+    }
+  }
   return { output, programs }
 }
 
@@ -1279,7 +1310,9 @@ function isConvertedJsxAttribute(attribute: Node): boolean {
   if (Node.isJsxSpreadAttribute(attribute)) return true
   if (!Node.isJsxAttribute(attribute)) return false
   const name = jsxAttributeName(attribute)
-  return !!name && (name === 'group' || styleProps.has(name) || isLegacyConditionName(name))
+  return (
+    !!name && (name === 'group' || styleProps.has(name) || isLegacyConditionName(name))
+  )
 }
 
 function rewriteJsxSite(
@@ -1456,8 +1489,7 @@ export function convertJsxSite(
     write &&
     !site.flags.some(
       (flag) =>
-        flag.code === 'emitted-program-mismatch' ||
-        flag.code === 'emitted-value-invalid'
+        flag.code === 'emitted-program-mismatch' || flag.code === 'emitted-value-invalid'
     )
   ) {
     rewriteJsxSite(opening, entries)
@@ -1471,7 +1503,9 @@ function pushStyledProperty(
   property: PropertyAssignment,
   authoredText?: string
 ): void {
-  const text = authoredText ?? compact(property.getText())
+  const comments = allCommentTexts(property)
+  if (comments.length) site.comments.set(site.index, comments)
+  const text = authoredText ?? textWithOuterComments(property)
   const initializer = unwrapExpression(property.getInitializerOrThrow())
 
   if (name === 'group') {
@@ -1591,8 +1625,7 @@ export function convertStyleObject(
     write &&
     !site.flags.some(
       (flag) =>
-        flag.code === 'emitted-program-mismatch' ||
-        flag.code === 'emitted-value-invalid'
+        flag.code === 'emitted-program-mismatch' || flag.code === 'emitted-value-invalid'
     )
   ) {
     rewriteStyleObject(object, entries)
@@ -1606,7 +1639,38 @@ function isConvertedStyledProperty(property: Node): boolean {
   const nameNode = property.getNameNode()
   if (Node.isComputedPropertyName(nameNode)) return false
   const name = propertyName(nameNode)
-  return !!name && (name === 'group' || styleProps.has(name) || isLegacyConditionName(name))
+  return (
+    !!name && (name === 'group' || styleProps.has(name) || isLegacyConditionName(name))
+  )
+}
+
+function allCommentTexts(node: Node): string[] {
+  const comments = new Map<number, string>()
+  for (const current of [node, ...node.getDescendants()]) {
+    for (const range of [
+      ...current.getLeadingCommentRanges(),
+      ...current.getTrailingCommentRanges(),
+    ]) {
+      comments.set(range.getPos(), range.getText())
+    }
+  }
+  return [...comments.entries()]
+    .sort((left, right) => left[0] - right[0])
+    .map((entry) => entry[1])
+}
+
+function textWithOuterComments(node: Node): string {
+  const comments = new Map<number, string>()
+  for (const range of [
+    ...node.getLeadingCommentRanges(),
+    ...node.getTrailingCommentRanges(),
+  ]) {
+    comments.set(range.getPos(), range.getText())
+  }
+  const prefix = [...comments.entries()]
+    .sort((left, right) => left[0] - right[0])
+    .map((entry) => entry[1])
+  return [...prefix, node.getText()].join('\n')
 }
 
 function rewriteStyleObject(
@@ -1622,10 +1686,14 @@ function rewriteStyleObject(
         inserted = true
       }
     } else {
-      rendered.push(property.getText())
+      rendered.push(textWithOuterComments(property))
     }
   }
-  object.replaceWithText(rendered.length ? `{
+  object.replaceWithText(
+    rendered.length
+      ? `{
 ${rendered.join(',\n')}
-}` : '{}')
+}`
+      : '{}'
+  )
 }

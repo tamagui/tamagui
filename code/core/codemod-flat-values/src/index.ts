@@ -9,6 +9,7 @@ import {
   Project,
   ScriptTarget,
   SyntaxKind,
+  ts,
   type Expression,
   type ObjectLiteralExpression,
   type SourceFile,
@@ -251,9 +252,7 @@ function inspectFile(
     )
     if (!Node.isObjectLiteralExpression(config)) continue
     const label = `styled(${compact(call.getArguments()[0]?.getText() ?? 'unknown')}, …)`
-    sites.push(
-      ...variantSites(config, label, registry, containers, targets, host, write)
-    )
+    sites.push(...variantSites(config, label, registry, containers, targets, host, write))
     const site = convertStyleObject(
       config,
       'styled',
@@ -340,9 +339,11 @@ function parseArguments(argv: readonly string[]): {
 const { reportPath, jsonPath, inputs, write } = parseArguments(process.argv.slice(2))
 const sourceFiles = collectFiles(inputs)
 for (const sourceFile of sourceFiles) {
-  const diagnostics = (sourceFile.compilerNode as unknown as {
-    parseDiagnostics?: readonly { messageText?: unknown }[]
-  }).parseDiagnostics
+  const diagnostics = (
+    sourceFile.compilerNode as unknown as {
+      parseDiagnostics?: readonly { messageText?: unknown }[]
+    }
+  ).parseDiagnostics
   if (diagnostics?.length) {
     console.error(
       `${relative(repoRoot, sourceFile.getFilePath())}: source has parse errors; no files were written`
@@ -361,6 +362,26 @@ const provenance = createProvenance()
 const files = sourceFiles.map((sourceFile) =>
   inspectFile(sourceFile, modifierRegistry.registry, provenance, write)
 )
+if (write) {
+  for (const sourceFile of sourceFiles) {
+    const filePath = sourceFile.getFilePath()
+    const parsed = ts.createSourceFile(
+      filePath,
+      sourceFile.getFullText(),
+      ScriptTarget.Latest,
+      true,
+      /x$/.test(filePath) ? ts.ScriptKind.TSX : ts.ScriptKind.TS
+    ) as typeof sourceFile.compilerNode & {
+      parseDiagnostics?: readonly unknown[]
+    }
+    if (parsed.parseDiagnostics?.length) {
+      console.error(
+        `${relative(repoRoot, filePath)}: rewrite produced parse errors; no files were written`
+      )
+      process.exit(2)
+    }
+  }
+}
 const { text, summary } = renderReport(
   files,
   inputs.map((input) => relative(repoRoot, resolve(repoRoot, input))),

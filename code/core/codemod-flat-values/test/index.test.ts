@@ -1393,13 +1393,19 @@ describe('inputs', () => {
     const output = runWrite(`import { View, styled } from 'tamagui'
 export const Box = styled(View, {
   bg: '$blue10',
-  hoverStyle: { bg: '$red10' },
+  hoverStyle: {
+    // the comment must survive when the condition object becomes a clause
+    bg: '$red10',
+  },
 })
 export const Fixture = () => <Box opacity={1} pressStyle={{ opacity: 0.5 }} />
 `)
 
     expect(output).toContain('bg: "blue10 hover:red10"')
     expect(output).toContain('opacity="1 press:0.5"')
+    expect(output).toContain(
+      '// the comment must survive when the condition object becomes a clause'
+    )
     expect(output).not.toContain('hoverStyle')
     expect(output).not.toContain('pressStyle')
   })
