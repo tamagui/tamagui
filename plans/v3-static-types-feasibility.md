@@ -8,11 +8,12 @@ Answer in one line: **yes for single-value strings, no for class lists**, and
 the reason is not type performance, it is that TypeScript string completions
 replace the whole string literal.
 
-Reproduce everything below from
-`<session-scratch>/static-types/` (generators `vocab.gen.ts`,
+Reproduce everything below from `/private/tmp/claude-501/-Users-n8--worktrees-tamagui-v3-flat/110548ab-b716-49f3-b69d-3914cebfcace/scratchpad/static-types/`
+(session scratch, so copy it out if you need it to survive; the generators are
+self-contained and only read this worktree). Generators `vocab.gen.ts`,
 `fixture.gen.ts`, `scaling.gen.ts`, `flat.gen.ts`, `validator.gen.ts`,
 `realistic.gen.ts`; harnesses `measure.sh`, `tsserver-probe.mjs`,
-`ls-probe.mjs`).
+`ls-probe.mjs`.
 
 ## The vocabulary, measured against the real default config
 
@@ -26,9 +27,12 @@ Generated from the actual `code/core/style-grammar/src/registry.ts` crossed with
 | modifiers: state 14, media 14, platform 7, theme 294 | 329 |
 | base x one modifier | 1,264,018 |
 
-TypeScript's union limit is 100,000 constituents. One modifier level already
-exceeds it 12x, and the grammar allows chains (`dark:hover:sm:`). Confirmed, not
-estimated: the template-literal form of that cross product fails to compile.
+TypeScript's 100,000-constituent limit applies to unions it *computes*, which is
+what a template-literal cross product is. Hand-written literal unions are not
+capped: a 110,000-member one compiles (it just gets expensive, see below). One
+modifier level exceeds the computed limit 12x, and the grammar allows chains
+(`dark:hover:sm:`). Confirmed, not estimated: the template-literal form of that
+cross product fails to compile.
 
 ```
 lib.ts(4179,41): error TS2590: Expression produces a union type that is too
