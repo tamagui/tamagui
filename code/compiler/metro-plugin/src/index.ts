@@ -10,10 +10,6 @@ import { writeMetroCompilerTransformerBridge } from './transformer'
 import { composeMetroGetTransformOptions } from './transformOptions'
 
 export type MetroTamaguiOptions = TamaguiOptions & {
-  /**
-   * @deprecated CSS interop is no longer supported. Use `tamagui generate` instead.
-   */
-  cssInterop?: boolean
   /** Override the ignored on-disk handoff used by Metro transform workers. */
   compilerCacheRoot?: string
 }
@@ -66,13 +62,7 @@ export function withTamagui(
   metroConfig: MetroConfigInput,
   optionsIn?: MetroTamaguiOptions
 ): MetroConfigInput {
-  const { compilerCacheRoot, cssInterop, ...tamaguiOptionsIn } = optionsIn || {}
-
-  if (cssInterop) {
-    console.warn(
-      '[@tamagui/metro-plugin] cssInterop option is deprecated. Use `tamagui generate` to pre-generate CSS instead.'
-    )
-  }
+  const { compilerCacheRoot, ...tamaguiOptionsIn } = optionsIn || {}
 
   const options = {
     ...tamaguiOptionsIn,

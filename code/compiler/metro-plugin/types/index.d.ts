@@ -4,7 +4,6 @@ export type MetroTamaguiOptions = TamaguiOptions & {
 	/**
 	* @deprecated CSS interop is no longer supported. Use `tamagui generate` instead.
 	*/
-	cssInterop?: boolean;
 	/** Override the ignored on-disk handoff used by Metro transform workers. */
 	compilerCacheRoot?: string;
 };
