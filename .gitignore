@@ -67,6 +67,3 @@ code/studio/types/**
 .playwright-report/
 .playwright-results/
 test-results/
-
-# scratch type-perf fixtures generated into the checkout by measurement harnesses
-zz-typeperf*
