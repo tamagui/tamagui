@@ -118,7 +118,9 @@ describe('tamagui-build integration test', () => {
     expect(existsSync(join(simplePackagePath, 'types', 'ignored.test-d.d.ts'))).toBe(
       false
     )
-  })
+    // spawns a real package build, which runs close to the 5s default on an idle
+    // machine and over it on a loaded one
+  }, 15000)
 
   it('rebuilds declarations when incremental state outlives the output', () => {
     execSync('bun run build', { cwd: simplePackagePath })
