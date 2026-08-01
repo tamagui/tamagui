@@ -1,4 +1,4 @@
-import type { StyleFrontendConfig } from '@tamagui/core/internal-runtime';
+import { type StyleFrontendConfig } from '@tamagui/core/internal-runtime';
 import { type GrammarConfigView } from '@tamagui/style-grammar';
 export declare function getStyleGrammarConfig(config: StyleFrontendConfig): GrammarConfigView;
 export declare function isTokenValueProp(prop: string): boolean;
@@ -13,7 +13,8 @@ export declare function isTokenValueProp(prop: string): boolean;
  */
 export declare function setInAuthoredOrder(target: Record<string, any>, key: string, value: any): void;
 /**
- * Tokenize a className into flat `$mods:prop` props, once per class per config.
+ * Tokenize a className into ordinary props and internal value-program contributions,
+ * once per class per config.
  * User-defined tokens drive resolution; Tailwind's color/spacing scales are never
  * hardcoded. Classes the grammar does not claim stay in `className` verbatim, in
  * author order, so official Tailwind CSS still applies them on web.

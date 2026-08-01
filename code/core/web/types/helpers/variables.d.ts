@@ -5,7 +5,7 @@ export declare const getThemeKeySet: (conf: TamaguiInternalConfig) => Set<string
  * Resolves one <Variables> value to a CSS value string.
  * References emit var() so they stay live in the cascade; literals serialize
  * with the same unit rule numeric style props use (px unless unitless key).
- * Returns undefined for unresolvable references (dev-warned, dropped).
+ * Configured names resolve first; a lookup miss stays literal.
  */
 export declare function resolveVariableValueToCSS(key: string, value: VariableValIn, conf: TamaguiInternalConfig): string | undefined;
 export type VariablesCSS = {
@@ -47,6 +47,6 @@ export declare function getMergedInlineTheme(parentTheme: Record<string, Variabl
  * References resolve per-theme at parse time; sub-themes inherit through
  * proxyThemesToParents (native) and the cascade (web).
  */
-export declare function mergeConfigVariablesIntoTheme(theme: Record<string, Variable>, themeName: string, variables: GenericVariables, specificTokens: Record<string, Variable>, tokensParsed: TokensParsed): void;
+export declare function mergeConfigVariablesIntoTheme(theme: Record<string, Variable>, themeName: string, variables: GenericVariables, tokensParsed: TokensParsed): void;
 export {};
 //# sourceMappingURL=variables.d.ts.map

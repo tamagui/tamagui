@@ -26,7 +26,6 @@ export * from './helpers/normalizeStyle';
 export * from './helpers/normalizeValueWithProperty';
 export * from './helpers/propMapper';
 export * from './helpers/proxyThemeToParents';
-export * from './helpers/proxyThemeVariables';
 export * from './helpers/pseudoDescriptors';
 export * from './helpers/pseudoTransitions';
 export * from './helpers/themeable';

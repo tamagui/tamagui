@@ -25,7 +25,7 @@ export interface GrammarRuntimeContext {
     /**
      * the lookup for `resolvePayload`, scoped to one property. `fontFamily` is the
      * active font token and only matters for font-scoped props; it falls back to
-     * the config default font exactly as `getTokenForKey` does.
+     * the config default font.
      */
     getLookup(property: string, fontFamily?: string): (name: string) => ResolvedReference | undefined;
     /** whether bare numbers resolve for this property */

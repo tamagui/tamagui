@@ -7,7 +7,6 @@ export * from "./config";
 export * from "./evaluateProgram";
 export * from "./fontShorthand";
 export * from "./geometricShorthand";
-export * from "./legacyConditions";
 export * from "./lowerProgram";
 export * from "./modifierRegistry";
 export * from "./payloadShape";
@@ -29,6 +28,7 @@ export * from "./transitionNative";
 export * from "./toolingDiagnostics";
 export * from "./valueParser";
 export * from "./valueTypes";
+export * from "./unitlessNumbers";
 export * from "./v6ThemeNames";
 
 //# sourceMappingURL=index.d.ts.map

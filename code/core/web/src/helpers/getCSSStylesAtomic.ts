@@ -33,8 +33,7 @@ let conf: TamaguiInternalConfig | null = null
 // this could be cached for performance?
 const getStyleObject = (
   style: ViewStyleWithPseudos,
-  key: string,
-  pseudo?: PseudoDescriptor
+  key: string
 ): StyleObject | undefined => {
   let val = style[key]
   if (val == null) return
@@ -44,21 +43,20 @@ const getStyleObject = (
   }
   const value = normalizeValueWithProperty(val, key)
   const hash = simpleHash(typeof value === 'string' ? value : `${value}`)
-  const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
   conf ||= getConfigMaybe()
   const shortProp = conf?.inverseShorthands[key] || key
-  let identifier = `_${shortProp}-${pseudoPrefix}${hash}`
-  if (key === 'pointerEvents' && !pseudo) {
+  let identifier = `_${shortProp}-${hash}`
+  if (key === 'pointerEvents') {
     if (value === 'box-none') identifier = '_pe-boxnone'
     else if (value === 'box-only') identifier = '_pe-boxonly'
   }
-  const rules = createAtomicRules(identifier, key, value, pseudo)
+  const rules = createAtomicRules(identifier, key, value)
   return [
     // array for performance
     key,
     value,
     identifier,
-    pseudo?.name as any,
+    undefined,
     rules,
   ]
 }
@@ -122,51 +120,16 @@ const hyphenateStyleName = (key: string) => {
   return val
 }
 
-// adding one more :root so we always override react native web styles :/
-const selectorPriority = (() => {
-  const res: Record<string, string> = {}
-  for (const key in pseudoDescriptors) {
-    const pseudo = pseudoDescriptors[key]
-    res[pseudo.name] = `${[...Array(pseudo.priority)].map(() => ':root').join('')} `
-  }
-  return res
-})()
-
 function createAtomicRules(
   identifier: string,
   property: string,
-  value: any,
-  pseudo?: PseudoDescriptor
+  value: any
 ): string[] {
-  const pseudoIdPostfix = pseudo
-    ? pseudo.name === 'disabled'
-      ? `[aria-disabled]`
-      : `:${pseudo.name}`
-    : ''
-  const pseudoSelector = pseudo?.selector
-
   // longhands get .cls.cls for higher specificity over shorthands
   const cls =
     property in cssShorthandLonghands ? `.${identifier}.${identifier}` : `.${identifier}`
 
-  // base rules sit at flat class specificity, matching the program block
-  // encoding (design record: "This deletes the current encoding's entire
-  // specificity apparatus"); the pseudo/media tiers keep their ladders until
-  // the legacy condition machinery is deleted with them
-  let selector = pseudo
-    ? pseudoSelector
-      ? `${pseudoSelector} ${cls}`
-      : `${selectorPriority[pseudo.name]} ${cls}${pseudoIdPostfix}`
-    : cls
-
-  // enter style on css driver needs both:
-  //   .t_unmounted .selector
-  //   .selector.t_unmounted
-  if (pseudoSelector === pseudoDescriptors.enterStyle.selector) {
-    selector = `${selector}, .${identifier}${pseudoSelector}`
-  }
-
-  const important = !!pseudo
+  const selector = cls
 
   let rules: string[] = []
 
@@ -180,7 +143,7 @@ function createAtomicRules(
           ['color', value],
           ['opacity', 1],
         ],
-        important
+        false
       )
       rules.push(`${selector}::placeholder${block}`)
       break
@@ -196,7 +159,7 @@ function createAtomicRules(
           [property, value],
           [webkitProperty, value],
         ],
-        important
+        false
       )
       rules.push(`${selector}${block}`)
       break
@@ -216,19 +179,10 @@ function createAtomicRules(
     }
 
     default: {
-      const block = createDeclarationBlock([[property, value]], important)
+      const block = createDeclarationBlock([[property, value]])
       rules.push(`${selector}${block}`)
       break
     }
-  }
-
-  // hover styles need to be conditional
-  // perhaps this can be generalized but for now lets just shortcut
-  // and hardcode for hover styles, if we need to later we can
-  // WEIRD SYNTAX, SEE:
-  //   https://stackoverflow.com/questions/40532204/media-query-for-devices-supporting-hover
-  if (pseudo?.name === 'hover') {
-    rules = rules.map((r) => `@media (hover) {${r}}`)
   }
 
   return rules
