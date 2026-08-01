@@ -863,29 +863,22 @@ export const Fixture = () => (
 })
 
 describe('conversion assessment', () => {
-  test('keeps a web-working exitStyle authored in a shared file', () => {
+  test('converts exitStyle in a shared file', () => {
     const result = run(`import { View } from 'tamagui'
 export const Fixture = () => (
   <View opacity={0.5} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
 )`)
     const site = only(result)
 
-    expect(programs(site)).toEqual({ opacity: '0.5 enter:0' })
-    expect(site.after).toContain('exitStyle=')
-    expect(assessmentVerdicts(site)).toContain('needs-relocation')
+    expect(programs(site)).toEqual({ opacity: '0.5 enter:0 exit:0' })
+    expect(site.after).not.toContain('exitStyle=')
+    expect(site.assessments).toEqual([])
     expect(result.summary).toMatchObject({
       sites: 1,
-      clean: 0,
-      needsRelocation: 1,
+      clean: 1,
+      needsRelocation: 0,
       unknownHost: 0,
       ineligible: 0,
-    })
-    expect(site.assessments).toContainEqual({
-      property: 'opacity',
-      verdict: 'needs-relocation',
-      reasons: expect.arrayContaining([
-        expect.objectContaining({ dimension: 'clause', modifier: 'exit' }),
-      ]),
     })
   })
 
@@ -912,8 +905,8 @@ export const Fixture = () => (
     const view = labeled(result, '<View>')
     const text = labeled(result, '<Text>')
 
-    expect(programs(view)).toEqual({})
-    expect(view.after).toContain('hoverStyle=')
+    expect(programs(view)).toEqual({ color: 'hover:red10' })
+    expect(view.after).not.toContain('hoverStyle=')
     expect(view.assessments).toContainEqual({
       property: 'color',
       verdict: 'needs-relocation',
@@ -938,8 +931,8 @@ export const Fixture = () => (
     const shared = only(run(source))
     const web = only(runOn([fixture(source, 'fixture.web.tsx')]))
 
-    expect(programs(shared)).toEqual({ bg: 'red10' })
-    expect(shared.after).toContain('$group-card-open=')
+    expect(programs(shared)).toEqual({ bg: 'red10 group-open/card:blue10' })
+    expect(shared.after).not.toContain('$group-card-open=')
     expect(shared.assessments).toContainEqual({
       property: 'background',
       verdict: 'needs-relocation',
@@ -963,12 +956,12 @@ const Box = Raw as React.ComponentType<any>
 export const Fixture = () => <Box bg="$red10" hoverStyle={{ bg: '$blue10' }} />`)
     )
 
-    expect(programs(site)).toEqual({})
-    expect(site.after).toContain('hoverStyle=')
+    expect(programs(site)).toEqual({ bg: 'red10 hover:blue10' })
+    expect(site.after).not.toContain('hoverStyle=')
     expect(site.assessmentVerdict).toBe('unknown-host')
   })
 
-  test('a determined clause failure outranks an unknown host', () => {
+  test('a supported exit clause keeps an erased component in unknown-host review', () => {
     const site = only(
       run(`import type React from 'react'
 import { View as Raw } from 'tamagui'
@@ -976,12 +969,13 @@ const Box = Raw as React.ComponentType<any>
 export const Fixture = () => <Box exitStyle={{ opacity: 0 }} />`)
     )
 
-    expect(site.assessmentVerdict).toBe('needs-relocation')
+    expect(programs(site)).toEqual({ opacity: 'exit:0' })
+    expect(site.assessmentVerdict).toBe('unknown-host')
     expect(site.assessments).toContainEqual({
       property: 'opacity',
-      verdict: 'needs-relocation',
+      verdict: 'unknown-host',
       reasons: expect.arrayContaining([
-        expect.objectContaining({ dimension: 'clause', modifier: 'exit' }),
+        expect.objectContaining({ dimension: 'host' }),
       ]),
     })
   })
@@ -1448,9 +1442,9 @@ export const Fixture = () => (
 })
 
 describe('the kitchen-sink corpus', () => {
-  test('every clean site emits programs that parse and keep no v1 syntax', () => {
+  test('the migrated default corpus has no v1 conversion sites', () => {
     const result = runOn([])
-    expect(result.summary.sites).toBeGreaterThan(1500)
+    expect(result.summary.sites).toBe(0)
 
     const legacyNames = [
       'hoverStyle',

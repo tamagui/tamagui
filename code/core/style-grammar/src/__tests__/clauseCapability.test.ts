@@ -17,9 +17,9 @@ const { registry } = createModifierRegistry(
 )
 
 describe('clauseCapability', () => {
-  test('exit is native-evaluable and web-unlowerable', () => {
+  test('exit is native-evaluable and web-lowerable', () => {
     const capability = clauseCapability('exit', 'state')
-    expect(capability.web).toBe(false)
+    expect(capability.web).toBe(true)
     expect(capability.native).toBe(true)
   })
 
@@ -58,13 +58,13 @@ describe('clauseCapability', () => {
     for (const state of Object.keys(defaultStateSelectors)) {
       expect(clauseCapability(state, 'state').web, state).toBe(true)
     }
-    expect(clauseCapability('exit', 'state').web).toBe(false)
+    expect(clauseCapability('exit', 'state').web).toBe(true)
   })
 
-  test('every native-sourceable interaction state is web-lowerable except exit', () => {
+  test('every native-sourceable interaction state is web-lowerable', () => {
     for (const state of nativeSourceableStates) {
       const capability = clauseCapability(state, 'state')
-      expect(capability.web, state).toBe(state !== 'exit')
+      expect(capability.web, state).toBe(true)
     }
   })
 })

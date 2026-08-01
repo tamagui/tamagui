@@ -128,7 +128,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // ensure variables
   const tokens = createVariables(configIn.tokens || {})
-  const tokensParsed = tokens as TokensParsed
+  const tokensParsed = tokens as unknown as TokensParsed
 
   if (configIn.tokens) {
     for (const cat in tokens) {

@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { resolveTamaguiHost } from '@tamagui/language-service/host'
@@ -58,6 +58,10 @@ function collectFiles(inputs: readonly string[]): SourceFile[] {
   const missing: string[] = []
   for (const input of inputs) {
     const path = resolve(repoRoot, input)
+    if (!existsSync(path)) {
+      missing.push(input)
+      continue
+    }
     const pattern = /\.[cm]?[jt]sx?$/.test(path) ? path : `${path}/**/*.{ts,tsx}`
     const matched = project.addSourceFilesAtPaths(pattern)
     // an input that matches nothing must never reach the report: a typo in a
