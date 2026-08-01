@@ -66,13 +66,11 @@ async function trackTranslateX(page: any, selector: string, frames = 6) {
         let count = 0
         function tick() {
           const style = getComputedStyle(el!)
-          values.push(
-            style.translate !== 'none'
-              ? Number.parseFloat(style.translate)
-              : style.transform === 'none'
-                ? 0
-                : new DOMMatrixReadOnly(style.transform).e
-          )
+          const individualTranslate =
+            style.translate === 'none' ? 0 : Number.parseFloat(style.translate)
+          const legacyTranslate =
+            style.transform === 'none' ? 0 : new DOMMatrixReadOnly(style.transform).e
+          values.push(individualTranslate + legacyTranslate)
           count++
           if (count < frames) {
             requestAnimationFrame(tick)
@@ -182,9 +180,11 @@ test('direction: exiting element keeps original direction when going reverses', 
       const el = els[i] as HTMLElement
       if (el.dataset.tab === 'Tab A') {
         const style = getComputedStyle(el)
-        if (style.translate !== 'none') return Number.parseFloat(style.translate)
-        if (style.transform === 'none') return 0
-        return new DOMMatrixReadOnly(style.transform).e
+        const individualTranslate =
+          style.translate === 'none' ? 0 : Number.parseFloat(style.translate)
+        const legacyTranslate =
+          style.transform === 'none' ? 0 : new DOMMatrixReadOnly(style.transform).e
+        return individualTranslate + legacyTranslate
       }
     }
     return null
