@@ -15,7 +15,7 @@ real Tailwind v4 (oracle), tamagui-web, and tamagui-native (iOS via Expo Go), cr
 - 122 cases; `cases.tsx` is the single source.
 
 The remaining fails split into REAL conversion gaps (worth closing) and INHERENT model differences
-(not bugs — see below). Native is the *honest* conversion test (no CSS fallback). Native's looser
+(not bugs — see below). Native is the _honest_ conversion test (no CSS fallback). Native's looser
 6% tolerance lets `rounded-t-*` / `border-t-*` squeak by at small sizes even though they don't
 truly convert — web (1% tol) exposes them.
 
@@ -61,7 +61,7 @@ Direction (per design discussion): do not add Tailwind-only special-case branche
 renderer. Keep the Tailwind-to-Tamagui map 1-to-1 and config-driven. The clean mechanism is **multi-target
 shorthands** — a general tamagui feature (a shorthand maps to one OR an array of props) that tailwind
 frontend uses, plus making the generic Tailwind parser match the longest shorthand prefix (kebab→camel)
-so `rounded-t-xl` parses as prop `rounded-t` (→shorthand `roundedT`) + value `xl` (→`$xl` token),
+so `rounded-t-xl` parses as prop `rounded-t` (→shorthand `roundedT`) + value `xl` (→`xl` token),
 instead of `rounded` + `t-xl`. This also REPLACES the existing `tailwindPropPrefixes` (min-w/max-h)
 special-case, so it's a cleanup, not a new carve-out.
 
@@ -75,7 +75,7 @@ special-case, so it's a cleanup, not a new carve-out.
    per-side color via `borderTColor`… if desired.
 4. **corner-specific radius** `rounded-t/b/l/r/tl/tr/bl/br-*` (`gap-rounded-t`): shorthands
    `roundedT:['borderTopLeftRadius','borderTopRightRadius']`, `roundedTL:['borderTopLeftRadius']`, …
-   value resolves to a radius token (`xl`→`$xl`), same as `rounded-*`.
+   value resolves to a radius token (`xl`→`xl`), same as `rounded-*`.
 
 Prereq for all of the above: **shorthands must accept `string | string[]`** (multi-target). That's the
 one core change; everything else is config data. Deferred for now (native already ≥90%); not blocking.

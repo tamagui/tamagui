@@ -3,7 +3,7 @@
  *
  * each category has a list of utilities, and each utility tracks
  * which frameworks support it:
- *   - tamagui: flat-style prop syntax ($bg, $hover:bg, etc)
+ *   - tamagui: flat value programs (`bg="red hover:blue"`, etc)
  *   - tailwind: tailwind CSS classes
  *   - nativewind: nativewind v5 (tailwind v4 for RN) support
  *   - uniwind: uniwind (unistyles-based) support
@@ -52,7 +52,7 @@ export const categories: Category[] = [
         name: 'display',
         description: 'Set display type',
         examples: {
-          tamagui: '$dsp="flex"',
+          tamagui: 'dsp="flex"',
           tailwind: 'flex / block / grid / hidden',
           nativewind: 'flex / hidden',
           uniwind: 'flex / block / hidden',
@@ -64,13 +64,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui: `$dsp` is a named prop; `flex`/`none` work cross-platform, other values (block/grid/contents) web-only. RN natively only has flex + none, so NativeWind/Uniwind map flex/hidden and ignore the rest on native.',
+          'Tamagui: `dsp` is a named prop; `flex`/`none` work cross-platform, other values (block/grid/contents) web-only. RN natively only has flex + none, so NativeWind/Uniwind map flex/hidden and ignore the rest on native.',
       },
       {
         name: 'position',
         description: 'Set positioning mode',
         examples: {
-          tamagui: '$pos="absolute"',
+          tamagui: 'pos="absolute"',
           tailwind: 'absolute / relative / fixed / sticky',
           nativewind: 'absolute / relative',
           uniwind: 'absolute / relative',
@@ -82,13 +82,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui: `$pos` named prop; absolute/relative/static cross-platform, fixed/sticky web-only (RN has no fixed/sticky positioning). NativeWind/Uniwind map absolute/relative on native and drop fixed/sticky.',
+          'Tamagui: `pos` named prop; absolute/relative/static cross-platform, fixed/sticky web-only (RN has no fixed/sticky positioning). NativeWind/Uniwind map absolute/relative on native and drop fixed/sticky.',
       },
       {
         name: 'top/right/bottom/left',
         description: 'Position offsets',
         examples: {
-          tamagui: '$t={10} $r={10} $b={10} $l={10}',
+          tamagui: 't={10} r={10} b={10} l={10}',
           tailwind: 'top-4 right-4 bottom-4 left-4',
           nativewind: 'top-4 right-4 bottom-4 left-4',
           uniwind: 'top-4 right-4 bottom-4 left-4',
@@ -104,7 +104,7 @@ export const categories: Category[] = [
         name: 'inset',
         description: 'Shorthand for all position offsets',
         examples: {
-          tamagui: '$inset={10}',
+          tamagui: 'inset={10}',
           tailwind: 'inset-4 inset-x-4 inset-y-4',
           nativewind: 'inset-4',
           uniwind: 'inset-4',
@@ -120,7 +120,7 @@ export const categories: Category[] = [
         name: 'z-index',
         description: 'Stack order',
         examples: {
-          tamagui: '$zi={10}',
+          tamagui: 'zi={10}',
           tailwind: 'z-10',
           nativewind: 'z-10',
           uniwind: 'z-10',
@@ -136,7 +136,7 @@ export const categories: Category[] = [
         name: 'overflow',
         description: 'Overflow behavior',
         examples: {
-          tamagui: '$ov="hidden"',
+          tamagui: 'ov="hidden"',
           tailwind: 'overflow-hidden / overflow-scroll',
           nativewind: 'overflow-hidden / overflow-scroll',
           uniwind: 'overflow-hidden',
@@ -148,13 +148,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui: `$ov` named prop, cross-platform (visible/hidden/scroll). RN ignores overflow:scroll on Android for clipping. Uniwind: only overflow-hidden documented.',
+          'Tamagui: `ov` named prop, cross-platform (visible/hidden/scroll). RN ignores overflow:scroll on Android for clipping. Uniwind: only overflow-hidden documented.',
       },
       {
         name: 'aspect-ratio',
         description: 'Aspect ratio',
         examples: {
-          tamagui: '$aspectRatio={1}',
+          tamagui: 'aspectRatio={1}',
           tailwind: 'aspect-square / aspect-video',
           nativewind: 'aspect-square / aspect-video',
           uniwind: 'aspect-square',
@@ -166,13 +166,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui: `$aspectRatio` cross-platform. Uniwind docs note aspect-ratio has "limited support".',
+          'Tamagui: `aspectRatio` cross-platform. Uniwind docs note aspect-ratio has "limited support".',
       },
       {
         name: 'box-sizing',
         description: 'Box model sizing',
         examples: {
-          tamagui: '$bxs="border-box"',
+          tamagui: 'bxs="border-box"',
           tailwind: 'box-border / box-content',
           nativewind: 'box-border',
           uniwind: 'box-border',
@@ -184,13 +184,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui: `$bxs` named prop, maps to RN 0.77+ boxSizing (New Architecture) so border-box/content-box both work cross-platform. RN defaults to and only supports border-box, so NativeWind/Uniwind box-border is a no-op and box-content is unsupported on native.',
+          'Tamagui: `bxs` named prop, maps to RN 0.77+ boxSizing (New Architecture) so border-box/content-box both work cross-platform. RN defaults to and only supports border-box, so NativeWind/Uniwind box-border is a no-op and box-content is unsupported on native.',
       },
       {
         name: 'isolation',
         description: 'Stacking context isolation',
         examples: {
-          tamagui: '$isolation="isolate"',
+          tamagui: 'isolation="isolate"',
           tailwind: 'isolate / isolation-auto',
         },
         support: {
@@ -200,7 +200,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$isolation` maps to RN 0.77+ isolation (New Architecture) for native stacking contexts; NativeWind `isolate` is web-only.',
+          'Tamagui: `isolation` maps to RN 0.77+ isolation (New Architecture) for native stacking contexts; NativeWind `isolate` is web-only.',
       },
       {
         name: 'visibility',
@@ -249,7 +249,7 @@ export const categories: Category[] = [
         name: 'columns',
         description: 'Multi-column layout',
         examples: {
-          tamagui: '$columnCount={3}',
+          tamagui: 'columnCount={3}',
           tailwind: 'columns-3',
         },
         support: {
@@ -259,13 +259,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$columnCount` is a typed prop but CSS multi-column only renders on web; RN has no multi-column layout. Uniwind explicitly lists `columns-*` as unsupported.',
+          'Tamagui: `columnCount` is a typed prop but CSS multi-column only renders on web; RN has no multi-column layout. Uniwind explicitly lists `columns-*` as unsupported.',
       },
       {
         name: 'object-fit',
         description: 'Replaced element sizing',
         examples: {
-          tamagui: '$objectFit="cover"',
+          tamagui: 'objectFit="cover"',
           tailwind: 'object-cover / object-contain',
           nativewind: 'object-cover / object-contain',
         },
@@ -282,7 +282,7 @@ export const categories: Category[] = [
         name: 'object-position',
         description: 'Replaced element position',
         examples: {
-          tamagui: '$objectPosition="center"',
+          tamagui: 'objectPosition="center"',
           tailwind: 'object-center / object-top',
         },
         support: {
@@ -307,7 +307,7 @@ export const categories: Category[] = [
         name: 'flex-direction',
         description: 'Main axis direction',
         examples: {
-          tamagui: '$fd="row"',
+          tamagui: 'fd="row"',
           tailwind: 'flex-row / flex-col',
           nativewind: 'flex-row / flex-col',
           uniwind: 'flex-row / flex-col',
@@ -323,7 +323,7 @@ export const categories: Category[] = [
         name: 'flex-wrap',
         description: 'Wrapping behavior',
         examples: {
-          tamagui: '$fw="wrap"',
+          tamagui: 'fw="wrap"',
           tailwind: 'flex-wrap / flex-nowrap',
           nativewind: 'flex-wrap / flex-nowrap',
           uniwind: 'flex-wrap / flex-nowrap',
@@ -339,7 +339,7 @@ export const categories: Category[] = [
         name: 'flex',
         description: 'Flex shorthand',
         examples: {
-          tamagui: '$f={1}',
+          tamagui: 'f={1}',
           tailwind: 'flex-1 / flex-auto / flex-none',
           nativewind: 'flex-1',
           uniwind: 'flex-1',
@@ -351,13 +351,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui: `$f` plus separate `$fg`/`$fs`/`$fb` give full control cross-platform. On native, RN flex is a single number, so the CSS `flex: grow shrink basis` shorthand (e.g. flex-auto/flex-initial) does not map cleanly; NativeWind/Uniwind support flex-1 but the multi-value shorthands are web-leaning.',
+          'Tamagui: `f` plus separate `fg`/`fs`/`fb` give full control cross-platform. On native, RN flex is a single number, so the CSS `flex: grow shrink basis` shorthand (e.g. flex-auto/flex-initial) does not map cleanly; NativeWind/Uniwind support flex-1 but the multi-value shorthands are web-leaning.',
       },
       {
         name: 'flex-grow',
         description: 'Flex grow factor',
         examples: {
-          tamagui: '$fg={1}',
+          tamagui: 'fg={1}',
           tailwind: 'grow / grow-0',
           nativewind: 'grow / grow-0',
           uniwind: 'grow / grow-0',
@@ -373,7 +373,7 @@ export const categories: Category[] = [
         name: 'flex-shrink',
         description: 'Flex shrink factor',
         examples: {
-          tamagui: '$fs={0}',
+          tamagui: 'fs={0}',
           tailwind: 'shrink / shrink-0',
           nativewind: 'shrink / shrink-0',
           uniwind: 'shrink / shrink-0',
@@ -389,7 +389,7 @@ export const categories: Category[] = [
         name: 'flex-basis',
         description: 'Initial main size',
         examples: {
-          tamagui: '$fb="auto"',
+          tamagui: 'fb="auto"',
           tailwind: 'basis-1/2 / basis-auto',
           nativewind: 'basis-auto',
           uniwind: 'basis-auto',
@@ -405,7 +405,7 @@ export const categories: Category[] = [
         name: 'justify-content',
         description: 'Main axis alignment',
         examples: {
-          tamagui: '$jc="center"',
+          tamagui: 'jc="center"',
           tailwind: 'justify-center / justify-between',
           nativewind: 'justify-center / justify-between',
           uniwind: 'justify-center / justify-between',
@@ -421,7 +421,7 @@ export const categories: Category[] = [
         name: 'align-items',
         description: 'Cross axis alignment',
         examples: {
-          tamagui: '$ai="center"',
+          tamagui: 'ai="center"',
           tailwind: 'items-center / items-start',
           nativewind: 'items-center / items-start',
           uniwind: 'items-center / items-start',
@@ -437,7 +437,7 @@ export const categories: Category[] = [
         name: 'align-self',
         description: 'Individual cross axis alignment',
         examples: {
-          tamagui: '$als="center"',
+          tamagui: 'als="center"',
           tailwind: 'self-center / self-start',
           nativewind: 'self-center / self-start',
           uniwind: 'self-center / self-start',
@@ -453,7 +453,7 @@ export const categories: Category[] = [
         name: 'align-content',
         description: 'Multi-line cross axis alignment',
         examples: {
-          tamagui: '$ac="center"',
+          tamagui: 'ac="center"',
           tailwind: 'content-center / content-between',
           nativewind: 'content-center',
           uniwind: 'content-center',
@@ -469,7 +469,7 @@ export const categories: Category[] = [
         name: 'gap',
         description: 'Gap between flex/grid items',
         examples: {
-          tamagui: '$gap={10} $columnGap={8} $rowGap={8}',
+          tamagui: 'gap={10} columnGap={8} rowGap={8}',
           tailwind: 'gap-4 / gap-x-4 / gap-y-4',
           nativewind: 'gap-4 / gap-x-4 / gap-y-4',
           uniwind: 'gap-4',
@@ -481,13 +481,13 @@ export const categories: Category[] = [
           uniwind: 'full',
         },
         notes:
-          'Tamagui: `$gap`/`$columnGap`/`$rowGap` are named props, cross-platform via RN 0.71+ flexbox gap. All four support it natively now (RN 0.71+ added row/column gap to flexbox); pre-0.71 needed a margin workaround.',
+          'Tamagui: `gap`/`columnGap`/`rowGap` are named props, cross-platform via RN 0.71+ flexbox gap. All four support it natively now (RN 0.71+ added row/column gap to flexbox); pre-0.71 needed a margin workaround.',
       },
       {
         name: 'order',
         description: 'Flex item order',
         examples: {
-          tamagui: '$order={1}',
+          tamagui: 'order={1}',
           tailwind: 'order-1 / order-first / order-last',
         },
         support: {
@@ -497,7 +497,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$order` is a typed prop but flex `order` only affects web layout; RN flexbox ignores order (paint order = child order). Web-only for everyone.',
+          'Tamagui: `order` is a typed prop but flex `order` only affects web layout; RN flexbox ignores order (paint order = child order). Web-only for everyone.',
       },
     ],
   },
@@ -512,7 +512,7 @@ export const categories: Category[] = [
         name: 'grid-template-columns',
         description: 'Define grid columns',
         examples: {
-          tamagui: '$gridTemplateColumns="repeat(3, 1fr)"',
+          tamagui: 'gridTemplateColumns="repeat(3, 1fr)"',
           tailwind: 'grid-cols-3',
         },
         support: {
@@ -522,13 +522,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'CSS grid only exists on web; RN has no grid layout engine. Tamagui exposes `$gridTemplate*` as typed props but they no-op on native. All RN approaches require manual flex layout or a list component instead.',
+          'CSS grid only exists on web; RN has no grid layout engine. Tamagui exposes `gridTemplate*` as typed props but they no-op on native. All RN approaches require manual flex layout or a list component instead.',
       },
       {
         name: 'grid-column',
         description: 'Column span/placement',
         examples: {
-          tamagui: '$gridColumn="span 2"',
+          tamagui: 'gridColumn="span 2"',
           tailwind: 'col-span-2 / col-start-1',
         },
         support: {
@@ -542,7 +542,7 @@ export const categories: Category[] = [
         name: 'grid-row',
         description: 'Row span/placement',
         examples: {
-          tamagui: '$gridRow="span 2"',
+          tamagui: 'gridRow="span 2"',
           tailwind: 'row-span-2 / row-start-1',
         },
         support: {
@@ -556,7 +556,7 @@ export const categories: Category[] = [
         name: 'grid-template-areas',
         description: 'Named grid areas',
         examples: {
-          tamagui: '$gridTemplateAreas="..."',
+          tamagui: 'gridTemplateAreas="..."',
           tailwind: 'grid-areas-[...]',
         },
         support: {
@@ -570,7 +570,7 @@ export const categories: Category[] = [
         name: 'grid-auto-flow',
         description: 'Auto-placement algorithm',
         examples: {
-          tamagui: '$gridAutoFlow="row"',
+          tamagui: 'gridAutoFlow="row"',
           tailwind: 'grid-flow-row / grid-flow-col',
         },
         support: {
@@ -580,7 +580,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$gridAutoFlow` is a typed prop but renders web-only (RN has no grid).',
+          'Tamagui: `gridAutoFlow` is a typed prop but renders web-only (RN has no grid).',
       },
       {
         name: 'place-content/items/self',
@@ -608,7 +608,7 @@ export const categories: Category[] = [
         name: 'padding',
         description: 'Inner spacing',
         examples: {
-          tamagui: '$p={16} $pt={8} $px={12}',
+          tamagui: 'p={16} pt={8} px={12}',
           tailwind: 'p-4 pt-2 px-3',
           nativewind: 'p-4 pt-2 px-3',
           uniwind: 'p-4 pt-2 px-3',
@@ -624,7 +624,7 @@ export const categories: Category[] = [
         name: 'margin',
         description: 'Outer spacing',
         examples: {
-          tamagui: '$m={16} $mt={8} $mx={12}',
+          tamagui: 'm={16} mt={8} mx={12}',
           tailwind: 'm-4 mt-2 mx-3',
           nativewind: 'm-4 mt-2 mx-3',
           uniwind: 'm-4 mt-2 mx-3',
@@ -640,7 +640,7 @@ export const categories: Category[] = [
         name: 'padding-block/inline (logical)',
         description: 'Logical spacing (writing-mode aware)',
         examples: {
-          tamagui: '$paddingBlock={10} $paddingInline={10}',
+          tamagui: 'paddingBlock={10} paddingInline={10}',
           tailwind: 'ps-4 pe-4 / pb-4 pt-4',
           nativewind: 'ps-4 pe-4',
         },
@@ -656,7 +656,7 @@ export const categories: Category[] = [
         name: 'margin-block/inline (logical)',
         description: 'Logical margin (writing-mode aware)',
         examples: {
-          tamagui: '$marginBlock={10} $marginInline={10}',
+          tamagui: 'marginBlock={10} marginInline={10}',
           tailwind: 'ms-4 me-4',
           nativewind: 'ms-4 me-4',
         },
@@ -682,7 +682,7 @@ export const categories: Category[] = [
           uniwind: 'full',
         },
         notes:
-          'Tamagui has no `space-*` className; the idiomatic equivalent is `$gap` (cross-platform). NativeWind v5 marks space-x/space-y as web-only (it injects a `> * + *` sibling selector that has no native equivalent) and recommends gap on native. Uniwind lists space-x/y as supported.',
+          'Tamagui has no `space-*` className; the idiomatic equivalent is `gap` (cross-platform). NativeWind v5 marks space-x/space-y as web-only (it injects a `> * + *` sibling selector that has no native equivalent) and recommends gap on native. Uniwind lists space-x/y as supported.',
       },
     ],
   },
@@ -697,7 +697,7 @@ export const categories: Category[] = [
         name: 'width',
         description: 'Element width',
         examples: {
-          tamagui: '$w={100} / $w="50%"',
+          tamagui: 'w={100} / w="50%"',
           tailwind: 'w-24 / w-1/2 / w-full',
           nativewind: 'w-24 / w-1/2 / w-full',
           uniwind: 'w-24 / w-1/2 / w-full',
@@ -713,7 +713,7 @@ export const categories: Category[] = [
         name: 'height',
         description: 'Element height',
         examples: {
-          tamagui: '$h={100} / $h="50%"',
+          tamagui: 'h={100} / h="50%"',
           tailwind: 'h-24 / h-1/2 / h-full',
           nativewind: 'h-24 / h-full',
           uniwind: 'h-24 / h-full',
@@ -729,7 +729,7 @@ export const categories: Category[] = [
         name: 'min-width / max-width',
         description: 'Width constraints',
         examples: {
-          tamagui: '$miw={100} $maw={500}',
+          tamagui: 'miw={100} maw={500}',
           tailwind: 'min-w-0 max-w-lg',
           nativewind: 'min-w-0 max-w-lg',
           uniwind: 'min-w-0 max-w-lg',
@@ -745,7 +745,7 @@ export const categories: Category[] = [
         name: 'min-height / max-height',
         description: 'Height constraints',
         examples: {
-          tamagui: '$mih={100} $mah={500}',
+          tamagui: 'mih={100} mah={500}',
           tailwind: 'min-h-0 max-h-screen',
           nativewind: 'min-h-0 max-h-screen',
           uniwind: 'min-h-0 max-h-screen',
@@ -761,7 +761,7 @@ export const categories: Category[] = [
         name: 'size (width + height)',
         description: 'Combined width and height shorthand',
         examples: {
-          tamagui: '$w={16} $h={16}',
+          tamagui: 'w={16} h={16}',
           tailwind: 'size-4 / size-full',
           nativewind: 'size-4 / size-full',
           uniwind: 'size-4',
@@ -773,13 +773,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'The `size-*` shorthand (sets width+height together) shipped in Tailwind v3.4. Tamagui has no single shorthand: use `$w`/`$h` (both cross-platform, so the capability exists, just two props). NativeWind v5 docs only enumerate `w-*`/`h-*` as Full on native; `size-*` native support is undocumented/unconfirmed.',
+          'The `size-*` shorthand (sets width+height together) shipped in Tailwind v3.4. Tamagui has no single shorthand: use `w`/`h` (both cross-platform, so the capability exists, just two props). NativeWind v5 docs only enumerate `w-*`/`h-*` as Full on native; `size-*` native support is undocumented/unconfirmed.',
       },
       {
         name: 'inline-size / block-size',
         description: 'Logical sizing (writing-mode aware)',
         examples: {
-          tamagui: '$inlineSize={100} $blockSize={100}',
+          tamagui: 'inlineSize={100} blockSize={100}',
           tailwind: 'w-* / h-* (logical via writing-mode)',
         },
         support: {
@@ -789,7 +789,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui types `$inlineSize`/`$blockSize` as size-token props but they only resolve on web (RN has no inlineSize/blockSize style props; use `$w`/`$h`). On native, writing-mode is effectively LTR/TTB so logical == physical anyway.',
+          'Tamagui types `inlineSize`/`blockSize` as size-token props but they only resolve on web (RN has no inlineSize/blockSize style props; use `w`/`h`). On native, writing-mode is effectively LTR/TTB so logical == physical anyway.',
       },
     ],
   },
@@ -804,7 +804,7 @@ export const categories: Category[] = [
         name: 'font-family',
         description: 'Font family',
         examples: {
-          tamagui: '$ff="$body"',
+          tamagui: 'ff="body"',
           tailwind: 'font-sans / font-serif / font-mono',
           nativewind: 'font-sans',
           uniwind: 'font-sans',
@@ -820,7 +820,7 @@ export const categories: Category[] = [
         name: 'font-size',
         description: 'Font size',
         examples: {
-          tamagui: '$fontSize={16}',
+          tamagui: 'fontSize={16}',
           tailwind: 'text-sm / text-lg / text-xl',
           nativewind: 'text-sm / text-lg',
           uniwind: 'text-sm / text-lg',
@@ -836,7 +836,7 @@ export const categories: Category[] = [
         name: 'font-weight',
         description: 'Font weight',
         examples: {
-          tamagui: '$fontWeight="bold"',
+          tamagui: 'fontWeight="bold"',
           tailwind: 'font-bold / font-semibold / font-light',
           nativewind: 'font-bold / font-semibold',
           uniwind: 'font-bold / font-semibold',
@@ -852,7 +852,7 @@ export const categories: Category[] = [
         name: 'font-style',
         description: 'Italic/normal',
         examples: {
-          tamagui: '$fst="italic"',
+          tamagui: 'fst="italic"',
           tailwind: 'italic / not-italic',
           nativewind: 'italic',
           uniwind: 'italic',
@@ -868,7 +868,7 @@ export const categories: Category[] = [
         name: 'color',
         description: 'Text color',
         examples: {
-          tamagui: '$col="$color"',
+          tamagui: 'col="color"',
           tailwind: 'text-red-500 / text-blue-700',
           nativewind: 'text-red-500',
           uniwind: 'text-red-500',
@@ -884,7 +884,7 @@ export const categories: Category[] = [
         name: 'text-align',
         description: 'Text alignment',
         examples: {
-          tamagui: '$ta="center"',
+          tamagui: 'ta="center"',
           tailwind: 'text-center / text-left / text-right',
           nativewind: 'text-center',
           uniwind: 'text-center',
@@ -900,7 +900,7 @@ export const categories: Category[] = [
         name: 'text-transform',
         description: 'Text case transformation',
         examples: {
-          tamagui: '$tt="uppercase"',
+          tamagui: 'tt="uppercase"',
           tailwind: 'uppercase / lowercase / capitalize',
           nativewind: 'uppercase / lowercase',
           uniwind: 'uppercase',
@@ -916,7 +916,7 @@ export const categories: Category[] = [
         name: 'text-decoration',
         description: 'Underline/strikethrough',
         examples: {
-          tamagui: '$td="underline"',
+          tamagui: 'td="underline"',
           tailwind: 'underline / line-through / no-underline',
           nativewind: 'underline / line-through',
           uniwind: 'underline',
@@ -932,7 +932,7 @@ export const categories: Category[] = [
         name: 'letter-spacing',
         description: 'Letter spacing',
         examples: {
-          tamagui: '$ls={1.5}',
+          tamagui: 'ls={1.5}',
           tailwind: 'tracking-tight / tracking-wide',
           nativewind: 'tracking-tight',
           uniwind: 'tracking-tight',
@@ -948,7 +948,7 @@ export const categories: Category[] = [
         name: 'line-height',
         description: 'Line height',
         examples: {
-          tamagui: '$lh={24}',
+          tamagui: 'lh={24}',
           tailwind: 'leading-tight / leading-loose',
           nativewind: 'leading-tight',
           uniwind: 'leading-tight',
@@ -964,7 +964,7 @@ export const categories: Category[] = [
         name: 'line-clamp',
         description: 'Truncate text to N lines',
         examples: {
-          tamagui: '$lineClamp={3}',
+          tamagui: 'lineClamp={3}',
           tailwind: 'line-clamp-3',
           nativewind: 'line-clamp-3',
         },
@@ -979,7 +979,7 @@ export const categories: Category[] = [
         name: 'white-space',
         description: 'Whitespace handling',
         examples: {
-          tamagui: '$whiteSpace="nowrap"',
+          tamagui: 'whiteSpace="nowrap"',
           tailwind: 'whitespace-nowrap / whitespace-pre',
         },
         support: {
@@ -989,13 +989,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$whiteSpace` is a web-only text prop (tree-shaken on native). On native, text wrapping is controlled by `numberOfLines` and container width, not white-space.',
+          'Tamagui: `whiteSpace` is a web-only text prop (tree-shaken on native). On native, text wrapping is controlled by `numberOfLines` and container width, not white-space.',
       },
       {
         name: 'word-break',
         description: 'Word breaking behavior',
         examples: {
-          tamagui: '$wordWrap="break-word"',
+          tamagui: 'wordWrap="break-word"',
           tailwind: 'break-words / break-all',
         },
         support: {
@@ -1005,13 +1005,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$wordWrap` (`ww` shorthand) is web-only. RN has no word-break control; it breaks at whitespace or character based on platform text engine.',
+          'Tamagui: `wordWrap` (`ww` shorthand) is web-only. RN has no word-break control; it breaks at whitespace or character based on platform text engine.',
       },
       {
         name: 'text-overflow',
         description: 'Text overflow behavior',
         examples: {
-          tamagui: '$textOverflow="ellipsis"',
+          tamagui: 'textOverflow="ellipsis"',
           tailwind: 'truncate / text-ellipsis / text-clip',
         },
         support: {
@@ -1021,7 +1021,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$textOverflow="ellipsis"` works cross-platform on Text - web uses CSS text-overflow, native maps to numberOfLines={1} + ellipsizeMode="tail". Other values (clip) are web-only.',
+          'Tamagui: `textOverflow="ellipsis"` works cross-platform on Text - web uses CSS text-overflow, native maps to numberOfLines={1} + ellipsizeMode="tail". Other values (clip) are web-only.',
       },
       {
         name: 'text-indent',
@@ -1040,7 +1040,7 @@ export const categories: Category[] = [
         name: 'vertical-align',
         description: 'Vertical alignment of inline elements',
         examples: {
-          tamagui: '$verticalAlign="middle"',
+          tamagui: 'verticalAlign="middle"',
           tailwind: 'align-middle / align-top',
         },
         support: {
@@ -1050,13 +1050,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$verticalAlign` maps to RN 0.71+ verticalAlign on Text (auto/top/bottom/middle), so it works cross-platform. NativeWind `align-*` is largely a web inline-element concept; RN only honors a subset on Text.',
+          'Tamagui: `verticalAlign` maps to RN 0.71+ verticalAlign on Text (auto/top/bottom/middle), so it works cross-platform. NativeWind `align-*` is largely a web inline-element concept; RN only honors a subset on Text.',
       },
       {
         name: 'font-variant-numeric',
         description: 'Numeric font features',
         examples: {
-          tamagui: '$fontVariant={["tabular-nums"]}',
+          tamagui: 'fontVariant={["tabular-nums"]}',
           tailwind: 'tabular-nums / oldstyle-nums',
         },
         support: {
@@ -1066,13 +1066,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$fontVariant` maps to RN fontVariant array; RN supports a subset (tabular-nums, oldstyle-nums, lining-nums, etc.) cross-platform but not the full CSS font-variant-numeric grammar. NativeWind maps the common numeric variants to RN fontVariant, same subset limitation.',
+          'Tamagui: `fontVariant` maps to RN fontVariant array; RN supports a subset (tabular-nums, oldstyle-nums, lining-nums, etc.) cross-platform but not the full CSS font-variant-numeric grammar. NativeWind maps the common numeric variants to RN fontVariant, same subset limitation.',
       },
       {
         name: 'text-shadow',
         description: 'Text shadow',
         examples: {
-          tamagui: '$textShadow="0px 1px 2px rgba(0,0,0,0.3)"',
+          tamagui: 'textShadow="0px 1px 2px rgba(0,0,0,0.3)"',
           tailwind: 'text-shadow-sm / text-shadow-lg',
           nativewind: 'text-shadow-sm / text-shadow-lg',
         },
@@ -1083,13 +1083,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tailwind text-shadow utilities are new in v4.1; NativeWind v5 maps to RN textShadow* (single shadow only). Tamagui `$textShadow` + offset/radius/color are cross-platform via RN textShadow* props.',
+          'Tailwind text-shadow utilities are new in v4.1; NativeWind v5 maps to RN textShadow* (single shadow only). Tamagui `textShadow` + offset/radius/color are cross-platform via RN textShadow* props.',
       },
       {
         name: 'text-wrap (balance / pretty)',
         description: 'Better line-break distribution for headings/paragraphs',
         examples: {
-          tamagui: '$textWrap="balance"',
+          tamagui: 'textWrap="balance"',
           tailwind: 'text-balance / text-pretty',
         },
         support: {
@@ -1099,7 +1099,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tailwind `text-balance` (text-wrap: balance) and `text-pretty` shipped in v3.4. Tamagui `$textWrap` is a web-only prop. RN text layout has no balance/pretty algorithm, so all are web-only (NativeWind passes them through on web only).',
+          'Tailwind `text-balance` (text-wrap: balance) and `text-pretty` shipped in v3.4. Tamagui `textWrap` is a web-only prop. RN text layout has no balance/pretty algorithm, so all are web-only (NativeWind passes them through on web only).',
       },
     ],
   },
@@ -1114,7 +1114,7 @@ export const categories: Category[] = [
         name: 'background-color',
         description: 'Background color',
         examples: {
-          tamagui: '$bg="$background"',
+          tamagui: 'bg="background"',
           tailwind: 'bg-red-500 / bg-blue-700',
           nativewind: 'bg-red-500',
           uniwind: 'bg-red-500',
@@ -1130,7 +1130,7 @@ export const categories: Category[] = [
         name: 'background-image',
         description: 'Background images and gradients',
         examples: {
-          tamagui: '$backgroundImage="linear-gradient(...)"',
+          tamagui: 'backgroundImage="linear-gradient(...)"',
           tailwind: 'bg-linear-to-r from-blue-500 to-purple-500',
           nativewind: 'bg-linear-to-r',
         },
@@ -1141,7 +1141,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$backgroundImage` maps to RN 0.76+ experimental_backgroundImage, so CSS gradients (linear/radial) render on native; raster url() background images stay web-only (use the Image component on native). NativeWind v5 similarly maps gradient utilities to RN 0.76+ backgroundImage; url() backgrounds remain web-only.',
+          'Tamagui: `backgroundImage` maps to RN 0.76+ experimental_backgroundImage, so CSS gradients (linear/radial) render on native; raster url() background images stay web-only (use the Image component on native). NativeWind v5 similarly maps gradient utilities to RN 0.76+ backgroundImage; url() backgrounds remain web-only.',
       },
       {
         name: 'background-position',
@@ -1208,7 +1208,7 @@ export const categories: Category[] = [
         name: 'border-width',
         description: 'Border width',
         examples: {
-          tamagui: '$bw={1} $btw={2}',
+          tamagui: 'bw={1} btw={2}',
           tailwind: 'border / border-2 / border-t-2',
           nativewind: 'border / border-2',
           uniwind: 'border / border-2',
@@ -1224,7 +1224,7 @@ export const categories: Category[] = [
         name: 'border-color',
         description: 'Border color',
         examples: {
-          tamagui: '$bc="$borderColor"',
+          tamagui: 'bc="borderColor"',
           tailwind: 'border-red-500 / border-blue-700',
           nativewind: 'border-red-500',
           uniwind: 'border-red-500',
@@ -1240,7 +1240,7 @@ export const categories: Category[] = [
         name: 'border-style',
         description: 'Border style',
         examples: {
-          tamagui: '$bs="dashed"',
+          tamagui: 'bs="dashed"',
           tailwind: 'border-solid / border-dashed / border-dotted',
           nativewind: 'border-solid / border-dashed',
           uniwind: 'border-solid',
@@ -1256,7 +1256,7 @@ export const categories: Category[] = [
         name: 'border-radius',
         description: 'Corner rounding',
         examples: {
-          tamagui: '$rounded={8} $btlr={4}',
+          tamagui: 'rounded={8} btlr={4}',
           tailwind: 'rounded-lg / rounded-t-lg',
           nativewind: 'rounded-lg',
           uniwind: 'rounded-lg',
@@ -1272,7 +1272,7 @@ export const categories: Category[] = [
         name: 'border-width (logical)',
         description: 'Logical border widths (block/inline)',
         examples: {
-          tamagui: '$borderBlockWidth={1} $borderInlineWidth={2}',
+          tamagui: 'borderBlockWidth={1} borderInlineWidth={2}',
           tailwind: 'border-s / border-e',
           nativewind: 'border-s / border-e',
         },
@@ -1289,7 +1289,7 @@ export const categories: Category[] = [
         name: 'outline',
         description: 'Outline styling',
         examples: {
-          tamagui: '$outlineWidth={2} $outlineColor="blue"',
+          tamagui: 'outlineWidth={2} outlineColor="blue"',
           tailwind: 'outline / outline-2 / outline-blue-500',
           nativewind: 'outline / outline-2',
         },
@@ -1300,13 +1300,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$outline*` named props map to RN 0.77+ outline / outlineColor / outlineWidth / outlineOffset (New Architecture), so outlines render cross-platform. NativeWind v5 maps outline-* to the same RN props.',
+          'Tamagui: `outline*` named props map to RN 0.77+ outline / outlineColor / outlineWidth / outlineOffset (New Architecture), so outlines render cross-platform. NativeWind v5 maps outline-* to the same RN props.',
       },
       {
         name: 'ring',
         description: 'Box-shadow based ring',
         examples: {
-          tamagui: '$bxsh="0 0 0 2px blue" (ring via box-shadow)',
+          tamagui: 'bxsh="0 0 0 2px blue" (ring via box-shadow)',
           tailwind: 'ring / ring-2 / ring-blue-500',
           nativewind: 'ring / ring-2',
         },
@@ -1317,7 +1317,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui has no `ring` shorthand but the same effect is a one-liner via `$bxsh` (box-shadow), which works cross-platform on RN 0.76+. NativeWind ring is box-shadow-based, so on native it inherits the RN boxShadow limitations (no inset). Uniwind: ring not documented.',
+          'Tamagui has no `ring` shorthand but the same effect is a one-liner via `bxsh` (box-shadow), which works cross-platform on RN 0.76+. NativeWind ring is box-shadow-based, so on native it inherits the RN boxShadow limitations (no inset). Uniwind: ring not documented.',
       },
       {
         name: 'divide',
@@ -1347,7 +1347,7 @@ export const categories: Category[] = [
         name: 'opacity',
         description: 'Element opacity',
         examples: {
-          tamagui: '$o={0.5}',
+          tamagui: 'o={0.5}',
           tailwind: 'opacity-50',
           nativewind: 'opacity-50',
           uniwind: 'opacity-50',
@@ -1363,7 +1363,7 @@ export const categories: Category[] = [
         name: 'box-shadow',
         description: 'Box shadow',
         examples: {
-          tamagui: '$bxsh="0 2px 4px rgba(0,0,0,0.1)"',
+          tamagui: 'bxsh="0 2px 4px rgba(0,0,0,0.1)"',
           tailwind: 'shadow-sm / shadow-lg / shadow-xl',
           nativewind: 'shadow-sm / shadow-lg',
           uniwind: 'shadow-sm / shadow-lg',
@@ -1381,7 +1381,7 @@ export const categories: Category[] = [
         name: 'mix-blend-mode',
         description: 'Element blending mode',
         examples: {
-          tamagui: '$mixBlendMode="multiply"',
+          tamagui: 'mixBlendMode="multiply"',
           tailwind: 'mix-blend-multiply / mix-blend-screen',
         },
         support: {
@@ -1395,7 +1395,7 @@ export const categories: Category[] = [
         name: 'cursor',
         description: 'Mouse cursor style',
         examples: {
-          tamagui: '$cur="pointer"',
+          tamagui: 'cur="pointer"',
           tailwind: 'cursor-pointer / cursor-default',
         },
         support: {
@@ -1405,13 +1405,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$cur` (cursor) is accepted as a prop on native without error but only renders on web/web-of-RN; touch platforms have no cursor. Effectively web-only for everyone.',
+          'Tamagui: `cur` (cursor) is accepted as a prop on native without error but only renders on web/web-of-RN; touch platforms have no cursor. Effectively web-only for everyone.',
       },
       {
         name: 'pointer-events',
         description: 'Pointer event behavior',
         examples: {
-          tamagui: '$pe="none"',
+          tamagui: 'pe="none"',
           tailwind: 'pointer-events-none / pointer-events-auto',
           nativewind: 'pointer-events-none / pointer-events-auto',
         },
@@ -1422,13 +1422,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$pe` maps to the core RN View pointerEvents prop (cross-platform). NativeWind maps pointer-events-* to the same RN prop. Uniwind: not documented.',
+          'Tamagui: `pe` maps to the core RN View pointerEvents prop (cross-platform). NativeWind maps pointer-events-* to the same RN prop. Uniwind: not documented.',
       },
       {
         name: 'user-select',
         description: 'Text selection behavior',
         examples: {
-          tamagui: '$ussel="none"',
+          tamagui: 'ussel="none"',
           tailwind: 'select-none / select-text / select-all',
           nativewind: 'select-none / select-text',
         },
@@ -1439,7 +1439,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$ussel` (userSelect) maps to RN 0.71+ userSelect on Text/View, so none/text/auto work cross-platform. NativeWind select-* maps to the same RN prop; select-all is web-only.',
+          'Tamagui: `ussel` (userSelect) maps to RN 0.71+ userSelect on Text/View, so none/text/auto work cross-platform. NativeWind select-* maps to the same RN prop; select-all is web-only.',
       },
     ],
   },
@@ -1454,7 +1454,7 @@ export const categories: Category[] = [
         name: 'filter (blur, brightness, etc)',
         description: 'CSS filter effects',
         examples: {
-          tamagui: '$filter="blur(4px)"',
+          tamagui: 'filter="blur(4px)"',
           tailwind: 'blur-sm / brightness-150 / contrast-125',
           nativewind: 'blur-sm / brightness-150',
         },
@@ -1465,13 +1465,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$filter` maps to RN 0.76+ filter, so blur/brightness/contrast/etc. render on native — but some filters (e.g. drop-shadow) are Android 12+ only and behavior differs from CSS. NativeWind v5 maps filter utilities to the same RN 0.76+ prop with the same platform caveats.',
+          'Tamagui: `filter` maps to RN 0.76+ filter, so blur/brightness/contrast/etc. render on native — but some filters (e.g. drop-shadow) are Android 12+ only and behavior differs from CSS. NativeWind v5 maps filter utilities to the same RN 0.76+ prop with the same platform caveats.',
       },
       {
         name: 'backdrop-filter',
         description: 'Backdrop filter effects',
         examples: {
-          tamagui: '$backdropFilter="blur(8px)"',
+          tamagui: 'backdropFilter="blur(8px)"',
           tailwind: 'backdrop-blur-sm / backdrop-brightness-150',
         },
         support: {
@@ -1481,7 +1481,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$backdropFilter` is web-only. RN has no backdrop-filter; native blur-behind effects need a dedicated component (e.g. expo-blur / @react-native-community/blur).',
+          'Tamagui: `backdropFilter` is web-only. RN has no backdrop-filter; native blur-behind effects need a dedicated component (e.g. expo-blur / @react-native-community/blur).',
       },
     ],
   },
@@ -1496,7 +1496,7 @@ export const categories: Category[] = [
         name: 'transform',
         description: 'CSS transform',
         examples: {
-          tamagui: '$tr="rotate(45deg) scale(1.1)"',
+          tamagui: 'tr="rotate(45deg) scale(1.1)"',
           tailwind: 'transform',
         },
         support: {
@@ -1510,7 +1510,7 @@ export const categories: Category[] = [
         name: 'translate',
         description: 'Translate position',
         examples: {
-          tamagui: '$x={10} $y={20}',
+          tamagui: 'x={10} y={20}',
           tailwind: 'translate-x-4 / translate-y-4',
           nativewind: 'translate-x-4',
           uniwind: 'translate-x-4',
@@ -1526,7 +1526,7 @@ export const categories: Category[] = [
         name: 'scale',
         description: 'Scale sizing',
         examples: {
-          tamagui: '$scale={1.5} $scaleX={2}',
+          tamagui: 'scale={1.5} scaleX={2}',
           tailwind: 'scale-150 / scale-x-150',
           nativewind: 'scale-150',
           uniwind: 'scale-150',
@@ -1542,7 +1542,7 @@ export const categories: Category[] = [
         name: 'rotate',
         description: 'Rotation',
         examples: {
-          tamagui: '$rotate="45deg"',
+          tamagui: 'rotate="45deg"',
           tailwind: 'rotate-45 / -rotate-45',
           nativewind: 'rotate-45',
           uniwind: 'rotate-45',
@@ -1558,7 +1558,7 @@ export const categories: Category[] = [
         name: 'skew',
         description: 'Skew distortion',
         examples: {
-          tamagui: '$skewX="12deg" $skewY="6deg"',
+          tamagui: 'skewX="12deg" skewY="6deg"',
           tailwind: 'skew-x-12 / skew-y-6',
           nativewind: 'skew-x-12',
           uniwind: 'skew-x-12',
@@ -1574,7 +1574,7 @@ export const categories: Category[] = [
         name: 'transform-origin',
         description: 'Transform origin point',
         examples: {
-          tamagui: '$transformOrigin="center"',
+          tamagui: 'transformOrigin="center"',
           tailwind: 'origin-center / origin-top-left',
           nativewind: 'origin-center',
         },
@@ -1589,7 +1589,7 @@ export const categories: Category[] = [
         name: 'perspective',
         description: '3D perspective depth',
         examples: {
-          tamagui: '$perspective={500}',
+          tamagui: 'perspective={500}',
           tailwind: 'perspective-500',
         },
         support: {
@@ -1603,7 +1603,7 @@ export const categories: Category[] = [
         name: 'backface-visibility',
         description: 'Backface visibility in 3D',
         examples: {
-          tamagui: '$backfaceVisibility="hidden"',
+          tamagui: 'backfaceVisibility="hidden"',
           tailwind: 'backface-hidden / backface-visible',
         },
         support: {
@@ -1694,7 +1694,7 @@ export const categories: Category[] = [
         name: 'enter/exit styles',
         description: 'Mount/unmount animation styles',
         examples: {
-          tamagui: '$enter:o={0} $exit:o={0}',
+          tamagui: 'o="enter:0 exit:0"',
         },
         support: {
           tamagui: 'full',
@@ -1702,7 +1702,7 @@ export const categories: Category[] = [
           nativewind: 'none',
           uniwind: 'none',
         },
-        notes: 'Tamagui-specific: AnimatePresence + enterStyle/exitStyle',
+        notes: 'Tamagui-specific: AnimatePresence + `enter:` / `exit:` clauses',
       },
     ],
   },
@@ -1717,7 +1717,7 @@ export const categories: Category[] = [
         name: 'hover',
         description: 'Hover state styling',
         examples: {
-          tamagui: '$hover:bg="blue"',
+          tamagui: 'bg="hover:blue"',
           tailwind: 'hover:bg-blue-500',
           nativewind: 'hover:bg-blue-500',
         },
@@ -1728,13 +1728,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui `hoverStyle` / `$hover:` fires wherever a pointer exists (web + RN desktop/trackpad via onHoverIn); inert on touch like everywhere. NativeWind hover behaves the same. Uniwind explicitly lists `hover:` as unsupported (no RN equivalent in its model).',
+          'Tamagui `hover:` clauses fire wherever a pointer exists (web + RN desktop/trackpad via onHoverIn); inert on touch like everywhere. NativeWind hover behaves the same. Uniwind explicitly lists `hover:` as unsupported (no RN equivalent in its model).',
       },
       {
         name: 'press / active',
         description: 'Press/active state styling',
         examples: {
-          tamagui: '$press:bg="blue"',
+          tamagui: 'bg="press:blue"',
           tailwind: 'active:bg-blue-500',
           nativewind: 'active:bg-blue-500',
           uniwind: 'active:bg-blue-500',
@@ -1750,7 +1750,7 @@ export const categories: Category[] = [
         name: 'focus',
         description: 'Focus state styling',
         examples: {
-          tamagui: '$focus:borderColor="blue"',
+          tamagui: 'borderColor="focus:blue"',
           tailwind: 'focus:border-blue-500',
           nativewind: 'focus:border-blue-500',
           uniwind: 'focus:border-blue-500',
@@ -1766,7 +1766,7 @@ export const categories: Category[] = [
         name: 'focus-visible',
         description: 'Keyboard focus state',
         examples: {
-          tamagui: '$focusVisible:outlineColor="blue"',
+          tamagui: 'outlineColor="focus-visible:blue"',
           tailwind: 'focus-visible:outline-blue-500',
           nativewind: 'focus-visible:outline-blue-500',
         },
@@ -1777,13 +1777,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `focusVisibleStyle` / `$focusVisible:` is registered only on web (it depends on the `:focus-visible` pseudo). NativeWind focus-visible is likewise web-only. No framework has a native equivalent (RN has no keyboard-vs-pointer focus distinction).',
+          'Tamagui: `focus-visible:` is registered only on web (it depends on the `:focus-visible` pseudo). NativeWind focus-visible is likewise web-only. No framework has a native equivalent (RN has no keyboard-vs-pointer focus distinction).',
       },
       {
         name: 'focus-within',
         description: 'Focus within container',
         examples: {
-          tamagui: '$focusWithin:bg="blue"',
+          tamagui: 'bg="focus-within:blue"',
           tailwind: 'focus-within:bg-blue-500',
         },
         support: {
@@ -1793,13 +1793,13 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui exposes `focusWithinStyle` but it relies on the `:focus-within` pseudo, so it only takes effect on web; RN has no focus-within. Use a named `group` + focus state for a native equivalent.',
+          'Tamagui exposes `focus-within:` clauses on web, where the `:focus-within` pseudo exists; RN has no focus-within. Use a named `group` + focus state for a native equivalent.',
       },
       {
         name: 'disabled',
         description: 'Disabled state styling',
         examples: {
-          tamagui: '$disabled:o={0.5}',
+          tamagui: 'o="disabled:0.5"',
           tailwind: 'disabled:opacity-50',
           nativewind: 'disabled:opacity-50',
           uniwind: 'disabled:opacity-50',
@@ -1815,7 +1815,7 @@ export const categories: Category[] = [
         name: 'group hover/press/focus',
         description: 'Styling a child based on a named parent state',
         examples: {
-          tamagui: 'group on parent + $group-name-hover:bg="..." on child',
+          tamagui: 'group="name" on parent + bg="group-hover/name:..." on child',
           tailwind: 'group-hover:text-white',
           nativewind: 'group-hover:text-white',
         },
@@ -1826,7 +1826,7 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui: mark the parent `group` (or `group="card"`) and style children with `$group-hover:`, `$group-card-hover:`, `$group-press:`, `$group-focus:` — implemented via a JS state emitter so it works cross-platform (web + native). NativeWind v5 group-* tracks parent state on native. Uniwind: group-active/focus is Pro-tier (free no-ops); group-hover never (no native hover).',
+          'Tamagui: mark the parent `group` (or `group="card"`) and use `group-hover:`, `group-hover/card:`, `group-press:`, or `group-focus:` clauses on child values. A JS state emitter makes this cross-platform. NativeWind v5 group-* tracks parent state on native. Uniwind: group-active/focus is Pro-tier (free no-ops); group-hover never (no native hover).',
       },
       {
         name: 'peer variants',
@@ -1903,7 +1903,7 @@ export const categories: Category[] = [
         name: 'breakpoints',
         description: 'Responsive breakpoint modifiers',
         examples: {
-          tamagui: '$sm:bg="red" $md:p={20}',
+          tamagui: 'bg="sm:red" p="md:20px"',
           tailwind: 'sm:bg-red-500 md:p-5',
           nativewind: 'sm:bg-red-500 md:p-5',
           uniwind: 'sm:bg-red-500 md:p-5',
@@ -1919,7 +1919,7 @@ export const categories: Category[] = [
         name: 'dark mode',
         description: 'Dark theme modifier',
         examples: {
-          tamagui: '$dark:bg="black"',
+          tamagui: 'bg="dark:black"',
           tailwind: 'dark:bg-black',
           nativewind: 'dark:bg-black',
           uniwind: 'dark:bg-black',
@@ -1936,7 +1936,7 @@ export const categories: Category[] = [
         name: 'combined media + pseudo',
         description: 'Media query + interactive state',
         examples: {
-          tamagui: '$sm:hover:bg="blue"',
+          tamagui: 'bg="sm:hover:blue"',
           tailwind: 'sm:hover:bg-blue-500',
           nativewind: 'sm:hover:bg-blue-500',
         },
@@ -1951,7 +1951,7 @@ export const categories: Category[] = [
         name: 'container queries',
         description: 'Style a child based on the size/state of a named parent container',
         examples: {
-          tamagui: 'group="card" on parent + $group-card-sm:fd="row" on child',
+          tamagui: 'containerName="card" on parent + fd="@sm/card:row" on child',
           tailwind: '@container / @lg:grid-cols-3',
           nativewind: '@container / @lg:flex-row',
         },
@@ -1962,7 +1962,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: container queries are the `group` system combined with media keys — mark a parent `group="card"` and use `$group-card-$sm:` style keys. On web this uses real CSS container queries (containerType); on native it measures the parent and applies styles via the group emitter, so it works cross-platform (the `untilMeasured` prop exists to avoid flashes before first measure). NativeWind v5 also supports `@container` on native, implemented via onLayout measurement (size-based only, not CSS containment). Tailwind is web-only; Uniwind: not documented.',
+          'Tamagui: mark a parent query container and use `@sm:` or a named form such as `@sm/card:` on child values. On web this uses real CSS container queries; on native it measures the parent, so it works cross-platform. NativeWind v5 also supports `@container` on native through onLayout measurement. Tailwind is web-only; Uniwind: not documented.',
       },
       {
         name: 'container query units (cqw/cqh)',
@@ -1983,8 +1983,7 @@ export const categories: Category[] = [
         name: 'prefers-reduced-motion',
         description: 'Reduced motion preference',
         examples: {
-          tamagui:
-            '$motionReduce={{ animation: null }} / $motionSafe={{ animation: "bouncy" }}',
+          tamagui: 'animation="motion-reduce:null motion-safe:bouncy"',
           tailwind: 'motion-reduce:animate-none / motion-safe:...',
           nativewind: 'motion-reduce:animate-none',
         },
@@ -1995,7 +1994,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          '`$motionReduce` and `$motionSafe` are built-in media keys in @tamagui/config. Web subscribes to `(prefers-reduced-motion: reduce | no-preference)` via `window.matchMedia`; native subscribes to `AccessibilityInfo.isReduceMotionEnabled` + the `reduceMotionChanged` event through `@tamagui/react-native-media-driver`. NativeWind v5 maps the same two states.',
+          '`motion-reduce` and `motion-safe` are built-in media keys in @tamagui/config. Web subscribes to `(prefers-reduced-motion: reduce | no-preference)` via `window.matchMedia`; native subscribes to `AccessibilityInfo.isReduceMotionEnabled` + the `reduceMotionChanged` event through `@tamagui/react-native-media-driver`. NativeWind v5 maps the same two states.',
       },
     ],
   },
@@ -2010,7 +2009,7 @@ export const categories: Category[] = [
         name: 'web-specific styles',
         description: 'Web-only styling',
         examples: {
-          tamagui: '$web:cursor="pointer"',
+          tamagui: 'cursor="web:pointer"',
           nativewind: 'web:cursor-pointer',
           uniwind: 'web:cursor-pointer',
         },
@@ -2026,7 +2025,7 @@ export const categories: Category[] = [
         name: 'native-specific styles',
         description: 'Native-only styling',
         examples: {
-          tamagui: '$native:p={20}',
+          tamagui: 'p="native:20px"',
           nativewind: 'native:p-5',
           uniwind: 'native:p-5',
         },
@@ -2041,7 +2040,7 @@ export const categories: Category[] = [
         name: 'ios-specific styles',
         description: 'iOS-only styling',
         examples: {
-          tamagui: '$ios:p={20}',
+          tamagui: 'p="ios:20px"',
           nativewind: 'ios:p-5',
           uniwind: 'ios:p-5',
         },
@@ -2056,7 +2055,7 @@ export const categories: Category[] = [
         name: 'android-specific styles',
         description: 'Android-only styling',
         examples: {
-          tamagui: '$android:p={20}',
+          tamagui: 'p="android:20px"',
           nativewind: 'android:p-5',
           uniwind: 'android:p-5',
         },
@@ -2217,7 +2216,7 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'fill-red-500 / fill-current',
           nativewind: 'fill-red-500',
-          tamagui: 'fill="$color10" / fill="red"',
+          tamagui: 'fill="color10" / fill="red"',
         },
         support: {
           tamagui: 'full',
@@ -2226,7 +2225,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          '@tamagui/lucide-icons accepts `fill` as a style prop on both web and native, resolving theme tokens (e.g. `fill="$color10"`) via the icon `themed()` wrapper. Plain colors (e.g. `fill="red"`) pass through unchanged.',
+          '@tamagui/lucide-icons accepts `fill` as a style prop on both web and native, resolving theme tokens (e.g. `fill="color10"`) via the icon `themed()` wrapper. Plain colors (e.g. `fill="red"`) pass through unchanged.',
       },
       {
         name: 'stroke',
@@ -2234,7 +2233,7 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'stroke-red-500 / stroke-current',
           nativewind: 'stroke-red-500',
-          tamagui: 'stroke="$accent10" / stroke="red"',
+          tamagui: 'stroke="accent10" / stroke="red"',
         },
         support: {
           tamagui: 'full',
@@ -2251,7 +2250,7 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'stroke-1 / stroke-2',
           nativewind: 'stroke-1',
-          tamagui: 'strokeWidth={2} / strokeWidth="$1"',
+          tamagui: 'strokeWidth={2} / strokeWidth="1"',
         },
         support: {
           tamagui: 'full',
@@ -2260,7 +2259,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui icons accept numeric `strokeWidth` directly and resolve size tokens (e.g. `strokeWidth="$1"`) on both web and native.',
+          'Tamagui icons accept numeric `strokeWidth` directly and resolve size tokens (e.g. `strokeWidth="1"`) on both web and native.',
       },
     ],
   },
@@ -2301,7 +2300,7 @@ export const categories: Category[] = [
         name: 'touch-action',
         description: 'Touch interaction behavior',
         examples: {
-          tamagui: '$touchAction="none"',
+          tamagui: 'touchAction="none"',
           tailwind: 'touch-none / touch-pan-x',
         },
         support: {
@@ -2311,7 +2310,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$touchAction` is a web-only prop. On native, gesture handling is done with the gesture system (PanResponder / react-native-gesture-handler), not a style.',
+          'Tamagui: `touchAction` is a web-only prop. On native, gesture handling is done with the gesture system (PanResponder / react-native-gesture-handler), not a style.',
       },
       {
         name: 'resize',
@@ -2375,7 +2374,7 @@ export const categories: Category[] = [
         name: 'caret-color',
         description: 'Text input caret color',
         examples: {
-          tamagui: '$caretColor="blue"',
+          tamagui: 'caretColor="blue"',
           tailwind: 'caret-blue-500',
         },
         support: {
@@ -2385,7 +2384,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: on web, `$caretColor` is the CSS caret-color property. On native, `@tamagui/input` Input forwards `caretColor` to RN TextInput `cursorColor` (Android) + `selectionColor` (iOS+Android caret) — explicit `cursorColor`/`selectionColor` props still win. Cross-platform but only applies to the Input/TextArea components (not a generic style prop).',
+          'Tamagui: on web, `caretColor` is the CSS caret-color property. On native, `@tamagui/input` Input forwards `caretColor` to RN TextInput `cursorColor` (Android) + `selectionColor` (iOS+Android caret) — explicit `cursorColor`/`selectionColor` props still win. Cross-platform but only applies to the Input/TextArea components (not a generic style prop).',
       },
       {
         name: 'accent-color',
@@ -2404,7 +2403,7 @@ export const categories: Category[] = [
         name: 'will-change',
         description: 'GPU rendering hints',
         examples: {
-          tamagui: '$willChange="transform"',
+          tamagui: 'willChange="transform"',
           tailwind: 'will-change-transform / will-change-scroll',
         },
         support: {
@@ -2414,7 +2413,7 @@ export const categories: Category[] = [
           uniwind: 'none',
         },
         notes:
-          'Tamagui: `$willChange` is a web-only GPU hint. RN has no will-change; native rasterization hints are platform-specific (e.g. shouldRasterizeIOS / renderToHardwareTextureAndroid).',
+          'Tamagui: `willChange` is a web-only GPU hint. RN has no will-change; native rasterization hints are platform-specific (e.g. shouldRasterizeIOS / renderToHardwareTextureAndroid).',
       },
     ],
   },
@@ -2469,7 +2468,7 @@ export const categories: Category[] = [
         name: 'design tokens',
         description: 'Configurable design tokens',
         examples: {
-          tamagui: '$bg="$primary" $p="$4"',
+          tamagui: 'bg="primary" p="4"',
           tailwind: 'theme() / extend config',
           nativewind: 'tailwind.config.js',
           uniwind: 'unistyles theme',
@@ -2532,7 +2531,7 @@ export const categories: Category[] = [
         name: 'arbitrary values',
         description: 'One-off custom values',
         examples: {
-          tamagui: '$bg="rgb(123,45,67)" $w="calc(100% - 2rem)"',
+          tamagui: 'bg="rgb(123,45,67)" w="calc(100% - 2rem)"',
           tailwind: 'bg-[rgb(123,45,67)]',
           nativewind: 'bg-[rgb(123,45,67)] / w-[calc(100%-2rem)]',
           uniwind: 'bg-[rgb(123,45,67)]',
@@ -2544,13 +2543,13 @@ export const categories: Category[] = [
           uniwind: 'full',
         },
         notes:
-          'Tamagui takes any raw value directly as a prop ($bg="rgb(...)") — no bracket escape hatch needed. NativeWind v5 improved arbitrary calc()/clamp() handling. Uniwind bundles the real Tailwind v4 oxide compiler, so bracket arbitrary values parse; calc() resolves on web, limited on native.',
+          'Tamagui takes any raw value directly as a prop (`bg="rgb(...)"`) — no bracket escape hatch needed. NativeWind v5 improved arbitrary calc()/clamp() handling. Uniwind bundles the real Tailwind v4 oxide compiler, so bracket arbitrary values parse; calc() resolves on web, limited on native.',
       },
       {
         name: 'CSS variables / custom properties',
         description: 'CSS custom properties and var() references',
         examples: {
-          tamagui: '$bg="$color" (tokens) / $bg="var(--my-color)" (web)',
+          tamagui: 'bg="color" (tokens) / bg="var(--my-color)" (web)',
           tailwind: '@theme { --color-brand } / bg-(--my-var)',
           nativewind: '@theme { --color-brand } / bg-(--my-var)',
         },
@@ -2561,13 +2560,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui: the design-token system ($color, $4, theme values) IS the cross-platform var() equivalent — on web tokens compile to real CSS custom properties (`var(--...)`), on native they resolve to JS values. Raw `var(--x)` string literals only work on web. NativeWind v5 implements Tailwind v4 `@theme` + `var()` resolution on web AND native (its runtime resolves custom properties). Uniwind theming exists but var()/@theme breadth is less documented.',
+          'Tamagui: the design-token system (`color`, `4`, theme values) is the cross-platform var() equivalent — on web tokens compile to real CSS custom properties (`var(--...)`), on native they resolve to JS values. Raw `var(--x)` string literals only work on web. NativeWind v5 implements Tailwind v4 `@theme` + `var()` resolution on web and native. Uniwind theming exists but var()/@theme breadth is less documented.',
       },
       {
         name: 'color opacity modifier',
         description: 'Inline color alpha via /N syntax',
         examples: {
-          tamagui: '$bg="$blue10/50" (props) / className="bg-blue-500/50" (tw mode)',
+          tamagui: 'bg="blue10/50" (props) / className="bg-blue-500/50" (tw mode)',
           tailwind: 'bg-blue-500/50 text-black/75',
           nativewind: 'bg-blue-500/50 text-black/75',
           uniwind: 'bg-black/50',
@@ -2579,7 +2578,7 @@ export const categories: Category[] = [
           uniwind: 'full',
         },
         notes:
-          'Tamagui supports inline `/N` cross-platform on any color prop (`$bg="$blue10/50"`) and in tw-mode classNames (`bg-blue-500/50`); the runtime applies it via color-mix() on web and rgba() multiply on native, matching NativeWind v5 behavior. NativeWind v5 fully supports `/N` cross-platform (Tailwind v4 compiles it to color-mix(); v5 ships a runtime color-mix resolver). Uniwind supports `/N` in its examples.',
+          'Tamagui supports inline `/N` cross-platform on any color prop (`bg="blue10/50"`) and in tw-mode classNames (`bg-blue-500/50`); the runtime applies it via color-mix() on web and rgba() multiply on native, matching NativeWind v5 behavior. NativeWind v5 fully supports `/N` cross-platform (Tailwind v4 compiles it to color-mix(); v5 ships a runtime color-mix resolver). Uniwind supports `/N` in its examples.',
       },
     ],
   },

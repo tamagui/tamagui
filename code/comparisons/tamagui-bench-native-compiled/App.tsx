@@ -71,8 +71,18 @@ function RichItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-                    key={i + seed * ITEM_COUNT} width={60} height={40} borderRadius={6} padding={4} borderWidth={1} borderColor="rgba(0,0,0,0.1) hover:rgba(0,0,0,0.3)" backgroundColor="rgb(99,102,241)" margin={1} scale="hover:1.02 press:0.98" opacity="press:0.8"
-                  />
+          key={i + seed * ITEM_COUNT}
+          width={60}
+          height={40}
+          borderRadius={6}
+          padding={4}
+          borderWidth={1}
+          borderColor="rgba(0,0,0,0.1) hover:rgba(0,0,0,0.3)"
+          backgroundColor="rgb(99,102,241)"
+          margin={1}
+          scale="hover:1.02 press:0.98"
+          opacity="press:0.8"
+        />
       )
     }
     return <>{arr}</>
@@ -85,15 +95,28 @@ function GroupItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-                              key={i + seed * ITEM_COUNT} group="row" flexDirection="row" alignItems="center" gap={8} padding={8} borderRadius={8} backgroundColor="gray2 hover:gray3" margin={1}
-                            >
+          key={i + seed * ITEM_COUNT}
+          group="row"
+          flexDirection="row"
+          alignItems="center"
+          gap={8}
+          padding={8}
+          borderRadius={8}
+          backgroundColor="gray2 hover:gray3"
+          margin={1}
+        >
           <View
-                                        width={32} height={32} borderRadius={16} backgroundColor="blue5 group-hover/row:blue7"
-                                      />
+            width={32}
+            height={32}
+            borderRadius={16}
+            backgroundColor="blue5 group-hover/row:blue7"
+          />
           <View flex={1}>
             <View
-                                                  height={10} borderRadius={4} backgroundColor="gray8 group-hover/row:blue8"
-                                                />
+              height={10}
+              borderRadius={4}
+              backgroundColor="gray8 group-hover/row:blue8"
+            />
           </View>
         </View>
       )
@@ -102,7 +125,7 @@ function GroupItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-const CARD_COLORS = ['$blue5', '$green5', '$pink5', '$orange5']
+const CARD_COLORS = ['blue5', 'green5', 'pink5', 'orange5']
 
 function HeavyItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -111,22 +134,45 @@ function HeavyItems({ seed }: { seed: number }) {
       const color = CARD_COLORS[(i + seed) % 4]
       arr.push(
         <View
-                              key={i + seed * HEAVY_COUNT} group="card" flexDirection="row" alignItems="center" gap={12} padding={12} borderRadius={10} backgroundColor="gray1 hover:gray2" borderWidth={1} borderColor="gray4 hover:gray6" marginBottom={4}
-                            >
+          key={i + seed * HEAVY_COUNT}
+          group="card"
+          flexDirection="row"
+          alignItems="center"
+          gap={12}
+          padding={12}
+          borderRadius={10}
+          backgroundColor="gray1 hover:gray2"
+          borderWidth={1}
+          borderColor="gray4 hover:gray6"
+          marginBottom={4}
+        >
           <View
-                          width={44} height={44} borderRadius={22} backgroundColor={color} opacity="group-hover/card:0.8"
-                        />
+            width={44}
+            height={44}
+            borderRadius={22}
+            backgroundColor={color}
+            opacity="group-hover/card:0.8"
+          />
           <View flex={1} gap={4}>
             <View
-                                                  height={12} borderRadius={4} backgroundColor="gray11 group-hover/card:blue9" width={80 + ((i * 17) % 60)}
-                                                />
+              height={12}
+              borderRadius={4}
+              backgroundColor="gray11 group-hover/card:blue9"
+              width={80 + ((i * 17) % 60)}
+            />
             <View
-                                                  height={10} borderRadius={3} backgroundColor="gray8" width={120 + ((i * 13) % 80)}
-                                                />
+              height={10}
+              borderRadius={3}
+              backgroundColor="gray8"
+              width={120 + ((i * 13) % 80)}
+            />
           </View>
           <View
-                                        paddingHorizontal={8} paddingVertical={3} borderRadius={6} backgroundColor="blue3 group-hover/card:blue5"
-                                      >
+            paddingHorizontal={8}
+            paddingVertical={3}
+            borderRadius={6}
+            backgroundColor="blue3 group-hover/card:blue5"
+          >
             <View width={24} height={8} borderRadius={3} backgroundColor="blue9" />
           </View>
         </View>
@@ -142,8 +188,16 @@ function AnimatedItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-                    key={i + seed * ITEM_COUNT} transition="bouncy" width={24} height={24} borderRadius={4} backgroundColor="rgb(59,130,246)" margin={1} opacity="enter:0" scale="enter:0.5 hover:1.1 press:0.95"
-                  />
+          key={i + seed * ITEM_COUNT}
+          transition="bouncy"
+          width={24}
+          height={24}
+          borderRadius={4}
+          backgroundColor="rgb(59,130,246)"
+          margin={1}
+          opacity="enter:0"
+          scale="enter:0.5 hover:1.1 press:0.95"
+        />
       )
     }
     return <>{arr}</>
@@ -151,7 +205,7 @@ function AnimatedItems({ seed }: { seed: number }) {
 }
 
 // isolates the light-dynamic gear: same shape as simple but a theme token
-// ($blue5) instead of an rgb literal. on the compiled path the token can't be
+// (blue5) instead of an rgb literal. on the compiled path the token can't be
 // statically inlined (theme varies), so the element folds to _withStableStyle
 // (raw RN View + theme accessor) instead of a 100% static flatten. therefore
 // (themed − simple) = the real per-element cost of the light-dynamic gear.
@@ -161,8 +215,13 @@ function ThemedItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-                              key={i + seed * ITEM_COUNT} width={20} height={20} backgroundColor="blue5" borderRadius={3} margin={1}
-                            />
+          key={i + seed * ITEM_COUNT}
+          width={20}
+          height={20}
+          backgroundColor="blue5"
+          borderRadius={3}
+          margin={1}
+        />
       )
     }
     return <>{arr}</>
