@@ -1068,20 +1068,38 @@ export function createTamaguiCompilerHost(
       // Against completeProps, not props: clauses also arrive from styled()
       // defaults. Native resolution evaluates them against the build machine's
       // current state, so folding would freeze that state into the bundle.
-      if (
-        platform === 'native' &&
-        Object.entries(completeProps).some(
-          ([name, value]) =>
-            isStyleProp(name, component) &&
-            typeof value === 'string' &&
-            flatClausePattern.test(value)
-        )
-      ) {
-        return bailout(
-          input,
-          'local/unsupported-target',
-          'Native conditional value programs remain on the runtime path'
-        )
+      if (platform === 'native') {
+        const isClauseValue = (name: string, value: unknown) =>
+          isStyleProp(name, component) &&
+          typeof value === 'string' &&
+          flatClausePattern.test(value)
+        // a clause can also sit inside a variant definition, where it never
+        // appears as a prop: variants: { big: { true: { width: 'gt-lg:999px' } } }
+        const defaultVariants = component.staticConfig.defaultVariants ?? {}
+        const carriesClause =
+          Object.entries(completeProps).some(([name, value]) =>
+            isClauseValue(name, value)
+          ) ||
+          Object.entries(component.staticConfig.variants ?? {}).some(
+            ([variantName, definitions]) =>
+              (completeProps[variantName] !== undefined ||
+                defaultVariants[variantName] !== undefined) &&
+              staticObject(definitions) &&
+              Object.values(definitions).some(
+                (definition) =>
+                  staticObject(definition) &&
+                  Object.entries(definition).some(([name, value]) =>
+                    isClauseValue(name, value)
+                  )
+              )
+          )
+        if (carriesClause) {
+          return bailout(
+            input,
+            'local/unsupported-target',
+            'Native conditional value programs remain on the runtime path'
+          )
+        }
       }
       const split = resolveSplitStyles(completeProps, component.staticConfig)
       if (!split) {
