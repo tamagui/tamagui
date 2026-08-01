@@ -1,7 +1,6 @@
 import { type GetProps } from '@tamagui/ui';
 declare const StyledListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     active?: boolean | undefined;
-    color?: string | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
@@ -9,14 +8,12 @@ declare const StyledListItem: import("react").FunctionComponent<Omit<import("@ta
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
     active?: boolean | undefined;
-    color?: string | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
-        color?: string | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
@@ -24,7 +21,6 @@ declare const StyledListItem: import("react").FunctionComponent<Omit<import("@ta
 };
 export declare const ListItem: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, "active" | "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     active?: boolean | undefined;
-    color?: string | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
@@ -32,14 +28,12 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
     active?: boolean | undefined;
-    color?: string | undefined;
     disabled?: boolean | undefined;
     size?: false | import("@tamagui/web").Size | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").ListItemExtraProps, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
-        color?: string | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
@@ -58,20 +52,17 @@ export declare const ListItem: import("react").FunctionComponent<Omit<import("@t
         scope?: string;
     }>;
     Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "disabled" | "size" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        color?: string | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
         ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        color?: string | undefined;
         disabled?: boolean | undefined;
         size?: false | import("@tamagui/web").Size | undefined;
         variant?: "outlined" | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-            color?: string | undefined;
             disabled?: boolean | undefined;
             size?: false | import("@tamagui/web").Size | undefined;
             variant?: "outlined" | undefined;

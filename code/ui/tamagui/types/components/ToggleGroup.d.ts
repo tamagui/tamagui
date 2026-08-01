@@ -8,7 +8,6 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
     }>> | undefined;
 }> & {
     active?: boolean | undefined;
-    color?: string | undefined;
     defaultActiveStyle?: boolean | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -31,7 +30,6 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
     }>> | undefined;
 }> & {
     active?: boolean | undefined;
-    color?: string | undefined;
     defaultActiveStyle?: boolean | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -50,7 +48,6 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
     }>> | undefined;
 }> & {
     active?: boolean | undefined;
-    color?: string | undefined;
     defaultActiveStyle?: boolean | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -73,7 +70,6 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
     }>> | undefined;
 }, {
     active?: boolean | undefined;
-    color?: string | undefined;
     defaultActiveStyle?: boolean | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
 }, {
@@ -93,7 +89,6 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
         }>> | undefined;
     }> & {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -116,7 +111,6 @@ export declare const ToggleGroupItem: React.FunctionComponent<Omit<import("@tama
         }>> | undefined;
     }, {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
     }, {
@@ -139,7 +133,6 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
         }>> | undefined;
     }> & {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -162,7 +155,6 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
         }>> | undefined;
     }> & {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -181,7 +173,6 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
         }>> | undefined;
     }> & {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -204,7 +195,6 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
         }>> | undefined;
     }, {
         active?: boolean | undefined;
-        color?: string | undefined;
         defaultActiveStyle?: boolean | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
     }, {
@@ -224,7 +214,6 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
             }>> | undefined;
         }> & {
             active?: boolean | undefined;
-            color?: string | undefined;
             defaultActiveStyle?: boolean | undefined;
             size?: number | import("@tamagui/web").Size | undefined;
         } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
@@ -247,7 +236,6 @@ export declare const ToggleGroup: ((props: ((import("@tamagui/ui").ToggleGroupPr
             }>> | undefined;
         }, {
             active?: boolean | undefined;
-            color?: string | undefined;
             defaultActiveStyle?: boolean | undefined;
             size?: number | import("@tamagui/web").Size | undefined;
         }, {

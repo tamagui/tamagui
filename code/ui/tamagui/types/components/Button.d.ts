@@ -53,7 +53,6 @@ export declare const buttonSizes: import("@tamagui/ui").CreatedSizeTable<{
 export type ButtonSize = keyof typeof buttonSizes.values;
 export declare const ButtonFrame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     circular?: boolean | undefined;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
     disabled?: boolean | undefined;
     ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
     fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -69,7 +68,6 @@ export declare const ButtonFrame: import("react").FunctionComponent<Omit<import(
     ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
     disabled?: boolean | undefined;
     ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
     fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -84,7 +82,6 @@ export declare const ButtonFrame: import("react").FunctionComponent<Omit<import(
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         circular?: boolean | undefined;
-        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
         disabled?: boolean | undefined;
         ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
         fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -112,7 +109,6 @@ export declare const ButtonText: import("react").FunctionComponent<Omit<import("
 export declare const ButtonIcon: ({ size, ...props }: ButtonBehaviorIconProps) => import("react/jsx-runtime").JSX.Element;
 declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
     disabled?: boolean | undefined;
     ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
     fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -184,7 +180,6 @@ declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<impor
     value?: string | readonly string[] | number;
 }, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
     disabled?: boolean | undefined;
     ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
     fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -199,7 +194,6 @@ declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<impor
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const Button: import("react").FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
     disabled?: boolean | undefined;
     ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
     fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -244,7 +238,6 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
     disabled?: boolean | undefined;
     ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
     fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -316,7 +309,6 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     value?: string | readonly string[] | number;
 }, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
-    color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
     disabled?: boolean | undefined;
     ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
     fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -331,7 +323,6 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         circular?: boolean | undefined;
-        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
         disabled?: boolean | undefined;
         ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
         fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -403,7 +394,6 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         value?: string | readonly string[] | number;
     }, import("@tamagui/web").StackStyleBase, {
         circular?: boolean | undefined;
-        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
         disabled?: boolean | undefined;
         ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
         fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -419,7 +409,6 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
 } & {
     Frame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         circular?: boolean | undefined;
-        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
         disabled?: boolean | undefined;
         ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
         fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -435,7 +424,6 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         circular?: boolean | undefined;
-        color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
         disabled?: boolean | undefined;
         ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
         fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
@@ -450,7 +438,6 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             circular?: boolean | undefined;
-            color?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined>;
             disabled?: boolean | undefined;
             ellipsis?: import("@tamagui/web").FlatStyleValue<"unset" | boolean | undefined>;
             fontFamily?: import("@tamagui/web").FlatStyleValue<import("@tamagui/ui").GetThemeValueForKey<"fontFamily"> | undefined>;
