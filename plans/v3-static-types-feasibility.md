@@ -319,8 +319,30 @@ completions. The real prop types are not affected (they compose it inside
 `WithThemeValues`, and `backgroundColor` measures healthy above), but it makes
 that alias a bad thing to hand-write into a prop type.
 
-Applying this needs a source edit plus a `@tamagui/web` types rebuild, so it is
-prototyped here and not landed.
+### Landed
+
+Shipped in `53fe77bd9a`, `code/core/web/src/types.tsx` plus the rebuilt
+`code/core/web/types/types.d.ts`. Verified against the real built package, not
+the shadow prototype:
+
+- `<View bg="">` returns 1,166 completions, 950 of them theme tokens, up from
+  216 and 0. `backgroundColor` (1,101) and `Text.color` (1,101) unchanged.
+- both arms survive in the entry list: `$color1`, `$background`, `no-repeat`,
+  `center`, `round`, `repeat-x`, `border-box`, `transparent`, `currentColor`.
+- `bg="no-repeat center"`, `bg="url(x.png) $color1"`, `bg="$color1"`,
+  `bg="$color1 hover:$color5"`, `bg="linear-gradient(red, blue)"` and
+  `bg="#ff0000"` all typecheck.
+- `@tamagui/web` type tests 93 passed / no type errors, core-test web 475
+  passed, core-test native 198 passed, style-grammar 403 passed.
+
+No regression test was added on purpose. The failure mode is "the token arm
+disappears from the union", and no assignability test can see that: with
+`Properties['background']` carrying `(string & {})`, `expectTypeOf<'$color1'>()`
+passes whether or not the tokens are there. A test that stays green when the
+thing is broken is worse than none. Catching this needs constituent inspection
+through the checker API, which is what `typeshape.mjs` in the scratch harness
+does; promoting that into a vitest case is a real option if `ColorKeys` and the
+web-only style props start moving.
 
 ## The integration surface, if it were done anyway
 
