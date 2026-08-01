@@ -1021,25 +1021,33 @@ export type TransitionSpringConfig = {
     bounciness?: number;
     speed?: number;
 };
-export type TransitionProp = TransitionKeys | ({
-    default?: TransitionKeys;
-    enter?: TransitionKeys;
-    exit?: TransitionKeys;
+/**
+ * A transition value: the name of a configured driver animation, or a raw CSS
+ * transition string such as `200ms` or `200ms hover:400ms`. The runtime accepts
+ * both — a name that is not a configured preset is treated as CSS — so the type
+ * must too. `(string & {})` keeps the preset names in autocomplete instead of
+ * collapsing the union to plain `string`.
+ */
+export type TransitionValue = TransitionKeys | (string & {});
+export type TransitionProp = TransitionValue | ({
+    default?: TransitionValue;
+    enter?: TransitionValue;
+    exit?: TransitionValue;
     delay?: number;
 } & TransitionSpringConfig & {
-    [key: string]: TransitionKeys | {
-        type: TransitionKeys;
+    [key: string]: TransitionValue | {
+        type: TransitionValue;
         [key: string]: any;
     } | number | boolean | undefined;
 }) | [
-    TransitionKeys,
+    TransitionValue,
     {
         delay?: number;
-        enter?: TransitionKeys;
-        exit?: TransitionKeys;
+        enter?: TransitionValue;
+        exit?: TransitionValue;
     } & TransitionSpringConfig & {
-        [key: string]: TransitionKeys | {
-            type?: TransitionKeys;
+        [key: string]: TransitionValue | {
+            type?: TransitionValue;
             [key: string]: any;
         } | number | boolean | undefined;
     }
