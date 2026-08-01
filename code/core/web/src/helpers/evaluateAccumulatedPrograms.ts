@@ -163,10 +163,9 @@ function matchContainerModifier(modifier: string): boolean {
 }
 
 const noted = new Set<string>()
-function noteOnce(key: string, message: string) {
-  if (process.env.NODE_ENV === 'development' && !noted.has(key)) {
-    if (noted.size > 1000) noted.clear()
-    noted.add(key)
+function noteOnce(message: string) {
+  if (process.env.NODE_ENV === 'development' && !noted.has(message)) {
+    noted.add(message)
     console.warn(message)
   }
 }
@@ -265,7 +264,6 @@ export function evaluateAccumulatedPrograms(
             ;(usedStates ||= new Set()).add(modifier)
           } else {
             noteOnce(
-              `state\0${modifier}`,
               `[tamagui] ${program.sourceProp}: "${modifier}:" is a component-tier state with no native source yet; the clause is skipped`
             )
           }
@@ -276,13 +274,11 @@ export function evaluateAccumulatedPrograms(
             ;(usedGroupKeys ||= new Set()).add(key)
             if (!groupContext?.[key]) {
               noteOnce(
-                `group\0${key}`,
                 `[tamagui] ${program.sourceProp}: "${modifier}:" has no parent providing group "${key === 'true' ? '' : key}"`
               )
             }
           } else {
             noteOnce(
-              `group\0${modifier}`,
               `[tamagui] ${program.sourceProp}: "${modifier}:" group state has no native source; the clause is skipped`
             )
           }
@@ -294,7 +290,6 @@ export function evaluateAccumulatedPrograms(
             ;(usedGroupSizes ||= []).push(parsed.size)
             if (!groupContext?.[key]) {
               noteOnce(
-                `container\0${key}`,
                 `[tamagui] ${program.sourceProp}: "${modifier}:" has no parent container${parsed.container ? ` named "${parsed.container}"` : ''}`
               )
             }
@@ -312,7 +307,6 @@ export function evaluateAccumulatedPrograms(
     })
     if (resolved.errors?.length) {
       noteOnce(
-        `${longhand}\0${payload}`,
         `[tamagui] ${program.sourceProp}: "${payload}" — ${resolved.errors[0].code}; dropping`
       )
       continue
@@ -339,7 +333,6 @@ export function evaluateAccumulatedPrograms(
       })
     } catch (error) {
       noteOnce(
-        `${longhand}\0${payload}\0ser`,
         `[tamagui] ${program.sourceProp}: ${error instanceof Error ? error.message : String(error)}`
       )
       continue
@@ -366,7 +359,6 @@ export function evaluateAccumulatedPrograms(
 
     if (nativeUnsupportedLogicalLonghands.has(longhand)) {
       noteOnce(
-        `${longhand}\0logical`,
         `[tamagui] ${program.sourceProp}: RN has no logical border properties; "${longhand}" is dropped on native`
       )
       continue
@@ -495,6 +487,6 @@ function reportTransformErrors(
   styleState: GetStyleState
 ): void {
   for (const error of errors) {
-    noteOnce(`transform\0${error.code}\0${error.source}`, `[tamagui] ${error.message}`)
+    noteOnce(`[tamagui] ${error.message}`)
   }
 }

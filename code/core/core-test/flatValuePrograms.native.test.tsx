@@ -107,6 +107,26 @@ test('component-tier states are skipped, not phantom-attached', () => {
   expect(result.programStates?.has('checked') ?? false).toBe(false)
 })
 
+test('distinct diagnostic messages each warn once per process', () => {
+  const warnings: string[] = []
+  const original = console.warn
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  console.warn = (message: string) => warnings.push(String(message))
+  try {
+    const props = { width: '1 invalid:2', height: '1 invalid:2' }
+    split(props)
+    split(props)
+    expect(warnings.filter((warning) => warning.includes('"invalid:"'))).toEqual([
+      expect.stringContaining('width:'),
+      expect.stringContaining('height:'),
+    ])
+  } finally {
+    console.warn = original
+    process.env.NODE_ENV = previousNodeEnv
+  }
+})
+
 test('the gap family resolves to native numbers', () => {
   const result = split({ gap: '16px hover:24px' })
   expect(result.style?.rowGap).toBe(16)
