@@ -32,9 +32,7 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     get font() {
       return (
         fonts[this.fontFamily] ||
-        (!props.fontFamily || props.fontFamily[0] === '$'
-          ? fonts[getSetting('defaultFont') || '']
-          : undefined)
+        (!props.fontFamily ? fonts[getSetting('defaultFont') || ''] : undefined)
       )
     },
     props,
@@ -58,8 +56,8 @@ export function getFontsForLanguage(fonts: GenericFonts, language: LanguageConte
         if (lang === 'default') {
           return []
         }
-        const langKey = `$${name}_${lang}`
-        return [[`$${name}`, fonts[langKey]]]
+        const langKey = `${name}_${lang}`
+        return [[name, fonts[langKey]]]
       })
     ),
   }

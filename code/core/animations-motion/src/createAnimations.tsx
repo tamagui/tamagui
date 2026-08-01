@@ -1188,7 +1188,8 @@ function compileAnimatedStyle(
     source,
     target: shorthands?.[source] ?? source,
     tokenValue:
-      typeof initialSource[source] === 'string' && initialSource[source].startsWith('$')
+      typeof initialSource[source] === 'string' &&
+      initialResolved[shorthands?.[source] ?? source] !== initialSource[source]
         ? initialResolved[shorthands?.[source] ?? source]
         : undefined,
   }))

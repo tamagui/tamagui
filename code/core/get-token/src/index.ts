@@ -11,7 +11,7 @@ const resolveToken = (
   type: 'size' | 'space' | 'radius',
   input: GetTokenBase
 ): Variable<number> => {
-  const tokens = getTokens({ prefixed: true })[type] as Record<string, Variable>
+  const tokens = getTokens()[type] as Record<string, Variable>
   const resolved = input === true ? getDefaultToken(type) : input
   if (resolved == null) return resolved as any
   const key = typeof resolved === 'object' ? (resolved as Variable).key : String(resolved)
@@ -24,12 +24,12 @@ export const getSpace = (space: GetTokenBase) => resolveToken('space', space)
 
 export const getRadius = (radius: GetTokenBase) => resolveToken('radius', radius)
 
-// returns the token key one whole step smaller (e.g. `$4` -> `$3`), clamped at
-// `$1`. used where a component wants a slightly smaller size/font token (list
+// returns the token key one whole step smaller (e.g. `4` -> `3`), clamped at
+// `1`. used where a component wants a slightly smaller size/font token (list
 // item subtitle, tooltip default size) without stepping through a sorted scale.
 export const oneSizeTokenSmaller = (token: GetTokenBase): string => {
   const key = token === true ? getDefaultSizeToken() : token
-  const n = Number(String(key).replace('$', ''))
+  const n = Number(String(key))
   if (Number.isNaN(n)) return String(key)
-  return `$${Math.max(1, Math.round(n) - 1)}`
+  return `${Math.max(1, Math.round(n) - 1)}`
 }
