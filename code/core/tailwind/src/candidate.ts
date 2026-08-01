@@ -1,5 +1,9 @@
 import { isWeb } from '@tamagui/constants'
-import type { StyleFrontendConfig } from '@tamagui/core/internal-runtime'
+import {
+  createFrontendProgram,
+  plainValueToPayload,
+  type StyleFrontendConfig,
+} from '@tamagui/core/internal-runtime'
 import {
   borderSideSuffix,
   classifyCandidate,
@@ -112,14 +116,13 @@ function expandBorderCandidate(
 }
 
 /**
- * Adapt a registry-parsed candidate into the flat props shared rendering consumes.
+ * Adapt a registry-parsed candidate into the ordinary props shared rendering consumes.
  * Examples:
- *   "hover:bg-blue5" → { key: "$hover:backgroundColor", value: "blue5" } (if blue5 is a token)
- *   "sm:p-4" → { key: "$sm:padding", value: "4" } (if 4 is a space token)
- *   "bg-[red]" → { key: "$backgroundColor", value: "red" } (raw CSS value)
- *   "w-100" → { key: "$width", value: 100 }
- *   "opacity-50" → { key: "$opacity", value: 0.5 }
- * Note: $ prefix in values (e.g., "m-$spacing") is invalid and will warn.
+ *   "hover:bg-blue5" → backgroundColor + a `hover:blue5` program
+ *   "sm:p-4" → padding + an `sm:4` program
+ *   "bg-[red]" → { key: "backgroundColor", value: "red" }
+ *   "w-100" → { key: "width", value: 100 }
+ *   "opacity-50" → { key: "opacity", value: 0.5 }
  */
 function tailwindClassToFlatProp(
   parsed: ParsedCandidate
@@ -127,7 +130,6 @@ function tailwindClassToFlatProp(
   if (parsed.kind !== 'dynamic' || !parsed.entry || parsed.rawValue === undefined) {
     return null
   }
-  const modifiers = parsed.modifiers
   const prop = parsed.entry.prop
   const category = parsed.entry.tokenCategory
   let value: any = parsed.rawValue
@@ -140,8 +142,7 @@ function tailwindClassToFlatProp(
     } else {
       return null
     }
-    const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
-    return { key, value }
+    return { key: prop, value }
   }
 
   if (prop === 'fontFamily') {
@@ -157,7 +158,7 @@ function tailwindClassToFlatProp(
       famValue = parsed.valueKind === 'token' ? value : generic[value] || value
     }
     return {
-      key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontFamily` : `$fontFamily`,
+      key: 'fontFamily',
       value: famValue,
     }
   }
@@ -171,7 +172,7 @@ function tailwindClassToFlatProp(
       fsValue = value
     }
     return {
-      key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontSize` : `$fontSize`,
+      key: 'fontSize',
       value: fsValue,
     }
   }
@@ -188,7 +189,7 @@ function tailwindClassToFlatProp(
       lhValue = value
     }
     return {
-      key: modifiers.length > 0 ? `$${modifiers.join(':')}:lineHeight` : `$lineHeight`,
+      key: 'lineHeight',
       value: lhValue,
     }
   }
@@ -201,15 +202,14 @@ function tailwindClassToFlatProp(
       lsValue = value
     }
     return {
-      key:
-        modifiers.length > 0 ? `$${modifiers.join(':')}:letterSpacing` : `$letterSpacing`,
+      key: 'letterSpacing',
       value: lsValue,
     }
   }
 
   if (prop === 'boxShadow' && value[0] === '[' && value[value.length - 1] === ']') {
     return {
-      key: modifiers.length > 0 ? `$${modifiers.join(':')}:boxShadow` : `$boxShadow`,
+      key: 'boxShadow',
       value: decodeArbitrary(value.slice(1, -1)),
     }
   }
@@ -220,10 +220,9 @@ function tailwindClassToFlatProp(
   if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
     const inner = decodeArbitrary(value.slice(1, -1))
     if (inner === '') return null
-    const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
     // px-length + unitless arbitraries become NUMBERS (native requires numbers, drops "Npx"
     // strings); unit/function values stay strings. one canonical rule (arbitraryValue).
-    return { key, value: arbitraryValue(inner) }
+    return { key: prop, value: arbitraryValue(inner) }
   }
 
   // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).
@@ -232,8 +231,7 @@ function tailwindClassToFlatProp(
   if (category === 'size' && parsed.valueKind !== 'token') {
     const sized = tailwindSizingValue(prop, value)
     if (sized != null) {
-      const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
-      return { key, value: sized }
+      return { key: prop, value: sized }
     }
   }
 
@@ -245,8 +243,7 @@ function tailwindClassToFlatProp(
   if (category === 'color' && typeof value === 'string') {
     const suffix = splitColorOpacitySuffix(value)
     if (suffix.kind === 'invalid') {
-      const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
-      return { key, value }
+      return { key: prop, value }
     }
     if (suffix.kind === 'valid') {
       opacitySuffix = value.slice(suffix.name.length)
@@ -258,7 +255,7 @@ function tailwindClassToFlatProp(
   if (percentUtilityProps.has(prop) && /^\d+$/.test(value)) {
     // tailwind percentage utilities: opacity-50 → 0.5, scale-95 → 0.95, scale-100 → 1
     value = Number(value) / 100
-  } else if (/^\d+(\.\d+)?$/.test(value) && !value.startsWith('$')) {
+  } else if (/^\d+(\.\d+)?$/.test(value)) {
     if (category) {
       value = `${parsed.negative ? '-' : ''}${value}`
     } else {
@@ -287,9 +284,7 @@ function tailwindClassToFlatProp(
     else if (typeof value === 'string' && value[0] !== '-') value = `-${value}`
   }
 
-  const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
-
-  return { key, value }
+  return { key: prop, value }
 }
 
 // Parsing a Tailwind candidate depends only on the class string and the grammar
@@ -303,9 +298,10 @@ function tailwindClassToFlatProp(
 // null = web-only candidate dropped on native. 'raw' = not claimed by the
 // grammar, caller preserves the class string. An array (which may legitimately be
 // empty) = claimed, apply these entries.
-type TailwindClassPlan = [string, any][] | null | 'raw'
+type TailwindPlanEntry = [key: string | null, value: any]
+type TailwindClassPlan = TailwindPlanEntry[] | null | 'raw'
 type TailwindParentPlan = {
-  entries: [string, any][]
+  entries: TailwindPlanEntry[]
   preserveRawClass: boolean
 }
 
@@ -320,6 +316,23 @@ function getClassPlanCache(grammarConfig: object) {
     classPlanCache.set(grammarConfig, cache)
   }
   return cache
+}
+
+function createPlanEntry(
+  property: string,
+  value: unknown,
+  modifiers: readonly string[]
+): TailwindPlanEntry | null {
+  if (modifiers.length === 0) return [property, value]
+  const payload = plainValueToPayload(value, property)
+  if (payload === null) return null
+  return [
+    null,
+    createFrontendProgram(property, {
+      base: null,
+      clauses: [{ modifiers, payload }],
+    }),
+  ]
 }
 
 function computeClassPlan(
@@ -338,7 +351,7 @@ function computeClassPlan(
   if (containerMarker) {
     const isSize = containerMarker[1] !== undefined
     const name = containerMarker[2]
-    const entries: [string, any][] = []
+    const entries: TailwindPlanEntry[] = []
     if (name) entries.push(['containerName', name])
     if (isSize) {
       entries.push(['containerType', 'size'])
@@ -357,16 +370,13 @@ function computeClassPlan(
   const parsed = classification.parsed
   // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
   // these may emit multiple props and may have no dash, so handle before the generic parse.
-  const mods = parsed.modifiers.join(':')
   const util = parsed.kind === 'utility' ? parsed.properties : null
   if (util) {
-    const entries: [string, any][] = []
+    const entries: TailwindPlanEntry[] = []
     for (const p in util) {
-      // BASE (unmodified) util props are set DIRECTLY as props so they flow through the normal
-      // resolution — critical for props routed to viewProps (pointerEvents) or expanded (flex),
-      // which the `$prop` flat form doesn't convert for non-style keys. MODIFIED util props
-      // (hover:/md:) still use the `$mods:prop` flat form the modifier pass understands.
-      entries.push([mods ? `$${mods}:${p}` : p, util[p]])
+      const entry = createPlanEntry(p, util[p], parsed.modifiers)
+      if (!entry) return 'raw'
+      entries.push(entry)
     }
     return entries
   }
@@ -376,13 +386,16 @@ function computeClassPlan(
   if (flatProp) {
     const expanded = expandBorderCandidate(parsed, flatProp.value)
     if (expanded) {
-      const entries: [string, any][] = []
+      const entries: TailwindPlanEntry[] = []
       for (const p in expanded) {
-        entries.push([mods ? `$${mods}:${p}` : `$${p}`, expanded[p]])
+        const entry = createPlanEntry(p, expanded[p], parsed.modifiers)
+        if (!entry) return 'raw'
+        entries.push(entry)
       }
       return entries
     }
-    return [[flatProp.key, flatProp.value]]
+    const entry = createPlanEntry(flatProp.key, flatProp.value, parsed.modifiers)
+    return entry ? [entry] : 'raw'
   }
   // not claimed: caller preserves the raw class
   return 'raw'
@@ -409,7 +422,8 @@ export function setInAuthoredOrder(
 }
 
 /**
- * Tokenize a className into flat `$mods:prop` props, once per class per config.
+ * Tokenize a className into ordinary props and internal value-program contributions,
+ * once per class per config.
  * User-defined tokens drive resolution; Tailwind's color/spacing scales are never
  * hardcoded. Classes the grammar does not claim stay in `className` verbatim, in
  * author order, so official Tailwind CSS still applies them on web.
@@ -428,6 +442,15 @@ export function preprocessTailwindClassName(
   const result: Record<string, any> = {}
   const grammarConfig = getStyleGrammarConfig(config)
   const plans = getClassPlanCache(grammarConfig)
+  let frontendProgramIndex = 0
+
+  const applyEntry = ([key, value]: TailwindPlanEntry) => {
+    if (key === null) {
+      result[`__tamagui_frontend_program_${frontendProgramIndex++}`] = value
+    } else {
+      setInAuthoredOrder(result, key, value)
+    }
+  }
 
   // Expand the className exactly where it was authored. Claimed classes and
   // ordinary props therefore share one forward pass: whichever contribution is
@@ -467,12 +490,12 @@ export function preprocessTailwindClassName(
           regularClasses.push(cls)
         }
         for (let i = 0; i < plan.entries.length; i++) {
-          setInAuthoredOrder(result, plan.entries[i][0], plan.entries[i][1])
+          applyEntry(plan.entries[i])
         }
         continue
       }
       for (let i = 0; i < plan.length; i++) {
-        setInAuthoredOrder(result, plan[i][0], plan[i][1])
+        applyEntry(plan[i])
       }
     }
     if (regularClasses.length > 0) {

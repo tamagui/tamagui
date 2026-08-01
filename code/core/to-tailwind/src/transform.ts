@@ -48,7 +48,7 @@ function addConfigNames(
   source: Record<string, any> | undefined
 ): void {
   if (!source) return
-  for (const key in source) target.add(key[0] === '$' ? key.slice(1) : key)
+  for (const key in source) target.add(key)
 }
 
 function createTransformGrammarConfig(
@@ -93,7 +93,7 @@ function createTransformGrammarConfig(
     tokenNames.lineHeight ||= new Set<string>()
     tokenNames.letterSpacing ||= new Set<string>()
     for (const familyName in options.fonts) {
-      tokenNames.fontFamily.add(familyName[0] === '$' ? familyName.slice(1) : familyName)
+      tokenNames.fontFamily.add(familyName)
       const font = options.fonts[familyName]
       addConfigNames(tokenNames.fontSize, font?.size)
       addConfigNames(tokenNames.fontWeight, font?.weight)
@@ -107,7 +107,7 @@ function createTransformGrammarConfig(
     for (const themeName in options.themes) {
       themeNames.add(themeName)
       for (const name in options.themes[themeName]) {
-        const mapped = getV6ThemeName(name[0] === '$' ? name.slice(1) : name)
+        const mapped = getV6ThemeName(name)
         if (mapped) tokenNames.color.add(mapped)
       }
     }
@@ -613,7 +613,7 @@ function propValueToClass(
   let formatted: FormattedValue | null = null
   if (strVal !== null && standaloneValueProps[fullProp]?.[strVal]) {
     formatted = { value: strVal, valueKind: 'enum' }
-  } else if (strVal !== null) formatted = formatStringValue(fullProp, strVal)
+  } else if (strVal !== null) formatted = formatStringValue(ctx, fullProp, strVal)
   else if (numVal !== null) formatted = formatNumericValue(fullProp, numVal)
   else return null // dynamic expression → retain
 
@@ -833,17 +833,32 @@ type FormattedValue = {
   valueKind: 'token' | 'arbitrary' | 'enum' | 'convenience'
 }
 
-function formatStringValue(prop: string, value: string): FormattedValue | null {
-  // Tokens are class VALUE NAMES, resolved by the runtime against the component prop's category.
-  // No converter-time token data is needed: padding="$4" → p-4 for every app config.
-  if (value.startsWith('$')) {
-    if (prop === 'fontWeight') return null
-    const tokenName = value.slice(1)
-    if (getTokenCategory(prop) === 'color') {
-      const mapped = getV6ThemeName(tokenName)
+function hasConfiguredName(
+  names: NonNullable<GrammarConfigView['tokenNames']>[TokenCategory] | undefined,
+  value: string
+): boolean {
+  if (!names) return false
+  if (Array.isArray(names)) return names.includes(value)
+  if (names instanceof Set) return names.has(value)
+  return Object.prototype.hasOwnProperty.call(names, value)
+}
+
+function formatStringValue(
+  ctx: Ctx,
+  prop: string,
+  value: string
+): FormattedValue | null {
+  const category = getTokenCategory(prop)
+  if (
+    prop !== 'fontWeight' &&
+    category &&
+    hasConfiguredName(ctx.grammarConfig.tokenNames?.[category], value)
+  ) {
+    if (category === 'color') {
+      const mapped = getV6ThemeName(value)
       return mapped ? { value: mapped, valueKind: 'token' } : null
     }
-    return { value: tokenName, valueKind: 'token' }
+    return { value, valueKind: 'token' }
   }
 
   // named font weight (fontWeight only). an unknown weight ("450") → retain (not font-[450]).
