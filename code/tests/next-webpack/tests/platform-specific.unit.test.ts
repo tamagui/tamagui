@@ -70,9 +70,9 @@ describe('Platform-specific file optimization', () => {
       expect(existsSync(nativePath)).toBe(true)
       const nativeContent = readFileSync(nativePath, 'utf-8')
 
-      // Theme-dependent native styles stay on the runtime path.
-      expect(nativeContent).toContain('<View')
-      expect(nativeContent).toContain('bg="background"')
+      // Bare theme values are resolved during native optimization.
+      expect(nativeContent).toContain('<__TamaguiNativeView')
+      expect(nativeContent).toContain('"backgroundColor"')
       expect(nativeContent).not.toContain('.css')
       expect(nativeContent).not.toContain('className')
     })
@@ -80,19 +80,17 @@ describe('Platform-specific file optimization', () => {
 
   describe('WithWeb.tsx + WithWeb.web.tsx', () => {
     it('should optimize .web.tsx for web and base file for native only', () => {
-      const originalBase = readFileSync(join(FIXTURES_DIR, 'WithWeb.tsx'), 'utf-8')
-
       execSync('bun tamagui build ./packages/app/test-fixtures --include "WithWeb*"', {
         cwd: ROOT_DIR,
         encoding: 'utf-8',
         stdio: 'pipe',
       })
 
-      // Base file is selected only for native, where theme-dependent styles bail out.
+      // Base file is selected only for native and lowered to a native view.
       const baseContent = readFileSync(join(FIXTURES_DIR, 'WithWeb.tsx'), 'utf-8')
-      expect(baseContent).toBe(originalBase)
+      expect(baseContent).toContain('<__TamaguiNativeView')
       expect(baseContent).not.toContain('.css') // No web CSS import
-      expect(baseContent).toContain('>Base<') // Original content preserved
+      expect(baseContent).toContain('>Base<')
 
       // .web.tsx should get web optimization
       const webContent = readFileSync(join(FIXTURES_DIR, 'WithWeb.web.tsx'), 'utf-8')
@@ -117,11 +115,6 @@ describe('Platform-specific file optimization', () => {
 
   describe('WithNative.tsx + WithNative.native.tsx', () => {
     it('should optimize base file for web only and .native.tsx for native', () => {
-      const originalNative = readFileSync(
-        join(FIXTURES_DIR, 'WithNative.native.tsx'),
-        'utf-8'
-      )
-
       execSync('bun tamagui build ./packages/app/test-fixtures --include "WithNative*"', {
         cwd: ROOT_DIR,
         encoding: 'utf-8',
@@ -149,7 +142,7 @@ describe('Platform-specific file optimization', () => {
         join(FIXTURES_DIR, 'WithNative.native.tsx'),
         'utf-8'
       )
-      expect(nativeContent).toBe(originalNative)
+      expect(nativeContent).toContain('<__TamaguiNativeView')
       expect(nativeContent).toContain('>Native<')
       expect(nativeContent).not.toContain('.css')
     })
@@ -158,10 +151,6 @@ describe('Platform-specific file optimization', () => {
   describe('WithBoth.tsx + WithBoth.web.tsx + WithBoth.native.tsx', () => {
     it('should leave base file untouched and optimize platform-specific files', () => {
       const originalBase = readFileSync(join(FIXTURES_DIR, 'WithBoth.tsx'), 'utf-8')
-      const originalNative = readFileSync(
-        join(FIXTURES_DIR, 'WithBoth.native.tsx'),
-        'utf-8'
-      )
 
       execSync('bun tamagui build ./packages/app/test-fixtures --include "WithBoth*"', {
         cwd: ROOT_DIR,
@@ -191,7 +180,7 @@ describe('Platform-specific file optimization', () => {
         join(FIXTURES_DIR, 'WithBoth.native.tsx'),
         'utf-8'
       )
-      expect(nativeContent).toBe(originalNative)
+      expect(nativeContent).toContain('<__TamaguiNativeView')
       expect(nativeContent).toContain('>Native<')
       expect(nativeContent).not.toContain('.css')
     })
@@ -223,11 +212,6 @@ describe('Platform-specific file optimization', () => {
 
   describe('NativeOnly.native.tsx - native-only file', () => {
     it('should optimize for native only', () => {
-      const originalNative = readFileSync(
-        join(FIXTURES_DIR, 'NativeOnly.native.tsx'),
-        'utf-8'
-      )
-
       execSync('bun tamagui build ./packages/app/test-fixtures --include "NativeOnly*"', {
         cwd: ROOT_DIR,
         encoding: 'utf-8',
@@ -238,7 +222,7 @@ describe('Platform-specific file optimization', () => {
         join(FIXTURES_DIR, 'NativeOnly.native.tsx'),
         'utf-8'
       )
-      expect(nativeContent).toBe(originalNative)
+      expect(nativeContent).toContain('<__TamaguiNativeView')
       expect(nativeContent).toContain('Native Only File')
       expect(nativeContent).not.toContain('.css')
 
