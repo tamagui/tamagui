@@ -68,3 +68,6 @@ code/studio/types/**
 .playwright-results/
 test-results/
 .agentbus/
+
+# scratch type-perf fixtures generated into the checkout by measurement harnesses
+zz-typeperf*
