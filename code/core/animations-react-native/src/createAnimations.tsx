@@ -11,7 +11,7 @@ import type {
 } from '@tamagui/web'
 import { useEvent, useThemeWithState } from '@tamagui/web'
 import React from 'react'
-import { Animated, type Text, type View } from 'react-native'
+import { Animated, processColor, type ColorValue, type Text, type View } from 'react-native'
 
 // detect Fabric (New Architecture) — Paper doesn't support native driver for all style keys
 const isFabric =
@@ -86,16 +86,12 @@ function hasAnimatedLayoutKey(
   return false
 }
 
-// a color string that RN's color interpolation can actually parse. var(...),
-// calc(...) and empty strings reach createInterpolationFromStringOutputRange /
-// mapStringToNumericComponents and throw ('.map of null' / 'outputRange must
-// contain color or value with numeric component'). those must be applied as a
-// static style instead of entering interpolation.
+// Only colors accepted by RN's own parser can enter interpolation. CSS-wide
+// keywords, unresolved tokens, var()/calc(), and empty strings otherwise reach
+// createInterpolationFromStringOutputRange / mapStringToNumericComponents and
+// throw. Those values must be applied as static styles.
 function isAnimatableColor(value: unknown): value is string {
-  if (typeof value !== 'string') return false
-  if (value === '') return false
-  if (value.includes('var(') || value.includes('calc(')) return false
-  return true
+  return typeof value === 'string' && processColor(value as ColorValue) != null
 }
 
 // these style keys are costly to animate and only work with native driver on Fabric
@@ -415,7 +411,7 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          // unparseable themed colors (var(), calc(), empty) crash RN
+          // unparseable colors crash RN
           // interpolation — apply them as a static style instead
           if (colorStyleKey[key] && !isAnimatableColor(val)) {
             nonAnimatedStyle[key] = val
