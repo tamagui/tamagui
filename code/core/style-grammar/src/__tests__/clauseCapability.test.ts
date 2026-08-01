@@ -76,14 +76,12 @@ describe('assessFlatConversion', () => {
     componentName: 'View',
   }
 
-  test('the exitStyle case: shared file gets needs-relocation with the remedy', () => {
+  test('exit is supported in shared files when the host is known', () => {
     const assessment = assessFlatConversion(
-      { property: 'opacity', modifiers: ['exit'], targets: 'shared' },
+      { property: 'opacity', modifiers: ['exit'], targets: 'shared', host: textHost },
       registry
     )
-    expect(assessment.verdict).toBe('needs-relocation')
-    expect(assessment.reasons[0].dimension).toBe('clause')
-    expect(assessment.reasons[0].remedy).toContain('.native.tsx')
+    expect(assessment.verdict).toBe('clean')
   })
 
   test('the same clause in a native file with a known host is clean', () => {
@@ -101,12 +99,11 @@ describe('assessFlatConversion', () => {
     )
     expect(assessment.verdict).toBe('unknown-host')
     expect(assessment.reasons[0].dimension).toBe('host')
-    // determined problems outrank the unverified host
-    const determined = assessFlatConversion(
+    const exitWithoutHost = assessFlatConversion(
       { property: 'opacity', modifiers: ['exit'], targets: 'shared' },
       registry
     )
-    expect(determined.verdict).toBe('needs-relocation')
+    expect(exitWithoutHost.verdict).toBe('unknown-host')
   })
 
   test('a component-tier state in a shared file needs relocation the other way', () => {

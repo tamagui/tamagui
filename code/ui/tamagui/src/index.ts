@@ -202,7 +202,6 @@ export type {
   SizeTableSelection,
   SizeTokens,
   SpaceTokens,
-  SpecificTokens,
   StackNonStyleProps,
   ViewProps,
   StaticConfig,

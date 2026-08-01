@@ -60,8 +60,7 @@ const nativeGroupSourceable: ReadonlySet<string> = new Set(nativeGroupSourceable
 
 /**
  * Web lowerability is DERIVED from the selector table the lowering actually
- * uses, so `exit` (deliberately absent there — no exited-state class exists
- * in the DOM to select) is web-unlowerable here by construction.
+ * uses, including the lifecycle classes emitted by createComponent.
  */
 const webLowerableStates: ReadonlySet<string> = new Set(
   Object.keys(defaultStateSelectors)
@@ -101,7 +100,7 @@ export function clauseCapability(
       web,
       native,
       note: !web
-        ? `"${modifier}:" cannot lower to web CSS — there is no exited-state class in the DOM to select; exit is animation-driver territory`
+        ? `"${modifier}:" cannot lower to web CSS because it has no selector`
         : `"${modifier}:" is a component-tier state with no native source until the behavior packages feed componentState`,
     }
   }

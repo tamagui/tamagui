@@ -126,7 +126,7 @@ function lowerOneProgram(
     lowered.baseValue = base
     return lowered
   } catch (error) {
-    // a clause that cannot become CSS (exit:, unknown media key) drops the
+    // a clause that cannot become CSS (for example, an unknown media key) drops the
     // whole program with one warning; native evaluation is unaffected
     warnOnce(
       `${longhand}\0${program.sourceProp}\0lower`,

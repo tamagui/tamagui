@@ -382,8 +382,7 @@ export function createComponent<
     // components without a descriptor pay one property read.
     if (staticConfig.styleFrontend) {
       props = staticConfig.styleFrontend.preprocessProps(props, config) as
-        | ViewProps
-        | TextProps
+        ViewProps | TextProps
     }
 
     if (process.env.NODE_ENV === 'development' && isClient) {
@@ -1052,7 +1051,6 @@ export function createComponent<
         splitStyles.style = splitStyles.style || {}
         splitStyles.style.opacity = 0
       }
-
     }
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
@@ -1215,6 +1213,10 @@ export function createComponent<
       }
 
       if (process.env.NODE_ENV === 'development' && time) time`animations`
+    }
+
+    if (isWeb && isExiting) {
+      viewProps.className = `t_exiting ${viewProps.className || ''}`
     }
 
     if (process.env.NODE_ENV === 'development' && props.untilMeasured && !props.group) {
@@ -1405,12 +1407,9 @@ export function createComponent<
     const programStates = !disabled ? splitStyles?.programStates : undefined
 
     const runtimePressStyle =
-      !disabled &&
-      (programStates?.has('press') || programStates?.has('active'))
-    const runtimeFocusStyle =
-      !disabled && programStates?.has('focus')
-    const runtimeFocusVisibleStyle =
-      !disabled && programStates?.has('focus-visible')
+      !disabled && (programStates?.has('press') || programStates?.has('active'))
+    const runtimeFocusStyle = !disabled && programStates?.has('focus')
+    const runtimeFocusVisibleStyle = !disabled && programStates?.has('focus-visible')
 
     const attachFocus = Boolean(
       runtimePressStyle ||
@@ -1435,8 +1434,7 @@ export function createComponent<
       onClick
     )
 
-    const runtimeHoverStyle =
-      !disabled && programStates?.has('hover')
+    const runtimeHoverStyle = !disabled && programStates?.has('hover')
     // with a platform pseudo driver the hover STATE is driver-sourced; only keep
     // the JS hover listeners when something else needs them (dynamic group
     // children, or the user's own onMouseEnter/Leave handlers below).

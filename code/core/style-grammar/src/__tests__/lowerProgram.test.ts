@@ -304,8 +304,12 @@ describe('states', () => {
     )
   })
 
-  test('exit has no web selector, so it reports instead of inventing one', () => {
-    expect(() => lower('opacity', 'exit:0')).toThrow(/has no web selector/)
+  test('exit is is-or-within on the exiting lifecycle class', () => {
+    const lowered = lower('opacity', 'exit:0')
+    expect(lowered.rules[0]).toBe(
+      `.${lowered.className}:where(.t_exiting, .t_exiting *){opacity:0}`
+    )
+    expectSubjectAnchored(lowered)
   })
 })
 

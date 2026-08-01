@@ -54,9 +54,8 @@ export interface ConditionSelector {
  * Mirrored as data instead of imported because this package must not depend on
  * @tamagui/web.
  *
- * `exit` is deliberately absent. Exit is animation-driver territory — there is
- * no exited-state class in the DOM to select — so a web `exit:` clause cannot
- * lower and says so instead of inventing an approximation.
+ * Lifecycle clauses use classes supplied by createComponent. `is-or-within`
+ * lets a presence boundary carry the lifecycle state for descendants too.
  */
 export const defaultStateSelectors: Readonly<Record<string, ConditionSelector>> =
   Object.freeze({
@@ -70,6 +69,7 @@ export const defaultStateSelectors: Readonly<Record<string, ConditionSelector>> 
     'focus-within': { fragment: ':focus-within' },
     disabled: { fragment: '[aria-disabled]' },
     enter: { fragment: '.t_unmounted', scope: 'is-or-within' },
+    exit: { fragment: '.t_exiting', scope: 'is-or-within' },
     // component-tier states, from the shared state vocabulary's web selectors
     ...(Object.fromEntries(
       Object.entries(stateToSelector).map(([state, selector]) => [
