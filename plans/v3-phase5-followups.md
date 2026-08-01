@@ -43,6 +43,11 @@ branch.
 4. **`@tamagui/expo-router-starter` `tests/native-smoke.test.tsx:71`** — the
    toast title is absent. Fails at the identical line at baseline.
 
+5. **kitchen-sink native `TooltipToolbarRow`** — 2 tests time out waiting on
+   `[data-popper-animate-position]`. Both fail at baseline, retry included.
+   These are the only kitchen-sink failures left after phase 5; the full matrix
+   went from 25 failures of 1669 scheduled down to these two.
+
 ## Tests that exist but nothing runs
 
 A test nobody runs is worse than no test, because it reads as coverage. Four
