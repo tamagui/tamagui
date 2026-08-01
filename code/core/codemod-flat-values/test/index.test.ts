@@ -1412,6 +1412,19 @@ export const Fixture = () => <Box opacity={1} pressStyle={{ opacity: 0.5 }} />
     expect(output).not.toContain('pressStyle')
   })
 
+  test('write mode preserves V2 pseudo priority when objects overlap', () => {
+    const output = runWrite(`import { View, styled } from 'tamagui'
+export const Box = styled(View, {
+  bg: '$background',
+  focusStyle: { bg: 'red' },
+  pressStyle: { bg: 'blue' },
+  hoverStyle: { bg: 'green' },
+})
+`)
+
+    expect(output).toContain('bg: "background hover:green press:blue focus:red"')
+  })
+
   test('an ignore marker protects a pinned compatibility fixture from write mode', () => {
     const directory = mkdtempSync(join(packageDir, 'test/.flat-values-fixture-'))
     temporaryDirectories.push(directory)

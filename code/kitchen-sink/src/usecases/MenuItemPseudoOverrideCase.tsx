@@ -56,7 +56,7 @@ export function MenuItemPseudoOverrideCase() {
             <Menu.Item
               key="item-1"
               data-testid="custom-item"
-              backgroundColor="focus:rgb(255, 0, 0) press:rgb(0, 255, 0) hover:rgb(0, 0, 255)"
+              backgroundColor="hover:rgb(0, 0, 255) press:rgb(0, 255, 0) focus:rgb(255, 0, 0)"
             >
               <Menu.ItemTitle>Custom Pseudo Item</Menu.ItemTitle>
             </Menu.Item>

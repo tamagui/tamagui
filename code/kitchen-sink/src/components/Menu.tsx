@@ -22,7 +22,7 @@ const itemStyles = {
   flexDirection: 'row',
   borderRadius: '2',
   cursor: 'pointer',
-  backgroundColor: 'focus:background-hover press:background-press',
+  backgroundColor: 'press:background-press focus:background-hover',
 
   variants: {
     disabled: {

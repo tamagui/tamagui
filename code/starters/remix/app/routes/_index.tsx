@@ -27,7 +27,7 @@ const ButtonOuter = styled(View, {
   p: '4',
   maxW: 'fit-content' as any,
   display: 'unset',
-  opacity: 'press:0.8 hover:0.9',
+  opacity: 'hover:0.9 press:0.8',
 })
 
 const ButtonText = styled(Text, {

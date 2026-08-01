@@ -108,7 +108,7 @@ export function SelectDemoContents(
                       index={i}
                       key={item.name}
                       value={item.name.toLowerCase()}
-                      bg="transparent press:background-press hover:transparent"
+                      bg="transparent hover:transparent press:background-press"
                     >
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">

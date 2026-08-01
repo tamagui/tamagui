@@ -7,7 +7,7 @@ const contentStyles = {
   name: 'DemoMenuContent',
   minWidth: 180,
   padding: '1-5',
-  backgroundColor: 'background focus:background-hover press:background-press',
+  backgroundColor: 'background press:background-press focus:background-hover',
   borderColor: 'border-color',
   borderRadius: '4',
   borderWidth: 1,

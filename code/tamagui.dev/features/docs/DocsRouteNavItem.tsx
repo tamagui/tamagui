@@ -37,7 +37,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
         px="4"
         py="2 sm:2"
         opacity={pending ? 0.25 : 1}
-        bg="press:background04 hover:background06"
+        bg="hover:background06 press:background04"
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         position="relative"
       >

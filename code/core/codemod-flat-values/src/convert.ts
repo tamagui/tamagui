@@ -886,6 +886,8 @@ interface Entry {
   base: boolean
   /** the legacy attribute this clause came from, when it came from one */
   from: LegacyMember | null
+  /** V2 resolved overlapping pseudo objects by this fixed priority. */
+  legacyStatePriority: number | null
 }
 
 /**
@@ -904,6 +906,29 @@ interface Barrier {
 
 const noProperties: ReadonlySet<string> = new Set()
 
+const legacyStatePriorities: Readonly<Record<string, number>> = Object.freeze({
+  hover: 2,
+  press: 3,
+  active: 3,
+  focus: 4,
+  'focus-visible': 4,
+  'focus-within': 4,
+  enter: 4,
+  disabled: 5,
+  exit: 5,
+})
+
+function legacyStatePriority(modifiers: readonly string[]): number | null {
+  let priority: number | null = null
+  for (const modifier of modifiers) {
+    const candidate = legacyStatePriorities[modifier]
+    if (candidate !== undefined && (priority === null || candidate > priority)) {
+      priority = candidate
+    }
+  }
+  return priority
+}
+
 function orderedEntries(site: Site): Entry[] {
   const ordered: Entry[] = []
   for (const member of site.members) {
@@ -916,6 +941,7 @@ function orderedEntries(site: Site): Entry[] {
         index: member.index,
         base: true,
         from: null,
+        legacyStatePriority: null,
       })
       continue
     }
@@ -932,10 +958,28 @@ function orderedEntries(site: Site): Entry[] {
         index: member.index,
         base: false,
         from: member,
+        legacyStatePriority: legacyStatePriority(contribution.clause.modifiers),
       })
     }
   }
-  return ordered
+
+  // New flat programs are authored-order by design, but V2 pseudo objects had
+  // fixed overlap precedence regardless of object-property order. Reorder only
+  // the legacy state entries in their existing positions; authored bases and
+  // non-state conditions remain anchored exactly where they were.
+  const ranked = ordered
+    .filter((entry) => entry.legacyStatePriority !== null)
+    .sort(
+      (left, right) =>
+        left.legacyStatePriority! - right.legacyStatePriority! ||
+        left.index - right.index
+    )
+  if (ranked.length < 2) return ordered
+
+  let rankedIndex = 0
+  return ordered.map((entry) =>
+    entry.legacyStatePriority === null ? entry : ranked[rankedIndex++]
+  )
 }
 
 function buildSlots(ordered: readonly Entry[]): Map<string, Slot> {
