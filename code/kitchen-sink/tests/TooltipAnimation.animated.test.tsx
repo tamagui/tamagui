@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { setupPage } from './test-utils'
+import { getComputedTranslateY, setupPage } from './test-utils'
 
 /**
  * TOOLTIP CSS ANIMATION TESTS
@@ -24,15 +24,7 @@ async function getOpacity(page: Page, testId: string): Promise<number> {
 }
 
 async function getTranslateY(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return -9999
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 0
-    // matrix(a, b, c, d, tx, ty) - translateY is in the 'ty' position (6th value)
-    const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,\s*([^)]+)\)/)
-    return match ? Number.parseFloat(match[1]) : 0
-  }, testId)
+  return getComputedTranslateY(page, `[data-testid="${testId}"]`)
 }
 
 async function elementExists(page: Page, testId: string): Promise<boolean> {

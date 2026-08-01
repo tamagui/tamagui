@@ -129,3 +129,19 @@ export async function getComputedTranslateX(
     return new DOMMatrixReadOnly(style.transform).e
   }, selector)
 }
+
+export async function getComputedTranslateY(
+  page: Page,
+  selector: string
+): Promise<number> {
+  return page.evaluate((sel) => {
+    const element = document.querySelector(sel)
+    if (!element) return Number.NaN
+    const style = getComputedStyle(element)
+    if (style.translate !== 'none') {
+      return Number.parseFloat(style.translate.split(' ')[1] ?? '0')
+    }
+    if (style.transform === 'none') return 0
+    return new DOMMatrixReadOnly(style.transform).f
+  }, selector)
+}

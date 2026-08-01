@@ -41,8 +41,14 @@ test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', (
 
     const { center, width } = await page.evaluate((sel) => {
       const el = document.querySelector(sel) as HTMLElement
-      const m = new DOMMatrixReadOnly(getComputedStyle(el).transform)
-      return { center: m.e + el.offsetWidth / 2, width: el.offsetWidth }
+      const style = getComputedStyle(el)
+      const x =
+        style.translate !== 'none'
+          ? Number.parseFloat(style.translate)
+          : style.transform === 'none'
+            ? 0
+            : new DOMMatrixReadOnly(style.transform).e
+      return { center: x + el.offsetWidth / 2, width: el.offsetWidth }
     }, CONTENT_SEL)
 
     expect(width).toBeGreaterThan(150) // the label actually widened
@@ -65,8 +71,14 @@ test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', (
       const sample = () => {
         const el = document.querySelector(sel) as HTMLElement | null
         if (el) {
-          const m = new DOMMatrixReadOnly(getComputedStyle(el).transform)
-          ;(window as any).__tips.push(m.e)
+          const style = getComputedStyle(el)
+          ;(window as any).__tips.push(
+            style.translate !== 'none'
+              ? Number.parseFloat(style.translate)
+              : style.transform === 'none'
+                ? 0
+                : new DOMMatrixReadOnly(style.transform).e
+          )
         }
         requestAnimationFrame(sample)
       }
@@ -91,8 +103,14 @@ test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', (
 
     const state = await page.evaluate((sel) => {
       const el = document.querySelector(sel) as HTMLElement
-      const m = new DOMMatrixReadOnly(getComputedStyle(el).transform)
-      return { center: m.e + el.offsetWidth / 2, text: el.textContent }
+      const style = getComputedStyle(el)
+      const x =
+        style.translate !== 'none'
+          ? Number.parseFloat(style.translate)
+          : style.transform === 'none'
+            ? 0
+            : new DOMMatrixReadOnly(style.transform).e
+      return { center: x + el.offsetWidth / 2, text: el.textContent }
     }, CONTENT_SEL)
     expect(state.text).toContain('Back')
     expect(Math.abs(state.center - left.x)).toBeLessThan(4)
