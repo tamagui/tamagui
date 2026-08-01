@@ -33,6 +33,19 @@ function motionGetProps(props: object) {
   return out.viewProps
 }
 
+function runBaseline() {
+  const start = performance.now()
+  new Array(100_000).fill(0).map(() => {
+    return JSON.stringify([].concat([]).concat([]).concat([]))
+  })
+  return performance.now() - start
+}
+
+function median(values: number[]) {
+  const sorted = [...values].sort((a, b) => a - b)
+  return sorted[Math.floor(sorted.length / 2)]
+}
+
 describe('motion driver getProps conversion', () => {
   test('converts getStyle output shapes to web CSS', () => {
     expect(
@@ -65,13 +78,24 @@ describe('motion driver getProps conversion', () => {
     for (let i = 0; i < 1000; i++) {
       motionGetProps({ style: { transform: [{ translateY: i }] } })
     }
+
+    // normalize against same-process work so scheduler contention slows both
+    // measurements instead of looking like a product regression.
+    runBaseline()
+    const baselines = Array.from({ length: 5 }, runBaseline)
+    const baselinePerCallUs = (median(baselines) / 100_000) * 1000
+
     const start = performance.now()
     for (let i = 0; i < N; i++) {
       motionGetProps({ style: { transform: [{ translateY: i * 0.5 }] } })
     }
     const perCallUs = ((performance.now() - start) / N) * 1000
-    console.info(`motion per-change conversion: ${perCallUs.toFixed(2)}us per call`)
-    // measured ~7us; alert if it regresses an order of magnitude
-    expect(perCallUs).toBeLessThan(70)
+    // unloaded arm64 runs one conversion in about 50 baseline operations.
+    const slowdown = perCallUs / baselinePerCallUs / 50
+    console.info(
+      `motion per-change conversion: ${perCallUs.toFixed(2)}us, baseline: ${baselinePerCallUs.toFixed(3)}us, slowdown: ${slowdown.toFixed(2)}x`
+    )
+    // preserve the original order-of-magnitude regression ceiling.
+    expect(slowdown).toBeLessThan(10)
   })
 })
