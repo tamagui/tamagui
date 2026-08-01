@@ -35,6 +35,7 @@ import {
 import { mediaKeyMatch } from '../hooks/useMedia'
 import type { AllGroupContexts, GetStyleState, TamaguiComponentState } from '../types'
 import { ensureGrammarContext } from './contributePrograms'
+import { noteOnce } from './noteOnce'
 import { parseNativeStyle } from './parseNativeStyle'
 
 // the noClass/animated-inline web path evaluates here too, so the platform
@@ -160,14 +161,6 @@ function matchContainerModifier(modifier: string): boolean {
   // container's last known layout (also covers hardcoded width/height parents)
   const layout = activeGroupContext?.[key]?.state.layout
   return layout ? mediaKeyMatch(parsed.size, layout) : false
-}
-
-const noted = new Set<string>()
-function noteOnce(message: string) {
-  if (process.env.NODE_ENV === 'development' && !noted.has(message)) {
-    noted.add(message)
-    console.warn(message)
-  }
 }
 
 export interface EvaluatedProgramsInfo {

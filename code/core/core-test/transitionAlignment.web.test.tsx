@@ -59,6 +59,34 @@ test('longhands never leak to the DOM as attributes', () => {
   expect(result.viewProps.transitionDuration).toBeUndefined()
 })
 
+test('distinct transition diagnostics each warn once per process', () => {
+  const warnings: string[] = []
+  const original = console.warn
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  console.warn = (message: string) => warnings.push(String(message))
+  try {
+    const cases = [
+      { transition: 'opacity 200ms', transitionDuration: '-314159ms' },
+      {
+        transition: 'opacity 200ms',
+        transitionTimingFunction: 'not-a-timing-function',
+      },
+    ]
+    for (const props of cases) {
+      split(props)
+      split(props)
+    }
+    expect(warnings).toEqual([
+      expect.stringContaining('"-314159ms"'),
+      expect.stringContaining('"not-a-timing-function"'),
+    ])
+  } finally {
+    console.warn = original
+    process.env.NODE_ENV = previousNodeEnv
+  }
+})
+
 test('an aligned diagnostic drops the value instead of emitting invalid CSS', () => {
   const result = split({
     transition: 'opacity 200ms',

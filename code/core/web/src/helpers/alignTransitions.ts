@@ -35,6 +35,7 @@ import {
 
 import type { GetStyleState } from '../types'
 import { detectNativeTransitionTarget } from './nativeTransitionTarget'
+import { noteOnce } from './noteOnce'
 
 export const transitionLonghandKeys: ReadonlySet<string> = new Set([
   'transitionProperty',
@@ -78,19 +79,14 @@ const camelToKebab = (property: string) =>
  * (`y` -> `translate`), and camelCase names hyphenate — otherwise the CSS
  * `transition` names a property CSS does not know and silently never fires.
  */
-function cssTransitionPropertyName(property: string): string {
-  const targets = getTransformTargets(property)
+function cssTransitionPropertyName(
+  property: string,
+  shorthands: Record<string, string>
+): string {
+  const effectiveProperty = shorthands[property] ?? property
+  const targets = getTransformTargets(effectiveProperty)
   if (targets.length > 0) return targets[0].effectiveProperty
-  return camelToKebab(property)
-}
-
-const noted = new Set<string>()
-function noteOnce(key: string, message: string) {
-  if (process.env.NODE_ENV === 'development' && !noted.has(key)) {
-    if (noted.size > 1000) noted.clear()
-    noted.add(key)
-    console.warn(message)
-  }
+  return camelToKebab(effectiveProperty)
 }
 
 export function applyAccumulatedTransitions(styleState: GetStyleState): void {
@@ -103,7 +99,6 @@ export function applyAccumulatedTransitions(styleState: GetStyleState): void {
   // a note, mirroring the preset rule
   if (styleState.programs?.has('transition')) {
     noteOnce(
-      'program\0owns',
       `[tamagui] a conditional \`transition\` value owns the property; the other transition contributions are dropped. Put everything in the conditional value, or remove its clauses to use longhands.`
     )
     return
@@ -111,7 +106,6 @@ export function applyAccumulatedTransitions(styleState: GetStyleState): void {
 
   if (styleState.sawTransitionPreset) {
     noteOnce(
-      `preset\0${styleState.sawTransitionPreset}`,
       `[tamagui] transition longhands cannot compose with the "${styleState.sawTransitionPreset}" driver preset yet — the preset applies and the longhands are dropped. Restate \`transition\` as a CSS value to use longhands.`
     )
     return
@@ -120,7 +114,7 @@ export function applyAccumulatedTransitions(styleState: GetStyleState): void {
   const merged = alignTransitionContributions(contributions)
   if (!merged.ok) {
     for (const diagnostic of merged.diagnostics) {
-      noteOnce(`align\0${diagnostic.message}`, `[tamagui] ${diagnostic.message}`)
+      noteOnce(`[tamagui] ${diagnostic.message}`)
     }
     return
   }
@@ -135,7 +129,13 @@ export function applyAccumulatedTransitions(styleState: GetStyleState): void {
             entries: value.entries.map((entry) =>
               entry.property === 'all' || entry.property === 'none'
                 ? entry
-                : { ...entry, property: cssTransitionPropertyName(entry.property) }
+                : {
+                    ...entry,
+                    property: cssTransitionPropertyName(
+                      entry.property,
+                      styleState.conf.shorthands
+                    ),
+                  }
             ),
           }
         : value
@@ -153,7 +153,6 @@ export function applyAccumulatedTransitions(styleState: GetStyleState): void {
   const target = detectNativeTransitionTarget()
   if (!target) {
     noteOnce(
-      'native\0no-target',
       `[tamagui] CSS transitions on native need a detectable React Native version and platform; none was found, so the transition is dropped`
     )
     return
@@ -161,14 +160,13 @@ export function applyAccumulatedTransitions(styleState: GetStyleState): void {
   const validated = validateNativeTransition(merged.value, target)
   if (!validated.ok) {
     for (const diagnostic of validated.diagnostics) {
-      noteOnce(`native\0${diagnostic.message}`, `[tamagui] ${diagnostic.message}`)
+      noteOnce(`[tamagui] ${diagnostic.message}`)
     }
     return
   }
   // supported by the matrix, but no native driver consumes the IR yet: say so
   // rather than silently dropping a transition the matrix says could work
   noteOnce(
-    'native\0no-driver',
     `[tamagui] CSS transitions are not driven on native yet — use an animation driver preset. The value validated against the capability matrix and was dropped.`
   )
 }
