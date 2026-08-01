@@ -2,7 +2,8 @@
 
 Status: prepared on 2026-07-31. Execute after Phase 6 item 4 is committed.
 
-Final audited SHA: pending.
+Final audited SHA: `af0896eee3`, audited 2026-08-01. All 24 gates exit 0,
+post-build tracked dirt zero, both shuffled order gates 5/5.
 
 This is the release-facing procedure for Phase 6 item 5. It replaces warm-tree
 suite totals and package-level claims with one isolated reading of one commit.
@@ -121,36 +122,66 @@ warm transform caches are excluded.
 
 | Gate | Last coherent reference | Final baseline |
 | --- | --- | --- |
-| CI task graph | prepared tree: 23 executable web tasks, 3 executable native tasks | pending |
-| post-build dirt | isolated `4fdcd94500`: one postinstall CSS file, zero declarations | pending |
-| frozen-lockfile | isolated `4fdcd94500`: exit 0 | pending |
-| v6 config defaults | rebuilt package at `f4804dec80`/`d781941bbf`: 5 tests, 18,387 assertions | pending |
-| build package | rebuilt package at `d616ebc451`: 19 tests | pending |
-| lint | isolated `4fdcd94500`: exit 0, warnings only | pending |
-| typecheck | isolated `4fdcd94500`: exit 0 after declarations reproduced cleanly | pending |
-| style grammar | fully rebuilt at `114a015a73`: 373 tests / 21 files | pending |
-| DOM contract | rebuilt package at `0c82653e85`: 17 conformance tests plus typecheck | pending |
-| ESLint plugin | rebuilt package at `d0d8b73ab6`: 4 tests | pending |
-| language service | rebuilt package at `0192c1f8e2`: 3 tests | pending |
-| codemod | rebuilt dependencies at `78029931a7`: 66 tests, 444 assertions | pending |
-| core web | isolated `4fdcd94500`: 414 passed / 47 files; current total intentionally unset | pending |
-| core native | isolated `4fdcd94500`: 177 passed, 7 expected failures, 11 skipped / 21 files; current total intentionally unset | pending |
-| components web | no coherent current total recorded | pending |
-| components native | rebuilt package at `0b284b80bb`: 36 tests / 13 files | pending |
-| static web | fresh compiler builds at `5e59fea19b`: 113 passed | pending |
-| static native | fresh compiler builds at `5e59fea19b`: 47 passed, 1 expected failure | pending |
-| webpack | fresh compiler builds at `5e59fea19b`: 20 passed | pending |
-| Tailwind web | fully built at `114a015a73`: 462 tests / 20 files | pending |
-| Tailwind native | fully built at `114a015a73`: 273 tests / 4 files | pending |
-| Tailwind types | fully built at `114a015a73`: exit 0 | pending |
-| to-tailwind | rebuilt package at `9291a06298`: 63 tests | pending |
-| web package | isolated `4fdcd94500`: 90 tests / 8 files, no type errors | pending |
-| core order gates | five runs each, zero failures required; prior intermittent ordering evidence is not a baseline | pending |
+| CI task graph | prepared tree: 23 executable web tasks, 3 executable native tasks | 23 executable web tasks, 3 executable native tasks |
+| post-build dirt | isolated `4fdcd94500`: one postinstall CSS file, zero declarations | **zero** tracked files rewritten, declarations included |
+| frozen-lockfile | isolated `4fdcd94500`: exit 0 | exit 0 |
+| v6 config defaults | rebuilt package at `f4804dec80`/`d781941bbf`: 5 tests, 18,387 assertions | exit 0; 6 tests / 1 file |
+| build package | rebuilt package at `d616ebc451`: 19 tests | 19 tests / 1 file |
+| lint | isolated `4fdcd94500`: exit 0, warnings only | exit 0, warnings only |
+| typecheck | isolated `4fdcd94500`: exit 0 after declarations reproduced cleanly | exit 0, zero errors |
+| style grammar | fully rebuilt at `114a015a73`: 373 tests / 21 files | 381 tests / 23 files |
+| DOM contract | rebuilt package at `0c82653e85`: 17 conformance tests plus typecheck | 24 tests / 2 files |
+| ESLint plugin | rebuilt package at `d0d8b73ab6`: 4 tests | 4 tests / 1 file |
+| language service | rebuilt package at `0192c1f8e2`: 3 tests | 3 tests / 2 files |
+| codemod | rebuilt dependencies at `78029931a7`: 66 tests, 444 assertions | 90 tests / 2 files |
+| core web | isolated `4fdcd94500`: 414 passed / 47 files; current total intentionally unset | 469 passed, 2 skipped, 1 todo / 55 files + 1 skipped |
+| core native | isolated `4fdcd94500`: 177 passed, 7 expected failures, 11 skipped / 21 files; current total intentionally unset | 222 passed, 7 expected fail, 9 skipped / 24 files + 1 skipped |
+| components web | no coherent current total recorded | 46 tests / 9 files |
+| components native | rebuilt package at `0b284b80bb`: 36 tests / 13 files | 36 tests / 13 files |
+| static web | fresh compiler builds at `5e59fea19b`: 113 passed | 144 passed, 2 skipped / 16 files + 1 skipped |
+| static native | fresh compiler builds at `5e59fea19b`: 47 passed, 1 expected failure | 48 passed / 4 files |
+| webpack | fresh compiler builds at `5e59fea19b`: 20 passed | 20 passed / 1 file |
+| Tailwind web | fully built at `114a015a73`: 462 tests / 20 files | 456 tests / 19 files |
+| Tailwind native | fully built at `114a015a73`: 273 tests / 4 files | 275 tests / 4 files |
+| Tailwind types | fully built at `114a015a73`: exit 0 | exit 0; 456 tests / 19 files |
+| to-tailwind | rebuilt package at `9291a06298`: 63 tests | 63 tests / 2 files |
+| web package | isolated `4fdcd94500`: 90 tests / 8 files, no type errors | 81 tests / 8 files, no type errors |
+| core order gates | five runs each, zero failures required; prior intermittent ordering evidence is not a baseline | 5 shuffled runs each, zero failures |
 
 Do not use the reported `430/186`, `434/186`, or `450/188` core totals. They
 were withdrawn after a transform-cache audit showed two pre-existing reds were
 hidden at every coherent state in that window. Red-first mutation evidence
 from the same work remains valid, but those suite totals do not.
+
+### Why the final baseline moved from the reference column
+
+Two counts went DOWN, and per this document a smaller exit-zero suite is a
+baseline change rather than a pass. Both were source-counted before acceptance:
+
+- **Tailwind web 462 → 456.** `flatGroupSyntax.web.test.tsx` and its 3 legacy
+  `$group` adapter tests were deleted, legacy-only cases were dropped from
+  `adversarialAudit`, `mode` and `partition`, and 2 flat group/container parity
+  tests were added in `configAware.native`. Deliberate V2 coverage removal.
+- **web package 90 → 81.** `styledNonStyleProps.test-d.ts` and its 12 legacy
+  media/pseudo type tests were deleted; `stylePropParity.test-d.ts` adds 3.
+  Net −9 with the file count unchanged. Deliberate contract replacement.
+
+Several went UP, which needs recording so a later run does not read the higher
+number as drift:
+
+- **static web 113 → 144 / 17 files.** The package globbed `tests/*.web.test.tsx`
+  and this script repeated that glob, so `e3-lowerer.web.test.ts` (27 tests) and
+  `e2-parity.web.test.ts` (7) had never run anywhere. The glob now lives only in
+  the package, as `test:web:files`, and this script calls it.
+- **core web 414 → 469, core native 177 → 222.** `constants.web.test.ts` was
+  invisible to `*.web.test.tsx`, and `getSplitStyles.nestedMedia.test.tsx` had
+  no platform infix so no script matched it at all. Both now run.
+- **style grammar 373 → 381, codemod 66 → 90, DOM contract 17 → 24.** Tests
+  added during the sigil rip.
+
+Do not repeat a package's test glob in this script. A copied pattern silently
+stops matching when the original changes, and that is exactly how the static
+gate spent its life reporting 110 tests while the package ran 144.
 
 ## CI reachability verified from the task graph
 
