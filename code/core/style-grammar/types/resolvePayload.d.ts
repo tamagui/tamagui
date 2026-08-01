@@ -15,16 +15,16 @@ export type PayloadReference = ResolvedReference & {
 	opacity?: number;
 };
 export type PayloadSegment = string | PayloadReference;
-export type PayloadResolveErrorCode = "opacity-on-non-color" | "opacity-out-of-range";
+export type PayloadResolveErrorCode = "opacity-on-non-color" | "opacity-out-of-range" | "unresolved-token";
 export interface PayloadResolveError {
 	code: PayloadResolveErrorCode;
 	/** character offset of the identifier within the payload */
 	index: number;
 	message: string;
-	/** the identifier the suffix was applied to, without the suffix */
+	/** the token or identifier name, without a sigil or opacity suffix */
 	name: string;
-	/** the percentage as authored, which may be out of range or fractional */
-	opacity: number;
+	/** the percentage as authored, when this is an opacity error */
+	opacity?: number;
 }
 export interface ResolvedPayload {
 	/** static text runs and references, in payload order; adjacent text collapses */

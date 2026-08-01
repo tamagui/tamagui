@@ -122,7 +122,7 @@ export function splitFontValue(value: ParsedValue): {
       }
       const slash = component.indexOf('/')
       const sizePart = slash === -1 ? component : component.slice(0, slash)
-      if (sizePattern.test(sizePart)) {
+      if (sizePattern.test(sizePart) || (sizePart[0] === '$' && sizePart.length > 1)) {
         if (found.size !== undefined) {
           errors.push({ code: 'unsupported-font-component', component, where })
           continue

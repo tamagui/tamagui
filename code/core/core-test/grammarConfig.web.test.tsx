@@ -31,6 +31,14 @@ describe('identifier lookup', () => {
     )
   })
 
+  test('a qualified legacy token resolves through one bare lookup name', () => {
+    const reference = context.getLookup('boxShadow')('color.white')
+    expect(reference).toBeDefined()
+    expect(context.toVar(reference!.name)).toBe(
+      tamaguiConfig.tokensParsed.color.$white.variable
+    )
+  })
+
   test('lookup is property-scoped, so colliding token names stay distinct', () => {
     // `4` is a space token for padding and a size token for width
     const space = context.getLookup('padding')('4')!

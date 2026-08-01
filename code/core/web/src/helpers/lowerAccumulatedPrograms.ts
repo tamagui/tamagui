@@ -37,18 +37,6 @@ function warnOnce(key: string, message: string) {
   }
 }
 
-// `$` survives resolution only when the author mixed the legacy token
-// spelling into a clause payload (`hover:$color10`); a `$` in real CSS lives
-// inside strings or urls, which resolution never touches, so a bare one here
-// means invalid CSS is about to ship
-function hasBareTokenPrefix(serialized: string): boolean {
-  const index = serialized.indexOf('$')
-  if (index === -1) return false
-  return (
-    !serialized.includes('"') && !serialized.includes("'") && !serialized.includes('url(')
-  )
-}
-
 type LoweredResult =
   | (ReturnType<typeof lowerProgram> & {
       /** resolved base payload, riding the StyleObject value slot like the
@@ -69,21 +57,14 @@ function resolveProgramPayload(
 ): string | null {
   const resolved = resolvePayload(payload, { lookup, resolveNumbers })
   if (resolved.errors?.length) {
+    const error = resolved.errors[0]
     warnOnce(
       `${longhand}\0${payload}`,
-      `[tamagui] ${sourceProp}: "${payload}" — ${resolved.errors[0].code}; dropping this program`
+      `[tamagui] ${sourceProp}: "${payload}" — ${error.message}`
     )
     return null
   }
-  const serialized = serializePayloadWeb(resolved, context.toVar)
-  if (hasBareTokenPrefix(serialized)) {
-    warnOnce(
-      `${longhand}\0${payload}\0$`,
-      `[tamagui] ${sourceProp}: "${payload}" — flat clause values use config-first names without "$"; dropping this program`
-    )
-    return null
-  }
-  return serialized
+  return serializePayloadWeb(resolved, context.toVar)
 }
 
 function lowerOneProgram(
@@ -105,10 +86,15 @@ function lowerOneProgram(
       program.sourceProp,
       program.value.base
     )
-    // an unresolvable base ships raw (with the warning above), matching what
-    // the legacy value path did — dropping it would silently erase the style
     if (base === null) {
-      base = program.value.base
+      // clause-free compound values retain the legacy path's byte-for-byte
+      // handling of unknown embedded tokens. a conditional program cannot ship
+      // an unresolved sigil because native would receive it as an invalid value.
+      if (program.value.clauses.length === 0) {
+        base = program.value.base
+      } else {
+        return null
+      }
     }
   }
 

@@ -1875,9 +1875,18 @@ export type Size =
 
 export type SizeTokens = Size
 
-export type Space =
+type FlatValueStateModifier = 'hover' | 'press' | 'focus' | 'disabled'
+type StateTokenClause<Token extends string> = Token extends `$${infer Name}`
+  ? `${FlatValueStateModifier}:${Name}`
+  : never
+
+type SpaceTokenBase =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['space']>
+
+export type Space =
+  | SpaceTokenBase
+  | StateTokenClause<SpaceTokenBase>
   | ThemeValueFallbackSpace
   | true
 
@@ -1895,6 +1904,7 @@ type TokenWithOpacity = `$${string}/${number}`
 
 export type Color =
   | ColorTokenBase
+  | StateTokenClause<ColorTokenBase>
   | CSSColorNames
   // opacity modifier: $token/50 → parsed at runtime in getTokenForKey
   | TokenWithOpacity

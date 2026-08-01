@@ -1101,11 +1101,14 @@ export type SpecificTokensSpecial = TamaguiSettings extends {
 } ? Val extends 'except-special' | undefined ? never : SpecificTokens : SpecificTokens;
 export type Size = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']> | true;
 export type SizeTokens = Size;
-export type Space = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | true;
+type FlatValueStateModifier = 'hover' | 'press' | 'focus' | 'disabled';
+type StateTokenClause<Token extends string> = Token extends `$${infer Name}` ? `${FlatValueStateModifier}:${Name}` : never;
+type SpaceTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']>;
+export type Space = SpaceTokenBase | StateTokenClause<SpaceTokenBase> | ThemeValueFallbackSpace | true;
 export type SpaceTokens = Space;
 type ColorTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
 type TokenWithOpacity = `$${string}/${number}`;
-export type Color = ColorTokenBase | CSSColorNames | TokenWithOpacity;
+export type Color = ColorTokenBase | StateTokenClause<ColorTokenBase> | CSSColorNames | TokenWithOpacity;
 export type ColorTokens = Color;
 export type ZIndex = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number | true;
 export type ZIndexTokens = ZIndex;

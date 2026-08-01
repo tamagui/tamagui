@@ -479,10 +479,47 @@ keywords), while `getSplitStyles.tsx:763-767` expands any key present in the
 shorthand map unconditionally, so at runtime `content` always becomes
 `alignContent` and the CSS property is unreachable through it.
 
-Same family as `bg`: a shorthand remap the type layer does not reflect. Left
-alone because unlike the four above it needs a product decision (rename the
-shorthand, or rename/drop the CSS `content` style prop), and because
-`types.tsx` is contended.
+Same family as `bg`: a shorthand remap the type layer does not reflect.
+
+**Ruled (a2662): the CSS `content` style prop goes, `content` types as the
+alignContent shorthand.** The type is advertising behavior that cannot happen,
+which is the same lie as `bg` offering zero tokens, pointed the other way. CSS
+`content` only does anything on `::before`/`::after`, which style props do not
+target, so nothing real is lost. Beta is when to fix this, before people depend
+on the broken shape.
+
+The change is four lines, removing the declaration from `ExtraStyleProps`:
+
+```ts
+-  /**
+-   * Web-only style property. Will be omitted on native.
+-   */
+-  content?: Properties['content']
+```
+
+Verified against the real type machinery without editing the contended file, by
+shadowing the post-change type as `WithThemeValues<StackStyleBase>['alignContent']`:
+
+| `content=""` | constituents | string literals | completions offered |
+| --- | --- | --- | --- |
+| today | 2 | 0 | **none at all** |
+| after removal | 11 | 8 | `unset`, `flex-start`, `flex-end`, `center`, `stretch`, `space-between`, `space-around`, `space-evenly` |
+
+For comparison the unshadowed sibling shorthands sit at `items` 6 literals and
+`justify` 7, so 8 is the expected shape for `alignContent`.
+
+Non-breaking, verified by compiling both sides: `content="center"` and
+`content="space-between"` compile (and now autocomplete), and anything written
+against the old CSS-content typing, `content="'hello'"` or
+`content="url(x.png)"`, still compiles through `(string & {})`. Runtime
+behavior does not change at all, because `getSplitStyles` already expanded the
+shorthand unconditionally in every one of those cases.
+
+Held, not landed: the beta candidate is frozen at `fa3f27be45` for the
+conformance matrix, and `types.tsx` has three lanes in it. The patch is
+generated against the frozen candidate and verified to apply cleanly both to it
+and to the current working tree with the other two lanes' changes present. It
+needs a `@tamagui/web` types rebuild when sequenced.
 
 ## The integration surface, if it were done anyway
 

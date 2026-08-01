@@ -85,6 +85,9 @@ function classifyBorderComponent(
   if (lower === 'auto' && property === 'outline') return 'style'
   if (widthKeywords.has(lower) || lengthPattern.test(component)) return 'width'
   if (classifyComponent(component, colorTokens) === 'color') return 'color'
+  // configured colors were claimed above, so another legacy token spelling is
+  // a width candidate. payload resolution owns whether that token exists.
+  if (component[0] === '$') return 'width'
   if (/^(calc|var|min|max|clamp)\(/i.test(component)) return 'width'
   return null
 }

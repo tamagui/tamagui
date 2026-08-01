@@ -17,9 +17,10 @@
 //   box-shadow because it binds no numeric category. Numbers with units are
 //   always literal.
 //
-// A lookup miss stays literal text. Typos in literal positions are the
-// compiler's and language service's job, never a runtime guess — so with a
-// lookup that resolves nothing, both serializers reproduce the input exactly.
+// A bare lookup miss stays literal text. Typos in literal positions are the
+// compiler's and language service's job, never a runtime guess. An explicit
+// legacy `$token` is different: a miss is structured invalid-token input so
+// neither serializer can ship the sigil as CSS or a native value.
 
 import { reservedCssIdents } from './valueTypes'
 
@@ -49,16 +50,18 @@ export type PayloadResolveErrorCode =
   | 'opacity-on-non-color'
   /** a suffix on a resolved color token that is not an integer 0 through 100 */
   | 'opacity-out-of-range'
+  /** a legacy `$token` spelling did not name a configured token */
+  | 'unresolved-token'
 
 export interface PayloadResolveError {
   code: PayloadResolveErrorCode
   /** character offset of the identifier within the payload */
   index: number
   message: string
-  /** the identifier the suffix was applied to, without the suffix */
+  /** the token or identifier name, without a sigil or opacity suffix */
   name: string
-  /** the percentage as authored, which may be out of range or fractional */
-  opacity: number
+  /** the percentage as authored, when this is an opacity error */
+  opacity?: number
 }
 
 interface OpacitySuffix {
@@ -100,6 +103,7 @@ const CHAR_LF = 10
 const CHAR_FF = 12
 const CHAR_CR = 13
 const CHAR_SPACE = 32
+const CHAR_DOLLAR = 36
 const CHAR_PERCENT = 37
 const CHAR_HASH = 35
 const CHAR_DOUBLE_QUOTE = 34
@@ -147,6 +151,10 @@ function isIdentStart(code: number): boolean {
 
 function isIdentPart(code: number): boolean {
   return isIdentStart(code) || isDigit(code)
+}
+
+function isLegacyTokenPart(code: number): boolean {
+  return isIdentPart(code) || code === CHAR_DOT
 }
 
 /** a component-value boundary, with -1 meaning start or end of the payload */
@@ -208,36 +216,71 @@ export function resolvePayload(
       continue
     }
 
+    // the flat spelling is bare, but v3 must remain additive while existing
+    // apps still author `$token`. treat one leading sigil as syntax, consume
+    // the complete legacy atom (including dotted and numeric names), then run
+    // the same configured-name lookup exactly once.
+    const hasLegacyPrefix = code === CHAR_DOLLAR
+    const candidateStart = hasLegacyPrefix ? index + 1 : index
+    const candidateCode = codeAt(candidateStart)
+
     // `-` before a digit is a signed number, not an ident
-    if (isIdentStart(code) && !(code === CHAR_MINUS && isDigit(codeAt(index + 1)))) {
-      const start = index
-      let end = index
-      while (end < length && isIdentPart(payload.charCodeAt(end))) {
+    if (
+      hasLegacyPrefix ||
+      (isIdentStart(candidateCode) &&
+        !(candidateCode === CHAR_MINUS && isDigit(codeAt(candidateStart + 1))))
+    ) {
+      const replacementStart = index
+      const start = candidateStart
+      let end = candidateStart
+      while (
+        end < length &&
+        (hasLegacyPrefix
+          ? isLegacyTokenPart(payload.charCodeAt(end))
+          : isIdentPart(payload.charCodeAt(end)))
+      ) {
         end += payload.charCodeAt(end) === CHAR_BACKSLASH ? 2 : 1
       }
       const name = payload.slice(start, Math.min(end, length))
 
       // a function name is never a candidate, and an unquoted url() body never
       // resolves, so skip the whole call
-      if (codeAt(end) === CHAR_PAREN_OPEN) {
+      if (!hasLegacyPrefix && codeAt(end) === CHAR_PAREN_OPEN) {
         index = name.toLowerCase() === 'url' ? skipParens(payload, end) : end + 1
         continue
       }
 
       // custom-property references stay literal
-      if (name.startsWith('--')) {
+      if (!hasLegacyPrefix && name.startsWith('--')) {
         index = end
         continue
       }
 
       // CSS-wide keywords are case-insensitive, so the reserved gate is folded.
-      // Token names themselves stay case-sensitive: only the gate folds.
-      const resolved = reservedFolded.has(name.toLowerCase()) ? undefined : lookup(name)
+      // Token names themselves stay case-sensitive, and an explicit legacy
+      // sigil bypasses this literal-only gate.
+      const resolved =
+        !name || (!hasLegacyPrefix && reservedFolded.has(name.toLowerCase()))
+          ? undefined
+          : lookup(name)
 
       // a numeric run directly after the ident, ending at a component boundary,
       // is an opacity suffix attempt. `center/50%` and `center/cover` are not
       // attempts at all, so ordinary CSS slash forms never come near this.
       const suffix = readOpacitySuffix(payload, end, codeAt)
+
+      if (hasLegacyPrefix && !resolved) {
+        const tokenEnd = suffix?.end ?? end
+        const authored = payload.slice(replacementStart, tokenEnd) || '$'
+        ;(errors ||= []).push({
+          code: 'unresolved-token',
+          index: replacementStart,
+          message: `"${authored}" is not a configured token; use a configured token name or remove "$" for a literal value`,
+          name,
+        })
+        index = Math.max(tokenEnd, replacementStart + 1)
+        continue
+      }
 
       if (suffix !== null && resolved?.kind === 'color') {
         if (suffix.percentage === null) {
@@ -245,7 +288,7 @@ export function resolvePayload(
           // opacity and missing, so it is reported rather than emitted as text
           ;(errors ||= []).push({
             code: 'opacity-out-of-range',
-            index: start,
+            index: replacementStart,
             message: `"${name}${payload.slice(end, suffix.end)}" is not an opacity suffix: it must be an integer percentage from 0 through 100`,
             name,
             opacity: Number(payload.slice(end + 1, suffix.end)),
@@ -254,7 +297,7 @@ export function resolvePayload(
           continue
         }
         pushReference(
-          start,
+          replacementStart,
           suffix.end,
           // 100% is the identity, so it never reaches a serializer
           suffix.percentage === 100
@@ -271,7 +314,7 @@ export function resolvePayload(
         // literal so the payload still round-trips.
         ;(errors ||= []).push({
           code: 'opacity-on-non-color',
-          index: start,
+          index: replacementStart,
           message: resolved
             ? `"${name}" is not a color token (kind: ${resolved.kind}), so the /${suffix.percentage} opacity suffix does not apply`
             : `"${name}" is not a resolved color token, so the /${suffix.percentage} opacity suffix does not apply`,
@@ -289,7 +332,7 @@ export function resolvePayload(
         continue
       }
 
-      pushReference(start, end, { ...resolved })
+      pushReference(replacementStart, end, { ...resolved })
       index = end
       continue
     }
@@ -299,8 +342,9 @@ export function resolvePayload(
       code === CHAR_DOT ||
       ((code === CHAR_PLUS || code === CHAR_MINUS) && isDigit(codeAt(index + 1)))
     ) {
+      const replacementStart = index
       const start = index
-      let end = index
+      let end = start
       if (code === CHAR_PLUS || code === CHAR_MINUS) end++
       while (end < length) {
         const digit = payload.charCodeAt(end)
@@ -332,7 +376,7 @@ export function resolvePayload(
       // bounded on both sides: `4 8` resolves both, `4/8` and `12px/4` neither
       if (
         !resolveNumbers ||
-        !isBoundary(codeAt(start - 1)) ||
+        !isBoundary(codeAt(replacementStart - 1)) ||
         !isBoundary(codeAt(numberEnd))
       ) {
         index = numberEnd
@@ -341,7 +385,7 @@ export function resolvePayload(
 
       const name = payload.slice(start, numberEnd)
       const resolved = lookup(name)
-      if (resolved) pushReference(start, numberEnd, { ...resolved })
+      if (resolved) pushReference(replacementStart, numberEnd, { ...resolved })
       index = numberEnd
       continue
     }

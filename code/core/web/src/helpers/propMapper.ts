@@ -15,6 +15,7 @@ import type {
 } from '../types'
 import { variantResolverNames } from '../types'
 import { cssColorNames } from '../interfaces/CSSColorNames'
+import { hasTopLevelClause } from './alignTransitions'
 import { expandStyle } from './expandStyle'
 import {
   getLastFontFamilyToken,
@@ -33,6 +34,17 @@ import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 
 export { getTokenForKey } from './getTokenForKey'
+
+// a conditional string must reach the flat grammar intact. legacy whole-token
+// and compound resolution erase the program or replace typed token components
+// with indistinguishable values before family splitting.
+function hasConditionalClause(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.indexOf(':') !== -1 &&
+    hasTopLevelClause(value)
+  )
+}
 
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
   if (disabled) {
@@ -118,9 +130,10 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
         styleState
       )
     } else if (typeof value === 'string') {
-      if (value[0] === '$') {
+      const isConditional = hasConditionalClause(value)
+      if (!isConditional && value[0] === '$') {
         value = getTokenForKey(key, value, styleProps, styleState)
-      } else {
+      } else if (!isConditional) {
         const resolved = resolveCompoundTokens(key, value, styleProps, styleState)
         value =
           resolved !== value ? resolved : isRemValue(value) ? resolveRem(value) : value
@@ -356,7 +369,9 @@ const resolveTokensAndVariants: StyleResolver<object> = (
         // eg: { variants: { flex: { true: { flex: 2 } } } }
         if (parentVariantKey && parentVariantKey === key) {
           res[subKey] =
-            val[0] === '$' ? getTokenForKey(subKey, val, styleProps, styleState) : val
+            typeof val === 'string' && val[0] === '$' && !hasConditionalClause(val)
+              ? getTokenForKey(subKey, val, styleProps, styleState)
+              : val
         } else {
           const variantOut = resolveVariants(subKey, val, styleProps, styleState, key)
 
@@ -414,8 +429,10 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     }
 
     if (typeof val === 'string') {
-      const fVal =
-        val[0] === '$'
+      const isConditional = hasConditionalClause(val)
+      const fVal = isConditional
+        ? val
+        : val[0] === '$'
           ? getTokenForKey(subKey, val, styleProps, styleState)
           : resolveCompoundTokens(subKey, val, styleProps, styleState)
 

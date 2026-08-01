@@ -54,6 +54,85 @@ test('tokens resolve to variables and media clauses wrap', () => {
   }
 })
 
+test('legacy token sigils resolve in conditional flat values', () => {
+  const colors = split({ backgroundColor: '$white hover:$black' })
+  const colorClass = colors.classNames.backgroundColor
+  expect(rulesFor(colors, colorClass)).toEqual([
+    `.${colorClass}{background-color:var(--c-white)}`,
+    `@media (hover: hover) {.${colorClass}:where(:hover){background-color:var(--c-black)}}`,
+  ])
+
+  const padding = split({ padding: '$4 hover:$8' })
+  for (const [longhand, cssProperty] of [
+    ['paddingTop', 'padding-top'],
+    ['paddingRight', 'padding-right'],
+    ['paddingBottom', 'padding-bottom'],
+    ['paddingLeft', 'padding-left'],
+  ] as const) {
+    const className = padding.classNames[longhand]
+    expect(rulesFor(padding, className), longhand).toEqual([
+      `.${className}{${cssProperty}:var(--t-space-4)}`,
+      `@media (hover: hover) {.${className}:where(:hover){${cssProperty}:var(--t-space-8)}}`,
+    ])
+  }
+
+  const qualified = split({ backgroundColor: '$color.white hover:$color.black' })
+  const qualifiedClass = qualified.classNames.backgroundColor
+  expect(rulesFor(qualified, qualifiedClass)).toEqual([
+    `.${qualifiedClass}{background-color:var(--c-white)}`,
+    `@media (hover: hover) {.${qualifiedClass}:where(:hover){background-color:var(--c-black)}}`,
+  ])
+
+  const background = split({ background: '$white hover:$black' })
+  const backgroundClass = background.classNames.backgroundColor
+  expect(rulesFor(background, backgroundClass)).toEqual([
+    `.${backgroundClass}{background-color:var(--c-white)}`,
+    `@media (hover: hover) {.${backgroundClass}:where(:hover){background-color:var(--c-black)}}`,
+  ])
+})
+
+test('an unknown legacy base token drops the web program with a diagnostic', () => {
+  const warnings: string[] = []
+  const original = console.warn
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  console.warn = (message: string) => warnings.push(String(message))
+  try {
+    const result = split({ backgroundColor: '$missing-web-base hover:black' })
+    expect(result.classNames.backgroundColor).toBeUndefined()
+    expect(warnings).toContainEqual(
+      expect.stringContaining(
+        '"$missing-web-base" is not a configured token; use a configured token name or remove "$" for a literal value'
+      )
+    )
+  } finally {
+    console.warn = original
+    process.env.NODE_ENV = previousNodeEnv
+  }
+})
+
+test('legacy token sigils reach conditional border-family splitting intact', () => {
+  const result = split({ border: '$4 solid $white hover:$8 dashed $black' })
+
+  const widthClass = result.classNames.borderTopWidth
+  expect(rulesFor(result, widthClass)).toEqual([
+    `.${widthClass}{border-top-width:var(--t-space-4)}`,
+    `@media (hover: hover) {.${widthClass}:where(:hover){border-top-width:var(--t-space-8)}}`,
+  ])
+
+  const styleClass = result.classNames.borderTopStyle
+  expect(rulesFor(result, styleClass)).toEqual([
+    `.${styleClass}{border-top-style:solid}`,
+    `@media (hover: hover) {.${styleClass}:where(:hover){border-top-style:dashed}}`,
+  ])
+
+  const colorClass = result.classNames.borderTopColor
+  expect(rulesFor(result, colorClass)).toEqual([
+    `.${colorClass}{border-top-color:var(--c-white)}`,
+    `@media (hover: hover) {.${colorClass}:where(:hover){border-top-color:var(--c-black)}}`,
+  ])
+})
+
 test('a later plain value restates the base; the hover survives (decision 21)', () => {
   const result = split({ backgroundColor: 'red hover:blue', bg: 'green' })
   const className = result.classNames.backgroundColor

@@ -299,8 +299,9 @@ export function evaluateAccumulatedPrograms(
       resolveNumbers: context.resolvesNumbers(longhand),
     })
     if (resolved.errors?.length) {
+      const error = resolved.errors[0]
       noteOnce(
-        `[tamagui] ${program.sourceProp}: "${payload}" — ${resolved.errors[0].code}; dropping`
+        `[tamagui] ${program.sourceProp}: "${payload}" — ${error.message}; dropping`
       )
       continue
     }

@@ -92,6 +92,28 @@ describe('the border family', () => {
     expect(entries[2].value.base).toBe('primary')
   })
 
+  test('legacy sigils classify width and color tokens before resolution', () => {
+    const { entries, errors } = splitBorderValue(
+      'borderTop',
+      value('$4 solid $primary', [
+        { modifiers: ['hover'], payload: '$8 dashed $color.color5' },
+      ]),
+      colorTokens
+    )
+    expect(errors).toEqual([])
+    const byProp = Object.fromEntries(
+      entries.map((entry) => [entry.property, entry.value])
+    )
+    expect(byProp.borderTopWidth).toEqual({
+      base: '$4',
+      clauses: [{ modifiers: ['hover'], payload: '$8' }],
+    })
+    expect(byProp.borderTopColor).toEqual({
+      base: '$primary',
+      clauses: [{ modifiers: ['hover'], payload: '$color.color5' }],
+    })
+  })
+
   test('outline splits to outline longhands and allows auto', () => {
     const { entries, errors } = splitBorderValue(
       'outline',

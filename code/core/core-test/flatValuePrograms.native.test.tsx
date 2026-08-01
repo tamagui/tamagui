@@ -38,6 +38,69 @@ const groupEntry = (
   state: { pseudo, layout },
 })
 
+type SplitConditions = [
+  state?: Record<string, any>,
+  themeName?: string,
+  styleProps?: Record<string, any>,
+  groupContext?: Record<string, any>,
+]
+
+const sigilClauseCases: {
+  name: string
+  modifier: string
+  active: SplitConditions
+  inactive: SplitConditions
+}[] = [
+  {
+    name: 'hover',
+    modifier: 'hover',
+    active: [{ hover: true }],
+    inactive: [{}],
+  },
+  {
+    name: 'press',
+    modifier: 'press',
+    active: [{ press: true }],
+    inactive: [{}],
+  },
+  {
+    name: 'focus',
+    modifier: 'focus',
+    active: [{ focus: true }],
+    inactive: [{}],
+  },
+  {
+    name: 'disabled',
+    modifier: 'disabled',
+    active: [{ disabled: true }],
+    inactive: [{}],
+  },
+  {
+    name: 'dark theme',
+    modifier: 'dark',
+    active: [{}, 'dark'],
+    inactive: [{}, 'light'],
+  },
+  {
+    name: 'media',
+    modifier: 'sm',
+    active: [{}, 'light', { mediaState: { sm: true } }],
+    inactive: [{}, 'light', { mediaState: { sm: false } }],
+  },
+  {
+    name: 'group press',
+    modifier: 'group-press',
+    active: [{}, 'light', {}, { true: groupEntry({ press: true }) }],
+    inactive: [{}, 'light', {}, { true: groupEntry({ press: false }) }],
+  },
+  {
+    name: 'container',
+    modifier: '@sm',
+    active: [{}, 'light', {}, { '@': groupEntry({}, { width: 400, height: 100 }) }],
+    inactive: [{}, 'light', {}, { '@': groupEntry({}, { width: 1000, height: 100 }) }],
+  },
+]
+
 test('base applies and the hover clause waits for the state', () => {
   const base = split({ backgroundColor: 'red hover:blue' })
   expect(base.style?.backgroundColor).toBe('red')
@@ -46,6 +109,61 @@ test('base applies and the hover clause waits for the state', () => {
   const hovered = split({ backgroundColor: 'red hover:blue' }, { hover: true })
   expect(hovered.style?.backgroundColor).toBe('blue')
 })
+
+test.each(sigilClauseCases)(
+  'legacy token sigils resolve in clause payloads on native: $name',
+  ({ modifier, active }) => {
+    const clause = split({ backgroundColor: `white ${modifier}:$black` }, ...active)
+    expect(clause.style?.backgroundColor).toBe('#000')
+  }
+)
+
+test('qualified legacy token sigils resolve in both program positions on native', () => {
+  const base = split({ backgroundColor: '$color.white press:black' })
+  expect(base.style?.backgroundColor).toBe('#fff')
+
+  const clause = split({ backgroundColor: 'white press:$color.black' }, { press: true })
+  expect(clause.style?.backgroundColor).toBe('#000')
+})
+
+test('an unknown legacy token is dropped with an actionable native diagnostic', () => {
+  const warnings: string[] = []
+  const original = console.warn
+  const previousNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+  console.warn = (message: string) => warnings.push(String(message))
+  try {
+    const result = split(
+      { backgroundColor: 'white press:$missing-native-sigil' },
+      { press: true }
+    )
+    expect(result.style?.backgroundColor).toBeUndefined()
+
+    const base = split({ backgroundColor: '$missing-native-base press:black' })
+    expect(base.style?.backgroundColor).toBeUndefined()
+    expect(warnings).toContainEqual(
+      expect.stringContaining(
+        '"$missing-native-sigil" is not a configured token; use a configured token name or remove "$" for a literal value'
+      )
+    )
+    expect(warnings).toContainEqual(
+      expect.stringContaining(
+        '"$missing-native-base" is not a configured token; use a configured token name or remove "$" for a literal value'
+      )
+    )
+  } finally {
+    console.warn = original
+    process.env.NODE_ENV = previousNodeEnv
+  }
+})
+
+test.each(sigilClauseCases)(
+  'legacy token sigils resolve in base payloads on native: $name',
+  ({ modifier, inactive }) => {
+    const base = split({ backgroundColor: `$white ${modifier}:black` }, ...inactive)
+    expect(base.style?.backgroundColor).toBe('#fff')
+  }
+)
 
 test('press state matches press and active spellings', () => {
   const pressed = split({ opacity: '0.5 press:1' }, { press: true })
