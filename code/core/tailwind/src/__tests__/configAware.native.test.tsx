@@ -46,12 +46,44 @@ function className(sourceJSX: string): string {
 function flat(cls: string): Record<string, any> {
   return tailwindStyleFrontend.preprocessProps({ className: cls }, CFG)
 }
+function split(
+  props: Record<string, any>,
+  themeName = 'light',
+  groupContext?: Record<string, any>
+) {
+  return splitTailwindStyles(View, props, {
+    theme: (CFG.themes as any)[themeName],
+    themeName,
+    groupContext,
+  })
+}
 function style(props: Record<string, any>, themeName = 'light'): Record<string, any> {
-  return (
-    splitTailwindStyles(View, props, {
-      theme: (CFG.themes as any)[themeName],
-      themeName,
-    }).style || {}
+  return split(props, themeName).style || {}
+}
+const fullOutput = (result: ReturnType<typeof split>) =>
+  JSON.stringify({
+    rules: Object.entries(result.rulesToInsert ?? {}).map(([identifier, entry]) => [
+      identifier,
+      (entry as any)?.[4] ?? [],
+    ]),
+    style: result.style ?? null,
+    viewProps: result.viewProps ?? null,
+  })
+const groupEntry = (pseudo: Record<string, boolean>) => ({
+  subscribe: () => () => {},
+  state: { pseudo },
+})
+const containerEntry = (width: number, height: number) => ({
+  subscribe: () => () => {},
+  state: { layout: { width, height } },
+})
+function expectConditionalParity(
+  className: string,
+  value: string,
+  groupContext: Record<string, any>
+) {
+  expect(fullOutput(split({ className }, 'light', groupContext))).toBe(
+    fullOutput(split({ backgroundColor: value }, 'light', groupContext))
   )
 }
 describe('config-aware tokens (NATIVE) — class names follow runtime-owned values', () => {
@@ -110,6 +142,20 @@ describe('shared candidate semantics (NATIVE)', () => {
     expect(style({ className: 'web:bg-black' }, 'web').backgroundColor).toBe(
       style({ backgroundColor: 'web:black' }, 'web').backgroundColor
     )
+  })
+
+  test('named hover and press group candidates match the full flat program output', () => {
+    expectConditionalParity('group-hover/card:bg-black', 'group-hover/card:black', {
+      card: groupEntry({ hover: true }),
+    })
+    expectConditionalParity('group-press/card:bg-black', 'group-press/card:black', {
+      card: groupEntry({ press: true }),
+    })
+  })
+
+  test('a named container candidate matches the full active flat program output', () => {
+    const groupContext = { '@layout': containerEntry(10_000, 10_000) }
+    expectConditionalParity('@sm/layout:bg-black', '@sm/layout:black', groupContext)
   })
 })
 

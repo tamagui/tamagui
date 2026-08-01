@@ -143,7 +143,10 @@ function displacePlainStyles(
   return displaced
 }
 
-function plainValueToPayload(value: unknown, longhand: string): string | null {
+// exported for the internal-runtime projection only: another frontend
+// serializing numeric/arbitrary values must reuse THIS units heuristic, never
+// copy it (a second units heuristic is the second-table disease)
+export function plainValueToPayload(value: unknown, longhand: string): string | null {
   if (typeof value === 'string') return value
   if (typeof value !== 'number' || !Number.isFinite(value)) return null
   const transformUnit = transformDeclarationUnit[longhand]

@@ -2,6 +2,7 @@ import { type ParsedValue } from '@tamagui/style-grammar';
 import type { GetStyleState } from '../types';
 import { type GrammarRuntimeContext } from './grammarConfig';
 export declare function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeContext;
+export declare function plainValueToPayload(value: unknown, longhand: string): string | null;
 export declare function canAppendParsedProgram(styleState: GetStyleState, prop: string): boolean;
 /**
  * Claims every longhand for one parsed contribution. Ordinary flat values

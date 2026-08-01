@@ -304,8 +304,14 @@ function tailwindClassToFlatProp(
 // grammar, caller preserves the class string. An array (which may legitimately be
 // empty) = claimed, apply these entries.
 type TailwindClassPlan = [string, any][] | null | 'raw'
+type TailwindParentPlan = {
+  entries: [string, any][]
+  preserveRawClass: boolean
+}
 
-const classPlanCache = new WeakMap<object, Map<string, TailwindClassPlan>>()
+type CachedTailwindClassPlan = TailwindClassPlan | TailwindParentPlan
+
+const classPlanCache = new WeakMap<object, Map<string, CachedTailwindClassPlan>>()
 
 function getClassPlanCache(grammarConfig: object) {
   let cache = classPlanCache.get(grammarConfig)
@@ -319,7 +325,31 @@ function getClassPlanCache(grammarConfig: object) {
 function computeClassPlan(
   cls: string,
   grammarConfig: GrammarConfigView
-): TailwindClassPlan {
+): CachedTailwindClassPlan {
+  const groupMarker = /^group(?:\/([A-Za-z0-9_-]+))?$/.exec(cls)
+  if (groupMarker) {
+    return {
+      entries: [['group', groupMarker[1] || true]],
+      preserveRawClass: isWeb,
+    }
+  }
+
+  const containerMarker = /^@container(-size)?(?:\/([A-Za-z0-9_-]+))?$/.exec(cls)
+  if (containerMarker) {
+    const isSize = containerMarker[1] !== undefined
+    const name = containerMarker[2]
+    const entries: [string, any][] = []
+    if (name) entries.push(['containerName', name])
+    if (isSize) {
+      entries.push(['containerType', 'size'])
+    } else if (name) {
+      entries.push(['containerType', 'inline-size'])
+    } else {
+      entries.push(['container', true])
+    }
+    return { entries, preserveRawClass: isWeb }
+  }
+
   const classification = classifyCandidate(cls, grammarConfig)
   if (classification.kind === 'passthrough') {
     return isWeb ? 'raw' : null
@@ -430,6 +460,15 @@ export function preprocessTailwindClassName(
       if (plan === 'raw') {
         // not claimed by the grammar: preserve the class as-is
         regularClasses.push(cls)
+        continue
+      }
+      if (!Array.isArray(plan)) {
+        if (plan.preserveRawClass) {
+          regularClasses.push(cls)
+        }
+        for (let i = 0; i < plan.entries.length; i++) {
+          setInAuthoredOrder(result, plan.entries[i][0], plan.entries[i][1])
+        }
         continue
       }
       for (let i = 0; i < plan.length; i++) {

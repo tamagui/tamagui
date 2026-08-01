@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import {
   classifyCandidate,
+  createModifierRegistry,
   decodeArbitrary,
   encodeArbitrary,
   formatCandidate,
@@ -124,6 +125,57 @@ describe('candidate grammar', () => {
       'tablet:tablet:p-4',
     ]) {
       expect(classifyCandidate(candidate, config).kind, candidate).toBe('passthrough')
+    }
+  })
+
+  test('group modifiers are registry-backed, named, chainable, and collision-safe', () => {
+    for (const candidate of [
+      'group-hover:bg-color5',
+      'group-hover/card:bg-color5',
+      'group-press/card:bg-color5',
+      'tablet:dark:group-hover/card:bg-color5',
+    ]) {
+      expect(classifyCandidate(candidate, config).kind, candidate).toBe('tamagui')
+    }
+
+    const collisionConfig: GrammarConfigView = {
+      ...config,
+      mediaNames: ['tablet', 'group-hover'],
+    }
+    const collisionRegistry = createModifierRegistry(collisionConfig).registry
+    expect(collisionRegistry.get('group-hover')).toBe('media')
+    expect(
+      classifyCandidate('group-hover:group-press:bg-color5', collisionConfig).kind
+    ).toBe('tamagui')
+
+    for (const candidate of ['group-unknown:bg-color5', 'group/card', '@container']) {
+      expect(classifyCandidate(candidate, config).kind, candidate).toBe('passthrough')
+    }
+  })
+
+  test('container modifiers claim only derived size media and remain chainable', () => {
+    const containerConfig: GrammarConfigView = {
+      ...config,
+      mediaNames: ['tablet', 'hoverNone'],
+      containerSizeNames: ['tablet'],
+    }
+    for (const candidate of [
+      '@tablet:bg-color5',
+      '@tablet/layout:bg-color5',
+      'tablet:dark:@tablet/layout:bg-color5',
+    ]) {
+      expect(classifyCandidate(candidate, containerConfig).kind, candidate).toBe(
+        'tamagui'
+      )
+    }
+    for (const candidate of [
+      '@hoverNone:bg-color5',
+      '@missing:bg-color5',
+      '@container',
+    ]) {
+      expect(classifyCandidate(candidate, containerConfig).kind, candidate).toBe(
+        'passthrough'
+      )
     }
   })
 

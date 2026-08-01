@@ -9,6 +9,7 @@ import {
   createModifierRegistry,
   modifierAliases,
   modifierToPseudo,
+  parseGroupModifier,
   type ModifierRegistryView,
 } from '@tamagui/style-grammar'
 import {
@@ -32,12 +33,13 @@ import {
  */
 
 interface FlatParsedProp {
+  conditionKeys: string[]
+  hasContainer?: true
   mediaKey?: string
   pseudoKey?: string
   platformKey?: string
   themeKey?: string
-  // verbatim group modifier (e.g. "group-card-hover") — used as the object-form
-  // key, which itself encodes the group name plus optional media/pseudo parts
+  // legacy object-form key, which encodes the group name and state
   groupKey?: string
   prop: string
   value: any
@@ -106,10 +108,10 @@ function parseFlatModifierProp(
 
   const prop = shorthands[propShort] || propShort
 
-  const result: FlatParsedProp = { prop, value: finalValue }
+  const result: FlatParsedProp = { conditionKeys: [], prop, value: finalValue }
   const registry = getModifierRegistry(config)
 
-  // parse modifiers (order doesn't matter)
+  // parse modifiers in authored order; the registry owns every kind decision
   for (const mod of parts) {
     const canonical = modifierAliases[mod] || mod
     const kind = registry.get(canonical)
@@ -117,27 +119,44 @@ function parseFlatModifierProp(
       const pseudoKey = modifierToPseudo[canonical]
       if (!pseudoKey) return null
       result.pseudoKey = pseudoKey
+      result.conditionKeys.push(pseudoKey)
       continue
     }
     if (kind === 'media') {
       result.mediaKey = canonical
+      result.conditionKeys.push(`$${canonical}`)
       continue
     }
     if (kind === 'platform') {
       result.platformKey = canonical
+      result.conditionKeys.push(`$platform-${canonical}`)
       continue
     }
     if (kind === 'theme') {
       result.themeKey = canonical
+      result.conditionKeys.push(`$theme-${canonical}`)
+      continue
+    }
+    if (kind === 'container') {
+      result.hasContainer = true
+      result.conditionKeys.push(`$${canonical}`)
       continue
     }
 
-    // legacy flat group spelling predates the candidate modifier grammar. Keep
-    // adapting it until the group/container candidate work moves both forms
-    // onto the shared program representation.
+    if (kind === 'group') {
+      const parsed = parseGroupModifier(canonical)
+      if (!parsed) return null
+      const state = modifierAliases[parsed.state] || parsed.state
+      result.groupKey = parsed.group ? `group-${parsed.group}-${state}` : `group-${state}`
+      result.conditionKeys.push(`$${result.groupKey}`)
+      continue
+    }
+
+    // legacy flat group spelling predates the candidate modifier grammar.
     // ($group-card-hover:opacity → '$group-card-hover': { opacity })
-    if (kind === 'group' || (!kind && (mod === 'group' || mod.startsWith('group-')))) {
+    if (!kind && (mod === 'group' || mod.startsWith('group-'))) {
       result.groupKey = mod
+      result.conditionKeys.push(`$${mod}`)
       continue
     }
 
@@ -220,6 +239,8 @@ function preprocessFlatProps(
 
         if (flatParsed) {
           const {
+            conditionKeys,
+            hasContainer,
             mediaKey,
             pseudoKey,
             platformKey,
@@ -228,6 +249,20 @@ function preprocessFlatProps(
             prop,
             value: parsedValue,
           } = flatParsed
+
+          // container clauses have no legacy public prop shape. Keep the
+          // modifier chain in authored order and adapt it immediately into the
+          // condition-object input that the shared program converter consumes.
+          if (hasContainer) {
+            let styleObj: any = { [prop]: parsedValue }
+            for (let index = conditionKeys.length - 1; index >= 0; index--) {
+              styleObj = { [conditionKeys[index]]: styleObj }
+            }
+            for (const k in styleObj) {
+              result[k] = result[k] ? mergeDeep(result[k], styleObj[k]) : styleObj[k]
+            }
+            continue
+          }
 
           // build the style object from innermost to outermost
           // order: prop → pseudo → group → theme → platform → media

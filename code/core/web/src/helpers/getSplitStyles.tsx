@@ -91,6 +91,13 @@ import {
   contributeTransformNumber,
   ensureGrammarContext,
 } from './contributePrograms'
+import {
+  accumulateTransition,
+  applyAccumulatedTransitions,
+  hasTopLevelClause,
+  transitionLonghandKeys,
+} from './alignTransitions'
+import { contributeFrontendProgram, isFrontendProgram } from './frontendProgram'
 import { evaluateAccumulatedPrograms } from './evaluateAccumulatedPrograms'
 import { lowerAccumulatedPrograms } from './lowerAccumulatedPrograms'
 import {
@@ -810,12 +817,72 @@ export const getSplitStyles: StyleSplitter = (
           // to ordinary css so the compiler can keep flattening.
           valInit = `all ${animationConfig}`
         } else if (animationConfig) {
+          // driver preset: byte-identical short-circuit, recorded only so a
+          // longhand beside it diagnoses instead of composing with an IR no
+          // driver consumes yet
+          styleState.sawTransitionPreset = valInit
+          continue
+        } else if (hasTopLevelClause(valInit)) {
+          // conditional transition clauses ship today through the program
+          // engine — fall through to it byte-identically; the accumulator
+          // yields to program ownership at pass end
+        } else {
+          // clause-free raw CSS transition values merge with any longhand
+          // contributions at pass end (helpers/alignTransitions)
+          accumulateTransition(styleState, 'transition', valInit)
           continue
         }
-        // unknown names are raw CSS transition values and pass through.
       } else {
         continue
       }
+    }
+
+    // the five transition longhands accumulate for the same pass-end merge:
+    // authored order decides, last-wins per longhand, shorthand resets.
+    // clause-bearing longhands have no home yet (the program path owns whole
+    // transitions, the aligned lists are clause-free): diagnostic + drop,
+    // never a silent leak. GATED exactly like the shorthand block above —
+    // under noSkip or isHOC the shorthand bypasses accumulation, so the
+    // longhands must too, or one element gets two competing transition
+    // owners (review finding: the 775/837 gate asymmetry)
+    if (
+      !noSkip &&
+      !isHOC &&
+      transitionLonghandKeys.has(keyInit) &&
+      typeof valInit === 'string'
+    ) {
+      if (hasTopLevelClause(valInit)) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(
+            `[tamagui] ${keyInit}="${valInit}": conditional clauses are not supported on transition longhands — put the condition on \`transition\` itself.`
+          )
+        }
+        continue
+      }
+      accumulateTransition(styleState, keyInit as any, valInit)
+      continue
+    }
+
+    // minted frontend programs consume BEFORE style-key validity and
+    // propMapper: the transport key is only a position marker (unique per
+    // contribution, so repeated clauses on one property and interleaving
+    // with ordinary props survive in authored order). validity applies to
+    // the program's REAL property, so the host ruling still holds
+    if (isFrontendProgram(valInit)) {
+      if (
+        process.env.TAMAGUI_TARGET === 'native' ||
+        (process.env.TAMAGUI_TARGET === 'web' &&
+          (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))
+      ) {
+        if (isValidStyleKey(valInit.property, validStyles, accept)) {
+          contributeFrontendProgram(styleState, keyInit, valInit)
+        } else if (process.env.NODE_ENV === 'development') {
+          console.warn(
+            `[tamagui] "${valInit.property}" is not a valid style on this component — the frontend program is dropped.`
+          )
+        }
+      }
+      continue
     }
 
     let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
@@ -1693,6 +1760,12 @@ export const getSplitStyles: StyleSplitter = (
     // @ts-expect-error
     time`split-styles-propsend`
   }
+
+  // the six transition props merge once, before emission: web serializes the
+  // aligned IR into style.transition, native validates against the capability
+  // matrix and reports (helpers/alignTransitions). runs ahead of the program
+  // evaluation below so a clause-bearing transition still wins the property
+  applyAccumulatedTransitions(styleState)
 
   // lane W3: native programs evaluate last-matching-clause against the live
   // conditions, BEFORE the native post-processing below (fixStyles defaults,

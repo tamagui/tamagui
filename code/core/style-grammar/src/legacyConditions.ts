@@ -236,7 +236,8 @@ function resolveLegacyCondition(
 
   if (propName[0] === '$') {
     const modifier = propName.slice(1)
-    if (registry.get(modifier) === 'media') {
+    const kind = registry.get(modifier)
+    if (kind === 'media' || kind === 'container') {
       return { recognized: true, modifiers: [modifier] }
     }
   }

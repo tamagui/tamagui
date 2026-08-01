@@ -25,6 +25,18 @@ export {
 } from './helpers/styleFrontend'
 export type * from './internalRuntimeTypes'
 
+// the frontend-program contribution channel: a frontend hands getSplitStyles
+// a pre-parsed (property, program) pair that contributes at the exact
+// forward-pass position of the equivalent authored string. values are only
+// recognized when minted by this factory (module-private WeakSet), so the
+// channel cannot become publicly authorable
+export { createFrontendProgram } from './helpers/frontendProgram'
+export type { FrontendProgramValue } from './helpers/frontendProgram'
+
+// the one units heuristic for serializing plain values into payloads —
+// projected here so a frontend reuses it instead of copying it
+export { plainValueToPayload } from './helpers/contributePrograms'
+
 // shared-runtime pieces the platform setup module in `@tamagui/core` needs. They are
 // explicitly typed here rather than reexported from their source modules, so the
 // private declaration entry does not reconnect those modules' public type graph.

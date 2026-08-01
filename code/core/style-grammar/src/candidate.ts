@@ -140,8 +140,6 @@ function splitCandidate(candidate: string): { modifiers: string[]; base: string 
   return { modifiers: parts, base: current }
 }
 
-type CandidateModifierKind = Exclude<ModifierKind, 'group' | 'container'>
-
 const modifierRegistryCache = new WeakMap<GrammarConfigView, ModifierRegistryView>()
 
 function getModifierRegistry(config: GrammarConfigView): ModifierRegistryView {
@@ -153,20 +151,16 @@ function getModifierRegistry(config: GrammarConfigView): ModifierRegistryView {
   return registry
 }
 
-function modifierKind(
-  modifier: string,
-  config: GrammarConfigView
-): CandidateModifierKind | null {
+function modifierKind(modifier: string, config: GrammarConfigView): ModifierKind | null {
   const canonical = modifierAliases[modifier] || modifier
-  const kind = getModifierRegistry(config).get(canonical)
-  return kind === 'group' || kind === 'container' ? null : kind || null
+  return getModifierRegistry(config).get(canonical) || null
 }
 
 function modifiersAreKnown(
   modifiers: readonly string[],
   config: GrammarConfigView
 ): boolean {
-  const seen = new Set<CandidateModifierKind>()
+  const seen = new Set<ModifierKind>()
   for (const modifier of modifiers) {
     const kind = modifierKind(modifier, config)
     if (!kind || seen.has(kind)) return false

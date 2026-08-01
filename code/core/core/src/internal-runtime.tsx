@@ -16,10 +16,13 @@ void platformSetup
 
 export {
   STYLE_FRONTEND_PREPROCESSED,
+  createFrontendProgram,
   createFrontendStyled,
   createFrontendViews,
+  plainValueToPayload,
   regularStyleFrontend,
 } from '@tamagui/web/internal-runtime'
+export type { FrontendProgramValue } from '@tamagui/web/internal-runtime'
 export type {
   FrontendComponent,
   FrontendStaticConfig,

@@ -483,6 +483,13 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
       const { createTamagui } = requireTamaguiCore(props.platform || 'web')
       // need to create it
       config = createTamagui(config)
+    } else {
+      // an esm-evaluated config parses inside its own core module instance,
+      // leaving this host copy with empty token and media state. install the
+      // already-parsed config so host module-local state matches, same as
+      // loadTamaguiFromModules, without re-parsing or browser css discovery.
+      const { installTamaguiConfig } = requireTamaguiCore(props.platform || 'web')
+      installTamaguiConfig(config)
     }
 
     if (props.outputCSS) {

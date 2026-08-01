@@ -13,6 +13,8 @@
 // name-resolution divergences pass for the wrong reason.
 
 import { defaultConfig as v6 } from '@tamagui/config/v6'
+import { TamaguiProvider } from '@tamagui/core'
+import { renderToString } from 'react-dom/server'
 import { beforeAll, expect, test } from 'vitest'
 import { createTamagui, getSplitStyles } from '../web/src'
 import { tailwindStyleFrontend } from '../tailwind/src/frontend'
@@ -107,6 +109,70 @@ test('a modifier name shared by platform and theme classifies identically', () =
     splitClass('web:bg-collision'),
     splitFlat({ backgroundColor: 'web:collision' })
   )
+})
+
+// relationship-to-tailwind group contract: descendant group modifiers carry a
+// Tamagui value, so candidate and flat spellings must enter the same program.
+test.each([
+  ['group-hover:bg-collision', 'group-hover:collision'],
+  ['group-hover/card:bg-collision', 'group-hover/card:collision'],
+  ['group-active/card:bg-collision', 'group-active/card:collision'],
+  ['sm:dark:group-hover/card:bg-collision', 'sm:dark:group-hover/card:collision'],
+])('%s matches the full flat group program output', (className, value) => {
+  expectParity(splitClass(className), splitFlat({ backgroundColor: value }))
+})
+
+// relationship-to-tailwind container contract: descendant container modifiers
+// carry a Tamagui value, while standalone parent markers remain passthrough.
+test.each([
+  ['@sm:bg-collision', '@sm:collision'],
+  ['@sm/layout:bg-collision', '@sm/layout:collision'],
+  ['sm:dark:@sm/layout:bg-collision', 'sm:dark:@sm/layout:collision'],
+  ['@sm:bg-collision @md:bg-black', '@sm:collision @md:black'],
+])('%s matches the full flat container program output', (className, value) => {
+  expectParity(splitClass(className), splitFlat({ backgroundColor: value }))
+})
+
+test.each([
+  ['group', { group: true }],
+  ['group/card', { group: 'card' }],
+  ['@container', { container: true }],
+  [
+    '@container/layout',
+    { containerName: 'layout', containerType: 'inline-size' },
+  ],
+  ['@container-size', { containerType: 'size' }],
+  [
+    '@container-size/layout',
+    { containerName: 'layout', containerType: 'size' },
+  ],
+])('%s remains raw and projects its Tamagui parent capability', (className, props) => {
+  expect(tailwindStyleFrontend.preprocessProps({ className }, CFG)).toMatchObject({
+    ...props,
+    className,
+  })
+})
+
+test('unknown and non-size descendants remain Tailwind passthrough', () => {
+  const className = '@hoverNone:bg-collision @missing:bg-collision'
+  const result = tailwindStyleFrontend.preprocessProps({ className }, CFG)
+  expect(result).toMatchObject({ className })
+  expect(Object.keys(result)).toEqual(['className'])
+})
+
+test('parent markers establish the web capabilities their descendant program targets', () => {
+  const html = renderToString(
+    <TamaguiProvider config={CFG} defaultTheme="light" disableInjectCSS>
+      <TailwindView className="group/card @container/layout">
+        <TailwindView className="group-hover/card:@sm/layout:bg-collision" />
+      </TailwindView>
+    </TamaguiProvider>
+  )
+  expect(html).toContain('group/card')
+  expect(html).toContain('@container/layout')
+  expect(html).toContain('t_group_card')
+  expect(html).toContain(':where(.t_group_card:hover *)')
+  expect(html).toContain('@container layout')
 })
 
 test('the legacy $token path never clamps an out-of-range opacity', () => {
