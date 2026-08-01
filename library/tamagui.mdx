@@ -14,7 +14,7 @@ import { View, Text } from 'tamagui'
 export default () => (
   <>
     <View backgroundColor="red" />
-    <Text fontSize={16} color="$colorToken" />
+    <Text fontSize={16} color="colorToken" />
   </>
 )
 ```
@@ -67,7 +67,7 @@ export const RoundedSquare = styled(View, {
     },
 
     size: {
-      // functional that take all "size" tokens, so <View size="$sm" /> passes into here
+      // functional that take all "size" tokens, so <View size="sm" /> passes into here
       '...size': (size, { tokens }) => {
         return {
           width: tokens.size[size] ?? size,
@@ -89,11 +89,11 @@ import { createTamagui, getConfig } from '@tamagui/core'
 export const config = createTamagui({
   // act like CSS variables at your root
   tokens: {
-    // width="$sm"
+    // width="sm"
     size: { sm: 8, md: 12, lg: 20 },
-    // margin="$-sm"
+    // margin="-sm"
     space: { '-sm': 8 },
-    // radius="$none"
+    // radius="none"
     radius: { none: 0, sm: 3 },
     color: { white: '#fff', black: '#000' },
   },
@@ -141,7 +141,7 @@ declare module '@tamagui/core' {
 ```
 
 Note that Tamagui maps tokens to style props using some logic, so if you use
-`<View margin="$sm />` it looks for
+`<View margin="sm" />` it looks for
 `createTamagui({ tokens: { space: { sm: 10 } } })`:
 
 ```ts

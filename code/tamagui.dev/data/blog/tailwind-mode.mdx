@@ -89,7 +89,15 @@ The numbers split cleanly into two groups: cases the compiler can fully optimize
 
 **When the compiler cannot fully optimize**, performance falls back to Tamagui's runtime style path, and the numbers look different. Two cases hit this today.
 
-The first is group styles. A parent with `group="row"` and children with `$group-row-hover:backgroundColor` use a JavaScript state emitter to propagate the hover signal cross-platform. That makes it work on native (nothing else does), but the compiler cannot express it as pure CSS because on native there is no CSS to write. On web the compiler could theoretically emit `:has([data-group])` selectors, but that optimization is not implemented yet. The result: 500 group-hover components mount in 396ms, which is 19x baseline and 7.5x NativeWind. This is the single largest compiler gap right now and the thing being worked on next.
+The first is group styles. A parent with `group="row"` and children using a
+`group-hover/row:` value clause rely on a JavaScript state emitter to propagate
+the hover signal cross-platform. That makes it work on native (nothing else
+does), but the compiler cannot express it as pure CSS because on native there
+is no CSS to write. On web the compiler could theoretically emit
+`:has([data-group])` selectors, but that optimization is not implemented yet.
+The result: 500 group-hover components mount in 396ms, which is 19x baseline
+and 7.5x NativeWind. This is the single largest compiler gap right now and the
+thing being worked on next.
 
 The second is dynamic style props. The heavy scenario mixes static props with computed values (`width={80 + ((i * 17) % 60)}`). When a dynamic value sits next to static props in the same component, the current compiler bails on the whole component and falls back to runtime. The goal is partial extraction: emit atomic classes for the static props and leave only the dynamic value as an inline style. That would cut heavy mount from 149ms to something near pure-CSS performance.
 

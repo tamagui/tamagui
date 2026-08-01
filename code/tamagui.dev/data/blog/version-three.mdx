@@ -75,10 +75,10 @@ props can change the result, including in the Tailwind class pipeline.
 
 ```tsx
 // bg-blue-500 wins: it is authored after backgroundColor
-<View backgroundColor="$red9" className="bg-blue-500" />
+<View backgroundColor="red9" className="bg-blue-500" />
 
-// $red9 wins: it is authored after the class
-<View className="bg-blue-500" backgroundColor="$red9" />
+// red9 wins: it is authored after the class
+<View className="bg-blue-500" backgroundColor="red9" />
 ```
 
 ## Removed deprecated APIs
@@ -128,7 +128,7 @@ const MyInput = createStyledHOC(StyledInput)<Props>((props, ref) => ...)
 ## True tokens are gone
 
 The old `$true` token aliases have been removed from v3 configs. Component
-defaults still resolve to the default size, which is `$4`.
+defaults still resolve to the default size, which is `4`.
 
 ```tsx
 // before
@@ -138,8 +138,8 @@ defaults still resolve to the default size, which is `$4`.
 
 ```tsx
 // after
-<Button size="$4" />
-<YStack gap="$4" />
+<Button size="4" />
+<YStack gap="4" />
 ```
 
 Boolean size shorthands in component variants still resolve through the default
@@ -229,8 +229,8 @@ behavior that made theme output harder to predict.
 // after
 <Sheet>
   <Sheet.Overlay />
-  <Sheet.Container padding="$4">
-    <Sheet.Background bg="$background" borderTopRadius="$6" />
+  <Sheet.Container padding="4">
+    <Sheet.Background bg="background" borderTopRadius="6" />
     <Sheet.ScrollView>{children}</Sheet.ScrollView>
   </Sheet.Container>
 </Sheet>
@@ -557,7 +557,7 @@ meant defining another named theme, or passing override props down manually.
 v3 adds `Variables`, an anonymous patch on the nearest theme:
 
 ```tsx
-<Variables values={{ backgroundHover: '$blue4' }} dark={{ backgroundHover: '$blue2' }}>
+<Variables values={{ backgroundHover: 'blue4' }} dark={{ backgroundHover: 'blue2' }}>
   <SettingsPanel />
 </Variables>
 ```
@@ -575,7 +575,7 @@ You can also declare your own variables in config:
 ```tsx
 createTamagui({
   variables: {
-    focusRingColor: '$blue10',
+    focusRingColor: 'blue10',
     focusRingWidth: 2,
     disabledOpacity: 0.5,
     pressScale: 0.97,
@@ -585,7 +585,7 @@ createTamagui({
 
 These behave like theme keys everywhere — style props, `useTheme()`, and
 `Variables` redefinition — and they are the intended replacement for
-convention-by-copy-paste: define your focus ring once, read `$focusRingColor`
+convention-by-copy-paste: define your focus ring once, read `focusRingColor`
 in the components you own, and redefine it per section when a screen wants a
 different accent. Together with the component changes above, this also
 replaces `createTamagui({ defaultProps })`, which is deprecated in v3.

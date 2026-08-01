@@ -28,13 +28,13 @@ branch + tag. `--dry-run` prints the plan without writing.
 
 ## landed on v3-beta (July 2026)
 
-- deprecated API removals: `focusable` => `tabIndex`, `fullscreen`, `styleable`, forwardRef wrappers, `inlineWhenUnflattened`, ui-kit aliases, true tokens (default size resolves to `$4`), platform style key renames, createSystemFont moved to its own package
+- deprecated API removals: `focusable` => `tabIndex`, `fullscreen`, `styleable`, forwardRef wrappers, `inlineWhenUnflattened`, ui-kit aliases, true tokens (default size resolves to `4`), platform style key renames, createSystemFont moved to its own package
 - SSR-safe inverse sub-themes: `inverse` is a built-in sub-theme now, old themeInverse path gone
 - composable structure audit: ListItem alignment, Select dead-code sweep + Select.Separator, FocusScope (display:contents wrapper, render-prop removed, new `noFocus` zero-focus mode threaded through Dialog/Popover/Select), Dialog (dead-code sweep, RemoveScroll gated to open modal dialogs, parts own presence, driver-level `onDidAnimate` completion), Sheet (scoped context, Frame => Container + Background split with codemod, Overlay must be direct child)
 - Adapt live slot core + dialog<->sheet handoff (exit animations play through media flips)
 - notable fixes along the way: boolean size-shorthand tokens inside variant styles, animated-driver custom component preservation (render-as-string clobbering), slider visible track/fill, dialog exit releases pointer-events locks (body lock, overlay, focus trap)
 - icons: sizing now defaults to font sizes instead of size tokens (`themed()` resolves token sizes via the current font's `font.size[token]` scale, so icons line up with text at every size), and `usePropsAndStyle` was removed from `themed()` (icons now resolve theme color/fill/stroke via `useTheme()` and build a minimal style object instead of running full style resolution on every render)
-- token stepping removed from default component styling: `@tamagui/get-token`'s `getSize`/`getSpace`/`getRadius` are now trivial same-key token resolvers (token in, Variable out). The runtime scale-sorting stepper (`stepTokenUpOrDown` / `getTokenRelative`, plus the `shift`/`bounds`/`excludeHalfSteps` options) is gone — it sorted the config's token scale at runtime and stepped up/down by index, which was unpredictable with custom configs. Components that stepped a token down now multiply the resolved numeric size value instead (input padding, list-item/select-label paddingVertical, select-native paddingVertical, popper arrow, slider thumb, tooltip content padding), with per-site constants tuned to match the previous default-config output within ~1-2px. "One size smaller" token-key lookups (list-item subtitle font, tooltip default size) use the new `oneSizeTokenSmaller`, which just decrements the `$N` key.
+- token stepping removed from default component styling: `@tamagui/get-token`'s `getSize`/`getSpace`/`getRadius` are now trivial same-key token resolvers (token in, Variable out). The runtime scale-sorting stepper (`stepTokenUpOrDown` / `getTokenRelative`, plus the `shift`/`bounds`/`excludeHalfSteps` options) is gone — it sorted the config's token scale at runtime and stepped up/down by index, which was unpredictable with custom configs. Components that stepped a token down now multiply the resolved numeric size value instead (input padding, list-item/select-label paddingVertical, select-native paddingVertical, popper arrow, slider thumb, tooltip content padding), with per-site constants tuned to match the previous default-config output within ~1-2px. "One size smaller" token-key lookups (list-item subtitle font, tooltip default size) use the new `oneSizeTokenSmaller`, which just decrements a numeric token key.
 
 migration notes so far:
 
@@ -43,8 +43,8 @@ migration notes so far:
 - FocusScope no longer supports function-as-children/render-prop; pass JSX children directly.
 - Select's unused `name` and `autoComplete` props were removed; they never backed form or autofill behavior.
 - Sheet.Frame => Sheet.Container + Sheet.Background (codemod: scripts/codemods/sheet-frame-to-container.js). Container no longer clips with overflow hidden. Sheet.Overlay must be a direct child of Sheet.
-- icon token sizes now resolve through the current font's size scale (`font.size[token]`) rather than the `size` token scale, so e.g. `<Icon size="$4" />` matches `$4` text instead of the `$4` space/size value. Raw numeric sizes are unchanged.
-- icon components no longer accept media/pseudo props directly (e.g. `$sm`, `hoverStyle`) — `themed()` dropped `usePropsAndStyle` and no longer runs full style resolution. Wrap an icon in a styled `View` if you need responsive/pseudo styling around it. Color/fill/stroke theme tokens, `size`, `strokeWidth`, `style`, and `testID` still work as before.
+- icon token sizes now resolve through the current font's size scale (`font.size[token]`) rather than the `size` token scale, so e.g. `<Icon size="4" />` matches `4` text instead of the `4` space/size value. Raw numeric sizes are unchanged.
+- icon components no longer accept media/state styling directly — `themed()` dropped `usePropsAndStyle` and no longer runs full style resolution. Wrap an icon in a styled `View` and use `sm:` or `hover:` value clauses when you need responsive/state styling around it. Color/fill/stroke theme tokens, `size`, `strokeWidth`, `style`, and `testID` still work as before.
 - `@tamagui/get-token` public API removal: `stepTokenUpOrDown` and its alias `getTokenRelative` are gone, and `getSize` / `getSpace` / `getRadius` no longer accept the second options argument (`shift` / `bounds` / `excludeHalfSteps`). They now take a single token and return that token's Variable, resolving `true` to the default size and looking up cross-scale by the same key. Replace shifted lookups with arithmetic on the resolved numeric value (e.g. `getVariableValue(getSize(size)) * n`). `createCheckbox`'s `sizeAdjust` prop was also removed (it relied on token stepping).
 - font size semantics settled: a raw **number** font size is the multiplier / platform-default-lineHeight path (a direct numeric `fontSize` sets the literal size and leaves lineHeight to the platform — landed earlier), while a **"Npx" string** (e.g. `"17px"`, or `fontSize="17px"`) means an exact pixel value. Px strings are first-class literals — never token keys, no lineHeight auto-derivation: web passes them through as CSS, native parses them to the number, and a token authored as a px string is normalized to its number with a `needsPx` flag at creation. The v5 config font `size` + `lineHeight` scales are now pinned to px strings, so v5 behavior is exactly the previous numbers (verified identical computed styles); v6 will redefine the number scales aligned to tailwind.
 
@@ -67,7 +67,7 @@ migration notes so far:
 - theme model
   - ~~remove component themes / remove `name` from `styled()`; component example just show using theme="surface1"~~ decided + shipping: component themes give way to `theme="surface1-3"` sub-themes; see `plans/v3-beta-campaign-plan.md` decision 3 and `plans/surface-levels.md`
   - maybe make theme builder have easy "inverse" option so accent can be something else
-  - ~~`$backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops).~~ resolved: migrated all four to `$backgroundPress` (matching the slider fix), regression-tested in kitchen-sink `ActiveStateBackground.test.tsx`
+  - ~~`backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops).~~ resolved: migrated all four to `background-press` (matching the slider fix), regression-tested in kitchen-sink `ActiveStateBackground.test.tsx`
 - update button a bit to how i do them
 - ~~consider removing or simplifying `ThemeableStack` / `SizableStack`~~ done: removed in PR #4137; replaced by the copied `Surface` fixture + facets (`plans/surface-levels.md`)
 - simplify Select/ListItem further where it directly helps perf or API clarity
@@ -87,9 +87,9 @@ migration notes so far:
   - css if functions of some sort
   - bringing back some sort of "flat-mode" for tamagui
     - bg="ios:light(red) dark(blue)"
-    - boxShadow="dark(0 0 10px $shadow5)"
-    - green-red-blue(#xxx, $some, $thing)
-    - light-dark(hover-press($red2, $red3), hover-press($red3, $red2))
+    - boxShadow="dark(0 0 10px shadow5)"
+    - green-red-blue(#xxx, some, thing)
+    - light-dark(hover-press(red2, red3), hover-press(red3, red2))
 
 ---
 
@@ -107,9 +107,9 @@ migration notes so far:
 
 **priority 1 - group styles compiler optimization (19x slowdown is the biggest issue)**:
 
-- `group` prop and `$group-*-*` children are ALL in deoptProps → compiler bails out the entire tree
+- `group` parents and `group-hover/name:` child clauses are ALL in deoptProps → compiler bails out the entire tree
 - 500 group items × ~3 children = 1500 TamaguiComponent instances all running full getSplitStyles
-- goal: compile group parent to a div with data-group attribute; compile children's $group-\* styles
+- goal: compile group parent to a div with data-group attribute; compile children's group clauses
   to CSS :has([data-group]) selectors on web; preserve group JS emitter only for native
 - location: createExtractor.ts deoptProps (line 1088-1109), extractToClassNames.ts
 - estimated improvement: group mount 396ms → ~20ms (matching inline JS hover)
@@ -151,7 +151,7 @@ driver but is not an input to RN Animated/Reanimated/Motion: those drivers
 consume resolved inline style and can replace the class-backed `viewProps.style`
 after hydration. Until the retained runtime component can import compiler-owned
 style values into every driver's input, all `transition`, `animateOnly`,
-`animatePresence`, `animatedBy`, `enterStyle`, and `exitStyle` candidates stay
+`animatePresence`, `animatedBy`, and `enter:`/`exit:` candidates stay
 byte-identical on the runtime path. The follow-up must define one driver-neutral
 style payload, merge it before `useAnimations`, and prove CSS, RN Animated,
 Reanimated, and Motion runtime parity before re-enabling partial extraction.
@@ -188,7 +188,7 @@ before v2 final:
 
 can be after v2 final
 
-- Dialog API cleanup: modal={false} + Overlay should just work without forceMount, and exit animations should work without Portal. Users shouldn't need Portal/forceMount for basic non-modal dialogs with overlays. Currently without Portal there's no AnimatePresence lifecycle so enterStyle/exitStyle don't animate - content just stays mounted. Dialog.Content/Overlay should handle their own presence animation when not inside Portal.
+- Dialog API cleanup: modal={false} + Overlay should just work without forceMount, and exit animations should work without Portal. Users shouldn't need Portal/forceMount for basic non-modal dialogs with overlays. Currently without Portal there's no AnimatePresence lifecycle so enter/exit clauses don't animate - content just stays mounted. Dialog.Content/Overlay should handle their own presence animation when not inside Portal.
 
 <Popover.Content
 onInteractOutside={close}
@@ -236,7 +236,7 @@ and cant put another View next to Content and have it show
   - fix toggle / multiple https://github.com/tamagui/tamagui/pull/3362
   - seems <Switch checked defaultChecked> isnt showing in the checked position
 
-- option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
+- option for compiler to optimize theme, platform, and group clauses (currently bails from optimization)
   - useTheme().x.val may have bug on light/dark switch
   - react native 78 dialogs not working
     - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
@@ -308,9 +308,7 @@ const padding = !props.unstyled
         ? (props.padding ??
           props.size ??
           popperSize ??
-          getSize('$true', {
-            shift: -2,
-          }))
+          getVariableValue(getSize('4')) * 0.6)
         : undefined
 ```
 
@@ -388,7 +386,7 @@ v3:
   - https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - todo:
-  - remove $true tokens and concept
+  - remove true-token aliases and concept
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
@@ -422,7 +420,6 @@ v3:
   - need to copy/paste all the component docs to 2.0.0.mdx
   - ~~need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack~~ done (T5): all v3 `3.0.0.mdx` component pages now say YStack; new `/ui/surface` + `/docs/core/surfaces` pages added
   - see how much of accessibilityDirectMap we can remove for web
-  - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
   - @tamagui/cli => tamagui
     - `tamagui build` document/announce
     - `tamagui lint` fix check and document/announce
@@ -493,8 +490,8 @@ createCore<CustomTypes>({
 
 const Context = createStyledContext({
 isVertical: {
-$sm: true,
-$gtSm: false,
+sm: true,
+gtSm: false,
 },
 })
 
@@ -522,9 +519,9 @@ $gtSm: false,
 - remove scroll not working when Dialog adapted to Sheet on mobile
   - we may want Sheet to have its own removeScroll in this case
 
-- adapt nested-ScrollView problem: when a Dialog adapts to a Sheet, the Sheet already wraps contents in Sheet.ScrollView, so any inner ScrollView the consumer renders (e.g. DialogBody's `scrollable`) double-nests and content overscrolls while the sheet drags. right now dialog.tsx hand-detects `$xs` and skips its own ScrollView - that's a leaky workaround. need something better: either Adapt automatically unwraps/flattens a redundant ScrollView when adapting, or a documented pattern (e.g. a context flag the adapted child reads to know "a Sheet.ScrollView already owns scrolling, don't add one")
+- adapt nested-ScrollView problem: when a Dialog adapts to a Sheet, the Sheet already wraps contents in Sheet.ScrollView, so any inner ScrollView the consumer renders (e.g. DialogBody's `scrollable`) double-nests and content overscrolls while the sheet drags. right now dialog.tsx hand-detects `xs` and skips its own ScrollView - that's a leaky workaround. need something better: either Adapt automatically unwraps/flattens a redundant ScrollView when adapting, or a documented pattern (e.g. a context flag the adapted child reads to know "a Sheet.ScrollView already owns scrolling, don't add one")
 
-- AnimatePresence should just work if you change the enterStyle exitStyle dynamically in the render, no need for custom we can capture the props
+- AnimatePresence should just work if you change enter/exit clauses dynamically in the render, no need for custom because we can capture the programs
 
 - popover transform origin
   - https://codesandbox.io/p/sandbox/floating-ui-react-scale-transform-origin-qv0t1c?file=%2Fsrc%2FApp.tsx%3A43%2C25
@@ -578,7 +575,7 @@ $gtSm: false,
 
 - studio color scales first class:
   - adding a color/scale really adds a theme
-  - but also adds $colorName1 => $colorNameX to base theme
+  - but also adds colorName1 => colorNameX to base theme
 
 - check usePropsAndStyle with group props
 
@@ -600,18 +597,11 @@ import { Stack, style } from '@tamagui/core'
 // or something like this (can be exported from core):
 
 type StackStyle = {
-  base: ViewStyle
-  press?: ViewStyle
-  hover?: ViewStyle
-  focus?: ViewStyle
+  backgroundColor?: string
 }
 
 const mySubStyle: StackStyle = style({
-  backgroundColor: 'red', // optimizes on web to _bg-red
-
-  pressStyle: {
-    backgroundColor: 'blue', // optimizes on web to _press-bg-blue
-  },
+  backgroundColor: 'red press:blue',
 })
 
 const MyComponent = (props: { accentedStyle?: StackStyle }) => {
@@ -637,15 +627,11 @@ const MyComponent = (props: { accentedStyle?: StackStyle }) => {
 - add defaultSize and defaultFontFamily to createTamagui
 
 - @tamagui/tailwind
-- pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)
+- pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '4' }}> ?)
 - `tag` => `as` (keep fallback around as deprecated)
   - `as={['a', { ...props }]}`
 - VSCode => "turn JSX into styled()"
 - Switch gesture
-- beforeStyle, afterStyle could work ...
-  - only if we can do with pseudos:
-    - focusStyle={{ after: { fullscreen: true, border... } }}
-    - allows for proper focused borders that don't require super hacks
-    - see Switch
+- before/after styling could allow proper focused borders without component-specific hacks
   - radio may be List.Radio just combines List, Label, Drawer
     - can use Switch or check or custom

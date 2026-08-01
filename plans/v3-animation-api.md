@@ -168,8 +168,7 @@ The canonical Sheet skin and docs show the two supported fade patterns:
 
 ```tsx
 // 1. presence fade: animates on open/close only
-<Sheet.Overlay enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }}
-  opacity={0.5} transition="quick" />
+<Sheet.Overlay opacity="0.5 enter:0 exit:0" transition="quick" />
 
 // 2. drag-linked fade: tracks the finger
 const SheetBackdrop = () => {
@@ -183,7 +182,7 @@ const SheetBackdrop = () => {
 ```
 
 Dialog/Popover/Tooltip/Toast already leave fades to enter/exit styles; their
-remaining `$background`/shadow/size defaults are C4 work and out of scope here.
+remaining background/shadow/size defaults are C4 work and out of scope here.
 Popper's pre-positioning `opacity: 0` stays but is scoped so it cannot
 override user opacity once positioned.
 
