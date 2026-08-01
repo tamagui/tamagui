@@ -21,7 +21,7 @@ describe('tamagui migrate', () => {
     expect(result.stdout).toContain('Sheet.Frame')
     expect(result.stdout).toContain('FocusScope')
     expect(result.stdout).toContain('Select.Separator')
-    expect(result.stdout).toContain('### 13. Verification')
+    expect(result.stdout).toContain('### 14. Verification')
   })
 
   it('prints the v1 to v3 migration prompt with a v1 to v2 pass first', () => {

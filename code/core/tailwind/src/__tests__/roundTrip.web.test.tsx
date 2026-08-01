@@ -285,7 +285,6 @@ describe('PASS 2 — embedded shadow tokens', () => {
     expect(cls).toContain('shadow-[')
     const fromClass = classStyle(cls).boxShadow
     const fromProp = styleOf({ boxShadow: '0 8px 18px shadow5' }).boxShadow
-    expect(String(fromClass)).not.toContain('shadow5') // token must be resolved, not left dead
     expect(fromClass).toBe('0 8px 18px var(--shadow5)')
     expect(fromClass).toBe(fromProp)
   })

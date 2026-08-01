@@ -45,20 +45,20 @@ describe('tamaguiToTailwind', () => {
       expect(output).toContain('border-[1px] border-[red]')
     })
 
-    test('token reference keeps its bare name', () => {
+    test('a config-less bare name stays a literal arbitrary value', () => {
       const input = `<View backgroundColor="blue5" />`
       const output = tamaguiToTailwind(input)
-      expect(output).toContain('bg-blue5')
+      expect(output).toContain('bg-[blue5]')
     })
 
     test('text color uses color-* utility, not text-* (text is textAlign in v6)', () => {
-      expect(tamaguiToTailwind(`<Text color="color8" />`)).toContain('color-color8')
+      expect(tamaguiToTailwind(`<Text color="color8" />`)).toContain('color-[color8]')
       expect(tamaguiToTailwind(`<Text color="color8/50" />`)).toContain(
-        'color-color8/50'
+        'color-[color8/50]'
       )
       expect(tamaguiToTailwind(`<Text color="red" />`)).toContain('color-[red]')
       // must not emit the text-* form for color, which would set textAlign
-      expect(tamaguiToTailwind(`<Text color="color8" />`)).not.toMatch(/text-color8/)
+      expect(tamaguiToTailwind(`<Text color="color8" />`)).not.toMatch(/text-\[color8\]/)
     })
 
     test('unit-bearing and negative string values become arbitrary [..] classes', () => {
@@ -69,24 +69,30 @@ describe('tamaguiToTailwind', () => {
       expect(tamaguiToTailwind(`<View height="calc(100% - 2px)" />`)).toContain(
         'h-[calc(100%_-_2px)]'
       )
-      // tokens and mapped percentages are unchanged
+      // config-less bare names stay literal; mapped percentages are unchanged
       expect(tamaguiToTailwind(`<View width="50%" />`)).toContain('w-1/2')
-      expect(tamaguiToTailwind(`<View backgroundColor="blue5" />`)).toContain('bg-blue5')
+      expect(tamaguiToTailwind(`<View backgroundColor="blue5" />`)).toContain(
+        'bg-[blue5]'
+      )
     })
 
-    test('spacing tokens emit names and raw numbers remain arbitrary', () => {
-      expect(tamaguiToTailwind(`<View margin="4" />`)).toContain('m-4')
-      expect(tamaguiToTailwind(`<View padding="5" />`)).toContain('p-5')
-      expect(tamaguiToTailwind(`<View gap="6" />`)).toContain('gap-6')
-      expect(tamaguiToTailwind(`<View margin="-1" />`)).toContain('-m-1')
-      expect(tamaguiToTailwind(`<View marginTop="-2" />`)).toContain('-mt-2')
+    test('numeric strings stay authored without config and configured spacing emits names', () => {
+      expect(tamaguiToTailwind(`<View margin="4" />`)).toContain('margin="4"')
+      expect(
+        tamaguiToTailwind(`<View padding="5" gap="6" />`, {
+          tokens: { space: { 5: 20, 6: 24 } },
+        })
+      ).toContain('p-5 gap-6')
       // numeric literals still bracket their raw px
       expect(tamaguiToTailwind(`<View marginTop={-4} />`)).toContain('mt-[-4px]')
     })
 
-    test('radius/size tokens emit names', () => {
-      expect(tamaguiToTailwind(`<View borderRadius="8" />`)).toContain('rounded-8')
-      expect(tamaguiToTailwind(`<View width="10" />`)).toContain('w-10')
+    test('configured radius and size tokens emit names', () => {
+      const options = { tokens: { radius: { 8: 8 }, size: { 10: 40 } } }
+      expect(tamaguiToTailwind(`<View borderRadius="8" />`, options)).toContain(
+        'rounded-8'
+      )
+      expect(tamaguiToTailwind(`<View width="10" />`, options)).toContain('w-10')
     })
 
     test('enter and exit clauses become enter:/exit: classes', () => {
@@ -109,8 +115,12 @@ describe('tamaguiToTailwind', () => {
       ).toBe(`<View animation="bouncy" />`)
     })
 
-    test('lineHeight tokens use the token-first leading namespace', () => {
-      expect(tamaguiToTailwind(`<Text lineHeight="8" />`)).toContain('leading-8')
+    test('configured lineHeight tokens use the token-first leading namespace', () => {
+      expect(
+        tamaguiToTailwind(`<Text lineHeight="8" />`, {
+          fonts: { body: { lineHeight: { 8: 24 } } },
+        })
+      ).toContain('leading-8')
     })
 
     test('negative values in flat clauses are not dropped', () => {
@@ -325,7 +335,7 @@ describe('tamaguiToTailwind', () => {
       })
       expect(out).toContain('tablet:p-[10px]')
       // without the config media, an unknown key stays a prop (documented fallback)
-      const noCfg = tamaguiToTailwind(input)
+      const noCfg = tamaguiToTailwind(input, { renameComponents: false })
       expect(noCfg).toBe(input)
     })
   })
@@ -356,7 +366,7 @@ describe('tamaguiToTailwind', () => {
       )
       expect(output).toContain('p-4')
       expect(output).toContain('tablet:p-4')
-      expect(output).toContain('width="missing"')
+      expect(output).toContain('w-[missing]')
     })
 
     test('spacing tokens use the PASSED config names, not their values', () => {
@@ -367,7 +377,7 @@ describe('tamaguiToTailwind', () => {
     })
 
     test('zIndex tokens emit names while raw numbers use brackets', () => {
-      expect(tamaguiToTailwind(`<View zIndex="4" />`)).toContain('z-4')
+      expect(tamaguiToTailwind(`<View zIndex="4" />`)).toContain('zIndex="4"')
       const custom = tamaguiToTailwind(`<View zIndex="4" />`, {
         tokens: { zIndex: { 4: 40 } },
       })
@@ -382,14 +392,20 @@ describe('tamaguiToTailwind', () => {
       expect(out).toContain('border-2')
     })
 
-    test('color and font tokens stay dynamic (token names, never baked to px)', () => {
-      expect(tamaguiToTailwind(`<View backgroundColor="color5" />`)).toContain(
-        'bg-color5'
+    test('configured color and font tokens stay dynamic (names, never baked to px)', () => {
+      const options = {
+        tokens: { color: { color5: '#fff' } },
+        fonts: { body: { size: { 5: 16 } } },
+      }
+      expect(
+        tamaguiToTailwind(`<View backgroundColor="color5" />`, options)
+      ).toContain('bg-color5')
+      expect(tamaguiToTailwind(`<Text fontSize="5" />`, options)).toContain(
+        'text-5'
       )
-      expect(tamaguiToTailwind(`<Text fontSize="5" />`)).toContain('text-5')
     })
 
-    test('missing and wrong-category token names are retained when config domains are known', () => {
+    test('missing and wrong-category names lower as literal arbitrary values', () => {
       const options = {
         renameComponents: false,
         tokens: {
@@ -404,12 +420,9 @@ describe('tamaguiToTailwind', () => {
         `<View padding="sizeOnly" width="spaceOnly" borderRadius="colorOnly" zIndex="missing" backgroundColor="spaceOnly" />`,
         options
       )
-      expect(output).toContain('padding="sizeOnly"')
-      expect(output).toContain('width="spaceOnly"')
-      expect(output).toContain('borderRadius="colorOnly"')
-      expect(output).toContain('zIndex="missing"')
-      expect(output).toContain('backgroundColor="spaceOnly"')
-      expect(output).not.toContain('className')
+      expect(output).toContain(
+        'className="p-[sizeOnly] w-[spaceOnly] rounded-[colorOnly] z-[missing] bg-[spaceOnly]"'
+      )
     })
 
     test('an explicit partial config treats omitted token and font domains as known-empty', () => {
@@ -422,18 +435,9 @@ describe('tamaguiToTailwind', () => {
         options
       )
       expect(output).toContain('p-4')
-      for (const retained of [
-        'width="missing"',
-        'borderRadius="missing"',
-        'zIndex="missing"',
-        'color="missing"',
-        'fontFamily="body"',
-        'fontSize="5"',
-        'lineHeight="5"',
-        'letterSpacing="5"',
-      ]) {
-        expect(output).toContain(retained)
-      }
+      expect(output).toContain(
+        'w-[missing] rounded-[missing] z-[missing] color-[missing] font-[body] text-[5px] leading-[5px] tracking-[5px]'
+      )
     })
 
     test('configured tokens win reserved conveniences and enums with the same spelling', () => {
@@ -464,10 +468,9 @@ describe('tamaguiToTailwind', () => {
         `<Text width="auto" textAlign="center" fontWeight="700" />`,
         options
       )
-      expect(rawCollision).toContain('width="auto"')
+      expect(rawCollision).toContain('className="w-auto"')
       expect(rawCollision).toContain('textAlign="center"')
       expect(rawCollision).toContain('fontWeight="700"')
-      expect(rawCollision).not.toContain('className')
     })
 
     test('font token categories are checked independently', () => {
@@ -494,7 +497,7 @@ describe('tamaguiToTailwind', () => {
         tamaguiToTailwind(`<Text letterSpacing="letterOnly" />`, options)
       ).toContain('tracking-letterOnly')
       expect(tamaguiToTailwind(`<Text fontSize="body" />`, options)).toContain(
-        'fontSize="body"'
+        'text-[body]'
       )
     })
   })
@@ -515,29 +518,30 @@ describe('tamaguiToTailwind', () => {
       const output = tamaguiToTailwind(input)
       expect(output).toContain('flex flex-col')
       expect(output).toContain('p-[20px]')
-      expect(output).toContain('bg-background')
+      expect(output).toContain('bg-[background]')
       expect(output).toContain('rounded-[12px]')
       expect(output).toContain('gap-[8px]')
-      expect(output).toContain('hover:bg-background-hover')
+      expect(output).toContain('hover:bg-[background-hover]')
       expect(output).toContain('text-[18px]')
       expect(output).toContain('font-bold')
       // text color maps to the `color-*` utility (v6 `text` is textAlign)
-      expect(output).toContain('color-color')
+      expect(output).toContain('color-[color]')
     })
 
-    test('maps every renamed v6 theme token and retains removed names', () => {
-      for (const [legacyName, v6Name] of Object.entries(v6ThemeNameReplacements)) {
+    test('config-less legacy theme names stay literal for the migration codemod', () => {
+      for (const legacyName of Object.keys(v6ThemeNameReplacements)) {
         expect(tamaguiToTailwind(`<View backgroundColor="${legacyName}" />`)).toContain(
-          `className="bg-${v6Name}"`
+          `className="bg-[${legacyName}]"`
         )
         expect(
           tamaguiToTailwind(`<View backgroundColor="${legacyName}/50" />`)
-        ).toContain(`className="bg-${v6Name}/50"`)
+        ).toContain(`className="bg-[${legacyName}/50]"`)
       }
 
       for (const removedName of v6RemovedThemeNames) {
-        const input = `<View backgroundColor="${removedName}" />`
-        expect(tamaguiToTailwind(input, { renameComponents: false })).toBe(input)
+        expect(tamaguiToTailwind(`<View backgroundColor="${removedName}" />`)).toContain(
+          `className="bg-[${removedName}]"`
+        )
       }
     })
 

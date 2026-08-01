@@ -16,13 +16,27 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('p-4')).toEqual({ padding: '4' })
   })
 
-  test('modifiers are preserved on the flat key', () => {
-    expect(tokenize('hover:bg-[red]')).toEqual({ 'hover:backgroundColor': 'red' })
+  test('modifiers are preserved in the frontend program', () => {
+    expect(tokenize('hover:bg-[red]')).toEqual({
+      __tamagui_frontend_program_0: {
+        property: 'backgroundColor',
+        value: {
+          base: null,
+          clauses: [{ modifiers: ['hover'], payload: 'red' }],
+        },
+      },
+    })
   })
 
   test('chained modifiers keep their authored order', () => {
     expect(tokenize('sm:hover:bg-[red]')).toEqual({
-      'sm:hover:backgroundColor': 'red',
+      __tamagui_frontend_program_0: {
+        property: 'backgroundColor',
+        value: {
+          base: null,
+          clauses: [{ modifiers: ['sm', 'hover'], payload: 'red' }],
+        },
+      },
     })
   })
 
@@ -80,8 +94,16 @@ describe('claimed candidates become flat props', () => {
     expect(tokenize('flex-row')).toEqual({ flexDirection: 'row' })
   })
 
-  test('a modified whole-class utility uses the flat modifier form', () => {
-    expect(tokenize('hover:flex-row')).toEqual({ 'hover:flexDirection': 'row' })
+  test('a modified whole-class utility emits a frontend program', () => {
+    expect(tokenize('hover:flex-row')).toEqual({
+      __tamagui_frontend_program_0: {
+        property: 'flexDirection',
+        value: {
+          base: null,
+          clauses: [{ modifiers: ['hover'], payload: 'row' }],
+        },
+      },
+    })
   })
 })
 

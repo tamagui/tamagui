@@ -60,7 +60,7 @@ export function Card() {
     expect(run.status).toBe(0)
     expect(run.stderr + run.stdout).toMatch(/bare token names pass through/i)
     // components PRESERVED (not DOM-renamed) so the native app keeps working
-    expect(run.stdout).toContain('flex flex-col p-[10px] bg-background gap-[4px]')
+    expect(run.stdout).toContain('flex flex-col p-[10px] bg-[background] gap-[4px]')
     expect(run.stdout).toContain('YStack') // NOT div
     expect(run.stdout).not.toContain('<div')
   })

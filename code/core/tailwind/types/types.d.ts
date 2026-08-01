@@ -106,7 +106,7 @@ export type TailwindTextElement = (HTMLElement & TailwindElementMethods) | React
  * Everything else a component accepts is ordinary behavior: children, refs,
  * accessibility, events, ids, and the raw platform `style` escape hatch, all
  * inherited from the shared non-style prop types. Tamagui inline style props
- * (`padding`, `bg`, shorthands, `hoverStyle`, `$sm`, theme style props) are
+ * (`padding`, `bg`, shorthands, state/media clauses, theme style props) are
  * deliberately absent — that authoring syntax belongs to `@tamagui/core`.
  */
 export type TailwindStyleProps = {

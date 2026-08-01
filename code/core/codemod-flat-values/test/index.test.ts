@@ -1228,8 +1228,8 @@ describe('authored order across an inline object spread', () => {
   })
 })
 
-describe('unconvertible nested conditions', () => {
-  test('an unknown nested condition still barriers what it can set', () => {
+describe('nested custom media conditions', () => {
+  test('a statically named nested condition is discovered and converted', () => {
     const site = only(
       run(`import { View } from 'tamagui'
         export const Fixture = () => (
@@ -1241,16 +1241,15 @@ describe('unconvertible nested conditions', () => {
         )`)
     )
 
-    // $sm keeps a nested condition that can set bg, so hover cannot move in front
-    // of it: the condition stays authored while the base-only program migrates
-    expect(codes(site)).toContain('condition-order-not-preservable')
-    expect(programs(site)).toEqual({ bg: 'blue10' })
-    expect(site.after).toBe(
-      `bg="blue10" $sm={{ '$future-condition': { bg: 'red' } }} hoverStyle={{ bg: 'yellow' }}`
-    )
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      bg: 'blue10 sm:future-condition:red hover:yellow',
+    })
+    expect(site.after).not.toContain('$sm')
+    expect(site.after).not.toContain('hoverStyle')
   })
 
-  test('an unknown nested condition does not barrier a property it cannot set', () => {
+  test('a nested custom media clause composes beside another property program', () => {
     const site = only(
       run(`import { View } from 'tamagui'
         export const Fixture = () => (
@@ -1262,9 +1261,11 @@ describe('unconvertible nested conditions', () => {
         )`)
     )
 
-    // the shared converter refuses the nested condition, but it cannot set opacity
-    expect(codes(site)).toEqual(['unsupported-legacy-value'])
-    expect(programs(site)).toEqual({ opacity: '0.5 hover:1' })
+    expect(codes(site)).toEqual([])
+    expect(programs(site)).toEqual({
+      opacity: '0.5 hover:1',
+      bg: 'sm:future-condition:red',
+    })
     expect(resolve1('0.5 hover:1', { states: ['hover'] })).toBe('1')
   })
 })

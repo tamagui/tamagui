@@ -3,22 +3,14 @@ import type { GetStyleState } from '../types';
 import { type GrammarRuntimeContext } from './grammarConfig';
 export declare function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeContext;
 export declare function plainValueToPayload(value: unknown, longhand: string): string | null;
-export declare function canAppendParsedProgram(styleState: GetStyleState, prop: string): boolean;
+/** Clear lifecycle metadata when a plain value displaces a program. */
+export declare function clearProgramLifecycleForProp(styleState: GetStyleState, prop: string): void;
 /**
- * Claims every longhand for one parsed contribution. Ordinary flat values
- * replace the whole program. Converted legacy condition props append clauses
- * at their authored position and lift an earlier plain value into the base.
+ * Claims every longhand for one parsed contribution. Later contributions
+ * replace the base and any condition sets they restate while preserving the
+ * other clauses already accumulated for that longhand.
  */
 export declare function contributeParsedProgram(styleState: GetStyleState, prop: string, value: ParsedValue, sourceProp?: string): void;
-/**
- * Converted legacy contributions may land on a family shorthand (`border`,
- * `background`), whose value-dependent split runs here — uncached, since the
- * conversion path is the compat path. Returns false when the value cannot
- * split, which sends the whole condition prop back to the legacy handling.
- */
-export declare function contributeConvertedProgram(styleState: GetStyleState, prop: string, value: ParsedValue, sourceProp: string): boolean;
-/** validation half of contributeConvertedProgram, run before any contribution */
-export declare function canContributeConvertedProgram(styleState: GetStyleState, prop: string, value: ParsedValue): boolean;
 /**
  * Returns true when the value was consumed as programs. False means the caller
  * proceeds down the existing plain-value path.

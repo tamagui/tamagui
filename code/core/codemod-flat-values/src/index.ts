@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { resolveTamaguiHost } from '@tamagui/language-service/host'
+import { stylePropsTextOnly } from '@tamagui/helpers'
 import {
   ModuleKind,
   ModuleResolutionKind,
@@ -235,10 +236,21 @@ function conversionTargets(filePath: string): ConversionTargets {
 
 function typeAwareHost(node: Node): HostView | undefined {
   const checker = node.getProject().getTypeChecker().compilerObject
-  return resolveTamaguiHost(
+  const host = resolveTamaguiHost(
     checker as unknown as Parameters<typeof resolveTamaguiHost>[0],
     node.compilerNode as unknown as Parameters<typeof resolveTamaguiHost>[1]
   )
+  if (!host || node.getText() !== 'View') return host
+
+  // Flat value typing deliberately admits arbitrary strings on narrow style
+  // props, so TypeScript alone can no longer distinguish Text-only styles on
+  // the primitive View. Keep the host assessment tied to the runtime table for
+  // this canonical primitive; styled(View, …) and direct <View> share it.
+  return {
+    ...host,
+    accepts: (property) =>
+      !(property in stylePropsTextOnly) && host.accepts(property),
+  }
 }
 
 function inspectFile(

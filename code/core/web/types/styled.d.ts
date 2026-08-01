@@ -48,7 +48,7 @@ type HTMLElementStyleBase<T extends keyof HTMLElementTagNameMap> = T extends Tex
  *
  * @example
  * const StyledAnchor = styledHtml('a', {
- *   color: '$blue10',
+ *   color: 'blue10',
  *   textDecorationLine: 'underline',
  * })
  * // StyledAnchor now accepts `href` prop with proper typing

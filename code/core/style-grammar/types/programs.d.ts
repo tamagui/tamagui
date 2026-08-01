@@ -7,8 +7,7 @@ export declare function expandToLonghands(prop: string, shorthands?: Record<stri
 * replaces the clauses whose condition sets it restates, and its clauses
 * append after the surviving earlier ones so last-match-wins holds. A styled
 * `bg="gray hover:blue"` overridden by a call-site `bg="red"` keeps the
-* hover — v1's `hoverStyle`-as-separate-prop semantics and tailwind-merge's
-* per-variant conflict groups.
+* hover clause, matching tailwind-merge's per-variant conflict groups.
 */
 export declare function mergeProgramValues(earlier: ParsedValue, later: ParsedValue): ParsedValue;
 export declare function mergePrograms(entries: ReadonlyArray<{

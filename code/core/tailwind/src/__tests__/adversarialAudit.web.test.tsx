@@ -124,7 +124,9 @@ describe('5 — chained media and state clause → md:hover:opacity-50', () => {
       { className: 'md:hover:opacity-50' },
       CFG
     )
-    const program = Object.values(flat).find((value) => value?.property === 'opacity')
+    const program = Object.values(flat as Record<string, any>).find(
+      (value) => value?.property === 'opacity'
+    )
     expect(program?.value).toEqual({
       base: null,
       clauses: [{ modifiers: ['md', 'hover'], payload: '0.5' }],
@@ -132,10 +134,10 @@ describe('5 — chained media and state clause → md:hover:opacity-50', () => {
   })
 })
 
-describe('6 — unresolved token: RETAIN, no dead class', () => {
-  test('padding="custom" with a config lacking it stays a prop', () => {
+describe('6 — unresolved bare value: literal arbitrary class', () => {
+  test('padding="custom" with a config lacking it stays literal', () => {
     const out = convert(`<View padding="custom" />`, { tokens: { space: { 4: 20 } } })
-    expect(out).toBe(`<View padding="custom" />`)
+    expect(out).toBe(`<View className="p-[custom]" />;`)
     expect(out).not.toContain('p-custom')
   })
 })

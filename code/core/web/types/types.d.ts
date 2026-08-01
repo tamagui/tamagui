@@ -1153,13 +1153,13 @@ export interface TransformStyleProps {
     rotateX?: `${number}deg` | UnionableString;
     rotateZ?: `${number}deg` | UnionableString;
 }
-type BoxShadowPreset = '0 0' | '0 1px 2px' | '0 1px 2px 0' | '0 1px 2px $shadowColor' | '0 1px 3px 0 $shadowColor' | '0 4px 6px -1px $shadowColor' | 'inset 0 2px 4px $shadowColor' | 'none';
+type BoxShadowPreset = '0 0' | '0 1px 2px' | '0 1px 2px 0' | '0 1px 2px shadow-color' | '0 1px 3px 0 shadow-color' | '0 4px 6px -1px shadow-color' | 'inset 0 2px 4px shadow-color' | 'none';
 export type BoxShadowValue = BoxShadowPreset | (string & {});
-type FilterPreset = 'blur(4px)' | 'brightness(1.2)' | 'contrast(1.2)' | 'drop-shadow(0 4px 8px $shadowColor)' | 'grayscale(1)' | 'hue-rotate(90deg)' | 'invert(1)' | 'opacity(0.5)' | 'saturate(1.5)' | 'sepia(1)' | 'none';
+type FilterPreset = 'blur(4px)' | 'brightness(1.2)' | 'contrast(1.2)' | 'drop-shadow(0 4px 8px shadow-color)' | 'grayscale(1)' | 'hue-rotate(90deg)' | 'invert(1)' | 'opacity(0.5)' | 'saturate(1.5)' | 'sepia(1)' | 'none';
 export type FilterValue = FilterPreset | (string & {});
-type BorderPreset = '1px solid' | '1px solid $borderColor' | '2px dashed $borderColor' | '1px dotted red' | 'none';
+type BorderPreset = '1px solid' | '1px solid border-color' | '2px dashed border-color' | '1px dotted red' | 'none';
 export type BorderValue = BorderPreset | (string & {});
-type OutlinePreset = '1px solid' | '1px solid $outlineColor' | '2px dashed $outlineColor' | '1px dotted red' | 'none';
+type OutlinePreset = '1px solid' | '1px solid outline-color' | '2px dashed outline-color' | '1px dotted red' | 'none';
 export type OutlineValue = OutlinePreset | (string & {});
 interface ExtraStyleProps {
     /**
@@ -1199,7 +1199,7 @@ interface ExtraStyleProps {
      */
     outlineWidth?: SpaceValue;
     /**
-     * CSS outline shorthand string. Supports tokens: "2px solid $outlineColor"
+     * CSS outline shorthand string. Supports tokens: "2px solid outline-color"
      * Expands to outlineWidth, outlineStyle, outlineColor on native.
      * Works on web and native.
      */
@@ -1216,7 +1216,7 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      *
      * The v6 shorthands map `bg` here rather than to `backgroundColor`, because
-     * the background family splits a value like `url(x.png) $color1` across
+     * the background family splits a value like `url(x.png) color1` across
      * backgroundImage and backgroundColor. Color tokens lead the union so `bg`
      * completes them; `Properties['background']` keeps the CSS shorthand
      * keywords. Adding this key to `ColorKeys` instead would erase that second
@@ -1244,12 +1244,12 @@ interface ExtraStyleProps {
      */
     backgroundSize?: Properties['backgroundSize'];
     /**
-     * CSS box-shadow string. Supports tokens: "0 4px 8px $shadowColor"
+     * CSS box-shadow string. Supports tokens: "0 4px 8px shadow-color"
      * Works on web and native (RN 0.76+).
      */
     boxShadow?: BoxShadowValue;
     /**
-     * CSS border shorthand string. Supports tokens: "1px solid $borderColor"
+     * CSS border shorthand string. Supports tokens: "1px solid border-color"
      * Expands to borderWidth, borderStyle, borderColor.
      * Works on web and native. On native, applies to all sides.
      */
@@ -1585,7 +1585,7 @@ export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBase
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
     /**
-     * CSS text-shadow string. Supports tokens: "2px 2px 4px $shadowColor"
+     * CSS text-shadow string. Supports tokens: "2px 2px 4px shadow-color"
      * On native, only a single shadow is supported.
      */
     textShadow?: string;
@@ -1696,6 +1696,10 @@ export type GetStyleState = {
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
     programs?: Map<string, import('@tamagui/style-grammar').LonghandProgram>;
+    programLifecycle?: Map<string, {
+        enter?: true;
+        exit?: true;
+    }>;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
     tokenProvenance?: Record<string, string>;
@@ -2016,6 +2020,10 @@ export type GetStyleResult = {
     programStates?: Set<string>;
     usesSafeArea?: true;
     effectiveTransition?: TransitionProp | null;
+    programLifecycleStyleKeys?: {
+        enter?: Set<string>;
+        exit?: Set<string>;
+    };
 };
 export type ClassNamesObject = Record<string, string>;
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;
