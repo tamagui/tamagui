@@ -17,6 +17,8 @@ import {
   TamaguiProvider,
   Theme,
   createTamagui,
+  getMedia,
+  setConfig,
   setMediaState,
   updateMediaListeners,
   useMedia,
@@ -24,7 +26,7 @@ import {
 } from '@tamagui/core'
 import { act, render } from '@testing-library/react'
 import { memo, useState } from 'react'
-import { describe, expect, test } from 'vitest'
+import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
 
@@ -268,6 +270,17 @@ describe('theme subscription lifecycle', () => {
 })
 
 describe('first-render optimization mode', () => {
+  let previousMediaState: ReturnType<typeof getMedia>
+
+  beforeAll(() => {
+    previousMediaState = getMedia()
+  })
+
+  afterAll(() => {
+    setMediaState(previousMediaState)
+    setConfig(conf)
+  })
+
   test('keeps theme/media values reactive without granular key tracking', () => {
     const defaultConfig = getDefaultTamaguiConfig()
     const firstRenderConfig = createTamagui({

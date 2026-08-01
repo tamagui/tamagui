@@ -101,6 +101,12 @@ export function resetProgramCache(): void {
   cache.clear()
 }
 
+/** clears the installed context for isolated runtime lifecycles and tests */
+export function resetProgramCacheContext(): void {
+  context = null
+  cache.clear()
+}
+
 /** for tests and diagnostics only */
 export function getProgramCacheSize(): number {
   return cache.size

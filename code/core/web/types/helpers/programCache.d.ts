@@ -38,6 +38,8 @@ export declare const backgroundFamilyProps: ReadonlySet<string>;
  */
 export declare function setProgramCacheContext(next: ProgramCacheContext): void;
 export declare function resetProgramCache(): void;
+/** clears the installed context for isolated runtime lifecycles and tests */
+export declare function resetProgramCacheContext(): void;
 /** for tests and diagnostics only */
 export declare function getProgramCacheSize(): number;
 export declare function getCachedPrograms(property: string, input: string): CachedEntry;

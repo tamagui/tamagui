@@ -299,9 +299,15 @@ const getIdentifierFromTamaguiSelector = (selector: string) => {
 
 let sheet: CSSStyleSheet | null = null
 
+let mountedProviders = 0
 let trackAllRules = true
 export function stopAccumulatingRules() {
+  mountedProviders++
   trackAllRules = false
+  return () => {
+    mountedProviders--
+    trackAllRules = mountedProviders === 0
+  }
 }
 
 export function updateRules(identifier: string, rules: string[]) {

@@ -1,9 +1,8 @@
 process.env.TAMAGUI_TARGET = 'web'
 
-import { PassThrough } from 'node:stream'
-import { Suspense, act } from 'react'
+import { act } from 'react'
 import { hydrateRoot } from 'react-dom/client'
-import { renderToPipeableStream, renderToString } from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 import config from '../config-default'
 import { TamaguiProvider, Text, View, createTamagui, getSplitStyles } from '../web/src'
@@ -139,63 +138,5 @@ describe('flat value program SSR', () => {
       root.unmount()
     })
     container.remove()
-  })
-
-  test('dedupes program blocks across a Suspense-delayed stream', async () => {
-    const streamConfig = createTamagui(config.getDefaultTamaguiConfig() as any)
-    const sharedProps = {
-      color: 'rgb(1,2,3) hover:rgb(4,5,6)',
-    }
-    const lateProps = {
-      ...sharedProps,
-      opacity: '0.2 hover:0.8',
-    }
-    const sharedSplit = split(sharedProps)
-    const lateSplit = split(lateProps)
-    const sharedClass = sharedSplit.classNames.color
-    const lateClass = lateSplit.classNames.opacity
-
-    let ready = false
-    let resolveLate!: () => void
-    const waiting = new Promise<void>((resolve) => {
-      resolveLate = resolve
-    })
-
-    function LateComponent() {
-      if (!ready) throw waiting
-      return <Text data-testid="stream-late" {...lateProps} />
-    }
-
-    const chunks: string[] = []
-    const html = await new Promise<string>((resolve, reject) => {
-      const output = new PassThrough()
-      output.on('data', (chunk) => chunks.push(chunk.toString()))
-      output.on('end', () => resolve(chunks.join('')))
-      output.on('error', reject)
-
-      const stream = renderToPipeableStream(
-        <TamaguiProvider config={streamConfig} defaultTheme="light" disableInjectCSS>
-          <Text data-testid="stream-initial" {...sharedProps} />
-          <Suspense fallback={<div data-testid="stream-fallback" />}>
-            <LateComponent />
-          </Suspense>
-        </TamaguiProvider>,
-        {
-          onShellReady() {
-            stream.pipe(output)
-            ready = true
-            resolveLate()
-          },
-          onShellError: reject,
-          onError: reject,
-        }
-      )
-    })
-
-    expect(chunks.length).toBeGreaterThan(1)
-    expect(styleResourceCount(html, sharedClass)).toBe(1)
-    expect(styleResourceCount(html, lateClass)).toBe(1)
-    expect(occurrences(html, rulesFor(sharedSplit, sharedClass).join('\n'))).toBe(1)
-    expect(occurrences(html, rulesFor(lateSplit, lateClass).join('\n'))).toBe(1)
   })
 })

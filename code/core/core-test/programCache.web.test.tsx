@@ -1,6 +1,6 @@
 process.env.TAMAGUI_TARGET = 'web'
 
-import { beforeAll, describe, expect, test } from 'vitest'
+import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
 import { createTamagui } from '../web/src'
@@ -9,6 +9,7 @@ import {
   getCachedPrograms,
   getProgramCacheSize,
   resetProgramCache,
+  resetProgramCacheContext,
   setProgramCacheContext,
 } from '../web/src/helpers/programCache'
 
@@ -19,8 +20,8 @@ import {
 const tamaguiConfig = createTamagui(config.getDefaultTamaguiConfig())
 const context = createGrammarRuntimeContext(tamaguiConfig)
 
-// NOTE: this test must run first — it asserts the module state before any
-// context is installed, and vitest runs tests in declaration order.
+// the context-owning suite below restores the context on teardown, so this
+// assertion stays valid regardless of shuffled suite order.
 test('parsing before config creation installs a context is a named error', () => {
   expect(() => getCachedPrograms('color', 'red')).toThrow(
     /program cache has no config context/
@@ -34,6 +35,10 @@ describe('the program cache', () => {
       configRevision: context.configRevision,
       colorTokens: context.colorTokens,
     })
+  })
+
+  afterAll(() => {
+    resetProgramCacheContext()
   })
 
   test('a miss parses and a hit returns the very same entry', () => {

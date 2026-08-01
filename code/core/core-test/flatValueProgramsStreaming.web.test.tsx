@@ -41,6 +41,16 @@ const split = (props: Record<string, any>) =>
 const rulesFor = (result: any, identifier: string): string[] =>
   result.rulesToInsert[identifier]?.[4] ?? []
 
+const occurrences = (text: string, value: string): number => text.split(value).length - 1
+
+function styleResourceCount(html: string, identifier: string): number {
+  const host = document.createElement('div')
+  host.innerHTML = html
+  return [...host.querySelectorAll('style[data-href]')]
+    .flatMap((style) => style.getAttribute('data-href')?.split(/\s+/) ?? [])
+    .filter((href) => href === `t_${identifier}`).length
+}
+
 /**
  * How many chunks a block is spread over: 1 is whole, 0 is absent, and anything
  * above 1 means a browser saw part of the program before the rest.
@@ -179,5 +189,29 @@ describe('program blocks over a stream', () => {
     const hover = carrier!.indexOf(rules[rules.length - 1])
     expect(base).toBeGreaterThanOrEqual(0)
     expect(hover).toBeGreaterThan(base)
+  })
+
+  test('dedupes program blocks across a Suspense-delayed stream', async () => {
+    // react 19's stream and client renderers retain different sigils on shared
+    // context objects, so streaming coverage stays in this server-only module.
+    const sharedProps = {
+      color: 'rgb(1,2,3) hover:rgb(4,5,6)',
+    }
+    const lateProps = {
+      ...sharedProps,
+      opacity: '0.2 hover:0.8',
+    }
+    const chunks = await streamWithSuspense(sharedProps, lateProps)
+    const html = chunks.join('')
+    const sharedSplit = split(sharedProps)
+    const lateSplit = split(lateProps)
+    const sharedClass = sharedSplit.classNames.color
+    const lateClass = lateSplit.classNames.opacity
+
+    expect(chunks.length).toBeGreaterThan(1)
+    expect(styleResourceCount(html, sharedClass)).toBe(1)
+    expect(styleResourceCount(html, lateClass)).toBe(1)
+    expect(occurrences(html, rulesFor(sharedSplit, sharedClass).join('\n'))).toBe(1)
+    expect(occurrences(html, rulesFor(lateSplit, lateClass).join('\n'))).toBe(1)
   })
 })

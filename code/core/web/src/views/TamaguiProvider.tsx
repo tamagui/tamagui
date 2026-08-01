@@ -36,8 +36,9 @@ export function TamaguiProvider({
   // (e.g. useColorScheme() returns null on first render in RN 0.83+)
   const defaultTheme = defaultThemeProp || firstThemeKey(config) || 'light'
   useIsomorphicLayoutEffect(() => {
-    stopAccumulatingRules()
+    const resumeAccumulatingRules = stopAccumulatingRules()
     updateMediaListeners()
+    return resumeAccumulatingRules
   }, [])
 
   const memoizedInsets = React.useMemo(
