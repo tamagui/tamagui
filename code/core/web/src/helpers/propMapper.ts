@@ -20,7 +20,6 @@ import { resolveVariableValue } from './resolveVariableValue'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { normalizeStyle } from './normalizeStyle'
-import { pseudoDescriptors } from './pseudoDescriptors'
 import { isRemValue, resolveRem } from './resolveRem'
 import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { skipProps } from './skipProps'
@@ -333,28 +332,14 @@ const resolveTokensAndVariants: StyleResolver<object> = (
         } else {
           const variantOut = resolveVariants(subKey, val, styleProps, styleState, key)
 
-          // apply, merging sub-styles
+          // apply variant output in authored order
           if (variantOut) {
             for (const [key, val, originalVal] of variantOut) {
               if (val == null) continue
-              if (key in pseudoDescriptors) {
-                res[key] ??= {}
-                Object.assign(res[key], val)
-                const subOriginalValues = styleOriginalValues.get(val)
-                if (subOriginalValues) {
-                  const existing = styleOriginalValues.get(res[key])
-                  if (existing) {
-                    Object.assign(existing, subOriginalValues)
-                  } else {
-                    styleOriginalValues.set(res[key], { ...subOriginalValues })
-                  }
-                }
-              } else {
-                res[key] = val
-                if (originalVal !== undefined) {
-                  originalValues ||= {}
-                  originalValues[key] = originalVal
-                }
+              res[key] = val
+              if (originalVal !== undefined) {
+                originalValues ||= {}
+                originalValues[key] = originalVal
               }
             }
           }
@@ -393,7 +378,7 @@ const resolveTokensAndVariants: StyleResolver<object> = (
         console.info(`object`, subKey, subObject)
       }
 
-      // sub-objects: media queries, pseudos, shadowOffset
+      // structured style values such as shadowOffset
       res[subKey] ??= {}
       Object.assign(res[subKey], subObject)
       const subOriginalValues = styleOriginalValues.get(subObject)

@@ -311,19 +311,4 @@ export const stylePropsText = {
 
 export const stylePropsAll = stylePropsText
 
-export const validPseudoKeys = {
-  enterStyle: true,
-  exitStyle: true,
-  hoverStyle: true,
-  pressStyle: true,
-  focusStyle: true,
-  disabledStyle: true,
-  focusWithinStyle: true,
-
-  // allow some web only ones
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    focusVisibleStyle: true,
-  }),
-}
-
 export const validStyles = stylePropsView

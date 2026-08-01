@@ -16,7 +16,6 @@ beforeAll(() => {
     ...defaultConfig,
     settings: {
       ...defaultConfig.settings,
-      legacyConditionObjects: true,
     },
   } as any)
 })

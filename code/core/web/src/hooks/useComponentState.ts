@@ -1,5 +1,7 @@
 import { getPlatformDriver, isServer, isWeb } from '@tamagui/constants'
+import { stylePropsAll } from '@tamagui/helpers'
 import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
+import { parseValue } from '@tamagui/style-grammar'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import { getSetting } from '../config'
@@ -10,6 +12,7 @@ import {
   defaultComponentStateShouldEnter,
 } from '../defaultComponentState'
 import { isObj } from '../helpers/isObj'
+import { createGrammarRuntimeContext } from '../helpers/grammarConfig'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
@@ -21,6 +24,31 @@ import type {
   UseAnimationHook,
 } from '../types'
 import type { ViewProps } from '../views/View'
+
+const platformPseudoModifiers = new Set(['hover', 'press', 'active', 'focus'])
+const enterModifier = new Set(['enter'])
+
+function hasFlatModifier(
+  props: Record<string, any>,
+  config: TamaguiInternalConfig,
+  modifiers: ReadonlySet<string>
+): boolean {
+  const registry = createGrammarRuntimeContext(config).registry
+  for (const key in props) {
+    const value = props[key]
+    if (typeof value !== 'string' || value.indexOf(':') === -1) continue
+    const property = config.shorthands[key] || key
+    if (!(property in stylePropsAll) && property !== 'transition') continue
+    const parsed = parseValue(value, registry)
+    if (!parsed.ok) continue
+    for (const clause of parsed.value.clauses) {
+      for (const modifier of clause.modifiers) {
+        if (modifiers.has(modifier)) return true
+      }
+    }
+  }
+  return false
+}
 
 export const useComponentState = (
   props: ViewProps | TextProps | Record<string, any>,
@@ -65,8 +93,8 @@ export const useComponentState = (
     curStateRef.hasAnimated = true
   }
 
-  // a renderer platform driver with native pseudo states (react-native-gpui)
-  // makes ANY component with runtime pseudo styles ride the animation-driver
+  // A renderer platform driver with native pseudo states (react-native-gpui)
+  // makes any component with interaction clauses ride the animation-driver
   // emitter path — no per-site transition/animation prop required. the flip is
   // driver-sourced (hover) or event-sourced (press/focus) but either way applies
   // through the emitter with zero React commits; with no transition declared it
@@ -76,7 +104,7 @@ export const useComponentState = (
     useAnimations &&
     animationDriver?.avoidReRenders &&
     getPlatformDriver()?.pseudo &&
-    ('hoverStyle' in props || 'pressStyle' in props || 'focusStyle' in props)
+    hasFlatModifier(props, config, platformPseudoModifiers)
   )
 
   const willBeAnimatedClient = (() => {
@@ -105,7 +133,7 @@ export const useComponentState = (
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
 
-  const hasEnterStyle = !!props.enterStyle
+  const hasEnterStyle = hasFlatModifier(props, config, enterModifier)
 
   const hasAnimationThatNeedsHydrate =
     hasAnimationProp &&

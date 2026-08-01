@@ -6,7 +6,7 @@
 import type { StyleObject } from '@tamagui/helpers'
 import { cssShorthandLonghands, simpleHash } from '@tamagui/helpers'
 import { getConfigMaybe } from '../config'
-import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
+import type { TamaguiInternalConfig, ViewStyleObject } from '../types'
 import { defaultOffset } from './defaultOffset'
 import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
@@ -14,7 +14,7 @@ import { transformsToString } from './transformsToString'
 
 // refactor this file away next...
 
-export function getCSSStylesAtomic(style: ViewStyleWithPseudos) {
+export function getCSSStylesAtomic(style: ViewStyleObject) {
   styleToCSS(style)
   const out: StyleObject[] = []
   for (const key in style) {
@@ -32,7 +32,7 @@ let conf: TamaguiInternalConfig | null = null
 
 // this could be cached for performance?
 const getStyleObject = (
-  style: ViewStyleWithPseudos,
+  style: ViewStyleObject,
   key: string
 ): StyleObject | undefined => {
   let val = style[key]

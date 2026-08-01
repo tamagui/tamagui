@@ -461,7 +461,7 @@ function getFontSubMap(
  *
  * `@sm:` applies the same condition the media key describes, measured against the
  * container instead of the viewport, so the derived text is the config's own query
- * text — which is also what createMediaStyle already emits after `@container`. A
+ * text used by flat-program lowering after `@container`. A
  * caller may override the table, including adding a size the heuristic misses
  * (`aspect-ratio`, say), and every size must end up with query text: decision 18
  * makes that a config-creation error rather than a lowering-time throw.

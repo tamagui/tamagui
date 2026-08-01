@@ -283,10 +283,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animationDrivers,
     defaultProps,
     settings: {
-      // decision 23: on by default in v3 — old condition objects convert into
-      // program clauses at the getSplitStyles loop entry; false keeps the
-      // legacy machinery. v4 removes the setting and the old parsers
-      legacyConditionObjects: true,
       webContainerType: 'inline-size',
       ...configIn.settings,
       defaultSize,

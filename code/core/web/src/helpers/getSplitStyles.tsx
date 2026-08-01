@@ -22,7 +22,6 @@ import {
   decodeArbitrary,
   getTokenCategory,
   hasTokenName,
-  modifierToPseudo,
   percentUtilityProps,
   radiusCornerProps,
   splitColorOpacitySuffix,
@@ -44,7 +43,6 @@ import type {
   GetStyleResult,
   GetStyleState,
   GenericCompoundVariant,
-  PseudoStyles,
   RulesToInsert,
   SpaceTokens,
   SplitStyleProps,
@@ -54,7 +52,8 @@ import type {
   TamaguiInternalConfig,
   TextStyle,
   ThemeParsed,
-  ViewStyleWithPseudos,
+  TransitionProp,
+  ViewStyleObject,
 } from '../types'
 import { fixStyles } from './expandStyles'
 import { getCSSStylesAtomic, styleToCSS } from './getCSSStylesAtomic'
@@ -280,10 +279,8 @@ function getPropEntriesInForwardOrder(
 //     borderWidth: props.borderWidth,
 //     padding: props.padding,
 //   },
-//   pseudos,
 //   classNames,
 //   rulesToInsert,
-//   dynamicThemeAccess,
 // }
 
 // exported so the compiler applies the SAME host-validity decision when it
@@ -364,9 +361,7 @@ export const getSplitStyles: StyleSplitter = (
   const classNames: ClassNamesObject = {}
 
   let space: SpaceTokens | null = props.space
-  let pseudos: PseudoStyles | null = null
   let hasMedia: boolean | Set<string> = false
-  let dynamicThemeAccess: boolean | undefined
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
   // the frontend's normalizeStaticConfig partitions unclaimed styled-base
@@ -891,24 +886,6 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (shouldPassThrough) {
-      // // TODO bring this back but probably improve it?
-      // if (isPseudo) {
-      //   // this is a lot... but we need to track sub-keys so we don't override them in future things that aren't passed down
-      //   // like our own variants that aren't in parent
-      //   const pseudoStyleObject = getSubStyle(
-      //     styleState,
-      //     keyInit,
-      //     valInit,
-      //     fontFamily,
-      //     true,
-      //     state.noClass
-      //   )
-      //   const descriptor = pseudoDescriptors[keyInit]
-      //   for (const key in pseudoStyleObject) {
-      //     debugger
-      //   }
-      // }
-
       passDownProp(viewProps, keyInit, valInit)
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -1130,6 +1107,21 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  // A conditional transition is a flat program like every other style value.
+  // Hand its selected value to animation drivers and keep it out of native
+  // destination styles, where `transition` is not a React Native style key.
+  const effectiveTransition = styleState.style?.transition as
+    | TransitionProp
+    | null
+    | undefined
+  if (
+    effectiveTransition != null &&
+    styleState.style &&
+    (process.env.TAMAGUI_TARGET === 'native' || driver?.outputStyle !== 'css')
+  ) {
+    delete styleState.style.transition
+  }
+
   // on native, container config is context + layout measurement, never a
   // react-native style key
   if (process.env.TAMAGUI_TARGET === 'native' && styleState.style) {
@@ -1170,7 +1162,7 @@ export const getSplitStyles: StyleSplitter = (
 
     // these are only the flat transforms
     // always do this at the very end to preserve the order strictly (animations, origin)
-    // and allow proper merging of all pseudos before applying
+    // and allow proper merging before applying
     if (styleState.flatTransforms) {
       // we need to match the order for animations to work because it needs consistent order
       // was thinking of having something like `state.prevTransformsOrder = ['y', 'x', ...]
@@ -1222,7 +1214,7 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (!styleProps.noMergeStyle && styleState.style && shouldDoClasses) {
-      let retainedStyles: ViewStyleWithPseudos | undefined
+      let retainedStyles: ViewStyleObject | undefined
       let shouldRetain = false
 
       if (styleState.style['$$css']) {
@@ -1372,14 +1364,12 @@ export const getSplitStyles: StyleSplitter = (
     fontFamily: styleState.fontFamily,
     viewProps,
     style: styleState.style as any,
-    pseudos,
     classNames,
     rulesToInsert,
-    dynamicThemeAccess,
     pseudoGroups,
     mediaGroups,
     overriddenContextProps: styleState.overriddenContextProps,
-    pseudoTransitions: styleState.pseudoTransitions,
+    ...(effectiveTransition != null && { effectiveTransition }),
     ...(programStates && { programStates }),
     ...(usesSafeArea && { usesSafeArea: true }),
   }

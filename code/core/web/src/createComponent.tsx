@@ -27,10 +27,7 @@ import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { usePointerEvents } from './helpers/pointerEvents'
-import {
-  extractPseudoState,
-  resolveEffectivePseudoTransition,
-} from './helpers/pseudoTransitions'
+import { extractPseudoState } from './helpers/extractPseudoState'
 import { subscribeToSafeArea } from './helpers/resolveSafeAreaVariable'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
@@ -620,14 +617,6 @@ export function createComponent<
       const next: AllGroupContexts = { ...groupContextParent }
       if (groupName) {
         next[groupName] = entry
-        // v2 groups are containers: converted legacy `$group-name-media`
-        // conditions measure the group as a container query, so while the
-        // compat setting is on the group also answers the container keys.
-        // v4 removes the setting and groups become state-only (decision 17)
-        if (getConfig().settings.legacyConditionObjects !== false) {
-          next['@'] = entry
-          next[`@${groupName}`] = entry
-        }
       }
       if (isContainer) {
         // `@sm:` reads the nearest container of any name, so every container
@@ -926,14 +915,10 @@ export function createComponent<
           animationDriver
         )
 
-        // compute effective transition based on entering/exiting pseudo states
-        const effectiveTransition = resolveEffectivePseudoTransition(
-          stateRef.current.prevPseudoState,
-          updatedState,
-          nextStyles?.pseudoTransitions,
-          // platform-pseudo with no declared transition = instant (CSS :hover semantics)
-          props.transition ?? (platformPseudo ? '0ms' : undefined)
-        )
+        const effectiveTransition =
+          nextStyles?.effectiveTransition ??
+          props.transition ??
+          (platformPseudo ? '0ms' : undefined)
 
         // update prev state for next comparison (includes group states)
         stateRef.current.prevPseudoState = extractPseudoState(updatedState)
@@ -1068,9 +1053,6 @@ export function createComponent<
         splitStyles.style.opacity = 0
       }
 
-      if (splitStyles.dynamicThemeAccess != null) {
-        stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
-      }
     }
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
@@ -1097,7 +1079,6 @@ export function createComponent<
 
     const {
       viewProps: viewPropsIn,
-      pseudos,
       style: splitStylesStyle,
       classNames,
       pseudoGroups,
@@ -1186,15 +1167,10 @@ export function createComponent<
           }
         : undefined
 
-      // compute effective transition once here (single source of truth)
-      // avoidReRenders path also computes this in updateStyleListener
-      const effectiveTransition = resolveEffectivePseudoTransition(
-        stateRef.current.prevPseudoState,
-        state,
-        splitStyles?.pseudoTransitions,
-        // platform-pseudo with no declared transition = instant (CSS :hover semantics)
-        props.transition ?? (platformPseudo ? '0ms' : undefined)
-      )
+      const effectiveTransition =
+        splitStyles?.effectiveTransition ??
+        props.transition ??
+        (platformPseudo ? '0ms' : undefined)
 
       // add effectiveTransition to splitStyles for drivers to consume
       if (splitStyles) {
@@ -1218,7 +1194,6 @@ export function createComponent<
         styleProps,
         theme,
         themeName,
-        pseudos: pseudos || null,
         staticConfig,
         stateRef,
         onTransition,
@@ -1425,20 +1400,17 @@ export function createComponent<
 
     // if its a group its gotta listen for pseudos to emit them to children
 
-    // native flat-value programs surface the interaction states their clauses
-    // reference; they need the same event attachment as pseudo-style objects
+    // Native flat-value programs surface the interaction states their clauses
+    // reference so the component attaches the matching events.
     const programStates = !disabled ? splitStyles?.programStates : undefined
 
     const runtimePressStyle =
       !disabled &&
-      ((noClass && pseudos?.pressStyle) ||
-        programStates?.has('press') ||
-        programStates?.has('active'))
+      (programStates?.has('press') || programStates?.has('active'))
     const runtimeFocusStyle =
-      !disabled && ((noClass && pseudos?.focusStyle) || programStates?.has('focus'))
+      !disabled && programStates?.has('focus')
     const runtimeFocusVisibleStyle =
-      !disabled &&
-      ((noClass && pseudos?.focusVisibleStyle) || programStates?.has('focus-visible'))
+      !disabled && programStates?.has('focus-visible')
 
     const attachFocus = Boolean(
       runtimePressStyle ||
@@ -1460,12 +1432,11 @@ export function createComponent<
       onMouseDown ||
       onMouseUp ||
       onLongPress ||
-      onClick ||
-      pseudos?.focusVisibleStyle
+      onClick
     )
 
     const runtimeHoverStyle =
-      !disabled && ((noClass && pseudos?.hoverStyle) || programStates?.has('hover'))
+      !disabled && programStates?.has('hover')
     // with a platform pseudo driver the hover STATE is driver-sourced; only keep
     // the JS hover listeners when something else needs them (dynamic group
     // children, or the user's own onMouseEnter/Leave handlers below).
@@ -1505,7 +1476,6 @@ export function createComponent<
         attachHover,
         shouldAttach,
         needsHoverState,
-        pseudos,
       })
     }
 
@@ -1598,7 +1568,7 @@ export function createComponent<
                 componentContext.setParentFocusState({ focusWithin: true })
                 next.focusWithin = true
               }
-              if (pseudos?.focusVisibleStyle || programStates?.has('focus-visible')) {
+              if (programStates?.has('focus-visible')) {
                 if (lastInteractionWasKeyboard.value) {
                   next.focusVisible = true
                 } else {
@@ -1812,11 +1782,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    if (
-      'focusWithinStyle' in propsIn ||
-      pseudos?.focusWithinStyle ||
-      programStates?.has('focus-within')
-    ) {
+    if (programStates?.has('focus-within')) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
@@ -1935,7 +1901,6 @@ export function createComponent<
                 hasRuntimeMediaKeys,
                 isStringElement,
                 mediaListeningKeys,
-                pseudos,
                 shouldAttach,
                 noClass,
                 shouldListenForMedia,

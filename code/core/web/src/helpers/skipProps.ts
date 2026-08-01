@@ -15,7 +15,7 @@ export const skipProps = {
   componentName: 1,
   disableOptimization: 1,
   render: 1,
-  style: 1, // handled after loop so pseudos set usedKeys and override it if necessary
+  style: 1, // handled after the prop loop to preserve authored order
   group: 1,
   container: 1,
   animatePresence: 1,

@@ -181,7 +181,6 @@ export type {
   GroupNames,
   Longhands,
   Media,
-  MediaPropKeys,
   MediaQueries,
   MediaQueryState,
   GenericVariables,

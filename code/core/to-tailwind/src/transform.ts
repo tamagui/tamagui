@@ -8,7 +8,6 @@ import {
   formatCandidate,
   getTokenCategory,
   propToTailwindPrefix,
-  pseudoToModifier,
   standaloneValueProps,
   type GrammarConfigView,
   type TokenCategory,
@@ -178,8 +177,8 @@ export function findParseError(source: string): string | null {
 /**
  * converts tamagui JSX source code to tailwind className syntax.
  *
- * input:  <View backgroundColor="red" padding={10} hoverStyle={{ opacity: 0.8 }} />
- * output: <div className="bg-[red] p-[10px] hover:opacity-80" />
+ * input:  <View backgroundColor="red" padding={10} opacity="1 hover:0.8" />
+ * output: <div className="bg-[red] p-[10px] opacity-100 hover:opacity-80" />
  */
 export function tamaguiToTailwind(
   source: string,
@@ -259,8 +258,6 @@ export function tamaguiToTailwind(
       const hasNeighboringStyleProp = node.attributes.some((attr) => {
         if (!t.isJSXAttribute(attr) || attr.name.name === 'className') return false
         const name = attr.name.name as string
-        if (name in pseudoToModifier) return true
-        if (ctx.mediaKeys.has(name)) return true
         return isConvertibleStyleProp(resolveShorthand(ctx, name))
       })
       if (hasClassName && hasNeighboringStyleProp) return
@@ -304,14 +301,6 @@ export function tamaguiToTailwind(
 
         if (name === 'className') {
           existingClassName = attr
-          continue
-        }
-        if (name in pseudoToModifier) {
-          partitionAttr(ctx, attr, pseudoToModifier[name], classes, keptAttrs)
-          continue
-        }
-        if (ctx.mediaKeys.has(name)) {
-          partitionAttr(ctx, attr, name, classes, keptAttrs)
           continue
         }
         // base style prop — defer
@@ -623,160 +612,6 @@ function propValueToClass(
     },
     ctx.grammarConfig
   )
-}
-
-/**
- * PARTITION a media/pseudo style object into (a) the tailwind classes we could convert and
- * (b) the RESIDUAL properties we could not (dynamic values, complex expressions, spreads,
- * nested-object residuals). LOSSLESS: every member goes to exactly one side, so the caller can
- * emit the classes AND retain the residual under the same prop — never dropping user code.
- *
- * RECURSIVE for nested media+pseudo (and pseudo+media): a nested pseudo/media object is
- * partitioned with a combined modifier ($md → hoverStyle ⇒ `md:hover:`), its classes bubble up,
- * and any residual is retained as a nested object under the same key.
- */
-function partitionStyleObject(
-  ctx: Ctx,
-  expr: t.ObjectExpression,
-  modifier: string
-): { classes: string[]; residual: t.ObjectExpression['properties'] } {
-  // SPREAD-CONSERVATIVE: a spread inside the object makes MEMBER precedence order-dependent
-  // ({ opacity: .5, ...d } vs { ...d, opacity: .5 } resolve opposite), and moving a converted
-  // member out to className loses that ordering relative to the retained spread. so if the object
-  // contains ANY spread, retain the WHOLE object untouched (order-preserving, lossless).
-  if (expr.properties.some((p) => t.isSpreadElement(p))) {
-    return { classes: [], residual: expr.properties }
-  }
-
-  // pass 1: classify each member (leaf convert/retain, or nested media/pseudo)
-  type Entry =
-    | { kind: 'retain'; prop: t.ObjectExpression['properties'][number] }
-    | {
-        kind: 'nested'
-        key: t.Identifier
-        classes: string[]
-        residual: t.ObjectExpression['properties']
-      }
-    | { kind: 'leaf'; prop: t.ObjectProperty; fullProp: string; cls: string | null }
-  const entries: Entry[] = []
-
-  for (const prop of expr.properties) {
-    if (!t.isObjectProperty(prop) || !t.isIdentifier(prop.key)) {
-      entries.push({ kind: 'retain', prop })
-      continue
-    }
-    const propName = prop.key.name
-    const value = prop.value
-
-    const mediaKey = ctx.mediaKeys.has(propName) ? propName : null
-    const nestedIsMedia = mediaKey !== null && !(propName in pseudoToModifier)
-    const nestedMod = propName in pseudoToModifier ? pseudoToModifier[propName] : mediaKey
-    if (nestedMod && t.isObjectExpression(value)) {
-      // canonical modifier order = MEDIA before PSEUDO (`md:hover:`), regardless of direction
-      const combined = !modifier
-        ? nestedMod
-        : nestedIsMedia
-          ? `${nestedMod}:${modifier}`
-          : `${modifier}:${nestedMod}`
-      const inner = partitionStyleObject(ctx, value, combined)
-      entries.push({
-        kind: 'nested',
-        key: prop.key,
-        classes: inner.classes,
-        residual: inner.residual,
-      })
-      continue
-    }
-
-    // wrap a convertible leaf value (string / numeric / negative-numeric)
-    let jsxValue: t.JSXAttribute['value'] | null = null
-    if (t.isStringLiteral(value)) {
-      jsxValue = value
-    } else if (
-      t.isNumericLiteral(value) ||
-      (t.isUnaryExpression(value) &&
-        value.operator === '-' &&
-        t.isNumericLiteral(value.argument))
-    ) {
-      jsxValue = t.jsxExpressionContainer(value)
-    }
-    entries.push({
-      kind: 'leaf',
-      prop,
-      fullProp: resolveShorthand(ctx, propName),
-      cls: jsxValue ? propValueToClass(ctx, propName, jsxValue, modifier) : null,
-    })
-  }
-
-  // pass 2: a RETAINED leaf (dynamic/unconvertible — e.g. a later duplicate `opacity: dynamic`)
-  // blocks any overlapping conversion (a class would beat the retained member; className wins).
-  const retainedLeafKeys = new Set<string>()
-  for (const e of entries) {
-    if (e.kind === 'leaf' && e.cls === null && isConvertibleStyleProp(e.fullProp)) {
-      for (const k of leafKeysOfProp(e.fullProp)) retainedLeafKeys.add(k)
-    }
-  }
-
-  const classes: string[] = []
-  const residual: t.ObjectExpression['properties'] = []
-  for (const e of entries) {
-    if (e.kind === 'retain') {
-      residual.push(e.prop)
-    } else if (e.kind === 'nested') {
-      classes.push(...e.classes)
-      if (e.residual.length > 0) {
-        residual.push(t.objectProperty(e.key, t.objectExpression(e.residual)))
-      }
-    } else if (
-      e.cls !== null &&
-      !overlapsSet(leafKeysOfProp(e.fullProp), retainedLeafKeys)
-    ) {
-      classes.push(e.cls)
-    } else {
-      residual.push(e.prop) // dynamic / unconvertible / overlapping → RETAIN, never drop
-    }
-  }
-
-  return { classes, residual }
-}
-
-// build a retained attribute holding the unconverted residual members under the SAME prop name
-// (reusing the original name node preserves `$md` / `$max-md` exactly).
-function buildResidualAttr(
-  attr: t.JSXAttribute,
-  residual: t.ObjectExpression['properties']
-): t.JSXAttribute {
-  return t.jsxAttribute(attr.name, t.jsxExpressionContainer(t.objectExpression(residual)))
-}
-
-// partition a media/pseudo attribute: push converted classes, retain a residual attribute for
-// anything unconverted. LOSSLESS — either the whole original attr is kept (nothing converted),
-// or classes are emitted plus a residual attr for the leftover members.
-function partitionAttr(
-  ctx: Ctx,
-  attr: t.JSXAttribute,
-  modifier: string,
-  classes: string[],
-  keptAttrs: t.JSXAttribute[]
-): void {
-  if (
-    !t.isJSXExpressionContainer(attr.value) ||
-    !t.isObjectExpression(attr.value.expression)
-  ) {
-    keptAttrs.push(attr) // not a style object (dynamic/spread) → retain untouched
-    return
-  }
-  const { classes: converted, residual } = partitionStyleObject(
-    ctx,
-    attr.value.expression,
-    modifier
-  )
-  if (converted.length === 0) {
-    keptAttrs.push(attr) // nothing converted → keep the original attribute whole
-    return
-  }
-  classes.push(...converted)
-  if (residual.length > 0) keptAttrs.push(buildResidualAttr(attr, residual))
 }
 
 function getStringValue(value: t.JSXAttribute['value']): string | null {

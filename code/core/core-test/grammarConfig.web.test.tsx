@@ -5,19 +5,16 @@ import { describe, expect, test } from 'vitest'
 import config from '../config-default'
 import { createTamagui } from '../web/src'
 import { createGrammarRuntimeContext } from '../web/src/helpers/grammarConfig'
-import { createMediaStyle } from '../web/src/helpers/createMediaStyle'
 import {
   lowerProgram,
   parseValue,
   resolvePayload,
   serializePayloadWeb,
 } from '@tamagui/style-grammar'
-import type { StyleObject } from '@tamagui/helpers'
 
 // The resolver view adapter (lane W4). What matters here is that it agrees with
 // the config that already exists: the same variable text the theme system emits,
-// the same query text createMediaStyle emits, and the same property-to-token
-// category bindings the `$token` path uses.
+// the same media query text, and the same property-to-token category bindings.
 
 const tamaguiConfig = createTamagui(config.getDefaultTamaguiConfig())
 const context = createGrammarRuntimeContext(tamaguiConfig)
@@ -27,7 +24,7 @@ describe('identifier lookup', () => {
     const reference = context.getLookup('padding')('4')
     expect(reference).toBeDefined()
     expect(context.toVar(reference!.name)).toBe(
-      tamaguiConfig.tokensParsed.space['$4'].variable
+      tamaguiConfig.tokensParsed.space['4'].variable
     )
   })
 
@@ -162,23 +159,6 @@ describe('modifiers from the real config', () => {
 })
 
 describe('media and container query text', () => {
-  test('the media text is exactly what createMediaStyle emits for that key', () => {
-    const styleObject: StyleObject = [
-      'color',
-      'red',
-      '_col-test',
-      undefined as any,
-      ['._col-test{color:red}'],
-    ]
-    const [, , , , rules] = createMediaStyle(
-      styleObject,
-      'sm',
-      tamaguiConfig.media as any,
-      true
-    )
-    expect(rules[0]).toContain(`@media ${context.mediaQueries.sm}`)
-  })
-
   test('every container size has query text, so lowering never throws', () => {
     expect(context.containerSizes.length).toBeGreaterThan(0)
     for (const key of context.containerSizes) {

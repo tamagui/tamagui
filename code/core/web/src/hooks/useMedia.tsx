@@ -2,7 +2,6 @@ import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEffect, useReducer, useRef } from 'react'
 import { getSetting } from '../config'
 import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
-import { resetMediaStyleCache } from '../helpers/createMediaStyle'
 import { matchMedia } from '../helpers/matchMedia'
 import { mediaObjectToString } from '../helpers/mediaObjectToString'
 import {
@@ -14,26 +13,14 @@ import {
 import type {
   ComponentContextI,
   DebugProp,
-  GetStyleState,
   MediaQueryState,
   TamaguiInternalConfig,
   UseMediaState,
   WidthHeight,
 } from '../types'
-import { defaultMediaImportance } from '../helpers/pseudoDescriptors'
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
-
-let mediaKeysOrdered: string[]
-let mediaKeyImportance: Record<string, number> = {}
-
-export const getMediaKeyImportance = (key: string) => {
-  // precomputed in configureMedia: index + 100 because we set base usedKeys=1,
-  // pseudos are 2-N (however many we have), all media go above all pseudos so
-  // we need to pad it based on that
-  return mediaKeyImportance[key] ?? 99
-}
 
 const dispose = new Set<Function>()
 
@@ -44,8 +31,6 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   const mediaQueryDefaultActive = getSetting('mediaQueryDefaultActive')
   if (!media) return
   mediaVersion++
-  // reset cached media style prefixes/selectors so they get recalculated with new key order
-  resetMediaStyleCache()
   // touch-tracker getter object depends on the current media key set
   resetMediaTouchTracker()
   for (const key in media) {
@@ -54,11 +39,6 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   }
   Object.assign(mediaQueryConfig, media)
   initState = { ...getMedia() }
-  mediaKeysOrdered = Object.keys(media)
-  mediaKeyImportance = {}
-  for (let i = 0; i < mediaKeysOrdered.length; i++) {
-    mediaKeyImportance[mediaKeysOrdered[i]] = i + 100
-  }
   setupMediaListeners()
 }
 
@@ -401,19 +381,6 @@ export function getMediaState(mediaGroups: Set<string>, layout: WidthHeight) {
     disableMediaTouch = false
   }
   return res
-}
-
-export const getMediaImportanceIfMoreImportant = (
-  mediaKey: string,
-  key: string,
-  styleState: GetStyleState,
-  isSizeMedia: boolean
-) => {
-  const importance = isSizeMedia
-    ? getMediaKeyImportance(mediaKey)
-    : defaultMediaImportance
-  const usedKeys = styleState.usedKeys
-  return !usedKeys[key] || importance > usedKeys[key] ? importance : null
 }
 
 const cachedMediaKeyToQuery: Record<string, string> = {}

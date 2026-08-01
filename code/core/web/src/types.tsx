@@ -495,8 +495,6 @@ export interface PxValue {
 
 export type ColorScheme = 'light' | 'dark'
 
-export type IsMediaType = boolean | 'platform' | 'theme' | 'group'
-
 export type MaybeTamaguiComponent<A = any> = TamaguiComponent<A> | React.FC<A>
 
 type MeasureOnSuccessCallback = (
@@ -1259,14 +1257,6 @@ export interface GenericTamaguiSettings {
   onlyAllowShorthands?: boolean | undefined
 
   /**
-   * Accept deprecated pseudo, theme, platform, media, and group condition
-   * objects by converting them to flat value programs.
-   *
-   * @default false
-   */
-  legacyConditionObjects?: boolean
-
-  /**
    * Define a default font, for better types and default font on Text
    */
   defaultFont?: string
@@ -1501,30 +1491,7 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
 // media
 export type MediaQueryObject = { [key: string]: string | number | string }
 export type MediaQueryKey = keyof Media
-type IsAny<A> = 0 extends 1 & A ? true : false
-type StrictMediaQueryKey =
-  IsAny<MediaQueryKey> extends true
-    ? never
-    : string extends MediaQueryKey
-      ? never
-      : Extract<MediaQueryKey, string>
-export type MediaPropKeys = Exclude<`$${StrictMediaQueryKey}`, PlatformMediaKeys>
 export type MediaQueryState = { [key in MediaQueryKey]: boolean }
-
-// guard against a loose `Themes` whose `keyof` collapses to `string` (e.g. a config
-// whose themes type carries a string index signature). without this, TK becomes `string`
-// and ThemeMediaKeys becomes `$theme-${string}`, which collapses the whole WithMediaProps
-// mapped type into a `[key: string]` index signature that then swallows non-style props
-// like onPress/children. see issue #4010
-export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = TK extends string
-  ? string extends TK
-    ? never
-    : TK extends `${string}_${string}`
-      ? never
-      : `$theme-${TK}`
-  : never
-
-export type PlatformMediaKeys = `$${AllPlatforms}`
 
 export interface TypeOverride {
   groupNames(): 1
@@ -1535,34 +1502,6 @@ export type GroupNames =
   ReturnType<TypeOverride['groupNames']> extends 1
     ? never
     : ReturnType<TypeOverride['groupNames']>
-type StrictGroupNames =
-  IsAny<GroupNames> extends true ? string : Extract<GroupNames, string | number>
-
-type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin'
-
-export type GroupMediaKeys =
-  | `$group-${StrictGroupNames}`
-  | `$group-${StrictGroupNames}-${ParentMediaStates}`
-  | `$group-${StrictGroupNames}-${StrictMediaQueryKey}`
-  | `$group-${StrictGroupNames}-${StrictMediaQueryKey}-${ParentMediaStates}`
-  | `$group-${ParentMediaStates}`
-  | `$group-${StrictMediaQueryKey}`
-  | `$group-${StrictMediaQueryKey}-${ParentMediaStates}`
-
-export type WithMediaProps<A> = {
-  [Key in
-    | MediaPropKeys
-    | GroupMediaKeys
-    | ThemeMediaKeys
-    | PlatformMediaKeys]?: Key extends `$web`
-    ? AddWebOnlyStyleProps<A> & { [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A> }
-    : Key extends MediaPropKeys
-      ? A & {
-          // TODO we can support $theme- inside media queries here if we change to ThemeMediaKeys | PlatformMediaKeys
-          [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>
-        }
-      : A & { [Key in MediaPropKeys]?: A }
-}
 
 export type AddWebOnlyStyleProps<A> = Partial<
   Omit<CSSProperties, keyof WebOnlyValidStyleValues>
@@ -2095,46 +2034,6 @@ export type WithShorthands<StyleProps> = {
     : undefined
 }
 
-// adds pseudo props
-// PseudoStyleWithTransition allows transition inside pseudo-style props for enter/exit timing
-export type PseudoStyleWithTransition<A> = A & { transition?: TransitionProp | null }
-
-export type WithPseudoProps<A> = {
-  hoverStyle?: PseudoStyleWithTransition<A> | null
-  pressStyle?: PseudoStyleWithTransition<A> | null
-  focusStyle?: PseudoStyleWithTransition<A> | null
-  focusWithinStyle?: PseudoStyleWithTransition<A> | null
-  focusVisibleStyle?: PseudoStyleWithTransition<A> | null
-  disabledStyle?: PseudoStyleWithTransition<A> | null
-  exitStyle?: PseudoStyleWithTransition<A> | null
-  enterStyle?: PseudoStyleWithTransition<A> | null
-}
-
-// type for transitions extracted from pseudo-style props (e.g., hoverStyle.transition)
-// includes $group-*-hover, $group-*-press, $group-*-focus patterns
-export type PseudoTransitions = Partial<
-  Record<keyof WithPseudoProps<any>, TransitionProp | null>
-> & {
-  // allow $group-{name}-{pseudo} keys dynamically
-  [key: `$group-${string}-${'hover' | 'press' | 'focus'}`]:
-    | TransitionProp
-    | null
-    | undefined
-}
-
-export type PseudoPropKeys = keyof WithPseudoProps<any>
-
-export type PseudoStyles = {
-  hoverStyle?: ViewStyle
-  pressStyle?: ViewStyle
-  focusStyle?: ViewStyle
-  focusWithinStyle?: ViewStyle
-  focusVisibleStyle?: ViewStyle
-  disabledStyle?: ViewStyle
-  enterStyle?: ViewStyle
-  exitStyle?: ViewStyle
-}
-
 export type AllPlatforms =
   | 'web'
   | 'native'
@@ -2161,24 +2060,6 @@ export type WithThemeAndShorthands<
       Variants &
       WithShorthands<WithThemeValues<A>>
   : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>
-
-//
-// combines all of theme, shorthands, pseudos...
-//
-export type WithThemeShorthandsAndPseudos<
-  A extends object,
-  Variants = {},
-> = WithThemeAndShorthands<A, Variants> &
-  WithPseudoProps<WithThemeAndShorthands<A, Variants>>
-
-//
-// ... media queries and animations
-//
-export type WithThemeShorthandsPseudosMedia<
-  A extends object,
-  Variants = {},
-> = WithThemeShorthandsAndPseudos<A, Variants> &
-  WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>
 
 /**
  * Base style-only props (no media, pseudo):
@@ -2781,7 +2662,7 @@ export interface StackNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
 }
 
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
+export type StackStyle = WithThemeAndShorthands<StackStyleBase>
 
 //
 // Text props
@@ -2804,7 +2685,7 @@ export interface TextNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>
 }
 
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
+export type TextStyle = WithThemeAndShorthands<TextStylePropsBase>
 
 export type TextProps = TextNonStyleProps & TextStyle
 
@@ -2853,7 +2734,7 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   keyof StylePropsBase | keyof Variants
 > &
   (StylePropsBase extends object
-    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+    ? WithThemeAndShorthands<StylePropsBase, Variants>
     : {})
 
 export type TamaguiComponent<
@@ -2902,7 +2783,7 @@ export type InferStyledProps<
 export type InferStyleProps<
   A extends StylableComponent,
   B extends StaticConfigPublic,
-> = WithThemeShorthandsPseudosMedia<GetBaseStyles<A, B>, {}>
+> = WithThemeAndShorthands<GetBaseStyles<A, B>, {}>
 
 export type GetProps<A extends StylableComponent> = A extends {
   __tama: [
@@ -3010,8 +2891,6 @@ export type GetStyleState = {
   // for each winning base style key, cleared on literal override. stamped onto
   // the final style object as non-enumerable metadata (see helpers/styleProvenance).
   tokenProvenance?: Record<string, string>
-  // Transitions extracted from pseudo-style props (e.g., hoverStyle.transition)
-  pseudoTransitions?: PseudoTransitions | null
   // Resolved animation driver (respects animatedBy prop)
   animationDriver?: AnimationDriver | null
   // the six transition props in authored order, merged once at pass end
@@ -3186,16 +3065,7 @@ export type StaticConfig = StaticConfigBase & {
   parentStaticConfig?: StaticConfigBase
 }
 
-export type ViewStyleWithPseudos =
-  | TextStyle
-  | (TextStyle & {
-      hoverStyle?: TextStyle
-      pressStyle?: TextStyle
-      focusStyle?: TextStyle
-      focusWithinStyle?: TextStyle
-      focusVisibleStyle?: TextStyle
-      disabledStyle?: TextStyle
-    })
+export type ViewStyleObject = TextStyle
 
 /**
  * --------------------------------------------
@@ -3341,7 +3211,7 @@ export type GetVariantProps<
   ? Props extends TamaDefer
     ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
     : Props
-  : WithThemeShorthandsPseudosMedia<
+  : WithThemeAndShorthands<
       IsText extends true ? TextStylePropsBase : StackStyleBase
     >
 
@@ -3578,7 +3448,6 @@ export type UseAnimationHook = (props: {
   useStyleEmitter?: UseStyleEmitter
   theme: ThemeParsed
   themeName: string
-  pseudos: WithPseudoProps<ViewStyle> | null
   stateRef: { current: TamaguiComponentStateRef }
   onTransition?: OnTransition
   delay?: number
@@ -3596,7 +3465,6 @@ export type GestureReponderEvent =
 export type RulesToInsert = Record<string, StyleObject>
 
 export type GetStyleResult = {
-  pseudos?: PseudoStyles | null
   style: ViewStyle | null
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert
@@ -3604,19 +3472,16 @@ export type GetStyleResult = {
   fontFamily: string | undefined
   space?: any // SpaceTokens?
   hasMedia: boolean | Set<string>
-  dynamicThemeAccess?: boolean
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
   // Style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
-  // Transitions extracted from pseudo-style props (e.g., hoverStyle.transition)
-  pseudoTransitions?: PseudoTransitions | null
   // native flat-value programs: interaction states referenced by any clause,
   // so createComponent attaches the matching event handlers (lane W3)
   programStates?: Set<string>
   // native flat-value programs: subscribe this component to live safe-area insets
   usesSafeArea?: true
-  // Effective transition to use (accounts for entering pseudo states)
+  // The transition selected by the active flat value program
   effectiveTransition?: TransitionProp | null
 }
 
