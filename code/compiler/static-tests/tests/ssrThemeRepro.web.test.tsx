@@ -34,7 +34,9 @@ test('tokens inside theme clauses resolve to CSS variables', async () => {
   const styles = output?.styles ?? ''
   expect(styles).toContain('.t_light')
   expect(styles).toContain('var(--color5)')
-  expect(styles).not.toContain('color5')
+  // the token must appear only as a variable reference; a bare `color5` as a
+  // declaration value is what browsers drop
+  expect(styles).not.toMatch(/(?<!--)color5/)
 })
 
 test('chained theme and media clauses extract in one pass', async () => {

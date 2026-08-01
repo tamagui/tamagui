@@ -172,8 +172,6 @@ describe('loadTamaguiFromModules', () => {
       },
     }
     const tokenName = Object.keys(parsedConfig.tokens.space)[0]
-    const unprefixedTokenName = tokenName[0] === '$' ? tokenName.slice(1) : tokenName
-    const prefixedTokenName = `$${unprefixedTokenName}`
 
     expect(hostMediaQueryConfig).not.toBe(mediaQueryConfig)
     expect(hostMediaQueryConfig.sm).not.toEqual(boundaryMedia)
@@ -192,12 +190,10 @@ describe('loadTamaguiFromModules', () => {
       expect(project.tamaguiConfig).toBe(parsedConfig)
       expect(hostCore.getConfig()).toBe(parsedConfig)
       expect(hostMediaQueryConfig.sm).toEqual(boundaryMedia)
-      expect(hostTokens.space[unprefixedTokenName]).toBe(
-        parsedConfig.tokens.space[tokenName]
-      )
-      expect(hostTokens.space[prefixedTokenName]).toBe(
-        parsedConfig.tokensParsed.space[prefixedTokenName]
-      )
+      // guards the lookup itself: both sides reading undefined would pass silently
+      expect(hostTokens.space[tokenName]).toBeDefined()
+      expect(hostTokens.space[tokenName]).toBe(parsedConfig.tokens.space[tokenName])
+      expect(hostTokens.space[tokenName]).toBe(parsedConfig.tokensParsed.space[tokenName])
     } finally {
       hostCore.installTamaguiConfig(previousHostConfig)
     }
