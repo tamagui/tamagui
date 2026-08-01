@@ -34,11 +34,22 @@ type Provenance = ReturnType<typeof createProvenance>
 const packageDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const repoRoot = resolve(packageDir, '../../..')
 const defaultReportPath = resolve(packageDir, 'dry-run-report.md')
+const ignoreMarker = '.tamagui-flat-values-ignore'
 
 const defaultCorpus = [
   'code/kitchen-sink/src/usecases',
   'code/ui/tamagui/src/components/Button.tsx',
 ]
+
+function isIgnored(filePath: string): boolean {
+  let directory = dirname(filePath)
+  while (true) {
+    if (existsSync(resolve(directory, ignoreMarker))) return true
+    const parent = dirname(directory)
+    if (parent === directory) return false
+    directory = parent
+  }
+}
 
 function collectFiles(inputs: readonly string[]): SourceFile[] {
   const project = new Project({
@@ -69,7 +80,9 @@ function collectFiles(inputs: readonly string[]): SourceFile[] {
     // an input that matches nothing must never reach the report: a typo in a
     // migration path would otherwise render an empty corpus as ready to cut over
     if (!matched.length) missing.push(input)
-    for (const file of matched) files.set(file.getFilePath(), file)
+    for (const file of matched) {
+      if (!isIgnored(file.getFilePath())) files.set(file.getFilePath(), file)
+    }
   }
 
   if (missing.length) {
@@ -248,8 +261,7 @@ function typeAwareHost(node: Node): HostView | undefined {
   // this canonical primitive; styled(View, …) and direct <View> share it.
   return {
     ...host,
-    accepts: (property) =>
-      !(property in stylePropsTextOnly) && host.accepts(property),
+    accepts: (property) => !(property in stylePropsTextOnly) && host.accepts(property),
   }
 }
 

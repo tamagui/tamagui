@@ -334,7 +334,8 @@ export const Fixture = ({ active }) => <View rotate={active ? '180deg' : '0deg'}
 export const Fixture = ({ active }) => <View rotate={\`\${active ? '180deg' : '0deg'}\`} />`)
       )
     ).toEqual([])
-  })
+    // three runs in one test: each spawns the CLI over a fresh ts-morph project
+  }, 30_000)
 })
 
 describe('conditions', () => {
@@ -974,9 +975,7 @@ export const Fixture = () => <Box exitStyle={{ opacity: 0 }} />`)
     expect(site.assessments).toContainEqual({
       property: 'opacity',
       verdict: 'unknown-host',
-      reasons: expect.arrayContaining([
-        expect.objectContaining({ dimension: 'host' }),
-      ]),
+      reasons: expect.arrayContaining([expect.objectContaining({ dimension: 'host' })]),
     })
   })
 })
@@ -1403,6 +1402,37 @@ export const Fixture = () => <Box opacity={1} pressStyle={{ opacity: 0.5 }} />
     )
     expect(output).not.toContain('hoverStyle')
     expect(output).not.toContain('pressStyle')
+  })
+
+  test('an ignore marker protects a pinned compatibility fixture from write mode', () => {
+    const directory = mkdtempSync(join(packageDir, 'test/.flat-values-fixture-'))
+    temporaryDirectories.push(directory)
+    writeFileSync(join(directory, '.tamagui-flat-values-ignore'), 'Pinned V2 fixture.\n')
+    const sourcePath = join(directory, 'fixture.tsx')
+    const source = `import { View } from 'tamagui'
+export const Fixture = () => <View bg="$blue10" hoverStyle={{ bg: '$blue11' }} />
+`
+    writeFileSync(sourcePath, source)
+
+    const reportDirectory = mkdtempSync(join(tmpdir(), 'flat-values-ignore-'))
+    temporaryDirectories.push(reportDirectory)
+    const result = Bun.spawnSync({
+      cmd: [
+        process.execPath,
+        'src/index.ts',
+        '--write',
+        '--report',
+        join(reportDirectory, 'report.md'),
+        directory,
+      ],
+      cwd: packageDir,
+      stderr: 'pipe',
+      stdout: 'pipe',
+    })
+
+    expect(result.exitCode, result.stderr.toString()).toBe(0)
+    expect(result.stdout.toString()).toContain('rewrote 0 source files')
+    expect(readFileSync(sourcePath, 'utf8')).toBe(source)
   })
 
   test('write mode preserves a line comment before JSX style attributes', () => {

@@ -21,6 +21,11 @@ V1 conversion sites. Focused fixtures still parse every emitted program back thr
 A positional argument that matches no file exits 2 with no report, so a typo in a
 migration path can never read as a clean corpus.
 
+A directory containing `.tamagui-flat-values-ignore` is excluded recursively from
+both dry-run and write mode. Use the marker only for intentionally pinned legacy
+fixtures, such as the V2 side of a version comparison; application source should be
+migrated rather than excluded.
+
 ## What it converts
 
 A conversion site is one style object: a JSX attribute list, a `styled()` config, or
