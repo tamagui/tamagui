@@ -1053,7 +1053,7 @@ export type Space = GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSp
 export type SpaceTokens = Space;
 type ColorTokenBase = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
 type TokenWithOpacity = `${string}/${number}`;
-export type Color = ColorTokenBase | CSSColorNames | TokenWithOpacity;
+export type Color = ColorTokenBase | CSSColorNames | TokenWithOpacity | (string & {});
 export type ColorTokens = Color;
 export type ZIndex = GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number | true;
 export type ZIndexTokens = ZIndex;
@@ -1162,6 +1162,10 @@ export type BorderValue = BorderPreset | (string & {});
 type OutlinePreset = '1px solid' | '1px solid $outlineColor' | '2px dashed $outlineColor' | '1px dotted red' | 'none';
 export type OutlineValue = OutlinePreset | (string & {});
 interface ExtraStyleProps {
+    /**
+     * Text color, or a web-scoped color clause on a View.
+     */
+    color?: ColorStyleProp;
     /**
      * Controls the curve style of rounded corners.
      * - 'circular': Standard circular arc corners (default)
@@ -1282,6 +1286,10 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     overflowY?: Properties['overflowY'];
+    /**
+     * Web-only text wrapping strategy. Will be omitted on native.
+     */
+    textWrap?: Properties['textWrap'];
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * The point at which transforms originate from.

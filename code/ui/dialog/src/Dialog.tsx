@@ -152,10 +152,6 @@ type DialogPortalProps = ScopedProps<
   }
 >
 
-const dialogPortalWebStyles = {
-  color: 'web:inherit',
-} as const
-
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
   alignItems: 'center',
@@ -164,7 +160,7 @@ export const DialogPortalFrame = styled(YStack, {
   inset: 0,
   borderWidth: 'web:0px',
   backgroundColor: 'web:transparent',
-  ...dialogPortalWebStyles,
+  color: 'web:inherit',
   maxInlineSize: 'web:none',
   margin: 'web:0px',
   width: 'web:auto',

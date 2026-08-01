@@ -7,10 +7,6 @@ import * as React from 'react'
 import type { TooltipProps } from './Tooltip'
 import { Tooltip } from './Tooltip'
 
-const balanceTextStyles = {
-  textWrap: 'web:balance',
-} as const
-
 export type TooltipSimpleProps = TooltipProps & {
   disabled?: boolean
   label?: React.ReactNode
@@ -63,6 +59,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
           )}
           transition={['quicker', { opacity: { overshootClamping: true } }]}
           {...contentProps}
+          elevation="0-5"
           animateOnly={['transform', 'opacity']}
         >
           <Tooltip.Arrow />
@@ -70,7 +67,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
             maxWidth={350}
             overflow="hidden"
             textAlign="center"
-            {...balanceTextStyles}
+            textWrap="web:balance"
             size="3"
           >
             {label}

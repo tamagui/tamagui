@@ -1775,6 +1775,9 @@ export type Color =
   | CSSColorNames
   // opacity modifier: token/50
   | TokenWithOpacity
+  // clause-bearing values are intentionally open-ended; the language service
+  // validates the grammar without materializing a combinatorial type union
+  | (string & {})
 
 export type ColorTokens = Color
 
@@ -2155,6 +2158,10 @@ export type OutlineValue = OutlinePreset | (string & {})
 
 interface ExtraStyleProps {
   /**
+   * Text color, or a web-scoped color clause on a View.
+   */
+  color?: ColorStyleProp
+  /**
    * Controls the curve style of rounded corners.
    * - 'circular': Standard circular arc corners (default)
    * - 'continuous': Apple's "squircle" style continuous curve
@@ -2275,6 +2282,10 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   overflowY?: Properties['overflowY']
+  /**
+   * Web-only text wrapping strategy. Will be omitted on native.
+   */
+  textWrap?: Properties['textWrap']
 
   pointerEvents?: ViewProps['pointerEvents']
 

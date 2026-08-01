@@ -114,6 +114,14 @@ function validateDefaultTokens(config: TamaguiInternalConfig) {
   }
 }
 
+function createParsedTokens(tokensIn: CreateTamaguiProps['tokens']): TokensParsed {
+  const parsed: Record<string, any> = createVariables(tokensIn || {})
+  for (const category of ['color', 'space', 'size', 'radius', 'zIndex'] as const) {
+    parsed[category] ||= {}
+  }
+  return parsed as TokensParsed
+}
+
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
@@ -127,8 +135,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   // ensure variables
-  const tokens = createVariables(configIn.tokens || {})
-  const tokensParsed = tokens as unknown as TokensParsed
+  const tokensParsed = createParsedTokens(configIn.tokens)
+  const tokens = tokensParsed
 
   if (configIn.tokens) {
     for (const cat in tokens) {
