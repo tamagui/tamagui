@@ -41,7 +41,7 @@ test('a group parent marker creates the native context its descendant consumes',
   })
 })
 
-test('a container parent marker creates the native context its descendant consumes', async () => {
+test('a container parent marker re-evaluates its descendant after layout changes', async () => {
   const parentProps = preprocessTailwindClassName(
     { testID: 'parent', className: '@container/layout' },
     config
@@ -60,6 +60,15 @@ test('a container parent marker creates the native context its descendant consum
   )
 
   expect(backgroundColor(host(screen, 'child'))).not.toBe('#000')
+  fireEvent(host(screen, 'parent'), 'layout', {
+    nativeEvent: {
+      layout: { width: 1000, height: 100, x: 0, y: 0 },
+    },
+  })
+  await waitFor(() => {
+    expect(backgroundColor(host(screen, 'child'))).not.toBe('#000')
+  })
+
   fireEvent(host(screen, 'parent'), 'layout', {
     nativeEvent: {
       layout: { width: 100, height: 100, x: 0, y: 0 },
