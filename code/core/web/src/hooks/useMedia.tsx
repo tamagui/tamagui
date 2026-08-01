@@ -7,6 +7,7 @@ import { mediaObjectToString } from '../helpers/mediaObjectToString'
 import {
   getMedia,
   mediaKeys,
+  mediaKeysOrdered,
   mediaQueryConfig,
   setMediaState,
 } from '../helpers/mediaState'
@@ -42,8 +43,6 @@ export const getMediaKey = (key: string): IsMediaType => {
 // for SSR capture it at time of startup
 let initState: MediaQueryState
 
-let mediaKeysOrdered: string[]
-
 export const getMediaKeyImportance = (key: string) => {
   if (process.env.NODE_ENV === 'development' && key[0] === '$') {
     throw new Error('use short key')
@@ -74,7 +73,10 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   }
   Object.assign(mediaQueryConfig, media)
   initState = { ...getMedia() }
-  mediaKeysOrdered = Object.keys(media)
+  // in place: the array is shared across copies of this package, so replacing it
+  // would leave the other copies pointing at the old one
+  mediaKeysOrdered.length = 0
+  mediaKeysOrdered.push(...Object.keys(media))
   setupMediaListeners()
 }
 

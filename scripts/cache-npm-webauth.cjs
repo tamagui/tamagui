@@ -1,6 +1,24 @@
 const Module = require('node:module')
 
 const load = Module._load
+let approval
+
+const resetApproval = () => {
+  approval = undefined
+}
+
+const isAuthFailure = (error) => {
+  if (error?.code === 'EOTP') {
+    return true
+  }
+
+  return (
+    error?.code === 'E401' &&
+    /one-time pass|one[- ]time password|two-factor|2fa|otp/i.test(
+      `${error.message || ''}\n${error.body || ''}`
+    )
+  )
+}
 
 Module._load = function (request, parent, isMain) {
   const loaded = load.call(this, request, parent, isMain)
@@ -18,10 +36,20 @@ Module._load = function (request, parent, isMain) {
           const results = await Promise.allSettled(
             pending.map((workspace) => this.exec([workspace]))
           )
-
-          pending = results.flatMap((result, resultIndex) =>
+          const rejected = results.flatMap((result, resultIndex) =>
             result.status === 'rejected' ? [pending[resultIndex]] : []
           )
+
+          if (
+            rejected.length > 0 &&
+            results.some((result) => {
+              return result.status === 'rejected' && isAuthFailure(result.reason)
+            })
+          ) {
+            resetApproval()
+          }
+
+          pending = rejected
         }
 
         failures.push(...pending)
@@ -36,5 +64,22 @@ Module._load = function (request, parent, isMain) {
     }
   }
 
-  return loaded
+  if (request !== 'npm-profile' || typeof loaded.webAuthOpener !== 'function') {
+    return loaded
+  }
+
+  return {
+    ...loaded,
+    webAuthOpener: (...args) => {
+      if (!approval) {
+        approval = Promise.resolve()
+          .then(() => loaded.webAuthOpener(...args))
+          .catch((error) => {
+            resetApproval()
+            throw error
+          })
+      }
+      return approval
+    },
+  }
 }
