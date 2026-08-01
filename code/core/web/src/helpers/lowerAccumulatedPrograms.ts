@@ -179,12 +179,20 @@ export function lowerAccumulatedPrograms(
     if (!lowered) continue
 
     styleState.classNames[program.property] = lowered.className
+    const rules =
+      program.property === 'transition' &&
+      styleState.sawTransitionPreset &&
+      styleState.animationDriver?.outputStyle === 'css'
+        ? lowered.rules.map((rule) =>
+            rule.replace(/(transition:[^;}]+)(})/, '$1 !important$2')
+          )
+        : lowered.rules
     addStyleObject([
       program.property,
       lowered.baseValue,
       lowered.className,
       undefined,
-      lowered.rules,
+      rules,
     ])
 
     // an axis-variable program (x/y/scaleX/scaleY) only sets a custom property;

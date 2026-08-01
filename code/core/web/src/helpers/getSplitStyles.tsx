@@ -591,6 +591,23 @@ export const getSplitStyles: StyleSplitter = (
           }
         }
 
+        const transition =
+          value && typeof value === 'object'
+            ? (value as Record<string, unknown>).transition
+            : undefined
+        if (transition !== undefined) {
+          const isPseudo = key in validPseudoKeys
+          const mediaKey = isPseudo ? false : getMediaKey(key)
+          if (isPseudo || mediaKey === 'group') {
+            const transitionKey =
+              mediaKey === 'group' ? normalizeGroupKey(key, groupContext) : key
+            styleState.pseudoTransitions ||= {}
+            styleState.pseudoTransitions[
+              transitionKey as keyof typeof styleState.pseudoTransitions
+            ] = transition as any
+          }
+        }
+
         for (const contribution of converted.contributions) {
           contributeConvertedProgram(
             styleState,
