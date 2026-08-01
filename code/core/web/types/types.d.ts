@@ -233,7 +233,6 @@ export interface PxValue {
     needsPx: true;
 }
 export type ColorScheme = 'light' | 'dark';
-export type IsMediaType = boolean | 'platform' | 'theme' | 'group';
 export type MaybeTamaguiComponent<A = any> = TamaguiComponent<A> | React.FC<A>;
 type MeasureOnSuccessCallback = (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void;
 type MeasureInWindowOnSuccessCallback = (x: number, y: number, width: number, height: number) => void;
@@ -727,13 +726,6 @@ export interface GenericTamaguiSettings {
      */
     onlyAllowShorthands?: boolean | undefined;
     /**
-     * Accept deprecated pseudo, theme, platform, media, and group condition
-     * objects by converting them to flat value programs.
-     *
-     * @default false
-     */
-    legacyConditionObjects?: boolean;
-    /**
      * Define a default font, for better types and default font on Text
      */
     defaultFont?: string;
@@ -937,31 +929,14 @@ export type MediaQueryObject = {
     [key: string]: string | number | string;
 };
 export type MediaQueryKey = keyof Media;
-type IsAny<A> = 0 extends 1 & A ? true : false;
-type StrictMediaQueryKey = IsAny<MediaQueryKey> extends true ? never : string extends MediaQueryKey ? never : Extract<MediaQueryKey, string>;
-export type MediaPropKeys = Exclude<`$${StrictMediaQueryKey}`, PlatformMediaKeys>;
 export type MediaQueryState = {
     [key in MediaQueryKey]: boolean;
 };
-export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = TK extends string ? string extends TK ? never : TK extends `${string}_${string}` ? never : `$theme-${TK}` : never;
-export type PlatformMediaKeys = `$${AllPlatforms}`;
 export interface TypeOverride {
     groupNames(): 1;
     animationDrivers(): 1;
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
-type StrictGroupNames = IsAny<GroupNames> extends true ? string : Extract<GroupNames, string | number>;
-type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin';
-export type GroupMediaKeys = `$group-${StrictGroupNames}` | `$group-${StrictGroupNames}-${ParentMediaStates}` | `$group-${StrictGroupNames}-${StrictMediaQueryKey}` | `$group-${StrictGroupNames}-${StrictMediaQueryKey}-${ParentMediaStates}` | `$group-${ParentMediaStates}` | `$group-${StrictMediaQueryKey}` | `$group-${StrictMediaQueryKey}-${ParentMediaStates}`;
-export type WithMediaProps<A> = {
-    [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends `$web` ? AddWebOnlyStyleProps<A> & {
-        [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A>;
-    } : Key extends MediaPropKeys ? A & {
-        [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>;
-    } : A & {
-        [Key in MediaPropKeys]?: A;
-    };
-};
 export type AddWebOnlyStyleProps<A> = Partial<Omit<CSSProperties, keyof WebOnlyValidStyleValues>> & Partial<WebOnlyValidStyleValues> & {
     [K in Exclude<keyof A, keyof CSSProperties>]?: A[K];
 };
@@ -1148,38 +1123,9 @@ type ShorthandLonghandProps = 'borderWidth' | 'borderStyle' | 'borderColor' | 'o
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
-export type PseudoStyleWithTransition<A> = A & {
-    transition?: TransitionProp | null;
-};
-export type WithPseudoProps<A> = {
-    hoverStyle?: PseudoStyleWithTransition<A> | null;
-    pressStyle?: PseudoStyleWithTransition<A> | null;
-    focusStyle?: PseudoStyleWithTransition<A> | null;
-    focusWithinStyle?: PseudoStyleWithTransition<A> | null;
-    focusVisibleStyle?: PseudoStyleWithTransition<A> | null;
-    disabledStyle?: PseudoStyleWithTransition<A> | null;
-    exitStyle?: PseudoStyleWithTransition<A> | null;
-    enterStyle?: PseudoStyleWithTransition<A> | null;
-};
-export type PseudoTransitions = Partial<Record<keyof WithPseudoProps<any>, TransitionProp | null>> & {
-    [key: `$group-${string}-${'hover' | 'press' | 'focus'}`]: TransitionProp | null | undefined;
-};
-export type PseudoPropKeys = keyof WithPseudoProps<any>;
-export type PseudoStyles = {
-    hoverStyle?: ViewStyle;
-    pressStyle?: ViewStyle;
-    focusStyle?: ViewStyle;
-    focusWithinStyle?: ViewStyle;
-    focusVisibleStyle?: ViewStyle;
-    disabledStyle?: ViewStyle;
-    enterStyle?: ViewStyle;
-    exitStyle?: ViewStyle;
-};
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios' | 'tv' | 'androidtv' | 'tvos';
 type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true ? Omit<A, ShorthandLonghandProps> : A;
 export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>;
-export type WithThemeShorthandsAndPseudos<A extends object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
-export type WithThemeShorthandsPseudosMedia<A extends object, Variants = {}> = WithThemeShorthandsAndPseudos<A, Variants> & WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>;
 /**
  * Base style-only props (no media, pseudo):
  */
@@ -1650,11 +1596,11 @@ type LooseCombinedObjects<A extends object, B extends object> = A | B | (A & B);
 export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
+export type StackStyle = WithThemeAndShorthands<StackStyleBase>;
 export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
+export type TextStyle = WithThemeAndShorthands<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
@@ -1667,7 +1613,7 @@ export type StyledHOCOptions = {
     staticConfig?: Partial<StaticConfig>;
 };
 export type StyledHOCFactory<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties> = <CustomProps extends object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends (props: MergedProps, ref?: ReactRef<Ref>) => ReactNode = (props: MergedProps, ref?: ReactRef<Ref>) => ReactNode>(a: FunctionDef, options?: StyledHOCOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
-export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {});
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeAndShorthands<StylePropsBase, Variants> : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends object = {}, Variants = {}, ParentStaticProperties = {}> = FunctionComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & {
     ref?: ReactRef<Ref>;
 }> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig'> & {
@@ -1678,7 +1624,7 @@ export type InferStyledProps<A extends StylableComponent, B extends StaticConfig
     __tama: any;
 } ? GetProps<A> : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>, {}>;
 /** Like InferStyledProps but returns only style props (no non-styled props or variants). */
-export type InferStyleProps<A extends StylableComponent, B extends StaticConfigPublic> = WithThemeShorthandsPseudosMedia<GetBaseStyles<A, B>, {}>;
+export type InferStyleProps<A extends StylableComponent, B extends StaticConfigPublic> = WithThemeAndShorthands<GetBaseStyles<A, B>, {}>;
 export type GetProps<A extends StylableComponent> = A extends {
     __tama: [
         infer Props,
@@ -1745,7 +1691,6 @@ export type GetStyleState = {
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
     tokenProvenance?: Record<string, string>;
-    pseudoTransitions?: PseudoTransitions | null;
     animationDriver?: AnimationDriver | null;
     transitionContributions?: import('@tamagui/style-grammar').TransitionContribution[];
     sawTransitionPreset?: string;
@@ -1863,14 +1808,7 @@ type StaticConfigBase = StaticConfigPublic & {
 export type StaticConfig = StaticConfigBase & {
     parentStaticConfig?: StaticConfigBase;
 };
-export type ViewStyleWithPseudos = TextStyle | (TextStyle & {
-    hoverStyle?: TextStyle;
-    pressStyle?: TextStyle;
-    focusStyle?: TextStyle;
-    focusWithinStyle?: TextStyle;
-    focusVisibleStyle?: TextStyle;
-    disabledStyle?: TextStyle;
-});
+export type ViewStyleObject = TextStyle;
 /**
  * --------------------------------------------
  *   variants
@@ -1901,7 +1839,7 @@ export type GetVariantProps<A extends StylableComponent, IsText extends boolean 
         infer VariantProps,
         any
     ];
-} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeShorthandsPseudosMedia<IsText extends true ? TextStylePropsBase : StackStyleBase>;
+} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeAndShorthands<IsText extends true ? TextStylePropsBase : StackStyleBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | {
         [Key in string | number | 'true' | 'false']?: MyProps | VariantSpreadFunction<MyProps, Val> | StaticStyleInput;
@@ -2044,7 +1982,6 @@ export type UseAnimationHook = (props: {
     useStyleEmitter?: UseStyleEmitter;
     theme: ThemeParsed;
     themeName: string;
-    pseudos: WithPseudoProps<ViewStyle> | null;
     stateRef: {
         current: TamaguiComponentStateRef;
     };
@@ -2058,7 +1995,6 @@ export type UseAnimationHook = (props: {
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = Record<string, StyleObject>;
 export type GetStyleResult = {
-    pseudos?: PseudoStyles | null;
     style: ViewStyle | null;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;
@@ -2066,11 +2002,9 @@ export type GetStyleResult = {
     fontFamily: string | undefined;
     space?: any;
     hasMedia: boolean | Set<string>;
-    dynamicThemeAccess?: boolean;
     pseudoGroups?: Set<string>;
     mediaGroups?: Set<string>;
     overriddenContextProps?: Record<string, any>;
-    pseudoTransitions?: PseudoTransitions | null;
     programStates?: Set<string>;
     usesSafeArea?: true;
     effectiveTransition?: TransitionProp | null;

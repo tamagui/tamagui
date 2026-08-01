@@ -975,16 +975,6 @@ export declare const stylePropsAll: {
     font: boolean;
     verticalAlign: boolean;
 };
-export declare const validPseudoKeys: {
-    enterStyle: boolean;
-    exitStyle: boolean;
-    hoverStyle: boolean;
-    pressStyle: boolean;
-    focusStyle: boolean;
-    disabledStyle: boolean;
-    focusWithinStyle: boolean;
-    focusVisibleStyle?: boolean | undefined;
-};
 export declare const validStyles: {
     borderRadius: boolean;
     borderTopLeftRadius: boolean;

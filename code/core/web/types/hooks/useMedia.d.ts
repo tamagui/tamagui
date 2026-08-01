@@ -1,5 +1,4 @@
-import type { ComponentContextI, DebugProp, GetStyleState, TamaguiInternalConfig, UseMediaState, WidthHeight } from '../types';
-export declare const getMediaKeyImportance: (key: string) => number;
+import type { ComponentContextI, DebugProp, TamaguiInternalConfig, UseMediaState, WidthHeight } from '../types';
 export declare const configureMedia: (config: TamaguiInternalConfig) => void;
 export declare function setupMediaListeners(): void;
 export declare function updateMediaListeners(): void;
@@ -11,7 +10,6 @@ export declare function setMediaShouldUpdate(ref: any, enabled?: boolean, keys?:
 export declare function useMedia(componentContext?: ComponentContextI, debug?: DebugProp): UseMediaState;
 export declare function _disableMediaTouch(val: boolean): void;
 export declare function getMediaState(mediaGroups: Set<string>, layout: WidthHeight): Record<string, boolean>;
-export declare const getMediaImportanceIfMoreImportant: (mediaKey: string, key: string, styleState: GetStyleState, isSizeMedia: boolean) => number | null;
 export declare function mediaKeyToQuery(key: string): string;
 export declare function mediaKeyMatch(key: string, dimensions: {
     width: number;

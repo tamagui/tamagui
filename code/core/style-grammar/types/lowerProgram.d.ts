@@ -16,9 +16,7 @@ export interface ConditionSelector {
 	media?: string;
 }
 /**
-* Interaction-state selector spellings, mirroring
-* `code/core/web/src/helpers/pseudoDescriptors.ts` and the two special cases in
-* `getCSSStylesAtomic.createAtomicRules`: `disabled` is an attribute rather than
+* Interaction-state selector spellings: `disabled` is an attribute rather than
 * `:disabled`, and enter matches the unmounted class on the subject or above it.
 * Mirrored as data instead of imported because this package must not depend on
 * @tamagui/web.

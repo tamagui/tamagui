@@ -6,8 +6,6 @@
  * are merging defaultProps, givenProps, but we started using it elsewhere and now its a bit confusing
  * Should look into refactoring this to match common usage
  *
- * Merges pseudo sub-objects.
- *
  *    Given:
  *      mergeProps({ a: 1, b: 2 }, { b: 1, a: 2 })
  *    The final key order will be:
