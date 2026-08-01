@@ -12,8 +12,8 @@ Reproduce everything below from `/private/tmp/claude-501/-Users-n8--worktrees-ta
 (session scratch, so copy it out if you need it to survive; the generators are
 self-contained and only read this worktree). Generators `vocab.gen.ts`,
 `fixture.gen.ts`, `scaling.gen.ts`, `flat.gen.ts`, `validator.gen.ts`,
-`realistic.gen.ts`; harnesses `measure.sh`, `tsserver-probe.mjs`,
-`ls-probe.mjs`.
+`realistic.gen.ts`, `matrix.gen.ts`, `bgcost.gen.ts`; harnesses `measure.sh`,
+`tsserver-probe.mjs`, `ls-probe.mjs`, `typeshape.mjs`, `settle.mjs`.
 
 ## The vocabulary, measured against the real default config
 
@@ -130,9 +130,43 @@ The compute is cheap at every size. The payload is what an editor pays, once per
 completion request, and 8.2MB per keystroke is the wall. Any envelope claim has
 to be stated against the round trip, not the checker call.
 
-Fable's "no measurable cost at 2,000 classes across 300 sites" is the
-**matching** column above. Once the fixture uses realistic multi-class strings
-the same union is 0.75ms/site, which at 300 sites is +0.22s on a 0.47s baseline.
+### The gap depends on the syntactic shape, which is why it did not reproduce
+
+a2662 measured the same member versus non-member comparison in a plain call
+argument (`Box({ className: '...' })`) at a 3,842 union and saw no gap. That
+result is correct and so is mine. Holding the union (53,788) and the strings
+fixed and varying only the shape, 1,000 sites, tsc check time:
+
+| shape | member | multi-class | non-member single token |
+| --- | --- | --- | --- |
+| `const x: ClassName = '…'` | 0.08s | 4.14s | 4.00s |
+| `Box({ className: '…' })` | 2.46s | 6.45s | 6.34s |
+| `<View className={'…'} />` | 0.54s | **10.76s** | **12.19s** |
+| `<View className="…" />` | 2.80s | 12.50s | 14.88s |
+
+Two things follow. The trigger is **non-membership, not multi-token-ness**: a
+single token that is not in the union costs the same as a three-class string.
+And JSX attributes, which is how className is actually written, are the worst
+shape by a wide margin.
+
+Sweeping a2662's own harness over union size (`settle.mjs`, their `universe()`,
+their call shape, 1,000 sites, total program ms) shows where it turns on:
+
+| union | member | multi-class | non-member single |
+| --- | --- | --- | --- |
+| 3,842 | 623 | 563 | 506 |
+| 20,000 | 1,491 | 1,776 | 1,743 |
+| 53,788 | 3,381 | 4,129 | 4,016 |
+| 80,000 | 4,761 | 7,756 | 6,991 |
+
+So at 3,842 in a call argument there is genuinely no gap, which is the exact
+corner that harness measured. It appears above ~20,000 there, and it appears at
+3,842 in JSX (0.14s versus 0.81s, the scaling table above).
+
+One measurement trap worth recording: running that harness from the tamagui
+worktree pulls the repo's `@types/**` into every program, which pushes the
+baseline to ~4.5s with 124 unrelated errors and buries the signal completely.
+`types: []` is required for any of these numbers to mean anything.
 
 ## The conditional-type validator: real, cheap, and no autocomplete
 
@@ -215,14 +249,78 @@ config:
 | `bg=""` | **216** | **0** |
 | `ColorTokens` directly | 1,098 | 950 |
 
-`bg` returns csstype's CSS color keyword set (`Window`, `WindowFrame`,
-`currentColor`) with no theme tokens, while its own longhand returns 950 tokens.
-The space shorthand `p` is fine, so this is specific to the color chain, not to
-shorthands in general. Neither prop validates: `<View bg="$nope-not-a-token" />`
-and `<View backgroundColor="$nope-not-a-token" />` both typecheck today, which is
+Neither prop validates: `<View bg="$nope-not-a-token" />` and
+`<View backgroundColor="$nope-not-a-token" />` both typecheck today, which is
 `(string & {})` working as designed.
 
-Repro: `realistic/r3-core-today/` in the scratch dir.
+### Why `bg` has no tokens
+
+Not a bug in the shorthand chain. v6 deliberately remaps it:
+`code/core/shorthands/src/v6.ts:10` is `bg: 'background'`, where v4 and v5 were
+`bg: 'backgroundColor'`. That is the flat-value background family doing its job,
+since `bg="url(x.png) $color1"` has to reach `backgroundImage` too.
+
+The gap is that `background` never got a theme-aware value type to go with the
+remap. It is declared `background?: Properties['background']`
+(`code/core/web/src/types.tsx:2382`, in `interface ExtraStyleProps`) and
+`'background'` is absent from `ColorKeys` (`types.tsx:37-53`), so
+`ThemeValueGet<'background'>` is `never` and `WithThemeValues` takes its
+no-theme branch. Inspecting the contextual type of the JSX attribute directly
+(`typeshape.mjs`, which reads `checker.getContextualType`):
+
+| attribute | union constituents | string literals |
+| --- | --- | --- |
+| `<View backgroundColor="">` | 1,112 | 1,101 |
+| `<Text color="">` | 1,112 | 1,101 |
+| `<View bg="">` | **220** | **216** |
+
+The 216 are `Properties['background']` keywords (`Window`, `WindowFrame`,
+`round`, `center`), which is the CSS `background` shorthand's own value set, so
+the symptom is exactly what the remap implies.
+
+Two other props read as broken and are not. `<View width="">` and
+`<View borderRadius="">` return 0 completions because under v6 they are not
+props at all (`Property 'width' does not exist`), which is `onlyAllowShorthands`
+behaving as configured. `<View color="">` returns 0 for the same reason; `color`
+on `Text` is healthy at 1,101 literals.
+
+Repro: `realistic/r3-core-today/` and `realistic/r4-bg-proposal/` in the scratch
+dir.
+
+### The fix, prototyped and measured
+
+Give `background` a color-aware type that keeps its CSS shorthand arm:
+
+```ts
+// code/core/web/src/types.tsx:2382
+background?: ColorTokens | Properties['background']
+```
+
+Measured by shadowing that prop onto the real component so the real config's
+token union is exercised, 1,000 `bg={'$token'}` sites:
+
+| `bg` type | completions | of which tokens | tsc check |
+| --- | --- | --- | --- |
+| `Properties['background']` (today) | 216 | 0 | 0.46s |
+| `ColorTokens \| Properties['background']` | **1,166** | **950** | **0.36s** |
+
+It is free, and slightly faster: with the tokens in the union a `$token` value
+now hits the literal-to-union fast path instead of scanning past
+`Properties['background']`. `no-repeat center` and `url(x.png) $color1` both
+still typecheck.
+
+Do not do this by adding `'background'` to `ColorKeys`. That routes it through
+`GetThemeValueForKey`, whose `Exclude<T[K], string>` erases the CSS shorthand
+arm, so you would trade the position and repeat keywords away to get the tokens.
+
+One trap found while prototyping: `ColorTokens | ThemeValueFallbackColor` used
+directly collapses to a single non-union constituent and returns **0**
+completions. The real prop types are not affected (they compose it inside
+`WithThemeValues`, and `backgroundColor` measures healthy above), but it makes
+that alias a bad thing to hand-write into a prop type.
+
+Applying this needs a source edit plus a `@tamagui/web` types rebuild, so it is
+prototyped here and not landed.
 
 ## The integration surface, if it were done anyway
 
@@ -285,10 +383,10 @@ is affordable and it is a real gain over today.
 
 Two concrete follow-ups, in priority order:
 
-1. Fix `bg` losing its 950 token completions while `backgroundColor` keeps them.
-   Users get less autocomplete for using the shorthand the docs recommend. This
-   is worth more than anything else in this document and costs nothing in type
-   performance.
+1. Give `background` a color-aware value type so `bg` regains theme tokens
+   (`ColorTokens | Properties['background']`, prototyped above). Users get less
+   autocomplete for using the shorthand the docs recommend. It is worth more
+   than anything else in this document and it measures free.
 2. If clause-level completion in Tamagui mode is wanted, add
    `` `${StateModifier}:${Token}` `` to the color and space categories only, and
    hold the line there. Media (14) and theme (294) modifiers multiply the same
