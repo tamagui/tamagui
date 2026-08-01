@@ -168,13 +168,31 @@ the numbers above are `getCompletionsAtPosition` called in-process. Over the
 real tsserver round trip a 40,000-entry response is an 8.2MB payload taking
 ~880ms. At 3,842 entries it is 519KB and 13-25ms, which is fine.
 
-One claim did not reproduce and is recorded as unsettled: that non-member
-multi-class values miss the literal-to-union fast path and cost dramatically
-more (reported 0.59s vs 10.50s at a 53,788 union). An independent run at 1,000
-sites showed no such gap — 526ms for member values vs 506ms for multi-class at
-3,842, and 1,255ms vs 1,358ms at 20,000. The disagreement is probably down to
-template-literal arms in the union under test. It does not change the
-conclusion, which rests on the replacement-span result.
+### The cost gap is real but shape-dependent
+
+Two measurements initially disagreed about whether values that are *not* members
+of the union cost dramatically more. Both were right; the variable is the
+syntactic shape of the usage site. Holding the union (53,788) and the strings
+fixed and varying only the shape, 1,000 sites:
+
+| shape | member | non-member |
+|---|---|---|
+| `const x: ClassName = '…'` | 0.08s | 4.14s |
+| `Box({ className: '…' })` | 2.46s | 6.45s |
+| `<View className={'…'} />` | 0.54s | 10.76s |
+| `<View className="…" />` | 2.80s | 12.50s |
+
+Two things follow. The trigger is **non-membership, not multi-token-ness** — a
+single unknown token costs the same as a three-class string. And **JSX
+attributes are by far the worst shape**, which is exactly how `className` is
+written in practice. A call-argument shape at a 3,842 union shows no gap at all
+(which is why one harness saw none); the gap turns on above roughly 20,000
+there, but is already present at 3,842 in JSX.
+
+A harness trap worth recording: running this from the repo worktree makes
+`ts.createCompilerHost` pull the repo's `@types/**` into every program, which
+inflates the baseline to ~4.5s with 124 unrelated errors and destroys the
+signal. `types: []` is mandatory.
 
 ### Conclusion: leave `className` as `string`, spend it on flat props
 
@@ -202,12 +220,60 @@ were ever routed through `T[K]` instead of alongside it.
 
 ### A real autocomplete bug found on the way
 
-With the v3 config, `backgroundColor=""` offers 1,101 completions including 950
-tokens, but the `bg` shorthand offers 216 with **zero** tokens — it falls back to
-csstype's CSS color keywords (`currentColor`, `Window`, `WindowFrame`). `p=""` is
-fine at 501. So it is the color chain specifically, and users get worse
-autocomplete for using the shorthand the docs recommend. Fixing it costs nothing
-in type performance.
+Read straight off `checker.getContextualType` at the JSX attribute:
+`<View backgroundColor="">` offers 1,112 constituents with 1,101 string
+literals, `<Text color="">` the same — but `<View bg="">` offers 220 with
+**zero tokens**, returning `Properties['background']` CSS keywords like
+`currentColor` and `WindowFrame`. Users get worse autocomplete for using the
+shorthand the docs recommend.
+
+The cause is not the color chain. V6 deliberately remaps the shorthand:
+`code/core/shorthands/src/v6.ts` has `bg: 'background'` where V4/V5 had
+`bg: 'backgroundColor'`, which is correct — the flat-value background family
+needs `bg="url(x.png) $color1"` to reach `backgroundImage`. What is missing is
+that `background` never got a theme-aware value type to match the remap. It is
+`background?: Properties['background']` in `ExtraStyleProps`
+(`code/core/web/src/types.tsx`), and `'background'` is absent from `ColorKeys`,
+so `ThemeValueGet<'background'>` is `never` and `WithThemeValues` takes the
+no-theme branch.
+
+The fix, prototyped and measured against the real config over 1,000
+`bg={'$token'}` sites:
+
+```ts
+background?: ColorTokens | Properties['background']
+```
+
+216 completions with 0 tokens becomes 1,166 with 950, and check time *drops*
+from 0.46s to 0.36s — with tokens in the union a `$token` value hits the
+literal-to-union fast path instead of scanning past `Properties['background']`.
+`no-repeat center` and `url(x.png) $color1` both still typecheck.
+
+Two traps to respect when implementing it. Do **not** add `'background'` to
+`ColorKeys`: that routes it through `GetThemeValueForKey`, whose
+`Exclude<T[K], string>` erases the CSS shorthand arm, trading the
+position/repeat keywords away to get the tokens. And `ColorTokens |
+ThemeValueFallbackColor` written directly into a prop type collapses to one
+non-union constituent and returns zero completions — the real props are fine
+because they compose it inside `WithThemeValues`, but that alias must never be
+hand-written into a prop type.
+
+Two earlier claims are retracted: `color`, `width` and `borderRadius` are not
+broken. `width` and `borderRadius` are simply not props under V6's
+`onlyAllowShorthands`, and `color` on `Text` is healthy at 1,101.
+
+### A related type/runtime gap, fixed
+
+`TransitionProp` admitted only `TransitionKeys` — the union of *configured
+driver preset names* — while the runtime deliberately accepts raw CSS
+transition strings, which is the headline V3 transition feature. The public
+type was strictly narrower than the runtime. Landed as `a1e2671de6`:
+`TransitionValue = TransitionKeys | (string & {})`, so `transition="200ms"` and
+`transition="200ms hover:400ms"` typecheck while preset names stay in
+autocomplete. Note that in an unaugmented config `TransitionKeys` already
+widens to `string`, so this only bites where a real config narrows it — I did
+not reproduce the originally reported TS2322, and the change is recorded as
+making the runtime contract explicit rather than as fixing a reproduced failure.
 
 ## Reproducing
 
