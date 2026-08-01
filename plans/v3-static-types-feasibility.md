@@ -357,13 +357,37 @@ literals, and how many of those are `$`-prefixed tokens.
 $ node scripts/inspect-style-prop-types.mjs probe.tsx bg,backgroundColor --expect-tokens
 View.bg                 constituents= 1171  stringLiterals= 1166  tokens= 950  templates=1
 View.backgroundColor    constituents= 1112  stringLiterals= 1101  tokens= 950  templates=2
-OK: every inspected attribute carries theme token literals
+OK: every inspected attribute carries theme token literals (config augmentation: 26 members)
 ```
 
-`--expect-tokens` exits 1 when an inspected attribute has no token literals.
-Verified in both directions: it exits 0 against the current build and exits 1
-against the pre-`53fe77bd9a` shape (`bg?: Properties['background']`, 219
-constituents, 216 string literals, 0 tokens).
+**The probe file must import the app's tamagui config.** Token unions come from
+the `TamaguiCustomConfig` augmentation, so a probe that only imports components
+reads as zero tokens on every prop, which is byte-for-byte what the real
+regression looks like. The script checks `TamaguiCustomConfig` for members
+before it asserts anything about tokens, and separates the two outcomes:
+
+| exit | meaning |
+| --- | --- |
+| 0 | every inspected attribute carries token literals |
+| 1 | token regression, in a program that is genuinely augmented |
+| 2 | usage error (bad args, no tsconfig, no matching attributes) |
+| 3 | the probe is not usable, so the run proves nothing |
+
+Verified in all four directions against the real build, not by reasoning:
+
+- correct probe, current build: exit 0, 950 tokens on `bg`, `backgroundColor`
+  and `Text.color`
+- pre-`53fe77bd9a` shape (`bg?: Properties['background']`) with the config
+  imported: **exit 1**, 219 constituents, 216 string literals, 0 tokens
+- probe missing the config import: **exit 3**, reporting the missing
+  augmentation, not a token regression. This reproduces the false alarm exactly
+  (`View.bg no contextual type`, `backgroundColor` 160 constituents / 0 tokens)
+- attribute that is not a prop of the component (`<View width="">`): **exit 3**,
+  reporting a broken probe
+
+The 1-versus-3 split is the point. A guard that cries wolf on a misplaced probe
+gets muted by the third person who hits it, and a muted guard is worse than no
+guard.
 
 Promote it into a vitest case when `ColorKeys` (`types.tsx:37-53`), the
 `ExtraStyleProps` web-only style props, or the shorthand-to-longhand map start
