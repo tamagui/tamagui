@@ -1457,6 +1457,17 @@ export const Fixture = () => (
     expect(output).toContain('two()')
   })
 
+  test('write mode discovers custom media names from the migration corpus', () => {
+    const output = runWrite(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View display="flex" $gtSmall={{ display: 'none' }} />
+)
+`)
+
+    expect(output).toContain('display="flex gtSmall:none"')
+    expect(output).not.toContain('$gtSmall')
+  })
+
   test('an input that matches no file exits nonzero and writes no report', () => {
     const result = runRaw([join(tmpdir(), 'flat-values-does-not-exist.tsx')])
 

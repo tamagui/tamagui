@@ -93,6 +93,29 @@ function themeNames(sourceFiles: readonly SourceFile[]): Set<string> {
   return names
 }
 
+/**
+ * Configs may name media queries freely. Any otherwise-unreserved `$name`
+ * condition in the migration corpus is therefore a media name; the codemod
+ * must not require each app's config to be imported and executed.
+ */
+function mediaNames(sourceFiles: readonly SourceFile[]): Set<string> {
+  const names = new Set(codemodMediaNames)
+  for (const sourceFile of sourceFiles) {
+    for (const name of conditionNames(sourceFile)) {
+      if (!name.startsWith('$')) continue
+      if (
+        name.startsWith('$theme-') ||
+        name.startsWith('$platform-') ||
+        name.startsWith('$group-')
+      ) {
+        continue
+      }
+      names.add(name.slice(1))
+    }
+  }
+  return names
+}
+
 function conditionNames(sourceFile: SourceFile): string[] {
   const names: string[] = []
   for (const attribute of sourceFile.getDescendantsOfKind(SyntaxKind.JsxAttribute)) {
@@ -359,7 +382,7 @@ const originals = new Map(
   sourceFiles.map((sourceFile) => [sourceFile.getFilePath(), sourceFile.getFullText()])
 )
 const modifierRegistry = createModifierRegistry({
-  mediaNames: codemodMediaNames,
+  mediaNames: mediaNames(sourceFiles),
   themeNames: themeNames(sourceFiles),
 })
 const provenance = createProvenance()
