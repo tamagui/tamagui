@@ -438,7 +438,9 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
         <DialogOverlayFrame
           key={`${context.contentId}-overlay`}
           data-state={getState(context.open)}
-          pointerEvents={context.open ? 'auto' : 'none'}
+          // Presence freezes the exiting clone with its open props. The exit
+          // clause releases the full-screen overlay during that frozen frame.
+          pointerEvents={context.open ? 'auto exit:none' : 'none'}
           {...overlayProps}
           ref={forwardedRef}
         />
