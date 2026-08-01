@@ -1,17 +1,17 @@
 import type { Variable } from '@tamagui/web';
 export declare const size: {
     0: number;
-    '0.25': number;
-    '0.5': number;
-    '0.75': number;
+    '0-25': number;
+    '0-5': number;
+    '0-75': number;
     1: number;
-    '1.5': number;
+    '1-5': number;
     2: number;
-    '2.5': number;
+    '2-5': number;
     3: number;
-    '3.5': number;
+    '3-5': number;
     4: number;
-    '4.5': number;
+    '4-5': number;
     5: number;
     6: number;
     7: number;
@@ -879,11 +879,11 @@ export declare const tokens: {
     space: {};
     size: {
         0: Variable<number>;
-        0.25: Variable<number>;
-        0.5: Variable<number>;
-        0.75: Variable<number>;
+        "0-25": Variable<number>;
+        "0-5": Variable<number>;
+        "0-75": Variable<number>;
         1: Variable<number>;
-        1.5: Variable<number>;
+        "1-5": Variable<number>;
         10: Variable<number>;
         11: Variable<number>;
         12: Variable<number>;
@@ -895,12 +895,12 @@ export declare const tokens: {
         18: Variable<number>;
         19: Variable<number>;
         2: Variable<number>;
-        2.5: Variable<number>;
+        "2-5": Variable<number>;
         20: Variable<number>;
         3: Variable<number>;
-        3.5: Variable<number>;
+        "3-5": Variable<number>;
         4: Variable<number>;
-        4.5: Variable<number>;
+        "4-5": Variable<number>;
         5: Variable<number>;
         6: Variable<number>;
         7: Variable<number>;
@@ -1151,11 +1151,11 @@ export declare const tokens: {
     space: {};
     size: {
         0: Variable<number>;
-        0.25: Variable<number>;
-        0.5: Variable<number>;
-        0.75: Variable<number>;
+        "0-25": Variable<number>;
+        "0-5": Variable<number>;
+        "0-75": Variable<number>;
         1: Variable<number>;
-        1.5: Variable<number>;
+        "1-5": Variable<number>;
         10: Variable<number>;
         11: Variable<number>;
         12: Variable<number>;
@@ -1167,12 +1167,12 @@ export declare const tokens: {
         18: Variable<number>;
         19: Variable<number>;
         2: Variable<number>;
-        2.5: Variable<number>;
+        "2-5": Variable<number>;
         20: Variable<number>;
         3: Variable<number>;
-        3.5: Variable<number>;
+        "3-5": Variable<number>;
         4: Variable<number>;
-        4.5: Variable<number>;
+        "4-5": Variable<number>;
         5: Variable<number>;
         6: Variable<number>;
         7: Variable<number>;

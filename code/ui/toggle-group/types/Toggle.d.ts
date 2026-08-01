@@ -17,34 +17,6 @@ export declare const ToggleFrame: React.FunctionComponent<Omit<import("@tamagui/
             readonly activeStyle: 'style';
         };
     }>> | undefined;
-}>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
-    readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
-        accept: {
-            readonly activeStyle: 'style';
-        };
-    }>> | undefined;
-}> & {
-    active?: boolean | undefined;
-    color?: string | undefined;
-    defaultActiveStyle?: boolean | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
-    readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
-        accept: {
-            readonly activeStyle: 'style';
-        };
-    }>> | undefined;
-}>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase & {
-    readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
-        accept: {
-            readonly activeStyle: 'style';
-        };
-    }>> | undefined;
-}, {
-    active?: boolean | undefined;
-    color?: string | undefined;
-    defaultActiveStyle?: boolean | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
 }>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase & {

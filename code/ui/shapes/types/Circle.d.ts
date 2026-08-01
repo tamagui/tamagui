@@ -4,17 +4,7 @@ export declare const Circle: import("react").FunctionComponent<Omit<import("@tam
     elevation?: number | import("@tamagui/web").Size | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
     transparent?: boolean | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    circular?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    transparent?: boolean | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-    circular?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    transparent?: boolean | undefined;
-}>> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
     ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;

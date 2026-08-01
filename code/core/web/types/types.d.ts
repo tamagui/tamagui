@@ -572,7 +572,7 @@ export type VariablesProps = {
 };
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
-    [Key in keyof Required<Tokens>]: TokenifyRecord<Tokens[Key]>;
+    [Key in keyof Required<Tokens>]: TokenifyRecord<NonNullable<Tokens[Key]>>;
 };
 export type Shorthands = TamaguiConfig['shorthands'];
 export type Media = TamaguiConfig['media'];

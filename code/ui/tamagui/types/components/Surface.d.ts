@@ -6,21 +6,7 @@ export declare const SurfaceFrame: import("react").FunctionComponent<Omit<import
     interactive?: boolean | undefined;
     outlined?: boolean | undefined;
     rounded?: boolean | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevated?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    filled?: boolean | undefined;
-    interactive?: boolean | undefined;
-    outlined?: boolean | undefined;
-    rounded?: boolean | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-    elevated?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    filled?: boolean | undefined;
-    interactive?: boolean | undefined;
-    outlined?: boolean | undefined;
-    rounded?: boolean | undefined;
-}>> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
     ref?: import("react").Ref<import("@tamagui/ui").TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevated?: boolean | undefined;
@@ -50,21 +36,7 @@ export declare const Surface: import("react").ForwardRefExoticComponent<Omit<imp
     interactive?: boolean | undefined;
     outlined?: boolean | undefined;
     rounded?: boolean | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-    elevated?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    filled?: boolean | undefined;
-    interactive?: boolean | undefined;
-    outlined?: boolean | undefined;
-    rounded?: boolean | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-    elevated?: boolean | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
-    filled?: boolean | undefined;
-    interactive?: boolean | undefined;
-    outlined?: boolean | undefined;
-    rounded?: boolean | undefined;
-}>> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
     /** shift the subtree to a surface sub-theme (surface1-3). */
     level?: 1 | 2 | 3;
 } & import("react").RefAttributes<any>>;

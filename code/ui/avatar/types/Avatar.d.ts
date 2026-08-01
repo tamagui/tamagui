@@ -10,11 +10,7 @@ type AvatarImageProps = Partial<ImageProps> & {
 declare const AvatarImage: import("@tamagui/core").RefComponent<TamaguiElement, AvatarImageProps>;
 export declare const AvatarFallbackFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/core").Size | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    elevation?: number | import("@tamagui/core").Size | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").Size | undefined;
-}>> & {
+} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").Size | undefined;
@@ -44,17 +40,7 @@ export declare const AvatarFrame: React.FunctionComponent<Omit<import("@tamagui/
     elevation?: number | import("@tamagui/core").Size | undefined;
     size?: number | import("@tamagui/core").Size | undefined;
     transparent?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    circular?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").Size | undefined;
-    size?: number | import("@tamagui/core").Size | undefined;
-    transparent?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    circular?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").Size | undefined;
-    size?: number | import("@tamagui/core").Size | undefined;
-    transparent?: boolean | undefined;
-}>> & {
+} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & {
     ref?: React.Ref<TamaguiElement> | undefined;
 }> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     circular?: boolean | undefined;
@@ -82,12 +68,12 @@ type AvatarProps = GetProps<typeof AvatarFrame>;
  *
  * @example
  * ```tsx
- * <Avatar circular size="$10">
+ * <Avatar circular size="10">
  *  <Avatar.Image
  *    aria-label="Cam"
  *    src="https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80"
  *  />
- *  <Avatar.Fallback backgroundColor="$blue10" />
+ *  <Avatar.Fallback backgroundColor="blue10" />
  * </Avatar>
  * ```
  */
@@ -96,17 +82,7 @@ declare const Avatar: ((props: Omit<import("@tamagui/core").RNTamaguiViewNonStyl
     elevation?: number | import("@tamagui/core").Size | undefined;
     size?: number | import("@tamagui/core").Size | undefined;
     transparent?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    circular?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").Size | undefined;
-    size?: number | import("@tamagui/core").Size | undefined;
-    transparent?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    circular?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").Size | undefined;
-    size?: number | import("@tamagui/core").Size | undefined;
-    transparent?: boolean | undefined;
-}>> & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
+} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
