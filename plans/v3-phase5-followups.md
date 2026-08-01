@@ -10,6 +10,52 @@ install and root build, then run the same command there. Both arms on the same
 branch cannot discriminate a regression, so the branch is the independent
 variable.
 
+## Branch consolidation onto v3-beta (2026-08-01)
+
+Per decision 7 in `plans/v3-beta-campaign-plan.md`, everything lands on
+`v3-beta`. Seventeen v3 branches were outstanding when that started. The single
+fact that explains most of them: **this repo only allows squash merges**, so a
+merged branch is never an ancestor of its target. `git merge-base --is-ancestor`
+therefore reports merged work as unmerged, and reading that as "seventeen
+branches of lost work" is wrong. Check the PR record first.
+
+Merged content, branch already deleted. The PR is the recoverable record:
+
+| branch | tip | how it landed |
+| --- | --- | --- |
+| `v3/t12-v1-removal-surface` | `3e1de5df1b` | squashed, PR #4137 |
+| `v3/t5-docs-migration` | `bb619f1cf7` | squashed, PR #4138 |
+| `v3/t7-benchmarks` | `26ca8cd8ee` | squashed, PR #4139 |
+| `v3/t3-native-ci-truth` | `d26f4b9b35` | squashed, PR #4140 |
+| `v3/t4-state-wiring` | `b0ab83afc8` | squashed, PR #4136 |
+| `v3/fix-ssr-hydration-baseline` | `566e5f1e92` | squashed, PR #4095 |
+| `v3/remove-inverse` | `0a60f22107` | squashed, PR #4090 |
+| `v3/remove-true-literals-snapshot` | `3a013b0065` | squashed, PR #4098 |
+| `v3/docs-toggle-migration` | `fd169b062c` | re-applied, no PR |
+| `collection/air-24/v3-docs-main-20260731` | `fab16460f4` | re-applied except `release.yml` |
+| `collection/air-24/v3-beta-integration-20260731` | `897d5ea242` | already an ancestor |
+| `recovery/air24-v3-flat-20260731` | `d7c1df523f` | already an ancestor |
+
+Merged during consolidation, so their history is now in `v3-beta` directly:
+`collection/air-24/v3-hook-hazards-20260731` (`20c90a90f4`),
+`collection/air-24/v3-compiler-validation-20260731` (`50dd7e4663`),
+`release-canary-from-any-branch` (`2d3bf61f40`), and the five-file deprecated
+surface removal cherry-picked out of `v3/deprecated-jsdoc-sweep` (`1fbd6d981e`).
+
+Two traps worth remembering, both hit during this pass:
+
+**A clean merge is not a safe merge.** `v3/t7-benchmarks` merged with zero
+conflicts and would have reintroduced `$blue3`/`$gray1`. They turned out to be
+correct, because they live in `tamagui-v2-bench`, a v2 fixture that exists to be
+benchmarked against v3. Check *where* a sigil lands before reacting to it.
+
+**Marker greps produce false SUPERSEDED verdicts.** `resolveTokenSize` exists in
+`code/core/size`, but the shipped Button/Select skins still use named size
+tables, so `v3-button-sizing` was not superseded. `mediaEmitListeners` exists in
+`createComponent.tsx`, but the listener-lifetime fix does not, so
+`v3-hook-hazards` was not superseded either. A symbol being present says nothing
+about whether the behavior around it landed. Read the diff.
+
 ## Failures that reproduce at the pre-rip baseline
 
 These fail identically at `c4be9a44c8` and on the rip branch. Real bugs, wrong
