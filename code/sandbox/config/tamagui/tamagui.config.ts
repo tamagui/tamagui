@@ -1,4 +1,5 @@
-import { defaultConfig } from '@tamagui/config/v6'
+import { defaultConfig } from '@tamagui/config/v5'
+import { themes } from '@tamagui/config/v6'
 import { animationsMotion } from '@tamagui/config/v5-motion'
 import { createTamagui } from 'tamagui'
 
@@ -21,6 +22,7 @@ const customTokens = {
 
 export const config = createTamagui({
   ...defaultConfig,
+  themes,
   animations: animationsMotion,
   tokens: customTokens,
 })

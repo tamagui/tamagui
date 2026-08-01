@@ -2,16 +2,25 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
+import { config as configV3 } from '@tamagui/config/v3'
 import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { defaultConfig as configV5 } from '@tamagui/config/v5'
-import { defaultConfig as config, shorthands } from '@tamagui/config/v6'
+import { shorthands } from '@tamagui/config/v6'
 import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui } from 'tamagui'
 // TODO just move this into this folder
 import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
 import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
+import { toV6Themes } from '../../packages/tamagui-dev-config/src/v6Themes'
 // Generated theme from v5 theme builder for testing
 import { themes as generatedV5Themes } from './generatedV5Theme'
+
+// Keep the kitchen sink's established token, font, and media scales. Only the
+// built-in theme namespace is a V3 migration concern here.
+const config = {
+  ...configV3,
+  themes: toV6Themes(configV3.themes),
+}
 
 export const animationsCSS = createAnimationsCSS({
   '0ms': '0ms linear',
@@ -406,7 +415,7 @@ const tamaConf = createTamagui({
   },
   // Use v4 themes when ?v4theme=true is in the URL
   themes: useV4Themes
-    ? tamaguiThemes
+    ? toV6Themes(tamaguiThemes)
     : {
         ...config.themes,
         ...themeDev,
@@ -452,7 +461,15 @@ declare module 'tamagui' {
 export default tamav5Config
   ? createTamagui(tamaguiDevConfig)
   : generatedV5
-    ? createTamagui({ ...configV5, themes: generatedV5Themes, animations })
+    ? createTamagui({
+        ...configV5,
+        themes: toV6Themes(generatedV5Themes),
+        animations,
+      })
     : v5config
-      ? createTamagui({ ...configV5, animations })
+      ? createTamagui({
+          ...configV5,
+          themes: toV6Themes(configV5.themes),
+          animations,
+        })
       : tamaConf

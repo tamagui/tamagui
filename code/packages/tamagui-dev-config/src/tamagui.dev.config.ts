@@ -1,6 +1,6 @@
 import { animationsCSS } from '@tamagui/config/v5-css'
 import { animationsMotion } from '@tamagui/config/v5-motion'
-import { defaultConfig } from '@tamagui/config/v6'
+import { defaultConfig } from '@tamagui/config/v5-subtle'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { createV5Theme, subtleChildrenThemes } from '@tamagui/themes/v5-subtle-builder'
@@ -39,7 +39,8 @@ export const animations = {
   css: animationsCSS,
 }
 
-// Use the V6 config as base, with tamagui.dev custom themes in the same namespace.
+// Preserve the site's established scales while emitting its custom themes in
+// the sole V3 built-in namespace.
 export const config = {
   ...defaultConfig,
   themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
