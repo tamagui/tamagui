@@ -51,6 +51,13 @@ export type ColorKeys =
   | 'borderInlineColor'
   | 'borderInlineStartColor'
   | 'borderInlineEndColor'
+  // these four resolve theme colors at runtime (tokenCategories.color in
+  // @tamagui/helpers) and were missing here, so they typechecked via
+  // `(string & {})` while offering no token autocomplete at all
+  | 'borderEndColor'
+  | 'borderStartColor'
+  | 'textDecorationColor'
+  | 'caretColor'
 
 export type SpaceKeys =
   | 'space'
