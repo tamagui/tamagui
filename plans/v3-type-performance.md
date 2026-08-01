@@ -45,8 +45,29 @@ components) while check time fell 45%. In shape B they went **down** (5,050 to
 making each one cheaper to evaluate.
 
 The instantiation growth is therefore specific to the `styled()` / variants /
-`GetProps` machinery rather than general to the type surface. That is where any
-further type-performance work should be aimed.
+`GetProps` machinery rather than general to the type surface.
+
+Tracing it further shows the headline is hiding a genuine regression.
+Decomposed at 50 pairs: plain definitions cost 45,226 instantiations in v3 vs
+17,160 in v2; definitions plus variants 59,328 vs 24,202; plus `GetProps`
+65,113 vs 38,640. But JSX usage adds only 13,112 in v3 against 23,233 in v2.
+
+So **v3 is more expensive per `styled()` definition and cheaper per JSX use**,
+and because ordinary app code is JSX-heavy the cheaper side dominates the
+totals. Marginal cost per styled pair at definition time is ~1,186
+instantiations in v3 against ~481 in v2, a 2.47x regression that the canonical
+total masks. It is linear rather than an imminent depth failure, but for a
+component-definition-heavy codebase it is a real scaling risk, not benign.
+
+The identified culprit is `GetStyledOptionsAcceptedProps`: an unresolved
+`Context` conditional expands `InferStyledOptionsProps`. In a controlled
+experiment over 100 `styled()` calls, replacing that conditional with
+`InferStyledProps &` the existing `GetStyledContextProps` took instantiations
+from 53,716 to 21,156 — a saving of 32,560. Per-declaration tracing agrees: on
+a plain no-variant fixture the inner options object costs 75ms in v3 against
+15ms in v2.
+
+That fix is the first place to spend further type-performance effort.
 
 Memory was too noisy to report (v2 166MB vs v3 207MB at 50 components, but v2
 203MB vs v3 165MB at 25). That is GC timing, not a result.
@@ -89,28 +110,81 @@ Template-literal modifier forms complete correctly too (`hover:` expands to
 diagnostics at every size, because of `(string & {})`. Existing code does not
 have to change.
 
-### The cost envelope, which decides the design
+### Cost by union size
 
 Full typecheck across 300 usage sites, against a plain `string` baseline of
-473ms:
+473ms: 500-member union 393ms, 2,000 405ms (both inside the noise), 8,000 571ms,
+20,000 953ms. So by size alone a curated subset in the low thousands is free and
+the whole Tailwind space is what costs.
 
-| union size | check time | vs baseline |
-|---|---|---|
-| 500 | 393ms | no measurable cost |
-| 2,000 | 405ms | no measurable cost |
-| 8,000 | 571ms | +21% |
-| 20,000 | 953ms | +101% |
+That framing turned out to be the wrong question.
 
-So a curated subset in the low thousands is free, and enumerating the entire
-Tailwind space is what costs — it would roughly double typecheck time and hand
-back the win recorded above. The design conclusion is to type a bounded,
-generated subset rather than the whole space.
+### `className` autocomplete does not work, for a structural reason
 
-What is still open: which props take the typed subset, how the subset is
-generated from the user's config instead of hardcoded, whether Tamagui-mode flat
-value strings can use the same mechanism for their known keyword and token
-values, and what the existing `styled()`/variants type machinery does when
-`string` becomes a union there.
+The completions above are real but unusable for `className`, and the reason is
+not performance. **A completion's `replacementSpan` covers the entire string
+literal**, and no completion entry ever contains a space.
+
+Verified directly: with the cursor after `bg-re` in `className='p-4 bg-re'`, the
+service returns 3,842 entries whose replacement span is `{start, length: 9}` —
+covering the whole of `p-4 bg-re`. Accepting `bg-red-500` therefore rewrites the
+attribute to `"bg-red-500"` and silently deletes `p-4`.
+
+Completing the second class of a list would require entries that are whole
+lists, and those are not expressible: a two-class template is ~14.7M
+constituents, and TypeScript raises TS2590 well before that — measured at
+1.26M, where the type returns zero completions. The list-shaped
+`` Base | `${Base} ${string}` `` returns only the finite arm, so it buys nothing.
+
+Class lists are structurally unreachable from the type system. This is precisely
+why Tailwind IntelliSense is a language-service extension rather than a set of
+types.
+
+There is also an editor-transport cost that the in-process measurement hides:
+the numbers above are `getCompletionsAtPosition` called in-process. Over the
+real tsserver round trip a 40,000-entry response is an 8.2MB payload taking
+~880ms. At 3,842 entries it is 519KB and 13-25ms, which is fine.
+
+One claim did not reproduce and is recorded as unsettled: that non-member
+multi-class values miss the literal-to-union fast path and cost dramatically
+more (reported 0.59s vs 10.50s at a 53,788 union). An independent run at 1,000
+sites showed no such gap — 526ms for member values vs 506ms for multi-class at
+3,842, and 1,255ms vs 1,358ms at 20,000. The disagreement is probably down to
+template-literal arms in the union under test. It does not change the
+conclusion, which rests on the replacement-span result.
+
+### Conclusion: leave `className` as `string`, spend it on flat props
+
+Tamagui-mode flat values are where this pays off, because those values are
+frequently a *single* token, which does hit the union fast path. Measured at
+1,000 sites with 2 props each: token union with single-token values 0.07s;
+adding `` `${State}:${Token}` `` clause forms 0.19s. So making `bg="hover:$color5"`
+complete costs roughly 0.22ms per prop instance. Stop before media and theme
+modifiers — theme alone takes the color prop to about 39,000 members.
+
+Attachment points, if this is built: tailwind mode has one,
+`TailwindStyleProps.className` in `code/core/tailwind/src/types.ts`, and the
+variant definitions beside it would have to move together or a variant body gets
+weaker checking than a plain prop. Tamagui mode goes through
+`FlatStyleValue<T>` in `code/core/web/src/types.tsx`, which is carried by
+value-preserving mapped types, so the escape hatch survives them. The token
+unions are already config-driven through `TamaguiCustomConfig` augmentation, so
+the subset can be derived rather than code-generated.
+
+Two hazards to respect: narrowing the variant-definition index signature from
+`string` to a union breaks assignability from any `Record<string, string>` built
+elsewhere and needs the same `| (string & {})` escape; and `Exclude<T[K], string>`
+in the core chain would strip a literal union to `never` if a candidate union
+were ever routed through `T[K]` instead of alongside it.
+
+### A real autocomplete bug found on the way
+
+With the v3 config, `backgroundColor=""` offers 1,101 completions including 950
+tokens, but the `bg` shorthand offers 216 with **zero** tokens — it falls back to
+csstype's CSS color keywords (`currentColor`, `Window`, `WindowFrame`). `p=""` is
+fine at 501. So it is the color chain specifically, and users get worse
+autocomplete for using the shorthand the docs recommend. Fixing it costs nothing
+in type performance.
 
 ## Reproducing
 
