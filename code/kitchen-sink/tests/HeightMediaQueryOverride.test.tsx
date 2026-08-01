@@ -10,7 +10,13 @@ async function getScale(page: Page, testId: string): Promise<number> {
   return page.evaluate((id) => {
     const el = document.querySelector(`[data-testid="${id}"]`)
     if (!el) return -1
-    const transform = getComputedStyle(el).transform
+    const styles = getComputedStyle(el)
+    // Flat transform-family programs lower scale to the CSS individual
+    // property. Legacy numeric props may still appear in transform matrices.
+    if (styles.scale && styles.scale !== 'none') {
+      return Number.parseFloat(styles.scale)
+    }
+    const transform = styles.transform
     if (transform === 'none') return 1
     const match = transform.match(/matrix\(([^,]+),/)
     return match ? Number.parseFloat(match[1]) : 1
