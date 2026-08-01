@@ -113,7 +113,12 @@ const TRANSFORM_KEYS = new Set([
   'skewY',
 ])
 
-const getCSSProperty = (key: string) => (TRANSFORM_KEYS.has(key) ? 'transform' : key)
+const getCSSProperty = (key: string) => {
+  if (key === 'x' || key === 'y') return 'translate'
+  if (key === 'scale' || key === 'scaleX' || key === 'scaleY') return 'scale'
+  if (key === 'rotate') return 'rotate'
+  return TRANSFORM_KEYS.has(key) ? 'transform' : key
+}
 
 /**
  * Build a CSS transform string from a style object containing transform properties
