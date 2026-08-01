@@ -582,19 +582,38 @@ is affordable and it is a real gain over today.
 
 Two concrete follow-ups, in priority order:
 
-1. Give `background` a color-aware value type so `bg` regains theme tokens
-   (`ColorTokens | Properties['background']`, prototyped above). Users get less
-   autocomplete for using the shorthand the docs recommend. It is worth more
-   than anything else in this document and it measures free.
-2. **Final ruling: do not add clause-level token subsets.** Nate vetoed the
-   color/space-only `` `${StateModifier}:${Token}` `` follow-up. V3 keeps the
-   cheap bare-token unions for single values, while clause-bearing flat strings
-   intentionally fall through to `(string & {})`. State, media, theme, group,
-   platform, enter, and exit clauses therefore remain untyped authoring strings;
-   the language service owns token-scoped completion and validation.
+1. **Approved (Nate, 2026-08-01).** Give `background` a color-aware value type
+   so `bg` regains theme tokens (`ColorTokens | Properties['background']`,
+   prototyped above). Users get less autocomplete for using the shorthand the
+   docs recommend. It is worth more than anything else in this document and it
+   measures free. The earlier veto covered clause subsets only, never this.
+2. **Revised ruling (Nate, 2026-08-01): one modifier level is approved, but
+   only if it covers every fixed prefix family at once.** The original
+   color/space-only `` `${StateModifier}:${Token}` `` proposal was vetoed
+   because it offered `hover:` and nothing else, which is not worth a compile
+   cost. The shape that earns it spans state, media and platform together, so
+   the list that appears is `hover:`, `sm:`, `web:` and their siblings rather
+   than one family.
 
-The background fix is not a className change and needs no codegen. The former
-clause-subset proposal is closed and must not be reintroduced.
+Sizing that, from the vocabulary table above: state 14 + media 14 + platform 7
+= 35 fixed modifiers, against the 14 the measured prototype used. A color prop
+goes from the measured 1,950 members to roughly 4,875. That is comfortably
+inside TypeScript's 100,000-constituent limit, and it is **2.5x a union whose
+cost was measured at 0.19s (single clause) and 0.50s (two clauses) per 1,000
+sites**. Nobody has measured the 35-modifier form. Do that before shipping it:
+union size and check time are not linearly related, and the two-clause row is
+where this gets expensive.
+
+Theme modifiers stay out. There are 294 of them, they are config-dependent
+rather than registry-fixed, and folding them in takes a color prop to about
+45,700 members. Group and container modifiers stay out for the reason they
+always did: the name is user-chosen and unbounded.
+
+Everything else in the original ruling stands. `className` remains `string`,
+modifier chains (`dark:hover:sm:`) stay untyped, arbitrary values and opacity
+suffixes still force `(string & {})`, and the language service still owns
+token-scoped completion and validation, because a whole-literal replacement
+span cannot do it.
 
 ## What would need to be true to revisit
 

@@ -41,6 +41,26 @@ registry, state grammar, and the review's correctness fixes were found on
    See `plans/surface-levels.md`.
 6. **Benchmarks (review Gate 4) stay deprioritized to the very end** (user call,
    unchanged).
+7. **One branch: everything lands on `v3-beta`, coherence beats cleanliness
+   (user, 2026-08-01).** V3 work moves between machines, so it has to be
+   readable as one tree from any of them. Land work on `v3-beta` even when it
+   does not compile, and do not park it on a topic branch to keep that branch
+   tidy. A branch nobody merges is work nobody can find: phase 5 ended with
+   seventeen unmerged v3 branches, and most of them turned out to hold content
+   that had already been re-applied to `v3-beta` by another route, so the only
+   thing the branches still carried was doubt about whether anything was
+   missing. Topic branches are fine as scratch space; they are not storage.
+   The one thing that does not get merged back is a change that undoes the
+   token sigil rip, since most of these branches predate it.
+8. **Value-prop types: base autocomplete yes, one modifier level only if it
+   covers every prefix family (user, 2026-08-01).** This revises decision
+   `plans/v3-static-types-feasibility.md` follow-up 2. Typing a prop's bare
+   token union is approved, and so is giving `background`/`bg` a color-aware
+   value type (follow-up 1, which the earlier veto never covered). A single
+   modifier level is approved *conditionally*: it must offer state, media and
+   platform prefixes together (`hover:`, `sm:`, `web:`), because a completion
+   list showing only `hover:` is not worth its compile cost. `className` stays
+   `string` regardless; nothing here changes that.
 
 ## Landed (post-merge v3-beta @ 61ab5e4b84)
 
