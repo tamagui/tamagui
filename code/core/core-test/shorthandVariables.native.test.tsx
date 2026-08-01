@@ -12,9 +12,9 @@ describe('shorthand variables - native', () => {
   // on native, boxShadow/backgroundImage are parsed to RN object format
   // filter stays as string (no RN object equivalent)
 
-  test('boxShadow with $variable resolves token to object format', () => {
+  test('boxShadow with variable resolves token to object format', () => {
     const { style } = getSplitStylesFor({
-      boxShadow: '0 0 10px $white',
+      boxShadow: '0 0 10px white',
     })
 
     expect(style?.boxShadow).toEqual([
@@ -24,7 +24,7 @@ describe('shorthand variables - native', () => {
 
   test('boxShadow with multiple tokens resolves all to objects', () => {
     const { style } = getSplitStylesFor({
-      boxShadow: '0 0 10px $white, 0 0 20px $black',
+      boxShadow: '0 0 10px white, 0 0 20px black',
     })
 
     expect(style?.boxShadow).toEqual([
@@ -43,22 +43,22 @@ describe('shorthand variables - native', () => {
     ])
   })
 
-  test('boxShadow with unresolvable $variable keeps token string in object', () => {
+  test('boxShadow with unresolvable variable keeps token string in object', () => {
     const { style } = getSplitStylesFor({
-      boxShadow: '0 0 10px $nonexistent',
+      boxShadow: '0 0 10px nonexistent',
     })
 
     expect(style?.boxShadow).toEqual([
-      { offsetX: 0, offsetY: 0, blurRadius: 10, color: '$nonexistent' },
+      { offsetX: 0, offsetY: 0, blurRadius: 10, color: 'nonexistent' },
     ])
   })
 
-  test('filter with $variable resolves space token', () => {
+  test('filter with variable resolves space token', () => {
     const { style } = getSplitStylesFor({
-      filter: 'blur($2)',
+      filter: 'blur(2)',
     })
 
-    // $2 in space = 7 (size 28 * 0.333 rounded)
+    // 2 in space = 7 (size 28 * 0.333 rounded)
     expect(style?.filter).toBe('blur(7)')
   })
 
@@ -72,9 +72,9 @@ describe('shorthand variables - native', () => {
 
   // backgroundImage - RN 0.76+ uses experimental_backgroundImage
   // on native, parsed to object array format
-  test('backgroundImage with $variable resolves tokens to object format', () => {
+  test('backgroundImage with variable resolves tokens to object format', () => {
     const { style } = getSplitStylesFor({
-      backgroundImage: 'linear-gradient(to bottom, $white, $black)',
+      backgroundImage: 'linear-gradient(to bottom, white, black)',
     })
 
     expect((style as any)?.experimental_backgroundImage).toEqual([
@@ -88,7 +88,7 @@ describe('shorthand variables - native', () => {
 
   test('backgroundImage with angle and multiple color stops', () => {
     const { style } = getSplitStylesFor({
-      backgroundImage: 'linear-gradient(45deg, $black 0%, $white 50%, $black 100%)',
+      backgroundImage: 'linear-gradient(45deg, black 0%, white 50%, black 100%)',
     })
 
     expect((style as any)?.experimental_backgroundImage).toEqual([
@@ -118,23 +118,23 @@ describe('shorthand variables - native', () => {
     ])
   })
 
-  test('backgroundImage with unresolvable $variable keeps token in object', () => {
+  test('backgroundImage with unresolvable variable keeps token in object', () => {
     const { style } = getSplitStylesFor({
-      backgroundImage: 'linear-gradient($nonexistent, $white)',
+      backgroundImage: 'linear-gradient(nonexistent, white)',
     })
 
-    // $nonexistent is not a valid direction, so parsed as color stop
+    // nonexistent is not a valid direction, so parsed as color stop
     expect((style as any)?.experimental_backgroundImage).toEqual([
       {
         type: 'linear-gradient',
-        colorStops: [{ color: '$nonexistent' }, { color: '#fff' }],
+        colorStops: [{ color: 'nonexistent' }, { color: '#fff' }],
       },
     ])
   })
 
-  test('backgroundImage with $token/NN opacity modifier resolves to concrete rgba', () => {
+  test('backgroundImage with token/NN opacity modifier resolves to concrete rgba', () => {
     const { style } = getSplitStylesFor({
-      backgroundImage: 'linear-gradient(180deg, $white/50, $white/0)',
+      backgroundImage: 'linear-gradient(180deg, white/50, white/0)',
     })
 
     expect((style as any)?.experimental_backgroundImage).toEqual([
@@ -170,9 +170,9 @@ describe('border shorthand - native', () => {
     expect(style?.borderLeftColor).toBe('red')
   })
 
-  test('border with $variable color resolves token', () => {
+  test('border with variable color resolves token', () => {
     const { style } = getSplitStylesFor({
-      border: '2px dashed $white',
+      border: '2px dashed white',
     })
 
     expect(style?.borderTopWidth).toBe(2)
@@ -221,9 +221,9 @@ describe('outline shorthand - native', () => {
     expect(style?.outlineColor).toBe('red')
   })
 
-  test('outline with $variable color resolves token', () => {
+  test('outline with variable color resolves token', () => {
     const { style } = getSplitStylesFor({
-      outline: '2px dashed $white',
+      outline: '2px dashed white',
     })
 
     expect(style?.outlineWidth).toBe(2)
@@ -251,8 +251,8 @@ describe('outline shorthand - native', () => {
 })
 
 describe('border shorthand with media queries - native', () => {
-  test('border in $sm applies when media state sm is true', () => {
-    const { style } = getSplitStylesFor({ $sm: { border: '2px solid green' } }, View, {
+  test('border in sm applies when media state sm is true', () => {
+    const { style } = getSplitStylesFor({ border: 'sm:2px solid green' }, View, {
       mediaState: { sm: true },
     })
 
@@ -261,8 +261,8 @@ describe('border shorthand with media queries - native', () => {
     expect(style?.borderTopColor).toBe('green')
   })
 
-  test('border in $sm does not apply when media state sm is false', () => {
-    const { style } = getSplitStylesFor({ $sm: { border: '2px solid green' } }, View, {
+  test('border in sm does not apply when media state sm is false', () => {
+    const { style } = getSplitStylesFor({ border: 'sm:2px solid green' }, View, {
       mediaState: { sm: false },
     })
 
@@ -271,8 +271,8 @@ describe('border shorthand with media queries - native', () => {
     expect(style?.borderTopColor).toBeUndefined()
   })
 
-  test('border in $sm with token resolves when media matches', () => {
-    const { style } = getSplitStylesFor({ $sm: { border: '1px dashed $white' } }, View, {
+  test('border in sm with token resolves when media matches', () => {
+    const { style } = getSplitStylesFor({ border: 'sm:1px dashed white' }, View, {
       mediaState: { sm: true },
     })
 

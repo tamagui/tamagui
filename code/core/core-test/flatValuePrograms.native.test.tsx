@@ -111,7 +111,7 @@ test('base applies and the hover clause waits for the state', () => {
 })
 
 test.each(tokenClauseCases)(
-  'bare tokens resolve in clause payloads on native: $name',
+  'bare tokens resolve in clause payloads on native: name',
   ({ modifier, active }) => {
     const clause = split({ backgroundColor: `white ${modifier}:black` }, ...active)
     expect(clause.style?.backgroundColor).toBe('#000')
@@ -149,7 +149,7 @@ test('an unknown bare lookup miss stays literal on native', () => {
 })
 
 test.each(tokenClauseCases)(
-  'bare tokens resolve in base payloads on native: $name',
+  'bare tokens resolve in base payloads on native: name',
   ({ modifier, inactive }) => {
     const base = split({ backgroundColor: `white ${modifier}:black` }, ...inactive)
     expect(base.style?.backgroundColor).toBe('#fff')
@@ -331,10 +331,8 @@ test('named container clauses target the named entry and prefer subscribed state
   expect(subscribed.style?.backgroundColor).toBe('red')
 })
 
-test('converted legacy group media measures the group as a container', () => {
-  // $group-frame-sm converts to @sm/frame; the v2 group IS the container, so
-  // its entry answers the @frame key while the compat setting is on
-  const value = { '$group-frame-sm': { opacity: 0.5 }, opacity: 1 }
+test('a named container clause measures the named container', () => {
+  const value = { opacity: '1 @sm/frame:0.5' }
   const narrow = split(
     value,
     {},
@@ -464,7 +462,7 @@ test('a styled clause default survives a call-site override on native', () => {
 
 test('geometric shorthand payloads distribute by slot on native', () => {
   const result = split({ p: '4 8' })
-  // space tokens: $4 = 18, $8 = 46 in the default test config
+  // space tokens: 4 = 18, 8 = 46 in the default test config
   expect(result.style?.paddingTop).toBe(18)
   expect(result.style?.paddingRight).toBe(46)
   expect(result.style?.paddingBottom).toBe(18)

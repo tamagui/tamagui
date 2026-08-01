@@ -6,14 +6,8 @@
  * react-native-tvos behavior (verified):
  *   - Android TV: Platform.OS === 'android', Platform.isTV === true
  *
- * So on Android TV:
- *   - $android should apply (Platform.OS === 'android')
- *   - $native should apply (non-web platform)
- *   - $tv should apply (Platform.isTV === true)
- *   - $androidtv should apply (Platform.OS === 'android' && Platform.isTV === true)
- *   - $ios should NOT apply
- *   - $tvos should NOT apply
- *   - $web should NOT apply
+ * So on Android TV the android, native, tv, and androidtv modifiers apply;
+ * ios, tvos, and web do not.
  */
 
 import { View, createTamagui } from '@tamagui/core'
@@ -74,77 +68,61 @@ function getSplitStylesFor(props: Record<string, any>, Component = View) {
 }
 
 describe('Android TV - platform style props', () => {
-  test('$android applies on Android TV (Platform.OS === "android")', () => {
-    const result = getSplitStylesFor({
-      $android: { backgroundColor: 'red' },
-    })
+  test('android applies on Android TV (Platform.OS === "android")', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'android:red' })
     expect(result.style?.backgroundColor).toBe('red')
   })
 
-  test('$native applies on Android TV (non-web platform)', () => {
-    const result = getSplitStylesFor({
-      $native: { backgroundColor: 'green' },
-    })
+  test('native applies on Android TV (non-web platform)', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'native:green' })
     expect(result.style?.backgroundColor).toBe('green')
   })
 
-  test('$tv applies on Android TV (Platform.isTV === true)', () => {
-    const result = getSplitStylesFor({
-      $tv: { backgroundColor: 'blue' },
-    })
+  test('tv applies on Android TV (Platform.isTV === true)', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'tv:blue' })
     expect(result.style?.backgroundColor).toBe('blue')
   })
 
-  test('$androidtv applies on Android TV (Platform.OS === "android" && Platform.isTV === true)', () => {
-    const result = getSplitStylesFor({
-      $androidtv: { backgroundColor: 'purple' },
-    })
+  test('androidtv applies on Android TV (Platform.OS === "android" && Platform.isTV === true)', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'androidtv:purple' })
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
-  test('$ios does NOT apply on Android TV', () => {
-    const result = getSplitStylesFor({
-      $ios: { backgroundColor: 'orange' },
-    })
+  test('ios does NOT apply on Android TV', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'ios:orange' })
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$tvos does NOT apply on Android TV', () => {
-    const result = getSplitStylesFor({
-      $tvos: { backgroundColor: 'pink' },
-    })
+  test('tvos does NOT apply on Android TV', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'tvos:pink' })
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$web does NOT apply on Android TV', () => {
-    const result = getSplitStylesFor({
-      $web: { backgroundColor: 'yellow' },
-    })
+  test('web does NOT apply on Android TV', () => {
+    const result = getSplitStylesFor({ backgroundColor: 'web:yellow' })
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$androidtv overrides $android on Android TV (androidtv declared after)', () => {
+  test('androidtv overrides android on Android TV (androidtv authored after)', () => {
     const result = getSplitStylesFor({
-      $android: { backgroundColor: 'red' },
-      $androidtv: { backgroundColor: 'purple' },
+      backgroundColor: 'android:red androidtv:purple',
     })
     // androidtv is more specific → always wins regardless of declaration order
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
-  test('$androidtv overrides $android on Android TV (androidtv declared first)', () => {
+  test('androidtv overrides android on Android TV (androidtv authored first)', () => {
     const result = getSplitStylesFor({
-      $androidtv: { backgroundColor: 'purple' },
-      $android: { backgroundColor: 'red' },
+      backgroundColor: 'androidtv:purple android:red',
     })
     // androidtv is more specific → wins even when declared first
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
-  test('$tv and $androidtv both apply on Android TV', () => {
+  test('tv and androidtv both apply on Android TV', () => {
     const result = getSplitStylesFor({
-      $tv: { marginTop: 10 },
-      $androidtv: { marginBottom: 20 },
+      marginTop: 'tv:10px',
+      marginBottom: 'androidtv:20px',
     })
     expect(result.style?.marginTop).toBe(10)
     expect(result.style?.marginBottom).toBe(20)
@@ -152,9 +130,10 @@ describe('Android TV - platform style props', () => {
 
   test('platform specificity cascade: native → tv → androidtv (each overrides previous for same key, retains others)', () => {
     const result = getSplitStylesFor({
-      $native: { backgroundColor: 'green', opacity: 1, zIndex: 2 },
-      $tv: { backgroundColor: 'blue', marginTop: 8 },
-      $androidtv: { backgroundColor: 'purple' },
+      backgroundColor: 'native:green tv:blue androidtv:purple',
+      opacity: 'native:1',
+      zIndex: 'native:2',
+      marginTop: 'tv:8px',
     })
     // androidtv wins for backgroundColor (most specific)
     expect(result.style?.backgroundColor).toBe('purple')
@@ -167,9 +146,10 @@ describe('Android TV - platform style props', () => {
 
   test('platform specificity cascade is order-independent (most specific declared first, retains other props)', () => {
     const result = getSplitStylesFor({
-      $androidtv: { backgroundColor: 'purple' },
-      $tv: { backgroundColor: 'blue', marginTop: 8 },
-      $native: { backgroundColor: 'green', opacity: 1, zIndex: 2 },
+      backgroundColor: 'androidtv:purple tv:blue native:green',
+      marginTop: 'tv:8px',
+      opacity: 'native:1',
+      zIndex: 'native:2',
     })
     // androidtv wins for backgroundColor even though it was declared first
     expect(result.style?.backgroundColor).toBe('purple')

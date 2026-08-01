@@ -322,7 +322,7 @@ describe('mergeVariants', () => {
     const parentVariants = {
       tone: {
         active: {
-          hoverStyle: {
+          nestedOptions: {
             opacity: 0.2,
           },
           transform: [{ scale: 1 }],
@@ -336,7 +336,7 @@ describe('mergeVariants', () => {
     const ourVariants = {
       tone: {
         active: {
-          hoverStyle: [{ opacity: 0.5 }],
+          nestedOptions: [{ opacity: 0.5 }],
           transform: [{ scale: 2 }],
           className: 'child-class',
           onPress: childPress,
@@ -347,7 +347,7 @@ describe('mergeVariants', () => {
     expect(mergeVariants(parentVariants, ourVariants)).toEqual({
       tone: {
         active: {
-          hoverStyle: [{ opacity: 0.5 }],
+          nestedOptions: [{ opacity: 0.5 }],
           transform: [{ scale: 2 }],
           className: 'child-class',
           onPress: childPress,

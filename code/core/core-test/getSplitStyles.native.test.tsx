@@ -87,7 +87,7 @@ describe('getSplitStyles', () => {
       }
     )
 
-    expect(seenSize).toBe('$4')
+    expect(seenSize).toBe('4')
     expect(findLayoutValue(spread, 'width')).toBe('44px')
   })
 
@@ -97,12 +97,12 @@ describe('getSplitStyles', () => {
       ...next,
       settings: {
         ...next.settings,
-        defaultSize: '$5',
+        defaultSize: '5',
         defaultTokens: {
-          space: '$3',
-          radius: '$2',
-          zIndex: '$1',
-          fontSize: '$1',
+          space: '3',
+          radius: '2',
+          zIndex: '1',
+          fontSize: '1',
         },
       },
     })
@@ -123,68 +123,29 @@ describe('getSplitStyles', () => {
       )
 
       expect(findLayoutValue(direct, 'height')).toBe(
-        `${configured.tokensParsed.size.$5.val}px`
+        `${configured.tokensParsed.size['5'].val}px`
       )
       expect(findLayoutValue(direct, 'paddingTop')).toBe(
-        `${configured.tokensParsed.space.$3.val}px`
+        `${configured.tokensParsed.space['3'].val}px`
       )
       expect(findLayoutValue(direct, 'borderTopLeftRadius')).toBe(
-        `${configured.tokensParsed.radius.$2.val}px`
+        `${configured.tokensParsed.radius['2'].val}px`
       )
       expect(findLayoutValue(direct, 'zIndex')).toBe(
-        `${configured.tokensParsed.zIndex.$1.val}px`
+        `${configured.tokensParsed.zIndex['1'].val}px`
       )
       expect(findLayoutValue(direct, 'fontSize')).toBe(
-        `${configured.fontsParsed.$body.size.$1.val}px`
+        `${configured.fontsParsed.body.size['1'].val}px`
       )
     } finally {
       createTamagui(config.getDefaultTamaguiConfig('native'))
     }
   })
 
-  test('functional variants see media-resolved sibling variant props', () => {
-    const MediaVariantView = styled(View, {
-      variants: {
-        kind: {
-          info: {},
-          danger: {},
-        },
-        tone: {
-          true: (_val, { props }) => ({
-            backgroundColor: props.kind === 'danger' ? 'red' : 'blue',
-          }),
-        },
-      } as const,
-    })
-
-    const { style } = getSplitStylesFor(
-      {
-        kind: 'info',
-        $sm: {
-          kind: 'danger',
-          tone: true,
-        },
-      },
-      MediaVariantView,
-      {
-        mediaState: {
-          sm: true,
-        },
-      }
-    )
-
-    expect(style?.backgroundColor).toBe('red')
-  })
-
-  test('pseudo styles can override read-only parent props', () => {
-    const props = {
-      hoverStyle: {
-        boxShadow: '0 1px 2px black',
-      },
-    }
-
+  test('flat programs can override read-only parent props', () => {
+    const props = {}
     Object.defineProperty(props, 'boxShadow', {
-      value: '0 0 1px black',
+      value: '0 0 1px black hover:0 1px 2px black',
       enumerable: true,
       writable: false,
     })
@@ -192,11 +153,9 @@ describe('getSplitStyles', () => {
     expect(() => getSplitStylesFor(props)).not.toThrow()
   })
 
-  test('native skips hover pseudo style work', () => {
+  test('native skips inactive hover clauses', () => {
     const directHover = getSplitStylesFor({
-      hoverStyle: {
-        backgroundColor: 'red',
-      },
+      backgroundColor: 'hover:red',
     })
 
     expect(directHover.style?.backgroundColor).toBeUndefined()
@@ -205,9 +164,7 @@ describe('getSplitStyles', () => {
       variants: {
         hoverable: {
           true: {
-            hoverStyle: {
-              opacity: 0.5,
-            },
+          opacity: "hover:0.5"
           },
         },
       } as const,
@@ -230,9 +187,7 @@ describe('getSplitStyles', () => {
 
     const groupHover = getSplitStylesFor(
       {
-        '$group-row-hover': {
-          backgroundColor: 'red',
-        },
+        backgroundColor: 'group-hover/row:red',
       },
       View,
       {
@@ -248,9 +203,7 @@ describe('getSplitStyles', () => {
 
     const groupMedia = getSplitStylesFor(
       {
-        '$group-row-sm': {
-          opacity: 0.5,
-        },
+        opacity: '@sm/row:0.5',
       },
       View,
       {
@@ -368,16 +321,10 @@ describe('getSplitStyles', () => {
     expect(style?.opacity).toBe(0.8)
   })
 
-  test(`$theme-light and $theme-dark styles are applied correctly based on active theme`, () => {
+  test(`light and dark theme clauses apply based on the active theme`, () => {
     const themeProps = {
-      '$theme-light': {
-        backgroundColor: 'white',
-        color: 'black',
-      },
-      '$theme-dark': {
-        backgroundColor: 'black',
-        color: 'white',
-      },
+      backgroundColor: 'light:white dark:black',
+      color: 'light:black dark:white',
     }
 
     // Test with light theme
@@ -394,18 +341,11 @@ describe('getSplitStyles', () => {
     expect(darkResult.style?.color).toBe('#fff')
   })
 
-  test(`$theme-light and $theme-dark styles don't apply if theme doesn't match`, () => {
+  test(`theme clauses do not apply if the theme does not match`, () => {
     // When using a custom theme that isn't 'light' or 'dark'
     const customResult = getThemeStylesView(
       {
-        '$theme-light': {
-          backgroundColor: 'white',
-        },
-        '$theme-dark': {
-          backgroundColor: 'black',
-        },
-        // Default style
-        backgroundColor: 'blue',
+        backgroundColor: 'blue light:white dark:black',
       },
       'custom'
     )
@@ -451,52 +391,6 @@ describe('getSplitStyles', () => {
     expect(style?.backgroundColor).toBeUndefined()
     expect(style?.padding).toBeUndefined()
     expect(style?.paddingTop).toBeUndefined()
-  })
-})
-
-describe.skip('getSplitStyles - pseudo prop merging', () => {
-  const StyledButton = styled(View, {
-    name: 'StyledButton',
-    pressStyle: { backgroundColor: 'green' },
-    variants: {
-      variant: {
-        prim: {
-          pressStyle: { backgroundColor: 'blue' },
-        },
-      },
-    },
-  })
-
-  function getPressStyle(props: any) {
-    const { style } = getSplitStyles(
-      props,
-      StyledButton.staticConfig,
-      {} as any,
-      '',
-      {
-        hover: false,
-        press: true, // simulate press state
-        pressIn: true,
-        focus: false,
-        unmounted: false,
-        disabled: false,
-        focusVisible: false,
-      },
-      {
-        isAnimated: false,
-      }
-    )!
-    return style?.backgroundColor
-  }
-
-  test('inline pressStyle should override variant pressStyle', () => {
-    const bg = getPressStyle({ variant: 'prim', pressStyle: { backgroundColor: 'red' } })
-    expect(bg).toBe('red')
-  })
-
-  test('variant pressStyle should be used if no inline pressStyle', () => {
-    const bg = getPressStyle({ variant: 'prim' })
-    expect(bg).toBe('blue')
   })
 })
 

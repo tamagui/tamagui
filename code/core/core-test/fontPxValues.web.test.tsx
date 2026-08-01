@@ -19,7 +19,7 @@ const baseConfig = (fontSize: any, fontLineHeight: any, sizeTokens: any) => ({
     },
   },
   themes: { light: { background: '#fff', color: '#000' } },
-  settings: { defaultFont: 'body', defaultSize: '$4' },
+  settings: { defaultFont: 'body', defaultSize: '4' },
 })
 
 describe('px string font values', () => {
@@ -35,27 +35,27 @@ describe('px string font values', () => {
       ) as any
     )
 
-    const numFont = numeric.fontsParsed.$body
-    const pxFont = pxStrings.fontsParsed.$body
+    const numFont = numeric.fontsParsed["body"]
+    const pxFont = pxStrings.fontsParsed["body"]
 
     // values match exactly as numbers
-    expect(pxFont.size['$4'].val).toBe(15)
-    expect(pxFont.size['$5'].val).toBe(20)
-    expect(pxFont.lineHeight['$4'].val).toBe(23)
-    expect(numFont.size['$4'].val).toBe(15)
-    expect(pxFont.size['$4'].val).toBe(numFont.size['$4'].val)
-    expect(pxFont.lineHeight['$4'].val).toBe(numFont.lineHeight['$4'].val)
+    expect(pxFont.size['4'].val).toBe(15)
+    expect(pxFont.size['5'].val).toBe(20)
+    expect(pxFont.lineHeight['4'].val).toBe(23)
+    expect(numFont.size['4'].val).toBe(15)
+    expect(pxFont.size['4'].val).toBe(numFont.size['4'].val)
+    expect(pxFont.lineHeight['4'].val).toBe(numFont.lineHeight['4'].val)
 
     // px string variant is flagged needsPx so web keeps the px unit
-    expect(pxFont.size['$4'].needsPx).toBe(true)
-    expect(numFont.size['$4'].needsPx).toBeFalsy()
+    expect(pxFont.size['4'].needsPx).toBe(true)
+    expect(numFont.size['4'].needsPx).toBeFalsy()
   })
 
   test('a "Npx" size token normalizes to a number with needsPx', () => {
     const conf = createTamagui(
       baseConfig({ 4: 15 }, { 4: 23 }, { 4: '44px', 5: 52 }) as any
     )
-    expect(conf.tokensParsed.size['$4'].val).toBe(44)
-    expect(conf.tokensParsed.size['$4'].needsPx).toBe(true)
+    expect(conf.tokensParsed.size['4'].val).toBe(44)
+    expect(conf.tokensParsed.size['4'].needsPx).toBe(true)
   })
 })

@@ -151,7 +151,7 @@ test('clause-free strings are base-only programs resolving config-first', () => 
   expect(rulesFor(result, className)).toEqual([`.${className}{background-color:red}`])
 
   // a configured bare numeric string resolves through the token category
-  // (`p="4"` is the space token exactly like `p="$4"` was)
+  // (`p="4"` is the space token exactly like `p="4"` was)
   const tokens = split({ p: '4' })
   for (const longhand of ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']) {
     const tokenClass = tokens.classNames[longhand]
@@ -338,7 +338,7 @@ test('styled same-key programs survive call-site props and retain authored order
 test('animatable defaults do not displace a program', () => {
   // S3: the program marks usedKeys ownership, so applyDefaultStyle skips it
   const result = getSplitStyles(
-    { opacity: '0.5 hover:1', enterStyle: { opacity: 0 } },
+    { opacity: '0.5 hover:1 enter:0' },
     View.staticConfig,
     undefined as any,
     'light',

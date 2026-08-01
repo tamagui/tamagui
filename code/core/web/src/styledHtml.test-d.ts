@@ -20,7 +20,7 @@ import type { GetProps } from './types'
 
 describe('styled.a() types', () => {
   const StyledAnchor = styled.a({
-    color: '$blue10',
+    color: 'blue10',
   })
 
   type AnchorProps = GetProps<typeof StyledAnchor>
@@ -53,7 +53,7 @@ describe('styled.a() types', () => {
 
 describe('styled.button() types', () => {
   const StyledButton = styled.button({
-    padding: '$4',
+    padding: '4',
   })
 
   type ButtonProps = GetProps<typeof StyledButton>
@@ -84,7 +84,7 @@ describe('styled.button() types', () => {
 
 describe('styled.input() types', () => {
   const StyledInput = styled.input({
-    padding: '$2',
+    padding: '2',
   })
 
   type InputProps = GetProps<typeof StyledInput>
@@ -116,7 +116,7 @@ describe('styled.input() types', () => {
 
 describe('styled.form() types', () => {
   const StyledForm = styled.form({
-    gap: '$3',
+    gap: '3',
   })
 
   type FormProps = GetProps<typeof StyledForm>
@@ -140,7 +140,7 @@ describe('styled.form() types', () => {
 
 describe('styled.label() types', () => {
   const StyledLabel = styled.label({
-    fontSize: '$3',
+    fontSize: '3',
   })
 
   type LabelProps = GetProps<typeof StyledLabel>
@@ -156,7 +156,7 @@ describe('styled.label() types', () => {
 
 describe('styled.div() types', () => {
   const StyledDiv = styled.div({
-    padding: '$4',
+    padding: '4',
   })
 
   type DivProps = GetProps<typeof StyledDiv>
@@ -175,7 +175,7 @@ describe('styled.div() types', () => {
 
 describe('styled.span() types', () => {
   const StyledSpan = styled.span({
-    color: '$color',
+    color: 'color',
   })
 
   type SpanProps = GetProps<typeof StyledSpan>
@@ -194,12 +194,12 @@ describe('styled.span() types', () => {
 
 describe('styled.element() with variants', () => {
   const StyledAnchorWithVariants = styled.a({
-    color: '$blue10',
+    color: 'blue10',
 
     variants: {
       size: {
-        small: { fontSize: '$2' },
-        large: { fontSize: '$6' },
+        small: { fontSize: '2' },
+        large: { fontSize: '6' },
       },
       underline: {
         true: { textDecorationLine: 'underline' },
@@ -233,7 +233,7 @@ describe('styled.element() with variants', () => {
 
 describe('styledHtml() function', () => {
   const StyledAnchor = styledHtml('a', {
-    color: '$blue10',
+    color: 'blue10',
   })
 
   type AnchorProps = GetProps<typeof StyledAnchor>
@@ -249,7 +249,7 @@ describe('styledHtml() function', () => {
 
 describe('semantic HTML elements', () => {
   test('styled.nav() creates nav element component', () => {
-    const StyledNav = styled.nav({ padding: '$2' })
+    const StyledNav = styled.nav({ padding: '2' })
     type NavProps = GetProps<typeof StyledNav>
     expectTypeOf<NavProps>().toHaveProperty('padding')
   })
@@ -261,25 +261,25 @@ describe('semantic HTML elements', () => {
   })
 
   test('styled.section() creates section element component', () => {
-    const StyledSection = styled.section({ padding: '$3' })
+    const StyledSection = styled.section({ padding: '3' })
     type SectionProps = GetProps<typeof StyledSection>
     expectTypeOf<SectionProps>().toHaveProperty('padding')
   })
 
   test('styled.article() creates article element component', () => {
-    const StyledArticle = styled.article({ padding: '$3' })
+    const StyledArticle = styled.article({ padding: '3' })
     type ArticleProps = GetProps<typeof StyledArticle>
     expectTypeOf<ArticleProps>().toHaveProperty('padding')
   })
 
   test('styled.header() creates header element component', () => {
-    const StyledHeader = styled.header({ padding: '$2' })
+    const StyledHeader = styled.header({ padding: '2' })
     type HeaderProps = GetProps<typeof StyledHeader>
     expectTypeOf<HeaderProps>().toHaveProperty('padding')
   })
 
   test('styled.footer() creates footer element component', () => {
-    const StyledFooter = styled.footer({ padding: '$2' })
+    const StyledFooter = styled.footer({ padding: '2' })
     type FooterProps = GetProps<typeof StyledFooter>
     expectTypeOf<FooterProps>().toHaveProperty('padding')
   })

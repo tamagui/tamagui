@@ -56,25 +56,25 @@ function splitInspect(
 describe.runIf(provenanceEnabled)('getSplitStyles token provenance', () => {
   test('a direct color token resolves to a real color and records its token + theme', () => {
     const { resolved, provenance } = splitInspect('light', {
-      backgroundColor: '$background',
+      backgroundColor: 'background',
       width: 10,
       height: 10,
     })
     expect(resolved.backgroundColor).toBe('#fff')
     expect(provenance).toEqual({
-      backgroundColor: { token: '$background', theme: 'light' },
+      backgroundColor: { token: 'background', theme: 'light' },
     })
   })
 
   test('a shorthand token records against the expanded style key', () => {
     const { resolved, provenance } = splitInspect('dark', {
-      bg: '$background',
+      bg: 'background',
       width: 10,
       height: 10,
     })
     expect(resolved.backgroundColor).toBe('#000')
     expect(provenance).toEqual({
-      backgroundColor: { token: '$background', theme: 'dark' },
+      backgroundColor: { token: 'background', theme: 'dark' },
     })
   })
 
@@ -82,7 +82,7 @@ describe.runIf(provenanceEnabled)('getSplitStyles token provenance', () => {
     const Toned = styled(View, {
       variants: {
         toned: {
-          true: { backgroundColor: '$background', color: '$color' },
+          true: { backgroundColor: 'background', color: 'color' },
         },
       } as const,
     })
@@ -92,27 +92,27 @@ describe.runIf(provenanceEnabled)('getSplitStyles token provenance', () => {
       Toned
     )
     expect(provenance).toEqual({
-      backgroundColor: { token: '$background', theme: 'light' },
-      color: { token: '$color', theme: 'light' },
+      backgroundColor: { token: 'background', theme: 'light' },
+      color: { token: 'color', theme: 'light' },
     })
   })
 
   test('a nested theme name rides along with the token', () => {
     const { resolved, provenance } = splitInspect('dark_blue', {
-      backgroundColor: '$background',
+      backgroundColor: 'background',
       width: 10,
       height: 10,
     })
     expect(resolved.backgroundColor).toBe('blue')
     expect(provenance).toEqual({
-      backgroundColor: { token: '$background', theme: 'dark_blue' },
+      backgroundColor: { token: 'background', theme: 'dark_blue' },
     })
   })
 
   test('a literal style-prop override stays a literal even when it equals the token value', () => {
-    // in `dark`, $color resolves to #fff — the same value the literal supplies.
+    // in `dark`, color resolves to #fff — the same value the literal supplies.
     const { resolved, provenance } = splitInspect('dark', {
-      color: '$color',
+      color: 'color',
       style: { color: '#fff' },
       width: 10,
       height: 10,
@@ -135,7 +135,7 @@ describe.runIf(provenanceEnabled)('getSplitStyles token provenance', () => {
   test('a media-selected token overrides the base token in provenance', () => {
     // media state is easiest to force through the low-level splitter.
     const result = getSplitStyles(
-      { backgroundColor: '$background', $sm: { backgroundColor: '$color' } },
+      { backgroundColor: 'background sm:color' },
       View.staticConfig,
       {} as any,
       'dark',
@@ -156,7 +156,7 @@ describe.runIf(provenanceEnabled)('getSplitStyles token provenance', () => {
       undefined
     )!
     expect(getStyleTokenProvenance(result.style)).toEqual({
-      backgroundColor: { token: '$color', theme: 'dark' },
+      backgroundColor: { token: 'color', theme: 'dark' },
     })
   })
 })
@@ -164,7 +164,7 @@ describe.runIf(provenanceEnabled)('getSplitStyles token provenance', () => {
 describe.runIf(!provenanceEnabled)('getSplitStyles token provenance disabled', () => {
   test('does not track tokens without both development mode and the opt-in flag', () => {
     const { provenance } = splitInspect('light', {
-      backgroundColor: '$background',
+      backgroundColor: 'background',
       width: 10,
       height: 10,
     })

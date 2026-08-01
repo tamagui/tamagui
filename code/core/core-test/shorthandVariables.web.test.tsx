@@ -33,11 +33,11 @@ function getStyleValue(
 }
 
 describe('shorthand variables - web', () => {
-  // boxShadow/filter/backgroundImage support embedded $tokens which resolve to CSS vars
+  // boxShadow/filter/backgroundImage support embedded tokens which resolve to CSS vars
 
-  test('boxShadow with $variable resolves to CSS var', () => {
+  test('boxShadow with variable resolves to CSS var', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      boxShadow: '0 0 10px $white',
+      boxShadow: '0 0 10px white',
     })
     const value = getStyleValue(styles, 'boxShadow')
 
@@ -47,7 +47,7 @@ describe('shorthand variables - web', () => {
 
   test('boxShadow with multiple tokens resolves all to CSS vars', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      boxShadow: '0 0 10px $white, 0 0 20px $black',
+      boxShadow: '0 0 10px white, 0 0 20px black',
     })
     const value = getStyleValue(styles, 'boxShadow')
 
@@ -65,29 +65,29 @@ describe('shorthand variables - web', () => {
     expect(value).toBe('0 0 10px red')
   })
 
-  test('boxShadow with unresolvable $variable keeps token string', () => {
+  test('boxShadow with unresolvable variable keeps token string', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      boxShadow: '0 0 10px $nonexistent',
+      boxShadow: '0 0 10px nonexistent',
     })
     const value = getStyleValue(styles, 'boxShadow')
 
-    expect(value).toBe('0 0 10px $nonexistent')
+    expect(value).toBe('0 0 10px nonexistent')
   })
 
   test('boxShadow with dotted token path resolves', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      boxShadow: '0 0 10px $color.white',
+      boxShadow: '0 0 10px color.white',
     })
     const value = getStyleValue(styles, 'boxShadow')
 
-    // dotted paths like $color.white resolve to the token value
+    // dotted paths like color.white resolve to the token value
     expect(value).toMatch(/var\(--.*white/)
   })
 
   // backgroundImage - supports linear-gradient with tokens
-  test('backgroundImage with $variable resolves to CSS var', () => {
+  test('backgroundImage with variable resolves to CSS var', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      backgroundImage: 'linear-gradient(to bottom, $white, $black)',
+      backgroundImage: 'linear-gradient(to bottom, white, black)',
     })
     const value = getStyleValue(styles, 'backgroundImage')
 
@@ -98,7 +98,7 @@ describe('shorthand variables - web', () => {
 
   test('backgroundImage with angle and multiple color stops', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      backgroundImage: 'linear-gradient(45deg, $black 0%, $white 50%, $black 100%)',
+      backgroundImage: 'linear-gradient(45deg, black 0%, white 50%, black 100%)',
     })
     const value = getStyleValue(styles, 'backgroundImage')
 
@@ -115,18 +115,18 @@ describe('shorthand variables - web', () => {
     expect(value).toBe('linear-gradient(to bottom, red, blue)')
   })
 
-  test('backgroundImage with unresolvable $variable keeps token string', () => {
+  test('backgroundImage with unresolvable variable keeps token string', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      backgroundImage: 'linear-gradient($nonexistent, $white)',
+      backgroundImage: 'linear-gradient(nonexistent, white)',
     })
     const value = getStyleValue(styles, 'backgroundImage')
 
-    expect(value).toMatch(/linear-gradient\(\$nonexistent, var\(--.*white/)
+    expect(value).toMatch(/linear-gradient\(\nonexistent, var\(--.*white/)
   })
 
-  test('backgroundImage with $token/NN opacity modifier resolves to color-mix', () => {
+  test('backgroundImage with token/NN opacity modifier resolves to color-mix', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      backgroundImage: 'linear-gradient(180deg, $white/50, $white/0)',
+      backgroundImage: 'linear-gradient(180deg, white/50, white/0)',
     })
     const value = getStyleValue(styles, 'backgroundImage')
 
@@ -150,9 +150,9 @@ describe('border shorthand - web', () => {
     expect(getStyleValue(styles, 'borderLeftColor')).toBe('red')
   })
 
-  test('border with $variable color resolves to CSS var', () => {
+  test('border with variable color resolves to CSS var', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      border: '2px dashed $white',
+      border: '2px dashed white',
     })
     const value = getStyleValue(styles, 'border')
 
@@ -191,9 +191,9 @@ describe('outline shorthand - web', () => {
     expect(getStyleValue(styles, 'outlineColor')).toBe('red')
   })
 
-  test('outline with $variable color resolves to CSS var', () => {
+  test('outline with variable color resolves to CSS var', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      outline: '2px solid $white',
+      outline: '2px solid white',
     })
     const value = getStyleValue(styles, 'outline')
 
@@ -253,12 +253,12 @@ describe('logical border shorthands - web', () => {
 })
 
 describe('tokens in variant styles - web', () => {
-  test('boxShadow with embedded $token in variant resolves to CSS var', () => {
+  test('boxShadow with embedded token in variant resolves to CSS var', () => {
     const Comp = styled(View, {
       variants: {
         floating: {
           true: {
-            boxShadow: '0 20px 40px $white',
+          boxShadow: "0 20px 40px white"
           },
         },
       } as const,
@@ -266,16 +266,16 @@ describe('tokens in variant styles - web', () => {
     const styles = simplifiedGetSplitStyles(Comp, { floating: true })
     const value = getStyleValue(styles, 'boxShadow')
 
-    // token should resolve, not remain as literal $white
+    // token should resolve, not remain as literal white
     expect(value).toMatch(/var\(--.*white/)
   })
 
-  test('border with embedded $token in variant resolves to CSS var', () => {
+  test('border with embedded token in variant resolves to CSS var', () => {
     const Comp = styled(View, {
       variants: {
         outlined: {
           true: {
-            border: '2px solid $white',
+          border: "2px solid white"
           },
         },
       } as const,
@@ -286,12 +286,12 @@ describe('tokens in variant styles - web', () => {
     expect(value).toMatch(/2px solid var\(--.*white/)
   })
 
-  test('backgroundImage with embedded $tokens in variant resolves', () => {
+  test('backgroundImage with embedded tokens in variant resolves', () => {
     const Comp = styled(View, {
       variants: {
         gradient: {
           true: {
-            backgroundImage: 'linear-gradient(to bottom, $white, $black)',
+          backgroundImage: "linear-gradient(to bottom, white, black)"
           },
         },
       } as const,
@@ -305,9 +305,9 @@ describe('tokens in variant styles - web', () => {
 })
 
 describe('border shorthand with media queries - web', () => {
-  test('border in $sm splits into per-longhand media programs', () => {
+  test('border in sm splits into per-longhand media programs', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      $sm: { border: '2px solid green' },
+      border: 'sm:2px solid green',
     })
 
     // the border family splits the composite into width/style/color programs
@@ -328,9 +328,9 @@ describe('border shorthand with media queries - web', () => {
     expect(colorRules).toContain('border-top-color:green')
   })
 
-  test('border in $sm with token resolves through the variable', () => {
+  test('border in sm with token resolves through the variable', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      $sm: { border: '1px dashed $white' },
+      border: 'sm:1px dashed white',
     })
 
     const colorRules = (

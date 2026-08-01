@@ -232,7 +232,7 @@ describe('styled v3 overloads', () => {
 
     type Props = GetProps<typeof Advanced>
     expectTypeOf<Props['tone']>().toEqualTypeOf<'quiet' | undefined>()
-    expectTypeOf<'$4'>().toMatchTypeOf<Props['iconSize']>()
+    expectTypeOf<'4'>().toMatchTypeOf<Props['iconSize']>()
   })
 
   test('static class strings are typed as static style input leaves only', () => {
@@ -659,7 +659,7 @@ describe('styled v3 overloads', () => {
 
   test('context keys already accepted by a parent stay on one prop path', () => {
     const TextContext = createStyledContext({
-      size: '$4' as '$4' | '$5',
+      size: '4' as '4' | '5',
       color: undefined as string | undefined,
       tone: 'neutral' as 'neutral' | 'critical',
     })
@@ -675,14 +675,14 @@ describe('styled v3 overloads', () => {
       context: TextContext,
       variants: {
         size: {
-          $4: { fontSize: '$4' },
-          $5: { fontSize: '$5' },
+          4: { fontSize: '4' },
+          5: { fontSize: '5' },
         },
       },
     } as const)
 
     type Props = GetProps<typeof ContextTextChild>
-    expectTypeOf<'$4'>().toMatchTypeOf<Props['size']>()
+    expectTypeOf<'4'>().toMatchTypeOf<Props['size']>()
     expectTypeOf<string | undefined>().toMatchTypeOf<Props['color']>()
     expectTypeOf<Props['tone']>().toEqualTypeOf<'neutral' | 'critical' | undefined>()
     expectTypeOf<HasStringIndex<Props>>().toEqualTypeOf<false>()

@@ -29,17 +29,13 @@ describe('compoundVariants - iOS platform specificity', () => {
       {
         state: 'active' as const,
         style: {
-          $ios: {
-            marginTop: 2000,
-          },
+          marginTop: 'ios:2000px',
         },
       },
       ...Array.from({ length: 1005 }, (_, index) => ({
         state: 'active' as const,
         style: {
-          $native: {
-            marginTop: index,
-          },
+          marginTop: `native:${index}px`,
         },
       })),
     ]
@@ -74,16 +70,7 @@ describe('compoundVariants - iOS platform specificity', () => {
     const equalSpecificityLaterWins = simplifiedGetSplitStyles(
       Frame,
       {
-        $sm: {
-          $ios: {
-            marginTop: 1,
-          },
-        },
-        $ios: {
-          $sm: {
-            marginTop: 2,
-          },
-        },
+        marginTop: 'sm:ios:1px ios:sm:2px',
       },
       {
         mediaState: {
@@ -97,16 +84,7 @@ describe('compoundVariants - iOS platform specificity', () => {
     const higherSpecificityWins = simplifiedGetSplitStyles(
       Frame,
       {
-        $ios: {
-          $sm: {
-            marginTop: 2,
-          },
-        },
-        $native: {
-          $sm: {
-            marginTop: 3,
-          },
-        },
+        marginTop: 'ios:sm:2px native:sm:3px',
       },
       {
         mediaState: {

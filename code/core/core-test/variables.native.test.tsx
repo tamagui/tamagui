@@ -8,12 +8,12 @@ import { createTamagui, getMergedInlineTheme, inlineLayerKey, px } from '../web/
 const conf = createTamagui({
   ...getDefaultTamaguiConfig('native'),
   variables: {
-    surfaceBorder: '$color',
+    surfaceBorder: 'color',
     disabledOpacity: 0.5,
     focusRingWidth: 2,
     radius: 9,
     accent: { light: '#001', dark: '#ffe' },
-    chained: '$surfaceBorder',
+    chained: 'surfaceBorder',
   },
 })
 
@@ -70,10 +70,10 @@ describe('getMergedInlineTheme (native inline layer)', () => {
       lightTheme,
       {
         values: {
-          accent: '$surfaceBorder',
-          surfaceBorder: '$background',
+          accent: 'surfaceBorder',
+          surfaceBorder: 'background',
           focusRingWidth: '10px',
-          disabledOpacity: '$color.white' as any,
+          disabledOpacity: 'color.white' as any,
           radius: px(6),
         } as any,
       },
@@ -95,7 +95,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
     const merged: any = getMergedInlineTheme(
       lightTheme,
       {
-        values: { surfaceBorder: '$chained', chained: '$surfaceBorder', accent: '#123' },
+        values: { surfaceBorder: 'chained', chained: 'surfaceBorder', accent: '#123' },
       },
       'light',
       conf
@@ -109,7 +109,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
     const scheme: any = getMergedInlineTheme(
       lightTheme,
       {
-        values: { surfaceBorder: '$chained', chained: '$surfaceBorder' },
+        values: { surfaceBorder: 'chained', chained: 'surfaceBorder' },
         dark: { chained: 'red' },
       },
       'light',
@@ -128,7 +128,7 @@ describe('getMergedInlineTheme (native inline layer)', () => {
     const merged: any = getMergedInlineTheme(
       lightTheme,
       {
-        values: { accent: '#111', surfaceBorder: '$background' },
+        values: { accent: '#111', surfaceBorder: 'background' },
         dark: { accent: '#eee' },
       },
       'light',

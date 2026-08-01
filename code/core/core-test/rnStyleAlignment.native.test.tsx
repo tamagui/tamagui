@@ -53,7 +53,7 @@ describe('RN 0.76+ Style Alignment - Native', () => {
 
     test('boxShadow with tokens resolves them', () => {
       const { style } = getSplitStylesFor({
-        boxShadow: '0 0 10px $white',
+        boxShadow: '0 0 10px white',
       })
       expect(style?.boxShadow).toBeDefined()
       expect(style?.boxShadow).toEqual([
@@ -95,10 +95,10 @@ describe('RN 0.76+ Style Alignment - Native', () => {
 
     test('filter with tokens resolves them', () => {
       const { style } = getSplitStylesFor({
-        filter: 'blur($2)',
+        filter: 'blur(2)',
       })
       expect(style?.filter).toBeDefined()
-      expect(style?.filter).not.toContain('$2')
+      expect(style?.filter).not.toContain('2')
     })
 
     test('filter multiple functions', () => {
@@ -146,7 +146,7 @@ describe('RN 0.76+ Style Alignment - Native', () => {
   describe('outline props', () => {
     test('outlineColor with token resolves', () => {
       const { style } = getSplitStylesFor({
-        outlineColor: '$white',
+        outlineColor: 'white',
       })
       expect(style?.outlineColor).toBeDefined()
       expect(style?.outlineColor).not.toContain('$')

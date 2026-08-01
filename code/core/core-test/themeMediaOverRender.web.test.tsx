@@ -1,6 +1,6 @@
 // Guards the granular re-render contract:
 //
-//   - Components that read theme tokens (via $-prefixed style props or
+//   - Components that read theme tokens (via bare style values or
 //     useTheme().val) MUST re-render when the theme they depend on changes.
 //   - Components that DO NOT read theme tokens MUST NOT re-render on a theme
 //     change. (the regression that motivated this test: a moonshot that
@@ -8,7 +8,7 @@
 //     ThemeState directly into ThemeStateContext caused every consumer to
 //     re-render on any theme update, killing toggle perf.)
 //
-// Same shape for media: components that don't touch a $-prefixed media key
+// Same shape for media: components that do not author a media clause
 // must not re-render when the media state changes.
 process.env.TAMAGUI_TARGET = 'web'
 
@@ -310,7 +310,7 @@ describe('first-render optimization mode', () => {
       const theme = useTheme()
       const media = useMedia()
       const background = theme.background.val
-      const backgroundAlias = theme.$background
+      const backgroundAlias = theme["background"]
 
       return (
         <span

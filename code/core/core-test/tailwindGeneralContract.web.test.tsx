@@ -22,33 +22,32 @@ describe('media default keys parity — fallback set covers the canonical config
   })
 
   test('a standard max-* key round-trips with NO config passed (hyphenated JSX attr)', () => {
-    // JSX attribute names may contain hyphens, so $max-md is a valid source prop
-    const out = convert(`<View $max-md={{ display: 'none' }} />`)
+    const out = convert(`<View display="max-md:none" />`)
     expect(out).toContain('max-md:hidden')
   })
 })
 
 describe('converter purity / reentrancy — no module-global config leakage', () => {
   test('interleaved token-domain configs do not leak membership', () => {
-    const A = { tokens: { space: { $4: 20 } } }
-    const B = { tokens: { space: { $5: 99 } } }
-    expect(convert(`<View padding="$4" />`, A)).toBe('p-4')
-    expect(convert(`<View padding="$4" />`, B)).toBe('')
-    expect(convert(`<View padding="$4" />`, A)).toBe('p-4')
-    expect(convert(`<View padding="$4" />`)).toBe('p-4')
+    const A = { tokens: { space: { 4: 20 } } }
+    const B = { tokens: { space: { 5: 99 } } }
+    expect(convert(`<View padding="4" />`, A)).toBe('p-4')
+    expect(convert(`<View padding="4" />`, B)).toBe('')
+    expect(convert(`<View padding="4" />`, A)).toBe('p-4')
+    expect(convert(`<View padding="4" />`)).toBe('p-4')
   })
 
   test('interleaved media configs each use their own key set', () => {
     const A = { media: { tablet: {} } }
     const B = { media: { widescreen: {} } }
-    expect(convert(`<View $tablet={{ padding: 10 }} />`, A)).toBe('tablet:p-[10px]')
-    // B has no `tablet` → $tablet is NOT converted (retained); A did not leak into B
+    expect(convert(`<View padding="tablet:10px" />`, A)).toBe('tablet:p-[10px]')
+    // B has no `tablet`, so the flat value is retained; A did not leak into B.
     expect(
-      tamaguiToTailwind(`<View $tablet={{ padding: 10 }} />`, {
+      tamaguiToTailwind(`<View padding="tablet:10px" />`, {
         renameComponents: false,
         ...B,
       })
-    ).toContain('$tablet=')
+    ).toContain('padding="tablet:10px"')
   })
 })
 
@@ -64,11 +63,11 @@ describe('config-aware shorthands — uses the PASSED shorthands, not the hardco
   })
 
   test('passing shorthands REPLACES the default set (hardcode not consulted)', () => {
-    // with a shorthands map that lacks `p`, `p="$4"` is NOT treated as padding → retained
-    const out = tamaguiToTailwind(`<View p="$4" />`, {
+    // with a shorthands map that lacks `p`, `p="4"` is NOT treated as padding → retained
+    const out = tamaguiToTailwind(`<View p="4" />`, {
       renameComponents: false,
       shorthands: { bgc: 'backgroundColor' },
     })
-    expect(out).toContain('p="$4"') // retained, since this config's shorthands has no `p`
+    expect(out).toContain('p="4"') // retained, since this config's shorthands has no `p`
   })
 })

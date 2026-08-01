@@ -22,7 +22,7 @@ describe('config variables inference', () => {
         dark: { background: '#000', color: '#fff' },
       },
       variables: {
-        surfaceBorder: '$color',
+        surfaceBorder: 'color',
         disabledOpacity: 0.5,
         accent: { light: '#001', dark: '#ffe' },
       },
@@ -39,7 +39,7 @@ describe('config variables inference', () => {
 
   test('GenericVariables accepts literals, references, and scheme pairs', () => {
     const good: GenericVariables = {
-      ref: '$borderColor',
+      ref: 'borderColor',
       literal: 10,
       easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
       scoped: { light: '#fff', dark: '#000' },
@@ -54,7 +54,7 @@ describe('config variables inference', () => {
 describe('VariablesProps', () => {
   test('values/dark/light accept theme-key records', () => {
     const props: VariablesProps = {
-      values: { background: '$color', anything: 10 },
+      values: { background: 'color', anything: 10 },
       dark: { background: '#000' },
       light: { background: '#fff' },
     }

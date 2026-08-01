@@ -33,9 +33,9 @@ describe('identifier lookup', () => {
     const space = context.getLookup('padding')('4')!
     const size = context.getLookup('width')('4')!
     expect(context.toVar(space.name)).toBe(
-      tamaguiConfig.tokensParsed.space['$4'].variable
+      tamaguiConfig.tokensParsed.space['4'].variable
     )
-    expect(context.toVar(size.name)).toBe(tamaguiConfig.tokensParsed.size['$4'].variable)
+    expect(context.toVar(size.name)).toBe(tamaguiConfig.tokensParsed.size['4'].variable)
     expect(context.toVar(space.name)).not.toBe(context.toVar(size.name))
   })
 
@@ -72,7 +72,7 @@ describe('identifier lookup', () => {
     const font = (tamaguiConfig.fontsParsed as Record<string, any>)[
       tamaguiConfig.defaultFontToken
     ]
-    expect(context.toVar(reference!.name)).toBe(font.size['$4'].variable)
+    expect(context.toVar(reference!.name)).toBe(font.size['4'].variable)
   })
 
   test('bare numbers resolve only for numeric-category props', () => {
@@ -95,7 +95,7 @@ describe('serialization against the real config', () => {
       resolveNumbers: context.resolvesNumbers('padding'),
     })
     expect(serializePayloadWeb(resolved, context.toVar)).toBe(
-      tamaguiConfig.tokensParsed.space['$4'].variable
+      tamaguiConfig.tokensParsed.space['4'].variable
     )
   })
 
@@ -144,7 +144,7 @@ describe('modifiers from the real config', () => {
     // unprefixed platform names, which is what the flat grammar spells
     expect(context.registry.get('web')).toBe('platform')
     expect(context.registry.get('ios')).toBe('platform')
-    expect(context.registry.get('$web')).toBeUndefined()
+    expect(context.registry.get('web')).toBeUndefined()
   })
 
   test('container modifiers resolve for real media sizes', () => {

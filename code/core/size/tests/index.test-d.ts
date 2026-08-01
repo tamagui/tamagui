@@ -19,13 +19,13 @@ declare const extras: {
 const first = createSizeTable(
   {
     small: {
-      frame: { height: 28, borderRadius: '$2' },
-      text: { fontSize: '$3' },
+      frame: { height: 28, borderRadius: '2' },
+      text: { fontSize: '3' },
       icon: 14,
     },
     large: {
-      frame: { height: 44, borderRadius: '$4' },
-      text: { fontSize: '$5' },
+      frame: { height: 44, borderRadius: '4' },
+      text: { fontSize: '5' },
       icon: 22,
     },
   } as const,
@@ -36,7 +36,7 @@ const second = createSizeTable(
   {
     small: {
       frame: { height: 20 },
-      text: { fontSize: '$1' },
+      text: { fontSize: '1' },
       icon: 10,
     },
   } as const,
@@ -47,11 +47,11 @@ describe('size table types', () => {
   test('retains exact names and literal projections', () => {
     expectTypeOf<SizeTableName<typeof first.values>>().toEqualTypeOf<'small' | 'large'>()
     expectTypeOf(first.resolve('small').frame.height).toEqualTypeOf<28>()
-    expectTypeOf(first.resolve('large').text.fontSize).toEqualTypeOf<'$5'>()
+    expectTypeOf(first.resolve('large').text.fontSize).toEqualTypeOf<'5'>()
     expectTypeOf(first.resolve('small').icon).toEqualTypeOf<14>()
     expectTypeOf(first.resolve().frame.height).toEqualTypeOf<28>()
     expectTypeOf(first.frame.small.height).toEqualTypeOf<28>()
-    expectTypeOf(first.text.large.fontSize).toEqualTypeOf<'$5'>()
+    expectTypeOf(first.text.large.fontSize).toEqualTypeOf<'5'>()
     expectTypeOf(first.icon.small).toEqualTypeOf<14>()
   })
 
@@ -81,16 +81,16 @@ describe('size table types', () => {
   })
 
   test('creates typed token and raw-size contexts with defaults', () => {
-    const context = createSizeContext<'$2' | '$4' | 24 | true>('$2')
+    const context = createSizeContext<'2' | '4' | 24 | true>('2')
     type ProviderProps = ComponentProps<typeof context.Provider>
 
     expectTypeOf<ProviderProps['size']>().toEqualTypeOf<
-      '$2' | '$4' | 24 | true | undefined
+      '2' | '4' | 24 | true | undefined
     >()
   })
 
   test('resolves token categories independently and leaves literals intact', () => {
-    const token = resolveTokenSize('$4', extras)
+    const token = resolveTokenSize('4', extras)
     const literal = resolveTokenSize(24, extras)
     const defaults = resolveTokenSize(true, extras)
 

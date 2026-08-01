@@ -21,13 +21,13 @@ describe('TS-style variant resolvers - native', () => {
       variants: {
         kind: {
           'Size | number': (value) => ({
-            opacity: value === '$4' ? 0.61 : 0.62,
+            opacity: value === '4' ? 0.61 : 0.62,
           }),
         },
       } as const,
     })
 
-    expect(getOpacity(Comp, '$4')).toBe(0.61)
+    expect(getOpacity(Comp, '4')).toBe(0.61)
     expect(getOpacity(Comp, 4)).toBe(0.62)
   })
 
@@ -66,7 +66,7 @@ describe('TS-style variant resolvers - native', () => {
     })
 
     expect(getOpacity(Comp, true)).toBe(0.65)
-    expect(seenSize).toBe('$4')
+    expect(seenSize).toBe('4')
   })
 
   test('legacy-shaped keys only match as exact literals', () => {
@@ -86,7 +86,7 @@ describe('TS-style variant resolvers - native', () => {
     expect(getOpacity(Comp, legacySpreadKey)).toBe(0.66)
     expect(getOpacity(Comp, legacyNumberKey)).toBe(0.67)
     expect(getOpacity(Comp, legacyCatchAllKey)).toBe(0.68)
-    expect(getOpacity(Comp, '$4')).toBeUndefined()
+    expect(getOpacity(Comp, '4')).toBeUndefined()
     expect(getOpacity(Comp, 4)).toBeUndefined()
     expect(getOpacity(Comp, 'other')).toBeUndefined()
   })

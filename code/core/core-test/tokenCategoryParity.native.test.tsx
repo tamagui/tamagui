@@ -29,7 +29,7 @@ test('borderWidth binds the space category on native', () => {
 
 test('fontFamily resolves the configured family value, not the literal name', () => {
   const result = split({ fontFamily: 'heading' })
-  expect(result.fontFamily).toBe('$heading')
+  expect(result.fontFamily).toBe('heading')
   expect(result.style?.fontFamily).toBe('Heading')
 })
 

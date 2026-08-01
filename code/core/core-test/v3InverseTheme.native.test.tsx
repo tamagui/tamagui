@@ -16,7 +16,7 @@ describe('v3 inverse sub-themes on native', () => {
     const tree = render(
       <TamaguiProvider config={config} defaultTheme="light">
         <Theme name="inverse">
-          <View backgroundColor="$background" />
+          <View backgroundColor="background" />
         </Theme>
       </TamaguiProvider>
     )

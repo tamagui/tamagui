@@ -13,24 +13,24 @@ describe('size primitives', () => {
   test('resolves true by category while retaining explicit values', () => {
     setConfig({
       settings: {
-        defaultSize: '$frame-default',
+        defaultSize: 'frame-default',
         defaultTokens: {
-          space: '$space-default',
-          radius: '$radius-default',
-          fontSize: '$font-default',
+          space: 'space-default',
+          radius: 'radius-default',
+          fontSize: 'font-default',
         },
       },
     } as TamaguiInternalConfig)
 
     const extras = {
       tokens: {
-        size: { '$frame-default': 40, $4: 44 },
-        space: { '$space-default': 12, $4: 14 },
-        radius: { '$radius-default': 8, $4: 10 },
+        size: { 'frame-default': 40, 4: 44 },
+        space: { 'space-default': 12, 4: 14 },
+        radius: { 'radius-default': 8, 4: 10 },
       },
       font: {
-        size: { '$font-default': 16, $4: 18 },
-        lineHeight: { '$font-default': 22, $4: 24 },
+        size: { 'font-default': 16, 4: 18 },
+        lineHeight: { 'font-default': 22, 4: 24 },
       },
     } as unknown as SizeResolverExtras
 
@@ -43,7 +43,7 @@ describe('size primitives', () => {
       text: { fontSize: 16, lineHeight: 22 },
       icon: 16,
     })
-    expect(resolveTokenSize('$4', extras)).toEqual({
+    expect(resolveTokenSize('4', extras)).toEqual({
       frame: { size: 44, space: 14, radius: 10 },
       text: { fontSize: 18, lineHeight: 24 },
       icon: 18,
@@ -82,10 +82,10 @@ describe('size primitives', () => {
   })
 
   test('creates an optional generic context with an explicit default when requested', () => {
-    const defaulted = createSizeContext('$4')
+    const defaulted = createSizeContext('4')
 
     expect(SizeContext.props).toEqual({ size: undefined })
-    expect(defaulted.props).toEqual({ size: '$4' })
+    expect(defaulted.props).toEqual({ size: '4' })
     expect(defaulted.context).not.toBe(SizeContext.context)
   })
 })

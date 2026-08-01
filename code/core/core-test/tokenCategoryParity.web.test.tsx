@@ -58,7 +58,7 @@ test('fontFamily resolves the configured font and records the scope', () => {
   const result = split({ fontFamily: 'heading' }, Text.staticConfig)
   // the font scope drives the font_heading class; without it the family
   // variable resolves to the default font and the value is silently wrong
-  expect(result.fontFamily).toBe('$heading')
+  expect(result.fontFamily).toBe('heading')
   const className = result.classNames.fontFamily
   expect(className).toBeTruthy()
   const [rule] = rulesFor(result, className)

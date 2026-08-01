@@ -17,9 +17,7 @@ function NestedGroup({ index, active }: { index: number; active: boolean }) {
     index === 0
       ? {}
       : {
-          [`$group-${parent}-press`]: {
-            opacity: active ? 0.96 : 0.95,
-          },
+          opacity: `group-press/${parent}:${active ? 0.96 : 0.95}`,
         }
 
   return (
@@ -39,12 +37,8 @@ function NestedGroupCase() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
       <View
-        testID="nested-group-root"
-        disableClassName
-        group="root"
-        pressStyle={{ opacity: 0.9 }}
-        onPress={() => setActive((x) => !x)}
-      >
+                  testID="nested-group-root" disableClassName group="root" opacity="press:0.9" onPress={() => setActive((x) => !x)}
+                >
         <NestedGroup index={0} active={active} />
       </View>
     </TamaguiProvider>

@@ -38,7 +38,7 @@ test('a channel program is byte-identical to the authored string', () => {
   const viaChannel = split({
     // the transport key is a synthetic position marker, never the property:
     // that is what lets one property receive several contributions
-    $tw0: createFrontendProgram('backgroundColor', {
+    frontendProgram0: createFrontendProgram('backgroundColor', {
       base: 'red',
       clauses: [{ modifiers: ['hover'], payload: 'blue' }],
     }),
@@ -56,12 +56,12 @@ test('THE REQUIREMENT: repeated contributions to one property, interleaved with 
     bg: 'green sm:yellow',
   })
   const viaChannel = split({
-    $tw0: createFrontendProgram('backgroundColor', {
+    frontendProgram0: createFrontendProgram('backgroundColor', {
       base: 'red',
       clauses: [{ modifiers: ['hover'], payload: 'blue' }],
     }),
     padding: '4',
-    $tw1: createFrontendProgram('backgroundColor', {
+    frontendProgram1: createFrontendProgram('backgroundColor', {
       base: 'green',
       clauses: [{ modifiers: ['sm'], payload: 'yellow' }],
     }),
@@ -72,7 +72,7 @@ test('THE REQUIREMENT: repeated contributions to one property, interleaved with 
 test('the host ruling applies to the real property, not the transport key', () => {
   // color is text-only: a minted program targeting it on a plain View drops
   const result = split({
-    $tw0: createFrontendProgram('color', {
+    frontendProgram0: createFrontendProgram('color', {
       base: 'red',
       clauses: [{ modifiers: ['hover'], payload: 'blue' }],
     }),
@@ -93,7 +93,7 @@ test('clause order and registry spellings carry verbatim', () => {
   }
   const viaString = split({ backgroundColor: 'red group-active/card:blue sm:green' })
   const viaChannel = split({
-    $tw0: createFrontendProgram('backgroundColor', value),
+    frontendProgram0: createFrontendProgram('backgroundColor', value),
   })
   expect(fullOutput(viaChannel)).toBe(fullOutput(viaString))
 })
@@ -101,7 +101,7 @@ test('clause order and registry spellings carry verbatim', () => {
 test('a later plain value restates the base exactly like the string path', () => {
   const viaString = split({ backgroundColor: 'red hover:blue', bg: 'green' })
   const viaChannel = split({
-    $tw0: createFrontendProgram('backgroundColor', {
+    frontendProgram0: createFrontendProgram('backgroundColor', {
       base: 'red',
       clauses: [{ modifiers: ['hover'], payload: 'blue' }],
     }),
@@ -116,7 +116,7 @@ test('an unminted structural clone contributes nothing', () => {
     value: { base: 'red', clauses: [{ modifiers: ['hover'], payload: 'blue' }] },
   }
   const result = split({ backgroundColor: clone })
-  // the clone takes the legacy unknown-object path (stringified, garbage
+  // the clone takes the ordinary unknown-object path (stringified, garbage
   // class) exactly as any foreign object always has — the channel's pin is
   // that it NEVER parses as a program: no hover selector in any emitted rule
   const ruleText = Object.values(result.rulesToInsert ?? {})

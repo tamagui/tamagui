@@ -18,7 +18,7 @@ const config = createTamagui({
 const inverseTree = (
   <TamaguiProvider config={config} defaultTheme="light">
     <Theme name="inverse">
-      <View backgroundColor="$background" />
+      <View backgroundColor="background" />
     </Theme>
   </TamaguiProvider>
 )

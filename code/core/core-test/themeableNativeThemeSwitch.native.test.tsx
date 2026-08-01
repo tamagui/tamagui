@@ -32,7 +32,7 @@ const findBg = (node: any): any => {
 test('styled HOC leaf updates token color on theme switch (native)', () => {
   const ui = (theme: string) => (
     <TamaguiProvider config={config} defaultTheme={theme}>
-      <Custom backgroundColor="$color" width={10} height={10} />
+      <Custom backgroundColor="color" width={10} height={10} />
     </TamaguiProvider>
   )
   const { rerender, toJSON } = render(ui('light'))

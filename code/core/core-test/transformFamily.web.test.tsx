@@ -105,8 +105,8 @@ test('x resolves space tokens like padding does', () => {
   const result = split({ x: '4 hover:8' })
   const axisClass = result.classNames['--t-x']
   const rules = rulesFor(result, axisClass)
-  expect(rules[0]).toBe(`.${axisClass}{--t-x:${conf.tokensParsed.space['$4'].variable}}`)
-  expect(rules[1]).toContain(conf.tokensParsed.space['$8'].variable)
+  expect(rules[0]).toBe(`.${axisClass}{--t-x:${conf.tokensParsed.space['4'].variable}}`)
+  expect(rules[1]).toContain(conf.tokensParsed.space['8'].variable)
 })
 
 test('clause-free transform values are base-only axis programs', () => {

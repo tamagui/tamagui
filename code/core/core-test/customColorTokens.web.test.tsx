@@ -38,26 +38,26 @@ describe('custom color tokens', () => {
     const tamagui = createTamagui(config)
 
     // Check that custom colors are available in tokensParsed with correct structure
-    expect(tamagui.tokensParsed.color['$customRed']).toBeDefined()
-    expect(tamagui.tokensParsed.color['$customRed']).toMatchObject({
+    expect(tamagui.tokensParsed.color['customRed']).toBeDefined()
+    expect(tamagui.tokensParsed.color['customRed']).toMatchObject({
       isVar: true,
-      key: '$customRed',
+      key: 'customRed',
       name: 'c-color-customRed',
       val: '#ff0000',
       variable: 'var(--c-color-customRed)',
     })
 
-    expect(tamagui.tokensParsed.color['$customBlue']).toMatchObject({
+    expect(tamagui.tokensParsed.color['customBlue']).toMatchObject({
       isVar: true,
-      key: '$customBlue',
+      key: 'customBlue',
       name: 'c-color-customBlue',
       val: '#0000ff',
       variable: 'var(--c-color-customBlue)',
     })
 
-    expect(tamagui.tokensParsed.color['$customGreen']).toMatchObject({
+    expect(tamagui.tokensParsed.color['customGreen']).toMatchObject({
       isVar: true,
-      key: '$customGreen',
+      key: 'customGreen',
       name: 'c-color-customGreen',
       val: '#00ff00',
       variable: 'var(--c-color-customGreen)',
@@ -110,9 +110,9 @@ describe('custom color tokens', () => {
     const tamagui = createTamagui(config)
 
     // Check token structure
-    expect(tamagui.tokensParsed.color['$customAccent']).toMatchObject({
+    expect(tamagui.tokensParsed.color['customAccent']).toMatchObject({
       isVar: true,
-      key: '$customAccent',
+      key: 'customAccent',
       name: 'c-color-customAccent',
       val: '#ff00ff',
       variable: 'var(--c-color-customAccent)',

@@ -11,14 +11,14 @@ describe('createTamagui', () => {
   test(`z-index resolves to correct unitless values`, () => {
     const theme = createTamagui(config.getDefaultTamaguiConfig())
     expect(theme.themeConfig.cssRuleSets[0].includes('--t-zIndex-1:100;')).toBeTruthy()
-    expect(theme.tokensParsed.zIndex['$1'].name).toEqual('t-zIndex-1')
-    expect(theme.tokensParsed.zIndex['$1'].variable).toEqual('var(--t-zIndex-1)')
-    expect(theme.tokensParsed.zIndex['$1'].val).toEqual(100)
+    expect(theme.tokensParsed.zIndex['1'].name).toEqual('t-zIndex-1')
+    expect(theme.tokensParsed.zIndex['1'].variable).toEqual('var(--t-zIndex-1)')
+    expect(theme.tokensParsed.zIndex['1'].val).toEqual(100)
   })
 
-  test(`settings.defaultSize defaults to $4`, () => {
+  test(`settings.defaultSize defaults to 4`, () => {
     const theme = createTamagui(config.getDefaultTamaguiConfig())
-    expect(theme.settings.defaultSize).toBe('$4')
+    expect(theme.settings.defaultSize).toBe('4')
   })
 
   test(`settings.defaultSize normalizes unprefixed token names`, () => {
@@ -31,7 +31,7 @@ describe('createTamagui', () => {
       },
     })
 
-    expect(theme.settings.defaultSize).toBe('$5')
+    expect(theme.settings.defaultSize).toBe('5')
   })
 
   test(`font reset uses the configured default when another font sorts first`, () => {
@@ -58,9 +58,9 @@ describe('createTamagui', () => {
     const rootFontRule = theme.themeConfig.cssRuleSets.find((rule) =>
       rule.includes('.is_View')
     )
-    expect(rootFontRule).toContain(theme.fontsParsed.$body.family.variable)
-    expect(rootFontRule).toContain(theme.fontsParsed.$body.lineHeight.$4.variable)
-    expect(rootFontRule).not.toContain(theme.fontsParsed.$aaa.lineHeight.$3.variable)
+    expect(rootFontRule).toContain(theme.fontsParsed["body"].family.variable)
+    expect(rootFontRule).toContain(theme.fontsParsed["body"].lineHeight["4"].variable)
+    expect(rootFontRule).not.toContain(theme.fontsParsed["aaa"].lineHeight["3"].variable)
   })
 
   test(`font reset uses body without depending on sort order when defaultFont is omitted`, () => {
@@ -90,7 +90,7 @@ describe('createTamagui', () => {
       },
     })
 
-    expect(withoutDefaultFont.defaultFontToken).toBe('$body')
+    expect(withoutDefaultFont.defaultFontToken).toBe('body')
     expect(withoutDefaultFont.themeConfig.cssRuleSets).toEqual(
       withExplicitDefault.themeConfig.cssRuleSets
     )
@@ -108,7 +108,7 @@ describe('createTamagui', () => {
         },
       })
     ).toThrow(
-      'settings.defaultFont points to missing font "$missing". Configure fonts.missing or choose an existing default.'
+      'settings.defaultFont points to missing font "missing". Configure fonts.missing or choose an existing default.'
     )
   })
 
@@ -129,29 +129,29 @@ describe('createTamagui', () => {
     })
 
     expect(theme.settings).toMatchObject({
-      defaultSize: '$5',
+      defaultSize: '5',
       defaultTokens: {
-        space: '$4',
-        radius: '$3',
-        zIndex: '$2',
-        fontSize: '$4',
+        space: '4',
+        radius: '3',
+        zIndex: '2',
+        fontSize: '4',
       },
     })
-    expect(getDefaultToken('size')).toBe('$5')
-    expect(getDefaultToken('space')).toBe('$4')
-    expect(getDefaultToken('radius')).toBe('$3')
-    expect(getDefaultToken('zIndex')).toBe('$2')
-    expect(getDefaultToken('fontSize')).toBe('$4')
-    expect(getSize(true).key).toBe('$5')
-    expect(getSpace(true).key).toBe('$4')
-    expect(getRadius(true).key).toBe('$3')
-    expect(getFontSizeToken(true)).toBe('$4')
-    expect(resolveDefaultToken('$5', 'space')).toBe('$5')
+    expect(getDefaultToken('size')).toBe('5')
+    expect(getDefaultToken('space')).toBe('4')
+    expect(getDefaultToken('radius')).toBe('3')
+    expect(getDefaultToken('zIndex')).toBe('2')
+    expect(getDefaultToken('fontSize')).toBe('4')
+    expect(getSize(true).key).toBe('5')
+    expect(getSpace(true).key).toBe('4')
+    expect(getRadius(true).key).toBe('3')
+    expect(getFontSizeToken(true)).toBe('4')
+    expect(resolveDefaultToken('5', 'space')).toBe('5')
 
     const rootFontRule = theme.themeConfig.cssRuleSets.find((rule) =>
       rule.includes('.is_View')
     )
-    expect(rootFontRule).toContain(theme.fontsParsed.$body.lineHeight.$4.variable)
+    expect(rootFontRule).toContain(theme.fontsParsed["body"].lineHeight["4"].variable)
     expect(rootFontRule).not.toContain('var(--f-lineHeight-5)')
   })
 
@@ -166,10 +166,10 @@ describe('createTamagui', () => {
           ...baseConfig,
           settings: {
             ...baseConfig.settings,
-            defaultSize: '$missing',
+            defaultSize: 'missing',
           },
         })
-      ).toThrow(/settings\.defaultSize.*tokens\.size\.\$missing/)
+      ).toThrow(/settings\.defaultSize.*tokens\.size\.missing/)
     } finally {
       process.env.NODE_ENV = originalNodeEnv
     }
@@ -191,7 +191,7 @@ describe('createTamagui', () => {
             },
           },
         })
-      ).toThrow(/settings\.defaultTokens\.radius.*tokens\.radius\.\$missing/)
+      ).toThrow(/settings\.defaultTokens\.radius.*tokens\.radius\.missing/)
 
       expect(() =>
         createTamagui({
@@ -203,7 +203,7 @@ describe('createTamagui', () => {
             },
           },
         })
-      ).toThrow(/settings\.defaultTokens\.space.*tokens\.space\.\$missing/)
+      ).toThrow(/settings\.defaultTokens\.space.*tokens\.space\.missing/)
 
       expect(() =>
         createTamagui({
@@ -215,7 +215,7 @@ describe('createTamagui', () => {
             },
           },
         })
-      ).toThrow(/settings\.defaultTokens\.zIndex.*tokens\.zIndex\.\$missing/)
+      ).toThrow(/settings\.defaultTokens\.zIndex.*tokens\.zIndex\.missing/)
 
       expect(() =>
         createTamagui({
@@ -227,7 +227,7 @@ describe('createTamagui', () => {
             },
           },
         })
-      ).toThrow(/settings\.defaultTokens\.fontSize.*fonts\.\$body\.size\.\$missing/)
+      ).toThrow(/settings\.defaultTokens\.fontSize.*fonts\.body\.size\.missing/)
     } finally {
       process.env.NODE_ENV = originalNodeEnv
     }
@@ -278,30 +278,30 @@ describe('createTamagui', () => {
       },
       settings: {
         defaultFont: 'body',
-        defaultSize: '$4',
+        defaultSize: '4',
       },
     }
 
     createTamagui(legacyConfig)
 
-    expect(getSize(true).key).toBe('$4')
-    expect(getSpace(true).key).toBe('$4')
-    expect(getRadius(true).key).toBe('$4')
-    expect(getFontSizeToken(true)).toBe('$4')
-    expect(getFontSizeToken(true, { relativeSize: 1 })).toBe('$5')
+    expect(getSize(true).key).toBe('4')
+    expect(getSpace(true).key).toBe('4')
+    expect(getRadius(true).key).toBe('4')
+    expect(getFontSizeToken(true)).toBe('4')
+    expect(getFontSizeToken(true, { relativeSize: 1 })).toBe('5')
 
     createTamagui({
       ...legacyConfig,
       settings: {
         ...legacyConfig.settings,
-        defaultSize: '$5',
+        defaultSize: '5',
       },
     })
 
-    expect(getSize(true).key).toBe('$5')
-    expect(getSpace(true).key).toBe('$5')
-    expect(getRadius(true).key).toBe('$5')
-    expect(getDefaultToken('zIndex')).toBe('$5')
-    expect(getFontSizeToken(true)).toBe('$5')
+    expect(getSize(true).key).toBe('5')
+    expect(getSpace(true).key).toBe('5')
+    expect(getRadius(true).key).toBe('5')
+    expect(getDefaultToken('zIndex')).toBe('5')
+    expect(getFontSizeToken(true)).toBe('5')
   })
 })

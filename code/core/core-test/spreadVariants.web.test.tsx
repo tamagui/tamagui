@@ -43,22 +43,22 @@ describe('Color variant resolver (#3892)', () => {
     { accept: { stroke: 'color' } }
   )
 
-  test('resolves color token ($white) to stroke', () => {
-    const { viewProps } = simplifiedGetSplitStyles(StyledSvg, { color: '$white' })
+  test('resolves color token white to stroke', () => {
+    const { viewProps } = simplifiedGetSplitStyles(StyledSvg, { color: 'white' })
     expect(viewProps.stroke).toBeDefined()
   })
 
-  test('resolves theme value ($color) to stroke', () => {
+  test('resolves theme value color to stroke', () => {
     const { viewProps } = simplifiedGetSplitStyles(
       StyledSvg,
-      { color: '$color' },
+      { color: 'color' },
       { theme: lightTheme, themeName: 'light' }
     )
     expect(viewProps.stroke).toBeDefined()
   })
 
   test('does NOT produce CSS color property', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(StyledSvg, { color: '$white' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(StyledSvg, { color: 'white' })
     const rules = Object.values(rulesToInsert)
     expect(rules.find((r) => r[StyleObjectProperty] === 'color')).toBeUndefined()
   })
@@ -95,7 +95,7 @@ describe('FontSize variant resolver', () => {
   })
 
   test('resolves fontSize token', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { textSize: '$1' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { textSize: '1' })
     expect(findRuleValue(rulesToInsert, 'fontSize')).toBe('var(--f-size-1)')
   })
 })
@@ -149,7 +149,7 @@ describe('FontLetterSpacing variant resolver', () => {
   })
 
   test('resolves font letter-spacing tokens', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { tracking: '$1' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { tracking: '1' })
     expect(findRuleValue(rulesToInsert, 'letterSpacing')).toBe('var(--f-letterSpacing-1)')
   })
 })
@@ -167,7 +167,7 @@ describe('FontLineHeight variant resolver', () => {
   })
 
   test('resolves font line-height tokens', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { leading: '$1' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { leading: '1' })
     expect(findRuleValue(rulesToInsert, 'lineHeight')).toBe('var(--f-lineHeight-1)')
   })
 })
@@ -183,7 +183,7 @@ describe('Radius variant resolver', () => {
   })
 
   test('resolves radius token to borderRadius', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { rounding: '$4' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { rounding: '4' })
     expect(findRuleValue(rulesToInsert, 'borderTopLeftRadius')).toBe('var(--t-radius-4)')
   })
 })
@@ -199,13 +199,13 @@ describe('Size variant resolver', () => {
   })
 
   test('resolves size token to height and width', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { size: '$4' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { size: '4' })
     expect(findRuleValue(rulesToInsert, 'height')).toBeDefined()
     expect(findRuleValue(rulesToInsert, 'width')).toBeDefined()
   })
 
   test('resolves to CSS variables on web', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { size: '$4' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { size: '4' })
     expect(findRuleValue(rulesToInsert, 'height')).toBe('var(--t-size-4)')
     expect(findRuleValue(rulesToInsert, 'width')).toBe('var(--t-size-4)')
   })
@@ -222,7 +222,7 @@ describe('Space variant resolver', () => {
   })
 
   test('resolves space token to padding', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { spacing: '$4' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { spacing: '4' })
     expect(findRuleValue(rulesToInsert, 'paddingTop')).toBe('var(--t-space-4)')
   })
 })
@@ -242,7 +242,7 @@ describe('Theme variant resolver', () => {
   test('resolves theme values', () => {
     const { rulesToInsert } = simplifiedGetSplitStyles(
       Comp,
-      { look: '$background' },
+      { look: 'background' },
       { theme: lightTheme, themeName: 'light' }
     )
     expect(findRuleValue(rulesToInsert, 'backgroundColor')).toBe('var(--background)')
@@ -260,7 +260,7 @@ describe('ZIndex variant resolver', () => {
   })
 
   test('resolves zIndex token', () => {
-    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { layer: '$1' })
+    const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { layer: '1' })
     expect(findRuleValue(rulesToInsert, 'zIndex')).toBe('var(--t-zIndex-1)')
   })
 })
@@ -285,7 +285,7 @@ describe('spread variants combined', () => {
   test('works together with theme values', () => {
     const { viewProps } = simplifiedGetSplitStyles(
       StyledSvg,
-      { color: '$color', size: '$4' },
+      { color: 'color', size: '4' },
       { theme: lightTheme, themeName: 'light' }
     )
     expect(viewProps.stroke).toBeDefined()
@@ -295,8 +295,8 @@ describe('spread variants combined', () => {
 
   test('works together with token values', () => {
     const { viewProps } = simplifiedGetSplitStyles(StyledSvg, {
-      color: '$white',
-      size: '$4',
+      color: 'white',
+      size: '4',
     })
     expect(viewProps.stroke).toBeDefined()
     expect(viewProps.height).toBeDefined()

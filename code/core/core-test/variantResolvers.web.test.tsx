@@ -58,7 +58,7 @@ function configure(settings: Record<string, any> = {}) {
       1: '400',
     },
     color: {
-      1: '$color',
+      1: 'color',
     },
   })
   next.settings = {
@@ -76,17 +76,17 @@ beforeAll(() => {
 
 describe('TS-style variant resolvers', () => {
   const cases = [
-    ['Size', '$4'],
-    ['Space', '$4'],
-    ['Color', '$white'],
-    ['Radius', '$4'],
-    ['ZIndex', '$1'],
-    ['Theme', '$color', () => lightTheme],
-    ['FontSize', '$1'],
-    ['FontStyle', '$italic'],
-    ['FontTransform', '$upper'],
-    ['FontLineHeight', '$4'],
-    ['FontLetterSpacing', '$1'],
+    ['Size', '4'],
+    ['Space', '4'],
+    ['Color', 'white'],
+    ['Radius', '4'],
+    ['ZIndex', '1'],
+    ['Theme', 'color', () => lightTheme],
+    ['FontSize', '1'],
+    ['FontStyle', 'italic'],
+    ['FontTransform', 'upper'],
+    ['FontLineHeight', '4'],
+    ['FontLetterSpacing', '1'],
     ['number', 12],
     ['string', 'plain'],
     ['boolean', true],
@@ -111,7 +111,7 @@ describe('TS-style variant resolvers', () => {
     const Comp = styled(View, {
       variants: {
         kind: {
-          $4: {
+          4: {
             opacity: 0.2,
           },
           Size: createVariantResolver('Size', () => ({
@@ -121,7 +121,7 @@ describe('TS-style variant resolvers', () => {
       } as const,
     })
 
-    expect(getOpacity(Comp, '$4')).toBe(0.2)
+    expect(getOpacity(Comp, '4')).toBe(0.2)
   })
 
   test('exact true, false, and null keys win before resolvers', () => {
@@ -176,8 +176,8 @@ describe('TS-style variant resolvers', () => {
       } as const,
     })
 
-    expect(getOpacity(StringFirst, '$4')).toBe(0.3)
-    expect(getOpacity(SizeFirst, '$4')).toBe(0.7)
+    expect(getOpacity(StringFirst, '4')).toBe(0.3)
+    expect(getOpacity(SizeFirst, '4')).toBe(0.7)
   })
 
   test('primitive resolvers distinguish boolean, number, and string before any', () => {
@@ -217,7 +217,7 @@ describe('TS-style variant resolvers', () => {
             opacity: 0.31,
           })),
           Size: createVariantResolver('Size', (value) => ({
-            opacity: value === '$4' ? 0.41 : 0.91,
+            opacity: value === '4' ? 0.41 : 0.91,
           })),
         },
       } as const,
@@ -229,7 +229,7 @@ describe('TS-style variant resolvers', () => {
           Size: createVariantResolver('Size', (value) => {
             sizeFirstSeen = value
             return {
-              opacity: value === '$4' ? 0.41 : 0.91,
+              opacity: value === '4' ? 0.41 : 0.91,
             }
           }),
           boolean: createVariantResolver('boolean', () => ({
@@ -241,7 +241,7 @@ describe('TS-style variant resolvers', () => {
 
     expect(getOpacity(BooleanFirst, true)).toBe(0.31)
     expect(getOpacity(SizeFirst, true)).toBe(0.41)
-    expect(sizeFirstSeen).toBe('$4')
+    expect(sizeFirstSeen).toBe('4')
   })
 
   test('overlapping resolver domains follow declaration order', () => {
@@ -326,8 +326,8 @@ describe('TS-style variant resolvers', () => {
 
     expect(getOpacity(ColorFirst, 'red')).toBe(0.21)
     expect(getOpacity(StringFirst, 'red')).toBe(0.22)
-    expect(getOpacity(SizeFirst, '$4')).toBe(0.23)
-    expect(getOpacity(SpaceFirst, '$4')).toBe(0.24)
+    expect(getOpacity(SizeFirst, '4')).toBe(0.23)
+    expect(getOpacity(SpaceFirst, '4')).toBe(0.24)
     expect(getOpacity(CategoryNumberAny, 2)).toBe(0.25)
     expect(getOpacity(NumberCategoryAny, 2)).toBe(0.26)
   })
@@ -361,19 +361,19 @@ describe('TS-style variant resolvers', () => {
     })
 
     expect(getOpacity(SizeFirst, true)).toBe(0.28)
-    expect(sizeFirstSeen).toBe('$4')
+    expect(sizeFirstSeen).toBe('4')
     expect(getOpacity(BooleanFirst, true)).toBe(0.29)
     expect(booleanFirstSeen).toBe(true)
   })
 
   test('true resolves through the matched category and exact true stays raw', () => {
     configure({
-      defaultSize: '$4',
+      defaultSize: '4',
       defaultTokens: {
-        space: '$1',
-        radius: '$2',
-        zIndex: '$1',
-        fontSize: '$1',
+        space: '1',
+        radius: '2',
+        zIndex: '1',
+        fontSize: '1',
       },
     })
 
@@ -431,11 +431,11 @@ describe('TS-style variant resolvers', () => {
       })
 
       expect(seen).toEqual({
-        size: '$4',
-        space: '$1',
-        radius: '$2',
-        zIndex: '$1',
-        fontSize: '$1',
+        size: '4',
+        space: '1',
+        radius: '2',
+        zIndex: '1',
+        fontSize: '1',
         fanout: true,
       })
     } finally {
@@ -455,15 +455,15 @@ describe('TS-style variant resolvers', () => {
       ['Space', '1rem'],
       ['Space', '12px'],
       ['Color', 'red'],
-      ['Color', '$white/50'],
+      ['Color', 'white/50'],
       ['Color', '$/-1'],
-      ['Color', '$white/.5'],
-      ['Color', '$white/-1'],
-      ['Color', '$white/+1'],
-      ['Color', '$white/0x10'],
-      ['Color', '$notConfigured/1e3'],
-      ['Color', '$not/Configured/1E-3'],
-      ['Color', '$notConfigured/50'],
+      ['Color', 'white/.5'],
+      ['Color', 'white/-1'],
+      ['Color', 'white/+1'],
+      ['Color', 'white/0x10'],
+      ['Color', 'notConfigured/1e3'],
+      ['Color', 'not/Configured/1E-3'],
+      ['Color', 'notConfigured/50'],
       ['Radius', 6],
       ['Radius', '+.5rem'],
       ['Radius', '0.5rem'],
@@ -636,20 +636,20 @@ describe('TS-style variant resolvers', () => {
       allowedStyleValues: 'strict',
       autocompleteSpecificTokens: 'except-special',
     })
-    expect(getOpacity(Comp, '$radius.4')).toBeUndefined()
+    expect(getOpacity(Comp, 'radius.4')).toBeUndefined()
     configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: undefined })
-    expect(getOpacity(Comp, '$radius.4')).toBeUndefined()
+    expect(getOpacity(Comp, 'radius.4')).toBeUndefined()
     configure({ allowedStyleValues: 'strict' })
-    expect(getOpacity(Comp, '$radius.4')).toBe(0.46)
+    expect(getOpacity(Comp, 'radius.4')).toBe(0.46)
     configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: false })
-    expect(getOpacity(Comp, '$radius.4')).toBe(0.46)
+    expect(getOpacity(Comp, 'radius.4')).toBe(0.46)
     configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: true })
-    expect(getOpacity(Comp, '$radius.4')).toBe(0.46)
+    expect(getOpacity(Comp, 'radius.4')).toBe(0.46)
     configure()
   })
 
   test('variable values match aliases that include ThemeValueFallback', () => {
-    const variable = createVariable({ key: '$custom', name: 'custom', val: 1 }, true)
+    const variable = createVariable({ key: 'custom', name: 'custom', val: 1 }, true)
     const Comp = styled(View, {
       variants: {
         kind: {
@@ -713,8 +713,8 @@ describe('TS-style variant resolvers', () => {
     })
     ownKeysCount = 0
 
-    expect(getOpacity(Comp, '$4')).toBe(0.52)
-    expect(getOpacity(Comp, '$4')).toBe(0.52)
+    expect(getOpacity(Comp, '4')).toBe(0.52)
+    expect(getOpacity(Comp, '4')).toBe(0.52)
     expect(ownKeysCount).toBe(1)
   })
 
@@ -729,7 +729,7 @@ describe('TS-style variant resolvers', () => {
       } as const,
     })
 
-    expect(getOpacity(Comp, '$4')).toBe(0.55)
+    expect(getOpacity(Comp, '4')).toBe(0.55)
     expect(getOpacity(Comp, 4)).toBe(0.55)
   })
 
@@ -738,13 +738,13 @@ describe('TS-style variant resolvers', () => {
       variants: {
         kind: {
           'Size | number': (value) => ({
-            opacity: value === '$4' ? 0.66 : 0.77,
+            opacity: value === '4' ? 0.66 : 0.77,
           }),
         },
       } as const,
     })
 
-    expect(getOpacity(Comp, '$4')).toBe(0.66)
+    expect(getOpacity(Comp, '4')).toBe(0.66)
     expect(getOpacity(Comp, 4)).toBe(0.77)
   })
 
@@ -765,7 +765,7 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(Comp, legacySpreadKey)).toBe(0.81)
     expect(getOpacity(Comp, legacyNumberKey)).toBe(0.82)
     expect(getOpacity(Comp, legacyCatchAllKey)).toBe(0.83)
-    expect(getOpacity(Comp, '$4')).toBeUndefined()
+    expect(getOpacity(Comp, '4')).toBeUndefined()
     expect(getOpacity(Comp, 4)).toBeUndefined()
     expect(getOpacity(Comp, 'other')).toBeUndefined()
   })
@@ -790,7 +790,7 @@ describe('TS-style variant resolvers', () => {
       } as const,
     })
 
-    expect(getOpacity(Comp, '$4')).toBe(0.5)
+    expect(getOpacity(Comp, '4')).toBe(0.5)
   })
 
   test('default-size resolvers receive the default token for true', () => {
@@ -810,7 +810,7 @@ describe('TS-style variant resolvers', () => {
       } as const)
 
       expect(getOpacity(Comp, true)).toBe(0.58)
-      expect(seenSize).toBe('$4')
+      expect(seenSize).toBe('4')
     }
   })
 })

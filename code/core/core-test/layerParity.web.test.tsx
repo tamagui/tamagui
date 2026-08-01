@@ -80,7 +80,7 @@ test('a name in both the bound category and the active theme resolves identicall
 // authored legacy $ values retain their theme-first lookup until the later
 // getTokenForKey contraction. candidates must not reconstruct this spelling.
 test('an authored legacy $ value retains its theme-first lookup', () => {
-  const legacy = splitFlat({ backgroundColor: '$collision' })
+  const legacy = splitFlat({ backgroundColor: 'collision' })
   const rules = (
     legacy.rulesToInsert[legacy.classNames?.backgroundColor]?.[4] ?? []
   ).join('')
@@ -169,9 +169,9 @@ test('parent markers establish the web capabilities their descendant program tar
   expect(html).toContain('@container layout')
 })
 
-test('the legacy $token path never clamps an out-of-range opacity', () => {
-  const result = splitFlat({ backgroundColor: '$black/150' })
-  const blackVar = CFG.tokensParsed.color.$black.variable
+test('a bare token path never clamps an out-of-range opacity', () => {
+  const result = splitFlat({ backgroundColor: 'black/150' })
+  const blackVar = CFG.tokensParsed.color["black"].variable
   const rules = (
     result.rulesToInsert[result.classNames?.backgroundColor]?.[4] ?? []
   ).join('')

@@ -1,14 +1,8 @@
 /**
  * Nested Media + Platform Query Tests
  *
- * Verifies that media queries and platform queries can be nested inside each other.
- *
- * Examples:
- *   $xs={{ "$android": { bg: "yellow" } }}  — platform inside media
- *   $android={{ $xs: { bg: "red" } }}       — media inside platform
- *
- * Both directions should work and the nested condition should be checked.
- * The nested style should only apply when BOTH conditions are true.
+ * Verifies that media and platform modifiers can be chained in either order.
+ * A chained clause applies only when both conditions are true.
  */
 
 import { beforeAll, describe, expect, test } from 'vitest'
@@ -73,16 +67,11 @@ function getSplitStylesFor(
 }
 
 describe('Nested media + platform queries', () => {
-  describe('platform query nested inside media query', () => {
-    test('$xs with nested $android applies on Android when xs is active', () => {
+  describe('platform modifier after media modifier', () => {
+    test('xs:android applies on Android when xs is active', () => {
       const result = getSplitStylesFor(
         {
-          $xs: {
-            backgroundColor: 'orange',
-            $android: {
-              backgroundColor: 'yellow',
-            },
-          },
+          backgroundColor: 'xs:orange xs:android:yellow',
         },
         View,
         { xs: true }
@@ -92,33 +81,22 @@ describe('Nested media + platform queries', () => {
       expect(result.style?.backgroundColor).toBe('yellow')
     })
 
-    test('$xs with nested $ios does NOT apply on Android', () => {
+    test('xs:ios does NOT apply on Android', () => {
       const result = getSplitStylesFor(
         {
-          $xs: {
-            backgroundColor: 'orange',
-            $ios: {
-              backgroundColor: 'yellow',
-            },
-          },
+          backgroundColor: 'xs:orange xs:ios:yellow',
         },
         View,
         { xs: true }
       )
-      // xs is active but $ios doesn't match Android
-      // Only the outer $xs style applies
+      // xs is active but ios doesn't match Android, so the xs clause applies.
       expect(result.style?.backgroundColor).toBe('orange')
     })
 
-    test('$xs with nested $android does NOT apply when xs is inactive', () => {
+    test('xs:android does NOT apply when xs is inactive', () => {
       const result = getSplitStylesFor(
         {
-          $xs: {
-            backgroundColor: 'orange',
-            $android: {
-              backgroundColor: 'yellow',
-            },
-          },
+          backgroundColor: 'xs:orange xs:android:yellow',
         },
         View,
         { xs: false }
@@ -128,16 +106,11 @@ describe('Nested media + platform queries', () => {
     })
   })
 
-  describe('media query nested inside platform query', () => {
-    test('$android with nested $xs applies on Android when xs is active', () => {
+  describe('media modifier after platform modifier', () => {
+    test('android:xs applies on Android when xs is active', () => {
       const result = getSplitStylesFor(
         {
-          $android: {
-            backgroundColor: 'green',
-            $xs: {
-              backgroundColor: 'red',
-            },
-          },
+          backgroundColor: 'android:green android:xs:red',
         },
         View,
         { xs: true }
@@ -147,33 +120,23 @@ describe('Nested media + platform queries', () => {
       expect(result.style?.backgroundColor).toBe('red')
     })
 
-    test('$android with nested $xs does NOT apply when xs is inactive', () => {
+    test('android:xs does NOT apply when xs is inactive', () => {
       const result = getSplitStylesFor(
         {
-          $android: {
-            backgroundColor: 'green',
-            $xs: {
-              backgroundColor: 'red',
-            },
-          },
+          backgroundColor: 'android:green android:xs:red',
         },
         View,
         { xs: false }
       )
       // Platform matches but xs is not active
-      // Only the outer $android style applies
+      // Only the android clause applies.
       expect(result.style?.backgroundColor).toBe('green')
     })
 
-    test('$ios with nested $xs does NOT apply on Android', () => {
+    test('ios:xs does NOT apply on Android', () => {
       const result = getSplitStylesFor(
         {
-          $ios: {
-            backgroundColor: 'green',
-            $xs: {
-              backgroundColor: 'red',
-            },
-          },
+          backgroundColor: 'ios:green ios:xs:red',
         },
         View,
         { xs: true }
@@ -183,70 +146,45 @@ describe('Nested media + platform queries', () => {
     })
   })
 
-  describe('interchangeable nesting — both directions used together', () => {
-    test('last-declared nested style wins when both conditions are met', () => {
+  describe('both modifier orders together', () => {
+    test('the last equally specific clause wins when both conditions are met', () => {
       const result = getSplitStylesFor(
         {
-          $xs: {
-            backgroundColor: 'orange',
-            $android: {
-              backgroundColor: 'yellow',
-            },
-          },
-          $android: {
-            backgroundColor: 'green',
-            $xs: {
-              backgroundColor: 'red',
-            },
-          },
+          backgroundColor:
+            'xs:orange xs:android:yellow android:green android:xs:red',
         },
         View,
         { xs: true }
       )
-      // Both nesting directions have their conditions met and produce
-      // identical importance (symmetric). Since $android is declared
-      // last in the props object, its nested $xs wins by declaration order.
+      // Both chains have identical importance, so the last clause wins.
       expect(result.style?.backgroundColor).toBe('red')
     })
 
     test('non-nested properties from both apply independently', () => {
       const result = getSplitStylesFor(
         {
-          $xs: {
-            opacity: 0.5,
-            $android: {
-              zIndex: 5,
-            },
-          },
-          $android: {
-            zIndex: 10,
-            $xs: {
-              flex: 1,
-            },
-          },
+          opacity: 'xs:0.5',
+          zIndex: 'xs:android:5 android:10',
+          flex: 'android:xs:1',
         },
         View,
         { xs: true }
       )
       // All conditions met — all properties should apply
       expect(result.style?.opacity).toBe(0.5)
-      // zIndex is set in both nested contexts: $xs.$android (5) and
-      // $android non-nested (10). The nested value (5) has higher
+      // zIndex is set in both a chained context (5) and an android clause (10).
+      // The chained value (5) has higher
       // importance than the non-nested outer value, so 5 wins.
       expect(result.style?.zIndex).toBe(5)
       expect(result.style?.flex).toBe(1)
     })
   })
 
-  describe('shorthand expansion in nested queries', () => {
-    test('shorthands in nested platform query are expanded correctly', () => {
+  describe('shorthand expansion in chained clauses', () => {
+    test('shorthand with media:platform is expanded correctly', () => {
       const result = getSplitStylesFor(
         {
-          $xs: {
-            $android: {
-              bg: 'yellow',
-            },
-          },
+          bg: 'xs:android:yellow',
         },
         View,
         { xs: true }
@@ -255,14 +193,10 @@ describe('Nested media + platform queries', () => {
       expect(result.style?.backgroundColor).toBe('yellow')
     })
 
-    test('shorthands in nested media query are expanded correctly', () => {
+    test('shorthand with platform:media is expanded correctly', () => {
       const result = getSplitStylesFor(
         {
-          $android: {
-            $xs: {
-              bg: 'red',
-            },
-          },
+          bg: 'android:xs:red',
         },
         View,
         { xs: true }

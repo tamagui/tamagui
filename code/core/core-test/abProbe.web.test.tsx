@@ -1,6 +1,5 @@
-// engine-contraction A/B: converted legacy pseudo props must be behaviorally
-// equivalent to the legacy pseudo classes — the class names change shape
-// (program hash instead of per-value atomic), the emitted behavior must not.
+// Engine-contraction A/B: variant and inline flat clauses use the same program
+// shape and obey last-restatement-wins.
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
 import { View, createTamagui, getSplitStyles, styled } from '../web/src'
@@ -10,17 +9,19 @@ beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
 })
 
-test('variant pressStyle converts to an :active program clause; inline restates it', () => {
+test('a variant press clause converts to :active; inline restates it', () => {
   const StyledButton = styled(View, {
     variants: {
       variant: {
-        prim: { pressStyle: { backgroundColor: 'blue' } },
+        prim: {
+        backgroundColor: "press:blue"
+        },
       },
     } as const,
   })
 
   const inline = getSplitStyles(
-    { variant: 'prim', pressStyle: { backgroundColor: 'red' } },
+    { variant: 'prim', backgroundColor: 'press:red' },
     StyledButton.staticConfig,
     undefined as any,
     'light',
@@ -31,7 +32,7 @@ test('variant pressStyle converts to an :active program clause; inline restates 
   expect(className).toMatch(/^_bc-/)
   const rules = inline.rulesToInsert[className]?.[4] ?? []
   const all = rules.join('\n')
-  // the inline pressStyle restated the press clause: red wins, blue is gone
+  // The inline clause restated the press clause: red wins, blue is gone.
   expect(all).toContain(':active')
   expect(all).toContain('red')
   expect(all).not.toContain('blue')

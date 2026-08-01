@@ -164,19 +164,13 @@ test(`styleCompat preserves special and string flex values`, () => {
 
 //   function run() {
 //     getCSSStylesAtomic({
-//       backgroundColor: 'red',
+//       backgroundColor: 'red gt-lg:green',
 //       width: 100,
 //       height: 200,
 //       scale: 2,
 
-//       $gtLg: {
-//         backgroundColor: 'green',
-//       },
-
-//       hoverStyle: {
-//         margin: 20,
-//         padding: 20,
-//       },
+//       margin: 'hover:20px',
+//       padding: 'hover:20px',
 //     })
 //   }
 

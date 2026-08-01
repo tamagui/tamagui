@@ -16,12 +16,12 @@ import {
 const conf = createTamagui({
   ...getDefaultTamaguiConfig(),
   variables: {
-    surfaceBorder: '$color',
+    surfaceBorder: 'color',
     disabledOpacity: 0.5,
     focusRingWidth: 2,
     radius: 9,
     accent: { light: '#001', dark: '#ffe' },
-    chained: '$surfaceBorder',
+    chained: 'surfaceBorder',
   },
 })
 
@@ -71,8 +71,8 @@ describe('createTamagui variables', () => {
 
 describe('getVariablesCSSRules', () => {
   test('emits var() references for theme keys and stable identifiers', () => {
-    const a = getVariablesCSSRules({ values: { surfaceBorder: '$background' } }, conf)!
-    const b = getVariablesCSSRules({ values: { surfaceBorder: '$background' } }, conf)!
+    const a = getVariablesCSSRules({ values: { surfaceBorder: 'background' } }, conf)!
+    const b = getVariablesCSSRules({ values: { surfaceBorder: 'background' } }, conf)!
     expect(a.identifier).toBe(b.identifier)
     expect(a.identifier).toMatch(/^tvar_\d+$/)
     expect(a.rules[0]).toContain(`:root .${a.identifier} {`)
@@ -89,7 +89,7 @@ describe('getVariablesCSSRules', () => {
   })
 
   test('qualified token references resolve through specificTokens', () => {
-    const res = getVariablesCSSRules({ values: { surfaceBorder: '$color.white' } }, conf)!
+    const res = getVariablesCSSRules({ values: { surfaceBorder: 'color.white' } }, conf)!
     expect(res.rules[0]).toContain('--surfaceBorder:var(--c-white);')
   })
 
@@ -119,7 +119,7 @@ describe('getVariablesCSSRules', () => {
     // direct cycle: both keys dropped
     expect(
       getVariablesCSSRules(
-        { values: { surfaceBorder: '$chained', chained: '$surfaceBorder' } },
+        { values: { surfaceBorder: 'chained', chained: 'surfaceBorder' } },
         conf
       )
     ).toBe(null)
@@ -129,9 +129,9 @@ describe('getVariablesCSSRules', () => {
       getVariablesCSSRules(
         {
           values: {
-            accent: '$surfaceBorder',
-            surfaceBorder: '$chained',
-            chained: '$surfaceBorder',
+            accent: 'surfaceBorder',
+            surfaceBorder: 'chained',
+            chained: 'surfaceBorder',
           },
         },
         conf
@@ -143,7 +143,7 @@ describe('getVariablesCSSRules', () => {
     expect(
       getVariablesCSSRules(
         {
-          values: { surfaceBorder: '$chained', chained: '$surfaceBorder' },
+          values: { surfaceBorder: 'chained', chained: 'surfaceBorder' },
           dark: { chained: 'red' },
         },
         conf
@@ -155,8 +155,8 @@ describe('getVariablesCSSRules', () => {
       {
         values: {
           accent: '#123',
-          surfaceBorder: '$chained',
-          chained: '$surfaceBorder',
+          surfaceBorder: 'chained',
+          chained: 'surfaceBorder',
         },
       },
       conf
@@ -172,7 +172,7 @@ describe('<Variables>', () => {
     const { container } = render(
       <TamaguiProvider config={conf} defaultTheme="light">
         <Variables values={{ surfaceBorder: 'red' }}>
-          <View testID="child" borderColor="$surfaceBorder" />
+          <View testID="child" borderColor="surfaceBorder" />
         </Variables>
       </TamaguiProvider>
     )

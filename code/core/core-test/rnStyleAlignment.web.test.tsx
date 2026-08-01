@@ -32,7 +32,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
   describe('boxShadow', () => {
     test('boxShadow string with tokens resolves', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        boxShadow: '0 0 10px $white',
+        boxShadow: '0 0 10px white',
       })
       const value = getStyleValue(styles, 'boxShadow')
       expect(value).toBeDefined()
@@ -66,12 +66,12 @@ describe('RN 0.76+ Style Alignment - Web', () => {
 
     test('boxShadow with multiple tokens resolves all', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        boxShadow: '0 0 10px $white, 0 0 20px $black',
+        boxShadow: '0 0 10px white, 0 0 20px black',
       })
       const value = getStyleValue(styles, 'boxShadow')
       expect(value).toBeDefined()
-      expect(value).not.toContain('$white')
-      expect(value).not.toContain('$black')
+      expect(value).not.toContain('white')
+      expect(value).not.toContain('black')
     })
   })
 
@@ -86,11 +86,11 @@ describe('RN 0.76+ Style Alignment - Web', () => {
 
     test('filter with embedded tokens resolves', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        filter: 'blur($2)',
+        filter: 'blur(2)',
       })
       const value = getStyleValue(styles, 'filter')
       // Token should be resolved
-      expect(value).not.toContain('$2')
+      expect(value).not.toContain('2')
     })
 
     test('filter multiple functions', () => {
@@ -143,7 +143,7 @@ describe('RN 0.76+ Style Alignment - Web', () => {
   describe('outline props', () => {
     test('outlineColor with token resolves', () => {
       const styles = simplifiedGetSplitStyles(View, {
-        outlineColor: '$white',
+        outlineColor: 'white',
       })
       const value = getStyleValue(styles, 'outlineColor')
       expect(value).toContain('var(--')

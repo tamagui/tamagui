@@ -153,13 +153,13 @@ describe('variant resolver types', () => {
     })
     createVariantResolver('Color', (value) => {
       expectTypeOf<'red'>().toMatchTypeOf<typeof value>()
-      expectTypeOf<'$color/50'>().toMatchTypeOf<typeof value>()
+      expectTypeOf<'color/50'>().toMatchTypeOf<typeof value>()
       expectTypeOf<'$/0x10'>().toMatchTypeOf<typeof value>()
-      expectTypeOf<'$color/.5'>().toMatchTypeOf<typeof value>()
-      expectTypeOf<'$color/-1'>().toMatchTypeOf<typeof value>()
-      expectTypeOf<'$color/+1'>().toMatchTypeOf<typeof value>()
-      expectTypeOf<'$color/1e3'>().toMatchTypeOf<typeof value>()
-      expectTypeOf<'$not/Configured/1E-3'>().toMatchTypeOf<typeof value>()
+      expectTypeOf<'color/.5'>().toMatchTypeOf<typeof value>()
+      expectTypeOf<'color/-1'>().toMatchTypeOf<typeof value>()
+      expectTypeOf<'color/+1'>().toMatchTypeOf<typeof value>()
+      expectTypeOf<'color/1e3'>().toMatchTypeOf<typeof value>()
+      expectTypeOf<'not/Configured/1E-3'>().toMatchTypeOf<typeof value>()
       return {}
     })
   })
@@ -260,7 +260,7 @@ describe('variant resolver types', () => {
 
     type Props = GetProps<typeof Comp>
     expectTypeOf<'sm'>().toMatchTypeOf<Props['tone']>()
-    expectTypeOf<'$4'>().toMatchTypeOf<Props['tone']>()
+    expectTypeOf<'4'>().toMatchTypeOf<Props['tone']>()
     expectTypeOf<4>().toMatchTypeOf<Props['tone']>()
     // @ts-expect-error object is not accepted by exact or Size | number
     const invalid: Props['tone'] = {}

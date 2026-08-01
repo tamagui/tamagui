@@ -66,11 +66,11 @@ test('a clause evaluates per state and recomposes the array', () => {
 test('x resolves space tokens to points', () => {
   const result = split({ x: '4 hover:8' })
   expect(result.style?.transform).toEqual([
-    { translateX: conf.tokensParsed.space['$4'].val },
+    { translateX: conf.tokensParsed.space['4'].val },
   ])
   const hovered = split({ x: '4 hover:8' }, { hover: true })
   expect(hovered.style?.transform).toEqual([
-    { translateX: conf.tokensParsed.space['$8'].val },
+    { translateX: conf.tokensParsed.space['8'].val },
   ])
 })
 
@@ -133,9 +133,8 @@ test('unrepresentable values are diagnosed, not forwarded', () => {
   expect(result.style?.transform ?? []).toEqual([])
 })
 
-test('the plan example: enterStyle scale converts and evaluates end to end', () => {
-  // enterStyle={{ scale: 0.9 }} is the shape the whole campaign started from
-  const props = { scale: 1, enterStyle: { scale: 0.9 } }
+test('an enter scale clause evaluates end to end', () => {
+  const props = { scale: '1 enter:0.9' }
 
   const entering = split(props, { unmounted: true })
   expect(entering.style?.transform).toEqual([{ scale: 0.9 }])
@@ -145,7 +144,7 @@ test('the plan example: enterStyle scale converts and evaluates end to end', () 
 })
 
 test('the plan example with y, the other common codemod flag', () => {
-  const props = { y: 0, enterStyle: { y: 10 } }
+  const props = { y: '0 enter:10px' }
   expect(split(props, { unmounted: true }).style?.transform).toEqual([{ translateY: 10 }])
   expect(split(props, { unmounted: false }).style?.transform).toEqual([{ translateY: 0 }])
 })

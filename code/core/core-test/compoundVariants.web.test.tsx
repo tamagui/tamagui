@@ -42,68 +42,52 @@ describe('compoundVariants - web', () => {
     const Frame = styled(
       View,
       {
-        context: FrameContext,
-        contextProps: ['tone'],
-        backgroundColor: 'gray',
-        hoverStyle: {
-          opacity: 0.1,
-          borderRadius: 1,
-        },
-        $sm: {
-          marginTop: 1,
-          paddingTop: 1,
-        },
-        variants: {
-          size: {
-            sm: {
-              backgroundColor: 'blue',
-              hoverStyle: {
-                opacity: 0.3,
-                borderRadius: 1.5,
+      context: FrameContext,
+      contextProps: ['tone'],
+      backgroundColor: 'gray',
+      opacity: "hover:0.1",
+      borderRadius: "hover:1px",
+      marginTop: "sm:1px",
+      paddingTop: "sm:1px",
+      variants: {
+                size: {
+                  sm: {
+                  backgroundColor: 'blue',
+                  opacity: "hover:0.3",
+                  borderRadius: "hover:1.5px",
+                  marginTop: "sm:2px",
+                  paddingTop: "sm:2px"
+                  },
+                },
+                state: {
+                  active: {},
+                  selected: {},
+                },
+              } as const,
+      defaultVariants: {
+                size: 'sm',
               },
-              $sm: {
-                marginTop: 2,
-                paddingTop: 2,
-              },
-            },
-          },
-          state: {
-            active: {},
-            selected: {},
-          },
-        } as const,
-        defaultVariants: {
-          size: 'sm',
-        },
-        compoundVariants: [
-          {
-            size: 'sm',
-            tone: 'critical',
-            state: ['active', 'selected'],
-            style: {
-              hoverStyle: {
-                borderRadius: 2,
-              },
-              $sm: {
-                paddingTop: 3,
-              },
-            },
-          },
-          {
-            size: 'sm',
-            tone: 'critical',
-            state: 'active',
-            style: {
-              backgroundColor: 'red',
-              hoverStyle: {
-                opacity: 0.5,
-              },
-              $sm: {
-                marginTop: 3,
-              },
-            },
-          },
-        ],
+      compoundVariants: [
+                {
+                  size: 'sm',
+                  tone: 'critical',
+                  state: ['active', 'selected'],
+                  style: {
+                  borderRadius: "hover:2px",
+                  paddingTop: "sm:3px"
+                  },
+                },
+                {
+                  size: 'sm',
+                  tone: 'critical',
+                  state: 'active',
+                  style: {
+                  backgroundColor: 'red',
+                  opacity: "hover:0.5",
+                  marginTop: "sm:3px"
+                  },
+                },
+              ]
       } as const,
       {
         acceptsClassName: false,
@@ -140,12 +124,8 @@ describe('compoundVariants - web', () => {
         tone: 'critical',
         state: 'active',
         backgroundColor: 'green',
-        hoverStyle: {
-          opacity: 0.7,
-        },
-        $sm: {
-          marginTop: 4,
-        },
+        opacity: 'hover:0.7',
+        marginTop: 'sm:4px',
         style: {
           backgroundColor: 'black',
         },
@@ -174,12 +154,8 @@ describe('compoundVariants - web', () => {
         style: {
           backgroundColor: 'black',
         },
-        $sm: {
-          marginTop: 4,
-        },
-        hoverStyle: {
-          opacity: 0.7,
-        },
+        marginTop: 'sm:4px',
+        opacity: 'hover:0.7',
         backgroundColor: 'green',
         state: 'active',
         tone: 'critical',
@@ -270,9 +246,7 @@ describe('compoundVariants - web', () => {
     const compoundVariants = Array.from({ length: 1005 }, (_, index) => ({
       state: 'active' as const,
       style: {
-        $sm: {
-          marginTop: index,
-        },
+        marginTop: `sm:${index}px`,
       },
     }))
     const Frame = styled(
@@ -312,17 +286,13 @@ describe('compoundVariants - web', () => {
       {
         state: 'active' as const,
         style: {
-          $md: {
-            marginTop: 2000,
-          },
+          marginTop: 'md:2000px',
         },
       },
       ...Array.from({ length: 1005 }, (_, index) => ({
         state: 'active' as const,
         style: {
-          $sm: {
-            marginTop: index,
-          },
+          marginTop: `sm:${index}px`,
         },
       })),
     ]
@@ -368,14 +338,7 @@ describe('compoundVariants - web', () => {
     const lowerSpecificityLast = simplifiedGetSplitStyles(
       Frame,
       {
-        $sm: {
-          $web: {
-            marginTop: 2,
-          },
-        },
-        $web: {
-          marginTop: 1,
-        },
+        marginTop: 'sm:web:2px web:1px',
       },
       {
         mediaState: {
@@ -401,16 +364,7 @@ describe('compoundVariants - web', () => {
     const equalSpecificityLaterWins = simplifiedGetSplitStyles(
       Frame,
       {
-        $sm: {
-          $web: {
-            marginTop: 1,
-          },
-        },
-        $web: {
-          $sm: {
-            marginTop: 2,
-          },
-        },
+        marginTop: 'sm:web:1px web:sm:2px',
       },
       {
         mediaState: {
