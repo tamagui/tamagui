@@ -1,5 +1,7 @@
 // Setup for native tests - alias react-native to fake-react-native at runtime
 
+delete process.env.IS_STATIC
+
 const Module = require('module')
 const originalRequire = Module.prototype.require
 const React = require('react')

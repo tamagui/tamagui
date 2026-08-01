@@ -1,10 +1,25 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
+import { matchMedia as matchNativeMedia } from '@tamagui/react-native-media-driver'
+import {
+  TamaguiProvider,
+  View,
+  configureMedia,
+  createTamagui,
+  setupMatchMedia,
+} from '@tamagui/core'
 import { fireEvent, render, waitFor } from '@testing-library/react-native'
-import { expect, test } from 'vitest'
+import { Dimensions } from 'react-native'
+import { expect, test, vi } from 'vitest'
 import { preprocessTailwindClassName } from '../tailwind/src/candidate'
+
+vi.spyOn(Dimensions, 'get').mockReturnValue({
+  width: 390,
+  height: 844,
+  scale: 3,
+  fontScale: 1,
+})
 
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 
@@ -74,6 +89,21 @@ test('a container parent marker re-evaluates its descendant after layout changes
       layout: { width: 100, height: 100, x: 0, y: 0 },
     },
   })
+  await waitFor(() => {
+    expect(backgroundColor(host(screen, 'child'))).toBe('#000')
+  })
+})
+
+test('a media clause resolves against native window dimensions', async () => {
+  setupMatchMedia(matchNativeMedia)
+  configureMedia(config)
+
+  const screen = render(
+    <TamaguiProvider config={config} defaultTheme="light">
+      <View testID="child" backgroundColor="red sm:black" />
+    </TamaguiProvider>
+  )
+
   await waitFor(() => {
     expect(backgroundColor(host(screen, 'child'))).toBe('#000')
   })
