@@ -56,8 +56,7 @@ describe('setMediaShouldUpdate sibling isolation', () => {
           <View
             data-testid="media-reader"
             disableClassName
-            backgroundColor="blue"
-            $sm={{ backgroundColor: 'red' }}
+            backgroundColor="blue sm:red"
           />
           <StaticSibling tick={tick} renders={staticRenders} />
         </TamaguiProvider>
@@ -86,7 +85,7 @@ describe('setMediaShouldUpdate sibling isolation', () => {
       updateMediaListeners()
     })
 
-    // the media reader must re-render with its $sm style applied
+    // the media reader must re-render with its sm: clause applied
     expect(getByTestId('media-reader').style.backgroundColor).toBe('red')
     // and the media-independent sibling must NOT re-render on a media change
     expect(staticRenders.current).toBe(staticRendersBefore)

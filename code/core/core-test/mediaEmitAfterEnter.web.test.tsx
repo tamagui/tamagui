@@ -39,8 +39,7 @@ describe('avoidReRenders media emitter lifecycle', () => {
         <View
           transition="100ms"
           enterStyle={{ opacity: 0 }}
-          backgroundColor="blue"
-          $sm={{ backgroundColor: 'red' }}
+          backgroundColor="blue sm:red"
         />
       </TamaguiProvider>
     )
