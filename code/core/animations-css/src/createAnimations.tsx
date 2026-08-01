@@ -505,11 +505,21 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           lastMountedStyleRef.current = {}
           return
         }
-        lastMountedStyleRef.current = readComputedProperties(
-          host as HTMLElement,
-          exitCSSProperties
-        )
-      }, [isExiting, exitCSSPropertiesSignature])
+        const node = host as HTMLElement
+        const capture = () => {
+          if (stateRef.current.host !== node || wasExitingRef.current) return
+          lastMountedStyleRef.current = readComputedProperties(node, exitCSSProperties)
+        }
+
+        // The first mounted layout effect can run while an enter clause is still
+        // active. Capture again after that concrete transition settles so a later
+        // exit restarts from the mounted value, not the enter value.
+        if (justFinishedEntering) {
+          void waitForAnimations(node).then(capture)
+        } else {
+          capture()
+        }
+      }, [isExiting, justFinishedEntering, exitCSSPropertiesSignature])
 
       // use effectiveTransition computed by createComponent (single source of truth)
       const effectiveTransition = styleState?.effectiveTransition ?? props.transition
