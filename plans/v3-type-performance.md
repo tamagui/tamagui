@@ -59,15 +59,38 @@ instantiations in v3 against ~481 in v2, a 2.47x regression that the canonical
 total masks. It is linear rather than an imminent depth failure, but for a
 component-definition-heavy codebase it is a real scaling risk, not benign.
 
-The identified culprit is `GetStyledOptionsAcceptedProps`: an unresolved
-`Context` conditional expands `InferStyledOptionsProps`. In a controlled
-experiment over 100 `styled()` calls, replacing that conditional with
-`InferStyledProps &` the existing `GetStyledContextProps` took instantiations
-from 53,716 to 21,156 — a saving of 32,560. Per-declaration tracing agrees: on
-a plain no-variant fixture the inner options object costs 75ms in v3 against
-15ms in v2.
+The culprit was `GetStyledOptionsAcceptedProps`: an unresolved `Context`
+conditional expanding `InferStyledOptionsProps`.
 
-That fix is the first place to spend further type-performance effort.
+### That regression is now fixed
+
+Landed as `23ce3c0729` on `v3-beta`: `InferStyledOptionsProps` and the
+unresolved conditional are deleted, and `StyledOptions` uses
+`Partial<InferStyledProps>` plus the existing exact `GetStyledContextProps`
+path.
+
+Independently re-measured at 50 component pairs, v2 against v3 after the fix:
+
+| | v2 | v3 before | v3 after |
+|---|---|---|---|
+| instantiations | 61,873 | 78,225 | **53,617** |
+| types | 12,590 | 12,509 | **10,265** |
+| check time | 0.74s | — | **0.41s** |
+
+So v3 now sits **13.3% below v2 on instantiations** rather than 26% above, and
+18% below on types. The definition-time regression is gone, and v3 is better
+than v2 on every counter as well as on wall clock.
+
+Two honest caveats. Wall-clock check time did not move measurably — the ratio
+stays about 1.8x before and after — so this fix removed a *scaling risk* for
+component-definition-heavy codebases rather than making the common case faster.
+And per-declaration tracing does show real work removed: the cold options object
+falls from 67ms to 23ms and the first `styled()` declaration from 92ms to 61ms.
+
+Correctness was checked beyond counters: a downstream compile against the built
+declarations exercised context defaults, inherited context props, overlapping
+size/color, variants, JSX, and `@ts-expect-error` invalid values, with no
+unexpected errors.
 
 Memory was too noisy to report (v2 166MB vs v3 207MB at 50 components, but v2
 203MB vs v3 165MB at 25). That is GC timing, not a result.
