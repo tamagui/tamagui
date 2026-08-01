@@ -54,6 +54,8 @@ function staticObject(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === 'object' && !Array.isArray(value)
 }
 
+const flatClausePattern = /(?:^|\s)@?[A-Za-z][A-Za-z0-9-]*(?:\/[A-Za-z0-9_-]+)?:/
+
 function componentKey(resolvedId: string, exportName: string): string {
   return `${resolvedId}#${exportName}`
 }
@@ -671,9 +673,7 @@ export function createTamaguiCompilerHost(
       compilerStyleProps.has(name) ||
       name in (options.tamaguiConfig.shorthands ?? {}) ||
       !!staticConfig.validStyles?.[name] ||
-      !!staticConfig.variants?.[name] ||
-      name.startsWith('$') ||
-      name.endsWith('Style')
+      !!staticConfig.variants?.[name]
     )
   }
 
@@ -692,10 +692,7 @@ export function createTamaguiCompilerHost(
 
   const directStyleName = (name: string, component: LoweringComponent): string | null => {
     if (
-      compilerStyleProps.has(name) ||
-      name.startsWith('$') ||
-      name.endsWith('Style') ||
-      name === 'style'
+      compilerStyleProps.has(name) || name === 'style'
     ) {
       return null
     }
@@ -1028,45 +1025,24 @@ export function createTamaguiCompilerHost(
           entry.span
         )
       }
-      if (Object.keys(props).some((name) => name.startsWith('$group-'))) {
-        const measuredAncestor = input.module.elements.find(
-          (candidate) =>
-            candidate !== input.element &&
-            candidate.span.start < input.element.span.start &&
-            candidate.span.end > input.element.span.end &&
-            candidate.entries.some(
-              (entry) =>
-                entry.kind === 'prop' &&
-                entry.name === 'untilMeasured' &&
-                entry.value.kind === 'static' &&
-                !!entry.value.value
-            )
-        )
-        if (measuredAncestor) {
-          return bailout(
-            input,
-            'local/unsupported-target',
-            'Group styles below an untilMeasured boundary remain on the runtime path'
-          )
-        }
-      }
       const defaultProps = core.getDefaultProps(component.staticConfig) ?? {}
       const completeProps = core.mergeProps(defaultProps, props)
-      // against completeProps, not props: media and pseudo also arrive from a
-      // styled() definition's defaults, and resolveSplitStyles below evaluates
-      // media against the BUILD machine's getMedia(). checking only the JSX
-      // attributes let those flatten, freezing the build host's viewport into
-      // the bundle and dropping every block it read as inactive.
+      // Against completeProps, not props: clauses also arrive from styled()
+      // defaults. Native resolution evaluates them against the build machine's
+      // current state, so folding would freeze that state into the bundle.
       if (
         platform === 'native' &&
-        Object.keys(completeProps).some(
-          (name) => name.startsWith('$') || name.endsWith('Style')
+        Object.entries(completeProps).some(
+          ([name, value]) =>
+            isStyleProp(name, component) &&
+            typeof value === 'string' &&
+            flatClausePattern.test(value)
         )
       ) {
         return bailout(
           input,
           'local/unsupported-target',
-          'Native pseudo, media, and theme variants remain on the runtime path'
+          'Native conditional value programs remain on the runtime path'
         )
       }
       const split = resolveSplitStyles(completeProps, component.staticConfig)

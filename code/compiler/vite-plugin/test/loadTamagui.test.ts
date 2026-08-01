@@ -547,7 +547,7 @@ export function App() {
       : androidPlugin!.transform
   const source = `
 import { View } from 'tamagui'
-export const App = () => <View padding="$fixtureNative" />
+export const App = () => <View padding="fixtureNative" />
 `
   const id = path.join(nativeRoot, 'src/NativeConfigReload.android.tsx')
   const before = await transform?.call(transformContext, source, id)
@@ -1048,7 +1048,7 @@ test('evaluates the same fixture during a production build without legacy bundle
   expect(buildOutput).toContain('browser:workspace-v1:user-plugin:build-only')
   expect(buildOutput).not.toContain('serve-only')
   expectMediaPaddingCss(buildOutput, 21)
-  expect(buildOutput).not.toContain('$fixture')
+  expect(buildOutput).not.toContain('fixture')
   const evaluationProbe = (globalThis as any).__tamaguiFixtureOwnedEvaluation
   const evaluationPluginNames = (globalThis as any).__tamaguiFixtureOwnedPluginNames
   expect(evaluationProbe).toContain('resolve:build')
@@ -1261,7 +1261,7 @@ test('keeps the owned runner alive across concurrent builds sharing one plugin',
     for (const result of [slowResult, fastResult]) {
       const output = getBuildOutput(result)
       expect(output).toContain('className')
-      expect(output).not.toContain('$fixture')
+      expect(output).not.toContain('fixture')
       expectMediaPaddingCss(output, 21)
     }
 

@@ -13,15 +13,8 @@ test('font family across media queries', async () => {
     export function Test(props) {
       return (
         <H2
-          ff="$silkscreen"
-          size="$12"
-          $lg={{
-            size: '$9',
-          }}
-          $sm={{
-            size: '$8',
-            ff: '$mono',
-          }}
+          fontFamily="silkscreen sm:mono"
+          fontSize="12 lg:9 sm:8"
         >
           Test
         </H2>

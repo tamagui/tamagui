@@ -3,7 +3,7 @@ import { LocalFrame } from './LocalFrame'
 
 export function App() {
   return (
-    <FixtureFrame $sm={{ padding: 9 }} data-resolution={compilerResolution}>
+    <FixtureFrame padding="sm:9px" data-resolution={compilerResolution}>
       <LocalFrame />
     </FixtureFrame>
   )

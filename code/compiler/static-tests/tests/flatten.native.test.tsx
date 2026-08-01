@@ -76,7 +76,7 @@ describe('flatten-tests', () => {
             y={10}
             x={20}
             rotate="10deg"
-            backgroundColor="$background"
+            backgroundColor="background"
           />
         )
       }
@@ -91,7 +91,7 @@ describe('flatten-tests', () => {
 
       export function Test() {
         return (
-          <View backgroundColor={showBackground ? '$color1' : '$color2'} />
+          <View backgroundColor={showBackground ? 'color1' : 'color2'} />
         )
       }
     `)
@@ -104,12 +104,12 @@ describe('flatten-tests', () => {
         import { View } from 'tamagui'
         export function Test() {
           return (
-            <View backgroundColor='$invalid-identifier' />
+            <View backgroundColor='invalid-identifier' />
           )
         }
       `)
 
-    expect(output?.code).contains("backgroundColor='$invalid-identifier'")
+    expect(output?.code).contains("backgroundColor='invalid-identifier'")
   })
 
   test(`bails on runtime event handlers — a bare RN View ignores onPress`, async () => {
@@ -131,7 +131,7 @@ describe('flatten-tests', () => {
     expect(code).not.toContain('__TamaguiNativeView')
   })
 
-  test(`preserves the complete runtime candidate on pressStyle bailout`, async () => {
+  test(`preserves the complete runtime candidate on a state-clause bailout`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'
       export function Test() {
@@ -140,8 +140,7 @@ describe('flatten-tests', () => {
             width={60}
             height={40}
             backgroundColor="rgb(1,2,3)"
-            hoverStyle={{ opacity: 0.5 }}
-            pressStyle={{ opacity: 0.8 }}
+            opacity="hover:0.5 press:0.8"
           />
         )
       }
@@ -149,13 +148,12 @@ describe('flatten-tests', () => {
     const code = output?.code ?? ''
     expect(code).toContain('width={60}')
     expect(code).toContain('backgroundColor="rgb(1,2,3)"')
-    expect(code).toContain('pressStyle')
-    expect(code).toContain('hoverStyle')
+    expect(code).toContain('hover:0.5 press:0.8')
     expect(code).toContain('<View')
     expect(code).not.toContain('__TamaguiNativeView')
   })
 
-  test(`keeps theme tokens inline on a pseudo-style bailout`, async () => {
+  test(`keeps theme tokens inline on a state-clause bailout`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'
       export function Test() {
@@ -163,16 +161,16 @@ describe('flatten-tests', () => {
           <View
             width={60}
             height={40}
-            backgroundColor="$gray2"
-            pressStyle={{ opacity: 0.8 }}
+            backgroundColor="gray2"
+            opacity="press:0.8"
           />
         )
       }
     `)
     const code = output?.code ?? ''
     expect(code).toContain('width={60}')
-    expect(code).toContain('backgroundColor="$gray2"')
-    expect(code).toContain('pressStyle')
+    expect(code).toContain('backgroundColor="gray2"')
+    expect(code).toContain('press:0.8')
     expect(code).not.toContain('__TamaguiNativeView')
   })
 
@@ -183,7 +181,7 @@ describe('flatten-tests', () => {
 
   //     export function Test() {
   //       return (
-  //         <View position="absolute" key={0} right="$2" top="$2" />
+  //         <View position="absolute" key={0} right="2" top="2" />
   //       )
   //     }
   //   `)

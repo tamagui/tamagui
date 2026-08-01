@@ -22,7 +22,7 @@ test('basic extraction', async () => {
 })
 
 test('theme value extraction should work when no theme variables used', async () => {
-  // here we override default "$color" so it should flatten totally
+  // here we override default "color" so it should flatten totally
   // we're not smart enough yet to detect that it's later overridden
   // that could be a perf optimization, but also have work to improve flattening soon anyway
   const output = await extractForNative(`
@@ -152,7 +152,7 @@ test('normalize dynamic values with theme access only', async () => {
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg='$color'/>
+        <YStack bg='color'/>
       )
     }
   `)
@@ -165,7 +165,7 @@ test('do NOT flatten dynamic values with theme access', async () => {
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg='$color' height={props.height}/>
+        <YStack bg='color' height={props.height}/>
       )
     }
   `)
@@ -178,7 +178,7 @@ test('do NOT flatten dynamic values with theme access, dynamic values, and condi
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg={props.isLoading ? '$color' : 'red'} height={props.height}/>
+        <YStack bg={props.isLoading ? 'color' : 'red'} height={props.height}/>
       )
     }
   `)
@@ -191,7 +191,7 @@ test('do NOT flatten multiple dynamic values with theme access and conditional',
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg={props.isLoading ? '$color' : 'red'} height={props.height} width={props.width}/>
+        <YStack bg={props.isLoading ? 'color' : 'red'} height={props.height} width={props.width}/>
       )
     }
   `)
@@ -199,10 +199,9 @@ test('do NOT flatten multiple dynamic values with theme access and conditional',
   expect(code).toMatchSnapshot()
 })
 
-test('$md and $gtMd media queries should respect breakpoint boundaries', async () => {
+test('md and gt-md clauses should respect breakpoint boundaries', async () => {
   // Regression test for bug starting in 1.132.17
-  // On small screens (iPhone), $md should apply, NOT $gtMd
-  // The bug was that $gtMd was incorrectly applying on mobile
+  // On small screens (iPhone), md should apply, not gt-md.
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
@@ -210,9 +209,7 @@ test('$md and $gtMd media queries should respect breakpoint boundaries', async (
         <YStack
           h={100}
           w={100}
-          bc="red"
-          $md={{ bc: 'yellow' }}
-          $gtMd={{ bc: 'green' }}
+          bc="red md:yellow gt-md:green"
         />
       )
     }
@@ -223,7 +220,7 @@ test('$md and $gtMd media queries should respect breakpoint boundaries', async (
   expect(code).toMatchSnapshot()
 })
 
-test('$gtMd only should NOT apply on small screens', async () => {
+test('gtMd only should NOT apply on small screens', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
@@ -231,8 +228,7 @@ test('$gtMd only should NOT apply on small screens', async () => {
         <YStack
           h={100}
           w={100}
-          bc="red"
-          $gtMd={{ bc: 'green' }}
+          bc="red gt-md:green"
         />
       )
     }
@@ -247,9 +243,9 @@ test('multiple media query components should not conflict', async () => {
     export function Test() {
       return (
         <>
-          <YStack bc="red" $md={{ bc: 'yellow' }} />
-          <XStack bc="blue" $gtMd={{ bc: 'green' }} />
-          <YStack bc="purple" $sm={{ bc: 'pink' }} />
+          <YStack bc="red md:yellow" />
+          <XStack bc="blue gt-md:green" />
+          <YStack bc="purple sm:pink" />
         </>
       )
     }
@@ -270,96 +266,80 @@ test('string ternary and media prop remain distinct on the runtime component', a
       return (
         <YStack
           width={someString ? 24 : 66}
-          $sm={{ height: 30 }}
+          height="sm:30px"
         />
       )
     }
   `)
   const code = output?.code ?? ''
   expect(code).toContain('someString ? 24 : 66')
-  expect(code).toContain('$sm={{ height: 30 }}')
+  expect(code).toContain('sm:30px')
   expect(code).toMatchSnapshot()
 })
 
-// native has no hover state, so hoverStyle should be dropped instead of
-// preserved as runtime work.
-test('hoverStyle on native should drop dead hover work', async () => {
+test('a hover clause on native stays on the runtime path', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
       return (
-        <YStack backgroundColor="red" hoverStyle={{ backgroundColor: 'green' }} />
+        <YStack backgroundColor="red hover:green" />
       )
     }
   `)
   const code = output?.code ?? ''
-  // must not serialize hoverStyle into the stylesheet or preserve it as runtime work
-  expect(code).not.toContain('"hoverStyle"')
-  expect(code).not.toContain('hoverStyle')
-  expect(code).not.toContain("backgroundColor: 'green'")
-  expect(code).toContain('__TamaguiNativeView')
+  expect(code).toContain('hover:green')
+  expect(code).not.toContain('__TamaguiNativeView')
   expect(code).toMatchSnapshot()
 })
 
-test('$theme-* on native should de-opt (preserve as inline prop)', async () => {
+test('a theme clause on native de-opts to the runtime path', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
       return (
-        <YStack backgroundColor="red" $theme-dark={{ backgroundColor: 'green' }} />
+        <YStack backgroundColor="red dark:green" />
       )
     }
   `)
   const code = output?.code ?? ''
-  // must NOT serialize $theme-dark as a sheet key (it would never match on RN)
-  expect(code).not.toContain('"$theme-dark"')
-  // must preserve as an inline JSX prop so runtime resolves it via theme
-  expect(code).toContain('$theme-dark')
+  expect(code).toContain('dark:green')
   expect(code).toContain('<YStack')
   expect(code).toMatchSnapshot()
 })
 
-test('$group-*-hover on native should drop dead hover work', async () => {
+test('a named group hover clause on native stays on the runtime path', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
       return (
         <YStack group="row">
           <YStack
-            backgroundColor="red"
-            $group-row-hover={{ backgroundColor: 'green' }}
+            backgroundColor="red group-hover/row:green"
           />
         </YStack>
       )
     }
   `)
   const code = output?.code ?? ''
-  // must not serialize or preserve hover-only group styles on native
-  expect(code).not.toContain('"$group-row-hover"')
-  expect(code).not.toContain('$group-row-hover')
-  expect(code).not.toContain("backgroundColor: 'green'")
+  expect(code).toContain('group-hover/row:green')
   expect(code).toMatchSnapshot()
 })
 
-test('$group-* non-hover on native should de-opt (preserve as inline prop)', async () => {
+test('a named group press clause on native stays on the runtime path', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
       return (
         <YStack group="row">
           <YStack
-            backgroundColor="red"
-            $group-row-press={{ backgroundColor: 'green' }}
+            backgroundColor="red group-press/row:green"
           />
         </YStack>
       )
     }
   `)
   const code = output?.code ?? ''
-  // must not serialize $group-row-press as a sheet key
-  expect(code).not.toContain('"$group-row-press"')
-  // must preserve as an inline jsx prop so runtime resolves it via group context
-  expect(code).toContain('$group-row-press')
+  expect(code).toContain('group-press/row:green')
   // group="row" parent must remain (it provides the runtime container context)
   expect(code).toContain('group="row"')
   expect(code).toMatchSnapshot()
@@ -371,9 +351,9 @@ test('ternary with mixed theme-token and non-token values preserves all props', 
     export function Test({ isActive, label }) {
       return (
         <Text
-          fontSize="$3"
+          fontSize="3"
           fontWeight={isActive ? '600' : '400'}
-          color={isActive ? '$color12' : '$color11'}
+          color={isActive ? 'color12' : 'color11'}
         >
           {label}
         </Text>

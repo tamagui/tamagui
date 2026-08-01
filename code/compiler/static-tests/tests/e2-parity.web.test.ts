@@ -268,7 +268,7 @@ export const Example = createElement(View, { padding: value }, 'compiled')
 `,
       runtimeImport: { specifier: 'react', resolvedId: reactId },
     },
-  ])('$name closes a frozen legacy coverage gap', ({ name, source, runtimeImport }) => {
+  ])('name closes a frozen legacy coverage gap', ({ name, source, runtimeImport }) => {
     const observations = observeNew({
       name: `compiled-${name}`,
       source,

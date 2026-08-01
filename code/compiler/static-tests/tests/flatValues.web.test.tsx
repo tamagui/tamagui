@@ -97,21 +97,6 @@ test('transform axis programs carry their composition class', async () => {
   expect(output?.styles).toContain('translate:')
 })
 
-test('legacy condition objects convert and extract to the same program CSS', async () => {
-  const object = await extract(
-    `<View backgroundColor="red" hoverStyle={{ backgroundColor: 'blue' }} />`
-  )
-  const flat = await extract(`<View backgroundColor="red hover:blue" />`)
-  require('node:fs').writeFileSync(
-    '/tmp/fv-legacy-out.txt',
-    `JS:\n${object?.js}\n\nCSS:\n${object?.styles}`
-  )
-  expect(object?.js).toContain('<div')
-  const classOf = (js?: string) => js?.match(/_bc-\d+/)?.[0]
-  // one merged program, identical class identity both spellings
-  expect(classOf(object?.js)).toBeTruthy()
-  expect(classOf(object?.js)).toBe(classOf(flat?.js))
-})
 
 test('a dynamic clause string bails to the runtime component', async () => {
   const output = await extractForWeb(

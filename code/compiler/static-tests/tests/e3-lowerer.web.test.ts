@@ -17,11 +17,6 @@ import {
 } from '@tamagui/static'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import {
-  legacyHardWebClassNames,
-  legacyHardWebCompactCss,
-} from './fixtures/e3-hard-web-legacy'
-
 const configPath = resolve(import.meta.dirname, 'lib/tamagui.config.cjs')
 const coreId = resolvedModuleId('/virtual/@tamagui/core.mjs')
 let projectInfo: TamaguiProjectInfo
@@ -93,13 +88,13 @@ export const App = () => (
     className="host-class"
     padding={10}
     {...override}
-    hoverStyle={{ opacity: 0.5 }}
-    $sm={{ margin: 3 }}
-    $theme-dark={{ color: '$color' }}
+    opacity="hover:0.5"
+    margin="sm:3px"
+    color="dark:color"
     group="card"
     data-sentinel="untouched"
   >
-    <Text fontFamily="$body">font</Text>
+    <Text fontFamily="body">font</Text>
   </View>
 )
 `
@@ -130,28 +125,6 @@ export const App = () => (
     expect(output.map?.sourcesContent).toEqual([source])
   })
 
-  test('matches the frozen legacy class and CSS output for the hard web style corpus', () => {
-    const source = `
-import { Text, View } from '@tamagui/core'
-export const App = () => (
-  <View
-    className="host-class"
-    padding={14}
-    hoverStyle={{ opacity: 0.5 }}
-    $sm={{ margin: 3 }}
-    $theme-dark={{ color: '$color' }}
-    group="card"
-    data-sentinel="yes"
-  >
-    <Text fontFamily="$body">font</Text>
-  </View>
-)
-`
-    const { plan, output } = compile(source)
-    expect(loweredClassNames(output.code)).toEqual(legacyHardWebClassNames)
-    expect(compactCss(plan.css)).toBe(legacyHardWebCompactCss)
-  })
-
   test('unsafe candidate bailout is all-or-nothing and does not block a sibling', () => {
     const source = `
 import { View } from '@tamagui/core'
@@ -159,8 +132,7 @@ export const App = () => (
   <>
     <View
       transition="fast"
-      padding={12}
-      hoverStyle={{ padding: 16 }}
+      padding="12px hover:16px"
       data-bailed="exact"
     />
     <View padding={16} data-lowered="yes" />
@@ -177,8 +149,7 @@ export const App = () => (
       bailed: 1,
     })
     expect(output.code).toContain('transition="fast"')
-    expect(output.code).toContain('padding={12}')
-    expect(output.code).toContain('hoverStyle={{ padding: 16 }}')
+    expect(output.code).toContain('padding="12px hover:16px"')
     expect(output.code).toContain('data-bailed="exact"')
     expect(output.code).toContain('<div className=')
     expect(output.code).toContain('data-lowered="yes"')
@@ -240,7 +211,7 @@ export const Card = () => (
   <View group="card" animatedBy="css" data-group="parent">
     <View
       width={100}
-      $group-card-hover={{ backgroundColor: 'red' }}
+      backgroundColor="group-hover/card:red"
       data-group="child"
     />
   </View>
@@ -257,7 +228,7 @@ export const Card = () => (
       bailed: 0,
     })
     expect(output.code).not.toContain('animatedBy')
-    expect(output.code).not.toContain('$group-card-hover')
+    expect(output.code).not.toContain('group-hover/card:red')
     const [parentClassName, childClassName] = loweredClassNames(output.code)
     expect(parentClassName).toContain('t_group_card')
     const childHoverClass = plan.css.match(
@@ -592,8 +563,7 @@ import { View } from '@tamagui/core'
 export const Card = () => (
   <View
     transition="fast"
-    padding={12}
-    hoverStyle={{ padding: 16 }}
+    padding="12px hover:16px"
     data-runtime="animated-state"
   />
 )

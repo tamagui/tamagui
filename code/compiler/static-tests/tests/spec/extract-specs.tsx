@@ -130,7 +130,7 @@ export function Test3(props: any) {
   )
 }
 
-// static + dynamic prop, hoverStyle
+// static + dynamic prop, hover clause
 export function Test4() {
   return (
     <YStack
@@ -278,7 +278,7 @@ export function Test13(props: TestProps) {
   )
 }
 
-// pressStyle + external constants
+// press clause + external constants
 export function Test14() {
   return (
     <YStack
