@@ -16,7 +16,6 @@ import { getReactNativeConfig } from './setupReactNative'
 import type {
   CompoundVariantDefinition,
   GetBaseStyles,
-  GetFinalProps,
   GetNonStyledProps,
   GetProps,
   GetStaticConfig,
@@ -68,34 +67,13 @@ type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false'
 type NoInferLocal<T> = [T][T extends any ? 0 : never]
 type IsAny<T> = 0 extends 1 & T ? true : false
 
-type InferStyledOptionsProps<
-  ParentComponent extends StylableComponent,
-  StyledConfig extends StaticConfigPublic,
-  Context,
-  ContextPropKeys extends string,
-> = ParentComponent extends { __tama: any }
-  ? GetFinalProps<
-      GetNonStyledProps<ParentComponent>,
-      GetBaseStyles<ParentComponent, StyledConfig>,
-      StyledVariantsWithContext<
-        GetStyledVariants<ParentComponent>,
-        GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
-      >
-    >
-  : InferStyledProps<ParentComponent, StyledConfig> &
-      GetStyledContextProps<Context, ContextPropKeys>
-
 type GetStyledOptionsAcceptedProps<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
   Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context,
   ContextPropKeys extends string,
-> = (Context extends undefined
-  ? Partial<InferStyledProps<ParentComponent, StyledConfig>>
-  : Partial<
-      InferStyledOptionsProps<ParentComponent, StyledConfig, Context, ContextPropKeys>
-    >) &
+> = Partial<InferStyledProps<ParentComponent, StyledConfig>> &
   (AreVariantsUndefined<Variants> extends true
     ? {}
     : Partial<GetVariantAcceptedValues<Variants>>) &
