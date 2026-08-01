@@ -5,7 +5,7 @@
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tamagui/tamagui.git",
+    "url": "git+https://github.com/tamagui/tamagui.git",
     "directory": "code/ui/tamagui"
   },
   "source": "src/index.ts",
