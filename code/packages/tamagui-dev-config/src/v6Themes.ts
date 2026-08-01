@@ -11,7 +11,7 @@ type V6Theme<Theme> = {
       : Name]: Theme[Name]
 }
 
-type V6Themes<Themes> = {
+export type V6Themes<Themes> = {
   [ThemeName in keyof Themes]: V6Theme<Themes[ThemeName]>
 }
 

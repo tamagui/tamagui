@@ -7,19 +7,28 @@ import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { defaultConfig as configV5 } from '@tamagui/config/v5'
 import { shorthands } from '@tamagui/config/v6'
 import { tamaguiThemes } from '@tamagui/themes/v4'
-import { createTamagui } from 'tamagui'
+import type { InferTamaguiConfig } from '@tamagui/web'
+import {
+  createTamagui,
+  type TamaguiInternalConfig,
+} from 'tamagui'
 // TODO just move this into this folder
 import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
 import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
-import { toV6Themes } from '../../packages/tamagui-dev-config/src/v6Themes'
+import {
+  toV6Themes,
+  type V6Themes,
+} from '../../packages/tamagui-dev-config/src/v6Themes'
 // Generated theme from v5 theme builder for testing
 import { themes as generatedV5Themes } from './generatedV5Theme'
 
 // Keep the kitchen sink's established token, font, and media scales. Only the
 // built-in theme namespace is a V3 migration concern here.
+const v3Themes: V6Themes<typeof configV3.themes> = toV6Themes(configV3.themes)
+
 const config = {
   ...configV3,
-  themes: toV6Themes(configV3.themes),
+  themes: v3Themes,
 }
 
 export const animationsCSS = createAnimationsCSS({
@@ -407,19 +416,68 @@ const bodyJa = {
   lineHeight: { ...config.fonts.body.lineHeight, 3: 30 },
 }
 
-const tamaConf = createTamagui({
+type Merge<Left, Right> = Omit<Left, keyof Right> & Right
+type KitchenThemes =
+  | V6Themes<typeof tamaguiThemes>
+  | Merge<V6Themes<typeof configV3.themes>, typeof themeDev>
+
+const themes: KitchenThemes = useV4Themes
+  ? toV6Themes(tamaguiThemes)
+  : {
+      ...config.themes,
+      ...themeDev,
+    }
+
+const variables = {
+  caseAccent: { light: 'rgb(0, 90, 200)', dark: 'rgb(90, 90, 255)' },
+  caseSurface: 'background',
+  caseRadius: 4,
+} as const
+
+const defaultProps = {
+  Square: {
+    backgroundColor: 'violet',
+  },
+} as const
+
+type KitchenConfigInput = Omit<
+  typeof config,
+  | 'animations'
+  | 'defaultProps'
+  | 'fonts'
+  | 'media'
+  | 'settings'
+  | 'shorthands'
+  | 'themes'
+  | 'tokens'
+  | 'variables'
+> & {
+  animations: typeof animations
+  defaultProps: typeof defaultProps
+  fonts: Merge<typeof config.fonts, { body_ja: typeof bodyJa }>
+  media: Merge<typeof configV4.media, typeof config.media>
+  settings: Merge<
+    typeof config.settings,
+    {
+      defaultFont: 'body'
+      allowedStyleValues: 'somewhat-strict'
+      fastSchemeChange: true
+    }
+  >
+  shorthands: typeof shorthands
+  themes: KitchenThemes
+  tokens: typeof tokens
+  variables: typeof variables
+}
+
+const tamaConf: InferTamaguiConfig<KitchenConfigInput> = createTamagui<KitchenConfigInput>({
   ...config,
   fonts: {
     ...config.fonts,
     body_ja: bodyJa,
   },
   // Use v4 themes when ?v4theme=true is in the URL
-  themes: useV4Themes
-    ? toV6Themes(tamaguiThemes)
-    : {
-        ...config.themes,
-        ...themeDev,
-      },
+  themes,
   shorthands: shorthands,
   settings: {
     ...config.settings,
@@ -435,17 +493,9 @@ const tamaConf = createTamagui({
   animations, // default reanimated
 
   // custom variables for VariablesCase (plans/variables.md)
-  variables: {
-    caseAccent: { light: 'rgb(0, 90, 200)', dark: 'rgb(90, 90, 255)' },
-    caseSurface: 'background',
-    caseRadius: 4,
-  },
+  variables,
 
-  defaultProps: {
-    Square: {
-      backgroundColor: 'violet',
-    },
-  },
+  defaultProps,
 })
 
 export type Conf = typeof tamaConf
@@ -458,7 +508,7 @@ declare module 'tamagui' {
   }
 }
 
-export default tamav5Config
+const activeConfig: TamaguiInternalConfig = tamav5Config
   ? createTamagui(tamaguiDevConfig)
   : generatedV5
     ? createTamagui({
@@ -473,3 +523,5 @@ export default tamav5Config
           animations,
         })
       : tamaConf
+
+export default activeConfig
