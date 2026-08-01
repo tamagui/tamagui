@@ -1,6 +1,8 @@
 export interface TransformComposition {
 	/** the CSS property the axis variables compose into */
 	property: string;
+	/** local axis defaults that prevent inherited parent transforms from leaking in */
+	defaults: Readonly<Record<string, string>>;
 	/** the composing declaration value, with per-axis fallbacks */
 	value: string;
 }

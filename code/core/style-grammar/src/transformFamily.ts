@@ -24,6 +24,8 @@
 export interface TransformComposition {
   /** the CSS property the axis variables compose into */
   property: string
+  /** local axis defaults that prevent inherited parent transforms from leaking in */
+  defaults: Readonly<Record<string, string>>
   /** the composing declaration value, with per-axis fallbacks */
   value: string
 }
@@ -49,11 +51,13 @@ export interface TransformTarget {
 // `0px` rather than `0` so the fallback is unambiguous in both slots
 const translateComposition: TransformComposition = Object.freeze({
   property: 'translate',
+  defaults: Object.freeze({ '--t-x': '0px', '--t-y': '0px' }),
   value: 'var(--t-x, 0px) var(--t-y, 0px)',
 })
 
 const scaleComposition: TransformComposition = Object.freeze({
   property: 'scale',
+  defaults: Object.freeze({ '--t-scale-x': '1', '--t-scale-y': '1' }),
   value: 'var(--t-scale-x, 1) var(--t-scale-y, 1)',
 })
 

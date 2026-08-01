@@ -46,6 +46,7 @@ describe('the family table', () => {
       effectiveProperty: 'translate',
       composition: {
         property: 'translate',
+        defaults: { '--t-x': '0px', '--t-y': '0px' },
         value: 'var(--t-x, 0px) var(--t-y, 0px)',
       },
     })
@@ -60,6 +61,7 @@ describe('the family table', () => {
     expect(transformFamilyTargets.scaleY.declaration).toBe('--t-scale-y')
     expect(transformFamilyTargets.scaleX.composition).toEqual({
       property: 'scale',
+      defaults: { '--t-scale-x': '1', '--t-scale-y': '1' },
       value: 'var(--t-scale-x, 1) var(--t-scale-y, 1)',
     })
   })
@@ -125,7 +127,7 @@ describe('web lowering', () => {
     expect(lowered.composition).toBeDefined()
     expect(lowered.composition!.property).toBe('translate')
     expect(lowered.composition!.rules).toEqual([
-      `.${lowered.composition!.className}{translate:var(--t-x, 0px) var(--t-y, 0px)}`,
+      `:where(.${lowered.composition!.className}){--t-x:0px;--t-y:0px;translate:var(--t-x, 0px) var(--t-y, 0px)}`,
     ])
   })
 
@@ -140,10 +142,9 @@ describe('web lowering', () => {
     expect(scaleX.composition!.className).not.toBe(x.composition!.className)
   })
 
-  test('every rule stays at specificity (0,1,0), composing rule included', () => {
+  test('program rules stay at specificity (0,1,0) and composition defaults lose to them', () => {
     const lowered = lower('--t-x', '0px hover:10px sm:20px dark:30px')
-    const all = [...lowered.rules, ...lowered.composition!.rules]
-    for (const rule of all) {
+    for (const rule of lowered.rules) {
       let inner = rule
       while (inner.startsWith('@')) {
         inner = inner.slice(inner.indexOf('{') + 1, inner.lastIndexOf('}')).trim()
@@ -153,6 +154,11 @@ describe('web lowering', () => {
       expect(bare, rule).toMatch(/^\.[A-Za-z0-9_-]+$/)
       expect(bare.split(' '), rule).toHaveLength(1)
     }
+    expect(
+      lowered.composition!.rules[0].startsWith(
+        `:where(.${lowered.composition!.className}){`
+      )
+    ).toBe(true)
   })
 
   test('an individual-property program carries no composing rule', () => {
@@ -408,7 +414,7 @@ describe("the codemod's scale shape end to end", () => {
     // one composing rule serves both axes
     expect(lowered[0].composition!.className).toBe(lowered[1].composition!.className)
     expect(lowered[0].composition!.rules).toEqual([
-      `.${lowered[0].composition!.className}{scale:var(--t-scale-x, 1) var(--t-scale-y, 1)}`,
+      `:where(.${lowered[0].composition!.className}){--t-scale-x:1;--t-scale-y:1;scale:var(--t-scale-x, 1) var(--t-scale-y, 1)}`,
     ])
 
     // native evaluates both axes and collapses them back to one entry

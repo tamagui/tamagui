@@ -310,13 +310,18 @@ export function lowerProgram(
     { base: composition.value, clauses: [] },
     configRevision
   )
+  const localDefaults = Object.entries(composition.defaults)
+    .map(([property, value]) => `${property}:${value}`)
+    .join(';')
   return {
     className,
     rules,
     composition: {
       property: composition.property,
       className: compositionClassName,
-      rules: [`.${compositionClassName}{${composition.property}:${composition.value}}`],
+      rules: [
+        `:where(.${compositionClassName}){${localDefaults};${composition.property}:${composition.value}}`,
+      ],
     },
   }
 }

@@ -39,7 +39,7 @@ test('an x program writes its axis variable and ships the composing rule', () =>
   const composeClass = result.classNames.translate
   expect(composeClass).toBeTruthy()
   expect(rulesFor(result, composeClass)).toEqual([
-    `.${composeClass}{translate:var(--t-x, 0px) var(--t-y, 0px)}`,
+    `:where(.${composeClass}){--t-x:0px;--t-y:0px;translate:var(--t-x, 0px) var(--t-y, 0px)}`,
   ])
 
   // both classes reach the element, or the variable is set and nothing reads it
@@ -55,7 +55,7 @@ test('x and y share one composing class', () => {
   // one translate composition for both axes
   const composeClass = result.classNames.translate
   expect(rulesFor(result, composeClass)).toEqual([
-    `.${composeClass}{translate:var(--t-x, 0px) var(--t-y, 0px)}`,
+    `:where(.${composeClass}){--t-x:0px;--t-y:0px;translate:var(--t-x, 0px) var(--t-y, 0px)}`,
   ])
 })
 
@@ -74,7 +74,7 @@ test('uniform scale expands to both axis programs behind one scale composition',
   )
   const composeClass = result.classNames.scale
   expect(rulesFor(result, composeClass)).toEqual([
-    `.${composeClass}{scale:var(--t-scale-x, 1) var(--t-scale-y, 1)}`,
+    `:where(.${composeClass}){--t-scale-x:1;--t-scale-y:1;scale:var(--t-scale-x, 1) var(--t-scale-y, 1)}`,
   ])
 })
 
