@@ -2893,6 +2893,11 @@ export type GetStyleState = {
   // same longhand delete the program and vice versa, so one longhand never has
   // both systems' output on one element.
   programs?: Map<string, import('@tamagui/style-grammar').LonghandProgram>
+  // lifecycle modifiers carried by each winning program longhand. This survives
+  // an early web class flush (which clears `programs`) so the CSS animation
+  // driver can restart exits from computed styles without reading removed
+  // condition-object props.
+  programLifecycle?: Map<string, { enter?: true; exit?: true }>
   // Track style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
   // Track original token values before they get resolved to CSS vars
@@ -3494,6 +3499,13 @@ export type GetStyleResult = {
   usesSafeArea?: true
   // The transition selected by the active flat value program
   effectiveTransition?: TransitionProp | null
+  // CSS properties controlled by lifecycle clauses in the winning programs.
+  // Internal animation-driver metadata; authored condition objects never enter
+  // this contract.
+  programLifecycleStyleKeys?: {
+    enter?: Set<string>
+    exit?: Set<string>
+  }
 }
 
 export type ClassNamesObject = Record<string, string>

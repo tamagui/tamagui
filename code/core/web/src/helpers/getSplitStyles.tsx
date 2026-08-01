@@ -25,6 +25,7 @@ import {
   percentUtilityProps,
   radiusCornerProps,
   splitColorOpacitySuffix,
+  transformAxisCompositions,
   transformFamilyProps,
   type GrammarConfigView,
   type ParsedCandidate,
@@ -64,6 +65,7 @@ import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { propMapper } from './propMapper'
 import {
   absorbPlainIntoPrograms,
+  clearProgramLifecycleForProp,
   contributeStylePrograms,
   contributeTransformNumber,
 } from './contributePrograms'
@@ -475,6 +477,7 @@ export const getSplitStyles: StyleSplitter = (
       const style = isArray ? styleProp[index] : styleProp
       if (!style) continue
       if (style['$$css']) {
+        for (const key in style) clearProgramLifecycleForProp(styleState, key)
         Object.assign(styleState.classNames, style)
         continue
       }
@@ -492,6 +495,7 @@ export const getSplitStyles: StyleSplitter = (
           // program's conditions survive (decision 21)
           continue
         }
+        clearProgramLifecycleForProp(styleState, key)
         styleState.style[key] = normalized[key]
         // An authored style object is one ordinary contribution, not a permanent
         // higher-precedence tier. Reset the key so any later contribution can win.
@@ -1374,6 +1378,19 @@ export const getSplitStyles: StyleSplitter = (
     ...(usesSafeArea && { usesSafeArea: true }),
   }
 
+  if (styleState.programLifecycle?.size) {
+    let enter: Set<string> | undefined
+    let exit: Set<string> | undefined
+    for (const [longhand, lifecycle] of styleState.programLifecycle) {
+      const property = transformAxisCompositions[longhand]?.property ?? longhand
+      if (lifecycle.enter) (enter ||= new Set()).add(property)
+      if (lifecycle.exit) (exit ||= new Set()).add(property)
+    }
+    if (enter || exit) {
+      result.programLifecycleStyleKeys = { enter, exit }
+    }
+  }
+
   const asChildExceptStyleLike =
     asChild === 'except-style' || asChild === 'except-style-web'
 
@@ -1545,6 +1562,7 @@ function mergeStyle(
       // their conditions survive (decision 21)
       if (absorbPlainIntoPrograms(styleState, key, val)) return
     }
+    clearProgramLifecycleForProp(styleState, key)
     styleState.flatTransforms[key] = val
   } else {
     const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
@@ -1564,6 +1582,7 @@ function mergeStyle(
         // (pseudo/media importance) are contributions beside the program
         if (absorbPlainIntoPrograms(styleState, key, out)) return
       }
+      clearProgramLifecycleForProp(styleState, key)
       styleState.style[key] =
         // if you dont do this you'll be passing props.transform arrays directly here and then mutating them
         // if theres any flatTransforms later, causing issues (mutating props is bad, in strict mode styles get borked)

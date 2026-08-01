@@ -60,7 +60,7 @@ export interface ConditionSelector {
 export const defaultStateSelectors: Readonly<Record<string, ConditionSelector>> =
   Object.freeze({
     hover: { fragment: ':hover', media: '(hover: hover)' },
-    // pressStyle's CSS pseudo name is `active`
+    // the press modifier's CSS pseudo name is `active`
     press: { fragment: ':active' },
     // the registered alias of press
     active: { fragment: ':active' },

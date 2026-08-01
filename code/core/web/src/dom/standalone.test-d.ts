@@ -54,7 +54,7 @@ props<Parameters<typeof html.div>[0]>({ onKeyDownCapture: () => {} })
 props<Parameters<typeof html.div>[0]>({ backgroundColor: 'red' })
 // @ts-expect-error so is a shorthand
 props<Parameters<typeof html.div>[0]>({ bg: 'red' })
-// @ts-expect-error and so is a pseudo style object
-props<Parameters<typeof html.div>[0]>({ hoverStyle: { opacity: 1 } })
+// @ts-expect-error and so is a flat state program
+props<Parameters<typeof html.div>[0]>({ opacity: '1 hover:0.5' })
 // @ts-expect-error className belongs to the Tailwind frontend, not this one
 props<Parameters<typeof html.div>[0]>({ className: 'p-4' })

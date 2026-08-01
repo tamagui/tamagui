@@ -15,7 +15,6 @@ import {
   borderFamilyTargets,
   expandToLonghands,
   fontShorthandTargets,
-  splitFontValue,
   legacyTransformKeysFor,
   longhandExpansionTable,
   type LonghandProgram,
@@ -23,9 +22,6 @@ import {
   type ParsedValue,
   legacyPartComposite,
   programEligibility,
-  splitBackgroundValue,
-  splitBorderValue,
-  splitTextDecorationValue,
   textDecorationFamilyTargets,
   transformDeclarationUnit,
   transformDeclarationsFor,
@@ -182,6 +178,37 @@ function isTransformDeclaration(longhand: string): boolean {
   return transformDeclarationUnit[longhand] !== undefined
 }
 
+function syncProgramLifecycle(
+  styleState: GetStyleState,
+  longhand: string,
+  value: ParsedValue
+): void {
+  let enter: true | undefined
+  let exit: true | undefined
+  for (const clause of value.clauses) {
+    for (const modifier of clause.modifiers) {
+      if (modifier === 'enter' || modifier === 'starting') enter = true
+      if (modifier === 'exit' || modifier === 'ending') exit = true
+    }
+  }
+  if (enter || exit) {
+    ;(styleState.programLifecycle ||= new Map()).set(longhand, { enter, exit })
+  } else {
+    styleState.programLifecycle?.delete(longhand)
+  }
+}
+
+/** Clear lifecycle metadata when a plain value displaces a program. */
+export function clearProgramLifecycleForProp(
+  styleState: GetStyleState,
+  prop: string
+): void {
+  if (!styleState.programLifecycle?.size) return
+  for (const longhand of longhandsFor(prop, styleState)) {
+    styleState.programLifecycle.delete(longhand)
+  }
+}
+
 /**
  * The transform family's legacy store is `flatTransforms`, not `style`, so a
  * transform program displaces there. A uniform legacy `scale` covers both axes:
@@ -213,27 +240,10 @@ function displaceFlatTransforms(
   return displaced
 }
 
-export function canAppendParsedProgram(styleState: GetStyleState, prop: string): boolean {
-  for (const longhand of longhandsFor(prop, styleState)) {
-    if (styleState.programs?.has(longhand)) continue
-    // a legacy flat transform value is always a number or a unit string, so it
-    // always lifts into a base
-    if (isTransformDeclaration(longhand)) continue
-    if (
-      styleState.style &&
-      longhand in styleState.style &&
-      plainValueToPayload(styleState.style[longhand], longhand) === null
-    ) {
-      return false
-    }
-  }
-  return true
-}
-
 /**
- * Claims every longhand for one parsed contribution. Ordinary flat values
- * replace the whole program. Converted legacy condition props append clauses
- * at their authored position and lift an earlier plain value into the base.
+ * Claims every longhand for one parsed contribution. Later contributions
+ * replace the base and any condition sets they restate while preserving the
+ * other clauses already accumulated for that longhand.
  */
 export function contributeParsedProgram(
   styleState: GetStyleState,
@@ -274,84 +284,9 @@ export function contributeParsedProgram(
 
     programs.delete(longhand)
     programs.set(longhand, { property: longhand, value: nextValue, sourceProp })
+    syncProgramLifecycle(styleState, longhand, nextValue)
     styleState.usedKeys[longhand] = 1
   }
-}
-
-/**
- * Converted legacy contributions may land on a family shorthand (`border`,
- * `background`), whose value-dependent split runs here — uncached, since the
- * conversion path is the compat path. Returns false when the value cannot
- * split, which sends the whole condition prop back to the legacy handling.
- */
-export function contributeConvertedProgram(
-  styleState: GetStyleState,
-  prop: string,
-  value: ParsedValue,
-  sourceProp: string
-): boolean {
-  if (borderFamilyTargets[prop]) {
-    const context = ensureGrammarContext(styleState)
-    const split = splitBorderValue(prop, value, context.colorTokens)
-    if (split.errors.length) return false
-    for (const entry of split.entries) {
-      contributeParsedProgram(styleState, entry.property, entry.value, sourceProp)
-    }
-    return true
-  }
-  if (prop === 'background') {
-    const context = ensureGrammarContext(styleState)
-    const split = splitBackgroundValue(value, context.colorTokens)
-    if (split.errors.length) return false
-    for (const entry of split.entries) {
-      contributeParsedProgram(styleState, entry.property, entry.value, sourceProp)
-    }
-    return true
-  }
-  if (textDecorationFamilyTargets[prop]) {
-    const context = ensureGrammarContext(styleState)
-    const split = splitTextDecorationValue(value, context.colorTokens)
-    if (split.errors.length) return false
-    for (const entry of split.entries) {
-      contributeParsedProgram(styleState, entry.property, entry.value, sourceProp)
-    }
-    return true
-  }
-  if (fontShorthandTargets[prop]) {
-    const split = splitFontValue(value)
-    if (split.errors.length) return false
-    for (const entry of split.entries) {
-      contributeParsedProgram(styleState, entry.property, entry.value, sourceProp)
-    }
-    return true
-  }
-  contributeParsedProgram(styleState, prop, value, sourceProp)
-  return true
-}
-
-/** validation half of contributeConvertedProgram, run before any contribution */
-export function canContributeConvertedProgram(
-  styleState: GetStyleState,
-  prop: string,
-  value: ParsedValue
-): boolean {
-  if (!canAppendParsedProgram(styleState, prop)) return false
-  if (borderFamilyTargets[prop]) {
-    const context = ensureGrammarContext(styleState)
-    return splitBorderValue(prop, value, context.colorTokens).errors.length === 0
-  }
-  if (prop === 'background') {
-    const context = ensureGrammarContext(styleState)
-    return splitBackgroundValue(value, context.colorTokens).errors.length === 0
-  }
-  if (textDecorationFamilyTargets[prop]) {
-    const context = ensureGrammarContext(styleState)
-    return splitTextDecorationValue(value, context.colorTokens).errors.length === 0
-  }
-  if (fontShorthandTargets[prop]) {
-    return splitFontValue(value).errors.length === 0
-  }
-  return true
 }
 
 /**
@@ -492,6 +427,7 @@ export function absorbPlainIntoPrograms(
   if (isTransform && plainValueToPayload(val, longhands[0]) === null) {
     for (let index = 0; index < longhands.length; index++) {
       programs.delete(longhands[index])
+      styleState.programLifecycle?.delete(longhands[index])
       delete styleState.usedKeys[longhands[index]]
     }
     return false
@@ -511,6 +447,7 @@ export function absorbPlainIntoPrograms(
     // later shorthand expansion is not suppressed by a stale mark (M5)
     for (let index = 0; index < longhands.length; index++) {
       programs.delete(longhands[index])
+      styleState.programLifecycle?.delete(longhands[index])
       delete styleState.usedKeys[longhands[index]]
     }
     return false
@@ -524,6 +461,7 @@ export function absorbPlainIntoPrograms(
       if (payload === null) {
         // not expressible as a payload: this longhand reverts to plain
         programs.delete(longhand)
+        styleState.programLifecycle?.delete(longhand)
         if (!isTransform) writePlainSlot(styleState, longhand, perSlot[index])
         continue
       }
@@ -536,6 +474,7 @@ export function absorbPlainIntoPrograms(
         }),
         sourceProp: key,
       })
+      syncProgramLifecycle(styleState, longhand, programs.get(longhand)!.value)
       styleState.usedKeys[longhand] = 1
     } else if (longhands.length > 1) {
       if (isTransform) {

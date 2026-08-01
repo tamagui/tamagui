@@ -121,83 +121,49 @@ const getCSSProperties = (key: string) => {
   return [TRANSFORM_KEYS.has(key) ? 'transform' : key]
 }
 
-/**
- * Build a CSS transform string from a style object containing transform properties
- */
-function buildTransformString(style: Record<string, unknown> | undefined): string {
-  if (!style) return ''
+const hyphenatedPropertyCache: Record<string, string> = {}
 
-  const parts: string[] = []
-
-  if (style.x !== undefined || style.y !== undefined) {
-    const x = style.x ?? 0
-    const y = style.y ?? 0
-    parts.push(`translate(${x}px, ${y}px)`)
-  }
-  if (style.scale !== undefined) {
-    parts.push(`scale(${style.scale})`)
-  }
-  if (style.scaleX !== undefined) {
-    parts.push(`scaleX(${style.scaleX})`)
-  }
-  if (style.scaleY !== undefined) {
-    parts.push(`scaleY(${style.scaleY})`)
-  }
-  if (style.rotate !== undefined) {
-    const val = style.rotate
-    const unit = typeof val === 'string' && val.includes('deg') ? '' : 'deg'
-    parts.push(`rotate(${val}${unit})`)
-  }
-  if (style.rotateX !== undefined) {
-    parts.push(`rotateX(${style.rotateX}deg)`)
-  }
-  if (style.rotateY !== undefined) {
-    parts.push(`rotateY(${style.rotateY}deg)`)
-  }
-  if (style.rotateZ !== undefined) {
-    parts.push(`rotateZ(${style.rotateZ}deg)`)
-  }
-  if (style.skewX !== undefined) {
-    parts.push(`skewX(${style.skewX}deg)`)
-  }
-  if (style.skewY !== undefined) {
-    parts.push(`skewY(${style.skewY}deg)`)
-  }
-
-  return parts.join(' ')
+function hyphenateProperty(property: string): string {
+  if (property.startsWith('--')) return property
+  return (hyphenatedPropertyCache[property] ||= property.replace(
+    /[A-Z]/g,
+    (letter) => `-${letter.toLowerCase()}`
+  ))
 }
 
-/**
- * Apply a style object to a DOM node, handling transform keys specially
- */
-function applyStylesToNode(
-  node: HTMLElement,
-  style: Record<string, unknown> | undefined
-): void {
-  if (!style) return
-
-  // collect transform values
-  const transformStr = buildTransformString(style)
-  if (transformStr) {
-    node.style.transform = transformStr
-  }
-
-  // apply non-transform properties
-  for (const key in style) {
-    const value = style[key]
-    if (TRANSFORM_KEYS.has(key)) continue
-    if (value === undefined) continue
-
-    if (key === 'opacity') {
-      node.style.opacity = String(value)
-    } else if (key === 'backgroundColor') {
-      node.style.backgroundColor = String(value)
-    } else if (key === 'color') {
-      node.style.color = String(value)
-    } else {
-      // generic fallback
-      node.style[key as any] = typeof value === 'number' ? `${value}px` : String(value)
+function getLifecycleCSSProperties(keys: Set<string> | undefined): string[] {
+  if (!keys?.size) return []
+  const properties = new Set<string>()
+  for (const key of keys) {
+    for (const property of getCSSProperties(key)) {
+      properties.add(hyphenateProperty(property))
     }
+  }
+  return [...properties].sort()
+}
+
+function readComputedProperties(
+  node: HTMLElement,
+  properties: readonly string[]
+): Record<string, string> {
+  const computed = getComputedStyle(node)
+  const values: Record<string, string> = {}
+  for (const property of properties) {
+    const value = computed.getPropertyValue(property)
+    if (value) values[property] = value
+  }
+  return values
+}
+
+function applyCSSProperties(node: HTMLElement, values: Record<string, string>): void {
+  for (const property in values) {
+    node.style.setProperty(property, values[property])
+  }
+}
+
+function clearCSSProperties(node: HTMLElement, properties: readonly string[]): void {
+  for (const property of properties) {
+    node.style.removeProperty(property)
   }
 }
 
@@ -493,10 +459,14 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       const exitCycleIdRef = React.useRef(0)
       const exitCompletedRef = React.useRef(false)
       const wasExitingRef = React.useRef(false)
-      const exitInterruptedRef = React.useRef(false)
       const sendExitCompleteRef = React.useRef(sendExitComplete)
-      const lastNonExitingStyleRef = React.useRef<Record<string, string>>({})
+      const lastMountedStyleRef = React.useRef<Record<string, string>>({})
       sendExitCompleteRef.current = sendExitComplete
+
+      const exitCSSProperties = getLifecycleCSSProperties(
+        styleState?.programLifecycleStyleKeys?.exit
+      )
+      const exitCSSPropertiesSignature = exitCSSProperties.join('\0')
 
       // onTransition lifecycle bookkeeping (independent from presence completion)
       const enterCycleIdRef = React.useRef(0)
@@ -515,10 +485,8 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         exitCycleIdRef.current++
         exitCompletedRef.current = false
       }
-      // track interruptions so we know to force-restart transitions
       if (justStoppedExiting) {
         exitCycleIdRef.current++
-        exitInterruptedRef.current = true
       }
 
       // track previous exiting state
@@ -526,11 +494,22 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         wasExitingRef.current = isExiting
       })
 
-      if (!isExiting) {
-        lastNonExitingStyleRef.current.opacity = String(
-          style?.opacity ?? props.opacity ?? 1
+      // Snapshot the actual mounted CSS values for every property with an exit
+      // clause. Most program values live in generated classes rather than the
+      // inline `style` object, so computed style is the only complete source.
+      // The snapshot becomes the reset point for normal and interrupted exits.
+      useIsomorphicLayoutEffect(() => {
+        if (isExiting) return
+        const host = stateRef.current.host
+        if (!host || !exitCSSProperties.length) {
+          lastMountedStyleRef.current = {}
+          return
+        }
+        lastMountedStyleRef.current = readComputedProperties(
+          host as HTMLElement,
+          exitCSSProperties
         )
-      }
+      }, [isExiting, exitCSSPropertiesSignature])
 
       // use effectiveTransition computed by createComponent (single source of truth)
       const effectiveTransition = styleState?.effectiveTransition ?? props.transition
@@ -611,18 +590,11 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           return
         }
 
-        // Force transition restart for interrupted exits
-        // When an exit is interrupted and restarted, the element may already be at
-        // the exit style, so no CSS transition fires. We need to:
-        // 1. Reset to non-exit state
-        // 2. Force reflow
-        // 3. Re-apply exit state to trigger transition
+        // React can apply the exit class in the same render batch as the
+        // transition. Restart from the last mounted computed values so normal
+        // and interrupted exits both produce a concrete browser transition.
         let rafId: number | undefined
         let disposed = false
-        const wasInterrupted = exitInterruptedRef.current
-        // get enter/exit styles for potential restart
-        const enterStyle = props.enterStyle as Record<string, unknown> | undefined
-        const exitStyle = props.exitStyle as Record<string, unknown> | undefined
 
         // Build the exit transition string - needed for both normal and interrupted exits
         const delayStr = normalized.delay ? ` ${normalized.delay}ms` : ''
@@ -654,94 +626,22 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           .filter(Boolean)
           .join(', ')
 
-        const getResetValue = (key: string) => {
-          if (key === 'opacity') {
-            return (
-              lastNonExitingStyleRef.current.opacity ??
-              props.opacity ??
-              style?.opacity ??
-              1
-            )
-          }
-          if (TRANSFORM_KEYS.has(key)) {
-            return key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
-          }
-          return enterStyle?.[key]
-        }
-
-        if (wasInterrupted) {
-          exitInterruptedRef.current = false
-          // disable transition, reset to enter state
+        const mountedStyle = lastMountedStyleRef.current
+        const canRestart =
+          exitCSSProperties.length > 0 && Object.keys(mountedStyle).length > 0
+        let exitTarget: Record<string, string> | undefined
+        if (canRestart) {
           node.style.transition = 'none'
-
-          // reset: apply active/open state for each exit property (not enterStyle,
-          // which may equal exitStyle — see comment in the normal exit path below)
-          if (exitStyle) {
-            const resetStyle: Record<string, unknown> = {}
-            for (const key of Object.keys(exitStyle)) {
-              const resetValue = getResetValue(key)
-              if (resetValue !== undefined) {
-                resetStyle[key] = resetValue
-              }
-            }
-            applyStylesToNode(node, resetStyle)
-          } else {
-            // fallback if no exitStyle defined
-            node.style.opacity = '1'
-            node.style.transform = 'none'
-          }
-
-          // force reflow
+          // With transitions disabled, the exit classes expose their final
+          // targets immediately. Capture those, then restore the mounted values.
+          exitTarget = readComputedProperties(node, exitCSSProperties)
+          applyCSSProperties(node, mountedStyle)
           void node.offsetHeight
-        } else if (exitStyle) {
-          // For normal (non-interrupted) exits, we need to ensure the CSS transition is
-          // processed by the browser BEFORE the exitStyle takes effect. The issue is that
-          // React may have already applied exitStyle in the same render batch. To fix this:
-          // 1. Disable transition and reset to non-exit state
-          // 2. Force reflow so browser processes the reset
-          // 3. Use RAF to ensure we're in a new frame
-          // 4. Re-enable transition and apply exitStyle
-          // This mirrors the interrupted exit handling approach (which also uses RAF).
-          node.style.transition = 'none'
-
-          // Reset to the active/open state (not enterStyle, which may equal exitStyle).
-          // enterStyle is the "unmounted" initial state and can share values with exitStyle
-          // (e.g., both have opacity: 0). resetting to enterStyle would mean no value change
-          // when exitStyle is applied, so the CSS transition wouldn't fire.
-          const resetStyle: Record<string, unknown> = {}
-          for (const key of Object.keys(exitStyle)) {
-            const resetValue = getResetValue(key)
-            if (resetValue !== undefined) {
-              resetStyle[key] = resetValue
-            }
-          }
-          applyStylesToNode(node, resetStyle)
-
-          // Force reflow
-          void node.offsetHeight
-
-          // Use RAF to ensure transition is applied in a new frame
           rafId = requestAnimationFrame(() => {
             if (cycleId !== exitCycleIdRef.current) return
-            // Re-enable transition
             node.style.transition = exitTransitionString
-            // Force reflow to ensure transition is active
             void node.offsetHeight
-            // Apply exit styles - this triggers the animation
-            applyStylesToNode(node, exitStyle)
-          })
-        }
-
-        // For interrupted exits, re-enable transition and re-apply exit styles
-        if (wasInterrupted) {
-          rafId = requestAnimationFrame(() => {
-            if (cycleId !== exitCycleIdRef.current) return
-            // re-enable transition using the pre-built string
-            node.style.transition = exitTransitionString
-            // force reflow again
-            void node.offsetHeight
-            // now apply exit styles - this triggers the transition
-            applyStylesToNode(node, exitStyle)
+            applyCSSProperties(node, exitTarget!)
           })
         }
 
@@ -755,6 +655,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         return () => {
           disposed = true
           if (rafId !== undefined) cancelAnimationFrame(rafId)
+          clearCSSProperties(node, exitCSSProperties)
           // restore transition: the exit handling sets node.style.transition='none'
           // directly on the DOM (bypassing React). if exit is interrupted (e.g. same-key
           // re-entry in AnimatePresence), React won't re-apply its managed transition
@@ -762,7 +663,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           // override lets React's value take effect again.
           node.style.transition = ''
         }
-      }, [isExiting])
+      }, [isExiting, exitCSSPropertiesSignature])
 
       // signature of the animatable style, so the update effect can detect
       // in-place style changes. the css driver applies most style values as

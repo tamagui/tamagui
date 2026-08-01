@@ -376,9 +376,9 @@ export function createComponent<
     overriddenContextProps = overrides
 
     // frontend single pass (hoisted): the component's descriptor tokenizes className +
-    // flattens props ONCE here, so the reconstructed enterStyle/exitStyle/size/animation
-    // props are in place before the state machine / variant / animation driver below read
-    // them. preprocessProps marks its result, so getSplitStyles skips its own preprocess.
+    // flattens props ONCE here, so flat programs and transition props are in place before
+    // the state machine / variant / animation driver below read them. preprocessProps
+    // marks its result, so getSplitStyles skips its own preprocess.
     // components without a descriptor pay one property read.
     if (staticConfig.styleFrontend) {
       props = staticConfig.styleFrontend.preprocessProps(props, config) as
@@ -521,7 +521,7 @@ export function createComponent<
         // keeps the last-emitted snapshot latched across re-renders (so an unrelated
         // render doesn't snap a hovered style back to base), but a render can change
         // the styles that FEED the pseudo merge — e.g. a row becoming active removes
-        // its hoverStyle while still hovered — and the stale snapshot would keep
+        // its hover clause while still hovered — and the stale snapshot would keep
         // painting over the new base (hover-beats-active-during-scrub).
         // `updateStyleListener` is rebuilt each render over fresh props/state and
         // reads `nextState || state`, so re-invoking it re-emits the correct merged
@@ -1318,7 +1318,7 @@ export function createComponent<
     }
 
     // Animation enter state machine: true -> 'should-enter' -> false
-    // Stage 1: Set 'should-enter' synchronously before paint to apply enterStyle classes
+    // Stage 1: Set 'should-enter' synchronously before paint to apply enter clauses
     // Stage 2: After browser paint, set false to trigger CSS transition
     //
     // CRITICAL: useEffect does NOT guarantee post-paint execution!
@@ -1332,7 +1332,7 @@ export function createComponent<
       }
 
       if (state.unmounted) {
-        // For CSS transitions, we need browser to paint enterStyle before removing it.
+        // For CSS transitions, the browser must paint enter clauses before removing them.
         // Double RAF guarantees paint: first RAF schedules after current frame,
         // second RAF schedules after that frame completes (including paint).
         if (inputStyle === 'css') {
@@ -1540,7 +1540,7 @@ export function createComponent<
                   // @ts-ignore
                   onClick?.(e)
                   // matches RN pressable behavior - only when an explicit press
-                  // handler is set, so pressStyle alone doesn't swallow clicks
+                  // handler is set, so a press clause alone doesn't swallow clicks
                   if (onPress || onClick) {
                     e.stopPropagation()
                   }
@@ -1633,7 +1633,7 @@ export function createComponent<
     // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
     // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
     // hasRealPressEvents distinguishes user-provided handlers from events.onPress
-    // synthesized for pressStyle alone — only the former should claim the responder.
+    // synthesized for press clauses alone — only the former should claim the responder.
     const hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
     const pressGesture =
       process.env.TAMAGUI_TARGET === 'native'

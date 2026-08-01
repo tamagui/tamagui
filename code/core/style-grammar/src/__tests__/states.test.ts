@@ -5,14 +5,13 @@ import {
   stateToModifier,
   modifierToState,
   stateToSelector,
-  stateToPseudoProp,
   componentStateNames,
 } from '..'
 
 // A1 state vocabulary — the join tables the registry generator and the Tailwind
 // bridge read as the single source of truth. these tests pin the joins (state ->
-// modifier / selector / pseudo-prop, and the reverse modifier -> state including
-// aliases) so a future edit to states.ts can't silently drift the contract.
+// modifier / selector, and the reverse modifier -> state including aliases) so
+// a future edit to states.ts can't silently drift the contract.
 
 describe('A1 state vocabulary joins', () => {
   test('the nine canonical states are exactly these', () => {
@@ -59,7 +58,7 @@ describe('A1 state vocabulary joins', () => {
     expect(modifierToState['active']).not.toBe('selected')
   })
 
-  test('component-tier states carry a web selector; pseudo-tier states carry a pseudo-prop', () => {
+  test('component-tier states carry a web selector; runtime-tier states do not', () => {
     const componentEntries = stateVocabulary.filter((e) => e.tier === 'component')
     const pseudoEntries = stateVocabulary.filter((e) => e.tier === 'pseudo')
 
@@ -67,10 +66,8 @@ describe('A1 state vocabulary joins', () => {
 
     for (const e of componentEntries) {
       expect(stateToSelector[e.state], `selector for ${e.state}`).toBeTruthy()
-      expect(stateToPseudoProp[e.state]).toBeUndefined()
     }
     for (const e of pseudoEntries) {
-      expect(stateToPseudoProp[e.state], `pseudo-prop for ${e.state}`).toBeTruthy()
       expect(stateToSelector[e.state]).toBeUndefined()
     }
   })
@@ -84,12 +81,5 @@ describe('A1 state vocabulary joins', () => {
     expect(stateToSelector.highlighted).toBe('[data-highlighted]')
     expect(stateToSelector.selected).toBe('[data-state="active"]')
     expect(stateToSelector.invalid).toBe('[aria-invalid="true"]')
-  })
-
-  test('pseudo-tier props are the core pseudo-style props', () => {
-    expect(stateToPseudoProp.pressed).toBe('pressStyle')
-    expect(stateToPseudoProp.disabled).toBe('disabledStyle')
-    expect(stateToPseudoProp.starting).toBe('enterStyle')
-    expect(stateToPseudoProp.ending).toBe('exitStyle')
   })
 })

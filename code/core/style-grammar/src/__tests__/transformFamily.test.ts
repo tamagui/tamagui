@@ -164,7 +164,7 @@ describe('web lowering', () => {
   })
 
   test("the codemod's scale shape round-trips to web rules", () => {
-    // scale="1 enter:0.9" is the flat spelling of enterStyle={{ scale: 0.9 }}
+    // scale="1 enter:0.9" keeps the lifecycle clause in the scale program
     const lowered = lower('scale', '1 enter:0.9')
     const cls = lowered.className
     expect(lowered.rules).toEqual([

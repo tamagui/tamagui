@@ -60,8 +60,7 @@ function clauseSetKey(modifiers: readonly string[]): string {
  * replaces the clauses whose condition sets it restates, and its clauses
  * append after the surviving earlier ones so last-match-wins holds. A styled
  * `bg="gray hover:blue"` overridden by a call-site `bg="red"` keeps the
- * hover — v1's `hoverStyle`-as-separate-prop semantics and tailwind-merge's
- * per-variant conflict groups.
+ * hover clause, matching tailwind-merge's per-variant conflict groups.
  */
 export function mergeProgramValues(
   earlier: ParsedValue,

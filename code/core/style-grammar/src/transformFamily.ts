@@ -6,7 +6,7 @@
 //
 // `x`, `y`, `scale`, and `rotate` stay first-class props, each its own program
 // with independent clause replacement, which is what makes `scale="1 enter:0.9"`
-// the flat spelling of `enterStyle={{ scale: 0.9 }}`.
+// an independently replaceable lifecycle program.
 //
 // Web: uniform `scale` and `rotate` lower to the CSS individual properties
 // directly. Where two programs share one CSS property — `x` and `y` both feed
