@@ -44,8 +44,16 @@ export const HeroTypography = memo(() => {
           <OverlayCard />
 
           <YStack
-                                                h={300} w="40%" gap="$0.5" scale={1.1} x={-20} y={5} $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }} jc="center"
-                                              >
+            h={300}
+            w="40%"
+            gap="0-5"
+            scale="1.1 sm:0.9"
+            x="-20px sm:0"
+            y="5px sm:0"
+            miw="sm:110%"
+            ai="sm:center"
+            jc="center"
+          >
             <YStack ai="flex-end" h={270}>
               <AnimatePresence mode="wait">
                 <AnimatedHeading
@@ -54,7 +62,7 @@ export const HeroTypography = memo(() => {
                   index={0}
                   Component={H1}
                   family={family}
-                  color="$red10"
+                  color="red10"
                 >
                   Swappable
                 </AnimatedHeading>
@@ -63,7 +71,7 @@ export const HeroTypography = memo(() => {
                   index={1}
                   Component={H2}
                   family={family}
-                  color="$blue10"
+                  color="blue10"
                 >
                   typed, compiled
                 </AnimatedHeading>
@@ -72,7 +80,7 @@ export const HeroTypography = memo(() => {
                   index={2}
                   Component={H3}
                   family={family}
-                  color="$blue10"
+                  color="blue10"
                 >
                   custom per-size
                 </AnimatedHeading>
@@ -81,7 +89,7 @@ export const HeroTypography = memo(() => {
                   index={3}
                   Component={H4}
                   family={family}
-                  color="$green10"
+                  color="green10"
                 >
                   premade or custom
                 </AnimatedHeading>
@@ -90,7 +98,7 @@ export const HeroTypography = memo(() => {
                   index={4}
                   Component={H5}
                   family={family}
-                  color="$yellow10"
+                  color="yellow10"
                 >
                   easy to author
                 </AnimatedHeading>
@@ -99,7 +107,7 @@ export const HeroTypography = memo(() => {
                   index={5}
                   Component={H6}
                   family={family}
-                  color="$red10"
+                  color="red10"
                 >
                   font themes
                 </AnimatedHeading> */}
@@ -115,13 +123,13 @@ export const HeroTypography = memo(() => {
 const OverlayCard = () => {
   // {/* TODO elevation not overriding? */}
   return (
-    <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
+    <Card bw={1} bc="border-color" br="6" elevation="6" shadowRadius={60}>
       <YStack jc="center" p="6 sm:5" gap="5" maw="calc(min(90vw, 400px))">
-        <Paragraph ta="left" size="$8" fow="400" ls={-1}>
+        <Paragraph ta="left" size="8" fow="400" ls={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph ta="left" size="$6" color="color8" fow="400">
+        <Paragraph ta="left" size="6" color="color8" fow="400">
           Typed, sizable fonts with control over every facet - weight, spacing,
           line-height, letter-spacing, color and more.
         </Paragraph>
@@ -153,18 +161,13 @@ const AnimatedHeading = memo(
       <Delay passThrough={disableAnimation} by={index * 180 + 20}>
         <Component
           transition={disableAnimation ? null : 'lazy'}
-          enterStyle={{ o: 0, y: -10 }}
-          exitStyle={{ o: 0, y: 10 }}
-          o={1}
-          y={0}
-          pr="$1"
-          my="$1"
-          $sm={{
-            pr: 0,
-          }}
+          o="1 enter:0 exit:0"
+          y="0 enter:-10px exit:10px"
+          pr="1 sm:0"
+          my="1"
           // @ts-ignore
-          fontFamily={`$${family}`}
-          textShadowColor="$shadow2"
+          fontFamily={family}
+          textShadowColor="shadow2"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
           ellipsis

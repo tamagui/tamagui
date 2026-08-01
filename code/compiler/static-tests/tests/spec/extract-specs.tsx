@@ -44,8 +44,13 @@ export function Test1() {
 
 export const Card = (props: any) => (
   <XStack
-            className="transition all ease-in ms100" borderRadius="2" backgroundColor="background" hoverStyle={{ backgroundColor: '$backgroundHover', shadowColor: '$shadowColor', shadowRadius: 20, shadowOffset: { height: 3, width: 0 }, y: -4, }} {...props}
-          />
+    className="transition all ease-in ms100"
+    borderRadius="2"
+    backgroundColor="background hover:background-hover"
+    boxShadow="hover:0 3px 20px shadow-color"
+    y="hover:-4px"
+    {...props}
+  />
 )
 
 export function TestVariantDefaultFalseOn(props: TestProps) {

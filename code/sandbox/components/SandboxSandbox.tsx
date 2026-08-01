@@ -573,11 +573,6 @@ const Motion = () => {
   console.warn('render')
   const [x, setX] = useState(0)
   const [show, setShow] = useState(false)
-  const [pressed, setPressed] = useState(false)
-  const pressedStyle = {
-    y: 20,
-    scale: 1.1,
-  }
 
   const squares = (
     <>
@@ -618,22 +613,41 @@ const Motion = () => {
 
       {/* animateOnly */}
       <Square
-                            transition={[ 'superBouncy', { opacity: '100ms', }, ]} bg="red maxMd:blue" opacity={0.25} borderWidth={2} hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }} scale="press:0.8" borderColor="press:red" x={x * 300} animateOnly={['transform', 'opacity']} size={50}
-                          />
+        transition={['superBouncy', { opacity: '100ms' }]}
+        bg="red maxMd:blue"
+        opacity="0.25 hover:1"
+        borderWidth={2}
+        scale="hover:1.5 press:0.8"
+        borderColor="hover:green press:red"
+        x={x * 300}
+        animateOnly={['transform', 'opacity']}
+        size={50}
+      />
 
       <Button onPress={() => setX(Math.random())}>asdasdas</Button>
 
       <Square
-                            transition={[ 'superBouncy', { opacity: '100ms', }, ]} bg="red" opacity={0.25} borderWidth={2} hoverStyle={{ scale: 1.5, borderColor: 'green', opacity: 1 }} scale="press:0.8" borderColor="press:red" x={x * 300} size={50}
-                          />
+        transition={['superBouncy', { opacity: '100ms' }]}
+        bg="red"
+        opacity="0.25 hover:1"
+        borderWidth={2}
+        scale="hover:1.5 press:0.8"
+        borderColor="hover:green press:red"
+        x={x * 300}
+        size={50}
+      />
 
       <Button onPress={() => setShow(!show)}>show</Button>
 
       <YStack width="100%" bg="yellow" group="card">
         {/* render during animate update */}
         <Square
-                                      transition="lazy" y="group-hover/card:10px" scale="group-hover/card:1.1" $group-card-press={pressedStyle} {...(pressed && pressedStyle)} bg="red" size={50}
-                                    />
+          transition="lazy"
+          y="group-hover/card:10px group-press/card:20px"
+          scale="group-hover/card:1.1 group-press/card:1.1"
+          bg="red"
+          size={50}
+        />
 
         <AnimatePresence>
           {show && (
