@@ -38,7 +38,9 @@ import { existsSync } from 'node:fs'
 
 const [, , fileArg, attrArg, ...flags] = process.argv
 if (!fileArg) {
-  console.error('usage: inspect-style-prop-types.mjs <file.tsx> [attr,attr] [--expect-tokens]')
+  console.error(
+    'usage: inspect-style-prop-types.mjs <file.tsx> [attr,attr] [--expect-tokens]'
+  )
   process.exit(2)
 }
 const file = resolve(fileArg)
@@ -115,16 +117,28 @@ function describe(type) {
       if (String(part.value).startsWith('$')) tokenLiterals++
     } else if (part.flags & F.TemplateLiteral) {
       templates++
-    } else if (!(part.flags & (F.NumberLiteral | F.Number | F.Boolean | F.BooleanLiteral))) {
+    } else if (
+      !(part.flags & (F.NumberLiteral | F.Number | F.Boolean | F.BooleanLiteral))
+    ) {
       if (nonLiteral.length < 6) nonLiteral.push(checker.typeToString(part))
     }
   }
-  return { constituents: parts.length, stringLiterals, tokenLiterals, templates, nonLiteral }
+  return {
+    constituents: parts.length,
+    stringLiterals,
+    tokenLiterals,
+    templates,
+    nonLiteral,
+  }
 }
 
 const rows = []
 function visit(node) {
-  if (ts.isJsxAttribute(node) && node.initializer && ts.isStringLiteral(node.initializer)) {
+  if (
+    ts.isJsxAttribute(node) &&
+    node.initializer &&
+    ts.isStringLiteral(node.initializer)
+  ) {
     const name = node.name.getText()
     if (!wanted || wanted.includes(name)) {
       const tag = node.parent.parent
@@ -135,7 +149,13 @@ function visit(node) {
         contextual: !!contextual,
         ...(contextual
           ? describe(contextual)
-          : { constituents: 0, stringLiterals: 0, tokenLiterals: 0, templates: 0, nonLiteral: [] }),
+          : {
+              constituents: 0,
+              stringLiterals: 0,
+              tokenLiterals: 0,
+              templates: 0,
+              nonLiteral: [],
+            }),
       })
     }
   }
@@ -144,7 +164,9 @@ function visit(node) {
 visit(source)
 
 if (!rows.length) {
-  console.error('no JSX string-literal attributes matched; give the probe file attributes like <View bg="" />')
+  console.error(
+    'no JSX string-literal attributes matched; give the probe file attributes like <View bg="" />'
+  )
   process.exit(2)
 }
 
