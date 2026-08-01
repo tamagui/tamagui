@@ -9,7 +9,7 @@ import { Button, Square, YStack, XStack, Text, View } from 'tamagui'
  * - animatedBy="default" should use motion driver (JS-based, smooth)
  * - animatedBy="css" should use CSS driver (CSS transitions)
  * - no animatedBy should use default (motion)
- * - $group-hover with transition should work with selected driver
+ * - group-hover with transition should work with selected driver
  */
 export function MultiDriverAnimation() {
   const [active, setActive] = useState(false)

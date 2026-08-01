@@ -72,7 +72,7 @@ describe('Platform-specific file optimization', () => {
 
       // Theme-dependent native styles stay on the runtime path.
       expect(nativeContent).toContain('<View')
-      expect(nativeContent).toContain('bg="$background"')
+      expect(nativeContent).toContain('bg="background"')
       expect(nativeContent).not.toContain('.css')
       expect(nativeContent).not.toContain('className')
     })

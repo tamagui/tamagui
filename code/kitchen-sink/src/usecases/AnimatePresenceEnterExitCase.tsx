@@ -3,7 +3,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { Button, Circle, Paragraph, Square, Text, XStack, YStack } from 'tamagui'
 
 /**
- * Tests that enterStyle/exitStyle actually animate (opacity changes)
+ * Tests that enter clause/exit clause actually animate (opacity changes)
  * when using AnimatePresence with conditional rendering.
  *
  * Bug: motion driver doesn't animate enter/exit styles at all,
@@ -62,7 +62,7 @@ export function AnimatePresenceEnterExitCase() {
 }
 
 /**
- * Scenario 01: basic square with enterStyle/exitStyle opacity
+ * Scenario 01: basic square with enter clause/exit clause opacity
  */
 function Scenario01_BasicEnterExit() {
   const [show, setShow] = useState(false)

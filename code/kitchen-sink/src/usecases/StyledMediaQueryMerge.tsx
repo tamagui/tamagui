@@ -29,24 +29,24 @@ export const StyledMediaQueryMerge = () => (
     <YStack>
       <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Media Query Test:</Text>
 
-      {/* Test 1: $sm media query merge */}
+      {/* Test 1: sm media query merge */}
       <ContainerWithMedia id="test1" background="sm:blue">
         <Text style={{ color: 'white' }}>
           Should have pt: 100, mx: 100, height: 100, width: 100, background: blue
         </Text>
       </ContainerWithMedia>
 
-      {/* Test 2: $sm media query with different runtime override */}
+      {/* Test 2: sm media query with different runtime override */}
       <ContainerWithMedia id="test2" background="sm:purple">
         <Text style={{ color: 'white' }}>
           Should have pt: 100, mx: 100, height: 100, width: 100, background: purple
         </Text>
       </ContainerWithMedia>
 
-      {/* Test 3: $sm media query with runtime override */}
+      {/* Test 3: sm media query with runtime override */}
       <ContainerWithMedia id="test3" background="sm:blue">
         <Text style={{ color: 'white' }}>
-          Should merge $sm styled definition with runtime override
+          Should merge sm styled definition with runtime override
         </Text>
       </ContainerWithMedia>
     </YStack>

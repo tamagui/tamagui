@@ -42,7 +42,7 @@ describe('PressStyleNative (no RNGH)', () => {
       .withTimeout(5000)
   })
 
-  describe('pressStyle without transition', () => {
+  describe('press clause without transition', () => {
     it('should fire pressIn and pressOut events on tap', async () => {
       await waitFor(element(by.id('simple-press-in-count')))
         .toHaveText('In: 0')
@@ -137,7 +137,7 @@ describe('PressStyleNative (no RNGH)', () => {
     })
   })
 
-  describe('pressStyle with transition (animation driver)', () => {
+  describe('press clause with transition (animation driver)', () => {
     it('should fire pressIn and pressOut events on animated pressable', async () => {
       await waitFor(element(by.id('animated-press-in-count')))
         .toHaveText('In: 0')

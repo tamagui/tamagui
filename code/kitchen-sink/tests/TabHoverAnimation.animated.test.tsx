@@ -159,7 +159,7 @@ test('direction: exiting element keeps original direction when going reverses', 
     }
   })
 
-  // hover Tab E → Tab A starts exiting LEFT (going=1, exitStyle x=-100)
+  // hover Tab E → Tab A starts exiting LEFT (going=1, exit clause x=-100)
   await hoverTab(page, 'tab-tab-e')
   await page.waitForTimeout(80) // let exit animation start
 

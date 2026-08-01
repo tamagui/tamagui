@@ -73,7 +73,7 @@ function PopoverWithScale({
   return (
     <YStack items="center" gap="2">
       <Popover
-        size="$4"
+        size="4"
         allowFlip={false}
         stayInFrame
         offset={10}
@@ -82,14 +82,20 @@ function PopoverWithScale({
         {...props}
       >
         <Popover.Trigger asChild>
-          <Button icon={Icon} size="$4">
+          <Button icon={Icon} size="4">
             {label}
           </Button>
         </Popover.Trigger>
 
         <Popover.Content
-                                      borderWidth={1} borderColor="border-color" p="4" transition={[ 'quick', { opacity: { overshootClamping: true, }, }, ]} scale="enter:0.5 exit:0.5" opacity="enter:0 exit:0" elevate
-                                    >
+          borderWidth={1}
+          borderColor="border-color"
+          p="4"
+          transition={['quick', { opacity: { overshootClamping: true } }]}
+          scale="enter:0.5 exit:0.5"
+          opacity="enter:0 exit:0"
+          elevate
+        >
           <Popover.Arrow borderWidth={1} borderColor="border-color" />
 
           <YStack gap="2" width={150}>
@@ -98,7 +104,7 @@ function PopoverWithScale({
               Scale animation should grow from the arrow point
             </Text>
             <Popover.Close asChild>
-              <Button size="$2" mt="2">
+              <Button size="2" mt="2">
                 Close
               </Button>
             </Popover.Close>

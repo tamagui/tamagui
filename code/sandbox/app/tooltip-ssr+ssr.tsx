@@ -60,10 +60,20 @@ export default function TooltipSSRTest() {
           </XStack>
 
           <Tooltip.Content
-                                                id="tip-content" scope="promo-tooltip" animatePosition transition="medium" bg="background" rounded="4" px="$2.5" py="1" y="enter:-4px exit:-4px" opacity="enter:0 exit:0" elevation="$2"
-                                              >
+            id="tip-content"
+            scope="promo-tooltip"
+            animatePosition
+            transition="medium"
+            bg="background"
+            rounded="4"
+            px="2.5"
+            py="1"
+            y="enter:-4px exit:-4px"
+            opacity="enter:0 exit:0"
+            elevation="2"
+          >
             <Tooltip.Arrow scope="promo-tooltip" id="tip-arrow" />
-            <Paragraph id="tip-label" size="$3">
+            <Paragraph id="tip-label" size="3">
               {label}
             </Paragraph>
           </Tooltip.Content>

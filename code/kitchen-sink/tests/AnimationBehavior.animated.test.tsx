@@ -195,7 +195,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
   })
 
-  test('enterStyle animates on mount', async ({ page }) => {
+  test('enter clause animates on mount', async ({ page }) => {
     const trigger = page.getByTestId('scenario-21-trigger')
     await trigger.click() // Hide
     await page.waitForTimeout(1000)
@@ -210,7 +210,7 @@ test.describe('Animation Behavior', () => {
     expect(await getScale(page, 'scenario-21-target'), 'End scale').toBeCloseTo(1, 0)
   })
 
-  test('exitStyle has intermediate values during exit animation', async ({
+  test('exit clause has intermediate values during exit animation', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -280,7 +280,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 0)
   })
 
-  test('enterStyle with scaleX animates from 0 to 1', async ({ page }) => {
+  test('enter clause with scaleX animates from 0 to 1', async ({ page }) => {
     const END_SCALE_X = 1
     const END_OPACITY = 1
 
@@ -437,7 +437,7 @@ test.describe('Animation Behavior', () => {
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
 
-  test('animateOnly with exitStyle has intermediate values during exit animation', async ({
+  test('animateOnly with exit clause has intermediate values during exit animation', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -483,7 +483,7 @@ test.describe('Animation Behavior', () => {
     )
   })
 
-  test('animateOnly with enterStyle and exitStyle animates correctly', async ({
+  test('animateOnly with enter clause and exit clause animates correctly', async ({
     page,
   }, testInfo) => {
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -492,7 +492,7 @@ test.describe('Animation Behavior', () => {
     // scroll to the element first
     await page.getByTestId('scenario-49-trigger').scrollIntoViewIfNeeded()
 
-    // element should be visible initially (after enterStyle animation completes)
+    // element should be visible initially (after enter clause animation completes)
     expect(await elementExists(page, 'scenario-49-target'), 'Initially visible').toBe(
       true
     )

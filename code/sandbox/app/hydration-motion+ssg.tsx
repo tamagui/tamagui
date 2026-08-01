@@ -16,7 +16,7 @@ import {
  * Key scenarios tested:
  * 1. animateOnly prop (the bug we fixed - server rendered inline style, client rendered className)
  * 2. Transform styles
- * 3. AnimatePresence with enterStyle/exitStyle
+ * 3. AnimatePresence with enter clause/exit clause
  */
 export default function HydrationMotionTest() {
   const driver = animationsMotion
@@ -28,8 +28,15 @@ export default function HydrationMotionTest() {
     () =>
       [0, 1, 2].map((i) => (
         <XStack
-                              key={i} data-testid={`indicator-dot-${i}`} width={i === 1 ? 16 : 8} height={8} bg={`${i === 1 ? "color10" : "color5"}`} rounded={100} transition="quick" animateOnly={['width', 'backgroundColor']}
-                            />
+          key={i}
+          data-testid={`indicator-dot-${i}`}
+          width={i === 1 ? 16 : 8}
+          height={8}
+          bg={`${i === 1 ? 'color10' : 'color5'}`}
+          rounded={100}
+          transition="quick"
+          animateOnly={['width', 'backgroundColor']}
+        />
       )),
     []
   )
@@ -37,8 +44,16 @@ export default function HydrationMotionTest() {
   // test case: transform styles
   const transformBox = (
     <YStack
-                  data-testid="transform-box" width={100} height={100} bg="blue10" x={50} y={20} scale={1.1} rotate="5deg" transition="medium"
-                />
+      data-testid="transform-box"
+      width={100}
+      height={100}
+      bg="blue10"
+      x={50}
+      y={20}
+      scale={1.1}
+      rotate="5deg"
+      transition="medium"
+    />
   )
 
   // test case: AnimatePresence with enter/exit
@@ -46,8 +61,15 @@ export default function HydrationMotionTest() {
     <AnimatePresence>
       {showAnimated && (
         <YStack
-                                      key="presence-box" data-testid="presence-box" width={80} height={80} bg="green10" opacity="1 enter:0 exit:0" scale="1 enter:0.8 exit:0.5" transition="bouncy"
-                                    />
+          key="presence-box"
+          data-testid="presence-box"
+          width={80}
+          height={80}
+          bg="green10"
+          opacity="1 enter:0 exit:0"
+          scale="1 enter:0.8 exit:0.5"
+          transition="bouncy"
+        />
       )}
     </AnimatePresence>
   )
@@ -82,9 +104,7 @@ export default function HydrationMotionTest() {
         {/* Test 3: AnimatePresence */}
         <YStack gap="2">
           <Text fontSize="4">Test 3: AnimatePresence</Text>
-          <XStack
-                                                gap="2" cursor="pointer" onPress={() => setShowAnimated(!showAnimated)}
-                                              >
+          <XStack gap="2" cursor="pointer" onPress={() => setShowAnimated(!showAnimated)}>
             <Text color="blue10">Toggle (click)</Text>
           </XStack>
           {presenceBox}

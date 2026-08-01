@@ -106,7 +106,7 @@ export function SheetPressRegressionCase() {
                 Scroll Button
               </Button>
 
-              {/* poll "add option" pattern: a View with onPress + pressStyle */}
+              {/* poll "add option" pattern: a View with onPress + press clause */}
               <View
                 testID="sheet-press-nested-view"
                 alignSelf="flex-start"

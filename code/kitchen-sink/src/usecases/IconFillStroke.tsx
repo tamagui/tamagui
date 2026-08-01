@@ -3,7 +3,7 @@ import { YStack, XStack, Text } from 'tamagui'
 
 // smoke case for SVG fill/stroke/strokeWidth on themed icons:
 // - plain colors pass through
-// - theme tokens ($colorN) resolve via the themed() wrapper on both web and native
+// - theme tokens (colorN) resolve via the themed() wrapper on both web and native
 export const IconFillStroke = () => (
   <YStack gap="4" padding="4">
     <XStack gap="3" alignItems="center">

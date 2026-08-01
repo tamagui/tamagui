@@ -1,6 +1,6 @@
 import { Text, View } from 'tamagui'
 
-// Smoke test for $textOverflow="ellipsis" cross-platform.
+// Smoke test for textOverflow="ellipsis" cross-platform.
 // Web: applies CSS text-overflow: ellipsis (plus overflow:hidden + white-space:nowrap via the
 //   existing webOnlyStylePropsText path).
 // Native: getSplitStyles maps textOverflow="ellipsis" on Text to numberOfLines={1}

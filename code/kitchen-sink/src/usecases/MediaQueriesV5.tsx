@@ -11,15 +11,15 @@ import { Text, useMedia, YStack, XStack } from 'tamagui'
  * - xxxs: 260, xxs: 340, xs: 460, sm: 640, md: 768, lg: 1024, xl: 1280, xxl: 1536
  *
  * Width queries (mobile-first, minWidth):
- * - $sm, $md, $lg, etc. - apply at minWidth and above
+ * - sm, md, lg, etc. - apply at minWidth and above
  * - Larger breakpoints override smaller ones
  *
  * Max-width queries (desktop-first, maxWidth):
- * - $max-sm, $max-md, $max-lg, etc. - apply at maxWidth and below
+ * - max-sm, max-md, max-lg, etc. - apply at maxWidth and below
  * - Smaller breakpoints override larger ones
  *
  * Height queries (minHeight):
- * - $height-sm, $height-md, $height-lg, etc.
+ * - height-sm, height-md, height-lg, etc.
  */
 export const MediaQueriesV5 = () => {
   const media = useMedia()
@@ -45,7 +45,7 @@ export const MediaQueriesV5 = () => {
       {/* Test 1: Mobile-first (minWidth) - larger should win */}
       <YStack gap="2">
         <Text fontWeight="bold">Test 1: Mobile-first (larger wins)</Text>
-        <Text fontSize={12}>On large screen: should be green ($lg wins over $sm)</Text>
+        <Text fontSize={12}>On large screen: should be green (lg wins over sm)</Text>
         <YStack
           testID="test-mobile-first"
           height={60}
@@ -58,7 +58,7 @@ export const MediaQueriesV5 = () => {
       <YStack gap="2">
         <Text fontWeight="bold">Test 2: Desktop-first (smaller wins)</Text>
         <Text fontSize={12}>
-          On small screen: should be yellow ($max-sm wins over $max-lg)
+          On small screen: should be yellow (max-sm wins over max-lg)
         </Text>
         <YStack
           testID="test-desktop-first"

@@ -7,12 +7,12 @@ import { Paragraph, SizableText, Span, Text } from 'tamagui'
 export function ParagraphSpanFontInheritance() {
   return (
     <>
-      {/* Test 1: Span should inherit $mono fontFamily from Paragraph */}
+      {/* Test 1: Span should inherit mono fontFamily from Paragraph */}
       <Paragraph testID="parent-mono" fontFamily="mono">
         mono paragraph with <Span testID="nested-span-mono">span text</Span> inside
       </Paragraph>
 
-      {/* Test 2: Span should inherit $body fontFamily from Paragraph */}
+      {/* Test 2: Span should inherit body fontFamily from Paragraph */}
       <Paragraph testID="parent-body" fontFamily="body">
         body paragraph with <Span testID="nested-span-body">span text</Span> inside
       </Paragraph>

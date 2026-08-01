@@ -97,7 +97,7 @@ test.describe('Tooltip animation', () => {
   // TEST 2: Enter animation translateY intermediate values
   // timing sensitive - on fast machines animation may complete before sample
   test('enter animation has intermediate translateY values', async ({ page }) => {
-    const START_Y = -20 // enterStyle y value
+    const START_Y = -20 // enter clause y value
     const END_Y = 0
 
     // Hover to trigger tooltip

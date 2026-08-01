@@ -9,8 +9,8 @@ import { setupPage } from './test-utils'
  *
  * Example:
  * - Base: x={-100}
- * - $sm: { x: 50 }
- * - Expected at $sm: x = 50 (overwrite)
+ * - sm: { x: 50 }
+ * - Expected at sm: x = 50 (overwrite)
  * - Bug behavior: x = -50 (cumulative: -100 + 50)
  */
 
@@ -51,15 +51,15 @@ test.describe('Transform Media Query Merge', () => {
   })
 
   test('media query x OVERWRITES base value (not cumulative)', async ({ page }) => {
-    // Set viewport to $sm breakpoint
+    // Set viewport to sm breakpoint
     await page.setViewportSize({ width: 600, height: 800 })
     await page.waitForTimeout(300)
 
-    // Test 1: styled() with base x=-100, $sm: x=50
+    // Test 1: styled() with base x=-100, sm: x=50
     // If cumulative (bug): x = -100 + 50 = -50
     // If overwrite (correct): x = 50
     const x1 = await getTranslateX(page, 'test1')
-    expect(x1, 'styled $sm x should OVERWRITE to 50, not cumulate to -50').toBeCloseTo(
+    expect(x1, 'styled sm x should OVERWRITE to 50, not cumulate to -50').toBeCloseTo(
       50,
       0
     )
@@ -69,11 +69,11 @@ test.describe('Transform Media Query Merge', () => {
     await page.setViewportSize({ width: 600, height: 800 })
     await page.waitForTimeout(300)
 
-    // Test 3: runtime prop with base x=-75, $sm: x=75
+    // Test 3: runtime prop with base x=-75, sm: x=75
     // If cumulative (bug): x = -75 + 75 = 0
     // If overwrite (correct): x = 75
     const x3 = await getTranslateX(page, 'test3')
-    expect(x3, 'runtime $sm x should OVERWRITE to 75, not cumulate to 0').toBeCloseTo(
+    expect(x3, 'runtime sm x should OVERWRITE to 75, not cumulate to 0').toBeCloseTo(
       75,
       0
     )

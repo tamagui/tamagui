@@ -48,8 +48,11 @@ export function SelectDemoContents(
     >
       {props?.trigger || (
         <Select.Trigger
-                                      maxWidth={220} borderRadius="4" backgroundColor="background hover:background-hover press:background-press" iconAfter={ChevronDown}
-                                    >
+          maxWidth={220}
+          borderRadius="4"
+          backgroundColor="background hover:background-hover press:background-press"
+          iconAfter={ChevronDown}
+        >
           <Select.Value placeholder="Something" />
         </Select.Trigger>
       )}
@@ -62,26 +65,37 @@ export function SelectDemoContents(
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Container>
-          <Sheet.Overlay
-                                                bg="shadow-color" transition="lazy" opacity="enter:0 exit:0"
-                                              />
+          <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Adapt>
 
       <Select.Content>
         <Select.ScrollUpButton
-                                      items="center" justify="center" position="relative" width="100%" height="3"
-                                    >
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
           <YStack z={10}>
             <ChevronUp size={20} />
           </YStack>
           <LinearGradient
-                                                start={[0, 0]} end={[0, 1]} position="absolute" inset={0} rounded="4" colors={['$background', 'transparent']}
-                                              />
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            rounded="4"
+            colors={['background', 'transparent']}
+          />
         </Select.ScrollUpButton>
         <Select.Viewport
-                                      minW={200} bg="background" rounded="4" borderWidth={1} borderColor="border-color"
-                                    >
+          minW={200}
+          bg="background"
+          rounded="4"
+          borderWidth={1}
+          borderColor="border-color"
+        >
           <Select.Indicator transition="quick" />
           <Select.Group>
             <Select.Label fontWeight="bold">Fruits</Select.Label>
@@ -91,8 +105,11 @@ export function SelectDemoContents(
                 items.map((item, i) => {
                   return (
                     <Select.Item
-                                            index={i} key={item.name} value={item.name.toLowerCase()} bg="transparent press:background-press hover:transparent"
-                                          >
+                      index={i}
+                      key={item.name}
+                      value={item.name.toLowerCase()}
+                      bg="transparent press:background-press hover:transparent"
+                    >
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
@@ -106,22 +123,37 @@ export function SelectDemoContents(
           {/* Native gets an extra icon */}
           {props.native && (
             <YStack
-                                                          position="absolute" r={0} t={16} items="center" justify="center" width="4" pointerEvents="none"
-                                                        >
+              position="absolute"
+              r={0}
+              t={16}
+              items="center"
+              justify="center"
+              width="4"
+              pointerEvents="none"
+            >
               <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </YStack>
           )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
-                                      items="center" justify="center" position="relative" width="100%" height="3"
-                                    >
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
           <YStack z={10}>
             <ChevronDown size={20} />
           </YStack>
           <LinearGradient
-                                                start={[0, 0]} end={[0, 1]} position="absolute" inset={0} rounded="4" colors={['transparent', '$background']}
-                                              />
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            rounded="4"
+            colors={['transparent', 'background']}
+          />
         </Select.ScrollDownButton>
       </Select.Content>
     </Select>

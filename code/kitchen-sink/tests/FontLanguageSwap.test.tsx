@@ -7,7 +7,7 @@ import { setupPage } from './test-utils'
  * A `body_ja` font key emits its own rules behind `.t_lang-body-ja`, and
  * `<FontLanguage body="ja">` puts that class on a wrapper. The claim being
  * tested is not that the family name changes — that would be true of a swap
- * that carried none of the face with it. It is that `$3` means the ja face's
+ * that carried none of the face with it. It is that `3` means the ja face's
  * size and line height inside the wrapper. Those resolve through CSS variables,
  * so this needs a real browser.
  *
@@ -35,7 +35,7 @@ test('a language face brings its own metrics, not just its own name', async ({
   expect(await face.evaluate((el) => getComputedStyle(el).fontFamily)).toContain(
     'KitchenSinkJA'
   )
-  // the ja face maps $3 to 20/30 where the default face maps it to 13/22, so
+  // the ja face maps token 3 to 20/30 where the default face maps it to 13/22, so
   // these prove the size scale swapped with the family rather than surviving it
   await expect(face).toHaveCSS('font-size', '20px')
   await expect(face).toHaveCSS('line-height', '30px')

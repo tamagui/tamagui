@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { Text, View, XStack, YStack, styled } from 'tamagui'
 
 /**
- * Regression matrix for $group-press stuck on a child after press-drag-release
+ * Regression matrix for group-press stuck on a child after press-drag-release
  * when the child has transition and the parent does not. Each cell is a
  * pressable parent frame holding a single child View whose bg reacts to
- * $group-press; the release-target below the row lets detox drag the finger
+ * group-press; the release-target below the row lets detox drag the finger
  * out of bounds before release, which reproduces the stuck state.
  */
 

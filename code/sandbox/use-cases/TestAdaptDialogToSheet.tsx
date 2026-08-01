@@ -9,7 +9,7 @@ export default function TestAdaptDialogToSheet() {
       <Dialog modal open={open} onOpenChange={setOpen}>
         <Dialog.Trigger asChild>
           <Button
-            size="$6"
+            size="6"
             onPress={() => {
               setOpen(true)
             }}
@@ -46,13 +46,20 @@ export default function TestAdaptDialogToSheet() {
         </Adapt>
 
         <Dialog.Portal>
-          <Dialog.Overlay
-                                                key="overlay" transition="quick" opacity="0.9 enter:0 exit:0"
-                                              />
+          <Dialog.Overlay key="overlay" transition="quick" opacity="0.9 enter:0 exit:0" />
 
           <Dialog.Content
-                                                key="content" p={0} m="0" width="100%" height="100%" items="center" rounded={0} transition="quick" x="enter:100% exit:100%" animateOnly={['transform', 'opacity']}
-                                              >
+            key="content"
+            p={0}
+            m="0"
+            width="100%"
+            height="100%"
+            items="center"
+            rounded={0}
+            transition="quick"
+            x="enter:100% exit:100%"
+            animateOnly={['transform', 'opacity']}
+          >
             <ScrollView width="100%">
               <YStack items="center" justify="center">
                 <YStack gap={12}>

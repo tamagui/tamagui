@@ -686,7 +686,7 @@ function Scenario53_TransformSubKeySplitDurations() {
 
 // ============================================================================
 // SCENARIO 55: Zero Animatable Exit Props
-// exitStyle exists but no animatable properties (only static props)
+// exit clause exists but no animatable properties (only static props)
 // Should complete immediately (no animations to wait for)
 // Tests: immediate completion code path
 // ============================================================================

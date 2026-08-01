@@ -96,7 +96,7 @@ describe('Variables', () => {
     await expect(element(by.id('vars-native-dynamic'))).toHaveText(
       dynamicValue('dynamic', true)
     )
-    // reference patch ($color) has no pair: deopts to the tracked path
+    // reference patch (color) has no pair: deopts to the tracked path
     await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText('refDynamic:false')
   })
 

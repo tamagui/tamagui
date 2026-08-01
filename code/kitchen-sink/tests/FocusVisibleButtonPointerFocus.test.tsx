@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'FocusVisibleButtonPointer', type: 'useCase' })
 })
 
-test(`button + focusVisibleStyle + non keyboard focus`, async ({ page }) => {
+test(`button + focus-visible clause + non keyboard focus`, async ({ page }) => {
   const button = page.locator('#focus-visible-button')
 
   const box = await button.boundingBox()

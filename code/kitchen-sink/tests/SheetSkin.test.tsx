@@ -25,7 +25,7 @@ test('applies app-owned surface, handle, overlay, and spacing aesthetics', async
 
   await expect(page.getByTestId('sheet-skin-overlay')).toHaveCSS('opacity', '0.45')
   await expect(page.getByTestId('sheet-skin-handle')).toHaveCSS('height', '10px')
-  // content spacing lives on the ScrollView (paddingHorizontal $2), not the
+  // content spacing lives on the ScrollView (paddingHorizontal token 2), not the
   // Container frame — Container frame padding inflates the fit-mode height and
   // breaks keyboard-lift geometry (see SheetWebKeyboard), so the skin keeps the
   // frame padding-free and insets content via the ScrollView + consumer content.

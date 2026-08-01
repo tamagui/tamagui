@@ -50,7 +50,7 @@ test('debug display should show green background when token is preserved', async
   const debugSmall = page.locator('#debug-small')
   const bgColor = await debugSmall.evaluate((el) => getComputedStyle(el).backgroundColor)
 
-  // Green-ish color indicates token was preserved (using $green5 theme token)
+  // Green-ish color indicates token was preserved (using green5 theme token)
   // This is a sanity check that our isToken logic in the component is working
-  expect(bgColor).not.toBe('rgb(254, 202, 202)') // not red ($red5)
+  expect(bgColor).not.toBe('rgb(254, 202, 202)') // not red (red5)
 })

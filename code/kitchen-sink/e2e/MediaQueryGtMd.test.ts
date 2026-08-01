@@ -1,10 +1,10 @@
 /**
  * Detox E2E Test for Media Query Regression (Issue starting in v1.132.17)
  *
- * Tests that $md and $gtMd media queries correctly apply based on screen size.
+ * Tests that md and gtMd media queries correctly apply based on screen size.
  *
- * Bug: On small screens (iPhone ~390px), $gtMd styles were incorrectly applying
- * when they should not. Only $md should apply on mobile devices.
+ * Bug: On small screens (iPhone ~390px), gtMd styles were incorrectly applying
+ * when they should not. Only md should apply on mobile devices.
  *
  * Breakpoints:
  * - md: maxWidth 1020 (matches when width <= 1020)
@@ -69,10 +69,10 @@ describe('MediaQueryGtMd', () => {
   it('should take screenshot for visual verification', async () => {
     // Take a screenshot for visual regression testing
     // On iPhone:
-    // - media-test-both: should be YELLOW (not green) - $md applies, not $gtMd
-    // - media-test-gtmd-only: should be RED - $gtMd doesn't match
-    // - media-test-md-only: should be YELLOW - $md applies
-    // - media-test-all: should be YELLOW - $md has priority over $sm
+    // - media-test-both: should be YELLOW (not green) - md applies, not gtMd
+    // - media-test-gtmd-only: should be RED - gtMd doesn't match
+    // - media-test-md-only: should be YELLOW - md applies
+    // - media-test-all: should be YELLOW - md has priority over sm
     await device.takeScreenshot('media-query-mobile')
   })
 })

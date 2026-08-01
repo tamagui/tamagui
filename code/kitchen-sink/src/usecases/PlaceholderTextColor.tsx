@@ -9,7 +9,7 @@ export const PlaceholderTextColor = () => (
     <Input placeholder="should be green" placeholderTextColor="green10" />
 
     <Text>Token "color10":</Text>
-    <Input placeholder="should be $color10" placeholderTextColor="color10" />
+    <Input placeholder="should be color10" placeholderTextColor="color10" />
 
     <Text>Token "blue10":</Text>
     <Input placeholder="should be blue" placeholderTextColor="blue10" />

@@ -44,16 +44,16 @@ export function getDominantColor(screenshotPath: string): RGB {
 }
 
 /**
- * Check if a color is predominantly blue (for $blue10)
+ * Check if a color is predominantly blue (for blue10)
  */
 export function isBlueish(color: RGB): boolean {
   // blue should have B as the dominant channel
-  // in dark themes $color4 can be a darker blue (e.g. RGB(0, 50, 97))
+  // in dark themes color4 can be a darker blue (e.g. RGB(0, 50, 97))
   return color.b > 60 && color.b > color.r && color.b > color.g
 }
 
 /**
- * Check if a color is predominantly red (for $red10)
+ * Check if a color is predominantly red (for red10)
  */
 export function isReddish(color: RGB): boolean {
   // red should have R as the dominant channel
@@ -62,7 +62,7 @@ export function isReddish(color: RGB): boolean {
 }
 
 /**
- * Check if a color is predominantly green (for $green10)
+ * Check if a color is predominantly green (for green10)
  */
 export function isGreenish(color: RGB): boolean {
   // green should have G as the dominant channel

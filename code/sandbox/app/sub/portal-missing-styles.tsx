@@ -4,7 +4,7 @@ export default function Test() {
   return (
     <>
       <YStack id="test-sub-box" width={500} height={500} bg="color10">
-        <Paragraph size="$4">Test case</Paragraph>
+        <Paragraph size="4">Test case</Paragraph>
       </YStack>
       <DialogTest />
     </>
@@ -26,9 +26,7 @@ export const DialogTest = () => {
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Container>
-          <Sheet.Overlay
-                              transition="lazy" opacity="enter:0 exit:0"
-                            />
+          <Sheet.Overlay transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Dialog.Adapt>
 
@@ -37,8 +35,12 @@ export const DialogTest = () => {
 
         <Dialog.Content key="content">
           <YStack
-                                                bg="red10" borderWidth={20} borderColor="green10" width={350} height={350}
-                                              >
+            bg="red10"
+            borderWidth={20}
+            borderColor="green10"
+            width={350}
+            height={350}
+          >
             <H1>ok ok</H1>
           </YStack>
         </Dialog.Content>

@@ -1,7 +1,7 @@
 /**
  * Tests compiler extraction with various scenarios:
  * - Simple extraction (static values)
- * - Advanced extraction ($color tokens)
+ * - Advanced extraction (color tokens)
  * - Light/dark mode switching
  * - Sub-theme changes
  * - Performance benchmark (warmup + shuffled median sampling)
@@ -43,7 +43,7 @@ function SimpleBoxNoOpt() {
   )
 }
 
-// advanced extracted component - uses $colorN tokens
+// advanced extracted component - uses colorN tokens
 function AdvancedBox() {
   return (
     <YStack
@@ -471,7 +471,7 @@ export function CompilerExtraction() {
         </XStack>
 
         <Text fontSize="3" marginTop="2">
-          Advanced $colorN (opt | no-opt):
+          Advanced colorN (opt | no-opt):
         </Text>
         <XStack gap="2">
           <AdvancedBox />

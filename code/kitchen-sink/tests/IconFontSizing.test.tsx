@@ -42,8 +42,8 @@ test('button icon and text use the copied skin named-size projections', async ({
 test('direct icon token size resolves via the font size scale, not size tokens', async ({
   page,
 }) => {
-  // font.body.size.$2 === 12 (size token $2 === 28)
+  // font.body.size['2'] === 12 (size token 2 === 28)
   expect(await directSvgWidth(page, 'icon-2')).toBe(12)
-  // font.body.size.$8 === 23 (size token $8 === 84)
+  // font.body.size['8'] === 23 (size token 8 === 84)
   expect(await directSvgWidth(page, 'icon-8')).toBe(23)
 })

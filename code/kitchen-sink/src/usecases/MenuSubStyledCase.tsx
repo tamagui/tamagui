@@ -8,7 +8,7 @@ import { Button } from '../components/Button'
  * Menu Submenu Styled Test Case
  *
  * Tests that styled(Menu.SubContent, {...}) works correctly with animation styles
- * like scale, enterStyle, and exitStyle. Previously these would break positioning
+ * like scale, enter clause, and exit clause. Previously these would break positioning
  * because Menu.SubContent wasn't properly styleable.
  */
 

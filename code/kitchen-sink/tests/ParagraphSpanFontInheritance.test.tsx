@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'ParagraphSpanFontInheritance', type: 'useCase' })
 })
 
-test(`Span inherits $mono fontFamily from Paragraph`, async ({ page }) => {
+test(`Span inherits mono fontFamily from Paragraph`, async ({ page }) => {
   const parentStyles = await getStyles(page.getByTestId('parent-mono').first())
   const nestedStyles = await getStyles(page.getByTestId('nested-span-mono').first())
 
@@ -18,7 +18,7 @@ test(`Span inherits $mono fontFamily from Paragraph`, async ({ page }) => {
   expect(nestedStyles.fontFamily).toBe(parentStyles.fontFamily)
 })
 
-test(`Span inherits $body fontFamily from Paragraph`, async ({ page }) => {
+test(`Span inherits body fontFamily from Paragraph`, async ({ page }) => {
   const parentStyles = await getStyles(page.getByTestId('parent-body').first())
   const nestedStyles = await getStyles(page.getByTestId('nested-span-body').first())
 
@@ -26,7 +26,7 @@ test(`Span inherits $body fontFamily from Paragraph`, async ({ page }) => {
   expect(nestedStyles.fontFamily).toBe(parentStyles.fontFamily)
 })
 
-test(`nested Text inherits $mono fontFamily from Text (baseline)`, async ({ page }) => {
+test(`nested Text inherits mono fontFamily from Text (baseline)`, async ({ page }) => {
   const parentStyles = await getStyles(page.getByTestId('parent-text-mono').first())
   const nestedStyles = await getStyles(page.getByTestId('nested-text-mono').first())
 
@@ -44,7 +44,7 @@ test(`Span explicit fontFamily override works`, async ({ page }) => {
   // parent should have mono font family
   expect(parentStyles.fontFamily).toContain('mono')
 
-  // span with explicit $body should NOT inherit mono
+  // span with explicit body should NOT inherit mono
   expect(nestedStyles.fontFamily).not.toBe(parentStyles.fontFamily)
 })
 

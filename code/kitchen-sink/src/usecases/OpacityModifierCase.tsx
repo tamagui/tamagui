@@ -57,7 +57,7 @@ export function OpacityModifierCase() {
         height={100}
       />
 
-      {/* $token/100 should be same as no modifier */}
+      {/* token/100 should be same as no modifier */}
       <View
         data-testid="opacity-bg-full"
         backgroundColor="customRed/100"
@@ -65,7 +65,7 @@ export function OpacityModifierCase() {
         height={100}
       />
 
-      {/* $token/0 should be fully transparent */}
+      {/* token/0 should be fully transparent */}
       <View
         data-testid="opacity-bg-zero"
         backgroundColor="customRed/0"

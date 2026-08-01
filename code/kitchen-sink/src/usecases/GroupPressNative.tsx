@@ -4,14 +4,14 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
 /**
  * Test cases for native group press style behaviors:
  *
- * 1. $group-press WITHOUT transition
- * 2. $group-press WITH transition
- * 3. Named group ($group-testy-press)
+ * 1. group-press WITHOUT transition
+ * 2. group-press WITH transition
+ * 3. Named group (group-testy-press)
  * 4. Press and drag off behavior - should unpress correctly
  *
  * Colors:
- * - Default: blue (#0000ff via $blue10)
- * - Pressed: red (#ff0000 via $red10)
+ * - Default: blue (#0000ff via blue10)
+ * - Pressed: red (#ff0000 via red10)
  */
 
 // child that reacts to group press WITHOUT transition
@@ -68,7 +68,7 @@ export function GroupPressNative() {
         Group Press Tests
       </Text>
 
-      {/* test 1: $group-press WITHOUT transition */}
+      {/* test 1: group-press WITHOUT transition */}
       <YStack gap="1">
         <Text fontSize="2">1. Group (no transition)</Text>
         <YStack
@@ -96,7 +96,7 @@ export function GroupPressNative() {
         </XStack>
       </YStack>
 
-      {/* test 2: $group-press WITH transition */}
+      {/* test 2: group-press WITH transition */}
       <YStack gap="1">
         <Text fontSize="2">2. Group (with transition)</Text>
         <YStack
@@ -124,7 +124,7 @@ export function GroupPressNative() {
         </XStack>
       </YStack>
 
-      {/* test 3: named $group-testy-press WITHOUT transition */}
+      {/* test 3: named group-testy-press WITHOUT transition */}
       <YStack gap="1">
         <Text fontSize="2">3. Named group (no transition)</Text>
         <YStack
@@ -152,7 +152,7 @@ export function GroupPressNative() {
         </XStack>
       </YStack>
 
-      {/* test 4: named $group-testy-press WITH transition */}
+      {/* test 4: named group-testy-press WITH transition */}
       <YStack gap="1">
         <Text fontSize="2">4. Named group (with transition)</Text>
         <YStack

@@ -2255,8 +2255,8 @@ function Scenario47_TransitionEnterExitWithDelay() {
 }
 
 // ============================================================================
-// SCENARIO 48: animateOnly with exitStyle
-// Tests: animateOnly={['opacity', 'transform']} combined with exitStyle
+// SCENARIO 48: animateOnly with exit clause
+// Tests: animateOnly={['opacity', 'transform']} combined with exit clause
 // Exit animation should work correctly when animateOnly includes the exit properties
 // ============================================================================
 function Scenario48_AnimateOnlyWithExitStyle() {
@@ -2305,7 +2305,7 @@ function Scenario48_AnimateOnlyWithExitStyle() {
 }
 
 // ============================================================================
-// SCENARIO 49: animateOnly with enterStyle and exitStyle
+// SCENARIO 49: animateOnly with enter clause and exit clause
 // Tests: animateOnly combined with both enter and exit animations
 // Both should animate smoothly using only the specified properties
 // ============================================================================

@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { Button, Paragraph, Square, XStack, YStack } from 'tamagui'
 
-// regression: a style key first introduced by exitStyle (no base value, never
+// regression: a style key first introduced by exit clause (no base value, never
 // painted) must still animate over the exit and gate exit completion. the bug
 // emitted such keys as plain values and excluded them from the pending exit
-// key set, so an element whose exitStyle only used new keys unmounted the same
+// key set, so an element whose exit clause only used new keys unmounted the same
 // cycle, skipping the exit entirely.
 export function ExitStyleNewKeyCase() {
   const [show, setShow] = useState(true)

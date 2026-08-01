@@ -10,7 +10,7 @@ import { TEST_IDS } from '../constants/test-ids'
  * 1. <Theme name="accent"> wrapping components (docs: theme-builder.mdx)
  * 2. <Button theme="accent"> component prop (docs: config-v5.mdx)
  * 3. accent-background / accent-color tokens (docs: config-v5.mdx)
- * 4. $accent1-$accent12 raw tokens
+ * 4. accent1-accent12 raw tokens
  *
  * Open in browser: http://localhost:9000/?test=V5ThemeBuilderOutput&generatedV5=true
  */
@@ -50,10 +50,10 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="background"
               borderRadius="4"
             />
-            <Text color="color11">Base $background</Text>
+            <Text color="color11">Base background</Text>
           </YStack>
 
-          {/* Accent theme: $background should differ from base */}
+          {/* Accent theme: background should differ from base */}
           <Theme name="accent">
             <YStack gap="1" alignItems="center">
               <YStack
@@ -63,9 +63,9 @@ export function V5ThemeBuilderOutput() {
                 backgroundColor="background"
                 borderRadius="4"
               />
-              <Text color="color11">Accent $background</Text>
+              <Text color="color11">Accent background</Text>
               <Text testID={TEST_IDS.accentThemeColor} color="color" marginTop="2">
-                Accent $color text
+                Accent color text
               </Text>
             </YStack>
           </Theme>
@@ -122,7 +122,7 @@ export function V5ThemeBuilderOutput() {
         />
       </YStack>
 
-      {/* === SECTION 4: $accent1-12 raw palette tokens === */}
+      {/* === SECTION 4: accent1-12 raw palette tokens === */}
       <YStack
         gap="3"
         padding="4"

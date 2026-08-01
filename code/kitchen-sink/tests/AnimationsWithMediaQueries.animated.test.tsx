@@ -57,7 +57,7 @@ test.describe('Animations With Media Queries', () => {
   test('scale applies at small viewport', async ({ page }) => {
     await page.setViewportSize({ width: 600, height: 800 })
     const scale = await waitForScale(page, 'test-scale', 0.75)
-    expect(scale, 'scale should be 0.75 at $sm').toBeCloseTo(0.75, 1)
+    expect(scale, 'scale should be 0.75 at sm').toBeCloseTo(0.75, 1)
   })
 
   test('scale updates when resizing from large to small', async ({ page }) => {

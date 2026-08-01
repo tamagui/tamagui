@@ -66,8 +66,8 @@ const CustomButtonText = styled(SizableText, {
   } as const,
 })
 
-// This is the key pattern from issue #3676 - using $color to reference context value
-// The child should use $color to reference the parent's color value from context
+// This is the key pattern from issue #3676 - using color to reference context value
+// The child should use color to reference the parent's color value from context
 const ContextRefButtonFrame = styled(YStack, {
   name: 'ContextRefButton',
   context: CustomButtonContext,
@@ -93,12 +93,12 @@ const ContextRefButtonFrame = styled(YStack, {
   } as const,
 })
 
-// Child that references parent's context color using $color syntax
+// Child that references parent's context color using color syntax
 // This pattern mimics ButtonText which uses `color: 'color'` to inherit from parent
 const ContextRefButtonText = styled(SizableText, {
   name: 'ContextRefButtonText',
   context: CustomButtonContext,
-  // this $color should reference the parent's color value from context
+  // this color should reference the parent's color value from context
   color: 'color',
 })
 
@@ -132,8 +132,8 @@ const ContextRefButtonComponent = createStyledHOC(
   )
 })
 
-// Issue #3670 - pressStyle color not propagating to children
-// Button with pressStyle that changes color - should propagate to text on press
+// Issue #3670 - press clause color not propagating to children
+// Button with press clause that changes color - should propagate to text on press
 // Note: This only works with animation drivers that re-render on press (not CSS driver)
 const PressStyleButtonFrame = styled(YStack, {
   name: 'PressStyleButton',
@@ -203,7 +203,7 @@ export function StyledContextColor() {
         </CustomButtonFrame>
       </CustomButtonContext.Provider>
 
-      {/* Test 4: Issue #3676 - $color reference should get parent's color from context */}
+      {/* Test 4: Issue #3676 - color reference should get parent's color from context */}
       {/* Direct color prop - this should work like Button */}
       <CustomButtonContext.Provider color="green">
         <ContextRefButtonFrame testID="context-ref-button-link">
@@ -218,7 +218,7 @@ export function StyledContextColor() {
         Context Ref Primary Button (via variant)
       </ContextRefButtonComponent>
 
-      {/* Test 5: Issue #3670 - pressStyle color should propagate to children on press */}
+      {/* Test 5: Issue #3670 - press clause color should propagate to children on press */}
       {/* Note: Requires disableClassName to force runtime press handling */}
       <PressStyleButtonComponent testID="press-style-button" disableClassName>
         Press Style Button (green → red on press)

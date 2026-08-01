@@ -1,11 +1,11 @@
 import { Square, YStack, Text } from 'tamagui'
 
 /**
- * Test case for $theme-dark/$theme-light with animation drivers.
+ * Test case for theme-dark/theme-light with animation drivers.
  *
  * Bug: When using an inline animation driver (e.g., motion), base styles are
  * applied as inline styles which override theme media CSS classes due to
- * CSS specificity. This means $theme-dark and $theme-light have no effect.
+ * CSS specificity. This means theme-dark and theme-light have no effect.
  */
 export function ThemeMediaAnimationCase() {
   return (

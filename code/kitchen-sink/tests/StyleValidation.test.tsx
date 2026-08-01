@@ -215,7 +215,7 @@ test('media: base color at wide viewport', async ({ page }) => {
   expect(s.backgroundColor).toBe('rgb(255, 0, 0)')
 })
 
-test('media: $sm override at narrow viewport', async ({ page }) => {
+test('media: sm override at narrow viewport', async ({ page }) => {
   await page.setViewportSize({ width: 700, height: 800 })
   await page.waitForTimeout(100)
   const s = await getStyles(page.locator('#sv-media'))

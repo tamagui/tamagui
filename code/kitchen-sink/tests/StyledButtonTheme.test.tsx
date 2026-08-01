@@ -15,7 +15,7 @@ test(`button + styled + createStyledHOC + theme works`, async ({ page }) => {
     return window.getComputedStyle(el)
   })
 
-  // The copied Button skin resolves its $background from the authored green Theme.
+  // The copied Button skin resolves its background from the authored green Theme.
   expect(styles.backgroundColor).toBe(referenceStyles.backgroundColor)
   expect(styles.backgroundColor).not.toBe('rgba(0, 0, 0, 0)')
 

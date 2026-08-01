@@ -4,7 +4,7 @@ import { setupPage } from './test-utils'
 
 // regression test: the slider track and active fill became invisible after
 // background-press was removed from themes (the track/fill inherited the
-// page $background so nothing rendered on a plain background)
+// page background so nothing rendered on a plain background)
 
 let pageErrors: Error[]
 

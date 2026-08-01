@@ -20,11 +20,11 @@ const config = createTamagui({
     ...v6.tokens,
     color: {
       ...v6.tokens.color,
-      '$canary-token': '#7c3aed',
+      'canary-token': '#7c3aed',
     },
     space: {
       ...v6.tokens.space,
-      $4: 18,
+      4: 18,
     },
   },
 })

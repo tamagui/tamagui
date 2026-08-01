@@ -6,7 +6,7 @@ import { Button, Square, XStack, YStack, Paragraph } from 'tamagui'
  * Test case for clicking to close while enter animation is still playing.
  * Uses separate show/hide buttons so we can trigger them independently.
  *
- * The element uses enterStyle + exitStyle with opacity, y, and scale
+ * The element uses enter clause + exit clause with opacity, y, and scale
  * to match a real popover-like animation.
  */
 export function ClickDuringEnterCase() {

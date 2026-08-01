@@ -7,7 +7,7 @@ import { Button, FontLanguage, Text, YStack } from 'tamagui'
  * A font key of `body_ja` in the config emits its own rule set behind
  * `.t_lang-body-ja`, and `<FontLanguage body="ja">` puts that class on a
  * wrapper. The part worth testing is that the swap carries the FACE'S OWN
- * METRICS with it — `$3` has to mean the ja size and the ja line height inside
+ * METRICS with it — `3` has to mean the ja size and the ja line height inside
  * the wrapper, not the default face's numbers with a different family name
  * painted on. Those come through CSS variables, so only a real browser
  * resolving the cascade can answer it.

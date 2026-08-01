@@ -1,7 +1,7 @@
 import { Text, useMedia, YStack } from 'tamagui'
 
 /**
- * Smoke test for the built-in $motionReduce / $motionSafe media keys.
+ * Smoke test for the built-in motionReduce / motionSafe media keys.
  *
  * Web: subscribes to `(prefers-reduced-motion: reduce | no-preference)` via
  * `window.matchMedia`. Native: subscribes to

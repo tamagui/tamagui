@@ -3,13 +3,13 @@ import { YStack, XStack, Text, Square, styled } from 'tamagui'
 /**
  * Test case for transform media query merging bug
  *
- * Bug: When a media query like $sm sets transform props like `x`, it should OVERWRITE
+ * Bug: When a media query like sm sets transform props like `x`, it should OVERWRITE
  * the base value, not be CUMULATIVE (added together).
  *
  * Example:
  * - Base: x={-100}
- * - $sm: { x: 50 }
- * - Expected at $sm: x = 50
+ * - sm: { x: 50 }
+ * - Expected at sm: x = 50
  * - Actual bug: x = -100 + 50 = -50 (cumulative)
  */
 
@@ -17,7 +17,7 @@ import { YStack, XStack, Text, Square, styled } from 'tamagui'
 const TransformBox = styled(Square, {
   size: 100,
   bg: 'blue10 sm:green10',
-  // at $sm: should be shifted right 50px (OVERWRITE, not cumulative)
+  // at sm: should be shifted right 50px (OVERWRITE, not cumulative)
   x: '-100px sm:50px',
 })
 
@@ -28,16 +28,14 @@ export function TransformMediaQueryMerge() {
         Transform Media Query Merge Test
       </Text>
       <Text fontSize="2" color="color10">
-        Resize window to test. At $sm breakpoint, x should OVERWRITE not be cumulative.
+        Resize window to test. At sm breakpoint, x should OVERWRITE not be cumulative.
       </Text>
 
       {/* Test 1: styled() component with transform in definition */}
       <YStack gap="2">
         <Text fontWeight="bold">Test 1: styled() component</Text>
-        <Text fontSize="2">Base: x=-100, $sm: x=50</Text>
-        <Text fontSize="2">
-          Expected at $sm: x=50 (overwrite), NOT x=-50 (cumulative)
-        </Text>
+        <Text fontSize="2">Base: x=-100, sm: x=50</Text>
+        <Text fontSize="2">Expected at sm: x=50 (overwrite), NOT x=-50 (cumulative)</Text>
         <XStack
           height={150}
           bg="color3"
@@ -55,9 +53,9 @@ export function TransformMediaQueryMerge() {
 
       {/* Test 3: Runtime prop with media query */}
       <YStack gap="2">
-        <Text fontWeight="bold">Test 3: Runtime prop with $sm</Text>
-        <Text fontSize="2">Base: x=-75, $sm: x=75</Text>
-        <Text fontSize="2">Expected at $sm: x=75 (overwrite), NOT x=0 (cumulative)</Text>
+        <Text fontWeight="bold">Test 3: Runtime prop with sm</Text>
+        <Text fontSize="2">Base: x=-75, sm: x=75</Text>
+        <Text fontSize="2">Expected at sm: x=75 (overwrite), NOT x=0 (cumulative)</Text>
         <XStack
           height={150}
           bg="color3"

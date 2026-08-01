@@ -141,19 +141,6 @@ export const Sandbox = () => {
 
           {/* <TooltipDemo /> */}
 
-          {/* <XStack
-             $gtSm={{
-               space: 50,
-             }}
-             $gtLg={{
-               space: 200,
-             }}
-            >
-             <Square size={100} bc="red" />
-             <Square size={100} bc="red" />
-             <Square size={100} bc="red" />
-            </XStack> */}
-
           {/* <AnimationsHoverDemo /> */}
 
           {/* <AnimationChangeTest /> */}
@@ -180,17 +167,6 @@ export const Sandbox = () => {
 
           {/* <Input  placeholder="hello" /> */}
 
-          {/* <>make sure enterStyle works without scale set on defaults</>
-            <Square
-             size={100}
-             bc="red"
-             transition="bouncy"
-             
-             // scale={1}
-             enterStyle={{
-               scale: 2,
-             }}
-            /> */}
           {/* <AnimationsPresenceDemo /> */}
           {/* <Square size={100} bc="red" transition="bouncy" /> */}
           {/* <AnimationsPresenceDemo /> */}
@@ -227,13 +203,6 @@ export const Sandbox = () => {
 
           {/* <SheetDemo /> */}
 
-          {/* space */}
-          {/* <YStack  gap="2" $gtSm={{ gap: '10' }}>
-             <Circle bc="red" size="10" />
-             <Circle bc="red" size="10" />
-             <Circle bc="red" size="10" />
-            </YStack> */}
-
           {/* <LabelDemo /> */}
           {/* <SelectDemo /> */}
 
@@ -250,12 +219,6 @@ export const Sandbox = () => {
             Hello world
             </TestFontTokensInVariants> */}
 
-          {/* <Button size="small" $sm={{ size: 'large' }} >
-            test
-            </Button> */}
-
-          {/* <Button pressStyle={{ backgroundColor: 'blue' }}>hi</Button> */}
-
           {/* <GroupDemo /> */}
 
           {/* <Animated.View style={style} /> */}
@@ -266,27 +229,12 @@ export const Sandbox = () => {
           {/* <DialogDemo /> */}
           {/* <InputsDemo /> */}
           {/* <SelectDemo /> */}
-          {/* <ScrollView bc="yellow" p="1" $gtXs={{ bg: 'blue', p: '4' }} maxHeight={200}>
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            <Square bc="red" size={100} />
-            </ScrollView> */}
           {/* <PopoverDemo /> */}
           {/* <TooltipDemo /> */}
           {/* <SwitchDemo /> */}
           {/* <SheetDemo2 /> */}
           {/* <SheetDemo /> */}
           {/* <SwitchDemo /> */}
-          {/* <XStack gap="4">
-            <Square size={50} bc="red" />
-            <Square $sm={{ display: 'none' }} size={50} bc="red" />
-            <Square size={50} bc="red" />
-            <Square disp="none" size={50} bc="red" />
-            <Square size={50} bc="red" />
-            </XStack> */}
         </div>
       </div>
     </TamaguiProvider>
@@ -355,14 +303,6 @@ export const Sandbox = () => {
 //       },
 //     },
 //   } as const,
-// })
-
-// const StyledInput = styled(Input, {
-//   debug: 'verbose',
-//   backgroundColor: 'red',
-//   hoverStyle: {
-//     backgroundColor: 'blue',
-//   },
 // })
 
 // const StyledText = styled(Text, {

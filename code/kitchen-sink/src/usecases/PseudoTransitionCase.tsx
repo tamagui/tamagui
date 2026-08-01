@@ -3,14 +3,14 @@ import { Square, YStack, Text, XStack, View, styled } from 'tamagui'
 /**
  * PSEUDO TRANSITION TEST CASES
  *
- * Tests for transition prop inside pseudo-style props (hoverStyle, pressStyle, etc.)
+ * Tests for transition prop inside pseudo-style props (hover clause, press clause, etc.)
  * CSS semantics: enter uses pseudo's transition, exit uses base transition
  *
  * Test scenarios:
- * 1. hoverStyle with transition - enter fast (200ms), exit slow (1000ms)
- * 2. pressStyle with transition - press fast (200ms), release slow (1000ms)
+ * 1. hover clause with transition - enter fast (200ms), exit slow (1000ms)
+ * 2. press clause with transition - press fast (200ms), release slow (1000ms)
  * 3. Multiple pseudo states with different transitions
- * 4. $group-hover with transition
+ * 4. group-hover with transition
  */
 
 // styled component for group test
@@ -22,7 +22,7 @@ const GroupHoverSquare = styled(Square, {
   variants: {
     groupHover: {
       true: {
-        // this would be the $group-hover case - tested via props below
+        // this would be the group-hover case - tested via props below
       },
     },
   },
@@ -35,7 +35,7 @@ export function PseudoTransitionCase() {
         Pseudo Transition Tests
       </Text>
 
-      {/* Scenario 1: hoverStyle transition */}
+      {/* Scenario 1: hover clause transition */}
       <YStack gap="2">
         <Text>Scenario 1: hover - enter 200ms, exit 1000ms</Text>
         <Text color="gray10" fontSize="2">
@@ -50,7 +50,7 @@ export function PseudoTransitionCase() {
         />
       </YStack>
 
-      {/* Scenario 2: pressStyle transition */}
+      {/* Scenario 2: press clause transition */}
       <YStack gap="2">
         <Text>Scenario 2: press - enter 200ms, exit 1000ms</Text>
         <Text color="gray10" fontSize="2">
@@ -80,7 +80,7 @@ export function PseudoTransitionCase() {
         />
       </YStack>
 
-      {/* Scenario 4: $group-hover with transition - uses opacity for simpler testing */}
+      {/* Scenario 4: group-hover with transition - uses opacity for simpler testing */}
       <YStack gap="2">
         <Text>Scenario 4: group hover - enter 200ms, exit 1000ms</Text>
         <Text color="gray10" fontSize="2">
@@ -104,7 +104,7 @@ export function PseudoTransitionCase() {
         </XStack>
       </YStack>
 
-      {/* Scenario 5: focusStyle with transition */}
+      {/* Scenario 5: focus clause with transition */}
       <YStack gap="2">
         <Text>Scenario 5: focus - enter 200ms, exit 1000ms</Text>
         <Text color="gray10" fontSize="2">
@@ -123,7 +123,7 @@ export function PseudoTransitionCase() {
         />
       </YStack>
 
-      {/* Scenario 6: opacity animation in hoverStyle */}
+      {/* Scenario 6: opacity animation in hover clause */}
       <YStack gap="2">
         <Text>Scenario 6: opacity - hover enter 200ms, exit 1000ms</Text>
         <Text color="gray10" fontSize="2">

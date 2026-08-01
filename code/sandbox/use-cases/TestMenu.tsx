@@ -43,13 +43,22 @@ export function MenuDemo() {
         placement="bottom-start"
       >
         <Menu.Trigger asChild>
-          <Button size="$3" circular icon={Backpack} scaleIcon={1.2} marginLeft="20" />
+          <Button size="3" circular icon={Backpack} scaleIcon={1.2} marginLeft="20" />
         </Menu.Trigger>
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
-                                                paddingHorizontal={0} borderWidth={1} items="flex-start" borderColor="border-color" backgroundColor="color1" scale="enter:0.4 exit:0.6" opacity="enter:0 exit:0" y="enter:-10px exit:-5px" transformOrigin="top" animation="menu"
-                                              >
+            paddingHorizontal={0}
+            borderWidth={1}
+            items="flex-start"
+            borderColor="border-color"
+            backgroundColor="color1"
+            scale="enter:0.4 exit:0.6"
+            opacity="enter:0 exit:0"
+            y="enter:-10px exit:-5px"
+            transformOrigin="top"
+            animation="menu"
+          >
             <Menu.Item onSelect={onSelect} key="about-notes">
               <Menu.ItemTitle>About Notes</Menu.ItemTitle>
             </Menu.Item>
@@ -104,15 +113,21 @@ export function MenuDemo() {
                 <>
                   <Menu.ItemTitle>Actions</Menu.ItemTitle>
                   <View rotate={subMenuOpen ? '90deg' : '0deg'} animation="quicker">
-                    <ChevronRight size="$1" />
+                    <ChevronRight size="1" />
                   </View>
                 </>
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>
                 <Menu.SubContent
-                                                                              opacity="enter:0 exit:0" y="enter:-5px exit:-3px" scale="1.02 enter:0.5 exit:0.7" transformOrigin="top left" backgroundColor="color1" animation="menu" elevation="$5"
-                                                                            >
+                  opacity="enter:0 exit:0"
+                  y="enter:-5px exit:-3px"
+                  scale="1.02 enter:0.5 exit:0.7"
+                  transformOrigin="top left"
+                  backgroundColor="color1"
+                  animation="menu"
+                  elevation="5"
+                >
                   <Menu.Item
                     onSelect={onSelect}
                     key="create-note"
@@ -146,23 +161,29 @@ export function MenuDemo() {
             <Menu.Separator />
 
             <Menu.CheckboxItem
-                                                          key="show-hidden" checked={bookmarksChecked} onCheckedChange={setBookmarksChecked} gap="2"
-                                                        >
+              key="show-hidden"
+              checked={bookmarksChecked}
+              onCheckedChange={setBookmarksChecked}
+              gap="2"
+            >
               <Menu.ItemTitle>Mark as read</Menu.ItemTitle>
               <Menu.ItemIndicator>
                 <Check size={16} color="color10" />
               </Menu.ItemIndicator>
             </Menu.CheckboxItem>
             <Menu.CheckboxItem
-                                                          key="show-other-notes" checked={native} onCheckedChange={setNative} gap="2"
-                                                        >
+              key="show-other-notes"
+              checked={native}
+              onCheckedChange={setNative}
+              gap="2"
+            >
               <Menu.ItemTitle>Enable Native</Menu.ItemTitle>
               <Menu.ItemIndicator>
                 <Check size={16} color="color10" />
               </Menu.ItemIndicator>
             </Menu.CheckboxItem>
 
-            <Menu.Arrow size={'$2'} />
+            <Menu.Arrow size={'2'} />
           </Menu.Content>
         </Menu.Portal>
       </Menu>

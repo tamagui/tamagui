@@ -10,7 +10,7 @@ import { getStyles } from './utils'
  * 1. <Theme name="accent"> - theme-builder.mdx, how-to-upgrade.mdx
  * 2. <Button theme="accent"> - config-v5.mdx, ButtonDemo.tsx
  * 3. accent-background / accent-color - config-v5.mdx
- * 4. $accent1-$accent12 raw tokens
+ * 4. accent1-accent12 raw tokens
  */
 
 test.beforeEach(async ({ page }) => {
@@ -23,7 +23,7 @@ test.beforeEach(async ({ page }) => {
 
 // --- <Theme name="accent"> ---
 
-test('<Theme name="accent"> $background differs from base $background', async ({
+test('<Theme name="accent"> background differs from base background', async ({
   page,
 }) => {
   const baseEl = page.getByTestId(TEST_IDS.baseBackground)
@@ -39,7 +39,7 @@ test('<Theme name="accent"> $background differs from base $background', async ({
   expect(accentStyles.backgroundColor).not.toBe(baseStyles.backgroundColor)
 })
 
-test('<Theme name="accent"> $background is not gray (has color)', async ({ page }) => {
+test('<Theme name="accent"> background is not gray (has color)', async ({ page }) => {
   const accentEl = page.getByTestId(TEST_IDS.accentThemeBackground)
   await expect(accentEl).toBeVisible()
 
@@ -57,7 +57,7 @@ test('<Theme name="accent"> $background is not gray (has color)', async ({ page 
   }
 })
 
-test('<Theme name="accent"> $color is defined', async ({ page }) => {
+test('<Theme name="accent"> color is defined', async ({ page }) => {
   const textEl = page.getByTestId(TEST_IDS.accentThemeColor)
   await expect(textEl).toBeVisible()
 
@@ -120,9 +120,9 @@ test('accent-background token resolves to a non-gray color', async ({ page }) =>
   }
 })
 
-// --- $accent1-12 raw tokens ---
+// --- accent1-12 raw tokens ---
 
-test('$accent1-12 palette tokens render a gradient (not all identical)', async ({
+test('accent1-12 palette tokens render a gradient (not all identical)', async ({
   page,
 }) => {
   const colors: string[] = []

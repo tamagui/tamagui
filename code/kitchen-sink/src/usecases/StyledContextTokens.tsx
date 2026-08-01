@@ -97,7 +97,7 @@ export function StyledContextTokens() {
     <View padding="4" gap="4">
       <Text fontWeight="bold">Styled Context Token Preservation Test</Text>
 
-      {/* Test 1: Variant sets gap to $2 */}
+      {/* Test 1: Variant sets gap to token 2 */}
       <View>
         <Text>Test 1: spacing="small" should set gap="2"</Text>
         <GridParent spacing="small" id="test-small">
@@ -107,7 +107,7 @@ export function StyledContextTokens() {
         </GridParent>
       </View>
 
-      {/* Test 2: Variant sets gap to $8 */}
+      {/* Test 2: Variant sets gap to token 8 */}
       <View>
         <Text>Test 2: spacing="large" should set gap="8"</Text>
         <GridParent spacing="large" id="test-large">

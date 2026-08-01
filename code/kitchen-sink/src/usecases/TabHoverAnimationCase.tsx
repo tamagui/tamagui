@@ -36,7 +36,7 @@ export function TabHoverAnimationCase() {
   const displayTab = useLastValueIf(activeTab, !!activeTab) ?? activeTab
 
   // compute going synchronously during render (not in useEffect)
-  // so exitStyle has the correct direction immediately
+  // so exit clause has the correct direction immediately
   if (activeTab && prevActiveTab && activeTab !== prevActiveTab) {
     const prevIdx = TABS.indexOf(prevActiveTab)
     const nextIdx = TABS.indexOf(activeTab)

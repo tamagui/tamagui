@@ -283,7 +283,7 @@ function TranslateAnimationTest() {
 
 /**
  * Test 4: Enter/Exit Animation with AnimatePresence
- * Tests enterStyle and exitStyle animations
+ * Tests enter clause and exit clause animations
  */
 function EnterExitAnimationTest() {
   const [visible, setVisible] = useState(true)

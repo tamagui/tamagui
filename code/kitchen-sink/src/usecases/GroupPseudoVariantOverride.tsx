@@ -1,7 +1,7 @@
 import { View, styled } from 'tamagui'
 
-// reproduces bug where variant's $group-<name>-press opacity
-// doesn't override the base $group-<name>-press opacity
+// reproduces bug where variant's group-<name>-press opacity
+// doesn't override the base group-<name>-press opacity
 
 const Overlay = styled(View, {
   position: 'absolute',

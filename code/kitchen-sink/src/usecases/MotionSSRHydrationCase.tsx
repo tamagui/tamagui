@@ -14,13 +14,13 @@ import config from '../tamagui.config'
 //
 // two elements cover the two SSR contracts:
 //
-// 1. steady pill (transition, no enterStyle): SSR paints the resting values;
+// 1. steady pill (transition, no enter clause): SSR paints the resting values;
 //    the driver must adopt them at hydration. the bug: on the render where
 //    useDidFinishSSR flips, the core strips the SSR atomic classes (noClass)
 //    and the driver animated the "new" styles from the stripped (zeroed)
 //    computed values — the element visibly collapsed and re-grew after load.
 //
-// 2. enter pill (transition + enterStyle): SSR paints the enterStyle values
+// 2. enter pill (transition + enter clause): SSR paints the enter clause values
 //    (opacity 0), and hydration must animate it to resting — not snap, and
 //    not lose its other styles along the way.
 export function MotionSSRHydrationCase() {
@@ -92,7 +92,7 @@ export function MotionSSRHydrationCase() {
     }
     sample()
 
-    // SSR baseline: steady pill fully painted, enter pill at its enterStyle
+    // SSR baseline: steady pill fully painted, enter pill at its enter clause
     if (errors.length || enterOpacities[0] !== 0) {
       cancelAnimationFrame(rafId)
       setResult(`SSR-BASELINE-BAD:${errors[0] ?? `enter-opacity=${enterOpacities[0]}`}`)

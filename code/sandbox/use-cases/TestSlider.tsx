@@ -35,7 +35,7 @@ function SimpleSlider({ children, ...props }: SliderProps) {
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb size="$2" index={0} circular />
+      <Slider.Thumb size="2" index={0} circular />
       {children}
     </Slider>
   )

@@ -69,15 +69,21 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
             </Sheet.ScrollView>
           </Sheet.Container>
           <Sheet.Overlay
-                                                backgroundColor="shadow-color" transition="lazy" opacity="enter:0 exit:0"
-                                              />
+            backgroundColor="shadow-color"
+            transition="lazy"
+            opacity="enter:0 exit:0"
+          />
         </Sheet>
       </Adapt>
 
       <Select.Content>
         <Select.ScrollUpButton
-                                      items="center" justify="center" position="relative" width="100%" height="3"
-                                    >
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
           <YStack z={10}>
             <ChevronUp size={20} />
           </YStack>
@@ -86,7 +92,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
             end={[0, 1]}
             position="absolute"
             inset={0}
-            colors={['$background', 'transparent']}
+            colors={['background', 'transparent']}
           />
         </Select.ScrollUpButton>
 
@@ -94,8 +100,8 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           // to do animations:
           // transition="quick"
           // animateOnly={['transform', 'opacity']}
-          // enterStyle={{ o: 0, y: -10 }}
-          // exitStyle={{ o: 0, y: 10 }}
+          // opacity="enter:0 exit:0"
+          // y="enter:-10px exit:10px"
           minW={200}
         >
           <Select.Group>
@@ -123,16 +129,27 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <YStack
-                                                          position="absolute" r={0} t={0} b={0} items="center" justify="center" width="4" pointerEvents="none"
-                                                        >
+              position="absolute"
+              r={0}
+              t={0}
+              b={0}
+              items="center"
+              justify="center"
+              width="4"
+              pointerEvents="none"
+            >
               <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </YStack>
           )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
-                                      items="center" justify="center" position="relative" width="100%" height="3"
-                                    >
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
           <YStack z={10}>
             <ChevronDown size={20} />
           </YStack>
@@ -141,7 +158,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
             end={[0, 1]}
             position="absolute"
             inset={0}
-            colors={['transparent', '$background']}
+            colors={['transparent', 'background']}
           />
         </Select.ScrollDownButton>
       </Select.Content>
@@ -183,8 +200,13 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   return (
     <YStack flex={1} justify="center" items="center" gap="8" p="4" bg="background">
       <XStack
-                            position="absolute sm:relative" width="100%" t="6 sm:0px" gap="6" justify="center" flexWrap="wrap"
-                          >
+        position="absolute sm:relative"
+        width="100%"
+        t="6 sm:0px"
+        gap="6"
+        justify="center"
+        flexWrap="wrap"
+      >
         {Platform.OS === 'web' && (
           <>
             <SwitchRouterButton pagesMode={pagesMode} />
@@ -197,7 +219,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 
       <XStack gap="2">
         <Button
-          size="$3"
+          size="3"
           iconAfter={
             <Button.Icon>
               <Activity />
@@ -237,7 +259,7 @@ function SheetDemo() {
   return (
     <>
       <Button
-        size="$6"
+        size="6"
         icon={open ? ChevronDown : ChevronUp}
         circular
         onPress={() => setOpen((x) => !x)}
@@ -252,28 +274,27 @@ function SheetDemo() {
         onPositionChange={setPosition}
         dismissOnSnapToBottom
       >
-        <Sheet.Overlay
-                                      bg="shadow4" transition="lazy" opacity="enter:0 exit:0"
-                                    />
+        <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
         <Sheet.Handle bg="color8" />
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
           <XStack gap="2">
             <Paragraph text="center">Made by</Paragraph>
-            <Anchor
-                                                          color="blue10" href="https://twitter.com/natebirdman" target="_blank"
-                                                        >
+            <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
             <Anchor
-                                                          color="blue10" href="https://github.com/tamagui/tamagui" target="_blank" rel="noreferrer"
-                                                        >
+              color="blue10"
+              href="https://github.com/tamagui/tamagui"
+              target="_blank"
+              rel="noreferrer"
+            >
               give it a ⭐️
             </Anchor>
           </XStack>
 
           <Button
-            size="$6"
+            size="6"
             circular
             icon={ChevronDown}
             onPress={() => {
