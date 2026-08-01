@@ -173,9 +173,10 @@ run_gate "core web"          "code/core/core-test"          "bun run test:web"
 run_gate "core native"       "code/core/core-test"          "bun run test:native"
 run_gate "components web"    "code/ui/components-test"      "bun run test:web"
 run_gate "components native" "code/ui/components-test"      "bun run test:native"
-# the glob must reach the shell unquoted, the way the package script writes it;
-# quoted, it arrives at vitest as a literal filter and matches nothing
-run_gate "static"            "code/compiler/static-tests"   "bun run test:run:web -- tests/*.web.test.tsx"
+# call the package script rather than repeat its glob here: a copy silently
+# stops matching when the package's own pattern changes, and this gate spent
+# time reporting 110 tests while the package ran 144
+run_gate "static"            "code/compiler/static-tests"   "bun run test:web:files"
 run_gate "static native"     "code/compiler/static-tests"   "bun run test:native"
 run_gate "webpack"           "code/compiler/static-tests"   "bun run test:webpack"
 run_gate "tailwind web"      "code/core/tailwind"           "bun run test:web"
@@ -237,7 +238,7 @@ run_shuffle_gate() {
 echo
 echo "--- ordering gates (shuffled; a red here is test order, not behaviour) ---"
 run_shuffle_gate "core native order" "code/core/core-test" "TAMAGUI_TARGET=native" "*.native.test.tsx"
-run_shuffle_gate "core web order"    "code/core/core-test" "TAMAGUI_TARGET=web"    "*.web.test.tsx"
+run_shuffle_gate "core web order"    "code/core/core-test" "TAMAGUI_TARGET=web"    "*.web.test.ts*"
 
 echo
 echo "logs in $LOGS"
