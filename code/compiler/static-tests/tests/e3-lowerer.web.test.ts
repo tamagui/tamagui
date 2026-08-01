@@ -90,11 +90,10 @@ export const App = () => (
     {...override}
     opacity="hover:0.5"
     margin="sm:3px"
-    color="dark:color"
     group="card"
     data-sentinel="untouched"
   >
-    <Text fontFamily="body">font</Text>
+    <Text fontFamily="body" color="dark:color">font</Text>
   </View>
 )
 `
@@ -117,7 +116,7 @@ export const App = () => (
     expect(output.code).not.toContain('{...override}')
     expect(output.code).not.toContain('group="card"')
     expect(plan.css).toContain('padding-top:14px')
-    expect(plan.css).toContain('@media (hover)')
+    expect(plan.css).toContain('@media (hover: hover)')
     expect(plan.css).toContain('@media (max-width: 800px)')
     expect(plan.css).toContain('.t_dark')
     expect(plan.css).toContain('container-name: card')
@@ -131,7 +130,8 @@ import { View } from '@tamagui/core'
 export const App = () => (
   <>
     <View
-      transition="fast"
+      animatedBy="css"
+      transition="opacity 150ms ease-out"
       padding="12px hover:16px"
       data-bailed="exact"
     />
@@ -148,7 +148,8 @@ export const App = () => (
       styled: 0,
       bailed: 1,
     })
-    expect(output.code).toContain('transition="fast"')
+    expect(output.code).toContain('animatedBy="css"')
+    expect(output.code).toContain('transition="opacity 150ms ease-out"')
     expect(output.code).toContain('padding="12px hover:16px"')
     expect(output.code).toContain('data-bailed="exact"')
     expect(output.code).toContain('<div className=')
@@ -310,7 +311,7 @@ export const Card = ({ paddingLeft }) => (
     expect(plan.css).toBe('')
   })
 
-  test('compares normalized transform ownership before partial extraction', () => {
+  test('extracts a static transform beside a dynamic transform-family prop', () => {
     const source = `
 import { View } from '@tamagui/core'
 export const Card = ({ x }) => (
@@ -321,10 +322,10 @@ export const Card = ({ x }) => (
 
     expect(codes(plan)).toEqual([])
     expect(output.code).toContain('x={x}')
-    expect(output.code).toContain('transform={[{ scale: 2 }]}')
+    expect(output.code).not.toContain('transform={[{ scale: 2 }]}')
     expect(output.code).not.toContain('padding={12}')
     expect(plan.css).toContain('padding-top:12px')
-    expect(plan.css).not.toContain('transform:')
+    expect(plan.css).toContain('transform:scale(2)')
   })
 
   test('compares logical and physical property ownership before partial extraction', () => {
@@ -370,7 +371,7 @@ export const Card = ({ flex, shadowColor }) => (
     expect(plan.css).not.toContain('box-shadow:')
   })
 
-  test('uses normalized ownership for compiled jsx props', () => {
+  test('extracts a static transform beside a compiled dynamic transform-family prop', () => {
     const source = `
 import { View } from '@tamagui/core'
 import { jsx } from 'react/jsx-runtime'
@@ -384,10 +385,10 @@ export const Card = ({ x }) => jsx(View, {
 
     expect(codes(plan)).toEqual([])
     expect(output.code).toContain('x,')
-    expect(output.code).toContain('transform: [{ scale: 2 }]')
+    expect(output.code).not.toContain('transform: [{ scale: 2 }]')
     expect(output.code).not.toContain('padding: 12')
     expect(plan.css).toContain('padding-top:12px')
-    expect(plan.css).not.toContain('transform:')
+    expect(plan.css).toContain('transform:scale(2)')
   })
 
   test('keeps CSS shorthand and longhand collisions on the runtime path', () => {
@@ -472,18 +473,20 @@ export const Card = ({ width, marginLeft }) => (
     expect(plan.css).not.toContain('margin-inline-start:4px')
   })
 
-  test('keeps animation props from static spreads byte-identical', () => {
+  test('flattens CSS transitions from static spreads', () => {
     const source = `
 import { View } from '@tamagui/core'
-const animated = { transition: 'fast', padding: 12 }
+const animated = { transition: 'opacity 150ms ease-out', padding: 12 }
 export const Card = () => <View {...animated} />
 `
     const { plan, output } = compile(source)
 
-    expect(codes(plan)).toEqual(['local/unsupported-target'])
-    expect(output.changed).toBe(false)
-    expect(output.code).toBe(source)
-    expect(plan.css).toBe('')
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    expect(output.changed).toBe(true)
+    expect(output.code).not.toContain('{...animated}')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain('transition:opacity 150ms ease-out')
   })
 
   test('keeps styled defaults and runtime overrides on one runtime path', () => {
@@ -557,12 +560,12 @@ export const Card = ({ style }) => (
     expect(plan.css).toBe('')
   })
 
-  test('keeps animation and state styles together on the runtime path', () => {
+  test('lowers a CSS transition and state styles together', () => {
     const source = `
 import { View } from '@tamagui/core'
 export const Card = () => (
   <View
-    transition="fast"
+    transition="opacity 150ms ease-out"
     padding="12px hover:16px"
     data-runtime="animated-state"
   />
@@ -570,10 +573,14 @@ export const Card = () => (
 `
     const { plan, output } = compile(source)
 
-    expect(codes(plan)).toEqual(['local/unsupported-target'])
-    expect(output.changed).toBe(false)
-    expect(output.code).toBe(source)
-    expect(plan.css).toBe('')
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    expect(output.changed).toBe(true)
+    expect(output.code).not.toContain('transition="opacity 150ms ease-out"')
+    expect(output.code).not.toContain('padding="12px hover:16px"')
+    expect(plan.css).toContain('transition:opacity 150ms ease-out')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).toContain(':where(:hover){padding-top:16px}')
   })
 
   test('materializes local styled definitions before lowering variants and compounds', () => {
