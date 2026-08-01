@@ -118,7 +118,6 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ProgramBlockDeliveryCase: () =>
     require('./ProgramBlockDeliveryCase').ProgramBlockDeliveryCase,
   FormButtonTypeCase: () => require('./FormButtonTypeCase').FormButtonTypeCase,
-  MixedCascadeCase: () => require('./MixedCascadeCase').MixedCascadeCase,
   GroupHoverMobile: () => require('./GroupHoverMobile').GroupHoverMobile,
   GroupPressInVariant: () => require('./GroupPressInVariant').GroupPressInVariant,
   GroupPseudoVariantOverride: () =>
