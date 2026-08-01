@@ -45,7 +45,7 @@ test('a clause-bearing string flattens to a plain element with a program class',
   const runtime = hostCore.getSplitStyles(
     { width: 10, backgroundColor: 'red hover:blue' },
     hostCore.View.staticConfig,
-    hostCore.proxyThemeVariables(config.themes[themeName] ?? {}),
+    config.themes[themeName] ?? {},
     themeName,
     {
       focus: false,

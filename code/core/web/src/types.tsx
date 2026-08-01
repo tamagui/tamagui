@@ -945,7 +945,6 @@ type EmptyFonts = {}
 
 type EmptyTamaguiSettings = {
   allowedStyleValues: false
-  autocompleteSpecificTokens: 'except-special'
 }
 
 // Helper to extract animation config from AnimationDriver<Config> or multi-driver object
@@ -1034,23 +1033,8 @@ export type VariablesProps = {
 export type Tokens = TamaguiConfig['tokens']
 
 export type TokensParsed = {
-  [Key in keyof Required<Tokens>]: TokenPrefixed<Tokens[Key]>
+  [Key in keyof Required<Tokens>]: TokenifyRecord<Tokens[Key]>
 }
-
-type TokenPrefixed<A extends { [key: string]: any }> = {
-  [Key in Ensure$Prefix<keyof A> | keyof A]: A[keyof A]
-}
-
-type Ensure$Prefix<A extends string | number | symbol> = A extends
-  | string
-  | number
-  | boolean
-  ? A extends `$${string | number}`
-    ? A
-    : `$${A}`
-  : never
-
-export type TokensMerged = TokensParsed & Tokens
 
 export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
@@ -1060,7 +1044,7 @@ export type ThemeName = Exclude<
   GetAltThemeNames<keyof Themes> | BuiltInSubThemeName,
   number
 >
-export type ThemeTokens = `$${ThemeKeys}`
+export type ThemeTokens = GetTokenString<ThemeKeys>
 // Animation names (slow, fast, bouncy) for the `transition` prop
 // Extract animation keys from the driver's `animations` property
 // The AnimationDriver<Config> has an `animations: Config` property
@@ -1157,8 +1141,6 @@ type AllowedStyleValuesSetting =
   | AllowedValueSettingBase
   | AllowedStyleValuesSettingPerCategory
 
-type AutocompleteSpecificTokensSetting = boolean | 'except-special'
-
 export type DefaultTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize'
 
 export type DefaultTokens = Partial<Record<Exclude<DefaultTokenCategory, 'size'>, string>>
@@ -1215,20 +1197,6 @@ export interface GenericTamaguiSettings {
    *
    */
   allowedStyleValues?: AllowedStyleValuesSetting
-
-  /**
-   * Set up if "specific tokens" ($color.name) are added to the types where
-   * tokens are allowed. The VSCode autocomplete puts specific tokens above the
-   * regular ones, which leads to worse DX. If true this setting removes the
-   * specific token from types for the defined categories.
-   *
-   * If set to "except-special", specific tokens will autocomplete only if they
-   * don't normally use one of the special token groups: space, size, radius,
-   * zIndex, color.
-   *
-   * @default except-special
-   */
-  autocompleteSpecificTokens?: AutocompleteSpecificTokensSetting
 
   /**
    * On iOS, this enables a mode where Tamagui returns color values using
@@ -1306,7 +1274,7 @@ export interface GenericTamaguiSettings {
   /**
    * Define the token used when a component size is set to true.
    *
-   * @default '$4'
+   * @default '4'
    */
   defaultSize?: string
 
@@ -1439,9 +1407,9 @@ export type CreateTamaguiProps = {
 
   /**
    * Custom variables: merged into every base theme at createTamagui time, so
-   * they resolve like theme keys everywhere ($name in style props, useTheme(),
+   * they resolve like theme keys everywhere (bare names in style props, useTheme(),
    * CSS variable emission) and can be redefined per-subtree via <Variables>.
-   * Values may reference theme keys or tokens ('$borderColor', '$space.4') or
+   * Values may reference theme keys or tokens by bare name or
    * be literals; per-scheme values via { light, dark }.
    */
   variables?: GenericVariables
@@ -1484,7 +1452,6 @@ export type TamaguiInternalConfig<
   Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, AnimDriverKeys>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
-    // with $ prefixes for fast lookups (one time cost at startup vs every render)
     tokens: Tokenify<A>
     tokensParsed: Tokenify<A>
     themeConfig: any
@@ -1496,7 +1463,6 @@ export type TamaguiInternalConfig<
     userShorthands: C
     reactNative?: any
     fontSizeTokens: Set<string>
-    specificTokens: Record<string, Variable>
     settings: Omit<GenericTamaguiSettings, keyof G> & G
     defaultFont?: string
     defaultFontToken: `${string}`
@@ -1840,51 +1806,17 @@ export type ThemeValueFallbackZIndex =
       WebStyleValueUniversal
     >
 
-export type GetTokenString<A> = A extends `$${string}`
-  ? A
-  : A extends string | number
-    ? `$${A}`
-    : `$${string}`
-
-export type SpecificTokens<
-  Record = Tokens,
-  RK extends keyof Record = keyof Record,
-> = RK extends string
-  ? `$${RK}.${keyof Record[RK] extends string | number
-      ? // remove any $ prefix so instead of $size.$sm its $size.sm
-        keyof Record[RK] extends `$${infer X}`
-        ? X
-        : keyof Record[RK]
-      : never}`
-  : never
-
-// defaults to except-special
-export type SpecificTokensSpecial = TamaguiSettings extends {
-  autocompleteSpecificTokens: infer Val
-}
-  ? Val extends 'except-special' | undefined
-    ? never
-    : SpecificTokens
-  : SpecificTokens
+export type GetTokenString<A> = A extends string | number ? `${A}` : string
 
 export type Size =
-  | SpecificTokensSpecial
   | ThemeValueFallbackSize
   | GetTokenString<keyof Tokens['size']>
   | true
 
 export type SizeTokens = Size
 
-type FlatValueStateModifier = 'hover' | 'press' | 'focus' | 'disabled'
-type StateTokenClause<Token extends string> = Token extends `$${infer Name}`
-  ? `${FlatValueStateModifier}:${Name}`
-  : never
-
-type SpaceTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']>
-
 export type Space =
-  | SpaceTokenBase
-  | StateTokenClause<SpaceTokenBase>
+  | GetTokenString<keyof Tokens['space']>
   | ThemeValueFallbackSpace
   | true
 
@@ -1892,25 +1824,22 @@ export type SpaceTokens = Space
 
 // base color token strings (before opacity modifier)
 type ColorTokenBase =
-  | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeParsed>
 
 // keep this non-expanded. using `${ColorTokenBase}/${number}` preserves stricter
 // token names, but large user token/theme unions hit TS2590.
-type TokenWithOpacity = `$${string}/${number}`
+type TokenWithOpacity = `${string}/${number}`
 
 export type Color =
   | ColorTokenBase
-  | StateTokenClause<ColorTokenBase>
   | CSSColorNames
-  // opacity modifier: $token/50 → parsed at runtime in getTokenForKey
+  // opacity modifier: token/50
   | TokenWithOpacity
 
 export type ColorTokens = Color
 
 export type ZIndex =
-  | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['zIndex']>
   | ThemeValueFallbackZIndex
   | number
@@ -1919,7 +1848,6 @@ export type ZIndex =
 export type ZIndexTokens = ZIndex
 
 export type Radius =
-  | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['radius']>
   | ThemeValueFallbackRadius
   | number
@@ -1928,18 +1856,12 @@ export type Radius =
 
 export type RadiusTokens = Radius
 
-export type NonSpecificTokens =
+export type Token =
   | GetTokenString<keyof Tokens['radius']>
   | GetTokenString<keyof Tokens['zIndex']>
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof Tokens['space']>
   | GetTokenString<keyof Tokens['size']>
-
-export type Token =
-  | NonSpecificTokens
-  | (TamaguiSettings extends { autocompleteSpecificTokens: false }
-      ? never
-      : SpecificTokens)
 
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens
 
@@ -1974,42 +1896,44 @@ export type FontSize =
 
 export type FontSizeTokens = FontSize
 export type FontLineHeightTokens =
-  | `$${GetTokenFontKeysFor<'lineHeight'>}`
+  | GetTokenString<GetTokenFontKeysFor<'lineHeight'>>
   | number
   | RemString
 export type FontWeightValues =
   | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
   | 'bold'
   | 'normal'
-export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues
+export type FontWeightTokens =
+  | GetTokenString<GetTokenFontKeysFor<'weight'>>
+  | FontWeightValues
 // font color tokens also support the opacity modifier
-type FontColorTokenBase = `$${GetTokenFontKeysFor<'color'>}`
+type FontColorTokenBase = GetTokenString<GetTokenFontKeysFor<'color'>>
 export type FontColorTokens = FontColorTokenBase | number | TokenWithOpacity
 export type FontLetterSpacingTokens =
-  | `$${GetTokenFontKeysFor<'letterSpacing'>}`
+  | GetTokenString<GetTokenFontKeysFor<'letterSpacing'>>
   | number
   | RemString
 export type FontStyleTokens =
-  | `$${GetTokenFontKeysFor<'style'>}`
+  | GetTokenString<GetTokenFontKeysFor<'style'>>
   | RNTextStyle['fontStyle']
 export type FontTransformTokens =
-  | `$${GetTokenFontKeysFor<'transform'>}`
+  | GetTokenString<GetTokenFontKeysFor<'transform'>>
   | RNTextStyle['textTransform']
 
 export type ParseFont<A extends GenericFont> = {
-  size: TokenPrefixed<A['size']>
-  lineHeight: TokenPrefixedIfExists<A['lineHeight']>
-  letterSpacing: TokenPrefixedIfExists<A['letterSpacing']>
-  weight: TokenPrefixedIfExists<A['weight']>
-  family: TokenPrefixedIfExists<A['family']>
-  style: TokenPrefixedIfExists<A['style']>
-  transform: TokenPrefixedIfExists<A['transform']>
-  color: TokenPrefixedIfExists<A['color']>
-  face: TokenPrefixedIfExists<A['face']>
+  size: TokenifyRecord<A['size']>
+  lineHeight: TokenParsedIfExists<A['lineHeight']>
+  letterSpacing: TokenParsedIfExists<A['letterSpacing']>
+  weight: TokenParsedIfExists<A['weight']>
+  family: TokenParsedIfExists<A['family']>
+  style: TokenParsedIfExists<A['style']>
+  transform: TokenParsedIfExists<A['transform']>
+  color: TokenParsedIfExists<A['color']>
+  face: TokenParsedIfExists<A['face']>
 }
 
-export type TokenPrefixedIfExists<A> =
-  A extends Record<string, any> ? TokenPrefixed<A> : {}
+export type TokenParsedIfExists<A> =
+  A extends Record<string, any> ? TokenifyRecord<A> : {}
 
 //
 // adds theme short values to relevant props
@@ -2075,17 +1999,12 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
                     : K extends FontLetterSpacingKeys
                       ? FontLetterSpacingTokens
                       : K extends OpacityKeys
-                        ? SpecificTokens | ThemeValueFallback
+                        ? ThemeValueFallback
                         : never
 
 export type GetThemeValueForKey<K extends string | symbol | number> =
   | ThemeValueGet<K>
   | ThemeValueFallback
-  | (TamaguiSettings extends { autocompleteSpecificTokens: infer Val }
-      ? Val extends true | undefined
-        ? SpecificTokens
-        : never
-      : never)
 
 // keys that accept the first-class "safe" value (-> env(safe-area-inset-*) on
 // web, numeric insets on native). must mirror propEdges in resolveSafeArea.ts.
@@ -3084,10 +3003,10 @@ export type GetStyleState = {
   programs?: Map<string, import('@tamagui/style-grammar').LonghandProgram>
   // Track style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
-  // Track original token values (like '$8') before they get resolved to CSS vars
+  // Track original token values before they get resolved to CSS vars
   // This is used to preserve token strings in overriddenContextProps
   originalContextPropValues?: Record<string, any>
-  // opt-in dev-tools token provenance: original token string (like '$background')
+  // opt-in dev-tools token provenance: original token string
   // for each winning base style key, cleared on literal override. stamped onto
   // the final style object as non-enumerable metadata (see helpers/styleProvenance).
   tokenProvenance?: Record<string, string>

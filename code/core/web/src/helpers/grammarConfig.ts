@@ -10,7 +10,6 @@
 //
 // - identifier lookup is property-scoped, because token names collide across
 //   categories: `4` is a space token for `padding` and a size token for `width`.
-//   Bindings come from the same tables the `$token` path already uses;
 // - variable names are never constructed here. Every reference carries the
 //   `Variable` the config already built, so web emits exactly the `var(--x)`
 //   text the theme system emits today;
@@ -74,8 +73,7 @@ function warnMismatchOnce(key: string, message: string) {
 
 /**
  * Props whose token lives in a font's sub-map rather than in `tokens`. Mirrors
- * the fontSize/lineHeight/letterSpacing/fontWeight branch in `getTokenForKey`,
- * including its sub-map names.
+ * the fontSize/lineHeight/letterSpacing/fontWeight runtime bindings.
  */
 const fontSubMapByProp: Readonly<Record<string, string>> = {
   fontSize: 'size',
@@ -111,7 +109,7 @@ export interface GrammarRuntimeContext {
   /**
    * the lookup for `resolvePayload`, scoped to one property. `fontFamily` is the
    * active font token and only matters for font-scoped props; it falls back to
-   * the config default font exactly as `getTokenForKey` does.
+   * the config default font.
    */
   getLookup(
     property: string,
@@ -297,14 +295,14 @@ export function createGrammarRuntimeContext(
         // family Variable (var text is shared across fonts; the font_* scope
         // class recorded at contribute time selects which family it resolves to)
         if (category === 'fontFamily') {
-          const familyFont = fonts[`$${name}`] ?? fonts[name]
+          const familyFont = fonts[name]
           const familyVariable = familyFont?.family
           if (isVariable(familyVariable)) {
             return { name: familyVariable.name, kind }
           }
         }
         // the property's bound category first
-        const token = tokenNames?.get(name) ?? fontMap?.[`$${name}`]
+        const token = tokenNames?.get(name) ?? fontMap?.[name]
         if (isVariable(token)) return { name: token.name, kind }
         if (kind === 'length' && resolveSafeAreaVariable(name) !== undefined) {
           return { name, kind }
@@ -360,7 +358,6 @@ export function createGrammarRuntimeContext(
       const familyKey = fontFamily ?? config.defaultFontToken
       const familyVars = familyKey
         ? (fontVarsByFamily.get(familyKey) ??
-          fontVarsByFamily.get(`$${familyKey}`) ??
           fontVarsByFamily.get(config.defaultFontToken))
         : undefined
       return (name) => {
@@ -449,11 +446,9 @@ function getFontSubMap(
   property: string,
   fontFamily: string | undefined
 ): Record<string, unknown> | undefined {
-  // same fallback as getTokenForKey: the passed family, then the config default
+  // the passed family, then the config default
   const family = fontFamily ?? config.defaultFontToken
-  const font =
-    (family ? (fonts[family] ?? fonts[`$${family}`]) : undefined) ??
-    fonts[config.defaultFontToken]
+  const font = (family ? fonts[family] : undefined) ?? fonts[config.defaultFontToken]
   const entries = font?.[fontSubMapByProp[property]]
   return entries && typeof entries === 'object'
     ? (entries as Record<string, unknown>)

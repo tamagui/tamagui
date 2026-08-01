@@ -28,14 +28,13 @@ export function createThemeWithPalettes<
   const newDef = { ...definition }
   for (const key in definition) {
     let val = definition[key]
-    if (typeof val === 'string' && val[0] === '$') {
-      const [altPaletteName$, altPaletteIndex] = val.split('.')
-      const altPaletteName = altPaletteName$.slice(1)
+    if (typeof val === 'string') {
+      const [altPaletteName, altPaletteIndex] = val.split('.')
       const parentName = defaultPalette.split('_')[0]
       const altPalette =
         palettes[altPaletteName] || palettes[`${parentName}_${altPaletteName}`]
 
-      if (altPalette) {
+      if (altPalette && /^-?\d+$/.test(altPaletteIndex)) {
         const next = getValue(altPalette, +altPaletteIndex)
         if (typeof next !== 'undefined') {
           newDef[key] = next as any

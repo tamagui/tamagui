@@ -54,12 +54,12 @@ describe('v6 Tailwind defaults provenance', () => {
 
   test('component and category defaults preserve the v5 control geometry', () => {
     expect(settings).toMatchObject({
-      defaultSize: '$11',
+      defaultSize: '11',
       defaultTokens: {
-        space: '$4',
-        radius: '$4',
-        zIndex: '$4',
-        fontSize: '$4',
+        space: '4',
+        radius: '4',
+        zIndex: '4',
+        fontSize: '4',
       },
     })
   })
@@ -92,20 +92,20 @@ describe('v6 Tailwind defaults provenance', () => {
   test('token categories stay finite and semantically distinct', () => {
     expect(tailwindSpace).not.toBe(tailwindSize)
     for (const table of [tailwindSpace, tailwindSize]) {
-      expect(table).toHaveProperty('$px', 1)
-      expect(table).toHaveProperty('$4', 16)
-      expect(table).toHaveProperty('$24', 96)
-      expect(table).toHaveProperty('$96', 384)
+      expect(table).toHaveProperty('px', 1)
+      expect(table).toHaveProperty('4', 16)
+      expect(table).toHaveProperty('24', 96)
+      expect(table).toHaveProperty('96', 384)
     }
     expect(tailwindSpace).toHaveProperty('-24', -96)
     expect(tailwindSize).not.toHaveProperty('-24')
-    expect(tailwindSpace).not.toHaveProperty('$0.25')
-    expect(tailwindSpace).not.toHaveProperty('$13')
-    expect(tailwindRadius).toHaveProperty('$lg', 8)
-    expect(tailwindZIndex).toHaveProperty('$4', 4)
-    expect(tailwindZIndex).toHaveProperty('$10', 10)
-    expect(tailwindFontSize).toHaveProperty('$base', '16px')
-    expect(tailwindLineHeight).toHaveProperty('$base', '24px')
-    expect(tailwindColors).toHaveProperty('$blue-500', '#2b7fff')
+    expect(tailwindSpace).not.toHaveProperty('0.25')
+    expect(tailwindSpace).not.toHaveProperty('13')
+    expect(tailwindRadius).toHaveProperty('lg', 8)
+    expect(tailwindZIndex).toHaveProperty('4', 4)
+    expect(tailwindZIndex).toHaveProperty('10', 10)
+    expect(tailwindFontSize).toHaveProperty('base', '16px')
+    expect(tailwindLineHeight).toHaveProperty('base', '24px')
+    expect(tailwindColors).toHaveProperty('blue-500', '#2b7fff')
   })
 })

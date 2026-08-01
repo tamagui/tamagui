@@ -88,7 +88,7 @@ function hslToRgb(h: number, s: number, l: number): { r: number; g: number; b: n
 }
 
 export function opacify(color: string, opacity = 0.1): string {
-  // Handle dynamic color objects (from $theme-dark/$theme-light)
+  // Handle dynamic color objects
   if (typeof color !== 'string') return color
 
   // handle hsl/hsla

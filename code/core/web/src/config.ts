@@ -8,12 +8,12 @@ import type {
   TamaguiInternalConfig,
   Token,
   Tokens,
-  TokensMerged,
+  TokensParsed,
 } from './types'
 
 export type StyleCompat = 'legacy' | 'react-native' | 'web'
 
-export const DEFAULT_SIZE_TOKEN = '$4'
+export const DEFAULT_SIZE_TOKEN = '4'
 
 let conf: TamaguiInternalConfig | null
 let setConfigCalledByThisInstance = false
@@ -129,7 +129,7 @@ export const setConfigFont = (name: string, font: any, fontParsed: any) => {
     if (!config) throw new Error(haventCalledErrorMessage)
   }
   config!.fonts[name] = font
-  config!.fontsParsed[`$${name}`] = fontParsed
+  config!.fontsParsed[name] = fontParsed
 }
 
 export const getConfig = () => {
@@ -148,39 +148,23 @@ export const getConfigMaybe = () => {
   return getConfigFromGlobalOrLocal()
 }
 
-let tokensMerged: TokensMerged
-export function setTokens(_: TokensMerged) {
-  tokensMerged = _
+let tokens: TokensParsed
+export function setTokens(next: TokensParsed) {
+  tokens = next
 }
 
-export const getTokens = ({
-  prefixed,
-}: {
-  /**
-   * Force either with $ or without $ prefix
-   */
-  prefixed?: boolean
-} = {}): TokensMerged => {
+export const getTokens = (): TokensParsed => {
   const config = getConfigFromGlobalOrLocal()
   if (process.env.NODE_ENV === 'development') {
     if (!config) throw new Error(haventCalledErrorMessage)
   }
-  const { tokens, tokensParsed } = config!
-  if (prefixed === false) return tokens as any
-  if (prefixed === true) return tokensParsed as any
-  return tokensMerged
+  return tokens
 }
 
 export const getTokenObject = (value: Token, group?: keyof Tokens) => {
-  const config = getConfigFromGlobalOrLocal()
-  return (
-    config!.specificTokens[value] ??
-    (group
-      ? tokensMerged[group]?.[value]
-      : tokensMerged[
-          Object.keys(tokensMerged).find((cat) => tokensMerged[cat][value]) || ''
-        ]?.[value])
-  )
+  return group
+    ? tokens[group]?.[value]
+    : tokens[Object.keys(tokens).find((cat) => tokens[cat][value]) || '']?.[value]
 }
 
 export const getToken = (value: Token, group?: keyof Tokens, useVariable = isWeb) => {

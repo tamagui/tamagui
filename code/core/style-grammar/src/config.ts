@@ -70,18 +70,14 @@ export const grammarPlatformGroups: ReadonlyMap<string, ReadonlySet<string>> = n
 function addNames(target: Set<string>, source: Names | undefined): void {
   if (!source) return
   if (Array.isArray(source)) {
-    for (const key of source) target.add(stripTokenPrefix(key))
+    for (const key of source) target.add(key)
     return
   }
   if (source instanceof Set) {
-    for (const key of source) target.add(stripTokenPrefix(key))
+    for (const key of source) target.add(key)
     return
   }
-  for (const key in source) target.add(stripTokenPrefix(key))
-}
-
-function stripTokenPrefix(name: string): string {
-  return name[0] === '$' ? name.slice(1) : name
+  for (const key in source) target.add(key)
 }
 
 /**
@@ -118,7 +114,7 @@ export function createGrammarConfigView(
   }
 
   for (const familyName in config.fontsParsed) {
-    tokenNames.fontFamily.add(stripTokenPrefix(familyName))
+    tokenNames.fontFamily.add(familyName)
     const font = config.fontsParsed[familyName]
     addNames(tokenNames.fontSize, font?.size)
     addNames(tokenNames.fontWeight, font?.weight)

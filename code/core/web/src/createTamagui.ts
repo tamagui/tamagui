@@ -35,7 +35,6 @@ import type {
   TamaguiInternalConfig,
   ThemeParsed,
   ThemesLikeObject,
-  TokensMerged,
   TokensParsed,
   Variable,
 } from './types'
@@ -68,44 +67,9 @@ function initializeTamaguiConfig(config: TamaguiInternalConfig) {
 }
 
 export function installTamaguiConfig(config: TamaguiInternalConfig) {
-  const tokens = config.tokens as Record<string, Record<string, Variable>>
-  const tokensParsed = config.tokensParsed as Record<string, Record<string, Variable>>
-  const tokensMerged: TokensMerged = {} as any
-  const categories = new Set([
-    ...Object.keys(tokens || {}),
-    ...Object.keys(tokensParsed || {}),
-  ])
-
-  for (const category of categories) {
-    const categoryTokens = tokens?.[category] || {}
-    const categoryTokensParsed = tokensParsed?.[category] || {}
-    const categoryTokensMerged = (tokensMerged[category] = {})
-
-    for (const name in categoryTokens) {
-      const unprefixedName = name[0] === '$' ? name.slice(1) : name
-      const prefixedName = `$${unprefixedName}`
-      categoryTokensMerged[unprefixedName] = categoryTokens[name]
-      categoryTokensMerged[prefixedName] =
-        categoryTokensParsed[prefixedName] ?? categoryTokens[name]
-    }
-
-    for (const name in categoryTokensParsed) {
-      const unprefixedName = name[0] === '$' ? name.slice(1) : name
-      const prefixedName = `$${unprefixedName}`
-      categoryTokensMerged[unprefixedName] ??=
-        categoryTokens[unprefixedName] ?? categoryTokensParsed[name]
-      categoryTokensMerged[prefixedName] = categoryTokensParsed[name]
-    }
-  }
-
-  setTokens(tokensMerged)
+  setTokens(config.tokensParsed)
   initializeTamaguiConfig(config)
   return config
-}
-
-function normalizeDefaultToken(defaultToken: string | undefined) {
-  if (!defaultToken) return
-  return defaultToken[0] === '$' ? defaultToken : `$${defaultToken}`
 }
 
 function validateDefaultTokens(config: TamaguiInternalConfig) {
@@ -163,15 +127,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   // ensure variables
-  const tokensParsed: TokensParsed = {} as any
   const tokens = createVariables(configIn.tokens || {})
+  const tokensParsed = tokens as TokensParsed
 
   if (configIn.tokens) {
-    // faster lookups
-    const tokensMerged: TokensMerged = {} as any
     for (const cat in tokens) {
-      tokensParsed[cat] = {}
-      tokensMerged[cat] = {}
       const tokenCat = tokens[cat]
       for (const key in tokenCat) {
         // determinism rule: CSS-wide keywords are reserved, so a token by one
@@ -182,14 +142,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
             `Token tokens.${cat}.${key} takes a reserved CSS-wide keyword name. These always resolve as literal CSS ("${key.toLowerCase()}"), so this token could never be referenced. Rename it.`
           )
         }
-        const val = tokenCat[key]
-        const prefixedKey = `$${key}`
-        tokensParsed[cat][prefixedKey] = val as any
-        tokensMerged[cat][prefixedKey] = val as any
-        tokensMerged[cat][key] = val as any
       }
     }
-    setTokens(tokensMerged)
+    setTokens(tokensParsed)
   }
 
   let foundThemes: DedupedThemes | undefined
@@ -219,7 +174,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       for (const familyName in fontTokens) {
         const font = fontTokens[familyName]
         const fontParsed = parseFont(font)
-        res[`$${familyName}`] = fontParsed
+        res[familyName] = fontParsed
         if (!fontSizeTokens && fontParsed.size) {
           fontSizeTokens = new Set(Object.keys(fontParsed.size))
         }
@@ -228,25 +183,17 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     })()
   }
 
-  const specificTokens = {}
-  const defaultSize =
-    normalizeDefaultToken(configIn.settings?.defaultSize) || DEFAULT_SIZE_TOKEN
+  const defaultSize = configIn.settings?.defaultSize || DEFAULT_SIZE_TOKEN
   const defaultTokens = configIn.settings?.defaultTokens
-    ? (Object.fromEntries(
-        Object.entries(configIn.settings.defaultTokens).map(([category, token]) => [
-          category,
-          normalizeDefaultToken(token),
-        ])
-      ) as DefaultTokens)
+    ? ({ ...configIn.settings.defaultTokens } as DefaultTokens)
     : undefined
   const defaultFontSetting = configIn.settings?.defaultFont
-  const defaultFont =
-    defaultFontSetting?.[0] === '$' ? defaultFontSetting.slice(1) : defaultFontSetting
+  const defaultFont = defaultFontSetting
   const defaultFontToken =
     (defaultFont
-      ? `$${defaultFont}`
-      : fontsParsed?.$body
-        ? '$body'
+      ? defaultFont
+      : fontsParsed?.body
+        ? 'body'
         : Object.keys(fontsParsed || {})[0]) || ''
   if (defaultFont && !fontsParsed?.[defaultFontToken]) {
     throw new Error(
@@ -255,24 +202,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   const themeConfig = (() => {
-    // populate specificTokens (needed for runtime)
-    const sortedTokenKeys = Object.keys(tokens).sort()
-    for (const key of sortedTokenKeys) {
-      const sortedSubKeys = Object.keys(tokens[key]).sort()
-      for (const skey of sortedSubKeys) {
-        const variable = tokens[key][skey] as any as Variable
-        specificTokens[`$${key}.${skey}`] = variable
-
-        if (process.env.NODE_ENV === 'development') {
-          if (typeof variable === 'undefined') {
-            throw new Error(
-              `No value for tokens.${key}.${skey}:\n${JSON.stringify(variable, null, 2)}`
-            )
-          }
-        }
-      }
-    }
-
     // CSS generation (tree-shaken when TAMAGUI_DID_OUTPUT_CSS is set)
     const declarations = createTokenCSS(tokens as any, shouldTokenCategoryHaveUnits)
     const fontDeclarations = createFontCSS(fontsParsed, registerFontVariables)
@@ -290,7 +219,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const dedupedThemes =
       foundThemes ??
       getThemesDeduped(themesIn, tokens.color, configIn.variables, {
-        specificTokens,
         tokensParsed,
       })
     const themes = proxyThemesToParents(dedupedThemes)
@@ -380,7 +308,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     getCSS,
     defaultFont,
     fontSizeTokens: fontSizeTokens || new Set(),
-    specificTokens,
     defaultFontToken,
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
@@ -412,7 +339,6 @@ function getThemesDeduped(
   colorTokens?: Record<string, any>,
   variables?: CreateTamaguiProps['variables'],
   variablesCtx?: {
-    specificTokens: Record<string, Variable>
     tokensParsed: TokensParsed
   }
 ): DedupedThemes {
@@ -463,7 +389,6 @@ function getThemesDeduped(
         theme as any,
         themeName,
         variables,
-        variablesCtx.specificTokens,
         variablesCtx.tokensParsed
       )
     }

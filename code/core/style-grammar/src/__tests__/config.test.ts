@@ -12,28 +12,28 @@ describe('createGrammarConfigView', () => {
           light_alt: { borderColor: '#ccc' },
         },
         tokensParsed: {
-          space: { $4: 16 },
-          size: { $10: 40 },
-          radius: { $true: 8 },
-          zIndex: { $modal: 100 },
-          color: { $red9: '#f00' },
+          space: { 4: 16 },
+          size: { 10: 40 },
+          radius: { true: 8 },
+          zIndex: { modal: 100 },
+          color: { red9: '#f00' },
         },
         fontsParsed: {
-          $body: {
-            size: { $4: 16 },
-            weight: { $4: '400', $semibold: '600' },
-            lineHeight: { $4: 20 },
-            letterSpacing: { $tight: -0.2 },
+          body: {
+            size: { 4: 16 },
+            weight: { 4: '400', semibold: '600' },
+            lineHeight: { 4: 20 },
+            letterSpacing: { tight: -0.2 },
           },
         },
       },
-      { platformNames: new Set(['$web', 'ios']) }
+      { platformNames: new Set(['web', 'ios']) }
     )
 
     expect(view.shorthands).toEqual({ p: 'padding' })
     expect(view.mediaNames).toHaveProperty('tablet')
     expect(view.themeNames).toHaveProperty('light')
-    expect(view.platformNames).toEqual(new Set(['$web', 'ios']))
+    expect(view.platformNames).toEqual(new Set(['web', 'ios']))
     expect(view.tokenNames?.space).toEqual(new Set(['4']))
     expect(view.tokenNames?.size).toEqual(new Set(['10']))
     expect(view.tokenNames?.radius).toEqual(new Set(['true']))

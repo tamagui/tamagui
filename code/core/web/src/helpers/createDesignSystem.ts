@@ -98,7 +98,7 @@ export function createFontCSS(
       const [name, language] = key.includes('_') ? key.split('_') : [key]
       const fontVars = registerFontVariables(fontParsed)
       fontDeclarations[key] = {
-        name: name.slice(1),
+        name,
         declarations: fontVars,
         language,
         fontParsed,

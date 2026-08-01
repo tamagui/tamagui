@@ -82,12 +82,12 @@ export const fonts = {
 
 export const settings = {
   ...v5Settings,
-  defaultSize: '$11',
+  defaultSize: '11',
   defaultTokens: {
-    space: '$4',
-    radius: '$4',
-    zIndex: '$4',
-    fontSize: '$4',
+    space: '4',
+    radius: '4',
+    zIndex: '4',
+    fontSize: '4',
   },
 } satisfies CreateTamaguiProps['settings']
 

@@ -163,37 +163,35 @@ export function readPinnedTailwindSource(): PinnedTailwindSource {
 export function createDefaultTables(themeCss: string): V6TailwindDefaultTables {
   const variables = themeVariables(themeCss)
   const spacing = toPx(requiredVariable(variables, 'spacing'))
-  const size: Table = { $px: 1 }
-  const space: Table = { $px: 1 }
+  const size: Table = { px: 1 }
+  const space: Table = { px: 1 }
 
   for (const name of DEFAULT_SPACING_SUGGESTIONS) {
     const value = Number(name) * spacing
-    size[`$${name}`] = value
-    space[`$${name}`] = value
+    size[name] = value
+    space[name] = value
   }
   space['-px'] = -1
   for (const name of DEFAULT_SPACING_SUGGESTIONS) {
     if (name !== '0') space[`-${name}`] = -Number(name) * spacing
   }
 
-  // no $none: reserved css-wide keyword names are rejected at config creation;
+  // no `none`: reserved css-wide keyword names are rejected at config creation;
   // tailwind's rounded-none is a candidate-layer spelling, not a token
   const radius: Table = {}
   for (const name of RADIUS_NAMES) {
-    radius[`$${name}`] = toPx(requiredVariable(variables, `radius-${name}`))
+    radius[name] = toPx(requiredVariable(variables, `radius-${name}`))
   }
-  radius.$full = 9999
+  radius.full = 9999
 
-  const zIndex = Object.fromEntries(
-    Z_INDEX_NAMES.map((name) => [`$${name}`, Number(name)])
-  )
+  const zIndex = Object.fromEntries(Z_INDEX_NAMES.map((name) => [name, Number(name)]))
 
   const fontSize: Table = {}
   const lineHeight: Table = {}
   for (const name of FONT_SIZE_NAMES) {
     const sizeValue = toPx(requiredVariable(variables, `text-${name}`))
-    fontSize[`$${name}`] = `${sizeValue}px`
-    lineHeight[`$${name}`] = `${toPx(
+    fontSize[name] = `${sizeValue}px`
+    lineHeight[name] = `${toPx(
       requiredVariable(variables, `text-${name}--line-height`),
       sizeValue
     )}px`
@@ -247,12 +245,12 @@ export function sourceChecksum(source: PinnedTailwindSource): string {
 export function convertColorsToSrgb(source: Record<string, unknown>): Table {
   // tailwind publishes these colors as OKLCH. native needs sRGB, so use the
   // pinned W3C conversion math, then clip and round each channel to 8-bit hex.
-  // no $transparent: 'transparent' is a reserved CSS-wide keyword — config
+  // no `transparent`: it is a reserved CSS-wide keyword — config
   // creation rejects tokens by these names, and the value resolves
   // byte-identically through the reserved-literal path without a token
   const out: Table = {
-    $white: '#ffffff',
-    $black: '#000000',
+    white: '#ffffff',
+    black: '#000000',
   }
 
   for (const [hue, shades] of Object.entries(normalizedColorSource(source))) {
@@ -266,7 +264,7 @@ export function convertColorsToSrgb(source: Record<string, unknown>): Table {
       }
       const oklch: Color = [Number(match[1]) / 100, Number(match[2]), Number(match[3])]
       const srgb = clip(gam_sRGB(XYZ_to_lin_sRGB(OKLab_to_XYZ(OKLCH_to_OKLab(oklch)))))
-      out[`$${hue}-${shade}`] = `#${srgb
+      out[`${hue}-${shade}`] = `#${srgb
         .map((channel) =>
           Math.round(channel * 255)
             .toString(16)

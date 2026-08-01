@@ -32,40 +32,38 @@ import { createTokens } from '@tamagui/web'
 //  space is used in conjunction with size
 //  i'm setting space to generally just a fixed fraction of size (~1/3-2/3 still fine tuning)
 export const size = {
-  $0: 0,
-  '$0.25': 2,
-  '$0.5': 4,
-  '$0.75': 8,
-  $1: 20,
-  '$1.5': 24,
-  $2: 28,
-  '$2.5': 32,
-  $3: 36,
-  '$3.5': 40,
-  $4: 44,
-  '$4.5': 48,
-  $5: 52,
-  $6: 64,
-  $7: 74,
-  $8: 84,
-  $9: 94,
-  $10: 104,
-  $11: 124,
-  $12: 144,
-  $13: 164,
-  $14: 184,
-  $15: 204,
-  $16: 224,
-  $17: 224,
-  $18: 244,
-  $19: 264,
-  $20: 284,
+  0: 0,
+  '0.25': 2,
+  '0.5': 4,
+  '0.75': 8,
+  1: 20,
+  '1.5': 24,
+  2: 28,
+  '2.5': 32,
+  3: 36,
+  '3.5': 40,
+  4: 44,
+  '4.5': 48,
+  5: 52,
+  6: 64,
+  7: 74,
+  8: 84,
+  9: 94,
+  10: 104,
+  11: 124,
+  12: 144,
+  13: 164,
+  14: 184,
+  15: 204,
+  16: 224,
+  17: 224,
+  18: 244,
+  19: 264,
+  20: 284,
 }
 
 type SizeKeysIn = keyof typeof size
-type Sizes = {
-  [Key in SizeKeysIn extends `$${infer Key}` ? Key : SizeKeysIn]: number
-}
+type Sizes = { [Key in SizeKeysIn]: number }
 type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`
 
 const spaces = Object.entries(size).map(([k, v]) => {
@@ -82,16 +80,12 @@ function sizeToSpace(v: number) {
   return Math.floor(v * 0.7 - 12)
 }
 
-const spacesNegative = spaces.slice(1).map(([k, v]) => [`-${k.slice(1)}`, -v])
+const spacesNegative = spaces.slice(1).map(([k, v]) => [`-${k}`, -v])
 
-type SizeKeysWithNegatives =
-  | Exclude<`-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`, '-0'>
-  | SizeKeys
-
-type SizeKeysWithNegativesString = `$${SizeKeysWithNegatives}`
+type SizeKeysWithNegatives = Exclude<`-${SizeKeys}`, '-0'> | SizeKeys
 
 export const space: {
-  [Key in SizeKeysWithNegativesString]: Key extends keyof Sizes ? Sizes[Key] : number
+  [Key in SizeKeysWithNegatives]: Key extends keyof Sizes ? Sizes[Key] : number
 } = {
   ...Object.fromEntries(spaces),
   ...Object.fromEntries(spacesNegative),

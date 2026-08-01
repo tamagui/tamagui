@@ -31,8 +31,7 @@ export const isUnitlessVariableKey = (key: string): boolean => {
   return unitlessSuffixes.some((suffix) => lower.endsWith(suffix))
 }
 
-// bare $name token references scan categories in this fixed, documented order.
-// qualified $category.name references (specificTokens) never hit this path.
+// Property-less variable references scan token categories in this fixed order.
 const tokenCategoryOrder = ['color', 'space', 'size', 'radius', 'zIndex'] as const
 
 const themeKeySets = new WeakMap<object, Set<string>>()
@@ -60,6 +59,27 @@ const warnOnce = (key: string, message: string) => {
   }
 }
 
+const findToken = (tokensParsed: TokensParsed, name: string): Variable | undefined => {
+  let found: Variable | undefined
+  let foundCategory: string | undefined
+  for (const category of tokenCategoryOrder) {
+    const token = tokensParsed[category]?.[name] as Variable | undefined
+    if (!token) continue
+    if (!found) {
+      found = token
+      foundCategory = category
+      if (process.env.NODE_ENV !== 'development') break
+    } else {
+      warnOnce(
+        `ambiguous:${name}`,
+        `Variables: "${name}" exists in multiple token categories; using "${foundCategory}". Rename one of the colliding tokens.`
+      )
+      break
+    }
+  }
+  return found
+}
+
 const cssVariablePrefix = process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''
 
 // theme-key custom property reference, matching the declaration side in
@@ -70,7 +90,7 @@ const themeKeyVar = (key: string) => `var(--${cssVariablePrefix}${simpleHash(key
  * Resolves one <Variables> value to a CSS value string.
  * References emit var() so they stay live in the cascade; literals serialize
  * with the same unit rule numeric style props use (px unless unitless key).
- * Returns undefined for unresolvable references (dev-warned, dropped).
+ * Configured names resolve first; a lookup miss stays literal.
  */
 export function resolveVariableValueToCSS(
   key: string,
@@ -86,48 +106,18 @@ export function resolveVariableValueToCSS(
   if (typeof value !== 'string') {
     return
   }
-  if (value[0] !== '$') {
-    return value
-  }
-
-  const name = value.slice(1)
+  const name = value
 
   // theme keys and config-declared custom variables
   if (getThemeKeySet(conf).has(name)) {
     return themeKeyVar(name)
   }
 
-  // qualified token: $category.name
-  const specific = conf.specificTokens[value] as Variable | undefined
-  if (specific) {
-    return specific.variable
+  const token = findToken(conf.tokensParsed, name)
+  if (token) {
+    return token.variable
   }
-
-  // bare token name, fixed category order
-  let found: string | undefined
-  for (const category of tokenCategoryOrder) {
-    const token = conf.tokensParsed[category]?.[value] as Variable | undefined
-    if (token) {
-      if (found === undefined) {
-        found = token.variable
-        if (process.env.NODE_ENV !== 'development') break
-      } else {
-        warnOnce(
-          `ambiguous:${value}`,
-          `Variables: "${value}" exists in multiple token categories, using "${tokenCategoryOrder.find((c) => conf.tokensParsed[c]?.[value])}". Use the qualified form ($category.name) to disambiguate.`
-        )
-        break
-      }
-    }
-  }
-  if (found !== undefined) {
-    return found
-  }
-
-  warnOnce(
-    `missing:${value}`,
-    `Variables: reference "${value}" doesn't match any theme key, custom variable, or token — dropping.`
-  )
+  return value
 }
 
 export type VariablesCSS = {
@@ -199,8 +189,8 @@ const getCycleDroppedKeys = (props: VariablesProps): Set<string> | null => {
         path.push(current)
         pathSet.add(current)
         const value = map[current]
-        if (typeof value !== 'string' || value[0] !== '$') break
-        const next = value.slice(1)
+        if (typeof value !== 'string') break
+        const next = value
         if (!(next in map)) break
         current = next
       }
@@ -377,8 +367,8 @@ export function getMergedInlineTheme(
   const resolveRaw = (keyIn: string, map: Record<string, VariableValIn>): unknown => {
     let key = keyIn
     let value: VariableValIn | undefined = map[key]
-    while (typeof value === 'string' && value[0] === '$') {
-      const name = value.slice(1)
+    while (typeof value === 'string') {
+      const name = value
       if (name in map && !dropped?.has(name)) {
         key = name
         value = map[name]
@@ -388,17 +378,9 @@ export function getMergedInlineTheme(
       if (themeValue !== undefined) {
         return isVariable(themeValue) ? themeValue.val : themeValue
       }
-      const specific = conf.specificTokens[value] as Variable | undefined
-      if (specific) return specific.val
-      for (const category of tokenCategoryOrder) {
-        const token = conf.tokensParsed[category]?.[value] as Variable | undefined
-        if (token) return token.val
-      }
-      warnOnce(
-        `missing:${value}`,
-        `Variables: reference "${value}" doesn't match any theme key, custom variable, or token — dropping.`
-      )
-      return
+      const token = findToken(conf.tokensParsed, name)
+      if (token) return token.val
+      return value
     }
     if (value && typeof value === 'object') {
       return (value as { val: number }).val
@@ -442,7 +424,11 @@ export function getMergedInlineTheme(
     const activeLiteral = effective[key]
     const oppositeLiteral = opposite[key]
     const isLiteral = (v: unknown) =>
-      (typeof v === 'string' && v[0] !== '$') || typeof v === 'number'
+      (typeof v === 'string' &&
+        !(v in effective) &&
+        !(v in parentTheme) &&
+        !findToken(conf.tokensParsed, v)) ||
+      typeof v === 'number'
     if (isLiteral(activeLiteral) && isLiteral(oppositeLiteral)) {
       info.pairs[key] = {
         light: (activeScheme === 'light' ? activeLiteral : oppositeLiteral) as
@@ -482,7 +468,6 @@ export function mergeConfigVariablesIntoTheme(
   theme: Record<string, Variable>,
   themeName: string,
   variables: GenericVariables,
-  specificTokens: Record<string, Variable>,
   tokensParsed: TokensParsed
 ) {
   const scheme = themeName.startsWith('dark') ? 'dark' : 'light'
@@ -497,8 +482,8 @@ export function mergeConfigVariablesIntoTheme(
       }
       return
     }
-    if (typeof value === 'string' && value[0] === '$') {
-      const name = value.slice(1)
+    if (typeof value === 'string') {
+      const name = value
       // other config variables first (chains allowed, cycles dropped)
       if (name in variables && !(name in theme)) {
         if (resolving.has(name)) {
@@ -517,17 +502,8 @@ export function mergeConfigVariablesIntoTheme(
       if (themeValue !== undefined) {
         return isVariable(themeValue) ? themeValue.val : themeValue
       }
-      const specific = specificTokens[value]
-      if (specific) return specific.val
-      for (const category of tokenCategoryOrder) {
-        const token = tokensParsed[category]?.[value] as Variable | undefined
-        if (token) return token.val
-      }
-      warnOnce(
-        `config-missing:${value}`,
-        `createTamagui variables: reference "${value}" for "${key}" doesn't match any theme key, variable, or token — dropping.`
-      )
-      return
+      const token = findToken(tokensParsed, name)
+      return token ? token.val : value
     }
     return value
   }

@@ -372,10 +372,10 @@ const opacityValid = /^\d+$/
 /**
  * The one owner of the color opacity suffix rule for WHOLE names
  * (`slate-500/50`). Every layer — flat payloads (via `readOpacitySuffix`
- * below, same rules anchored mid-payload), Tailwind candidates, and the
- * legacy `$token/NN` path — must agree: valid means an unsigned integer 0
- * through 100; an invalid attempt is a diagnostic and is never clamped or
- * partially applied (review divergence 2).
+ * below, same rules anchored mid-payload), Tailwind candidates, and whole
+ * color token values must agree: valid means an unsigned integer 0 through
+ * 100; an invalid attempt is a diagnostic and is never clamped or partially
+ * applied (review divergence 2).
  */
 export function splitColorOpacitySuffix(value: string): ColorOpacitySuffix {
   const slash = value.lastIndexOf('/')

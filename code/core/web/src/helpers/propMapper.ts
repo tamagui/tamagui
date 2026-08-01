@@ -1,8 +1,8 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
-import { longhandExpansionTable } from '@tamagui/style-grammar'
+import { longhandExpansionTable, splitColorOpacitySuffix } from '@tamagui/style-grammar'
 import { resolveDefaultToken } from '../config'
-import { getVariableValue, isVariable } from '../createVariable'
+import { isVariable } from '../createVariable'
 import type {
   GetStyleState,
   DefaultTokenCategory,
@@ -15,43 +15,21 @@ import type {
 } from '../types'
 import { variantResolverNames } from '../types'
 import { cssColorNames } from '../interfaces/CSSColorNames'
-import { hasTopLevelClause } from './alignTransitions'
 import { expandStyle } from './expandStyle'
-import {
-  getLastFontFamilyToken,
-  getTokenForKey,
-  resolveVariableValue,
-  setLastFontFamilyToken,
-} from './getTokenForKey'
+import { resolveVariableValue } from './resolveVariableValue'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { normalizeStyle } from './normalizeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
-import { resolveCompoundTokens } from './resolveCompoundTokens'
 import { isRemValue, resolveRem } from './resolveRem'
 import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 
-export { getTokenForKey } from './getTokenForKey'
-
-// a conditional string must reach the flat grammar intact. legacy whole-token
-// and compound resolution erase the program or replace typed token components
-// with indistinguishable values before family splitting.
-function hasConditionalClause(value: unknown): value is string {
-  return (
-    typeof value === 'string' &&
-    value.indexOf(':') !== -1 &&
-    hasTopLevelClause(value)
-  )
-}
-
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
   if (disabled) {
     return map(key, value)
   }
-
-  setLastFontFamilyToken(null)
 
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
     // this shouldnt be necessary and handled in the outer loop
@@ -123,21 +101,9 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   if (value != null) {
     const defaultTokenCategory = defaultTokenCategories[key]
     if (value === true && defaultTokenCategory) {
-      value = getTokenForKey(
-        key,
-        resolveDefaultToken(value, defaultTokenCategory, conf),
-        styleProps,
-        styleState
-      )
+      value = resolveDefaultToken(value, defaultTokenCategory, conf)
     } else if (typeof value === 'string') {
-      const isConditional = hasConditionalClause(value)
-      if (!isConditional && value[0] === '$') {
-        value = getTokenForKey(key, value, styleProps, styleState)
-      } else if (!isConditional) {
-        const resolved = resolveCompoundTokens(key, value, styleProps, styleState)
-        value =
-          resolved !== value ? resolved : isRemValue(value) ? resolveRem(value) : value
-      }
+      value = isRemValue(value) ? resolveRem(value) : value
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)
     } else if (isRemValue(value)) {
@@ -152,9 +118,10 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   // Phase-6-item-2 backgroundImage gap)
 
   if (value != null) {
-    const fontToken = getLastFontFamilyToken()
-    if (key === 'fontFamily' && fontToken) {
-      styleState.fontFamily = fontToken
+    if (key === 'fontFamily' && typeof originalValue === 'string') {
+      if (originalValue in conf.fontsParsed) {
+        styleState.fontFamily = originalValue
+      }
     }
 
     // a geometric shorthand STRING flows whole into the program engine, which
@@ -272,10 +239,6 @@ const resolveVariants: StyleResolver = (
     const originalValues = styleOriginalValues.get(expanded)
 
     // store any changed font family (only support variables for now)
-    if (fontFamilyResult && fontFamilyResult[0] === '$') {
-      setLastFontFamilyToken(getVariableValue(fontFamilyResult))
-    }
-
     const next: [string, any, any][] = []
     for (const key in expanded) {
       next.push([key, expanded[key], originalValues?.[key]])
@@ -299,10 +262,8 @@ export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInterna
         }
       }
     }
-  } else if (typeof input === 'string') {
-    if (input[0] === '$') {
-      return input
-    }
+  } else if (typeof input === 'string' && input in conf.fontsParsed) {
+    return input
   }
 }
 
@@ -315,7 +276,7 @@ const resolveTokensAndVariants: StyleResolver<object> = (
   styleState,
   parentVariantKey
 ) => {
-  const { conf, staticConfig, debug, theme } = styleState
+  const { conf, staticConfig, debug } = styleState
   const { variants } = staticConfig
   const res = {}
   let originalValues: Record<string, any> | undefined
@@ -368,10 +329,7 @@ const resolveTokensAndVariants: StyleResolver<object> = (
         // avoids infinite loop if variant is matching a style prop
         // eg: { variants: { flex: { true: { flex: 2 } } } }
         if (parentVariantKey && parentVariantKey === key) {
-          res[subKey] =
-            typeof val === 'string' && val[0] === '$' && !hasConditionalClause(val)
-              ? getTokenForKey(subKey, val, styleProps, styleState)
-              : val
+          res[subKey] = val
         } else {
           const variantOut = resolveVariants(subKey, val, styleProps, styleState, key)
 
@@ -419,24 +377,12 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     // drivers (rn driver throws constructing Animated.Value(true))
     const defaultTokenCategory = defaultTokenCategories[subKey]
     if (val === true && defaultTokenCategory) {
-      res[subKey] = getTokenForKey(
-        subKey,
-        resolveDefaultToken(val, defaultTokenCategory, conf),
-        styleProps,
-        styleState
-      )
+      res[subKey] = resolveDefaultToken(val, defaultTokenCategory, conf)
       continue
     }
 
     if (typeof val === 'string') {
-      const isConditional = hasConditionalClause(val)
-      const fVal = isConditional
-        ? val
-        : val[0] === '$'
-          ? getTokenForKey(subKey, val, styleProps, styleState)
-          : resolveCompoundTokens(subKey, val, styleProps, styleState)
-
-      res[subKey] = fVal === val && isRemValue(val) ? resolveRem(val) : fVal
+      res[subKey] = isRemValue(val) ? resolveRem(val) : val
       continue
     }
 
@@ -464,18 +410,6 @@ const resolveTokensAndVariants: StyleResolver<object> = (
       res[subKey] = val
     }
 
-    if (process.env.NODE_ENV === 'development') {
-      if (debug) {
-        if (res[subKey]?.[0] === '$') {
-          console.warn(
-            `⚠️ Missing token in theme ${theme.name}:`,
-            subKey,
-            res[subKey],
-            theme
-          )
-        }
-      }
-    }
   }
 
   if (originalValues) {
@@ -645,14 +579,12 @@ function matchesVariantResolver(
       return (
         value === true ||
         isTokenCategoryValue(conf, 'size', value) ||
-        isSpecificTokenValue(conf, value) ||
         matchesAllowedStyleValue(conf, 'size', value)
       )
     case 'Space':
       return (
         value === true ||
         isTokenCategoryValue(conf, 'space', value) ||
-        isSpecificTokenValue(conf, value) ||
         isVariable(value) ||
         matchesAllowedStyleValue(conf, 'space', value)
       )
@@ -660,15 +592,13 @@ function matchesVariantResolver(
       return (
         isTokenCategoryValue(conf, 'color', value) ||
         isThemeValue(theme, value) ||
-        isSpecificTokenValue(conf, value) ||
-        isDollarTokenWithOpacity(value) ||
+        isTokenWithOpacity(conf, theme, value) ||
         isCSSColorName(value)
       )
     case 'Radius':
       return (
         value === true ||
         isTokenCategoryValue(conf, 'radius', value) ||
-        isSpecificTokenValue(conf, value) ||
         isVariable(value) ||
         isRemString(value) ||
         isNumericValue(value) ||
@@ -678,7 +608,6 @@ function matchesVariantResolver(
       return (
         value === true ||
         isTokenCategoryValue(conf, 'zIndex', value) ||
-        isSpecificTokenValue(conf, value) ||
         isVariable(value) ||
         isNumericValue(value) ||
         matchesAllowedStyleValue(conf, 'zIndex', value)
@@ -738,10 +667,7 @@ function isTokenCategoryValue(
 }
 
 function isThemeValue(theme: Partial<GetStyleState>['theme'], value: any) {
-  if (!theme || typeof value !== 'string' || value[0] !== '$') {
-    return false
-  }
-  return value.slice(1) in theme
+  return Boolean(theme && typeof value === 'string' && value in theme)
 }
 
 function isNumericValue(value: any) {
@@ -754,21 +680,17 @@ function isCSSColorName(value: any) {
   return typeof value === 'string' && cssColorNameSet.has(value)
 }
 
-function isDollarTokenWithOpacity(value: any) {
-  return typeof value === 'string' && tokenWithOpacityPattern.test(value)
-}
-
-function isSpecificTokenValue(conf: TamaguiInternalConfig, value: any) {
+function isTokenWithOpacity(
+  conf: TamaguiInternalConfig,
+  theme: Partial<GetStyleState>['theme'],
+  value: any
+) {
   if (typeof value !== 'string') return false
-  const hasSetting = Object.prototype.hasOwnProperty.call(
-    conf.settings,
-    'autocompleteSpecificTokens'
+  const suffix = splitColorOpacitySuffix(value)
+  return (
+    suffix.kind === 'valid' &&
+    (isTokenCategoryValue(conf, 'color', suffix.name) || isThemeValue(theme, suffix.name))
   )
-  const setting = conf.settings.autocompleteSpecificTokens
-  if (hasSetting && (setting === undefined || setting === 'except-special')) {
-    return false
-  }
-  return value in conf.specificTokens
 }
 
 type AllowedCategory = 'size' | 'space' | 'radius' | 'zIndex'
@@ -866,7 +788,6 @@ function isWebOnlySizeValue(value: any) {
 
 const numberStringPattern =
   /[+-]?(?:(?:\d+\.?\d*)|(?:\.\d+))(?:[eE][+-]?\d+)?|[+-]?0[xX][\da-fA-F]+|[+-]?0[bB][01]+|[+-]?0[oO][0-7]+/
-const tokenWithOpacityPattern = new RegExp(`^\\$.*\\/(?:${numberStringPattern.source})$`)
 const remStringPattern = new RegExp(`^(?:${numberStringPattern.source})rem$`)
 const viewportValuePattern = new RegExp(
   `^(?:${numberStringPattern.source})(vw|dvw|lvw|svw|vh|dvh|lvh|svh)$`
@@ -886,7 +807,7 @@ function isBodyFontToken(
   value: any
 ) {
   if (typeof value !== 'string') return false
-  const bodyFont = conf.fontsParsed.$body
+  const bodyFont = conf.fontsParsed.body
   const fontCategory = bodyFont?.[category]
   return Boolean(fontCategory && value in fontCategory)
 }

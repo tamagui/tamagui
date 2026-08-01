@@ -113,7 +113,7 @@ export const config = {
   settings: {
     mediaQueryDefaultActive,
     defaultFont: 'body',
-    defaultSize: '$4',
+    defaultSize: '4',
     fastSchemeChange: true,
     shouldAddPrefersColorThemes: true,
   },

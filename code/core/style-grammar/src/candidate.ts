@@ -439,7 +439,7 @@ export function parseCandidate(
     | undefined
   if (prefix) {
     const rawValue = core.slice(prefix.length + 1)
-    if (rawValue && !rawValue.startsWith('$')) {
+    if (rawValue) {
       const entries = resolveEntries(prefix, config)
       const selected = chooseEntry(entries, prefix, rawValue, negative, config)
       if (

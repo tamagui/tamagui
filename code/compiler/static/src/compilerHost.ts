@@ -540,7 +540,7 @@ export function createTamaguiCompilerHost(
   const core = requireTamaguiCore(platform) as any
   const firstThemeName = Object.keys(options.tamaguiConfig.themes ?? {})[0] ?? ''
   const firstTheme = options.tamaguiConfig.themes?.[firstThemeName] ?? {}
-  const theme = core.proxyThemeVariables(firstTheme)
+  const theme = firstTheme
   const modulesById = new Map(
     options.componentModules.map((module) => [module.resolvedId, module.moduleName])
   )

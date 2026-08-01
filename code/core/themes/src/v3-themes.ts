@@ -274,7 +274,7 @@ const getTemplates = () => {
       color075: -4,
       // the background, color, etc keys here work like generics - they make it so you
       // can publish components for others to use without mandating a specific color scale
-      // the @tamagui/button Button component looks for `$background`, so you set the
+      // the @tamagui/button Button component looks for `background`, so you set the
       // dark_red_Button theme to have a stronger background than the dark_red theme.
       background: bgIndex,
       backgroundHover: bgIndex + lighten, // always lighten on hover no matter the scheme
