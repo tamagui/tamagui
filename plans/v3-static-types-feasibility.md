@@ -335,14 +335,40 @@ the shadow prototype:
 - `@tamagui/web` type tests 93 passed / no type errors, core-test web 475
   passed, core-test native 198 passed, style-grammar 403 passed.
 
-No regression test was added on purpose. The failure mode is "the token arm
-disappears from the union", and no assignability test can see that: with
-`Properties['background']` carrying `(string & {})`, `expectTypeOf<'$color1'>()`
-passes whether or not the tokens are there. A test that stays green when the
-thing is broken is worse than none. Catching this needs constituent inspection
-through the checker API, which is what `typeshape.mjs` in the scratch harness
-does; promoting that into a vitest case is a real option if `ColorKeys` and the
-web-only style props start moving.
+### Known coverage gap, and the tool that closes it
+
+No regression test was added, on purpose, and this is a recorded gap rather than
+an oversight.
+
+The failure mode is "the token arm disappears from the prop's union". No
+assignability test can see it. Every style prop type ends in `| (string & {})`,
+so `expectTypeOf<'$color1'>().toExtend<BgType>()` passes whether or not the
+token literals are present, and the prop keeps typechecking while autocomplete
+is dead. That is a test that stays green while the thing is broken, which is
+worse than no test. It is also not hypothetical: this exact failure shipped
+unnoticed in `bg`, and nothing went red.
+
+Seeing it requires asking the checker what the contextual type actually
+contains. `scripts/inspect-style-prop-types.mjs` does that: point it at a probe
+file with string-literal attributes and it reports union constituents, string
+literals, and how many of those are `$`-prefixed tokens.
+
+```
+$ node scripts/inspect-style-prop-types.mjs probe.tsx bg,backgroundColor --expect-tokens
+View.bg                 constituents= 1171  stringLiterals= 1166  tokens= 950  templates=1
+View.backgroundColor    constituents= 1112  stringLiterals= 1101  tokens= 950  templates=2
+OK: every inspected attribute carries theme token literals
+```
+
+`--expect-tokens` exits 1 when an inspected attribute has no token literals.
+Verified in both directions: it exits 0 against the current build and exits 1
+against the pre-`53fe77bd9a` shape (`bg?: Properties['background']`, 219
+constituents, 216 string literals, 0 tokens).
+
+Promote it into a vitest case when `ColorKeys` (`types.tsx:37-53`), the
+`ExtraStyleProps` web-only style props, or the shorthand-to-longhand map start
+moving. Those are the three edits that can silently drop a token arm, and today
+none of them would turn anything red.
 
 ## The integration surface, if it were done anyway
 
