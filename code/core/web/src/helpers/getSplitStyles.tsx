@@ -68,6 +68,7 @@ import {
   clearProgramLifecycleForProp,
   contributeStylePrograms,
   contributeTransformNumber,
+  resolveLegacyPartValue,
 } from './contributePrograms'
 import {
   accumulateTransition,
@@ -968,10 +969,12 @@ export const getSplitStyles: StyleSplitter = (
 
       if (val == null) return
 
-      if (
+      const isHostStyleKey =
         (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
-      ) {
+      const isContextProgramKey = !isHOC && Boolean(isStyledContextProp)
+
+      if (isHostStyleKey || isContextProgramKey) {
         // flat value programs: every string value contributes per-longhand
         // programs — clause-free strings are base-only programs, which is what
         // resolves configured bare names and numeric strings config-first
@@ -988,7 +991,14 @@ export const getSplitStyles: StyleSplitter = (
               transformFamilyProps.has(key) &&
               contributeTransformNumber(styleState, key, val)))
         ) {
+          if (!isHostStyleKey) {
+            ;(styleState.contextOnlyProgramKeys ||= new Set()).add(key)
+          }
           return
+        }
+        if (!isHostStyleKey) return
+        if (typeof val === 'string') {
+          val = resolveLegacyPartValue(styleState, key, val)
         }
         mergeStyle(styleState, key, val, 1, false, originalVal)
         return

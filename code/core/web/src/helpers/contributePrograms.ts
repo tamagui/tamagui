@@ -22,6 +22,9 @@ import {
   type ParsedValue,
   legacyPartComposite,
   programEligibility,
+  resolvePayload,
+  serializePayloadNative,
+  serializePayloadWeb,
   textDecorationFamilyTargets,
   transformDeclarationUnit,
   transformDeclarationsFor,
@@ -364,6 +367,44 @@ export function contributeStylePrograms(
   }
 
   return true
+}
+
+/**
+ * Legacy RN part props still compose through the existing shadow/transform
+ * pipeline, but their bare names need the same config-first resolution as a
+ * base-only program. Resolve only the value here and let mergeStyle retain
+ * ownership of ordering, normalization, and the composite assembly.
+ */
+export function resolveLegacyPartValue(
+  styleState: GetStyleState,
+  key: string,
+  value: string
+): string | number {
+  if (programEligibility(key) !== 'legacy-part' || value.indexOf(':') !== -1) {
+    return value
+  }
+
+  const context = ensureGrammarContext(styleState)
+  const resolved = resolvePayload(value, {
+    lookup: context.getLookup(key, styleState.fontFamily),
+    resolveNumbers: context.resolvesNumbers(key),
+  })
+  if (resolved.errors?.length) return value
+
+  try {
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      return serializePayloadWeb(resolved, context.toVar)
+    }
+    return serializePayloadNative(
+      resolved,
+      context.createNativeValueGetter(styleState.theme, styleState.fontFamily),
+      {
+        unit: unitlessNumberProperties.has(key) ? undefined : 'px-to-number',
+      }
+    )
+  } catch {
+    return value
+  }
 }
 
 /**

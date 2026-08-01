@@ -17,6 +17,13 @@ export declare function contributeParsedProgram(styleState: GetStyleState, prop:
  */
 export declare function contributeStylePrograms(styleState: GetStyleState, key: string, val: string): boolean;
 /**
+ * Legacy RN part props still compose through the existing shadow/transform
+ * pipeline, but their bare names need the same config-first resolution as a
+ * base-only program. Resolve only the value here and let mergeStyle retain
+ * ownership of ordering, normalization, and the composite assembly.
+ */
+export declare function resolveLegacyPartValue(styleState: GetStyleState, key: string, value: string): string | number;
+/**
  * Numeric values on the transform family contribute base-only programs so the
  * family always composes in the canonical CSS order (translate, rotate,
  * scale). Without this, a numeric x beside a string rotate falls into the

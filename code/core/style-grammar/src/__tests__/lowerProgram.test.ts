@@ -129,6 +129,30 @@ describe('rule order is authored clause order', () => {
   })
 })
 
+describe('React Native pointer-events modes', () => {
+  test('box-none disables the subject and restores its direct children', () => {
+    const lowered = lower('pointerEvents', 'box-none')
+    const cls = lowered.className
+    expect(lowered.rules).toEqual([
+      `.${cls}{pointer-events:none}`,
+      `.${cls}>*{pointer-events:auto}`,
+    ])
+  })
+
+  test('each clause resets both halves when a program contains a box mode', () => {
+    const lowered = lower('pointerEvents', 'box-none press:none hover:box-only')
+    const cls = lowered.className
+    expect(lowered.rules).toEqual([
+      `.${cls}{pointer-events:none}`,
+      `.${cls}>*{pointer-events:auto}`,
+      `.${cls}:where(:active){pointer-events:none}`,
+      `.${cls}:where(:active)>*{pointer-events:none}`,
+      `@media (hover: hover) {.${cls}:where(:hover){pointer-events:auto}}`,
+      `@media (hover: hover) {.${cls}:where(:hover)>*{pointer-events:none}}`,
+    ])
+  })
+})
+
 describe('media conditions', () => {
   test('a media chain nests, first authored outermost, adding no specificity', () => {
     const lowered = lower('color', 'sm:md:hover:red')

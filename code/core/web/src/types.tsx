@@ -2893,6 +2893,10 @@ export type GetStyleState = {
   // same longhand delete the program and vice versa, so one longhand never has
   // both systems' output on one element.
   programs?: Map<string, import('@tamagui/style-grammar').LonghandProgram>
+  // Context props such as color may carry a runtime program even when the host
+  // view cannot accept that style key. Evaluate them for Provider propagation,
+  // then keep them out of the host style object.
+  contextOnlyProgramKeys?: Set<string>
   // lifecycle modifiers carried by each winning program longhand. This survives
   // an early web class flush (which clears `programs`) so the CSS animation
   // driver can restart exits from computed styles without reading removed

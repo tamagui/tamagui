@@ -1,6 +1,11 @@
 import { expect, test } from '@playwright/test'
 
-import { setupPage } from './test-utils'
+import {
+  getComputedScale,
+  getComputedTranslateX,
+  getComputedTranslateY,
+  setupPage,
+} from './test-utils'
 import { getStyles, getHoverStyle, getPressStyle } from './utils'
 
 test.beforeEach(async ({ page }) => {
@@ -165,21 +170,19 @@ test('effects: cursor and pointer-events', async ({ page }) => {
 // ── transforms ───────────────────────────────────────
 
 test('transforms: rotate', async ({ page }) => {
-  const s = await getStyles(page.locator('#sv-rotate'))
-  // transform matrix contains rotation
-  expect(s.transform).not.toBe('none')
+  const rotate = await page
+    .locator('#sv-rotate')
+    .evaluate((element) => getComputedStyle(element).rotate)
+  expect(rotate).toBe('45deg')
 })
 
 test('transforms: scale', async ({ page }) => {
-  const s = await getStyles(page.locator('#sv-scale'))
-  expect(s.transform).not.toBe('none')
-  // scale(0.75) → matrix contains 0.75
-  expect(s.transform).toContain('0.75')
+  expect(await getComputedScale(page, '#sv-scale')).toBeCloseTo(0.75)
 })
 
 test('transforms: translate x/y', async ({ page }) => {
-  const s = await getStyles(page.locator('#sv-translate'))
-  expect(s.transform).not.toBe('none')
+  expect(await getComputedTranslateX(page, '#sv-translate')).toBeCloseTo(10)
+  expect(await getComputedTranslateY(page, '#sv-translate')).toBeCloseTo(-5)
 })
 
 // ── interactive states ───────────────────────────────

@@ -152,6 +152,22 @@ function conditionSelector(fragment: string, scope: ConditionScope): string {
   return `:where(${fragment})`
 }
 
+type PointerEventsMode = 'auto' | 'none' | 'box-none' | 'box-only'
+
+function isPointerEventsMode(value: string): value is PointerEventsMode {
+  return value === 'auto' || value === 'none' || value === 'box-none' || value === 'box-only'
+}
+
+function pointerEventsCSS(mode: PointerEventsMode): {
+  subject: 'auto' | 'none'
+  children: 'auto' | 'none'
+} {
+  return {
+    subject: mode === 'none' || mode === 'box-none' ? 'none' : 'auto',
+    children: mode === 'none' || mode === 'box-only' ? 'none' : 'auto',
+  }
+}
+
 export function lowerProgram(
   program: LonghandProgram,
   options: LowerProgramOptions
@@ -170,8 +186,31 @@ export function lowerProgram(
   const declaration = hyphenate(program.property)
   const rules: string[] = []
 
+  // React Native's box-only/box-none values need a subject rule and a direct-child
+  // rule. If either appears in a program, every clause emits both halves so moving
+  // between (for example) box-none and none cannot leave the base child rule active.
+  const pointerEventsProgram =
+    program.property === 'pointerEvents' &&
+    [program.value.base, ...program.value.clauses.map((clause) => clause.payload)].some(
+      (value) => value === 'box-none' || value === 'box-only'
+    )
+
+  const pushRule = (selector: string, wrappers: readonly string[], value: string) => {
+    if (pointerEventsProgram && isPointerEventsMode(value)) {
+      const pointerEvents = pointerEventsCSS(value)
+      rules.push(
+        wrapAtRules(`${selector}{${declaration}:${pointerEvents.subject}}`, wrappers)
+      )
+      rules.push(
+        wrapAtRules(`${selector}>*{${declaration}:${pointerEvents.children}}`, wrappers)
+      )
+      return
+    }
+    rules.push(wrapAtRules(`${selector}{${declaration}:${value}}`, wrappers))
+  }
+
   if (program.value.base !== null) {
-    rules.push(`.${className}{${declaration}:${program.value.base}}`)
+    pushRule(`.${className}`, [], program.value.base)
   }
 
   for (const clause of program.value.clauses) {
@@ -259,7 +298,7 @@ export function lowerProgram(
 
     if (skip) continue
 
-    rules.push(wrapAtRules(`${selector}{${declaration}:${clause.payload}}`, wrappers))
+    pushRule(selector, wrappers, clause.payload)
   }
 
   const composition = transformAxisCompositions[program.property]

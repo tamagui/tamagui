@@ -1700,6 +1700,7 @@ export type GetStyleState = {
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
     programs?: Map<string, import('@tamagui/style-grammar').LonghandProgram>;
+    contextOnlyProgramKeys?: Set<string>;
     programLifecycle?: Map<string, {
         enter?: true;
         exit?: true;

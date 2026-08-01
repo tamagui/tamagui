@@ -118,6 +118,30 @@ function cachedGroupModifier(modifier: string): GroupModifier | null {
   return parsed
 }
 
+function setContextOverrideFromProgram(
+  styleState: GetStyleState,
+  key: string,
+  payload: string
+): void {
+  const { staticConfig } = styleState
+  const contextConfig = staticConfig.context || staticConfig.parentStaticConfig?.context
+  const contextProps = contextConfig?.props
+  const inheritedContextPropKeys =
+    !staticConfig.context ||
+    staticConfig.context === staticConfig.parentStaticConfig?.context
+      ? staticConfig.parentStaticConfig?.contextProps
+      : undefined
+  const contextPropKeys = staticConfig.contextProps || inheritedContextPropKeys
+  const isContextProp =
+    (contextProps && key in contextProps) ||
+    contextPropKeys?.includes(key) ||
+    contextConfig?.propKeys?.includes(key)
+
+  if (isContextProp) {
+    ;(styleState.overriddenContextProps ||= {})[key] = payload
+  }
+}
+
 function cachedContainerModifier(modifier: string): ContainerModifier | null {
   let parsed = containerModifierCache.get(modifier)
   if (parsed === undefined) {
@@ -305,6 +329,14 @@ export function evaluateAccumulatedPrograms(
       )
       continue
     }
+
+    // Runtime-evaluated programs can change a styled-context prop as state or
+    // media changes. Propagate the selected authored payload just as mergeStyle
+    // propagates an ordinary token value, so child variants see `red`, not the
+    // serialized color or the program text.
+    setContextOverrideFromProgram(styleState, longhand, payload)
+    if (styleState.contextOnlyProgramKeys?.has(longhand)) continue
+
     // only the currently matching payload is resolved. if a conditional
     // safe-area value activates later, that condition's normal re-render sets
     // the flag and attaches the inset subscription then.
