@@ -321,9 +321,7 @@
           "border-color-hover",
           "border-color-press",
           "shadow-color",
-          "outline-color",
-          "radius",
-          "pressScale"
+          "outline-color"
         ],
         "themes": [
           "surface1",
@@ -414,9 +412,7 @@
           "border-color-hover",
           "border-color-press",
           "shadow-color",
-          "outline-color",
-          "radius",
-          "pressScale"
+          "outline-color"
         ],
         "states": [
           "pressed"

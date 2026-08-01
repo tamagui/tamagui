@@ -150,8 +150,9 @@ export function createNonNativeContextMenu() {
 
   const TRIGGER_NAME = 'ContextMenuTrigger'
 
-  const ContextMenuTrigger = createStyledHOC(View)<ScopedProps<ContextMenuTriggerProps>>(
-    (props, forwardedRef) => {
+  const ContextMenuTrigger = createStyledHOC(
+    View,
+    (props: ScopedProps<ContextMenuTriggerProps>, forwardedRef) => {
       const { scope, style, disabled = false, asChild, children, ...triggerProps } = props
       const context = useContextMenuContext(scope)
       const pointRef = React.useRef<Point>({ x: 0, y: 0 })
@@ -452,19 +453,20 @@ export function createNonNativeContextMenu() {
 
   const INDICATOR_NAME = 'ContextMenuItemIndicator'
 
-  const ContextMenuItemIndicator = createStyledHOC(Menu.ItemIndicator)<
-    ScopedProps<ContextMenuItemIndicatorProps>
-  >((props, forwardedRef) => {
-    const { scope, ...itemIndicatorProps } = props
-    return (
-      <Menu.ItemIndicator
-        componentName={INDICATOR_NAME}
-        scope={scope || CONTEXTMENU_CONTEXT}
-        {...itemIndicatorProps}
-        ref={forwardedRef}
-      />
-    )
-  })
+  const ContextMenuItemIndicator = createStyledHOC(
+    Menu.ItemIndicator,
+    (props: ScopedProps<ContextMenuItemIndicatorProps>, forwardedRef) => {
+      const { scope, ...itemIndicatorProps } = props
+      return (
+        <Menu.ItemIndicator
+          componentName={INDICATOR_NAME}
+          scope={scope || CONTEXTMENU_CONTEXT}
+          {...itemIndicatorProps}
+          ref={forwardedRef}
+        />
+      )
+    }
+  )
 
   ContextMenuItemIndicator.displayName = INDICATOR_NAME
 
@@ -502,19 +504,20 @@ export function createNonNativeContextMenu() {
 
   const SUB_TRIGGER_NAME = 'ContextMenuSubTrigger'
 
-  const ContextMenuSubTrigger = createStyledHOC(View)<
-    ScopedProps<ContextMenuSubTriggerProps>
-  >((props, forwardedRef) => {
-    const { scope, ...subTriggerProps } = props
-    return (
-      <Menu.SubTrigger
-        componentName={SUB_TRIGGER_NAME}
-        scope={scope || CONTEXTMENU_CONTEXT}
-        {...subTriggerProps}
-        ref={forwardedRef}
-      />
-    )
-  })
+  const ContextMenuSubTrigger = createStyledHOC(
+    View,
+    (props: ScopedProps<ContextMenuSubTriggerProps>, forwardedRef) => {
+      const { scope, ...subTriggerProps } = props
+      return (
+        <Menu.SubTrigger
+          componentName={SUB_TRIGGER_NAME}
+          scope={scope || CONTEXTMENU_CONTEXT}
+          {...subTriggerProps}
+          ref={forwardedRef}
+        />
+      )
+    }
+  )
 
   ContextMenuSubTrigger.displayName = SUB_TRIGGER_NAME
 

@@ -12,7 +12,7 @@ type SpinnerExtraProps = {
 export type SpinnerProps = Omit<YStackProps, 'children' | keyof SpinnerExtraProps> &
   SpinnerExtraProps
 
-export const Spinner = createStyledHOC(YStack)<SpinnerExtraProps>((props, ref) => {
+export const Spinner = createStyledHOC(YStack, (props: SpinnerProps, ref) => {
   const { size, color: colorProp, ...stackProps } = props
   const theme = useTheme()
   let color = colorProp as string

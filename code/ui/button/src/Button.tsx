@@ -286,8 +286,9 @@ export function useButton<Props extends ButtonBehaviorProps>(
   }
 }
 
-const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(
-  function Button(props, ref) {
+const ButtonComponent = createStyledHOC(
+  ButtonFrame,
+  function Button(props: ButtonBehaviorProps, ref) {
     const { props: buttonProps } = useButton(props)
 
     return <ButtonFrame ref={ref} {...buttonProps} />

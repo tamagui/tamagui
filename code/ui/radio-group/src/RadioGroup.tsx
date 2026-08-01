@@ -83,8 +83,9 @@ export type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
   accentColor?: string
 }
 
-const RadioGroupComponent = createStyledHOC(RadioGroupFrame)<RadioGroupProps>(
-  (props, ref) => {
+const RadioGroupComponent = createStyledHOC(
+  RadioGroupFrame,
+  (props: RadioGroupProps, ref) => {
     const {
       value,
       defaultValue,
@@ -120,8 +121,9 @@ const RadioGroupComponent = createStyledHOC(RadioGroupFrame)<RadioGroupProps>(
   }
 )
 
-const RadioGroupItem = createStyledHOC(RadioGroupItemFrame)<RadioGroupItemProps>(
-  (props, ref) => {
+const RadioGroupItem = createStyledHOC(
+  RadioGroupItemFrame,
+  (props: RadioGroupItemProps, ref) => {
     const { value, labelledBy, onPress, onKeyDown, disabled, id, ...rest } = props
 
     const {
@@ -161,26 +163,27 @@ const RadioGroupItem = createStyledHOC(RadioGroupItemFrame)<RadioGroupItemProps>
 RadioGroupItem.displayName = 'RadioGroupItem'
 
 const RadioGroupIndicator = createStyledHOC(
-  RadioGroupIndicatorFrame
-)<RadioGroupIndicatorProps>((props, forwardedRef) => {
-  const { forceMount, disabled, ...indicatorProps } = props
-  const { checked, ...useIndicatorRest } = useRadioGroupItemIndicator({
-    radioGroupItemContext: RadioGroupItemContext,
-    disabled,
-  })
+  RadioGroupIndicatorFrame,
+  (props: RadioGroupIndicatorProps, forwardedRef) => {
+    const { forceMount, disabled, ...indicatorProps } = props
+    const { checked, ...useIndicatorRest } = useRadioGroupItemIndicator({
+      radioGroupItemContext: RadioGroupItemContext,
+      disabled,
+    })
 
-  if (forceMount || checked) {
-    return (
-      <RadioGroupIndicatorFrame
-        {...useIndicatorRest}
-        ref={forwardedRef}
-        {...indicatorProps}
-      />
-    )
+    if (forceMount || checked) {
+      return (
+        <RadioGroupIndicatorFrame
+          {...useIndicatorRest}
+          ref={forwardedRef}
+          {...indicatorProps}
+        />
+      )
+    }
+
+    return null
   }
-
-  return null
-})
+)
 
 RadioGroupIndicator.displayName = 'RadioGroupIndicator'
 

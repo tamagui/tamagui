@@ -482,8 +482,9 @@ export interface PopoverContentTypeProps extends Omit<
 
 export type PopoverContentProps = PopoverContentTypeProps
 
-export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContentProps>(
-  function PopoverContent(props, forwardedRef) {
+export const PopoverContent = createStyledHOC(
+  PopperContentFrame,
+  function PopoverContent(props: PopoverContentProps, forwardedRef) {
     const {
       trapFocus,
       enableRemoveScroll = false,
@@ -894,8 +895,9 @@ export const PopoverClose = createRefComponent<TamaguiElement, PopoverCloseProps
 
 export type PopoverArrowProps = PopperArrowProps
 
-export const PopoverArrow = createStyledHOC(PopperArrowFrame)<PopperArrowExtraProps>(
-  function PopoverArrow(props, forwardedRef) {
+export const PopoverArrow = createStyledHOC(
+  PopperArrowFrame,
+  function PopoverArrow(props: PopperArrowExtraProps, forwardedRef) {
     const { scope, ...rest } = props
     const context = usePopoverContext(scope)
     const isAdapted = useAdaptIsActive(context.adaptScope)

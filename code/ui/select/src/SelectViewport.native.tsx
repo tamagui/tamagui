@@ -20,40 +20,38 @@ export const SelectViewportFrame = styled(View, {
 })
 
 export const SelectViewport = createStyledHOC(
-  SelectViewportFrame
-)<SelectViewportExtraProps>(function SelectViewport(
-  props: SelectViewportProps,
-  forwardedRef
-) {
-  const { scope, children, disableScroll: _disableScroll, ...viewportProps } = props
-  const context = useSelectContext(scope)
-  const itemParentContext = useSelectItemParentContext(scope)
-  const themeName = useThemeName()
-  const adaptContext = useAdaptContext()
-  const isAdapted = useAdaptIsActive(context.adaptScope)
+  SelectViewportFrame,
+  function SelectViewport(props: SelectViewportProps, forwardedRef) {
+    const { scope, children, disableScroll: _disableScroll, ...viewportProps } = props
+    const context = useSelectContext(scope)
+    const itemParentContext = useSelectItemParentContext(scope)
+    const themeName = useThemeName()
+    const adaptContext = useAdaptContext()
+    const isAdapted = useAdaptIsActive(context.adaptScope)
 
-  const contents = (
-    <Theme name={themeName}>
-      <ForwardSelectContext itemContext={itemParentContext} context={context}>
-        <AdaptContext.Provider {...adaptContext}>
-          <SelectViewportFrame {...viewportProps} ref={forwardedRef}>
-            {children}
-          </SelectViewportFrame>
-        </AdaptContext.Provider>
-      </ForwardSelectContext>
-    </Theme>
-  )
+    const contents = (
+      <Theme name={themeName}>
+        <ForwardSelectContext itemContext={itemParentContext} context={context}>
+          <AdaptContext.Provider {...adaptContext}>
+            <SelectViewportFrame {...viewportProps} ref={forwardedRef}>
+              {children}
+            </SelectViewportFrame>
+          </AdaptContext.Provider>
+        </ForwardSelectContext>
+      </Theme>
+    )
 
-  if (!context.open) {
-    if (context.lazyMount && context.renderValue) return null
-    return <SelectViewportFrame display="none">{contents}</SelectViewportFrame>
+    if (!context.open) {
+      if (context.lazyMount && context.renderValue) return null
+      return <SelectViewportFrame display="none">{contents}</SelectViewportFrame>
+    }
+
+    return isAdapted ? (
+      <AdaptPortalContents scope={context.adaptScope}>{contents}</AdaptPortalContents>
+    ) : (
+      contents
+    )
   }
-
-  return isAdapted ? (
-    <AdaptPortalContents scope={context.adaptScope}>{contents}</AdaptPortalContents>
-  ) : (
-    contents
-  )
-})
+)
 
 SelectViewport.displayName = VIEWPORT_NAME

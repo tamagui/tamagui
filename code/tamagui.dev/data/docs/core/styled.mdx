@@ -57,7 +57,7 @@ export const RoundedSquare = styled(View, {
     },
 
     size: {
-      '...size': (size, { tokens }) => {
+      Size: (size, { tokens }) => {
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
@@ -219,7 +219,7 @@ The way to fix this is to wrap your `HigherOrderStyledText` with `createStyledHO
 const StyledText = styled(Text)
 
 // note the createStyledHOC wrapper here:
-const HigherOrderStyledText = createStyledHOC(StyledText)((props, ref) => (
+const HigherOrderStyledText = createStyledHOC(StyledText, (props, ref) => (
   <StyledText ref={ref} {...props} />
 ))
 
@@ -234,7 +234,7 @@ Now your component will handle everything properly, even if a theme is changed o
 
 A final note: you must pass all Tamagui style props given to `HigherOrderStyledText` down to a single `StyledText`, at least if you want everything to work fully correctly.
 
-And if you'd like to add new props on top of the existing props, you can pass them in for the first generic type argument of `createStyledHOC`:
+And if you'd like to add new props on top of the existing props, annotate the render function's props parameter — the annotated props merge over the wrapped component's props:
 
 ```tsx
 import { createStyledHOC, View, ViewProps } from '@tamagui/core'
@@ -245,7 +245,7 @@ type ExtraProps = {
 
 export type CustomProps = ViewProps & ExtraProps
 
-const Custom = createStyledHOC(View)<ExtraProps>((props) => {
+const Custom = createStyledHOC(View, (props: ExtraProps) => {
   // ...
   return null
 })

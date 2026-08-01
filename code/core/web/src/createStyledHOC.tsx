@@ -3,7 +3,7 @@ import { themeable } from './helpers/themeable'
 import type {
   GetFinalProps,
   StaticConfig,
-  StyledHOCFactory,
+  StyledHOCMergedProps,
   StyledHOCOptions,
   TamaguiComponent,
   TamaDefer,
@@ -16,6 +16,7 @@ export function createStyledHOC<
   BaseStyles extends object,
   VariantProps,
   ParentStaticProperties,
+  CustomProps extends object = {},
 >(
   component: TamaguiComponent<
     Props,
@@ -24,43 +25,51 @@ export function createStyledHOC<
     BaseStyles,
     VariantProps,
     ParentStaticProperties
-  >
-): StyledHOCFactory<
-  Props extends TamaDefer
-    ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
-    : Props,
+  >,
+  render: (
+    props: NoInfer<
+      Props extends TamaDefer
+        ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+        : Props
+    > &
+      CustomProps,
+    ref?: ReactRef<NoInfer<Ref>>
+  ) => ReactNode,
+  options?: StyledHOCOptions
+): TamaguiComponent<
+  StyledHOCMergedProps<
+    Props extends TamaDefer
+      ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+      : Props,
+    CustomProps
+  >,
   Ref,
-  NonStyledProps,
+  NonStyledProps & CustomProps,
   BaseStyles,
   VariantProps,
   ParentStaticProperties
 > {
   const staticConfig = component.staticConfig
 
-  return function createStyledHOCComponent(
-    Component: (props: any, ref?: ReactRef<Ref>) => ReactNode,
-    options?: StyledHOCOptions
-  ) {
-    const extendedConfig: StaticConfig = {
-      ...staticConfig,
-      ...options?.staticConfig,
-      neverFlatten: true,
-      isHOC: true,
-      isStyledHOC: false,
-    }
+  const extendedConfig: StaticConfig = {
+    ...staticConfig,
+    ...options?.staticConfig,
+    neverFlatten: true,
+    isHOC: true,
+    isStyledHOC: false,
+  }
 
-    let out: any = function StyledHOCComponent(props: any) {
-      const { ref, ...rest } = props
-      return Component(rest, ref)
-    }
+  let out: any = function StyledHOCComponent(props: any) {
+    const { ref, ...rest } = props
+    return render(rest, ref)
+  }
 
-    out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
+  out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
 
-    if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLED_HOC) {
-      out = React.memo(out)
-    }
+  if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLED_HOC) {
+    out = React.memo(out)
+  }
 
-    out.staticConfig = extendedConfig
-    return out
-  } as any
+  out.staticConfig = extendedConfig
+  return out
 }

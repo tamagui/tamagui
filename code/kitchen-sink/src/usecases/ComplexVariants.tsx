@@ -62,7 +62,7 @@ const Frame = styled(View, {
   } as const,
 })
 
-const FrameContainer = createStyledHOC(Frame)((propsIn, ref) => {
+const FrameContainer = createStyledHOC(Frame, (propsIn, ref) => {
   const props = useProps(propsIn)
   return <Frame ref={ref} {...props} />
 })

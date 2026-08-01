@@ -24,9 +24,11 @@ registry, state grammar, and the review's correctness fixes were found on
 3. **Surface component / ThemeableStack:** direction is specced and accepted but
    not executed. `plans/variables.md` (coordinator-accepted): "Surface is a
    copied fixture, not a framework hook" — a user-owned copied `Surface` skin
-   reads conventional variables (`$surfaceBorder`, `$focusRingColor`,
-   `$disabledOpacity`, `$pressScale`, easings) via the shipped `<Variables>`
-   primitive; behavior components never read them. `next.md` companions: remove
+   reads theme generics plus standard tokens/literals (the implemented facets
+   read `background`/`borderColor`-family generics, resolve the default radius
+   token for `rounded`, and use a literal press scale; `surfaceBorder` was
+   rejected in `plans/surface-levels.md` and no custom config variables are
+   read); behavior components never read them. `next.md` companions: remove
    component themes in favor of `theme="surface1-3"` sub-themes, remove or
    simplify `ThemeableStack`/`SizableStack` (docs already treat stacks as plain
    YStack extensions). Work item T2 below executes this as: delete the

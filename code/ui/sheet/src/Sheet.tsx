@@ -105,8 +105,9 @@ const SheetBackgroundFrame = styled(YStack, {
   pointerEvents: 'none',
 })
 
-export const SheetHandle = createStyledHOC(SheetHandleFrame)<SheetViewProps>(
-  ({ scope, ...props }, forwardedRef) => {
+export const SheetHandle = createStyledHOC(
+  SheetHandleFrame,
+  ({ scope, ...props }: SheetViewProps, forwardedRef) => {
     const context = useSheetContext(scope)
     const composedRef = useComposedRefs<TamaguiElement>(context.handleRef, forwardedRef)
     const wasDraggingRef = useRef(false)
@@ -146,8 +147,9 @@ export const SheetHandle = createStyledHOC(SheetHandleFrame)<SheetViewProps>(
   }
 )
 
-export const SheetOverlay = createStyledHOC(SheetOverlayFrame)<SheetViewProps>(
-  (propsIn, ref) => {
+export const SheetOverlay = createStyledHOC(
+  SheetOverlayFrame,
+  (propsIn: SheetViewProps, ref) => {
     const { scope, ...props } = propsIn
     const context = useSheetContext(scope)
     const isInOverlayLayer = useContext(SheetOverlayLayerContext)
@@ -194,53 +196,66 @@ type ExtraContainerProps = {
   adjustPaddingForOffscreenContent?: boolean
 }
 
-export const SheetContainer = createStyledHOC(SheetContainerFrame)<
-  SheetViewProps<ExtraContainerProps>
->(({ scope, adjustPaddingForOffscreenContent, children, ...props }, forwardedRef) => {
-  const context = useSheetContext(scope)
-  const { hasFit, disableRemoveScroll, frameSize, contentRef, open } = context
-  const composedContentRef = useComposedRefs(forwardedRef, contentRef)
-  const offscreenSize = useSheetOffscreenSize(context)
-  const stableFrameSize = useRef(frameSize)
+export const SheetContainer = createStyledHOC(
+  SheetContainerFrame,
+  (
+    {
+      scope,
+      adjustPaddingForOffscreenContent,
+      children,
+      ...props
+    }: SheetViewProps<ExtraContainerProps>,
+    forwardedRef
+  ) => {
+    const context = useSheetContext(scope)
+    const { hasFit, disableRemoveScroll, frameSize, contentRef, open } = context
+    const composedContentRef = useComposedRefs(forwardedRef, contentRef)
+    const offscreenSize = useSheetOffscreenSize(context)
+    const stableFrameSize = useRef(frameSize)
 
-  useEffect(() => {
-    if (open && frameSize) {
-      stableFrameSize.current = frameSize
-    }
-  }, [open, frameSize])
+    useEffect(() => {
+      if (open && frameSize) {
+        stableFrameSize.current = frameSize
+      }
+    }, [open, frameSize])
 
-  const sheetContents = useMemo(() => {
-    const shouldUseFixedHeight = hasFit && !open && stableFrameSize.current
+    const sheetContents = useMemo(() => {
+      const shouldUseFixedHeight = hasFit && !open && stableFrameSize.current
+
+      return (
+        <SheetContainerFrame
+          ref={composedContentRef}
+          flex={hasFit && open ? 0 : 1}
+          flexBasis={hasFit ? 'auto' : undefined}
+          height={
+            shouldUseFixedHeight
+              ? stableFrameSize.current
+              : hasFit
+                ? undefined
+                : frameSize
+          }
+          pointerEvents={open ? 'auto' : 'none'}
+          data-state={open ? 'open' : 'closed'}
+          {...props}
+        >
+          <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
+            {children}
+          </StackZIndexContext>
+
+          {adjustPaddingForOffscreenContent && (
+            <View data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+          )}
+        </SheetContainerFrame>
+      )
+    }, [open, props, frameSize, offscreenSize, adjustPaddingForOffscreenContent, hasFit])
 
     return (
-      <SheetContainerFrame
-        ref={composedContentRef}
-        flex={hasFit && open ? 0 : 1}
-        flexBasis={hasFit ? 'auto' : undefined}
-        height={
-          shouldUseFixedHeight ? stableFrameSize.current : hasFit ? undefined : frameSize
-        }
-        pointerEvents={open ? 'auto' : 'none'}
-        data-state={open ? 'open' : 'closed'}
-        {...props}
-      >
-        <StackZIndexContext zIndex={resolveViewZIndex(props.zIndex)}>
-          {children}
-        </StackZIndexContext>
-
-        {adjustPaddingForOffscreenContent && (
-          <View data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-        )}
-      </SheetContainerFrame>
+      <RemoveScroll enabled={!disableRemoveScroll && context.open}>
+        {sheetContents}
+      </RemoveScroll>
     )
-  }, [open, props, frameSize, offscreenSize, adjustPaddingForOffscreenContent, hasFit])
-
-  return (
-    <RemoveScroll enabled={!disableRemoveScroll && context.open}>
-      {sheetContents}
-    </RemoveScroll>
-  )
-})
+  }
+)
 
 type ExtraBackgroundProps = {
   /**
@@ -250,23 +265,27 @@ type ExtraBackgroundProps = {
   disableHideBottomOverflow?: boolean
 }
 
-export const SheetBackground = createStyledHOC(SheetBackgroundFrame)<
-  SheetViewProps<ExtraBackgroundProps>
->(({ scope, disableHideBottomOverflow, ...props }, forwardedRef) => {
-  const context = useSheetContext(scope)
-  const bottomOverflow = isWeb
-    ? Math.max(context.frameSize, getMaxViewportHeight())
-    : context.frameSize
+export const SheetBackground = createStyledHOC(
+  SheetBackgroundFrame,
+  (
+    { scope, disableHideBottomOverflow, ...props }: SheetViewProps<ExtraBackgroundProps>,
+    forwardedRef
+  ) => {
+    const context = useSheetContext(scope)
+    const bottomOverflow = isWeb
+      ? Math.max(context.frameSize, getMaxViewportHeight())
+      : context.frameSize
 
-  return (
-    <SheetBackgroundFrame
-      ref={forwardedRef}
-      data-sheet-background=""
-      bottom={disableHideBottomOverflow ? 0 : -bottomOverflow}
-      {...props}
-    />
-  )
-})
+    return (
+      <SheetBackgroundFrame
+        ref={forwardedRef}
+        data-sheet-background=""
+        bottom={disableHideBottomOverflow ? 0 : -bottomOverflow}
+        {...props}
+      />
+    )
+  }
+)
 
 export const SheetRoot = createRefComponent<RNView, SheetProps>(
   function SheetRoot(props, ref) {

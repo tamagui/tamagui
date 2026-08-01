@@ -81,6 +81,7 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover',
   borderRadius: 8,
+  borderStyle: 'solid',
   borderWidth: 1,
   cursor: 'web:pointer',
   opacity: 'press:0.7',
@@ -184,19 +185,18 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
   )
 }
 
-const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(
-  function Button(props, ref) {
+const ButtonComponent = createStyledHOC(
+  ButtonFrame,
+  function Button(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
     const size = (props.size ?? buttonSizes.defaultSize) as ButtonSize
-    const { props: buttonProps } = useButton(
-      {
-        ...props,
-        size,
-      },
-      {
-        Text: ButtonText,
-        iconSize: buttonSizes.resolve(size).icon,
-      }
-    )
+    // Size is the frame's baseline contribution. Appending it after
+    // HOC-expanded style props would let the variant overwrite a direct
+    // padding override from the caller.
+    const sizedProps = { size, ...props }
+    const { props: buttonProps } = useButton(sizedProps, {
+      Text: ButtonText,
+      iconSize: buttonSizes.resolve(size).icon,
+    })
 
     return (
       <buttonSizes.Context.Provider size={size}>

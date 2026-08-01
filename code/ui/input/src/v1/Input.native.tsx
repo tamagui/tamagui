@@ -13,7 +13,7 @@ const StyledInput = styled(TextInput, styledBody[0], styledBody[1])
 /**
  * @deprecated Use the new Input from '@tamagui/input' instead
  */
-export const Input = createStyledHOC(StyledInput)<InputProps>((inProps, forwardedRef) => {
+export const Input = createStyledHOC(StyledInput, (inProps: InputProps, forwardedRef) => {
   const {
     // some of destructed props are just to avoid passing them to ...rest because they are not in native.
     type,

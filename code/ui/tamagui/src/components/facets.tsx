@@ -14,10 +14,12 @@
 //      inert when that chrome is absent (no borderWidth -> borderColor does
 //      nothing). So `interactive + outlined` composes with zero coordination.
 //   2. Generics-only. Facets read theme GENERICS (background, border-color,
-//      background-hover, …) and conventional custom variables (radius,
-//      pressScale), never the color scale (colorN). That makes them
-//      level-aware for free: <Surface level={2} filled interactive> needs no
-//      facet cooperation — the level re-bound the generics the facets read.
+//      background-hover, ...) plus standard tokens and literals for shape
+//      (`borderRadius: true` resolves the configured default radius token, the
+//      press scale is a literal), never the color scale (colorN) and never
+//      custom config variables. That makes them level-aware for free:
+//      <Surface level={2} filled interactive> needs no facet cooperation; the
+//      level re-bound the generics the facets read.
 //
 // Nothing is on by default: every facet is opt-in at the use site.
 
@@ -46,7 +48,8 @@ export const elevated = {
 
 export const rounded = {
   true: {
-    borderRadius: 'radius',
+    // resolves via settings.defaultTokens.radius, same as the Dialog skin
+    borderRadius: true,
   },
 } as const
 
@@ -57,7 +60,7 @@ export const interactive = {
   true: {
     backgroundColor: 'hover:background-hover press:background-press',
     borderColor: 'hover:border-color-hover press:border-color-press',
-    scale: 'press:pressScale',
+    scale: 'press:0.97',
     outlineColor: 'focus-visible:outline-color',
     outlineWidth: 'focus-visible:2px',
     outlineStyle: 'focus-visible:solid',

@@ -21,14 +21,14 @@ export declare const elevated: {
 };
 export declare const rounded: {
     readonly true: {
-        readonly borderRadius: 'radius';
+        readonly borderRadius: true;
     };
 };
 export declare const interactive: {
     readonly true: {
         readonly backgroundColor: 'hover:background-hover press:background-press';
         readonly borderColor: 'hover:border-color-hover press:border-color-press';
-        readonly scale: 'press:pressScale';
+        readonly scale: 'press:0.97';
         readonly outlineColor: 'focus-visible:outline-color';
         readonly outlineWidth: 'focus-visible:2px';
         readonly outlineStyle: 'focus-visible:solid';
@@ -58,14 +58,14 @@ export declare const facets: {
     };
     readonly rounded: {
         readonly true: {
-            readonly borderRadius: 'radius';
+            readonly borderRadius: true;
         };
     };
     readonly interactive: {
         readonly true: {
             readonly backgroundColor: 'hover:background-hover press:background-press';
             readonly borderColor: 'hover:border-color-hover press:border-color-press';
-            readonly scale: 'press:pressScale';
+            readonly scale: 'press:0.97';
             readonly outlineColor: 'focus-visible:outline-color';
             readonly outlineWidth: 'focus-visible:2px';
             readonly outlineStyle: 'focus-visible:solid';

@@ -24,7 +24,8 @@ export const SelectTriggerFrame = styled(View, {
 
 export type SelectTriggerProps = SelectScopedProps<GetProps<typeof SelectTriggerFrame>>
 
-export const SelectTrigger = createStyledHOC(SelectTriggerFrame)<{ scope?: string }>(
+export const SelectTrigger = createStyledHOC(
+  SelectTriggerFrame,
   function SelectTrigger(props: SelectTriggerProps, forwardedRef) {
     const { scope, disabled = false, ...triggerProps } = props
     const context = useSelectContext(scope)

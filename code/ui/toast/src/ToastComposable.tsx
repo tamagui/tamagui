@@ -484,8 +484,9 @@ export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
   portalZIndex?: number
 }
 
-const ToastViewport = createStyledHOC(ToastViewportFrame)<ToastViewportProps>(
-  function ToastViewport(props, ref) {
+const ToastViewport = createStyledHOC(
+  ToastViewportFrame,
+  function ToastViewport(props: ToastViewportProps, ref) {
     const {
       offset = VIEWPORT_OFFSET,
       hotkey = DEFAULT_HOTKEY,
@@ -878,8 +879,9 @@ export type ToastItemProps = GetProps<typeof ToastItemFrame> & {
   children: React.ReactNode
 }
 
-const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
-  function ToastItem(props, ref) {
+const ToastItemInner = createStyledHOC(
+  ToastItemFrame,
+  function ToastItem(props: ToastItemProps, ref) {
     const { toast, index, children, ...rest } = props
     const ctx = useToastContext('Toast.Item')
 
@@ -1240,7 +1242,7 @@ const ToastDescription = styled(SizableText, {
  * ToastClose - auto-wired to dismiss current toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastClose = createStyledHOC(ToastCloseFrame)(function ToastClose(props, ref) {
+const ToastClose = createStyledHOC(ToastCloseFrame, function ToastClose(props, ref) {
   // try to get handleClose from context, but allow manual override
   let handleClose: (() => void) | undefined
   try {
@@ -1263,7 +1265,7 @@ const ToastClose = createStyledHOC(ToastCloseFrame)(function ToastClose(props, r
  * ToastAction
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastAction = createStyledHOC(ToastActionFrame)(function ToastAction(props, ref) {
+const ToastAction = createStyledHOC(ToastActionFrame, function ToastAction(props, ref) {
   return <ToastActionFrame ref={ref} {...props} />
 })
 

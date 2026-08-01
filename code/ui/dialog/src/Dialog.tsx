@@ -109,8 +109,9 @@ const DialogTriggerFrame = styled(View, {
 
 type DialogTriggerProps = ScopedProps<ViewProps>
 
-const DialogTrigger = createStyledHOC(DialogTriggerFrame)<ScopedProps<{}>>(
-  function DialogTrigger(props, forwardedRef) {
+const DialogTrigger = createStyledHOC(
+  DialogTriggerFrame,
+  function DialogTrigger(props: DialogTriggerProps, forwardedRef) {
     const { scope, ...triggerProps } = props
     const isInsideButton = React.useContext(ButtonNestingContext)
     const context = useDialogContext(scope)
@@ -406,8 +407,9 @@ export type DialogOverlayExtraProps = ScopedProps<{
 
 type DialogOverlayProps = YStackProps & DialogOverlayExtraProps
 
-const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProps>(
-  function DialogOverlay({ scope, ...props }, forwardedRef) {
+const DialogOverlay = createStyledHOC(
+  DialogOverlayFrame,
+  function DialogOverlay({ scope, ...props }: DialogOverlayProps, forwardedRef) {
     const context = useDialogContext(scope)
     const { forceMount = context.forceMount, ...overlayProps } = props
     const isAdapted = useAdaptIsActive(context.adaptScope)
@@ -493,8 +495,9 @@ type DialogContentExtraProps = ScopedProps<
 
 type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps
 
-const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProps>(
-  function DialogContent({ scope, ...props }, forwardedRef) {
+const DialogContent = createStyledHOC(
+  DialogContentFrame,
+  function DialogContent({ scope, ...props }: DialogContentExtraProps, forwardedRef) {
     const context = useDialogContext(scope)
     const isAdapted = useAdaptIsActive(context.adaptScope)
     const reporter = useDialogAnimationReporter(context)
@@ -819,8 +822,9 @@ const DialogTitleFrame = styled(H2, {
 type DialogTitleExtraProps = ScopedProps<{}>
 type DialogTitleProps = DialogTitleExtraProps & GetProps<typeof DialogTitleFrame>
 
-const DialogTitle = createStyledHOC(DialogTitleFrame)<DialogTitleExtraProps>(
-  function DialogTitle(props, forwardedRef) {
+const DialogTitle = createStyledHOC(
+  DialogTitleFrame,
+  function DialogTitle(props: DialogTitleExtraProps, forwardedRef) {
     const { scope, ...titleProps } = props
     const context = useDialogContext(scope)
     return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />
@@ -840,18 +844,19 @@ type DialogDescriptionProps = DialogDescriptionExtraProps &
   GetProps<typeof DialogDescriptionFrame>
 
 const DialogDescription = createStyledHOC(
-  DialogDescriptionFrame
-)<DialogDescriptionExtraProps>(function DialogDescription(props, forwardedRef) {
-  const { scope, ...descriptionProps } = props
-  const context = useDialogContext(scope)
-  return (
-    <DialogDescriptionFrame
-      id={context.descriptionId}
-      {...descriptionProps}
-      ref={forwardedRef}
-    />
-  )
-})
+  DialogDescriptionFrame,
+  function DialogDescription(props: DialogDescriptionExtraProps, forwardedRef) {
+    const { scope, ...descriptionProps } = props
+    const context = useDialogContext(scope)
+    return (
+      <DialogDescriptionFrame
+        id={context.descriptionId}
+        {...descriptionProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * DialogClose
@@ -870,8 +875,9 @@ export type DialogCloseExtraProps = ScopedProps<{
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
 
-const DialogClose = createStyledHOC(DialogCloseFrame)<DialogCloseExtraProps>(
-  (props, forwardedRef) => {
+const DialogClose = createStyledHOC(
+  DialogCloseFrame,
+  (props: DialogCloseProps, forwardedRef) => {
     const { scope, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(scope)
     const isAdapted = useAdaptIsActive(context.adaptScope)

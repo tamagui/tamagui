@@ -37,6 +37,13 @@ test('Surface: nothing on by default, facets opt-in, level re-binds the theme', 
   )
   expect(outlinedBorder).not.toBe('0px')
 
+  // rounded resolves the default radius token — a real radius under a config
+  // that declares no custom variables
+  const outlinedRadius = await outlined.evaluate(
+    (el: HTMLElement) => getComputedStyle(el).borderTopLeftRadius
+  )
+  expect(outlinedRadius).not.toBe('0px')
+
   // `level` re-binds the subtree theme (surface1 vs surface2), so filled
   // surfaces at different levels resolve to different backgrounds
   const l1Bg = await bg(l1)

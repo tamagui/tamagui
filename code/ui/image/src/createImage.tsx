@@ -141,8 +141,9 @@ export function createImage<C extends ComponentType<any>>(
   // Combined props: ImageProps (Tamagui) + Component's native props
   type CombinedProps = ImageProps & Omit<GetProps<C>, keyof ImageProps>
 
-  const ImageComponent = createStyledHOC(StyledImage)<CombinedProps>(
-    (incomingProps, ref) => {
+  const ImageComponent = createStyledHOC(
+    StyledImage,
+    (incomingProps: CombinedProps, ref) => {
       const props = incomingProps as any
       const {
         src,

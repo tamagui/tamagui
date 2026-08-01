@@ -585,8 +585,9 @@ export function createBaseMenu() {
     name: CONTENT_NAME,
   })
 
-  const MenuContent = createStyledHOC(MenuContentFrame)<ScopedProps<MenuContentProps>>(
-    (props, forwardedRef) => {
+  const MenuContent = createStyledHOC(
+    MenuContentFrame,
+    (props: ScopedProps<MenuContentProps>, forwardedRef) => {
       const scope = props.scope || MENU_CONTEXT
       const portalContext = usePortalContext(scope)
       const { forceMount = portalContext.forceMount, ...contentProps } = props
@@ -968,8 +969,9 @@ export function createBaseMenu() {
   const ITEM_NAME = 'MenuItem'
   const ITEM_SELECT = 'menu.itemSelect'
 
-  const MenuItem = createStyledHOC(View)<ScopedProps<MenuItemProps>>(
-    (props, forwardedRef) => {
+  const MenuItem = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuItemProps>, forwardedRef) => {
       const {
         disabled = false,
         onSelect,
@@ -1155,8 +1157,9 @@ export function createBaseMenu() {
    * MenuItemTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_TITLE_NAME = 'MenuItemTitle'
-  const MenuItemTitle = createStyledHOC(Text)<MenuItemTitleProps>(
-    (props, forwardedRef) => {
+  const MenuItemTitle = createStyledHOC(
+    Text,
+    (props: MenuItemTitleProps, forwardedRef) => {
       return <Text {...props} ref={forwardedRef} />
     }
   )
@@ -1168,8 +1171,9 @@ export function createBaseMenu() {
    * MenuItemSubTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_SUB_TITLE_NAME = 'MenuItemSubTitle'
-  const MenuItemSubTitle = createStyledHOC(Text)<MenuItemSubTitleProps>(
-    (props, forwardedRef) => {
+  const MenuItemSubTitle = createStyledHOC(
+    Text,
+    (props: MenuItemSubTitleProps, forwardedRef) => {
       return <Text {...props} ref={forwardedRef} />
     }
   )
@@ -1205,7 +1209,7 @@ export function createBaseMenu() {
    * -----------------------------------------------------------------------------------------------*/
 
   const ITEM_ICON = 'MenuItemIcon'
-  const MenuItemIcon = createStyledHOC(View)<MenuItemIconProps>((props, forwardedRef) => {
+  const MenuItemIcon = createStyledHOC(View, (props: MenuItemIconProps, forwardedRef) => {
     // filter out native-only props that shouldn't reach the DOM
     const {
       // @ts-ignore
@@ -1229,8 +1233,9 @@ export function createBaseMenu() {
 
   const CHECKBOX_ITEM_NAME = 'MenuCheckboxItem'
 
-  const MenuCheckboxItem = createStyledHOC(View)<ScopedProps<MenuCheckboxItemProps>>(
-    (props, forwardedRef) => {
+  const MenuCheckboxItem = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuCheckboxItemProps>, forwardedRef) => {
       const {
         checked = false,
         onCheckedChange,
@@ -1273,8 +1278,9 @@ export function createBaseMenu() {
   const { Provider: RadioGroupProvider, useStyledContext: useRadioGroupContext } =
     createStyledContext<MenuRadioGroupProps>()
 
-  const MenuRadioGroup = createStyledHOC(View)<ScopedProps<MenuRadioGroupProps>>(
-    (props, forwardedRef) => {
+  const MenuRadioGroup = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuRadioGroupProps>, forwardedRef) => {
       const { value, onValueChange, scope = MENU_CONTEXT, ...groupProps } = props
       const handleValueChange = useCallbackRef(onValueChange)
       return (
@@ -1292,8 +1298,9 @@ export function createBaseMenu() {
 
   const RADIO_ITEM_NAME = 'MenuRadioItem'
 
-  const MenuRadioItem = createStyledHOC(View)<ScopedProps<MenuRadioItemProps>>(
-    (props, forwardedRef) => {
+  const MenuRadioItem = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
       const { value, scope = MENU_CONTEXT, ...radioItemProps } = props
       const context = useRadioGroupContext(scope)
       const checked = value === context.value
@@ -1329,8 +1336,9 @@ export function createBaseMenu() {
   const { Provider: ItemIndicatorProvider, useStyledContext: useItemIndicatorContext } =
     createStyledContext<CheckboxContextValue>()
 
-  const MenuItemIndicator = createStyledHOC(View)<ScopedProps<MenuItemIndicatorProps>>(
-    (props, forwardedRef) => {
+  const MenuItemIndicator = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuItemIndicatorProps>, forwardedRef) => {
       const { scope = MENU_CONTEXT, forceMount, ...itemIndicatorProps } = props
       const indicatorContext = useItemIndicatorContext(scope)
       return (
@@ -1726,123 +1734,125 @@ export function createBaseMenu() {
     name: SUB_CONTENT_NAME,
   })
 
-  const MenuSubContent = createStyledHOC(MenuSubContentFrame)<
-    ScopedProps<MenuSubContentProps>
-  >((props, forwardedRef) => {
-    const scope = props.scope || MENU_CONTEXT
-    const portalContext = usePortalContext(scope)
-    const { forceMount = portalContext.forceMount, ...subContentProps } = props
-    const context = useMenuContext(scope)
-    const rootContext = useMenuRootContext(scope)
-    const subContext = useMenuSubContext(scope)
-    const popperContext = PopperPrimitive.usePopperContext(scope)
-    const ref = React.useRef<MenuSubContentElement>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref)
+  const MenuSubContent = createStyledHOC(
+    MenuSubContentFrame,
+    (props: ScopedProps<MenuSubContentProps>, forwardedRef) => {
+      const scope = props.scope || MENU_CONTEXT
+      const portalContext = usePortalContext(scope)
+      const { forceMount = portalContext.forceMount, ...subContentProps } = props
+      const context = useMenuContext(scope)
+      const rootContext = useMenuRootContext(scope)
+      const subContext = useMenuSubContext(scope)
+      const popperContext = PopperPrimitive.usePopperContext(scope)
+      const ref = React.useRef<MenuSubContentElement>(null)
+      const composedRefs = useComposedRefs(forwardedRef, ref)
 
-    // determine side from actual placement, not just RTL direction
-    // placement like "left-start" or "right-end" - extract the side
-    const placementSide = popperContext.placement?.split('-')[0] as
-      | 'left'
-      | 'right'
-      | 'top'
-      | 'bottom'
-      | undefined
-    // for submenus, we care about horizontal placement (left/right)
-    // default to 'right' for LTR, 'left' for RTL
-    const dataSide: Side =
-      placementSide === 'left' || placementSide === 'right'
-        ? placementSide
-        : rootContext.dir === 'rtl'
-          ? 'left'
-          : 'right'
+      // determine side from actual placement, not just RTL direction
+      // placement like "left-start" or "right-end" - extract the side
+      const placementSide = popperContext.placement?.split('-')[0] as
+        | 'left'
+        | 'right'
+        | 'top'
+        | 'bottom'
+        | undefined
+      // for submenus, we care about horizontal placement (left/right)
+      // default to 'right' for LTR, 'left' for RTL
+      const dataSide: Side =
+        placementSide === 'left' || placementSide === 'right'
+          ? placementSide
+          : rootContext.dir === 'rtl'
+            ? 'left'
+            : 'right'
 
-    // keyboard navigation follows text direction, not placement side
-    const effectiveDir: Direction = rootContext.dir
+      // keyboard navigation follows text direction, not placement side
+      const effectiveDir: Direction = rootContext.dir
 
-    return (
-      <Collection.Provider scope={scope}>
-        <Collection.Slot scope={scope}>
-          <MenuContentImpl
-            id={subContext.contentId}
-            aria-labelledby={subContext.triggerId}
-            {...subContentProps}
-            ref={composedRefs}
-            data-side={dataSide}
-            disableOutsidePointerEvents={false}
-            disableOutsideScroll={false}
-            trapFocus={false}
-            onOpenAutoFocus={(event) => {
-              // when opening a submenu, focus content for keyboard users only
-              if (rootContext.isUsingKeyboardRef.current) {
-                // scope query to this submenu's subtree so nested submenus
-                // don't accidentally focus a sibling/parent submenu content
-                const root = ref.current as unknown as HTMLElement
-                const content = root?.querySelector?.(
-                  '[data-tamagui-menu-content]'
-                ) as HTMLElement | null
-                ;(content || root)?.focus({ preventScroll: true })
-              }
-              event.cancel()
-            }}
-            // The menu might close because of focusing another menu item in the parent menu. We
-            // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
-            onCloseAutoFocus={(event) => event.cancel()}
-            onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
-              // We prevent closing when the trigger is focused to avoid triggering a re-open animation
-              // on pointer interaction.
-              if (event.event?.target !== subContext.trigger) context.onOpenChange(false)
-            })}
-            onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
-              // close only this submenu, not the root menu
-              context.onOpenChange(false)
-              // return focus to the submenu trigger with focusVisible since this is keyboard navigation
-              // @ts-ignore focusVisible is a newer API
-              subContext.trigger?.focus({ focusVisible: true })
-              // we close the submenu ourselves, so veto the layer's dismiss
-              event.cancel()
-              // and still ensure escape doesn't exit fullscreen (cancel no
-              // longer touches the native event)
-              event.event?.preventDefault?.()
-            })}
-            {...(isWeb
-              ? {
-                  onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
-                    // Submenu key events bubble through portals. We only care about keys in this menu.
-                    // @ts-ignore
-                    const isKeyDownInside = event.currentTarget.contains(
-                      event.target as HTMLElement
-                    )
-                    // use effectiveDir so arrow keys match the submenu's actual position
-                    // (e.g., ArrowRight closes a left-side submenu)
-                    const isCloseKey = SUB_CLOSE_KEYS[effectiveDir].includes(event.key)
-                    if (isKeyDownInside && isCloseKey) {
-                      context.onOpenChange(false)
-                      // We focus manually because we prevented it in `onCloseAutoFocus`
-                      // use focusVisible: true since this is keyboard navigation
-                      // @ts-ignore focusVisible is a newer API
-                      subContext.trigger?.focus({ focusVisible: true })
-                      // prevent window from scrolling
-                      event.preventDefault()
-                    }
-                  }),
+      return (
+        <Collection.Provider scope={scope}>
+          <Collection.Slot scope={scope}>
+            <MenuContentImpl
+              id={subContext.contentId}
+              aria-labelledby={subContext.triggerId}
+              {...subContentProps}
+              ref={composedRefs}
+              data-side={dataSide}
+              disableOutsidePointerEvents={false}
+              disableOutsideScroll={false}
+              trapFocus={false}
+              onOpenAutoFocus={(event) => {
+                // when opening a submenu, focus content for keyboard users only
+                if (rootContext.isUsingKeyboardRef.current) {
+                  // scope query to this submenu's subtree so nested submenus
+                  // don't accidentally focus a sibling/parent submenu content
+                  const root = ref.current as unknown as HTMLElement
+                  const content = root?.querySelector?.(
+                    '[data-tamagui-menu-content]'
+                  ) as HTMLElement | null
+                  ;(content || root)?.focus({ preventScroll: true })
                 }
-              : null)}
-          />
-        </Collection.Slot>
-      </Collection.Provider>
-    )
-  })
+                event.cancel()
+              }}
+              // The menu might close because of focusing another menu item in the parent menu. We
+              // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
+              onCloseAutoFocus={(event) => event.cancel()}
+              onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
+                // We prevent closing when the trigger is focused to avoid triggering a re-open animation
+                // on pointer interaction.
+                if (event.event?.target !== subContext.trigger)
+                  context.onOpenChange(false)
+              })}
+              onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
+                // close only this submenu, not the root menu
+                context.onOpenChange(false)
+                // return focus to the submenu trigger with focusVisible since this is keyboard navigation
+                // @ts-ignore focusVisible is a newer API
+                subContext.trigger?.focus({ focusVisible: true })
+                // we close the submenu ourselves, so veto the layer's dismiss
+                event.cancel()
+                // and still ensure escape doesn't exit fullscreen (cancel no
+                // longer touches the native event)
+                event.event?.preventDefault?.()
+              })}
+              {...(isWeb
+                ? {
+                    onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                      // Submenu key events bubble through portals. We only care about keys in this menu.
+                      // @ts-ignore
+                      const isKeyDownInside = event.currentTarget.contains(
+                        event.target as HTMLElement
+                      )
+                      // use effectiveDir so arrow keys match the submenu's actual position
+                      // (e.g., ArrowRight closes a left-side submenu)
+                      const isCloseKey = SUB_CLOSE_KEYS[effectiveDir].includes(event.key)
+                      if (isKeyDownInside && isCloseKey) {
+                        context.onOpenChange(false)
+                        // We focus manually because we prevented it in `onCloseAutoFocus`
+                        // use focusVisible: true since this is keyboard navigation
+                        // @ts-ignore focusVisible is a newer API
+                        subContext.trigger?.focus({ focusVisible: true })
+                        // prevent window from scrolling
+                        event.preventDefault()
+                      }
+                    }),
+                  }
+                : null)}
+            />
+          </Collection.Slot>
+        </Collection.Provider>
+      )
+    }
+  )
 
   MenuSubContent.displayName = SUB_CONTENT_NAME
 
   const Anchor = MenuAnchor
   const Portal = MenuPortal
   const Content = MenuContent
-  const Group = createStyledHOC(View)<MenuGroupProps>((props, ref) => {
+  const Group = createStyledHOC(View, (props: MenuGroupProps, ref) => {
     return <View role="group" {...props} ref={ref} />
   })
   Group.displayName = 'MenuGroup'
-  const Label = createStyledHOC(Text)<MenuLabelProps>((props, ref) => {
+  const Label = createStyledHOC(Text, (props: MenuLabelProps, ref) => {
     return <Text {...props} ref={ref} />
   })
   Label.displayName = 'MenuLabel'
@@ -1851,7 +1861,7 @@ export function createBaseMenu() {
   const RadioGroup = MenuRadioGroup
   const RadioItem = MenuRadioItem
   const ItemIndicator = MenuItemIndicator
-  const Separator = createStyledHOC(View)<MenuSeparatorProps>((props, ref) => {
+  const Separator = createStyledHOC(View, (props: MenuSeparatorProps, ref) => {
     return <View role="separator" aria-orientation="horizontal" {...props} ref={ref} />
   })
   Separator.displayName = 'MenuSeparator'

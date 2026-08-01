@@ -116,7 +116,7 @@ const GalleryItem = styled(YStack, {
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
-      ':number': (going) => ({
+      number: (going: number) => ({
         x: `0 enter:${going > 0 ? '1000px' : '-1000px'} exit:${
           going < 0 ? '1000px' : '-1000px'
         }`,

@@ -60,7 +60,7 @@ the `theme` prop or `<Theme>` component. `<Surface level={2}>` renders
 ## Facets
 
 Facets are canonical boolean variants, each a pure function of theme generics plus
-conventional variables. Chrome facets own one property family each and set static
+standard tokens. Chrome facets own one property family each and set static
 styles only; the interaction facet owns pseudos only. Because family ownership
 keeps them from colliding, any combination composes with zero coordination.
 
@@ -94,7 +94,7 @@ keeps them from colliding, any combination composes with zero coordination.
       name: 'rounded',
       required: false,
       type: 'boolean',
-      description: `Chrome: borderRadius from the radius conventional variable.`,
+      description: `Chrome: borderRadius resolving your configured default radius token.`,
     },
     {
       name: 'interactive',
@@ -165,14 +165,14 @@ export const elevated = {
 } as const
 
 export const rounded = {
-  true: { borderRadius: 'radius' },
+  true: { borderRadius: true },
 } as const
 
 export const interactive = {
   true: {
     backgroundColor: 'hover:background-hover press:background-press',
     borderColor: 'hover:border-color-hover press:border-color-press',
-    scale: 'press:press-scale',
+    scale: 'press:0.97',
     outlineColor: 'focus-visible:outline-color',
     outlineWidth: 'focus-visible:2px',
     outlineStyle: 'focus-visible:solid',

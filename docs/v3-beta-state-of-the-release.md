@@ -41,9 +41,12 @@ Button and the v1 imperative Toast are deleted. This is what made the primary
 single largest source of breaking changes below.
 
 **Surface is a copied fixture, not a framework hook.** A user-owned copied
-`Surface` skin reads conventional variables (`$surfaceBorder`, `$focusRingColor`,
-`$disabledOpacity`, `$pressScale`, easings) through the shipped `<Variables>`
-primitive. Behavior components never read them.
+`Surface` skin reads theme generics (`background`, `borderColor` families,
+`shadowColor`, `outlineColor`) plus standard tokens/literals: `rounded`
+resolves the configured default radius token (`borderRadius: true`) and the
+`interactive` press scale is a literal, so it renders correctly under a stock
+config with no custom `variables` declared (`surfaceBorder` was rejected in
+`plans/surface-levels.md`). Behavior components never read any of this.
 
 **Nothing on by default.** A bare `<Surface>` renders no chrome and no
 interaction styling. Every facet is opt-in. Facet names are all adjectives:
@@ -102,7 +105,7 @@ Condensed:
    `disableRemoveScroll` (**note the inverted intent**),
    `@tamagui/animations-moti`→`@tamagui/animations-reanimated`.
    One item on that list is a **rename, not a removal**:
-   `Component.styleable(fn)` became `createStyledHOC(Component)(fn)`, same
+   `Component.styleable(fn)` became `createStyledHOC(Component, fn)`, same
    behavior (see §4.7). The guide, the CLI and the blog post all described it as
    "move to ordinary React composition", which would have lost the pass-through
    behavior; that guidance is corrected.
@@ -258,7 +261,7 @@ standalone factory with an identical static config
 // before
 const MyInput = StyledInput.styleable<Props>((props, ref) => ...)
 // after
-const MyInput = createStyledHOC(StyledInput)<Props>((props, ref) => ...)
+const MyInput = createStyledHOC(StyledInput, (props: Props, ref) => ...)
 ```
 
 Both things it bought you still work. The compiler still sees a `staticConfig` on

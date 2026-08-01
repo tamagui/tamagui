@@ -15,8 +15,9 @@ export type CustomButtonProps = ButtonProps &
   CustomButtonFrameProps &
   CustomButtonTextProps
 
-export const CustomButton = createStyledHOC(CustomButtonFrame)<CustomButtonProps>(
-  (propsIn, ref) => {
+export const CustomButton = createStyledHOC(
+  CustomButtonFrame,
+  (propsIn: CustomButtonProps, ref) => {
     return (
       <CustomButtonFrame {...propsIn} ref={ref}>
         <CustomButtonText>{propsIn.children}</CustomButtonText>
@@ -41,8 +42,9 @@ export type CustomButtonProps2 = ButtonProps &
   CustomButtonFrameProps2 &
   CustomButtonTextProps2
 
-export const CustomButton2 = createStyledHOC(CustomButtonFrame2)<CustomButtonProps2>(
-  (propsIn, ref) => {
+export const CustomButton2 = createStyledHOC(
+  CustomButtonFrame2,
+  (propsIn: CustomButtonProps2, ref) => {
     return (
       <CustomButtonFrame2 {...propsIn} ref={ref}>
         <CustomButtonText2>{propsIn.children}</CustomButtonText2>
