@@ -4,17 +4,8 @@
 // this maps the value to env(safe-area-inset-*) on web, and to numeric
 // insets on native (see resolveSafeArea.native.ts).
 //
-// also supports the legacy $safeAreaTop/$safeAreaBottom/... per-edge tokens.
 
 type Edge = 'top' | 'bottom' | 'left' | 'right'
-
-// per-edge legacy tokens (still resolved for back-compat)
-const safeAreaTokenEdges: Record<string, Edge> = {
-  $safeAreaTop: 'top',
-  $safeAreaBottom: 'bottom',
-  $safeAreaLeft: 'left',
-  $safeAreaRight: 'right',
-}
 
 // map prop name -> which edge(s) it covers.
 // single-edge props map to one edge; multi-edge props (padding, inset, ...)
@@ -69,12 +60,6 @@ const envForEdge: Record<Edge, string> = {
   bottom: 'env(safe-area-inset-bottom)',
   left: 'env(safe-area-inset-left)',
   right: 'env(safe-area-inset-right)',
-}
-
-// legacy: resolve $safeAreaTop etc. to its env() value.
-export function resolveSafeAreaValue(value: string): string | undefined {
-  const edge = safeAreaTokenEdges[value]
-  return edge ? envForEdge[edge] : undefined
 }
 
 // is this prop key safe-area-aware?

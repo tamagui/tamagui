@@ -9,13 +9,6 @@
 
 type Edge = 'top' | 'bottom' | 'left' | 'right'
 
-const safeAreaTokenEdges: Record<string, Edge> = {
-  $safeAreaTop: 'top',
-  $safeAreaBottom: 'bottom',
-  $safeAreaLeft: 'left',
-  $safeAreaRight: 'right',
-}
-
 const propEdges: Record<string, Edge | Edge[]> = {
   padding: ['top', 'right', 'bottom', 'left'],
   paddingTop: 'top',
@@ -85,11 +78,6 @@ function getInsetForEdge(edge: Edge): number {
     return state.initialMetrics.insets[edge] ?? 0
   }
   return 0
-}
-
-export function resolveSafeAreaValue(value: string): number | undefined {
-  const edge = safeAreaTokenEdges[value]
-  return edge ? getInsetForEdge(edge) : undefined
 }
 
 export function isSafeAreaKey(key: string): boolean {

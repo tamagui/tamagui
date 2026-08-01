@@ -297,7 +297,7 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     originalValues[subKey] = val
 
     // Track context overrides for any key that's in context props (issues #3670, #3676)
-    // Store the ORIGINAL token value (like '$8') before resolution so that
+    // Store the ORIGINAL token value (like '8') before resolution so that
     // children's functional variants can look up token values
     if (staticConfig) {
       const contextProps =
@@ -427,7 +427,7 @@ function mapDefaultTokenCategory(
 }
 
 // exported so the flat-value grammar adapter binds props to the same token
-// categories the `$token` path already uses, rather than keeping a second table
+// categories the bare-token path already uses, rather than keeping a second table
 export const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
   ...mapDefaultTokenCategory(tokenCategories.size, 'size'),
   ...mapDefaultTokenCategory(tokenCategories.radius, 'radius'),

@@ -44,27 +44,6 @@ export function resolveEffectivePseudoTransition(
     return pseudoTransitions.focusStyle
   }
 
-  // check group pseudo transitions (e.g., $group-scenario4-hover)
-  for (const key in pseudoTransitions) {
-    if (key.startsWith('$group-')) {
-      // parse $group-{name}-{pseudo} format
-      const match = key.match(/^\$group-(.+)-(hover|press|focus)$/)
-      if (!match) continue
-
-      const groupName = match[1]
-      const pseudoType = match[2] as 'hover' | 'press' | 'focus'
-
-      // get current and previous group pseudo state
-      const nextGroupPseudo = next.group?.[groupName]?.pseudo
-      const prevGroupPseudo = prevState.groups?.[groupName]
-
-      // check if entering this group pseudo state
-      if (nextGroupPseudo?.[pseudoType] && !prevGroupPseudo?.[pseudoType]) {
-        return pseudoTransitions[key as `$group-${string}-${'hover' | 'press' | 'focus'}`]
-      }
-    }
-  }
-
   // exiting uses base transition
   return baseTransition
 }

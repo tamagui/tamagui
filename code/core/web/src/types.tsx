@@ -435,7 +435,7 @@ export interface WebOnlyPressEvents {
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
-type FontFamilies = FontTokens extends `$${infer Token}` ? Token : never
+type FontFamilies = FontTokens
 
 export type LanguageContextType = Partial<{
   [key in FontFamilies]: FontLanguages | 'default'
@@ -915,7 +915,7 @@ type ConfProps<A, B, C, D, E, F, I, V = undefined> = {
 }
 
 // config-declared custom variables become keys on every base theme, so they
-// flow into ThemeKeys/ThemeParsed and $-prop autocompletion with no separate
+// flow into ThemeKeys/ThemeParsed and theme-value autocompletion with no separate
 // augmentation surface
 type VariableValInScheme<V> = V extends { light: infer L } ? L : V
 type ThemesWithVariables<B, V> = [V] extends [undefined]
