@@ -394,6 +394,96 @@ Promote it into a vitest case when `ColorKeys` (`types.tsx:37-53`), the
 moving. Those are the three edits that can silently drop a token arm, and today
 none of them would turn anything red.
 
+## Sweep: is `bg` the only one?
+
+`bg` lost its tokens because a shorthand remap was not reflected in the type
+layer. That is a class, not a one-off, so the whole style prop surface was
+audited rather than spot-checked. Measured at `ec95f05965`.
+
+The authority is the runtime, not the type layer: `tokenCategories` in
+`code/core/helpers/src/tokenCategories.ts` and `defaultTokenCategories` in
+`code/core/web/src/helpers/propMapper.ts` are what decide, at runtime, which
+props resolve a theme token. Any prop in those tables whose type carries no
+token arm is the bug, by definition.
+
+Two passes, because the first one over-reports:
+
+1. diff the runtime tables against the type-level key sets (`ColorKeys`,
+   `SpaceKeys`, `SizeKeys`, `ZIndexKeys`, and the `` `border${string}Radius` ``
+   pattern)
+2. probe every prop the runtime token-resolves with
+   `scripts/inspect-style-prop-types.mjs`, because several props carry tokens
+   through a direct declaration (`blockSize?: SizeTokens | number`) rather than
+   through a key set, and the diff alone reports those as false gaps
+
+| category | runtime props | key-set gap | real gaps after probing |
+| --- | --- | --- | --- |
+| color | 20 | 4 | **4** |
+| space | 46 | 7 | 0 (all 7 declared directly) |
+| size | 12 | 6 | 0 (all 6 declared directly) |
+| radius | 9 | 9 | 0 (matched by the pattern, not a list) |
+| zIndex | 1 | 0 | 0 |
+
+### Found and fixed
+
+Four color props resolve theme colors at runtime and offered none in the types.
+They typechecked the whole time through `(string & {})`, which is why nothing
+ever went red:
+
+| prop | before | after |
+| --- | --- | --- |
+| `caretColor` | 201 constituents, 199 literals, **0 tokens** | 950 tokens |
+| `textDecorationColor` | 4 constituents, 0 literals, **0 tokens** | 950 tokens |
+| `borderEndColor` | 4 constituents, 0 literals, **0 tokens** | 950 tokens |
+| `borderStartColor` | 4 constituents, 0 literals, **0 tokens** | 950 tokens |
+
+All four now match `backgroundColor` and `color` exactly. Fixed by adding them
+to `ColorKeys` (`types.tsx:37-56`), which is the correct route **here** and was
+the wrong route for `background`: the documented trap is that
+`Exclude<T[K], string>` erases the other arm, and `background` needed its CSS
+shorthand keyword arm (`no-repeat`, `center`) preserved. These four are pure
+color longhands whose other arm is `ColorValue`/csstype color, which
+`ThemeValueFallbackColor` supplies anyway. Verified rather than assumed:
+`caretColor` keeps `red`, `blue`, `transparent` and now matches `backgroundColor`
+keyword-for-keyword. `currentColor` and `auto` are absent from every tamagui
+color prop including the pre-existing ones, so that is a separate, older
+question and not something this change introduced.
+
+Isolated from a concurrent change: a2763 was adding `${state}:${token}` clause
+forms to the color and space value types in the same file, which inflates the
+constituent totals. Probing the pre-fix types in the *same* program shows them
+still at 0 tokens while the fixed props read 950, so the token arm is this
+change and not theirs.
+
+### Deliberately not findings
+
+- **composite CSS shorthands** (`border`, `borderBlock`, `borderInline`,
+  `outline`, `boxShadow`, `filter`, `mask`, `backgroundImage`, `textEmphasis`,
+  `borderImage`, `transformOrigin`) carry 6 to 33 preset literals and no tokens.
+  That is deliberate: they take composite values like `1px solid $borderColor`,
+  where a token cross-product is exactly the combinatorial explosion this
+  document argues against. Preset hints are the right design.
+- **enum and numeric shorthands** (`items`, `justify`, `self`, `select`,
+  `grow`, `shrink`, `text`) have no tokens because they take no tokens.
+- **`gridRowGap`, `gridColumnGap`** look like space props and are not in the
+  runtime space table, so the types correctly offer no tokens. Fixing these
+  would have made the types claim something the runtime does not do.
+
+### Reported, not fixed: the `content` collision
+
+`content` is both a v6 shorthand (`content: 'alignContent'`,
+`code/core/shorthands/src/v6.ts`) and a style prop
+(`content?: Properties['content']`, `types.tsx`). The type layer resolves the
+prop to the CSS `content` property (2 constituents, no `alignContent`
+keywords), while `getSplitStyles.tsx:763-767` expands any key present in the
+shorthand map unconditionally, so at runtime `content` always becomes
+`alignContent` and the CSS property is unreachable through it.
+
+Same family as `bg`: a shorthand remap the type layer does not reflect. Left
+alone because unlike the four above it needs a product decision (rename the
+shorthand, or rename/drop the CSS `content` style prop), and because
+`types.tsx` is contended.
+
 ## The integration surface, if it were done anyway
 
 Where a typed subset would attach, and what it touches:
