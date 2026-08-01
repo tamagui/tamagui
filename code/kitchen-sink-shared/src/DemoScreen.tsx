@@ -15,7 +15,7 @@ export function DemoScreen({
   return (
     <YStack flex={1} bg="background">
       <YStack paddingRight="3" paddingBottom="3" paddingLeft="3" pt="6">
-        <Button size="$3" icon={ArrowLeft} alignSelf="flex-start" onPress={onBack}>
+        <Button size="3" icon={ArrowLeft} alignSelf="flex-start" onPress={onBack}>
           Back
         </Button>
       </YStack>

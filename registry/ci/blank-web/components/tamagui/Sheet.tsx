@@ -16,16 +16,12 @@ const SheetHandleFrame = styled(SheetBehavior.Handle, {
   name: 'SheetHandle',
   height: 10,
   borderRadius: 1000,
-  backgroundColor: '$color5',
+  backgroundColor: 'color5',
   zIndex: 10,
   marginHorizontal: '35%',
-  marginBottom: '$2',
-
+  marginBottom: '2',
   // Handle opacity aesthetics live in the skin, not the behavior package.
-  opacity: 0.5,
-  hoverStyle: {
-    opacity: 0.7,
-  },
+  opacity: '0.5 hover:0.7',
   variants: {
     open: {
       true: {
@@ -51,7 +47,7 @@ export const SheetHandle = createRefComponent<
 
 export const SheetOverlay = styled(SheetBehavior.Overlay, {
   name: 'SheetOverlay',
-  backgroundColor: '$shadowColor',
+  backgroundColor: 'shadow-color',
   opacity: 0.45,
 })
 
@@ -66,9 +62,9 @@ export const SheetContainer = styled(SheetBehavior.Container, {
 
 export const SheetBackground = styled(SheetBehavior.Background, {
   name: 'SheetBackground',
-  backgroundColor: '$background',
-  borderTopLeftRadius: '$6',
-  borderTopRightRadius: '$6',
+  backgroundColor: 'background',
+  borderTopLeftRadius: '6',
+  borderTopRightRadius: '6',
 })
 
 export const SheetScrollView = styled(SheetBehavior.ScrollView, {
@@ -77,7 +73,7 @@ export const SheetScrollView = styled(SheetBehavior.ScrollView, {
   // snapPointsMode="fit" so the content-sized Container doesn't collapse, 1
   // otherwise), and consumer props apply AFTER that guard — a skin-level flex:1
   // would override it and collapse the fit-mode scrollview (SheetWebKeyboard).
-  paddingHorizontal: '$2',
+  paddingHorizontal: '2',
 })
 
 const sheetParts = {

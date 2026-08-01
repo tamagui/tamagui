@@ -19,14 +19,14 @@ import type * as React from 'react'
 
 export const DialogOverlay = styled(UiDialog.Overlay, {
   name: 'DialogOverlay',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
 })
 
 export const DialogContent = styled(UiDialog.Content, {
   name: 'DialogContent',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   borderWidth: 1,
-  borderColor: '$borderColor',
+  borderColor: 'border-color',
   padding: true,
   borderRadius: true,
 })

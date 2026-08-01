@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "components/tamagui/Input.tsx",
-      "content": "// Styled Input/TextArea = the unstyled @tamagui/ui Input/TextArea behavior\n// primitives + the default v2-look skin (theme palette, border, background, font\n// family, hover/focus color styling), layered here in `tamagui`. The behavior\n// primitives keep only structural sizing + the native outline reset. Single skin\n// definition; the shadcn registry item is generated from this file.\nimport {\n  type GetProps,\n  Input as UiInput,\n  styled,\n  TextArea as UiTextArea,\n} from '@tamagui/ui'\n\nconst inputSkin = {\n  fontFamily: '$body',\n  color: '$color',\n  backgroundColor: '$background',\n  borderColor: '$borderColor',\n  borderWidth: 1,\n\n  hoverStyle: {\n    borderColor: '$borderColorHover',\n  },\n\n  focusStyle: {\n    borderColor: '$borderColorFocus',\n  },\n\n  focusVisibleStyle: {\n    outlineColor: '$outlineColor',\n    outlineWidth: 2,\n    outlineStyle: 'solid',\n  },\n} as const\n\nexport const Input = styled(UiInput, {\n  name: 'Input',\n  ...inputSkin,\n})\n\nexport const TextArea = styled(UiTextArea, {\n  name: 'TextArea',\n  ...inputSkin,\n})\n\nexport type InputProps = GetProps<typeof Input>\nexport type TextAreaProps = GetProps<typeof TextArea>\n",
+      "content": "// Styled Input/TextArea = the unstyled @tamagui/ui Input/TextArea behavior\n// primitives + the default v2-look skin (theme palette, border, background, font\n// family, hover/focus color styling), layered here in `tamagui`. The behavior\n// primitives keep only structural sizing + the native outline reset. Single skin\n// definition; the shadcn registry item is generated from this file.\nimport {\n  type GetProps,\n  Input as UiInput,\n  styled,\n  TextArea as UiTextArea,\n} from '@tamagui/ui'\n\nconst inputSkin = {\n  fontFamily: 'body',\n  color: 'color',\n  backgroundColor: 'background',\n  borderColor: 'border-color hover:border-color-hover focus:border-color-focus',\n  borderWidth: 1,\n  outlineColor: 'focus-visible:outline-color',\n  outlineWidth: 'focus-visible:2px',\n  outlineStyle: 'focus-visible:solid',\n} as const\n\nexport const Input = styled(UiInput, {\n  name: 'Input',\n  ...inputSkin,\n})\n\nexport const TextArea = styled(UiTextArea, {\n  name: 'TextArea',\n  ...inputSkin,\n})\n\nexport type InputProps = GetProps<typeof Input>\nexport type TextAreaProps = GetProps<typeof TextArea>\n",
       "type": "registry:ui",
       "target": "components/tamagui/Input.tsx"
     }
@@ -20,12 +20,12 @@
   ],
   "meta": {
     "tokens": [
-      "$background",
-      "$borderColor",
-      "$borderColorHover",
-      "$borderColorFocus",
-      "$outlineColor",
-      "$color"
+      "background",
+      "border-color",
+      "border-color-hover",
+      "border-color-focus",
+      "outline-color",
+      "color"
     ]
   }
 }

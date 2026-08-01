@@ -15,17 +15,15 @@ import type * as React from 'react'
 export const AccordionTrigger = styled(UiAccordion.Trigger, {
   name: 'AccordionTrigger',
   cursor: 'pointer',
-  backgroundColor: '$background',
+  backgroundColor:
+    'background hover:background-hover focus:background-focus press:background-press',
   padding: true,
-  hoverStyle: { backgroundColor: '$backgroundHover' },
-  focusStyle: { backgroundColor: '$backgroundFocus' },
-  pressStyle: { backgroundColor: '$backgroundPress' },
 })
 
 export const AccordionContent = styled(UiAccordion.Content, {
   name: 'AccordionContent',
   padding: true,
-  backgroundColor: '$background',
+  backgroundColor: 'background',
 })
 
 // see Dialog.tsx: withStaticProperties assigns in place, so composing onto

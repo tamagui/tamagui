@@ -17,10 +17,10 @@
       ],
       "meta": {
         "tokens": [
-          "$background",
-          "$backgroundHover",
-          "$backgroundFocus",
-          "$backgroundPress"
+          "background",
+          "background-hover",
+          "background-focus",
+          "background-press"
         ],
         "states": [
           "pressed"
@@ -42,13 +42,13 @@
       ],
       "meta": {
         "tokens": [
-          "$background",
-          "$backgroundHover",
-          "$backgroundPress",
-          "$borderColor",
-          "$borderColorHover",
-          "$outlineColor",
-          "$color"
+          "background",
+          "background-hover",
+          "background-press",
+          "border-color",
+          "border-color-hover",
+          "outline-color",
+          "color"
         ],
         "states": [
           "disabled",
@@ -70,7 +70,7 @@
       ],
       "meta": {
         "tokens": [
-          "$background"
+          "background"
         ]
       }
     },
@@ -91,8 +91,8 @@
           "requires a Portal provider at the app root for the dialog to mount above content"
         ],
         "tokens": [
-          "$background",
-          "$borderColor"
+          "background",
+          "border-color"
         ]
       }
     },
@@ -110,12 +110,12 @@
       ],
       "meta": {
         "tokens": [
-          "$background",
-          "$borderColor",
-          "$borderColorHover",
-          "$borderColorFocus",
-          "$outlineColor",
-          "$color"
+          "background",
+          "border-color",
+          "border-color-hover",
+          "border-color-focus",
+          "outline-color",
+          "color"
         ]
       }
     },
@@ -133,8 +133,8 @@
       ],
       "meta": {
         "tokens": [
-          "$color",
-          "$colorPress"
+          "color",
+          "color-press"
         ],
         "states": [
           "pressed"
@@ -155,13 +155,13 @@
       ],
       "meta": {
         "tokens": [
-          "$background",
-          "$backgroundHover",
-          "$backgroundPress",
-          "$borderColor",
-          "$borderColorHover",
-          "$borderColorPress",
-          "$color"
+          "background",
+          "background-hover",
+          "background-press",
+          "border-color",
+          "border-color-hover",
+          "border-color-press",
+          "color"
         ],
         "states": [
           "disabled",
@@ -184,7 +184,7 @@
       ],
       "meta": {
         "tokens": [
-          "$background"
+          "background"
         ]
       }
     },
@@ -206,15 +206,15 @@
           "requires a Portal/Adapt provider at the app root; on native the Select adapts to a Sheet, so the Sheet native peer requirements apply when adaptation is used"
         ],
         "tokens": [
-          "$background",
-          "$backgroundHover",
-          "$backgroundPress",
-          "$backgroundFocus",
-          "$borderColor",
-          "$borderColorHover",
-          "$outlineColor",
-          "$color",
-          "$color10"
+          "background",
+          "background-hover",
+          "background-press",
+          "background-focus",
+          "border-color",
+          "border-color-hover",
+          "outline-color",
+          "color",
+          "color10"
         ],
         "states": [
           "pressed"
@@ -235,7 +235,7 @@
       ],
       "meta": {
         "tokens": [
-          "$backgroundFocus"
+          "background-focus"
         ]
       }
     },
@@ -260,9 +260,9 @@
           "react-native-safe-area-context"
         ],
         "tokens": [
-          "$background",
-          "$color5",
-          "$shadowColor"
+          "background",
+          "color5",
+          "shadow-color"
         ],
         "states": [
           "open"
@@ -283,14 +283,14 @@
       ],
       "meta": {
         "tokens": [
-          "$background",
-          "$backgroundHover",
-          "$backgroundPress",
-          "$color",
-          "$borderColor",
-          "$borderColorHover",
-          "$borderColorPress",
-          "$outlineColor"
+          "background",
+          "background-hover",
+          "background-press",
+          "color",
+          "border-color",
+          "border-color-hover",
+          "border-color-press",
+          "outline-color"
         ],
         "states": [
           "pressed"
@@ -314,16 +314,16 @@
       ],
       "meta": {
         "tokens": [
-          "$background",
-          "$backgroundHover",
-          "$backgroundPress",
-          "$borderColor",
-          "$borderColorHover",
-          "$borderColorPress",
-          "$shadowColor",
-          "$outlineColor",
-          "$radius",
-          "$pressScale"
+          "background",
+          "background-hover",
+          "background-press",
+          "border-color",
+          "border-color-hover",
+          "border-color-press",
+          "shadow-color",
+          "outline-color",
+          "radius",
+          "pressScale"
         ],
         "themes": [
           "surface1",
@@ -350,18 +350,18 @@
           "requires a Portal provider at the app root for the toast viewport to mount above content"
         ],
         "tokens": [
-          "$background",
-          "$borderColor",
-          "$color",
-          "$color3",
-          "$color4",
-          "$color5",
-          "$color6",
-          "$color7",
-          "$color8",
-          "$color10",
-          "$color11",
-          "$color12"
+          "background",
+          "border-color",
+          "color",
+          "color3",
+          "color4",
+          "color5",
+          "color6",
+          "color7",
+          "color8",
+          "color10",
+          "color11",
+          "color12"
         ],
         "states": [
           "pressed"
@@ -382,13 +382,13 @@
       ],
       "meta": {
         "tokens": [
-          "$background",
-          "$backgroundHover",
-          "$backgroundPress",
-          "$borderColor",
-          "$borderColorHover",
-          "$borderColorPress",
-          "$outlineColor"
+          "background",
+          "background-hover",
+          "background-press",
+          "border-color",
+          "border-color-hover",
+          "border-color-press",
+          "outline-color"
         ],
         "states": [
           "checked",
@@ -407,16 +407,16 @@
       ],
       "meta": {
         "tokens": [
-          "$background",
-          "$backgroundHover",
-          "$backgroundPress",
-          "$borderColor",
-          "$borderColorHover",
-          "$borderColorPress",
-          "$shadowColor",
-          "$outlineColor",
-          "$radius",
-          "$pressScale"
+          "background",
+          "background-hover",
+          "background-press",
+          "border-color",
+          "border-color-hover",
+          "border-color-press",
+          "shadow-color",
+          "outline-color",
+          "radius",
+          "pressScale"
         ],
         "states": [
           "pressed"

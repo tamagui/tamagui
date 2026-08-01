@@ -7,8 +7,7 @@ import { type GetProps, Label as UiLabel, styled } from '@tamagui/ui'
 
 export const Label = styled(UiLabel, {
   name: 'Label',
-  color: '$color',
-  pressStyle: { color: '$colorPress' },
+  color: 'color press:color-press',
 })
 
 export type LabelProps = GetProps<typeof Label> & {

@@ -2,7 +2,6 @@ import { describe, expect, test } from 'bun:test'
 // the real A1 vocabulary from style-grammar's committed source (see emit.ts) —
 // pure source read so the registry CI job needs no workspace build.
 import {
-  stateToPseudoProp,
   stateNames,
   stateToSelector,
   stateToModifier,
@@ -130,7 +129,7 @@ styled(F, { name: 'ComboFrame' })
     const skin = fakeSkin('B', `styled(F, { name: 'BFrame' })`)
     skin.manifest = {
       description: 'b',
-      tokens: ['$background'],
+      tokens: ['background'],
       themes: ['accent'],
       native: ['requires a Portal provider'],
       peerDependencies: ['react-native-safe-area-context'],
@@ -140,14 +139,14 @@ styled(F, { name: 'ComboFrame' })
     expect(item.meta).toEqual({
       native: ['requires a Portal provider'],
       peerDependencies: ['react-native-safe-area-context'],
-      tokens: ['$background'],
+      tokens: ['background'],
       themes: ['accent'],
     })
     expect(item.categories).toEqual(['controls'])
   })
 
   test('emits uniform meta.states only when the A1 tables are injected', () => {
-    const src = `styled(F, { name: 'CFrame', pressStyle: {}, variants: { open: { true: {} } } })`
+    const src = `styled(F, { name: 'CFrame', opacity: 'press:0.7', variants: { open: { true: {} } } })`
     // no tables (pre-reassembly): registry unchanged, no states
     expect(buildItem(fakeSkin('C', src), new Set(['C'])).meta).toBeUndefined()
     // tables injected (post-reassembly): uniform canonical state names
@@ -160,11 +159,11 @@ styled(F, { name: 'ComboFrame' })
 // keeping it here proves the derivation without duplicating the canonical table
 // into shipped code — the generator passes the real tables.
 const TABLES: StateTables = {
-  pseudoProps: {
-    pressed: 'pressStyle',
-    disabled: 'disabledStyle',
-    starting: 'enterStyle',
-    ending: 'exitStyle',
+  modifiers: {
+    pressed: 'press',
+    disabled: 'disabled',
+    starting: 'enter',
+    ending: 'exit',
   },
   allStates: [
     'pressed',
@@ -187,11 +186,11 @@ const TABLES: StateTables = {
 }
 
 describe('deriveStates', () => {
-  test('pseudo-tier: pressStyle + variants.disabled, ignores hover (not in the eight)', () => {
-    // a Button-shaped skin: pressStyle pseudo-prop + disabled authored as a variant
+  test('runtime tier: press clause + variants.disabled, ignores hover (not in the eight)', () => {
+    // a Button-shaped skin: press modifier + disabled authored as a variant
     const src = `styled(Frame, {
-  hoverStyle: { backgroundColor: '$backgroundHover' },
-  pressStyle: { opacity: 0.7 },
+  backgroundColor: 'background hover:background-hover',
+  opacity: 'press:0.7',
   variants: {
     size: sizes,
     disabled: { true: { opacity: 0.35 } },
@@ -200,8 +199,8 @@ describe('deriveStates', () => {
     expect(deriveStates(src, TABLES)).toEqual(['disabled', 'pressed'])
   })
 
-  test('lifecycle pseudo-props map to starting/ending, not enter/exit', () => {
-    const src = `styled(F, { enterStyle: { opacity: 0 }, exitStyle: { opacity: 0 } })`
+  test('lifecycle modifiers map to starting/ending, not enter/exit', () => {
+    const src = `styled(F, { opacity: 'enter:0 exit:0' })`
     expect(deriveStates(src, TABLES)).toEqual(['ending', 'starting'])
   })
 
@@ -211,7 +210,7 @@ describe('deriveStates', () => {
   })
 
   test('component-tier authored as a raw web attribute selector', () => {
-    const src = `styled(F, { '[data-state="checked"]': { backgroundColor: '$color' } })`
+    const src = `styled(F, { '[data-state="checked"]': { backgroundColor: 'color' } })`
     expect(deriveStates(src, TABLES)).toEqual(['checked'])
   })
 
@@ -239,7 +238,7 @@ describe('deriveStates', () => {
 // derivation matches the three authoring tiers on the real skins, and every
 // emitted state joins back to a Tailwind modifier.
 const REAL_TABLES: StateTables = {
-  pseudoProps: stateToPseudoProp,
+  modifiers: stateToModifier,
   allStates: stateNames,
   selectors: stateToSelector,
 }
@@ -248,14 +247,14 @@ describe('A1 reassembly join (real style-grammar tables + real skins)', () => {
   test('the injected table shapes match what deriveStates consumes', () => {
     // guards the exact failure the reassembly could reintroduce: a states.ts
     // export renamed/reshaped so the generator silently derives nothing.
-    expect(Object.values(stateToPseudoProp)).toContain('pressStyle')
+    expect(stateToModifier.pressed).toBe('press')
     expect(stateNames).toContain('open')
     expect(stateToSelector.selected).toBe('[data-state="active"]')
   })
 
   test('source-scanned tiers derive from the real Button + Sheet skin source', async () => {
     const button = await loadSkin('Button')
-    // tier 1 pseudo-prop (pressStyle) + tier 2 canonical variant (disabled)
+    // tier 1 flat modifier (press:) + tier 2 canonical variant (disabled)
     expect(deriveStates(button.source, REAL_TABLES)).toEqual(['disabled', 'pressed'])
 
     const sheet = await loadSkin('Sheet')

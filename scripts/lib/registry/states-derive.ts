@@ -13,8 +13,8 @@
 // single source of truth while remaining testable before the branches merge.
 
 export type StateTables = {
-  /** canonical state name -> core pseudo-style prop (states.ts stateToPseudoProp). */
-  pseudoProps: Readonly<Record<string, string>>
+  /** canonical state name -> flat value modifier (states.ts stateToModifier). */
+  modifiers: Readonly<Record<string, string>>
   /** every canonical state name (states.ts stateNames). */
   allStates: readonly string[]
   /** canonical state name -> web attribute selector (states.ts stateToSelector). */
@@ -30,11 +30,11 @@ function esc(s: string): string {
  * scan a skin's TSX source and return the sorted, de-duplicated set of canonical
  * A1 state names it styles. three authoring forms, all uniform and additive:
  *
- *  1. pseudo tier — a core pseudo-style prop as a styled() config key or a JSX
- *     prop: `pressStyle: {…}` / `pressStyle={…}`. matched from `pseudoProps`.
+ *  1. runtime tier — a modifier in a flat value program, such as
+ *     `opacity: '1 press:0.7'`. matched from `modifiers`.
  *  2. component tier — a `variants: { <state>: { … } }` block whose key is a
  *     canonical state name (open/checked/highlighted/invalid, and disabled,
- *     which real skins author as a variant rather than disabledStyle). matched
+ *     which real skins author as a variant rather than a disabled clause). matched
  *     from `allStates`.
  *  3. raw selector — a style keyed by the web attribute selector itself,
  *     e.g. `'[data-state="open"]': {…}`. matched from `selectors`. rare in
@@ -43,9 +43,9 @@ function esc(s: string): string {
 export function deriveStates(source: string, tables: StateTables): string[] {
   const found = new Set<string>()
 
-  // 1. pseudo-style props (config key `prop:` or JSX `prop={`).
-  for (const [state, prop] of Object.entries(tables.pseudoProps)) {
-    const re = new RegExp(`\\b${esc(prop)}\\s*[:=]`)
+  // 1. flat value modifiers, including combined clauses such as dark:press:0.7.
+  for (const [state, modifier] of Object.entries(tables.modifiers)) {
+    const re = new RegExp(`(^|[\\s\"'\`])(?:[A-Za-z0-9@/-]+:)*${esc(modifier)}:`, 'm')
     if (re.test(source)) found.add(state)
   }
 

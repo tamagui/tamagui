@@ -74,7 +74,7 @@ export type Registry = {
  *   export const manifest = {
  *     description: 'A styled, v2-compatible button built on @tamagui/ui.',
  *     categories: ['controls'],
- *     tokens: ['$background', '$borderColor', '$color', '$outlineColor'],
+ *     tokens: ['background', 'border-color', 'color', 'outline-color'],
  *   } satisfies SkinManifest
  *
  * only NON-derivable fields live here. file content, name, title, npm
@@ -114,17 +114,17 @@ export type SkinManifest = {
   extraRegistryDependencies?: string[]
   /**
    * enforce the generics-only rule on this skin: buildItem throws if the skin
-   * source references the color scale ($colorN) directly (plans/surface-levels.md).
+   * source references the color scale (colorN) directly (plans/surface-levels.md).
    * defaults to true — the copied chrome layer (Surface, facets) and new skins
    * must style against generics so they restyle under any re-bound level. the
-   * grandfathered v2-compat skins that still reference specific palette steps for
-   * their look opt out with `genericsOnly: false`.
+   * skins that intentionally reference specific palette steps for their look opt
+   * out with `genericsOnly: false`.
    */
   genericsOnly?: boolean
   /**
    * escape hatch: canonical A1 state names (states.ts) a source scan cannot see
    * — a state a wrapped/behavior component applies that never appears as a
-   * pseudo-prop, named variant, or attribute selector in the skin file. rare;
+   * flat modifier, named variant, or attribute selector in the skin file. rare;
    * prefer authoring the state uniformly so it derives.
    */
   extraStates?: string[]

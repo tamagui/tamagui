@@ -11,25 +11,14 @@ import {
 } from '@tamagui/ui'
 
 const inputSkin = {
-  fontFamily: '$body',
-  color: '$color',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  fontFamily: 'body',
+  color: 'color',
+  backgroundColor: 'background',
+  borderColor: 'border-color hover:border-color-hover focus:border-color-focus',
   borderWidth: 1,
-
-  hoverStyle: {
-    borderColor: '$borderColorHover',
-  },
-
-  focusStyle: {
-    borderColor: '$borderColorFocus',
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineWidth: 2,
-    outlineStyle: 'solid',
-  },
+  outlineColor: 'focus-visible:outline-color',
+  outlineWidth: 'focus-visible:2px',
+  outlineStyle: 'focus-visible:solid',
 } as const
 
 export const Input = styled(UiInput, {

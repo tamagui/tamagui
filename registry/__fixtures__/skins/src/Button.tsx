@@ -72,31 +72,15 @@ export type ButtonSize = keyof typeof buttonSizes.values
 export const ButtonFrame = styled(ButtonBehaviorFrame, {
   context: buttonSizes.Context,
   name: 'DemoButtonFrame',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover',
   borderRadius: 8,
   borderWidth: 1,
-
-  $web: {
-    cursor: 'pointer',
-  },
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    opacity: 0.7,
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-  },
-
+  cursor: 'web:pointer',
+  opacity: 'press:0.7',
+  outlineColor: 'focus-visible:outline-color',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
   variants: {
     size: buttonSizes.frame,
 
@@ -116,7 +100,7 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
     variant: {
       outlined: {
         backgroundColor: 'transparent',
-        borderColor: '$borderColor',
+        borderColor: 'border-color',
       },
       quiet: {
         backgroundColor: 'transparent',
@@ -124,11 +108,9 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
       },
     },
   } as const,
-
   defaultVariants: {
     size: 'medium',
   },
-
   compoundVariants: [
     {
       size: 'small',
@@ -176,14 +158,12 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
 export const ButtonText = styled(ButtonBehaviorText, {
   context: buttonSizes.Context,
   name: 'DemoButtonText',
-  color: '$color',
+  color: 'color',
   fontWeight: '600',
   userSelect: 'none',
-
   variants: {
     size: buttonSizes.text,
   } as const,
-
   defaultVariants: {
     size: 'medium',
   },

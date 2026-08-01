@@ -13,40 +13,23 @@ import {
 } from '@tamagui/ui'
 import type * as React from 'react'
 
-// default appearance for an active (pressed-on) item — applied by the Toggle
-// behavior through its `activeStyle` prop when the item is active.
+// This plain prop object is applied by Toggle while active; its interaction
+// overrides are flat clauses like every other authored style value.
 const activeAppearance = {
-  backgroundColor: '$backgroundPress',
-  hoverStyle: {
-    backgroundColor: '$backgroundPress',
-  },
-  focusStyle: {
-    backgroundColor: '$backgroundPress',
-  },
+  backgroundColor: 'background-press hover:background-press focus:background-press',
 } as const
 
 export const ToggleGroupItem = styled(UiToggleGroup.Item, {
   name: 'ToggleGroupItem',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
   borderWidth: 1,
   margin: -1,
+  outlineColor: 'focus-visible:outline-color',
+  outlineWidth: 'focus-visible:2px',
+  outlineStyle: 'focus-visible:solid',
+  zIndex: 'focus-visible:10',
   activeStyle: activeAppearance,
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineWidth: 2,
-    outlineStyle: 'solid',
-    zIndex: 10,
-  },
 })
 
 // see Dialog.tsx: withStaticProperties assigns in place, so composing onto

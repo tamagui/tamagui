@@ -14,7 +14,7 @@ import {
 
 export const CardFrame = styled(UiCardFrame, {
   name: 'Card',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
 })
 
 export const Card = withStaticProperties(CardFrame, {

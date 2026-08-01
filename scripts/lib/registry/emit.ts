@@ -17,7 +17,7 @@ import type { Registry, RegistryItem } from './types'
 // build), and the generator already reads skin SOURCE across packages. states.ts
 // is pure data with no imports.
 import {
-  stateToPseudoProp,
+  stateToModifier,
   stateNames,
   stateToSelector,
 } from '../../../code/core/style-grammar/src/states'
@@ -28,7 +28,7 @@ const JSON_INDENT = 2
 // at reassembly: buildRegistry now defaults to these so build/check/drift/
 // consumers all emit a uniform `meta.states` derived from the skin source.
 const a1StateTables: StateTables = {
-  pseudoProps: stateToPseudoProp,
+  modifiers: stateToModifier,
   allStates: stateNames,
   selectors: stateToSelector,
 }

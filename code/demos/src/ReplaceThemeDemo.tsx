@@ -46,7 +46,7 @@ export function ReplaceThemeDemo() {
           update()
         }}
       >
-        Replace theme to only have $color: blue
+        Replace theme to only have color: blue
       </Button>
     </YStack>
   )

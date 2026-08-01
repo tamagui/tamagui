@@ -6,7 +6,7 @@ import { type GetProps, Separator as UiSeparator, styled } from '@tamagui/ui'
 
 export const Separator = styled(UiSeparator, {
   name: 'Separator',
-  borderColor: '$backgroundFocus',
+  borderColor: 'background-focus',
 })
 
 export type SeparatorProps = GetProps<typeof Separator>

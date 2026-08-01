@@ -14,35 +14,17 @@ import {
 // the additive-border "outlined" appearance (formerly themeableVariantStyles.outlined
 // from ThemeableStack, now removed from the behavior package).
 const outlined = {
-  backgroundColor: 'transparent',
+  backgroundColor: 'transparent hover:transparent press:transparent',
   borderWidth: 1,
-  borderColor: '$borderColor',
-  hoverStyle: {
-    backgroundColor: 'transparent',
-    borderColor: '$borderColorHover',
-  },
-  pressStyle: {
-    backgroundColor: 'transparent',
-    borderColor: '$borderColorPress',
-  },
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
 } as const
 
 const StyledListItem = styled(UiListItem, {
   name: 'ListItem',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
-  color: '$color',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
+  color: 'color',
   cursor: 'default',
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
-
   variants: {
     variant: {
       outlined,
@@ -50,9 +32,7 @@ const StyledListItem = styled(UiListItem, {
 
     active: {
       true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
+        backgroundColor: 'hover:background',
       },
     },
 

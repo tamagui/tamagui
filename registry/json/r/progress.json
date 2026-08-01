@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "components/tamagui/Progress.tsx",
-      "content": "// Styled Progress = the unstyled @tamagui/ui Progress behavior (the clip + the\n// size-derived track height + the indeterminate/complete/loading state machine)\n// + the default v2-look skin (theme background on the track and indicator, pill\n// radius on the track). Single skin definition; the shadcn registry item is\n// generated from this file.\nimport {\n  type GetProps,\n  Progress as UiProgress,\n  ProgressIndicator as UiProgressIndicator,\n  type ProgressExtraProps,\n  styled,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nexport const ProgressIndicator = styled(UiProgressIndicator, {\n  name: 'ProgressIndicator',\n  backgroundColor: '$background',\n})\n\nconst ProgressFrame = styled(UiProgress, {\n  name: 'Progress',\n  backgroundColor: '$background',\n  borderRadius: 100_000,\n})\n\nexport const Progress = withStaticProperties(ProgressFrame, {\n  Indicator: ProgressIndicator,\n})\n\nexport type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps\n",
+      "content": "// Styled Progress = the unstyled @tamagui/ui Progress behavior (the clip + the\n// size-derived track height + the indeterminate/complete/loading state machine)\n// + the default v2-look skin (theme background on the track and indicator, pill\n// radius on the track). Single skin definition; the shadcn registry item is\n// generated from this file.\nimport {\n  type GetProps,\n  Progress as UiProgress,\n  ProgressIndicator as UiProgressIndicator,\n  type ProgressExtraProps,\n  styled,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nexport const ProgressIndicator = styled(UiProgressIndicator, {\n  name: 'ProgressIndicator',\n  backgroundColor: 'background',\n})\n\nconst ProgressFrame = styled(UiProgress, {\n  name: 'Progress',\n  backgroundColor: 'background',\n  borderRadius: 100_000,\n})\n\nexport const Progress = withStaticProperties(ProgressFrame, {\n  Indicator: ProgressIndicator,\n})\n\nexport type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps\n",
       "type": "registry:ui",
       "target": "components/tamagui/Progress.tsx"
     }
@@ -20,7 +20,7 @@
   ],
   "meta": {
     "tokens": [
-      "$background"
+      "background"
     ]
   }
 }

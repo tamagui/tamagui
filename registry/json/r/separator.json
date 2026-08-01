@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "components/tamagui/Separator.tsx",
-      "content": "// Styled Separator = the unstyled @tamagui/ui Separator behavior (orientation +\n// layout + the collapsed 1px rule, transparent by default) + the default v2-look\n// skin (theme line color). Single skin definition; the shadcn registry item is\n// generated from this file.\nimport { type GetProps, Separator as UiSeparator, styled } from '@tamagui/ui'\n\nexport const Separator = styled(UiSeparator, {\n  name: 'Separator',\n  borderColor: '$backgroundFocus',\n})\n\nexport type SeparatorProps = GetProps<typeof Separator>\n",
+      "content": "// Styled Separator = the unstyled @tamagui/ui Separator behavior (orientation +\n// layout + the collapsed 1px rule, transparent by default) + the default v2-look\n// skin (theme line color). Single skin definition; the shadcn registry item is\n// generated from this file.\nimport { type GetProps, Separator as UiSeparator, styled } from '@tamagui/ui'\n\nexport const Separator = styled(UiSeparator, {\n  name: 'Separator',\n  borderColor: 'background-focus',\n})\n\nexport type SeparatorProps = GetProps<typeof Separator>\n",
       "type": "registry:ui",
       "target": "components/tamagui/Separator.tsx"
     }
@@ -20,7 +20,7 @@
   ],
   "meta": {
     "tokens": [
-      "$backgroundFocus"
+      "background-focus"
     ]
   }
 }

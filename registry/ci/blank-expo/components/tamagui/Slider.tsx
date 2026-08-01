@@ -14,34 +14,24 @@ import type * as React from 'react'
 
 export const SliderTrack = styled(UiSlider.Track, {
   name: 'SliderTrack',
-  backgroundColor: '$backgroundPress',
+  backgroundColor: 'background-press',
   borderRadius: 100_000,
 })
 
 export const SliderActive = styled(UiSlider.TrackActive, {
   name: 'SliderTrackActive',
-  backgroundColor: '$color',
+  backgroundColor: 'color',
   borderRadius: 100_000,
 })
 
 export const SliderThumb = styled(UiSlider.Thumb, {
   name: 'SliderThumb',
   borderWidth: 2,
-  borderColor: '$borderColor',
-  backgroundColor: '$background',
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-  focusVisibleStyle: {
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineColor: '$outlineColor',
-  },
+  borderColor: 'border-color press:border-color-press hover:border-color-hover',
+  backgroundColor: 'background press:background-press hover:background-hover',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
+  outlineColor: 'focus-visible:outline-color',
 })
 
 // see Dialog.tsx: withStaticProperties assigns in place, so composing onto UiSlider

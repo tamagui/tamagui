@@ -17,7 +17,7 @@ import {
 
 const IconGlyph = styled(SizableText, {
   name: 'SelectIconGlyph',
-  color: '$color',
+  color: 'color',
   userSelect: 'none',
 })
 
@@ -65,20 +65,14 @@ export type SelectSize = keyof typeof selectSizes.values
 export const SelectTrigger = styled(SelectBehavior.Trigger, {
   context: selectSizes.Context,
   name: 'SelectTrigger',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover',
   borderRadius: 8,
   borderWidth: 1,
   justifyContent: 'space-between',
-
-  hoverStyle: { backgroundColor: '$backgroundHover', borderColor: '$borderColorHover' },
-  pressStyle: { backgroundColor: '$backgroundPress' },
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-  },
-
+  outlineColor: 'focus-visible:outline-color',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:2px',
   variants: { size: selectSizes.frame } as const,
   defaultVariants: { size: 'medium' },
 })
@@ -86,7 +80,7 @@ export const SelectTrigger = styled(SelectBehavior.Trigger, {
 export const SelectValue = styled(SelectBehavior.Value, {
   context: selectSizes.Context,
   name: 'SelectValue',
-  color: '$color',
+  color: 'color',
   ellipsis: true,
   variants: { size: selectSizes.text } as const,
   defaultVariants: { size: 'medium' },
@@ -107,7 +101,7 @@ export const SelectGroup = styled(SelectBehavior.Group, {
 export const SelectLabel = styled(SelectBehavior.Label, {
   context: selectSizes.Context,
   name: 'SelectLabel',
-  color: '$color10',
+  color: 'color10',
   fontWeight: '600',
   paddingHorizontal: 10,
   paddingVertical: 6,
@@ -122,16 +116,10 @@ export const SelectItem = styled(SelectBehavior.Item, {
   outlineOffset: -1,
   paddingHorizontal: 10,
   borderRadius: 6,
-
-  hoverStyle: { backgroundColor: '$backgroundHover' },
-  pressStyle: { backgroundColor: '$backgroundPress' },
-  focusStyle: { backgroundColor: '$backgroundFocus' },
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineStyle: 'solid',
-    outlineWidth: 1,
-  },
-
+  backgroundColor: 'hover:background-hover press:background-press focus:background-focus',
+  outlineColor: 'focus-visible:outline-color',
+  outlineStyle: 'focus-visible:solid',
+  outlineWidth: 'focus-visible:1px',
   variants: { size: selectSizes.frame } as const,
   defaultVariants: { size: 'medium' },
 })
@@ -139,9 +127,9 @@ export const SelectItem = styled(SelectBehavior.Item, {
 export const SelectItemText = styled(SelectBehavior.ItemText, {
   context: selectSizes.Context,
   name: 'SelectItemText',
-  color: '$color',
-  ellipsis: true,
+  color: 'color',
   userSelect: 'none',
+  ellipsis: true,
   variants: { size: selectSizes.text } as const,
   defaultVariants: { size: 'medium' },
 })
@@ -156,14 +144,14 @@ export const SelectItemIndicator = styled(SelectBehavior.ItemIndicator, {
 
 export const SelectIndicator = styled(SelectBehavior.Indicator, {
   name: 'SelectIndicator',
-  backgroundColor: '$backgroundFocus',
+  backgroundColor: 'background-focus',
   borderRadius: 6,
 })
 
 export const SelectViewport = styled(SelectBehavior.Viewport, {
   name: 'SelectViewport',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
+  backgroundColor: 'background',
+  borderColor: 'border-color',
   borderRadius: 10,
   borderWidth: 1,
   maxHeight: 300,
@@ -174,7 +162,7 @@ export const SelectViewport = styled(SelectBehavior.Viewport, {
 export const SelectScrollUpButton = styled(SelectBehavior.ScrollUpButton, {
   name: 'SelectScrollUpButton',
   alignItems: 'center',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   height: 28,
   justifyContent: 'center',
   children: <ChevronUp size={16} />,
@@ -183,7 +171,7 @@ export const SelectScrollUpButton = styled(SelectBehavior.ScrollUpButton, {
 export const SelectScrollDownButton = styled(SelectBehavior.ScrollDownButton, {
   name: 'SelectScrollDownButton',
   alignItems: 'center',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   height: 28,
   justifyContent: 'center',
   children: <ChevronDown size={16} />,
@@ -191,7 +179,7 @@ export const SelectScrollDownButton = styled(SelectBehavior.ScrollDownButton, {
 
 export const SelectSeparator = styled(SelectBehavior.Separator, {
   name: 'SelectSeparator',
-  backgroundColor: '$borderColor',
+  backgroundColor: 'border-color',
   height: 1,
   marginVertical: 4,
 })

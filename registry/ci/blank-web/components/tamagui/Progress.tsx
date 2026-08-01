@@ -14,12 +14,12 @@ import {
 
 export const ProgressIndicator = styled(UiProgressIndicator, {
   name: 'ProgressIndicator',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
 })
 
 const ProgressFrame = styled(UiProgress, {
   name: 'Progress',
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   borderRadius: 100_000,
 })
 
