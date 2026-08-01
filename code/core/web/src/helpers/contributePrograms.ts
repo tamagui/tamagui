@@ -3,7 +3,7 @@
 // Every string style value contributes per-longhand programs: a clause-free
 // string is a base-only program, so configured bare names and numeric strings
 // resolve config-first through the payload identifier lookup (`p="4"` is the
-// space token exactly like `p="$4"` was). A clause-shaped string that fails to
+// configured space token. A clause-shaped string that fails to
 // parse throws in development (v3 cutover) — a top-level colon is never valid
 // CSS, so it can only be a typo — except on aspectRatio, whose RN value space
 // legitimately holds "16:9". Colon-free strings that fail to parse fall
@@ -246,8 +246,8 @@ export function contributeParsedProgram(
   // mirror setLastFontFamilyToken: a base naming a configured family drives
   // the font_* scope class on web and per-family variable resolution on native
   if (prop === 'fontFamily' && value.base) {
-    if (styleState.conf.fontsParsed?.[`$${value.base}`]) {
-      styleState.fontFamily = `$${value.base}`
+    if (styleState.conf.fontsParsed?.[value.base]) {
+      styleState.fontFamily = value.base
     }
   }
 

@@ -233,10 +233,7 @@ export function getThemeProxied(
             get,
           }
 
-      return [
-        [key, proxied],
-        [`$${key}`, proxied],
-      ]
+      return [[key, proxied]]
     })
   ) as ThemeProxied
 
