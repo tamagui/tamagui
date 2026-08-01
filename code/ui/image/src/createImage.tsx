@@ -166,12 +166,10 @@ export function createImage<C extends ComponentType<any>>(
       } = props
 
       const resolvedWidth =
-        typeof width === 'string' && width[0] === '$'
-          ? getTokenValue(width as any, 'size')
-          : width
+        typeof width === 'string' ? (getTokenValue(width as any, 'size') ?? width) : width
       const resolvedHeight =
-        typeof height === 'string' && height[0] === '$'
-          ? getTokenValue(height as any, 'size')
+        typeof height === 'string'
+          ? (getTokenValue(height as any, 'size') ?? height)
           : height
 
       const finalSource = transformSource({
@@ -186,8 +184,8 @@ export function createImage<C extends ComponentType<any>>(
         : rest.style
 
       const resolvedBorderRadius =
-        typeof borderRadius === 'string' && borderRadius[0] === '$'
-          ? getTokenValue(borderRadius as any, 'radius')
+        typeof borderRadius === 'string'
+          ? (getTokenValue(borderRadius as any, 'radius') ?? borderRadius)
           : borderRadius
 
       const finalProps: any = {

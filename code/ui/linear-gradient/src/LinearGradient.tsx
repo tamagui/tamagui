@@ -43,7 +43,7 @@ export const LinearGradient = createStyledHOC(
     if (
       colors.some((c) => {
         const normalized = normalizeColor(c)
-        if (!normalized || normalized.startsWith('$')) {
+        if (!normalized) {
           return true
         }
       })

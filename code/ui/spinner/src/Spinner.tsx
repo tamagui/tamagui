@@ -13,7 +13,7 @@ export const Spinner = createStyledHOC(YStack)<SpinnerProps>((props, ref) => {
   const { size, color: colorProp, ...stackProps } = props
   const theme = useTheme()
   let color = colorProp as string
-  if (color && color[0] === '$') {
+  if (color && theme[color]) {
     color = variableToString(theme[color])
   }
   return (

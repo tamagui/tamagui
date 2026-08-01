@@ -236,7 +236,7 @@ function tailwindClassToFlatProp(
   }
 
   // color opacity modifier: bg-blue-500/50 → split value into base + /N suffix,
-  // re-attached after token resolution so getTokenForKey applies it via color-mix
+  // re-attached after token resolution so the shared color resolver applies it via color-mix
   // (web) / rgba (native). only for color props; for non-color props a "/" in the
   // value is left intact (e.g. fraction sizing handled above).
   let opacitySuffix = ''

@@ -236,7 +236,6 @@ settings: {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,  // auto light/dark CSS
   allowedStyleValues: 'somewhat-strict-web',
-  autocompleteSpecificTokens: 'except-special',
   onlyAllowShorthands: false,  // allow both short and long names
   mediaQueryDefaultActive: {
     // SSR: assume these queries are true initially

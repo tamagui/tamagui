@@ -79,7 +79,7 @@ const DebugInfo = styled(Text, {
 function DebugDisplay({ id }: { id: string }) {
   // Access context to show what values the child receives
   const context = GridContext.useStyledContext()
-  const isToken = context.gap?.startsWith('$')
+  const isToken = context.gap ? ['2', '4', '8'].includes(context.gap) : false
 
   return (
     <View id={id} padding="2" backgroundColor={`${isToken ? 'green5' : 'red5'}`}>
