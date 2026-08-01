@@ -104,3 +104,28 @@ export async function getBoundingRect(
     )
   }, selector)
 }
+
+export async function getComputedScale(page: Page, selector: string): Promise<number> {
+  return page.evaluate((sel) => {
+    const element = document.querySelector(sel)
+    if (!element) return Number.NaN
+    const style = getComputedStyle(element)
+    if (style.scale !== 'none') return Number.parseFloat(style.scale)
+    if (style.transform === 'none') return 1
+    return new DOMMatrixReadOnly(style.transform).a
+  }, selector)
+}
+
+export async function getComputedTranslateX(
+  page: Page,
+  selector: string
+): Promise<number> {
+  return page.evaluate((sel) => {
+    const element = document.querySelector(sel)
+    if (!element) return Number.NaN
+    const style = getComputedStyle(element)
+    if (style.translate !== 'none') return Number.parseFloat(style.translate)
+    if (style.transform === 'none') return 0
+    return new DOMMatrixReadOnly(style.transform).e
+  }, selector)
+}

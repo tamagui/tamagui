@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { setupPage } from './test-utils'
+import { getComputedScale, getComputedTranslateX, setupPage } from './test-utils'
 
 /**
  * ANIMATION BEHAVIOR TESTS
@@ -21,25 +21,11 @@ async function getOpacity(page: Page, testId: string): Promise<number> {
 }
 
 async function getScale(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return -1
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 1
-    const match = transform.match(/matrix\(([^,]+),/)
-    return match ? Number.parseFloat(match[1]) : 1
-  }, testId)
+  return getComputedScale(page, `[data-testid="${testId}"]`)
 }
 
 async function getTranslateX(page: Page, testId: string): Promise<number> {
-  return page.evaluate((id) => {
-    const el = document.querySelector(`[data-testid="${id}"]`)
-    if (!el) return -1
-    const transform = getComputedStyle(el).transform
-    if (transform === 'none') return 0
-    const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+),/)
-    return match ? Number.parseFloat(match[1]) : 0
-  }, testId)
+  return getComputedTranslateX(page, `[data-testid="${testId}"]`)
 }
 
 async function elementExists(page: Page, testId: string): Promise<boolean> {
@@ -132,9 +118,14 @@ test.describe('Animation Behavior', () => {
         const vals: number[] = []
         const start = performance.now()
         function tick() {
-          const t = getComputedStyle(el).transform
-          const m = t.match(/matrix\(([^,]+),/)
-          vals.push(m ? Number.parseFloat(m[1]) : 1)
+          const style = getComputedStyle(el)
+          vals.push(
+            style.scale !== 'none'
+              ? Number.parseFloat(style.scale)
+              : style.transform === 'none'
+                ? 1
+                : new DOMMatrixReadOnly(style.transform).a
+          )
           if (performance.now() - start < 800) requestAnimationFrame(tick)
           else resolve(vals)
         }
@@ -315,11 +306,10 @@ test.describe('Animation Behavior', () => {
       return page.evaluate(() => {
         const el = document.querySelector('[data-testid="scenario-37-target"]')
         if (!el) return -1
-        const transform = getComputedStyle(el).transform
-        if (transform === 'none') return 1
-        // matrix(a, b, c, d, tx, ty) - scaleX is in the 'a' position
-        const match = transform.match(/matrix\(([^,]+),/)
-        return match ? Number.parseFloat(match[1]) : 1
+        const style = getComputedStyle(el)
+        if (style.scale !== 'none') return Number.parseFloat(style.scale)
+        if (style.transform === 'none') return 1
+        return new DOMMatrixReadOnly(style.transform).a
       })
     }
 
