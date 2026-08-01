@@ -20,7 +20,7 @@ describe('CLI shared compiler runtime', () => {
         paths: { root, dotDir: path.join(root, '.tamagui') },
         tamaguiOptions: {
           config: './src/tamagui.config.ts',
-          components: ['tamagui'],
+          components: ['tamagui', '@tamagui/tailwind'],
         },
         target: 'web',
         dir: 'src/Root.tsx',

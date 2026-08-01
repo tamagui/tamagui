@@ -1,7 +1,16 @@
 import { createHash } from 'node:crypto'
 import { createRequire } from 'node:module'
 import { existsSync, readFileSync, unlinkSync } from 'node:fs'
-import { basename, dirname, extname, join, relative, resolve, sep } from 'node:path'
+import {
+  basename,
+  dirname,
+  extname,
+  isAbsolute,
+  join,
+  relative,
+  resolve,
+  sep,
+} from 'node:path'
 import { pathToFileURL } from 'node:url'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
@@ -293,6 +302,7 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
     isBundling = true
 
     const root = props.root || process.cwd()
+    const rootRequire = createRequire(join(root, 'package.json'))
     const configEntry = props.config
       ? getTamaguiConfigPathFromOptionsConfig(props.config, root)
       : ''
@@ -307,11 +317,19 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
     const configExt = configFormat === 'esm' ? '.mjs' : '.cjs'
     const configOutPath = join(tmpDir, `tamagui.config${platformSuffix}${configExt}`)
     const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
-    // detect format per component module
+    // resolve from the consumer root, then walk from the exported subpath because
+    // packages are not required to export their package.json
     const componentFormats: Array<'esm' | 'cjs'> = baseComponents.map((mod) => {
       try {
-        const pkgJson = nodeRequire.resolve(mod + '/package.json')
-        const pkg = JSON.parse(readFileSync(pkgJson, 'utf-8'))
+        let packageRoot = dirname(rootRequire.resolve(mod))
+        while (!existsSync(join(packageRoot, 'package.json'))) {
+          const parent = dirname(packageRoot)
+          if (parent === packageRoot) {
+            return 'cjs'
+          }
+          packageRoot = parent
+        }
+        const pkg = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf-8'))
         return pkg.type === 'module' ? 'esm' : 'cjs'
       } catch {
         return 'cjs'
@@ -388,7 +406,13 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
           return esbundleTamaguiConfig(
             {
               entryPoints: [componentModule],
-              resolvePlatformSpecificEntries: true,
+              // bare packages must stay bare so esbuild can select their
+              // react-native conditional export; local files still use siblings
+              resolvePlatformSpecificEntries:
+                props.platform !== 'native' ||
+                componentModule.startsWith('.') ||
+                isAbsolute(componentModule),
+              conditions: props.platform === 'native' ? ['react-native'] : undefined,
               external,
               outfile: componentOutPaths[i],
               target: 'node24',
