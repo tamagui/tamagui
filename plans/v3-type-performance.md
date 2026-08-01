@@ -237,19 +237,23 @@ that `background` never got a theme-aware value type to match the remap. It is
 so `ThemeValueGet<'background'>` is `never` and `WithThemeValues` takes the
 no-theme branch.
 
-The fix, prototyped and measured against the real config over 1,000
-`bg={'$token'}` sites:
+**Fixed and landed as `53fe77bd9a`** (source plus rebuilt declarations), in
+`ExtraStyleProps`:
 
 ```ts
 background?: ColorTokens | Properties['background']
 ```
 
-216 completions with 0 tokens becomes 1,166 with 950, and check time *drops*
-from 0.46s to 0.36s — with tokens in the union a `$token` value hits the
+Measured against the real config over 1,000 `bg={'$token'}` sites: 216
+completions with 0 tokens becomes 1,166 with 950, and check time *drops* from
+0.46s to 0.36s — with tokens in the union a `$token` value hits the
 literal-to-union fast path instead of scanning past `Properties['background']`.
-`no-repeat center` and `url(x.png) $color1` both still typecheck.
+`no-repeat center`, `url(x.png) $color1`, `$color1 hover:$color5`,
+`linear-gradient(red, blue)` and `#ff0000` all still typecheck. Gates after the
+change: web type tests 93, core-test web 475, native 198, grammar 403.
 
-Two traps to respect when implementing it. Do **not** add `'background'` to
+Two traps that shaped the fix, and that any future change here must respect. Do
+**not** add `'background'` to
 `ColorKeys`: that routes it through `GetThemeValueForKey`, whose
 `Exclude<T[K], string>` erases the CSS shorthand arm, trading the
 position/repeat keywords away to get the tokens. And `ColorTokens |
@@ -277,15 +281,29 @@ making the runtime contract explicit rather than as fixing a reproduced failure.
 
 ## Reproducing
 
-Harnesses live in the session scratchpad rather than the repo, since they
-generate fixtures into a checkout:
+The one harness that guards a live invariant is **committed**, because a tool
+that only exists in a session scratchpad cannot guard anything after that
+session ends:
 
-- `gen-typeperf.py <checkout> <n>` — shape A fixture
-- `gen-typeperf2.py <checkout> <n>` — shape B fixture
-- `measure-typeperf.py` — interleaved v2/v3 run, writes `typeperf-results.json`
-- `autocomplete-probe.mjs <unionSize>` — completions via the LanguageService
-- `static-types-cost.mjs` — typecheck cost by union size
+- `scripts/inspect-style-prop-types.mjs` — asks the checker what a style prop's
+  contextual type actually *contains*, so it can see the token arm silently
+  dropping out (landed `ff93f527ef`, hardened `3d3a65c7f9`). Run it as
+  `node scripts/inspect-style-prop-types.mjs <probe.tsx> bg,backgroundColor
+  --expect-tokens`. Exit 0 passes, 1 is a real token regression, 2 is a usage
+  error, 3 means the probe itself is unusable and the run proves nothing.
+  **The probe file must import the app's tamagui config** — without it every
+  prop reads as zero tokens and the output would otherwise look exactly like
+  the regression it exists to catch.
 
-One trap worth recording: the pre-push hook runs `oxfmt --check` over the whole
+The measurement harnesses were session-local and generate fixtures into a
+checkout: `gen-typeperf.py` / `gen-typeperf2.py` (fixture shapes A and B),
+`measure-typeperf.py` (interleaved v2/v3 run), `autocomplete-probe.mjs`
+(completions via the LanguageService), `static-types-cost.mjs` (cost by union
+size).
+
+Two traps worth recording. The pre-push hook runs `oxfmt --check` over the whole
 working tree including untracked files, so a generated fixture directory left in
-a checkout will fail an unrelated push.
+a checkout fails an unrelated push. And running a measurement harness from
+inside the worktree makes `ts.createCompilerHost` pull the repo's `@types/**`
+into every program, inflating the baseline and destroying the signal — `types:
+[]` is mandatory.
