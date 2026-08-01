@@ -220,6 +220,10 @@ function inspectFile(
   const containers = planContainers(sourceFile, registry)
   const targets = conversionTargets(sourceFile.getFilePath())
   const sites: SiteReport[] = []
+  const styledCalls = sourceFile
+    .getDescendantsOfKind(SyntaxKind.CallExpression)
+    .filter((call) => provenance.isTamaguiStyledCall(call))
+    .sort((left, right) => right.getStart() - left.getStart())
 
   for (const kind of [
     SyntaxKind.JsxOpeningElement,
@@ -239,8 +243,7 @@ function inspectFile(
     }
   }
 
-  for (const call of sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression)) {
-    if (!provenance.isTamaguiStyledCall(call)) continue
+  for (const call of styledCalls) {
     const component = call.getArguments()[0]
     const host = component ? typeAwareHost(component) : undefined
     const config = unwrapExpression(

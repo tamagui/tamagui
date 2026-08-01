@@ -1304,11 +1304,9 @@ function rewriteJsxSite(
   const start = opening.getStart()
   const first = attributes[0]
   const last = attributes[attributes.length - 1]
-  const prefix = source.slice(0, first.getStart() - start).trimEnd()
-  const suffix = source.slice(last.getEnd() - start).trimStart()
-  opening.replaceWithText(
-    `${prefix}${rendered.length ? ` ${rendered.join(' ')}` : ''}${suffix}`
-  )
+  const prefix = source.slice(0, first.getStart() - start)
+  const suffix = source.slice(last.getEnd() - start)
+  opening.replaceWithText(`${prefix}${rendered.join(' ')}${suffix}`)
 }
 
 /**

@@ -79,7 +79,9 @@ function runWrite(source: string): string {
 }
 
 function fixture(source: string, fileName = 'fixture.tsx'): string {
-  const directory = mkdtempSync(join(tmpdir(), 'flat-values-fixture-'))
+  // Keep source fixtures inside the repository so TypeScript resolves the same
+  // Tamagui package graph the codemod sees in its real corpus.
+  const directory = mkdtempSync(join(packageDir, 'test/.flat-values-fixture-'))
   temporaryDirectories.push(directory)
   const sourcePath = join(directory, fileName)
   writeFileSync(sourcePath, source)
@@ -1400,6 +1402,23 @@ export const Fixture = () => <Box opacity={1} pressStyle={{ opacity: 0.5 }} />
     expect(output).toContain('opacity="1 press:0.5"')
     expect(output).not.toContain('hoverStyle')
     expect(output).not.toContain('pressStyle')
+  })
+
+  test('write mode preserves a line comment before JSX style attributes', () => {
+    const output = runWrite(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View
+    // @ts-expect-error migration fixture
+    bg="$blue10"
+    hoverStyle={{ bg: 'red' }}
+  />
+)
+`)
+
+    expect(output).toMatch(
+      /\/\/ @ts-expect-error migration fixture\n\s+bg="blue10 hover:red"/
+    )
+    expect(output).not.toContain('hoverStyle')
   })
 
   test('an input that matches no file exits nonzero and writes no report', () => {
