@@ -1421,6 +1421,42 @@ export const Fixture = () => (
     expect(output).not.toContain('hoverStyle')
   })
 
+  test('write mode converts nested JSX from the leaves upward', () => {
+    const output = runWrite(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View bg="$blue10" hoverStyle={{ bg: 'red' }}>
+    <View p="$2" pressStyle={{ p: '$3' }} />
+  </View>
+)
+`)
+
+    expect(output).toContain('bg="blue10 hover:red"')
+    expect(output).toContain('p="2 press:3"')
+    expect(output).not.toContain('hoverStyle')
+    expect(output).not.toContain('pressStyle')
+  })
+
+  test('write mode preserves ASI-sensitive statements inside a JSX spread', () => {
+    const output = runWrite(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View
+    bg="$blue10"
+    hoverStyle={{ bg: 'red' }}
+    {...{
+      onPress() {
+        one()
+        two()
+      },
+    }}
+  />
+)
+`)
+
+    expect(output).toContain('bg="blue10 hover:red"')
+    expect(output).toContain('one()\n')
+    expect(output).toContain('two()')
+  })
+
   test('an input that matches no file exits nonzero and writes no report', () => {
     const result = runRaw([join(tmpdir(), 'flat-values-does-not-exist.tsx')])
 

@@ -229,23 +229,23 @@ function inspectFile(
     .getDescendantsOfKind(SyntaxKind.CallExpression)
     .filter((call) => provenance.isTamaguiStyledCall(call))
     .sort((left, right) => right.getStart() - left.getStart())
+  const jsxOpenings = [
+    ...sourceFile.getDescendantsOfKind(SyntaxKind.JsxOpeningElement),
+    ...sourceFile.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement),
+  ]
+    .filter((opening) => provenance.isTamaguiElement(opening))
+    .sort((left, right) => right.getStart() - left.getStart())
 
-  for (const kind of [
-    SyntaxKind.JsxOpeningElement,
-    SyntaxKind.JsxSelfClosingElement,
-  ] as const) {
-    for (const opening of sourceFile.getDescendantsOfKind(kind)) {
-      if (!provenance.isTamaguiElement(opening)) continue
-      const site = convertJsxSite(
-        opening,
-        registry,
-        containers,
-        targets,
-        typeAwareHost(opening.getTagNameNode()),
-        write
-      )
-      if (site) sites.push(site)
-    }
+  for (const opening of jsxOpenings) {
+    const site = convertJsxSite(
+      opening,
+      registry,
+      containers,
+      targets,
+      typeAwareHost(opening.getTagNameNode()),
+      write
+    )
+    if (site) sites.push(site)
   }
 
   for (const call of styledCalls) {
@@ -376,11 +376,22 @@ if (write) {
       true,
       /x$/.test(filePath) ? ts.ScriptKind.TSX : ts.ScriptKind.TS
     ) as typeof sourceFile.compilerNode & {
-      parseDiagnostics?: readonly unknown[]
+      parseDiagnostics?: readonly ts.Diagnostic[]
     }
     if (parsed.parseDiagnostics?.length) {
+      const details = parsed.parseDiagnostics
+        .map((diagnostic) => {
+          const start = diagnostic.start ?? 0
+          const position = parsed.getLineAndCharacterOfPosition(start)
+          const line = parsed.text.split(/\r?\n/)[position.line] ?? ''
+          return `${position.line + 1}:${position.character + 1} ${ts.flattenDiagnosticMessageText(
+            diagnostic.messageText,
+            '\n'
+          )}\n  ${line.trim()}`
+        })
+        .join('\n')
       console.error(
-        `${relative(repoRoot, filePath)}: rewrite produced parse errors; no files were written`
+        `${relative(repoRoot, filePath)}: rewrite produced parse errors; no files were written\n${details}`
       )
       process.exit(2)
     }

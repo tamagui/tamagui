@@ -1403,13 +1403,13 @@ export function convertJsxSite(
                   site,
                   name,
                   property,
-                  `${name}={${compact(property.getInitializerOrThrow().getText())}}`
+                  `${name}={${property.getInitializerOrThrow().getText()}}`
                 )
               } else {
                 site.members.push({
                   type: 'passthrough',
                   index: site.index++,
-                  text: `${name}={${compact(property.getInitializerOrThrow().getText())}}`,
+                  text: `${name}={${property.getInitializerOrThrow().getText()}}`,
                 })
               }
               continue
@@ -1421,8 +1421,8 @@ export function convertJsxSite(
             type: 'spread',
             index: site.index++,
             text: Node.isSpreadAssignment(property)
-              ? `{${compact(property.getText())}}`
-              : `{...{ ${compact(property.getText())} }}`,
+              ? `{${property.getText()}}`
+              : `{...{ ${property.getText()} }}`,
           })
         }
         continue
@@ -1431,7 +1431,7 @@ export function convertJsxSite(
       site.members.push({
         type: 'spread',
         index: site.index++,
-        text: compact(attribute.getText()),
+        text: attribute.getText(),
       })
       continue
     }

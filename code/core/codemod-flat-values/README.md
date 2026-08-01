@@ -1,8 +1,8 @@
 # Flat-values codemod
 
 Converts existing Tamagui style syntax to V3 flat property values. Dry-run mode
-reports every conversion; `--write` applies the statically safe subset and leaves
-flagged source authored for manual migration.
+reports every conversion; `--write` applies every flat-eligible rewrite in one
+transaction and records host or target assessments for manual review.
 
 ```sh
 cd code/core/codemod-flat-values
@@ -14,9 +14,9 @@ bun src/index.ts --help
 ```
 
 The default corpus is `code/kitchen-sink/src/usecases` plus the canonical
-`Button.tsx` skin. Its acceptance test checks every clean program by parsing it back
-through `@tamagui/style-grammar`; outcome counts deliberately move when the grammar,
-platform capabilities, or component types change.
+`Button.tsx` skin. Its acceptance test now asserts that the migrated corpus has no
+V1 conversion sites. Focused fixtures still parse every emitted program back through
+`@tamagui/style-grammar`.
 
 A positional argument that matches no file exits 2 with no report, so a typo in a
 migration path can never read as a clean corpus.
@@ -82,13 +82,13 @@ component's TypeScript prop type accepts the style.
 - **clean** means all three checks passed. A shared `.tsx` file must work on web and
   native; `.web.tsx` and `.native.tsx` require only their named target.
 - **needs-relocation** means the syntax is valid but the authored target or host cannot
-  evaluate it. The report keeps the legacy condition authored and prints the contract's
-  remedy. For example, `exitStyle` stays driver-evaluated in a shared file because
-  `exit:` has no web selector, while text-only styles on a View move to Text or
+  evaluate it. Write mode still removes the V1 syntax because V3 has no legacy runtime;
+  the report prints the required hand edit. For example, a component-tier web state in
+  a shared file moves to `.web.tsx`, while text-only styles on a View move to Text or
   `html.*`.
 - **unknown-host** means the component is provably Tamagui but its TypeScript type does
   not expose enough component identity and style-prop information to verify the host.
-  The report keeps the source authored for review instead of calling it clean.
+  Write mode converts the site and leaves the host check in the report for review.
 - **ineligible** means the property has no flat clause spelling. Transform and React
   Native shadow part props stay authored, with a remedy that points to the `transform`,
   `boxShadow`, or `textShadow` composite.
