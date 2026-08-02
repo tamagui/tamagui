@@ -233,8 +233,20 @@ repo ends up with two.
   starts but the page reports `Can't find Tamagui configuration` alongside a
   duplicate-instance warning. The Tailwind unit suites (web 456, native 275)
   are green, but the pixel-level check went unmeasured in phase 5.
-- Two configs independently paired a v5 config with v6 themes and broke at
-  runtime: kitchen-sink (walked back in `e761914e27`) and the Expo Router
-  starter (`ba0f262924`, where `theme.red10.val` threw
-  `Cannot read properties of undefined`). If a third config does the same, it
-  will fail the same way.
+- Two configs independently paired a v5 config with **v6's actual theme set** and
+  broke at runtime: kitchen-sink (walked back in `e761914e27`) and the Expo
+  Router starter (`ba0f262924`, where `theme.red10.val` threw
+  `Cannot read properties of undefined`). The mechanism is that v5-era lookups
+  reach for values v6's palette does not contain.
+
+  **This does not describe `toV6Themes`, and reading it that way has now cost two
+  people time (2026-08-02).** `toV6Themes` renames a theme's camelCase keys to
+  kebab-case and drops exactly one name, `backgroundActive`
+  (`v6RemovedThemeNames`). The values stay whatever you handed it. So
+  `{ ...configV5, themes: toV6Themes(configV5.themes) }` keeps v5's palette under
+  v6 naming and is the deliberate, supported way to migrate. kitchen-sink and
+  `tamagui-dev-config` both do it on purpose.
+
+  The hazard is swapping in a *different palette*, not converting key names. When
+  a theme value goes missing, check whether the palette changed before blaming
+  the naming conversion.
