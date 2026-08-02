@@ -314,7 +314,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
     <>
       <span style={{ opacity: 0 }}>{displayText}</span>
 
-      <YStack position="absolute" inset={0}>
+      <span style={{ position: 'absolute', inset: 0, display: 'flex' }}>
         <HeroText className="clip-text rainbow grain" l={-1} opacity={0.5}>
           {displayText}
         </HeroText>
@@ -365,7 +365,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
             {displayText}
           </HeroText>
         </ThemeTintAlt>
-      </YStack>
+      </span>
     </>
   )
 }
