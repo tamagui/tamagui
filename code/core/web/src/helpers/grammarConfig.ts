@@ -98,6 +98,8 @@ export interface GrammarRuntimeContext {
   modifierDiagnostics: readonly string[]
   /** content-derived stamp; part of the program hash and the cache generation */
   configRevision: string
+  /** per-input hashes used to diagnose server/client revision mismatches */
+  configRevisionParts: ConfigRevisionParts
   /** media key -> `@media` condition text */
   mediaQueries: Readonly<Record<string, string>>
   /** container size -> `@container` condition text; size keys only */
@@ -129,6 +131,21 @@ export interface GrammarRuntimeContext {
     theme?: ThemeParsed,
     fontFamily?: string
   ): (name: string) => string | number
+}
+
+export type ConfigRevisionPart =
+  | 'media'
+  | 'themeNames'
+  | 'themeVariables'
+  | 'tokens'
+  | 'fonts'
+  | 'shorthands'
+
+export type ConfigRevisionParts = Readonly<Record<ConfigRevisionPart, string>>
+
+export interface ConfigRevisionSnapshot {
+  revision: string
+  parts: ConfigRevisionParts
 }
 
 export interface CreateGrammarRuntimeContextOptions {
@@ -265,10 +282,12 @@ export function createGrammarRuntimeContext(
     return tokenNameOwners.get(name) ?? null
   }
 
+  const configRevision = getConfigRevision(config, mediaQueries, themeVariables, tokens)
   const context: GrammarRuntimeContext = {
     registry,
     modifierDiagnostics: diagnostics,
-    configRevision: getConfigRevision(config, mediaQueries, themeVariables, tokens),
+    configRevision: configRevision.revision,
+    configRevisionParts: configRevision.parts,
     mediaQueries,
     containerQueries,
     containerSizes,
@@ -405,6 +424,16 @@ export function createGrammarRuntimeContext(
   return context
 }
 
+export function getConfigRevisionSnapshot(
+  config: TamaguiInternalConfig
+): ConfigRevisionSnapshot {
+  const context = createGrammarRuntimeContext(config)
+  return {
+    revision: context.configRevision,
+    parts: context.configRevisionParts,
+  }
+}
+
 /**
  * The transform family's axis custom properties inherit x/y's space binding
  * (x/y themselves bind through `defaultTokenCategories`).
@@ -509,7 +538,7 @@ function resolveContainerQueries(
   return { containerQueries, containerSizes: Object.keys(containerQueries) }
 }
 
-const revisions = new WeakMap<TamaguiInternalConfig, string>()
+const revisions = new WeakMap<TamaguiInternalConfig, ConfigRevisionSnapshot>()
 
 /**
  * A content hash, not a counter, so the same config stamps the same revision in
@@ -522,39 +551,55 @@ function getConfigRevision(
   mediaQueries: Readonly<Record<string, string>>,
   themeVariables: ReadonlyMap<string, Variable>,
   tokens: Record<string, Record<string, unknown>>
-): string {
+): ConfigRevisionSnapshot {
   const cached = revisions.get(config)
   if (cached) return cached
 
-  const parts: string[] = []
-  for (const key of Object.keys(mediaQueries).sort()) {
-    parts.push(`m:${key}=${mediaQueries[key]}`)
+  const sections: Record<ConfigRevisionPart, string[]> = {
+    media: [],
+    themeNames: [],
+    themeVariables: [],
+    tokens: [],
+    fonts: [],
+    shorthands: [],
   }
-  parts.push(
+  for (const key of Object.keys(mediaQueries).sort()) {
+    sections.media.push(`m:${key}=${mediaQueries[key]}`)
+  }
+  sections.themeNames.push(
     `t:${Object.keys(config.themes ?? {})
       .sort()
       .join(',')}`
   )
-  parts.push(`v:${[...themeVariables.keys()].sort().join(',')}`)
+  sections.themeVariables.push(`v:${[...themeVariables.keys()].sort().join(',')}`)
   for (const category of tokenCategoryNames) {
     const categoryTokens = tokens[category]
-    parts.push(
+    sections.tokens.push(
       `${category}:${categoryTokens ? Object.keys(categoryTokens).sort().join(',') : ''}`
     )
   }
   for (const family of Object.keys(config.fontsParsed ?? {}).sort()) {
     const font = (config.fontsParsed as Record<string, Record<string, unknown>>)[family]
-    parts.push(`f:${family}=${font ? Object.keys(font).sort().join(',') : ''}`)
+    sections.fonts.push(`f:${family}=${font ? Object.keys(font).sort().join(',') : ''}`)
   }
   const shorthands = config.shorthands ?? {}
-  parts.push(
+  sections.shorthands.push(
     `s:${Object.keys(shorthands)
       .sort()
       .map((key) => `${key}>${shorthands[key]}`)
       .join(',')}`
   )
 
-  const revision = simpleHash(parts.join('|'), 'strict') || '0'
-  revisions.set(config, revision)
-  return revision
+  const serialized = Object.values(sections).flat()
+  const snapshot: ConfigRevisionSnapshot = {
+    revision: simpleHash(serialized.join('|'), 'strict') || '0',
+    parts: Object.fromEntries(
+      Object.entries(sections).map(([name, values]) => [
+        name,
+        simpleHash(values.join('|'), 'strict') || '0',
+      ])
+    ) as Record<ConfigRevisionPart, string>,
+  }
+  revisions.set(config, snapshot)
+  return snapshot
 }

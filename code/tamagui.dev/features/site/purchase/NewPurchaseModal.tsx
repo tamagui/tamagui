@@ -291,7 +291,7 @@ export function PurchaseModalContents() {
           }
         }}
       >
-        <Dialog.Adapt when="maxMd">
+        <Dialog.Adapt when="max-md">
           <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Container p={0} flex={1}>
               <Sheet.Background bg="color1" />

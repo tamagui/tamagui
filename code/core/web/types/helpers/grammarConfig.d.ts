@@ -14,6 +14,8 @@ export interface GrammarRuntimeContext {
     modifierDiagnostics: readonly string[];
     /** content-derived stamp; part of the program hash and the cache generation */
     configRevision: string;
+    /** per-input hashes used to diagnose server/client revision mismatches */
+    configRevisionParts: ConfigRevisionParts;
     /** media key -> `@media` condition text */
     mediaQueries: Readonly<Record<string, string>>;
     /** container size -> `@container` condition text; size keys only */
@@ -40,6 +42,12 @@ export interface GrammarRuntimeContext {
      */
     createNativeValueGetter(theme?: ThemeParsed, fontFamily?: string): (name: string) => string | number;
 }
+export type ConfigRevisionPart = 'media' | 'themeNames' | 'themeVariables' | 'tokens' | 'fonts' | 'shorthands';
+export type ConfigRevisionParts = Readonly<Record<ConfigRevisionPart, string>>;
+export interface ConfigRevisionSnapshot {
+    revision: string;
+    parts: ConfigRevisionParts;
+}
 export interface CreateGrammarRuntimeContextOptions {
     /**
      * Overrides the derived container query table. Every size-measuring media key
@@ -49,6 +57,7 @@ export interface CreateGrammarRuntimeContextOptions {
     containerQueries?: Readonly<Record<string, string>>;
 }
 export declare function createGrammarRuntimeContext(config: TamaguiInternalConfig, options?: CreateGrammarRuntimeContextOptions): GrammarRuntimeContext;
+export declare function getConfigRevisionSnapshot(config: TamaguiInternalConfig): ConfigRevisionSnapshot;
 export declare function categoryForProperty(property: string): TokenCategoryName | FontCategoryName | undefined;
 export {};
 //# sourceMappingURL=grammarConfig.d.ts.map

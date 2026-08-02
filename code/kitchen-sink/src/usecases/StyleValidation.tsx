@@ -294,7 +294,7 @@ const MediaQuery = () => (
     id="sv-media"
     width={80}
     height={80}
-    backgroundColor="rgb(255,0,0) md:rgb(0,0,255) sm:rgb(0,255,0)"
+    backgroundColor="rgb(255,0,0) max-lg:rgb(0,0,255) max-md:rgb(0,255,0)"
   />
 )
 

@@ -68,7 +68,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
         </XStack>
       </Popover.Anchor>
 
-      <Adapt platform="touch" when="maxMd">
+      <Adapt platform="touch" when="max-md">
         <Sheet zIndex={100000000} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Container>
             <Sheet.Background />

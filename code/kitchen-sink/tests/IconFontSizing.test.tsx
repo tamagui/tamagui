@@ -33,9 +33,9 @@ async function fontSizePx(page: any, testId: string) {
 test('button icon and text resolve through the font scale at the size token', async ({
   page,
 }) => {
-  // kitchen-sink uses the v3 Inter scale: font.body.size.$3 === 13, $5 === 16
-  expect(await nestedSvgWidth(page, 'btn-2')).toBe(13)
-  expect(await fontSizePx(page, 'btn-2')).toBe(13)
+  // kitchen-sink uses the v5 scale: font.body.size.$3 === 14, $5 === 16
+  expect(await nestedSvgWidth(page, 'btn-2')).toBe(14)
+  expect(await fontSizePx(page, 'btn-2')).toBe(14)
   expect(await nestedSvgWidth(page, 'btn-6')).toBe(16)
   expect(await fontSizePx(page, 'btn-6')).toBe(16)
 })
@@ -43,8 +43,8 @@ test('button icon and text resolve through the font scale at the size token', as
 test('direct icon token size resolves via the font size scale, not size tokens', async ({
   page,
 }) => {
-  // font.body.size['2'] === 12 (size token 2 === 28)
-  expect(await directSvgWidth(page, 'icon-2')).toBe(12)
-  // font.body.size['8'] === 23 (size token 8 === 84)
-  expect(await directSvgWidth(page, 'icon-8')).toBe(23)
+  // font.body.size['2'] === 13 (size token 2 === 28)
+  expect(await directSvgWidth(page, 'icon-2')).toBe(13)
+  // font.body.size['8'] === 26 (size token 8 === 84)
+  expect(await directSvgWidth(page, 'icon-8')).toBe(26)
 })

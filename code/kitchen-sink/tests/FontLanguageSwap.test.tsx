@@ -23,9 +23,11 @@ test.beforeEach(async ({ page }) => {
 
 test('the default face resolves its own family and metrics', async ({ page }) => {
   const face = page.getByTestId('default-face')
-  await expect(face).toHaveCSS('font-size', '13px')
-  await expect(face).toHaveCSS('line-height', '22px')
-  expect(await face.evaluate((el) => getComputedStyle(el).fontFamily)).toContain('Inter')
+  await expect(face).toHaveCSS('font-size', '14px')
+  await expect(face).toHaveCSS('line-height', '21px')
+  expect(await face.evaluate((el) => getComputedStyle(el).fontFamily)).toContain(
+    'system-ui'
+  )
 })
 
 test('a language face brings its own metrics, not just its own name', async ({
@@ -35,7 +37,7 @@ test('a language face brings its own metrics, not just its own name', async ({
   expect(await face.evaluate((el) => getComputedStyle(el).fontFamily)).toContain(
     'KitchenSinkJA'
   )
-  // the ja face maps token 3 to 20/30 where the default face maps it to 13/22, so
+  // the ja face maps token 3 to 20/30 where the v5 default maps it to 14/21, so
   // these prove the size scale swapped with the family rather than surviving it
   await expect(face).toHaveCSS('font-size', '20px')
   await expect(face).toHaveCSS('line-height', '30px')
@@ -45,8 +47,8 @@ test('swapping the language at runtime swaps the face and its metrics', async ({
   page,
 }) => {
   const face = page.getByTestId('swapped-face')
-  await expect(face).toHaveCSS('font-size', '13px')
-  await expect(face).toHaveCSS('line-height', '22px')
+  await expect(face).toHaveCSS('font-size', '14px')
+  await expect(face).toHaveCSS('line-height', '21px')
 
   await page.getByTestId('toggle-language').click()
   await expect(face).toHaveCSS('font-size', '20px')
@@ -56,8 +58,8 @@ test('swapping the language at runtime swaps the face and its metrics', async ({
   )
 
   await page.getByTestId('toggle-language').click()
-  await expect(face).toHaveCSS('font-size', '13px')
-  await expect(face).toHaveCSS('line-height', '22px')
+  await expect(face).toHaveCSS('font-size', '14px')
+  await expect(face).toHaveCSS('line-height', '21px')
 })
 
 test('the swap is scoped to the wrapper and leaves the rest of the page alone', async ({
@@ -68,9 +70,9 @@ test('the swap is scoped to the wrapper and leaves the rest of the page alone', 
 
   // the default face is outside the wrapper, so a language swap must not reach it
   const untouched = page.getByTestId('default-face')
-  await expect(untouched).toHaveCSS('font-size', '13px')
-  await expect(untouched).toHaveCSS('line-height', '22px')
+  await expect(untouched).toHaveCSS('font-size', '14px')
+  await expect(untouched).toHaveCSS('line-height', '21px')
   expect(await untouched.evaluate((el) => getComputedStyle(el).fontFamily)).toContain(
-    'Inter'
+    'system-ui'
   )
 })

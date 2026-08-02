@@ -73,7 +73,7 @@ const DebugInfo = styled(Text, {
   name: 'DebugInfo',
   context: GridContext,
   fontSize: 12,
-  fontFamily: 'mono',
+  fontFamily: 'monospace',
 })
 
 function DebugDisplay({ id }: { id: string }) {

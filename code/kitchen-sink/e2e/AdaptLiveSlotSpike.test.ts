@@ -105,7 +105,9 @@ describe('AdaptLiveSlotSpike', () => {
     await detoxExpect(testElement('live-slot-context')).toHaveText(
       'dialog-context: dialog-parent-ok; portal-context: portal-wrapper-ok; target-context: target-context-ok; revision: 0'
     )
-    await detoxExpect(element(by.label('Live slot spike panel'))).toExist()
+    await detoxExpect(testElement('live-slot-content')).toHaveLabel(
+      'Live slot spike panel'
+    )
 
     await withSync(() => testElement('live-slot-focus-next').tap())
     await detoxExpect(testElement('live-slot-press-count')).toHaveText('press-count: 1')

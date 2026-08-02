@@ -60,7 +60,7 @@ const AltTrigger = styled(SelectTrigger, {
 const AltValue = styled(SelectValue, {
   name: 'KitchenAltSelectValue',
   color: 'purple11',
-  fontFamily: 'mono',
+  fontFamily: 'monospace',
 })
 
 const AltItem = styled(SelectItem, {
@@ -72,7 +72,7 @@ const AltItem = styled(SelectItem, {
 const AltItemText = styled(SelectItemText, {
   name: 'KitchenAltSelectItemText',
   color: 'purple11',
-  fontFamily: 'mono',
+  fontFamily: 'monospace',
 })
 
 const AltItemIndicator = styled(SelectItemIndicator, {

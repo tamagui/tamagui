@@ -106,7 +106,7 @@ export function PopoverHoverableDisableClickCase() {
 
       <YStack id="open-state-log" gap="1" mt="4">
         {log.map((entry, i) => (
-          <SizableText key={i} size="2" color="color8" fontFamily="mono">
+          <SizableText key={i} size="2" color="color8" fontFamily="monospace">
             {entry}
           </SizableText>
         ))}

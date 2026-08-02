@@ -485,7 +485,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
 
   const context = React.useContext(SlidingPopoverContext)
   const pointerFine = !isTouchable
-  const isOnlyShowingMenu = useMedia().maxMd
+  const isOnlyShowingMenu = useMedia()['max-md']
 
   useFocusEffect(() => {
     context.close()
@@ -589,7 +589,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
   const bentoStore = useBentoStore()
   const themeHistories = data?.themeHistories || []
   const bentoTheme = useBentoTheme()
-  const isOnlyShowingMenu = useMedia().maxMd
+  const isOnlyShowingMenu = useMedia()['max-md']
   const isMobile = isTouchable && isOnlyShowingMenu
 
   const contents = (() => {

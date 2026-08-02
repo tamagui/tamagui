@@ -14,7 +14,7 @@ test('applies the last matching hover clause', async ({ page }) => {
   await expect(background).toHaveCSS('background-color', 'rgb(0, 0, 255)')
 })
 
-test('updates shorthand padding at the sm breakpoint', async ({ page }) => {
+test('updates shorthand padding at the max-sm breakpoint', async ({ page }) => {
   const padding = page.getByTestId('flat-padding')
 
   await expect(padding).toHaveCSS('padding-top', '18px')

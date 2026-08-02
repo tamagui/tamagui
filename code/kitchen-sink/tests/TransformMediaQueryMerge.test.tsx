@@ -33,11 +33,11 @@ test.describe('Transform Media Query Merge', () => {
   })
 
   test('media query x OVERWRITES base value (not cumulative)', async ({ page }) => {
-    // Set viewport to sm breakpoint
+    // Set viewport below the max-sm breakpoint
     await page.setViewportSize({ width: 600, height: 800 })
     await page.waitForTimeout(300)
 
-    // Test 1: styled() with base x=-100, sm: x=50
+    // Test 1: styled() with base x=-100, max-sm: x=50
     // If cumulative (bug): x = -100 + 50 = -50
     // If overwrite (correct): x = 50
     const x1 = await getComputedTranslateX(page, '[data-testid="test1"]')
@@ -51,7 +51,7 @@ test.describe('Transform Media Query Merge', () => {
     await page.setViewportSize({ width: 600, height: 800 })
     await page.waitForTimeout(300)
 
-    // Test 3: runtime prop with base x=-75, sm: x=75
+    // Test 3: runtime prop with base x=-75, max-sm: x=75
     // If cumulative (bug): x = -75 + 75 = 0
     // If overwrite (correct): x = 75
     const x3 = await getComputedTranslateX(page, '[data-testid="test3"]')

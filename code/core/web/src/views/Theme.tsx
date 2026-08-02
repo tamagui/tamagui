@@ -227,13 +227,15 @@ function getThemeClassNameAndColor(
     : undefined
 
   const themeClassName = themeState.name.replace(schemePrefix, '')
+  const fullThemeClassName =
+    themeState.name === themeClassName ? '' : ` t_${themeState.name}`
 
   // Build full hierarchy of theme classes for CSS variable inheritance
   // Examples:
   // - "red_surface1" → "t_red t_red_surface1"
   // - "green_active_Button" → "t_green t_green_active t_green_active_Button"
   const themeNameParts = themeClassName.split('_')
-  let themeClasses = `t_${themeClassName}`
+  let themeClasses = `t_${themeClassName}${fullThemeClassName}`
 
   if (themeNameParts.length > 1) {
     // Build full hierarchy for all multi-part themes (sub-themes, component themes, etc.)
@@ -242,7 +244,7 @@ function getThemeClassNameAndColor(
     for (let i = 1; i <= themeNameParts.length; i++) {
       hierarchyClasses.push(`t_${themeNameParts.slice(0, i).join('_')}`)
     }
-    themeClasses = hierarchyClasses.join(' ')
+    themeClasses = `${hierarchyClasses.join(' ')}${fullThemeClassName}`
   }
 
   const className = `${isRoot ? '' : 't_sub_theme'} ${themeClasses}`

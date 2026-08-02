@@ -73,7 +73,7 @@ export function Demo({
       </Popover.Trigger>
 
       {shouldAdapt && (
-        <Adapt when="maxMd" platform="touch">
+        <Adapt when="max-md" platform="touch">
           <Sheet transition="medium" modal dismissOnSnapToBottom>
             <Sheet.Container p="4">
               <Sheet.Background />

@@ -122,6 +122,20 @@ function createParsedTokens(tokensIn: CreateTamaguiProps['tokens']): TokensParse
   return parsed as TokensParsed
 }
 
+function isNamesOnlyThemeProjection(
+  themes: Record<string, Record<string, unknown>>
+): boolean {
+  const names = Object.keys(themes)
+  if (names.length === 0) return false
+
+  return names.every((name) => {
+    const theme = themes[name]
+    if (!theme || typeof theme !== 'object') return false
+    const variables = Object.keys(theme)
+    return variables.length > 0 && variables.every((key) => theme[key] === undefined)
+  })
+}
+
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
@@ -158,8 +172,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   let foundThemes: DedupedThemes | undefined
   if (configIn.themes) {
     const noThemes = Object.keys(configIn.themes).length === 0
-    if (noThemes && !process.env.TAMAGUI_DID_OUTPUT_CSS) {
-      foundThemes = scanAllSheets(noThemes, tokensParsed)
+    const namesOnlyThemes = isNamesOnlyThemeProjection(configIn.themes)
+    if ((noThemes || namesOnlyThemes) && !process.env.TAMAGUI_DID_OUTPUT_CSS) {
+      // A names-only client projection keeps the grammar/config revision
+      // deterministic while the CSS remains authoritative for actual values.
+      foundThemes = scanAllSheets(true, tokensParsed)
     }
   }
 

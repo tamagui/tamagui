@@ -102,7 +102,7 @@ function TakeoutStyleDialog({
         <Dialog.FocusScope focusOnIdle>
           <DialogContent key="content" rounded={CONTENT_RADIUS} overflow="hidden" p="3">
             <YStack pointerEvents="box-none" gap="2">
-              <Dialog.Title fontFamily="mono" text="center" size="5">
+              <Dialog.Title fontFamily="monospace" text="center" size="5">
                 Dialog with Sheet Adapt
               </Dialog.Title>
               <Dialog.Description size="4" color="color10">

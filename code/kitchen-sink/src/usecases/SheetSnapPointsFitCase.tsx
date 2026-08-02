@@ -64,7 +64,7 @@ function Tall3pcDialogAdaptSheet() {
         </Button>
       </Dialog.Trigger>
 
-      <Adapt when="xs" platform="web">
+      <Adapt when="max-xs" platform="web">
         <Sheet
           transition="medium"
           zIndex={250000}
@@ -178,7 +178,7 @@ function AdaptedDialogSheet() {
         <Button data-testid="adapted-dialog-trigger">Open Adapted Dialog/Sheet</Button>
       </Dialog.Trigger>
 
-      <Adapt when="sm" platform="web">
+      <Adapt when="max-sm" platform="web">
         <Sheet
           transition="medium"
           zIndex={200000}

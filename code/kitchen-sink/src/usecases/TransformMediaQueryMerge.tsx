@@ -3,7 +3,7 @@ import { YStack, XStack, Text, Square, styled } from 'tamagui'
 /**
  * Test case for transform media query merging bug
  *
- * Bug: When a media query like sm sets transform props like `x`, it should OVERWRITE
+ * Bug: When a media query like max-sm sets transform props like `x`, it should OVERWRITE
  * the base value, not be CUMULATIVE (added together).
  *
  * Example:
@@ -16,9 +16,9 @@ import { YStack, XStack, Text, Square, styled } from 'tamagui'
 // Styled component with transform in media query definition
 const TransformBox = styled(Square, {
   size: 100,
-  bg: 'blue10 sm:green10',
-  // at sm: should be shifted right 50px (OVERWRITE, not cumulative)
-  x: '-100px sm:50px',
+  bg: 'blue10 max-sm:green10',
+  // at max-sm: should be shifted right 50px (OVERWRITE, not cumulative)
+  x: '-100px max-sm:50px',
 })
 
 export function TransformMediaQueryMerge() {
@@ -28,14 +28,16 @@ export function TransformMediaQueryMerge() {
         Transform Media Query Merge Test
       </Text>
       <Text fontSize="2" color="color10">
-        Resize window to test. At sm breakpoint, x should OVERWRITE not be cumulative.
+        Resize window to test. At max-sm, x should OVERWRITE not be cumulative.
       </Text>
 
       {/* Test 1: styled() component with transform in definition */}
       <YStack gap="2">
         <Text fontWeight="bold">Test 1: styled() component</Text>
-        <Text fontSize="2">Base: x=-100, sm: x=50</Text>
-        <Text fontSize="2">Expected at sm: x=50 (overwrite), NOT x=-50 (cumulative)</Text>
+        <Text fontSize="2">Base: x=-100, max-sm: x=50</Text>
+        <Text fontSize="2">
+          Expected at max-sm: x=50 (overwrite), NOT x=-50 (cumulative)
+        </Text>
         <XStack
           height={150}
           bg="color3"
@@ -53,9 +55,11 @@ export function TransformMediaQueryMerge() {
 
       {/* Test 3: Runtime prop with media query */}
       <YStack gap="2">
-        <Text fontWeight="bold">Test 3: Runtime prop with sm</Text>
-        <Text fontSize="2">Base: x=-75, sm: x=75</Text>
-        <Text fontSize="2">Expected at sm: x=75 (overwrite), NOT x=0 (cumulative)</Text>
+        <Text fontWeight="bold">Test 3: Runtime prop with max-sm</Text>
+        <Text fontSize="2">Base: x=-75, max-sm: x=75</Text>
+        <Text fontSize="2">
+          Expected at max-sm: x=75 (overwrite), NOT x=0 (cumulative)
+        </Text>
         <XStack
           height={150}
           bg="color3"
@@ -78,8 +82,8 @@ export function TransformMediaQueryMerge() {
             testID="test3"
             data-testid="test3"
             size={100}
-            bg="red10 sm:blue10"
-            x="-75px sm:75px"
+            bg="red10 max-sm:blue10"
+            x="-75px max-sm:75px"
           />
         </XStack>
       </YStack>

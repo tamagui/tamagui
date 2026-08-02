@@ -77,7 +77,7 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
       </Dialog.Trigger>
 
       {mode === 'adapt' && (
-        <Adapt when="maxMd" platform="touch">
+        <Adapt when="max-md" platform="touch">
           <Sheet
             transition="medium"
             zIndex={200000}

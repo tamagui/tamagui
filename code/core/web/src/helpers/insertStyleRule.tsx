@@ -7,6 +7,7 @@ import type {
   ThemeParsed,
   TokensParsed,
 } from '../types'
+import { normalizeThemeValue } from './themes'
 
 // only cache tamagui styles
 // TODO merge totalSelectorsInserted and allSelectors?
@@ -242,7 +243,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
       {
         key,
         name: key,
-        val: value,
+        val: normalizeThemeValue(value),
       },
       true
     ) as any
@@ -252,22 +253,32 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   // loop selectors and build deduped
   for (const selector of selectors) {
-    if (selector === ' .tm_xxt') continue
-    const lastThemeSelectorIndex = selector.lastIndexOf('.t_')
-    const name = selector.slice(lastThemeSelectorIndex).slice(3)
-    const [schemeChar] = selector[lastThemeSelectorIndex - 5]
-    const scheme = schemeChar === 'd' ? 'dark' : schemeChar === 'i' ? 'light' : ''
-    const themeName = scheme && scheme !== name ? `${scheme}_${name}` : name
-    if (!themeName || themeName === 'light_dark' || themeName === 'dark_light') {
-      continue
-    }
-    names.add(themeName)
+    const themeName = getThemeNameFromSelector(selector)
+    if (themeName) names.add(themeName)
   }
 
   return {
     names: [...names],
     theme: values,
   } satisfies DedupedTheme
+}
+
+export function getThemeNameFromSelector(selector: string): string | undefined {
+  if (selector === ' .tm_xxt') return
+  const lastThemeSelectorIndex = selector.lastIndexOf('.t_')
+  if (lastThemeSelectorIndex === -1) return
+
+  // A selector may qualify the class for specificity, for example
+  // `.t_light_blue:not(#t_theme_full_name)`. Only the class identifier is a
+  // theme name; retaining the pseudo-class would double the client theme set.
+  const name = selector.slice(lastThemeSelectorIndex + 3).match(/^[\w-]+/)?.[0]
+  if (!name) return
+
+  const schemeChar = selector[lastThemeSelectorIndex - 5]
+  const scheme = schemeChar === 'd' ? 'dark' : schemeChar === 'i' ? 'light' : ''
+  const themeName = scheme && scheme !== name ? `${scheme}_${name}` : name
+  if (themeName === 'light_dark' || themeName === 'dark_light') return
+  return themeName
 }
 
 const tamaguiSelectorRegex = /\.tm_xxt/

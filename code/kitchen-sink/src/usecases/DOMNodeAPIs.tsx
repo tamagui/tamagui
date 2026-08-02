@@ -143,7 +143,7 @@ export function DOMNodeAPIs() {
       <YStack id="dom-node-results" gap="1" paddingTop="4">
         {Object.entries(results).map(([key, value]) => (
           <XStack key={key} gap="2">
-            <Text fontSize="2" fontFamily="mono" data-testid={`result-${key}`}>
+            <Text fontSize="2" fontFamily="monospace" data-testid={`result-${key}`}>
               {key}={value}
             </Text>
           </XStack>

@@ -158,7 +158,7 @@ function Scenario03_InitialFalse() {
               y="enter:-3px exit:-3px"
               size={16}
             >
-              <Text color="color1" fontFamily="mono" fontSize={10} lineHeight={10}>
+              <Text color="color1" fontFamily="monospace" fontSize={10} lineHeight={10}>
                 {countString}
               </Text>
             </Circle>
@@ -226,7 +226,7 @@ function Scenario02_CircleBadge() {
               y="enter:-3px exit:-3px"
               size={24}
             >
-              <Text color="color1" fontFamily="mono" fontSize={12}>
+              <Text color="color1" fontFamily="monospace" fontSize={12}>
                 {countString}
               </Text>
             </Circle>

@@ -181,8 +181,6 @@ const loaders: Record<string, () => ComponentType<any>> = {
   OnLayoutStressCase: () => require('./OnLayoutStressCase').OnLayoutStressCase,
   NewInputEvents: () => require('./NewInputEvents').NewInputEvents,
   OverlayStyled: () => require('./OverlayStyled').OverlayStyled,
-  ParagraphSpanFontInheritance: () =>
-    require('./ParagraphSpanFontInheritance').ParagraphSpanFontInheritance,
   PlaceholderTextColor: () => require('./PlaceholderTextColor').PlaceholderTextColor,
   PointerEventsCase: () => require('./PointerEventsCase').PointerEventsCase,
   ProgressFirstPaint: () => require('./ProgressFirstPaint').ProgressFirstPaint,

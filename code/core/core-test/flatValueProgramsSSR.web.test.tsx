@@ -37,10 +37,63 @@ beforeAll(() => {
 })
 
 afterEach(() => {
+  vi.unstubAllEnvs()
   vi.restoreAllMocks()
 })
 
 describe('flat value program SSR', () => {
+  test('names the config inputs that differ between server and hydration', async () => {
+    const base = config.getDefaultTamaguiConfig() as any
+    const serverConfig = createTamagui({
+      ...base,
+      themes: {
+        light: { background: 'red' },
+        light_alt: { background: 'pink' },
+      },
+    })
+    const html = renderToString(
+      <TamaguiProvider config={serverConfig} defaultTheme="light" disableInjectCSS>
+        <div>revision diagnostic</div>
+      </TamaguiProvider>
+    )
+    const container = document.createElement('div')
+    container.innerHTML = html
+    document.body.appendChild(container)
+
+    const clientConfig = createTamagui({
+      ...base,
+      themes: {
+        light: { color: 'black' },
+      },
+    })
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+    let root: ReturnType<typeof hydrateRoot>
+
+    await act(async () => {
+      root = hydrateRoot(
+        container,
+        <TamaguiProvider config={clientConfig} defaultTheme="light" disableInjectCSS>
+          <div>revision diagnostic</div>
+        </TamaguiProvider>
+      )
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    })
+
+    expect(
+      consoleError.mock.calls
+        .flat()
+        .map(String)
+        .find((message) =>
+          message.includes('Server/client config revision mismatch during hydration')
+        )
+    ).toMatch(/server ".+", client ".+".*themeNames, themeVariables/)
+
+    await act(async () => {
+      root.unmount()
+    })
+    container.remove()
+  })
+
   test('hydrates deterministic contiguous blocks and dedupes late insertion', async () => {
     const serverConfig = createTamagui(config.getDefaultTamaguiConfig() as any)
     const initialProps = {

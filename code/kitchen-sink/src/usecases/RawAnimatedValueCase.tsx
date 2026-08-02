@@ -154,10 +154,10 @@ export function RawAnimatedValueCase() {
         borderWidth={1}
         borderColor="border-color"
       >
-        <Paragraph size="1" fontFamily="mono">
+        <Paragraph size="1" fontFamily="monospace">
           Debug Info:
         </Paragraph>
-        <Paragraph testID="debug-info" size="1" fontFamily="mono" whiteSpace="pre">
+        <Paragraph testID="debug-info" size="1" fontFamily="monospace" whiteSpace="pre">
           {debugInfo}
         </Paragraph>
       </YStack>
@@ -212,10 +212,15 @@ function ComputedStyleDisplay({ targetId }: { targetId: string }) {
 
   return (
     <YStack backgroundColor="background-hover" padding="2" borderRadius="2">
-      <Paragraph size="1" fontFamily="mono">
+      <Paragraph size="1" fontFamily="monospace">
         Computed Styles:
       </Paragraph>
-      <Paragraph testID="computed-styles" size="1" fontFamily="mono" whiteSpace="pre">
+      <Paragraph
+        testID="computed-styles"
+        size="1"
+        fontFamily="monospace"
+        whiteSpace="pre"
+      >
         {computedStyles}
       </Paragraph>
     </YStack>

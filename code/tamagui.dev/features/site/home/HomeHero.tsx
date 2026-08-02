@@ -296,9 +296,13 @@ const HeroH1 = styled(H1, {
   size: '11',
 })
 
-const HeroText = styled(HeroH1, {
+const HeroText = styled(Span, {
   position: 'absolute',
   text: 'center',
+  fontFamily: 'inherit',
+  fontSize: 'inherit',
+  fontWeight: 'inherit',
+  lineHeight: 'inherit',
   l: 'sm:-2px',
   t: 'sm:0px gtSm:1px gtMd:3px gtLg:7px',
 })

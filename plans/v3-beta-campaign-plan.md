@@ -318,6 +318,21 @@ The observed failures were not reordering — classes were **dropped** and varia
 references **emptied**. That is a real visual break, not a reproducibility
 annoyance.
 
+**SECOND INDEPENDENT INSTANCE ROOT-CAUSED 2026-08-01.**
+
+`simpleHash(strIn, hashMin)` cached by `strIn` alone even though `hashMin`
+changes the result. A strict caller could therefore populate the cache before a
+readable-hash caller (or vice versa), making all later output for that input
+depend on module evaluation order. The site exposed this as an SSR hydration
+mismatch: server and client emitted different atomic class names for identical
+declarations. The real strict callers in `programHash.ts`, `grammarConfig.ts`
+and `variables.ts` mean this was not theoretical.
+
+Fix: key the cache by both `hashMin` and `strIn`, with a regression that runs
+strict-then-readable and readable-then-strict from fresh module state and
+requires the same pair of outputs. This is a separate same-source/different-bytes
+bug from the platform-ambiguous bundle cache above.
+
 Two consequences worth keeping:
 - `_tt-f-transform44812` on H1 SHOULD be emitted. `createFont`'s `processSection`
   forward-fills the heading font's `transform: { 6: 'uppercase', 7: 'none' }`

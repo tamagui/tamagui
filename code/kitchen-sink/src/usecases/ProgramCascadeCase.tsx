@@ -29,7 +29,7 @@ export function ProgramCascadeCase() {
         data-testid="base-then-media"
         width={60}
         height={60}
-        backgroundColor="rgb(128, 0, 0) sm:rgb(0, 128, 0)"
+        backgroundColor="rgb(128, 0, 0) max-sm:rgb(0, 128, 0)"
       />
     </YStack>
   )

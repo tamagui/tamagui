@@ -10,7 +10,6 @@ const TextInput = styled(
   TamaguiInput,
   {
     fontSize: 16,
-    fontFamily: 'silkscreen',
     color: 'color5',
     minWidth: 0,
     borderWidth: 0,

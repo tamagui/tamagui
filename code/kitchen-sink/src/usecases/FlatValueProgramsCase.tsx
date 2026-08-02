@@ -10,7 +10,7 @@ export function FlatValueProgramsCase() {
         backgroundColor="red hover:blue"
       />
 
-      <View data-testid="flat-padding" p="4 sm:6">
+      <View data-testid="flat-padding" p="4 max-sm:6">
         <Text>Responsive padding</Text>
       </View>
 

@@ -221,7 +221,8 @@ export const ExampleAnimations = memo(() => {
                 theme={isActive ? 'accent' : null}
                 px="4"
                 py="2"
-                bg={`${isActive ? 'color2' : 'color1'}`}
+                bg={isActive ? 'var(--color2)' : 'var(--color1)'}
+                borderColor="var(--border-color)"
                 cursor="pointer"
                 title={item.name}
                 subTitle={item.description}

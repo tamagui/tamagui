@@ -103,7 +103,7 @@ export function Panel({
               />
             </Popover.Trigger>
 
-            <Adapt when="maxMd" platform="touch">
+            <Adapt when="max-md" platform="touch">
               <Sheet modal dismissOnSnapToBottom>
                 <Sheet.Container p="4">
                   <Sheet.Background />

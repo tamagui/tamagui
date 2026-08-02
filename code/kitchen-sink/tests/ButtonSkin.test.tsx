@@ -95,10 +95,9 @@ test('plumbs leading and trailing icons around wrapped text', async ({ page }) =
 
   expect(leadingOrder).toEqual(['button-skin-leading-icon', 'Leading icon'])
   expect(trailingOrder).toEqual(['Trailing icon', 'button-skin-trailing-icon'])
-  // icon + text follow the font scale at the default size token ($4 -> 14 in
-  // kitchen-sink's v3 Inter scale)
-  await expect(page.getByTestId('button-skin-leading-icon')).toHaveCSS('width', '14px')
-  await expect(page.getByText('Wrapped string text')).toHaveCSS('font-size', '14px')
+  // icon + text follow the font scale at the default size token ($4 -> 15 in v5)
+  await expect(page.getByTestId('button-skin-leading-icon')).toHaveCSS('width', '15px')
+  await expect(page.getByText('Wrapped string text')).toHaveCSS('font-size', '15px')
   await expect(page.getByTestId('button-skin-explicit-text')).toHaveText(
     'Explicit text part'
   )

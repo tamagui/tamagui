@@ -544,7 +544,7 @@ const PaymentForm = ({
                 render={<button type="submit" />}
                 rounded="10"
                 self="flex-end"
-                width="maxMd:100%"
+                width="max-md:100%"
                 disabled={isProcessing || !stripe || !elements}
               >
                 <Button.Text fontFamily="mono">
@@ -591,7 +591,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
   const theme = useTheme()
   const themeName = useThemeName()
-  const { maxMd } = useMedia()
+  const maxMd = useMedia()['max-md']
 
   // Use store values if available, otherwise use props
   const yearlyTotal = store.yearlyTotal || propYearlyTotal
@@ -1365,7 +1365,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         store.show = val
       }}
     >
-      <Dialog.Adapt when="maxMd">
+      <Dialog.Adapt when="max-md">
         <Sheet zIndex={1_000_001} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Container p={0} gap="4">
             <Sheet.Background bg="color1" />

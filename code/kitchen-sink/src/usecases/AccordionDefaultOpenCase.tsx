@@ -149,7 +149,7 @@ export function AccordionDefaultOpenCase() {
               <Button
                 id="grow-content"
                 testID="grow-content"
-                size="small"
+                size="2"
                 onPress={() => setExpanded((value) => !value)}
               >
                 Resize content

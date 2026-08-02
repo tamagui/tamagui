@@ -56,6 +56,36 @@ tables, so `v3-button-sizing` was not superseded. `mediaEmitListeners` exists in
 `v3-hook-hazards` was not superseded either. A symbol being present says nothing
 about whether the behavior around it landed. Read the diff.
 
+## Flat program hashes require identical server/client config metadata
+
+Two independent hydration failures on 2026-08-01 had the same visible symptom:
+identical declarations received different flat-program classes on the server and
+client.
+
+First, `simpleHash(strIn, hashMin)` cached by `strIn` alone, so strict and
+readable callers for the same input made each other's output depend on call
+order. The cache now includes `hashMin`, with both call orders covered by a
+regression. This is the second nondeterministic-output bug documented in
+`plans/v3-beta-campaign-plan.md`; it is separate from the compiler's
+platform-ambiguous bundle cache.
+
+Second, `getConfigRevision()` correctly hashes the names that determine grammar
+resolution: theme names, theme-variable names, token names, font names, media
+keys and queries, and shorthands. The site kept full themes on the server but
+replaced them with `themes: {}` on the client to save bundle weight. That made
+every flat-program class diverge during hydration even though the emitted CSS
+declarations were identical.
+
+The constraint is general: **everything that feeds `getConfigRevision()` must
+be identical across server and client environments.** Removing theme names from
+the revision would create silent cache collisions because those names determine
+modifier and payload resolution. The safe client-config optimization is to drop
+theme **values** while preserving theme and variable **names**. For the site,
+that metadata is 6,964 bytes versus 339,521 bytes for full theme JSON. A
+development hydration check now reports both revisions and the specific metadata
+parts that differ, so a future optimization fails with the cause instead of a
+whole-app class mismatch.
+
 ## Failures that reproduce at the pre-rip baseline
 
 These fail identically at `c4be9a44c8` and on the rip branch. Real bugs, wrong

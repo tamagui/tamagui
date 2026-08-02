@@ -114,7 +114,7 @@ export const LogoWords: React.MemoExoticComponent<
           y={mounted === 'start' ? -30 : -4}
           x={x}
           backgroundColor="color12"
-          size={4}
+          style={{ width: 4, height: 4 }}
         />
       )}
 

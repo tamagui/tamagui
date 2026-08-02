@@ -6,6 +6,7 @@ import { setupDev } from '@tamagui/core'
 import { createV5Theme, subtleChildrenThemes } from '@tamagui/themes/v5-subtle-builder'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
+import { clientThemes } from './themeMetadata'
 import { toV6Themes } from './v6Themes'
 
 // only generate the accent themes the site actually uses: red/green/blue/gray/yellow
@@ -13,8 +14,8 @@ import { toV6Themes } from './v6Themes'
 // halves the render-blocking theme css. note: dropping an accent also removes its
 // color tokens (--pink10 etc.), so all pink/purple/orange/teal/neutral usages are
 // collapsed to kept colors across the site. component themes are kept (they dedupe to
-// surfaces in css and the site shows them off). themes-as-js is still stripped to {}
-// on the client below and hydrated from css.
+// surfaces in css and the site shows them off). theme values are stripped on the
+// client below and hydrated from css, while names remain for deterministic SSR.
 const { gray, blue, red, yellow, green } = subtleChildrenThemes
 const themes = toV6Themes(
   createV5Theme({
@@ -43,7 +44,10 @@ export const animations = {
 // the sole V3 built-in namespace.
 export const config = {
   ...defaultConfig,
-  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
+  themes:
+    process.env.VITE_ENVIRONMENT === 'client'
+      ? (clientThemes as unknown as typeof themes)
+      : themes,
   fonts,
   animations,
   media,
