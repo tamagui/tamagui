@@ -223,9 +223,13 @@ string construction is introduced.
   native platform integration, and structural/mechanical layout required for
   correctness.
 - A skin owns colors, typography, radii, padding, visual dimensions, hover/
-  press aesthetics, and named size tables.
-- Default copy/paste skins use semantic named sizes, following the patterns in
-  `~/github/chat/src/interface/buttons`. The values may reference user tokens.
+  press aesthetics, and its sizing projection.
+- AMENDED (post-C1 ruling): the SHIPPED default skins use token-based sizing —
+  `size` takes size tokens (`4`) or `true` resolved through
+  `settings.defaultSize`/`settings.defaultTokens` via `resolveTokenSize`, the
+  same language Input/Label/ListItem/Tabs speak. Named size tables
+  (`createSizeTable`) remain an opt-in primitive for user-owned copied skins
+  only; they are no longer the default-kit pattern originally described here.
 - `@tamagui/size` provides an optional `SizeContext` and reusable token-based
   resolvers. It does not make `size` a universal built-in visual contract.
 - Button exposes a behavior hook. Sheet/Select expose already-wired behavior
@@ -485,9 +489,10 @@ button behavior, press composition, optional text wrapping, and icon prop
 plumbing. Export `useButton` plus styleable structural parts. Do not export a
 `createButton` factory.
 
-**Skin owns:** named sizes, frame/text/icon lookup, gap, radius, colors, borders,
-hover/press/focus visuals, and variants. Start from the simplified chat Button,
-not the current framework default.
+**Skin owns:** sizing (AMENDED: token-based via `resolveTokenSize`, not the
+named px table originally piloted from the chat Button — see the amended
+"Component/skin boundary" above), frame/text/icon lookup, gap, radius, colors,
+borders, hover/press/focus visuals, and variants.
 
 **Acceptance:** canonical copy file is standalone in a starter/kitchen-sink
 app; it uses only public behavior/size APIs; default, disabled, nested, icon,

@@ -4,77 +4,52 @@ import {
   ButtonText as ButtonBehaviorText,
   type ButtonBehaviorProps,
   type ButtonIconProps as ButtonBehaviorIconProps,
-  createSizeTable,
   createStyledHOC,
   type GetProps,
+  getThemedIconSize,
+  getVariableValue,
+  resolveTokenSize,
+  SizeContext,
+  type SizeTokens,
   styled,
+  type TokenSize,
   useButton,
+  type VariantSpreadExtras,
   withStaticProperties,
 } from 'tamagui'
 
-export const buttonSizes = createSizeTable(
-  {
-    small: {
-      frame: {
-        gap: 6,
-        height: 30,
-        paddingHorizontal: 10,
-      },
-      text: {
-        fontSize: 13,
-        lineHeight: 18,
-      },
-      icon: 14,
-    },
-    medium: {
-      frame: {
-        gap: 8,
-        height: 36,
-        paddingHorizontal: 14,
-      },
-      text: {
-        fontSize: 15,
-        lineHeight: 20,
-      },
-      icon: 16,
-    },
-    large: {
-      frame: {
-        gap: 10,
-        height: 44,
-        paddingHorizontal: 18,
-      },
-      text: {
-        fontSize: 17,
-        lineHeight: 24,
-      },
-      icon: 20,
-    },
-    wide: {
-      frame: {
-        gap: 10,
-        height: 44,
-        minWidth: 180,
-        paddingHorizontal: 24,
-      },
-      text: {
-        fontSize: 16,
-        lineHeight: 22,
-      },
-      icon: 18,
-    },
-  } as const,
-  'medium'
-)
+export type ButtonSize = SizeTokens
 
-export type ButtonSize = keyof typeof buttonSizes.values
+const buttonFrameSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>) => {
+  if (extras.props.circular) return
+  const { frame } = resolveTokenSize(val, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  return {
+    borderRadius: frame.radius,
+    gap: Math.round(getVariableValue(frame.size) * 0.2),
+    height: frame.size,
+    paddingHorizontal: frame.space,
+  }
+}
+
+const buttonTextSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>) => {
+  const { text } = resolveTokenSize(val, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  return {
+    fontSize: text.fontSize,
+    ...(text.lineHeight !== undefined && { lineHeight: text.lineHeight }),
+  }
+}
 
 export const ButtonFrame = styled(ButtonBehaviorFrame, {
-  context: buttonSizes.Context,
+  context: SizeContext,
   name: 'SiteButtonFrame',
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover',
-  borderRadius: 8,
   borderWidth: 1,
   cursor: 'web:pointer',
   opacity: 'press:0.7',
@@ -82,12 +57,26 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
-    size: buttonSizes.frame,
+    size: {
+      true: buttonFrameSizeVariant,
+      Size: buttonFrameSizeVariant,
+    },
 
     circular: {
-      true: {
-        borderRadius: 1000,
-        paddingHorizontal: 0,
+      true: (_, extras: VariantSpreadExtras<any>) => {
+        const { frame } = resolveTokenSize((extras.props.size as ButtonSize) ?? true, {
+          tokens: extras.tokens,
+          font: extras.font!,
+        })
+        return {
+          borderRadius: 1000,
+          paddingHorizontal: 0,
+          height: frame.size,
+          maxHeight: frame.size,
+          maxWidth: frame.size,
+          minWidth: frame.size,
+          width: frame.size,
+        }
       },
     },
 
@@ -109,94 +98,55 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
     },
   } as const,
   defaultVariants: {
-    size: 'medium',
+    size: true,
   },
-  compoundVariants: [
-    {
-      size: 'small',
-      circular: true,
-      style: {
-        maxHeight: 30,
-        maxWidth: 30,
-        minWidth: 30,
-        width: 30,
-      },
-    },
-    {
-      size: 'medium',
-      circular: true,
-      style: {
-        maxHeight: 36,
-        maxWidth: 36,
-        minWidth: 36,
-        width: 36,
-      },
-    },
-    {
-      size: 'large',
-      circular: true,
-      style: {
-        maxHeight: 44,
-        maxWidth: 44,
-        minWidth: 44,
-        width: 44,
-      },
-    },
-    {
-      size: 'wide',
-      circular: true,
-      style: {
-        maxHeight: 44,
-        maxWidth: 44,
-        minWidth: 44,
-        width: 44,
-      },
-    },
-  ],
 })
 
 export const ButtonText = styled(ButtonBehaviorText, {
-  context: buttonSizes.Context,
+  context: SizeContext,
   name: 'SiteButtonText',
   color: 'color',
   fontWeight: '600',
   userSelect: 'none',
   variants: {
-    size: buttonSizes.text,
+    size: {
+      true: buttonTextSizeVariant,
+      Size: buttonTextSizeVariant,
+    },
   } as const,
   defaultVariants: {
-    size: 'medium',
+    size: true,
   },
 })
 
 export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
-  const context = buttonSizes.Context.useStyledContext()
-  const namedSize = context?.size ?? buttonSizes.defaultSize
+  const context = SizeContext.useStyledContext()
 
   return (
-    <ButtonBehaviorIcon {...props} size={size ?? buttonSizes.resolve(namedSize).icon} />
+    <ButtonBehaviorIcon
+      {...props}
+      size={size ?? getThemedIconSize(context?.size ?? true)}
+    />
   )
 }
 
 const ButtonComponent = createStyledHOC(
   ButtonFrame,
   function Button(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
-    const size = (props.size ?? buttonSizes.defaultSize) as ButtonSize
-    const { props: buttonProps } = useButton(
-      {
-        ...props,
-        size,
-      },
-      {
-        Text: ButtonText,
-        iconSize: buttonSizes.resolve(size).icon,
-      }
-    )
+    const contextSize = SizeContext.useStyledContext()?.size
+    const size = ((props.size as TokenSize | undefined) ??
+      contextSize ??
+      true) as ButtonSize
+    const sizedProps = { size, ...props }
+    const { props: buttonProps } = useButton(sizedProps, {
+      Text: ButtonText,
+      iconSize: getThemedIconSize(size),
+    })
 
     return (
-      <buttonSizes.Context.Provider size={size}>
+      <SizeContext.Provider size={size}>
         <ButtonFrame ref={ref} {...buttonProps} />
-      </buttonSizes.Context.Provider>
+      </SizeContext.Provider>
     )
   }
 )

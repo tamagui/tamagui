@@ -1,8 +1,27 @@
 import React, { useState } from 'react'
-import { XStack, YStack, isWeb, styled, withStaticProperties } from 'tamagui'
+import {
+  XStack,
+  YStack,
+  isWeb,
+  resolveTokenSize,
+  styled,
+  type VariantSpreadExtras,
+  withStaticProperties,
+} from 'tamagui'
 import { Button } from './Button'
 import { Tabs as TabsBehavior } from '@tamagui/tabs'
-import { getButtonSized } from '@tamagui/get-button-sized'
+
+const tabSizeVariant = (value: any, extras: VariantSpreadExtras<any>) => {
+  const { frame } = resolveTokenSize(value, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  return {
+    borderRadius: frame.radius,
+    height: frame.size,
+    paddingHorizontal: frame.space,
+  }
+}
 
 const demos = ['horizontal', 'vertical'] as const
 
@@ -17,7 +36,7 @@ export const TabFrame = styled(TabsBehavior.Tab, {
   backgroundColor: 'transparent',
   variants: {
     size: {
-      Size: getButtonSized,
+      Size: tabSizeVariant,
     },
 
     disabled: {
@@ -62,7 +81,7 @@ export function TabsCustomDemo() {
 
       <XStack items="center" gap="4" position="absolute" b="3" l="4" display="xxs:none">
         <Button
-          size="small"
+          size="3"
           onPress={() => setDemo(demo === 'horizontal' ? 'vertical' : 'horizontal')}
         >
           <Button.Text textTransform="capitalize">{demo}</Button.Text>

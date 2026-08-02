@@ -24,7 +24,7 @@ export function MenuOverflowCase() {
       {/* position menu trigger near bottom of page to test overflow behavior */}
       <Menu placement="top-start" stayInFrame allowFlip>
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="medium">
+          <Button data-testid="menu-trigger" size="4">
             Open Long Menu
           </Button>
         </Menu.Trigger>

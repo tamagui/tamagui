@@ -161,11 +161,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton
-          size="small"
-          rounded="10"
-          boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)"
-        />
+        <SearchButton size="3" rounded="10" boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)" />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
           <XStack group containerType="normal">
@@ -261,7 +257,7 @@ const HeaderMenuButton = () => {
     <Popover.Trigger>
       <SlidingPopoverTarget id="menu">
         <Button
-          size="large"
+          size="5"
           circular
           my={-1}
           bg="transparent hover:shadow1"

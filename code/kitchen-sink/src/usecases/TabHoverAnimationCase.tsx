@@ -89,7 +89,7 @@ export function TabHoverAnimationCase() {
               <Button
                 id={`tab-${tab.replace(' ', '-').toLowerCase()}`}
                 data-testid={`tab-${tab.replace(' ', '-').toLowerCase()}`}
-                size="medium"
+                size="4"
                 theme={activeTab === tab ? 'blue' : undefined}
               >
                 {tab}

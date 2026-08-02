@@ -155,7 +155,7 @@ export const createSizeTable = <
     if (!(name in values)) {
       if (process.env.NODE_ENV !== 'production') {
         console.error(
-          `Unknown size "${String(name)}" — this size table only has: ${Object.keys(values).join(', ')}. v3 skins use named sizes instead of numeric token sizes; see the upgrade guide. Falling back to "${String(defaultSize)}".`
+          `Unknown size "${String(name)}" — this size table only has: ${Object.keys(values).join(', ')}. Size tables are user-owned named scales; the default skins take size tokens instead. Falling back to "${String(defaultSize)}".`
         )
       }
       return values[defaultSize]

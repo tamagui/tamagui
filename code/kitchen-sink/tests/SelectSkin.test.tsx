@@ -11,9 +11,11 @@ test('keeps two copied skins isolated while preserving selection labels', async 
   const normal = page.getByTestId('select-skin-default-trigger')
   const alternate = page.getByTestId('select-skin-alt-trigger')
 
-  await expect(normal).toHaveCSS('height', '32px')
-  await expect(normal).toHaveCSS('border-radius', '8px')
-  await expect(alternate).toHaveCSS('height', '46px')
+  // token sizing: $3 -> size token 36 / radius token 7 in the v5 config
+  await expect(normal).toHaveCSS('height', '36px')
+  await expect(normal).toHaveCSS('border-radius', '7px')
+  // $5 -> size token 52; the alt skin overrides radius to a pill
+  await expect(alternate).toHaveCSS('height', '52px')
   await expect(alternate).toHaveCSS('border-radius', '1000px')
 
   await normal.click()

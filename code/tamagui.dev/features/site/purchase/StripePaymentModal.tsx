@@ -742,7 +742,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
           </Paragraph>
 
           <Button
-            size="medium"
+            size="4"
             theme="accent"
             onPress={handleLogin}
             icon={GithubIcon}
@@ -872,7 +872,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       setCouponCode(text)
                     }}
                   />
-                  <Button size="medium" theme="accent" onPress={handleApplyCoupon}>
+                  <Button size="4" theme="accent" onPress={handleApplyCoupon}>
                     <Button.Text>Apply</Button.Text>
                   </Button>
                 </XStack>
@@ -1060,7 +1060,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       setCouponCode(text)
                     }}
                   />
-                  <Button size="medium" theme="accent" onPress={handleApplyCoupon}>
+                  <Button size="4" theme="accent" onPress={handleApplyCoupon}>
                     <Button.Text>Apply</Button.Text>
                   </Button>
                 </XStack>
@@ -1272,7 +1272,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                     setCouponCode(text)
                   }}
                 />
-                <Button size="medium" theme="accent" onPress={handleApplyCoupon}>
+                <Button size="4" theme="accent" onPress={handleApplyCoupon}>
                   <Button.Text>Apply</Button.Text>
                 </Button>
               </XStack>
@@ -1399,7 +1399,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="2" r="2" size="small" circular icon={X} />
+              <Button position="absolute" t="2" r="2" size="3" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

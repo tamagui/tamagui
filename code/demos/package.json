@@ -55,7 +55,6 @@
     "@tamagui/config": "workspace:*",
     "@tamagui/context-menu": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/input": "workspace:*",
     "@tamagui/linear-gradient": "workspace:*",

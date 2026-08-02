@@ -22,7 +22,7 @@ export function MenuThemeCase() {
       >
         <Menu placement="bottom-start" offset={8}>
           <Menu.Trigger asChild>
-            <Button data-testid="menu-trigger" size="medium">
+            <Button data-testid="menu-trigger" size="4">
               Open Menu
             </Button>
           </Menu.Trigger>

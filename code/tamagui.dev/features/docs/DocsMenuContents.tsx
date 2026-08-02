@@ -188,7 +188,7 @@ const ToggleAllButton = ({
     <TooltipSimple label={expanded ? 'Collapse all' : 'Expand all'} placement="right">
       <Button
         circular
-        size="medium"
+        size="4"
         my="-3"
         variant="quiet"
         opacity="hover:1 press:0.8"

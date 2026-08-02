@@ -70,7 +70,7 @@ export function CompilerTernaryActive() {
         Active: {isActive ? 'YES' : 'NO'}
       </Text>
 
-      <Button size="small" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
+      <Button size="3" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
         Toggle Active
       </Button>
 

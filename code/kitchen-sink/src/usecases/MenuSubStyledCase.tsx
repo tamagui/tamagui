@@ -49,7 +49,7 @@ export function MenuSubStyledCase() {
       <YStack alignItems="flex-start" gap="4">
         <Menu allowFlip placement="bottom-start" offset={8}>
           <Menu.Trigger asChild>
-            <Button id="menu-trigger" size="medium">
+            <Button id="menu-trigger" size="4">
               Open Menu
             </Button>
           </Menu.Trigger>

@@ -2,7 +2,6 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { createContext } from '@tamagui/create-context'
 import { focusFocusable } from '@tamagui/focusable'
-import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { SizableText } from '@tamagui/text'
 import type {
@@ -11,7 +10,7 @@ import type {
   SizeTokens,
   VariantSpreadExtras,
 } from '@tamagui/web'
-import { createStyledHOC, styled } from '@tamagui/web'
+import { createStyledHOC, resolveDefaultToken, styled } from '@tamagui/web'
 import * as React from 'react'
 
 const NAME = 'Label'
@@ -27,12 +26,13 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
 })
 
 const labelSizeVariant = (val: SizeTokens | true, extras: VariantSpreadExtras<any>) => {
-  const buttonStyle = getButtonSized(val, extras)
-  const buttonHeight = buttonStyle?.height
   const fontStyle = getFontSized(val as FontSizeTokens, extras as any)
+  // line-height matches the control height at the same size token, so a Label
+  // sits flush next to the Input/Button it labels
+  const sizeKey = resolveDefaultToken(val, 'size') as string
   return {
     ...fontStyle,
-    lineHeight: buttonHeight ? extras.tokens.size[buttonHeight] : undefined,
+    lineHeight: extras.tokens.size[sizeKey],
   }
 }
 

@@ -167,7 +167,7 @@ const ThemeBuilderModal = memo(() => {
       >
         <XStack position="absolute" z={999} t="2" l="2" display="gtLg:none">
           <Button
-            size="small"
+            size="3"
             circular
             icon={hide ? ChevronLeft : ChevronRight}
             onPress={() => setHide(!hide)}
@@ -281,14 +281,14 @@ const ThemeStudioStepButtonsBar = () => {
             <a
               href={`start-chat-dev://theme?value=${btoa(JSON.stringify(lastInserted))}`}
             >
-              <Button size="medium">Chat</Button>
+              <Button size="4">Chat</Button>
             </a>
             <View flex={1} />
           </>
         )}
 
       <Button
-        size="medium"
+        size="4"
         onPress={() => {
           if (confirm(`Reset theme builder state?`)) {
             store.reset()
@@ -302,7 +302,7 @@ const ThemeStudioStepButtonsBar = () => {
       {canGoBackward && (
         <Button
           variant="quiet"
-          size="medium"
+          size="4"
           // disabled={disableBackward}
           // opacity={disableBackward ? 0.5 : 1}
           icon={ChevronLeft}
@@ -315,7 +315,7 @@ const ThemeStudioStepButtonsBar = () => {
       {canGoForward && (
         <Theme name={!disableForward ? 'accent' : undefined}>
           <Button
-            size="medium"
+            size="4"
             disabled={disableForward}
             opacity={disableForward ? 0.5 : 1}
             cursor={disableForward ? 'not-allowed' : undefined}

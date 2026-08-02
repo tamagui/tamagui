@@ -21,10 +21,9 @@ registry/json/r/button.json        ← shadcn registry-item (the copy-paste payl
         └─▶ blank web + blank Expo apps — installed, built, interacted with in CI
 ```
 
-> The exact `styled = unstyled + skin` layering mechanism (how the skin is
-> defined and made registry-extractable) is owned by W4 and being finalized; it
-> determines the concrete files `<skin source>` points at. The generator is
-> source-shape-agnostic — see "Wiring to the real skin source" below.
+> `<skin source>` is the real styled source: `code/ui/tamagui/src/components`
+> (one `<Component>.tsx` skin + co-located manifest). The generator is
+> source-shape-agnostic — see "The skin source" below.
 
 Everything the generator can derive from the skin, it derives:
 
@@ -75,21 +74,13 @@ bun ./scripts/generate-registry.ts drift --only-authorized --strict
 3. **expo** — same install proof, a react-test-renderer press smoke under native
    resolution, then `expo export` (a real Metro/Hermes bundle).
 
-## Wiring to the real skin source
+## The skin source
 
-Today the generator targets a fixture (`registry/__fixtures__/skins/`) that
-mirrors the layout it consumes, so the whole pipeline is validated before the
-real styled source is extractable. When W4's `styled = unstyled + skin`
-mechanism lands, flip one constant in `scripts/lib/registry/config.ts`:
-
-```ts
-export const USE_REAL_SKIN_SOURCE = true   // skinSourceRoot → the real styled source
-// canonicalNamePrefix auto-switches to '' (real skins use bare names)
-```
-
-Then `bun run registry:build && bun run registry:write-consumers`. No other
-change: the generator, schema, drift check, installer, and blank-app harness are
-all source-shape-agnostic.
+The generator targets the real styled source at
+`code/ui/tamagui/src/components` (`skinSourceRoot` in
+`scripts/lib/registry/config.ts`). After changing a skin, run
+`bun run registry:build && bun run registry:write-consumers` to refresh the
+generated artifacts and the generator-owned blank-app copies.
 
 ## Layout
 
@@ -99,7 +90,6 @@ registry/
   json/             GENERATED (checked in): registry.json + r/<name>.json
   ci/blank-web/     blank vite+tamagui app — install target + web smoke
   ci/blank-expo/    blank expo+tamagui app — install target + native smoke
-  __fixtures__/skins/ stub skin source (Button pilot) until the real one is extractable
 scripts/
   generate-registry.ts   CLI: build | check | validate | drift | write-consumers
   registry-install.ts    minimal shadcn-compatible installer (used by CI)

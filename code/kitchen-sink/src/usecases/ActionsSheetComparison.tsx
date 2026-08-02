@@ -27,11 +27,11 @@ export function ActionsSheetComparison() {
       </Text>
 
       <YStack gap="3">
-        <Button onPress={() => actionsSheetRef.current?.show()} theme="blue" size="large">
+        <Button onPress={() => actionsSheetRef.current?.show()} theme="blue" size="5">
           Open Actions Sheet (Reference)
         </Button>
 
-        <Button onPress={() => setTamaguiOpen(true)} theme="green" size="large">
+        <Button onPress={() => setTamaguiOpen(true)} theme="green" size="5">
           Open Tamagui Sheet
         </Button>
       </YStack>

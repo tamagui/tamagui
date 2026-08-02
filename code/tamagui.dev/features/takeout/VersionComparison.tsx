@@ -205,7 +205,7 @@ export function VersionComparison() {
           <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
             <ThemeTintAlt>
               <Button
-                size="medium"
+                size="4"
                 bg="color5 hover:color6 press:color7"
                 borderWidth={0.5}
                 borderColor="color7 hover:color8"
@@ -220,7 +220,7 @@ export function VersionComparison() {
           <Link href="https://takeout.tamagui.dev/docs/highlights" target="_blank">
             <ThemeTintAlt offset={2}>
               <Button
-                size="medium"
+                size="4"
                 bg="color5 hover:color6 press:color7"
                 borderWidth={0.5}
                 borderColor="color7 hover:color8"
@@ -234,7 +234,7 @@ export function VersionComparison() {
           </Link>
           <Link href="https://github.com/tamagui/takeout-free" target="_blank">
             <Button
-              size="medium"
+              size="4"
               bg="color3 hover:color4 press:color5"
               borderWidth={0.5}
               borderColor="color6 hover:color8"

@@ -94,13 +94,13 @@ const SheetContents = memo(
   ({ modal, isPercent, innerOpen, setInnerOpen, setOpen }: any) => {
     return (
       <>
-        <Button size="large" circular icon={ChevronDown} onPress={() => setOpen(false)} />
+        <Button size="5" circular icon={ChevronDown} onPress={() => setOpen(false)} />
         <Input width={200} />
         {modal && isPercent && (
           <>
             <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
             <Button
-              size="large"
+              size="5"
               circular
               icon={ChevronUp}
               onPress={() => setInnerOpen(true)}
@@ -123,7 +123,7 @@ function InnerSheet(props: SheetProps) {
         <Sheet.ScrollView>
           <YStack p="5" gap="8">
             <Button
-              size="large"
+              size="5"
               circular
               self="center"
               icon={ChevronDown}

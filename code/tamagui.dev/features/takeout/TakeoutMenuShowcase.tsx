@@ -171,13 +171,13 @@ function ProfileCard() {
           <Card3D.Item translateZ={30}>
             <XStack gap="2">
               <ThemeTintAlt>
-                <Button size="small" bg="color9" flex={1} cursor="pointer">
+                <Button size="3" bg="color9" flex={1} cursor="pointer">
                   <Button.Text color="white" fontSize={11} fontWeight="600">
                     Message
                   </Button.Text>
                 </Button>
               </ThemeTintAlt>
-              <Button size="small" flex={1} cursor="pointer">
+              <Button size="3" flex={1} cursor="pointer">
                 <Button.Text fontSize={11} fontWeight="500">
                   Profile
                 </Button.Text>
@@ -326,7 +326,7 @@ function PaginationComponent() {
       <ThemeTintAlt>
         <XStack gap="3" items="center" rounded="6" p="2">
           <Button
-            size="medium"
+            size="4"
             circular
             icon={ArrowLeft}
             scaleIcon={1.5}
@@ -338,7 +338,7 @@ function PaginationComponent() {
             <IndicatorDot key={idx} isActive={idx === tint.tintIndex} />
           ))}
           <Button
-            size="medium"
+            size="4"
             circular
             icon={ArrowRight}
             scaleIcon={1.5}
@@ -362,7 +362,7 @@ function InputComponent() {
         size="3"
         placeholder="Search..."
       />
-      <Button theme="surface1" size="medium">
+      <Button theme="surface1" size="4">
         Go
       </Button>
     </XStack>
@@ -536,7 +536,7 @@ function TooltipBadge() {
   return (
     <Tooltip placement="bottom" offset={12} delay={{ open: 0, close: 150 }}>
       <Tooltip.Trigger asChild>
-        <Button theme="accent" size="medium" cursor="pointer">
+        <Button theme="accent" size="4" cursor="pointer">
           <Button.Text fontSize={13} color="color11">
             Hover me
           </Button.Text>

@@ -34,7 +34,7 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
         <YStack mt="2" items="flex-start">
           <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
-              <Button size="medium" variant="quiet" icon={ArrowLeft} ml="-2">
+              <Button size="4" variant="quiet" icon={ArrowLeft} ml="-2">
                 <Button.Text>{isDraft ? 'Drafts' : 'Blog'}</Button.Text>
               </Button>
             </Link>

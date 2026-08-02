@@ -96,7 +96,7 @@ export function CompilerTernaryActive() {
         Active: {isActive ? 'YES' : 'NO'}
       </_ReactNativeTextStyled3>
 
-      <Button size="small" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
+      <Button size="3" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
         Toggle Active
       </Button>
 

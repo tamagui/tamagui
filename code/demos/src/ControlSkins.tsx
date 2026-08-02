@@ -2,8 +2,25 @@ import { Checkbox as CheckboxBehavior } from '@tamagui/checkbox'
 import { RadioGroup as RadioGroupBehavior } from '@tamagui/radio-group'
 import { Switch as SwitchBehavior } from '@tamagui/switch'
 import { Tabs as TabsBehavior } from '@tamagui/tabs'
-import { getButtonSized } from '@tamagui/get-button-sized'
-import { getVariableValue, resolveTokenSize, styled, withStaticProperties } from 'tamagui'
+import {
+  getVariableValue,
+  resolveTokenSize,
+  styled,
+  type VariantSpreadExtras,
+  withStaticProperties,
+} from 'tamagui'
+
+const tabSizeVariant = (value: any, extras: VariantSpreadExtras<any>) => {
+  const { frame } = resolveTokenSize(value, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  return {
+    borderRadius: frame.radius,
+    height: frame.size,
+    paddingHorizontal: frame.space,
+  }
+}
 
 export const CheckboxFrame = styled(CheckboxBehavior, {
   name: 'DemoCheckboxFrame',
@@ -180,8 +197,8 @@ export const TabsTab = styled(TabsBehavior.Tab, {
   zIndex: 'focus-visible:10',
   variants: {
     size: {
-      true: getButtonSized,
-      Size: getButtonSized,
+      true: tabSizeVariant,
+      Size: tabSizeVariant,
     },
 
     disabled: {

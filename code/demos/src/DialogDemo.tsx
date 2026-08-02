@@ -28,7 +28,7 @@ export function DialogDemo() {
       <XGroup>
         <XGroup.Item>
           <Button
-            size="medium"
+            size="4"
             theme={mode === 'plain' ? 'accent' : undefined}
             onPress={() => setMode('plain')}
           >
@@ -37,7 +37,7 @@ export function DialogDemo() {
         </XGroup.Item>
         <XGroup.Item>
           <Button
-            size="medium"
+            size="4"
             theme={mode === 'adapt' ? 'accent' : undefined}
             onPress={() => setMode('adapt')}
           >
@@ -46,7 +46,7 @@ export function DialogDemo() {
         </XGroup.Item>
         <XGroup.Item>
           <Button
-            size="medium"
+            size="4"
             theme={mode === 'keepMounted' ? 'accent' : undefined}
             onPress={() => setMode('keepMounted')}
           >
@@ -157,7 +157,7 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button position="absolute" r="3" size="small" circular icon={X} />
+                <Button position="absolute" r="3" size="3" circular icon={X} />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>

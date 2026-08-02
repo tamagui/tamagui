@@ -32,7 +32,7 @@ export function StudioStepTip() {
   const button = (
     <Button
       cursor="default"
-      size="small"
+      size="3"
       variant="quiet"
       scaleIcon={1.2}
       circular
@@ -74,7 +74,7 @@ export function StudioStepTip() {
           <Tip />
 
           <Button
-            size="small"
+            size="3"
             circular
             position="absolute"
             t="-3"

@@ -97,7 +97,7 @@ export function Panel({
                 onPress={(event) => {
                   event.stopPropagation()
                 }}
-                size="small"
+                size="3"
                 circular
                 icon={<MoreVertical size="1" />}
               />

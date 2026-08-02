@@ -119,7 +119,7 @@ function Scenario01_BasicExit() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -161,7 +161,7 @@ function Scenario02_ZeroDuration() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -199,7 +199,7 @@ function Scenario03_VeryShortDuration() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -249,7 +249,7 @@ function Scenario04_RapidToggle() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={handleRapidToggle}
         testID="exit-04-trigger"
         data-testid="exit-04-trigger"
@@ -298,7 +298,7 @@ function Scenario05_ReRenderDuringExit() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={handleExitWithRerenders}
         testID="exit-05-trigger"
         data-testid="exit-05-trigger"
@@ -345,14 +345,14 @@ function Scenario06_MultipleChildren() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={handleRemoveAll}
         testID="exit-06-trigger"
         data-testid="exit-06-trigger"
       >
         06: Remove All
       </Button>
-      <Button size="small" onPress={handleReset}>
+      <Button size="3" onPress={handleReset}>
         Reset
       </Button>
       <AnimatePresence onExitComplete={onExitComplete}>
@@ -385,7 +385,7 @@ function Scenario07_LongAnimation() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -437,7 +437,7 @@ function Scenario08_InterruptedExit() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={handleInterruptedExit}
         testID="exit-08-trigger"
         data-testid="exit-08-trigger"
@@ -489,7 +489,7 @@ function Scenario09_CanceledAndRestarted() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={handleStressTest}
         testID="exit-09-trigger"
         data-testid="exit-09-trigger"
@@ -529,7 +529,7 @@ function Scenario10_PerPropertyExit() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -570,7 +570,7 @@ function Scenario11_MixedDurationExit() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -613,7 +613,7 @@ function Scenario51_AnimateOnlyExclusion() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -655,7 +655,7 @@ function Scenario53_TransformSubKeySplitDurations() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)
@@ -697,7 +697,7 @@ function Scenario55_ZeroAnimatableExitProps() {
   return (
     <XStack gap="2" alignItems="center" minHeight={50}>
       <Button
-        size="small"
+        size="3"
         onPress={() => {
           if (visible) startExit()
           setVisible(!visible)

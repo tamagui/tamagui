@@ -339,8 +339,8 @@
       "name": "@tamagui/cli",
       "version": "2.5.1",
       "bin": {
-        "tama": "./dist/index.cjs",
-        "tamagui": "./dist/index.cjs",
+        "tama": "dist/index.cjs",
+        "tamagui": "dist/index.cjs",
       },
       "dependencies": {
         "@tamagui/create-theme": "workspace:*",
@@ -542,7 +542,9 @@
     "code/core/create-tamagui": {
       "name": "create-tamagui",
       "version": "2.5.1",
-      "bin": "./run.js",
+      "bin": {
+        "create-tamagui": "run.js",
+      },
       "dependencies": {
         "@expo/package-manager": "^1.1.2",
         "chalk": "^4.1.2",
@@ -767,21 +769,6 @@
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
-      },
-    },
-    "code/core/get-button-sized": {
-      "name": "@tamagui/get-button-sized",
-      "version": "2.5.1",
-      "dependencies": {
-        "@tamagui/get-token": "workspace:*",
-        "@tamagui/web": "workspace:*",
-      },
-      "devDependencies": {
-        "@tamagui/build": "workspace:*",
-        "react": ">=19",
-      },
-      "peerDependencies": {
-        "react": ">=19",
       },
     },
     "code/core/get-font-sized": {
@@ -1406,7 +1393,6 @@
         "@tamagui/config": "workspace:*",
         "@tamagui/context-menu": "workspace:*",
         "@tamagui/core": "workspace:*",
-        "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/image": "workspace:*",
         "@tamagui/input": "workspace:*",
         "@tamagui/linear-gradient": "workspace:*",
@@ -1796,7 +1782,9 @@
     "code/packages/native-ci": {
       "name": "@tamagui/native-ci",
       "version": "2.5.1",
-      "bin": "./dist/cli.mjs",
+      "bin": {
+        "native-ci": "dist/cli.mjs",
+      },
       "dependencies": {
         "@expo/fingerprint": "~0.16.6",
       },
@@ -2450,7 +2438,6 @@
         "@tamagui/config-default": "workspace:*",
         "@tamagui/core": "workspace:*",
         "@tamagui/font-size": "workspace:*",
-        "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
         "@tamagui/spacer": "workspace:*",
@@ -2833,9 +2820,7 @@
         "@tamagui/element": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/font-size": "workspace:*",
-        "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/get-font-sized": "workspace:*",
-        "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
         "@tamagui/stacks": "workspace:*",
@@ -2860,7 +2845,6 @@
         "@tamagui/constants": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/focusable": "workspace:*",
-        "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/get-font-sized": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -3311,7 +3295,6 @@
       "version": "2.5.1",
       "dependencies": {
         "@tamagui/core": "workspace:*",
-        "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -3426,7 +3409,6 @@
         "@tamagui/focusable": "workspace:*",
         "@tamagui/font-size": "workspace:*",
         "@tamagui/form": "workspace:*",
-        "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/get-font-sized": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/group": "workspace:*",
@@ -3615,7 +3597,6 @@
         "@tamagui/focusable": "workspace:*",
         "@tamagui/font-size": "workspace:*",
         "@tamagui/form": "workspace:*",
-        "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/get-font-sized": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/group": "workspace:*",
@@ -5491,8 +5472,6 @@
     "@tamagui/form": ["@tamagui/form@workspace:code/ui/form"],
 
     "@tamagui/generate-themes": ["@tamagui/generate-themes@workspace:code/core/generate-themes"],
-
-    "@tamagui/get-button-sized": ["@tamagui/get-button-sized@workspace:code/core/get-button-sized"],
 
     "@tamagui/get-font-sized": ["@tamagui/get-font-sized@workspace:code/core/get-font-sized"],
 

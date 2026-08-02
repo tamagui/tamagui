@@ -114,7 +114,7 @@ function NoScrollViewSheet() {
               setLastDragY(0)
             }}
             theme="red"
-            size="medium"
+            size="4"
           >
             Reset Drag Tracking
           </Button>
@@ -214,7 +214,7 @@ function NonScrollableContentSheet() {
                   setDragEventCount(0)
                 }}
                 theme="red"
-                size="medium"
+                size="4"
               >
                 Reset Counters
               </Button>
@@ -319,7 +319,7 @@ function ScrollableContentSheet() {
                 testID="scrollable-reset"
                 onPress={() => setMaxDragUp(0)}
                 theme="red"
-                size="medium"
+                size="4"
               >
                 Reset Drag Tracking
               </Button>

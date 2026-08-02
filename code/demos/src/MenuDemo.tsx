@@ -31,7 +31,7 @@ export function MenuDemo() {
     <>
       <Menu offset={8}>
         <Menu.Trigger asChild>
-          <Button size="medium" icon={Backpack}>
+          <Button size="4" icon={Backpack}>
             Open
           </Button>
         </Menu.Trigger>
