@@ -280,3 +280,83 @@ repo ends up with two.
   The hazard is swapping in a *different palette*, not converting key names. When
   a theme value goes missing, check whether the palette changed before blaming
   the naming conversion.
+
+## kitchen-sink moved onto the shipped v6 config (2026-08-01)
+
+It had been running a hand-rolled hybrid: `@tamagui/config/v5` for tokens/fonts/
+media/settings, `toV6Themes(configV5.themes)` for theme keys, v6 shorthands, and
+three alternate configs selected by URL query param. `@tamagui/config/v6-classic`
+is that exact hybrid, already packaged, so the hand-rolled version was pure
+duplication. It now runs `@tamagui/config/v6`, the config we actually ship.
+
+Removed with it: the `v5config` / `tamav5config` / `generatedV5` query-param
+gates, which never worked. The compiler extracts CSS from one config at build
+time while the gate swapped a different config in at runtime, so the two
+desynced. `MediaQueriesV5` had been `describe.skip`ped for exactly this reason
+and its own comment said so. v6 reuses v5's media set verbatim, so those tests
+now run against the app config directly: 8 previously-dead tests came back.
+
+`theme.dev.ts` moved from `packages/tamagui-dev-config` (where its first line
+read "ONLY USED BY KITCHEN SINK FOR TESTS") into `kitchen-sink/src/themes/`, and
+its duplicate copy of `toV6Themes` was deleted in favor of the one
+`@tamagui/config/v6-base` exports.
+
+Result on the `default` project: 689 passing / 5 skipped, against a
+684 passing / 13 skipped baseline. Four of the five failures predate the change
+(`PopoverHoverableReposition`, `SelectSkin` x3). The fifth is below.
+
+### Open: v6 cannot express an explicit component size coherently
+
+`resolveTokenSize` indexes four scales with one key — `size`, `space`, `radius`
+and `fontSize`. Under v5 those numeric keys were a single coherent component
+scale, so `size="4"` meant a 44px frame with 18px padding, 9px radius and 15px
+text. Under v6 `size` and `space` are both Tailwind's utility scale and `radius`
+/`fontSize` are not, so the same key pulls unrelated values:
+
+| key | height | paddingX | radius | fontSize |
+| --- | ------ | -------- | ------ | -------- |
+| 9   | 36     | 36       | 26     | 30       |
+| 11  | 44     | 44       | 42     | 46       |
+| 12  | 48     | 48       | 50     | 52       |
+
+Measured, not derived: `<Button size="12">` renders 48px tall with 48px
+horizontal padding and a 50px radius.
+
+`settings.defaultTokens` exists to decouple exactly this, and v6 sets it
+(`space: '4'`, `radius: '4'`, `fontSize: '4'` against `defaultSize: '11'`). But
+`resolveDefaultToken` consults it only when the value is `true`, so it fixes the
+default and nothing else. An unsized `<Button>` is correct at 44px; every
+explicit size is not.
+
+This collides with the C1 ruling in `v3-evolution.md`, which says the shipped
+skins take size tokens *or* `true` resolved through `defaultSize`/`defaultTokens`
+and that named size tables stay opt-in. Both decisions are settled; they are not
+compatible as implemented. **Needs a ruling before beta** — the fix is either to
+project `defaultTokens` across explicit keys too, or to accept size tables for
+the default kit.
+
+Until then `ButtonSkin`'s explicit-size assertion stays red on purpose. Its
+`size="5"` renders 20px against an expected 52px, and that failure is the
+clearest standing signal of the gap. kitchen-sink was not contorted around it.
+Sites where `size="4"` simply meant "the default" dropped the prop instead: v5's
+default was `'4'` and v6's is `'11'`, both 44px, so omitting it is the faithful
+translation and picks up the one coherent path.
+
+### Fixed: a numeric size was being read as a token index
+
+Found by the v6 move, because Tailwind's scales are keyed by numeric-looking
+strings and v5's mostly were not. `getShapeSize` did `tokens.size[sizeToken] ??
+sizeToken`, so `<Square size={60} />` hit the `'60'` key and rendered 240px.
+`getElevation` had the same shape, making `elevation={10}` a 40px shadow. Both
+now treat a number as a literal pixel value, which is the line
+`resolveTokenSize` in `@tamagui/size` already draws.
+
+`Avatar` had worked around this at its own call site with a comment describing
+the exact symptom ("resolves a numeric `size` as a size-TOKEN index ... blowing
+the image far past its frame"). That workaround stays correct but was treating
+the symptom; the cause is fixed now.
+
+The bug is not v6-specific — it just needed a config whose token keys collide
+with plausible pixel values to become visible. On v5, `tokens.size[60]` was
+undefined and the `??` fallback hid it. This is the sort of thing kitchen-sink
+existed to catch and could not, while it ran a config no user runs.
