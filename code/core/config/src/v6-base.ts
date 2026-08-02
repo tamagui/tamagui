@@ -1,57 +1,35 @@
-// v6 is the opt-in home for breaking Tailwind-compatible defaults, so v5 stays stable.
+// the aligned v6 base: Tailwind-aligned shorthands, scales, fonts, media and settings.
+// colors and themes are deliberately not here — they are the divergent piece. pick a pack:
+//   @tamagui/config/v6          Tailwind palette + themes generated from it
+//   @tamagui/config/v6-classic  the v5 color story (generated v5 themes, no color tokens)
+//   createV6Config(colors)      bring your own (generate via @tamagui/config/v6-builder)
 import { shorthands } from '@tamagui/shorthands/v6'
-import { themes as v5themes, tokens as v5tokens, type V5Themes } from '@tamagui/themes/v5'
+import { tokens as v5tokens } from '@tamagui/themes/v5-tokens'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { fonts as v5fonts } from './v5-fonts'
-import { media, mediaQueryDefaultActive } from './v5-media'
-import { selectionStyles, settings as v5Settings } from './v5-base'
-import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar'
+import { media } from './v5-media'
+import { selectionStyles, settings as v5Settings } from './v5-settings'
 import {
-  tailwindColors,
   tailwindFontSize,
   tailwindLineHeight,
   tailwindRadius,
   tailwindSize,
   tailwindSpace,
   tailwindZIndex,
-} from './v6-tailwind-tokens'
+} from './v6-tailwind-scales.generated'
 
-// inherit all v5 helpers/types/theme re-exports, then override shorthands + defaultConfig
-export * from './v5-base'
-export { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar'
 export { shorthands }
-
-type V6Theme<Theme> = {
-  [Name in keyof Theme as Name extends (typeof v6RemovedThemeNames)[number]
-    ? never
-    : Name extends keyof typeof v6ThemeNameReplacements
-      ? (typeof v6ThemeNameReplacements)[Name]
-      : Name]: Theme[Name]
-}
-
-export type V6Themes = {
-  [Name in keyof V5Themes]: V6Theme<V5Themes[Name]>
-}
-
-export const themes = Object.fromEntries(
-  Object.entries(v5themes).map(([themeName, theme]) => [
-    themeName,
-    Object.fromEntries(
-      Object.entries(theme)
-        .filter(([name]) => !(v6RemovedThemeNames as readonly string[]).includes(name))
-        .map(([name, value]) => [
-          v6ThemeNameReplacements[name as keyof typeof v6ThemeNameReplacements] ?? name,
-          value,
-        ])
-    ),
-  ])
-) as V6Themes
+export { createSystemFont } from './v5-fonts'
+export { breakpoints, media, mediaQueryDefaultActive } from './v5-media'
+export { selectionStyles }
+export { tailwindSource } from './v6-tailwind-scales.generated'
+export { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar'
+export { toV6Themes } from './v6-themes'
 
 // space and size deliberately remain separate configured domains even though their default
 // values coincide. Radius keeps v5's numeric component scale while adding Tailwind's named
 // border-radius scale; v6's z-index names resolve to their direct CSS values.
 export const tokens = {
-  color: tailwindColors,
   space: tailwindSpace,
   size: tailwindSize,
   radius: { ...v5tokens.radius, ...tailwindRadius },
@@ -93,12 +71,31 @@ export const settings = {
 
 export type V6Settings = typeof settings
 
-export const defaultConfig = {
-  media,
-  shorthands,
-  themes,
-  tokens,
-  fonts,
-  selectionStyles,
-  settings,
-} satisfies CreateTamaguiProps
+/**
+ * A v6 colors pack: the one seam where color choice enters the config.
+ * Themes should be generated from the same palette the color tokens come from —
+ * see `@tamagui/config/v6-builder` (and `@tamagui/themes/v5-builder`).
+ */
+export type V6Colors = {
+  themes: NonNullable<CreateTamaguiProps['themes']>
+  /** flat named colors added at tokens.color — omit to keep colors theme-only (like v5) */
+  colorTokens?: Record<string, string>
+}
+
+/** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */
+export function createV6Config<Colors extends V6Colors>(colors: Colors) {
+  return {
+    media,
+    shorthands,
+    fonts,
+    selectionStyles,
+    settings,
+    themes: colors.themes as Colors['themes'],
+    tokens: {
+      ...tokens,
+      ...(colors.colorTokens && { color: colors.colorTokens }),
+    } as Colors['colorTokens'] extends Record<string, string>
+      ? typeof tokens & { color: Colors['colorTokens'] }
+      : typeof tokens,
+  }
+}

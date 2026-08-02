@@ -429,6 +429,7 @@
       "devDependencies": {
         "@csstools/color-helpers": "6.1.0",
         "@tamagui/build": "workspace:*",
+        "@tamagui/cli": "workspace:*",
         "tailwindcss": "4.3.0",
       },
     },
