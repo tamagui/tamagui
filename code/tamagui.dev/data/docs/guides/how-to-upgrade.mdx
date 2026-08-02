@@ -70,6 +70,29 @@ Remove tooling packages that no longer exist in v3:
 | `@tamagui/static-sync`     | Remove direct imports. Compiler sessions are owned by the supported bundler adapters.                         |
 | `@tamagui/static-worker`   | Remove direct imports. Metro owns its graph/cache workers through `@tamagui/metro-plugin`.                    |
 
+### Config and theme entries removed
+
+V3 ships one config generation lineage: v5 and v6. Every entry from v4 and
+earlier is gone, including the original unversioned `@tamagui/config` and
+`@tamagui/themes` roots. Pick v5 if you want the v2-era token and type scales,
+v6 if you want the Tailwind-aligned defaults. Neither entry bundles an
+animation driver, so import one alongside it.
+
+| Removed entry | Replacement |
+| --- | --- |
+| `@tamagui/config` (root, `config` / `configWithoutAnimations`) | `@tamagui/config/v5` (`defaultConfig`) or `@tamagui/config/v6` |
+| `@tamagui/config/v3` (`config`) | `@tamagui/config/v5` (`defaultConfig`) or `@tamagui/config/v6` |
+| `@tamagui/config/v4` (`defaultConfig`) | `@tamagui/config/v5` (`defaultConfig`) or `@tamagui/config/v6` |
+| `@tamagui/config` `animations` / `@tamagui/config/reanimated` | `@tamagui/config/v5-css`, `v5-rn`, `v5-reanimated`, or `v5-motion` |
+| `@tamagui/config/v3` and `/v4` `fonts` | `fonts` from `@tamagui/config/v5`, or build your own with `createSystemFont` |
+| `@tamagui/config/v3` and `/v4` `media` / `breakpoints` | `media` from `@tamagui/config/v5`, which already spells the max-queries kebab-case (`max-md`) |
+| `@tamagui/config/v3` `shorthands` | `shorthands` from `@tamagui/config/v5` (same set as v4) or `/v6` |
+| `@tamagui/config` `createGenericFont` | `createSystemFont` from `@tamagui/config/v5` |
+| `@tamagui/themes` (root: `themes`, `tokens`, `palettes`, `templates`, `shadows`, `componentThemeDefinitions`) | `@tamagui/themes/v5`; the builder pieces live in `@tamagui/theme-builder` |
+| `@tamagui/themes/v3` | `@tamagui/themes/v5` |
+| `@tamagui/themes/v3-themes` (and the Radix legacy color re-exports) | `@tamagui/themes/v5`, or `@tamagui/colors` for the color ramps |
+| `@tamagui/themes/v4` (`defaultThemes`, `tamaguiThemes`, `tokens`) | `@tamagui/themes/v5` (`themes`, `tokens`), or `@tamagui/themes/v5-subtle` |
+
 In monorepos, keep resolutions/overrides aligned:
 
 ```json
@@ -138,7 +161,7 @@ Rules to verify:
 Search for removed APIs:
 
 ```bash
-rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust"
+rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands"
 ```
 
 Use these replacements:
@@ -156,6 +179,16 @@ Use these replacements:
 | deprecated UI kit aliases | import the current component names |
 | old platform condition keys | use flat `web:`, `native:`, `ios:`, `android:`, etc. clauses |
 | `forceRemoveScrollEnabled` | `disableRemoveScroll` with inverted intent |
+| `selectable` on Text | `userSelect` (core maps it to RN's `selectable` on native) |
+| `AnimatePresence` `enterVariant` / `exitVariant` / `enterExitVariant` | `custom={{ ... }}` plus a variant on the child that emits `enter:` / `exit:` clauses |
+| `Avatar.Fallback` `delayMs` | `delay` |
+| `Sheet` `disableTransparencyHide` | `disableHideWhenClosed` |
+| `Select.Item` `index` | remove it, registry order is authoritative |
+| `TamaguiProvider` / `ThemeProvider` `disableRootThemeClass` and `themeClassNameOnRoot` | `createTamagui({ settings: { addThemeClassName } })` |
+| `@tamagui/input` v1 `Input` / `TextArea` | the current `Input` and `TextArea` from `@tamagui/input` |
+| `isWindowDefined` | `isBrowser` |
+| `createMedia` from `@tamagui/react-native-media-driver` | remove the call, `createTamagui` sets the driver up |
+| `getExpandedShorthands` | `useProps` |
 | `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
 | `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
 | `@tamagui/config/reanimated` | `@tamagui/config/v5-reanimated` |
@@ -792,7 +825,7 @@ npx tamagui check
 node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
 
 # removed APIs
-rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust"
+rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands"
 ```
 
 ## v1 to v3 path
