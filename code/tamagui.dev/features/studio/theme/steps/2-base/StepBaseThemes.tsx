@@ -768,7 +768,7 @@ const PaletteColor = memo(
           justify="center"
         >
           <SizableText
-            selectable={false}
+            userSelect="none"
             color={`${index > 4 ? 'background' : 'color'}`}
             scale={size === 'small' ? 0.8 : 1}
             size="1"

@@ -2697,6 +2697,9 @@ export interface TextNonStyleProps
       | RNOnlyProps
       | keyof ExtendBaseTextProps
       | 'style'
+      // web-standard `userSelect` is the one authoring name; core maps it to
+      // RN's `selectable` prop on native
+      | 'selectable'
     >,
     ExtendBaseTextProps,
     TamaguiComponentPropsBase {
