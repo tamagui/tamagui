@@ -757,7 +757,7 @@ export const getSplitStyles: StyleSplitter = (
     let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
-    if (process.env.TAMAGUI_TARGET === 'web') {
+    if (isWeb) {
       // React Native Web ignores direct data-* props. This includes ordinary
       // Tamagui views whose final host is swapped to RNW Animated.View.
       if (

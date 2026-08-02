@@ -354,8 +354,10 @@ export function contributeStylePrograms(
       // string (unterminated or invalid CSS the author wrote as a plain
       // value). production never throws
       if (key !== 'aspectRatio' && val.indexOf(':') !== -1) {
+        const firstError = cached.errors[0]
+        const modifier = 'modifier' in firstError ? firstError.modifier : undefined
         throw new Error(
-          `[tamagui] ${key}="${val}" looks like a flat value program but does not parse (${cached.errors[0].code}). Fix the value, or if this is intentional CSS, remove the top-level ":".`
+          `[tamagui] ${key}="${val}" looks like a flat value program but does not parse (${firstError.code}${modifier ? `: "${modifier}"` : ''}). Fix the value, or if this is intentional CSS, remove the top-level ":".`
         )
       }
     }
