@@ -8,13 +8,6 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "legacy": [
-        "./types/legacy.d.ts"
-      ]
-    }
-  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -25,15 +18,6 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
-    },
-    "./legacy": {
-      "types": "./types/legacy.d.ts",
-      "react-native": "./dist/esm/legacy.native.js",
-      "browser": "./dist/esm/legacy.mjs",
-      "module": "./dist/esm/legacy.mjs",
-      "import": "./dist/esm/legacy.mjs",
-      "require": "./dist/cjs/legacy.cjs",
-      "default": "./dist/cjs/legacy.native.js"
     }
   },
   "publishConfig": {
