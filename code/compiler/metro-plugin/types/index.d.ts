@@ -1,9 +1,6 @@
 import type { TamaguiOptions } from "@tamagui/static";
 import { MetroCompilerFrontend } from "./frontend";
 export type MetroTamaguiOptions = TamaguiOptions & {
-	/**
-	* @deprecated CSS interop is no longer supported. Use `tamagui generate` instead.
-	*/
 	/** Override the ignored on-disk handoff used by Metro transform workers. */
 	compilerCacheRoot?: string;
 };

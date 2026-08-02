@@ -23,6 +23,7 @@ export type ViteTamaguiLoader = {
             moduleName: string;
             id: string;
         }[];
+        disablePartialExtraction?: boolean;
     }>;
     getEvaluationDependencies(): string[];
     isEvaluationDependency(id: string): boolean;
