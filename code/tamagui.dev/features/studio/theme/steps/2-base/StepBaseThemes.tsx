@@ -68,15 +68,9 @@ export const StepBaseThemes = (_props: StepBaseThemesProps) => {
                     minW={80}
                     borderWidth={0}
                   >
-                    <SelectItem value="off">
-                      Off
-                    </SelectItem>
-                    <SelectItem value="inverse">
-                      Inverse
-                    </SelectItem>
-                    <SelectItem value="color">
-                      Color
-                    </SelectItem>
+                    <SelectItem value="off">Off</SelectItem>
+                    <SelectItem value="inverse">Inverse</SelectItem>
+                    <SelectItem value="color">Color</SelectItem>
                   </Select>
                 )}
               </XStack>

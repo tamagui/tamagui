@@ -22,9 +22,7 @@ export const PagesTamaguiProvider = ({ children }: { children: ReactNode }) => {
         setTheme(next as any)
       }}
     >
-      <Provider defaultTheme={theme || 'light'}>
-        {children}
-      </Provider>
+      <Provider defaultTheme={theme || 'light'}>{children}</Provider>
     </NextThemeProvider>
   )
 }

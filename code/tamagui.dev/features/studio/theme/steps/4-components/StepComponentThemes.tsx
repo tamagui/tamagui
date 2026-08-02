@@ -197,9 +197,7 @@ const SelectParentTheme = () => {
           store.componentParentTheme = val
         }}
       >
-        <Select.Item value="base">
-          Light/Dark
-        </Select.Item>
+        <Select.Item value="base">Light/Dark</Select.Item>
 
         <Select.Item value="accent" disabled={!store.baseTheme.accent}>
           Accent

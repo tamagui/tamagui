@@ -210,10 +210,7 @@ export function SelectFocusScopeCase() {
                   <Select.ItemText>Carrot</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item
-                  data-testid="default-select-broccoli"
-                  value="broccoli"
-                >
+                <Select.Item data-testid="default-select-broccoli" value="broccoli">
                   <Select.ItemText>Broccoli</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
