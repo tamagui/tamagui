@@ -64,6 +64,31 @@ registry, state grammar, and the review's correctness fixes were found on
    list showing only `hover:` is not worth its compile cost. `className` stays
    `string` regardless; nothing here changes that.
 
+   **Outcome, measured same day: the modifier half is not buildable, at any
+   prefix scope.** The base half shipped (`bg` gained `ColorTokens` in
+   `53fe77bd9a`). The modifier half was priced against the real prop graph
+   (`code/tests/v3-canary`, `tsc --extendedDiagnostics`, two isolated worktrees
+   at the same base) and every arm produced TS2590 at `createStyledHOC`:
+
+   | arm | members | Types | check | TS2590 |
+   | --- | --- | --- | --- | --- |
+   | control | — | 21,408 | 1.71s | no |
+   | state 14 | 1,950 | 30,703 | 10.73s | yes |
+   | media+platform 21 | 2,860 | 35,095 | 15.78s | yes |
+   | state+media+platform 35 | 4,680 | 43,861 | 26.78s | yes |
+
+   The smallest arm is the proposal originally vetoed for being `hover:`-only.
+   It is 6.27x slower and unrepresentable, so there is no narrower surface to
+   retreat to and the condition above can never be satisfied. Clause-bearing
+   flat strings keep falling through to `(string & {})`, and the language
+   service keeps ownership of token-scoped completion. See
+   `plans/v3-static-types-feasibility.md` for the full matrix.
+
+   Method note worth carrying: a synthetic 1,000-site JSX fixture measured this
+   at 1.82x and read as affordable. It had no `styled()` component in it, and
+   Tamagui's type cost lives in styled-component inference. A fixture that
+   cannot contain the failure cannot discriminate.
+
 ## Landed (post-merge v3-beta @ 61ab5e4b84)
 
 - Behavior/aesthetic separation for the 10-component beta set: Button, Select,
