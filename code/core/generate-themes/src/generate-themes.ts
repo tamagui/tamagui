@@ -12,10 +12,28 @@ export async function generateThemes(inputFile: string) {
 
   if (!didRegisterOnce) {
     didRegisterOnce = true
+    const Module = require('node:module')
+    const nodeResolve = Module._resolveFilename
     // the unregsiter does basically nothing and keeps a process running
     require('esbuild-register/dist/node').register({
       hookIgnoreNodeModules: false,
     })
+    // esbuild-register installs a tsconfig-paths hook that rewrites bare workspace
+    // specifiers like @tamagui/themes/v5-builder to source-tree directories (the
+    // metro-compat proxy dirs), which are not resolvable under node. prefer real node
+    // resolution (package exports) for bare specifiers, falling back to the
+    // tsconfig-paths chain for packages whose dist isn't built.
+    const chained = Module._resolveFilename
+    Module._resolveFilename = function (request: string, ...args: any[]) {
+      if (request[0] !== '.' && !request.startsWith('/')) {
+        try {
+          return nodeResolve.call(this, request, ...args)
+        } catch {
+          // fall through to the tsconfig-paths chain
+        }
+      }
+      return chained.call(this, request, ...args)
+    }
   } else {
     purgeCache(inputFilePath)
   }
@@ -90,7 +108,7 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
   const baseTypeString = `export type Theme = {
 ${baseKeys
   .map(([k]) => {
-    return `  ${k}: string;\n`
+    return `  ${JSON.stringify(k)}: string;\n`
   })
   .join('')}
 }`
@@ -122,7 +140,7 @@ function t(a: [number, number][]) {
   // add all keys array
   const keys = baseKeys.map(([k]) => k)
   out += `const ks = [\n`
-  out += keys.map((k) => `'${k}'`).join(',\n')
+  out += keys.map((k) => JSON.stringify(k)).join(',\n')
   out += `]\n\n`
 
   // add all themes

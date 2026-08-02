@@ -32,8 +32,17 @@ export default function fullySpecifyCommonJS(
               const cjsExtension = options.esExtensionDefault || '.cjs'
               const jsExtension = '.js'
 
-              // Check if moduleSpecifier already has an extension
-              if (!extname(moduleSpecifier)) {
+              // Check if moduleSpecifier already has a module extension. extname alone
+              // is wrong here: dotted basenames like ./foo.generated have no extension.
+              const specifierExtension = extname(moduleSpecifier)
+              const hasModuleExtension = [
+                '.js',
+                '.cjs',
+                '.mjs',
+                '.json',
+                '.node',
+              ].includes(specifierExtension)
+              if (!hasModuleExtension) {
                 const resolvedPath = resolve(fileDir, moduleSpecifier)
                 let newModuleSpecifier = moduleSpecifier
 
