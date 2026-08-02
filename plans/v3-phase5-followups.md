@@ -169,6 +169,36 @@ indentation. From `code/tests/v3-canary/src/CanaryTree.tsx`:
 directories. Running a formatter afterwards is a fine workaround for this repo,
 but a user migrating their own app gets this diff.
 
+## A missing workspace bin silently runs another repo's CLI
+
+Nine package scripts invoke the CLI as bare `tamagui generate-themes` / `tamagui
+generate-css` (`code/core/config`, `code/core/themes` x5, `code/tamagui.dev`,
+`code/tests/configs` x2). Bins hoist to the root `node_modules/.bin`, so no
+workspace package has a local one, and the call depends entirely on the runner
+prepending the root bin directory.
+
+When that does not happen, the script does not fail. It falls through to `PATH`
+and runs whatever `tamagui` it finds there. On this machine that is
+**`/Users/n8/soot/node_modules/.bin/tamagui`, a different repository**, and it
+was hit for real while regenerating the v6 Tailwind theme artifact in a fresh
+worktree whose install had not exposed the bin. Confirmed by hand afterwards:
+`node_modules/.bin/tamagui` exists at the repo root, and `which tamagui` still
+answers with soot's copy.
+
+A generate script quietly running another project's compiler produces committed
+artifacts that nobody can reproduce. The regeneration above was instead done
+through the worktree's own package APIs (importing `generateThemes` /
+`writeGeneratedThemes` from `@tamagui/generate-themes`) and verified byte-stable
+across a repeat, so the committed artifact is sound. The scripts were left as
+authored.
+
+Same root cause as the `next15-plus-cli-optimize` failure above, which dies with
+`Script not found "tamagui"` from a fixture cwd. One reports loudly, the other
+does not report at all. The fix belongs at the invocation, not at either
+symptom: resolve the workspace bin explicitly rather than trusting `PATH`
+lookup. Changing all nine together keeps one spelling; changing one is how the
+repo ends up with two.
+
 ## Smaller items
 
 - `scripts/inspect-style-prop-types.mjs` counts token literals by a `$` prefix
