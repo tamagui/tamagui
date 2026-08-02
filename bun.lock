@@ -6,7 +6,7 @@
       "name": "tamagui-monorepo",
       "devDependencies": {
         "@manypkg/cli": "^0.23.0",
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@take-out/cli": "0.0.65",
         "@testing-library/dom": "^10.4.0",
         "dotenv-cli": "^7.4.2",
@@ -551,7 +551,7 @@
         "validate-npm-package-name": "3.0.0",
       },
       "devDependencies": {
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@tamagui/build": "workspace:*",
         "@types/node": "^22.1.0",
         "@types/opener": "^1.4.3",
@@ -1490,7 +1490,7 @@
       "devDependencies": {
         "@babel/core": "^7.25.2",
         "@expo/fingerprint": "~0.16.6",
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "@tamagui/metro-plugin": "workspace:*",
         "@types/jest": "29.5.14",
@@ -1963,7 +1963,7 @@
         "tamagui": "workspace:*",
       },
       "devDependencies": {
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@react-native-community/cli": "15.1.3",
         "@tamagui/vite-plugin": "workspace:*",
         "@types/react": "~19.1.10",
@@ -2004,7 +2004,7 @@
       "devDependencies": {
         "@babel/core": "^7.25.2",
         "@expo/metro-runtime": "~55.0.6",
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@tamagui/fake-react-native": "workspace:*",
         "@tamagui/metro-plugin": "workspace:*",
         "@types/react": "~19.1.10",
@@ -2148,7 +2148,7 @@
         "tamagui": "workspace:*",
       },
       "devDependencies": {
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@tamagui/vite-plugin": "workspace:*",
         "@vitejs/plugin-react": "^6.0.0",
         "async-retry": "1.3.1",
@@ -2174,7 +2174,7 @@
       "devDependencies": {
         "@babel/preset-react": "^7.24.7",
         "@babel/preset-typescript": "^7.26.0",
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@tamagui/build": "workspace:*",
         "tamagui-loader": "workspace:*",
       },
@@ -2192,7 +2192,7 @@
         "react-native-web": "^0.21.0",
       },
       "devDependencies": {
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@tamagui/cli": "workspace:*",
         "@types/node": "^22.1.0",
         "@types/react": "~19.1.10",
@@ -2283,7 +2283,7 @@
       },
       "devDependencies": {
         "@babel/core": "^7.25.2",
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@tamagui/metro-plugin": "workspace:*",
         "@tamagui/vite-plugin": "workspace:*",
         "@types/node": "^22.1.0",
@@ -3703,7 +3703,7 @@
         "tamagui": "workspace:*",
       },
       "devDependencies": {
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@tamagui/vite-plugin": "workspace:*",
         "@types/node": "^22.1.0",
         "@types/react": "~19.1.10",
