@@ -1,8 +1,11 @@
 #!/usr/bin/env bun
 
-// measures the finite one-modifier value-prop type proposed in
-// plans/v3-static-types-feasibility.md. both arms run from the same generated
-// fixture and TypeScript installation so their ratio stays meaningful.
+// measures isolated JSX contextual typing for the finite one-modifier
+// value-prop type proposed in plans/v3-static-types-feasibility.md. it does not
+// measure Tamagui's styled() variant inference or createStyledHOC graph. the
+// real-graph control in that plan shows why this result cannot establish that
+// the public prop type is viable. both arms here still run from the same
+// generated fixture and TypeScript installation so their ratio stays meaningful.
 //
 // run with `bun scripts/benchmark-flat-value-modifier-types.ts`. optional
 // overrides are `--sites=1000`, `--runs=5`, and `--completion-runs=5`.
@@ -123,6 +126,10 @@ try {
   const state = results[0]
   const fixed = results[1]
   const output = {
+    scope: {
+      measures: 'isolated JSX contextual typing',
+      excludes: 'Tamagui styled() variant inference and createStyledHOC',
+    },
     typescript: readTypeScriptVersion(),
     bun: Bun.version,
     siteCount,
