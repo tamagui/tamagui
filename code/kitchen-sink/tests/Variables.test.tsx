@@ -11,6 +11,7 @@ const CONFIG_DARK_ACCENT = 'rgb(90, 90, 255)'
 const PATCH_ACCENT = 'rgb(200, 0, 0)'
 const PATCH_DARK_ACCENT = 'rgb(200, 100, 100)'
 const NESTED_ACCENT = 'rgb(1, 2, 3)'
+const THEMED_ACCENT = 'rgb(7, 7, 77)'
 
 test('config variables resolve through themes, nested patch wins nearest', async ({
   page,
@@ -26,6 +27,21 @@ test('config variables resolve through themes, nested patch wins nearest', async
   const inherit = await getStyles(page.getByTestId('vars-inherit-square'))
   const reset = await getStyles(page.getByTestId('vars-reset-square'))
   expect(reset.backgroundColor).not.toBe(inherit.backgroundColor)
+})
+
+test('themes-map bucket scoped to a named theme applies via CSS', async ({ page }) => {
+  // the blue bucket matches the light_blue theme resolved by <Theme name="blue">
+  const themed = await getStyles(page.getByTestId('vars-themed-square'))
+  expect(themed.backgroundColor).toBe(THEMED_ACCENT)
+
+  // still applies when the scheme flips (blue matches dark_blue too)
+  await page.getByTestId('vars-toggle-scheme').click()
+  await expect
+    .poll(async () => (await getStyles(page.getByTestId('vars-square'))).backgroundColor)
+    .toBe(CONFIG_DARK_ACCENT)
+  expect((await getStyles(page.getByTestId('vars-themed-square'))).backgroundColor).toBe(
+    THEMED_ACCENT
+  )
 })
 
 test('patching values restyles with zero re-renders', async ({ page }) => {

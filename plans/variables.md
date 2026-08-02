@@ -518,6 +518,61 @@ Deviations from the spec text above, decided during implementation:
    A-lane; `code/ui/select/types/Select.d.ts` regenerates with churn on any
    build (stale committed types).
 
+## Themes map generalization (2026-07-22, branch `v3/variables-themes`)
+
+The anticipated `themed={{ [name]: values }}` form landed as `themes`, and it
+REPLACES the top-level `dark`/`light` props (one way to do it, no aliases):
+
+```tsx
+<Variables
+  values={{ accent: '#111' }}
+  themes={{ dark: { accent: '#eee' }, blue: { accent: '#00f' } }}
+>
+```
+
+Semantics:
+
+- **Scheme keys (`dark`/`light`) keep the exact v1 behavior**: two-level
+  inversion selectors, `prefers-color-scheme` media fallback, scheme-effective
+  native resolution, and the DynamicColorIOS literal-pair fast path.
+- **Any other key matches the subtree's resolved theme name by segment**,
+  mirroring the theme-class scoping on web (Theme.tsx strips the scheme prefix
+  before emitting `t_` classes): bucket `blue` applies under `dark_blue`,
+  `light_blue_surface1`, or a top-level theme named `blue`. Web emits
+  `:root .t_blue .tvar_x, :root.t_blue .tvar_x` (plain one-level scoping —
+  nested inversion is a scheme concept and doesn't apply); native matches
+  `bucketName` against the scheme-stripped theme name (`base === name ||
+  base.startsWith(name + '_')`).
+- **Precedence**: `values` < non-scheme buckets (sorted by name, so within a
+  prefix chain like `blue`/`blue_surface1` the deeper name wins) < scheme
+  bucket. Scheme-over-theme is forced by CSS: the dark inversion selector is
+  (0,4,0) and outranks any (0,3,0) theme rule regardless of order, so the
+  emission order makes the un-inverted case consistent with it and native
+  merges in the same order.
+- **Cycle dropping** checks every effective map that can co-occur at runtime:
+  values alone, plus values + each prefix chain of non-scheme buckets, each
+  combined with the light and dark buckets. Buckets that are not prefixes of
+  one another can never apply simultaneously (a theme name has one segment
+  path), so those combinations are not checked — a cycle spanning e.g. `blue`
+  and `red` buckets is unreachable and allowed.
+- **Dev warnings**: unknown value keys warn as before; a themes-map name that
+  matches no theme-name segment in the config also warns (it can never apply).
+- **iOS pairs**: unchanged mechanism. Non-scheme bucket values fold into both
+  scheme-effective maps, so a literal that doesn't vary by scheme produces an
+  identity pair (still render-free on scheme flips); references still deopt.
+- `getMergedInlineTheme` now takes the resolved theme NAME instead of a
+  scheme and derives the scheme from its first segment; the matched bucket
+  set is part of the merge cache key.
+- Known web/native edge (pre-existing theme-system shape, accepted): web
+  matches by DOM ancestry of theme classes while native matches the resolved
+  name, so a scheme-only `<Theme name="dark">` below a `<Theme name="blue">`
+  drops `blue` from the resolved name but leaves `.t_blue` in the DOM — a
+  `blue` bucket still applies on web there and not on native. Same divergence
+  class as theme CSS variable inheritance itself.
+- `createTamagui({ variables })` config values keep their `{ light, dark }`
+  per-value shape — generalizing that to arbitrary themes is a separate
+  decision, out of scope here.
+
 ## Simulator validation (2026-07-16, iPhone 17 sim, iOS debug build)
 
 Detox suite `code/kitchen-sink/e2e/Variables.test.ts` against

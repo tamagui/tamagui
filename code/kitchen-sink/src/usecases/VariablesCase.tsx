@@ -33,6 +33,16 @@ const PatchedChild = React.memo(() => {
           backgroundColor="background"
         />
       </Theme>
+      <Theme name="blue">
+        <Variables themes={{ blue: { caseAccent: 'rgb(7, 7, 77)' } }}>
+          <View
+            testID="vars-themed-square"
+            width={80}
+            height={40}
+            backgroundColor="caseAccent"
+          />
+        </Variables>
+      </Theme>
     </YStack>
   )
 })
@@ -55,7 +65,7 @@ export function VariablesCase() {
       <Theme name={scheme}>
         <Variables
           values={patched ? { caseAccent: 'rgb(200, 0, 0)' } : undefined}
-          dark={patched ? { caseAccent: 'rgb(200, 100, 100)' } : undefined}
+          themes={patched ? { dark: { caseAccent: 'rgb(200, 100, 100)' } } : undefined}
         >
           <PatchedChild />
         </Variables>

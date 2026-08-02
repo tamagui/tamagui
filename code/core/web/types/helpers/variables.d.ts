@@ -17,11 +17,13 @@ export type VariablesCSS = {
  * Identifier is a pure function of the resolved declarations so SSR and
  * client agree, and a build-time extractor can precompute it.
  *
- * Scheme scoping supports two levels of light/dark inversion, matching the
- * theme system's own selector strategy (getThemeCSSRules).
+ * The themes map emits each bucket under its theme-class scope. dark/light
+ * buckets keep the scheme strategy (two levels of light/dark inversion plus
+ * the prefers-color-scheme fallback, matching getThemeCSSRules); other names
+ * scope by plain theme class.
  */
 export declare function getVariablesCSSRules(props: VariablesProps, conf: TamaguiInternalConfig): VariablesCSS | null;
-type InlineValues = Pick<VariablesProps, 'values' | 'dark' | 'light'>;
+type InlineValues = Pick<VariablesProps, 'values' | 'themes'>;
 export declare const inlineLayerKey = "_tmgInlineLayer";
 export type InlineLayerInfo = {
     key: string;
@@ -35,12 +37,16 @@ export declare const getInlineValuesKey: (inline: InlineValues) => string;
 /**
  * Builds the merged theme for a <Variables> layer: parent theme spread plus
  * overridden keys as Variables, resolved per the shared contract (effective
- * scheme map, fixed-point references, cycle-involved keys dropped in both
- * schemes). Returns the parent theme unchanged when nothing applies.
- * Identity-stable per (parentTheme, values, scheme) so snapshot bailouts and
+ * map = values + matching non-scheme theme buckets + scheme bucket,
+ * fixed-point references, cycle-involved keys dropped everywhere). Non-scheme
+ * buckets match the subtree's resolved theme name by segment (bucket "blue"
+ * under "dark_blue"), mirroring the theme-class scoping on web; dark/light
+ * buckets resolve by the scheme derived from the theme name. Returns the
+ * parent theme unchanged when nothing applies. Identity-stable per
+ * (parentTheme, values, matched buckets, scheme) so snapshot bailouts and
  * proxy caches hold.
  */
-export declare function getMergedInlineTheme(parentTheme: Record<string, Variable>, inline: InlineValues, scheme: 'light' | 'dark' | undefined, conf: TamaguiInternalConfig): Record<string, Variable>;
+export declare function getMergedInlineTheme(parentTheme: Record<string, Variable>, inline: InlineValues, themeName: string | undefined, conf: TamaguiInternalConfig): Record<string, Variable>;
 /**
  * Config-level custom variables: merged into every base theme at createTamagui
  * time so they behave exactly like theme keys in every existing code path.
