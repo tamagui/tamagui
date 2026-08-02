@@ -59,13 +59,12 @@ export function DismissLayerStackingCase() {
                   </Select.Trigger>
                   <Select.Content>
                     <Select.Viewport testID="popover-select-viewport">
-                      <Select.Item testID="popover-select-apple" value="apple" index={0}>
+                      <Select.Item testID="popover-select-apple" value="apple">
                         <Select.ItemText>Apple</Select.ItemText>
                       </Select.Item>
                       <Select.Item
                         testID="popover-select-banana"
                         value="banana"
-                        index={1}
                       >
                         <Select.ItemText>Banana</Select.ItemText>
                       </Select.Item>
@@ -108,14 +107,12 @@ export function DismissLayerStackingCase() {
                               <Select.Item
                                 testID="dialog-select-red"
                                 value="red"
-                                index={0}
                               >
                                 <Select.ItemText>Red</Select.ItemText>
                               </Select.Item>
                               <Select.Item
                                 testID="dialog-select-blue"
                                 value="blue"
-                                index={1}
                               >
                                 <Select.ItemText>Blue</Select.ItemText>
                               </Select.Item>

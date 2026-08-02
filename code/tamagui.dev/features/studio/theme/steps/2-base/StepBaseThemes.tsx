@@ -68,13 +68,13 @@ export const StepBaseThemes = (_props: StepBaseThemesProps) => {
                     minW={80}
                     borderWidth={0}
                   >
-                    <SelectItem value="off" index={0}>
+                    <SelectItem value="off">
                       Off
                     </SelectItem>
-                    <SelectItem value="inverse" index={1}>
+                    <SelectItem value="inverse">
                       Inverse
                     </SelectItem>
-                    <SelectItem value="color" index={2}>
+                    <SelectItem value="color">
                       Color
                     </SelectItem>
                   </Select>

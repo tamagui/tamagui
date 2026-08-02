@@ -37,7 +37,7 @@ export const StudioThemeBuilderActionBar = memo(function StudioThemeBuilderActio
 //       value={themeId}
 //     >
 //       {themeEntries.map(([id, theme], idx) => (
-//         <Select.Item key={id} value={id} index={idx}>
+//         <Select.Item key={id} value={id}>
 //           {theme.name}
 //         </Select.Item>
 //       ))}

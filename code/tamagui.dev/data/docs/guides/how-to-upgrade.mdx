@@ -457,11 +457,11 @@ Added or expanded:
   <Select.Viewport>
     <Select.Group>
       <Select.Label>Fruit</Select.Label>
-      <Select.Item index={0} value="apple">
+      <Select.Item value="apple">
         <Select.ItemText>Apple</Select.ItemText>
       </Select.Item>
       <Select.Separator />
-      <Select.Item index={1} value="orange">
+      <Select.Item value="orange">
         <Select.ItemText>Orange</Select.ItemText>
       </Select.Item>
     </Select.Group>
@@ -578,7 +578,7 @@ one of the two [overlay fade patterns](/ui/sheet#overlay-fades).
 
 The stable-2.4.x `disableTransparencyHide` prop is renamed to
 `disableHideWhenClosed` (matching `unmountChildrenWhenHidden`). The old name is
-honored as a deprecated alias through the v3 betas.
+removed, not aliased.
 
 `Sheet.Handle` ships no opacity of its own in v3. If you used the default handle
 dim or its fade-in on open, set `opacity` (and an `open`-driven opacity) on your

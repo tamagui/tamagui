@@ -110,7 +110,7 @@ export function SourceVersionSwitcher({
               () =>
                 versions.map((version, i) => {
                   return (
-                    <Select.Item index={i} key={version} value={version}>
+                    <Select.Item key={version} value={version}>
                       <Select.ItemText fontFamily="mono">{version}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />

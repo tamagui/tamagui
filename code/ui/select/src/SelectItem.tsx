@@ -39,8 +39,6 @@ export const {
 
 export interface SelectItemExtraProps {
   value: string
-  /** @deprecated registry order is authoritative. this prop is accepted but inert. */
-  index?: number
   disabled?: boolean
   textValue?: string
 }
@@ -65,7 +63,6 @@ export const SelectItem = createStyledHOC(
       disabled: disabledProp,
       'aria-disabled': ariaDisabled,
       textValue: textValueProp,
-      index: _index,
       ...restProps
     } = props
     const disabled = disabledProp ?? ariaDisabled === true

@@ -301,10 +301,6 @@ const ImagesCarousel = () => {
     }
   }, [store.galleryOpen])
 
-  const enterVariant =
-    store.galleryDirection === 1 || store.galleryDirection === 0 ? 'isRight' : 'isLeft'
-  const exitVariant = store.galleryDirection === 1 ? 'isLeft' : 'isRight'
-
   const currentImage = takeoutImages[store.galleryImageIdx]
   return (
     <XStack
@@ -315,12 +311,11 @@ const ImagesCarousel = () => {
       width="100vw"
       items="center"
     >
-      <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
+      <AnimatePresence custom={{ going: store.galleryDirection }}>
         <YStackEnterable
           key={store.galleryImageIdx}
+          going={store.galleryDirection}
           transition="medium"
-          x={0}
-          opacity={1}
           width="100vw"
           height="100vh"
           position="absolute"
@@ -364,8 +359,15 @@ const ImagesCarousel = () => {
 
 const YStackEnterable = styled(YStack, {
   variants: {
-    isLeft: { true: { x: -300, opacity: 0 } },
-    isRight: { true: { x: 300, opacity: 0 } },
+    // 1 = paginated forward, -1 = back, 0 = first render
+    going: {
+      number: (going: number) => ({
+        x: `0 enter:${going >= 0 ? '300px' : '-300px'} exit:${
+          going > 0 ? '-300px' : '300px'
+        }`,
+        opacity: '1 enter:0 exit:0',
+      }),
+    },
   } as const,
 })
 

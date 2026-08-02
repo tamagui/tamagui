@@ -53,15 +53,15 @@ export function SelectFocusScopeCase() {
             <Select.Viewport data-testid="basic-select-viewport">
               <Select.Group>
                 <Select.Label>Fruits</Select.Label>
-                <Select.Item data-testid="select-apple" value="apple" index={0}>
+                <Select.Item data-testid="select-apple" value="apple">
                   <Select.ItemText>Apple</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-banana" value="banana" index={1}>
+                <Select.Item data-testid="select-banana" value="banana">
                   <Select.ItemText>Banana</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-orange" value="orange" index={2}>
+                <Select.Item data-testid="select-orange" value="orange">
                   <Select.ItemText>Orange</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
@@ -69,11 +69,11 @@ export function SelectFocusScopeCase() {
 
               <Select.Group>
                 <Select.Label>Vegetables</Select.Label>
-                <Select.Item data-testid="select-carrot" value="carrot" index={3}>
+                <Select.Item data-testid="select-carrot" value="carrot">
                   <Select.ItemText>Carrot</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-broccoli" value="broccoli" index={4}>
+                <Select.Item data-testid="select-broccoli" value="broccoli">
                   <Select.ItemText>Broccoli</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
@@ -101,14 +101,14 @@ export function SelectFocusScopeCase() {
           <Select.Content data-testid="custom-select-content">
             <Select.Viewport data-testid="custom-select-viewport">
               <YStack padding="2" gap="2">
-                <Select.Item data-testid="select-red" value="red" index={0}>
+                <Select.Item data-testid="select-red" value="red">
                   <XStack gap="2" alignItems="center">
                     <View width={20} height={20} backgroundColor="red" borderRadius="2" />
                     <Select.ItemText>Red</Select.ItemText>
                   </XStack>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-green" value="green" index={1}>
+                <Select.Item data-testid="select-green" value="green">
                   <XStack gap="2" alignItems="center">
                     <View
                       width={20}
@@ -120,7 +120,7 @@ export function SelectFocusScopeCase() {
                   </XStack>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-blue" value="blue" index={2}>
+                <Select.Item data-testid="select-blue" value="blue">
                   <XStack gap="2" alignItems="center">
                     <View
                       width={20}
@@ -155,15 +155,15 @@ export function SelectFocusScopeCase() {
 
             <Select.Content data-testid="small-select-content">
               <Select.Viewport>
-                <Select.Item data-testid="select-small" value="small" index={0}>
+                <Select.Item data-testid="select-small" value="small">
                   <Select.ItemText>Small</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-medium" value="medium" index={1}>
+                <Select.Item data-testid="select-medium" value="medium">
                   <Select.ItemText>Medium</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="select-large" value="large" index={2}>
+                <Select.Item data-testid="select-large" value="large">
                   <Select.ItemText>Large</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
@@ -194,26 +194,25 @@ export function SelectFocusScopeCase() {
             <Select.Viewport data-testid="default-select-viewport">
               <Select.Group>
                 <Select.Label>Fruits</Select.Label>
-                <Select.Item data-testid="default-select-apple" value="apple" index={0}>
+                <Select.Item data-testid="default-select-apple" value="apple">
                   <Select.ItemText>Apple</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="default-select-banana" value="banana" index={1}>
+                <Select.Item data-testid="default-select-banana" value="banana">
                   <Select.ItemText>Banana</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="default-select-orange" value="orange" index={2}>
+                <Select.Item data-testid="default-select-orange" value="orange">
                   <Select.ItemText>Orange</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="default-select-carrot" value="carrot" index={3}>
+                <Select.Item data-testid="default-select-carrot" value="carrot">
                   <Select.ItemText>Carrot</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
                 <Select.Item
                   data-testid="default-select-broccoli"
                   value="broccoli"
-                  index={4}
                 >
                   <Select.ItemText>Broccoli</Select.ItemText>
                   <Select.ItemIndicator />
@@ -245,15 +244,15 @@ export function SelectFocusScopeCase() {
             <Select.Viewport data-testid="lazy-select-viewport">
               <Select.Group>
                 <Select.Label>Fruits</Select.Label>
-                <Select.Item data-testid="lazy-select-apple" value="apple" index={0}>
+                <Select.Item data-testid="lazy-select-apple" value="apple">
                   <Select.ItemText>Apple</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="lazy-select-banana" value="banana" index={1}>
+                <Select.Item data-testid="lazy-select-banana" value="banana">
                   <Select.ItemText>Banana</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
-                <Select.Item data-testid="lazy-select-orange" value="orange" index={2}>
+                <Select.Item data-testid="lazy-select-orange" value="orange">
                   <Select.ItemText>Orange</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>

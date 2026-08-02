@@ -39,24 +39,7 @@ export const BarTabs = memo(function HeaderTabs({
       prevActiveAt: tabRovingState.activeAt,
       activeAt,
     })
-  const { activeAt, intentAt, prevActiveAt } = tabRovingState
-
-  /**
-   * -1: from left
-   *  0: n/a
-   *  1: from right
-   */
-  //   const direction = (() => {
-  //     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
-  //       return 0
-  //     }
-  //     return activeAt.x > prevActiveAt.x ? -1 : 1
-  //   })()
-
-  //   const enterVariant =
-  //     direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
-  //   const exitVariant =
-  //     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
+  const { activeAt, intentAt } = tabRovingState
 
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {

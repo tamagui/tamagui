@@ -93,11 +93,9 @@ function generateMarkdown(config: any): string {
       }
     }
 
-    if (settings.themeClassNameOnRoot !== undefined) {
-      sections.push(
-        `### Theme Class Name on Root: \`${settings.themeClassNameOnRoot}\`\n\n`
-      )
-      if (settings.themeClassNameOnRoot) {
+    if (settings.addThemeClassName !== undefined) {
+      sections.push(`### Theme Class Name: \`${settings.addThemeClassName}\`\n\n`)
+      if (settings.addThemeClassName === 'html') {
         sections.push('Theme classes are applied to the root HTML element.\n\n')
       }
     }
