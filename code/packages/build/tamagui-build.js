@@ -528,14 +528,20 @@ const pkgTypes = Boolean(pkg.types || pkg.typings)
 
 // build config from package.json
 const buildConfig = pkg['tamagui-build'] || {}
+const buildOutputs = new Set(buildConfig.outputs || [])
 // if bundleOnly is set, only bundle those packages (old behavior)
 // otherwise bundle ALL packages by default (new behavior)
 const bundleOnly = buildConfig.bundleOnly || null
 // if bundleExternal is set, always keep those packages external
 const bundleExternal = buildConfig.bundleExternal || null
 
-const shouldBuildESM = Boolean(pkgModule || (!pkgMain && !pkgModuleJSX && pkgBin))
-const flatOut = [pkgMain, shouldBuildESM, pkgModuleJSX].filter(Boolean).length === 1
+const shouldBuildCJS = Boolean(pkgMain || buildOutputs.has('cjs'))
+const shouldBuildESM = Boolean(
+  pkgModule || buildOutputs.has('esm') || (!pkgMain && !pkgModuleJSX && pkgBin)
+)
+const shouldBuildTypes = Boolean(pkgTypes || buildOutputs.has('types'))
+const flatOut =
+  [shouldBuildCJS, shouldBuildESM, Boolean(pkgModuleJSX)].filter(Boolean).length === 1
 
 const avoidCJS = pkgMain?.endsWith('.js')
 const getJsEntryAliasPath = (entry) => {
@@ -581,7 +587,7 @@ const getProcessLabel = () => {
   if (shouldSkipTypes) return labels.js
   if (!skipJS && !jsOnly) return labels.build
   if (jsOnly) return labels.js
-  if (!shouldSkipTypes && pkgTypes) return labels.tsc
+  if (!shouldSkipTypes && shouldBuildTypes) return labels.tsc
 
   return 'Unknown'
 }
@@ -891,7 +897,7 @@ async function runAfterBuild() {
 }
 
 async function buildTsc(allFiles) {
-  if (!pkgTypes || jsOnly || shouldSkipTypes) return
+  if (!shouldBuildTypes || jsOnly || shouldSkipTypes) return
   if (shouldSkipInitialTypes) {
     shouldSkipInitialTypes = false
     return
@@ -1209,7 +1215,7 @@ async function buildJs(allFiles, distBuild) {
 
   const results = await Promise.allSettled([
     // web output to cjs
-    pkgMain
+    shouldBuildCJS
       ? esbuildWriteIfChanged(cjsConfigWeb, {
           platform: 'web',
           bundle: shouldBundleFlag,
@@ -1221,7 +1227,7 @@ async function buildJs(allFiles, distBuild) {
       : null,
 
     // native output to cjs
-    pkgMain && !shouldSkipNative
+    shouldBuildCJS && !shouldSkipNative
       ? esbuildWriteIfChanged(cjsConfig, {
           platform: 'native',
           distBuild,

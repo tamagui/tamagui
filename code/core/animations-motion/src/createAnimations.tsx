@@ -40,7 +40,7 @@ const isServer = typeof window === 'undefined'
 // don't need animations so we return a no-op scope/animate pair.
 function useAnimateSSRSafe() {
   if (isServer) {
-    return [useRef(null), (() => {}) as any] as ReturnType<typeof useAnimate>
+    return [useRef(null), (() => {}) as any] as unknown as ReturnType<typeof useAnimate>
   }
   return useAnimate()
 }
@@ -53,6 +53,11 @@ type MotionAnimatedNumberStyle = {
   motionValue?: MotionValue<number>
   motionValues?: MotionValue<number>[]
 }
+
+const asStyleRecord = (style: unknown): Record<string, unknown> =>
+  style && typeof style === 'object' && !Array.isArray(style)
+    ? (style as Record<string, unknown>)
+    : {}
 
 /**
  * Animation options with optional default and per-property configs.
@@ -1294,7 +1299,7 @@ function createMotionView(defaultTag: string) {
           ? [animatedStyle.motionValue.get()]
           : []
       const initialSource = animatedStyle.getStyle(...currentValues)
-      const initialResolved = getProps({ style: initialSource }).style ?? {}
+      const initialResolved = asStyleRecord(getProps({ style: initialSource }).style)
       return {
         initial: initialResolved,
         resolve: compileAnimatedStyle(initialSource, initialResolved),
@@ -1342,7 +1347,13 @@ function createMotionView(defaultTag: string) {
 
     if (resolvedAnimatedStyle) {
       // reassign so the animated initial never leaks into the memo cache
-      props = { ...props, style: { ...props.style, ...resolvedAnimatedStyle.initial } }
+      props = {
+        ...props,
+        style: {
+          ...asStyleRecord(props.style),
+          ...resolvedAnimatedStyle.initial,
+        },
+      }
     }
 
     const Element = render || 'div'

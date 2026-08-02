@@ -106,9 +106,11 @@ function extractedStyleArtifacts(
   split: any,
   props: Record<string, unknown>,
   config: TamaguiInternalConfig,
-  includeRuntimeBase = true
+  includeRuntimeBase = true,
+  hasStyleFrontend = false
 ): { className: string; css: string[] } {
-  const callerClassName = typeof props.className === 'string' ? props.className : ''
+  const callerClassName =
+    !hasStyleFrontend && typeof props.className === 'string' ? props.className : ''
   const viewClassName =
     typeof split.viewProps?.className === 'string' ? split.viewProps.className : ''
   const classNameWithoutCaller =
@@ -1315,7 +1317,13 @@ export function createTamaguiCompilerHost(
           flattened: true,
         }
       }
-      const artifacts = extractedStyleArtifacts(split, props, options.tamaguiConfig)
+      const artifacts = extractedStyleArtifacts(
+        split,
+        props,
+        options.tamaguiConfig,
+        true,
+        Boolean(component.staticConfig.styleFrontend)
+      )
       const className = artifacts.className
       const rawInlineStyle = split.viewProps?.style
       const inlineStyle =

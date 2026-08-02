@@ -91,6 +91,12 @@ function createTailwindPlugin(loader: ViteTamaguiLoader): Plugin {
         resolve: {
           dedupe: ['@tamagui/tailwind'],
         },
+        define: {
+          // Runtime-generated and SSR fallback rules must participate in the same
+          // cascade order as compiler-extracted Tamagui CSS. Without this, the
+          // unlayered runtime duplicate beats official Tailwind utilities.
+          'process.env.TAMAGUI_CSS_LAYER': JSON.stringify('tamagui'),
+        },
       }
     },
 

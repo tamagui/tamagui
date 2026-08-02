@@ -100,13 +100,9 @@ export function SelectDemoContents(
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>
-                items.map((item, i) => {
+                items.map((item) => {
                   return (
-                    <Select.Item
-                      index={i}
-                      key={item.name}
-                      value={item.name.toLowerCase()}
-                    >
+                    <Select.Item key={item.name} value={item.name.toLowerCase()}>
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />

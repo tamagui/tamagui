@@ -68,9 +68,8 @@ export function SelectAdaptSheetUnmountCase() {
           <Select.Viewport minW={200}>
             <Select.Group>
               <Select.Label testID="select-content-marker">Fruits</Select.Label>
-              {items.map((item, i) => (
+              {items.map((item) => (
                 <Select.Item
-                  index={i}
                   key={item}
                   value={item.toLowerCase()}
                   testID={`select-option-${item.toLowerCase()}`}

@@ -71,19 +71,6 @@ export interface AnimatePresenceProps {
      * @internal
      */
     presenceAffectsLayout?: boolean;
-    /**
-     * @deprecated use `custom` passing it an Object instead
-     */
-    exitVariant?: string | null;
-    /**
-     * @deprecated use `custom` passing it an Object instead
-     */
-    enterVariant?: string | null;
-    /**
-     * Will use a variant on the child component and apply the true styles for when its entering, false styles for when its exiting
-     * @deprecated use `custom` passing it an Object instead
-     */
-    enterExitVariant?: string | null;
     passThrough?: boolean;
 }
 //# sourceMappingURL=types.d.ts.map

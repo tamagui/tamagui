@@ -319,7 +319,7 @@ export function Test16(props: TestProps) {
 // flexWrap and other flex properties
 export function TestFlexWrap() {
   return (
-    <XStack flexWrap="wrap" flexDirection="row" gap="2">
+    <XStack data-testid="flex-wrap" flexWrap="wrap" flexDirection="row" gap="2">
       {child}
     </XStack>
   )
@@ -329,6 +329,7 @@ export function TestFlexWrap() {
 export function TestFlexWrapConditional(props: TestProps) {
   return (
     <XStack
+      data-testid="flex-wrap-conditional"
       flexWrap={props.conditional ? 'wrap' : 'nowrap'}
       flexDirection="row"
       items="center"
@@ -343,6 +344,7 @@ export function TestFlexWrapConditional(props: TestProps) {
 export function TestFlexProperties() {
   return (
     <YStack
+      data-testid="flex-properties"
       flexDirection="column"
       flexWrap="wrap"
       flexGrow={1}
@@ -390,6 +392,7 @@ export function TestFlexWrapWithMediaQuery() {
   const media = useMedia()
   return (
     <XStack
+      data-testid="flex-wrap-media"
       flexWrap="wrap sm:nowrap"
       flexDirection={media.sm ? 'row' : 'column'}
       gap="2"

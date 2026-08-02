@@ -33,6 +33,8 @@ const temporaryFailureSourcePath = join(simplePackagePath, 'src', 'build-failure
 const temporaryStaleSourcePath = join(simplePackagePath, 'src', 'stale-output.ts')
 const jsMainPackagePath = join(__dirname, 'fixtures', 'js-main-package')
 const jsMainDistPath = join(jsMainPackagePath, 'dist')
+const subpathOnlyPackagePath = join(__dirname, 'fixtures', 'subpath-only-package')
+const subpathOnlyDistPath = join(subpathOnlyPackagePath, 'dist')
 const repositoryRoot = join(__dirname, '../../../..')
 // console.log({
 //   distCjsFilePath,
@@ -65,6 +67,7 @@ describe('tamagui-build integration test', () => {
     // Clean up dist directory before starting
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('rm -rf dist', { cwd: jsMainPackagePath })
+    execSync('rm -rf dist && rm -rf types', { cwd: subpathOnlyPackagePath })
   })
 
   it('should build the package correctly', async () => {
@@ -552,9 +555,28 @@ describe('tamagui-build integration test', () => {
     expect(existsSync(join(jsMainDistPath, 'esm', 'index.mjs'))).toBe(true)
   })
 
+  it('builds subpath-only packages without advertising a root entry', () => {
+    execSync('bun run build', { cwd: subpathOnlyPackagePath })
+
+    expect(existsSync(join(subpathOnlyDistPath, 'cjs', 'feature.cjs'))).toBe(true)
+    expect(existsSync(join(subpathOnlyDistPath, 'esm', 'feature.mjs'))).toBe(true)
+    expect(existsSync(join(subpathOnlyPackagePath, 'types', 'feature.d.ts'))).toBe(
+      true
+    )
+
+    const packageJson = JSON.parse(
+      readFileSync(join(subpathOnlyPackagePath, 'package.json'), 'utf-8')
+    )
+    expect(packageJson).not.toHaveProperty('main')
+    expect(packageJson).not.toHaveProperty('module')
+    expect(packageJson).not.toHaveProperty('types')
+    expect(packageJson.exports['.']).toBeUndefined()
+  })
+
   afterAll(() => {
     // Clean up dist directory after tests
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
     execSync('rm -rf dist', { cwd: jsMainPackagePath })
+    execSync('rm -rf dist && rm -rf types', { cwd: subpathOnlyPackagePath })
   })
 })

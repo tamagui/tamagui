@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import {
+  STYLE_FRONTEND_PASSTHROUGH_PREFIX,
   createFrontendProgram,
   plainValueToPayload,
   type StyleFrontendConfig,
@@ -430,7 +431,8 @@ export function setInAuthoredOrder(
  */
 export function preprocessTailwindClassName(
   props: Record<string, any>,
-  config: StyleFrontendConfig
+  config: StyleFrontendConfig,
+  preservePassthroughPosition = false
 ): Record<string, any> {
   const className = props.className
   if (!className || typeof className !== 'string') {
@@ -438,11 +440,30 @@ export function preprocessTailwindClassName(
   }
 
   const classes = className.split(/\s+/).filter(Boolean)
-  const regularClasses: string[] = []
   const result: Record<string, any> = {}
   const grammarConfig = getStyleGrammarConfig(config)
   const plans = getClassPlanCache(grammarConfig)
+  const classPlans = classes.map((cls) => {
+    let plan = plans.get(cls)
+    if (plan === undefined) {
+      plan = computeClassPlan(cls, grammarConfig)
+      plans.set(cls, plan)
+    }
+    return plan
+  })
+  const hasOwnedStyleCandidate =
+    preservePassthroughPosition && classPlans.some((plan) => Array.isArray(plan))
   let frontendProgramIndex = 0
+  let passthroughIndex = 0
+  const regularClasses: string[] = []
+
+  const preserveRawClass = (cls: string) => {
+    if (hasOwnedStyleCandidate) {
+      result[`${STYLE_FRONTEND_PASSTHROUGH_PREFIX}${passthroughIndex++}`] = cls
+    } else {
+      regularClasses.push(cls)
+    }
+  }
 
   const applyEntry = ([key, value]: TailwindPlanEntry) => {
     if (key === null) {
@@ -461,12 +482,9 @@ export function preprocessTailwindClassName(
       setInAuthoredOrder(result, key, props[key])
       continue
     }
-    for (const cls of classes) {
-      let plan = plans.get(cls)
-      if (plan === undefined) {
-        plan = computeClassPlan(cls, grammarConfig)
-        plans.set(cls, plan)
-      }
+    for (let classIndex = 0; classIndex < classes.length; classIndex++) {
+      const cls = classes[classIndex]
+      const plan = classPlans[classIndex]
       if (plan === null) {
         // web-only candidate on native: dropped, warned once
         if (
@@ -482,12 +500,12 @@ export function preprocessTailwindClassName(
       }
       if (plan === 'raw') {
         // not claimed by the grammar: preserve the class as-is
-        regularClasses.push(cls)
+        preserveRawClass(cls)
         continue
       }
       if (!Array.isArray(plan)) {
         if (plan.preserveRawClass) {
-          regularClasses.push(cls)
+          preserveRawClass(cls)
         }
         for (let i = 0; i < plan.entries.length; i++) {
           applyEntry(plan.entries[i])

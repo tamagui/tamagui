@@ -26,7 +26,10 @@ import {
   type ParsedCandidate,
 } from '@tamagui/style-grammar'
 import React from 'react'
-import { STYLE_FRONTEND_PREPROCESSED } from './styleFrontend'
+import {
+  STYLE_FRONTEND_PASSTHROUGH_PREFIX,
+  STYLE_FRONTEND_PREPROCESSED,
+} from './styleFrontend'
 import { getConfig, getFont } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { mediaState as globalMediaState } from './mediaState'
@@ -507,27 +510,29 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const flushForwardStylesToClasses = () => {
-    if (!shouldDoClasses || !styleState.style) return
-    if (styleState.flatTransforms) {
-      mergeFlatTransforms(styleState.style, styleState.flatTransforms)
-      styleState.flatTransforms = undefined
-    }
-    if (styleProps.noNormalize !== false) {
-      fixStyles(styleState.style)
-      if (!styleProps.noExpand && !styleProps.noMergeStyle) {
-        if (isWeb && (isReactNative ? driver?.inputStyle !== 'css' : true)) {
-          styleToCSS(styleState.style)
+    if (!shouldDoClasses) return
+    if (styleState.style) {
+      if (styleState.flatTransforms) {
+        mergeFlatTransforms(styleState.style, styleState.flatTransforms)
+        styleState.flatTransforms = undefined
+      }
+      if (styleProps.noNormalize !== false) {
+        fixStyles(styleState.style)
+        if (!styleProps.noExpand && !styleProps.noMergeStyle) {
+          if (isWeb && (isReactNative ? driver?.inputStyle !== 'css' : true)) {
+            styleToCSS(styleState.style)
+          }
         }
       }
-    }
-    const flushedKeys = Object.keys(styleState.style)
-    for (const atomicStyle of getCSSStylesAtomic(styleState.style)) {
-      addStyleToInsertRules(rulesToInsert, atomicStyle)
-      classNames[atomicStyle[StyleObjectProperty]] = atomicStyle[StyleObjectIdentifier]
-    }
-    styleState.style = {}
-    for (const key of flushedKeys) {
-      delete styleState.usedKeys[key]
+      const flushedKeys = Object.keys(styleState.style)
+      for (const atomicStyle of getCSSStylesAtomic(styleState.style)) {
+        addStyleToInsertRules(rulesToInsert, atomicStyle)
+        classNames[atomicStyle[StyleObjectProperty]] = atomicStyle[StyleObjectIdentifier]
+      }
+      styleState.style = {}
+      for (const key of flushedKeys) {
+        delete styleState.usedKeys[key]
+      }
     }
     // programs flush here too: this early flush can be followed by
     // shouldDoClasses turning off (tailwind className path), which would
@@ -543,6 +548,10 @@ export const getSplitStyles: StyleSplitter = (
   for (const [keyOg, valOg] of orderedProcessedProps) {
     let keyInit = keyOg
     let valInit = valOg
+
+    if (styleFrontend && keyInit.startsWith(STYLE_FRONTEND_PASSTHROUGH_PREFIX)) {
+      keyInit = 'className'
+    }
 
     if (keyInit === 'children') {
       viewProps[keyInit] = valInit
@@ -749,11 +758,26 @@ export const getSplitStyles: StyleSplitter = (
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (process.env.TAMAGUI_TARGET === 'web') {
-      // react-native-web ignores data-* attributes, fixes passing them to animated views
-      if (staticConfig.isReactNative && keyInit.startsWith('data-')) {
+      // React Native Web ignores direct data-* props. This includes ordinary
+      // Tamagui views whose final host is swapped to RNW Animated.View.
+      if (
+        (staticConfig.isReactNative ||
+          (styleProps.isAnimated &&
+            driver?.isReactNative &&
+            !driver.View?.acceptRenderProp)) &&
+        keyInit.startsWith('data-')
+      ) {
         keyInit = keyInit.replace('data-', '')
         viewProps['dataSet'] ||= {}
         viewProps['dataSet'][keyInit] = valInit
+        continue
+      }
+
+      // Standard data attributes are view props, never style or styled-context
+      // programs. Context providers receive arbitrary JSX attributes, so handle
+      // these before a provider value can make the key look style-like.
+      if (keyInit.startsWith('data-')) {
+        viewProps[keyInit] = valInit
         continue
       }
     }

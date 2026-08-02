@@ -93,10 +93,9 @@ export function CanaryTree() {
           <Select.Content>
             <Select.Viewport testID="canary-select-viewport">
               <Select.Group>
-                {fruits.map((fruit, index) => (
+                {fruits.map((fruit) => (
                   <Select.Item
                     testID={`canary-select-${fruit}`}
-                    index={index}
                     key={fruit}
                     value={fruit}
                   >

@@ -34,9 +34,13 @@
     "v6-builder.cjs",
     "v6-builder.d.ts"
   ],
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "types": "./types/index.d.ts",
+  "tamagui-build": {
+    "outputs": [
+      "cjs",
+      "esm",
+      "types"
+    ]
+  },
   "exports": {
     "./package.json": "./package.json",
     "./v5": {

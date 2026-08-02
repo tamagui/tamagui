@@ -13,7 +13,7 @@ import type { FunctionComponent } from 'react';
 import type { ParsedValue } from '@tamagui/style-grammar';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { FrontendProgramValue } from './internalRuntimeTypes';
-export { STYLE_FRONTEND_PREPROCESSED, regularStyleFrontend, } from './helpers/styleFrontend';
+export { STYLE_FRONTEND_PASSTHROUGH_PREFIX, STYLE_FRONTEND_PREPROCESSED, regularStyleFrontend, } from './helpers/styleFrontend';
 export type * from './internalRuntimeTypes';
 export declare const createFrontendProgram: (property: string, value: ParsedValue) => FrontendProgramValue;
 export declare const plainValueToPayload: (value: unknown, longhand: string) => string | null;

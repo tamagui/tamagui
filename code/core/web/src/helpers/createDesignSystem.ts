@@ -4,7 +4,7 @@ import { DEFAULT_SIZE_TOKEN } from '../config'
 import { getVariableVariable, isVariable } from '../createVariable'
 import { autoVariables, registerCSSVariable, variableToCSS } from './registerCSSVariable'
 import { getThemeCSSRules } from './getThemeCSSRules'
-import { getAllRules } from './insertStyleRule'
+import { getAllRules, wrapStyleRules } from './insertStyleRule'
 
 type ThemeConfig = {
   cssRuleSets: string[]
@@ -215,7 +215,7 @@ export function getCSS(
       const rules = getAllRules()
       const newRules = rules.slice(lastIndex.value)
       lastIndex.value = rules.length
-      return newRules.join(separator)
+      return wrapStyleRules(newRules.join(separator))
     }
 
     lastIndex.value = 0
@@ -223,7 +223,7 @@ export function getCSS(
     const runtimeStyles = getAllRules().join(separator)
 
     if (exclude === 'design-system') {
-      return runtimeStyles
+      return wrapStyleRules(runtimeStyles)
     }
 
     const themeRules = exclude ? '' : themeConfig.getThemeRulesSets().join(separator)
@@ -259,9 +259,9 @@ ${hideScrollBarsCSS}
 ${autoVarCSS}
 ${themeConfig.cssRuleSets.join(separator)}`
 
-    return `${designSystem}
+    return wrapStyleRules(`${designSystem}
 ${themeRules}
-${runtimeStyles}`
+${runtimeStyles}`)
   }
   return ''
 }

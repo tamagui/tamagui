@@ -78,9 +78,6 @@ export function TamaguiProvider({
 
   return (
     <>
-      {hasSafeAreaTracker() && <SafeAreaTracker />}
-      {contents}
-
       {process.env.TAMAGUI_TARGET !== 'native' && config && !disableInjectCSS && (
         <style
           // react 19 feature to hoist style tags to header:
@@ -93,6 +90,9 @@ export function TamaguiProvider({
           {config.getCSS()}
         </style>
       )}
+
+      {hasSafeAreaTracker() && <SafeAreaTracker />}
+      {contents}
     </>
   )
 }

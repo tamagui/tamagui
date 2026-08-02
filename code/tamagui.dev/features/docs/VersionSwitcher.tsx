@@ -106,13 +106,9 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>
-                versions.map((item, i) => {
+                versions.map((item) => {
                   return (
-                    <Select.Item
-                      index={i}
-                      key={item.name}
-                      value={item.name.toLowerCase()}
-                    >
+                    <Select.Item key={item.name} value={item.name.toLowerCase()}>
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />

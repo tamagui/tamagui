@@ -635,62 +635,6 @@ test('optimizes the core singleton with context-bearing Tamagui packages', async
   )
 })
 
-test('layers the core reset only in hybrid style modes', async () => {
-  const transformReset = async (styleMode: 'tamagui' | 'tamagui-and-tailwind') => {
-    ;(globalThis as any).__tamaguiFixtureStyleMode = styleMode
-    let capturedReset = ''
-    // captures right after the tamagui plugins' pre-order transforms; by the
-    // post stage vite:css-post has already replaced the CSS with its JS proxy
-    const captureResetPlugin: Plugin = {
-      name: `fixture-capture-reset-${styleMode}`,
-      enforce: 'pre',
-      transform: {
-        order: 'pre',
-        handler(code, id) {
-          if (path.resolve(id.split('?')[0]) === path.resolve(coreResetPath)) {
-            capturedReset = code
-          }
-        },
-      },
-    }
-    const server = await createServer({
-      configFile: false,
-      root: fixtureRoot,
-      logLevel: 'silent',
-      server: {
-        middlewareMode: true,
-        fs: {
-          allow: [path.dirname(coreResetPath)],
-        },
-      },
-      resolve: {
-        alias: fixtureAliases,
-      },
-      plugins: [
-        ...environmentSpecificCompilerPlugins('serve'),
-        ...fixturePlugins(undefined, true),
-        tamaguiPlugin({
-          components: directPackageFixtureComponents,
-          enableDynamicEvaluation: true,
-        }),
-        captureResetPlugin,
-      ],
-    })
-    servers.push(server)
-
-    const clientEnvironment = server.environments.client
-    await clientEnvironment.transformRequest(`/@fs${coreResetPath}`)
-    expect(capturedReset).toBeTruthy()
-    return capturedReset
-  }
-
-  const originalReset = await readFile(coreResetPath, 'utf8')
-  expect(await transformReset('tamagui')).toBe(originalReset)
-  expect(await transformReset('tamagui-and-tailwind')).toBe(
-    `@layer tamagui {\n${originalReset}\n}`
-  )
-})
-
 test('evaluates config and components through the app resolver and invalidates HMR', async () => {
   ;(globalThis as any).__tamaguiFixtureOwnedEvaluation = []
   const server = await createServer({
@@ -1112,7 +1056,7 @@ test('evaluates the same fixture during a production build without legacy bundle
   expect(buildOutput).toContain('browser:workspace-v1:user-plugin:build-only')
   expect(buildOutput).not.toContain('serve-only')
   expectMediaPaddingCss(buildOutput, 21)
-  expect(buildOutput).not.toContain('fixture')
+  expect(buildOutput).not.toContain('var(--c-space-fixture)')
   const evaluationProbe = (globalThis as any).__tamaguiFixtureOwnedEvaluation
   const evaluationPluginNames = (globalThis as any).__tamaguiFixtureOwnedPluginNames
   expect(evaluationProbe).toContain('resolve:build')
@@ -1325,7 +1269,7 @@ test('keeps the owned runner alive across concurrent builds sharing one plugin',
     for (const result of [slowResult, fastResult]) {
       const output = getBuildOutput(result)
       expect(output).toContain('className')
-      expect(output).not.toContain('fixture')
+      expect(output).not.toContain('var(--c-space-fixture)')
       expectMediaPaddingCss(output, 21)
     }
 

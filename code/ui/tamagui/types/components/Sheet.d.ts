@@ -488,7 +488,6 @@ export declare const Sheet: ((props: Omit<{
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
     disableHideWhenClosed?: boolean;
-    disableTransparencyHide?: boolean;
     native?: 'ios'[] | boolean;
     transition?: import("@tamagui/ui").TransitionProp;
     handleDisableScroll?: boolean;

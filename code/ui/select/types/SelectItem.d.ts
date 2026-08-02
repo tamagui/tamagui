@@ -12,8 +12,6 @@ export declare const SelectItemContextProvider: React.Provider<SelectItemContext
 }>, useSelectItemContext: (scope?: string) => SelectItemContextValue;
 export interface SelectItemExtraProps {
     value: string;
-    /** @deprecated registry order is authoritative. this prop is accepted but inert. */
-    index?: number;
     disabled?: boolean;
     textValue?: string;
 }

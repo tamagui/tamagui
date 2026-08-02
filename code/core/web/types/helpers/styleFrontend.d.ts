@@ -74,6 +74,12 @@ export type StyleFrontend = {
  */
 export declare const STYLE_FRONTEND_PREPROCESSED: unique symbol;
 /**
+ * Internal ordered-prop channel for raw CSS classes a frontend does not own.
+ * Numbered keys let passthrough segments keep their exact position among claimed
+ * style contributions while the shared renderer still handles them as className.
+ */
+export declare const STYLE_FRONTEND_PASSTHROUGH_PREFIX = "__tamagui_frontend_passthrough_";
+/**
  * The regular Tamagui frontend: props are already the renderer's input shape, so
  * preprocessing is identity and costs one property read plus one call.
  */

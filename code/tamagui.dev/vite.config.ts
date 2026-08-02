@@ -135,6 +135,10 @@ export default {
 
       // Standard string-based aliases
       {
+        find: /^~\//,
+        replacement: `${import.meta.dirname}/`,
+      },
+      {
         find: 'react-native-svg',
         replacement: '@tamagui/react-native-svg',
       },
@@ -252,6 +256,12 @@ export const LocationNotification = BentoComponentStub
     }),
 
     one({
+      config: {
+        // The repo tsconfig contains declaration-only package mappings that
+        // must not override runtime package exports.
+        tsConfigPaths: false,
+      },
+
       setupFile: {
         server: './setup.server.ts',
       },

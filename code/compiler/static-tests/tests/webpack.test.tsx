@@ -127,14 +127,14 @@ describe('webpack-tests', () => {
     expect(divOn).toBeTruthy()
     expect(divOff).toBeTruthy()
     expect(window.getComputedStyle(divOn!).paddingLeft).toBe('')
-    expect(window.getComputedStyle(divOff!).paddingLeft).toBe('var(--t-space-4)')
+    expect(window.getComputedStyle(divOff!).paddingLeft).toBe('var(--c-space-4)')
   })
 
   test('18. extracts flexWrap property', () => {
     const { renderTrue } = getTest('TestFlexWrap')
     const { container } = renderTrue()
 
-    const element = container.querySelector('span.is_Theme div')
+    const element = container.querySelector('[data-testid="flex-wrap"]')
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)
@@ -149,8 +149,12 @@ describe('webpack-tests', () => {
     const { container: containerTrue } = renderTrue()
     const { container: containerFalse } = renderFalse()
 
-    const elementTrue = containerTrue.querySelector('span.is_Theme div')
-    const elementFalse = containerFalse.querySelector('span.is_Theme div')
+    const elementTrue = containerTrue.querySelector(
+      '[data-testid="flex-wrap-conditional"]'
+    )
+    const elementFalse = containerFalse.querySelector(
+      '[data-testid="flex-wrap-conditional"]'
+    )
 
     expect(elementTrue).toBeTruthy()
     expect(elementFalse).toBeTruthy()
@@ -169,8 +173,9 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexProperties')
     const { container } = renderTrue()
 
-    // Select the div element which is the actual component (inside theme/font wrapper spans)
-    const element = container.querySelector('span.is_Theme div') as HTMLElement
+    const element = container.querySelector(
+      '[data-testid="flex-properties"]'
+    ) as HTMLElement
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)
@@ -210,8 +215,9 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexWrapWithMediaQuery')
     const { container } = renderTrue()
 
-    // Select the div element which is the actual component (inside theme/font wrapper spans)
-    const element = container.querySelector('span.is_Theme div') as HTMLElement
+    const element = container.querySelector(
+      '[data-testid="flex-wrap-media"]'
+    ) as HTMLElement
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)

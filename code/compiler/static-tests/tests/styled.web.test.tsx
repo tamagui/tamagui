@@ -76,10 +76,10 @@ describe('styled() tests', () => {
       throw new Error(`No output`)
     }
 
-    expect(output.styles).toContain('padding-top:var(--t-space-0)')
+    expect(output.styles).toContain('padding-top:var(--c-space-0)')
     expect(output.styles).toContain('border-top-left-radius')
-    expect(output.styles).toContain('height:var(--t-size-8)')
-    expect(output.styles).toContain('padding-left:var(--t-space-0)')
+    expect(output.styles).toContain('height:var(--c-size-8)')
+    expect(output.styles).toContain('padding-left:var(--c-space-0)')
     expect(output.styles).toContain('background-color:red')
     expect(output.styles).toContain('opacity:0.75')
     expect(output.styles).toContain('width:30px')

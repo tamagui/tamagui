@@ -5,9 +5,9 @@ exports[`styled() tests > extracts to className at call-site 1`] = `
       import { MyStack } from '@tamagui/test-design-system'
 
       export function Test() {
-        return <div className="is_View _bc-795713679" />
+        return <div className="is_View _bc-1493651562" />
       }
 "
 `;
 
-exports[`styled() tests > extracts to className at call-site 2`] = `"._bc-795713679{background-color:green}"`;
+exports[`styled() tests > extracts to className at call-site 2`] = `"._bc-1493651562{background-color:green}"`;

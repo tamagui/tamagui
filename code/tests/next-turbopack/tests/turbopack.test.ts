@@ -30,8 +30,8 @@ export function TestComponent() {
       <Button onPress={() => setCount(c => c + 1)}>
         <Text color="white">Increment</Text>
       </Button>
-      <YStack padding="4" backgroundColor="blue5 sm:red5" borderRadius="4">
-        <Text>Media query test (blue on lg, red on sm)</Text>
+      <YStack padding="4" backgroundColor="blue5 max-sm:red5" borderRadius="4">
+        <Text>Media query test (blue above sm, red below sm)</Text>
       </YStack>
     </YStack>
   )

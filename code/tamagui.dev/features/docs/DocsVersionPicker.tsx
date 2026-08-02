@@ -210,9 +210,8 @@ function PickerSelect({
             <Select.Label fontSize="2" color="color9">
               {label}
             </Select.Label>
-            {items.map((item, index) => (
+            {items.map((item) => (
               <Select.Item
-                index={index}
                 key={item.value}
                 value={item.value}
                 testID={testID ? `${testID}-${item.value}` : undefined}

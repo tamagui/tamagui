@@ -122,7 +122,7 @@ export const App = () => (
     expect(output.code).not.toContain('group="card"')
     expect(plan.css).toContain('padding-top:14px')
     expect(plan.css).toContain('@media (hover: hover)')
-    expect(plan.css).toContain('@media (max-width: 800px)')
+    expect(plan.css).toContain('@media (min-width: 640px)')
     expect(plan.css).toContain('.t_dark')
     expect(plan.css).toContain('container-name: card')
     expect(plan.css).toContain('font-family')
@@ -455,10 +455,10 @@ export const Card = ({ border }) => jsx(View, {
   test('keeps shorthand aliases and logical properties with physical collisions', () => {
     const source = `
 import { View } from '@tamagui/core'
-export const Card = ({ width, marginLeft }) => (
+export const Card = ({ maxWidth, marginLeft }) => (
   <View
-    w={width}
-    inlineSize={120}
+    maxW={maxWidth}
+    maxInlineSize={120}
     marginLeft={marginLeft}
     marginInlineStart={4}
     opacity={0.5}
@@ -468,13 +468,13 @@ export const Card = ({ width, marginLeft }) => (
     const { plan, output } = compile(source)
 
     expect(codes(plan)).toEqual([])
-    expect(output.code).toContain('w={width}')
-    expect(output.code).toContain('inlineSize={120}')
+    expect(output.code).toContain('maxW={maxWidth}')
+    expect(output.code).toContain('maxInlineSize={120}')
     expect(output.code).toContain('marginLeft={marginLeft}')
     expect(output.code).toContain('marginInlineStart={4}')
     expect(output.code).not.toContain('opacity={0.5}')
     expect(plan.css).toContain('opacity:0.5')
-    expect(plan.css).not.toContain('width:120px')
+    expect(plan.css).not.toContain('max-width:120px')
     expect(plan.css).not.toContain('margin-inline-start:4px')
   })
 

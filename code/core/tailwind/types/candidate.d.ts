@@ -19,5 +19,5 @@ export declare function setInAuthoredOrder(target: Record<string, any>, key: str
  * hardcoded. Classes the grammar does not claim stay in `className` verbatim, in
  * author order, so official Tailwind CSS still applies them on web.
  */
-export declare function preprocessTailwindClassName(props: Record<string, any>, config: StyleFrontendConfig): Record<string, any>;
+export declare function preprocessTailwindClassName(props: Record<string, any>, config: StyleFrontendConfig, preservePassthroughPosition?: boolean): Record<string, any>;
 //# sourceMappingURL=candidate.d.ts.map

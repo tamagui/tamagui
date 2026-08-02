@@ -72,9 +72,8 @@ export function SelectAndroidOnPress() {
           <Select.Viewport minWidth={200}>
             <Select.Group>
               <Select.Label>Fruits</Select.Label>
-              {items.map((item, i) => (
+              {items.map((item) => (
                 <Select.Item
-                  index={i}
                   key={item.name}
                   value={item.name.toLowerCase()}
                   testID={`select-android-item-${item.name.toLowerCase()}`}

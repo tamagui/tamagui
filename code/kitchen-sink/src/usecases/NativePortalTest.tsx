@@ -39,9 +39,8 @@ function SelectWithSheet({ id }: { id: string }) {
         <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
-            {items.map((item, i) => (
+            {items.map((item) => (
               <Select.Item
-                index={i}
                 key={item.name}
                 value={item.name.toLowerCase()}
                 testID={`${id}-option-${item.name.toLowerCase()}`}

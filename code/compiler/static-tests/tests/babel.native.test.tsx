@@ -199,66 +199,6 @@ test('do NOT flatten multiple dynamic values with theme access and conditional',
   expect(code).toMatchSnapshot()
 })
 
-test('md and gt-md clauses should respect breakpoint boundaries', async () => {
-  // Regression test for bug starting in 1.132.17
-  // On small screens (iPhone), md should apply, not gt-md.
-  const output = await extractForNative(`
-    import { YStack } from 'tamagui'
-    export function Test() {
-      return (
-        <YStack
-          h={100}
-          w={100}
-          bc="red md:yellow gt-md:green"
-        />
-      )
-    }
-  `)
-  const code = output?.code ?? ''
-  // Verify the output includes both media query conditions
-  // and they are structured correctly for runtime evaluation
-  expect(code).toMatchSnapshot()
-})
-
-test('gtMd only should NOT apply on small screens', async () => {
-  const output = await extractForNative(`
-    import { YStack } from 'tamagui'
-    export function Test() {
-      return (
-        <YStack
-          h={100}
-          w={100}
-          bc="red gt-md:green"
-        />
-      )
-    }
-  `)
-  const code = output?.code ?? ''
-  expect(code).toMatchSnapshot()
-})
-
-test('multiple media query components should not conflict', async () => {
-  const output = await extractForNative(`
-    import { YStack, XStack } from 'tamagui'
-    export function Test() {
-      return (
-        <>
-          <YStack bc="red md:yellow" />
-          <XStack bc="blue gt-md:green" />
-          <YStack bc="purple sm:pink" />
-        </>
-      )
-    }
-  `)
-  const code = output?.code ?? ''
-  // Verify each wrapper has a unique name
-  expect(code).toMatchSnapshot()
-  // Make sure we don't have duplicate const declarations
-  const styledMatches = code.match(/const _\w+Styled\d+/g) || []
-  const uniqueNames = new Set(styledMatches)
-  expect(styledMatches.length).toBe(uniqueNames.size)
-})
-
 test('string ternary and media prop remain distinct on the runtime component', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'

@@ -17,10 +17,9 @@ function FruitItems({
   return (
     <Part.Group>
       <Part.Label>Fruit</Part.Label>
-      {fruits.map((fruit, index) => (
+      {fruits.map((fruit) => (
         <Part.Item
           key={fruit}
-          index={index}
           value={fruit.toLowerCase()}
           disabled={fruit === 'Orange'}
           onPress={fruit === 'Banana' ? onBananaPress : undefined}

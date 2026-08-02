@@ -64,25 +64,36 @@ for (const driver of drivers) {
       const box = page.getByTestId('transform-box')
       await expect(box).toBeAttached({ timeout: 15000 })
 
-      // pre-hydration: SSR should have transform applied via className
-      const preTransform = await box.evaluate((el) => getComputedStyle(el).transform)
-      console.log(`${driver} driver - pre-hydration transform:`, preTransform)
-      expect(preTransform, 'transform should be applied before hydration').toContain(
-        'matrix'
-      )
+      // SSR emits the web-standard individual transform properties as classes.
+      const preStyles = await box.evaluate((el) => {
+        const styles = getComputedStyle(el)
+        return {
+          transform: styles.transform,
+          translate: styles.translate,
+          scale: styles.scale,
+          rotate: styles.rotate,
+        }
+      })
+      const preBounds = await box.boundingBox()
+
+      expect(preStyles).toEqual({
+        transform: 'none',
+        translate: '50px 20px',
+        scale: '1.1',
+        rotate: '5deg',
+      })
 
       // wait for hydration
       await page.waitForSelector('[data-testid=hydrated-true]')
 
-      // post-hydration: transform should still be correct
-      const postTransform = await box.evaluate((el) => getComputedStyle(el).transform)
-      console.log(`${driver} driver - post-hydration transform:`, postTransform)
-      expect(postTransform, 'transform should be applied after hydration').toContain(
-        'matrix'
-      )
-
-      // the styles dont change the transform shouldnt change
-      expect(postTransform === preTransform)
+      // Motion composes those properties into a matrix after hydration, while
+      // CSS keeps the longhands. Either representation must preserve geometry.
+      const postBounds = await box.boundingBox()
+      expect(preBounds).not.toBeNull()
+      expect(postBounds).not.toBeNull()
+      for (const key of ['x', 'y', 'width', 'height'] as const) {
+        expect(postBounds![key]).toBeCloseTo(preBounds![key], 3)
+      }
     })
 
     test('presence box renders without hydration error', async ({ page }) => {

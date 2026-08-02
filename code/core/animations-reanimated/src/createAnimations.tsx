@@ -286,7 +286,11 @@ const buildSnapshot = (
   transforms: Array<Record<string, unknown>>,
   previousKeys: Set<string>,
   lastPainted: Record<string, unknown>
-) => {
+): {
+  value: AnimationSnapshot
+  painted: Record<string, unknown>
+  keys: Set<string>
+} => {
   const snapshotAnimated: Record<string, unknown> = {}
   const snapshotStatics = cloneStyleRecord(statics)
 
@@ -393,13 +397,13 @@ const createReanimatedConfig = (config: TransitionConfig): Record<string, unknow
 /**
  * Apply animation to a value based on config, with optional completion callback
  */
-const applyAnimation = (
-  targetValue: number | string,
+const applyAnimation = <T extends number | string>(
+  targetValue: T,
   config: TransitionConfig,
   callback?: AnimationCallback,
   seedValue?: number | string,
   validateStartAsColor = false
-): number | string => {
+): T => {
   'worklet'
   const delay = config.delay
   const reanimatedConfig = createReanimatedConfig(config)
@@ -449,7 +453,7 @@ const applyAnimation = (
     animatedValue = withDelay(delay, animatedValue)
   }
 
-  return animatedValue
+  return animatedValue as T
 }
 
 const animateSnapshotValue = (
@@ -706,7 +710,7 @@ function buildTransitionConfig<A extends Record<string, TransitionConfig>>(
   }
 
   if (normalized.config) {
-    base = cloneTransitionConfig({ ...base, ...normalized.config })
+    base = cloneTransitionConfig({ ...base, ...normalized.config } as TransitionConfig)
     // infer type: 'timing' if duration is provided without spring params
     if (
       base.type !== 'timing' &&
@@ -1248,15 +1252,23 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // a latch. animated keys live only in this snapshot after mount (staticStyles carries
       // them during mount only), so a render that never publishes leaves the worklet reading
       // an empty snapshot and the animated properties never reach the screen at all.
+      // The first emitter snapshot can already contain the browser's real media-query state
+      // while the first render still contains mediaQueryDefaultActive for hydration. Publish
+      // that render behind the latch, but do not let it replace the fresher runtime snapshot.
       const publishedSnapshotRef = useRef<object | null>(null)
       useIsomorphicLayoutEffect(() => {
+        const renderChanged = publishedSnapshotRef.current !== renderSnapshot.value
         const droppingLatch =
-          (isExiting || !pseudoActiveRef.current) && emitterSnapshotRef.value !== null
+          (isExiting ||
+            (!pseudoActiveRef.current &&
+              publishedSnapshotRef.current !== null &&
+              renderChanged)) &&
+          emitterSnapshotRef.value !== null
         // when the latch drops, keys the emitter owned that this render no longer has must
         // be cleared too, otherwise reanimated keeps painting the stale emitted value
         const emitterKeys = droppingLatch ? emitterKeysRef.current : null
 
-        if (droppingLatch || publishedSnapshotRef.current !== renderSnapshot.value) {
+        if (droppingLatch || renderChanged) {
           const removedKeys = emitterKeys
             ? {
                 ...renderSnapshot.value.removedKeys,

@@ -414,15 +414,9 @@
         "@tamagui/animations-motion": "workspace:*",
         "@tamagui/animations-react-native": "workspace:*",
         "@tamagui/animations-reanimated": "workspace:*",
-        "@tamagui/colors": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-system-font": "workspace:*",
-        "@tamagui/font-inter": "workspace:*",
-        "@tamagui/font-silkscreen": "workspace:*",
-        "@tamagui/react-native-media-driver": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
         "@tamagui/style-grammar": "workspace:*",
-        "@tamagui/theme-builder": "workspace:*",
         "@tamagui/themes": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -1142,10 +1136,7 @@
       "version": "2.5.1",
       "dependencies": {
         "@tamagui/colors": "workspace:*",
-        "@tamagui/create-theme": "workspace:*",
         "@tamagui/theme-builder": "workspace:*",
-        "@tamagui/web": "workspace:*",
-        "color2k": "^2.0.2",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -1390,7 +1381,6 @@
         "@tamagui/checkbox": "workspace:*",
         "@tamagui/checkbox-headless": "workspace:*",
         "@tamagui/colors": "workspace:*",
-        "@tamagui/config": "workspace:*",
         "@tamagui/context-menu": "workspace:*",
         "@tamagui/core": "workspace:*",
         "@tamagui/image": "workspace:*",
@@ -1655,6 +1645,10 @@
         "@tamagui/build": "workspace:*",
         "typescript": "~5.9.2",
       },
+    },
+    "code/packages/build/__tests__/fixtures/subpath-only-package": {
+      "name": "tamagui-build-test-subpath-only-package",
+      "version": "1.0.0",
     },
     "code/packages/build/__tests__/fixtures/watch-package": {
       "name": "tamagui-build-test-watch-package",
@@ -8676,6 +8670,8 @@
     "tamagui-build-test-js-main-package": ["tamagui-build-test-js-main-package@workspace:code/packages/build/__tests__/fixtures/js-main-package"],
 
     "tamagui-build-test-simple-tpackage": ["tamagui-build-test-simple-tpackage@workspace:code/packages/build/__tests__/fixtures/simple-package"],
+
+    "tamagui-build-test-subpath-only-package": ["tamagui-build-test-subpath-only-package@workspace:code/packages/build/__tests__/fixtures/subpath-only-package"],
 
     "tamagui-build-test-watch-package": ["tamagui-build-test-watch-package@workspace:code/packages/build/__tests__/fixtures/watch-package"],
 

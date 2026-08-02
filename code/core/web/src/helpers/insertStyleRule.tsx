@@ -25,6 +25,11 @@ export const getAllRules = () => {
   return []
 }
 
+export function wrapStyleRules(css: string): string {
+  const layer = process.env.TAMAGUI_CSS_LAYER
+  return layer && css ? `@layer ${layer} {\n${css}\n}` : css
+}
+
 // once react 19 onyl supported we can remove most of this
 // gets existing ones (client side)
 // takes ~0.1ms for a fairly large page
@@ -297,7 +302,7 @@ const getIdentifierFromTamaguiSelector = (selector: string) => {
   return selector.slice(7)
 }
 
-let sheet: CSSStyleSheet | null = null
+let sheet: Pick<CSSStyleSheet, 'cssRules' | 'insertRule'> | null = null
 
 let mountedProviders = 0
 let trackAllRules = true
@@ -331,7 +336,18 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     if (nonce) {
       styleTag.nonce = nonce
     }
-    sheet = document.head.appendChild(styleTag).sheet
+    const rootSheet = document.head.appendChild(styleTag).sheet
+    const layer = process.env.TAMAGUI_CSS_LAYER
+    if (rootSheet && layer) {
+      rootSheet.insertRule(`@layer ${layer} {}`, rootSheet.cssRules.length)
+      const layerRule = rootSheet.cssRules[rootSheet.cssRules.length - 1]
+      sheet =
+        'cssRules' in layerRule && 'insertRule' in layerRule
+          ? (layerRule as CSSGroupingRule)
+          : rootSheet
+    } else {
+      sheet = rootSheet
+    }
   }
 
   if (!sheet) return

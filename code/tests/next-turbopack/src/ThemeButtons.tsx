@@ -11,7 +11,7 @@ const Button = styled(View, {
   backgroundColor: 'blue10',
   borderRadius: '4',
   cursor: 'pointer',
-  opacity: 'press:0.8',
+  opacity: '1 press:0.8',
 })
 
 export function ThemeButtons() {

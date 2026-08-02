@@ -102,7 +102,7 @@ export const tailwindStyleFrontend: StyleFrontend = {
   preprocessProps(props, config) {
     const transformed =
       typeof props.className === 'string'
-        ? preprocessTailwindClassName(props, config)
+        ? preprocessTailwindClassName(props, config, true)
         : props
     // only a fresh object gets the marker; marking the caller's props would leak the
     // symbol onto props the frontend never actually rewrote

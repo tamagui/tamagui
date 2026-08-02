@@ -18,20 +18,20 @@ export function AnimationsWithMediaQueriesCase() {
         Animations With Media Queries Test
       </Text>
       <Text fontSize="2" color="color10">
-        Resize window to test. At sm breakpoint (&lt;660px), styles should change.
+        Resize window to test. At max-sm breakpoint (&lt;640px), styles should change.
       </Text>
 
       {/* Test 1: scale only */}
       <YStack gap="2">
         <Text fontWeight="bold">Test 1: Scale in media query</Text>
-        <Text fontSize="2">Base: scale=1 (blue), sm: scale=0.75 (green)</Text>
+        <Text fontSize="2">Base: scale=1 (blue), max-sm: scale=0.75 (green)</Text>
         <XStack height={150} bg="color3" alignItems="center" justifyContent="center">
           <Square
             testID="test-scale"
             data-testid="test-scale"
             size={100}
-            bg="blue10 sm:green10"
-            scale="1 sm:0.75"
+            bg="blue10 max-sm:green10"
+            scale="1 max-sm:0.75"
             transition="quick"
           />
         </XStack>
@@ -40,7 +40,7 @@ export function AnimationsWithMediaQueriesCase() {
       {/* Test 2: translateX only */}
       <YStack gap="2">
         <Text fontWeight="bold">Test 2: TranslateX in media query</Text>
-        <Text fontSize="2">Base: x=0 (purple), sm: x=50 (orange)</Text>
+        <Text fontSize="2">Base: x=0 (purple), max-sm: x=50 (orange)</Text>
         <XStack
           height={150}
           bg="color3"
@@ -60,8 +60,8 @@ export function AnimationsWithMediaQueriesCase() {
             testID="test-translate"
             data-testid="test-translate"
             size={100}
-            bg="purple10 sm:orange10"
-            x="10px sm:50px"
+            bg="purple10 max-sm:orange10"
+            x="10px max-sm:50px"
             transition="quick"
           />
         </XStack>
@@ -70,7 +70,7 @@ export function AnimationsWithMediaQueriesCase() {
       {/* Test 3: combined scale + translate (mimics promo badge) */}
       <YStack gap="2">
         <Text fontWeight="bold">Test 3: Combined scale + translateX</Text>
-        <Text fontSize="2">Base: scale=1, x=-50%, sm: scale=0.75, x=-90%</Text>
+        <Text fontSize="2">Base: scale=1, x=-50%, max-sm: scale=0.75, x=-90%</Text>
         <XStack height={150} bg="color3" position="relative" overflow="hidden">
           <XStack
             testID="test-combined"
@@ -78,7 +78,7 @@ export function AnimationsWithMediaQueriesCase() {
             position="absolute"
             t={30}
             l="50%"
-            x="-50% sm:-90%"
+            x="-50% max-sm:-90%"
             rounded="10"
             px="4"
             py="2"
@@ -88,7 +88,7 @@ export function AnimationsWithMediaQueriesCase() {
             bg="color5"
             borderWidth={0.5}
             transition="quick"
-            scale="sm:0.75"
+            scale="1 max-sm:0.75"
           >
             <Text>Promo Badge</Text>
           </XStack>

@@ -17,9 +17,13 @@
     "v5-tokens.cjs",
     "v5-tokens.d.ts"
   ],
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "types": "./types/index.d.ts",
+  "tamagui-build": {
+    "outputs": [
+      "cjs",
+      "esm",
+      "types"
+    ]
+  },
   "exports": {
     "./package.json": "./package.json",
     "./v5": {

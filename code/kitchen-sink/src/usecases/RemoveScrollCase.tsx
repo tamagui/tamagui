@@ -40,12 +40,11 @@ export function RemoveScrollCase() {
         <Select.Content data-testid="rs-select-content">
           <Select.Viewport data-testid="rs-select-viewport">
             <Select.Group>
-              {items.map((item, i) => (
+              {items.map((item) => (
                 <Select.Item
                   key={item.value}
                   data-testid={`rs-select-${item.value}`}
                   value={item.value}
-                  index={i}
                 >
                   <Select.ItemText>{item.label}</Select.ItemText>
                   <Select.ItemIndicator />

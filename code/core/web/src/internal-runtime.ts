@@ -24,6 +24,7 @@ import { textStaticConfig } from './views/Text'
 import { viewStaticConfig } from './views/View'
 
 export {
+  STYLE_FRONTEND_PASSTHROUGH_PREFIX,
   STYLE_FRONTEND_PREPROCESSED,
   regularStyleFrontend,
 } from './helpers/styleFrontend'

@@ -110,7 +110,7 @@ import { View } from '@tamagui/core'
     }
   )
 
-  expect(output?.js).toContain('className="_w-10px"')
+  expect(output?.js).toContain('className="_width-10px"')
   expect(output?.js).toContain("bg={props.green ? 'red' : 'blue'}")
   expect(output?.styles).toContain('width:10px')
   expect(output?.js).toMatchSnapshot()
@@ -376,7 +376,7 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
     export function Test() {
       return (
         <View
-          fb="1 gtXs:0px"
+          fb="1 sm:0px"
         />
       )
     }
@@ -385,7 +385,7 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
 
   // fb: 0 should extract as 0px, not auto
   expect(output?.styles).toMatch(
-    /@media \(min-width: 661px\) \{\._fb-\d+\{flex-basis:0px\}\}/
+    /@media \(min-width: 640px\) \{\._fb-\d+\{flex-basis:0px\}\}/
   )
   expect(output?.styles).not.toContain('auto')
   expect(output?.js).toMatchSnapshot()

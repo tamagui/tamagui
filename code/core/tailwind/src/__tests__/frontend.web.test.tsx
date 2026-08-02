@@ -86,6 +86,15 @@ describe('tailwind components render through the shared renderer', () => {
     expect(styles.style?.backgroundColor).toBe('red')
   })
 
+  test('an owned candidate before a passthrough candidate stays atomic', () => {
+    const styles = splitTailwindStyles(View, {
+      className: 'bg-[red] supports-[display:grid]:bg-blue-500',
+    })
+
+    expect(styles.classNames.backgroundColor).toBeTruthy()
+    expect(styles.style?.backgroundColor).toBeUndefined()
+  })
+
   test('unknown classes keep their authored order', () => {
     const styles = splitTailwindStyles(View, {
       className: 'grid-cols-2 p-4 grid-cols-3',

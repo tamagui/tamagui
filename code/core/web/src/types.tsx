@@ -3438,6 +3438,7 @@ export type UseStyleEmitter = (cb: UseStyleListener) => void
 export type UseAnimationHook = (props: {
   style: Record<string, any>
   props: Record<string, any>
+  styleState?: GetStyleResult | null
   presence?: UsePresenceResult | null
   staticConfig: StaticConfig
   styleProps: SplitStyleProps

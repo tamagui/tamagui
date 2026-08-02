@@ -1194,7 +1194,6 @@ export function createComponent<
         // clone style to prevent animation driver mutations from leaking to viewProps
         // during SSR/pre-hydration (CSS driver mutates style.transition in place)
         style: isHydrated ? splitStylesStyle || {} : { ...splitStylesStyle },
-        // @ts-ignore
         styleState: splitStyles,
         useStyleEmitter,
         presence,

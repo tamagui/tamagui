@@ -1,17 +1,13 @@
 import { describe, expect, test } from 'vitest'
 
-import { config as v3Config } from '../config/src/v3'
-import { defaultConfig as v4Config } from '../config/src/v4'
 import { defaultConfig as v5Config } from '../config/src/v5-base'
-import { defaultConfig as v6Config } from '../config/src/v6-base'
+import { defaultConfig as v6Config } from '../config/src/v6'
 import { View, createTamagui, styled } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 const negativeTrueKey = `-${'true'}`
 
 const configs = [
-  ['v3', v3Config],
-  ['v4', v4Config],
   ['v5', v5Config],
   ['v6', v6Config],
 ] as const
