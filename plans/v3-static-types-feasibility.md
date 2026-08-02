@@ -595,14 +595,35 @@ Two concrete follow-ups, in priority order:
    the list that appears is `hover:`, `sm:`, `web:` and their siblings rather
    than one family.
 
-Sizing that, from the vocabulary table above: state 14 + media 14 + platform 7
-= 35 fixed modifiers, against the 14 the measured prototype used. A color prop
-goes from the measured 1,950 members to roughly 4,875. That is comfortably
-inside TypeScript's 100,000-constituent limit, and it is **2.5x a union whose
-cost was measured at 0.19s (single clause) and 0.50s (two clauses) per 1,000
-sites**. Nobody has measured the 35-modifier form. Do that before shipping it:
-union size and check time are not linearly related, and the two-clause row is
-where this gets expensive.
+**Measured 2026-08-01, and it is affordable.** Harness committed at
+`scripts/benchmark-flat-value-modifier-types.ts` (TypeScript 5.9.3, Bun 1.3.10,
+1,000 JSX sites, two color props per site, five interleaved checker samples and
+five warmed tsserver samples, sample order alternated). It derives the 130/14/14/7
+vocabularies from live repo sources rather than hardcoding them.
+
+| arm | members | single clause | two clauses | entries | round trip |
+| --- | --- | --- | --- | --- | --- |
+| state 14 | 1,950 | 0.11s | 0.22s | 1,950 | 3.10ms |
+| fixed 35 (state+media+platform) | 4,680 | 0.20s | 0.40s | 4,680 | 5.45ms |
+| **ratio** | 2.40x | **1.82x** | **1.82x** | | 1.76x |
+
+Check time grows sublinearly with union size: 2.4x the members costs 1.82x the
+check. Paired per-round medians are 1.82x and 1.86x, so the result does not
+depend on arm ordering. The 35 arm returns `hover:color1`, `sm:color1` and
+`web:color1`; the 14 arm returns only the state entry, which is the difference
+that made this worth doing at all.
+
+Two corrections fall out of that run. The exact union is **4,680, not the ~4,875
+estimated above**: 130 bare tokens x 36 bare-or-modified forms. And the
+**0.19s/0.50s row published earlier in this document does not reproduce** — the
+same arm measures 0.11s/0.22s here, 42% and 56% lower. Treat every absolute
+millisecond figure in this file as machine- and version-bound. The internally
+controlled ratio is the transferable number, which is why both arms were
+re-measured together instead of comparing against the old row.
+
+`replacementSpan` still covers the whole string literal in both arms. That
+limitation is unchanged and is why this is worth doing for single-value props
+and not for `className`.
 
 Theme modifiers stay out. There are 294 of them, they are config-dependent
 rather than registry-fixed, and folding them in takes a color prop to about
