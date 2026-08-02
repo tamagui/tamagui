@@ -14,27 +14,17 @@ describe('animation props', () => {
       </TamaguiProvider>
     )
 
-    expect(tree.asFragment()).toMatchInlineSnapshot(`
-      <DocumentFragment>
-        <span
-          class="t_light _dsp_contents"
-        >
-          <span
-            class=" t_light is_Theme"
-            style="color: var(--color); display: contents;"
-          >
-            <span
-              class="_dsp_contents  font_body"
-            >
-              <div
-                class="is_View _mt-200px _mr-200px _mb-200px _ml-200px _tx-927052474 _t-616221249 _bc-1124498088"
-                id="test-id"
-                style="transition: all cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms;"
-              />
-            </span>
-          </span>
-        </span>
-      </DocumentFragment>
+    // snapshot the View itself, not the whole fragment. TamaguiProvider also
+    // renders ConfigRevisionCheck, whose hidden span carries a hash of every
+    // theme/token/media/font/shorthand NAME in the config — so capturing the
+    // fragment made this animation test break whenever an unrelated config key
+    // was added anywhere. Theme and font wrapping is covered by its own tests.
+    expect(tree.container.querySelector('#test-id')).toMatchInlineSnapshot(`
+      <div
+        class="is_View _mt-200px _mr-200px _mb-200px _ml-200px _tx-927052474 _t-616221249 _bc-1124498088"
+        id="test-id"
+        style="transition: all cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms;"
+      />
     `)
   })
 })
