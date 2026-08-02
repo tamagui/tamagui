@@ -44,12 +44,13 @@ export const getVariantExtras = (styleState: GetStyleState) => {
         }
       }
 
-      // A bare var() reference without a font class is the root --f-family,
-      // which resolves to the normalized default font token.
-      return !props.fontFamily ||
-        (typeof props.fontFamily === 'string' && props.fontFamily.startsWith('var('))
-        ? fonts[conf.defaultFontToken]
-        : undefined
+      // Anything else is a font this config does not define — a bare var()
+      // reference to the root --f-family, or a real CSS family like
+      // `fontFamily: 'monospace'`. Neither has a configured type scale, so size
+      // resolution falls back to the default font's. Returning undefined here
+      // instead crashed every size variant that reads `font.size`, because each
+      // caller passes `extras.font!` straight into resolveTokenSize.
+      return fonts[conf.defaultFontToken]
     },
     props,
   }
