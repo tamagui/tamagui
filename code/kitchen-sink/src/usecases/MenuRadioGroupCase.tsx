@@ -38,9 +38,7 @@ export function MenuRadioGroupCase() {
       <YStack alignItems="flex-start" gap="4">
         <Menu allowFlip placement="bottom-start" offset={8}>
           <Menu.Trigger asChild>
-            <Button testID="menu-radio-trigger" size="4">
-              Pick a color
-            </Button>
+            <Button testID="menu-radio-trigger">Pick a color</Button>
           </Menu.Trigger>
 
           <Menu.Portal zIndex={100}>

@@ -73,7 +73,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./GroupPressTransitionMatrix').GroupPressTransitionMatrix,
   GroupProp: () => require('./GroupProp').GroupProp,
   MediaQueryGtMd: () => require('./MediaQueryGtMd').MediaQueryGtMd,
-  MediaQueriesV5: () => require('./MediaQueriesV5').MediaQueriesV5,
+  MediaQueries: () => require('./MediaQueries').MediaQueries,
   MotionReduceCase: () => require('./MotionReduceCase').MotionReduceCase,
   MenuAccessibilityCase: () => require('./MenuAccessibilityCase').MenuAccessibilityCase,
   MenuAsChildPositionCase: () =>
@@ -193,7 +193,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./TransformMediaQueryMerge').TransformMediaQueryMerge,
   UseCases: () => require('./UseCases').UseCases,
   UseTheme: () => require('./UseTheme').UseTheme,
-  V5ThemeBuilderOutput: () => require('./V5ThemeBuilderOutput').V5ThemeBuilderOutput,
+  AccentAndColorThemes: () => require('./AccentAndColorThemes').AccentAndColorThemes,
   VariantFontFamily: () => require('./VariantFontFamily').VariantFontFamily,
   VariantsOrder: () => require('./VariantsOrder').VariantsOrder,
   VisibilityCase: () => require('./VisibilityCase').VisibilityCase,

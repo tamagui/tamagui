@@ -103,7 +103,7 @@ export function NestedPressExclusive() {
             <Text testID="child-press-out-count">Child out: {childPressOutCount}</Text>
           </XStack>
           <Text testID="last-pressed">Last pressed: {lastPressed}</Text>
-          <Button testID="nested-press-reset" size="4" onPress={resetCounts}>
+          <Button testID="nested-press-reset" onPress={resetCounts}>
             Reset counts
           </Button>
         </YStack>
@@ -133,7 +133,6 @@ function NestedTamaguiTest() {
           <Text>Outer Tamagui Button</Text>
           <Button
             testID="inner-tamagui-button"
-            size="4"
             onPress={() => setInnerCount((c) => c + 1)}
           >
             Inner Button

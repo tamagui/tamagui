@@ -4,29 +4,23 @@ import { setupPage } from './test-utils'
 import { getStyles } from './utils'
 
 /**
- * Tests for v5 media queries with mobile-first (minWidth) and desktop-first (maxWidth)
+ * Tests the configured media queries: mobile-first (minWidth) base queries and
+ * desktop-first (maxWidth) max-* queries.
  *
- * v5 uses:
- * - minWidth for base queries (sm, md, lg, etc.) - mobile-first: larger wins
- * - maxWidth for max-* queries (max-sm, max-md, etc.) - desktop-first: smaller wins
+ * - minWidth for base queries (sm, md, lg, ...) - mobile-first: larger wins
+ * - maxWidth for max-* queries (max-sm, max-md, ...) - desktop-first: smaller wins
  *
- * NOTE: These tests are currently skipped because the kitchen-sink webpack build
- * evaluates the config selection at bundle time (when window.location is undefined),
- * not at runtime. The v5config query param doesn't work for dynamic config switching.
- *
- * The v5 media config itself is correct - see code/core/config/src/v5-media.ts
- * To properly test, the kitchen-sink would need to be built with v5 config as default,
- * or use a different mechanism for config switching.
+ * These used to be skipped behind a ?v5config query param that swapped the whole
+ * runtime config out from under the compiler-extracted CSS, so it never worked.
+ * The app's own media set is the same one, so they just run against it directly.
  */
 
-test.describe.skip('v5 Media Queries', () => {
+test.describe('Media Queries', () => {
   test.describe('Mobile-first (minWidth) - larger breakpoints should win', () => {
     test.beforeEach(async ({ page }) => {
-      // use v5config query param to enable v5 media config
       await setupPage(page, {
-        name: 'MediaQueriesV5',
+        name: 'MediaQueries',
         type: 'useCase',
-        searchParams: { v5config: 'true' },
       })
     })
 
@@ -66,9 +60,8 @@ test.describe.skip('v5 Media Queries', () => {
   test.describe('Desktop-first (maxWidth) - smaller breakpoints should win', () => {
     test.beforeEach(async ({ page }) => {
       await setupPage(page, {
-        name: 'MediaQueriesV5',
+        name: 'MediaQueries',
         type: 'useCase',
-        searchParams: { v5config: 'true' },
       })
     })
 

@@ -78,9 +78,7 @@ function PopoverTest({ id }: { id: string }) {
         <YStack gap="3" padding="4">
           <Text testID={`${id}-text`}>Popover content works!</Text>
           <Popover.Close asChild>
-            <Button testID={`${id}-close`} size="4">
-              Close
-            </Button>
+            <Button testID={`${id}-close`}>Close</Button>
           </Popover.Close>
         </YStack>
       </Popover.Content>

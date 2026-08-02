@@ -4,23 +4,24 @@ import { Button } from '../components/Button'
 import { TEST_IDS } from '../constants/test-ids'
 
 /**
- * Visual test for v5 theme builder output.
+ * Visual test for accent and color child themes, against the app's own theme
+ * corpus (see src/themes/theme.dev.ts).
  *
  * Tests the documented usage patterns from the docs:
  * 1. <Theme name="accent"> wrapping components (docs: theme-builder.mdx)
- * 2. <Button theme="accent"> component prop (docs: config-v5.mdx)
- * 3. accent-background / accent-color tokens (docs: config-v5.mdx)
+ * 2. <Button theme="accent"> component prop
+ * 3. accent-background / accent-color tokens
  * 4. accent1-accent12 raw tokens
  *
- * Open in browser: http://localhost:9000/?test=V5ThemeBuilderOutput&generatedV5=true
+ * Open in browser: http://localhost:9000/?test=AccentAndColorThemes
  */
-export function V5ThemeBuilderOutput() {
+export function AccentAndColorThemes() {
   return (
     <YStack gap="6" padding="6" backgroundColor="background">
       <YStack gap="2">
-        <H2>V5 Theme Builder - Accent Theme Tests</H2>
+        <H2>Accent and Color Theme Tests</H2>
         <Paragraph color="color11">
-          Tests documented accent usage patterns from tamagui.dev docs.
+          Tests documented accent usage patterns against the configured themes.
         </Paragraph>
       </YStack>
 
@@ -35,9 +36,9 @@ export function V5ThemeBuilderOutput() {
       >
         <H3 color="color11">{'<Theme name="accent">'}</H3>
         <Paragraph size="2" color="color11">
-          Expected: first square is the base gray background. Second square should be DARK
-          PURPLE (the accent palette inverted). Text below it should be light/readable
-          against the accent background.
+          Expected: first square is the base background. Second square is the same surface
+          inverted, so it reads dark against a light base. Text below it should stay
+          readable against the accent background.
         </Paragraph>
 
         <XStack gap="3" alignItems="flex-start">
@@ -83,16 +84,14 @@ export function V5ThemeBuilderOutput() {
       >
         <H3 color="color11">{'<Button theme="accent">'}</H3>
         <Paragraph size="2" color="color11">
-          Expected: first button is the default gray surface. Second button should have a
-          PURPLE background with light text — visually distinct from the base button.
+          Expected: first button is the default surface. Second button is the inverted
+          surface with contrasting text, visually distinct from the base button.
         </Paragraph>
 
         <XStack gap="3">
-          <Button testID={TEST_IDS.baseButton} size="4">
-            Base Button
-          </Button>
+          <Button testID={TEST_IDS.baseButton}>Base Button</Button>
 
-          <Button testID={TEST_IDS.accentPropButton} theme="accent" size="4">
+          <Button testID={TEST_IDS.accentPropButton} theme="accent">
             Accent Button
           </Button>
         </XStack>
@@ -109,8 +108,8 @@ export function V5ThemeBuilderOutput() {
       >
         <H3 color="color11">accent-background / accent-color</H3>
         <Paragraph size="2" color="color11">
-          Expected: square should be a DARK PURPLE — same hue as the accent palette. This
-          is the raw token, not a theme wrapper.
+          Expected: square matches the accent surface above. This is the raw token, not a
+          theme wrapper.
         </Paragraph>
 
         <YStack
@@ -133,8 +132,8 @@ export function V5ThemeBuilderOutput() {
       >
         <H4>Accent Palette (accent1-12)</H4>
         <Paragraph size="2" color="color11">
-          Expected: a gradient of 12 swatches going from dark purple to light purple. If
-          these are all gray, the accent palette is broken.
+          Expected: a gradient of 12 swatches stepping evenly from one end of the accent
+          palette to the other. If these are all identical, the palette is broken.
         </Paragraph>
         <XStack gap="1">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
@@ -173,9 +172,7 @@ export function V5ThemeBuilderOutput() {
         <XStack gap="3" flexWrap="wrap">
           <Theme name="yellow">
             <Card padding="3" backgroundColor="background" minWidth={140}>
-              <Button testID="button-yellow" size="4">
-                Yellow
-              </Button>
+              <Button testID="button-yellow">Yellow</Button>
             </Card>
           </Theme>
           <Theme name="red">
@@ -185,9 +182,7 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="background"
               minWidth={140}
             >
-              <Button testID="button-red" size="4">
-                Red
-              </Button>
+              <Button testID="button-red">Red</Button>
             </Card>
           </Theme>
           <Theme name="green">
@@ -197,9 +192,7 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="background"
               minWidth={140}
             >
-              <Button testID="button-green" size="4">
-                Green
-              </Button>
+              <Button testID="button-green">Green</Button>
             </Card>
           </Theme>
           <Theme name="blue">
@@ -209,9 +202,7 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="background"
               minWidth={140}
             >
-              <Button testID="button-blue" size="4">
-                Blue
-              </Button>
+              <Button testID="button-blue">Blue</Button>
             </Card>
           </Theme>
         </XStack>

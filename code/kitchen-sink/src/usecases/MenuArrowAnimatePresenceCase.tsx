@@ -29,7 +29,6 @@ const PopoverWithAnimatePresenceArrow = () => {
         <AnimatePresence>
           <Popover.Arrow
             testID="popover-arrow"
-            size="4"
             borderWidth={1}
             borderColor="border-color"
             bg="background"
@@ -61,12 +60,7 @@ const MenuWithArrow = () => {
           transition="100ms"
           borderRadius="4"
         >
-          <Menu.Arrow
-            testID="menu-arrow"
-            size="4"
-            borderWidth={1}
-            borderColor="border-color"
-          />
+          <Menu.Arrow testID="menu-arrow" borderWidth={1} borderColor="border-color" />
           <Menu.Item key="item1">
             <Menu.ItemTitle>Item 1</Menu.ItemTitle>
           </Menu.Item>

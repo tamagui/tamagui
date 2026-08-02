@@ -42,7 +42,6 @@ export function PopoverFocusScopeCase() {
               id="popover-notes"
               data-testid="popover-notes-textarea"
               placeholder="Add some notes..."
-              size="4"
             />
 
             <XStack gap="3" justifyContent="flex-end">
@@ -114,9 +113,7 @@ export function PopoverFocusScopeCase() {
             {/* Nested Popover */}
             <Popover>
               <Popover.Trigger asChild>
-                <Button data-testid="nested-popover-trigger" size="4">
-                  Open Nested
-                </Button>
+                <Button data-testid="nested-popover-trigger">Open Nested</Button>
               </Popover.Trigger>
               <Popover.Content
                 y="enter:-10px exit:-10px"
@@ -128,9 +125,7 @@ export function PopoverFocusScopeCase() {
                 <YStack gap="3" padding="3" data-testid="nested-popover-content">
                   <Input data-testid="nested-popover-input" placeholder="Nested input" />
                   <Popover.Close asChild>
-                    <Button data-testid="nested-popover-close" size="4">
-                      Close Nested
-                    </Button>
+                    <Button data-testid="nested-popover-close">Close Nested</Button>
                   </Popover.Close>
                 </YStack>
                 <Popover.Arrow />

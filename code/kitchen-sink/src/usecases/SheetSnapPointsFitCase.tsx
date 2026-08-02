@@ -622,7 +622,6 @@ function DynamicContentSheet() {
           <YStack gap="2" flexDirection="row" flexWrap="wrap" justifyContent="center">
             <Button
               data-testid="dynamic-content-small"
-              size="4"
               onPress={() => setContentSize('small')}
               theme={contentSize === 'small' ? 'blue' : undefined}
             >
@@ -630,7 +629,6 @@ function DynamicContentSheet() {
             </Button>
             <Button
               data-testid="dynamic-content-medium"
-              size="4"
               onPress={() => setContentSize('medium')}
               theme={contentSize === 'medium' ? 'blue' : undefined}
             >
@@ -638,7 +636,6 @@ function DynamicContentSheet() {
             </Button>
             <Button
               data-testid="dynamic-content-large"
-              size="4"
               onPress={() => setContentSize('large')}
               theme={contentSize === 'large' ? 'blue' : undefined}
             >

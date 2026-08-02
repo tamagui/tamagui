@@ -23,8 +23,8 @@ export function TestModal() {
             mt="5"
             alignSelf="center"
             t={-40}
-            o={1}
-            pos="absolute"
+            opacity={1}
+            position="absolute"
           />
 
           <Sheet.Overlay height={windowHeight} width={windowWidth} bg="background" />

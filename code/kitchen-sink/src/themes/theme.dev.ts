@@ -1,9 +1,10 @@
-// ONLY USED BY KITCHEN SINK FOR TESTS
-
+// the kitchen sink's own custom theme corpus, built with the public
+// createThemes API. it layers over the config's built-in themes so the cases
+// exercise a real user-authored palette rather than only the shipped one.
 import * as Colors from '@tamagui/colors'
+import { toV6Themes } from '@tamagui/config/v6-base'
 import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
 import { desaturate } from 'color2k'
-import { toV6Themes } from './v6Themes'
 
 const desat = (colors: Record<string, string>, amount: number) => {
   return Object.fromEntries(

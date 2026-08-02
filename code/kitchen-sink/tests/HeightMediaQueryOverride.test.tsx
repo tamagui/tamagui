@@ -2,8 +2,8 @@ import { expect, test, type Page } from '@playwright/test'
 import { setupPage } from './test-utils'
 
 /**
- * Tests for height media query overriding transform props (scale)
- * Uses v5 config where height-lg breakpoint: minHeight 1024px
+ * Tests for height media query overriding transform props (scale).
+ * height-lg is minHeight 1024px in the configured media set.
  */
 
 async function getScale(page: Page, testId: string): Promise<number> {
@@ -35,7 +35,6 @@ test.describe('Height Media Query Override', () => {
     await setupPage(page, {
       name: 'HeightMediaQueryOverrideCase',
       type: 'useCase',
-      searchParams: { v5config: 'true' },
     })
   })
 

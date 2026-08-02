@@ -202,7 +202,6 @@ export function SheetScrollableDrag() {
               <Button
                 testID="sheet-scrollable-drag-add-items"
                 onPress={() => setItemCount((c) => c + 5)}
-                size="4"
               >
                 Add 5 Items ({itemCount} total)
               </Button>

@@ -21,15 +21,11 @@ export function TestCasesScreen() {
       >
         <H2>All Test Cases</H2>
         <YStack gap="4" maxW={600}>
-          <YGroup size="4">
+          <YGroup>
             {Object.keys(TestCases).map((page) => {
               return (
                 <YGroup.Item key={page}>
-                  <LinkListItem
-                    href={`/test/${page}`}
-                    size="4"
-                    testID={`test-case-${page}`}
-                  >
+                  <LinkListItem href={`/test/${page}`} testID={`test-case-${page}`}>
                     {page}
                   </LinkListItem>
                 </YGroup.Item>

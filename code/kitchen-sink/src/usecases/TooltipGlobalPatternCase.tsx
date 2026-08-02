@@ -23,9 +23,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Top Left')}
               >
-                <Button data-testid="trigger-tl" size="4">
-                  Top Left
-                </Button>
+                <Button data-testid="trigger-tl">Top Left</Button>
               </Tooltip.Trigger>
 
               <Tooltip.Trigger
@@ -33,9 +31,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Top Right')}
               >
-                <Button data-testid="trigger-tr" size="4">
-                  Top Right
-                </Button>
+                <Button data-testid="trigger-tr">Top Right</Button>
               </Tooltip.Trigger>
             </XStack>
 
@@ -45,9 +41,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Bottom Left')}
               >
-                <Button data-testid="trigger-bl" size="4">
-                  Bottom Left
-                </Button>
+                <Button data-testid="trigger-bl">Bottom Left</Button>
               </Tooltip.Trigger>
 
               <Tooltip.Trigger
@@ -55,9 +49,7 @@ export function TooltipGlobalPatternCase() {
                 asChild
                 onMouseEnter={() => setLabel('Bottom Right')}
               >
-                <Button data-testid="trigger-br" size="4">
-                  Bottom Right
-                </Button>
+                <Button data-testid="trigger-br">Bottom Right</Button>
               </Tooltip.Trigger>
             </XStack>
           </YStack>

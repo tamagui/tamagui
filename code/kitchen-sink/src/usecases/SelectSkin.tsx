@@ -94,7 +94,7 @@ export function SelectSkin() {
         {callerHandlers.trigger}:{callerHandlers.item}
       </YStack>
 
-      <Select value={adapted} onValueChange={setAdapted} size="4">
+      <Select value={adapted} onValueChange={setAdapted}>
         <Select.Trigger testID="select-skin-adapt-trigger" width={220}>
           <Select.Value placeholder="Adapted fruit" />
           <Select.Icon />

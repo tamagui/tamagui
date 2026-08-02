@@ -5,21 +5,31 @@ import { setupPage } from './test-utils'
 import { getStyles } from './utils'
 
 /**
- * Tests for the v5 theme builder output, covering the documented accent usage patterns:
+ * Accent and color child themes, covering the documented usage patterns:
  *
  * 1. <Theme name="accent"> - theme-builder.mdx, how-to-upgrade.mdx
- * 2. <Button theme="accent"> - config-v5.mdx, ButtonDemo.tsx
- * 3. accent-background / accent-color - config-v5.mdx
+ * 2. <Button theme="accent"> - ButtonDemo.tsx
+ * 3. accent-background / accent-color
  * 4. accent1-accent12 raw tokens
  */
 
 test.beforeEach(async ({ page }) => {
   await setupPage(page, {
-    name: 'V5ThemeBuilderOutput',
+    name: 'AccentAndColorThemes',
     type: 'useCase',
-    searchParams: { generatedV5: 'true' },
   })
 })
+
+// the configured base palette is deliberately grayscale, so "accent has a hue"
+// says nothing. What accent (template: inverse) actually guarantees is that it
+// flips the surface: a near-white base background becomes a near-black accent
+// one. Compare relative luminance so this holds in either color scheme.
+function luminance(color: string): number {
+  const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
+  if (!match) throw new Error(`not an rgb color: ${color}`)
+  const [r, g, b] = match.slice(1).map(Number)
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+}
 
 // --- <Theme name="accent"> ---
 
@@ -39,22 +49,16 @@ test('<Theme name="accent"> background differs from base background', async ({
   expect(accentStyles.backgroundColor).not.toBe(baseStyles.backgroundColor)
 })
 
-test('<Theme name="accent"> background is not gray (has color)', async ({ page }) => {
+test('<Theme name="accent"> background inverts the base surface', async ({ page }) => {
   const accentEl = page.getByTestId(TEST_IDS.accentThemeBackground)
+  const baseEl = page.getByTestId(TEST_IDS.baseBackground)
   await expect(accentEl).toBeVisible()
+  await expect(baseEl).toBeVisible()
 
-  const styles = await getStyles(accentEl)
+  const accent = luminance((await getStyles(accentEl)).backgroundColor)
+  const base = luminance((await getStyles(baseEl)).backgroundColor)
 
-  // The generated theme has a purple accent (hue 250). Verify it's not a pure gray.
-  // In a gray color, r === g === b. A colored accent will have channel differences.
-  const match = styles.backgroundColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
-  expect(match).toBeTruthy()
-
-  if (match) {
-    const [, r, g, b] = match.map(Number)
-    const isGray = r === g && g === b
-    expect(isGray).toBe(false)
-  }
+  expect(Math.abs(accent - base)).toBeGreaterThan(0.5)
 })
 
 test('<Theme name="accent"> color is defined', async ({ page }) => {
@@ -84,40 +88,30 @@ test('<Button theme="accent"> has different background than base button', async 
   expect(accentStyles.backgroundColor).not.toBe(baseStyles.backgroundColor)
 })
 
-test('<Button theme="accent"> background is not gray', async ({ page }) => {
+test('<Button theme="accent"> inverts the base button surface', async ({ page }) => {
   const accentBtn = page.getByTestId(TEST_IDS.accentPropButton)
+  const baseBtn = page.getByTestId(TEST_IDS.baseButton)
   await expect(accentBtn).toBeVisible()
+  await expect(baseBtn).toBeVisible()
 
-  const styles = await getStyles(accentBtn)
+  const accent = luminance((await getStyles(accentBtn)).backgroundColor)
+  const base = luminance((await getStyles(baseBtn)).backgroundColor)
 
-  const match = styles.backgroundColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
-  expect(match).toBeTruthy()
-
-  if (match) {
-    const [, r, g, b] = match.map(Number)
-    const isGray = r === g && g === b
-    expect(isGray).toBe(false)
-  }
+  expect(Math.abs(accent - base)).toBeGreaterThan(0.5)
 })
 
 // --- accent-background token ---
 
-test('accent-background token resolves to a non-gray color', async ({ page }) => {
+test('accent-background token resolves to the inverted surface', async ({ page }) => {
   const el = page.getByTestId(TEST_IDS.accentBgToken)
+  const baseEl = page.getByTestId(TEST_IDS.baseBackground)
   await expect(el).toBeVisible()
+  await expect(baseEl).toBeVisible()
 
-  const styles = await getStyles(el)
-  expect(styles.backgroundColor).toBeDefined()
-  expect(styles.backgroundColor).not.toBe('')
+  const token = luminance((await getStyles(el)).backgroundColor)
+  const base = luminance((await getStyles(baseEl)).backgroundColor)
 
-  const match = styles.backgroundColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
-  expect(match).toBeTruthy()
-
-  if (match) {
-    const [, r, g, b] = match.map(Number)
-    const isGray = r === g && g === b
-    expect(isGray).toBe(false)
-  }
+  expect(Math.abs(token - base)).toBeGreaterThan(0.5)
 })
 
 // --- accent1-12 raw tokens ---

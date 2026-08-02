@@ -20,9 +20,7 @@ export function MenuSubNestedPositionCase() {
       <YStack alignItems="flex-end" paddingRight={100}>
         <Menu placement="bottom-start" offset={4}>
           <Menu.Trigger asChild>
-            <Button id="menu-trigger" size="4">
-              Open Menu
-            </Button>
+            <Button id="menu-trigger">Open Menu</Button>
           </Menu.Trigger>
 
           <Menu.Portal zIndex={100}>

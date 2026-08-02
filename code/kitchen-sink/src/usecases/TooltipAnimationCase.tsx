@@ -39,7 +39,7 @@ export function TooltipAnimationCase() {
         }}
       >
         <Tooltip.Trigger data-testid="tooltip-trigger">
-          <Button size="4">Hover for tooltip</Button>
+          <Button>Hover for tooltip</Button>
         </Tooltip.Trigger>
 
         <Tooltip.Content
@@ -57,7 +57,7 @@ export function TooltipAnimationCase() {
       {/* Second tooltip to test first vs subsequent shows */}
       <Tooltip placement="top" delay={0} restMs={0}>
         <Tooltip.Trigger data-testid="tooltip-trigger-2">
-          <Button size="4">Second tooltip</Button>
+          <Button>Second tooltip</Button>
         </Tooltip.Trigger>
 
         <Tooltip.Content
@@ -75,7 +75,7 @@ export function TooltipAnimationCase() {
       {/* Quick animation tooltip for comparison - 100ms */}
       <Tooltip placement="right" delay={0} restMs={0}>
         <Tooltip.Trigger data-testid="tooltip-trigger-quick">
-          <Button size="4">Quick animation (100ms)</Button>
+          <Button>Quick animation (100ms)</Button>
         </Tooltip.Trigger>
 
         <Tooltip.Content

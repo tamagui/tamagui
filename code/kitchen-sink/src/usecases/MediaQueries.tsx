@@ -1,11 +1,11 @@
-import { breakpoints } from '@tamagui/config/v5'
+import { breakpoints } from '@tamagui/config/v6-base'
 import { useWindowDimensions } from 'react-native'
 import { Text, useMedia, YStack, XStack } from 'tamagui'
 
 /**
- * Test case for v5 media queries
+ * Test case for the configured media queries.
  *
- * v5 uses mobile-first (minWidth) for base queries and desktop-first (maxWidth) for max-* queries
+ * Base queries are mobile-first (minWidth); max-* queries are desktop-first (maxWidth).
  *
  * Breakpoints:
  * - xxxs: 260, xxs: 340, xs: 460, sm: 640, md: 768, lg: 1024, xl: 1280, xxl: 1536
@@ -21,17 +21,13 @@ import { Text, useMedia, YStack, XStack } from 'tamagui'
  * Height queries (minHeight):
  * - height-sm, height-md, height-lg, etc.
  */
-export const MediaQueriesV5 = () => {
+export const MediaQueries = () => {
   const media = useMedia()
   const { height: viewportHeight } = useWindowDimensions()
 
   return (
     <YStack p="4" gap="4">
-      <Text fontWeight="bold">v5 Media Query Test</Text>
-      <Text fontSize={12} color="color10">
-        Use ?v5config in URL to test with v5 config
-      </Text>
-
+      <Text fontWeight="bold">Media Query Test</Text>
       {/* Display current media state */}
       <YStack gap="1">
         <Text testID="media-sm">{`sm (≥640): ${media.sm}`}</Text>

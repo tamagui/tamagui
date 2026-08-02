@@ -42,9 +42,7 @@
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/font-silkscreen": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
-    "@tamagui/theme-builder": "workspace:*",
-    "@tamagui/themes": "workspace:*",
-    "color2k": "^2.0.2"
+    "@tamagui/themes": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

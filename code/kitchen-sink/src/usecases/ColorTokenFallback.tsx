@@ -20,7 +20,6 @@ export function ColorTokenFallback() {
         <Text fontWeight="bold">
           Color token overrides a same-named theme value (customRed is red #ff0000)
         </Text>
-        {/* @ts-expect-error - custom test theme */}
         <Theme name="light_ColorTokenTest">
           <Square
             id={TEST_IDS.colorTokenFallbackThemeValue}
@@ -35,7 +34,6 @@ export function ColorTokenFallback() {
         <Text fontWeight="bold">
           Color token as fallback (customBlue should be blue #0000ff)
         </Text>
-        {/* @ts-expect-error - custom test theme */}
         <Theme name="light_ColorTokenTest">
           <Square
             id={TEST_IDS.colorTokenFallbackTokenValue}

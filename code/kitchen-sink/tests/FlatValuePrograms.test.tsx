@@ -17,18 +17,18 @@ test('applies the last matching hover clause', async ({ page }) => {
 test('updates shorthand padding at the max-sm breakpoint', async ({ page }) => {
   const padding = page.getByTestId('flat-padding')
 
-  await expect(padding).toHaveCSS('padding-top', '18px')
-  await expect(padding).toHaveCSS('padding-right', '18px')
-  await expect(padding).toHaveCSS('padding-bottom', '18px')
-  await expect(padding).toHaveCSS('padding-left', '18px')
+  await expect(padding).toHaveCSS('padding-top', '16px')
+  await expect(padding).toHaveCSS('padding-right', '16px')
+  await expect(padding).toHaveCSS('padding-bottom', '16px')
+  await expect(padding).toHaveCSS('padding-left', '16px')
 
   await page.setViewportSize({ width: 600, height: 800 })
   await page.waitForTimeout(100)
 
-  await expect(padding).toHaveCSS('padding-top', '32px')
-  await expect(padding).toHaveCSS('padding-right', '32px')
-  await expect(padding).toHaveCSS('padding-bottom', '32px')
-  await expect(padding).toHaveCSS('padding-left', '32px')
+  await expect(padding).toHaveCSS('padding-top', '24px')
+  await expect(padding).toHaveCSS('padding-right', '24px')
+  await expect(padding).toHaveCSS('padding-bottom', '24px')
+  await expect(padding).toHaveCSS('padding-left', '24px')
 })
 
 test('matches a dark theme clause under a dark theme wrapper', async ({ page }) => {

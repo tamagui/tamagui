@@ -2,31 +2,20 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
-import { defaultConfig as configV5 } from '@tamagui/config/v5'
-import { shorthands } from '@tamagui/config/v6'
+import { defaultConfig } from '@tamagui/config/v6'
 import type { InferTamaguiConfig } from '@tamagui/web'
-import { createTamagui, type TamaguiInternalConfig } from 'tamagui'
-// TODO just move this into this folder
-import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
-import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
-import { toV6Themes, type V6Themes } from '../../packages/tamagui-dev-config/src/v6Themes'
-// Generated theme from v5 theme builder for testing
-import { themes as generatedV5Themes } from './generatedV5Theme'
+import { createTamagui } from 'tamagui'
+import { themeDev } from './themes/theme.dev'
 
-// v5 is the config generation the kitchen sink runs on: its tokens, fonts and
-// media (which already spells the max-queries kebab-case) plus the V6 theme-key
-// grammar applied to the v5 theme pack.
-const config = {
-  ...configV5,
-  themes: toV6Themes(configV5.themes),
-  media: {
-    ...configV5.media,
-    // the reduced-motion keys are not part of the v5 media set, but the media
-    // drivers support them on both platforms — MotionReduceCase covers that
-    motionReduce: { prefersReducedMotion: 'reduce' },
-    motionSafe: { prefersReducedMotion: 'no-preference' },
-  },
-}
+// the kitchen sink runs on the shipped default config so the cases exercise
+// exactly what users get: v6 tokens, fonts, media, shorthands and settings.
+const media = {
+  ...defaultConfig.media,
+  // the reduced-motion keys are not part of the shipped media set, but the
+  // media drivers support them on both platforms — MotionReduceCase covers that
+  motionReduce: { prefersReducedMotion: 'reduce' },
+  motionSafe: { prefersReducedMotion: 'no-preference' },
+} as const
 
 export const animationsCSS = createAnimationsCSS({
   '0ms': '0ms linear',
@@ -331,50 +320,17 @@ export const animationsReanimated = createAnimationsReanimated({
   },
 })
 
-// this is used by the button test...
-config.themes = {
-  ...config.themes,
-
-  // @ts-ignore
-  light_green_Button: {
-    // @ts-ignore
-    ...config.themes.light_green_Button,
-    background: 'green',
-  },
-
-  // @ts-ignore
-  light_MyLabel: {
-    color: 'red',
-  },
-
-  // A same-named theme value used to win. Flat values bind the color category
-  // first, so customRed below deliberately loses to the configured color token.
-  // @ts-ignore
-  light_ColorTokenTest: {
-    background: '#ffffff',
-    customRed: '#00ff00',
-  },
-}
-
-const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
-
-const v5config = search.includes('v5config')
-const tamav5Config = search.includes('tamav5config')
-const generatedV5 = search.includes('generatedV5')
-
-// v5 keeps colors in themes, so the color scale here is only the kitchen sink's
-// own test tokens
+// the shipped palette plus the cases' own fixture colors. v6 keeps colors in
+// tokens (the Tailwind palette), so these sit alongside rather than replacing it.
 const tokens = {
-  ...config.tokens,
+  ...defaultConfig.tokens,
   color: {
+    ...defaultConfig.tokens.color,
     testsomethingdifferent: '#ff0000',
     customRed: '#ff0000',
     customBlue: '#0000ff',
     customGreen: '#00ff00',
   },
-  // size: {
-  //   0: 10,
-  // },
 }
 
 // multi-driver config for testing animatedBy prop and driver selection
@@ -382,6 +338,11 @@ const animationsMultiDriver = {
   default: animationsMotion,
   css: animationsCSS,
 }
+
+// the driver is the one thing the test harness picks per run, via ?animationDriver=.
+// it only swaps which driver object the same config carries — unlike a whole
+// alternate config, it cannot desync from what the compiler extracted.
+const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
 
 const animations = search.includes('animationDriver=css')
   ? animationsCSS
@@ -407,19 +368,35 @@ const animations = search.includes('animationDriver=css')
  * would change the font reset for every View on the page.
  */
 const bodyJa = {
-  ...config.fonts.body,
+  ...defaultConfig.fonts.body,
   family: 'KitchenSinkJA, sans-serif',
-  size: { ...config.fonts.body.size, 3: 20 },
-  lineHeight: { ...config.fonts.body.lineHeight, 3: 30 },
+  size: { ...defaultConfig.fonts.body.size, 3: 20 },
+  lineHeight: { ...defaultConfig.fonts.body.lineHeight, 3: 30 },
 }
 
 type Merge<Left, Right> = Omit<Left, keyof Right> & Right
-type KitchenThemes = Merge<V6Themes<typeof configV5.themes>, typeof themeDev>
 
-const themes: KitchenThemes = {
-  ...config.themes,
-  ...themeDev,
+// deliberately partial themes the cases assert against. themeDev defines
+// neither name, so these land whole rather than merging into a generated theme.
+const fixtureThemes = {
+  light_MyLabel: {
+    color: 'red',
+  },
+  // A same-named theme value used to win. Flat values bind the color category
+  // first, so customRed here deliberately loses to the configured color token.
+  light_ColorTokenTest: {
+    background: '#ffffff',
+    customRed: '#00ff00',
+  },
 }
+
+const themes = {
+  ...defaultConfig.themes,
+  ...themeDev,
+  ...fixtureThemes,
+}
+
+type KitchenThemes = typeof themes
 
 const variables = {
   caseAccent: { light: 'rgb(0, 90, 200)', dark: 'rgb(90, 90, 255)' },
@@ -434,23 +411,15 @@ const defaultProps = {
 } as const
 
 type KitchenConfigInput = Omit<
-  typeof config,
-  | 'animations'
-  | 'defaultProps'
-  | 'fonts'
-  | 'media'
-  | 'settings'
-  | 'shorthands'
-  | 'themes'
-  | 'tokens'
-  | 'variables'
+  typeof defaultConfig,
+  'fonts' | 'media' | 'settings' | 'themes' | 'tokens'
 > & {
   animations: typeof animations
   defaultProps: typeof defaultProps
-  fonts: Merge<typeof config.fonts, { body_ja: typeof bodyJa }>
-  media: typeof config.media
+  fonts: Merge<typeof defaultConfig.fonts, { body_ja: typeof bodyJa }>
+  media: typeof media
   settings: Merge<
-    typeof config.settings,
+    typeof defaultConfig.settings,
     {
       defaultFont: 'body'
       allowedStyleValues: 'somewhat-strict'
@@ -458,7 +427,6 @@ type KitchenConfigInput = Omit<
       onlyAllowShorthands: false
     }
   >
-  shorthands: typeof shorthands
   themes: KitchenThemes
   tokens: typeof tokens
   variables: typeof variables
@@ -466,15 +434,14 @@ type KitchenConfigInput = Omit<
 
 const tamaConf: InferTamaguiConfig<KitchenConfigInput> =
   createTamagui<KitchenConfigInput>({
-    ...config,
+    ...defaultConfig,
     fonts: {
-      ...config.fonts,
+      ...defaultConfig.fonts,
       body_ja: bodyJa,
     },
     themes,
-    shorthands: shorthands,
     settings: {
-      ...config.settings,
+      ...defaultConfig.settings,
       defaultFont: 'body',
       allowedStyleValues: 'somewhat-strict',
       fastSchemeChange: true,
@@ -482,7 +449,7 @@ const tamaConf: InferTamaguiConfig<KitchenConfigInput> =
       onlyAllowShorthands: false,
     },
     tokens,
-    media: config.media,
+    media,
     animations, // default reanimated
 
     // custom variables for VariablesCase (plans/variables.md)
@@ -501,20 +468,4 @@ declare module 'tamagui' {
   }
 }
 
-const activeConfig: TamaguiInternalConfig = tamav5Config
-  ? createTamagui(tamaguiDevConfig)
-  : generatedV5
-    ? createTamagui({
-        ...configV5,
-        themes: toV6Themes(generatedV5Themes),
-        animations,
-      })
-    : v5config
-      ? createTamagui({
-          ...configV5,
-          themes: toV6Themes(configV5.themes),
-          animations,
-        })
-      : tamaConf
-
-export default activeConfig
+export default tamaConf

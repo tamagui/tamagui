@@ -7,7 +7,7 @@ import { createV5Theme, subtleChildrenThemes } from '@tamagui/themes/v5-subtle-b
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 import { clientThemes } from './themeMetadata'
-import { toV6Themes } from './v6Themes'
+import { toV6Themes } from '@tamagui/config/v6-base'
 
 // only generate the accent themes the site actually uses: red/green/blue/gray/yellow
 // (the @tamagui/logo tint family). dropping orange/pink/purple/teal/neutral roughly

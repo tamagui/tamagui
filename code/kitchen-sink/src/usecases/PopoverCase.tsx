@@ -143,7 +143,6 @@ function Demo({
 
           <Popover.Close asChild>
             <Button
-              size="4"
               id={`${dataTestId}-close`}
               onPress={() => {
                 /* Custom code goes here, does not interfere with popover closure */

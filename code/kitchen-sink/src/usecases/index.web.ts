@@ -129,7 +129,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   GlobalScopedTriggerIsolationCase: () =>
     require('./GlobalScopedTriggerIsolationCase').GlobalScopedTriggerIsolationCase,
   MediaQueryGtMd: () => require('./MediaQueryGtMd').MediaQueryGtMd,
-  MediaQueriesV5: () => require('./MediaQueriesV5').MediaQueriesV5,
+  MediaQueries: () => require('./MediaQueries').MediaQueries,
   MotionReduceCase: () => require('./MotionReduceCase').MotionReduceCase,
   MenuAboveDialogCase: () => require('./MenuAboveDialogCase').MenuAboveDialogCase,
   MenuAnimatePositionCase: () =>
@@ -323,7 +323,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   NumberOfLinesMediaQuery: () =>
     require('./NumberOfLinesMediaQuery').NumberOfLinesMediaQuery,
   UseTheme: () => require('./UseTheme').UseTheme,
-  V5ThemeBuilderOutput: () => require('./V5ThemeBuilderOutput').V5ThemeBuilderOutput,
+  AccentAndColorThemes: () => require('./AccentAndColorThemes').AccentAndColorThemes,
   VariantFontFamily: () => require('./VariantFontFamily').VariantFontFamily,
   VariantsOrder: () => require('./VariantsOrder').VariantsOrder,
   VisibilityCase: () => require('./VisibilityCase').VisibilityCase,

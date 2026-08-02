@@ -49,7 +49,6 @@ function TestCasesSection() {
     <YStack gap="2">
       <Button
         testID="toggle-test-cases"
-        size="4"
         onPress={() => {
           setExpanded(!expanded)
         }}
@@ -94,7 +93,7 @@ export function HomeScreen() {
         <TestCasesSection />
 
         {/* Quick access to RNGH test case */}
-        <YGroup size="4">
+        <YGroup>
           <YGroup.Item>
             <LinkListItem
               bg="blue3 press:blue4"
@@ -148,7 +147,7 @@ export function HomeScreen() {
         <YStack gap="4" maxW={600}>
           {demos.map(({ pages }, i) => {
             return (
-              <YGroup key={i} size="4">
+              <YGroup key={i}>
                 {pages.map((page) => {
                   const route = page?.route
 
@@ -159,7 +158,6 @@ export function HomeScreen() {
                       <LinkListItem
                         bg="color1 press:color2"
                         href={route}
-                        size="4"
                         testID={(page as any).testID}
                       >
                         {page.title}
