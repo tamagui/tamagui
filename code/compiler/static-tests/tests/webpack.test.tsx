@@ -12,6 +12,27 @@ if (typeof window !== 'undefined') {
   ;(window as any).React = React
 }
 
+/**
+ * What to snapshot for a rendered container.
+ *
+ * TamaguiProvider renders ConfigRevisionCheck: a hidden span carrying a hash of
+ * every theme, token, media, font and shorthand NAME in the config, used to
+ * report SSR/client config mismatches at hydration. Capturing it would make
+ * this compiler suite fail whenever an unrelated config key is added anywhere.
+ *
+ * This clones rather than removing in place — the live nodes belong to React,
+ * and detaching one makes React throw "The node to be removed is not a child of
+ * this node" when it unmounts. Callers keep using the real container for
+ * queries and computed styles.
+ */
+function snapshotOf(container: HTMLElement): HTMLElement {
+  const clone = container.cloneNode(true) as HTMLElement
+  for (const marker of clone.querySelectorAll('[data-tamagui-config-revision]')) {
+    marker.remove()
+  }
+  return clone
+}
+
 function getTest(name: string) {
   const app = require('./spec/out/out-webpack')
   const App = app[name]
@@ -44,74 +65,74 @@ describe('webpack-tests', () => {
   test('1. extracts to a div for simple views, flat transforms', () => {
     const { renderTrue } = getTest('Test1')
     const { container } = renderTrue()
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('2. extracts className for complex views but keeps other props', () => {
     const { renderTrue, renderFalse } = getTest('Test2')
     const { container: containerTrue } = renderTrue()
-    expect(containerTrue).toMatchSnapshot()
+    expect(snapshotOf(containerTrue)).toMatchSnapshot()
     const { container: containerFalse } = renderFalse()
-    expect(containerFalse).toMatchSnapshot()
+    expect(snapshotOf(containerFalse)).toMatchSnapshot()
   })
 
   test('5. spread conditional', () => {
     const { renderTrue } = getTest('Test5')
     const { container } = renderTrue()
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('6. spread ternary', () => {
     const { renderTrue, renderFalse } = getTest('Test6')
-    expect(renderTrue().container).toMatchSnapshot()
-    expect(renderFalse().container).toMatchSnapshot()
+    expect(snapshotOf(renderTrue().container)).toMatchSnapshot()
+    expect(snapshotOf(renderFalse().container)).toMatchSnapshot()
   })
 
   test('7. ternary + data-is', () => {
     const { renderTrue } = getTest('Test7')
     const { container } = renderTrue()
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('8. styleExpansions', () => {
     const { renderTrue } = getTest('Test8')
     const { container } = renderTrue()
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('9. combines with classname', () => {
     const { renderTrue } = getTest('Test9')
     const { container } = renderTrue()
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('10. extracts Text', () => {
     const { renderTrue } = getTest('Test10')
     const { container } = renderTrue()
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('12. ternary multiple on same key', () => {
     const { renderTrue } = getTest('Test12')
-    expect(renderTrue().container).toMatchSnapshot()
+    expect(snapshotOf(renderTrue().container)).toMatchSnapshot()
   })
 
   test('14. extracts pseudo styles and evaluates constants', () => {
     const { renderTrue } = getTest('Test14')
     const { container } = renderTrue()
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('15. extracts spacer (complex expansion)', () => {
     const { renderTrue } = getTest('Test15')
     const { container } = renderTrue()
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('16. deopt when spreading multiple', () => {
     const { renderTrue } = getTest('Test16')
     const { container } = renderTrue()
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('17. variant default false flattens properly', () => {
@@ -140,7 +161,7 @@ describe('webpack-tests', () => {
     const computedStyle = window.getComputedStyle(element!)
     expect(computedStyle.flexWrap).toBe('wrap')
 
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('19. extracts flexWrap with conditional', () => {
@@ -165,8 +186,8 @@ describe('webpack-tests', () => {
     expect(computedStyleTrue.flexWrap).toBe('wrap')
     expect(computedStyleFalse.flexWrap).toBe('nowrap')
 
-    expect(containerTrue).toMatchSnapshot()
-    expect(containerFalse).toMatchSnapshot()
+    expect(snapshotOf(containerTrue)).toMatchSnapshot()
+    expect(snapshotOf(containerFalse)).toMatchSnapshot()
   })
 
   test('20. extracts multiple flex properties together', () => {
@@ -185,7 +206,7 @@ describe('webpack-tests', () => {
     expect(computedStyle.flexShrink).toBe('0')
     expect(computedStyle.alignItems).toBe('stretch')
 
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('21. complex real-world case - flexWrap with many conditionals and media queries', () => {
@@ -207,8 +228,8 @@ describe('webpack-tests', () => {
     expect(computedStyleTrue.flexWrap).toBe('wrap')
     expect(computedStyleFalse.flexWrap).toBe('wrap')
 
-    expect(containerTrue).toMatchSnapshot()
-    expect(containerFalse).toMatchSnapshot()
+    expect(snapshotOf(containerTrue)).toMatchSnapshot()
+    expect(snapshotOf(containerFalse)).toMatchSnapshot()
   })
 
   test('22. flexWrap with media query conditionals', () => {
@@ -223,7 +244,7 @@ describe('webpack-tests', () => {
     const computedStyle = window.getComputedStyle(element!)
     expect(computedStyle.flexWrap).toBe('wrap')
 
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('23. inert animatedBy selector flattens with group styles', () => {
@@ -236,7 +257,7 @@ describe('webpack-tests', () => {
     expect(parent?.hasAttribute('animatedby')).toBe(false)
     expect(parent?.className).toContain('t_group_animated')
     expect(child?.className).toContain('_bc-')
-    expect(container).toMatchSnapshot()
+    expect(snapshotOf(container)).toMatchSnapshot()
   })
 
   test('24. DOM frontend lowers to semantic host elements', () => {
