@@ -8,7 +8,7 @@ const bg = (loc: any) =>
 test('Surface: nothing on by default, facets opt-in, level re-binds the theme', async ({
   page,
 }) => {
-  // the v5 theme pack ships the surface1-3 sub-themes the `level` variant re-binds to.
+  // the v5 theme pack ships the surface1-2 sub-themes the `level` variant re-binds to.
   await setupPage(page, {
     name: 'SurfaceCase',
     type: 'useCase',

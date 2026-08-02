@@ -19,6 +19,13 @@ import { themes as generatedV5Themes } from './generatedV5Theme'
 const config = {
   ...configV5,
   themes: toV6Themes(configV5.themes),
+  media: {
+    ...configV5.media,
+    // the reduced-motion keys are not part of the v5 media set, but the media
+    // drivers support them on both platforms — MotionReduceCase covers that
+    motionReduce: { prefersReducedMotion: 'reduce' },
+    motionSafe: { prefersReducedMotion: 'no-preference' },
+  },
 }
 
 export const animationsCSS = createAnimationsCSS({
