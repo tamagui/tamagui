@@ -641,6 +641,9 @@ test('evaluates config and components through the app resolver and invalidates H
     configFile: false,
     root: fixtureRoot,
     logLevel: 'silent',
+    define: {
+      'process.env.VITE_ENVIRONMENT': JSON.stringify('client'),
+    },
     server: {
       middlewareMode: true,
     },
@@ -665,6 +668,9 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(
     clientEnvironment.config.define?.['process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL']
   ).toBeUndefined()
+  expect(evaluationEnvironment.config.define?.['process.env.VITE_ENVIRONMENT']).toBe(
+    JSON.stringify('ssr')
+  )
   expect(isRunnableDevEnvironment(evaluationEnvironment)).toBe(true)
   if (!isRunnableDevEnvironment(evaluationEnvironment)) {
     throw new Error('Expected a runnable Tamagui evaluation environment')
@@ -749,6 +755,7 @@ test('evaluates config and components through the app resolver and invalidates H
     /\.evaluation-fixture-runtime\/\d+\/esm\/value\.mjs$/
   )
   expect(directConfigModule.sliderIntervalDisabled).toBe('1')
+  expect(directConfigModule.viteEnvironment).toBe('ssr')
   expect(directConfigModule.sliderModuleLoaded).toBe(true)
   expect(directConfigModule.sliderResolution).toEqual({
     id: sliderResolution?.id,

@@ -35,6 +35,7 @@ export const compilerResolution = `${conditionalResolution}:${workspaceResolutio
 export const sliderIntervalDisabled = process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL
 export const sliderModuleLoaded = Boolean(Slider)
 export const tamaguiBarrelLoaded = Boolean(TamaguiBarrelSlider)
+export const viteEnvironment = process.env.VITE_ENVIRONMENT
 export {
   evaluationPluginNames,
   oneTsconfigPathsOrder,

@@ -761,6 +761,9 @@ export function createTamaguiPlugins({
       'process.env.TAMAGUI_IS_SERVER': JSON.stringify(true),
       'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
       'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(TAMAGUI_EVALUATION_ENVIRONMENT),
+      // Client configs may strip theme values. Compiler evaluation and outputCSS
+      // must use the full config regardless of which outer Vite environment runs last.
+      'process.env.VITE_ENVIRONMENT': JSON.stringify('ssr'),
       'process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL': JSON.stringify('1'),
     },
     resolve: {
