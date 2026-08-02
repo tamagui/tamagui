@@ -17,6 +17,9 @@
     "v5-tokens.cjs",
     "v5-tokens.d.ts"
   ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     "./v5": {

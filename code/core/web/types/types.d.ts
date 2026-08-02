@@ -198,10 +198,6 @@ export type FontLanguageProps = LanguageContextType & {
 export type ThemeProviderProps = {
     className?: string;
     defaultTheme: string | null | undefined;
-    /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
-    disableRootThemeClass?: boolean;
-    /** @deprecated moved to createTamagui({ settings: { themeClassNameOnRoot } }) */
-    themeClassNameOnRoot?: boolean;
     children?: any;
     reset?: boolean;
 };
@@ -1614,7 +1610,7 @@ export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointer
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeAndShorthands<StackStyleBase>;
-export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
+export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style' | 'selectable'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
 export type TextStyle = WithThemeAndShorthands<TextStylePropsBase>;
@@ -1917,8 +1913,6 @@ export type SplitStyleProps = {
     willBeAnimated?: boolean;
     isAnimated: boolean;
     isExiting?: boolean;
-    exitVariant?: string;
-    enterVariant?: string;
 };
 export interface PresenceContextProps {
     id: string;
@@ -1927,9 +1921,6 @@ export interface PresenceContextProps {
     onExitComplete?: (id: string) => void;
     initial?: false | string | string[];
     custom?: any;
-    exitVariant?: string | null;
-    enterVariant?: string | null;
-    enterExitVariant?: string | null;
 }
 type SafeToRemoveCallback = () => void;
 type AlwaysPresent = [true, null, null];

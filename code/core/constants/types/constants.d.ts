@@ -3,8 +3,6 @@ export declare const isWeb: boolean;
 export declare const isBrowser: boolean;
 export declare const isServer: boolean;
 export declare const isClient: boolean;
-/** @deprecated use isBrowser instead */
-export declare const isWindowDefined: boolean;
 export declare const useIsomorphicLayoutEffect: typeof useEffect;
 export declare const isChrome: boolean;
 export declare const isWebTouchable: boolean;
