@@ -360,3 +360,30 @@ The bug is not v6-specific — it just needed a config whose token keys collide
 with plausible pixel values to become visible. On v5, `tokens.size[60]` was
 undefined and the `??` fallback hid it. This is the sort of thing kitchen-sink
 existed to catch and could not, while it ran a config no user runs.
+
+### PopoverHoverableReposition is order-dependent, and the product is fine
+
+The last kitchen-sink red that was not the size ruling. `close then reopen on
+different trigger: initial position is correct` fails with a stable ~28.3px
+x-drift, but only when its sibling test in the same file has run first:
+
+| how it runs | result |
+| --- | --- |
+| whole file, workers=1, no retries | fails ~2 of 3, drift 28.31 / 28.32 |
+| `--grep "initial position is correct"` alone | passes 2 of 2 |
+
+So state leaks between the two tests. That is a test defect, not a popover bug.
+
+The behavior the test guards against does not happen. A probe replaying the exact
+interaction (same URL, `animationDriver=native`, 1920x1080) sampled the content
+box at 50/100/150/200/300/450/600/800ms after hovering the second trigger and got
+a constant `x=61, width=300` every time, against the old trigger's `x=10`. No
+slide, no late reposition, no enter-scale movement. The sibling test, which
+asserts no-slide directly, passes.
+
+**The leak mechanism is NOT identified.** Each test gets a fresh page through
+`setupPage`, so the obvious explanations do not apply, and the isolated probe
+cannot reproduce the failure by construction — it is the isolated case. Whoever
+picks this up should instrument the test itself rather than replicate it, and
+should not loosen the 20px tolerance to make it green: that tolerance is the only
+thing standing between this test and passing for a popover that really did slide.
