@@ -1,0 +1,20 @@
+{
+  // deliberately broken fixture for check-runtime-path-mappings. it is named
+  // bad-tsconfig.json, not tsconfig.json, so the repo walk never picks it up and
+  // no exclusion list can drift away from it. the comments and the trailing comma
+  // below are load-bearing: tsconfigs are JSONC and the checker must survive both.
+  "compilerOptions": {
+    "paths": {
+      // rule A, direct: a real import specifier pointed at a declaration file.
+      // this is the exact mapping that broke the tamagui.dev dev server.
+      "@fixture/declaration": ["../../../code/core/colors/types/legacy.d.ts"],
+      // rule A, by directory: a package's generated types/ output, detected by the
+      // package.json sitting next to it
+      "@fixture/generated": ["../../../code/core/colors/types"],
+      // legitimate, must NOT trip: an ordinary source entry, and a src/types source
+      // directory, which shares the name but has no package.json beside it
+      "@fixture/source": ["./pkg/src/index.ts"],
+      "@fixture/source-types": ["./pkg/src/types"],
+    }
+  }
+}
