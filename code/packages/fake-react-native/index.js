@@ -18,12 +18,17 @@ const emtpyComponent = () => null
 // Mock usePressability for testing - returns empty event handlers
 const usePressabilityMock = () => ({})
 
+// real context: consumers (tamagui's useChildren) call React.useContext on it,
+// the proxyWorm fallback object would break that
+const TextAncestorContext = React.createContext(false)
+
 function proxyWorm() {
   return new Proxy(
     {
       StyleSheet: {
         create() {},
       },
+      unstable_TextAncestorContext: TextAncestorContext,
       Platform: {
         OS: 'web',
       },

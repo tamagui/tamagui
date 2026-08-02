@@ -52,13 +52,23 @@ describe('config variables inference', () => {
 })
 
 describe('VariablesProps', () => {
-  test('values/dark/light accept theme-key records', () => {
+  test('values and themes map accept theme-key records per theme name', () => {
     const props: VariablesProps = {
       values: { background: 'color', anything: 10 },
-      dark: { background: '#000' },
-      light: { background: '#fff' },
+      themes: {
+        dark: { background: '#000' },
+        light: { background: '#fff' },
+        blue: { background: '#00f' },
+      },
     }
     expectTypeOf(props).toMatchTypeOf<VariablesProps>()
+  })
+
+  test('old top-level dark/light props are removed', () => {
+    // @ts-expect-error dark moved into themes={{ dark }}
+    const bad: VariablesProps = { dark: { background: '#000' } }
+    // @ts-expect-error light moved into themes={{ light }}
+    const bad2: VariablesProps = { light: { background: '#fff' } }
   })
 
   test('values reject non-value types', () => {
@@ -66,5 +76,7 @@ describe('VariablesProps', () => {
     const bad: VariablesValues = { background: () => 'red' }
     // @ts-expect-error objects are not variable values (no nesting)
     const bad2: VariablesValues = { background: { deep: 'red' } }
+    // @ts-expect-error themes buckets reject non-value types too
+    const bad3: VariablesProps = { themes: { dark: { background: () => 'red' } } }
   })
 })

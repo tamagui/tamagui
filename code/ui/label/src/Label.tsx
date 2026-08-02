@@ -62,7 +62,7 @@ export type LabelProps = GetProps<typeof LabelFrame> & {
   htmlFor?: string
 }
 
-export const Label = createStyledHOC(LabelFrame)(function Label(props, forwardedRef) {
+export const Label = createStyledHOC(LabelFrame, function Label(props, forwardedRef) {
   const { htmlFor, id: idProp, ...labelProps } = props
   const controlRef = React.useRef<HTMLElement | null>(null)
   const ref = React.useRef<any>(null)

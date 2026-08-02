@@ -5,10 +5,12 @@ export const SelectScrollButtonFrame = styled(View, {
   name: 'SelectScrollButton',
 })
 
-export const SelectScrollUpButton = createStyledHOC(SelectScrollButtonFrame)<{
-  scope?: string
-}>((_props: SelectScopedProps<SelectScrollButtonProps>) => null)
+export const SelectScrollUpButton = createStyledHOC(
+  SelectScrollButtonFrame,
+  (_props: SelectScopedProps<SelectScrollButtonProps>) => null
+)
 
-export const SelectScrollDownButton = createStyledHOC(SelectScrollButtonFrame)<{
-  scope?: string
-}>((_props: SelectScopedProps<SelectScrollButtonProps>) => null)
+export const SelectScrollDownButton = createStyledHOC(
+  SelectScrollButtonFrame,
+  (_props: SelectScopedProps<SelectScrollButtonProps>) => null
+)

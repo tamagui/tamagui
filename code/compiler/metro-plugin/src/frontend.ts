@@ -1,5 +1,6 @@
 import { watch, type FSWatcher } from 'node:fs'
 import { readFile, realpath } from 'node:fs/promises'
+import { createRequire } from 'node:module'
 import { basename, join, relative, resolve } from 'node:path'
 
 import {
@@ -35,7 +36,10 @@ import {
 
 interface CompiledRecord {
   input: HostModuleInput
+  sourceHash: string
   compiledHash: string
+  /** Specifiers that reached the compiled output as require() calls instead of imports. */
+  requireSpecifiers: string[]
 }
 
 export interface MetroCompilerFrontendConfig extends MetroResolverConfig {
@@ -80,6 +84,21 @@ export interface MetroCompilerUpdate {
 function compareCodeUnits(left: string, right: string): number {
   return left < right ? -1 : left > right ? 1 : 0
 }
+
+const requireFromFrontend = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
+
+// upgrading the compiler must invalidate published plans even when the Tamagui
+// config output is unchanged
+const compilerImplementationVersions = (
+  ['@tamagui/metro-plugin', '@tamagui/static', '@tamagui/compiler-core'] as const
+).map((packageName) => {
+  const { version } = requireFromFrontend(`${packageName}/package.json`) as {
+    version: string
+  }
+  return `${packageName}@${version}`
+})
 
 function scanOptionsHash(
   options: MetroCompilerScanOptions,
@@ -194,9 +213,39 @@ export class MetroCompilerFrontend {
         moduleName,
         resolvedId: id,
       })),
+      disablePartialExtraction: this.config.tamaguiOptions?.disablePartialExtraction,
     })
     this.#entries.clear()
     for (const id of this.#graph.moduleIds()) this.#refreshEntry(id)
+    const totalFound = [...this.#entries.values()].reduce(
+      (sum, entry) => sum + entry.plan.stats.found,
+      0
+    )
+    if (this.#entries.size > 0 && totalFound === 0) {
+      const componentNames = compilerProject.componentModules.map(
+        ({ moduleName }) => moduleName
+      )
+      const cjsComponentImporters = [...this.#records.values()].filter((record) =>
+        record.requireSpecifiers.some((specifier) =>
+          componentNames.some(
+            (name) => specifier === name || specifier.startsWith(`${name}/`)
+          )
+        )
+      ).length
+      if (cjsComponentImporters > 0) {
+        const diagnostic = metroDiagnostic(
+          'metro/no-linked-components',
+          `The Tamagui compiler linked 0 components across ${this.#entries.size} modules even though ` +
+            `${cjsComponentImporters} module(s) reference ${componentNames.join(', ')} through require() calls. ` +
+            `Metro compiled modules to CommonJS before the compiler could analyze them, so component ` +
+            `imports cannot be linked and nothing will be optimized. Enable experimentalImportSupport ` +
+            `in your transformer's getTransformOptions (Expo enables it by default) to restore ` +
+            `Tamagui compilation.`
+        )
+        diagnostics.push(diagnostic)
+        this.#report(diagnostic)
+      }
+    }
     const generation = await this.#publish(options.platform)
     const moduleIds = this.#graph.moduleIds()
     if (this.config.watch !== false && retainsLiveGraph(options)) {
@@ -235,6 +284,7 @@ export class MetroCompilerFrontend {
       validation.valid &&
       validation.generation &&
       validation.optionsHash === optionsHash &&
+      (await this.#sourcesAreFresh(validation.sourceHashes)) &&
       ((!retainsLiveGraph(options) && !this.#graph) ||
         (this.#publishedGeneration && this.#scanOptionsHash === optionsHash))
     ) {
@@ -323,6 +373,18 @@ export class MetroCompilerFrontend {
     })
   }
 
+  /** A published plan only applies while every recorded module source is unchanged. */
+  async #sourcesAreFresh(sourceHashes: Record<string, string>): Promise<boolean> {
+    const checks = Object.entries(sourceHashes).map(async ([moduleId, sourceHash]) => {
+      try {
+        return metroCompilerContentHash(await readFile(moduleId, 'utf8')) === sourceHash
+      } catch {
+        return false
+      }
+    })
+    return (await Promise.all(checks)).every(Boolean)
+  }
+
   #enqueue<T>(operation: () => Promise<T>): Promise<T> {
     const queued = this.#operationQueue.then(operation)
     this.#operationQueue = queued.then(
@@ -391,8 +453,10 @@ export class MetroCompilerFrontend {
     const generation = metroCompilerContentHash(
       JSON.stringify({
         cacheVersion: METRO_COMPILER_CACHE_VERSION,
+        compilerImplementationVersions,
         componentModules,
         configCss,
+        disablePartialExtraction: !!this.config.tamaguiOptions?.disablePartialExtraction,
         target,
       })
     )
@@ -412,7 +476,9 @@ export class MetroCompilerFrontend {
       args
     )
     const imports: HostResolvedImport[] = []
+    const requireSpecifiers: string[] = []
     for (const dependency of moduleSpecifiersFromAst(compiled.result.ast)) {
+      if (!dependency.isESMImport) requireSpecifiers.push(dependency.specifier)
       try {
         const resolution = this.#resolver.resolve(path, dependency, options.platform)
         if (!resolution) continue
@@ -434,7 +500,9 @@ export class MetroCompilerFrontend {
     const id = resolvedModuleId(path)
     return {
       input: { id, source: compiled.code, imports },
+      sourceHash: metroCompilerContentHash(source),
       compiledHash: metroCompilerContentHash(compiled.code),
+      requireSpecifiers,
     }
   }
 
@@ -518,6 +586,7 @@ export class MetroCompilerFrontend {
     this.#entries.set(id, {
       schemaVersion: METRO_COMPILER_CACHE_VERSION,
       moduleId: id,
+      sourceHash: record.sourceHash,
       compiledHash: record.compiledHash,
       plan,
       diagnostics,

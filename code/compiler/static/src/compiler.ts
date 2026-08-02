@@ -23,6 +23,8 @@ export interface CompilerProject {
   projectInfo: TamaguiProjectInfo
   componentModules: CompilerProjectComponentModule[]
   generation: string
+  /** Keep elements with dynamic style props fully on the runtime path. */
+  disablePartialExtraction?: boolean
 }
 
 export interface CompilerResolution {
@@ -129,6 +131,7 @@ export class CompilerFrontend {
         moduleName: component.moduleName,
         resolvedId: cleanId(component.id),
       })),
+      disablePartialExtraction: input.project.disablePartialExtraction,
     })
     const result = await this.session.compile({
       module: rootModule,

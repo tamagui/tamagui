@@ -18,8 +18,9 @@ const AnchorFrame = styled(SizableText, {
   role: 'link',
 })
 
-export const Anchor = createStyledHOC(AnchorFrame)<AnchorExtraProps>(
-  ({ href, target, rel, ...props }, ref) => {
+export const Anchor = createStyledHOC(
+  AnchorFrame,
+  ({ href, target, rel, ...props }: AnchorProps, ref) => {
     return (
       <AnchorFrame
         {...props}

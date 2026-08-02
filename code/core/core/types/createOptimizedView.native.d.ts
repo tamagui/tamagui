@@ -10,6 +10,6 @@ import React, { Context } from 'react';
  */
 export declare function createOptimizedView(children: any, viewProps: Record<string, any>, baseViews: {
     TextAncestor: Context<any>;
-}): React.DOMElement<Record<string, any>, Element> | React.FunctionComponentElement<React.ProviderProps<any>>;
+}, isInText: boolean): React.DOMElement<Record<string, any>, Element> | React.FunctionComponentElement<React.ProviderProps<any>>;
 export declare function getAccessibilityRoleFromRole(role: any): "adjustable" | "alert" | "button" | "checkbox" | "combobox" | "grid" | "header" | "image" | "link" | "list" | "menu" | "menubar" | "menuitem" | "none" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "search" | "spinbutton" | "summary" | "switch" | "tab" | "tablist" | "timer" | "toolbar" | undefined;
 //# sourceMappingURL=createOptimizedView.native.d.ts.map

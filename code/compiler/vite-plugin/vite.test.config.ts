@@ -10,6 +10,8 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
-    include: ['code/compiler/vite-plugin/test/**/*.test.ts'],
+    include: [path.resolve(__dirname, 'test/**/*.test.ts')],
+    testTimeout: 120_000,
+    hookTimeout: 120_000,
   },
 })

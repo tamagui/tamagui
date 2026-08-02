@@ -13,7 +13,10 @@ import React, { Context } from 'react' // native only, taken from react-native
 export function createOptimizedView(
   children: any,
   viewProps: Record<string, any>,
-  baseViews: { TextAncestor: Context<any> }
+  baseViews: { TextAncestor: Context<any> },
+  // context value read by the caller (useChildren) — reading it here would put
+  // a hook behind per-render branches and break hook-order stability
+  isInText: boolean
 ) {
   const TextAncestor = baseViews.TextAncestor
 
@@ -133,7 +136,6 @@ export function createOptimizedView(
   }
 
   // isInText is significantly faster than just providing it each time
-  const isInText = React.useContext(TextAncestor)
   const finalElement = React.createElement('RCTView', viewProps, children)
 
   if (!isInText) {

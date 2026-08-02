@@ -1,0 +1,199 @@
+---
+title: 'v6 Colors'
+description: Choose or bring a color palette and generate your themes from it
+---
+
+<IntroParagraph>
+  In config v6 the shorthands, scales and settings are fixed, and colors are the one
+  swappable piece. Every palette choice works the same way: a colors pack pairs color
+  tokens with themes generated from that same palette, and the base config composes
+  around it.
+</IntroParagraph>
+
+A colors pack is a plain object:
+
+```tsx
+type V6Colors = {
+  // the full generated theme set (light, dark, light_blue, ...)
+  themes: Record<string, Record<string, string>>
+  // optional flat named colors added at tokens.color, e.g. { 'blue-500': '#2b7fff' }
+  colorTokens?: Record<string, string>
+}
+```
+
+Whichever palette you pick, themes are generated from it through the same pipeline
+(`@tamagui/theme-builder`), so the theme names (`light_blue`, `dark_accent`, ...) and
+theme keys (`background`, `color1`-`color12`, `accent1`-`accent12`, shadows, surfaces)
+never change. Swapping palettes never breaks a `theme="blue"` prop or a `color5` value.
+
+### Use the Tailwind colors (default)
+
+`@tamagui/config/v6` ships the full Tailwind palette: every family as color tokens
+(`blue-500`, `slate-50`, ...) plus themes generated from the Tailwind ramps. This is
+the config that makes `styleMode: 'tailwind'` class names like `bg-blue-500` resolve to
+real Tailwind colors.
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(defaultConfig)
+```
+
+```tsx
+<View bg="blue-500" borderColor="slate-200" />
+// themes generated from the same palette:
+<Button theme="blue">Tailwind blue</Button>
+```
+
+The default themes include the same families as v5 - gray, blue, red, yellow, green,
+orange, pink, purple, teal, neutral - built from the Tailwind ramps, and each base theme
+exposes scheme-relative steps like `blue1`-`blue11` (1 is the background-side tint, 11
+the foreground side, flipped in dark mode).
+
+### Use the classic v5 colors
+
+Prefer the v5 look with the v6 scales and shorthands? `@tamagui/config/v6-classic` is the
+same aligned base with the generated v5 themes. Like v5 there are no color tokens -
+colors live in the themes (`blue5`, `red11`, and friends resolve per scheme).
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v6-classic'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(defaultConfig)
+```
+
+```tsx
+<View bg="blue5" />
+<Button theme="blue">Radix blue</Button>
+```
+
+### Customize the Tailwind themes
+
+`@tamagui/config/v6-builder` exposes every Tailwind family as a ready-made ramp and a
+`createTailwindThemes` function that regenerates the theme set. Add families as child
+themes, or swap the accent:
+
+```tsx fileName="tamagui.config.ts"
+import { createV6Config } from '@tamagui/config/v6-base'
+import {
+  createTailwindThemes,
+  tailwindChildrenThemes,
+  tailwindPalettes,
+} from '@tamagui/config/v6-builder'
+import { tailwindColors } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+
+const themes = createTailwindThemes({
+  childrenThemes: {
+    ...tailwindChildrenThemes,
+    // now <View theme="emerald" /> works
+    emerald: tailwindPalettes.emerald,
+    indigo: tailwindPalettes.indigo,
+  },
+  // use indigo for the accent scale instead of the inverted base palette
+  accent: tailwindPalettes.indigo,
+})
+
+export const config = createTamagui(
+  createV6Config({ themes, colorTokens: tailwindColors })
+)
+```
+
+Every `createV5Theme` option works here - `lightPalette`/`darkPalette` for the base
+ramps, `grandChildrenThemes`, `getTheme` for computed values.
+
+### Bring your own palette
+
+Provide your own ramps and generate themes from them with `createV5Theme` (re-exported
+from `v6-builder`). A ramp is an ordered object from background-side to foreground-side
+color; dark ramps run the other way:
+
+```tsx fileName="tamagui.config.ts"
+import { createV6Config } from '@tamagui/config/v6-base'
+import { createV5Theme } from '@tamagui/config/v6-builder'
+import { createTamagui } from 'tamagui'
+
+const brand = {
+  light: {
+    brand1: '#f0f9ff',
+    brand2: '#e0f2fe',
+    brand3: '#bae6fd',
+    brand4: '#7dd3fc',
+    brand5: '#38bdf8',
+    brand6: '#0ea5e9',
+    brand7: '#0284c7',
+    brand8: '#0369a1',
+    brand9: '#075985',
+    brand10: '#0c4a6e',
+    brand11: '#082f49',
+  },
+  dark: {
+    brand1: '#082f49',
+    brand2: '#0c4a6e',
+    brand3: '#075985',
+    brand4: '#0369a1',
+    brand5: '#0284c7',
+    brand6: '#0ea5e9',
+    brand7: '#38bdf8',
+    brand8: '#7dd3fc',
+    brand9: '#bae6fd',
+    brand10: '#e0f2fe',
+    brand11: '#f0f9ff',
+  },
+}
+
+const themes = createV5Theme({
+  // your own base ramps too, if you want - 12 colors, background to foreground
+  // lightPalette: [...], darkPalette: [...],
+  childrenThemes: {
+    brand,
+    // keep any of the defaults you like by importing them from
+    // '@tamagui/themes/v5-builder' (radix) or tailwindPalettes (tailwind)
+  },
+})
+
+export const config = createTamagui(
+  createV6Config({
+    themes,
+    // optional: flat color tokens, usable as brand-500 anywhere
+    colorTokens: { 'brand-500': '#0ea5e9' },
+  })
+)
+```
+
+Now `<View theme="brand" bg="background" />` uses themes generated from your palette,
+and `brand1`-`brand11` resolve per scheme inside any theme.
+
+### Pre-generate themes for production
+
+Runtime generation pulls `@tamagui/theme-builder` into your bundle and runs at startup.
+For production, generate the themes once at build time with the CLI - point it at a file
+whose default export (or `themes` export) is your generated theme set:
+
+```tsx fileName="themes-input.ts"
+import { createTailwindThemes } from '@tamagui/config/v6-builder'
+
+export const themes = createTailwindThemes()
+```
+
+```bash
+npx tamagui generate-themes ./themes-input.ts ./src/themes.generated.ts
+```
+
+```tsx fileName="tamagui.config.ts"
+import { createV6Config } from '@tamagui/config/v6-base'
+import { tailwindColors } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
+import { themes } from './src/themes.generated'
+
+export const config = createTamagui(createV6Config({ themes, colorTokens: tailwindColors }))
+```
+
+This is exactly how the built-in packs are made: `@tamagui/config/v6` ships themes
+pre-generated from the Tailwind palette, `@tamagui/config/v6-classic` ships the
+pre-generated v5 themes, and neither pulls the theme builder into your app.
+
+For the full theme-building API (templates, masks, component themes), see the
+[Creating Custom Themes Guide](/docs/guides/theme-builder).

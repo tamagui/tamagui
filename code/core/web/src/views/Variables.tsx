@@ -23,13 +23,13 @@ const useInsertEffectCompat = isWeb
  * existing theme-state subscription) so JS theme readers (useTheme().val,
  * animation drivers) see patched values. On web, styles additionally compile
  * to CSS custom properties on this node, so styled consumers restyle with
- * zero re-renders and dark/light values apply via scheme-scoped selectors.
+ * zero re-renders and themes-map values apply via theme-class-scoped
+ * selectors (scheme-scoped with inversion handling for dark/light).
  */
 export function Variables(props: VariablesProps) {
   const inlineValues = {
     values: props.values,
-    dark: props.dark,
-    light: props.light,
+    themes: props.themes,
   }
 
   // forThemeView=true: descendants subscribe under this state id and get

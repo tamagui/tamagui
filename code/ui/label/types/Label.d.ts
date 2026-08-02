@@ -16,7 +16,7 @@ export type LabelProps = GetProps<typeof LabelFrame> & {
 };
 export declare const Label: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
-}>, import("react-native").Text | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TextNonStyleProps & void, import("@tamagui/web").TextStylePropsBase, {
+}>, import("react-native").Text | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const useLabelContext: (element?: HTMLElement | null) => string | undefined;

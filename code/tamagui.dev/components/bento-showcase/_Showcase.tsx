@@ -352,7 +352,7 @@ export const { Provider: PhoneScaleProvider, useStyledContext: usePhoneScale } =
     invertScale: 1.464,
   })
 
-export const ShowcaseChildWrapper = createStyledHOC(ScrollView)((props, ref) => {
+export const ShowcaseChildWrapper = createStyledHOC(ScrollView, (props, ref) => {
   const { sm } = useGroupMedia('window')
 
   return (
@@ -375,8 +375,18 @@ export const ShowcaseChildWrapper = createStyledHOC(ScrollView)((props, ref) => 
 type ResizableBoxExtraProps = {
   hideDragHandle?: boolean
 }
-const ResizableBox = createStyledHOC(XStack)<ResizableBoxExtraProps>(
-  ({ children, hideDragHandle, ...rest }, ref) => {
+const ResizableBox = createStyledHOC(
+  XStack,
+  (
+    {
+      children,
+      hideDragHandle,
+      ...rest
+    }: ResizableBoxExtraProps & {
+      children?: React.ReactNode
+    },
+    ref
+  ) => {
     const [width, setWidth] = useState<number | string>('100%')
     const startX = useRef(null)
     const initialWidth = useRef<number>(null)
@@ -545,7 +555,7 @@ export const WithSize = ({ children }: { children: any }) => {
   return React.cloneElement(children, { size })
 }
 
-export const SizeController = createStyledHOC(XGroup)((props, ref) => {
+export const SizeController = createStyledHOC(XGroup, (props, ref) => {
   const { size, sizes, setSize, showController } = useSize()
 
   if (!showController) return null

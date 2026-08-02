@@ -339,8 +339,8 @@
       "name": "@tamagui/cli",
       "version": "2.5.1",
       "bin": {
-        "tama": "./dist/index.cjs",
-        "tamagui": "./dist/index.cjs",
+        "tama": "dist/index.cjs",
+        "tamagui": "dist/index.cjs",
       },
       "dependencies": {
         "@tamagui/create-theme": "workspace:*",
@@ -429,6 +429,7 @@
       "devDependencies": {
         "@csstools/color-helpers": "6.1.0",
         "@tamagui/build": "workspace:*",
+        "@tamagui/cli": "workspace:*",
         "tailwindcss": "4.3.0",
       },
     },
@@ -541,7 +542,9 @@
     "code/core/create-tamagui": {
       "name": "create-tamagui",
       "version": "2.5.1",
-      "bin": "./run.js",
+      "bin": {
+        "create-tamagui": "run.js",
+      },
       "dependencies": {
         "@expo/package-manager": "^1.1.2",
         "chalk": "^4.1.2",
@@ -1779,7 +1782,9 @@
     "code/packages/native-ci": {
       "name": "@tamagui/native-ci",
       "version": "2.5.1",
-      "bin": "./dist/cli.mjs",
+      "bin": {
+        "native-ci": "dist/cli.mjs",
+      },
       "dependencies": {
         "@expo/fingerprint": "~0.16.6",
       },

@@ -1,6 +1,6 @@
 import { YStack, createStyledHOC } from 'tamagui'
 
-export const TakeoutIcon = createStyledHOC(YStack)((props, ref) => (
+export const TakeoutIcon = createStyledHOC(YStack, (props, ref) => (
   <YStack {...props} p="4" m="-4" ref={ref as any}>
     <svg
       width="24px"

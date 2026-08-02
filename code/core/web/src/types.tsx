@@ -643,6 +643,10 @@ export type TamaguiComponentStateRef = {
   nextState?: TamaguiComponentState
   nextMedia?: UseMediaState
 
+  // avoidReRenders latched on first render (animationDriver derives from the
+  // per-render animatedBy prop; hooks gated on it must keep a stable count)
+  avoidReRenders?: boolean
+
   // cleanup function for media emit listener
   mediaEmitCleanup?: () => void
 
@@ -1021,10 +1025,12 @@ export type VariablesValues = {
 
 export type VariablesProps = {
   values?: VariablesValues
-  /** applied additionally when the subtree's scheme is dark */
-  dark?: VariablesValues
-  /** applied additionally when the subtree's scheme is light */
-  light?: VariablesValues
+  /**
+   * per theme name: applied additionally when the subtree's resolved theme
+   * matches that name (by theme-name segment, so `blue` matches `dark_blue`).
+   * `dark`/`light` keys follow the subtree's color scheme.
+   */
+  themes?: { [Name in ThemeName]?: VariablesValues }
   children?: ReactNode
 }
 
@@ -1106,7 +1112,7 @@ export type UseThemeWithStateProps = ThemeProps & {
   disable?: boolean
   needsUpdate?: () => boolean
   /** <Variables> inline theme layer: patches merged over the parent theme */
-  inlineValues?: Pick<VariablesProps, 'values' | 'dark' | 'light'>
+  inlineValues?: Pick<VariablesProps, 'values' | 'themes'>
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
@@ -2714,33 +2720,12 @@ export type StyledHOCOptions = {
   staticConfig?: Partial<StaticConfig>
 }
 
-export type StyledHOCFactory<
-  Props,
-  Ref,
-  NonStyledProps,
-  BaseStyles extends object,
-  VariantProps,
-  ParentStaticProperties,
-> = <
-  CustomProps extends object | void = void,
-  MergedProps = CustomProps extends void
-    ? Props
-    : Omit<Props, keyof CustomProps> & CustomProps,
-  FunctionDef extends (props: MergedProps, ref?: ReactRef<Ref>) => ReactNode = (
-    props: MergedProps,
-    ref?: ReactRef<Ref>
-  ) => ReactNode,
->(
-  a: FunctionDef,
-  options?: StyledHOCOptions
-) => TamaguiComponent<
-  MergedProps,
-  Ref,
-  NonStyledProps & CustomProps,
-  BaseStyles,
-  VariantProps,
-  ParentStaticProperties
->
+// merges an annotated render-fn props type over the wrapped component's props.
+// when the render fn param is unannotated CustomProps stays {} and the wrapped
+// component's props pass through untouched.
+export type StyledHOCMergedProps<Props, CustomProps> = keyof CustomProps extends never
+  ? Props
+  : Omit<Props, keyof CustomProps> & CustomProps
 
 export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   NonStyleProps,

@@ -53,8 +53,9 @@ const ALWAYS_DISABLE_TOOLTIP = {
   // dismiss: true
 } as const
 
-const TooltipContent = createStyledHOC(TooltipContentFrame)<TooltipContentProps>(
-  (props, ref) => {
+const TooltipContent = createStyledHOC(
+  TooltipContentFrame,
+  (props: TooltipContentProps, ref) => {
     const preventAnimation = React.useContext(PreventTooltipAnimationContext)
     const zIndexFromContext = React.useContext(TooltipZIndexContext)
 

@@ -112,8 +112,9 @@ export type Card3DItemProps = {
   translateZ?: number
 }
 
-const Card3DItem = createStyledHOC(View)<Card3DItemProps>(
-  ({ translateZ = 0, children, ...rest }, forwardedRef) => {
+const Card3DItem = createStyledHOC(
+  View,
+  ({ translateZ = 0, children, ...rest }: Card3DItemProps & ViewProps, forwardedRef) => {
     const [ref, setRef] = useState<TamaguiElement | null>(null)
     const [isMouseEntered] = useMouseEnter()
 

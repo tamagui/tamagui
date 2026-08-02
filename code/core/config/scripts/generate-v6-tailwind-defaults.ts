@@ -298,20 +298,23 @@ function renderTable(name: string, table: Table, type = 'as const'): string {
   return `export const ${name} = {\n${entries}\n} ${type}`
 }
 
-export function generateSource(): string {
+// the colors and scales are written to separate modules so the aligned scale base can be
+// imported (v6-base, v6-classic) without bundling the 289-color palette on native.
+export function generateSources(): { colors: string; scales: string } {
   const source = readPinnedTailwindSource()
   const tables = createDefaultTables(source.themeCss)
   const convertedColors = convertColorsToSrgb(source.colors)
   const checksum = sourceChecksum(source)
-  return `// AUTO-GENERATED from tailwindcss@${TAILWIND_VERSION} with @csstools/color-helpers@${COLOR_HELPERS_VERSION}. Do not edit.
+  const header = `// AUTO-GENERATED from tailwindcss@${TAILWIND_VERSION} with @csstools/color-helpers@${COLOR_HELPERS_VERSION}. Do not edit.
 // Source checksum: ${checksum}
-export const tailwindSource = {
+`
+  const colors = `${header}${renderTable('tailwindColors', convertedColors, 'satisfies Record<string, string>')}
+`
+  const scales = `${header}export const tailwindSource = {
   tailwindVersion: '${TAILWIND_VERSION}',
   colorConverter: '@csstools/color-helpers@${COLOR_HELPERS_VERSION}',
   checksum: '${checksum}',
 } as const
-
-${renderTable('tailwindColors', convertedColors, 'satisfies Record<string, string>')}
 
 ${renderTable('tailwindSpace', tables.space)}
 
@@ -325,28 +328,34 @@ ${renderTable('tailwindFontSize', tables.fontSize)}
 
 ${renderTable('tailwindLineHeight', tables.lineHeight)}
 `
+  return { colors, scales }
 }
 
 function main(): void {
-  const outputPath = join(
-    dirname(fileURLToPath(import.meta.url)),
-    '../src/v6-tailwind-defaults.generated.ts'
-  )
-  const generated = generateSource()
+  const srcDir = join(dirname(fileURLToPath(import.meta.url)), '../src')
+  const outputs = {
+    colors: join(srcDir, 'v6-tailwind-colors.generated.ts'),
+    scales: join(srcDir, 'v6-tailwind-scales.generated.ts'),
+  }
+  const generated = generateSources()
   if (process.argv.includes('--check')) {
-    const current = readFileSync(outputPath, 'utf8')
-    if (current !== generated) {
-      throw new Error(
-        'v6 Tailwind defaults drifted; run bun ./scripts/generate-v6-tailwind-defaults.ts'
-      )
+    for (const key of ['colors', 'scales'] as const) {
+      const current = readFileSync(outputs[key], 'utf8')
+      if (current !== generated[key]) {
+        throw new Error(
+          `v6 Tailwind ${key} drifted; run bun ./scripts/generate-v6-tailwind-defaults.ts`
+        )
+      }
     }
     console.info(
       'v6 Tailwind defaults match tailwindcss@4.3.0 + @csstools/color-helpers@6.1.0'
     )
     return
   }
-  writeFileSync(outputPath, generated)
-  console.info(`wrote ${outputPath}`)
+  for (const key of ['colors', 'scales'] as const) {
+    writeFileSync(outputs[key], generated[key])
+    console.info(`wrote ${outputs[key]}`)
+  }
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {

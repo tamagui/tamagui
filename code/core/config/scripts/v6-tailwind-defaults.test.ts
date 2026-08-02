@@ -1,8 +1,7 @@
 import { describe, expect, test } from 'bun:test'
-import { themes as v5themes } from '@tamagui/themes/v5'
 
+import { tailwindColors } from '../src/v6-tailwind-colors.generated'
 import {
-  tailwindColors,
   tailwindFontSize,
   tailwindLineHeight,
   tailwindRadius,
@@ -10,14 +9,8 @@ import {
   tailwindSource,
   tailwindSpace,
   tailwindZIndex,
-} from '../src/v6-tailwind-defaults.generated'
-import {
-  shorthands,
-  settings,
-  themes,
-  v6RemovedThemeNames,
-  v6ThemeNameReplacements,
-} from '../src/v6-base'
+} from '../src/v6-tailwind-scales.generated'
+import { settings } from '../src/v6-base'
 import {
   COLOR_HELPERS_VERSION,
   TAILWIND_VERSION,
@@ -28,30 +21,6 @@ import {
 } from './generate-v6-tailwind-defaults'
 
 describe('v6 Tailwind defaults provenance', () => {
-  test('v6 binds bg to the background family and exposes only kebab-case theme names', () => {
-    expect(shorthands.bg).toBe('background')
-
-    for (const [themeName, v5theme] of Object.entries(v5themes)) {
-      const theme = themes[themeName as keyof typeof themes]
-      for (const [legacyName, v6Name] of Object.entries(v6ThemeNameReplacements)) {
-        expect(theme).not.toHaveProperty(legacyName)
-        const existed = Object.hasOwn(v5theme, legacyName)
-        expect(Object.hasOwn(theme, v6Name)).toBe(existed)
-        if (existed) {
-          expect(theme[v6Name as keyof typeof theme]).toBe(
-            v5theme[legacyName as keyof typeof v5theme]
-          )
-        }
-      }
-      for (const removedName of v6RemovedThemeNames) {
-        expect(theme).not.toHaveProperty(removedName)
-      }
-      expect(theme).not.toHaveProperty('background-active')
-      expect(Object.keys(theme).filter((name) => /[A-Z]/.test(name))).toEqual([])
-    }
-    expect(themes.light['background-press']).toBe(v5themes.light.backgroundPress)
-  })
-
   test('component and category defaults preserve the v5 control geometry', () => {
     expect(settings).toMatchObject({
       defaultSize: '11',

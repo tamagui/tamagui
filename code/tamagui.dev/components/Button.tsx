@@ -130,8 +130,9 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
   )
 }
 
-const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(
-  function Button(props, ref) {
+const ButtonComponent = createStyledHOC(
+  ButtonFrame,
+  function Button(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
     const contextSize = SizeContext.useStyledContext()?.size
     const size = ((props.size as TokenSize | undefined) ??
       contextSize ??

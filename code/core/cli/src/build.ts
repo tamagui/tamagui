@@ -202,7 +202,10 @@ export const build = async (
           .update(buildOptions.config ?? 'tamagui.config.ts')
           .update('\0')
           .update(JSON.stringify(targetOptions.components ?? []))
+          .update('\0')
+          .update(String(!!targetOptions.disablePartialExtraction))
           .digest('hex'),
+        disablePartialExtraction: targetOptions.disablePartialExtraction,
       })
       compilerFrontends.set(target, new CompilerFrontend())
     }

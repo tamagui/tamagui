@@ -329,6 +329,7 @@ export type TamaguiComponentStateRef = {
     group?: ComponentGroupEmitter;
     nextState?: TamaguiComponentState;
     nextMedia?: UseMediaState;
+    avoidReRenders?: boolean;
     mediaEmitCleanup?: () => void;
     prevPseudoState?: {
         hover?: boolean;
@@ -564,10 +565,14 @@ export type VariablesValues = {
 };
 export type VariablesProps = {
     values?: VariablesValues;
-    /** applied additionally when the subtree's scheme is dark */
-    dark?: VariablesValues;
-    /** applied additionally when the subtree's scheme is light */
-    light?: VariablesValues;
+    /**
+     * per theme name: applied additionally when the subtree's resolved theme
+     * matches that name (by theme-name segment, so `blue` matches `dark_blue`).
+     * `dark`/`light` keys follow the subtree's color scheme.
+     */
+    themes?: {
+        [Name in ThemeName]?: VariablesValues;
+    };
     children?: ReactNode;
 };
 export type Tokens = TamaguiConfig['tokens'];
@@ -609,7 +614,7 @@ export type UseThemeWithStateProps = ThemeProps & {
     disable?: boolean;
     needsUpdate?: () => boolean;
     /** <Variables> inline theme layer: patches merged over the parent theme */
-    inlineValues?: Pick<VariablesProps, 'values' | 'dark' | 'light'>;
+    inlineValues?: Pick<VariablesProps, 'values' | 'themes'>;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S) | S;
@@ -1624,7 +1629,7 @@ export type StyledHOCOptions = {
     disableTheme?: boolean;
     staticConfig?: Partial<StaticConfig>;
 };
-export type StyledHOCFactory<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties> = <CustomProps extends object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends (props: MergedProps, ref?: ReactRef<Ref>) => ReactNode = (props: MergedProps, ref?: ReactRef<Ref>) => ReactNode>(a: FunctionDef, options?: StyledHOCOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
+export type StyledHOCMergedProps<Props, CustomProps> = keyof CustomProps extends never ? Props : Omit<Props, keyof CustomProps> & CustomProps;
 export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeAndShorthands<StylePropsBase, Variants> : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends object = {}, Variants = {}, ParentStaticProperties = {}> = FunctionComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & {
     ref?: ReactRef<Ref>;

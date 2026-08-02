@@ -150,7 +150,7 @@ Use these replacements:
 | `themeInverse` | `theme="inverse"` |
 | `<Theme inverse>` | `<Theme name="inverse">` |
 | `Sheet.Frame` | `Sheet.Container` plus `Sheet.Background` |
-| `Component.styleable(fn)` | `createStyledHOC(Component)(fn)` |
+| `Component.styleable(fn)` | `createStyledHOC(Component, fn)` |
 | forwardRef wrapper statics | direct refs and normal component composition |
 | `inlineWhenUnflattened` | remove it |
 | deprecated UI kit aliases | import the current component names |
@@ -159,6 +159,31 @@ Use these replacements:
 | `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
 | `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
 | `@tamagui/config/reanimated` | `@tamagui/config/v5-reanimated` |
+| `'...size'` / `'...fontSize'` spread variant keys | resolver-name keys: `Size`, `FontSize`, `Space`, `Color`, `Radius`, `ZIndex`, and unions like `'Size \| number'` |
+| `':string'` / `':number'` / `':boolean'` type-key variants | plain `string` / `number` / `boolean` keys |
+| `'...'` catch-all variant key | the `any` key |
+
+Spread and type-key variants have no runtime support in v3 — a leftover
+`'...size'` key only ever matches the literal string `"...size"`. Search with
+`` rg "'\.\.\.\w*':|':(string|number|boolean)':" `` and switch to resolver-name
+keys, which type the prop from the key (see
+[the variants docs](/docs/core/variants#resolver-variants)):
+
+```tsx
+// before
+variants: {
+  size: {
+    '...size': (val, { tokens }) => ({ padding: tokens.size[val] }),
+  },
+} as const
+
+// after
+variants: {
+  size: {
+    Size: (val, { tokens }) => ({ padding: tokens.size[val] }),
+  },
+} as const
+```
 
 Examples:
 

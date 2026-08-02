@@ -8,10 +8,12 @@ import {
   createTamagui,
   getVariablesCSSRules,
   TamaguiProvider,
+  Theme,
   useTheme,
   Variables,
   View,
 } from '@tamagui/core'
+import type { VariablesProps } from '@tamagui/core'
 
 const conf = createTamagui({
   ...getDefaultTamaguiConfig(),
@@ -95,7 +97,7 @@ describe('getVariablesCSSRules', () => {
 
   test('dark values emit scheme-scoped selectors and media rules', () => {
     const res = getVariablesCSSRules(
-      { values: { accent: '#111' }, dark: { accent: '#eee' } },
+      { values: { accent: '#111' }, themes: { dark: { accent: '#eee' } } },
       conf
     )!
     const cls = `.${res.identifier}`
@@ -113,6 +115,44 @@ describe('getVariablesCSSRules', () => {
 
   test('unknown keys drop, empty output is null', () => {
     expect(getVariablesCSSRules({ values: { notAKey: 'red' } as any }, conf)).toBe(null)
+  })
+
+  test('non-scheme theme buckets emit plain theme-class-scoped rules', () => {
+    const res = getVariablesCSSRules(
+      {
+        values: { accent: '#111' },
+        themes: { blue: { accent: '#00f' }, dark: { accent: '#eee' } },
+      },
+      conf
+    )!
+    const cls = `.${res.identifier}`
+    expect(res.rules[0]).toBe(`:root ${cls} {--accent:#111;}`)
+    const blueIndex = res.rules.findIndex((rule) => rule.includes('.t_blue'))
+    expect(res.rules[blueIndex]).toBe(
+      `:root .t_blue ${cls}, :root.t_blue ${cls} {--accent:#00f;}`
+    )
+    // no inversion selectors or media duplication for non-scheme names
+    expect(res.rules.filter((rule) => rule.includes('.t_blue')).length).toBe(1)
+    // scheme rules come after non-scheme rules so schemes win overlap ties,
+    // consistent with the dark inversion selector outranking them anyway
+    const darkIndex = res.rules.findIndex((rule) => rule.includes('.t_dark'))
+    expect(blueIndex).toBeLessThan(darkIndex)
+  })
+
+  test('prefix-chain buckets emit least-specific first so the deeper name wins', () => {
+    const res = getVariablesCSSRules(
+      {
+        themes: {
+          red_alt1: { accent: '#b00' },
+          red: { accent: '#a00' },
+        },
+      },
+      conf
+    )!
+    const redIndex = res.rules.findIndex((rule) => rule.includes('.t_red '))
+    const altIndex = res.rules.findIndex((rule) => rule.includes('.t_red_alt1'))
+    expect(redIndex).toBeGreaterThanOrEqual(0)
+    expect(redIndex).toBeLessThan(altIndex)
   })
 
   test('cycle-involved keys drop in all modes', () => {
@@ -143,8 +183,22 @@ describe('getVariablesCSSRules', () => {
     expect(
       getVariablesCSSRules(
         {
-          values: { surfaceBorder: 'chained', chained: 'surfaceBorder' },
-          dark: { chained: 'red' },
+        values: { surfaceBorder: 'chained', chained: 'surfaceBorder' },
+        themes: { dark: { chained: 'red' } },
+        },
+        conf
+      )
+    ).toBe(null)
+
+    // a cycle only reachable by combining a non-scheme bucket with a scheme
+    // bucket (both can apply at once under a matching theme) drops everywhere
+    expect(
+      getVariablesCSSRules(
+        {
+          themes: {
+            blue: { surfaceBorder: 'chained' },
+            dark: { chained: 'surfaceBorder' },
+          },
         },
         conf
       )
@@ -221,6 +275,66 @@ describe('<Variables>', () => {
     )
     expect(view.getByTestId('read-val').textContent).toBe(
       String(conf.themes.light.surfaceBorder.val)
+    )
+    view.unmount()
+  })
+
+  test('themes-map bucket applies via JS merge when the subtree theme matches', () => {
+    const ReadVal = () => {
+      const theme = useTheme()
+      return <span data-testid="read-themed">{String(theme.surfaceBorder?.val)}</span>
+    }
+    const make = (themeName: string) => (
+      <TamaguiProvider config={conf} defaultTheme="dark">
+        <Theme name={themeName as any}>
+          <Variables
+            values={{ surfaceBorder: 'rgb(1, 1, 1)' }}
+            themes={{ blue: { surfaceBorder: 'rgb(2, 2, 2)' } }}
+          >
+            <ReadVal />
+          </Variables>
+        </Theme>
+      </TamaguiProvider>
+    )
+
+    // theme dark_blue: the blue bucket matches by segment and wins over values
+    const view = render(make('blue'))
+    expect(view.getByTestId('read-themed').textContent).toBe('rgb(2, 2, 2)')
+    view.unmount()
+
+    // theme dark_red: blue doesn't match, base values apply
+    const other = render(make('red'))
+    expect(other.getByTestId('read-themed').textContent).toBe('rgb(1, 1, 1)')
+    other.unmount()
+  })
+
+  test('patch-remove-restore with the themes map restores config values', () => {
+    const ReadVal = () => {
+      const theme = useTheme()
+      return <span data-testid="read-restore">{String(theme.surfaceBorder?.val)}</span>
+    }
+    const make = (props: VariablesProps) => (
+      <TamaguiProvider config={conf} defaultTheme="dark">
+        <Variables {...props}>
+          <ReadVal />
+        </Variables>
+      </TamaguiProvider>
+    )
+
+    const view = render(
+      make({ themes: { dark: { surfaceBorder: 'rgb(3, 3, 3)' } } })
+    )
+    expect(view.getByTestId('read-restore').textContent).toBe('rgb(3, 3, 3)')
+
+    // changing the bucket updates subscribed readers
+    view.rerender(make({ themes: { dark: { surfaceBorder: 'rgb(4, 4, 4)' } } }))
+    expect(view.getByTestId('read-restore').textContent).toBe('rgb(4, 4, 4)')
+
+    // removing the map restores the config value (merge must base on the
+    // parent theme, not the provider's own merged output)
+    view.rerender(make({}))
+    expect(view.getByTestId('read-restore').textContent).toBe(
+      String(conf.themes.dark.surfaceBorder.val)
     )
     view.unmount()
   })

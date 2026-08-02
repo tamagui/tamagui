@@ -17,7 +17,7 @@ const StyledInput = styled(Input, {
 
 const AnotherStyled = styled(StyledInput, {})
 
-const MyComponent = createStyledHOC(AnotherStyled)((props, ref) => (
+const MyComponent = createStyledHOC(AnotherStyled, (props, ref) => (
   <StyledInput ref={ref as any} {...props} />
 ))
 

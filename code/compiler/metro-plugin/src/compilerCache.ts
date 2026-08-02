@@ -6,11 +6,13 @@ import type { LoweredModulePlan } from '@tamagui/compiler-core'
 
 import { metroDiagnostic, type MetroCompilerDiagnostic } from './diagnostics'
 
-export const METRO_COMPILER_CACHE_VERSION = 2
+export const METRO_COMPILER_CACHE_VERSION = 3
 
 export interface MetroCompilerCacheEntry {
   schemaVersion: typeof METRO_COMPILER_CACHE_VERSION
   moduleId: string
+  /** Hash of the raw on-disk module source the compiled record was produced from. */
+  sourceHash: string
   compiledHash: string
   plan: LoweredModulePlan
   diagnostics: MetroCompilerDiagnostic[]
@@ -18,6 +20,7 @@ export interface MetroCompilerCacheEntry {
 
 interface MetroCompilerCacheDescriptor {
   blobHash: string
+  sourceHash: string
   compiledHash: string
 }
 
@@ -34,6 +37,8 @@ export interface MetroCompilerCacheValidation {
   diagnostics: MetroCompilerDiagnostic[]
   generation: string | null
   moduleIds: string[]
+  /** Raw module source hash by module id, for host freshness checks. */
+  sourceHashes: Record<string, string>
   optionsHash: string | null
 }
 
@@ -141,6 +146,7 @@ export class MetroCompilerCache {
       }
       descriptors[entry.moduleId] = {
         blobHash,
+        sourceHash: entry.sourceHash,
         compiledHash: entry.compiledHash,
       }
     }
@@ -186,17 +192,21 @@ export class MetroCompilerCache {
           diagnostics,
           generation: null,
           moduleIds: [],
+          sourceHashes: {},
           optionsHash: null,
         }
       }
+      const sourceHashes: Record<string, string> = {}
       for (const [moduleId, descriptor] of stableEntries(manifest.entries)) {
         await this.#readBlob(moduleId, descriptor)
+        sourceHashes[moduleId] = descriptor.sourceHash
       }
       return {
         valid: true,
         diagnostics,
         generation: manifest.generation,
         moduleIds: Object.keys(manifest.entries).sort(compareCodeUnits),
+        sourceHashes,
         optionsHash: manifest.optionsHash,
       }
     } catch (error) {
@@ -207,6 +217,7 @@ export class MetroCompilerCache {
           diagnostics,
           generation: null,
           moduleIds: [],
+          sourceHashes: {},
           optionsHash: null,
         }
       }
@@ -264,6 +275,8 @@ export class MetroCompilerCache {
     if (
       entry.schemaVersion !== METRO_COMPILER_CACHE_VERSION ||
       entry.moduleId !== moduleId ||
+      typeof entry.sourceHash !== 'string' ||
+      entry.sourceHash !== descriptor.sourceHash ||
       entry.compiledHash !== descriptor.compiledHash ||
       !entry.plan ||
       entry.plan.version !== 1 ||

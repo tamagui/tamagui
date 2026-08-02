@@ -397,7 +397,7 @@ export const App = ({ dynamic }) => <>
       expect(afterRecovery.metadata?.tamagui.cacheHit).toBe(true)
       expect(outputCode(afterRecovery)).toContain('"paddingTop": 5')
 
-      await frontend.ensureValidCache({
+      const productionOptionsAfterEdits = {
         dev: false,
         entryFiles: [appPath],
         // Expo production exports may still report hot=true. Production must not retain
@@ -405,13 +405,162 @@ export const App = ({ dynamic }) => <>
         hot: true,
         platform: 'ios',
         transform: { experimentalImportSupport: true },
-      })
+      }
+      const productionGeneration = await frontend.ensureValidCache(
+        productionOptionsAfterEdits
+      )
       await write(themePath, 'export const space = 20\n')
       expect(await frontend.updateFile(themePath)).toEqual({
         changed: false,
         affectedIds: [],
         generation: null,
       })
+
+      // a later production build (fresh process) must observe the source edit
+      // instead of reusing the published manifest and silently de-optimizing
+      await write(tokensPath, 'export const spacing = 21\n')
+      const laterBuildFrontend = new MetroCompilerFrontend({
+        projectRoot,
+        cacheRoot,
+        watch: false,
+        originalBabelTransformerPath: transformerPath,
+        loadCompilerProject: async () => compilerProject,
+        resolver: {
+          resolveRequest,
+          sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+          unstable_enablePackageExports: true,
+        },
+      })
+      try {
+        const refreshed = await laterBuildFrontend.ensureValidCache(
+          productionOptionsAfterEdits
+        )
+        expect(refreshed.generation).not.toBe(productionGeneration.generation)
+        expect(refreshed.moduleIds).toContain(appPath)
+        const afterLaterBuild = await firstWorker.transform(args)
+        expect(afterLaterBuild.metadata?.tamagui.cacheHit).toBe(true)
+        expect(outputCode(afterLaterBuild)).toContain('"paddingTop": 21')
+
+        // and an unchanged tree keeps the published generation
+        const reused = await new MetroCompilerFrontend({
+          projectRoot,
+          cacheRoot,
+          watch: false,
+          originalBabelTransformerPath: transformerPath,
+          loadCompilerProject: async () => compilerProject,
+          resolver: {
+            resolveRequest,
+            sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+            unstable_enablePackageExports: true,
+          },
+        }).ensureValidCache(productionOptionsAfterEdits)
+        expect(reused.generation).toBe(refreshed.generation)
+      } finally {
+        await laterBuildFrontend.close()
+      }
+    } finally {
+      await frontend.close()
+    }
+  })
+
+  test('warns loudly when CommonJS interop hides every component from the analyzer', async () => {
+    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-cjs-fixture-'))
+    temporaryRoots.push(fixtureRoot)
+    const projectRoot = join(fixtureRoot, 'app')
+    const appPath = join(projectRoot, 'src/App.tsx')
+    const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
+    // the shape metro's default CommonJS output takes when a transformer runs
+    // with experimentalImportSupport disabled
+    const appSource = `
+var _jsxRuntime = require('react/jsx-runtime')
+var _ui = require('@fixture/ui')
+exports.App = function App() {
+  return (0, _jsxRuntime.jsx)(_ui.View, { padding: 12 })
+}
+`
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-cjs-fixture"}\n')
+    await write(appPath, appSource)
+    await write(uiPath, 'export const View = (_props) => null\n')
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    expect(viewInfo).toBeTruthy()
+    const reported: string[] = []
+    const frontend = new MetroCompilerFrontend({
+      projectRoot,
+      cacheRoot: join(fixtureRoot, 'cache'),
+      watch: false,
+      originalBabelTransformerPath: transformerPath,
+      loadCompilerProject: async () => ({
+        projectInfo: {
+          ...loadedProject,
+          components: [{ moduleName: '@fixture/ui', nameToInfo: { View: viewInfo! } }],
+        },
+        componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+        generation: 'e4-cjs-fixture-v1',
+      }),
+      reportDiagnostic(diagnostic) {
+        reported.push(diagnostic.code)
+      },
+      resolver: {
+        resolveRequest: (context: any, specifier: string, platform: string) => {
+          if (specifier === '@fixture/ui') {
+            return { type: 'sourceFile', filePath: uiPath }
+          }
+          if (specifier === 'react/jsx-runtime') {
+            return {
+              type: 'sourceFile',
+              filePath: requireFromTest.resolve('react/jsx-runtime'),
+            }
+          }
+          return context.resolveRequest(context, specifier, platform)
+        },
+        sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+        unstable_enablePackageExports: true,
+      },
+    })
+
+    try {
+      const generation = await frontend.scan({
+        dev: false,
+        entryFiles: [appPath],
+        hot: false,
+        platform: 'ios',
+        transform: {},
+      })
+      expect(generation.moduleIds).toContain(appPath)
+      const warning = generation.diagnostics.find(
+        ({ code }) => code === 'metro/no-linked-components'
+      )
+      expect(warning).toBeTruthy()
+      expect(warning!.message).toContain('experimentalImportSupport')
+      expect(warning!.message).toContain('@fixture/ui')
+      expect(reported).toContain('metro/no-linked-components')
+
+      // the same project with real imports links components and stays quiet
+      await write(
+        appPath,
+        `
+import { View } from '@fixture/ui'
+export const App = () => <View padding={12} />
+`
+      )
+      const healthy = await frontend.scan({
+        dev: false,
+        entryFiles: [appPath],
+        hot: false,
+        platform: 'ios',
+        transform: {},
+      })
+      expect(
+        healthy.diagnostics.filter(({ code }) => code === 'metro/no-linked-components')
+      ).toEqual([])
     } finally {
       await frontend.close()
     }

@@ -509,7 +509,14 @@ export function createComponent<
     // input (which, with no clone above, would be React's own props object)
     props = componentState.props as typeof props
 
-    if (animationDriver?.avoidReRenders) {
+    // latch on first render: animationDriver derives from the per-render
+    // animatedBy prop, and the layout effect below is conditioned on
+    // avoidReRenders — letting it flip between renders would change the hook
+    // count mid-lifecycle (same latch pattern as hasAnimated in
+    // useComponentState). ??= keeps the first value: false stays false.
+    stateRef.current.avoidReRenders ??= !!animationDriver?.avoidReRenders
+
+    if (stateRef.current.avoidReRenders) {
       // post-commit reconciliation of `nextState` with the committed React state.
       // `nextState` is the source of truth for the fast `setStateShallow` path; it
       // must stay populated until React actually commits the corresponding update,
@@ -768,7 +775,9 @@ export function createComponent<
     }
     const isStringElement = typeof elementType === 'string'
 
-    const mediaState = useMedia(componentContext, debugProp)
+    // stateRef.current is this instance's key into useMedia's per-component
+    // States map (setMediaShouldUpdate below writes under the same key)
+    const mediaState = useMedia(componentContext, debugProp, stateRef.current)
 
     setDidGetVariableValue(false)
 
@@ -1070,7 +1079,7 @@ export function createComponent<
     }
 
     setMediaShouldUpdate(
-      componentContext,
+      stateRef.current,
       shouldListenForMedia,
       mediaListeningKeys,
       stateRef.current.optimizeForFirstRender
@@ -1352,12 +1361,22 @@ export function createComponent<
         // Non-CSS drivers handle their own animation timing
         setStateShallow({ unmounted: false })
       }
+    }, [state.unmounted, inputStyle])
 
+    // unmount-only cleanup. this must NOT live on the enter effect above: that
+    // effect re-runs on every unmounted transition (true -> 'should-enter' ->
+    // false), and a cleanup returned there ran mid-lifecycle — dropping the
+    // mediaEmit listener right after mount for value-input avoidReRenders
+    // drivers, with no re-registration (render only registers while
+    // mediaEmitCleanup is unset), so media styles silently stopped applying
+    useIsomorphicLayoutEffect(() => {
       return () => {
         componentSetStates.delete(setState)
         stateRef.current.mediaEmitCleanup?.()
+        // clear so a render after a simulated unmount (StrictMode dev) can re-register
+        stateRef.current.mediaEmitCleanup = undefined
       }
-    }, [state.unmounted, inputStyle])
+    }, [])
 
     useIsomorphicLayoutEffect(() => {
       let disposeSafeArea: (() => void) | undefined
@@ -1680,6 +1699,14 @@ export function createComponent<
 
     let content: ReactNode | undefined
 
+    // ONLY native: useChildren reads TextAncestor context (a hook), so it must
+    // run on every render — passthrough included — or toggling passThrough
+    // (Adapt/Popover flip it per breakpoint) would change the hook count
+    // mid-lifecycle. it returns undefined for passthrough.
+    const childrenFromHooks = hooks.useChildren
+      ? hooks.useChildren(elementType, children, viewProps, isPassthrough)
+      : undefined
+
     if (isPassthrough) {
       // avoid re-parenting but avoid layout changes
       content = React.createElement(
@@ -1693,9 +1720,8 @@ export function createComponent<
       )
     } else {
       // here elementType is either the custom animated driver view, or base view
-      if (hooks.useChildren) {
-        // ONLY native:
-        content = hooks.useChildren(elementType, content || children, viewProps)
+      if (childrenFromHooks) {
+        content = childrenFromHooks
       }
 
       const isRenderPropString = typeof renderProp === 'string'
