@@ -468,7 +468,7 @@ test('native provider lowers source in One Rolldown for iOS and Android', async 
     writeFile(
       rootConfigPath,
       `const { createTamagui } = require('@tamagui/core')
-const { defaultConfig } = require('@tamagui/config/v4')
+const { defaultConfig } = require('@tamagui/config/v5')
 module.exports = createTamagui({
   ...defaultConfig,
   tokens: {

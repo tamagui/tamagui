@@ -3,7 +3,7 @@
 // against the esm build of core while the compiler host requires the cjs
 // build, so the config parses inside a different core module instance than
 // the one extraction reads from.
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 import { createTamagui } from '@tamagui/core'
 
 export default createTamagui({

@@ -17,16 +17,14 @@
     "v5-motion.cjs",
     "v5-subtle.d.ts",
     "v5-subtle.cjs",
-    "v4.d.ts",
-    "v4.cjs",
-    "v3.cjs",
-    "v3.d.ts",
-    "v2.d.ts",
-    "v2.cjs",
-    "v2-reanimated.d.ts",
-    "v2-reanimated.js",
-    "v2-native.d.ts",
-    "v2-native.js",
+    "v6.d.ts",
+    "v6.cjs",
+    "v6-base.d.ts",
+    "v6-base.cjs",
+    "v6-classic.d.ts",
+    "v6-classic.cjs",
+    "v6-builder.d.ts",
+    "v6-builder.cjs",
     "scripts",
     "dist",
     "**/__tests__"
@@ -36,25 +34,22 @@
       "path": "../animations-css"
     },
     {
+      "path": "../animations-motion"
+    },
+    {
       "path": "../animations-react-native"
     },
     {
-      "path": "../colors"
+      "path": "../animations-reanimated"
     },
     {
       "path": "../create-system-font"
     },
     {
-      "path": "../font-inter"
-    },
-    {
-      "path": "../font-silkscreen"
-    },
-    {
-      "path": "../react-native-media-driver"
-    },
-    {
       "path": "../shorthands"
+    },
+    {
+      "path": "../style-grammar"
     },
     {
       "path": "../themes"

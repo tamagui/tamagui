@@ -2,9 +2,6 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "@tamagui/colors/legacy": [
-        "./code/core/colors/types/legacy.d.ts"
-      ],
       "tamagui": [
         "./code/ui/tamagui"
       ],

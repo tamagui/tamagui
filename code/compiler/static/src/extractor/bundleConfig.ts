@@ -456,7 +456,7 @@ export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
 
     // clear specific output file caches so we pick up the fresh (or newly discovered) build
     // only clear the built output files - not all require.cache entries, since that breaks
-    // external requires like @tamagui/config/v3 that are externalized in the bundled CJS
+    // external requires like @tamagui/config/v5 that are externalized in the bundled CJS
     if (hasBundledOnce) {
       try {
         delete nodeRequire.cache[nodeRequire.resolve(configOutPath)]

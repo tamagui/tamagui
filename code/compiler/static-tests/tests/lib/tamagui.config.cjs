@@ -1,8 +1,16 @@
 const { createTamagui } = require('@tamagui/core')
 
-const conf = require('@tamagui/config/v3').config
+const { defaultConfig } = require('@tamagui/config/v5')
+const { animations } = require('@tamagui/config/v5-css')
 
-// Add an invalid identifier color token (with hyphen) to test the fix for #3737
-conf.tokens.color['invalid-identifier'] = conf.tokens.color.white0
-
-module.exports = createTamagui(conf)
+module.exports = createTamagui({
+  ...defaultConfig,
+  animations,
+  tokens: {
+    ...defaultConfig.tokens,
+    color: {
+      // an invalid identifier color token (with hyphen) covers the fix for #3737
+      'invalid-identifier': 'rgba(255,255,255,0)',
+    },
+  },
+})

@@ -12,11 +12,9 @@ import { TEST_IDS } from '../src/constants/test-ids'
  */
 
 test.beforeEach(async ({ page }) => {
-  // Use v4 themes as these tests require theme names like light_green, dark_green, etc.
   await setupPage(page, {
     name: 'ThemeComponentResolution',
     type: 'useCase',
-    searchParams: { v4theme: 'true' },
   })
 })
 

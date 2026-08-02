@@ -16,11 +16,9 @@ import { TEST_IDS } from '../src/constants/test-ids'
 
 test.beforeEach(async ({ page }) => {
   // Test the nested theme regression (issue #3673)
-  // Use v4 themes as the bug specifically occurs with @tamagui/themes/v4
   await setupPage(page, {
     name: 'ThemeNested',
     type: 'useCase',
-    searchParams: { v4theme: 'true' },
   })
 })
 

@@ -6,16 +6,6 @@
   "exclude": [
     "types",
     "tests",
-    "v2.d.ts",
-    "v2.js",
-    "v2-themes.cjs",
-    "v2-themes.d.ts",
-    "v3.d.ts",
-    "v3.cjs",
-    "v3-themes.cjs",
-    "v3-themes.d.ts",
-    "v4.d.ts",
-    "v4.cjs",
     "v5.d.ts",
     "v5.cjs",
     "v5-subtle.d.ts",
@@ -31,13 +21,7 @@
       "path": "../colors"
     },
     {
-      "path": "../create-theme"
-    },
-    {
       "path": "../theme-builder"
-    },
-    {
-      "path": "../web"
     }
   ]
 }

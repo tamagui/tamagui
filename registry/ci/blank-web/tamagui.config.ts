@@ -1,4 +1,4 @@
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 import { createTamagui } from 'tamagui'
 
 // a blank tamagui app's config: the stock @tamagui/config preset, nothing

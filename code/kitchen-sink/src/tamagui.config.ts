@@ -2,11 +2,8 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
-import { config as configV3 } from '@tamagui/config/v3'
-import { defaultConfig as configV4 } from '@tamagui/config/v4'
 import { defaultConfig as configV5 } from '@tamagui/config/v5'
 import { shorthands } from '@tamagui/config/v6'
-import { tamaguiThemes } from '@tamagui/themes/v4'
 import type { InferTamaguiConfig } from '@tamagui/web'
 import { createTamagui, type TamaguiInternalConfig } from 'tamagui'
 // TODO just move this into this folder
@@ -16,26 +13,13 @@ import { toV6Themes, type V6Themes } from '../../packages/tamagui-dev-config/src
 // Generated theme from v5 theme builder for testing
 import { themes as generatedV5Themes } from './generatedV5Theme'
 
-// Keep the kitchen sink's established token, font, and media scales. Only the
-// built-in theme namespace is a V3 migration concern here.
-const v3Themes: V6Themes<typeof configV3.themes> = toV6Themes(configV3.themes)
-
+// v5 is the config generation the kitchen sink runs on: its tokens, fonts and
+// media (which already spells the max-queries kebab-case) plus the V6 theme-key
+// grammar applied to the v5 theme pack.
 const config = {
-  ...configV3,
-  themes: v3Themes,
+  ...configV5,
+  themes: toV6Themes(configV5.themes),
 }
-
-// V4 predates the V6 multi-part-name ruling. Keep its breakpoint values while
-// exposing the max-query names in the sole supported kebab-case spelling.
-const v4MaxMedia = {
-  'max-2xs': configV4.media.max2xs,
-  'max-xs': configV4.media.maxXs,
-  'max-sm': configV4.media.maxSm,
-  'max-md': configV4.media.maxMd,
-  'max-lg': configV4.media.maxLg,
-  'max-xl': configV4.media.maxXl,
-  'max-2xl': configV4.media.max2Xl,
-} as const
 
 export const animationsCSS = createAnimationsCSS({
   '0ms': '0ms linear',
@@ -367,15 +351,15 @@ config.themes = {
 
 const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
 
-const useV4Themes = search.includes('v4theme=true')
 const v5config = search.includes('v5config')
 const tamav5Config = search.includes('tamav5config')
 const generatedV5 = search.includes('generatedV5')
 
+// v5 keeps colors in themes, so the color scale here is only the kitchen sink's
+// own test tokens
 const tokens = {
   ...config.tokens,
   color: {
-    ...config.tokens.color,
     testsomethingdifferent: '#ff0000',
     customRed: '#ff0000',
     customBlue: '#0000ff',
@@ -423,16 +407,12 @@ const bodyJa = {
 }
 
 type Merge<Left, Right> = Omit<Left, keyof Right> & Right
-type KitchenThemes =
-  | V6Themes<typeof tamaguiThemes>
-  | Merge<V6Themes<typeof configV3.themes>, typeof themeDev>
+type KitchenThemes = Merge<V6Themes<typeof configV5.themes>, typeof themeDev>
 
-const themes: KitchenThemes = useV4Themes
-  ? toV6Themes(tamaguiThemes)
-  : {
-      ...config.themes,
-      ...themeDev,
-    }
+const themes: KitchenThemes = {
+  ...config.themes,
+  ...themeDev,
+}
 
 const variables = {
   caseAccent: { light: 'rgb(0, 90, 200)', dark: 'rgb(90, 90, 255)' },
@@ -461,13 +441,14 @@ type KitchenConfigInput = Omit<
   animations: typeof animations
   defaultProps: typeof defaultProps
   fonts: Merge<typeof config.fonts, { body_ja: typeof bodyJa }>
-  media: Merge<typeof v4MaxMedia, typeof config.media>
+  media: typeof config.media
   settings: Merge<
     typeof config.settings,
     {
       defaultFont: 'body'
       allowedStyleValues: 'somewhat-strict'
       fastSchemeChange: true
+      onlyAllowShorthands: false
     }
   >
   shorthands: typeof shorthands
@@ -483,7 +464,6 @@ const tamaConf: InferTamaguiConfig<KitchenConfigInput> =
       ...config.fonts,
       body_ja: bodyJa,
     },
-    // Use v4 themes when ?v4theme=true is in the URL
     themes,
     shorthands: shorthands,
     settings: {
@@ -491,12 +471,11 @@ const tamaConf: InferTamaguiConfig<KitchenConfigInput> =
       defaultFont: 'body',
       allowedStyleValues: 'somewhat-strict',
       fastSchemeChange: true,
+      // the cases author with long property names as well as shorthands
+      onlyAllowShorthands: false,
     },
     tokens,
-    media: {
-      ...v4MaxMedia,
-      ...config.media,
-    },
+    media: config.media,
     animations, // default reanimated
 
     // custom variables for VariablesCase (plans/variables.md)

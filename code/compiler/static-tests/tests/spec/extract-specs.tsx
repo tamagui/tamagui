@@ -1,4 +1,5 @@
-import { config } from '@tamagui/config'
+import { defaultConfig } from '@tamagui/config/v5'
+import { animations } from '@tamagui/config/v5-css'
 import { html } from '@tamagui/core'
 import {
   Spacer,
@@ -22,7 +23,7 @@ type TestProps = {
   altConditional?: boolean
 }
 
-const tamaguiConfig = createTamagui(config)
+const tamaguiConfig = createTamagui({ ...defaultConfig, animations })
 
 export const Provider = (props) => (
   <TamaguiProvider defaultTheme="dark" config={tamaguiConfig}>
