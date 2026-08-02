@@ -14,33 +14,18 @@ describe('animation props', () => {
       </TamaguiProvider>
     )
 
-    expect(tree.asFragment()).toMatchInlineSnapshot(`
-      <DocumentFragment>
-        <span
-          aria-hidden="true"
-          data-tamagui-config-revision="1346665106"
-          data-tamagui-config-revision-parts="{"media":"2088666861","themeNames":"801574318","themeVariables":"559364601","tokens":"200528947","fonts":"301787118","shorthands":"2146910233"}"
-          hidden=""
-        />
-        <span
-          class="t_light _dsp_contents"
-        >
-          <span
-            class=" t_light is_Theme"
-            style="color: var(--color); display: contents;"
-          >
-            <span
-              class="_dsp_contents  font_body"
-            >
-              <div
-                class="is_View _mt-200px _mr-200px _mb-200px _ml-200px _tx-927052474 _t-616221249 _bc-1124498088"
-                id="test-id"
-                style="transition: all cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms;"
-              />
-            </span>
-          </span>
-        </span>
-      </DocumentFragment>
+    // snapshot the View, not the whole fragment. TamaguiProvider also renders
+    // ConfigRevisionCheck, whose hidden span carries a hash of every theme,
+    // token, media, font and shorthand NAME in the config — capturing the
+    // fragment made this animation test fail whenever an unrelated config key
+    // was added anywhere, which teaches rubber-stamping the snapshot. Theme and
+    // font wrapping have their own tests.
+    expect(tree.container.querySelector('#test-id')).toMatchInlineSnapshot(`
+      <div
+        class="is_View _mt-200px _mr-200px _mb-200px _ml-200px _tx-927052474 _t-616221249 _bc-1124498088"
+        id="test-id"
+        style="transition: all cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms;"
+      />
     `)
   })
 })
