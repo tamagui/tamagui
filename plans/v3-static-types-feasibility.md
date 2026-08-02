@@ -587,15 +587,16 @@ Two concrete follow-ups, in priority order:
    prototyped above). Users get less autocomplete for using the shorthand the
    docs recommend. It is worth more than anything else in this document and it
    measures free. The earlier veto covered clause subsets only, never this.
-2. **Revised ruling (Nate, 2026-08-01): one modifier level is approved, but
-   only if it covers every fixed prefix family at once.** The original
-   color/space-only `` `${StateModifier}:${Token}` `` proposal was vetoed
-   because it offered `hover:` and nothing else, which is not worth a compile
-   cost. The shape that earns it spans state, media and platform together, so
-   the list that appears is `hover:`, `sm:`, `web:` and their siblings rather
-   than one family.
+2. **Revised ruling (Nate, 2026-08-01): one modifier level was approved only if
+   it covered every fixed prefix family at once.** The original color/space-only
+   `` `${StateModifier}:${Token}` `` proposal was vetoed because it offered
+   `hover:` and nothing else, which is not worth a compile cost. The shape that
+   would earn it spans state, media and platform together, so the list that
+   appears is `hover:`, `sm:`, `web:` and their siblings rather than one family.
+   The real prop-graph control below shows that this type shape does not compile,
+   so it remains unimplemented.
 
-**Measured 2026-08-01, and it is affordable.** Harness committed at
+**Synthetic JSX measurement, 2026-08-01.** Harness committed at
 `scripts/benchmark-flat-value-modifier-types.ts` (TypeScript 5.9.3, Bun 1.3.10,
 1,000 JSX sites, two color props per site, five interleaved checker samples and
 five warmed tsserver samples, sample order alternated). It derives the 130/14/14/7
@@ -607,11 +608,38 @@ vocabularies from live repo sources rather than hardcoding them.
 | fixed 35 (state+media+platform) | 4,680 | 0.20s | 0.40s | 4,680 | 5.45ms |
 | **ratio** | 2.40x | **1.82x** | **1.82x** | | 1.76x |
 
+**This table does not predict Tamagui's real type cost.** Its fixture declares a
+plain function with two props. It contains no `styled()` component, variants,
+compound variants, inherited style props, or `createStyledHOC`. A controlled run
+against `code/tests/v3-canary` at the same `506b41c510` base produced a different
+result. Each arm rebuilt `@tamagui/web`, excluded the type-assertion fixture from
+the timed project, and ran the same TypeScript 5.9.3 command with
+`--extendedDiagnostics`. The two existing `background` longhand errors occurred
+in every arm; TS2590 occurred only after adding modifier clauses.
+
+| real prop-graph arm | color-prop members | Types | Instantiations | check | TS2590 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| bare tokens (control) | 130 | 21,408 | 264,073 | 1.71s | no |
+| state 14 | 1,950 | 30,703 | 267,663 | 10.73s | yes |
+| media + platform 21 | 2,860 | 35,095 | 267,733 | 15.78s | yes |
+| fixed 35 | 4,680 | 43,861 | 267,873 | 26.78s | yes |
+
+The state-only arm is the smallest clause subset that had been proposed. It is
+6.27x slower than the control and fails at
+`src/components/Button.tsx:70` when `createStyledHOC` consumes a styled Button.
+Media plus platform is 9.23x slower and fails at the same site. Fixed 35 is
+15.66x slower and fails there as well. A fixture without a styled component
+cannot discriminate this implementation choice, because styled-component
+inference is where the type becomes unrepresentable. Clause-level token unions
+are therefore not viable in the current public prop graph at any of the proposed
+prefix scopes. Prefix and candidate completion remain language-service work.
+
 Check time grows sublinearly with union size: 2.4x the members costs 1.82x the
 check. Paired per-round medians are 1.82x and 1.86x, so the result does not
-depend on arm ordering. The 35 arm returns `hover:color1`, `sm:color1` and
-`web:color1`; the 14 arm returns only the state entry, which is the difference
-that made this worth doing at all.
+depend on arm ordering inside the isolated fixture. The 35 arm returns
+`hover:color1`, `sm:color1` and `web:color1`; the 14 arm returns only the state
+entry. These remain valid completion measurements, but they do not establish
+that the union can be added to Tamagui's public props.
 
 Two corrections fall out of that run. The exact union is **4,680, not the ~4,875
 estimated above**: 130 bare tokens x 36 bare-or-modified forms. And the
