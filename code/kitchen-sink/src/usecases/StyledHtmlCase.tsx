@@ -126,7 +126,7 @@ export function StyledHtmlCase() {
       <StyledAnchorWithVariants
         data-testid="styled-a-variants"
         href="/internal"
-        size="5"
+        size="large"
         underline={false}
       >
         Large Link No Underline
@@ -135,7 +135,7 @@ export function StyledHtmlCase() {
       <StyledAnchorWithVariants
         data-testid="styled-a-variants-small"
         href="/small"
-        size="3"
+        size="small"
       >
         Small Link With Underline
       </StyledAnchorWithVariants>
