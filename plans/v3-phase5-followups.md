@@ -169,6 +169,26 @@ indentation. From `code/tests/v3-canary/src/CanaryTree.tsx`:
 directories. Running a formatter afterwards is a fine workaround for this repo,
 but a user migrating their own app gets this diff.
 
+## The codemod does not convert token-valued variant props
+
+Found while migrating Button/Select sizing: running the codemod with `--write`
+across the consumer sweep reported **0 sites**. Not zero remaining work, zero
+recognized work. `size` on a `Button` is a variant, not a style prop, and the
+codemod matches style props, so `<Button size="$4">` is invisible to it. Every
+one of those mappings had to be applied by hand.
+
+This matters more than the formatting item above. Ruling 4 makes the codemod the
+whole migration story, and a component library's most common token-valued props
+are variants: `size` on Button, Select, Input, Label, ListItem, and any variant a
+user defines that accepts a token. A migrating app runs the codemod, sees a clean
+report, and still has `$` values throughout its own components.
+
+The honest framing for anyone writing migration docs: the codemod covers style
+props, and variant props are a manual pass. Either teach the codemod the
+component's variant surface (the manifests already declare it) or say so plainly
+in the guide. Reporting `0 sites` while real sites exist is the worst of the
+three options.
+
 ## A missing workspace bin silently runs another repo's CLI
 
 Nine package scripts invoke the CLI as bare `tamagui generate-themes` / `tamagui
