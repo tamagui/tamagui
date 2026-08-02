@@ -57,7 +57,7 @@ function convertedClassName(sourceJSX: string): string {
 // only (media/pseudo-scoped rules are skipped; media is asserted through preprocessing).
 function styleOf(props: Record<string, any>, Comp: any = View): Record<string, any> {
   const s = splitTailwindStyles(Comp, props, { theme: THEME, themeName: 'light' })
-  const out: Record<string, any> = { ...(s.style || {}) }
+  const out: Record<string, any> = { ...s.style }
   for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
     const id = r[StyleObjectIdentifier] || ''
     if (/hover|focus|press|_md|_sm|_lg|_max|:/.test(id)) continue // base props only

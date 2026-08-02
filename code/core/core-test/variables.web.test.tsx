@@ -183,8 +183,8 @@ describe('getVariablesCSSRules', () => {
     expect(
       getVariablesCSSRules(
         {
-        values: { surfaceBorder: 'chained', chained: 'surfaceBorder' },
-        themes: { dark: { chained: 'red' } },
+          values: { surfaceBorder: 'chained', chained: 'surfaceBorder' },
+          themes: { dark: { chained: 'red' } },
         },
         conf
       )
@@ -321,9 +321,7 @@ describe('<Variables>', () => {
       </TamaguiProvider>
     )
 
-    const view = render(
-      make({ themes: { dark: { surfaceBorder: 'rgb(3, 3, 3)' } } })
-    )
+    const view = render(make({ themes: { dark: { surfaceBorder: 'rgb(3, 3, 3)' } } }))
     expect(view.getByTestId('read-restore').textContent).toBe('rgb(3, 3, 3)')
 
     // changing the bucket updates subscribed readers

@@ -52,7 +52,7 @@ function styleFlat(props: Record<string, any>): Record<string, any> {
     theme: (CFG.themes as any).light,
     themeName: 'light',
   })
-  const out: Record<string, any> = { ...(s.style || {}) }
+  const out: Record<string, any> = { ...s.style }
   for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
     const p = r[StyleObjectProperty]
     if (p != null && out[p] === undefined) out[p] = r[StyleObjectValue]

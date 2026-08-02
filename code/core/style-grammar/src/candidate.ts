@@ -268,7 +268,7 @@ function arbitraryBorderKind(value: string): 'width' | 'color' | null {
   if (/^-?(?:\d+|\d*\.\d+)$/.test(value)) return 'width'
   if (cssLengthPattern.test(value) || borderWidthKeywords.has(value)) return 'width'
   if (/^(?:calc|min|max|clamp)\(/.test(value)) return 'width'
-  if (ambiguousCssKeywords.has(value) || /^var\(/.test(value)) return null
+  if (ambiguousCssKeywords.has(value) || value.startsWith('var(')) return null
   if (
     value.startsWith('#') ||
     /^(?:rgb|hsl|hwb|lab|lch|oklab|oklch|color|color-mix|light-dark)\(/.test(value) ||
@@ -524,7 +524,7 @@ function tokenValidationConfig(
   config: GrammarConfigView | undefined
 ): GrammarConfigView {
   const tokenNames: Partial<Record<TokenCategory, Names>> = {
-    ...(config?.tokenNames || {}),
+    ...config?.tokenNames,
   }
   const category = entry.tokenCategory!
   if (tokenNames[category] === undefined) {

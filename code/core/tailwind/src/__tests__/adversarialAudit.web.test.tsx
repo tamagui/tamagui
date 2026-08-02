@@ -21,7 +21,7 @@ beforeAll(() => {
 })
 
 const convert = (s: string, o?: any) =>
-  tamaguiToTailwind(s, { renameComponents: false, ...(o || {}) })
+  tamaguiToTailwind(s, { renameComponents: false, ...o })
 // extract the className and EVALUATE the string literal to its RUNTIME value (@babel/generator
 // escapes backslashes in the emitted code, e.g. `\_` → `\\_`; a bundler un-escapes them at run).
 const classOf = (out: string) => {
@@ -30,7 +30,7 @@ const classOf = (out: string) => {
 }
 function resolved(Comp: any, props: Record<string, any>): Record<string, any> {
   const s = splitTailwindStyles(Comp, props as any)
-  const out: Record<string, any> = { ...(s.style || {}) }
+  const out: Record<string, any> = { ...s.style }
   for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
     const p = r[StyleObjectProperty]
     if (p != null && out[p] === undefined) out[p] = r[StyleObjectValue]

@@ -453,7 +453,7 @@ if (write) {
       sourceFile.getFullText(),
       ScriptTarget.Latest,
       true,
-      /x$/.test(filePath) ? ts.ScriptKind.TSX : ts.ScriptKind.TS
+      filePath.endsWith('x') ? ts.ScriptKind.TSX : ts.ScriptKind.TS
     ) as typeof sourceFile.compilerNode & {
       parseDiagnostics?: readonly ts.Diagnostic[]
     }

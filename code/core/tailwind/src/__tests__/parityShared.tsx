@@ -33,7 +33,7 @@ function convert(sourceJSX: string): string {
 // merged resolved output: style/rules (base props only) + viewProps (pointerEvents, a11y, …)
 function resolved(Comp: any, props: Record<string, any>): Record<string, any> {
   const s = splitTailwindStyles(Comp, props as any)
-  const out: Record<string, any> = { ...(s.style || {}) }
+  const out: Record<string, any> = { ...s.style }
   for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
     const p = r[StyleObjectProperty]
     if (p != null) out[p] = r[StyleObjectValue]

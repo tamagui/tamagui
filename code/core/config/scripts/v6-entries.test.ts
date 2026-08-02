@@ -3,7 +3,10 @@ import { describe, expect, test } from 'bun:test'
 import { createTamagui } from '@tamagui/web'
 import { createV6Config, tokens as baseTokens } from '../src/v6-base'
 import { createTailwindThemes, tailwindPalettes } from '../src/v6-builder'
-import { colors as classicColors, defaultConfig as classicConfig } from '../src/v6-classic'
+import {
+  colors as classicColors,
+  defaultConfig as classicConfig,
+} from '../src/v6-classic'
 import { colors as tailwindColorsPack, defaultConfig as tailwindConfig } from '../src/v6'
 
 describe('v6 config split: aligned base, swappable colors', () => {
@@ -53,7 +56,10 @@ describe('v6 config split: aligned base, swappable colors', () => {
   test('every palette entry produces a working createTamagui config', () => {
     const custom = createV6Config({
       themes: createTailwindThemes({
-        childrenThemes: { blue: tailwindPalettes.blue, emerald: tailwindPalettes.emerald },
+        childrenThemes: {
+          blue: tailwindPalettes.blue,
+          emerald: tailwindPalettes.emerald,
+        },
       }),
       colorTokens: { brand: '#ff6600' },
     })

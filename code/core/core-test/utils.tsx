@@ -31,7 +31,7 @@ export function simplifiedGetSplitStyles(
           next[key] = true
           return next
         }, {}),
-        ...(context.props || {}),
+        ...context.props,
       }
     : context?.props
   // optionally merge in default/context props like createComponent does

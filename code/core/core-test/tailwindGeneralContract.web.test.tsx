@@ -11,7 +11,7 @@ import { defaultMediaKeys } from '@tamagui/style-grammar'
 
 const cls = (out: string) => (/className="([^"]*)"/.exec(out) || [, ''])[1]
 const convert = (s: string, o?: any) =>
-  cls(tamaguiToTailwind(s, { renameComponents: false, ...(o || {}) }))
+  cls(tamaguiToTailwind(s, { renameComponents: false, ...o }))
 
 describe('media default keys parity — fallback set covers the canonical config media', () => {
   test('every @tamagui/config v6 media key is in defaultMediaKeys (no silent drop)', () => {

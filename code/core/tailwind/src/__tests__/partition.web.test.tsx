@@ -76,7 +76,7 @@ describe('precedence — same-key className and props retain authored order', ()
 
   test('the later contribution wins in both attribute orders', () => {
     const findPad = (s: any) => {
-      const merged: Record<string, any> = { ...(s.style || {}) }
+      const merged: Record<string, any> = { ...s.style }
       for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
         const p = r[StyleObjectProperty]
         if (p === 'paddingTop' && merged.paddingTop === undefined)
