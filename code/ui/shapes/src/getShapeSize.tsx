@@ -7,8 +7,14 @@ export const getShapeSize: SizeVariantSpreadFunction<YStackProps> = (
   { tokens }
 ) => {
   const sizeToken = resolveDefaultSizeToken(size)
-  const width = tokens.size[sizeToken] ?? sizeToken
-  const height = tokens.size[sizeToken] ?? sizeToken
+  // a numeric size is a literal pixel value, never a token index. the size
+  // scale is keyed by numeric-looking strings ('60'), so indexing it with a
+  // number silently turns <Square size={60} /> into that token's value.
+  // resolveTokenSize in @tamagui/size draws the same line.
+  const resolved =
+    typeof sizeToken === 'number' ? sizeToken : (tokens.size[sizeToken] ?? sizeToken)
+  const width = resolved
+  const height = resolved
   return {
     width,
     height,

@@ -15,6 +15,9 @@ export const getElevation: SizeVariantSpreadFunction<ViewProps> = (size, extras)
   if (!size) return
   const { tokens } = extras
   const sizeToken = resolveDefaultSizeToken(size)
+  // elevation={10} means 10px, not size token '10'. the size scale is keyed by
+  // numeric-looking strings, so only a non-numeric token may be looked up.
+  if (typeof sizeToken === 'number') return getSizedElevation(sizeToken, extras)
   const token = tokens.size[sizeToken]
   const sizeNum = (isVariable(token) ? +token.val : size) as number
   return getSizedElevation(sizeNum, extras)
