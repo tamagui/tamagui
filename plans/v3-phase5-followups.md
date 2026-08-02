@@ -126,16 +126,15 @@ branch.
    final x drift exceeds the 20px threshold: 34.75px at the branch tip, 33.3px
    at baseline. Fails both places, so the threshold is the thing to revisit.
 
-### Resolved load-dependent test metric
+### Not pre-existing, not a regression either
 
-**kitchen-sink reanimated `TooltipToolbarRow` fast-sweep** failed only when
-Playwright projects ran concurrently. The test compared displacement between
-consecutive `requestAnimationFrame` samples, so a delayed callback under load
-was indistinguishable from a teleport. The recorder now keeps each sample's
-timestamp and preserves the original 150px-per-60Hz-frame boundary as velocity.
-A synthetic 151px single-frame teleport is the negative control. Three projects
-passed 30/30 across five repeats, then 18/18 across three repeats while 12 CPU
-burners deliberately delayed the browser.
+**kitchen-sink reanimated `TooltipToolbarRow` fast-sweep** fails only when three
+Playwright projects run concurrently. It was checked against baseline but the
+failure could not be reproduced there, and a focused repeat passes 10/10 at the
+tip and 10/10 at baseline. That is a load-dependent flake, and it is recorded
+that way deliberately: "could not reproduce it either way" is a different claim
+from "reproduced it at baseline", and flattening the two is how a flake becomes
+a fact.
 
 ### Final kitchen-sink state
 

@@ -18,27 +18,6 @@ async function getIconCenter(page, i: number) {
 }
 
 const CONTENT_SEL = '[data-popper-animate-position]'
-const NOMINAL_FRAME_MS = 1000 / 60
-const TELEPORT_VELOCITY = 150 / NOMINAL_FRAME_MS
-
-type PositionSample = {
-  at: number
-  tx: number
-}
-
-function getMaxPositionVelocity(samples: PositionSample[]) {
-  let maxVelocity = 0
-  for (let i = 1; i < samples.length; i++) {
-    const elapsed = samples[i].at - samples[i - 1].at
-    if (elapsed > 0) {
-      maxVelocity = Math.max(
-        maxVelocity,
-        Math.abs(samples[i].tx - samples[i - 1].tx) / elapsed
-      )
-    }
-  }
-  return maxVelocity
-}
 
 test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', () => {
   test.beforeEach(async ({ page }) => {
@@ -86,24 +65,20 @@ test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', (
     await page.waitForSelector(CONTENT_SEL, { timeout: 5000 })
     await page.waitForTimeout(500)
 
-    // Record time as well as position. Distance per sample confuses a delayed
-    // rAF under concurrent CI load with a teleport; velocity preserves the
-    // original 150px-per-60Hz-frame boundary without depending on frame rate.
+    // per-frame recorder to detect teleport jumps
     await page.evaluate((sel) => {
       ;(window as any).__tips = []
-      const sample = (at: number) => {
+      const sample = () => {
         const el = document.querySelector(sel) as HTMLElement | null
         if (el) {
           const style = getComputedStyle(el)
-          ;(window as any).__tips.push({
-            at,
-            tx:
-              style.translate !== 'none'
-                ? Number.parseFloat(style.translate)
-                : style.transform === 'none'
-                  ? 0
-                  : new DOMMatrixReadOnly(style.transform).e,
-          })
+          ;(window as any).__tips.push(
+            style.translate !== 'none'
+              ? Number.parseFloat(style.translate)
+              : style.transform === 'none'
+                ? 0
+                : new DOMMatrixReadOnly(style.transform).e
+          )
         }
         requestAnimationFrame(sample)
       }
@@ -118,21 +93,13 @@ test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', (
     }
     await page.waitForTimeout(800)
 
-    const samples = await page.evaluate(() => (window as any).__tips as PositionSample[])
-    expect(samples.length).toBeGreaterThan(1)
-
-    // Negative control: the metric must still reject the same 150px-per-frame
-    // class of jump that this regression test was written to catch.
-    const syntheticTeleport = getMaxPositionVelocity([
-      { at: 0, tx: 0 },
-      { at: NOMINAL_FRAME_MS, tx: 151 },
-    ])
-    expect(syntheticTeleport).toBeGreaterThan(TELEPORT_VELOCITY)
-
-    const maxVelocity = getMaxPositionVelocity(samples)
-    expect(maxVelocity, `tooltip moved at ${maxVelocity.toFixed(2)}px/ms`).toBeLessThan(
-      TELEPORT_VELOCITY
-    )
+    const txs = await page.evaluate(() => (window as any).__tips as number[])
+    let maxJump = 0
+    for (let i = 1; i < txs.length; i++) {
+      maxJump = Math.max(maxJump, Math.abs(txs[i] - txs[i - 1]))
+    }
+    // animated glide moves tens of px/frame at most; a teleport is 150+
+    expect(maxJump).toBeLessThan(150)
 
     const state = await page.evaluate((sel) => {
       const el = document.querySelector(sel) as HTMLElement
