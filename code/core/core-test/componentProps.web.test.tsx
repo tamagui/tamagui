@@ -17,6 +17,12 @@ describe('animation props', () => {
     expect(tree.asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <span
+          aria-hidden="true"
+          data-tamagui-config-revision="1346665106"
+          data-tamagui-config-revision-parts="{"media":"2088666861","themeNames":"801574318","themeVariables":"559364601","tokens":"200528947","fonts":"301787118","shorthands":"2146910233"}"
+          hidden=""
+        />
+        <span
           class="t_light _dsp_contents"
         >
           <span
