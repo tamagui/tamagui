@@ -6,25 +6,23 @@ import { TEST_IDS } from '../src/constants/test-ids'
 /**
  * Tests for GitHub issue #3673: Nested theme regression
  *
- * When using nested themes like <Theme name="blue"><Theme name="surface3">,
+ * When using nested themes like <Theme name="blue"><Theme name="surface2">,
  * the parent color context (blue) should be preserved, resulting in
- * light_blue_surface3 theme being applied.
+ * light_blue_surface2 theme being applied.
  *
  * The bug causes the nested theme to lose the color context, resulting in
- * just light_surface3 being applied instead.
+ * just light_surface2 being applied instead.
  */
 
 test.beforeEach(async ({ page }) => {
   // Test the nested theme regression (issue #3673)
-  // Use v4 themes as the bug specifically occurs with @tamagui/themes/v4
   await setupPage(page, {
     name: 'ThemeNested',
     type: 'useCase',
-    searchParams: { v4theme: 'true' },
   })
 })
 
-test('Nested blue theme with surface3 matches direct light_blue_surface3', async ({
+test('Nested blue theme with surface2 matches direct light_blue_surface2', async ({
   page,
 }) => {
   // Get the direct theme element
@@ -40,11 +38,11 @@ test('Nested blue theme with surface3 matches direct light_blue_surface3', async
   const nestedStyles = await getStyles(nestedSquare)
 
   // The nested theme should produce the same background color as the direct theme
-  // If the bug is present, nestedStyles will have light_surface3 colors instead of light_blue_surface3
+  // If the bug is present, nestedStyles will have light_surface2 colors instead of light_blue_surface2
   expect(nestedStyles.backgroundColor).toBe(directStyles.backgroundColor)
 })
 
-test('Nested light → blue → surface3 matches direct light_blue_surface3', async ({
+test('Nested light → blue → surface2 matches direct light_blue_surface2', async ({
   page,
 }) => {
   // Get the direct theme element
@@ -63,7 +61,7 @@ test('Nested light → blue → surface3 matches direct light_blue_surface3', as
   expect(nestedStyles.backgroundColor).toBe(directStyles.backgroundColor)
 })
 
-test('Nested red theme with surface3 matches direct light_red_surface3', async ({
+test('Nested red theme with surface2 matches direct light_red_surface2', async ({
   page,
 }) => {
   // Get the direct red theme element
@@ -82,12 +80,12 @@ test('Nested red theme with surface3 matches direct light_red_surface3', async (
   expect(redNestedStyles.backgroundColor).toBe(redDirectStyles.backgroundColor)
 })
 
-test('Blue surface3 differs from colorless surface3', async ({ page }) => {
+test('Blue surface2 differs from colorless surface2', async ({ page }) => {
   // Get the blue nested theme
   const blueNestedSquare = page.locator(`#${TEST_IDS.nestedThemeNested}`)
   await expect(blueNestedSquare).toBeVisible()
 
-  // Get the colorless surface3 theme
+  // Get the colorless surface2 theme
   const noColorSquare = page.locator(`#${TEST_IDS.nestedThemeNoColor}`)
   await expect(noColorSquare).toBeVisible()
 
@@ -95,12 +93,12 @@ test('Blue surface3 differs from colorless surface3', async ({ page }) => {
   const blueStyles = await getStyles(blueNestedSquare)
   const noColorStyles = await getStyles(noColorSquare)
 
-  // The blue surface3 should have a different background than the colorless surface3
+  // The blue surface2 should have a different background than the colorless surface2
   // This verifies that color context actually makes a difference
   expect(blueStyles.backgroundColor).not.toBe(noColorStyles.backgroundColor)
 })
 
-test('Blue surface3 differs from red surface3', async ({ page }) => {
+test('Blue surface2 differs from red surface2', async ({ page }) => {
   // Get the blue nested theme
   const blueNestedSquare = page.locator(`#${TEST_IDS.nestedThemeNested}`)
   await expect(blueNestedSquare).toBeVisible()
@@ -117,17 +115,17 @@ test('Blue surface3 differs from red surface3', async ({ page }) => {
   expect(blueStyles.backgroundColor).not.toBe(redStyles.backgroundColor)
 })
 
-test('Nested blue → surface1 → surface3 preserves blue color context', async ({
+test('Nested blue → surface1 → surface2 preserves blue color context', async ({
   page,
 }) => {
   // This is the exact reproduction case from issue #3673
-  // Using surface3 theme inside a surface1 theme should preserve the blue color context
+  // Using surface2 theme inside a surface1 theme should preserve the blue color context
 
-  // Get the direct blue_surface3 element
+  // Get the direct blue_surface2 element
   const directSquare = page.locator(`#${TEST_IDS.nestedSurface1To3Direct}`)
   await expect(directSquare).toBeVisible()
 
-  // Get the nested blue → surface1 → surface3 element
+  // Get the nested blue → surface1 → surface2 element
   const nestedSquare = page.locator(`#${TEST_IDS.nestedSurface1To3Nested}`)
   await expect(nestedSquare).toBeVisible()
 
@@ -136,6 +134,6 @@ test('Nested blue → surface1 → surface3 preserves blue color context', async
   const nestedStyles = await getStyles(nestedSquare)
 
   // The nested theme should produce the same background color as the direct theme
-  // If the bug is present, nestedStyles will have light_surface3 colors instead of light_blue_surface3
+  // If the bug is present, nestedStyles will have light_surface2 colors instead of light_blue_surface2
   expect(nestedStyles.backgroundColor).toBe(directStyles.backgroundColor)
 })

@@ -448,10 +448,6 @@ export type FontLanguageProps = LanguageContextType & {
 export type ThemeProviderProps = {
   className?: string
   defaultTheme: string | null | undefined
-  /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
-  disableRootThemeClass?: boolean
-  /** @deprecated moved to createTamagui({ settings: { themeClassNameOnRoot } }) */
-  themeClassNameOnRoot?: boolean
   children?: any
   reset?: boolean
 }
@@ -2697,6 +2693,9 @@ export interface TextNonStyleProps
       | RNOnlyProps
       | keyof ExtendBaseTextProps
       | 'style'
+      // web-standard `userSelect` is the one authoring name; core maps it to
+      // RN's `selectable` prop on native
+      | 'selectable'
     >,
     ExtendBaseTextProps,
     TamaguiComponentPropsBase {
@@ -3327,8 +3326,6 @@ export type SplitStyleProps = {
   willBeAnimated?: boolean // we need to track media queries even before animation
   isAnimated: boolean
   isExiting?: boolean
-  exitVariant?: string
-  enterVariant?: string
 }
 
 // Presence
@@ -3340,9 +3337,6 @@ export interface PresenceContextProps {
   onExitComplete?: (id: string) => void
   initial?: false | string | string[]
   custom?: any
-  exitVariant?: string | null
-  enterVariant?: string | null
-  enterExitVariant?: string | null
 }
 
 type SafeToRemoveCallback = () => void

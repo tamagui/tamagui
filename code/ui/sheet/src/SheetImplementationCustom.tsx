@@ -59,9 +59,6 @@ import { useSheetProviderProps } from './useSheetProviderProps'
 
 const hiddenSize = 10_000.1
 
-// dev-only: warn once about the deprecated disableTransparencyHide alias
-let warnedDisableTransparencyHide = false
-
 // the re-established rngh root for a modal sheet (see modal branch below).
 // GestureHandlerRootView does its own native touch interception and ignores
 // pointerEvents, so it would block the whole app while the sheet sits closed
@@ -114,28 +111,11 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
       unmountChildrenWhenHidden = false,
-      disableHideWhenClosed: disableHideWhenClosedProp,
-      disableTransparencyHide,
+      disableHideWhenClosed = false,
       portalProps,
       containerComponent: ContainerComponent = React.Fragment,
       onTransition,
     } = props
-
-    // disableTransparencyHide shipped in stable 2.4.x; it is now an alias for
-    // disableHideWhenClosed (v3 hides the closed wrapper with display:none, not
-    // opacity). warn once in dev and map it through.
-    if (
-      process.env.NODE_ENV === 'development' &&
-      disableTransparencyHide !== undefined &&
-      !warnedDisableTransparencyHide
-    ) {
-      warnedDisableTransparencyHide = true
-      console.warn(
-        '⚠️ Sheet `disableTransparencyHide` is deprecated, use `disableHideWhenClosed` instead.'
-      )
-    }
-    const disableHideWhenClosed =
-      disableHideWhenClosedProp ?? disableTransparencyHide ?? false
 
     const state = useSheetOpenState(props)
 

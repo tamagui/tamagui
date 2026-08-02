@@ -9,8 +9,6 @@ export const isBrowser: boolean =
 
 export const isServer: boolean = isWeb && !isBrowser
 export const isClient: boolean = isWeb && isBrowser
-/** @deprecated use isBrowser instead */
-export const isWindowDefined: boolean = isBrowser
 
 export const useIsomorphicLayoutEffect: typeof useEffect = isServer
   ? useEffect

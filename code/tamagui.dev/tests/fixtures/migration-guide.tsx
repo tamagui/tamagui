@@ -127,11 +127,11 @@ export const SelectForm = () => (
         <Select.Viewport>
           <Select.Group>
             <Select.Label>Fruit</Select.Label>
-            <Select.Item index={0} value="apple">
+            <Select.Item value="apple">
               <Select.ItemText>Apple</Select.ItemText>
             </Select.Item>
             <Select.Separator />
-            <Select.Item index={1} value="orange">
+            <Select.Item value="orange">
               <Select.ItemText>Orange</Select.ItemText>
             </Select.Item>
           </Select.Group>

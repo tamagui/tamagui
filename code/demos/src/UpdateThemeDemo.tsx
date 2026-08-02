@@ -36,8 +36,8 @@ export function UpdateThemeDemo() {
 
       <Button
         onPress={() => {
-          // read the app's own palette rather than importing a config: pulling in
-          // @tamagui/config/v3 here dragged the legacy color graph into every
+          // read the app's own palette rather than importing a config: pulling a
+          // config entry in here dragged its whole color graph into every
           // consumer of this demo
           const colors = getTokens().color
           const colorKeys = Object.keys(colors)

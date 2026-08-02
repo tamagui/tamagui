@@ -68,15 +68,9 @@ export const StepBaseThemes = (_props: StepBaseThemesProps) => {
                     minW={80}
                     borderWidth={0}
                   >
-                    <SelectItem value="off" index={0}>
-                      Off
-                    </SelectItem>
-                    <SelectItem value="inverse" index={1}>
-                      Inverse
-                    </SelectItem>
-                    <SelectItem value="color" index={2}>
-                      Color
-                    </SelectItem>
+                    <SelectItem value="off">Off</SelectItem>
+                    <SelectItem value="inverse">Inverse</SelectItem>
+                    <SelectItem value="color">Color</SelectItem>
                   </Select>
                 )}
               </XStack>
@@ -768,7 +762,7 @@ const PaletteColor = memo(
           justify="center"
         >
           <SizableText
-            selectable={false}
+            userSelect="none"
             color={`${index > 4 ? 'background' : 'color'}`}
             scale={size === 'small' ? 0.8 : 1}
             size="1"

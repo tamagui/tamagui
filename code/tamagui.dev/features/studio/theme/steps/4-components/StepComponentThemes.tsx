@@ -81,7 +81,7 @@ const SelectComponentTheme = () => {
     <XStack items="center" gap="3">
       <Label fontFamily="mono">Theme:</Label>
       <Select size="3" value="ok" width={200}>
-        <Select.Item index={0} value="" />
+        <Select.Item value="" />
       </Select>
     </XStack>
   )
@@ -197,11 +197,9 @@ const SelectParentTheme = () => {
           store.componentParentTheme = val
         }}
       >
-        <Select.Item index={0} value="base">
-          Light/Dark
-        </Select.Item>
+        <Select.Item value="base">Light/Dark</Select.Item>
 
-        <Select.Item index={1} value="accent" disabled={!store.baseTheme.accent}>
+        <Select.Item value="accent" disabled={!store.baseTheme.accent}>
           Accent
         </Select.Item>
       </Select>

@@ -189,7 +189,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
         setTheme(next as any)
       }}
     >
-      <TamaguiProvider config={tamaguiConfig} disableRootThemeClass defaultTheme={theme}>
+      <TamaguiProvider config={tamaguiConfig} defaultTheme={theme}>
         {children}
       </TamaguiProvider>
     </NextThemeProvider>
@@ -452,7 +452,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NextThemeProvider>
-        <TamaguiProvider config={tamaguiConfig} disableInjectCSS disableRootThemeClass>
+        <TamaguiProvider config={tamaguiConfig} disableInjectCSS>
           {contents}
         </TamaguiProvider>
       </NextThemeProvider>
@@ -519,7 +519,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <TamaguiProvider
           config={tamaguiConfig}
           disableInjectCSS
-          disableRootThemeClass
           defaultTheme={theme}
         >
           {contents}
@@ -665,7 +664,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <NextThemeProvider skipNextHead>
-      <TamaguiProvider config={tamaguiConfig} disableRootThemeClass>
+      <TamaguiProvider config={tamaguiConfig}>
         {children}
       </TamaguiProvider>
     </NextThemeProvider>
@@ -767,7 +766,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
         setTheme(next as any)
       }}
     >
-      <TamaguiProvider config={tamaguiConfig} disableRootThemeClass defaultTheme={theme}>
+      <TamaguiProvider config={tamaguiConfig} defaultTheme={theme}>
         {children}
       </TamaguiProvider>
     </NextThemeProvider>

@@ -38,9 +38,6 @@ export const AnimatePresence: FunctionComponent<
   PropsWithChildren<AnimatePresenceProps>
 > = ({
   children,
-  enterVariant,
-  exitVariant,
-  enterExitVariant,
   initial = true,
   onExitComplete,
   mode = 'sync',
@@ -199,9 +196,6 @@ export const AnimatePresence: FunctionComponent<
             initial={!isInitialRender.current || initial ? undefined : false}
             custom={isPresent ? custom : (frozenCustomRef.current.get(key) ?? custom)}
             presenceAffectsLayout={presenceAffectsLayout}
-            enterExitVariant={enterExitVariant}
-            enterVariant={enterVariant}
-            exitVariant={exitVariant}
             onExitComplete={isPresent ? undefined : onExit}
           >
             {child}

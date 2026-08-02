@@ -67,11 +67,6 @@ export type SheetProps = SheetScopedProps<{
   disableHideWhenClosed?: boolean
 
   /**
-   * @deprecated use `disableHideWhenClosed` instead.
-   */
-  disableTransparencyHide?: boolean
-
-  /**
    * Adapts the sheet to use native sheet on the given platform (if available)
    * The iOS system sheet does not expose continuous position, so
    * `Sheet.useAnimatedPosition` and `onTransition` are unavailable in this mode.

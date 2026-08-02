@@ -1,5 +1,5 @@
 import { createPalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
-import type { BuildThemeSuiteProps } from '@tamagui/themes'
+import type { BuildThemeSuiteProps } from '@tamagui/theme-builder'
 
 type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
   includeComponentThemes: boolean

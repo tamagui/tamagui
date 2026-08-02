@@ -25,7 +25,7 @@ const generateColorConfig = (input: ColorsStore) => {
 export const generateOutput = (globalStore: ReturnType<typeof useGlobalState>) => {
   const animations = globalStore.animations.draftAnimations
 
-  return `import { config as baseConfig } from '@tamagui/config/v3'
+  return `import { defaultConfig as baseConfig } from '@tamagui/config/v5'
 import { createTamagui } from 'tamagui'
 import { createAnimations } from '@tamagui/animations-react-native'
 

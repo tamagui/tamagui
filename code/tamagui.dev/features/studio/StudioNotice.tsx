@@ -76,9 +76,6 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
   const paginate = (newDirection: number) => {
     setPage([page + newDirection, newDirection])
   }
-  const enterVariant = direction === 1 || direction === 0 ? 'isRight' : 'isLeft'
-  const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
-
   return (
     <Panel
       icon={<Lightbulb size="1" color="color7" />}
@@ -115,13 +112,10 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
       ) : steps ? (
         <YStack flex={1} overflow="hidden" mx="-4" my="-2">
           <ScrollViewWithFade showsVerticalScrollIndicator={false}>
-            <AnimatePresence
-              initial={false}
-              enterVariant={enterVariant}
-              exitVariant={exitVariant}
-            >
+            <AnimatePresence initial={false} custom={{ going: direction }}>
               <YStackEnterable
                 key={page}
+                going={direction}
                 transition="quicker"
                 gap="3"
                 position="absolute"
@@ -311,8 +305,13 @@ const wrap = (min: number, max: number, v: number) => {
 
 const YStackEnterable = styled(YStack, {
   variants: {
-    isLeft: { true: { x: -30, opacity: 0 } },
-    isRight: { true: { x: 30, opacity: 0 } },
+    // 1 = paginated forward, -1 = back, 0 = first render
+    going: {
+      number: (going: number) => ({
+        x: `0 enter:${going >= 0 ? '30px' : '-30px'} exit:${going > 0 ? '-30px' : '30px'}`,
+        opacity: '1 enter:0 exit:0',
+      }),
+    },
   } as const,
 })
 
