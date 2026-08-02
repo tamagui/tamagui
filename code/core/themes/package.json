@@ -8,17 +8,8 @@
     "src",
     "types",
     "dist",
-    "v3",
-    "v3-themes",
-    "v4",
     "v5",
     "v5-subtle",
-    "v3.cjs",
-    "v3.d.ts",
-    "v3-themes.cjs",
-    "v3-themes.d.ts",
-    "v4.cjs",
-    "v4.d.ts",
     "v5.cjs",
     "v5.d.ts",
     "v5-subtle.cjs",
@@ -26,47 +17,8 @@
     "v5-tokens.cjs",
     "v5-tokens.d.ts"
   ],
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
-    ".": {
-      "types": "./types/index.d.ts",
-      "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/esm/index.mjs"
-    },
-    "./v3": {
-      "types": "./types/v3.d.ts",
-      "react-native": "./dist/esm/v3.native.js",
-      "browser": "./dist/esm/v3.mjs",
-      "module": "./dist/esm/v3.mjs",
-      "import": "./dist/esm/v3.mjs",
-      "require": "./dist/cjs/v3.cjs",
-      "default": "./dist/esm/v3.mjs"
-    },
-    "./v3-themes": {
-      "types": "./types/v3-themes.d.ts",
-      "react-native": "./dist/esm/v3-themes.native.js",
-      "browser": "./dist/esm/v3-themes.mjs",
-      "module": "./dist/esm/v3-themes.mjs",
-      "import": "./dist/esm/v3-themes.mjs",
-      "require": "./dist/cjs/v3-themes.cjs",
-      "default": "./dist/esm/v3-themes.mjs"
-    },
-    "./v4": {
-      "types": "./types/v4.d.ts",
-      "react-native": "./dist/esm/v4.native.js",
-      "browser": "./dist/esm/v4.mjs",
-      "module": "./dist/esm/v4.mjs",
-      "import": "./dist/esm/v4.mjs",
-      "require": "./dist/cjs/v4.cjs",
-      "default": "./dist/esm/v4.mjs"
-    },
     "./v5": {
       "types": "./types/v5.d.ts",
       "react-native": "./dist/esm/v5.native.js",
@@ -120,9 +72,6 @@
     "generate": "bun run generate:v5 & bun run generate:v5-subtle",
     "generate:v5": "tamagui generate-themes ./src/v5-themes.generate.ts ./src/generated-v5.ts",
     "generate:v5-subtle": "tamagui generate-themes ./src/v5-themes-subtle.generate.ts ./src/generated-v5-subtle.ts",
-    "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
-    "generate:v4": "tamagui generate-themes ./src/v4-default.ts ./src/generated-v4.ts",
-    "generate:v4-tamagui": "tamagui generate-themes ./src/v4-tamagui.ts ./src/generated-v4-tamagui.ts",
     "test": "bun run generate",
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -131,10 +80,7 @@
   },
   "dependencies": {
     "@tamagui/colors": "workspace:*",
-    "@tamagui/create-theme": "workspace:*",
-    "@tamagui/theme-builder": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "color2k": "^2.0.2"
+    "@tamagui/theme-builder": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
