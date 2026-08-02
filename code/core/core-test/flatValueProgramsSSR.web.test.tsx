@@ -42,6 +42,18 @@ afterEach(() => {
 })
 
 describe('flat value program SSR', () => {
+  test('does not ship config revision diagnostics in production', () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    const productionConfig = createTamagui(config.getDefaultTamaguiConfig() as any)
+    const html = renderToString(
+      <TamaguiProvider config={productionConfig} defaultTheme="light" disableInjectCSS>
+        <div>production content</div>
+      </TamaguiProvider>
+    )
+
+    expect(html).not.toContain('data-tamagui-config-revision')
+  })
+
   test('names the config inputs that differ between server and hydration', async () => {
     const base = config.getDefaultTamaguiConfig() as any
     const serverConfig = createTamagui({

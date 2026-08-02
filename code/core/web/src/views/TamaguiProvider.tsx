@@ -92,9 +92,9 @@ export function TamaguiProvider({
         </style>
       )}
 
-      {process.env.TAMAGUI_TARGET !== 'native' && config && (
-        <ConfigRevisionCheck config={config} />
-      )}
+      {process.env.NODE_ENV !== 'production' &&
+        process.env.TAMAGUI_TARGET !== 'native' &&
+        config && <ConfigRevisionCheck config={config} />}
       {hasSafeAreaTracker() && <SafeAreaTracker />}
       {contents}
     </>
