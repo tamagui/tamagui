@@ -163,12 +163,12 @@ source, same as any skin.
 - `Surface` is a copy-paste panel primitive;
 - custom knobs go in `config.variables`.
 
-## Explicitly deferred
+## Relative levels follow-up
 
-**Relative levels** (`level="+1"` compounding under nesting). Real new
-concept: theme resolution is absolute today; nesting `surface2` inside
-`surface2` does not compound. Absolute named levels cover the app cases seen
-so far. Revisit post-beta only with a concrete consumer.
+The brand landing-page footer and its nested Button now provide the concrete
+consumer that was missing here. `plans/v3-composable-theme-levels.md` defines
+the accepted relative composition model using finite `level2`, `level3`, and
+`level4` theme aliases.
 
 ## Execution (if accepted)
 
