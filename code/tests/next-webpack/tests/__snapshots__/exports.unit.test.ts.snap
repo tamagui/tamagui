@@ -28,15 +28,15 @@ import { useLink } from 'solito/navigation'
 
 export function SelectDemo() {
   return (
-    <__TamaguiNativeView style={{"flexDirection":"column","rowGap":18,"columnGap":18}}>
-      <__TamaguiNativeView style={{"flexDirection":"row","width":"100%","alignItems":"center","rowGap":18,"columnGap":18}}  >
+    <__TamaguiNativeView style={__TamaguiNativeStyle658._ ?? __TamaguiNativeStyle658()}>
+      <__TamaguiNativeView style={__TamaguiNativeStyle681._ ?? __TamaguiNativeStyle681()}  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </__TamaguiNativeView>
 
-      <__TamaguiNativeView style={{"flexDirection":"row","width":"100%","alignItems":"center","rowGap":18,"columnGap":18}}  >
+      <__TamaguiNativeView style={__TamaguiNativeStyle890._ ?? __TamaguiNativeStyle890()}  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
@@ -87,7 +87,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <__TamaguiNativeView style={{"zIndex":10,"flexDirection":"column"}}>
+          <__TamaguiNativeView style={__TamaguiNativeStyle2277._ ?? __TamaguiNativeStyle2277()}>
             <ChevronUp size={20} />
           </__TamaguiNativeView>
           <LinearGradient
@@ -132,7 +132,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <__TamaguiNativeView
-              style={{"right":0,"top":0,"bottom":0,"flexDirection":"column","position":"absolute","alignItems":"center","justifyContent":"center","width":44,"pointerEvents":"none"}}
+              style={__TamaguiNativeStyle3703._ ?? __TamaguiNativeStyle3703()}
 
 
 
@@ -153,7 +153,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <__TamaguiNativeView style={{"zIndex":10,"flexDirection":"column"}}>
+          <__TamaguiNativeView style={__TamaguiNativeStyle4269._ ?? __TamaguiNativeStyle4269()}>
             <ChevronDown size={20} />
           </__TamaguiNativeView>
           <LinearGradient
@@ -201,7 +201,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   })
 
   return (
-    <__TamaguiNativeView style={{"flex":1,"flexDirection":"column","justifyContent":"center","alignItems":"center","rowGap":46,"columnGap":46,"paddingTop":18,"paddingRight":18,"paddingBottom":18,"paddingLeft":18,"backgroundColor":"hsla(0, 0%, 8%, 1)"}}     >
+    <__TamaguiNativeView style={__TamaguiNativeStyle5363._ ?? __TamaguiNativeStyle5363()}     >
       <XStack
         position="absolute sm:relative"
         width="100%"
@@ -220,7 +220,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 
       <SelectDemo />
 
-      <__TamaguiNativeView style={{"flexDirection":"row","rowGap":7,"columnGap":7}}>
+      <__TamaguiNativeView style={__TamaguiNativeStyle5822._ ?? __TamaguiNativeStyle5822()}>
         <Button
           size="3"
           iconAfter={
@@ -232,18 +232,18 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
           <Button.Text>Inverse</Button.Text>
         </Button>
       </__TamaguiNativeView>
-      <__TamaguiNativeView style={{"flexDirection":"column","rowGap":18,"columnGap":18}}>
-        <__TamaguiNativeText style={{"letterSpacing":-3,"fontSize":46,"lineHeight":56,"marginTop":0,"marginRight":0,"marginBottom":0,"marginLeft":0,"textTransform":"none","fontFamily":"InterBold","textAlign":"center","color":"hsla(0, 0%, 100%, 1)"}} >
+      <__TamaguiNativeView style={__TamaguiNativeStyle6083._ ?? __TamaguiNativeStyle6083()}>
+        <__TamaguiNativeText style={__TamaguiNativeStyle6108._ ?? __TamaguiNativeStyle6108()} >
           Welcome to Tamagui.
         </__TamaguiNativeText>
-        <__TamaguiNativeText style={{"letterSpacing":0,"fontSize":15,"lineHeight":27,"fontFamily":"Inter","color":"hsla(0, 0%, 67%, 1)","textAlign":"center"}} >
+        <__TamaguiNativeText style={__TamaguiNativeStyle6195._ ?? __TamaguiNativeStyle6195()} >
           Here's a basic starter to show navigating from one screen to another.
         </__TamaguiNativeText>
-        <__TamaguiNativeView style={{"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderTopColor":"background-focus","borderRightColor":"background-focus","borderBottomColor":"background-focus","borderLeftColor":"background-focus","transform":[{"translateY":-0.5}],"borderStyle":"solid"}} />
-        <__TamaguiNativeText style={{"letterSpacing":0,"fontSize":15,"lineHeight":27,"fontFamily":"Inter","color":"hsla(0, 0%, 100%, 1)","textAlign":"center"}}>
+        <__TamaguiNativeView style={__TamaguiNativeStyle6346._ ?? __TamaguiNativeStyle6346()} />
+        <__TamaguiNativeText style={__TamaguiNativeStyle6368._ ?? __TamaguiNativeStyle6368()}>
           This screen uses the same code on Next.js and React Native.
         </__TamaguiNativeText>
-        <__TamaguiNativeView style={{"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderTopColor":"background-focus","borderRightColor":"background-focus","borderBottomColor":"background-focus","borderLeftColor":"background-focus","transform":[{"translateY":-0.5}],"borderStyle":"solid"}} />
+        <__TamaguiNativeView style={__TamaguiNativeStyle6493._ ?? __TamaguiNativeStyle6493()} />
       </__TamaguiNativeView>
 
       <Button {...linkProps} theme={'dark'}>
@@ -281,8 +281,8 @@ function SheetDemo() {
         <Sheet.Handle bg="color8" />
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
-          <__TamaguiNativeView style={{"flexDirection":"row","rowGap":7,"columnGap":7}}>
-            <__TamaguiNativeText style={{"letterSpacing":0,"fontSize":15,"lineHeight":27,"fontFamily":"Inter","color":"hsla(0, 0%, 100%, 1)","textAlign":"center"}}>Made by</__TamaguiNativeText>
+          <__TamaguiNativeView style={__TamaguiNativeStyle7400._ ?? __TamaguiNativeStyle7400()}>
+            <__TamaguiNativeText style={__TamaguiNativeStyle7429._ ?? __TamaguiNativeStyle7429()}>Made by</__TamaguiNativeText>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
@@ -313,11 +313,27 @@ function SheetDemo() {
   )
 }
 
+function __TamaguiNativeStyle658() { return __TamaguiNativeStyle658._ ?? (__TamaguiNativeStyle658._ = {"flexDirection":"column","gap":18}); } __TamaguiNativeStyle658();
 const __TamaguiNativeView = require('react-native').View;
-const __TamaguiNativeText = require('react-native').Text;"
+function __TamaguiNativeStyle681() { return __TamaguiNativeStyle681._ ?? (__TamaguiNativeStyle681._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":18}); } __TamaguiNativeStyle681();
+function __TamaguiNativeStyle890() { return __TamaguiNativeStyle890._ ?? (__TamaguiNativeStyle890._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":18}); } __TamaguiNativeStyle890();
+function __TamaguiNativeStyle2277() { return __TamaguiNativeStyle2277._ ?? (__TamaguiNativeStyle2277._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle2277();
+function __TamaguiNativeStyle3703() { return __TamaguiNativeStyle3703._ ?? (__TamaguiNativeStyle3703._ = {"flexDirection":"column","position":"absolute","right":0,"top":0,"bottom":0,"alignItems":"center","justifyContent":"center","width":44,"pointerEvents":"none"}); } __TamaguiNativeStyle3703();
+function __TamaguiNativeStyle4269() { return __TamaguiNativeStyle4269._ ?? (__TamaguiNativeStyle4269._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle4269();
+function __TamaguiNativeStyle5363() { return __TamaguiNativeStyle5363._ ?? (__TamaguiNativeStyle5363._ = {"flexDirection":"column","flex":1,"justifyContent":"center","alignItems":"center","gap":46,"paddingTop":18,"paddingRight":18,"paddingBottom":18,"paddingLeft":18,"backgroundColor":"hsla(0, 0%, 8%, 1)"}); } __TamaguiNativeStyle5363();
+function __TamaguiNativeStyle5822() { return __TamaguiNativeStyle5822._ ?? (__TamaguiNativeStyle5822._ = {"flexDirection":"row","gap":7}); } __TamaguiNativeStyle5822();
+function __TamaguiNativeStyle6083() { return __TamaguiNativeStyle6083._ ?? (__TamaguiNativeStyle6083._ = {"flexDirection":"column","gap":18}); } __TamaguiNativeStyle6083();
+function __TamaguiNativeStyle6108() { return __TamaguiNativeStyle6108._ ?? (__TamaguiNativeStyle6108._ = {"textTransform":"none","fontFamily":"InterBold","letterSpacing":-3,"fontSize":46,"lineHeight":56,"color":"hsla(0, 0%, 100%, 1)","marginTop":0,"marginRight":0,"marginBottom":0,"marginLeft":0,"textAlign":"center"}); } __TamaguiNativeStyle6108();
+const __TamaguiNativeText = require('react-native').Text;
+function __TamaguiNativeStyle6195() { return __TamaguiNativeStyle6195._ ?? (__TamaguiNativeStyle6195._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"color":"hsla(0, 0%, 67%, 1)","textAlign":"center"}); } __TamaguiNativeStyle6195();
+function __TamaguiNativeStyle6346() { return __TamaguiNativeStyle6346._ ?? (__TamaguiNativeStyle6346._ = {"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderTopColor":"background-focus","borderRightColor":"background-focus","borderBottomColor":"background-focus","borderLeftColor":"background-focus","borderStyle":"solid","transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6346();
+function __TamaguiNativeStyle6368() { return __TamaguiNativeStyle6368._ ?? (__TamaguiNativeStyle6368._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"color":"hsla(0, 0%, 100%, 1)","textAlign":"center"}); } __TamaguiNativeStyle6368();
+function __TamaguiNativeStyle6493() { return __TamaguiNativeStyle6493._ ?? (__TamaguiNativeStyle6493._ = {"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderTopColor":"background-focus","borderRightColor":"background-focus","borderBottomColor":"background-focus","borderLeftColor":"background-focus","borderStyle":"solid","transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6493();
+function __TamaguiNativeStyle7400() { return __TamaguiNativeStyle7400._ ?? (__TamaguiNativeStyle7400._ = {"flexDirection":"row","gap":7}); } __TamaguiNativeStyle7400();
+function __TamaguiNativeStyle7429() { return __TamaguiNativeStyle7429._ ?? (__TamaguiNativeStyle7429._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"color":"hsla(0, 0%, 100%, 1)","textAlign":"center"}); } __TamaguiNativeStyle7429();"
 `;
 
-exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._fd-705616716{flex-direction:column}._rg-138590524{row-gap:var(--c-space-4)}._cg-1486234039{column-gap:var(--c-space-4)}._fd-69771487{flex-direction:row}._w-1922012707{width:100%}._ai-1818832327{align-items:center}._rg-138590524{row-gap:var(--c-space-4)}._cg-1486234039{column-gap:var(--c-space-4)}._fd-69771487{flex-direction:row}._w-1922012707{width:100%}._ai-1818832327{align-items:center}._rg-138590524{row-gap:var(--c-space-4)}._cg-1486234039{column-gap:var(--c-space-4)}._z-10{z-index:10;}._fd-705616716{flex-direction:column}._r-0px{right:0px;}._t-0px{top:0px;}._b-0px{bottom:0px;}._fd-705616716{flex-direction:column}._p-479368562{position:absolute}._ai-1818832327{align-items:center}._jc-1779629571{justify-content:center}._w-1986647453{width:var(--c-size-4)}._pe-2143478976{pointer-events:none}._z-10{z-index:10;}._fd-705616716{flex-direction:column}._grow-1{flex-grow:1;}._shrink-1{flex-shrink:1;}._fb-0px{flex-basis:0px;}._fd-705616716{flex-direction:column}._jc-1779629571{justify-content:center}._ai-1818832327{align-items:center}._rg-138590648{row-gap:var(--c-space-8)}._cg-1486234163{column-gap:var(--c-space-8)}._pt-737474647{padding-top:var(--c-space-4)}._pr-1837658660{padding-right:var(--c-space-4)}._pb-1275329248{padding-bottom:var(--c-space-4)}._pl-281835450{padding-left:var(--c-space-4)}._bc-1272928377{background-color:var(--background)}._fd-69771487{flex-direction:row}._p-1632149189{position:absolute}@media (min-width: 640px) {._p-1632149189{position:relative}}._w-1922012707{width:100%}._t-315174416{top:var(--c-space-6)}@media (min-width: 640px) {._t-315174416{top:0px}}._rg-138590586{row-gap:var(--c-space-6)}._cg-1486234101{column-gap:var(--c-space-6)}._jc-1779629571{justify-content:center}._fw-1669021077{flex-wrap:wrap}._fd-69771487{flex-direction:row}._rg-138590462{row-gap:var(--c-space-2)}._cg-1486233977{column-gap:var(--c-space-2)}._fd-705616716{flex-direction:column}._rg-138590524{row-gap:var(--c-space-4)}._cg-1486234039{column-gap:var(--c-space-4)}._mt-0px{margin-top:0px;}._mr-0px{margin-right:0px;}._mb-0px{margin-bottom:0px;}._ml-0px{margin-left:0px;}._us-774919159{user-select:auto}._ws-850364919{white-space:normal}._tt-1780939873{text-transform:var(--f-transform-10)}._ff-427956157{font-family:var(--f-family)}._fw-182018766{font-weight:var(--f-weight-10)}._ls-779227446{letter-spacing:var(--f-letterSpacing-10)}._fs-98858029{font-size:var(--f-size-10)}._lh-1494979092{line-height:var(--f-lineHeight-10)}._ta-870847610{text-align:center}._c-921632471{color:var(--color12)}._us-774919159{user-select:auto}._ws-850364919{white-space:normal}._ff-427956157{font-family:var(--f-family)}._fw-19059536{font-weight:var(--f-weight-4)}._ls-975714678{letter-spacing:var(--f-letterSpacing-4)}._fs-657383983{font-size:var(--f-size-4)}._lh-1200862450{line-height:var(--f-lineHeight-4)}._c-921632409{color:var(--color10)}._ta-870847610{text-align:center}._shrink-1{flex-shrink:1;}._btw-0px._btw-0px{border-top-width:0px;}._brw-0px._brw-0px{border-right-width:0px;}._borderBottomWidth-1px._borderBottomWidth-1px{border-bottom-width:1px;}._borderLeftWidth-0px._borderLeftWidth-0px{border-left-width:0px;}._grow-1{flex-grow:1;}._fb-0px{flex-basis:0px;}._height-0px{height:0px;}._maxH-0px{max-height:0px;}._bbs-solid._bbs-solid{border-bottom-style:solid;}._bts-solid._bts-solid{border-top-style:solid;}._bls-solid._bls-solid{border-left-style:solid;}._brs-solid._brs-solid{border-right-style:solid;}._ty-207145345{--t-y:-0.5px}:where(._t-2031343298){--t-x:0px;--t-y:0px}._t-2031343298{translate:var(--t-x, 0px) var(--t-y, 0px)}._btc-187312933{border-top-color:background-focus}._brc-1084792562{border-right-color:background-focus}._bbc-1099070874{border-bottom-color:background-focus}._blc-34212472{border-left-color:background-focus}._us-774919159{user-select:auto}._ws-850364919{white-space:normal}._ff-427956157{font-family:var(--f-family)}._fw-19059536{font-weight:var(--f-weight-4)}._ls-975714678{letter-spacing:var(--f-letterSpacing-4)}._fs-657383983{font-size:var(--f-size-4)}._lh-1200862450{line-height:var(--f-lineHeight-4)}._c-2049372838{color:var(--color)}._ta-870847610{text-align:center}._shrink-1{flex-shrink:1;}._btw-0px._btw-0px{border-top-width:0px;}._brw-0px._brw-0px{border-right-width:0px;}._borderBottomWidth-1px._borderBottomWidth-1px{border-bottom-width:1px;}._borderLeftWidth-0px._borderLeftWidth-0px{border-left-width:0px;}._grow-1{flex-grow:1;}._fb-0px{flex-basis:0px;}._height-0px{height:0px;}._maxH-0px{max-height:0px;}._bbs-solid._bbs-solid{border-bottom-style:solid;}._bts-solid._bts-solid{border-top-style:solid;}._bls-solid._bls-solid{border-left-style:solid;}._brs-solid._brs-solid{border-right-style:solid;}._ty-207145345{--t-y:-0.5px}:where(._t-2031343298){--t-x:0px;--t-y:0px}._t-2031343298{translate:var(--t-x, 0px) var(--t-y, 0px)}._btc-187312933{border-top-color:background-focus}._brc-1084792562{border-right-color:background-focus}._bbc-1099070874{border-bottom-color:background-focus}._blc-34212472{border-left-color:background-focus}._fd-69771487{flex-direction:row}._rg-138590462{row-gap:var(--c-space-2)}._cg-1486233977{column-gap:var(--c-space-2)}._us-774919159{user-select:auto}._ws-850364919{white-space:normal}._ff-427956157{font-family:var(--f-family)}._fw-19059536{font-weight:var(--f-weight-4)}._ls-975714678{letter-spacing:var(--f-letterSpacing-4)}._fs-657383983{font-size:var(--f-size-4)}._lh-1200862450{line-height:var(--f-lineHeight-4)}._c-2049372838{color:var(--color)}._ta-870847610{text-align:center}"`;
+exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._fd-1155724988{flex-direction:column}._g-1012092611{gap:var(--c-space-4)}._fd-1289797684{flex-direction:row}._w-132203642{width:100%}._ai-1980109838{align-items:center}._g-1012092611{gap:var(--c-space-4)}._fd-1289797684{flex-direction:row}._w-132203642{width:100%}._ai-1980109838{align-items:center}._g-1012092611{gap:var(--c-space-4)}._fd-1155724988{flex-direction:column}._zi-1175933931{z-index:10}._fd-1155724988{flex-direction:column}._p-384527714{position:absolute}._r-1632656972{right:0px}._t-874702747{top:0px}._b-642571495{bottom:0px}._ai-1980109838{align-items:center}._jc-658029924{justify-content:center}._w-137381456{width:var(--c-size-4)}._pe-635873870{pointer-events:none}._pe-635873870>*{pointer-events:none}._fd-1155724988{flex-direction:column}._zi-1175933931{z-index:10}._fd-1155724988{flex-direction:column}._fg-169839737{flex-grow:1}._fs-1866857425{flex-shrink:1}._fb-1102215147{flex-basis:0px}._jc-658029924{justify-content:center}._ai-1980109838{align-items:center}._g-1012092487{gap:var(--c-space-8)}._pt-39185609{padding-top:var(--c-space-4)}._pr-635101616{padding-right:var(--c-space-4)}._pb-245633347{padding-bottom:var(--c-space-4)}._pl-354517857{padding-left:var(--c-space-4)}._bc-1288965051{background-color:var(--background)}._fd-1289797684{flex-direction:row}._p-1814547269{position:absolute}@media (min-width: 640px) {._p-1814547269{position:relative}}._w-132203642{width:100%}._t-1257708669{top:var(--c-space-6)}@media (min-width: 640px) {._t-1257708669{top:0px}}._g-1012092549{gap:var(--c-space-6)}._jc-658029924{justify-content:center}._fw-381719595{flex-wrap:wrap}._fd-1289797684{flex-direction:row}._g-1012092673{gap:var(--c-space-2)}._fd-1155724988{flex-direction:column}._g-1012092611{gap:var(--c-space-4)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._tt-1698380096{text-transform:var(--f-transform-10)}._ff-1640205464{font-family:var(--f-family)}._fw-1469196224{font-weight:var(--f-weight-10)}._ls-1888220256{letter-spacing:var(--f-letterSpacing-10)}._fs-313015168{font-size:var(--f-size-10)}._lh-1415683744{line-height:var(--f-lineHeight-10)}._c-2107070213{color:var(--color12)}._mt-279610455{margin-top:0px}._mr-1468885570{margin-right:0px}._mb-1993857511{margin-bottom:0px}._ml-1118921597{margin-left:0px}._ta-628280461{text-align:center}._ff-1640205464{font-family:var(--f-family)}._fw-1379533702{font-weight:var(--f-weight-4)}._ls-870375212{letter-spacing:var(--f-letterSpacing-4)}._fs-183738666{font-size:var(--f-size-4)}._lh-106962612{line-height:var(--f-lineHeight-4)}._c-393637825{color:var(--color10)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._ta-628280461{text-align:center}._fs-1698630561{flex-shrink:1}._bs-1746519034{border-style:solid}._btw-1743474923{border-top-width:0px}._brw-1478209636{border-right-width:0px}._bbw-1723652447{border-bottom-width:1px}._blw-1024325245{border-left-width:0px}._fg-169839737{flex-grow:1}._fb-1102215147{flex-basis:0px}._h-883471467{height:0px}._mh-751572549{max-height:0px}._bbs-452384145{border-bottom-style:solid}._ty-885232850{--t-y:-0.5px}:where(._t-2131811775){--t-x:0px;--t-y:0px}._t-2131811775{translate:var(--t-x, 0px) var(--t-y, 0px)}._btc-276587089{border-top-color:background-focus}._brc-1486568726{border-right-color:background-focus}._bbc-1250684411{border-bottom-color:background-focus}._blc-768713239{border-left-color:background-focus}._ff-1640205464{font-family:var(--f-family)}._fw-1379533702{font-weight:var(--f-weight-4)}._ls-870375212{letter-spacing:var(--f-letterSpacing-4)}._fs-183738666{font-size:var(--f-size-4)}._lh-106962612{line-height:var(--f-lineHeight-4)}._c-1572260098{color:var(--color)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._ta-628280461{text-align:center}._fs-1698630561{flex-shrink:1}._bs-1746519034{border-style:solid}._btw-1743474923{border-top-width:0px}._brw-1478209636{border-right-width:0px}._bbw-1723652447{border-bottom-width:1px}._blw-1024325245{border-left-width:0px}._fg-169839737{flex-grow:1}._fb-1102215147{flex-basis:0px}._h-883471467{height:0px}._mh-751572549{max-height:0px}._bbs-452384145{border-bottom-style:solid}._ty-885232850{--t-y:-0.5px}:where(._t-2131811775){--t-x:0px;--t-y:0px}._t-2131811775{translate:var(--t-x, 0px) var(--t-y, 0px)}._btc-276587089{border-top-color:background-focus}._brc-1486568726{border-right-color:background-focus}._bbc-1250684411{border-bottom-color:background-focus}._blc-768713239{border-left-color:background-focus}._fd-1289797684{flex-direction:row}._g-1012092673{gap:var(--c-space-2)}._ff-1640205464{font-family:var(--f-family)}._fw-1379533702{font-weight:var(--f-weight-4)}._ls-870375212{letter-spacing:var(--f-letterSpacing-4)}._fs-183738666{font-size:var(--f-size-4)}._lh-106962612{line-height:var(--f-lineHeight-4)}._c-1572260098{color:var(--color)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._ta-628280461{text-align:center}"`;
 
 exports[`Package.json exports support > should build app package for both web and native targets > web-optimized 1`] = `
 "import "./_screen.css"
@@ -348,15 +364,15 @@ import { useLink } from 'solito/navigation'
 
 export function SelectDemo() {
   return (
-    <div className="is_View _fd-705616716 _rg-138590524 _cg-1486234039">
-      <div className="is_View _fd-69771487 _w-1922012707 _ai-1818832327 _rg-138590524 _cg-1486234039"  >
+    <div className="is_View _fd-1155724988 _g-1012092611">
+      <div className="is_View _fd-1289797684 _w-132203642 _ai-1980109838 _g-1012092611"  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </div>
 
-      <div className="is_View _fd-69771487 _w-1922012707 _ai-1818832327 _rg-138590524 _cg-1486234039"  >
+      <div className="is_View _fd-1289797684 _w-132203642 _ai-1980109838 _g-1012092611"  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
@@ -407,7 +423,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <div className="is_View _z-10 _fd-705616716">
+          <div className="is_View _fd-1155724988 _zi-1175933931">
             <ChevronUp size={20} />
           </div>
           <LinearGradient
@@ -452,7 +468,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <div
-              className="is_View _r-0px _t-0px _b-0px _fd-705616716 _p-479368562 _ai-1818832327 _jc-1779629571 _w-1986647453 _pe-2143478976"
+              className="is_View _fd-1155724988 _p-384527714 _r-1632656972 _t-874702747 _b-642571495 _ai-1980109838 _jc-658029924 _w-137381456 _pe-635873870"
 
 
 
@@ -473,7 +489,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <div className="is_View _z-10 _fd-705616716">
+          <div className="is_View _fd-1155724988 _zi-1175933931">
             <ChevronDown size={20} />
           </div>
           <LinearGradient
@@ -521,9 +537,9 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   })
 
   return (
-    <div className="is_View _grow-1 _shrink-1 _fb-0px _fd-705616716 _jc-1779629571 _ai-1818832327 _rg-138590648 _cg-1486234163 _pt-737474647 _pr-1837658660 _pb-1275329248 _pl-281835450 _bc-1272928377"     >
+    <div className="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _jc-658029924 _ai-1980109838 _g-1012092487 _pt-39185609 _pr-635101616 _pb-245633347 _pl-354517857 _bc-1288965051"     >
       <div
-        className="is_View _fd-69771487 _p-1632149189 _w-1922012707 _t-315174416 _rg-138590586 _cg-1486234101 _jc-1779629571 _fw-1669021077"
+        className="is_View _fd-1289797684 _p-1814547269 _w-132203642 _t-1257708669 _g-1012092549 _jc-658029924 _fw-381719595"
 
 
 
@@ -540,7 +556,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 
       <SelectDemo />
 
-      <div className="is_View _fd-69771487 _rg-138590462 _cg-1486233977">
+      <div className="is_View _fd-1289797684 _g-1012092673">
         <Button
           size="3"
           iconAfter={
@@ -552,18 +568,18 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
           <Button.Text>Inverse</Button.Text>
         </Button>
       </div>
-      <div className="is_View _fd-705616716 _rg-138590524 _cg-1486234039">
-        <h1 className="is_H1 is_Text font_heading _mt-0px _mr-0px _mb-0px _ml-0px _us-774919159 _ws-850364919 _tt-1780939873 _ff-427956157 _fw-182018766 _ls-779227446 _fs-98858029 _lh-1494979092 _ta-870847610 _c-921632471" >
+      <div className="is_View _fd-1155724988 _g-1012092611">
+        <h1 className="is_H1 is_Text font_heading _us-1298715756 _ws-45919554 _tt-1698380096 _ff-1640205464 _fw-1469196224 _ls-1888220256 _fs-313015168 _lh-1415683744 _c-2107070213 _mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _ta-628280461" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Paragraph is_Text font_body _us-774919159 _ws-850364919 _ff-427956157 _fw-19059536 _ls-975714678 _fs-657383983 _lh-1200862450 _c-921632409 _ta-870847610" >
+        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-393637825 _us-1298715756 _ws-45919554 _ta-628280461" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
-        <div className="is_Separator is_View _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-0px _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _ty-207145345 _t-2031343298 _btc-187312933 _brc-1084792562 _bbc-1099070874 _blc-34212472" />
-        <p className="is_Paragraph is_Text font_body _us-774919159 _ws-850364919 _ff-427956157 _fw-19059536 _ls-975714678 _fs-657383983 _lh-1200862450 _c-2049372838 _ta-870847610">
+        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-276587089 _brc-1486568726 _bbc-1250684411 _blc-768713239" />
+        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">
           This screen uses the same code on Next.js and React Native.
         </p>
-        <div className="is_Separator is_View _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-0px _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _ty-207145345 _t-2031343298 _btc-187312933 _brc-1084792562 _bbc-1099070874 _blc-34212472" />
+        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-276587089 _brc-1486568726 _bbc-1250684411 _blc-768713239" />
       </div>
 
       <Button {...linkProps} theme={'dark'}>
@@ -601,8 +617,8 @@ function SheetDemo() {
         <Sheet.Handle bg="color8" />
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
-          <div className="is_View _fd-69771487 _rg-138590462 _cg-1486233977">
-            <p className="is_Paragraph is_Text font_body _us-774919159 _ws-850364919 _ff-427956157 _fw-19059536 _ls-975714678 _fs-657383983 _lh-1200862450 _c-2049372838 _ta-870847610">Made by</p>
+          <div className="is_View _fd-1289797684 _g-1012092673">
+            <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
@@ -663,15 +679,15 @@ import { useLink } from 'solito/navigation'
 
 export function SelectDemo() {
   return (
-    <__TamaguiNativeView style={{"flexDirection":"column","rowGap":18,"columnGap":18}}>
-      <__TamaguiNativeView style={{"flexDirection":"row","width":"100%","alignItems":"center","rowGap":18,"columnGap":18}}  >
+    <__TamaguiNativeView style={__TamaguiNativeStyle658._ ?? __TamaguiNativeStyle658()}>
+      <__TamaguiNativeView style={__TamaguiNativeStyle681._ ?? __TamaguiNativeStyle681()}  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </__TamaguiNativeView>
 
-      <__TamaguiNativeView style={{"flexDirection":"row","width":"100%","alignItems":"center","rowGap":18,"columnGap":18}}  >
+      <__TamaguiNativeView style={__TamaguiNativeStyle890._ ?? __TamaguiNativeStyle890()}  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
@@ -722,7 +738,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <__TamaguiNativeView style={{"zIndex":10,"flexDirection":"column"}}>
+          <__TamaguiNativeView style={__TamaguiNativeStyle2277._ ?? __TamaguiNativeStyle2277()}>
             <ChevronUp size={20} />
           </__TamaguiNativeView>
           <LinearGradient
@@ -767,7 +783,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <__TamaguiNativeView
-              style={{"right":0,"top":0,"bottom":0,"flexDirection":"column","position":"absolute","alignItems":"center","justifyContent":"center","width":44,"pointerEvents":"none"}}
+              style={__TamaguiNativeStyle3703._ ?? __TamaguiNativeStyle3703()}
 
 
 
@@ -788,7 +804,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <__TamaguiNativeView style={{"zIndex":10,"flexDirection":"column"}}>
+          <__TamaguiNativeView style={__TamaguiNativeStyle4269._ ?? __TamaguiNativeStyle4269()}>
             <ChevronDown size={20} />
           </__TamaguiNativeView>
           <LinearGradient
@@ -836,7 +852,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   })
 
   return (
-    <__TamaguiNativeView style={{"flex":1,"flexDirection":"column","justifyContent":"center","alignItems":"center","rowGap":46,"columnGap":46,"paddingTop":18,"paddingRight":18,"paddingBottom":18,"paddingLeft":18,"backgroundColor":"hsla(0, 0%, 8%, 1)"}}     >
+    <__TamaguiNativeView style={__TamaguiNativeStyle5363._ ?? __TamaguiNativeStyle5363()}     >
       <XStack
         position="absolute sm:relative"
         width="100%"
@@ -855,7 +871,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 
       <SelectDemo />
 
-      <__TamaguiNativeView style={{"flexDirection":"row","rowGap":7,"columnGap":7}}>
+      <__TamaguiNativeView style={__TamaguiNativeStyle5822._ ?? __TamaguiNativeStyle5822()}>
         <Button
           size="3"
           iconAfter={
@@ -867,18 +883,18 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
           <Button.Text>Inverse</Button.Text>
         </Button>
       </__TamaguiNativeView>
-      <__TamaguiNativeView style={{"flexDirection":"column","rowGap":18,"columnGap":18}}>
-        <__TamaguiNativeText style={{"letterSpacing":-3,"fontSize":46,"lineHeight":56,"marginTop":0,"marginRight":0,"marginBottom":0,"marginLeft":0,"textTransform":"none","fontFamily":"InterBold","textAlign":"center","color":"hsla(0, 0%, 100%, 1)"}} >
+      <__TamaguiNativeView style={__TamaguiNativeStyle6083._ ?? __TamaguiNativeStyle6083()}>
+        <__TamaguiNativeText style={__TamaguiNativeStyle6108._ ?? __TamaguiNativeStyle6108()} >
           Welcome to Tamagui.
         </__TamaguiNativeText>
-        <__TamaguiNativeText style={{"letterSpacing":0,"fontSize":15,"lineHeight":27,"fontFamily":"Inter","color":"hsla(0, 0%, 67%, 1)","textAlign":"center"}} >
+        <__TamaguiNativeText style={__TamaguiNativeStyle6195._ ?? __TamaguiNativeStyle6195()} >
           Here's a basic starter to show navigating from one screen to another.
         </__TamaguiNativeText>
-        <__TamaguiNativeView style={{"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderTopColor":"background-focus","borderRightColor":"background-focus","borderBottomColor":"background-focus","borderLeftColor":"background-focus","transform":[{"translateY":-0.5}],"borderStyle":"solid"}} />
-        <__TamaguiNativeText style={{"letterSpacing":0,"fontSize":15,"lineHeight":27,"fontFamily":"Inter","color":"hsla(0, 0%, 100%, 1)","textAlign":"center"}}>
+        <__TamaguiNativeView style={__TamaguiNativeStyle6346._ ?? __TamaguiNativeStyle6346()} />
+        <__TamaguiNativeText style={__TamaguiNativeStyle6368._ ?? __TamaguiNativeStyle6368()}>
           This screen uses the same code on Next.js and React Native.
         </__TamaguiNativeText>
-        <__TamaguiNativeView style={{"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderTopColor":"background-focus","borderRightColor":"background-focus","borderBottomColor":"background-focus","borderLeftColor":"background-focus","transform":[{"translateY":-0.5}],"borderStyle":"solid"}} />
+        <__TamaguiNativeView style={__TamaguiNativeStyle6493._ ?? __TamaguiNativeStyle6493()} />
       </__TamaguiNativeView>
 
       <Button {...linkProps} theme={'dark'}>
@@ -916,8 +932,8 @@ function SheetDemo() {
         <Sheet.Handle bg="color8" />
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
-          <__TamaguiNativeView style={{"flexDirection":"row","rowGap":7,"columnGap":7}}>
-            <__TamaguiNativeText style={{"letterSpacing":0,"fontSize":15,"lineHeight":27,"fontFamily":"Inter","color":"hsla(0, 0%, 100%, 1)","textAlign":"center"}}>Made by</__TamaguiNativeText>
+          <__TamaguiNativeView style={__TamaguiNativeStyle7400._ ?? __TamaguiNativeStyle7400()}>
+            <__TamaguiNativeText style={__TamaguiNativeStyle7429._ ?? __TamaguiNativeStyle7429()}>Made by</__TamaguiNativeText>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
@@ -948,8 +964,24 @@ function SheetDemo() {
   )
 }
 
+function __TamaguiNativeStyle658() { return __TamaguiNativeStyle658._ ?? (__TamaguiNativeStyle658._ = {"flexDirection":"column","gap":18}); } __TamaguiNativeStyle658();
 const __TamaguiNativeView = require('react-native').View;
-const __TamaguiNativeText = require('react-native').Text;"
+function __TamaguiNativeStyle681() { return __TamaguiNativeStyle681._ ?? (__TamaguiNativeStyle681._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":18}); } __TamaguiNativeStyle681();
+function __TamaguiNativeStyle890() { return __TamaguiNativeStyle890._ ?? (__TamaguiNativeStyle890._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":18}); } __TamaguiNativeStyle890();
+function __TamaguiNativeStyle2277() { return __TamaguiNativeStyle2277._ ?? (__TamaguiNativeStyle2277._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle2277();
+function __TamaguiNativeStyle3703() { return __TamaguiNativeStyle3703._ ?? (__TamaguiNativeStyle3703._ = {"flexDirection":"column","position":"absolute","right":0,"top":0,"bottom":0,"alignItems":"center","justifyContent":"center","width":44,"pointerEvents":"none"}); } __TamaguiNativeStyle3703();
+function __TamaguiNativeStyle4269() { return __TamaguiNativeStyle4269._ ?? (__TamaguiNativeStyle4269._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle4269();
+function __TamaguiNativeStyle5363() { return __TamaguiNativeStyle5363._ ?? (__TamaguiNativeStyle5363._ = {"flexDirection":"column","flex":1,"justifyContent":"center","alignItems":"center","gap":46,"paddingTop":18,"paddingRight":18,"paddingBottom":18,"paddingLeft":18,"backgroundColor":"hsla(0, 0%, 8%, 1)"}); } __TamaguiNativeStyle5363();
+function __TamaguiNativeStyle5822() { return __TamaguiNativeStyle5822._ ?? (__TamaguiNativeStyle5822._ = {"flexDirection":"row","gap":7}); } __TamaguiNativeStyle5822();
+function __TamaguiNativeStyle6083() { return __TamaguiNativeStyle6083._ ?? (__TamaguiNativeStyle6083._ = {"flexDirection":"column","gap":18}); } __TamaguiNativeStyle6083();
+function __TamaguiNativeStyle6108() { return __TamaguiNativeStyle6108._ ?? (__TamaguiNativeStyle6108._ = {"textTransform":"none","fontFamily":"InterBold","letterSpacing":-3,"fontSize":46,"lineHeight":56,"color":"hsla(0, 0%, 100%, 1)","marginTop":0,"marginRight":0,"marginBottom":0,"marginLeft":0,"textAlign":"center"}); } __TamaguiNativeStyle6108();
+const __TamaguiNativeText = require('react-native').Text;
+function __TamaguiNativeStyle6195() { return __TamaguiNativeStyle6195._ ?? (__TamaguiNativeStyle6195._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"color":"hsla(0, 0%, 67%, 1)","textAlign":"center"}); } __TamaguiNativeStyle6195();
+function __TamaguiNativeStyle6346() { return __TamaguiNativeStyle6346._ ?? (__TamaguiNativeStyle6346._ = {"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderTopColor":"background-focus","borderRightColor":"background-focus","borderBottomColor":"background-focus","borderLeftColor":"background-focus","borderStyle":"solid","transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6346();
+function __TamaguiNativeStyle6368() { return __TamaguiNativeStyle6368._ ?? (__TamaguiNativeStyle6368._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"color":"hsla(0, 0%, 100%, 1)","textAlign":"center"}); } __TamaguiNativeStyle6368();
+function __TamaguiNativeStyle6493() { return __TamaguiNativeStyle6493._ ?? (__TamaguiNativeStyle6493._ = {"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderTopColor":"background-focus","borderRightColor":"background-focus","borderBottomColor":"background-focus","borderLeftColor":"background-focus","borderStyle":"solid","transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6493();
+function __TamaguiNativeStyle7400() { return __TamaguiNativeStyle7400._ ?? (__TamaguiNativeStyle7400._ = {"flexDirection":"row","gap":7}); } __TamaguiNativeStyle7400();
+function __TamaguiNativeStyle7429() { return __TamaguiNativeStyle7429._ ?? (__TamaguiNativeStyle7429._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"color":"hsla(0, 0%, 100%, 1)","textAlign":"center"}); } __TamaguiNativeStyle7429();"
 `;
 
 exports[`Package.json exports support > should recognize imports from path-specific exports during optimization > web-optimized-single 1`] = `
@@ -981,15 +1013,15 @@ import { useLink } from 'solito/navigation'
 
 export function SelectDemo() {
   return (
-    <div className="is_View _fd-705616716 _rg-138590524 _cg-1486234039">
-      <div className="is_View _fd-69771487 _w-1922012707 _ai-1818832327 _rg-138590524 _cg-1486234039"  >
+    <div className="is_View _fd-1155724988 _g-1012092611">
+      <div className="is_View _fd-1289797684 _w-132203642 _ai-1980109838 _g-1012092611"  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </div>
 
-      <div className="is_View _fd-69771487 _w-1922012707 _ai-1818832327 _rg-138590524 _cg-1486234039"  >
+      <div className="is_View _fd-1289797684 _w-132203642 _ai-1980109838 _g-1012092611"  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
@@ -1040,7 +1072,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <div className="is_View _z-10 _fd-705616716">
+          <div className="is_View _fd-1155724988 _zi-1175933931">
             <ChevronUp size={20} />
           </div>
           <LinearGradient
@@ -1085,7 +1117,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           {/* Native gets an extra icon */}
           {props.native && (
             <div
-              className="is_View _r-0px _t-0px _b-0px _fd-705616716 _p-479368562 _ai-1818832327 _jc-1779629571 _w-1986647453 _pe-2143478976"
+              className="is_View _fd-1155724988 _p-384527714 _r-1632656972 _t-874702747 _b-642571495 _ai-1980109838 _jc-658029924 _w-137381456 _pe-635873870"
 
 
 
@@ -1106,7 +1138,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           width="100%"
           height="3"
         >
-          <div className="is_View _z-10 _fd-705616716">
+          <div className="is_View _fd-1155724988 _zi-1175933931">
             <ChevronDown size={20} />
           </div>
           <LinearGradient
@@ -1154,9 +1186,9 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
   })
 
   return (
-    <div className="is_View _grow-1 _shrink-1 _fb-0px _fd-705616716 _jc-1779629571 _ai-1818832327 _rg-138590648 _cg-1486234163 _pt-737474647 _pr-1837658660 _pb-1275329248 _pl-281835450 _bc-1272928377"     >
+    <div className="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _jc-658029924 _ai-1980109838 _g-1012092487 _pt-39185609 _pr-635101616 _pb-245633347 _pl-354517857 _bc-1288965051"     >
       <div
-        className="is_View _fd-69771487 _p-1632149189 _w-1922012707 _t-315174416 _rg-138590586 _cg-1486234101 _jc-1779629571 _fw-1669021077"
+        className="is_View _fd-1289797684 _p-1814547269 _w-132203642 _t-1257708669 _g-1012092549 _jc-658029924 _fw-381719595"
 
 
 
@@ -1173,7 +1205,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
 
       <SelectDemo />
 
-      <div className="is_View _fd-69771487 _rg-138590462 _cg-1486233977">
+      <div className="is_View _fd-1289797684 _g-1012092673">
         <Button
           size="3"
           iconAfter={
@@ -1185,18 +1217,18 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
           <Button.Text>Inverse</Button.Text>
         </Button>
       </div>
-      <div className="is_View _fd-705616716 _rg-138590524 _cg-1486234039">
-        <h1 className="is_H1 is_Text font_heading _mt-0px _mr-0px _mb-0px _ml-0px _us-774919159 _ws-850364919 _tt-1780939873 _ff-427956157 _fw-182018766 _ls-779227446 _fs-98858029 _lh-1494979092 _ta-870847610 _c-921632471" >
+      <div className="is_View _fd-1155724988 _g-1012092611">
+        <h1 className="is_H1 is_Text font_heading _us-1298715756 _ws-45919554 _tt-1698380096 _ff-1640205464 _fw-1469196224 _ls-1888220256 _fs-313015168 _lh-1415683744 _c-2107070213 _mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _ta-628280461" >
           Welcome to Tamagui.
         </h1>
-        <p className="is_Paragraph is_Text font_body _us-774919159 _ws-850364919 _ff-427956157 _fw-19059536 _ls-975714678 _fs-657383983 _lh-1200862450 _c-921632409 _ta-870847610" >
+        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-393637825 _us-1298715756 _ws-45919554 _ta-628280461" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
-        <div className="is_Separator is_View _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-0px _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _ty-207145345 _t-2031343298 _btc-187312933 _brc-1084792562 _bbc-1099070874 _blc-34212472" />
-        <p className="is_Paragraph is_Text font_body _us-774919159 _ws-850364919 _ff-427956157 _fw-19059536 _ls-975714678 _fs-657383983 _lh-1200862450 _c-2049372838 _ta-870847610">
+        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-276587089 _brc-1486568726 _bbc-1250684411 _blc-768713239" />
+        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">
           This screen uses the same code on Next.js and React Native.
         </p>
-        <div className="is_Separator is_View _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-0px _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _ty-207145345 _t-2031343298 _btc-187312933 _brc-1084792562 _bbc-1099070874 _blc-34212472" />
+        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-276587089 _brc-1486568726 _bbc-1250684411 _blc-768713239" />
       </div>
 
       <Button {...linkProps} theme={'dark'}>
@@ -1234,8 +1266,8 @@ function SheetDemo() {
         <Sheet.Handle bg="color8" />
         <Sheet.Container items="center" justify="center" gap="10">
           <Sheet.Background bg="color2" />
-          <div className="is_View _fd-69771487 _rg-138590462 _cg-1486233977">
-            <p className="is_Paragraph is_Text font_body _us-774919159 _ws-850364919 _ff-427956157 _fw-19059536 _ls-975714678 _fs-657383983 _lh-1200862450 _c-2049372838 _ta-870847610">Made by</p>
+          <div className="is_View _fd-1289797684 _g-1012092673">
+            <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
             <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
