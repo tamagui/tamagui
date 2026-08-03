@@ -4,7 +4,7 @@ import {
   classifyCandidate,
   createGrammarConfigView,
   type GrammarSourceConfig,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/runtime'
 import { readFile, realpath } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import path from 'node:path'

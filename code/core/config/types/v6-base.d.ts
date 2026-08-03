@@ -6,7 +6,7 @@ export { createSystemFont } from './v5-fonts';
 export { breakpoints, media, mediaQueryDefaultActive } from './v5-media';
 export { selectionStyles };
 export { tailwindSource } from './v6-tailwind-scales.generated';
-export { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar';
+export { v6RemovedThemeNames, v6ThemeNameReplacements, } from '@tamagui/style-grammar/tooling';
 export { toV6Themes } from './v6-themes';
 export declare const tokens: {
     readonly space: {

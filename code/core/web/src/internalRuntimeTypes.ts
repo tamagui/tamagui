@@ -1,4 +1,4 @@
-import type { ParsedValue } from '@tamagui/style-grammar'
+import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 
 /**
  * The narrow type surface another style frontend needs to build components on the

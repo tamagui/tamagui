@@ -2876,7 +2876,7 @@ export type GetStyleState = {
   // program-block CSS on web after the pass. later plain-value writes to the
   // same longhand delete the program and vice versa, so one longhand never has
   // both systems' output on one element.
-  programs?: Map<string, import('@tamagui/style-grammar').LonghandProgram>
+  programs?: Map<string, import('@tamagui/style-grammar/runtime').LonghandProgram>
   // Context props such as color may carry a runtime program even when the host
   // view cannot accept that style key. Evaluate them for Provider propagation,
   // then keep them out of the host style object.
@@ -2899,7 +2899,7 @@ export type GetStyleState = {
   animationDriver?: AnimationDriver | null
   // the six transition props in authored order, merged once at pass end
   // (helpers/alignTransitions)
-  transitionContributions?: import('@tamagui/style-grammar').TransitionContribution[]
+  transitionContributions?: import('@tamagui/style-grammar/runtime').TransitionContribution[]
   // the driver preset name that short-circuited, so a longhand beside it can
   // diagnose instead of composing with something drivers cannot consume
   sawTransitionPreset?: string

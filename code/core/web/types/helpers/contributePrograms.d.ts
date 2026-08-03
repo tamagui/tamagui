@@ -1,4 +1,4 @@
-import { type ParsedValue } from '@tamagui/style-grammar';
+import { type ParsedValue } from '@tamagui/style-grammar/runtime';
 import type { GetStyleState } from '../types';
 import { type GrammarRuntimeContext } from './grammarConfig';
 export declare function ensureGrammarContext(styleState: GetStyleState): GrammarRuntimeContext;
