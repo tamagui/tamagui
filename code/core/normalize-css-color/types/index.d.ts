@@ -1,9 +1,10 @@
-export declare const normalizeCSSColor: (color: string) => number | null;
-export declare function rgba(colorInt: number): {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
-};
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+export { rgba } from './rgba';
+export declare function normalizeCSSColor(color: string): number | null;
 export default normalizeCSSColor;
 //# sourceMappingURL=index.d.ts.map

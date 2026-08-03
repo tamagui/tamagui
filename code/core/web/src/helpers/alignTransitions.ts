@@ -29,12 +29,10 @@ import {
   alignTransitionContributions,
   getTransformTargets,
   serializeTransition,
-  validateNativeTransition,
   type TransitionContribution,
 } from '@tamagui/style-grammar'
 
 import type { GetStyleState } from '../types'
-import { detectNativeTransitionTarget } from './nativeTransitionTarget'
 import { noteOnce } from './noteOnce'
 
 export const transitionLonghandKeys: ReadonlySet<string> = new Set([
@@ -119,56 +117,30 @@ export function applyAccumulatedTransitions(styleState: GetStyleState): void {
     return
   }
 
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    const value = merged.value
-    // normalize Tamagui property spellings before CSS sees them
-    const normalized =
-      value.kind === 'transition'
-        ? {
-            ...value,
-            entries: value.entries.map((entry) =>
-              entry.property === 'all' || entry.property === 'none'
-                ? entry
-                : {
-                    ...entry,
-                    property: cssTransitionPropertyName(
-                      entry.property,
-                      styleState.conf.shorthands
-                    ),
-                  }
-            ),
-          }
-        : value
-    const css = serializeTransition(normalized)
-    if (css !== null) {
-      styleState.style ||= {}
-      styleState.style.transition = css
-    }
-    return
+  const value = merged.value
+  // normalize Tamagui property spellings before CSS sees them
+  const normalized =
+    value.kind === 'transition'
+      ? {
+          ...value,
+          entries: value.entries.map((entry) =>
+            entry.property === 'all' || entry.property === 'none'
+              ? entry
+              : {
+                  ...entry,
+                  property: cssTransitionPropertyName(
+                    entry.property,
+                    styleState.conf.shorthands
+                  ),
+                }
+          ),
+        }
+      : value
+  const css = serializeTransition(normalized)
+  if (css !== null) {
+    styleState.style ||= {}
+    styleState.style.transition = css
   }
-
-  // native: validate against the capability matrix with the DETECTED target.
-  // an undetectable React Native version is itself the diagnostic — the
-  // matrix's version gate has no default and gets no invented one here
-  const target = detectNativeTransitionTarget()
-  if (!target) {
-    noteOnce(
-      `[tamagui] CSS transitions on native need a detectable React Native version and platform; none was found, so the transition is dropped`
-    )
-    return
-  }
-  const validated = validateNativeTransition(merged.value, target)
-  if (!validated.ok) {
-    for (const diagnostic of validated.diagnostics) {
-      noteOnce(`[tamagui] ${diagnostic.message}`)
-    }
-    return
-  }
-  // supported by the matrix, but no native driver consumes the IR yet: say so
-  // rather than silently dropping a transition the matrix says could work
-  noteOnce(
-    `[tamagui] CSS transitions are not driven on native yet — use an animation driver preset. The value validated against the capability matrix and was dropped.`
-  )
 }
 
 export function accumulateTransition(
