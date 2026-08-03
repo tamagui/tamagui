@@ -11,7 +11,7 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { variantResolverNames } from '../types'
-import { cssColorNames } from '../interfaces/CSSColorNames'
+import { isKnownColorName } from '@tamagui/normalize-css-color'
 import { expandStyle } from './expandStyle'
 import { resolveVariableValue } from './resolveVariableValue'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
@@ -549,7 +549,10 @@ const remStringPattern = new RegExp(`^(?:${numberStringPattern.source})rem$`)
 const viewportValuePattern = new RegExp(
   `^(?:${numberStringPattern.source})(vw|dvw|lvw|svw|vh|dvh|lvh|svh)$`
 )
-const cssColorNameSet = new Set<string>(cssColorNames)
+// the normalize-css-color table also holds RN-only extras absent from the
+// CSSColorNames type; exclude them so resolver matching stays type-accurate
+const isCSSColorName = (value: string) =>
+  value !== 'transparent' && value !== 'burntsienna' && isKnownColorName(value)
 
 function matchesVariantResolver(
   resolverName: VariantResolverName,
@@ -627,7 +630,7 @@ function matchesVariantResolver(
           opacity >= 0 &&
           opacity <= 100 &&
           (name in conf.tokensParsed.color || (!!theme && name in theme))) ||
-        (string && cssColorNameSet.has(value))
+        (string && isCSSColorName(value))
       )
     }
     case 'Theme':

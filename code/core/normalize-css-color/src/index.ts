@@ -169,6 +169,13 @@ export function normalizeCSSColor(color: string): number | null {
     )
   }
 
+  const namedColor = getColorNameMap().get(color)
+  if (namedColor !== undefined) return namedColor
+
+  return null
+}
+
+function getColorNameMap() {
   colorNameMap ||= new Map(
     colorNames
       .split(',')
@@ -177,10 +184,11 @@ export function normalizeCSSColor(color: string): number | null {
         Number.parseInt(colorValues.slice(index * 8, index * 8 + 8), 16) >>> 0,
       ])
   )
-  const namedColor = colorNameMap.get(color)
-  if (namedColor !== undefined) return namedColor
+  return colorNameMap
+}
 
-  return null
+export function isKnownColorName(color: string): boolean {
+  return getColorNameMap().has(color)
 }
 
 export default normalizeCSSColor
