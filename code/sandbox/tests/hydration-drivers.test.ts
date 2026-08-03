@@ -50,14 +50,13 @@ for (const driver of drivers) {
       await page.waitForSelector(`[data-testid=hydrated-true]`)
 
       const dot = page.getByTestId('indicator-dot-1')
-      await expect(dot).toBeVisible({ timeout: 15000 })
-
       const classes = await dot.getAttribute('class')
 
       console.log(`${driver} driver - classes:`, classes)
       console.log(`${driver} driver - server tag:`, serverTag)
 
-      expect(classes?.length).toBeGreaterThan(0)
+      expect(classes).toBe(className)
+      await expect(dot).toBeVisible({ timeout: 15000 })
     })
 
     test('transform styles render correctly before and after hydration', async ({
