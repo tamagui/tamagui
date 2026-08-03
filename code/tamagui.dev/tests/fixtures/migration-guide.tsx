@@ -9,12 +9,9 @@
 //   index shadows the unstyled @tamagui/ui primitive with the default skin), so
 //   `<Button size="5" />` compiles against the token size scale below. The
 //   unstyled primitive lives at `tamagui/unstyled` and owns no size scale.
-// - a couple of guide snippets use values that only exist in the v5 default
-//   config the guide targets (the kebab media key `max-md` in §8, and the
-//   px-string font scale in §6). those are source-verified against
-//   @tamagui/config/v5 (v5-media.ts defines `max-md`; v5 pins font scales to px)
-//   and reproduced here in a config-agnostic form so this fixture stays green
-//   against tamagui.dev's own config.
+// - a couple of guide snippets use configured values such as the `max-md`
+//   media key. they are reproduced here in a config-agnostic form so this
+//   fixture stays green against tamagui.dev's own config.
 
 import * as React from 'react'
 import {
@@ -96,7 +93,7 @@ export const AdaptAnatomy = () => (
       <Adapt.Contents />
     </Popover.Content>
 
-    {/* guide uses when="max-md" (v5 default config media key); boolean here
+    {/* guide uses when="max-md" (v6 default config media key); boolean here
         keeps this fixture config-agnostic */}
     <Adapt when={true} platform="touch">
       <Sheet modal dismissOnSnapToBottom>
@@ -196,7 +193,7 @@ export type CircleProps = GetProps<typeof Circle>
 export const CircleUsage = () => <Circle size="10" />
 
 // §6 — numeric vs exact-px font size. the guide also shows fontSize="17px"
-// (an exact px passthrough valid under the v5 px-pinned font scale); the numeric
+// (an exact px passthrough); the numeric
 // form below typechecks against any config.
 export const Misc = () => (
   <>

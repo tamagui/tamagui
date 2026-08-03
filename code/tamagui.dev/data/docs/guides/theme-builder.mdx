@@ -1,6 +1,6 @@
 ---
 title: Creating Themes with Tamagui
-description: Learn how to create a suite of themes for a Tamagui app
+description: Generate typed themes from color tokens and a recipe tree
 demoName: ThemeBuilder
 ---
 
@@ -9,369 +9,226 @@ demoName: ThemeBuilder
 </HeroContainer>
 
 <IntroParagraph>
-  Tamagui themes start simple, but can do some pretty powerful things. To make them easier
-  to generate, we've built a few helpers. You can always just skip themes, or add a single
-  basic theme if you prefer. This guide is for users wanting to generate a more complex
-  suite of themes.
+  Tamagui v3 creates theme suites with one function: `createThemes(tokens, tree,
+  { getTheme })`. The tree describes names and inheritance. Your `getTheme`
+  function turns each recipe into a plain theme record.
 </IntroParagraph>
 
-We have three ways to generate themes, from simplest to most powerful:
+The default recipe helpers live in `@tamagui/themes/builder`. The generated
+default themes live in `@tamagui/themes`, so applications using
+`@tamagui/config/v6` do not run the generator at startup.
 
-| Helper                   | Best for                                                 |
-| ------------------------ | -------------------------------------------------------- |
-| **`createV5Theme`**      | Quick start with sensible defaults. Minimal config.      |
-| **`createThemes`**       | Custom palettes and structure while keeping conventions. |
-| **`createThemeBuilder`** | Full control over every aspect of theme generation.      |
+## Start with the default themes
 
-We've also released [Theme](/theme), a free visual tool to create themes.
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from 'tamagui'
 
----
-
-## createV5Theme
-
-The simplest way to get a complete theme suite. Call it with no arguments for production-ready defaults, or pass options to customize.
-
-```tsx
-import { createV5Theme } from '@tamagui/themes/v5-builder'
-
-// zero-config - includes light, dark, accent, and color themes
-export const themes = createV5Theme()
+export const config = createTamagui(defaultConfig)
 ```
 
-### Customizing
+The default suite contains light and dark roots, relative levels, `inverse`,
+`accent`, `brand`, and the `red`, `yellow`, and `green` semantic colors.
 
-```tsx
-import { createV5Theme, defaultChildrenThemes } from '@tamagui/themes/v5-builder'
-import { orange, orangeDark } from '@tamagui/colors'
+## Build a theme tree
 
-export const themes = createV5Theme({
-  // override base palettes
-  lightPalette: ['#fff', '#f8f8f8', ...],
-  darkPalette: ['#000', '#111', ...],
+```tsx fileName="themes.ts"
+import {
+  createThemes,
+  getTheme,
+  levels,
+  tokens,
+} from '@tamagui/themes/builder'
 
-  // add/override color themes
-  childrenThemes: {
-    ...defaultChildrenThemes,
-    orange: { light: orange, dark: orangeDark },
-  },
-
-  // disable component themes
-  componentThemes: false,
-})
-```
-
-### Options
-
-- `lightPalette` / `darkPalette` - Override base 12-color palettes
-- `childrenThemes` - Color themes (blue, red, etc). Accepts Radix color objects directly
-- `grandChildrenThemes` - Third-level themes (defaults to `{ accent: { template: 'inverse' } }`)
-- `componentThemes` - Component theme mappings, or `false` to disable
-
----
-
-## createThemes
-
-More control over structure while still getting automatic palette interpolation and component themes.
-
-### Quick Start
-
-```tsx
-import { createThemes } from '@tamagui/theme-builder'
-
-export const themes = createThemes({
-  base: {
-    palette: {
-      light: ['#fff', '#000'],
-      dark: ['#000', '#fff'],
+export const tree = {
+  light: { scheme: 'light', palette: 'gray' },
+  dark: { scheme: 'dark', palette: 'gray' },
+  children: {
+    ...levels(),
+    accent: {
+      palette: 'brand',
+      treatment: 'tint',
+      children: levels(),
     },
-  },
-})
-```
-
-### Full Example
-
-```tsx
-import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
-import * as Colors from '@tamagui/colors'
-
-export const themes = createThemes({
-  componentThemes: defaultComponentThemes,
-
-  base: {
-    palette: {
-      light: ['#fff', '#f2f2f2', '#e0e0e0', '#999', '#666', '#333', '#000'],
-      dark: ['#000', '#111', '#222', '#666', '#999', '#ccc', '#fff'],
-    },
-    extra: {
-      light: { ...Colors.blue, shadowColor: 'rgba(0,0,0,0.1)' },
-      dark: { ...Colors.blueDark, shadowColor: 'rgba(0,0,0,0.4)' },
-    },
-  },
-
-  accent: {
-    palette: {
-      light: ['#000', '#333', '#666', '#999', '#ccc', '#eee', '#fff'],
-      dark: ['#fff', '#eee', '#ccc', '#999', '#666', '#333', '#000'],
-    },
-  },
-
-  childrenThemes: {
-    blue: {
-      palette: {
-        light: Object.values(Colors.blue),
-        dark: Object.values(Colors.blueDark),
-      },
-    },
+    inverse: ({ parent }) => ({
+      scheme: parent.scheme === 'light' ? 'dark' : 'light',
+      children: levels(),
+    }),
     red: {
-      palette: { light: Object.values(Colors.red), dark: Object.values(Colors.redDark) },
+      palette: 'red',
+      treatment: 'tint',
+      children: levels(2),
     },
   },
+} as const
 
-  grandChildrenThemes: {
-    accent: { template: 'inverse' },
-  },
-})
+export const themes = createThemes(tokens, tree, { getTheme })
+export type Themes = typeof themes
 ```
 
-### Structure
+The roots must be named `light` and `dark`. A child inherits its parent's recipe
+fields by shallow merge. `children` and `values` are structural keys; every
+other field is application-defined data passed to `getTheme`.
 
-`createThemes` generates this hierarchy:
+Generated names flatten the path:
 
+```text
+light
+├── light_level2
+│   └── light_level2_level2
+├── light_accent
+│   └── light_accent_level2
+├── light_inverse
+└── light_red
+    └── light_red_level2
 ```
-light / dark                    # base themes
-├── light_accent / dark_accent  # accent themes
-├── light_blue / dark_blue      # child themes
-│   └── light_blue_accent       # grandchild themes
-└── light_Button / dark_Button  # component themes
-```
 
-### Configuration
+The same children attach below `dark`. Definition-local children attach only
+below that definition.
 
-#### `base` (required)
+## Resolve recipes with getTheme
+
+The default resolver combines two small helpers:
 
 ```tsx
-base: {
-  palette: { light: string[], dark: string[] },
-  // or single array (auto-reversed for dark):
-  palette: string[],
-  template: 'base' | 'surface1' | 'surface2' | 'surface3' | 'inverse',
-  extra: { light: {...}, dark: {...} }, // non-inherited values
+import {
+  fromShades,
+  ramp,
+  scales,
+  type GetThemeContext,
+  type DefaultRecipe,
+} from '@tamagui/themes/builder'
+
+export function getTheme({ recipe }: GetThemeContext<typeof tokens, DefaultRecipe>) {
+  const scale =
+    scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
+
+  return {
+    ...ramp(recipe.palette, recipe.scheme),
+    ...fromShades(recipe.palette, scale),
+  }
 }
 ```
 
-#### `accent`, `childrenThemes`, `grandChildrenThemes`
+`ramp()` emits the adaptive `color1` through `color11` keys. `color1` is nearest
+the background and `color11` is nearest the foreground in both schemes.
+`fromShades()` maps numeric shades in a semantic scale to the active palette and
+passes exact token names or color literals through.
+
+All generated values resolve against `tokens.color` immediately. A misspelled
+token or unsupported value fails generation and reports the nearest token name.
+
+## Relative levels
+
+`levels()` creates self-nesting `level2`, `level3`, and `level4` children.
+Their names are relative operations:
 
 ```tsx
-accent: { palette: { light: [...], dark: [...] } }
-
-childrenThemes: {
-  blue: { palette: { light: [...], dark: [...] }, template: 'base' },
-}
-
-grandChildrenThemes: {
-  accent: { template: 'inverse' }, // template-only inherits parent palette
-}
-```
-
-#### `templates`
-
-Override default templates. Maps property names to palette indices:
-
-```tsx
-templates: {
-  base: { background: 6, color: -1, borderColor: 9 },
-  surface1: { background: 7, color: -1, borderColor: 10 },
-}
-```
-
-Defaults: `base`, `surface1`, `surface2`, `surface3`, `alt1`, `alt2`, `inverse`
-
-#### `componentThemes`
-
-```tsx
-componentThemes: {
-  Button: { template: 'surface3' },
-  Card: { template: 'surface1' },
-}
-// or disable:
-componentThemes: false
-```
-
-#### `getTheme`
-
-Customize any generated theme:
-
-```tsx
-getTheme: ({ name, theme, scheme, level, palette }) => ({
-  ...theme,
-  shadowColor: scheme === 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.1)',
-})
-```
-
-Parameters: `name`, `theme`, `scheme` ('light'|'dark'), `level` (1=base, 2=children, 3=grandchildren), `parentName`, `parentNames`, `palette`, `template`
-
-### Generated Theme Shape
-
-```tsx
-{
-  background, backgroundHover, backgroundPress, backgroundFocus,
-  color, colorHover, colorPress, colorFocus,
-  borderColor, borderColorHover, borderColorPress, borderColorFocus,
-  placeholderColor, outlineColor,
-  color1...color12,           // full palette scale
-  background0...background08, // transparent variants
-  accent1...accent12,         // if accent defined
-}
-```
-
----
-
-## createThemeBuilder
-
-The low-level API that powers `createThemes`. Use this when you need complete control over palette structure, template definitions, and theme hierarchy.
-
-```tsx
-import { createThemeBuilder } from '@tamagui/theme-builder'
-
-const themesBuilder = createThemeBuilder()
-  .addPalettes({
-    dark: ['#000', '#111', '#222', '#999', '#ccc', '#eee', '#fff'],
-    light: ['#fff', '#eee', '#ccc', '#999', '#222', '#111', '#000'],
-  })
-  .addTemplates({
-    base: { background: 0, color: -0 },
-    subtle: { background: 1, color: -1 },
-  })
-  .addThemes({
-    light: { template: 'base', palette: 'light' },
-    dark: { template: 'base', palette: 'dark' },
-  })
-  .addChildThemes({
-    subtle: { template: 'subtle' },
-  })
-
-export const themes = themesBuilder.build()
-```
-
-### Build-time Generation
-
-Optionally generate themes at build time to reduce bundle size:
-
-```tsx
-// next.config.js
-withTamagui({
-  themeBuilder: {
-    input: './themes-input.tsx',
-    output: './themes.tsx',
-  },
-})
-```
-
-Or use the CLI: `npx @tamagui/cli generate-themes ./src/themes-in.ts ./src/themes-out.ts`
-
----
-
-## Concepts
-
-### Palettes
-
-A palette is a gradient of colors from background to foreground:
-
-<Blog.ThemeBuilder.ExamplePalette showLabels />
-
-```tsx
-const dark_blue = [
-  'hsl(212, 35.0%, 9.2%)', // background
-  'hsl(216, 50.0%, 11.8%)',
-  // ...
-  'hsl(206, 98.0%, 95.8%)', // foreground
-]
-```
-
-### Templates
-
-Templates map property names to palette indices:
-
-```tsx
-const template = { background: 0, color: 12 }
-// Negative indices count from end: -1 = last, -2 = second-to-last
-```
-
-### Sub-themes
-
-Underscore in theme names defines nesting: `dark_subtle` is a sub-theme of `dark`.
-
-```tsx
-<Theme name="dark">
-  <Box /> {/* uses dark theme */}
-  <Theme name="subtle">
-    <Box /> {/* uses dark_subtle theme */}
-  </Theme>
+<Theme name="level2">
+  <Panel>
+    <Button>{/* the Button's own level2 boundary resolves to level 3 */}</Button>
+  </Panel>
 </Theme>
 ```
 
-### Component Themes
+At the configured maximum, deeper levels saturate. The generated names remain
+valid aliases, but identical resolved maps share one parsed theme and one CSS
+declaration block.
 
-Named components automatically pick up matching sub-themes:
+Pass a lower maximum for color themes when only one raised step is useful:
 
 ```tsx
-const Button = styled(View, { name: 'Button', ... })
-
-// If dark_Button theme exists, <Button /> uses it automatically
+red: {
+  palette: 'red',
+  treatment: 'tint',
+  children: levels(2),
+}
 ```
 
-### getTheme Callback
+This creates a real `light_red_level2` map. Deeper relative paths resolve to the
+same map instead of falling back to a neutral level.
 
-Both `createThemes` and `createThemeBuilder` support `getTheme` for customization:
+## One-theme values
 
-```tsx
-.getTheme(({ theme, scheme, level }) => ({
-  ...theme,
-  customBorder: scheme === 'dark' ? '#333' : '#ddd',
-}))
-```
-
-### nonInheritedValues
-
-Add values that don't cascade to child themes:
+Recipe fields inherit. `values` apply only to the theme defined at that node:
 
 ```tsx
-.addThemes({
+const tree = {
   light: {
-    template: 'base',
-    palette: 'light',
-    nonInheritedValues: {
-      blue1: '#e0f2fe',
-      shadowColor: 'rgba(0,0,0,0.1)',
-    },
+    scheme: 'light',
+    palette: 'gray',
+    values: { 'border-color': 'transparent' },
   },
+  dark: { scheme: 'dark', palette: 'gray' },
+} as const
+```
+
+Values are applied after `getTheme`, so they are useful for a precise override.
+Put data in the recipe when descendants must retain it.
+
+You may omit `getTheme` entirely when every node supplies its theme through
+`values`.
+
+## Function children
+
+A definition function receives the resolved parent recipe and may return a
+definition or `null`:
+
+```tsx
+inverse: ({ parent }) => ({
+  scheme: parent.scheme === 'light' ? 'dark' : 'light',
 })
 ```
 
-### Inverse Themes
+Returning `null` skips that path. The default `inverse` theme uses this ordinary
+mechanism. Its resolved maps deduplicate with the opposite root, so inverse adds
+names without duplicating declarations.
 
-Use the `inverse` sub-theme when you want a subtree to use the opposite light or
-dark palette:
+## Customize scales and treatments
 
-```tsx
-<Button theme="inverse">Inverted colors</Button>
-
-<Theme name="inverse">
-  <Card>Inverted colors</Card>
-</Theme>
-```
-
-The default v3 config generates concrete inverse sub-themes from the same model
-as `accent`: light parents use the dark palette, and dark parents use the light
-palette. Because `inverse` is a real named sub-theme, the server can render the
-final theme class and hydrate it without a client-only theme swap.
-
-If you are building custom themes, generate inverse sub-themes by swapping the
-palettes in your theme definition:
+The default `scales` object has `normal`, `bold`, and `tint` treatments in both
+schemes at levels 1 through 4. Each level is plain data. `raise(scale, steps)`
+shifts background and border shades along the `white`, `50` through `950`,
+`black` ladder and clamps at its ends.
 
 ```tsx
-inverse: [
-  { parent: 'light', palette: 'dark', template: 'base' },
-  { parent: 'dark', palette: 'light', template: 'base' },
-]
+import { raise, scales } from '@tamagui/themes/builder'
+
+const subtleLight = {
+  ...raise(scales.tint.light[1], 1),
+  'border-color': 200,
+}
 ```
+
+Add a key to your own scales object and reference it with a recipe field. Then
+use that field in your resolver. `createThemes` does not reserve `scheme`,
+`palette`, `level`, or `treatment`; these are conventions implemented by the
+default resolver.
+
+## No component themes, templates, or masks
+
+V3 does not inspect styled component names or look for uppercase theme name
+segments. A Button gets a raised theme because its skin creates a `level2`
+boundary, the same operation available to application code.
+
+The v2 builder options `componentThemes`, `templates`, `masks`,
+`childrenThemes`, and `grandChildrenThemes` have no v3 equivalent. Express the
+structure directly in `tree`, semantic values in scale objects, and exact
+single-theme changes in `values`.
+
+## Pre-generate a custom suite
+
+Runtime generation is small, but a shared design system can emit the flat module
+once:
+
+```bash
+npx tamagui generate-themes ./src/themes.input.ts ./src/themes.generated.ts
+```
+
+The input module exports `themes` or exports it as the default. Import the
+generated module from your Tamagui config so the authoring helpers stay out of
+the client bundle.
+
+See [v6 Colors](/docs/core/config-v6-colors) for a complete custom-palette
+example and [Surfaces and levels](/docs/core/surfaces) for using relative levels
+in components.

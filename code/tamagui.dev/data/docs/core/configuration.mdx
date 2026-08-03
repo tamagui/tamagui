@@ -9,7 +9,7 @@ animations, shorthands, and settings.
 First, create a `tamagui.config.ts` file.
 
 <Notice theme="blue">
-  We recommend starting with [`@tamagui/config/v5`](/docs/core/config-v5), our preset
+  We recommend starting with [`@tamagui/config/v6`](/docs/core/config-v6), our preset
   configuration with sensible defaults, Tailwind-aligned shorthands, and a complete theme
   system.
 </Notice>
@@ -19,7 +19,7 @@ npm install @tamagui/config
 ```
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig } from '@tamagui/config/v6'
 import { createTamagui } from 'tamagui'
 
 export const config = createTamagui({
@@ -39,7 +39,7 @@ declare module 'tamagui' {
 
 We find most people are best off with this as it saves a lot of time, shares
 shorthands with Tailwind, and has a lot of refinement. For more on our default
-configuration, go to [the next page](/docs/core/config-v5).
+configuration, go to [the Config v6 page](/docs/core/config-v6).
 
 Here's an example of a stripped down configuration to get a feel for the most
 common concepts:
@@ -582,7 +582,7 @@ through a Styled Component like View or Text:
 
 ```tsx
 const P = styled(Text, {
-  color: 'color12'
+  color: 'color11'
 })
 
 // or directly
@@ -856,14 +856,14 @@ client, it reads these from the DOM instead of needing the JS object.
 
 <Notice>
   This optimization only applies to SSR web apps (Next.js, One, Vite SSR). It doesn't
-  apply to Metro/Expo or static sites. Note that v5 themes are already more optimized than
-  v4, so this is mainly relevant if chasing the last few Lighthouse points.
+  apply to Metro/Expo or static sites. The static v6 defaults are already generated, so
+  this is mainly relevant when chasing the last few Lighthouse points.
 </Notice>
 
 ### Setup
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig, themes } from '@tamagui/config/v5'
+import { defaultConfig, themes } from '@tamagui/config/v6'
 import { createTamagui } from 'tamagui'
 
 export const config = createTamagui({

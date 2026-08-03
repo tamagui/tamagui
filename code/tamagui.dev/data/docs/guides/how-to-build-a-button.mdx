@@ -219,15 +219,9 @@ export default createTamagui({
 
   themes: {
     light: {
-      background: '#fff',
-      color: '#000',
-    },
-
-    // define a Button sub-theme, see the Themes docs for more
-    light_Button: {
       background: '#ccc',
-      backgroundPress: '#bbb', // darker background on press
-      backgroundHover: '#ddd', // lighter background on hover
+      'background-press': '#bbb', // darker background on press
+      'background-hover': '#ddd', // lighter background on hover
       color: '#222',
     },
   },
@@ -247,9 +241,7 @@ like so:
 import { View, styled } from '@tamagui/core'
 
 const ButtonFrame = styled(View, {
-  // the name indicates to use the sub-theme `Button`
-  // since we defined light_Button, if our theme is light, this component
-  // will always use the values from our `light_Button` theme
+  // name identifies the component for config and debugging
   name: 'Button',
 
   alignItems: 'center',
@@ -275,11 +267,11 @@ const ButtonFrame = styled(View, {
 This gets us a simple rounded rectangle that uses the `md` tokens from your
 design system and the `background` styles from your theme.
 
-We set the `name` property to `"Button"`, which tells Tamagui to check for a
-sub-theme `Button` that extends the current one. So since we have a theme
-`light` and we have a sub-theme `light_Button`, Tamagui finds the theme
-`light_Button` and apply it to this component, getting the `background` value
-from that theme (assuming we have our base theme set to light).
+The `name` property identifies the styled component for configuration and
+debugging. V3 does not select a `light_Button` theme from that name. The frame
+reads the active theme's semantic `background` values directly. Components that
+need to sit above their surroundings wrap their frame in an explicit `level2`
+theme boundary.
 
 Finally, the `hover:` and `press:` clauses make the frame respond to interaction.
 
@@ -299,9 +291,8 @@ export const ButtonText = styled(Text, {
 ```
 
 This is pretty similar to the frame, just with its own name and with a `color`
-set rather than a `background`. Since we didn't define a `light_ButtonText`
-theme, this will fall back to the color defined on the light theme. Finally,
-button text usually isn't selectable so we set `userSelect` to none.
+set rather than a `background`. It reads the same active theme as the frame.
+Finally, button text usually isn't selectable so we set `userSelect` to none.
 
 We can use our simple button. It's nicely themed, but only renders at one size:
 

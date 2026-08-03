@@ -41,9 +41,9 @@ npx shadcn add surface
 
 ## Levels
 
-`level` shifts the subtree to the `surface1`, `surface2`, or `surface3`
-sub-theme. Because facets read theme generics (`background`, `borderColor`, …)
-and the surface theme re-binds those generics, a level restyles every facet
+`level` shifts the subtree through the relative `level2`, `level3`, or `level4`
+sub-theme. Because facets read theme generics (`background`, `border-color`, …)
+and the level theme re-binds those generics, a level restyles every facet
 beneath it with no cooperation. Read [Surfaces and
 levels](/docs/core/surfaces) for the full theming model.
 
@@ -51,11 +51,12 @@ levels](/docs/core/surfaces) for the full theming model.
 <Surface level={1} filled>Base panel</Surface>
 <Surface level={2} filled>A step up</Surface>
 <Surface level={3} filled>A step further</Surface>
+<Surface level={4} filled>The highest default level</Surface>
 ```
 
 `level` is a prop, not a variant, because a theme boundary can only be created by
 the `theme` prop or `<Theme>` component. `<Surface level={2}>` renders
-`<Theme name="surface2">` around the frame.
+`<Theme name="level2">` around the frame.
 
 ## Facets
 
@@ -69,8 +70,8 @@ keeps them from colliding, any combination composes with zero coordination.
     {
       name: 'level',
       required: false,
-      type: '1 | 2 | 3',
-      description: `Shift the subtree to the surface1-3 sub-theme.`,
+      type: '1 | 2 | 3 | 4',
+      description: `Shift the subtree through a relative level theme.`,
     },
     {
       name: 'filled',
@@ -131,8 +132,8 @@ export const SurfaceFrame = styled(YStack, {
 })
 
 export type SurfaceProps = GetProps<typeof SurfaceFrame> & {
-  /** shift the subtree to a surface sub-theme (surface1-3). */
-  level?: 1 | 2 | 3
+  /** shift the subtree to a relative theme level. */
+  level?: 1 | 2 | 3 | 4
 }
 
 export const Surface = forwardRef<any, SurfaceProps>(function Surface(
@@ -140,8 +141,8 @@ export const Surface = forwardRef<any, SurfaceProps>(function Surface(
   ref
 ) {
   const frame = <SurfaceFrame ref={ref} {...props} />
-  if (!level) return frame
-  return <Theme name={`surface${level}` as any}>{frame}</Theme>
+  if (!level || level === 1) return frame
+  return <Theme name={`level${level}` as 'level2' | 'level3' | 'level4'}>{frame}</Theme>
 })
 ```
 

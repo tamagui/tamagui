@@ -86,7 +86,41 @@ becomes:
 Resolve every report row and rerun until the app has no V2 authoring. Do not
 add a compatibility setting or restore condition-object parsing.
 
-### 3. Run the Sheet codemod
+### 3. Migrate config and themes
+
+- Replace every old config entry with \`defaultConfig\` from \`@tamagui/config/v6\`.
+- Import animations from \`@tamagui/config/animations-css\`, \`animations-rn\`, \`animations-reanimated\`, or \`animations-motion\`.
+- Remove \`@tamagui/theme-builder\`, every \`@tamagui/themes/v5*\` entry, and every \`@tamagui/config/v5*\` entry.
+- Use \`createThemes\`, \`levels\`, scales, and the other recipe helpers from \`@tamagui/themes/builder\`.
+- Remove \`componentThemes\`, \`templates\`, \`masks\`, \`childrenThemes\`, and \`grandChildrenThemes\`. Express hierarchy in the recipe tree, semantic values in scales, and exact one-theme overrides in \`values\`.
+- Component names no longer select uppercase theme segments automatically. Replace component themes with explicit normal theme or \`level2\` boundaries in component skins.
+
+Rename the adaptive 12-step ramp approximately:
+
+- \`color1\` -> \`color1\`
+- \`color2\` -> \`color2\`
+- \`color3\` -> \`color3\`
+- \`color4\` -> \`color4\`
+- \`color5\` -> \`color5\`
+- \`color6\` and \`color7\` -> \`color6\`
+- \`color8\` -> \`color7\`
+- \`color9\` -> \`color8\`
+- \`color10\` -> \`color9\`
+- \`color11\` -> \`color10\`
+- \`color12\` -> \`color11\`
+
+The endpoints are exact; inspect contrast in the compressed middle. Replace
+\`surface1\` with \`level2\`, \`surface2\` with \`level3\`, and \`surface3\`
+or \`surface4\` with \`level4\`. Levels are relative and preserve a surrounding
+color theme when nested.
+
+Search the config and application together:
+
+\`\`\`bash
+rg "@tamagui/theme-builder|themes/v5|config/v5|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
+\`\`\`
+
+### 4. Run the Sheet codemod
 
 Run the codemod, then inspect every changed Sheet:
 
@@ -132,7 +166,7 @@ After:
 </Sheet>
 \`\`\`
 
-### 4. Remove deprecated v2 APIs
+### 5. Remove deprecated v2 APIs
 
 Search:
 
@@ -155,14 +189,14 @@ Replace:
 - \`forceRemoveScrollEnabled\` -> \`disableRemoveScroll\` with inverted intent.
 - \`createCheckbox\` \`sizeAdjust\` -> explicit sizing math or component styles.
 
-### 5. Replace true tokens
+### 6. Replace true tokens
 
 - Default v3 configs no longer export the legacy \`$true\` token key.
 - Component default size resolves to bare \`4\`.
 - Replace authored \`$true\` tokens with real bare keys such as \`4\`.
 - Do not change unrelated boolean props or boolean variant values.
 
-### 6. Replace token stepping
+### 7. Replace token stepping
 
 Removed from \`@tamagui/get-token\`:
 
@@ -185,14 +219,14 @@ const padding = getVariableValue(getSize(size)) * 0.6
 
 Use explicit token keys when you need a named smaller or larger token. Use numeric multiplication when proportional sizing is intended.
 
-### 7. Audit font size values
+### 8. Audit font size values
 
 - \`fontSize={17}\` is a raw numeric platform value and keeps platform-default line-height behavior.
 - \`fontSize="17px"\` is an exact pixel value.
-- v5 config font \`size\` and \`lineHeight\` scales are pinned to px strings in v3.
+- Configured font \`size\` and \`lineHeight\` tokens should use px strings when exact web pixels are intended.
 - Convert custom config font tokens to px strings if exact pixels were intended.
 
-### 8. Update FocusScope
+### 9. Update FocusScope
 
 - Function-as-children is removed. Pass JSX children directly.
 - FocusScope renders a \`display: contents\` wrapper.
@@ -216,7 +250,7 @@ After:
 </FocusScope>
 \`\`\`
 
-### 9. Update Dialog, Popover, Select, and Adapt flows
+### 10. Update Dialog, Popover, Select, and Adapt flows
 
 - Dialog, Popover, and Select use one Adapt handoff model.
 - Adapted Sheet content stays mounted through the sheet slide-out.
@@ -227,27 +261,27 @@ After:
 - Non-modal Dialog content no longer enables RemoveScroll while open.
 - Remove internal imports such as \`useShowPopoverSheet\`, \`PopoverAdaptHiddenContext\`, or \`useSelectBreakpointActive\` if the app used them.
 
-### 10. Update Select
+### 11. Update Select
 
-- Remove \`name\` and \`autoComplete\` from custom \`Select\` usage.
+- Keep \`name\` when Select participates in a form. Remove the unsupported \`autoComplete\` prop.
 - Use \`Select.Separator\` for visual grouping.
 - \`Select.Content\` accepts \`onEscapeKeyDown\` and \`onInteractOutside\`.
 - \`Select.Trigger\` and web \`Select.Viewport\` expose \`data-state="open" | "closed"\`.
 
-### 11. Update themed icons
+### 12. Update themed icons
 
 - \`<Icon size="4" />\` now resolves through the current font's \`font.size['4']\` scale.
 - Raw numeric icon sizes are unchanged.
 - Themed icons no longer accept Tamagui media or pseudo props directly.
 - Wrap icons in a styled \`View\` for media and state clauses.
 
-### 12. Check ScrollView web usage
+### 13. Check ScrollView web usage
 
 \`@tamagui/scroll-view\` now has its own web implementation. It supports \`scrollTo\`, \`scrollToEnd\`, \`getScrollableNode\`, RN-shaped \`onScroll\`, \`contentContainerStyle\`, \`horizontal\`, and indicator props.
 
 Replace unsupported old web/lite usage such as momentum events, \`snapTo*\`, and \`keyboardDismissMode\`.
 
-### 13. Optional Tailwind frontend
+### 14. Optional Tailwind frontend
 
 Tailwind authoring is selected by the component package, with no global config:
 
@@ -259,7 +293,7 @@ Keep importing regular Tamagui components from \`tamagui\` or
 \`@tamagui/core\`. Do not mix utility classes and Tamagui style props on the
 same component; choose the import whose styling language that component uses.
 
-### 14. Verification
+### 15. Verification
 
 - Run \`npx tamagui check\`.
 - Run typecheck and build.
@@ -286,7 +320,7 @@ Bring the app to the v2 baseline before applying v3 changes.
 - Move root \`createTamagui\` settings into \`settings\`.
 - Account for the defaults \`flexBasis: 0\` and \`position: static\`. Use \`styleCompat: 'legacy'\` or explicit props if needed.
 - Rename media queries: \`$2xl\` -> \`$xxl\`, \`$2xs\` -> \`$xxs\`, and max queries to kebab-case such as \`$max-md\`.
-- Update colors/themes to Radix v3 and Config v5 theme helpers if the app uses default themes.
+- Update colors and themes to the v3 recipe helpers in \`@tamagui/themes/builder\`.
 
 ### v1 prop and API changes
 

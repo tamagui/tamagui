@@ -408,3 +408,23 @@ Known dependents to migrate, from a repo grep: `@tamagui/themes` v5 files,
 - `ramp()` keys ship in every theme (11 keys per distinct map); that is what
   makes scheme- and palette-relative styling work everywhere. Revisit only if
   the size assertion flags the cost.
+
+## Implementation receipt
+
+Measured on 2026-08-03 against `0f510aaa6f`, the last v6 output before this
+implementation. The CSS comparison runs both theme packs through the same v3
+serializer so it measures the theme-set change rather than serializer drift.
+
+| Artifact | Previous v6 | Recipe tree | Delta |
+| --- | ---: | ---: | ---: |
+| Theme names | 390 | 128 | -262 (-67.2%) |
+| Distinct maps | 124 | 36 | -88 (-71.0%) |
+| Static module, raw | 93,042 B | 18,736 B | -74,306 B (-79.9%) |
+| Static module, gzip -9 | 14,281 B | 2,911 B | -11,370 B (-79.6%) |
+| Theme CSS, raw | 2,067,692 B | 627,130 B | -1,440,562 B (-69.7%) |
+| Theme CSS, gzip -9 | 49,811 B | 17,517 B | -32,294 B (-64.8%) |
+
+The original estimate of about 28 maps omitted the light/dark multiplier for
+base, accent, and brand. The implemented tree's exact expected count is 36:
+eight normal maps, eight accent maps, eight brand maps, and twelve semantic
+color maps. `themes.test.ts` asserts both 128 names and 36 distinct maps.
