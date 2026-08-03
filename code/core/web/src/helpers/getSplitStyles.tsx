@@ -943,6 +943,25 @@ export const getSplitStyles: StyleSplitter = (
 
     const disablePropMap = !isStyleLikeKey
 
+    // ordinary host strings need no structural mapping. Contribute them
+    // directly so the program engine is their only per-prop runtime path.
+    if (
+      !isHOC &&
+      isValidStyleKeyInit &&
+      typeof valInit === 'string' &&
+      valInit !== 'safe' &&
+      !(process.env.TAMAGUI_TARGET === 'native' && valInit === 'unset') &&
+      !(variants && keyInit in variants) &&
+      !(accept && keyInit in accept) &&
+      !(styledContext && keyInit in styledContext) &&
+      (process.env.TAMAGUI_TARGET === 'native' ||
+        (process.env.TAMAGUI_TARGET === 'web' &&
+          (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))) &&
+      contributeStylePrograms(styleState, keyInit, valInit)
+    ) {
+      continue
+    }
+
     propMapper(keyInit, valInit, styleState, disablePropMap, (key, val, originalVal) => {
       const isStyledContextProp = styledContext && key in styledContext
 
