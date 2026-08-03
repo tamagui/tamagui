@@ -62,8 +62,8 @@ describe('tailwind theme-value color classes', () => {
   })
 
   test('an unconfigured palette name passes through', () => {
-    expect((getConfig() as any).tokensParsed.color).not.toHaveProperty('brand-500')
-    expect(colorRule('bg-brand-500', 'backgroundColor')).toBeNull()
+    expect((getConfig() as any).tokensParsed.color).not.toHaveProperty('not-configured-500')
+    expect(colorRule('bg-not-configured-500', 'backgroundColor')).toBeNull()
   })
 
   test('non-color arbitrary width is unaffected', () => {
