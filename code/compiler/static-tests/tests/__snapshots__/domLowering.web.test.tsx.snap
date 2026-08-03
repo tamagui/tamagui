@@ -6,10 +6,10 @@ exports[`DOM elements lower to literal tags through every normalized element for
     import { jsx, jsxs } from 'react/jsx-runtime'
     import { html as h } from '@tamagui/core'
 
-    export const JSXElement = <main id="main"><h1>Title</h1></main>
-    export const JSXCall = jsx("section", { children: 'jsx' })
-    export const JSXSCall = jsxs("nav", { children: ['one', jsx("span", { children: 'two' })] })
-    export const CreateElementCall = createElement("article", null, 'named')
-    export const MemberCreateElementCall = React.createElement("footer", null, 'member')
+    export const JSXElement = <main className="_mt-0px _mr-0px _mb-0px _ml-0px _pt-0px _pr-0px _pb-0px _pl-0px" id="main"><h1 className="_mt-0px _mr-0px _mb-0px _ml-0px _pt-0px _pr-0px _pb-0px _pl-0px _fs-32970875 _fw-2130218822">Title</h1></main>
+    export const JSXCall = jsx("section", { children: 'jsx' , className: "_mt-0px _mr-0px _mb-0px _ml-0px _pt-0px _pr-0px _pb-0px _pl-0px" })
+    export const JSXSCall = jsxs("nav", { children: ['one', jsx("span", { children: 'two' , className: "_mt-0px _mr-0px _mb-0px _ml-0px _pt-0px _pr-0px _pb-0px _pl-0px _tdl-1489692905" })] , className: "_mt-0px _mr-0px _mb-0px _ml-0px _pt-0px _pr-0px _pb-0px _pl-0px" })
+    export const CreateElementCall = createElement("article", { className: "_mt-0px _mr-0px _mb-0px _ml-0px _pt-0px _pr-0px _pb-0px _pl-0px" }, 'named')
+    export const MemberCreateElementCall = React.createElement("footer", { className: "_mt-0px _mr-0px _mb-0px _ml-0px _pt-0px _pr-0px _pb-0px _pl-0px" }, 'member')
 "
 `;

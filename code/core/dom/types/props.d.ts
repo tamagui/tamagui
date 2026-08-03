@@ -197,50 +197,22 @@ export interface StrictDOMPropsBase extends StrictDOMDataProps {
 	* @platform web
 	*/
 	onFullscreenError?: (event: unknown) => void;
-	/**
-	* native scrolling lives in a scroll view, not in an ordinary element
-	* @platform web
-	*/
 	onScroll?: (event: unknown) => void;
 	/**
 	* native has no wheel input
 	* @platform web
 	*/
 	onWheel?: (event: unknown) => void;
-	/**
-	* use onPointerDown for cross-platform pointer input
-	* @platform web
-	*/
 	onMouseDown?: (event: unknown) => void;
-	/**
-	* use onPointerEnter for cross-platform pointer input
-	* @platform web
-	*/
 	onMouseEnter?: (event: unknown) => void;
-	/**
-	* use onPointerLeave for cross-platform pointer input
-	* @platform web
-	*/
 	onMouseLeave?: (event: unknown) => void;
 	/**
 	* use onPointerMove for cross-platform pointer input
 	* @platform web
 	*/
 	onMouseMove?: (event: unknown) => void;
-	/**
-	* use onPointerOut for cross-platform pointer input
-	* @platform web
-	*/
 	onMouseOut?: (event: unknown) => void;
-	/**
-	* use onPointerOver for cross-platform pointer input
-	* @platform web
-	*/
 	onMouseOver?: (event: unknown) => void;
-	/**
-	* use onPointerUp for cross-platform pointer input
-	* @platform web
-	*/
 	onMouseUp?: (event: unknown) => void;
 }
 export interface StrictDOMAnchorProps extends StrictDOMPropsBase {

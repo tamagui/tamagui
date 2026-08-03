@@ -125,13 +125,12 @@ export const COMPATIBILITY: readonly CompatibilityRow[] = [
   },
   {
     area: 'event',
-    subject:
-      'onMouseDown, onMouseEnter, onMouseLeave, onMouseMove, onMouseOut, onMouseOver, onMouseUp',
+    subject: 'onMouseMove',
     keys: [],
-    rsd: 'forwarded to native props react native ignores, marked TEMPORARY in its allowlist',
-    tamagui: 'web only, with a diagnostic pointing at the matching pointer event',
+    rsd: 'allowed on the strict surface but omitted from the native prop forwarding path',
+    tamagui: 'native diagnostic pointing at onPointerMove',
     reason:
-      'a handler that silently never fires is worse than a build error that names the cross-platform spelling',
+      'a handler that is silently dropped is worse than a build error naming the supported cross-platform spelling; the other mouse events and onScroll match the upstream native host passthrough',
   },
   {
     area: 'event',
@@ -354,8 +353,8 @@ export const COMPATIBILITY: readonly CompatibilityRow[] = [
     keys: [],
     rsd: 'wraps every ref-ed host node in an Object.create view adding nodeName, viewport-scaled metrics and the tag polyfills',
     tamagui:
-      'exposes the react native public instance untouched, so tagName reports the native view name rather than the html tag, and neither the image nor the text-entry polyfill exists',
+      'wraps only ref-ed hosts in a stable Object.create facade adding nodeName, tagName, image complete, text-entry selection APIs, bound host methods and viewport-scaled geometry',
     reason:
-      'react native already implements the whole documented Node and Element subset on its own instance, so the wrapper only buys the tag name and two polyfills. Whether to add those back is design item 8, a user decision; the proposal is in `plans/v3-handoff-log.md` item 9 and this row describes what ships until it is picked',
+      'the compiler supplies the semantic tag only on the ref path, preserving the zero-allocation common path; the viewport provider scales synchronous DOM-shaped lengths and getBoundingClientRect while native measure methods remain bound to the host instance',
   },
 ]

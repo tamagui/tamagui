@@ -3,21 +3,31 @@ import {
   DOMText,
   DOMTextInput,
   DOMView,
+  DOMViewportProvider,
+  createDOMRefCallback,
   // the @tamagui/core alias in the native test config rewrites deep imports,
   // so this reaches the source directly
 } from '../web/src/dom/primitives.native'
+import * as React from 'react'
 import { Image, Pressable, Text, TextInput, View } from 'react-native'
+import { act, create } from 'react-test-renderer'
 import { describe, expect, test, vi } from 'vitest'
+
+vi.mock('react-native', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('react-native')>()),
+  useWindowDimensions: () => ({ width: 2000, height: 1000, scale: 1, fontScale: 1 }),
+}))
 
 /**
  * The native DOM primitives.
  *
- * These are called as plain functions rather than rendered, for two reasons.
+ * Ref-free primitives are called as plain functions rather than rendered, for two reasons.
  * The fake react native the native suite runs against renders every host to
  * null, so a render tree would assert nothing; and calling a component outside
  * a renderer throws the moment it uses a hook, which makes every test here also
- * a proof that the primitives stay hook-free. That is the property the whole
- * design rests on — see `contract.ts`.
+ * a proof that the common path stays hook-free. A compiler-tagged ref takes a
+ * separate component path so it can consume viewport scale without taxing
+ * elements that do not expose a ref.
  */
 
 const press = (pageX = 4, pageY = 8) => ({ nativeEvent: { pageX, pageY } })
@@ -179,5 +189,124 @@ describe('the ref', () => {
     expect(DOMView({ ref }).props.ref).toBe(ref)
     expect(DOMText({ ref, onClick: () => {} }).props.ref).toBe(ref)
     expect(DOMTextInput({ ref, onChange: () => {} }).props.ref).toBe(ref)
+  })
+
+  test('exposes a stable DOM-shaped facade when the compiler supplies a tag', () => {
+    const ref = { current: null as null | Record<string, any> }
+    const firstHost = {
+      focus: vi.fn(function (this: unknown) {
+        expect(this).toBe(firstHost)
+      }),
+    }
+    let renderer: ReturnType<typeof create>
+    act(() => {
+      renderer = create(<DOMView __tag="main" ref={ref} />, {
+        createNodeMock: () => firstHost,
+      })
+    })
+    expect(ref.current?.nodeName).toBe('MAIN')
+    expect(ref.current?.tagName).toBe('MAIN')
+    ref.current?.focus()
+    expect(firstHost.focus).toHaveBeenCalledTimes(1)
+    const facade = ref.current
+    act(() => renderer.update(<DOMView __tag="main" ref={ref} />))
+    expect(ref.current).toBe(facade)
+    act(() => renderer.unmount())
+    expect(ref.current).toBeNull()
+  })
+
+  test('provides text-selection methods on input refs', () => {
+    const ref = { current: null as null | Record<string, any> }
+    const setSelection = vi.fn()
+    act(() => {
+      create(<DOMTextInput __tag="input" ref={ref} />, {
+        createNodeMock: () => ({ setSelection }),
+      })
+    })
+    ref.current?.setSelectionRange(2, 5)
+    expect(ref.current?.selectionStart).toBe(2)
+    expect(ref.current?.selectionEnd).toBe(5)
+    expect(setSelection).toHaveBeenCalledWith(2, 5)
+  })
+
+  test('scales DOM geometry through the viewport provider', () => {
+    const ref = { current: null as null | Record<string, any> }
+    const host = {
+      offsetWidth: 30,
+      getBoundingClientRect: () => ({ x: 2, y: 4, width: 30, height: 20 }),
+    }
+    act(() => {
+      create(
+        <DOMViewportProvider viewportWidth={1000}>
+          <DOMView __tag="div" ref={ref} />
+        </DOMViewportProvider>,
+        { createNodeMock: () => host }
+      )
+    })
+    expect(ref.current?.offsetWidth).toBe(15)
+    expect(ref.current?.getBoundingClientRect()).toMatchObject({
+      x: 1,
+      y: 2,
+      width: 15,
+      height: 10,
+    })
+  })
+
+  test('honors callback-ref cleanup and null cleanup semantics', () => {
+    const host = { focus: vi.fn() }
+    const cleanup = vi.fn()
+    const withCleanup = vi.fn(() => cleanup)
+    const callback = createDOMRefCallback(withCleanup, 'section', 1)
+    const returnedCleanup = callback(host)
+    expect(withCleanup).toHaveBeenCalledTimes(1)
+    expect(withCleanup.mock.calls[0]?.[0].nodeName).toBe('SECTION')
+    expect(typeof returnedCleanup).toBe('function')
+    returnedCleanup?.()
+    expect(cleanup).toHaveBeenCalledTimes(1)
+    expect(withCleanup).toHaveBeenCalledTimes(1)
+
+    const values: unknown[] = []
+    const withoutCleanup = (value: unknown) => {
+      values.push(value)
+    }
+    const nullingCallback = createDOMRefCallback(withoutCleanup, 'aside', 1)
+    nullingCallback(host)
+    expect((values[0] as { nodeName: string }).nodeName).toBe('ASIDE')
+    const nullingCleanup = nullingCallback(host)
+    expect(values[1]).toBeNull()
+    expect(values[2]).toBe(values[0])
+    nullingCleanup?.()
+    expect(values.at(-1)).toBeNull()
+  })
+
+  test('runs React 19 callback-ref cleanup across mount, update and unmount', () => {
+    const host = { focus: vi.fn() }
+    const firstCleanup = vi.fn()
+    const secondCleanup = vi.fn()
+    const firstRef = vi.fn(() => firstCleanup)
+    const secondRef = vi.fn(() => secondCleanup)
+    let renderer: ReturnType<typeof create>
+
+    act(() => {
+      renderer = create(<DOMView __tag="section" ref={firstRef} />, {
+        createNodeMock: () => host,
+      })
+    })
+    expect(firstRef).toHaveBeenCalledTimes(1)
+    expect(firstRef.mock.calls[0]?.[0].nodeName).toBe('SECTION')
+
+    act(() => renderer.update(<DOMView __tag="section" ref={secondRef} />))
+    expect(firstCleanup).toHaveBeenCalledOnce()
+    expect(firstRef).toHaveBeenCalledTimes(1)
+    expect(secondRef).toHaveBeenCalledTimes(1)
+    expect(secondRef.mock.calls[0]?.[0]).toBe(firstRef.mock.calls[0]?.[0])
+
+    act(() => renderer.unmount())
+    expect(secondCleanup).toHaveBeenCalledOnce()
+    expect(secondRef).toHaveBeenCalledTimes(1)
+  })
+
+  test('renders br as a newline without a runtime child scan', () => {
+    expect(DOMText({ __tag: 'br' }).props.children).toBe('\n')
   })
 })

@@ -15,8 +15,8 @@ import type { EventRow, TagName } from './types'
 const TEXT_ENTRY: readonly TagName[] = ['input', 'textarea']
 const FORM_CONTROLS: readonly TagName[] = ['input', 'select', 'textarea']
 
-/** react native carries these w3c pointer events on its host views */
-const pointer = (nativeProp: string): EventRow => ({
+/** react native carries these pointer, mouse and scroll events on host views */
+const nativeHost = (nativeProp: string): EventRow => ({
   tags: '*',
   payload: 'unknown',
   nativeProp,
@@ -36,20 +36,20 @@ const webOnly = (note: string): EventRow => ({
 
 export const EVENTS: Readonly<Record<string, EventRow>> = {
   // pointer and touch
-  onPointerCancel: pointer('onPointerCancel'),
-  onPointerDown: pointer('onPointerDown'),
-  onPointerEnter: pointer('onPointerEnter'),
-  onPointerLeave: pointer('onPointerLeave'),
-  onPointerMove: pointer('onPointerMove'),
-  onPointerOut: pointer('onPointerOut'),
-  onPointerOver: pointer('onPointerOver'),
-  onPointerUp: pointer('onPointerUp'),
-  onGotPointerCapture: pointer('onGotPointerCapture'),
-  onLostPointerCapture: pointer('onLostPointerCapture'),
-  onTouchCancel: pointer('onTouchCancel'),
-  onTouchEnd: pointer('onTouchEnd'),
-  onTouchMove: pointer('onTouchMove'),
-  onTouchStart: pointer('onTouchStart'),
+  onPointerCancel: nativeHost('onPointerCancel'),
+  onPointerDown: nativeHost('onPointerDown'),
+  onPointerEnter: nativeHost('onPointerEnter'),
+  onPointerLeave: nativeHost('onPointerLeave'),
+  onPointerMove: nativeHost('onPointerMove'),
+  onPointerOut: nativeHost('onPointerOut'),
+  onPointerOver: nativeHost('onPointerOver'),
+  onPointerUp: nativeHost('onPointerUp'),
+  onGotPointerCapture: nativeHost('onGotPointerCapture'),
+  onLostPointerCapture: nativeHost('onLostPointerCapture'),
+  onTouchCancel: nativeHost('onTouchCancel'),
+  onTouchEnd: nativeHost('onTouchEnd'),
+  onTouchMove: nativeHost('onTouchMove'),
+  onTouchStart: nativeHost('onTouchStart'),
 
   // press
   onClick: {
@@ -102,24 +102,17 @@ export const EVENTS: Readonly<Record<string, EventRow>> = {
   // document and viewport
   onFullscreenChange: webOnly('fullscreen is a browser api'),
   onFullscreenError: webOnly('fullscreen is a browser api'),
-  onScroll: {
-    tags: '*',
-    payload: 'unknown',
-    nativeProp: null,
-    web: 'host',
-    native: 'none',
-    note: 'native scrolling lives in a scroll view, not in an ordinary element',
-  },
+  onScroll: nativeHost('onScroll'),
   onWheel: webOnly('native has no wheel input'),
 
-  // mouse, web only: pointer events are the cross-platform spelling
-  onMouseDown: webOnly('use onPointerDown for cross-platform pointer input'),
-  onMouseEnter: webOnly('use onPointerEnter for cross-platform pointer input'),
-  onMouseLeave: webOnly('use onPointerLeave for cross-platform pointer input'),
+  // React Native desktop carries the mouse subset that React Strict DOM forwards.
+  onMouseDown: nativeHost('onMouseDown'),
+  onMouseEnter: nativeHost('onMouseEnter'),
+  onMouseLeave: nativeHost('onMouseLeave'),
   onMouseMove: webOnly('use onPointerMove for cross-platform pointer input'),
-  onMouseOut: webOnly('use onPointerOut for cross-platform pointer input'),
-  onMouseOver: webOnly('use onPointerOver for cross-platform pointer input'),
-  onMouseUp: webOnly('use onPointerUp for cross-platform pointer input'),
+  onMouseOut: nativeHost('onMouseOut'),
+  onMouseOver: nativeHost('onMouseOver'),
+  onMouseUp: nativeHost('onMouseUp'),
 
   // image
   onError: {

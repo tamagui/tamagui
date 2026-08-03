@@ -1,9 +1,7 @@
-import { defaultConfig } from '@tamagui/config/v6'
-import { createTamagui } from 'tamagui'
+import { createFont, createTamagui, createTokens } from 'tamagui'
+import { createNativeBenchConfig } from '../shared/native-tamagui-config'
 
-const tamaguiConfig = createTamagui({
-  ...defaultConfig,
-})
+const tamaguiConfig = createNativeBenchConfig({ createFont, createTamagui, createTokens })
 
 export type Conf = typeof tamaguiConfig
 
