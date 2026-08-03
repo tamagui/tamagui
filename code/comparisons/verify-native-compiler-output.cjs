@@ -562,15 +562,17 @@ async function main() {
           dynamicOpacityStyles++
         }
       }
-      if (
+      const jsxExpressionArray =
         value.type === 'JSXAttribute' &&
         value.name?.type === 'JSXIdentifier' &&
         value.name.name === '_expressions' &&
         value.value?.type === 'JSXExpressionContainer' &&
         value.value.expression?.type === 'ArrayExpression'
-      ) {
-        expressionArrays++
-      }
+      const objectExpressionArray =
+        value.type === 'ObjectProperty' &&
+        propertyName(value) === '_expressions' &&
+        value.value?.type === 'ArrayExpression'
+      if (jsxExpressionArray || objectExpressionArray) expressionArrays++
     })
     return { calls, expressionArrays, dynamicOpacityStyles, staticStyles }
   }
@@ -716,6 +718,8 @@ async function main() {
           stableStyleWrappers: v3DynamicBehavior.calls,
           dynamicExpressionArrays: v3DynamicBehavior.expressionArrays,
           dynamicOpacityStyles: v3DynamicBehavior.dynamicOpacityStyles,
+          metroFrontendCacheTest:
+            'frontend.test.ts publishes and applies the post-Babel native opacity plan through the Metro cache worker',
           compileRenderUpdateTest:
             'dynamicPartial.native.test.tsx asserts stable host identity, static styles, and opacity 1 to 0.8',
         },
