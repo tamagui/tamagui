@@ -10,6 +10,9 @@ import {
   type BenchResult,
 } from '../../shared/bench'
 
+const BEHAVIOR_VALIDATION =
+  new URLSearchParams(window.location.search).get('behaviorValidation') === '1'
+
 // ── scenario 1: simple (fully static — compiler CAN flatten) ──
 
 function SimpleItems({ seed }: { seed: number }) {
@@ -19,7 +22,8 @@ function SimpleItems({ seed }: { seed: number }) {
       // all props are static literals — compiler should flatten to div
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
+          key={i}
+          data-bench-scenario-item="simple"
           width={20}
           height={20}
           backgroundColor="rgb(99,102,241)"
@@ -40,7 +44,8 @@ function RichItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
+          key={i}
+          data-bench-scenario-item="rich"
           width={60}
           height={40}
           borderRadius={6}
@@ -64,7 +69,8 @@ function GroupItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
+          key={i}
+          data-bench-scenario-item="group"
           flexDirection="row"
           alignItems="center"
           gap={8}
@@ -105,7 +111,8 @@ function HeavyItems({ seed }: { seed: number }) {
       const color = CARD_COLORS[(i + seed) % 4]
       arr.push(
         <View
-          key={i + seed * HEAVY_COUNT}
+          key={i}
+          data-bench-scenario-item="heavy"
           flexDirection="row"
           alignItems="center"
           gap={12}
@@ -159,7 +166,10 @@ function AnimatedItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
+          key={i}
+          data-bench-scenario-item="animated"
+          data-bench-dynamic-item={i === 0 ? 'primary' : undefined}
+          data-bench-dynamic-seed={seed}
           transition="bouncy"
           width={24}
           height={24}
@@ -205,15 +215,27 @@ function BenchRunner({
       mountTimeRef.current = performance.now() - startRef.current
       setPhase('mounted')
     } else if (phase === 'mounted') {
-      requestAnimationFrame(() => {
+      const rerender = () => {
         startRef.current = performance.now()
         setPhase('rerendering')
         setSeed((s) => s + 1)
-      })
+      }
+      if (BEHAVIOR_VALIDATION) {
+        setTimeout(rerender, 500)
+      } else {
+        requestAnimationFrame(rerender)
+      }
     } else if (phase === 'rerendering') {
       const rerenderTime = performance.now() - startRef.current
-      setPhase('done')
-      onResult({ mount: mountTimeRef.current, rerender: rerenderTime })
+      const finish = () => {
+        setPhase('done')
+        onResult({ mount: mountTimeRef.current, rerender: rerenderTime })
+      }
+      if (BEHAVIOR_VALIDATION) {
+        setTimeout(finish, 700)
+      } else {
+        finish()
+      }
     }
   }, [phase])
 
@@ -230,6 +252,7 @@ function BenchRunner({
 
   return (
     <div
+      data-bench-runner-seed={seed}
       style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}
     >
       <Component seed={seed} />
