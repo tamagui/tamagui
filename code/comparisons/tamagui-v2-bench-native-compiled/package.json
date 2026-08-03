@@ -1,10 +1,10 @@
 {
-  "name": "@tamagui/comparison-tamagui-bench-native-compiled",
+  "name": "@tamagui/comparison-tamagui-v2-bench-native-compiled",
   "version": "0.0.0",
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "expo start --port 8104"
+    "start": "expo start --port 8107"
   },
   "expo": {
     "autolinking": {
@@ -16,15 +16,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/config": "workspace:*",
-    "@tamagui/timer": "workspace:*",
+    "@tamagui/config": "2.6.2",
     "expo": "~55.0.28",
     "expo-linking": "~55.0.7",
-    "react": ">=19",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "react-native": "0.83.2",
-    "tamagui": "workspace:*"
+    "react-native-safe-area-context": "5.7.0",
+    "tamagui": "2.6.2"
   },
   "devDependencies": {
-    "@tamagui/metro-plugin": "workspace:*"
+    "@tamagui/babel-plugin": "2.6.2",
+    "@tamagui/metro-plugin": "npm:@tamagui/metro-plugin@2.6.2"
   }
 }

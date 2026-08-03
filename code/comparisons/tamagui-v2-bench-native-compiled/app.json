@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "tamagui-bench-native",
-    "slug": "tamagui-bench-native",
+    "name": "tamagui-v2-bench-native-compiled",
+    "slug": "tamagui-v2-bench-native-compiled",
     "version": "1.0.0",
-    "scheme": "tgbenchnative",
+    "scheme": "tgv2benchnativecompiled",
     "platforms": ["ios"],
     "ios": {
-      "bundleIdentifier": "dev.tamagui.benchnative",
+      "bundleIdentifier": "dev.tamagui.v2benchnative.compiled",
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsLocalNetworking": true
