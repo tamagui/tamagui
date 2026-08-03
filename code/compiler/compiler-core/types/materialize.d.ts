@@ -2,7 +2,7 @@ import type { ResolvedModuleId, SourceSpan } from './contracts';
 import type { BailoutReason } from './diagnostics';
 import type { StaticEvaluationValue } from './evaluate';
 import type { ProjectGraph } from './graph';
-import type { ComponentImportProvenance, ElementComponentIR, ElementIR } from './ir';
+import type { ComponentImportProvenance, ElementComponentIR, ElementIR, DOMStyleDefinitionIR } from './ir';
 export type MaterializedValue = {
     kind: 'static';
     value: StaticEvaluationValue;
@@ -19,6 +19,15 @@ export type MaterializedValue = {
     kind: 'bailout';
     bailout: BailoutReason;
     span: SourceSpan;
+} | {
+    kind: 'dom-style';
+    span: SourceSpan;
+    items: {
+        condition: SourceSpan | null;
+        value: Exclude<MaterializedValue, {
+            kind: 'dom-style';
+        }>;
+    }[];
 };
 export type MaterializedElementEntry = {
     kind: 'prop';
@@ -64,12 +73,16 @@ export interface MaterializedStyledDefinition {
     complete: boolean;
     bailouts: BailoutReason[];
 }
+export interface MaterializedDOMStyleDefinition extends Omit<DOMStyleDefinitionIR, 'value'> {
+    value: MaterializedValue;
+}
 export interface MaterializedModule {
     version: 1;
     id: ResolvedModuleId;
     inputHash: string;
     elements: MaterializedElement[];
     styledDefinitions: MaterializedStyledDefinition[];
+    domStyleDefinitions: MaterializedDOMStyleDefinition[];
     diagnostics: BailoutReason[];
     dependencies: ResolvedModuleId[];
 }

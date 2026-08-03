@@ -14,6 +14,16 @@ export type StaticValue = string | number | boolean | null
 export type ElementValue =
   | { kind: 'static'; value: StaticValue; span: SourceSpan }
   | ExpressionReference
+  | DOMStyleProgramIR
+
+export interface DOMStyleProgramIR {
+  kind: 'dom-style'
+  span: SourceSpan
+  items: {
+    condition: ExpressionReference | null
+    value: ExpressionReference
+  }[]
+}
 
 export interface ComponentImportProvenance {
   specifier: string
@@ -108,9 +118,22 @@ export interface IncompleteStyledDefinitionIR extends StyledDefinitionIRBase {
 
 export type StyledDefinitionIR = CompleteStyledDefinitionIR | IncompleteStyledDefinitionIR
 
+/** A compile-time style handle declared by the standalone DOM frontend. */
+export interface DOMStyleDefinitionIR {
+  kind: 'dom-style-definition'
+  id: ResolvedModuleId
+  name: string
+  /** Span of the complete style(...) call. */
+  span: SourceSpan
+  definitionSpan: SourceSpan
+  factory: ComponentImportProvenance
+  value: ExpressionReference
+}
+
 export interface ElementIRResult {
   elements: ElementIR[]
   styledDefinitions: StyledDefinitionIR[]
+  domStyleDefinitions: DOMStyleDefinitionIR[]
   bailouts: BailoutReason[]
 }
 

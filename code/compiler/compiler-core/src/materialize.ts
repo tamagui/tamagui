@@ -8,6 +8,7 @@ import type {
   ElementEntryIR,
   ElementIR,
   StyledDefinitionIR,
+  DOMStyleDefinitionIR,
 } from './ir'
 
 export type MaterializedValue =
@@ -28,6 +29,14 @@ export type MaterializedValue =
       kind: 'bailout'
       bailout: BailoutReason
       span: SourceSpan
+    }
+  | {
+      kind: 'dom-style'
+      span: SourceSpan
+      items: {
+        condition: SourceSpan | null
+        value: Exclude<MaterializedValue, { kind: 'dom-style' }>
+      }[]
     }
 
 export type MaterializedElementEntry =
@@ -77,12 +86,20 @@ export interface MaterializedStyledDefinition {
   bailouts: BailoutReason[]
 }
 
+export interface MaterializedDOMStyleDefinition extends Omit<
+  DOMStyleDefinitionIR,
+  'value'
+> {
+  value: MaterializedValue
+}
+
 export interface MaterializedModule {
   version: 1
   id: ResolvedModuleId
   inputHash: string
   elements: MaterializedElement[]
   styledDefinitions: MaterializedStyledDefinition[]
+  domStyleDefinitions: MaterializedDOMStyleDefinition[]
   diagnostics: BailoutReason[]
   dependencies: ResolvedModuleId[]
 }
@@ -102,6 +119,19 @@ function materializeValue(
       dependencies: [],
       span: value.span,
       literalOrigin: true,
+    }
+  }
+  if (value.kind === 'dom-style') {
+    return {
+      kind: 'dom-style',
+      span: value.span,
+      items: value.items.map((item) => ({
+        condition: item.condition,
+        value: materializeValue(graph, item.value) as Exclude<
+          MaterializedValue,
+          { kind: 'dom-style' }
+        >,
+      })),
     }
   }
   const result = graph.evaluate(value)
@@ -188,6 +218,8 @@ function collectDependencies(module: Omit<MaterializedModule, 'dependencies'>) {
   const collect = (value: MaterializedValue) => {
     if (value.kind === 'static') {
       for (const dependency of value.dependencies) dependencies.add(dependency)
+    } else if (value.kind === 'dom-style') {
+      for (const item of value.items) collect(item.value)
     } else if (value.bailout.dependencyId) {
       dependencies.add(value.bailout.dependencyId)
     }
@@ -214,6 +246,10 @@ function collectDependencies(module: Omit<MaterializedModule, 'dependencies'>) {
     if (definition.base.definition) dependencies.add(definition.base.definition.id)
     if (definition.baseClassName) collect(definition.baseClassName)
     collect(definition.options)
+  }
+  for (const definition of module.domStyleDefinitions) {
+    dependencies.add(definition.factory.resolvedId)
+    collect(definition.value)
   }
   return [...dependencies].sort(compareCodeUnits)
 }
@@ -251,6 +287,10 @@ export function materializeModule(
     styledDefinitions: definitions.map((definition) =>
       materializeStyledDefinition(graph, definition)
     ),
+    domStyleDefinitions: result.domStyleDefinitions.map((definition) => ({
+      ...definition,
+      value: materializeValue(graph, definition.value),
+    })),
     diagnostics: graph.diagnostics().filter(({ span }) => span.id === id),
   }
   return { ...base, dependencies: collectDependencies(base) }

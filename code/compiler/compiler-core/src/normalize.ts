@@ -28,6 +28,8 @@ import type {
   ElementPropIR,
   ElementSpreadIR,
   ElementValue,
+  DOMStyleDefinitionIR,
+  DOMStyleProgramIR,
   StaticValue,
   StyledDefinitionIR,
 } from './ir'
@@ -621,6 +623,118 @@ function styledDefinitions(
   return definitions.sort((left, right) => left.span.start - right.span.start)
 }
 
+const DOM_STYLE_FRONTENDS = new Set([
+  'tamagui/dom',
+  '@tamagui/core/dom',
+  '@tamagui/tailwind',
+])
+
+function domStyleDefinitions(
+  id: ResolvedModuleId,
+  program: AstNode,
+  imports: readonly HostResolvedImport[]
+): DOMStyleDefinitionIR[] {
+  const definitions: DOMStyleDefinitionIR[] = []
+  walkAst(program, (node) => {
+    if (node.type !== 'VariableDeclarator') return
+    const identifier = childNode(node, 'id')
+    const name = identifierName(identifier)
+    const call = childNode(node, 'init')
+    if (!name || !identifier || call?.type !== 'CallExpression') return
+    const callee = childNode(call, 'callee')
+    const factoryName = callee && identifierName(callee)
+    if (!factoryName) return
+    const binding = importBinding(program, factoryName)
+    if (
+      !binding ||
+      binding.imported !== 'style' ||
+      !DOM_STYLE_FRONTENDS.has(binding.source)
+    ) {
+      return
+    }
+    const factory = hostImportProvenance(imports, binding.source, binding.imported)
+    const value = childNodes(call, 'arguments')[0]
+    if (!factory || !value) return
+    definitions.push({
+      kind: 'dom-style-definition',
+      id,
+      name,
+      span: spanOf(id, call),
+      definitionSpan: spanOf(id, identifier),
+      factory,
+      value: expressionReference(id, value),
+    })
+  })
+  return definitions.sort((left, right) => left.span.start - right.span.start)
+}
+
+function domStyleArgument(
+  candidate: AnalyzerCandidate,
+  id: ResolvedModuleId,
+  program: AstNode,
+  node: AstNode
+): AstNode | null {
+  let call = node
+  if (node.type === 'Identifier') {
+    const name = identifierName(node)
+    const definition = name ? candidate.definitionOf(id, name) : null
+    if (!definition?.constant || !definition.initializer) return null
+    call = definition.initializer
+  }
+  if (call.type !== 'CallExpression') return null
+  const callee = childNode(call, 'callee')
+  const factoryName = callee && identifierName(callee)
+  if (!factoryName) return null
+  const binding = importBinding(program, factoryName)
+  if (
+    !binding ||
+    binding.imported !== 'style' ||
+    !DOM_STYLE_FRONTENDS.has(binding.source)
+  ) {
+    return null
+  }
+  return childNodes(call, 'arguments')[0] ?? null
+}
+
+function domStyleProgram(
+  candidate: AnalyzerCandidate,
+  id: ResolvedModuleId,
+  program: AstNode,
+  node: AstNode
+): DOMStyleProgramIR | null {
+  if (node.type !== 'ArrayExpression' || !Array.isArray(node.elements)) {
+    const argument = domStyleArgument(candidate, id, program, node)
+    return argument
+      ? {
+          kind: 'dom-style',
+          span: spanOf(id, node),
+          items: [{ condition: null, value: expressionReference(id, argument) }],
+        }
+      : null
+  }
+  const items: DOMStyleProgramIR['items'] = []
+  for (const rawItem of node.elements) {
+    if (!isAstNode(rawItem)) return null
+    let item = rawItem
+    let condition: DOMStyleProgramIR['items'][number]['condition'] = null
+    if (item.type === 'LogicalExpression' && item.operator === '&&') {
+      const left = childNode(item, 'left')
+      const right = childNode(item, 'right')
+      if (!left || !right) return null
+      condition = expressionReference(id, left)
+      item = right
+    }
+    const argument = domStyleArgument(candidate, id, program, item)
+    if (!argument) {
+      const staticValue = asStaticValue(item)
+      if (staticValue === false || staticValue === null) continue
+      return null
+    }
+    items.push({ condition, value: expressionReference(id, argument) })
+  }
+  return { kind: 'dom-style', span: spanOf(id, node), items }
+}
+
 export function normalizeElements(
   candidate: AnalyzerCandidate,
   rawId: string,
@@ -650,6 +764,17 @@ export function normalizeElements(
       const closingName = closingElement && childNode(closingElement, 'name')
       if (closingName) component.closingSpan = spanOf(id, closingName)
       const entries = jsxEntries(id, node, opening, bailouts)
+      for (const entry of entries) {
+        if (entry.kind !== 'prop' || entry.name !== 'style') continue
+        const raw =
+          entry.value.kind === 'expression'
+            ? nodeAtSpan(program, entry.value.start, entry.value.end)
+            : null
+        const styleProgram = raw && domStyleProgram(candidate, id, program, raw)
+        const argument = raw && domStyleArgument(candidate, id, program, raw)
+        if (styleProgram) entry.value = styleProgram
+        else if (argument) entry.value = expressionReference(id, argument)
+      }
       elements.push(
         finalizeElement(
           {
@@ -679,12 +804,27 @@ export function normalizeElements(
       runtime,
       bailouts
     )
-    if (element) elements.push(element)
+    if (element) {
+      const entries = element.complete ? element.entries : element.bailedEntries
+      for (const entry of entries) {
+        if (entry.kind !== 'prop' || entry.name !== 'style') continue
+        const raw =
+          entry.value.kind === 'expression'
+            ? nodeAtSpan(program, entry.value.start, entry.value.end)
+            : null
+        const styleProgram = raw && domStyleProgram(candidate, id, program, raw)
+        const argument = raw && domStyleArgument(candidate, id, program, raw)
+        if (styleProgram) entry.value = styleProgram
+        else if (argument) entry.value = expressionReference(id, argument)
+      }
+      elements.push(element)
+    }
   })
 
   return {
     elements: elements.sort((left, right) => left.span.start - right.span.start),
     styledDefinitions: styledDefinitions(candidate, id, program, imports, bailouts),
+    domStyleDefinitions: domStyleDefinitions(id, program, imports),
     bailouts: bailouts.sort((left, right) => left.span.start - right.span.start),
   }
 }
