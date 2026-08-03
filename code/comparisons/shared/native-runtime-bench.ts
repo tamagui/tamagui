@@ -140,67 +140,70 @@ export function createNativeRuntimeBenchApp({
     version === 'v2'
       ? {
           borderColor: 'rgba(0,0,0,0.1)',
-          hoverStyle: { borderColor: 'rgba(0,0,0,0.3)', scale: 1.02 },
-          pressStyle: { opacity: 0.8, scale: 0.98 },
+          pressStyle: {
+            borderColor: 'rgba(0,0,0,0.3)',
+            opacity: 0.8,
+            scale: 0.98,
+          },
         }
       : {
-          borderColor: 'rgba(0,0,0,0.1) hover:rgba(0,0,0,0.3)',
-          scale: 'hover:1.02 press:0.98',
+          borderColor: 'rgba(0,0,0,0.1) press:rgba(0,0,0,0.3)',
+          scale: 'press:0.98',
           opacity: 'press:0.8',
         }
   const groupParentInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('gray2'),
-          hoverStyle: { backgroundColor: token('gray3') },
+          pressStyle: { backgroundColor: token('gray3') },
         }
-      : { backgroundColor: 'gray2 hover:gray3' }
+      : { backgroundColor: 'gray2 press:gray3' }
   const groupAvatarInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('blue5'),
-          '$group-row-hover:backgroundColor': token('blue7'),
+          '$group-row-press:backgroundColor': token('blue7'),
         }
-      : { backgroundColor: 'blue5 group-hover/row:blue7' }
+      : { backgroundColor: 'blue5 group-press/row:blue7' }
   const groupBarInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('gray8'),
-          '$group-row-hover:backgroundColor': token('blue8'),
+          '$group-row-press:backgroundColor': token('blue8'),
         }
-      : { backgroundColor: 'gray8 group-hover/row:blue8' }
+      : { backgroundColor: 'gray8 group-press/row:blue8' }
   const heavyParentInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('gray1'),
           borderColor: token('gray4'),
-          hoverStyle: {
+          pressStyle: {
             backgroundColor: token('gray2'),
             borderColor: token('gray6'),
           },
         }
       : {
-          backgroundColor: 'gray1 hover:gray2',
-          borderColor: 'gray4 hover:gray6',
+          backgroundColor: 'gray1 press:gray2',
+          borderColor: 'gray4 press:gray6',
         }
   const heavyAvatarInteractionProps =
     version === 'v2'
-      ? { opacity: 1, '$group-card-hover:opacity': 0.8 }
-      : { opacity: 'group-hover/card:0.8' }
+      ? { opacity: 1, '$group-card-press:opacity': 0.8 }
+      : { opacity: 'group-press/card:0.8' }
   const heavyTitleInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('gray11'),
-          '$group-card-hover:backgroundColor': token('blue9'),
+          '$group-card-press:backgroundColor': token('blue9'),
         }
-      : { backgroundColor: 'gray11 group-hover/card:blue9' }
+      : { backgroundColor: 'gray11 group-press/card:blue9' }
   const heavyBadgeInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('blue3'),
-          '$group-card-hover:backgroundColor': token('blue5'),
+          '$group-card-press:backgroundColor': token('blue5'),
         }
-      : { backgroundColor: 'blue3 group-hover/card:blue5' }
+      : { backgroundColor: 'blue3 group-press/card:blue5' }
   type RenderState = { instance: number; revision: number }
 
   function SimpleItems({ instance, revision }: RenderState) {
@@ -422,6 +425,8 @@ export function createNativeRuntimeBenchApp({
     const [, pseudoStyle] = usePropsAndStyle(runtimeBehaviorProps.pseudo, {
       noMedia: true,
     })
+    // Button is a never-flatten HOC; resolve the styled frame it forwards to while
+    // the timed component scenario continues to render the real Button.
     const [, componentStyle] = usePropsAndStyle(runtimeBehaviorProps.component, {
       forComponent: Button.Frame,
       noMedia: true,
@@ -471,7 +476,6 @@ export function createNativeRuntimeBenchApp({
           'color',
           'opacity',
         ]),
-        componentName: Button.staticConfig?.componentName ?? null,
       }),
       [componentStyle, pseudoStyle, staticStyle, tokenStyle]
     )
@@ -505,7 +509,7 @@ export function createNativeRuntimeBenchApp({
         }
       }
       if (
-        typeof completeSignature.componentName !== 'string' ||
+        typeof Button.staticConfig?.componentName !== 'string' ||
         completeSignature.component.opacity !== 0.8
       ) {
         throw new Error(
