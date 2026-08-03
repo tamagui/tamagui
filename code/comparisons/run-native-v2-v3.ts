@@ -58,6 +58,7 @@ const markdownPath = outputPath.replace(/\.json$/, '.md')
 const compilerEvidencePath = arg('compiler-evidence')
 const resultPort = 8091
 const scenarioTimeoutMs = 60_000
+const minimumCompilerMountSpeedup = 1.5
 
 type Metric = 'mount' | 'update' | 'remount'
 type ScenarioId = NativeRuntimeScenario | NativeCompiledScenario
@@ -208,6 +209,17 @@ interface CompilerEvidence {
   [key: string]: unknown
 }
 
+interface CompilerEffectivenessGate {
+  scenario: 'simple'
+  metric: 'mount'
+  minimumSpeedup: number
+  warmupRounds: number
+  arms: Record<
+    'v2' | 'v3',
+    { runtimeMeanMs: number; compiledMeanMs: number; speedup: number }
+  >
+}
+
 interface BenchmarkReport {
   schemaVersion: 2
   metadata: Record<string, unknown>
@@ -253,6 +265,14 @@ if (
   scenarios.length !== (scenarioFilter?.length ?? scenarios.length)
 ) {
   throw new Error(`--scenarios must contain only: ${allScenarios.join(',')}`)
+}
+const measuresCompiled = NATIVE_COMPILED_SCENARIOS.some((scenario) =>
+  scenarios.includes(scenario)
+)
+if (transport === 'release' && measuresCompiled && !scenarios.includes('simple')) {
+  throw new Error(
+    'Release compiler measurements must include simple so the runtime-versus-compiled effectiveness gate can run'
+  )
 }
 
 function git(...gitArgs: string[]) {
@@ -655,6 +675,7 @@ async function main() {
       .map((scenario) => ({ bench, scenario }))
   )
   const trials: Trial[] = []
+  let compilerEffectivenessGate: CompilerEffectivenessGate | null = null
   let sequence = 0
   try {
     const phases = smoke ? (['warmup'] as const) : (['warmup', 'sample'] as const)
@@ -671,6 +692,81 @@ async function main() {
           await Bun.sleep(250)
         }
         console.log(` ${round + 1}/${rounds}`)
+      }
+      if (phase === 'warmup' && transport === 'release' && measuresCompiled) {
+        const arms = Object.fromEntries(
+          (
+            [
+              {
+                version: 'v2',
+                runtime: 'tamagui-v2-runtime',
+                compiled: 'tamagui-v2-compiled',
+              },
+              {
+                version: 'v3',
+                runtime: 'tamagui-v3-runtime',
+                compiled: 'tamagui-v3-compiled',
+              },
+            ] as const
+          ).map(({ version, runtime, compiled }) => {
+            const runtimeMounts = trials
+              .filter(
+                (trial) =>
+                  trial.phase === 'warmup' &&
+                  trial.framework === runtime &&
+                  trial.scenario === 'simple'
+              )
+              .map((trial) => trial.mount)
+            const compiledMounts = trials
+              .filter(
+                (trial) =>
+                  trial.phase === 'warmup' &&
+                  trial.framework === compiled &&
+                  trial.scenario === 'simple'
+              )
+              .map((trial) => trial.mount)
+            if (runtimeMounts.length !== warmups || compiledMounts.length !== warmups) {
+              throw new Error(
+                `compiler effectiveness gate expected ${warmups} ${version} simple warmups, received runtime=${runtimeMounts.length} compiled=${compiledMounts.length}`
+              )
+            }
+            const runtimeMeanMs = summarize(runtimeMounts).mean
+            const compiledMeanMs = summarize(compiledMounts).mean
+            return [
+              version,
+              {
+                runtimeMeanMs,
+                compiledMeanMs,
+                speedup: runtimeMeanMs / compiledMeanMs,
+              },
+            ]
+          })
+        ) as CompilerEffectivenessGate['arms']
+        compilerEffectivenessGate = {
+          scenario: 'simple',
+          metric: 'mount',
+          minimumSpeedup: minimumCompilerMountSpeedup,
+          warmupRounds: warmups,
+          arms,
+        }
+        console.log(
+          `Compiler effectiveness gate: ${(['v2', 'v3'] as const)
+            .map(
+              (version) =>
+                `${version.toUpperCase()} ${arms[version].speedup.toFixed(2)}x (${arms[version].runtimeMeanMs.toFixed(2)}ms runtime -> ${arms[version].compiledMeanMs.toFixed(2)}ms compiled)`
+            )
+            .join(', ')}; required >= ${minimumCompilerMountSpeedup.toFixed(2)}x`
+        )
+        for (const version of ['v2', 'v3'] as const) {
+          if (
+            !Number.isFinite(arms[version].speedup) ||
+            arms[version].speedup < minimumCompilerMountSpeedup
+          ) {
+            throw new Error(
+              `${version.toUpperCase()} compiled simple mount failed the effectiveness gate: ${arms[version].speedup.toFixed(2)}x speedup is below ${minimumCompilerMountSpeedup.toFixed(2)}x; stop before retained sampling and verify the Release bundle consumed compiler output`
+            )
+          }
+        }
       }
     }
 
@@ -790,6 +886,7 @@ async function main() {
               report: compilerEvidence,
             }
           : null,
+        compilerEffectivenessGate,
         releaseArtifacts,
         transport:
           transport === 'release'
