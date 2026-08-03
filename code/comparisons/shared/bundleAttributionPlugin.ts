@@ -4,6 +4,30 @@ import { writeFileSync } from 'node:fs'
 
 const normalizePath = (value: string) => value.replaceAll('\\', '/')
 
+function dependencyName(id: string) {
+  const normalized = normalizePath(id).split('?')[0]!
+  const dependency = normalized.split('node_modules/').at(-1)
+  if (!dependency || dependency === normalized) return null
+  const parts = dependency.split('/')
+  return parts[0]!.startsWith('@') ? `${parts[0]}/${parts[1]}` : parts[0]!
+}
+
+function isolatedChunk(id: string) {
+  const dependency = dependencyName(id)
+  if (dependency === 'tamagui' || dependency?.startsWith('@tamagui/')) {
+    return 'tamagui'
+  }
+  if (
+    dependency === 'react' ||
+    dependency === 'react-dom' ||
+    dependency === 'scheduler'
+  ) {
+    return 'react-control'
+  }
+  const normalized = normalizePath(id).split('?')[0]!
+  if (/\/(?:core|packages|ui)\/[^/]+\/dist\//.test(normalized)) return 'tamagui'
+}
+
 function byteLength(source: string | Uint8Array) {
   return typeof source === 'string' ? Buffer.byteLength(source) : source.byteLength
 }
@@ -12,11 +36,30 @@ export function bundleAttributionPlugin(outputPath: string | undefined, root: st
   if (!outputPath) return null
   return {
     name: 'comparison-bundle-attribution',
+    outputOptions(options: Record<string, any>) {
+      if (options.manualChunks) {
+        throw new Error('bundle attribution requires sole ownership of manualChunks')
+      }
+      return {
+        ...options,
+        manualChunks(id: string) {
+          return isolatedChunk(id)
+        },
+        onlyExplicitManualChunks: true,
+      }
+    },
     generateBundle(_options: unknown, bundle: Record<string, any>) {
       const chunks = Object.values(bundle)
         .filter((output): output is any => output.type === 'chunk')
         .map((chunk) => ({
           fileName: chunk.fileName,
+          name: chunk.name,
+          attributionGroup:
+            chunk.name === 'tamagui'
+              ? 'tamagui'
+              : chunk.name === 'react-control'
+                ? 'react-control'
+                : 'other',
           codeBytes: Buffer.byteLength(chunk.code),
           gzipBytes: gzipSync(chunk.code).byteLength,
           modules: Object.entries(chunk.modules)
@@ -32,6 +75,16 @@ export function bundleAttributionPlugin(outputPath: string | undefined, root: st
             ),
         }))
         .sort((left, right) => left.fileName.localeCompare(right.fileName))
+      for (const chunk of chunks) {
+        if (
+          chunk.attributionGroup !== 'other' &&
+          chunk.modules.some(
+            (module) => isolatedChunk(module.id) !== chunk.attributionGroup
+          )
+        ) {
+          throw new Error(`mixed module ownership in ${chunk.fileName}`)
+        }
+      }
       const assets = Object.values(bundle)
         .filter((output): output is any => output.type === 'asset')
         .map((asset) => {
@@ -45,7 +98,44 @@ export function bundleAttributionPlugin(outputPath: string | undefined, root: st
         .sort((left, right) => left.fileName.localeCompare(right.fileName))
       writeFileSync(
         outputPath,
-        `${JSON.stringify({ schemaVersion: 1, chunks, assets }, null, 2)}\n`
+        `${JSON.stringify(
+          {
+            schemaVersion: 2,
+            decomposition: {
+              method:
+                'explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip',
+              tamaguiIncludes:
+                'rendered modules from tamagui, @tamagui/*, and Tamagui workspace core/packages/ui dist paths, plus their isolated chunk wrapper',
+              tamaguiExcludes:
+                'fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and all other dependencies',
+              groups: Object.fromEntries(
+                ['tamagui', 'react-control', 'other'].map((group) => {
+                  const selected = chunks.filter(
+                    (chunk) => chunk.attributionGroup === group
+                  )
+                  return [
+                    group,
+                    {
+                      chunks: selected.map((chunk) => chunk.fileName),
+                      codeBytes: selected.reduce(
+                        (total, chunk) => total + chunk.codeBytes,
+                        0
+                      ),
+                      gzipBytes: selected.reduce(
+                        (total, chunk) => total + chunk.gzipBytes,
+                        0
+                      ),
+                    },
+                  ]
+                })
+              ),
+            },
+            chunks,
+            assets,
+          },
+          null,
+          2
+        )}\n`
       )
     },
   }
