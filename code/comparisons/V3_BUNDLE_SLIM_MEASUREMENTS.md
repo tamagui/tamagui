@@ -123,6 +123,8 @@ bun code/comparisons/run-native-v2-v3.ts --smoke --udid=3C03FA2F-D68F-4537-A939-
 It ran while holding `/tmp/tamagui-bench.lock` with stale-lock removal and an exit
 trap, then released the lock. Future timing runs acquire and release that lock
 through `shared/benchmarkLock.ts`; build-only bundle attribution does not take it.
+The lock records the owning session ID so a future liveness check can disambiguate
+a recycled process ID.
 It failed with:
 
 ```text

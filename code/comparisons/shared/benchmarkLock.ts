@@ -27,6 +27,7 @@ function readOwner(): BenchmarkLockOwner | null {
 }
 
 function processIsRunning(pid: number) {
+  // a recycled pid fails safe as a live owner; session metadata lets an operator disambiguate it.
   try {
     process.kill(pid, 0)
     return true
