@@ -126,9 +126,9 @@ export function createNativeRuntimeBenchApp({
       version === 'v2'
         ? {
             backgroundColor: token('blue5'),
-            '$group-row-hover:backgroundColor': token('blue7'),
+            '$group-row-press:backgroundColor': token('blue7'),
           }
-        : { backgroundColor: 'blue5 group-hover/row:blue7' },
+        : { backgroundColor: 'blue5 group-press/row:blue7' },
     component: {
       size: token('3'),
       theme: 'blue',
@@ -423,7 +423,7 @@ export function createNativeRuntimeBenchApp({
       noMedia: true,
     })
     const [, componentStyle] = usePropsAndStyle(runtimeBehaviorProps.component, {
-      forComponent: Button,
+      forComponent: Button.Frame,
       noMedia: true,
     })
     const [groupStyle, setGroupStyle] = useState(null as object | null)
@@ -432,7 +432,7 @@ export function createNativeRuntimeBenchApp({
       []
     )
     const groupContext = useMemo(() => {
-      const state = { pseudo: { hover: true } }
+      const state = { pseudo: { press: true } }
       return {
         row: {
           state,
