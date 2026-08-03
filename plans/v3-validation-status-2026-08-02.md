@@ -118,6 +118,17 @@ A clean production Kitchen Sink iOS export provides broader V3-only evidence. Me
 
 There is no honest broad V2 percentage for that same app. The checked-in Kitchen Sink config imports the V3-only `@tamagui/config/v6` export, which pinned V2 2.6.2 does not provide. The attempted V2 load fails before transformation with `ERR_PACKAGE_PATH_NOT_EXPORTED`; swapping in a V2 config would change the app semantics and cease to be byte-identical. Accordingly, the seven-site/six-recognized controlled corpus is the only fair native cross-version optimizer comparison in this campaign, while 76.78% is a broader V3 health measure rather than a V3-versus-V2 result.
 
+### Known core-suite reds and owners
+
+The integrated `v3-beta` core aggregate has known runtime reds. These are real behavior or fixture-contract failures, not machine limitations:
+
+- `test:token-provenance` fails 5/8 because the native split result has no provenance under the development opt-in. p13983 owns this in the single-pass `getSplitStyles` rewrite and will keep production free of provenance work.
+- `test:ios` fails 10/26. Eight failures return raw colors or missing `dynamicThemeAccess` where DynamicColorIOS, portal, and `useTheme` parity expect dynamic light/dark values. Two compound-variant failures exercise the platform selection contract.
+- `test:androidtv` and `test:tvos` each fail 3/12. A temporary in-process probe under `TEST_NATIVE_PLATFORM=androidtv` read `isAndroid=true`, `isTV=true`, and `platformName="androidtv"` inside `evaluateAccumulatedPrograms`, while `android:red` still failed to apply. This rules out a missing platform environment. The current grammar containment map has `native -> {android, ios, androidtv, tvos}` and `tv -> {androidtv, tvos}`, but omits `android -> androidtv` and `ios -> tvos`. The evaluator also selects the last matching platform clause, while the retained contract requires the most specific platform match regardless of authored order. Orthogonal conditions such as hover and press remain authored-order last-wins.
+- The TV fixtures' `zIndex="native:2"` expectation is stale. Config-first flat values correctly resolve quoted `2` to the configured z-index token value 200; the fixture must express an unambiguous literal value instead of weakening token resolution.
+
+p13983 owns these runtime program-evaluation fixes as part of the active scan-and-emit replacement. The old engine should not receive parallel repairs that will be deleted or conflict with that rewrite.
+
 ## React Strict DOM coverage
 
 ### What was compared and actually executed
