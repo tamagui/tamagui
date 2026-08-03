@@ -419,10 +419,7 @@ test('group clauses extract to parent-hover selectors', async () => {
   expect(output?.styles).toContain('background-color')
 })
 
-test('group clauses on an animated element stay on the runtime path', async () => {
-  // Q2 invariant: a static @container class can't drive a JS animation driver's
-  // interpolation, so an animated element's group clause must not extract to CSS.
-  // the shared compiler enforces this with an all-or-nothing animation bailout.
+test('group clauses on a CSS-animated element extract with its transition', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -440,7 +437,12 @@ test('group clauses on an animated element stay on the runtime path', async () =
     }
   `
   )
-  expect(output?.js).toContain('group-hover/card:red')
+  expect(output?.js).toContain('div')
+  expect(output?.js).not.toContain('transition="bouncy"')
+  expect(output?.js).not.toContain('group-hover/card:red')
+  expect(output?.styles).toContain('transition:all 350ms cubic-bezier')
+  expect(output?.styles).toContain('.t_group_card:hover')
+  expect(output?.styles).toContain('background-color:red')
 })
 
 test('group clauses on an element with an enter clause stay on the runtime path', async () => {

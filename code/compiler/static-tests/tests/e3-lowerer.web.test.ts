@@ -32,7 +32,15 @@ beforeAll(() => {
 function compile(
   source: string,
   target: CompilerTarget = 'web',
-  hostOptions?: { disablePartialExtraction?: boolean }
+  hostOptions?: {
+    animationDriver?: {
+      animations?: Record<string, unknown>
+      inputStyle?: 'css' | 'value'
+      isReactNative?: boolean
+      outputStyle?: 'css' | 'inline'
+    }
+    disablePartialExtraction?: boolean
+  }
 ) {
   const id = resolvedModuleId(
     resolve(import.meta.dirname, `fixtures/e3-${target}-lowerer.tsx`)
@@ -55,10 +63,18 @@ function compile(
   })
   const host = createTamaguiCompilerHost({
     target,
-    tamaguiConfig: projectInfo.tamaguiConfig!,
+    tamaguiConfig: hostOptions?.animationDriver
+      ? {
+          ...projectInfo.tamaguiConfig!,
+          animations: {
+            ...projectInfo.tamaguiConfig!.animations,
+            ...hostOptions.animationDriver,
+          },
+        }
+      : projectInfo.tamaguiConfig!,
     components: projectInfo.components!,
     componentModules: [{ moduleName: '@tamagui/core', resolvedId: coreId }],
-    ...hostOptions,
+    disablePartialExtraction: hostOptions?.disablePartialExtraction,
   })
   const plan = lowerModule({
     module: materializeModule(graph, id),
@@ -129,7 +145,7 @@ export const App = () => (
     expect(output.map?.sourcesContent).toEqual([source])
   })
 
-  test('unsafe candidate bailout is all-or-nothing and does not block a sibling', () => {
+  test('an explicit CSS driver lowers a transition candidate without blocking a sibling', () => {
     const source = `
 import { View } from '@tamagui/core'
 export const App = () => (
@@ -144,23 +160,30 @@ export const App = () => (
   </>
 )
 `
-    const { plan, output } = compile(source)
-    expect(codes(plan)).toEqual(['local/unsupported-target'])
+    const { plan, output } = compile(source, 'web', {
+      animationDriver: {
+        inputStyle: 'value',
+        isReactNative: true,
+        outputStyle: 'inline',
+      },
+    })
+    expect(codes(plan)).toEqual([])
     expect(plan.stats).toEqual({
       found: 2,
-      lowered: 1,
-      flattened: 1,
+      lowered: 2,
+      flattened: 2,
       styled: 0,
-      bailed: 1,
+      bailed: 0,
     })
-    expect(output.code).toContain('animatedBy="css"')
-    expect(output.code).toContain('transition="opacity 150ms ease-out"')
-    expect(output.code).toContain('padding="12px hover:16px"')
+    expect(output.code).not.toContain('animatedBy="css"')
+    expect(output.code).not.toContain('transition="opacity 150ms ease-out"')
+    expect(output.code).not.toContain('padding="12px hover:16px"')
     expect(output.code).toContain('data-bailed="exact"')
-    expect(output.code).toContain('<div className=')
+    expect(output.code.match(/<div\b/g)).toHaveLength(2)
     expect(output.code).toContain('data-lowered="yes"')
+    expect(plan.css).toContain('transition:opacity 150ms ease-out')
+    expect(plan.css).toContain('padding-top:12px')
     expect(plan.css).toContain('padding-top:16px')
-    expect(plan.css).not.toContain('padding-top:12px')
   })
 
   test('extracts static styles while retaining a dynamic style prop on the Tamagui component', () => {
@@ -586,6 +609,72 @@ export const Card = () => (
     expect(plan.css).toContain('transition:opacity 150ms ease-out')
     expect(plan.css).toContain('padding-top:12px')
     expect(plan.css).toContain(':where(:hover){padding-top:16px}')
+  })
+
+  test('lowers a configured CSS transition preset on a dynamic animated component', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ seed }) => (
+  <View
+    transition="bouncy"
+    width={24}
+    height={24}
+    borderRadius={4}
+    backgroundColor="rgb(59,130,246)"
+    margin={1}
+    opacity={seed % 2 ? 0.85 : 1}
+    scale={seed % 2 ? 0.95 : 1}
+    data-animated="css-preset"
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 1, bailed: 0 })
+    expect(output.code).toContain('<div')
+    expect(output.code).not.toContain('transition="bouncy"')
+    expect(output.code).toContain('opacity: (seed % 2 ? 0.85 : 1)')
+    expect(output.code).toContain('transform: "scale(" + (seed % 2 ? 0.95 : 1) + ")"')
+    expect(plan.css).toContain(
+      'transition:all 350ms cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+    )
+  })
+
+  test('partially extracts static styles beside a non-CSS driver transition', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ opacity }) => (
+  <View
+    transition="spring"
+    width={24}
+    height={24}
+    opacity={opacity}
+    data-animated="object-preset"
+  />
+)
+`
+    const { plan, output } = compile(source, 'web', {
+      animationDriver: {
+        animations: {
+          spring: { damping: 10, mass: 1, stiffness: 100 },
+        },
+        inputStyle: 'value',
+        isReactNative: true,
+        outputStyle: 'inline',
+      },
+    })
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
+    expect(output.code).toMatch(
+      /<View\s+transition="spring"\s+className="[^"]+"\s+opacity=\{opacity\}/
+    )
+    expect(output.code).not.toContain('width={24}')
+    expect(output.code).not.toContain('height={24}')
+    expect(plan.css).toContain('width:24px')
+    expect(plan.css).toContain('height:24px')
+    expect(plan.css).not.toContain('transition:')
   })
 
   test('materializes local styled definitions before lowering variants and compounds', () => {

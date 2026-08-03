@@ -84,19 +84,44 @@ function objectClassName(value: string): string {
   return `className: ${JSON.stringify(value)}`
 }
 
-function jsxStyleAttributes(className: string, style: Record<string, unknown> | null) {
+function serializedStyle(
+  style: Record<string, unknown> | null,
+  dynamicProperties: readonly string[]
+): string {
+  if (dynamicProperties.length === 0) return style ? JSON.stringify(style) : ''
+  return `{ ${[
+    ...(style
+      ? Object.entries(style).map(
+          ([name, value]) => `${JSON.stringify(name)}: ${JSON.stringify(value)}`
+        )
+      : []),
+    ...dynamicProperties,
+  ].join(', ')} }`
+}
+
+function jsxStyleAttributes(
+  className: string,
+  style: Record<string, unknown> | null,
+  dynamicProperties: readonly string[] = []
+) {
+  const serialized = serializedStyle(style, dynamicProperties)
   return [
     className ? jsxClassName(className) : '',
-    style ? `style={${JSON.stringify(style)}}` : '',
+    serialized ? `style={${serialized}}` : '',
   ]
     .filter(Boolean)
     .join(' ')
 }
 
-function objectStyleProperties(className: string, style: Record<string, unknown> | null) {
+function objectStyleProperties(
+  className: string,
+  style: Record<string, unknown> | null,
+  dynamicProperties: readonly string[] = []
+) {
+  const serialized = serializedStyle(style, dynamicProperties)
   return [
     className ? objectClassName(className) : '',
-    style ? `style: ${JSON.stringify(style)}` : '',
+    serialized ? `style: ${serialized}` : '',
   ]
     .filter(Boolean)
     .join(', ')
@@ -570,28 +595,63 @@ export function createTamaguiCompilerHost(
     mediaNames: options.tamaguiConfig.media ?? {},
     themeNames: options.tamaguiConfig.themes ?? {},
   }).registry
-  const transitionPresetNames = new Set(
-    Object.keys((options.tamaguiConfig.animations as any)?.animations ?? {})
-  )
-  const isStaticCssTransition = (value: unknown): boolean => {
-    if (platform !== 'web' || typeof value !== 'string') return false
+  const configuredAnimationDriver = options.tamaguiConfig.animations as any
+  const configuredCssAnimationDriver =
+    platform === 'web' &&
+    configuredAnimationDriver?.outputStyle === 'css' &&
+    !options.tamaguiConfig.animationDrivers
+  const transitionPresets: Record<string, unknown> =
+    configuredAnimationDriver?.animations ?? {}
+  const transitionPresetNames = new Set(Object.keys(transitionPresets))
+  const resolveStaticCssTransition = (value: unknown): string | null => {
+    if (platform !== 'web' || typeof value !== 'string') return null
     const program = parseValue(value, modifierRegistry)
-    if (!program.ok) return false
+    if (!program.ok) return null
+    const resolvedPayloads: string[] = []
     const payloads = [
       program.value.base,
-      ...program.value.clauses.map((x) => x.payload),
+      ...program.value.clauses.map((clause) => clause.payload),
     ].filter((payload): payload is string => payload !== null)
-    return (
-      payloads.length > 0 &&
-      payloads.every((payload) => {
-        const transition = parseTransition(payload, transitionPresetNames)
-        return (
-          transition.ok &&
-          (transition.value.kind === 'global' ||
-            transition.value.entries.every((entry) => entry.timing.type === 'css'))
-        )
-      })
-    )
+    if (payloads.length === 0) return null
+    for (const payload of payloads) {
+      const transition = parseTransition(payload, transitionPresetNames)
+      if (!transition.ok) return null
+      if (
+        transition.value.kind === 'global' ||
+        transition.value.entries.every((entry) => entry.timing.type === 'css')
+      ) {
+        resolvedPayloads.push(payload)
+        continue
+      }
+      if (
+        transition.value.entries.length !== 1 ||
+        transition.value.entries[0]!.timing.type !== 'preset'
+      ) {
+        return null
+      }
+      const preset = transitionPresets[transition.value.entries[0]!.timing.name]
+      if (typeof preset !== 'string') return null
+      const parsedPreset = parseTransition(preset)
+      if (
+        !parsedPreset.ok ||
+        parsedPreset.value.kind !== 'transition' ||
+        parsedPreset.value.entries.length !== 1 ||
+        parsedPreset.value.entries[0]!.property !== 'all' ||
+        parsedPreset.value.entries[0]!.timing.type !== 'css'
+      ) {
+        return null
+      }
+      resolvedPayloads.push(`all ${preset}`)
+    }
+    let payloadIndex = 0
+    const resolved: string[] = []
+    if (program.value.base !== null) {
+      resolved.push(resolvedPayloads[payloadIndex++]!)
+    }
+    for (const clause of program.value.clauses) {
+      resolved.push(`${clause.modifiers.join(':')}:${resolvedPayloads[payloadIndex++]!}`)
+    }
+    return resolved.join(' ')
   }
   const modulesById = new Map(
     options.componentModules.map((module) => [module.resolvedId, module.moduleName])
@@ -910,37 +970,113 @@ export function createTamaguiCompilerHost(
           )
         }
       }
-      const animationEntry = input.element.entries.find(
-        (entry) => entry.kind === 'prop' && runtimeAnimationProps.has(entry.name)
+      const animationNames = new Set([
+        ...input.element.entries.flatMap((entry) =>
+          entry.kind === 'prop' && runtimeAnimationProps.has(entry.name)
+            ? [entry.name]
+            : []
+        ),
+        ...Object.keys(props).filter((name) => runtimeAnimationProps.has(name)),
+      ])
+      const animateOnlyEntry = input.element.entries.find(
+        (entry) => entry.kind === 'prop' && entry.name === 'animateOnly'
       )
-      const animationProp =
-        animationEntry?.kind === 'prop'
-          ? animationEntry.name
-          : Object.keys(props).find((name) => runtimeAnimationProps.has(name))
-      const animatedByHasRuntimeWork =
-        animationProp === 'animatedBy' &&
-        Object.keys(props).some(
-          (name) =>
-            name !== 'animatedBy' &&
-            (runtimeAnimationProps.has(name) ||
-              (isStyleProp(name, component) &&
-                typeof props[name] === 'string' &&
-                props[name].includes(':')) ||
-              name === 'animationConfig' ||
-              name === 'forceStyle' ||
-              name === 'onTransition')
-        )
-      if (
-        animationProp &&
-        !(animationProp === 'transition' && isStaticCssTransition(props.transition)) &&
-        (animationProp !== 'animatedBy' || animatedByHasRuntimeWork)
-      ) {
+      if (animationNames.has('animateOnly')) {
         return bailout(
           input,
           'local/unsupported-target',
           'Animated candidates remain on the runtime path',
-          animationEntry?.span
+          animateOnlyEntry?.span
         )
+      }
+      const transitionEntry = input.element.entries.find(
+        (entry) => entry.kind === 'prop' && entry.name === 'transition'
+      )
+      const animatedBy =
+        typeof props.animatedBy === 'string' ? props.animatedBy.trim() : null
+      const cssAnimated =
+        platform === 'web' &&
+        !options.tamaguiConfig.animationDrivers &&
+        (animatedBy === 'css' ||
+          ((animatedBy === null || animatedBy === 'default') &&
+            configuredCssAnimationDriver))
+      const resolvedCssTransition =
+        animationNames.has('transition') && cssAnimated
+          ? resolveStaticCssTransition(props.transition)
+          : null
+      if (resolvedCssTransition !== null) {
+        props.transition = resolvedCssTransition
+      }
+      const animatedByNeedsRuntime =
+        animationNames.has('animatedBy') &&
+        !animationNames.has('transition') &&
+        (dynamicStyleEntries.length > 0 ||
+          Object.keys(props).some(
+            (name) =>
+              name !== 'animatedBy' &&
+              ((isStyleProp(name, component) &&
+                typeof props[name] === 'string' &&
+                props[name].includes(':')) ||
+                name === 'animationConfig' ||
+                name === 'forceStyle' ||
+                name === 'onTransition')
+          ))
+      const runtimeAnimationRequired =
+        (animationNames.has('transition') && resolvedCssTransition === null) ||
+        [...animationNames].some(
+          (name) =>
+            name !== 'transition' && name !== 'animatedBy' && name !== 'animateOnly'
+        ) ||
+        animatedByNeedsRuntime
+      let dynamicHostStyleProperties: string[] | null = null
+      if (
+        resolvedCssTransition !== null &&
+        dynamicStyleEntries.length > 0 &&
+        !input.element.entries.some((entry) => entry.kind === 'spread')
+      ) {
+        const seen = new Set<string>()
+        const properties: string[] = []
+        const dynamicOwners = new Set<string>()
+        for (const entry of dynamicStyleEntries) {
+          if (entry.kind !== 'prop' || entry.value.kind !== 'bailout') continue
+          const name = directStyleName(entry.name, component)
+          if ((name !== 'opacity' && name !== 'scale') || seen.has(name)) {
+            properties.length = 0
+            break
+          }
+          const owners = dynamicStyleOwners(name, component.staticConfig as StaticConfig)
+          if (!owners) {
+            properties.length = 0
+            break
+          }
+          seen.add(name)
+          for (const owner of owners) dynamicOwners.add(owner)
+          const expression = input.source.slice(
+            entry.value.span.start,
+            entry.value.span.end
+          )
+          properties.push(
+            name === 'opacity'
+              ? `opacity: (${expression})`
+              : `transform: "scale(" + (${expression}) + ")"`
+          )
+        }
+        if (
+          properties.length === dynamicStyleEntries.length &&
+          !input.element.entries.some((entry) => {
+            if (entry.kind !== 'prop' || entry.value.kind !== 'static') return false
+            const name = directStyleName(entry.name, component)
+            if (!name) return false
+            const owners = styleOwners(
+              name,
+              entry.value.value,
+              component.staticConfig as StaticConfig
+            )
+            return !!owners && cssOwnersConflict(owners, dynamicOwners)
+          })
+        ) {
+          dynamicHostStyleProperties = properties
+        }
       }
       if ('theme' in props || 'themeInverse' in props) {
         return bailout(
@@ -958,7 +1094,8 @@ export function createTamaguiCompilerHost(
       }
       if (
         platform === 'web' &&
-        dynamicStyleEntries.length > 0 &&
+        (dynamicStyleEntries.length > 0 || runtimeAnimationRequired) &&
+        dynamicHostStyleProperties === null &&
         component.partialRuntimeSafe
       ) {
         const hasSpread = input.element.entries.some((entry) => entry.kind === 'spread')
@@ -992,6 +1129,7 @@ export function createTamaguiCompilerHost(
           const staticStyleEntries = canProveDynamicOwnership
             ? input.element.entries.filter((entry) => {
                 if (entry.kind !== 'prop' || entry.value.kind !== 'static') return false
+                if (runtimeAnimationProps.has(entry.name)) return false
                 const name = directStyleName(entry.name, component)
                 if (!name) return false
                 const owners = styleOwners(
@@ -1069,7 +1207,15 @@ export function createTamaguiCompilerHost(
           }
         }
       }
-      if (dynamicStyleEntries.length > 0) {
+      if (runtimeAnimationRequired) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Animated candidates remain on the runtime path',
+          transitionEntry?.span
+        )
+      }
+      if (dynamicStyleEntries.length > 0 && dynamicHostStyleProperties === null) {
         const entry = dynamicStyleEntries[0]!
         return bailout(
           input,
@@ -1343,7 +1489,7 @@ export function createTamaguiCompilerHost(
         const propsEdits = compiledPropsEdits(
           input,
           styleEntries,
-          objectStyleProperties(className, inlineStyle)
+          objectStyleProperties(className, inlineStyle, dynamicHostStyleProperties ?? [])
         )
         if (!propsEdits) {
           return bailout(
@@ -1362,7 +1508,11 @@ export function createTamaguiCompilerHost(
         }
       }
       if (styleEntries.length === 0) {
-        const attributes = jsxStyleAttributes(className, inlineStyle)
+        const attributes = jsxStyleAttributes(
+          className,
+          inlineStyle,
+          dynamicHostStyleProperties ?? []
+        )
         return {
           ok: true,
           edits: attributes
@@ -1385,6 +1535,11 @@ export function createTamaguiCompilerHost(
       }
 
       const [first, ...rest] = styleEntries
+      const attributes = jsxStyleAttributes(
+        className,
+        inlineStyle,
+        dynamicHostStyleProperties ?? []
+      )
       return {
         ok: true,
         edits: [
@@ -1393,7 +1548,7 @@ export function createTamaguiCompilerHost(
           {
             start: first!.span.start,
             end: first!.span.end,
-            content: jsxStyleAttributes(className, inlineStyle),
+            content: attributes,
             origin: first!.span,
           },
           ...rest.map((entry) => ({
