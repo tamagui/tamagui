@@ -109,7 +109,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     }
   }
 
-  // Strings stay whole so the direct scanner can distinguish CSS components
+  // strings stay whole so the direct scanner can distinguish CSS components
   // from modifier clauses before it emits them.
 
   if (value != null) {

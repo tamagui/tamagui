@@ -689,7 +689,7 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      // Standard data attributes are view props, never styles or styled-context
+      // standard data attributes are view props, never styles or styled-context
       // values. Context providers receive arbitrary JSX attributes, so handle
       // these before a provider value can make the key look style-like.
       if (keyInit.startsWith('data-')) {
@@ -1008,7 +1008,7 @@ export const getSplitStyles: StyleSplitter = (
     for (const key of styleState.flatGroupMedia) mediaGroups.add(key)
   }
 
-  // Hand the selected transition to animation drivers and keep it out of native
+  // hand the selected transition to animation drivers and keep it out of native
   // destination styles, where `transition` is not a React Native style key.
   const effectiveTransition = styleState.style?.transition as
     | TransitionProp

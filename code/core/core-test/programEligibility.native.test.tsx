@@ -1,4 +1,4 @@
-// Native scalar conditions resolve before they reach the host. Structured
+// native scalar conditions resolve before they reach the host. structured
 // transform parts keep their composite owner.
 
 import { beforeAll, expect, test } from 'vitest'

@@ -1,5 +1,5 @@
-// Web transition values are emitted in authored order inside one atomic block.
-// The browser applies shorthand resets, list cycling, validation, and defaults.
+// web transition values are emitted in authored order inside one atomic block.
+// the browser applies shorthand resets, list cycling, validation, and defaults.
 
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
