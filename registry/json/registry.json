@@ -32,7 +32,7 @@
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
-      "description": "v2-look Button: token-based sizing (size tokens via settings.defaultSize), circular and variant (outlined/quiet) skins, icon + text composition on the unstyled @tamagui/ui Button behavior.",
+      "description": "v2-look Button: token-based sizing through the opt-in @tamagui/size policy, circular and variant (outlined/quiet) skins, icon + text composition on the unstyled @tamagui/ui Button behavior.",
       "dependencies": [
         "@tamagui/ui"
       ],

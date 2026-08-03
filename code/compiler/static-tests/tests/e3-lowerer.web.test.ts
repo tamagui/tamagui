@@ -68,15 +68,15 @@ function compile(
     target,
     tamaguiConfig:
       hostOptions?.animationDriver || hostOptions?.animationDrivers
-      ? {
-          ...projectInfo.tamaguiConfig!,
-          animations: {
-            ...projectInfo.tamaguiConfig!.animations,
-            ...hostOptions.animationDriver,
-          },
-          animationDrivers: hostOptions.animationDrivers,
-        }
-      : projectInfo.tamaguiConfig!,
+        ? {
+            ...projectInfo.tamaguiConfig!,
+            animations: {
+              ...projectInfo.tamaguiConfig!.animations,
+              ...hostOptions.animationDriver,
+            },
+            animationDrivers: hostOptions.animationDrivers,
+          }
+        : projectInfo.tamaguiConfig!,
     components: projectInfo.components!,
     componentModules: [{ moduleName: '@tamagui/core', resolvedId: coreId }],
     disablePartialExtraction: hostOptions?.disablePartialExtraction,

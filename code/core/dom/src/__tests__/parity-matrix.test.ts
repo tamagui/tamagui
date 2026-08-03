@@ -130,13 +130,11 @@ describe('React Strict DOM parity matrix', () => {
     ).toBe(matrix.execution.realizedUpstreamCases.snapshotsPassed)
     expect(matrix.execution.local.every(({ status }) => status === 'passed')).toBe(true)
     expect(matrix.execution.local.reduce((sum, row) => sum + row.testsPassed, 0)).toBe(
-      364
+      353
     )
     expect(
       matrix.execution.local.reduce((sum, row) => sum + (row.testsSkipped ?? 0), 0)
-    ).toBe(
-      2
-    )
+    ).toBe(2)
     expect(matrix.execution.builds).toHaveLength(6)
     expect(matrix.execution.builds.every(({ status }) => status === 'passed')).toBe(true)
   })

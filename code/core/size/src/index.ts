@@ -27,10 +27,7 @@ export const defaultTokenSizePolicy: TokenSizePolicy = {
   fontSize: '4',
 }
 
-export const resolveSizeToken = <
-  Value,
-  Category extends keyof TokenSizePolicy,
->(
+export const resolveSizeToken = <Value, Category extends keyof TokenSizePolicy>(
   value: Value,
   category: Category,
   policy: TokenSizePolicy = defaultTokenSizePolicy
@@ -164,7 +161,7 @@ export type CreatedSizeTable<
   text: SizeTableProjection<Table, 'text'>
   icon: SizeTableProjection<Table, 'icon'>
   resolve: {
-    (): SizeTableSelection<Table, DefaultName>
+    (): SizeTableSelection<Table, DefaultName>;
     <Name extends SizeTableName<Table>>(name: Name): SizeTableSelection<Table, Name>
   }
 }
