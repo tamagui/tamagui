@@ -1,5 +1,5 @@
 // review P0-1: the runtime resolver kept a second property-to-category table
-// (defaultTokenCategories + fontSubMapByProp) that diverged from the
+// (tokenCategoryByProperty + fontSubMapByProp) that diverged from the
 // style-grammar registry: borderWidth and the four side widths bound to
 // nothing (emitting invalid unitless CSS) and fontFamily bound to nothing
 // (emitting a literal family name with no font scope), while the codemod and

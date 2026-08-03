@@ -15,6 +15,7 @@ describe('createGrammarConfigView', () => {
           space: { 4: 16 },
           size: { 10: 40 },
           radius: { true: 8 },
+          zIndex: { modal: 100 },
           color: { red9: '#f00' },
         },
         fontsParsed: {
@@ -36,7 +37,7 @@ describe('createGrammarConfigView', () => {
     expect(view.tokenNames?.space).toEqual(new Set(['4']))
     expect(view.tokenNames?.size).toEqual(new Set(['10']))
     expect(view.tokenNames?.radius).toEqual(new Set(['true']))
-    expect(view.tokenNames).not.toHaveProperty('zIndex')
+    expect(view.tokenNames?.zIndex).toEqual(new Set(['modal']))
     expect(view.tokenNames?.color).toEqual(
       new Set(['red9', 'color5', 'background', 'borderColor'])
     )

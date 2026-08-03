@@ -14,7 +14,7 @@ describe('createTamagui', () => {
     expect(theme.tokensParsed.zIndex['1'].val).toEqual(100)
   })
 
-  test(`font reset uses the configured default when another font sorts first`, () => {
+  test(`font reset uses the configured default family when another font sorts first`, () => {
     const baseConfig = config.getDefaultTamaguiConfig()
     const alternate = {
       ...baseConfig.fonts.body,
@@ -39,8 +39,8 @@ describe('createTamagui', () => {
       rule.includes('.is_View')
     )
     expect(rootFontRule).toContain(theme.fontsParsed['body'].family.variable)
-    expect(rootFontRule).toContain(theme.fontsParsed['body'].lineHeight['4'].variable)
     expect(rootFontRule).not.toContain(theme.fontsParsed['aaa'].lineHeight['3'].variable)
+    expect(rootFontRule).not.toContain('line-height')
   })
 
   test(`font reset uses body without depending on sort order when defaultFont is omitted`, () => {

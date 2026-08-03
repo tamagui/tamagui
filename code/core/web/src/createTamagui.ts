@@ -1,4 +1,4 @@
-import { DEFAULT_SIZE_TOKEN, getConfigMaybe, setConfig, setTokens } from './config'
+import { getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
@@ -191,12 +191,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // CSS generation (tree-shaken when TAMAGUI_DID_OUTPUT_CSS is set)
     const declarations = createTokenCSS(tokens as any, shouldTokenCategoryHaveUnits)
     const fontDeclarations = createFontCSS(fontsParsed, registerFontVariables)
-    const cssRuleSets = buildCSSRuleSets(
-      declarations,
-      fontDeclarations,
-      DEFAULT_SIZE_TOKEN,
-      defaultFontToken
-    )
+    const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations, defaultFontToken)
 
     const themesIn = configIn.themes as ThemesLikeObject
     const dedupedThemes =

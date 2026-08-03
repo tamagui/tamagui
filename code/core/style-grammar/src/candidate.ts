@@ -402,6 +402,9 @@ function chooseEntry(
       ) {
         return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
       }
+      if (entry.tokenCategory === 'zIndex' && numericPattern.test(rawValue)) {
+        return { entry, valueKind: 'convenience', convenience: 'integer' }
+      }
       continue
     }
     if (prefix === 'opacity' || prefix === 'scale') {

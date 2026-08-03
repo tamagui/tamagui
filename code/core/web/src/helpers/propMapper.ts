@@ -1,10 +1,8 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
-import { resolveDefaultToken } from '../config'
 import { isVariable } from '../createVariable'
 import type {
   GetStyleState,
-  DefaultTokenCategory,
   PropMapper,
   SplitStyleProps,
   StyleResolver,
@@ -97,10 +95,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   }
 
   if (value != null) {
-    const defaultTokenCategory = defaultTokenCategories[key]
-    if (value === true && defaultTokenCategory) {
-      value = resolveDefaultToken(value, defaultTokenCategory, conf)
-    } else if (typeof value === 'string') {
+    if (typeof value === 'string') {
       value = isRemValue(value) ? resolveRem(value) : value
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)
@@ -181,9 +176,6 @@ const resolveVariants: StyleResolver = (
   if (typeof variantValue === 'function') {
     const fn = variantValue as VariantSpreadFunction<any>
     const extras = getVariantExtras(styleState)
-    if (variantMatch?.resolveDefaultTokenCategory) {
-      value = resolveDefaultToken(value, variantMatch.resolveDefaultTokenCategory, conf)
-    }
     variantValue = fn(value, extras)
 
     if (
@@ -349,15 +341,6 @@ const resolveTokensAndVariants: StyleResolver<object> = (
       continue
     }
 
-    // boolean token shorthand (borderRadius: true etc) inside variant styles —
-    // mirrors the direct-prop gate in map(); without this the raw `true` reaches
-    // drivers (rn driver throws constructing Animated.Value(true))
-    const defaultTokenCategory = defaultTokenCategories[subKey]
-    if (val === true && defaultTokenCategory) {
-      res[subKey] = resolveDefaultToken(val, defaultTokenCategory, conf)
-      continue
-    }
-
     if (typeof val === 'string') {
       res[subKey] = isRemValue(val) ? resolveRem(val) : val
       continue
@@ -395,18 +378,18 @@ const resolveTokensAndVariants: StyleResolver<object> = (
   return res
 }
 
-function mapDefaultTokenCategory(
-  keys: Record<string, boolean>,
-  category: DefaultTokenCategory
-) {
+export type StyleTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize'
+
+function mapTokenCategory(keys: Record<string, boolean>, category: StyleTokenCategory) {
   return Object.fromEntries(Object.keys(keys).map((key) => [key, category]))
 }
 
 // exported so the flat-value grammar adapter binds props to the same token
 // categories the bare-token path already uses, rather than keeping a second table
-export const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
-  ...mapDefaultTokenCategory(tokenCategories.size, 'size'),
-  ...mapDefaultTokenCategory(tokenCategories.radius, 'radius'),
+export const tokenCategoryByProperty: Record<string, StyleTokenCategory> = {
+  ...mapTokenCategory(tokenCategories.size, 'size'),
+  ...mapTokenCategory(tokenCategories.radius, 'radius'),
+  ...mapTokenCategory(tokenCategories.zIndex, 'zIndex'),
   // the transform family's x/y are lengths from the space scale (v6 decision:
   // `x="4"` resolves like `p="4"`), never the size category
   x: 'space',
@@ -471,7 +454,7 @@ export const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
   paddingVertical: 'space',
 }
 
-export type RuntimeTokenCategory = DefaultTokenCategory | 'color' | 'font' | 'fontFamily'
+export type RuntimeTokenCategory = StyleTokenCategory | 'color' | 'font' | 'fontFamily'
 
 export function getTokenCategoryForProperty(
   property: string
@@ -486,7 +469,7 @@ export function getTokenCategoryForProperty(
     return 'font'
   }
   return (
-    defaultTokenCategories[property] ||
+    tokenCategoryByProperty[property] ||
     (property in tokenCategories.color ? 'color' : undefined)
   )
 }
@@ -494,7 +477,6 @@ export function getTokenCategoryForProperty(
 // goes through specificity finding best matching variant function
 type VariantDefinitionMatch = {
   value: any
-  resolveDefaultTokenCategory?: DefaultTokenCategory
 }
 
 function getVariantDefinition(
@@ -514,12 +496,7 @@ function getVariantDefinition(
   for (const { key, parts } of getCompiledVariantResolvers(variant)) {
     for (const part of parts) {
       if (matchesVariantResolver(part, value, conf, theme)) {
-        const resolveDefaultTokenCategory =
-          value === true ? defaultTokenCategoryByResolverName[part] : undefined
-        return {
-          value: variant[key],
-          resolveDefaultTokenCategory,
-        }
+        return { value: variant[key] }
       }
     }
   }
@@ -530,15 +507,6 @@ function getVariantDefinition(
 type VariantResolverName = (typeof variantResolverNames)[number]
 
 const variantResolverNameSet = new Set<string>(variantResolverNames)
-
-const defaultTokenCategoryByResolverName: Partial<
-  Record<VariantResolverName, DefaultTokenCategory>
-> = {
-  Size: 'size',
-  Space: 'space',
-  Radius: 'radius',
-  FontSize: 'fontSize',
-}
 
 type CompiledVariantResolver = {
   key: string

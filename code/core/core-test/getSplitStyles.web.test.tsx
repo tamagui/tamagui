@@ -47,7 +47,7 @@ describe('getSplitStyles', () => {
     expect((styles.rulesToInsert[className]?.[4] ?? []).join('')).toContain('color:red')
   })
 
-  test(`Size variants resolve true to the built-in token key`, () => {
+  test(`Size variants receive true for opt-in sizing policies`, () => {
     let seenSize: unknown
     const SizedView = styled(View, {
       variants: {
@@ -66,28 +66,7 @@ describe('getSplitStyles', () => {
       size: true,
     })
 
-    expect(seenSize).toBe('4')
-  })
-
-  test(`direct true style tokens resolve to the built-in token key`, () => {
-    const out = simplifiedGetSplitStyles(View, {
-      padding: true,
-      borderRadius: true,
-    })
-
-    const byProp: Record<string, string> = {}
-    for (const rule of Object.values(out.rulesToInsert)) {
-      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
-    }
-
-    expect(byProp.paddingTop).toBe('var(--t-space-4)')
-    expect(byProp.paddingRight).toBe('var(--t-space-4)')
-    expect(byProp.paddingBottom).toBe('var(--t-space-4)')
-    expect(byProp.paddingLeft).toBe('var(--t-space-4)')
-    expect(byProp.borderTopLeftRadius).toBe('var(--t-radius-4)')
-    expect(byProp.borderTopRightRadius).toBe('var(--t-radius-4)')
-    expect(byProp.borderBottomRightRadius).toBe('var(--t-radius-4)')
-    expect(byProp.borderBottomLeftRadius).toBe('var(--t-radius-4)')
+    expect(seenSize).toBe(true)
   })
 
   test(`prop "aria-required" is passed through`, () => {
@@ -427,20 +406,20 @@ describe('getSplitStyles', () => {
     expect(rules[0][4].join('')).toContain('transform:perspective(1000px)')
   })
 
-  test(`z-index resolves numeric strings as literals`, () => {
-    const literal = simplifiedGetSplitStyles(Text, {
+  test(`z-index prefers an overlapping token and otherwise stays literal`, () => {
+    const token = simplifiedGetSplitStyles(Text, {
       zIndex: '1',
     })
 
     expect(
-      Object.values(literal.rulesToInsert)[0][StyleObjectProperty] === 'zIndex'
+      Object.values(token.rulesToInsert)[0][StyleObjectProperty] === 'zIndex'
     ).toBeTruthy()
-    expect(Object.values(literal.rulesToInsert)[0][StyleObjectValue]).toEqual('1')
-
-    const explicitToken = simplifiedGetSplitStyles(Text, { zIndex: '$1' })
-    expect(Object.values(explicitToken.rulesToInsert)[0][StyleObjectValue]).toEqual(
+    expect(Object.values(token.rulesToInsert)[0][StyleObjectValue]).toEqual(
       'var(--t-zIndex-1)'
     )
+
+    const literal = simplifiedGetSplitStyles(Text, { zIndex: '13' })
+    expect(Object.values(literal.rulesToInsert)[0][StyleObjectValue]).toEqual('13')
   })
 
   test(`shadowColor + shadowOpacity`, () => {

@@ -50,7 +50,7 @@ describe('TS-style variant resolvers - native', () => {
     expect(getOpacity(Comp, undefined)).toBeUndefined()
   })
 
-  test('Size resolver receives the default token for true', () => {
+  test('Size resolver receives true for opt-in sizing policies', () => {
     let seenSize: unknown
     const Comp = styled(View, {
       variants: {
@@ -66,7 +66,7 @@ describe('TS-style variant resolvers - native', () => {
     })
 
     expect(getOpacity(Comp, true)).toBe(0.65)
-    expect(seenSize).toBe('4')
+    expect(seenSize).toBe(true)
   })
 
   test('legacy-shaped keys only match as exact literals', () => {

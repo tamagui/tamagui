@@ -369,7 +369,7 @@ describe('tamaguiToTailwind', () => {
       expect(out).toContain('p-4')
     })
 
-    test('zIndex values stay literal even when a legacy scale is configured', () => {
+    test('zIndex candidates preserve names for runtime token-or-literal resolution', () => {
       expect(tamaguiToTailwind(`<View zIndex="4" />`)).toContain('z-4')
       const custom = tamaguiToTailwind(`<View zIndex="4" />`, {
         tokens: { zIndex: { 4: 40 } },

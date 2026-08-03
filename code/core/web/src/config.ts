@@ -3,7 +3,6 @@ import { MISSING_THEME_MESSAGE } from './constants/constants'
 import type {
   AnimationDriver,
   ConfigListener,
-  DefaultTokenCategory,
   GenericTamaguiSettings,
   TamaguiInternalConfig,
   Token,
@@ -12,8 +11,6 @@ import type {
 } from './types'
 
 export type StyleCompat = 'legacy' | 'react-native' | 'web'
-
-export const DEFAULT_SIZE_TOKEN = '4'
 
 let conf: TamaguiInternalConfig | null
 let setConfigCalledByThisInstance = false
@@ -77,14 +74,6 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
     // @ts-expect-error
     config[key]
   )
-}
-
-export const resolveDefaultToken = <Val>(
-  val: Val,
-  _category: DefaultTokenCategory,
-  _config?: TamaguiInternalConfig | null
-): Exclude<Val, true> | string => {
-  return val === true ? DEFAULT_SIZE_TOKEN : (val as Exclude<Val, true>)
 }
 
 export function getStyleCompat(): StyleCompat {

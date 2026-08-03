@@ -77,9 +77,9 @@ Numbers that should cascade but are not part of the color palette —
 `config.variables`, typed through module augmentation, and read by skins the
 same way generics are. This is also how you ship your own tokens. The shipped
 facets deliberately avoid custom variables so a copied Surface works under a
-stock config: `rounded` resolves your configured default radius token
-(`borderRadius: true`) and the `interactive` press scale is a literal. Fork the
-copy if you want those knobs driven by your own variables.
+stock config: `rounded` reads the optional `@tamagui/size` radius policy and the
+`interactive` press scale is a literal. Fork the copy if you want those knobs
+driven by your own variables.
 
 Do not reintroduce component-scoped tokens like `surfaceBorder`. Inside a level
 the border already is `borderColor`; the template re-bound it.

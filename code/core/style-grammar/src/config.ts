@@ -15,7 +15,10 @@ export type GrammarSourceConfig = {
   media?: Names
   themes?: Readonly<Record<string, unknown>>
   tokensParsed?: Partial<
-    Record<'space' | 'size' | 'radius' | 'color', Readonly<Record<string, unknown>>>
+    Record<
+      'space' | 'size' | 'radius' | 'zIndex' | 'color',
+      Readonly<Record<string, unknown>>
+    >
   >
   fontsParsed?: Readonly<Record<string, GrammarFontConfig | undefined>>
 }
@@ -90,6 +93,7 @@ export function createGrammarConfigView(
     space: new Set(),
     size: new Set(),
     radius: new Set(),
+    zIndex: new Set(),
     color: new Set(),
     fontFamily: new Set(),
     fontSize: new Set(),
@@ -98,7 +102,7 @@ export function createGrammarConfigView(
     letterSpacing: new Set(),
   }
 
-  for (const category of ['space', 'size', 'radius', 'color'] as const) {
+  for (const category of ['space', 'size', 'radius', 'zIndex', 'color'] as const) {
     addNames(tokenNames[category], config.tokensParsed?.[category])
   }
 

@@ -19,6 +19,7 @@ import { splitTailwindStyles } from './utils'
 const tokens = {
   ...(v6 as any).tokens,
   space: { ...(v6 as any).tokens.space, 4: 20 },
+  zIndex: { 4: 40 },
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
 const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
@@ -102,10 +103,10 @@ describe('config-aware tokens (NATIVE) — class names follow runtime-owned valu
     expect(typeof style({ className: cls }).width).toBe('number')
   })
 
-  test('zIndex="4" → z-4 → literal 4 (number)', () => {
+  test('zIndex="4" → z-4 → configured token value', () => {
     const cls = className(`<View zIndex="4" />`)
     expect(cls).toContain('z-4')
-    expect(style({ className: cls }).zIndex).toBe(4)
+    expect(style({ className: cls }).zIndex).toBe(40)
     expect(typeof style({ className: cls }).zIndex).toBe('number')
   })
 

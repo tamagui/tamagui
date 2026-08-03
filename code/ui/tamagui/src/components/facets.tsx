@@ -14,14 +14,15 @@
 //      inert when that chrome is absent (no borderWidth -> borderColor does
 //      nothing). So `interactive + outlined` composes with zero coordination.
 //   2. Generics-only. Facets read theme GENERICS (background, border-color,
-//      background-hover, ...) plus standard tokens and literals for shape
-//      (`borderRadius: true` resolves the configured default radius token, the
-//      press scale is a literal), never the color scale (colorN) and never
+//      background-hover, ...) plus the opt-in size policy and literals for shape,
+//      never the color scale (colorN) and never
 //      custom config variables. That makes them level-aware for free:
 //      <Surface level={2} filled interactive> needs no facet cooperation; the
 //      level re-bound the generics the facets read.
 //
 // Nothing is on by default: every facet is opt-in at the use site.
+
+import { defaultTokenSizePolicy } from '@tamagui/ui'
 
 // chrome facets — one property family each, static styles only.
 
@@ -48,8 +49,7 @@ export const elevated = {
 
 export const rounded = {
   true: {
-    // boolean radii use the built-in token key, same as the Dialog skin
-    borderRadius: true,
+    borderRadius: defaultTokenSizePolicy.radius,
   },
 } as const
 

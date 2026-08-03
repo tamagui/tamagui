@@ -3,8 +3,6 @@ type ThemeConfig = {
     cssRuleSets: string[];
     getThemeRulesSets: () => string[];
 };
-declare function getFontPropertyDeclarations(fontParsed: any, tokenKey?: string): string[];
-export { getFontPropertyDeclarations };
 /**
  * Generates CSS for tokens - registers CSS variables and builds declaration strings
  */
@@ -26,7 +24,7 @@ export declare function buildCSSRuleSets(declarations: string[], fontDeclaration
     declarations: string[];
     language?: string;
     fontParsed: any;
-}>, defaultFontSizeToken?: string, defaultFontToken?: string): string[];
+}>, defaultFontToken?: string): string[];
 /**
  * Generates theme CSS rules
  */
@@ -44,4 +42,5 @@ export declare function getCSS(themeConfig: ThemeConfig, opts: {
 } | undefined, lastIndex: {
     value: number;
 }): string;
+export {};
 //# sourceMappingURL=createDesignSystem.d.ts.map

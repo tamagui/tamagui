@@ -1,7 +1,5 @@
 import { isWeb } from '@tamagui/constants'
 import type { CreateTamaguiProps, Variable } from '../types'
-import { DEFAULT_SIZE_TOKEN } from '../config'
-import { getVariableVariable, isVariable } from '../createVariable'
 import { autoVariables, registerCSSVariable, variableToCSS } from './registerCSSVariable'
 import { getThemeCSSRules } from './getThemeCSSRules'
 import { getAllRules, wrapStyleRules } from './insertStyleRule'
@@ -10,38 +8,6 @@ type ThemeConfig = {
   cssRuleSets: string[]
   getThemeRulesSets: () => string[]
 }
-
-// helper to get font property CSS declarations
-function getFontPropertyDeclarations(
-  fontParsed: any,
-  tokenKey: string = DEFAULT_SIZE_TOKEN
-): string[] {
-  const props: string[] = ['font-family: var(--f-family)']
-
-  const getVarRef = (obj: any) => {
-    const val = obj?.[tokenKey]
-    if (isVariable(val)) {
-      return getVariableVariable(val)
-    }
-    return undefined
-  }
-
-  const letterSpacing = getVarRef(fontParsed.letterSpacing)
-  if (letterSpacing) props.push(`letter-spacing: ${letterSpacing}`)
-
-  const lineHeight = getVarRef(fontParsed.lineHeight)
-  if (lineHeight) props.push(`line-height: ${lineHeight}`)
-
-  const fontStyle = getVarRef(fontParsed.style)
-  if (fontStyle) props.push(`font-style: ${fontStyle}`)
-
-  const fontWeight = getVarRef(fontParsed.weight)
-  if (fontWeight) props.push(`font-weight: ${fontWeight}`)
-
-  return props
-}
-
-export { getFontPropertyDeclarations }
 
 /**
  * Generates CSS for tokens - registers CSS variables and builds declaration strings
@@ -119,7 +85,6 @@ export function buildCSSRuleSets(
     string,
     { name: string; declarations: string[]; language?: string; fontParsed: any }
   >,
-  defaultFontSizeToken: string = DEFAULT_SIZE_TOKEN,
   defaultFontToken = ''
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
@@ -155,12 +120,8 @@ export function buildCSSRuleSets(
     if (fontSelectors.length) {
       const defaultFont = fontDeclarations[defaultFontToken]
       if (defaultFont?.fontParsed) {
-        const fontProps = getFontPropertyDeclarations(
-          defaultFont.fontParsed,
-          defaultFontSizeToken
-        )
         const sharedSelectors = [...fontSelectors, '.is_View'].join(', ')
-        cssRuleSets.push(`${sharedSelectors} {${fontProps.join('; ')}}`)
+        cssRuleSets.push(`${sharedSelectors} {font-family: var(--f-family)}`)
       }
     }
 

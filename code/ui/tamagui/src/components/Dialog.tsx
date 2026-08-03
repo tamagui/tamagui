@@ -10,6 +10,7 @@
 // static background/border/padding/radius.
 import {
   createRefComponent,
+  defaultTokenSizePolicy,
   Dialog as UiDialog,
   styled,
   type TamaguiElement,
@@ -27,8 +28,8 @@ export const DialogContent = styled(UiDialog.Content, {
   backgroundColor: 'background',
   borderWidth: 1,
   borderColor: 'border-color',
-  padding: true,
-  borderRadius: true,
+  padding: defaultTokenSizePolicy.space,
+  borderRadius: defaultTokenSizePolicy.radius,
 })
 
 // `withStaticProperties` assigns onto the component it is given, so composing the

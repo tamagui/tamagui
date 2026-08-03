@@ -52,7 +52,7 @@ describe('versioned token configs', () => {
         size: true,
       })
 
-      expect(seenSize).toBe('4')
+      expect(seenSize).toBe(true)
     }
   )
 })

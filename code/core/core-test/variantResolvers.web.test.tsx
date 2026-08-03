@@ -217,7 +217,7 @@ describe('TS-style variant resolvers', () => {
             opacity: 0.31,
           })),
           Size: createVariantResolver('Size', (value) => ({
-            opacity: value === '4' ? 0.41 : 0.91,
+            opacity: value === true ? 0.41 : 0.91,
           })),
         },
       } as const,
@@ -229,7 +229,7 @@ describe('TS-style variant resolvers', () => {
           Size: createVariantResolver('Size', (value) => {
             sizeFirstSeen = value
             return {
-              opacity: value === '4' ? 0.41 : 0.91,
+              opacity: value === true ? 0.41 : 0.91,
             }
           }),
           boolean: createVariantResolver('boolean', () => ({
@@ -241,7 +241,7 @@ describe('TS-style variant resolvers', () => {
 
     expect(getOpacity(BooleanFirst, true)).toBe(0.31)
     expect(getOpacity(SizeFirst, true)).toBe(0.41)
-    expect(sizeFirstSeen).toBe('4')
+    expect(sizeFirstSeen).toBe(true)
   })
 
   test('overlapping resolver domains follow declaration order', () => {
@@ -332,7 +332,7 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(NumberCategoryAny, 2)).toBe(0.26)
   })
 
-  test('union member order controls true default-token resolver argument', () => {
+  test('union member order keeps true as the resolver argument', () => {
     let sizeFirstSeen: unknown
     let booleanFirstSeen: unknown
     const SizeFirst = styled(View, {
@@ -361,12 +361,12 @@ describe('TS-style variant resolvers', () => {
     })
 
     expect(getOpacity(SizeFirst, true)).toBe(0.28)
-    expect(sizeFirstSeen).toBe('4')
+    expect(sizeFirstSeen).toBe(true)
     expect(getOpacity(BooleanFirst, true)).toBe(0.29)
     expect(booleanFirstSeen).toBe(true)
   })
 
-  test('true resolves through the matched category and exact true stays raw', () => {
+  test('true stays raw through matched categories and exact variants', () => {
     const seen: Record<string, unknown> = {}
     const Comp = styled(View, {
       variants: {
@@ -420,11 +420,11 @@ describe('TS-style variant resolvers', () => {
     })
 
     expect(seen).toEqual({
-      size: '4',
-      space: '4',
-      radius: '4',
+      size: true,
+      space: true,
+      radius: true,
       zIndex: true,
-      fontSize: '4',
+      fontSize: true,
       fanout: true,
     })
   })
@@ -744,7 +744,7 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(Comp, '4')).toBe(0.5)
   })
 
-  test('default-size resolvers receive the default token for true', () => {
+  test('size resolvers receive true for opt-in sizing policies', () => {
     for (const resolverKey of ['Size', 'Space', 'FontSize'] as const) {
       let seenSize: unknown
       const Comp = styled(View, {
@@ -761,7 +761,7 @@ describe('TS-style variant resolvers', () => {
       } as const)
 
       expect(getOpacity(Comp, true)).toBe(0.58)
-      expect(seenSize).toBe('4')
+      expect(seenSize).toBe(true)
     }
   })
 })

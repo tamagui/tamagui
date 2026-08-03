@@ -94,7 +94,7 @@ keeps them from colliding, any combination composes with zero coordination.
       name: 'rounded',
       required: false,
       type: 'boolean',
-      description: `Chrome: borderRadius resolving your configured default radius token.`,
+      description: `Chrome: borderRadius from the optional @tamagui/size policy.`,
     },
     {
       name: 'interactive',
@@ -148,6 +148,8 @@ export const Surface = forwardRef<any, SurfaceProps>(function Surface(
 The facets live in a sibling `facets.ts` so any skin can compose the same chrome:
 
 ```tsx
+import { defaultTokenSizePolicy } from '@tamagui/ui'
+
 export const filled = {
   true: { backgroundColor: 'background' },
 } as const
@@ -165,7 +167,7 @@ export const elevated = {
 } as const
 
 export const rounded = {
-  true: { borderRadius: true },
+  true: { borderRadius: defaultTokenSizePolicy.radius },
 } as const
 
 export const interactive = {

@@ -13,7 +13,6 @@ import {
 } from '@tamagui/helpers'
 import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 
-import { resolveDefaultToken } from '../config'
 import { isVariable } from '../createVariable'
 import { mediaKeyMatch } from '../hooks/useMedia'
 import type { GetStyleState } from '../types'
@@ -25,7 +24,7 @@ import { mediaObjectToString } from './mediaObjectToString'
 import { normalizeColor } from './normalizeColor'
 import { parseNativeStyle } from './parseNativeStyle.native'
 import { parseNativeTransform } from './parseNativeTransform.native'
-import { defaultTokenCategories, getTokenCategoryForProperty } from './propMapper'
+import { getTokenCategoryForProperty, tokenCategoryByProperty } from './propMapper'
 import { resolveSafeAreaVariable } from './resolveSafeAreaVariable'
 import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { resolveVariableValue } from './resolveVariableValue'
@@ -391,9 +390,8 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
 }
 
 function tokenVariable(state: GetStyleState, property: string, name: string): any {
-  let lookupName = name[0] === '$' ? name.slice(1) : name
+  let lookupName = name
   if (property === 'fontFamily') return state.conf.fontsParsed[lookupName]?.family
-  if (property === 'zIndex') return state.conf.tokensParsed.zIndex?.[lookupName]
   const fontKey =
     property === 'fontSize'
       ? 'size'
@@ -440,7 +438,6 @@ function tokenVariable(state: GetStyleState, property: string, name: string): an
 }
 
 function configuredValue(state: GetStyleState, property: string, raw: string): any {
-  if (property === 'zIndex' && raw[0] !== '$') return raw
   let name = raw
   let opacity: number | undefined
   const slash = raw.lastIndexOf('/')
@@ -462,7 +459,7 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
   if (!isVariable(variable)) {
     if (
       process.env.NODE_ENV === 'development' &&
-      defaultTokenCategories[property] &&
+      tokenCategoryByProperty[property] &&
       state.conf.tokensParsed.color?.[name]
     ) {
       warnOnce(`"${name}" contributes to "color", not "${property}"; keeping it literal`)
@@ -1031,10 +1028,6 @@ function emitValue(
 ) {
   if (typeof raw === 'string') raw = raw.trim()
 
-  if (raw === true) {
-    const category = defaultTokenCategories[property]
-    if (category) raw = resolveDefaultToken(raw, category, state.conf)
-  }
   if (isVariable(raw)) {
     raw = resolveVariableValue(
       property,
@@ -1519,7 +1512,7 @@ export function contributeStyleString(
     process.env.NODE_ENV === 'development' &&
     !hasBase &&
     condition &&
-    (property in tokenCategories.color || property in defaultTokenCategories) &&
+    (property in tokenCategories.color || property in tokenCategoryByProperty) &&
     splitComponents(source.slice(segmentStart)).length > 1
   ) {
     warnOnce(

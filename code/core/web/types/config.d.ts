@@ -1,8 +1,6 @@
-import type { AnimationDriver, DefaultTokenCategory, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensParsed } from './types';
+import type { AnimationDriver, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensParsed } from './types';
 export type StyleCompat = 'legacy' | 'react-native' | 'web';
-export declare const DEFAULT_SIZE_TOKEN = "4";
 export declare const getSetting: <Key extends keyof GenericTamaguiSettings>(key: Key) => GenericTamaguiSettings[Key];
-export declare const resolveDefaultToken: <Val>(val: Val, _category: DefaultTokenCategory, _config?: TamaguiInternalConfig | null) => Exclude<Val, true> | string;
 export declare function getStyleCompat(): StyleCompat;
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;

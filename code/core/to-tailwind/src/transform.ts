@@ -62,7 +62,7 @@ function createTransformGrammarConfig(
     return { ...options.grammarConfig, shorthands, mediaNames: mediaKeys }
   }
   const tokenNames: Partial<Record<TokenCategory, Set<string>>> = {}
-  const tokenCategories = ['space', 'size', 'radius', 'color'] as const
+  const tokenCategories = ['space', 'size', 'radius', 'zIndex', 'color'] as const
   const fontCategories = [
     'fontFamily',
     'fontSize',

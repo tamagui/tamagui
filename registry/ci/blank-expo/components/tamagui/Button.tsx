@@ -24,7 +24,7 @@ import {
   withStaticProperties,
 } from '@tamagui/ui'
 
-// SizeTokens includes `true`, which resolves through settings.defaultSize.
+// SizeTokens includes `true`, which resolves through @tamagui/size's opt-in policy.
 export type ButtonSize = SizeTokens
 
 const buttonFrameSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>) => {

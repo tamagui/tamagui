@@ -6,8 +6,8 @@
 // pass their own icon components as children of the icon parts.
 //
 // Sizing is token-based: `size` accepts a size token or `true`, which resolves
-// through settings.defaultSize/defaultTokens — the same language Button,
-// Input, Label, ListItem, and Tabs speak.
+// through the opt-in @tamagui/size policy shared by Button, Input, Label,
+// ListItem, and Tabs.
 import {
   type GetProps,
   getVariableValue,

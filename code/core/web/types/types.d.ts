@@ -627,7 +627,6 @@ type AllowedStyleValuesSettingPerCategory = {
     color?: AllowedStyleValuesSettingColor;
 };
 type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSettingPerCategory;
-export type DefaultTokenCategory = 'size' | 'space' | 'radius' | 'fontSize';
 export interface GenericTamaguiSettings {
     /**
      * controls style semantics where React Native/Yoga and CSS differ.

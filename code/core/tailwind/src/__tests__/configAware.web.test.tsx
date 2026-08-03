@@ -22,6 +22,7 @@ import { splitTailwindStyles } from './utils'
 const tokens = {
   ...(v6 as any).tokens,
   space: { ...(v6 as any).tokens.space, 4: 20 }, // default is 16 → prove we use 20
+  zIndex: { 4: 40 },
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
 const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
@@ -78,7 +79,7 @@ describe('config-aware tokens (WEB) — class names follow runtime-owned values'
     expect(styleFlat({ className: cls }).width).toBe(styleFlat({ width: '4' }).width)
   })
 
-  test('zIndex="4" → z-4 → literal parity', () => {
+  test('zIndex="4" → z-4 → configured token parity', () => {
     const cls = className(`<View zIndex="4" />`)
     expect(cls).toContain('z-4')
     expect(String(styleFlat({ className: cls }).zIndex)).toBe(

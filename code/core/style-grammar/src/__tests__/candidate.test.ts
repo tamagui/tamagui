@@ -18,6 +18,7 @@ const tokenNames: Record<TokenCategory, readonly string[]> = {
   space: ['0', '1', '2', '4', '-1', 'spaceOnly'],
   size: ['0', '4', '10', 'sizeOnly'],
   radius: ['0', '4', '8', 'radiusOnly'],
+  zIndex: ['4', 'modal'],
   color: ['color5', 'red-9', 'colorOnly'],
   fontFamily: ['body', 'heading', 'familyOnly', 'bothNamed'],
   fontSize: ['4', '5', 'fontSizeOnly'],
@@ -203,7 +204,8 @@ describe('candidate grammar', () => {
     expect(parseCandidate('w-full', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('w-1/2', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('opacity-50', config)?.convenience).toBe('percentage')
-    expect(parseCandidate('z-4', config)?.convenience).toBe('integer')
+    expect(parseCandidate('z-4', config)?.valueKind).toBe('token')
+    expect(parseCandidate('z-10', config)?.convenience).toBe('integer')
     expect(parseCandidate('font-sans', config)?.convenience).toBe('font-generic')
     expect(parseCandidate('border', config)?.convenience).toBe('bare-border')
     expect(parseCandidate('flex-1', config)?.convenience).toBe('flex-bundle')
@@ -250,7 +252,7 @@ describe('candidate grammar', () => {
     }
     expect(
       formatCandidate(
-        { prop: 'zIndex', value: '4', valueKind: 'convenience', modifiers: ['hover'] },
+        { prop: 'zIndex', value: '4', valueKind: 'token', modifiers: ['hover'] },
         config
       )
     ).toBe('hover:z-4')

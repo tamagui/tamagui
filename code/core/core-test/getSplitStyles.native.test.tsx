@@ -1,5 +1,4 @@
 import { View, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
-import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -42,27 +41,7 @@ describe('getSplitStyles', () => {
     expect(style?.rowGap).toBe(10)
   })
 
-  test(`default size markers resolve to native layout values`, () => {
-    const direct = getSplitStylesFor(
-      {
-        padding: true,
-        borderRadius: true,
-      },
-      View,
-      {
-        resolveValues: 'value',
-      }
-    )
-
-    expect(findLayoutValue(direct, 'paddingTop')).toBe('18px')
-    expect(findLayoutValue(direct, 'paddingRight')).toBe('18px')
-    expect(findLayoutValue(direct, 'paddingBottom')).toBe('18px')
-    expect(findLayoutValue(direct, 'paddingLeft')).toBe('18px')
-    expect(findLayoutValue(direct, 'borderTopLeftRadius')).toBe('9px')
-    expect(findLayoutValue(direct, 'borderTopRightRadius')).toBe('9px')
-    expect(findLayoutValue(direct, 'borderBottomRightRadius')).toBe('9px')
-    expect(findLayoutValue(direct, 'borderBottomLeftRadius')).toBe('9px')
-
+  test(`Size variants receive true for opt-in sizing policies`, () => {
     let seenSize: unknown
     const SpreadSizeView = styled(View, {
       variants: {
@@ -70,7 +49,7 @@ describe('getSplitStyles', () => {
           Size: (val) => {
             seenSize = val
             return {
-              width: val,
+              opacity: 0.5,
             }
           },
         },
@@ -87,8 +66,8 @@ describe('getSplitStyles', () => {
       }
     )
 
-    expect(seenSize).toBe('4')
-    expect(findLayoutValue(spread, 'width')).toBe('44px')
+    expect(seenSize).toBe(true)
+    expect(spread.style?.opacity).toBe(0.5)
   })
 
   test('flat programs can override read-only parent props', () => {
@@ -377,24 +356,6 @@ function getSplitStylesFor(
     undefined,
     undefined
   )!
-}
-
-function findLayoutValue(result: ReturnType<typeof getSplitStylesFor>, property: string) {
-  const styleValue = result.style?.[property] ?? result.viewProps?.style?.[property]
-  if (styleValue != null) {
-    return typeof styleValue === 'number' ? `${styleValue}px` : styleValue
-  }
-
-  for (const rule of Object.values(result.rulesToInsert ?? {})) {
-    if ((rule as any)[StyleObjectProperty] === property) {
-      return (rule as any)[StyleObjectValue]
-    }
-  }
-
-  const className = result.classNames?.[property]
-  const match =
-    typeof className === 'string' ? /-(-?\d+(?:\.\d+)?px)$/.exec(className) : null
-  return match?.[1]
 }
 
 function getThemeStylesView(props: Record<string, any>, themeName: string, tag?: string) {
