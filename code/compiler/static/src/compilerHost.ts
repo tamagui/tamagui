@@ -36,11 +36,7 @@ import {
   parseValue,
 } from '@tamagui/style-grammar'
 import { isValidStyleKey } from '@tamagui/web'
-import type {
-  AnimationDriver,
-  StaticConfig,
-  TamaguiInternalConfig,
-} from '@tamagui/web'
+import type { AnimationDriver, StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 
 import type { LoadedComponents } from './extractor/bundleConfig'
 import { concatClassName } from './extractor/concatClassName'
@@ -1313,9 +1309,7 @@ export function createTamaguiCompilerHost(
       const animatedBy =
         typeof props.animatedBy === 'string' ? props.animatedBy.trim() : null
       const namedAnimationDriver =
-        animatedBy === null
-          ? null
-          : options.tamaguiConfig.animationDrivers?.[animatedBy]
+        animatedBy === null ? null : options.tamaguiConfig.animationDrivers?.[animatedBy]
       const namedCssAnimationDriver =
         platform === 'web' && namedAnimationDriver?.outputStyle === 'css'
           ? namedAnimationDriver
@@ -2247,11 +2241,7 @@ export function createTamaguiCompilerHost(
           ]
             .filter(Boolean)
             .join(' ')
-        : jsxStyleAttributes(
-            className,
-            inlineStyle,
-            dynamicHostStyleProperties ?? []
-          )
+        : jsxStyleAttributes(className, inlineStyle, dynamicHostStyleProperties ?? [])
       const objectWebStyle = classNameExpression
         ? [
             `className: ${classNameExpression}`,
@@ -2259,11 +2249,7 @@ export function createTamaguiCompilerHost(
           ]
             .filter(Boolean)
             .join(', ')
-        : objectStyleProperties(
-            className,
-            inlineStyle,
-            dynamicHostStyleProperties ?? []
-          )
+        : objectStyleProperties(className, inlineStyle, dynamicHostStyleProperties ?? [])
       const webCSS = [...artifacts.css, ...programCSS]
       const webExtraProps = serializedProps(input.element.form, webDOMResult.additions)
       if (input.element.form !== 'jsx') {
