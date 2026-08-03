@@ -1,4 +1,4 @@
-import { grammarPlatformGroups } from './config'
+import { grammarPlatformGroups, grammarPlatformRank } from './config'
 import type { ModifierRegistryView, ParsedValue } from './valueTypes'
 
 export interface ActiveConditions {
@@ -16,14 +16,29 @@ export interface ActiveConditions {
   containers: (modifier: string) => boolean
 }
 
+/**
+ * Resolves a program to one payload, mirroring the runtime directStyle
+ * contract: clauses apply in authored order, except that platform-bearing
+ * clauses with the same non-platform condition set compete by platform
+ * specificity (grammarPlatformRank), where a more specific earlier clause
+ * survives a less specific later one and equal ranks keep authored order.
+ */
 export function evaluateProgram(
   value: ParsedValue,
   registry: ModifierRegistryView,
   active: ActiveConditions
 ): string | null {
-  for (let clauseIndex = value.clauses.length - 1; clauseIndex >= 0; clauseIndex--) {
+  let payload: string | null = null
+  let found = false
+  // best platform rank seen per non-platform condition set; mirrors the
+  // runtime gate keyed by property + specificityGroup in directStyle
+  let groupBest: Map<string, number> | undefined
+
+  for (let clauseIndex = 0; clauseIndex < value.clauses.length; clauseIndex++) {
     const clause = value.clauses[clauseIndex]
     let matches = true
+    let rank = 0
+    let others: string[] | undefined
 
     for (
       let modifierIndex = 0;
@@ -43,6 +58,7 @@ export function evaluateProgram(
         matches =
           modifier === active.platform ||
           (grammarPlatformGroups.get(modifier)?.has(active.platform) ?? false)
+        if (matches) rank = Math.max(rank, grammarPlatformRank(modifier))
       } else if (kind === 'group') {
         matches = active.groups(modifier)
       } else if (kind === 'container') {
@@ -52,10 +68,21 @@ export function evaluateProgram(
       }
 
       if (!matches) break
+      if (kind !== 'platform') (others ||= []).push(modifier)
     }
 
-    if (matches) return clause.payload
+    if (!matches) continue
+
+    if (rank) {
+      const groupKey = others ? others.sort().join(':') : ''
+      const best = groupBest?.get(groupKey) ?? 0
+      if (rank < best) continue
+      ;(groupBest ||= new Map()).set(groupKey, rank)
+    }
+
+    payload = clause.payload
+    found = true
   }
 
-  return value.base
+  return found ? payload : value.base
 }

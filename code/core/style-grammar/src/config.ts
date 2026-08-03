@@ -65,7 +65,24 @@ export const grammarPlatformNames: ReadonlySet<string> = new Set([
 export const grammarPlatformGroups: ReadonlyMap<string, ReadonlySet<string>> = new Map([
   ['native', new Set(['android', 'ios', 'androidtv', 'tvos'])],
   ['tv', new Set(['androidtv', 'tvos'])],
+  // react-native-tvos reports Platform.OS 'android'/'ios' on TV devices, so the
+  // base platform contains its TV variant (matches runtime platformMatches)
+  ['android', new Set(['androidtv'])],
+  ['ios', new Set(['tvos'])],
 ])
+
+/**
+ * Platform clause specificity, mirroring the runtime directStyle ranks: a TV
+ * variant beats its base platform, which beats `native`, independent of
+ * authored order. Non-platform modifiers never rank.
+ */
+export function grammarPlatformRank(modifier: string): number {
+  return modifier === 'native'
+    ? 1
+    : modifier === 'androidtv' || modifier === 'tvos'
+      ? 3
+      : 2
+}
 
 function addNames(target: Set<string>, source: Names | undefined): void {
   if (!source) return

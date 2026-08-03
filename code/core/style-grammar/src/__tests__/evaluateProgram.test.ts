@@ -73,6 +73,8 @@ describe('runtime program evaluation', () => {
     ['native', 'tvos'],
     ['tv', 'tvos'],
     ['ios', 'ios'],
+    ['ios', 'tvos'],
+    ['android', 'androidtv'],
   ])('matches the %s modifier on %s', (modifier, platform) => {
     expect(
       evaluateProgram(
@@ -196,5 +198,116 @@ describe('runtime program evaluation', () => {
         active()
       )
     ).toBe('red')
+  })
+})
+
+describe('platform specificity', () => {
+  const platformRegistry: ModifierRegistryView = {
+    get(name) {
+      return (
+        {
+          native: 'platform',
+          web: 'platform',
+          android: 'platform',
+          ios: 'platform',
+          tv: 'platform',
+          androidtv: 'platform',
+          tvos: 'platform',
+          hover: 'state',
+        } as Readonly<Record<string, ModifierKind>>
+      )[name]
+    },
+  }
+
+  const evaluate = (
+    clauses: ParsedValue['clauses'],
+    conditions: Partial<ActiveConditions> = {}
+  ) =>
+    evaluateProgram(
+      { base: 'base', clauses },
+      platformRegistry,
+      active({ platform: 'androidtv', ...conditions })
+    )
+
+  test('androidtv beats android regardless of authored order', () => {
+    expect(
+      evaluate([
+        { modifiers: ['android'], payload: 'android' },
+        { modifiers: ['androidtv'], payload: 'androidtv' },
+      ])
+    ).toBe('androidtv')
+    expect(
+      evaluate([
+        { modifiers: ['androidtv'], payload: 'androidtv' },
+        { modifiers: ['android'], payload: 'android' },
+      ])
+    ).toBe('androidtv')
+  })
+
+  test('specificity cascade native < android < androidtv is order-independent', () => {
+    expect(
+      evaluate([
+        { modifiers: ['androidtv'], payload: 'androidtv' },
+        { modifiers: ['tv'], payload: 'tv' },
+        { modifiers: ['native'], payload: 'native' },
+      ])
+    ).toBe('androidtv')
+    expect(
+      evaluate([
+        { modifiers: ['android'], payload: 'android' },
+        { modifiers: ['native'], payload: 'native' },
+      ])
+    ).toBe('android')
+  })
+
+  test('equal specificity keeps authored order (later wins)', () => {
+    expect(
+      evaluate([
+        { modifiers: ['android'], payload: 'android' },
+        { modifiers: ['tv'], payload: 'tv' },
+      ])
+    ).toBe('tv')
+    expect(
+      evaluate([
+        { modifiers: ['tv'], payload: 'tv' },
+        { modifiers: ['android'], payload: 'android' },
+      ])
+    ).toBe('android')
+  })
+
+  test('specificity competes only within the same non-platform condition set', () => {
+    // hover:android and plain androidtv are different condition sets: the
+    // later clause wins by authored order once both match
+    expect(
+      evaluate(
+        [
+          { modifiers: ['androidtv'], payload: 'androidtv' },
+          { modifiers: ['hover', 'android'], payload: 'hover-android' },
+        ],
+        { states: new Set(['hover']) }
+      )
+    ).toBe('hover-android')
+    // within the hover set, androidtv still beats android
+    expect(
+      evaluate(
+        [
+          { modifiers: ['hover', 'androidtv'], payload: 'hover-androidtv' },
+          { modifiers: ['hover', 'android'], payload: 'hover-android' },
+        ],
+        { states: new Set(['hover']) }
+      )
+    ).toBe('hover-androidtv')
+  })
+
+  test('a platform-less clause still applies by authored order', () => {
+    expect(
+      evaluate(
+        [
+          { modifiers: ['androidtv'], payload: 'androidtv' },
+          { modifiers: ['hover'], payload: 'hover' },
+        ],
+        { states: new Set(['hover']) }
+      )
+    ).toBe('hover')
   })
 })

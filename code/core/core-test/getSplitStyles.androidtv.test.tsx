@@ -132,7 +132,9 @@ describe('Android TV - platform style props', () => {
     const result = getSplitStylesFor({
       backgroundColor: 'native:green tv:blue androidtv:purple',
       opacity: 'native:1',
-      zIndex: 'native:2',
+      // 1337 is not a zIndex token key: bare token-scale numbers like 2
+      // resolve config-first to the token value (owner-decided contract)
+      zIndex: 'native:1337',
       marginTop: 'tv:8px',
     })
     // androidtv wins for backgroundColor (most specific)
@@ -141,7 +143,7 @@ describe('Android TV - platform style props', () => {
     expect(result.style?.marginTop).toBe(8)
     // native-only props are retained (not overridden by tv or androidtv)
     expect(result.style?.opacity).toBe(1)
-    expect(result.style?.zIndex).toBe(2)
+    expect(result.style?.zIndex).toBe(1337)
   })
 
   test('platform specificity cascade is order-independent (most specific declared first, retains other props)', () => {
@@ -149,7 +151,7 @@ describe('Android TV - platform style props', () => {
       backgroundColor: 'androidtv:purple tv:blue native:green',
       marginTop: 'tv:8px',
       opacity: 'native:1',
-      zIndex: 'native:2',
+      zIndex: 'native:1337',
     })
     // androidtv wins for backgroundColor even though it was declared first
     expect(result.style?.backgroundColor).toBe('purple')
@@ -157,6 +159,6 @@ describe('Android TV - platform style props', () => {
     expect(result.style?.marginTop).toBe(8)
     // native-only props are retained even though native was not the winner for backgroundColor
     expect(result.style?.opacity).toBe(1)
-    expect(result.style?.zIndex).toBe(2)
+    expect(result.style?.zIndex).toBe(1337)
   })
 })
