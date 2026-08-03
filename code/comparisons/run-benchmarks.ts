@@ -1123,7 +1123,7 @@ async function main() {
                 moduleLengths:
                   'Rendered module lengths are pre-minification attribution, while artifact bytes and gzip bytes are exact emitted sizes.',
                 tamaguiGzip:
-                  'Tamagui-only gzip is measured from an explicit production-minified Rollup chunk containing tamagui, @tamagui/*, and workspace core/packages/ui dist modules. It excludes fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and other dependencies.',
+                  'Tamagui-attributable gzip is measured from an explicit production-minified Rollup chunk containing tamagui, @tamagui/*, workspace core/packages/ui dist modules, and @react-native/normalize-color when pulled by the Tamagui runtime. It excludes fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and other dependencies.',
                 remainingDelta:
                   'The remaining V3 delta is framework surface led by @tamagui/style-grammar and @tamagui/web, not fixture/config/theme code.',
               },
