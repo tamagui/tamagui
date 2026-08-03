@@ -1,93 +1,39 @@
 import { describe, expect, test } from 'bun:test'
 
+import { themes as authoredThemes } from '@tamagui/themes/builder'
 import { createTamagui } from '@tamagui/web'
-import { createV6Config, tokens as baseTokens } from '../src/v6-base'
-import { createTailwindThemes, tailwindPalettes } from '../src/v6-builder'
-import {
-  colors as classicColors,
-  defaultConfig as classicConfig,
-} from '../src/v6-classic'
-import { colors as tailwindColorsPack, defaultConfig as tailwindConfig } from '../src/v6'
+import { colors, defaultConfig, themes, tokens } from '../src/v6'
 
-describe('v6 config split: aligned base, swappable colors', () => {
-  test('the aligned pieces never diverge between color packs', () => {
-    expect(classicConfig.shorthands).toBe(tailwindConfig.shorthands)
-    expect(classicConfig.fonts).toBe(tailwindConfig.fonts)
-    expect(classicConfig.media).toBe(tailwindConfig.media)
-    expect(classicConfig.settings).toBe(tailwindConfig.settings)
-    for (const scale of ['space', 'size', 'radius'] as const) {
-      expect(classicConfig.tokens[scale]).toEqual(tailwindConfig.tokens[scale])
-    }
-    expect(classicConfig.tokens).not.toHaveProperty('zIndex')
-    expect(tailwindConfig.tokens).not.toHaveProperty('zIndex')
+describe('v6 config', () => {
+  test('ships the statically generated form of the authored themes', () => {
+    expect(themes).toEqual(authoredThemes)
+    expect(colors).toEqual({ themes, colorTokens: tokens.color })
   })
 
-  test('both packs generate the identical theme name set and theme shape', () => {
-    const tailwindNames = Object.keys(tailwindConfig.themes).sort()
-    const classicNames = Object.keys(classicConfig.themes).sort()
-    expect(tailwindNames).toEqual(classicNames)
-    // the v5 template shape survives palette swaps
-    for (const key of [
-      'background',
-      'color',
-      'color1',
-      'color12',
-      'accent1',
-      'shadow1',
-      'border-color',
-    ]) {
-      expect(tailwindConfig.themes.light).toHaveProperty(key)
-      expect(classicConfig.themes.light).toHaveProperty(key)
-    }
+  test('creates a Tamagui config with the v6 tokens and themes', () => {
+    const created = createTamagui(defaultConfig)
+    expect(created.themes.light.background).toBeTruthy()
+    expect(created.themes.dark.background).toBeTruthy()
+    expect(created.tokensParsed.color['brand-600']).toBeTruthy()
+    expect(created.tokensParsed.color['shadow-7']).toBeTruthy()
+    expect(created.tokensParsed.space['4']).toBeTruthy()
+    expect(created.shorthands?.w).toBe('width')
   })
 
-  test('the tailwind pack themes are generated from the Tailwind palette, not shared with v5', () => {
-    expect(tailwindColorsPack.colorTokens).toHaveProperty('blue-500', '#2b7fff')
-    expect(classicColors).not.toHaveProperty('colorTokens')
-    // different palettes must produce different theme values
-    expect(tailwindConfig.themes.light_blue.color9).not.toBe(
-      classicConfig.themes.light_blue.color9
-    )
-    expect(tailwindConfig.themes.dark.color3).not.toBe(classicConfig.themes.dark.color3)
-    // scheme-relative family ramps land in the base themes (like radix in v5)
-    expect(tailwindConfig.themes.light).toHaveProperty('blue5')
-    expect(tailwindConfig.themes.dark).toHaveProperty('blue5')
-    expect(tailwindConfig.themes.light.blue5).not.toBe(tailwindConfig.themes.dark.blue5)
+  test('uses eleven scheme-relative ramp values', () => {
+    expect(themes.light.color1).toBe(tokens.color['gray-50'])
+    expect(themes.light.color11).toBe(tokens.color['gray-950'])
+    expect(themes.dark.color1).toBe(tokens.color['gray-950'])
+    expect(themes.dark.color11).toBe(tokens.color['gray-50'])
+    expect(themes.light).not.toHaveProperty('color12')
   })
 
-  test('every palette entry produces a working createTamagui config', () => {
-    const custom = createV6Config({
-      themes: createTailwindThemes({
-        childrenThemes: {
-          blue: tailwindPalettes.blue,
-          emerald: tailwindPalettes.emerald,
-        },
-      }),
-      colorTokens: { brand: '#ff6600' },
-    })
-
-    for (const config of [tailwindConfig, classicConfig, custom]) {
-      const created = createTamagui(config as any)
-      expect(created.themes.light).toBeTruthy()
-      expect(created.themes.dark).toBeTruthy()
-      expect(created.themes.light.background).toBeTruthy()
-      expect(created.tokensParsed.space['4']).toBeTruthy()
-      expect(created.shorthands?.w).toBe('width')
-    }
-  })
-
-  test('custom colors flow into tokens and generated themes', () => {
-    const custom = createV6Config({
-      themes: createTailwindThemes({
-        childrenThemes: { blue: tailwindPalettes.blue },
-      }),
-      colorTokens: { brand: '#ff6600' },
-    })
-    expect(custom.tokens.color).toEqual({ brand: '#ff6600' })
-    expect(custom.themes).toHaveProperty('light_blue')
-    expect(custom.themes).not.toHaveProperty('light_red')
-    // classic pack omits color tokens entirely (v5 behavior: colors live in themes)
-    expect('color' in classicConfig.tokens).toBe(false)
-    expect(baseTokens).not.toHaveProperty('color')
+  test('deduplicates inverse and saturated semantic levels', () => {
+    expect(themes.light_inverse).toBe(themes.dark)
+    expect(themes.light_inverse_level2).toBe(themes.dark_level2)
+    expect(themes.light_red_level2).not.toBe(themes.light_red)
+    expect(themes.light_red_level3).toBe(themes.light_red_level2)
+    expect(themes.light_red_level4).toBe(themes.light_red_level2)
+    expect(themes.light_red_level2.background).toBe(tokens.color['red-50'])
   })
 })

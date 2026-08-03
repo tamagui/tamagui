@@ -315,7 +315,7 @@ ${renderTable('tailwindLineHeight', tables.lineHeight)}
 function main(): void {
   const srcDir = join(dirname(fileURLToPath(import.meta.url)), '../src')
   const outputs = {
-    colors: join(srcDir, 'v6-tailwind-colors.generated.ts'),
+    colors: join(srcDir, '../../themes/src/tailwind-colors.ts'),
     scales: join(srcDir, 'v6-tailwind-scales.generated.ts'),
   }
   const generated = generateSources()

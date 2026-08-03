@@ -1139,6 +1139,7 @@
       "version": "2.5.1",
       "dependencies": {
         "@tamagui/colors": "workspace:*",
+        "@tamagui/create-theme": "workspace:*",
         "@tamagui/theme-builder": "workspace:*",
       },
       "devDependencies": {

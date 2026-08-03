@@ -140,7 +140,6 @@
   "scripts": {
     "build": "tamagui-build",
     "check:v6-tailwind-defaults": "bun ./scripts/generate-v6-tailwind-defaults.ts --check",
-    "generate:v6-tailwind-themes": "tamagui generate-themes ./src/v6-tailwind-themes.generate.ts ./src/v6-tailwind-themes.generated.ts",
     "test:v6-tailwind-defaults": "bun test ./scripts/v6-tailwind-defaults.test.ts",
     "test:v6-entries": "bun test ./scripts/v6-entries.test.ts",
     "watch": "tamagui-build --watch",

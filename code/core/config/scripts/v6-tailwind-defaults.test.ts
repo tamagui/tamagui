@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 
-import { tailwindColors } from '../src/v6-tailwind-colors.generated'
+import { tailwindColors } from '../../themes/src/tailwind-colors'
 import {
   tailwindFontSize,
   tailwindLineHeight,

@@ -8,6 +8,9 @@
     "src",
     "types",
     "dist",
+    "index.cjs",
+    "index.d.ts",
+    "builder",
     "v5",
     "v5-subtle",
     "v5.cjs",
@@ -26,6 +29,24 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    },
+    "./builder": {
+      "types": "./types/builder.d.ts",
+      "react-native": "./dist/esm/builder.native.js",
+      "browser": "./dist/esm/builder.mjs",
+      "module": "./dist/esm/builder.mjs",
+      "import": "./dist/esm/builder.mjs",
+      "require": "./dist/cjs/builder.cjs",
+      "default": "./dist/esm/builder.mjs"
+    },
     "./v5": {
       "types": "./types/v5.d.ts",
       "react-native": "./dist/esm/v5.native.js",
@@ -76,10 +97,12 @@
     "access": "public"
   },
   "scripts": {
-    "generate": "bun run generate:v5 & bun run generate:v5-subtle",
+    "generate": "tamagui generate-themes ./src/themes.generate.ts ./src/generated.ts",
+    "generate:v5-all": "bun run generate:v5 & bun run generate:v5-subtle",
     "generate:v5": "tamagui generate-themes ./src/v5-themes.generate.ts ./src/generated-v5.ts",
     "generate:v5-subtle": "tamagui generate-themes ./src/v5-themes-subtle.generate.ts ./src/generated-v5-subtle.ts",
-    "test": "bun run generate",
+    "test": "bun test tests/themes.test.ts",
+    "test:types": "vitest --typecheck --run tests/themes.test-d.ts",
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
@@ -87,6 +110,7 @@
   },
   "dependencies": {
     "@tamagui/colors": "workspace:*",
+    "@tamagui/create-theme": "workspace:*",
     "@tamagui/theme-builder": "workspace:*"
   },
   "devDependencies": {

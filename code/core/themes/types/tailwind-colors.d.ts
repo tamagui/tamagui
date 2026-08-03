@@ -288,4 +288,4 @@ export declare const tailwindColors: {
     'rose-900': string;
     'rose-950': string;
 };
-//# sourceMappingURL=v6-tailwind-colors.generated.d.ts.map
+//# sourceMappingURL=tailwind-colors.d.ts.map
