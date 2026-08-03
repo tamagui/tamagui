@@ -118,7 +118,7 @@ export const loader = async function loader(
     // add import to css
     let code = extracted.output.code
     if (extracted.plan.css) {
-      const cssQuery = `cssData=${Buffer.from(extracted.plan.css).toString('base64')}`
+      const cssQuery = `cssData=${Buffer.from(extracted.plan.css).toString('base64url')}`
       const remReq = this.remainingRequest
       const importPath = `${cssPath}!=!${CSS_LOADER_PATH}?${cssQuery}!${remReq}`
       code = `${code}\n\nrequire(${JSON.stringify(importPath)})`
