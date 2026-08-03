@@ -114,38 +114,56 @@ The command writes `output/benchmarks-native-v2-v3.json` and a Markdown summary 
 ## Final source-bound campaign
 
 The committed final campaign was sampled from clean source commit
-`da80f52af4bf7eaf8af99195371d2cff644cc7eb` on
-`validate/v3-native-runtime`. It used seed `73129`, two complete warmup rounds,
-and 12 retained rounds. One seeded PRNG shuffled all 18 framework/scenario cells
-independently in every round, producing 36 warmup and 216 retained observations.
-Independent validation replayed all 14 shuffled orders and recomputed all 54
-cell statistics and 33 paired effects from the raw observations.
+`0f510aaa6f5e9a8a043d7c24c9741966a27042d8` on
+`validate/v3-native-retained-wb`. It used seed `73129`, three complete warmup
+rounds, and 30 retained rounds. One seeded PRNG shuffled all 18
+framework/scenario cells independently in every round, producing 54 warmup and
+540 retained observations. The JSON records `sourceDirtyBeforeOutput: false`.
 
-The host was an Apple M5 running macOS 26.5.1 (25F80), Darwin 25.5.0 arm64.
+The host was an Apple M3 Max running macOS 26.5.1 (25F80), Darwin 25.5.0 arm64.
 Builds used Xcode 26.4 (17E192) and Apple clang 21.0.0
-(`clang-2100.0.123.102`). The timing runner recorded Bun 1.3.10,
-`process.version` v24.3.0, and xcodebuildmcp 2.3.0. The single target was an
-iPhone 17 Pro iOS Simulator, iOS 26.4 (23E244), UDID
-`A5ED797B-EFC1-4261-A328-6FF79E9B68FF`.
+(`clang-2100.0.123.102`). The timing runner recorded Bun 1.3.9,
+`process.version` v24.3.0, and xcodebuildmcp 2.3.0. The single target was a
+Tamagui Perf iPhone 16 Pro iOS Simulator, iOS 18.6 (22G86), UDID
+`3C03FA2F-D68F-4537-A939-3B14A75A9BA7`.
 
 Every retained result returned one of these source-bound IDs, and the runner
 hashed the installed embedded `main.jsbundle` before accepting output:
 
 | Arm         | Build ID                                                           | Bundle bytes | Bundle SHA-256                                                     |
 | ----------- | ------------------------------------------------------------------ | -----------: | ------------------------------------------------------------------ |
-| V2 runtime  | `3a1d4afae276f82127718891ec78e795a5329525d31d1e30568ea2ba42a7e2a8` |    2,767,187 | `e1e9d11f2b62d8fd6ca2b4273865d6cc553daa6c4eab5d1a520a0ddab6fadaf4` |
-| V3 runtime  | `373fd6fc27c6ac2942f142774f4960fc96ff00c57992da21a904bbabecca697a` |    3,180,469 | `a7fdb485879b0a46a36f38d8cf28101ebcf09c0e81392b77a4a58203c5d7e962` |
-| V2 compiled | `63906533a4265cb913f9b001e6b51534368e0ee09616ac127234537e632452ea` |    2,762,331 | `f6b9a46cced80effa6292f4b77e629828d42c3a22e6081f7d69c24fd7798e609` |
-| V3 compiled | `6e714056a88c8966ed78ad88dcc6d99dbec338df6c0d023010158f19f3ff2e04` |    3,174,330 | `73294da67a448bee070ff23ee0cb48f56340228aaa52bf5ff3a61929aaba251d` |
+| V2 runtime  | `63c2d0844b7dab818948da58fe3c4cbd2c5693ae503983d6a6a820f7d4edaf03` |    2,767,190 | `788837ea78ff3c89159b8017e4dccb3f8519c25b5fd5dc36fc0e7c40ea018a48` |
+| V3 runtime  | `d709f3586b9a9bbd498936a622cbc7046df7fec5eb67840c62f887c81a0aedf1` |    2,969,934 | `fb73fb0c78ff5391f1b0658ad94036df8b5c038c17c35356725a7f80f77a48c0` |
+| V2 compiled | `e4dc8550e2cc1c870295a7cec0d8202ac67706f0b250ede559349771973bed3e` |    2,762,318 | `ec16dd47cb8585925422565b8dc0c92a55bc5f373bf2733409bf1e1a5e8421b8` |
+| V3 compiled | `39ae80ab12373a259a7fbccb641be9b9d5f72c17f3ac7363fa60d875eb8a5390` |    2,963,725 | `82a4324e80d63bcb7e8956732162b5db7b16ec084d478f25b0b4387f9ddd4c6d` |
 
 The authoritative [raw JSON](./output/benchmarks-native-v2-v3.json) has SHA-256
-`78354c231a142de17149bb9a8e1b88c7a2d4e83728d59f3e7b63958624be2f5b`.
-The unchanged [generated summary](./output/benchmarks-native-v2-v3.md) has
-SHA-256 `83b484f1990eb7c04a124fe7cd0e74926e101249f0cb862ee30c760f0cf59bd1`.
+`c759666e9e3d5bc2eb9c181e49355b409d333d940de1de719b4460a03fffc895`.
+The [generated and robustness-enriched summary](./output/benchmarks-native-v2-v3.md)
+has SHA-256 `5ca6d22f9d6269142e1883e026db768af4462da4ffaacd7b5d8dd8f942e49fae`.
 The [derived effects table](./output/benchmarks-native-v2-v3-effects.md) reports
 every right/left ratio of means and every round-paired right-minus-left 95%
 confidence interval. Positive differences are slower because each metric is a
 duration.
+
+The post-fix campaign narrowed every compiled mount and remount ratio but did
+not close the gap. Compared with the previous 12-sample campaign from
+`da80f52af4bf7eaf8af99195371d2cff644cc7eb`, the ratio of means changed from
+5.16x to 5.09x for simple mount, 6.07x to 4.77x for nested-static mount, and
+1.50x to 1.38x for styled-static mount. The corresponding remount ratios moved
+from 5.49x to 5.28x, 5.92x to 5.02x, and 1.50x to 1.28x. Commits
+`97024e8ab1` and `5826b250ca` postdate the previous campaign source, while the
+current source contains later changes too. These values are a before/after
+record rather than an isolated causal estimate for those two fixes.
+
+Concurrent development watchers prevented a fully idle host. The retained run
+therefore increased to 30 samples and recorded process-attributed `top` samples
+at the start, every 60 seconds, and after completion. Retained checkpoints
+ranged from 44.95% to 78.76% idle. The individual-arm audit found 20
+leave-one-out observations at or above three standard deviations among 1,620
+retained metric observations. Paired means, medians, and 20% trimmed means agree
+on every material V2/V3 direction. The complete robust table and load trace are
+in the generated summary.
 
 All four clean Release arms passed the warmup-only smoke with the same runtime
 behavior signature. The final smoke and retained campaign encountered no iOS

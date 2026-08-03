@@ -1,8 +1,8 @@
 # V3 bundle-slim measurement record
 
 This record covers W4 on `validate/v3-bundle-slim-measure`. All byte claims below
-come from `code/comparisons/run-benchmarks.ts`. Native wall-clock output is not
-claimed because the retained native run did not pass its behavior gate.
+come from `code/comparisons/run-benchmarks.ts`. The native section preserves the
+failed W4 smoke and adds the later source-bound retained campaign.
 
 ## Source and harness
 
@@ -103,6 +103,8 @@ style-grammar change removed `clauseCapability.mjs` (650 rendered bytes), added
 
 ## Native retained status
 
+### Failed W4 smoke
+
 Native work used clean branch `validate/v3-native-retained-w4` at
 `b5e6a63a0b50d0e54aec54459a9efd54164a07ec`. That comparison-only commit fixes
 the runtime parity gate to validate Button passthrough props from the hook result
@@ -128,8 +130,7 @@ The locked smoke command was:
 bun code/comparisons/run-native-v2-v3.ts --smoke --udid=3C03FA2F-D68F-4537-A939-3B14A75A9BA7 --seed=73129 --scenarios=simple --compiler-evidence=/tmp/tamagui-native-compiler-evidence-final.json
 ```
 
-It ran while holding `/tmp/tamagui-bench.lock` with stale-lock removal and an exit
-trap, then released the lock. It failed with:
+It failed with:
 
 ```text
 error: timed out waiting for tamagui-v2-runtime/simple/warmup-0-0
@@ -139,5 +140,75 @@ The exact log is `/tmp/v3-bundle-w4-native-smoke-final.log`. A temporary
 comparison-only UI probe then read the V2 active-group candidate as
 `{"backgroundColor":"#60a5fa"}` instead of the required active value
 `#2563eb`; see `/tmp/v3-bundle-w4-native-v2-group-style-probe-ui.txt`. The probe
-was reverted and the branch is clean. No native timing is claimed, and
-`output/benchmarks-native-v2-v3.json` was not produced.
+was reverted and the branch was clean. That run produced no retained native
+timing output.
+
+The mismatch came from the comparison fixture. The failed fixture used V2's
+scalar `$group-row-hover:backgroundColor` spelling and activated hover in the
+synthetic group context. The corrected native fixture uses the supported
+object-valued `$group-row-press` clause and activates press in both arms. This
+keeps the gate strict while driving a native-supported state.
+
+### Current retained campaign
+
+The later campaign used clean source commit
+`0f510aaa6f5e9a8a043d7c24c9741966a27042d8` on
+`validate/v3-native-retained-wb`. The supported object-valued group-press fixture
+passed the parity gate in both runtime arms with `backgroundColor: #2563eb`.
+The smoke also passed all four Release apps before retained sampling.
+
+The Release build identities were:
+
+- V3 runtime: `d709f3586b9a9bbd498936a622cbc7046df7fec5eb67840c62f887c81a0aedf1`
+- V2 runtime: `63c2d0844b7dab818948da58fe3c4cbd2c5693ae503983d6a6a820f7d4edaf03`
+- V3 compiled: `39ae80ab12373a259a7fbccb641be9b9d5f72c17f3ac7363fa60d875eb8a5390`
+- V2 compiled: `e4dc8550e2cc1c870295a7cec0d8202ac67706f0b250ede559349771973bed3e`
+
+Fresh compiler evidence had SHA-256
+`7ae5d942b02e587c054449c3292930bb0aba204cae4a6f39b83004c361e9b519`.
+V2 optimized and flattened all six static and both recognized dynamic
+candidates. V3 lowered and flattened all seven static and three dynamic
+candidates with zero bailouts.
+
+The retained command ran the full default scenario set with seed `73129`, three
+warmup rounds, and 30 retained rounds:
+
+```sh
+bun code/comparisons/run-native-v2-v3.ts --udid=3C03FA2F-D68F-4537-A939-3B14A75A9BA7 --seed=73129 --warmups=3 --samples=30 --compiler-evidence=/tmp/tamagui-native-compiler-evidence-final.json
+```
+
+Every round shuffled all 18 V2 and V3 framework/scenario cells together. The
+run retained 540 timed trials on an iOS 18.6 iPhone 16 Pro Simulator and wrote
+[`output/benchmarks-native-v2-v3.json`](./output/benchmarks-native-v2-v3.json),
+whose SHA-256 is
+`c759666e9e3d5bc2eb9c181e49355b409d333d940de1de719b4460a03fffc895`.
+The JSON records `sourceDirtyBeforeOutput: false`.
+
+| Comparison | Scenario | Metric | V2 mean ± SD (ms) | V3 mean ± SD (ms) | V3/V2 | Paired difference 95% CI (ms) |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| runtime | simple | mount | 23.98 ± 2.19 | 27.49 ± 2.83 | 1.15x | 2.36 to 4.65 |
+| runtime | simple | update | 21.34 ± 2.14 | 23.90 ± 2.15 | 1.12x | 1.46 to 3.67 |
+| runtime | simple | remount | 23.90 ± 1.75 | 26.93 ± 1.87 | 1.13x | 2.12 to 3.94 |
+| compiled | simple | mount | 5.19 ± 0.67 | 26.45 ± 1.72 | 5.09x | 20.52 to 22.00 |
+| compiled | simple | remount | 4.92 ± 0.50 | 25.97 ± 1.41 | 5.28x | 20.54 to 21.58 |
+| compiled | nested-static | mount | 8.36 ± 0.93 | 39.87 ± 1.88 | 4.77x | 30.73 to 32.27 |
+| compiled | nested-static | remount | 8.01 ± 0.59 | 40.16 ± 1.94 | 5.02x | 31.44 to 32.87 |
+| compiled | styled-static | mount | 9.40 ± 1.09 | 12.98 ± 1.47 | 1.38x | 2.99 to 4.18 |
+| compiled | styled-static | remount | 9.64 ± 0.73 | 12.30 ± 0.88 | 1.28x | 2.24 to 3.08 |
+
+Concurrent development watchers made a fully idle host unavailable. The run
+therefore retained the process-attributed load trace and used paired median and
+20% trimmed-mean checks in addition to the reported means. The audit found 20
+leave-one-out observations at or above three standard deviations among 1,620
+retained metric observations. The paired mean, median, and trimmed mean agreed
+on every material V2/V3 direction. The complete robust table and all nine load
+checkpoints are in
+[`output/benchmarks-native-v2-v3.md`](./output/benchmarks-native-v2-v3.md).
+
+Compared with the prior 12-sample record at `da80f52af4`, the compiled mount
+ratios changed from 5.16x to 5.09x for simple, 6.07x to 4.77x for
+nested-static, and 1.50x to 1.38x for styled-static. The remount ratios changed
+from 5.49x to 5.28x, 5.92x to 5.02x, and 1.50x to 1.28x. The post-fix campaign
+narrowed every retained compiled mount and remount gap, but did not close them.
+The current source contains changes beyond the prewarm/reuse commits, so this is
+a before/after record rather than an isolated causal estimate for either fix.
