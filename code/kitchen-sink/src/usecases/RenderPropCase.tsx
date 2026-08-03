@@ -13,7 +13,7 @@ const StyledButton = styled(View, {
 
 // Test: styled.a() - styled-components style API with proper href typing
 const StyledAnchor = styled.a({
-  color: 'blue10',
+  color: 'blue-600',
   textDecorationLine: 'underline',
 })
 
@@ -200,7 +200,7 @@ export function RenderPropCase() {
         data-testid="jsx-element-render"
         render={<a href="/test-link" data-jsx-element="true" />}
         padding="2"
-        backgroundColor="blue5"
+        backgroundColor="blue-500"
       >
         <Text>JSX Element Render (anchor with href)</Text>
       </View>
@@ -209,7 +209,7 @@ export function RenderPropCase() {
         data-testid="jsx-element-button"
         render={<button type="submit" data-jsx-button="true" />}
         padding="3"
-        backgroundColor="green5"
+        backgroundColor="green-500"
       >
         <Text>JSX Element Render (button with type)</Text>
       </View>
@@ -220,7 +220,7 @@ export function RenderPropCase() {
         data-testid="function-render"
         render={(props) => <CustomButton {...props} />}
         padding="2"
-        backgroundColor="red5"
+        backgroundColor="red-500"
       >
         <Text testID="function-render-text">Function Render (CustomButton)</Text>
       </View>
@@ -236,7 +236,7 @@ export function RenderPropCase() {
             />
           )}
           padding="3"
-          backgroundColor="purple5 hover:purple7 press:purple9"
+          backgroundColor="purple-500 hover:purple-700 press:purple-900"
         >
           <Text>Function Render with State</Text>
         </View>
@@ -250,7 +250,7 @@ export function RenderPropCase() {
             />
           )}
           padding="3"
-          backgroundColor="purple5 press:purple9"
+          backgroundColor="purple-500 press:purple-900"
         >
           <Text testID="function-render-state-text">Function Render with State</Text>
         </View>

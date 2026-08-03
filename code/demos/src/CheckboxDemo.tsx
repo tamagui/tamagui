@@ -23,24 +23,22 @@ export function CheckboxWithLabel({
 }: CheckboxProps & { label?: string }) {
   const id = `checkbox-${size || ''}`
   return (
-    <Theme name={disabled ? 'gray' : null}>
-      <XStack width={300} items="center" gap="4">
-        <Checkbox
-          id={id}
-          size={size}
-          disabled={disabled}
-          activeStyle={{ backgroundColor: 'background-press' }}
-          {...checkboxProps}
-        >
-          <Checkbox.Indicator>
-            <CheckIcon size={14} />
-          </Checkbox.Indicator>
-        </Checkbox>
+    <XStack width={300} items="center" gap="4">
+      <Checkbox
+        id={id}
+        size={size}
+        disabled={disabled}
+        activeStyle={{ backgroundColor: 'accent-background' }}
+        {...checkboxProps}
+      >
+        <Checkbox.Indicator>
+          <CheckIcon size={14} />
+        </Checkbox.Indicator>
+      </Checkbox>
 
-        <Label size={size} htmlFor={id} opacity={disabled ? 0.5 : 1}>
-          {label}
-        </Label>
-      </XStack>
-    </Theme>
+      <Label size={size} htmlFor={id} opacity={disabled ? 0.5 : 1}>
+        {label}
+      </Label>
+    </XStack>
   )
 }

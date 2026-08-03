@@ -10,7 +10,7 @@ import { getStyles } from './utils'
  * 1. <Theme name="accent"> - theme-builder.mdx, how-to-upgrade.mdx
  * 2. <Button theme="accent"> - ButtonDemo.tsx
  * 3. accent-background / accent-color
- * 4. accent1-accent12 raw tokens
+ * 4. color1-color11 inside the accent theme
  */
 
 test.beforeEach(async ({ page }) => {
@@ -20,14 +20,14 @@ test.beforeEach(async ({ page }) => {
   })
 })
 
-// the configured base palette is deliberately grayscale, so "accent has a hue"
-// says nothing. What accent (template: inverse) actually guarantees is that it
-// flips the surface: a near-white base background becomes a near-black accent
-// one. Compare relative luminance so this holds in either color scheme.
-function luminance(color: string): number {
+function rgb(color: string): number[] {
   const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
   if (!match) throw new Error(`not an rgb color: ${color}`)
-  const [r, g, b] = match.slice(1).map(Number)
+  return match.slice(1).map(Number)
+}
+
+function luminance(color: string): number {
+  const [r, g, b] = rgb(color)
   return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
 }
 
@@ -49,16 +49,13 @@ test('<Theme name="accent"> background differs from base background', async ({
   expect(accentStyles.backgroundColor).not.toBe(baseStyles.backgroundColor)
 })
 
-test('<Theme name="accent"> background inverts the base surface', async ({ page }) => {
+test('<Theme name="accent"> background uses the brand tint', async ({ page }) => {
   const accentEl = page.getByTestId(TEST_IDS.accentThemeBackground)
-  const baseEl = page.getByTestId(TEST_IDS.baseBackground)
   await expect(accentEl).toBeVisible()
-  await expect(baseEl).toBeVisible()
 
-  const accent = luminance((await getStyles(accentEl)).backgroundColor)
-  const base = luminance((await getStyles(baseEl)).backgroundColor)
+  const accent = rgb((await getStyles(accentEl)).backgroundColor)
 
-  expect(Math.abs(accent - base)).toBeGreaterThan(0.5)
+  expect(Math.max(...accent) - Math.min(...accent)).toBeGreaterThan(10)
 })
 
 test('<Theme name="accent"> color is defined', async ({ page }) => {
@@ -88,21 +85,18 @@ test('<Button theme="accent"> has different background than base button', async 
   expect(accentStyles.backgroundColor).not.toBe(baseStyles.backgroundColor)
 })
 
-test('<Button theme="accent"> inverts the base button surface', async ({ page }) => {
+test('<Button theme="accent"> uses the brand tint', async ({ page }) => {
   const accentBtn = page.getByTestId(TEST_IDS.accentPropButton)
-  const baseBtn = page.getByTestId(TEST_IDS.baseButton)
   await expect(accentBtn).toBeVisible()
-  await expect(baseBtn).toBeVisible()
 
-  const accent = luminance((await getStyles(accentBtn)).backgroundColor)
-  const base = luminance((await getStyles(baseBtn)).backgroundColor)
+  const accent = rgb((await getStyles(accentBtn)).backgroundColor)
 
-  expect(Math.abs(accent - base)).toBeGreaterThan(0.5)
+  expect(Math.max(...accent) - Math.min(...accent)).toBeGreaterThan(10)
 })
 
 // --- accent-background token ---
 
-test('accent-background token resolves to the inverted surface', async ({ page }) => {
+test('accent-background token resolves to the fixed brand surface', async ({ page }) => {
   const el = page.getByTestId(TEST_IDS.accentBgToken)
   const baseEl = page.getByTestId(TEST_IDS.baseBackground)
   await expect(el).toBeVisible()
@@ -114,14 +108,12 @@ test('accent-background token resolves to the inverted surface', async ({ page }
   expect(Math.abs(token - base)).toBeGreaterThan(0.5)
 })
 
-// --- accent1-12 raw tokens ---
+// --- adaptive accent ramp ---
 
-test('accent1-12 palette tokens render a gradient (not all identical)', async ({
-  page,
-}) => {
+test('color1-11 render the accent gradient (not all identical)', async ({ page }) => {
   const colors: string[] = []
 
-  for (let i = 1; i <= 12; i++) {
+  for (let i = 1; i <= 11; i++) {
     const swatch = page.getByTestId(`palette-accent-${i}`)
     await expect(swatch).toBeVisible()
 
@@ -137,7 +129,7 @@ test('accent1-12 palette tokens render a gradient (not all identical)', async ({
 
 // --- Color child themes ---
 
-test('color child themes (yellow, red, green, blue) have distinct backgrounds', async ({
+test('color child themes (yellow, red, green) have distinct backgrounds', async ({
   page,
 }) => {
   const yellowBtn = page.getByTestId('button-yellow')

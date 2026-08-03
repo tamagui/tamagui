@@ -11,7 +11,7 @@ import { TEST_IDS } from '../constants/test-ids'
  * 1. <Theme name="accent"> wrapping components (docs: theme-builder.mdx)
  * 2. <Button theme="accent"> component prop
  * 3. accent-background / accent-color tokens
- * 4. accent1-accent12 raw tokens
+ * 4. color1-color11 inside the accent theme
  *
  * Open in browser: http://localhost:9000/?test=AccentAndColorThemes
  */
@@ -36,9 +36,8 @@ export function AccentAndColorThemes() {
       >
         <H3 color="color11">{'<Theme name="accent">'}</H3>
         <Paragraph size="2" color="color11">
-          Expected: first square is the base background. Second square is the same surface
-          inverted, so it reads dark against a light base. Text below it should stay
-          readable against the accent background.
+          Expected: first square is the base background. Second square is a soft brand
+          tint. Text below it should stay readable against the accent background.
         </Paragraph>
 
         <XStack gap="3" alignItems="flex-start">
@@ -84,8 +83,8 @@ export function AccentAndColorThemes() {
       >
         <H3 color="color11">{'<Button theme="accent">'}</H3>
         <Paragraph size="2" color="color11">
-          Expected: first button is the default surface. Second button is the inverted
-          surface with contrasting text, visually distinct from the base button.
+          Expected: first button is the default surface. Second button uses the brand tint
+          and stays visually distinct from the base button.
         </Paragraph>
 
         <XStack gap="3">
@@ -108,8 +107,8 @@ export function AccentAndColorThemes() {
       >
         <H3 color="color11">accent-background / accent-color</H3>
         <Paragraph size="2" color="color11">
-          Expected: square matches the accent surface above. This is the raw token, not a
-          theme wrapper.
+          Expected: square uses the fixed brand fill. This is a semantic theme token, not
+          the adaptive accent surface above.
         </Paragraph>
 
         <YStack
@@ -121,7 +120,7 @@ export function AccentAndColorThemes() {
         />
       </YStack>
 
-      {/* === SECTION 4: accent1-12 raw palette tokens === */}
+      {/* === SECTION 4: adaptive accent ramp === */}
       <YStack
         gap="3"
         padding="4"
@@ -130,29 +129,31 @@ export function AccentAndColorThemes() {
         borderWidth={1}
         borderColor="border-color"
       >
-        <H4>Accent Palette (accent1-12)</H4>
+        <H4>Adaptive Accent Ramp (color1-11)</H4>
         <Paragraph size="2" color="color11">
-          Expected: a gradient of 12 swatches stepping evenly from one end of the accent
-          palette to the other. If these are all identical, the palette is broken.
+          Expected: a gradient of 11 swatches stepping through the accent palette. The
+          direction adapts to the active color scheme.
         </Paragraph>
-        <XStack gap="1">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-            <YStack
-              key={i}
-              testID={`palette-accent-${i}`}
-              width={40}
-              height={40}
-              backgroundColor={`${`accent${i}`}`}
-              borderRadius="2"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text fontSize={10} color={`${i > 6 ? 'accent1' : 'accent12'}`}>
-                {i}
-              </Text>
-            </YStack>
-          ))}
-        </XStack>
+        <Theme name="accent">
+          <XStack gap="1">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (
+              <YStack
+                key={i}
+                testID={`palette-accent-${i}`}
+                width={40}
+                height={40}
+                backgroundColor={`${`color${i}`}`}
+                borderRadius="2"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Text fontSize={10} color={i > 6 ? 'color1' : 'color11'}>
+                  {i}
+                </Text>
+              </YStack>
+            ))}
+          </XStack>
+        </Theme>
       </YStack>
 
       {/* === SECTION 5: Color child themes === */}
@@ -193,16 +194,6 @@ export function AccentAndColorThemes() {
               minWidth={140}
             >
               <Button testID="button-green">Green</Button>
-            </Card>
-          </Theme>
-          <Theme name="blue">
-            <Card
-              testID="card-blue"
-              padding="3"
-              backgroundColor="background"
-              minWidth={140}
-            >
-              <Button testID="button-blue">Blue</Button>
             </Card>
           </Theme>
         </XStack>
