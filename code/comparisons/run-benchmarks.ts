@@ -9,15 +9,31 @@
  */
 
 import { execFileSync, spawn, type ChildProcess } from 'child_process'
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'fs'
+import { createHash } from 'crypto'
+import { createRequire } from 'module'
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'fs'
 import { arch, cpus, platform, release, tmpdir, totalmem } from 'os'
 import { dirname, join } from 'path'
 
 const args = process.argv.slice(2)
+const VERIFY_WORKLOAD_ONLY = args.includes('--verify-workload')
+const BUILD_ONLY = args.includes('--build-only')
 const samplesArg =
   args.find((arg) => arg.startsWith('--samples=')) ??
   args.find((arg) => arg.startsWith('--runs='))
 const NUM_SAMPLES = Number.parseInt(samplesArg?.split('=')[1] ?? '10', 10)
+const NUM_WARMUPS = Number.parseInt(
+  args.find((arg) => arg.startsWith('--warmups='))?.split('=')[1] ?? '2',
+  10
+)
 const SEED = Number.parseInt(
   args.find((arg) => arg.startsWith('--seed='))?.split('=')[1] ?? `${Date.now()}`,
   10
@@ -26,6 +42,11 @@ const OUTPUT_PATH =
   args.find((arg) => arg.startsWith('--output='))?.split('=')[1] ??
   join(import.meta.dir, 'output', 'benchmarks.json')
 const HTML_PATH = OUTPUT_PATH.replace(/\.json$/, '.html')
+const FRAMEWORK_IDS = args
+  .find((arg) => arg.startsWith('--frameworks='))
+  ?.split('=')[1]
+  ?.split(',')
+  .filter(Boolean)
 const ITEM_COUNT = 200
 const HEAVY_COUNT = 60
 const SCENARIOS = ['simple', 'rich', 'group', 'heavy', 'animated'] as const
@@ -34,10 +55,10 @@ type Metric = 'mount' | 'rerender'
 
 const SCENARIO_LABELS: Record<ScenarioId, string> = {
   simple: 'Simple (static props)',
-  rich: 'Rich (pseudo states)',
-  group: 'Group hover',
+  rich: 'Rich (borders and spacing)',
+  group: 'Nested row',
   heavy: `Heavy page (${HEAVY_COUNT})`,
-  animated: 'Animated (spring)',
+  animated: 'Dynamic transition',
 }
 
 interface BenchConfig {
@@ -51,7 +72,7 @@ interface BenchConfig {
   mode: string
 }
 
-const BENCHMARKS: BenchConfig[] = [
+const ALL_BENCHMARKS: BenchConfig[] = [
   {
     id: 'tamagui-v3-compiled',
     name: 'Tamagui v3 (compiled)',
@@ -72,13 +93,23 @@ const BENCHMARKS: BenchConfig[] = [
   },
   {
     id: 'tamagui-v2-compiled',
-    name: 'Tamagui v2.4.6 (compiled)',
+    name: 'Tamagui v2.6.2 (compiled)',
     dir: 'tamagui-v2-bench',
     port: 9107,
     buildEnv: { EXTRACT: '1' },
     installWith: 'npm',
-    version: '2.4.6',
+    version: '2.6.2',
     mode: 'compiled',
+  },
+  {
+    id: 'tamagui-v2-runtime',
+    name: 'Tamagui v2.6.2 (runtime)',
+    dir: 'tamagui-v2-bench',
+    port: 9108,
+    buildEnv: { EXTRACT: '0' },
+    installWith: 'npm',
+    version: '2.6.2',
+    mode: 'runtime',
   },
   {
     id: 'tailwind',
@@ -117,11 +148,18 @@ const BENCHMARKS: BenchConfig[] = [
     installWith: 'bun',
   },
 ]
+const BENCHMARKS = FRAMEWORK_IDS
+  ? FRAMEWORK_IDS.map((id) => {
+      const benchmark = ALL_BENCHMARKS.find((candidate) => candidate.id === id)
+      if (!benchmark) throw new Error(`unknown framework id: ${id}`)
+      return benchmark
+    })
+  : ALL_BENCHMARKS
 
 interface Trial {
   sequence: number
   phase: 'warmup' | 'sample'
-  round: number | null
+  round: number
   framework: string
   scenario: ScenarioId
   mount: number
@@ -136,9 +174,16 @@ interface Statistic {
 }
 
 interface ScenarioSummary {
-  warmup: { mount: number; rerender: number }
+  warmups: { mount: number[]; rerender: number[] }
   mount: Statistic
   rerender: Statistic
+}
+
+interface PairedEffect {
+  v3: Statistic
+  v2: Statistic
+  differenceMs: Statistic
+  ratio: Statistic
 }
 
 interface BenchmarkReport {
@@ -146,8 +191,22 @@ interface BenchmarkReport {
   metadata: Record<string, unknown>
   frameworks: Array<Pick<BenchConfig, 'id' | 'name' | 'version' | 'mode'>>
   workload: { itemCount: number; heavyCount: number; samples: number; warmups: number }
+  artifacts: Record<
+    string,
+    {
+      files: number
+      totalBytes: number
+      jsBytes: number
+      cssBytes: number
+      compilerStats?: unknown
+      versions: Record<string, string>
+    }
+  >
   trials: Trial[]
   summary: Record<string, Record<ScenarioId, ScenarioSummary>>
+  effects: Partial<
+    Record<'compiled' | 'runtime', Record<ScenarioId, Record<Metric, PairedEffect>>>
+  >
 }
 
 function command(command: string, commandArgs: string[], cwd: string, env = {}) {
@@ -162,6 +221,76 @@ function git(...commandArgs: string[]) {
   return execFileSync('git', commandArgs, { cwd: import.meta.dir })
     .toString()
     .trim()
+}
+
+function measureBuildArtifact(directory: string) {
+  const totals = { files: 0, totalBytes: 0, jsBytes: 0, cssBytes: 0 }
+  const visit = (current: string) => {
+    for (const entry of readdirSync(current, { withFileTypes: true })) {
+      const filePath = join(current, entry.name)
+      if (entry.isDirectory()) {
+        visit(filePath)
+        continue
+      }
+      const bytes = statSync(filePath).size
+      totals.files++
+      totals.totalBytes += bytes
+      if (/\.[cm]?js$/.test(entry.name)) totals.jsBytes += bytes
+      if (entry.name.endsWith('.css')) totals.cssBytes += bytes
+    }
+  }
+  visit(directory)
+  return totals
+}
+
+function installedPackageVersion(directory: string, packageName: string) {
+  const require = createRequire(join(directory, 'package.json'))
+  let current = dirname(require.resolve(packageName))
+  while (true) {
+    const packagePath = join(current, 'package.json')
+    try {
+      const metadata = JSON.parse(readFileSync(packagePath, 'utf8')) as {
+        name?: string
+        version?: string
+      }
+      if (metadata.name === packageName && metadata.version) return metadata.version
+    } catch {}
+    const parent = dirname(current)
+    if (parent === current) break
+    current = parent
+  }
+  throw new Error(`could not resolve installed version for ${packageName}`)
+}
+
+function installedVersions(directory: string) {
+  return Object.fromEntries(
+    [
+      'react',
+      'react-dom',
+      'vite',
+      '@vitejs/plugin-react',
+      'tamagui',
+      '@tamagui/vite-plugin',
+    ].map((packageName) => [packageName, installedPackageVersion(directory, packageName)])
+  )
+}
+
+function verifyTamaguiWorkload() {
+  const v3Path = join(import.meta.dir, 'tamagui-bench', 'src', 'index.tsx')
+  const v2Path = join(import.meta.dir, 'tamagui-v2-bench', 'src', 'index.tsx')
+  const v3Source = readFileSync(v3Path)
+  const v2Source = readFileSync(v2Path)
+  if (!v3Source.equals(v2Source)) {
+    throw new Error(
+      'Tamagui v2 and v3 benchmark sources must remain byte-for-byte identical'
+    )
+  }
+  return {
+    byteIdentical: true,
+    bytes: v3Source.byteLength,
+    sha256: createHash('sha256').update(v3Source).digest('hex'),
+    sources: ['tamagui-bench/src/index.tsx', 'tamagui-v2-bench/src/index.tsx'],
+  }
 }
 
 function createRandom(seed: number) {
@@ -213,12 +342,12 @@ function buildSummary(trials: Trial[]): BenchmarkReport['summary'] {
   for (const bench of BENCHMARKS) {
     summary[bench.id] = {} as Record<ScenarioId, ScenarioSummary>
     for (const scenario of SCENARIOS) {
-      const warmup = trials.find(
+      const warmups = trials.filter(
         (trial) =>
           trial.phase === 'warmup' &&
           trial.framework === bench.id &&
           trial.scenario === scenario
-      )!
+      )
       const samples = trials.filter(
         (trial) =>
           trial.phase === 'sample' &&
@@ -226,13 +355,66 @@ function buildSummary(trials: Trial[]): BenchmarkReport['summary'] {
           trial.scenario === scenario
       )
       summary[bench.id][scenario] = {
-        warmup: { mount: warmup.mount, rerender: warmup.rerender },
+        warmups: {
+          mount: warmups.map((warmup) => warmup.mount),
+          rerender: warmups.map((warmup) => warmup.rerender),
+        },
         mount: summarize(samples.map((sample) => sample.mount)),
         rerender: summarize(samples.map((sample) => sample.rerender)),
       }
     }
   }
   return summary
+}
+
+function buildEffects(trials: Trial[]): BenchmarkReport['effects'] {
+  const effects = {} as BenchmarkReport['effects']
+  for (const mode of ['compiled', 'runtime'] as const) {
+    const v3Framework = `tamagui-v3-${mode}`
+    const v2Framework = `tamagui-v2-${mode}`
+    if (
+      !BENCHMARKS.some(({ id }) => id === v3Framework) ||
+      !BENCHMARKS.some(({ id }) => id === v2Framework)
+    ) {
+      continue
+    }
+    effects[mode] = {} as Record<ScenarioId, Record<Metric, PairedEffect>>
+    for (const scenario of SCENARIOS) {
+      effects[mode][scenario] = {} as Record<Metric, PairedEffect>
+      for (const metric of ['mount', 'rerender'] as const) {
+        const v3 = trials
+          .filter(
+            (trial) =>
+              trial.phase === 'sample' &&
+              trial.framework === v3Framework &&
+              trial.scenario === scenario
+          )
+          .sort((left, right) => left.round - right.round)
+        const v2 = trials
+          .filter(
+            (trial) =>
+              trial.phase === 'sample' &&
+              trial.framework === v2Framework &&
+              trial.scenario === scenario
+          )
+          .sort((left, right) => left.round - right.round)
+        if (v3.length !== NUM_SAMPLES || v2.length !== NUM_SAMPLES) {
+          throw new Error(`incomplete paired samples for ${mode}/${scenario}/${metric}`)
+        }
+        const v3Values = v3.map((trial) => trial[metric])
+        const v2Values = v2.map((trial) => trial[metric])
+        effects[mode][scenario][metric] = {
+          v3: summarize(v3Values),
+          v2: summarize(v2Values),
+          differenceMs: summarize(
+            v3Values.map((value, index) => value - v2Values[index])
+          ),
+          ratio: summarize(v3Values.map((value, index) => value / v2Values[index])),
+        }
+      }
+    }
+  }
+  return effects
 }
 
 async function waitForServer(port: number, timeout = 30_000) {
@@ -274,6 +456,12 @@ async function measure(
   }
   await page.locator('#bench-start').click()
   await page.waitForSelector(`#bench-result-${scenario}-rerender`, { timeout: 120_000 })
+  const resultCells = await page.locator('[id^="bench-result-"]').count()
+  if (resultCells !== 2) {
+    throw new Error(
+      `${bench.id}/${scenario} rendered ${resultCells} result cells; expected one scenario`
+    )
+  }
   const mount = Number(
     await page.locator(`#bench-result-${scenario}-mount`).getAttribute('data-value')
   )
@@ -295,15 +483,20 @@ function escapeHtml(value: string) {
 }
 
 function generateHtml(report: BenchmarkReport) {
-  const v2 = report.summary['tamagui-v2-compiled']
+  const baseline =
+    report.summary['tamagui-v2-compiled'] ??
+    report.summary[report.frameworks[0]?.id ?? '']
+  const baselineName = report.summary['tamagui-v2-compiled']
+    ? 'v2 compiled'
+    : report.frameworks[0]?.name
   const cells = (metric: Metric, scenario: ScenarioId) =>
     report.frameworks
       .map((framework) => {
         const stat = report.summary[framework.id][scenario][metric]
-        const v2Mean = v2[scenario][metric].mean
-        const ratio = stat.mean / v2Mean
+        const baselineMean = baseline[scenario][metric].mean
+        const ratio = stat.mean / baselineMean
         const ratioClass = ratio > 1 ? 'regression' : 'improvement'
-        return `<td><span class="value">${stat.mean.toFixed(1)} ms</span><span class="ci">95% CI ${stat.ci95.low.toFixed(1)}–${stat.ci95.high.toFixed(1)}</span><span class="ratio ${ratioClass}">${ratio.toFixed(2)}× v2</span></td>`
+        return `<td><span class="value">${stat.mean.toFixed(1)} ms</span><span class="ci">95% CI ${stat.ci95.low.toFixed(1)}–${stat.ci95.high.toFixed(1)}</span><span class="ratio ${ratioClass}">${ratio.toFixed(2)}× ${escapeHtml(baselineName)}</span></td>`
       })
       .join('')
   const rows = (metric: Metric) =>
@@ -311,6 +504,18 @@ function generateHtml(report: BenchmarkReport) {
       (scenario) =>
         `<tr><td>${escapeHtml(SCENARIO_LABELS[scenario])}</td>${cells(metric, scenario)}</tr>`
     ).join('\n')
+  const effectRows = (['compiled', 'runtime'] as const)
+    .flatMap((mode) => {
+      const modeEffects = report.effects[mode]
+      if (!modeEffects) return []
+      return SCENARIOS.flatMap((scenario) =>
+        (['mount', 'rerender'] as const).map((metric) => {
+          const effect = modeEffects[scenario][metric]
+          return `<tr><td>${mode}</td><td>${escapeHtml(SCENARIO_LABELS[scenario])}</td><td>${metric}</td><td>${effect.ratio.mean.toFixed(3)}× <span class="ci">${effect.ratio.ci95.low.toFixed(3)}–${effect.ratio.ci95.high.toFixed(3)}</span></td><td>${effect.differenceMs.mean.toFixed(2)} ms <span class="ci">${effect.differenceMs.ci95.low.toFixed(2)}–${effect.differenceMs.ci95.high.toFixed(2)}</span></td></tr>`
+        })
+      )
+    })
+    .join('\n')
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -336,7 +541,7 @@ function generateHtml(report: BenchmarkReport) {
 </head>
 <body>
 <h1>Tamagui production benchmark comparison</h1>
-<p class="sub">${report.workload.itemCount}/${report.workload.heavyCount} equal components · ${report.workload.samples} retained samples + ${report.workload.warmups} separate warmup · randomized seed ${escapeHtml(String(report.metadata.randomSeed))} · Chromium ${escapeHtml(String(report.metadata.browserVersion))} · commit ${escapeHtml(String(report.metadata.commit))}</p>
+<p class="sub">${report.workload.itemCount}/${report.workload.heavyCount} equal components · ${report.workload.samples} retained samples + ${report.workload.warmups} warmup rounds · randomized seed ${escapeHtml(String(report.metadata.randomSeed))} · Chromium ${escapeHtml(String(report.metadata.browserVersion))} · commit ${escapeHtml(String(report.metadata.commit))}</p>
 <div class="scroll"><table>
 <thead><tr><th>Scenario</th>${report.frameworks.map((framework) => `<th>${escapeHtml(framework.name)}</th>`).join('')}</tr></thead>
 <tbody>
@@ -346,19 +551,35 @@ ${rows('mount')}
 ${rows('rerender')}
 </tbody>
 </table></div>
+<h2>Paired V3 versus V2 effects</h2>
+<p class="sub">Ratios below 1 and negative differences favor V3. Confidence intervals pair observations by retained sample round.</p>
+<div class="scroll"><table>
+<thead><tr><th>Mode</th><th>Scenario</th><th>Metric</th><th>V3 / V2 ratio (95% CI)</th><th>V3 − V2 (95% CI)</th></tr></thead>
+<tbody>${effectRows}</tbody>
+</table></div>
 </body>
 </html>`
 }
 
 async function main() {
+  const tamaguiWorkload = verifyTamaguiWorkload()
+  if (VERIFY_WORKLOAD_ONLY) {
+    console.log(JSON.stringify(tamaguiWorkload, null, 2))
+    return
+  }
   if (!Number.isInteger(NUM_SAMPLES) || NUM_SAMPLES < 3) {
     throw new Error('--samples must be an integer of at least 3')
+  }
+  if (!Number.isInteger(NUM_WARMUPS) || NUM_WARMUPS < 2) {
+    throw new Error('--warmups must be an integer of at least 2')
   }
 
   const buildRoot = mkdtempSync(join(tmpdir(), 'tamagui-production-bench-'))
   const previews: ChildProcess[] = []
   const random = createRandom(SEED)
   const byId = new Map(BENCHMARKS.map((bench) => [bench.id, bench]))
+  const installedDirs = new Set<string>()
+  const artifacts: BenchmarkReport['artifacts'] = {}
   const tasks = BENCHMARKS.flatMap((bench) =>
     SCENARIOS.map((scenario) => ({ framework: bench.id, scenario }))
   )
@@ -368,9 +589,13 @@ async function main() {
     for (const bench of BENCHMARKS) {
       const cwd = join(import.meta.dir, bench.dir)
       const outDir = join(buildRoot, bench.id)
-      if (bench.installWith === 'npm') command('npm', ['ci'], cwd)
-      if (bench.installWith === 'bun') {
-        command('bun', ['install', '--frozen-lockfile'], cwd)
+      const compilerStatsPath = join(buildRoot, `${bench.id}-compiler-stats.json`)
+      if (!installedDirs.has(cwd)) {
+        if (bench.installWith === 'npm') command('npm', ['ci'], cwd)
+        if (bench.installWith === 'bun') {
+          command('bun', ['install', '--frozen-lockfile'], cwd)
+        }
+        installedDirs.add(cwd)
       }
       const executable = bench.installWith === 'npm' ? 'npm' : 'bunx'
       const buildArgs =
@@ -380,8 +605,18 @@ async function main() {
       console.log(`▶ ${bench.name}`)
       command(executable, buildArgs, cwd, {
         NODE_ENV: 'production',
+        ...(bench.id === 'tamagui-v3-compiled' && {
+          TAMAGUI_COMPILER_STATS_FILE: compilerStatsPath,
+        }),
         ...bench.buildEnv,
       })
+      artifacts[bench.id] = {
+        ...measureBuildArtifact(outDir),
+        versions: installedVersions(cwd),
+        ...(bench.id === 'tamagui-v3-compiled' && {
+          compilerStats: JSON.parse(readFileSync(compilerStatsPath, 'utf8')),
+        }),
+      }
       const previewArgs =
         bench.installWith === 'npm'
           ? [
@@ -414,6 +649,13 @@ async function main() {
       await waitForServer(bench.port)
     }
 
+    if (BUILD_ONLY) {
+      console.log(
+        '\nProduction builds and previews validated; retained sampling skipped.\n'
+      )
+      return
+    }
+
     const { chromium } = await import('playwright')
     const browser = await chromium.launch()
     const context = await browser.newContext({ viewport: { width: 1280, height: 720 } })
@@ -422,17 +664,20 @@ async function main() {
     let sequence = 0
     try {
       console.log('\nRecording randomized warmups...')
-      for (const task of shuffle(tasks, random)) {
-        const bench = byId.get(task.framework)!
-        const result = await measure(context, pages, bench, task.scenario, sequence)
-        trials.push({
-          sequence: sequence++,
-          phase: 'warmup',
-          round: null,
-          ...task,
-          ...result,
-        })
-        process.stdout.write('.')
+      for (let round = 0; round < NUM_WARMUPS; round++) {
+        for (const task of shuffle(tasks, random)) {
+          const bench = byId.get(task.framework)!
+          const result = await measure(context, pages, bench, task.scenario, sequence)
+          trials.push({
+            sequence: sequence++,
+            phase: 'warmup',
+            round,
+            ...task,
+            ...result,
+          })
+          process.stdout.write('.')
+        }
+        console.log(` ${round + 1}/${NUM_WARMUPS}`)
       }
       console.log('\nRecording retained samples...')
       for (let round = 0; round < NUM_SAMPLES; round++) {
@@ -474,8 +719,10 @@ async function main() {
           viewport: { width: 1280, height: 720 },
           buildMode: 'production',
           order:
-            'framework/scenario warmups shuffled once; every sample round reshuffled',
+            'framework/scenario tasks reshuffled independently in every warmup and sample round',
           randomSeed: SEED,
+          tamaguiWorkload,
+          selectedFrameworks: BENCHMARKS.map(({ id }) => id),
         },
         frameworks: BENCHMARKS.map(({ id, name, version, mode }) => ({
           id,
@@ -487,10 +734,12 @@ async function main() {
           itemCount: ITEM_COUNT,
           heavyCount: HEAVY_COUNT,
           samples: NUM_SAMPLES,
-          warmups: 1,
+          warmups: NUM_WARMUPS,
         },
+        artifacts,
         trials,
         summary: buildSummary(trials),
+        effects: buildEffects(trials),
       }
       mkdirSync(dirname(OUTPUT_PATH), { recursive: true })
       writeFileSync(OUTPUT_PATH, `${JSON.stringify(report, null, 2)}\n`)

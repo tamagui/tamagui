@@ -38,10 +38,10 @@ export interface BenchScenario {
 
 const allScenarios: BenchScenario[] = [
   { id: 'simple', name: '1. Simple (static layout props)' },
-  { id: 'rich', name: '2. Rich (pseudo states)' },
-  { id: 'group', name: '3. Group hover (parent group state affects child styles)' },
+  { id: 'rich', name: '2. Rich (static borders and spacing)' },
+  { id: 'group', name: '3. Nested row layout' },
   { id: 'heavy', name: '4. Heavy page (realistic card list, nested, mixed)' },
-  { id: 'animated', name: '5. Animated (JS spring)' },
+  { id: 'animated', name: '5. Dynamic transition' },
 ]
 
 const scenarioParam = urlParams.get('scenario')
