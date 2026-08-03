@@ -8,7 +8,7 @@ const bg = (loc: any) =>
 test('Surface: nothing on by default, facets opt-in, level re-binds the theme', async ({
   page,
 }) => {
-  // the v5 theme pack ships the surface1-2 sub-themes the `level` variant re-binds to.
+  // v6 ships relative level themes for the `level` boundary.
   await setupPage(page, {
     name: 'SurfaceCase',
     type: 'useCase',
@@ -43,7 +43,7 @@ test('Surface: nothing on by default, facets opt-in, level re-binds the theme', 
   )
   expect(outlinedRadius).not.toBe('0px')
 
-  // `level` re-binds the subtree theme (surface1 vs surface2), so filled
+  // `level` re-binds the subtree theme, so filled
   // surfaces at different levels resolve to different backgrounds
   const l1Bg = await bg(l1)
   const l2Bg = await bg(l2)

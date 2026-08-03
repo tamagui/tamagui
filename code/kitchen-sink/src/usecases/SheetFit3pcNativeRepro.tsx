@@ -106,7 +106,7 @@ export function SheetFit3pcNativeRepro() {
             {...sheetTopRadius}
             position="absolute"
             inset={0}
-            bg="color12"
+            bg="color11"
             opacity={0.15}
             borderWidth={2}
             borderBottomWidth={0}
@@ -120,7 +120,7 @@ export function SheetFit3pcNativeRepro() {
             opacity={0.25}
             borderWidth={1}
             borderBottomWidth={0}
-            borderColor="color12"
+            borderColor="color11"
           />
 
           <TamaguiSheet.ScrollView

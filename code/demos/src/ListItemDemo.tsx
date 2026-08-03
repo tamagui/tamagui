@@ -3,7 +3,7 @@ import { ListItem, Separator, Theme, XStack, YGroup } from 'tamagui'
 
 export function ListItemDemo() {
   return (
-    <Theme name="surface1">
+    <Theme name="level2">
       <XStack flexDirection="max-md:column" px="4" gap="4">
         <ListItemDemo1 />
         <ListItemDemo2 />

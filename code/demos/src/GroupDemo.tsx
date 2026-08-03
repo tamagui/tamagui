@@ -34,20 +34,20 @@ export function GroupDemo() {
       {/* with separators - add them between items */}
       <YGroup>
         <YGroup.Item>
-          <ListItem borderRadius="6" theme="surface1" title="First" />
+          <ListItem borderRadius="6" theme="level2" title="First" />
         </YGroup.Item>
         <Separator />
         <YGroup.Item>
           <ListItem
             borderRadius="6"
-            theme="surface1"
+            theme="level2"
             title="Second"
             subTitle="Second subtitle"
           />
         </YGroup.Item>
         <Separator />
         <YGroup.Item>
-          <ListItem borderRadius="6" theme="surface1">
+          <ListItem borderRadius="6" theme="level2">
             Third
           </ListItem>
         </YGroup.Item>

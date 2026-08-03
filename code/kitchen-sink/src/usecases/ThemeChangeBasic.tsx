@@ -42,7 +42,7 @@ export function ThemeChangeBasic() {
           backgroundColor="color4"
           borderRadius={14}
         >
-          <Text color="color12" fontWeight="bold">
+          <Text color="color11" fontWeight="bold">
             {themeName.toUpperCase()}
           </Text>
         </YStack>

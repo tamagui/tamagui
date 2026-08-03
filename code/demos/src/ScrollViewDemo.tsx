@@ -11,7 +11,7 @@ export function ScrollViewDemo() {
         <Square m="4" bg="color9" size={120} />
         <Circle m="4" bg="color10" size={120} />
         <Square m="4" bg="color11" size={120} />
-        <Circle m="4" bg="color12" size={120} />
+        <Circle m="4" bg="color11" size={120} />
       </XStack>
     </ScrollView>
   )

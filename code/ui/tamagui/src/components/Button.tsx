@@ -18,6 +18,7 @@ import {
   SizeContext,
   type SizeTokens,
   styled,
+  Theme,
   type TokenSize,
   useButton,
   type VariantSpreadExtras,
@@ -155,9 +156,18 @@ const ButtonComponent = createStyledHOC(
       iconSize: getThemedIconSize(size),
     })
 
+    const { theme, ...frameProps } = buttonProps as typeof buttonProps & {
+      theme?: string
+    }
+    const frame = (
+      <Theme name="level2">
+        <ButtonFrame ref={ref} {...frameProps} />
+      </Theme>
+    )
+
     return (
       <SizeContext.Provider size={size}>
-        <ButtonFrame ref={ref} {...buttonProps} />
+        {theme ? <Theme name={theme as any}>{frame}</Theme> : frame}
       </SizeContext.Provider>
     )
   }

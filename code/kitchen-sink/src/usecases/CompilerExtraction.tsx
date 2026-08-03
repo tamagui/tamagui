@@ -56,7 +56,7 @@ function AdvancedBox() {
       borderColor="color8"
       borderWidth={2}
     >
-      <Text testID="compiler-advanced-text" color="color12" fontSize="3">
+      <Text testID="compiler-advanced-text" color="color11" fontSize="3">
         Token
       </Text>
     </YStack>
@@ -80,7 +80,7 @@ function AdvancedBoxNoOpt() {
       <Text
         disableOptimization
         testID="compiler-advanced-text-noopt"
-        color="color12"
+        color="color11"
         fontSize="3"
       >
         Token
@@ -101,7 +101,7 @@ function SubThemedBox({ themeName }: { themeName: string }) {
         borderRadius={8}
         backgroundColor="color4"
       >
-        <Text testID="compiler-subtheme-text" color="color12" fontSize="2">
+        <Text testID="compiler-subtheme-text" color="color11" fontSize="2">
           {themeName}
         </Text>
       </YStack>
@@ -125,7 +125,7 @@ function SubThemedBoxNoOpt({ themeName }: { themeName: string }) {
         <Text
           disableOptimization
           testID="compiler-subtheme-text-noopt"
-          color="color12"
+          color="color11"
           fontSize="2"
         >
           {themeName}
@@ -189,7 +189,7 @@ function OptimizedNestedBenchItem({ index }: { index: number }) {
         borderWidth={1}
         borderRadius={2}
       />
-      <Text color="color12" fontSize="2">
+      <Text color="color11" fontSize="2">
         Row {index}
       </Text>
     </XStack>
@@ -208,7 +208,7 @@ function UnoptimizedNestedBenchItem({ index }: { index: number }) {
         borderWidth={1}
         borderRadius={2}
       />
-      <Text disableOptimization color="color12" fontSize="2">
+      <Text disableOptimization color="color11" fontSize="2">
         Row {index}
       </Text>
     </XStack>

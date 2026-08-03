@@ -16,12 +16,12 @@ export const manifest = {
     'color8',
     'color10',
     'color11',
-    'color12',
+    'color11',
   ],
   native: [
     'requires a Portal provider at the app root for the toast viewport to mount above content',
   ],
-  // grandfathered: the toast card/buttons use palette steps color3..color12
+  // grandfathered: the toast card/buttons use palette steps color3..color11
   // for their layered light/dark surface look.
   genericsOnly: false,
 } satisfies SkinManifest

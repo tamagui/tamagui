@@ -161,6 +161,6 @@ const DialogContent = styled(Dialog.Content, {
   scale: 'enter:0.985',
   x: 'enter:0 exit:0',
   outlineWidth: 'focus:2px',
-  outlineColor: 'focus:background02',
+  outlineColor: 'focus:outline-color',
   outlineStyle: 'focus:solid',
 })

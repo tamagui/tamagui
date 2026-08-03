@@ -14,7 +14,7 @@ const ReadValues = () => {
     !!(value && typeof value === 'object' && 'dynamic' in (value as object))
   return (
     <YStack gap="2">
-      <Text testID="vars-native-env">{`env:${themeName}/${String(Appearance.getColorScheme())}`}</Text>
+      <Text testID="vars-native-env">{`env:${String(themeName)}/${String(Appearance.getColorScheme())}`}</Text>
       <Text testID="vars-native-val">{`val:${String(theme.caseAccent?.val)}`}</Text>
       <Text testID="vars-native-dynamic">{`dynamic:${isDynamic(accentDynamic)}`}</Text>
       <Text testID="vars-native-ref-val">{`ref:${String(theme.caseSurface?.val)}`}</Text>

@@ -2,7 +2,7 @@ import type { SkinManifest } from './registry-manifest'
 
 export const manifest = {
   description:
-    'Surface: a copied panel/well/toolbar fixture — a YStack + the composable chrome/interaction facets (filled, outlined, elevated, rounded, interactive) + a `level` prop that shifts the subtree to the surface1-3 sub-theme. Nothing on by default; every facet is opt-in. Generics-only, so it restyles under any re-bound level.',
+    'Surface: a copied panel/well/toolbar fixture with composable chrome and interaction facets plus a relative `level` theme boundary. Nothing is on by default; every facet is opt-in.',
   categories: ['layout'],
   tokens: [
     'background',
@@ -14,5 +14,5 @@ export const manifest = {
     'shadow-color',
     'outline-color',
   ],
-  themes: ['surface1', 'surface2', 'surface3'],
+  themes: ['level2', 'level3', 'level4'],
 } satisfies SkinManifest

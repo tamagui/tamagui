@@ -3,7 +3,7 @@ import { Button, Card, H2, Image, Paragraph, Theme, XStack } from 'tamagui'
 
 export function CardDemo() {
   return (
-    <Theme name="surface1">
+    <Theme name="level2">
       <XStack flexDirection="max-md:column" px="4" gap="4">
         <DemoCard
           transition="bouncy"

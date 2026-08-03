@@ -15,7 +15,7 @@ export function ProgressDemo() {
           Progress: {progress}
         </Paragraph>
 
-        <Progress key={key} theme="surface2" value={progress}>
+        <Progress key={key} theme="level3" value={progress}>
           <Progress.Indicator
             backgroundColor="color"
             transition={['quicker', { transform: { overshootClamping: true } }]}
@@ -26,7 +26,7 @@ export function ProgressDemo() {
       <XStack items="center" gap="2" position="absolute" b="3" l="4" display="xxs:none">
         {/* <Slider
           size="2"
-          theme="surface2"
+          theme="level3"
           width={130}
           value={slider}
           min={0}

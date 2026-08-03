@@ -5,7 +5,7 @@ import { Checkbox } from './ControlSkins'
 
 export function CheckboxDemo() {
   return (
-    <Theme name="surface2">
+    <Theme name="level3">
       <YStack width={300} items="center" gap="2">
         <CheckboxWithLabel size="3" />
         <CheckboxWithLabel size="4" defaultChecked />

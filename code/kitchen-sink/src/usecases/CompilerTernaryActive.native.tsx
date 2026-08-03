@@ -71,7 +71,7 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
     <YStack
       disableOptimization
       testID="noopt-color-box"
-      backgroundColor={`${isActive ? 'color12' : 'color11'}`}
+      backgroundColor={`${isActive ? 'color11' : 'color10'}`}
       height={60}
       justifyContent="center"
       alignItems="center"
@@ -81,7 +81,7 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
         testID="active-text-noopt"
         fontSize="3"
         fontWeight={isActive ? '700' : '400'}
-        color={`${isActive ? 'color12' : 'color11'}`}
+        color={`${isActive ? 'color11' : 'color10'}`}
       >
         {label}
       </Text>
@@ -118,7 +118,7 @@ const _ReactNativeViewStyled0 = _withStableStyle(
     _sheet['0'],
     _expressions[0]
       ? {
-          backgroundColor: theme.color12.get(),
+          backgroundColor: theme.color11.get(),
         }
       : {
           backgroundColor: theme.color11.get(),
@@ -138,7 +138,7 @@ const _ReactNativeTextStyled1 = _withStableStyle(
       ? [
           _sheet['2'],
           {
-            color: theme.color12.get(),
+            color: theme.color11.get(),
           },
         ]
       : [

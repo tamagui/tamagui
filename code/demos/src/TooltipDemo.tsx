@@ -11,7 +11,7 @@ import { Button } from './Button'
 
 export function TooltipDemo() {
   return (
-    <Theme name="surface2">
+    <Theme name="level3">
       <TooltipGroup delay={{ open: 300, close: 100 }}>
         <YStack gap="2" self="center">
           <XStack gap="2">

@@ -41,7 +41,7 @@ export const Input = createStyledHOC(TamaguiInput, function MyInput({ ...props }
   return (
     // @ts-ignore - complex type inference issue with createStyledHOC + styled combination
     <TextInput
-      keyboardAppearance={parentTheme?.includes('dark') ? 'dark' : 'default'}
+      keyboardAppearance={String(parentTheme).includes('dark') ? 'dark' : 'default'}
       {...props}
       id={Platform.select({
         // on native, this leads to duplicates?

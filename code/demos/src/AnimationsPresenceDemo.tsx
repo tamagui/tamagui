@@ -6,11 +6,11 @@ import { Image, XStack, YStack, styled } from 'tamagui'
 import { Button } from './Button'
 
 // @ts-ignore
-import photo1 from '../../public/photo1.jpg'
+import photo1 from '@tamagui/demos/photo/photo1'
 // @ts-ignore
-import photo2 from '../../public/photo2.jpg'
+import photo2 from '@tamagui/demos/photo/photo2'
 // @ts-ignore
-import photo3 from '../../public/photo3.jpg'
+import photo3 from '@tamagui/demos/photo/photo3'
 
 export const images = [photo1, photo2, photo3].map((x) => (x as any).src || x)
 

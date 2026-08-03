@@ -3,9 +3,9 @@ import { createAnimations as createAnimationsMotion } from '@tamagui/animations-
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
 import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from '@tamagui/core'
 import type { InferTamaguiConfig } from '@tamagui/web'
-import { createTamagui } from 'tamagui'
-import { themeDev } from './themes/theme.dev'
+import { themeDev, type TamaguiThemes } from './themes/theme.dev'
 
 // the kitchen sink runs on the shipped default config so the cases exercise
 // exactly what users get: v6 tokens, fonts, media, shorthands and settings.
@@ -390,13 +390,13 @@ const fixtureThemes = {
   },
 }
 
-const themes = {
+type KitchenThemes = TamaguiThemes & typeof fixtureThemes
+
+const themes: KitchenThemes = {
   ...defaultConfig.themes,
   ...themeDev,
   ...fixtureThemes,
 }
-
-type KitchenThemes = typeof themes
 
 const variables = {
   caseAccent: { light: 'rgb(0, 90, 200)', dark: 'rgb(90, 90, 255)' },

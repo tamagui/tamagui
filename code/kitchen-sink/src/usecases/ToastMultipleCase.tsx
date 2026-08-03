@@ -337,7 +337,7 @@ function CustomToastContent({ toast: t }: { toast: ToastT }) {
           <XStack gap="2" marginTop="2">
             {t.action && (
               <Toast.Action
-                backgroundColor="color12 hover:color11 press:color10"
+                backgroundColor="color11 hover:color10 press:color9"
                 onPress={(e: any) => {
                   t.action?.onClick?.(e)
                   if (!e.defaultPrevented) handleClose()

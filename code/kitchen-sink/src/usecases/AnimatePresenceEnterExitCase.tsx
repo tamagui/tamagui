@@ -148,7 +148,7 @@ function Scenario03_InitialFalse() {
               key="count-badge-03"
               testID="enter-exit-03-target"
               transition="medium"
-              bg="color12"
+              bg="color11"
               position="absolute"
               t={4}
               r={6}
@@ -218,7 +218,7 @@ function Scenario02_CircleBadge() {
               key="count-badge"
               testID="enter-exit-02-target"
               transition="medium"
-              bg="color12"
+              bg="color11"
               position="absolute"
               items="center"
               justify="center"

@@ -49,7 +49,7 @@ export function LogoDotInterruptCase() {
           top={30}
           left={20}
           x={positions[index]}
-          backgroundColor="color12"
+          backgroundColor="color11"
           size={16}
         />
         {positions.map((p, i) => (

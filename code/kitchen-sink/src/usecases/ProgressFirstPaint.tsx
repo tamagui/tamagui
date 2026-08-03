@@ -17,7 +17,7 @@ export function ProgressFirstPaint() {
 
   return (
     <YStack gap="4" padding="4" width={300}>
-      <Progress testID="progress" theme="surface2" value={value}>
+      <Progress testID="progress" theme="level3" value={value}>
         <Progress.Indicator
           testID="progress-indicator"
           backgroundColor="color"

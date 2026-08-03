@@ -26,12 +26,12 @@ export const TEST_IDS = {
   // Goal 1b: Inherit scheme for component
   themeInheritSchemeDirect: 'theme-inherit-scheme-direct',
   themeInheritSchemeNested: 'theme-inherit-scheme-nested',
-  // Goal 2: Component-only preserves sub-theme (no backtracking)
-  themeSurface1Direct: 'theme-surface1-direct',
-  themeSurface1WithComponent: 'theme-surface1-with-component',
-  // Nested Surface test IDs
-  nestedSurface1To3Direct: 'nested-surface-1-to-3-direct',
-  nestedSurface1To3Nested: 'nested-surface-1-to-3-nested',
+  // Goal 2: relative level path preservation
+  themeLevel2Direct: 'theme-level-2-direct',
+  themeLevel2Nested: 'theme-level-2-nested',
+  // Nested level test IDs
+  nestedLevel3Direct: 'nested-level-3-direct',
+  nestedLevel3Composed: 'nested-level-3-composed',
   // Theme Mutation test IDs (DynamicColorIOS force update fix)
   themeMutationSquare: 'theme-mutation-square',
   themeMutationButton: 'theme-mutation-button',

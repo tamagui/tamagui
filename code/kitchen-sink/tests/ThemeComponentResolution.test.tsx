@@ -3,12 +3,12 @@ import { setupPage } from './test-utils'
 import { TEST_IDS } from '../src/constants/test-ids'
 
 /**
- * Tests for theme component resolution (commit 5839319146 goals)
+ * Tests for generated theme path resolution.
  *
  * These tests verify that the theme resolution algorithm correctly handles:
  * 1. Explicit scheme overrides (e.g., dark_green inside blue parent)
- * 2. Inheriting scheme from parent for component themes
- * 3. Preserving sub-themes when only componentName is provided (no backtracking)
+ * 2. Inheriting scheme from the parent
+ * 3. Preserving a relative level under a color theme
  */
 
 test.beforeEach(async ({ page }) => {
@@ -58,23 +58,18 @@ test.describe('Goal 1b: Inherit scheme from parent', () => {
   })
 })
 
-test.describe('Goal 2: Sub-theme preservation', () => {
-  test('surface1 sub-theme is preserved when nested (no backtracking)', async ({
-    page,
-  }) => {
-    // Direct light_blue_surface1
-    const directSquare = page.locator(`#${TEST_IDS.themeSurface1Direct}`)
+test.describe('Goal 2: Relative level preservation', () => {
+  test('level2 keeps its blue palette when nested', async ({ page }) => {
+    const directSquare = page.locator(`#${TEST_IDS.themeLevel2Direct}`)
     await expect(directSquare).toBeVisible()
 
-    // Nested: blue → surface1
-    const nestedSquare = page.locator(`#${TEST_IDS.themeSurface1WithComponent}`)
+    const nestedSquare = page.locator(`#${TEST_IDS.themeLevel2Nested}`)
     await expect(nestedSquare).toBeVisible()
 
-    // Both should be light_blue_surface1
     const directText = await directSquare.innerText()
     const nestedText = await nestedSquare.innerText()
 
-    expect(directText).toBe('light_blue_surface1')
-    expect(nestedText).toBe('light_blue_surface1')
+    expect(directText).toBe('light_blue_level2')
+    expect(nestedText).toBe('light_blue_level2')
   })
 })

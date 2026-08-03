@@ -1,4 +1,5 @@
 import '@tamagui/core/reset.css'
+import './tamagui.config'
 
 import * as Demos from '@tamagui/demos'
 import React from 'react'

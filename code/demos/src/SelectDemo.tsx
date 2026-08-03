@@ -1,13 +1,13 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import React from 'react'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Label, Select, Sheet, Theme, XStack, YStack, getFontSize } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function SelectDemo() {
   return (
-    <Theme name="surface1">
+    <Theme name="level2">
       <YStack gap="4">
         <XStack width="100%" items="center" gap="4">
           <Label htmlFor="select-demo-1" flex={1} minW={80}>

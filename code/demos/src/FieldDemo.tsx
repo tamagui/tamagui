@@ -140,7 +140,7 @@ export function FieldDemo() {
           height={40}
           px="5"
           rounded="5"
-          bg="color12 hover:color11"
+          bg="color11 hover:color10"
           color="color1"
           fontSize="2"
           fontWeight="500"

@@ -224,7 +224,7 @@ function ThemedSection() {
         <H2 color="color">Themed Section</H2>
         <XStack gap="2" flexWrap="wrap">
           {Array.from({ length: 12 }, (_, i) => (
-            <Theme key={i} name={i % 2 === 0 ? 'surface1' : 'surface2'}>
+            <Theme key={i} name={i % 2 === 0 ? 'level2' : 'level3'}>
               <View
                 width={80}
                 height={60}

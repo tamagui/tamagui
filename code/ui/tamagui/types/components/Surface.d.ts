@@ -26,8 +26,8 @@ export declare const SurfaceFrame: import("react").FunctionComponent<Omit<import
     }, import("@tamagui/web").StaticConfigPublic];
 };
 export type SurfaceProps = GetProps<typeof SurfaceFrame> & {
-    /** shift the subtree to a surface sub-theme (surface1-3). */
-    level?: 1 | 2 | 3;
+    /** shift the subtree to a relative theme level. */
+    level?: 1 | 2 | 3 | 4;
 };
 export declare const Surface: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevated" | "elevation" | "filled" | "interactive" | "outlined" | "rounded" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevated?: boolean | undefined;
@@ -37,7 +37,7 @@ export declare const Surface: import("react").ForwardRefExoticComponent<Omit<imp
     outlined?: boolean | undefined;
     rounded?: boolean | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    /** shift the subtree to a surface sub-theme (surface1-3). */
-    level?: 1 | 2 | 3;
+    /** shift the subtree to a relative theme level. */
+    level?: 1 | 2 | 3 | 4;
 } & import("react").RefAttributes<any>>;
 //# sourceMappingURL=Surface.d.ts.map

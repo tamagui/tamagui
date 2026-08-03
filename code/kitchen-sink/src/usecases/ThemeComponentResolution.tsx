@@ -3,12 +3,12 @@ import { Square, Text, Theme, useThemeName, YStack } from 'tamagui'
 import { TEST_IDS } from '../constants/test-ids'
 
 /**
- * Test cases for theme component resolution (commit 5839319146 goals)
+ * Test cases for generated theme path resolution.
  *
  * These tests verify that the theme resolution algorithm correctly handles:
  * 1. Explicit scheme overrides (e.g., dark_green inside blue parent)
- * 2. Inheriting scheme from parent for component themes
- * 3. Preserving sub-themes when only componentName is provided (no backtracking)
+ * 2. Inheriting scheme from the parent
+ * 3. Preserving a relative level under a color theme
  */
 
 function ThemeNameDisplay({ id }: { id: string }) {
@@ -62,7 +62,7 @@ export function ThemeComponentResolution() {
         </YStack>
       </YStack>
 
-      {/* Goal 1b: Inherit scheme for component */}
+      {/* Goal 1b: Inherit scheme */}
       <YStack gap="2">
         <Text fontWeight="bold">Goal 1b: Inherit scheme from parent</Text>
         <Text fontSize="2">
@@ -88,28 +88,25 @@ export function ThemeComponentResolution() {
         </YStack>
       </YStack>
 
-      {/* Goal 2: Component-only preserves sub-theme */}
+      {/* Goal 2: Relative level path */}
       <YStack gap="2">
-        <Text fontWeight="bold">Goal 2: Sub-theme preservation</Text>
-        <Text fontSize="2">
-          When inside surface1 sub-theme, components should NOT backtrack to find a
-          component theme
-        </Text>
+        <Text fontWeight="bold">Goal 2: Relative level preservation</Text>
+        <Text fontSize="2">A level nested under blue keeps the blue palette.</Text>
 
-        {/* Direct: light_blue_surface1 */}
+        {/* Direct: light_blue_level2 */}
         <YStack gap="1">
-          <Text>Direct light_blue_surface1:</Text>
-          <Theme name="light_blue_surface1">
-            <ThemeNameDisplay id={TEST_IDS.themeSurface1Direct} />
+          <Text>Direct light_blue_level2:</Text>
+          <Theme name="light_blue_level2">
+            <ThemeNameDisplay id={TEST_IDS.themeLevel2Direct} />
           </Theme>
         </YStack>
 
-        {/* Nested: blue → surface1, then a Button (should stay on surface1, not get Button theme) */}
+        {/* Nested: blue → level2 */}
         <YStack gap="1">
-          <Text>Nested: blue → surface1 (component should stay on surface1):</Text>
+          <Text>Nested: blue → level2:</Text>
           <Theme name="blue">
-            <Theme name="surface1">
-              <ThemeNameDisplay id={TEST_IDS.themeSurface1WithComponent} />
+            <Theme name="level2">
+              <ThemeNameDisplay id={TEST_IDS.themeLevel2Nested} />
             </Theme>
           </Theme>
         </YStack>

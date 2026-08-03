@@ -4,7 +4,7 @@ import { RadioGroup } from './ControlSkins'
 
 export function RadioGroupDemo() {
   return (
-    <Theme name="surface2">
+    <Theme name="level3">
       <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
         <YStack width={300} items="center" gap="2">
           <RadioGroupItemWithLabel size="3" value="2" label="Second value" />

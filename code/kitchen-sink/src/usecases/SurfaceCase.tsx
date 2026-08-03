@@ -1,7 +1,7 @@
 import { Surface, Text, YStack } from 'tamagui'
 
 // smoke case for the copied Surface fixture: nothing on by default, facets are
-// opt-in, and `level` re-binds the subtree theme (surface1-3) so filled surfaces
+// opt-in, and `level` re-binds the subtree through relative level themes so surfaces
 // at different levels resolve to different backgrounds.
 export function SurfaceCase() {
   return (
