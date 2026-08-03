@@ -55,7 +55,7 @@ const matrix = JSON.parse(
       total: number
       snapshotsPassed: number
     }
-    local: Array<{ status: string; testsPassed: number }>
+    local: Array<{ status: string; testsPassed: number; testsSkipped?: number }>
     builds: Array<{ status: string }>
   }
   features: Feature[]
@@ -130,7 +130,12 @@ describe('React Strict DOM parity matrix', () => {
     ).toBe(matrix.execution.realizedUpstreamCases.snapshotsPassed)
     expect(matrix.execution.local.every(({ status }) => status === 'passed')).toBe(true)
     expect(matrix.execution.local.reduce((sum, row) => sum + row.testsPassed, 0)).toBe(
-      116
+      364
+    )
+    expect(
+      matrix.execution.local.reduce((sum, row) => sum + (row.testsSkipped ?? 0), 0)
+    ).toBe(
+      2
     )
     expect(matrix.execution.builds).toHaveLength(6)
     expect(matrix.execution.builds.every(({ status }) => status === 'passed')).toBe(true)
@@ -166,6 +171,9 @@ describe('React Strict DOM parity matrix', () => {
     expect(matrix.upstreamManualInventory).toHaveLength(
       matrix.reference.manualPlatformFixtures
     )
+    expect(matrix.upstreamManualInventory.map(({ status }) => status)).toEqual([
+      'intentional-difference',
+    ])
     for (const row of [
       ...matrix.upstreamTypeTestInventory,
       ...matrix.upstreamManualInventory,

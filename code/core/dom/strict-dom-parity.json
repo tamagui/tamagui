@@ -79,6 +79,40 @@
         "status": "passed",
         "testsPassed": 20,
         "warning": "Webpack emitted its pre-existing DefinePlugin NODE_ENV conflict warning; Vitest emitted the existing non-boolean conditional attribute warning."
+      },
+      {
+        "command": "bunx vitest --run src/__tests__/evaluateProgram.test.ts src/__tests__/programs.test.ts src/__tests__/transformFamily.test.ts src/__tests__/transition.test.ts src/__tests__/valueParser.test.ts",
+        "cwd": "code/core/style-grammar",
+        "status": "passed",
+        "testsPassed": 122
+      },
+      {
+        "command": "TAMAGUI_TARGET=native bunx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts componentProps.native.test.tsx getSplitStyles.nestedMedia.native.test.tsx rnStyleAlignment.native.test.tsx transformFamily.native.test.tsx transitionAlignment.native.test.tsx variables.native.test.tsx",
+        "cwd": "code/core/core-test",
+        "status": "passed",
+        "testsPassed": 89,
+        "testsSkipped": 2,
+        "note": "Vitest's filename filters also selected safeAreaVariables.native.test.tsx and shorthandVariables.native.test.tsx through the variables.native.test.tsx suffix, so the realized execution was eight files rather than six."
+      },
+      {
+        "command": "TAMAGUI_TARGET=web bunx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts createRefComponent.web.test.tsx domEntries.web.test.tsx flatValueProgramsSSR.web.test.tsx programCache.web.test.tsx",
+        "cwd": "code/core/core-test",
+        "status": "passed",
+        "testsPassed": 23
+      },
+      {
+        "prerequisiteCommand": "bun run pretest",
+        "command": "INCLUDE_CSS_COLOR_NAMES=1 bunx vitest --retry=0 --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run --dangerouslyIgnoreUnhandledErrors tests/flatValues.web.test.tsx tests/flatten.native.test.tsx",
+        "cwd": "code/compiler/static-tests",
+        "status": "passed",
+        "testsPassed": 13,
+        "note": "The fresh integration worktree first required the workspace packages referenced by the shared compiler config and static-test fixture to be built; after that documented setup, the unchanged test command passed."
+      },
+      {
+        "command": "NODE_ENV=test npx playwright test tests/MenuAsChildPosition.test.tsx",
+        "cwd": "code/kitchen-sink",
+        "status": "passed",
+        "testsPassed": 1
       }
     ],
     "builds": [
@@ -302,9 +336,9 @@
   "upstreamManualInventory": [
     {
       "path": "apps/platform-tests/src/components/App.js:1-922",
-      "status": "equivalent",
+      "status": "intentional-difference",
       "localEvidence": ["code/compiler/static-tests/tests/domPlatformFixture.test.tsx", "code/compiler/static-tests/tests/domCompiledRuntime.native.test.tsx", "code/core/core-test/domPlatformRuntime.web.test.tsx"],
-      "note": "The same semantic fixture shape is compiler-asserted for both targets, rendered and interacted with in a real web DOM, and compiled then rendered against native host primitives with style, role and press assertions."
+      "note": "Tamagui automates a representative five-tag semantic fixture across compiler, web DOM, and native renderer layers. The pinned upstream manual app exercises a much broader screen and 37 distinct semantic tags, so this is not equivalent app-level or visual coverage."
     }
   ],
   "scope": {
@@ -715,7 +749,7 @@
     {
       "id": "platform-app",
       "capability": "Integrated cross-platform visual/interaction fixture",
-      "status": "equivalent",
+      "status": "intentional-difference",
       "upstreamSources": [
         "apps/platform-tests/src/components/App.js:1-922",
         "apps/platform-tests/src/app/strict.css:1-13"
@@ -732,7 +766,7 @@
         "code/compiler/static-tests/tests/domCompiledRuntime.native.test.tsx",
         "code/compiler/static-tests/tests/domPlatformFixture.test.tsx"
       ],
-      "rationale": "The shared semantic fixture is asserted at compiler output on both targets, rendered and interacted with in a real web DOM, and compiled then rendered through native host primitives with role, accessibility, style, conditional composition and press assertions. This automates the upstream screen's contract; device-specific visual fidelity remains outside both projects' unit conformance suites."
+      "rationale": "The shared five-tag fixture is asserted at compiler output on both targets, rendered and interacted with in a real web DOM, and compiled then rendered through native host primitives with role, accessibility, style, conditional composition and press assertions. It is representative automation, not coverage equivalent to the upstream 922-line manual platform screen or device-specific visual fidelity."
     },
     {
       "id": "diagnostics-and-compatibility-ledger",
