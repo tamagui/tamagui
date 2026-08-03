@@ -51,8 +51,14 @@ export const themeVariableNames = [
 ]
 
 const variableShape = Object.fromEntries(
-  themeVariableNames.map((name) => [name, undefined])
+  themeVariableNames.map((name) => [name, 'transparent'])
 )
+
+type ClientThemes = {
+  [Name in keyof typeof serverThemes]: {
+    [Key in keyof (typeof serverThemes)[Name]]: string
+  }
+}
 
 /**
  * The flat-value config revision depends on theme and variable names, never
@@ -61,4 +67,5 @@ const variableShape = Object.fromEntries(
  */
 export const clientThemes = Object.fromEntries(
   themeNames.map((name) => [name, variableShape])
-)
+) as ClientThemes
+import type { themes as serverThemes } from './themes'

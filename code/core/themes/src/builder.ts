@@ -1,7 +1,9 @@
 import {
   createThemes,
   type GetThemeContext,
+  type ThemeChildren,
   type ThemeDefinitionContext,
+  type ThemeDefinitionObject,
 } from '@tamagui/create-theme'
 
 import { tokens, type ColorTokenName } from './tokens'
@@ -280,20 +282,33 @@ export type LevelChildren<Depth extends number = 4> = Depth extends 4
           }
         : {}
 
-export function levels(max: Level = 4): LevelChildren {
-  const raiseLevel = (by: number): LevelDefinition<3> =>
-    (({ parent }) => {
+function createLevels(max: Level, depth: 4): LevelChildren<4>
+function createLevels(max: Level, depth: 3): LevelChildren<3>
+function createLevels(max: Level, depth: 2): LevelChildren<2>
+function createLevels(max: Level, depth: 1): LevelChildren<1>
+function createLevels(max: Level, depth: 0): LevelChildren<0>
+function createLevels(max: Level, depth: number): ThemeChildren
+function createLevels(max: Level, depth: number): ThemeChildren {
+  if (depth === 0) return {}
+
+  const raiseLevel =
+    (by: number) =>
+    ({ parent }: ThemeDefinitionContext<LevelParent>): ThemeDefinitionObject | null => {
       const current = parent.level ?? 1
       const level = Math.min(current + by, max) as Level
       if (level === current) return null
-      return { level, children: levels(max) as unknown as LevelChildren<3> }
-    }) as LevelDefinition<3>
+      return { level, children: createLevels(max, depth - 1) }
+    }
 
   return {
     level2: raiseLevel(1),
     level3: raiseLevel(2),
     level4: raiseLevel(3),
   }
+}
+
+export function levels(max: Level = 4): LevelChildren {
+  return createLevels(max, 4)
 }
 
 export const tree = {

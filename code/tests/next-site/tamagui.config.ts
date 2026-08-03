@@ -1,5 +1,5 @@
-import { defaultConfig } from '@tamagui/config/v5'
-import { animations } from '@tamagui/config/v5-css'
+import { defaultConfig } from '@tamagui/config/v6'
+import { animations } from '@tamagui/config/animations-css'
 import { createTamagui } from 'tamagui'
 
 const tamaConf = createTamagui({

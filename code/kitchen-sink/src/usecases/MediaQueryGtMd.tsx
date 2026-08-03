@@ -5,10 +5,10 @@ import { Text, useMedia, YStack } from 'tamagui'
  *
  * Bug: on small screens the min-width query incorrectly applied. The max-width
  * styles should apply on mobile, not the min-width ones. The case is still named
- * for the v3-config `gtMd` key the bug was first reported against; config v5 is
+ * for the v3-config `gtMd` key the bug was first reported against; config v6 is
  * mobile-first, so the same pair is `max-md` and `md`.
  *
- * Breakpoints (from @tamagui/config/v5):
+ * Breakpoints (from @tamagui/config/v6):
  * - max-md: maxWidth 767.98 (matches when width < 768)
  * - md: minWidth 768 (matches when width >= 768)
  *

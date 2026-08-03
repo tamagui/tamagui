@@ -19,7 +19,7 @@
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/create-theme": "workspace:*",
+    "@tamagui/themes": "workspace:*",
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
     "@tamagui/shorthands": "workspace:*",

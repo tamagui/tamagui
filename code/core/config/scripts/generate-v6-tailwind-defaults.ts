@@ -178,11 +178,11 @@ export function createDefaultTables(themeCss: string): V6TailwindDefaultTables {
   const lineHeight: Table = {}
   for (const name of FONT_SIZE_NAMES) {
     const sizeValue = toPx(requiredVariable(variables, `text-${name}`))
-    fontSize[name] = `${sizeValue}px`
-    lineHeight[name] = `${toPx(
+    fontSize[name] = sizeValue
+    lineHeight[name] = toPx(
       requiredVariable(variables, `text-${name}--line-height`),
       sizeValue
-    )}px`
+    )
   }
 
   return { fontSize, lineHeight, radius, size, space }
@@ -282,7 +282,7 @@ function renderTable(name: string, table: Table, type = 'as const'): string {
 }
 
 // the colors and scales are written to separate modules so the aligned scale base can be
-// imported (v6-base, v6-classic) without bundling the 289-color palette on native.
+// imported through v6-base without bundling the 289-color palette on native.
 export function generateSources(): { colors: string; scales: string } {
   const source = readPinnedTailwindSource()
   const tables = createDefaultTables(source.themeCss)

@@ -1,7 +1,7 @@
 const { createTamagui } = require('@tamagui/core')
 
-const { defaultConfig } = require('@tamagui/config/v5')
-const { animations } = require('@tamagui/config/v5-css')
+const { defaultConfig } = require('@tamagui/config/v6')
+const { animations } = require('@tamagui/config/animations-css')
 
 module.exports = createTamagui({
   ...defaultConfig,

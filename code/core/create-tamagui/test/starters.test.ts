@@ -29,9 +29,9 @@ describe('expo-router starter', () => {
     expect(metro).toContain('getDefaultConfig')
   })
 
-  it('uses v5 tamagui config', () => {
+  it('uses v6 tamagui config', () => {
     const config = fs.readFileSync(path.join(dir, 'tamagui.config.ts'), 'utf-8')
-    expect(config).toContain('@tamagui/config/v5')
+    expect(config).toContain('@tamagui/config/v6')
   })
 
   // TODO: metro can't resolve @tamagui/menu through workspace symlinks
@@ -69,9 +69,9 @@ describe('remix starter', () => {
     expect(pkg.dependencies?.['@tamagui/core']).toBeUndefined()
   })
 
-  it('uses v5 tamagui config', () => {
+  it('uses v6 tamagui config', () => {
     const config = fs.readFileSync(path.join(dir, 'tamagui.config.ts'), 'utf-8')
-    expect(config).toContain('@tamagui/config/v5')
+    expect(config).toContain('@tamagui/config/v6')
   })
 
   it('imports from tamagui not @tamagui/web', () => {

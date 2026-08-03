@@ -1,14 +1,10 @@
 // the aligned v6 base: Tailwind-aligned shorthands, scales, fonts, media and settings.
-// colors and themes are deliberately not here — they are the divergent piece. pick a pack:
-//   @tamagui/config/v6          Tailwind palette + themes generated from it
-//   @tamagui/config/v6-classic  the v5 color story (generated v5 themes, no color tokens)
-//   createV6Config(colors)      bring your own (generate via @tamagui/config/v6-builder)
+// colors and themes are deliberately separate so createV6Config can accept any pack.
 import { shorthands } from '@tamagui/shorthands/v6'
-import { tokens as v5tokens } from '@tamagui/themes/v5-tokens'
 import type { CreateTamaguiProps } from '@tamagui/web'
-import { fonts as v5fonts } from './v5-fonts'
-import { media } from './v5-media'
-import { selectionStyles, settings as v5Settings } from './v5-settings'
+import { fonts as systemFonts } from './fonts'
+import { media } from './media'
+import { selectionStyles, settings as baseSettings } from './settings'
 import {
   tailwindFontSize,
   tailwindLineHeight,
@@ -18,78 +14,100 @@ import {
 } from './v6-tailwind-scales.generated'
 
 export { shorthands }
-export { createSystemFont } from './v5-fonts'
-export { breakpoints, media, mediaQueryDefaultActive } from './v5-media'
+export { createSystemFont } from './fonts'
+export { breakpoints, media, mediaQueryDefaultActive } from './media'
 export { selectionStyles }
 export { tailwindSource } from './v6-tailwind-scales.generated'
 export {
   v6RemovedThemeNames,
   v6ThemeNameReplacements,
 } from '@tamagui/style-grammar/tooling'
-export { toV6Themes } from './v6-themes'
-
 // space and size deliberately remain separate configured domains even though their default
-// values coincide. Radius keeps v5's numeric component scale while adding Tailwind's named
-// border-radius scale. z-index is literal, so its identity scale is not configured as tokens.
+// values coincide. z-index is literal, so its identity scale is not configured as tokens.
 export const tokens = {
   space: tailwindSpace,
   size: tailwindSize,
-  radius: { ...v5tokens.radius, ...tailwindRadius },
+  radius: {
+    0: 0,
+    1: 3,
+    2: 5,
+    3: 7,
+    4: 9,
+    5: 10,
+    6: 16,
+    7: 19,
+    8: 22,
+    9: 26,
+    10: 34,
+    11: 42,
+    12: 50,
+    ...tailwindRadius,
+  },
 } as const
-
-// font px strings are normalized to numeric Variable values by createVariable. keep the same
-// public numeric type contract as v5's pinFontToPx while retaining the generated map's exact keys.
-type NormalizedPxScale<T extends Record<string, string>> = {
-  [Key in keyof T]: number
-}
-
-const asNormalizedPxScale = <T extends Record<string, string>>(scale: T) =>
-  scale as unknown as NormalizedPxScale<T>
 
 function withTailwindTypeScale<F extends { size: object; lineHeight: object }>(font: F) {
   return {
     ...font,
-    size: { ...font.size, ...asNormalizedPxScale(tailwindFontSize) },
-    lineHeight: { ...font.lineHeight, ...asNormalizedPxScale(tailwindLineHeight) },
+    size: { ...font.size, ...tailwindFontSize },
+    lineHeight: { ...font.lineHeight, ...tailwindLineHeight },
   }
 }
 
 export const fonts = {
-  body: withTailwindTypeScale(v5fonts.body),
-  heading: withTailwindTypeScale(v5fonts.heading),
+  body: withTailwindTypeScale(systemFonts.body),
+  heading: withTailwindTypeScale(systemFonts.heading),
 } satisfies NonNullable<CreateTamaguiProps['fonts']>
 
 export const settings = {
-  ...v5Settings,
+  ...baseSettings,
 } satisfies CreateTamaguiProps['settings']
 
 export type V6Settings = typeof settings
 
 /**
  * A v6 colors pack: the one seam where color choice enters the config.
- * Themes should be generated from the same palette the color tokens come from —
- * see `@tamagui/config/v6-builder` (and `@tamagui/themes/v5-builder`).
+ * Themes should be generated from the same palette as the color tokens.
  */
 export type V6Colors = {
   themes: NonNullable<CreateTamaguiProps['themes']>
-  /** flat named colors added at tokens.color — omit to keep colors theme-only (like v5) */
+  /** flat named colors added at tokens.color */
   colorTokens?: Record<string, string>
 }
 
+const alignedConfig = {
+  media,
+  shorthands,
+  fonts,
+  selectionStyles,
+  settings,
+}
+
 /** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */
-export function createV6Config<Colors extends V6Colors>(colors: Colors) {
+export function createV6Config<
+  Themes extends NonNullable<CreateTamaguiProps['themes']>,
+  ColorTokens extends Record<string, string>,
+>(colors: {
+  themes: Themes
+  colorTokens: ColorTokens
+}): typeof alignedConfig & {
+  themes: Themes
+  tokens: typeof tokens & { color: ColorTokens }
+}
+export function createV6Config<
+  Themes extends NonNullable<CreateTamaguiProps['themes']>,
+>(colors: {
+  themes: Themes
+  colorTokens?: undefined
+}): typeof alignedConfig & {
+  themes: Themes
+  tokens: typeof tokens
+}
+export function createV6Config(colors: V6Colors) {
   return {
-    media,
-    shorthands,
-    fonts,
-    selectionStyles,
-    settings,
-    themes: colors.themes as Colors['themes'],
-    tokens: {
-      ...tokens,
-      ...(colors.colorTokens && { color: colors.colorTokens }),
-    } as Colors['colorTokens'] extends Record<string, string>
-      ? typeof tokens & { color: Colors['colorTokens'] }
-      : typeof tokens,
+    ...alignedConfig,
+    themes: colors.themes,
+    tokens: colors.colorTokens
+      ? { ...tokens, color: colors.colorTokens }
+      : tokens,
   }
 }

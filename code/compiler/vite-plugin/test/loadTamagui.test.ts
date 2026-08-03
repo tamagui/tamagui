@@ -468,7 +468,7 @@ test('native provider lowers source in One Rolldown for iOS and Android', async 
     writeFile(
       rootConfigPath,
       `const { createTamagui } = require('@tamagui/core')
-const { defaultConfig } = require('@tamagui/config/v5')
+const { defaultConfig } = require('@tamagui/config/v6')
 module.exports = createTamagui({
   ...defaultConfig,
   tokens: {
@@ -705,7 +705,7 @@ test('evaluates config and components through the app resolver and invalidates H
   )
   expect(directConfigResolution?.id).toBe(path.join(fixtureRoot, 'tamagui.config.ts'))
   const inlinePackageResolution = await evaluationEnvironment.pluginContainer.resolveId(
-    '@tamagui/config/v5',
+    '@tamagui/config/v6',
     directConfigResolution!.id
   )
   const sliderResolution = await evaluationEnvironment.pluginContainer.resolveId(
@@ -721,7 +721,7 @@ test('evaluates config and components through the app resolver and invalidates H
     directConfigResolution!.id
   )
   expect(inlinePackageResolution?.id).toMatch(
-    /(?:node_modules\/@tamagui\/config|code\/core\/config)\/dist\/esm\/v5\.mjs$/
+    /(?:node_modules\/@tamagui\/config|code\/core\/config)\/dist\/esm\/v6\.mjs$/
   )
   expect(inlinePackageResolution?.external).not.toBe(true)
   expect(sliderResolution?.id).toMatch(/\/slider\/dist\/esm\/index\.mjs$/)

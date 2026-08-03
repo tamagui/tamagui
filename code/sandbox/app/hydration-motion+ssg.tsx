@@ -1,4 +1,4 @@
-import { animationsMotion } from '@tamagui/config/v5-motion'
+import { animationsMotion } from '@tamagui/config/animations-motion'
 import { useMemo, useState } from 'react'
 import {
   AnimatePresence,

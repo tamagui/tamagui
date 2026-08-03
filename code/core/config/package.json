@@ -7,30 +7,22 @@
     "src",
     "types",
     "dist",
-    "v5",
-    "v5-css",
-    "v5-motion",
-    "v5-reanimated",
-    "v5-rn",
-    "v5-subtle",
-    "v5.cjs",
-    "v5.d.ts",
-    "v5-css.cjs",
-    "v5-css.d.ts",
-    "v5-motion.cjs",
-    "v5-motion.d.ts",
-    "v5-reanimated.cjs",
-    "v5-reanimated.d.ts",
-    "v5-rn.cjs",
-    "v5-rn.d.ts",
-    "v5-subtle.cjs",
-    "v5-subtle.d.ts",
+    "animations-css",
+    "animations-motion",
+    "animations-reanimated",
+    "animations-rn",
+    "animations-css.cjs",
+    "animations-css.d.ts",
+    "animations-motion.cjs",
+    "animations-motion.d.ts",
+    "animations-reanimated.cjs",
+    "animations-reanimated.d.ts",
+    "animations-rn.cjs",
+    "animations-rn.d.ts",
     "v6.cjs",
     "v6.d.ts",
     "v6-base.cjs",
     "v6-base.d.ts",
-    "v6-classic.cjs",
-    "v6-classic.d.ts",
     "v6-builder.cjs",
     "v6-builder.d.ts"
   ],
@@ -43,15 +35,6 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./v5": {
-      "types": "./types/v5.d.ts",
-      "react-native": "./dist/esm/v5.native.js",
-      "browser": "./dist/esm/v5.mjs",
-      "module": "./dist/esm/v5.mjs",
-      "import": "./dist/esm/v5.mjs",
-      "require": "./dist/cjs/v5.cjs",
-      "default": "./dist/esm/v5.mjs"
-    },
     "./v6": {
       "types": "./types/v6.d.ts",
       "react-native": "./dist/esm/v6.native.js",
@@ -70,15 +53,6 @@
       "require": "./dist/cjs/v6-base.cjs",
       "default": "./dist/esm/v6-base.mjs"
     },
-    "./v6-classic": {
-      "types": "./types/v6-classic.d.ts",
-      "react-native": "./dist/esm/v6-classic.native.js",
-      "browser": "./dist/esm/v6-classic.mjs",
-      "module": "./dist/esm/v6-classic.mjs",
-      "import": "./dist/esm/v6-classic.mjs",
-      "require": "./dist/cjs/v6-classic.cjs",
-      "default": "./dist/esm/v6-classic.mjs"
-    },
     "./v6-builder": {
       "types": "./types/v6-builder.d.ts",
       "react-native": "./dist/esm/v6-builder.native.js",
@@ -88,50 +62,41 @@
       "require": "./dist/cjs/v6-builder.cjs",
       "default": "./dist/esm/v6-builder.mjs"
     },
-    "./v5-css": {
-      "types": "./types/v5-css.d.ts",
-      "react-native": "./dist/esm/v5-css.native.js",
-      "browser": "./dist/esm/v5-css.mjs",
-      "module": "./dist/esm/v5-css.mjs",
-      "import": "./dist/esm/v5-css.mjs",
-      "require": "./dist/cjs/v5-css.cjs",
-      "default": "./dist/esm/v5-css.mjs"
+    "./animations-css": {
+      "types": "./types/animations-css.d.ts",
+      "react-native": "./dist/esm/animations-css.native.js",
+      "browser": "./dist/esm/animations-css.mjs",
+      "module": "./dist/esm/animations-css.mjs",
+      "import": "./dist/esm/animations-css.mjs",
+      "require": "./dist/cjs/animations-css.cjs",
+      "default": "./dist/esm/animations-css.mjs"
     },
-    "./v5-rn": {
-      "types": "./types/v5-rn.d.ts",
-      "react-native": "./dist/esm/v5-rn.native.js",
-      "browser": "./dist/esm/v5-rn.mjs",
-      "module": "./dist/esm/v5-rn.mjs",
-      "import": "./dist/esm/v5-rn.mjs",
-      "require": "./dist/cjs/v5-rn.cjs",
-      "default": "./dist/esm/v5-rn.mjs"
+    "./animations-rn": {
+      "types": "./types/animations-rn.d.ts",
+      "react-native": "./dist/esm/animations-rn.native.js",
+      "browser": "./dist/esm/animations-rn.mjs",
+      "module": "./dist/esm/animations-rn.mjs",
+      "import": "./dist/esm/animations-rn.mjs",
+      "require": "./dist/cjs/animations-rn.cjs",
+      "default": "./dist/esm/animations-rn.mjs"
     },
-    "./v5-reanimated": {
-      "types": "./types/v5-reanimated.d.ts",
-      "react-native": "./dist/esm/v5-reanimated.native.js",
-      "browser": "./dist/esm/v5-reanimated.mjs",
-      "module": "./dist/esm/v5-reanimated.mjs",
-      "import": "./dist/esm/v5-reanimated.mjs",
-      "require": "./dist/cjs/v5-reanimated.cjs",
-      "default": "./dist/esm/v5-reanimated.mjs"
+    "./animations-reanimated": {
+      "types": "./types/animations-reanimated.d.ts",
+      "react-native": "./dist/esm/animations-reanimated.native.js",
+      "browser": "./dist/esm/animations-reanimated.mjs",
+      "module": "./dist/esm/animations-reanimated.mjs",
+      "import": "./dist/esm/animations-reanimated.mjs",
+      "require": "./dist/cjs/animations-reanimated.cjs",
+      "default": "./dist/esm/animations-reanimated.mjs"
     },
-    "./v5-motion": {
-      "types": "./types/v5-motion.d.ts",
-      "react-native": "./dist/esm/v5-motion.native.js",
-      "browser": "./dist/esm/v5-motion.mjs",
-      "module": "./dist/esm/v5-motion.mjs",
-      "import": "./dist/esm/v5-motion.mjs",
-      "require": "./dist/cjs/v5-motion.cjs",
-      "default": "./dist/esm/v5-motion.mjs"
-    },
-    "./v5-subtle": {
-      "types": "./types/v5-subtle.d.ts",
-      "react-native": "./dist/esm/v5-subtle.native.js",
-      "browser": "./dist/esm/v5-subtle.mjs",
-      "module": "./dist/esm/v5-subtle.mjs",
-      "import": "./dist/esm/v5-subtle.mjs",
-      "require": "./dist/cjs/v5-subtle.cjs",
-      "default": "./dist/esm/v5-subtle.mjs"
+    "./animations-motion": {
+      "types": "./types/animations-motion.d.ts",
+      "react-native": "./dist/esm/animations-motion.native.js",
+      "browser": "./dist/esm/animations-motion.mjs",
+      "module": "./dist/esm/animations-motion.mjs",
+      "import": "./dist/esm/animations-motion.mjs",
+      "require": "./dist/cjs/animations-motion.cjs",
+      "default": "./dist/esm/animations-motion.mjs"
     }
   },
   "publishConfig": {

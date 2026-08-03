@@ -279,12 +279,12 @@ Bring the app to the v2 baseline before applying v3 changes.
 - React Native 0.81+ with New Architecture support
 - TypeScript 5+
 
-### Config v5
+### Config
 
-- Move from \`@tamagui/config/v4\` to \`@tamagui/config/v5\` unless the app already did.
-- Import animations separately from \`@tamagui/config/v5-css\`, \`v5-rn\`, \`v5-reanimated\`, or \`v5-motion\`.
+- Move to \`@tamagui/config/v6\`.
+- Import animations separately from \`@tamagui/config/animations-css\`, \`animations-rn\`, \`animations-reanimated\`, or \`animations-motion\`.
 - Move root \`createTamagui\` settings into \`settings\`.
-- Account for v5 defaults: \`flexBasis: 0\` and \`position: static\`. Use \`styleCompat: 'legacy'\` or explicit props if needed.
+- Account for the defaults \`flexBasis: 0\` and \`position: static\`. Use \`styleCompat: 'legacy'\` or explicit props if needed.
 - Rename media queries: \`$2xl\` -> \`$xxl\`, \`$2xs\` -> \`$xxs\`, and max queries to kebab-case such as \`$max-md\`.
 - Update colors/themes to Radix v3 and Config v5 theme helpers if the app uses default themes.
 

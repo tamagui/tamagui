@@ -1,4 +1,4 @@
-import { animationsMotion } from '@tamagui/config/v5-motion'
+import { animationsMotion } from '@tamagui/config/animations-motion'
 import { Image } from '@tamagui/image'
 import './_layout.css'
 import './tamagui.generated.css'

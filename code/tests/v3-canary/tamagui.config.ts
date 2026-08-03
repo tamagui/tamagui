@@ -1,4 +1,4 @@
-import { animations } from '@tamagui/config/v5-css'
+import { animations } from '@tamagui/config/animations-css'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { createTamagui } from 'tamagui'
 

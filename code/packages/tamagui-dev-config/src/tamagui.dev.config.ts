@@ -1,5 +1,5 @@
-import { animationsCSS } from '@tamagui/config/v5-css'
-import { animationsMotion } from '@tamagui/config/v5-motion'
+import { animationsCSS } from '@tamagui/config/animations-css'
+import { animationsMotion } from '@tamagui/config/animations-motion'
 import { defaultConfig } from '@tamagui/config/v6'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
@@ -25,12 +25,12 @@ export const animations = {
   css: animationsCSS,
 }
 
+const configuredThemes: typeof themes =
+  process.env.VITE_ENVIRONMENT === 'client' ? clientThemes : themes
+
 export const config = {
   ...defaultConfig,
-  themes:
-    process.env.VITE_ENVIRONMENT === 'client'
-      ? (clientThemes as unknown as typeof themes)
-      : themes,
+  themes: configuredThemes,
   fonts,
   animations,
   media,
@@ -38,7 +38,7 @@ export const config = {
     ...defaultConfig.settings,
     mediaQueryDefaultActive,
     allowedStyleValues: 'somewhat-strict-web',
-    // Allow both shorthands and longhand names for flexibility
+    // allow both shorthands and longhand names for flexibility
     onlyAllowShorthands: false,
   },
 } satisfies CreateTamaguiProps

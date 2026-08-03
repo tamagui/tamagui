@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest'
-import { defaultConfig } from '../../config/src/v5-base'
+import { defaultConfig } from '../../config/src/v6'
 import { bundledDefaultGrammarConfig } from '../src/to-tailwind-default-config'
 
 const namesOf = (source: Record<string, unknown> | undefined) => Object.keys(source || {})
 const sortedUnique = (names: Iterable<string>) => [...new Set(names)].sort()
 
 describe('to-tailwind bundled default names', () => {
-  test('matches every canonical v5 config name without runtime config dependencies', () => {
+  test('matches every default v6 config name without runtime config dependencies', () => {
     const config = defaultConfig as any
     const actualTokenNames: Record<string, string[]> = {}
     for (const category of ['space', 'size', 'radius', 'zIndex', 'color']) {

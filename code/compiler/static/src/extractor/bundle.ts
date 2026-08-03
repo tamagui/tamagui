@@ -217,7 +217,7 @@ function getESBuildConfig(
           const proxyWormPath = nodeRequire.resolve('@tamagui/proxy-worm')
 
           // only externalize @tamagui/core and @tamagui/web - these are provided at runtime
-          // other @tamagui/* packages (like @tamagui/config/v5) must be bundled in to avoid
+          // other @tamagui/* packages (like @tamagui/config/v6) must be bundled in to avoid
           // ESM race conditions when multiple threads require() them concurrently
           build.onResolve({ filter: /^@tamagui\/(core|web)$/ }, (args) => {
             if (args.kind === 'entry-point') {

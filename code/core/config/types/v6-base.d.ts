@@ -1,13 +1,12 @@
 import { shorthands } from '@tamagui/shorthands/v6';
 import type { CreateTamaguiProps } from '@tamagui/web';
-import { selectionStyles } from './v5-settings';
+import { selectionStyles } from './settings';
 export { shorthands };
-export { createSystemFont } from './v5-fonts';
-export { breakpoints, media, mediaQueryDefaultActive } from './v5-media';
+export { createSystemFont } from './fonts';
+export { breakpoints, media, mediaQueryDefaultActive } from './media';
 export { selectionStyles };
 export { tailwindSource } from './v6-tailwind-scales.generated';
 export { v6RemovedThemeNames, v6ThemeNameReplacements, } from '@tamagui/style-grammar/tooling';
-export { toV6Themes } from './v6-themes';
 export declare const tokens: {
     readonly space: {
         readonly '0': 0;
@@ -118,19 +117,6 @@ export declare const tokens: {
         readonly '3-5': 14;
     };
     readonly radius: {
-        readonly 0: number;
-        readonly 1: number;
-        readonly 2: number;
-        readonly 3: number;
-        readonly 4: number;
-        readonly 5: number;
-        readonly 6: number;
-        readonly 7: number;
-        readonly 8: number;
-        readonly 9: number;
-        readonly 10: number;
-        readonly 11: number;
-        readonly 12: number;
         readonly xs: 2;
         readonly sm: 4;
         readonly md: 6;
@@ -140,71 +126,84 @@ export declare const tokens: {
         readonly '3xl': 24;
         readonly '4xl': 32;
         readonly full: 9999;
+        readonly 0: 0;
+        readonly 1: 3;
+        readonly 2: 5;
+        readonly 3: 7;
+        readonly 4: 9;
+        readonly 5: 10;
+        readonly 6: 16;
+        readonly 7: 19;
+        readonly 8: 22;
+        readonly 9: 26;
+        readonly 10: 34;
+        readonly 11: 42;
+        readonly 12: 50;
     };
 };
 export declare const fonts: {
     body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
         size: {
-            xs: number;
-            sm: number;
-            base: number;
-            lg: number;
-            xl: number;
-            '2xl': number;
-            '3xl': number;
-            '4xl': number;
-            '5xl': number;
-            '6xl': number;
-            '7xl': number;
-            '8xl': number;
-            '9xl': number;
+            xs: 12;
+            sm: 14;
+            base: 16;
+            lg: 18;
+            xl: 20;
+            '2xl': 24;
+            '3xl': 30;
+            '4xl': 36;
+            '5xl': 48;
+            '6xl': 60;
+            '7xl': 72;
+            '8xl': 96;
+            '9xl': 128;
         };
         lineHeight: {
-            xs: number;
-            sm: number;
-            base: number;
-            lg: number;
-            xl: number;
-            '2xl': number;
-            '3xl': number;
-            '4xl': number;
-            '5xl': number;
-            '6xl': number;
-            '7xl': number;
-            '8xl': number;
-            '9xl': number;
+            xs: 16;
+            sm: 20;
+            base: 24;
+            lg: 28;
+            xl: 28;
+            '2xl': 32;
+            '3xl': 36;
+            '4xl': 40;
+            '5xl': 48;
+            '6xl': 60;
+            '7xl': 72;
+            '8xl': 96;
+            '9xl': 128;
         };
     };
     heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
         size: {
-            xs: number;
-            sm: number;
-            base: number;
-            lg: number;
-            xl: number;
-            '2xl': number;
-            '3xl': number;
-            '4xl': number;
-            '5xl': number;
-            '6xl': number;
-            '7xl': number;
-            '8xl': number;
-            '9xl': number;
+            xs: 12;
+            sm: 14;
+            base: 16;
+            lg: 18;
+            xl: 20;
+            '2xl': 24;
+            '3xl': 30;
+            '4xl': 36;
+            '5xl': 48;
+            '6xl': 60;
+            '7xl': 72;
+            '8xl': 96;
+            '9xl': 128;
         };
         lineHeight: {
-            xs: number;
-            sm: number;
-            base: number;
-            lg: number;
-            xl: number;
-            '2xl': number;
-            '3xl': number;
-            '4xl': number;
-            '5xl': number;
-            '6xl': number;
-            '7xl': number;
-            '8xl': number;
-            '9xl': number;
+            xs: 16;
+            sm: 20;
+            base: 24;
+            lg: 28;
+            xl: 28;
+            '2xl': 32;
+            '3xl': 36;
+            '4xl': 40;
+            '5xl': 48;
+            '6xl': 60;
+            '7xl': 72;
+            '8xl': 96;
+            '9xl': 128;
         };
     };
 };
@@ -246,16 +245,14 @@ export declare const settings: {
 export type V6Settings = typeof settings;
 /**
  * A v6 colors pack: the one seam where color choice enters the config.
- * Themes should be generated from the same palette the color tokens come from —
- * see `@tamagui/config/v6-builder` (and `@tamagui/themes/v5-builder`).
+ * Themes should be generated from the same palette as the color tokens.
  */
 export type V6Colors = {
     themes: NonNullable<CreateTamaguiProps['themes']>;
-    /** flat named colors added at tokens.color — omit to keep colors theme-only (like v5) */
+    /** flat named colors added at tokens.color */
     colorTokens?: Record<string, string>;
 };
-/** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */
-export declare function createV6Config<Colors extends V6Colors>(colors: Colors): {
+declare const alignedConfig: {
     media: {
         readonly touchable: {
             pointer: string;
@@ -391,66 +388,66 @@ export declare function createV6Config<Colors extends V6Colors>(colors: Colors):
     fonts: {
         body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
             size: {
-                xs: number;
-                sm: number;
-                base: number;
-                lg: number;
-                xl: number;
-                '2xl': number;
-                '3xl': number;
-                '4xl': number;
-                '5xl': number;
-                '6xl': number;
-                '7xl': number;
-                '8xl': number;
-                '9xl': number;
+                xs: 12;
+                sm: 14;
+                base: 16;
+                lg: 18;
+                xl: 20;
+                '2xl': 24;
+                '3xl': 30;
+                '4xl': 36;
+                '5xl': 48;
+                '6xl': 60;
+                '7xl': 72;
+                '8xl': 96;
+                '9xl': 128;
             };
             lineHeight: {
-                xs: number;
-                sm: number;
-                base: number;
-                lg: number;
-                xl: number;
-                '2xl': number;
-                '3xl': number;
-                '4xl': number;
-                '5xl': number;
-                '6xl': number;
-                '7xl': number;
-                '8xl': number;
-                '9xl': number;
+                xs: 16;
+                sm: 20;
+                base: 24;
+                lg: 28;
+                xl: 28;
+                '2xl': 32;
+                '3xl': 36;
+                '4xl': 40;
+                '5xl': 48;
+                '6xl': 60;
+                '7xl': 72;
+                '8xl': 96;
+                '9xl': 128;
             };
         };
         heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
             size: {
-                xs: number;
-                sm: number;
-                base: number;
-                lg: number;
-                xl: number;
-                '2xl': number;
-                '3xl': number;
-                '4xl': number;
-                '5xl': number;
-                '6xl': number;
-                '7xl': number;
-                '8xl': number;
-                '9xl': number;
+                xs: 12;
+                sm: 14;
+                base: 16;
+                lg: 18;
+                xl: 20;
+                '2xl': 24;
+                '3xl': 30;
+                '4xl': 36;
+                '5xl': 48;
+                '6xl': 60;
+                '7xl': 72;
+                '8xl': 96;
+                '9xl': 128;
             };
             lineHeight: {
-                xs: number;
-                sm: number;
-                base: number;
-                lg: number;
-                xl: number;
-                '2xl': number;
-                '3xl': number;
-                '4xl': number;
-                '5xl': number;
-                '6xl': number;
-                '7xl': number;
-                '8xl': number;
-                '9xl': number;
+                xs: 16;
+                sm: 20;
+                base: 24;
+                lg: 28;
+                xl: 28;
+                '2xl': 32;
+                '3xl': 36;
+                '4xl': 40;
+                '5xl': 48;
+                '6xl': 60;
+                '7xl': 72;
+                '8xl': 96;
+                '9xl': 128;
             };
         };
     };
@@ -490,9 +487,22 @@ export declare function createV6Config<Colors extends V6Colors>(colors: Colors):
         onlyAllowShorthands: true;
         styleCompat: "web";
     };
-    themes: Colors['themes'];
-    tokens: Colors['colorTokens'] extends Record<string, string> ? typeof tokens & {
-        color: Colors['colorTokens'];
-    } : typeof tokens;
+};
+/** Compose the aligned v6 base with a colors pack into a createTamagui-ready config. */
+export declare function createV6Config<Themes extends NonNullable<CreateTamaguiProps['themes']>, ColorTokens extends Record<string, string>>(colors: {
+    themes: Themes;
+    colorTokens: ColorTokens;
+}): typeof alignedConfig & {
+    themes: Themes;
+    tokens: typeof tokens & {
+        color: ColorTokens;
+    };
+};
+export declare function createV6Config<Themes extends NonNullable<CreateTamaguiProps['themes']>>(colors: {
+    themes: Themes;
+    colorTokens?: undefined;
+}): typeof alignedConfig & {
+    themes: Themes;
+    tokens: typeof tokens;
 };
 //# sourceMappingURL=v6-base.d.ts.map

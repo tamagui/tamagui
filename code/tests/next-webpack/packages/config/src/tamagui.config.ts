@@ -1,4 +1,4 @@
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig } from '@tamagui/config/v6'
 import { createTamagui } from 'tamagui'
 import { bodyFont, headingFont } from './fonts'
 import { animations } from './animations'

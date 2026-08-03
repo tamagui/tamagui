@@ -424,19 +424,6 @@ export declare const tokens: {
         readonly '3-5': 14;
     };
     readonly radius: {
-        readonly 0: number;
-        readonly 1: number;
-        readonly 2: number;
-        readonly 3: number;
-        readonly 4: number;
-        readonly 5: number;
-        readonly 6: number;
-        readonly 7: number;
-        readonly 8: number;
-        readonly 9: number;
-        readonly 10: number;
-        readonly 11: number;
-        readonly 12: number;
         readonly xs: 2;
         readonly sm: 4;
         readonly md: 6;
@@ -446,6 +433,19 @@ export declare const tokens: {
         readonly '3xl': 24;
         readonly '4xl': 32;
         readonly full: 9999;
+        readonly 0: 0;
+        readonly 1: 3;
+        readonly 2: 5;
+        readonly 3: 7;
+        readonly 4: 9;
+        readonly 5: 10;
+        readonly 6: 16;
+        readonly 7: 19;
+        readonly 8: 22;
+        readonly 9: 26;
+        readonly 10: 34;
+        readonly 11: 42;
+        readonly 12: 50;
     };
     readonly color: {
         readonly white: string;
@@ -892,70 +892,70 @@ export declare const defaultConfig: {
     fonts: {
         body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
             size: {
-                xs: number;
-                sm: number;
-                base: number;
-                lg: number;
-                xl: number;
-                '2xl': number;
-                '3xl': number;
-                '4xl': number;
-                '5xl': number;
-                '6xl': number;
-                '7xl': number;
-                '8xl': number;
-                '9xl': number;
+                xs: 12;
+                sm: 14;
+                base: 16;
+                lg: 18;
+                xl: 20;
+                '2xl': 24;
+                '3xl': 30;
+                '4xl': 36;
+                '5xl': 48;
+                '6xl': 60;
+                '7xl': 72;
+                '8xl': 96;
+                '9xl': 128;
             };
             lineHeight: {
-                xs: number;
-                sm: number;
-                base: number;
-                lg: number;
-                xl: number;
-                '2xl': number;
-                '3xl': number;
-                '4xl': number;
-                '5xl': number;
-                '6xl': number;
-                '7xl': number;
-                '8xl': number;
-                '9xl': number;
+                xs: 16;
+                sm: 20;
+                base: 24;
+                lg: 28;
+                xl: 28;
+                '2xl': 32;
+                '3xl': 36;
+                '4xl': 40;
+                '5xl': 48;
+                '6xl': 60;
+                '7xl': 72;
+                '8xl': 96;
+                '9xl': 128;
             };
         };
         heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16> & {
             size: {
-                xs: number;
-                sm: number;
-                base: number;
-                lg: number;
-                xl: number;
-                '2xl': number;
-                '3xl': number;
-                '4xl': number;
-                '5xl': number;
-                '6xl': number;
-                '7xl': number;
-                '8xl': number;
-                '9xl': number;
+                xs: 12;
+                sm: 14;
+                base: 16;
+                lg: 18;
+                xl: 20;
+                '2xl': 24;
+                '3xl': 30;
+                '4xl': 36;
+                '5xl': 48;
+                '6xl': 60;
+                '7xl': 72;
+                '8xl': 96;
+                '9xl': 128;
             };
             lineHeight: {
-                xs: number;
-                sm: number;
-                base: number;
-                lg: number;
-                xl: number;
-                '2xl': number;
-                '3xl': number;
-                '4xl': number;
-                '5xl': number;
-                '6xl': number;
-                '7xl': number;
-                '8xl': number;
-                '9xl': number;
+                xs: 16;
+                sm: 20;
+                base: 24;
+                lg: 28;
+                xl: 28;
+                '2xl': 32;
+                '3xl': 36;
+                '4xl': 40;
+                '5xl': 48;
+                '6xl': 60;
+                '7xl': 72;
+                '8xl': 96;
+                '9xl': 128;
             };
         };
     };
-    selectionStyles: typeof import("./v5-settings").selectionStyles;
+    selectionStyles: typeof import("./settings").selectionStyles;
     settings: {
         mediaQueryDefaultActive: {
             touchable: boolean;
@@ -991,6 +991,7 @@ export declare const defaultConfig: {
         onlyAllowShorthands: true;
         styleCompat: "web";
     };
+} & {
     themes: Themes;
     tokens: {
         readonly space: {
@@ -1102,19 +1103,6 @@ export declare const defaultConfig: {
             readonly '3-5': 14;
         };
         readonly radius: {
-            readonly 0: number;
-            readonly 1: number;
-            readonly 2: number;
-            readonly 3: number;
-            readonly 4: number;
-            readonly 5: number;
-            readonly 6: number;
-            readonly 7: number;
-            readonly 8: number;
-            readonly 9: number;
-            readonly 10: number;
-            readonly 11: number;
-            readonly 12: number;
             readonly xs: 2;
             readonly sm: 4;
             readonly md: 6;
@@ -1124,6 +1112,19 @@ export declare const defaultConfig: {
             readonly '3xl': 24;
             readonly '4xl': 32;
             readonly full: 9999;
+            readonly 0: 0;
+            readonly 1: 3;
+            readonly 2: 5;
+            readonly 3: 7;
+            readonly 4: 9;
+            readonly 5: 10;
+            readonly 6: 16;
+            readonly 7: 19;
+            readonly 8: 22;
+            readonly 9: 26;
+            readonly 10: 34;
+            readonly 11: 42;
+            readonly 12: 50;
         };
     } & {
         color: {

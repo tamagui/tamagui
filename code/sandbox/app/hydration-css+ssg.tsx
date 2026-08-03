@@ -1,4 +1,4 @@
-import { animationsCSS } from '@tamagui/config/v5-css'
+import { animationsCSS } from '@tamagui/config/animations-css'
 import { useMemo, useState } from 'react'
 import {
   AnimatePresence,

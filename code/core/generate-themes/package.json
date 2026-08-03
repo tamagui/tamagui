@@ -34,8 +34,6 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/create-theme": "workspace:*",
-    "@tamagui/theme-builder": "workspace:*",
     "@tamagui/types": "workspace:*",
     "esbuild-register": "^3.6.0",
     "fs-extra": "^11.2.0"
