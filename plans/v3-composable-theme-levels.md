@@ -1,7 +1,11 @@
 # Composable theme levels for v3
 
-2026-08-02. Status: accepted design, ready for implementation. This plan
-supersedes only the relative-level deferral in `plans/surface-levels.md`.
+2026-08-02. Status: partially superseded. This plan supersedes only the
+relative-level deferral in `plans/surface-levels.md`. Its "Builder API"
+section, the luminance-direction enforcement, and the emit-only-valid-paths
+rule are superseded by `plans/v6-theme-creation.md`, which is the current
+design for theme generation. The relative-level semantics, dedup approach,
+size assertion, and acceptance condition here still apply.
 
 ## Decision
 
