@@ -46,12 +46,21 @@ for (const driver of drivers) {
       ).toBe(true)
       expect(serverTag).not.toContain('style=')
 
-      if (driver === 'motion') return
-
       await page.goto(`/hydration-${driver}`)
       await page.waitForSelector(`[data-testid=hydrated-true]`)
 
       const dot = page.getByTestId('indicator-dot-1')
+
+      if (driver === 'motion') {
+        const computedSize = await dot.evaluate((element) => {
+          const style = getComputedStyle(element)
+          return { width: style.width, height: style.height }
+        })
+        expect(computedSize).toEqual({ width: '16px', height: '8px' })
+        await expect(dot).toBeVisible({ timeout: 15000 })
+        return
+      }
+
       const classes = await dot.getAttribute('class')
 
       console.log(`${driver} driver - classes:`, classes)
