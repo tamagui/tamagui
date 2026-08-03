@@ -369,7 +369,7 @@ async function main() {
                   'tamagui-v2-runtime'
                 ),
                 disposition:
-                  'The source-mapped diagnostic does not identify a V3 @tamagui/web hotspot; compare the reported framework and lifecycle groups. The remaining mapped delta is spread across React reconciliation, element layout, and ref composition, so no isolated validation-lane fix is safe.',
+                  'The source-mapped diagnostic does not identify one dominant hotspot; the reported mapped delta is distributed across framework, element-layout, and fixture callsites with offsets in React and scheduler work, so no isolated validation-lane fix is safe.',
               },
             },
             results,

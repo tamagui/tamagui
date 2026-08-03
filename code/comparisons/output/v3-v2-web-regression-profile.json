@@ -1,0 +1,796 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "commit": "a6d0b631132f7d6ccc8370a19fb350ab40a1e928",
+    "branch": "validate/v3-web-flatten",
+    "dirty": false,
+    "buildMode": "production with source maps",
+    "browser": "Chromium",
+    "browserVersion": "145.0.7632.6",
+    "workload": {
+      "byteIdentical": true,
+      "sha256": "56dd6ba8bb07f9ee8537096f8ab7a98f6f822c94b35bfbcf9ed33356e0a22c99",
+      "sourceSha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e",
+      "configSha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324",
+      "files": [
+        {
+          "file": "src/index.tsx",
+          "bytes": 9717,
+          "sha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e"
+        },
+        {
+          "file": "src/tamagui.config.ts",
+          "bytes": 457,
+          "sha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324"
+        }
+      ],
+      "sources": [
+        "tamagui-bench/src/index.tsx",
+        "tamagui-v2-bench/src/index.tsx",
+        "tamagui-bench/src/tamagui.config.ts",
+        "tamagui-v2-bench/src/tamagui.config.ts"
+      ]
+    },
+    "retainedBenchmarkCommit": "8fa0e3ac53db4ee45fe2697175d1b4327f6c94bc"
+  },
+  "retainedEffects": {
+    "compiledAnimated": {
+      "mount": {
+        "v3": {
+          "n": 20,
+          "mean": 7.590000000000002,
+          "standardDeviation": 3.034694123145302,
+          "ci95": {
+            "low": 6.1697357540880695,
+            "high": 9.010264245911934,
+            "margin": 1.4202642459119323
+          }
+        },
+        "v2": {
+          "n": 20,
+          "mean": 0.575,
+          "standardDeviation": 0.24894514297436357,
+          "ci95": {
+            "low": 0.4584914256882443,
+            "high": 0.6915085743117556,
+            "margin": 0.11650857431175567
+          }
+        },
+        "differenceMs": {
+          "n": 20,
+          "mean": 7.015000000000001,
+          "standardDeviation": 3.021723976387268,
+          "ci95": {
+            "low": 5.600805899861301,
+            "high": 8.4291941001387,
+            "margin": 1.414194100138699
+          }
+        },
+        "ratioOfMeans": 13.200000000000005,
+        "medianPairedRatio": 12.133333333333333
+      },
+      "rerender": {
+        "v3": {
+          "n": 20,
+          "mean": 8.04,
+          "standardDeviation": 2.585465447254588,
+          "ci95": {
+            "low": 6.829978829902464,
+            "high": 9.250021170097535,
+            "margin": 1.2100211700975358
+          }
+        },
+        "v2": {
+          "n": 20,
+          "mean": 2.6950000000000003,
+          "standardDeviation": 1.003402107568887,
+          "ci95": {
+            "low": 2.22539875525388,
+            "high": 3.1646012447461205,
+            "margin": 0.46960124474612
+          }
+        },
+        "differenceMs": {
+          "n": 20,
+          "mean": 5.344999999999999,
+          "standardDeviation": 2.928709972882798,
+          "ci95": {
+            "low": 3.974337293203047,
+            "high": 6.715662706796951,
+            "margin": 1.3706627067969521
+          }
+        },
+        "ratioOfMeans": 2.9833024118738396,
+        "medianPairedRatio": 3.494285714285714
+      }
+    },
+    "runtimeSimple": {
+      "mount": {
+        "v3": {
+          "n": 20,
+          "mean": 7.840000000000001,
+          "standardDeviation": 2.8266401852450382,
+          "ci95": {
+            "low": 6.517106875271994,
+            "high": 9.162893124728008,
+            "margin": 1.3228931247280074
+          }
+        },
+        "v2": {
+          "n": 20,
+          "mean": 5.2749999999999995,
+          "standardDeviation": 1.9130782579530383,
+          "ci95": {
+            "low": 4.379662104599168,
+            "high": 6.170337895400831,
+            "margin": 0.895337895400831
+          }
+        },
+        "differenceMs": {
+          "n": 20,
+          "mean": 2.5650000000000004,
+          "standardDeviation": 3.5061262174416337,
+          "ci95": {
+            "low": 0.9241012780142488,
+            "high": 4.205898721985752,
+            "margin": 1.6408987219857516
+          }
+        },
+        "ratioOfMeans": 1.4862559241706164,
+        "medianPairedRatio": 1.3825995807127884
+      },
+      "rerender": {
+        "v3": {
+          "n": 20,
+          "mean": 1.5799999999999998,
+          "standardDeviation": 0.37500877182723136,
+          "ci95": {
+            "low": 1.4044925093216516,
+            "high": 1.755507490678348,
+            "margin": 0.17550749067834834
+          }
+        },
+        "v2": {
+          "n": 20,
+          "mean": 1.44,
+          "standardDeviation": 0.38030458707116377,
+          "ci95": {
+            "low": 1.2620140199785093,
+            "high": 1.6179859800214906,
+            "margin": 0.17798598002149077
+          }
+        },
+        "differenceMs": {
+          "n": 20,
+          "mean": 0.13999999999999996,
+          "standardDeviation": 0.43213058455201153,
+          "ci95": {
+            "low": -0.06224101471160337,
+            "high": 0.3422410147116033,
+            "margin": 0.20224101471160333
+          }
+        },
+        "ratioOfMeans": 1.097222222222222,
+        "medianPairedRatio": 1.0982142857142856
+      }
+    }
+  },
+  "compilerEvidence": {
+    "v3": {
+      "totals": {
+        "modules": 1,
+        "found": 14,
+        "lowered": 13,
+        "flattened": 10,
+        "partial": 3,
+        "styled": 0,
+        "bailed": 1,
+        "notFlattened": 4,
+        "flattenRate": 0.7142857142857143
+      },
+      "bailoutCodes": {
+        "local/unsupported-target": 1
+      }
+    },
+    "v2": {
+      "found": 14,
+      "flattened": 11,
+      "legacyOptimized": 14,
+      "source": "V2 production compiler build log"
+    },
+    "cause": "V3 leaves the animated View on the runtime path as local/unsupported-target (10/14 flat); V2 lowers that additional candidate (11/14 flat) while the browser conformance artifact proves equivalent transition behavior."
+  },
+  "attribution": {
+    "compiledAnimated": {
+      "profile": {
+        "v3MappedSelfTimeMs": 162.606,
+        "v2MappedSelfTimeMs": 24.092,
+        "moduleGroupSelfTimeMs": {
+          "browser/unmapped": {
+            "v3": 4100.207,
+            "v2": 4294.727,
+            "delta": -194.51999999999953
+          },
+          "@tamagui/web": {
+            "v3": 96.244,
+            "v2": 0,
+            "delta": 96.244
+          },
+          "react-dom": {
+            "v3": 42.498,
+            "v2": 19.116,
+            "delta": 23.381999999999998
+          },
+          "@tamagui/animations-css": {
+            "v3": 12.535,
+            "v2": 0,
+            "delta": 12.535
+          },
+          "@tamagui/use-element-layout": {
+            "v3": 3.77,
+            "v2": 1.265,
+            "delta": 2.505
+          },
+          "@tamagui/simple-hash": {
+            "v3": 1.258,
+            "v2": 0,
+            "delta": 1.258
+          },
+          "@tamagui/compose-refs": {
+            "v3": 1.253,
+            "v2": 0,
+            "delta": 1.253
+          },
+          "fixture": {
+            "v3": 2.526,
+            "v2": 1.279,
+            "delta": 1.2469999999999999
+          },
+          "shared benchmark": {
+            "v3": 1.264,
+            "v2": 1.17,
+            "delta": 0.09400000000000008
+          },
+          "react": {
+            "v3": 1.258,
+            "v2": 1.262,
+            "delta": -0.0040000000000000036
+          }
+        }
+      },
+      "disposition": "Release gap, not changed here: safely lowering transition-bearing animated candidates requires a compiler feature with dedicated correctness coverage; V3 currently records this as an intentional unsupported-target bailout."
+    },
+    "runtimeSimple": {
+      "profile": {
+        "v3MappedSelfTimeMs": 136.429,
+        "v2MappedSelfTimeMs": 129.526,
+        "moduleGroupSelfTimeMs": {
+          "browser/unmapped": {
+            "v3": 4130.987,
+            "v2": 4199.779,
+            "delta": -68.79200000000037
+          },
+          "@tamagui/web": {
+            "v3": 69.367,
+            "v2": 63.728,
+            "delta": 5.639000000000003
+          },
+          "@tamagui/use-element-layout": {
+            "v3": 7.528,
+            "v2": 2.488,
+            "delta": 5.039999999999999
+          },
+          "fixture": {
+            "v3": 6.155,
+            "v2": 1.458,
+            "delta": 4.697
+          },
+          "react-dom": {
+            "v3": 44.597,
+            "v2": 48.891,
+            "delta": -4.293999999999997
+          },
+          "scheduler": {
+            "v3": 0,
+            "v2": 3.798,
+            "delta": -3.798
+          },
+          "shared benchmark": {
+            "v3": 1.267,
+            "v2": 4.146,
+            "delta": -2.879
+          },
+          "@tamagui/simple-hash": {
+            "v3": 3.719,
+            "v2": 1.256,
+            "delta": 2.463
+          },
+          "@tamagui/use-did-finish-ssr": {
+            "v3": 3.796,
+            "v2": 3.761,
+            "delta": 0.0349999999999997
+          }
+        }
+      },
+      "disposition": "The source-mapped diagnostic does not identify one dominant hotspot; the reported mapped delta is distributed across framework, element-layout, and fixture callsites with offsets in React and scheduler work, so no isolated validation-lane fix is safe."
+    }
+  },
+  "results": {
+    "tamagui-v3-compiled": {
+      "scenario": "animated",
+      "warmups": 2,
+      "iterations": 20,
+      "timings": [
+        {
+          "mount": 4.7,
+          "update": 6.4
+        },
+        {
+          "mount": 6.5,
+          "update": 6.8
+        },
+        {
+          "mount": 8.9,
+          "update": 6.8
+        },
+        {
+          "mount": 4.9,
+          "update": 6.9
+        },
+        {
+          "mount": 4,
+          "update": 4.6
+        },
+        {
+          "mount": 5.6,
+          "update": 7.1
+        },
+        {
+          "mount": 7.3,
+          "update": 6.1
+        },
+        {
+          "mount": 9.2,
+          "update": 10
+        },
+        {
+          "mount": 3.7,
+          "update": 4.7
+        },
+        {
+          "mount": 3.6,
+          "update": 4.3
+        },
+        {
+          "mount": 4.1,
+          "update": 4.9
+        },
+        {
+          "mount": 3.7,
+          "update": 5.3
+        },
+        {
+          "mount": 6,
+          "update": 6.3
+        },
+        {
+          "mount": 2.6,
+          "update": 4.5
+        },
+        {
+          "mount": 2.6,
+          "update": 3.3
+        },
+        {
+          "mount": 2.6,
+          "update": 3.4
+        },
+        {
+          "mount": 2.3,
+          "update": 3.1
+        },
+        {
+          "mount": 2.6,
+          "update": 3
+        },
+        {
+          "mount": 3.2,
+          "update": 3.9
+        },
+        {
+          "mount": 2.8,
+          "update": 3.7
+        }
+      ],
+      "cpuProfile": {
+        "sampledTimeMs": 4262.813,
+        "mappedTimeMs": 162.606,
+        "selfTimeMsByModuleGroup": {
+          "browser/unmapped": 4100.207,
+          "@tamagui/web": 96.244,
+          "react-dom": 42.498,
+          "@tamagui/animations-css": 12.535,
+          "@tamagui/use-element-layout": 3.77,
+          "fixture": 2.526,
+          "shared benchmark": 1.264,
+          "@tamagui/simple-hash": 1.258,
+          "react": 1.258,
+          "@tamagui/compose-refs": 1.253
+        },
+        "topSourceSelfTimeMs": {
+          "node_modules/react-dom/cjs/react-dom-client.production.js": 42.498,
+          "code/core/web/dist/esm/helpers/getSplitStyles.mjs": 39.091,
+          "code/core/web/dist/esm/hooks/useMedia.mjs": 12.536,
+          "code/core/animations-css/dist/esm/createAnimations.mjs": 12.535,
+          "code/core/web/dist/esm/helpers/getCSSStylesAtomic.mjs": 8.803,
+          "code/core/web/dist/esm/helpers/propMapper.mjs": 8.145,
+          "code/core/web/dist/esm/createComponent.mjs": 7.445,
+          "code/core/web/dist/esm/helpers/insertStyleRule.mjs": 6.338,
+          "code/core/web/dist/esm/hooks/useThemeState.mjs": 5.025,
+          "code/core/web/dist/esm/helpers/normalizeValueWithProperty.mjs": 3.773,
+          "code/core/use-element-layout/dist/esm/index.mjs": 3.77,
+          "code/comparisons/tamagui-bench/src/index.tsx": 2.526,
+          "code/core/web/dist/esm/helpers/contributePrograms.mjs": 2.497,
+          "code/core/web/dist/esm/hooks/useComponentState.mjs": 1.334,
+          "code/comparisons/shared/bench.ts": 1.264,
+          "code/core/simple-hash/dist/esm/index.mjs": 1.258,
+          "node_modules/react/cjs/react.production.js": 1.258,
+          "code/core/web/dist/esm/helpers/lowerAccumulatedPrograms.mjs": 1.257,
+          "code/core/compose-refs/dist/esm/compose-refs.mjs": 1.253
+        }
+      }
+    },
+    "tamagui-v2-compiled": {
+      "scenario": "animated",
+      "warmups": 2,
+      "iterations": 20,
+      "timings": [
+        {
+          "mount": 0.9,
+          "update": 2
+        },
+        {
+          "mount": 0.8,
+          "update": 3.3
+        },
+        {
+          "mount": 0.5,
+          "update": 1.7
+        },
+        {
+          "mount": 0.2,
+          "update": 1.2
+        },
+        {
+          "mount": 0.4,
+          "update": 1.8
+        },
+        {
+          "mount": 0.4,
+          "update": 2
+        },
+        {
+          "mount": 0.9,
+          "update": 3.3
+        },
+        {
+          "mount": 0.7,
+          "update": 2.6
+        },
+        {
+          "mount": 0.5,
+          "update": 2.9
+        },
+        {
+          "mount": 1.2,
+          "update": 5.1
+        },
+        {
+          "mount": 0.6,
+          "update": 4.3
+        },
+        {
+          "mount": 0.9,
+          "update": 3.5
+        },
+        {
+          "mount": 0.4,
+          "update": 1.3
+        },
+        {
+          "mount": 0.3,
+          "update": 1.4
+        },
+        {
+          "mount": 0.3,
+          "update": 2.2
+        },
+        {
+          "mount": 0.8,
+          "update": 2.9
+        },
+        {
+          "mount": 0.8,
+          "update": 3.5
+        },
+        {
+          "mount": 0.6,
+          "update": 3.9
+        },
+        {
+          "mount": 0.3,
+          "update": 1.6
+        },
+        {
+          "mount": 0.5,
+          "update": 2.9
+        }
+      ],
+      "cpuProfile": {
+        "sampledTimeMs": 4318.819,
+        "mappedTimeMs": 24.092,
+        "selfTimeMsByModuleGroup": {
+          "browser/unmapped": 4294.727,
+          "react-dom": 19.116,
+          "fixture": 1.279,
+          "@tamagui/use-element-layout": 1.265,
+          "react": 1.262,
+          "shared benchmark": 1.17
+        },
+        "topSourceSelfTimeMs": {
+          "code/comparisons/tamagui-v2-bench/node_modules/react-dom/cjs/react-dom-client.production.js": 19.116,
+          "code/comparisons/tamagui-v2-bench/src/index.tsx": 1.279,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/use-element-layout/dist/esm/index.mjs": 1.265,
+          "code/comparisons/tamagui-v2-bench/node_modules/react/cjs/react-jsx-runtime.production.js": 1.262,
+          "code/comparisons/shared/bench.ts": 1.17
+        }
+      }
+    },
+    "tamagui-v3-runtime": {
+      "scenario": "simple",
+      "warmups": 2,
+      "iterations": 20,
+      "timings": [
+        {
+          "mount": 7.2,
+          "update": 1.2
+        },
+        {
+          "mount": 8.7,
+          "update": 2.2
+        },
+        {
+          "mount": 5,
+          "update": 1.1
+        },
+        {
+          "mount": 3.4,
+          "update": 0.9
+        },
+        {
+          "mount": 7.8,
+          "update": 1.6
+        },
+        {
+          "mount": 2.5,
+          "update": 1.4
+        },
+        {
+          "mount": 3.3,
+          "update": 0.8
+        },
+        {
+          "mount": 7,
+          "update": 1.2
+        },
+        {
+          "mount": 9.3,
+          "update": 2.3
+        },
+        {
+          "mount": 8,
+          "update": 2.2
+        },
+        {
+          "mount": 4.5,
+          "update": 1.2
+        },
+        {
+          "mount": 7.4,
+          "update": 2.2
+        },
+        {
+          "mount": 7.6,
+          "update": 2.4
+        },
+        {
+          "mount": 8.2,
+          "update": 2.1
+        },
+        {
+          "mount": 2.6,
+          "update": 1.2
+        },
+        {
+          "mount": 3.1,
+          "update": 0.9
+        },
+        {
+          "mount": 3.3,
+          "update": 0.8
+        },
+        {
+          "mount": 2.5,
+          "update": 0.7
+        },
+        {
+          "mount": 3.8,
+          "update": 1.4
+        },
+        {
+          "mount": 6.4,
+          "update": 2.5
+        }
+      ],
+      "cpuProfile": {
+        "sampledTimeMs": 4267.416,
+        "mappedTimeMs": 136.429,
+        "selfTimeMsByModuleGroup": {
+          "browser/unmapped": 4130.987,
+          "@tamagui/web": 69.367,
+          "react-dom": 44.597,
+          "@tamagui/use-element-layout": 7.528,
+          "fixture": 6.155,
+          "@tamagui/use-did-finish-ssr": 3.796,
+          "@tamagui/simple-hash": 3.719,
+          "shared benchmark": 1.267
+        },
+        "topSourceSelfTimeMs": {
+          "node_modules/react-dom/cjs/react-dom-client.production.js": 44.597,
+          "code/core/web/dist/esm/helpers/getSplitStyles.mjs": 20.638,
+          "code/core/web/dist/esm/helpers/getCSSStylesAtomic.mjs": 13.609,
+          "code/core/web/dist/esm/hooks/useThemeState.mjs": 10.208,
+          "code/core/web/dist/esm/createComponent.mjs": 7.857,
+          "code/core/use-element-layout/dist/esm/index.mjs": 7.528,
+          "code/comparisons/tamagui-bench/src/index.tsx": 6.155,
+          "code/core/use-did-finish-ssr/dist/esm/index.mjs": 3.796,
+          "code/core/simple-hash/dist/esm/index.mjs": 3.719,
+          "code/core/web/dist/esm/hooks/useMedia.mjs": 3.193,
+          "code/core/web/dist/esm/hooks/getThemeProxied.mjs": 2.526,
+          "code/core/web/dist/esm/hooks/useComponentState.mjs": 2.096,
+          "code/core/web/dist/esm/helpers/insertStyleRule.mjs": 1.268,
+          "code/comparisons/shared/bench.ts": 1.267,
+          "code/core/web/dist/esm/hooks/useTheme.mjs": 1.264,
+          "code/core/web/dist/esm/config.mjs": 1.26,
+          "code/core/web/dist/esm/helpers/contributePrograms.mjs": 1.26,
+          "code/core/web/dist/esm/helpers/expandStyle.mjs": 1.257,
+          "code/core/web/dist/esm/helpers/lowerAccumulatedPrograms.mjs": 1.255,
+          "code/core/web/dist/esm/helpers/alignTransitions.mjs": 1.242,
+          "code/core/web/dist/esm/helpers/propMapper.mjs": 0.434
+        }
+      }
+    },
+    "tamagui-v2-runtime": {
+      "scenario": "simple",
+      "warmups": 2,
+      "iterations": 20,
+      "timings": [
+        {
+          "mount": 4.5,
+          "update": 0.9
+        },
+        {
+          "mount": 3.3,
+          "update": 1
+        },
+        {
+          "mount": 5,
+          "update": 1.4
+        },
+        {
+          "mount": 9.1,
+          "update": 1.9
+        },
+        {
+          "mount": 10.2,
+          "update": 1.7
+        },
+        {
+          "mount": 7.5,
+          "update": 2.2
+        },
+        {
+          "mount": 3.7,
+          "update": 1.3
+        },
+        {
+          "mount": 8.4,
+          "update": 2.1
+        },
+        {
+          "mount": 6.7,
+          "update": 1.6
+        },
+        {
+          "mount": 4.4,
+          "update": 1.4
+        },
+        {
+          "mount": 5.4,
+          "update": 2.3
+        },
+        {
+          "mount": 7,
+          "update": 1.4
+        },
+        {
+          "mount": 5.4,
+          "update": 2.4
+        },
+        {
+          "mount": 6.7,
+          "update": 2.2
+        },
+        {
+          "mount": 6.3,
+          "update": 2.4
+        },
+        {
+          "mount": 5.8,
+          "update": 2.4
+        },
+        {
+          "mount": 3.7,
+          "update": 1.8
+        },
+        {
+          "mount": 6,
+          "update": 2.2
+        },
+        {
+          "mount": 2.4,
+          "update": 1
+        },
+        {
+          "mount": 3.4,
+          "update": 1.3
+        }
+      ],
+      "cpuProfile": {
+        "sampledTimeMs": 4329.305,
+        "mappedTimeMs": 129.526,
+        "selfTimeMsByModuleGroup": {
+          "browser/unmapped": 4199.779,
+          "@tamagui/web": 63.728,
+          "react-dom": 48.891,
+          "shared benchmark": 4.146,
+          "scheduler": 3.798,
+          "@tamagui/use-did-finish-ssr": 3.761,
+          "@tamagui/use-element-layout": 2.488,
+          "fixture": 1.458,
+          "@tamagui/simple-hash": 1.256
+        },
+        "topSourceSelfTimeMs": {
+          "code/comparisons/tamagui-v2-bench/node_modules/react-dom/cjs/react-dom-client.production.js": 48.891,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/helpers/getSplitStyles.mjs": 19.929,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/hooks/useThemeState.mjs": 9.693,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/helpers/getCSSStylesAtomic.mjs": 8.465,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/createComponent.mjs": 6.773,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/helpers/insertStyleRule.mjs": 4.427,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/helpers/propMapper.mjs": 4.366,
+          "code/comparisons/shared/bench.ts": 4.146,
+          "code/comparisons/tamagui-v2-bench/node_modules/scheduler/cjs/scheduler.production.js": 3.798,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/use-did-finish-ssr/dist/esm/index.mjs": 3.761,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/hooks/useMedia.mjs": 2.534,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/hooks/useComponentState.mjs": 2.508,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/use-element-layout/dist/esm/index.mjs": 2.488,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/helpers/expandStyle.mjs": 2.338,
+          "code/comparisons/tamagui-v2-bench/src/index.tsx": 1.458,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/hooks/getThemeProxied.mjs": 1.438,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/web/dist/esm/helpers/resolveRem.mjs": 1.257,
+          "code/comparisons/tamagui-v2-bench/node_modules/@tamagui/simple-hash/dist/esm/index.mjs": 1.256
+        }
+      }
+    }
+  }
+}
