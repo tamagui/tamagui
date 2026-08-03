@@ -26,6 +26,6 @@ export const App = createNativeRuntimeBenchApp({
   getVariableValue,
   usePropsAndStyle,
   config,
-  version: 'v3',
-  framework: 'tamagui-v3-runtime',
+  version: 'v2',
+  framework: 'tamagui-v2-runtime',
 })

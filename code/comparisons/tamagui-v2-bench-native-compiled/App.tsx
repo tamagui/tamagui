@@ -3,5 +3,5 @@ import config from './tamagui.config'
 
 export const App = createNativeCompiledBenchApp({
   config,
-  framework: 'tamagui-v3-compiled',
+  framework: 'tamagui-v2-compiled',
 })
