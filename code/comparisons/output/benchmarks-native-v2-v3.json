@@ -1,5 +1,29 @@
 {
   "schemaVersion": 2,
+  "validity": {
+    "status": "partial",
+    "validFrameworks": [
+      "tamagui-v2-runtime",
+      "tamagui-v3-runtime",
+      "tamagui-v2-compiled"
+    ],
+    "invalidFrameworks": {
+      "tamagui-v3-compiled": {
+        "status": "invalid",
+        "reason": "The Release bundle did not apply cached Metro lowering plans because Metro workers supplied project-relative filenames while the plan cache was keyed by absolute realpaths.",
+        "fixCommit": "2acce54e05",
+        "nextStep": "Re-measure after the fix lands."
+      }
+    },
+    "validComparisons": [
+      "runtime-v3-vs-v2",
+      "v2-compiled-vs-runtime"
+    ],
+    "invalidComparisons": [
+      "compiled-v3-vs-v2",
+      "v3-compiled-vs-runtime"
+    ]
+  },
   "metadata": {
     "generatedAt": "2026-08-03T22:13:51.737Z",
     "sourceCommit": "0f510aaa6f5e9a8a043d7c24c9741966a27042d8",
