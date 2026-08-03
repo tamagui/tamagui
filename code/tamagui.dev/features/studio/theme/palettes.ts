@@ -34,10 +34,7 @@ export function normalizePalette(palette: BuildPalette): BuildPalette {
   }
 }
 
-function generateColorPalette(
-  buildPalette: BuildPalette,
-  scheme: Scheme
-): string[] {
+function generateColorPalette(buildPalette: BuildPalette, scheme: Scheme): string[] {
   const { anchors } = normalizePalette(buildPalette)
   const palette: string[] = []
 
@@ -56,8 +53,7 @@ function generateColorPalette(
           previous.sat[scheme] + (anchor.sat[scheme] - previous.sat[scheme]) * progress,
           previous.lum[scheme] + (anchor.lum[scheme] - previous.lum[scheme]) * progress,
           (previous.alpha?.[scheme] ?? 1) +
-            ((anchor.alpha?.[scheme] ?? 1) - (previous.alpha?.[scheme] ?? 1)) *
-              progress
+            ((anchor.alpha?.[scheme] ?? 1) - (previous.alpha?.[scheme] ?? 1)) * progress
         )
       }
     }
@@ -162,10 +158,7 @@ export function getStudioThemeTokens(palettes: Record<string, BuildPalette>) {
       const built = getThemeSuitePalettes(palette)
       return (['light', 'dark'] as const).flatMap((scheme) => {
         const colors = scheme === 'light' ? built.light : [...built.dark].reverse()
-        return shades.map((shade, index) => [
-          `${name}-${scheme}-${shade}`,
-          colors[index],
-        ])
+        return shades.map((shade, index) => [`${name}-${scheme}-${shade}`, colors[index]])
       })
     })
   )
@@ -206,10 +199,7 @@ export function createStudioThemes({ palettes }: BuildThemeSuiteProps) {
   const themes = createThemes(tokens, tree, {
     getTheme: ({ recipe }: { recipe: StudioRecipe }) => ({
       ...ramp(recipe.palette, recipe.scheme),
-      ...fromShades(
-        recipe.palette,
-        studioScales[recipe.scheme][recipe.level ?? 1]
-      ),
+      ...fromShades(recipe.palette, studioScales[recipe.scheme][recipe.level ?? 1]),
     }),
   })
 

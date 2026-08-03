@@ -244,10 +244,7 @@ export function ramp<const PaletteName extends string>(
   ) as Ramp<PaletteName>
 }
 
-export function fromShades<
-  const PaletteName extends string,
-  TokenName extends string,
->(
+export function fromShades<const PaletteName extends string, TokenName extends string>(
   palette: PaletteName,
   scale: ThemeScale<TokenName>
 ): Record<SemanticThemeKey, `${PaletteName}-${Shade}` | TokenName> {

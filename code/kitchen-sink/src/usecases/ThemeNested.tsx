@@ -29,9 +29,7 @@ export function ThemeNested() {
       </YStack>
 
       <YStack gap="2">
-        <Text fontWeight="bold">
-          Case 2: Nested blue → level3 (should match Case 1)
-        </Text>
+        <Text fontWeight="bold">Case 2: Nested blue → level3 (should match Case 1)</Text>
         <Theme name="blue">
           <Theme name="level3">
             <Square id={TEST_IDS.nestedThemeNested} bg="background" size={100} />
@@ -78,9 +76,7 @@ export function ThemeNested() {
 
       {/* Test Case 5: relative level composition */}
       <YStack gap="2">
-        <Text fontWeight="bold">
-          Case 7: Direct light_blue_level3 (expected result)
-        </Text>
+        <Text fontWeight="bold">Case 7: Direct light_blue_level3 (expected result)</Text>
         <Theme name="light_blue_level3">
           <Square id={TEST_IDS.nestedLevel3Direct} bg="background" size={100} />
         </Theme>

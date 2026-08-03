@@ -14,10 +14,7 @@ export const ColorThemeIndicator = ({
   const isDark = useThemeName().startsWith('dark')
   const palettes = [primary, secondary]
     .filter(Boolean)
-    .map(
-      (x) =>
-        getThemeSuitePalettes(x!)[isDark ? 'dark' : 'light'][8]
-    )
+    .map((x) => getThemeSuitePalettes(x!)[isDark ? 'dark' : 'light'][8])
 
   return (
     <YStack>

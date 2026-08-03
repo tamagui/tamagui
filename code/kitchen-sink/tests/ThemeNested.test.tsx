@@ -61,9 +61,7 @@ test('Nested light → blue → level3 matches direct light_blue_level3', async 
   expect(nestedStyles.backgroundColor).toBe(directStyles.backgroundColor)
 })
 
-test('Nested red theme with level2 matches direct light_red_level2', async ({
-  page,
-}) => {
+test('Nested red theme with level2 matches direct light_red_level2', async ({ page }) => {
   // Get the direct red theme element
   const redDirectSquare = page.locator(`#${TEST_IDS.nestedThemeRedDirect}`)
   await expect(redDirectSquare).toBeVisible()
@@ -115,9 +113,7 @@ test('Blue level3 differs from red level2', async ({ page }) => {
   expect(blueStyles.backgroundColor).not.toBe(redStyles.backgroundColor)
 })
 
-test('Nested blue → level2 → level2 composes to level3', async ({
-  page,
-}) => {
+test('Nested blue → level2 → level2 composes to level3', async ({ page }) => {
   // Repeating the one-level boundary composes relative to the current level.
 
   const directSquare = page.locator(`#${TEST_IDS.nestedLevel3Direct}`)
