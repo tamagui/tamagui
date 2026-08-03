@@ -264,6 +264,10 @@ function bundleSizes(attribution: any) {
     cssGzipBytes: attribution.assets
       .filter((asset: any) => asset.fileName.endsWith('.css'))
       .reduce((total: number, asset: any) => total + asset.gzipBytes, 0),
+    tamaguiJsBytes: attribution.decomposition.groups.tamagui.codeBytes,
+    tamaguiJsGzipBytes: attribution.decomposition.groups.tamagui.gzipBytes,
+    reactControlJsBytes: attribution.decomposition.groups['react-control'].codeBytes,
+    reactControlJsGzipBytes: attribution.decomposition.groups['react-control'].gzipBytes,
   }
 }
 
@@ -273,9 +277,10 @@ function moduleGroup(id: string) {
     const parts = dependency!.split('/')
     return parts[0]!.startsWith('@') ? `${parts[0]}/${parts[1]}` : parts[0]
   }
-  const workspace = id.match(/\.\.\/\.\.\/(?:core|packages)\/([^/]+)\/dist/)
-  if (workspace) return `@tamagui/${workspace[1]}`
-  if (id.includes('../../ui/tamagui/dist/')) return 'tamagui'
+  const workspace = id.match(/\.\.\/\.\.\/(?:core|packages|ui)\/([^/]+)\/dist/)
+  if (workspace) {
+    return workspace[1] === 'tamagui' ? 'tamagui' : `@tamagui/${workspace[1]}`
+  }
   if (id.startsWith('src/')) return 'fixture'
   if (id.includes('../shared/')) return 'shared benchmark'
   return 'build/runtime helpers'
@@ -334,6 +339,12 @@ function buildBundleComparison(artifacts: BenchmarkReport['artifacts']) {
               css: v3.cssBytes - v2.cssBytes,
               jsGzipBytes: v3Gzip.jsGzipBytes - v2Gzip.jsGzipBytes,
               cssGzipBytes: v3Gzip.cssGzipBytes - v2Gzip.cssGzipBytes,
+              tamaguiJsBytes: v3Gzip.tamaguiJsBytes - v2Gzip.tamaguiJsBytes,
+              tamaguiJsGzipBytes: v3Gzip.tamaguiJsGzipBytes - v2Gzip.tamaguiJsGzipBytes,
+              reactControlJsBytes:
+                v3Gzip.reactControlJsBytes - v2Gzip.reactControlJsBytes,
+              reactControlJsGzipBytes:
+                v3Gzip.reactControlJsGzipBytes - v2Gzip.reactControlJsGzipBytes,
             },
           },
           renderedModuleGroups: groups,
@@ -1040,7 +1051,7 @@ async function main() {
           BUNDLE_ATTRIBUTION_PATH,
           `${JSON.stringify(
             {
-              schemaVersion: 1,
+              schemaVersion: 2,
               metadata: {
                 commit: git('rev-parse', 'HEAD'),
                 branch: git('branch', '--show-current'),
@@ -1061,6 +1072,8 @@ async function main() {
                   'Both arms use byte-identical minimal Tamagui configs; the prior default-theme import mismatch was removed.',
                 moduleLengths:
                   'Rendered module lengths are pre-minification attribution, while artifact bytes and gzip bytes are exact emitted sizes.',
+                tamaguiGzip:
+                  'Tamagui-attributable gzip is measured from an explicit production-minified Rollup chunk containing tamagui, @tamagui/*, workspace core/packages/ui dist modules, and @react-native/normalize-color when pulled by the Tamagui runtime. It excludes fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and other dependencies.',
                 remainingDelta:
                   'The remaining V3 delta is framework surface led by @tamagui/style-grammar and @tamagui/web, not fixture/config/theme code.',
               },
