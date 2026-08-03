@@ -24,9 +24,9 @@ function isolatedChunk(id: string) {
   ) {
     return 'react-control'
   }
+  if (dependency) return 'other-dependencies'
   const normalized = normalizePath(id).split('?')[0]!
   if (/\/(?:core|packages|ui)\/[^/]+\/dist\//.test(normalized)) return 'tamagui'
-  return 'other'
 }
 
 function byteLength(source: string | Uint8Array) {
