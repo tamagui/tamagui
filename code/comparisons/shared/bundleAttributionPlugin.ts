@@ -14,7 +14,11 @@ function dependencyName(id: string) {
 
 function isolatedChunk(id: string) {
   const dependency = dependencyName(id)
-  if (dependency === 'tamagui' || dependency?.startsWith('@tamagui/')) {
+  if (
+    dependency === 'tamagui' ||
+    dependency?.startsWith('@tamagui/') ||
+    dependency === '@react-native/normalize-color'
+  ) {
     return 'tamagui'
   }
   if (
@@ -106,9 +110,9 @@ export function bundleAttributionPlugin(outputPath: string | undefined, root: st
               method:
                 'explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip',
               tamaguiIncludes:
-                'rendered modules from tamagui, @tamagui/*, and Tamagui workspace core/packages/ui dist paths, plus their isolated chunk wrapper',
+                'rendered modules from tamagui, @tamagui/*, Tamagui workspace core/packages/ui dist paths, and @react-native/normalize-color when pulled by the Tamagui runtime, plus their isolated chunk wrapper',
               tamaguiExcludes:
-                'fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and all other dependencies',
+                'fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and dependencies other than the Tamagui runtime color normalizer',
               groups: Object.fromEntries(
                 ['tamagui', 'react-control', 'other'].map((group) => {
                   const selected = chunks.filter(
