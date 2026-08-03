@@ -338,7 +338,11 @@ async function main() {
               runtimeSimple: runtimeEffect,
             },
             compilerEvidence: {
-              v3: retained.artifacts['tamagui-v3-compiled'].compilerStats.totals,
+              v3: {
+                totals: retained.artifacts['tamagui-v3-compiled'].compilerStats.totals,
+                bailoutCodes:
+                  retained.artifacts['tamagui-v3-compiled'].compilerStats.bailoutCodes,
+              },
               v2: {
                 found: 14,
                 flattened: 11,
@@ -365,7 +369,7 @@ async function main() {
                   'tamagui-v2-runtime'
                 ),
                 disposition:
-                  'Framework runtime cost, not a harness/config/source difference. No isolated validation-lane fix is safe without changing the V3 style resolution implementation.',
+                  'The source-mapped diagnostic does not identify a V3 @tamagui/web hotspot; compare the reported framework and lifecycle groups. The remaining mapped delta is spread across React reconciliation, element layout, and ref composition, so no isolated validation-lane fix is safe.',
               },
             },
             results,
