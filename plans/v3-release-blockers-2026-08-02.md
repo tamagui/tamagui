@@ -62,6 +62,43 @@ legacy-optimized), leaving them on the runtime path. The corrected benchmark
 medians agree: animated compiled mount 7.35 ms (V3) vs 0.50 ms (V2). On every
 other compiled scenario V3 matches or beats V2.
 
+### Finding 2 root cause, traced in source
+
+The benchmark's animated fixture is a `View` carrying `transition="bouncy"` plus
+five static style props (width, height, borderRadius, backgroundColor, margin)
+and two dynamic ones (opacity, scale). The bench config defines the preset as a
+literal CSS timing string:
+
+```ts
+const animations = createAnimations({
+  bouncy: '350ms cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+})
+```
+
+`code/compiler/static/src/compilerHost.ts:576` `isStaticCssTransition` accepts a
+transition only when every parsed entry has `timing.type === 'css'`.
+`parseTransition` (`code/core/style-grammar/src/transition.ts:336-355`) returns
+`timing: { type: 'preset', name }` for a registered preset name, so a preset
+never satisfies the check, and the guard at
+`code/compiler/static/src/compilerHost.ts:930-941` bails the whole candidate as
+`local/unsupported-target`.
+
+Two consequences, and the second is the expensive one:
+
+1. The transition itself stays on the runtime path.
+2. The bailout returns BEFORE the partial-extraction path at
+   `compilerHost.ts:959`, so the five STATIC style props are not extracted
+   either. All of them resolve at runtime, on 200 elements. V2 partially
+   extracted exactly these, which is why V2 mounts in 0.5 ms and V3 in 7.6 ms.
+
+The preset value is already available to the compiler (`transitionPresetNames`
+at `compilerHost.ts:573` is built from `tamaguiConfig.animations.animations`),
+so a CSS-driver preset is statically resolvable into the existing, tested
+static-CSS-transition lowering path. The safe test is value-shaped rather than
+driver-identity-shaped: a preset whose configured value is a string parsing as a
+valid CSS transition timing can be substituted; spring/object presets
+(reanimated, motion) must keep bailing.
+
 ## Finding 3: uncompiled runtime web is slower where it counts
 
 Corrected benchmark medians: simple mount 8.0 ms vs 4.65 ms (1.7x), group
