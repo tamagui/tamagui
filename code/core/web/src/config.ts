@@ -112,20 +112,25 @@ export const getConfigMaybe = () => {
   return getConfigFromGlobalOrLocal()
 }
 
-let tokens: TokensParsed
+// on globalThis for the same reason setConfig puts the config there: a project
+// can load two copies of this package, and only the one that ran createTamagui
+// would have this otherwise
 export function setTokens(next: TokensParsed) {
-  tokens = next
+  globalThis.__tamaguiTokensParsed = next
 }
+
+const getTokensParsed = (): TokensParsed => globalThis.__tamaguiTokensParsed
 
 export const getTokens = (): TokensParsed => {
   const config = getConfigFromGlobalOrLocal()
   if (process.env.NODE_ENV === 'development') {
     if (!config) throw new Error(haventCalledErrorMessage)
   }
-  return config?.tokensParsed ?? tokens
+  return config?.tokensParsed ?? getTokensParsed()
 }
 
 export const getTokenObject = (value: Token, group?: keyof Tokens) => {
+  const tokens = getTokensParsed()
   return group
     ? tokens[group]?.[value]
     : tokens[Object.keys(tokens).find((cat) => tokens[cat][value]) || '']?.[value]

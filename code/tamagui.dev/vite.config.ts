@@ -256,6 +256,8 @@ export const LocationNotification = BentoComponentStub
     }),
 
     one({
+      native: false,
+
       config: {
         // The repo tsconfig contains declaration-only package mappings that
         // must not override runtime package exports.

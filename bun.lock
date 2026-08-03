@@ -41,7 +41,7 @@
     },
     "code/compiler/compiler-core": {
       "name": "@tamagui/compiler-core",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@jridgewell/gen-mapping": "0.3.13",
         "magic-string": "0.30.21",
@@ -54,7 +54,7 @@
     },
     "code/compiler/loader": {
       "name": "tamagui-loader",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/cli-color": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -74,7 +74,7 @@
     },
     "code/compiler/metro-plugin": {
       "name": "@tamagui/metro-plugin",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@jridgewell/trace-mapping": "0.3.31",
         "@tamagui/compiler-core": "workspace:*",
@@ -86,7 +86,7 @@
     },
     "code/compiler/next-plugin": {
       "name": "@tamagui/next-plugin",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@babel/preset-react": "^7.24.7",
         "@tamagui/proxy-worm": "workspace:*",
@@ -112,7 +112,7 @@
     },
     "code/compiler/static": {
       "name": "@tamagui/static",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/cli-color": "workspace:*",
         "@tamagui/compiler-core": "workspace:*",
@@ -158,7 +158,7 @@
     },
     "code/compiler/static-tests": {
       "name": "@tamagui/static-tests",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@babel/plugin-syntax-typescript": "^7.25.4",
         "@babel/types": "^7.25.4",
@@ -190,7 +190,7 @@
     },
     "code/compiler/vite-plugin": {
       "name": "@tamagui/vite-plugin",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/fake-react-native": "workspace:*",
         "@tamagui/proxy-worm": "workspace:*",
@@ -214,7 +214,7 @@
     },
     "code/compiler/vite-plugin-cjs": {
       "name": "@tamagui/vite-plugin-cjs",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/vite-plugin": "workspace:*",
       },
@@ -237,14 +237,14 @@
     },
     "code/core/animation-helpers": {
       "name": "@tamagui/animation-helpers",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
     },
     "code/core/animations-css": {
       "name": "@tamagui/animations-css",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -264,7 +264,7 @@
     },
     "code/core/animations-motion": {
       "name": "@tamagui/animations-motion",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/use-presence": "workspace:*",
@@ -281,7 +281,7 @@
     },
     "code/core/animations-react-native": {
       "name": "@tamagui/animations-react-native",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animation-helpers": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -300,7 +300,7 @@
     },
     "code/core/animations-reanimated": {
       "name": "@tamagui/animations-reanimated",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@react-native/normalize-colors": "0.83.2",
         "@tamagui/animation-helpers": "workspace:*",
@@ -320,14 +320,14 @@
     },
     "code/core/assert": {
       "name": "@tamagui/assert",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
     },
     "code/core/calc": {
       "name": "@tamagui/calc",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -337,7 +337,7 @@
     },
     "code/core/cli": {
       "name": "@tamagui/cli",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "bin": {
         "tama": "dist/index.cjs",
         "tamagui": "dist/index.cjs",
@@ -389,14 +389,14 @@
     },
     "code/core/colors": {
       "name": "@tamagui/colors",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
     },
     "code/core/compose-refs": {
       "name": "@tamagui/compose-refs",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -407,7 +407,7 @@
     },
     "code/core/config": {
       "name": "@tamagui/config",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animations-css": "workspace:*",
         "@tamagui/animations-motion": "workspace:*",
@@ -428,14 +428,14 @@
     },
     "code/core/config-base": {
       "name": "@tamagui/config-base",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
     },
     "code/core/config-default": {
       "name": "@tamagui/config-default",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animations-css": "workspace:*",
         "@tamagui/animations-react-native": "workspace:*",
@@ -449,7 +449,7 @@
     },
     "code/core/constants": {
       "name": "@tamagui/constants",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -461,7 +461,7 @@
     },
     "code/core/core": {
       "name": "@tamagui/core",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -490,7 +490,7 @@
     },
     "code/core/core-test": {
       "name": "@tamagui/core-test",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/dialog": "workspace:*",
@@ -508,7 +508,7 @@
     },
     "code/core/create-context": {
       "name": "@tamagui/create-context",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -519,7 +519,7 @@
     },
     "code/core/create-system-font": {
       "name": "@tamagui/create-system-font",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -534,7 +534,7 @@
     },
     "code/core/create-tamagui": {
       "name": "create-tamagui",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "bin": {
         "create-tamagui": "run.js",
       },
@@ -564,7 +564,7 @@
     },
     "code/core/create-theme": {
       "name": "@tamagui/create-theme",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "vitest": "4.0.4",
@@ -572,14 +572,14 @@
     },
     "code/core/cubic-bezier-animator": {
       "name": "@tamagui/cubic-bezier-animator",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
     },
     "code/core/dom": {
       "name": "@tamagui/dom",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -591,7 +591,7 @@
     },
     "code/core/eslint-plugin": {
       "name": "@tamagui/eslint-plugin",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/style-grammar": "workspace:*",
       },
@@ -607,7 +607,7 @@
     },
     "code/core/floating": {
       "name": "@tamagui/floating",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@floating-ui/react-dom": "^2.1.6",
         "@floating-ui/react-native": "^0.10.7",
@@ -625,7 +625,7 @@
     },
     "code/core/font": {
       "name": "@tamagui/font",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -640,7 +640,7 @@
     },
     "code/core/font-cherry-bomb": {
       "name": "@tamagui/font-cherry-bomb",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -652,7 +652,7 @@
     },
     "code/core/font-dm-sans": {
       "name": "@tamagui/font-dm-sans",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -663,7 +663,7 @@
     },
     "code/core/font-dm-serif-display": {
       "name": "@tamagui/font-dm-serif-display",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -674,7 +674,7 @@
     },
     "code/core/font-fira-mono": {
       "name": "@tamagui/font-fira-mono",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -684,7 +684,7 @@
     },
     "code/core/font-glusp": {
       "name": "@tamagui/font-glusp",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/web": "workspace:*",
       },
@@ -694,7 +694,7 @@
     },
     "code/core/font-inter": {
       "name": "@tamagui/font-inter",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -705,7 +705,7 @@
     },
     "code/core/font-munro": {
       "name": "@tamagui/font-munro",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -715,7 +715,7 @@
     },
     "code/core/font-nohemi": {
       "name": "@tamagui/font-nohemi",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -726,7 +726,7 @@
     },
     "code/core/font-silkscreen": {
       "name": "@tamagui/font-silkscreen",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -736,7 +736,7 @@
     },
     "code/core/font-size": {
       "name": "@tamagui/font-size",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -750,7 +750,7 @@
     },
     "code/core/generate-themes": {
       "name": "@tamagui/generate-themes",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/types": "workspace:*",
         "esbuild-register": "^3.6.0",
@@ -762,7 +762,7 @@
     },
     "code/core/get-font-sized": {
       "name": "@tamagui/get-font-sized",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/size": "workspace:*",
@@ -778,7 +778,7 @@
     },
     "code/core/get-token": {
       "name": "@tamagui/get-token",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/size": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -793,7 +793,7 @@
     },
     "code/core/helpers": {
       "name": "@tamagui/helpers",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/simple-hash": "workspace:*",
@@ -808,7 +808,7 @@
     },
     "code/core/helpers-icon": {
       "name": "@tamagui/helpers-icon",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/font-size": "workspace:*",
@@ -825,7 +825,7 @@
     },
     "code/core/helpers-node": {
       "name": "@tamagui/helpers-node",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/types": "workspace:*",
       },
@@ -836,7 +836,7 @@
     },
     "code/core/helpers-tamagui": {
       "name": "@tamagui/helpers-tamagui",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/font-size": "workspace:*",
         "@tamagui/helpers": "workspace:*",
@@ -854,7 +854,7 @@
     },
     "code/core/language-service": {
       "name": "@tamagui/language-service",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/style-grammar": "workspace:*",
       },
@@ -869,14 +869,14 @@
     },
     "code/core/monorepo-test": {
       "name": "@tamagui/monorepo-test",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "vitest": "4.0.4",
       },
     },
     "code/core/native": {
       "name": "@tamagui/native",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
       },
@@ -920,7 +920,7 @@
     },
     "code/core/normalize-css-color": {
       "name": "@tamagui/normalize-css-color",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@react-native/normalize-color": "^2.1.0",
       },
@@ -930,18 +930,18 @@
     },
     "code/core/polyfill-dev": {
       "name": "@tamagui/polyfill-dev",
-      "version": "2.5.1",
+      "version": "2.6.3",
     },
     "code/core/proxy-worm": {
       "name": "@tamagui/proxy-worm",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "peerDependencies": {
         "react-native": "*",
       },
     },
     "code/core/react-native-media-driver": {
       "name": "@tamagui/react-native-media-driver",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/web": "workspace:*",
       },
@@ -955,7 +955,7 @@
     },
     "code/core/react-native-use-pressable": {
       "name": "@tamagui/react-native-use-pressable",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -966,7 +966,7 @@
     },
     "code/core/react-native-use-responder-events": {
       "name": "@tamagui/react-native-use-responder-events",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -977,7 +977,7 @@
     },
     "code/core/react-native-web-internals": {
       "name": "@tamagui/react-native-web-internals",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/normalize-css-color": "workspace:*",
         "@tamagui/react-native-use-pressable": "workspace:*",
@@ -998,7 +998,7 @@
     },
     "code/core/shorthands": {
       "name": "@tamagui/shorthands",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/web": "workspace:*",
       },
@@ -1008,14 +1008,14 @@
     },
     "code/core/simple-hash": {
       "name": "@tamagui/simple-hash",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
     },
     "code/core/size": {
       "name": "@tamagui/size",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/web": "workspace:*",
       },
@@ -1030,7 +1030,7 @@
     },
     "code/core/start-transition": {
       "name": "@tamagui/start-transition",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1041,7 +1041,7 @@
     },
     "code/core/style-grammar": {
       "name": "@tamagui/style-grammar",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "vitest": "4.0.4",
@@ -1049,7 +1049,7 @@
     },
     "code/core/tailwind": {
       "name": "@tamagui/tailwind",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tailwindcss/node": "4.3.0",
         "@tailwindcss/oxide": "4.3.0",
@@ -1084,7 +1084,7 @@
     },
     "code/core/test-design-system": {
       "name": "@tamagui/test-design-system",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -1094,7 +1094,7 @@
     },
     "code/core/theme": {
       "name": "@tamagui/theme",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
@@ -1110,14 +1110,14 @@
     },
     "code/core/theme-base": {
       "name": "@tamagui/theme-base",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
     },
     "code/core/themes": {
       "name": "@tamagui/themes",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/create-theme": "workspace:*",
       },
@@ -1129,7 +1129,7 @@
     },
     "code/core/to-tailwind": {
       "name": "@tamagui/to-tailwind",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@babel/generator": "^7.25.5",
         "@babel/parser": "^7.25.4",
@@ -1144,11 +1144,11 @@
     },
     "code/core/types": {
       "name": "@tamagui/types",
-      "version": "2.5.1",
+      "version": "2.6.3",
     },
     "code/core/use-callback-ref": {
       "name": "@tamagui/use-callback-ref",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1159,7 +1159,7 @@
     },
     "code/core/use-constant": {
       "name": "@tamagui/use-constant",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1170,7 +1170,7 @@
     },
     "code/core/use-controllable-state": {
       "name": "@tamagui/use-controllable-state",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
@@ -1186,7 +1186,7 @@
     },
     "code/core/use-debounce": {
       "name": "@tamagui/use-debounce",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1197,7 +1197,7 @@
     },
     "code/core/use-did-finish-ssr": {
       "name": "@tamagui/use-did-finish-ssr",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1208,7 +1208,7 @@
     },
     "code/core/use-direction": {
       "name": "@tamagui/use-direction",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1219,7 +1219,7 @@
     },
     "code/core/use-element-layout": {
       "name": "@tamagui/use-element-layout",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/is-equal-shallow": "workspace:*",
@@ -1234,7 +1234,7 @@
     },
     "code/core/use-escape-keydown": {
       "name": "@tamagui/use-escape-keydown",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/use-callback-ref": "workspace:*",
       },
@@ -1248,7 +1248,7 @@
     },
     "code/core/use-event": {
       "name": "@tamagui/use-event",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1259,7 +1259,7 @@
     },
     "code/core/use-force-update": {
       "name": "@tamagui/use-force-update",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1270,7 +1270,7 @@
     },
     "code/core/use-keyboard-visible": {
       "name": "@tamagui/use-keyboard-visible",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1283,7 +1283,7 @@
     },
     "code/core/use-presence": {
       "name": "@tamagui/use-presence",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/web": "workspace:*",
       },
@@ -1297,7 +1297,7 @@
     },
     "code/core/use-previous": {
       "name": "@tamagui/use-previous",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1308,7 +1308,7 @@
     },
     "code/core/use-window-dimensions": {
       "name": "@tamagui/use-window-dimensions",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
       },
@@ -1323,7 +1323,7 @@
     },
     "code/core/web": {
       "name": "@tamagui/web",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -1356,7 +1356,7 @@
     },
     "code/demos": {
       "name": "@tamagui/demos",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/avatar": "workspace:*",
@@ -1402,7 +1402,7 @@
     },
     "code/kitchen-sink": {
       "name": "@tamagui/kitchen-sink",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@dominicstop/ts-event-emitter": "1.1.0",
         "@react-native-async-storage/async-storage": "2.2.0",
@@ -1481,7 +1481,7 @@
         "html-webpack-plugin": "^5.5.0",
         "jest": "^29",
         "mini-css-extract-plugin": "^2.9.1",
-        "one": "1.20.4",
+        "one": "1.21.13",
         "pngjs": "^7.0.0",
         "pod-install": "^0.3.2",
         "tilg": "0.1.1",
@@ -1493,7 +1493,7 @@
     },
     "code/kitchen-sink-go": {
       "name": "@tamagui/kitchen-sink-go",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/config": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -1512,7 +1512,7 @@
     },
     "code/kitchen-sink-shared": {
       "name": "@tamagui/kitchen-sink-shared",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/config": "workspace:*",
         "@tamagui/demos": "workspace:*",
@@ -1526,7 +1526,7 @@
     },
     "code/packages/babel-plugin-fully-specified": {
       "name": "@tamagui/babel-plugin-fully-specified",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@babel/core": "^7.25.2",
       },
@@ -1537,7 +1537,7 @@
     },
     "code/packages/bento-get": {
       "name": "bento-get",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "bin": "dist/cli.mjs",
       "dependencies": {
         "@inkjs/ui": "2.0.0",
@@ -1569,7 +1569,7 @@
     },
     "code/packages/build": {
       "name": "@tamagui/build",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "bin": {
         "tamagui-build": "tamagui-build.js",
         "tamagui-build-workspace": "tamagui-build-workspace.js",
@@ -1643,14 +1643,14 @@
     },
     "code/packages/cli-color": {
       "name": "@tamagui/cli-color",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
     },
     "code/packages/code-to-html": {
       "name": "@tamagui/code-to-html",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "hast-util-to-html": "^8.0.3",
         "hast-util-to-string": "^2.0.0",
@@ -1668,7 +1668,7 @@
     },
     "code/packages/conditional-hooks": {
       "name": "@tamagui/conditional-hooks",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
       },
@@ -1682,7 +1682,7 @@
     },
     "code/packages/element": {
       "name": "@tamagui/element",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
       },
@@ -1695,11 +1695,11 @@
     },
     "code/packages/fake-react-native": {
       "name": "@tamagui/fake-react-native",
-      "version": "2.5.1",
+      "version": "2.6.3",
     },
     "code/packages/is-equal-shallow": {
       "name": "@tamagui/is-equal-shallow",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1710,7 +1710,7 @@
     },
     "code/packages/logo": {
       "name": "@tamagui/logo",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/use-element-layout": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -1726,7 +1726,7 @@
     },
     "code/packages/lucide-icons": {
       "name": "@tamagui/lucide-icons-2",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/helpers-icon": "workspace:*",
@@ -1748,7 +1748,7 @@
     },
     "code/packages/native-bundle": {
       "name": "@tamagui/native-bundle",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "vite": "^8.0.3",
       },
@@ -1758,7 +1758,7 @@
     },
     "code/packages/native-ci": {
       "name": "@tamagui/native-ci",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "bin": {
         "native-ci": "dist/cli.mjs",
       },
@@ -1773,7 +1773,7 @@
     },
     "code/packages/next-theme": {
       "name": "@tamagui/next-theme",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/use-event": "workspace:*",
@@ -1790,7 +1790,7 @@
     },
     "code/packages/react-native-svg": {
       "name": "@tamagui/react-native-svg",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react-native-svg": "15.15.3",
@@ -1801,7 +1801,7 @@
     },
     "code/packages/react-native-web-lite": {
       "name": "@tamagui/react-native-web-lite",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/normalize-css-color": "workspace:*",
         "@tamagui/react-native-use-pressable": "workspace:*",
@@ -1823,7 +1823,7 @@
     },
     "code/packages/sandbox-ui": {
       "name": "@tamagui/sandbox-ui",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animations-react-native": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -1844,7 +1844,7 @@
     },
     "code/packages/tamagui-dev-config": {
       "name": "@tamagui/tamagui-dev-config",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animations-css": "workspace:*",
         "@tamagui/animations-motion": "workspace:*",
@@ -1868,14 +1868,14 @@
     },
     "code/packages/timer": {
       "name": "@tamagui/timer",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
     },
     "code/packages/use-async": {
       "name": "@tamagui/use-async",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -1886,7 +1886,7 @@
     },
     "code/packages/use-store": {
       "name": "@tamagui/use-store",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/simple-hash": "workspace:*",
       },
@@ -1902,7 +1902,7 @@
     },
     "code/packages/vite-plugin-internal": {
       "name": "@tamagui/vite-plugin-internal",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/vite-plugin": "workspace:*",
       },
@@ -1921,7 +1921,7 @@
     },
     "code/sandbox": {
       "name": "sandbox",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@react-native-masked-view/masked-view": "^0.3.1",
         "@tamagui/animations-css": "workspace:*",
@@ -1931,9 +1931,9 @@
         "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
         "@tamagui/toast": "workspace:*",
-        "@vxrn/color-scheme": "^1.20.4",
+        "@vxrn/color-scheme": "^1.21.13",
         "expo": "~55.0.28",
-        "one": "1.20.4",
+        "one": "1.21.13",
         "react": ">=19",
         "react-native": "0.83.2",
         "react-native-reanimated": "~4.2.2",
@@ -1955,7 +1955,7 @@
     },
     "code/starters/expo-router": {
       "name": "@tamagui/expo-router-starter",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/config": "workspace:*",
         "@tamagui/lucide-icons-2": "workspace:*",
@@ -1997,7 +1997,7 @@
     },
     "code/starters/remix": {
       "name": "@tamagui/remix-starter",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@react-router/node": "^7.18.0",
         "@react-router/serve": "^7.18.0",
@@ -2020,7 +2020,7 @@
     },
     "code/tamagui.dev": {
       "name": "@tamagui/dot-dev",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@ai-sdk/anthropic": "^3.0.84",
         "@discordjs/core": "^2.5.0",
@@ -2050,8 +2050,8 @@
         "@tanstack/react-table": "^8.11.2",
         "@ts-react/form": "^1.8.3",
         "@vercel/og": "^0.6.5",
-        "@vxrn/color-scheme": "^1.20.4",
-        "@vxrn/mdx-rust": "^1.20.4",
+        "@vxrn/color-scheme": "^1.21.13",
+        "@vxrn/mdx-rust": "^1.21.13",
         "ai": "^6.0.206",
         "awesome-phonenumber": "^6.4.0",
         "color2k": "^2.0.2",
@@ -2064,7 +2064,7 @@
         "hsluv": "^0.1.0",
         "jsonwebtoken": "^9.0.2",
         "masonic": "^4.0.1",
-        "one": "1.20.4",
+        "one": "1.21.13",
         "parse-numeric-range": "^1.3.0",
         "posthog-node": "^5.24.17",
         "postmark": "^3.0.18",
@@ -2108,7 +2108,7 @@
     },
     "code/tests/configs": {
       "name": "@tamagui/configs-test",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/cli": "workspace:*",
         "@tamagui/config": "workspace:*",
@@ -2117,7 +2117,7 @@
     },
     "code/tests/integration": {
       "name": "integration",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animations-css": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -2145,7 +2145,7 @@
     },
     "code/tests/next-site": {
       "name": "@tamagui/next-site",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@types/d3-scale": "^4.0.2",
         "@types/lodash-es": "^4.17.6",
@@ -2163,7 +2163,7 @@
     },
     "code/tests/next-turbopack": {
       "name": "test-next-turbopack",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/config": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -2183,7 +2183,7 @@
     },
     "code/tests/next-webpack": {
       "name": "next15-plus-cli-optimize",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/cli": "workspace:*",
         "tamagui": "workspace:*",
@@ -2282,7 +2282,7 @@
     },
     "code/ui/accordion": {
       "name": "@tamagui/accordion",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/collapsible": "workspace:*",
         "@tamagui/collection": "workspace:*",
@@ -2307,7 +2307,7 @@
     },
     "code/ui/adapt": {
       "name": "@tamagui/adapt",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -2325,7 +2325,7 @@
     },
     "code/ui/alert-dialog": {
       "name": "@tamagui/alert-dialog",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
@@ -2355,7 +2355,7 @@
     },
     "code/ui/animate": {
       "name": "@tamagui/animate",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animate-presence": "workspace:*",
       },
@@ -2369,7 +2369,7 @@
     },
     "code/ui/animate-presence": {
       "name": "@tamagui/animate-presence",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/helpers": "workspace:*",
@@ -2388,7 +2388,7 @@
     },
     "code/ui/avatar": {
       "name": "@tamagui/avatar",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
@@ -2409,7 +2409,7 @@
     },
     "code/ui/button": {
       "name": "@tamagui/button",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/config-default": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -2432,7 +2432,7 @@
     },
     "code/ui/card": {
       "name": "@tamagui/card",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/create-context": "workspace:*",
         "@tamagui/helpers": "workspace:*",
@@ -2451,7 +2451,7 @@
     },
     "code/ui/checkbox": {
       "name": "@tamagui/checkbox",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/checkbox-headless": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -2468,7 +2468,7 @@
     },
     "code/ui/checkbox-headless": {
       "name": "@tamagui/checkbox-headless",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -2491,7 +2491,7 @@
     },
     "code/ui/collapsible": {
       "name": "@tamagui/collapsible",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
@@ -2513,7 +2513,7 @@
     },
     "code/ui/collection": {
       "name": "@tamagui/collection",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -2533,7 +2533,7 @@
     },
     "code/ui/components-test": {
       "name": "@tamagui/components-test",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.1.0",
@@ -2550,7 +2550,7 @@
     },
     "code/ui/context-menu": {
       "name": "@tamagui/context-menu",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/create-menu": "workspace:*",
@@ -2570,7 +2570,7 @@
     },
     "code/ui/create-menu": {
       "name": "@tamagui/create-menu",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animate": "workspace:*",
         "@tamagui/animate-presence": "workspace:*",
@@ -2603,7 +2603,7 @@
     },
     "code/ui/dialog": {
       "name": "@tamagui/dialog",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/adapt": "workspace:*",
         "@tamagui/animate": "workspace:*",
@@ -2635,7 +2635,7 @@
     },
     "code/ui/dismissable": {
       "name": "@tamagui/dismissable",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -2655,7 +2655,7 @@
     },
     "code/ui/elements": {
       "name": "@tamagui/elements",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
       },
@@ -2669,7 +2669,7 @@
     },
     "code/ui/field": {
       "name": "@tamagui/field",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/focusable": "workspace:*",
@@ -2687,7 +2687,7 @@
     },
     "code/ui/focus-guard": {
       "name": "@tamagui/focus-guard",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/use-event": "workspace:*",
@@ -2702,7 +2702,7 @@
     },
     "code/ui/focus-scope": {
       "name": "@tamagui/focus-scope",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -2722,7 +2722,7 @@
     },
     "code/ui/focusable": {
       "name": "@tamagui/focusable",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -2737,7 +2737,7 @@
     },
     "code/ui/form": {
       "name": "@tamagui/form",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/focusable": "workspace:*",
@@ -2753,7 +2753,7 @@
     },
     "code/ui/group": {
       "name": "@tamagui/group",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
@@ -2773,7 +2773,7 @@
     },
     "code/ui/image": {
       "name": "@tamagui/image",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -2791,7 +2791,7 @@
     },
     "code/ui/input": {
       "name": "@tamagui/input",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/element": "workspace:*",
@@ -2816,7 +2816,7 @@
     },
     "code/ui/label": {
       "name": "@tamagui/label",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -2838,7 +2838,7 @@
     },
     "code/ui/linear-gradient": {
       "name": "@tamagui/linear-gradient",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/native": "workspace:*",
@@ -2857,7 +2857,7 @@
     },
     "code/ui/list-item": {
       "name": "@tamagui/list-item",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/font-size": "workspace:*",
         "@tamagui/get-font-sized": "workspace:*",
@@ -2879,7 +2879,7 @@
     },
     "code/ui/menu": {
       "name": "@tamagui/menu",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/create-menu": "workspace:*",
@@ -2901,7 +2901,7 @@
     },
     "code/ui/popover": {
       "name": "@tamagui/popover",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/adapt": "workspace:*",
         "@tamagui/animate": "workspace:*",
@@ -2935,7 +2935,7 @@
     },
     "code/ui/popper": {
       "name": "@tamagui/popper",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -2958,7 +2958,7 @@
     },
     "code/ui/portal": {
       "name": "@tamagui/portal",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -2982,7 +2982,7 @@
     },
     "code/ui/progress": {
       "name": "@tamagui/progress",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -3002,7 +3002,7 @@
     },
     "code/ui/radio-group": {
       "name": "@tamagui/radio-group",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/radio-headless": "workspace:*",
@@ -3018,7 +3018,7 @@
     },
     "code/ui/radio-headless": {
       "name": "@tamagui/radio-headless",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -3041,7 +3041,7 @@
     },
     "code/ui/react-native-web": {
       "name": "@tamagui/react-native-web",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/react-native-use-pressable": "workspace:*",
         "@tamagui/react-native-use-responder-events": "workspace:*",
@@ -3057,7 +3057,7 @@
     },
     "code/ui/remove-scroll": {
       "name": "@tamagui/remove-scroll",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -3068,7 +3068,7 @@
     },
     "code/ui/roving-focus": {
       "name": "@tamagui/roving-focus",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/collection": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
@@ -3090,7 +3090,7 @@
     },
     "code/ui/scroll-view": {
       "name": "@tamagui/scroll-view",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/web": "workspace:*",
       },
@@ -3105,7 +3105,7 @@
     },
     "code/ui/select": {
       "name": "@tamagui/select",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/adapt": "workspace:*",
         "@tamagui/animate-presence": "workspace:*",
@@ -3146,7 +3146,7 @@
     },
     "code/ui/separator": {
       "name": "@tamagui/separator",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -3161,7 +3161,7 @@
     },
     "code/ui/shapes": {
       "name": "@tamagui/shapes",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/size": "workspace:*",
         "@tamagui/stacks": "workspace:*",
@@ -3177,7 +3177,7 @@
     },
     "code/ui/sheet": {
       "name": "@tamagui/sheet",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/adapt": "workspace:*",
         "@tamagui/animate-presence": "workspace:*",
@@ -3215,7 +3215,7 @@
     },
     "code/ui/slider": {
       "name": "@tamagui/slider",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -3240,7 +3240,7 @@
     },
     "code/ui/spacer": {
       "name": "@tamagui/spacer",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/size": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -3256,7 +3256,7 @@
     },
     "code/ui/spinner": {
       "name": "@tamagui/spinner",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/stacks": "workspace:*",
@@ -3273,7 +3273,7 @@
     },
     "code/ui/stacks": {
       "name": "@tamagui/stacks",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -3288,7 +3288,7 @@
     },
     "code/ui/switch": {
       "name": "@tamagui/switch",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/focusable": "workspace:*",
@@ -3306,7 +3306,7 @@
     },
     "code/ui/switch-headless": {
       "name": "@tamagui/switch-headless",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -3325,7 +3325,7 @@
     },
     "code/ui/tabs": {
       "name": "@tamagui/tabs",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -3348,7 +3348,7 @@
     },
     "code/ui/tabs-headless": {
       "name": "@tamagui/tabs-headless",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/helpers": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
@@ -3364,7 +3364,7 @@
     },
     "code/ui/tamagui": {
       "name": "tamagui",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/accordion": "workspace:*",
         "@tamagui/adapt": "workspace:*",
@@ -3447,7 +3447,7 @@
     },
     "code/ui/text": {
       "name": "@tamagui/text",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/get-font-sized": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
@@ -3463,7 +3463,7 @@
     },
     "code/ui/text-test": {
       "name": "@tamagui/text-test",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/text": "workspace:*",
         "vitest": "4.0.4",
@@ -3471,7 +3471,7 @@
     },
     "code/ui/toast": {
       "name": "@tamagui/toast",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/collection": "workspace:*",
@@ -3501,7 +3501,7 @@
     },
     "code/ui/toggle-group": {
       "name": "@tamagui/toggle-group",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
@@ -3528,7 +3528,7 @@
     },
     "code/ui/tooltip": {
       "name": "@tamagui/tooltip",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/core": "workspace:*",
@@ -3554,7 +3554,7 @@
     },
     "code/ui/ui": {
       "name": "@tamagui/ui",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/accordion": "workspace:*",
         "@tamagui/adapt": "workspace:*",
@@ -3633,7 +3633,7 @@
     },
     "code/ui/visually-hidden": {
       "name": "@tamagui/visually-hidden",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -3648,7 +3648,7 @@
     },
     "code/ui/z-index-stack": {
       "name": "@tamagui/z-index-stack",
-      "version": "2.5.1",
+      "version": "2.6.3",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
@@ -5959,35 +5959,35 @@
 
     "@vladfrangu/async_event_emitter": ["@vladfrangu/async_event_emitter@2.4.7", "", {}, "sha512-Xfe6rpCTxSxfbswi/W/Pz7zp1WWSNn4A0eW4mLkQUewCrXXtMj31lCg+iQyTkh/CkusZSq9eDflu7tjEDXUY6g=="],
 
-    "@vxrn/color-scheme": ["@vxrn/color-scheme@1.21.12", "", { "dependencies": { "@vxrn/use-isomorphic-layout-effect": "1.21.12" }, "peerDependencies": { "react": "19.2.0", "react-native": "0.83.2" } }, "sha512-vyTBy1O2ycpiPEAwiJ9bMTXJo/MsZTlPvD1Ri9fT18B/60KJhFDKgzakClZE3YVLYOFjIz+BgKcTG+2PVvf7RQ=="],
+    "@vxrn/color-scheme": ["@vxrn/color-scheme@1.21.13", "", { "dependencies": { "@vxrn/use-isomorphic-layout-effect": "1.21.13" }, "peerDependencies": { "react": "19.2.0", "react-native": "0.83.2" } }, "sha512-epKEM8o2AvxgOT+4VAjLZkS1IK6bD1b7wDoQFiE9hBukbeZzixXG38tkJ6YCVu/hB1dl2yiiVOtwuEr9FmOdwQ=="],
 
-    "@vxrn/compiler": ["@vxrn/compiler@1.20.4", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/plugin-transform-destructuring": "^7.28.5", "@babel/plugin-transform-react-jsx": "^7.27.1", "@babel/plugin-transform-regenerator": "^7.28.4", "@react-native/babel-plugin-codegen": "^0.83.0", "@vxrn/utils": "1.20.4", "@vxrn/vite-native-client": "1.20.4", "babel-plugin-react-compiler": "^1.0.0", "react-native-css-interop": "^0.2.1", "ts-deepmerge": "^7.0.2" }, "peerDependencies": { "vite": "^8.0.13" }, "optionalPeers": ["vite"] }, "sha512-tcTJypauyNroi21UZs70nCIhHpZJ5ZZUwWyZIRRWx002zBGgtlkVWytLiwFM9sSCZHbHkAWOJwZp+f4sAVQNlw=="],
+    "@vxrn/compiler": ["@vxrn/compiler@1.21.13", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/plugin-transform-destructuring": "^7.28.5", "@babel/plugin-transform-flow-strip-types": "^7.27.1", "@babel/plugin-transform-react-jsx": "^7.27.1", "@babel/plugin-transform-regenerator": "^7.28.4", "@react-native/babel-plugin-codegen": "^0.83.0", "@vxrn/utils": "1.21.13", "@vxrn/vite-native-client": "1.21.13", "babel-plugin-react-compiler": "^1.0.0", "babel-plugin-syntax-hermes-parser": "^0.32.0", "react-native-css-interop": "^0.2.1", "ts-deepmerge": "^7.0.2" }, "peerDependencies": { "vite": "^8.0.13" }, "optionalPeers": ["vite"] }, "sha512-1s8ddkO5cFQSHdtATgs+dMPt9Uzn2SaeHEduAX/M+Bploee0mykPqoTiuodx+9dD15wLjpvfYREM/8ALN9tsFw=="],
 
-    "@vxrn/debug": ["@vxrn/debug@1.20.4", "", { "dependencies": { "debug": "^4.3.7" } }, "sha512-f3AdjF1KiXohJUogWUE8UaSpDr1AX+8LqeYDSv6GMnr0lvqQ/KXyMk+I0Wp8ZTMk3HUYGvGoyYsGoCUM+buKEA=="],
+    "@vxrn/debug": ["@vxrn/debug@1.21.13", "", { "dependencies": { "debug": "^4.3.7" } }, "sha512-cDe7Wnwc/bE1AtWzLOEvD0eStjyFfXLrNkddE4h6jQgs83+BoDG2loYQOJ8EH3t1NQHzZTBV7/PpC6+FtFTE8g=="],
 
     "@vxrn/mdx-rust": ["@vxrn/mdx-rust@1.20.4", "", { "dependencies": { "compare-versions": "^4.1.3", "fast-glob": "^3.3.3", "github-slugger": "^2.0.0", "gray-matter": "^4.0.3", "reading-time": "1.3.0", "satteri": "^0.9.4", "satteri-expressive-code": "^0.1.17" }, "optionalDependencies": { "sharp": "^0.34.5" }, "peerDependencies": { "react": "*" } }, "sha512-k2weWWQNC3hWoTmR/AQojqXLi7NwaS3MCHm+wrBjfams75h7gOy4msUo8Ljy6qkvhdkj8T0FAc6tNbxRxypJpQ=="],
 
-    "@vxrn/query-string": ["@vxrn/query-string@1.20.4", "", { "dependencies": { "query-string": "^9.1.0" } }, "sha512-duBIjgSuiMDktQeu1bl5OtiunuXsxneRjN5H4gMArkIfKzMXpxxeTeTwBWewIBSeDkJjI511eRvqYu2lAl6iYg=="],
+    "@vxrn/query-string": ["@vxrn/query-string@1.21.13", "", { "dependencies": { "query-string": "^9.1.0" } }, "sha512-vVFMZYeaxEGv49efvASE1IjoKYytg18Qmy+wKzH5Wm7ZPK9oc43R6wKwSbA4gbXz7wheAXFzYegb3LLRGsqixw=="],
 
-    "@vxrn/resolve": ["@vxrn/resolve@1.20.4", "", {}, "sha512-PXKJC/CJy6ub9Gc7IzfGfs7kIwGnevcQxo7W5ssNi2i6rfMw6mT4NijjMOjPMLk5oglVJHxZNKrguP/s0obZDA=="],
+    "@vxrn/resolve": ["@vxrn/resolve@1.21.13", "", {}, "sha512-OsoMensjG2aYLHI3vCHjG9TCqs+16RdsjgXZgbR+ppaJbLMj7heYSUIXfGP45jUH5Gh7pPDhwTTHSqFvl7leig=="],
 
-    "@vxrn/safe-area": ["@vxrn/safe-area@1.20.4", "", {}, "sha512-FAxJQw2sk9+SUOD6gOhH6CteaCoLNIvksKxYrpqvBC5izmzO3mMlUJ4VCEI8C4BQWd9tuwj2uB2aF12yvdZ9cw=="],
+    "@vxrn/safe-area": ["@vxrn/safe-area@1.21.13", "", {}, "sha512-IwRL/A7GQoq8Y0qBqerN7YaeLyurKHOuIeTHHsHzU4XHzRu4HKFMeiaKzNmIV/Rd1QeH3vKc2+lfqjT0DR2BRQ=="],
 
-    "@vxrn/tslib-lite": ["@vxrn/tslib-lite@1.20.4", "", {}, "sha512-3PnnQnoxK8AkaT1hO1KlNtm+jUD1lii1RVIYOZDmOJ/iu28Cs2okqkVUqcQP3yrQTVvdoxh4UCCGGC5oGdMIkg=="],
+    "@vxrn/tslib-lite": ["@vxrn/tslib-lite@1.21.13", "", {}, "sha512-JVqahCufHHROH6wyux8nyIRoMAUaGJYuuJ+Ac1wYZbPKEcTATyh25uaw8Olwv7QDI0CEt4zrY6A8LzXFecykrg=="],
 
-    "@vxrn/url-parse": ["@vxrn/url-parse@1.20.4", "", { "dependencies": { "url-parse": "^1.5.10" } }, "sha512-nb6OVcbj/51qnBebIr2JfQNDWJTcBVn09XTX5kzYZGLmqwjUlidZJwqIhqFRZL2CB4FY61zxdTlF5Lqdoc8IUg=="],
+    "@vxrn/url-parse": ["@vxrn/url-parse@1.21.13", "", { "dependencies": { "url-parse": "^1.5.10" } }, "sha512-BJ3lchlPj4h9EUeGRDjqtx3+5i4+mEMaQHAOL52oUYBM2JE75lrijx+KcrMYNFrNq89gtmovpP+vfGd0s6Q27Q=="],
 
-    "@vxrn/use-isomorphic-layout-effect": ["@vxrn/use-isomorphic-layout-effect@1.21.12", "", { "peerDependencies": { "react": "^19.2.0" } }, "sha512-BatIx/Dx9dDZ2D9YM0F2LzUhb0cP6p+S6R5qFZiu+bVK5nrz1h3zZXQkXRVWc6SKZh09nlwiXmxouSBRjLIczg=="],
+    "@vxrn/use-isomorphic-layout-effect": ["@vxrn/use-isomorphic-layout-effect@1.21.13", "", { "peerDependencies": { "react": "^19.2.0" } }, "sha512-t32a+1OHOuOzmFKVA5pxpjnHpFCwjPdh3zDF3aYwHJH69s1QFin8oVspdWIVEqWScBxh/flz32XJeB5fphHkeA=="],
 
-    "@vxrn/utils": ["@vxrn/utils@1.20.4", "", { "dependencies": { "@vxrn/debug": "1.20.4", "@vxrn/resolve": "1.20.4", "ws": "^8.21.0" } }, "sha512-W7d0JV+bzqnQOpNJkSh25mzUSjRHAinIv821ua7/KWPz4WhcRTHlzrW/vavnawu3KQ8mKJ6NWyuHodIJL07cQg=="],
+    "@vxrn/utils": ["@vxrn/utils@1.21.13", "", { "dependencies": { "@vxrn/debug": "1.21.13", "@vxrn/resolve": "1.21.13", "ws": "^8.21.0" } }, "sha512-crwX/P9fYDfEyCcAXmgZdmEThas9zpP2OiLk11nsaWUtZjxvKBtM74QJFU92v+hJX9arY7rX6o0nJL38ncW+Fw=="],
 
-    "@vxrn/vendor": ["@vxrn/vendor@1.20.4", "", {}, "sha512-inUHmsPokdO9KHczQ2RUqWDjFfNe+k97i6TgVv6OF1LN9+SdTHO31aGGw1aN+MoHiMK/ngxUw7oxZOF93OWMAg=="],
+    "@vxrn/vendor": ["@vxrn/vendor@1.21.13", "", {}, "sha512-RoArsbQfDpqU9uz6rD7tIF+6barYrssDQGmFyu2DLGOfoz7DgbHnaAgWh2MOLVszID1eBzCR1MTDIptH1SVP3g=="],
 
-    "@vxrn/vite-flow": ["@vxrn/vite-flow@1.20.4", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/helper-plugin-utils": "^7.27.1", "@react-native/babel-preset": "^0.83.0", "@vxrn/resolve": "1.20.4", "vite": "^8.0.13" } }, "sha512-ukJc8bMM2TQI+EoNg4qrm04D6cOKxskwqJOF00VMRPT2zUs7NUekdLil0+c4/3Ep6plTDWmjcATybCGhv5ePBQ=="],
+    "@vxrn/vite-flow": ["@vxrn/vite-flow@1.21.13", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/helper-plugin-utils": "^7.27.1", "@react-native/babel-preset": "^0.83.0", "@vxrn/resolve": "1.21.13", "vite": "^8.0.13" } }, "sha512-fulhNdd1+K+RgQBUsaswmckFkDFh/KPc5pA9iRmFZv3wo0QVZWB49iO4mUfTa6wFgFmj2BgrmMYinC4UYQBClQ=="],
 
-    "@vxrn/vite-native-client": ["@vxrn/vite-native-client@1.20.4", "", { "peerDependencies": { "react-native": "0.83.2" } }, "sha512-SuMqfBnSZc1pKAU+iWXJJoT+PZb0LqyAE0Tq6rPKI55xelSpPRUCJHluXigCzwXAouuBDdsLwCy5oXZqGQJBjg=="],
+    "@vxrn/vite-native-client": ["@vxrn/vite-native-client@1.21.13", "", { "peerDependencies": { "react-native": "0.83.2" } }, "sha512-L1b86fCWB+2gcWiNn+CnPgMyJ49YPBByqHBu0ze2ZeYGuCPWuXhrBQzlwTi3jDPhZxiTUEvK7WXBEkQypuKy/Q=="],
 
-    "@vxrn/vite-plugin-metro": ["@vxrn/vite-plugin-metro@1.20.4", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/helper-plugin-utils": "^7.27.1", "@babel/types": "^7.28.5", "@vxrn/debug": "1.20.4", "@vxrn/utils": "1.20.4", "babel-preset-expo": "~55.0.0", "launch-editor": "^2.10.0", "micromatch": "^4.0.8", "picocolors": "^1.0.0" }, "peerDependencies": { "@expo/metro-config": "~55.0.9", "expo": "~55.0.7", "metro": "^0.83", "metro-config": "*", "react-native": "0.83.2", "vite": "^8.0.13" } }, "sha512-/k0gqut2yfRsHLYh5yD6lk1bf4Gx2qCupwTtsIaYq/DhzGxWGMHwk+UMw28WfYA/i+r6XbOkdj7uppJsNEzBlA=="],
+    "@vxrn/vite-plugin-metro": ["@vxrn/vite-plugin-metro@1.21.13", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/helper-plugin-utils": "^7.27.1", "@babel/types": "^7.28.5", "@vxrn/debug": "1.21.13", "@vxrn/utils": "1.21.13", "babel-preset-expo": "~55.0.0", "launch-editor": "^2.10.0", "micromatch": "^4.0.8", "picocolors": "^1.0.0" }, "peerDependencies": { "@expo/metro-config": "~55.0.9", "expo": "~55.0.7", "metro": "^0.83", "metro-config": "*", "react-native": "0.83.2", "vite": "^8.0.13" } }, "sha512-Nfp9B/Mhzb5BjYZjFJjoEY7Oa9dbP6thRXyyP2UkxEegrW94rno6ebfL3WmHPN6ZJbu3k/jwjySHkNW0zjF4pQ=="],
 
     "@webassemblyjs/ast": ["@webassemblyjs/ast@1.14.1", "", { "dependencies": { "@webassemblyjs/helper-numbers": "1.13.2", "@webassemblyjs/helper-wasm-bytecode": "1.13.2" } }, "sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ=="],
 
@@ -6505,7 +6505,7 @@
 
     "create-tamagui": ["create-tamagui@workspace:code/core/create-tamagui"],
 
-    "create-vxrn": ["create-vxrn@1.20.4", "", { "dependencies": { "@types/validate-npm-package-name": "^4.0.2", "@vxrn/utils": "1.20.4", "ansis": "^3.1.0", "async-retry": "1.3.1", "citty": "^0.1.6", "cpy": "^11.0.1", "fs-extra": "^11.2.0", "prompts": "^2.4.2", "rimraf": "^5.0.1", "validate-npm-package-name": "3.0.0", "yocto-spinner": "^0.1.0" }, "bin": { "create-vxrn": "run.js" } }, "sha512-HNQp/gNaxGKAR8n1xE3jkiyKJlfo2t9/3/IKFGElxFHGb/saCZNS9K+9/Cch6FWmW+fTNCudzRV2ZjTdYNvNtw=="],
+    "create-vxrn": ["create-vxrn@1.21.13", "", { "dependencies": { "@types/validate-npm-package-name": "^4.0.2", "@vxrn/utils": "1.21.13", "ansis": "^3.1.0", "async-retry": "1.3.1", "citty": "^0.1.6", "cpy": "^11.0.1", "fs-extra": "^11.2.0", "prompts": "^2.4.2", "rimraf": "^5.0.1", "validate-npm-package-name": "3.0.0", "yocto-spinner": "^0.1.0" }, "bin": { "create-vxrn": "run.js" } }, "sha512-FkjinFbgU0jFVkf0k8XtHYCUcarjU2LzPnQn+m5xPK+cKKa3KhuYv23Q9XkGE1LMyQVc6jebgH4Fd4oLV2+wMQ=="],
 
     "cross-env": ["cross-env@7.0.3", "", { "dependencies": { "cross-spawn": "^7.0.1" }, "bin": { "cross-env": "src/bin/cross-env.js", "cross-env-shell": "src/bin/cross-env-shell.js" } }, "sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw=="],
 
@@ -7905,7 +7905,7 @@
 
     "once": ["once@1.4.0", "", { "dependencies": { "wrappy": "1" } }, "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w=="],
 
-    "one": ["one@1.20.4", "", { "dependencies": { "@azure/core-asynciterator-polyfill": "^1.0.2", "@babel/core": "^7.28.5", "@babel/generator": "^7.28.5", "@babel/parser": "^7.28.5", "@babel/traverse": "^7.28.5", "@babel/types": "^7.28.5", "@bacons/text-decoder": "^0.0.0", "@cloudflare/vite-plugin": "^1.33.1", "@radix-ui/react-slot": "^1.0.2", "@react-native-masked-view/masked-view": "^0.3.2", "@react-navigation/bottom-tabs": "~7.15.9", "@react-navigation/elements": "~2.9.14", "@react-navigation/native-stack": "~7.14.10", "@react-navigation/routers": "~7.5.3", "@swc/core": "^1.14.0", "@ungap/structured-clone": "^1.2.0", "@vxrn/color-scheme": "1.20.4", "@vxrn/compiler": "1.20.4", "@vxrn/resolve": "1.20.4", "@vxrn/tslib-lite": "1.20.4", "@vxrn/use-isomorphic-layout-effect": "1.20.4", "@vxrn/vite-plugin-metro": "1.20.4", "babel-dead-code-elimination": "1.0.10", "babel-plugin-module-resolver": "^5.0.2", "babel-preset-expo": "~55.0.0", "citty": "^0.1.6", "core-js": "^3.38.1", "create-vxrn": "1.20.4", "escape-string-regexp": "^5.0.0", "expo-linking": "~55.0.7", "expo-modules-core": "~55.0.16", "fast-deep-equal": "^3.1.3", "fast-glob": "^3.3.3", "fs-extra": "^11.2.0", "hono": "^4.12.8", "lightningcss": "^1.30.1", "micromatch": "^4.0.8", "nanoid": "^3.3.7", "oxc-parser": "^0.112.0", "perfect-debounce": "^1.0.0", "picocolors": "^1.0.0", "react-compiler-runtime": "^19.0.0-beta-201e55d-20241215", "react-native-css-interop": "^0.2.1", "ts-pattern": "^5.6.2", "tsconfig-paths": "^4", "use-latest-callback": "^0.2.3", "vite": "^8.0.13", "vxrn": "1.20.4", "ws": "^8.21.0", "xxhashjs": "^0.2.2" }, "peerDependencies": { "@bottom-tabs/react-navigation": ">=0.9.0", "@react-navigation/drawer": "~7.9.8", "@react-navigation/native": "~7.2.2", "react": "^19.2.0", "react-dom": "^19.2.0", "react-native": "0.83.2", "react-native-bottom-tabs": ">=1.0.0", "react-native-gesture-handler": ">=2.0.0", "react-native-reanimated": ">=4.0.0", "react-native-safe-area-context": ">=5.0.0", "react-native-screens": ">=4.0.0", "react-native-worklets": ">=0.7.0", "sharp": "^0.34.5" }, "optionalPeers": ["@bottom-tabs/react-navigation", "@react-navigation/drawer", "react-native", "react-native-bottom-tabs", "react-native-gesture-handler", "react-native-reanimated", "react-native-worklets", "sharp"], "bin": { "one": "run.mjs" } }, "sha512-lJZhuB0nwxLiwrKEAgfKJsTfAYHZnM/GTJSpkYoXw5ET8bUQyx3RMd5kIywt7moKSOjvQz1/U4pqq8EqdZWSuA=="],
+    "one": ["one@1.21.13", "", { "dependencies": { "@azure/core-asynciterator-polyfill": "^1.0.2", "@babel/core": "^7.28.5", "@babel/generator": "^7.28.5", "@babel/parser": "^7.28.5", "@babel/traverse": "^7.28.5", "@babel/types": "^7.28.5", "@bacons/text-decoder": "^0.0.0", "@cloudflare/vite-plugin": "^1.33.1", "@radix-ui/react-slot": "^1.0.2", "@react-native-masked-view/masked-view": "^0.3.2", "@react-navigation/bottom-tabs": "~7.15.9", "@react-navigation/elements": "~2.9.14", "@react-navigation/native-stack": "~7.14.10", "@react-navigation/routers": "~7.5.3", "@swc/core": "^1.14.0", "@ungap/structured-clone": "^1.2.0", "@vxrn/color-scheme": "1.21.13", "@vxrn/compiler": "1.21.13", "@vxrn/resolve": "1.21.13", "@vxrn/tslib-lite": "1.21.13", "@vxrn/use-isomorphic-layout-effect": "1.21.13", "@vxrn/vite-plugin-metro": "1.21.13", "babel-dead-code-elimination": "1.0.10", "babel-plugin-module-resolver": "^5.0.2", "babel-preset-expo": "~55.0.0", "citty": "^0.1.6", "core-js": "^3.38.1", "create-vxrn": "1.21.13", "escape-string-regexp": "^5.0.0", "expo-linking": "~55.0.7", "expo-modules-core": "~55.0.16", "fast-deep-equal": "^3.1.3", "fast-glob": "^3.3.3", "fs-extra": "^11.2.0", "hono": "^4.12.8", "lightningcss": "^1.30.1", "micromatch": "^4.0.8", "nanoid": "^3.3.7", "oxc-parser": "^0.112.0", "perfect-debounce": "^1.0.0", "picocolors": "^1.0.0", "react-compiler-runtime": "^19.0.0-beta-201e55d-20241215", "react-native-css-interop": "^0.2.1", "ts-pattern": "^5.6.2", "tsconfig-paths": "^4", "use-latest-callback": "^0.2.3", "vite": "^8.0.13", "vxrn": "1.21.13", "ws": "^8.21.0", "xxhashjs": "^0.2.2" }, "peerDependencies": { "@bottom-tabs/react-navigation": ">=0.9.0", "@react-navigation/drawer": "~7.9.8", "@react-navigation/native": "~7.2.2", "react": "^19.2.0", "react-dom": "^19.2.0", "react-native": "0.83.2", "react-native-bottom-tabs": ">=1.0.0", "react-native-gesture-handler": ">=2.0.0", "react-native-reanimated": ">=4.0.0", "react-native-safe-area-context": ">=5.0.0", "react-native-screens": ">=4.0.0", "react-native-worklets": ">=0.7.0", "sharp": "^0.35.3" }, "optionalPeers": ["@bottom-tabs/react-navigation", "@react-navigation/drawer", "react-native", "react-native-bottom-tabs", "react-native-gesture-handler", "react-native-reanimated", "react-native-worklets", "sharp"], "bin": { "one": "run.mjs" } }, "sha512-Qp+5eeNBXz589UIMOoSdlXN1goWmdNtjA6m1UlXxEWYAzLoG6sZofJYRbC01nBxP+iyZnv+AoEPC3GkjRGdoUA=="],
 
     "one-time": ["one-time@1.0.0", "", { "dependencies": { "fn.name": "1.x.x" } }, "sha512-5DXOiRKwuSEcQ/l0kGCF6Q3jcADFv5tSmRaJck/OqkVFcOzutB134KRSfF0xDrL39MNnqxbHBbUUcjZIhTgb2g=="],
 
@@ -9005,7 +9005,7 @@
 
     "vlq": ["vlq@1.0.1", "", {}, "sha512-gQpnTgkubC6hQgdIcRdYGDSDc+SaujOdyesZQMv6JlfQee/9Mp0Qhnys6WxDWvQnL5WZdT7o2Ul187aSt0Rq+w=="],
 
-    "vxrn": ["vxrn@1.20.4", "", { "dependencies": { "@expo/config-plugins": "~55.0.6", "@hono/node-server": "^1.19.14", "@react-native/dev-middleware": "^0.83.4", "@swc/core": "^1.14.0", "@vxrn/compiler": "1.20.4", "@vxrn/debug": "1.20.4", "@vxrn/query-string": "1.20.4", "@vxrn/resolve": "1.20.4", "@vxrn/safe-area": "1.20.4", "@vxrn/url-parse": "1.20.4", "@vxrn/utils": "1.20.4", "@vxrn/vendor": "1.20.4", "@vxrn/vite-flow": "1.20.4", "@vxrn/vite-plugin-metro": "1.20.4", "citty": "^0.1.6", "dotenv": "^17.2.1", "dotenv-expand": "^12.0.2", "env-editor": "^1.1.0", "es-module-lexer": "^1.3.0", "fast-flow-transform": "^0.0.3", "fast-glob": "^3.3.3", "find-node-modules": "^2.1.3", "fs-extra": "^11.2.0", "get-port-please": "^3.1.2", "hono": "^4.12.8", "image-size": "^1.2.1", "micromatch": "^4.0.8", "perfect-debounce": "^1.0.0", "picocolors": "^1.0.0", "pkg-types": "^1.0.3", "rolldown": "^1.0.1", "semver": "^7.6.3", "vite": "^8.0.13", "ws": "^8.21.0" }, "bin": { "vxrn": "run.mjs" } }, "sha512-abgmwwOPD9fBvQxDRr0SGtoYochQBuyPQxOUZbI1FCPAhcSTEuWYOIDisnpEjTo5DmCdtNA4HWiy/khVlqwnAQ=="],
+    "vxrn": ["vxrn@1.21.13", "", { "dependencies": { "@expo/config-plugins": "~55.0.6", "@hono/node-server": "^1.19.14", "@react-native/dev-middleware": "^0.83.4", "@swc/core": "^1.14.0", "@vxrn/compiler": "1.21.13", "@vxrn/debug": "1.21.13", "@vxrn/query-string": "1.21.13", "@vxrn/resolve": "1.21.13", "@vxrn/safe-area": "1.21.13", "@vxrn/url-parse": "1.21.13", "@vxrn/utils": "1.21.13", "@vxrn/vendor": "1.21.13", "@vxrn/vite-flow": "1.21.13", "@vxrn/vite-plugin-metro": "1.21.13", "citty": "^0.1.6", "dotenv": "^17.2.1", "dotenv-expand": "^12.0.2", "env-editor": "^1.1.0", "es-module-lexer": "^1.3.0", "fast-flow-transform": "^0.0.3", "fast-glob": "^3.3.3", "find-node-modules": "^2.1.3", "fs-extra": "^11.2.0", "get-port-please": "^3.1.2", "hono": "^4.12.8", "image-size": "^1.2.1", "micromatch": "^4.0.8", "perfect-debounce": "^1.0.0", "picocolors": "^1.0.0", "pkg-types": "^1.0.3", "rolldown": "^1.0.1", "semver": "^7.6.3", "vite": "^8.0.13", "ws": "^8.21.0" }, "bin": { "vxrn": "run.mjs" } }, "sha512-ad5OdDexmYBSxUwcy3rXs1TNxMGHZSkH3teWqEPjIie1jLTGIFatif8EA9rBYUs17A370dv0H6+R1OKkmLjUsg=="],
 
     "w-json": ["w-json@1.3.11", "", {}, "sha512-Xa8vTinB5XBIYZlcN8YyHpE625pBU6k+lvCetTQM+FKxRtLJxAY9zUVZbRqCqkMeEGbQpKvGUzwh4wZKGem+ag=="],
 
@@ -9878,10 +9878,6 @@
     "null-loader/loader-utils": ["loader-utils@2.0.4", "", { "dependencies": { "big.js": "^5.2.2", "emojis-list": "^3.0.0", "json5": "^2.1.2" } }, "sha512-xXqpXoINfFhgua9xiqD8fPFHgkoq1mmmpE92WlDbm9rNRd/EbRb+Gqf908T2DMfuHjjJlksiK2RbHVOdD/MqSw=="],
 
     "null-loader/schema-utils": ["schema-utils@3.3.0", "", { "dependencies": { "@types/json-schema": "^7.0.8", "ajv": "^6.12.5", "ajv-keywords": "^3.5.2" } }, "sha512-pN/yOAvcC+5rQ5nERGuwrjLlYvLTbCibnZ1I7B1LaiAz9BRBlE9GMgE/eqV30P7aJQUf7Ddimy/RsbYO/GrVGg=="],
-
-    "one/@vxrn/color-scheme": ["@vxrn/color-scheme@1.20.4", "", { "dependencies": { "@vxrn/use-isomorphic-layout-effect": "1.20.4" }, "peerDependencies": { "react": "19.2.0", "react-native": "0.83.2" } }, "sha512-BkXMtFfl1cwHH91EnhF+AoFh/pXqcnK0039v7EQHJyOM7INfzb18FBXIOt1Mwe2PHvlsdlrp+iI6UX6w/cN0JA=="],
-
-    "one/@vxrn/use-isomorphic-layout-effect": ["@vxrn/use-isomorphic-layout-effect@1.20.4", "", { "peerDependencies": { "react": "^19.2.0" } }, "sha512-Qoxn7dnhgNNFZg0MBbXRvN/OrFaeUChfQ8xBLjcmjntA/A548H/8pLA9wpCF6OeqGWJHnSMJa4FM9Sck2wUwcQ=="],
 
     "ora/chalk": ["chalk@2.4.2", "", { "dependencies": { "ansi-styles": "^3.2.1", "escape-string-regexp": "^1.0.5", "supports-color": "^5.3.0" } }, "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ=="],
 

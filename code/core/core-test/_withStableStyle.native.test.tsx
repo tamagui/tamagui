@@ -7,7 +7,16 @@ import { View } from 'react-native'
 import { describe, expect, test, vi } from 'vitest'
 
 const defaultConfig = getDefaultTamaguiConfig('native')
-const config = createTamagui(defaultConfig)
+const config = createTamagui({
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    mediaQueryDefaultActive: {
+      xs: true,
+      gtLg: false,
+    },
+  },
+})
 
 describe('_withStableStyle', () => {
   test('renders correctly with TamaguiProvider', () => {
@@ -76,5 +85,33 @@ describe('_withStableStyle', () => {
     )
 
     expect(receivedExpressions).toEqual([true, false, 42])
+  })
+
+  test('media expressions require both the media query and runtime condition', () => {
+    let receivedExpressions: any[] = []
+
+    const Wrapped = _withStableStyle(
+      View,
+      (_theme, expressions) => {
+        receivedExpressions = expressions
+        return []
+      },
+      false,
+      true
+    )
+
+    render(
+      <TamaguiProvider defaultTheme="light" config={config}>
+        <Wrapped
+          _expressions={[
+            ['gtLg', true],
+            ['xs', true],
+            ['xs', false],
+          ]}
+        />
+      </TamaguiProvider>
+    )
+
+    expect(receivedExpressions).toEqual([false, true, false])
   })
 })

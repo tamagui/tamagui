@@ -8,6 +8,7 @@ const React = require('react')
 
 // mock for usePressability - returns empty event handlers object
 const usePressabilityMock = { default: () => ({}) }
+const codegenNativeComponentMock = (name) => name
 const SafeAreaInsetsContext = React.createContext(null)
 const defaultInsets = { top: 0, right: 0, bottom: 0, left: 0 }
 const defaultFrame = { x: 0, y: 0, width: 0, height: 0 }
@@ -37,6 +38,9 @@ Module.prototype.require = function (id) {
   // handle specific react-native subpaths that need special mocking
   if (id === 'react-native/Libraries/Pressability/usePressability') {
     return usePressabilityMock
+  }
+  if (id === 'react-native/Libraries/Utilities/codegenNativeComponent') {
+    return codegenNativeComponentMock
   }
   // redirect all other react-native requires to fake-react-native
   if (id === 'react-native' || id.startsWith('react-native/')) {

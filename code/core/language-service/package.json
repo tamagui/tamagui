@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/language-service",
-  "version": "2.5.1",
+  "version": "2.6.3",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
