@@ -1,5 +1,5 @@
 import { getSafeArea } from '@tamagui/native'
-import { getSafeAreaEdge } from '@tamagui/style-grammar'
+import { getSafeAreaEdge } from '@tamagui/style-grammar/runtime'
 
 let didWarnMissingSetup = false
 
