@@ -52,7 +52,6 @@ export const webOnlyStylePropsView = {
   transition: true,
   backdropFilter: true,
   WebkitBackdropFilter: true,
-  background: true,
   borderTop: true,
   borderRight: true,
   borderBottom: true,

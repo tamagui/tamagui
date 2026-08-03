@@ -1189,6 +1189,12 @@ function emitValue(
       )
       return
     }
+    if (!isWeb) {
+      if (process.env.NODE_ENV === 'development') {
+        warnOnce(`native background cannot represent "${raw}"; dropping it`)
+      }
+      return
+    }
   }
 
   if (
