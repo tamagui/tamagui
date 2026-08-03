@@ -105,9 +105,17 @@ bun code/comparisons/run-native-v2-v3.ts \
   --smoke \
   --udid=<UDID> \
   --seed=73129 \
+  --warmups=3 \
   --scenarios=simple \
   --compiler-evidence=/tmp/tamagui-native-compiler-evidence.json
 ```
+
+Every Release run that selects a compiled scenario must include `simple`.
+After the warmups and before any retained sampling, the runner compares each
+version's simple-mount runtime mean with its compiled mean. Both V2 and V3 must
+show at least a 1.5x compiled speedup. A failure stops the campaign before it
+writes retained output; a pass is recorded in
+`metadata.compilerEffectivenessGate`.
 
 The command writes `output/benchmarks-native-v2-v3.json` and a Markdown summary beside it. The JSON records every trial and its randomized sequence plus source, package lock, npm integrity, installed dependency, host, simulator, tool, compiler, and production bundle metadata.
 
