@@ -75,7 +75,7 @@ Lives in a fresh `@tamagui/themes` src, statically generated for shipping (the
 generator stays out of `@tamagui/config/v6` static imports, same split as
 today). Everything below is exported so apps can import-and-override or copy.
 
-The authoring surface is the scales plus the tree, roughly 200 lines total.
+The authoring surface is the scales plus the tree, roughly 120 lines total.
 The level cross-product (~28 value maps, ~130 names) exists only in generated
 output; customizing never means writing levels out by hand, it means editing a
 number in a scale object.
@@ -90,73 +90,91 @@ absolute strings don't tint.
 Shade numbers below are starting points pending the visual pass in Validation.
 
 ```ts
+const light = {
+  background: 'white',
+  'background-hover': 50,
+  'background-press': 'white', // press rests by default, see below
+  'background-focus': 50,
+  'border-color': 200,
+  'border-color-hover': 300,
+  'border-color-press': 200,
+  'border-color-focus': 300,
+  color: 950,
+  'color-hover': 950,
+  'color-press': 950,
+  'color-focus': 950,
+  'placeholder-color': 500,
+  'outline-color': 400,
+  'shadow-color': 'shadow-3',
+  'accent-background': 'brand-600',
+  'accent-color': 'brand-50',
+}
+
+const dark = {
+  ...light,
+  background: 950,
+  'background-hover': 900,
+  'background-press': 950,
+  'background-focus': 900,
+  'border-color': 800,
+  'border-color-hover': 700,
+  'border-color-press': 800,
+  'border-color-focus': 700,
+  color: 50,
+  'color-hover': 50,
+  'color-press': 50,
+  'color-focus': 50,
+  'shadow-color': 'shadow-6',
+}
+
+const boldLight = { background: 600, 'background-hover': 500, 'background-press': 600, 'border-color': 700, color: 50, 'placeholder-color': 200, 'outline-color': 400 /* ... */ }
+
+const tintLight = { background: 100, 'background-hover': 50, 'background-press': 100, 'border-color': 300, color: 700, 'placeholder-color': 400, 'outline-color': 400 /* ... */ }
+
 export const scales = {
-  // the app base: light and dark, anchored to white/black endpoints
+  // the app base, anchored to the white/black ladder endpoints
   normal: {
-    light: {
-      1: {
-        background: 'white',
-        'background-hover': 50,
-        'background-press': 'white', // press rests by default, see below
-        'background-focus': 50,
-        'border-color': 200,
-        'border-color-hover': 300,
-        'border-color-press': 200,
-        'border-color-focus': 300,
-        color: 950,
-        'color-hover': 950,
-        'color-press': 950,
-        'color-focus': 950,
-        'placeholder-color': 500,
-        'outline-color': 400,
-        'shadow-color': 'rgba(0,0,0,0.085)',
-        'accent-background': 'brand-600',
-        'accent-color': 'brand-50',
-      },
-      2: { background: 50, 'background-hover': 100, 'background-press': 50, 'background-focus': 100, 'border-color': 200 },
-      3: { background: 100, 'background-hover': 200, 'background-press': 100, 'background-focus': 200, 'border-color': 300 },
-      4: { background: 200, 'background-hover': 300, 'background-press': 200, 'background-focus': 300, 'border-color': 300 },
-    },
-    dark: {
-      1: { background: 950, 'background-hover': 900, 'background-press': 950, color: 50, 'border-color': 800, 'shadow-color': 'rgba(0,0,0,0.3)' /* ... */ },
-      2: { background: 900, 'background-hover': 800 /* ... */ },
-      3: { background: 800 /* ... */ },
-      4: { background: 700 /* ... */ },
-    },
+    light: { 1: light, 2: raise(light, 1), 3: raise(light, 2), 4: raise(light, 3) },
+    dark: { 1: dark, 2: raise(dark, -1), 3: raise(dark, -2), 4: raise(dark, -3) },
   },
 
   // the bold brand surface: solid fills, on-brand foreground
   bold: {
-    light: {
-      1: { background: 600, 'background-hover': 500, 'background-press': 600, 'border-color': 700, color: 50, 'placeholder-color': 200, 'outline-color': 400 /* ... */ },
-      2: { background: 500 /* ... */ },
-      3: { background: 400 /* ... */ },
-      4: { background: 300 /* ... */ },
-    },
+    light: { 1: boldLight, 2: raise(boldLight, -1), 3: raise(boldLight, -2), 4: raise(boldLight, -3) },
     dark: { /* same shape, tuned in visual pass */ },
   },
 
   // colored surfaces (accent, red, yellow, green, user-added): soft fill, semantic text
   tint: {
-    light: {
-      1: { background: 100, 'background-hover': 50, 'background-press': 100, 'border-color': 300, color: 700, 'placeholder-color': 400, 'outline-color': 400 /* ... */ },
-      2: { background: 50 /* ... */ },
-      3: { background: 200 /* ... */ },
-      4: { background: 300 /* ... */ },
-    },
-    dark: {
-      1: { background: 900, color: 300 /* ... */ },
-      2: { background: 800 /* ... */ },
-      3: { background: 700 /* ... */ },
-      4: { background: 600 /* ... */ },
-    },
+    light: { 1: tintLight, 2: raise(tintLight, -1), 3: raise(tintLight, 1), 4: raise(tintLight, 2) },
+    dark: { /* mirrored from a tintDark base via raise, tuned in visual pass */ },
   },
 }
 ```
 
-Levels 2+ spread the previous level and state deltas, plain JS. Each scale
-object is the complete customization surface for that treatment: change one
-number to change hover direction, press behavior, or border weight everywhere.
+`raise(scale, steps)` is a small exported helper, not a concept: it shifts the
+background and border families along the shade ladder
+`[white, 50, 100, ..., 950, black]` by `steps` (positive toward black,
+negative toward white), clamping at the ends. Foreground keys (`color`,
+`placeholder-color`, `outline-color`), shadows, and accent references pass
+through untouched, as do strings that aren't ladder stops (`brand-600`, rgba
+literals). Customizing a level means overriding after it
+(`3: { ...raise(light, 2), background: 100 }`), writing the level out
+literally, or not using `raise` at all. The level-1 objects are the complete
+customization surface per treatment: one number changes hover direction, press
+behavior, or border weight everywhere.
+
+### Shadows
+
+The numbered shadow scale stays, as tokens: `tokens.color` gains `shadow-1`
+through `shadow-7`, a black-alpha ladder aligned to Tailwind's shadow steps
+(2xs through 2xl), replacing v5's two-step `shadow1`/`shadow2` theme extras.
+Shadows are base-level values, not per-theme: themes carry only
+`shadow-color`, and each scale picks its step per scheme (the sketch uses
+`shadow-3` light, `shadow-6` dark, keeping v5's stronger-in-dark behavior).
+The tokens are also usable directly in styles for a fixed shadow. Shadow
+geometry stays in skins per `plans/v3-composable-theme-levels.md`. Exact
+alphas settle in the visual pass.
 
 Interaction defaults: press stays at rest (skins that want press feedback use
 opacity in `pressStyle`), hover moves one step. Both are single-number edits in
@@ -348,8 +366,9 @@ Known dependents to migrate, from a repo grep: `@tamagui/themes` v5 files,
    the `levels()` recursive type prototype. Prove the typing story before
    anything else.
 2. Default config in fresh `@tamagui/themes` src: scales, `getTheme`,
-   `fromShades`, `ramp`, `levels`, the tree. Static generation. Rewire
-   `@tamagui/config/v6` off the v5 path.
+   `fromShades`, `ramp`, `raise`, `levels`, the tree, and the `shadow-1..7`
+   token ladder. Static generation. Rewire `@tamagui/config/v6` off the v5
+   path.
 3. Migrate kitchen-sink (`theme.dev.ts`), run the visual pass and the size
    assertion.
 4. Remove runtime component-theme resolution from `@tamagui/web`.
@@ -382,8 +401,10 @@ Known dependents to migrate, from a repo grep: `@tamagui/themes` v5 files,
   current v6 output via v5 palette padding. Lean: drop from the default and use
   opacity styles or literal rgba where needed; grep kitchen-sink and site usage
   before deciding.
-- `shadow-color` ships as literal rgba in the scales; revisit if shadow tokens
-  become cross-platform generics.
+- Tinted shadows (a theme's `shadow-color` derived from its palette at low
+  alpha) are attractive as an option. Needs alpha-of-shade support: dedicated
+  tinted shadow tokens or color math at generation time. Not in the default;
+  document as a customization once proven.
 - `ramp()` keys ship in every theme (11 keys per distinct map); that is what
   makes scheme- and palette-relative styling work everywhere. Revisit only if
   the size assertion flags the cost.
