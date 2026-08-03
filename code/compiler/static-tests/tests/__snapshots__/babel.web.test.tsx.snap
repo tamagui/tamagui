@@ -158,13 +158,13 @@ exports[`conditional styles extract disjoint static siblings 1`] = `
 import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <View className="_width-10px" bg={props.green ? 'red' : 'blue'} />
+        <View className="_w-1850139707" bg={props.green ? 'red' : 'blue'} />
       )
     }
 "
 `;
 
-exports[`conditional styles extract disjoint static siblings 2`] = `"._width-10px{width:10px;}"`;
+exports[`conditional styles extract disjoint static siblings 2`] = `"._w-1850139707{width:10px}"`;
 
 exports[`double ternary + spread 1`] = `
 "
@@ -194,14 +194,14 @@ exports[`flexBasis: 0 with responsive style extracts correctly 1`] = `
     export function Test() {
       return (
         <div
-          className="is_View _fb-704506053"
+          className="is_View _fb-1714115553"
         />
       )
     }
 "
 `;
 
-exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._fb-704506053{flex-basis:1}@media (min-width: 640px) {._fb-704506053{flex-basis:0px}}"`;
+exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._fb-1714115553{flex-basis:1}@media (min-width: 640px) {._fb-1714115553{flex-basis:0px}}"`;
 
 exports[`font_body class is present in BOTH ternary branches 1`] = `
 "const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
@@ -236,7 +236,7 @@ exports[`fontFamily shorthand + styled + flatten works 1`] = `
     export function Test(props) {
       return (
         <span
-          className="is_MySizableText is_Text _bc-1493651562 _ff-505468216"
+          className="is_MySizableText is_Text _bc-1277784850 _ff-513915828"
         />
       )
     }
@@ -319,7 +319,7 @@ exports[`ternary with mixed theme-token and non-token values retains dynamic pro
     export function Test({ isActive, label }) {
       return (
         <Text
-          className="_fs-2056930215"
+          className="_fs-893655852"
           fontWeight={isActive ? '600' : '400'}
           color={isActive ? 'color12' : 'color11'}
         >
@@ -330,7 +330,7 @@ exports[`ternary with mixed theme-token and non-token values retains dynamic pro
 "
 `;
 
-exports[`ternary with mixed theme-token and non-token values retains dynamic props 2`] = `"._fs-2056930215{font-size:var(--f-size-3)}"`;
+exports[`ternary with mixed theme-token and non-token values retains dynamic props 2`] = `"._fs-893655852{font-size:var(--f-size-3)}"`;
 
 exports[`theme + media queries + conditionals extract 1`] = `
 "

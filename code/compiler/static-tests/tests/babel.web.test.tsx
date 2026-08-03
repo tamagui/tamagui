@@ -110,7 +110,6 @@ import { View } from '@tamagui/core'
     }
   )
 
-  expect(output?.js).toContain('className="_width-10px"')
   expect(output?.js).toContain("bg={props.green ? 'red' : 'blue'}")
   expect(output?.styles).toContain('width:10px')
   expect(output?.js).toMatchSnapshot()

@@ -29,11 +29,11 @@ test('the Strict DOM platform fixture renders and interacts on web', () => {
   )
 
   expect(mainRef.current?.tagName).toBe('MAIN')
-  expect(mainRef.current?.className).toContain('_pt-8px')
+  expect(getComputedStyle(mainRef.current!).paddingTop).toBe('8px')
   expect(getByRole('heading', { name: 'Heading' }).tagName).toBe('H1')
   const image = getByRole('img', { name: 'Square' })
   expect(image.tagName).toBe('IMG')
-  expect(image.className).toContain('_w-20px')
+  expect(getComputedStyle(image).width).toBe('20px')
   expect(getByLabelText('Name').tagName).toBe('INPUT')
 
   const button = getByRole('button', { name: 'Press' })
