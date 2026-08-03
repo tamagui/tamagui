@@ -1,10 +1,6 @@
 name: Test iOS Kitchen Sink Go (Maestro)
 
 on:
-  push:
-    branches: [main, 'v2-*', 'v3-*']
-  pull_request:
-    branches: [main, 'v2-*', 'v3-*']
   workflow_dispatch:
 
 permissions:
