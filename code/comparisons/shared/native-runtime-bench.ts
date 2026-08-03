@@ -20,8 +20,9 @@ type CreateNativeRuntimeBenchOptions = {
   useURL(): string | null
   RNView: any
   RNText: any
+  flattenStyle(style: unknown): Record<string, unknown> | undefined
   TamaguiProvider: any
-  GroupContext: any
+  styled: any
   View: any
   Button: any
   getVariableValue(value: unknown): unknown
@@ -41,8 +42,9 @@ export function createNativeRuntimeBenchApp({
   useURL,
   RNView,
   RNText,
+  flattenStyle,
   TamaguiProvider,
-  GroupContext,
+  styled,
   View,
   Button,
   getVariableValue,
@@ -126,9 +128,9 @@ export function createNativeRuntimeBenchApp({
       version === 'v2'
         ? {
             backgroundColor: token('blue5'),
-            '$group-row-hover:backgroundColor': token('blue7'),
+            '$group-row-press': { backgroundColor: token('blue7') },
           }
-        : { backgroundColor: 'blue5 group-hover/row:blue7' },
+        : { backgroundColor: 'blue5 group-press/row:blue7' },
     component: {
       size: token('3'),
       theme: 'blue',
@@ -152,55 +154,55 @@ export function createNativeRuntimeBenchApp({
     version === 'v2'
       ? {
           backgroundColor: token('gray2'),
-          hoverStyle: { backgroundColor: token('gray3') },
+          pressStyle: { backgroundColor: token('gray3') },
         }
-      : { backgroundColor: 'gray2 hover:gray3' }
+      : { backgroundColor: 'gray2 press:gray3' }
   const groupAvatarInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('blue5'),
-          '$group-row-hover:backgroundColor': token('blue7'),
+          '$group-row-press': { backgroundColor: token('blue7') },
         }
-      : { backgroundColor: 'blue5 group-hover/row:blue7' }
+      : { backgroundColor: 'blue5 group-press/row:blue7' }
   const groupBarInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('gray8'),
-          '$group-row-hover:backgroundColor': token('blue8'),
+          '$group-row-press': { backgroundColor: token('blue8') },
         }
-      : { backgroundColor: 'gray8 group-hover/row:blue8' }
+      : { backgroundColor: 'gray8 group-press/row:blue8' }
   const heavyParentInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('gray1'),
           borderColor: token('gray4'),
-          hoverStyle: {
+          pressStyle: {
             backgroundColor: token('gray2'),
             borderColor: token('gray6'),
           },
         }
       : {
-          backgroundColor: 'gray1 hover:gray2',
-          borderColor: 'gray4 hover:gray6',
+          backgroundColor: 'gray1 press:gray2',
+          borderColor: 'gray4 press:gray6',
         }
   const heavyAvatarInteractionProps =
     version === 'v2'
-      ? { opacity: 1, '$group-card-hover:opacity': 0.8 }
-      : { opacity: 'group-hover/card:0.8' }
+      ? { opacity: 1, '$group-card-press': { opacity: 0.8 } }
+      : { opacity: 'group-press/card:0.8' }
   const heavyTitleInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('gray11'),
-          '$group-card-hover:backgroundColor': token('blue9'),
+          '$group-card-press': { backgroundColor: token('blue9') },
         }
-      : { backgroundColor: 'gray11 group-hover/card:blue9' }
+      : { backgroundColor: 'gray11 group-press/card:blue9' }
   const heavyBadgeInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('blue3'),
-          '$group-card-hover:backgroundColor': token('blue5'),
+          '$group-card-press': { backgroundColor: token('blue5') },
         }
-      : { backgroundColor: 'blue3 group-hover/card:blue5' }
+      : { backgroundColor: 'blue3 group-press/card:blue5' }
   type RenderState = { instance: number; revision: number }
 
   function SimpleItems({ instance, revision }: RenderState) {
@@ -401,16 +403,29 @@ export function createNativeRuntimeBenchApp({
     component: ComponentItems,
   }
 
-  function GroupBehaviorProbe({ onResolved }: { onResolved(style: object): void }) {
-    const [, style] = usePropsAndStyle(runtimeBehaviorProps.group, { noMedia: true })
-    const signature = JSON.stringify(style)
-    useLayoutEffect(() => {
-      if (getVariableValue(style.backgroundColor) === '#2563eb') {
-        onResolved(normalizeStyle(style, ['backgroundColor']))
+  const GroupBehaviorProbe = styled(
+    React.forwardRef(
+      (
+        {
+          onResolvedStyle,
+          style,
+          ...props
+        }: {
+          onResolvedStyle(style: object): void
+          style?: unknown
+        },
+        ref: unknown
+      ) => {
+        const flattened = flattenStyle(style) ?? {}
+        const signature = JSON.stringify(flattened)
+        useLayoutEffect(() => {
+          onResolvedStyle(normalizeStyle(flattened, ['backgroundColor']))
+        }, [onResolvedStyle, signature])
+        return createElement(RNView, { ...props, ref, style })
       }
-    }, [onResolved, signature])
-    return null
-  }
+    ),
+    { name: 'NativeRuntimeGroupBehaviorProbe' }
+  )
 
   function RuntimeBehaviorGate({ onReady }: { onReady(signature: object): void }) {
     const [, staticStyle] = usePropsAndStyle(runtimeBehaviorProps.static, {
@@ -430,20 +445,11 @@ export function createNativeRuntimeBenchApp({
       }
     )
     const [groupStyle, setGroupStyle] = useState(null as object | null)
-    const handleGroupStyle = useCallback(
-      (style: object) => setGroupStyle((current: object | null) => current ?? style),
-      []
-    )
-    const groupContext = useMemo(() => {
-      const state = { pseudo: { hover: true } }
-      return {
-        row: {
-          state,
-          subscribe(listener: (next: typeof state) => void) {
-            listener(state)
-            return () => {}
-          },
-        },
+    const componentName = Button.staticConfig?.componentName ?? null
+    const expectedComponentName = version === 'v2' ? 'Button' : 'ButtonFrame'
+    const handleGroupStyle = useCallback((style: Record<string, unknown>) => {
+      if (getVariableValue(style.backgroundColor) === '#2563eb') {
+        setGroupStyle((current: object | null) => current ?? style)
       }
     }, [])
     const signature = useMemo(
@@ -474,9 +480,17 @@ export function createNativeRuntimeBenchApp({
           'color',
           'opacity',
         ]),
-        componentName: Button.staticConfig?.componentName ?? null,
+        componentName: componentName === expectedComponentName ? 'Button' : componentName,
       }),
-      [componentProps, componentStyle, pseudoStyle, staticStyle, tokenStyle]
+      [
+        componentName,
+        componentProps,
+        componentStyle,
+        expectedComponentName,
+        pseudoStyle,
+        staticStyle,
+        tokenStyle,
+      ]
     )
 
     useLayoutEffect(() => {
@@ -508,20 +522,26 @@ export function createNativeRuntimeBenchApp({
         }
       }
       if (
-        typeof completeSignature.componentName !== 'string' ||
+        componentName !== expectedComponentName ||
         completeSignature.component.opacity !== 0.8
       ) {
         throw new Error(
-          `native component behavior mismatch: ${JSON.stringify(completeSignature.component)}`
+          `native component behavior mismatch: ${JSON.stringify({
+            componentName,
+            style: completeSignature.component,
+          })}`
         )
       }
       onReady(completeSignature)
-    }, [groupStyle, onReady, signature])
+    }, [componentName, expectedComponentName, groupStyle, onReady, signature])
 
     return createElement(
-      GroupContext.Provider,
-      { value: groupContext },
-      createElement(GroupBehaviorProbe, { onResolved: handleGroupStyle })
+      View,
+      { group: 'row', forceStyle: 'press' },
+      createElement(GroupBehaviorProbe, {
+        ...runtimeBehaviorProps.group,
+        onResolvedStyle: handleGroupStyle,
+      })
     )
   }
 

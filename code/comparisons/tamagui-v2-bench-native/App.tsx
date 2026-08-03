@@ -1,11 +1,11 @@
 import * as Linking from 'expo-linking'
 import { useURL } from 'expo-linking'
 import * as React from 'react'
-import { Text as RNText, View as RNView } from 'react-native'
+import { StyleSheet, Text as RNText, View as RNView } from 'react-native'
 import {
   Button,
   getVariableValue,
-  GroupContext,
+  styled,
   TamaguiProvider,
   usePropsAndStyle,
   View,
@@ -19,8 +19,9 @@ export const App = createNativeRuntimeBenchApp({
   useURL,
   RNView,
   RNText,
+  flattenStyle: StyleSheet.flatten,
   TamaguiProvider,
-  GroupContext,
+  styled,
   View,
   Button,
   getVariableValue,
