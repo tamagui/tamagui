@@ -74,7 +74,6 @@ export declare const webOnlyStylePropsView: {
     transition: boolean;
     backdropFilter: boolean;
     WebkitBackdropFilter: boolean;
-    background: boolean;
     borderTop: boolean;
     borderRight: boolean;
     borderBottom: boolean;

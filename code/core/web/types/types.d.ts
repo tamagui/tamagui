@@ -1200,7 +1200,8 @@ interface ExtraStyleProps {
      */
     backdropFilter?: Properties['backdropFilter'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * Works on web and native. Native lowers a single color value to
+     * backgroundColor and drops url()/gradient/multi-part values it can't express.
      *
      * The v6 shorthands map `bg` here rather than to `backgroundColor`, because
      * the background family splits a value like `url(x.png) color1` across

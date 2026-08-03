@@ -208,6 +208,24 @@ describe('getSplitStyles', () => {
     ).toEqual('var(--f-size-1)')
   })
 
+  test(`background shorthand passes through to CSS on web`, () => {
+    const shorthand = simplifiedGetSplitStyles(View, {
+      background: '#fff url(x.png) no-repeat',
+    })
+    const rule = Object.values(shorthand.rulesToInsert).find(
+      (rule) => rule[StyleObjectProperty] === 'background'
+    )
+    expect(rule?.[StyleObjectValue]).toBe('#fff url(x.png) no-repeat')
+
+    // single color values normalize to backgroundColor
+    const color = simplifiedGetSplitStyles(View, { background: 'red' })
+    expect(
+      Object.values(color.rulesToInsert).find(
+        (rule) => rule[StyleObjectProperty] === 'backgroundColor'
+      )?.[StyleObjectValue]
+    ).toBe('red')
+  })
+
   test(`light and dark theme clauses generate the correct CSS selectors`, () => {
     // Test light theme styles
     const lightThemeStyles = simplifiedGetSplitStyles(View, {
