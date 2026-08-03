@@ -59,6 +59,15 @@ const asStyleRecord = (style: unknown): Record<string, unknown> =>
     ? (style as Record<string, unknown>)
     : {}
 
+// raw CSSOM assignment (unlike React's style prop) silently ignores unitless
+// numbers, and the core hands the inline-output driver RN-format numeric
+// values — suffix px the way React would before writing
+function assignInlineStyles(node: HTMLElement, styles: Record<string, unknown>) {
+  for (const key in styles) {
+    node.style[key] = normalizeValueWithProperty(styles[key], key)
+  }
+}
+
 /**
  * Animation options with optional default and per-property configs.
  * This extends AnimationOptions to support the default key.
@@ -384,10 +393,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               removeRemovedStyles(prevDont, dontAnimate, node, doAnimate)
               const changed = getDiff(prevDont, dontAnimate)
               if (changed) {
-                Object.assign(node.style, changed as any)
+                assignInlineStyles(node, changed)
               }
             } else {
-              Object.assign(node.style, dontAnimate as any)
+              assignInlineStyles(node, dontAnimate)
             }
           }
 
@@ -397,7 +406,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             if (prevDont) {
               for (const key in prevDont) {
                 if (key in doAnimate) {
-                  node.style[key] = prevDont[key]
+                  node.style[key] = normalizeValueWithProperty(prevDont[key], key)
                   if (refs.current.lastDoAnimate) {
                     refs.current.lastDoAnimate[key] = prevDont[key]
                   }
@@ -781,8 +790,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if ((justEnabled || justStrippedClasses) && animationState !== 'enter') {
           const node = stateRef.current.host
           if (node instanceof HTMLElement) {
-            if (dontAnimate) Object.assign(node.style, dontAnimate)
-            if (doAnimate) Object.assign(node.style, doAnimate)
+            if (dontAnimate) assignInlineStyles(node, dontAnimate)
+            if (doAnimate) assignInlineStyles(node, doAnimate)
             // keep the popper position motion values in sync with the direct
             // inline write so a later retarget doesn't start from a stale spot
             const entry = PopperPositionAnims.get(node)
