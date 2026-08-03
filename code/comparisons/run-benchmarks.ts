@@ -273,9 +273,10 @@ function moduleGroup(id: string) {
     const parts = dependency!.split('/')
     return parts[0]!.startsWith('@') ? `${parts[0]}/${parts[1]}` : parts[0]
   }
-  const workspace = id.match(/\.\.\/\.\.\/(?:core|packages)\/([^/]+)\/dist/)
-  if (workspace) return `@tamagui/${workspace[1]}`
-  if (id.includes('../../ui/tamagui/dist/')) return 'tamagui'
+  const workspace = id.match(/\.\.\/\.\.\/(?:core|packages|ui)\/([^/]+)\/dist/)
+  if (workspace) {
+    return workspace[1] === 'tamagui' ? 'tamagui' : `@tamagui/${workspace[1]}`
+  }
   if (id.startsWith('src/')) return 'fixture'
   if (id.includes('../shared/')) return 'shared benchmark'
   return 'build/runtime helpers'
