@@ -257,7 +257,9 @@ function tailwindClassToFlatProp(
     // tailwind percentage utilities: opacity-50 → 0.5, scale-95 → 0.95, scale-100 → 1
     value = Number(value) / 100
   } else if (/^\d+(\.\d+)?$/.test(value)) {
-    if (category) {
+    if (category === 'zIndex' && parsed.valueKind === 'convenience') {
+      value = Number(value)
+    } else if (category) {
       value = `${parsed.negative ? '-' : ''}${value}`
     } else {
       value = Number(value)

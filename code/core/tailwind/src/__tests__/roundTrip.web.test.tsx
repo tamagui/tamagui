@@ -173,8 +173,8 @@ describe('PASS 1 — 1b: aligned named typography', () => {
     const fromProp = styleOf({ fontSize: 'base', lineHeight: 'base' }, Text)
     expect(cls).toContain('text-base')
     expect(cls).toContain('leading-base')
-    expect((v6 as any).fonts.body.size.base).toBe('16px')
-    expect((v6 as any).fonts.body.lineHeight.base).toBe('24px')
+    expect((v6 as any).fonts.body.size.base).toBe(16)
+    expect((v6 as any).fonts.body.lineHeight.base).toBe(24)
     expect(fromClass.fontSize).toBe(fromProp.fontSize)
     expect(fromClass.lineHeight).toBe(fromProp.lineHeight)
     expect(typeof fromClass.fontSize).toBe('string')
@@ -279,12 +279,12 @@ describe('nested modifier expansion — md:hover:border-x', () => {
 })
 
 describe('PASS 2 — embedded shadow tokens', () => {
-  test('boxShadow="0 8px 18px shadow5" resolves shadow5 to the theme var, identical to the source prop', () => {
-    const cls = convertedClassName(`<View boxShadow="0 8px 18px shadow5" />`)
+  test('boxShadow="0 8px 18px shadow-5" resolves shadow-5 to the theme var, identical to the source prop', () => {
+    const cls = convertedClassName(`<View boxShadow="0 8px 18px shadow-5" />`)
     expect(cls).toContain('shadow-[')
     const fromClass = classStyle(cls).boxShadow
-    const fromProp = styleOf({ boxShadow: '0 8px 18px shadow5' }).boxShadow
-    expect(fromClass).toBe('0 8px 18px var(--shadow5)')
+    const fromProp = styleOf({ boxShadow: '0 8px 18px shadow-5' }).boxShadow
+    expect(fromClass).toBe('0 8px 18px var(--shadow-5)')
     expect(fromClass).toBe(fromProp)
   })
 })
