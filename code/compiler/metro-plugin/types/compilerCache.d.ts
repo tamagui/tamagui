@@ -34,7 +34,7 @@ export declare class MetroCompilerCache {
 	readonly root: string;
 	constructor(root: string);
 	publish(platform: string | null, entries: readonly MetroCompilerCacheEntry[], optionsHash: string): Promise<string>;
-	read(moduleId: string, compiledSource: string): Promise<MetroCompilerCacheEntry | null>;
+	read(moduleId: string, compiledSource: string, onMiss?: (reason: "no-entry" | "compiled-hash-mismatch", detail?: string) => void): Promise<MetroCompilerCacheEntry | null>;
 	validate(): Promise<MetroCompilerCacheValidation>;
 	discardManifest(): Promise<void>;
 }

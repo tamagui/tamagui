@@ -107,6 +107,7 @@ export function withTamagui(
       {
         cacheBaseRoot,
         originalBabelTransformerPath,
+        projectRoot,
       }
     )
     const userGetTransformOptions = metroConfig.transformer.getTransformOptions

@@ -171,14 +171,24 @@ export class MetroCompilerCache {
 
   async read(
     moduleId: string,
-    compiledSource: string
+    compiledSource: string,
+    onMiss?: (reason: 'no-entry' | 'compiled-hash-mismatch', detail?: string) => void
   ): Promise<MetroCompilerCacheEntry | null> {
     const manifest = await this.#readManifest()
     if (!manifest) return null
     const descriptor = manifest.entries[moduleId]
-    if (!descriptor) return null
+    if (!descriptor) {
+      onMiss?.('no-entry')
+      return null
+    }
     const compiledHash = metroCompilerContentHash(compiledSource)
-    if (compiledHash !== descriptor.compiledHash) return null
+    if (compiledHash !== descriptor.compiledHash) {
+      onMiss?.(
+        'compiled-hash-mismatch',
+        `worker ${compiledHash.slice(0, 12)} vs plan ${descriptor.compiledHash.slice(0, 12)}`
+      )
+      return null
+    }
     return await this.#readBlob(moduleId, descriptor)
   }
 

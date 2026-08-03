@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { promisify } from 'node:util'
 import { runInNewContext } from 'node:vm'
-import { dirname, join, resolve } from 'node:path'
+import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { afterEach, describe, expect, test } from 'vitest'
@@ -220,6 +220,7 @@ export const App = ({ dynamic }) => (
       const worker = createMetroCompilerTransformer({
         cacheBaseRoot: cacheRoot,
         originalBabelTransformerPath: transformerPath,
+        projectRoot,
       })
       const transformed = await worker.transform(args)
       expect(transformed.metadata?.tamagui).toMatchObject({
@@ -412,10 +413,12 @@ export const App = ({ dynamic }) => <>
       const firstWorker = createMetroCompilerTransformer({
         cacheBaseRoot: cacheRoot,
         originalBabelTransformerPath: transformerPath,
+        projectRoot,
       })
       const secondWorker = createMetroCompilerTransformer({
         cacheBaseRoot: cacheRoot,
         originalBabelTransformerPath: transformerPath,
+        projectRoot,
       })
       const [first, second] = await Promise.all([
         firstWorker.transform(args),
@@ -460,6 +463,16 @@ export const App = ({ dynamic }) => <>
         }),
       ])
 
+      // Metro hands workers project-relative filenames (relative to projectRoot,
+      // including ../ paths outside it); the worker must resolve them back to
+      // the cache's absolute realpath keys or every module ships unlowered
+      const relativeFilenameResult = await firstWorker.transform({
+        ...args,
+        filename: relative(projectRoot, appPath),
+      })
+      expect(relativeFilenameResult.metadata?.tamagui.cacheHit).toBe(true)
+      expect(outputCode(relativeFilenameResult)).toBe(firstCode)
+
       const workerInputPath = join(fixtureRoot, 'worker-input.json')
       await write(workerInputPath, JSON.stringify(args))
       const readFromIsolatedWorker = async () =>
@@ -472,6 +485,7 @@ export const App = ({ dynamic }) => <>
                 builtTransformerPath,
                 cacheRoot,
                 transformerPath,
+                projectRoot,
                 workerInputPath,
               ],
               { encoding: 'utf8' }
