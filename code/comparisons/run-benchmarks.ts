@@ -264,6 +264,10 @@ function bundleSizes(attribution: any) {
     cssGzipBytes: attribution.assets
       .filter((asset: any) => asset.fileName.endsWith('.css'))
       .reduce((total: number, asset: any) => total + asset.gzipBytes, 0),
+    tamaguiJsBytes: attribution.decomposition.groups.tamagui.codeBytes,
+    tamaguiJsGzipBytes: attribution.decomposition.groups.tamagui.gzipBytes,
+    reactControlJsBytes: attribution.decomposition.groups['react-control'].codeBytes,
+    reactControlJsGzipBytes: attribution.decomposition.groups['react-control'].gzipBytes,
   }
 }
 
@@ -335,6 +339,12 @@ function buildBundleComparison(artifacts: BenchmarkReport['artifacts']) {
               css: v3.cssBytes - v2.cssBytes,
               jsGzipBytes: v3Gzip.jsGzipBytes - v2Gzip.jsGzipBytes,
               cssGzipBytes: v3Gzip.cssGzipBytes - v2Gzip.cssGzipBytes,
+              tamaguiJsBytes: v3Gzip.tamaguiJsBytes - v2Gzip.tamaguiJsBytes,
+              tamaguiJsGzipBytes: v3Gzip.tamaguiJsGzipBytes - v2Gzip.tamaguiJsGzipBytes,
+              reactControlJsBytes:
+                v3Gzip.reactControlJsBytes - v2Gzip.reactControlJsBytes,
+              reactControlJsGzipBytes:
+                v3Gzip.reactControlJsGzipBytes - v2Gzip.reactControlJsGzipBytes,
             },
           },
           renderedModuleGroups: groups,
@@ -1091,7 +1101,7 @@ async function main() {
           BUNDLE_ATTRIBUTION_PATH,
           `${JSON.stringify(
             {
-              schemaVersion: 1,
+              schemaVersion: 2,
               metadata: {
                 commit: git('rev-parse', 'HEAD'),
                 branch: git('branch', '--show-current'),
@@ -1112,6 +1122,8 @@ async function main() {
                   'Both arms use byte-identical minimal Tamagui configs; the prior default-theme import mismatch was removed.',
                 moduleLengths:
                   'Rendered module lengths are pre-minification attribution, while artifact bytes and gzip bytes are exact emitted sizes.',
+                tamaguiGzip:
+                  'Tamagui-only gzip is measured from an explicit production-minified Rollup chunk containing tamagui, @tamagui/*, and workspace core/packages/ui dist modules. It excludes fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and other dependencies.',
                 remainingDelta:
                   'The remaining V3 delta is framework surface led by @tamagui/style-grammar and @tamagui/web, not fixture/config/theme code.',
               },
