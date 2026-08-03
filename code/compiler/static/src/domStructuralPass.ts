@@ -2,14 +2,12 @@ import {
   ATTRIBUTES,
   EVENTS,
   NATIVE_BACKING,
-  NATIVE_PRIMITIVE_MODULE,
   TAGS,
   type PropTags,
   type TagName,
 } from '@tamagui/dom'
 import {
   localBailout,
-  type CandidateImport,
   type BailoutReason,
   type MaterializedElement,
   type MaterializedModule,
@@ -34,44 +32,21 @@ function isDOMElement(element: MaterializedElement) {
   return provenance?.importedName === 'html' && DOM_FRONTENDS.has(provenance.specifier)
 }
 
-function replaceTarget(
-  edits: SourceEdit[],
-  element: MaterializedElement,
-  content: string
-) {
-  edits.push({
-    start: element.component.span.start,
-    end: element.component.span.end,
-    content,
-    origin: element.component.span,
-  })
-  if (element.component.closingSpan) {
-    edits.push({
-      start: element.component.closingSpan.start,
-      end: element.component.closingSpan.end,
-      content,
-      origin: element.component.closingSpan,
-    })
-  }
-}
-
 const versionHash = createHash('sha256')
   .update(
     JSON.stringify({
       ATTRIBUTES,
       EVENTS,
       NATIVE_BACKING,
-      NATIVE_PRIMITIVE_MODULE,
       TAGS,
     })
   )
   .digest('hex')
 
 export const domStructuralPass: StructuralModulePass = {
-  versionHash: `dom-structural-v2-${versionHash}`,
+  versionHash: `dom-structural-v3-${versionHash}`,
   transform({ module, source, target }) {
     const edits: SourceEdit[] = []
-    const imports: CandidateImport[] = []
     const diagnostics: BailoutReason[] = []
     const domElements = module.elements.filter(isDOMElement)
     const supportedDOMElements = domElements.filter(
@@ -87,46 +62,6 @@ export const domStructuralPass: StructuralModulePass = {
         element,
       ])
     )
-
-    const usedPrimitives = new Set<string>()
-    const primitiveLocals = new Map<string, string>()
-    // web elements left on the runtime component path stay in module.elements
-    const keptForRuntime = new Set<number>()
-    let reactCreateElement = ''
-    if (target === 'native') {
-      const primitives = new Set(
-        supportedDOMElements.map(
-          (element) => NATIVE_BACKING[TAGS[element.component.name].backing].primitive
-        )
-      )
-      for (const element of supportedDOMElements) {
-        const tag = TAGS[element.component.name]
-        if (
-          NATIVE_BACKING[tag.backing].wrapsLiteralText &&
-          element.entries.some(
-            (entry) =>
-              entry.kind === 'child' &&
-              entry.value.kind === 'static' &&
-              entry.value.literalOrigin === true &&
-              (typeof entry.value.value === 'string' ||
-                typeof entry.value.value === 'number')
-          )
-        ) {
-          primitives.add(NATIVE_BACKING.text.primitive)
-          if (element.form !== 'jsx') reactCreateElement = '__TamaguiCreateElement'
-        }
-      }
-      for (const primitive of primitives) {
-        let local = `__Tamagui${primitive}`
-        while (new RegExp(`\\b${local}\\b`).test(source)) local += '_'
-        primitiveLocals.set(primitive, local)
-      }
-      if (reactCreateElement) {
-        while (new RegExp(`\\b${reactCreateElement}\\b`).test(source)) {
-          reactCreateElement += '_'
-        }
-      }
-    }
 
     for (const element of domElements) {
       const tagName = element.component.name as TagName
@@ -175,7 +110,9 @@ export const domStructuralPass: StructuralModulePass = {
             localBailout(
               'local/unsupported-prop-key',
               entry.span,
-              `${entry.name} is not supported on native html.${tagName}: ${row.note ?? 'no native equivalent'}`
+              event
+                ? `${entry.name} has no native DOM event equivalent`
+                : `${entry.name} is not supported on native html.${tagName}: ${row.note ?? 'no native equivalent'}`
             )
           )
         }
@@ -201,117 +138,32 @@ export const domStructuralPass: StructuralModulePass = {
           )
         }
       }
+    }
 
-      if (target === 'web') {
-        // generated html.* on web are full Tamagui components that also accept
-        // regular style props. an element carrying anything outside the strict
-        // DOM prop tables — a style prop, or a spread this pass cannot see
-        // through — must keep the runtime component path: a literal-tag
-        // rewrite would strip the element resets and leak style props onto
-        // the DOM as junk attributes
-        const keepsRuntimePath = element.entries.some((entry) => {
-          if (entry.kind === 'spread') return true
-          if (entry.kind !== 'prop') return false
-          // className is valid on a literal tag and carries no runtime work
-          if (entry.name === 'className') return false
-          return (
-            !Object.hasOwn(ATTRIBUTES, entry.name) &&
-            !entry.name.startsWith('data-') &&
-            !Object.hasOwn(EVENTS, entry.name)
+    for (const definition of module.domStyleDefinitions) {
+      if (definition.value.kind !== 'static') {
+        diagnostics.push(
+          localBailout(
+            'local/dynamic-style-value',
+            definition.value.span,
+            `style() definition ${definition.name} must be statically evaluable`
           )
-        })
-        if (keepsRuntimePath) {
-          keptForRuntime.add(element.span.start)
-          continue
-        }
-        const targetName = element.form === 'jsx' ? tagName : JSON.stringify(tagName)
-        replaceTarget(edits, element, targetName)
+        )
         continue
       }
-
-      const primitive = NATIVE_BACKING[tag.backing].primitive
-      const localPrimitive = primitiveLocals.get(primitive)!
-      usedPrimitives.add(primitive)
-      replaceTarget(edits, element, localPrimitive)
-
-      if (!NATIVE_BACKING[tag.backing].wrapsLiteralText) continue
-      for (const entry of element.entries) {
-        if (entry.kind !== 'child') continue
-        if (
-          entry.value.kind === 'empty' ||
-          entry.value.kind === 'element' ||
-          (entry.value.kind === 'static' &&
-            (entry.value.value === null || typeof entry.value.value === 'boolean'))
-        ) {
-          continue
-        }
-        if (
-          entry.value.kind !== 'static' ||
-          entry.value.literalOrigin !== true ||
-          (typeof entry.value.value !== 'string' && typeof entry.value.value !== 'number')
-        ) {
-          diagnostics.push(
-            localBailout(
-              'local/unsupported-child',
-              entry.span,
-              `html.${tagName} has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span`
-            )
-          )
-          continue
-        }
-        const textPrimitive = NATIVE_BACKING.text.primitive
-        const localText = primitiveLocals.get(textPrimitive)!
-        usedPrimitives.add(textPrimitive)
-        const childSource = source.slice(entry.span.start, entry.span.end)
-        edits.push({
-          start: entry.span.start,
-          end: entry.span.end,
-          content:
-            element.form === 'jsx'
-              ? `<${localText}>${childSource}</${localText}>`
-              : `${reactCreateElement}(${localText}, null, ${childSource})`,
-          origin: entry.span,
-        })
-      }
-    }
-
-    if (target === 'native' && usedPrimitives.size) {
-      const specifiers = [...usedPrimitives]
-        .sort()
-        .map((primitive) => `${primitive} as ${primitiveLocals.get(primitive)}`)
-        .join(', ')
-      imports.push({
-        content: `\nimport { ${specifiers} } from ${JSON.stringify(NATIVE_PRIMITIVE_MODULE)}\n`,
-        origin: module.elements[0]?.span ?? {
-          id: module.id,
-          start: 0,
-          end: Math.min(1, source.length),
-        },
+      edits.push({
+        start: definition.span.start,
+        end: definition.span.end,
+        content: 'undefined',
+        origin: definition.span,
       })
-      if (reactCreateElement) {
-        imports.push({
-          content: `\nimport { createElement as ${reactCreateElement} } from "react"\n`,
-          origin: module.elements[0]?.span ?? {
-            id: module.id,
-            start: 0,
-            end: Math.min(1, source.length),
-          },
-        })
-      }
     }
 
-    const domSpans = new Set(domElements.map((element) => element.span.start))
-    const nextModule: MaterializedModule = {
-      ...module,
-      elements: module.elements.filter(
-        (element) =>
-          !domSpans.has(element.span.start) || keptForRuntime.has(element.span.start)
-      ),
-    }
+    const nextModule: MaterializedModule = module
     return {
       module: nextModule,
       edits,
-      imports,
+      imports: [],
       diagnostics,
       dependencies: [],
     }

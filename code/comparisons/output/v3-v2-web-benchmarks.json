@@ -1,0 +1,5548 @@
+{
+  "schemaVersion": 2,
+  "metadata": {
+    "generatedAt": "2026-08-03T01:02:08.884Z",
+    "commit": "8fa0e3ac53db4ee45fe2697175d1b4327f6c94bc",
+    "branch": "validate/v3-web-flatten",
+    "dirty": false,
+    "platform": "darwin",
+    "osRelease": "25.5.0",
+    "architecture": "arm64",
+    "cpu": "Apple M5",
+    "logicalCpuCount": 10,
+    "totalMemoryBytes": 34359738368,
+    "bunVersion": "1.3.10",
+    "browser": "Chromium",
+    "browserVersion": "145.0.7632.6",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "buildMode": "production",
+    "order": "framework/scenario tasks reshuffled independently in every warmup and sample round",
+    "randomSeed": 73129,
+    "tamaguiWorkload": {
+      "byteIdentical": true,
+      "sha256": "56dd6ba8bb07f9ee8537096f8ab7a98f6f822c94b35bfbcf9ed33356e0a22c99",
+      "sourceSha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e",
+      "configSha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324",
+      "files": [
+        {
+          "file": "src/index.tsx",
+          "bytes": 9717,
+          "sha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e"
+        },
+        {
+          "file": "src/tamagui.config.ts",
+          "bytes": 457,
+          "sha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324"
+        }
+      ],
+      "sources": [
+        "tamagui-bench/src/index.tsx",
+        "tamagui-v2-bench/src/index.tsx",
+        "tamagui-bench/src/tamagui.config.ts",
+        "tamagui-v2-bench/src/tamagui.config.ts"
+      ]
+    },
+    "selectedFrameworks": [
+      "tamagui-v3-compiled",
+      "tamagui-v3-runtime",
+      "tamagui-v2-compiled",
+      "tamagui-v2-runtime"
+    ]
+  },
+  "frameworks": [
+    {
+      "id": "tamagui-v3-compiled",
+      "name": "Tamagui v3 (compiled)",
+      "version": "workspace",
+      "mode": "compiled"
+    },
+    {
+      "id": "tamagui-v3-runtime",
+      "name": "Tamagui v3 (runtime)",
+      "version": "workspace",
+      "mode": "runtime"
+    },
+    {
+      "id": "tamagui-v2-compiled",
+      "name": "Tamagui v2.6.2 (compiled)",
+      "version": "2.6.2",
+      "mode": "compiled"
+    },
+    {
+      "id": "tamagui-v2-runtime",
+      "name": "Tamagui v2.6.2 (runtime)",
+      "version": "2.6.2",
+      "mode": "runtime"
+    }
+  ],
+  "workload": {
+    "itemCount": 200,
+    "heavyCount": 60,
+    "samples": 20,
+    "warmups": 2
+  },
+  "artifacts": {
+    "tamagui-v3-compiled": {
+      "files": 3,
+      "totalBytes": 381383,
+      "jsBytes": 377550,
+      "cssBytes": 3415,
+      "versions": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "vite": "8.0.16",
+        "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.5.1",
+        "tamagui": "2.5.1",
+        "@tamagui/vite-plugin": "2.5.1"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "eed500b4a4608f051f93dce4bab9b1fd141e309e7010269ff10b642e04d066e3",
+        "lockfile": {
+          "file": "../../bun.lock",
+          "sha256": "c857dc8329a99e3f47df76aaf753d58087beba1ad09441db337d4f84a4702149"
+        }
+      },
+      "compilerStats": {
+        "schemaVersion": 1,
+        "selector": {
+          "id": "all",
+          "include": [
+            "**"
+          ]
+        },
+        "totals": {
+          "modules": 1,
+          "found": 14,
+          "lowered": 13,
+          "flattened": 10,
+          "partial": 3,
+          "styled": 0,
+          "bailed": 1,
+          "notFlattened": 4,
+          "flattenRate": 0.7142857142857143
+        },
+        "bailoutCodes": {
+          "local/unsupported-target": 1
+        },
+        "bailoutReasons": [
+          {
+            "code": "local/unsupported-target",
+            "message": "Animated candidates remain on the runtime path",
+            "component": "View",
+            "count": 1
+          }
+        ],
+        "modules": [
+          {
+            "id": "src/index.tsx",
+            "stats": {
+              "found": 14,
+              "lowered": 13,
+              "flattened": 10,
+              "styled": 0,
+              "bailed": 1,
+              "partial": 3,
+              "notFlattened": 4
+            },
+            "diagnostics": [
+              {
+                "code": "local/unsupported-target",
+                "message": "Animated candidates remain on the runtime path",
+                "component": "View"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "tamagui-v3-runtime": {
+      "files": 2,
+      "totalBytes": 376828,
+      "jsBytes": 376482,
+      "cssBytes": 0,
+      "versions": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "vite": "8.0.16",
+        "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.5.1",
+        "tamagui": "2.5.1",
+        "@tamagui/vite-plugin": "2.5.1"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "eed500b4a4608f051f93dce4bab9b1fd141e309e7010269ff10b642e04d066e3",
+        "lockfile": {
+          "file": "../../bun.lock",
+          "sha256": "c857dc8329a99e3f47df76aaf753d58087beba1ad09441db337d4f84a4702149"
+        }
+      }
+    },
+    "tamagui-v2-compiled": {
+      "files": 3,
+      "totalBytes": 288323,
+      "jsBytes": 283472,
+      "cssBytes": 4427,
+      "versions": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "vite": "8.0.16",
+        "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.6.2",
+        "tamagui": "2.6.2",
+        "@tamagui/vite-plugin": "2.6.2"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "61d53812722ef1c9969e43dcf3b5979d91a8a5772e821a2a9df30b494fa561b0",
+        "lockfile": {
+          "file": "tamagui-v2-bench/package-lock.json",
+          "sha256": "d0c843addf2173bcfc8f5391d078b75dac7850474f7ed5e802d61358bc638e04"
+        }
+      }
+    },
+    "tamagui-v2-runtime": {
+      "files": 2,
+      "totalBytes": 281895,
+      "jsBytes": 281543,
+      "cssBytes": 0,
+      "versions": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "vite": "8.0.16",
+        "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.6.2",
+        "tamagui": "2.6.2",
+        "@tamagui/vite-plugin": "2.6.2"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "61d53812722ef1c9969e43dcf3b5979d91a8a5772e821a2a9df30b494fa561b0",
+        "lockfile": {
+          "file": "tamagui-v2-bench/package-lock.json",
+          "sha256": "d0c843addf2173bcfc8f5391d078b75dac7850474f7ed5e802d61358bc638e04"
+        }
+      }
+    }
+  },
+  "trials": [
+    {
+      "sequence": 0,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 2,
+      "rerender": 3.2
+    },
+    {
+      "sequence": 1,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 24,
+      "rerender": 10.1
+    },
+    {
+      "sequence": 2,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 18.7,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 3,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 21.1,
+      "rerender": 9.7
+    },
+    {
+      "sequence": 4,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 12.2,
+      "rerender": 4.7
+    },
+    {
+      "sequence": 5,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.7,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 6,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 17.7,
+      "rerender": 9.9
+    },
+    {
+      "sequence": 7,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 17.2,
+      "rerender": 8.6
+    },
+    {
+      "sequence": 8,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.6,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 9,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 10,
+      "rerender": 2.7
+    },
+    {
+      "sequence": 10,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.6,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 11,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.5,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 12,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 12.4,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 13,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 17.5,
+      "rerender": 7.6
+    },
+    {
+      "sequence": 14,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.5,
+      "rerender": 0.9
+    },
+    {
+      "sequence": 15,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1.2,
+      "rerender": 2.5
+    },
+    {
+      "sequence": 16,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 15.7,
+      "rerender": 7.5
+    },
+    {
+      "sequence": 17,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 34.1,
+      "rerender": 9.3
+    },
+    {
+      "sequence": 18,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 18.7,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 19,
+      "phase": "warmup",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 10,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 20,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 3.2
+    },
+    {
+      "sequence": 21,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.6,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 22,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 7.2,
+      "rerender": 4.3
+    },
+    {
+      "sequence": 23,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 10.9,
+      "rerender": 6.2
+    },
+    {
+      "sequence": 24,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 7.3,
+      "rerender": 5.5
+    },
+    {
+      "sequence": 25,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.4,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 26,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.9,
+      "rerender": 2.2
+    },
+    {
+      "sequence": 27,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 17.9,
+      "rerender": 11.9
+    },
+    {
+      "sequence": 28,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 1,
+      "rerender": 2.8
+    },
+    {
+      "sequence": 29,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 7,
+      "rerender": 3.5
+    },
+    {
+      "sequence": 30,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 6.7,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 31,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 5.5,
+      "rerender": 5.4
+    },
+    {
+      "sequence": 32,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 1,
+      "rerender": 2.8
+    },
+    {
+      "sequence": 33,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.5,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 34,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 17,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 35,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 16.6,
+      "rerender": 8.2
+    },
+    {
+      "sequence": 36,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 9.4,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 37,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 13.6,
+      "rerender": 7.4
+    },
+    {
+      "sequence": 38,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 6.8,
+      "rerender": 6.5
+    },
+    {
+      "sequence": 39,
+      "phase": "warmup",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 8.7,
+      "rerender": 1.7
+    },
+    {
+      "sequence": 40,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.5,
+      "rerender": 1
+    },
+    {
+      "sequence": 41,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.5,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 42,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 4.8,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 43,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 10.4,
+      "rerender": 6.5
+    },
+    {
+      "sequence": 44,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 12.4,
+      "rerender": 9.3
+    },
+    {
+      "sequence": 45,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 12,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 46,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 12.2,
+      "rerender": 8.3
+    },
+    {
+      "sequence": 47,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.4,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 48,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 4.8,
+      "rerender": 5.4
+    },
+    {
+      "sequence": 49,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 3.7,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 50,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.5,
+      "rerender": 1
+    },
+    {
+      "sequence": 51,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 9.8,
+      "rerender": 6.9
+    },
+    {
+      "sequence": 52,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 2.3,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 53,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 7.5,
+      "rerender": 5.9
+    },
+    {
+      "sequence": 54,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.7,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 55,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 2.9,
+      "rerender": 5.8
+    },
+    {
+      "sequence": 56,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 7.4,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 57,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 13.1,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 58,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 2.5,
+      "rerender": 4.3
+    },
+    {
+      "sequence": 59,
+      "phase": "sample",
+      "round": 0,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 3.4,
+      "rerender": 2.8
+    },
+    {
+      "sequence": 60,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.4,
+      "rerender": 0.9
+    },
+    {
+      "sequence": 61,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 8.5,
+      "rerender": 5.6
+    },
+    {
+      "sequence": 62,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 12.8,
+      "rerender": 2.9
+    },
+    {
+      "sequence": 63,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.6,
+      "rerender": 4.4
+    },
+    {
+      "sequence": 64,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 16.9,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 65,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 7.6,
+      "rerender": 8.9
+    },
+    {
+      "sequence": 66,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 2.8,
+      "rerender": 2.5
+    },
+    {
+      "sequence": 67,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 10,
+      "rerender": 7.4
+    },
+    {
+      "sequence": 68,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 11.1,
+      "rerender": 7.5
+    },
+    {
+      "sequence": 69,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 4.1,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 70,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 0.6,
+      "rerender": 2.6
+    },
+    {
+      "sequence": 71,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 5
+    },
+    {
+      "sequence": 72,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.7,
+      "rerender": 2.5
+    },
+    {
+      "sequence": 73,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 15.1,
+      "rerender": 6.1
+    },
+    {
+      "sequence": 74,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.6,
+      "rerender": 4.2
+    },
+    {
+      "sequence": 75,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 12.2,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 76,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.5,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 77,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 4.7,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 78,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 3.1,
+      "rerender": 5.4
+    },
+    {
+      "sequence": 79,
+      "phase": "sample",
+      "round": 1,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 2.2,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 80,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 5.4,
+      "rerender": 5.1
+    },
+    {
+      "sequence": 81,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 6.8,
+      "rerender": 5.8
+    },
+    {
+      "sequence": 82,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 11.9,
+      "rerender": 9.1
+    },
+    {
+      "sequence": 83,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 12.2,
+      "rerender": 2.2
+    },
+    {
+      "sequence": 84,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 9.2,
+      "rerender": 16.6
+    },
+    {
+      "sequence": 85,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 1.1,
+      "rerender": 2.6
+    },
+    {
+      "sequence": 86,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 15,
+      "rerender": 8.1
+    },
+    {
+      "sequence": 87,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 3
+    },
+    {
+      "sequence": 88,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 4.8
+    },
+    {
+      "sequence": 89,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 1,
+      "rerender": 3.2
+    },
+    {
+      "sequence": 90,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 20.9,
+      "rerender": 9.8
+    },
+    {
+      "sequence": 91,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 4.4,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 92,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 4,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 93,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 10,
+      "rerender": 12.8
+    },
+    {
+      "sequence": 94,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 5.4,
+      "rerender": 4.5
+    },
+    {
+      "sequence": 95,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 96,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.2,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 97,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 10.5,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 98,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.4,
+      "rerender": 2
+    },
+    {
+      "sequence": 99,
+      "phase": "sample",
+      "round": 2,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 8.4,
+      "rerender": 7.1
+    },
+    {
+      "sequence": 100,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 6.3,
+      "rerender": 6.9
+    },
+    {
+      "sequence": 101,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 2.9
+    },
+    {
+      "sequence": 102,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 6.3,
+      "rerender": 5
+    },
+    {
+      "sequence": 103,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 6.3,
+      "rerender": 7.8
+    },
+    {
+      "sequence": 104,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 14.9,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 105,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 106,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 4.1,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 107,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 12.7,
+      "rerender": 5.5
+    },
+    {
+      "sequence": 108,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 25.7,
+      "rerender": 11.1
+    },
+    {
+      "sequence": 109,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 2.7,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 110,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 5.2,
+      "rerender": 7.8
+    },
+    {
+      "sequence": 111,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 112,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.5,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 113,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 7.3,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 114,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1.7
+    },
+    {
+      "sequence": 115,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 8.2,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 116,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1.6,
+      "rerender": 5.3
+    },
+    {
+      "sequence": 117,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 23.7,
+      "rerender": 15.5
+    },
+    {
+      "sequence": 118,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.5,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 119,
+      "phase": "sample",
+      "round": 3,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 10.8,
+      "rerender": 9.3
+    },
+    {
+      "sequence": 120,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 7.6,
+      "rerender": 10
+    },
+    {
+      "sequence": 121,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 16.1,
+      "rerender": 4.4
+    },
+    {
+      "sequence": 122,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 8.8,
+      "rerender": 9.6
+    },
+    {
+      "sequence": 123,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 0.8,
+      "rerender": 5.4
+    },
+    {
+      "sequence": 124,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 7,
+      "rerender": 4.3
+    },
+    {
+      "sequence": 125,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 12.4,
+      "rerender": 12
+    },
+    {
+      "sequence": 126,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 11.8,
+      "rerender": 9.7
+    },
+    {
+      "sequence": 127,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 6.4,
+      "rerender": 2.4
+    },
+    {
+      "sequence": 128,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 8.5,
+      "rerender": 8.4
+    },
+    {
+      "sequence": 129,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 7.3,
+      "rerender": 3.6
+    },
+    {
+      "sequence": 130,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.6,
+      "rerender": 3
+    },
+    {
+      "sequence": 131,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.5,
+      "rerender": 2.5
+    },
+    {
+      "sequence": 132,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1
+    },
+    {
+      "sequence": 133,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.6,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 134,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 9.4,
+      "rerender": 8.9
+    },
+    {
+      "sequence": 135,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.3,
+      "rerender": 2.5
+    },
+    {
+      "sequence": 136,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 16.3,
+      "rerender": 8.5
+    },
+    {
+      "sequence": 137,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1
+    },
+    {
+      "sequence": 138,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 9.9,
+      "rerender": 2
+    },
+    {
+      "sequence": 139,
+      "phase": "sample",
+      "round": 4,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 7.5,
+      "rerender": 1
+    },
+    {
+      "sequence": 140,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 13.4,
+      "rerender": 8.5
+    },
+    {
+      "sequence": 141,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 4.9,
+      "rerender": 4.5
+    },
+    {
+      "sequence": 142,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 3.3,
+      "rerender": 0.9
+    },
+    {
+      "sequence": 143,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 3.1,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 144,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 2.3,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 145,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 4.6,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 146,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.4,
+      "rerender": 2
+    },
+    {
+      "sequence": 147,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.8,
+      "rerender": 2.8
+    },
+    {
+      "sequence": 148,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 17,
+      "rerender": 7.8
+    },
+    {
+      "sequence": 149,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.8,
+      "rerender": 2
+    },
+    {
+      "sequence": 150,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 2.2
+    },
+    {
+      "sequence": 151,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.2,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 152,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 6.5,
+      "rerender": 5.9
+    },
+    {
+      "sequence": 153,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 11.5,
+      "rerender": 10
+    },
+    {
+      "sequence": 154,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 9.9,
+      "rerender": 9.7
+    },
+    {
+      "sequence": 155,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 8.5,
+      "rerender": 9.5
+    },
+    {
+      "sequence": 156,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 7.5,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 157,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.4,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 158,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 13.1,
+      "rerender": 2.2
+    },
+    {
+      "sequence": 159,
+      "phase": "sample",
+      "round": 5,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1.5,
+      "rerender": 6.6
+    },
+    {
+      "sequence": 160,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 13.9,
+      "rerender": 8.5
+    },
+    {
+      "sequence": 161,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 22.7,
+      "rerender": 16.8
+    },
+    {
+      "sequence": 162,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.5,
+      "rerender": 2.4
+    },
+    {
+      "sequence": 163,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 6,
+      "rerender": 4.9
+    },
+    {
+      "sequence": 164,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 0.6,
+      "rerender": 3.1
+    },
+    {
+      "sequence": 165,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.8,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 166,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 7.7,
+      "rerender": 8.2
+    },
+    {
+      "sequence": 167,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 10.7,
+      "rerender": 10.1
+    },
+    {
+      "sequence": 168,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 12.7,
+      "rerender": 2
+    },
+    {
+      "sequence": 169,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 8.2,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 170,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.4,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 171,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 3.2,
+      "rerender": 1
+    },
+    {
+      "sequence": 172,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 9.2,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 173,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 3,
+      "rerender": 3
+    },
+    {
+      "sequence": 174,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 19.1,
+      "rerender": 7.8
+    },
+    {
+      "sequence": 175,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.8,
+      "rerender": 3.3
+    },
+    {
+      "sequence": 176,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 1.7,
+      "rerender": 5.8
+    },
+    {
+      "sequence": 177,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.6,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 178,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 16.5,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 179,
+      "phase": "sample",
+      "round": 6,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 11.5,
+      "rerender": 10.5
+    },
+    {
+      "sequence": 180,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 8.5,
+      "rerender": 5.8
+    },
+    {
+      "sequence": 181,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 9.4,
+      "rerender": 1.7
+    },
+    {
+      "sequence": 182,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 10.1,
+      "rerender": 9.1
+    },
+    {
+      "sequence": 183,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 13.8,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 184,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 7.7,
+      "rerender": 5
+    },
+    {
+      "sequence": 185,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 11.6,
+      "rerender": 12.1
+    },
+    {
+      "sequence": 186,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 6.9,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 187,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 13.6,
+      "rerender": 7.3
+    },
+    {
+      "sequence": 188,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 7.8,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 189,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 6.6,
+      "rerender": 4.8
+    },
+    {
+      "sequence": 190,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 3.6,
+      "rerender": 3.6
+    },
+    {
+      "sequence": 191,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 192,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1.6,
+      "rerender": 4.7
+    },
+    {
+      "sequence": 193,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.7,
+      "rerender": 3
+    },
+    {
+      "sequence": 194,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.3,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 195,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 8.9,
+      "rerender": 8.5
+    },
+    {
+      "sequence": 196,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.4,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 197,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 20,
+      "rerender": 10.4
+    },
+    {
+      "sequence": 198,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.8,
+      "rerender": 2.8
+    },
+    {
+      "sequence": 199,
+      "phase": "sample",
+      "round": 7,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.4,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 200,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.8,
+      "rerender": 4.7
+    },
+    {
+      "sequence": 201,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 14.4,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 202,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 17.5,
+      "rerender": 7.9
+    },
+    {
+      "sequence": 203,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 7.5,
+      "rerender": 5.1
+    },
+    {
+      "sequence": 204,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 4.7,
+      "rerender": 5.8
+    },
+    {
+      "sequence": 205,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 16.5,
+      "rerender": 9.2
+    },
+    {
+      "sequence": 206,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 4.8,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 207,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 8.9,
+      "rerender": 6
+    },
+    {
+      "sequence": 208,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 4.3,
+      "rerender": 5.4
+    },
+    {
+      "sequence": 209,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 5.1,
+      "rerender": 3.6
+    },
+    {
+      "sequence": 210,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 6.5,
+      "rerender": 8.6
+    },
+    {
+      "sequence": 211,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.7,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 212,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 1.9,
+      "rerender": 3.6
+    },
+    {
+      "sequence": 213,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 11.2,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 214,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 7.3,
+      "rerender": 5.4
+    },
+    {
+      "sequence": 215,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 216,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.8,
+      "rerender": 3.7
+    },
+    {
+      "sequence": 217,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 10.2,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 218,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.2,
+      "rerender": 0.7
+    },
+    {
+      "sequence": 219,
+      "phase": "sample",
+      "round": 8,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1,
+      "rerender": 2.4
+    },
+    {
+      "sequence": 220,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 22,
+      "rerender": 14
+    },
+    {
+      "sequence": 221,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 6.2,
+      "rerender": 5
+    },
+    {
+      "sequence": 222,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 7.6,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 223,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 7.8,
+      "rerender": 7.4
+    },
+    {
+      "sequence": 224,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 1.1,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 225,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 7.4,
+      "rerender": 6.8
+    },
+    {
+      "sequence": 226,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 227,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.6,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 228,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 9.3,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 229,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.6,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 230,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 29.7,
+      "rerender": 12.2
+    },
+    {
+      "sequence": 231,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 3.4,
+      "rerender": 3
+    },
+    {
+      "sequence": 232,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.9,
+      "rerender": 3.8
+    },
+    {
+      "sequence": 233,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 10.7,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 234,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 11.5,
+      "rerender": 11.2
+    },
+    {
+      "sequence": 235,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 9.6,
+      "rerender": 7.1
+    },
+    {
+      "sequence": 236,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 2.9,
+      "rerender": 3.2
+    },
+    {
+      "sequence": 237,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.2,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 238,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 2.7,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 239,
+      "phase": "sample",
+      "round": 9,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 8.6,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 240,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.7,
+      "rerender": 2.9
+    },
+    {
+      "sequence": 241,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 11.9,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 242,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1.2,
+      "rerender": 5.7
+    },
+    {
+      "sequence": 243,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 1,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 244,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 3.2,
+      "rerender": 3.1
+    },
+    {
+      "sequence": 245,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 246,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 16.9,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 247,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 6.6,
+      "rerender": 8.2
+    },
+    {
+      "sequence": 248,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 5.8,
+      "rerender": 3.9
+    },
+    {
+      "sequence": 249,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 7.2,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 250,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 13.4,
+      "rerender": 10.7
+    },
+    {
+      "sequence": 251,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 7.2,
+      "rerender": 4.5
+    },
+    {
+      "sequence": 252,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 5.2,
+      "rerender": 5.6
+    },
+    {
+      "sequence": 253,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.6,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 254,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 11.3,
+      "rerender": 8.1
+    },
+    {
+      "sequence": 255,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 9.9,
+      "rerender": 7.7
+    },
+    {
+      "sequence": 256,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 5.1,
+      "rerender": 4.1
+    },
+    {
+      "sequence": 257,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.5,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 258,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.3,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 259,
+      "phase": "sample",
+      "round": 10,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 10.4,
+      "rerender": 1.7
+    },
+    {
+      "sequence": 260,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 34.8,
+      "rerender": 27.2
+    },
+    {
+      "sequence": 261,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 5.3,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 262,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 8.1,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 263,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 4.6,
+      "rerender": 6.1
+    },
+    {
+      "sequence": 264,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 1.1,
+      "rerender": 4.1
+    },
+    {
+      "sequence": 265,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 11.1,
+      "rerender": 6.7
+    },
+    {
+      "sequence": 266,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.5,
+      "rerender": 2.8
+    },
+    {
+      "sequence": 267,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 2.3,
+      "rerender": 5.4
+    },
+    {
+      "sequence": 268,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 15.4,
+      "rerender": 6.3
+    },
+    {
+      "sequence": 269,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.7,
+      "rerender": 2.2
+    },
+    {
+      "sequence": 270,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 13.4,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 271,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 272,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 8.5,
+      "rerender": 5.9
+    },
+    {
+      "sequence": 273,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 4.7,
+      "rerender": 5
+    },
+    {
+      "sequence": 274,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 7,
+      "rerender": 1.7
+    },
+    {
+      "sequence": 275,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 8.8,
+      "rerender": 8.6
+    },
+    {
+      "sequence": 276,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.5,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 277,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 5,
+      "rerender": 4.8
+    },
+    {
+      "sequence": 278,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.7,
+      "rerender": 4.7
+    },
+    {
+      "sequence": 279,
+      "phase": "sample",
+      "round": 11,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 6.7,
+      "rerender": 2
+    },
+    {
+      "sequence": 280,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.2,
+      "rerender": 1
+    },
+    {
+      "sequence": 281,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 3.7,
+      "rerender": 0.7
+    },
+    {
+      "sequence": 282,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 3.6,
+      "rerender": 0.8
+    },
+    {
+      "sequence": 283,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 3.8,
+      "rerender": 4
+    },
+    {
+      "sequence": 284,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 285,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 286,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.7,
+      "rerender": 3.5
+    },
+    {
+      "sequence": 287,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 16.1,
+      "rerender": 2.8
+    },
+    {
+      "sequence": 288,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 7.3,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 289,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 15.8,
+      "rerender": 9.7
+    },
+    {
+      "sequence": 290,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 5.8,
+      "rerender": 7.9
+    },
+    {
+      "sequence": 291,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.7,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 292,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 0.9
+    },
+    {
+      "sequence": 293,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 13.1,
+      "rerender": 9.1
+    },
+    {
+      "sequence": 294,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 8.7,
+      "rerender": 6.6
+    },
+    {
+      "sequence": 295,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 6.1,
+      "rerender": 4.9
+    },
+    {
+      "sequence": 296,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 15.1,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 297,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 6,
+      "rerender": 4.9
+    },
+    {
+      "sequence": 298,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 12.8,
+      "rerender": 6.8
+    },
+    {
+      "sequence": 299,
+      "phase": "sample",
+      "round": 12,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 4
+    },
+    {
+      "sequence": 300,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 16,
+      "rerender": 7.3
+    },
+    {
+      "sequence": 301,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 6.2,
+      "rerender": 8
+    },
+    {
+      "sequence": 302,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 9.5,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 303,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.5,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 304,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 12.7,
+      "rerender": 7.2
+    },
+    {
+      "sequence": 305,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 6.6,
+      "rerender": 4.3
+    },
+    {
+      "sequence": 306,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 8.8,
+      "rerender": 7.9
+    },
+    {
+      "sequence": 307,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 4.3,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 308,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 3.4,
+      "rerender": 4.7
+    },
+    {
+      "sequence": 309,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 14,
+      "rerender": 7.3
+    },
+    {
+      "sequence": 310,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.4,
+      "rerender": 0.8
+    },
+    {
+      "sequence": 311,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 2.7,
+      "rerender": 2.5
+    },
+    {
+      "sequence": 312,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 4.6,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 313,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 0.7,
+      "rerender": 2.5
+    },
+    {
+      "sequence": 314,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 1.5,
+      "rerender": 5.5
+    },
+    {
+      "sequence": 315,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 316,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 9.6,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 317,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.2,
+      "rerender": 1.7
+    },
+    {
+      "sequence": 318,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.3,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 319,
+      "phase": "sample",
+      "round": 13,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 4.9,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 320,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 6.4,
+      "rerender": 7
+    },
+    {
+      "sequence": 321,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 6.7,
+      "rerender": 1.7
+    },
+    {
+      "sequence": 322,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 5.7,
+      "rerender": 7.2
+    },
+    {
+      "sequence": 323,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 5.4,
+      "rerender": 7.4
+    },
+    {
+      "sequence": 324,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 12.2,
+      "rerender": 6.8
+    },
+    {
+      "sequence": 325,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 12.7,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 326,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 327,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.5,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 328,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 329,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.3,
+      "rerender": 1.1
+    },
+    {
+      "sequence": 330,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 8.1,
+      "rerender": 5
+    },
+    {
+      "sequence": 331,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 3.6,
+      "rerender": 3.1
+    },
+    {
+      "sequence": 332,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 4.5,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 333,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.6,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 334,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 17.5,
+      "rerender": 10.2
+    },
+    {
+      "sequence": 335,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 3.2,
+      "rerender": 3.6
+    },
+    {
+      "sequence": 336,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.2,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 337,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 7.5,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 338,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 6.2,
+      "rerender": 2
+    },
+    {
+      "sequence": 339,
+      "phase": "sample",
+      "round": 14,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1,
+      "rerender": 3.9
+    },
+    {
+      "sequence": 340,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 5.5,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 341,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 11.7,
+      "rerender": 9.3
+    },
+    {
+      "sequence": 342,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.7,
+      "rerender": 2
+    },
+    {
+      "sequence": 343,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 7.5,
+      "rerender": 7.1
+    },
+    {
+      "sequence": 344,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.8,
+      "rerender": 3.5
+    },
+    {
+      "sequence": 345,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 13.6,
+      "rerender": 2.5
+    },
+    {
+      "sequence": 346,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.9,
+      "rerender": 4
+    },
+    {
+      "sequence": 347,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 9.3,
+      "rerender": 7.5
+    },
+    {
+      "sequence": 348,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 349,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 2.3,
+      "rerender": 2.3
+    },
+    {
+      "sequence": 350,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 8.7,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 351,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.6,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 352,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 7.2,
+      "rerender": 8.3
+    },
+    {
+      "sequence": 353,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1.3,
+      "rerender": 4.7
+    },
+    {
+      "sequence": 354,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 11.8,
+      "rerender": 7.3
+    },
+    {
+      "sequence": 355,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 9.3,
+      "rerender": 8.1
+    },
+    {
+      "sequence": 356,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 13.9,
+      "rerender": 7.1
+    },
+    {
+      "sequence": 357,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 5.7,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 358,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 1.3,
+      "rerender": 5.9
+    },
+    {
+      "sequence": 359,
+      "phase": "sample",
+      "round": 15,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 15,
+      "rerender": 7.8
+    },
+    {
+      "sequence": 360,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 8.6,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 361,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 6.1,
+      "rerender": 5.6
+    },
+    {
+      "sequence": 362,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1.6,
+      "rerender": 7.3
+    },
+    {
+      "sequence": 363,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 7.7,
+      "rerender": 6.2
+    },
+    {
+      "sequence": 364,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.4,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 365,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 6.3,
+      "rerender": 1.9
+    },
+    {
+      "sequence": 366,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 4.8,
+      "rerender": 0.9
+    },
+    {
+      "sequence": 367,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 7.3,
+      "rerender": 7.6
+    },
+    {
+      "sequence": 368,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 5.7,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 369,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 10.5,
+      "rerender": 12
+    },
+    {
+      "sequence": 370,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.9,
+      "rerender": 3.5
+    },
+    {
+      "sequence": 371,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 10.6,
+      "rerender": 9.7
+    },
+    {
+      "sequence": 372,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 7.1,
+      "rerender": 5.6
+    },
+    {
+      "sequence": 373,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 16.3,
+      "rerender": 8.5
+    },
+    {
+      "sequence": 374,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 10.9,
+      "rerender": 8.1
+    },
+    {
+      "sequence": 375,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.5,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 376,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 1
+    },
+    {
+      "sequence": 377,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 0.8
+    },
+    {
+      "sequence": 378,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 9.4,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 379,
+      "phase": "sample",
+      "round": 16,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.7,
+      "rerender": 3.2
+    },
+    {
+      "sequence": 380,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.7,
+      "rerender": 3.2
+    },
+    {
+      "sequence": 381,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 17.2,
+      "rerender": 9.2
+    },
+    {
+      "sequence": 382,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 13.3,
+      "rerender": 8.5
+    },
+    {
+      "sequence": 383,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 4.9
+    },
+    {
+      "sequence": 384,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 6.9,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 385,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 5.2,
+      "rerender": 0.9
+    },
+    {
+      "sequence": 386,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 8.6,
+      "rerender": 5.6
+    },
+    {
+      "sequence": 387,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 388,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 11.8,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 389,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 1.4,
+      "rerender": 5.2
+    },
+    {
+      "sequence": 390,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 4.7,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 391,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 392,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 8.1,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 393,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.4,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 394,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 4.5,
+      "rerender": 4.7
+    },
+    {
+      "sequence": 395,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 4.7,
+      "rerender": 6.4
+    },
+    {
+      "sequence": 396,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.6,
+      "rerender": 1.4
+    },
+    {
+      "sequence": 397,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 8.1,
+      "rerender": 6.5
+    },
+    {
+      "sequence": 398,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 2.9,
+      "rerender": 3.1
+    },
+    {
+      "sequence": 399,
+      "phase": "sample",
+      "round": 17,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 3.4,
+      "rerender": 3
+    },
+    {
+      "sequence": 400,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 10.3,
+      "rerender": 6.6
+    },
+    {
+      "sequence": 401,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.3,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 402,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 5.4,
+      "rerender": 8.3
+    },
+    {
+      "sequence": 403,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 3.6,
+      "rerender": 5.2
+    },
+    {
+      "sequence": 404,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 2.7,
+      "rerender": 2.2
+    },
+    {
+      "sequence": 405,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 9.3,
+      "rerender": 7.7
+    },
+    {
+      "sequence": 406,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.4,
+      "rerender": 2.4
+    },
+    {
+      "sequence": 407,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 7.1,
+      "rerender": 5.2
+    },
+    {
+      "sequence": 408,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 9,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 409,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 10.3,
+      "rerender": 9.7
+    },
+    {
+      "sequence": 410,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 17,
+      "rerender": 8.3
+    },
+    {
+      "sequence": 411,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.4,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 412,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.5,
+      "rerender": 1.6
+    },
+    {
+      "sequence": 413,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 4.7,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 414,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 4.7,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 415,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 1.1,
+      "rerender": 3
+    },
+    {
+      "sequence": 416,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.6,
+      "rerender": 2.1
+    },
+    {
+      "sequence": 417,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 2.9,
+      "rerender": 2.5
+    },
+    {
+      "sequence": 418,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 9.2,
+      "rerender": 1.5
+    },
+    {
+      "sequence": 419,
+      "phase": "sample",
+      "round": 18,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.7,
+      "rerender": 4
+    },
+    {
+      "sequence": 420,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "heavy",
+      "mount": 2.2,
+      "rerender": 2
+    },
+    {
+      "sequence": 421,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "animated",
+      "mount": 3.8,
+      "rerender": 5.2
+    },
+    {
+      "sequence": 422,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "animated",
+      "mount": 3.3,
+      "rerender": 4.2
+    },
+    {
+      "sequence": 423,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "simple",
+      "mount": 0.2,
+      "rerender": 0.9
+    },
+    {
+      "sequence": 424,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "rich",
+      "mount": 0.2,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 425,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "simple",
+      "mount": 0.3,
+      "rerender": 0.6
+    },
+    {
+      "sequence": 426,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "rich",
+      "mount": 6.9,
+      "rerender": 1.3
+    },
+    {
+      "sequence": 427,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "animated",
+      "mount": 9.2,
+      "rerender": 7.4
+    },
+    {
+      "sequence": 428,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "rich",
+      "mount": 9.5,
+      "rerender": 1.8
+    },
+    {
+      "sequence": 429,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "heavy",
+      "mount": 6.2,
+      "rerender": 5.6
+    },
+    {
+      "sequence": 430,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 3.5
+    },
+    {
+      "sequence": 431,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "heavy",
+      "mount": 8.5,
+      "rerender": 5.7
+    },
+    {
+      "sequence": 432,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "group",
+      "mount": 9.9,
+      "rerender": 8.2
+    },
+    {
+      "sequence": 433,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "heavy",
+      "mount": 5,
+      "rerender": 4.1
+    },
+    {
+      "sequence": 434,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "rich",
+      "mount": 0.4,
+      "rerender": 2
+    },
+    {
+      "sequence": 435,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-runtime",
+      "scenario": "simple",
+      "mount": 9.9,
+      "rerender": 2
+    },
+    {
+      "sequence": 436,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v3-compiled",
+      "scenario": "group",
+      "mount": 0.9,
+      "rerender": 2.9
+    },
+    {
+      "sequence": 437,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "group",
+      "mount": 13,
+      "rerender": 7.9
+    },
+    {
+      "sequence": 438,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-runtime",
+      "scenario": "simple",
+      "mount": 3.3,
+      "rerender": 1.2
+    },
+    {
+      "sequence": 439,
+      "phase": "sample",
+      "round": 19,
+      "framework": "tamagui-v2-compiled",
+      "scenario": "animated",
+      "mount": 0.4,
+      "rerender": 2.6
+    }
+  ],
+  "summary": {
+    "tamagui-v3-compiled": {
+      "simple": {
+        "warmups": {
+          "mount": [
+            0.5,
+            0.6
+          ],
+          "rerender": [
+            0.9,
+            1.3
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 0.51,
+          "standardDeviation": 0.23373399185263663,
+          "ci95": {
+            "low": 0.40061038173478014,
+            "high": 0.6193896182652199,
+            "margin": 0.10938961826521985
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 1.595,
+          "standardDeviation": 0.567056109727201,
+          "ci95": {
+            "low": 1.3296126214404984,
+            "high": 1.8603873785595015,
+            "margin": 0.2653873785595016
+          }
+        }
+      },
+      "rich": {
+        "warmups": {
+          "mount": [
+            0.6,
+            0.9
+          ],
+          "rerender": [
+            1.2,
+            2.2
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 0.45500000000000007,
+          "standardDeviation": 0.21392325234704354,
+          "ci95": {
+            "low": 0.3548819866686267,
+            "high": 0.5551180133313734,
+            "margin": 0.10011801333137338
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 1.6700000000000004,
+          "standardDeviation": 0.7554016011019359,
+          "ci95": {
+            "low": 1.3164652311522809,
+            "high": 2.02353476884772,
+            "margin": 0.3535347688477195
+          }
+        }
+      },
+      "group": {
+        "warmups": {
+          "mount": [
+            2,
+            1
+          ],
+          "rerender": [
+            3.2,
+            2.8
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 1.045,
+          "standardDeviation": 0.5266327992663938,
+          "ci95": {
+            "low": 0.7985310956653002,
+            "high": 1.2914689043346996,
+            "margin": 0.2464689043346997
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 3.41,
+          "standardDeviation": 1.4286172924968576,
+          "ci95": {
+            "low": 2.741394209996417,
+            "high": 4.078605790003583,
+            "margin": 0.6686057900035832
+          }
+        }
+      },
+      "heavy": {
+        "warmups": {
+          "mount": [
+            10,
+            7
+          ],
+          "rerender": [
+            2.7,
+            3.5
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 4.045,
+          "standardDeviation": 1.9187372492290202,
+          "ci95": {
+            "low": 3.1470136455943862,
+            "high": 4.942986354405614,
+            "margin": 0.8979863544056135
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 3.3549999999999995,
+          "standardDeviation": 1.2111217071267792,
+          "ci95": {
+            "low": 2.7881841074324876,
+            "high": 3.9218158925675115,
+            "margin": 0.566815892567512
+          }
+        }
+      },
+      "animated": {
+        "warmups": {
+          "mount": [
+            21.1,
+            10.9
+          ],
+          "rerender": [
+            9.7,
+            6.2
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 7.590000000000002,
+          "standardDeviation": 3.034694123145302,
+          "ci95": {
+            "low": 6.1697357540880695,
+            "high": 9.010264245911934,
+            "margin": 1.4202642459119323
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 8.04,
+          "standardDeviation": 2.585465447254588,
+          "ci95": {
+            "low": 6.829978829902464,
+            "high": 9.250021170097535,
+            "margin": 1.2100211700975358
+          }
+        }
+      }
+    },
+    "tamagui-v3-runtime": {
+      "simple": {
+        "warmups": {
+          "mount": [
+            12.4,
+            6.7
+          ],
+          "rerender": [
+            1.2,
+            1.2
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 7.840000000000001,
+          "standardDeviation": 2.8266401852450382,
+          "ci95": {
+            "low": 6.517106875271994,
+            "high": 9.162893124728008,
+            "margin": 1.3228931247280074
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 1.5799999999999998,
+          "standardDeviation": 0.37500877182723136,
+          "ci95": {
+            "low": 1.4044925093216516,
+            "high": 1.755507490678348,
+            "margin": 0.17550749067834834
+          }
+        }
+      },
+      "rich": {
+        "warmups": {
+          "mount": [
+            18.7,
+            17
+          ],
+          "rerender": [
+            1.4,
+            1.8
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 10.434999999999997,
+          "standardDeviation": 4.158096097722458,
+          "ci95": {
+            "low": 8.48897348826039,
+            "high": 12.381026511739604,
+            "margin": 1.9460265117396063
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 1.335,
+          "standardDeviation": 0.25188761069384225,
+          "ci95": {
+            "low": 1.2171143242318399,
+            "high": 1.45288567576816,
+            "margin": 0.11788567576816017
+          }
+        }
+      },
+      "group": {
+        "warmups": {
+          "mount": [
+            24,
+            13.6
+          ],
+          "rerender": [
+            10.1,
+            7.4
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 16.044999999999998,
+          "standardDeviation": 5.384038300481584,
+          "ci95": {
+            "low": 13.52522146994209,
+            "high": 18.564778530057904,
+            "margin": 2.519778530057907
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 9.005,
+          "standardDeviation": 2.349126377367149,
+          "ci95": {
+            "low": 7.905587648205811,
+            "high": 10.10441235179419,
+            "margin": 1.0994123517941898
+          }
+        }
+      },
+      "heavy": {
+        "warmups": {
+          "mount": [
+            15.7,
+            7.2
+          ],
+          "rerender": [
+            7.5,
+            4.3
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 9.705,
+          "standardDeviation": 2.8070353343734475,
+          "ci95": {
+            "low": 8.391282122466427,
+            "high": 11.018717877533573,
+            "margin": 1.313717877533573
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 6.340000000000001,
+          "standardDeviation": 1.4299061434050024,
+          "ci95": {
+            "low": 5.670791016136058,
+            "high": 7.009208983863943,
+            "margin": 0.6692089838639423
+          }
+        }
+      },
+      "animated": {
+        "warmups": {
+          "mount": [
+            17.2,
+            6.8
+          ],
+          "rerender": [
+            8.6,
+            6.5
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 8.040000000000001,
+          "standardDeviation": 2.865842394755676,
+          "ci95": {
+            "low": 6.6987598873155925,
+            "high": 9.38124011268441,
+            "margin": 1.341240112684408
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 7.459999999999999,
+          "standardDeviation": 1.6213704404802618,
+          "ci95": {
+            "low": 6.70118399662438,
+            "high": 8.218816003375618,
+            "margin": 0.7588160033756189
+          }
+        }
+      }
+    },
+    "tamagui-v2-compiled": {
+      "simple": {
+        "warmups": {
+          "mount": [
+            0.5,
+            0.4
+          ],
+          "rerender": [
+            1.3,
+            1.6
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 0.4299999999999999,
+          "standardDeviation": 0.202874085917453,
+          "ci95": {
+            "low": 0.33505309630613195,
+            "high": 0.5249469036938678,
+            "margin": 0.09494690369386792
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 1.485,
+          "standardDeviation": 0.4579990806701874,
+          "ci95": {
+            "low": 1.2706522955723085,
+            "high": 1.6993477044276917,
+            "margin": 0.2143477044276916
+          }
+        }
+      },
+      "rich": {
+        "warmups": {
+          "mount": [
+            0.7,
+            0.5
+          ],
+          "rerender": [
+            2.3,
+            1.4
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 0.45999999999999996,
+          "standardDeviation": 0.20875571218153782,
+          "ci95": {
+            "low": 0.3623004421170376,
+            "high": 0.5576995578829623,
+            "margin": 0.09769955788296238
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 2.4100000000000006,
+          "standardDeviation": 1.161170008859032,
+          "ci95": {
+            "low": 1.8665619531702766,
+            "high": 2.9534380468297243,
+            "margin": 0.543438046829724
+          }
+        }
+      },
+      "group": {
+        "warmups": {
+          "mount": [
+            1.2,
+            0.9
+          ],
+          "rerender": [
+            2.5,
+            3.2
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 1.305,
+          "standardDeviation": 0.6605221220248498,
+          "ci95": {
+            "low": 0.9958696839029482,
+            "high": 1.6141303160970517,
+            "margin": 0.3091303160970518
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 4.6000000000000005,
+          "standardDeviation": 1.4367360670338132,
+          "ci95": {
+            "low": 3.927594550219337,
+            "high": 5.272405449780664,
+            "margin": 0.6724054497806637
+          }
+        }
+      },
+      "heavy": {
+        "warmups": {
+          "mount": [
+            12.2,
+            5.5
+          ],
+          "rerender": [
+            4.7,
+            5.4
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 5.045,
+          "standardDeviation": 1.8018922802081383,
+          "ci95": {
+            "low": 4.2016981459364,
+            "high": 5.8883018540636,
+            "margin": 0.8433018540635998
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 4.0649999999999995,
+          "standardDeviation": 1.386884050099738,
+          "ci95": {
+            "low": 3.415925744193073,
+            "high": 4.714074255806926,
+            "margin": 0.6490742558069267
+          }
+        }
+      },
+      "animated": {
+        "warmups": {
+          "mount": [
+            0.6,
+            1
+          ],
+          "rerender": [
+            1.5,
+            2.8
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 0.575,
+          "standardDeviation": 0.24894514297436357,
+          "ci95": {
+            "low": 0.4584914256882443,
+            "high": 0.6915085743117556,
+            "margin": 0.11650857431175567
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 2.6950000000000003,
+          "standardDeviation": 1.003402107568887,
+          "ci95": {
+            "low": 2.22539875525388,
+            "high": 3.1646012447461205,
+            "margin": 0.46960124474612
+          }
+        }
+      }
+    },
+    "tamagui-v2-runtime": {
+      "simple": {
+        "warmups": {
+          "mount": [
+            10,
+            9.4
+          ],
+          "rerender": [
+            1.1,
+            1.9
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 5.2749999999999995,
+          "standardDeviation": 1.9130782579530383,
+          "ci95": {
+            "low": 4.379662104599168,
+            "high": 6.170337895400831,
+            "margin": 0.895337895400831
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 1.44,
+          "standardDeviation": 0.38030458707116377,
+          "ci95": {
+            "low": 1.2620140199785093,
+            "high": 1.6179859800214906,
+            "margin": 0.17798598002149077
+          }
+        }
+      },
+      "rich": {
+        "warmups": {
+          "mount": [
+            18.7,
+            8.7
+          ],
+          "rerender": [
+            2.3,
+            1.7
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 10.73,
+          "standardDeviation": 3.530036528810551,
+          "ci95": {
+            "low": 9.0779110364387,
+            "high": 12.382088963561301,
+            "margin": 1.6520889635613007
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 2.0749999999999997,
+          "standardDeviation": 0.7122056178557309,
+          "ci95": {
+            "low": 1.7416813412714807,
+            "high": 2.408318658728519,
+            "margin": 0.33331865872851907
+          }
+        }
+      },
+      "group": {
+        "warmups": {
+          "mount": [
+            34.1,
+            17.9
+          ],
+          "rerender": [
+            9.3,
+            11.9
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 13.565000000000001,
+          "standardDeviation": 6.952188220454879,
+          "ci95": {
+            "low": 10.311313150622134,
+            "high": 16.81868684937787,
+            "margin": 3.253686849377867
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 9.440000000000001,
+          "standardDeviation": 4.932214192642617,
+          "ci95": {
+            "low": 7.13167923133903,
+            "high": 11.748320768660973,
+            "margin": 2.308320768660971
+          }
+        }
+      },
+      "heavy": {
+        "warmups": {
+          "mount": [
+            17.5,
+            7.3
+          ],
+          "rerender": [
+            7.6,
+            5.5
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 10.909999999999997,
+          "standardDeviation": 3.9784815934566904,
+          "ci95": {
+            "low": 9.04803469776096,
+            "high": 12.771965302239034,
+            "margin": 1.8619653022390363
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 7.139999999999999,
+          "standardDeviation": 1.5796068798080243,
+          "ci95": {
+            "low": 6.4007297200474955,
+            "high": 7.879270279952502,
+            "margin": 0.7392702799525033
+          }
+        }
+      },
+      "animated": {
+        "warmups": {
+          "mount": [
+            17.7,
+            16.6
+          ],
+          "rerender": [
+            9.9,
+            8.2
+          ]
+        },
+        "mount": {
+          "n": 20,
+          "mean": 6.965000000000001,
+          "standardDeviation": 2.3493056084948294,
+          "ci95": {
+            "low": 5.865503766420013,
+            "high": 8.064496233579987,
+            "margin": 1.0994962335799874
+          }
+        },
+        "rerender": {
+          "n": 20,
+          "mean": 8.120000000000001,
+          "standardDeviation": 2.687906639982713,
+          "ci95": {
+            "low": 6.862035426898299,
+            "high": 9.377964573101703,
+            "margin": 1.257964573101702
+          }
+        }
+      }
+    }
+  },
+  "effects": {
+    "compiled": {
+      "simple": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 0.51,
+            "standardDeviation": 0.23373399185263663,
+            "ci95": {
+              "low": 0.40061038173478014,
+              "high": 0.6193896182652199,
+              "margin": 0.10938961826521985
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 0.4299999999999999,
+            "standardDeviation": 0.202874085917453,
+            "ci95": {
+              "low": 0.33505309630613195,
+              "high": 0.5249469036938678,
+              "margin": 0.09494690369386792
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": 0.07999999999999999,
+            "standardDeviation": 0.3001753873286328,
+            "ci95": {
+              "low": -0.06048479116035449,
+              "high": 0.22048479116035447,
+              "margin": 0.14048479116035448
+            }
+          },
+          "ratioOfMeans": 1.1860465116279073,
+          "medianPairedRatio": 1.4499999999999997
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 1.595,
+            "standardDeviation": 0.567056109727201,
+            "ci95": {
+              "low": 1.3296126214404984,
+              "high": 1.8603873785595015,
+              "margin": 0.2653873785595016
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 1.485,
+            "standardDeviation": 0.4579990806701874,
+            "ci95": {
+              "low": 1.2706522955723085,
+              "high": 1.6993477044276917,
+              "margin": 0.2143477044276916
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": 0.11000000000000006,
+            "standardDeviation": 0.6648308055437865,
+            "ci95": {
+              "low": -0.2011468188813763,
+              "high": 0.4211468188813764,
+              "margin": 0.31114681888137635
+            }
+          },
+          "ratioOfMeans": 1.074074074074074,
+          "medianPairedRatio": 1
+        }
+      },
+      "rich": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 0.45500000000000007,
+            "standardDeviation": 0.21392325234704354,
+            "ci95": {
+              "low": 0.3548819866686267,
+              "high": 0.5551180133313734,
+              "margin": 0.10011801333137338
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 0.45999999999999996,
+            "standardDeviation": 0.20875571218153782,
+            "ci95": {
+              "low": 0.3623004421170376,
+              "high": 0.5576995578829623,
+              "margin": 0.09769955788296238
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -0.0049999999999999906,
+            "standardDeviation": 0.3268268493769816,
+            "ci95": {
+              "low": -0.15795791600013792,
+              "high": 0.14795791600013797,
+              "margin": 0.15295791600013794
+            }
+          },
+          "ratioOfMeans": 0.989130434782609,
+          "medianPairedRatio": 1
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 1.6700000000000004,
+            "standardDeviation": 0.7554016011019359,
+            "ci95": {
+              "low": 1.3164652311522809,
+              "high": 2.02353476884772,
+              "margin": 0.3535347688477195
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 2.4100000000000006,
+            "standardDeviation": 1.161170008859032,
+            "ci95": {
+              "low": 1.8665619531702766,
+              "high": 2.9534380468297243,
+              "margin": 0.543438046829724
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -0.74,
+            "standardDeviation": 1.489047735263963,
+            "ci95": {
+              "low": -1.4368877827659352,
+              "high": -0.04311221723406489,
+              "margin": 0.6968877827659351
+            }
+          },
+          "ratioOfMeans": 0.6929460580912863,
+          "medianPairedRatio": 0.7027972027972028
+        }
+      },
+      "group": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 1.045,
+            "standardDeviation": 0.5266327992663938,
+            "ci95": {
+              "low": 0.7985310956653002,
+              "high": 1.2914689043346996,
+              "margin": 0.2464689043346997
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 1.305,
+            "standardDeviation": 0.6605221220248498,
+            "ci95": {
+              "low": 0.9958696839029482,
+              "high": 1.6141303160970517,
+              "margin": 0.3091303160970518
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -0.26000000000000006,
+            "standardDeviation": 0.7611625457500072,
+            "ci95": {
+              "low": -0.6162309429510434,
+              "high": 0.09623094295104329,
+              "margin": 0.35623094295104335
+            }
+          },
+          "ratioOfMeans": 0.8007662835249042,
+          "medianPairedRatio": 0.7638888888888888
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 3.41,
+            "standardDeviation": 1.4286172924968576,
+            "ci95": {
+              "low": 2.741394209996417,
+              "high": 4.078605790003583,
+              "margin": 0.6686057900035832
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 4.6000000000000005,
+            "standardDeviation": 1.4367360670338132,
+            "ci95": {
+              "low": 3.927594550219337,
+              "high": 5.272405449780664,
+              "margin": 0.6724054497806637
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -1.19,
+            "standardDeviation": 2.3103656580039904,
+            "ci95": {
+              "low": -2.2712719852124454,
+              "high": -0.10872801478755423,
+              "margin": 1.0812719852124457
+            }
+          },
+          "ratioOfMeans": 0.7413043478260869,
+          "medianPairedRatio": 0.6103723404255319
+        }
+      },
+      "heavy": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 4.045,
+            "standardDeviation": 1.9187372492290202,
+            "ci95": {
+              "low": 3.1470136455943862,
+              "high": 4.942986354405614,
+              "margin": 0.8979863544056135
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 5.045,
+            "standardDeviation": 1.8018922802081383,
+            "ci95": {
+              "low": 4.2016981459364,
+              "high": 5.8883018540636,
+              "margin": 0.8433018540635998
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -1,
+            "standardDeviation": 2.2360679774997894,
+            "ci95": {
+              "low": -2.0465,
+              "high": 0.046499999999999764,
+              "margin": 1.0464999999999998
+            }
+          },
+          "ratioOfMeans": 0.8017839444995046,
+          "medianPairedRatio": 0.8560480530240264
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 3.3549999999999995,
+            "standardDeviation": 1.2111217071267792,
+            "ci95": {
+              "low": 2.7881841074324876,
+              "high": 3.9218158925675115,
+              "margin": 0.566815892567512
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 4.0649999999999995,
+            "standardDeviation": 1.386884050099738,
+            "ci95": {
+              "low": 3.415925744193073,
+              "high": 4.714074255806926,
+              "margin": 0.6490742558069267
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -0.7100000000000002,
+            "standardDeviation": 1.4728775988019616,
+            "ci95": {
+              "low": -1.399320012922728,
+              "high": -0.020679987077272477,
+              "margin": 0.6893200129227277
+            }
+          },
+          "ratioOfMeans": 0.8253382533825337,
+          "medianPairedRatio": 0.8697478991596639
+        }
+      },
+      "animated": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 7.590000000000002,
+            "standardDeviation": 3.034694123145302,
+            "ci95": {
+              "low": 6.1697357540880695,
+              "high": 9.010264245911934,
+              "margin": 1.4202642459119323
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 0.575,
+            "standardDeviation": 0.24894514297436357,
+            "ci95": {
+              "low": 0.4584914256882443,
+              "high": 0.6915085743117556,
+              "margin": 0.11650857431175567
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": 7.015000000000001,
+            "standardDeviation": 3.021723976387268,
+            "ci95": {
+              "low": 5.600805899861301,
+              "high": 8.4291941001387,
+              "margin": 1.414194100138699
+            }
+          },
+          "ratioOfMeans": 13.200000000000005,
+          "medianPairedRatio": 12.133333333333333
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 8.04,
+            "standardDeviation": 2.585465447254588,
+            "ci95": {
+              "low": 6.829978829902464,
+              "high": 9.250021170097535,
+              "margin": 1.2100211700975358
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 2.6950000000000003,
+            "standardDeviation": 1.003402107568887,
+            "ci95": {
+              "low": 2.22539875525388,
+              "high": 3.1646012447461205,
+              "margin": 0.46960124474612
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": 5.344999999999999,
+            "standardDeviation": 2.928709972882798,
+            "ci95": {
+              "low": 3.974337293203047,
+              "high": 6.715662706796951,
+              "margin": 1.3706627067969521
+            }
+          },
+          "ratioOfMeans": 2.9833024118738396,
+          "medianPairedRatio": 3.494285714285714
+        }
+      }
+    },
+    "runtime": {
+      "simple": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 7.840000000000001,
+            "standardDeviation": 2.8266401852450382,
+            "ci95": {
+              "low": 6.517106875271994,
+              "high": 9.162893124728008,
+              "margin": 1.3228931247280074
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 5.2749999999999995,
+            "standardDeviation": 1.9130782579530383,
+            "ci95": {
+              "low": 4.379662104599168,
+              "high": 6.170337895400831,
+              "margin": 0.895337895400831
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": 2.5650000000000004,
+            "standardDeviation": 3.5061262174416337,
+            "ci95": {
+              "low": 0.9241012780142488,
+              "high": 4.205898721985752,
+              "margin": 1.6408987219857516
+            }
+          },
+          "ratioOfMeans": 1.4862559241706164,
+          "medianPairedRatio": 1.3825995807127884
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 1.5799999999999998,
+            "standardDeviation": 0.37500877182723136,
+            "ci95": {
+              "low": 1.4044925093216516,
+              "high": 1.755507490678348,
+              "margin": 0.17550749067834834
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 1.44,
+            "standardDeviation": 0.38030458707116377,
+            "ci95": {
+              "low": 1.2620140199785093,
+              "high": 1.6179859800214906,
+              "margin": 0.17798598002149077
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": 0.13999999999999996,
+            "standardDeviation": 0.43213058455201153,
+            "ci95": {
+              "low": -0.06224101471160337,
+              "high": 0.3422410147116033,
+              "margin": 0.20224101471160333
+            }
+          },
+          "ratioOfMeans": 1.097222222222222,
+          "medianPairedRatio": 1.0982142857142856
+        }
+      },
+      "rich": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 10.434999999999997,
+            "standardDeviation": 4.158096097722458,
+            "ci95": {
+              "low": 8.48897348826039,
+              "high": 12.381026511739604,
+              "margin": 1.9460265117396063
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 10.73,
+            "standardDeviation": 3.530036528810551,
+            "ci95": {
+              "low": 9.0779110364387,
+              "high": 12.382088963561301,
+              "margin": 1.6520889635613007
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -0.2950000000000005,
+            "standardDeviation": 4.8337056722886835,
+            "ci95": {
+              "low": -2.5572178918308777,
+              "high": 1.967217891830877,
+              "margin": 2.2622178918308773
+            }
+          },
+          "ratioOfMeans": 0.9725069897483687,
+          "medianPairedRatio": 0.8883431360280316
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 1.335,
+            "standardDeviation": 0.25188761069384225,
+            "ci95": {
+              "low": 1.2171143242318399,
+              "high": 1.45288567576816,
+              "margin": 0.11788567576816017
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 2.0749999999999997,
+            "standardDeviation": 0.7122056178557309,
+            "ci95": {
+              "low": 1.7416813412714807,
+              "high": 2.408318658728519,
+              "margin": 0.33331865872851907
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -0.74,
+            "standardDeviation": 0.7789331435401008,
+            "ci95": {
+              "low": -1.1045477431442676,
+              "high": -0.3754522568557323,
+              "margin": 0.3645477431442677
+            }
+          },
+          "ratioOfMeans": 0.6433734939759037,
+          "medianPairedRatio": 0.6666666666666666
+        }
+      },
+      "group": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 16.044999999999998,
+            "standardDeviation": 5.384038300481584,
+            "ci95": {
+              "low": 13.52522146994209,
+              "high": 18.564778530057904,
+              "margin": 2.519778530057907
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 13.565000000000001,
+            "standardDeviation": 6.952188220454879,
+            "ci95": {
+              "low": 10.311313150622134,
+              "high": 16.81868684937787,
+              "margin": 3.253686849377867
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": 2.48,
+            "standardDeviation": 7.606479232587799,
+            "ci95": {
+              "low": -1.0799009497929632,
+              "high": 6.039900949792964,
+              "margin": 3.5599009497929632
+            }
+          },
+          "ratioOfMeans": 1.1828234426833761,
+          "medianPairedRatio": 1.2603114996306328
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 9.005,
+            "standardDeviation": 2.349126377367149,
+            "ci95": {
+              "low": 7.905587648205811,
+              "high": 10.10441235179419,
+              "margin": 1.0994123517941898
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 9.440000000000001,
+            "standardDeviation": 4.932214192642617,
+            "ci95": {
+              "low": 7.13167923133903,
+              "high": 11.748320768660973,
+              "margin": 2.308320768660971
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -0.43500000000000005,
+            "standardDeviation": 5.5448672329983655,
+            "ci95": {
+              "low": -3.03004792238962,
+              "high": 2.16004792238962,
+              "margin": 2.59504792238962
+            }
+          },
+          "ratioOfMeans": 0.9539194915254238,
+          "medianPairedRatio": 1.043678699796843
+        }
+      },
+      "heavy": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 9.705,
+            "standardDeviation": 2.8070353343734475,
+            "ci95": {
+              "low": 8.391282122466427,
+              "high": 11.018717877533573,
+              "margin": 1.313717877533573
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 10.909999999999997,
+            "standardDeviation": 3.9784815934566904,
+            "ci95": {
+              "low": 9.04803469776096,
+              "high": 12.771965302239034,
+              "margin": 1.8619653022390363
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -1.2049999999999998,
+            "standardDeviation": 5.195491466545525,
+            "ci95": {
+              "low": -3.636536909633331,
+              "high": 1.2265369096333314,
+              "margin": 2.4315369096333312
+            }
+          },
+          "ratioOfMeans": 0.8895508707607702,
+          "medianPairedRatio": 0.9504044274159218
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 6.340000000000001,
+            "standardDeviation": 1.4299061434050024,
+            "ci95": {
+              "low": 5.670791016136058,
+              "high": 7.009208983863943,
+              "margin": 0.6692089838639423
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 7.139999999999999,
+            "standardDeviation": 1.5796068798080243,
+            "ci95": {
+              "low": 6.4007297200474955,
+              "high": 7.879270279952502,
+              "margin": 0.7392702799525033
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -0.8,
+            "standardDeviation": 1.8122390919290394,
+            "ci95": {
+              "low": -1.6481442553567978,
+              "high": 0.04814425535679767,
+              "margin": 0.8481442553567977
+            }
+          },
+          "ratioOfMeans": 0.8879551820728293,
+          "medianPairedRatio": 0.9362026862026862
+        }
+      },
+      "animated": {
+        "mount": {
+          "v3": {
+            "n": 20,
+            "mean": 8.040000000000001,
+            "standardDeviation": 2.865842394755676,
+            "ci95": {
+              "low": 6.6987598873155925,
+              "high": 9.38124011268441,
+              "margin": 1.341240112684408
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 6.965000000000001,
+            "standardDeviation": 2.3493056084948294,
+            "ci95": {
+              "low": 5.865503766420013,
+              "high": 8.064496233579987,
+              "margin": 1.0994962335799874
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": 1.075,
+            "standardDeviation": 3.7915244816217184,
+            "ci95": {
+              "low": -0.6994676861092883,
+              "high": 2.8494676861092882,
+              "margin": 1.7744676861092883
+            }
+          },
+          "ratioOfMeans": 1.154343144292893,
+          "medianPairedRatio": 0.9352451433857539
+        },
+        "rerender": {
+          "v3": {
+            "n": 20,
+            "mean": 7.459999999999999,
+            "standardDeviation": 1.6213704404802618,
+            "ci95": {
+              "low": 6.70118399662438,
+              "high": 8.218816003375618,
+              "margin": 0.7588160033756189
+            }
+          },
+          "v2": {
+            "n": 20,
+            "mean": 8.120000000000001,
+            "standardDeviation": 2.687906639982713,
+            "ci95": {
+              "low": 6.862035426898299,
+              "high": 9.377964573101703,
+              "margin": 1.257964573101702
+            }
+          },
+          "differenceMs": {
+            "n": 20,
+            "mean": -0.6600000000000001,
+            "standardDeviation": 3.308108061621993,
+            "ci95": {
+              "low": -2.2082244374154953,
+              "high": 0.8882244374154948,
+              "margin": 1.548224437415495
+            }
+          },
+          "ratioOfMeans": 0.91871921182266,
+          "medianPairedRatio": 0.916490857946554
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "commit": "cd0d9a98e30619e45d73a6a3bb8253fee2aa8cd4",
+    "branch": "validate/v3-web-flatten",
+    "dirty": false,
+    "buildMode": "production",
+    "workload": {
+      "byteIdentical": true,
+      "sha256": "56dd6ba8bb07f9ee8537096f8ab7a98f6f822c94b35bfbcf9ed33356e0a22c99",
+      "sourceSha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e",
+      "configSha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324",
+      "files": [
+        {
+          "file": "src/index.tsx",
+          "bytes": 9717,
+          "sha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e"
+        },
+        {
+          "file": "src/tamagui.config.ts",
+          "bytes": 457,
+          "sha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324"
+        }
+      ],
+      "sources": [
+        "tamagui-bench/src/index.tsx",
+        "tamagui-v2-bench/src/index.tsx",
+        "tamagui-bench/src/tamagui.config.ts",
+        "tamagui-v2-bench/src/tamagui.config.ts"
+      ]
+    }
+  },
+  "assertion": "Removing only data-bench-* conformance selectors before Tamagui extraction leaves compiler counters unchanged.",
+  "results": {
+    "tamagui-v3-compiled": {
+      "withoutAttributes": {
+        "found": 14,
+        "flattened": 10,
+        "partial": 3,
+        "lowered": 13,
+        "bailed": 1
+      },
+      "withAttributes": {
+        "found": 14,
+        "flattened": 10,
+        "partial": 3,
+        "lowered": 13,
+        "bailed": 1
+      },
+      "unchanged": true,
+      "semantics": "V3 compiler JSON counters"
+    },
+    "tamagui-v2-compiled": {
+      "withoutAttributes": {
+        "found": 14,
+        "legacyOptimized": 14,
+        "flattened": 11
+      },
+      "withAttributes": {
+        "found": 14,
+        "legacyOptimized": 14,
+        "flattened": 11
+      },
+      "unchanged": true,
+      "semantics": "V2 legacy build log; found includes styled and optimized overlaps flattened (styled is zero in this fixture)"
+    }
+  },
+  "passes": true
+}

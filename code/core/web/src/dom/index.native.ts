@@ -6,7 +6,18 @@
  * is why `NATIVE_PRIMITIVE_MODULE` in `@tamagui/dom` names this entry.
  */
 
-export { DOMImage, DOMText, DOMTextInput, DOMView } from './primitives.native'
+export {
+  DOMImage,
+  DOMRuntimeImage,
+  DOMRuntimeText,
+  DOMRuntimeTextInput,
+  DOMRuntimeView,
+  DOMText,
+  DOMTextInput,
+  DOMView,
+  DOMViewportProvider,
+  useViewportScale_DO_NOT_USE,
+} from './primitives.native'
 export type {
   CompiledStyle,
   ConditionalCompiledStyle,

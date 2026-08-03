@@ -1,6 +1,4 @@
-// vanilla Expo monorepo metro config (mirrors conformance/native) — resolves @tamagui/* from
-// the workspace source. Mode is selected at deep-link time, not at build time, so a single
-// bundle exercises both "compiled" (default) and "runtime" (EXTRACT=0) paths via deep-link.
+// runtime fixture: resolve @tamagui/* from workspace source without the compiler plugin.
 const { getDefaultConfig } = require('expo/metro-config')
 const path = require('path')
 
