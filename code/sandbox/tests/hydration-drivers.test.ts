@@ -39,7 +39,11 @@ for (const driver of drivers) {
       const tagEnd = html.indexOf('>', markerIndex)
       const serverTag = html.slice(tagStart, tagEnd)
 
-      expect(serverTag).toContain('_width-16px')
+      const className = serverTag.match(/\bclass="([^"]*)"/)?.[1]
+      expect(className).toBeTruthy()
+      expect(
+        className!.split(/\s+/).some((name) => html.includes(`.${name}{width:16px}`))
+      ).toBe(true)
       expect(serverTag).not.toContain('style=')
 
       await page.goto(`/hydration-${driver}`)
