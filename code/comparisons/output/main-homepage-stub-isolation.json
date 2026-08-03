@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "selector": {
+    "id": "tamagui.dev-homepage",
+    "include": [
+      "app/(site)/index.tsx",
+      "features/site/home/**"
+    ]
+  },
+  "entry": "app/(site)/index.tsx",
+  "graph": "production manifest static imports",
+  "note": "Router-wide dynamic entries from virtual:one-entry are excluded because they are not part of the homepage static import graph.",
+  "selectedModules": 21,
+  "reachableChunks": [
+    "/assets/(site)-BxjNhJnw.js",
+    "/assets/AddEvenBrandIcon-BshBL_Bi.js",
+    "/assets/BentoIcon-DzuT4vIC.js",
+    "/assets/Card-IkHwu4e3.js",
+    "/assets/CheckCircle-DjMVZMF8.js",
+    "/assets/Code-B1WGBsQM.js",
+    "/assets/Containers-D_dPQ2yT.js",
+    "/assets/GithubIcon-CzSmMypk.js",
+    "/assets/HeadInfo-BTt6Tj7_.js",
+    "/assets/HomeAnimations-d1TYFdw-.js",
+    "/assets/HomeTypography-DuxtogZ3.js",
+    "/assets/Link-SgaNLcgc.js",
+    "/assets/PromoLinksRow-hHxhHWuC.js",
+    "/assets/SeasonTogglePopover-Bu8HNqal.js",
+    "/assets/SocialLinksRow-DtT3x-D7.js",
+    "/assets/TakeoutButton-Gg4KQj1H.js",
+    "/assets/TakeoutIcon-CIZlIMz3.js",
+    "/assets/ThemeNameEffect-C8XZMp5n.js",
+    "/assets/_virtual_one-entry-CYVPifZ3.js",
+    "/assets/chunk-BNv3lrIs.js",
+    "/assets/compiler-runtime-BI2P8zuE.js",
+    "/assets/dist-AK-CpVwS.js",
+    "/assets/esm-B2dZgOzr.js",
+    "/assets/esm-BGdRbuor.js",
+    "/assets/esm-BGwiy3uX.js",
+    "/assets/esm-BeGrifBR.js",
+    "/assets/esm-BxnzgyUs.js",
+    "/assets/esm-BzZh_Qta.js",
+    "/assets/esm-CUfyakyj.js",
+    "/assets/esm-CdXpWK9T.js",
+    "/assets/esm-WizzaUSr.js",
+    "/assets/esm-smVF2Zvy.js",
+    "/assets/renderSafeHtml-tPNDxV_c.js",
+    "/assets/useClipboard-DzxsOQPV.js",
+    "/assets/useOnIntersecting-BJ5g47tY.js"
+  ],
+  "selectedModuleChunks": {
+    "app/(site)/index.tsx": [
+      "/assets/(site)-BxjNhJnw.js"
+    ],
+    "features/site/home/SocialLinksRow.tsx": [
+      "/assets/SocialLinksRow-DtT3x-D7.js"
+    ],
+    "features/site/home/HomeHeaders.tsx": [
+      "/assets/tame-impala-B3JqzcSO.jpg",
+      "/assets/useOnIntersecting-BJ5g47tY.js"
+    ],
+    "features/site/home/TintSection.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/HomeCommunity.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/HomeAnimations.tsx": [
+      "/assets/HomeAnimations-d1TYFdw-.js"
+    ],
+    "features/site/home/HomeExamples.tsx": [
+      "/assets/HomeAnimations-d1TYFdw-.js"
+    ],
+    "features/site/home/HomeFeaturesGrid.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/HomeGlow.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/HomeExampleProps.tsx": [
+      "/assets/(site)-BxjNhJnw.js"
+    ],
+    "features/site/home/HomeHero.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/HomeHeroBelow.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/HomePerformance.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/HomeThemes.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/HomeResponsive.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/HomeTypography.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ],
+    "features/site/home/PromoLinksRow.tsx": [
+      "/assets/PromoLinksRow-hHxhHWuC.js"
+    ],
+    "features/site/home/MediaPlayer.tsx": [
+      "/assets/tame-impala-B3JqzcSO.jpg",
+      "/assets/useOnIntersecting-BJ5g47tY.js"
+    ],
+    "features/site/home/CodeDemoPreParsed.tsx": [
+      "/assets/HomeAnimations-d1TYFdw-.js"
+    ],
+    "features/site/home/IconStack.tsx": [
+      "/assets/tame-impala-B3JqzcSO.jpg",
+      "/assets/useOnIntersecting-BJ5g47tY.js"
+    ],
+    "features/site/home/InstallInput.tsx": [
+      "/assets/HomeTypography-DuxtogZ3.js"
+    ]
+  },
+  "stubModules": {},
+  "reachableStubChunks": [],
+  "selectedStubChunks": [],
+  "isolated": true
+}
