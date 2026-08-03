@@ -422,10 +422,13 @@ export function createNativeRuntimeBenchApp({
     const [, pseudoStyle] = usePropsAndStyle(runtimeBehaviorProps.pseudo, {
       noMedia: true,
     })
-    const [, componentStyle] = usePropsAndStyle(runtimeBehaviorProps.component, {
-      forComponent: Button,
-      noMedia: true,
-    })
+    const [componentProps, componentStyle] = usePropsAndStyle(
+      runtimeBehaviorProps.component,
+      {
+        forComponent: Button,
+        noMedia: true,
+      }
+    )
     const [groupStyle, setGroupStyle] = useState(null as object | null)
     const handleGroupStyle = useCallback(
       (style: object) => setGroupStyle((current: object | null) => current ?? style),
@@ -461,7 +464,7 @@ export function createNativeRuntimeBenchApp({
         ]),
         token: normalizeStyle(tokenStyle, ['width', 'height', 'backgroundColor']),
         pseudo: normalizeStyle(pseudoStyle, ['opacity', 'backgroundColor']),
-        component: normalizeStyle(componentStyle, [
+        component: normalizeStyle({ ...componentProps, ...componentStyle }, [
           'height',
           'minHeight',
           'paddingLeft',
@@ -473,7 +476,7 @@ export function createNativeRuntimeBenchApp({
         ]),
         componentName: Button.staticConfig?.componentName ?? null,
       }),
-      [componentStyle, pseudoStyle, staticStyle, tokenStyle]
+      [componentProps, componentStyle, pseudoStyle, staticStyle, tokenStyle]
     )
 
     useLayoutEffect(() => {
