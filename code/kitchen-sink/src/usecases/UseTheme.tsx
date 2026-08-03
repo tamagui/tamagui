@@ -7,8 +7,8 @@ export function UseTheme() {
     label: 'usecases/UseTheme',
     test1: x.background?.get(),
     test2: x.background?.val,
-    test3: x.blue1?.get(),
-    test4: x.blue1?.val,
+    test3: x.color1?.get(),
+    test4: x.color1?.val,
   })
   return (
     <YStack gap="4">
@@ -25,15 +25,15 @@ export function UseTheme() {
         </Text>
       </YStack>
       <YStack>
-        <Text>x.blue1.get():</Text>
+        <Text>x.color1.get():</Text>
         <Text id="token-get" fontFamily="monospace">
-          {x.blue1?.get()}
+          {x.color1?.get()}
         </Text>
       </YStack>
       <YStack>
-        <Text>x.blue1.val:</Text>
+        <Text>x.color1.val:</Text>
         <Text id="token-val" fontFamily="monospace">
-          {x.blue1?.val}
+          {x.color1?.val}
         </Text>
       </YStack>
     </YStack>

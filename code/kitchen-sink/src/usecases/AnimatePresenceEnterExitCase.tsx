@@ -93,7 +93,7 @@ function Scenario01_BasicEnterExit() {
               key="test-square"
               testID="enter-exit-01-target"
               transition="medium"
-              bg="blue10"
+              bg="blue-600"
               opacity="enter:0 exit:0"
               size={60}
             />
