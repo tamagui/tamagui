@@ -126,7 +126,7 @@ export function createNativeRuntimeBenchApp({
       version === 'v2'
         ? {
             backgroundColor: token('blue5'),
-            '$group-row-press:backgroundColor': token('blue7'),
+            '$group-row-press': { backgroundColor: token('blue7') },
           }
         : { backgroundColor: 'blue5 group-press/row:blue7' },
     component: {
@@ -162,14 +162,14 @@ export function createNativeRuntimeBenchApp({
     version === 'v2'
       ? {
           backgroundColor: token('blue5'),
-          '$group-row-press:backgroundColor': token('blue7'),
+          '$group-row-press': { backgroundColor: token('blue7') },
         }
       : { backgroundColor: 'blue5 group-press/row:blue7' }
   const groupBarInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('gray8'),
-          '$group-row-press:backgroundColor': token('blue8'),
+          '$group-row-press': { backgroundColor: token('blue8') },
         }
       : { backgroundColor: 'gray8 group-press/row:blue8' }
   const heavyParentInteractionProps =
@@ -188,20 +188,20 @@ export function createNativeRuntimeBenchApp({
         }
   const heavyAvatarInteractionProps =
     version === 'v2'
-      ? { opacity: 1, '$group-card-press:opacity': 0.8 }
+      ? { opacity: 1, '$group-card-press': { opacity: 0.8 } }
       : { opacity: 'group-press/card:0.8' }
   const heavyTitleInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('gray11'),
-          '$group-card-press:backgroundColor': token('blue9'),
+          '$group-card-press': { backgroundColor: token('blue9') },
         }
       : { backgroundColor: 'gray11 group-press/card:blue9' }
   const heavyBadgeInteractionProps =
     version === 'v2'
       ? {
           backgroundColor: token('blue3'),
-          '$group-card-press:backgroundColor': token('blue5'),
+          '$group-card-press': { backgroundColor: token('blue5') },
         }
       : { backgroundColor: 'blue3 group-press/card:blue5' }
   type RenderState = { instance: number; revision: number }
