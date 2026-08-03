@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
-import { mkdirSync, renameSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { mkdirSync, realpathSync, renameSync, writeFileSync } from 'node:fs'
+import { isAbsolute, join, resolve } from 'node:path'
 
 import {
   compileWithUserBabel,
@@ -19,6 +19,7 @@ import { applyMetroCompilerPlan, type MetroCompilerLoweringResult } from './lowe
 export interface MetroCompilerTransformerOptions {
   cacheBaseRoot: string
   originalBabelTransformerPath: string
+  projectRoot: string
 }
 
 export interface MetroCompilerTransformMetadata {
@@ -31,6 +32,27 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
   transform(args: MetroBabelTransformArgs): Promise<MetroBabelTransformResult>
   getCacheKey(): string
 } {
+  // Metro hands workers project-relative filenames while the compiler cache is
+  // keyed by absolute realpaths (the frontend realpaths every module). Resolve
+  // to the same form or every plan lookup silently misses and the whole build
+  // ships unlowered.
+  const moduleIdCache = new Map<string, string>()
+  const missWarned = new Set<string>()
+  function cacheModuleId(filename: string): string {
+    let id = moduleIdCache.get(filename)
+    if (!id) {
+      const absolute = isAbsolute(filename)
+        ? filename
+        : resolve(config.projectRoot, filename)
+      try {
+        id = realpathSync(absolute)
+      } catch {
+        id = absolute
+      }
+      moduleIdCache.set(filename, id)
+    }
+    return id
+  }
   return {
     async transform(args) {
       const compiled = await compileWithUserBabel(
@@ -45,14 +67,28 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
         diagnostics: [],
       }
       let ast = compiled.result.ast
+      const moduleId = cacheModuleId(args.filename)
       try {
-        const entry = await cache.read(args.filename, compiled.code)
+        // a manifest exists exactly when the frontend planned this build, so a
+        // lookup miss is a lowering defect (unlowered output), never routine —
+        // surface it instead of silently shipping runtime-path modules
+        const entry = await cache.read(moduleId, compiled.code, (reason, detail) => {
+          if (missWarned.has(moduleId)) return
+          missWarned.add(moduleId)
+          const diagnostic = metroDiagnostic(
+            'metro/plan-miss',
+            `Lowering plan lookup missed for ${moduleId} (${reason}${detail ? `: ${detail}` : ''}); module ships unlowered`,
+            { moduleId }
+          )
+          tamagui.diagnostics.push(diagnostic)
+          console.warn(`[@tamagui/metro-plugin] ${diagnostic.code}: ${diagnostic.message}`)
+        })
         if (entry) {
           try {
             const lowered = applyMetroCompilerPlan(
               compiled,
               entry.plan,
-              args,
+              { ...args, filename: moduleId },
               config.originalBabelTransformerPath
             )
             ast = lowered.ast
@@ -65,7 +101,7 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
             const diagnostic = metroDiagnostic(
               'metro/cache-corrupt',
               `Cached lowering plan for ${args.filename} could not be applied: ${error instanceof Error ? error.message : String(error)}`,
-              { moduleId: args.filename }
+              { moduleId }
             )
             tamagui = {
               cacheHit: true,

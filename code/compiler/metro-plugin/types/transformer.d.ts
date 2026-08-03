@@ -3,6 +3,7 @@ import { type MetroCompilerLoweringResult } from "./lowering";
 export interface MetroCompilerTransformerOptions {
 	cacheBaseRoot: string;
 	originalBabelTransformerPath: string;
+	projectRoot: string;
 }
 export interface MetroCompilerTransformMetadata {
 	cacheHit: boolean;

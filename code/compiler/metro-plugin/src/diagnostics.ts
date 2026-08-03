@@ -2,6 +2,7 @@ export type MetroCompilerDiagnosticCode =
   | 'metro/cache-corrupt'
   | 'metro/cache-stale'
   | 'metro/no-linked-components'
+  | 'metro/plan-miss'
   | 'metro/resolve-failed'
   | 'metro/transform-failed'
 
