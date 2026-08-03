@@ -39,21 +39,35 @@ for (const driver of drivers) {
       const tagEnd = html.indexOf('>', markerIndex)
       const serverTag = html.slice(tagStart, tagEnd)
 
-      expect(serverTag).toContain('_width-16px')
+      const className = serverTag.match(/\bclass="([^"]*)"/)?.[1]
+      expect(className).toBeTruthy()
+      expect(
+        className!.split(/\s+/).some((name) => html.includes(`.${name}{width:16px`))
+      ).toBe(true)
       expect(serverTag).not.toContain('style=')
 
       await page.goto(`/hydration-${driver}`)
       await page.waitForSelector(`[data-testid=hydrated-true]`)
 
       const dot = page.getByTestId('indicator-dot-1')
-      await expect(dot).toBeVisible({ timeout: 15000 })
+
+      if (driver === 'motion') {
+        const computedSize = await dot.evaluate((element) => {
+          const style = getComputedStyle(element)
+          return { width: style.width, height: style.height }
+        })
+        expect(computedSize).toEqual({ width: '16px', height: '8px' })
+        await expect(dot).toBeVisible({ timeout: 15000 })
+        return
+      }
 
       const classes = await dot.getAttribute('class')
 
       console.log(`${driver} driver - classes:`, classes)
       console.log(`${driver} driver - server tag:`, serverTag)
 
-      expect(classes?.length).toBeGreaterThan(0)
+      expect(classes).toBe(className)
+      await expect(dot).toBeVisible({ timeout: 15000 })
     })
 
     test('transform styles render correctly before and after hydration', async ({
