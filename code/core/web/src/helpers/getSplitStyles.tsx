@@ -50,6 +50,7 @@ import {
   clearDirectStyle,
   contributeStyleValue,
   contributeStyleString,
+  directStyleSignature,
   flushDirectStyles,
   getDirectDynamicThemeAccess,
 } from './directStyle'
@@ -1128,7 +1129,16 @@ export const getSplitStyles: StyleSplitter = (
       if (!styleState.style['$$css']) {
         for (const key in styleState.style) {
           if (key in nonAnimatableStyleProps) {
-            const atomicStyle = getCSSStyleAtomic(key, styleState.style[key])
+            // reproduce the direct-emission identity so the surviving class
+            // matches its server-rendered counterpart exactly
+            const atomicStyle = getCSSStyleAtomic(
+              key,
+              styleState.style[key],
+              '',
+              undefined,
+              directStyleSignature(key, styleState.style[key]),
+              true
+            )
             delete styleState.style[key]
             if (atomicStyle) {
               addStyleToInsertRules(rulesToInsert, atomicStyle)
