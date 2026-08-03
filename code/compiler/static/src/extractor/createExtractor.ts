@@ -46,7 +46,7 @@ import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBinding
 import { literalToAst } from './literalToAst'
 import { loadTamagui, loadTamaguiSync } from './loadTamagui'
 import { logLines } from './logLines'
-import { normalizeTernaries } from './normalizeTernaries'
+import { getTernaryKey, normalizeTernaries } from './normalizeTernaries'
 import { setPropsToFontFamily } from './propsToFontFamilyCache'
 import { timer } from './timer'
 import { validHTMLAttributes } from './validHTMLAttributes'
@@ -2129,6 +2129,16 @@ export function createExtractor(
             }, [])
             .flat()
 
+          const ternaryBranchProps = new Map<string, Ternary>()
+          const allTernaries = attrs.flatMap((attr) =>
+            attr.type === 'ternary' ? attr.value : []
+          )
+          if (allTernaries.length > 1) {
+            for (const ternary of normalizeTernaries(allTernaries)) {
+              ternaryBranchProps.set(getTernaryKey(ternary.test), ternary)
+            }
+          }
+
           // wrap theme around children on flatten
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
           if (themeVal) {
@@ -2397,7 +2407,8 @@ export function createExtractor(
           const getProps = (
             props: object | null,
             includeProps = false,
-            debugName = ''
+            debugName = '',
+            branchProps?: object | null
           ) => {
             if (!props) {
               if (shouldPrintDebug) logger.info([' getProps() no props'].join(' '))
@@ -2415,6 +2426,10 @@ export function createExtractor(
             const before = process.env.IS_STATIC
             process.env.IS_STATIC = 'is_static'
             try {
+              const fallbackProps = branchProps
+                ? { ...completeProps, ...branchProps }
+                : completeProps
+
               // $group-* / $theme-* keys carry block-form style objects that
               // getSplitStyles drops in static mode (no parent group context,
               // no theme value to read). Pluck them out so the atomic-CSS
@@ -2453,7 +2468,7 @@ export function createExtractor(
                 {
                   ...styleProps,
                   noClass: true,
-                  fallbackProps: completeProps,
+                  fallbackProps,
                   ...(platform === 'native' && {
                     resolveValues: 'except-theme',
                   }),
@@ -2484,7 +2499,7 @@ export function createExtractor(
                     {
                       ...styleProps,
                       noClass: true,
-                      fallbackProps: completeProps,
+                      fallbackProps,
                     },
                     undefined,
                     undefined,
@@ -2641,8 +2656,21 @@ export function createExtractor(
 
               switch (attr.type) {
                 case 'ternary': {
-                  const a = getProps(attr.value.alternate, false, 'ternary.alternate')
-                  const c = getProps(attr.value.consequent, false, 'ternary.consequent')
+                  const branchProps = ternaryBranchProps.get(
+                    getTernaryKey(attr.value.test)
+                  )
+                  const a = getProps(
+                    attr.value.alternate,
+                    false,
+                    'ternary.alternate',
+                    branchProps?.alternate
+                  )
+                  const c = getProps(
+                    attr.value.consequent,
+                    false,
+                    'ternary.consequent',
+                    branchProps?.consequent
+                  )
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
                   if (shouldPrintDebug)

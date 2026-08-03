@@ -5,6 +5,10 @@ import invariant from 'invariant'
 import type { Ternary } from '../types'
 import { forwardFontFamilyName } from './propsToFontFamilyCache'
 
+export function getTernaryKey(test: t.Node) {
+  return generate(test).code
+}
+
 export function normalizeTernaries(ternaries: Ternary[]) {
   invariant(
     Array.isArray(ternaries),
@@ -43,8 +47,7 @@ export function normalizeTernaries(ternaries: Ternary[]) {
       }
     }
 
-    // @ts-ignore
-    const key = generate(ternaryTest as any).code
+    const key = getTernaryKey(ternaryTest)
 
     if (!ternariesByKey[key]) {
       ternariesByKey[key] = {
