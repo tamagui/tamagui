@@ -62,6 +62,14 @@ with output `v3-bundle-slim-assembled-web-bundle-attribution.json`. Logs are
 `/tmp/v3-bundle-w4-assembled-measured-gzip.log`. Both reports record
 `metadata.dirty: false` and are retained by `87c2411736`.
 
+## Benchmark lock
+
+Timing runs acquire and release `/tmp/tamagui-bench.lock` through
+`shared/benchmarkLock.ts`. Build-only bundle attribution does not take the lock.
+The lock records the owning session ID alongside its process ID so a future
+liveness check can disambiguate a recycled process ID. Until then, PID reuse
+fails safe by refusing to reclaim the lock.
+
 ## Web results
 
 The assembled fixes changed the decomposed production builds as follows:
@@ -121,11 +129,7 @@ bun code/comparisons/run-native-v2-v3.ts --smoke --udid=3C03FA2F-D68F-4537-A939-
 ```
 
 It ran while holding `/tmp/tamagui-bench.lock` with stale-lock removal and an exit
-trap, then released the lock. Future timing runs acquire and release that lock
-through `shared/benchmarkLock.ts`; build-only bundle attribution does not take it.
-The lock records the owning session ID so a future liveness check can disambiguate
-a recycled process ID.
-It failed with:
+trap, then released the lock. It failed with:
 
 ```text
 error: timed out waiting for tamagui-v2-runtime/simple/warmup-0-0
