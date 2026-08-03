@@ -153,14 +153,15 @@ The Release build identities were:
 
 - V3 runtime: `d709f3586b9a9bbd498936a622cbc7046df7fec5eb67840c62f887c81a0aedf1`
 - V2 runtime: `63c2d0844b7dab818948da58fe3c4cbd2c5693ae503983d6a6a820f7d4edaf03`
-- V3 compiled: `39ae80ab12373a259a7fbccb641be9b9d5f72c17f3ac7363fa60d875eb8a5390`
+- V3 compiled (INVALID): `39ae80ab12373a259a7fbccb641be9b9d5f72c17f3ac7363fa60d875eb8a5390`
 - V2 compiled: `e4dc8550e2cc1c870295a7cec0d8202ac67706f0b250ede559349771973bed3e`
 
 Fresh compiler evidence had SHA-256
 `7ae5d942b02e587c054449c3292930bb0aba204cae4a6f39b83004c361e9b519`.
 V2 optimized and flattened all six static and both recognized dynamic
 candidates. V3 lowered and flattened all seven static and three dynamic
-candidates with zero bailouts.
+candidates with zero bailouts. This evidence proved that the build generated
+the plans, but it did not prove that the Release bundle consumed them.
 
 The retained command ran the full default scenario set with seed `73129`, three
 warmup rounds, and 30 retained rounds:
@@ -173,34 +174,42 @@ Every round shuffled all 18 V2 and V3 framework/scenario cells together. The
 run retained 540 timed trials on an iOS 18.6 iPhone 16 Pro Simulator and wrote
 [`output/benchmarks-native-v2-v3.json`](./output/benchmarks-native-v2-v3.json),
 whose SHA-256 is
-`c759666e9e3d5bc2eb9c181e49355b409d333d940de1de719b4460a03fffc895`.
+`71aa4f53960f9b2620bd394b6634213bd6d8d988069549977174ee8da4b4f0ac`.
 The JSON records `sourceDirtyBeforeOutput: false`.
+
+The V3 compiled Release bundle did not apply its cached Metro lowering plans.
+Metro workers supplied project-relative filenames while the plan cache was
+keyed by absolute realpaths, so every lookup missed and this arm shipped the
+runtime path. All V3 compiled cells below are INVALID pending re-measurement
+after `2acce54e05`. V2 runtime, V3 runtime, and V2 compiled remain valid because
+the runtime arms use no compiler plugin and V2 uses its Babel extractor.
+The simple-mount internal control corroborates the miss: V2 improved from
+23.98 ms runtime to 5.19 ms compiled, while V3 changed only from 27.49 ms to
+26.45 ms.
 
 | Comparison | Scenario | Metric | V2 mean ± SD (ms) | V3 mean ± SD (ms) | V3/V2 | Paired difference 95% CI (ms) |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | runtime | simple | mount | 23.98 ± 2.19 | 27.49 ± 2.83 | 1.15x | 2.36 to 4.65 |
 | runtime | simple | update | 21.34 ± 2.14 | 23.90 ± 2.15 | 1.12x | 1.46 to 3.67 |
 | runtime | simple | remount | 23.90 ± 1.75 | 26.93 ± 1.87 | 1.13x | 2.12 to 3.94 |
-| compiled | simple | mount | 5.19 ± 0.67 | 26.45 ± 1.72 | 5.09x | 20.52 to 22.00 |
-| compiled | simple | remount | 4.92 ± 0.50 | 25.97 ± 1.41 | 5.28x | 20.54 to 21.58 |
-| compiled | nested-static | mount | 8.36 ± 0.93 | 39.87 ± 1.88 | 4.77x | 30.73 to 32.27 |
-| compiled | nested-static | remount | 8.01 ± 0.59 | 40.16 ± 1.94 | 5.02x | 31.44 to 32.87 |
-| compiled | styled-static | mount | 9.40 ± 1.09 | 12.98 ± 1.47 | 1.38x | 2.99 to 4.18 |
-| compiled | styled-static | remount | 9.64 ± 0.73 | 12.30 ± 0.88 | 1.28x | 2.24 to 3.08 |
+| compiled (INVALID) | simple | mount | 5.19 ± 0.67 | 26.45 ± 1.72 | 5.09x | 20.52 to 22.00 |
+| compiled (INVALID) | simple | remount | 4.92 ± 0.50 | 25.97 ± 1.41 | 5.28x | 20.54 to 21.58 |
+| compiled (INVALID) | nested-static | mount | 8.36 ± 0.93 | 39.87 ± 1.88 | 4.77x | 30.73 to 32.27 |
+| compiled (INVALID) | nested-static | remount | 8.01 ± 0.59 | 40.16 ± 1.94 | 5.02x | 31.44 to 32.87 |
+| compiled (INVALID) | styled-static | mount | 9.40 ± 1.09 | 12.98 ± 1.47 | 1.38x | 2.99 to 4.18 |
+| compiled (INVALID) | styled-static | remount | 9.64 ± 0.73 | 12.30 ± 0.88 | 1.28x | 2.24 to 3.08 |
 
 Concurrent development watchers made a fully idle host unavailable. The run
 therefore retained the process-attributed load trace and used paired median and
 20% trimmed-mean checks in addition to the reported means. The audit found 20
 leave-one-out observations at or above three standard deviations among 1,620
 retained metric observations. The paired mean, median, and trimmed mean agreed
-on every material V2/V3 direction. The complete robust table and all nine load
+on every material V2/V3 direction in the raw observations. This robustness does
+not validate the V3 compiled arm. The complete robust table and all nine load
 checkpoints are in
 [`output/benchmarks-native-v2-v3.md`](./output/benchmarks-native-v2-v3.md).
 
-Compared with the prior 12-sample record at `da80f52af4`, the compiled mount
-ratios changed from 5.16x to 5.09x for simple, 6.07x to 4.77x for
-nested-static, and 1.50x to 1.38x for styled-static. The remount ratios changed
-from 5.49x to 5.28x, 5.92x to 5.02x, and 1.50x to 1.28x. The post-fix campaign
-narrowed every retained compiled mount and remount gap, but did not close them.
-The current source contains changes beyond the prewarm/reuse commits, so this is
-a before/after record rather than an isolated causal estimate for either fix.
+The invalid V3 compiled ratios cannot answer whether prewarm/reuse closed the
+earlier gap. They remain in the raw record only for forensic comparison. The
+surviving headline is runtime simple mount: V2 23.98 ms versus V3 27.49 ms,
+with a paired right-minus-left 95% confidence interval of 2.36 to 4.65 ms.

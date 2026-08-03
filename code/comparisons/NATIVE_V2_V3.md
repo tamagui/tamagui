@@ -135,26 +135,30 @@ hashed the installed embedded `main.jsbundle` before accepting output:
 | V2 runtime  | `63c2d0844b7dab818948da58fe3c4cbd2c5693ae503983d6a6a820f7d4edaf03` |    2,767,190 | `788837ea78ff3c89159b8017e4dccb3f8519c25b5fd5dc36fc0e7c40ea018a48` |
 | V3 runtime  | `d709f3586b9a9bbd498936a622cbc7046df7fec5eb67840c62f887c81a0aedf1` |    2,969,934 | `fb73fb0c78ff5391f1b0658ad94036df8b5c038c17c35356725a7f80f77a48c0` |
 | V2 compiled | `e4dc8550e2cc1c870295a7cec0d8202ac67706f0b250ede559349771973bed3e` |    2,762,318 | `ec16dd47cb8585925422565b8dc0c92a55bc5f373bf2733409bf1e1a5e8421b8` |
-| V3 compiled | `39ae80ab12373a259a7fbccb641be9b9d5f72c17f3ac7363fa60d875eb8a5390` |    2,963,725 | `82a4324e80d63bcb7e8956732162b5db7b16ec084d478f25b0b4387f9ddd4c6d` |
+| V3 compiled (INVALID) | `39ae80ab12373a259a7fbccb641be9b9d5f72c17f3ac7363fa60d875eb8a5390` |    2,963,725 | `82a4324e80d63bcb7e8956732162b5db7b16ec084d478f25b0b4387f9ddd4c6d` |
+
+This campaign is partially valid. The V3 compiled Release bundle did not apply
+its cached Metro lowering plans. Metro workers supplied project-relative
+filenames while the plan cache was keyed by absolute realpaths, so every lookup
+missed and this arm shipped the runtime path. All `tamagui-v3-compiled` cells
+and comparisons involving that arm are INVALID pending re-measurement after
+`2acce54e05`. V2 runtime, V3 runtime, and V2 compiled remain valid because the
+runtime arms do not use the compiler plugin and V2 uses its Babel extractor.
 
 The authoritative [raw JSON](./output/benchmarks-native-v2-v3.json) has SHA-256
-`c759666e9e3d5bc2eb9c181e49355b409d333d940de1de719b4460a03fffc895`.
+`71aa4f53960f9b2620bd394b6634213bd6d8d988069549977174ee8da4b4f0ac`.
 The [generated and robustness-enriched summary](./output/benchmarks-native-v2-v3.md)
-has SHA-256 `5ca6d22f9d6269142e1883e026db768af4462da4ffaacd7b5d8dd8f942e49fae`.
+has SHA-256 `15edf573e4d93405df9c5a9f20d5e41f0bf8c2214651c9f2acec006aa045eb0b`.
 The [derived effects table](./output/benchmarks-native-v2-v3-effects.md) reports
 every right/left ratio of means and every round-paired right-minus-left 95%
 confidence interval. Positive differences are slower because each metric is a
 duration.
 
-The post-fix campaign narrowed every compiled mount and remount ratio but did
-not close the gap. Compared with the previous 12-sample campaign from
-`da80f52af4bf7eaf8af99195371d2cff644cc7eb`, the ratio of means changed from
-5.16x to 5.09x for simple mount, 6.07x to 4.77x for nested-static mount, and
-1.50x to 1.38x for styled-static mount. The corresponding remount ratios moved
-from 5.49x to 5.28x, 5.92x to 5.02x, and 1.50x to 1.28x. Commits
-`97024e8ab1` and `5826b250ca` postdate the previous campaign source, while the
-current source contains later changes too. These values are a before/after
-record rather than an isolated causal estimate for those two fixes.
+The V3 compiled ratios in this record cannot answer whether prewarm/reuse closed
+the earlier gap. They describe an unlowered bundle and are retained only for
+forensic comparison. The surviving headline is runtime simple mount: V2
+23.98 ms versus V3 27.49 ms, with a paired right-minus-left 95% confidence
+interval of 2.36 to 4.65 ms.
 
 Concurrent development watchers prevented a fully idle host. The retained run
 therefore increased to 30 samples and recorded process-attributed `top` samples
@@ -162,15 +166,17 @@ at the start, every 60 seconds, and after completion. Retained checkpoints
 ranged from 44.95% to 78.76% idle. The individual-arm audit found 20
 leave-one-out observations at or above three standard deviations among 1,620
 retained metric observations. Paired means, medians, and 20% trimmed means agree
-on every material V2/V3 direction. The complete robust table and load trace are
+on every material V2/V3 direction in the raw observations. This robustness does
+not validate the V3 compiled arm. The complete robust table and load trace are
 in the generated summary.
 
-All four clean Release arms passed the warmup-only smoke with the same runtime
-behavior signature. The final smoke and retained campaign encountered no iOS
-confirmation dialog. The deterministic fallback, if a dispatch stalled, was to
-inspect SpringBoard once and tap only an exact `Open` confirmation. Deep-link
-transport and any such confirmation occur before the app begins its timer, so
-they are outside the measured interval.
+All four installed Release apps passed the warmup-only behavior smoke with the
+same runtime signature. That smoke did not verify that the V3 compiled bundle
+consumed its lowering plans. The final smoke and retained campaign encountered
+no iOS confirmation dialog. The deterministic fallback, if a dispatch stalled,
+was to inspect SpringBoard once and tap only an exact `Open` confirmation.
+Deep-link transport and any such confirmation occur before the app begins its
+timer, so they are outside the measured interval.
 
 ## What it measures
 
