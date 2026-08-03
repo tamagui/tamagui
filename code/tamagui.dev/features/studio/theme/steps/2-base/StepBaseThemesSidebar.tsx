@@ -1,14 +1,6 @@
 import { useState } from 'react'
 import type { ThemeName } from 'tamagui'
-import {
-  Label,
-  Separator,
-  SizableText,
-  Switch,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Label, Separator, SizableText, Switch, Theme, XStack, YStack } from 'tamagui'
 
 import { useThemeBuilderStore } from '../../store/ThemeBuilderStore'
 import { StudioThemesQuickPreviewSection } from '../views/StudioThemesQuickPreviewSection'

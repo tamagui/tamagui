@@ -1,12 +1,5 @@
 import type { ThemeName } from 'tamagui'
-import {
-  Separator,
-  SizableText,
-  Theme,
-  XStack,
-  YStack,
-  useThemeName,
-} from 'tamagui'
+import { Separator, SizableText, Theme, XStack, YStack, useThemeName } from 'tamagui'
 
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { StudioThemesQuickPreviewSection } from '../views/StudioThemesQuickPreviewSection'
@@ -53,7 +46,6 @@ export function StepSubThemesSidebar() {
             <StudioThemesQuickPreviewSection scheme="dark" hasAccent={hasAccent} />
           </Theme>
         </Theme>
-
       </YStack>
     </YStack>
   )

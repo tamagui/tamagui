@@ -1,7 +1,4 @@
-import {
-  getStudioThemeTokens,
-  studioScales,
-} from '../theme/palettes'
+import { getStudioThemeTokens, studioScales } from '../theme/palettes'
 import type { ThemeSuiteItemData } from '../theme/types'
 
 export async function generateThemeBuilderCode({ palettes }: ThemeSuiteItemData) {

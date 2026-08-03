@@ -7,11 +7,7 @@ import { steps } from '~/features/studio/theme/steps/steps'
 import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
-import {
-  createPalettes,
-  getThemeSuitePalettes,
-  normalizePalette,
-} from '../palettes'
+import { createPalettes, getThemeSuitePalettes, normalizePalette } from '../palettes'
 import type {
   BuildPalette,
   BuildTheme,

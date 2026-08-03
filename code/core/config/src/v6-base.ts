@@ -106,8 +106,6 @@ export function createV6Config(colors: V6Colors) {
   return {
     ...alignedConfig,
     themes: colors.themes,
-    tokens: colors.colorTokens
-      ? { ...tokens, color: colors.colorTokens }
-      : tokens,
+    tokens: colors.colorTokens ? { ...tokens, color: colors.colorTokens } : tokens,
   }
 }
