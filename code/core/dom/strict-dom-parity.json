@@ -95,10 +95,10 @@
         "note": "Vitest's filename filters also selected safeAreaVariables.native.test.tsx and shorthandVariables.native.test.tsx through the variables.native.test.tsx suffix, so the realized execution was eight files rather than six."
       },
       {
-        "command": "TAMAGUI_TARGET=web bunx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts createRefComponent.web.test.tsx domEntries.web.test.tsx flatValueProgramsSSR.web.test.tsx programCache.web.test.tsx",
+        "command": "TAMAGUI_TARGET=web bunx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts createRefComponent.web.test.tsx domEntries.web.test.tsx flatValueProgramsSSR.web.test.tsx",
         "cwd": "code/core/core-test",
         "status": "passed",
-        "testsPassed": 23
+        "testsPassed": 12
       },
       {
         "prerequisiteCommand": "bun run pretest",
@@ -182,8 +182,8 @@
       "skipped": 0,
       "status": "intentional-difference",
       "severity": "none",
-      "localEvidence": ["code/core/core-test/programCache.web.test.tsx"],
-      "note": "This is an RSD internal memoization helper; Tamagui proves its different program-cache behavior directly."
+      "localEvidence": [],
+      "note": "This is an RSD internal memoization helper. Tamagui's direct style emission has no equivalent program cache, so the helper is intentionally not duplicated."
     },
     {
       "path": "packages/react-strict-dom/src/shared/__tests__/mergeRefs-test.js",
@@ -403,7 +403,7 @@
         "code/core/web/package.json:33-44",
         "code/core/core/package.json:53-64",
         "code/ui/tamagui/package.json:30-41",
-        "code/core/web/src/index.ts:80-119"
+        "code/core/web/src/index.ts:76-114"
       ],
       "tamaguiTests": [
         "code/core/core-test/domEntries.web.test.tsx",
@@ -674,7 +674,7 @@
         "code/core/style-grammar/src/valueParser.ts:1-256",
         "code/core/style-grammar/src/transformFamily.ts:1-590",
         "code/core/style-grammar/src/transition.ts:1-553",
-        "code/core/web/src/helpers/getSplitStyles.tsx:1-1818"
+        "code/core/web/src/helpers/getSplitStyles.tsx:861-872"
       ],
       "tamaguiTests": [
         "code/compiler/static-tests/tests/flatValues.web.test.tsx",

@@ -15,8 +15,7 @@ export const createTamagui: typeof createTamaguiCore =
         for (const name of ['radius', 'zIndex'] as const) {
           const tokenSet = tamaguiConfig.tokensParsed[name]
           const received = Object.keys(tokenSet)
-          const hasSomeOverlap = received.some((rk) => expected.includes(rk))
-          if (!hasSomeOverlap) {
+          if (received.length > 0 && !received.some((rk) => expected.includes(rk))) {
             throw new Error(`
 createTamagui() invalid tokens.${name}:
 
