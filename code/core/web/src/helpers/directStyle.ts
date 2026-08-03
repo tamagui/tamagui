@@ -560,6 +560,17 @@ function normalizeTransitionNames(state: GetStyleState, raw: string) {
   return copyFrom ? out + raw.slice(copyFrom) : raw
 }
 
+// one contribution's slice of an atomic identity; accumulated per atomicKey in
+// directAtomic, and reproduced standalone by the getSplitStyles class-strip
+// path so a surviving base style keeps its server-rendered identifier
+export function directStyleSignature(
+  property: string,
+  value: unknown,
+  conditionKey = ''
+) {
+  return `\u001f${property}\u001f${conditionKey}\u001e${String(value)}`
+}
+
 function directAtomic(
   state: DirectState,
   property: string,
@@ -570,7 +581,7 @@ function directAtomic(
   const atomics = (state.flatAtomics ||= {})
   const atomicKey = property.startsWith('transition') ? 'transition' : property
   const existing = atomics[atomicKey]
-  const signature = `${existing?.signature || ''}\u001f${property}\u001f${condition?.key || ''}\u001e${String(value)}`
+  const signature = `${existing?.signature || ''}${directStyleSignature(property, value, condition?.key || '')}`
   const next = getCSSStyleAtomic(
     property,
     value,

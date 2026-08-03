@@ -28,6 +28,12 @@ export declare function isContainerSizeQuery(query: unknown): boolean;
 export declare const grammarPlatformNames: ReadonlySet<string>;
 export declare const grammarPlatformGroups: ReadonlyMap<string, ReadonlySet<string>>;
 /**
+* Platform clause specificity, mirroring the runtime directStyle ranks: a TV
+* variant beats its base platform, which beats `native`, independent of
+* authored order. Non-platform modifiers never rank.
+*/
+export declare function grammarPlatformRank(modifier: string): number;
+/**
 * Creates the dependency-free config projection consumed by the shared style grammar.
 * Runtime and compiler integrations must classify candidates through this same view so
 * a candidate cannot be claimed by one side and emitted by the other.
