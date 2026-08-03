@@ -13,6 +13,13 @@ export interface ActiveConditions {
 	*/
 	containers: (modifier: string) => boolean;
 }
+/**
+* Resolves a program to one payload, mirroring the runtime directStyle
+* contract: clauses apply in authored order, except that platform-bearing
+* clauses with the same non-platform condition set compete by platform
+* specificity (grammarPlatformRank), where a more specific earlier clause
+* survives a less specific later one and equal ranks keep authored order.
+*/
 export declare function evaluateProgram(value: ParsedValue, registry: ModifierRegistryView, active: ActiveConditions): string | null;
 
 //# sourceMappingURL=evaluateProgram.d.ts.map
