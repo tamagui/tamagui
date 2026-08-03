@@ -75,6 +75,11 @@ Lives in a fresh `@tamagui/themes` src, statically generated for shipping (the
 generator stays out of `@tamagui/config/v6` static imports, same split as
 today). Everything below is exported so apps can import-and-override or copy.
 
+The authoring surface is the scales plus the tree, roughly 200 lines total.
+The level cross-product (~28 value maps, ~130 names) exists only in generated
+output; customizing never means writing levels out by hand, it means editing a
+number in a scale object.
+
 ### Scales
 
 Scale values: a number is a shade of the current palette; a string is an exact
@@ -131,15 +136,19 @@ export const scales = {
     dark: { /* same shape, tuned in visual pass */ },
   },
 
-  // colored surfaces (red, yellow, green, user-added): soft fill, semantic text
+  // colored surfaces (accent, red, yellow, green, user-added): soft fill, semantic text
   tint: {
     light: {
       1: { background: 100, 'background-hover': 50, 'background-press': 100, 'border-color': 300, color: 700, 'placeholder-color': 400, 'outline-color': 400 /* ... */ },
       2: { background: 50 /* ... */ },
+      3: { background: 200 /* ... */ },
+      4: { background: 300 /* ... */ },
     },
     dark: {
       1: { background: 900, color: 300 /* ... */ },
       2: { background: 800 /* ... */ },
+      3: { background: 700 /* ... */ },
+      4: { background: 600 /* ... */ },
     },
   },
 }
@@ -160,16 +169,23 @@ and its impossible corner (nothing is darker than 950).
 export function getTheme({ recipe }) {
   const scale = scales[recipe.treatment ?? 'normal'][recipe.scheme][recipe.level ?? 1]
   return {
-    ...ramp(recipe.palette), // color-50 ... color-950 for the current palette
+    ...ramp(recipe.palette, recipe.scheme), // color1 ... color11, scheme-relative
     ...fromShades(recipe.palette, scale),
   }
 }
 ```
 
 `fromShades(palette, scale)` maps numbers to `` `${palette}-${shade}` `` and
-passes strings through. `ramp(palette)` emits the palette-relative shade keys
-(`color-500` inside `theme="red"` resolves to `red-500`). Ramp keys are
-absolute, not scheme-flipped like v5's `color1`-`color12`.
+passes strings through. `ramp(palette, scheme)` emits the scheme-invariant
+scale: `color1` through `color11`, where `color1` is the shade nearest the
+background and `color11` nearest the foreground for the current scheme and
+palette (light: `color1` = 50 up to `color11` = 950; dark reversed). This is
+the core advantage over raw Tailwind: one value adapts to scheme and palette
+with no `dark:` pairs. Absolute colors are ordinary tokens (`red-500`) used
+directly in styles, never theme keys, so the two vocabularies stay distinct:
+theme `color1`-`color11` adapts, token `red-500` never does. The ramp is a
+documented superset over Tailwind; an app removes it by dropping `ramp()`
+from its `getTheme`.
 
 Customizing is function composition, no API flag:
 
@@ -222,7 +238,7 @@ export const themes = createThemes(tokens, {
   children: {
     ...levels(),
 
-    accent: { palette: 'brand', children: levels() },
+    accent: { palette: 'brand', treatment: 'tint', children: levels() },
     brand: { palette: 'brand', treatment: 'bold', children: levels() },
 
     inverse: ({ parent }) => ({
@@ -251,10 +267,12 @@ Notes:
   `theme="red"` rises and stays red (`light_red_level2`), everything deeper
   saturates. Without the generated name, the resolver would backtrack to
   `light_level2` and the button would go gray.
-- `accent` reuses the brand palette at normal treatment; `brand` is the same
-  palette bold. Cross-palette references like `accent-background: 'brand-600'`
-  are plain strings because `brand-*` is an ordinary token family the app
-  aliases to its ramp.
+- `accent` is the brand palette with the tint treatment: a soft brand surface
+  at lightness close to base. `brand` is the same palette bold. The `normal`
+  scale's white/black anchors apply only to the neutral base and inverse, so
+  no colored theme can pick up a white background. Cross-palette references
+  like `accent-background: 'brand-600'` are plain strings because `brand-*` is
+  an ordinary token family the app aliases to its ramp.
 - `treatment` is a string keyed into `scales`, user-extensible. Apps add
   `subtle` or `outline` by adding a scale set and using it in a recipe.
 
@@ -275,10 +293,13 @@ v5's "12-step" light palette was literally `['#ffffff', ...11-shade gray ramp]`
   in so there's room below" behavior of v5's `color2`.
 - Dark level 1 background is `950` with `black` available beneath.
 
-The numbered theme keys `color1`-`color12` are replaced by palette-relative
-shade keys `color-50`-`color-950`. One vocabulary shared by Tailwind, tokens,
-scales, and theme keys. The rename goes in the v3 codemod guide
-(`color2` -> `color-100`, approximate mapping documented there).
+The numbered theme keys stay scheme-relative but become 11 steps:
+`color1`-`color11` (see `ramp()` above). The split of vocabularies is:
+adaptive values come from the theme (`color1`-`color11`, generics), absolute
+values come from tokens (`gray-500`). The 12-to-11 renumber goes in the v3
+codemod guide; the ends map exactly (`color1` -> `color1`,
+`color12` -> `color11`) and the middle compresses by one step, approximate
+mapping documented there.
 
 All token/theme references are bare strings (no `$` prefix), matching the v3
 `$`-removal direction.
@@ -363,6 +384,6 @@ Known dependents to migrate, from a repo grep: `@tamagui/themes` v5 files,
   before deciding.
 - `shadow-color` ships as literal rgba in the scales; revisit if shadow tokens
   become cross-platform generics.
-- Whether `ramp()` keys belong in every theme or only base themes (cost is
-  11 keys per distinct map; lean: every theme, it's what makes palette-relative
-  styling work under any color theme).
+- `ramp()` keys ship in every theme (11 keys per distinct map); that is what
+  makes scheme- and palette-relative styling work everywhere. Revisit only if
+  the size assertion flags the cost.
