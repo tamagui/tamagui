@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "metadata": {
-    "generatedAt": "2026-08-03T00:30:33.674Z",
-    "commit": "6e383fa533453a688f70c653a9984008e005dd48",
+    "generatedAt": "2026-08-03T01:02:08.884Z",
+    "commit": "8fa0e3ac53db4ee45fe2697175d1b4327f6c94bc",
     "branch": "validate/v3-web-flatten",
     "dirty": false,
     "platform": "darwin",
@@ -24,11 +24,26 @@
     "randomSeed": 73129,
     "tamaguiWorkload": {
       "byteIdentical": true,
-      "bytes": 9076,
-      "sha256": "10ee8ab7709cd811618c117481fd899698c33cf84a4885d11e1cf9e3b3bb7446",
+      "sha256": "56dd6ba8bb07f9ee8537096f8ab7a98f6f822c94b35bfbcf9ed33356e0a22c99",
+      "sourceSha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e",
+      "configSha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324",
+      "files": [
+        {
+          "file": "src/index.tsx",
+          "bytes": 9717,
+          "sha256": "4bbf2de845876f99203484ee6ef4c1cdf22543407441b4b1494c07ba47b3ae9e"
+        },
+        {
+          "file": "src/tamagui.config.ts",
+          "bytes": 457,
+          "sha256": "cc2569cc5a30c5df8ae3fca81451ebfbd0f9dceb9eff31911fa4f61f485e6324"
+        }
+      ],
       "sources": [
         "tamagui-bench/src/index.tsx",
-        "tamagui-v2-bench/src/index.tsx"
+        "tamagui-v2-bench/src/index.tsx",
+        "tamagui-bench/src/tamagui.config.ts",
+        "tamagui-v2-bench/src/tamagui.config.ts"
       ]
     },
     "selectedFrameworks": [
@@ -73,16 +88,24 @@
   "artifacts": {
     "tamagui-v3-compiled": {
       "files": 3,
-      "totalBytes": 468121,
-      "jsBytes": 464474,
-      "cssBytes": 3229,
+      "totalBytes": 381383,
+      "jsBytes": 377550,
+      "cssBytes": 3415,
       "versions": {
         "react": "19.1.0",
         "react-dom": "19.1.0",
         "vite": "8.0.16",
         "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.5.1",
         "tamagui": "2.5.1",
         "@tamagui/vite-plugin": "2.5.1"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "eed500b4a4608f051f93dce4bab9b1fd141e309e7010269ff10b642e04d066e3",
+        "lockfile": {
+          "file": "../../bun.lock",
+          "sha256": "c857dc8329a99e3f47df76aaf753d58087beba1ad09441db337d4f84a4702149"
+        }
       },
       "compilerStats": {
         "schemaVersion": 1,
@@ -139,44 +162,68 @@
     },
     "tamagui-v3-runtime": {
       "files": 2,
-      "totalBytes": 464033,
-      "jsBytes": 463687,
+      "totalBytes": 376828,
+      "jsBytes": 376482,
       "cssBytes": 0,
       "versions": {
         "react": "19.1.0",
         "react-dom": "19.1.0",
         "vite": "8.0.16",
         "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.5.1",
         "tamagui": "2.5.1",
         "@tamagui/vite-plugin": "2.5.1"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "eed500b4a4608f051f93dce4bab9b1fd141e309e7010269ff10b642e04d066e3",
+        "lockfile": {
+          "file": "../../bun.lock",
+          "sha256": "c857dc8329a99e3f47df76aaf753d58087beba1ad09441db337d4f84a4702149"
+        }
       }
     },
     "tamagui-v2-compiled": {
       "files": 3,
-      "totalBytes": 309347,
-      "jsBytes": 304988,
-      "cssBytes": 3935,
+      "totalBytes": 288323,
+      "jsBytes": 283472,
+      "cssBytes": 4427,
       "versions": {
         "react": "19.1.0",
         "react-dom": "19.1.0",
         "vite": "8.0.16",
         "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.6.2",
         "tamagui": "2.6.2",
         "@tamagui/vite-plugin": "2.6.2"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "61d53812722ef1c9969e43dcf3b5979d91a8a5772e821a2a9df30b494fa561b0",
+        "lockfile": {
+          "file": "tamagui-v2-bench/package-lock.json",
+          "sha256": "d0c843addf2173bcfc8f5391d078b75dac7850474f7ed5e802d61358bc638e04"
+        }
       }
     },
     "tamagui-v2-runtime": {
       "files": 2,
-      "totalBytes": 304134,
-      "jsBytes": 303782,
+      "totalBytes": 281895,
+      "jsBytes": 281543,
       "cssBytes": 0,
       "versions": {
         "react": "19.1.0",
         "react-dom": "19.1.0",
         "vite": "8.0.16",
         "@vitejs/plugin-react": "6.0.4",
+        "@tamagui/animations-css": "2.6.2",
         "tamagui": "2.6.2",
         "@tamagui/vite-plugin": "2.6.2"
+      },
+      "dependencyMetadata": {
+        "packageJsonSha256": "61d53812722ef1c9969e43dcf3b5979d91a8a5772e821a2a9df30b494fa561b0",
+        "lockfile": {
+          "file": "tamagui-v2-bench/package-lock.json",
+          "sha256": "d0c843addf2173bcfc8f5391d078b75dac7850474f7ed5e802d61358bc638e04"
+        }
       }
     }
   },
@@ -187,8 +234,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 2.4,
-      "rerender": 5.4
+      "mount": 2,
+      "rerender": 3.2
     },
     {
       "sequence": 1,
@@ -196,8 +243,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 36.7,
-      "rerender": 28
+      "mount": 24,
+      "rerender": 10.1
     },
     {
       "sequence": 2,
@@ -205,8 +252,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 25.9,
-      "rerender": 9.8
+      "mount": 18.7,
+      "rerender": 1.4
     },
     {
       "sequence": 3,
@@ -214,8 +261,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 14,
-      "rerender": 11.2
+      "mount": 21.1,
+      "rerender": 9.7
     },
     {
       "sequence": 4,
@@ -223,8 +270,8 @@
       "round": 0,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 15.3,
-      "rerender": 9.2
+      "mount": 12.2,
+      "rerender": 4.7
     },
     {
       "sequence": 5,
@@ -232,8 +279,8 @@
       "round": 0,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 1.1,
-      "rerender": 5.8
+      "mount": 0.7,
+      "rerender": 2.3
     },
     {
       "sequence": 6,
@@ -241,8 +288,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 14.7,
-      "rerender": 10.8
+      "mount": 17.7,
+      "rerender": 9.9
     },
     {
       "sequence": 7,
@@ -250,8 +297,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 18.1,
-      "rerender": 13.3
+      "mount": 17.2,
+      "rerender": 8.6
     },
     {
       "sequence": 8,
@@ -259,8 +306,8 @@
       "round": 0,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.4,
-      "rerender": 1.9
+      "mount": 0.6,
+      "rerender": 1.5
     },
     {
       "sequence": 9,
@@ -268,8 +315,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 23.6,
-      "rerender": 8.1
+      "mount": 10,
+      "rerender": 2.7
     },
     {
       "sequence": 10,
@@ -277,8 +324,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.8,
-      "rerender": 3.2
+      "mount": 0.6,
+      "rerender": 1.2
     },
     {
       "sequence": 11,
@@ -286,8 +333,8 @@
       "round": 0,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.6,
-      "rerender": 2.7
+      "mount": 0.5,
+      "rerender": 1.3
     },
     {
       "sequence": 12,
@@ -295,8 +342,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 22.4,
-      "rerender": 8.9
+      "mount": 12.4,
+      "rerender": 1.2
     },
     {
       "sequence": 13,
@@ -304,8 +351,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 9,
-      "rerender": 10
+      "mount": 17.5,
+      "rerender": 7.6
     },
     {
       "sequence": 14,
@@ -313,8 +360,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 1.3,
-      "rerender": 4.8
+      "mount": 0.5,
+      "rerender": 0.9
     },
     {
       "sequence": 15,
@@ -322,8 +369,8 @@
       "round": 0,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 2.1,
-      "rerender": 5.6
+      "mount": 1.2,
+      "rerender": 2.5
     },
     {
       "sequence": 16,
@@ -331,8 +378,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 30.7,
-      "rerender": 17.3
+      "mount": 15.7,
+      "rerender": 7.5
     },
     {
       "sequence": 17,
@@ -340,8 +387,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 24.4,
-      "rerender": 15.9
+      "mount": 34.1,
+      "rerender": 9.3
     },
     {
       "sequence": 18,
@@ -349,8 +396,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 8.6,
-      "rerender": 8.6
+      "mount": 18.7,
+      "rerender": 2.3
     },
     {
       "sequence": 19,
@@ -358,8 +405,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 6.2,
-      "rerender": 4.9
+      "mount": 10,
+      "rerender": 1.1
     },
     {
       "sequence": 20,
@@ -367,8 +414,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.8,
-      "rerender": 4.1
+      "mount": 0.9,
+      "rerender": 3.2
     },
     {
       "sequence": 21,
@@ -376,8 +423,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 1.1,
-      "rerender": 3.5
+      "mount": 0.6,
+      "rerender": 1.3
     },
     {
       "sequence": 22,
@@ -385,8 +432,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 14.2,
-      "rerender": 13.2
+      "mount": 7.2,
+      "rerender": 4.3
     },
     {
       "sequence": 23,
@@ -394,8 +441,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 4.3,
-      "rerender": 6.7
+      "mount": 10.9,
+      "rerender": 6.2
     },
     {
       "sequence": 24,
@@ -403,8 +450,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 4.4,
-      "rerender": 6.4
+      "mount": 7.3,
+      "rerender": 5.5
     },
     {
       "sequence": 25,
@@ -412,8 +459,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.3,
-      "rerender": 1.4
+      "mount": 0.4,
+      "rerender": 1.6
     },
     {
       "sequence": 26,
@@ -421,8 +468,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.4,
-      "rerender": 1.5
+      "mount": 0.9,
+      "rerender": 2.2
     },
     {
       "sequence": 27,
@@ -430,8 +477,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 14.2,
-      "rerender": 18.1
+      "mount": 17.9,
+      "rerender": 11.9
     },
     {
       "sequence": 28,
@@ -439,8 +486,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.8,
-      "rerender": 4.1
+      "mount": 1,
+      "rerender": 2.8
     },
     {
       "sequence": 29,
@@ -448,8 +495,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 2.6,
-      "rerender": 3.3
+      "mount": 7,
+      "rerender": 3.5
     },
     {
       "sequence": 30,
@@ -457,8 +504,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 6.4,
-      "rerender": 7.1
+      "mount": 6.7,
+      "rerender": 1.2
     },
     {
       "sequence": 31,
@@ -466,8 +513,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 10.2,
-      "rerender": 10.9
+      "mount": 5.5,
+      "rerender": 5.4
     },
     {
       "sequence": 32,
@@ -475,8 +522,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 0.9,
-      "rerender": 5.4
+      "mount": 1,
+      "rerender": 2.8
     },
     {
       "sequence": 33,
@@ -484,8 +531,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 1.4,
-      "rerender": 4.9
+      "mount": 0.5,
+      "rerender": 1.4
     },
     {
       "sequence": 34,
@@ -493,8 +540,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 5.5,
-      "rerender": 7.7
+      "mount": 17,
+      "rerender": 1.8
     },
     {
       "sequence": 35,
@@ -502,8 +549,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 5.7,
-      "rerender": 4.5
+      "mount": 16.6,
+      "rerender": 8.2
     },
     {
       "sequence": 36,
@@ -511,8 +558,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 3,
-      "rerender": 3.6
+      "mount": 9.4,
+      "rerender": 1.9
     },
     {
       "sequence": 37,
@@ -520,8 +567,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 16.5,
-      "rerender": 17.9
+      "mount": 13.6,
+      "rerender": 7.4
     },
     {
       "sequence": 38,
@@ -529,8 +576,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 9.1,
-      "rerender": 10.3
+      "mount": 6.8,
+      "rerender": 6.5
     },
     {
       "sequence": 39,
@@ -538,8 +585,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 13.9,
-      "rerender": 10.7
+      "mount": 8.7,
+      "rerender": 1.7
     },
     {
       "sequence": 40,
@@ -547,8 +594,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.9,
-      "rerender": 8.4
+      "mount": 0.5,
+      "rerender": 1
     },
     {
       "sequence": 41,
@@ -557,7 +604,7 @@
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
       "mount": 0.5,
-      "rerender": 4
+      "rerender": 1.3
     },
     {
       "sequence": 42,
@@ -565,8 +612,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 10,
-      "rerender": 10.6
+      "mount": 4.8,
+      "rerender": 1.1
     },
     {
       "sequence": 43,
@@ -574,8 +621,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 12.4,
-      "rerender": 12.8
+      "mount": 10.4,
+      "rerender": 6.5
     },
     {
       "sequence": 44,
@@ -583,8 +630,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 4.1,
-      "rerender": 6.6
+      "mount": 12.4,
+      "rerender": 9.3
     },
     {
       "sequence": 45,
@@ -592,8 +639,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 8.3,
-      "rerender": 7.8
+      "mount": 12,
+      "rerender": 1.6
     },
     {
       "sequence": 46,
@@ -601,8 +648,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 6,
-      "rerender": 7.1
+      "mount": 12.2,
+      "rerender": 8.3
     },
     {
       "sequence": 47,
@@ -610,8 +657,8 @@
       "round": 0,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.9,
-      "rerender": 4.8
+      "mount": 0.4,
+      "rerender": 1.2
     },
     {
       "sequence": 48,
@@ -619,8 +666,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 12.6,
-      "rerender": 9.5
+      "mount": 4.8,
+      "rerender": 5.4
     },
     {
       "sequence": 49,
@@ -628,8 +675,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 8.2,
-      "rerender": 7.6
+      "mount": 3.7,
+      "rerender": 1.1
     },
     {
       "sequence": 50,
@@ -637,8 +684,8 @@
       "round": 0,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 1,
-      "rerender": 4.2
+      "mount": 0.5,
+      "rerender": 1
     },
     {
       "sequence": 51,
@@ -646,8 +693,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 24.9,
-      "rerender": 17
+      "mount": 9.8,
+      "rerender": 6.9
     },
     {
       "sequence": 52,
@@ -655,8 +702,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 7.3,
-      "rerender": 6.9
+      "mount": 2.3,
+      "rerender": 1.9
     },
     {
       "sequence": 53,
@@ -664,8 +711,8 @@
       "round": 0,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 4.9,
-      "rerender": 6
+      "mount": 7.5,
+      "rerender": 5.9
     },
     {
       "sequence": 54,
@@ -673,8 +720,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.4,
-      "rerender": 2
+      "mount": 0.7,
+      "rerender": 1.6
     },
     {
       "sequence": 55,
@@ -682,8 +729,8 @@
       "round": 0,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1.4,
-      "rerender": 8.4
+      "mount": 2.9,
+      "rerender": 5.8
     },
     {
       "sequence": 56,
@@ -691,8 +738,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 22.2,
-      "rerender": 19.2
+      "mount": 7.4,
+      "rerender": 6.4
     },
     {
       "sequence": 57,
@@ -700,8 +747,8 @@
       "round": 0,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 9.6,
-      "rerender": 9.7
+      "mount": 13.1,
+      "rerender": 1.3
     },
     {
       "sequence": 58,
@@ -709,8 +756,8 @@
       "round": 0,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 0.6,
-      "rerender": 3.5
+      "mount": 2.5,
+      "rerender": 4.3
     },
     {
       "sequence": 59,
@@ -718,8 +765,8 @@
       "round": 0,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 3.2,
-      "rerender": 6.1
+      "mount": 3.4,
+      "rerender": 2.8
     },
     {
       "sequence": 60,
@@ -727,8 +774,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.3,
-      "rerender": 1.8
+      "mount": 0.4,
+      "rerender": 0.9
     },
     {
       "sequence": 61,
@@ -736,8 +783,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 9.8,
-      "rerender": 10.4
+      "mount": 8.5,
+      "rerender": 5.6
     },
     {
       "sequence": 62,
@@ -745,8 +792,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 6.1,
-      "rerender": 5.3
+      "mount": 12.8,
+      "rerender": 2.9
     },
     {
       "sequence": 63,
@@ -754,8 +801,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.4,
-      "rerender": 2.4
+      "mount": 0.6,
+      "rerender": 4.4
     },
     {
       "sequence": 64,
@@ -763,8 +810,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 5.1,
-      "rerender": 5.9
+      "mount": 16.9,
+      "rerender": 1.6
     },
     {
       "sequence": 65,
@@ -772,8 +819,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 6.5,
-      "rerender": 9.2
+      "mount": 7.6,
+      "rerender": 8.9
     },
     {
       "sequence": 66,
@@ -781,8 +828,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 4,
-      "rerender": 9.7
+      "mount": 2.8,
+      "rerender": 2.5
     },
     {
       "sequence": 67,
@@ -790,8 +837,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 19.8,
-      "rerender": 14.9
+      "mount": 10,
+      "rerender": 7.4
     },
     {
       "sequence": 68,
@@ -799,8 +846,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 16.4,
-      "rerender": 14.5
+      "mount": 11.1,
+      "rerender": 7.5
     },
     {
       "sequence": 69,
@@ -808,8 +855,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 4.8,
-      "rerender": 5.7
+      "mount": 4.1,
+      "rerender": 2.3
     },
     {
       "sequence": 70,
@@ -817,8 +864,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1.7,
-      "rerender": 10.1
+      "mount": 0.6,
+      "rerender": 2.6
     },
     {
       "sequence": 71,
@@ -826,8 +873,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 0.6,
-      "rerender": 3.5
+      "mount": 0.9,
+      "rerender": 5
     },
     {
       "sequence": 72,
@@ -835,8 +882,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.2,
-      "rerender": 1.3
+      "mount": 0.7,
+      "rerender": 2.5
     },
     {
       "sequence": 73,
@@ -844,8 +891,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 11.5,
-      "rerender": 11.6
+      "mount": 15.1,
+      "rerender": 6.1
     },
     {
       "sequence": 74,
@@ -853,8 +900,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.5,
-      "rerender": 1.9
+      "mount": 0.6,
+      "rerender": 4.2
     },
     {
       "sequence": 75,
@@ -862,8 +909,8 @@
       "round": 1,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 3.3,
-      "rerender": 4.6
+      "mount": 12.2,
+      "rerender": 1.8
     },
     {
       "sequence": 76,
@@ -871,8 +918,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.6,
-      "rerender": 3.3
+      "mount": 0.5,
+      "rerender": 1.8
     },
     {
       "sequence": 77,
@@ -880,8 +927,8 @@
       "round": 1,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 13.8,
-      "rerender": 11.1
+      "mount": 4.7,
+      "rerender": 6.4
     },
     {
       "sequence": 78,
@@ -889,8 +936,8 @@
       "round": 1,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 8.5,
-      "rerender": 11.2
+      "mount": 3.1,
+      "rerender": 5.4
     },
     {
       "sequence": 79,
@@ -898,8 +945,8 @@
       "round": 1,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 1.9,
-      "rerender": 4.5
+      "mount": 2.2,
+      "rerender": 2.1
     },
     {
       "sequence": 80,
@@ -907,8 +954,8 @@
       "round": 2,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 2.9,
-      "rerender": 6.7
+      "mount": 5.4,
+      "rerender": 5.1
     },
     {
       "sequence": 81,
@@ -916,8 +963,8 @@
       "round": 2,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 11.1,
-      "rerender": 15.7
+      "mount": 6.8,
+      "rerender": 5.8
     },
     {
       "sequence": 82,
@@ -925,8 +972,8 @@
       "round": 2,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 10.5,
-      "rerender": 12
+      "mount": 11.9,
+      "rerender": 9.1
     },
     {
       "sequence": 83,
@@ -934,8 +981,8 @@
       "round": 2,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 3.7,
-      "rerender": 5
+      "mount": 12.2,
+      "rerender": 2.2
     },
     {
       "sequence": 84,
@@ -943,8 +990,8 @@
       "round": 2,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 6.2,
-      "rerender": 6.8
+      "mount": 9.2,
+      "rerender": 16.6
     },
     {
       "sequence": 85,
@@ -952,8 +999,8 @@
       "round": 2,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.7,
-      "rerender": 5.5
+      "mount": 1.1,
+      "rerender": 2.6
     },
     {
       "sequence": 86,
@@ -961,8 +1008,8 @@
       "round": 2,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 5.7,
-      "rerender": 10.9
+      "mount": 15,
+      "rerender": 8.1
     },
     {
       "sequence": 87,
@@ -971,7 +1018,7 @@
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
       "mount": 0.9,
-      "rerender": 5.1
+      "rerender": 3
     },
     {
       "sequence": 88,
@@ -979,8 +1026,8 @@
       "round": 2,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.5,
-      "rerender": 3
+      "mount": 0.9,
+      "rerender": 4.8
     },
     {
       "sequence": 89,
@@ -989,7 +1036,7 @@
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
       "mount": 1,
-      "rerender": 2.7
+      "rerender": 3.2
     },
     {
       "sequence": 90,
@@ -997,8 +1044,8 @@
       "round": 2,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 7,
-      "rerender": 9.6
+      "mount": 20.9,
+      "rerender": 9.8
     },
     {
       "sequence": 91,
@@ -1006,8 +1053,8 @@
       "round": 2,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 3,
-      "rerender": 4
+      "mount": 4.4,
+      "rerender": 1.6
     },
     {
       "sequence": 92,
@@ -1015,8 +1062,8 @@
       "round": 2,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 8,
-      "rerender": 9.9
+      "mount": 4,
+      "rerender": 1.2
     },
     {
       "sequence": 93,
@@ -1024,8 +1071,8 @@
       "round": 2,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 12.8,
-      "rerender": 14
+      "mount": 10,
+      "rerender": 12.8
     },
     {
       "sequence": 94,
@@ -1033,8 +1080,8 @@
       "round": 2,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 4.3,
-      "rerender": 6.5
+      "mount": 5.4,
+      "rerender": 4.5
     },
     {
       "sequence": 95,
@@ -1042,8 +1089,8 @@
       "round": 2,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.9,
-      "rerender": 4.4
+      "mount": 0.3,
+      "rerender": 1.2
     },
     {
       "sequence": 96,
@@ -1051,8 +1098,8 @@
       "round": 2,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.5,
-      "rerender": 4.2
+      "mount": 0.2,
+      "rerender": 1.1
     },
     {
       "sequence": 97,
@@ -1060,8 +1107,8 @@
       "round": 2,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 12.6,
-      "rerender": 12.1
+      "mount": 10.5,
+      "rerender": 1.3
     },
     {
       "sequence": 98,
@@ -1069,8 +1116,8 @@
       "round": 2,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.2,
-      "rerender": 1.6
+      "mount": 0.4,
+      "rerender": 2
     },
     {
       "sequence": 99,
@@ -1078,8 +1125,8 @@
       "round": 2,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 3.6,
-      "rerender": 6
+      "mount": 8.4,
+      "rerender": 7.1
     },
     {
       "sequence": 100,
@@ -1087,8 +1134,8 @@
       "round": 3,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 6.4,
-      "rerender": 5.4
+      "mount": 6.3,
+      "rerender": 6.9
     },
     {
       "sequence": 101,
@@ -1096,8 +1143,8 @@
       "round": 3,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1.3,
-      "rerender": 5.1
+      "mount": 0.9,
+      "rerender": 2.9
     },
     {
       "sequence": 102,
@@ -1105,8 +1152,8 @@
       "round": 3,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 3.2,
-      "rerender": 5.6
+      "mount": 6.3,
+      "rerender": 5
     },
     {
       "sequence": 103,
@@ -1114,8 +1161,8 @@
       "round": 3,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 6.8,
-      "rerender": 10.1
+      "mount": 6.3,
+      "rerender": 7.8
     },
     {
       "sequence": 104,
@@ -1123,8 +1170,8 @@
       "round": 3,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 19.8,
-      "rerender": 13.8
+      "mount": 14.9,
+      "rerender": 1.2
     },
     {
       "sequence": 105,
@@ -1132,8 +1179,8 @@
       "round": 3,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.6,
-      "rerender": 2.7
+      "mount": 0.3,
+      "rerender": 1.2
     },
     {
       "sequence": 106,
@@ -1141,8 +1188,8 @@
       "round": 3,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 9.3,
-      "rerender": 9.7
+      "mount": 4.1,
+      "rerender": 1.2
     },
     {
       "sequence": 107,
@@ -1150,8 +1197,8 @@
       "round": 3,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 14.9,
-      "rerender": 14.6
+      "mount": 12.7,
+      "rerender": 5.5
     },
     {
       "sequence": 108,
@@ -1159,8 +1206,8 @@
       "round": 3,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 10.3,
-      "rerender": 18.6
+      "mount": 25.7,
+      "rerender": 11.1
     },
     {
       "sequence": 109,
@@ -1168,8 +1215,8 @@
       "round": 3,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 1.7,
-      "rerender": 3.4
+      "mount": 2.7,
+      "rerender": 2.3
     },
     {
       "sequence": 110,
@@ -1177,8 +1224,8 @@
       "round": 3,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 4,
-      "rerender": 7.3
+      "mount": 5.2,
+      "rerender": 7.8
     },
     {
       "sequence": 111,
@@ -1186,8 +1233,8 @@
       "round": 3,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.6,
-      "rerender": 3.7
+      "mount": 0.3,
+      "rerender": 1.1
     },
     {
       "sequence": 112,
@@ -1195,8 +1242,8 @@
       "round": 3,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.6,
-      "rerender": 2.6
+      "mount": 0.5,
+      "rerender": 1.8
     },
     {
       "sequence": 113,
@@ -1204,8 +1251,8 @@
       "round": 3,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 12.7,
-      "rerender": 10.6
+      "mount": 7.3,
+      "rerender": 1.8
     },
     {
       "sequence": 114,
@@ -1213,8 +1260,8 @@
       "round": 3,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.4,
-      "rerender": 1.8
+      "mount": 0.3,
+      "rerender": 1.7
     },
     {
       "sequence": 115,
@@ -1222,8 +1269,8 @@
       "round": 3,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 7.7,
-      "rerender": 9.1
+      "mount": 8.2,
+      "rerender": 1.4
     },
     {
       "sequence": 116,
@@ -1231,8 +1278,8 @@
       "round": 3,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.6,
-      "rerender": 4.2
+      "mount": 1.6,
+      "rerender": 5.3
     },
     {
       "sequence": 117,
@@ -1240,8 +1287,8 @@
       "round": 3,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 11,
-      "rerender": 12.6
+      "mount": 23.7,
+      "rerender": 15.5
     },
     {
       "sequence": 118,
@@ -1250,7 +1297,7 @@
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
       "mount": 0.5,
-      "rerender": 2.6
+      "rerender": 2.3
     },
     {
       "sequence": 119,
@@ -1258,8 +1305,8 @@
       "round": 3,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 6.5,
-      "rerender": 7.5
+      "mount": 10.8,
+      "rerender": 9.3
     },
     {
       "sequence": 120,
@@ -1267,8 +1314,8 @@
       "round": 4,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 3.4,
-      "rerender": 5.7
+      "mount": 7.6,
+      "rerender": 10
     },
     {
       "sequence": 121,
@@ -1276,8 +1323,8 @@
       "round": 4,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 7,
-      "rerender": 9.5
+      "mount": 16.1,
+      "rerender": 4.4
     },
     {
       "sequence": 122,
@@ -1285,8 +1332,8 @@
       "round": 4,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 13.3,
-      "rerender": 11.1
+      "mount": 8.8,
+      "rerender": 9.6
     },
     {
       "sequence": 123,
@@ -1294,8 +1341,8 @@
       "round": 4,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.4,
-      "rerender": 2.8
+      "mount": 0.8,
+      "rerender": 5.4
     },
     {
       "sequence": 124,
@@ -1303,8 +1350,8 @@
       "round": 4,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 4.9,
-      "rerender": 6.8
+      "mount": 7,
+      "rerender": 4.3
     },
     {
       "sequence": 125,
@@ -1312,8 +1359,8 @@
       "round": 4,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 19.2,
-      "rerender": 15.2
+      "mount": 12.4,
+      "rerender": 12
     },
     {
       "sequence": 126,
@@ -1321,8 +1368,8 @@
       "round": 4,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 9.6,
-      "rerender": 9.8
+      "mount": 11.8,
+      "rerender": 9.7
     },
     {
       "sequence": 127,
@@ -1330,8 +1377,8 @@
       "round": 4,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 2.4,
-      "rerender": 3.6
+      "mount": 6.4,
+      "rerender": 2.4
     },
     {
       "sequence": 128,
@@ -1339,8 +1386,8 @@
       "round": 4,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 3.8,
-      "rerender": 4.6
+      "mount": 8.5,
+      "rerender": 8.4
     },
     {
       "sequence": 129,
@@ -1348,8 +1395,8 @@
       "round": 4,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 3.1,
-      "rerender": 3.8
+      "mount": 7.3,
+      "rerender": 3.6
     },
     {
       "sequence": 130,
@@ -1357,8 +1404,8 @@
       "round": 4,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.3,
-      "rerender": 2.4
+      "mount": 0.6,
+      "rerender": 3
     },
     {
       "sequence": 131,
@@ -1366,8 +1413,8 @@
       "round": 4,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.3,
-      "rerender": 2.3
+      "mount": 0.5,
+      "rerender": 2.5
     },
     {
       "sequence": 132,
@@ -1375,8 +1422,8 @@
       "round": 4,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.4,
-      "rerender": 1.8
+      "mount": 0.3,
+      "rerender": 1
     },
     {
       "sequence": 133,
@@ -1384,8 +1431,8 @@
       "round": 4,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 0.5,
-      "rerender": 3
+      "mount": 0.6,
+      "rerender": 2.3
     },
     {
       "sequence": 134,
@@ -1393,8 +1440,8 @@
       "round": 4,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 8.9,
-      "rerender": 9
+      "mount": 9.4,
+      "rerender": 8.9
     },
     {
       "sequence": 135,
@@ -1402,8 +1449,8 @@
       "round": 4,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.6,
-      "rerender": 5.7
+      "mount": 0.3,
+      "rerender": 2.5
     },
     {
       "sequence": 136,
@@ -1411,8 +1458,8 @@
       "round": 4,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 19.4,
-      "rerender": 9
+      "mount": 16.3,
+      "rerender": 8.5
     },
     {
       "sequence": 137,
@@ -1421,7 +1468,7 @@
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
       "mount": 0.3,
-      "rerender": 1.5
+      "rerender": 1
     },
     {
       "sequence": 138,
@@ -1429,8 +1476,8 @@
       "round": 4,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 3.5,
-      "rerender": 6.2
+      "mount": 9.9,
+      "rerender": 2
     },
     {
       "sequence": 139,
@@ -1438,8 +1485,8 @@
       "round": 4,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 15.6,
-      "rerender": 11.7
+      "mount": 7.5,
+      "rerender": 1
     },
     {
       "sequence": 140,
@@ -1447,8 +1494,8 @@
       "round": 5,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 13.2,
-      "rerender": 17.9
+      "mount": 13.4,
+      "rerender": 8.5
     },
     {
       "sequence": 141,
@@ -1456,8 +1503,8 @@
       "round": 5,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 9.2,
-      "rerender": 10.9
+      "mount": 4.9,
+      "rerender": 4.5
     },
     {
       "sequence": 142,
@@ -1465,8 +1512,8 @@
       "round": 5,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 5,
-      "rerender": 5.1
+      "mount": 3.3,
+      "rerender": 0.9
     },
     {
       "sequence": 143,
@@ -1474,8 +1521,8 @@
       "round": 5,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 7.8,
-      "rerender": 11.8
+      "mount": 3.1,
+      "rerender": 2.1
     },
     {
       "sequence": 144,
@@ -1483,8 +1530,8 @@
       "round": 5,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 6,
-      "rerender": 9.1
+      "mount": 2.3,
+      "rerender": 1.8
     },
     {
       "sequence": 145,
@@ -1492,8 +1539,8 @@
       "round": 5,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 4.3,
-      "rerender": 5.2
+      "mount": 4.6,
+      "rerender": 1.1
     },
     {
       "sequence": 146,
@@ -1501,8 +1548,8 @@
       "round": 5,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.2,
-      "rerender": 1.4
+      "mount": 0.4,
+      "rerender": 2
     },
     {
       "sequence": 147,
@@ -1510,8 +1557,8 @@
       "round": 5,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.2,
-      "rerender": 1.2
+      "mount": 0.8,
+      "rerender": 2.8
     },
     {
       "sequence": 148,
@@ -1519,8 +1566,8 @@
       "round": 5,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 4.1,
-      "rerender": 6.3
+      "mount": 17,
+      "rerender": 7.8
     },
     {
       "sequence": 149,
@@ -1528,8 +1575,8 @@
       "round": 5,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.3,
-      "rerender": 1.3
+      "mount": 0.8,
+      "rerender": 2
     },
     {
       "sequence": 150,
@@ -1537,8 +1584,8 @@
       "round": 5,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1.1,
-      "rerender": 4.6
+      "mount": 0.9,
+      "rerender": 2.2
     },
     {
       "sequence": 151,
@@ -1546,8 +1593,8 @@
       "round": 5,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.3,
-      "rerender": 2.6
+      "mount": 0.2,
+      "rerender": 1.4
     },
     {
       "sequence": 152,
@@ -1555,8 +1602,8 @@
       "round": 5,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 9.2,
-      "rerender": 9.1
+      "mount": 6.5,
+      "rerender": 5.9
     },
     {
       "sequence": 153,
@@ -1564,8 +1611,8 @@
       "round": 5,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 17.8,
-      "rerender": 18.9
+      "mount": 11.5,
+      "rerender": 10
     },
     {
       "sequence": 154,
@@ -1573,8 +1620,8 @@
       "round": 5,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 15.4,
-      "rerender": 10.1
+      "mount": 9.9,
+      "rerender": 9.7
     },
     {
       "sequence": 155,
@@ -1582,8 +1629,8 @@
       "round": 5,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 8.7,
-      "rerender": 8.5
+      "mount": 8.5,
+      "rerender": 9.5
     },
     {
       "sequence": 156,
@@ -1591,8 +1638,8 @@
       "round": 5,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 7.1,
-      "rerender": 6.6
+      "mount": 7.5,
+      "rerender": 1.3
     },
     {
       "sequence": 157,
@@ -1600,8 +1647,8 @@
       "round": 5,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.3,
-      "rerender": 1.6
+      "mount": 0.4,
+      "rerender": 2.1
     },
     {
       "sequence": 158,
@@ -1609,8 +1656,8 @@
       "round": 5,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 3.2,
-      "rerender": 3.5
+      "mount": 13.1,
+      "rerender": 2.2
     },
     {
       "sequence": 159,
@@ -1618,8 +1665,8 @@
       "round": 5,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1.2,
-      "rerender": 7.3
+      "mount": 1.5,
+      "rerender": 6.6
     },
     {
       "sequence": 160,
@@ -1627,8 +1674,8 @@
       "round": 6,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 8.9,
-      "rerender": 9.1
+      "mount": 13.9,
+      "rerender": 8.5
     },
     {
       "sequence": 161,
@@ -1636,8 +1683,8 @@
       "round": 6,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 19.5,
-      "rerender": 18.2
+      "mount": 22.7,
+      "rerender": 16.8
     },
     {
       "sequence": 162,
@@ -1645,7 +1692,7 @@
       "round": 6,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.3,
+      "mount": 0.5,
       "rerender": 2.4
     },
     {
@@ -1654,8 +1701,8 @@
       "round": 6,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 2.9,
-      "rerender": 5
+      "mount": 6,
+      "rerender": 4.9
     },
     {
       "sequence": 164,
@@ -1663,8 +1710,8 @@
       "round": 6,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.5,
-      "rerender": 3
+      "mount": 0.6,
+      "rerender": 3.1
     },
     {
       "sequence": 165,
@@ -1672,8 +1719,8 @@
       "round": 6,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.3,
-      "rerender": 1.1
+      "mount": 0.8,
+      "rerender": 2.1
     },
     {
       "sequence": 166,
@@ -1681,8 +1728,8 @@
       "round": 6,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 5.2,
-      "rerender": 7.2
+      "mount": 7.7,
+      "rerender": 8.2
     },
     {
       "sequence": 167,
@@ -1690,8 +1737,8 @@
       "round": 6,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 4.4,
-      "rerender": 5.9
+      "mount": 10.7,
+      "rerender": 10.1
     },
     {
       "sequence": 168,
@@ -1699,8 +1746,8 @@
       "round": 6,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 6.1,
-      "rerender": 6.4
+      "mount": 12.7,
+      "rerender": 2
     },
     {
       "sequence": 169,
@@ -1708,8 +1755,8 @@
       "round": 6,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 7.8,
-      "rerender": 9.8
+      "mount": 8.2,
+      "rerender": 1.5
     },
     {
       "sequence": 170,
@@ -1717,8 +1764,8 @@
       "round": 6,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.2,
-      "rerender": 1
+      "mount": 0.4,
+      "rerender": 1.1
     },
     {
       "sequence": 171,
@@ -1726,8 +1773,8 @@
       "round": 6,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 1.8,
-      "rerender": 2.8
+      "mount": 3.2,
+      "rerender": 1
     },
     {
       "sequence": 172,
@@ -1735,8 +1782,8 @@
       "round": 6,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 6.4,
-      "rerender": 7.9
+      "mount": 9.2,
+      "rerender": 6.4
     },
     {
       "sequence": 173,
@@ -1744,8 +1791,8 @@
       "round": 6,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 2.2,
-      "rerender": 3.7
+      "mount": 3,
+      "rerender": 3
     },
     {
       "sequence": 174,
@@ -1753,8 +1800,8 @@
       "round": 6,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 14.1,
-      "rerender": 17.2
+      "mount": 19.1,
+      "rerender": 7.8
     },
     {
       "sequence": 175,
@@ -1762,8 +1809,8 @@
       "round": 6,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.3,
-      "rerender": 1.6
+      "mount": 0.8,
+      "rerender": 3.3
     },
     {
       "sequence": 176,
@@ -1771,8 +1818,8 @@
       "round": 6,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 0.7,
-      "rerender": 4.8
+      "mount": 1.7,
+      "rerender": 5.8
     },
     {
       "sequence": 177,
@@ -1781,7 +1828,7 @@
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
       "mount": 0.6,
-      "rerender": 3.1
+      "rerender": 2.1
     },
     {
       "sequence": 178,
@@ -1789,8 +1836,8 @@
       "round": 6,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 10.4,
-      "rerender": 9.6
+      "mount": 16.5,
+      "rerender": 1.5
     },
     {
       "sequence": 179,
@@ -1798,8 +1845,8 @@
       "round": 6,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 12.2,
-      "rerender": 14.4
+      "mount": 11.5,
+      "rerender": 10.5
     },
     {
       "sequence": 180,
@@ -1807,8 +1854,8 @@
       "round": 7,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 20.5,
-      "rerender": 17.3
+      "mount": 8.5,
+      "rerender": 5.8
     },
     {
       "sequence": 181,
@@ -1816,8 +1863,8 @@
       "round": 7,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 6.4,
-      "rerender": 9.5
+      "mount": 9.4,
+      "rerender": 1.7
     },
     {
       "sequence": 182,
@@ -1825,8 +1872,8 @@
       "round": 7,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 11.5,
-      "rerender": 12
+      "mount": 10.1,
+      "rerender": 9.1
     },
     {
       "sequence": 183,
@@ -1834,8 +1881,8 @@
       "round": 7,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 11.1,
-      "rerender": 9.8
+      "mount": 13.8,
+      "rerender": 1.4
     },
     {
       "sequence": 184,
@@ -1843,8 +1890,8 @@
       "round": 7,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 1.9,
-      "rerender": 3.9
+      "mount": 7.7,
+      "rerender": 5
     },
     {
       "sequence": 185,
@@ -1852,8 +1899,8 @@
       "round": 7,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 4.9,
-      "rerender": 6.3
+      "mount": 11.6,
+      "rerender": 12.1
     },
     {
       "sequence": 186,
@@ -1861,8 +1908,8 @@
       "round": 7,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 3.2,
-      "rerender": 4
+      "mount": 6.9,
+      "rerender": 1.8
     },
     {
       "sequence": 187,
@@ -1870,8 +1917,8 @@
       "round": 7,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 6.8,
-      "rerender": 7.4
+      "mount": 13.6,
+      "rerender": 7.3
     },
     {
       "sequence": 188,
@@ -1879,8 +1926,8 @@
       "round": 7,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 3.5,
-      "rerender": 4.3
+      "mount": 7.8,
+      "rerender": 1.5
     },
     {
       "sequence": 189,
@@ -1888,8 +1935,8 @@
       "round": 7,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 4.9,
-      "rerender": 5.7
+      "mount": 6.6,
+      "rerender": 4.8
     },
     {
       "sequence": 190,
@@ -1897,8 +1944,8 @@
       "round": 7,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 3.9,
-      "rerender": 6.6
+      "mount": 3.6,
+      "rerender": 3.6
     },
     {
       "sequence": 191,
@@ -1906,8 +1953,8 @@
       "round": 7,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.8,
-      "rerender": 4
+      "mount": 0.3,
+      "rerender": 2.3
     },
     {
       "sequence": 192,
@@ -1915,8 +1962,8 @@
       "round": 7,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.5,
-      "rerender": 3.1
+      "mount": 1.6,
+      "rerender": 4.7
     },
     {
       "sequence": 193,
@@ -1924,8 +1971,8 @@
       "round": 7,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.1,
-      "rerender": 0.9
+      "mount": 0.7,
+      "rerender": 3
     },
     {
       "sequence": 194,
@@ -1934,7 +1981,7 @@
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
       "mount": 0.3,
-      "rerender": 1.3
+      "rerender": 2.1
     },
     {
       "sequence": 195,
@@ -1942,8 +1989,8 @@
       "round": 7,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 4.4,
-      "rerender": 6.9
+      "mount": 8.9,
+      "rerender": 8.5
     },
     {
       "sequence": 196,
@@ -1951,8 +1998,8 @@
       "round": 7,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.2,
-      "rerender": 1.5
+      "mount": 0.4,
+      "rerender": 1.3
     },
     {
       "sequence": 197,
@@ -1960,8 +2007,8 @@
       "round": 7,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 11.3,
-      "rerender": 11.9
+      "mount": 20,
+      "rerender": 10.4
     },
     {
       "sequence": 198,
@@ -1969,8 +2016,8 @@
       "round": 7,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 0.6,
-      "rerender": 3.9
+      "mount": 0.8,
+      "rerender": 2.8
     },
     {
       "sequence": 199,
@@ -1978,8 +2025,8 @@
       "round": 7,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 1.1,
-      "rerender": 3.4
+      "mount": 0.4,
+      "rerender": 1.8
     },
     {
       "sequence": 200,
@@ -1987,8 +2034,8 @@
       "round": 8,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.6,
-      "rerender": 3.6
+      "mount": 0.8,
+      "rerender": 4.7
     },
     {
       "sequence": 201,
@@ -1996,8 +2043,8 @@
       "round": 8,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 14,
-      "rerender": 10.1
+      "mount": 14.4,
+      "rerender": 2.3
     },
     {
       "sequence": 202,
@@ -2005,8 +2052,8 @@
       "round": 8,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 12.6,
-      "rerender": 12.7
+      "mount": 17.5,
+      "rerender": 7.9
     },
     {
       "sequence": 203,
@@ -2014,8 +2061,8 @@
       "round": 8,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 3.3,
-      "rerender": 4.3
+      "mount": 7.5,
+      "rerender": 5.1
     },
     {
       "sequence": 204,
@@ -2023,8 +2070,8 @@
       "round": 8,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 4.6,
-      "rerender": 5.9
+      "mount": 4.7,
+      "rerender": 5.8
     },
     {
       "sequence": 205,
@@ -2032,8 +2079,8 @@
       "round": 8,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 10.4,
-      "rerender": 11.7
+      "mount": 16.5,
+      "rerender": 9.2
     },
     {
       "sequence": 206,
@@ -2041,8 +2088,8 @@
       "round": 8,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 4.1,
-      "rerender": 5.8
+      "mount": 4.8,
+      "rerender": 1.2
     },
     {
       "sequence": 207,
@@ -2050,8 +2097,8 @@
       "round": 8,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 25.4,
-      "rerender": 18.8
+      "mount": 8.9,
+      "rerender": 6
     },
     {
       "sequence": 208,
@@ -2059,8 +2106,8 @@
       "round": 8,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 12.7,
-      "rerender": 11
+      "mount": 4.3,
+      "rerender": 5.4
     },
     {
       "sequence": 209,
@@ -2068,8 +2115,8 @@
       "round": 8,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 3.8,
-      "rerender": 6
+      "mount": 5.1,
+      "rerender": 3.6
     },
     {
       "sequence": 210,
@@ -2077,8 +2124,8 @@
       "round": 8,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 12.5,
-      "rerender": 8.4
+      "mount": 6.5,
+      "rerender": 8.6
     },
     {
       "sequence": 211,
@@ -2087,7 +2134,7 @@
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
       "mount": 0.7,
-      "rerender": 3.6
+      "rerender": 1.9
     },
     {
       "sequence": 212,
@@ -2095,8 +2142,8 @@
       "round": 8,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1.8,
-      "rerender": 9.3
+      "mount": 1.9,
+      "rerender": 3.6
     },
     {
       "sequence": 213,
@@ -2104,8 +2151,8 @@
       "round": 8,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 7.1,
-      "rerender": 6.3
+      "mount": 11.2,
+      "rerender": 1.6
     },
     {
       "sequence": 214,
@@ -2113,8 +2160,8 @@
       "round": 8,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 19.8,
-      "rerender": 15.4
+      "mount": 7.3,
+      "rerender": 5.4
     },
     {
       "sequence": 215,
@@ -2122,8 +2169,8 @@
       "round": 8,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.6,
-      "rerender": 3
+      "mount": 0.3,
+      "rerender": 1.4
     },
     {
       "sequence": 216,
@@ -2131,8 +2178,8 @@
       "round": 8,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.7,
-      "rerender": 6.4
+      "mount": 0.8,
+      "rerender": 3.7
     },
     {
       "sequence": 217,
@@ -2140,8 +2187,8 @@
       "round": 8,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 7.6,
-      "rerender": 7.4
+      "mount": 10.2,
+      "rerender": 1.4
     },
     {
       "sequence": 218,
@@ -2149,8 +2196,8 @@
       "round": 8,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.5,
-      "rerender": 2.4
+      "mount": 0.2,
+      "rerender": 0.7
     },
     {
       "sequence": 219,
@@ -2158,8 +2205,8 @@
       "round": 8,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1.8,
-      "rerender": 12
+      "mount": 1,
+      "rerender": 2.4
     },
     {
       "sequence": 220,
@@ -2167,8 +2214,8 @@
       "round": 9,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 20.6,
-      "rerender": 14.4
+      "mount": 22,
+      "rerender": 14
     },
     {
       "sequence": 221,
@@ -2176,8 +2223,8 @@
       "round": 9,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 10.6,
-      "rerender": 12.2
+      "mount": 6.2,
+      "rerender": 5
     },
     {
       "sequence": 222,
@@ -2185,8 +2232,8 @@
       "round": 9,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 4.3,
-      "rerender": 5.8
+      "mount": 7.6,
+      "rerender": 1.4
     },
     {
       "sequence": 223,
@@ -2194,8 +2241,8 @@
       "round": 9,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 6.1,
-      "rerender": 9
+      "mount": 7.8,
+      "rerender": 7.4
     },
     {
       "sequence": 224,
@@ -2203,8 +2250,8 @@
       "round": 9,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.7,
-      "rerender": 2.8
+      "mount": 1.1,
+      "rerender": 2.3
     },
     {
       "sequence": 225,
@@ -2212,8 +2259,8 @@
       "round": 9,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 19.7,
-      "rerender": 12.5
+      "mount": 7.4,
+      "rerender": 6.8
     },
     {
       "sequence": 226,
@@ -2221,8 +2268,8 @@
       "round": 9,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.4,
-      "rerender": 1.9
+      "mount": 0.3,
+      "rerender": 1.3
     },
     {
       "sequence": 227,
@@ -2230,8 +2277,8 @@
       "round": 9,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 0.8,
-      "rerender": 6
+      "mount": 0.6,
+      "rerender": 2.3
     },
     {
       "sequence": 228,
@@ -2239,8 +2286,8 @@
       "round": 9,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 3.8,
-      "rerender": 4.8
+      "mount": 9.3,
+      "rerender": 1.9
     },
     {
       "sequence": 229,
@@ -2248,8 +2295,8 @@
       "round": 9,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.3,
-      "rerender": 1.7
+      "mount": 0.6,
+      "rerender": 2.1
     },
     {
       "sequence": 230,
@@ -2257,8 +2304,8 @@
       "round": 9,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 18.5,
-      "rerender": 17.4
+      "mount": 29.7,
+      "rerender": 12.2
     },
     {
       "sequence": 231,
@@ -2266,8 +2313,8 @@
       "round": 9,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 2,
-      "rerender": 4.1
+      "mount": 3.4,
+      "rerender": 3
     },
     {
       "sequence": 232,
@@ -2275,8 +2322,8 @@
       "round": 9,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.3,
-      "rerender": 1.6
+      "mount": 0.9,
+      "rerender": 3.8
     },
     {
       "sequence": 233,
@@ -2284,8 +2331,8 @@
       "round": 9,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 5.7,
-      "rerender": 6.3
+      "mount": 10.7,
+      "rerender": 1.8
     },
     {
       "sequence": 234,
@@ -2293,8 +2340,8 @@
       "round": 9,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 12,
-      "rerender": 10
+      "mount": 11.5,
+      "rerender": 11.2
     },
     {
       "sequence": 235,
@@ -2302,8 +2349,8 @@
       "round": 9,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 13.7,
-      "rerender": 11
+      "mount": 9.6,
+      "rerender": 7.1
     },
     {
       "sequence": 236,
@@ -2311,8 +2358,8 @@
       "round": 9,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 10.1,
-      "rerender": 13.2
+      "mount": 2.9,
+      "rerender": 3.2
     },
     {
       "sequence": 237,
@@ -2320,8 +2367,8 @@
       "round": 9,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.4,
-      "rerender": 1.4
+      "mount": 0.2,
+      "rerender": 1.1
     },
     {
       "sequence": 238,
@@ -2329,8 +2376,8 @@
       "round": 9,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.5,
-      "rerender": 3.1
+      "mount": 2.7,
+      "rerender": 6.4
     },
     {
       "sequence": 239,
@@ -2338,8 +2385,8 @@
       "round": 9,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 7.5,
-      "rerender": 7.6
+      "mount": 8.6,
+      "rerender": 1.6
     },
     {
       "sequence": 240,
@@ -2347,8 +2394,8 @@
       "round": 10,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.6,
-      "rerender": 4.2
+      "mount": 0.7,
+      "rerender": 2.9
     },
     {
       "sequence": 241,
@@ -2356,8 +2403,8 @@
       "round": 10,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 4,
-      "rerender": 4.9
+      "mount": 11.9,
+      "rerender": 2.1
     },
     {
       "sequence": 242,
@@ -2365,8 +2412,8 @@
       "round": 10,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.8,
-      "rerender": 5.1
+      "mount": 1.2,
+      "rerender": 5.7
     },
     {
       "sequence": 243,
@@ -2374,8 +2421,8 @@
       "round": 10,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.6,
-      "rerender": 3
+      "mount": 1,
+      "rerender": 1.9
     },
     {
       "sequence": 244,
@@ -2383,8 +2430,8 @@
       "round": 10,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 8.9,
-      "rerender": 9.4
+      "mount": 3.2,
+      "rerender": 3.1
     },
     {
       "sequence": 245,
@@ -2392,8 +2439,8 @@
       "round": 10,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.9,
-      "rerender": 4.1
+      "mount": 0.3,
+      "rerender": 1.8
     },
     {
       "sequence": 246,
@@ -2401,8 +2448,8 @@
       "round": 10,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 8,
-      "rerender": 8.4
+      "mount": 16.9,
+      "rerender": 1.4
     },
     {
       "sequence": 247,
@@ -2410,8 +2457,8 @@
       "round": 10,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 14.4,
-      "rerender": 10.7
+      "mount": 6.6,
+      "rerender": 8.2
     },
     {
       "sequence": 248,
@@ -2419,8 +2466,8 @@
       "round": 10,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 9.9,
-      "rerender": 12.8
+      "mount": 5.8,
+      "rerender": 3.9
     },
     {
       "sequence": 249,
@@ -2428,8 +2475,8 @@
       "round": 10,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 10,
-      "rerender": 9.8
+      "mount": 7.2,
+      "rerender": 1.8
     },
     {
       "sequence": 250,
@@ -2437,8 +2484,8 @@
       "round": 10,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 7.9,
-      "rerender": 9.7
+      "mount": 13.4,
+      "rerender": 10.7
     },
     {
       "sequence": 251,
@@ -2446,8 +2493,8 @@
       "round": 10,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 11.7,
-      "rerender": 11
+      "mount": 7.2,
+      "rerender": 4.5
     },
     {
       "sequence": 252,
@@ -2455,8 +2502,8 @@
       "round": 10,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 8.5,
-      "rerender": 11.7
+      "mount": 5.2,
+      "rerender": 5.6
     },
     {
       "sequence": 253,
@@ -2464,8 +2511,8 @@
       "round": 10,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1.5,
-      "rerender": 11.5
+      "mount": 0.6,
+      "rerender": 1.9
     },
     {
       "sequence": 254,
@@ -2473,8 +2520,8 @@
       "round": 10,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 22.5,
-      "rerender": 16.1
+      "mount": 11.3,
+      "rerender": 8.1
     },
     {
       "sequence": 255,
@@ -2482,8 +2529,8 @@
       "round": 10,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 15.4,
-      "rerender": 13.3
+      "mount": 9.9,
+      "rerender": 7.7
     },
     {
       "sequence": 256,
@@ -2491,8 +2538,8 @@
       "round": 10,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 8.5,
-      "rerender": 11.3
+      "mount": 5.1,
+      "rerender": 4.1
     },
     {
       "sequence": 257,
@@ -2500,8 +2547,8 @@
       "round": 10,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.6,
-      "rerender": 2.3
+      "mount": 0.5,
+      "rerender": 1.9
     },
     {
       "sequence": 258,
@@ -2509,8 +2556,8 @@
       "round": 10,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.9,
-      "rerender": 5.3
+      "mount": 0.3,
+      "rerender": 1.5
     },
     {
       "sequence": 259,
@@ -2518,8 +2565,8 @@
       "round": 10,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 4.5,
-      "rerender": 4.4
+      "mount": 10.4,
+      "rerender": 1.7
     },
     {
       "sequence": 260,
@@ -2527,8 +2574,8 @@
       "round": 11,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 7.7,
-      "rerender": 9.9
+      "mount": 34.8,
+      "rerender": 27.2
     },
     {
       "sequence": 261,
@@ -2536,8 +2583,8 @@
       "round": 11,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 4.5,
-      "rerender": 5.9
+      "mount": 5.3,
+      "rerender": 1.4
     },
     {
       "sequence": 262,
@@ -2545,8 +2592,8 @@
       "round": 11,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 7.4,
-      "rerender": 8.5
+      "mount": 8.1,
+      "rerender": 6.4
     },
     {
       "sequence": 263,
@@ -2554,8 +2601,8 @@
       "round": 11,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 11.6,
-      "rerender": 14.4
+      "mount": 4.6,
+      "rerender": 6.1
     },
     {
       "sequence": 264,
@@ -2563,8 +2610,8 @@
       "round": 11,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1.2,
-      "rerender": 8.4
+      "mount": 1.1,
+      "rerender": 4.1
     },
     {
       "sequence": 265,
@@ -2572,8 +2619,8 @@
       "round": 11,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 22.2,
-      "rerender": 17.2
+      "mount": 11.1,
+      "rerender": 6.7
     },
     {
       "sequence": 266,
@@ -2581,8 +2628,8 @@
       "round": 11,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.7,
-      "rerender": 4.1
+      "mount": 0.5,
+      "rerender": 2.8
     },
     {
       "sequence": 267,
@@ -2590,8 +2637,8 @@
       "round": 11,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 2.2,
-      "rerender": 7.9
+      "mount": 2.3,
+      "rerender": 5.4
     },
     {
       "sequence": 268,
@@ -2599,8 +2646,8 @@
       "round": 11,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 13.6,
-      "rerender": 14
+      "mount": 15.4,
+      "rerender": 6.3
     },
     {
       "sequence": 269,
@@ -2608,8 +2655,8 @@
       "round": 11,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.3,
-      "rerender": 1.6
+      "mount": 0.7,
+      "rerender": 2.2
     },
     {
       "sequence": 270,
@@ -2617,8 +2664,8 @@
       "round": 11,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 14.6,
-      "rerender": 8.9
+      "mount": 13.4,
+      "rerender": 2.1
     },
     {
       "sequence": 271,
@@ -2626,8 +2673,8 @@
       "round": 11,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.8,
-      "rerender": 3.2
+      "mount": 0.3,
+      "rerender": 1.9
     },
     {
       "sequence": 272,
@@ -2635,8 +2682,8 @@
       "round": 11,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 17.8,
-      "rerender": 13.2
+      "mount": 8.5,
+      "rerender": 5.9
     },
     {
       "sequence": 273,
@@ -2644,8 +2691,8 @@
       "round": 11,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 11,
-      "rerender": 10.2
+      "mount": 4.7,
+      "rerender": 5
     },
     {
       "sequence": 274,
@@ -2653,8 +2700,8 @@
       "round": 11,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 4.3,
-      "rerender": 6.4
+      "mount": 7,
+      "rerender": 1.7
     },
     {
       "sequence": 275,
@@ -2662,8 +2709,8 @@
       "round": 11,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 11.5,
-      "rerender": 8.3
+      "mount": 8.8,
+      "rerender": 8.6
     },
     {
       "sequence": 276,
@@ -2671,8 +2718,8 @@
       "round": 11,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.7,
-      "rerender": 4.1
+      "mount": 0.5,
+      "rerender": 1.6
     },
     {
       "sequence": 277,
@@ -2680,8 +2727,8 @@
       "round": 11,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 8.2,
-      "rerender": 10
+      "mount": 5,
+      "rerender": 4.8
     },
     {
       "sequence": 278,
@@ -2689,8 +2736,8 @@
       "round": 11,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.2,
-      "rerender": 1.3
+      "mount": 0.7,
+      "rerender": 4.7
     },
     {
       "sequence": 279,
@@ -2698,8 +2745,8 @@
       "round": 11,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 7.7,
-      "rerender": 7.6
+      "mount": 6.7,
+      "rerender": 2
     },
     {
       "sequence": 280,
@@ -2707,8 +2754,8 @@
       "round": 12,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.3,
-      "rerender": 2.6
+      "mount": 0.2,
+      "rerender": 1
     },
     {
       "sequence": 281,
@@ -2716,8 +2763,8 @@
       "round": 12,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 10.8,
-      "rerender": 10.1
+      "mount": 3.7,
+      "rerender": 0.7
     },
     {
       "sequence": 282,
@@ -2725,8 +2772,8 @@
       "round": 12,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 7.8,
-      "rerender": 10.4
+      "mount": 3.6,
+      "rerender": 0.8
     },
     {
       "sequence": 283,
@@ -2734,8 +2781,8 @@
       "round": 12,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 15.1,
-      "rerender": 14
+      "mount": 3.8,
+      "rerender": 4
     },
     {
       "sequence": 284,
@@ -2743,8 +2790,8 @@
       "round": 12,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.6,
-      "rerender": 4
+      "mount": 0.3,
+      "rerender": 1.1
     },
     {
       "sequence": 285,
@@ -2752,8 +2799,8 @@
       "round": 12,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.9,
-      "rerender": 2.8
+      "mount": 0.3,
+      "rerender": 1.2
     },
     {
       "sequence": 286,
@@ -2762,7 +2809,7 @@
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
       "mount": 0.7,
-      "rerender": 3.7
+      "rerender": 3.5
     },
     {
       "sequence": 287,
@@ -2770,8 +2817,8 @@
       "round": 12,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 4.2,
-      "rerender": 5.4
+      "mount": 16.1,
+      "rerender": 2.8
     },
     {
       "sequence": 288,
@@ -2779,8 +2826,8 @@
       "round": 12,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 6.2,
-      "rerender": 7.5
+      "mount": 7.3,
+      "rerender": 6.4
     },
     {
       "sequence": 289,
@@ -2788,8 +2835,8 @@
       "round": 12,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 10.8,
-      "rerender": 12.1
+      "mount": 15.8,
+      "rerender": 9.7
     },
     {
       "sequence": 290,
@@ -2797,8 +2844,8 @@
       "round": 12,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 9.6,
-      "rerender": 9.9
+      "mount": 5.8,
+      "rerender": 7.9
     },
     {
       "sequence": 291,
@@ -2806,8 +2853,8 @@
       "round": 12,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1.1,
-      "rerender": 8.7
+      "mount": 0.7,
+      "rerender": 1.9
     },
     {
       "sequence": 292,
@@ -2816,7 +2863,7 @@
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
       "mount": 0.3,
-      "rerender": 1.6
+      "rerender": 0.9
     },
     {
       "sequence": 293,
@@ -2824,8 +2871,8 @@
       "round": 12,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 18.6,
-      "rerender": 14.7
+      "mount": 13.1,
+      "rerender": 9.1
     },
     {
       "sequence": 294,
@@ -2833,8 +2880,8 @@
       "round": 12,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 10.9,
-      "rerender": 14.2
+      "mount": 8.7,
+      "rerender": 6.6
     },
     {
       "sequence": 295,
@@ -2842,8 +2889,8 @@
       "round": 12,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 4.5,
-      "rerender": 7.1
+      "mount": 6.1,
+      "rerender": 4.9
     },
     {
       "sequence": 296,
@@ -2851,8 +2898,8 @@
       "round": 12,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 8.3,
-      "rerender": 8.2
+      "mount": 15.1,
+      "rerender": 1.2
     },
     {
       "sequence": 297,
@@ -2860,8 +2907,8 @@
       "round": 12,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 1.8,
-      "rerender": 3.3
+      "mount": 6,
+      "rerender": 4.9
     },
     {
       "sequence": 298,
@@ -2869,8 +2916,8 @@
       "round": 12,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 5.6,
-      "rerender": 9.2
+      "mount": 12.8,
+      "rerender": 6.8
     },
     {
       "sequence": 299,
@@ -2878,8 +2925,8 @@
       "round": 12,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.5,
-      "rerender": 3.8
+      "mount": 0.9,
+      "rerender": 4
     },
     {
       "sequence": 300,
@@ -2887,8 +2934,8 @@
       "round": 13,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 9.9,
-      "rerender": 11.6
+      "mount": 16,
+      "rerender": 7.3
     },
     {
       "sequence": 301,
@@ -2896,8 +2943,8 @@
       "round": 13,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 9.1,
-      "rerender": 13.1
+      "mount": 6.2,
+      "rerender": 8
     },
     {
       "sequence": 302,
@@ -2905,8 +2952,8 @@
       "round": 13,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 14.5,
-      "rerender": 9.8
+      "mount": 9.5,
+      "rerender": 6.4
     },
     {
       "sequence": 303,
@@ -2914,8 +2961,8 @@
       "round": 13,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.3,
-      "rerender": 2.2
+      "mount": 0.5,
+      "rerender": 1.2
     },
     {
       "sequence": 304,
@@ -2923,8 +2970,8 @@
       "round": 13,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 5,
-      "rerender": 6.3
+      "mount": 12.7,
+      "rerender": 7.2
     },
     {
       "sequence": 305,
@@ -2932,8 +2979,8 @@
       "round": 13,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 2.4,
-      "rerender": 4.2
+      "mount": 6.6,
+      "rerender": 4.3
     },
     {
       "sequence": 306,
@@ -2941,8 +2988,8 @@
       "round": 13,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 3.3,
-      "rerender": 5.2
+      "mount": 8.8,
+      "rerender": 7.9
     },
     {
       "sequence": 307,
@@ -2950,8 +2997,8 @@
       "round": 13,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 2.6,
-      "rerender": 3.3
+      "mount": 4.3,
+      "rerender": 1.5
     },
     {
       "sequence": 308,
@@ -2959,8 +3006,8 @@
       "round": 13,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 4.2,
-      "rerender": 4.4
+      "mount": 3.4,
+      "rerender": 4.7
     },
     {
       "sequence": 309,
@@ -2968,8 +3015,8 @@
       "round": 13,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 6.8,
-      "rerender": 9.1
+      "mount": 14,
+      "rerender": 7.3
     },
     {
       "sequence": 310,
@@ -2977,8 +3024,8 @@
       "round": 13,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.3,
-      "rerender": 1.6
+      "mount": 0.4,
+      "rerender": 0.8
     },
     {
       "sequence": 311,
@@ -2986,8 +3033,8 @@
       "round": 13,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 6.9,
-      "rerender": 12.7
+      "mount": 2.7,
+      "rerender": 2.5
     },
     {
       "sequence": 312,
@@ -2995,8 +3042,8 @@
       "round": 13,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 10.1,
-      "rerender": 10
+      "mount": 4.6,
+      "rerender": 1.3
     },
     {
       "sequence": 313,
@@ -3004,8 +3051,8 @@
       "round": 13,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1.6,
-      "rerender": 9.7
+      "mount": 0.7,
+      "rerender": 2.5
     },
     {
       "sequence": 314,
@@ -3013,8 +3060,8 @@
       "round": 13,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1.3,
-      "rerender": 8.1
+      "mount": 1.5,
+      "rerender": 5.5
     },
     {
       "sequence": 315,
@@ -3022,8 +3069,8 @@
       "round": 13,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.4,
-      "rerender": 2.4
+      "mount": 0.3,
+      "rerender": 1.4
     },
     {
       "sequence": 316,
@@ -3031,8 +3078,8 @@
       "round": 13,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 4.7,
-      "rerender": 5.4
+      "mount": 9.6,
+      "rerender": 1.3
     },
     {
       "sequence": 317,
@@ -3041,7 +3088,7 @@
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
       "mount": 0.2,
-      "rerender": 1.8
+      "rerender": 1.7
     },
     {
       "sequence": 318,
@@ -3049,8 +3096,8 @@
       "round": 13,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.1,
-      "rerender": 2
+      "mount": 0.3,
+      "rerender": 1.4
     },
     {
       "sequence": 319,
@@ -3058,8 +3105,8 @@
       "round": 13,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 10,
-      "rerender": 12
+      "mount": 4.9,
+      "rerender": 1.4
     },
     {
       "sequence": 320,
@@ -3067,8 +3114,8 @@
       "round": 14,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 11.6,
-      "rerender": 12.1
+      "mount": 6.4,
+      "rerender": 7
     },
     {
       "sequence": 321,
@@ -3076,8 +3123,8 @@
       "round": 14,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 7.1,
-      "rerender": 7.2
+      "mount": 6.7,
+      "rerender": 1.7
     },
     {
       "sequence": 322,
@@ -3085,8 +3132,8 @@
       "round": 14,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 13.6,
-      "rerender": 10.3
+      "mount": 5.7,
+      "rerender": 7.2
     },
     {
       "sequence": 323,
@@ -3103,8 +3150,8 @@
       "round": 14,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 19.3,
-      "rerender": 14.7
+      "mount": 12.2,
+      "rerender": 6.8
     },
     {
       "sequence": 325,
@@ -3112,8 +3159,8 @@
       "round": 14,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 6.2,
-      "rerender": 8.2
+      "mount": 12.7,
+      "rerender": 1.3
     },
     {
       "sequence": 326,
@@ -3121,8 +3168,8 @@
       "round": 14,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.4,
-      "rerender": 2.8
+      "mount": 0.3,
+      "rerender": 2.1
     },
     {
       "sequence": 327,
@@ -3130,8 +3177,8 @@
       "round": 14,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1.5,
-      "rerender": 10.7
+      "mount": 0.5,
+      "rerender": 1.8
     },
     {
       "sequence": 328,
@@ -3139,8 +3186,8 @@
       "round": 14,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.9,
-      "rerender": 5
+      "mount": 0.3,
+      "rerender": 1.1
     },
     {
       "sequence": 329,
@@ -3148,8 +3195,8 @@
       "round": 14,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.9,
-      "rerender": 5.2
+      "mount": 0.3,
+      "rerender": 1.1
     },
     {
       "sequence": 330,
@@ -3157,8 +3204,8 @@
       "round": 14,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 16.4,
-      "rerender": 11.2
+      "mount": 8.1,
+      "rerender": 5
     },
     {
       "sequence": 331,
@@ -3166,8 +3213,8 @@
       "round": 14,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 4,
-      "rerender": 6.5
+      "mount": 3.6,
+      "rerender": 3.1
     },
     {
       "sequence": 332,
@@ -3175,8 +3222,8 @@
       "round": 14,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 2.2,
-      "rerender": 3
+      "mount": 4.5,
+      "rerender": 1.6
     },
     {
       "sequence": 333,
@@ -3184,8 +3231,8 @@
       "round": 14,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.3,
-      "rerender": 1.3
+      "mount": 0.6,
+      "rerender": 2.1
     },
     {
       "sequence": 334,
@@ -3193,8 +3240,8 @@
       "round": 14,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 11.3,
-      "rerender": 10.5
+      "mount": 17.5,
+      "rerender": 10.2
     },
     {
       "sequence": 335,
@@ -3202,8 +3249,8 @@
       "round": 14,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 1.9,
-      "rerender": 3.1
+      "mount": 3.2,
+      "rerender": 3.6
     },
     {
       "sequence": 336,
@@ -3211,8 +3258,8 @@
       "round": 14,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.3,
-      "rerender": 1.6
+      "mount": 0.2,
+      "rerender": 1.5
     },
     {
       "sequence": 337,
@@ -3220,8 +3267,8 @@
       "round": 14,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 17,
-      "rerender": 13.1
+      "mount": 7.5,
+      "rerender": 6.4
     },
     {
       "sequence": 338,
@@ -3229,8 +3276,8 @@
       "round": 14,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 9.5,
-      "rerender": 7.7
+      "mount": 6.2,
+      "rerender": 2
     },
     {
       "sequence": 339,
@@ -3238,8 +3285,8 @@
       "round": 14,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1.4,
-      "rerender": 10.5
+      "mount": 1,
+      "rerender": 3.9
     },
     {
       "sequence": 340,
@@ -3247,8 +3294,8 @@
       "round": 15,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 9.4,
-      "rerender": 10.2
+      "mount": 5.5,
+      "rerender": 1.5
     },
     {
       "sequence": 341,
@@ -3256,8 +3303,8 @@
       "round": 15,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 13.4,
-      "rerender": 12.2
+      "mount": 11.7,
+      "rerender": 9.3
     },
     {
       "sequence": 342,
@@ -3265,8 +3312,8 @@
       "round": 15,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.2,
-      "rerender": 1
+      "mount": 0.7,
+      "rerender": 2
     },
     {
       "sequence": 343,
@@ -3274,8 +3321,8 @@
       "round": 15,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 4.6,
-      "rerender": 6.5
+      "mount": 7.5,
+      "rerender": 7.1
     },
     {
       "sequence": 344,
@@ -3283,8 +3330,8 @@
       "round": 15,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.2,
-      "rerender": 2
+      "mount": 0.8,
+      "rerender": 3.5
     },
     {
       "sequence": 345,
@@ -3292,8 +3339,8 @@
       "round": 15,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 4.1,
-      "rerender": 5.3
+      "mount": 13.6,
+      "rerender": 2.5
     },
     {
       "sequence": 346,
@@ -3301,8 +3348,8 @@
       "round": 15,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.3,
-      "rerender": 2
+      "mount": 0.9,
+      "rerender": 4
     },
     {
       "sequence": 347,
@@ -3310,8 +3357,8 @@
       "round": 15,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 14.8,
-      "rerender": 13.9
+      "mount": 9.3,
+      "rerender": 7.5
     },
     {
       "sequence": 348,
@@ -3319,8 +3366,8 @@
       "round": 15,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.7,
-      "rerender": 3.6
+      "mount": 0.3,
+      "rerender": 1.3
     },
     {
       "sequence": 349,
@@ -3328,8 +3375,8 @@
       "round": 15,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 8.5,
-      "rerender": 12.8
+      "mount": 2.3,
+      "rerender": 2.3
     },
     {
       "sequence": 350,
@@ -3337,8 +3384,8 @@
       "round": 15,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 14.3,
-      "rerender": 11.6
+      "mount": 8.7,
+      "rerender": 1.5
     },
     {
       "sequence": 351,
@@ -3346,8 +3393,8 @@
       "round": 15,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.5,
-      "rerender": 3.7
+      "mount": 0.6,
+      "rerender": 1.8
     },
     {
       "sequence": 352,
@@ -3355,8 +3402,8 @@
       "round": 15,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 15.4,
-      "rerender": 11.7
+      "mount": 7.2,
+      "rerender": 8.3
     },
     {
       "sequence": 353,
@@ -3364,8 +3411,8 @@
       "round": 15,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 0.4,
-      "rerender": 3.1
+      "mount": 1.3,
+      "rerender": 4.7
     },
     {
       "sequence": 354,
@@ -3373,8 +3420,8 @@
       "round": 15,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 5.1,
-      "rerender": 7.7
+      "mount": 11.8,
+      "rerender": 7.3
     },
     {
       "sequence": 355,
@@ -3382,8 +3429,8 @@
       "round": 15,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 7,
-      "rerender": 9.8
+      "mount": 9.3,
+      "rerender": 8.1
     },
     {
       "sequence": 356,
@@ -3391,8 +3438,8 @@
       "round": 15,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 20.5,
-      "rerender": 15.6
+      "mount": 13.9,
+      "rerender": 7.1
     },
     {
       "sequence": 357,
@@ -3400,8 +3447,8 @@
       "round": 15,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 9.3,
-      "rerender": 7.2
+      "mount": 5.7,
+      "rerender": 1.5
     },
     {
       "sequence": 358,
@@ -3410,7 +3457,7 @@
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
       "mount": 1.3,
-      "rerender": 11
+      "rerender": 5.9
     },
     {
       "sequence": 359,
@@ -3419,7 +3466,7 @@
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
       "mount": 15,
-      "rerender": 11.9
+      "rerender": 7.8
     },
     {
       "sequence": 360,
@@ -3427,8 +3474,8 @@
       "round": 16,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 5,
-      "rerender": 5.7
+      "mount": 8.6,
+      "rerender": 1.5
     },
     {
       "sequence": 361,
@@ -3436,8 +3483,8 @@
       "round": 16,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 8.2,
-      "rerender": 13.9
+      "mount": 6.1,
+      "rerender": 5.6
     },
     {
       "sequence": 362,
@@ -3445,8 +3492,8 @@
       "round": 16,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1.1,
-      "rerender": 5.2
+      "mount": 1.6,
+      "rerender": 7.3
     },
     {
       "sequence": 363,
@@ -3454,8 +3501,8 @@
       "round": 16,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 10,
-      "rerender": 11.2
+      "mount": 7.7,
+      "rerender": 6.2
     },
     {
       "sequence": 364,
@@ -3463,8 +3510,8 @@
       "round": 16,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.8,
-      "rerender": 5.3
+      "mount": 0.4,
+      "rerender": 1.6
     },
     {
       "sequence": 365,
@@ -3472,8 +3519,8 @@
       "round": 16,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 13.9,
-      "rerender": 12.2
+      "mount": 6.3,
+      "rerender": 1.9
     },
     {
       "sequence": 366,
@@ -3481,8 +3528,8 @@
       "round": 16,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 12.6,
-      "rerender": 10.1
+      "mount": 4.8,
+      "rerender": 0.9
     },
     {
       "sequence": 367,
@@ -3490,8 +3537,8 @@
       "round": 16,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 11.5,
-      "rerender": 17.5
+      "mount": 7.3,
+      "rerender": 7.6
     },
     {
       "sequence": 368,
@@ -3499,8 +3546,8 @@
       "round": 16,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 6.7,
-      "rerender": 5.2
+      "mount": 5.7,
+      "rerender": 1.4
     },
     {
       "sequence": 369,
@@ -3508,8 +3555,8 @@
       "round": 16,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 7.1,
-      "rerender": 11.5
+      "mount": 10.5,
+      "rerender": 12
     },
     {
       "sequence": 370,
@@ -3517,8 +3564,8 @@
       "round": 16,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.4,
-      "rerender": 3.2
+      "mount": 0.9,
+      "rerender": 3.5
     },
     {
       "sequence": 371,
@@ -3526,8 +3573,8 @@
       "round": 16,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 15.2,
-      "rerender": 12.2
+      "mount": 10.6,
+      "rerender": 9.7
     },
     {
       "sequence": 372,
@@ -3535,8 +3582,8 @@
       "round": 16,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 2.6,
-      "rerender": 4.2
+      "mount": 7.1,
+      "rerender": 5.6
     },
     {
       "sequence": 373,
@@ -3544,8 +3591,8 @@
       "round": 16,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 6,
-      "rerender": 8.4
+      "mount": 16.3,
+      "rerender": 8.5
     },
     {
       "sequence": 374,
@@ -3553,8 +3600,8 @@
       "round": 16,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 6.8,
-      "rerender": 10.3
+      "mount": 10.9,
+      "rerender": 8.1
     },
     {
       "sequence": 375,
@@ -3562,8 +3609,8 @@
       "round": 16,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.7,
-      "rerender": 2.3
+      "mount": 0.5,
+      "rerender": 1.6
     },
     {
       "sequence": 376,
@@ -3571,8 +3618,8 @@
       "round": 16,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.9,
-      "rerender": 2.7
+      "mount": 0.3,
+      "rerender": 1
     },
     {
       "sequence": 377,
@@ -3580,8 +3627,8 @@
       "round": 16,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.7,
-      "rerender": 4.9
+      "mount": 0.3,
+      "rerender": 0.8
     },
     {
       "sequence": 378,
@@ -3589,8 +3636,8 @@
       "round": 16,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 23,
-      "rerender": 11.1
+      "mount": 9.4,
+      "rerender": 6.4
     },
     {
       "sequence": 379,
@@ -3598,8 +3645,8 @@
       "round": 16,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1.3,
-      "rerender": 8
+      "mount": 0.7,
+      "rerender": 3.2
     },
     {
       "sequence": 380,
@@ -3608,7 +3655,7 @@
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
       "mount": 0.7,
-      "rerender": 4.6
+      "rerender": 3.2
     },
     {
       "sequence": 381,
@@ -3616,8 +3663,8 @@
       "round": 17,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 7.8,
-      "rerender": 11.9
+      "mount": 17.2,
+      "rerender": 9.2
     },
     {
       "sequence": 382,
@@ -3625,8 +3672,8 @@
       "round": 17,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 9.5,
-      "rerender": 12.7
+      "mount": 13.3,
+      "rerender": 8.5
     },
     {
       "sequence": 383,
@@ -3634,8 +3681,8 @@
       "round": 17,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1,
-      "rerender": 7.7
+      "mount": 0.9,
+      "rerender": 4.9
     },
     {
       "sequence": 384,
@@ -3643,8 +3690,8 @@
       "round": 17,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 13.6,
-      "rerender": 8.9
+      "mount": 6.9,
+      "rerender": 6.4
     },
     {
       "sequence": 385,
@@ -3652,8 +3699,8 @@
       "round": 17,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 15,
-      "rerender": 12.7
+      "mount": 5.2,
+      "rerender": 0.9
     },
     {
       "sequence": 386,
@@ -3661,8 +3708,8 @@
       "round": 17,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 13.8,
-      "rerender": 12.6
+      "mount": 8.6,
+      "rerender": 5.6
     },
     {
       "sequence": 387,
@@ -3670,8 +3717,8 @@
       "round": 17,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.2,
-      "rerender": 1.6
+      "mount": 0.3,
+      "rerender": 1.5
     },
     {
       "sequence": 388,
@@ -3679,8 +3726,8 @@
       "round": 17,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 4.4,
-      "rerender": 6.7
+      "mount": 11.8,
+      "rerender": 1.5
     },
     {
       "sequence": 389,
@@ -3688,8 +3735,8 @@
       "round": 17,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 0.8,
-      "rerender": 5.9
+      "mount": 1.4,
+      "rerender": 5.2
     },
     {
       "sequence": 390,
@@ -3697,8 +3744,8 @@
       "round": 17,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 6.9,
-      "rerender": 6.1
+      "mount": 4.7,
+      "rerender": 1.3
     },
     {
       "sequence": 391,
@@ -3706,8 +3753,8 @@
       "round": 17,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.2,
-      "rerender": 1.1
+      "mount": 0.3,
+      "rerender": 1.8
     },
     {
       "sequence": 392,
@@ -3715,8 +3762,8 @@
       "round": 17,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 3.3,
-      "rerender": 6.1
+      "mount": 8.1,
+      "rerender": 1.8
     },
     {
       "sequence": 393,
@@ -3724,8 +3771,8 @@
       "round": 17,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.7,
-      "rerender": 3.1
+      "mount": 0.4,
+      "rerender": 1.6
     },
     {
       "sequence": 394,
@@ -3733,8 +3780,8 @@
       "round": 17,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 6.2,
-      "rerender": 8.3
+      "mount": 4.5,
+      "rerender": 4.7
     },
     {
       "sequence": 395,
@@ -3742,8 +3789,8 @@
       "round": 17,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 12,
-      "rerender": 11
+      "mount": 4.7,
+      "rerender": 6.4
     },
     {
       "sequence": 396,
@@ -3751,8 +3798,8 @@
       "round": 17,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.2,
-      "rerender": 1.7
+      "mount": 0.6,
+      "rerender": 1.4
     },
     {
       "sequence": 397,
@@ -3760,8 +3807,8 @@
       "round": 17,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 16.4,
-      "rerender": 13.2
+      "mount": 8.1,
+      "rerender": 6.5
     },
     {
       "sequence": 398,
@@ -3769,8 +3816,8 @@
       "round": 17,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 6.7,
-      "rerender": 8.1
+      "mount": 2.9,
+      "rerender": 3.1
     },
     {
       "sequence": 399,
@@ -3778,8 +3825,8 @@
       "round": 17,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 8,
-      "rerender": 10.6
+      "mount": 3.4,
+      "rerender": 3
     },
     {
       "sequence": 400,
@@ -3787,8 +3834,8 @@
       "round": 18,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 5.9,
-      "rerender": 9.2
+      "mount": 10.3,
+      "rerender": 6.6
     },
     {
       "sequence": 401,
@@ -3796,8 +3843,8 @@
       "round": 18,
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
-      "mount": 0.2,
-      "rerender": 1.2
+      "mount": 0.3,
+      "rerender": 1.3
     },
     {
       "sequence": 402,
@@ -3806,7 +3853,7 @@
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
       "mount": 5.4,
-      "rerender": 5.6
+      "rerender": 8.3
     },
     {
       "sequence": 403,
@@ -3814,8 +3861,8 @@
       "round": 18,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 8,
-      "rerender": 8.2
+      "mount": 3.6,
+      "rerender": 5.2
     },
     {
       "sequence": 404,
@@ -3823,8 +3870,8 @@
       "round": 18,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 6.9,
-      "rerender": 11.9
+      "mount": 2.7,
+      "rerender": 2.2
     },
     {
       "sequence": 405,
@@ -3832,8 +3879,8 @@
       "round": 18,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 20.8,
-      "rerender": 16.3
+      "mount": 9.3,
+      "rerender": 7.7
     },
     {
       "sequence": 406,
@@ -3841,8 +3888,8 @@
       "round": 18,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.5,
-      "rerender": 4.1
+      "mount": 0.4,
+      "rerender": 2.4
     },
     {
       "sequence": 407,
@@ -3850,8 +3897,8 @@
       "round": 18,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 14.8,
-      "rerender": 12.8
+      "mount": 7.1,
+      "rerender": 5.2
     },
     {
       "sequence": 408,
@@ -3859,8 +3906,8 @@
       "round": 18,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 9.8,
-      "rerender": 9.2
+      "mount": 9,
+      "rerender": 1.8
     },
     {
       "sequence": 409,
@@ -3868,8 +3915,8 @@
       "round": 18,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 3.5,
-      "rerender": 5.8
+      "mount": 10.3,
+      "rerender": 9.7
     },
     {
       "sequence": 410,
@@ -3877,8 +3924,8 @@
       "round": 18,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 7.2,
-      "rerender": 9.8
+      "mount": 17,
+      "rerender": 8.3
     },
     {
       "sequence": 411,
@@ -3886,8 +3933,8 @@
       "round": 18,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.3,
-      "rerender": 2.2
+      "mount": 0.4,
+      "rerender": 1.2
     },
     {
       "sequence": 412,
@@ -3895,8 +3942,8 @@
       "round": 18,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 1,
-      "rerender": 8.5
+      "mount": 0.5,
+      "rerender": 1.6
     },
     {
       "sequence": 413,
@@ -3904,8 +3951,8 @@
       "round": 18,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 8.8,
-      "rerender": 9.4
+      "mount": 4.7,
+      "rerender": 1.3
     },
     {
       "sequence": 414,
@@ -3913,8 +3960,8 @@
       "round": 18,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 14.8,
-      "rerender": 14.2
+      "mount": 4.7,
+      "rerender": 1.2
     },
     {
       "sequence": 415,
@@ -3922,8 +3969,8 @@
       "round": 18,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1.5,
-      "rerender": 10.7
+      "mount": 1.1,
+      "rerender": 3
     },
     {
       "sequence": 416,
@@ -3931,8 +3978,8 @@
       "round": 18,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.8,
-      "rerender": 3
+      "mount": 0.6,
+      "rerender": 2.1
     },
     {
       "sequence": 417,
@@ -3940,8 +3987,8 @@
       "round": 18,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 3.4,
-      "rerender": 6.1
+      "mount": 2.9,
+      "rerender": 2.5
     },
     {
       "sequence": 418,
@@ -3949,8 +3996,8 @@
       "round": 18,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 5,
-      "rerender": 6.4
+      "mount": 9.2,
+      "rerender": 1.5
     },
     {
       "sequence": 419,
@@ -3958,8 +4005,8 @@
       "round": 18,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.5,
-      "rerender": 4.4
+      "mount": 0.7,
+      "rerender": 4
     },
     {
       "sequence": 420,
@@ -3967,8 +4014,8 @@
       "round": 19,
       "framework": "tamagui-v3-compiled",
       "scenario": "heavy",
-      "mount": 6.7,
-      "rerender": 10.5
+      "mount": 2.2,
+      "rerender": 2
     },
     {
       "sequence": 421,
@@ -3976,8 +4023,8 @@
       "round": 19,
       "framework": "tamagui-v2-runtime",
       "scenario": "animated",
-      "mount": 12.1,
-      "rerender": 8.8
+      "mount": 3.8,
+      "rerender": 5.2
     },
     {
       "sequence": 422,
@@ -3985,8 +4032,8 @@
       "round": 19,
       "framework": "tamagui-v3-compiled",
       "scenario": "animated",
-      "mount": 12.4,
-      "rerender": 13.1
+      "mount": 3.3,
+      "rerender": 4.2
     },
     {
       "sequence": 423,
@@ -3994,8 +4041,8 @@
       "round": 19,
       "framework": "tamagui-v2-compiled",
       "scenario": "simple",
-      "mount": 0.6,
-      "rerender": 3.2
+      "mount": 0.2,
+      "rerender": 0.9
     },
     {
       "sequence": 424,
@@ -4003,8 +4050,8 @@
       "round": 19,
       "framework": "tamagui-v2-compiled",
       "scenario": "rich",
-      "mount": 0.6,
-      "rerender": 5.5
+      "mount": 0.2,
+      "rerender": 1.2
     },
     {
       "sequence": 425,
@@ -4012,8 +4059,8 @@
       "round": 19,
       "framework": "tamagui-v3-compiled",
       "scenario": "simple",
-      "mount": 0.5,
-      "rerender": 2.3
+      "mount": 0.3,
+      "rerender": 0.6
     },
     {
       "sequence": 426,
@@ -4021,8 +4068,8 @@
       "round": 19,
       "framework": "tamagui-v3-runtime",
       "scenario": "rich",
-      "mount": 13.9,
-      "rerender": 12.5
+      "mount": 6.9,
+      "rerender": 1.3
     },
     {
       "sequence": 427,
@@ -4030,8 +4077,8 @@
       "round": 19,
       "framework": "tamagui-v3-runtime",
       "scenario": "animated",
-      "mount": 8.1,
-      "rerender": 8.6
+      "mount": 9.2,
+      "rerender": 7.4
     },
     {
       "sequence": 428,
@@ -4039,8 +4086,8 @@
       "round": 19,
       "framework": "tamagui-v2-runtime",
       "scenario": "rich",
-      "mount": 3.7,
-      "rerender": 4.7
+      "mount": 9.5,
+      "rerender": 1.8
     },
     {
       "sequence": 429,
@@ -4048,8 +4095,8 @@
       "round": 19,
       "framework": "tamagui-v2-runtime",
       "scenario": "heavy",
-      "mount": 6.8,
-      "rerender": 9.4
+      "mount": 6.2,
+      "rerender": 5.6
     },
     {
       "sequence": 430,
@@ -4057,8 +4104,8 @@
       "round": 19,
       "framework": "tamagui-v2-compiled",
       "scenario": "group",
-      "mount": 1.1,
-      "rerender": 9.4
+      "mount": 0.9,
+      "rerender": 3.5
     },
     {
       "sequence": 431,
@@ -4066,8 +4113,8 @@
       "round": 19,
       "framework": "tamagui-v3-runtime",
       "scenario": "heavy",
-      "mount": 7.3,
-      "rerender": 9.1
+      "mount": 8.5,
+      "rerender": 5.7
     },
     {
       "sequence": 432,
@@ -4075,8 +4122,8 @@
       "round": 19,
       "framework": "tamagui-v3-runtime",
       "scenario": "group",
-      "mount": 20.2,
-      "rerender": 13.6
+      "mount": 9.9,
+      "rerender": 8.2
     },
     {
       "sequence": 433,
@@ -4084,8 +4131,8 @@
       "round": 19,
       "framework": "tamagui-v2-compiled",
       "scenario": "heavy",
-      "mount": 2.7,
-      "rerender": 5.6
+      "mount": 5,
+      "rerender": 4.1
     },
     {
       "sequence": 434,
@@ -4094,7 +4141,7 @@
       "framework": "tamagui-v3-compiled",
       "scenario": "rich",
       "mount": 0.4,
-      "rerender": 2.6
+      "rerender": 2
     },
     {
       "sequence": 435,
@@ -4102,8 +4149,8 @@
       "round": 19,
       "framework": "tamagui-v3-runtime",
       "scenario": "simple",
-      "mount": 5.9,
-      "rerender": 7.4
+      "mount": 9.9,
+      "rerender": 2
     },
     {
       "sequence": 436,
@@ -4111,8 +4158,8 @@
       "round": 19,
       "framework": "tamagui-v3-compiled",
       "scenario": "group",
-      "mount": 0.4,
-      "rerender": 2.5
+      "mount": 0.9,
+      "rerender": 2.9
     },
     {
       "sequence": 437,
@@ -4120,8 +4167,8 @@
       "round": 19,
       "framework": "tamagui-v2-runtime",
       "scenario": "group",
-      "mount": 7,
-      "rerender": 9.6
+      "mount": 13,
+      "rerender": 7.9
     },
     {
       "sequence": 438,
@@ -4129,8 +4176,8 @@
       "round": 19,
       "framework": "tamagui-v2-runtime",
       "scenario": "simple",
-      "mount": 7.8,
-      "rerender": 7.2
+      "mount": 3.3,
+      "rerender": 1.2
     },
     {
       "sequence": 439,
@@ -4138,8 +4185,8 @@
       "round": 19,
       "framework": "tamagui-v2-compiled",
       "scenario": "animated",
-      "mount": 0.7,
-      "rerender": 4.1
+      "mount": 0.4,
+      "rerender": 2.6
     }
   ],
   "summary": {
@@ -4147,160 +4194,160 @@
       "simple": {
         "warmups": {
           "mount": [
-            1.3,
-            1.1
+            0.5,
+            0.6
           ],
           "rerender": [
-            4.8,
-            3.5
+            0.9,
+            1.3
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 0.475,
-          "standardDeviation": 0.23367769075779302,
+          "mean": 0.51,
+          "standardDeviation": 0.23373399185263663,
           "ci95": {
-            "low": 0.3656367311554358,
-            "high": 0.5843632688445641,
-            "margin": 0.10936326884456418
+            "low": 0.40061038173478014,
+            "high": 0.6193896182652199,
+            "margin": 0.10938961826521985
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 2.2950000000000004,
-          "standardDeviation": 0.9185085164204206,
+          "mean": 1.595,
+          "standardDeviation": 0.567056109727201,
           "ci95": {
-            "low": 1.8651297223044465,
-            "high": 2.7248702776955542,
-            "margin": 0.4298702776955539
+            "low": 1.3296126214404984,
+            "high": 1.8603873785595015,
+            "margin": 0.2653873785595016
           }
         }
       },
       "rich": {
         "warmups": {
           "mount": [
-            0.8,
-            0.4
+            0.6,
+            0.9
           ],
           "rerender": [
-            3.2,
-            1.5
+            1.2,
+            2.2
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 0.5149999999999999,
-          "standardDeviation": 0.29607075967890195,
+          "mean": 0.45500000000000007,
+          "standardDeviation": 0.21392325234704354,
           "ci95": {
-            "low": 0.37643621163502833,
-            "high": 0.6535637883649714,
-            "margin": 0.13856378836497157
+            "low": 0.3548819866686267,
+            "high": 0.5551180133313734,
+            "margin": 0.10011801333137338
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 2.7,
-          "standardDeviation": 1.7447666108439233,
+          "mean": 1.6700000000000004,
+          "standardDeviation": 0.7554016011019359,
           "ci95": {
-            "low": 1.8834334749117274,
-            "high": 3.516566525088273,
-            "margin": 0.8165665250882728
+            "low": 1.3164652311522809,
+            "high": 2.02353476884772,
+            "margin": 0.3535347688477195
           }
         }
       },
       "group": {
         "warmups": {
           "mount": [
-            2.4,
-            0.9
+            2,
+            1
           ],
           "rerender": [
-            5.4,
-            5.4
+            3.2,
+            2.8
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 1.0150000000000001,
-          "standardDeviation": 0.3856300381399113,
+          "mean": 1.045,
+          "standardDeviation": 0.5266327992663938,
           "ci95": {
-            "low": 0.8345216608018104,
-            "high": 1.1954783391981898,
-            "margin": 0.18047833919818973
+            "low": 0.7985310956653002,
+            "high": 1.2914689043346996,
+            "margin": 0.2464689043346997
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 6.605000000000001,
-          "standardDeviation": 2.826654150088144,
+          "mean": 3.41,
+          "standardDeviation": 1.4286172924968576,
           "ci95": {
-            "low": 5.28210033959935,
-            "high": 7.927899660400652,
-            "margin": 1.3228996604006513
+            "low": 2.741394209996417,
+            "high": 4.078605790003583,
+            "margin": 0.6686057900035832
           }
         }
       },
       "heavy": {
         "warmups": {
           "mount": [
-            23.6,
-            2.6
+            10,
+            7
           ],
           "rerender": [
-            8.1,
-            3.3
+            2.7,
+            3.5
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 4.85,
-          "standardDeviation": 2.6248809496813372,
+          "mean": 4.045,
+          "standardDeviation": 1.9187372492290202,
           "ci95": {
-            "low": 3.6215320189357803,
-            "high": 6.078467981064219,
-            "margin": 1.2284679810642196
+            "low": 3.1470136455943862,
+            "high": 4.942986354405614,
+            "margin": 0.8979863544056135
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 7.264999999999999,
-          "standardDeviation": 3.5661087446890023,
+          "mean": 3.3549999999999995,
+          "standardDeviation": 1.2111217071267792,
           "ci95": {
-            "low": 5.596028913758775,
-            "high": 8.933971086241222,
-            "margin": 1.668971086241224
+            "low": 2.7881841074324876,
+            "high": 3.9218158925675115,
+            "margin": 0.566815892567512
           }
         }
       },
       "animated": {
         "warmups": {
           "mount": [
-            14,
-            4.3
+            21.1,
+            10.9
           ],
           "rerender": [
-            11.2,
-            6.7
+            9.7,
+            6.2
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 9.285,
-          "standardDeviation": 3.6978336474496154,
+          "mean": 7.590000000000002,
+          "standardDeviation": 3.034694123145302,
           "ci95": {
-            "low": 7.554380470095129,
-            "high": 11.015619529904871,
-            "margin": 1.7306195299048712
+            "low": 6.1697357540880695,
+            "high": 9.010264245911934,
+            "margin": 1.4202642459119323
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 10.570000000000002,
-          "standardDeviation": 2.752434329251491,
+          "mean": 8.04,
+          "standardDeviation": 2.585465447254588,
           "ci95": {
-            "low": 9.281835885784492,
-            "high": 11.858164114215512,
-            "margin": 1.2881641142155107
+            "low": 6.829978829902464,
+            "high": 9.250021170097535,
+            "margin": 1.2100211700975358
           }
         }
       }
@@ -4309,160 +4356,160 @@
       "simple": {
         "warmups": {
           "mount": [
-            22.4,
-            6.4
+            12.4,
+            6.7
           ],
           "rerender": [
-            8.9,
-            7.1
+            1.2,
+            1.2
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 6.005,
-          "standardDeviation": 2.47545317488589,
+          "mean": 7.840000000000001,
+          "standardDeviation": 2.8266401852450382,
           "ci95": {
-            "low": 4.846465566527783,
-            "high": 7.163534433472217,
-            "margin": 1.1585344334722165
+            "low": 6.517106875271994,
+            "high": 9.162893124728008,
+            "margin": 1.3228931247280074
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 6.610000000000001,
-          "standardDeviation": 2.316281048304986,
+          "mean": 1.5799999999999998,
+          "standardDeviation": 0.37500877182723136,
           "ci95": {
-            "low": 5.5259595587243755,
-            "high": 7.694040441275627,
-            "margin": 1.0840404412756255
+            "low": 1.4044925093216516,
+            "high": 1.755507490678348,
+            "margin": 0.17550749067834834
           }
         }
       },
       "rich": {
         "warmups": {
           "mount": [
-            25.9,
-            5.5
+            18.7,
+            17
           ],
           "rerender": [
-            9.8,
-            7.7
+            1.4,
+            1.8
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 10.370000000000001,
-          "standardDeviation": 4.2892889853680884,
+          "mean": 10.434999999999997,
+          "standardDeviation": 4.158096097722458,
           "ci95": {
-            "low": 8.362574032473427,
-            "high": 12.377425967526575,
-            "margin": 2.007425967526574
+            "low": 8.48897348826039,
+            "high": 12.381026511739604,
+            "margin": 1.9460265117396063
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 9.469999999999999,
-          "standardDeviation": 2.749564558827069,
+          "mean": 1.335,
+          "standardDeviation": 0.25188761069384225,
           "ci95": {
-            "low": 8.183178964250517,
-            "high": 10.75682103574948,
-            "margin": 1.2868210357494814
+            "low": 1.2171143242318399,
+            "high": 1.45288567576816,
+            "margin": 0.11788567576816017
           }
         }
       },
       "group": {
         "warmups": {
           "mount": [
-            36.7,
-            16.5
+            24,
+            13.6
           ],
           "rerender": [
-            28,
-            17.9
+            10.1,
+            7.4
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 14.794999999999998,
-          "standardDeviation": 6.1387873824001895,
+          "mean": 16.044999999999998,
+          "standardDeviation": 5.384038300481584,
           "ci95": {
-            "low": 11.921992085962911,
-            "high": 17.668007914037084,
-            "margin": 2.8730079140370868
+            "low": 13.52522146994209,
+            "high": 18.564778530057904,
+            "margin": 2.519778530057907
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 13.754999999999999,
-          "standardDeviation": 3.432426638921646,
+          "mean": 9.005,
+          "standardDeviation": 2.349126377367149,
           "ci95": {
-            "low": 12.148593346098602,
-            "high": 15.361406653901396,
-            "margin": 1.6064066539013973
+            "low": 7.905587648205811,
+            "high": 10.10441235179419,
+            "margin": 1.0994123517941898
           }
         }
       },
       "heavy": {
         "warmups": {
           "mount": [
-            30.7,
-            14.2
+            15.7,
+            7.2
           ],
           "rerender": [
-            17.3,
-            13.2
+            7.5,
+            4.3
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 11.42,
-          "standardDeviation": 5.08750792059386,
+          "mean": 9.705,
+          "standardDeviation": 2.8070353343734475,
           "ci95": {
-            "low": 9.039000364714102,
-            "high": 13.800999635285898,
-            "margin": 2.3809996352858978
+            "low": 8.391282122466427,
+            "high": 11.018717877533573,
+            "margin": 1.313717877533573
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 10.569999999999999,
-          "standardDeviation": 2.442194871314262,
+          "mean": 6.340000000000001,
+          "standardDeviation": 1.4299061434050024,
           "ci95": {
-            "low": 9.427030752844981,
-            "high": 11.712969247155016,
-            "margin": 1.1429692471550164
+            "low": 5.670791016136058,
+            "high": 7.009208983863943,
+            "margin": 0.6692089838639423
           }
         }
       },
       "animated": {
         "warmups": {
           "mount": [
-            18.1,
-            9.1
+            17.2,
+            6.8
           ],
           "rerender": [
-            13.3,
-            10.3
+            8.6,
+            6.5
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 7.359999999999999,
-          "standardDeviation": 3.3666162928314085,
+          "mean": 8.040000000000001,
+          "standardDeviation": 2.865842394755676,
           "ci95": {
-            "low": 5.784393182184283,
-            "high": 8.935606817815716,
-            "margin": 1.5756068178157165
+            "low": 6.6987598873155925,
+            "high": 9.38124011268441,
+            "margin": 1.341240112684408
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 8.83,
-          "standardDeviation": 2.8738567520979443,
+          "mean": 7.459999999999999,
+          "standardDeviation": 1.6213704404802618,
           "ci95": {
-            "low": 7.485009095728271,
-            "high": 10.174990904271729,
-            "margin": 1.3449909042717292
+            "low": 6.70118399662438,
+            "high": 8.218816003375618,
+            "margin": 0.7588160033756189
           }
         }
       }
@@ -4471,160 +4518,160 @@
       "simple": {
         "warmups": {
           "mount": [
-            0.6,
-            0.3
+            0.5,
+            0.4
           ],
           "rerender": [
-            2.7,
-            1.4
+            1.3,
+            1.6
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 0.53,
-          "standardDeviation": 0.24730122267559068,
+          "mean": 0.4299999999999999,
+          "standardDeviation": 0.202874085917453,
           "ci95": {
-            "low": 0.41426079522887405,
-            "high": 0.645739204771126,
-            "margin": 0.11573920477112595
+            "low": 0.33505309630613195,
+            "high": 0.5249469036938678,
+            "margin": 0.09494690369386792
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 2.7150000000000007,
-          "standardDeviation": 1.1165147841197154,
+          "mean": 1.485,
+          "standardDeviation": 0.4579990806701874,
           "ci95": {
-            "low": 2.1924610014818344,
-            "high": 3.237538998518167,
-            "margin": 0.5225389985181664
+            "low": 1.2706522955723085,
+            "high": 1.6993477044276917,
+            "margin": 0.2143477044276916
           }
         }
       },
       "rich": {
         "warmups": {
           "mount": [
-            1.1,
-            1.4
+            0.7,
+            0.5
           ],
           "rerender": [
-            5.8,
-            4.9
+            2.3,
+            1.4
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 0.43,
-          "standardDeviation": 0.1949358868961793,
+          "mean": 0.45999999999999996,
+          "standardDeviation": 0.20875571218153782,
           "ci95": {
-            "low": 0.3387682451116937,
-            "high": 0.5212317548883063,
-            "margin": 0.0912317548883063
+            "low": 0.3623004421170376,
+            "high": 0.5576995578829623,
+            "margin": 0.09769955788296238
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 2.9599999999999995,
-          "standardDeviation": 1.2803782335906182,
+          "mean": 2.4100000000000006,
+          "standardDeviation": 1.161170008859032,
           "ci95": {
-            "low": 2.360771427820911,
-            "high": 3.559228572179088,
-            "margin": 0.5992285721790889
+            "low": 1.8665619531702766,
+            "high": 2.9534380468297243,
+            "margin": 0.543438046829724
           }
         }
       },
       "group": {
         "warmups": {
           "mount": [
-            2.1,
-            0.8
+            1.2,
+            0.9
           ],
           "rerender": [
-            5.6,
-            4.1
+            2.5,
+            3.2
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 1.0350000000000001,
-          "standardDeviation": 0.547986745901952,
+          "mean": 1.305,
+          "standardDeviation": 0.6605221220248498,
           "ci95": {
-            "low": 0.7785372558630337,
-            "high": 1.2914627441369666,
-            "margin": 0.25646274413696646
+            "low": 0.9958696839029482,
+            "high": 1.6141303160970517,
+            "margin": 0.3091303160970518
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 6.505,
-          "standardDeviation": 3.180942429036103,
+          "mean": 4.6000000000000005,
+          "standardDeviation": 1.4367360670338132,
           "ci95": {
-            "low": 5.016290226646701,
-            "high": 7.993709773353299,
-            "margin": 1.488709773353299
+            "low": 3.927594550219337,
+            "high": 5.272405449780664,
+            "margin": 0.6724054497806637
           }
         }
       },
       "heavy": {
         "warmups": {
           "mount": [
-            15.3,
-            10.2
+            12.2,
+            5.5
           ],
           "rerender": [
-            9.2,
-            10.9
+            4.7,
+            5.4
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 4.880000000000001,
-          "standardDeviation": 2.5415701736069423,
+          "mean": 5.045,
+          "standardDeviation": 1.8018922802081383,
           "ci95": {
-            "low": 3.6905222142425167,
-            "high": 6.069477785757485,
-            "margin": 1.1894777857574839
+            "low": 4.2016981459364,
+            "high": 5.8883018540636,
+            "margin": 0.8433018540635998
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 7.51,
-          "standardDeviation": 2.9163603849210475,
+          "mean": 4.0649999999999995,
+          "standardDeviation": 1.386884050099738,
           "ci95": {
-            "low": 6.145117011857407,
-            "high": 8.874882988142591,
-            "margin": 1.3648829881425923
+            "low": 3.415925744193073,
+            "high": 4.714074255806926,
+            "margin": 0.6490742558069267
           }
         }
       },
       "animated": {
         "warmups": {
           "mount": [
-            0.4,
-            0.8
+            0.6,
+            1
           ],
           "rerender": [
-            1.9,
-            4.1
+            1.5,
+            2.8
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 0.55,
-          "standardDeviation": 0.2417044737516849,
+          "mean": 0.575,
+          "standardDeviation": 0.24894514297436357,
           "ci95": {
-            "low": 0.4368801242509802,
-            "high": 0.6631198757490199,
-            "margin": 0.11311987574901981
+            "low": 0.4584914256882443,
+            "high": 0.6915085743117556,
+            "margin": 0.11650857431175567
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 3.6100000000000003,
-          "standardDeviation": 1.6163311281384996,
+          "mean": 2.6950000000000003,
+          "standardDeviation": 1.003402107568887,
           "ci95": {
-            "low": 2.8535424402936793,
-            "high": 4.366457559706321,
-            "margin": 0.756457559706321
+            "low": 2.22539875525388,
+            "high": 3.1646012447461205,
+            "margin": 0.46960124474612
           }
         }
       }
@@ -4633,160 +4680,160 @@
       "simple": {
         "warmups": {
           "mount": [
-            6.2,
-            3
+            10,
+            9.4
           ],
           "rerender": [
-            4.9,
-            3.6
+            1.1,
+            1.9
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 6.05,
-          "standardDeviation": 2.789736829693326,
+          "mean": 5.2749999999999995,
+          "standardDeviation": 1.9130782579530383,
           "ci95": {
-            "low": 4.744377978822274,
-            "high": 7.355622021177726,
-            "margin": 1.305622021177726
+            "low": 4.379662104599168,
+            "high": 6.170337895400831,
+            "margin": 0.895337895400831
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 6.784999999999999,
-          "standardDeviation": 2.4688107087805404,
+          "mean": 1.44,
+          "standardDeviation": 0.38030458707116377,
           "ci95": {
-            "low": 5.629574300631216,
-            "high": 7.940425699368783,
-            "margin": 1.1554256993687835
+            "low": 1.2620140199785093,
+            "high": 1.6179859800214906,
+            "margin": 0.17798598002149077
           }
         }
       },
       "rich": {
         "warmups": {
           "mount": [
-            8.6,
-            13.9
+            18.7,
+            8.7
           ],
           "rerender": [
-            8.6,
-            10.7
+            2.3,
+            1.7
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 7.594999999999999,
-          "standardDeviation": 3.8588892593322077,
+          "mean": 10.73,
+          "standardDeviation": 3.530036528810551,
           "ci95": {
-            "low": 5.789004989773824,
-            "high": 9.400995010226174,
-            "margin": 1.805995010226175
+            "low": 9.0779110364387,
+            "high": 12.382088963561301,
+            "margin": 1.6520889635613007
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 7.6549999999999985,
-          "standardDeviation": 2.568324253999913,
+          "mean": 2.0749999999999997,
+          "standardDeviation": 0.7122056178557309,
           "ci95": {
-            "low": 6.453001063091041,
-            "high": 8.856998936908955,
-            "margin": 1.2019989369089572
+            "low": 1.7416813412714807,
+            "high": 2.408318658728519,
+            "margin": 0.33331865872851907
           }
         }
       },
       "group": {
         "warmups": {
           "mount": [
-            24.4,
-            14.2
+            34.1,
+            17.9
           ],
           "rerender": [
-            15.9,
-            18.1
+            9.3,
+            11.9
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 15.375,
-          "standardDeviation": 5.6778308497079,
+          "mean": 13.565000000000001,
+          "standardDeviation": 6.952188220454879,
           "ci95": {
-            "low": 12.71772390463591,
-            "high": 18.03227609536409,
-            "margin": 2.657276095364089
+            "low": 10.311313150622134,
+            "high": 16.81868684937787,
+            "margin": 3.253686849377867
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 14.440000000000003,
-          "standardDeviation": 2.9533923403079165,
+          "mean": 9.440000000000001,
+          "standardDeviation": 4.932214192642617,
           "ci95": {
-            "low": 13.057785722423317,
-            "high": 15.82221427757669,
-            "margin": 1.3822142775766866
+            "low": 7.13167923133903,
+            "high": 11.748320768660973,
+            "margin": 2.308320768660971
           }
         }
       },
       "heavy": {
         "warmups": {
           "mount": [
-            9,
-            4.4
+            17.5,
+            7.3
           ],
           "rerender": [
-            10,
-            6.4
+            7.6,
+            5.5
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 10.715000000000002,
-          "standardDeviation": 4.167704782958449,
+          "mean": 10.909999999999997,
+          "standardDeviation": 3.9784815934566904,
           "ci95": {
-            "low": 8.764476536825713,
-            "high": 12.66552346317429,
-            "margin": 1.9505234631742883
+            "low": 9.04803469776096,
+            "high": 12.771965302239034,
+            "margin": 1.8619653022390363
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 10.945,
-          "standardDeviation": 2.370981364662942,
+          "mean": 7.139999999999999,
+          "standardDeviation": 1.5796068798080243,
           "ci95": {
-            "low": 9.835359316851314,
-            "high": 12.054640683148687,
-            "margin": 1.1096406831486867
+            "low": 6.4007297200474955,
+            "high": 7.879270279952502,
+            "margin": 0.7392702799525033
           }
         }
       },
       "animated": {
         "warmups": {
           "mount": [
-            14.7,
-            5.7
+            17.7,
+            16.6
           ],
           "rerender": [
-            10.8,
-            4.5
+            9.9,
+            8.2
           ]
         },
         "mount": {
           "n": 20,
-          "mean": 9.934999999999999,
-          "standardDeviation": 4.041921768038982,
+          "mean": 6.965000000000001,
+          "standardDeviation": 2.3493056084948294,
           "ci95": {
-            "low": 8.043344123338176,
-            "high": 11.826655876661821,
-            "margin": 1.891655876661823
+            "low": 5.865503766420013,
+            "high": 8.064496233579987,
+            "margin": 1.0994962335799874
           }
         },
         "rerender": {
           "n": 20,
-          "mean": 8.440000000000001,
-          "standardDeviation": 2.4902758249259307,
+          "mean": 8.120000000000001,
+          "standardDeviation": 2.687906639982713,
           "ci95": {
-            "low": 7.274528432494746,
-            "high": 9.605471567505257,
-            "margin": 1.1654715675052556
+            "low": 6.862035426898299,
+            "high": 9.377964573101703,
+            "margin": 1.257964573101702
           }
         }
       }
@@ -4798,430 +4845,350 @@
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 0.475,
-            "standardDeviation": 0.23367769075779302,
+            "mean": 0.51,
+            "standardDeviation": 0.23373399185263663,
             "ci95": {
-              "low": 0.3656367311554358,
-              "high": 0.5843632688445641,
-              "margin": 0.10936326884456418
+              "low": 0.40061038173478014,
+              "high": 0.6193896182652199,
+              "margin": 0.10938961826521985
             }
           },
           "v2": {
             "n": 20,
-            "mean": 0.53,
-            "standardDeviation": 0.24730122267559068,
+            "mean": 0.4299999999999999,
+            "standardDeviation": 0.202874085917453,
             "ci95": {
-              "low": 0.41426079522887405,
-              "high": 0.645739204771126,
-              "margin": 0.11573920477112595
+              "low": 0.33505309630613195,
+              "high": 0.5249469036938678,
+              "margin": 0.09494690369386792
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.05500000000000003,
-            "standardDeviation": 0.36051863226541614,
+            "mean": 0.07999999999999999,
+            "standardDeviation": 0.3001753873286328,
             "ci95": {
-              "low": -0.22372597455092058,
-              "high": 0.11372597455092054,
-              "margin": 0.16872597455092056
+              "low": -0.06048479116035449,
+              "high": 0.22048479116035447,
+              "margin": 0.14048479116035448
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.171349206349206,
-            "standardDeviation": 0.9551835989944489,
-            "ci95": {
-              "low": 0.7243146589177047,
-              "high": 1.618383753780707,
-              "margin": 0.44703454743150123
-            }
-          }
+          "ratioOfMeans": 1.1860465116279073,
+          "medianPairedRatio": 1.4499999999999997
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 2.2950000000000004,
-            "standardDeviation": 0.9185085164204206,
+            "mean": 1.595,
+            "standardDeviation": 0.567056109727201,
             "ci95": {
-              "low": 1.8651297223044465,
-              "high": 2.7248702776955542,
-              "margin": 0.4298702776955539
+              "low": 1.3296126214404984,
+              "high": 1.8603873785595015,
+              "margin": 0.2653873785595016
             }
           },
           "v2": {
             "n": 20,
-            "mean": 2.7150000000000007,
-            "standardDeviation": 1.1165147841197154,
+            "mean": 1.485,
+            "standardDeviation": 0.4579990806701874,
             "ci95": {
-              "low": 2.1924610014818344,
-              "high": 3.237538998518167,
-              "margin": 0.5225389985181664
+              "low": 1.2706522955723085,
+              "high": 1.6993477044276917,
+              "margin": 0.2143477044276916
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.41999999999999993,
-            "standardDeviation": 1.4986309541852207,
+            "mean": 0.11000000000000006,
+            "standardDeviation": 0.6648308055437865,
             "ci95": {
-              "low": -1.1213728157354201,
-              "high": 0.28137281573542017,
-              "margin": 0.7013728157354201
+              "low": -0.2011468188813763,
+              "high": 0.4211468188813764,
+              "margin": 0.31114681888137635
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.0299084524402808,
-            "standardDeviation": 0.7151032411447288,
-            "ci95": {
-              "low": 0.6952336798536639,
-              "high": 1.3645832250268977,
-              "margin": 0.33467477258661693
-            }
-          }
+          "ratioOfMeans": 1.074074074074074,
+          "medianPairedRatio": 1
         }
       },
       "rich": {
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 0.5149999999999999,
-            "standardDeviation": 0.29607075967890195,
+            "mean": 0.45500000000000007,
+            "standardDeviation": 0.21392325234704354,
             "ci95": {
-              "low": 0.37643621163502833,
-              "high": 0.6535637883649714,
-              "margin": 0.13856378836497157
+              "low": 0.3548819866686267,
+              "high": 0.5551180133313734,
+              "margin": 0.10011801333137338
             }
           },
           "v2": {
             "n": 20,
-            "mean": 0.43,
-            "standardDeviation": 0.1949358868961793,
+            "mean": 0.45999999999999996,
+            "standardDeviation": 0.20875571218153782,
             "ci95": {
-              "low": 0.3387682451116937,
-              "high": 0.5212317548883063,
-              "margin": 0.0912317548883063
+              "low": 0.3623004421170376,
+              "high": 0.5576995578829623,
+              "margin": 0.09769955788296238
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": 0.085,
-            "standardDeviation": 0.3030980386815982,
+            "mean": -0.0049999999999999906,
+            "standardDeviation": 0.3268268493769816,
             "ci95": {
-              "low": -0.05685261837833473,
-              "high": 0.22685261837833476,
-              "margin": 0.14185261837833474
+              "low": -0.15795791600013792,
+              "high": 0.14795791600013797,
+              "margin": 0.15295791600013794
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.4533333333333334,
-            "standardDeviation": 1.2465431733561962,
-            "ci95": {
-              "low": 0.8699398747964129,
-              "high": 2.0367267918702536,
-              "margin": 0.5833934585369205
-            }
-          }
+          "ratioOfMeans": 0.989130434782609,
+          "medianPairedRatio": 1
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 2.7,
-            "standardDeviation": 1.7447666108439233,
+            "mean": 1.6700000000000004,
+            "standardDeviation": 0.7554016011019359,
             "ci95": {
-              "low": 1.8834334749117274,
-              "high": 3.516566525088273,
-              "margin": 0.8165665250882728
+              "low": 1.3164652311522809,
+              "high": 2.02353476884772,
+              "margin": 0.3535347688477195
             }
           },
           "v2": {
             "n": 20,
-            "mean": 2.9599999999999995,
-            "standardDeviation": 1.2803782335906182,
+            "mean": 2.4100000000000006,
+            "standardDeviation": 1.161170008859032,
             "ci95": {
-              "low": 2.360771427820911,
-              "high": 3.559228572179088,
-              "margin": 0.5992285721790889
+              "low": 1.8665619531702766,
+              "high": 2.9534380468297243,
+              "margin": 0.543438046829724
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.25999999999999995,
-            "standardDeviation": 1.721504849649986,
+            "mean": -0.74,
+            "standardDeviation": 1.489047735263963,
             "ci95": {
-              "low": -1.065679810849525,
-              "high": 0.5456798108495249,
-              "margin": 0.8056798108495249
+              "low": -1.4368877827659352,
+              "high": -0.04311221723406489,
+              "margin": 0.6968877827659351
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 0.9966419598301878,
-            "standardDeviation": 0.5971761146520642,
-            "ci95": {
-              "low": 0.7171581470517616,
-              "high": 1.276125772608614,
-              "margin": 0.2794838127784261
-            }
-          }
+          "ratioOfMeans": 0.6929460580912863,
+          "medianPairedRatio": 0.7027972027972028
         }
       },
       "group": {
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 1.0150000000000001,
-            "standardDeviation": 0.3856300381399113,
+            "mean": 1.045,
+            "standardDeviation": 0.5266327992663938,
             "ci95": {
-              "low": 0.8345216608018104,
-              "high": 1.1954783391981898,
-              "margin": 0.18047833919818973
+              "low": 0.7985310956653002,
+              "high": 1.2914689043346996,
+              "margin": 0.2464689043346997
             }
           },
           "v2": {
             "n": 20,
-            "mean": 1.0350000000000001,
-            "standardDeviation": 0.547986745901952,
+            "mean": 1.305,
+            "standardDeviation": 0.6605221220248498,
             "ci95": {
-              "low": 0.7785372558630337,
-              "high": 1.2914627441369666,
-              "margin": 0.25646274413696646
+              "low": 0.9958696839029482,
+              "high": 1.6141303160970517,
+              "margin": 0.3091303160970518
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.02,
-            "standardDeviation": 0.5727128425310541,
+            "mean": -0.26000000000000006,
+            "standardDeviation": 0.7611625457500072,
             "ci95": {
-              "low": -0.28803478057893905,
-              "high": 0.24803478057893905,
-              "margin": 0.26803478057893904
+              "low": -0.6162309429510434,
+              "high": 0.09623094295104329,
+              "margin": 0.35623094295104335
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.2440675133689842,
-            "standardDeviation": 0.7358673639199108,
-            "ci95": {
-              "low": 0.8996749438715039,
-              "high": 1.5884600828664646,
-              "margin": 0.3443925694974803
-            }
-          }
+          "ratioOfMeans": 0.8007662835249042,
+          "medianPairedRatio": 0.7638888888888888
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 6.605000000000001,
-            "standardDeviation": 2.826654150088144,
+            "mean": 3.41,
+            "standardDeviation": 1.4286172924968576,
             "ci95": {
-              "low": 5.28210033959935,
-              "high": 7.927899660400652,
-              "margin": 1.3228996604006513
+              "low": 2.741394209996417,
+              "high": 4.078605790003583,
+              "margin": 0.6686057900035832
             }
           },
           "v2": {
             "n": 20,
-            "mean": 6.505,
-            "standardDeviation": 3.180942429036103,
+            "mean": 4.6000000000000005,
+            "standardDeviation": 1.4367360670338132,
             "ci95": {
-              "low": 5.016290226646701,
-              "high": 7.993709773353299,
-              "margin": 1.488709773353299
+              "low": 3.927594550219337,
+              "high": 5.272405449780664,
+              "margin": 0.6724054497806637
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": 0.10000000000000009,
-            "standardDeviation": 3.928706764586187,
+            "mean": -1.19,
+            "standardDeviation": 2.3103656580039904,
             "ci95": {
-              "low": -1.7386702329758805,
-              "high": 1.9386702329758807,
-              "margin": 1.8386702329758806
+              "low": -2.2712719852124454,
+              "high": -0.10872801478755423,
+              "margin": 1.0812719852124457
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.266139965028083,
-            "standardDeviation": 0.7970310568896511,
-            "ci95": {
-              "low": 0.8931222350538616,
-              "high": 1.6391576950023041,
-              "margin": 0.37301772997422133
-            }
-          }
+          "ratioOfMeans": 0.7413043478260869,
+          "medianPairedRatio": 0.6103723404255319
         }
       },
       "heavy": {
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 4.85,
-            "standardDeviation": 2.6248809496813372,
+            "mean": 4.045,
+            "standardDeviation": 1.9187372492290202,
             "ci95": {
-              "low": 3.6215320189357803,
-              "high": 6.078467981064219,
-              "margin": 1.2284679810642196
+              "low": 3.1470136455943862,
+              "high": 4.942986354405614,
+              "margin": 0.8979863544056135
             }
           },
           "v2": {
             "n": 20,
-            "mean": 4.880000000000001,
-            "standardDeviation": 2.5415701736069423,
+            "mean": 5.045,
+            "standardDeviation": 1.8018922802081383,
             "ci95": {
-              "low": 3.6905222142425167,
-              "high": 6.069477785757485,
-              "margin": 1.1894777857574839
+              "low": 4.2016981459364,
+              "high": 5.8883018540636,
+              "margin": 0.8433018540635998
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.03000000000000016,
-            "standardDeviation": 3.3430367537378505,
+            "mean": -1,
+            "standardDeviation": 2.2360679774997894,
             "ci95": {
-              "low": -1.5945713806511457,
-              "high": 1.5345713806511452,
-              "margin": 1.5645713806511454
+              "low": -2.0465,
+              "high": 0.046499999999999764,
+              "margin": 1.0464999999999998
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.2342575996528329,
-            "standardDeviation": 0.9002305484284295,
-            "ci95": {
-              "low": 0.8129415759853726,
-              "high": 1.6555736233202931,
-              "margin": 0.4213160236674603
-            }
-          }
+          "ratioOfMeans": 0.8017839444995046,
+          "medianPairedRatio": 0.8560480530240264
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 7.264999999999999,
-            "standardDeviation": 3.5661087446890023,
+            "mean": 3.3549999999999995,
+            "standardDeviation": 1.2111217071267792,
             "ci95": {
-              "low": 5.596028913758775,
-              "high": 8.933971086241222,
-              "margin": 1.668971086241224
+              "low": 2.7881841074324876,
+              "high": 3.9218158925675115,
+              "margin": 0.566815892567512
             }
           },
           "v2": {
             "n": 20,
-            "mean": 7.51,
-            "standardDeviation": 2.9163603849210475,
+            "mean": 4.0649999999999995,
+            "standardDeviation": 1.386884050099738,
             "ci95": {
-              "low": 6.145117011857407,
-              "high": 8.874882988142591,
-              "margin": 1.3648829881425923
+              "low": 3.415925744193073,
+              "high": 4.714074255806926,
+              "margin": 0.6490742558069267
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.24499999999999983,
-            "standardDeviation": 4.877820371738525,
+            "mean": -0.7100000000000002,
+            "standardDeviation": 1.4728775988019616,
             "ci95": {
-              "low": -2.5278639694272647,
-              "high": 2.0378639694272653,
-              "margin": 2.282863969427265
+              "low": -1.399320012922728,
+              "high": -0.020679987077272477,
+              "margin": 0.6893200129227277
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.1429532240607394,
-            "standardDeviation": 0.8653015693325803,
-            "ci95": {
-              "low": 0.7379842779381565,
-              "high": 1.5479221701833223,
-              "margin": 0.4049689461225829
-            }
-          }
+          "ratioOfMeans": 0.8253382533825337,
+          "medianPairedRatio": 0.8697478991596639
         }
       },
       "animated": {
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 9.285,
-            "standardDeviation": 3.6978336474496154,
+            "mean": 7.590000000000002,
+            "standardDeviation": 3.034694123145302,
             "ci95": {
-              "low": 7.554380470095129,
-              "high": 11.015619529904871,
-              "margin": 1.7306195299048712
+              "low": 6.1697357540880695,
+              "high": 9.010264245911934,
+              "margin": 1.4202642459119323
             }
           },
           "v2": {
             "n": 20,
-            "mean": 0.55,
-            "standardDeviation": 0.2417044737516849,
+            "mean": 0.575,
+            "standardDeviation": 0.24894514297436357,
             "ci95": {
-              "low": 0.4368801242509802,
-              "high": 0.6631198757490199,
-              "margin": 0.11311987574901981
+              "low": 0.4584914256882443,
+              "high": 0.6915085743117556,
+              "margin": 0.11650857431175567
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": 8.734999999999998,
-            "standardDeviation": 3.704090910558785,
+            "mean": 7.015000000000001,
+            "standardDeviation": 3.021723976387268,
             "ci95": {
-              "low": 7.001452014471399,
-              "high": 10.468547985528597,
-              "margin": 1.7335479855285987
+              "low": 5.600805899861301,
+              "high": 8.4291941001387,
+              "margin": 1.414194100138699
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 23.41488095238095,
-            "standardDeviation": 22.20186274492433,
-            "ci95": {
-              "low": 13.024208756206408,
-              "high": 33.8055531485555,
-              "margin": 10.390672196174544
-            }
-          }
+          "ratioOfMeans": 13.200000000000005,
+          "medianPairedRatio": 12.133333333333333
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 10.570000000000002,
-            "standardDeviation": 2.752434329251491,
+            "mean": 8.04,
+            "standardDeviation": 2.585465447254588,
             "ci95": {
-              "low": 9.281835885784492,
-              "high": 11.858164114215512,
-              "margin": 1.2881641142155107
+              "low": 6.829978829902464,
+              "high": 9.250021170097535,
+              "margin": 1.2100211700975358
             }
           },
           "v2": {
             "n": 20,
-            "mean": 3.6100000000000003,
-            "standardDeviation": 1.6163311281384996,
+            "mean": 2.6950000000000003,
+            "standardDeviation": 1.003402107568887,
             "ci95": {
-              "low": 2.8535424402936793,
-              "high": 4.366457559706321,
-              "margin": 0.756457559706321
+              "low": 2.22539875525388,
+              "high": 3.1646012447461205,
+              "margin": 0.46960124474612
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": 6.959999999999999,
-            "standardDeviation": 3.189357302028106,
+            "mean": 5.344999999999999,
+            "standardDeviation": 2.928709972882798,
             "ci95": {
-              "low": 5.467351990119572,
-              "high": 8.452648009880427,
-              "margin": 1.4926480098804271
+              "low": 3.974337293203047,
+              "high": 6.715662706796951,
+              "margin": 1.3706627067969521
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 3.6550691538878013,
-            "standardDeviation": 1.9015882077200577,
-            "ci95": {
-              "low": 2.765108705724625,
-              "high": 4.5450296020509775,
-              "margin": 0.8899604481631763
-            }
-          }
+          "ratioOfMeans": 2.9833024118738396,
+          "medianPairedRatio": 3.494285714285714
         }
       }
     },
@@ -5230,430 +5197,350 @@
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 6.005,
-            "standardDeviation": 2.47545317488589,
+            "mean": 7.840000000000001,
+            "standardDeviation": 2.8266401852450382,
             "ci95": {
-              "low": 4.846465566527783,
-              "high": 7.163534433472217,
-              "margin": 1.1585344334722165
+              "low": 6.517106875271994,
+              "high": 9.162893124728008,
+              "margin": 1.3228931247280074
             }
           },
           "v2": {
             "n": 20,
-            "mean": 6.05,
-            "standardDeviation": 2.789736829693326,
+            "mean": 5.2749999999999995,
+            "standardDeviation": 1.9130782579530383,
             "ci95": {
-              "low": 4.744377978822274,
-              "high": 7.355622021177726,
-              "margin": 1.305622021177726
+              "low": 4.379662104599168,
+              "high": 6.170337895400831,
+              "margin": 0.895337895400831
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.04499999999999993,
-            "standardDeviation": 3.548531942559968,
+            "mean": 2.5650000000000004,
+            "standardDeviation": 3.5061262174416337,
             "ci95": {
-              "low": -1.7057449841669026,
-              "high": 1.6157449841669027,
-              "margin": 1.6607449841669026
+              "low": 0.9241012780142488,
+              "high": 4.205898721985752,
+              "margin": 1.6408987219857516
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.303607086075994,
-            "standardDeviation": 1.0391263386683256,
-            "ci95": {
-              "low": 0.8172865786680278,
-              "high": 1.7899275934839602,
-              "margin": 0.4863205074079663
-            }
-          }
+          "ratioOfMeans": 1.4862559241706164,
+          "medianPairedRatio": 1.3825995807127884
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 6.610000000000001,
-            "standardDeviation": 2.316281048304986,
+            "mean": 1.5799999999999998,
+            "standardDeviation": 0.37500877182723136,
             "ci95": {
-              "low": 5.5259595587243755,
-              "high": 7.694040441275627,
-              "margin": 1.0840404412756255
+              "low": 1.4044925093216516,
+              "high": 1.755507490678348,
+              "margin": 0.17550749067834834
             }
           },
           "v2": {
             "n": 20,
-            "mean": 6.784999999999999,
-            "standardDeviation": 2.4688107087805404,
+            "mean": 1.44,
+            "standardDeviation": 0.38030458707116377,
             "ci95": {
-              "low": 5.629574300631216,
-              "high": 7.940425699368783,
-              "margin": 1.1554256993687835
+              "low": 1.2620140199785093,
+              "high": 1.6179859800214906,
+              "margin": 0.17798598002149077
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.175,
-            "standardDeviation": 3.3673158137415156,
+            "mean": 0.13999999999999996,
+            "standardDeviation": 0.43213058455201153,
             "ci95": {
-              "low": -1.7509341999167052,
-              "high": 1.400934199916705,
-              "margin": 1.5759341999167051
+              "low": -0.06224101471160337,
+              "high": 0.3422410147116033,
+              "margin": 0.20224101471160333
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.1558758446666937,
-            "standardDeviation": 0.77364749825191,
-            "ci95": {
-              "low": 0.7938018312344701,
-              "high": 1.5179498580989172,
-              "margin": 0.3620740134322235
-            }
-          }
+          "ratioOfMeans": 1.097222222222222,
+          "medianPairedRatio": 1.0982142857142856
         }
       },
       "rich": {
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 10.370000000000001,
-            "standardDeviation": 4.2892889853680884,
+            "mean": 10.434999999999997,
+            "standardDeviation": 4.158096097722458,
             "ci95": {
-              "low": 8.362574032473427,
-              "high": 12.377425967526575,
-              "margin": 2.007425967526574
+              "low": 8.48897348826039,
+              "high": 12.381026511739604,
+              "margin": 1.9460265117396063
             }
           },
           "v2": {
             "n": 20,
-            "mean": 7.594999999999999,
-            "standardDeviation": 3.8588892593322077,
+            "mean": 10.73,
+            "standardDeviation": 3.530036528810551,
             "ci95": {
-              "low": 5.789004989773824,
-              "high": 9.400995010226174,
-              "margin": 1.805995010226175
+              "low": 9.0779110364387,
+              "high": 12.382088963561301,
+              "margin": 1.6520889635613007
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": 2.775,
-            "standardDeviation": 5.658796133826569,
+            "mean": -0.2950000000000005,
+            "standardDeviation": 4.8337056722886835,
             "ci95": {
-              "low": 0.1266323235079012,
-              "high": 5.423367676492099,
-              "margin": 2.6483676764920987
+              "low": -2.5572178918308777,
+              "high": 1.967217891830877,
+              "margin": 2.2622178918308773
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.7177561766992908,
-            "standardDeviation": 1.0631552322711457,
-            "ci95": {
-              "low": 1.2201899301597852,
-              "high": 2.2153224232387965,
-              "margin": 0.49756624653950554
-            }
-          }
+          "ratioOfMeans": 0.9725069897483687,
+          "medianPairedRatio": 0.8883431360280316
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 9.469999999999999,
-            "standardDeviation": 2.749564558827069,
+            "mean": 1.335,
+            "standardDeviation": 0.25188761069384225,
             "ci95": {
-              "low": 8.183178964250517,
-              "high": 10.75682103574948,
-              "margin": 1.2868210357494814
+              "low": 1.2171143242318399,
+              "high": 1.45288567576816,
+              "margin": 0.11788567576816017
             }
           },
           "v2": {
             "n": 20,
-            "mean": 7.6549999999999985,
-            "standardDeviation": 2.568324253999913,
+            "mean": 2.0749999999999997,
+            "standardDeviation": 0.7122056178557309,
             "ci95": {
-              "low": 6.453001063091041,
-              "high": 8.856998936908955,
-              "margin": 1.2019989369089572
+              "low": 1.7416813412714807,
+              "high": 2.408318658728519,
+              "margin": 0.33331865872851907
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": 1.815,
-            "standardDeviation": 3.668396322502159,
+            "mean": -0.74,
+            "standardDeviation": 0.7789331435401008,
             "ci95": {
-              "low": 0.0981574039216031,
-              "high": 3.5318425960783966,
-              "margin": 1.7168425960783968
+              "low": -1.1045477431442676,
+              "high": -0.3754522568557323,
+              "margin": 0.3645477431442677
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.366470420617795,
-            "standardDeviation": 0.5788330810040546,
-            "ci95": {
-              "low": 1.0955713131818716,
-              "high": 1.6373695280537182,
-              "margin": 0.2708991074359232
-            }
-          }
+          "ratioOfMeans": 0.6433734939759037,
+          "medianPairedRatio": 0.6666666666666666
         }
       },
       "group": {
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 14.794999999999998,
-            "standardDeviation": 6.1387873824001895,
+            "mean": 16.044999999999998,
+            "standardDeviation": 5.384038300481584,
             "ci95": {
-              "low": 11.921992085962911,
-              "high": 17.668007914037084,
-              "margin": 2.8730079140370868
+              "low": 13.52522146994209,
+              "high": 18.564778530057904,
+              "margin": 2.519778530057907
             }
           },
           "v2": {
             "n": 20,
-            "mean": 15.375,
-            "standardDeviation": 5.6778308497079,
+            "mean": 13.565000000000001,
+            "standardDeviation": 6.952188220454879,
             "ci95": {
-              "low": 12.71772390463591,
-              "high": 18.03227609536409,
-              "margin": 2.657276095364089
+              "low": 10.311313150622134,
+              "high": 16.81868684937787,
+              "margin": 3.253686849377867
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.5800000000000004,
-            "standardDeviation": 7.6963832927858835,
+            "mean": 2.48,
+            "standardDeviation": 7.606479232587799,
             "ci95": {
-              "low": -4.181976861591715,
-              "high": 3.0219768615917144,
-              "margin": 3.601976861591715
+              "low": -1.0799009497929632,
+              "high": 6.039900949792964,
+              "margin": 3.5599009497929632
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.098743123014391,
-            "standardDeviation": 0.6885482558081337,
-            "ci95": {
-              "low": 0.7764963232954948,
-              "high": 1.4209899227332872,
-              "margin": 0.32224679971889614
-            }
-          }
+          "ratioOfMeans": 1.1828234426833761,
+          "medianPairedRatio": 1.2603114996306328
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 13.754999999999999,
-            "standardDeviation": 3.432426638921646,
+            "mean": 9.005,
+            "standardDeviation": 2.349126377367149,
             "ci95": {
-              "low": 12.148593346098602,
-              "high": 15.361406653901396,
-              "margin": 1.6064066539013973
+              "low": 7.905587648205811,
+              "high": 10.10441235179419,
+              "margin": 1.0994123517941898
             }
           },
           "v2": {
             "n": 20,
-            "mean": 14.440000000000003,
-            "standardDeviation": 2.9533923403079165,
+            "mean": 9.440000000000001,
+            "standardDeviation": 4.932214192642617,
             "ci95": {
-              "low": 13.057785722423317,
-              "high": 15.82221427757669,
-              "margin": 1.3822142775766866
+              "low": 7.13167923133903,
+              "high": 11.748320768660973,
+              "margin": 2.308320768660971
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.6850000000000002,
-            "standardDeviation": 4.2297536322430975,
+            "mean": -0.43500000000000005,
+            "standardDeviation": 5.5448672329983655,
             "ci95": {
-              "low": -2.664562884797324,
-              "high": 1.2945628847973238,
-              "margin": 1.979562884797324
+              "low": -3.03004792238962,
+              "high": 2.16004792238962,
+              "margin": 2.59504792238962
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 0.9881351203653935,
-            "standardDeviation": 0.31719121979156434,
-            "ci95": {
-              "low": 0.8396867659987145,
-              "high": 1.1365834747320727,
-              "margin": 0.14844835436667903
-            }
-          }
+          "ratioOfMeans": 0.9539194915254238,
+          "medianPairedRatio": 1.043678699796843
         }
       },
       "heavy": {
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 11.42,
-            "standardDeviation": 5.08750792059386,
+            "mean": 9.705,
+            "standardDeviation": 2.8070353343734475,
             "ci95": {
-              "low": 9.039000364714102,
-              "high": 13.800999635285898,
-              "margin": 2.3809996352858978
+              "low": 8.391282122466427,
+              "high": 11.018717877533573,
+              "margin": 1.313717877533573
             }
           },
           "v2": {
             "n": 20,
-            "mean": 10.715000000000002,
-            "standardDeviation": 4.167704782958449,
+            "mean": 10.909999999999997,
+            "standardDeviation": 3.9784815934566904,
             "ci95": {
-              "low": 8.764476536825713,
-              "high": 12.66552346317429,
-              "margin": 1.9505234631742883
+              "low": 9.04803469776096,
+              "high": 12.771965302239034,
+              "margin": 1.8619653022390363
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": 0.7049999999999998,
-            "standardDeviation": 6.747122193553103,
+            "mean": -1.2049999999999998,
+            "standardDeviation": 5.195491466545525,
             "ci95": {
-              "low": -2.4527140975151713,
-              "high": 3.8627140975151706,
-              "margin": 3.157714097515171
+              "low": -3.636536909633331,
+              "high": 1.2265369096333314,
+              "margin": 2.4315369096333312
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.2659624967431389,
-            "standardDeviation": 0.7468919967870911,
-            "ci95": {
-              "low": 0.9164102995368426,
-              "high": 1.6155146939494351,
-              "margin": 0.3495521972062963
-            }
-          }
+          "ratioOfMeans": 0.8895508707607702,
+          "medianPairedRatio": 0.9504044274159218
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 10.569999999999999,
-            "standardDeviation": 2.442194871314262,
+            "mean": 6.340000000000001,
+            "standardDeviation": 1.4299061434050024,
             "ci95": {
-              "low": 9.427030752844981,
-              "high": 11.712969247155016,
-              "margin": 1.1429692471550164
+              "low": 5.670791016136058,
+              "high": 7.009208983863943,
+              "margin": 0.6692089838639423
             }
           },
           "v2": {
             "n": 20,
-            "mean": 10.945,
-            "standardDeviation": 2.370981364662942,
+            "mean": 7.139999999999999,
+            "standardDeviation": 1.5796068798080243,
             "ci95": {
-              "low": 9.835359316851314,
-              "high": 12.054640683148687,
-              "margin": 1.1096406831486867
+              "low": 6.4007297200474955,
+              "high": 7.879270279952502,
+              "margin": 0.7392702799525033
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -0.3750000000000001,
-            "standardDeviation": 3.5447329347847027,
+            "mean": -0.8,
+            "standardDeviation": 1.8122390919290394,
             "ci95": {
-              "low": -2.0339670142318114,
-              "high": 1.2839670142318114,
-              "margin": 1.6589670142318114
+              "low": -1.6481442553567978,
+              "high": 0.04814425535679767,
+              "margin": 0.8481442553567977
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.027406733597653,
-            "standardDeviation": 0.37669156143020727,
-            "ci95": {
-              "low": 0.8511116821934079,
-              "high": 1.2037017850018983,
-              "margin": 0.17629505140424515
-            }
-          }
+          "ratioOfMeans": 0.8879551820728293,
+          "medianPairedRatio": 0.9362026862026862
         }
       },
       "animated": {
         "mount": {
           "v3": {
             "n": 20,
-            "mean": 7.359999999999999,
-            "standardDeviation": 3.3666162928314085,
+            "mean": 8.040000000000001,
+            "standardDeviation": 2.865842394755676,
             "ci95": {
-              "low": 5.784393182184283,
-              "high": 8.935606817815716,
-              "margin": 1.5756068178157165
+              "low": 6.6987598873155925,
+              "high": 9.38124011268441,
+              "margin": 1.341240112684408
             }
           },
           "v2": {
             "n": 20,
-            "mean": 9.934999999999999,
-            "standardDeviation": 4.041921768038982,
+            "mean": 6.965000000000001,
+            "standardDeviation": 2.3493056084948294,
             "ci95": {
-              "low": 8.043344123338176,
-              "high": 11.826655876661821,
-              "margin": 1.891655876661823
+              "low": 5.865503766420013,
+              "high": 8.064496233579987,
+              "margin": 1.0994962335799874
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": -2.5749999999999997,
-            "standardDeviation": 3.0844047450973333,
+            "mean": 1.075,
+            "standardDeviation": 3.7915244816217184,
             "ci95": {
-              "low": -4.018529265757603,
-              "high": -1.131470734242397,
-              "margin": 1.4435292657576027
+              "low": -0.6994676861092883,
+              "high": 2.8494676861092882,
+              "margin": 1.7744676861092883
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 0.785795118393766,
-            "standardDeviation": 0.28358546896851355,
-            "ci95": {
-              "low": 0.6530745587945992,
-              "high": 0.9185156779929329,
-              "margin": 0.1327205595991669
-            }
-          }
+          "ratioOfMeans": 1.154343144292893,
+          "medianPairedRatio": 0.9352451433857539
         },
         "rerender": {
           "v3": {
             "n": 20,
-            "mean": 8.83,
-            "standardDeviation": 2.8738567520979443,
+            "mean": 7.459999999999999,
+            "standardDeviation": 1.6213704404802618,
             "ci95": {
-              "low": 7.485009095728271,
-              "high": 10.174990904271729,
-              "margin": 1.3449909042717292
+              "low": 6.70118399662438,
+              "high": 8.218816003375618,
+              "margin": 0.7588160033756189
             }
           },
           "v2": {
             "n": 20,
-            "mean": 8.440000000000001,
-            "standardDeviation": 2.4902758249259307,
+            "mean": 8.120000000000001,
+            "standardDeviation": 2.687906639982713,
             "ci95": {
-              "low": 7.274528432494746,
-              "high": 9.605471567505257,
-              "margin": 1.1654715675052556
+              "low": 6.862035426898299,
+              "high": 9.377964573101703,
+              "margin": 1.257964573101702
             }
           },
           "differenceMs": {
             "n": 20,
-            "mean": 0.3899999999999998,
-            "standardDeviation": 1.9726818507327852,
+            "mean": -0.6600000000000001,
+            "standardDeviation": 3.308108061621993,
             "ci95": {
-              "low": -0.5332329149045534,
-              "high": 1.313232914904553,
-              "margin": 0.9232329149045532
+              "low": -2.2082244374154953,
+              "high": 0.8882244374154948,
+              "margin": 1.548224437415495
             }
           },
-          "ratio": {
-            "n": 20,
-            "mean": 1.0723979121972398,
-            "standardDeviation": 0.2266645773298567,
-            "ci95": {
-              "low": 0.9663168437491687,
-              "high": 1.1784789806453109,
-              "margin": 0.10608106844807107
-            }
-          }
+          "ratioOfMeans": 0.91871921182266,
+          "medianPairedRatio": 0.916490857946554
         }
       }
     }
