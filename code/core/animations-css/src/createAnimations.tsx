@@ -18,22 +18,6 @@ import { unstable_batchedUpdates } from 'react-dom'
 // rAF-driven animated number is browser-only. read (don't call) at module scope
 // so ssr never touches requestAnimationFrame.
 const hasRAF = typeof requestAnimationFrame !== 'undefined'
-const nowMs = () => (typeof performance !== 'undefined' ? performance.now() : Date.now())
-
-// spring params use the same names/semantics as react-native Animated, so an
-// explicit transitionConfig (stiffness/damping/mass) feels the same across
-// drivers. defaults are critically damped (zeta ~1) rather than RN's bouncy
-// 100/10: a css consumer that supplies no spring params gets a clean, prompt,
-// non-oscillating settle instead of ringing for ~1.4s. rest-detection thresholds
-// are sub-pixel by default; the sheet passes px-sized overrides.
-const SPRING_DEFAULTS = {
-  stiffness: 300,
-  damping: 35,
-  mass: 1,
-  overshootClamping: false,
-  restSpeedThreshold: 0.001,
-  restDisplacementThreshold: 0.001,
-}
 
 // resolve once all WAAPI animations on `node` finish. mirrors base-ui's
 // useAnimationsFinished: resolves immediately when the browser exposes no
@@ -74,51 +58,34 @@ function waitForAnimations(node: HTMLElement): Promise<boolean> {
   })
 }
 
-const MS_DURATION_REGEX = /(\d+(?:\.\d+)?)\s*ms/
-const S_DURATION_REGEX = /(\d+(?:\.\d+)?)\s*s(?!tiffness)/
+const DURATION_REGEX = /(\d+(?:\.\d+)?)\s*(?:ms|s(?!tiffness))/
 
 /**
  * Apply duration override to a CSS animation string
  * Replaces the existing duration with the override value
  */
 function applyDurationOverride(animation: string, durationMs: number): string {
-  // Replace ms duration
-  const msReplaced = animation.replace(MS_DURATION_REGEX, `${durationMs}ms`)
-  if (msReplaced !== animation) {
-    return msReplaced
-  }
-
-  // Replace seconds duration
-  const sReplaced = animation.replace(S_DURATION_REGEX, `${durationMs}ms`)
-  if (sReplaced !== animation) {
-    return sReplaced
-  }
-
-  // No duration found, prepend the duration
-  return `${durationMs}ms ${animation}`
+  const replaced = animation.replace(DURATION_REGEX, `${durationMs}ms`)
+  return replaced === animation ? `${durationMs}ms ${animation}` : replaced
 }
 
-// transform keys that need special handling
-const TRANSFORM_KEYS = new Set([
-  'x',
-  'y',
-  'scale',
-  'scaleX',
-  'scaleY',
-  'rotate',
-  'rotateX',
-  'rotateY',
-  'rotateZ',
-  'skewX',
-  'skewY',
-])
+const CSS_TRANSFORM_PROPERTIES: Record<string, string[]> = {
+  transform: ['translate', 'scale', 'rotate', 'transform'],
+  x: ['translate'],
+  y: ['translate'],
+  scale: ['scale'],
+  scaleX: ['scale'],
+  scaleY: ['scale'],
+  rotate: ['rotate'],
+  rotateX: ['transform'],
+  rotateY: ['transform'],
+  rotateZ: ['transform'],
+  skewX: ['transform'],
+  skewY: ['transform'],
+}
 
 const getCSSProperties = (key: string) => {
-  if (key === 'transform') return ['translate', 'scale', 'rotate', 'transform']
-  if (key === 'x' || key === 'y') return ['translate']
-  if (key === 'scale' || key === 'scaleX' || key === 'scaleY') return ['scale']
-  if (key === 'rotate') return ['rotate']
-  return [TRANSFORM_KEYS.has(key) ? 'transform' : key]
+  return CSS_TRANSFORM_PROPERTIES[key] || [key]
 }
 
 const hyphenatedPropertyCache: Record<string, string> = {}
@@ -296,9 +263,12 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             }
 
             if (config.type === 'timing') {
-              const startedAt = nowMs()
+              const startedAt = performance.now()
               const tick = () => {
-                const progress = Math.min(1, (nowMs() - startedAt) / config.duration)
+                const progress = Math.min(
+                  1,
+                  (performance.now() - startedAt) / config.duration
+                )
                 if (progress === 1) {
                   settle()
                   return
@@ -310,66 +280,53 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
               return
             }
 
-            const spring = config as Extract<AnimatedNumberStrategy, { type: 'spring' }>
-            const stiffness = spring.stiffness ?? SPRING_DEFAULTS.stiffness
-            const damping = spring.damping ?? SPRING_DEFAULTS.damping
-            const mass = spring.mass ?? SPRING_DEFAULTS.mass
-            const overshootClamping =
-              spring.overshootClamping ?? SPRING_DEFAULTS.overshootClamping
-            const restSpeed =
-              spring.restSpeedThreshold ?? SPRING_DEFAULTS.restSpeedThreshold
-            const restDisplacement =
-              spring.restDisplacementThreshold ??
-              SPRING_DEFAULTS.restDisplacementThreshold
+            const {
+              stiffness = 300,
+              damping = 35,
+              mass = 1,
+              overshootClamping,
+              restSpeedThreshold: restSpeed = 0.001,
+              restDisplacementThreshold: restDisplacement = 0.001,
+            } = config as Extract<AnimatedNumberStrategy, { type: 'spring' }>
             const displacement = from - next
             const decayRate = damping / (2 * mass)
             const naturalFrequency = Math.sqrt(stiffness / mass)
-            const startedAt = nowMs()
+            const startedAt = performance.now()
 
-            const getSpringState = (elapsed: number) => {
+            const tick = () => {
+              const elapsed = (performance.now() - startedAt) / 1000
+              let value: number
+              let velocity: number
               if (decayRate < naturalFrequency) {
                 const dampedFrequency = Math.sqrt(naturalFrequency ** 2 - decayRate ** 2)
                 const b = (decayRate * displacement) / dampedFrequency
                 const decay = Math.exp(-decayRate * elapsed)
                 const cos = Math.cos(dampedFrequency * elapsed)
                 const sin = Math.sin(dampedFrequency * elapsed)
-                return {
-                  value: next + decay * (displacement * cos + b * sin),
-                  velocity:
-                    decay *
-                    ((-decayRate * displacement + b * dampedFrequency) * cos +
-                      (-decayRate * b - displacement * dampedFrequency) * sin),
-                }
-              }
-
-              if (decayRate === naturalFrequency) {
+                value = next + decay * (displacement * cos + b * sin)
+                velocity =
+                  decay *
+                  ((-decayRate * displacement + b * dampedFrequency) * cos +
+                    (-decayRate * b - displacement * dampedFrequency) * sin)
+              } else if (decayRate === naturalFrequency) {
                 const b = decayRate * displacement
                 const decay = Math.exp(-decayRate * elapsed)
-                return {
-                  value: next + (displacement + b * elapsed) * decay,
-                  velocity: (b - decayRate * (displacement + b * elapsed)) * decay,
-                }
-              }
-
-              const frequency = Math.sqrt(decayRate ** 2 - naturalFrequency ** 2)
-              const slowRoot = -decayRate + frequency
-              const fastRoot = -decayRate - frequency
-              const slowCoefficient = (-fastRoot * displacement) / (slowRoot - fastRoot)
-              const fastCoefficient = displacement - slowCoefficient
-              return {
-                value:
+                value = next + (displacement + b * elapsed) * decay
+                velocity = (b - decayRate * (displacement + b * elapsed)) * decay
+              } else {
+                const frequency = Math.sqrt(decayRate ** 2 - naturalFrequency ** 2)
+                const slowRoot = -decayRate + frequency
+                const fastRoot = -decayRate - frequency
+                const slowCoefficient = (-fastRoot * displacement) / (slowRoot - fastRoot)
+                const fastCoefficient = displacement - slowCoefficient
+                value =
                   next +
                   slowCoefficient * Math.exp(slowRoot * elapsed) +
-                  fastCoefficient * Math.exp(fastRoot * elapsed),
-                velocity:
+                  fastCoefficient * Math.exp(fastRoot * elapsed)
+                velocity =
                   slowCoefficient * slowRoot * Math.exp(slowRoot * elapsed) +
-                  fastCoefficient * fastRoot * Math.exp(fastRoot * elapsed),
+                  fastCoefficient * fastRoot * Math.exp(fastRoot * elapsed)
               }
-            }
-
-            const tick = () => {
-              const state = getSpringState((nowMs() - startedAt) / 1000)
-              let { value, velocity } = state
 
               if (
                 overshootClamping &&
@@ -566,6 +523,33 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         keys = ['all']
       }
 
+      let transition: string | undefined
+      const getTransition = () => {
+        if (transition !== undefined) return transition
+        const delay = normalized.delay ? ` ${normalized.delay}ms` : ''
+        const duration = normalized.config?.duration
+        transition = keys
+          .flatMap((key) => {
+            const propertyAnimation = normalized.properties[key]
+            let animation = defaultAnimation
+            if (typeof propertyAnimation === 'string') {
+              animation = animations[propertyAnimation]
+            } else if (propertyAnimation?.type) {
+              animation = animations[propertyAnimation.type]
+            }
+            if (animation && duration) {
+              animation = applyDurationOverride(animation, duration)
+            }
+            return animation
+              ? getCSSProperties(key).map(
+                  (property) => `${property} ${animation}${delay}`
+                )
+              : []
+          })
+          .join(', ')
+        return transition
+      }
+
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host
         if (!sendExitComplete || !isExiting || !host) return
@@ -606,36 +590,6 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         let rafId: number | undefined
         let disposed = false
 
-        // Build the exit transition string - needed for both normal and interrupted exits
-        const delayStr = normalized.delay ? ` ${normalized.delay}ms` : ''
-        const durationOverride = normalized.config?.duration
-        const exitTransitionString = keys
-          .flatMap((key) => {
-            const propAnimation = normalized.properties[key]
-            let animationValue: string | null = null
-            if (typeof propAnimation === 'string') {
-              animationValue = animations[propAnimation]
-            } else if (
-              propAnimation &&
-              typeof propAnimation === 'object' &&
-              propAnimation.type
-            ) {
-              animationValue = animations[propAnimation.type]
-            } else if (defaultAnimation) {
-              animationValue = defaultAnimation
-            }
-            if (animationValue && durationOverride) {
-              animationValue = applyDurationOverride(animationValue, durationOverride)
-            }
-            return animationValue
-              ? getCSSProperties(key).map(
-                  (property) => `${property} ${animationValue}${delayStr}`
-                )
-              : []
-          })
-          .filter(Boolean)
-          .join(', ')
-
         const mountedStyle = lastMountedStyleRef.current
         const canRestart =
           exitCSSProperties.length > 0 && Object.keys(mountedStyle).length > 0
@@ -649,7 +603,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           void node.offsetHeight
           rafId = requestAnimationFrame(() => {
             if (cycleId !== exitCycleIdRef.current) return
-            node.style.transition = exitTransitionString
+            node.style.transition = getTransition()
             void node.offsetHeight
             applyCSSProperties(node, exitTarget!)
           })
@@ -770,42 +724,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         style.transform = transformsToString(style.transform)
       }
 
-      // Build CSS transition string
-      // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
-      // for non layout transform properties either use animate function or find a workaround to do it with css
-      const delayStr = normalized.delay ? ` ${normalized.delay}ms` : ''
-      const durationOverride = normalized.config?.duration
-      style.transition = keys
-        .flatMap((key) => {
-          // Check for property-specific animation, fall back to default
-          const propAnimation = normalized.properties[key]
-          let animationValue: string | null = null
-
-          if (typeof propAnimation === 'string') {
-            animationValue = animations[propAnimation]
-          } else if (
-            propAnimation &&
-            typeof propAnimation === 'object' &&
-            propAnimation.type
-          ) {
-            animationValue = animations[propAnimation.type]
-          } else if (defaultAnimation) {
-            animationValue = defaultAnimation
-          }
-
-          // Apply global duration override if specified
-          if (animationValue && durationOverride) {
-            animationValue = applyDurationOverride(animationValue, durationOverride)
-          }
-
-          return animationValue
-            ? getCSSProperties(key).map(
-                (property) => `${property} ${animationValue}${delayStr}`
-              )
-            : []
-        })
-        .filter(Boolean)
-        .join(', ')
+      style.transition = getTransition()
 
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
         console.info('CSS animation', {
