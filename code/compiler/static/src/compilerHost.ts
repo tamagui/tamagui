@@ -854,9 +854,9 @@ export function createTamaguiCompilerHost(
     isStyleProp,
     canLowerDynamicStyleProp(name, component) {
       return (
-        platform === 'web' &&
         !options.disablePartialExtraction &&
-        !!directStyleName(name, component)
+        ((platform === 'web' && !!directStyleName(name, component)) ||
+          (platform === 'native' && directStyleName(name, component) === 'opacity'))
       )
     },
     lowerCandidate(input): LoweringCandidateResult {
@@ -886,7 +886,9 @@ export function createTamaguiCompilerHost(
         }
       }
       const dynamicStyleEntries = input.element.entries.filter(
-        (entry) =>
+        (
+          entry
+        ): entry is Extract<MaterializedElement['entries'][number], { kind: 'prop' }> =>
           entry.kind === 'prop' &&
           entry.value.kind === 'bailout' &&
           isStyleProp(entry.name, component)
@@ -1069,7 +1071,15 @@ export function createTamaguiCompilerHost(
           }
         }
       }
-      if (dynamicStyleEntries.length > 0) {
+      const supportsNativeDynamicStyles =
+        platform === 'native' &&
+        !options.disablePartialExtraction &&
+        input.element.form === 'jsx' &&
+        dynamicStyleEntries.every(
+          (entry) =>
+            entry.kind === 'prop' && directStyleName(entry.name, component) === 'opacity'
+        )
+      if (dynamicStyleEntries.length > 0 && !supportsNativeDynamicStyles) {
         const entry = dynamicStyleEntries[0]!
         return bailout(
           input,
@@ -1229,6 +1239,61 @@ export function createTamaguiCompilerHost(
         }
         const nativeName = component.staticConfig.isText ? 'Text' : 'View'
         const nativeLocal = unusedIdentifier(input.source, `__TamaguiNative${nativeName}`)
+        if (dynamicStyleEntries.length > 0) {
+          const stableLocal = `__TamaguiStable${nativeName}${input.element.span.start}`
+          const expressions = dynamicStyleEntries.map((entry) =>
+            input.source.slice(entry.value.span.start, entry.value.span.end)
+          )
+          const dynamicStyle = dynamicStyleEntries
+            .map(
+              (entry, index) =>
+                `${JSON.stringify(directStyleName(entry.name, component))}: expressions[${index}]`
+            )
+            .join(', ')
+          const tagEdits = [
+            input.element.component.span,
+            input.element.component.closingSpan,
+          ]
+            .filter((span): span is NonNullable<typeof span> => !!span)
+            .map((span) => ({
+              start: span.start,
+              end: span.end,
+              content: stableLocal,
+              origin: span,
+            }))
+          const [first, ...rest] = styleEntries
+          return {
+            ok: true,
+            edits: [
+              ...tagEdits,
+              {
+                start: first!.span.start,
+                end: first!.span.end,
+                content: `_expressions={[${expressions.join(', ')}]}`,
+                origin: first!.span,
+              },
+              ...rest.map((entry) => ({
+                start: entry.span.start,
+                end: entry.span.end,
+                content: '',
+                origin: entry.span,
+              })),
+            ],
+            css: [],
+            imports: [
+              {
+                content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
+                origin: input.element.component.span,
+              },
+              {
+                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${JSON.stringify(nativeStyle ?? {})}, { ${dynamicStyle} }]);`,
+                origin: input.element.component.span,
+              },
+            ],
+            diagnostics: invalidHostStyleDiagnostics,
+            flattened: true,
+          }
+        }
         const styleContent = `style: ${JSON.stringify(nativeStyle ?? {})}`
         const tagEdits = [
           input.element.component.span,
