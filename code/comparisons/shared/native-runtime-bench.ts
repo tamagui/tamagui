@@ -32,6 +32,7 @@ type CreateNativeRuntimeBenchOptions = {
   config: any
   version: 'v2' | 'v3'
   framework: string
+  buildId: string | undefined
 }
 
 export function createNativeRuntimeBenchApp({
@@ -49,7 +50,11 @@ export function createNativeRuntimeBenchApp({
   config,
   version,
   framework: defaultFramework,
+  buildId,
 }: CreateNativeRuntimeBenchOptions) {
+  if (!buildId) {
+    throw new Error('EXPO_PUBLIC_NATIVE_BENCH_BUILD_ID is required')
+  }
   const {
     createElement,
     Fragment,
@@ -603,6 +608,7 @@ export function createNativeRuntimeBenchApp({
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
             framework,
+            buildId,
             scenario,
             run,
             fixtureVersion: NATIVE_RUNTIME_FIXTURE_VERSION,
@@ -611,7 +617,7 @@ export function createNativeRuntimeBenchApp({
           }),
         }).catch(() => {})
       },
-      [behaviorSignature, framework, run, scenario]
+      [behaviorSignature, buildId, framework, run, scenario]
     )
 
     return createElement(

@@ -42,6 +42,7 @@ npm exec expo -- prebuild --platform ios --clean
 Build, install, and launch every app in Release configuration on one explicit simulator:
 
 ```sh
+EXPO_PUBLIC_NATIVE_BENCH_BUILD_ID="$(bun code/comparisons/native-bench-build-id.ts --framework=tamagui-v3-runtime)" \
 xcodebuildmcp simulator build-and-run \
   --workspace-path code/comparisons/tamagui-bench-native/ios/tamaguibenchnative.xcworkspace \
   --scheme tamaguibenchnative \
@@ -49,6 +50,7 @@ xcodebuildmcp simulator build-and-run \
   --derived-data-path code/comparisons/.native-release/v3-runtime \
   --simulator-id <UDID>
 
+EXPO_PUBLIC_NATIVE_BENCH_BUILD_ID="$(bun code/comparisons/native-bench-build-id.ts --framework=tamagui-v2-runtime)" \
 xcodebuildmcp simulator build-and-run \
   --workspace-path code/comparisons/tamagui-v2-bench-native/ios/tamaguiv2benchnative.xcworkspace \
   --scheme tamaguiv2benchnative \
@@ -56,6 +58,7 @@ xcodebuildmcp simulator build-and-run \
   --derived-data-path code/comparisons/.native-release/v2-runtime \
   --simulator-id <UDID>
 
+EXPO_PUBLIC_NATIVE_BENCH_BUILD_ID="$(bun code/comparisons/native-bench-build-id.ts --framework=tamagui-v3-compiled)" \
 TAMAGUI_DEBUG_FILE=native-compiled-bench xcodebuildmcp simulator build-and-run \
   --workspace-path code/comparisons/tamagui-bench-native-compiled/ios/tamaguibenchnativecompiled.xcworkspace \
   --scheme tamaguibenchnativecompiled \
@@ -63,6 +66,7 @@ TAMAGUI_DEBUG_FILE=native-compiled-bench xcodebuildmcp simulator build-and-run \
   --derived-data-path code/comparisons/.native-release/v3-compiled \
   --simulator-id <UDID>
 
+EXPO_PUBLIC_NATIVE_BENCH_BUILD_ID="$(bun code/comparisons/native-bench-build-id.ts --framework=tamagui-v2-compiled)" \
 TAMAGUI_DEBUG_FILE=native-compiled-bench xcodebuildmcp simulator build-and-run \
   --workspace-path code/comparisons/tamagui-v2-bench-native-compiled/ios/tamaguiv2benchnativecompiled.xcworkspace \
   --scheme tamaguiv2benchnativecompiled \
@@ -70,6 +74,11 @@ TAMAGUI_DEBUG_FILE=native-compiled-bench xcodebuildmcp simulator build-and-run \
   --derived-data-path code/comparisons/.native-release/v2-compiled \
   --simulator-id <UDID>
 ```
+
+The build ID is a SHA-256 digest over the clean Git commit and the exact fixture,
+configuration, wrapper, Metro/Babel, package, and runner files for that arm. Every app
+returns its embedded ID with each result, and the runner independently recomputes and
+checks it before accepting a timing. Rebuild all four arms after any source commit.
 
 Prove that both compiler pipelines transformed the checked-in compiler corpora. This command checks the static timed fixture plus a separate byte-identical dynamic corpus with revision-dependent opacity on two Tamagui Views and one local styled component. It matches V2 Babel output and V3 content-addressed Metro plans to raw-source and pre-lowering Babel hashes, applies the V3 edit plans, and structurally asserts expected native host styles and dynamic expressions:
 

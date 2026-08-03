@@ -185,10 +185,15 @@ function BenchRunner({
 export function createNativeCompiledBenchApp({
   config,
   framework: defaultFramework,
+  buildId,
 }: {
   config: any
   framework: string
+  buildId: string | undefined
 }) {
+  if (!buildId) {
+    throw new Error('EXPO_PUBLIC_NATIVE_BENCH_BUILD_ID is required')
+  }
   return function NativeCompiledBenchApp() {
     const url = useURL()
     let scenario: NativeCompiledScenario | null = null
@@ -212,6 +217,7 @@ export function createNativeCompiledBenchApp({
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
             framework,
+            buildId,
             scenario,
             run,
             fixtureVersion: NATIVE_COMPILED_FIXTURE_VERSION,
@@ -219,7 +225,7 @@ export function createNativeCompiledBenchApp({
           }),
         }).catch(() => {})
       },
-      [framework, run, scenario]
+      [buildId, framework, run, scenario]
     )
 
     return (
