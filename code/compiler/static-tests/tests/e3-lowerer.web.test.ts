@@ -714,6 +714,41 @@ export const Card = ({ opacity }) => (
     expect(plan.css).toBe('')
   })
 
+  test('partially extracts static styles beside an unsupported CSS-driver transition', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ opacity }) => (
+  <View
+    transition="spring"
+    width={24}
+    height={24}
+    opacity={opacity}
+    data-animated="unsupported-css-preset"
+  />
+)
+`
+    const { plan, output } = compile(source, 'web', {
+      animationDriver: {
+        animations: {
+          spring: { damping: 10, mass: 1, stiffness: 100 },
+        },
+        inputStyle: 'css',
+        outputStyle: 'css',
+      },
+    })
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
+    expect(output.code).toMatch(
+      /<View\s+transition="spring"\s+className="[^"]+"\s+opacity=\{opacity\}/
+    )
+    expect(output.code).not.toContain('width={24}')
+    expect(output.code).not.toContain('height={24}')
+    expect(plan.css).toContain('width:24px')
+    expect(plan.css).toContain('height:24px')
+    expect(plan.css).not.toContain('transition:')
+  })
+
   test('materializes local styled definitions before lowering variants and compounds', () => {
     const source = `
 import { View, styled } from '@tamagui/core'

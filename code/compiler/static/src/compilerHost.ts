@@ -1119,7 +1119,7 @@ export function createTamaguiCompilerHost(
           'Native group containers remain on the runtime path'
         )
       }
-      if (runtimeAnimationRequired) {
+      if (runtimeAnimationRequired && !cssAnimationDriver) {
         return bailout(
           input,
           'local/unsupported-target',
@@ -1129,7 +1129,7 @@ export function createTamaguiCompilerHost(
       }
       if (
         platform === 'web' &&
-        dynamicStyleEntries.length > 0 &&
+        (dynamicStyleEntries.length > 0 || runtimeAnimationRequired) &&
         dynamicHostStyleProperties === null &&
         component.partialRuntimeSafe
       ) {
@@ -1241,6 +1241,14 @@ export function createTamaguiCompilerHost(
             }
           }
         }
+      }
+      if (runtimeAnimationRequired) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Animated candidates remain on the runtime path',
+          transitionEntry?.span
+        )
       }
       if (dynamicStyleEntries.length > 0 && dynamicHostStyleProperties === null) {
         const entry = dynamicStyleEntries[0]!
