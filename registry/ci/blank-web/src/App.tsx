@@ -8,7 +8,7 @@ import { Button } from '../components/tamagui/Button'
 export function App() {
   const [count, setCount] = useState(0)
   return (
-    <YStack p="4" gap="4" ai="center">
+    <YStack p="4" gap="4" items="center">
       <Button id="smoke-button" onPress={() => setCount((c) => c + 1)}>
         <Button.Text>pressed {count}</Button.Text>
       </Button>

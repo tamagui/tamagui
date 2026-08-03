@@ -19,6 +19,7 @@ import {
   type SizeTokens,
   styled,
   Theme,
+  type ThemeProps,
   type TokenSize,
   useButton,
   type VariantSpreadExtras,
@@ -142,7 +143,10 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
 
 const ButtonComponent = createStyledHOC(
   ButtonFrame,
-  function Button(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
+  function Button(
+    props: ButtonBehaviorProps & { size?: ButtonSize; theme?: ThemeProps['name'] },
+    ref
+  ) {
     const contextSize = SizeContext.useStyledContext()?.size
     const size = ((props.size as TokenSize | undefined) ??
       contextSize ??
@@ -156,9 +160,7 @@ const ButtonComponent = createStyledHOC(
       iconSize: getThemedIconSize(size),
     })
 
-    const { theme, ...frameProps } = buttonProps as typeof buttonProps & {
-      theme?: string
-    }
+    const { theme, ...frameProps } = buttonProps
     const frame = (
       <Theme name="level2">
         <ButtonFrame ref={ref} {...frameProps} />
@@ -167,7 +169,7 @@ const ButtonComponent = createStyledHOC(
 
     return (
       <SizeContext.Provider size={size}>
-        {theme ? <Theme name={theme as any}>{frame}</Theme> : frame}
+        {theme ? <Theme name={theme}>{frame}</Theme> : frame}
       </SizeContext.Provider>
     )
   }

@@ -1,4 +1,4 @@
-import { type ButtonIconProps as ButtonBehaviorIconProps, type GetProps, type SizeTokens } from '@tamagui/ui';
+import { type ButtonIconProps as ButtonBehaviorIconProps, type GetProps, type SizeTokens, type ThemeProps } from '@tamagui/ui';
 export type ButtonSize = SizeTokens;
 export declare const ButtonFrame: import("react").FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps, "circular" | "disabled" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "size" | "textAlign" | "variant" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     circular?: boolean | undefined;
@@ -69,7 +69,7 @@ declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<impor
     size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
     textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
     variant?: "outlined" | "quiet" | undefined;
-}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
+}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "theme" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
@@ -100,6 +100,7 @@ declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<impor
     value?: string | readonly string[] | number;
 } & {
     size?: ButtonSize;
+    theme?: ThemeProps['name'];
 }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").TextContextStyles & {
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
@@ -131,6 +132,7 @@ declare const ButtonComponent: import("@tamagui/ui").TamaguiComponent<Omit<impor
     value?: string | readonly string[] | number;
 } & {
     size?: ButtonSize;
+    theme?: ThemeProps['name'];
 }, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -158,7 +160,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
     textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
     variant?: "outlined" | "quiet" | undefined;
-}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
+}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "theme" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
@@ -189,6 +191,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     value?: string | readonly string[] | number;
 } & {
     size?: ButtonSize;
+    theme?: ThemeProps['name'];
 } & {
     ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/ui").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
@@ -204,7 +207,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
     textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
     variant?: "outlined" | "quiet" | undefined;
-}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
+}>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "theme" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
 } & {
@@ -235,6 +238,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     value?: string | readonly string[] | number;
 } & {
     size?: ButtonSize;
+    theme?: ThemeProps['name'];
 }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").TextContextStyles & {
     textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
     noTextWrap?: boolean;
@@ -266,6 +270,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
     value?: string | readonly string[] | number;
 } & {
     size?: ButtonSize;
+    theme?: ThemeProps['name'];
 }, import("@tamagui/web").StackStyleBase, {
     circular?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -293,7 +298,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         size?: string | number | boolean | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | (string & {}) | undefined;
         textAlign?: import("@tamagui/web").FlatStyleValue<"auto" | "center" | "justify" | "left" | "right" | "unset" | undefined>;
         variant?: "outlined" | "quiet" | undefined;
-    }>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
+    }>, "form" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget" | "icon" | "iconAfter" | "iconSize" | "name" | "noTextWrap" | "scaleIcon" | "size" | "textProps" | "theme" | "type" | "value" | keyof import("@tamagui/ui").TextContextStyles> & import("@tamagui/ui").TextContextStyles & {
         textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
         noTextWrap?: boolean;
     } & {
@@ -324,6 +329,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         value?: string | readonly string[] | number;
     } & {
         size?: ButtonSize;
+        theme?: ThemeProps['name'];
     }, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").TextContextStyles & {
         textProps?: Partial<import("@tamagui/ui").SizableTextProps>;
         noTextWrap?: boolean;
@@ -355,6 +361,7 @@ export declare const Button: import("react").FunctionComponent<Omit<import("@tam
         value?: string | readonly string[] | number;
     } & {
         size?: ButtonSize;
+        theme?: ThemeProps['name'];
     }, import("@tamagui/web").StackStyleBase, {
         circular?: boolean | undefined;
         disabled?: boolean | undefined;
