@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "metadata": {
-    "commit": "8d4d422ae7b257e828efb947a7e1e88df4dc37ba",
-    "branch": "validate/v3-bundle-slim-measure",
+    "commit": "3a864e62f82c9fe558ed50d74d11d05afb1b8ad4",
+    "branch": "validate/v3-bundle-slim-pre-gzip-w4",
     "dirty": false,
     "workload": {
       "byteIdentical": true,
@@ -58,9 +58,9 @@
   ],
   "artifacts": {
     "tamagui-v3-compiled": {
-      "files": 3,
-      "totalBytes": 381383,
-      "jsBytes": 377550,
+      "files": 6,
+      "totalBytes": 381590,
+      "jsBytes": 377514,
       "cssBytes": 3415,
       "versions": {
         "react": "19.1.0",
@@ -79,17 +79,139 @@
         }
       },
       "bundleAttribution": {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
+        "decomposition": {
+          "method": "explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip",
+          "tamaguiIncludes": "rendered modules from tamagui, @tamagui/*, Tamagui workspace core/packages/ui dist paths, and @react-native/normalize-color when pulled by the Tamagui runtime, plus their isolated chunk wrapper",
+          "tamaguiExcludes": "fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and dependencies other than the Tamagui runtime color normalizer",
+          "groups": {
+            "tamagui": {
+              "chunks": [
+                "assets/tamagui-RTZpWi7P.js"
+              ],
+              "codeBytes": 185879,
+              "gzipBytes": 62623
+            },
+            "react-control": {
+              "chunks": [
+                "assets/react-control-DOh_dsS2.js"
+              ],
+              "codeBytes": 182423,
+              "gzipBytes": 57105
+            },
+            "other": {
+              "chunks": [
+                "assets/index-6tTS75b6.js",
+                "assets/rolldown-runtime-jpDsebLB.js"
+              ],
+              "codeBytes": 9212,
+              "gzipBytes": 3580
+            }
+          }
+        },
         "chunks": [
           {
-            "fileName": "assets/index-BviPmxDQ.js",
-            "codeBytes": 377550,
-            "gzipBytes": 122352,
+            "fileName": "assets/index-6tTS75b6.js",
+            "name": "index",
+            "attributionGroup": "other",
+            "codeBytes": 8645,
+            "gzipBytes": 3217,
+            "modules": [
+              {
+                "id": "src/index.tsx",
+                "renderedBytes": 10248
+              },
+              {
+                "id": "../shared/bench.ts",
+                "renderedBytes": 2462
+              },
+              {
+                "id": "\u0000vite/modulepreload-polyfill.js",
+                "renderedBytes": 1205
+              },
+              {
+                "id": "src/tamagui.config.ts",
+                "renderedBytes": 413
+              },
+              {
+                "id": "src/index.tsx.tamagui.css",
+                "renderedBytes": 97
+              },
+              {
+                "id": "index.html",
+                "renderedBytes": 0
+              }
+            ]
+          },
+          {
+            "fileName": "assets/react-control-DOh_dsS2.js",
+            "name": "react-control",
+            "attributionGroup": "react-control",
+            "codeBytes": 182423,
+            "gzipBytes": 57105,
             "modules": [
               {
                 "id": "../../../node_modules/react-dom/cjs/react-dom-client.production.js",
                 "renderedBytes": 433819
               },
+              {
+                "id": "../../../node_modules/react/cjs/react.production.js",
+                "renderedBytes": 15050
+              },
+              {
+                "id": "../../../node_modules/react-dom/node_modules/scheduler/cjs/scheduler.production.js",
+                "renderedBytes": 9026
+              },
+              {
+                "id": "../../../node_modules/react-dom/cjs/react-dom.production.js",
+                "renderedBytes": 5717
+              },
+              {
+                "id": "../../../node_modules/react/cjs/react-jsx-runtime.production.js",
+                "renderedBytes": 875
+              },
+              {
+                "id": "../../../node_modules/react-dom/client.js",
+                "renderedBytes": 482
+              },
+              {
+                "id": "../../../node_modules/react-dom/index.js",
+                "renderedBytes": 477
+              },
+              {
+                "id": "../../../node_modules/react-dom/node_modules/scheduler/index.js",
+                "renderedBytes": 220
+              },
+              {
+                "id": "../../../node_modules/react/jsx-runtime.js",
+                "renderedBytes": 209
+              },
+              {
+                "id": "../../../node_modules/react/index.js",
+                "renderedBytes": 185
+              }
+            ]
+          },
+          {
+            "fileName": "assets/rolldown-runtime-jpDsebLB.js",
+            "name": "rolldown-runtime",
+            "attributionGroup": "other",
+            "codeBytes": 567,
+            "gzipBytes": 363,
+            "modules": [
+              {
+                "id": "\u0000rolldown/runtime.js",
+                "renderedBytes": 1124
+              }
+            ]
+          },
+          {
+            "fileName": "assets/tamagui-RTZpWi7P.js",
+            "name": "tamagui",
+            "attributionGroup": "tamagui",
+            "codeBytes": 185879,
+            "gzipBytes": 62623,
+            "modules": [
               {
                 "id": "../../core/web/dist/esm/helpers/getSplitStyles.mjs",
                 "renderedBytes": 26986
@@ -105,10 +227,6 @@
               {
                 "id": "../../core/web/dist/esm/helpers/propMapper.mjs",
                 "renderedBytes": 15232
-              },
-              {
-                "id": "../../../node_modules/react/cjs/react.production.js",
-                "renderedBytes": 15050
               },
               {
                 "id": "../../core/style-grammar/dist/esm/transition.mjs",
@@ -143,16 +261,8 @@
                 "renderedBytes": 10321
               },
               {
-                "id": "src/index.tsx",
-                "renderedBytes": 10248
-              },
-              {
                 "id": "../../core/use-element-layout/dist/esm/index.mjs",
                 "renderedBytes": 9867
-              },
-              {
-                "id": "../../../node_modules/react-dom/node_modules/scheduler/cjs/scheduler.production.js",
-                "renderedBytes": 9026
               },
               {
                 "id": "../../core/web/dist/esm/helpers/variables.mjs",
@@ -176,15 +286,11 @@
               },
               {
                 "id": "../../core/web/dist/esm/hooks/useMedia.mjs",
-                "renderedBytes": 6351
+                "renderedBytes": 6349
               },
               {
                 "id": "../../core/web/dist/esm/helpers/createDesignSystem.mjs",
                 "renderedBytes": 5738
-              },
-              {
-                "id": "../../../node_modules/react-dom/cjs/react-dom.production.js",
-                "renderedBytes": 5717
               },
               {
                 "id": "../../core/style-grammar/dist/esm/lowerProgram.mjs",
@@ -283,10 +389,6 @@
                 "renderedBytes": 2400
               },
               {
-                "id": "../shared/bench.ts",
-                "renderedBytes": 2398
-              },
-              {
                 "id": "../../core/style-grammar/dist/esm/textDecorationFamily.mjs",
                 "renderedBytes": 2371
               },
@@ -351,10 +453,6 @@
                 "renderedBytes": 1249
               },
               {
-                "id": "\u0000vite/modulepreload-polyfill.js",
-                "renderedBytes": 1205
-              },
-              {
                 "id": "../../core/web/dist/esm/config.mjs",
                 "renderedBytes": 1195
               },
@@ -369,10 +467,6 @@
               {
                 "id": "../../core/style-grammar/dist/esm/unitlessNumbers.mjs",
                 "renderedBytes": 1142
-              },
-              {
-                "id": "\u0000rolldown/runtime.js",
-                "renderedBytes": 1124
               },
               {
                 "id": "../../core/style-grammar/dist/esm/evaluateProgram.mjs",
@@ -401,10 +495,6 @@
               {
                 "id": "../../core/web/dist/esm/helpers/nativeOnlyProps.mjs",
                 "renderedBytes": 885
-              },
-              {
-                "id": "../../../node_modules/react/cjs/react-jsx-runtime.production.js",
-                "renderedBytes": 875
               },
               {
                 "id": "../../core/web/dist/esm/helpers/mergeSlotStyleProps.mjs",
@@ -463,16 +553,8 @@
                 "renderedBytes": 501
               },
               {
-                "id": "../../../node_modules/react-dom/client.js",
-                "renderedBytes": 482
-              },
-              {
                 "id": "../../core/compose-refs/dist/esm/compose-refs.mjs",
                 "renderedBytes": 479
-              },
-              {
-                "id": "../../../node_modules/react-dom/index.js",
-                "renderedBytes": 477
               },
               {
                 "id": "../../core/web/dist/esm/helpers/objectIdentityKey.mjs",
@@ -517,10 +599,6 @@
               {
                 "id": "../../core/web/dist/esm/helpers/transformsToString.mjs",
                 "renderedBytes": 426
-              },
-              {
-                "id": "src/tamagui.config.ts",
-                "renderedBytes": 413
               },
               {
                 "id": "../../core/use-did-finish-ssr/dist/esm/ClientOnly.mjs",
@@ -568,7 +646,7 @@
               },
               {
                 "id": "../../core/web/dist/esm/helpers/matchMedia.mjs",
-                "renderedBytes": 298
+                "renderedBytes": 296
               },
               {
                 "id": "../../core/style-grammar/dist/esm/stateModifiers.mjs",
@@ -599,24 +677,12 @@
                 "renderedBytes": 221
               },
               {
-                "id": "../../../node_modules/react-dom/node_modules/scheduler/index.js",
-                "renderedBytes": 220
-              },
-              {
-                "id": "../../../node_modules/react/jsx-runtime.js",
-                "renderedBytes": 209
-              },
-              {
                 "id": "../../core/web/dist/esm/helpers/resolveRem.mjs",
                 "renderedBytes": 207
               },
               {
                 "id": "../../ui/z-index-stack/dist/esm/context.mjs",
                 "renderedBytes": 198
-              },
-              {
-                "id": "../../../node_modules/react/index.js",
-                "renderedBytes": 185
               },
               {
                 "id": "../../core/web/dist/esm/internal-runtime.mjs",
@@ -705,14 +771,6 @@
               {
                 "id": "../../core/core/dist/esm/index.mjs",
                 "renderedBytes": 77
-              },
-              {
-                "id": "index.html",
-                "renderedBytes": 0
-              },
-              {
-                "id": "src/index.tsx.tamagui.css",
-                "renderedBytes": 0
               }
             ]
           }
@@ -779,9 +837,9 @@
       }
     },
     "tamagui-v3-runtime": {
-      "files": 2,
-      "totalBytes": 376828,
-      "jsBytes": 376482,
+      "files": 5,
+      "totalBytes": 377025,
+      "jsBytes": 376436,
       "cssBytes": 0,
       "versions": {
         "react": "19.1.0",
@@ -800,17 +858,135 @@
         }
       },
       "bundleAttribution": {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
+        "decomposition": {
+          "method": "explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip",
+          "tamaguiIncludes": "rendered modules from tamagui, @tamagui/*, Tamagui workspace core/packages/ui dist paths, and @react-native/normalize-color when pulled by the Tamagui runtime, plus their isolated chunk wrapper",
+          "tamaguiExcludes": "fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and dependencies other than the Tamagui runtime color normalizer",
+          "groups": {
+            "tamagui": {
+              "chunks": [
+                "assets/tamagui-RTZpWi7P.js"
+              ],
+              "codeBytes": 185879,
+              "gzipBytes": 62623
+            },
+            "react-control": {
+              "chunks": [
+                "assets/react-control-DOh_dsS2.js"
+              ],
+              "codeBytes": 182423,
+              "gzipBytes": 57105
+            },
+            "other": {
+              "chunks": [
+                "assets/index-B6J7aIDi.js",
+                "assets/rolldown-runtime-jpDsebLB.js"
+              ],
+              "codeBytes": 8134,
+              "gzipBytes": 3289
+            }
+          }
+        },
         "chunks": [
           {
-            "fileName": "assets/index-vL6dIIqS.js",
-            "codeBytes": 376482,
-            "gzipBytes": 122024,
+            "fileName": "assets/index-B6J7aIDi.js",
+            "name": "index",
+            "attributionGroup": "other",
+            "codeBytes": 7567,
+            "gzipBytes": 2926,
+            "modules": [
+              {
+                "id": "src/index.tsx",
+                "renderedBytes": 9553
+              },
+              {
+                "id": "../shared/bench.ts",
+                "renderedBytes": 2462
+              },
+              {
+                "id": "\u0000vite/modulepreload-polyfill.js",
+                "renderedBytes": 1205
+              },
+              {
+                "id": "src/tamagui.config.ts",
+                "renderedBytes": 413
+              },
+              {
+                "id": "index.html",
+                "renderedBytes": 0
+              }
+            ]
+          },
+          {
+            "fileName": "assets/react-control-DOh_dsS2.js",
+            "name": "react-control",
+            "attributionGroup": "react-control",
+            "codeBytes": 182423,
+            "gzipBytes": 57105,
             "modules": [
               {
                 "id": "../../../node_modules/react-dom/cjs/react-dom-client.production.js",
                 "renderedBytes": 433819
               },
+              {
+                "id": "../../../node_modules/react/cjs/react.production.js",
+                "renderedBytes": 15050
+              },
+              {
+                "id": "../../../node_modules/react-dom/node_modules/scheduler/cjs/scheduler.production.js",
+                "renderedBytes": 9026
+              },
+              {
+                "id": "../../../node_modules/react-dom/cjs/react-dom.production.js",
+                "renderedBytes": 5717
+              },
+              {
+                "id": "../../../node_modules/react/cjs/react-jsx-runtime.production.js",
+                "renderedBytes": 875
+              },
+              {
+                "id": "../../../node_modules/react-dom/client.js",
+                "renderedBytes": 482
+              },
+              {
+                "id": "../../../node_modules/react-dom/index.js",
+                "renderedBytes": 477
+              },
+              {
+                "id": "../../../node_modules/react-dom/node_modules/scheduler/index.js",
+                "renderedBytes": 220
+              },
+              {
+                "id": "../../../node_modules/react/jsx-runtime.js",
+                "renderedBytes": 209
+              },
+              {
+                "id": "../../../node_modules/react/index.js",
+                "renderedBytes": 185
+              }
+            ]
+          },
+          {
+            "fileName": "assets/rolldown-runtime-jpDsebLB.js",
+            "name": "rolldown-runtime",
+            "attributionGroup": "other",
+            "codeBytes": 567,
+            "gzipBytes": 363,
+            "modules": [
+              {
+                "id": "\u0000rolldown/runtime.js",
+                "renderedBytes": 1124
+              }
+            ]
+          },
+          {
+            "fileName": "assets/tamagui-RTZpWi7P.js",
+            "name": "tamagui",
+            "attributionGroup": "tamagui",
+            "codeBytes": 185879,
+            "gzipBytes": 62623,
+            "modules": [
               {
                 "id": "../../core/web/dist/esm/helpers/getSplitStyles.mjs",
                 "renderedBytes": 26986
@@ -826,10 +1002,6 @@
               {
                 "id": "../../core/web/dist/esm/helpers/propMapper.mjs",
                 "renderedBytes": 15232
-              },
-              {
-                "id": "../../../node_modules/react/cjs/react.production.js",
-                "renderedBytes": 15050
               },
               {
                 "id": "../../core/style-grammar/dist/esm/transition.mjs",
@@ -868,14 +1040,6 @@
                 "renderedBytes": 9867
               },
               {
-                "id": "src/index.tsx",
-                "renderedBytes": 9505
-              },
-              {
-                "id": "../../../node_modules/react-dom/node_modules/scheduler/cjs/scheduler.production.js",
-                "renderedBytes": 9026
-              },
-              {
                 "id": "../../core/web/dist/esm/helpers/variables.mjs",
                 "renderedBytes": 8036
               },
@@ -897,15 +1061,11 @@
               },
               {
                 "id": "../../core/web/dist/esm/hooks/useMedia.mjs",
-                "renderedBytes": 6351
+                "renderedBytes": 6349
               },
               {
                 "id": "../../core/web/dist/esm/helpers/createDesignSystem.mjs",
                 "renderedBytes": 5738
-              },
-              {
-                "id": "../../../node_modules/react-dom/cjs/react-dom.production.js",
-                "renderedBytes": 5717
               },
               {
                 "id": "../../core/style-grammar/dist/esm/lowerProgram.mjs",
@@ -1004,10 +1164,6 @@
                 "renderedBytes": 2400
               },
               {
-                "id": "../shared/bench.ts",
-                "renderedBytes": 2398
-              },
-              {
                 "id": "../../core/style-grammar/dist/esm/textDecorationFamily.mjs",
                 "renderedBytes": 2371
               },
@@ -1072,10 +1228,6 @@
                 "renderedBytes": 1249
               },
               {
-                "id": "\u0000vite/modulepreload-polyfill.js",
-                "renderedBytes": 1205
-              },
-              {
                 "id": "../../core/web/dist/esm/config.mjs",
                 "renderedBytes": 1195
               },
@@ -1090,10 +1242,6 @@
               {
                 "id": "../../core/style-grammar/dist/esm/unitlessNumbers.mjs",
                 "renderedBytes": 1142
-              },
-              {
-                "id": "\u0000rolldown/runtime.js",
-                "renderedBytes": 1124
               },
               {
                 "id": "../../core/style-grammar/dist/esm/evaluateProgram.mjs",
@@ -1122,10 +1270,6 @@
               {
                 "id": "../../core/web/dist/esm/helpers/nativeOnlyProps.mjs",
                 "renderedBytes": 885
-              },
-              {
-                "id": "../../../node_modules/react/cjs/react-jsx-runtime.production.js",
-                "renderedBytes": 875
               },
               {
                 "id": "../../core/web/dist/esm/helpers/mergeSlotStyleProps.mjs",
@@ -1184,16 +1328,8 @@
                 "renderedBytes": 501
               },
               {
-                "id": "../../../node_modules/react-dom/client.js",
-                "renderedBytes": 482
-              },
-              {
                 "id": "../../core/compose-refs/dist/esm/compose-refs.mjs",
                 "renderedBytes": 479
-              },
-              {
-                "id": "../../../node_modules/react-dom/index.js",
-                "renderedBytes": 477
               },
               {
                 "id": "../../core/web/dist/esm/helpers/objectIdentityKey.mjs",
@@ -1238,10 +1374,6 @@
               {
                 "id": "../../core/web/dist/esm/helpers/transformsToString.mjs",
                 "renderedBytes": 426
-              },
-              {
-                "id": "src/tamagui.config.ts",
-                "renderedBytes": 413
               },
               {
                 "id": "../../core/use-did-finish-ssr/dist/esm/ClientOnly.mjs",
@@ -1289,7 +1421,7 @@
               },
               {
                 "id": "../../core/web/dist/esm/helpers/matchMedia.mjs",
-                "renderedBytes": 298
+                "renderedBytes": 296
               },
               {
                 "id": "../../core/style-grammar/dist/esm/stateModifiers.mjs",
@@ -1320,24 +1452,12 @@
                 "renderedBytes": 221
               },
               {
-                "id": "../../../node_modules/react-dom/node_modules/scheduler/index.js",
-                "renderedBytes": 220
-              },
-              {
-                "id": "../../../node_modules/react/jsx-runtime.js",
-                "renderedBytes": 209
-              },
-              {
                 "id": "../../core/web/dist/esm/helpers/resolveRem.mjs",
                 "renderedBytes": 207
               },
               {
                 "id": "../../ui/z-index-stack/dist/esm/context.mjs",
                 "renderedBytes": 198
-              },
-              {
-                "id": "../../../node_modules/react/index.js",
-                "renderedBytes": 185
               },
               {
                 "id": "../../core/web/dist/esm/internal-runtime.mjs",
@@ -1426,10 +1546,6 @@
               {
                 "id": "../../core/core/dist/esm/index.mjs",
                 "renderedBytes": 77
-              },
-              {
-                "id": "index.html",
-                "renderedBytes": 0
               }
             ]
           }
@@ -1438,9 +1554,9 @@
       }
     },
     "tamagui-v2-compiled": {
-      "files": 3,
-      "totalBytes": 288323,
-      "jsBytes": 283472,
+      "files": 6,
+      "totalBytes": 288491,
+      "jsBytes": 283397,
       "cssBytes": 4427,
       "versions": {
         "react": "19.1.0",
@@ -1459,17 +1575,139 @@
         }
       },
       "bundleAttribution": {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
+        "decomposition": {
+          "method": "explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip",
+          "tamaguiIncludes": "rendered modules from tamagui, @tamagui/*, Tamagui workspace core/packages/ui dist paths, and @react-native/normalize-color when pulled by the Tamagui runtime, plus their isolated chunk wrapper",
+          "tamaguiExcludes": "fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and dependencies other than the Tamagui runtime color normalizer",
+          "groups": {
+            "tamagui": {
+              "chunks": [
+                "assets/tamagui-ks4GvddR.js"
+              ],
+              "codeBytes": 90923,
+              "gzipBytes": 33418
+            },
+            "react-control": {
+              "chunks": [
+                "assets/react-control-DvJh9EV3.js"
+              ],
+              "codeBytes": 182421,
+              "gzipBytes": 57091
+            },
+            "other": {
+              "chunks": [
+                "assets/index-CtN_AyXT.js",
+                "assets/rolldown-runtime-Bh1tDfsg.js"
+              ],
+              "codeBytes": 10053,
+              "gzipBytes": 3644
+            }
+          }
+        },
         "chunks": [
           {
-            "fileName": "assets/index-YMhFRidN.js",
-            "codeBytes": 283472,
-            "gzipBytes": 93098,
+            "fileName": "assets/index-CtN_AyXT.js",
+            "name": "index",
+            "attributionGroup": "other",
+            "codeBytes": 9486,
+            "gzipBytes": 3281,
+            "modules": [
+              {
+                "id": "src/index.tsx",
+                "renderedBytes": 11272
+              },
+              {
+                "id": "../shared/bench.ts",
+                "renderedBytes": 2462
+              },
+              {
+                "id": "\u0000vite/modulepreload-polyfill.js",
+                "renderedBytes": 1205
+              },
+              {
+                "id": "src/tamagui.config.ts",
+                "renderedBytes": 461
+              },
+              {
+                "id": "index.html",
+                "renderedBytes": 0
+              },
+              {
+                "id": "src/index.tsx.tamagui.css",
+                "renderedBytes": 0
+              }
+            ]
+          },
+          {
+            "fileName": "assets/react-control-DvJh9EV3.js",
+            "name": "react-control",
+            "attributionGroup": "react-control",
+            "codeBytes": 182421,
+            "gzipBytes": 57091,
             "modules": [
               {
                 "id": "node_modules/react-dom/cjs/react-dom-client.production.js",
                 "renderedBytes": 433810
               },
+              {
+                "id": "node_modules/react/cjs/react.production.js",
+                "renderedBytes": 15041
+              },
+              {
+                "id": "node_modules/scheduler/cjs/scheduler.production.js",
+                "renderedBytes": 8994
+              },
+              {
+                "id": "node_modules/react-dom/cjs/react-dom.production.js",
+                "renderedBytes": 5708
+              },
+              {
+                "id": "node_modules/react/cjs/react-jsx-runtime.production.js",
+                "renderedBytes": 866
+              },
+              {
+                "id": "node_modules/react-dom/client.js",
+                "renderedBytes": 473
+              },
+              {
+                "id": "node_modules/react-dom/index.js",
+                "renderedBytes": 468
+              },
+              {
+                "id": "node_modules/react/jsx-runtime.js",
+                "renderedBytes": 200
+              },
+              {
+                "id": "node_modules/scheduler/index.js",
+                "renderedBytes": 188
+              },
+              {
+                "id": "node_modules/react/index.js",
+                "renderedBytes": 176
+              }
+            ]
+          },
+          {
+            "fileName": "assets/rolldown-runtime-Bh1tDfsg.js",
+            "name": "rolldown-runtime",
+            "attributionGroup": "other",
+            "codeBytes": 567,
+            "gzipBytes": 363,
+            "modules": [
+              {
+                "id": "\u0000rolldown/runtime.js",
+                "renderedBytes": 1124
+              }
+            ]
+          },
+          {
+            "fileName": "assets/tamagui-ks4GvddR.js",
+            "name": "tamagui",
+            "attributionGroup": "tamagui",
+            "codeBytes": 90923,
+            "gzipBytes": 33418,
+            "modules": [
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/getSplitStyles.mjs",
                 "renderedBytes": 27126
@@ -1479,16 +1717,8 @@
                 "renderedBytes": 25322
               },
               {
-                "id": "node_modules/react/cjs/react.production.js",
-                "renderedBytes": 15041
-              },
-              {
                 "id": "node_modules/@tamagui/animations-css/dist/esm/createAnimations.mjs",
                 "renderedBytes": 12488
-              },
-              {
-                "id": "src/index.tsx",
-                "renderedBytes": 11272
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/hooks/useThemeState.mjs",
@@ -1497,10 +1727,6 @@
               {
                 "id": "node_modules/@tamagui/use-element-layout/dist/esm/index.mjs",
                 "renderedBytes": 9878
-              },
-              {
-                "id": "node_modules/scheduler/cjs/scheduler.production.js",
-                "renderedBytes": 8994
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/propMapper.mjs",
@@ -1525,10 +1751,6 @@
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/createDesignSystem.mjs",
                 "renderedBytes": 5729
-              },
-              {
-                "id": "node_modules/react-dom/cjs/react-dom.production.js",
-                "renderedBytes": 5708
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/getCSSStylesAtomic.mjs",
@@ -1567,12 +1789,8 @@
                 "renderedBytes": 3289
               },
               {
-                "id": "../shared/bench.ts",
-                "renderedBytes": 2398
-              },
-              {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/createStyledContext.mjs",
-                "renderedBytes": 2217
+                "renderedBytes": 2153
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/themeable.mjs",
@@ -1623,6 +1841,10 @@
                 "renderedBytes": 1274
               },
               {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/pseudoDescriptors.mjs",
+                "renderedBytes": 1233
+              },
+              {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/wrapStyleTags.mjs",
                 "renderedBytes": 1226
               },
@@ -1631,20 +1853,8 @@
                 "renderedBytes": 1216
               },
               {
-                "id": "\u0000vite/modulepreload-polyfill.js",
-                "renderedBytes": 1205
-              },
-              {
                 "id": "node_modules/@tamagui/web/dist/esm/createVariables.mjs",
                 "renderedBytes": 1202
-              },
-              {
-                "id": "node_modules/@tamagui/web/dist/esm/helpers/pseudoDescriptors.mjs",
-                "renderedBytes": 1169
-              },
-              {
-                "id": "\u0000rolldown/runtime.js",
-                "renderedBytes": 1124
               },
               {
                 "id": "node_modules/@tamagui/simple-hash/dist/esm/index.mjs",
@@ -1665,10 +1875,6 @@
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/mergeSlotStyleProps.mjs",
                 "renderedBytes": 880
-              },
-              {
-                "id": "node_modules/react/cjs/react-jsx-runtime.production.js",
-                "renderedBytes": 866
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/config.mjs",
@@ -1727,14 +1933,6 @@
                 "renderedBytes": 482
               },
               {
-                "id": "node_modules/react-dom/client.js",
-                "renderedBytes": 473
-              },
-              {
-                "id": "node_modules/react-dom/index.js",
-                "renderedBytes": 468
-              },
-              {
                 "id": "node_modules/@tamagui/web/dist/esm/eventHandling.mjs",
                 "renderedBytes": 452
               },
@@ -1768,10 +1966,6 @@
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/transformsToString.mjs",
-                "renderedBytes": 413
-              },
-              {
-                "id": "src/tamagui.config.ts",
                 "renderedBytes": 413
               },
               {
@@ -1847,20 +2041,8 @@
                 "renderedBytes": 211
               },
               {
-                "id": "node_modules/react/jsx-runtime.js",
-                "renderedBytes": 200
-              },
-              {
-                "id": "node_modules/scheduler/index.js",
-                "renderedBytes": 188
-              },
-              {
-                "id": "node_modules/react/index.js",
-                "renderedBytes": 176
-              },
-              {
                 "id": "node_modules/@tamagui/react-native-media-driver/dist/esm/createMedia.mjs",
-                "renderedBytes": 175
+                "renderedBytes": 173
               },
               {
                 "id": "node_modules/tamagui/node_modules/@tamagui/portal/dist/esm/constants.mjs",
@@ -1900,7 +2082,7 @@
               },
               {
                 "id": "node_modules/@tamagui/react-native-media-driver/dist/esm/matchMedia.mjs",
-                "renderedBytes": 140
+                "renderedBytes": 138
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/sortString.mjs",
@@ -1925,14 +2107,6 @@
               {
                 "id": "node_modules/tamagui/dist/esm/createTamagui.mjs",
                 "renderedBytes": 108
-              },
-              {
-                "id": "index.html",
-                "renderedBytes": 0
-              },
-              {
-                "id": "src/index.tsx.tamagui.css",
-                "renderedBytes": 0
               }
             ]
           }
@@ -1947,9 +2121,9 @@
       }
     },
     "tamagui-v2-runtime": {
-      "files": 2,
-      "totalBytes": 281895,
-      "jsBytes": 281543,
+      "files": 5,
+      "totalBytes": 282078,
+      "jsBytes": 281483,
       "cssBytes": 0,
       "versions": {
         "react": "19.1.0",
@@ -1968,17 +2142,135 @@
         }
       },
       "bundleAttribution": {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
+        "decomposition": {
+          "method": "explicit Rollup chunks with onlyExplicitManualChunks, followed by production minification and independent gzip",
+          "tamaguiIncludes": "rendered modules from tamagui, @tamagui/*, Tamagui workspace core/packages/ui dist paths, and @react-native/normalize-color when pulled by the Tamagui runtime, plus their isolated chunk wrapper",
+          "tamaguiExcludes": "fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and dependencies other than the Tamagui runtime color normalizer",
+          "groups": {
+            "tamagui": {
+              "chunks": [
+                "assets/tamagui-BByIbgPd.js"
+              ],
+              "codeBytes": 90923,
+              "gzipBytes": 33418
+            },
+            "react-control": {
+              "chunks": [
+                "assets/react-control-Cutphfo4.js"
+              ],
+              "codeBytes": 182421,
+              "gzipBytes": 57108
+            },
+            "other": {
+              "chunks": [
+                "assets/index-Dr5-zKO7.js",
+                "assets/rolldown-runtime-Bh1tDfsg.js"
+              ],
+              "codeBytes": 8139,
+              "gzipBytes": 3285
+            }
+          }
+        },
         "chunks": [
           {
-            "fileName": "assets/index-CF3jrawg.js",
-            "codeBytes": 281543,
-            "gzipBytes": 92763,
+            "fileName": "assets/index-Dr5-zKO7.js",
+            "name": "index",
+            "attributionGroup": "other",
+            "codeBytes": 7572,
+            "gzipBytes": 2922,
+            "modules": [
+              {
+                "id": "src/index.tsx",
+                "renderedBytes": 9553
+              },
+              {
+                "id": "../shared/bench.ts",
+                "renderedBytes": 2462
+              },
+              {
+                "id": "\u0000vite/modulepreload-polyfill.js",
+                "renderedBytes": 1205
+              },
+              {
+                "id": "src/tamagui.config.ts",
+                "renderedBytes": 413
+              },
+              {
+                "id": "index.html",
+                "renderedBytes": 0
+              }
+            ]
+          },
+          {
+            "fileName": "assets/react-control-Cutphfo4.js",
+            "name": "react-control",
+            "attributionGroup": "react-control",
+            "codeBytes": 182421,
+            "gzipBytes": 57108,
             "modules": [
               {
                 "id": "node_modules/react-dom/cjs/react-dom-client.production.js",
                 "renderedBytes": 433810
               },
+              {
+                "id": "node_modules/react/cjs/react.production.js",
+                "renderedBytes": 15041
+              },
+              {
+                "id": "node_modules/scheduler/cjs/scheduler.production.js",
+                "renderedBytes": 8994
+              },
+              {
+                "id": "node_modules/react-dom/cjs/react-dom.production.js",
+                "renderedBytes": 5708
+              },
+              {
+                "id": "node_modules/react/cjs/react-jsx-runtime.production.js",
+                "renderedBytes": 866
+              },
+              {
+                "id": "node_modules/react-dom/client.js",
+                "renderedBytes": 473
+              },
+              {
+                "id": "node_modules/react-dom/index.js",
+                "renderedBytes": 468
+              },
+              {
+                "id": "node_modules/react/jsx-runtime.js",
+                "renderedBytes": 200
+              },
+              {
+                "id": "node_modules/scheduler/index.js",
+                "renderedBytes": 188
+              },
+              {
+                "id": "node_modules/react/index.js",
+                "renderedBytes": 176
+              }
+            ]
+          },
+          {
+            "fileName": "assets/rolldown-runtime-Bh1tDfsg.js",
+            "name": "rolldown-runtime",
+            "attributionGroup": "other",
+            "codeBytes": 567,
+            "gzipBytes": 363,
+            "modules": [
+              {
+                "id": "\u0000rolldown/runtime.js",
+                "renderedBytes": 1124
+              }
+            ]
+          },
+          {
+            "fileName": "assets/tamagui-BByIbgPd.js",
+            "name": "tamagui",
+            "attributionGroup": "tamagui",
+            "codeBytes": 90923,
+            "gzipBytes": 33418,
+            "modules": [
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/getSplitStyles.mjs",
                 "renderedBytes": 27126
@@ -1986,10 +2278,6 @@
               {
                 "id": "node_modules/@tamagui/web/dist/esm/createComponent.mjs",
                 "renderedBytes": 25322
-              },
-              {
-                "id": "node_modules/react/cjs/react.production.js",
-                "renderedBytes": 15041
               },
               {
                 "id": "node_modules/@tamagui/animations-css/dist/esm/createAnimations.mjs",
@@ -2002,14 +2290,6 @@
               {
                 "id": "node_modules/@tamagui/use-element-layout/dist/esm/index.mjs",
                 "renderedBytes": 9878
-              },
-              {
-                "id": "src/index.tsx",
-                "renderedBytes": 9505
-              },
-              {
-                "id": "node_modules/scheduler/cjs/scheduler.production.js",
-                "renderedBytes": 8994
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/propMapper.mjs",
@@ -2034,10 +2314,6 @@
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/createDesignSystem.mjs",
                 "renderedBytes": 5729
-              },
-              {
-                "id": "node_modules/react-dom/cjs/react-dom.production.js",
-                "renderedBytes": 5708
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/getCSSStylesAtomic.mjs",
@@ -2076,12 +2352,8 @@
                 "renderedBytes": 3289
               },
               {
-                "id": "../shared/bench.ts",
-                "renderedBytes": 2398
-              },
-              {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/createStyledContext.mjs",
-                "renderedBytes": 2217
+                "renderedBytes": 2153
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/themeable.mjs",
@@ -2132,6 +2404,10 @@
                 "renderedBytes": 1274
               },
               {
+                "id": "node_modules/@tamagui/web/dist/esm/helpers/pseudoDescriptors.mjs",
+                "renderedBytes": 1233
+              },
+              {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/wrapStyleTags.mjs",
                 "renderedBytes": 1226
               },
@@ -2140,20 +2416,8 @@
                 "renderedBytes": 1216
               },
               {
-                "id": "\u0000vite/modulepreload-polyfill.js",
-                "renderedBytes": 1205
-              },
-              {
                 "id": "node_modules/@tamagui/web/dist/esm/createVariables.mjs",
                 "renderedBytes": 1202
-              },
-              {
-                "id": "node_modules/@tamagui/web/dist/esm/helpers/pseudoDescriptors.mjs",
-                "renderedBytes": 1169
-              },
-              {
-                "id": "\u0000rolldown/runtime.js",
-                "renderedBytes": 1124
               },
               {
                 "id": "node_modules/@tamagui/simple-hash/dist/esm/index.mjs",
@@ -2174,10 +2438,6 @@
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/mergeSlotStyleProps.mjs",
                 "renderedBytes": 880
-              },
-              {
-                "id": "node_modules/react/cjs/react-jsx-runtime.production.js",
-                "renderedBytes": 866
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/config.mjs",
@@ -2236,14 +2496,6 @@
                 "renderedBytes": 482
               },
               {
-                "id": "node_modules/react-dom/client.js",
-                "renderedBytes": 473
-              },
-              {
-                "id": "node_modules/react-dom/index.js",
-                "renderedBytes": 468
-              },
-              {
                 "id": "node_modules/@tamagui/web/dist/esm/eventHandling.mjs",
                 "renderedBytes": 452
               },
@@ -2277,10 +2529,6 @@
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/transformsToString.mjs",
-                "renderedBytes": 413
-              },
-              {
-                "id": "src/tamagui.config.ts",
                 "renderedBytes": 413
               },
               {
@@ -2356,20 +2604,8 @@
                 "renderedBytes": 211
               },
               {
-                "id": "node_modules/react/jsx-runtime.js",
-                "renderedBytes": 200
-              },
-              {
-                "id": "node_modules/scheduler/index.js",
-                "renderedBytes": 188
-              },
-              {
-                "id": "node_modules/react/index.js",
-                "renderedBytes": 176
-              },
-              {
                 "id": "node_modules/@tamagui/react-native-media-driver/dist/esm/createMedia.mjs",
-                "renderedBytes": 175
+                "renderedBytes": 173
               },
               {
                 "id": "node_modules/tamagui/node_modules/@tamagui/portal/dist/esm/constants.mjs",
@@ -2409,7 +2645,7 @@
               },
               {
                 "id": "node_modules/@tamagui/react-native-media-driver/dist/esm/matchMedia.mjs",
-                "renderedBytes": 140
+                "renderedBytes": 138
               },
               {
                 "id": "node_modules/@tamagui/web/dist/esm/helpers/sortString.mjs",
@@ -2434,10 +2670,6 @@
               {
                 "id": "node_modules/tamagui/dist/esm/createTamagui.mjs",
                 "renderedBytes": 108
-              },
-              {
-                "id": "index.html",
-                "renderedBytes": 0
               }
             ]
           }
@@ -2450,22 +2682,34 @@
     "compiled": {
       "artifactBytes": {
         "v3": {
-          "js": 377550,
+          "js": 377514,
           "css": 3415,
-          "jsGzipBytes": 122352,
-          "cssGzipBytes": 914
+          "jsGzipBytes": 123308,
+          "cssGzipBytes": 914,
+          "tamaguiJsBytes": 185879,
+          "tamaguiJsGzipBytes": 62623,
+          "reactControlJsBytes": 182423,
+          "reactControlJsGzipBytes": 57105
         },
         "v2": {
-          "js": 283472,
+          "js": 283397,
           "css": 4427,
-          "jsGzipBytes": 93098,
-          "cssGzipBytes": 1040
+          "jsGzipBytes": 94153,
+          "cssGzipBytes": 1040,
+          "tamaguiJsBytes": 90923,
+          "tamaguiJsGzipBytes": 33418,
+          "reactControlJsBytes": 182421,
+          "reactControlJsGzipBytes": 57091
         },
         "delta": {
-          "js": 94078,
+          "js": 94117,
           "css": -1012,
-          "jsGzipBytes": 29254,
-          "cssGzipBytes": -126
+          "jsGzipBytes": 29155,
+          "cssGzipBytes": -126,
+          "tamaguiJsBytes": 94956,
+          "tamaguiJsGzipBytes": 29205,
+          "reactControlJsBytes": 2,
+          "reactControlJsGzipBytes": 14
         }
       },
       "renderedModuleGroups": {
@@ -2475,9 +2719,9 @@
           "deltaRenderedBytes": 98965
         },
         "@tamagui/web": {
-          "v3RenderedBytes": 225825,
+          "v3RenderedBytes": 225821,
           "v2RenderedBytes": 165619,
-          "deltaRenderedBytes": 60206
+          "deltaRenderedBytes": 60202
         },
         "@react-native/normalize-color": {
           "v3RenderedBytes": 10816,
@@ -2490,9 +2734,9 @@
           "deltaRenderedBytes": 6449
         },
         "fixture": {
-          "v3RenderedBytes": 10661,
-          "v2RenderedBytes": 11685,
-          "deltaRenderedBytes": -1024
+          "v3RenderedBytes": 10758,
+          "v2RenderedBytes": 11733,
+          "deltaRenderedBytes": -975
         },
         "@tamagui/animation-helpers": {
           "v3RenderedBytes": 2859,
@@ -2506,8 +2750,8 @@
         },
         "@tamagui/react-native-media-driver": {
           "v3RenderedBytes": 0,
-          "v2RenderedBytes": 315,
-          "deltaRenderedBytes": -315
+          "v2RenderedBytes": 311,
+          "deltaRenderedBytes": -311
         },
         "@tamagui/helpers": {
           "v3RenderedBytes": 8628,
@@ -2600,8 +2844,8 @@
           "deltaRenderedBytes": 0
         },
         "shared benchmark": {
-          "v3RenderedBytes": 2398,
-          "v2RenderedBytes": 2398,
+          "v3RenderedBytes": 2462,
+          "v2RenderedBytes": 2462,
           "deltaRenderedBytes": 0
         }
       }
@@ -2609,22 +2853,34 @@
     "runtime": {
       "artifactBytes": {
         "v3": {
-          "js": 376482,
+          "js": 376436,
           "css": 0,
-          "jsGzipBytes": 122024,
-          "cssGzipBytes": 0
+          "jsGzipBytes": 123017,
+          "cssGzipBytes": 0,
+          "tamaguiJsBytes": 185879,
+          "tamaguiJsGzipBytes": 62623,
+          "reactControlJsBytes": 182423,
+          "reactControlJsGzipBytes": 57105
         },
         "v2": {
-          "js": 281543,
+          "js": 281483,
           "css": 0,
-          "jsGzipBytes": 92763,
-          "cssGzipBytes": 0
+          "jsGzipBytes": 93811,
+          "cssGzipBytes": 0,
+          "tamaguiJsBytes": 90923,
+          "tamaguiJsGzipBytes": 33418,
+          "reactControlJsBytes": 182421,
+          "reactControlJsGzipBytes": 57108
         },
         "delta": {
-          "js": 94939,
+          "js": 94953,
           "css": 0,
-          "jsGzipBytes": 29261,
-          "cssGzipBytes": 0
+          "jsGzipBytes": 29206,
+          "cssGzipBytes": 0,
+          "tamaguiJsBytes": 94956,
+          "tamaguiJsGzipBytes": 29205,
+          "reactControlJsBytes": 2,
+          "reactControlJsGzipBytes": -3
         }
       },
       "renderedModuleGroups": {
@@ -2634,9 +2890,9 @@
           "deltaRenderedBytes": 98965
         },
         "@tamagui/web": {
-          "v3RenderedBytes": 225825,
+          "v3RenderedBytes": 225821,
           "v2RenderedBytes": 165619,
-          "deltaRenderedBytes": 60206
+          "deltaRenderedBytes": 60202
         },
         "@react-native/normalize-color": {
           "v3RenderedBytes": 10816,
@@ -2660,8 +2916,8 @@
         },
         "@tamagui/react-native-media-driver": {
           "v3RenderedBytes": 0,
-          "v2RenderedBytes": 315,
-          "deltaRenderedBytes": -315
+          "v2RenderedBytes": 311,
+          "deltaRenderedBytes": -311
         },
         "@tamagui/helpers": {
           "v3RenderedBytes": 8628,
@@ -2754,13 +3010,13 @@
           "deltaRenderedBytes": 0
         },
         "fixture": {
-          "v3RenderedBytes": 9918,
-          "v2RenderedBytes": 9918,
+          "v3RenderedBytes": 9966,
+          "v2RenderedBytes": 9966,
           "deltaRenderedBytes": 0
         },
         "shared benchmark": {
-          "v3RenderedBytes": 2398,
-          "v2RenderedBytes": 2398,
+          "v3RenderedBytes": 2462,
+          "v2RenderedBytes": 2462,
           "deltaRenderedBytes": 0
         }
       }
@@ -2769,6 +3025,7 @@
   "interpretation": {
     "correctedHarness": "Both arms use byte-identical minimal Tamagui configs; the prior default-theme import mismatch was removed.",
     "moduleLengths": "Rendered module lengths are pre-minification attribution, while artifact bytes and gzip bytes are exact emitted sizes.",
+    "tamaguiGzip": "Tamagui-attributable gzip is measured from an explicit production-minified Rollup chunk containing tamagui, @tamagui/*, workspace core/packages/ui dist modules, and @react-native/normalize-color when pulled by the Tamagui runtime. It excludes fixture code, shared benchmark code, React, react-dom, scheduler, Vite helpers, and other dependencies.",
     "remainingDelta": "The remaining V3 delta is framework surface led by @tamagui/style-grammar and @tamagui/web, not fixture/config/theme code."
   }
 }
