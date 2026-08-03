@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "metadata": {
-    "commit": "8003f60b01d7f99f66fb63c753e11fa39a809024",
-    "branch": "validate/v3-web-flatten",
+    "commit": "55a0c80c7ca3911be484f1efbe7983f7b3967474",
+    "branch": "validate/v3-web-receipts-wa",
     "dirty": false,
     "workload": {
       "byteIdentical": true,
@@ -185,14 +185,14 @@
             "marginTop": "1px"
           }
         },
-        "samples": 81,
+        "samples": 79,
         "opacityRange": {
           "min": 0.85,
           "max": 1
         },
         "scaleRange": {
           "min": 0.95,
-          "max": 1.00433
+          "max": 1.00434
         },
         "transitionDeclared": true,
         "startStateObserved": true,
@@ -349,7 +349,7 @@
             "marginTop": "1px"
           }
         },
-        "samples": 81,
+        "samples": 80,
         "opacityRange": {
           "min": 0.85,
           "max": 1
@@ -513,7 +513,7 @@
             "marginTop": "1px"
           }
         },
-        "samples": 79,
+        "samples": 78,
         "opacityRange": {
           "min": 0.85,
           "max": 1
@@ -684,7 +684,7 @@
         },
         "scaleRange": {
           "min": 0.95,
-          "max": 1.00433
+          "max": 1.00434
         },
         "transitionDeclared": true,
         "startStateObserved": true,
