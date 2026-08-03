@@ -22,7 +22,11 @@ import {
   parseValue,
 } from '@tamagui/style-grammar'
 import { isValidStyleKey } from '@tamagui/web'
-import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
+import type {
+  AnimationDriver,
+  StaticConfig,
+  TamaguiInternalConfig,
+} from '@tamagui/web'
 
 import type { LoadedComponents } from './extractor/bundleConfig'
 import { concatClassName } from './extractor/concatClassName'
@@ -595,16 +599,21 @@ export function createTamaguiCompilerHost(
     mediaNames: options.tamaguiConfig.media ?? {},
     themeNames: options.tamaguiConfig.themes ?? {},
   }).registry
-  const configuredAnimationDriver = options.tamaguiConfig.animations as any
+  const configuredAnimationDriver = options.tamaguiConfig.animations as
+    | AnimationDriver
+    | undefined
   const configuredCssAnimationDriver =
     platform === 'web' &&
     configuredAnimationDriver?.outputStyle === 'css' &&
     !options.tamaguiConfig.animationDrivers
-  const transitionPresets: Record<string, unknown> =
-    configuredAnimationDriver?.animations ?? {}
-  const transitionPresetNames = new Set(Object.keys(transitionPresets))
-  const resolveStaticCssTransition = (value: unknown): string | null => {
+      ? configuredAnimationDriver
+      : null
+  const resolveStaticCssTransition = (
+    value: unknown,
+    transitionPresets: Record<string, unknown>
+  ): string | null => {
     if (platform !== 'web' || typeof value !== 'string') return null
+    const transitionPresetNames = new Set(Object.keys(transitionPresets))
     const program = parseValue(value, modifierRegistry)
     if (!program.ok) return null
     const resolvedPayloads: string[] = []
@@ -812,7 +821,8 @@ export function createTamaguiCompilerHost(
 
   const resolveSplitStyles = (
     props: Record<string, unknown>,
-    staticConfig: StaticConfig
+    staticConfig: StaticConfig,
+    animationDriver?: AnimationDriver | null
   ) => {
     const previousStatic = process.env.IS_STATIC
     const previousTarget = process.env.TAMAGUI_TARGET
@@ -833,7 +843,14 @@ export function createTamaguiCompilerHost(
           resolveValues: platform === 'native' ? 'except-theme' : 'variable',
           noClass: platform === 'native',
           isAnimated: false,
-        }
+        },
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        animationDriver
       )
     } finally {
       if (previousStatic === undefined) delete process.env.IS_STATIC
@@ -994,15 +1011,25 @@ export function createTamaguiCompilerHost(
       )
       const animatedBy =
         typeof props.animatedBy === 'string' ? props.animatedBy.trim() : null
-      const cssAnimated =
-        platform === 'web' &&
-        !options.tamaguiConfig.animationDrivers &&
-        (animatedBy === 'css' ||
-          ((animatedBy === null || animatedBy === 'default') &&
-            configuredCssAnimationDriver))
+      const namedAnimationDriver =
+        animatedBy === null
+          ? null
+          : options.tamaguiConfig.animationDrivers?.[animatedBy]
+      const namedCssAnimationDriver =
+        platform === 'web' && namedAnimationDriver?.outputStyle === 'css'
+          ? namedAnimationDriver
+          : null
+      const cssAnimationDriver =
+        namedCssAnimationDriver ??
+        (animatedBy === null || animatedBy === 'default'
+          ? configuredCssAnimationDriver
+          : null)
       const resolvedCssTransition =
-        animationNames.has('transition') && cssAnimated
-          ? resolveStaticCssTransition(props.transition)
+        animationNames.has('transition') && cssAnimationDriver
+          ? resolveStaticCssTransition(
+              props.transition,
+              cssAnimationDriver.animations ?? {}
+            )
           : null
       if (resolvedCssTransition !== null) {
         props.transition = resolvedCssTransition
@@ -1092,9 +1119,17 @@ export function createTamaguiCompilerHost(
           'Native group containers remain on the runtime path'
         )
       }
+      if (runtimeAnimationRequired) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Animated candidates remain on the runtime path',
+          transitionEntry?.span
+        )
+      }
       if (
         platform === 'web' &&
-        (dynamicStyleEntries.length > 0 || runtimeAnimationRequired) &&
+        dynamicStyleEntries.length > 0 &&
         dynamicHostStyleProperties === null &&
         component.partialRuntimeSafe
       ) {
@@ -1207,14 +1242,6 @@ export function createTamaguiCompilerHost(
           }
         }
       }
-      if (runtimeAnimationRequired) {
-        return bailout(
-          input,
-          'local/unsupported-target',
-          'Animated candidates remain on the runtime path',
-          transitionEntry?.span
-        )
-      }
       if (dynamicStyleEntries.length > 0 && dynamicHostStyleProperties === null) {
         const entry = dynamicStyleEntries[0]!
         return bailout(
@@ -1262,7 +1289,11 @@ export function createTamaguiCompilerHost(
           )
         }
       }
-      const split = resolveSplitStyles(completeProps, component.staticConfig)
+      const split = resolveSplitStyles(
+        completeProps,
+        component.staticConfig,
+        cssAnimationDriver
+      )
       if (!split) {
         return bailout(
           input,

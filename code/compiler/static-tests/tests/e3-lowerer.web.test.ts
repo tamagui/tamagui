@@ -21,6 +21,13 @@ const configPath = resolve(import.meta.dirname, 'lib/tamagui.config.cjs')
 const coreId = resolvedModuleId('/virtual/@tamagui/core.mjs')
 let projectInfo: TamaguiProjectInfo
 
+type AnimationDriverShape = {
+  animations?: Record<string, unknown>
+  inputStyle?: 'css' | 'value'
+  isReactNative?: boolean
+  outputStyle?: 'css' | 'inline'
+}
+
 beforeAll(() => {
   projectInfo = loadTamaguiSync({
     platform: 'web',
@@ -33,12 +40,8 @@ function compile(
   source: string,
   target: CompilerTarget = 'web',
   hostOptions?: {
-    animationDriver?: {
-      animations?: Record<string, unknown>
-      inputStyle?: 'css' | 'value'
-      isReactNative?: boolean
-      outputStyle?: 'css' | 'inline'
-    }
+    animationDriver?: AnimationDriverShape
+    animationDrivers?: Record<string, AnimationDriverShape>
     disablePartialExtraction?: boolean
   }
 ) {
@@ -63,13 +66,15 @@ function compile(
   })
   const host = createTamaguiCompilerHost({
     target,
-    tamaguiConfig: hostOptions?.animationDriver
+    tamaguiConfig:
+      hostOptions?.animationDriver || hostOptions?.animationDrivers
       ? {
           ...projectInfo.tamaguiConfig!,
           animations: {
             ...projectInfo.tamaguiConfig!.animations,
             ...hostOptions.animationDriver,
           },
+          animationDrivers: hostOptions.animationDrivers,
         }
       : projectInfo.tamaguiConfig!,
     components: projectInfo.components!,
@@ -145,19 +150,16 @@ export const App = () => (
     expect(output.map?.sourcesContent).toEqual([source])
   })
 
-  test('an explicit CSS driver lowers a transition candidate without blocking a sibling', () => {
+  test('keeps a transition byte-identical for animatedBy css with a single non-CSS driver', () => {
     const source = `
 import { View } from '@tamagui/core'
 export const App = () => (
-  <>
-    <View
-      animatedBy="css"
-      transition="opacity 150ms ease-out"
-      padding="12px hover:16px"
-      data-bailed="exact"
-    />
-    <View padding={16} data-lowered="yes" />
-  </>
+  <View
+    animatedBy="css"
+    transition="opacity 150ms ease-out"
+    padding="12px hover:16px"
+    data-runtime="single-non-css"
+  />
 )
 `
     const { plan, output } = compile(source, 'web', {
@@ -167,20 +169,60 @@ export const App = () => (
         outputStyle: 'inline',
       },
     })
+    expect(codes(plan)).toEqual(['local/unsupported-target'])
+    expect(plan.stats).toEqual({
+      found: 1,
+      lowered: 0,
+      flattened: 0,
+      styled: 0,
+      bailed: 1,
+    })
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
+  })
+
+  test('lowers animatedBy css through a multi-driver CSS entry', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const App = () => (
+  <View
+    animatedBy="css"
+    transition="opacity 150ms ease-out"
+    padding="12px hover:16px"
+    data-compiled="multi-css"
+  />
+)
+`
+    const nonCssDriver: AnimationDriverShape = {
+      inputStyle: 'value',
+      isReactNative: true,
+      outputStyle: 'inline',
+    }
+    const { plan, output } = compile(source, 'web', {
+      animationDriver: nonCssDriver,
+      animationDrivers: {
+        default: nonCssDriver,
+        css: {
+          animations: projectInfo.tamaguiConfig!.animations.animations,
+          inputStyle: 'css',
+          outputStyle: 'css',
+        },
+      },
+    })
+
     expect(codes(plan)).toEqual([])
     expect(plan.stats).toEqual({
-      found: 2,
-      lowered: 2,
-      flattened: 2,
+      found: 1,
+      lowered: 1,
+      flattened: 1,
       styled: 0,
       bailed: 0,
     })
     expect(output.code).not.toContain('animatedBy="css"')
     expect(output.code).not.toContain('transition="opacity 150ms ease-out"')
     expect(output.code).not.toContain('padding="12px hover:16px"')
-    expect(output.code).toContain('data-bailed="exact"')
-    expect(output.code.match(/<div\b/g)).toHaveLength(2)
-    expect(output.code).toContain('data-lowered="yes"')
+    expect(output.code).toContain('<div')
     expect(plan.css).toContain('transition:opacity 150ms ease-out')
     expect(plan.css).toContain('padding-top:12px')
     expect(plan.css).toContain('padding-top:16px')
@@ -641,7 +683,7 @@ export const Card = ({ seed }) => (
     )
   })
 
-  test('partially extracts static styles beside a non-CSS driver transition', () => {
+  test('keeps a non-CSS driver transition byte-identical', () => {
     const source = `
 import { View } from '@tamagui/core'
 export const Card = ({ opacity }) => (
@@ -665,16 +707,11 @@ export const Card = ({ opacity }) => (
       },
     })
 
-    expect(codes(plan)).toEqual([])
-    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
-    expect(output.code).toMatch(
-      /<View\s+transition="spring"\s+className="[^"]+"\s+opacity=\{opacity\}/
-    )
-    expect(output.code).not.toContain('width={24}')
-    expect(output.code).not.toContain('height={24}')
-    expect(plan.css).toContain('width:24px')
-    expect(plan.css).toContain('height:24px')
-    expect(plan.css).not.toContain('transition:')
+    expect(codes(plan)).toEqual(['local/unsupported-target'])
+    expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
   })
 
   test('materializes local styled definitions before lowering variants and compounds', () => {
