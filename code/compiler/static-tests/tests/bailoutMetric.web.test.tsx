@@ -1,13 +1,14 @@
 // the decision-24 standing metric: how much of kitchen-sink compiles to the
 // static fast path. run on demand:
-//   BAILOUT_METRIC=1 bun run test:run:web -- tests/bailoutMetric.web.test.tsx
+//   bun run test:bailout-metric
 // found/lowered/flattened/bailed come from the compiler's own LoweredModuleStats;
 // record the aggregate in plans/dom-tailwind-flat-values.md when it moves.
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import * as React from 'react'
 import { expect, test } from 'vitest'
 
+import expectedMetric from './fixtures/bailoutMetric.expected.json'
 import { extractForWeb } from './lib/extract'
 
 window['React'] = React
@@ -62,7 +63,9 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
   { timeout: 300_000 },
   async () => {
     const dir = resolve(process.cwd(), '../../kitchen-sink/src/usecases')
-    const files = readdirSync(dir).filter((name) => name.endsWith('.tsx'))
+    const files = readdirSync(dir)
+      .filter((name) => name.endsWith('.tsx'))
+      .sort()
     const totals = {
       files: 0,
       failed: 0,
@@ -80,6 +83,17 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
     const structuralComponents = new Map<string, number>()
     const unexpectedStructuralComponents = new Set<string>()
     const details: string[] = []
+    const modules: Array<{
+      name: string
+      stats: {
+        found: number
+        lowered: number
+        flattened: number
+        styled: number
+        bailed: number
+      }
+      diagnostics: Array<{ code: string; message: string; component?: string }>
+    }> = []
     let recoverable = 0
     let structurallyRetained = 0
 
@@ -99,6 +113,15 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
         totals.flattened += stats.flattened
         totals.styled += stats.styled
         totals.bailed += stats.bailed
+        modules.push({
+          name,
+          stats,
+          diagnostics: output.diagnostics.map(({ code, message, component }) => ({
+            code,
+            message,
+            ...(component && { component }),
+          })),
+        })
         for (const diagnostic of output.diagnostics) {
           const message = diagnostic.message.endsWith(' does not accept className')
             ? `${diagnostic.component ?? 'unknown component'} does not accept className`
@@ -183,20 +206,34 @@ test.skipIf(!process.env.BAILOUT_METRIC)(
     const classificationReport = `classification: RECOVERABLE ${recoverable}, STRUCTURALLY RETAINED ${structurallyRetained}`
     const completeReport = `${classificationReport}\n${report}\n\nstructural classes:\n${structuralClassReport}\n\nstructurally retained components:\n${structuralReport}\n\nall reasons:\n${reasonReport}`
     process.stdout.write(`\n${completeReport}\n`)
-    writeFileSync('/tmp/tamagui-bailout-metric.txt', completeReport)
-    writeFileSync('/tmp/tamagui-bailout-details.txt', details.join('\n'))
+    if (process.env.BAILOUT_METRIC_JSON) {
+      process.stdout.write(
+        `\nBAILOUT_METRIC_JSON=${JSON.stringify({
+          totals,
+          classifications: { recoverable, structurallyRetained },
+          structuralClasses: Object.fromEntries(
+            [...structuralClasses].sort(([left], [right]) => left.localeCompare(right))
+          ),
+          structuralComponents: Object.fromEntries(
+            [...structuralComponents].sort(([left], [right]) => left.localeCompare(right))
+          ),
+          reasons: Object.fromEntries(
+            [...reasons].sort(([left], [right]) => left.localeCompare(right))
+          ),
+          modules,
+          details,
+        })}\n`
+      )
+    }
 
-    // Two new files joined the corpus: FontLanguageSwapCase adds 6/5/5/0/1
-    // and ProgramCascadeCase adds 4/4/2/0/0 to found/lowered/flattened/styled/bailed.
-    expect(totals).toEqual({
-      files: 253,
-      failed: 0,
-      found: 2575,
-      lowered: 2047,
-      flattened: 2032,
-      styled: 55,
-      bailed: 528,
-    })
+    expect({
+      schemaVersion: 1,
+      totals,
+      classifications: { recoverable, structurallyRetained },
+      structuralClasses: Object.fromEntries(structuralClasses),
+      structuralComponents: Object.fromEntries(structuralComponents),
+      reasons: Object.fromEntries(reasons),
+    }).toEqual(expectedMetric)
     expect([...unexpectedStructuralComponents].sort()).toEqual([])
     expect([...structuralClasses.keys()].sort()).toEqual(
       Object.keys(structuralClassJustifications).sort()

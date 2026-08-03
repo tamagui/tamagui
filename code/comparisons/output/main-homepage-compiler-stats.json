@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "compiler": "v2-legacy",
+  "source": {
+    "revision": "1c8cc029cdbecfb8057511e62048732c592acec6",
+    "dependencies": {
+      "bento": "06163a598ba8f478a0886643671b93d037b357ca"
+    },
+    "format": "legacy-jsonl",
+    "buildCommand": "TAMAGUI_BENTO_PATH=<bento-origin-main-archive> POSTMARK_SERVER_TOKEN=<sentinel> TAMAGUI_COMPILER_STATS_FILE=<output> NODE_ENV=production bun run build:prod",
+    "environment": "Production build with the pinned real Bento source.",
+    "scopeQualification": "Homepage parity uses the exact selector; full-site source scope differs across revisions."
+  },
+  "selector": {
+    "id": "tamagui.dev-homepage",
+    "include": [
+      "app/(site)/index.tsx",
+      "features/site/home/**"
+    ]
+  },
+  "limitations": [
+    "V2 legacy stats do not expose bailout diagnostics or partial flattening.",
+    "styled declarations are separate from JSX candidates and are not part of found.",
+    "legacyOptimized overlaps flattened and is not comparable to V3 lowered."
+  ],
+  "totals": {
+    "modules": 21,
+    "found": 251,
+    "legacyOptimized": 196,
+    "flattened": 195,
+    "partial": 0,
+    "styled": 8,
+    "bailed": 56,
+    "notFlattened": 56,
+    "flattenRate": 0.7768924302788844
+  },
+  "bailoutCodes": {},
+  "bailoutReasons": [],
+  "modules": [
+    {
+      "id": "app/(site)/index.tsx",
+      "stats": {
+        "found": 6,
+        "legacyOptimized": 6,
+        "flattened": 0,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 6,
+        "notFlattened": 6
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/SocialLinksRow.tsx",
+      "stats": {
+        "found": 7,
+        "legacyOptimized": 7,
+        "flattened": 7,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 0,
+        "notFlattened": 0
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeHeaders.tsx",
+      "stats": {
+        "found": 0,
+        "legacyOptimized": 0,
+        "flattened": 0,
+        "partial": 0,
+        "styled": 3,
+        "bailed": 0,
+        "notFlattened": 0
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/TintSection.tsx",
+      "stats": {
+        "found": 6,
+        "legacyOptimized": 6,
+        "flattened": 3,
+        "partial": 0,
+        "styled": 1,
+        "bailed": 3,
+        "notFlattened": 3
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeCommunity.tsx",
+      "stats": {
+        "found": 3,
+        "legacyOptimized": 2,
+        "flattened": 2,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 1,
+        "notFlattened": 1
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeAnimations.tsx",
+      "stats": {
+        "found": 27,
+        "legacyOptimized": 20,
+        "flattened": 22,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 5,
+        "notFlattened": 5
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeExamples.tsx",
+      "stats": {
+        "found": 19,
+        "legacyOptimized": 19,
+        "flattened": 13,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 6,
+        "notFlattened": 6
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeFeaturesGrid.tsx",
+      "stats": {
+        "found": 21,
+        "legacyOptimized": 13,
+        "flattened": 19,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 2,
+        "notFlattened": 2
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeGlow.tsx",
+      "stats": {
+        "found": 3,
+        "legacyOptimized": 2,
+        "flattened": 0,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 3,
+        "notFlattened": 3
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeExampleProps.tsx",
+      "stats": {
+        "found": 11,
+        "legacyOptimized": 8,
+        "flattened": 9,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 2,
+        "notFlattened": 2
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeHero.tsx",
+      "stats": {
+        "found": 22,
+        "legacyOptimized": 14,
+        "flattened": 19,
+        "partial": 0,
+        "styled": 3,
+        "bailed": 3,
+        "notFlattened": 3
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeHeroBelow.tsx",
+      "stats": {
+        "found": 10,
+        "legacyOptimized": 10,
+        "flattened": 9,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 1,
+        "notFlattened": 1
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomePerformance.tsx",
+      "stats": {
+        "found": 8,
+        "legacyOptimized": 5,
+        "flattened": 6,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 2,
+        "notFlattened": 2
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeThemes.tsx",
+      "stats": {
+        "found": 13,
+        "legacyOptimized": 11,
+        "flattened": 9,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 4,
+        "notFlattened": 4
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeResponsive.tsx",
+      "stats": {
+        "found": 65,
+        "legacyOptimized": 46,
+        "flattened": 55,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 10,
+        "notFlattened": 10
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/HomeTypography.tsx",
+      "stats": {
+        "found": 11,
+        "legacyOptimized": 11,
+        "flattened": 9,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 2,
+        "notFlattened": 2
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/PromoLinksRow.tsx",
+      "stats": {
+        "found": 2,
+        "legacyOptimized": 1,
+        "flattened": 1,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 1,
+        "notFlattened": 1
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/MediaPlayer.tsx",
+      "stats": {
+        "found": 11,
+        "legacyOptimized": 10,
+        "flattened": 8,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 3,
+        "notFlattened": 3
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/CodeDemoPreParsed.tsx",
+      "stats": {
+        "found": 1,
+        "legacyOptimized": 1,
+        "flattened": 0,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 1,
+        "notFlattened": 1
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/IconStack.tsx",
+      "stats": {
+        "found": 0,
+        "legacyOptimized": 0,
+        "flattened": 0,
+        "partial": 0,
+        "styled": 1,
+        "bailed": 0,
+        "notFlattened": 0
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "features/site/home/InstallInput.tsx",
+      "stats": {
+        "found": 5,
+        "legacyOptimized": 4,
+        "flattened": 4,
+        "partial": 0,
+        "styled": 0,
+        "bailed": 1,
+        "notFlattened": 1
+      },
+      "diagnostics": []
+    }
+  ]
+}

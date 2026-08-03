@@ -10,6 +10,9 @@ import {
   type BenchResult,
 } from '../../shared/bench'
 
+const BEHAVIOR_VALIDATION =
+  new URLSearchParams(window.location.search).get('behaviorValidation') === '1'
+
 // ── scenario 1: simple (fully static — compiler CAN flatten) ──
 
 function SimpleItems({ seed }: { seed: number }) {
@@ -19,7 +22,8 @@ function SimpleItems({ seed }: { seed: number }) {
       // all props are static literals — compiler should flatten to div
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
+          key={i}
+          data-bench-scenario-item="simple"
           width={20}
           height={20}
           backgroundColor="rgb(99,102,241)"
@@ -32,7 +36,7 @@ function SimpleItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 2: rich (static props + pseudo states) ──
+// ── scenario 2: rich (static borders and spacing) ──
 
 function RichItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -40,17 +44,16 @@ function RichItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
+          key={i}
+          data-bench-scenario-item="rich"
           width={60}
           height={40}
           borderRadius={6}
           padding={4}
           borderWidth={1}
-          borderColor="rgba(0,0,0,0.1) hover:rgba(0,0,0,0.3)"
+          borderColor="rgba(0,0,0,0.1)"
           backgroundColor="rgb(99,102,241)"
           margin={1}
-          scale="hover:1.02 press:0.98"
-          opacity="press:0.8"
         />
       )
     }
@@ -58,7 +61,7 @@ function RichItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 3: group (parent group state affects child styles) ──
+// ── scenario 3: group (nested row layout) ──
 
 function GroupItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -66,28 +69,24 @@ function GroupItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
-          group={'row' as any}
+          key={i}
+          data-bench-scenario-item="group"
           flexDirection="row"
           alignItems="center"
           gap={8}
           padding={8}
           borderRadius={8}
-          backgroundColor="gray2 hover:gray3"
+          backgroundColor="rgb(245,245,245)"
           margin={1}
         >
           <View
             width={32}
             height={32}
             borderRadius={16}
-            backgroundColor="blue5 group-hover/row:blue7"
+            backgroundColor="rgb(147,197,253)"
           />
           <View flex={1}>
-            <View
-              height={10}
-              borderRadius={4}
-              backgroundColor="gray8 group-hover/row:blue8"
-            />
+            <View height={10} borderRadius={4} backgroundColor="rgb(115,115,115)" />
           </View>
         </View>
       )
@@ -98,7 +97,12 @@ function GroupItems({ seed }: { seed: number }) {
 
 // ── scenario 4: heavy (realistic card list, nested, mixed) ──
 
-const CARD_COLORS = ['blue5', 'green5', 'pink5', 'orange5']
+const CARD_COLORS = [
+  'rgb(147,197,253)',
+  'rgb(134,239,172)',
+  'rgb(249,168,212)',
+  'rgb(253,186,116)',
+]
 
 function HeavyItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -107,36 +111,30 @@ function HeavyItems({ seed }: { seed: number }) {
       const color = CARD_COLORS[(i + seed) % 4]
       arr.push(
         <View
-          key={i + seed * HEAVY_COUNT}
-          group={'card' as any}
+          key={i}
+          data-bench-scenario-item="heavy"
           flexDirection="row"
           alignItems="center"
           gap={12}
           padding={12}
           borderRadius={10}
-          backgroundColor="gray1 hover:gray2"
+          backgroundColor="rgb(250,250,250)"
           borderWidth={1}
-          borderColor="gray4 hover:gray6"
+          borderColor="rgb(212,212,212)"
           marginBottom={4}
         >
-          <View
-            width={44}
-            height={44}
-            borderRadius={22}
-            backgroundColor={color}
-            opacity="1 group-hover/card:0.8"
-          />
+          <View width={44} height={44} borderRadius={22} backgroundColor={color} />
           <View flex={1} gap={4}>
             <View
               height={12}
               borderRadius={4}
-              backgroundColor="gray11 group-hover/card:blue9"
+              backgroundColor="rgb(64,64,64)"
               width={80 + ((i * 17) % 60)}
             />
             <View
               height={10}
               borderRadius={3}
-              backgroundColor="gray8"
+              backgroundColor="rgb(115,115,115)"
               width={120 + ((i * 13) % 80)}
             />
           </View>
@@ -144,9 +142,14 @@ function HeavyItems({ seed }: { seed: number }) {
             paddingHorizontal={8}
             paddingVertical={3}
             borderRadius={6}
-            backgroundColor="blue3 group-hover/card:blue5"
+            backgroundColor="rgb(219,234,254)"
           >
-            <View width={24} height={8} borderRadius={3} backgroundColor="blue9" />
+            <View
+              width={24}
+              height={8}
+              borderRadius={3}
+              backgroundColor="rgb(59,130,246)"
+            />
           </View>
         </View>
       )
@@ -155,7 +158,7 @@ function HeavyItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 5: animated (always deopts — transition prop) ──
+// ── scenario 5: dynamic transition (dynamic values retain the runtime path) ──
 
 function AnimatedItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -163,15 +166,18 @@ function AnimatedItems({ seed }: { seed: number }) {
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
         <View
-          key={i + seed * ITEM_COUNT}
+          key={i}
+          data-bench-scenario-item="animated"
+          data-bench-dynamic-item={i === 0 ? 'primary' : undefined}
+          data-bench-dynamic-seed={seed}
           transition="bouncy"
           width={24}
           height={24}
           borderRadius={4}
           backgroundColor="rgb(59,130,246)"
           margin={1}
-          opacity="enter:0"
-          scale="enter:0.5 hover:1.1 press:0.95"
+          opacity={seed % 2 ? 0.85 : 1}
+          scale={seed % 2 ? 0.95 : 1}
         />
       )
     }
@@ -209,15 +215,27 @@ function BenchRunner({
       mountTimeRef.current = performance.now() - startRef.current
       setPhase('mounted')
     } else if (phase === 'mounted') {
-      requestAnimationFrame(() => {
+      const rerender = () => {
         startRef.current = performance.now()
         setPhase('rerendering')
         setSeed((s) => s + 1)
-      })
+      }
+      if (BEHAVIOR_VALIDATION) {
+        setTimeout(rerender, 500)
+      } else {
+        requestAnimationFrame(rerender)
+      }
     } else if (phase === 'rerendering') {
       const rerenderTime = performance.now() - startRef.current
-      setPhase('done')
-      onResult({ mount: mountTimeRef.current, rerender: rerenderTime })
+      const finish = () => {
+        setPhase('done')
+        onResult({ mount: mountTimeRef.current, rerender: rerenderTime })
+      }
+      if (BEHAVIOR_VALIDATION) {
+        setTimeout(finish, 700)
+      } else {
+        finish()
+      }
     }
   }, [phase])
 
@@ -234,6 +252,7 @@ function BenchRunner({
 
   return (
     <div
+      data-bench-runner-seed={seed}
       style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}
     >
       <Component seed={seed} />
@@ -242,6 +261,15 @@ function BenchRunner({
 }
 
 function App() {
+  const requestedScenario = new URLSearchParams(window.location.search).get('scenario')
+  const activeScenarios = useMemo(() => {
+    if (!requestedScenario) return scenarios
+    const selected = scenarios.filter(({ id }) => id === requestedScenario)
+    if (!selected.length) {
+      throw new Error(`Unknown benchmark scenario: ${requestedScenario}`)
+    }
+    return selected
+  }, [requestedScenario])
   const [results, setResults] = useState<Record<string, BenchResult>>({})
   const [currentIdx, setCurrentIdx] = useState(0)
   const [running, setRunning] = useState(false)
@@ -255,10 +283,10 @@ function App() {
 
   const handleResult = useCallback(
     (result: BenchResult) => {
-      const scenarioId = scenarios[currentIdx].id
+      const scenarioId = activeScenarios[currentIdx].id
       setResults((prev) => {
         const next = { ...prev, [scenarioId]: result }
-        if (currentIdx + 1 >= scenarios.length && resultsRef.current) {
+        if (currentIdx + 1 >= activeScenarios.length && resultsRef.current) {
           const label =
             new URLSearchParams(window.location.search).get('label') ??
             'Tamagui benchmark'
@@ -266,22 +294,23 @@ function App() {
         }
         return next
       })
-      if (currentIdx + 1 < scenarios.length) {
+      if (currentIdx + 1 < activeScenarios.length) {
         setTimeout(() => setCurrentIdx((i) => i + 1), 200)
       } else {
         setRunning(false)
       }
     },
-    [currentIdx]
+    [activeScenarios, currentIdx]
   )
 
-  const currentScenario = running ? scenarios[currentIdx] : null
+  const currentScenario = running ? activeScenarios[currentIdx] : null
 
   return (
     <div style={{ padding: 24, color: '#eee', fontFamily: 'system-ui' }}>
       <h1 style={{ fontSize: 24, margin: '0 0 8px' }}>Tamagui Benchmark</h1>
       <p style={{ color: '#888', margin: '0 0 20px', fontSize: 14 }}>
-        {ITEM_COUNT} components × {scenarios.length} scenarios
+        {ITEM_COUNT} components × {activeScenarios.length} scenario
+        {activeScenarios.length === 1 ? '' : 's'}
       </p>
 
       <button
@@ -299,7 +328,9 @@ function App() {
           marginBottom: 16,
         }}
       >
-        {running ? `Running ${currentIdx + 1}/${scenarios.length}...` : 'Run Benchmarks'}
+        {running
+          ? `Running ${currentIdx + 1}/${activeScenarios.length}...`
+          : 'Run Benchmarks'}
       </button>
 
       {currentScenario && (

@@ -30,7 +30,7 @@ test('native diagnostics reject unsupported table semantics without inventing ou
     const dynamicText = 'dynamic'
     export const Invalid = () => (
       <>
-        <html.div onScroll={() => {}} />
+        <html.div onMouseMove={() => {}} />
         <html.div>{\`template literal\`}</html.div>
         <html.div>{1 + 2}</html.div>
         <html.div>{'a' + 'b'}</html.div>
@@ -43,33 +43,32 @@ test('native diagnostics reject unsupported table semantics without inventing ou
   expect(output.diagnostics.map(({ code, message }) => ({ code, message }))).toEqual([
     {
       code: 'local/unsupported-prop-key',
-      message:
-        'onScroll is not supported on native html.div: native scrolling lives in a scroll view, not in an ordinary element',
-    },
-    {
-      code: 'local/unsupported-child',
-      message:
-        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
-    },
-    {
-      code: 'local/unsupported-child',
-      message:
-        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
-    },
-    {
-      code: 'local/unsupported-child',
-      message:
-        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
-    },
-    {
-      code: 'local/unsupported-child',
-      message:
-        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
+      message: 'onMouseMove has no native DOM event equivalent',
     },
     {
       code: 'local/unsupported-target',
       message:
         'html.select is not supported on native: native has no menu-based select control, so this tag is a native build error',
+    },
+    {
+      code: 'local/unsupported-child',
+      message:
+        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
+    },
+    {
+      code: 'local/unsupported-child',
+      message:
+        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
+    },
+    {
+      code: 'local/unsupported-child',
+      message:
+        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
+    },
+    {
+      code: 'local/unsupported-child',
+      message:
+        'html.div has a direct child that may render unwrapped native text; write a literal as JSX text or wrap the child in html.span',
     },
   ])
 })

@@ -6,6 +6,15 @@
   "scripts": {
     "start": "expo start --port 8101"
   },
+  "expo": {
+    "autolinking": {
+      "exclude": [
+        "react-native-reanimated",
+        "react-native-safe-area-context",
+        "react-native-worklets"
+      ]
+    }
+  },
   "dependencies": {
     "@tamagui/config": "workspace:*",
     "@tamagui/timer": "workspace:*",

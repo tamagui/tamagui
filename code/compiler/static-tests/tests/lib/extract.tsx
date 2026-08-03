@@ -8,6 +8,7 @@ import { dirname, isAbsolute, resolve } from 'node:path'
 interface ExtractOptions {
   sourcePath?: string
   options?: TamaguiOptions
+  disablePartialExtraction?: boolean
 }
 
 const require = createRequire(import.meta.url)
@@ -41,14 +42,20 @@ function resolveFile(specifier: string, importer: string): string | null {
   }
 }
 
-function projectFor(target: 'web' | 'native', options: TamaguiOptions): CompilerProject {
+function projectFor(target: 'web' | 'native', opts: ExtractOptions): CompilerProject {
+  const options = opts.options ?? {}
   const components = options.components ?? [
     'tamagui',
     '@tamagui/core',
     '@tamagui/test-design-system',
   ]
   const config = options.config ?? './tests/lib/tamagui.config.cjs'
-  const key = JSON.stringify({ target, config, components })
+  const key = JSON.stringify({
+    target,
+    config,
+    components,
+    disablePartialExtraction: opts.disablePartialExtraction,
+  })
   const cached = projects.get(key)
   if (cached) return cached
   const projectInfo = loadTamaguiSync({
@@ -64,7 +71,12 @@ function projectFor(target: 'web' | 'native', options: TamaguiOptions): Compiler
       return { moduleName, id }
     }
   )
-  const project = { projectInfo, componentModules, generation: key }
+  const project = {
+    projectInfo,
+    componentModules,
+    generation: key,
+    disablePartialExtraction: opts.disablePartialExtraction,
+  }
   projects.set(key, project)
   return project
 }
@@ -74,9 +86,8 @@ async function compile(
   target: 'web' | 'native',
   opts: ExtractOptions = {}
 ) {
-  const options = opts.options ?? {}
   const sourcePath = opts.sourcePath ?? resolve(root, 'tests/__compiler-test__.tsx')
-  const project = projectFor(target, options)
+  const project = projectFor(target, opts)
   let frontend = frontends.get(project.generation)
   if (!frontend) {
     frontend = new CompilerFrontend()
@@ -106,8 +117,8 @@ function normalizeSnapshotCode(code: string) {
   return code.replace(/[ \t]+$/gm, '')
 }
 
-export async function extractForNative(source: string) {
-  const result = await compile(source, 'native')
+export async function extractForNative(source: string, opts: ExtractOptions = {}) {
+  const result = await compile(source, 'native', opts)
   return {
     code: normalizeSnapshotCode(result.output.code),
     map: result.output.map,

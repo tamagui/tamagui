@@ -1,10 +1,5 @@
-// finding: generated html.* on web are ordinary Tamagui components that
-// accept regular style props (html.tsx says so), but the structural pass
-// rewrote every html.* to a literal tag unconditionally — so
-// <html.a color="red"> compiled to <a color="red">, the style prop landing on
-// the DOM as a junk attribute and the element resets vanishing. an element
-// carrying anything outside the strict DOM prop tables must stay on the
-// runtime component path until the DOM candidate lowering exists.
+// DOM elements use the ordinary lowering candidate, so author styles and
+// element resets are extracted before the semantic target becomes a host tag.
 
 import * as React from 'react'
 import { expect, test } from 'vitest'
@@ -13,7 +8,7 @@ import { extractForWeb } from './lib/extract'
 
 window['React'] = React
 
-test('an html element carrying a style prop is not rewritten to a literal tag', async () => {
+test('an html element carrying a style prop lowers to CSS on its semantic tag', async () => {
   const output = await extractForWeb(`
     import { html } from '@tamagui/core'
     export function Test() {
@@ -21,10 +16,10 @@ test('an html element carrying a style prop is not rewritten to a literal tag', 
     }
   `)
   const code = output?.js ?? ''
-  // the style prop must never land on a literal DOM tag as an attribute
-  expect(code).not.toMatch(/<a[\s>]/)
-  // the runtime component keeps handling it
-  expect(code).toContain('html.a')
+  expect(code).toMatch(/<a[\s>]/)
+  expect(code).not.toContain('<html.a')
+  expect(code).not.toContain('color="red"')
+  expect(output.styles).toContain('color:red')
 })
 
 test('an html element with a spread is not rewritten either', async () => {
@@ -47,5 +42,5 @@ test('an html element with only strict DOM props still rewrites', async () => {
   `)
   const code = output?.js ?? ''
   expect(code).toContain('<main')
-  expect(code).not.toContain('html.main')
+  expect(code).not.toContain('<html.main')
 })
