@@ -7,7 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@tamagui/config": "2.6.2",
+    "@tamagui/animations-css": "2.6.2",
     "@tamagui/vite-plugin": "2.6.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",

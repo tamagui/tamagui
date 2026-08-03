@@ -21,11 +21,17 @@ import {
   writeFileSync,
 } from 'fs'
 import { arch, cpus, platform, release, tmpdir, totalmem } from 'os'
-import { dirname, join } from 'path'
+import { dirname, join, relative } from 'path'
 
 const args = process.argv.slice(2)
 const VERIFY_WORKLOAD_ONLY = args.includes('--verify-workload')
 const BUILD_ONLY = args.includes('--build-only')
+const BUNDLE_ATTRIBUTION_PATH = args
+  .find((arg) => arg.startsWith('--bundle-attribution='))
+  ?.slice(21)
+const BEHAVIOR_VALIDATION_PATH = args
+  .find((arg) => arg.startsWith('--behavior-validation='))
+  ?.slice(22)
 const samplesArg =
   args.find((arg) => arg.startsWith('--samples=')) ??
   args.find((arg) => arg.startsWith('--runs='))
@@ -183,11 +189,12 @@ interface PairedEffect {
   v3: Statistic
   v2: Statistic
   differenceMs: Statistic
-  ratio: Statistic
+  ratioOfMeans: number
+  medianPairedRatio: number
 }
 
 interface BenchmarkReport {
-  schemaVersion: 1
+  schemaVersion: 2
   metadata: Record<string, unknown>
   frameworks: Array<Pick<BenchConfig, 'id' | 'name' | 'version' | 'mode'>>
   workload: { itemCount: number; heavyCount: number; samples: number; warmups: number }
@@ -199,7 +206,12 @@ interface BenchmarkReport {
       jsBytes: number
       cssBytes: number
       compilerStats?: unknown
+      bundleAttribution?: unknown
       versions: Record<string, string>
+      dependencyMetadata: {
+        packageJsonSha256: string
+        lockfile: { file: string; sha256: string }
+      }
     }
   >
   trials: Trial[]
@@ -243,6 +255,94 @@ function measureBuildArtifact(directory: string) {
   return totals
 }
 
+function bundleSizes(attribution: any) {
+  return {
+    jsGzipBytes: attribution.chunks.reduce(
+      (total: number, chunk: any) => total + chunk.gzipBytes,
+      0
+    ),
+    cssGzipBytes: attribution.assets
+      .filter((asset: any) => asset.fileName.endsWith('.css'))
+      .reduce((total: number, asset: any) => total + asset.gzipBytes, 0),
+  }
+}
+
+function moduleGroup(id: string) {
+  const dependency = id.split('node_modules/').at(-1)
+  if (dependency !== id) {
+    const parts = dependency!.split('/')
+    return parts[0]!.startsWith('@') ? `${parts[0]}/${parts[1]}` : parts[0]
+  }
+  const workspace = id.match(/\.\.\/\.\.\/(?:core|packages)\/([^/]+)\/dist/)
+  if (workspace) return `@tamagui/${workspace[1]}`
+  if (id.includes('../../ui/tamagui/dist/')) return 'tamagui'
+  if (id.startsWith('src/')) return 'fixture'
+  if (id.includes('../shared/')) return 'shared benchmark'
+  return 'build/runtime helpers'
+}
+
+function renderedModuleGroups(attribution: any) {
+  const groups: Record<string, number> = {}
+  for (const module of attribution.chunks.flatMap((chunk: any) => chunk.modules)) {
+    const group = moduleGroup(module.id)
+    groups[group] = (groups[group] ?? 0) + module.renderedBytes
+  }
+  return groups
+}
+
+function buildBundleComparison(artifacts: BenchmarkReport['artifacts']) {
+  return Object.fromEntries(
+    (['compiled', 'runtime'] as const).map((mode) => {
+      const v3 = artifacts[`tamagui-v3-${mode}`]
+      const v2 = artifacts[`tamagui-v2-${mode}`]
+      if (!v3?.bundleAttribution || !v2?.bundleAttribution) return [mode, null]
+      const v3Groups = renderedModuleGroups(v3.bundleAttribution)
+      const v2Groups = renderedModuleGroups(v2.bundleAttribution)
+      const groups = Object.fromEntries(
+        [...new Set([...Object.keys(v3Groups), ...Object.keys(v2Groups)])]
+          .map((group) => ({
+            group,
+            v3RenderedBytes: v3Groups[group] ?? 0,
+            v2RenderedBytes: v2Groups[group] ?? 0,
+            deltaRenderedBytes: (v3Groups[group] ?? 0) - (v2Groups[group] ?? 0),
+          }))
+          .sort(
+            (left, right) =>
+              Math.abs(right.deltaRenderedBytes) - Math.abs(left.deltaRenderedBytes) ||
+              left.group.localeCompare(right.group)
+          )
+          .map(({ group, ...values }) => [group, values])
+      )
+      const v3Gzip = bundleSizes(v3.bundleAttribution)
+      const v2Gzip = bundleSizes(v2.bundleAttribution)
+      return [
+        mode,
+        {
+          artifactBytes: {
+            v3: {
+              js: v3.jsBytes,
+              css: v3.cssBytes,
+              ...v3Gzip,
+            },
+            v2: {
+              js: v2.jsBytes,
+              css: v2.cssBytes,
+              ...v2Gzip,
+            },
+            delta: {
+              js: v3.jsBytes - v2.jsBytes,
+              css: v3.cssBytes - v2.cssBytes,
+              jsGzipBytes: v3Gzip.jsGzipBytes - v2Gzip.jsGzipBytes,
+              cssGzipBytes: v3Gzip.cssGzipBytes - v2Gzip.cssGzipBytes,
+            },
+          },
+          renderedModuleGroups: groups,
+        },
+      ]
+    })
+  )
+}
+
 function installedPackageVersion(directory: string, packageName: string) {
   const require = createRequire(join(directory, 'package.json'))
   let current = dirname(require.resolve(packageName))
@@ -269,27 +369,70 @@ function installedVersions(directory: string) {
       'react-dom',
       'vite',
       '@vitejs/plugin-react',
+      '@tamagui/animations-css',
       'tamagui',
       '@tamagui/vite-plugin',
     ].map((packageName) => [packageName, installedPackageVersion(directory, packageName)])
   )
 }
 
-function verifyTamaguiWorkload() {
-  const v3Path = join(import.meta.dir, 'tamagui-bench', 'src', 'index.tsx')
-  const v2Path = join(import.meta.dir, 'tamagui-v2-bench', 'src', 'index.tsx')
-  const v3Source = readFileSync(v3Path)
-  const v2Source = readFileSync(v2Path)
-  if (!v3Source.equals(v2Source)) {
-    throw new Error(
-      'Tamagui v2 and v3 benchmark sources must remain byte-for-byte identical'
-    )
+function sha256File(file: string) {
+  return createHash('sha256').update(readFileSync(file)).digest('hex')
+}
+
+function dependencyMetadata(directory: string, installWith?: 'bun' | 'npm') {
+  let current = directory
+  const lockfileName = installWith === 'npm' ? 'package-lock.json' : 'bun.lock'
+  while (true) {
+    const lockfile = join(current, lockfileName)
+    try {
+      statSync(lockfile)
+      return {
+        packageJsonSha256: sha256File(join(directory, 'package.json')),
+        lockfile: {
+          file: relative(import.meta.dir, lockfile).replaceAll('\\', '/'),
+          sha256: sha256File(lockfile),
+        },
+      }
+    } catch {}
+    const parent = dirname(current)
+    if (parent === current) {
+      throw new Error(`could not find ${lockfileName} for ${directory}`)
+    }
+    current = parent
   }
+}
+
+function verifyTamaguiWorkload() {
+  const files = ['src/index.tsx', 'src/tamagui.config.ts']
+  const workloadHash = createHash('sha256')
+  const verifiedFiles = files.map((file) => {
+    const v3Source = readFileSync(join(import.meta.dir, 'tamagui-bench', file))
+    const v2Source = readFileSync(join(import.meta.dir, 'tamagui-v2-bench', file))
+    if (!v3Source.equals(v2Source)) {
+      throw new Error(
+        `Tamagui v2 and v3 benchmark files must remain byte-for-byte identical: ${file}`
+      )
+    }
+    workloadHash.update(file)
+    workloadHash.update(v3Source)
+    return {
+      file,
+      bytes: v3Source.byteLength,
+      sha256: createHash('sha256').update(v3Source).digest('hex'),
+    }
+  })
   return {
     byteIdentical: true,
-    bytes: v3Source.byteLength,
-    sha256: createHash('sha256').update(v3Source).digest('hex'),
-    sources: ['tamagui-bench/src/index.tsx', 'tamagui-v2-bench/src/index.tsx'],
+    sha256: workloadHash.digest('hex'),
+    sourceSha256: verifiedFiles.find(({ file }) => file === 'src/index.tsx')!.sha256,
+    configSha256: verifiedFiles.find(({ file }) => file === 'src/tamagui.config.ts')!
+      .sha256,
+    files: verifiedFiles,
+    sources: files.flatMap((file) => [
+      `tamagui-bench/${file}`,
+      `tamagui-v2-bench/${file}`,
+    ]),
   }
 }
 
@@ -335,6 +478,12 @@ function summarize(values: number[]): Statistic {
     standardDeviation,
     ci95: { low: mean - margin, high: mean + margin, margin },
   }
+}
+
+function median(values: number[]) {
+  const sorted = [...values].sort((left, right) => left - right)
+  const middle = Math.floor(sorted.length / 2)
+  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2
 }
 
 function buildSummary(trials: Trial[]): BenchmarkReport['summary'] {
@@ -403,13 +552,17 @@ function buildEffects(trials: Trial[]): BenchmarkReport['effects'] {
         }
         const v3Values = v3.map((trial) => trial[metric])
         const v2Values = v2.map((trial) => trial[metric])
+        const pairedRatios = v3Values.map((value, index) => value / v2Values[index])
         effects[mode][scenario][metric] = {
           v3: summarize(v3Values),
           v2: summarize(v2Values),
           differenceMs: summarize(
             v3Values.map((value, index) => value - v2Values[index])
           ),
-          ratio: summarize(v3Values.map((value, index) => value / v2Values[index])),
+          ratioOfMeans:
+            v3Values.reduce((total, value) => total + value, 0) /
+            v2Values.reduce((total, value) => total + value, 0),
+          medianPairedRatio: median(pairedRatios),
         }
       }
     }
@@ -474,6 +627,279 @@ async function measure(
   return { mount, rerender }
 }
 
+const expectedLayouts = {
+  simple: {
+    itemCount: ITEM_COUNT,
+    hostCount: ITEM_COUNT,
+    styles: {
+      width: '20px',
+      height: '20px',
+      backgroundColor: 'rgb(99, 102, 241)',
+      borderRadius: '3px',
+      marginTop: '1px',
+    },
+  },
+  rich: {
+    itemCount: ITEM_COUNT,
+    hostCount: ITEM_COUNT,
+    styles: {
+      width: '60px',
+      height: '40px',
+      backgroundColor: 'rgb(99, 102, 241)',
+      borderRadius: '6px',
+      borderTopWidth: '1px',
+      borderTopColor: 'rgba(0, 0, 0, 0.1)',
+      paddingTop: '4px',
+      marginTop: '1px',
+    },
+  },
+  group: {
+    itemCount: ITEM_COUNT,
+    hostCount: ITEM_COUNT * 4,
+    styles: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: '8px',
+      paddingTop: '8px',
+      borderRadius: '8px',
+      backgroundColor: 'rgb(245, 245, 245)',
+      marginTop: '1px',
+    },
+  },
+  heavy: {
+    itemCount: HEAVY_COUNT,
+    hostCount: HEAVY_COUNT * 7,
+    styles: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: '12px',
+      paddingTop: '12px',
+      borderRadius: '10px',
+      backgroundColor: 'rgb(250, 250, 250)',
+      borderTopWidth: '1px',
+      borderTopColor: 'rgb(212, 212, 212)',
+      marginBottom: '4px',
+    },
+  },
+} as const
+
+async function validateScenarioLayout(
+  context: import('playwright').BrowserContext,
+  bench: BenchConfig,
+  scenario: keyof typeof expectedLayouts
+) {
+  const page = await context.newPage()
+  await page.goto(
+    `http://127.0.0.1:${bench.port}/?scenario=${scenario}&behaviorValidation=1&label=${encodeURIComponent(bench.name)}`,
+    { waitUntil: 'networkidle' }
+  )
+  await page.locator('#bench-start').click()
+  const items = page.locator(`[data-bench-scenario-item="${scenario}"]`)
+  await items.first().waitFor({ state: 'attached' })
+  const initialItem = await items.first().elementHandle()
+  if (!initialItem) throw new Error(`${bench.id}/${scenario}: missing initial item`)
+  await page.waitForSelector('[data-bench-runner-seed="2"]', { timeout: 120_000 })
+  const actual = await initialItem.evaluate((element, expectedStyles) => {
+    const style = getComputedStyle(element)
+    return {
+      sameNodeAfterUpdate:
+        element.isConnected &&
+        element.parentElement?.getAttribute('data-bench-runner-seed') === '2',
+      itemCount: element.parentElement!.querySelectorAll(
+        `[data-bench-scenario-item="${element.getAttribute('data-bench-scenario-item')}"]`
+      ).length,
+      hostCount: element.parentElement!.querySelectorAll('*').length,
+      styles: Object.fromEntries(
+        Object.keys(expectedStyles).map((property) => [
+          property,
+          style[property as keyof CSSStyleDeclaration],
+        ])
+      ),
+    }
+  }, expectedLayouts[scenario].styles)
+  await page.waitForSelector(`#bench-result-${scenario}-rerender`, {
+    timeout: 120_000,
+  })
+  await page.close()
+
+  const expected = expectedLayouts[scenario]
+  const preservesBehavior =
+    actual.sameNodeAfterUpdate &&
+    actual.itemCount === expected.itemCount &&
+    actual.hostCount === expected.hostCount &&
+    Object.entries(expected.styles).every(
+      ([property, value]) => actual.styles[property] === value
+    )
+  return { expected, actual, preservesBehavior }
+}
+
+async function validateDynamicTransition(
+  context: import('playwright').BrowserContext,
+  bench: BenchConfig
+) {
+  const page = await context.newPage()
+  await page.goto(
+    `http://127.0.0.1:${bench.port}/?scenario=animated&behaviorValidation=1&label=${encodeURIComponent(bench.name)}`,
+    { waitUntil: 'networkidle' }
+  )
+  await page.evaluate(() => {
+    const samples: Array<{
+      elapsed: number
+      opacity: number
+      scale: number
+      seed: number
+      transitionDuration: string
+      transitionProperty: string
+    }> = []
+    const start = performance.now()
+    const capture = () => {
+      const target = document.querySelector<HTMLElement>(
+        '[data-bench-dynamic-item="primary"]'
+      )
+      if (!target) return
+      const style = getComputedStyle(target)
+      const match = style.transform.match(/^matrix\(([^,]+)/)
+      const individualScale =
+        style.scale !== 'none' ? Number.parseFloat(style.scale) : Number.NaN
+      samples.push({
+        elapsed: performance.now() - start,
+        opacity: Number(style.opacity),
+        scale: Number.isFinite(individualScale)
+          ? individualScale
+          : match
+            ? Number(match[1])
+            : style.transform === 'none'
+              ? 1
+              : Number.NaN,
+        seed: Number(target.dataset.benchDynamicSeed),
+        transitionDuration: style.transitionDuration,
+        transitionProperty: style.transitionProperty,
+      })
+    }
+    const timer = setInterval(capture, 16)
+    const observer = new MutationObserver(capture)
+    observer.observe(document.getElementById('root')!, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    })
+    ;(window as any).__dynamicTransitionCapture = { samples, timer, observer }
+  })
+  await page.locator('#bench-start').click()
+  const initialTarget = page.locator('[data-bench-dynamic-item="primary"]')
+  await initialTarget.waitFor({ state: 'attached' })
+  const initialTargetHandle = await initialTarget.elementHandle()
+  if (!initialTargetHandle) {
+    await page.close()
+    throw new Error(`${bench.id}: missing initial dynamic transition target`)
+  }
+  const expected = {
+    itemCount: ITEM_COUNT,
+    hostCount: ITEM_COUNT,
+    styles: {
+      width: '24px',
+      height: '24px',
+      backgroundColor: 'rgb(59, 130, 246)',
+      borderRadius: '4px',
+      marginTop: '1px',
+    },
+  }
+  await page.waitForFunction(
+    () =>
+      document.querySelector<HTMLElement>('[data-bench-dynamic-item="primary"]')?.dataset
+        .benchDynamicSeed === '2',
+    undefined,
+    { timeout: 120_000 }
+  )
+  await page.waitForTimeout(400)
+  const actual = await initialTargetHandle.evaluate((target) => {
+    const style = getComputedStyle(target)
+    return {
+      sameNodeAfterUpdate:
+        target.isConnected &&
+        target.parentElement?.getAttribute('data-bench-runner-seed') === '2',
+      itemCount: target.parentElement!.querySelectorAll(
+        '[data-bench-scenario-item="animated"]'
+      ).length,
+      hostCount: target.parentElement!.querySelectorAll('*').length,
+      styles: {
+        width: style.width,
+        height: style.height,
+        backgroundColor: style.backgroundColor,
+        borderRadius: style.borderRadius,
+        marginTop: style.marginTop,
+      },
+    }
+  })
+  await page.waitForSelector('#bench-result-animated-rerender', { timeout: 120_000 })
+  const samples = await page.evaluate(() => {
+    const capture = (window as any).__dynamicTransitionCapture
+    clearInterval(capture.timer)
+    capture.observer.disconnect()
+    return capture.samples
+  })
+  await page.close()
+
+  if (!samples.length) {
+    throw new Error(`${bench.id}: dynamic transition target produced zero samples`)
+  }
+  if (!actual) {
+    throw new Error(`${bench.id}: dynamic transition target unmounted before validation`)
+  }
+  const opacity = samples.map((sample) => sample.opacity).filter(Number.isFinite)
+  const scale = samples.map((sample) => sample.scale).filter(Number.isFinite)
+  const transitionDeclared = samples.some(
+    (sample) =>
+      sample.transitionDuration
+        .split(',')
+        .some((duration) => Number.parseFloat(duration) > 0) &&
+      sample.transitionProperty !== 'none'
+  )
+  const startStateObserved = samples.some(
+    ({ seed, opacity, scale }) =>
+      seed === 1 && opacity >= 0.83 && opacity <= 0.87 && scale >= 0.93 && scale <= 0.97
+  )
+  const finalStateObserved = samples.some(
+    ({ seed, opacity, scale }) => seed === 2 && opacity >= 0.99 && scale >= 0.99
+  )
+  const intermediateStateObserved = samples.some(
+    ({ seed, opacity, scale }) =>
+      seed === 2 && opacity > 0.87 && opacity < 0.99 && scale > 0.97 && scale < 0.99
+  )
+  const layoutPreserved =
+    actual.sameNodeAfterUpdate &&
+    actual.itemCount === expected.itemCount &&
+    actual.hostCount === expected.hostCount &&
+    Object.entries(expected.styles).every(
+      ([property, value]) =>
+        actual.styles[property as keyof typeof actual.styles] === value
+    )
+  return {
+    expected,
+    actual,
+    samples: samples.length,
+    opacityRange: {
+      min: Math.min(...opacity),
+      max: Math.max(...opacity),
+    },
+    scaleRange: {
+      min: Math.min(...scale),
+      max: Math.max(...scale),
+    },
+    transitionDeclared,
+    startStateObserved,
+    finalStateObserved,
+    intermediateStateObserved,
+    layoutPreserved,
+    preservesBehavior:
+      transitionDeclared &&
+      startStateObserved &&
+      finalStateObserved &&
+      intermediateStateObserved &&
+      layoutPreserved,
+  }
+}
+
 function escapeHtml(value: string) {
   return value
     .replaceAll('&', '&amp;')
@@ -511,7 +937,7 @@ function generateHtml(report: BenchmarkReport) {
       return SCENARIOS.flatMap((scenario) =>
         (['mount', 'rerender'] as const).map((metric) => {
           const effect = modeEffects[scenario][metric]
-          return `<tr><td>${mode}</td><td>${escapeHtml(SCENARIO_LABELS[scenario])}</td><td>${metric}</td><td>${effect.ratio.mean.toFixed(3)}× <span class="ci">${effect.ratio.ci95.low.toFixed(3)}–${effect.ratio.ci95.high.toFixed(3)}</span></td><td>${effect.differenceMs.mean.toFixed(2)} ms <span class="ci">${effect.differenceMs.ci95.low.toFixed(2)}–${effect.differenceMs.ci95.high.toFixed(2)}</span></td></tr>`
+          return `<tr><td>${mode}</td><td>${escapeHtml(SCENARIO_LABELS[scenario])}</td><td>${metric}</td><td>${effect.ratioOfMeans.toFixed(3)}× <span class="ci">paired median ${effect.medianPairedRatio.toFixed(3)}×</span></td><td>${effect.differenceMs.mean.toFixed(2)} ms <span class="ci">${effect.differenceMs.ci95.low.toFixed(2)}–${effect.differenceMs.ci95.high.toFixed(2)}</span></td></tr>`
         })
       )
     })
@@ -554,7 +980,7 @@ ${rows('rerender')}
 <h2>Paired V3 versus V2 effects</h2>
 <p class="sub">Ratios below 1 and negative differences favor V3. Confidence intervals pair observations by retained sample round.</p>
 <div class="scroll"><table>
-<thead><tr><th>Mode</th><th>Scenario</th><th>Metric</th><th>V3 / V2 ratio (95% CI)</th><th>V3 − V2 (95% CI)</th></tr></thead>
+<thead><tr><th>Mode</th><th>Scenario</th><th>Metric</th><th>Ratio of means / paired median</th><th>V3 − V2 (95% CI)</th></tr></thead>
 <tbody>${effectRows}</tbody>
 </table></div>
 </body>
@@ -590,6 +1016,7 @@ async function main() {
       const cwd = join(import.meta.dir, bench.dir)
       const outDir = join(buildRoot, bench.id)
       const compilerStatsPath = join(buildRoot, `${bench.id}-compiler-stats.json`)
+      const bundleAttributionPath = join(buildRoot, `${bench.id}-bundle-attribution.json`)
       if (!installedDirs.has(cwd)) {
         if (bench.installWith === 'npm') command('npm', ['ci'], cwd)
         if (bench.installWith === 'bun') {
@@ -608,11 +1035,18 @@ async function main() {
         ...(bench.id === 'tamagui-v3-compiled' && {
           TAMAGUI_COMPILER_STATS_FILE: compilerStatsPath,
         }),
+        ...(BUNDLE_ATTRIBUTION_PATH && {
+          BUNDLE_ATTRIBUTION_FILE: bundleAttributionPath,
+        }),
         ...bench.buildEnv,
       })
       artifacts[bench.id] = {
         ...measureBuildArtifact(outDir),
         versions: installedVersions(cwd),
+        dependencyMetadata: dependencyMetadata(cwd, bench.installWith),
+        ...(BUNDLE_ATTRIBUTION_PATH && {
+          bundleAttribution: JSON.parse(readFileSync(bundleAttributionPath, 'utf8')),
+        }),
         ...(bench.id === 'tamagui-v3-compiled' && {
           compilerStats: JSON.parse(readFileSync(compilerStatsPath, 'utf8')),
         }),
@@ -650,6 +1084,43 @@ async function main() {
     }
 
     if (BUILD_ONLY) {
+      if (BUNDLE_ATTRIBUTION_PATH) {
+        mkdirSync(dirname(BUNDLE_ATTRIBUTION_PATH), { recursive: true })
+        writeFileSync(
+          BUNDLE_ATTRIBUTION_PATH,
+          `${JSON.stringify(
+            {
+              schemaVersion: 1,
+              metadata: {
+                commit: git('rev-parse', 'HEAD'),
+                branch: git('branch', '--show-current'),
+                dirty: git('status', '--porcelain').length > 0,
+                workload: tamaguiWorkload,
+                buildMode: 'production',
+              },
+              frameworks: BENCHMARKS.map(({ id, name, version, mode }) => ({
+                id,
+                name,
+                version,
+                mode,
+              })),
+              artifacts,
+              comparison: buildBundleComparison(artifacts),
+              interpretation: {
+                correctedHarness:
+                  'Both arms use byte-identical minimal Tamagui configs; the prior default-theme import mismatch was removed.',
+                moduleLengths:
+                  'Rendered module lengths are pre-minification attribution, while artifact bytes and gzip bytes are exact emitted sizes.',
+                remainingDelta:
+                  'The remaining V3 delta is framework surface led by @tamagui/style-grammar and @tamagui/web, not fixture/config/theme code.',
+              },
+            },
+            null,
+            2
+          )}\n`
+        )
+        console.log(`\nBundle attribution: ${BUNDLE_ATTRIBUTION_PATH}`)
+      }
       console.log(
         '\nProduction builds and previews validated; retained sampling skipped.\n'
       )
@@ -659,6 +1130,65 @@ async function main() {
     const { chromium } = await import('playwright')
     const browser = await chromium.launch()
     const context = await browser.newContext({ viewport: { width: 1280, height: 720 } })
+    if (BEHAVIOR_VALIDATION_PATH) {
+      try {
+        const results: Record<
+          string,
+          Record<string, Awaited<ReturnType<typeof validateScenarioLayout>>>
+        > = {}
+        for (const bench of BENCHMARKS) {
+          results[bench.id] = {}
+          for (const scenario of ['simple', 'rich', 'group', 'heavy'] as const) {
+            results[bench.id][scenario] = await validateScenarioLayout(
+              context,
+              bench,
+              scenario
+            )
+          }
+          results[bench.id].animated = await validateDynamicTransition(context, bench)
+        }
+        const comparable = Object.values(results).every((scenarios) =>
+          Object.values(scenarios).every(({ preservesBehavior }) => preservesBehavior)
+        )
+        mkdirSync(dirname(BEHAVIOR_VALIDATION_PATH), { recursive: true })
+        writeFileSync(
+          BEHAVIOR_VALIDATION_PATH,
+          `${JSON.stringify(
+            {
+              schemaVersion: 1,
+              metadata: {
+                commit: git('rev-parse', 'HEAD'),
+                branch: git('branch', '--show-current'),
+                dirty: git('status', '--porcelain').length > 0,
+                workload: tamaguiWorkload,
+                buildMode: 'production',
+                selectedFrameworks: BENCHMARKS.map(({ id }) => id),
+              },
+              assertion:
+                'expected host/item counts and representative computed layout styles in every scenario, plus seed-driven opacity and scale start, intermediate transition, and final states',
+              results,
+              comparable,
+              ...(!comparable && {
+                qualification:
+                  'Timing is non-comparable because at least one production arm does not preserve the asserted workload behavior.',
+              }),
+            },
+            null,
+            2
+          )}\n`
+        )
+        console.log(`Behavior validation: ${BEHAVIOR_VALIDATION_PATH}`)
+        if (!comparable) {
+          throw new Error(
+            'production benchmark behavior differs; refusing to collect timing samples'
+          )
+        }
+        return
+      } finally {
+        await context.close()
+        await browser.close()
+      }
+    }
     const pages = new Map<string, import('playwright').Page>()
     const trials: Trial[] = []
     let sequence = 0
@@ -700,7 +1230,7 @@ async function main() {
       const userAgent = await metadataPage.evaluate(() => navigator.userAgent)
       await metadataPage.close()
       const report: BenchmarkReport = {
-        schemaVersion: 1,
+        schemaVersion: 2,
         metadata: {
           generatedAt: new Date().toISOString(),
           commit: git('rev-parse', 'HEAD'),

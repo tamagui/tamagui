@@ -9,7 +9,7 @@
     "build": "EXTRACT=1 vite build"
   },
   "dependencies": {
-    "@tamagui/config": "workspace:*",
+    "@tamagui/animations-css": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
     "tamagui": "workspace:*",
     "react": "^19.0.0",
