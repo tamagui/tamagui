@@ -17,7 +17,7 @@ import {
   splitColorOpacitySuffix,
   type GrammarConfigView,
   type ParsedCandidate,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/runtime'
 
 /**
  * Class-string tokenization and candidate adaptation. This is the Tailwind

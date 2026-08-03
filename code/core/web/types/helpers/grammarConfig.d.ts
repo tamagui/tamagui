@@ -1,4 +1,4 @@
-import { type ModifierRegistryView, type ResolvedReference } from '@tamagui/style-grammar';
+import { type ModifierRegistryView, type ResolvedReference } from '@tamagui/style-grammar/runtime';
 import type { TamaguiInternalConfig, ThemeParsed } from '../types';
 /** the token categories a bare name can resolve against */
 type TokenCategoryName = 'color' | 'space' | 'size' | 'radius' | 'zIndex';

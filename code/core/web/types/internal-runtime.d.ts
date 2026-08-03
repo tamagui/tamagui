@@ -10,7 +10,7 @@
  * styled, or inline style-prop declarations.
  */
 import type { FunctionComponent } from 'react';
-import type { ParsedValue } from '@tamagui/style-grammar';
+import type { ParsedValue } from '@tamagui/style-grammar/runtime';
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend';
 import type { FrontendProgramValue } from './internalRuntimeTypes';
 export { STYLE_FRONTEND_PASSTHROUGH_PREFIX, STYLE_FRONTEND_PREPROCESSED, regularStyleFrontend, } from './helpers/styleFrontend';

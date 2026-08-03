@@ -10,7 +10,7 @@
  * styled, or inline style-prop declarations.
  */
 import type { FunctionComponent } from 'react'
-import type { ParsedValue } from '@tamagui/style-grammar'
+import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 import { createComponent } from './createComponent'
 import { plainValueToPayload as plainValueToPayloadImpl } from './helpers/contributePrograms'
 import { createFrontendProgram as createFrontendProgramImpl } from './helpers/frontendProgram'

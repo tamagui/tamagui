@@ -5,7 +5,7 @@ import {
   setConfig,
   setTokens,
 } from './config'
-import { reservedCssIdents } from '@tamagui/style-grammar'
+import { reservedCssIdents } from '@tamagui/style-grammar/runtime'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'

@@ -1,4 +1,7 @@
-import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar'
+import {
+  v6RemovedThemeNames,
+  v6ThemeNameReplacements,
+} from '@tamagui/style-grammar/tooling'
 
 export type V6Theme<Theme> = {
   [Name in keyof Theme as Name extends (typeof v6RemovedThemeNames)[number]

@@ -27,7 +27,7 @@ import {
   type ModifierRegistryView,
   type ReferenceKind,
   type ResolvedReference,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/runtime'
 import { isVariable } from '../createVariable'
 import type { TamaguiInternalConfig, ThemeParsed, Variable } from '../types'
 import { mediaObjectToString } from './mediaObjectToString'

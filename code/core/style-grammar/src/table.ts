@@ -1,9 +1,5 @@
-import {
-  grammarDecisions,
-  grammarEntries,
-  wholeClassConveniences,
-  wholeClassUtilities,
-} from './registry'
+import { grammarEntries, wholeClassConveniences, wholeClassUtilities } from './registry'
+import { grammarDecisions } from './toolingRegistry'
 
 export function generateGrammarTable(): string {
   const rows = [

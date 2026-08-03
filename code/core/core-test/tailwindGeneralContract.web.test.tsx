@@ -7,7 +7,7 @@ import { describe, expect, test } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
-import { defaultMediaKeys } from '@tamagui/style-grammar'
+import { defaultMediaKeys } from '@tamagui/style-grammar/tooling'
 
 const cls = (out: string) => (/className="([^"]*)"/.exec(out) || [, ''])[1]
 const convert = (s: string, o?: any) =>
