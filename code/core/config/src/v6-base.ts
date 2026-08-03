@@ -15,7 +15,6 @@ import {
   tailwindRadius,
   tailwindSize,
   tailwindSpace,
-  tailwindZIndex,
 } from './v6-tailwind-scales.generated'
 
 export { shorthands }
@@ -31,12 +30,11 @@ export { toV6Themes } from './v6-themes'
 
 // space and size deliberately remain separate configured domains even though their default
 // values coincide. Radius keeps v5's numeric component scale while adding Tailwind's named
-// border-radius scale; v6's z-index names resolve to their direct CSS values.
+// border-radius scale. z-index is literal, so its identity scale is not configured as tokens.
 export const tokens = {
   space: tailwindSpace,
   size: tailwindSize,
   radius: { ...v5tokens.radius, ...tailwindRadius },
-  zIndex: tailwindZIndex,
 } as const
 
 // font px strings are normalized to numeric Variable values by createVariable. keep the same
@@ -67,7 +65,6 @@ export const settings = {
   defaultTokens: {
     space: '4',
     radius: '4',
-    zIndex: '4',
     fontSize: '4',
   },
 } satisfies CreateTamaguiProps['settings']

@@ -1,7 +1,7 @@
 export declare const tailwindSource: {
     readonly tailwindVersion: '4.3.0';
     readonly colorConverter: '@csstools/color-helpers@6.1.0';
-    readonly checksum: '9cb34e0dbf707c82321163587a800da0bbabbc58d97e96464f5487478d3c50a4';
+    readonly checksum: 'd8fc16823f2b4e64ea102d9888d8ca3d7aa97e4551d9cd5f17c0ec6d65bb0bf6';
 };
 export declare const tailwindSpace: {
     readonly '0': 0;
@@ -121,19 +121,6 @@ export declare const tailwindRadius: {
     readonly '3xl': 24;
     readonly '4xl': 32;
     readonly full: 9999;
-};
-export declare const tailwindZIndex: {
-    readonly '0': 0;
-    readonly '1': 1;
-    readonly '2': 2;
-    readonly '3': 3;
-    readonly '4': 4;
-    readonly '5': 5;
-    readonly '10': 10;
-    readonly '20': 20;
-    readonly '30': 30;
-    readonly '40': 40;
-    readonly '50': 50;
 };
 export declare const tailwindFontSize: {
     readonly xs: '12px';

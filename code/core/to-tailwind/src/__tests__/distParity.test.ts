@@ -10,7 +10,6 @@ const options = {
   renameComponents: false,
   tokens: {
     space: { 4: 20 },
-    zIndex: { 4: 40 },
     radius: { 8: 24 },
   },
 }

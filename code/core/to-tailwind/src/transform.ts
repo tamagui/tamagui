@@ -62,7 +62,7 @@ function createTransformGrammarConfig(
     return { ...options.grammarConfig, shorthands, mediaNames: mediaKeys }
   }
   const tokenNames: Partial<Record<TokenCategory, Set<string>>> = {}
-  const tokenCategories = ['space', 'size', 'radius', 'zIndex', 'color'] as const
+  const tokenCategories = ['space', 'size', 'radius', 'color'] as const
   const fontCategories = [
     'fontFamily',
     'fontSize',
@@ -731,6 +731,10 @@ function formatStringValue(ctx: Ctx, prop: string, value: string): FormattedValu
     return fontWeightNames[value] ? { value, valueKind: 'enum' } : null
   }
 
+  if (prop === 'zIndex' && /^\d+$/.test(value)) {
+    return { value, valueKind: 'convenience' }
+  }
+
   // a NUMERIC-LOOKING STRING literal ("10", "0.5") is NOT a number — reinterpreting it as the
   // Tailwind scale or a token would diverge from the source string (which tamagui keeps verbatim,
   // quirks and all). it's also not a valid unit-bearing CSS value → RETAIN. (fontWeight handled
@@ -846,7 +850,11 @@ function formatNumericValue(prop: string, value: number): FormattedValue | null 
   if (prop === 'flexGrow' || prop === 'flexShrink') {
     return { value: String(value), valueKind: 'arbitrary' }
   }
-  if (prop === 'zIndex') return { value: String(value), valueKind: 'arbitrary' }
+  if (prop === 'zIndex') {
+    return Number.isInteger(value) && value >= 0
+      ? { value: String(value), valueKind: 'convenience' }
+      : { value: String(value), valueKind: 'arbitrary' }
+  }
 
   // NAMED weight: numeric 700 → the named-weight class; unknown weight → retain (null)
   if (prop === 'fontWeight') {

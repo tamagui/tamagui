@@ -11,8 +11,8 @@
  */
 import type { FunctionComponent } from 'react'
 import type { ParsedValue } from '@tamagui/style-grammar/runtime'
+import { stylePropsUnitless } from '@tamagui/helpers'
 import { createComponent } from './createComponent'
-import { plainValueToPayload as plainValueToPayloadImpl } from './helpers/contributePrograms'
 import { createFrontendProgram as createFrontendProgramImpl } from './helpers/frontendProgram'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
 import type { FrontendProgramValue } from './internalRuntimeTypes'
@@ -40,10 +40,31 @@ export const createFrontendProgram: (
   value: ParsedValue
 ) => FrontendProgramValue = createFrontendProgramImpl
 
-// the one units heuristic for serializing plain values into payloads —
-// projected here so a frontend reuses it instead of copying it
-export const plainValueToPayload: (value: unknown, longhand: string) => string | null =
-  plainValueToPayloadImpl
+// the one scalar-to-css boundary used by frontends before they mint a conditional
+// value. strings already carry their authored units; finite numbers use the same
+// property table as direct atomic styles on both web and native.
+export const plainValueToPayload = (value: unknown, property: string): string | null => {
+  if (typeof value === 'string') return value
+  if (typeof value !== 'number' || !Number.isFinite(value)) return null
+  if (
+    property === 'rotate' ||
+    property === 'rotateX' ||
+    property === 'rotateY' ||
+    property === 'rotateZ'
+  ) {
+    return value === 0 ? '0' : `${value}deg`
+  }
+  if (
+    property === 'x' ||
+    property === 'y' ||
+    property === 'perspective' ||
+    property === 'translateX' ||
+    property === 'translateY'
+  ) {
+    return value === 0 ? '0' : `${value}px`
+  }
+  return stylePropsUnitless[property] ? String(value) : `${value}px`
+}
 
 // shared-runtime pieces the platform setup module in `@tamagui/core` needs. They are
 // explicitly typed here rather than reexported from their source modules, so the

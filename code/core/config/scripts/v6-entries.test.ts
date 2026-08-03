@@ -15,9 +15,11 @@ describe('v6 config split: aligned base, swappable colors', () => {
     expect(classicConfig.fonts).toBe(tailwindConfig.fonts)
     expect(classicConfig.media).toBe(tailwindConfig.media)
     expect(classicConfig.settings).toBe(tailwindConfig.settings)
-    for (const scale of ['space', 'size', 'radius', 'zIndex'] as const) {
+    for (const scale of ['space', 'size', 'radius'] as const) {
       expect(classicConfig.tokens[scale]).toEqual(tailwindConfig.tokens[scale])
     }
+    expect(classicConfig.tokens).not.toHaveProperty('zIndex')
+    expect(tailwindConfig.tokens).not.toHaveProperty('zIndex')
   })
 
   test('both packs generate the identical theme name set and theme shape', () => {

@@ -1,7 +1,7 @@
 import { modifierAliases } from "./stateModifiers";
 export { modifierAliases };
-export type TokenCategory = "space" | "size" | "radius" | "zIndex" | "color" | "fontFamily" | "fontSize" | "fontWeight" | "lineHeight" | "letterSpacing";
-export type Convenience = "alignment-alias" | "bare-border" | "flex-bundle" | "font-generic" | "percentage" | "sizing-keyword";
+export type TokenCategory = "space" | "size" | "radius" | "color" | "fontFamily" | "fontSize" | "fontWeight" | "lineHeight" | "letterSpacing";
+export type Convenience = "alignment-alias" | "bare-border" | "flex-bundle" | "font-generic" | "integer" | "percentage" | "sizing-keyword";
 export interface GrammarEntry {
 	prop: string;
 	prefix: string;

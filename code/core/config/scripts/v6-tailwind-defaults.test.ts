@@ -8,7 +8,6 @@ import {
   tailwindSize,
   tailwindSource,
   tailwindSpace,
-  tailwindZIndex,
 } from '../src/v6-tailwind-scales.generated'
 import { settings } from '../src/v6-base'
 import {
@@ -27,7 +26,6 @@ describe('v6 Tailwind defaults provenance', () => {
       defaultTokens: {
         space: '4',
         radius: '4',
-        zIndex: '4',
         fontSize: '4',
       },
     })
@@ -53,7 +51,6 @@ describe('v6 Tailwind defaults provenance', () => {
     expect(tailwindSpace).toEqual(generated.space)
     expect(tailwindSize).toEqual(generated.size)
     expect(tailwindRadius).toEqual(generated.radius)
-    expect(tailwindZIndex).toEqual(generated.zIndex)
     expect(tailwindFontSize).toEqual(generated.fontSize)
     expect(tailwindLineHeight).toEqual(generated.lineHeight)
   })
@@ -71,8 +68,6 @@ describe('v6 Tailwind defaults provenance', () => {
     expect(tailwindSpace).not.toHaveProperty('0.25')
     expect(tailwindSpace).not.toHaveProperty('13')
     expect(tailwindRadius).toHaveProperty('lg', 8)
-    expect(tailwindZIndex).toHaveProperty('4', 4)
-    expect(tailwindZIndex).toHaveProperty('10', 10)
     expect(tailwindFontSize).toHaveProperty('base', '16px')
     expect(tailwindLineHeight).toHaveProperty('base', '24px')
     expect(tailwindColors).toHaveProperty('blue-500', '#2b7fff')

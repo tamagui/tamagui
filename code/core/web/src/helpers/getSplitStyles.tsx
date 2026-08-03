@@ -10,21 +10,6 @@ import {
   stylePropsTransform,
   validStyles as validStylesView,
 } from '@tamagui/helpers'
-import {
-  borderSideSuffix,
-  classifyCandidate,
-  createGrammarConfigView,
-  decodeArbitrary,
-  getTokenCategory,
-  hasTokenName,
-  percentUtilityProps,
-  radiusCornerProps,
-  splitColorOpacitySuffix,
-  transformAxisCompositions,
-  transformFamilyProps,
-  type GrammarConfigView,
-  type ParsedCandidate,
-} from '@tamagui/style-grammar'
 import React from 'react'
 import {
   STYLE_FRONTEND_PASSTHROUGH_PREFIX,
@@ -55,28 +40,20 @@ import type {
   ViewStyleObject,
 } from '../types'
 import { fixStyles } from './expandStyles'
-import { getCSSStylesAtomic, styleToCSS } from './getCSSStylesAtomic'
+import { getCSSStyleAtomic, styleToCSS } from './getCSSStylesAtomic'
 import { getDefaultProps } from './getDefaultProps'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { propMapper } from './propMapper'
 import {
-  absorbPlainIntoPrograms,
-  clearProgramLifecycleForProp,
-  contributeStylePrograms,
-  contributeTransformNumber,
-  resolveLegacyPartValue,
-} from './contributePrograms'
-import {
-  accumulateTransition,
-  applyAccumulatedTransitions,
-  hasTopLevelClause,
-  transitionLonghandKeys,
-} from './alignTransitions'
+  clearDirectStyle,
+  contributeStyleValue,
+  contributeStyleString,
+  flushDirectStyles,
+  getDirectDynamicThemeAccess,
+} from './directStyle'
 import { contributeFrontendProgram, isFrontendProgram } from './frontendProgram'
-import { evaluateAccumulatedPrograms } from './evaluateAccumulatedPrograms'
-import { lowerAccumulatedPrograms } from './lowerAccumulatedPrograms'
 import { skipProps } from './skipProps'
 import { sortString } from './sortString'
 import { styleOriginalValues } from './styleOriginalValues'
@@ -151,7 +128,7 @@ type OrderedPropEntry = readonly [string, any]
 // static config: `styled(View, { bg: 'gray hover:blue' })` must survive a
 // call-site `bg="red"` as clauses (decision 21), but mergeComponentProps
 // replaces defaults at the prop level, so the split re-injects the styled
-// value at the styled-base position and the ordinary program merge restates
+// value at the styled-base position and the later direct contribution restates
 // only the base. null = this component has none, one WeakMap hit per render.
 const styledClauseDefaultsCache = new WeakMap<object, OrderedPropEntry[] | null>()
 
@@ -292,7 +269,16 @@ export function isValidStyleKey(
   validStyles: Record<string, boolean>,
   accept?: Record<string, any>
 ) {
-  return key in validStyles ? true : accept && key in accept
+  return Boolean(
+    key in validStyles ||
+    (isWeb &&
+      (key === 'transitionProperty' ||
+        key === 'transitionDuration' ||
+        key === 'transitionTimingFunction' ||
+        key === 'transitionDelay' ||
+        key === 'transitionBehavior')) ||
+    (accept && key in accept)
+  )
 }
 
 export const getSplitStyles: StyleSplitter = (
@@ -399,10 +385,14 @@ export const getSplitStyles: StyleSplitter = (
     staticConfig,
     style: null,
     theme,
-    usedKeys: {},
     viewProps,
     context: componentContext,
     debug,
+    flatRulesToInsert: rulesToInsert,
+    flatShouldDoClasses: shouldDoClasses,
+    flatThemeName: themeName,
+    flatMediaState: mediaState,
+    flatGroupContext: groupContext,
     // resolved animation driver (respects animatedBy prop)
     animationDriver: driver,
   }
@@ -476,73 +466,30 @@ export const getSplitStyles: StyleSplitter = (
       const style = isArray ? styleProp[index] : styleProp
       if (!style) continue
       if (style['$$css']) {
-        for (const key in style) clearProgramLifecycleForProp(styleState, key)
+        for (const key in style) clearDirectStyle(styleState, key)
         Object.assign(styleState.classNames, style)
         continue
       }
       const normalized = normalizeStyle(style)
-      styleState.style ||= {}
       const styleOriginals = shouldTrackStyleTokenProvenance
-        ? styleOriginalValues.get(normalized)
+        ? styleOriginalValues.get(style)
         : undefined
       for (const key in normalized) {
-        if (
-          styleState.programs?.size &&
-          absorbPlainIntoPrograms(styleState, key, normalized[key])
-        ) {
-          // a later style-prop value restates the program's base; the
-          // program's conditions survive (decision 21)
-          continue
-        }
-        clearProgramLifecycleForProp(styleState, key)
-        styleState.style[key] = normalized[key]
-        // An authored style object is one ordinary contribution, not a permanent
-        // higher-precedence tier. Reset the key so any later contribution can win.
-        styleState.usedKeys[key] = 1
-        if (shouldTrackStyleTokenProvenance) {
-          // the literal style prop wins at its position: carry its own token
-          // provenance forward, and clear a prior token wherever it supplies a
-          // literal (e.g. style={{ color: '#fff' }} over color="color9")
-          recordStyleTokenProvenance(styleState, key, styleOriginals?.[key])
-        }
+        if (normalized[key] == null) continue
+        contributeStyleValue(
+          styleState,
+          key,
+          normalized[key],
+          mergeStyle,
+          styleOriginals?.[key]
+        )
       }
     }
   }
 
   const flushForwardStylesToClasses = () => {
     if (!shouldDoClasses) return
-    if (styleState.style) {
-      if (styleState.flatTransforms) {
-        mergeFlatTransforms(styleState.style, styleState.flatTransforms)
-        styleState.flatTransforms = undefined
-      }
-      if (styleProps.noNormalize !== false) {
-        fixStyles(styleState.style)
-        if (!styleProps.noExpand && !styleProps.noMergeStyle) {
-          if (isWeb && (isReactNative ? driver?.inputStyle !== 'css' : true)) {
-            styleToCSS(styleState.style)
-          }
-        }
-      }
-      const flushedKeys = Object.keys(styleState.style)
-      for (const atomicStyle of getCSSStylesAtomic(styleState.style)) {
-        addStyleToInsertRules(rulesToInsert, atomicStyle)
-        classNames[atomicStyle[StyleObjectProperty]] = atomicStyle[StyleObjectIdentifier]
-      }
-      styleState.style = {}
-      for (const key of flushedKeys) {
-        delete styleState.usedKeys[key]
-      }
-    }
-    // programs flush here too: this early flush can be followed by
-    // shouldDoClasses turning off (tailwind className path), which would
-    // otherwise drop them
-    if (styleState.programs?.size) {
-      lowerAccumulatedPrograms(styleState, (styleObject) => {
-        addStyleToInsertRules(rulesToInsert, styleObject)
-      })
-      styleState.programs.clear()
-    }
+    flushDirectStyles(styleState, true)
   }
 
   for (const [keyOg, valOg] of orderedProcessedProps) {
@@ -588,6 +535,18 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
+    if (
+      process.env.TAMAGUI_TARGET === 'native' &&
+      (keyInit === 'transition' ||
+        keyInit === 'transitionProperty' ||
+        keyInit === 'transitionDuration' ||
+        keyInit === 'transitionTimingFunction' ||
+        keyInit === 'transitionDelay' ||
+        keyInit === 'transitionBehavior')
+    ) {
+      continue
+    }
+
     // for custom accept sub-styles
     if (accept) {
       const accepted = accept[keyInit]
@@ -619,6 +578,7 @@ export const getSplitStyles: StyleSplitter = (
         if (styleFrontend) {
           flushForwardStylesToClasses()
           shouldDoClasses = false
+          styleState.flatShouldDoClasses = false
         }
       }
       continue
@@ -686,19 +646,7 @@ export const getSplitStyles: StyleSplitter = (
           // to ordinary css so the compiler can keep flattening.
           valInit = `all ${animationConfig}`
         } else if (animationConfig) {
-          // driver preset: byte-identical short-circuit, recorded only so a
-          // longhand beside it diagnoses instead of composing with an IR no
-          // driver consumes yet
-          styleState.sawTransitionPreset = valInit
-          continue
-        } else if (hasTopLevelClause(valInit)) {
-          // conditional transition clauses ship today through the program
-          // engine — fall through to it byte-identically; the accumulator
-          // yields to program ownership at pass end
-        } else {
-          // clause-free raw CSS transition values merge with any longhand
-          // contributions at pass end (helpers/alignTransitions)
-          accumulateTransition(styleState, 'transition', valInit)
+          // animation drivers consume configured preset names directly
           continue
         }
       } else {
@@ -706,50 +654,18 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    // the five transition longhands accumulate for the same pass-end merge:
-    // authored order decides, last-wins per longhand, shorthand resets.
-    // clause-bearing longhands have no home yet (the program path owns whole
-    // transitions, the aligned lists are clause-free): diagnostic + drop,
-    // never a silent leak. GATED exactly like the shorthand block above —
-    // under noSkip or isHOC the shorthand bypasses accumulation, so the
-    // longhands must too, or one element gets two competing transition
-    // owners (review finding: the 775/837 gate asymmetry)
-    if (
-      !noSkip &&
-      !isHOC &&
-      transitionLonghandKeys.has(keyInit) &&
-      typeof valInit === 'string'
-    ) {
-      if (hasTopLevelClause(valInit)) {
-        if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            `[tamagui] ${keyInit}="${valInit}": conditional clauses are not supported on transition longhands — put the condition on \`transition\` itself.`
-          )
-        }
-        continue
-      }
-      accumulateTransition(styleState, keyInit as any, valInit)
-      continue
-    }
-
-    // minted frontend programs consume BEFORE style-key validity and
+    // minted frontend values consume before style-key validity and
     // propMapper: the transport key is only a position marker (unique per
     // contribution, so repeated clauses on one property and interleaving
     // with ordinary props survive in authored order). validity applies to
-    // the program's REAL property, so the host ruling still holds
+    // the value's real property, so the host ruling still holds
     if (isFrontendProgram(valInit)) {
-      if (
-        process.env.TAMAGUI_TARGET === 'native' ||
-        (process.env.TAMAGUI_TARGET === 'web' &&
-          (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))
-      ) {
-        if (isValidStyleKey(valInit.property, validStyles, accept)) {
-          contributeFrontendProgram(styleState, keyInit, valInit)
-        } else if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            `[tamagui] "${valInit.property}" is not a valid style on this component — the frontend program is dropped.`
-          )
-        }
+      if (isValidStyleKey(valInit.property, validStyles, accept)) {
+        contributeFrontendProgram(styleState, valInit, mergeStyle)
+      } else if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          `[tamagui] "${valInit.property}" is not a valid style on this component; the frontend value is dropped.`
+        )
       }
       continue
     }
@@ -773,8 +689,8 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      // Standard data attributes are view props, never style or styled-context
-      // programs. Context providers receive arbitrary JSX attributes, so handle
+      // Standard data attributes are view props, never styles or styled-context
+      // values. Context providers receive arbitrary JSX attributes, so handle
       // these before a provider value can make the key look style-like.
       if (keyInit.startsWith('data-')) {
         viewProps[keyInit] = valInit
@@ -893,7 +809,6 @@ export const getSplitStyles: StyleSplitter = (
           variant: variants?.[keyInit],
           isVariant,
           isHOCShouldPassThrough,
-          usedKeys: { ...styleState.usedKeys },
           parentStaticConfig,
         })
       }
@@ -943,22 +858,17 @@ export const getSplitStyles: StyleSplitter = (
 
     const disablePropMap = !isStyleLikeKey
 
-    // ordinary host strings need no structural mapping. Contribute them
-    // directly so the program engine is their only per-prop runtime path.
+    // ordinary host styles scan and emit directly without propMapper
     if (
       !isHOC &&
       isValidStyleKeyInit &&
-      typeof valInit === 'string' &&
-      valInit !== 'safe' &&
+      valInit != null &&
       !(process.env.TAMAGUI_TARGET === 'native' && valInit === 'unset') &&
       !(variants && keyInit in variants) &&
       !(accept && keyInit in accept) &&
-      !(styledContext && keyInit in styledContext) &&
-      (process.env.TAMAGUI_TARGET === 'native' ||
-        (process.env.TAMAGUI_TARGET === 'web' &&
-          (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))) &&
-      contributeStylePrograms(styleState, keyInit, valInit)
+      !(styledContext && keyInit in styledContext)
     ) {
+      contributeStyleValue(styleState, keyInit, valInit, mergeStyle)
       continue
     }
 
@@ -997,38 +907,25 @@ export const getSplitStyles: StyleSplitter = (
 
       if (val == null) return
 
+      if (accept && key in accept) {
+        viewProps[key] = val
+        return
+      }
+
       const isHostStyleKey =
         (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
       const isContextProgramKey = !isHOC && Boolean(isStyledContextProp)
 
       if (isHostStyleKey || isContextProgramKey) {
-        // flat value programs: every string value contributes per-longhand
-        // programs — clause-free strings are base-only programs, which is what
-        // resolves configured bare names and numeric strings config-first
-        // (`p="4"` is the space token). on web, classes express programs when
-        // shouldDoClasses; the noClass/animated-inline path evaluates them at
-        // the end of the pass exactly like native. static extraction keeps its
-        // own path
-        if (
-          (process.env.TAMAGUI_TARGET === 'native' ||
-            (process.env.TAMAGUI_TARGET === 'web' &&
-              (shouldDoClasses || process.env.IS_STATIC !== 'is_static'))) &&
-          ((typeof val === 'string' && contributeStylePrograms(styleState, key, val)) ||
-            (typeof val === 'number' &&
-              transformFamilyProps.has(key) &&
-              contributeTransformNumber(styleState, key, val)))
-        ) {
-          if (!isHostStyleKey) {
-            ;(styleState.contextOnlyProgramKeys ||= new Set()).add(key)
-          }
-          return
-        }
-        if (!isHostStyleKey) return
-        if (typeof val === 'string') {
-          val = resolveLegacyPartValue(styleState, key, val)
-        }
-        mergeStyle(styleState, key, val, 1, false, originalVal)
+        contributeStyleValue(
+          styleState,
+          key,
+          val,
+          mergeStyle,
+          originalVal,
+          !isHostStyleKey
+        )
         return
       }
 
@@ -1094,62 +991,24 @@ export const getSplitStyles: StyleSplitter = (
     time`split-styles-propsend`
   }
 
-  // the six transition props merge once, before emission: web serializes the
-  // aligned IR into style.transition, native validates against the capability
-  // matrix and reports (helpers/alignTransitions). runs ahead of the program
-  // evaluation below so a clause-bearing transition still wins the property
-  applyAccumulatedTransitions(styleState)
-
-  // lane W3: native programs evaluate last-matching-clause against the live
-  // conditions, BEFORE the native post-processing below (fixStyles defaults,
-  // the per-weight font-face swap) so program values go through the same
-  // finishing as plain values. referenced media keys ride the hasMedia
-  // subscription; referenced states surface for event attachment
-  let programStates: Set<string> | null = null
-  let usesSafeArea = false
-  if (
-    styleState.programs?.size &&
-    (process.env.TAMAGUI_TARGET === 'native' ||
-      (!shouldDoClasses && process.env.IS_STATIC !== 'is_static'))
-  ) {
-    const info = evaluateAccumulatedPrograms(
-      styleState,
-      themeName,
-      mediaState,
-      groupContext
-    )
-    programStates = info.usedStates
-    usesSafeArea = info.usesSafeArea
-    if (info.usedMediaKeys) {
-      if (!hasMedia) {
-        hasMedia = new Set()
-      }
-      if (typeof hasMedia !== 'boolean') {
-        for (const usedKey of info.usedMediaKeys) {
-          hasMedia.add(usedKey)
-        }
-      }
-      // hasMedia === true means subscribe-to-all and already covers the keys
-    }
-    // group/container clauses subscribe through the context channel: keys feed
-    // the per-name listeners, sizes feed
-    // the layout-to-media math inside subscribeToContextGroup
-    if (info.usedGroupKeys) {
-      pseudoGroups ||= new Set()
-      for (const groupKey of info.usedGroupKeys) {
-        pseudoGroups.add(groupKey)
-      }
-    }
-    if (info.usedGroupSizes) {
-      mediaGroups ||= new Set()
-      for (const sizeKey of info.usedGroupSizes) {
-        mediaGroups.add(sizeKey)
-      }
+  const conditionalStates = styleState.flatStateKeys || null
+  const usesSafeArea = !!styleState.flatUsesSafeArea
+  if (styleState.flatMediaKeys?.size) {
+    if (!hasMedia) hasMedia = new Set()
+    if (typeof hasMedia !== 'boolean') {
+      for (const key of styleState.flatMediaKeys) hasMedia.add(key)
     }
   }
+  if (styleState.flatGroupKeys?.size) {
+    pseudoGroups ||= new Set()
+    for (const key of styleState.flatGroupKeys) pseudoGroups.add(key)
+  }
+  if (styleState.flatGroupMedia?.size) {
+    mediaGroups ||= new Set()
+    for (const key of styleState.flatGroupMedia) mediaGroups.add(key)
+  }
 
-  // A conditional transition is a flat program like every other style value.
-  // Hand its selected value to animation drivers and keep it out of native
+  // Hand the selected transition to animation drivers and keep it out of native
   // destination styles, where `transition` is not a React Native style key.
   const effectiveTransition = styleState.style?.transition as
     | TransitionProp
@@ -1170,19 +1029,19 @@ export const getSplitStyles: StyleSplitter = (
     if ('containerName' in styleState.style) delete styleState.style.containerName
   }
 
-  // a named container must also establish containment or its size queries
-  // match nothing: `containerName` alone pairs with the default container type
-  // (mirroring `isContainer` in createComponent, decision 17). the name may
-  // sit in plain style or as a base-only program
+  // a named container also establishes containment
   if (
     process.env.TAMAGUI_TARGET === 'web' &&
-    (styleState.style?.containerName != null ||
-      styleState.programs?.has('containerName')) &&
+    (styleState.style?.containerName != null || classNames.containerName) &&
     !(styleState.style && 'containerType' in styleState.style) &&
-    !styleState.programs?.has('containerType')
+    !classNames.containerType
   ) {
-    styleState.style ||= {}
-    styleState.style.containerType = webContainerType || 'inline-size'
+    contributeStyleValue(
+      styleState,
+      'containerType',
+      webContainerType || 'inline-size',
+      mergeStyle
+    )
   }
 
   // style prop after:
@@ -1254,67 +1113,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
-    if (!styleProps.noMergeStyle && styleState.style && shouldDoClasses) {
-      let retainedStyles: ViewStyleObject | undefined
-      let shouldRetain = false
-
-      if (styleState.style['$$css']) {
-        // avoid re-processing for rnw
-      } else {
-        const atomic = getCSSStylesAtomic(styleState.style)
-
-        for (const atomicStyle of atomic) {
-          const [key, value, identifier] = atomicStyle
-
-          const isAnimatedAndTransitionOnly =
-            styleProps.isAnimated &&
-            styleProps.noClass &&
-            props.animateOnly?.includes(key)
-
-          // animateOnly properties should always use className on server and initial
-          // client render to avoid hydration mismatch (server has isAnimated=false but
-          // client has isAnimated=true for CSS driver, causing different style output)
-          const nonAnimatedTransitionOnly =
-            !isAnimatedAndTransitionOnly &&
-            !styleProps.isAnimated &&
-            isClient &&
-            driver?.outputStyle === 'css' &&
-            props.animateOnly?.includes(key)
-
-          if (isAnimatedAndTransitionOnly) {
-            retainedStyles ||= {}
-            retainedStyles[key] = styleState.style[key]
-          } else if (nonAnimatedTransitionOnly) {
-            retainedStyles ||= {}
-            retainedStyles[key] = value
-            shouldRetain = true
-          } else {
-            addStyleToInsertRules(rulesToInsert, atomicStyle)
-            classNames[key] = identifier
-          }
-        }
-
-        if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-          // console.groupEnd() // ensure group ended from loop above
-          console.groupCollapsed(`🔹 getSplitStyles final style object`)
-          console.info(styleState.style)
-          console.info(`retainedStyles`, retainedStyles)
-          console.groupEnd()
-        }
-
-        if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
-          styleState.style = retainedStyles || {}
-        }
-      }
-    }
-
-    // flat value programs lower to program-block CSS; insertion dedups by the
-    // hashed class name, and cross-program order is irrelevant by design
-    if (!styleProps.noMergeStyle && shouldDoClasses && styleState.programs?.size) {
-      lowerAccumulatedPrograms(styleState, (styleObject) => {
-        addStyleToInsertRules(rulesToInsert, styleObject)
-      })
-    }
+    flushDirectStyles(styleState)
 
     // when noClass is true (inline animation driver) extract non-animatable
     // base styles to atomic CSS classNames so the driver doesn't manage them
@@ -1327,22 +1126,15 @@ export const getSplitStyles: StyleSplitter = (
       !driver?.isReactNative
     ) {
       if (!styleState.style['$$css']) {
-        const toConvert: Record<string, any> = {}
-        let hasProps = false
-        const animateOnly = props.animateOnly as string[] | undefined
         for (const key in styleState.style) {
           if (key in nonAnimatableStyleProps) {
-            toConvert[key] = styleState.style[key]
+            const atomicStyle = getCSSStyleAtomic(key, styleState.style[key])
             delete styleState.style[key]
-            hasProps = true
-          }
-        }
-        if (hasProps) {
-          const atomic = getCSSStylesAtomic(toConvert)
-          for (const atomicStyle of atomic) {
-            addStyleToInsertRules(rulesToInsert, atomicStyle)
-            classNames[atomicStyle[StyleObjectProperty]] =
-              atomicStyle[StyleObjectIdentifier]
+            if (atomicStyle) {
+              addStyleToInsertRules(rulesToInsert, atomicStyle)
+              classNames[atomicStyle[StyleObjectProperty]] =
+                atomicStyle[StyleObjectIdentifier]
+            }
           }
         }
       }
@@ -1411,20 +1203,29 @@ export const getSplitStyles: StyleSplitter = (
     mediaGroups,
     overriddenContextProps: styleState.overriddenContextProps,
     ...(effectiveTransition != null && { effectiveTransition }),
-    ...(programStates && { programStates }),
+    ...(conditionalStates && { programStates: conditionalStates }),
     ...(usesSafeArea && { usesSafeArea: true }),
+    ...(getDirectDynamicThemeAccess(styleState) && { dynamicThemeAccess: true }),
   }
 
-  if (styleState.programLifecycle?.size) {
-    let enter: Set<string> | undefined
-    let exit: Set<string> | undefined
-    for (const [longhand, lifecycle] of styleState.programLifecycle) {
-      const property = transformAxisCompositions[longhand]?.property ?? longhand
-      if (lifecycle.enter) (enter ||= new Set()).add(property)
-      if (lifecycle.exit) (exit ||= new Set()).add(property)
+  if (styleState.flatEnterKeys || styleState.flatExitKeys) {
+    const effectiveKeys = (keys?: Set<string>) => {
+      if (!keys) return
+      const out = new Set<string>()
+      for (const key of keys) {
+        out.add(
+          key === '--t-x' || key === '--t-y'
+            ? 'translate'
+            : key === '--t-scale-x' || key === '--t-scale-y'
+              ? 'scale'
+              : key
+        )
+      }
+      return out
     }
-    if (enter || exit) {
-      result.programLifecycleStyleKeys = { enter, exit }
+    result.programLifecycleStyleKeys = {
+      enter: effectiveKeys(styleState.flatEnterKeys),
+      exit: effectiveKeys(styleState.flatExitKeys),
     }
   }
 
@@ -1542,30 +1343,54 @@ export const getSplitStyles: StyleSplitter = (
 }
 
 function mergeFlatTransforms(target: TextStyle, flatTransforms: Record<string, any>) {
+  const transform: Record<string, any>[] = []
+  if ('x' in flatTransforms) transform.push({ translateX: flatTransforms.x })
+  if ('y' in flatTransforms) transform.push({ translateY: flatTransforms.y })
+  if ('rotate' in flatTransforms) transform.push({ rotate: flatTransforms.rotate })
+
+  const hasScaleX = 'scaleX' in flatTransforms
+  const hasScaleY = 'scaleY' in flatTransforms
+  if (hasScaleX && hasScaleY && Object.is(flatTransforms.scaleX, flatTransforms.scaleY)) {
+    transform.push({ scale: flatTransforms.scaleX })
+  } else {
+    if (hasScaleX) transform.push({ scaleX: flatTransforms.scaleX })
+    if (hasScaleY) transform.push({ scaleY: flatTransforms.scaleY })
+    if (!hasScaleX && !hasScaleY && 'scale' in flatTransforms) {
+      transform.push({ scale: flatTransforms.scale })
+    }
+  }
+
   const keys: string[] = []
   for (const key in flatTransforms) {
-    keys.push(key)
+    if (
+      key !== 'x' &&
+      key !== 'y' &&
+      key !== 'rotate' &&
+      key !== 'scale' &&
+      key !== 'scaleX' &&
+      key !== 'scaleY'
+    )
+      keys.push(key)
   }
   keys.sort(sortString)
   for (const key of keys) {
-    mergeTransform(target, key, flatTransforms[key], true)
+    transform.push({ [mapTransformKeys[key] || key]: flatTransforms[key] })
   }
+  if (Array.isArray(target.transform)) {
+    transform.push(...(target.transform as any))
+  }
+  target.transform = transform as any
 }
 
 function mergeStyle(
   styleState: GetStyleState,
   key: string,
   val: any,
-  importance: number,
+  _importance: number,
   disableNormalize = false,
   originalVal?: any
 ) {
-  const { viewProps, styleProps, staticConfig, usedKeys } = styleState
-
-  const existingImportance = usedKeys[key] || 0
-  if (existingImportance > importance) {
-    return
-  }
+  const { viewProps, styleProps, staticConfig } = styleState
 
   // track context overrides for pseudo/media styles (issues #3670, #3676)
   // when a style sets a key that's in context props, update overriddenContextProps
@@ -1593,13 +1418,6 @@ function mergeStyle(
 
   if (key in stylePropsTransform) {
     styleState.flatTransforms ||= {}
-    usedKeys[key] = importance
-    if (styleState.programs && importance <= 1) {
-      // a later BASE transform value restates the covered programs' bases;
-      // their conditions survive (decision 21)
-      if (absorbPlainIntoPrograms(styleState, key, val)) return
-    }
-    clearProgramLifecycleForProp(styleState, key)
     styleState.flatTransforms[key] = val
   } else {
     const shouldNormalize = isWeb && !disableNormalize && !styleProps.noNormalize
@@ -1612,14 +1430,6 @@ function mergeStyle(
       viewProps[key] = out
     } else {
       styleState.style ||= {}
-      usedKeys[key] = importance
-      if (styleState.programs && importance <= 1) {
-        // a later BASE value restates the program's base clause; the
-        // program's conditions survive (decision 21). narrower-scope writes
-        // (pseudo/media importance) are contributions beside the program
-        if (absorbPlainIntoPrograms(styleState, key, out)) return
-      }
-      clearProgramLifecycleForProp(styleState, key)
       styleState.style[key] =
         // if you dont do this you'll be passing props.transform arrays directly here and then mutating them
         // if theres any flatTransforms later, causing issues (mutating props is bad, in strict mode styles get borked)
@@ -1644,12 +1454,19 @@ function recordStyleTokenProvenance(
 ) {
   let tokenName = typeof originalVal === 'string' ? originalVal : ''
   if (tokenName) {
-    const opacity = splitColorOpacitySuffix(tokenName)
-    if (opacity.kind === 'valid') tokenName = opacity.name
+    const slash = tokenName.lastIndexOf('/')
+    const opacity = slash === -1 ? NaN : Number(tokenName.slice(slash + 1))
+    if (Number.isInteger(opacity) && opacity >= 0 && opacity <= 100) {
+      tokenName = tokenName.slice(0, slash)
+    }
   }
   const isConfiguredToken =
     tokenName !== '' &&
     (Object.prototype.hasOwnProperty.call(styleState.theme, tokenName) ||
+      Object.prototype.hasOwnProperty.call(
+        styleState.conf.themes?.[styleState.flatThemeName || ''] || {},
+        tokenName
+      ) ||
       Object.values(styleState.conf.tokensParsed).some((category) =>
         Object.prototype.hasOwnProperty.call(category, tokenName)
       ))

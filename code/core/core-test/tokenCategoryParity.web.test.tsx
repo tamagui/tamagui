@@ -10,7 +10,7 @@ import { getTokenCategory, grammarEntries } from '@tamagui/style-grammar'
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles } from '../web/src'
-import { categoryForProperty } from '../web/src/helpers/grammarConfig'
+import { getTokenCategoryForProperty } from '../web/src/helpers/propMapper'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
@@ -33,6 +33,9 @@ const rulesFor = (result: any, identifier: string): string[] =>
 
 test('borderWidth binds the space category like the tooling says it does', () => {
   const result = split({ borderWidth: '4' })
+  expect(rulesFor(result, result.classNames.borderStyle).join('')).toContain(
+    'border-style:solid'
+  )
   for (const longhand of [
     'borderTopWidth',
     'borderRightWidth',
@@ -52,6 +55,14 @@ test('a side border width binds the space category on its own', () => {
   expect(className).toBeTruthy()
   const [rule] = rulesFor(result, className)
   expect(rule).toContain('var(--')
+  expect(rulesFor(result, result.classNames.borderTopStyle).join('')).toContain(
+    'border-top-style:solid'
+  )
+
+  const explicit = split({ borderTopWidth: 'hover:4', borderTopStyle: 'dashed' })
+  const styleRules = rulesFor(explicit, explicit.classNames.borderTopStyle).join('')
+  expect(styleRules).toContain('border-top-style:dashed')
+  expect(styleRules).not.toContain('border-top-style:solid')
 })
 
 test('fontFamily resolves the configured font and records the scope', () => {
@@ -79,6 +90,8 @@ test('every property the grammar registry binds, the runtime binds identically',
   for (const entry of grammarEntries) {
     const bound = getTokenCategory(entry.prop)
     if (!bound) continue
-    expect(categoryForProperty(entry.prop), entry.prop).toBe(runtimeCategoryFor(bound))
+    expect(getTokenCategoryForProperty(entry.prop), entry.prop).toBe(
+      runtimeCategoryFor(bound)
+    )
   }
 })

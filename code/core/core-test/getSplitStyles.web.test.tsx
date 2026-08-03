@@ -100,7 +100,6 @@ describe('getSplitStyles', () => {
         defaultTokens: {
           space: '3',
           radius: '2',
-          zIndex: '1',
           fontSize: '1',
         },
       },
@@ -111,7 +110,6 @@ describe('getSplitStyles', () => {
         height: true,
         padding: true,
         borderRadius: true,
-        zIndex: true,
         fontSize: true,
       })
 
@@ -123,7 +121,6 @@ describe('getSplitStyles', () => {
       expect(byProp.height).toBe('var(--t-size-5)')
       expect(byProp.paddingTop).toBe('var(--t-space-3)')
       expect(byProp.borderTopLeftRadius).toBe('var(--t-radius-2)')
-      expect(byProp.zIndex).toBe('var(--t-zIndex-1)')
       expect(byProp.fontSize).toBe('var(--f-size-1)')
     } finally {
       createTamagui(config.getDefaultTamaguiConfig())
@@ -456,36 +453,29 @@ describe('getSplitStyles', () => {
   )
 
   test(`perspective transform`, () => {
-    expect(
-      Object.values(
-        simplifiedGetSplitStyles(Text, {
-          perspective: 1000,
-        }).rulesToInsert
-      )
-    ).toMatchInlineSnapshot(`
-      [
-        [
-          "transform",
-          "perspective(1000px)",
-          "_tr-perspective1343953606",
-          undefined,
-          [
-            "._tr-perspective1343953606{transform:perspective(1000px);}",
-          ],
-        ],
-      ]
-    `)
+    const rules = Object.values(
+      simplifiedGetSplitStyles(Text, {
+        perspective: 1000,
+      }).rulesToInsert
+    )
+    expect(rules).toHaveLength(1)
+    expect(rules[0][0]).toBe('transform')
+    expect(rules[0][1]).toBe('perspective(1000px)')
+    expect(rules[0][4].join('')).toContain('transform:perspective(1000px)')
   })
 
-  test(`z-index resolves to respective tokens`, () => {
-    const styles = simplifiedGetSplitStyles(Text, {
+  test(`z-index resolves numeric strings as literals`, () => {
+    const literal = simplifiedGetSplitStyles(Text, {
       zIndex: '1',
     })
 
     expect(
-      Object.values(styles.rulesToInsert)[0][StyleObjectProperty] === 'zIndex'
+      Object.values(literal.rulesToInsert)[0][StyleObjectProperty] === 'zIndex'
     ).toBeTruthy()
-    expect(Object.values(styles.rulesToInsert)[0][StyleObjectValue]).toEqual(
+    expect(Object.values(literal.rulesToInsert)[0][StyleObjectValue]).toEqual('1')
+
+    const explicitToken = simplifiedGetSplitStyles(Text, { zIndex: '$1' })
+    expect(Object.values(explicitToken.rulesToInsert)[0][StyleObjectValue]).toEqual(
       'var(--t-zIndex-1)'
     )
   })

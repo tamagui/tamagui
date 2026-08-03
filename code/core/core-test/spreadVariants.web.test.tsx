@@ -259,9 +259,9 @@ describe('ZIndex variant resolver', () => {
     } as const,
   })
 
-  test('resolves zIndex token', () => {
+  test('keeps zIndex values literal', () => {
     const { rulesToInsert } = simplifiedGetSplitStyles(Comp, { layer: '1' })
-    expect(findRuleValue(rulesToInsert, 'zIndex')).toBe('var(--t-zIndex-1)')
+    expect(findRuleValue(rulesToInsert, 'zIndex')).toBe('1')
   })
 })
 

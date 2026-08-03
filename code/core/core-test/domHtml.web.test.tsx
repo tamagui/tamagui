@@ -67,13 +67,9 @@ describe('semantic tags', () => {
 describe('element defaults from the tag table', () => {
   test('reset the browser margin and padding on a block element', () => {
     const { container } = show(<html.p data-testid="para">x</html.p>)
-    const className = find(container, '[data-testid="para"]').className
-    for (const side of ['mt', 'mr', 'mb', 'ml']) {
-      expect(className, side).toContain(`_${side}-0px`)
-    }
-    for (const side of ['pt', 'pr', 'pb', 'pl']) {
-      expect(className, side).toContain(`_${side}-0px`)
-    }
+    const style = getComputedStyle(find(container, '[data-testid="para"]'))
+    expect(style.margin).toBe('0px')
+    expect(style.padding).toBe('0px')
   })
 
   test('carry the decoration the browser stylesheet would have given the tag', () => {
@@ -96,9 +92,8 @@ describe('element defaults from the tag table', () => {
         x
       </html.p>
     )
-    const className = find(container, '[data-testid="para"]').className
-    expect(className).toContain('_mt-16px')
-    expect(className).not.toContain('_mt-0px')
+    const style = getComputedStyle(find(container, '[data-testid="para"]'))
+    expect(style.margin).toBe('16px')
   })
 })
 

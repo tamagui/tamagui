@@ -71,19 +71,6 @@ const FONT_SIZE_NAMES = [
 ] as const
 
 const RADIUS_NAMES = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const
-const Z_INDEX_NAMES = [
-  '0',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '10',
-  '20',
-  '30',
-  '40',
-  '50',
-] as const
 const SKIP_COLORS = new Set(['inherit', 'current', 'transparent', 'black', 'white'])
 
 type Scalar = number | string
@@ -101,7 +88,6 @@ export type V6TailwindDefaultTables = {
   radius: Table
   size: Table
   space: Table
-  zIndex: Table
 }
 
 function themeVariables(themeCss: string): Record<string, string> {
@@ -188,8 +174,6 @@ export function createDefaultTables(themeCss: string): V6TailwindDefaultTables {
   }
   radius.full = 9999
 
-  const zIndex = Object.fromEntries(Z_INDEX_NAMES.map((name) => [name, Number(name)]))
-
   const fontSize: Table = {}
   const lineHeight: Table = {}
   for (const name of FONT_SIZE_NAMES) {
@@ -201,7 +185,7 @@ export function createDefaultTables(themeCss: string): V6TailwindDefaultTables {
     )}px`
   }
 
-  return { fontSize, lineHeight, radius, size, space, zIndex }
+  return { fontSize, lineHeight, radius, size, space }
 }
 
 function normalizedColorSource(source: Record<string, unknown>): Record<string, unknown> {
@@ -239,7 +223,6 @@ export function sourceChecksum(source: PinnedTailwindSource): string {
     tailwindVersion: TAILWIND_VERSION,
     colorHelpersVersion: source.colorHelpersVersion,
     spacingSuggestions: DEFAULT_SPACING_SUGGESTIONS,
-    zIndexNames: Z_INDEX_NAMES,
     relevantVariables,
     colors: normalizedColorSource(source.colors),
   })
@@ -321,8 +304,6 @@ ${renderTable('tailwindSpace', tables.space)}
 ${renderTable('tailwindSize', tables.size)}
 
 ${renderTable('tailwindRadius', tables.radius)}
-
-${renderTable('tailwindZIndex', tables.zIndex)}
 
 ${renderTable('tailwindFontSize', tables.fontSize)}
 

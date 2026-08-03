@@ -376,7 +376,7 @@ export function createComponent<
     overriddenContextProps = overrides
 
     // frontend single pass (hoisted): the component's descriptor tokenizes className +
-    // flattens props ONCE here, so flat programs and transition props are in place before
+    // flattens props ONCE here, so flat values and transition props are in place before
     // the state machine / variant / animation driver below read them. preprocessProps
     // marks its result, so getSplitStyles skips its own preprocess.
     // components without a descriptor pay one property read.
@@ -1421,14 +1421,14 @@ export function createComponent<
 
     // if its a group its gotta listen for pseudos to emit them to children
 
-    // Native flat-value programs surface the interaction states their clauses
-    // reference so the component attaches the matching events.
-    const programStates = !disabled ? splitStyles?.programStates : undefined
+    // native flat-value clauses surface the interaction states they reference
+    // so the component attaches the matching events.
+    const conditionalStates = !disabled ? splitStyles?.programStates : undefined
 
     const runtimePressStyle =
-      !disabled && (programStates?.has('press') || programStates?.has('active'))
-    const runtimeFocusStyle = !disabled && programStates?.has('focus')
-    const runtimeFocusVisibleStyle = !disabled && programStates?.has('focus-visible')
+      !disabled && (conditionalStates?.has('press') || conditionalStates?.has('active'))
+    const runtimeFocusStyle = !disabled && conditionalStates?.has('focus')
+    const runtimeFocusVisibleStyle = !disabled && conditionalStates?.has('focus-visible')
 
     const attachFocus = Boolean(
       runtimePressStyle ||
@@ -1453,7 +1453,7 @@ export function createComponent<
       onClick
     )
 
-    const runtimeHoverStyle = !disabled && programStates?.has('hover')
+    const runtimeHoverStyle = !disabled && conditionalStates?.has('hover')
     // with a platform pseudo driver the hover STATE is driver-sourced; only keep
     // the JS hover listeners when something else needs them (dynamic group
     // children, or the user's own onMouseEnter/Leave handlers below).
@@ -1585,7 +1585,7 @@ export function createComponent<
                 componentContext.setParentFocusState({ focusWithin: true })
                 next.focusWithin = true
               }
-              if (programStates?.has('focus-visible')) {
+              if (conditionalStates?.has('focus-visible')) {
                 if (lastInteractionWasKeyboard.value) {
                   next.focusVisible = true
                 } else {
@@ -1806,7 +1806,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    if (programStates?.has('focus-within')) {
+    if (conditionalStates?.has('focus-within')) {
       content = (
         <ComponentContext.Provider
           {...componentContext}

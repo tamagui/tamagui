@@ -627,7 +627,7 @@ type AllowedStyleValuesSettingPerCategory = {
     color?: AllowedStyleValuesSettingColor;
 };
 type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSettingPerCategory;
-export type DefaultTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize';
+export type DefaultTokenCategory = 'size' | 'space' | 'radius' | 'fontSize';
 export type DefaultTokens = Partial<Record<Exclude<DefaultTokenCategory, 'size'>, string>>;
 export interface GenericTamaguiSettings {
     /**
@@ -1105,7 +1105,7 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
 export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback;
 export type SafeAreaValueKeys = 'padding' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingHorizontal' | 'paddingVertical' | 'paddingStart' | 'paddingEnd' | 'paddingBlock' | 'paddingInline' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInlineStart' | 'paddingInlineEnd' | 'margin' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginHorizontal' | 'marginVertical' | 'marginStart' | 'marginEnd' | 'marginBlock' | 'marginInline' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInlineStart' | 'marginInlineEnd' | 'inset' | 'top' | 'bottom' | 'left' | 'right' | 'start' | 'end';
 /**
- * Flat value programs: every style prop accepts a clause-bearing string
+ * Flat values: every style prop accepts a clause-bearing string
  * (`bg="red hover:blue"`, `p="4 sm:6"`). `(string & {})` admits the broad
  * string without collapsing the token/literal unions, so autocomplete
  * survives (design record, "Types and editor tooling"). Candidate and
@@ -1686,7 +1686,6 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
 export type PropMappedValue = [string, any, any?][] | undefined;
 export type GetStyleState = {
     style: TextStyle | null;
-    usedKeys: Record<string, number>;
     classNames: ClassNamesObject;
     staticConfig: StaticConfig;
     theme: ThemeParsed;
@@ -1700,18 +1699,24 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
-    programs?: Map<string, import('@tamagui/style-grammar/runtime').LonghandProgram>;
-    contextOnlyProgramKeys?: Set<string>;
-    programLifecycle?: Map<string, {
-        enter?: true;
-        exit?: true;
-    }>;
+    flatRulesToInsert?: RulesToInsert;
+    flatShouldDoClasses?: boolean;
+    flatThemeName?: string;
+    flatMediaState?: Record<string, boolean | undefined>;
+    flatGroupContext?: AllGroupContexts | null;
+    flatConditionOrder?: number;
+    flatActiveConditions?: Record<string, true>;
+    flatStateKeys?: Set<string>;
+    flatMediaKeys?: Set<string>;
+    flatGroupKeys?: Set<string>;
+    flatGroupMedia?: Set<string>;
+    flatEnterKeys?: Set<string>;
+    flatExitKeys?: Set<string>;
+    flatUsesSafeArea?: boolean;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
     tokenProvenance?: Record<string, string>;
     animationDriver?: AnimationDriver | null;
-    transitionContributions?: import('@tamagui/style-grammar/runtime').TransitionContribution[];
-    sawTransitionPreset?: string;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any, originalVal?: any) => void) => void;
@@ -2018,6 +2023,7 @@ export type GetStyleResult = {
     hasMedia: boolean | Set<string>;
     pseudoGroups?: Set<string>;
     mediaGroups?: Set<string>;
+    dynamicThemeAccess?: boolean;
     overriddenContextProps?: Record<string, any>;
     programStates?: Set<string>;
     usesSafeArea?: true;

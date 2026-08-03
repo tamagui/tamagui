@@ -246,8 +246,7 @@ test('distinct diagnostic messages each warn once per process', () => {
 
 test('the gap family resolves to native numbers', () => {
   const result = split({ gap: '16px hover:24px' })
-  expect(result.style?.rowGap).toBe(16)
-  expect(result.style?.columnGap).toBe(16)
+  expect(result.style?.gap).toBe(16)
 })
 
 test('program values run through native fixStyles like plain values', () => {

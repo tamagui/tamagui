@@ -101,7 +101,6 @@ describe('getSplitStyles', () => {
         defaultTokens: {
           space: '3',
           radius: '2',
-          zIndex: '1',
           fontSize: '1',
         },
       },
@@ -113,7 +112,6 @@ describe('getSplitStyles', () => {
           height: true,
           padding: true,
           borderRadius: true,
-          zIndex: true,
           fontSize: true,
         },
         Text,
@@ -130,9 +128,6 @@ describe('getSplitStyles', () => {
       )
       expect(findLayoutValue(direct, 'borderTopLeftRadius')).toBe(
         `${configured.tokensParsed.radius['2'].val}px`
-      )
-      expect(findLayoutValue(direct, 'zIndex')).toBe(
-        `${configured.tokensParsed.zIndex['1'].val}px`
       )
       expect(findLayoutValue(direct, 'fontSize')).toBe(
         `${configured.fontsParsed.body.size['1'].val}px`

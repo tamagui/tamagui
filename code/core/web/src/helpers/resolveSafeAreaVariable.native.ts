@@ -1,11 +1,12 @@
 import { getSafeArea } from '@tamagui/native'
-import { getSafeAreaEdge } from '@tamagui/style-grammar/runtime'
 
 let didWarnMissingSetup = false
 
 export function resolveSafeAreaVariable(name: string): number | undefined {
-  const edge = getSafeAreaEdge(name)
-  if (!edge) return undefined
+  const edge = name.startsWith('safe-area-') ? name.slice(10) : ''
+  if (edge !== 'top' && edge !== 'right' && edge !== 'bottom' && edge !== 'left') {
+    return
+  }
 
   const safeArea = getSafeArea()
   const state = safeArea.state

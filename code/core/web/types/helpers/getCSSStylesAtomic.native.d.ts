@@ -1,5 +1,6 @@
 declare const empty: () => void;
 export declare const getCSSStylesAtomic: typeof empty;
+export declare const getCSSStyleAtomic: typeof empty;
 export declare const getStyleAtomic: typeof empty;
 export declare const styleToCSS: typeof empty;
 export {};

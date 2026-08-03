@@ -211,18 +211,6 @@ describe('createTamagui', () => {
           settings: {
             ...baseConfig.settings,
             defaultTokens: {
-              zIndex: 'missing',
-            },
-          },
-        })
-      ).toThrow(/settings\.defaultTokens\.zIndex.*tokens\.zIndex\.missing/)
-
-      expect(() =>
-        createTamagui({
-          ...baseConfig,
-          settings: {
-            ...baseConfig.settings,
-            defaultTokens: {
               fontSize: 'missing',
             },
           },

@@ -1,8 +1,5 @@
-// Phase 6 item 4 runtime wiring, web: the six transition props merge per the
-// alignment model (five-list substrate, last-wins per longhand, shorthand
-// resets) and emit one CSS transition declaration. no driver in this harness,
-// so every string here takes CSS semantics — the preset invariants are
-// demonstrated at the driver suites.
+// Web transition values are emitted in authored order inside one atomic block.
+// The browser applies shorthand resets, list cycling, validation, and defaults.
 
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
@@ -33,7 +30,12 @@ test('a longhand after the shorthand overrides only its component', () => {
     transition: 'opacity 200ms',
     transitionDelay: '50ms',
   })
-  expect(emittedTransition(result)).toContain('opacity 200ms ease 50ms normal')
+  const emitted = emittedTransition(result)
+  expect(emitted).toContain('{transition:opacity 200ms}')
+  expect(emitted).toContain('{transition-delay:50ms}')
+  expect(emitted.indexOf('transition:')).toBeLessThan(
+    emitted.indexOf('transition-delay:')
+  )
 })
 
 test('a later shorthand resets an earlier longhand', () => {
@@ -41,7 +43,12 @@ test('a later shorthand resets an earlier longhand', () => {
     transitionDelay: '50ms',
     transition: 'opacity 200ms',
   })
-  expect(emittedTransition(result)).toContain('opacity 200ms ease 0s normal')
+  const emitted = emittedTransition(result)
+  expect(emitted).toContain('{transition-delay:50ms}')
+  expect(emitted).toContain('{transition:opacity 200ms}')
+  expect(emitted.indexOf('transition-delay:')).toBeLessThan(
+    emitted.indexOf('transition:')
+  )
 })
 
 test('longhands alone assemble with CSS defaults and cycling', () => {
@@ -50,8 +57,8 @@ test('longhands alone assemble with CSS defaults and cycling', () => {
     transitionDuration: '150ms',
   })
   const emitted = emittedTransition(result)
-  expect(emitted).toContain('opacity 150ms ease 0s normal')
-  expect(emitted).toContain('transform 150ms ease 0s normal')
+  expect(emitted).toContain('{transition-property:opacity, transform}')
+  expect(emitted).toContain('{transition-duration:150ms}')
 })
 
 test('longhands never leak to the DOM as attributes', () => {
@@ -59,7 +66,7 @@ test('longhands never leak to the DOM as attributes', () => {
   expect(result.viewProps.transitionDuration).toBeUndefined()
 })
 
-test('distinct transition diagnostics each warn once per process', () => {
+test('transition validation stays with the browser', () => {
   const warnings: string[] = []
   const original = console.warn
   const previousNodeEnv = process.env.NODE_ENV
@@ -77,27 +84,28 @@ test('distinct transition diagnostics each warn once per process', () => {
       split(props)
       split(props)
     }
-    expect(warnings).toEqual([
-      expect.stringContaining('"-314159ms"'),
-      expect.stringContaining('"not-a-timing-function"'),
-    ])
+    expect(warnings).toEqual([])
+    expect(emittedTransition(split(cases[0]))).toContain('transition-duration:-314159ms')
+    expect(emittedTransition(split(cases[1]))).toContain(
+      'transition-timing-function:not-a-timing-function'
+    )
   } finally {
     console.warn = original
     process.env.NODE_ENV = previousNodeEnv
   }
 })
 
-test('an aligned diagnostic drops the value instead of emitting invalid CSS', () => {
+test('an invalid longhand does not erase the shorthand', () => {
   const result = split({
     transition: 'opacity 200ms',
     transitionDuration: '-100ms',
   })
-  expect(emittedTransition(result)).toBe('')
+  const emitted = emittedTransition(result)
+  expect(emitted).toContain('transition:opacity 200ms')
+  expect(emitted).toContain('transition-duration:-100ms')
 })
 
-test('REGRESSION GUARD: conditional transition clauses keep the shipped program path', () => {
-  // `transition="200ms hover:400ms"` works at HEAD through the program
-  // engine; the alignment wiring must never swallow it
+test('conditional transition clauses stay in the direct block', () => {
   const result = split({ transition: '200ms hover:400ms' })
   const className = result.classNames?.transition
   expect(className).toBeTruthy()
@@ -107,19 +115,22 @@ test('REGRESSION GUARD: conditional transition clauses keep the shipped program 
   expect(result.style?.transition).toBeUndefined()
 })
 
-test('a conditional transition owns the property over longhand contributions', () => {
+test('a conditional transition and a later longhand share one ordered block', () => {
   const result = split({
     transition: '200ms hover:400ms',
     transitionDelay: '50ms',
   })
   const className = result.classNames?.transition
   expect(className).toBeTruthy()
-  // the aligned lists yield: no second style.transition beside the program
+  expect(emittedTransition(result)).toContain('transition-delay:50ms')
   expect(result.style?.transition).toBeUndefined()
 })
 
-test('a clause-bearing longhand drops instead of leaking', () => {
+test('a clause-bearing longhand emits base and conditional declarations', () => {
   const result = split({ transitionDelay: '50ms hover:100ms' })
+  const emitted = emittedTransition(result)
+  expect(emitted).toContain('transition-delay:50ms')
+  expect(emitted).toContain(':where(:hover){transition-delay:100ms}')
   expect(result.style?.transition).toBeUndefined()
   expect(result.viewProps.transitionDelay).toBeUndefined()
 })
@@ -129,7 +140,10 @@ test('Tamagui property spellings normalize to CSS names in the aligned output', 
   // target is `translate`; camelCase names hyphenate — otherwise the CSS
   // names a property it does not know and silently never fires
   const y = split({ transition: 'y 200ms' })
-  expect(emittedTransition(y)).toContain('translate 200ms ease 0s normal')
+  expect(emittedTransition(y)).toContain('transition:translate 200ms')
   const camel = split({ transition: 'backgroundColor 300ms' })
-  expect(emittedTransition(camel)).toContain('background-color 300ms ease 0s normal')
+  expect(emittedTransition(camel)).toContain('transition:background-color 300ms')
+
+  const custom = split({ transitionProperty: 'var(--x), x' })
+  expect(emittedTransition(custom)).toContain('transition-property:var(--x), translate')
 })

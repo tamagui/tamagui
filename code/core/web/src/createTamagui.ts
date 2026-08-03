@@ -5,7 +5,6 @@ import {
   setConfig,
   setTokens,
 } from './config'
-import { reservedCssIdents } from '@tamagui/style-grammar/runtime'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
@@ -45,9 +44,16 @@ import type {
  * Custom categories default to unitless.
  */
 // css keywords are case-insensitive, so the rejection is too
-const reservedCssIdentsLower: ReadonlySet<string> = new Set(
-  Array.from(reservedCssIdents, (ident) => ident.toLowerCase())
-)
+const reservedCssIdentsLower: ReadonlySet<string> = new Set([
+  'inherit',
+  'initial',
+  'unset',
+  'revert',
+  'none',
+  'auto',
+  'transparent',
+  'currentcolor',
+])
 
 function shouldTokenCategoryHaveUnits(category: string): boolean {
   // From TokenCategories type: 'color' | 'space' | 'size' | 'radius' | 'zIndex'
@@ -98,13 +104,9 @@ function validateDefaultTokens(config: TamaguiInternalConfig) {
     }
   }
 
-  for (const category of ['radius', 'zIndex'] as const) {
-    const configured = overrides?.[category]
-    if (configured && !config.tokensParsed[category]?.[configured]) {
-      missing.push(
-        `settings.defaultTokens.${category} -> tokens.${category}.${configured}`
-      )
-    }
+  const defaultRadius = overrides?.radius
+  if (defaultRadius && !config.tokensParsed.radius?.[defaultRadius]) {
+    missing.push(`settings.defaultTokens.radius -> tokens.radius.${defaultRadius}`)
   }
 
   if (missing.length) {

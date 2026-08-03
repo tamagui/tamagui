@@ -6,7 +6,6 @@ export type TokenCategory =
   | 'space'
   | 'size'
   | 'radius'
-  | 'zIndex'
   | 'color'
   | 'fontFamily'
   | 'fontSize'
@@ -19,6 +18,7 @@ export type Convenience =
   | 'bare-border'
   | 'flex-bundle'
   | 'font-generic'
+  | 'integer'
   | 'percentage'
   | 'sizing-keyword'
 
@@ -118,7 +118,7 @@ export const grammarEntries: readonly GrammarEntry[] = [
   { prop: 'bottom', prefix: 'bottom', tokenCategory: 'space' },
   { prop: 'left', prefix: 'left', tokenCategory: 'space' },
   { prop: 'inset', prefix: 'inset', tokenCategory: 'space' },
-  { prop: 'zIndex', prefix: 'z', tokenCategory: 'zIndex' },
+  { prop: 'zIndex', prefix: 'z', conveniences: ['integer'] },
   { prop: 'overflow', prefix: '' },
   { prop: 'flex', prefix: 'flex', conveniences: ['flex-bundle'] },
   { prop: 'flexDirection', prefix: 'flex' },
