@@ -1074,7 +1074,7 @@ export function createTamaguiCompilerHost(
       const supportsNativeDynamicStyles =
         platform === 'native' &&
         !options.disablePartialExtraction &&
-        input.element.form === 'jsx' &&
+        (input.element.form === 'jsx' || input.element.propsSpan !== null) &&
         dynamicStyleEntries.every(
           (entry) =>
             entry.kind === 'prop' && directStyleName(entry.name, component) === 'opacity'
@@ -1262,23 +1262,37 @@ export function createTamaguiCompilerHost(
               origin: span,
             }))
           const [first, ...rest] = styleEntries
+          const expressionEdits =
+            input.element.form === 'jsx'
+              ? [
+                  {
+                    start: first!.span.start,
+                    end: first!.span.end,
+                    content: `_expressions={[${expressions.join(', ')}]}`,
+                    origin: first!.span,
+                  },
+                  ...rest.map((entry) => ({
+                    start: entry.span.start,
+                    end: entry.span.end,
+                    content: '',
+                    origin: entry.span,
+                  })),
+                ]
+              : compiledPropsEdits(
+                  input,
+                  styleEntries,
+                  `_expressions: [${expressions.join(', ')}]`
+                )
+          if (!expressionEdits) {
+            return bailout(
+              input,
+              'local/unsupported-target',
+              `Compiled ${input.element.form} call has no editable props argument`
+            )
+          }
           return {
             ok: true,
-            edits: [
-              ...tagEdits,
-              {
-                start: first!.span.start,
-                end: first!.span.end,
-                content: `_expressions={[${expressions.join(', ')}]}`,
-                origin: first!.span,
-              },
-              ...rest.map((entry) => ({
-                start: entry.span.start,
-                end: entry.span.end,
-                content: '',
-                origin: entry.span,
-              })),
-            ],
+            edits: [...tagEdits, ...expressionEdits],
             css: [],
             imports: [
               {
