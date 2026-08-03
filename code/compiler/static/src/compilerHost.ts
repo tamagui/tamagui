@@ -1749,10 +1749,11 @@ export function createTamaguiCompilerHost(
         )
         const nativeStyleImports = [
           {
-            content: `\nfunction ${nativeStyleLocal}() { return ${nativeStyleLocal}._ || (${nativeStyleLocal}._ = ${JSON.stringify(nativeStyle ?? {})}); }`,
+            content: `\nfunction ${nativeStyleLocal}() { return ${nativeStyleLocal}._ ?? (${nativeStyleLocal}._ = ${JSON.stringify(nativeStyle ?? {})}); } ${nativeStyleLocal}();`,
             origin: input.element.component.span,
           },
         ]
+        const nativeStyleSource = `${nativeStyleLocal}._ ?? ${nativeStyleLocal}()`
         if (component.domTag) {
           const row = TAGS[component.domTag]
           const basePrimitive = NATIVE_BACKING[row.backing].primitive
@@ -1767,7 +1768,7 @@ export function createTamaguiCompilerHost(
             )
           }
           styleEntries = [...new Set([...styleEntries, ...propsResult.consumed])]
-          let nativeStyleSource = `${nativeStyleLocal}()`
+          let nativeDOMStyleSource = nativeStyleSource
           let runtimeStyleSource: string | null = null
           if (
             domStyleProgram?.kind === 'prop' &&
@@ -1838,14 +1839,14 @@ export function createTamaguiCompilerHost(
               primitive = `DOMRuntime${basePrimitive.slice('DOM'.length)}`
               runtimeStyleSource = `[${itemSources.join(', ')}]`
             } else {
-              nativeStyleSource = `[${[nativeStyleSource, ...itemSources].join(', ')}]`
+              nativeDOMStyleSource = `[${[nativeDOMStyleSource, ...itemSources].join(', ')}]`
             }
           }
           const nativeLocal = unusedIdentifier(input.source, `__Tamagui${primitive}`)
           const propertyContent = [
             input.element.form === 'jsx'
-              ? `style={${nativeStyleSource}}`
-              : `style: ${nativeStyleSource}`,
+              ? `style={${nativeDOMStyleSource}}`
+              : `style: ${nativeDOMStyleSource}`,
             runtimeStyleSource
               ? input.element.form === 'jsx'
                 ? `__styles={${runtimeStyleSource}}`
@@ -2051,7 +2052,7 @@ export function createTamaguiCompilerHost(
                 origin: input.element.component.span,
               },
               {
-                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${nativeStyleLocal}(), { ${dynamicStyle} }]);`,
+                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${nativeStyleSource}, { ${dynamicStyle} }]);`,
                 origin: input.element.component.span,
               },
             ],
@@ -2059,7 +2060,7 @@ export function createTamaguiCompilerHost(
             flattened: true,
           }
         }
-        const styleContent = `style: ${nativeStyleLocal}()`
+        const styleContent = `style: ${nativeStyleSource}`
         const tagEdits = [
           input.element.component.span,
           input.element.component.closingSpan,
@@ -2103,7 +2104,7 @@ export function createTamaguiCompilerHost(
               {
                 start: input.element.component.span.end,
                 end: input.element.component.span.end,
-                content: ` style={${nativeStyleLocal}()}`,
+                content: ` style={${nativeStyleSource}}`,
                 origin: input.element.component.span,
               },
             ],
@@ -2128,7 +2129,7 @@ export function createTamaguiCompilerHost(
             {
               start: first!.span.start,
               end: first!.span.end,
-              content: `style={${nativeStyleLocal}()}`,
+              content: `style={${nativeStyleSource}}`,
               origin: first!.span,
             },
             ...rest.map((entry) => ({

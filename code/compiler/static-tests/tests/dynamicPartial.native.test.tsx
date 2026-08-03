@@ -110,9 +110,10 @@ test('native opacity partial extraction preserves static and dynamic host styles
     expect(createStyle.body.type).toBe('ArrayExpression')
     expect(createStyle.body.elements).toHaveLength(2)
     const staticStyle = createStyle.body.elements[0]
-    expect(staticStyle.type).toBe('CallExpression')
-    expect(staticStyle.arguments).toHaveLength(0)
-    expect(staticStyle.callee.type).toBe('Identifier')
+    expect(staticStyle.type).toBe('LogicalExpression')
+    expect(staticStyle.operator).toBe('??')
+    expect(staticStyle.right.type).toBe('CallExpression')
+    expect(staticStyle.right.arguments).toHaveLength(0)
     const dynamicStyle = createStyle.body.elements[1]
     expect(dynamicStyle.type).toBe('ObjectExpression')
     expect(dynamicStyle.properties).toHaveLength(1)

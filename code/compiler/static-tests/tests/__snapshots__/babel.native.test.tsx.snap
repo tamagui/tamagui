@@ -72,11 +72,11 @@ exports[`basic extraction 1`] = `
     import { YStack } from 'tamagui'
     export function Test() {
       return (
-        <__TamaguiNativeView style={__TamaguiNativeStyle90()} />
+        <__TamaguiNativeView style={__TamaguiNativeStyle90._ ?? __TamaguiNativeStyle90()} />
       )
     }
 
-function __TamaguiNativeStyle90() { return __TamaguiNativeStyle90._ || (__TamaguiNativeStyle90._ = {"flexDirection":"column","backgroundColor":"red"}); }
+function __TamaguiNativeStyle90() { return __TamaguiNativeStyle90._ ?? (__TamaguiNativeStyle90._ = {"flexDirection":"column","backgroundColor":"red"}); } __TamaguiNativeStyle90();
 const __TamaguiNativeView = require('react-native').View;"
 `;
 
@@ -173,11 +173,11 @@ exports[`normalize dynamic values with theme access only 1`] = `
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <__TamaguiNativeView style={__TamaguiNativeStyle95()}/>
+        <__TamaguiNativeView style={__TamaguiNativeStyle95._ ?? __TamaguiNativeStyle95()}/>
       )
     }
 
-function __TamaguiNativeStyle95() { return __TamaguiNativeStyle95._ || (__TamaguiNativeStyle95._ = {"flexDirection":"column","backgroundColor":"hsla(0, 0%, 100%, 1)"}); }
+function __TamaguiNativeStyle95() { return __TamaguiNativeStyle95._ ?? (__TamaguiNativeStyle95._ = {"flexDirection":"column","backgroundColor":"hsla(0, 0%, 100%, 1)"}); } __TamaguiNativeStyle95();
 const __TamaguiNativeView = require('react-native').View;"
 `;
 
@@ -228,11 +228,11 @@ exports[`theme value extraction should work when no theme variables used 1`] = `
     import { Paragraph } from 'tamagui'
     export function Test() {
       return (
-        <__TamaguiNativeText style={__TamaguiNativeStyle93()}>hello world</__TamaguiNativeText>
+        <__TamaguiNativeText style={__TamaguiNativeStyle93._ ?? __TamaguiNativeStyle93()}>hello world</__TamaguiNativeText>
       )
     }
 
-function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ || (__TamaguiNativeStyle93._ = {"letterSpacing":0,"fontSize":15,"lineHeight":23,"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontWeight":400,"color":"red"}); }
+function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ ?? (__TamaguiNativeStyle93._ = {"letterSpacing":0,"fontSize":15,"lineHeight":23,"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontWeight":400,"color":"red"}); } __TamaguiNativeStyle93();
 const __TamaguiNativeText = require('react-native').Text;"
 `;
 
@@ -241,10 +241,10 @@ exports[`theme value extraction should work when theme variables used 1`] = `
     import { Paragraph } from 'tamagui'
     export function Test() {
       return (
-        <__TamaguiNativeText style={__TamaguiNativeStyle93()}>hello world</__TamaguiNativeText>
+        <__TamaguiNativeText style={__TamaguiNativeStyle93._ ?? __TamaguiNativeStyle93()}>hello world</__TamaguiNativeText>
       )
     }
 
-function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ || (__TamaguiNativeStyle93._ = {"letterSpacing":0,"fontSize":15,"lineHeight":23,"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontWeight":400,"color":"hsla(0, 0%, 100%, 1)"}); }
+function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ ?? (__TamaguiNativeStyle93._ = {"letterSpacing":0,"fontSize":15,"lineHeight":23,"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontWeight":400,"color":"hsla(0, 0%, 100%, 1)"}); } __TamaguiNativeStyle93();
 const __TamaguiNativeText = require('react-native').Text;"
 `;
