@@ -6,15 +6,17 @@ exports[`native DOM elements lower to backing primitives and wrap literal text 1
     import { html as h } from '@tamagui/core'
 
     export const JSXElement = (
-      <__TamaguiDOMView id="main"><__TamaguiDOMText>
-        Hello </__TamaguiDOMText><__TamaguiDOMText>{7}</__TamaguiDOMText>
-        <__TamaguiDOMText>world</__TamaguiDOMText>
+      <__TamaguiDOMView style={{"flexShrink":0,"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexWrap":"nowrap","justifyContent":"flex-start"}} id="main"><__TamaguiDOMText __inherit>
+        Hello </__TamaguiDOMText><__TamaguiDOMText __inherit>{7}</__TamaguiDOMText>
+        <__TamaguiDOMText style={{"boxSizing":"content-box","position":"static"}} __inherit={true}>world</__TamaguiDOMText>
       </__TamaguiDOMView>
     )
-    export const JSXCall = jsx(__TamaguiDOMView, { children: __TamaguiCreateElement(__TamaguiDOMText, null, 'jsx') })
-    export const JSXSCall = jsxs(__TamaguiDOMView, { children: [__TamaguiCreateElement(__TamaguiDOMText, null, 'one'), jsx(__TamaguiDOMText, { children: 'two' })] })
+    export const JSXCall = jsx(__TamaguiDOMView, { children: __TamaguiCreateElement(__TamaguiDOMText, { __inherit: true }, 'jsx') , style: {"flexShrink":0,"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexWrap":"nowrap","justifyContent":"flex-start"} })
+    export const JSXSCall = jsxs(__TamaguiDOMView, { children: [__TamaguiCreateElement(__TamaguiDOMText, { __inherit: true }, 'one'), jsx(__TamaguiDOMText, { children: 'two' , style: {"boxSizing":"content-box","position":"static","fontWeight":"bold"}, "__inherit": true })] , style: {"flexShrink":0,"boxSizing":"content-box","position":"static","alignItems":"stretch","display":"flex","flexBasis":"auto","flexDirection":"column","flexWrap":"nowrap","justifyContent":"flex-start"} })
 
-import { DOMText as __TamaguiDOMText, DOMView as __TamaguiDOMView } from "@tamagui/core/dom"
+import { DOMView as __TamaguiDOMView } from "@tamagui/core/dom"
+
+import { DOMText as __TamaguiDOMText } from "@tamagui/core/dom"
 
 import { createElement as __TamaguiCreateElement } from "react"
 "

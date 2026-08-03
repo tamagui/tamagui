@@ -54,14 +54,14 @@ const compileOnly = (what: string) =>
 /**
  * One style handle per call, never a namespace of named sub-objects.
  *
- * **NOT IMPLEMENTED (2026-07-31).** This throws because the compiler is meant
- * to replace the call — but no compiler pass recognises it. `domStructuralPass`
- * matches imported `html` only, so a `tamagui/dom` module keeps its `style()`
- * calls through lowering and throws when the module is evaluated. The entry is
- * importable and its types are real; the frontend does not function end to end.
- *
- * The tests around this assert the throw and the types, both of which pass and
- * neither of which would notice the missing pass. Phase 4 item 7 is not shipped.
+ * The compiler records each definition, resolves its style grammar through the
+ * same lowering path as `styled()`, and replaces this call with `undefined`.
+ * Inline calls disappear with the authored style prop. Array handles and
+ * `condition && handle` entries compose as classes on web and style arrays on
+ * native; native theme, media and interaction clauses become private runtime
+ * programs consumed by compiler-injected primitives. Reaching this author API
+ * therefore remains a useful missing-compiler error rather than a runtime
+ * implementation.
  */
 export function style(_definition: StyleDefinition): CompiledStyle {
   throw compileOnly('style()')

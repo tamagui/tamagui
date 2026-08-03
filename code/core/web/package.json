@@ -31,8 +31,11 @@
       "default": "./dist/esm/index.mjs"
     },
     "./dom": {
+      "react-native": {
+        "types": "./types/dom/index.native.d.ts",
+        "default": "./dist/esm/dom/index.native.js"
+      },
       "types": "./types/dom/index.d.ts",
-      "react-native": "./dist/esm/dom/index.native.js",
       "browser": "./dist/esm/dom/index.mjs",
       "module": "./dist/esm/dom/index.mjs",
       "import": "./dist/esm/dom/index.mjs",
