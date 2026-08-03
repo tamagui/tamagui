@@ -18,7 +18,7 @@ import {
   mergePrograms,
   transformFamilyProps,
   type ParsedValue,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/runtime'
 
 import { getConfigMaybe } from '../config'
 import { createGrammarRuntimeContext, type GrammarRuntimeContext } from './grammarConfig'

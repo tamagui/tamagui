@@ -30,7 +30,7 @@ import {
   type ContainerModifier,
   type GroupModifier,
   type TransformEntry,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/runtime'
 
 import { mediaKeyMatch } from '../hooks/useMedia'
 import type { AllGroupContexts, GetStyleState, TamaguiComponentState } from '../types'

@@ -6,7 +6,7 @@ import {
   parseTransitionLonghands,
   serializeTransition,
   validateNativeTransition,
-} from '..'
+} from '../tooling'
 
 const presets = new Set(['quick', 'bouncy', '200ms', 'ease'])
 

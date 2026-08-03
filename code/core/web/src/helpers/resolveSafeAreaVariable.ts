@@ -1,4 +1,4 @@
-import { getSafeAreaEdge } from '@tamagui/style-grammar'
+import { getSafeAreaEdge } from '@tamagui/style-grammar/runtime'
 
 export function resolveSafeAreaVariable(name: string): string | undefined {
   const edge = getSafeAreaEdge(name)

@@ -1,4 +1,4 @@
-import type { GrammarSourceConfig } from '@tamagui/style-grammar';
+import type { GrammarSourceConfig } from '@tamagui/style-grammar/runtime';
 import type { FunctionComponent } from 'react';
 /**
  * The configuration a style frontend reads. It is the shared grammar's own

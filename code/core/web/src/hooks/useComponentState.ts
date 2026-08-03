@@ -1,7 +1,7 @@
 import { getPlatformDriver, isServer, isWeb } from '@tamagui/constants'
 import { stylePropsAll } from '@tamagui/helpers'
 import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
-import { parseValue } from '@tamagui/style-grammar'
+import { parseValue } from '@tamagui/style-grammar/runtime'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import { getSetting } from '../config'

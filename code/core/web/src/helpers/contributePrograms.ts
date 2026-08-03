@@ -31,7 +31,7 @@ import {
   transformFamilyProps,
   uniformLegacySiblings,
   unitlessNumberProperties,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/runtime'
 
 import type { GetStyleState } from '../types'
 import { resetLoweredProgramCache } from './lowerAccumulatedPrograms'

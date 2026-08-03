@@ -16,7 +16,7 @@ import {
   type TokenCategory,
   v6RemovedThemeNames,
   v6ThemeNameReplacements,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/tooling'
 import { componentToTag } from './maps/componentToTag'
 // CANONICAL default shorthands — a STATIC import (declared dep), ESM+CJS-safe, single owner.
 // (replaces a module-global lazy `require('@tamagui/shorthands/v4')`, which was the same

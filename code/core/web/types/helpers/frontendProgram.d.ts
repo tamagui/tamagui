@@ -1,4 +1,4 @@
-import type { ParsedValue } from '@tamagui/style-grammar';
+import type { ParsedValue } from '@tamagui/style-grammar/runtime';
 import type { FrontendProgramValue } from '../internalRuntimeTypes';
 import type { GetStyleState } from '../types';
 export type { FrontendProgramValue } from '../internalRuntimeTypes';

@@ -21,7 +21,7 @@ import {
   type LonghandProgram,
   type ParsedClause,
   type ParsedValue,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/runtime'
 
 import type { GetStyleState } from '../types'
 import { ensureGrammarContext } from './contributePrograms'

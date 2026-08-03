@@ -7,7 +7,7 @@ import {
   createModifierRegistry,
   defaultStateSelectors,
   nativeSourceableStates,
-} from '..'
+} from '../tooling'
 
 const { registry } = createModifierRegistry(
   createGrammarConfigView({

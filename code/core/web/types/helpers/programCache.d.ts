@@ -1,4 +1,4 @@
-import { type BorderFamilyError, type FontShorthandError, type GeometricShorthandError, type ModifierRegistryView, type ParsedValue, type TextDecorationFamilyError, type ValueParseError } from '@tamagui/style-grammar';
+import { type BorderFamilyError, type FontShorthandError, type GeometricShorthandError, type ModifierRegistryView, type ParsedValue, type TextDecorationFamilyError, type ValueParseError } from '@tamagui/style-grammar/runtime';
 /** one authored prop's contribution to one CSS longhand, pre-resolution */
 export interface ProgramEntry {
     property: string;

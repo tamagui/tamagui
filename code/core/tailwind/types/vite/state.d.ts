@@ -1,4 +1,4 @@
-import { type GrammarSourceConfig } from '@tamagui/style-grammar';
+import { type GrammarSourceConfig } from '@tamagui/style-grammar/runtime';
 export declare const TAILWIND_VERSION = "4.3.0";
 export declare const TAILWIND_VIRTUAL_ID = "virtual:tamagui-tailwind.css";
 export declare const TAILWIND_RESOLVED_ID = "\0virtual:tamagui-tailwind.css";

@@ -1,4 +1,4 @@
-import type { HostView } from '@tamagui/style-grammar'
+import type { HostView } from '@tamagui/style-grammar/tooling'
 import type ts from 'typescript'
 
 /**

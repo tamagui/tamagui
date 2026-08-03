@@ -12,7 +12,7 @@ import {
   wholeClassUtilities,
   type GrammarConfigView,
   type TokenCategory,
-} from '..'
+} from '../tooling'
 
 const tokenNames: Record<TokenCategory, readonly string[]> = {
   space: ['0', '1', '2', '4', '-1', 'spaceOnly'],

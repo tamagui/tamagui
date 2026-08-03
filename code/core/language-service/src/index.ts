@@ -10,7 +10,7 @@ import {
   programEligibility,
   type DiagnoseStyleValueOptions,
   type SerializedGrammarSourceConfig,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/tooling'
 import type ts from 'typescript'
 import { resolveTamaguiHost } from './host'
 

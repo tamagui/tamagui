@@ -37,7 +37,7 @@ import {
   type ParsedValue,
   type TextDecorationFamilyError,
   type ValueParseError,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/runtime'
 
 /** one authored prop's contribution to one CSS longhand, pre-resolution */
 export interface ProgramEntry {
