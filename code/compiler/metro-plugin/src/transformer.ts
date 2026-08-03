@@ -81,7 +81,9 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
             { moduleId }
           )
           tamagui.diagnostics.push(diagnostic)
-          console.warn(`[@tamagui/metro-plugin] ${diagnostic.code}: ${diagnostic.message}`)
+          console.warn(
+            `[@tamagui/metro-plugin] ${diagnostic.code}: ${diagnostic.message}`
+          )
         })
         if (entry) {
           try {
