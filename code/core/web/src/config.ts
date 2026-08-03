@@ -79,39 +79,12 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
   )
 }
 
-type DefaultTokenConfig = Pick<TamaguiInternalConfig, 'settings'>
-
-export const getDefaultToken = <Category extends DefaultTokenCategory>(
-  category: Category,
-  config: DefaultTokenConfig | null = getConfigFromGlobalOrLocal()
-): string => {
-  const defaultSize = config?.settings.defaultSize || DEFAULT_SIZE_TOKEN
-  return (
-    category === 'size'
-      ? defaultSize
-      : config?.settings.defaultTokens?.[category] || defaultSize
-  )
-}
-
 export const resolveDefaultToken = <Val>(
   val: Val,
-  category: DefaultTokenCategory,
-  config?: DefaultTokenConfig | null
+  _category: DefaultTokenCategory,
+  _config?: TamaguiInternalConfig | null
 ): Exclude<Val, true> | string => {
-  return val === true ? getDefaultToken(category, config) : (val as Exclude<Val, true>)
-}
-
-export const getDefaultSizeToken = (
-  config: DefaultTokenConfig | null = getConfigFromGlobalOrLocal()
-): string => {
-  return getDefaultToken('size', config)
-}
-
-export const resolveDefaultSizeToken = <Val>(
-  val: Val,
-  config?: DefaultTokenConfig | null
-): Exclude<Val, true> | string => {
-  return resolveDefaultToken(val, 'size', config)
+  return val === true ? DEFAULT_SIZE_TOKEN : (val as Exclude<Val, true>)
 }
 
 export function getStyleCompat(): StyleCompat {

@@ -243,12 +243,6 @@ export declare const defaultConfig: {
         addThemeClassName: "html";
         onlyAllowShorthands: true;
         styleCompat: "web";
-        defaultSize: string;
-        defaultTokens: {
-            space: string;
-            radius: string;
-            fontSize: string;
-        };
     };
     themes: V6Themes<V5Themes>;
     tokens: {

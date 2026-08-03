@@ -6,11 +6,6 @@ import { Button } from 'tamagui'
 import { describe, expect, test } from 'vitest'
 
 const config = createTamagui(v6)
-const defaultToken = config.settings.defaultSize
-const categoryDefaults = (config.settings as any).defaultTokens as
-  | Record<string, string>
-  | undefined
-const defaultFor = (category: string) => categoryDefaults?.[category] ?? defaultToken
 
 function flattenStyle(style: unknown): Record<string, unknown> {
   if (Array.isArray(style)) {
@@ -35,29 +30,13 @@ async function renderDefaultControls() {
 }
 
 describe('v6 default component size on native', () => {
-  test('keeps Tailwind numeric tokens without changing the component default', () => {
+  test('keeps Tailwind numeric tokens', () => {
     expect({
       size4: config.tokensParsed.size['4'].val,
       space4: config.tokensParsed.space['4'].val,
     }).toEqual({
       size4: 16,
       space4: 16,
-    })
-
-    expect({
-      size: config.tokensParsed.size[defaultFor('size')].val,
-      space: config.tokensParsed.space[defaultFor('space')].val,
-      radius: config.tokensParsed.radius[defaultFor('radius')].val,
-      zIndex: config.tokensParsed.zIndex[defaultFor('zIndex')].val,
-      fontSize: config.fontsParsed.body.size[defaultFor('fontSize')].val,
-      lineHeight: config.fontsParsed.body.lineHeight[defaultFor('fontSize')].val,
-    }).toEqual({
-      size: 44,
-      space: 16,
-      radius: 9,
-      zIndex: 4,
-      fontSize: 17,
-      lineHeight: 22,
     })
   })
 

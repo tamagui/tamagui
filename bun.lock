@@ -770,6 +770,7 @@
       "version": "2.5.1",
       "dependencies": {
         "@tamagui/constants": "workspace:*",
+        "@tamagui/size": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -784,6 +785,7 @@
       "name": "@tamagui/get-token",
       "version": "2.5.1",
       "dependencies": {
+        "@tamagui/size": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -2454,6 +2456,7 @@
       "dependencies": {
         "@tamagui/create-context": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/size": "workspace:*",
         "@tamagui/stacks": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -2840,6 +2843,7 @@
         "@tamagui/create-context": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/get-font-sized": "workspace:*",
+        "@tamagui/size": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -2880,6 +2884,7 @@
         "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
+        "@tamagui/size": "workspace:*",
         "@tamagui/stacks": "workspace:*",
         "@tamagui/text": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -3178,6 +3183,7 @@
       "name": "@tamagui/shapes",
       "version": "2.5.1",
       "dependencies": {
+        "@tamagui/size": "workspace:*",
         "@tamagui/stacks": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -3256,6 +3262,7 @@
       "name": "@tamagui/spacer",
       "version": "2.5.1",
       "dependencies": {
+        "@tamagui/size": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -3525,6 +3532,7 @@
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
         "@tamagui/roving-focus": "workspace:*",
+        "@tamagui/size": "workspace:*",
         "@tamagui/stacks": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-direction": "workspace:*",

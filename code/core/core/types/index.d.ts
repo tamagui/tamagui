@@ -1,5 +1,5 @@
 export * from '@tamagui/web';
-export { SizeContext, createSizeContext, createSizeTable, resolveTokenSize, } from '@tamagui/size';
+export { SizeContext, createSizeContext, createSizeTable, defaultTokenSizePolicy, resolveSizeToken, resolveTokenSize, } from '@tamagui/size';
 export type * from '@tamagui/size';
 export { createRefComponent, type RefProp } from '@tamagui/compose-refs';
 import type { StackNonStyleProps, StackStyleBase, TamaDefer, TamaguiComponent, TamaguiElement, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '@tamagui/web';

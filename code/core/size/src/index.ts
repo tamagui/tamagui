@@ -1,6 +1,5 @@
 import {
   createStyledContext,
-  resolveDefaultToken,
   type FontSizeTokens,
   type GenericFont,
   type SizeTokens,
@@ -10,6 +9,34 @@ import {
 } from '@tamagui/web'
 
 export type TokenSize = SizeTokens | FontSizeTokens | number | true
+
+export type TokenSizePolicy = {
+  size: Exclude<SizeTokens, true> | number
+  space: Exclude<SizeTokens, true> | number
+  radius: Exclude<SizeTokens, true> | number
+  fontSize: Exclude<FontSizeTokens, true> | number
+}
+
+// component defaults are intentionally owned by this opt-in package instead of
+// the global Tamagui config. The raw frame height works across token scales;
+// the other metrics retain each config's token-defined platform values.
+export const defaultTokenSizePolicy: TokenSizePolicy = {
+  size: 44,
+  space: '4',
+  radius: '4',
+  fontSize: '4',
+}
+
+export const resolveSizeToken = <
+  Value,
+  Category extends keyof TokenSizePolicy,
+>(
+  value: Value,
+  category: Category,
+  policy: TokenSizePolicy = defaultTokenSizePolicy
+): Exclude<Value, true> | TokenSizePolicy[Category] => {
+  return value === true ? policy[category] : (value as Exclude<Value, true>)
+}
 
 export type SizeContextValue<Value extends TokenSize = TokenSize> = {
   size: Value | undefined
@@ -31,11 +58,14 @@ export const SizeContext: CreatedSizeContext = createSizeContext()
 export type SizeResolverExtras = {
   tokens: Pick<TokensParsed, 'size' | 'space' | 'radius'>
   font: GenericFont
+  policy?: TokenSizePolicy
 }
 
 export type ResolvedFrameMetric<Value extends TokenSize> = Value extends number
   ? Value
-  : Variable
+  : Value extends true
+    ? number | Variable
+    : Variable
 
 export type ResolvedFontMetric<Value extends TokenSize> = Value extends number
   ? Value
@@ -56,7 +86,7 @@ export type ResolvedTokenSize<Value extends TokenSize = TokenSize> = {
 
 export const resolveTokenSize = <Value extends TokenSize>(
   value: Value,
-  { tokens, font }: SizeResolverExtras
+  { tokens, font, policy = defaultTokenSizePolicy }: SizeResolverExtras
 ): ResolvedTokenSize<Value> => {
   if (typeof value === 'number') {
     return {
@@ -66,22 +96,28 @@ export const resolveTokenSize = <Value extends TokenSize>(
     } as ResolvedTokenSize<Value>
   }
 
-  const sizeKey = resolveDefaultToken(value, 'size') as string
-  const spaceKey = resolveDefaultToken(value, 'space') as string
-  const radiusKey = resolveDefaultToken(value, 'radius') as string
-  const fontKey = resolveDefaultToken(value, 'fontSize') as string
+  const sizeKey = resolveSizeToken(value, 'size', policy)
+  const spaceKey = resolveSizeToken(value, 'space', policy)
+  const radiusKey = resolveSizeToken(value, 'radius', policy)
+  const fontKey = resolveSizeToken(value, 'fontSize', policy)
+
+  const size = typeof sizeKey === 'number' ? sizeKey : tokens.size[sizeKey]
+  const space = typeof spaceKey === 'number' ? spaceKey : tokens.space[spaceKey]
+  const radius = typeof radiusKey === 'number' ? radiusKey : tokens.radius[radiusKey]
+  const fontSize = typeof fontKey === 'number' ? fontKey : font.size[fontKey]
+  const lineHeight = typeof fontKey === 'number' ? undefined : font.lineHeight?.[fontKey]
 
   return {
     frame: {
-      size: tokens.size[sizeKey],
-      space: tokens.space[spaceKey],
-      radius: tokens.radius[radiusKey],
+      size,
+      space,
+      radius,
     },
     text: {
-      fontSize: font.size[fontKey],
-      lineHeight: font.lineHeight?.[fontKey],
+      fontSize,
+      lineHeight,
     },
-    icon: font.size[fontKey],
+    icon: fontSize,
   } as ResolvedTokenSize<Value>
 }
 
@@ -128,7 +164,7 @@ export type CreatedSizeTable<
   text: SizeTableProjection<Table, 'text'>
   icon: SizeTableProjection<Table, 'icon'>
   resolve: {
-    (): SizeTableSelection<Table, DefaultName>;
+    (): SizeTableSelection<Table, DefaultName>
     <Name extends SizeTableName<Table>>(name: Name): SizeTableSelection<Table, Name>
   }
 }

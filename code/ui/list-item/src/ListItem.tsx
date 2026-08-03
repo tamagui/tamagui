@@ -3,6 +3,7 @@ import { oneSizeTokenSmaller } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { YStack } from '@tamagui/stacks'
+import { resolveSizeToken } from '@tamagui/size'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type {
   ColorTokens,
@@ -15,7 +16,6 @@ import {
   createStyledContext,
   createStyledHOC,
   getVariableValue,
-  resolveDefaultToken,
   styled,
   useProps,
   View,
@@ -54,11 +54,12 @@ const listItemSizeVariant = (
   val: SizeTokens | true,
   { tokens }: VariantSpreadExtras<any>
 ) => {
-  const sizeToken = resolveDefaultToken(val, 'size')
-  const spaceToken = resolveDefaultToken(val, 'space')
-  const sizeVal = getVariableValue(tokens.size[sizeToken]) as number
+  const sizeToken = resolveSizeToken(val, 'size')
+  const spaceToken = resolveSizeToken(val, 'space')
+  const size = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+  const sizeVal = getVariableValue(size) as number
   return {
-    minHeight: tokens.size[sizeToken],
+    minHeight: size,
     paddingHorizontal: tokens.space[spaceToken],
     paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
     gap: getThemedIconSize(sizeToken, 0.4),
@@ -69,7 +70,7 @@ const listItemSubtitleSizeVariant = (
   val: SizeTokens | true,
   extras: VariantSpreadExtras<any>
 ) => {
-  const fontSizeToken = resolveDefaultToken(val, 'fontSize')
+  const fontSizeToken = resolveSizeToken(val, 'fontSize')
   const oneSmaller = oneSizeTokenSmaller(fontSizeToken)
   return getFontSized(oneSmaller as FontSizeTokens, extras as any)
 }

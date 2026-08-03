@@ -91,52 +91,6 @@ describe('getSplitStyles', () => {
     expect(findLayoutValue(spread, 'width')).toBe('44px')
   })
 
-  test(`direct true style tokens use native category defaults`, () => {
-    const next = config.getDefaultTamaguiConfig('native')
-    const configured = createTamagui({
-      ...next,
-      settings: {
-        ...next.settings,
-        defaultSize: '5',
-        defaultTokens: {
-          space: '3',
-          radius: '2',
-          fontSize: '1',
-        },
-      },
-    })
-
-    try {
-      const direct = getSplitStylesFor(
-        {
-          height: true,
-          padding: true,
-          borderRadius: true,
-          fontSize: true,
-        },
-        Text,
-        {
-          resolveValues: 'value',
-        }
-      )
-
-      expect(findLayoutValue(direct, 'height')).toBe(
-        `${configured.tokensParsed.size['5'].val}px`
-      )
-      expect(findLayoutValue(direct, 'paddingTop')).toBe(
-        `${configured.tokensParsed.space['3'].val}px`
-      )
-      expect(findLayoutValue(direct, 'borderTopLeftRadius')).toBe(
-        `${configured.tokensParsed.radius['2'].val}px`
-      )
-      expect(findLayoutValue(direct, 'fontSize')).toBe(
-        `${configured.fontsParsed.body.size['1'].val}px`
-      )
-    } finally {
-      createTamagui(config.getDefaultTamaguiConfig('native'))
-    }
-  })
-
   test('flat programs can override read-only parent props', () => {
     const props = {}
     Object.defineProperty(props, 'boxShadow', {

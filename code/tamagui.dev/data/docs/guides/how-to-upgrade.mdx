@@ -290,11 +290,11 @@ Component `size` still takes size tokens. The styled `tamagui` components
 (`import { Button } from 'tamagui'`) resolve `size` through your token scales:
 frame height, padding, and radius come from size, space, and radius tokens, while
 text and icon sizing come from the active font scale. Omitting `size` (or passing
-`true`) resolves through `settings.defaultSize` and `settings.defaultTokens`, so
-the whole kit shares one default control size:
+`true`) resolves through the opt-in policy in `@tamagui/size`, so component
+defaults no longer depend on global Tamagui settings:
 
 ```tsx
-// styled component: pass a size token, or omit for settings.defaultSize
+// styled component: pass a size token, or omit for the component default
 import { Button } from 'tamagui'
 
 <Button size="5" />

@@ -242,12 +242,6 @@ export declare const settings: {
     addThemeClassName: "html";
     onlyAllowShorthands: true;
     styleCompat: "web";
-    defaultSize: string;
-    defaultTokens: {
-        space: string;
-        radius: string;
-        fontSize: string;
-    };
 };
 export type V6Settings = typeof settings;
 /**
@@ -495,12 +489,6 @@ export declare function createV6Config<Colors extends V6Colors>(colors: Colors):
         addThemeClassName: "html";
         onlyAllowShorthands: true;
         styleCompat: "web";
-        defaultSize: string;
-        defaultTokens: {
-            space: string;
-            radius: string;
-            fontSize: string;
-        };
     };
     themes: Colors['themes'];
     tokens: Colors['colorTokens'] extends Record<string, string> ? typeof tokens & {

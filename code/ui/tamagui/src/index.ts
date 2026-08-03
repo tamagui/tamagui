@@ -283,6 +283,8 @@ export {
   mediaObjectToString,
   mediaQueryConfig,
   mediaState,
+  defaultTokenSizePolicy,
+  resolveSizeToken,
   resolveTokenSize,
   setOnLayoutStrategy,
   styled,

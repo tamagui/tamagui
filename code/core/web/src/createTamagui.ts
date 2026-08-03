@@ -1,10 +1,4 @@
-import {
-  DEFAULT_SIZE_TOKEN,
-  getConfigMaybe,
-  getDefaultToken,
-  setConfig,
-  setTokens,
-} from './config'
+import { DEFAULT_SIZE_TOKEN, getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
@@ -25,7 +19,6 @@ import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
 import type {
   CreateTamaguiProps,
-  DefaultTokens,
   DedupedTheme,
   DedupedThemes,
   GenericFont,
@@ -76,44 +69,6 @@ export function installTamaguiConfig(config: TamaguiInternalConfig) {
   setTokens(config.tokensParsed)
   initializeTamaguiConfig(config)
   return config
-}
-
-function validateDefaultTokens(config: TamaguiInternalConfig) {
-  const missing: string[] = []
-  const overrides = config.settings.defaultTokens
-  const defaultSize = getDefaultToken('size', config)
-  const defaultSpace = getDefaultToken('space', config)
-  const defaultFontSize = getDefaultToken('fontSize', config)
-
-  if (!config.tokensParsed.size?.[defaultSize]) {
-    missing.push(`settings.defaultSize -> tokens.size.${defaultSize}`)
-  }
-  if (!config.tokensParsed.space?.[defaultSpace]) {
-    const setting = overrides?.space
-      ? 'settings.defaultTokens.space'
-      : 'settings.defaultSize'
-    missing.push(`${setting} -> tokens.space.${defaultSpace}`)
-  }
-
-  for (const fontName in config.fontsParsed) {
-    if (!config.fontsParsed[fontName]?.size?.[defaultFontSize]) {
-      const setting = overrides?.fontSize
-        ? 'settings.defaultTokens.fontSize'
-        : 'settings.defaultSize'
-      missing.push(`${setting} -> fonts.${fontName}.size.${defaultFontSize}`)
-    }
-  }
-
-  const defaultRadius = overrides?.radius
-  if (defaultRadius && !config.tokensParsed.radius?.[defaultRadius]) {
-    missing.push(`settings.defaultTokens.radius -> tokens.radius.${defaultRadius}`)
-  }
-
-  if (missing.length) {
-    throw new Error(
-      `Default token settings point to missing tokens: ${missing.join(', ')}`
-    )
-  }
 }
 
 function createParsedTokens(tokensIn: CreateTamaguiProps['tokens']): TokensParsed {
@@ -210,10 +165,14 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     })()
   }
 
-  const defaultSize = configIn.settings?.defaultSize || DEFAULT_SIZE_TOKEN
-  const defaultTokens = configIn.settings?.defaultTokens
-    ? ({ ...configIn.settings.defaultTokens } as DefaultTokens)
-    : undefined
+  const {
+    defaultSize: _removedDefaultSize,
+    defaultTokens: _removedDefaultTokens,
+    ...settingsIn
+  } = (configIn.settings || {}) as NonNullable<CreateTamaguiProps['settings']> & {
+    defaultSize?: unknown
+    defaultTokens?: unknown
+  }
   const defaultFontSetting = configIn.settings?.defaultFont
   const defaultFont = defaultFontSetting
   const defaultFontToken =
@@ -232,13 +191,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // CSS generation (tree-shaken when TAMAGUI_DID_OUTPUT_CSS is set)
     const declarations = createTokenCSS(tokens as any, shouldTokenCategoryHaveUnits)
     const fontDeclarations = createFontCSS(fontsParsed, registerFontVariables)
-    const defaultFontSize = getDefaultToken('fontSize', {
-      settings: { defaultSize, defaultTokens },
-    })
     const cssRuleSets = buildCSSRuleSets(
       declarations,
       fontDeclarations,
-      defaultFontSize,
+      DEFAULT_SIZE_TOKEN,
       defaultFontToken
     )
 
@@ -273,7 +229,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
-  const defaultPositionSetting = configIn.settings?.defaultPosition || 'static'
+  const defaultPositionSetting = settingsIn.defaultPosition || 'static'
 
   const defaultProps = configIn.defaultProps || {}
   // apply defaultPosition via defaultProps when not static
@@ -311,9 +267,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultProps,
     settings: {
       webContainerType: 'inline-size',
-      ...configIn.settings,
-      defaultSize,
-      ...(defaultTokens && { defaultTokens }),
+      ...settingsIn,
     },
     tokens: tokens as any,
     // vite made this into a function if it wasn't set
@@ -334,10 +288,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultFontToken,
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    validateDefaultTokens(config)
   }
 
   initializeTamaguiConfig(config)

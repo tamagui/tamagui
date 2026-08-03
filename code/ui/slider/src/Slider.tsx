@@ -13,7 +13,7 @@ import {
   createRefComponent,
   getTokens,
   getVariableValue,
-  resolveDefaultSizeToken,
+  resolveSizeToken,
   styled,
   useConfiguration,
   useCreateShallowSetState,
@@ -412,11 +412,9 @@ const SliderActive = createStyledHOC(
 // so we can accurately use it for estimatedSize below
 const getThumbSize = (val?: SizeTokens | number | true) => {
   const tokens = getTokens()
-  const size =
-    typeof val === 'number'
-      ? val
-      : (getVariableValue(tokens.size[resolveDefaultSizeToken(val ?? true)]) as number) *
-        0.86
+  const sizeToken = resolveSizeToken(val ?? true, 'size')
+  const resolved = typeof sizeToken === 'number' ? sizeToken : tokens.size[sizeToken]
+  const size = typeof val === 'number' ? val : getVariableValue(resolved) * 0.86
   return {
     width: size,
     height: size,

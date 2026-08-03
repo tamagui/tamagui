@@ -4,6 +4,8 @@ export {
   SizeContext,
   createSizeContext,
   createSizeTable,
+  defaultTokenSizePolicy,
+  resolveSizeToken,
   resolveTokenSize,
 } from '@tamagui/size'
 export type * from '@tamagui/size'

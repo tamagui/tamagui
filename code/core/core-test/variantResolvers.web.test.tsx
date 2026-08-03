@@ -367,79 +367,66 @@ describe('TS-style variant resolvers', () => {
   })
 
   test('true resolves through the matched category and exact true stays raw', () => {
-    configure({
-      defaultSize: '4',
-      defaultTokens: {
-        space: '1',
-        radius: '2',
-        fontSize: '1',
-      },
+    const seen: Record<string, unknown> = {}
+    const Comp = styled(View, {
+      variants: {
+        sizeValue: {
+          Size: (value) => {
+            seen.size = value
+            return { opacity: 0.1 }
+          },
+        },
+        spaceValue: {
+          Space: (value) => {
+            seen.space = value
+            return { opacity: 0.2 }
+          },
+        },
+        radiusValue: {
+          Radius: (value) => {
+            seen.radius = value
+            return { opacity: 0.3 }
+          },
+        },
+        zIndexValue: {
+          ZIndex: (value) => {
+            seen.zIndex = value
+            return { opacity: 0.4 }
+          },
+        },
+        fontSizeValue: {
+          FontSize: (value) => {
+            seen.fontSize = value
+            return { opacity: 0.5 }
+          },
+        },
+        fanoutValue: {
+          true: (value) => {
+            seen.fanout = value
+            return { opacity: 0.6 }
+          },
+          Size: () => ({ opacity: 0.7 }),
+        },
+      } as const,
     })
 
-    try {
-      const seen: Record<string, unknown> = {}
-      const Comp = styled(View, {
-        variants: {
-          sizeValue: {
-            Size: (value) => {
-              seen.size = value
-              return { opacity: 0.1 }
-            },
-          },
-          spaceValue: {
-            Space: (value) => {
-              seen.space = value
-              return { opacity: 0.2 }
-            },
-          },
-          radiusValue: {
-            Radius: (value) => {
-              seen.radius = value
-              return { opacity: 0.3 }
-            },
-          },
-          zIndexValue: {
-            ZIndex: (value) => {
-              seen.zIndex = value
-              return { opacity: 0.4 }
-            },
-          },
-          fontSizeValue: {
-            FontSize: (value) => {
-              seen.fontSize = value
-              return { opacity: 0.5 }
-            },
-          },
-          fanoutValue: {
-            true: (value) => {
-              seen.fanout = value
-              return { opacity: 0.6 }
-            },
-            Size: () => ({ opacity: 0.7 }),
-          },
-        } as const,
-      })
+    simplifiedGetSplitStyles(Comp, {
+      sizeValue: true,
+      spaceValue: true,
+      radiusValue: true,
+      zIndexValue: true,
+      fontSizeValue: true,
+      fanoutValue: true,
+    })
 
-      simplifiedGetSplitStyles(Comp, {
-        sizeValue: true,
-        spaceValue: true,
-        radiusValue: true,
-        zIndexValue: true,
-        fontSizeValue: true,
-        fanoutValue: true,
-      })
-
-      expect(seen).toEqual({
-        size: '4',
-        space: '1',
-        radius: '2',
-        zIndex: true,
-        fontSize: '1',
-        fanout: true,
-      })
-    } finally {
-      configure()
-    }
+    expect(seen).toEqual({
+      size: '4',
+      space: '4',
+      radius: '4',
+      zIndex: true,
+      fontSize: '4',
+      fanout: true,
+    })
   })
 
   test('resolver domains include non-token values from exported value types', () => {

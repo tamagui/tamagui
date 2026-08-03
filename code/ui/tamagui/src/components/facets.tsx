@@ -48,7 +48,7 @@ export const elevated = {
 
 export const rounded = {
   true: {
-    // resolves via settings.defaultTokens.radius, same as the Dialog skin
+    // boolean radii use the built-in token key, same as the Dialog skin
     borderRadius: true,
   },
 } as const

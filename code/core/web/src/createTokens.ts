@@ -15,7 +15,7 @@ function validateNoTrueTokenKeys(tokens: CreateTokens) {
 
     if (Object.prototype.hasOwnProperty.call(tokenSet, 'true')) {
       throw new Error(
-        `tokens.${category}.true is reserved. Remove the true token key and set settings.defaultSize instead.`
+        `tokens.${category}.true is reserved because boolean values select component defaults. Use an explicit token name instead.`
       )
     }
   }

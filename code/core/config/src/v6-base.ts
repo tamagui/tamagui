@@ -61,12 +61,6 @@ export const fonts = {
 
 export const settings = {
   ...v5Settings,
-  defaultSize: '11',
-  defaultTokens: {
-    space: '4',
-    radius: '4',
-    fontSize: '4',
-  },
 } satisfies CreateTamaguiProps['settings']
 
 export type V6Settings = typeof settings

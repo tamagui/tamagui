@@ -104,7 +104,7 @@ describe('size table types', () => {
     expectTypeOf(literal.text.fontSize).toEqualTypeOf<24>()
     expectTypeOf(literal.text.lineHeight).toEqualTypeOf<undefined>()
     expectTypeOf(literal.icon).toEqualTypeOf<24>()
-    expectTypeOf(defaults.frame.size).toEqualTypeOf<Variable>()
+    expectTypeOf(defaults.frame.size).toEqualTypeOf<number | Variable>()
     expectTypeOf(defaults.text.fontSize).toEqualTypeOf<number | Variable>()
   })
 

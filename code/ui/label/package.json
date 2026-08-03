@@ -39,6 +39,7 @@
     "@tamagui/create-context": "workspace:*",
     "@tamagui/focusable": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
+    "@tamagui/size": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/web": "workspace:*"
   },

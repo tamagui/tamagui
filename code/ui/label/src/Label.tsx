@@ -3,6 +3,7 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { createContext } from '@tamagui/create-context'
 import { focusFocusable } from '@tamagui/focusable'
 import { getFontSized } from '@tamagui/get-font-sized'
+import { resolveSizeToken } from '@tamagui/size'
 import { SizableText } from '@tamagui/text'
 import type {
   FontSizeTokens,
@@ -10,7 +11,7 @@ import type {
   SizeTokens,
   VariantSpreadExtras,
 } from '@tamagui/web'
-import { createStyledHOC, resolveDefaultToken, styled } from '@tamagui/web'
+import { createStyledHOC, styled } from '@tamagui/web'
 import * as React from 'react'
 
 const NAME = 'Label'
@@ -29,10 +30,10 @@ const labelSizeVariant = (val: SizeTokens | true, extras: VariantSpreadExtras<an
   const fontStyle = getFontSized(val as FontSizeTokens, extras as any)
   // line-height matches the control height at the same size token, so a Label
   // sits flush next to the Input/Button it labels
-  const sizeKey = resolveDefaultToken(val, 'size') as string
+  const sizeKey = resolveSizeToken(val, 'size')
   return {
     ...fontStyle,
-    lineHeight: extras.tokens.size[sizeKey],
+    lineHeight: typeof sizeKey === 'number' ? sizeKey : extras.tokens.size[sizeKey],
   }
 }
 

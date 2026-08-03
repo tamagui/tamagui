@@ -2,11 +2,7 @@ import type { AnimationDriver, DefaultTokenCategory, GenericTamaguiSettings, Tam
 export type StyleCompat = 'legacy' | 'react-native' | 'web';
 export declare const DEFAULT_SIZE_TOKEN = "4";
 export declare const getSetting: <Key extends keyof GenericTamaguiSettings>(key: Key) => GenericTamaguiSettings[Key];
-type DefaultTokenConfig = Pick<TamaguiInternalConfig, 'settings'>;
-export declare const getDefaultToken: <Category extends DefaultTokenCategory>(category: Category, config?: DefaultTokenConfig | null) => string;
-export declare const resolveDefaultToken: <Val>(val: Val, category: DefaultTokenCategory, config?: DefaultTokenConfig | null) => Exclude<Val, true> | string;
-export declare const getDefaultSizeToken: (config?: DefaultTokenConfig | null) => string;
-export declare const resolveDefaultSizeToken: <Val>(val: Val, config?: DefaultTokenConfig | null) => Exclude<Val, true> | string;
+export declare const resolveDefaultToken: <Val>(val: Val, _category: DefaultTokenCategory, _config?: TamaguiInternalConfig | null) => Exclude<Val, true> | string;
 export declare function getStyleCompat(): StyleCompat;
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;

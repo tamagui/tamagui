@@ -205,8 +205,8 @@ export const Misc = () => (
   </>
 )
 
-// §4 — styled `tamagui` Button takes size tokens; omitting size (or `true`)
-// resolves through settings.defaultSize.
+// §4 — styled `tamagui` Button takes size tokens; omitting size uses the
+// package-local control policy from @tamagui/size.
 export const StyledButtonSize = () => <Button size="5">Save</Button>
 
 // §16 — imperative Toast removed; v3 uses the global toast() + the composable parts.

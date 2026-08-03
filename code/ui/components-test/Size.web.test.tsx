@@ -106,26 +106,14 @@ describe('opt-in size primitives on web', () => {
 
   test('projects true, explicit tokens, and raw numbers through active scales', () => {
     const extras = { tokens: config.tokensParsed, font: config.fontsParsed.body }
-    const defaultSize = config.settings.defaultSize
-    const defaults = config.settings.defaultTokens
     const projected = resolveTokenSize(true, extras)
 
-    expect(projected.frame.size).toBe(config.tokensParsed.size[defaultSize])
-    expect(projected.frame.space).toBe(
-      config.tokensParsed.space[defaults?.space ?? defaultSize]
-    )
-    expect(projected.frame.radius).toBe(
-      config.tokensParsed.radius[defaults?.radius ?? defaultSize]
-    )
-    expect(projected.text.fontSize).toBe(
-      config.fontsParsed.body.size[defaults?.fontSize ?? defaultSize]
-    )
-    expect(projected.text.lineHeight).toBe(
-      config.fontsParsed.body.lineHeight[defaults?.fontSize ?? defaultSize]
-    )
-    expect(projected.icon).toBe(
-      config.fontsParsed.body.size[defaults?.fontSize ?? defaultSize]
-    )
+    expect(projected.frame.size).toBe(44)
+    expect(projected.frame.space).toBe(config.tokensParsed.space['4'])
+    expect(projected.frame.radius).toBe(config.tokensParsed.radius['4'])
+    expect(projected.text.fontSize).toBe(config.fontsParsed.body.size['4'])
+    expect(projected.text.lineHeight).toBe(config.fontsParsed.body.lineHeight['4'])
+    expect(projected.icon).toBe(config.fontsParsed.body.size['4'])
     expect(resolveTokenSize('4', extras)).toEqual({
       frame: {
         size: config.tokensParsed.size['4'],

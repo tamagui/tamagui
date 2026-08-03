@@ -33,8 +33,8 @@ export const config = createTamagui(defaultConfig)
   numeric component scale.
 - **Tailwind type scale** - font `size` and `lineHeight` gain `xs` through `9xl` on top
   of the v5 numeric steps.
-- **Direct z-index values** - `0`-`50` resolve to their own numbers (v5 mapped `1` to
-  100).
+- **Literal z-index values** - v6 does not configure a z-index token scale. Pass
+  numbers directly (v5 mapped token `1` to 100).
 - **`w` and `h` shorthands** - width and height, matching Tailwind's `w-*`/`h-*`.
 - **Tailwind colors by default** - the full Tailwind palette as color tokens
   (`blue-500`), with themes generated from that same palette. Colors are the one
@@ -42,8 +42,8 @@ export const config = createTamagui(defaultConfig)
   the v5 colors or your own instead.
 
 The scale change is the breaking one: `4` was 44px in v5 and is 16px in v6.
-`settings.defaultSize` is `11` (44px) so unstyled components keep the same control
-geometry as v5.
+Styled controls keep their default geometry through the opt-in policy in
+`@tamagui/size`; the config no longer sets a global component size.
 
 ### Entries
 

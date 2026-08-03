@@ -47,7 +47,7 @@ describe('getSplitStyles', () => {
     expect((styles.rulesToInsert[className]?.[4] ?? []).join('')).toContain('color:red')
   })
 
-  test(`Size variants resolve true through settings.defaultSize`, () => {
+  test(`Size variants resolve true to the built-in token key`, () => {
     let seenSize: unknown
     const SizedView = styled(View, {
       variants: {
@@ -69,7 +69,7 @@ describe('getSplitStyles', () => {
     expect(seenSize).toBe('4')
   })
 
-  test(`direct true style tokens resolve through settings.defaultSize`, () => {
+  test(`direct true style tokens resolve to the built-in token key`, () => {
     const out = simplifiedGetSplitStyles(View, {
       padding: true,
       borderRadius: true,
@@ -88,43 +88,6 @@ describe('getSplitStyles', () => {
     expect(byProp.borderTopRightRadius).toBe('var(--t-radius-4)')
     expect(byProp.borderBottomRightRadius).toBe('var(--t-radius-4)')
     expect(byProp.borderBottomLeftRadius).toBe('var(--t-radius-4)')
-  })
-
-  test(`direct true style tokens resolve through their category defaults`, () => {
-    const next = config.getDefaultTamaguiConfig()
-    createTamagui({
-      ...next,
-      settings: {
-        ...next.settings,
-        defaultSize: '5',
-        defaultTokens: {
-          space: '3',
-          radius: '2',
-          fontSize: '1',
-        },
-      },
-    })
-
-    try {
-      const out = simplifiedGetSplitStyles(Text, {
-        height: true,
-        padding: true,
-        borderRadius: true,
-        fontSize: true,
-      })
-
-      const byProp: Record<string, string> = {}
-      for (const rule of Object.values(out.rulesToInsert)) {
-        byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
-      }
-
-      expect(byProp.height).toBe('var(--t-size-5)')
-      expect(byProp.paddingTop).toBe('var(--t-space-3)')
-      expect(byProp.borderTopLeftRadius).toBe('var(--t-radius-2)')
-      expect(byProp.fontSize).toBe('var(--f-size-1)')
-    } finally {
-      createTamagui(config.getDefaultTamaguiConfig())
-    }
   })
 
   test(`prop "aria-required" is passed through`, () => {

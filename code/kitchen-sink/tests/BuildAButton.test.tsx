@@ -5,7 +5,6 @@ import {
   View,
   Text,
   createStyledContext,
-  resolveDefaultSizeToken,
   styled,
   useTheme,
   withStaticProperties,
@@ -25,7 +24,7 @@ export const ButtonFrame = styled(View, {
   variants: {
     size: {
       Size: (name, { tokens }) => {
-        const sizeToken = resolveDefaultSizeToken(name) as Exclude<SizeTokens, true>
+        const sizeToken = (name === true ? '4' : name) as Exclude<SizeTokens, true>
 
         return {
           height: tokens.size[sizeToken],
@@ -51,7 +50,7 @@ export const ButtonText = styled(Text, {
   variants: {
     size: {
       FontSize: (name, { font }) => {
-        const sizeToken = resolveDefaultSizeToken(name) as Exclude<typeof name, true>
+        const sizeToken = (name === true ? '4' : name) as Exclude<typeof name, true>
 
         return {
           fontSize: font?.size[sizeToken],

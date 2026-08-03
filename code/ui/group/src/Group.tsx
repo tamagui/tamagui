@@ -2,7 +2,7 @@ import type { GetProps, VariantSpreadExtras } from '@tamagui/core'
 import {
   createStyledHOC,
   mergeSlotStyleProps,
-  resolveDefaultToken,
+  resolveSizeToken,
   styled,
 } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
@@ -24,7 +24,7 @@ const [createGroupContext, createGroupScope] = createContextScope(GROUP_NAME)
 const [GroupProvider, useGroupContext] = createGroupContext<GroupContextValue>(GROUP_NAME)
 
 const groupSizeVariant = (val: any, { tokens }: VariantSpreadExtras<any>) => {
-  const radiusToken = resolveDefaultToken(val, 'radius')
+  const radiusToken = resolveSizeToken(val, 'radius')
   return {
     borderRadius: tokens.radius[radiusToken] ?? radiusToken,
   }

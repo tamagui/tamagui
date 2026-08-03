@@ -1,4 +1,9 @@
-import { createStyledHOC, createRefComponent, styled } from '@tamagui/core'
+import {
+  createStyledHOC,
+  createRefComponent,
+  defaultTokenSizePolicy,
+  styled,
+} from '@tamagui/core'
 import '@tamagui/polyfill-dev'
 
 import { FloatingDelayGroup, useDelayGroupContext, type Delay } from '@tamagui/floating'
@@ -226,7 +231,7 @@ const TooltipComponent = createRefComponent(function Tooltip(
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
-  const smallerSize = oneSizeTokenSmaller(true)
+  const smallerSize = oneSizeTokenSmaller(defaultTokenSizePolicy.fontSize)
 
   const content = (
     <FloatingOverrideContext.Provider value={floatingContext}>

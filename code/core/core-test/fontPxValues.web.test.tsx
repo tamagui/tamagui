@@ -19,7 +19,7 @@ const baseConfig = (fontSize: any, fontLineHeight: any, sizeTokens: any) => ({
     },
   },
   themes: { light: { background: '#fff', color: '#000' } },
-  settings: { defaultFont: 'body', defaultSize: '4' },
+  settings: { defaultFont: 'body' },
 })
 
 describe('px string font values', () => {

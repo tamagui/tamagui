@@ -30,9 +30,9 @@ describe('versioned token configs', () => {
   })
 
   test.each(configs)(
-    '%s resolves boolean size through settings.defaultSize',
+    '%s resolves boolean style tokens through the built-in key',
     (_, config) => {
-      const tamaguiConfig = createTamagui(config)
+      createTamagui(config)
       let seenSize: unknown
 
       const SizedView = styled(View, {
@@ -52,7 +52,7 @@ describe('versioned token configs', () => {
         size: true,
       })
 
-      expect(seenSize).toBe(tamaguiConfig.settings.defaultSize)
+      expect(seenSize).toBe('4')
     }
   )
 })

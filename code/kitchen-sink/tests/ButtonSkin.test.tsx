@@ -12,7 +12,7 @@ test('uses button behavior without framework aesthetics', async ({ page }) => {
   await expect(button).toHaveAttribute('role', 'button')
   await expect(button).toHaveAttribute('tabindex', '0')
   await expect(button).toHaveAttribute('type', 'button')
-  // default size resolves settings.defaultSize ($4 -> size token 44 in v5)
+  // the opt-in size policy keeps the default control frame at 44px
   await expect(button).toHaveCSS('height', '44px')
   expect(await button.evaluate((element) => element.tagName)).toBe('BUTTON')
 

@@ -1,27 +1,17 @@
-import { setConfig, type TamaguiInternalConfig } from '@tamagui/web'
 import { describe, expect, test } from 'vitest'
 
 import {
   createSizeContext,
   createSizeTable,
+  defaultTokenSizePolicy,
+  resolveSizeToken,
   resolveTokenSize,
   type SizeResolverExtras,
   SizeContext,
 } from '../src'
 
 describe('size primitives', () => {
-  test('resolves true by category while retaining explicit values', () => {
-    setConfig({
-      settings: {
-        defaultSize: 'frame-default',
-        defaultTokens: {
-          space: 'space-default',
-          radius: 'radius-default',
-          fontSize: 'font-default',
-        },
-      },
-    } as TamaguiInternalConfig)
-
+  test('resolves true through an explicit package-local policy', () => {
     const extras = {
       tokens: {
         size: { 'frame-default': 40, 4: 44 },
@@ -31,6 +21,12 @@ describe('size primitives', () => {
       font: {
         size: { 'font-default': 16, 4: 18 },
         lineHeight: { 'font-default': 22, 4: 24 },
+      },
+      policy: {
+        size: 'frame-default',
+        space: 'space-default',
+        radius: 'radius-default',
+        fontSize: 'font-default',
       },
     } as unknown as SizeResolverExtras
 
@@ -52,6 +48,33 @@ describe('size primitives', () => {
       frame: { size: 24, space: 24, radius: 24 },
       text: { fontSize: 24, lineHeight: undefined },
       icon: 24,
+    })
+  })
+
+  test('owns the default control policy without reading Tamagui settings', () => {
+    const extras = {
+      tokens: {
+        size: { 4: 16 },
+        space: { 4: 16 },
+        radius: { 4: 9 },
+      },
+      font: {
+        size: { 4: 15 },
+        lineHeight: { 4: 23 },
+      },
+    } as unknown as SizeResolverExtras
+
+    expect(defaultTokenSizePolicy).toEqual({
+      size: 44,
+      space: '4',
+      radius: '4',
+      fontSize: '4',
+    })
+    expect(resolveSizeToken(true, 'size')).toBe(44)
+    expect(resolveTokenSize(true, extras)).toEqual({
+      frame: { size: 44, space: 16, radius: 9 },
+      text: { fontSize: 15, lineHeight: 23 },
+      icon: 15,
     })
   })
 

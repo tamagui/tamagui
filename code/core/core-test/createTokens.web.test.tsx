@@ -40,7 +40,7 @@ test('true token keys error in development', () => {
           true: 44,
         },
       })
-    ).toThrow(/tokens\.size\.true.*settings\.defaultSize/)
+    ).toThrow(/tokens\.size\.true.*explicit token name/)
   } finally {
     process.env.NODE_ENV = originalNodeEnv
   }

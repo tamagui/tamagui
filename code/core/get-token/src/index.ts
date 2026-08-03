@@ -1,19 +1,21 @@
 import type { Variable, VariableValGeneric } from '@tamagui/web'
-import { getDefaultSizeToken, getDefaultToken, getTokens } from '@tamagui/web'
+import { resolveSizeToken } from '@tamagui/size'
+import { getTokens } from '@tamagui/web'
 
 // technically number | undefined just for compat with the generic VariableVal
 type GetTokenBase = Variable | string | number | boolean | undefined | VariableValGeneric
 
 // trivial same-key token resolver: token in, Variable out.
-// resolves `true` to the config's category default, looks the key up in the
+// resolves `true` through the opt-in size policy, looks the key up in the
 // requested scale, and passes through numbers / unknown keys unchanged.
 const resolveToken = (
   type: 'size' | 'space' | 'radius',
   input: GetTokenBase
 ): Variable<number> => {
   const tokens = getTokens()[type] as Record<string, Variable>
-  const resolved = input === true ? getDefaultToken(type) : input
+  const resolved = resolveSizeToken(input, type)
   if (resolved == null) return resolved as any
+  if (typeof resolved === 'number') return resolved as any
   const key = typeof resolved === 'object' ? (resolved as Variable).key : String(resolved)
   return (tokens[key] ?? resolved) as any
 }
@@ -28,8 +30,7 @@ export const getRadius = (radius: GetTokenBase) => resolveToken('radius', radius
 // `1`. used where a component wants a slightly smaller size/font token (list
 // item subtitle, tooltip default size) without stepping through a sorted scale.
 export const oneSizeTokenSmaller = (token: GetTokenBase): string => {
-  const key = token === true ? getDefaultSizeToken() : token
-  const n = Number(String(key))
-  if (Number.isNaN(n)) return String(key)
+  const n = Number(String(token))
+  if (Number.isNaN(n)) return String(token)
   return `${Math.max(1, Math.round(n) - 1)}`
 }

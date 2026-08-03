@@ -228,7 +228,6 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     settings: {
       shouldAddPrefersColorThemes: true,
       defaultFont: 'body',
-      defaultSize: '4',
     },
   }
 }

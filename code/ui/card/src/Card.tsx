@@ -1,11 +1,7 @@
 import { YStack } from '@tamagui/stacks'
+import { resolveSizeToken } from '@tamagui/size'
 import type { GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/web'
-import {
-  createStyledContext,
-  resolveDefaultToken,
-  styled,
-  withStaticProperties,
-} from '@tamagui/web'
+import { createStyledContext, styled, withStaticProperties } from '@tamagui/web'
 
 const CardContext = createStyledContext({
   size: true as SizeTokens | true,
@@ -15,7 +11,7 @@ const cardRadiusVariant = (
   val: SizeTokens | true,
   { tokens }: VariantSpreadExtras<any>
 ) => {
-  const radiusToken = resolveDefaultToken(val, 'radius')
+  const radiusToken = resolveSizeToken(val, 'radius')
   return {
     borderRadius: tokens.radius[radiusToken] ?? radiusToken,
   }
@@ -25,7 +21,7 @@ const cardPaddingVariant = (
   val: SizeTokens | true,
   { tokens }: VariantSpreadExtras<any>
 ) => {
-  const spaceToken = resolveDefaultToken(val, 'space')
+  const spaceToken = resolveSizeToken(val, 'space')
   return {
     padding: tokens.space[spaceToken] ?? spaceToken,
   }

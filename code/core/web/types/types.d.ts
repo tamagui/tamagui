@@ -628,7 +628,6 @@ type AllowedStyleValuesSettingPerCategory = {
 };
 type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSettingPerCategory;
 export type DefaultTokenCategory = 'size' | 'space' | 'radius' | 'fontSize';
-export type DefaultTokens = Partial<Record<Exclude<DefaultTokenCategory, 'size'>, string>>;
 export interface GenericTamaguiSettings {
     /**
      * controls style semantics where React Native/Yoga and CSS differ.
@@ -730,18 +729,6 @@ export interface GenericTamaguiSettings {
      * Define a default font, for better types and default font on Text
      */
     defaultFont?: string;
-    /**
-     * Define the token used when a component size is set to true.
-     *
-     * @default '4'
-     */
-    defaultSize?: string;
-    /**
-     * define category-specific defaults for boolean token values.
-     *
-     * categories without an override fall back to `defaultSize`.
-     */
-    defaultTokens?: DefaultTokens;
     /**
      * Web-only: define CSS text-selection styles
      */

@@ -48,7 +48,7 @@ export type * from './interfaces/TamaguiComponentEvents';
 export type * from './types';
 export * from './interfaces/GetRef';
 export { createRefComponent, type RefProp } from '@tamagui/compose-refs';
-export { getConfig, getDefaultSizeToken, getDefaultToken, getSetting, getStyleCompat, getThemes, getToken, getTokens, getTokenValue, loadAnimationDriver, resolveDefaultSizeToken, resolveDefaultToken, setConfig, setupDev, updateConfig, DEFAULT_SIZE_TOKEN, type StyleCompat, } from './config';
+export { getConfig, getSetting, getStyleCompat, getThemes, getToken, getTokens, getTokenValue, loadAnimationDriver, setConfig, setupDev, updateConfig, type StyleCompat, } from './config';
 export { setNonce } from './helpers/insertStyleRule';
 export * from './constants/constants';
 export * from './hooks/useIsTouchDevice';
