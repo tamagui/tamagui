@@ -28,21 +28,26 @@ export const SurfaceFrame = styled(YStack, {
     filled,
     outlined,
     elevated,
-    rounded,
+    roundedFacet: rounded,
     interactive,
   } as const,
 })
 
-export type SurfaceProps = GetProps<typeof SurfaceFrame> & {
+export type SurfaceProps = Omit<
+  GetProps<typeof SurfaceFrame>,
+  'roundedFacet' | 'rounded'
+> & {
   /** shift the subtree to a relative theme level. */
   level?: 1 | 2 | 3 | 4
+  /** add the default component radius without depending on config shorthands. */
+  rounded?: boolean
 }
 
 export const Surface = forwardRef<any, SurfaceProps>(function Surface(
-  { level, ...props },
+  { level, rounded, ...props },
   ref
 ) {
-  const frame = <SurfaceFrame ref={ref} {...props} />
+  const frame = <SurfaceFrame ref={ref} roundedFacet={rounded} {...props} />
   if (!level || level === 1) return frame
   return <Theme name={`level${level}` as 'level2' | 'level3' | 'level4'}>{frame}</Theme>
 })
