@@ -219,6 +219,26 @@ async function main() {
       })
     )
   }
+  const cachedNativeStyles = (tree) => {
+    const byHelper = new Map()
+    walk(tree, (value) => {
+      if (
+        value.type !== 'AssignmentExpression' ||
+        value.operator !== '=' ||
+        value.left?.type !== 'MemberExpression' ||
+        value.left.computed ||
+        value.left.object?.type !== 'Identifier' ||
+        value.left.property?.type !== 'Identifier' ||
+        value.left.property.name !== '_' ||
+        value.right?.type !== 'ObjectExpression'
+      ) {
+        return
+      }
+      const style = literalValue(value.right)
+      if (style) byHelper.set(value.left.object.name, style)
+    })
+    return byHelper
+  }
   const styleObjectsFromStyleSheet = []
   walk(ast, (value) => {
     if (
@@ -442,22 +462,7 @@ async function main() {
     sourceType: 'module',
     plugins: ['jsx', 'typescript'],
   })
-  const v3HostStyles = []
-  for (const edit of entry.plan.edits) {
-    try {
-      const editAst = parser.parseExpression(`({${edit.content}})`, {
-        plugins: ['jsx', 'typescript'],
-      })
-      if (editAst.type !== 'ObjectExpression') continue
-      const styleProperty = editAst.properties.find(
-        (property) =>
-          property.type === 'ObjectProperty' && propertyName(property) === 'style'
-      )
-      if (styleProperty?.type !== 'ObjectProperty') continue
-      const style = literalValue(styleProperty.value)
-      if (style) v3HostStyles.push(style)
-    } catch {}
-  }
+  const v3HostStyles = [...cachedNativeStyles(v3Ast).values()]
   assertHostStyles('V3', v3HostStyles, [
     ...expectedDirectHostStyles,
     expectedStyledHostStyle,
@@ -529,6 +534,7 @@ async function main() {
   })
 
   const stableStyleEvidence = (tree) => {
+    const cachedStyles = cachedNativeStyles(tree)
     const staticStyles = []
     let calls = 0
     let expressionArrays = 0
@@ -547,7 +553,20 @@ async function main() {
         if (createStyle?.type !== 'ArrowFunctionExpression') return
         const body = createStyle.body
         if (body?.type !== 'ArrayExpression') return
-        const staticStyle = literalValue(body.elements?.[0])
+        const staticStyleExpression = body.elements?.[0]
+        const cachedStyleHelper =
+          staticStyleExpression?.type === 'LogicalExpression' &&
+          staticStyleExpression.operator === '??' &&
+          staticStyleExpression.left?.type === 'MemberExpression' &&
+          !staticStyleExpression.left.computed &&
+          staticStyleExpression.left.object?.type === 'Identifier' &&
+          staticStyleExpression.left.property?.type === 'Identifier' &&
+          staticStyleExpression.left.property.name === '_'
+            ? staticStyleExpression.left.object.name
+            : null
+        const staticStyle = cachedStyleHelper
+          ? cachedStyles.get(cachedStyleHelper)
+          : undefined
         if (staticStyle) staticStyles.push(staticStyle)
         const dynamicStyle = body.elements?.[1]
         if (dynamicStyle?.type !== 'ObjectExpression') return
