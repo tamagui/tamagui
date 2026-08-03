@@ -28,4 +28,5 @@ export const App = createNativeRuntimeBenchApp({
   config,
   version: 'v3',
   framework: 'tamagui-v3-runtime',
+  buildId: process.env.EXPO_PUBLIC_NATIVE_BENCH_BUILD_ID,
 })

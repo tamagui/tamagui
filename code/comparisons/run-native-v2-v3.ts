@@ -23,6 +23,10 @@ import {
   type Statistic,
 } from './benchmark-statistics'
 import {
+  nativeBenchBuildIdentity,
+  type NativeBenchFramework,
+} from './native-bench-build-id'
+import {
   NATIVE_COMPILED_FIXTURE_VERSION,
   NATIVE_COMPILED_SCENARIOS,
   type NativeCompiledScenario,
@@ -57,11 +61,7 @@ const scenarioTimeoutMs = 60_000
 
 type Metric = 'mount' | 'update' | 'remount'
 type ScenarioId = NativeRuntimeScenario | NativeCompiledScenario
-type FrameworkId =
-  | 'tamagui-v2-runtime'
-  | 'tamagui-v3-runtime'
-  | 'tamagui-v2-compiled'
-  | 'tamagui-v3-compiled'
+type FrameworkId = NativeBenchFramework
 
 interface BenchConfig {
   id: FrameworkId
@@ -162,6 +162,7 @@ type ComparisonId = (typeof comparisons)[number]['id']
 
 interface IncomingResult {
   framework: FrameworkId
+  buildId: string
   scenario: ScenarioId
   run: string
   fixtureVersion: number
@@ -370,6 +371,9 @@ const waiters = new Map<
     reject(error: Error): void
   }
 >()
+const expectedBuildIdentities = Object.fromEntries(
+  benchmarks.map((bench) => [bench.id, nativeBenchBuildIdentity(bench.id)])
+) as Record<FrameworkId, ReturnType<typeof nativeBenchBuildIdentity>>
 const runtimeBehaviorSignatures = new Map<FrameworkId, Record<string, unknown>>()
 const resultServer = Bun.serve({
   port: resultPort,
@@ -384,6 +388,7 @@ const resultServer = Bun.serve({
       if (
         !bench ||
         result.framework !== waiter.framework ||
+        result.buildId !== expectedBuildIdentities[bench.id].buildId ||
         result.scenario !== waiter.scenario ||
         !bench.scenarios.includes(result.scenario) ||
         !scenarios.includes(result.scenario) ||
@@ -682,6 +687,9 @@ async function main() {
     }
     if (smoke) {
       console.log(`Warmup-only smoke passed: ${trials.length} cases`)
+      console.log(
+        `Release build identities: ${JSON.stringify(Object.fromEntries(Object.entries(expectedBuildIdentities).map(([framework, identity]) => [framework, identity.buildId])))}`
+      )
       console.log(`Runtime behavior: ${JSON.stringify(v2RuntimeBehavior)}`)
       return
     }
@@ -774,6 +782,7 @@ async function main() {
             v2CompiledLock.packages['node_modules/@tamagui/babel-plugin'].integrity,
         },
         installedPackageVersions,
+        releaseBuildIdentities: expectedBuildIdentities,
         runtimeBehaviorSignature: v2RuntimeBehavior,
         compilerEvidence: compilerEvidence
           ? {
