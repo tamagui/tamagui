@@ -121,7 +121,9 @@ bun code/comparisons/run-native-v2-v3.ts --smoke --udid=3C03FA2F-D68F-4537-A939-
 ```
 
 It ran while holding `/tmp/tamagui-bench.lock` with stale-lock removal and an exit
-trap, then released the lock. It failed with:
+trap, then released the lock. Future timing runs acquire and release that lock
+through `shared/benchmarkLock.ts`; build-only bundle attribution does not take it.
+It failed with:
 
 ```text
 error: timed out waiting for tamagui-v2-runtime/simple/warmup-0-0

@@ -29,6 +29,7 @@ import {
   summarize,
   type Statistic,
 } from './benchmark-statistics'
+import { acquireBenchmarkLock } from './shared/benchmarkLock'
 
 const args = process.argv.slice(2)
 const VERIFY_WORKLOAD_ONLY = args.includes('--verify-workload')
@@ -1250,7 +1251,16 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error(error)
-  process.exit(1)
-})
+const releaseBenchmarkLock =
+  VERIFY_WORKLOAD_ONLY || BUILD_ONLY || BEHAVIOR_VALIDATION_PATH
+    ? undefined
+    : acquireBenchmarkLock(
+        `web benchmark timing with ${NUM_WARMUPS} warmups and ${NUM_SAMPLES} samples`
+      )
+
+main()
+  .finally(() => releaseBenchmarkLock?.())
+  .catch((error) => {
+    console.error(error)
+    process.exit(1)
+  })
