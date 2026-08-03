@@ -4,8 +4,7 @@
   "files": [
     "src",
     "types",
-    "dist",
-    "theme-builder"
+    "dist"
   ],
   "type": "module",
   "sideEffects": false,
@@ -34,9 +33,6 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
-  },
-  "dependencies": {
-    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

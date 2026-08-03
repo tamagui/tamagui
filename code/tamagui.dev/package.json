@@ -43,6 +43,7 @@
     "@tamagui/logo": "workspace:*",
     "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/tamagui-dev-config": "workspace:*",
+    "@tamagui/themes": "workspace:*",
     "@tamagui/use-store": "workspace:*",
     "@tanstack/react-table": "^8.11.2",
     "@ts-react/form": "^1.8.3",

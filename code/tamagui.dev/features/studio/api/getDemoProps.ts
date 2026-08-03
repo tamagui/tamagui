@@ -48,7 +48,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
       fontSize: 25,
       color:
         demosOptions.textAccent === 'high'
-          ? 'color12'
+          ? 'color11'
           : demosOptions.textAccent === 'low'
             ? 'color11'
             : 'color',

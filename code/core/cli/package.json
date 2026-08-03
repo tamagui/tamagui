@@ -26,7 +26,6 @@
     "test:web": "bun run test"
   },
   "dependencies": {
-    "@tamagui/create-theme": "workspace:*",
     "@tamagui/generate-themes": "workspace:*",
     "@tamagui/static": "workspace:*",
     "@tamagui/to-tailwind": "workspace:*",

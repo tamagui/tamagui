@@ -155,10 +155,10 @@ const ThemeBuilderModal = memo(() => {
         borderBottomLeftRadius="6"
         borderWidth={0.5}
         borderColor="color6"
-        bg="background06"
+        bg="background"
         backdropFilter="blur(60px)"
         {...(hide && {
-          borderColor: 'color0',
+          borderColor: 'transparent',
           bg: 'color3',
         })}
         animateOnly={['transform']}
@@ -232,7 +232,7 @@ const StudioThemeBuilderBottomBar = memo(() => {
       py="3"
       items="center"
       z={100}
-      bg="background02"
+      bg="background"
     >
       <CurrentStepActionBar />
       <Spacer flex={1} />

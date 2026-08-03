@@ -6,10 +6,6 @@
   "exclude": [
     "types",
     "tests",
-    "v5.d.ts",
-    "v5.cjs",
-    "v5-subtle.d.ts",
-    "v5-subtle.cjs",
     "dist",
     "**/__tests__"
   ],
@@ -19,12 +15,6 @@
     },
     {
       "path": "../cli"
-    },
-    {
-      "path": "../colors"
-    },
-    {
-      "path": "../theme-builder"
     }
   ]
 }

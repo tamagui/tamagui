@@ -1,97 +1,87 @@
-import { createPalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
-import type { BuildThemeSuiteProps } from '@tamagui/theme-builder'
+import {
+  getStudioThemeTokens,
+  studioScales,
+} from '../theme/palettes'
+import type { ThemeSuiteItemData } from '../theme/types'
 
-type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
-  includeComponentThemes: boolean
-  includeSizeTokens: boolean
+export async function generateThemeBuilderCode({ palettes }: ThemeSuiteItemData) {
+  const colorTokens = getStudioThemeTokens(palettes)
+  const paletteNames = Object.keys(palettes)
+    .flatMap((name) => [`${name}-light`, `${name}-dark`])
+    .map((name) => `'${name}'`)
+    .join(' | ')
+  const accentTree = palettes.accent
+    ? `
+    accent: ({ parent }: ThemeDefinitionContext) => ({
+      palette: parent.scheme === 'dark' ? 'accent-dark' : 'accent-light',
+      level: 1,
+      children: levels(),
+    }),`
+    : ''
+
+  return `import {
+  createThemes,
+  fromShades,
+  levels,
+  ramp,
+  raise,
+  type GetThemeContext,
+  type ThemeDefinitionContext,
+} from '@tamagui/themes/builder'
+
+export const tokens: { color: Record<string, string> } = {
+  color: ${JSON.stringify(colorTokens, null, 2)},
 }
 
-export async function generateThemeBuilderCode({
-  palettes,
-  includeComponentThemes,
-}: GenerateThemeBuilderCodeProps) {
-  // side effect to getLastBuilder
-  const palettesOut = createPalettes(palettes)
+const light = ${JSON.stringify(studioScales.light[1], null, 2)} as const
+const dark = ${JSON.stringify(studioScales.dark[1], null, 2)} as const
 
-  function paletteToCreateThemes(pIn: string[]) {
-    return pIn.slice(PALETTE_BACKGROUND_OFFSET, -PALETTE_BACKGROUND_OFFSET)
-  }
-
-  // Convert accent palette array to named color object
-  function paletteToNamedColors(name: string, palette: string[]) {
-    return palette.reduce(
-      (acc, color, i) => {
-        acc[`${name}${i + 1}`] = color
-        return acc
-      },
-      {} as Record<string, string>
-    )
-  }
-
-  const darkPalette = paletteToCreateThemes(palettesOut.dark)
-  const lightPalette = paletteToCreateThemes(palettesOut.light)
-  const darkAccent = paletteToCreateThemes(palettesOut.dark_accent)
-  const lightAccent = paletteToCreateThemes(palettesOut.light_accent)
-
-  const componentThemesProp = includeComponentThemes
-    ? `\n  componentThemes: v5ComponentThemes,`
-    : `\n  componentThemes: false,`
-
-  return `import { createV5Theme, defaultChildrenThemes${includeComponentThemes ? `, v5ComponentThemes` : ``} } from '@tamagui/themes/v5-builder'
-import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'
-
-const darkPalette = ${arrayToJS(darkPalette)}
-const lightPalette = ${arrayToJS(lightPalette)}
-
-// Your custom accent color theme
-const accentLight = ${JSON.stringify(paletteToNamedColors('accent', lightAccent), null, 2)}
-
-const accentDark = ${JSON.stringify(paletteToNamedColors('accent', darkAccent), null, 2)}
-
-const builtThemes = createV5Theme({
-  darkPalette,
-  lightPalette,${componentThemesProp}
-  accent: {
-    light: accentLight,
-    dark: accentDark,
+export const scales = {
+  light: {
+    1: light,
+    2: raise(light, 1),
+    3: raise(light, 2),
+    4: raise(light, 3),
   },
-  childrenThemes: {
-    // Include default color themes (blue, red, green, yellow, etc.)
-    ...defaultChildrenThemes,
+  dark: {
+    1: dark,
+    2: raise(dark, -1),
+    3: raise(dark, -2),
+    4: raise(dark, -3),
+  },
+} as const
 
-    // Semantic color themes for warnings, errors, and success states
-    warning: {
-      light: yellow,
-      dark: yellowDark,
-    },
-    error: {
-      light: red,
-      dark: redDark,
-    },
-    success: {
-      light: green,
-      dark: greenDark,
+type Recipe = {
+  scheme: 'light' | 'dark'
+  palette: ${paletteNames}
+  level?: 1 | 2 | 3 | 4
+}
+
+export const tree = {
+  light: { scheme: 'light', palette: 'base-light' },
+  dark: { scheme: 'dark', palette: 'base-dark' },
+  children: {
+    ...levels(),${accentTree}
+    inverse: ({ parent }: ThemeDefinitionContext) => {
+      const scheme = parent.scheme === 'light' ? 'dark' : 'light'
+      return {
+        scheme,
+        palette: scheme === 'dark' ? 'base-dark' : 'base-light',
+        level: 1,
+        children: levels(),
+      }
     },
   },
-})
+} as const
 
-export type Themes = typeof builtThemes
+export function getTheme({ recipe }: GetThemeContext<typeof tokens, Recipe>) {
+  return {
+    ...ramp(recipe.palette, recipe.scheme),
+    ...fromShades(recipe.palette, scales[recipe.scheme][recipe.level ?? 1]),
+  }
+}
 
-// the process.env conditional here is optional but saves web client-side bundle
-// size by leaving out themes JS. tamagui automatically hydrates themes from CSS
-// back into JS for you, and the bundler plugins set TAMAGUI_ENVIRONMENT. so
-// long as you are using the Vite, Next, Webpack plugins this should just work,
-// but if not you can just export builtThemes directly as themes:
-export const themes: Themes =
-  process.env.TAMAGUI_ENVIRONMENT === 'client' &&
-  process.env.NODE_ENV === 'production'
-    ? ({} as any)
-    : (builtThemes as any)
+export const themes = createThemes(tokens, tree, { getTheme })
+export type Themes = typeof themes
 `
-}
-
-function arrayToJS(palette: string[]) {
-  return `[${palette.map((val) => {
-    return `'${val}'`
-  })}]`
 }

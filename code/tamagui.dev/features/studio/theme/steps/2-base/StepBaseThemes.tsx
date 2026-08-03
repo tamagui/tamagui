@@ -4,8 +4,6 @@ import {
   ArrowRight,
   ArrowUpDown,
 } from '@tamagui/lucide-icons-2'
-import type { BuildPalette, BuildThemeAnchor } from '@tamagui/theme-builder'
-import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
 import { getStore, Store, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo, useState } from 'react'
@@ -29,6 +27,8 @@ import { type HSLA, ColorPickerContents } from '../../../colors/ColorPicker'
 import { rootStore } from '../../../state/RootStore'
 import { toastController } from '../../../ToastProvider'
 import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
+import { getThemeSuitePalettes } from '../../palettes'
+import type { BuildPalette, BuildThemeAnchor } from '../../types'
 import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
 import { XLabeledItem } from '../../views/XLabeledItem'
 
@@ -127,8 +127,8 @@ const PaletteView = memo((props: Props) => {
   const lightPalette = palettes['light']!
 
   const colors = {
-    light: sliceToPalette(lightPalette),
-    dark: sliceToPalette(darkPalette),
+    light: lightPalette,
+    dark: darkPalette,
   }
 
   const { activeColor } = store
@@ -137,7 +137,7 @@ const PaletteView = memo((props: Props) => {
 
   const { anchors } = palette
 
-  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
+  const anchorRealIndex = +hoveredItem?.value
 
   const anchorIndex = anchors.findIndex((x) => x.index === anchorRealIndex)
 
@@ -171,9 +171,8 @@ const PaletteView = memo((props: Props) => {
       }
     } else {
       const [lightHSLA, darkHSLA] = [
-        // adjusts for our transparent indices
-        parseToHsla(lightPalette[index + PALETTE_BACKGROUND_OFFSET]),
-        parseToHsla(darkPalette[index + PALETTE_BACKGROUND_OFFSET]),
+        parseToHsla(lightPalette[index]),
+        parseToHsla(darkPalette[index]),
       ]
 
       const anchor: BuildThemeAnchor = {
@@ -564,12 +563,6 @@ const DataItem = ({
   )
 }
 
-// get the center 12 items:
-const sliceToPalette = (colors: string[]) => {
-  const toRemove = colors.length - 12
-  return colors.slice(toRemove / 2, colors.length - toRemove / 2)
-}
-
 type PaletteProps = {
   colors: string[]
   size?: 'small' | 'medium'
@@ -787,7 +780,7 @@ const PaletteIndices = () => (
               opacity={0.6}
               scale={0.65}
               fontFamily="mono"
-              color="color12"
+              color="color11"
               self="center"
               text="center"
               key={i}

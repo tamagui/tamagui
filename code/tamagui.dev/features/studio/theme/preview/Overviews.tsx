@@ -90,7 +90,7 @@ export const OverviewCard = ({
           {...demoProps.headingFontFamilyProps}
           fontWeight="400"
           mb="-2"
-          color="color12"
+          color="color11"
           {...(alternative && {
             color: 'accent12',
           })}

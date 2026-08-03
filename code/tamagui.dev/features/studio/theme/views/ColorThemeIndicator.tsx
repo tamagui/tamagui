@@ -1,9 +1,6 @@
 import { Circle, YStack, useThemeName } from 'tamagui'
-import {
-  type BuildPalette,
-  PALETTE_BACKGROUND_OFFSET,
-  getThemeSuitePalettes,
-} from '@tamagui/theme-builder'
+import { getThemeSuitePalettes } from '../palettes'
+import type { BuildPalette } from '../types'
 
 export const ColorThemeIndicator = ({
   primary,
@@ -19,9 +16,7 @@ export const ColorThemeIndicator = ({
     .filter(Boolean)
     .map(
       (x) =>
-        getThemeSuitePalettes(x!)[isDark ? 'dark' : 'light'][
-          PALETTE_BACKGROUND_OFFSET + 8
-        ]
+        getThemeSuitePalettes(x!)[isDark ? 'dark' : 'light'][8]
     )
 
   return (

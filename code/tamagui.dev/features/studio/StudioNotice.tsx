@@ -209,7 +209,7 @@ const ScrollViewWithFade = ({
           l={0}
           r={0}
           height="20%"
-          colors={['background', 'background0']}
+          colors={['background', 'transparent']}
         />
       )}
 
@@ -222,7 +222,7 @@ const ScrollViewWithFade = ({
           r={0}
           height="20%"
           b={0}
-          colors={['background0', 'background']}
+          colors={['transparent', 'background']}
         />
       )}
 

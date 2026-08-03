@@ -143,7 +143,7 @@ export const BentoHero = () => {
             >
               <YStack rounded="4" shadowColor="rgba(0,0,0,0.1)" shadowRadius="8">
                 <ThemeTintAlt>
-                  <Theme name="surface2">
+                  <Theme name="level3">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -158,7 +158,7 @@ export const BentoHero = () => {
                 }}
               >
                 <ThemeTintAlt>
-                  <Theme name="surface1">
+                  <Theme name="level2">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -199,7 +199,7 @@ export const BentoHero = () => {
                 shadowRadius="8"
               >
                 <ThemeTint>
-                  <Theme name="surface1">
+                  <Theme name="level2">
                     <LocationNotification />
                   </Theme>
                 </ThemeTint>

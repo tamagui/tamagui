@@ -307,7 +307,7 @@ export function FontFamilyInput() {
                 <XGroup.Item>
                   <ToggleGroupItem value={font as any} aria-label={`${font} Font`}>
                     <SizableText
-                      color="color12"
+                      color="color11"
                       fontFamily={font as any}
                       fontSize={12}
                       textTransform="none"

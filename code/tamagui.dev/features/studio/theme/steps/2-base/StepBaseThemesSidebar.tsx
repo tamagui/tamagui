@@ -1,18 +1,15 @@
-import { useStore } from '@tamagui/use-store'
 import { useState } from 'react'
 import type { ThemeName } from 'tamagui'
 import {
   Label,
   Separator,
   SizableText,
-  Spinner,
   Switch,
   Theme,
   XStack,
   YStack,
 } from 'tamagui'
 
-import { StudioProcedureStore } from '../../callApi'
 import { useThemeBuilderStore } from '../../store/ThemeBuilderStore'
 import { StudioThemesQuickPreviewSection } from '../views/StudioThemesQuickPreviewSection'
 import { useBaseThemePreview } from './useBaseThemePreview'
@@ -35,16 +32,11 @@ export function StepBaseThemesSidebar() {
 const Contents = ({ themeNameBase }: { themeNameBase: string }) => {
   const themeBuilder = useThemeBuilderStore()
   const { schemes, accentSetting } = themeBuilder
-  const procedureStore = useStore(StudioProcedureStore)
   const [showAccent, setShowAccent] = useState(false)
   const themeName = (showAccent ? `${themeNameBase}_accent` : themeNameBase) as ThemeName
 
   return (
     <>
-      <XStack position="absolute" t="4" l={30} z={1000} gap="4" scale={0.75}>
-        {procedureStore.loading.createStudioThemes ? <Spinner size="small" /> : null}
-      </XStack>
-
       <XStack position="absolute" t="4" r="4" z={1000}>
         <XStack
           opacity={accentSetting === 'off' ? 0.5 : 1}

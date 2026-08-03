@@ -1,10 +1,3 @@
-import {
-  type BuildPalette,
-  createPalettes,
-  getThemeSuitePalettes,
-  type TemplateStrategy,
-  type ThemeSuiteItem,
-} from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { getAccessToken } from '~/features/auth/useSupabaseClient'
 import { toastController } from '~/features/studio/ToastProvider'
@@ -14,7 +7,18 @@ import { steps } from '~/features/studio/theme/steps/steps'
 import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
-import type { BuildTheme, ThemeBuilderState, ThemeSuiteItemData } from '../types'
+import {
+  createPalettes,
+  getThemeSuitePalettes,
+  normalizePalette,
+} from '../palettes'
+import type {
+  BuildPalette,
+  BuildTheme,
+  ThemeBuilderState,
+  ThemeSuiteItem,
+  ThemeSuiteItemData,
+} from '../types'
 import { updatePreviewTheme } from '../updatePreviewTheme'
 
 type AccentSetting = 'color' | 'inverse' | 'off'
@@ -39,7 +43,6 @@ export class ThemeBuilderStore {
   palettes: Record<string, BuildPalette> = defaultThemeSuiteItem.palettes
   schemes = defaultThemeSuiteItem.schemes
   accentSetting: AccentSetting = 'color'
-  templateStrategy: TemplateStrategy = 'base'
 
   // Sub-themes related properties
   subThemes: BuildTheme[] = []
@@ -52,11 +55,6 @@ export class ThemeBuilderStore {
     template: 'base',
     palette: 'base',
   }
-
-  // Component themes related properties
-  componentThemes: BuildTheme[] = []
-  selectedComponentTheme: string | null = null
-  componentParentTheme: string | null = null
 
   private async sync(state: ThemeBuilderState) {
     if (!this.themeSuiteUID) {
@@ -105,7 +103,16 @@ export class ThemeBuilderStore {
     // sync to working data:
     for (const key in row) {
       if (key in defaultThemeSuiteItem) {
-        this[key] = row[key] || defaultThemeSuiteItem[key]
+        if (key === 'palettes') {
+          this.palettes = Object.fromEntries(
+            Object.entries(row.palettes).map(([name, palette]) => [
+              name,
+              normalizePalette(palette),
+            ])
+          )
+        } else {
+          this[key] = row[key] || defaultThemeSuiteItem[key]
+        }
       }
     }
     this.updateDisabledState()
@@ -117,7 +124,6 @@ export class ThemeBuilderStore {
     this.palettes = defaultThemeSuiteItem.palettes
     this.schemes = defaultThemeSuiteItem.schemes
     this.accentSetting = 'color'
-    this.templateStrategy = 'base'
     await this.refreshThemeSuite()
   }
 
@@ -201,7 +207,6 @@ export class ThemeBuilderStore {
       name: this.name,
       palettes: this.palettes,
       schemes: this.schemes,
-      templateStrategy: this.templateStrategy,
     } satisfies ThemeSuiteItemData
   }
 
@@ -211,14 +216,15 @@ export class ThemeBuilderStore {
     themeId?: string | number,
     _username?: string | null
   ) {
-    this.palettes = themeSuite.palettes
+    this.palettes = Object.fromEntries(
+      Object.entries(themeSuite.palettes).map(([name, palette]) => [
+        name,
+        normalizePalette(palette),
+      ])
+    )
     if (themeSuite.schemes) {
       this.schemes = themeSuite.schemes
     }
-    if (themeSuite.templateStrategy) {
-      this.templateStrategy = themeSuite.templateStrategy
-    }
-
     if (query && themeId) {
       this.currentQuery = query
       this.currentThemeId = String(themeId)
@@ -293,7 +299,6 @@ export class ThemeBuilderStore {
       id: this.themeSuiteUID,
       palettes,
       schemes: this.schemes,
-      templateStrategy: this.templateStrategy,
     })
 
     this.save()
@@ -359,10 +364,6 @@ export class ThemeBuilderStore {
       ...this.palettes,
       [palette.name]: palette,
     }
-  }
-
-  setSelectedComponentTheme(id: string) {
-    this.selectedComponentTheme = id
   }
 
   get sectionsFlat() {
@@ -468,20 +469,8 @@ export class ThemeBuilderStore {
     return createPalettes(this.palettes)
   }
 
-  async getCode(
-    {
-      includeComponentThemes = false,
-      includeSizeTokens = false,
-    }: { includeComponentThemes: boolean; includeSizeTokens: boolean } = {
-      includeComponentThemes: false,
-      includeSizeTokens: false,
-    }
-  ) {
-    return await generateThemeBuilderCode({
-      ...this.getWorkingThemeSuite(),
-      includeComponentThemes,
-      includeSizeTokens,
-    })
+  async getCode() {
+    return await generateThemeBuilderCode(this.getWorkingThemeSuite())
   }
 }
 

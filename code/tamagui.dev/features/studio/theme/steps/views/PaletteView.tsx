@@ -5,12 +5,6 @@ import {
   ArrowRight,
   ArrowUpDown,
 } from '@tamagui/lucide-icons-2'
-import {
-  type BuildPalette,
-  type BuildThemeAnchor,
-  PALETTE_BACKGROUND_OFFSET,
-  getThemeSuitePalettes,
-} from '@tamagui/theme-builder'
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
@@ -30,6 +24,8 @@ import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
 import { rootStore } from '../../../state/RootStore'
 import { toastController } from '../../../ToastProvider'
 import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
+import { getThemeSuitePalettes } from '../../palettes'
+import type { BuildPalette, BuildThemeAnchor } from '../../types'
 import { XLabeledItem } from '../../views/XLabeledItem'
 
 type Props = {
@@ -68,8 +64,8 @@ export const PaletteView = memo((props: Props) => {
   const lightPalette = palettes['light']!
 
   const colors = {
-    light: sliceToPalette(lightPalette),
-    dark: sliceToPalette(darkPalette),
+    light: lightPalette,
+    dark: darkPalette,
   }
 
   const { activeColor } = store
@@ -78,7 +74,7 @@ export const PaletteView = memo((props: Props) => {
 
   const { anchors } = palette
 
-  const anchorRealIndex = +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
+  const anchorRealIndex = +hoveredItem?.value
 
   const anchorIndex = anchors.findIndex((x) => x.index === anchorRealIndex)
 
@@ -112,9 +108,8 @@ export const PaletteView = memo((props: Props) => {
       }
     } else {
       const [lightHSLA, darkHSLA] = [
-        // adjusts for our transparent indices
-        parseToHsla(lightPalette[index + PALETTE_BACKGROUND_OFFSET]),
-        parseToHsla(darkPalette[index + PALETTE_BACKGROUND_OFFSET]),
+        parseToHsla(lightPalette[index]),
+        parseToHsla(darkPalette[index]),
       ]
 
       const anchor: BuildThemeAnchor = {
@@ -501,12 +496,6 @@ const DataItem = ({
       </SizableText>
     </YStack>
   )
-}
-
-// get the center 12 items:
-const sliceToPalette = (colors: string[]) => {
-  const toRemove = colors.length - 12
-  return colors.slice(toRemove / 2, colors.length - toRemove / 2)
 }
 
 type PaletteProps = {

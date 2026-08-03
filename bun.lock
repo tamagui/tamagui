@@ -343,7 +343,6 @@
         "tamagui": "dist/index.cjs",
       },
       "dependencies": {
-        "@tamagui/create-theme": "workspace:*",
         "@tamagui/generate-themes": "workspace:*",
         "@tamagui/static": "workspace:*",
         "@tamagui/to-tailwind": "workspace:*",
@@ -566,9 +565,6 @@
     "code/core/create-theme": {
       "name": "@tamagui/create-theme",
       "version": "2.5.1",
-      "dependencies": {
-        "@tamagui/web": "workspace:*",
-      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "vitest": "4.0.4",
@@ -1119,26 +1115,11 @@
         "@tamagui/build": "workspace:*",
       },
     },
-    "code/core/theme-builder": {
-      "name": "@tamagui/theme-builder",
-      "version": "2.5.1",
-      "dependencies": {
-        "@tamagui/create-theme": "workspace:*",
-        "@tamagui/web": "workspace:*",
-        "color2k": "^2.0.2",
-      },
-      "devDependencies": {
-        "@tamagui/build": "workspace:*",
-        "vitest": "4.0.4",
-      },
-    },
     "code/core/themes": {
       "name": "@tamagui/themes",
       "version": "2.5.1",
       "dependencies": {
-        "@tamagui/colors": "workspace:*",
         "@tamagui/create-theme": "workspace:*",
-        "@tamagui/theme-builder": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -2064,6 +2045,7 @@
         "@tamagui/logo": "workspace:*",
         "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/tamagui-dev-config": "workspace:*",
+        "@tamagui/themes": "workspace:*",
         "@tamagui/use-store": "workspace:*",
         "@tanstack/react-table": "^8.11.2",
         "@ts-react/form": "^1.8.3",
@@ -5626,8 +5608,6 @@
     "@tamagui/theme": ["@tamagui/theme@workspace:code/core/theme"],
 
     "@tamagui/theme-base": ["@tamagui/theme-base@workspace:code/core/theme-base"],
-
-    "@tamagui/theme-builder": ["@tamagui/theme-builder@workspace:code/core/theme-builder"],
 
     "@tamagui/themes": ["@tamagui/themes@workspace:code/core/themes"],
 

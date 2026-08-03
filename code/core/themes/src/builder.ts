@@ -9,6 +9,7 @@ import {
 import { tokens, type ColorTokenName } from './tokens'
 
 export { createThemes } from '@tamagui/create-theme'
+export type { GetThemeContext, ThemeDefinitionContext } from '@tamagui/create-theme'
 export { colorTokens, tailwindColors, tokens } from './tokens'
 
 export const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const
@@ -42,7 +43,10 @@ export const semanticThemeKeys = [
 ] as const
 
 export type SemanticThemeKey = (typeof semanticThemeKeys)[number]
-export type ThemeScale = Record<SemanticThemeKey, Shade | ColorTokenName>
+export type ThemeScale<TokenName extends string = ColorTokenName> = Record<
+  SemanticThemeKey,
+  Shade | TokenName
+>
 
 const light = {
   background: 'white',
@@ -155,7 +159,10 @@ const tintDark = {
 
 const ladder = ['white', ...shades, 'black'] as const
 
-export function raise(scale: ThemeScale, steps: number): ThemeScale {
+export function raise<TokenName extends string>(
+  scale: ThemeScale<TokenName>,
+  steps: number
+): ThemeScale<TokenName> {
   return Object.fromEntries(
     Object.entries(scale).map(([key, value]) => {
       if (!key.startsWith('background') && !key.startsWith('border-color')) {
@@ -165,7 +172,7 @@ export function raise(scale: ThemeScale, steps: number): ThemeScale {
       if (index === -1) return [key, value]
       return [key, ladder[Math.max(0, Math.min(ladder.length - 1, index + steps))]]
     })
-  ) as ThemeScale
+  ) as ThemeScale<TokenName>
 }
 
 export const scales = {
@@ -222,25 +229,34 @@ export type DefaultRecipe = {
   level?: Level
 }
 
-export type Ramp = Record<`color${Level | 5 | 6 | 7 | 8 | 9 | 10 | 11}`, ColorTokenName>
+export type Ramp<PaletteName extends string = Palette> = Record<
+  `color${Level | 5 | 6 | 7 | 8 | 9 | 10 | 11}`,
+  `${PaletteName}-${Shade}`
+>
 
-export function ramp(palette: Palette, scheme: Scheme): Ramp {
+export function ramp<const PaletteName extends string>(
+  palette: PaletteName,
+  scheme: Scheme
+): Ramp<PaletteName> {
   const ordered = scheme === 'light' ? shades : [...shades].reverse()
   return Object.fromEntries(
     ordered.map((shade, index) => [`color${index + 1}`, `${palette}-${shade}`])
-  ) as Ramp
+  ) as Ramp<PaletteName>
 }
 
-export function fromShades(
-  palette: Palette,
-  scale: ThemeScale
-): Record<SemanticThemeKey, ColorTokenName> {
+export function fromShades<
+  const PaletteName extends string,
+  TokenName extends string,
+>(
+  palette: PaletteName,
+  scale: ThemeScale<TokenName>
+): Record<SemanticThemeKey, `${PaletteName}-${Shade}` | TokenName> {
   return Object.fromEntries(
     Object.entries(scale).map(([key, value]) => [
       key,
       typeof value === 'number' ? `${palette}-${value}` : value,
     ])
-  ) as Record<SemanticThemeKey, ColorTokenName>
+  ) as Record<SemanticThemeKey, `${PaletteName}-${Shade}` | TokenName>
 }
 
 export function getTheme({ recipe }: GetThemeContext<typeof tokens, DefaultRecipe>) {

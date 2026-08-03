@@ -10,15 +10,7 @@
     "dist",
     "index.cjs",
     "index.d.ts",
-    "builder",
-    "v5",
-    "v5-subtle",
-    "v5.cjs",
-    "v5.d.ts",
-    "v5-subtle.cjs",
-    "v5-subtle.d.ts",
-    "v5-tokens.cjs",
-    "v5-tokens.d.ts"
+    "builder"
   ],
   "tamagui-build": {
     "outputs": [
@@ -46,51 +38,6 @@
       "import": "./dist/esm/builder.mjs",
       "require": "./dist/cjs/builder.cjs",
       "default": "./dist/esm/builder.mjs"
-    },
-    "./v5": {
-      "types": "./types/v5.d.ts",
-      "react-native": "./dist/esm/v5.native.js",
-      "browser": "./dist/esm/v5.mjs",
-      "module": "./dist/esm/v5.mjs",
-      "import": "./dist/esm/v5.mjs",
-      "require": "./dist/cjs/v5.cjs",
-      "default": "./dist/esm/v5.mjs"
-    },
-    "./v5-subtle": {
-      "types": "./types/v5-subtle.d.ts",
-      "react-native": "./dist/esm/v5-subtle.native.js",
-      "browser": "./dist/esm/v5-subtle.mjs",
-      "module": "./dist/esm/v5-subtle.mjs",
-      "import": "./dist/esm/v5-subtle.mjs",
-      "require": "./dist/cjs/v5-subtle.cjs",
-      "default": "./dist/esm/v5-subtle.mjs"
-    },
-    "./v5-tokens": {
-      "types": "./types/v5-tokens.d.ts",
-      "react-native": "./dist/esm/v5-tokens.native.js",
-      "browser": "./dist/esm/v5-tokens.mjs",
-      "module": "./dist/esm/v5-tokens.mjs",
-      "import": "./dist/esm/v5-tokens.mjs",
-      "require": "./dist/cjs/v5-tokens.cjs",
-      "default": "./dist/esm/v5-tokens.mjs"
-    },
-    "./v5-builder": {
-      "types": "./types/v5-builder.d.ts",
-      "react-native": "./dist/esm/v5-builder.native.js",
-      "browser": "./dist/esm/v5-builder.mjs",
-      "module": "./dist/esm/v5-builder.mjs",
-      "import": "./dist/esm/v5-builder.mjs",
-      "require": "./dist/cjs/v5-builder.cjs",
-      "default": "./dist/esm/v5-builder.mjs"
-    },
-    "./v5-subtle-builder": {
-      "types": "./types/v5-subtle-builder.d.ts",
-      "react-native": "./dist/esm/v5-subtle-builder.native.js",
-      "browser": "./dist/esm/v5-subtle-builder.mjs",
-      "module": "./dist/esm/v5-subtle-builder.mjs",
-      "import": "./dist/esm/v5-subtle-builder.mjs",
-      "require": "./dist/cjs/v5-subtle-builder.cjs",
-      "default": "./dist/esm/v5-subtle-builder.mjs"
     }
   },
   "publishConfig": {
@@ -98,9 +45,6 @@
   },
   "scripts": {
     "generate": "tamagui generate-themes ./src/themes.generate.ts ./src/generated.ts",
-    "generate:v5-all": "bun run generate:v5 & bun run generate:v5-subtle",
-    "generate:v5": "tamagui generate-themes ./src/v5-themes.generate.ts ./src/generated-v5.ts",
-    "generate:v5-subtle": "tamagui generate-themes ./src/v5-themes-subtle.generate.ts ./src/generated-v5-subtle.ts",
     "test": "bun test tests/themes.test.ts",
     "test:types": "vitest --typecheck --run tests/themes.test-d.ts",
     "build": "tamagui-build",
@@ -109,9 +53,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/colors": "workspace:*",
-    "@tamagui/create-theme": "workspace:*",
-    "@tamagui/theme-builder": "workspace:*"
+    "@tamagui/create-theme": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

@@ -4,12 +4,9 @@ import { useStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
 import {
   Circle,
-  Fieldset,
-  Label,
   Paragraph,
   ScrollView,
   SizableText,
-  Switch,
   Tabs,
   Text,
   Theme,
@@ -20,7 +17,6 @@ import { Button } from '~/components/Button'
 
 import { themeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { toastController } from '../../../ToastProvider'
-import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
 
 const platforms = ['vanilla'] as const
 
@@ -47,8 +43,6 @@ type Step = {
 }
 
 export class StepExportStore {
-  includeComponentThemes = true
-
   platformData: Record<
     Platform,
     {
@@ -58,23 +52,8 @@ export class StepExportStore {
     }
   > | null = null
 
-  setIncludeComponentThemes(newVal: boolean) {
-    this.includeComponentThemes = newVal
-    this.updateSteps()
-  }
-
-  includeSizeTokens = true
-
-  setIncludeSizeTokens(newVal: boolean) {
-    this.includeSizeTokens = newVal
-    this.updateSteps()
-  }
-
   getThemeBuilderConfig() {
-    return themeBuilderStore.getCode({
-      includeComponentThemes: this.includeComponentThemes,
-      includeSizeTokens: this.includeSizeTokens,
-    })
+    return themeBuilderStore.getCode()
   }
 
   async updateSteps() {
@@ -159,28 +138,6 @@ export const StepExportCodeSidebar = () => {
   return (
     <ScrollView paddingBottom="2" pt="4">
       <YStack gap="8" pt="1" pb="6" px="3">
-        <FieldsetWithLabel label="Options">
-          <YStack gap="1" p="4">
-            <Fieldset flexDirection="row" items="center" gap="3">
-              <YStack>
-                <Switch
-                  id="include-component-themes-switch"
-                  checked={store.includeComponentThemes}
-                  onCheckedChange={(newChecked) =>
-                    store.setIncludeComponentThemes(!!newChecked)
-                  }
-                  size="2"
-                >
-                  <Switch.Thumb transition="quickest" />
-                </Switch>
-              </YStack>
-              <Label size="3" htmlFor="include-component-themes-switch">
-                Include Component Themes
-              </Label>
-            </Fieldset>
-          </YStack>
-        </FieldsetWithLabel>
-
         {platform.steps.map((step, idx) => (
           <YStack key={idx} gap="3">
             <XStack gap="3" items="center" ml="3">

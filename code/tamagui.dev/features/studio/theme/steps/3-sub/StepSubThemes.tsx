@@ -6,8 +6,7 @@ import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilder
 import { NoticeParagraph, StudioNotice } from '../../../StudioNotice'
 import { defaultBaseTheme } from '../../constants/defaultBaseTheme'
 import { getUniqueId } from '../../helpers/getUniqueId'
-import type { BuildTheme } from '../../types'
-import type { BuildPalette } from '@tamagui/theme-builder'
+import type { BuildPalette, BuildTheme } from '../../types'
 import { AddDropdown } from '../../views/AddDropdown'
 import { ColorThemeIndicator } from '../../views/ColorThemeIndicator'
 import { BuildThemeItem } from '../views/BuildThemeItem'
@@ -178,21 +177,21 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 9,
+          index: 8,
           hue: { syncLeft: true, sync: true, light: 153, dark: 153 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.5, dark: 0.5 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 10,
+          index: 9,
           hue: { sync: true, light: 153, dark: 153 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.15, dark: 0.925 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 11,
+          index: 10,
           hue: { syncLeft: true, sync: true, light: 153, dark: 153 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.1, dark: 0.95 },
@@ -221,21 +220,21 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 9,
+          index: 8,
           hue: { syncLeft: true, sync: true, light: 48, dark: 48 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.5, dark: 0.5 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 10,
+          index: 9,
           hue: { sync: true, light: 48, dark: 48 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.15, dark: 0.925 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 11,
+          index: 10,
           hue: { syncLeft: true, sync: true, light: 48, dark: 48 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.1, dark: 0.95 },
@@ -264,21 +263,21 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 9,
+          index: 8,
           hue: { syncLeft: true, sync: true, light: 0, dark: 0 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.5, dark: 0.5 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 10,
+          index: 9,
           hue: { sync: true, light: 0, dark: 0 },
           sat: { sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.15, dark: 0.925 },
           alpha: { light: 1, dark: 1 },
         },
         {
-          index: 11,
+          index: 10,
           hue: { syncLeft: true, sync: true, light: 0, dark: 0 },
           sat: { syncLeft: true, sync: true, light: 0.7, dark: 0.7 },
           lum: { light: 0.1, dark: 0.95 },

@@ -39,7 +39,7 @@ export const HuePicker = memo(
             >
               <Slider.Track
                 borderWidth={0.5}
-                borderColor="color12"
+                borderColor="color11"
                 width={145}
                 style={{
                   background: hueLinearGradient,
