@@ -1700,7 +1700,7 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
-    programs?: Map<string, import('@tamagui/style-grammar').LonghandProgram>;
+    programs?: Map<string, import('@tamagui/style-grammar/runtime').LonghandProgram>;
     contextOnlyProgramKeys?: Set<string>;
     programLifecycle?: Map<string, {
         enter?: true;
@@ -1710,7 +1710,7 @@ export type GetStyleState = {
     originalContextPropValues?: Record<string, any>;
     tokenProvenance?: Record<string, string>;
     animationDriver?: AnimationDriver | null;
-    transitionContributions?: import('@tamagui/style-grammar').TransitionContribution[];
+    transitionContributions?: import('@tamagui/style-grammar/runtime').TransitionContribution[];
     sawTransitionPreset?: string;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;

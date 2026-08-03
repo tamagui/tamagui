@@ -10,7 +10,7 @@ import {
   splitGeometricShorthandValue,
   type GrammarConfigView,
   validatePayloadShape,
-} from '@tamagui/style-grammar'
+} from '@tamagui/style-grammar/tooling'
 import type { Rule } from 'eslint'
 
 type RuleOption = {

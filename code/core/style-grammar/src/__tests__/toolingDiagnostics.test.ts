@@ -9,7 +9,7 @@ import {
   diagnoseStyleValue,
   parseValue,
   type GrammarConfigView,
-} from '..'
+} from '../tooling'
 
 const config: GrammarConfigView = {
   shorthands: {

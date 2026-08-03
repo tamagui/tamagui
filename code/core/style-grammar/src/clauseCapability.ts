@@ -20,41 +20,8 @@
 import { legacyPartComposite, programEligibility } from './programEligibility'
 import { defaultStateSelectors } from './lowerProgram'
 import { parseContainerModifier, parseGroupModifier } from './modifierRegistry'
+import { nativeGroupSourceableStates, nativeSourceableStates } from './clauseSources'
 import type { ModifierKind, ModifierRegistryView } from './valueTypes'
-
-/**
- * States the native evaluator can source right now: componentState fields
- * plus enter/exit from the lifecycle. Component-tier states (open, checked,
- * highlighted, invalid, …) need the behavior packages to feed componentState;
- * until then they are web-only and the evaluator diagnoses them — it imports
- * THIS set, so widening it here is what enables them there.
- */
-export const nativeSourceableStates: ReadonlySet<string> = new Set([
-  'hover',
-  'press',
-  'active',
-  'focus',
-  'focus-visible',
-  'focus-within',
-  'disabled',
-  'enter',
-  'exit',
-])
-
-/**
- * States a group clause can source natively: the subset of the sourceable
- * set that `subscribeToContextGroup` writes into componentState.group. The
- * native evaluator derives its group-state key map from this set.
- */
-export const nativeGroupSourceableStates: readonly string[] = Object.freeze([
-  'hover',
-  'press',
-  'active',
-  'focus',
-  'focus-visible',
-  'focus-within',
-  'disabled',
-])
 
 const nativeGroupSourceable: ReadonlySet<string> = new Set(nativeGroupSourceableStates)
 

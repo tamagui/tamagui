@@ -13,7 +13,10 @@ import { tamaguiToTailwind } from '@tamagui/to-tailwind'
 
 import { Text, View } from '../index'
 import { splitTailwindStyles } from './utils'
-import { propToTailwindPrefix, standaloneValueProps } from '@tamagui/style-grammar'
+import {
+  propToTailwindPrefix,
+  standaloneValueProps,
+} from '@tamagui/style-grammar/tooling'
 
 function classOf(out: string): string {
   const m = /className="([^"]*)"/.exec(out)

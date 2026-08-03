@@ -9,7 +9,7 @@ import { shorthands } from '@tamagui/shorthands/v6'
 // the source, not the package entry: the package entry resolves to `dist`, and a
 // codemod that reads a stale build of the grammar would emit values the current
 // grammar does not agree with
-import * as styleGrammarRuntime from '../../style-grammar/src/index'
+import * as styleGrammarTooling from '../../style-grammar/src/tooling'
 import type {
   ConvertLegacyConditionOptions,
   LegacyConditionError,
@@ -19,7 +19,7 @@ import type {
   ConversionReason,
   ConversionTargets,
   HostView,
-} from '../../style-grammar/src/clauseCapability'
+} from '../../style-grammar/src/tooling'
 import type {
   ModifierRegistryView,
   ParsedClause,
@@ -31,7 +31,7 @@ import {
   pseudoToModifier,
 } from './legacyConditions'
 
-const grammar = styleGrammarRuntime
+const grammar = styleGrammarTooling
 
 export const {
   assessFlatConversion,

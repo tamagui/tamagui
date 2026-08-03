@@ -1,5 +1,5 @@
 import { type StyleFrontendConfig } from '@tamagui/core/internal-runtime';
-import { type GrammarConfigView } from '@tamagui/style-grammar';
+import { type GrammarConfigView } from '@tamagui/style-grammar/runtime';
 export declare function getStyleGrammarConfig(config: StyleFrontendConfig): GrammarConfigView;
 export declare function isTokenValueProp(prop: string): boolean;
 /**

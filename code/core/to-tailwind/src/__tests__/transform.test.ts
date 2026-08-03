@@ -1,4 +1,7 @@
-import { v6RemovedThemeNames, v6ThemeNameReplacements } from '@tamagui/style-grammar'
+import {
+  v6RemovedThemeNames,
+  v6ThemeNameReplacements,
+} from '@tamagui/style-grammar/tooling'
 import { describe, expect, test } from 'vitest'
 import { tamaguiToTailwind } from '../transform'
 

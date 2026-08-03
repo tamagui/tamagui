@@ -1,18 +1,4 @@
 import type { ModifierKind, ModifierRegistryView } from "./valueTypes";
-/**
-* States the native evaluator can source right now: componentState fields
-* plus enter/exit from the lifecycle. Component-tier states (open, checked,
-* highlighted, invalid, …) need the behavior packages to feed componentState;
-* until then they are web-only and the evaluator diagnoses them — it imports
-* THIS set, so widening it here is what enables them there.
-*/
-export declare const nativeSourceableStates: ReadonlySet<string>;
-/**
-* States a group clause can source natively: the subset of the sourceable
-* set that `subscribeToContextGroup` writes into componentState.group. The
-* native evaluator derives its group-state key map from this set.
-*/
-export declare const nativeGroupSourceableStates: readonly string[];
 export interface ClauseCapability {
 	/** the clause can lower to web CSS */
 	web: boolean;

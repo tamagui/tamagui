@@ -11,7 +11,7 @@
 // contributes nothing. (A symbol marker would be weaker: symbols can be
 // recovered from a value via getOwnPropertySymbols and reused.)
 
-import type { ParsedValue } from '@tamagui/style-grammar'
+import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 
 import type { FrontendProgramValue } from '../internalRuntimeTypes'
 import type { GetStyleState } from '../types'
