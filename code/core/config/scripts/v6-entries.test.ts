@@ -36,4 +36,13 @@ describe('v6 config', () => {
     expect(themes.light_red_level4).toBe(themes.light_red_level2)
     expect(themes.light_red_level2.background).toBe(tokens.color['red-50'])
   })
+
+  test('emits inverse aliases in their base theme declaration blocks', () => {
+    const css = createTamagui(defaultConfig).getCSS()
+    const inverseSelector = ':root .t_light_inverse:not(#t_theme_full_name)'
+    const inverseRule = css.split('\n').find((rule) => rule.includes(inverseSelector))
+
+    expect(inverseRule).toContain(':root.t_dark')
+    expect(css.split(inverseSelector)).toHaveLength(2)
+  })
 })

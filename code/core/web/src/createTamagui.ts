@@ -313,23 +313,19 @@ function getThemesDeduped(
   const dedupedThemes: DedupedThemes = []
   const existing = new Map<string, DedupedTheme>()
 
-  // Sort theme names for deterministic CSS output order
-  const sortedThemeNames = Object.keys(themes).sort()
+  // keep base themes first so inverse aliases share their declaration blocks
+  const sortedThemeNames = Object.keys(themes).sort((a, b) => {
+    const aIsBase = a === 'light' || a === 'dark'
+    const bIsBase = b === 'light' || b === 'dark'
+    return aIsBase === bIsBase ? a.localeCompare(b) : aIsBase ? -1 : 1
+  })
 
   // first, de-dupe and parse them
   for (const themeName of sortedThemeNames) {
-    // forces us to separate the dark/light themes (otherwise we generate bad t_light prefix selectors)
-    const darkOrLightSpecificPrefix = themeName.startsWith('dark')
-      ? 'dark'
-      : themeName.startsWith('light')
-        ? 'light'
-        : ''
-
     const rawTheme = themes[themeName]
 
     // dont force referential equality but may need something more consistent than JSON.stringify
-    // separate between dark/light
-    const key = darkOrLightSpecificPrefix + JSON.stringify(rawTheme)
+    const key = JSON.stringify(rawTheme)
 
     // if existing, avoid
     if (existing.has(key)) {

@@ -84,7 +84,7 @@ export const useThemeState = (
       process.env.NODE_ENV === 'development'
         ? `${MISSING_THEME_MESSAGE}
 
-Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? ` (component: ${props.componentName})` : ''}, but no parent theme context was found (parentId: ${parentId}).`
+Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme context was found (parentId: ${parentId}).`
         : MISSING_THEME_MESSAGE
     )
   }
@@ -572,7 +572,6 @@ function getNewThemeName(
   forceUpdate = false
 ): string | null {
   const { name, reset } = props
-  const { componentName } = props
 
   if (name && reset) {
     throw new Error(
@@ -583,7 +582,7 @@ function getNewThemeName(
   }
 
   // check cache
-  const cacheKey = `${parentName}|${name || ''}|${componentName || ''}|${reset ? 1 : 0}|${forceUpdate ? 1 : 0}`
+  const cacheKey = `${parentName}|${name || ''}|${reset ? 1 : 0}|${forceUpdate ? 1 : 0}`
   if (themeNameCacheVer !== cacheVersion) {
     themeNameCache.clear()
     themeNameCacheVer = cacheVersion
@@ -616,104 +615,26 @@ function getNewThemeName(
     return result
   }
 
-  const parentParts = parentName.split('_')
-
-  // always remove component theme if it exists, we never sub a component theme
-  const lastName = parentParts[parentParts.length - 1]
-  if (lastName && lastName[0].toLowerCase() !== lastName[0]) {
-    parentParts.pop()
-  }
-
-  const subNames = [
-    name && componentName ? `${name}_${componentName}` : undefined,
-    name,
-    componentName,
-  ].filter(Boolean) as string[]
+  const parentParts = parentName ? parentName.split('_') : []
 
   let found: string | null = null
 
-  // If name is provided, try it as a standalone theme first (both with and without scheme)
-  // This allows explicit theme overrides like:
-  // - <Theme name="blue"><Button theme="dark_green"> → finds "dark_green_Button"
-  // - <Theme name="blue"><Button theme="green"> → finds "light_green_Button"
-  // - <Theme name="blue"><Button theme="green_active"> → finds "light_green_active_Button"
   if (name) {
-    // First try the exact name as-is, but only if it already has a scheme prefix
-    // This prevents "green" from matching before we try "light_green_Button"
     const nameHasScheme = getScheme(name)
 
-    if (nameHasScheme) {
-      // Name has scheme (like "dark_green"), try as-is with priority to component theme
-      for (const subName of subNames) {
-        if (subName in themes) {
-          found = subName
+    if (nameHasScheme && name in themes) {
+      found = name
+    }
+
+    if (!found && !nameHasScheme) {
+      for (let i = parentParts.length; i >= 0; i--) {
+        const base = parentParts.slice(0, i).join('_')
+        const potential = base ? `${base}_${name}` : name
+
+        if (potential in themes) {
+          found = potential
           break
         }
-      }
-    }
-
-    // If not found and name doesn't have a scheme, try adding parent's scheme
-    if (!found && !nameHasScheme) {
-      const parentScheme = getScheme(parentName)
-
-      if (parentScheme) {
-        // Try progressively shorter parent bases to preserve color context
-        // For parent "light_blue_surface1" + name "surface3":
-        //   Try: light_blue_surface1_surface3, light_blue_surface3, light_surface3
-        // This ensures color context (blue) is preserved before falling back to scheme-only
-
-        // Build list of potential bases from most specific to least specific
-        const potentialBases: string[] = []
-        for (let i = parentParts.length; i >= 1; i--) {
-          potentialBases.push(parentParts.slice(0, i).join('_'))
-        }
-
-        outer: for (const base of potentialBases) {
-          // Try with componentName first, then without
-          const candidates = [
-            componentName ? `${base}_${name}_${componentName}` : undefined,
-            `${base}_${name}`,
-          ].filter(Boolean) as string[]
-
-          for (const potential of candidates) {
-            if (potential in themes) {
-              found = potential
-              break outer
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // If not found, fall back to the original search algorithm combining with parent
-  if (!found) {
-    // If we're only adding componentName (no explicit name prop), don't backtrack through parent parts
-    // This preserves sub-themes like "light_red_surface1" when adding Button component
-    if (!name && componentName) {
-      // Just try adding component to full parent
-      const potential = `${parentParts.join('_')}_${componentName}`
-      if (potential in themes) {
-        found = potential
-      }
-      // If not found, don't add component theme - return null to keep parent theme
-    } else {
-      // Original backtracking search for when explicit name is provided
-      const max = parentParts.length
-
-      for (let i = 0; i <= max; i++) {
-        const base = (i === 0 ? parentParts : parentParts.slice(0, -i)).join('_')
-
-        for (const subName of subNames) {
-          const potential = base ? `${base}_${subName}` : subName
-
-          if (potential in themes) {
-            found = potential
-            break
-          }
-        }
-
-        if (found) break
       }
     }
   }
@@ -737,10 +658,9 @@ const getPropsKey = ({
   name,
   reset,
   forceClassName,
-  componentName,
   inlineValues,
 }: UseThemeWithStateProps) =>
-  `${name || ''}${reset || ''}${forceClassName || ''}${componentName || ''}${
+  `${name || ''}${reset || ''}${forceClassName || ''}${
     inlineValues ? getInlineValuesKey(inlineValues) : ''
   }`
 
