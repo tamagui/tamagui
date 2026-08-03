@@ -1,5 +1,10 @@
 v3 release plan:
 
+- remomve elevation:
+
+Yes — confirmed. elevation is a real built-in variant on Tamagui's YStack/XStack (@tamagui/stacks/dist/esm/Stacks.mjs:10-13), taking a size token or a raw number and resolved by
+  getElevation, which emits RN shadowColor/shadowRadius/shadowOffset → box-shadow on web.
+
 > **2026-07-18: beta-exit status and open work now live in
 > `plans/v3-beta-campaign-plan.md` (single source, includes the decisions log).**
 > This file remains for the release-command reference, migration notes, and the
