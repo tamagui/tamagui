@@ -1,4 +1,7 @@
+import { transform } from 'esbuild'
+import { createRequire } from 'node:module'
 import * as React from 'react'
+import TestRenderer, { act } from 'react-test-renderer'
 import { describe, expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
@@ -9,6 +12,61 @@ process.env.TAMAGUI_TARGET = 'native'
 window['React'] = React
 
 describe('flatten-tests', () => {
+  test('reuses a lowered static style across native renders', async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+
+      export function Test({ revision }) {
+        return (
+          <View
+            testID={revision ? 'after' : 'before'}
+            width={20}
+            height={20}
+            backgroundColor="rgb(1,2,3)"
+          />
+        )
+      }
+    `)
+    const executable = await transform(output.code, {
+      format: 'cjs',
+      jsx: 'automatic',
+      loader: 'tsx',
+      platform: 'node',
+      target: 'node20',
+    })
+    const compiledModule = { exports: {} as Record<string, unknown> }
+    const require = createRequire(import.meta.url)
+    new Function('require', 'module', 'exports', executable.code)(
+      require,
+      compiledModule,
+      compiledModule.exports
+    )
+    const Test = compiledModule.exports.Test as React.ComponentType<{
+      revision: number
+    }>
+    let rendered: TestRenderer.ReactTestRenderer
+    await act(async () => {
+      rendered = TestRenderer.create(<Test revision={0} />)
+    })
+    const before = rendered!.root.find((node) => node.type === 'View')
+    expect(before.props.style).toEqual({
+      width: 20,
+      height: 20,
+      backgroundColor: 'rgb(1,2,3)',
+    })
+    const beforeStyle = before.props.style
+
+    await act(async () => {
+      rendered!.update(<Test revision={1} />)
+    })
+    const after = rendered!.root.find((node) => node.type === 'View')
+    expect(after.props.style).toBe(beforeStyle)
+
+    await act(async () => {
+      rendered!.unmount()
+    })
+  })
+
   test(`flattened without extra attributes`, async () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui'

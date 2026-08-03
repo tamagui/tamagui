@@ -97,10 +97,18 @@ test('compiled JSX and createElement literals render with inherited text styles'
     import { createElement } from 'react'
     import { html, style } from '@tamagui/core/dom'
     const parent = style({ color: 'red', fontSize: 16, lineHeight: 2 })
+    export const TopLevel = <html.div style={parent}>top-level literal</html.div>
     export const JSXLiteral = () => <html.div style={parent}>jsx literal</html.div>
     export const CreateElementLiteral = () =>
       createElement(html.div, { style: parent }, 'createElement literal')
   `)
+
+  const topLevel = compiled.TopLevel as unknown as ReactModule.ReactElement<{
+    style: unknown
+  }>
+  expect(styleValue(topLevel, 'color')).toBe('red')
+  expect(styleValue(topLevel, 'fontSize')).toBe(16)
+  expect(styleValue(topLevel, 'lineHeight')).toBe(2)
 
   for (const name of ['JSXLiteral', 'CreateElementLiteral']) {
     let renderer: ReactTestRenderer

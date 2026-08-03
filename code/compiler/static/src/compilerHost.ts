@@ -1743,6 +1743,16 @@ export function createTamaguiCompilerHost(
             'Native style output is not a static serializable value'
           )
         }
+        const nativeStyleLocal = unusedIdentifier(
+          input.source,
+          `__TamaguiNativeStyle${input.element.span.start}`
+        )
+        const nativeStyleImports = [
+          {
+            content: `\nfunction ${nativeStyleLocal}() { return ${nativeStyleLocal}._ || (${nativeStyleLocal}._ = ${JSON.stringify(nativeStyle ?? {})}); }`,
+            origin: input.element.component.span,
+          },
+        ]
         if (component.domTag) {
           const row = TAGS[component.domTag]
           const basePrimitive = NATIVE_BACKING[row.backing].primitive
@@ -1757,7 +1767,7 @@ export function createTamaguiCompilerHost(
             )
           }
           styleEntries = [...new Set([...styleEntries, ...propsResult.consumed])]
-          let nativeStyleSource = JSON.stringify(nativeStyle ?? {})
+          let nativeStyleSource = `${nativeStyleLocal}()`
           let runtimeStyleSource: string | null = null
           if (
             domStyleProgram?.kind === 'prop' &&
@@ -1861,6 +1871,7 @@ export function createTamaguiCompilerHost(
             }))
           const literalEdits: SourceEdit[] = []
           const imports = [
+            ...nativeStyleImports,
             {
               content: `\nimport { ${primitive} as ${nativeLocal} } from ${JSON.stringify(NATIVE_PRIMITIVE_MODULE)}\n`,
               origin: input.element.component.span,
@@ -2034,12 +2045,13 @@ export function createTamaguiCompilerHost(
             edits: [...tagEdits, ...expressionEdits],
             css: [],
             imports: [
+              ...nativeStyleImports,
               {
                 content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
                 origin: input.element.component.span,
               },
               {
-                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${JSON.stringify(nativeStyle ?? {})}, { ${dynamicStyle} }]);`,
+                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${nativeStyleLocal}(), { ${dynamicStyle} }]);`,
                 origin: input.element.component.span,
               },
             ],
@@ -2047,7 +2059,7 @@ export function createTamaguiCompilerHost(
             flattened: true,
           }
         }
-        const styleContent = `style: ${JSON.stringify(nativeStyle ?? {})}`
+        const styleContent = `style: ${nativeStyleLocal}()`
         const tagEdits = [
           input.element.component.span,
           input.element.component.closingSpan,
@@ -2073,6 +2085,7 @@ export function createTamaguiCompilerHost(
             edits: [...tagEdits, ...propsEdits],
             css: [],
             imports: [
+              ...nativeStyleImports,
               {
                 content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
                 origin: input.element.component.span,
@@ -2090,12 +2103,13 @@ export function createTamaguiCompilerHost(
               {
                 start: input.element.component.span.end,
                 end: input.element.component.span.end,
-                content: ` style={${JSON.stringify(nativeStyle ?? {})}}`,
+                content: ` style={${nativeStyleLocal}()}`,
                 origin: input.element.component.span,
               },
             ],
             css: [],
             imports: [
+              ...nativeStyleImports,
               {
                 content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
                 origin: input.element.component.span,
@@ -2114,7 +2128,7 @@ export function createTamaguiCompilerHost(
             {
               start: first!.span.start,
               end: first!.span.end,
-              content: `style={${JSON.stringify(nativeStyle ?? {})}}`,
+              content: `style={${nativeStyleLocal}()}`,
               origin: first!.span,
             },
             ...rest.map((entry) => ({
@@ -2126,6 +2140,7 @@ export function createTamaguiCompilerHost(
           ],
           css: [],
           imports: [
+            ...nativeStyleImports,
             {
               content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
               origin: input.element.component.span,

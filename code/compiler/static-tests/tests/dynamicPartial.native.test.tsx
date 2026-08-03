@@ -104,22 +104,15 @@ test('native opacity partial extraction preserves static and dynamic host styles
 
   expect(stableStyleCalls).toHaveLength(3)
   expect(expressionAttributes).toHaveLength(3)
-  const staticStyles: Record<string, unknown>[] = []
   for (const call of stableStyleCalls) {
     const createStyle = call.arguments[1]
     expect(createStyle.type).toBe('ArrowFunctionExpression')
     expect(createStyle.body.type).toBe('ArrayExpression')
     expect(createStyle.body.elements).toHaveLength(2)
     const staticStyle = createStyle.body.elements[0]
-    expect(staticStyle.type).toBe('ObjectExpression')
-    staticStyles.push(
-      Object.fromEntries(
-        staticStyle.properties.map((property: any) => [
-          property.key.name ?? property.key.value,
-          property.value.value,
-        ])
-      )
-    )
+    expect(staticStyle.type).toBe('CallExpression')
+    expect(staticStyle.arguments).toHaveLength(0)
+    expect(staticStyle.callee.type).toBe('Identifier')
     const dynamicStyle = createStyle.body.elements[1]
     expect(dynamicStyle.type).toBe('ObjectExpression')
     expect(dynamicStyle.properties).toHaveLength(1)
@@ -128,32 +121,6 @@ test('native opacity partial extraction preserves static and dynamic host styles
     ).toBe('opacity')
     expect(dynamicStyle.properties[0].value.type).toBe('MemberExpression')
   }
-  expect(staticStyles).toEqual(
-    expect.arrayContaining([
-      expect.objectContaining({
-        width: 20,
-        height: 20,
-        backgroundColor: 'rgb(99,102,241)',
-      }),
-      expect.objectContaining({
-        flexDirection: 'row',
-        paddingTop: 8,
-        paddingRight: 8,
-        paddingBottom: 8,
-        paddingLeft: 8,
-        backgroundColor: 'rgb(229,231,235)',
-      }),
-      expect.objectContaining({
-        width: 120,
-        height: 48,
-        paddingTop: 8,
-        paddingRight: 8,
-        paddingBottom: 8,
-        paddingLeft: 8,
-        backgroundColor: 'rgb(249,250,251)',
-      }),
-    ])
-  )
   for (const attribute of expressionAttributes) {
     const expression = attribute.value.expression
     expect(expression.type).toBe('ArrayExpression')
@@ -213,6 +180,9 @@ test('native opacity partial extraction preserves static and dynamic host styles
       }),
     ])
   )
+  const beforeStaticStyles = before.map((node) =>
+    Array.isArray(node.props.style) ? node.props.style[0] : node.props.style
+  )
   await act(async () => {
     rendered!.update(<Corpus revision={1} />)
   })
@@ -220,7 +190,12 @@ test('native opacity partial extraction preserves static and dynamic host styles
     .findAll((node) => node.type === 'View')
     .filter((node) => flattenStyle(node.props.style).opacity === 0.8)
   expect(after).toHaveLength(3)
-  after.forEach((node, index) => expect(node).toBe(before[index]))
+  after.forEach((node, index) => {
+    expect(node).toBe(before[index])
+    expect(Array.isArray(node.props.style) ? node.props.style[0] : node.props.style).toBe(
+      beforeStaticStyles[index]
+    )
+  })
 
   await act(async () => {
     rendered!.unmount()
