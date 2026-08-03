@@ -76,13 +76,13 @@ export function bundleAttributionPlugin(outputPath: string | undefined, root: st
         }))
         .sort((left, right) => left.fileName.localeCompare(right.fileName))
       for (const chunk of chunks) {
-        if (
-          chunk.attributionGroup !== 'other' &&
-          chunk.modules.some(
-            (module) => isolatedChunk(module.id) !== chunk.attributionGroup
+        const mismatchedModules = chunk.modules.filter(
+          (module) => isolatedChunk(module.id) !== chunk.attributionGroup
+        )
+        if (chunk.attributionGroup !== 'other' && mismatchedModules.length) {
+          throw new Error(
+            `mixed module ownership in ${chunk.fileName}: ${mismatchedModules.map((module) => module.id).join(', ')}`
           )
-        ) {
-          throw new Error(`mixed module ownership in ${chunk.fileName}`)
         }
       }
       const assets = Object.values(bundle)
