@@ -1,4 +1,5 @@
 export * from './createTheme'
+export * from './createThemes'
 export * from './masks'
 export * from './combineMasks'
 export * from './applyMask'

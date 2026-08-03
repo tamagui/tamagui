@@ -571,6 +571,7 @@
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
+        "vitest": "4.0.4",
       },
     },
     "code/core/cubic-bezier-animator": {
