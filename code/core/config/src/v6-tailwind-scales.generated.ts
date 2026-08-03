@@ -1,9 +1,9 @@
 // AUTO-GENERATED from tailwindcss@4.3.0 with @csstools/color-helpers@6.1.0. Do not edit.
-// Source checksum: 9cb34e0dbf707c82321163587a800da0bbabbc58d97e96464f5487478d3c50a4
+// Source checksum: d8fc16823f2b4e64ea102d9888d8ca3d7aa97e4551d9cd5f17c0ec6d65bb0bf6
 export const tailwindSource = {
   tailwindVersion: '4.3.0',
   colorConverter: '@csstools/color-helpers@6.1.0',
-  checksum: '9cb34e0dbf707c82321163587a800da0bbabbc58d97e96464f5487478d3c50a4',
+  checksum: 'd8fc16823f2b4e64ea102d9888d8ca3d7aa97e4551d9cd5f17c0ec6d65bb0bf6',
 } as const
 
 export const tailwindSpace = {
@@ -126,20 +126,6 @@ export const tailwindRadius = {
   '3xl': 24,
   '4xl': 32,
   full: 9999,
-} as const
-
-export const tailwindZIndex = {
-  '0': 0,
-  '1': 1,
-  '2': 2,
-  '3': 3,
-  '4': 4,
-  '5': 5,
-  '10': 10,
-  '20': 20,
-  '30': 30,
-  '40': 40,
-  '50': 50,
 } as const
 
 export const tailwindFontSize = {

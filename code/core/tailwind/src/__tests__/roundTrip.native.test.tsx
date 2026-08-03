@@ -73,10 +73,8 @@ describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" st
     expect(typeof p).toBe('number')
 
     const gap = nativeStyle(View, toClass(`<View gap="6" />`))
-    expect(gap.rowGap).toBe(24)
-    expect(gap.columnGap).toBe(24)
-    expect(typeof gap.rowGap).toBe('number')
-    expect(typeof gap.columnGap).toBe('number')
+    expect(gap.gap).toBe(24)
+    expect(typeof gap.gap).toBe('number')
 
     const r = resolved(View, `<View borderRadius="8" />`, 'borderTopLeftRadius')
     expect(r).toBe(22)

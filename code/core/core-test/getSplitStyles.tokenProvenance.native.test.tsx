@@ -3,6 +3,7 @@ process.env.TAMAGUI_TARGET = 'native'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import {
   View,
+  Text,
   createTamagui,
   getSplitStyles,
   getStyleTokenProvenance,
@@ -79,7 +80,7 @@ describe.runIf(provenanceEnabled)('getSplitStyles token provenance', () => {
   })
 
   test('a variant-supplied token is recorded on the winning style', () => {
-    const Toned = styled(View, {
+    const Toned = styled(Text, {
       variants: {
         toned: {
           true: { backgroundColor: 'background', color: 'color' },

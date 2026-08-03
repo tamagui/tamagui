@@ -1,10 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
-import {
-  borderFamilyTargets,
-  longhandExpansionTable,
-  splitColorOpacitySuffix,
-} from '@tamagui/style-grammar'
 import { resolveDefaultToken } from '../config'
 import { isVariable } from '../createVariable'
 import type {
@@ -114,9 +109,8 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     }
   }
 
-  // String families flow WHOLE into the program engine (clause-free strings
-  // are base-only programs). Pre-expanding them here cannot distinguish a CSS
-  // component from a modifier clause and would make conditions unconditional.
+  // Strings stay whole so the direct scanner can distinguish CSS components
+  // from modifier clauses before it emits them.
 
   if (value != null) {
     if (key === 'fontFamily' && typeof originalValue === 'string') {
@@ -125,12 +119,9 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
       }
     }
 
-    // Geometric and border-family strings split after program parsing. Numbers
-    // and other values keep the ordinary per-longhand expansion.
+    // strings stay whole for the direct flat-value scanner
     const expanded =
-      styleProps.noExpand ||
-      (typeof value === 'string' &&
-        (key in longhandExpansionTable || key in borderFamilyTargets))
+      styleProps.noExpand || typeof value === 'string'
         ? null
         : expandStyle(key, value, conf.settings.styleCompat || 'web')
 
@@ -416,12 +407,24 @@ function mapDefaultTokenCategory(
 export const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
   ...mapDefaultTokenCategory(tokenCategories.size, 'size'),
   ...mapDefaultTokenCategory(tokenCategories.radius, 'radius'),
-  ...mapDefaultTokenCategory(tokenCategories.zIndex, 'zIndex'),
   // the transform family's x/y are lengths from the space scale (v6 decision:
   // `x="4"` resolves like `p="4"`), never the size category
   x: 'space',
   y: 'space',
   fontSize: 'fontSize',
+  borderWidth: 'space',
+  borderTopWidth: 'space',
+  borderRightWidth: 'space',
+  borderBottomWidth: 'space',
+  borderLeftWidth: 'space',
+  borderBlockWidth: 'space',
+  borderBlockStartWidth: 'space',
+  borderBlockEndWidth: 'space',
+  borderInlineWidth: 'space',
+  borderInlineStartWidth: 'space',
+  borderInlineEndWidth: 'space',
+  outlineOffset: 'space',
+  outlineWidth: 'space',
   gap: 'space',
   rowGap: 'space',
   columnGap: 'space',
@@ -466,6 +469,26 @@ export const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
   paddingHorizontal: 'space',
   paddingStart: 'space',
   paddingVertical: 'space',
+}
+
+export type RuntimeTokenCategory = DefaultTokenCategory | 'color' | 'font' | 'fontFamily'
+
+export function getTokenCategoryForProperty(
+  property: string
+): RuntimeTokenCategory | undefined {
+  if (property === 'fontFamily') return 'fontFamily'
+  if (
+    property === 'fontSize' ||
+    property === 'fontWeight' ||
+    property === 'lineHeight' ||
+    property === 'letterSpacing'
+  ) {
+    return 'font'
+  }
+  return (
+    defaultTokenCategories[property] ||
+    (property in tokenCategories.color ? 'color' : undefined)
+  )
 }
 
 // goes through specificity finding best matching variant function
@@ -514,7 +537,6 @@ const defaultTokenCategoryByResolverName: Partial<
   Size: 'size',
   Space: 'space',
   Radius: 'radius',
-  ZIndex: 'zIndex',
   FontSize: 'fontSize',
 }
 
@@ -553,246 +575,116 @@ function parseVariantResolverKey(key: string): VariantResolverName[] | null {
   return parts as VariantResolverName[]
 }
 
-function matchesVariantResolver(
-  resolverName: VariantResolverName,
-  value: any,
-  conf: TamaguiInternalConfig,
-  theme: Partial<GetStyleState>['theme']
-) {
-  switch (resolverName) {
-    case 'Size':
-      return (
-        value === true ||
-        isTokenCategoryValue(conf, 'size', value) ||
-        matchesAllowedStyleValue(conf, 'size', value)
-      )
-    case 'Space':
-      return (
-        value === true ||
-        isTokenCategoryValue(conf, 'space', value) ||
-        isVariable(value) ||
-        matchesAllowedStyleValue(conf, 'space', value)
-      )
-    case 'Color':
-      return (
-        isTokenCategoryValue(conf, 'color', value) ||
-        isThemeValue(theme, value) ||
-        isTokenWithOpacity(conf, theme, value) ||
-        isCSSColorName(value)
-      )
-    case 'Radius':
-      return (
-        value === true ||
-        isTokenCategoryValue(conf, 'radius', value) ||
-        isVariable(value) ||
-        isRemString(value) ||
-        isNumericValue(value) ||
-        matchesAllowedStyleValue(conf, 'radius', value)
-      )
-    case 'ZIndex':
-      return (
-        value === true ||
-        isTokenCategoryValue(conf, 'zIndex', value) ||
-        isVariable(value) ||
-        isNumericValue(value) ||
-        matchesAllowedStyleValue(conf, 'zIndex', value)
-      )
-    case 'Theme':
-      return isThemeValue(theme, value)
-    case 'FontSize':
-      return (
-        value === true ||
-        isBodyFontToken(conf, 'size', value) ||
-        isNumericValue(value) ||
-        isRemString(value)
-      )
-    case 'FontStyle':
-      return (
-        isBodyFontToken(conf, 'style', value) || value === 'normal' || value === 'italic'
-      )
-    case 'FontTransform':
-      return (
-        isBodyFontToken(conf, 'transform', value) ||
-        value === 'none' ||
-        value === 'capitalize' ||
-        value === 'uppercase' ||
-        value === 'lowercase'
-      )
-    case 'FontLineHeight':
-      return (
-        isBodyFontToken(conf, 'lineHeight', value) ||
-        isNumericValue(value) ||
-        isRemString(value)
-      )
-    case 'FontLetterSpacing':
-      return (
-        isBodyFontToken(conf, 'letterSpacing', value) ||
-        isNumericValue(value) ||
-        isRemString(value)
-      )
-    case 'number':
-      return typeof value === 'number'
-    case 'string':
-      return typeof value === 'string'
-    case 'boolean':
-      return typeof value === 'boolean'
-    case 'any':
-      return true
-  }
-}
-
-function isTokenCategoryValue(
-  conf: TamaguiInternalConfig,
-  category: 'size' | 'space' | 'color' | 'radius' | 'zIndex',
-  value: any
-) {
-  return Boolean(
-    value != null && category in conf.tokensParsed && value in conf.tokensParsed[category]
-  )
-}
-
-function isThemeValue(theme: Partial<GetStyleState>['theme'], value: any) {
-  return Boolean(theme && typeof value === 'string' && value in theme)
-}
-
-function isNumericValue(value: any) {
-  return typeof value === 'number'
-}
-
-const cssColorNameSet = new Set<string>(cssColorNames)
-
-function isCSSColorName(value: any) {
-  return typeof value === 'string' && cssColorNameSet.has(value)
-}
-
-function isTokenWithOpacity(
-  conf: TamaguiInternalConfig,
-  theme: Partial<GetStyleState>['theme'],
-  value: any
-) {
-  if (typeof value !== 'string') return false
-  const suffix = splitColorOpacitySuffix(value)
-  return (
-    suffix.kind === 'valid' &&
-    (isTokenCategoryValue(conf, 'color', suffix.name) || isThemeValue(theme, suffix.name))
-  )
-}
-
-type AllowedCategory = 'size' | 'space' | 'radius' | 'zIndex'
-
-function matchesAllowedStyleValue(
-  conf: TamaguiInternalConfig,
-  category: AllowedCategory,
-  value: any
-) {
-  const { setting, isGloballyAbsent } = getAllowedStyleValuesSetting(conf, category)
-  switch (setting) {
-    case 'strict':
-      return false
-    case 'strict-web':
-      return isWebAllowedValue(category, value)
-    case 'somewhat-strict':
-      return isSomewhatStrictValue(category, value)
-    case 'somewhat-strict-web':
-      return isSomewhatStrictValue(category, value) || isWebAllowedValue(category, value)
-    default:
-      return isLooseAllowedValue(category, value, isGloballyAbsent)
-  }
-}
-
-function getAllowedStyleValuesSetting(
-  conf: TamaguiInternalConfig,
-  category: AllowedCategory
-) {
-  const hasSetting = Object.prototype.hasOwnProperty.call(
-    conf.settings,
-    'allowedStyleValues'
-  )
-  if (!hasSetting) {
-    return { setting: undefined, isGloballyAbsent: true }
-  }
-  const setting = conf.settings.allowedStyleValues
-  if (setting && typeof setting === 'object') {
-    return { setting: setting[category], isGloballyAbsent: false }
-  }
-  return { setting, isGloballyAbsent: false }
-}
-
-function isSomewhatStrictValue(category: AllowedCategory, value: any) {
-  switch (category) {
-    case 'size':
-    case 'space':
-      return (
-        value === 'auto' ||
-        isNumericValue(value) ||
-        isRemString(value) ||
-        isPercentString(value)
-      )
-    case 'radius':
-    case 'zIndex':
-      return isNumericValue(value)
-  }
-}
-
-function isLooseAllowedValue(
-  category: AllowedCategory,
-  value: any,
-  isGloballyAbsent: boolean
-) {
-  if (isNumericValue(value)) return true
-  if (typeof value !== 'string') return false
-  if (category === 'radius' || category === 'zIndex') {
-    return isGloballyAbsent
-  }
-  return true
-}
-
-function isWebAllowedValue(category: AllowedCategory, value: any) {
-  return (
-    isWebUniversalValue(value) ||
-    ((category === 'size' || category === 'space') && isWebOnlySizeValue(value))
-  )
-}
-
-function isWebUniversalValue(value: any) {
-  return (
-    value === 'unset' ||
-    value === 'inherit' ||
-    (typeof value === 'string' && /^var\(.*\)$/.test(value))
-  )
-}
-
-function isWebOnlySizeValue(value: any) {
-  return (
-    value === 'max-content' ||
-    value === 'min-content' ||
-    (typeof value === 'string' &&
-      (viewportValuePattern.test(value) || /^(calc|min|max)\(.*\)$/.test(value)))
-  )
-}
-
 const numberStringPattern =
   /[+-]?(?:(?:\d+\.?\d*)|(?:\.\d+))(?:[eE][+-]?\d+)?|[+-]?0[xX][\da-fA-F]+|[+-]?0[bB][01]+|[+-]?0[oO][0-7]+/
 const remStringPattern = new RegExp(`^(?:${numberStringPattern.source})rem$`)
 const viewportValuePattern = new RegExp(
   `^(?:${numberStringPattern.source})(vw|dvw|lvw|svw|vh|dvh|lvh|svh)$`
 )
+const cssColorNameSet = new Set<string>(cssColorNames)
 
-function isRemString(value: any) {
-  return typeof value === 'string' && remStringPattern.test(value)
-}
-
-function isPercentString(value: any) {
-  return typeof value === 'string' && value.endsWith('%')
-}
-
-function isBodyFontToken(
+function matchesVariantResolver(
+  resolverName: VariantResolverName,
+  value: any,
   conf: TamaguiInternalConfig,
-  category: 'size' | 'style' | 'transform' | 'lineHeight' | 'letterSpacing',
-  value: any
+  theme: Partial<GetStyleState>['theme']
 ) {
-  if (typeof value !== 'string') return false
-  const bodyFont = conf.fontsParsed.body
-  const fontCategory = bodyFont?.[category]
-  return Boolean(fontCategory && value in fontCategory)
+  const string = typeof value === 'string'
+  const number = typeof value === 'number'
+  const rem = string && remStringPattern.test(value)
+  const token = (category: 'size' | 'space' | 'color' | 'radius' | 'zIndex') =>
+    value != null && value in conf.tokensParsed[category]
+  const themed = string && !!theme && value in theme
+  const font = (
+    category: 'size' | 'style' | 'transform' | 'lineHeight' | 'letterSpacing'
+  ) => string && !!conf.fontsParsed.body?.[category]?.[value]
+  const allowed = (category: 'size' | 'space' | 'radius' | 'zIndex') => {
+    const hasSetting = Object.prototype.hasOwnProperty.call(
+      conf.settings,
+      'allowedStyleValues'
+    )
+    const configured = conf.settings.allowedStyleValues
+    const setting =
+      configured && typeof configured === 'object' ? configured[category] : configured
+    const web =
+      value === 'unset' ||
+      value === 'inherit' ||
+      (string && /^var\(.*\)$/.test(value)) ||
+      ((category === 'size' || category === 'space') &&
+        (value === 'max-content' ||
+          value === 'min-content' ||
+          (string &&
+            (viewportValuePattern.test(value) || /^(calc|min|max)\(.*\)$/.test(value)))))
+    const somewhat =
+      category === 'size' || category === 'space'
+        ? value === 'auto' || number || rem || (string && value.endsWith('%'))
+        : number
+    if (setting === 'strict') return false
+    if (setting === 'strict-web') return web
+    if (setting === 'somewhat-strict') return somewhat
+    if (setting === 'somewhat-strict-web') return somewhat || web
+    return (
+      number || (string && (category === 'size' || category === 'space' || !hasSetting))
+    )
+  }
+
+  switch (resolverName) {
+    case 'Size':
+    case 'Space':
+    case 'Radius':
+    case 'ZIndex': {
+      const category =
+        resolverName === 'ZIndex'
+          ? 'zIndex'
+          : (resolverName.toLowerCase() as 'size' | 'space' | 'radius')
+      return (
+        value === true ||
+        token(category) ||
+        ((resolverName === 'Space' ||
+          resolverName === 'Radius' ||
+          resolverName === 'ZIndex') &&
+          isVariable(value)) ||
+        ((resolverName === 'Radius' || resolverName === 'ZIndex') && (number || rem)) ||
+        allowed(category)
+      )
+    }
+    case 'Color': {
+      const slash = string ? value.lastIndexOf('/') : -1
+      const opacity = slash === -1 ? NaN : Number(value.slice(slash + 1))
+      const name = slash === -1 ? value : value.slice(0, slash)
+      return (
+        token('color') ||
+        themed ||
+        (Number.isInteger(opacity) &&
+          opacity >= 0 &&
+          opacity <= 100 &&
+          (name in conf.tokensParsed.color || (!!theme && name in theme))) ||
+        (string && cssColorNameSet.has(value))
+      )
+    }
+    case 'Theme':
+      return themed
+    case 'FontSize':
+      return value === true || font('size') || number || rem
+    case 'FontStyle':
+      return font('style') || value === 'normal' || value === 'italic'
+    case 'FontTransform':
+      return (
+        font('transform') ||
+        value === 'none' ||
+        value === 'capitalize' ||
+        value === 'uppercase' ||
+        value === 'lowercase'
+      )
+    case 'FontLineHeight':
+      return font('lineHeight') || number || rem
+    case 'FontLetterSpacing':
+      return font('letterSpacing') || number || rem
+    case 'number':
+    case 'string':
+    case 'boolean':
+      return typeof value === resolverName
+    case 'any':
+      return true
+  }
 }

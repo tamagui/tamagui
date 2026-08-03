@@ -14,18 +14,14 @@ describe('animation props', () => {
       </TamaguiProvider>
     )
 
-    // snapshot the View, not the whole fragment. TamaguiProvider also renders
-    // ConfigRevisionCheck, whose hidden span carries a hash of every theme,
-    // token, media, font and shorthand NAME in the config — capturing the
-    // fragment made this animation test fail whenever an unrelated config key
-    // was added anywhere, which teaches rubber-stamping the snapshot. Theme and
-    // font wrapping have their own tests.
-    expect(tree.container.querySelector('#test-id')).toMatchInlineSnapshot(`
-      <div
-        class="is_View _mt-200px _mr-200px _mb-200px _ml-200px _tx-927052474 _t-616221249 _bc-1124498088"
-        id="test-id"
-        style="transition: all cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms;"
-      />
-    `)
+    const view = tree.container.querySelector('#test-id') as HTMLElement
+    expect(view.tagName).toBe('DIV')
+    expect(view.className).toContain('is_View')
+    expect(view.style.transition).toBe(
+      'all cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms'
+    )
+    const style = getComputedStyle(view)
+    expect(style.backgroundColor).toBe('red')
+    expect(style.margin).toBe('200px')
   })
 })

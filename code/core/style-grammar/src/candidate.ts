@@ -76,7 +76,6 @@ const negativeTokenProps = new Set([
   'bottom',
   'left',
   'inset',
-  'zIndex',
   'x',
   'y',
   'letterSpacing',
@@ -410,6 +409,9 @@ function chooseEntry(
         return { entry, valueKind: 'convenience', convenience: 'percentage' }
       }
       continue
+    }
+    if (entry.prop === 'zIndex' && numericPattern.test(rawValue)) {
+      return { entry, valueKind: 'convenience', convenience: 'integer' }
     }
   }
   return null

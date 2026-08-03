@@ -1,4 +1,4 @@
-import { View, createTamagui } from '@tamagui/core'
+import { Text, View, createTamagui } from '@tamagui/core'
 import { beforeAll, describe, expect, test, vi } from 'vitest'
 import { isColorStyleKey } from '../web/src/helpers/getDynamicVal'
 
@@ -127,7 +127,7 @@ describe('getSplitStyles iOS specific', () => {
     }
 
     // Act
-    const result = getSplitStylesWithTheme(props, 'light')
+    const result = getSplitStylesWithTheme(props, 'light', Text)
     const style = result?.style ?? {}
 
     // Assert - just verify the structure is correct
@@ -333,11 +333,11 @@ describe('DynamicColorIOS preserved in object format', () => {
 function getSplitStylesWithTheme(
   props: Record<string, any>,
   themeName: string,
-  tag?: string
+  Component = View
 ) {
   return getSplitStyles(
     props,
-    View.staticConfig as any,
+    Component.staticConfig as any,
     {} as any,
     themeName,
     {
@@ -355,7 +355,7 @@ function getSplitStylesWithTheme(
     undefined,
     undefined,
     undefined,
-    tag
+    undefined
   )
 }
 

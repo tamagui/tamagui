@@ -15,7 +15,7 @@ import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 
 import type { FrontendProgramValue } from '../internalRuntimeTypes'
 import type { GetStyleState } from '../types'
-import { contributeParsedProgram, ensureGrammarContext } from './contributePrograms'
+import { contributeFrontendValue, type MergeStyle } from './directStyle'
 
 export type { FrontendProgramValue } from '../internalRuntimeTypes'
 
@@ -38,13 +38,11 @@ export function isFrontendProgram(value: unknown): value is FrontendProgramValue
   )
 }
 
-/** consumed beside contributeStylePrograms in the forward pass */
+/** consumed beside direct flat strings in the forward pass */
 export function contributeFrontendProgram(
   styleState: GetStyleState,
-  sourceProp: string,
-  program: FrontendProgramValue
+  program: FrontendProgramValue,
+  merge: MergeStyle
 ): boolean {
-  ensureGrammarContext(styleState)
-  contributeParsedProgram(styleState, program.property, program.value, sourceProp)
-  return true
+  return contributeFrontendValue(styleState, program.property, program.value, merge)
 }

@@ -81,14 +81,16 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
 
 type DefaultTokenConfig = Pick<TamaguiInternalConfig, 'settings'>
 
-export const getDefaultToken = (
-  category: DefaultTokenCategory,
+export const getDefaultToken = <Category extends DefaultTokenCategory>(
+  category: Category,
   config: DefaultTokenConfig | null = getConfigFromGlobalOrLocal()
 ): string => {
   const defaultSize = config?.settings.defaultSize || DEFAULT_SIZE_TOKEN
-  return category === 'size'
-    ? defaultSize
-    : config?.settings.defaultTokens?.[category] || defaultSize
+  return (
+    category === 'size'
+      ? defaultSize
+      : config?.settings.defaultTokens?.[category] || defaultSize
+  )
 }
 
 export const resolveDefaultToken = <Val>(
@@ -96,7 +98,7 @@ export const resolveDefaultToken = <Val>(
   category: DefaultTokenCategory,
   config?: DefaultTokenConfig | null
 ): Exclude<Val, true> | string => {
-  return val === true ? getDefaultToken(category, config) : (val as any)
+  return val === true ? getDefaultToken(category, config) : (val as Exclude<Val, true>)
 }
 
 export const getDefaultSizeToken = (

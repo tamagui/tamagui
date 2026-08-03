@@ -1141,7 +1141,7 @@ type AllowedStyleValuesSetting =
   | AllowedValueSettingBase
   | AllowedStyleValuesSettingPerCategory
 
-export type DefaultTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize'
+export type DefaultTokenCategory = 'size' | 'space' | 'radius' | 'fontSize'
 
 export type DefaultTokens = Partial<Record<Exclude<DefaultTokenCategory, 'size'>, string>>
 
@@ -1991,7 +1991,7 @@ export type SafeAreaValueKeys =
   | 'end'
 
 /**
- * Flat value programs: every style prop accepts a clause-bearing string
+ * Flat values: every style prop accepts a clause-bearing string
  * (`bg="red hover:blue"`, `p="4 sm:6"`). `(string & {})` admits the broad
  * string without collapsing the token/literal unions, so autocomplete
  * survives (design record, "Types and editor tooling"). Candidate and
@@ -2857,7 +2857,6 @@ export type PropMappedValue = [string, any, any?][] | undefined
 
 export type GetStyleState = {
   style: TextStyle | null
-  usedKeys: Record<string, number>
   classNames: ClassNamesObject
   staticConfig: StaticConfig
   theme: ThemeParsed
@@ -2871,21 +2870,21 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
-  // flat value programs accumulated per CSS longhand during the forward pass
-  // (plans/dom-tailwind-flat-values.md "Programs and merging"); lowered to
-  // program-block CSS on web after the pass. later plain-value writes to the
-  // same longhand delete the program and vice versa, so one longhand never has
-  // both systems' output on one element.
-  programs?: Map<string, import('@tamagui/style-grammar/runtime').LonghandProgram>
-  // Context props such as color may carry a runtime program even when the host
-  // view cannot accept that style key. Evaluate them for Provider propagation,
-  // then keep them out of the host style object.
-  contextOnlyProgramKeys?: Set<string>
-  // lifecycle modifiers carried by each winning program longhand. This survives
-  // an early web class flush (which clears `programs`) so the CSS animation
-  // driver can restart exits from computed styles without reading removed
-  // condition-object props.
-  programLifecycle?: Map<string, { enter?: true; exit?: true }>
+  // direct flat-value scan context and its subscription output
+  flatRulesToInsert?: RulesToInsert
+  flatShouldDoClasses?: boolean
+  flatThemeName?: string
+  flatMediaState?: Record<string, boolean | undefined>
+  flatGroupContext?: AllGroupContexts | null
+  flatConditionOrder?: number
+  flatActiveConditions?: Record<string, true>
+  flatStateKeys?: Set<string>
+  flatMediaKeys?: Set<string>
+  flatGroupKeys?: Set<string>
+  flatGroupMedia?: Set<string>
+  flatEnterKeys?: Set<string>
+  flatExitKeys?: Set<string>
+  flatUsesSafeArea?: boolean
   // Track style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
   // Track original token values before they get resolved to CSS vars
@@ -2897,12 +2896,6 @@ export type GetStyleState = {
   tokenProvenance?: Record<string, string>
   // Resolved animation driver (respects animatedBy prop)
   animationDriver?: AnimationDriver | null
-  // the six transition props in authored order, merged once at pass end
-  // (helpers/alignTransitions)
-  transitionContributions?: import('@tamagui/style-grammar/runtime').TransitionContribution[]
-  // the driver preset name that short-circuited, so a longhand beside it can
-  // diagnose instead of composing with something drivers cannot consume
-  sawTransitionPreset?: string
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
@@ -3472,17 +3465,19 @@ export type GetStyleResult = {
   hasMedia: boolean | Set<string>
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
+  dynamicThemeAccess?: boolean
   // Style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
-  // native flat-value programs: interaction states referenced by any clause,
-  // so createComponent attaches the matching event handlers (lane W3)
+  // interaction states referenced by flat-value clauses, so createComponent
+  // attaches the matching event handlers. the field name remains for the
+  // compiler host contract.
   programStates?: Set<string>
-  // native flat-value programs: subscribe this component to live safe-area insets
+  // subscribe this component to live safe-area insets
   usesSafeArea?: true
-  // The transition selected by the active flat value program
+  // the transition selected by active flat-value clauses
   effectiveTransition?: TransitionProp | null
-  // CSS properties controlled by lifecycle clauses in the winning programs.
-  // Internal animation-driver metadata; authored condition objects never enter
+  // css properties controlled by active lifecycle clauses. internal
+  // animation-driver metadata; authored condition objects never enter
   // this contract.
   programLifecycleStyleKeys?: {
     enter?: Set<string>

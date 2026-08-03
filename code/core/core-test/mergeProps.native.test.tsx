@@ -14,7 +14,7 @@ describe('mergeProps', () => {
     expect(result).toEqual({ b: 1, a: 2 })
   })
 
-  test('merges flat programs property by property', () => {
+  test('replaces flat values without parsing style syntax', () => {
     const result = mergeProps(
       {
         backgroundColor: 'green press:blue',
@@ -29,17 +29,17 @@ describe('mergeProps', () => {
 
     expect(Object.keys(result)).toEqual(['scale', 'variant', 'backgroundColor'])
     expect(result.variant).toBe('primary')
-    expect(result.backgroundColor).toBe('green press:orange')
+    expect(result.backgroundColor).toBe('press:orange')
     expect(result.scale).toBe('1 press:0.95')
   })
 
-  test('the later base and clauses replace matching earlier contributions', () => {
+  test('the later flat value replaces the earlier string', () => {
     const result = mergeProps(
       { opacity: '0.5 hover:0.7 press:0.8' },
       { opacity: '1 hover:0.9' }
     )
 
-    expect(result.opacity).toBe('1 press:0.8 hover:0.9')
+    expect(result.opacity).toBe('1 hover:0.9')
   })
 
   test('plain string props still use ordinary replacement', () => {

@@ -1,7 +1,6 @@
 import { getPlatformDriver, isServer, isWeb } from '@tamagui/constants'
 import { stylePropsAll } from '@tamagui/helpers'
 import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
-import { parseValue } from '@tamagui/style-grammar/runtime'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import { getSetting } from '../config'
@@ -12,7 +11,6 @@ import {
   defaultComponentStateShouldEnter,
 } from '../defaultComponentState'
 import { isObj } from '../helpers/isObj'
-import { createGrammarRuntimeContext } from '../helpers/grammarConfig'
 import { log } from '../helpers/log'
 import type {
   ComponentContextI,
@@ -33,17 +31,29 @@ function hasFlatModifier(
   config: TamaguiInternalConfig,
   modifiers: ReadonlySet<string>
 ): boolean {
-  const registry = createGrammarRuntimeContext(config).registry
   for (const key in props) {
     const value = props[key]
     if (typeof value !== 'string' || value.indexOf(':') === -1) continue
     const property = config.shorthands[key] || key
     if (!(property in stylePropsAll) && property !== 'transition') continue
-    const parsed = parseValue(value, registry)
-    if (!parsed.ok) continue
-    for (const clause of parsed.value.clauses) {
-      for (const modifier of clause.modifiers) {
-        if (modifiers.has(modifier)) return true
+    let wordStart = 0
+    let quote = 0
+    let depth = 0
+    for (let index = 0; index < value.length; index++) {
+      const code = value.charCodeAt(index)
+      if (quote) {
+        if (code === 92) index++
+        else if (code === quote) quote = 0
+        continue
+      }
+      if (code === 34 || code === 39) quote = code
+      else if (code === 40) depth++
+      else if (code === 41) depth--
+      else if (!depth && code <= 32) wordStart = index + 1
+      else if (!depth && code === 58) {
+        const modifier = value.slice(wordStart, index)
+        const start = modifier.lastIndexOf(':') + 1
+        if (modifiers.has(modifier.slice(start))) return true
       }
     }
   }

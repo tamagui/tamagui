@@ -28,10 +28,38 @@ export function getCSSStylesAtomic(style: ViewStyleObject) {
   return out
 }
 
+export function getCSSStyleAtomic(
+  key: string,
+  val: any,
+  condition = '',
+  wrappers?: readonly string[],
+  identity?: string,
+  direct = false,
+  identityKey = key
+): StyleObject | undefined {
+  return getStyleObject(
+    { [key]: val } as ViewStyleObject,
+    key,
+    condition,
+    wrappers,
+    identity,
+    direct,
+    identityKey
+  )
+}
+
 let conf: TamaguiInternalConfig | null = null
 
 // this could be cached for performance?
-const getStyleObject = (style: ViewStyleObject, key: string): StyleObject | undefined => {
+const getStyleObject = (
+  style: ViewStyleObject,
+  key: string,
+  condition = '',
+  wrappers?: readonly string[],
+  identity?: string,
+  direct = false,
+  identityKey = key
+): StyleObject | undefined => {
   let val = style[key]
   if (val == null) return
   // transform
@@ -39,15 +67,33 @@ const getStyleObject = (style: ViewStyleObject, key: string): StyleObject | unde
     val = transformsToString(val)
   }
   const value = normalizeValueWithProperty(val, key)
-  const hash = simpleHash(typeof value === 'string' ? value : `${value}`)
+  const rawValue = typeof value === 'string' ? value : `${value}`
+  // this content hash is the atomic CSS class identity shared by server output
+  // and client hydration. it is not a parser cache or a runtime lookup key.
+  const hash = simpleHash(identity ?? rawValue, direct ? 'strict' : 10) || '0'
   conf ||= getConfigMaybe()
-  const shortProp = conf?.inverseShorthands[key] || key
+  let shortProp = conf?.inverseShorthands[key] || key
+  if (direct) {
+    shortProp = ''
+    for (let index = 0; index < identityKey.length; index++) {
+      const code = identityKey.charCodeAt(index)
+      if (
+        (index === 0 ||
+          (code >= 65 && code <= 90) ||
+          identityKey.charCodeAt(index - 1) === 45) &&
+        ((code >= 65 && code <= 90) || (code >= 97 && code <= 122))
+      ) {
+        shortProp += identityKey[index].toLowerCase()
+      }
+    }
+    shortProp ||= 'x'
+  }
   let identifier = `_${shortProp}-${hash}`
-  if (key === 'pointerEvents') {
+  if (key === 'pointerEvents' && !condition) {
     if (value === 'box-none') identifier = '_pe-boxnone'
     else if (value === 'box-only') identifier = '_pe-boxonly'
   }
-  const rules = createAtomicRules(identifier, key, value)
+  const rules = createAtomicRules(identifier, key, value, condition, wrappers, direct)
   return [
     // array for performance
     key,
@@ -100,10 +146,17 @@ export function styleToCSS(style: Record<string, any>) {
   }
 }
 
-function createDeclarationBlock(style: [string, any][], important = false) {
+function createDeclarationBlock(
+  style: [string, any][],
+  important = false,
+  trailingSemicolon = true
+) {
   let next = ''
-  for (const [key, value] of style) {
-    next += `${hyphenateStyleName(key)}:${value}${important ? ' !important' : ''};`
+  for (let index = 0; index < style.length; index++) {
+    const [key, value] = style[index]
+    next += `${hyphenateStyleName(key)}:${value}${important ? ' !important' : ''}${
+      trailingSemicolon || index < style.length - 1 ? ';' : ''
+    }`
   }
   return `{${next}}`
 }
@@ -117,12 +170,20 @@ const hyphenateStyleName = (key: string) => {
   return val
 }
 
-function createAtomicRules(identifier: string, property: string, value: any): string[] {
+function createAtomicRules(
+  identifier: string,
+  property: string,
+  value: any,
+  condition = '',
+  wrappers?: readonly string[],
+  direct = false
+): string[] {
   // longhands get .cls.cls for higher specificity over shorthands
   const cls =
-    property in cssShorthandLonghands ? `.${identifier}.${identifier}` : `.${identifier}`
-
-  const selector = cls
+    !direct && property in cssShorthandLonghands
+      ? `.${identifier}.${identifier}`
+      : `.${identifier}`
+  const selector = `${cls}${condition}`
 
   let rules: string[] = []
 
@@ -160,6 +221,19 @@ function createAtomicRules(identifier: string, property: string, value: any): st
 
     // Polyfill for additional 'pointer-events' values
     case 'pointerEvents': {
+      if (direct) {
+        const subject = value === 'none' || value === 'box-none' ? 'none' : 'auto'
+        const children = value === 'none' || value === 'box-only' ? 'none' : 'auto'
+        rules.push(
+          `${selector}${createDeclarationBlock([['pointerEvents', subject]], false, false)}`,
+          `${selector}>*${createDeclarationBlock(
+            [['pointerEvents', children]],
+            false,
+            false
+          )}`
+        )
+        break
+      }
       let finalValue = value
       if (value === 'auto' || value === 'box-only') {
         finalValue = 'auto'
@@ -172,11 +246,20 @@ function createAtomicRules(identifier: string, property: string, value: any): st
     }
 
     default: {
-      const block = createDeclarationBlock([[property, value]])
+      const block = createDeclarationBlock([[property, value]], false, !direct)
       rules.push(`${selector}${block}`)
       break
     }
   }
 
+  if (wrappers?.length) {
+    for (let ruleIndex = 0; ruleIndex < rules.length; ruleIndex++) {
+      let rule = rules[ruleIndex]
+      for (let index = wrappers.length - 1; index >= 0; index--) {
+        rule = `${wrappers[index]} {${rule}}`
+      }
+      rules[ruleIndex] = rule
+    }
+  }
   return rules
 }

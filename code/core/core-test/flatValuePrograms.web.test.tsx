@@ -200,10 +200,8 @@ test('an overloaded-family mismatch is a diagnostic, never a silent bind', () =>
 test('aspectRatio colon values pass through; other parse failures throw in dev', () => {
   // RN accepts aspectRatio="16:9"; it is the one legitimate colon value
   const result = split({ aspectRatio: '16:9' })
-  const hasProgram = Object.values(result.classNames).some((v) =>
-    String(v).startsWith('_ar-')
-  )
-  expect(hasProgram).toBe(false)
+  const className = result.classNames.aspectRatio
+  expect(rulesFor(result, className)[0]).toContain('aspect-ratio:16:9')
 
   // v3 cutover: a clause-shaped typo is loud where the author can see it
   const previousNodeEnv = process.env.NODE_ENV
@@ -392,8 +390,8 @@ test('sibling expansion never clobbers a later authored longhand', () => {
     paddingLeft: 100,
     paddingTop: '4 hover:8',
   })
-  const left = result.style?.paddingLeft ?? result.classNames.paddingLeft
-  expect(String(left)).toContain('100')
+  const left = result.classNames.paddingLeft
+  expect(rulesFor(result, left)[0]).toContain('padding-left:100px')
 })
 
 test('container clauses lower to @container queries', () => {

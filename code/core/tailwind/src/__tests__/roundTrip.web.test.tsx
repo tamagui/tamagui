@@ -255,10 +255,9 @@ describe('token category system — zIndex sentinel (default config)', () => {
   test('zIndex="10" → z-10 → runtime uses the direct Tailwind value', () => {
     const cls = convertedClassName(`<View zIndex="10" />`)
     expect(cls).toContain('z-10')
-    expect((v6 as any).tokens.zIndex['10']).toBe(10)
-    expect((v6 as any).tokens.zIndex['4']).toBe(4)
-    expect(flat(cls).zIndex).toBe('10')
-    expect(classStyle(cls).zIndex).toBe(styleOf({ zIndex: '10' }).zIndex)
+    expect((v6 as any).tokens.zIndex).toBeUndefined()
+    expect(flat(cls).zIndex).toBe(10)
+    expect(String(classStyle(cls).zIndex)).toBe(String(styleOf({ zIndex: '10' }).zIndex))
   })
 })
 

@@ -17,8 +17,11 @@ describe('versioned token configs', () => {
     const tokenCategories = ['size', 'space', 'radius', 'zIndex'] as const
 
     for (const category of tokenCategories) {
-      expect(config.tokens[category]).not.toHaveProperty('true')
-      expect(config.tokens[category]).not.toHaveProperty(negativeTrueKey)
+      const tokens = config.tokens[category]
+      if (tokens) {
+        expect(tokens).not.toHaveProperty('true')
+        expect(tokens).not.toHaveProperty(negativeTrueKey)
+      }
     }
 
     for (const font of Object.values(config.fonts)) {

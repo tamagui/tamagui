@@ -18,7 +18,6 @@ const tokenNames: Record<TokenCategory, readonly string[]> = {
   space: ['0', '1', '2', '4', '-1', 'spaceOnly'],
   size: ['0', '4', '10', 'sizeOnly'],
   radius: ['0', '4', '8', 'radiusOnly'],
-  zIndex: ['0', '4', 'zOnly'],
   color: ['color5', 'red-9', 'colorOnly'],
   fontFamily: ['body', 'heading', 'familyOnly', 'bothNamed'],
   fontSize: ['4', '5', 'fontSizeOnly'],
@@ -86,7 +85,6 @@ describe('candidate grammar', () => {
     ['space', 'p-spaceOnly', 'p-sizeOnly', 'p-missing'],
     ['size', 'w-sizeOnly', 'w-spaceOnly', 'w-missing'],
     ['radius', 'rounded-radiusOnly', 'rounded-spaceOnly', 'rounded-missing'],
-    ['zIndex', 'z-zOnly', 'z-spaceOnly', 'z-missing'],
     ['color', 'bg-colorOnly', 'bg-spaceOnly', 'bg-missing'],
     ['fontFamily', 'font-familyOnly', 'font-fontSizeOnly', 'font-missing'],
     ['fontSize', 'text-fontSizeOnly', 'text-familyOnly', 'text-missing'],
@@ -205,6 +203,7 @@ describe('candidate grammar', () => {
     expect(parseCandidate('w-full', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('w-1/2', config)?.convenience).toBe('sizing-keyword')
     expect(parseCandidate('opacity-50', config)?.convenience).toBe('percentage')
+    expect(parseCandidate('z-4', config)?.convenience).toBe('integer')
     expect(parseCandidate('font-sans', config)?.convenience).toBe('font-generic')
     expect(parseCandidate('border', config)?.convenience).toBe('bare-border')
     expect(parseCandidate('flex-1', config)?.convenience).toBe('flex-bundle')
@@ -233,7 +232,6 @@ describe('candidate grammar', () => {
       ['padding', '4'],
       ['width', '10'],
       ['borderRadius', '8'],
-      ['zIndex', '4'],
       ['backgroundColor', 'color5'],
       ['fontFamily', 'body'],
       ['fontSize', '5'],
@@ -250,6 +248,12 @@ describe('candidate grammar', () => {
       expect(parsed?.entry?.prop).toBe(prop)
       expect(parsed?.modifiers).toEqual(['hover'])
     }
+    expect(
+      formatCandidate(
+        { prop: 'zIndex', value: '4', valueKind: 'convenience', modifiers: ['hover'] },
+        config
+      )
+    ).toBe('hover:z-4')
     expect(
       formatCandidate({ prop: 'color', value: 'color5/50', valueKind: 'token' })
     ).toBe('color-color5/50')

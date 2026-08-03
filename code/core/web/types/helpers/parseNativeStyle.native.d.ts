@@ -11,4 +11,4 @@
 type TokenMap = Map<string, any>;
 export declare function parseNativeStyle(key: string, cssString: string, tokenMap?: TokenMap): any | undefined;
 export {};
-//# sourceMappingURL=parseNativeStyle.d.ts.map
+//# sourceMappingURL=parseNativeStyle.native.d.ts.map

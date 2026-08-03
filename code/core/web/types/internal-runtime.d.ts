@@ -16,7 +16,7 @@ import type { FrontendProgramValue } from './internalRuntimeTypes';
 export { STYLE_FRONTEND_PASSTHROUGH_PREFIX, STYLE_FRONTEND_PREPROCESSED, regularStyleFrontend, } from './helpers/styleFrontend';
 export type * from './internalRuntimeTypes';
 export declare const createFrontendProgram: (property: string, value: ParsedValue) => FrontendProgramValue;
-export declare const plainValueToPayload: (value: unknown, longhand: string) => string | null;
+export declare const plainValueToPayload: (value: unknown, property: string) => string | null;
 export declare const createTamagui: (config: any) => any;
 export declare const setupHooks: (hooks: Record<string, any>) => void;
 export declare const TamaguiProvider: FunctionComponent<any>;

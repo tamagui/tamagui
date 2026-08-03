@@ -429,19 +429,6 @@ export declare const tokens: {
         readonly '4xl': 32;
         readonly full: 9999;
     };
-    readonly zIndex: {
-        readonly '0': 0;
-        readonly '1': 1;
-        readonly '2': 2;
-        readonly '3': 3;
-        readonly '4': 4;
-        readonly '5': 5;
-        readonly '10': 10;
-        readonly '20': 20;
-        readonly '30': 30;
-        readonly '40': 40;
-        readonly '50': 50;
-    };
     readonly color: {
         white: string;
         black: string;
@@ -971,7 +958,6 @@ export declare const defaultConfig: {
         defaultTokens: {
             space: string;
             radius: string;
-            zIndex: string;
             fontSize: string;
         };
     };
@@ -1108,19 +1094,6 @@ export declare const defaultConfig: {
             readonly '3xl': 24;
             readonly '4xl': 32;
             readonly full: 9999;
-        };
-        readonly zIndex: {
-            readonly '0': 0;
-            readonly '1': 1;
-            readonly '2': 2;
-            readonly '3': 3;
-            readonly '4': 4;
-            readonly '5': 5;
-            readonly '10': 10;
-            readonly '20': 20;
-            readonly '30': 30;
-            readonly '40': 40;
-            readonly '50': 50;
         };
     } & {
         color: {

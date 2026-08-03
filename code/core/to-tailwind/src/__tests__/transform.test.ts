@@ -143,7 +143,7 @@ describe('tamaguiToTailwind', () => {
     test('z-index', () => {
       const input = `<View zIndex={10} />`
       const output = tamaguiToTailwind(input)
-      expect(output).toContain('z-[10]')
+      expect(output).toContain('z-10')
     })
   })
 
@@ -349,7 +349,6 @@ describe('tamaguiToTailwind', () => {
             space: ['4'],
             size: [],
             radius: [],
-            zIndex: [],
             color: [],
             fontFamily: [],
             fontSize: [],
@@ -370,8 +369,8 @@ describe('tamaguiToTailwind', () => {
       expect(out).toContain('p-4')
     })
 
-    test('zIndex tokens emit names while raw numbers use brackets', () => {
-      expect(tamaguiToTailwind(`<View zIndex="4" />`)).toContain('zIndex="4"')
+    test('zIndex values stay literal even when a legacy scale is configured', () => {
+      expect(tamaguiToTailwind(`<View zIndex="4" />`)).toContain('z-4')
       const custom = tamaguiToTailwind(`<View zIndex="4" />`, {
         tokens: { zIndex: { 4: 40 } },
       })
@@ -404,7 +403,6 @@ describe('tamaguiToTailwind', () => {
           space: { spaceOnly: 12 },
           size: { sizeOnly: 24 },
           radius: { radiusOnly: 8 },
-          zIndex: { zOnly: 2 },
           color: { colorOnly: 'red' },
         },
       }

@@ -1,71 +1,79 @@
-# V3 web engine consolidation remainder
+# V3 web engine consolidation
 
-The program engine should survive. Ordinary string style values already use it as
-their exclusive resolver and emitter. The remaining legacy surface owns values
-that the current program representation cannot preserve, so deleting it inside
-`@tamagui/web` alone would change behavior.
+The runtime program pipeline did not survive the consolidation. It parsed flat
+values into an IR, hashed and cached that IR, then evaluated or lowered it in a
+second pass. The runtime now scans and emits inside the existing prop traversal.
 
-## Proven boundary
+## Implemented path
 
-- Regular `View` has no `styleFrontend`. It enters `getSplitStyles` directly.
-- Before this branch, every ordinary host string entered `propMapper` for
-  structural normalization and then entered `contributeStylePrograms`. A
-  successful contribution returned before `resolveLegacyPartValue` and
-  `mergeStyle`, so the string was resolved and emitted only by programs.
-- This branch bypasses `propMapper` for ordinary eligible host strings. Variants,
-  safe-area values, styled-context values, accepted sub-styles, native `unset`,
-  numbers, variables, and structured values still enter the structural mapper.
-- Numbers deliberately keep their natural representation. A trial that sent all
-  numeric scalars through programs changed inline/native numbers into strings and
-  changed established atomic class identifiers. The web and native integration
-  suites caught both changes.
-- The 98,965 rendered bytes attributed to `@tamagui/style-grammar` are genuinely
-  reachable. Static compilation does not remove them: the validated fixture is
-  377,550 JS bytes compiled and 376,482 JS bytes uncompiled.
+- Ordinary scalar props bypass structural mapping and enter the direct emitter.
+- Variant output, style objects, safe-area values, variables, structured values,
+  and frontend-produced values enter the same emitter after their component-aware
+  expansion.
+- A flat string is scanned once. The scan tracks quote and parenthesis depth,
+  recognizes top-level modifier boundaries, resolves each payload, and writes its
+  native style or final web atomic rule immediately.
+- Web class generation hashes the final atomic identity because SSR and hydration
+  need deterministic class names. The hash is not a parser cache key.
+- Pre-parsed frontend values use the same emitter. Their IR was created outside
+  the component runtime and is consumed directly without runtime parsing or a
+  lowering pass.
+- Platform clauses use containment specificity. `androidtv` matches `android`,
+  `tv`, and `native`; `tvos` matches `ios`, `tv`, and `native`. The most specific
+  platform wins independently of authored order. Orthogonal state clauses retain
+  authored-order behavior.
+- Native theme clauses preserve `DynamicColorIOS` and dynamic theme access.
+- Token provenance remains development-only and is carried through direct
+  emission. Production performs no provenance work.
+- Transition values map Tamagui property names while scanning. The browser parses
+  the resulting CSS. Runtime transition validation, reserialization, and the
+  native transition parser are outside the default web graph.
+- Numeric z-index values are literals. The style-grammar `z` entry has no token
+  category, and the direct runtime does not consult the z-index token scale.
 
-## Required implementation order
+## Deleted runtime surface
 
-1. Extend the style-grammar payload contract to preserve non-string values. A
-   base payload must distinguish authored numbers from strings and carry the
-   original styled-context value. Web serialization may add CSS units, while
-   native evaluation must return the authored number for unitless and layout
-   properties. This change belongs to `@tamagui/style-grammar`.
-2. Add program ownership for the current `legacy-part` categories: structured
-   shadow parts, the remaining transform parts, and every composite family that
-   still reaches `resolveLegacyPartValue`. Each category needs one family split
-   and one platform serializer. Do not add a program attempt followed by a legacy
-   fallback.
-3. Move variant output canonicalization to variant resolution. Variant functions
-   and default-token selection remain component-aware, but their resulting style
-   entries should enter the same contribution API as authored props. Once every
-   output is canonical, remove shorthand expansion and scalar value resolution
-   from `propMapper`.
-4. Make the program web lowerer own base-only atomic output. It must cover the
-   non-standard rules currently in `getCSSStylesAtomic`: placeholder selectors,
-   prefixed `backgroundClip` and `userSelect`, pointer-event compatibility, and
-   transform composition. Then delete `getCSSStylesAtomic`, its value normalizer,
-   and the scalar `styleState.style` flush.
-5. Delete `resolveLegacyPartValue`, the ordinary scalar `mergeStyle` branch, and
-   the `usedKeys` state that only arbitrates between those paths. Keep a separate
-   structured-prop owner only for accepted custom sub-styles that are not host
-   CSS.
-6. Resolve the runtime parser entry contract before claiming the bundle target.
-   Splitting a barrel cannot remove code that synchronous rendering calls. Pick
-   one explicit product contract:
-   - keep runtime dynamic flat strings in core and reduce the web grammar entry to
-     the parser, web resolver, and web lowerer, with native modules excluded; or
-   - make dynamic flat strings an explicit runtime entry and require compiled
-     lowering in the default web entry.
+- `programCache`
+- `evaluateAccumulatedPrograms`
+- `lowerAccumulatedPrograms`
+- transition alignment and serialization in `@tamagui/web`
+- the grammar runtime adapter in `grammarConfig`
+- legacy resolution after a successful flat-value contribution
+- the scalar `styleState.style` to atomic-CSS flush
+- `usedKeys` arbitration between the two former paths
 
-The second choice changes the public runtime contract and needs an owner decision.
-Neither choice should be implemented as runtime feature detection or an async
-fallback.
+The built `@tamagui/web` JavaScript has no executable import of
+`@tamagui/style-grammar`. Type-only imports remain for the frontend contract.
 
-## Gates
+## Correctness record
 
-- `code/core/core-test`: `bun run test:web` and `bun run test:native`.
-- The comparison harness on `origin/validate/v3-web-flatten`, with the machine
-  benchmark lock held for every timing run.
-- Compiled JS below 93,098 gzip bytes and uncompiled JS below 92,763 gzip bytes.
-- V3 at or faster than V2 for mount and rerender in every compiled and runtime
-  scenario. Report retained medians and paired effects, not file-size estimates.
+The following passed after the direct path and z-index changes:
+
+- core native: 24 files passed, 1 skipped; 227 passed, 7 expected failures,
+  9 skipped
+- core web excluding the timing test while fleet benchmarking is paused:
+  57 files, 443 passed, 1 skipped, 1 todo
+- iOS: 26 passed
+- Android TV: 12 passed
+- tvOS: 12 passed
+- token provenance: 7 passed, 1 skipped
+- `@tamagui/web`: 89 runtime tests and its typecheck
+- `@tamagui/style-grammar`: 382 passed
+- `@tamagui/web` and `@tamagui/style-grammar` package builds
+
+## Remaining gates
+
+Fleet benchmarking is paused. When it reopens:
+
+1. Apply the product commit to `validate/v3-web-flatten`.
+2. Run the production four-arm harness with the web machine lock held.
+3. Report whole-app gzip and measured Tamagui-attributable gzip. The attribution
+   plugin gzips source-map-attributed minified output spans, including one combined
+   Tamagui stream, so the number is not inferred from rendered source share.
+4. Report same-run V2 and V3 simple and group medians for the uncompiled web path.
+5. Run the runtime native arm with the native machine lock held and compare every
+   retained initial-render scenario against same-run V2 controls.
+6. The release gate is Tamagui-attributable web JavaScript below 30 KB gzip and
+   uncompiled simple and complex initial render faster than V2 on web and native.
+
+No size or speed conclusion is recorded until those runs finish.

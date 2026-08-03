@@ -372,7 +372,6 @@ describe('TS-style variant resolvers', () => {
       defaultTokens: {
         space: '1',
         radius: '2',
-        zIndex: '1',
         fontSize: '1',
       },
     })
@@ -434,7 +433,7 @@ describe('TS-style variant resolvers', () => {
         size: '4',
         space: '1',
         radius: '2',
-        zIndex: '1',
+        zIndex: true,
         fontSize: '1',
         fanout: true,
       })

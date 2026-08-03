@@ -1,7 +1,5 @@
-// review P0-2, native half: a clause-bearing string on an RN shadow part was
-// forwarded verbatim into the style object (shadowColor: 'red hover:blue'
-// reaching the host as a literal), and transform parts likewise. they drop
-// with a diagnostic; plain values keep the legacy pipeline.
+// Native scalar conditions resolve before they reach the host. Structured
+// transform parts keep their composite owner.
 
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
@@ -21,9 +19,11 @@ const split = (props: Record<string, any>, state: Record<string, any> = {}) =>
     { isAnimated: false, noClass: true, resolveValues: 'auto' } as any
   )
 
-test('a clause on shadowColor drops instead of reaching the host verbatim', () => {
-  const result = split({ shadowColor: 'red hover:blue' })
-  expect(result.style?.shadowColor).toBeUndefined()
+test('a shadowColor clause selects a plain native color', () => {
+  expect(split({ shadowColor: 'red hover:blue' }).style?.shadowColor).toBe('red')
+  expect(
+    split({ shadowColor: 'red hover:blue' }, { hover: true }).style?.shadowColor
+  ).toBe('blue')
 })
 
 test('a clause on a legacy transform part drops', () => {
