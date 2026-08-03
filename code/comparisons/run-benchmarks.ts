@@ -290,6 +290,12 @@ function renderedModuleGroups(attribution: any) {
   return groups
 }
 
+function generatedModuleGroups(attribution: any) {
+  return Object.fromEntries(
+    attribution.generatedModuleGroups.map((group: any) => [group.group, group])
+  ) as Record<string, { generatedBytes: number; gzipBytes: number }>
+}
+
 function buildBundleComparison(artifacts: BenchmarkReport['artifacts']) {
   return Object.fromEntries(
     (['compiled', 'runtime'] as const).map((mode) => {
@@ -298,6 +304,8 @@ function buildBundleComparison(artifacts: BenchmarkReport['artifacts']) {
       if (!v3?.bundleAttribution || !v2?.bundleAttribution) return [mode, null]
       const v3Groups = renderedModuleGroups(v3.bundleAttribution)
       const v2Groups = renderedModuleGroups(v2.bundleAttribution)
+      const v3GeneratedGroups = generatedModuleGroups(v3.bundleAttribution)
+      const v2GeneratedGroups = generatedModuleGroups(v2.bundleAttribution)
       const groups = Object.fromEntries(
         [...new Set([...Object.keys(v3Groups), ...Object.keys(v2Groups)])]
           .map((group) => ({
@@ -315,6 +323,35 @@ function buildBundleComparison(artifacts: BenchmarkReport['artifacts']) {
       )
       const v3Gzip = bundleSizes(v3.bundleAttribution)
       const v2Gzip = bundleSizes(v2.bundleAttribution)
+      const gzipGroups = Object.fromEntries(
+        [
+          ...new Set([
+            ...Object.keys(v3GeneratedGroups),
+            ...Object.keys(v2GeneratedGroups),
+          ]),
+        ]
+          .map((group) => ({
+            group,
+            v3GeneratedBytes: v3GeneratedGroups[group]?.generatedBytes ?? 0,
+            v2GeneratedBytes: v2GeneratedGroups[group]?.generatedBytes ?? 0,
+            deltaGeneratedBytes:
+              (v3GeneratedGroups[group]?.generatedBytes ?? 0) -
+              (v2GeneratedGroups[group]?.generatedBytes ?? 0),
+            v3GzipBytes: v3GeneratedGroups[group]?.gzipBytes ?? 0,
+            v2GzipBytes: v2GeneratedGroups[group]?.gzipBytes ?? 0,
+            deltaGzipBytes:
+              (v3GeneratedGroups[group]?.gzipBytes ?? 0) -
+              (v2GeneratedGroups[group]?.gzipBytes ?? 0),
+          }))
+          .sort(
+            (left, right) =>
+              Math.abs(right.deltaGzipBytes) - Math.abs(left.deltaGzipBytes) ||
+              left.group.localeCompare(right.group)
+          )
+          .map(({ group, ...values }) => [group, values])
+      )
+      const v3Tamagui = v3.bundleAttribution.tamaguiAttributable
+      const v2Tamagui = v2.bundleAttribution.tamaguiAttributable
       return [
         mode,
         {
@@ -337,6 +374,16 @@ function buildBundleComparison(artifacts: BenchmarkReport['artifacts']) {
             },
           },
           renderedModuleGroups: groups,
+          generatedModuleGroups: gzipGroups,
+          tamaguiAttributable: {
+            definition: v3.bundleAttribution.tamaguiAttributableDefinition,
+            v3: v3Tamagui,
+            v2: v2Tamagui,
+            delta: {
+              generatedBytes: v3Tamagui.generatedBytes - v2Tamagui.generatedBytes,
+              gzipBytes: v3Tamagui.gzipBytes - v2Tamagui.gzipBytes,
+            },
+          },
         },
       ]
     })
@@ -1090,7 +1137,7 @@ async function main() {
           BUNDLE_ATTRIBUTION_PATH,
           `${JSON.stringify(
             {
-              schemaVersion: 1,
+              schemaVersion: 2,
               metadata: {
                 commit: git('rev-parse', 'HEAD'),
                 branch: git('branch', '--show-current'),
@@ -1111,6 +1158,8 @@ async function main() {
                   'Both arms use byte-identical minimal Tamagui configs; the prior default-theme import mismatch was removed.',
                 moduleLengths:
                   'Rendered module lengths are pre-minification attribution, while artifact bytes and gzip bytes are exact emitted sizes.',
+                generatedModuleGzip:
+                  'Generated module-group gzip is measured from source-map-attributed minified JavaScript spans. Group values are independently compressed and are not additive. Tamagui-attributable gzip concatenates all eligible spans before compression.',
                 remainingDelta:
                   'The remaining V3 delta is framework surface led by @tamagui/style-grammar and @tamagui/web, not fixture/config/theme code.',
               },
