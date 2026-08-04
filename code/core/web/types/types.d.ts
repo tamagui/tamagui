@@ -348,6 +348,7 @@ export type TamaguiComponentStateRef = {
     nativeStyleUpdate?: (next: ThemeState) => boolean;
     nativeUpdateProxy?: (next: ThemeState) => boolean;
     nativePushedStates?: Set<string>;
+    nativeActiveState?: string;
     nativeMediaUpdate?: () => boolean;
     nativeThemeState?: ThemeState;
     nativePushedKeys?: Set<string>;
