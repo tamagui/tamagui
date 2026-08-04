@@ -71,6 +71,42 @@ test can exercise stale `dist` output instead of the source you just changed.
 The [V3 final conformance matrix](./plans/v3-final-conformance-matrix.md)
 records the source, dist, mixed, or artifact topology for each release gate.
 
+#### Style value parsing: one parse per unique value
+
+Treat a style value string as immutable input to the shared style grammar. A
+runtime path may parse each unique string once, store the result in a bounded
+cache keyed by that string, and evaluate the parsed conditions as often as the
+component renders. It must not scan or parse the original string again to
+answer another question about its structure. Extend the cached parsed result
+with the needed predicate or metadata instead.
+
+This is a parsing and performance constraint. It is separate from the
+"single-forward-pass" rule in `plans/v3-evolution.md`, which defines authored
+precedence and says that later output wins per property. That ordering rule
+does not permit repeated parsing during the pass or in another render hook.
+
+Three runtime costs found in the v3 native rich fixture show what this rule
+prevents:
+
+- `contributeStyleString` parsed the same conditional `borderColor` string on
+  every render, then shorthand expansion resolved its one `rgba(...)`
+  component four times. Caching the canonical parse and reusing the resolved
+  single component reduced that Hermes hotspot from 36.189 ms to 18.416 ms
+  across 600 interactions.
+- `hasFlatModifier` rescanned every style string for lifecycle modifiers on
+  every node render, costing 7.8 ms across 600 interactions in a fixture with
+  no `enter:` modifiers. The cached parse now carries `modifierNames`, so the
+  lifecycle check reads the result instead of implementing another scanner.
+- `configuredValue` spent 3.9 ms across 600 interactions treating plain CSS
+  calls such as `rgb(...)` as possible sigil-less tokens, followed by another
+  0.8 ms in `resolveEmbeddedTokens`. Literal CSS calls now take the grammar's
+  classified fast path rather than being scanned twice.
+
+When adding a consumer of `@tamagui/style-grammar`, look for an existing cached
+parse before calling `parseValue`. If the parsed form cannot answer the new
+question, add that information to the shared parsed representation. Do not add
+a local string scanner beside the grammar.
+
 #### Playwright (web integration tests)
 
 Install browser binaries before first run:
