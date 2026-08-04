@@ -140,6 +140,31 @@ two-Babel-runs assumption and is fixed by the same change (same code path,
 platform-scoped cache). The vite path applies lowering in-process without a
 worker/hash split, so it never had this defect.
 
+## T7 web benchmark validity (checked 2026-08-03, at a2943's request)
+
+The campaign plan's T7 numbers (v3 compiled beats v2.4.6 compiled: group 19.3
+vs 43.8, heavy 18.8 vs 24.9, animated 15.8 vs 21.5) are NOT invalidated by the
+Metro delivery defect.
+
+- Build flow (READ from `code/comparisons/output/benchmarks.json` metadata and
+  `run-benchmarks.ts` / `tamagui-bench/vite.config.ts`): T7 ran 2026-07-19 on
+  branch `v3/t7-benchmarks` at `398b93155b`, clean tree, production VITE
+  builds; the v3 compiled arm used `@tamagui/vite-plugin` with `EXTRACT=1`.
+  Vite applies lowering in-process with no worker/hash split, so the
+  two-Babel-runs assumption that broke Metro delivery does not exist in that
+  path.
+- Internal control (READ from the retained JSON): v3 compiled vs v3 runtime
+  mount means are 0.54 vs 9.18 (17x) on simple, 19.3 vs 48.1 (2.5x) on group,
+  18.8 vs 30.6 (1.6x) on heavy, 15.8 vs 18.9 (1.2x) on animated. A
+  broken-delivery arm reads ~1x against its own runtime (the native scar was
+  0.91x), so the compiled arm demonstrably shipped lowered output.
+- The v2 column in that run really was 2.4.6 (the harness's current source
+  says 2.6.2; that arm was upgraded later, so do not cross-quote today's
+  harness against T7's retained numbers).
+- Standing caveat unchanged: T7 timings share the same machine-load softness
+  as every retained timing (absolute values soft, direction sound). That
+  caveat predates and is independent of the delivery defect.
+
 ## What is left on this lane
 
 1. NOT DONE: re-run the W-B compiler-effectiveness gate (Release apps on the
