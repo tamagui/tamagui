@@ -31,13 +31,13 @@ const FrameAnim = styled(View, {
 const ChildPlain = styled(View, {
   name: 'ChildPlain',
   flex: 1,
-  backgroundColor: 'blue10 group-press:red10',
+  backgroundColor: 'blue-600 group-press:red-600',
 })
 
 const ChildAnim = styled(View, {
   name: 'ChildAnim',
   flex: 1,
-  backgroundColor: 'blue10 group-press:red10',
+  backgroundColor: 'blue-600 group-press:red-600',
   transition: 'quick',
 })
 
@@ -114,7 +114,7 @@ export function GroupPressTransitionMatrix() {
         alignItems="center"
         justifyContent="center"
       >
-        <Text fontSize="1" color="gray11">
+        <Text fontSize="1" color="color10">
           release here
         </Text>
       </View>

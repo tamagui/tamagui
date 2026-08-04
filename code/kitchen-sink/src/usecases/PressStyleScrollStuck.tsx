@@ -55,7 +55,7 @@ export function PressStyleScrollStuck() {
       <Text fontSize="5" fontWeight="bold">
         Press + Horizontal Scroll
       </Text>
-      <Text fontSize="2" color="gray11">
+      <Text fontSize="2" color="color10">
         Press any pill, then drag sideways into a scroll. Pills should return to their
         rest color when the finger lifts.
       </Text>
@@ -88,7 +88,7 @@ export function PressStyleScrollStuck() {
 
       <XStack gap="2" flexWrap="wrap">
         {PILLS.map((name) => (
-          <Text key={name} testID={`pill-count-${name}`} fontSize="2" color="gray11">
+          <Text key={name} testID={`pill-count-${name}`} fontSize="2" color="color10">
             {name}: {pressed[name] ?? 0}
           </Text>
         ))}
@@ -96,7 +96,7 @@ export function PressStyleScrollStuck() {
 
       <XStack gap="2" flexWrap="wrap">
         {PILLS.map((name) => (
-          <Text key={name} testID={`pill-out-count-${name}`} fontSize="2" color="gray11">
+          <Text key={name} testID={`pill-out-count-${name}`} fontSize="2" color="color10">
             {name} out: {pressedOut[name] ?? 0}
           </Text>
         ))}

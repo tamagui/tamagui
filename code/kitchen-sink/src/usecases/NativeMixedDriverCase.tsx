@@ -24,7 +24,7 @@ export function NativeMixedDriverCase() {
           width={120}
           height={expanded ? 160 : 40}
           opacity={expanded ? 0 : 1}
-          backgroundColor="blue10"
+          backgroundColor="blue-600"
           transition="300ms"
         />
 
@@ -42,7 +42,7 @@ export function NativeMixedDriverCase() {
           id="native-pseudo-only-node"
           width={80}
           height={80}
-          backgroundColor="green10"
+          backgroundColor="green-600"
           transition="300ms"
           opacity="hover:0.2"
         />

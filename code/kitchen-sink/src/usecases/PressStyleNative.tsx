@@ -9,8 +9,8 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
  * 3. Press and drag off behavior - should unpress correctly
  *
  * Colors are chosen to be easily distinguishable in screenshots:
- * - Default: pure blue (#0000ff-ish via blue10)
- * - Pressed: pure red (#ff0000-ish via red10)
+ * - Default: strong blue (#155dfc via blue-600)
+ * - Pressed: strong red (#e7000b via red-600)
  */
 
 // press clause WITHOUT transition - tests the fallback to normal re-render
@@ -18,7 +18,7 @@ const ColorTestPressable = styled(View, {
   name: 'ColorTestPressable',
   width: 200,
   height: 100,
-  backgroundColor: 'blue10 press:red10',
+  backgroundColor: 'blue-600 press:red-600',
   alignItems: 'center',
   justifyContent: 'center',
 })
@@ -28,7 +28,7 @@ const ColorTestPressableAnimated = styled(View, {
   name: 'ColorTestPressableAnimated',
   width: 200,
   height: 100,
-  backgroundColor: 'blue10 press:red10',
+  backgroundColor: 'blue-600 press:red-600',
   alignItems: 'center',
   justifyContent: 'center',
   transition: 'quick',
@@ -56,7 +56,7 @@ export function PressStyleNative() {
       {/* test 1: press clause WITHOUT transition */}
       <YStack gap="2">
         <Text fontSize="3">1. No Transition</Text>
-        <Text fontSize="2" color="gray11">
+        <Text fontSize="2" color="color10">
           Blue → Red (no animation)
         </Text>
         <ColorTestPressable
@@ -94,7 +94,7 @@ export function PressStyleNative() {
       {/* test 2: press clause WITH transition */}
       <YStack gap="2">
         <Text fontSize="3">2. With Transition</Text>
-        <Text fontSize="2" color="gray11">
+        <Text fontSize="2" color="color10">
           Blue → Red (animated)
         </Text>
         <ColorTestPressableAnimated
