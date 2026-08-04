@@ -69,6 +69,150 @@
       "require": "./dist/cjs/linear-gradient.cjs",
       "default": "./dist/esm/linear-gradient.mjs"
     },
+    "./accordion": {
+      "types": "./types/components/Accordion.d.ts",
+      "react-native": "./dist/esm/components/Accordion.native.js",
+      "browser": "./dist/esm/components/Accordion.mjs",
+      "module": "./dist/esm/components/Accordion.mjs",
+      "import": "./dist/esm/components/Accordion.mjs",
+      "require": "./dist/cjs/components/Accordion.cjs",
+      "default": "./dist/esm/components/Accordion.mjs"
+    },
+    "./button": {
+      "types": "./types/components/Button.d.ts",
+      "react-native": "./dist/esm/components/Button.native.js",
+      "browser": "./dist/esm/components/Button.mjs",
+      "module": "./dist/esm/components/Button.mjs",
+      "import": "./dist/esm/components/Button.mjs",
+      "require": "./dist/cjs/components/Button.cjs",
+      "default": "./dist/esm/components/Button.mjs"
+    },
+    "./card": {
+      "types": "./types/components/Card.d.ts",
+      "react-native": "./dist/esm/components/Card.native.js",
+      "browser": "./dist/esm/components/Card.mjs",
+      "module": "./dist/esm/components/Card.mjs",
+      "import": "./dist/esm/components/Card.mjs",
+      "require": "./dist/cjs/components/Card.cjs",
+      "default": "./dist/esm/components/Card.mjs"
+    },
+    "./dialog": {
+      "types": "./types/components/Dialog.d.ts",
+      "react-native": "./dist/esm/components/Dialog.native.js",
+      "browser": "./dist/esm/components/Dialog.mjs",
+      "module": "./dist/esm/components/Dialog.mjs",
+      "import": "./dist/esm/components/Dialog.mjs",
+      "require": "./dist/cjs/components/Dialog.cjs",
+      "default": "./dist/esm/components/Dialog.mjs"
+    },
+    "./input": {
+      "types": "./types/components/Input.d.ts",
+      "react-native": "./dist/esm/components/Input.native.js",
+      "browser": "./dist/esm/components/Input.mjs",
+      "module": "./dist/esm/components/Input.mjs",
+      "import": "./dist/esm/components/Input.mjs",
+      "require": "./dist/cjs/components/Input.cjs",
+      "default": "./dist/esm/components/Input.mjs"
+    },
+    "./label": {
+      "types": "./types/components/Label.d.ts",
+      "react-native": "./dist/esm/components/Label.native.js",
+      "browser": "./dist/esm/components/Label.mjs",
+      "module": "./dist/esm/components/Label.mjs",
+      "import": "./dist/esm/components/Label.mjs",
+      "require": "./dist/cjs/components/Label.cjs",
+      "default": "./dist/esm/components/Label.mjs"
+    },
+    "./list-item": {
+      "types": "./types/components/ListItem.d.ts",
+      "react-native": "./dist/esm/components/ListItem.native.js",
+      "browser": "./dist/esm/components/ListItem.mjs",
+      "module": "./dist/esm/components/ListItem.mjs",
+      "import": "./dist/esm/components/ListItem.mjs",
+      "require": "./dist/cjs/components/ListItem.cjs",
+      "default": "./dist/esm/components/ListItem.mjs"
+    },
+    "./progress": {
+      "types": "./types/components/Progress.d.ts",
+      "react-native": "./dist/esm/components/Progress.native.js",
+      "browser": "./dist/esm/components/Progress.mjs",
+      "module": "./dist/esm/components/Progress.mjs",
+      "import": "./dist/esm/components/Progress.mjs",
+      "require": "./dist/cjs/components/Progress.cjs",
+      "default": "./dist/esm/components/Progress.mjs"
+    },
+    "./select": {
+      "types": "./types/components/Select.d.ts",
+      "react-native": "./dist/esm/components/Select.native.js",
+      "browser": "./dist/esm/components/Select.mjs",
+      "module": "./dist/esm/components/Select.mjs",
+      "import": "./dist/esm/components/Select.mjs",
+      "require": "./dist/cjs/components/Select.cjs",
+      "default": "./dist/esm/components/Select.mjs"
+    },
+    "./separator": {
+      "types": "./types/components/Separator.d.ts",
+      "react-native": "./dist/esm/components/Separator.native.js",
+      "browser": "./dist/esm/components/Separator.mjs",
+      "module": "./dist/esm/components/Separator.mjs",
+      "import": "./dist/esm/components/Separator.mjs",
+      "require": "./dist/cjs/components/Separator.cjs",
+      "default": "./dist/esm/components/Separator.mjs"
+    },
+    "./sheet": {
+      "types": "./types/components/Sheet.d.ts",
+      "react-native": "./dist/esm/components/Sheet.native.js",
+      "browser": "./dist/esm/components/Sheet.mjs",
+      "module": "./dist/esm/components/Sheet.mjs",
+      "import": "./dist/esm/components/Sheet.mjs",
+      "require": "./dist/cjs/components/Sheet.cjs",
+      "default": "./dist/esm/components/Sheet.mjs"
+    },
+    "./slider": {
+      "types": "./types/components/Slider.d.ts",
+      "react-native": "./dist/esm/components/Slider.native.js",
+      "browser": "./dist/esm/components/Slider.mjs",
+      "module": "./dist/esm/components/Slider.mjs",
+      "import": "./dist/esm/components/Slider.mjs",
+      "require": "./dist/cjs/components/Slider.cjs",
+      "default": "./dist/esm/components/Slider.mjs"
+    },
+    "./surface": {
+      "types": "./types/components/Surface.d.ts",
+      "react-native": "./dist/esm/components/Surface.native.js",
+      "browser": "./dist/esm/components/Surface.mjs",
+      "module": "./dist/esm/components/Surface.mjs",
+      "import": "./dist/esm/components/Surface.mjs",
+      "require": "./dist/cjs/components/Surface.cjs",
+      "default": "./dist/esm/components/Surface.mjs"
+    },
+    "./toast": {
+      "types": "./types/components/Toast.d.ts",
+      "react-native": "./dist/esm/components/Toast.native.js",
+      "browser": "./dist/esm/components/Toast.mjs",
+      "module": "./dist/esm/components/Toast.mjs",
+      "import": "./dist/esm/components/Toast.mjs",
+      "require": "./dist/cjs/components/Toast.cjs",
+      "default": "./dist/esm/components/Toast.mjs"
+    },
+    "./toggle-group": {
+      "types": "./types/components/ToggleGroup.d.ts",
+      "react-native": "./dist/esm/components/ToggleGroup.native.js",
+      "browser": "./dist/esm/components/ToggleGroup.mjs",
+      "module": "./dist/esm/components/ToggleGroup.mjs",
+      "import": "./dist/esm/components/ToggleGroup.mjs",
+      "require": "./dist/cjs/components/ToggleGroup.cjs",
+      "default": "./dist/esm/components/ToggleGroup.mjs"
+    },
+    "./facets": {
+      "types": "./types/components/facets.d.ts",
+      "react-native": "./dist/esm/components/facets.native.js",
+      "browser": "./dist/esm/components/facets.mjs",
+      "module": "./dist/esm/components/facets.mjs",
+      "import": "./dist/esm/components/facets.mjs",
+      "require": "./dist/cjs/components/facets.cjs",
+      "default": "./dist/esm/components/facets.mjs"
+    },
     "./unstyled": {
       "types": "./types/unstyled.d.ts",
       "react-native": "./dist/esm/unstyled.native.js",
@@ -77,15 +221,6 @@
       "import": "./dist/esm/unstyled.mjs",
       "require": "./dist/cjs/unstyled.cjs",
       "default": "./dist/esm/unstyled.mjs"
-    },
-    "./toast": {
-      "types": "./types/toast.d.ts",
-      "react-native": "./dist/esm/toast.native.js",
-      "browser": "./dist/esm/toast.mjs",
-      "module": "./dist/esm/toast.mjs",
-      "import": "./dist/esm/toast.mjs",
-      "require": "./dist/cjs/toast.cjs",
-      "default": "./dist/esm/toast.mjs"
     }
   },
   "scripts": {
