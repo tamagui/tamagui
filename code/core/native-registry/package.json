@@ -46,7 +46,7 @@
     "react": ">=19",
     "react-native": "0.83.2",
     "react-native-nitro-modules": "^0.36.5",
-    "typescript": "^5.9.2",
+    "typescript": "~5.9.2",
     "vitest": "4.0.4",
     "nitrogen": "^0.36.5"
   },
