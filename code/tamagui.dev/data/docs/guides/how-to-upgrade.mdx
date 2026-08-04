@@ -163,6 +163,28 @@ plugins: [tamaguiPlugin(tamaguiOptions)]
 config = withTamagui(config, tamaguiOptions)
 ```
 
+### Clear Metro after config changes
+
+The beta Metro plugin does not yet invalidate Metro's transform cache when a
+Tamagui lowering plan changes but the app source does not. After editing
+`tamagui.config.ts` or another compiler input, stop the live Metro process and
+restart it with a cleared cache:
+
+```bash
+npx expo start -c
+```
+
+For a warm CLI production build, remove the app-local Tamagui cache and use the
+Expo command's Metro reset flag:
+
+```bash
+rm -rf node_modules/.cache/tamagui
+npx expo export --clear
+# native embedded bundle: add --reset-cache to expo export:embed
+```
+
+Without this step, Metro can serve stale compiled output from the earlier plan.
+
 ### Theme migration
 
 V3's adaptive ramp has 11 keys, matching Tailwind's `50` through `950` shades.
@@ -215,7 +237,21 @@ color theme.
 <Theme name="level2"><Panel /></Theme>
 ```
 
-Custom theme generation now uses:
+Replace the old builder input:
+
+```tsx
+// before
+import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
+
+export const themes = createThemes({
+  componentThemes: defaultComponentThemes,
+  base,
+  accent,
+  childrenThemes,
+})
+```
+
+Custom theme generation now uses the tree API:
 
 ```tsx
 import {
@@ -1009,6 +1045,8 @@ Runtime checks:
 - Inspect icons next to text at every app size token you use.
 - Check any custom config tokens that used `true`, numeric font sizes, or token
   stepping.
+- After changing Tamagui config, restart Metro with `expo start -c` before
+  evaluating compiled output.
 - If you use Tailwind mode, compare web and native output for your supported
   utility classes.
 
