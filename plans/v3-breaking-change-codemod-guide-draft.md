@@ -15,6 +15,37 @@ The migration tool is report-only by default. Pass `--write` to apply every
 statically safe source conversion in place. It always reports conversions it
 cannot prove safe, and it never edits configuration.
 
+## Real consumer migration audit
+
+The Bento V2 corpus is the current external-consumer proxy. An August 3 dry run
+found 2,113 flat-value sites: 1,681 clean, 194 with an unverified host, 22 on
+properties that cannot carry flat clauses, and 232 with syntax or ordering
+flags. Of the 2,052 JSX sites, 412 need review. Another 20 of 61 `styled()`
+configuration sites need review. In total, 432 of 2,113 sites, or 20.4%, still
+need human judgement. After applying the proposed conversions, 63 of 208 files
+retain legacy condition objects and cannot run on V3 until those are migrated.
+
+The main flag classes in that corpus are 110 missing container-group
+declarations, 108 dot-path token names, 15 dynamic legacy conditions, 14 token
+constants whose provenance is not proven, 6 conditional non-style props, and 1
+unsupported legacy value. Do not present `--write` as a complete migration.
+Budget time to read the report, resolve every flag, and rerun it.
+
+The same consumer audit found these API and configuration migrations outside
+the flat-values codemod. Each requires a manual search and a before/after from
+the published upgrade guide:
+
+- the two-argument `createStyledHOC(Component, render)` signature;
+- `Sheet.Frame` split into `Sheet.Container` and `Sheet.Background`;
+- `focusable`, `fullscreen`, `Text selectable`, and `Select.Item index`;
+- the removed `$true` token and spread/type/catch-all variant keys;
+- removed token-stepping options, including `getSpace(value, { shift })`;
+- `backgroundActive`, `surface1` through `surface4`, and adaptive `color12`;
+- `@tamagui/config/v4`, `@tamagui/theme-builder/defaultComponentThemes`,
+  `@tamagui/animations-moti`, and `@tamagui/babel-plugin`;
+- app-owned visual skins for the V3 `Avatar`, `Tabs`, and `Group` behavior
+  components.
+
 ## Migrate styled wrapper factories manually
 
 V3 accepts the component and render function in one `createStyledHOC` call. The

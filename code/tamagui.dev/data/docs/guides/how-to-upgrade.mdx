@@ -49,6 +49,13 @@ Read and hand-fix every flagged report row, then rerun until the migrated path
 has no V2 authoring sites. See [Flat Conditional Values](/docs/guides/flat-values)
 for the grammar and full workflow.
 
+Plan for that review before starting a large migration. On the V2 Bento corpus,
+the codemod found 2,113 sites. It classified 1,681 as clean and left 412 of
+2,052 JSX sites plus 20 of 61 `styled()` configuration sites for a person to
+review. That is 432 sites, or 20.4% of the corpus. After the proposed conversion,
+63 of 208 files still contained legacy condition objects. A successful codemod
+run means the report was generated, not that the application is ready for V3.
+
 ## 1. Update packages
 
 Bump all `tamagui` and `@tamagui/*` packages together.
@@ -76,6 +83,30 @@ skins. Use `tamagui/unstyled` or `@tamagui/ui` for behavior primitives without t
 default skin, and `@tamagui/tailwind` for Tailwind-authored primitives. The Styled,
 Unstyled, and Tailwind switch above every v3 docs page changes examples between
 these authoring modes.
+
+The V3 roots for `Avatar`, `Tabs`, and `Group` retain behavior and structural
+layout, but no longer supply the old opinionated visual defaults. There are no
+`tamagui/avatar`, `tamagui/tabs`, or `tamagui/group` default-skin subpaths. Keep
+the behavior imports and add the exact visual styles your application needs:
+
+```tsx
+import { Avatar, Tabs, styled } from 'tamagui'
+
+const AppAvatar = styled(Avatar, {
+  borderWidth: 1,
+  borderColor: 'border-color',
+})
+
+const AppTab = styled(Tabs.Tab, {
+  paddingHorizontal: '3',
+  paddingVertical: '2',
+  activeStyle: { backgroundColor: 'background-press' },
+})
+```
+
+Apply the same treatment to `Group` and its children. Existing code that relied
+on V2 defaults can still compile while rendering without that chrome, so inspect
+these components visually rather than relying only on typecheck.
 
 Remove tooling packages that no longer exist in v3:
 
@@ -106,6 +137,32 @@ one alongside it.
 | `@tamagui/theme-builder` | recipe helpers from `@tamagui/themes/builder` |
 | `@tamagui/colors/legacy` (the pre-v2 Radix ramps: `blue`/`blueDark`, `gray`/`grayDark`, …) | `@tamagui/colors`, which exports the same names from the current Radix scales |
 
+For example:
+
+```tsx
+// before
+import { config } from '@tamagui/config/v4'
+import { createAnimations } from '@tamagui/animations-moti'
+
+// after
+import { defaultConfig } from '@tamagui/config/v6'
+import { createAnimations } from '@tamagui/animations-reanimated'
+```
+
+Remove `@tamagui/babel-plugin` from Babel configuration and dependencies. Vite
+and Metro perform compilation through their dedicated plugins:
+
+```tsx
+// before: babel.config.js
+plugins: ['@tamagui/babel-plugin']
+
+// after: vite.config.ts
+plugins: [tamaguiPlugin(tamaguiOptions)]
+
+// after: metro.config.js
+config = withTamagui(config, tamaguiOptions)
+```
+
 ### Theme migration
 
 V3's adaptive ramp has 11 keys, matching Tailwind's `50` through `950` shades.
@@ -126,6 +183,17 @@ adaptive theme ramp. Replace palette-specific uses such as `blue9` with an
 absolute token such as `blue-500`, or enter `theme="blue"` and use an adaptive
 `colorN` value from that theme.
 
+```tsx
+// before: adaptive ramp
+<Text color="color12" />
+
+// after: adaptive ramp
+<Text color="color11" />
+
+// palette-specific names are a separate migration
+<Text color="blue-500" />
+```
+
 Replace old surface themes with relative levels:
 
 | V2 | V3 |
@@ -138,6 +206,14 @@ Replace old surface themes with relative levels:
 Levels compose relative to the current theme. A nested `level2` below an
 existing `level2` resolves to absolute level 3 while preserving a surrounding
 color theme.
+
+```tsx
+// before
+<Theme name="surface1"><Panel /></Theme>
+
+// after
+<Theme name="level2"><Panel /></Theme>
+```
 
 Custom theme generation now uses:
 
@@ -164,17 +240,18 @@ const tree = {
 export const themes = createThemes(tokens, tree, { getTheme })
 ```
 
-Remove the v2 builder options `componentThemes`, `templates`, `masks`,
-`childrenThemes`, and `grandChildrenThemes`. Put hierarchy directly in the
-tree, semantic shade choices in scale objects, and exact one-theme overrides in
-`values`. Components no longer resolve uppercase name segments such as
+Remove the v2 builder exports and options `defaultComponentThemes`,
+`componentThemes`, `templates`, `masks`, `childrenThemes`, and
+`grandChildrenThemes`. Put hierarchy directly in the tree, semantic shade
+choices in scale objects, and exact one-theme overrides in `values`. Components
+no longer resolve uppercase name segments such as
 `light_Button` automatically. A component that needs elevation should create a
 normal `level2` boundary in its own skin.
 
 Search configuration and application code together:
 
 ```bash
-rg "@tamagui/theme-builder|themes/v5|config/v5|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
+rg "@tamagui/theme-builder|defaultComponentThemes|themes/v5|config/v[3-5]|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
 ```
 
 See [Creating Themes](/docs/guides/theme-builder) for the recipe API and
@@ -248,7 +325,7 @@ Rules to verify:
 Search for removed APIs:
 
 ```bash
-rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands"
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin"
 ```
 
 Use these replacements:
@@ -277,6 +354,12 @@ Use these replacements:
 | `isWindowDefined` | `isBrowser` |
 | `createMedia` from `@tamagui/react-native-media-driver` | remove the call, `createTamagui` sets the driver up |
 | `getExpandedShorthands` | `useProps` |
+| `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
+| `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
+| `@tamagui/config/reanimated` | `@tamagui/config/animations-reanimated` |
+| `'...size'` / `'...fontSize'` spread variant keys | resolver-name keys: `Size`, `FontSize`, `Space`, `Color`, `Radius`, `ZIndex`, and unions like `'Size \| number'` |
+| `':string'` / `':number'` / `':boolean'` type-key variants | plain `string` / `number` / `boolean` keys |
+| `'...'` catch-all variant key | the `any` key |
 
 The curried `createStyledHOC` form is a separate signature break from the
 `.styleable()` rename. Move the custom prop type onto the render parameter when
@@ -289,12 +372,6 @@ const Card = createStyledHOC(CardFrame)<CardProps>((props, ref) => ...)
 // after
 const Card = createStyledHOC(CardFrame, (props: CardProps, ref) => ...)
 ```
-| `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
-| `@tamagui/animations-moti` | `@tamagui/animations-reanimated` |
-| `@tamagui/config/reanimated` | `@tamagui/config/animations-reanimated` |
-| `'...size'` / `'...fontSize'` spread variant keys | resolver-name keys: `Size`, `FontSize`, `Space`, `Color`, `Radius`, `ZIndex`, and unions like `'Size \| number'` |
-| `':string'` / `':number'` / `':boolean'` type-key variants | plain `string` / `number` / `boolean` keys |
-| `'...'` catch-all variant key | the `any` key |
 
 Spread and type-key variants have no runtime support in v3 — a leftover
 `'...size'` key only ever matches the literal string `"...size"`. Search with
@@ -328,6 +405,16 @@ Examples:
 ```tsx
 // after
 <View tabIndex={0} position="absolute" inset={0} />
+```
+
+```tsx
+// before
+<Text selectable>Copy me</Text>
+<Select.Item index={0} value="first" />
+
+// after
+<Text userSelect="text">Copy me</Text>
+<Select.Item value="first" />
 ```
 
 ```tsx
@@ -422,16 +509,16 @@ are unrelated.
 
 ```tsx
 // before
-const padding = getSize(size, { shift: -2 })
+const padding = getSpace(size, { shift: -2 })
 const radius = getRadius(radiusToken, { shift: 1 })
 ```
 
 ```tsx
 // after
 import { getVariableValue } from 'tamagui'
-import { getSize, getRadius } from '@tamagui/get-token'
+import { getSpace, getRadius } from '@tamagui/get-token'
 
-const padding = getVariableValue(getSize(size)) * 0.6
+const padding = getVariableValue(getSpace(size)) * 0.6
 const radius = getVariableValue(getRadius(radiusToken)) * 1.2
 ```
 
@@ -735,6 +822,14 @@ last. Override the active color per-instance with `activeStyle`:
 If a custom theme defined `backgroundActive` to color these states, move that
 color to `background-press` or pass it through `activeStyle`.
 
+```tsx
+// before
+const themes = { light: { backgroundActive: '#ddd' } }
+
+// after
+const themes = { light: { 'background-press': '#ddd' } }
+```
+
 ## 14. Optional: adopt the Tailwind frontend
 
 Tailwind authoring is optional for v3. Select it by importing components from
@@ -907,6 +1002,8 @@ Runtime checks:
 - Verify sheet overlays still fade if you depended on the old built-in fade.
 - Verify Checkbox, Switch, Tabs, and Toggle Group active/checked states still
   read the way you want after the `backgroundActive` removal.
+- Inspect Avatar, Tabs, and Group anywhere the V2 default chrome was part of
+  the design. Add app-owned skins where needed.
 - Verify non-modal Dialogs do not lock page scroll.
 - Verify keyboard focus, Escape, outside click, and return focus behavior.
 - Inspect icons next to text at every app size token you use.
@@ -925,7 +1022,7 @@ npx tamagui check
 node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
 
 # removed APIs
-rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands"
+rg "createStyledHOC|focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust|selectable=|Select\.Item.*index|enterVariant|exitVariant|enterExitVariant|delayMs|disableTransparencyHide|disableRootThemeClass|themeClassNameOnRoot|isWindowDefined|getExpandedShorthands|backgroundActive|surface[1-4]|color12|defaultComponentThemes|@tamagui/config/v[3-5]|@tamagui/animations-moti|@tamagui/babel-plugin"
 ```
 
 ## v1 to v3 path

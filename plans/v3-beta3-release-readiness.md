@@ -9,16 +9,17 @@ to ship with a documented correctness gap remain owner actions.
 
 ## Cut verdict
 
-**Do not cut beta 3 yet.** The native theme correctness decision, branch Checks, frozen
-starter and Bento refs, and final packed release preview are still open. The compiled-native
-warmup effectiveness gate now passes, but the retained native benchmark cells remain invalid
-until the full 12-sample campaign replaces them.
+**Do not cut beta 3 yet.** Compiled-native delivery is broken for the default Expo Router
+topology. The native theme correctness decision, branch Checks, frozen starter and Bento refs,
+and final packed release preview are also open. The retained native benchmark cells remain
+invalid until the real Expo delivery path works and a full 12-sample campaign replaces them.
 
 ## Blockers
 
 | Status | Owner | Finding | Required evidence to close |
 | --- | --- | --- | --- |
-| Fixed, retained campaign pending | a2946 | `expo export:embed`, which Xcode Release uses, shipped compiled-native output unlowered. The Metro plugin planned from an approximate Babel pass, then discarded the plan when Expo-only `customTransformOptions` made the real worker bytes differ. The fix plans against raw source and applies edits before the worker's single Babel pass. A real Release warmup gate improved V3 from 0.91x before the fix to 4.37x after it, versus V2's 4.70x and a required 1.50x. | Delivery is fixed. Keep `output/benchmarks-native-v2-v3.json` marked partial and do not quote its old compiled-native cells until a full 12-sample campaign replaces them. |
+| Blocked, fix in progress | a2965 | The raw-source Metro fix works only when Metro starts from a project-source entry. A clean-cache `expo export:embed --platform ios` of the default Expo Router starter, with loaded metro-plugin dist verified at schema 4, produced 2,257 `no-entry` plan misses including the starter's own `app/*.tsx`, zero `__TamaguiNative` markers, and a manifest with only `node_modules/expo-router/entry.js`. Graph discovery stops at the external Expo Router entry and never follows its `require.context` app graph. The prior warmup gate used a project-source entry, so its result does not generalize to a default Expo app and must not be used in tester-facing performance claims. | Lower the default Expo Router starter through a clean-cache production export, prove app call sites are compiled rather than runtime helpers, then rerun retained native measurements. |
+| Blocked, fix in progress | a2965 | Metro's transform cache key excludes the lowering-plan generation. A plan change without a source change can therefore reuse a stale unlowered transform unless caches are manually reset. This is the third incomplete cache-key defect found in the campaign, after platform-ambiguous config bundles and `simpleHash` omitting `hashMin`. | Include every plan-affecting input in the transform cache key and prove that changing the plan with unchanged source invalidates the cached transform. |
 | Pending decision | a2946, then a2943 | `compilerHost` resolves theme values against the first theme during native flattening. Theme switching therefore breaks on fully flattened components. This is a correctness bug. | Fix and native theme-switch proof, or an explicit coordinator block-versus-document decision. |
 | In progress | a2949 | Checks are red at `4ac01cd6e7`. The failures are v6 fixture-regeneration debt predating the sync: `flatten.native.test.tsx` changed its theme background from `hsla(0,0%,8%,1)` to `#030712`, and `@tamagui/cli`'s `to-tailwind-default-config` bundle still contains grammar names removed by `d7dd3efa06`. | Validate the source change, regenerate the derived fixtures, then pass branch Checks. |
 | Cut action pending | a2952, cut action by Nate | `create-tamagui` currently clones the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests and v2 dependencies. Pointing it at moving `v3-beta` is unsafe because that branch is permitted to be red. Its old shallow cached update used `git pull --rebase`: moving from one tag to another replayed the old tag commit and missed the requested ref, while Git could autostash edits inside the cache. The replacement has one shared release-ref setting and uses only exact fetch plus detached checkout. A throwaway Git probe landed both an initial and updated cached clone exactly on their requested tags, with no rebase or autostash path left. | Set `tamaguiStarterReleaseRef` in `code/core/create-tamagui/src/templates.ts` to the frozen beta 3 ref at cut time. Do not create the ref before the owner cut. |
@@ -58,8 +59,9 @@ and React Native conditions.
 - [x] The web static compiler resolves and lowers `tamagui/separator`: found 1, lowered 1,
   flattened 1, bailed 0.
 - [x] The native static compiler resolves and lowers the same generated subpath: found 1,
-  lowered 1, flattened 1, bailed 0. The landed Metro Release gate independently proves those
-  native plans reach the production bundle.
+  lowered 1, flattened 1, bailed 0. This proves the package path reaches the compiler. The
+  default Expo delivery path remains blocked above and does not yet prove the plan reaches a
+  production bundle.
 
 Owner: a2952. Status: fixed, committed, and locally validated.
 
@@ -93,7 +95,7 @@ global TypeScript and was not a valid verdict. After `bun install --frozen-lockf
 | Expo Router starter, native | Production iOS Expo export plus rendered Toast interaction | Passed after replacing the false Toast assertions |
 | Remix starter | Typecheck and Vite production build | Passed after v6 shorthand migration |
 | Blank web registry consumer | Install generated skin, drift check, typecheck, production browser smoke | Passed |
-| Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Passed before the Metro fix; compiled-native skin acceptance is being rerun on the assembled tree |
+| Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Runtime interaction and export passed; static native skin lowering passes. Compiled-native delivery is blocked by the default Expo graph defect owned by a2965. |
 | `create-tamagui` cached clone | Initial clone and repeat/update clone from frozen tag | Passed in throwaway Git repositories; cut ref remains an owner action |
 
 The v3 branch no longer has the T3 placeholder test scripts. Expo, Remix, and both blank
@@ -131,6 +133,17 @@ tag input and passes only `--beta` plus a beta version, so its tested path canno
   corpus claims predate the landed legacy-path deletion and direct-style emitter. Do not
   publish it without a new verification pass. The published upgrade and flat-values guides
   contain the current tester workflow.
+- [x] A real Bento migration dry run found 2,113 flat-value sites. The codemod classified
+  1,681 as clean, while 412 of 2,052 JSX sites and 20 of 61 `styled()` configuration sites
+  need review. That is 432 sites, or 20.4% of the corpus. Proposed conversion still leaves
+  legacy condition objects in 63 of 208 files. The published guide now says plainly that a
+  successful codemod run is not a completed migration.
+- [x] The published upgrade guide now covers every removed API surfaced by the Bento audit:
+  `createStyledHOC`, Sheet anatomy, `focusable`, `fullscreen`, Text `selectable`,
+  `Select.Item index`, `$true`, variant keys, `getSpace` options, `backgroundActive`, surface
+  themes, adaptive `color12`, config v4, `defaultComponentThemes`, animations-moti, the Babel
+  plugin, and the app-owned Avatar/Tabs/Group skin requirement. Each class has an explicit
+  replacement or before/after example.
 - [x] The stale interactive beta instructions in `next.md` now describe the automatic
   workflow, exact version formula, lack of Git finish artifacts, and the manual
   `--tag latest` footgun.
@@ -144,9 +157,9 @@ does not generate a GitHub release or changelog entry.
   `tamagui/button` and `tamagui/toast`; the compiled migration fixture typechecks.
 - [x] Unstyled code transformation derives the current styled skin set from
   `tamagui/package.json` rather than maintaining a second component list.
-- [ ] The production docs build and Playwright three-mode toggle check must finish after the
-  compiled-native timing quiet window. The initial build with a non-v3 sibling Bento checkout
-  supplied the independent ref discriminator recorded in the blocker table.
+- [ ] The production docs build and Playwright three-mode toggle check must finish against the
+  completed Bento `v3-beta` SHA. The initial build with a non-v3 sibling Bento checkout supplied
+  the independent ref discriminator recorded in the blocker table.
 
 ## Reproducibility sweep
 

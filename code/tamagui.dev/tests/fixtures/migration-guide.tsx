@@ -15,6 +15,8 @@
 import * as React from 'react'
 import {
   Adapt,
+  Avatar,
+  createStyledHOC,
   createStyledContext,
   getVariableValue,
   GetProps,
@@ -25,6 +27,8 @@ import {
   Sheet,
   styled,
   Surface,
+  Tabs,
+  Text,
   Theme,
   View,
   XStack,
@@ -33,7 +37,19 @@ import {
 import { Button } from 'tamagui/button'
 import { Toast, toast } from 'tamagui/toast'
 import { FocusScope } from '@tamagui/focus-scope'
-import { getRadius, getSize } from '@tamagui/get-token'
+import { getRadius, getSpace } from '@tamagui/get-token'
+
+// §1 — behavior-only component roots need app-owned visual skins.
+export const AppAvatar = styled(Avatar, {
+  borderWidth: 1,
+  borderColor: 'border-color',
+})
+
+export const AppTab = styled(Tabs.Tab, {
+  paddingHorizontal: '3',
+  paddingVertical: '2',
+  activeStyle: { backgroundColor: 'background-press' },
+})
 
 // §2 — Sheet anatomy: Frame -> Container + Background
 export function SheetAnatomy({ children }: { children: React.ReactNode }) {
@@ -53,6 +69,20 @@ export const FocusableFullscreen = () => (
   <View tabIndex={0} position="absolute" inset={0} />
 )
 
+// §3 — selectable and Select.Item index removals
+export const TextAndSelectProps = () => (
+  <>
+    <Text userSelect="text">Copy me</Text>
+    <Select.Item value="first" />
+  </>
+)
+
+// §3 — createStyledHOC now accepts both arguments in one call.
+type CardProps = GetProps<typeof View> & { label?: string }
+export const Card = createStyledHOC(View, (props: CardProps, ref) => (
+  <View {...props} ref={ref} />
+))
+
 // §3 — themeInverse / <Theme inverse>
 export const ThemeInverse = () => (
   <Theme name="inverse">
@@ -65,7 +95,7 @@ export const TrueTokens = () => <XStack gap="4" p="4" />
 
 // §5 — token stepping replacement
 export function tokenStepping(sizeToken: any, radiusToken: any) {
-  const padding = getVariableValue(getSize(sizeToken)) * 0.6
+  const padding = getVariableValue(getSpace(sizeToken)) * 0.6
   const radius = getVariableValue(getRadius(radiusToken)) * 1.2
   return { padding, radius }
 }
