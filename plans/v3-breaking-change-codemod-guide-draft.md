@@ -1,16 +1,19 @@
 # V3 beta breaking changes and flat-values migration
 
-> Review draft. This document is not published. It describes the behavior in
-> the `v3-beta` tree on July 31, 2026. The proposed engine contraction is
-> separated from the behavior that has landed.
+> Audit verdict on August 3, 2026: **not ship-ready**. Most measurements and
+> implementation details describe the July 31 tree. The current beta has since
+> removed the legacy condition-object and sigil paths and replaced the web
+> program pipeline with direct style emission. Use the published v3 upgrade and
+> flat-values guides for tester instructions until this draft is reverified.
 
 V3 moves conditional styles into the value of the property they change. It
 also adopts the v6 built-in config vocabulary, makes identifier resolution
 config-first, and removes several web-only accidents from the cross-platform
 style contract.
 
-The migration tool currently produces a report. It never edits source files or
-configuration.
+The migration tool is report-only by default. Pass `--write` to apply every
+statically safe source conversion in place. It always reports conversions it
+cannot prove safe, and it never edits configuration.
 
 ## Start with the v6 config
 
@@ -145,7 +148,7 @@ native cannot source them until the behavior packages feed component state.
 Shared source therefore needs relocation to `.web.tsx`. Plain interaction
 states, media, themes, platforms, containers, and `enter` support both targets.
 
-## Run the report-only codemod
+## Run the codemod report-first
 
 Run the tool from a Tamagui checkout:
 
@@ -164,6 +167,18 @@ bun run dry-run \
 
 Read both the summary and each flagged site. A successful command means the
 report was generated. It does not mean every site converted.
+
+Commit or back up the source, then apply the clean conversions:
+
+```bash
+bun src/index.ts --write \
+  --report /tmp/flat-values-write-report.md \
+  path/to/src
+```
+
+`--write` updates only conversions the tool classified as statically safe.
+The generated report still lists relocation, host, eligibility, syntax, and
+ordering work that needs a person to decide.
 
 The codemod converts only bindings it can prove come from Tamagui. It handles:
 
@@ -459,9 +474,7 @@ service. A proven View keeps the condition authored and reports, for example:
 
 The tool deliberately does not:
 
-- write or apply source changes;
-- edit the `createTamagui()` config or change
-  `settings.legacyConditionObjects`;
+- edit the `createTamagui()` config;
 - convert a local `styled` helper, a React Native component, or an intrinsic
   element without proven Tamagui provenance;
 - guess through computed keys, opaque spreads, runtime-built condition
@@ -484,11 +497,9 @@ The tool deliberately does not:
 The report separates manual flags from review-only inventory. Preserve
 authored code until each flagged decision is made.
 
-`legacyConditionObjects` defaults to `true` in the current beta, which converts
-eligible legacy condition objects at the style loop entry. Setting it to
-`false` keeps the old condition machinery. The report tells you which files
-still contain legacy objects, but the tool never changes this setting and the
-setting itself is not proof that migration is complete.
+The current beta has no `legacyConditionObjects` setting or runtime
+condition-object path. The codemod must rewrite eligible legacy objects before
+the application runs; flagged objects need a manual migration.
 
 ## Current specificity change
 
@@ -526,9 +537,10 @@ consumer CSS should prefer a stable authored class or selector.
 
 1. Import the v6 config and rename custom references to the 16 built-in names.
 2. Rename or remove every reserved config token.
-3. Generate the codemod report for one source directory.
-4. Apply clean suggestions manually, reviewing `x` and `y` against custom
-   space and size scales.
+3. Commit or back up the source, then generate the codemod report for one
+   source directory.
+4. Run the same source directory with `--write` and inspect the resulting diff.
+   Review converted `x` and `y` values against custom space and size scales.
 5. Resolve `needs-relocation`: keep shared `exitStyle` driver-evaluated or move
    the use to native-only source, move web-only component states to
    `.web.tsx`, and move text-only View styles to a text or DOM host.
@@ -547,21 +559,18 @@ consumer CSS should prefer a stable authored class or selector.
 14. Rebaseline snapshots or consumer CSS that pins generated classes for
     `active:` or `group-active/*` aliases.
 
-## Proposed only: engine contraction
+## Landed after this guide's measurements
 
-The full engine contraction has not been approved or landed. Current V3 beta
-behavior still includes the legacy pseudo-object path, media importance
-ordering, specificity ladders, and legacy theme, platform, and group prop-key
-parsing.
+The engine contraction described by the earlier draft has landed. Commits
+`96f6d5574a` and `7809660bee` removed legacy condition objects and the remaining
+sigil-era paths. Commit `12f7e0e981` replaced the web program pipeline with
+direct style emission. Any implementation, specificity, class-name, or corpus
+measurement claim in this draft now needs to be rerun against that engine before
+publication.
 
-If the contraction is approved, those legacy internal paths are planned for
-deletion after the program engine replaces them. The migration guide must then
-be revised from the resulting code and measurements. Do not change application
-code based on that proposed deletion today.
+## Historical verification record
 
-## Draft verification record
-
-The claims in this draft were checked against the following current-tree
+The July 31 claims in this draft were checked against the following then-current
 contracts:
 
 - `code/core/style-grammar/src/v6ThemeNames.ts` and the built
