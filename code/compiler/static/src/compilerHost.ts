@@ -1873,7 +1873,9 @@ export function createTamaguiCompilerHost(
           for (const [themeName, themeValues] of Object.entries(
             options.tamaguiConfig.themes ?? {}
           )) {
-            const state: Record<string, unknown> = {}
+            const state: Record<string, unknown> = staticObject(nativeStyle)
+              ? { ...nativeStyle }
+              : {}
             for (const [styleKey, themeKey] of Object.entries(themedStyleKeys)) {
               const themeValue = (themeValues as Record<string, unknown>)[themeKey]
               state[styleKey] =
