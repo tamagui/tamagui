@@ -671,6 +671,9 @@ export type TamaguiComponentStateRef = {
   nativeStyleUpdate?: (next: ThemeState) => boolean
   nativeUpdateProxy?: (next: ThemeState) => boolean
   nativePushedStates?: Set<string>
+  // the state name currently committed for this view (by the render or the
+  // last intercepted update): an update resolving to the same name is a no-op
+  nativeActiveState?: string
   // media interception: recompute styles under the current theme when a
   // relevant media key flips (useMedia's subscription calls this before
   // forcing a re-render); nativeThemeState tracks the last theme handled

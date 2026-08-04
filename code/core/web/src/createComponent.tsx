@@ -849,8 +849,10 @@ export function createComponent<
         !groupName &&
         !props.disableNativeStyle
       stateRef.current.nativePushedStates = canNativeUpdate ? new Set() : undefined
-      // fresh render: the themeState captured below is current again
+      // fresh render: the themeState captured below is current again, and the
+      // render itself commits this state's styles
       stateRef.current.nativeThemeState = undefined
+      stateRef.current.nativeActiveState = canNativeUpdate ? themeState?.name : undefined
 
       // push one state's full computed style. keys pushed earlier but absent
       // from this style commit as null — reset-to-default, exactly what a real
@@ -886,6 +888,13 @@ export function createComponent<
             sr.nativeThemeState = nextTheme
 
             const stateName = nextTheme.name
+            // a cascade that resolves to the already-committed state (a
+            // pinned sub-theme under a toggling outer theme) changes nothing:
+            // a real re-render would commit identical styles, so skip both
+            // the push and the re-render
+            if (stateName === sr.nativeActiveState) return true
+            sr.nativeActiveState = stateName
+
             if (sr.nativePushedStates!.has(stateName)) {
               queueNativeViewState({ id: sr.nativeLink.id, state: stateName })
               return true
@@ -928,6 +937,8 @@ export function createComponent<
             const sr = stateRef.current
             if (!sr.nativeLink) return false
             sr.nativePushedStates!.clear()
+            // the same state name must recompute under the new media values
+            sr.nativeActiveState = undefined
             return sr.nativeStyleUpdate!(sr.nativeThemeState || themeState)
           }
         : undefined

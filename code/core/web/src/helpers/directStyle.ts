@@ -415,7 +415,11 @@ function tokenVariable(
   property: string,
   name: string
 ): TokenLookup | undefined {
-  let lookupName = name
+  // v3's canonical token representation is unprefixed, but classic `$token`
+  // values are still valid input: normalize here so `$background` and
+  // `background` resolve identically (themes, tokens, and fonts are all
+  // keyed unprefixed)
+  let lookupName = name.charCodeAt(0) === 36 ? name.slice(1) : name
   if (property === 'fontFamily') {
     const family = state.conf.fontsParsed[lookupName]?.family
     return family ? fillTokenLookup(family, false, lookupName) : undefined
