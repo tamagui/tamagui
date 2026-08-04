@@ -1,8 +1,8 @@
 # Tamagui v3 beta 3 release readiness
 
 Last complete packed preview: `8976311c1e` on the merged `v3-beta` tree.
-Current source candidate: `5a0b3d9d59`; its post-allowlist packed rerun was interrupted for
-the native timing window and remains required.
+Current local source candidate: `44d5423895`; it is held behind the Android push freeze.
+The current pushed candidate is `a8d156b150`. Its post-allowlist packed rerun remains required.
 Last updated: 2026-08-03.
 
 This is the single blocker list for the beta 3 cut. A checked item means the named
@@ -25,7 +25,7 @@ packed preview are open. The retained native benchmark cells remain invalid unti
 | Pending decision | a2946, then a2943 | `compilerHost` resolves theme values against the first theme during native flattening. Theme switching therefore breaks on fully flattened components. This is a correctness bug. | Fix and native theme-switch proof, or an explicit coordinator block-versus-document decision. |
 | Fixed | a2952 | V5 palette-step names such as `blue10` and `red10` do not exist in the v6 config. A live cross-driver probe computed the missing `blue10` color as transparent on both paths without an error or warning, then exposed different CSS and React Native Web fallback colors. The upgrade guide mentioned palette tokens as a separate migration but did not state that failure is silent. The flat-values codemod preserves `$blue10` as `blue10` because it cannot evaluate custom runtime config or choose the intended replacement. It now emits every preserved v5 palette name as a non-blocking `legacy-palette-token` configuration warning in both reports, while write mode keeps applying safe syntax conversions. | Passed: the published guide has an explicit before/after and silent-failure warning; focused static JSX, dynamic-expression, custom-name, Markdown report, full 92-test, and typecheck coverage pass. |
 | In progress | a2949 | Checks are red at `4ac01cd6e7`. The failures are v6 fixture-regeneration debt predating the sync: `flatten.native.test.tsx` changed its theme background from `hsla(0,0%,8%,1)` to `#030712`, and `@tamagui/cli`'s `to-tailwind-default-config` bundle still contains grammar names removed by `d7dd3efa06`. | Validate the source change, regenerate the derived fixtures, then pass branch Checks. |
-| Rerun pending after quiet window | a2952 | The merged all-package G1 preview at `8976311c1e` passed: 164 requested and packed artifacts, 8,043 export-condition probes, isolated installation, web production plus SSR browser canary, native Expo export plus runtime test, and 164 generated publish commands with `--tag beta` and zero `latest`. Packed `@tamagui/web` and bundled `@tamagui/core` contain the recent native-background and media-tuple fixes. The byte sweep found eight packages without `files` allowlists shipping nine tsconfigs, web Vitest config output, two source-build scripts, and the `tamagui` package's source-build config. Exact before/after inventories prove all runtime, compatibility, platform-extension, declaration, CSS, JSON, bin, and exported files are retained; only those explained build/test files leave. | Rerun G1 at or after `5a0b3d9d59`, because the allowlists changed the packed bytes after the passing preview. Record the exact assembled SHA and repeat content receipts. |
+| Rerun pending | a2952 | The merged all-package G1 preview at `8976311c1e` passed: 164 requested and packed artifacts, 8,043 export-condition probes, isolated installation, web production plus SSR browser canary, native Expo export plus runtime test, and 164 generated publish commands with `--tag beta` and zero `latest`. Packed `@tamagui/web` and bundled `@tamagui/core` contain the recent native-background and media-tuple fixes. The byte sweep found eight packages without `files` allowlists shipping nine tsconfigs, web Vitest config output, two source-build scripts, and the `tamagui` package's source-build config. Exact before/after inventories prove all runtime, compatibility, platform-extension, declaration, CSS, JSON, bin, and exported files are retained; only those explained build/test files leave. | Rerun G1 at or after `44d5423895`, because the allowlists and assembled engine fixes changed the packed bytes after the passing preview. Record the exact assembled SHA and repeat content receipts. |
 | Cut action pending | a2952, cut action by Nate | `create-tamagui` currently clones the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests and v2 dependencies. Pointing it at moving `v3-beta` is unsafe because that branch is permitted to be red. Its old shallow cached update used `git pull --rebase`: moving from one tag to another replayed the old tag commit and missed the requested ref, while Git could autostash edits inside the cache. The replacement has one shared release-ref setting and uses only exact fetch plus detached checkout. A throwaway Git probe landed both an initial and updated cached clone exactly on their requested tags, with no rebase or autostash path left. | Set `tamaguiStarterReleaseRef` in `code/core/create-tamagui/src/templates.ts` to the frozen beta 3 ref at cut time. Do not create the ref before the owner cut. |
 | Cut action pending | a2952, cut action by Nate | The production site Dockerfile cloned private Bento from the moving `v3` branch and ignored its declared `BENTO_BRANCH` argument. The ref is a real independent input: Bento's `bento-quality` branch still imports removed `ThemeableStack`, while the newer v3 line uses `YStack`, and the former made the v3 site build call `styled()` with an undefined component. The Docker build now consumes one ref argument, defaults to the paired Bento `v3-beta` branch, and the existing local `TAMAGUI_BENTO_REF` pin uses exact fetch plus detached `FETCH_HEAD`. | After the paired Bento branch passes, replace the `ARG BENTO_BRANCH=v3-beta` default in `Dockerfile` with its exact validated SHA at cut time. The branch is the integration line, not the freeze. |
 | In progress | a2968 | Exact Bento `v3` at `25af842` still has 28 callers of the removed curried `createStyledHOC(Component)(render)` signature. Bento had already migrated `.styleable()` to that intermediate form in July, so the current two-argument signature is a second API break on the same export in one cycle. The production docs bundle succeeds, then static route import invokes the returned themed component outside React and fails on `useContext`. This break was absent from the tester migration instructions; those instructions now include a before/after, and no curried caller remains in the Tamagui repository. A broken paid Bento package is also a public docs blocker because the home page imports its showcase. | Finish Bento's v3 conversion on its paired `v3-beta` branch, select its frozen SHA, then pass the production docs build and three-mode browser test. |
@@ -89,6 +89,16 @@ global TypeScript and was not a valid verdict. After `bun install --frozen-lockf
 - [x] `bun run typecheck`: passed under the repository TypeScript 5.9.3.
 - [x] `bun run build`: 167 of 167 tasks passed. The first baseline run was entirely served
   from exact-hash cache; the export-map rerun rebuilt 7 tasks and reused 160.
+- [x] The standard root test graph now builds the package outputs its tests load. The
+  `test`, `test:web`, and `test:native` tasks previously depended on `^build:js`, but no
+  workspace package defines that task. `@tamagui/static-tests` also imported
+  `@tamagui/static` without declaring it, so Turbo could not infer the compiler dependency
+  chain. The tasks now depend on `^build`, and the test package declares the direct
+  dependency. Turbo's dry graph proves `static-tests -> static -> core -> web`; the standard
+  native workflows pass with 116 of 116 tasks and 63 of 63 static tests, then 51 of 51 tasks
+  and 238 passing core tests.
+- [ ] Re-run root typecheck and build on the final assembled candidate. The checked results
+  above are the campaign baseline, not the cut verdict.
 - [ ] Branch Checks are green. This remains blocked on the a2949 fixture work above.
 
 ## Tester first-run matrix
@@ -208,6 +218,16 @@ sweep found no Git dependency or remote tarball entry in that lockfile.
   `withStaticProperties` on components imported from `@tamagui/ui`. This grafts styled
   parts onto the unstyled package's own exports for all consumers. It is not breaking a
   current test, but it contradicts the three-layer package contract.
+- **Contributor build artifact follow-up:** `@tamagui/core` bundles the built output of
+  `@tamagui/web`. The package dependency and Turbo `^build` edge are already correct, but a
+  caller that explicitly filters to `@tamagui/web`, or runs its package-local build, does not
+  select reverse dependents. Four lanes consumed stale bundled core bytes after such filtered
+  builds on 2026-08-03. The beta release path is not exposed because it runs the full root
+  build before packing, and the standard test graph now builds declared dependencies. After
+  beta, assess externalizing `@tamagui/web` from the core native bundle so one built copy is
+  resolved at runtime. That change needs explicit single-instance and dual-instance native
+  consumer probes because changing module resolution in this layer can recreate the split
+  package instances that previously broke Toast.
 
 ## Remaining release-readiness audit
 
