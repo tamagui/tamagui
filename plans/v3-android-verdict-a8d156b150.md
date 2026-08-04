@@ -1,5 +1,30 @@
 # Android verdict on a8d156b150
 
+## Follow-up on 9d4a0c05b1
+
+Detox run `30899085947` reached terminal failure at 01:05 on 2026-08-04. The
+Android build passed and Android Detox reported `6 failed, 3 skipped, 25
+passed, 31 of 34` suites.
+
+The failing-suite set changed by exactly one suite from the seven-suite
+baseline below:
+
+- unchanged failures: `Accordion`, `CompilerTernaryActive`,
+  `GroupPressTransitionMatrix`, `NativeMixedDriver`, `PointerEvents`, and
+  `PressStyleNative.noRngh`
+- removed failure: `AdaptLiveSlotSpike`
+- added failures: none
+
+`AdaptLiveSlotSpike` ran all four tests to `[OK]` and the suite passed in
+77.329 seconds on the follow-up. The other six failures reproduced. This gives
+the requested second data point: the failure set is not identical, but its only
+movement is the already-known flaky `AdaptLiveSlotSpike` suite passing on this
+run. The six-suite remainder is stable across both tips.
+
+The follow-up failed log was fetched once to
+`/tmp/android-30899085947-failed.log`. The baseline log remains in a2971's
+scratchpad as `android-fail.log`.
+
 The first Android run to complete in this campaign. Recorded here because the
 agent messaging channel was blocked when it landed, and this is the answer to a
 question that had been open all day.
