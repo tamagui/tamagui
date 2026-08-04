@@ -244,6 +244,22 @@ is a plainly visible text color, unlike the rest of group 2.
   wherever the transform array is turned into a style rather than in a driver.
   Whoever takes it should re-run the audit afterwards: the 231 transform
   differences are the acceptance criterion, and they should go to zero.
+
+  **Run it the right way or it will look fixed when it is not.** a2965 reported
+  `hydration-drivers` + `motion-hydration` + `ssr-theme` at 12 passed / 0 failed
+  with `:73` not reproducing, and concluded the failure might be gone. It is not.
+  `code/sandbox/playwright.config.ts:3` is
+  `const mode = process.env.TEST_MODE || 'dev'`, and the config builds a **single**
+  project from that: dev on port 8085, prod on 8086. A bare
+  `playwright test hydration-drivers.test.ts` therefore runs the dev project only
+  and never touches the project the failure lives in. With `TEST_MODE=prod` it
+  fails, and the reporter labels the failing line `[prod]`.
+
+  That makes it build-mode dependent, which is a lead rather than a nuisance: the
+  composed matrix appears in the prod build and not in dev, so suspect extraction
+  and compilation rather than the motion driver. Still to do: run dev and prod
+  back to back as a direct discriminator, since the above pairs a prod run of mine
+  against a dev run of someone else's rather than two arms of one experiment.
 - `AnimatePresenceEnterExit` x4 on native, motion and reanimated (css passes) is
   still an opacity/enter-scheduling problem, still unexplained, and a2949's
   reasoning that the transform split cannot account for it survives this session.
