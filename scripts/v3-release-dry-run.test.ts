@@ -94,6 +94,22 @@ describe('G1 package selection', () => {
     ])
   })
 
+  test('uses declared subpaths for a package without a root export', () => {
+    expect(
+      exportSpecifiers({
+        name: '@tamagui/config',
+        exports: {
+          './package.json': './package.json',
+          './v6': {
+            types: './types/v6.d.ts',
+            import: './dist/esm/v6.mjs',
+            require: './dist/cjs/v6.cjs',
+          },
+        },
+      })
+    ).toEqual(['@tamagui/config/v6'])
+  })
+
   test('derives changed package roots and expands their internal tarball closure', () => {
     const changed = packagesForChangedPaths(packages, [
       'code/core/core/src/index.tsx',

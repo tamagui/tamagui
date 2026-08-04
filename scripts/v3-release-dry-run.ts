@@ -697,14 +697,22 @@ async function main(): Promise<void> {
     const manifest = installedManifests.get(pkg.name)!
     if (!hasRuntimeExport(manifest)) continue
     const specifiers = exportSpecifiers(manifest)
-    await runProbe(consumerDir, 'esm', pkg.name)
-    probes.push({ package: pkg.name, condition: 'esm', specifier: pkg.name })
-    if (manifest.main || hasExportCondition(manifest.exports, 'require')) {
-      await runProbe(consumerDir, 'cjs', pkg.name)
-      probes.push({ package: pkg.name, condition: 'cjs', specifier: pkg.name })
-    }
-    for (const condition of ['browser', 'react-native'] as const) {
-      for (const specifier of specifiers) {
+    for (const specifier of specifiers) {
+      await runProbe(consumerDir, 'esm', specifier)
+      probes.push({ package: pkg.name, condition: 'esm', specifier })
+      const exportKey = specifier === pkg.name ? '.' : `.${specifier.slice(pkg.name.length)}`
+      const exports = manifest.exports
+      const exportValue =
+        exports && typeof exports === 'object' && !Array.isArray(exports)
+          ? Object.keys(exports).some((key) => key.startsWith('.'))
+            ? (exports as Record<string, unknown>)[exportKey]
+            : exports
+          : exports
+      if (manifest.main || hasExportCondition(exportValue, 'require')) {
+        await runProbe(consumerDir, 'cjs', specifier)
+        probes.push({ package: pkg.name, condition: 'cjs', specifier })
+      }
+      for (const condition of ['browser', 'react-native'] as const) {
         await runProbe(consumerDir, condition, specifier)
         probes.push({ package: pkg.name, condition, specifier })
       }
