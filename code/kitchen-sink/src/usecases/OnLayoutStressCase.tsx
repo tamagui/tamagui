@@ -12,10 +12,27 @@ type Stats = {
   lastBatchTime: number
 }
 
-// deeply nested component tree
-const GRAY_COLORS = ['gray2', 'gray3', 'gray4', 'gray5', 'gray6', 'gray7'] as const
-const GRID_COLORS = ['red5', 'green5', 'blue5', 'purple5', 'orange5'] as const
-const SIBLING_COLORS = ['red4', 'green4', 'blue4'] as const
+// deeply nested component tree.
+// these are read as theme[name].get(), so a name the theme does not define is
+// undefined and throws. v5's gray2/red5 spellings do not exist under v6, which
+// crashed this whole case on render and made every test here time out in
+// setupPage rather than reach a single assertion.
+const GRAY_COLORS = [
+  'gray-100',
+  'gray-200',
+  'gray-300',
+  'gray-400',
+  'gray-500',
+  'gray-600',
+] as const
+const GRID_COLORS = [
+  'red-500',
+  'green-500',
+  'blue-500',
+  'purple-500',
+  'orange-500',
+] as const
+const SIBLING_COLORS = ['red-400', 'green-400', 'blue-400'] as const
 
 const DeepChild = memo(
   ({
