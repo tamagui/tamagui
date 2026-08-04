@@ -1,5 +1,14 @@
 # Android verdict on a8d156b150
 
+## Third data point on d90f563b81
+
+Detox run `30903584203` completed after the integration push. The Android build
+passed. Android Detox returned to `7 failed, 3 skipped, 24 passed, 31 of 34`
+suites, with the exact original seven-suite set. `AdaptLiveSlotSpike` was the
+only suite to change relative to the 9d4 run: it failed again after passing the
+previous run. The three data points therefore confirm six stable failures and
+one flaky suite rather than a source-change regression between these tips.
+
 ## Follow-up on 9d4a0c05b1
 
 Detox run `30899085947` reached terminal failure at 01:05 on 2026-08-04. The
