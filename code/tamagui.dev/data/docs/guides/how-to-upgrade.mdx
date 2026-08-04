@@ -184,6 +184,10 @@ npx expo export --clear
 ```
 
 Without this step, Metro can serve stale compiled output from the earlier plan.
+Expect the first rebuild after clearing caches to be slower because Metro must
+replan every module. The beta measured about 12 ms per module: roughly 27
+seconds for a 2,328-module starter and about two minutes for a 10,000-module
+application. Later warm builds are unaffected.
 
 ### Theme migration
 
