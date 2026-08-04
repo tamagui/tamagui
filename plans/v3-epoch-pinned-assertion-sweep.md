@@ -102,10 +102,50 @@ on **web**, reproducible in the kitchen-sink `default` project, which is a much
 cheaper reproduction than the native fixture path if the two turn out to share a
 cause.
 
-## Not swept
+## OnLayoutStress: judged, and it was never a perf failure
 
-`OnLayoutStress` x6 are perf gates and were only ever observed under load, so
-they are unjudgeable here rather than unclassified. `AnimatePresenceEnterExit`
+Carried for the whole campaign as "perf gates, only ever observed under load,
+unjudgeable". That framing was wrong, and it was wrong in a way that made it
+self-perpetuating: because everyone believed the numbers were noise, nobody read
+the failure.
+
+Run alone with the machine quiet (busiest sample during the run 67.9% idle), all
+seven still failed, and every one failed at exactly 50.0s, which is the
+Playwright timeout rather than any threshold. The real error:
+
+```
+Test timeout of 50000ms exceeded while running "beforeEach" hook.
+  page.waitForFunction: ... at test-utils.ts:70
+```
+
+`setupPage` was timing out waiting for `#root` to have children. The page never
+rendered. Loading the case directly gave one pageerror:
+
+```
+TypeError: Cannot read properties of undefined (reading 'get')
+    at OnLayoutStressCase
+```
+
+`OnLayoutStressCase.tsx:15-17` declared its palette as `gray2 … gray7`,
+`red5 … orange5`, `red4 … blue4` and read them with
+`theme[name]!.get()`. Those are v5 spellings; v6 has no such keys, so `theme[name]`
+is `undefined` and `.get()` throws. The `!` assertion hid it from the compiler.
+Same v5-epoch fixture staleness as the `blue10`/`red10` colours documented above,
+except here it crashes the render instead of silently resolving to nothing.
+
+With the palette renamed to the v6 spellings, **all seven pass in 14.4s total**,
+versus seven 50-second timeouts. The perf assertions themselves are fine and were
+never the problem. Confirmed on a full default run afterwards: **8 failed / 696
+passed**, down from 14 / 690. The remaining eight are the seven classified above
+plus `PopoverHoverableReposition:63`, which is a known flake (it failed in one arm
+of an earlier A/B and passed in the other).
+
+The lesson worth keeping: "unjudgeable under load" was an inherited explanation
+nobody re-derived, and it survived precisely because it predicted the failures we
+kept seeing. A timeout is not a threshold breach, and the two are easy to
+conflate when you already expect the numbers to be junk.
+
+## Not swept `AnimatePresenceEnterExit`
 x4 and `DialogPresenceCompletion` x2 assert intermediate animation frames, not
 concrete token values, so they are outside this sweep's shape. `next15`
 `exports.unit.test.ts` x2 was flagged in the campaign brief as consistent with
