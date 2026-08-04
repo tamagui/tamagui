@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { mkdirSync, realpathSync, renameSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, realpathSync, renameSync, writeFileSync } from 'node:fs'
 import { isAbsolute, join, resolve } from 'node:path'
 
 import {
@@ -14,6 +14,7 @@ import {
   MetroCompilerCacheError,
 } from './compilerCache'
 import { metroDiagnostic } from './diagnostics'
+import { isCompilerSourceFile } from './metroResolver'
 import { applyMetroCompilerPlan, type MetroCompilerLoweringResult } from './lowering'
 
 export interface MetroCompilerTransformerOptions {
@@ -53,12 +54,19 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
     }
     return id
   }
+  // Metro also transforms modules the frontend can never plan: bundler-injected
+  // polyfills, virtual modules, and node_modules (external by design). A miss
+  // is only a lowering defect for a file the frontend's project graph would
+  // have crawled.
+  function planEligible(moduleId: string): boolean {
+    return (
+      isCompilerSourceFile(moduleId) &&
+      !moduleId.includes(`${join('node_modules')}`) &&
+      existsSync(moduleId)
+    )
+  }
   return {
     async transform(args) {
-      const compiled = await compileWithUserBabel(
-        config.originalBabelTransformerPath,
-        args
-      )
       const platform =
         typeof args.options.platform === 'string' ? args.options.platform : 'default'
       const cache = new MetroCompilerCache(join(config.cacheBaseRoot, platform))
@@ -66,14 +74,14 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
         cacheHit: false,
         diagnostics: [],
       }
-      let ast = compiled.result.ast
       const moduleId = cacheModuleId(args.filename)
       try {
         // a manifest exists exactly when the frontend planned this build, so a
-        // lookup miss is a lowering defect (unlowered output), never routine —
-        // surface it instead of silently shipping runtime-path modules
-        const entry = await cache.read(moduleId, compiled.code, (reason, detail) => {
-          if (missWarned.has(moduleId)) return
+        // lookup miss on a plannable file is a lowering defect (unlowered
+        // output), never routine — surface it instead of silently shipping
+        // runtime-path modules
+        const entry = await cache.read(moduleId, args.src, (reason, detail) => {
+          if (missWarned.has(moduleId) || !planEligible(moduleId)) return
           missWarned.add(moduleId)
           const diagnostic = metroDiagnostic(
             'metro/plan-miss',
@@ -87,17 +95,21 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
         })
         if (entry) {
           try {
-            const lowered = applyMetroCompilerPlan(
-              compiled,
-              entry.plan,
+            const lowered = await applyMetroCompilerPlan(
               { ...args, filename: moduleId },
+              entry.plan,
               config.originalBabelTransformerPath
             )
-            ast = lowered.ast
-            tamagui = {
-              cacheHit: true,
-              diagnostics: entry.diagnostics,
-              lowering: lowered.lowering,
+            return {
+              ...lowered.compiled.result,
+              metadata: {
+                ...lowered.compiled.result.metadata,
+                tamagui: {
+                  cacheHit: true,
+                  diagnostics: entry.diagnostics,
+                  lowering: lowered.lowering,
+                },
+              },
             }
           } catch (error) {
             const diagnostic = metroDiagnostic(
@@ -121,9 +133,12 @@ export function createMetroCompilerTransformer(config: MetroCompilerTransformerO
           `[@tamagui/metro-plugin] ${error.diagnostic.code}: ${error.diagnostic.message}`
         )
       }
+      const compiled = await compileWithUserBabel(
+        config.originalBabelTransformerPath,
+        args
+      )
       return {
         ...compiled.result,
-        ast,
         metadata: {
           ...compiled.result.metadata,
           tamagui,

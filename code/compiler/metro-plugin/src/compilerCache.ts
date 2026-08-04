@@ -6,14 +6,13 @@ import type { LoweredModulePlan } from '@tamagui/compiler-core'
 
 import { metroDiagnostic, type MetroCompilerDiagnostic } from './diagnostics'
 
-export const METRO_COMPILER_CACHE_VERSION = 3
+export const METRO_COMPILER_CACHE_VERSION = 4
 
 export interface MetroCompilerCacheEntry {
   schemaVersion: typeof METRO_COMPILER_CACHE_VERSION
   moduleId: string
-  /** Hash of the raw on-disk module source the compiled record was produced from. */
+  /** Hash of the raw on-disk module source the plan was generated from. */
   sourceHash: string
-  compiledHash: string
   plan: LoweredModulePlan
   diagnostics: MetroCompilerDiagnostic[]
 }
@@ -21,7 +20,6 @@ export interface MetroCompilerCacheEntry {
 interface MetroCompilerCacheDescriptor {
   blobHash: string
   sourceHash: string
-  compiledHash: string
 }
 
 interface MetroCompilerCacheManifest {
@@ -147,7 +145,6 @@ export class MetroCompilerCache {
       descriptors[entry.moduleId] = {
         blobHash,
         sourceHash: entry.sourceHash,
-        compiledHash: entry.compiledHash,
       }
     }
 
@@ -171,8 +168,8 @@ export class MetroCompilerCache {
 
   async read(
     moduleId: string,
-    compiledSource: string,
-    onMiss?: (reason: 'no-entry' | 'compiled-hash-mismatch', detail?: string) => void
+    rawSource: string,
+    onMiss?: (reason: 'no-entry' | 'source-hash-mismatch', detail?: string) => void
   ): Promise<MetroCompilerCacheEntry | null> {
     const manifest = await this.#readManifest()
     if (!manifest) return null
@@ -181,11 +178,11 @@ export class MetroCompilerCache {
       onMiss?.('no-entry')
       return null
     }
-    const compiledHash = metroCompilerContentHash(compiledSource)
-    if (compiledHash !== descriptor.compiledHash) {
+    const sourceHash = metroCompilerContentHash(rawSource)
+    if (sourceHash !== descriptor.sourceHash) {
       onMiss?.(
-        'compiled-hash-mismatch',
-        `worker ${compiledHash.slice(0, 12)} vs plan ${descriptor.compiledHash.slice(0, 12)}`
+        'source-hash-mismatch',
+        `worker ${sourceHash.slice(0, 12)} vs plan ${descriptor.sourceHash.slice(0, 12)}`
       )
       return null
     }
@@ -287,11 +284,10 @@ export class MetroCompilerCache {
       entry.moduleId !== moduleId ||
       typeof entry.sourceHash !== 'string' ||
       entry.sourceHash !== descriptor.sourceHash ||
-      entry.compiledHash !== descriptor.compiledHash ||
       !entry.plan ||
       entry.plan.version !== 1 ||
       entry.plan.id !== moduleId ||
-      entry.plan.sourceHash !== entry.compiledHash ||
+      entry.plan.sourceHash !== entry.sourceHash ||
       !Array.isArray(entry.plan.edits) ||
       !Array.isArray(entry.plan.diagnostics) ||
       !Array.isArray(entry.diagnostics)

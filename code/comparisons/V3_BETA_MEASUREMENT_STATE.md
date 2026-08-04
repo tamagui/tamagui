@@ -72,9 +72,23 @@ cheaply, and which is now a permanent harness gate:
 > and the campaign must not run.
 
 `2acce54e05` (metro-plugin, plan delivery) did **not** resolve it: the gate
-still fails with that commit in the build and compiler evidence reporting 7/7
+still failed with that commit in the build and compiler evidence reporting 7/7
 static and 3/3 dynamic lowered with zero bailouts. Plan generation and plan
-delivery are separate layers and at least one is still wrong.
+delivery are separate layers and at least one was still wrong.
+
+**RESOLVED 2026-08-03.** The third delivery defect: Expo Release builds bundle
+via `expo export:embed`, whose Metro workers receive Babel options
+(customTransformOptions engine=hermes, type, publicPath) that the metro-plugin
+frontend could never see, so every plan failed its compiled-hash guard and
+shipped unlowered — loudly (`metro/plan-miss: compiled-hash-mismatch`) but
+only in that flow. Fixed by planning against raw source (metro-plugin cache
+schema v4): workers apply plan edits to the raw module before their single
+Babel pass, so Babel option divergence can no longer invalidate delivery.
+Gate re-run on a quiet machine (idle >= 88% before and after): **V3 4.37x
+(30.01ms runtime -> 6.87ms compiled), V2 4.70x, bar 1.50x — PASSED.** The
+retained cells in `output/benchmarks-native-v2-v3.json` are still the OLD
+invalid data; a full retained campaign is still required before quoting
+native compiled numbers. See `plans/v3-metro-lowering-2026-08-03.md`.
 
 ## Open, owned elsewhere
 

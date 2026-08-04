@@ -390,7 +390,13 @@ async function main() {
     expectedDynamicDirectHostStyles
   )
 
-  const cacheDirectory = join(v3Root, 'node_modules/.cache/tamagui/metro-compiler/ios/v3')
+  const { METRO_COMPILER_CACHE_VERSION } = require(
+    resolve(comparisonRoot, '../compiler/metro-plugin/dist/cjs/compilerCache.cjs')
+  )
+  const cacheDirectory = join(
+    v3Root,
+    `node_modules/.cache/tamagui/metro-compiler/ios/v${METRO_COMPILER_CACHE_VERSION}`
+  )
   const manifestPath = join(cacheDirectory, 'manifest.json')
   if (!existsSync(manifestPath)) {
     throw new Error(`V3 Metro compiler manifest is missing: ${manifestPath}`)
@@ -415,43 +421,13 @@ async function main() {
     throw new Error(`V3 compiler did not lower the corpus: ${JSON.stringify(v3Stats)}`)
   }
 
-  const { compileWithUserBabel } = require(
-    resolve(comparisonRoot, '../compiler/metro-plugin/dist/cjs/babel.cjs')
-  )
-  const requireFromV3 = createRequire(join(v3Root, 'package.json'))
-  const expoMetroConfig = requireFromV3('expo/metro-config')
-  const metroConfig = expoMetroConfig.getDefaultConfig(v3Root)
-  const userTransformOptions = await metroConfig.transformer.getTransformOptions(
-    [join(v3Root, 'index.js')],
-    { dev: false, hot: false, platform: 'ios' },
-    async () => []
-  )
-  const v3Compiled = await compileWithUserBabel(
-    metroConfig.transformer.babelTransformerPath,
-    {
-      filename: sourcePath,
-      src: source,
-      plugins: [],
-      options: {
-        ...userTransformOptions.transform,
-        dev: false,
-        hot: false,
-        platform: 'ios',
-        projectRoot: v3Root,
-        enableBabelRCLookup: true,
-        enableBabelRuntime: true,
-        hermesParser: false,
-        publicPath: '/assets',
-      },
-    }
-  )
-  if (
-    sha256(v3Compiled.code) !== entry.compiledHash ||
-    entry.plan.sourceHash !== entry.compiledHash
-  ) {
-    throw new Error('V3 Babel input does not match the cached compiler plan')
+  // Plans are generated against the raw module source; workers apply them to
+  // the raw bytes before their own Babel pass, so the plan hash must match the
+  // corpus source directly.
+  if (entry.plan.sourceHash !== sourceSha256) {
+    throw new Error('V3 raw source does not match the cached compiler plan')
   }
-  let v3Code = v3Compiled.code
+  let v3Code = source
   for (const edit of [...entry.plan.edits].sort(
     (left, right) => right.start - left.start
   )) {
@@ -497,32 +473,10 @@ async function main() {
       `V3 compiler did not partially lower the dynamic corpus: ${JSON.stringify({ stats: v3DynamicStats, diagnostics: dynamicEntry.diagnostics })}`
     )
   }
-  const v3DynamicCompiled = await compileWithUserBabel(
-    metroConfig.transformer.babelTransformerPath,
-    {
-      filename: dynamicSourcePath,
-      src: dynamicSource,
-      plugins: [],
-      options: {
-        ...userTransformOptions.transform,
-        dev: false,
-        hot: false,
-        platform: 'ios',
-        projectRoot: v3Root,
-        enableBabelRCLookup: true,
-        enableBabelRuntime: true,
-        hermesParser: false,
-        publicPath: '/assets',
-      },
-    }
-  )
-  if (
-    sha256(v3DynamicCompiled.code) !== dynamicEntry.compiledHash ||
-    dynamicEntry.plan.sourceHash !== dynamicEntry.compiledHash
-  ) {
-    throw new Error('V3 dynamic Babel input does not match the cached compiler plan')
+  if (dynamicEntry.plan.sourceHash !== dynamicSourceSha256) {
+    throw new Error('V3 dynamic raw source does not match the cached compiler plan')
   }
-  let v3DynamicCode = v3DynamicCompiled.code
+  let v3DynamicCode = dynamicSource
   for (const edit of [...dynamicEntry.plan.edits].sort(
     (left, right) => right.start - left.start
   )) {
@@ -723,14 +677,13 @@ async function main() {
       v3: {
         generation: manifest.generation,
         sourceHash: dynamicEntry.sourceHash,
-        compiledHash: dynamicEntry.compiledHash,
         loweredOutputSha256: sha256(v3DynamicCode),
         planBlobHash: dynamicDescriptor.blobHash,
         stats: v3DynamicStats,
         diagnostics: dynamicEntry.diagnostics,
         behaviorAssertions: {
-          babelInputMatchesPlanHash:
-            sha256(v3DynamicCompiled.code) === dynamicEntry.plan.sourceHash,
+          planMatchesRawSourceHash:
+            dynamicEntry.plan.sourceHash === dynamicSourceSha256,
           appliedPlanParses: true,
           expectedDirectHostStylesMatched: expectedDynamicDirectHostStyles.length,
           expectedStyledHostStylesMatched: 1,
@@ -738,7 +691,7 @@ async function main() {
           dynamicExpressionArrays: v3DynamicBehavior.expressionArrays,
           dynamicOpacityStyles: v3DynamicBehavior.dynamicOpacityStyles,
           metroFrontendCacheTest:
-            'frontend.test.ts publishes and applies the post-Babel native opacity plan through the Metro cache worker',
+            'frontend.test.ts publishes and applies the raw-source native opacity plan through the Metro cache worker',
           compileRenderUpdateTest:
             'dynamicPartial.native.test.tsx asserts stable host identity, static styles, and opacity 1 to 0.8',
         },
@@ -769,7 +722,6 @@ async function main() {
     v3: {
       generation: manifest.generation,
       sourceHash: entry.sourceHash,
-      compiledHash: entry.compiledHash,
       loweredOutputSha256: v3LoweredOutputSha256,
       planBlobHash: descriptor.blobHash,
       stats: v3Stats,
@@ -784,7 +736,7 @@ async function main() {
       behaviorAssertions: {
         planMatchesSourceHash: entry.sourceHash === sourceSha256,
         planHasLoweredEdits: entry.plan.edits?.length > 0,
-        babelInputMatchesPlanHash: sha256(v3Compiled.code) === entry.plan.sourceHash,
+        planMatchesRawSourceHash: entry.plan.sourceHash === sourceSha256,
         appliedPlanParses: true,
         expectedDirectHostStylesMatched: expectedDirectHostStyles.length,
         expectedStyledHostStylesMatched: 1,
