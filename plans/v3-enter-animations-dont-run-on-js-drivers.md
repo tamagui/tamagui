@@ -111,7 +111,25 @@ click, first frames after the element appears:
 | reanimated | `1, 1, 1 …` | `0, 0, 0.007, 0.038, 0.096 …` |
 
 Tests: `AnimatePresenceEnterExit` and `DialogPresenceCompletion` across all four
-drivers, **48 passed / 0 failed**, covering all six failures.
+drivers, **48 passed / 0 failed**, covering all six failures. Re-run after
+merging `v3-beta` forward: still 48/0.
+
+### Regression check
+
+`directStyle.ts` is shared by every component, so both full matrices were run.
+
+| suite | before this fix | after |
+| --- | --- | --- |
+| animated (css, native, motion, reanimated) | 14 failed / 782 passed | **0 failed / 797 passed** |
+| default | 14 failed / 689 passed | 14 failed / 690 passed |
+
+The animated matrix is now entirely green. The default project's 14 are
+unchanged and none of them are new: seven are the pre-existing set already
+classified in `v3-epoch-pinned-assertion-sweep.md`, and seven are
+`OnLayoutStress`, which are perf gates that only ever fail under load and are
+not judgeable from these runs.
+
+Landed on `v3-beta` as `9ea89944f8`.
 
 ## Original next-step notes, kept for the record
 
