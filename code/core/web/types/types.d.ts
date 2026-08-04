@@ -2,6 +2,7 @@ import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
 import type { CSSProperties, ComponentType, Context, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject } from 'react';
 import type { PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
+import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
 import type { StyleFrontend } from './helpers/styleFrontend';
 import type { CSSColorNames } from './interfaces/CSSColorNames';
 import type { RNOnlyProps } from './interfaces/RNExclusiveTypes';
@@ -337,6 +338,10 @@ export type TamaguiComponentStateRef = {
             focus?: boolean;
         }>;
     };
+    nativeLink?: NativeStyleEngineLinkHandle | null;
+    nativeStyleUpdate?: (next: ThemeState) => boolean;
+    nativeUpdateProxy?: (next: ThemeState) => boolean;
+    nativePushedStates?: Set<string>;
 };
 export type ComponentGroupEmitter = {
     listeners: Set<GroupStateListener>;
@@ -610,6 +615,12 @@ export type UseThemeWithStateProps = ThemeProps & {
     needsUpdate?: () => boolean;
     /** <Variables> inline theme layer: patches merged over the parent theme */
     inlineValues?: Pick<VariablesProps, 'values' | 'themes'>;
+    /**
+     * native fast path (experimental): called on a theme update instead of
+     * re-rendering; return true when the update was committed natively so the
+     * re-render is skipped. never called for forced updates.
+     */
+    nativeUpdate?: (next: ThemeState) => boolean;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S) | S;

@@ -23,6 +23,8 @@ void HybridTamaguiRegistry::loadHybridMethods() {
   HybridTamaguiRegistrySpec::loadHybridMethods();
   registerHybrids(this, [](Prototype& prototype) {
     prototype.registerRawHybridMethod("link", 3, &HybridTamaguiRegistry::link);
+    prototype.registerRawHybridMethod("applyViewStates", 1,
+                                      &HybridTamaguiRegistry::applyViewStates);
   });
 }
 
@@ -112,7 +114,7 @@ double HybridTamaguiRegistry::getMissCount() {
 
 namespace {
 
-using LeafUpdates = std::unordered_map<const ShadowNodeFamily*, folly::dynamic>;
+using LeafUpdates = HybridTamaguiRegistry::LeafUpdates;
 using AffectedNodes =
     std::unordered_map<const ShadowNodeFamily*, std::unordered_set<size_t>>;
 
@@ -157,49 +159,46 @@ std::shared_ptr<ShadowNode> cloneSubtree(const ShadowNode& node,
 
 }  // namespace
 
-void HybridTamaguiRegistry::applyUpdates(jsi::Runtime& rt,
-                                         const std::string* scopeFilter) {
-  LeafUpdates updates;
-  updates.reserve(views_.size());
+// merge base + the named state's props for one view into `out`, syncing the
+// family's native props so React re-commits of unchanged children merge our
+// values instead of resurrecting a stale absorbed node (phase 0: the JS
+// mirror alone provably does not cover this). returns false on a state miss.
+bool HybridTamaguiRegistry::buildViewUpdate(LinkedView& view,
+                                            const std::string& stateName,
+                                            LeafUpdates& out) {
+  folly::dynamic props =
+      view.baseProps.isObject() ? view.baseProps : folly::dynamic::object();
 
-  for (auto& [id, view] : views_) {
-    if (scopeFilter && view.scopeId != *scopeFilter) continue;
-
-    folly::dynamic props =
-        view.baseProps.isObject() ? view.baseProps : folly::dynamic::object();
-
-    if (view.stateProps.isObject()) {
-      const auto* name = activeStateName(view.scopeId);
-      if (!name) continue;
-      auto it = view.stateProps.find(*name);
-      if (it == view.stateProps.items().end()) {
-        missCount_ += 1;
-        continue;
-      }
-      if (props.empty()) {
-        props = it->second;
-      } else {
-        props.update(it->second);
-      }
-    } else if (props.empty()) {
-      continue;
+  if (view.stateProps.isObject()) {
+    auto it = view.stateProps.find(stateName);
+    if (it == view.stateProps.items().end()) {
+      missCount_ += 1;
+      return false;
     }
-
-    // sync the family's native props so React re-commits of unchanged
-    // children merge our values instead of resurrecting a stale absorbed
-    // node (phase 0: the JS mirror alone provably does not cover this)
-    const auto& family = view.node->getFamily();
-    if (family.nativeProps_DEPRECATED) {
-      family.nativeProps_DEPRECATED->update(props);
+    if (props.empty()) {
+      props = it->second;
     } else {
-      family.nativeProps_DEPRECATED = std::make_unique<folly::dynamic>(props);
+      props.update(it->second);
     }
-
-    // the retained node keeps its family alive; unmounted views resolve to
-    // no ancestors during the transaction and are skipped safely
-    updates[&family] = std::move(props);
+  } else if (props.empty()) {
+    return false;
   }
 
+  const auto& family = view.node->getFamily();
+  if (family.nativeProps_DEPRECATED) {
+    family.nativeProps_DEPRECATED->update(props);
+  } else {
+    family.nativeProps_DEPRECATED = std::make_unique<folly::dynamic>(props);
+  }
+
+  // the retained node keeps its family alive; unmounted views resolve to
+  // no ancestors during the transaction and are skipped safely
+  out[&family] = std::move(props);
+  return true;
+}
+
+void HybridTamaguiRegistry::commitUpdates(jsi::Runtime& rt,
+                                          LeafUpdates& updates) {
   if (updates.empty()) return;
 
   auto binding = UIManagerBinding::getBinding(rt);
@@ -220,6 +219,72 @@ void HybridTamaguiRegistry::applyUpdates(jsi::Runtime& rt,
           commitCount_ += 1;
         }
       });
+}
+
+void HybridTamaguiRegistry::applyUpdates(jsi::Runtime& rt,
+                                         const std::string* scopeFilter) {
+  LeafUpdates updates;
+  updates.reserve(views_.size());
+
+  for (auto& [id, view] : views_) {
+    if (scopeFilter && view.scopeId != *scopeFilter) continue;
+    // runtime-managed views (applyViewStates) resolve state per view; scope
+    // broadcasts must not fight their controller
+    if (!view.activeState.empty()) continue;
+
+    const auto* name =
+        view.stateProps.isObject() ? activeStateName(view.scopeId) : nullptr;
+    if (view.stateProps.isObject() && !name) continue;
+
+    buildViewUpdate(view, name ? *name : "", updates);
+  }
+
+  commitUpdates(rt, updates);
+}
+
+jsi::Value HybridTamaguiRegistry::applyViewStates(jsi::Runtime& rt,
+                                                  const jsi::Value&,
+                                                  const jsi::Value* args,
+                                                  size_t count) {
+  if (count < 1 || !args[0].isObject()) {
+    throw jsi::JSError(rt, "applyViewStates(entries) requires an array");
+  }
+  runtime_ = &rt;
+
+  auto entries = jsi::dynamicFromValue(rt, args[0]);
+  if (!entries.isArray()) {
+    throw jsi::JSError(rt, "applyViewStates(entries) requires an array");
+  }
+
+  LeafUpdates updates;
+  updates.reserve(entries.size());
+
+  for (auto& entry : entries) {
+    if (!entry.isObject()) continue;
+    auto idIt = entry.find("id");
+    auto stateIt = entry.find("state");
+    if (idIt == entry.items().end() || stateIt == entry.items().end()) continue;
+
+    auto viewIt = views_.find(idIt->second.asDouble());
+    // unlinked between the JS pass and this call: stale entry, not a miss
+    if (viewIt == views_.end()) continue;
+    auto& view = viewIt->second;
+
+    const std::string stateName = stateIt->second.asString();
+    auto props = entry.getDefault("props", nullptr);
+    if (props.isObject()) {
+      if (!view.stateProps.isObject()) {
+        view.stateProps = folly::dynamic::object();
+      }
+      view.stateProps[stateName] = std::move(props);
+    }
+    view.activeState = stateName;
+
+    buildViewUpdate(view, stateName, updates);
+  }
+
+  commitUpdates(rt, updates);
+  return jsi::Value::undefined();
 }
 
 }  // namespace margelo::nitro::tamagui::registry

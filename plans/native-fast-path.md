@@ -110,6 +110,33 @@ statically extractable element with themed values, emit the resolved matrix:
   Widening bailouts (pre-computing both ternary branches) is future work, not
   v1.
 
+What changes, concretely (today's native output verified in
+`code/compiler/static-tests/tests/themedFlatten.native.test.tsx`):
+
+```tsx
+// source
+<Square bg="$background" borderColor="$color" width={40} />
+
+// today, uncompiled: styled -> createComponent -> useThemeWithState hook,
+// every themed component re-renders on any theme change (measured:
+// 125-170ms for 500 components per sub-theme toggle)
+
+// today, compiled (v3 native flattening): flattened element, but the themed
+// key becomes a live hook read - the "one theme value forces a hook" state:
+const _theme = useTheme()
+<View style={{ width: 40, backgroundColor: _theme["background"]?.get(), ... }} />
+// cheaper per render, but still N re-renders per theme change
+
+// fast path, runtime mode (built): uncompiled components intercept the theme
+// listener, commit natively, skip the re-render entirely
+
+// fast path, compiler mode (next): flattened element + link with the resolved
+// per-theme matrix, NO hook at all:
+<View ref={link({ state: { light: {...}, dark: {...}, light_red: {...} } })}
+      style={{ width: 40 }} />
+// theme change = one engine commit, zero JS per component
+```
+
 ### Runtime contract (JS)
 
 - A minimal host component per element type (view/text) that renders the RN
@@ -124,6 +151,39 @@ statically extractable element with themed values, emit the resolved matrix:
 - `Theme` publishes scope changes to the registry. Without the native module
   or off the fast path, everything behaves exactly as today. One fallback
   boundary, not per-feature forks.
+
+#### Runtime integration mode (built 2026-08-04, the beta path)
+
+Two engine modes share the commit tail. The compiler mode (scope broadcast +
+pre-filled state tables via `setStateName`) is the end state. The runtime mode
+ships first because it needs no compiler work and keeps every Tamagui
+resolution semantic (nesting, sub-themes, variants) in the code that already
+implements them:
+
+- Core (`@tamagui/web`) exposes `setNativeStyleEngine(engine)`; the engine
+  interface matches `@tamagui/native-registry` exactly, so wiring is
+  `setNativeStyleEngine(registry)`. Core has no native dependency; web never
+  sets an engine. Enabling the engine IS the experimental flag.
+- Eligible leaves (not animated, not HOC, no group, not passThrough) link
+  their host at mount with empty slots and register a per-render
+  `nativeStyleUpdate` closure.
+- The theme subscription callback in `useThemeState` calls
+  `props.nativeUpdate(next)` INSTEAD of forcing a re-render when it returns
+  true. State maps update first, so any later natural render resolves the
+  same values (mirror consistency by construction). Forced updates
+  (`forceUpdateThemes`) always re-render.
+- The updater re-runs `getSplitStyles` with the next theme (proxied via
+  `getThemeProxied`, cache-hit per theme object) and queues
+  `{id, state: themeName, props: style}`; a microtask flush folds the whole
+  cascade into ONE `applyViewStates` call and one ShadowTree commit.
+- Lazy warm tables: each pushed theme name is cached engine-side per view.
+  Re-toggling an already-pushed theme sends `{id, state}` only — no style
+  computation, zero JS beyond the queue. The pushed-set resets on every
+  React render so no cached entry can outlive the props/state that produced
+  it. This makes repeated toggles (the common case: 2-3 themes) converge to
+  compiler-mode performance without a compiler.
+- Views with a per-view active state are skipped by scope broadcasts, so the
+  two modes cannot fight over a view.
 
 ### Lifetime and threading rules (the old branch's sore spots, fixed by design)
 
@@ -236,6 +296,37 @@ commits can color correctly):
   accumulate, so every state entry for a view must emit the SAME key set
   (a key present in one theme and absent in another would go stale). The
   emitter must union keys across states.
+
+#### Benchmark results (2026-08-04, iOS sim, dev build, `NativeRegistryBenchCase`)
+
+500 squares, each with two theme-driven colors (`$background`, `$color`) plus
+static dims, toggling the `red`/`green` sub-themes (never light/dark, so
+DynamicColorIOS cannot flatter the baseline). 20 measured toggles after 5
+warmups, medians. "jsDone" is trigger → last React commit (React Profiler
+timestamp) or the fully-synchronous engine call; it has no vsync floor.
+
+| scenario | jsDone/toggle | React commits | control |
+| --- | --- | --- | --- |
+| tamagui today (unmemoized children) | 125–170ms | 2 per toggle | square-0 profiler: renders 2x per toggle |
+| rn floor (inline host views, setState) | 50ms | 1 per toggle | — |
+| native registry (pre-filled state tables) | 15.7–20.8ms | 0 | engine commits == toggles, misses 0 |
+
+- The native figure is all-inclusive and synchronous: props parse, tree clone,
+  Yoga layout, and sync mount for all 500 views inside one
+  `ShadowTree::commit`. The React paths pay their mount off the measured JS
+  timeline on top of the numbers shown.
+- Native is ~6x faster than today's sub-theme change and ~2.4x faster than the
+  cheapest possible React re-render, with zero React work.
+- Honesty notes: dev-mode React overhead inflates the React paths (a release
+  run is still owed); the first harness run measured a silent bail-out
+  (squares never re-rendered) and looked 12x better for the baseline than
+  reality — the per-square Profiler control is what caught it. Variance
+  across app sessions was 125–170ms for the baseline; the native path held
+  15.7–20.8ms.
+- Amusing control that mattered: with the iOS sim in dark appearance, the
+  baseline grid rendered invisibly (DynamicColorIOS resolves by OS scheme,
+  and the harness forces light sub-themes). Visual verification needs the sim
+  in light appearance.
 
 ### Phase 1: engine + compiler, themes only
 

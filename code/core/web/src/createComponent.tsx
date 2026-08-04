@@ -22,6 +22,12 @@ import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandlin
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import {
+  getNativeStyleEngine,
+  queueNativeViewState,
+  updateNativeStyleLink,
+} from './helpers/nativeStyleEngine'
+import { getThemeProxied } from './hooks/getThemeProxied'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
@@ -698,6 +704,10 @@ export function createComponent<
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
     if (process.env.TAMAGUI_TARGET === 'native') {
       themeStateProps.deopt = willBeAnimated
+      // native fast path (experimental): stable proxy so the theme
+      // subscription can hand updates to the per-render styled updater
+      themeStateProps.nativeUpdate = stateRef.current.nativeUpdateProxy ||= (next) =>
+        stateRef.current.nativeStyleUpdate?.(next) ?? false
     }
 
     if (process.env.NODE_ENV === 'development') {
@@ -822,6 +832,65 @@ export function createComponent<
     const isPassthrough = !splitStyles
 
     // splitStyles === null === passThrough
+
+    // native fast path (experimental, plans/native-fast-path.md): eligible
+    // leaves commit theme-driven style updates straight to the native tree
+    // and skip the re-render. eligibility is re-evaluated every render; the
+    // pushed-state cache resets every render so no native state entry can
+    // outlive the props/state that produced it. repeated toggles between
+    // already-pushed themes are pure native (no style computation at all).
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      const nativeEngine = getNativeStyleEngine()
+      const canNativeUpdate =
+        !!nativeEngine && !isPassthrough && !isHOC && !willBeAnimated && !groupName
+      stateRef.current.nativePushedStates = canNativeUpdate ? new Set() : undefined
+      stateRef.current.nativeStyleUpdate = canNativeUpdate
+        ? (nextTheme) => {
+            const handle = stateRef.current.nativeLink
+            if (!handle || !nextTheme.theme) return false
+
+            const stateName = nextTheme.name
+            const pushed = stateRef.current.nativePushedStates!
+            if (pushed.has(stateName)) {
+              queueNativeViewState({ id: handle.id, state: stateName })
+              return true
+            }
+
+            const proxiedTheme = getThemeProxied(
+              themeStateProps,
+              nextTheme,
+              { current: null },
+              { current: null }
+            )
+            const nextStyles = getSplitStyles(
+              props,
+              staticConfig,
+              proxiedTheme,
+              stateName,
+              state,
+              styleProps,
+              null,
+              componentContext,
+              allGroupContexts,
+              elementType,
+              startedUnhydrated,
+              debugProp,
+              animationDriver
+            )
+            if (!nextStyles?.style) return false
+
+            pushed.add(stateName)
+            queueNativeViewState({
+              id: handle.id,
+              state: stateName,
+              props: nativeEngine.processStyleColors(
+                nextStyles.style as Record<string, unknown>
+              ),
+            })
+            return true
+          }
+        : undefined
+    }
 
     // Merge style-resolved context overrides (issues #3670, #3676)
     // When styles set values that are also context keys (from variants, pseudos, media, etc),
@@ -1269,7 +1338,12 @@ export function createComponent<
 
     if (!stateRef.current.composedRef) {
       stateRef.current.composedRef = composeRefs<TamaguiElement>(
-        (x) => (stateRef.current.host = x as TamaguiElement),
+        (x) => {
+          stateRef.current.host = x as TamaguiElement
+          if (process.env.TAMAGUI_TARGET === 'native') {
+            updateNativeStyleLink(stateRef.current, x)
+          }
+        },
         forwardedRef,
         setElementProps,
         animatedRef

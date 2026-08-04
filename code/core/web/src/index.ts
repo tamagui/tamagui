@@ -11,6 +11,12 @@ export * from './helpers/getCSSStylesAtomic'
 export * from './helpers/getExpandedShorthands'
 export * from './helpers/getShorthandValue'
 export * from './helpers/getSplitStyles'
+export {
+  setNativeStyleEngine,
+  getNativeStyleEngine,
+  setNativeStyleEngineFlushListener,
+  type NativeStyleEngine,
+} from './helpers/nativeStyleEngine'
 export * from './helpers/getThemeCSSRules'
 export * from './helpers/variables'
 export * from './helpers/getVariantExtras'

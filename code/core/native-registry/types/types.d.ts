@@ -22,5 +22,25 @@ export interface RegistryStats {
 }
 /** Returned by link(); call to unlink. Safe to call more than once. */
 export type Unlink = () => void;
+/**
+* Handle for a linked view. `id` addresses the view in batched per-view
+* operations (applyViewStates); `unlink` removes it. null when the ref had
+* no shadow node (never mounted) or the engine is unavailable (web).
+*/
+export interface LinkHandle {
+	id: number;
+	unlink: Unlink;
+}
+/**
+* One entry of a batched per-view state update. When `props` is present it
+* is merged into the view's state table under `state` first (lazy warm-up
+* for runtime integrations); the view's active state then becomes `state`
+* and all entries commit natively in one transaction.
+*/
+export interface ViewStateUpdate {
+	id: number;
+	state: string;
+	props?: Record<string, unknown>;
+}
 
 //# sourceMappingURL=types.d.ts.map

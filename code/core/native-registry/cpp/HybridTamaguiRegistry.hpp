@@ -38,6 +38,10 @@ namespace jsi = facebook::jsi;
  */
 class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
  public:
+  using LeafUpdates =
+      std::unordered_map<const facebook::react::ShadowNodeFamily*,
+                         folly::dynamic>;
+
   HybridTamaguiRegistry() : HybridObject(TAG) {}
 
   void loadHybridMethods() override;
@@ -59,14 +63,33 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
     std::string scopeId;
     folly::dynamic baseProps;   // object, or nullptr when absent
     folly::dynamic stateProps;  // stateName -> props object, or nullptr
+    // per-view active state (runtime mode). empty = follow scope state.
+    // runtime integrations resolve state names per view (nested themes);
+    // scope broadcast stays for compiler-emitted tables.
+    std::string activeState;
   };
 
   // raw JSI: link(shadowNode, slots, scopeId) -> id
   jsi::Value link(jsi::Runtime& rt, const jsi::Value& thisValue,
                   const jsi::Value* args, size_t count);
 
+  // raw JSI: applyViewStates([{id, state, props?}]) -> void
+  // batched per-view state selection: for each entry, `props` (when given)
+  // is merged into the view's state table under `state`, the view's active
+  // state becomes `state`, and all changed views commit in ONE transaction.
+  jsi::Value applyViewStates(jsi::Runtime& rt, const jsi::Value& thisValue,
+                             const jsi::Value* args, size_t count);
+
   // resolve the active state name for a scope: scope entry, else root
   const std::string* activeStateName(const std::string& scopeId) const;
+
+  // merge base + named state props for one view into `out` (with native-props
+  // sync); returns false on a state miss
+  bool buildViewUpdate(LinkedView& view, const std::string& stateName,
+                       LeafUpdates& out);
+
+  // one race-safe in-transaction commit for all built updates
+  void commitUpdates(jsi::Runtime& rt, LeafUpdates& updates);
 
   // commit current props for all views (scopeFilter == nullptr) or one scope
   void applyUpdates(jsi::Runtime& rt, const std::string* scopeFilter);

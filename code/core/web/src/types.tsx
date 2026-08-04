@@ -21,6 +21,7 @@ import type {
   ViewStyle,
 } from 'react-native'
 
+import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine'
 import type { StyleFrontend } from './helpers/styleFrontend'
 import type { CSSColorNames } from './interfaces/CSSColorNames'
 import type { RNOnlyProps } from './interfaces/RNExclusiveTypes'
@@ -653,6 +654,16 @@ export type TamaguiComponentStateRef = {
     focus?: boolean
     groups?: Record<string, { hover?: boolean; press?: boolean; focus?: boolean }>
   }
+
+  // native fast path (experimental): engine link handle for the host view,
+  // the per-render themed-style updater, its stable proxy handed to
+  // useThemeState, and the set of theme names already pushed to the engine
+  // since the last render (reset every render, so cached native state props
+  // can never outlive the props/state that produced them)
+  nativeLink?: NativeStyleEngineLinkHandle | null
+  nativeStyleUpdate?: (next: ThemeState) => boolean
+  nativeUpdateProxy?: (next: ThemeState) => boolean
+  nativePushedStates?: Set<string>
 }
 
 export type ComponentGroupEmitter = {
@@ -1108,6 +1119,12 @@ export type UseThemeWithStateProps = ThemeProps & {
   needsUpdate?: () => boolean
   /** <Variables> inline theme layer: patches merged over the parent theme */
   inlineValues?: Pick<VariablesProps, 'values' | 'themes'>
+  /**
+   * native fast path (experimental): called on a theme update instead of
+   * re-rendering; return true when the update was committed natively so the
+   * re-render is skipped. never called for forced updates.
+   */
+  nativeUpdate?: (next: ThemeState) => boolean
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]

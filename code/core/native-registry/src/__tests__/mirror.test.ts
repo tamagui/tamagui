@@ -64,9 +64,7 @@ describe('resolveSlots', () => {
 })
 
 describe('web fallback', () => {
-  test('link is a no-op returning a callable unlink', () => {
-    const unlink = link({}, { base: { padding: 1 } })
-    expect(() => unlink()).not.toThrow()
-    expect(() => unlink()).not.toThrow()
+  test('link returns null (no engine on web)', () => {
+    expect(link({}, { base: { padding: 1 } })).toBeNull()
   })
 })

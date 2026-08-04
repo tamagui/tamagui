@@ -5,7 +5,13 @@
  */
 import { NitroModules } from 'react-native-nitro-modules'
 import type { TamaguiRegistry } from './specs/TamaguiRegistry.nitro'
-import type { RegistryStats, Unlink, ViewSlots } from './types'
+import type {
+  LinkHandle,
+  RegistryStats,
+  Unlink,
+  ViewSlots,
+  ViewStateUpdate,
+} from './types'
 import {
   ROOT_SCOPE,
   getMirroredStateName,
@@ -14,13 +20,20 @@ import {
 } from './mirror'
 import { processStyleColors } from './processStyleColors'
 
-export type { RegistryStats, Unlink, ViewSlots } from './types'
+export type {
+  LinkHandle,
+  RegistryStats,
+  Unlink,
+  ViewSlots,
+  ViewStateUpdate,
+} from './types'
 export { ROOT_SCOPE, getMirroredStateName } from './mirror'
 export { processStyleColors } from './processStyleColors'
 
-/** Full engine surface: typed Nitro methods plus the raw-JSI link. */
+/** Full engine surface: typed Nitro methods plus the raw-JSI methods. */
 interface Engine extends TamaguiRegistry {
   link(shadowNode: unknown, slots: object, scopeId: string): number
+  applyViewStates(entries: ViewStateUpdate[]): void
 }
 
 let engine: Engine | null = null
@@ -58,12 +71,16 @@ function getShadowNode(ref: unknown): unknown | null {
 
 /**
  * Link a mounted view to the engine. Captures the ShadowNode once, returns
- * an unlink keyed by the engine-issued id: unlink never re-derives anything
+ * a handle keyed by the engine-issued id: unlink never re-derives anything
  * from the ref, so a torn-down ref cannot leave a stale entry behind.
  */
-export function link(ref: unknown, slots: ViewSlots, scopeId: string = ROOT_SCOPE): Unlink {
+export function link(
+  ref: unknown,
+  slots: ViewSlots,
+  scopeId: string = ROOT_SCOPE
+): LinkHandle | null {
   const node = getShadowNode(ref)
-  if (!node) return noopUnlink
+  if (!node) return null
 
   const e = getEngine()
   const prepared: Record<string, unknown> = {}
@@ -78,14 +95,25 @@ export function link(ref: unknown, slots: ViewSlots, scopeId: string = ROOT_SCOP
 
   const id = e.link(node, prepared, scopeId)
   let unlinked = false
-  return () => {
-    if (unlinked) return
-    unlinked = true
-    e.unlink(id)
+  return {
+    id,
+    unlink: () => {
+      if (unlinked) return
+      unlinked = true
+      e.unlink(id)
+    },
   }
 }
 
-const noopUnlink: Unlink = () => {}
+/**
+ * Batched per-view state selection: cold entries carry `props` (computed by
+ * the caller, colors already processed via processStyleColors), warm entries
+ * just name the state. One native commit for the whole batch.
+ */
+export function applyViewStates(entries: ViewStateUpdate[]): void {
+  if (entries.length === 0) return
+  getEngine().applyViewStates(entries)
+}
 
 /**
  * Set the active state name (e.g. theme name) for a scope and commit the

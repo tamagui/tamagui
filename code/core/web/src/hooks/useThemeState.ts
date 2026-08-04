@@ -170,10 +170,18 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
       if (!r.unsubscribe) {
         const pid = r.parentId
         const sid = r.id
-        const cb = () => {
+        const cb = (forced?: boolean) => {
           const next = getSnapshotImpl(r)
           if (next !== r.lastSnap) {
             r.lastSnap = next
+            // native fast path: the component can commit the themed styles
+            // straight to the native tree and skip this re-render. state maps
+            // are already updated above, so a later natural render resolves
+            // the exact same values (mirror consistency). forced updates
+            // (config changes) always re-render.
+            if (!forced && r.props.nativeUpdate?.(next)) {
+              return
+            }
             forceUpdate()
           }
         }
@@ -181,8 +189,9 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme con
         listenersByParent[pid] = listenersByParent[pid] || new Set()
         listenersByParent[pid].add(sid)
         allListeners.set(sid, () => {
-          PendingUpdate.set(sid, shouldForce ? 'force' : true)
-          cb()
+          const forced = shouldForce
+          PendingUpdate.set(sid, forced ? 'force' : true)
+          cb(forced)
         })
         r.subscribedParentId = pid
         r.unsubscribe = () => {

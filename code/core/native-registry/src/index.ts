@@ -3,7 +3,12 @@
  * (or when the native module is absent) the mirror still tracks scope state
  * so shared code can resolve slots, but nothing links and nothing commits.
  */
-import type { RegistryStats, Unlink, ViewSlots } from './types'
+import type {
+  LinkHandle,
+  RegistryStats,
+  ViewSlots,
+  ViewStateUpdate,
+} from './types'
 import {
   ROOT_SCOPE,
   getMirroredStateName,
@@ -11,18 +16,28 @@ import {
   setMirroredStateName,
 } from './mirror'
 
-export type { RegistryStats, Unlink, ViewSlots } from './types'
+export type {
+  LinkHandle,
+  RegistryStats,
+  Unlink,
+  ViewSlots,
+  ViewStateUpdate,
+} from './types'
 export { ROOT_SCOPE, getMirroredStateName } from './mirror'
 
 export function isAvailable(): boolean {
   return false
 }
 
-export function link(_ref: unknown, _slots: ViewSlots, _scopeId?: string): Unlink {
-  return noopUnlink
+export function link(
+  _ref: unknown,
+  _slots: ViewSlots,
+  _scopeId?: string
+): LinkHandle | null {
+  return null
 }
 
-const noopUnlink: Unlink = () => {}
+export function applyViewStates(_entries: ViewStateUpdate[]): void {}
 
 export function setStateName(stateName: string, scopeId: string = ROOT_SCOPE): void {
   setMirroredStateName(scopeId, stateName)

@@ -43,7 +43,7 @@ function useLinked(slots: ViewSlots) {
   return {
     ref: (instance: unknown) => {
       unlinkRef.current?.()
-      unlinkRef.current = instance ? link(instance, slots) : null
+      unlinkRef.current = instance ? (link(instance, slots)?.unlink ?? null) : null
     },
     unlink: () => {
       unlinkRef.current?.()
