@@ -1,5 +1,25 @@
 # Android verdict on a8d156b150
 
+## Pre-batch baseline on 077ab3cb2f
+
+The temporary `v3-android-baseline` branch triggered Detox run `30912958881`
+at the exact pre-batch SHA `077ab3cb2f4da52bb475d7a796fbb8330f67f0e0`.
+The Android jobs actually ran: the build passed, Android Detox failed, and the
+suite tally was `8 failed, 3 skipped, 23 passed, 31 of 34`.
+
+All five failures still present on 41af were already failing before the batch:
+`Accordion`, `GroupPressTransitionMatrix`, `NativeMixedDriver`, `PointerEvents`,
+and `PressStyleNative.noRngh`. The baseline additionally failed
+`CompilerExtraction`, `CompilerTernaryActive`, and `ThemeChangeBasic`, all of
+which are green on the current candidate. The batch therefore did not create
+any of the current stable failures and fixed three baseline failures.
+
+`PressStyleScrollStuck` passed the baseline in 31.995 seconds and passed again
+on 41af, leaving its d371 failure as a single flaky observation rather than a
+regression. `AdaptLiveSlotSpike` also passed the baseline. The temporary branch
+was deleted after the result was recorded. Its failed log was fetched once to
+`/tmp/android-baseline-30912958881-failed.log`.
+
 ## Workflow-filter run on 41af737b54
 
 Detox run `30909721267` completed with the Android build green and exactly five
