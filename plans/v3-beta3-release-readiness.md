@@ -21,11 +21,26 @@ numbers in T7 do not support a release claim because they measured an unlowered 
 | In progress | a2946 | `expo export:embed`, which Xcode Release uses, ships compiled-native output unlowered. The Metro plugin planned from an approximate Babel pass, then silently discarded the plan when Expo-only `customTransformOptions` made the real worker bytes differ. This is the third defect of this class. T7 measured a path that was never engaged, so compiled-native performance claims are unsupported. | A production native export proves lowering is present, followed by the compiled-native skin acceptance check. |
 | Pending decision | a2946, then a2943 | `compilerHost` resolves theme values against the first theme during native flattening. Theme switching therefore breaks on fully flattened components. This is a correctness bug. | Fix and native theme-switch proof, or an explicit coordinator block-versus-document decision. |
 | In progress | a2949 | Checks are red at `4ac01cd6e7`. The failures are v6 fixture-regeneration debt predating the sync: `flatten.native.test.tsx` changed its theme background from `hsla(0,0%,8%,1)` to `#030712`, and `@tamagui/cli`'s `to-tailwind-default-config` bundle still contains grammar names removed by `d7dd3efa06`. | Validate the source change, regenerate the derived fixtures, then pass branch Checks. |
-| In progress | a2952 | The Expo starter exports successfully but its first web render reaches the Expo error boundary with `Cannot read properties of undefined (reading 'val')`. This reproduces at the unsynced `4ac01cd6e7` baseline as well as a2949's sync branch. Browser stack mapping identifies the starter's remaining v5 reads, `theme.red10.val` and `theme.borderColor.val`, while it loads config v6. | `code/starters/expo-router` `bun run test:web` passes from a fresh export and browser hydration. |
-| Validation pending | a2952, cut action by Nate | `create-tamagui` currently clones the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests and v2 dependencies. Pointing it at moving `v3-beta` is unsafe because that branch is permitted to be red. The local fix gives both templates one release-ref setting and replaces cache rebasing with exact fetch and detached checkout. | Prove initial and cached clones accept a tag, then set `tamaguiStarterReleaseRef` in `code/core/create-tamagui/src/templates.ts` to the frozen beta 3 ref at cut time. Do not create the ref before the owner cut. |
+| Cut action pending | a2952, cut action by Nate | `create-tamagui` currently clones the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests and v2 dependencies. Pointing it at moving `v3-beta` is unsafe because that branch is permitted to be red. Its old shallow cached update used `git pull --rebase`: moving from one tag to another replayed the old tag commit and missed the requested ref, while Git could autostash edits inside the cache. The replacement has one shared release-ref setting and uses only exact fetch plus detached checkout. A throwaway Git probe landed both an initial and updated cached clone exactly on their requested tags, with no rebase or autostash path left. | Set `tamaguiStarterReleaseRef` in `code/core/create-tamagui/src/templates.ts` to the frozen beta 3 ref at cut time. Do not create the ref before the owner cut. |
 | Pending, lowest compiler priority | a2946 | V3 refuses to compile conditional font variants as `local/dynamic-style-value` on web and native, where v2 lowered each branch. `fonts.web.test.tsx` pins the regression so it stays visible. | Restore branch lowering or make an explicit release decision. |
 
 ## Fixed in beta 3
+
+### Expo starter first render and native smoke
+
+The Expo starter's first web render reached the error boundary with
+`Cannot read properties of undefined (reading 'val')` on both the unsynced
+`4ac01cd6e7` baseline and a2949's sync branch. It still read v5 theme keys
+`red10` and `borderColor` while loading config v6. The web starter now uses
+`color9` and `border-color`; a fresh static export, served artifact, and browser
+hydration pass.
+
+The native smoke test also searched for a `toast-title` test ID that no component
+emitted and expected an animated dismissal to unmount synchronously. It now presses
+the real Button handlers, observes the rendered Toast text, and verifies dismissal
+marks the live Toast deleted. The production iOS Expo export and interaction pass.
+
+Owner: a2952. Status: fixed and locally validated, pending commit.
 
 ### Styled skin package exports
 
@@ -71,12 +86,12 @@ global TypeScript and was not a valid verdict. After `bun install --frozen-lockf
 
 | Surface | Test | Status |
 | --- | --- | --- |
-| Expo Router starter, web | Static Expo export, served artifact, browser hydration and themed style | Failing before hydration; fix in progress |
-| Expo Router starter, native | Production iOS Expo export plus rendered Toast interaction | Pending |
+| Expo Router starter, web | Static Expo export, served artifact, browser hydration and themed style | Passed after v6 theme-key fix |
+| Expo Router starter, native | Production iOS Expo export plus rendered Toast interaction | Passed after replacing the false Toast assertions |
 | Remix starter | Typecheck and Vite production build | Pending |
 | Blank web registry consumer | Install generated skin, drift check, typecheck, production browser smoke | Pending |
 | Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Pending |
-| `create-tamagui` cached clone | Initial clone and repeat/update clone from frozen tag | Pending |
+| `create-tamagui` cached clone | Initial clone and repeat/update clone from frozen tag | Passed in throwaway Git repositories; cut ref remains an owner action |
 
 The v3 branch no longer has the T3 placeholder test scripts. Expo, Remix, and both blank
 registry fixtures contain real build or interaction commands. The published CLI still
