@@ -93,6 +93,66 @@ Two files, both at the source rather than at the failure site.
 Verified after the fix: node unmounts, `borderRadius: 9`, and the transform array
 is `[{translateX:0},{translateY:10},{scale:0.95}]`, all numeric.
 
+## How wide is the inline-style path
+
+Worth knowing before judging the blast radius, because "animated components" is
+not the whole answer. `getSplitStyles.tsx:345` sets
+`shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClass`, and
+`useComponentState.ts:273` turns `noClass` on for:
+
+- an animated component once hydrated **when the driver's output is not css**
+  (so native, motion and reanimated, but not the css driver);
+- `disableClassName`, or `forceStyle`;
+- a component whose `staticConfig` does not accept a className;
+- plus `getSplitStyles.tsx:363/581`, a raw `className` prop or a
+  `passthroughClassName` from a styled frontend.
+
+So the unresolved `borderRadius` reached motion and reanimated too, not only the
+native driver. Those two did not hang, because only the native driver waits on a
+per-key completion promise, but they were still handed the raw token. Whether
+they rendered the wrong radius is **not yet measured**; the css-vs-native
+computed-style comparison in this doc covers only native.
+
+The plain web path is unaffected: an unanimated component accepting classNames
+still goes through the class path, which resolved correctly all along.
+
+### The audit to run when the machine is free
+
+Render one usecase carrying many token-valued style props, load it under
+`animationDriver=css` and again under `native`/`motion`/`reanimated`, and diff
+`getComputedStyle` across the drivers. Any property that differs is another
+value the inline path is failing to resolve. This is the same shape as the probe
+that found the radius, and it is the honest way to answer "what else is wrong",
+rather than reading the emit branches and guessing. `webShadowParts` and
+`webTextShadowParts` are the first suspects: they resolve the token but then
+`merge()` without the numeric coercion the other branches apply.
+
+## Did anything depend on the old regex?
+
+No, checked. `/(-?(?:\d+\.?\d*|\.\d+))(deg|%|px)?/` replaces a pattern that read
+`"1.5deg"` as `5`, which is a latent bug independent of the NaN hang. A repo-wide
+search for fractional degree values (positive control: the pattern matches
+`"1.5deg"` and correctly ignores `"45deg"`) found three, none of them a problem:
+
+- `tamagui.dev/.../HomeHero.tsx:119` `rotate="0.5deg"` sits inside a
+  commented-out block.
+- `tamagui.dev/.../DocSearch.tsx:124` is a CSS gradient string, not a style prop.
+- `tamagui.dev/.../ColorPicker.tsx:277` `rotateX="0.001deg"` is live. The old
+  regex read it as `1deg`. It is a static View inside a `Popover.Trigger`, so it
+  most likely never reached this driver path at all.
+
+Nothing in `code/ui`, `code/core` or `code/kitchen-sink` uses a fractional
+degree, so no test encoded the broken behavior.
+
+## Probably a tenth instance
+
+`SheetSnapPointsFit.animated.test.tsx:487` is `animated-native` only and was in
+the group a2949 could not attribute. Despite the filename it is a **Dialog**
+test, "dialog shows as dialog on large screens", and it fails at
+`await expect(dialogContent).not.toBeVisible()` after clicking a close button:
+the same signature as the other nine. INFERRED from reading the test, not yet
+confirmed by running it.
+
 ## Still open
 
 - **Full-suite validation has NOT run.** The fix is verified by runtime probe on
