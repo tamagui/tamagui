@@ -144,7 +144,11 @@ worker/hash split, so it never had this defect.
 
 The campaign plan's T7 numbers (v3 compiled beats v2.4.6 compiled: group 19.3
 vs 43.8, heavy 18.8 vs 24.9, animated 15.8 vs 21.5) are NOT invalidated by the
-Metro delivery defect.
+Metro delivery defect. But state the scope precisely: **T7 is a WEB result.
+Web compiled is measured and stands; native compiled has NEVER been validly
+measured and stays unmeasured until the gate re-run below.** T7 ran through
+vite, the toolchain that never had the defect, so it validates the web
+compiled path only. Do not quote T7 as the native perf story.
 
 - Build flow (READ from `code/comparisons/output/benchmarks.json` metadata and
   `run-benchmarks.ts` / `tamagui-bench/vite.config.ts`): T7 ran 2026-07-19 on
