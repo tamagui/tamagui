@@ -16,10 +16,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 function pinBentoRef(bentoPath, silent) {
   const ref = process.env.TAMAGUI_BENTO_REF
   if (!bentoPath || !ref || !existsSync(resolve(bentoPath, '.git'))) return
-  execFileSync('git', ['-C', bentoPath, 'fetch', '--quiet', 'origin', ref], { stdio: 'pipe' })
-  execFileSync('git', ['-C', bentoPath, 'checkout', '--quiet', '--detach', 'FETCH_HEAD'], {
+  execFileSync('git', ['-C', bentoPath, 'fetch', '--quiet', 'origin', ref], {
     stdio: 'pipe',
   })
+  execFileSync(
+    'git',
+    ['-C', bentoPath, 'checkout', '--quiet', '--detach', 'FETCH_HEAD'],
+    {
+      stdio: 'pipe',
+    }
+  )
   if (!silent) console.info(`Pinned bento to ref "${ref}" at ${bentoPath}`)
 }
 

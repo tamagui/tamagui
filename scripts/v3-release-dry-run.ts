@@ -700,7 +700,8 @@ async function main(): Promise<void> {
     for (const specifier of specifiers) {
       await runProbe(consumerDir, 'esm', specifier)
       probes.push({ package: pkg.name, condition: 'esm', specifier })
-      const exportKey = specifier === pkg.name ? '.' : `.${specifier.slice(pkg.name.length)}`
+      const exportKey =
+        specifier === pkg.name ? '.' : `.${specifier.slice(pkg.name.length)}`
       const exports = manifest.exports
       const exportValue =
         exports && typeof exports === 'object' && !Array.isArray(exports)
