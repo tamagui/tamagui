@@ -531,6 +531,17 @@ explicit bare token that it aliased. In the default config that value is `4`.
 <XStack gap="4" p="4" />
 ```
 
+Search both code and config files:
+
+```bash
+rg "\$true|true:" tamagui.config.* src code
+```
+
+Only replace token keys. Boolean variant values like `circular` or `unstyled={false}`
+are unrelated.
+
+## 5. Button and Input size values changed meaning
+
 Component `size` still takes the same names, but controls and shapes resolve their
 frame differently. `Button` and `Input` use a control-height ramp for the frame,
 while padding, radius, text, and icon sizing continue to use your config scales.
@@ -556,8 +567,10 @@ v6 config, `<Square size="5" />` is therefore 20 px while
 
 Earlier v3 betas accidentally resolved explicit Button and Input sizes through
 the v6 spacing scale. That made `size="4"` 16 px and `size="3"` 12 px, shorter
-than their text. If you compensated by selecting a much larger key, remove that
-workaround: `size="11"` now means the v2-compatible 124 px control again.
+than their text. V2 users do not need to change these props. If you adopted an
+earlier v3 beta and compensated by using `size="11"` for a normal 44 px control,
+remove that workaround: `size="11"` now means 124 px, while `size="4"` or no
+size prop gives you 44 px.
 
 Omitting `size` (or passing `true`) selects the `4` step, 44 px:
 
@@ -571,16 +584,7 @@ import { Button } from 'tamagui/button'
 If you also adopt the unstyled primitives from `@tamagui/ui`, those own no size
 scale at all, so you provide sizing yourself or through your copied styles.
 
-Search both code and config files:
-
-```bash
-rg "\$true|true:" tamagui.config.* src code
-```
-
-Only replace token keys. Boolean variant values like `circular` or `unstyled={false}`
-are unrelated.
-
-## 5. Replace token stepping
+## 6. Replace token stepping
 
 `@tamagui/get-token` no longer supports runtime scale stepping. Removed APIs:
 
@@ -608,7 +612,7 @@ If you need to move from `5` to `4`, use explicit token keys or a helper that
 only handles numeric token names. Do not rebuild runtime scale sorting in app
 code.
 
-## 6. Audit exact font sizes
+## 7. Audit exact font sizes
 
 v3 distinguishes raw numbers from exact px strings:
 
@@ -631,7 +635,7 @@ v3, so the default config keeps v2 computed output.
 If your config used numbers because you wanted exact web pixels, convert those
 font tokens to px strings.
 
-## 7. Update FocusScope usage
+## 8. Update FocusScope usage
 
 FocusScope now renders a `display: contents` wrapper. Function-as-children is
 removed; pass JSX children directly.
@@ -663,7 +667,7 @@ Use `noFocus` when a surface should temporarily reject all focus:
 `noFocus` takes precedence over `trapped` and auto-focus behavior. It is web-only;
 FocusScope remains a no-op on native.
 
-## 8. Update Dialog, Popover, and Select Adapt usage
+## 9. Update Dialog, Popover, and Select Adapt usage
 
 Dialog, Popover, and Select now share the same Adapt handoff model. Open state
 lives above `AdaptParent`, and adapted sheet content remains mounted until the
@@ -704,7 +708,7 @@ Component-specific notes:
   imported internal helpers like `useShowPopoverSheet` or `useSelectBreakpointActive`,
   remove those imports and use Adapt state instead.
 
-## 9. Update Select APIs
+## 10. Update Select APIs
 
 Select has a few public API changes and parity additions.
 
@@ -771,7 +775,7 @@ Added or expanded:
 </Select.Content>
 ```
 
-## 10. Update themed icon usage
+## 11. Update themed icon usage
 
 Themed icons now size token values through the current font size scale, not the
 space/size token scale. Raw numeric sizes are unchanged.
@@ -807,7 +811,7 @@ const IconFrame = styled(View, {
 Theme color, `fill`, `stroke`, `size`, `strokeWidth`, `style`, and `testID` still
 work.
 
-## 11. Check ScrollView web usage
+## 12. Check ScrollView web usage
 
 `@tamagui/scroll-view` now has its own web implementation. It no longer routes
 through `react-native-web`.
@@ -829,7 +833,7 @@ Unsupported old lite/RNW props should be replaced:
 - `keyboardDismissMode`
 - any app-specific reliance on RNW's legacy style system
 
-## 12. Update animation and sheet lifecycle callbacks
+## 13. Update animation and sheet lifecycle callbacks
 
 The untyped, enter-only `onDidAnimate` prop is gone. Every animated component now
 takes a typed [`onTransition`](/docs/core/animations#the-ontransition-lifecycle)
@@ -886,7 +890,7 @@ removed, not aliased.
 dim or its fade-in on open, set `opacity` (and an `open`-driven opacity) on your
 own `Sheet.Handle`.
 
-## 13. Update active-state background colors
+## 14. Update active-state background colors
 
 The V2 `backgroundActive` theme token was removed from v3 themes. Checkbox and
 Switch checked states, Tabs active tab, and Toggle Group active toggle used to
@@ -912,7 +916,7 @@ const themes = { light: { backgroundActive: '#ddd' } }
 const themes = { light: { 'background-press': '#ddd' } }
 ```
 
-## 14. Optional: adopt the Tailwind frontend
+## 15. Optional: adopt the Tailwind frontend
 
 Tailwind authoring is optional for v3. Select it by importing components from
 `@tamagui/tailwind`; there is no global config mode.
@@ -938,7 +942,7 @@ import { View as TailwindView } from '@tamagui/tailwind'
 Read [Tailwind for Tamagui](/blog/tailwind-mode) for current utility
 coverage and known gaps.
 
-## 15. Migrate createTamagui defaultProps
+## 16. Migrate createTamagui defaultProps
 
 `createTamagui({ defaultProps })` is deprecated in v3 and slated for removal.
 Each of its uses has a more direct replacement:
@@ -967,7 +971,7 @@ createTamagui({
 styled(View, { backgroundColor: 'squareBackground' })
 ```
 
-## 16. Migrate off the imperative Toast
+## 17. Migrate off the imperative Toast
 
 v3 removes the old imperative Toast. `@tamagui/toast` (and the `Toast` export from
 `tamagui`) is now the composable + `toast()` API, and it's the only Toast — there
@@ -1021,7 +1025,7 @@ function Save() {
 }
 ```
 
-## 17. Replace ThemeableStack and SizableStack
+## 18. Replace ThemeableStack and SizableStack
 
 `ThemeableStack` and `SizableStack` (and their `themeableVariants` /
 `themeableVariantStyles`) are removed from `@tamagui/stacks`. Their one good idea —
@@ -1055,7 +1059,7 @@ are unchanged.
   Facets read theme generics (`background`, `border-color`, …), never the color
   scale, so they restyle for free under any `level` or `theme` change.
 
-## 18. Verification checklist
+## 19. Verification checklist
 
 Run validation at the layer your app changed.
 
