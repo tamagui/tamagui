@@ -1531,7 +1531,12 @@ export function contributeStyleString(
     )
   }
 
-  if (!isWeb && lifecycle && !hasBase) {
+  // a property declared only through lifecycle clauses (opacity="enter:0 exit:0")
+  // has no base value, so releasing the clause would drop it from the style object
+  // entirely and the inline drivers would have nothing to animate toward. class
+  // output doesn't need this — removing .t_unmounted reverts to the base rule — but
+  // every inline path does, on web (native/reanimated/motion drivers) as on native.
+  if (lifecycle && !hasBase && (!isWeb || !state.flatShouldDoClasses)) {
     const value =
       property === 'opacity'
         ? 1

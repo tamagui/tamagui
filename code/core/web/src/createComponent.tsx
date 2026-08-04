@@ -1328,7 +1328,7 @@ export function createComponent<
 
     // Animation enter state machine: true -> 'should-enter' -> false
     // Stage 1: Set 'should-enter' synchronously before paint to apply enter clauses
-    // Stage 2: After browser paint, set false to trigger CSS transition
+    // Stage 2: After browser paint, set false to start the transition
     //
     // CRITICAL: useEffect does NOT guarantee post-paint execution!
     // See: https://thoughtspile.github.io/2021/11/15/unintentional-layout-effect/
@@ -1341,26 +1341,24 @@ export function createComponent<
       }
 
       if (state.unmounted) {
-        // For CSS transitions, the browser must paint enter clauses before removing them.
-        // Double RAF guarantees paint: first RAF schedules after current frame,
-        // second RAF schedules after that frame completes (including paint).
-        if (inputStyle === 'css') {
-          let cancelled = false
+        // every driver needs the browser to paint the enter clauses before we remove
+        // them. double RAF guarantees paint: first RAF schedules after the current
+        // frame, second after that frame completes (including paint). clearing
+        // synchronously here re-renders in the same pre-paint commit, so the enter
+        // frame never reaches the screen and the animation is skipped entirely.
+        let cancelled = false
+        requestAnimationFrame(() => {
+          if (cancelled) return
           requestAnimationFrame(() => {
             if (cancelled) return
-            requestAnimationFrame(() => {
-              if (cancelled) return
-              setStateShallow({ unmounted: false })
-            })
+            setStateShallow({ unmounted: false })
           })
-          return () => {
-            cancelled = true
-          }
+        })
+        return () => {
+          cancelled = true
         }
-        // Non-CSS drivers handle their own animation timing
-        setStateShallow({ unmounted: false })
       }
-    }, [state.unmounted, inputStyle])
+    }, [state.unmounted])
 
     // unmount-only cleanup. this must NOT live on the enter effect above: that
     // effect re-runs on every unmounted transition (true -> 'should-enter' ->
