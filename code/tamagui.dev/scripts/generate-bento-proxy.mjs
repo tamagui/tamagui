@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process'
+import { execFileSync } from 'node:child_process'
 import { mkdirSync } from 'node:fs'
 import { existsSync, writeFileSync, readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
@@ -11,20 +11,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
  * Optional ref pinning. bento's v3 migration lives on the `v3` branch until it
  * merges to bento main alongside the tamagui v3 cutover at release. The v3-beta
  * tamagui.dev deployment sets `TAMAGUI_BENTO_REF=v3` so it builds bento v3, while
- * the main (v2.4.x) site keeps building bento main untouched. Best-effort: on a
- * non-git path or a checkout error it logs and leaves the checkout as-is.
+ * the main (v2.4.x) site keeps building bento main untouched.
  */
 function pinBentoRef(bentoPath, silent) {
   const ref = process.env.TAMAGUI_BENTO_REF
   if (!bentoPath || !ref || !existsSync(resolve(bentoPath, '.git'))) return
-  try {
-    execSync(`git -C "${bentoPath}" fetch --quiet origin ${ref}`, { stdio: 'pipe' })
-    execSync(`git -C "${bentoPath}" checkout --quiet ${ref}`, { stdio: 'pipe' })
-    if (!silent) console.info(`Pinned bento to ref "${ref}" at ${bentoPath}`)
-  } catch (e) {
-    if (!silent)
-      console.warn(`Could not pin bento to TAMAGUI_BENTO_REF="${ref}": ${e.message}`)
-  }
+  execFileSync('git', ['-C', bentoPath, 'fetch', '--quiet', 'origin', ref], { stdio: 'pipe' })
+  execFileSync('git', ['-C', bentoPath, 'checkout', '--quiet', '--detach', 'FETCH_HEAD'], {
+    stdio: 'pipe',
+  })
+  if (!silent) console.info(`Pinned bento to ref "${ref}" at ${bentoPath}`)
 }
 
 /**
@@ -70,6 +66,8 @@ export function generateBentoProxy(options = {}) {
   const BENTO_PATH = resolveBentoPath(basePath)
   const HELPERS_DIST_PATH = resolve(basePath, '../helpers/dist')
   const hasBento = !!BENTO_PATH
+
+  pinBentoRef(BENTO_PATH, silent)
 
   // Ensure dist exists
   mkdirSync(HELPERS_DIST_PATH, { recursive: true })
