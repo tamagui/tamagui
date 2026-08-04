@@ -18,6 +18,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import {
+  getMirroredStateName,
   getStats,
   isAvailable,
   link,
@@ -33,6 +34,9 @@ const SLOTS: ViewSlots = {
     dark: { backgroundColor: '#111111', borderColor: '#f5f5f5', borderWidth: 2 },
   },
 }
+
+// initial state so first paint has a background (engine + mirror in sync)
+setStateName('light')
 
 function useLinked(slots: ViewSlots) {
   const unlinkRef = useRef<null | (() => void)>(null)
@@ -106,11 +110,11 @@ export function NativeRegistrySpikeCase() {
 
   return (
     <View style={styles.root} testID="spikeRoot">
-      <Text testID="available">native: {String(isAvailable())}</Text>
-      <Text testID="stats">
+      <Text style={styles.info} testID="available">native: {String(isAvailable())}</Text>
+      <Text style={styles.info} testID="stats">
         views={stats.viewCount} commits={stats.commitCount} misses={stats.missCount}
       </Text>
-      <Text testID="renderCount">parent renders: {renderCount}</Text>
+      <Text style={styles.info} testID="renderCount">parent renders: {renderCount}</Text>
 
       <Pressable
         testID="toggleState"
@@ -123,6 +127,19 @@ export function NativeRegistrySpikeCase() {
         }}
       >
         <Text>toggle state (now: {dark ? 'dark' : 'light'})</Text>
+      </Pressable>
+
+      <Pressable
+        testID="toggleStatePure"
+        style={styles.button}
+        onPress={() => {
+          // pure native path: no React state change in the same tick, so the
+          // only concurrent committer is Reanimated (when animating)
+          const next = (getMirroredStateName() ?? 'light') === 'light' ? 'dark' : 'light'
+          setStateName(next)
+        }}
+      >
+        <Text>toggle state (pure native)</Text>
       </Pressable>
 
       <Pressable
@@ -172,6 +189,7 @@ export function NativeRegistrySpikeCase() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, gap: 12, padding: 20 },
+  info: { color: '#888' },
   row: { flexDirection: 'row', gap: 12, flexWrap: 'wrap' },
   box: { width: 80, height: 80 },
   button: {

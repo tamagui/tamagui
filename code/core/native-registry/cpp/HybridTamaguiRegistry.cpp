@@ -1,10 +1,18 @@
 #include "HybridTamaguiRegistry.hpp"
 
 #include <jsi/JSIDynamic.h>
+#include <react/renderer/components/root/RootShadowNode.h>
+#include <react/renderer/core/PropsParserContext.h>
+#include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/ShadowNode.h>
+#include <react/renderer/core/ShadowNodeFragment.h>
+#include <react/renderer/mounting/ShadowTree.h>
+#include <react/renderer/mounting/ShadowTreeRegistry.h>
 #include <react/renderer/uimanager/UIManager.h>
 #include <react/renderer/uimanager/UIManagerBinding.h>
 #include <react/renderer/uimanager/primitives.h>
+
+#include <unordered_set>
 
 namespace margelo::nitro::tamagui::registry {
 
@@ -34,7 +42,7 @@ jsi::Value HybridTamaguiRegistry::link(jsi::Runtime& rt, const jsi::Value&,
   auto slots = jsi::dynamicFromValue(rt, args[1]);
   const double id = nextId_++;
   views_[id] = LinkedView{
-      wrapper->shadowNode->getTag(),
+      wrapper->shadowNode,
       args[2].asString(rt).utf8(rt),
       slots.getDefault("base", nullptr),
       slots.getDefault("state", nullptr),
@@ -91,9 +99,67 @@ double HybridTamaguiRegistry::getMissCount() {
   return missCount_;
 }
 
+// ── In-transaction tree cloning ──
+//
+// RN's UIManager::updateShadowTree (0.81+) pre-builds its clone from a
+// revision read before the commit and returns it from the commit callback
+// unchanged, so a commit that lands in between (a same-tick React render,
+// a Reanimated frame) makes it commit a stale-based tree: updates get lost
+// or revert. Phase 0 reproduced exactly that. So the engine does its own
+// ShadowTree::commit and builds the clone INSIDE the transaction from the
+// root the callback receives; on retry the clone is rebuilt from the fresh
+// root and the race disappears.
+
+namespace {
+
+using LeafUpdates = std::unordered_map<const ShadowNodeFamily*, folly::dynamic>;
+using AffectedNodes =
+    std::unordered_map<const ShadowNodeFamily*, std::unordered_set<size_t>>;
+
+AffectedNodes findAffectedNodes(const RootShadowNode& root,
+                                const LeafUpdates& updates) {
+  AffectedNodes affected;
+  for (const auto& [family, props] : updates) {
+    // families of unmounted views have no ancestors in this root: skipped
+    for (const auto& [parentNode, childIndex] : family->getAncestors(root)) {
+      affected[&parentNode.get().getFamily()].insert(childIndex);
+    }
+  }
+  return affected;
+}
+
+std::shared_ptr<ShadowNode> cloneSubtree(const ShadowNode& node,
+                                         const LeafUpdates& updates,
+                                         const AffectedNodes& affected) {
+  const auto* family = &node.getFamily();
+  auto children = node.getChildren();
+
+  if (auto it = affected.find(family); it != affected.end()) {
+    for (auto index : it->second) {
+      children[index] = cloneSubtree(*children[index], updates, affected);
+    }
+  }
+
+  Props::Shared newProps = ShadowNodeFragment::propsPlaceholder();
+  if (auto it = updates.find(family); it != updates.end()) {
+    PropsParserContext ctx{node.getSurfaceId(), *node.getContextContainer()};
+    newProps = node.getComponentDescriptor().cloneProps(ctx, node.getProps(),
+                                                        RawProps(it->second));
+  }
+
+  return node.clone({
+      .props = newProps,
+      .children = std::make_shared<std::vector<std::shared_ptr<const ShadowNode>>>(
+          std::move(children)),
+      .state = node.getState(),
+  });
+}
+
+}  // namespace
+
 void HybridTamaguiRegistry::applyUpdates(jsi::Runtime& rt,
                                          const std::string* scopeFilter) {
-  std::unordered_map<Tag, folly::dynamic> updates;
+  LeafUpdates updates;
   updates.reserve(views_.size());
 
   for (auto& [id, view] : views_) {
@@ -119,7 +185,19 @@ void HybridTamaguiRegistry::applyUpdates(jsi::Runtime& rt,
       continue;
     }
 
-    updates[view.tag] = std::move(props);
+    // sync the family's native props so React re-commits of unchanged
+    // children merge our values instead of resurrecting a stale absorbed
+    // node (phase 0: the JS mirror alone provably does not cover this)
+    const auto& family = view.node->getFamily();
+    if (family.nativeProps_DEPRECATED) {
+      family.nativeProps_DEPRECATED->update(props);
+    } else {
+      family.nativeProps_DEPRECATED = std::make_unique<folly::dynamic>(props);
+    }
+
+    // the retained node keeps its family alive; unmounted views resolve to
+    // no ancestors during the transaction and are skipped safely
+    updates[&family] = std::move(props);
   }
 
   if (updates.empty()) return;
@@ -127,8 +205,21 @@ void HybridTamaguiRegistry::applyUpdates(jsi::Runtime& rt,
   auto binding = UIManagerBinding::getBinding(rt);
   if (!binding) return;
 
-  binding->getUIManager().updateShadowTree(std::move(updates));
-  commitCount_ += 1;
+  binding->getUIManager().getShadowTreeRegistry().enumerate(
+      [this, &updates](const ShadowTree& tree, bool& /*stop*/) {
+        auto status = tree.commit(
+            [&updates](const RootShadowNode& oldRoot)
+                -> RootShadowNode::Unshared {
+              auto affected = findAffectedNodes(oldRoot, updates);
+              if (affected.empty()) return nullptr;
+              return std::static_pointer_cast<RootShadowNode>(
+                  cloneSubtree(oldRoot, updates, affected));
+            },
+            {.enableStateReconciliation = false, .mountSynchronously = true});
+        if (status == ShadowTree::CommitStatus::Succeeded) {
+          commitCount_ += 1;
+        }
+      });
 }
 
 }  // namespace margelo::nitro::tamagui::registry

@@ -198,6 +198,45 @@ which mitigation (commit traits, nativeProps sync, update queue) each needs.
 This spike decides the engine's commit strategy; everything after depends on
 it.
 
+#### Phase 0 results (2026-08-04, iOS sim, RN 0.83.2, Reanimated 4.2.2)
+
+Ran on device via `NativeRegistrySpikeCase` in kitchen-sink. The commit
+strategy is decided; two failures were found and fixed, each pinned by a
+discriminating run (a deliberately stale-props "box B" that only native
+commits can color correctly):
+
+- **RN's `UIManager::updateShadowTree` (0.81+) is unsafe under concurrent
+  commits.** It pre-builds its clone from a revision read before the commit
+  and its commit callback ignores the root it receives, so a commit landing
+  in between (the same-tap React render) makes it commit a stale-based tree
+  and the update is lost. Read directly from
+  `ReactCommon/react/renderer/uimanager/UIManagerUpdateShadowTree.cpp`.
+  Fix: the engine does its own `ShadowTree::commit` and builds the clone
+  INSIDE the transaction from the callback-provided root, so retries rebuild
+  from fresh state. Worth reporting upstream.
+- **The JS mirror alone does not survive React re-commits of
+  unchanged children.** React's tree absorbs native-updated nodes via state
+  reconciliation on unrelated commits; a later React commit then re-commits
+  that stale absorbed node over a fresh native update (reproduced: box B
+  reverted despite a successful engine commit). Fix: sync
+  `family.nativeProps_DEPRECATED` on every engine commit, which RN merges
+  over props on every future clone of that family. Both mechanisms are
+  needed: the mirror keeps re-rendered components consistent, nativeProps
+  keeps non-re-rendered clones consistent.
+- **Reanimated coexistence: clean.** A `withRepeat` transform/width animation
+  on a linked view and a sibling ran through repeated engine commits with no
+  lost updates in either direction (0.83's Animated backend; re-verify on
+  0.85+ when v3 bumps).
+- **Suspense: clean.** A linked view mounted under a suspend/resume boundary
+  links and receives subsequent commits.
+- **Unmount: clean.** Unlinking removes the view (count drops) and later
+  commits proceed; the retained-ShadowNode design means a missed unlink
+  degrades to a skipped family, not UB.
+- Consequence for the compiler contract: `nativeProps_DEPRECATED` merges
+  accumulate, so every state entry for a view must emit the SAME key set
+  (a key present in one theme and absent in another would go stale). The
+  emitter must union keys across states.
+
 ### Phase 1: engine + compiler, themes only
 
 - `@tamagui/native-registry` package: Nitro module, slot model, theme state,

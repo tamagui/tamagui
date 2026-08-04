@@ -4,7 +4,7 @@
 
 #include <folly/dynamic.h>
 #include <jsi/jsi.h>
-#include <react/renderer/core/ReactPrimitives.h>
+#include <react/renderer/core/ShadowNode.h>
 
 #include <string>
 #include <unordered_map>
@@ -53,7 +53,9 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
 
  private:
   struct LinkedView {
-    facebook::react::Tag tag;
+    // retained so the family stays valid for in-transaction ancestor lookup;
+    // unmounted views resolve to no ancestors and are skipped
+    std::shared_ptr<const facebook::react::ShadowNode> node;
     std::string scopeId;
     folly::dynamic baseProps;   // object, or nullptr when absent
     folly::dynamic stateProps;  // stateName -> props object, or nullptr
