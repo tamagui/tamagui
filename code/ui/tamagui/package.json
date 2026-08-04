@@ -13,6 +13,22 @@
   "sideEffects": [
     "setup.*"
   ],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "linear-gradient",
+    "native",
+    "native.cjs",
+    "native.d.ts",
+    "native-test",
+    "native-test.cjs",
+    "native-test.d.ts",
+    "react-native-web",
+    "react-native-web.cjs",
+    "web",
+    "web.cjs"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",

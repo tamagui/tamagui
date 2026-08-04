@@ -17,6 +17,23 @@
     "*.css",
     "**/runtime.*"
   ],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "inject-styles",
+    "inject-styles.cjs",
+    "internal-runtime",
+    "native",
+    "native.cjs",
+    "native.d.ts",
+    "native-test",
+    "native-test.cjs",
+    "native-test.d.ts",
+    "reactNativeTypes",
+    "reactNativeTypes.cjs",
+    "reset.css"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
