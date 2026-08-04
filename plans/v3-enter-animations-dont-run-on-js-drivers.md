@@ -1,6 +1,7 @@
 # Enter animations do not run on any JS driver, only css
 
-Six failures, one cause. Found while chasing the last unexplained Dialog failure.
+**FIXED.** Six failures, one cause, one gate. Found while chasing the last
+unexplained Dialog failure. Root cause and fix at the bottom.
 
 ## Measured
 
@@ -55,7 +56,64 @@ split as the cause. That reading holds, and this measures it.
 - Not `DialogPresenceCompletion`'s own driver bookkeeping. The
   `immediate-no-diff` branch is a symptom reporting the truth.
 
-## Next step for whoever takes it
+## Root cause
+
+The case authors the value as `opacity="enter:0 exit:0"` — clauses only, **no
+base**. There is no resting value to animate back to, so one has to be supplied.
+`directStyle.ts` already did that:
+
+```ts
+if (!isWeb && lifecycle && !hasBase) {
+  const value = property === 'opacity' ? 1 : /* scale 1, rotate '0deg', x/y 0 */
+  if (value !== null) emitValue(state, property, value, null, merge, value, contextOnly)
+}
+```
+
+Gated on `!isWeb`. CSS does not need it: the property is simply absent and the
+browser's default applies, which is why the css driver was the one that worked.
+A **style object** does need it, and that is every native render **plus every web
+render a driver drives inline**.
+
+Instrumenting the native driver's `useAnimations` showed it exactly:
+
+```
++0ms  unmounted=should-enter  isEntering=true   style.opacity=0
++3ms  unmounted=false         isEntering=false  style.opacity=undefined
+```
+
+The enter style lands with `opacity: 0`, and then the target style has **no
+opacity key at all**. The driver has nothing to animate toward, and the DOM falls
+back to its default of 1. Same `!isWeb` gate, same class of bug, and the same
+shape as the transform-coercion gate fixed earlier in this campaign.
+
+That also explains the two different symptoms. Whether the enter frame is ever
+painted is a race with how fast `should-enter` flips to `false`, measured per
+driver: css 23ms, motion 25ms, native **4ms**. Motion paints the enter style and
+then snaps; native flips inside one frame so the enter value is never painted at
+all. Same defect, two appearances, which is why they looked like two bugs.
+
+## The fix
+
+One gate in `code/core/web/src/helpers/directStyle.ts`:
+
+```ts
+if ((!isWeb || !state.flatShouldDoClasses) && lifecycle && !hasBase) {
+```
+
+Frame-accurate opacity, sampled per `requestAnimationFrame` from before the
+click, first frames after the element appears:
+
+| driver | before | after |
+| --- | --- | --- |
+| css | `0, 0, 0, 0.003, 0.012, 0.027 …` | unchanged |
+| motion | `0, 0, 1, 1, 1 …` | `0, 0, 0, 0.051, 0.108, 0.180 …` |
+| native | `1, 1, 1 …` | `0, 0.003, 0.022, 0.065, 0.128 …` |
+| reanimated | `1, 1, 1 …` | `0, 0, 0.007, 0.038, 0.096 …` |
+
+Tests: `AnimatePresenceEnterExit` and `DialogPresenceCompletion` across all four
+drivers, **48 passed / 0 failed**, covering all six failures.
+
+## Original next-step notes, kept for the record
 
 The discriminating detail is that **native and reanimated never show opacity 0
 at all** while **motion does show 0 and then jumps**. Motion applies the enter
