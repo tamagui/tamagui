@@ -1596,7 +1596,14 @@ export function contributeStyleString(
     )
   }
 
-  if (!isWeb && lifecycle && !hasBase) {
+  // a lifecycle-only value (`opacity="enter:0 exit:0"`) has no resting value to
+  // return to. CSS does not need one: the property is simply absent and the
+  // browser's own default applies. A style object does need one, because an
+  // animation driver can only animate between values it can see, and that is
+  // every native render plus every web render a driver drives inline. Without
+  // this the enter style lands and then the target style has no such key at
+  // all, so the driver has nothing to animate toward and the element snaps.
+  if ((!isWeb || !state.flatShouldDoClasses) && lifecycle && !hasBase) {
     const value =
       property === 'opacity'
         ? 1
