@@ -13,6 +13,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./NativeRegistrySpikeCase').NativeRegistrySpikeCase,
   NativeRegistryBenchCase: () =>
     require('./NativeRegistryBenchCase').NativeRegistryBenchCase,
+  NativeRegistryShowdownCase: () =>
+    require('./NativeRegistryShowdownCase').NativeRegistryShowdownCase,
+  NativeRegistryParityCase: () =>
+    require('./NativeRegistryParityCase').NativeRegistryParityCase,
   AccordionDefaultOpenCase: () =>
     require('./AccordionDefaultOpenCase').AccordionDefaultOpenCase,
   ActionsSheetComparison: () =>
