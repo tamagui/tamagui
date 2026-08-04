@@ -144,27 +144,109 @@ search for fractional degree values (positive control: the pattern matches
 Nothing in `code/ui`, `code/core` or `code/kitchen-sink` uses a fractional
 degree, so no test encoded the broken behavior.
 
-## Probably a tenth instance
+## The tenth instance, confirmed
 
 `SheetSnapPointsFit.animated.test.tsx:487` is `animated-native` only and was in
 the group a2949 could not attribute. Despite the filename it is a **Dialog**
-test, "dialog shows as dialog on large screens", and it fails at
+test, "dialog shows as dialog on large screens", and it failed at
 `await expect(dialogContent).not.toBeVisible()` after clicking a close button:
-the same signature as the other nine. INFERRED from reading the test, not yet
-confirmed by running it.
+the same signature as the other nine. Predicted from reading it, then confirmed
+by running it, and it passes on all four drivers after the fix.
+
+## Validation: what the fix actually did
+
+Ten of the eleven Dialog-cluster failures are fixed. Every one verified by
+running it, not inferred.
+
+| test | project | before | after |
+| --- | --- | --- | --- |
+| `DialogScoped` :9 :43 | default | fail | **pass** |
+| `DialogSheetAdaptResize:15` | default | fail | **pass** |
+| `DialogFocusScope` :9 :75 :107 :167 :196 | animated-native | fail | **pass** |
+| `DialogPointerEvents:18` | animated-native | fail | **pass** |
+| `SheetSnapPointsFit:487` | animated-native | fail | **pass** |
+| `DialogPresenceCompletion` x2 | animated-motion | fail | fail (still open) |
+
+`SheetSnapPointsFit:487` was the predicted tenth instance and it did turn out to
+be one.
+
+Animated projects: **14 failed, 782 passed**, and all 14 were already failing in
+the CI baseline on `6fbe1ba2f3`: `AnimatePresenceEnterExit` x4 on native,
+reanimated and motion (12) plus the two `DialogPresenceCompletion`.
+`animated-css` is fully green. No new failures on any driver.
+
+Sandbox `hydration-drivers.test.ts:73` still fails identically (`2 passed`), which
+is expected: that is the separate matrix-composition defect below, untouched.
+
+### No regressions from the gate change, proven by A/B
+
+The full default-project run surfaced ten failures that a2949's handoff never
+mentioned. That handoff's log turned out to cover only 309 test lines against
+this run's 743 and contained **none** of the ten, so its silence was not
+evidence. A/B'd instead, reverting both files to `bde5b72fc5^` and rebuilding:
+
+- before: 9 of the 10 failed
+- after: the same 8 failed
+
+Both arms produced per-test results (63 and 62 lines), so neither was an aborted
+run masquerading as a null result. Every one is pre-existing.
+`OnLayoutStress` x6 also failed but only under four parallel projects, which is
+exactly the load condition the rules here say makes it meaningless.
+
+## Cross-driver style audit
+
+The question was what else the inline path was silently getting wrong. Method:
+the css driver keeps the class path and is the reference; render the same case
+under each driver, settle, then diff `getComputedStyle` over every element.
+
+**The audit was validated against a known positive before its null results were
+trusted.** Run against the pre-fix build it reports `borderRadius` and all four
+corner properties as differing on native, motion **and** reanimated; run against
+the fixed build those fifteen groups are gone. So it detects this bug class, and
+a2943's suspicion was right: the unresolved radius token was live on two more
+drivers than the hang was, because only the native driver waits on a per-key
+completion promise. 718 differences before, 703 after, and the 15 that
+disappeared are exactly the radius groups.
+
+The 703 that remain are in **both** arms, so none of them are new. They fall into
+two groups:
+
+1. **Transform representation, all three inline drivers** (231): css writes the
+   individual properties (`scale: 1`, `translate: 0px`, `rotate: 0deg`,
+   `transform: none`) while native, motion and reanimated compose
+   `transform: matrix(...)` and leave the individual ones `none`. At rest these
+   are identity values, so nothing looks wrong, but it is the same defect as
+   `hydration-drivers.test.ts:73` and **the audit shows it is not motion-only**,
+   which is what that test's failure on its own implied. Any test reading
+   `style.translate` will misread on all three.
+2. **react-native-web base styles, native only** (472): `borderTop/Right/Bottom/
+   LeftColor` `rgb(0,0,0)` vs the theme's `rgb(3,7,18)`, `top/right/bottom/left`
+   `0px` vs `auto`, `zIndex` `0` vs `auto`. The native driver renders a real
+   react-native-web `Animated.View`, which carries RNW's own reset. Mostly
+   invisible (a border color with no border width, an offset of 0 on a
+   relatively positioned box), but the border color would show on anything with
+   a visible border, and `zIndex: 0` creates a stacking context where `auto` does
+   not. Pre-existing and structural, not token resolution.
+
+One straggler worth a look: `color` differs on exactly one element,
+`SPAN[scenario-12-target]`, `rgb(3,7,18)` on css vs `rgb(0,0,0)` on native. That
+is a plainly visible text color, unlike the rest of group 2.
 
 ## Still open
 
-- **Full-suite validation has NOT run.** The fix is verified by runtime probe on
-  `DialogScopedCase` only. The kitchen-sink `default` + four animated projects
-  need a run before this can be trusted, and `code/sandbox` hydration too, since
-  `directStyle.ts` is shared by every component. Blocked on a quiet window
-  (a2943 called one for a2965's build timings).
-- `DialogPresenceCompletion` x2 on **motion** is not explained by this and is
-  untouched.
-- The `hydration-drivers.test.ts:73` motion-driver matrix bug is a separate item
-  and may interact with the transform coercion change above. Check it after the
-  suite runs.
+- `DialogPresenceCompletion` x2 on **motion** is the remaining one of the eleven.
+  Not explained by this and untouched.
+- **The transform matrix composition is the next thing to fix and it is now
+  better scoped than when it was filed.** `hydration-drivers.test.ts:73` reads as
+  a motion-driver bug because that is the only driver its test covers; the audit
+  above shows native and reanimated compose a matrix identically. So it is one
+  defect in the shared inline path, not a motion quirk, and the fix belongs
+  wherever the transform array is turned into a style rather than in a driver.
+  Whoever takes it should re-run the audit afterwards: the 231 transform
+  differences are the acceptance criterion, and they should go to zero.
+- `AnimatePresenceEnterExit` x4 on native, motion and reanimated (css passes) is
+  still an opacity/enter-scheduling problem, still unexplained, and a2949's
+  reasoning that the transform split cannot account for it survives this session.
 - `ButtonUnstyled` not started.
 - `ButtonSkin:106` fails on the **first** assertion,
   `expect(circular).toHaveCSS('height', '52px')`, receiving `20px`. Read so far,
