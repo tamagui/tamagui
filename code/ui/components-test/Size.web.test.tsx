@@ -116,7 +116,9 @@ describe('opt-in size primitives on web', () => {
     expect(projected.icon).toBe(config.fontsParsed.body.size['4'])
     expect(resolveTokenSize('4', extras)).toEqual({
       frame: {
-        size: config.tokensParsed.size['4'],
+        // a control's frame height comes from the control ramp, not the config's
+        // spacing scale. v2's `4` step, and the same value `true` resolves to.
+        size: 44,
         space: config.tokensParsed.space['4'],
         radius: config.tokensParsed.radius['4'],
       },
