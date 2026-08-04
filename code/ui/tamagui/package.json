@@ -51,12 +51,14 @@
     "./native": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/native.cjs",
+      "browser": "./dist/native.cjs",
       "require": "./dist/native.cjs",
       "default": "./dist/native.cjs"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/test.cjs",
+      "browser": "./dist/test.cjs",
       "require": "./dist/test.cjs",
       "default": "./dist/test.cjs"
     },
