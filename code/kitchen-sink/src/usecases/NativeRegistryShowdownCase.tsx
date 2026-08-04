@@ -41,6 +41,7 @@ type Hud = {
   rightMs: number | null
   leftCommits: number
   rightCommits: number
+  flushes: number
 }
 
 const initialHud: Hud = {
@@ -49,6 +50,7 @@ const initialHud: Hud = {
   rightMs: null,
   leftCommits: 0,
   rightCommits: 0,
+  flushes: 0,
 }
 
 // this component never consumes the theme. its child elements keep stable
@@ -97,19 +99,28 @@ function ShowdownPanel({
   onRender: React.ProfilerOnRenderCallback
 }) {
   const isToday = kind === 'today'
+  // per-panel React render cost per toggle (Profiler actualDuration). the
+  // shared JS thread makes wall-clock "time to visually done" measure the
+  // OTHER panel's load (the fast path's microtask flush queues behind the
+  // baseline's renders), so render cost is the honest per-panel number.
   const ms = isToday ? hud.leftMs : hud.rightMs
   const commits = isToday ? hud.leftCommits : hud.rightCommits
+  const started = hud.toggles > 0
 
   return (
     <View style={[styles.panel, isToday ? styles.todayPanel : styles.fastPanel]}>
       <Text style={[styles.panelTitle, isToday ? styles.todayTitle : styles.fastTitle]}>
         {isToday ? 'today' : 'native fast path'}
       </Text>
-      <Text style={styles.metricLabel}>
-        {isToday ? 'Profiler JS done' : 'native flush JS done'}
+      <Text style={styles.metricLabel}>React render per toggle</Text>
+      <Text style={styles.metricValue}>
+        {ms === null ? (started && !isToday ? '0.0' : '--') : ms.toFixed(1)} ms
       </Text>
-      <Text style={styles.metricValue}>{ms === null ? '--' : ms.toFixed(1)} ms</Text>
-      <Text style={styles.commitCount}>React commits: {commits}</Text>
+      <Text style={styles.commitCount}>
+        {isToday
+          ? `React commits: ${commits}`
+          : `React commits: ${commits} · engine flushes: ${hud.flushes}`}
+      </Text>
 
       <Theme name={sub as any}>
         <ShowdownGrid
@@ -140,22 +151,31 @@ export function NativeRegistryShowdownCase() {
     setHud({ ...metricsRef.current })
   }, [])
 
-  const onLeftRender = useCallback<React.ProfilerOnRenderCallback>(() => {
-    if (!runningRef.current || toggleAtRef.current === 0) return
-    metricsRef.current.leftCommits += 1
-    metricsRef.current.leftMs = performance.now() - toggleAtRef.current
-    publishHud()
-  }, [publishHud])
+  const onLeftRender = useCallback<React.ProfilerOnRenderCallback>(
+    (_id, _phase, actualDuration) => {
+      if (!runningRef.current || toggleAtRef.current === 0) return
+      metricsRef.current.leftCommits += 1
+      metricsRef.current.leftMs = actualDuration
+      publishHud()
+    },
+    [publishHud]
+  )
 
-  const onRightRender = useCallback<React.ProfilerOnRenderCallback>(() => {
-    if (!runningRef.current) return
-    metricsRef.current.rightCommits += 1
-    publishHud()
-  }, [publishHud])
+  // honesty control: if the fast path breaks and the right grid re-renders,
+  // its render cost and commits appear here instead of staying at zero
+  const onRightRender = useCallback<React.ProfilerOnRenderCallback>(
+    (_id, _phase, actualDuration) => {
+      if (!runningRef.current) return
+      metricsRef.current.rightCommits += 1
+      metricsRef.current.rightMs = actualDuration
+      publishHud()
+    },
+    [publishHud]
+  )
 
   const onNativeFlush = useCallback(() => {
     if (!runningRef.current || toggleAtRef.current === 0) return
-    metricsRef.current.rightMs = performance.now() - toggleAtRef.current
+    metricsRef.current.flushes += 1
     publishHud()
   }, [publishHud])
 
@@ -193,6 +213,9 @@ export function NativeRegistryShowdownCase() {
   }, [dotProgress, running])
 
   const stop = useCallback(() => {
+    console.info(
+      `[showdown] end hud=${JSON.stringify(metricsRef.current)} stats=${JSON.stringify(registry.getStats())}`
+    )
     runningRef.current = false
     if (intervalRef.current !== null) {
       clearInterval(intervalRef.current)
@@ -223,6 +246,7 @@ export function NativeRegistryShowdownCase() {
       publishHud()
     }
 
+    console.info(`[showdown] start stats=${JSON.stringify(registry.getStats())}`)
     toggle()
     intervalRef.current = setInterval(toggle, TOGGLE_INTERVAL_MS)
     stopTimerRef.current = setTimeout(stop, RUN_DURATION_MS)

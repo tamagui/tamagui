@@ -26,7 +26,7 @@ xcrun simctl terminate "$SIM_UDID" "$APP_ID" >/dev/null 2>&1 || true
 xcrun simctl launch "$SIM_UDID" "$APP_ID" \
   -directUseCase NativeRegistryShowdownCase
 
-xcrun simctl io "$SIM_UDID" recordVideo --codec h264 "$OUT" &
+xcrun simctl io "$SIM_UDID" recordVideo --codec h264 --force "$OUT" &
 RECORD_PID=$!
 
 sleep 2
