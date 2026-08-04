@@ -41,7 +41,7 @@ path 'lib/arm64-v8a/libc++_shared.so'`, one from
 `-DANDROID_STL=c++_shared`, so the NDK copies the STL into its AAR, while its
 `packagingOptions.excludes` listed only `libjsi.so` and
 `libreact_nativemodule_core.so`. `react-native-nitro-modules`, which this
-package depends on, excludes seventeen React Native libraries including
+package depends on, excludes fourteen React Native libraries including
 `libc++_shared.so`. Adopting that same list is the fix.
 
 Consequence for the beta: Android has produced no test signal at all since this
