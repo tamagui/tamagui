@@ -44,10 +44,15 @@ export function getNativeStyleEngine(): NativeStyleEngine | null {
 }
 
 let pending: NativeViewStateUpdate[] | null = null
-let flushListener: (() => void) | null = null
+let flushListener: ((entries: NativeViewStateUpdate[]) => void) | null = null
 
-/** instrumentation hook: called after each batched native flush (benchmarks) */
-export function setNativeStyleEngineFlushListener(cb: (() => void) | null): void {
+/**
+ * instrumentation hook: called after each batched native flush with the
+ * flushed entries (benchmarks, parity tests)
+ */
+export function setNativeStyleEngineFlushListener(
+  cb: ((entries: NativeViewStateUpdate[]) => void) | null
+): void {
   flushListener = cb
 }
 
@@ -84,7 +89,7 @@ export function queueNativeViewState(entry: NativeViewStateUpdate): void {
       const entries = pending!
       pending = null
       engine?.applyViewStates(entries)
-      flushListener?.()
+      flushListener?.(entries)
     })
   }
   pending.push(entry)

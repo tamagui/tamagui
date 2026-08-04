@@ -185,6 +185,52 @@ implements them:
 - Views with a per-view active state are skipped by scope broadcasts, so the
   two modes cannot fight over a view.
 
+#### Media queries in runtime mode (built 2026-08-04)
+
+Media rides the same interception shape as themes, one layer over:
+
+- `useMedia`'s per-component subscription updates its proxy mirrors first,
+  then calls `stateRef.nativeMediaUpdate()` and skips the re-render when it
+  returns true. The subscription only fires when a media key the component's
+  styles actually reference flips (`flatMediaKeys` collects every media key
+  present in props regardless of active state, so the listening set is stable
+  without re-rendering).
+- The media updater clears the warm cache (every cached state entry was
+  computed under the old media state) and re-runs the theme updater cold
+  under the current theme (`nativeThemeState` tracks the last natively
+  handled theme so the recompute never uses a stale render capture). The
+  captured `styleProps.mediaState` is the component's media proxy, which
+  reads through the mirror updated one step earlier — fresh values with no
+  extra plumbing.
+- Dropped-key semantics, decided by reading RN's actual
+  `nativeProps_DEPRECATED` merge in `UIManager::cloneNode` (READ, RN 0.83):
+  render rawProps win for every key the render sets, sticky values persist
+  for keys it omits. So the one hazard is a key pushed earlier that a later
+  computation drops (media flip removing a `sm:` style, a removed prop). The
+  JS side tracks the union of pushed keys per link (`nativePushedKeys`) and
+  pushes `null` for dropped keys — RawProps null resets the prop to default,
+  exactly what a real re-render's style diff does — and the engine erases
+  null-valued keys from the sticky nativeProps so future React renders can
+  set them again. Nulled keys stay in the pushed-key union because engine
+  state tables retain them.
+- A real render re-pushes the fresh style (with nulls) only when it detects
+  previously pushed keys its own style dropped, closing the last
+  resurrection window RN's sticky merge would otherwise leave open.
+
+#### Test/demo surfaces (2026-08-04, code-complete, on-device run pending)
+
+- `NativeRegistryParityCase`: self-checking correctness — many prop kinds,
+  pinned nested sub-theme receives no updates, warm toggles send bare
+  entries with zero misses, a real re-render resets the warm cache, engine
+  tables inspected via the new `getViewState(id)` introspection, and a
+  rotate-the-sim media check (`sm` flips at minWidth 640) that must show a
+  `paddingBottom: null` reset on rotating back. Prints `[parity]` JSON.
+- `NativeRegistryShowdownCase` + `scripts/record-native-showdown.sh`: the
+  launch-video side-by-side — two 400-square grids, left opted out via the
+  new `disableNativeStyle` prop, shared sub-theme auto-toggling, per-panel
+  JS-done HUD and a shared-JS-thread jank dot; the script boots the sim,
+  records H.264 via simctl, and taps start via xcodebuildmcp.
+
 ### Lifetime and threading rules (the old branch's sore spots, fixed by design)
 
 - Link captures the ShadowNode once at mount; unlink uses the token returned

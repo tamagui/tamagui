@@ -27,8 +27,11 @@ export interface NativeStyleEngine {
 }
 export declare function setNativeStyleEngine(next: NativeStyleEngine | null): void;
 export declare function getNativeStyleEngine(): NativeStyleEngine | null;
-/** instrumentation hook: called after each batched native flush (benchmarks) */
-export declare function setNativeStyleEngineFlushListener(cb: (() => void) | null): void;
+/**
+ * instrumentation hook: called after each batched native flush with the
+ * flushed entries (benchmarks, parity tests)
+ */
+export declare function setNativeStyleEngineFlushListener(cb: ((entries: NativeViewStateUpdate[]) => void) | null): void;
 /**
  * Host-ref hook for createComponent: links eligible mounted hosts to the
  * engine, unlinks on detach. `nativeStyleUpdate` presence is the per-render

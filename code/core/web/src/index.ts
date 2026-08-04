@@ -16,6 +16,7 @@ export {
   getNativeStyleEngine,
   setNativeStyleEngineFlushListener,
   type NativeStyleEngine,
+  type NativeViewStateUpdate,
 } from './helpers/nativeStyleEngine'
 export * from './helpers/getThemeCSSRules'
 export * from './helpers/variables'
