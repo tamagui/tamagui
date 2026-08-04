@@ -55,7 +55,9 @@ export const CustomButton2 = createStyledHOC(
 
 export const StyledButtonTheme = () => (
   <Theme name="green">
-    <View id="test-theme-reference" backgroundColor="background" />
+    <Theme name="level2">
+      <View id="test-theme-reference" backgroundColor="background" />
+    </Theme>
     <CustomButton id="test">test2</CustomButton>
 
     <CustomButton2 id="test2">test2</CustomButton2>

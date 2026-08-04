@@ -80,7 +80,6 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
 ): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {
   const staticConfig = opts?.forComponent?.staticConfig ?? View.staticConfig
   const [theme, themeState] = useThemeWithState({
-    componentName: staticConfig.componentName,
     name: 'theme' in props ? props.theme : undefined,
     needsUpdate() {
       return true

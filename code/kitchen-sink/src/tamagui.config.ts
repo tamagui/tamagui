@@ -376,12 +376,9 @@ const bodyJa = {
 
 type Merge<Left, Right> = Omit<Left, keyof Right> & Right
 
-// deliberately partial themes the cases assert against. themeDev defines
-// neither name, so these land whole rather than merging into a generated theme.
+// deliberately partial theme the case asserts against. themeDev does not define
+// this name, so it lands whole rather than merging into a generated theme.
 const fixtureThemes = {
-  light_MyLabel: {
-    color: 'red',
-  },
   // A same-named theme value used to win. Flat values bind the color category
   // first, so customRed here deliberately loses to the configured color token.
   light_ColorTokenTest: {

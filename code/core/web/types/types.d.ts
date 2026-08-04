@@ -597,7 +597,6 @@ export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 export interface ThemeProps {
     className?: string;
     name?: Exclude<ThemeName, number> | null;
-    componentName?: string;
     children?: any;
     reset?: boolean;
     debug?: DebugProp;

@@ -148,7 +148,6 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyledCheckboxTheme: () => require('./StyledCheckboxTheme').StyledCheckboxTheme,
   StyledContextColor: () => require('./StyledContextColor').StyledContextColor,
   StyledContextTokens: () => require('./StyledContextTokens').StyledContextTokens,
-  StyledHOCNamed: () => require('./StyledHOCNamed').StyledHOCNamed,
   StyledIconColor: () => require('./StyledIconColor').StyledIconColor,
   IconFontSizing: () => require('./IconFontSizing').IconFontSizing,
   StyledInputFocusStyle: () => require('./StyledInputFocusStyle').StyledInputFocusStyle,

@@ -677,7 +677,6 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
     const themeStateProps: UseThemeWithStateProps = {
-      componentName,
       disable: disableTheme,
       shallow: props.themeShallow,
       debug: debugProp,

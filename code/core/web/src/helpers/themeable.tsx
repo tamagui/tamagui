@@ -15,7 +15,7 @@ export function themeable<ComponentType extends (props: any) => any>(
     const userDefaults = getDefaultProps(staticConfig, props.componentName)
     const defaultTheme = userDefaults?.theme
     const defaultResetTheme = userDefaults?.themeReset
-    const { theme, componentName, themeReset, ref, ...rest } = props
+    const { theme, themeReset, ref, ...rest } = props
 
     let overriddenContextProps: object | undefined
     const context = staticConfig?.context
@@ -45,11 +45,6 @@ export function themeable<ComponentType extends (props: any) => any>(
     // which is not allowed in HTML and causes hydration errors / logs
     let filteredProps: Partial<ThemeProps> | null = null
 
-    const compName = componentName || staticConfig?.componentName
-    if (compName) {
-      filteredProps = filteredProps || {}
-      filteredProps.componentName = compName
-    }
     if ('debug' in props) {
       filteredProps = filteredProps || {}
       filteredProps.debug = props.debug
