@@ -1,8 +1,8 @@
 # Tamagui v3 beta 3 release readiness
 
-Last complete packed preview: `8976311c1e` on the merged `v3-beta` tree.
-The current pushed candidate is `a8d156b150`. Its post-allowlist packed rerun remains required.
-Local release-readiness fixes are held behind the Android push freeze.
+Last complete packed preview: `b0bf3f7bef` on the assembled local `v3-beta` tree.
+The current pushed candidate is `a8d156b150`; the local candidate is 12 commits ahead.
+Local release-readiness fixes and the preview receipt are held behind the Android push freeze.
 Last updated: 2026-08-03.
 
 This is the single blocker list for the beta 3 cut. A checked item means the named
@@ -11,23 +11,24 @@ to ship with a documented correctness gap remain owner actions.
 
 ## Cut verdict
 
-**Do not cut beta 3 yet.** The native parity device gate, native theme correctness decision,
-branch Checks, docs static-page fail-open gate, frozen starter ref, and final post-allowlist
-packed preview are open. The retained native benchmark cells remain invalid until a full
-12-sample campaign replaces them.
+**Do not cut beta 3 yet.** Packaging, the whole-monorepo build and typecheck, the default
+Expo Router production export, and the static compiler suites are green on the assembled
+local candidate. The native parity device gate, branch Checks, docs static-page fail-open
+gate, frozen starter ref, and local commit push remain open. The retained native benchmark
+cells remain invalid until a full 12-sample campaign replaces them.
 
 ## Blockers
 
 | Status | Owner | Finding | Required evidence to close |
 | --- | --- | --- | --- |
-| Fixed, final candidate rerun pending | a2965 | The raw-source Metro fix initially worked only when Metro started from a project-source entry. A clean-cache default Expo Router export produced 2,257 `no-entry` plan misses including the starter's own app files. Graph discovery stopped at the external Expo Router entry and missed its `require.context` app graph. The project-source-entry warmup result therefore did not generalize and remains prohibited in tester-facing performance claims. The corrected default Expo probe now plans realpathed workspace imports through the app graph. `Separator.native.js` is correctly planned with zero candidates because it only defines a styled component; app use sites show 9 candidates and 7 flattened. `ToastComposable.native.js`, `Switch.native.js`, and `SheetScrollView.native.js` prove workspace dist modules receive real edits. | Rerun the assembled clean-cache Expo production export after a2965 lands the fix. Keep retained native benchmark cells invalid until a full 12-sample campaign replaces them. |
+| Fixed locally | a2965 | The raw-source Metro fix initially worked only when Metro started from a project-source entry. A clean-cache default Expo Router export produced 2,257 `no-entry` plan misses including the starter's own app files. Graph discovery stopped at the external Expo Router entry and missed its `require.context` app graph. The project-source-entry warmup result therefore did not generalize and remains prohibited in tester-facing performance claims. The corrected graph plans realpathed workspace imports reached through Expo Router's external entry and `require.context`. `Separator.native.js` is correctly planned with zero candidates because it only defines a styled component; app use sites show 9 candidates and 7 flattened. `ToastComposable.native.js`, `Switch.native.js`, and `SheetScrollView.native.js` prove workspace dist modules receive real edits. | Passed on assembled `b0bf3f7bef`: the default Expo Router production export bundled 3,417 modules into a 6.6 MB Hermes bundle, emitted `dist-native`, logged no plan miss, and passed the rendered native smoke. Keep retained native benchmark cells invalid until a full 12-sample campaign replaces them. |
 | Documented, deferred post-beta | a2965, decision by a2943 | Metro's transform cache key excludes the lowering-plan generation. A plan change without a source change can therefore reuse stale compiled output in a live `expo start` session or warm CLI build. This is the third incomplete cache-key defect found in the campaign, after platform-ambiguous config bundles and `simpleHash` omitting `hashMin`. Metro provides no per-module cache-key hook, while global invalidation would defeat incremental rebuilds, so the root fix is deferred with coordinator sign-off. | The beta upgrade guide tells testers to restart with `expo start -c`, or clear the app-local Tamagui cache and reset Metro before a warm production rebuild, after changing Tamagui config. The one-time replan costs about 12 ms per module: 27 seconds for the 2,328-module starter and roughly two minutes for a 10,000-module app. Steady-state warm builds remain unchanged at 7 seconds in both measured arms. |
-| Pending decision | a2946, then a2943 | `compilerHost` resolves theme values against the first theme during native flattening. Theme switching therefore breaks on fully flattened components. This is a correctness bug. | Fix and native theme-switch proof, or an explicit coordinator block-versus-document decision. |
+| Fixed locally | a2965 | `compilerHost` previously resolved theme values against the first theme during native flattening, so theme switching broke on fully flattened components. The compiler now preserves theme-backed values as symbolic references through `except-theme` resolution and emits runtime theme reads. | Passed on assembled `b0bf3f7bef`: `themedFlatten.native.test.tsx` exercises the symbolic theme path end to end inside the 63-of-63 native static suite. The native core suite also passes 238 tests with only its seven pinned expected failures. |
 | Fixed | a2952 | V5 palette-step names such as `blue10` and `red10` do not exist in the v6 config. A live cross-driver probe computed the missing `blue10` color as transparent on both paths without an error or warning, then exposed different CSS and React Native Web fallback colors. The upgrade guide mentioned palette tokens as a separate migration but did not state that failure is silent. The flat-values codemod preserves `$blue10` as `blue10` because it cannot evaluate custom runtime config or choose the intended replacement. It now emits every preserved v5 palette name as a non-blocking `legacy-palette-token` configuration warning in both reports, while write mode keeps applying safe syntax conversions. | Passed: the published guide has an explicit before/after and silent-failure warning; focused static JSX, dynamic-expression, custom-name, Markdown report, full 92-test, and typecheck coverage pass. |
 | Fix prepared, merge pending | a2971 code, a2952 docs | Explicit Button and Input sizes in the v6 config resolved through the Tailwind spacing scale, so `size="4"` produced a 16 px frame and `size="3"` a 12 px frame, shorter than their text. The prepared control-height ramp reproduces every v2 component size name and value, including the duplicated 224 px values at steps `16` and `17`; the unsized default is the `4` step at 44 px. Shapes intentionally remain on the config spacing scale. | Merge a2971's ramp, pass the frame-height and shape-spacing assertions, and rerun the assembled starter and package checks. The published guide and codemod draft now carry the exact mapping and warn earlier v3 beta users to remove compensating oversized keys. |
 | Failed at pushed candidate, fixes in progress | a2952 lint, a2971 hydration, a2965 unit tests | Checks on `a8d156b150` has three failures. Lint found four formatting-only files: two from the engine batch and two from the packaging lane; local `8ee854df01` formats all four and passes the clean-checkout formatter over 5,280 files plus `oxlint`. The production composed-matrix hydration test at `hydration-drivers.test.ts:73` failed the initial run and both retries. `next15-plus-cli-optimize` has four unit failures assigned to the engine lane, two from the known exports pair and two new to the inventory. | Merge all three fixes, then pass the complete Checks workflow on the assembled SHA. |
 | In progress, push freeze active | a2971 watcher | Android Detox is running on pushed candidate `a8d156b150`, the first run in this campaign to advance beyond queued. Maestro passed on both the pull-request and push runs. | Keep the branch push-frozen until Android reaches a terminal result and retain its artifacts for any retry-passed flake. |
-| Rerun pending | a2952 | The merged all-package G1 preview at `8976311c1e` passed: 164 requested and packed artifacts, 8,043 export-condition probes, isolated installation, web production plus SSR browser canary, native Expo export plus runtime test, and 164 generated publish commands with `--tag beta` and zero `latest`. Packed `@tamagui/web` and bundled `@tamagui/core` contain the recent native-background and media-tuple fixes. The byte sweep found eight packages without `files` allowlists shipping nine tsconfigs, web Vitest config output, two source-build scripts, and the `tamagui` package's source-build config. Exact before/after inventories prove all runtime, compatibility, platform-extension, declaration, CSS, JSON, bin, and exported files are retained; only those explained build/test files leave. | Rerun G1 on the final assembled candidate, because the allowlists and subsequent engine fixes changed the packed bytes after the passing preview. Record the exact assembled SHA and repeat content receipts. |
+| Fixed locally | a2952 | The final all-package G1 preview at assembled `b0bf3f7bef` passed: 164 requested and packed artifacts, 8,043 export-condition probes, isolated installation, web production plus SSR browser canary, native Expo export plus runtime test, and 164 generated publish commands carrying the beta tag with zero `latest`. The tarball contains all 16 generated skin subpaths and all 112 declared web, native, CommonJS, default, and type targets. Packed `@tamagui/web` and bundled `@tamagui/core` both contain the native `background` to `backgroundColor` lowering and media-condition tuple resolution. The eight package allowlists retain every runtime, compatibility, platform-extension, declaration, CSS, JSON, bin, and exported file; their reviewed diffs remove only explained build and test files. | Passed. The report is `release-preview.json` under the G1 directory named `tamagui-v3-beta3-g1-b0bf3f7bef`. It states `Release preview only. No publish was attempted.` Rerun after any source or built-byte change. |
 | Cut action pending | a2952, cut action by Nate | `create-tamagui` currently clones the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests and v2 dependencies. Pointing it at moving `v3-beta` is unsafe because that branch is permitted to be red. Its old shallow cached update used `git pull --rebase`: moving from one tag to another replayed the old tag commit and missed the requested ref, while Git could autostash edits inside the cache. The replacement has one shared release-ref setting and uses only exact fetch plus detached checkout. A throwaway Git probe landed both an initial and updated cached clone exactly on their requested tags, with no rebase or autostash path left. | Set `tamaguiStarterReleaseRef` in `code/core/create-tamagui/src/templates.ts` to the frozen beta 3 ref at cut time. Do not create the ref before the owner cut. |
 | Fixed | a2952 plumbing, a2968 Bento | The production site Dockerfile cloned private Bento from a moving branch and ignored its declared ref argument. The ref is a real independent input: Bento's older line still imports removed APIs and fails the v3 site build. Bento `v3-beta` is complete and pushed, and the validated source is frozen at `50432b85cc47de443b640bee0bcf5decd119231e`. A negative control proves `git clone --branch` rejects that SHA; the Docker path and local `TAMAGUI_BENTO_REF` path now both fetch the exact ref and detach at `FETCH_HEAD`. The positive Git probe lands exactly on the SHA with no branch. | Passed: the production docs build against that exact Bento SHA emits all 876 static pages with zero page-generation or template errors, and the three-mode browser check passes 9/9. |
 | Fixed | a2968 Bento, a2952 docs | Exact Bento `v3` at `25af842` had 28 callers of the removed curried `createStyledHOC(Component)(render)` signature. Bento had already migrated `.styleable()` to that intermediate form in July, so the current two-argument signature is a second API break on the same export in one cycle. The completed conversion audit reports zero conversion sites and zero legacy condition objects after manual review, including configuration, theme-builder, size, theme-key, and responsive-name fixes. This break was absent from the tester migration instructions; those instructions now include a before/after, and no curried caller remains in the Tamagui repository. | Passed: Bento `v3-beta` is pushed at the frozen SHA above, its production site integration builds, and the migration guide covers the API break. |
@@ -106,8 +107,10 @@ global TypeScript and was not a valid verdict. After `bun install --frozen-lockf
 - [x] Preliminary local candidate `44d5423895` passes root typecheck and all 167 root build
   tasks. All build tasks were served from exact-hash Turbo cache, so this is a graph verdict;
   the final force build and packed-content receipts still determine artifact freshness.
-- [ ] Re-run root typecheck and build on the final assembled candidate. The checked results
-  above are the campaign baseline, not the cut verdict.
+- [x] Final assembled `b0bf3f7bef` force build: 167 of 167 tasks passed, zero cached, in
+  24.171 seconds. A sequential root typecheck against those freshly rebuilt artifacts passed.
+  The packed-content receipts in the blocker table confirm that the force-built bytes reached
+  both `@tamagui/web` and the `@tamagui/core` bundle that inlines it.
 - [ ] Branch Checks are green. This remains blocked on the a2949 fixture work above.
 
 ## Tester first-run matrix
@@ -118,7 +121,7 @@ global TypeScript and was not a valid verdict. After `bun install --frozen-lockf
 | Expo Router starter, native | Production iOS Expo export plus rendered Toast interaction | Passed after replacing the false Toast assertions |
 | Remix starter | Typecheck and Vite production build | Passed after v6 shorthand migration |
 | Blank web registry consumer | Install generated skin, drift check, typecheck, production browser smoke | Passed |
-| Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Runtime interaction and export passed; static native skin lowering passes. The corrected default Expo graph plans the skin definition and lowers the app use sites; final assembled rerun remains. |
+| Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Passed. The corrected default Expo graph plans the skin definition and lowers the app use sites; assembled native static coverage passes. |
 | `create-tamagui` cached clone | Initial clone and repeat/update clone from frozen tag | Passed in throwaway Git repositories; cut ref remains an owner action |
 
 The v3 branch no longer has the T3 placeholder test scripts. Expo, Remix, and both blank
@@ -246,6 +249,12 @@ sweep found no Git dependency or remote tarball entry in that lockfile.
   resolved at runtime. That change needs explicit single-instance and dual-instance native
   consumer probes because changing module resolution in this layer can recreate the split
   package instances that previously broke Toast.
+- **Held registry consumers:** the strict final drift gate passes all 32 generated copies in
+  the blank web and Expo fixtures. The report-only full sweep still lists 64 missing or
+  divergent copies across demos, kitchen-sink, the site, and v3-canary. Those four consumers
+  are explicitly marked `writeAuthorized: false` until the campaign chooses to replace their
+  existing components with generated copies. This is unfinished generator adoption, while
+  the shipped registry artifacts, package exports, and tester install fixtures are current.
 
 ## Remaining release-readiness audit
 
@@ -253,9 +262,13 @@ sweep found no Git dependency or remote tarball entry in that lockfile.
 - [x] Finish the three-mode documentation runtime check against the final
   `tamagui/<skin>` exports.
 - [x] Audit version automation, changelog state, and the breaking-change/codemod guide.
-- [ ] Run the packed G1 release preview after all blocker fixes are assembled.
-- [ ] Re-run root typecheck, root build, registry drift, export checks, and relevant static
-  compiler tests from the assembled candidate.
+- [x] Run the packed G1 release preview after all blocker fixes are assembled.
+- [x] Re-run root typecheck, root force build, registry drift, export checks, and relevant
+  static compiler tests from assembled `b0bf3f7bef`. `registry:check` passes all 16 artifacts
+  and exports; the strict authorized-consumer drift gate passes 32 of 32 copies; all 8,043
+  packed export probes pass; static native passes 63 of 63; static web passes 157 with two
+  skips plus 20 of 20 webpack tests; core native passes 238 with seven expected failures and
+  nine skips.
 - [x] Pin the production docs Bento input at validated commit
   `50432b85cc47de443b640bee0bcf5decd119231e`.
 - [ ] Create the frozen starter ref at the validated candidate SHA and change the single
