@@ -8,6 +8,9 @@ on:
       - 'v*'
       - 'v3/**'
       - rn82
+    paths-ignore:
+      - 'plans/**'
+      - '**/*.md'
   pull_request:
     branches:
       - 'v3-*'

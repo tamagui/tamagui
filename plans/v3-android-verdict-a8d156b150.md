@@ -14,6 +14,13 @@ Android Detox still failed with six suites. Relative to d90:
 - `PressStyleScrollStuck` appeared as a new failing suite
 - the other five failures were unchanged
 
+The current attribution is five stable failures, one new
+`PressStyleScrollStuck` observation, and `AdaptLiveSlotSpike` passing again.
+`AdaptLiveSlotSpike` has now flipped across four completed runs, so Android has
+a demonstrated flake. `PressStyleScrollStuck` has only one observation and
+must not be called a regression without another data point. The stale-fixture
+fix from a2989 is what moved `CompilerTernaryActive` to green.
+
 The failed log was fetched once to `/tmp/android-30907237343-failed.log`.
 
 ## Third data point on d90f563b81
