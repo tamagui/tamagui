@@ -303,7 +303,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fw-381719595 _fd-1289797684 _ai-1980109838 _jc-874768870"
+      class="is_View _fd-1289797684 _ai-1980109838 _jc-874768870 _fw-381719595"
       data-testid="flex-wrap-conditional"
     >
       <span
@@ -325,7 +325,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fw-1500538156 _fd-1289797684 _ai-1980109838 _jc-874768870"
+      class="is_View _fd-1289797684 _ai-1980109838 _jc-874768870 _fw-1500538156"
       data-testid="flex-wrap-conditional"
     >
       <span
@@ -419,7 +419,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
     class="_dsp_contents  font_body"
   >
     <div
-      class="is_View _fw-785176263 _fd-1155724988 _g-1012092673 _pt-279819439 _pr-829857910 _pb-1107600041 _pl-112089339"
+      class="is_View _fw-785176263 _g-1012092673 _pt-279819439 _pr-829857910 _pb-1107600041 _pl-112089339 _fd-1155724988"
       data-testid="flex-wrap-media"
     >
       <span

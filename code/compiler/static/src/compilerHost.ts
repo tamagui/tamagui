@@ -1078,6 +1078,26 @@ export function createTamaguiCompilerHost(
     )
   }
 
+  // props the compiler can never pre-resolve per-branch: they carry runtime
+  // semantics beyond style resolution. Everything else that isStyleProp admits
+  // — including fontFamily and variants — is safe for conditional lowering,
+  // because each branch runs the full resolveSplitStyles pipeline
+  const runtimeOnlyStyleProps = new Set([
+    'className',
+    'style',
+    'group',
+    'transition',
+    'animation',
+    'animateOnly',
+    'animatePresence',
+    'animatedBy',
+    'render',
+  ])
+  const canLowerConditionalStyleProp = (
+    name: string,
+    component: LoweringComponent
+  ): boolean => isStyleProp(name, component) && !runtimeOnlyStyleProps.has(name)
+
   const isInvalidHostStyleProp = (
     name: string,
     component: LoweringComponent
@@ -1211,7 +1231,16 @@ export function createTamaguiCompilerHost(
   return {
     resolveComponent: resolve,
     isStyleProp,
-    canLowerDynamicStyleProp(name, component) {
+    canLowerDynamicStyleProp(name, component, valueKind) {
+      // a conditional with static branches lowers per-branch on both
+      // platforms: each side resolves at compile time, only the test survives
+      if (
+        !options.disablePartialExtraction &&
+        valueKind === 'conditional' &&
+        canLowerConditionalStyleProp(name, component)
+      ) {
+        return true
+      }
       return (
         !options.disablePartialExtraction &&
         ((platform === 'web' && !!directStyleName(name, component)) ||
@@ -1244,6 +1273,17 @@ export function createTamaguiCompilerHost(
           props[entry.name] = entry.value.value
         }
       }
+      const disableOptimizationEntry = input.element.entries.find(
+        (entry) => entry.kind === 'prop' && entry.name === 'disableOptimization'
+      )
+      if (disableOptimizationEntry || Object.hasOwn(props, 'disableOptimization')) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'disableOptimization keeps the component on the runtime path',
+          disableOptimizationEntry?.span
+        )
+      }
       if (component.domTag && props.hidden) props.display = 'none'
       if (
         platform === 'native' &&
@@ -1262,7 +1302,7 @@ export function createTamaguiCompilerHost(
           entry
         ): entry is Extract<MaterializedElement['entries'][number], { kind: 'prop' }> =>
           entry.kind === 'prop' &&
-          entry.value.kind === 'bailout' &&
+          (entry.value.kind === 'bailout' || entry.value.kind === 'conditional') &&
           isStyleProp(entry.name, component)
       )
       // both platforms: web needs runtime event mapping, and a flattened bare
@@ -1360,7 +1400,12 @@ export function createTamaguiCompilerHost(
         const properties: string[] = []
         const dynamicOwners = new Set<string>()
         for (const entry of dynamicStyleEntries) {
-          if (entry.kind !== 'prop' || entry.value.kind !== 'bailout') continue
+          if (
+            entry.kind !== 'prop' ||
+            (entry.value.kind !== 'bailout' && entry.value.kind !== 'conditional')
+          ) {
+            continue
+          }
           const name = directStyleName(entry.name, component)
           if ((name !== 'opacity' && name !== 'scale') || seen.has(name)) {
             properties.length = 0
@@ -1400,6 +1445,24 @@ export function createTamaguiCompilerHost(
           dynamicHostStyleProperties = properties
         }
       }
+      // web per-branch conditional classes need the same preconditions the
+      // native per-branch path has, and take precedence over web partial
+      // extraction because a full flatten beats a runtime component
+      // exactly one conditional: several would need a shared class
+      // intersection across every branch combination, so elements with more
+      // keep the web partial-extraction path they had before
+      const supportsWebConditionalClasses =
+        platform === 'web' &&
+        !options.disablePartialExtraction &&
+        (input.element.form === 'jsx' || input.element.propsSpan !== null) &&
+        dynamicHostStyleProperties === null &&
+        dynamicStyleEntries.length === 1 &&
+        dynamicStyleEntries.every(
+          (entry) =>
+            entry.kind === 'prop' &&
+            entry.value.kind === 'conditional' &&
+            canLowerConditionalStyleProp(entry.name, component)
+        )
       if ('theme' in props || 'themeInverse' in props) {
         return bailout(
           input,
@@ -1426,6 +1489,7 @@ export function createTamaguiCompilerHost(
         platform === 'web' &&
         (dynamicStyleEntries.length > 0 || runtimeAnimationRequired) &&
         dynamicHostStyleProperties === null &&
+        !supportsWebConditionalClasses &&
         component.partialRuntimeSafe
       ) {
         const hasSpread = input.element.entries.some((entry) => entry.kind === 'spread')
@@ -1551,12 +1615,16 @@ export function createTamaguiCompilerHost(
         (input.element.form === 'jsx' || input.element.propsSpan !== null) &&
         dynamicStyleEntries.every(
           (entry) =>
-            entry.kind === 'prop' && directStyleName(entry.name, component) === 'opacity'
+            entry.kind === 'prop' &&
+            (directStyleName(entry.name, component) === 'opacity' ||
+              (entry.value.kind === 'conditional' &&
+                canLowerConditionalStyleProp(entry.name, component)))
         )
       if (
         dynamicStyleEntries.length > 0 &&
         dynamicHostStyleProperties === null &&
-        !supportsNativeDynamicStyles
+        !supportsNativeDynamicStyles &&
+        !supportsWebConditionalClasses
       ) {
         const entry = dynamicStyleEntries[0]!
         return bailout(
@@ -2037,15 +2105,121 @@ export function createTamaguiCompilerHost(
         }
         if (dynamicStyleEntries.length > 0 || themedStyleKeys) {
           const stableLocal = `__TamaguiStable${nativeName}${input.element.span.start}`
-          const expressions = dynamicStyleEntries.map((entry) =>
-            input.source.slice(entry.value.span.start, entry.value.span.end)
-          )
-          const dynamicStyle = dynamicStyleEntries
-            .map(
-              (entry, index) =>
+          const expressions: string[] = []
+          const plainDynamicParts: string[] = []
+          // V2-parity per-branch lowering: a conditional whose branches
+          // evaluated statically resolves EACH branch through the full style
+          // pipeline at compile time, so cross-key effects (a fontFamily
+          // switch changing size/lineHeight resolution) are captured; only the
+          // test expression survives into the output
+          const conditionalParts: string[] = []
+          const conditionalKeys = new Set<string>()
+          const baseStyleForDiff = staticObject(nativeStyleResolved)
+            ? nativeStyleResolved
+            : {}
+          for (const entry of dynamicStyleEntries) {
+            // opacity keeps the leaner inline-expression form even for
+            // ternaries; per-branch lowering is for props that form cannot carry
+            if (
+              entry.value.kind === 'conditional' &&
+              directStyleName(entry.name, component) !== 'opacity'
+            ) {
+              const branchDiffs: Record<string, unknown>[] = []
+              for (const branchValue of [entry.value.whenTrue, entry.value.whenFalse]) {
+                const branchSplit = resolveSplitStyles(
+                  { ...completeProps, [entry.name]: branchValue },
+                  component.staticConfig,
+                  cssAnimationDriver
+                )
+                const branchStyle = branchSplit?.viewProps?.style
+                if (!staticObject(branchStyle)) {
+                  return bailout(
+                    input,
+                    'local/dynamic-style-value',
+                    `Conditional ${entry.name} branch did not resolve to a static native style`,
+                    entry.value.span
+                  )
+                }
+                // a branch (e.g. through a variant) may change viewProps
+                // beyond style; the style array cannot express those, so any
+                // non-style difference sends the element to the runtime path
+                for (const viewPropsKey of new Set([
+                  ...Object.keys(branchSplit?.viewProps ?? {}),
+                  ...Object.keys(split.viewProps ?? {}),
+                ])) {
+                  if (viewPropsKey === 'style') continue
+                  if (
+                    JSON.stringify(branchSplit?.viewProps?.[viewPropsKey]) !==
+                    JSON.stringify((split.viewProps as any)?.[viewPropsKey])
+                  ) {
+                    return bailout(
+                      input,
+                      'local/dynamic-style-value',
+                      `Conditional ${entry.name} branch changes ${viewPropsKey}, which the compiled style array cannot express`,
+                      entry.value.span
+                    )
+                  }
+                }
+                for (const key of Object.keys(baseStyleForDiff)) {
+                  if (!(key in branchStyle)) {
+                    return bailout(
+                      input,
+                      'local/dynamic-style-value',
+                      `Conditional ${entry.name} branch removes ${key}, which an additive style array cannot express`,
+                      entry.value.span
+                    )
+                  }
+                }
+                const diff: Record<string, unknown> = {}
+                for (const [key, value] of Object.entries(branchStyle)) {
+                  if (
+                    JSON.stringify((baseStyleForDiff as any)[key]) !==
+                    JSON.stringify(value)
+                  ) {
+                    diff[key] = value
+                  }
+                }
+                if (!isSerializableNativeStyle(diff) || core.containsThemeRef(diff)) {
+                  return bailout(
+                    input,
+                    'local/dynamic-style-value',
+                    `Conditional ${entry.name} branch style is not statically representable`,
+                    entry.value.span
+                  )
+                }
+                for (const key of Object.keys(diff)) {
+                  if (conditionalKeys.has(key)) {
+                    return bailout(
+                      input,
+                      'local/dynamic-style-value',
+                      `Multiple conditionals contribute ${key}; their interaction cannot be resolved per-branch`,
+                      entry.value.span
+                    )
+                  }
+                }
+                branchDiffs.push(diff)
+              }
+              for (const diff of branchDiffs) {
+                for (const key of Object.keys(diff)) conditionalKeys.add(key)
+              }
+              const index = expressions.length
+              expressions.push(
+                input.source.slice(entry.value.test.start, entry.value.test.end)
+              )
+              conditionalParts.push(
+                `expressions[${index}] ? ${JSON.stringify(branchDiffs[0])} : ${JSON.stringify(branchDiffs[1])}`
+              )
+            } else {
+              const index = expressions.length
+              expressions.push(
+                input.source.slice(entry.value.span.start, entry.value.span.end)
+              )
+              plainDynamicParts.push(
                 `${JSON.stringify(directStyleName(entry.name, component))}: expressions[${index}]`
-            )
-            .join(', ')
+              )
+            }
+          }
+          const dynamicStyle = plainDynamicParts.join(', ')
           // themed keys were resolved with the exact theme key known ahead of
           // time; the wrapper subscribes via useTheme() only when hasThemeKeys
           // is set, so purely-dynamic elements pay no theme cost
@@ -2060,6 +2234,7 @@ export function createTamaguiCompilerHost(
           const styleParts = [
             nativeStyleSource,
             ...(themedStyle ? [`{ ${themedStyle} }`] : []),
+            ...conditionalParts,
             ...(dynamicStyle ? [`{ ${dynamicStyle} }`] : []),
           ]
           const tagEdits = [
@@ -2298,9 +2473,80 @@ export function createTamaguiCompilerHost(
           }
         }
       }
+      // web per-branch conditional lowering: both branches resolve through the
+      // full pipeline; classes shared by both branches stay static and each
+      // branch's remainder becomes one ternary className segment. v3's web
+      // font architecture makes this cheap: sizes are family-independent
+      // variables, so a conditional fontFamily flips only its font_* class.
+      let webClassName = className
+      const webConditionalCSS: string[] = []
+      const webConditionalEntries = supportsWebConditionalClasses
+        ? dynamicStyleEntries.filter((entry) => entry.value.kind === 'conditional')
+        : []
+      for (const entry of webConditionalEntries) {
+        if (entry.value.kind !== 'conditional') continue
+        const branches: { classes: string[]; css: string[] }[] = []
+        for (const branchValue of [entry.value.whenTrue, entry.value.whenFalse]) {
+          const branchSplit = resolveSplitStyles(
+            { ...completeProps, [entry.name]: branchValue },
+            component.staticConfig,
+            cssAnimationDriver
+          )
+          if (!branchSplit) {
+            return bailout(
+              input,
+              'local/dynamic-style-value',
+              `Conditional ${entry.name} branch could not be resolved`,
+              entry.value.span
+            )
+          }
+          for (const viewPropsKey of new Set([
+            ...Object.keys(branchSplit.viewProps ?? {}),
+            ...Object.keys(split.viewProps ?? {}),
+          ])) {
+            if (viewPropsKey === 'className') continue
+            if (
+              JSON.stringify(branchSplit.viewProps?.[viewPropsKey]) !==
+              JSON.stringify((split.viewProps as any)?.[viewPropsKey])
+            ) {
+              return bailout(
+                input,
+                'local/dynamic-style-value',
+                `Conditional ${entry.name} branch changes ${viewPropsKey}, which conditional classes cannot express`,
+                entry.value.span
+              )
+            }
+          }
+          const branchArtifacts = extractedStyleArtifacts(
+            branchSplit,
+            { ...props, [entry.name]: branchValue },
+            options.tamaguiConfig,
+            !component.domTag,
+            Boolean(component.staticConfig.styleFrontend)
+          )
+          branches.push({
+            classes: branchArtifacts.className.split(' ').filter(Boolean),
+            css: branchArtifacts.css,
+          })
+        }
+        const [whenTrue, whenFalse] = branches
+        const shared = new Set(
+          whenTrue!.classes.filter((item) => whenFalse!.classes.includes(item))
+        )
+        const trueOnly = whenTrue!.classes.filter((item) => !shared.has(item))
+        const falseOnly = whenFalse!.classes.filter((item) => !shared.has(item))
+        webClassName = [...shared].join(' ')
+        webConditionalCSS.push(...whenTrue!.css, ...whenFalse!.css)
+        if (trueOnly.length > 0 || falseOnly.length > 0) {
+          const test = input.source.slice(entry.value.test.start, entry.value.test.end)
+          programClassSources.push(
+            `(${test}) ? ${JSON.stringify(trueOnly.join(' '))} : ${JSON.stringify(falseOnly.join(' '))}`
+          )
+        }
+      }
       const hasStyleProgram = programClassSources.length > 0
       const classNameExpression = hasStyleProgram
-        ? `[${[JSON.stringify(className), ...programClassSources].join(', ')}].filter(Boolean).join(" ")`
+        ? `[${[JSON.stringify(webClassName), ...programClassSources].join(', ')}].filter(Boolean).join(" ")`
         : null
       const serializedInlineStyle = serializedStyle(
         inlineStyle,
@@ -2313,7 +2559,7 @@ export function createTamaguiCompilerHost(
           ]
             .filter(Boolean)
             .join(' ')
-        : jsxStyleAttributes(className, inlineStyle, dynamicHostStyleProperties ?? [])
+        : jsxStyleAttributes(webClassName, inlineStyle, dynamicHostStyleProperties ?? [])
       const objectWebStyle = classNameExpression
         ? [
             `className: ${classNameExpression}`,
@@ -2321,8 +2567,12 @@ export function createTamaguiCompilerHost(
           ]
             .filter(Boolean)
             .join(', ')
-        : objectStyleProperties(className, inlineStyle, dynamicHostStyleProperties ?? [])
-      const webCSS = [...artifacts.css, ...programCSS]
+        : objectStyleProperties(
+            webClassName,
+            inlineStyle,
+            dynamicHostStyleProperties ?? []
+          )
+      const webCSS = [...new Set([...artifacts.css, ...programCSS, ...webConditionalCSS])]
       const webExtraProps = serializedProps(input.element.form, webDOMResult.additions)
       if (input.element.form !== 'jsx') {
         const replacement = [objectWebStyle, webExtraProps].filter(Boolean).join(', ')

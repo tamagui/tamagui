@@ -104,6 +104,27 @@ function compactCss(css: string): string {
 }
 
 describe('E3 shared Tamagui lowerer', () => {
+  test('keeps disableOptimization candidates on the runtime path', () => {
+    const source = `
+import { Text } from '@tamagui/core'
+export const App = () => <Text color="red" disableOptimization>runtime</Text>
+`
+    for (const target of ['web', 'native'] as const) {
+      const { plan, output } = compile(source, target)
+
+      expect(codes(plan)).toEqual(['local/unsupported-target'])
+      expect(plan.stats).toEqual({
+        found: 1,
+        lowered: 0,
+        flattened: 0,
+        styled: 0,
+        bailed: 1,
+      })
+      expect(output.changed).toBe(false)
+      expect(output.code).toBe(source)
+    }
+  })
+
   test('preserves ordered className overrides and emits pseudo/media/theme/group/font CSS', () => {
     const source = `
 // π🙂 UTF-16 parity sentinel

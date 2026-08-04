@@ -70,8 +70,8 @@ describe('Platform-specific file optimization', () => {
       expect(existsSync(nativePath)).toBe(true)
       const nativeContent = readFileSync(nativePath, 'utf-8')
 
-      // Bare theme values are resolved during native optimization.
-      expect(nativeContent).toContain('<__TamaguiNativeView')
+      // Theme values stay live through the stable-style wrapper.
+      expect(nativeContent).toContain('<__TamaguiStableView')
       expect(nativeContent).toContain('"backgroundColor"')
       expect(nativeContent).not.toContain('.css')
       expect(nativeContent).not.toContain('className')
@@ -222,7 +222,7 @@ describe('Platform-specific file optimization', () => {
         join(FIXTURES_DIR, 'NativeOnly.native.tsx'),
         'utf-8'
       )
-      expect(nativeContent).toContain('<__TamaguiNativeView')
+      expect(nativeContent).toContain('<__TamaguiStableView')
       expect(nativeContent).toContain('Native Only File')
       expect(nativeContent).not.toContain('.css')
 
