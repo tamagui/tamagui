@@ -177,7 +177,7 @@ exports[`normalize dynamic values with theme access only 1`] = `
       )
     }
 
-function __TamaguiNativeStyle95() { return __TamaguiNativeStyle95._ ?? (__TamaguiNativeStyle95._ = {"flexDirection":"column","backgroundColor":"hsla(0, 0%, 100%, 1)"}); } __TamaguiNativeStyle95();
+function __TamaguiNativeStyle95() { return __TamaguiNativeStyle95._ ?? (__TamaguiNativeStyle95._ = {"flexDirection":"column","backgroundColor":"#f9fafb"}); } __TamaguiNativeStyle95();
 const __TamaguiNativeView = require('react-native').View;"
 `;
 
@@ -245,6 +245,6 @@ exports[`theme value extraction should work when theme variables used 1`] = `
       )
     }
 
-function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ ?? (__TamaguiNativeStyle93._ = {"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontWeight":400,"letterSpacing":0,"fontSize":15,"lineHeight":23,"color":"hsla(0, 0%, 100%, 1)"}); } __TamaguiNativeStyle93();
+function __TamaguiNativeStyle93() { return __TamaguiNativeStyle93._ ?? (__TamaguiNativeStyle93._ = {"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontWeight":400,"letterSpacing":0,"fontSize":15,"lineHeight":23,"color":"#f9fafb"}); } __TamaguiNativeStyle93();
 const __TamaguiNativeText = require('react-native').Text;"
 `;

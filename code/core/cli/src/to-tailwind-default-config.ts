@@ -3,7 +3,7 @@ export const bundledDefaultGrammarConfig = {
   shorthands: {
     text: 'textAlign',
     b: 'bottom',
-    bg: 'backgroundColor',
+    bg: 'background',
     content: 'alignContent',
     grow: 'flexGrow',
     h: 'height',

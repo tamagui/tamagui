@@ -217,3 +217,41 @@ if (hasTransformWithTranslate && controls.current) {
 ## Motion Version
 
 - Upgraded to motion 12.29.0 (from 12.28.1) on 2026-01-22
+
+## RESOLVED 2026-07-30 — actual root cause found
+
+The one-jump-per-page-load on tamagui.dev's promo row (worst "right after
+hydration") was NOT an animation-driver bug. Full causal chain, proven with
+frame-by-frame instrumentation against both local dev and the live prod site:
+
+1. bento's lazy-loaded `AvatarsTooltip` / `AvatarsTooltipFancy` modules run
+   `withStaticProperties(Tooltip, { Content: styled(Tooltip.Content, ...) })`
+   shortly after hydration.
+2. `withStaticProperties` used `Object.assign(component, staticProps)` — it
+   MUTATED the shared `Tooltip`, replacing `Tooltip.Content`'s identity
+   globally for every consumer on the page.
+3. The next render of the (open) promo tooltip created its content element
+   with the new type. React saw a changed element type and replaced the whole
+   PopperContent subtree in one commit (same-timestamp remove+add of the DOM
+   node).
+4. The fresh PopperContent mounts with `needsMeasure=true` →
+   `disableAnimation` → `animateOnly: []`, so its first position write is a
+   direct inline style at the NEW anchor: a single-frame teleport (e.g.
+   472→624px). The motion-value spring then seeds at the already-teleported
+   position, so no glide happens.
+
+Why it matched the observed symptoms: it fires exactly once per page load
+(first content render after the bento chunks execute — i.e. right after
+hydration), only when the tooltip is open and mid-crossing at that moment
+(hence "how fast you go"), and never again once settled (identity is stable
+after the swap).
+
+Fix: `withStaticProperties` clones instead of mutating when the target is
+already a decorated compound component
+(`code/core/helpers/src/withStaticProperties.tsx`). Regression coverage:
+`tests/TooltipStaticClobber.animated.test.tsx` +
+`src/usecases/TooltipStaticClobberCase.tsx` (verified failing before the fix,
+passing after). Repro tooling: `scripts/repro-jump-ks.mjs` (fast-hop protocol
+against the kitchen-sink case or, with `PROMO=1 URL=...`, the real
+tamagui.dev promo row; includes per-frame recorder, node-identity tracking,
+and DOM mutation timing).
