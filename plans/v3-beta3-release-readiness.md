@@ -20,11 +20,15 @@ fail-open gate remain open. The retained native benchmark cells remain invalid u
 full 12-sample campaign replaces them; that campaign is now unblocked, because the freeze
 it waited on is lifted.
 
-Checks is close. Every failure on `a7bf975a27` has a local fix with a receipt, and none of
-them is a product defect: one dependency range, one fixture migration, seven stale test
-expectations, and one test metric that misreads a starved frame as a teleport. The packed
-G1 preview needs a rerun after the native fast path batch, since it was taken at
-`b0bf3f7bef`.
+Checks is close. Every failure on `a7bf975a27` is fixed and pushed, and none of them was a
+product defect: one dependency range, one fixture migration, seven stale test expectations,
+and one test metric that misreads a starved frame as a teleport. The packed G1 preview
+needs a rerun after the native fast path batch, since it was taken at `b0bf3f7bef`.
+
+Nothing in this list is waiting on a product fix any more. Every row is either passed, or
+pushed and waiting on a CI verdict, or an owner action. The conditional font variant gap,
+which was the one item still asking for a ship-or-fix decision, turned out to be fixed on
+both platforms on 2026-08-03.
 
 The device gate is the real remaining risk. Android produces no signal at all right now,
 because the native fast path batch broke the Android app build and a failed build skips
@@ -52,7 +56,7 @@ decision that has not been made.
 | Fixed | a2968 Bento, a2952 docs | Exact Bento `v3` at `25af842` had 28 callers of the removed curried `createStyledHOC(Component)(render)` signature. Bento had already migrated `.styleable()` to that intermediate form in July, so the current two-argument signature is a second API break on the same export in one cycle. The completed conversion audit reports zero conversion sites and zero legacy condition objects after manual review, including configuration, theme-builder, size, theme-key, and responsive-name fixes. This break was absent from the tester migration instructions; those instructions now include a before/after, and no curried caller remains in the Tamagui repository. | Passed: Bento `v3-beta` is pushed at the frozen SHA above, its production site integration builds, and the migration guide covers the API break. |
 | Fixed locally, upstream commit pending | a2952 | The docs picker portal targeted an element that did not exist, so no syntax control rendered. After restoring it, the control changed URL and cookie while code stayed Styled because query strings cannot select a different prebuilt SSG payload. Static Tailwind routes also compiled Styled because three prose loaders discarded the SSG `path`. The replacement gives Styled, Unstyled, and Tailwind distinct static routes and resolves mode from the SSG path. The same build exposed 11 omitted component pages from four demo names removed or renamed by the v3 migration. One printed those page errors, skipped them, exited zero, and still printed `build complete`; `/ui/checkbox` and `/ui/switch` returned 404. The MDX callers now use the current demo names and valid template sources. | Tamagui passes locally: 876 pages, zero page or template errors, all six current Checkbox/Switch mode URLs return 200, and Playwright passes 9/9 on the guide, Button, and Tabs. One branch `fix/page-build-errors` commit `c9cdfe4` removes both swallowing paths. An intentionally throwing SSG page now exits 1 with workers enabled and disabled; the valid fixture still reaches `build complete`. That commit is now onejs/one PR #747, opened 2026-08-04 against a `main` it merges into cleanly. Land it before trusting exit zero alone. |
 | Fixed locally, push pending | this session | Detox run `30948627664` on `a7bf975a27` is the first completed run after the native fast path batch, and the Android app build failed, so `Android Detox Tests` was skipped and the branch has no Android signal at all. `:tamagui_native-registry:mergeDebugAndroidTestNativeLibs` found `lib/arm64-v8a/libc++_shared.so` twice, once from the package's own AAR and once from React Native's. The package compiles with `-DANDROID_STL=c++_shared` while excluding only `libjsi.so` and `libreact_nativemodule_core.so` from packaging. Job-by-job against pre-batch baseline run `30912958881`, this is the only job that changed direction; all four iOS Detox shards were already red at the baseline, so the batch did not break iOS. Full comparison in `plans/v3-android-verdict-a8d156b150.md`. | `packagingOptions.excludes` now carries the same fourteen-library list `react-native-nitro-modules` uses, confirmed against that file by m3667. Unverified by build: neither this session nor m3667 ran Gradle, so the branch Detox run is the acceptance check. |
-| Pending, lowest compiler priority | a2946 | V3 refuses to compile conditional font variants as `local/dynamic-style-value` on web and native, where v2 lowered each branch. `fonts.web.test.tsx` pins the regression so it stays visible. | Restore branch lowering or make an explicit release decision. |
+| Fixed | a2946 | V3 refused to compile conditional font variants as `local/dynamic-style-value` on web and native, where v2 lowered each branch. Branch lowering is restored on both platforms, so no release decision is needed. Native landed as `ab66499598`, web as `9a15837246`, both on 2026-08-03 and both on `origin/v3-beta`. | Passed, run against the branch on 2026-08-04. `fonts.web.test.tsx` is 3 of 3 and its conditional case asserts the emitted `(compact) ? "font_body" : "font_heading"`, with no `_fs-` class inside either conditional segment because font size is now a family-independent `var(--f-size-*)`. `babel.native.test.tsx`'s `conditional font family lowers per-branch with per-family size resolution` passes, asserting the two branches differ, that the false branch carries its own `fontWeight` of 700, that `stats.flattened` is above zero, and that `diagnostics` is empty. |
 
 ## Fixed in beta 3
 
