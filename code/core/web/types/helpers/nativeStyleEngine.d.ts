@@ -33,6 +33,8 @@ export interface NativeStyleEngine {
 }
 export declare function setNativeStyleEngine(next: NativeStyleEngine | null): void;
 export declare function getNativeStyleEngine(): NativeStyleEngine | null;
+export declare function updateNativeStyleScope(scopeId: string, stateName: string): void;
+export declare function removeNativeStyleScope(scopeId: string): void;
 /**
  * instrumentation hook: called after each batched native flush with the
  * flushed entries (benchmarks, parity tests)

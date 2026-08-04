@@ -1,9 +1,13 @@
 import { createRefComponent } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, isValidElement, useRef } from 'react'
 import { getSetting } from '../config'
 import { variableToString } from '../createVariable'
+import {
+  removeNativeStyleScope,
+  updateNativeStyleScope,
+} from '../helpers/nativeStyleEngine'
 import { useThemeWithState } from '../hooks/useTheme'
 import {
   getThemeState,
@@ -34,6 +38,11 @@ export const Theme = createRefComponent(function Theme(
   // <Theme> pushes themeState.id into ThemeStateContext, so children subscribe
   // under this id and need to be notified when our propsKey changes.
   const [_, themeState] = useThemeWithState(props, isRoot, true)
+
+  useIsomorphicLayoutEffect(() => {
+    updateNativeStyleScope(themeState.id, themeState.name)
+    return () => removeNativeStyleScope(themeState.id)
+  }, [themeState.id, themeState.name])
 
   const disableDirectChildTheme = props['disable-child-theme']
 

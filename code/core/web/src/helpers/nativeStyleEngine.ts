@@ -41,13 +41,30 @@ export interface NativeStyleEngine {
 }
 
 let engine: NativeStyleEngine | null = null
+const scopeStates = new Map<string, string>()
 
 export function setNativeStyleEngine(next: NativeStyleEngine | null): void {
   engine = next
+  if (next) {
+    for (const [scopeId, stateName] of scopeStates) {
+      next.setStateName(stateName, scopeId)
+    }
+  }
 }
 
 export function getNativeStyleEngine(): NativeStyleEngine | null {
   return engine
+}
+
+export function updateNativeStyleScope(scopeId: string, stateName: string): void {
+  if (scopeStates.get(scopeId) === stateName) return
+  scopeStates.set(scopeId, stateName)
+  engine?.setStateName(stateName, scopeId)
+}
+
+export function removeNativeStyleScope(scopeId: string): void {
+  if (!scopeStates.delete(scopeId)) return
+  engine?.removeScope(scopeId)
 }
 
 let pending: NativeViewStateUpdate[] | null = null

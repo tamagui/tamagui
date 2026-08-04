@@ -16,6 +16,8 @@ export {
   setNativeStyleEngine,
   getNativeStyleEngine,
   setNativeStyleEngineFlushListener,
+  updateNativeStyleScope,
+  removeNativeStyleScope,
   type NativeStyleEngine,
   type NativeStyleEngineSlots,
   type NativeViewStateUpdate,
