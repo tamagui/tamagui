@@ -193,6 +193,13 @@ export function NativeRegistryBenchCase() {
   // read inside the runner without closing over stale state
   const subRef = useRef(sub)
   subRef.current = sub
+  // stable identity: an inline arrow here would invalidate the grid's
+  // memoized squares on every toggle (setSub re-renders this root), making
+  // every square re-render from element recreation and hiding what the
+  // fast path saves
+  const onSquareRender = useRef(() => {
+    profilerRef.current.sq0 += 1
+  }).current
 
   const runScenario = async (
     name: Scenario,
@@ -328,13 +335,7 @@ export function NativeRegistryBenchCase() {
         {scenario === 'tamagui' || scenario === 'fastpath' ? (
           // key remounts the grid per scenario so hosts re-link (eligibility
           // and engine linking are decided at mount)
-          <TamaguiGrid
-            key={scenario}
-            sub={sub}
-            onSquareRender={() => {
-              profilerRef.current.sq0 += 1
-            }}
-          />
+          <TamaguiGrid key={scenario} sub={sub} onSquareRender={onSquareRender} />
         ) : null}
         {scenario === 'native' ? <NativeGrid /> : null}
         {scenario === 'rn' ? <RNGrid sub={sub} /> : null}

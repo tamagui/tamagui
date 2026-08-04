@@ -19,7 +19,7 @@
 // read [parity] lines or the on-screen PASS/FAIL list. rotation checks are
 // reported live in the media section as you rotate.
 import React, { Profiler, useEffect, useMemo, useRef, useState } from 'react'
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Theme, View as TamaguiView, styled } from 'tamagui'
 import {
   getConfig,
@@ -50,6 +50,10 @@ const PSquare = styled(TamaguiView, {
   // dropped-key null push
   borderWidth: '2 sm:6',
   paddingBottom: 'sm:30',
+  // sm-ONLY key with no base value: rotating back must push minHeight: null
+  // (padding/border above always exist via base values, so they can never
+  // exercise the dropped-key reset)
+  minHeight: 'sm:70',
 })
 
 type Check = { name: string; pass: boolean; detail?: string }
@@ -118,9 +122,23 @@ export function NativeRegistryParityCase() {
       const nulled = cold.filter(
         (e) => e.props && Object.values(e.props).some((v) => v === null)
       )
+      const withPB = cold.filter(
+        (e) => e.props && e.props.paddingBottom != null
+      )
+      const dist = (key: string) => {
+        const counts: Record<string, number> = {}
+        for (const e of cold) {
+          const v = e.props ? e.props[key] : undefined
+          counts[String(v)] = (counts[String(v)] || 0) + 1
+        }
+        return JSON.stringify(counts)
+      }
+      console.info(
+        `[mediaflush] entries=${entries.length} cold=${cold.length} withPB=${withPB.length} nulled=${nulled.length} pb=${dist('paddingBottom')} minH=${dist('minHeight')}`
+      )
       setMediaLog(
         `last flush: ${entries.length} entries, ${cold.length} cold, ` +
-          `${nulled.length} with null resets` +
+          `${withPB.length} with paddingBottom, ${nulled.length} with null resets` +
           (nulled[0]?.props
             ? ` (${Object.entries(nulled[0].props)
                 .filter(([, v]) => v === null)
@@ -292,6 +310,23 @@ export function NativeRegistryParityCase() {
         onPress={runParity}
       >
         <Text>run parity</Text>
+      </Pressable>
+
+      <Pressable
+        testID="flipMedia"
+        style={styles.button}
+        onPress={() => {
+          // fires the same Dimensions change event a rotation does, which is
+          // all the media driver listens to — lets us exercise $sm without
+          // GUI-rotating the simulator
+          const win = Dimensions.get('window')
+          const screen = Dimensions.get('screen')
+          const swap = (d: typeof win) => ({ ...d, width: d.height, height: d.width })
+          console.info(`[mediaflip] ${win.width}x${win.height} -> ${win.height}x${win.width}`)
+          ;(Dimensions as any).set({ window: swap(win), screen: swap(screen) })
+        }}
+      >
+        <Text>flip media (w: {Dimensions.get('window').width})</Text>
       </Pressable>
 
       <Text
