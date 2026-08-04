@@ -12,6 +12,8 @@ export interface TamaguiCompilerHostOptions {
     componentModules: CompilerComponentModule[];
     /** Keep elements with dynamic style props fully on the runtime path. */
     disablePartialExtraction?: boolean;
+    /** Emit pre-resolved native theme tables for the native style engine. */
+    experimentalNativeFastPath?: boolean;
 }
 export declare function createTamaguiCompilerHost(options: TamaguiCompilerHostOptions): CompilerLoweringHost;
 //# sourceMappingURL=compilerHost.d.ts.map

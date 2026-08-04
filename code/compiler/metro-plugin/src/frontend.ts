@@ -58,6 +58,7 @@ export interface MetroCompilerProject {
   projectInfo: TamaguiProjectInfo
   componentModules: { moduleName: string; id: string }[]
   generation: string
+  experimentalNativeFastPath?: boolean
 }
 
 export interface MetroCompilerScanOptions {
@@ -280,6 +281,7 @@ export class MetroCompilerFrontend {
         resolvedId: id,
       })),
       disablePartialExtraction: this.config.tamaguiOptions?.disablePartialExtraction,
+      experimentalNativeFastPath: compilerProject.experimentalNativeFastPath,
     })
     this.#entries.clear()
     for (const id of this.#graph.moduleIds()) this.#refreshEntry(id)
@@ -528,10 +530,20 @@ export class MetroCompilerFrontend {
         componentModules,
         configCss,
         disablePartialExtraction: !!this.config.tamaguiOptions?.disablePartialExtraction,
+        experimentalNativeFastPath:
+          target === 'native' &&
+          this.config.tamaguiOptions?.experimental?.nativeFastPath === true,
         target,
       })
     )
-    return { projectInfo, componentModules, generation }
+    return {
+      projectInfo,
+      componentModules,
+      generation,
+      experimentalNativeFastPath:
+        target === 'native' &&
+        this.config.tamaguiOptions?.experimental?.nativeFastPath === true,
+    }
   }
 
   async #compileRecord(

@@ -55,6 +55,8 @@ function projectFor(target: 'web' | 'native', opts: ExtractOptions): CompilerPro
     config,
     components,
     disablePartialExtraction: opts.disablePartialExtraction,
+    experimentalNativeFastPath:
+      target === 'native' && opts.options?.experimental?.nativeFastPath === true,
   })
   const cached = projects.get(key)
   if (cached) return cached
@@ -76,6 +78,8 @@ function projectFor(target: 'web' | 'native', opts: ExtractOptions): CompilerPro
     componentModules,
     generation: key,
     disablePartialExtraction: opts.disablePartialExtraction,
+    experimentalNativeFastPath:
+      target === 'native' && opts.options?.experimental?.nativeFastPath === true,
   }
   projects.set(key, project)
   return project

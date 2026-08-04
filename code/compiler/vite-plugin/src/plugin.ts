@@ -523,6 +523,7 @@ function createTamaguiNativePlugin(
         projectInfo,
         componentModules,
         generation: `vite-native:${generation}`,
+        experimentalNativeFastPath: options.experimental?.nativeFastPath === true,
       }
     })()
     const guarded = pending.catch((error) => {

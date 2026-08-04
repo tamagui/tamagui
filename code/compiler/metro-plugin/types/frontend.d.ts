@@ -18,6 +18,7 @@ export interface MetroCompilerProject {
 		id: string;
 	}[];
 	generation: string;
+	experimentalNativeFastPath?: boolean;
 }
 export interface MetroCompilerScanOptions {
 	dev: boolean;

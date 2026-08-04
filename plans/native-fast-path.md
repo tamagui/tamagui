@@ -96,7 +96,8 @@ state setter, an invalidation rule. No engine rewrite per feature.
 
 ### Compiler contract
 
-Behind an explicit experimental flag in tamagui build options. For a
+Behind `experimental.nativeFastPath` in Tamagui build options. The flag only
+changes native compiler output. For a
 statically extractable element with themed values, emit the resolved matrix:
 
 - Per-theme props fully resolved at build time from the deterministic v3 theme
@@ -408,8 +409,8 @@ Each phase lands only with its own honesty-protocol benchmarks.
 
 ## Open questions
 
-- Package and flag naming (`@tamagui/native-registry`,
-  `experimental.nativeFastPath`?): pick at Phase 1 start.
+- Package and flag naming is settled: `@tamagui/native-registry` and
+  `experimental.nativeFastPath`.
 - Whether the JS mirror fully replaces `nativeProps_DEPRECATED` syncing:
   Phase 0 answers this.
 - How wide v1 extraction eligibility should be (currently: no ternaries, no

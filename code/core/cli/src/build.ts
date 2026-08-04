@@ -204,8 +204,12 @@ export const build = async (
           .update(JSON.stringify(targetOptions.components ?? []))
           .update('\0')
           .update(String(!!targetOptions.disablePartialExtraction))
+          .update('\0')
+          .update(String(target === 'native' && !!targetOptions.experimental?.nativeFastPath))
           .digest('hex'),
         disablePartialExtraction: targetOptions.disablePartialExtraction,
+        experimentalNativeFastPath:
+          target === 'native' && targetOptions.experimental?.nativeFastPath === true,
       })
       compilerFrontends.set(target, new CompilerFrontend())
     }

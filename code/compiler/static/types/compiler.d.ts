@@ -10,6 +10,8 @@ export interface CompilerProject {
     generation: string;
     /** Keep elements with dynamic style props fully on the runtime path. */
     disablePartialExtraction?: boolean;
+    /** Emit pre-resolved native theme tables for the native style engine. */
+    experimentalNativeFastPath?: boolean;
 }
 export interface CompilerResolution {
     id: string;

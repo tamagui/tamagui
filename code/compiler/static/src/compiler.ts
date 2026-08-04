@@ -25,6 +25,8 @@ export interface CompilerProject {
   generation: string
   /** Keep elements with dynamic style props fully on the runtime path. */
   disablePartialExtraction?: boolean
+  /** Emit pre-resolved native theme tables for the native style engine. */
+  experimentalNativeFastPath?: boolean
 }
 
 export interface CompilerResolution {
@@ -132,6 +134,7 @@ export class CompilerFrontend {
         resolvedId: cleanId(component.id),
       })),
       disablePartialExtraction: input.project.disablePartialExtraction,
+      experimentalNativeFastPath: input.project.experimentalNativeFastPath,
     })
     const result = await this.session.compile({
       module: rootModule,

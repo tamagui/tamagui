@@ -27,6 +27,7 @@ export type ViteTamaguiLoader = {
     projectInfo: TamaguiProjectInfo
     componentModules: { moduleName: string; id: string }[]
     disablePartialExtraction?: boolean
+    experimentalNativeFastPath?: boolean
   }>
   getEvaluationDependencies(): string[]
   isEvaluationDependency(id: string): boolean
@@ -198,6 +199,8 @@ export function createViteTamaguiLoader(
           id,
         })),
         disablePartialExtraction: !!options.disablePartialExtraction,
+        experimentalNativeFastPath:
+          options.platform === 'native' && options.experimental?.nativeFastPath === true,
       }
     },
     getEvaluationDependencies: () => [...evaluationDependencies],
