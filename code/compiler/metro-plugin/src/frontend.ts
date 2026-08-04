@@ -1,5 +1,5 @@
 import { watch, type FSWatcher } from 'node:fs'
-import { readFile, realpath } from 'node:fs/promises'
+import { readFile, readdir, realpath } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { basename, join, relative, resolve } from 'node:path'
 
@@ -101,9 +101,54 @@ const compilerImplementationVersions = (
 
 function scanOptionsHash(
   options: MetroCompilerScanOptions,
-  projectGeneration: string
+  projectGeneration: string,
+  projectSourcesHash: string
 ): string {
-  return metroCompilerContentHash(JSON.stringify({ options, projectGeneration }))
+  return metroCompilerContentHash(
+    JSON.stringify({ options, projectGeneration, projectSourcesHash })
+  )
+}
+
+// Metro entries can live inside node_modules (expo-router's entry reaches app
+// source only through require.context), so reachability from the entry alone
+// discovers nothing there. Project source is walked directly and seeded into
+// the scan alongside the entry; imports then extend the graph outside the
+// project root (workspace packages) exactly as before. Build output and
+// platform scaffolding are pruned: they hold no authored JSX, and seeding
+// compiled artifacts by walk would plan files nothing imports.
+const walkExcludedDirs = new Set([
+  'node_modules',
+  'ios',
+  'android',
+  'dist',
+  'build',
+  'coverage',
+  'types',
+  'web-build',
+])
+
+async function walkProjectSources(root: string): Promise<string[]> {
+  const found: string[] = []
+  const stack = [root]
+  while (stack.length) {
+    const dir = stack.pop()!
+    let entries
+    try {
+      entries = await readdir(dir, { withFileTypes: true })
+    } catch {
+      continue
+    }
+    for (const entry of entries) {
+      if (entry.name.startsWith('.')) continue
+      const path = join(dir, entry.name)
+      if (entry.isDirectory()) {
+        if (!walkExcludedDirs.has(entry.name)) stack.push(path)
+      } else if (entry.isFile() && isCompilerSourceFile(path)) {
+        found.push(path)
+      }
+    }
+  }
+  return found.sort(compareCodeUnits)
 }
 
 function compilerTarget(platform: string | null): CompilerTarget {
@@ -148,20 +193,38 @@ export class MetroCompilerFrontend {
 
   async #scan(
     options: MetroCompilerScanOptions,
-    preparedProject?: MetroCompilerProject
+    preparedProject?: MetroCompilerProject,
+    preparedProjectSources?: string[]
   ): Promise<MetroCompilerGeneration> {
     this.#scanOptions = options
     this.#publishedGeneration = null
     const diagnostics: MetroCompilerDiagnostic[] = []
-    const roots = (
+    const entryRoots = (
       await Promise.all(
         options.entryFiles.map((path) => realpath(resolve(this.config.projectRoot, path)))
       )
     ).sort(compareCodeUnits)
     const compilerProject =
-      preparedProject ?? (await this.#loadCompilerProject(options, roots[0], diagnostics))
+      preparedProject ??
+      (await this.#loadCompilerProject(options, entryRoots[0], diagnostics))
     this.#projectGeneration = compilerProject.generation
-    this.#scanOptionsHash = scanOptionsHash(options, compilerProject.generation)
+    const projectSources =
+      preparedProjectSources ?? (await walkProjectSources(this.config.projectRoot))
+    this.#scanOptionsHash = scanOptionsHash(
+      options,
+      compilerProject.generation,
+      metroCompilerContentHash(JSON.stringify(projectSources))
+    )
+    const speculativeRoots = new Set<string>()
+    for (const file of projectSources) {
+      try {
+        const id = await realpath(file)
+        if (!entryRoots.includes(id)) speculativeRoots.add(id)
+      } catch {}
+    }
+    const roots = [...new Set([...entryRoots, ...speculativeRoots])].sort(
+      compareCodeUnits
+    )
     const queue = [...roots]
     const queued = new Set(queue)
     for (const watcher of this.#watchers.values()) watcher.close()
@@ -185,6 +248,10 @@ export class MetroCompilerFrontend {
           queue.push(dependency.resolvedId)
         }
       } catch (error) {
+        // walk-seeded files are speculative: nothing proved the bundle needs
+        // them, so a compile failure is not a build diagnostic. If the bundle
+        // does include one, the transformer's plan-miss warning still fires.
+        if (speculativeRoots.has(path)) continue
         const diagnostic = metroDiagnostic(
           'metro/transform-failed',
           `Failed to compile ${path}: ${error instanceof Error ? error.message : String(error)}`,
@@ -278,7 +345,12 @@ export class MetroCompilerFrontend {
     )
     const cache = new MetroCompilerCache(this.cacheRootFor(options.platform))
     const validation = await cache.validate()
-    const optionsHash = scanOptionsHash(options, compilerProject.generation)
+    const projectSources = await walkProjectSources(this.config.projectRoot)
+    const optionsHash = scanOptionsHash(
+      options,
+      compilerProject.generation,
+      metroCompilerContentHash(JSON.stringify(projectSources))
+    )
     if (
       validation.valid &&
       validation.generation &&
@@ -299,7 +371,7 @@ export class MetroCompilerFrontend {
     }
     for (const diagnostic of validation.diagnostics) this.#report(diagnostic)
     await cache.discardManifest()
-    return await this.#scan(options, compilerProject)
+    return await this.#scan(options, compilerProject, projectSources)
   }
 
   async updateFile(path: string): Promise<MetroCompilerUpdate> {
