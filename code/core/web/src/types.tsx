@@ -676,9 +676,12 @@ export type TamaguiComponentStateRef = {
   nativeActiveState?: string
   // media interception: recompute styles under the current theme when a
   // relevant media key flips (useMedia's subscription calls this before
-  // forcing a re-render); nativeThemeState tracks the last theme handled
-  // natively so the recompute uses it instead of the stale render capture
-  nativeMediaUpdate?: () => boolean
+  // forcing a re-render, passing that re-render as the miss fallback);
+  // recomputes coalesce per event turn via nativeMediaQueued, and
+  // nativeThemeState tracks the last theme handled natively so the recompute
+  // uses it instead of the stale render capture
+  nativeMediaUpdate?: (onMiss?: () => void) => boolean
+  nativeMediaQueued?: boolean
   nativeThemeState?: ThemeState
   // union of style keys pushed to the engine since link: keys present before
   // but absent from the next push are sent as null (reset-to-default),

@@ -31,6 +31,7 @@ import { getThemeProxied } from './hooks/getThemeProxied'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
+import { getMedia } from './helpers/mediaState'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
 import { usePointerEvents } from './helpers/pointerEvents'
 import { extractPseudoState } from './helpers/extractPseudoState'
@@ -912,7 +913,10 @@ export function createComponent<
               proxiedTheme,
               stateName,
               state,
-              styleProps,
+              // media may have changed since render: the captured
+              // styleProps.mediaState is a mount-time snapshot in
+              // first-render mode, so resolve against the live global
+              { ...styleProps, mediaState: getMedia() },
               null,
               componentContext,
               allGroupContexts,
@@ -928,18 +932,33 @@ export function createComponent<
           }
         : undefined
 
-      // a relevant media key flipped (useMedia updated its mirrors first, so
-      // styleProps.mediaState already reads the new values): every cached
-      // state entry was computed under the old media state, so the warm cache
-      // clears and the current theme recomputes cold
+      // a relevant media key flipped: every cached state entry was computed
+      // under the old media state, so the warm cache clears and the current
+      // theme recomputes cold (against the live global media, see above).
+      // one dimension change fires one update per configured media key and in
+      // first-render mode every subscriber passes the snapshot check each
+      // time, so coalesce to a single recompute per event turn — by which
+      // point every key has settled
       stateRef.current.nativeMediaUpdate = canNativeUpdate
-        ? () => {
+        ? (onMiss) => {
             const sr = stateRef.current
             if (!sr.nativeLink) return false
-            sr.nativePushedStates!.clear()
-            // the same state name must recompute under the new media values
-            sr.nativeActiveState = undefined
-            return sr.nativeStyleUpdate!(sr.nativeThemeState || themeState)
+            if (!sr.nativeMediaQueued) {
+              sr.nativeMediaQueued = true
+              queueMicrotask(() => {
+                sr.nativeMediaQueued = false
+                if (!sr.nativeLink) return
+                sr.nativePushedStates!.clear()
+                // the same state name must recompute under the new media values
+                sr.nativeActiveState = undefined
+                if (!sr.nativeStyleUpdate!(sr.nativeThemeState || themeState)) {
+                  // couldn't commit natively after all: fall back to the
+                  // re-render this update path had skipped
+                  onMiss?.()
+                }
+              })
+            }
+            return true
           }
         : undefined
 

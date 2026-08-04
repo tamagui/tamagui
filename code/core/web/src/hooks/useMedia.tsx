@@ -351,7 +351,7 @@ export function useMedia(
             // native fast path (experimental): uid is createComponent's
             // stateRef.current; when the component can commit the media-driven
             // style change straight to the native tree, skip the re-render
-            if ((ref.uid as any)?.nativeMediaUpdate?.()) return
+            if ((ref.uid as any)?.nativeMediaUpdate?.(forceUpdate)) return
             forceUpdate()
           }
         })

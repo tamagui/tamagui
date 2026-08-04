@@ -15,8 +15,11 @@ import {
   _withStableStyle,
   createTamagui,
   forceUpdateThemes,
+  getMedia,
+  setMediaState,
   setNativeStyleEngine,
   styled,
+  updateMediaListeners,
   type NativeStyleEngine,
   type NativeStyleEngineSlots,
   type NativeViewStateTableUpdate,
@@ -352,5 +355,57 @@ test('compiled mappings refresh the active native table after a theme mutation',
   } finally {
     config.themes.dark_red = original
     await act(async () => forceUpdateThemes())
+  }
+})
+
+// reproduces the on-device rotation bug: styleProps.mediaState is a
+// mount-time snapshot in first-render mode (the native default), so media
+// recomputes must resolve against the live global media state — and a real
+// dimension change fires one listener pass per configured media key, which
+// must coalesce into a single recompute
+test('a media flip recomputes fresh styles and null-resets sm-only keys', async () => {
+  const smWas = getMedia().sm
+  render(
+    // minHeight exists ONLY under sm; borderWidth has a base, so it changes
+    // value instead of nulling
+    <Harness extraProps={{ minHeight: 'sm:70', borderWidth: '2 sm:6' }} />,
+    { createNodeMock: () => ({}) }
+  )
+  await flush()
+
+  try {
+    await act(async () => {
+      // a dimension change updates each configured key separately, notifying
+      // listeners after every one — the exact storm rotation produces
+      setMediaState({ ...getMedia(), sm: true })
+      updateMediaListeners()
+      setMediaState({ ...getMedia(), md: !getMedia().md })
+      updateMediaListeners()
+      setMediaState({ ...getMedia(), lg: !getMedia().lg })
+      updateMediaListeners()
+    })
+    await flush()
+
+    // coalesced: one cold entry for the whole storm, computed under sm
+    const activated = mock.entries()
+    expect(activated).toHaveLength(1)
+    expect(activated[0].props?.minHeight).toBe(70)
+    // string candidates resolve through the size token scale, so assert the
+    // sm value applied without pinning the token's numeric value
+    const smBorder = activated[0].props?.borderTopWidth
+    expect(smBorder).toBeTypeOf('number')
+
+    await act(async () => {
+      setMediaState({ ...getMedia(), sm: false })
+      updateMediaListeners()
+    })
+    await flush()
+
+    const deactivated = mock.entries().at(-1)!
+    expect(deactivated.props?.minHeight).toBe(null)
+    expect(deactivated.props?.borderTopWidth).toBeTypeOf('number')
+    expect(deactivated.props?.borderTopWidth).not.toBe(smBorder)
+  } finally {
+    setMediaState({ ...getMedia(), sm: smWas })
   }
 })
