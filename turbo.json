@@ -35,7 +35,7 @@
       "outputs": []
     },
     "test": {
-      "dependsOn": ["^build:js"],
+      "dependsOn": ["^build"],
       "inputs": ["../../bun.lockb", "src/**", "test/**", "tests/**", "__tests__/**", "*.config.*"],
       "outputs": [],
       "env": [
@@ -60,7 +60,7 @@
       ]
     },
     "test:web": {
-      "dependsOn": ["^build:js"],
+      "dependsOn": ["^build"],
       "inputs": ["../../bun.lockb", "src/**", "test/**", "tests/**", "__tests__/**", "*.config.*"],
       "outputs": [],
       "env": [
@@ -77,7 +77,7 @@
       ]
     },
     "test:native": {
-      "dependsOn": ["^build:js"],
+      "dependsOn": ["^build"],
       "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
       "outputs": [],
       "cache": false

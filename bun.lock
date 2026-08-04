@@ -163,6 +163,7 @@
         "@babel/plugin-syntax-typescript": "^7.25.4",
         "@babel/types": "^7.25.4",
         "@tamagui/sandbox-ui": "workspace:*",
+        "@tamagui/static": "workspace:*",
         "@tamagui/test-design-system": "workspace:*",
         "@testing-library/react": "^16.1.0",
         "@types/babel__generator": "^7.6.4",
