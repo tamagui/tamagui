@@ -124,9 +124,11 @@ tag input and passes only `--beta` plus a beta version, so its tested path canno
 - [x] The repository has no package changelog. Tester-facing release notes are the Tamagui 3
   post plus the v3 upgrade guide. The post now names flat conditional values, config v6, and
   the three component import surfaces; its placeholder credits section is removed.
-- [x] The flat-values codemod guide now matches the executable contract: report-only by
-  default, `--write` applies statically safe conversions, and unsafe outcomes stay in the
-  report for manual work.
+- [x] The draft codemod guide is assessed as **not ship-ready**. Its `--write` instructions
+  and removed `legacyConditionObjects` statement are corrected, but most implementation and
+  corpus claims predate the landed legacy-path deletion and direct-style emitter. Do not
+  publish it without a new verification pass. The published upgrade and flat-values guides
+  contain the current tester workflow.
 - [x] The stale interactive beta instructions in `next.md` now describe the automatic
   workflow, exact version formula, lack of Git finish artifacts, and the manual
   `--tag latest` footgun.
