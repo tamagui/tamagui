@@ -15,6 +15,22 @@ The migration tool is report-only by default. Pass `--write` to apply every
 statically safe source conversion in place. It always reports conversions it
 cannot prove safe, and it never edits configuration.
 
+## Migrate styled wrapper factories manually
+
+V3 accepts the component and render function in one `createStyledHOC` call. The
+flat-values codemod does not rewrite this API signature:
+
+```tsx
+// before
+const Card = createStyledHOC(CardFrame)<CardProps>((props, ref) => ...)
+
+// after
+const Card = createStyledHOC(CardFrame, (props: CardProps, ref) => ...)
+```
+
+Search every application and component package for `createStyledHOC(`. A
+one-argument call followed by another call is the removed curried form.
+
 ## Start with the v6 config
 
 Use the v6 default config as the base for new V3 configuration:

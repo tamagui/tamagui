@@ -161,6 +161,17 @@ const MyInput = StyledInput.styleable<Props>((props, ref) => ...)
 const MyInput = createStyledHOC(StyledInput, (props: Props, ref) => ...)
 ```
 
+An earlier standalone form was curried. V3 removes that intermediate signature,
+so pass the render function as the second argument:
+
+```tsx
+// before
+const MyInput = createStyledHOC(StyledInput)<Props>((props, ref) => ...)
+
+// after
+const MyInput = createStyledHOC(StyledInput, (props: Props, ref) => ...)
+```
+
 ## True tokens are gone
 
 The old `$true` token aliases have been removed from v3 configs. Component
