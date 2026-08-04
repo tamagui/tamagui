@@ -75,10 +75,15 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
 
   // raw JSI: applyViewStates([{id, state, props?}]) -> void
   // batched per-view state selection: for each entry, `props` (when given)
-  // is merged into the view's state table under `state`, the view's active
+  // replaces the view's state table entry under `state`, the view's active
   // state becomes `state`, and all changed views commit in ONE transaction.
   jsi::Value applyViewStates(jsi::Runtime& rt, const jsi::Value& thisValue,
                              const jsi::Value* args, size_t count);
+
+  // raw JSI: getViewState(id) -> {scopeId, activeState, base, states} | null
+  // debug/test introspection of a linked view's tables; not a hot path
+  jsi::Value getViewState(jsi::Runtime& rt, const jsi::Value& thisValue,
+                          const jsi::Value* args, size_t count);
 
   // resolve the active state name for a scope: scope entry, else root
   const std::string* activeStateName(const std::string& scopeId) const;

@@ -25,6 +25,8 @@ void HybridTamaguiRegistry::loadHybridMethods() {
     prototype.registerRawHybridMethod("link", 3, &HybridTamaguiRegistry::link);
     prototype.registerRawHybridMethod("applyViewStates", 1,
                                       &HybridTamaguiRegistry::applyViewStates);
+    prototype.registerRawHybridMethod("getViewState", 1,
+                                      &HybridTamaguiRegistry::getViewState);
   });
 }
 
@@ -191,6 +193,15 @@ bool HybridTamaguiRegistry::buildViewUpdate(LinkedView& view,
     family.nativeProps_DEPRECATED = std::make_unique<folly::dynamic>(props);
   }
 
+  // a null value means reset-to-default (a style key dropped by a media
+  // change): it must COMMIT as null so RawProps clears the prop, but must not
+  // stick in nativeProps_DEPRECATED or every future React render would keep
+  // re-clearing a key the render may now legitimately set
+  auto& sticky = *family.nativeProps_DEPRECATED;
+  for (const auto& item : props.items()) {
+    if (item.second.isNull()) sticky.erase(item.first.asString());
+  }
+
   // the retained node keeps its family alive; unmounted views resolve to
   // no ancestors during the transaction and are skipped safely
   out[&family] = std::move(props);
@@ -285,6 +296,25 @@ jsi::Value HybridTamaguiRegistry::applyViewStates(jsi::Runtime& rt,
 
   commitUpdates(rt, updates);
   return jsi::Value::undefined();
+}
+
+jsi::Value HybridTamaguiRegistry::getViewState(jsi::Runtime& rt,
+                                               const jsi::Value&,
+                                               const jsi::Value* args,
+                                               size_t count) {
+  if (count < 1 || !args[0].isNumber()) return jsi::Value::null();
+  auto it = views_.find(args[0].asNumber());
+  if (it == views_.end()) return jsi::Value::null();
+  const auto& view = it->second;
+
+  folly::dynamic out = folly::dynamic::object("scopeId", view.scopeId)(
+      "activeState", view.activeState)("base", view.baseProps)(
+      "states", view.stateProps);
+  const auto& family = view.node->getFamily();
+  out["nativeProps"] = family.nativeProps_DEPRECATED
+                           ? *family.nativeProps_DEPRECATED
+                           : folly::dynamic(nullptr);
+  return jsi::valueFromDynamic(rt, out);
 }
 
 }  // namespace margelo::nitro::tamagui::registry

@@ -342,10 +342,16 @@ export function useMedia(
         ref.unsubscribe = subscribe(() => {
           const next = ref.getSnapshot()
           if (next !== ref.proxyTarget) {
+            // mirrors update first either way, so a later natural render
+            // resolves the same media values the fast path committed
             ref.proxyTarget = next
             if (!ref.optimizeForFirstRender) {
               ;(ref.proxy as any)[refSlot].proxyTarget = next
             }
+            // native fast path (experimental): uid is createComponent's
+            // stateRef.current; when the component can commit the media-driven
+            // style change straight to the native tree, skip the re-render
+            if ((ref.uid as any)?.nativeMediaUpdate?.()) return
             forceUpdate()
           }
         })

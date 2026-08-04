@@ -46,3 +46,13 @@ export interface ViewStateUpdate {
   state: string
   props?: Record<string, unknown>
 }
+
+/** Debug/test snapshot of a linked view's engine tables (getViewState). */
+export interface ViewStateSnapshot {
+  scopeId: string
+  activeState: string
+  base: Record<string, unknown> | null
+  states: Record<string, Record<string, unknown>> | null
+  /** the family's sticky nativeProps_DEPRECATED merge, null when unset */
+  nativeProps: Record<string, unknown> | null
+}

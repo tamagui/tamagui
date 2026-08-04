@@ -37,6 +37,7 @@ export declare function setNativeStyleEngineFlushListener(cb: (() => void) | nul
 export declare function updateNativeStyleLink(ref: {
     nativeLink?: NativeStyleEngineLinkHandle | null;
     nativeStyleUpdate?: unknown;
+    nativePushedKeys?: Set<string>;
 }, host: unknown): void;
 export declare function queueNativeViewState(entry: NativeViewStateUpdate): void;
 //# sourceMappingURL=nativeStyleEngine.d.ts.map

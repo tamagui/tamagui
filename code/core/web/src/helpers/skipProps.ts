@@ -14,6 +14,7 @@ export const skipProps = {
   debug: 1,
   componentName: 1,
   disableOptimization: 1,
+  disableNativeStyle: 1,
   render: 1,
   style: 1, // handled after the prop loop to preserve authored order
   group: 1,
