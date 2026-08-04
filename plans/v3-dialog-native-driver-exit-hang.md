@@ -228,9 +228,38 @@ two groups:
    a visible border, and `zIndex: 0` creates a stacking context where `auto` does
    not. Pre-existing and structural, not token resolution.
 
-One straggler worth a look: `color` differs on exactly one element,
-`SPAN[scenario-12-target]`, `rgb(3,7,18)` on css vs `rgb(0,0,0)` on native. That
-is a plainly visible text color, unlike the rest of group 2.
+One straggler looked worse than the rest: `color` differs on exactly one element,
+`SPAN[scenario-12-target]`, `rgb(3,7,18)` on css vs `rgb(0,0,0)` on native. It is
+explained below, and it is not a core bug.
+
+## The one visible color difference: stale v5 token names in fixtures
+
+`scenario-12` sets `color={active ? 'red10' : 'blue10'}`. Neither measured value
+is blue, which is the tell. Probing the live config:
+
+- theme key `blue10` is **absent**; `blue-500` is `rgba(43,127,255,1)` and
+  `color10` is `rgba(16,24,40,1)`
+- `scenario-11`'s `backgroundColor="blue10"` computes to `rgba(0,0,0,0)` on
+  **both** css and native
+
+So `blue10`/`red10` are v5-era names the v6 config does not define. The value is
+dropped, and the drivers then fall back differently: the css path inherits the
+theme's body color `rgb(3,7,18)`, while the native path renders a
+react-native-web `DIV` carrying RNW's `css-text-146c3p1` base class, which
+hardcodes black. That is the same mechanism behind group 2's border colors: RNW's
+black default against the theme's value, invisible wherever `borderWidth` is 0.
+
+**No test is passing vacuously because of this.** Every kitchen-sink test that
+asserts a concrete color asserts `rgb(255,0,0)` / `rgb(0,128,0)` /
+`rgb(0,0,255)`, which are plain CSS color names, never a v5 token color.
+
+**Do not bulk-fix it.** `blue10`/`red10`/`green10`/`orange10` appear across **37**
+kitchen-sink files. Renaming all of them to chase one span is exactly the churn
+this campaign's rules warn against, kitchen-sink is an internal app so nothing
+ships colorless, and no assertion depends on it. If anyone does want it, it is a
+mechanical rename that belongs in its own commit. The one part worth escalating
+is a migration question rather than a fixture one: v5 color token names silently
+resolve to nothing under v6, with no warning.
 
 ## Still open
 
@@ -255,11 +284,20 @@ is a plainly visible text color, unlike the rest of group 2.
   and never touches the project the failure lives in. With `TEST_MODE=prod` it
   fails, and the reporter labels the failing line `[prod]`.
 
-  That makes it build-mode dependent, which is a lead rather than a nuisance: the
-  composed matrix appears in the prod build and not in dev, so suspect extraction
-  and compilation rather than the motion driver. Still to do: run dev and prod
-  back to back as a direct discriminator, since the above pairs a prod run of mine
-  against a dev run of someone else's rather than two arms of one experiment.
+  That makes it build-mode dependent, which is a lead rather than a nuisance:
+  suspect extraction and compilation rather than the motion driver.
+
+  **The discriminator is not finished, so do not treat "prod only" as settled.**
+  One arm has run: `NODE_ENV=test bunx playwright test hydration-drivers.test.ts`
+  with `TEST_MODE` unset gives `1 failed / 7 did not run`, and the failure is
+  `:9` "no errors at all (includes hydration errors)" timing out at 30s. So in
+  dev the file dies at its first test and **`:73` never executes**, which is a
+  third possibility beyond "fails in prod, passes in dev". It also does not match
+  a2965's 12 passed / 0 failed, so something differs beyond `TEST_MODE`. The
+  likely confounder is server state: the dev project's `webServer` sets
+  `reuseExistingServer: true`, so a warm dev server and a cold
+  `bun run dev --clean` boot are not the same experiment. Run both arms cold,
+  back to back, before concluding anything.
 - `AnimatePresenceEnterExit` x4 on native, motion and reanimated (css passes) is
   still an opacity/enter-scheduling problem, still unexplained, and a2949's
   reasoning that the transform split cannot account for it survives this session.
