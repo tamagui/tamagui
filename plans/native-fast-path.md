@@ -431,6 +431,10 @@ scenarios in one session, medians of 20 toggles:
   (42ms) is runtime-mode JS: 500 listener invocations each running
   getSplitStyles cold on first visit. Compiler emit mode exists to close
   exactly this gap (pre-resolved mappings, no per-view style computation).
+- Superseded by the one-session matrix below: these four rows were collected
+  across two app sessions, and per-session variance on this sim is larger than
+  several of the differences they were read for. Only same-session rows are
+  comparable.
 - Harness lesson: the first integrated run showed sq0 rendering once per
   toggle — an unstable inline `onRender` callback invalidated the grid's
   `useMemo` so every square remounted per toggle. Stable callback → 0. The
@@ -459,6 +463,48 @@ scenarios in one session, medians of 20 toggles:
      storm (one dimension change = one update per configured media key,
      ~11x redundant cold recomputes) into a single recompute per event
      turn, with the skipped re-render as the miss fallback.
+
+#### Compiler emit mode on device (2026-08-04, iOS sim, dev build)
+
+First on-device run of compiler mode. Metro started with
+`TAMAGUI_NATIVE_FAST_PATH=1` (kitchen-sink's `metro.config.js` gates
+`experimental.nativeFastPath` on that env var), so the bench's compiled squares
+lower to `_withNativeStyle` with the mapping
+`{backgroundColor: background, border{Top,Right,Bottom,Left}Color: color}`.
+All six scenarios in ONE app session, 500 squares, medians of 20 toggles after
+5 warmups:
+
+| scenario | jsDone | engineMs | frame | React render ms | sq0 renders | engine calls / 20 toggles |
+| --- | --- | --- | --- | --- | --- | --- |
+| tamagui (uncompiled, engine off) | 133.5ms | 0 | 165ms | 2868 | 25 | none |
+| compiled (`_withStableStyle`, engine off) | 77.2ms | 0 | 117ms | 1324 | 25 | none |
+| fastpath (uncompiled + engine) | 59.5ms | 31.7ms | 83ms | 8.1 | 0 | 20 applyViewStates (10,000 entries) + 20 setStateName |
+| **compiledFast (`_withNativeStyle` + engine)** | **52.6ms** | **28.4ms** | **83ms** | **8.0** | **0** | **20 setStateName, nothing else** |
+| native (pre-filled tables) | 15.5ms | 15.5ms | 33ms | 0 | 0 | 20 setStateName |
+| rn floor | 36.3ms | 0 | 67ms | 665 | 0 | none |
+
+- The compiler-mode contract holds on device, and the engine call counts are
+  what prove it: a warm toggle is one scope publish with zero applyViewStates
+  entries, zero state-table refills, and zero square renders. Runtime mode on
+  the same screen pushes 500 per-view entries per toggle. The bench wraps the
+  engine in a counting/timing proxy so this is read, not assumed.
+- Against the baseline that matters for an app that runs the compiler
+  (the `compiled` row, which is what ships today), compiler mode is 1.47x on
+  jsDone and drops React render work 166x, from 1324ms to 8ms across the run.
+  Against the uncompiled baseline it is 2.5x and 359x.
+- 28.4ms of compiledFast's 52.6ms is the synchronous ShadowTree commit itself.
+  The 15.5ms native floor commits the same 500 views with a two-key payload,
+  while compiler mode pushes five keys per view (`borderColor` expands to four
+  per-side keys), so payload accounts for most of that difference rather than
+  compiler-mode overhead. What is left, about 24ms, is React scheduling the
+  provider's two commits, not per-view work.
+- So the honest summary of compiler mode versus runtime mode: it removes all
+  per-view JS (10,000 entries per 20 toggles down to zero) and is modestly
+  faster wall-clock here, because at 500 views the ShadowTree commit dominates
+  both. The per-view JS it removes is the part that scales with app size and
+  competes with everything else on the JS thread.
+- jsDone for the engine scenarios is measured to the later of the last React
+  commit and the last engine call, so it cannot understate native work.
 
 ### Phase 1: engine + compiler, themes only
 

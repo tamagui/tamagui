@@ -51,6 +51,50 @@ Everything here was paid for in lost hours; read it before touching the loop.
   unquoted variables (`set -- $spec` keeps one arg). Loops that parse
   coordinate strings must be zsh-safe.
 
+## The compiler silently stops compiling (the #2 time sink)
+
+The metro plugin computes a lowering plan per file, then transform workers look
+it up by source hash. When they disagree the worker logs
+`metro/plan-miss: ... (source-hash-mismatch)` and **ships the module
+unlowered**, which is a warning in a wall of warnings and changes what your
+harness measures without changing a line of your source:
+
+- `NativeRegistryBenchCase.tsx` shipped unlowered in one session and lowered in
+  the next from identical source. The same "tamagui baseline" scenario measured
+  `styled()`/createComponent one time and the compiler's `_withStableStyle` the
+  next, a 1.7x difference in the row everything else is compared against.
+- Once a module ships unlowered it STAYS unlowered for the life of the metro
+  session: metro's transform cache is keyed on file content and transformer
+  options, and the plan is handed over out of band, so a fresh plan does not
+  invalidate the cached output. Relaunching the app does not fix it. Only
+  `bun expo start --clear` (or another edit to that file) does.
+- So: after editing a file whose lowering matters, restart metro with `--clear`
+  and confirm with `grep plan-miss <metro log>` that your file is not listed.
+- Check what actually shipped without waiting on a 4-minute bundle fetch: the
+  plan lives in
+  `code/kitchen-sink/node_modules/.cache/tamagui/metro-compiler/ios/v4/`
+  (`manifest.json` maps absolute path to a blob hash; the blob's `plan.edits`
+  hold the emitted `_withStableStyle` / `_withNativeStyle` wrappers). To see
+  the served module instead:
+  `curl -s "http://localhost:8081/code/kitchen-sink/index.bundle?platform=ios&dev=true&minify=false"`.
+- Do not build a harness that assumes either answer. Any scenario whose meaning
+  depends on being lowered (or not) must prove it at runtime: the bench reports
+  engine call counts and linked view count per scenario, and the runtime-mode
+  grids build their elements with `createElement` so the compiler's JSX path
+  can never claim them.
+
+## Running the compiler-mode bench
+
+1. `TAMAGUI_NATIVE_FAST_PATH=1 bun expo start --clear --port 8081` in
+   `code/kitchen-sink`. The flag is env-gated in `metro.config.js` so normal
+   sessions and CI are unaffected; with no engine installed the emitted
+   `_withNativeStyle` wrapper falls back to the ordinary theme-hook path.
+2. Wait for "Bundled", then launch with
+   `-directUseCase NativeRegistryBenchCase` and tap the six run buttons.
+3. Read `[bench]` lines. The path proof per scenario:
+   `applyEntries > 0` is runtime mode, `stateNameCalls` only is compiler mode,
+   `linkedViews: 0` on an engine scenario means it measured the React fallback.
+
 ## Tests
 
 - JS suite: `bun run test:native` in `code/core/core-test` — the script sets
@@ -107,19 +151,27 @@ Before touching engine code, check the harness for these known shapes:
 
 ## Current tap targets (portrait, iPhone 17)
 
-- Bench: fastpath (170,57), tamagui (64,57), native (269,57), rn (62,102)
+- Bench: tamagui (64,56), fastpath (170,56), compiled (279,56),
+  compiled fast (82,101), native (198,101), rn (294,101)
 - Parity: run parity (57,60), flip media (86,113)
-- Re-derive from `snapshot-ui` after any layout change.
+- Re-derive from `snapshot-ui` after any layout change, or tap by testID
+  (`xcodebuildmcp ui-automation tap --id runCompiledFast`), which is stable.
+
+## Never compare numbers across app sessions
+
+Medians on this sim move 1.5-2x between sessions for the same code: the
+uncompiled baseline measured 133ms, 149ms, 166ms and 250ms on the same build.
+Every claim of the form "X is faster than Y" needs X and Y measured in one app
+session, which is why the bench runs all six scenarios from one screen. Two
+conclusions in this plan were wrong for exactly this reason before the
+one-session matrix replaced them.
 
 ## Remaining work (state as of 2026-08-04)
 
-1. Compiler emit mode on-device: never run on a device. Wire a
-   compiler-emitted (`_withNativeStyle`) scenario into the bench case; it
-   should close the 150ms (runtime mode) → 42ms (pure native) jsDone gap.
-   This is the headline number the effort exists for.
-2. Release-build benchmark on a real device (all current numbers are
-   dev-mode sim; the plan explicitly owes this).
-3. Android first boot (packagingOptions build break was fixed, zero runs so
+1. Release-build benchmark on a real device (all current numbers are
+   dev-mode sim; the plan explicitly owes this). Needs the owner for device
+   provisioning.
+2. Android first boot (packagingOptions build break was fixed, zero runs so
    far).
 4. Detox correctness coverage (Phase 2): nested scopes, list virtualization
    re-linking, unmount/remount churn.
