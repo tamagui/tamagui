@@ -8,18 +8,22 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 /**
- * Optional ref pinning. bento's v3 migration lives on the `v3` branch until it
- * merges to bento main alongside the tamagui v3 cutover at release. The v3-beta
- * tamagui.dev deployment sets `TAMAGUI_BENTO_REF=v3` so it builds bento v3, while
- * the main (v2.4.x) site keeps building bento main untouched.
+ * Optional ref pinning. The v3-beta site passes its validated Bento commit in
+ * `TAMAGUI_BENTO_REF`, while the main v2 site keeps building Bento main.
  */
 function pinBentoRef(bentoPath, silent) {
   const ref = process.env.TAMAGUI_BENTO_REF
   if (!bentoPath || !ref || !existsSync(resolve(bentoPath, '.git'))) return
-  execFileSync('git', ['-C', bentoPath, 'fetch', '--quiet', 'origin', ref], { stdio: 'pipe' })
-  execFileSync('git', ['-C', bentoPath, 'checkout', '--quiet', '--detach', 'FETCH_HEAD'], {
+  execFileSync('git', ['-C', bentoPath, 'fetch', '--quiet', 'origin', ref], {
     stdio: 'pipe',
   })
+  execFileSync(
+    'git',
+    ['-C', bentoPath, 'checkout', '--quiet', '--detach', 'FETCH_HEAD'],
+    {
+      stdio: 'pipe',
+    }
+  )
   if (!silent) console.info(`Pinned bento to ref "${ref}" at ${bentoPath}`)
 }
 

@@ -110,8 +110,12 @@ import { View } from '@tamagui/core'
     }
   )
 
-  expect(output?.js).toContain("bg={props.green ? 'red' : 'blue'}")
+  // per-branch lowering: both branches resolve to atomic classes and the
+  // element fully flattens; only the test expression survives
+  expect(output?.js).toContain('(props.green) ?')
   expect(output?.styles).toContain('width:10px')
+  expect(output?.styles).toContain('background-color:red')
+  expect(output?.styles).toContain('background-color:blue')
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })
@@ -681,7 +685,7 @@ test('Text with a hover clause and conditional spread preserves ternary', async 
   expect(output?.js).toMatchSnapshot()
 })
 
-test('a conditional color prop stays on the runtime component', async () => {
+test('a conditional theme-token color lowers to conditional var classes', async () => {
   const output = await extractForWeb(
     `
     import { Text } from '@tamagui/core'
@@ -704,9 +708,11 @@ test('a conditional color prop stays on the runtime component', async () => {
     }
   )
 
-  expect(output?.styles).toBe('')
-  expect(output?.js).toContain('isActive')
-  expect(output?.js).toContain("color={isActive ? 'color' : 'color11'}")
+  // both branches are theme tokens; on web they resolve to css variables so
+  // the conditional classes stay theme-live
+  expect(output?.styles).toContain('color:var(--color)')
+  expect(output?.styles).toContain('color:var(--color11)')
+  expect(output?.js).toContain('(isActive) ?')
 })
 
 // role attribute is passed through during extraction

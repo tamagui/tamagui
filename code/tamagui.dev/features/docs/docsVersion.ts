@@ -32,23 +32,27 @@ export type DocsVersionState = {
 }
 
 export function getCanonicalDocsPath(pathname: string) {
-  if (pathname.startsWith('/tailwind-ui/')) {
-    return pathname.replace(/^\/tailwind-ui/, '/ui')
+  if (pathname.startsWith('/tailwind-ui/') || pathname.startsWith('/unstyled-ui/')) {
+    return pathname.replace(/^\/(?:tailwind|unstyled)-ui/, '/ui')
   }
 
-  if (pathname.startsWith('/tailwind/intro/')) {
-    return pathname.replace(/^\/tailwind\/intro\//, '/docs/intro/')
-  }
-
-  if (pathname.startsWith('/tailwind/core/')) {
-    return pathname.replace(/^\/tailwind\/core\//, '/docs/core/')
-  }
-
-  if (pathname.startsWith('/tailwind/guides/')) {
-    return pathname.replace(/^\/tailwind\/guides\//, '/docs/guides/')
+  if (/^\/(?:tailwind|unstyled)\/(?:intro|core|guides)\//.test(pathname)) {
+    return pathname.replace(/^\/(?:tailwind|unstyled)\//, '/docs/')
   }
 
   return pathname
+}
+
+export function getDocsSyntaxPath(pathname: string, syntax: DocsSyntax) {
+  const canonicalPath = getCanonicalDocsPath(pathname)
+  if (syntax === 'styled') return canonicalPath
+  if (canonicalPath.startsWith('/ui/')) {
+    return `/${syntax}-ui/${canonicalPath.slice('/ui/'.length)}`
+  }
+  if (canonicalPath.startsWith('/docs/')) {
+    return `/${syntax}/${canonicalPath.slice('/docs/'.length)}`
+  }
+  return canonicalPath
 }
 
 export function getDocsSyntax(pathname: string, search: URLSearchParams): DocsSyntax {
@@ -57,6 +61,7 @@ export function getDocsSyntax(pathname: string, search: URLSearchParams): DocsSy
   if (param === 'unstyled') return 'unstyled'
   if (param === 'styled' || param === 'tamagui') return 'styled'
   if (pathname.startsWith('/tailwind')) return 'tailwind'
+  if (pathname.startsWith('/unstyled')) return 'unstyled'
   return 'styled'
 }
 
@@ -135,10 +140,7 @@ export function getDocsVersionHref({
     search.set('version', nextProductVersion)
   }
 
-  // styled is the default (no param); unstyled and tailwind are explicit
-  if (nextSyntax !== 'styled') {
-    search.set('syntax', nextSyntax)
-  }
+  pathname = getDocsSyntaxPath(pathname, nextSyntax)
 
   const query = search.toString()
   return query ? `${pathname}?${query}` : pathname

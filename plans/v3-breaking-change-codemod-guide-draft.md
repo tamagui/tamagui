@@ -39,6 +39,7 @@ the published upgrade guide:
 - `Sheet.Frame` split into `Sheet.Container` and `Sheet.Background`;
 - `focusable`, `fullscreen`, `Text selectable`, and `Select.Item index`;
 - the removed `$true` token and spread/type/catch-all variant keys;
+- the v2-compatible Button and Input control-height ramp, distinct from shape spacing;
 - removed token-stepping options, including `getSpace(value, { shift })`;
 - `backgroundActive`, `surface1` through `surface4`, and adaptive `color12`;
 - `@tamagui/config/v4`, `@tamagui/theme-builder/defaultComponentThemes`,
@@ -78,8 +79,11 @@ The v6 config also removes old palette-step names such as `blue10` and `red10`.
 Missing colors are dropped silently, and web and native can expose different
 fallback colors underneath them. The codemod preserves these names because it
 does not evaluate runtime config and cannot choose the intended replacement.
-Search them manually, then select an absolute token such as `blue-500`, or enter
-a color theme and use its adaptive `colorN` ramp.
+It emits each preserved name as a non-blocking `legacy-palette-token`
+configuration warning in the Markdown and JSON reports. Write mode still
+applies the safe syntax conversion, so resolve every warning before running the
+converted application. Select an absolute token such as `blue-500`, or enter a
+color theme and use its adaptive `colorN` ramp.
 
 | Previous key | V3 flat value |
 | --- | --- |
@@ -111,6 +115,21 @@ than preserving the old active name.
 All 16 replacement names above exist in the base light and dark themes in
 `@tamagui/config/v6`. Their previous spellings and `backgroundActive` do not.
 Child themes inherit missing values through their theme-name chain.
+
+## Keep v2 control size meanings
+
+Button and Input frame height uses the `@tamagui/size` control ramp. Its names
+and pixel values reproduce the v2 component size scale: `1` through `5` map to
+20, 28, 36, 44, and 52 px, while `true` selects the `4` step at 44 px. Half
+steps and larger values are also preserved exactly. The published upgrade guide
+contains the complete table.
+
+Earlier v3 betas accidentally sent explicit control sizes through the v6
+spacing scale. A `size="4"` Button or Input was only 16 px tall, while v2 and
+the corrected beta use 44 px. Remove any workaround that chose a larger size
+name to compensate. `Square` and `Circle` are shapes and intentionally keep the
+config spacing scale, so the same name can produce a different shape dimension
+and control frame height.
 
 ## Write flat values
 

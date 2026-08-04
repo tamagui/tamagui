@@ -14,7 +14,13 @@ import type {
 } from './contracts'
 import { expressionReference, resolutionKey, resolvedModuleId } from './contracts'
 import { linkedBailout, localBailout, type BailoutReason } from './diagnostics'
-import { evaluateBinding, evaluateExpression, type EvaluationResult } from './evaluate'
+import {
+  evaluateBinding,
+  evaluateConditionalExpression,
+  evaluateExpression,
+  type ConditionalEvaluation,
+  type EvaluationResult,
+} from './evaluate'
 import type { ElementIRResult } from './ir'
 import { nodeAtSpan, normalizeElements } from './normalize'
 
@@ -158,6 +164,10 @@ export class ProjectGraph implements SymbolResolver {
 
   evaluate(reference: ExpressionReference): EvaluationResult {
     return evaluateExpression(this, reference)
+  }
+
+  evaluateConditional(reference: ExpressionReference): ConditionalEvaluation | null {
+    return evaluateConditionalExpression(this, reference)
   }
 
   evaluateBinding(id: ResolvedModuleId, localName: string): EvaluationResult {

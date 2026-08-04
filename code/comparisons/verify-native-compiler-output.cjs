@@ -682,8 +682,7 @@ async function main() {
         stats: v3DynamicStats,
         diagnostics: dynamicEntry.diagnostics,
         behaviorAssertions: {
-          planMatchesRawSourceHash:
-            dynamicEntry.plan.sourceHash === dynamicSourceSha256,
+          planMatchesRawSourceHash: dynamicEntry.plan.sourceHash === dynamicSourceSha256,
           appliedPlanParses: true,
           expectedDirectHostStylesMatched: expectedDynamicDirectHostStyles.length,
           expectedStyledHostStylesMatched: 1,

@@ -1,9 +1,9 @@
 import { Slot } from 'one'
 import { DocsSyntaxLayout } from '~/features/docs/DocsSyntaxLayout'
 
-export default function TailwindDocsLayout() {
+export default function UnstyledDocsLayout() {
   return (
-    <DocsSyntaxLayout mode="tailwind">
+    <DocsSyntaxLayout mode="unstyled">
       <Slot />
     </DocsSyntaxLayout>
   )

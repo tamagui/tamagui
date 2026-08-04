@@ -65,9 +65,10 @@ test('font size lowers to a family-independent variable', async () => {
   expect(heading.styles).toEqual(body.styles)
 })
 
-// with the family unresolvable there is no safe static answer for anything that
-// reads it, so the whole element has to stay on the runtime path
-test('a conditional font family keeps the element on the runtime path', async () => {
+// a conditional family with static branches lowers per-branch: every class
+// shared by both branches stays static, and because sizes are
+// family-independent variables the only thing that flips is the font marker
+test('a conditional font family lowers to a conditional font class', async () => {
   const output = await extractForWeb(`
     import * as React from 'react'
     import { SizableText } from 'tamagui'
@@ -80,8 +81,12 @@ test('a conditional font family keeps the element on the runtime path', async ()
     }
   `)
 
-  expect(output.stats.lowered).toBe(0)
-  expect(output.diagnostics.map((d) => [d.code, d.prop])).toEqual([
-    ['local/dynamic-style-value', 'fontFamily'],
-  ])
+  expect(output.stats.lowered).toBe(1)
+  expect(output.stats.flattened).toBe(1)
+  expect(output.diagnostics).toEqual([])
+  expect(output.js).toContain(`(compact) ? "font_body" : "font_heading"`)
+  // the size classes stay family-independent: they live in the static part,
+  // never inside the conditional segments
+  const conditional = output.js.match(/\(compact\)[^\]]*/)![0]
+  expect(conditional).not.toContain('_fs-')
 })

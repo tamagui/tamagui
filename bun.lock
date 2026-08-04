@@ -163,6 +163,7 @@
         "@babel/plugin-syntax-typescript": "^7.25.4",
         "@babel/types": "^7.25.4",
         "@tamagui/sandbox-ui": "workspace:*",
+        "@tamagui/static": "workspace:*",
         "@tamagui/test-design-system": "workspace:*",
         "@testing-library/react": "^16.1.0",
         "@types/babel__generator": "^7.6.4",
@@ -3705,6 +3706,7 @@
   "patchedDependencies": {
     "gray-matter@4.0.3": "patches/gray-matter@4.0.3.patch",
     "brace-expansion@5.0.6": "patches/brace-expansion@5.0.6.patch",
+    "vxrn@1.21.13": "patches/vxrn@1.21.13.patch",
     "detox@20.47.0": "patches/detox@20.47.0.patch",
   },
   "overrides": {

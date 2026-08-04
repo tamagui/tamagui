@@ -31,6 +31,21 @@ export type MaterializedValue =
       span: SourceSpan
     }
   | {
+      /**
+       * A conditional whose branches evaluated statically while the test did
+       * not: `cond ? 'body' : 'heading'`. Lowerings that cannot use it treat
+       * it exactly like a bailout (the bailout it would otherwise have been
+       * is preserved for that purpose).
+       */
+      kind: 'conditional'
+      test: SourceSpan
+      whenTrue: StaticEvaluationValue
+      whenFalse: StaticEvaluationValue
+      dependencies: ResolvedModuleId[]
+      bailout: BailoutReason
+      span: SourceSpan
+    }
+  | {
       kind: 'dom-style'
       span: SourceSpan
       items: {
@@ -135,14 +150,32 @@ function materializeValue(
     }
   }
   const result = graph.evaluate(value)
-  return result.ok
-    ? {
-        kind: 'static',
-        value: result.value,
-        dependencies: result.dependencies,
-        span: value,
-      }
-    : { kind: 'bailout', bailout: result.bailout, span: value }
+  if (result.ok) {
+    return {
+      kind: 'static',
+      value: result.value,
+      dependencies: result.dependencies,
+      span: value,
+    }
+  }
+  const conditional = graph.evaluateConditional(value)
+  if (conditional) {
+    return {
+      kind: 'conditional',
+      test: conditional.test,
+      whenTrue: conditional.whenTrue.value,
+      whenFalse: conditional.whenFalse.value,
+      dependencies: [
+        ...new Set([
+          ...conditional.whenTrue.dependencies,
+          ...conditional.whenFalse.dependencies,
+        ]),
+      ].sort(compareCodeUnits),
+      bailout: result.bailout,
+      span: value,
+    }
+  }
+  return { kind: 'bailout', bailout: result.bailout, span: value }
 }
 
 function materializeEntry(
@@ -216,7 +249,7 @@ function materializeStyledDefinition(
 function collectDependencies(module: Omit<MaterializedModule, 'dependencies'>) {
   const dependencies = new Set<ResolvedModuleId>()
   const collect = (value: MaterializedValue) => {
-    if (value.kind === 'static') {
+    if (value.kind === 'static' || value.kind === 'conditional') {
       for (const dependency of value.dependencies) dependencies.add(dependency)
     } else if (value.kind === 'dom-style') {
       for (const item of value.items) collect(item.value)

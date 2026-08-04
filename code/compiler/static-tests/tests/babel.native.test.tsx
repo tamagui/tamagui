@@ -103,7 +103,7 @@ test('handles style order merge properly', async () => {
   expect(code).toMatchSnapshot()
 })
 
-test(`dynamic ternary remains on the runtime component`, async () => {
+test(`dynamic ternary lowers per-branch, only the test survives`, async () => {
   const inputCode = `
   import { View } from 'tamagui'
   export function Test(props) {
@@ -114,8 +114,37 @@ test(`dynamic ternary remains on the runtime component`, async () => {
 `
   const output = await extractForNative(inputCode)
   const outCode = output?.code ?? ''
-  expect(outCode).toContain(`props !== 123 ? 12 : 0`)
+  expect(outCode).toContain(`_expressions={[props !== 123]}`)
+  expect(outCode).toContain(`expressions[0] ? {"marginBottom":12} : {"marginBottom":0}`)
   expect(outCode).toMatchSnapshot()
+})
+
+test(`conditional font family lowers per-branch with per-family size resolution`, async () => {
+  const output = await extractForNative(`
+  import { SizableText } from 'tamagui'
+  export function Test({ compact }) {
+    return (
+      <SizableText fontFamily={compact ? 'body' : 'heading'} size="7">
+        Go
+      </SizableText>
+    )
+  }
+`)
+  const code = output?.code ?? ''
+  expect(code).toContain('_expressions={[compact]}')
+  // each branch resolves the family AND everything that reads it at compile
+  // time; the branches must differ in family and carry their own font metrics
+  const branches = code.match(/expressions\[0\] \? (\{.*?\}) : (\{.*?\})\]/)
+  expect(branches).toBeTruthy()
+  const whenTrue = JSON.parse(branches![1]!)
+  const whenFalse = JSON.parse(branches![2]!)
+  // the test config's families share one family string; the branch difference
+  // shows up as the heading font's own metrics resolved per branch
+  expect(whenTrue).not.toEqual(whenFalse)
+  expect(whenFalse.fontWeight).toBe(700)
+  expect(output.stats.flattened).toBeGreaterThan(0)
+  expect(output.diagnostics).toEqual([])
+  expect(code).toMatchSnapshot()
 })
 
 test(`normalize ternaries with the conditional dynamic values`, async () => {

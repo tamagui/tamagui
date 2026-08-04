@@ -135,5 +135,7 @@ test('theme values with opacity modifiers stay on the runtime path', async () =>
     }
   `)
   expect(output.stats.flattened).toBe(0)
-  expect(output.diagnostics.map(({ code }) => code)).toEqual(['local/dynamic-style-value'])
+  expect(output.diagnostics.map(({ code }) => code)).toEqual([
+    'local/dynamic-style-value',
+  ])
 })

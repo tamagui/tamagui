@@ -59,12 +59,15 @@ exports[`basic conditional extraction 1`] = `
     export function Test() {
       return (
         <>
-          <YStack backgroundColor={x ? 'red' : 'blue'} />
+          <__TamaguiStableView120 _expressions={[x]} />
           <YStack {...x && { backgroundColor: 'red' }} />
         </>
       )
     }
-"
+
+function __TamaguiNativeStyle120() { return __TamaguiNativeStyle120._ ?? (__TamaguiNativeStyle120._ = {"flexDirection":"column"}); } __TamaguiNativeStyle120();
+const __TamaguiNativeView = require('react-native').View;
+const __TamaguiStableView120 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle120._ ?? __TamaguiNativeStyle120(), expressions[0] ? {"backgroundColor":"red"} : {"backgroundColor":"blue"}], false, false);"
 `;
 
 exports[`basic extraction 1`] = `
@@ -78,6 +81,22 @@ exports[`basic extraction 1`] = `
 
 function __TamaguiNativeStyle90() { return __TamaguiNativeStyle90._ ?? (__TamaguiNativeStyle90._ = {"flexDirection":"column","backgroundColor":"red"}); } __TamaguiNativeStyle90();
 const __TamaguiNativeView = require('react-native').View;"
+`;
+
+exports[`conditional font family lowers per-branch with per-family size resolution 1`] = `
+"
+  import { SizableText } from 'tamagui'
+  export function Test({ compact }) {
+    return (
+      <__TamaguiStableText98 _expressions={[compact]} >
+        Go
+      </__TamaguiStableText98>
+    )
+  }
+
+function __TamaguiNativeStyle98() { return __TamaguiNativeStyle98._ ?? (__TamaguiNativeStyle98._ = {"fontFamily":"-apple-system, system-ui, BlinkMacSystemFont, \\"Segoe UI\\", Roboto, Helvetica, Arial, sans-serif","fontWeight":400,"letterSpacing":0,"fontSize":22,"lineHeight":33}); } __TamaguiNativeStyle98();
+const __TamaguiNativeText = require('react-native').Text;
+const __TamaguiStableText98 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle98._ ?? __TamaguiNativeStyle98(), { "color": _theme["color"]?.get() }, expressions[0] ? {} : {"fontWeight":700,"lineHeight":30}], true, false);"
 `;
 
 exports[`do NOT flatten dynamic values with theme access 1`] = `
@@ -113,15 +132,18 @@ exports[`do NOT flatten multiple dynamic values with theme access and conditiona
 "
 `;
 
-exports[`dynamic ternary remains on the runtime component 1`] = `
+exports[`dynamic ternary lowers per-branch, only the test survives 1`] = `
 "
   import { View } from 'tamagui'
   export function Test(props) {
     return (
-      <View marginBottom={props !== 123 ? 12 : 0} />
+      <__TamaguiStableView85 _expressions={[props !== 123]} />
     )
   }
-"
+
+function __TamaguiNativeStyle85() { return __TamaguiNativeStyle85._ ?? (__TamaguiNativeStyle85._ = {}); } __TamaguiNativeStyle85();
+const __TamaguiNativeView = require('react-native').View;
+const __TamaguiStableView85 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle85._ ?? __TamaguiNativeStyle85(), expressions[0] ? {"marginBottom":12} : {"marginBottom":0}], false, false);"
 `;
 
 exports[`flat transform props 1`] = `
@@ -129,15 +151,18 @@ exports[`flat transform props 1`] = `
     import { YStack } from 'tamagui'
     export function Test(isLoading) {
       return (
-        <YStack
-          scale={isLoading ? 1 : 2}
-          x={10}
-          y={20}
-          rotate="10deg"
+        <__TamaguiStableView99
+          _expressions={[isLoading]}
+
+
+
         />
       )
     }
-"
+
+function __TamaguiNativeStyle99() { return __TamaguiNativeStyle99._ ?? (__TamaguiNativeStyle99._ = {"flexDirection":"column","transform":[{"translateX":10},{"translateY":20},{"rotate":"10deg"}]}); } __TamaguiNativeStyle99();
+const __TamaguiNativeView = require('react-native').View;
+const __TamaguiStableView99 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle99._ ?? __TamaguiNativeStyle99(), expressions[0] ? {"transform":[{"translateX":10},{"translateY":20},{"rotate":"10deg"},{"scale":1}]} : {"transform":[{"translateX":10},{"translateY":20},{"rotate":"10deg"},{"scale":2}]}], false, false);"
 `;
 
 exports[`handles style order merge properly 1`] = `

@@ -7,6 +7,7 @@ import {
   docsProductVersions,
   docsSyntaxes,
   docsSyntaxLabels,
+  getDocsSyntaxPath,
   getDocsVersionHref,
   getDocsVersionState,
   type DocsProductVersion,
@@ -49,16 +50,17 @@ export function DocsVersionPicker({
     return next
   }, [frontmatter, pathname, searchString, cookieMode])
 
-  // a non-styled mode (unstyled/tailwind) needs a sticky ?syntax= on the url so
-  // the loader re-runs its transform and each mode gets a distinct cache key.
-  // styled is the default and stays param-free.
+  // docs are statically generated, so each syntax has its own route. when a
+  // sticky cookie meets a canonical styled route, move to that static variant.
   React.useEffect(() => {
     if (!hydrated || state.syntax === 'styled') return
     const params = new URLSearchParams(window.location.search)
-    if (params.get('syntax')) return
-    params.set('syntax', state.syntax)
+    const pathname = getDocsSyntaxPath(window.location.pathname, state.syntax)
+    if (pathname === window.location.pathname && !params.has('syntax')) return
+    params.delete('syntax')
+    const search = params.toString()
     window.location.replace(
-      `${window.location.pathname}?${params.toString()}${window.location.hash}`
+      `${pathname}${search ? `?${search}` : ''}${window.location.hash}`
     )
   }, [hydrated, pathname, state.syntax])
 
@@ -82,8 +84,10 @@ export function DocsVersionPicker({
       const href = anchor.getAttribute('href')
       if (!href || !href.startsWith('/')) return
       const url = new URL(href, window.location.origin)
-      if (url.searchParams.get('syntax')) return
-      url.searchParams.set('syntax', state.syntax)
+      const nextPath = getDocsSyntaxPath(url.pathname, state.syntax)
+      if (nextPath === url.pathname) return
+      url.pathname = nextPath
+      url.searchParams.delete('syntax')
       event.preventDefault()
       event.stopPropagation()
       router.push(`${url.pathname}${url.search}${url.hash}` as Href)

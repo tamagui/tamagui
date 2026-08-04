@@ -80,10 +80,14 @@ of suggested.
 The codemod preserves palette-step names such as `blue10` and `red10`. It does
 not evaluate the application's runtime config, so it cannot know whether a
 custom config still defines them or which absolute shade preserves the design.
-When moving to `@tamagui/config/v6`, search these names and migrate them manually
-to absolute tokens such as `blue-500`, or enter a color theme and use its
-adaptive `colorN` ramp. The v6 defaults do not define the old palette-step
-names, and a missing color is dropped without a runtime warning.
+Every preserved v5 palette name appears as a non-blocking
+`legacy-palette-token` configuration warning in the Markdown and JSON reports.
+Write mode still applies the safe syntax conversion, so resolve every warning
+before running the converted application. When moving to `@tamagui/config/v6`,
+migrate each name manually to an absolute token such as `blue-500`, or enter a
+color theme and use its adaptive `colorN` ramp. The v6 defaults do not define
+the old palette-step names, and a missing color is dropped without a runtime
+warning.
 
 ## Conversion assessment
 
@@ -185,6 +189,12 @@ A flag means a human decides. Every code the tool can emit:
 | `computed-property` | a computed key hides the affected style property |
 | `emitted-program-mismatch`, `emitted-value-invalid` | the printer failed its own re-parse; this is a codemod bug |
 | plus any code from the shared converter | `unsupported-legacy-value`, `legacy-condition-object`, `ambiguous-legacy-group`, `legacy-composite-shorthand` |
+
+## Configuration warning codes
+
+| code | meaning |
+| --- | --- |
+| `legacy-palette-token` | the conversion preserves a v5 palette-step name that the v6 defaults do not define; choose an absolute palette token or an adaptive `colorN` value |
 
 `unsupported-legacy-value` covers the token-context refusals: a `$` mixed with quoted
 or unquoted `url()` content is literal CSS the resolver never reads as a token
