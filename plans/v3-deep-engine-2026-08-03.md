@@ -225,14 +225,51 @@ failure — the known hydration-drivers.test.ts:73 composed-matrix diff owned by
 a2971 — plus 6 passes. The fix is neutral on web dev and prod. Re-verify on
 the merged tree after the batched push (owed to a2943).
 
+## Item D RESOLVED on both platforms: static-branch conditionals lower per-branch
+
+Pipeline: compiler-core gained a `conditional` MaterializedValue kind
+(`evaluateConditionalExpression` in evaluate.ts recovers branch values when the
+test resists evaluation but both branches evaluate; materializeValue produces
+it with the would-be bailout preserved so any consumer that cannot use it
+treats it exactly as a bailout). `lower.ts` treats non-static spreads as
+unsafe and passes the value kind to `canLowerDynamicStyleProp`.
+
+NATIVE (`cc6f779021`): each branch resolves through the FULL resolveSplitStyles
+pipeline over completeProps, so cross-key effects are captured (a fontFamily
+switch carries its own fontWeight/lineHeight into the branch); the diff vs the
+base style becomes `expressions[i] ? {trueDiff} : {falseDiff}` inside the
+`_withStableStyle` style array, with only the TEST expression in
+`_expressions`. Variants are eligible too (a non-style viewProps difference
+between branches bails). Opacity keeps the leaner inline-expression form.
+Conservative bails: branch removes a base key, theme sentinel inside a diff,
+two conditionals contributing the same key.
+
+WEB (`9a15837246`): single-conditional elements fully flatten — classes shared
+by both branches stay static, each branch's remainder becomes one
+`(test) ? "a" : "b"` className segment via the existing program-class
+machinery. Each font family still ships its OWN size scale (`.font_heading
+{--f-size-5:13px}` vs `.font_body {--f-size-5:16px}` in generated CSS); what
+is family-independent is only the indirection — the atomic class says
+`font-size:var(--f-size-7)` and the active `font_*` class scope decides the
+value. So a conditional fontFamily flips ONLY its `font_*` marker and the
+whole per-family scale follows — this EXCEEDS v2, which re-baked resolved
+pixel values into each branch. Theme-token branches resolve to `var(--*)` classes,
+so they stay theme-live. Elements with 2+ conditionals keep the prior web
+partial-extraction path (a shared class intersection across branch
+combinations is not computed). The fonts.web and babel.web pins that kept the
+gap visible now assert the lowering; the webpack DOM snapshots changed
+class ORDER only, with their own computed-style assertions green.
+
+The campaign-plan example (`fontFamily={n ? 'body' : 'heading'}`, 16 of 52
+homepage bailouts) now lowers on web and native. Full sweep green: static-tests
+web 157 / native 64 / webpack 20, metro-plugin 5, monorepo typecheck.
+
 ## Queue
 
-1. Item D: conditional font variants (`supportsNativeDynamicStyles` admits
-   only opacity, compilerHost ~1548; whole element bails at ~1562). V2 lowered
-   ternaries per-branch (`case 'ternary'` in V2 extractToNative, scratchpad
-   copy). The starter's 30 bailed elements are a real-world corpus to mine.
-2. After the batched push lands: re-run prod hydration suites on merged tree;
-   support the 12-sample retained native campaign there (regenerate compiler
-   evidence first).
-3. Function variants reading theme via extras still freeze (shared V2
+1. After the batched push lands: support the 12-sample retained native
+   campaign on the merged tree (regenerate compiler evidence first; rebuild
+   all four bench apps at the measurement HEAD).
+2. Function variants reading theme via extras still freeze (shared V2
    limitation, documented in item B section).
+3. Web multi-conditional elements stay on partial extraction (see item D
+   notes) — possible future work, low value.
