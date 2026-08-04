@@ -96,6 +96,10 @@ export function NativeRegistryParityCase() {
   const [renderBump, setRenderBump] = useState(0)
   const [checks, setChecks] = useState<Check[]>([])
   const [running, setRunning] = useState(false)
+  // linking happens in each square's ref callback at mount, so the engine
+  // must be set BEFORE the grid mounts: gate the grid on it (same pattern as
+  // the showdown case)
+  const [engineReady, setEngineReady] = useState(false)
   const [mediaLog, setMediaLog] = useState('rotate the sim to test media')
   const flushesRef = useRef<NativeViewStateUpdate[][]>([])
   const sq0Renders = useRef(0)
@@ -107,6 +111,7 @@ export function NativeRegistryParityCase() {
   // media-driven flushes (rotation) are reported live outside runParity.
   useEffect(() => {
     setNativeStyleEngine(registry as unknown as NativeStyleEngine)
+    setEngineReady(true)
     setNativeStyleEngineFlushListener((entries) => {
       flushesRef.current.push(entries)
       const cold = entries.filter((e) => e.props)
@@ -308,11 +313,13 @@ export function NativeRegistryParityCase() {
         {mediaLog}
       </Text>
 
-      <ParityGrid
-        outer={outer}
-        renderBump={renderBump}
-        onSq0Render={onSq0Render}
-      />
+      {engineReady ? (
+        <ParityGrid
+          outer={outer}
+          renderBump={renderBump}
+          onSq0Render={onSq0Render}
+        />
+      ) : null}
     </ScrollView>
   )
 }
