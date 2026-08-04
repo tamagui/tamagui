@@ -1251,7 +1251,15 @@ function emitValue(
     property === 'rotate'
   ) {
     let value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-    if (!isWeb && typeof value === 'string' && !value.startsWith(THEME_REF_PREFIX)) {
+    // a transform going into a real style object rather than a CSS class has to
+    // carry numbers: that is every native render and every web render an
+    // animation driver drives inline. strings survive only on the class path.
+    // a theme-ref sentinel is not a number and must pass through untouched.
+    if (
+      (!isWeb || !state.flatShouldDoClasses) &&
+      typeof value === 'string' &&
+      !value.startsWith(THEME_REF_PREFIX)
+    ) {
       if (property === 'rotate' && !/^-?(?:\d+\.?\d*|\.\d+)(?:deg|rad)$/i.test(value)) {
         if (process.env.NODE_ENV === 'development') {
           warnOnce(
@@ -1274,7 +1282,13 @@ function emitValue(
   }
 
   if (isWeb && !state.flatShouldDoClasses && !condition && property === 'borderRadius') {
-    emitProperty(state, property, raw, condition, merge, originalValue, contextOnly)
+    // css reads the shorthand, so skip the four-corner expansion here. a string
+    // value still needs its token resolved, which is what emitResolved does.
+    if (typeof raw === 'string') {
+      emitResolved(state, property, raw, condition, merge, originalValue, contextOnly)
+    } else {
+      emitProperty(state, property, raw, condition, merge, originalValue, contextOnly)
+    }
     return
   }
 

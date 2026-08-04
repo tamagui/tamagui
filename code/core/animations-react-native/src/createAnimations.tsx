@@ -943,6 +943,11 @@ function getValue(input: number | string, isColor = false) {
   if (typeof input !== 'string') {
     return [input] as const
   }
-  const [_, number, after] = input.match(/([-0-9]+)(deg|%|px)/) ?? []
+  // the unit is optional: unitless numbers reach here as strings (scale, and
+  // any bare token value), and the number may be fractional. matching only
+  // `[-0-9]+` followed by a required unit read "1.5deg" as 5 and gave NaN for
+  // "0.95", and an Animated animation toward NaN never calls its completion
+  // callback, which strands whatever waits on it.
+  const [_, number, after] = input.match(/(-?(?:\d+\.?\d*|\.\d+))(deg|%|px)?/) ?? []
   return [+number, after] as const
 }
