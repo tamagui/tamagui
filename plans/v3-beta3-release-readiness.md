@@ -1,7 +1,7 @@
 # Tamagui v3 beta 3 release readiness
 
 Last complete packed preview: `b0bf3f7bef` on the assembled local `v3-beta` tree.
-The current pushed candidate is `a8d156b150`; the local candidate is 12 commits ahead.
+The current pushed candidate is `a8d156b150`; subsequent local commits are not pushed.
 Local release-readiness fixes and the preview receipt are held behind the Android push freeze.
 Last updated: 2026-08-03.
 
