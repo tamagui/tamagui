@@ -465,6 +465,26 @@ build:prod surfaces next) is a dedicated lane on branch bento `v3`. The
 bento-complete site prod build is a RELEASE gate, not a merge gate for the
 tamagui component-contract PRs.
 
+## HARD RULE: the v3 compiler must beat v2 on every dimension (user, 2026-08-03)
+
+Every single dimension. Flattens more, especially on native. More accurate.
+More cases lowered, fewer bailouts, better output. There is no dimension where
+"v3 is worse but safer" is an acceptable answer, and no dimension where v3
+merely matching v2 is the goal.
+
+**How to get there: read the v2 compiler and make the new one do the same
+thing.** v2 already solved these problems, including native theme values. The
+work is to reproduce that behavior in the new Rust-based setup, not to
+re-derive it, re-litigate it, or design something new. Reach parity first.
+Improvements come after parity, not instead of it.
+
+Anything that bails where v2 lowered is a regression, and it is on the list
+whether or not the output is "safe". A concrete example found 2026-08-03: a
+conditional style prop it cannot evaluate (`fontFamily={n ? 'body' : 'heading'}`)
+drops the whole element to runtime with `local/dynamic-style-value`, on both
+web and native. v2 lowered that case into per-branch output. That accounted for
+16 of the 52 homepage bailouts.
+
 ## Standing constraints
 
 - v2 release track is separate: `v2-animations-reliable` must go green before
