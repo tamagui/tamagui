@@ -209,6 +209,18 @@ adaptive theme ramp. Replace palette-specific uses such as `blue9` with an
 absolute token such as `blue-500`, or enter `theme="blue"` and use an adaptive
 `colorN` value from that theme.
 
+The v6 config does not define the old palette-step names such as `blue10` or
+`red10`. A missing color value is dropped without an error or warning, and the
+web and native renderers can expose different fallback colors underneath it.
+The flat-values codemod cannot choose the intended replacement because custom
+configs may still define those names and the closest Tailwind shade depends on
+the design. It preserves `$blue10` as `blue10`, so search for these names and
+review them manually when adopting the v6 config:
+
+```bash
+rg '\b(gray|mauve|slate|sage|olive|sand|tomato|red|ruby|crimson|pink|plum|purple|violet|iris|indigo|blue|cyan|teal|jade|green|grass|bronze|gold|brown|orange|amber|yellow|lime|mint|sky)[0-9]{1,2}\b' src
+```
+
 ```tsx
 // before: adaptive ramp
 <Text color="color12" />
@@ -217,6 +229,10 @@ absolute token such as `blue-500`, or enter `theme="blue"` and use an adaptive
 <Text color="color11" />
 
 // palette-specific names are a separate migration
+// before
+<Text color="blue10" />
+
+// after: choose the absolute shade that preserves the intended contrast
 <Text color="blue-500" />
 ```
 

@@ -74,6 +74,13 @@ The v6 themes rename every multi-word built-in theme key to kebab case. The
 runtime does not provide camelCase aliases because a user config could define
 both spellings.
 
+The v6 config also removes old palette-step names such as `blue10` and `red10`.
+Missing colors are dropped silently, and web and native can expose different
+fallback colors underneath them. The codemod preserves these names because it
+does not evaluate runtime config and cannot choose the intended replacement.
+Search them manually, then select an absolute token such as `blue-500`, or enter
+a color theme and use its adaptive `colorN` ramp.
+
 | Previous key | V3 flat value |
 | --- | --- |
 | `accentBackground` | `accent-background` |
@@ -115,7 +122,7 @@ clause := modifier (":" modifier)* ":" payload
 ```
 
 The last matching clause wins. Multiple modifiers in one clause are combined:
-`dark:hover:blue10` requires both the dark theme and hover state.
+`dark:hover:blue-500` requires both the dark theme and hover state.
 
 ```tsx
 // legacy
@@ -129,7 +136,7 @@ The last matching clause wins. Multiple modifiers in one clause are combined:
 
 // V3
 <View
-  bg="background hover:background-hover dark:blue10"
+  bg="background hover:background-hover dark:blue-500"
   p="4 sm:6"
 />
 ```
@@ -419,7 +426,7 @@ Move shadow part conditions to a complete `boxShadow` or `textShadow` value:
 />
 
 // manual migration: each payload is a complete shadow
-<View boxShadow="0 2px 8px shadow-color hover:0 2px 8px blue10" />
+<View boxShadow="0 2px 8px shadow-color hover:0 2px 8px blue-500" />
 ```
 
 The tool cannot reconstruct a complete shadow from one conditional part
