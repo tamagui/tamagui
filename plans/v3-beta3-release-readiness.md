@@ -96,7 +96,13 @@ global TypeScript and was not a valid verdict. After `bun install --frozen-lockf
   chain. The tasks now depend on `^build`, and the test package declares the direct
   dependency. Turbo's dry graph proves `static-tests -> static -> core -> web`; the standard
   native workflows pass with 116 of 116 tasks and 63 of 63 static tests, then 51 of 51 tasks
-  and 238 passing core tests.
+  and 238 passing core tests. Historical CI results did not rely on the broken task name:
+  the shared install action runs a full `build:js` before the Checks unit tests, focused native
+  jobs build the selected app's dependency closure, and the targeted workflow also runs
+  `build:js` explicitly.
+- [x] Preliminary local candidate `44d5423895` passes root typecheck and all 167 root build
+  tasks. All build tasks were served from exact-hash Turbo cache, so this is a graph verdict;
+  the final force build and packed-content receipts still determine artifact freshness.
 - [ ] Re-run root typecheck and build on the final assembled candidate. The checked results
   above are the campaign baseline, not the cut verdict.
 - [ ] Branch Checks are green. This remains blocked on the a2949 fixture work above.
