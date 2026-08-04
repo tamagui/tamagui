@@ -1,7 +1,7 @@
 # Tamagui v3 beta 3 release readiness
 
-Last updated: 2026-08-03 at `4ac01cd6e7f5db42312c01aa8d13e1811ea30f1a` on
-`v3-beta`.
+Baseline audited: `4ac01cd6e7f5db42312c01aa8d13e1811ea30f1a` on `v3-beta`.
+Last updated: 2026-08-03.
 
 This is the single blocker list for the beta 3 cut. A checked item means the named
 acceptance check passed. Publishing, creating the frozen starter ref, and choosing whether
@@ -9,10 +9,10 @@ to ship with a documented correctness gap remain owner actions.
 
 ## Cut verdict
 
-**Do not cut beta 3 yet.** Compiled native lowering is not engaged in the Xcode Release
-path, fully flattened native components can freeze the first theme, the branch Checks are
-red, and the Expo starter currently fails its first web render. The native performance
-numbers in T7 do not support a release claim because they measured an unlowered path.
+**Do not cut beta 3 yet.** The compiled-native performance remeasurement, native theme
+correctness decision, branch Checks, frozen Bento ref, and final packed release preview are
+still open. The old native performance numbers in T7 do not support a release claim because
+they measured an unlowered path.
 
 ## Blockers
 
@@ -22,6 +22,7 @@ numbers in T7 do not support a release claim because they measured an unlowered 
 | Pending decision | a2946, then a2943 | `compilerHost` resolves theme values against the first theme during native flattening. Theme switching therefore breaks on fully flattened components. This is a correctness bug. | Fix and native theme-switch proof, or an explicit coordinator block-versus-document decision. |
 | In progress | a2949 | Checks are red at `4ac01cd6e7`. The failures are v6 fixture-regeneration debt predating the sync: `flatten.native.test.tsx` changed its theme background from `hsla(0,0%,8%,1)` to `#030712`, and `@tamagui/cli`'s `to-tailwind-default-config` bundle still contains grammar names removed by `d7dd3efa06`. | Validate the source change, regenerate the derived fixtures, then pass branch Checks. |
 | Cut action pending | a2952, cut action by Nate | `create-tamagui` currently clones the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests and v2 dependencies. Pointing it at moving `v3-beta` is unsafe because that branch is permitted to be red. Its old shallow cached update used `git pull --rebase`: moving from one tag to another replayed the old tag commit and missed the requested ref, while Git could autostash edits inside the cache. The replacement has one shared release-ref setting and uses only exact fetch plus detached checkout. A throwaway Git probe landed both an initial and updated cached clone exactly on their requested tags, with no rebase or autostash path left. | Set `tamaguiStarterReleaseRef` in `code/core/create-tamagui/src/templates.ts` to the frozen beta 3 ref at cut time. Do not create the ref before the owner cut. |
+| Cut action pending | a2952, cut action by Nate | The production site Dockerfile cloned private Bento from the moving `v3` branch and ignored its declared `BENTO_BRANCH` argument. The ref is a real independent input: Bento's `bento-quality` branch still imports removed `ThemeableStack`, while `bento:v3` uses `YStack`, and the former made the v3 site build call `styled()` with an undefined component. The Docker build now consumes one ref argument, and the existing local `TAMAGUI_BENTO_REF` pin uses exact fetch plus detached `FETCH_HEAD`. | Create or select a frozen Bento release ref, then replace the `ARG BENTO_BRANCH=v3` default in `Dockerfile` with that ref at cut time. Do not create the external ref from this lane. |
 | Pending, lowest compiler priority | a2946 | V3 refuses to compile conditional font variants as `local/dynamic-style-value` on web and native, where v2 lowered each branch. `fonts.web.test.tsx` pins the regression so it stays visible. | Restore branch lowering or make an explicit release decision. |
 
 ## Fixed in beta 3
@@ -113,6 +114,63 @@ a prerelease version, and a test pins that behavior. The automatic v3 beta workf
 tag input and passes only `--beta` plus a beta version, so its tested path cannot select
 `latest`. A human manual release must not add `--tag latest`.
 
+## Version, release notes, and migration state
+
+- [x] A successful push-triggered `Checks` run on the current `v3-beta` tip publishes
+  `3.0.0-beta.<github-run-number>.<github-run-attempt>` to the `beta` dist-tag.
+- [x] The automatic beta path uses `--skip-finish`, so it creates no version commit or Git
+  tag. The immutable npm version and the source SHA from the workflow run are the beta's
+  identity.
+- [x] The repository has no package changelog. Tester-facing release notes are the Tamagui 3
+  post plus the v3 upgrade guide. The post now names flat conditional values, config v6, and
+  the three component import surfaces; its placeholder credits section is removed.
+- [x] The flat-values codemod guide now matches the executable contract: report-only by
+  default, `--write` applies statically safe conversions, and unsafe outcomes stay in the
+  report for manual work.
+- [x] The stale interactive beta instructions in `next.md` now describe the automatic
+  workflow, exact version formula, lack of Git finish artifacts, and the manual
+  `--tag latest` footgun.
+
+The beta announcement must link the Tamagui 3 post and upgrade guide because the workflow
+does not generate a GitHub release or changelog entry.
+
+## Documentation surface
+
+- [x] Migration snippets import styled skins from generated paths such as
+  `tamagui/button` and `tamagui/toast`; the compiled migration fixture typechecks.
+- [x] Unstyled code transformation derives the current styled skin set from
+  `tamagui/package.json` rather than maintaining a second component list.
+- [ ] The production docs build and Playwright three-mode toggle check must finish after the
+  compiled-native timing quiet window. The initial build with a non-v3 sibling Bento checkout
+  supplied the independent ref discriminator recorded in the blocker table.
+
+## Reproducibility sweep
+
+The following external inputs still move even when the Tamagui source SHA is fixed. They are
+recorded for the cut decision; this lane is fixing only the frozen repository refs.
+
+- The beta publish job runs on `ubuntu-latest` with Node `24`, so the runner image and Node
+  patch release are not pinned. Its checkout, setup-node, and setup-bun actions are pinned by
+  commit, while `actions/cache@v4` is not.
+- The Checks and native workflows use moving `actions/*@v4` tags and `ubuntu-latest` images.
+  Native CI additionally installs unversioned `detox-cli` and `applesimutils`; iOS pins the
+  named Xcode app and Maestro version, while Java `17` still selects a moving patch.
+- The site image starts from `node:22` by tag and installs current Debian packages with
+  `apt-get`. Bun itself is pinned there. These inputs affect the deployed image even after
+  Bento is frozen.
+- Incremental beta publishing reads current npm `beta` dist-tags for unchanged Tamagui
+  packages. Those values decide which packages are republished and which exact prior beta
+  versions are written into dependency manifests. G1 downloads those skipped packages by the
+  resolved exact versions, but the resolution is not stored in the source candidate.
+- The font and icon generator command clones the moving `generated` branches of
+  `tamagui-google-fonts` and `tamagui-iconify`. This happens when a tester explicitly runs that
+  generator, not during the beta package build.
+- Browser runtime assets such as analytics scripts, demo avatars, and the admin-only jsDelivr
+  Supabase script are remote, but the site build does not download them into candidate bytes.
+
+The root dependency graph itself is locked by `bun.lock` with package integrity hashes; the
+sweep found no Git dependency or remote tarball entry in that lockfile.
+
 ## Known open and deferred work
 
 - **Unowned:** `AdaptLiveSlotSpike` test 2 is flaky on Android and passes only on retry.
@@ -125,10 +183,10 @@ tag input and passes only `--beta` plus a beta version, so its tested path canno
 
 ## Remaining release-readiness audit
 
-- [ ] Finish the starter and registry first-run matrix.
-- [ ] Validate the three-mode documentation toggle and regenerate migration snippets
-  against the final `tamagui/<skin>` exports.
-- [ ] Audit version automation, changelog state, and the breaking-change/codemod guide.
+- [x] Finish the starter and registry first-run matrix.
+- [ ] Finish the three-mode documentation runtime check against the final
+  `tamagui/<skin>` exports.
+- [x] Audit version automation, changelog state, and the breaking-change/codemod guide.
 - [ ] Run the packed G1 release preview after all blocker fixes are assembled.
 - [ ] Re-run root typecheck, root build, registry drift, export checks, and relevant static
   compiler tests from the assembled candidate.
