@@ -1,8 +1,8 @@
 # Tamagui v3 beta 3 release readiness
 
 Last complete packed preview: `8976311c1e` on the merged `v3-beta` tree.
-Current local lane tip: `8ee854df01`; it is held behind the Android push freeze.
 The current pushed candidate is `a8d156b150`. Its post-allowlist packed rerun remains required.
+Local release-readiness fixes are held behind the Android push freeze.
 Last updated: 2026-08-03.
 
 This is the single blocker list for the beta 3 cut. A checked item means the named
@@ -12,7 +12,7 @@ to ship with a documented correctness gap remain owner actions.
 ## Cut verdict
 
 **Do not cut beta 3 yet.** The native parity device gate, native theme correctness decision,
-branch Checks, frozen starter and Bento refs, completed docs check, and final post-allowlist
+branch Checks, docs static-page fail-open gate, frozen starter ref, and final post-allowlist
 packed preview are open. The retained native benchmark cells remain invalid until a full
 12-sample campaign replaces them.
 
@@ -29,8 +29,9 @@ packed preview are open. The retained native benchmark cells remain invalid unti
 | In progress, push freeze active | a2971 watcher | Android Detox is running on pushed candidate `a8d156b150`, the first run in this campaign to advance beyond queued. Maestro passed on both the pull-request and push runs. | Keep the branch push-frozen until Android reaches a terminal result and retain its artifacts for any retry-passed flake. |
 | Rerun pending | a2952 | The merged all-package G1 preview at `8976311c1e` passed: 164 requested and packed artifacts, 8,043 export-condition probes, isolated installation, web production plus SSR browser canary, native Expo export plus runtime test, and 164 generated publish commands with `--tag beta` and zero `latest`. Packed `@tamagui/web` and bundled `@tamagui/core` contain the recent native-background and media-tuple fixes. The byte sweep found eight packages without `files` allowlists shipping nine tsconfigs, web Vitest config output, two source-build scripts, and the `tamagui` package's source-build config. Exact before/after inventories prove all runtime, compatibility, platform-extension, declaration, CSS, JSON, bin, and exported files are retained; only those explained build/test files leave. | Rerun G1 on the final assembled candidate, because the allowlists and subsequent engine fixes changed the packed bytes after the passing preview. Record the exact assembled SHA and repeat content receipts. |
 | Cut action pending | a2952, cut action by Nate | `create-tamagui` currently clones the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests and v2 dependencies. Pointing it at moving `v3-beta` is unsafe because that branch is permitted to be red. Its old shallow cached update used `git pull --rebase`: moving from one tag to another replayed the old tag commit and missed the requested ref, while Git could autostash edits inside the cache. The replacement has one shared release-ref setting and uses only exact fetch plus detached checkout. A throwaway Git probe landed both an initial and updated cached clone exactly on their requested tags, with no rebase or autostash path left. | Set `tamaguiStarterReleaseRef` in `code/core/create-tamagui/src/templates.ts` to the frozen beta 3 ref at cut time. Do not create the ref before the owner cut. |
-| Cut action pending | a2952, cut action by Nate | The production site Dockerfile cloned private Bento from the moving `v3` branch and ignored its declared `BENTO_BRANCH` argument. The ref is a real independent input: Bento's `bento-quality` branch still imports removed `ThemeableStack`, while the newer v3 line uses `YStack`, and the former made the v3 site build call `styled()` with an undefined component. The Docker build now consumes one ref argument, defaults to the paired Bento `v3-beta` branch, and the existing local `TAMAGUI_BENTO_REF` pin uses exact fetch plus detached `FETCH_HEAD`. | After the paired Bento branch passes, replace the `ARG BENTO_BRANCH=v3-beta` default in `Dockerfile` with its exact validated SHA at cut time. The branch is the integration line, not the freeze. |
-| In progress | a2968 | Exact Bento `v3` at `25af842` had 28 callers of the removed curried `createStyledHOC(Component)(render)` signature. Bento had already migrated `.styleable()` to that intermediate form in July, so the current two-argument signature is a second API break on the same export in one cycle. The production docs bundle succeeded, then static route import invoked the returned themed component outside React and failed on `useContext`. The completed conversion audit now reports zero conversion sites and zero legacy condition objects after manual review, including configuration, theme-builder, size, theme-key, and responsive-name fixes. This break was absent from the tester migration instructions; those instructions now include a before/after, and no curried caller remains in the Tamagui repository. A broken paid Bento package is also a public docs blocker because the home page imports its showcase. | Finish validating and land Bento's conversion on its paired `v3-beta` branch, select its frozen SHA, then pass the production docs build and three-mode browser test. |
+| Fixed | a2952 plumbing, a2968 Bento | The production site Dockerfile cloned private Bento from a moving branch and ignored its declared ref argument. The ref is a real independent input: Bento's older line still imports removed APIs and fails the v3 site build. Bento `v3-beta` is complete and pushed, and the validated source is frozen at `50432b85cc47de443b640bee0bcf5decd119231e`. A negative control proves `git clone --branch` rejects that SHA; the Docker path and local `TAMAGUI_BENTO_REF` path now both fetch the exact ref and detach at `FETCH_HEAD`. The positive Git probe lands exactly on the SHA with no branch. | Passed: the production docs build against that exact Bento SHA emits all 876 static pages with zero page-generation or template errors, and the three-mode browser check passes 9/9. |
+| Fixed | a2968 Bento, a2952 docs | Exact Bento `v3` at `25af842` had 28 callers of the removed curried `createStyledHOC(Component)(render)` signature. Bento had already migrated `.styleable()` to that intermediate form in July, so the current two-argument signature is a second API break on the same export in one cycle. The completed conversion audit reports zero conversion sites and zero legacy condition objects after manual review, including configuration, theme-builder, size, theme-key, and responsive-name fixes. This break was absent from the tester migration instructions; those instructions now include a before/after, and no curried caller remains in the Tamagui repository. | Passed: Bento `v3-beta` is pushed at the frozen SHA above, its production site integration builds, and the migration guide covers the API break. |
+| Fixed locally, upstream gate open | a2952 | The docs picker portal targeted an element that did not exist, so no syntax control rendered. After restoring it, the control changed URL and cookie while code stayed Styled because query strings cannot select a different prebuilt SSG payload. Static Tailwind routes also compiled Styled because three prose loaders discarded the SSG `path`. The replacement gives Styled, Unstyled, and Tailwind distinct static routes and resolves mode from the SSG path. The same build exposed 11 omitted component pages from four demo names removed or renamed by the v3 migration. One printed those page errors, skipped them, exited zero, and still printed `build complete`; `/ui/checkbox` and `/ui/switch` returned 404. The MDX callers now use the current demo names and valid template sources. | Passed locally: 876 pages, zero page or template errors, all six current Checkbox/Switch mode URLs return 200, and Playwright passes 9/9 on the guide, Button, and Tabs. The upstream One build still needs to stop swallowing page-generation failures; until then, the release runbook must inspect the page-error count rather than trusting exit zero. |
 | Pending, lowest compiler priority | a2946 | V3 refuses to compile conditional font variants as `local/dynamic-style-value` on web and native, where v2 lowered each branch. `fonts.web.test.tsx` pins the regression so it stays visible. | Restore branch lowering or make an explicit release decision. |
 
 ## Fixed in beta 3
@@ -192,9 +193,12 @@ does not generate a GitHub release or changelog entry.
   `tamagui/button` and `tamagui/toast`; the compiled migration fixture typechecks.
 - [x] Unstyled code transformation derives the current styled skin set from
   `tamagui/package.json` rather than maintaining a second component list.
-- [ ] The production docs build and Playwright three-mode toggle check must finish against the
-  completed Bento `v3-beta` SHA. The initial build with a non-v3 sibling Bento checkout supplied
-  the independent ref discriminator recorded in the blocker table.
+- [x] The production docs build against frozen Bento
+  `50432b85cc47de443b640bee0bcf5decd119231e` completes all 876 static pages with zero
+  page-generation or missing-template errors.
+- [x] The Playwright three-mode toggle passes 9/9 against production output. Styled,
+  Unstyled, and Tailwind use distinct static routes and transformed code payloads on the
+  upgrade guide, Button, and Tabs.
 
 ## Reproducibility sweep
 
@@ -246,12 +250,14 @@ sweep found no Git dependency or remote tarball entry in that lockfile.
 ## Remaining release-readiness audit
 
 - [x] Finish the starter and registry first-run matrix.
-- [ ] Finish the three-mode documentation runtime check against the final
+- [x] Finish the three-mode documentation runtime check against the final
   `tamagui/<skin>` exports.
 - [x] Audit version automation, changelog state, and the breaking-change/codemod guide.
 - [ ] Run the packed G1 release preview after all blocker fixes are assembled.
 - [ ] Re-run root typecheck, root build, registry drift, export checks, and relevant static
   compiler tests from the assembled candidate.
+- [x] Pin the production docs Bento input at validated commit
+  `50432b85cc47de443b640bee0bcf5decd119231e`.
 - [ ] Create the frozen starter ref at the validated candidate SHA and change the single
   starter release-ref setting at cut time.
 - [ ] Obtain explicit owner authorization before any npm publish or ref creation.
