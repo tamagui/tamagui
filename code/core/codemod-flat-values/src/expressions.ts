@@ -67,6 +67,8 @@ export interface LiteralTree {
   kind: LiteralKind
   /** the expression source with legacy token spellings rewritten */
   text: string
+  /** original string literal chunks, for migrations that need authored names */
+  strings: readonly string[]
   /** set when a token spelling in the tree has no flat name */
   error: TreeError | null
 }
@@ -103,12 +105,15 @@ function templateTree(
   const head = literalText(template.getHead().getLiteralText(), registry)
   let error = head.error
   let text = `\`${head.text}`
+  const strings = [template.getHead().getLiteralText()]
   for (const span of template.getTemplateSpans()) {
-    const tail = literalText(span.getLiteral().getLiteralText(), registry)
+    const literal = span.getLiteral().getLiteralText()
+    const tail = literalText(literal, registry)
     error ??= tail.error
+    strings.push(literal)
     text += `\${${span.getExpression().getText().trim()}}${tail.text}`
   }
-  return { kind: 'string', text: `${text}\``, error }
+  return { kind: 'string', text: `${text}\``, strings, error }
 }
 
 /**
@@ -122,20 +127,28 @@ export function literalTree(
   const current = unwrapExpression(expression)
 
   if (Node.isStringLiteral(current) || Node.isNoSubstitutionTemplateLiteral(current)) {
-    const literal = literalText(current.getLiteralValue(), registry)
-    return { kind: 'string', text: JSON.stringify(literal.text), error: literal.error }
+    const value = current.getLiteralValue()
+    const literal = literalText(value, registry)
+    return {
+      kind: 'string',
+      text: JSON.stringify(literal.text),
+      strings: [value],
+      error: literal.error,
+    }
   }
   if (Node.isTemplateExpression(current)) return templateTree(current, registry)
 
   const number = numericValue(current)
-  if (number !== null) return { kind: 'number', text: String(number), error: null }
+  if (number !== null) {
+    return { kind: 'number', text: String(number), strings: [], error: null }
+  }
 
   if (
     current.getKind() === SyntaxKind.UndefinedKeyword ||
     current.getKind() === SyntaxKind.NullKeyword ||
     (Node.isIdentifier(current) && current.getText() === 'undefined')
   ) {
-    return { kind: 'nullish', text: current.getText(), error: null }
+    return { kind: 'nullish', text: current.getText(), strings: [], error: null }
   }
 
   if (Node.isConditionalExpression(current)) {
@@ -152,6 +165,7 @@ export function literalTree(
     return {
       kind: whenTrue.kind === 'nullish' ? whenFalse.kind : whenTrue.kind,
       text: `${current.getCondition().getText().trim()} ? ${whenTrue.text} : ${whenFalse.text}`,
+      strings: [...whenTrue.strings, ...whenFalse.strings],
       error: whenTrue.error ?? whenFalse.error,
     }
   }

@@ -214,8 +214,11 @@ The v6 config does not define the old palette-step names such as `blue10` or
 web and native renderers can expose different fallback colors underneath it.
 The flat-values codemod cannot choose the intended replacement because custom
 configs may still define those names and the closest Tailwind shade depends on
-the design. It preserves `$blue10` as `blue10`, so search for these names and
-review them manually when adopting the v6 config:
+the design. It preserves `$blue10` as `blue10` and emits a non-blocking
+`legacy-palette-token` configuration warning for every old palette name it
+finds. Write mode still applies the safe syntax conversion, so resolve every
+warning before running the converted application. This search also finds old
+palette names in source the flat-values codemod does not need to edit:
 
 ```bash
 rg '\b(gray|mauve|slate|sage|olive|sand|tomato|red|ruby|crimson|pink|plum|purple|violet|iris|indigo|blue|cyan|teal|jade|green|grass|bronze|gold|brown|orange|amber|yellow|lime|mint|sky)[0-9]{1,2}\b' src
