@@ -6,15 +6,15 @@ Local release-readiness fixes and the preview receipt are held behind the Androi
 Last updated: 2026-08-03.
 
 This is the single blocker list for the beta 3 cut. A checked item means the named
-acceptance check passed. Publishing, creating the frozen starter ref, and choosing whether
-to ship with a documented correctness gap remain owner actions.
+acceptance check passed. Publishing and choosing whether to ship with a documented
+correctness gap remain owner actions.
 
 ## Cut verdict
 
 **Do not cut beta 3 yet.** Packaging, the whole-monorepo build and typecheck, the default
 Expo Router production export, and the static compiler suites are green on the assembled
 local candidate. The native parity device gate, branch Checks, docs static-page fail-open
-gate, frozen starter ref, and local commit push remain open. The retained native benchmark
+gate, and local commit push remain open. The retained native benchmark
 cells remain invalid until a full 12-sample campaign replaces them.
 
 ## Blockers
@@ -29,7 +29,7 @@ cells remain invalid until a full 12-sample campaign replaces them.
 | Failed at pushed candidate, fixes in progress | a2952 lint, a2971 hydration, a2965 unit tests | Checks on `a8d156b150` has three failures. Lint found four formatting-only files: two from the engine batch and two from the packaging lane; local `8ee854df01` formats all four and passes the clean-checkout formatter over 5,280 files plus `oxlint`. The production composed-matrix hydration test at `hydration-drivers.test.ts:73` failed the initial run and both retries. `next15-plus-cli-optimize` has four unit failures assigned to the engine lane, two from the known exports pair and two new to the inventory. | Merge all three fixes, then pass the complete Checks workflow on the assembled SHA. |
 | In progress, push freeze active | a2971 watcher | Android Detox is running on pushed candidate `a8d156b150`, the first run in this campaign to advance beyond queued. Maestro passed on both the pull-request and push runs. | Keep the branch push-frozen until Android reaches a terminal result and retain its artifacts for any retry-passed flake. |
 | Fixed locally | a2952 | The final all-package G1 preview at assembled `b0bf3f7bef` passed: 164 requested and packed artifacts, 8,043 export-condition probes, isolated installation, web production plus SSR browser canary, native Expo export plus runtime test, and 164 generated publish commands carrying the beta tag with zero `latest`. The tarball contains all 16 generated skin subpaths and all 112 declared web, native, CommonJS, default, and type targets. Packed `@tamagui/web` and bundled `@tamagui/core` both contain the native `background` to `backgroundColor` lowering and media-condition tuple resolution. The eight package allowlists retain every runtime, compatibility, platform-extension, declaration, CSS, JSON, bin, and exported file; their reviewed diffs remove only explained build and test files. | Passed. The report is `release-preview.json` under the G1 directory named `tamagui-v3-beta3-g1-b0bf3f7bef`. It states `Release preview only. No publish was attempted.` Rerun after any source or built-byte change. |
-| Cut action pending | a2952, cut action by Nate | `create-tamagui` currently clones the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests and v2 dependencies. Pointing it at moving `v3-beta` is unsafe because that branch is permitted to be red. Its old shallow cached update used `git pull --rebase`: moving from one tag to another replayed the old tag commit and missed the requested ref, while Git could autostash edits inside the cache. The replacement has one shared release-ref setting and uses only exact fetch plus detached checkout. A throwaway Git probe landed both an initial and updated cached clone exactly on their requested tags, with no rebase or autostash path left. | Set `tamaguiStarterReleaseRef` in `code/core/create-tamagui/src/templates.ts` to the frozen beta 3 ref at cut time. Do not create the ref before the owner cut. |
+| Fixed | a2952, ref authorized by Nate | `create-tamagui` previously cloned the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests. Pointing it at moving `v3-beta` was unsafe because that branch is permitted to be red. Its old shallow cached update used `git pull --rebase`: moving from one tag to another replayed the old tag commit and missed the requested ref, while Git could autostash edits inside the cache. The replacement has one shared release-ref setting and uses only exact fetch plus detached checkout. Nate authorized the annotated `starter/v3-beta.3` tag at candidate `41af737b5416be4bdc9e98089f1b7b94036b2a6e`. | Passed end to end: a clean `create-tamagui --template expo-router` run cloned the tag, detached at the exact candidate SHA, copied the real web and native test scripts plus `@tamagui/config/v6`, installed dependencies, and completed. Main's placeholder `true` test scripts were absent. The source-checkout probe rewrote workspace dependencies to its current `2.6.3` package version; the published beta CLI uses its release-assigned beta version through the same mechanism. |
 | Fixed | a2952 plumbing, a2968 Bento | The production site Dockerfile cloned private Bento from a moving branch and ignored its declared ref argument. The ref is a real independent input: Bento's older line still imports removed APIs and fails the v3 site build. Bento `v3-beta` is complete and pushed, and the validated source is frozen at `50432b85cc47de443b640bee0bcf5decd119231e`. A negative control proves `git clone --branch` rejects that SHA; the Docker path and local `TAMAGUI_BENTO_REF` path now both fetch the exact ref and detach at `FETCH_HEAD`. The positive Git probe lands exactly on the SHA with no branch. | Passed: the production docs build against that exact Bento SHA emits all 876 static pages with zero page-generation or template errors, and the three-mode browser check passes 9/9. |
 | Fixed | a2968 Bento, a2952 docs | Exact Bento `v3` at `25af842` had 28 callers of the removed curried `createStyledHOC(Component)(render)` signature. Bento had already migrated `.styleable()` to that intermediate form in July, so the current two-argument signature is a second API break on the same export in one cycle. The completed conversion audit reports zero conversion sites and zero legacy condition objects after manual review, including configuration, theme-builder, size, theme-key, and responsive-name fixes. This break was absent from the tester migration instructions; those instructions now include a before/after, and no curried caller remains in the Tamagui repository. | Passed: Bento `v3-beta` is pushed at the frozen SHA above, its production site integration builds, and the migration guide covers the API break. |
 | Fixed locally, upstream commit pending | a2952 | The docs picker portal targeted an element that did not exist, so no syntax control rendered. After restoring it, the control changed URL and cookie while code stayed Styled because query strings cannot select a different prebuilt SSG payload. Static Tailwind routes also compiled Styled because three prose loaders discarded the SSG `path`. The replacement gives Styled, Unstyled, and Tailwind distinct static routes and resolves mode from the SSG path. The same build exposed 11 omitted component pages from four demo names removed or renamed by the v3 migration. One printed those page errors, skipped them, exited zero, and still printed `build complete`; `/ui/checkbox` and `/ui/switch` returned 404. The MDX callers now use the current demo names and valid template sources. | Tamagui passes locally: 876 pages, zero page or template errors, all six current Checkbox/Switch mode URLs return 200, and Playwright passes 9/9 on the guide, Button, and Tabs. One branch `fix/page-build-errors` commit `c9cdfe4` removes both swallowing paths. An intentionally throwing SSG page now exits 1 with workers enabled and disabled; the valid fixture still reaches `build complete`. Land that upstream commit before trusting exit zero alone. |
@@ -122,12 +122,11 @@ global TypeScript and was not a valid verdict. After `bun install --frozen-lockf
 | Remix starter | Typecheck and Vite production build | Passed after v6 shorthand migration |
 | Blank web registry consumer | Install generated skin, drift check, typecheck, production browser smoke | Passed |
 | Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Passed. The corrected default Expo graph plans the skin definition and lowers the app use sites; assembled native static coverage passes. |
-| `create-tamagui` cached clone | Initial clone and repeat/update clone from frozen tag | Passed in throwaway Git repositories; cut ref remains an owner action |
+| `create-tamagui` frozen clone | Full Expo Router generation and install from `starter/v3-beta.3` | Passed. The cache detached at `41af737b5416be4bdc9e98089f1b7b94036b2a6e`, copied the v3 test scripts and v6 config, installed dependencies, and completed. |
 
 The v3 branch no longer has the T3 placeholder test scripts. Expo, Remix, and both blank
-registry fixtures contain real build or interaction commands. The published CLI still
-targets `main`, so those improvements do not reach a generated tester project until the
-frozen-ref plumbing closes.
+registry fixtures contain real build or interaction commands. The frozen starter tag and
+shared release-ref setting now deliver those files to generated tester projects.
 
 ## Release channel proof
 
@@ -271,6 +270,7 @@ sweep found no Git dependency or remote tarball entry in that lockfile.
   nine skips.
 - [x] Pin the production docs Bento input at validated commit
   `50432b85cc47de443b640bee0bcf5decd119231e`.
-- [ ] Create the frozen starter ref at the validated candidate SHA and change the single
-  starter release-ref setting at cut time.
+- [x] Create annotated tag `starter/v3-beta.3` at validated candidate
+  `41af737b5416be4bdc9e98089f1b7b94036b2a6e`, point the single starter release-ref
+  setting at it, and prove a complete generated Expo starter lands on that exact tag.
 - [ ] Obtain explicit owner authorization before any npm publish or ref creation.

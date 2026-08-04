@@ -1,5 +1,14 @@
 # Android verdict on a8d156b150
 
+## Workflow-filter run on 41af737b54
+
+Detox run `30909721267` completed with the Android build green and exactly five
+failing Android suites: `Accordion`, `GroupPressTransitionMatrix`,
+`NativeMixedDriver`, `PointerEvents`, and `PressStyleNative.noRngh`.
+`PressStyleScrollStuck` passed after its single failure on d371, so it must not
+be classified as a regression. `AdaptLiveSlotSpike` also passed again. This is
+the first run in the series containing only the five stable failures.
+
 ## Compiler fixture fix on d3719b077c
 
 Detox run `30907237343` validated the refreshed

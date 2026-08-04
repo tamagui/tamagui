@@ -7,7 +7,7 @@ import remixSteps from './steps/remix'
 import starterFree from './steps/starter-free'
 import takeoutSteps from './steps/takeout'
 
-export const tamaguiStarterReleaseRef = 'main'
+export const tamaguiStarterReleaseRef = 'starter/v3-beta.3'
 
 export const templates: Array<{
   title: string
