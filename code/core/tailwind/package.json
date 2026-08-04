@@ -14,7 +14,13 @@
   "type": "module",
   "sideEffects": false,
   "files": [
-    "src",
+    "src/candidate.ts",
+    "src/frontend.ts",
+    "src/index.tsx",
+    "src/styled.tsx",
+    "src/types.ts",
+    "src/vite.ts",
+    "src/vite/state.ts",
     "types",
     "dist"
   ],
