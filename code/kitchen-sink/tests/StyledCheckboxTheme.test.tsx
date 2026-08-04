@@ -12,6 +12,7 @@ test(`theme passes through createStyledHOC`, async ({ page }) => {
   })
 
   // green theme base background: in v3 the checked-state look is skin-owned via
-  // activeStyle, and this case passes none, so the frame keeps the theme background
-  expect(styles.backgroundColor).toBe(`rgb(232, 242, 235)`)
+  // activeStyle, and this case passes none, so the frame keeps the theme
+  // background — v6 light_green `background` = #dcfce7
+  expect(styles.backgroundColor).toBe(`rgb(220, 252, 231)`)
 })

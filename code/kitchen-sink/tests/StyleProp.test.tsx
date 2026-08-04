@@ -8,8 +8,9 @@ test.beforeEach(async ({ page }) => {
 })
 
 test(`style prop flattens`, async ({ page }) => {
+  // var(--color9) resolves to v6 light `color9` = #1e2939
   expect((await getStyles(page.getByTestId('style-prop').first())).background).toBe(
-    `rgba(0, 0, 0, 0) radial-gradient(rgb(143, 143, 143), rgba(0, 0, 0, 0) 70%) repeat scroll 0% 0% / auto padding-box border-box`
+    `rgba(0, 0, 0, 0) radial-gradient(rgb(30, 41, 57), rgba(0, 0, 0, 0) 70%) repeat scroll 0% 0% / auto padding-box border-box`
   )
 })
 

@@ -15,13 +15,12 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('slider track and active fill render with visible backgrounds', async ({ page }) => {
-  await expect(page.locator('.is_SliderActive').first()).toBeVisible()
+  await expect(page.locator('.is_SliderTrackActive').first()).toBeVisible()
 
   const colors = await page.evaluate(() => {
-    const active = document.querySelector('.is_SliderActive') as HTMLElement
-    // walk up to the track: the styled skin wraps the active fill in a
-    // SliderTrackActive component-theme <span>, so the fill's direct parent is
-    // that theme wrapper, not the track element itself.
+    // the styled skin names the active fill SliderTrackActive; component themes
+    // were removed, so it now sits directly inside the track
+    const active = document.querySelector('.is_SliderTrackActive') as HTMLElement
     const track = active.closest('.is_SliderTrack') as HTMLElement
     const getBg = (el: HTMLElement) => getComputedStyle(el).backgroundColor
     return { track: getBg(track), active: getBg(active) }

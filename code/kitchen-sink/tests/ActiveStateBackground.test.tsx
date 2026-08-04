@@ -23,9 +23,10 @@ async function pin(page: import('@playwright/test').Page, selector: string) {
 
 test('checkbox checked state changes background', async ({ page }) => {
   await setupPage(page, { name: 'Checkbox', type: 'demo' })
+  // select by role, not by skin class: the demo owns its own Checkbox skin now
   const checkbox = await pin(
     page,
-    '.is_Checkbox[aria-checked="false"]:not([aria-disabled="true"])'
+    '[role="checkbox"][aria-checked="false"]:not([aria-disabled="true"])'
   )
   const before = await checkbox.evaluate(getBg)
   await checkbox.click()
@@ -66,7 +67,7 @@ test('active tab background differs from inactive', async ({ page }) => {
 
 test('toggle-group active item background differs', async ({ page }) => {
   await setupPage(page, { name: 'ToggleGroup', type: 'demo' })
-  const item = await pin(page, '.is_Toggle[data-state="off"]')
+  const item = await pin(page, '.is_ToggleGroupItem[data-state="off"]')
   const before = await item.evaluate(getBg)
   await item.click()
   await expect(item).toHaveAttribute('data-state', 'on')
