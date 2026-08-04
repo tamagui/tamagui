@@ -90,7 +90,7 @@ global TypeScript and was not a valid verdict. After `bun install --frozen-lockf
 | Expo Router starter, native | Production iOS Expo export plus rendered Toast interaction | Passed after replacing the false Toast assertions |
 | Remix starter | Typecheck and Vite production build | Passed after v6 shorthand migration |
 | Blank web registry consumer | Install generated skin, drift check, typecheck, production browser smoke | Passed |
-| Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Install, drift, typecheck, and interaction passed; export in progress |
+| Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Passed; export still logs the a2946-owned compiled-hash misses on this pre-fix branch |
 | `create-tamagui` cached clone | Initial clone and repeat/update clone from frozen tag | Passed in throwaway Git repositories; cut ref remains an owner action |
 
 The v3 branch no longer has the T3 placeholder test scripts. Expo, Remix, and both blank
