@@ -87,6 +87,8 @@ export interface SiteReport {
   /** semantic or host constraints that make an otherwise valid rewrite unsafe */
   assessments: ConversionFinding[]
   assessmentVerdict: 'clean' | ConversionFinding['verdict']
+  /** non-blocking configuration risks the codemod cannot verify */
+  warnings: Flag[]
   /** the site cannot be converted correctly without a human */
   flags: Flag[]
   /** values left authored because they belong to another migration */
@@ -177,6 +179,7 @@ export interface Site {
   members: Member[]
   comments: Map<number, readonly string[]>
   extras: Array<{ index: number; text: string }>
+  warnings: Flag[]
   flags: Flag[]
   inventory: Flag[]
   pending: Flag[]
@@ -203,6 +206,7 @@ function createSite(
     members: [],
     comments: new Map(),
     extras: [],
+    warnings: [],
     flags: [],
     inventory: [],
     pending: [],
@@ -269,6 +273,26 @@ function addNote(site: Site, note: string): void {
   if (!site.notes.includes(note)) site.notes.push(note)
 }
 
+const legacyPaletteStepPattern =
+  /(?:^|[^\w-])\$?((?:gray|mauve|slate|sage|olive|sand|tomato|red|ruby|crimson|pink|plum|purple|violet|iris|indigo|blue|cyan|teal|jade|green|grass|bronze|gold|brown|orange|amber|yellow|lime|mint|sky)(?:1[0-2]|[1-9]))(?![\w-])/g
+
+function legacyPaletteStepWarning(prop: string, values: readonly string[]): Flag | null {
+  const names = new Set<string>()
+  for (const value of values) {
+    legacyPaletteStepPattern.lastIndex = 0
+    for (const match of value.matchAll(legacyPaletteStepPattern)) names.add(match[1])
+  }
+  if (!names.size) return null
+  const formatted = [...names]
+    .sort()
+    .map((name) => `\`${name}\``)
+    .join(', ')
+  return {
+    code: 'legacy-palette-token',
+    detail: `${prop} preserves ${formatted}, which @tamagui/config/v6 does not define; choose an absolute palette token or an adaptive colorN value`,
+  }
+}
+
 // —— value classification ————————————————————————————————————————————————
 
 interface Classification {
@@ -280,6 +304,8 @@ interface Classification {
   dynamic: boolean
   /** a problem with the value itself, raised on sight */
   problem: Flag | null
+  /** a non-blocking configuration risk visible in the authored literals */
+  warning: Flag | null
   /** raised only when a clause forces the value into a program */
   blocked: Flag | null
   /** recorded for a migration that is not the flat-value migration */
@@ -291,6 +317,7 @@ const empty: Classification = {
   text: null,
   dynamic: false,
   problem: null,
+  warning: null,
   blocked: null,
   inventory: null,
 }
@@ -375,6 +402,7 @@ function classifyDynamic(
       payload: interpolate(prop, tree.text, tree.kind, registry),
       text: rewrittenTokenText,
       dynamic: true,
+      warning: legacyPaletteStepWarning(prop, tree.strings),
     }
   }
   if (tree) {
@@ -441,6 +469,8 @@ function pushBase(
   const index = site.index++
 
   if (literalString !== null) {
+    const warning = legacyPaletteStepWarning(prop, [literalString])
+    if (warning) addFlag(site.warnings, warning.code, warning.detail)
     if (literalString.includes('$')) {
       site.legacy = true
       const allowed = assessProgram(site, prop, [])
@@ -557,6 +587,9 @@ function pushBase(
   if (classified.problem) {
     site.legacy = true
     addFlag(site.flags, classified.problem.code, classified.problem.detail)
+  }
+  if (classified.warning) {
+    addFlag(site.warnings, classified.warning.code, classified.warning.detail)
   }
   if (classified.inventory) {
     addFlag(site.inventory, classified.inventory.code, classified.inventory.detail)
@@ -791,6 +824,13 @@ function pushLegacy(
   for (let index = 0; index < evaluated.leaves.length; index++) {
     const leaf = evaluated.leaves[index]
     const classified = classifyDynamic(leaf.prop, leaf.expression, site.registry)
+    if (classified.warning) {
+      addFlag(
+        site.warnings,
+        classified.warning.code,
+        `${leaf.path}: ${classified.warning.detail}`
+      )
+    }
     if (classified.payload === null) {
       const flag = classified.problem ?? classified.blocked
       addFlag(
@@ -1521,6 +1561,7 @@ export function convertJsxSite(
     programs,
     assessments: site.assessments,
     assessmentVerdict: assessmentVerdict(site.assessments),
+    warnings: site.warnings,
     flags: site.flags,
     inventory: site.inventory,
     pending: site.pending,
@@ -1657,6 +1698,7 @@ export function convertStyleObject(
     programs,
     assessments: site.assessments,
     assessmentVerdict: assessmentVerdict(site.assessments),
+    warnings: site.warnings,
     flags: site.flags,
     inventory: site.inventory,
     pending: site.pending,

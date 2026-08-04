@@ -21,6 +21,7 @@ export interface ReportSummary {
   unknownHost: number
   ineligible: number
   flagged: number
+  warnings: number
   /** sites with nothing to convert until the runtime catches up */
   waiting: number
   ignoredFiles: number
@@ -35,9 +36,13 @@ export function renderReport(
 ): { text: string; summary: ReportSummary } {
   const sites = files.flatMap((file) => file.sites)
   const clean = sites.filter(
-    (site) => site.flags.length === 0 && site.assessmentVerdict === 'clean'
+    (site) =>
+      site.flags.length === 0 &&
+      site.warnings.length === 0 &&
+      site.assessmentVerdict === 'clean'
   )
   const flagged = sites.filter((site) => site.flags.length > 0)
+  const warnings = sites.filter((site) => site.warnings.length > 0)
   const needsRelocation = sites.filter(
     (site) => site.assessmentVerdict === 'needs-relocation'
   )
@@ -47,10 +52,16 @@ export function renderReport(
   const jsx = sites.filter((site) => site.kind === 'jsx')
   const styled = sites.filter((site) => site.kind === 'styled')
   const cleanJsx = jsx.filter(
-    (site) => site.flags.length === 0 && site.assessmentVerdict === 'clean'
+    (site) =>
+      site.flags.length === 0 &&
+      site.warnings.length === 0 &&
+      site.assessmentVerdict === 'clean'
   ).length
   const cleanStyled = styled.filter(
-    (site) => site.flags.length === 0 && site.assessmentVerdict === 'clean'
+    (site) =>
+      site.flags.length === 0 &&
+      site.warnings.length === 0 &&
+      site.assessmentVerdict === 'clean'
   ).length
   const readyFiles = files.filter(
     (file) => file.sites.length > 0 && file.sites.every((site) => site.legacyLeft === 0)
@@ -78,6 +89,7 @@ export function renderReport(
     `- ${ineligible.length} use properties that cannot carry flat clauses`,
     `- ${waiting.length} have nothing to convert until the runtime catches up (see below)`,
     `- ${flagged.length} have syntax or ordering flags for manual work`,
+    `- ${warnings.length} have configuration warnings for manual review`,
     `- ${ignoredFiles} source files skipped by \`.tamagui-flat-values-ignore\` markers`,
     `- ${jsx.length} JSX sites: ${cleanJsx} clean, ${jsx.length - cleanJsx} need review`,
     `- ${styled.length} styled config sites: ${cleanStyled} clean, ${styled.length - cleanStyled} need review`,
@@ -98,6 +110,16 @@ export function renderReport(
   lines.push(
     ...(flagCounts.length
       ? flagCounts.map(([code, count]) => `- ${code}: ${count}`)
+      : ['- none'])
+  )
+
+  const warningCounts = countCodes(warnings.flatMap((site) => site.warnings))
+  lines.push(
+    '',
+    '### Configuration warning reasons',
+    '',
+    ...(warningCounts.length
+      ? warningCounts.map(([code, count]) => `- ${code}: ${count}`)
       : ['- none'])
   )
 
@@ -140,6 +162,7 @@ export function renderReport(
       const status = [
         site.assessmentVerdict === 'clean' ? null : site.assessmentVerdict,
         site.flags.length ? 'syntax-blocked' : null,
+        site.warnings.length ? 'configuration-warning' : null,
       ]
         .filter(Boolean)
         .join(', ')
@@ -161,6 +184,12 @@ export function renderReport(
       if (site.flags.length) {
         lines.push('', 'Flags:', '')
         for (const flag of site.flags) lines.push(`- **${flag.code}**: ${flag.detail}`)
+      }
+      if (site.warnings.length) {
+        lines.push('', 'Configuration warnings:', '')
+        for (const warning of site.warnings) {
+          lines.push(`- **${warning.code}**: ${warning.detail}`)
+        }
       }
       if (site.assessments.length) {
         lines.push('', 'Conversion assessment:', '')
@@ -198,6 +227,7 @@ export function renderReport(
       unknownHost: unknownHost.length,
       ineligible: ineligible.length,
       flagged: flagged.length,
+      warnings: warnings.length,
       waiting: waiting.length,
       ignoredFiles,
     },

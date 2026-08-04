@@ -33,6 +33,7 @@ interface Result {
     unknownHost: number
     ineligible: number
     flagged: number
+    warnings: number
     waiting: number
     ignoredFiles: number
   }
@@ -144,6 +145,10 @@ function codes(site: SiteReport): string[] {
   return site.flags.map((flag) => flag.code)
 }
 
+function warningCodes(site: SiteReport): string[] {
+  return site.warnings.map((warning) => warning.code)
+}
+
 function pendingCodes(site: SiteReport): string[] {
   return [...new Set(site.pending.map((flag) => flag.code))]
 }
@@ -236,6 +241,8 @@ export const Fixture = () => (
     )
 
     expect(codes(site)).toEqual([])
+    expect(warningCodes(site)).toEqual(['legacy-palette-token'])
+    expect(site.warnings[0]?.detail).toContain('`blue10`')
     // the authored shorthand is kept: it is the smallest edit that still reads back
     // as the same program
     expect(programs(site)).toEqual({ bg: 'blue10 hover:red' })
@@ -298,11 +305,40 @@ export const Fixture = ({ active }) => (
     )
 
     expect(codes(site)).toEqual([])
+    expect(warningCodes(site)).toEqual(['legacy-palette-token'])
+    expect(site.warnings[0]?.detail).toContain('`blue10`')
+    expect(site.warnings[0]?.detail).toContain('`red10`')
     expect(pendingCodes(site)).toEqual([])
     expect(programs(site)).toEqual({
       color: '${active ? "red10" : "blue10"}',
     })
     expect(site.after).toBe('color={`${active ? "red10" : "blue10"}`}')
+  })
+
+  test('does not warn for custom or absolute palette names', () => {
+    const site = only(
+      run(`import { View } from 'tamagui'
+export const Fixture = () => (
+  <View bg="$brand10" hoverStyle={{ bg: 'blue-500' }} />
+)`)
+    )
+
+    expect(programs(site)).toEqual({ bg: 'brand10 hover:blue-500' })
+    expect(site.warnings).toEqual([])
+  })
+
+  test('prints preserved palette names as configuration warnings', () => {
+    const sourcePath = fixture(`import { Text } from 'tamagui'
+export const Fixture = ({ active }) => (
+  <Text color={active ? '$red10' : '$blue10'} />
+)`)
+    const result = runRaw([sourcePath])
+
+    expect(result.exitCode, result.stderr).toBe(0)
+    const report = readFileSync(result.reportPath, 'utf8')
+    expect(report).toContain('Configuration warnings:')
+    expect(report).toContain('**legacy-palette-token**')
+    expect(report).toContain('`blue10`, `red10`')
   })
 
   test('a dot-path token is reported instead of renamed, clauses or not', () => {

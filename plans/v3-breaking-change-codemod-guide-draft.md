@@ -78,8 +78,11 @@ The v6 config also removes old palette-step names such as `blue10` and `red10`.
 Missing colors are dropped silently, and web and native can expose different
 fallback colors underneath them. The codemod preserves these names because it
 does not evaluate runtime config and cannot choose the intended replacement.
-Search them manually, then select an absolute token such as `blue-500`, or enter
-a color theme and use its adaptive `colorN` ramp.
+It emits each preserved name as a non-blocking `legacy-palette-token`
+configuration warning in the Markdown and JSON reports. Write mode still
+applies the safe syntax conversion, so resolve every warning before running the
+converted application. Select an absolute token such as `blue-500`, or enter a
+color theme and use its adaptive `colorN` ramp.
 
 | Previous key | V3 flat value |
 | --- | --- |
