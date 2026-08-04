@@ -518,7 +518,13 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
   return value
 }
 
+// a single function-call literal whose arguments contain no letters
+// (rgb(99,102,241), hsl(0,100%,50%)) cannot hold token words; color literals
+// like these are common enough on hot paths to be worth skipping the word scan
+const letterFreeCallPattern = /^[A-Za-z-]+\([^A-Za-z]*\)$/
+
 function resolveEmbeddedTokens(state: GetStyleState, property: string, raw: string) {
+  if (letterFreeCallPattern.test(raw)) return raw
   return raw.replace(/[$A-Za-z_][\w.$-]*(?:\/\d+)?/g, (word, index) => {
     if (word.charCodeAt(0) !== 36) {
       const before = raw.charCodeAt(index - 1)
