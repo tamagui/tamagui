@@ -1,6 +1,6 @@
 # Tamagui v3 beta 3 release readiness
 
-Baseline audited: `4ac01cd6e7f5db42312c01aa8d13e1811ea30f1a` on `v3-beta`.
+Engine baseline audited: `5dd5b1992f` on `v3-beta`.
 Last updated: 2026-08-03.
 
 This is the single blocker list for the beta 3 cut. A checked item means the named
@@ -9,16 +9,16 @@ to ship with a documented correctness gap remain owner actions.
 
 ## Cut verdict
 
-**Do not cut beta 3 yet.** The compiled-native performance remeasurement, native theme
-correctness decision, branch Checks, frozen Bento ref, and final packed release preview are
-still open. The old native performance numbers in T7 do not support a release claim because
-they measured an unlowered path.
+**Do not cut beta 3 yet.** The native theme correctness decision, branch Checks, frozen
+starter and Bento refs, and final packed release preview are still open. The compiled-native
+warmup effectiveness gate now passes, but the retained native benchmark cells remain invalid
+until the full 12-sample campaign replaces them.
 
 ## Blockers
 
 | Status | Owner | Finding | Required evidence to close |
 | --- | --- | --- | --- |
-| In progress | a2946 | `expo export:embed`, which Xcode Release uses, ships compiled-native output unlowered. The Metro plugin planned from an approximate Babel pass, then silently discarded the plan when Expo-only `customTransformOptions` made the real worker bytes differ. This is the third defect of this class. T7 measured a path that was never engaged, so compiled-native performance claims are unsupported. Run `30879334011` on GitHub-hosted iOS infrastructure also logged `metro/plan-miss` and `module ships unlowered` for dependency modules, proving the symptom reaches CI. Those lines did not cause that job's separate Maestro warmup failure. | A production native export proves lowering is present, followed by the compiled-native skin acceptance check. |
+| Fixed, retained campaign pending | a2946 | `expo export:embed`, which Xcode Release uses, shipped compiled-native output unlowered. The Metro plugin planned from an approximate Babel pass, then discarded the plan when Expo-only `customTransformOptions` made the real worker bytes differ. The fix plans against raw source and applies edits before the worker's single Babel pass. A real Release warmup gate improved V3 from 0.91x before the fix to 4.37x after it, versus V2's 4.70x and a required 1.50x. | Delivery is fixed. Keep `output/benchmarks-native-v2-v3.json` marked partial and do not quote its old compiled-native cells until a full 12-sample campaign replaces them. |
 | Pending decision | a2946, then a2943 | `compilerHost` resolves theme values against the first theme during native flattening. Theme switching therefore breaks on fully flattened components. This is a correctness bug. | Fix and native theme-switch proof, or an explicit coordinator block-versus-document decision. |
 | In progress | a2949 | Checks are red at `4ac01cd6e7`. The failures are v6 fixture-regeneration debt predating the sync: `flatten.native.test.tsx` changed its theme background from `hsla(0,0%,8%,1)` to `#030712`, and `@tamagui/cli`'s `to-tailwind-default-config` bundle still contains grammar names removed by `d7dd3efa06`. | Validate the source change, regenerate the derived fixtures, then pass branch Checks. |
 | Cut action pending | a2952, cut action by Nate | `create-tamagui` currently clones the Expo and Remix starters from `main`, whose Expo package still contains placeholder `true` tests and v2 dependencies. Pointing it at moving `v3-beta` is unsafe because that branch is permitted to be red. Its old shallow cached update used `git pull --rebase`: moving from one tag to another replayed the old tag commit and missed the requested ref, while Git could autostash edits inside the cache. The replacement has one shared release-ref setting and uses only exact fetch plus detached checkout. A throwaway Git probe landed both an initial and updated cached clone exactly on their requested tags, with no rebase or autostash path left. | Set `tamaguiStarterReleaseRef` in `code/core/create-tamagui/src/templates.ts` to the frozen beta 3 ref at cut time. Do not create the ref before the owner cut. |
@@ -41,7 +41,7 @@ emitted and expected an animated dismissal to unmount synchronously. It now pres
 the real Button handlers, observes the rendered Toast text, and verifies dismissal
 marks the live Toast deleted. The production iOS Expo export and interaction pass.
 
-Owner: a2952. Status: fixed and locally validated, pending commit.
+Owner: a2952. Status: fixed, committed, and locally validated.
 
 ### Styled skin package exports
 
@@ -56,10 +56,9 @@ and React Native conditions.
   `.native.js` files under React Native conditions. Types point at emitted declarations.
 - [x] The web static compiler resolves and lowers `tamagui/separator`: found 1, lowered 1,
   flattened 1, bailed 0.
-- [ ] The production compiled-native half is blocked on a2946's Metro fix. Until then,
-  runtime fallback there is not evidence against the export map.
+- [ ] Re-run the compiled-native skin acceptance check on the landed Metro fix.
 
-Owner: a2952. Status: fixed and locally validated, pending commit.
+Owner: a2952. Status: fixed, committed, and locally validated.
 
 ### Styled v3 roots and removed v1 surface
 
@@ -91,7 +90,7 @@ global TypeScript and was not a valid verdict. After `bun install --frozen-lockf
 | Expo Router starter, native | Production iOS Expo export plus rendered Toast interaction | Passed after replacing the false Toast assertions |
 | Remix starter | Typecheck and Vite production build | Passed after v6 shorthand migration |
 | Blank web registry consumer | Install generated skin, drift check, typecheck, production browser smoke | Passed |
-| Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Passed; export still logs the a2946-owned compiled-hash misses on this pre-fix branch |
+| Blank Expo registry consumer | Install generated skin, drift check, typecheck, native interaction and Expo app export | Passed before the Metro fix; compiled-native skin acceptance is being rerun on the assembled tree |
 | `create-tamagui` cached clone | Initial clone and repeat/update clone from frozen tag | Passed in throwaway Git repositories; cut ref remains an owner action |
 
 The v3 branch no longer has the T3 placeholder test scripts. Expo, Remix, and both blank
