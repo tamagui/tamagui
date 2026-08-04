@@ -165,8 +165,26 @@ confirmed by running it.
 - The `hydration-drivers.test.ts:73` motion-driver matrix bug is a separate item
   and may interact with the transform coercion change above. Check it after the
   suite runs.
-- `ButtonUnstyled` / `ButtonSkin` not started. `ButtonSkin` fails
-  `toHaveCSS('52px')` receiving `20px` on `button-skin-circular`.
+- `ButtonUnstyled` not started.
+- `ButtonSkin:106` fails on the **first** assertion,
+  `expect(circular).toHaveCSS('height', '52px')`, receiving `20px`. Read so far,
+  all of it clean, so the answer is not in these files:
+  - `src/usecases/ButtonSkin.tsx:69` renders `<Button circular icon={CircleIcon}
+    size="5" />`, and `src/components/Button.tsx` is a bare re-export of
+    `tamagui`'s Button, so there is no local skin copy despite the test name.
+  - `ui/tamagui/src/components/Button.tsx:76` `circular` sets `height`,
+    `width`, `minWidth`, `maxHeight` and `maxWidth` all to
+    `resolveTokenSize(props.size ?? true).frame.size`, and the `size` variant at
+    :32 deliberately returns early when `props.circular` so it cannot be fighting
+    it.
+  - `core/size/src/index.ts:84` `resolveTokenSize("5")` reads
+    `tokens.size["5"]`, which exists, so the lookup is not obviously wrong.
+
+  `20px` is about what an icon-only frame collapses to with no height applied
+  (16px icon + 2x1px border), so the shape of it is "the circular variant's
+  geometry never landed" rather than "it landed with the wrong token". That is a
+  runtime question now: probe the element's resolved styles and check whether the
+  circular variant fired at all. Do not keep reading the variant definitions.
 
 ## Rules paid for in this session
 
