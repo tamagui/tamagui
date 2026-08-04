@@ -203,12 +203,15 @@ export function useMedia(
 
   const internalRef = useRef<MediaRef | null>(null)
   if (!internalRef.current) {
-    // SSR contract (see settings.disableSSR docs): every first render uses
+    // SSR contract (see settings.disableSSR docs): every first WEB render uses
     // mediaQueryDefaultActive so hydration matches the server — including
     // lazily-hydrated boundaries that mount long after the initial pass.
     // a pre-paint layout effect then corrects to the real matchMedia values,
-    // so fresh client-only mounts never paint a wrong frame.
-    const initial = !isServer && !getSetting('disableSSR') ? initState : getMedia()
+    // so fresh client-only mounts never paint a wrong frame. Native has no
+    // hydration: starting from the defaults object made the sync effect's
+    // reference check fail on every mount and re-render the entire tree once.
+    const initial =
+      isWeb && !isServer && !getSetting('disableSSR') ? initState : getMedia()
     const optimizeForFirstRender = isOptimizedForFirstRender()
     const r: MediaRef = {
       keys: optimizeForFirstRender ? null : new Set<string>(),
