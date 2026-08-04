@@ -1,6 +1,8 @@
 import { describe, expect, test } from 'vitest'
 
+import { createGrammarConfigView } from '../config'
 import { formatParsedValue, mergeFlatValues } from '../mergeFlatValues'
+import { createModifierRegistry } from '../modifierRegistry'
 import { parseValue } from '../valueParser'
 import type { ModifierRegistryView } from '../valueTypes'
 
@@ -60,6 +62,55 @@ describe('mergeFlatValues', () => {
     // an unterminated function is a parse error, not a merge input
     expect(mergeFlatValues('rgb(1,2,3', 'red')).toBe('red')
     expect(mergeFlatValues('red hover:blue', 'rgb(1,2,3')).toBe('rgb(1,2,3')
+  })
+})
+
+describe('the accepting registry mergeFlatValues parses with', () => {
+  // mergeFlatValues runs at styled() definition time, before any config exists,
+  // so it parses through a view that accepts every modifier. That is only sound
+  // while the modifier KIND has no effect on how a value is split. Today the
+  // parser consults the registry once, for whether a name is registered at all.
+  // If that ever changes, variant merging would start mis-splitting silently at
+  // definition time, so pin the equivalence rather than trusting a comment.
+  const accepting: ModifierRegistryView = { get: () => 'state' }
+  const { registry: configured } = createModifierRegistry(
+    createGrammarConfigView({
+      media: ['sm', 'lg'],
+      themes: { dark: {} },
+    })
+  )
+
+  const cases = [
+    'green hover:transparent press:transparent',
+    'red sm:blue',
+    'red hover:sm:blue',
+    'dark:red hover:green',
+    '10px sm:20px lg:30px',
+    'rgb(1, 2, 3) hover:rgb(4, 5, 6)',
+    'hover:red',
+    'plain',
+  ]
+
+  for (const input of cases) {
+    test(`splits ${input} identically to a configured registry`, () => {
+      const acceptingResult = parseValue(input, accepting)
+      const configuredResult = parseValue(input, configured)
+      // the configured view must actually accept these, or the comparison is
+      // vacuous on the side that matters
+      expect(configuredResult.ok, `configured registry rejected ${input}`).toBe(true)
+      expect(acceptingResult.ok).toBe(true)
+      if (acceptingResult.ok && configuredResult.ok) {
+        expect(acceptingResult.value).toEqual(configuredResult.value)
+      }
+    })
+  }
+
+  test('the two views genuinely differ, so the equivalence above is not vacuous', () => {
+    // an unregistered modifier is exactly where they must part ways: the
+    // accepting view takes it, the configured one rejects it
+    const unknown = 'red nosuchmodifier:blue'
+    expect(parseValue(unknown, accepting).ok).toBe(true)
+    expect(parseValue(unknown, configured).ok).toBe(false)
   })
 })
 
