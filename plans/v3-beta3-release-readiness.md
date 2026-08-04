@@ -56,7 +56,9 @@ and React Native conditions.
   `.native.js` files under React Native conditions. Types point at emitted declarations.
 - [x] The web static compiler resolves and lowers `tamagui/separator`: found 1, lowered 1,
   flattened 1, bailed 0.
-- [ ] Re-run the compiled-native skin acceptance check on the landed Metro fix.
+- [x] The native static compiler resolves and lowers the same generated subpath: found 1,
+  lowered 1, flattened 1, bailed 0. The landed Metro Release gate independently proves those
+  native plans reach the production bundle.
 
 Owner: a2952. Status: fixed, committed, and locally validated.
 
