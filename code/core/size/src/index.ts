@@ -18,13 +18,77 @@ export type TokenSizePolicy = {
 }
 
 // component defaults are intentionally owned by this opt-in package instead of
-// the global Tamagui config. The raw frame height works across token scales;
-// the other metrics retain each config's token-defined platform values.
+// the global Tamagui config, so the other metrics retain each config's
+// token-defined platform values.
 export const defaultTokenSizePolicy: TokenSizePolicy = {
+  // geometry consumers (Square, Circle) read the size scale directly and only
+  // need a default token; control frame heights do NOT come from here, they
+  // come from controlSizes below.
   size: 44,
   space: '4',
   radius: '4',
   fontSize: '4',
+}
+
+/**
+ * Frame heights for controls, keyed like v2's size tokens.
+ *
+ * `size` on a control is a preset, not a length. A config's size scale is a
+ * spacing scale: under v6 it is tailwind's, where `3` is 12px, so reading a
+ * frame height straight off it produced a 12px-tall Button holding 16px text.
+ * These are v2's size token values, so a migrating `size="4"` still means a
+ * 44px control rather than silently becoming a 16px one.
+ *
+ * `true` is the unsized default and is just the `4` step, so there is no
+ * separate default constant that can drift away from the ramp.
+ */
+export const controlSizes = {
+  true: 44,
+  0: 0,
+  '0-25': 2,
+  '0-5': 4,
+  '0-75': 8,
+  1: 20,
+  '1-5': 24,
+  2: 28,
+  '2-5': 32,
+  3: 36,
+  '3-5': 40,
+  4: 44,
+  '4-5': 48,
+  5: 52,
+  6: 64,
+  7: 74,
+  8: 84,
+  9: 94,
+  10: 104,
+  11: 124,
+  12: 144,
+  13: 164,
+  14: 184,
+  15: 204,
+  16: 224,
+  17: 224,
+  18: 244,
+  19: 264,
+  20: 284,
+} as const
+
+export type ControlSizeKey = keyof typeof controlSizes
+
+/**
+ * A control's frame height. Numbers stay literal pixel values, the same line
+ * resolveTokenSize and getShapeSize already draw. A size key outside the ramp
+ * (v6 carries larger ones like `24`) falls through to the config's size scale,
+ * where the value is already a sane large length.
+ */
+export const resolveControlSize = (
+  value: TokenSize,
+  tokens: Pick<TokensParsed, 'size'>
+): number | Variable => {
+  if (typeof value === 'number') return value
+  const ramp = controlSizes[value as ControlSizeKey]
+  return ramp ?? tokens.size[value as keyof typeof tokens.size]
 }
 
 export const resolveSizeToken = <Value, Category extends keyof TokenSizePolicy>(
@@ -68,9 +132,14 @@ export type ResolvedFontMetric<Value extends TokenSize> = Value extends number
   ? Value
   : number | Variable
 
+/** the ramp yields plain numbers, so a frame height is never only a Variable */
+export type ResolvedControlMetric<Value extends TokenSize> = Value extends number
+  ? Value
+  : number | Variable
+
 export type ResolvedTokenSize<Value extends TokenSize = TokenSize> = {
   frame: {
-    size: ResolvedFrameMetric<Value>
+    size: ResolvedControlMetric<Value>
     space: ResolvedFrameMetric<Value>
     radius: ResolvedFrameMetric<Value>
   }
@@ -93,12 +162,12 @@ export const resolveTokenSize = <Value extends TokenSize>(
     } as ResolvedTokenSize<Value>
   }
 
-  const sizeKey = resolveSizeToken(value, 'size', policy)
   const spaceKey = resolveSizeToken(value, 'space', policy)
   const radiusKey = resolveSizeToken(value, 'radius', policy)
   const fontKey = resolveSizeToken(value, 'fontSize', policy)
 
-  const size = typeof sizeKey === 'number' ? sizeKey : tokens.size[sizeKey]
+  // frame height is a control preset off the ramp, never the spacing scale
+  const size = resolveControlSize(value, tokens)
   const space = typeof spaceKey === 'number' ? spaceKey : tokens.space[spaceKey]
   const radius = typeof radiusKey === 'number' ? radiusKey : tokens.radius[radiusKey]
   const fontSize = typeof fontKey === 'number' ? fontKey : font.size[fontKey]

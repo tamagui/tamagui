@@ -47,8 +47,6 @@ export type CanonicalStyleValueResult = {
 	ok: false;
 	errors: readonly ValueParseError[];
 };
-/** Prints one parsed value without changing payloads, modifier order, or clause order. */
-export declare function formatParsedValue(value: ParsedValue): string;
 /** Parses and prints the canonical surface spelling for the same value IR. */
 export declare function canonicalizeStyleValue(input: string, registry: ModifierRegistryView): CanonicalStyleValueResult;
 /**

@@ -73,10 +73,27 @@ for (const driver of drivers) {
     test('transform styles render correctly before and after hydration', async ({
       page,
     }) => {
-      await page.goto(`/hydration-${driver}`)
+      // Hold every script until the pre-hydration styles have been read. Without
+      // this the assertion below is a race: in a production build hydration
+      // finishes before the element is even reported attached, so the "before"
+      // read lands after the driver has already replaced the longhands with a
+      // composed matrix, which is a state this test explicitly allows further
+      // down. It failed only under TEST_MODE=prod for exactly that reason.
+      let releaseScripts: () => void
+      const scriptsHeld = new Promise<void>((resolve) => {
+        releaseScripts = resolve
+      })
+      await page.route('**/*.js', async (route) => {
+        await scriptsHeld
+        await route.continue()
+      })
+
+      await page.goto(`/hydration-${driver}`, { waitUntil: 'domcontentloaded' })
 
       const box = page.getByTestId('transform-box')
       await expect(box).toBeAttached({ timeout: 15000 })
+      // the point of the gate: nothing may have hydrated yet
+      await expect(page.locator('[data-testid=hydrated-true]')).toHaveCount(0)
 
       // SSR emits the web-standard individual transform properties as classes.
       const preStyles = await box.evaluate((el) => {
@@ -97,7 +114,8 @@ for (const driver of drivers) {
         rotate: '5deg',
       })
 
-      // wait for hydration
+      // let the app boot and hydrate
+      releaseScripts!()
       await page.waitForSelector('[data-testid=hydrated-true]')
 
       // Motion composes those properties into a matrix after hydration, while

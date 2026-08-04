@@ -5,6 +5,7 @@ import {
   type CandidatePropertyMismatch,
 } from './candidateTarget'
 import { createGrammarConfigView, type GrammarSourceConfig } from './config'
+import { formatParsedValue } from './mergeFlatValues'
 import { stateModifierNames } from './modifierRegistry'
 import { resolvePayload } from './resolvePayload'
 import {
@@ -80,16 +81,6 @@ export interface StyleValueCursorCompletions {
 export type CanonicalStyleValueResult =
   | { ok: true; value: string; parsed: ParsedValue }
   | { ok: false; errors: readonly ValueParseError[] }
-
-/** Prints one parsed value without changing payloads, modifier order, or clause order. */
-export function formatParsedValue(value: ParsedValue): string {
-  const parts: string[] = []
-  if (value.base !== null) parts.push(value.base)
-  for (const clause of value.clauses) {
-    parts.push(`${clause.modifiers.join(':')}:${clause.payload}`)
-  }
-  return parts.join(' ')
-}
 
 /** Parses and prints the canonical surface spelling for the same value IR. */
 export function canonicalizeStyleValue(
