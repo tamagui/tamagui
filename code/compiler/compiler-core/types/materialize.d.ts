@@ -20,6 +20,20 @@ export type MaterializedValue = {
     bailout: BailoutReason;
     span: SourceSpan;
 } | {
+    /**
+     * A conditional whose branches evaluated statically while the test did
+     * not: `cond ? 'body' : 'heading'`. Lowerings that cannot use it treat
+     * it exactly like a bailout (the bailout it would otherwise have been
+     * is preserved for that purpose).
+     */
+    kind: 'conditional';
+    test: SourceSpan;
+    whenTrue: StaticEvaluationValue;
+    whenFalse: StaticEvaluationValue;
+    dependencies: ResolvedModuleId[];
+    bailout: BailoutReason;
+    span: SourceSpan;
+} | {
     kind: 'dom-style';
     span: SourceSpan;
     items: {
