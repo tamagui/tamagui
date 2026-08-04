@@ -39,8 +39,8 @@ ARG APP_NAME
 ARG TAMAGUI_PRO_SECRET
 ARG DEEPSEEK_API_KEY
 ARG BENTO_GITHUB_TOKEN
-# beta cut: replace v3 with the frozen bento release ref
-ARG BENTO_BRANCH=v3
+# beta cut: replace v3-beta with the frozen bento release ref
+ARG BENTO_BRANCH=v3-beta
 
 # install dependencies (sharp needs libvips for image processing)
 RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh libvips-dev
