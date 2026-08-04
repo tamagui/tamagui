@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
+import { expectNoTeleport, type PositionSample } from './utils'
 
 // regression: withStaticProperties(Tooltip, { Content }) from a lazy-loaded
 // module must not swap the shared Tooltip.Content identity. before the fix it
@@ -46,7 +47,7 @@ test.describe('Tooltip static clobber (withStaticProperties on shared compound)'
     await page.evaluate((sel) => {
       ;(window as any).__rec = []
       let nextId = 1
-      const sample = () => {
+      const sample = (at: number) => {
         const el = document.querySelector(sel) as any
         if (el) {
           if (!el.__recId) el.__recId = nextId++
@@ -57,7 +58,7 @@ test.describe('Tooltip static clobber (withStaticProperties on shared compound)'
               : style.transform === 'none'
                 ? 0
                 : new DOMMatrixReadOnly(style.transform).e
-          ;(window as any).__rec.push({ x, id: el.__recId })
+          ;(window as any).__rec.push({ at, tx: x, id: el.__recId })
         }
         requestAnimationFrame(sample)
       }
@@ -75,7 +76,7 @@ test.describe('Tooltip static clobber (withStaticProperties on shared compound)'
     await page.waitForTimeout(700)
 
     const rec = await page.evaluate(
-      () => (window as any).__rec as { x: number; id: number }[]
+      () => (window as any).__rec as (PositionSample & { id: number })[]
     )
     expect(rec.length).toBeGreaterThan(10)
 
@@ -83,14 +84,8 @@ test.describe('Tooltip static clobber (withStaticProperties on shared compound)'
     const ids = new Set(rec.map((r) => r.id))
     expect(ids.size).toBe(1)
 
-    // no teleport: per-frame movement stays animation-sized. same threshold as
-    // the sibling toolbar-row suite, which calibrated it against v3's drivers:
-    // an animated glide moves tens of px/frame at most, a teleport is 150+
-    let maxJump = 0
-    for (let i = 1; i < rec.length; i++) {
-      maxJump = Math.max(maxJump, Math.abs(rec[i].x - rec[i - 1].x))
-    }
-    expect(maxJump).toBeLessThan(150)
+    // no teleport: same shared metric as the sibling toolbar-row suite
+    expectNoTeleport(rec)
 
     // and the tooltip did retarget to the last icon
     const state = await page.evaluate((sel) => {

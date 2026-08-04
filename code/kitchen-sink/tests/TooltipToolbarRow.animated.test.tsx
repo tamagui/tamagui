@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
+import { expectNoTeleport, type PositionSample } from './utils'
 
 // covers the shared-tooltip-over-icon-row pattern (single controlled Tooltip,
 // label + anchor swap as the pointer crosses adjacent triggers):
@@ -65,20 +66,23 @@ test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', (
     await page.waitForSelector(CONTENT_SEL, { timeout: 5000 })
     await page.waitForTimeout(500)
 
-    // per-frame recorder to detect teleport jumps
+    // per-frame recorder to detect teleport jumps. records the frame time too,
+    // so the metric measures velocity rather than per-sample distance
     await page.evaluate((sel) => {
       ;(window as any).__tips = []
-      const sample = () => {
+      const sample = (at: number) => {
         const el = document.querySelector(sel) as HTMLElement | null
         if (el) {
           const style = getComputedStyle(el)
-          ;(window as any).__tips.push(
-            style.translate !== 'none'
-              ? Number.parseFloat(style.translate)
-              : style.transform === 'none'
-                ? 0
-                : new DOMMatrixReadOnly(style.transform).e
-          )
+          ;(window as any).__tips.push({
+            at,
+            tx:
+              style.translate !== 'none'
+                ? Number.parseFloat(style.translate)
+                : style.transform === 'none'
+                  ? 0
+                  : new DOMMatrixReadOnly(style.transform).e,
+          })
         }
         requestAnimationFrame(sample)
       }
@@ -93,13 +97,10 @@ test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', (
     }
     await page.waitForTimeout(800)
 
-    const txs = await page.evaluate(() => (window as any).__tips as number[])
-    let maxJump = 0
-    for (let i = 1; i < txs.length; i++) {
-      maxJump = Math.max(maxJump, Math.abs(txs[i] - txs[i - 1]))
-    }
-    // animated glide moves tens of px/frame at most; a teleport is 150+
-    expect(maxJump).toBeLessThan(150)
+    const samples = await page.evaluate(
+      () => (window as any).__tips as PositionSample[]
+    )
+    expectNoTeleport(samples)
 
     const state = await page.evaluate((sel) => {
       const el = document.querySelector(sel) as HTMLElement
