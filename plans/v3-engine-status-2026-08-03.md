@@ -56,13 +56,12 @@ pushed, both merge conflict-free into current v3-beta (verified via merge-tree):
    flow. My verified-good build script: scratchpad metro-build.cjs
    (Metro.loadConfig + runBuild from the bench app dir, clean
    node_modules/.cache/tamagui + $TMPDIR/metro-cache first).
-2. **Theme values statically inlined in compiled native output.** compilerHost
-   resolves against the FIRST theme in config (compilerHost.ts ~824) and inlines
-   concrete values, so theme switching won't update fully-flattened components;
-   affects backgroundColor same as background. Nate's direction: replicate V2
-   extractToNative (splitThemeStyles -> theme.<key>.get() expressions inside the
-   _withStableStyle-style dynamic path, per-platform). V2 reference source
-   unpacked at scratchpad v2-static/package/src/extractor/extractToNative.ts.
+2. **RESOLVED 2026-08-03 (`3a24f5423d`): theme values stay live in compiled
+   native output.** V2 extractToNative replicated via a compile-time theme-ref
+   sentinel; themed keys are split out of the hoisted style into
+   `_theme[key].get()` reads inside `_withStableStyle(..., hasThemeKeys)`.
+   Details, receipts and residual limitations:
+   `plans/v3-deep-engine-2026-08-03.md`.
 3. **motionDriverConversion.web.test.tsx perf-ceiling test** timed out twice
    under load (7.3s vs 5s ceiling); passed on the same tree earlier today.
    Assumed load flake, unverified on a quiet machine.
