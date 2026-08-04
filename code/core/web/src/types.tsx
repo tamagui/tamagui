@@ -352,6 +352,13 @@ export type TamaguiComponentPropsBaseBase = {
   disableOptimization?: boolean
 
   /**
+   * Opt this component out of the experimental native style fast path
+   * (setNativeStyleEngine); it re-renders through React on theme/media
+   * changes like normal
+   */
+  disableNativeStyle?: boolean
+
+  /**
    * Forces the pseudo style state to be on
    */
   forceStyle?: 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin'
@@ -664,6 +671,16 @@ export type TamaguiComponentStateRef = {
   nativeStyleUpdate?: (next: ThemeState) => boolean
   nativeUpdateProxy?: (next: ThemeState) => boolean
   nativePushedStates?: Set<string>
+  // media interception: recompute styles under the current theme when a
+  // relevant media key flips (useMedia's subscription calls this before
+  // forcing a re-render); nativeThemeState tracks the last theme handled
+  // natively so the recompute uses it instead of the stale render capture
+  nativeMediaUpdate?: () => boolean
+  nativeThemeState?: ThemeState
+  // union of style keys pushed to the engine since link: keys present before
+  // but absent from the next push are sent as null (reset-to-default),
+  // matching what a real re-render's style diff would do
+  nativePushedKeys?: Set<string>
 }
 
 export type ComponentGroupEmitter = {

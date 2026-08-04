@@ -60,6 +60,7 @@ export function updateNativeStyleLink(
   ref: {
     nativeLink?: NativeStyleEngineLinkHandle | null
     nativeStyleUpdate?: unknown
+    nativePushedKeys?: Set<string>
   },
   host: unknown
 ): void {
@@ -67,6 +68,9 @@ export function updateNativeStyleLink(
     ref.nativeLink.unlink()
     ref.nativeLink = null
   }
+  // pushed-key tracking is per-link: a new native view starts from the props
+  // React committed, nothing pushed yet
+  ref.nativePushedKeys = undefined
   if (host && engine && ref.nativeStyleUpdate) {
     ref.nativeLink = engine.link(host, {})
   }

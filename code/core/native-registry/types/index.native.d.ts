@@ -1,5 +1,5 @@
-import type { LinkHandle, RegistryStats, ViewSlots, ViewStateUpdate } from "./types";
-export type { LinkHandle, RegistryStats, Unlink, ViewSlots, ViewStateUpdate } from "./types";
+import type { LinkHandle, RegistryStats, ViewSlots, ViewStateSnapshot, ViewStateUpdate } from "./types";
+export type { LinkHandle, RegistryStats, Unlink, ViewSlots, ViewStateSnapshot, ViewStateUpdate } from "./types";
 export { ROOT_SCOPE, getMirroredStateName } from "./mirror";
 export { processStyleColors } from "./processStyleColors";
 export declare function isAvailable(): boolean;
@@ -24,6 +24,8 @@ export declare function setStateName(stateName: string, scopeId?: string): void;
 export declare function removeScope(scopeId: string): void;
 /** Resolve the props a view should render right now, mirror-consistent. */
 export declare function resolveSlots(slots: ViewSlots, scopeId?: string): Record<string, unknown>;
+/** Debug/test introspection of a linked view's engine tables. Not a hot path. */
+export declare function getViewState(id: number): ViewStateSnapshot | null;
 export declare function getStats(): RegistryStats;
 
 //# sourceMappingURL=index.native.d.ts.map

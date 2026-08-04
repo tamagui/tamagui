@@ -842,17 +842,52 @@ export function createComponent<
     if (process.env.TAMAGUI_TARGET === 'native') {
       const nativeEngine = getNativeStyleEngine()
       const canNativeUpdate =
-        !!nativeEngine && !isPassthrough && !isHOC && !willBeAnimated && !groupName
+        !!nativeEngine &&
+        !isPassthrough &&
+        !isHOC &&
+        !willBeAnimated &&
+        !groupName &&
+        !props.disableNativeStyle
       stateRef.current.nativePushedStates = canNativeUpdate ? new Set() : undefined
+      // fresh render: the themeState captured below is current again
+      stateRef.current.nativeThemeState = undefined
+
+      // push one state's full computed style. keys pushed earlier but absent
+      // from this style commit as null — reset-to-default, exactly what a real
+      // re-render's style diff does when a key disappears (media flip dropping
+      // a $sm style, a removed prop) — and the engine unsticks them from
+      // nativeProps_DEPRECATED so future React renders can set them again.
+      // nulled keys stay in nativePushedKeys: engine state tables retain them,
+      // so every later cold push must keep nulling until a value returns.
+      const pushViewState = canNativeUpdate
+        ? (stateName: string, style: Record<string, unknown>) => {
+            const sr = stateRef.current
+            const outProps = nativeEngine.processStyleColors(style)
+            if (sr.nativePushedKeys) {
+              for (const key of sr.nativePushedKeys) {
+                if (!(key in style)) outProps[key] = null
+              }
+            }
+            const keys = (sr.nativePushedKeys ||= new Set())
+            for (const key in outProps) keys.add(key)
+            sr.nativePushedStates!.add(stateName)
+            queueNativeViewState({
+              id: sr.nativeLink!.id,
+              state: stateName,
+              props: outProps,
+            })
+          }
+        : undefined
+
       stateRef.current.nativeStyleUpdate = canNativeUpdate
         ? (nextTheme) => {
-            const handle = stateRef.current.nativeLink
-            if (!handle || !nextTheme.theme) return false
+            const sr = stateRef.current
+            if (!sr.nativeLink || !nextTheme.theme) return false
+            sr.nativeThemeState = nextTheme
 
             const stateName = nextTheme.name
-            const pushed = stateRef.current.nativePushedStates!
-            if (pushed.has(stateName)) {
-              queueNativeViewState({ id: handle.id, state: stateName })
+            if (sr.nativePushedStates!.has(stateName)) {
+              queueNativeViewState({ id: sr.nativeLink.id, state: stateName })
               return true
             }
 
@@ -879,17 +914,46 @@ export function createComponent<
             )
             if (!nextStyles?.style) return false
 
-            pushed.add(stateName)
-            queueNativeViewState({
-              id: handle.id,
-              state: stateName,
-              props: nativeEngine.processStyleColors(
-                nextStyles.style as Record<string, unknown>
-              ),
-            })
+            pushViewState!(stateName, nextStyles.style as Record<string, unknown>)
             return true
           }
         : undefined
+
+      // a relevant media key flipped (useMedia updated its mirrors first, so
+      // styleProps.mediaState already reads the new values): every cached
+      // state entry was computed under the old media state, so the warm cache
+      // clears and the current theme recomputes cold
+      stateRef.current.nativeMediaUpdate = canNativeUpdate
+        ? () => {
+            const sr = stateRef.current
+            if (!sr.nativeLink) return false
+            sr.nativePushedStates!.clear()
+            return sr.nativeStyleUpdate!(sr.nativeThemeState || themeState)
+          }
+        : undefined
+
+      // a real render supersedes everything pushed since: its style is the
+      // truth React commits, and RN's nativeProps_DEPRECATED merge refreshes
+      // shared keys from it. the one hazard is a previously-pushed key this
+      // render dropped — RN's merge would resurrect the stale value — so
+      // re-push the fresh style (with nulls for dropped keys) right behind
+      // React's own commit.
+      if (canNativeUpdate && stateRef.current.nativeLink) {
+        const sr = stateRef.current
+        const style = splitStyles.style as Record<string, unknown> | undefined
+        if (style && sr.nativePushedKeys) {
+          let dropped = false
+          for (const key of sr.nativePushedKeys) {
+            if (!(key in style)) {
+              dropped = true
+              break
+            }
+          }
+          if (dropped) {
+            pushViewState!(themeState?.name || '', style)
+          }
+        }
+      }
     }
 
     // Merge style-resolved context overrides (issues #3670, #3676)

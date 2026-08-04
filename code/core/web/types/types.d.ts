@@ -124,6 +124,12 @@ export type TamaguiComponentPropsBaseBase = {
      */
     disableOptimization?: boolean;
     /**
+     * Opt this component out of the experimental native style fast path
+     * (setNativeStyleEngine); it re-renders through React on theme/media
+     * changes like normal
+     */
+    disableNativeStyle?: boolean;
+    /**
      * Forces the pseudo style state to be on
      */
     forceStyle?: 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin';
@@ -342,6 +348,9 @@ export type TamaguiComponentStateRef = {
     nativeStyleUpdate?: (next: ThemeState) => boolean;
     nativeUpdateProxy?: (next: ThemeState) => boolean;
     nativePushedStates?: Set<string>;
+    nativeMediaUpdate?: () => boolean;
+    nativeThemeState?: ThemeState;
+    nativePushedKeys?: Set<string>;
 };
 export type ComponentGroupEmitter = {
     listeners: Set<GroupStateListener>;

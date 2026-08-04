@@ -11,6 +11,7 @@ export declare const skipProps: {
     debug: number;
     componentName: number;
     disableOptimization: number;
+    disableNativeStyle: number;
     render: number;
     style: number;
     group: number;

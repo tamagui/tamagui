@@ -10,6 +10,7 @@ import type {
   RegistryStats,
   Unlink,
   ViewSlots,
+  ViewStateSnapshot,
   ViewStateUpdate,
 } from './types'
 import {
@@ -25,6 +26,7 @@ export type {
   RegistryStats,
   Unlink,
   ViewSlots,
+  ViewStateSnapshot,
   ViewStateUpdate,
 } from './types'
 export { ROOT_SCOPE, getMirroredStateName } from './mirror'
@@ -34,6 +36,7 @@ export { processStyleColors } from './processStyleColors'
 interface Engine extends TamaguiRegistry {
   link(shadowNode: unknown, slots: object, scopeId: string): number
   applyViewStates(entries: ViewStateUpdate[]): void
+  getViewState(id: number): ViewStateSnapshot | null
 }
 
 let engine: Engine | null = null
@@ -140,6 +143,12 @@ export function resolveSlots(
     ...slots.base,
     ...(name ? slots.state?.[name] : undefined),
   }
+}
+
+/** Debug/test introspection of a linked view's engine tables. Not a hot path. */
+export function getViewState(id: number): ViewStateSnapshot | null {
+  if (!engine) return null
+  return engine.getViewState(id)
 }
 
 export function getStats(): RegistryStats {
