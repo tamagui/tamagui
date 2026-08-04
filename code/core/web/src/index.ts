@@ -3,6 +3,7 @@ export * from './contexts/GroupContext'
 
 export * from '@tamagui/is-equal-shallow'
 export * from './_withStableStyle'
+export * from './_withNativeStyle'
 export * from './createComponent'
 export * from './helpers/createStyledContext'
 export * from './helpers/getDefaultProps'
@@ -16,6 +17,7 @@ export {
   getNativeStyleEngine,
   setNativeStyleEngineFlushListener,
   type NativeStyleEngine,
+  type NativeStyleEngineSlots,
   type NativeViewStateUpdate,
 } from './helpers/nativeStyleEngine'
 export * from './helpers/getThemeCSSRules'

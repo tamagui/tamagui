@@ -23,14 +23,21 @@ export interface NativeViewStateUpdate {
   props?: Record<string, unknown>
 }
 
+export interface NativeStyleEngineSlots {
+  base?: Record<string, unknown>
+  state?: Record<string, Record<string, unknown>>
+}
+
 export interface NativeStyleEngine {
   link(
     ref: unknown,
-    slots: object,
+    slots: NativeStyleEngineSlots,
     scopeId?: string
   ): NativeStyleEngineLinkHandle | null
   applyViewStates(entries: NativeViewStateUpdate[]): void
   processStyleColors(props: Record<string, unknown>): Record<string, unknown>
+  setStateName(stateName: string, scopeId?: string): void
+  removeScope(scopeId: string): void
 }
 
 let engine: NativeStyleEngine | null = null

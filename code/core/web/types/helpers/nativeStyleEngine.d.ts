@@ -20,10 +20,16 @@ export interface NativeViewStateUpdate {
     state: string;
     props?: Record<string, unknown>;
 }
+export interface NativeStyleEngineSlots {
+    base?: Record<string, unknown>;
+    state?: Record<string, Record<string, unknown>>;
+}
 export interface NativeStyleEngine {
-    link(ref: unknown, slots: object, scopeId?: string): NativeStyleEngineLinkHandle | null;
+    link(ref: unknown, slots: NativeStyleEngineSlots, scopeId?: string): NativeStyleEngineLinkHandle | null;
     applyViewStates(entries: NativeViewStateUpdate[]): void;
     processStyleColors(props: Record<string, unknown>): Record<string, unknown>;
+    setStateName(stateName: string, scopeId?: string): void;
+    removeScope(scopeId: string): void;
 }
 export declare function setNativeStyleEngine(next: NativeStyleEngine | null): void;
 export declare function getNativeStyleEngine(): NativeStyleEngine | null;
