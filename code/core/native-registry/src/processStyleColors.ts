@@ -1,8 +1,8 @@
 /**
  * Fabric's C++ prop parser takes colors as ARGB ints, not CSS strings, so
  * every color prop must be converted before props reach the engine. The
- * compiler does this at build time; this runtime version exists for
- * hand-written slots (spike harness, tests, manual usage).
+ * compiler mappings and runtime-mode pushes both use this exact runtime
+ * processor before props cross into the engine.
  */
 import { processColor } from 'react-native'
 

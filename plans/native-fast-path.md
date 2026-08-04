@@ -1,17 +1,19 @@
 # Native fast path: zero-re-render style updates via ShadowTree commits
 
-Researched 2026-08-04. Status: design, pre-implementation. Target lane: v3-beta,
-as an opt-in experimental feature.
+Researched and built through the off-device compiler/runtime suites 2026-08-04.
+Target lane: v3-beta, as an opt-in experimental feature. Compiler mode still
+needs an on-device iOS run before it is called verified.
 
 ## Goal
 
 On native, style changes driven by app state (theme today; media, press, group
 press, container queries later) should commit directly to Fabric's ShadowTree
 from C++ with zero React re-renders. This is the same mechanism Unistyles 3
-and Uniwind Pro ship in production, but Tamagui's compiler can go further:
-they resolve styles at runtime from parsed CSS, we can emit fully-resolved
-per-theme style matrices at build time, so the runtime does no resolution at
-all.
+and Uniwind Pro ship in production. Tamagui's compiler emits the smaller
+structural contract: flattened native styles plus a mapping from native style
+keys to theme tokens. Core resolves a mapping once for each distinct mapping
+and activated theme, then the engine owns ordinary theme toggles without React
+work.
 
 This also fixes the worst compiler outcome today: a component with a single
 themed value can't fully flatten and keeps a hook plus HOC, making one theme
@@ -65,11 +67,11 @@ External prior art to keep reading as we build:
 - Expo is building native CSS and vanilla Tailwind support with Mark Lawlor
   (NativeWind), with Material 3 dynamic colors called "a key primitive" of it;
   CSS grid is landing in Yoga. The ecosystem is converging on
-  styles-as-data-updated-outside-React. Our compiler contract (resolved style
-  matrices keyed by dependency state) is engine-agnostic: if RN core ever
-  ships variable-like primitives, the compiler retargets them and the C++
-  registry shrinks. Design the compiler output format as the stable contract,
-  the engine as replaceable.
+  styles-as-data-updated-outside-React. Our compiler contract (structural
+  style-key to token mappings) is engine-agnostic: if RN core ever ships
+  variable-like primitives, the compiler retargets them and the C++ registry
+  shrinks. The structural mapping is the stable contract; the resolver and
+  engine remain replaceable.
 - RN 0.87 introduces Props 2.0 (`setProp`); watch it as a possible future
   update primitive.
 
@@ -97,18 +99,29 @@ state setter, an invalidation rule. No engine rewrite per feature.
 ### Compiler contract
 
 Behind `experimental.nativeFastPath` in Tamagui build options. The flag only
-changes native compiler output. For a
-statically extractable element with themed values, emit the resolved matrix:
+changes native compiler output. For a statically extractable element with
+themed values, emit its static native style and a compact mapping such as
+`{ backgroundColor: "background", borderTopColor: "color" }`:
 
-- Per-theme props fully resolved at build time from the deterministic v3 theme
-  output. Identical themes deduped; aliases expanded at build time so the
-  runtime and C++ do exact key lookup only. No resolution, no fallback chains,
-  no name parsing at runtime. If a theme key is missing at runtime it is a
-  compiler bug: dev-mode assert, never a silent skip.
-- Theme colors stay as their resolved strings in emitted tables, then the
-  registry's existing `processStyleColors` converts them to Fabric ARGB ints
-  once when the view links. Compiler and runtime mode therefore use the same
-  color processor and representation.
+- Do not inline resolved theme values at call sites. That duplicates the same
+  config values across themes and components, and it becomes stale after
+  `addTheme` or `updateTheme`.
+- Expand style aliases and the native key set at build time. Every resolved
+  state uses that same mapping key set; a missing theme token resolves to
+  `null`, which clears RN's sticky native prop merge.
+- Core keys a shared cache by the mapping's sorted structural contents. It
+  resolves from the live `config.themes` object once per distinct mapping and
+  theme object, then runs the engine's `processStyleColors`. Compiler mode and
+  runtime mode therefore use the same value and color-processing path.
+- The first activation of a state fills every linked view's table through one
+  `updateViewStateTables` batch, then publishes the scope name. Later toggles
+  between warmed states publish only the scope name. A replaced theme object
+  invalidates the cached entry and sends one new table batch; the native method
+  keeps compiler views under scope control and commits immediately if that
+  state is already active.
+- C++ receives only fully resolved state entries and does exact state-name
+  lookup. It does no theme-token resolution, fallback-chain traversal, or name
+  parsing.
 - Bailouts (ternaries, spreads, dynamic values) keep today's output exactly.
   Widening bailouts (pre-computing both ternary branches) is future work, not
   v1.
@@ -133,19 +146,19 @@ const _theme = useTheme()
 // fast path, runtime mode (built): uncompiled components intercept the theme
 // listener, commit natively, skip the re-render entirely
 
-// fast path, compiler mode (next): flattened element + link with the resolved
-// per-theme matrix, NO hook at all:
-<View ref={link({ state: { light: {...}, dark: {...}, light_red: {...} } })}
-      style={{ width: 40 }} />
-// theme change = one engine commit, zero JS per component
+// fast path, compiler mode: flattened element + compact token mapping,
+// NO hook and no per-theme values duplicated in this module:
+const mapping = { backgroundColor: "background", borderColor: "color" }
+<_withNativeStyle(View, { width: 40 }, mapping) />
+// a warm theme change = one scope publish and one engine commit
 ```
 
 ### Runtime contract (JS)
 
-- A minimal host component per element type (view/text) that renders the RN
-  primitive, reads the current theme once without subscribing, and
-  links/unlinks with the registry. No HOC, no memo tricks doing correctness
-  work.
+- A minimal host component per element type (view/text) renders the RN
+  primitive, reads the current theme once without subscribing, resolves the
+  shared compiler mapping, and links/unlinks with the registry. Memoization
+  prevents unrelated parent renders; scope publication owns theme correctness.
 - A JS mirror of registry state (current theme per scope) so that when React
   does re-render a linked component for unrelated prop changes, it renders
   the current styles and cannot revert a native commit. Spike whether this
@@ -155,11 +168,31 @@ const _theme = useTheme()
   or off the fast path, everything behaves exactly as today. One fallback
   boundary, not per-feature forks.
 
+#### Compiler emit mode (built 2026-08-04, off-device verified)
+
+- Native-only `experimental.nativeFastPath` changes only elements that already
+  flatten completely except for direct theme values. Flag-off output, web
+  output, ternaries, spreads, opacity modifiers, and other dynamic bailouts
+  remain byte-identical to the existing compiler path.
+- Emitted modules contain one static style and one style-key to theme-token
+  mapping per call site. They contain no config theme values and install no
+  theme hook.
+- Equal mappings share resolved state objects across call sites. A state is
+  resolved from the live theme object at first activation, colors use the same
+  processor as runtime mode, and new or replaced theme objects refill native
+  tables in a single batch. Warm scope toggles do no per-view JS work.
+- With no engine, `_withNativeStyle` delegates at one boundary to the existing
+  `_withStableStyle` theme-hook path. The integration test compares both live
+  styles before and after a sub-theme toggle.
+- The correctness anchor compares merged compiler slots with the full props
+  runtime mode pushes for the same themed component after color processing;
+  the entries deep-equal.
+
 #### Runtime integration mode (built 2026-08-04, the beta path)
 
-Two engine modes share the commit tail. The compiler mode (scope broadcast +
-pre-filled state tables via `setStateName`) is the end state. The runtime mode
-ships first because it needs no compiler work and keeps every Tamagui
+Two engine modes share the commit tail. Compiler mode uses scope broadcasts
+plus lazily filled state tables and is the end state. Runtime mode shipped
+first because it needed no compiler work and keeps every Tamagui
 resolution semantic (nesting, sub-themes, variants) in the code that already
 implements them:
 
@@ -381,8 +414,9 @@ timestamp) or the fully-synchronous engine call; it has no vsync floor.
 
 - `@tamagui/native-registry` package: Nitro module, slot model, theme state,
   JS mirror, link/unlink lifetime rules above. RN >= 0.82 only, one C++ path.
-- Compiler emit behind the experimental flag, v3 themes, dedup + build-time
-  alias expansion, build-time color processing.
+- Compiler emit behind the experimental flag, v3 themes, build-time structural
+  alias expansion, shared lazy runtime resolution, and the common color
+  processor.
 - Benchmark suite from the honesty protocol, checked into kitchen-sink, with
   the negative controls automated.
 - Android verified in the same phase as iOS, not deferred (the old branch
@@ -413,10 +447,14 @@ Each phase lands only with its own honesty-protocol benchmarks.
 
 - Package and flag naming is settled: `@tamagui/native-registry` and
   `experimental.nativeFastPath`.
-- Whether the JS mirror fully replaces `nativeProps_DEPRECATED` syncing:
-  Phase 0 answers this.
-- How wide v1 extraction eligibility should be (currently: no ternaries, no
-  spreads): measure hit rate on kitchen-sink and takeout before widening.
+- The JS mirror does not replace `nativeProps_DEPRECATED` syncing. Phase 0
+  proved both are required across later React clones.
+- Kitchen-sink native extraction with the flag produced 1,044 fast wrappers
+  among 1,986 flattened elements (52.6%). It left 13 `_withStableStyle`
+  wrappers, so 1,044 of 1,057 compiler-generated theme helper sites (98.8%)
+  used compiler mode. The native CLI currently omits aggregate `found` and
+  `bailed` stats, so this does not count fully unlowered dynamic candidates.
+  Takeout was not measured in this pass.
 - Whether the registry should also own DynamicColorIOS interplay (a linked
   view on iOS could skip theme slots for pure-color scheme switches) or
   simply supersede it when the flag is on. Prefer supersede: one path.

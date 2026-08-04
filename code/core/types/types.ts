@@ -141,8 +141,8 @@ export interface TamaguiBuildOptions {
 
   experimental?: {
     /**
-     * Emit native flattened views with pre-resolved theme state tables for the
-     * experimental native style engine. Web output is unaffected.
+     * Emit native flattened views with theme-token mappings for the experimental
+     * native style engine. Web output is unaffected.
      */
     nativeFastPath?: boolean
   }

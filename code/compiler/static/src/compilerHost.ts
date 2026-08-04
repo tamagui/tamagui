@@ -54,7 +54,7 @@ export interface TamaguiCompilerHostOptions {
   componentModules: CompilerComponentModule[]
   /** Keep elements with dynamic style props fully on the runtime path. */
   disablePartialExtraction?: boolean
-  /** Emit pre-resolved native theme tables for the native style engine. */
+  /** emit native theme-token mappings for the native style engine */
   experimentalNativeFastPath?: boolean
 }
 
