@@ -69,7 +69,10 @@ describe('motion driver getProps conversion', () => {
     ).toEqual({
       opacity: 0.8,
       transform: 'translateY(4px)',
-      borderRadius: '6px',
+      // numeric, not '6px': since the direct-emission rewrite the core hands
+      // drivers RN-format numbers; px lands at the write site (React inline
+      // styles auto-suffix, the driver's assignInlineStyles suffixes CSSOM)
+      borderRadius: 6,
     })
   })
 
