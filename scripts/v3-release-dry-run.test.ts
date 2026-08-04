@@ -415,6 +415,17 @@ describe('G1 tarball audits', () => {
     await expect(auditExtractedPackage(root, '/repo')).resolves.toBeUndefined()
   })
 
+  test('ignores import examples embedded in published prompt strings', async () => {
+    const root = await fixturePackage(
+      { name: '@tamagui/example', version: '3.0.0-beta.0' },
+      {
+        'dist/index.cjs':
+          "const prompt = `\\nimport { View } from '@tamagui/tailwind'\\n`; module.exports = prompt",
+      }
+    )
+    await expect(auditExtractedPackage(root, '/repo')).resolves.toBeUndefined()
+  })
+
   test('rejects recursive workspace refs, deleted refs, source-only imports, missing exports, and undeclared deps', async () => {
     const cases: Array<[PackageManifest, Record<string, string>, RegExp]> = [
       [
