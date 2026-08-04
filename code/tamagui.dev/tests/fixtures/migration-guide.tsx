@@ -5,8 +5,7 @@
 // tamagui.dev's own complete, CI-validated config).
 //
 // NOTES:
-// - `import { Button } from 'tamagui'` is the STYLED v2-look skin (the tamagui
-//   index shadows the unstyled @tamagui/ui primitive with the default skin), so
+// - `import { Button } from 'tamagui/button'` is the styled default skin, so
 //   `<Button size="5" />` compiles against the token size scale below. The
 //   unstyled primitive lives at `tamagui/unstyled` and owns no size scale.
 // - a couple of guide snippets use configured values such as the `max-md`
@@ -16,7 +15,6 @@
 import * as React from 'react'
 import {
   Adapt,
-  Button,
   createStyledContext,
   getVariableValue,
   GetProps,
@@ -28,12 +26,12 @@ import {
   styled,
   Surface,
   Theme,
-  Toast,
-  toast,
   View,
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from 'tamagui/button'
+import { Toast, toast } from 'tamagui/toast'
 import { FocusScope } from '@tamagui/focus-scope'
 import { getRadius, getSize } from '@tamagui/get-token'
 
@@ -202,7 +200,7 @@ export const Misc = () => (
   </>
 )
 
-// §4 — styled `tamagui` Button takes size tokens; omitting size uses the
+// §4 — the styled `tamagui/button` skin takes size tokens; omitting size uses the
 // package-local control policy from @tamagui/size.
 export const StyledButtonSize = () => <Button size="5">Save</Button>
 

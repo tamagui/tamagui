@@ -36,6 +36,8 @@ test.describe('docs 3-mode code toggle', () => {
   }) => {
     await page.goto(PAGE)
     const styled = await codeText(page)
+    expect(styled).toContain('tamagui/button')
+    expect(styled).toContain('tamagui/toast')
 
     await page.getByTestId('docs-syntax').click()
     await page.getByTestId('docs-syntax-tailwind').click()
@@ -75,6 +77,8 @@ test.describe('docs 3-mode code toggle', () => {
     const unstyled = await codeText(page)
     expect(unstyled).not.toEqual(styled)
     expect(unstyled).toContain('tamagui/unstyled')
+    expect(unstyled).not.toContain('tamagui/button')
+    expect(unstyled).not.toContain('tamagui/toast')
 
     const cookie = (await context.cookies()).find((c) => c.name === 'tamaguiSyntax')
     expect(cookie?.value).toBe('unstyled')

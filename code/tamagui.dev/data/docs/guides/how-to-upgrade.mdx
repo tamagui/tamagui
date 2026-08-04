@@ -60,6 +60,23 @@ npx tamagui check
 Then install the v3 versions with your package manager and make sure your lockfile
 does not contain duplicate `@tamagui/core`, `@tamagui/web`, or `tamagui` copies.
 
+### Choose the component surface
+
+V3 gives each styling mode an explicit import path. Import the default styled skin
+from its generated `tamagui/<component>` subpath:
+
+```tsx
+import { Button } from 'tamagui/button'
+import { Toast, toast } from 'tamagui/toast'
+```
+
+The `tamagui` root remains the convenient full barrel. Component subpaths are the
+smaller delivery path for apps and compiler configuration that only need selected
+skins. Use `tamagui/unstyled` or `@tamagui/ui` for behavior primitives without the
+default skin, and `@tamagui/tailwind` for Tailwind-authored primitives. The Styled,
+Unstyled, and Tailwind switch above every v3 docs page changes examples between
+these authoring modes.
+
 Remove tooling packages that no longer exist in v3:
 
 | Removed package            | Migration                                                                                                     |
@@ -356,7 +373,7 @@ explicit bare token that it aliased. In the default config that value is `4`.
 ```
 
 Component `size` still takes size tokens. The styled `tamagui` components
-(`import { Button } from 'tamagui'`) resolve `size` through your token scales:
+(`import { Button } from 'tamagui/button'`) resolve `size` through your token scales:
 frame height, padding, and radius come from size, space, and radius tokens, while
 text and icon sizing come from the active font scale. Omitting `size` (or passing
 `true`) resolves through the opt-in policy in `@tamagui/size`, so component
@@ -364,7 +381,7 @@ defaults no longer depend on global Tamagui settings:
 
 ```tsx
 // styled component: pass a size token, or omit for the component default
-import { Button } from 'tamagui'
+import { Button } from 'tamagui/button'
 
 <Button size="5" />
 ```
@@ -795,7 +812,7 @@ function Save() {
 }
 
 // after (v3)
-import { Toast, toast } from 'tamagui'
+import { Toast, toast } from 'tamagui/toast'
 
 function Root({ children }) {
   return (

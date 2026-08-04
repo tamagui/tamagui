@@ -30,7 +30,7 @@ demoName: Toast
 Toast ships with `tamagui` — there's nothing extra to install:
 
 ```tsx
-import { Toast, toast } from 'tamagui'
+import { Toast, toast } from 'tamagui/toast'
 ```
 
 If you're using the unstyled primitives directly, it's also published on its own:
@@ -52,7 +52,8 @@ Toast is a composable component API: you mount the parts, and `toast()` drives
 them from anywhere in your app.
 
 ```tsx
-import { Button, Toast, toast } from 'tamagui'
+import { Button } from 'tamagui/button'
+import { Toast, toast } from 'tamagui/toast'
 
 function App() {
   return (
