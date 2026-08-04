@@ -1,5 +1,3 @@
-import { createRequire } from 'node:module'
-
 import {
   applyLoweredModule,
   resolvedModuleId,
@@ -12,7 +10,11 @@ import {
   originalPositionFor,
 } from '@jridgewell/trace-mapping'
 
-import type { CompiledMetroModule, MetroBabelTransformArgs } from './babel'
+import {
+  compileWithUserBabel,
+  type CompiledMetroModule,
+  type MetroBabelTransformArgs,
+} from './babel'
 
 export interface MetroCompilerLoweringResult {
   applied: boolean
@@ -38,20 +40,10 @@ function sourceIndex(starts: readonly number[], position: Position): number {
   return (starts[position.line - 1] ?? starts.at(-1) ?? 0) + position.column
 }
 
-function tracePosition(
-  loweredMap: TraceMap,
-  babelMap: TraceMap,
-  position: Position
-): Position | null {
-  const compiled = originalPositionFor(loweredMap, {
+function tracePosition(loweredMap: TraceMap, position: Position): Position | null {
+  const original = originalPositionFor(loweredMap, {
     line: position.line,
     column: position.column,
-    bias: GREATEST_LOWER_BOUND,
-  })
-  if (compiled.line == null || compiled.column == null) return null
-  const original = originalPositionFor(babelMap, {
-    line: compiled.line,
-    column: compiled.column,
     bias: GREATEST_LOWER_BOUND,
   })
   return original.line == null || original.column == null
@@ -62,7 +54,6 @@ function tracePosition(
 function remapAstLocations(
   ast: Record<string, any>,
   loweredMap: TraceMap,
-  babelMap: TraceMap,
   source: string,
   filename: string
 ): void {
@@ -78,8 +69,8 @@ function remapAstLocations(
     const node = value as Record<string, any>
     const loc = node.loc
     if (loc?.start && loc?.end) {
-      const start = tracePosition(loweredMap, babelMap, loc.start)
-      const end = tracePosition(loweredMap, babelMap, loc.end)
+      const start = tracePosition(loweredMap, loc.start)
+      const end = tracePosition(loweredMap, loc.end)
       if (start && end) {
         node.start = sourceIndex(starts, start)
         node.end = sourceIndex(starts, end)
@@ -99,17 +90,21 @@ function remapAstLocations(
   visit(ast)
 }
 
-/** Applies the cacheable E3 plan and returns a Babel AST mapped to the original module. */
-export function applyMetroCompilerPlan(
-  compiled: CompiledMetroModule,
-  plan: LoweredModulePlan,
+/**
+ * Applies the cacheable E3 plan to the raw module source, then runs the user's
+ * Babel transformer once over the lowered source. Plans carry spans into raw
+ * source, so this process's Babel output never needs to match the planning
+ * process's byte for byte — Babel options can differ freely between them.
+ */
+export async function applyMetroCompilerPlan(
   args: MetroBabelTransformArgs,
+  plan: LoweredModulePlan,
   transformerPath: string
-): { ast: Record<string, any>; lowering: MetroCompilerLoweringResult } {
-  const output = applyLoweredModule(compiled.code, resolvedModuleId(args.filename), plan)
+): Promise<{ compiled: CompiledMetroModule; lowering: MetroCompilerLoweringResult }> {
+  const output = applyLoweredModule(args.src, resolvedModuleId(args.filename), plan)
   if (!output.changed || !output.map) {
     return {
-      ast: compiled.result.ast,
+      compiled: await compileWithUserBabel(transformerPath, args),
       lowering: {
         applied: false,
         diagnostics: plan.diagnostics,
@@ -119,39 +114,18 @@ export function applyMetroCompilerPlan(
     }
   }
 
-  const requireFromTransformer = createRequire(transformerPath)
-  const parserModule = requireFromTransformer('@babel/parser')
-  const parse = parserModule.parse ?? parserModule.default?.parse
-  if (typeof parse !== 'function') {
-    throw new Error(`Metro Babel transformer ${transformerPath} has no Babel parser`)
-  }
-  const ast = parse(output.code, {
-    allowAwaitOutsideFunction: true,
-    allowReturnOutsideFunction: true,
-    plugins: [
-      'jsx',
-      'flow',
-      'decorators-legacy',
-      'classProperties',
-      'classPrivateProperties',
-      'classPrivateMethods',
-      'dynamicImport',
-      'importAttributes',
-      'importMeta',
-      'topLevelAwait',
-    ],
-    sourceFilename: args.filename,
-    sourceType: 'unambiguous',
-  }) as Record<string, any>
+  const compiled = await compileWithUserBabel(transformerPath, {
+    ...args,
+    src: output.code,
+  })
   remapAstLocations(
-    ast,
+    compiled.result.ast,
     new TraceMap(output.map as any),
-    new TraceMap(compiled.map as any),
     args.src,
     args.filename
   )
   return {
-    ast,
+    compiled,
     lowering: {
       applied: true,
       diagnostics: plan.diagnostics,

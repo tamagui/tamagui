@@ -10,7 +10,6 @@ import { afterEach, describe, expect, test } from 'vitest'
 
 import { loadTamaguiSync } from '@tamagui/static'
 
-import { compileWithUserBabel } from '../src/babel'
 import { METRO_COMPILER_CACHE_VERSION, MetroCompilerCache } from '../src/compilerCache'
 import { MetroCompilerFrontend } from '../src/frontend'
 import { createMetroCompilerTransformer } from '../src/transformer'
@@ -129,7 +128,7 @@ function executeNativeOutput(code: string): unknown {
 }
 
 describe('E4 Metro compiler frontend', () => {
-  test('publishes and applies native dynamic opacity plans after Metro Babel', async () => {
+  test('publishes and applies native dynamic opacity plans against raw source', async () => {
     const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-native-partial-'))
     temporaryRoots.push(fixtureRoot)
     const projectRoot = join(fixtureRoot, 'app')
@@ -202,11 +201,9 @@ export const App = ({ dynamic }) => (
 
     try {
       await frontend.ensureValidCache(options)
-      const compiled = await compileWithUserBabel(transformerPath, args)
-      expect(compiled.code).toContain('jsx')
       const entry = await new MetroCompilerCache(frontend.cacheRootFor('ios')).read(
         appPath,
-        compiled.code
+        appSource
       )
       expect(entry?.diagnostics).toEqual([])
       expect(entry?.plan.stats).toEqual({
@@ -254,7 +251,7 @@ export const App = ({ dynamic }) => (
     }
   })
 
-  test('publishes post-Babel lowering plans for isolated workers and invalidates exact edges', async () => {
+  test('publishes raw-source lowering plans for isolated workers and invalidates exact edges', async () => {
     const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-fixture-'))
     temporaryRoots.push(fixtureRoot)
     const projectRoot = join(fixtureRoot, 'app')
@@ -473,6 +470,22 @@ export const App = ({ dynamic }) => <>
       expect(relativeFilenameResult.metadata?.tamagui.cacheHit).toBe(true)
       expect(outputCode(relativeFilenameResult)).toBe(firstCode)
 
+      // Plans are keyed on raw source, so a worker whose Babel options differ
+      // from the planning process (Expo Release builds add customTransformOptions
+      // like engine=hermes that getTransformOptions never exposes) must still
+      // apply the plan — its own Babel pass simply runs over the lowered source
+      const divergentOptionsResult = await firstWorker.transform({
+        ...args,
+        options: { ...args.options, experimentalImportSupport: false },
+      })
+      expect(divergentOptionsResult.metadata?.tamagui.cacheHit).toBe(true)
+      expect(divergentOptionsResult.metadata?.tamagui.lowering).toMatchObject({
+        applied: true,
+      })
+      const divergentCode = outputCode(divergentOptionsResult)
+      expect(divergentCode).toContain('"paddingTop": 12')
+      expect(divergentCode).toContain('marker: 33')
+
       const workerInputPath = join(fixtureRoot, 'worker-input.json')
       await write(workerInputPath, JSON.stringify(args))
       const readFromIsolatedWorker = async () =>
@@ -520,8 +533,6 @@ export const App = ({ dynamic }) => <>
       const afterDetach = await secondWorker.transform(args)
       expect(outputCode(afterDetach)).toContain('"paddingTop": 5')
 
-      const compiled = await compileWithUserBabel(transformerPath, args)
-      expect(compiled.code).toContain('jsx')
       const manifestPath = join(
         cacheRoot,
         'ios',

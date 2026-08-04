@@ -1,12 +1,11 @@
 import type { LoweredModulePlan } from "@tamagui/compiler-core";
 import { type MetroCompilerDiagnostic } from "./diagnostics";
-export declare const METRO_COMPILER_CACHE_VERSION = 3;
+export declare const METRO_COMPILER_CACHE_VERSION = 4;
 export interface MetroCompilerCacheEntry {
 	schemaVersion: typeof METRO_COMPILER_CACHE_VERSION;
 	moduleId: string;
-	/** Hash of the raw on-disk module source the compiled record was produced from. */
+	/** Hash of the raw on-disk module source the plan was generated from. */
 	sourceHash: string;
-	compiledHash: string;
 	plan: LoweredModulePlan;
 	diagnostics: MetroCompilerDiagnostic[];
 }
@@ -34,7 +33,7 @@ export declare class MetroCompilerCache {
 	readonly root: string;
 	constructor(root: string);
 	publish(platform: string | null, entries: readonly MetroCompilerCacheEntry[], optionsHash: string): Promise<string>;
-	read(moduleId: string, compiledSource: string, onMiss?: (reason: "no-entry" | "compiled-hash-mismatch", detail?: string) => void): Promise<MetroCompilerCacheEntry | null>;
+	read(moduleId: string, rawSource: string, onMiss?: (reason: "no-entry" | "source-hash-mismatch", detail?: string) => void): Promise<MetroCompilerCacheEntry | null>;
 	validate(): Promise<MetroCompilerCacheValidation>;
 	discardManifest(): Promise<void>;
 }

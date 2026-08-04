@@ -23,7 +23,6 @@ describe('Metro compiler cache', () => {
       schemaVersion: METRO_COMPILER_CACHE_VERSION,
       moduleId: id,
       sourceHash: metroCompilerContentHash(source),
-      compiledHash: metroCompilerContentHash(source),
       plan: {
         version: 1,
         id,

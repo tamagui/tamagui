@@ -37,7 +37,6 @@ import {
 interface CompiledRecord {
   input: HostModuleInput
   sourceHash: string
-  compiledHash: string
   /** Specifiers that reached the compiled output as require() calls instead of imports. */
   requireSpecifiers: string[]
 }
@@ -499,9 +498,11 @@ export class MetroCompilerFrontend {
     }
     const id = resolvedModuleId(path)
     return {
-      input: { id, source: compiled.code, imports },
+      // The graph and plans operate on raw source: workers apply plan edits to
+      // the raw module before their own Babel pass, so plans never depend on
+      // this process's Babel output matching the workers' byte for byte.
+      input: { id, source, imports },
       sourceHash: metroCompilerContentHash(source),
-      compiledHash: metroCompilerContentHash(compiled.code),
       requireSpecifiers,
     }
   }
@@ -587,7 +588,6 @@ export class MetroCompilerFrontend {
       schemaVersion: METRO_COMPILER_CACHE_VERSION,
       moduleId: id,
       sourceHash: record.sourceHash,
-      compiledHash: record.compiledHash,
       plan,
       diagnostics,
     })
