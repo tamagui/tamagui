@@ -169,16 +169,61 @@ compiled path only. Do not quote T7 as the native perf story.
   as every retained timing (absolute values soft, direction sound). That
   caveat predates and is independent of the delivery defect.
 
+## GATE RE-RUN: PASSED (2026-08-03, quiet window, READ)
+
+```
+Compiler effectiveness gate: V2 4.70x (26.71ms runtime -> 5.68ms compiled),
+V3 4.37x (30.01ms runtime -> 6.87ms compiled); required >= 1.50x
+Warmup-only smoke passed: 36 cases
+```
+
+V3 compiled went from 0.91x (delivery broken) to **4.37x** against its own
+runtime arm, same band as V2's 4.70x in the same interleaved run. Conditions:
+all four Release apps rebuilt at `e65092e0d7` and identity-verified by the
+runner (build IDs + embedded bundle hashes); compiler evidence regenerated on
+the raw-source schema; idle from the busiest of three `top -l 2` samples was
+90.3% before and 88.7% after, so no load contention (the 0.91x scar was taken
+at ~35% idle). Command: `run-native-v2-v3.ts --udid=25D3F3D4-... --smoke
+--warmups=2 --compiler-evidence=...` (`--smoke` alone crashes: the gate's
+`summarize` needs at least two warmup rounds).
+
+Scope, stated precisely: this is the EFFECTIVENESS GATE (warmup-only smoke),
+not a retained-sample campaign. It proves compiled-native delivery works end
+to end in real Release apps and clears the 1.5x bar with margin. The retained
+`output/benchmarks-native-v2-v3.json` stays `validity: partial` until a full
+12-sample campaign is re-run. Absolute ms are relative to this constrained
+machine; only ratios are meaningful (owner's standing note).
+
+Also observed, honestly: V3's runtime arm (30.01ms) is slower than V2's
+(26.71ms) and V3 compiled (6.87ms) is behind V2 compiled (5.68ms) in this
+smoke. That is the pre-existing native runtime parity gap, not a delivery
+problem, and it is on the hard-rule list ("beat v2 on every dimension").
+
+### iOS 26 simulator trap this run uncovered (cost ~30 min, do not re-derive)
+
+`simctl openurl` with a custom scheme now shows an "Open in <app>?"
+confirmation dialog on iOS 26.x, so every runner deep link times out silently
+(the old campaign machine ran iOS 18.6, no prompt). Fix: pre-approve each
+scheme, then REBOOT the simulator (the plist is read at SpringBoard start):
+
+```sh
+xcrun simctl spawn <UDID> defaults write com.apple.launchservices.schemeapproval \
+  "com.apple.CoreSimulator.CoreSimulatorBridge-->tgbenchnativecompiled" \
+  -string "dev.tamagui.benchnative.compiled"   # repeat for all 4 schemes
+xcrun simctl shutdown <UDID> && xcrun simctl boot <UDID>
+```
+
+Also: something on this machine probes open ports with GET `/`,
+`/@vite/client`, `/status` (a dev-server discovery scanner). Requests like
+that on the result port are noise, not the bench app; the app posts
+`POST /result` with a real body.
+
 ## What is left on this lane
 
-1. NOT DONE: re-run the W-B compiler-effectiveness gate (Release apps on the
-   simulator, `run-native-v2-v3.ts --smoke`) to confirm V3 compiled clears the
-   1.5x bar now that delivery works. Needs: prebuild + Release builds of the 4
-   bench apps (V2 arms need their npm installs), `verify-native-compiler-output.cjs`
-   for `--compiler-evidence`, simulator `25D3F3D4-10A1-46A0-88D0-5853D69159D3`
-   (iPhone 16, iOS 26.5, recreated by a2943). TIMING RULE: message a2943 for a
-   quiet machine window BEFORE taking any timing number; the 0.91x scar came
-   from a 35%-idle machine.
+1. DONE (see gate section above). Follow-up remaining: a full retained
+   12-sample native campaign to replace the invalid
+   `benchmarks-native-v2-v3.json` cells, once the parity work (items 2 and 3)
+   settles enough to be worth measuring.
 2. Item 2 (theme values inlined into compiled native output): design settled,
    implementation NOT STARTED, no files touched yet. Replicate V2
    `extractToNative` (reference unpacked at the session scratchpad from
