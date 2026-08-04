@@ -398,6 +398,18 @@ interface TokenLookup {
   themeKey: string
 }
 
+// single reused result object: tokenVariable runs on the style hot path and its
+// one caller consumes the result before any re-entry, so this avoids allocating
+// per token lookup
+const tokenLookup: TokenLookup = { value: undefined, fromTheme: false, themeKey: '' }
+
+function fillTokenLookup(value: any, fromTheme: boolean, themeKey: string): TokenLookup {
+  tokenLookup.value = value
+  tokenLookup.fromTheme = fromTheme
+  tokenLookup.themeKey = themeKey
+  return tokenLookup
+}
+
 function tokenVariable(
   state: GetStyleState,
   property: string,
@@ -406,7 +418,7 @@ function tokenVariable(
   let lookupName = name
   if (property === 'fontFamily') {
     const family = state.conf.fontsParsed[lookupName]?.family
-    return family ? { value: family, fromTheme: false, themeKey: lookupName } : undefined
+    return family ? fillTokenLookup(family, false, lookupName) : undefined
   }
   const fontKey =
     property === 'fontSize'
@@ -421,7 +433,7 @@ function tokenVariable(
       state.conf.fontsParsed[state.fontFamily || state.conf.defaultFontToken] ||
       state.conf.fontsParsed[state.conf.defaultFontToken]
     const value = font?.[fontKey]?.[lookupName]
-    return value ? { value, fromTheme: false, themeKey: lookupName } : undefined
+    return value ? fillTokenLookup(value, false, lookupName) : undefined
   }
   const category = getTokenCategoryForProperty(property)
   const dot = lookupName.indexOf('.')
@@ -435,11 +447,11 @@ function tokenVariable(
     const value =
       state.theme?.[lookupName] ||
       state.conf.themes?.[state.flatThemeName || '']?.[lookupName]
-    return value ? { value, fromTheme: true, themeKey: lookupName } : undefined
+    return value ? fillTokenLookup(value, true, lookupName) : undefined
   }
   if (category) {
     const own = state.conf.tokensParsed[category]?.[lookupName]
-    if (own) return { value: own, fromTheme: false, themeKey: lookupName }
+    if (own) return fillTokenLookup(own, false, lookupName)
     for (const sibling of ['color', 'space', 'size', 'radius', 'zIndex'] as const) {
       if (sibling !== category && state.conf.tokensParsed[sibling]?.[lookupName]) return
     }
@@ -454,7 +466,7 @@ function tokenVariable(
   const token =
     state.conf.tokensParsed.space?.[lookupName] ||
     state.conf.tokensParsed.color?.[lookupName]
-  return token ? { value: token, fromTheme: false, themeKey: lookupName } : undefined
+  return token ? fillTokenLookup(token, false, lookupName) : undefined
 }
 
 function configuredValue(state: GetStyleState, property: string, raw: string): any {
@@ -1233,7 +1245,7 @@ function emitValue(
     property === 'rotate'
   ) {
     let value = typeof raw === 'string' ? configuredValue(state, property, raw) : raw
-    if (!isWeb && typeof value === 'string') {
+    if (!isWeb && typeof value === 'string' && !value.startsWith(THEME_REF_PREFIX)) {
       if (property === 'rotate' && !/^-?(?:\d+\.?\d*|\.\d+)(?:deg|rad)$/i.test(value)) {
         if (process.env.NODE_ENV === 'development') {
           warnOnce(
