@@ -1,5 +1,52 @@
 # Android verdict on a8d156b150
 
+## Native fast path batch on a7bf975a27, 2026-08-04
+
+Detox run `30948627664` is the first completed run after the native fast path
+batch. Compared job by job against the pre-batch baseline run `30912958881` on
+`077ab3cb2f`, exactly one job changed direction.
+
+| job | 077ab3cb2f baseline | a7bf975a27 |
+| --- | --- | --- |
+| Build Android App | success | **failure** |
+| Android Detox Tests | failure | skipped, the build gates it |
+| iOS Detox Tests 1/4 | failure | failure |
+| iOS Detox Tests 2/4 | failure | failure |
+| iOS Detox Tests 3/4 | failure | failure |
+| iOS Detox Tests 4/4 | failure | failure |
+| iOS Detox Tests, auto-discovered | success | success |
+| Build iOS App | success | success |
+| Build One Production Native Bundles | success | success |
+
+**READ: all four iOS Detox shards were already red at the pre-batch baseline.**
+The batch did not break iOS. This also retires the campaign plan's July claim
+that iOS Detox was green on all four shards; it went red somewhere between that
+run and `077ab3cb2f`, and no completed run in this campaign shows it green.
+
+The iOS failure set on `a7bf975a27` contains no suite absent from sets already
+recorded in this document: `Accordion` intermediate numeric heights,
+`GroupPressTransitionMatrix` cell rendering plus its four `pp`/`pa` variants,
+`NativeMixedDriver` height and opacity, `PointerEvents` down/up/enter/leave,
+`PressStyleNative.noRngh`, and the two keyboard-driven sheet cases. The
+`PressStyleNative.noRngh` suite fails its `should render the test case screen`
+step in 13 ms and then reports eight more tests at about 1 ms each, which is a
+suite that never launched rather than nine independent assertion failures.
+
+**READ: the Android build regression is the batch, and the error names the
+package.** `Execution failed for task
+':tamagui_native-registry:mergeDebugAndroidTestNativeLibs' > 2 files found with
+path 'lib/arm64-v8a/libc++_shared.so'`, one from
+`code/core/native-registry/android/build`, one from the
+`react-android-0.83.2-debug` transform. The package sets
+`-DANDROID_STL=c++_shared`, so the NDK copies the STL into its AAR, while its
+`packagingOptions.excludes` listed only `libjsi.so` and
+`libreact_nativemodule_core.so`. `react-native-nitro-modules`, which this
+package depends on, excludes seventeen React Native libraries including
+`libc++_shared.so`. Adopting that same list is the fix.
+
+Consequence for the beta: Android has produced no test signal at all since this
+landed, because a failed build skips the Detox job rather than failing it.
+
 ## Pre-batch baseline on 077ab3cb2f
 
 The temporary `v3-android-baseline` branch triggered Detox run `30912958881`
