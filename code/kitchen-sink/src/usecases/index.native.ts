@@ -9,6 +9,8 @@ import type { ComponentType } from 'react'
 const loaders: Record<string, () => ComponentType<any>> = {
   VariablesCase: () => require('./VariablesCase').VariablesCase,
   VariablesNativeCase: () => require('./VariablesNativeCase').VariablesNativeCase,
+  NativeRegistrySpikeCase: () =>
+    require('./NativeRegistrySpikeCase').NativeRegistrySpikeCase,
   AccordionDefaultOpenCase: () =>
     require('./AccordionDefaultOpenCase').AccordionDefaultOpenCase,
   ActionsSheetComparison: () =>
