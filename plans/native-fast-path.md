@@ -105,8 +105,10 @@ statically extractable element with themed values, emit the resolved matrix:
   runtime and C++ do exact key lookup only. No resolution, no fallback chains,
   no name parsing at runtime. If a theme key is missing at runtime it is a
   compiler bug: dev-mode assert, never a silent skip.
-- Colors pre-processed to ints at build time (Fabric's C++ parser takes ARGB
-  ints, not CSS strings), not per-link at runtime like the old branch.
+- Theme colors stay as their resolved strings in emitted tables, then the
+  registry's existing `processStyleColors` converts them to Fabric ARGB ints
+  once when the view links. Compiler and runtime mode therefore use the same
+  color processor and representation.
 - Bailouts (ternaries, spreads, dynamic values) keep today's output exactly.
   Widening bailouts (pre-computing both ternary branches) is future work, not
   v1.

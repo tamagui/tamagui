@@ -1852,6 +1852,76 @@ export function createTamaguiCompilerHost(
           },
         ]
         const nativeStyleSource = `${nativeStyleLocal}._ ?? ${nativeStyleLocal}()`
+        let nativeFastPath:
+          | {
+              imports: { content: string; origin: MaterializedElement['span'] }[]
+              slotsLocal: string
+            }
+          | undefined
+        if (
+          themedStyleKeys &&
+          options.experimentalNativeFastPath &&
+          dynamicStyleEntries.length === 0 &&
+          !input.element.entries.some((entry) => entry.kind === 'spread')
+        ) {
+          const uniqueStates = new Map<
+            string,
+            { local: string; props: Record<string, unknown> }
+          >()
+          const stateByTheme: [string, string][] = []
+          let canEmit = true
+          for (const [themeName, themeValues] of Object.entries(
+            options.tamaguiConfig.themes ?? {}
+          )) {
+            const state: Record<string, unknown> = {}
+            for (const [styleKey, themeKey] of Object.entries(themedStyleKeys)) {
+              const themeValue = (themeValues as Record<string, unknown>)[themeKey]
+              state[styleKey] =
+                themeValue === undefined ? null : core.getVariableValue(themeValue)
+            }
+            if (!isSerializableNativeStyle(state)) {
+              canEmit = false
+              break
+            }
+            const serialized = JSON.stringify(state)
+            let unique = uniqueStates.get(serialized)
+            if (!unique) {
+              unique = {
+                local: unusedIdentifier(
+                  input.source,
+                  `__TamaguiNativeState${input.element.span.start}_${uniqueStates.size}`
+                ),
+                props: state,
+              }
+              uniqueStates.set(serialized, unique)
+            }
+            stateByTheme.push([themeName, unique.local])
+          }
+          if (canEmit && stateByTheme.length > 0) {
+            const slotsLocal = unusedIdentifier(
+              input.source,
+              `__TamaguiNativeSlots${input.element.span.start}`
+            )
+            nativeFastPath = {
+              slotsLocal,
+              imports: [
+                ...[...uniqueStates.values()].map(({ local, props }) => ({
+                  content: `\nconst ${local} = ${JSON.stringify(props)};`,
+                  origin: input.element.component.span,
+                })),
+                {
+                  content: `\nconst ${slotsLocal} = { state: { ${stateByTheme
+                    .map(
+                      ([themeName, local]) =>
+                        `${JSON.stringify(themeName)}: ${local}`
+                    )
+                    .join(', ')} } };`,
+                  origin: input.element.component.span,
+                },
+              ],
+            }
+          }
+        }
         if (component.domTag) {
           if (themedStyleKeys) {
             return bailout(
@@ -2106,6 +2176,66 @@ export function createTamaguiCompilerHost(
           )
         }
         if (dynamicStyleEntries.length > 0 || themedStyleKeys) {
+          if (nativeFastPath) {
+            const fastLocal = `__TamaguiNativeFast${nativeName}${input.element.span.start}`
+            const tagEdits = [
+              input.element.component.span,
+              input.element.component.closingSpan,
+            ]
+              .filter((span): span is NonNullable<typeof span> => !!span)
+              .map((span) => ({
+                start: span.start,
+                end: span.end,
+                content: fastLocal,
+                origin: span,
+              }))
+            const [first, ...rest] = styleEntries
+            const styleEdits =
+              styleEntries.length === 0
+                ? []
+                : input.element.form === 'jsx'
+                  ? [
+                      {
+                        start: first!.span.start,
+                        end: first!.span.end,
+                        content: '',
+                        origin: first!.span,
+                      },
+                      ...rest.map((entry) => ({
+                        start: entry.span.start,
+                        end: entry.span.end,
+                        content: '',
+                        origin: entry.span,
+                      })),
+                    ]
+                  : compiledPropsEdits(input, styleEntries, `_expressions: []`)
+            if (!styleEdits) {
+              return bailout(
+                input,
+                'local/unsupported-target',
+                `Compiled ${input.element.form} call has no editable props argument`
+              )
+            }
+            return {
+              ok: true,
+              edits: [...tagEdits, ...styleEdits],
+              css: [],
+              imports: [
+                ...nativeStyleImports,
+                ...nativeFastPath.imports,
+                {
+                  content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
+                  origin: input.element.component.span,
+                },
+                {
+                  content: `\nconst ${fastLocal} = require('@tamagui/core')._withNativeStyle(${nativeLocal}, ${nativeStyleSource}, ${nativeFastPath.slotsLocal}, ${JSON.stringify(themedStyleKeys)});`,
+                  origin: input.element.component.span,
+                },
+              ],
+              diagnostics: invalidHostStyleDiagnostics,
+              flattened: true,
+            }
+          }
           const stableLocal = `__TamaguiStable${nativeName}${input.element.span.start}`
           const expressions: string[] = []
           const plainDynamicParts: string[] = []
