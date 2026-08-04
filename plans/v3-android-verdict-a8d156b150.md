@@ -1,5 +1,21 @@
 # Android verdict on a8d156b150
 
+## Compiler fixture fix on d3719b077c
+
+Detox run `30907237343` validated the refreshed
+`CompilerTernaryActive.native.tsx` fixture. The test executed its renamed
+compiler-bailout assertion and passed in 20.949 seconds. The Android build also
+passed.
+
+Android Detox still failed with six suites. Relative to d90:
+
+- `CompilerTernaryActive` moved from fail to pass, which is the intended fix
+- `AdaptLiveSlotSpike` moved from fail to pass again, consistent with its flake
+- `PressStyleScrollStuck` appeared as a new failing suite
+- the other five failures were unchanged
+
+The failed log was fetched once to `/tmp/android-30907237343-failed.log`.
+
 ## Third data point on d90f563b81
 
 Detox run `30903584203` completed after the integration push. The Android build
