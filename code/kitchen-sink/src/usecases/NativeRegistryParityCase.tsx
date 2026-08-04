@@ -190,14 +190,15 @@ export function NativeRegistryParityCase() {
       detail: `got ${JSON.stringify(gotBg)} want ${JSON.stringify(wantBg)}`,
     })
     const propKeys = cold[0]?.props ? Object.keys(cold[0].props) : []
+    // border props expand per-side in computed styles
     const expectKeys = [
       'backgroundColor',
-      'borderColor',
+      'borderTopColor',
       'shadowColor',
       'shadowOpacity',
       'opacity',
-      'borderWidth',
-      'borderRadius',
+      'borderTopWidth',
+      'borderTopLeftRadius',
     ]
     const missing = expectKeys.filter((k) => !propKeys.includes(k))
     // padding may stay shorthand or expand per-side depending on style mode
@@ -213,17 +214,27 @@ export function NativeRegistryParityCase() {
       detail: `sq0 renders ${sq0Renders.current}`,
     })
 
-    // 2: warm toggle back. bare entries, no misses
+    // 2: returning to the mount state is still cold (the mounting render's
+    // state is never pushed); re-toggling an already-pushed state rides the
+    // warm cache: bare entries, no misses
+    flushesRef.current = []
+    setOuter('red')
+    await settle()
+    flushed = flushesRef.current.flat()
+    const firstReturnCold =
+      flushed.length === FOLLOWERS && flushed.every((e) => !!e.props)
     flushesRef.current = []
     const missesBefore = getStats().missCount
-    setOuter('red')
+    setOuter('green')
     await settle()
     flushed = flushesRef.current.flat()
     results.push({
       name: 'warm toggle sends bare entries',
       pass:
-        flushed.length === FOLLOWERS && flushed.every((e) => e.props === undefined),
-      detail: `${flushed.length} entries, ${flushed.filter((e) => e.props).length} carried props`,
+        firstReturnCold &&
+        flushed.length === FOLLOWERS &&
+        flushed.every((e) => e.props === undefined),
+      detail: `${flushed.length} entries, ${flushed.filter((e) => e.props).length} carried props${firstReturnCold ? '' : ' (first-return not cold)'}`,
     })
     results.push({
       name: 'zero engine misses',
@@ -238,7 +249,7 @@ export function NativeRegistryParityCase() {
       name: 'getViewState: active + both tables + sticky synced',
       pass:
         !!snap &&
-        snap.activeState === 'light_red' &&
+        snap.activeState === 'light_green' &&
         !!snap.states?.light_red &&
         !!snap.states?.light_green &&
         snap.nativeProps?.backgroundColor !== undefined,
@@ -251,7 +262,7 @@ export function NativeRegistryParityCase() {
     setRenderBump((b) => b + 1)
     await settle()
     flushesRef.current = []
-    setOuter('green')
+    setOuter('red')
     await settle()
     flushed = flushesRef.current.flat()
     results.push({
@@ -259,9 +270,6 @@ export function NativeRegistryParityCase() {
       pass: flushed.length === FOLLOWERS && flushed.every((e) => !!e.props),
       detail: `${flushed.length} entries, ${flushed.filter((e) => e.props).length} cold`,
     })
-
-    setOuter('red')
-    await settle()
 
     console.info(
       `[parity] ${JSON.stringify({ pass: results.every((r) => r.pass), results })}`
