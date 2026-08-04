@@ -28,6 +28,7 @@ import { getTokenCategoryForProperty, tokenCategoryByProperty } from './propMapp
 import { resolveSafeAreaVariable } from './resolveSafeAreaVariable'
 import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { resolveVariableValue } from './resolveVariableValue'
+import { THEME_REF_PREFIX } from './themeRef'
 import { transformsToString } from './transformsToString'
 
 export type MergeStyle = (
@@ -389,9 +390,24 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
   return out
 }
 
-function tokenVariable(state: GetStyleState, property: string, name: string): any {
+interface TokenLookup {
+  value: any
+  /** The value resolved through the active theme, so it changes when the theme does. */
+  fromTheme: boolean
+  /** The normalized key the runtime theme object is indexed by. */
+  themeKey: string
+}
+
+function tokenVariable(
+  state: GetStyleState,
+  property: string,
+  name: string
+): TokenLookup | undefined {
   let lookupName = name
-  if (property === 'fontFamily') return state.conf.fontsParsed[lookupName]?.family
+  if (property === 'fontFamily') {
+    const family = state.conf.fontsParsed[lookupName]?.family
+    return family ? { value: family, fromTheme: false, themeKey: lookupName } : undefined
+  }
   const fontKey =
     property === 'fontSize'
       ? 'size'
@@ -404,7 +420,8 @@ function tokenVariable(state: GetStyleState, property: string, name: string): an
     const font =
       state.conf.fontsParsed[state.fontFamily || state.conf.defaultFontToken] ||
       state.conf.fontsParsed[state.conf.defaultFontToken]
-    return font?.[fontKey]?.[lookupName]
+    const value = font?.[fontKey]?.[lookupName]
+    return value ? { value, fromTheme: false, themeKey: lookupName } : undefined
   }
   const category = getTokenCategoryForProperty(property)
   const dot = lookupName.indexOf('.')
@@ -414,27 +431,30 @@ function tokenVariable(state: GetStyleState, property: string, name: string): an
       lookupName = lookupName.slice(dot + 1)
     }
   }
+  const themeValue = () => {
+    const value =
+      state.theme?.[lookupName] ||
+      state.conf.themes?.[state.flatThemeName || '']?.[lookupName]
+    return value ? { value, fromTheme: true, themeKey: lookupName } : undefined
+  }
   if (category) {
     const own = state.conf.tokensParsed[category]?.[lookupName]
-    if (own) return own
+    if (own) return { value: own, fromTheme: false, themeKey: lookupName }
     for (const sibling of ['color', 'space', 'size', 'radius', 'zIndex'] as const) {
       if (sibling !== category && state.conf.tokensParsed[sibling]?.[lookupName]) return
     }
-    return (
-      state.theme?.[lookupName] ||
-      state.conf.themes?.[state.flatThemeName || '']?.[lookupName]
-    )
+    return themeValue()
   }
   const first = lookupName.charCodeAt(0)
   if ((first >= 48 && first <= 57) || first === 43 || first === 45 || first === 46) {
     return
   }
-  return (
-    state.theme?.[lookupName] ||
-    state.conf.themes?.[state.flatThemeName || '']?.[lookupName] ||
+  const fromTheme = themeValue()
+  if (fromTheme) return fromTheme
+  const token =
     state.conf.tokensParsed.space?.[lookupName] ||
     state.conf.tokensParsed.color?.[lookupName]
-  )
+  return token ? { value: token, fromTheme: false, themeKey: lookupName } : undefined
 }
 
 function configuredValue(state: GetStyleState, property: string, raw: string): any {
@@ -455,8 +475,8 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     return safeArea
   }
 
-  const variable = tokenVariable(state, property, name)
-  if (!isVariable(variable)) {
+  const lookup = tokenVariable(state, property, name)
+  if (!lookup || !isVariable(lookup.value)) {
     if (
       process.env.NODE_ENV === 'development' &&
       tokenCategoryByProperty[property] &&
@@ -470,7 +490,14 @@ function configuredValue(state: GetStyleState, property: string, raw: string): a
     isWeb && !state.flatShouldDoClasses && state.styleProps.resolveValues === 'auto'
       ? 'value'
       : state.styleProps.resolveValues
-  let value = resolveVariableValue(property, variable, resolveValues)
+  // the static compiler resolves tokens but keeps theme-backed values symbolic
+  // so compiled output can read them through the live theme instead of freezing
+  // the build machine's first theme. an opacity modifier stays in the sentinel,
+  // which the compiler cannot represent and treats as a runtime-path bailout.
+  if (resolveValues === 'except-theme' && lookup.fromTheme) {
+    return `${THEME_REF_PREFIX}${lookup.themeKey}${opacity !== undefined ? `/${opacity}` : ''}`
+  }
+  let value = resolveVariableValue(property, lookup.value, resolveValues)
   if (opacity !== undefined) {
     value = isWeb
       ? `color-mix(in srgb, ${value} ${opacity}%, transparent)`

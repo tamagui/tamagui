@@ -1729,7 +1729,41 @@ export function createTamaguiCompilerHost(
       }
 
       if (platform === 'native') {
-        const nativeStyle = split.viewProps?.style
+        const nativeStyleResolved = split.viewProps?.style
+        // Theme-backed values arrive as sentinel strings under
+        // resolveValues: 'except-theme'. Split them out the way V2's
+        // extractToNative did: plain styles stay hoisted and static, themed
+        // keys read the live theme through _withStableStyle so a flattened
+        // component still updates when the theme changes.
+        let themedStyleKeys: Record<string, string> | null = null
+        let nativeStyle = nativeStyleResolved
+        if (staticObject(nativeStyleResolved)) {
+          for (const [styleKey, styleValue] of Object.entries(nativeStyleResolved)) {
+            if (!core.containsThemeRef(styleValue)) continue
+            const themeKey = core.themeRefKey(styleValue)
+            if (!themeKey) {
+              return bailout(
+                input,
+                'local/dynamic-style-value',
+                `Style ${styleKey} uses a theme value in a compound or modified position that compiled output cannot represent`
+              )
+            }
+            ;(themedStyleKeys ||= {})[styleKey] = themeKey
+          }
+          if (themedStyleKeys) {
+            const plain: Record<string, unknown> = {}
+            for (const [styleKey, styleValue] of Object.entries(nativeStyleResolved)) {
+              if (!(styleKey in themedStyleKeys)) plain[styleKey] = styleValue
+            }
+            nativeStyle = plain
+          }
+        } else if (core.containsThemeRef(nativeStyleResolved)) {
+          return bailout(
+            input,
+            'local/dynamic-style-value',
+            'Theme values inside non-object native style output stay on the runtime path'
+          )
+        }
         if (!isSerializableNativeStyle(nativeStyle)) {
           return bailout(
             input,
@@ -1749,6 +1783,13 @@ export function createTamaguiCompilerHost(
         ]
         const nativeStyleSource = `${nativeStyleLocal}._ ?? ${nativeStyleLocal}()`
         if (component.domTag) {
+          if (themedStyleKeys) {
+            return bailout(
+              input,
+              'local/unsupported-target',
+              'Theme values on DOM-tag native output stay on the runtime path'
+            )
+          }
           const row = TAGS[component.domTag]
           const basePrimitive = NATIVE_BACKING[row.backing].primitive
           let primitive = basePrimitive
@@ -1814,7 +1855,10 @@ export function createTamaguiCompilerHost(
                   partialStaticConfig(component.staticConfig)
                 )
                 const itemStyle = itemSplit?.viewProps?.style
-                if (!isSerializableNativeStyle(itemStyle)) {
+                if (
+                  !isSerializableNativeStyle(itemStyle) ||
+                  core.containsThemeRef(itemStyle)
+                ) {
                   return bailout(
                     input,
                     'local/unsupported-target',
@@ -1984,7 +2028,14 @@ export function createTamaguiCompilerHost(
         }
         const nativeName = component.staticConfig.isText ? 'Text' : 'View'
         const nativeLocal = unusedIdentifier(input.source, `__TamaguiNative${nativeName}`)
-        if (dynamicStyleEntries.length > 0) {
+        if (themedStyleKeys && options.disablePartialExtraction) {
+          return bailout(
+            input,
+            'local/dynamic-style-value',
+            'Theme values require partial extraction, which is disabled'
+          )
+        }
+        if (dynamicStyleEntries.length > 0 || themedStyleKeys) {
           const stableLocal = `__TamaguiStable${nativeName}${input.element.span.start}`
           const expressions = dynamicStyleEntries.map((entry) =>
             input.source.slice(entry.value.span.start, entry.value.span.end)
@@ -1995,6 +2046,22 @@ export function createTamaguiCompilerHost(
                 `${JSON.stringify(directStyleName(entry.name, component))}: expressions[${index}]`
             )
             .join(', ')
+          // themed keys were resolved with the exact theme key known ahead of
+          // time; the wrapper subscribes via useTheme() only when hasThemeKeys
+          // is set, so purely-dynamic elements pay no theme cost
+          const themedStyle = themedStyleKeys
+            ? Object.entries(themedStyleKeys)
+                .map(
+                  ([styleKey, themeKey]) =>
+                    `${JSON.stringify(styleKey)}: _theme[${JSON.stringify(themeKey)}]?.get()`
+                )
+                .join(', ')
+            : null
+          const styleParts = [
+            nativeStyleSource,
+            ...(themedStyle ? [`{ ${themedStyle} }`] : []),
+            ...(dynamicStyle ? [`{ ${dynamicStyle} }`] : []),
+          ]
           const tagEdits = [
             input.element.component.span,
             input.element.component.closingSpan,
@@ -2008,26 +2075,31 @@ export function createTamaguiCompilerHost(
             }))
           const [first, ...rest] = styleEntries
           const expressionEdits =
-            input.element.form === 'jsx'
-              ? [
-                  {
-                    start: first!.span.start,
-                    end: first!.span.end,
-                    content: `_expressions={[${expressions.join(', ')}]}`,
-                    origin: first!.span,
-                  },
-                  ...rest.map((entry) => ({
-                    start: entry.span.start,
-                    end: entry.span.end,
-                    content: '',
-                    origin: entry.span,
-                  })),
-                ]
-              : compiledPropsEdits(
-                  input,
-                  styleEntries,
-                  `_expressions: [${expressions.join(', ')}]`
-                )
+            styleEntries.length === 0
+              ? []
+              : input.element.form === 'jsx'
+                ? [
+                    {
+                      start: first!.span.start,
+                      end: first!.span.end,
+                      content:
+                        expressions.length > 0
+                          ? `_expressions={[${expressions.join(', ')}]}`
+                          : '',
+                      origin: first!.span,
+                    },
+                    ...rest.map((entry) => ({
+                      start: entry.span.start,
+                      end: entry.span.end,
+                      content: '',
+                      origin: entry.span,
+                    })),
+                  ]
+                : compiledPropsEdits(
+                    input,
+                    styleEntries,
+                    `_expressions: [${expressions.join(', ')}]`
+                  )
           if (!expressionEdits) {
             return bailout(
               input,
@@ -2046,7 +2118,7 @@ export function createTamaguiCompilerHost(
                 origin: input.element.component.span,
               },
               {
-                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${nativeStyleSource}, { ${dynamicStyle} }]);`,
+                content: `\nconst ${stableLocal} = require('@tamagui/core')._withStableStyle(${nativeLocal}, (_theme, expressions) => [${styleParts.join(', ')}], ${themedStyleKeys ? 'true' : 'false'}, false);`,
                 origin: input.element.component.span,
               },
             ],
