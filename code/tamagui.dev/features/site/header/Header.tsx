@@ -28,7 +28,6 @@ import {
 } from 'tamagui'
 import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
-import { useBannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { seasons, SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
@@ -51,7 +50,6 @@ import type { HeaderProps } from './types'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
-  const bannerHeight = useBannerHeight()
 
   if (isClient) {
     React.useEffect(() => {
@@ -83,9 +81,7 @@ export function Header(props: HeaderProps) {
           <XStack
             className="ease-out all ms300"
             py="1.5 sm:2"
-            y={`${bannerHeight}px sm:${-1 + (isScrolled ? 0 : bannerHeight)}px${
-              isScrolled ? ' gtSm:6px' : ''
-            }${props.hasBanner ? ` gtSm:${isScrolled ? 6 : 35}px` : ''}`}
+            y={`0px sm:-1px${isScrolled ? ' gtSm:6px' : ''}`}
             overflow="hidden"
             contain="paint"
             width="100%"
