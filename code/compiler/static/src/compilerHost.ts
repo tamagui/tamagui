@@ -1855,7 +1855,7 @@ export function createTamaguiCompilerHost(
         let nativeFastPath:
           | {
               imports: { content: string; origin: MaterializedElement['span'] }[]
-              slotsLocal: string
+              mappingLocal: string
             }
           | undefined
         if (
@@ -1864,64 +1864,18 @@ export function createTamaguiCompilerHost(
           dynamicStyleEntries.length === 0 &&
           !input.element.entries.some((entry) => entry.kind === 'spread')
         ) {
-          const uniqueStates = new Map<
-            string,
-            { local: string; props: Record<string, unknown> }
-          >()
-          const stateByTheme: [string, string][] = []
-          let canEmit = true
-          for (const [themeName, themeValues] of Object.entries(
-            options.tamaguiConfig.themes ?? {}
-          )) {
-            const state: Record<string, unknown> = staticObject(nativeStyle)
-              ? { ...nativeStyle }
-              : {}
-            for (const [styleKey, themeKey] of Object.entries(themedStyleKeys)) {
-              const themeValue = (themeValues as Record<string, unknown>)[themeKey]
-              state[styleKey] =
-                themeValue === undefined ? null : core.getVariableValue(themeValue)
-            }
-            if (!isSerializableNativeStyle(state)) {
-              canEmit = false
-              break
-            }
-            const serialized = JSON.stringify(state)
-            let unique = uniqueStates.get(serialized)
-            if (!unique) {
-              unique = {
-                local: unusedIdentifier(
-                  input.source,
-                  `__TamaguiNativeState${input.element.span.start}_${uniqueStates.size}`
-                ),
-                props: state,
-              }
-              uniqueStates.set(serialized, unique)
-            }
-            stateByTheme.push([themeName, unique.local])
-          }
-          if (canEmit && stateByTheme.length > 0) {
-            const slotsLocal = unusedIdentifier(
-              input.source,
-              `__TamaguiNativeSlots${input.element.span.start}`
-            )
-            nativeFastPath = {
-              slotsLocal,
-              imports: [
-                ...[...uniqueStates.values()].map(({ local, props }) => ({
-                  content: `\nconst ${local} = ${JSON.stringify(props)};`,
-                  origin: input.element.component.span,
-                })),
-                {
-                  content: `\nconst ${slotsLocal} = { state: { ${stateByTheme
-                    .map(
-                      ([themeName, local]) =>
-                        `${JSON.stringify(themeName)}: ${local}`
-                    )
-                    .join(', ')} } };`,
-                  origin: input.element.component.span,
-                },
-              ],
-            }
+          const mappingLocal = unusedIdentifier(
+            input.source,
+            `__TamaguiNativeMapping${input.element.span.start}`
+          )
+          nativeFastPath = {
+            mappingLocal,
+            imports: [
+              {
+                content: `\nconst ${mappingLocal} = ${JSON.stringify(themedStyleKeys)};`,
+                origin: input.element.component.span,
+              },
+            ],
           }
         }
         if (component.domTag) {
@@ -2230,7 +2184,7 @@ export function createTamaguiCompilerHost(
                   origin: input.element.component.span,
                 },
                 {
-                  content: `\nconst ${fastLocal} = require('@tamagui/core')._withNativeStyle(${nativeLocal}, ${nativeStyleSource}, ${nativeFastPath.slotsLocal}, ${JSON.stringify(themedStyleKeys)});`,
+                  content: `\nconst ${fastLocal} = require('@tamagui/core')._withNativeStyle(${nativeLocal}, ${nativeStyleSource}, ${nativeFastPath.mappingLocal});`,
                   origin: input.element.component.span,
                 },
               ],

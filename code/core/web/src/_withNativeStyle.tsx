@@ -3,8 +3,10 @@ import React, { useCallback, useContext, useRef } from 'react'
 import { _withStableStyle } from './_withStableStyle'
 import {
   getNativeStyleEngine,
+  linkNativeStyleMapping,
+  resolveNativeStyleMapping,
   type NativeStyleEngineLinkHandle,
-  type NativeStyleEngineSlots,
+  type NativeStyleThemeMapping,
 } from './helpers/nativeStyleEngine'
 import { getThemeState, ThemeStateContext } from './hooks/useThemeState'
 
@@ -12,8 +14,7 @@ import { getThemeState, ThemeStateContext } from './hooks/useThemeState'
 export const _withNativeStyle = (
   Component: any,
   baseStyle: Record<string, unknown>,
-  slots: NativeStyleEngineSlots,
-  themeStyleKeys: Record<string, string>
+  themeStyleKeys: NativeStyleThemeMapping
 ) => {
   const Fallback = _withStableStyle(
     Component,
@@ -37,26 +38,38 @@ export const _withNativeStyle = (
   }) {
     const { ref, _expressions: _ignoredExpressions, ...rest } = props
     const link = useRef<NativeStyleEngineLinkHandle | null>(null)
+    const themeState = getThemeState(_scopeId)
+    const stateName = themeState?.name
+    const theme = themeState?.theme
     const hostRef = useCallback(
       (host: unknown) => {
         link.current?.unlink()
         link.current = null
         setRef(ref, host)
-        if (host) {
-          link.current = getNativeStyleEngine()?.link(host, slots, _scopeId) ?? null
+        if (host && stateName && theme) {
+          link.current = linkNativeStyleMapping(
+            host,
+            baseStyle,
+            themeStyleKeys,
+            _scopeId,
+            stateName,
+            theme
+          )
         }
       },
-      [ref, _scopeId]
+      [ref, _scopeId, stateName, theme]
     )
-    const stateName = getThemeState(_scopeId)?.name
-    const stateStyle = stateName ? slots.state?.[stateName] : undefined
+    const stateStyle =
+      stateName && theme
+        ? resolveNativeStyleMapping(themeStyleKeys, stateName, theme)
+        : undefined
 
     if (
       process.env.NODE_ENV === 'development' &&
-      (!stateName || !slots.state || !Object.hasOwn(slots.state, stateName))
+      (!stateName || !theme)
     ) {
       throw new Error(
-        `[@tamagui/core] native fast path has no emitted state for theme ${JSON.stringify(stateName)}`
+        `[@tamagui/core] native fast path cannot resolve theme ${JSON.stringify(stateName)}`
       )
     }
 

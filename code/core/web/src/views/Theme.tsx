@@ -40,9 +40,9 @@ export const Theme = createRefComponent(function Theme(
   const [_, themeState] = useThemeWithState(props, isRoot, true)
 
   useIsomorphicLayoutEffect(() => {
-    updateNativeStyleScope(themeState.id, themeState.name)
+    updateNativeStyleScope(themeState.id, themeState.name, themeState.theme)
     return () => removeNativeStyleScope(themeState.id)
-  }, [themeState.id, themeState.name])
+  }, [themeState.id, themeState.name, themeState.theme])
 
   const disableDirectChildTheme = props['disable-child-theme']
 

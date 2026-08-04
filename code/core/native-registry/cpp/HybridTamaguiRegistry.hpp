@@ -80,6 +80,13 @@ class HybridTamaguiRegistry : public HybridTamaguiRegistrySpec {
   jsi::Value applyViewStates(jsi::Runtime& rt, const jsi::Value& thisValue,
                              const jsi::Value* args, size_t count);
 
+  // raw JSI: updateViewStateTables([{id, state, props}]) -> void
+  // compiler mappings resolve a state once in JS, then fill every matching
+  // linked view without moving it off scope-broadcast control.
+  jsi::Value updateViewStateTables(jsi::Runtime& rt,
+                                   const jsi::Value& thisValue,
+                                   const jsi::Value* args, size_t count);
+
   // raw JSI: getViewState(id) -> {scopeId, activeState, base, states} | null
   // debug/test introspection of a linked view's tables; not a hot path
   jsi::Value getViewState(jsi::Runtime& rt, const jsi::Value& thisValue,

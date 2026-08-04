@@ -20,21 +20,30 @@ export interface NativeViewStateUpdate {
     state: string;
     props?: Record<string, unknown>;
 }
+export interface NativeViewStateTableUpdate {
+    id: number;
+    state: string;
+    props: Record<string, unknown>;
+}
 export interface NativeStyleEngineSlots {
     base?: Record<string, unknown>;
     state?: Record<string, Record<string, unknown>>;
 }
+export type NativeStyleThemeMapping = Record<string, string>;
 export interface NativeStyleEngine {
     link(ref: unknown, slots: NativeStyleEngineSlots, scopeId?: string): NativeStyleEngineLinkHandle | null;
     applyViewStates(entries: NativeViewStateUpdate[]): void;
+    updateViewStateTables(entries: NativeViewStateTableUpdate[]): void;
     processStyleColors(props: Record<string, unknown>): Record<string, unknown>;
     setStateName(stateName: string, scopeId?: string): void;
     removeScope(scopeId: string): void;
 }
 export declare function setNativeStyleEngine(next: NativeStyleEngine | null): void;
 export declare function getNativeStyleEngine(): NativeStyleEngine | null;
-export declare function updateNativeStyleScope(scopeId: string, stateName: string): void;
+export declare function updateNativeStyleScope(scopeId: string, stateName: string, theme: object): void;
 export declare function removeNativeStyleScope(scopeId: string): void;
+export declare function resolveNativeStyleMapping(mapping: NativeStyleThemeMapping, stateName: string, theme: Record<string, unknown>): Record<string, unknown>;
+export declare function linkNativeStyleMapping(ref: unknown, baseStyle: Record<string, unknown>, mapping: NativeStyleThemeMapping, scopeId: string, stateName: string, theme: Record<string, unknown>): NativeStyleEngineLinkHandle | null;
 /**
  * instrumentation hook: called after each batched native flush with the
  * flushed entries (benchmarks, parity tests)

@@ -25,6 +25,9 @@ void HybridTamaguiRegistry::loadHybridMethods() {
     prototype.registerRawHybridMethod("link", 3, &HybridTamaguiRegistry::link);
     prototype.registerRawHybridMethod("applyViewStates", 1,
                                       &HybridTamaguiRegistry::applyViewStates);
+    prototype.registerRawHybridMethod(
+        "updateViewStateTables", 1,
+        &HybridTamaguiRegistry::updateViewStateTables);
     prototype.registerRawHybridMethod("getViewState", 1,
                                       &HybridTamaguiRegistry::getViewState);
   });
@@ -292,6 +295,52 @@ jsi::Value HybridTamaguiRegistry::applyViewStates(jsi::Runtime& rt,
     view.activeState = stateName;
 
     buildViewUpdate(view, stateName, updates);
+  }
+
+  commitUpdates(rt, updates);
+  return jsi::Value::undefined();
+}
+
+jsi::Value HybridTamaguiRegistry::updateViewStateTables(
+    jsi::Runtime& rt, const jsi::Value&, const jsi::Value* args,
+    size_t count) {
+  if (count < 1 || !args[0].isObject()) {
+    throw jsi::JSError(rt, "updateViewStateTables(entries) requires an array");
+  }
+  runtime_ = &rt;
+
+  auto entries = jsi::dynamicFromValue(rt, args[0]);
+  if (!entries.isArray()) {
+    throw jsi::JSError(rt, "updateViewStateTables(entries) requires an array");
+  }
+
+  LeafUpdates updates;
+  updates.reserve(entries.size());
+  for (auto& entry : entries) {
+    if (!entry.isObject()) continue;
+    auto idIt = entry.find("id");
+    auto stateIt = entry.find("state");
+    auto propsIt = entry.find("props");
+    if (idIt == entry.items().end() || stateIt == entry.items().end() ||
+        propsIt == entry.items().end() || !propsIt->second.isObject()) {
+      continue;
+    }
+
+    auto viewIt = views_.find(idIt->second.asDouble());
+    if (viewIt == views_.end()) continue;
+    auto& view = viewIt->second;
+    const std::string stateName = stateIt->second.asString();
+    if (!view.stateProps.isObject()) {
+      view.stateProps = folly::dynamic::object();
+    }
+    view.stateProps[stateName] = propsIt->second;
+
+    const auto* activeName = view.activeState.empty()
+                                 ? activeStateName(view.scopeId)
+                                 : &view.activeState;
+    if (activeName && *activeName == stateName) {
+      buildViewUpdate(view, stateName, updates);
+    }
   }
 
   commitUpdates(rt, updates);

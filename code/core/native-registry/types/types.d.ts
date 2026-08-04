@@ -42,6 +42,12 @@ export interface ViewStateUpdate {
 	state: string;
 	props?: Record<string, unknown>;
 }
+/** add or replace one resolved state-table entry without changing its view's controller */
+export interface ViewStateTableUpdate {
+	id: number;
+	state: string;
+	props: Record<string, unknown>;
+}
 /** Debug/test snapshot of a linked view's engine tables (getViewState). */
 export interface ViewStateSnapshot {
 	scopeId: string;

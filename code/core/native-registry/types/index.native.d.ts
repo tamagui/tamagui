@@ -1,5 +1,5 @@
-import type { LinkHandle, RegistryStats, ViewSlots, ViewStateSnapshot, ViewStateUpdate } from "./types";
-export type { LinkHandle, RegistryStats, Unlink, ViewSlots, ViewStateSnapshot, ViewStateUpdate } from "./types";
+import type { LinkHandle, RegistryStats, ViewSlots, ViewStateSnapshot, ViewStateTableUpdate, ViewStateUpdate } from "./types";
+export type { LinkHandle, RegistryStats, Unlink, ViewSlots, ViewStateSnapshot, ViewStateTableUpdate, ViewStateUpdate } from "./types";
 export { ROOT_SCOPE, getMirroredStateName } from "./mirror";
 export { processStyleColors } from "./processStyleColors";
 export declare function isAvailable(): boolean;
@@ -15,6 +15,12 @@ export declare function link(ref: unknown, slots: ViewSlots, scopeId?: string): 
 * just name the state. One native commit for the whole batch.
 */
 export declare function applyViewStates(entries: ViewStateUpdate[]): void;
+/**
+* Fill lazily resolved state-table entries without switching a view to the
+* per-view runtime controller. The native engine commits an entry immediately
+* only when that state is already active for the view's scope.
+*/
+export declare function updateViewStateTables(entries: ViewStateTableUpdate[]): void;
 /**
 * Set the active state name (e.g. theme name) for a scope and commit the
 * update natively. The JS mirror updates first so any concurrent React

@@ -11,6 +11,7 @@ import type {
   Unlink,
   ViewSlots,
   ViewStateSnapshot,
+  ViewStateTableUpdate,
   ViewStateUpdate,
 } from './types'
 import {
@@ -27,6 +28,7 @@ export type {
   Unlink,
   ViewSlots,
   ViewStateSnapshot,
+  ViewStateTableUpdate,
   ViewStateUpdate,
 } from './types'
 export { ROOT_SCOPE, getMirroredStateName } from './mirror'
@@ -36,6 +38,7 @@ export { processStyleColors } from './processStyleColors'
 interface Engine extends TamaguiRegistry {
   link(shadowNode: unknown, slots: object, scopeId: string): number
   applyViewStates(entries: ViewStateUpdate[]): void
+  updateViewStateTables(entries: ViewStateTableUpdate[]): void
   getViewState(id: number): ViewStateSnapshot | null
 }
 
@@ -116,6 +119,18 @@ export function link(
 export function applyViewStates(entries: ViewStateUpdate[]): void {
   if (entries.length === 0) return
   getEngine().applyViewStates(entries)
+}
+
+/**
+ * Fill lazily resolved state-table entries without switching a view to the
+ * per-view runtime controller. The native engine commits an entry immediately
+ * only when that state is already active for the view's scope.
+ */
+export function updateViewStateTables(entries: ViewStateTableUpdate[]): void {
+  if (entries.length === 0) return
+  getEngine().updateViewStateTables(
+    entries.map((entry) => ({ ...entry, props: processStyleColors(entry.props) }))
+  )
 }
 
 /**

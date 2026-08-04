@@ -8,6 +8,7 @@ import type {
   RegistryStats,
   ViewSlots,
   ViewStateSnapshot,
+  ViewStateTableUpdate,
   ViewStateUpdate,
 } from './types'
 import {
@@ -23,6 +24,7 @@ export type {
   Unlink,
   ViewSlots,
   ViewStateSnapshot,
+  ViewStateTableUpdate,
   ViewStateUpdate,
 } from './types'
 export { ROOT_SCOPE, getMirroredStateName } from './mirror'
@@ -40,6 +42,8 @@ export function link(
 }
 
 export function applyViewStates(_entries: ViewStateUpdate[]): void {}
+
+export function updateViewStateTables(_entries: ViewStateTableUpdate[]): void {}
 
 export function getViewState(_id: number): ViewStateSnapshot | null {
   return null
