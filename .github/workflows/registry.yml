@@ -1,8 +1,8 @@
 name: Registry
 
-# the DRY shadcn registry is generated from the KIT skin source. this workflow
+# the DRY shadcn registry is generated from the canonical tamagui skin source. this workflow
 # enforces that (a) the checked-in registry artifacts are up to date, (b) the
-# generated items are shadcn-valid, (c) the shipped copies never drift from KIT,
+# generated items are shadcn-valid, (c) the shipped copies never drift from that source,
 # and (d) an installed item builds + interacts in a blank web AND a blank Expo
 # app. see registry/README.md.
 
@@ -47,7 +47,7 @@ jobs:
       - name: Registry is shadcn-valid
         run: bun run registry:validate
 
-      - name: Shipped copies match KIT (blank apps)
+      - name: Shipped copies match canonical skins (blank apps)
         run: bun ./scripts/generate-registry.ts drift --only-authorized --strict
 
       - name: Report held-consumer drift (non-fatal)

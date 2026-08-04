@@ -8,7 +8,7 @@ import {
 } from '../../../code/core/style-grammar/src/states'
 import { extractImportSpecifiers, classifyDependencies, packageNameOf } from './deps'
 import { reprefixNames, buildItem, loadSkin, type Skin } from './core'
-import { buildRegistry } from './emit'
+import { buildRegistry, buildSkinPackageExports } from './emit'
 import { deriveStates, type StateTables } from './states-derive'
 
 describe('extractImportSpecifiers', () => {
@@ -152,6 +152,33 @@ styled(F, { name: 'ComboFrame' })
     // tables injected (post-reassembly): uniform canonical state names
     const withStates = buildItem(fakeSkin('C', src), new Set(['C']), TABLES)
     expect(withStates.meta).toEqual({ states: ['open', 'pressed'] })
+  })
+})
+
+describe('buildSkinPackageExports', () => {
+  test('derives kebab-cased web, native, require, and type targets from skin names', () => {
+    expect(
+      buildSkinPackageExports([fakeSkin('Button', ''), fakeSkin('ToggleGroup', '')])
+    ).toEqual({
+      './button': {
+        types: './types/components/Button.d.ts',
+        'react-native': './dist/esm/components/Button.native.js',
+        browser: './dist/esm/components/Button.mjs',
+        module: './dist/esm/components/Button.mjs',
+        import: './dist/esm/components/Button.mjs',
+        require: './dist/cjs/components/Button.cjs',
+        default: './dist/esm/components/Button.mjs',
+      },
+      './toggle-group': {
+        types: './types/components/ToggleGroup.d.ts',
+        'react-native': './dist/esm/components/ToggleGroup.native.js',
+        browser: './dist/esm/components/ToggleGroup.mjs',
+        module: './dist/esm/components/ToggleGroup.mjs',
+        import: './dist/esm/components/ToggleGroup.mjs',
+        require: './dist/cjs/components/ToggleGroup.cjs',
+        default: './dist/esm/components/ToggleGroup.mjs',
+      },
+    })
   })
 })
 

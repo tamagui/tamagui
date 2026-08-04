@@ -6,6 +6,7 @@ import {
   registryName,
   registryHomepage,
   driftConsumers,
+  skinPackagePath,
   type DriftConsumer,
 } from './config'
 import { discoverSkins, loadSkin, buildItem, renderConsumerCopy, type Skin } from './core'
@@ -88,10 +89,91 @@ export function writeRegistryTo(dir: string, registry: Registry): void {
 }
 
 export async function writeRegistry(): Promise<Registry> {
-  const { registry } = await buildRegistry()
+  const { registry, skins } = await buildRegistry()
   mkdirSync(outDir, { recursive: true })
   writeRegistryTo(outDir, registry)
+  writeSkinPackageExports(skins)
   return registry
+}
+
+type PackageExport = {
+  types: string
+  'react-native': string
+  browser: string
+  module: string
+  import: string
+  require: string
+  default: string
+}
+
+export function buildSkinPackageExports(skins: Skin[]): Record<string, PackageExport> {
+  return Object.fromEntries(
+    skins.map(({ base }) => {
+      const subpath = base.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
+      return [
+        `./${subpath}`,
+        {
+          types: `./types/components/${base}.d.ts`,
+          'react-native': `./dist/esm/components/${base}.native.js`,
+          browser: `./dist/esm/components/${base}.mjs`,
+          module: `./dist/esm/components/${base}.mjs`,
+          import: `./dist/esm/components/${base}.mjs`,
+          require: `./dist/cjs/components/${base}.cjs`,
+          default: `./dist/esm/components/${base}.mjs`,
+        },
+      ]
+    })
+  )
+}
+
+function isGeneratedSkinExport(value: unknown): boolean {
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    'types' in value &&
+    typeof value.types === 'string' &&
+    value.types.startsWith('./types/components/')
+  )
+}
+
+export function checkSkinPackageExports(skins: Skin[]): string[] {
+  const pkg = JSON.parse(readFileSync(skinPackagePath, 'utf8'))
+  const actual = pkg.exports ?? {}
+  const expected = buildSkinPackageExports(skins)
+  const issues: string[] = []
+
+  for (const [subpath, target] of Object.entries(expected)) {
+    if (JSON.stringify(actual[subpath]) !== JSON.stringify(target)) {
+      issues.push(`${subpath} is missing or stale`)
+    }
+  }
+  for (const [subpath, target] of Object.entries(actual)) {
+    if (isGeneratedSkinExport(target) && !(subpath in expected)) {
+      issues.push(`${subpath} points to a skin that no longer exists`)
+    }
+  }
+  return issues
+}
+
+export function writeSkinPackageExports(skins: Skin[]): void {
+  const pkg = JSON.parse(readFileSync(skinPackagePath, 'utf8'))
+  const expected = buildSkinPackageExports(skins)
+  const expectedKeys = new Set(Object.keys(expected))
+  const nextExports: Record<string, unknown> = {}
+  let inserted = false
+
+  for (const [subpath, target] of Object.entries(pkg.exports ?? {})) {
+    if (!inserted && subpath === './unstyled') {
+      Object.assign(nextExports, expected)
+      inserted = true
+    }
+    if (expectedKeys.has(subpath) || isGeneratedSkinExport(target)) continue
+    nextExports[subpath] = target
+  }
+  if (!inserted) Object.assign(nextExports, expected)
+
+  pkg.exports = nextExports
+  writeFileSync(skinPackagePath, `${JSON.stringify(pkg, null, 2)}\n`)
 }
 
 export type DriftEntry = {

@@ -22,6 +22,7 @@ import {
   checkDrift,
   firstDivergence,
   writeConsumers,
+  checkSkinPackageExports,
 } from './lib/registry/emit'
 import { loadSkin, renderConsumerCopy } from './lib/registry/core'
 import { driftConsumers } from './lib/registry/config'
@@ -47,7 +48,7 @@ async function build() {
 // regenerate to memory and diff against the checked-in files. this is the gate
 // that a human ran `build` and committed the result.
 async function check() {
-  const { registry } = await buildRegistry()
+  const { registry, skins } = await buildRegistry()
   const indexPath = join(outDir, 'registry.json')
   if (!existsSync(indexPath))
     fail(`registry not generated yet — run: bun scripts/generate-registry.ts build`)
@@ -71,7 +72,14 @@ async function check() {
       `generated registry is stale (run \`bun scripts/generate-registry.ts build\` and commit):\n  ${stale.join('\n  ')}`
     )
   }
+  const exportIssues = checkSkinPackageExports(skins)
+  if (exportIssues.length) {
+    fail(
+      `tamagui skin package exports are stale (run \`bun scripts/generate-registry.ts build\` and commit):\n  ${exportIssues.join('\n  ')}`
+    )
+  }
   ok(`registry artifacts are up to date (${registry.items.length} item(s))`)
+  ok(`tamagui skin package exports are up to date (${skins.length} subpath(s))`)
 }
 
 async function validate() {

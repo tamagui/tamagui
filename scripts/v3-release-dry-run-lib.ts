@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto'
 import { realpathSync } from 'node:fs'
 import { lstat, readFile, readdir, realpath, stat } from 'node:fs/promises'
 import { isAbsolute, join, relative, resolve, sep } from 'node:path'
+import ts from 'typescript'
 
 export type JsonObject = Record<string, unknown>
 
@@ -465,25 +466,42 @@ async function walkFiles(dir: string): Promise<string[]> {
 
 function bareImports(source: string): Set<string> {
   const imports = new Set<string>()
-  const patterns = [
-    /(?:^|\n)\s*(?:import|export)\b[^\n;]*?\bfrom\s*['"]([^'"]+)['"]/g,
-    /(?:^|\n)\s*import\s*['"]([^'"]+)['"]/g,
-    /\brequire\(\s*['"]([^'"]+)['"]\s*\)/g,
-    /\bimport\(\s*['"]([^'"]+)['"]\s*\)/g,
-  ]
-  for (const pattern of patterns) {
-    for (const match of source.matchAll(pattern)) {
-      const specifier = match[1]
-      if (
-        specifier &&
-        !specifier.startsWith('.') &&
-        !specifier.startsWith('/') &&
-        !specifier.startsWith('#')
-      ) {
-        imports.add(specifier)
-      }
+  const file = ts.createSourceFile('packed.js', source, ts.ScriptTarget.Latest, false)
+  const add = (specifier: string) => {
+    if (
+      !specifier.startsWith('.') &&
+      !specifier.startsWith('/') &&
+      !specifier.startsWith('#')
+    ) {
+      imports.add(specifier)
     }
   }
+  const visit = (node: ts.Node) => {
+    if (
+      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+      node.moduleSpecifier &&
+      ts.isStringLiteralLike(node.moduleSpecifier)
+    ) {
+      add(node.moduleSpecifier.text)
+    } else if (
+      ts.isImportEqualsDeclaration(node) &&
+      ts.isExternalModuleReference(node.moduleReference) &&
+      node.moduleReference.expression &&
+      ts.isStringLiteralLike(node.moduleReference.expression)
+    ) {
+      add(node.moduleReference.expression.text)
+    } else if (
+      ts.isCallExpression(node) &&
+      node.arguments.length === 1 &&
+      ts.isStringLiteralLike(node.arguments[0]!) &&
+      (node.expression.kind === ts.SyntaxKind.ImportKeyword ||
+        (ts.isIdentifier(node.expression) && node.expression.text === 'require'))
+    ) {
+      add(node.arguments[0]!.text)
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(file)
   return imports
 }
 

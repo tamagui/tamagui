@@ -5,8 +5,7 @@
 // tamagui.dev's own complete, CI-validated config).
 //
 // NOTES:
-// - `import { Button } from 'tamagui'` is the STYLED v2-look skin (the tamagui
-//   index shadows the unstyled @tamagui/ui primitive with the default skin), so
+// - `import { Button } from 'tamagui/button'` is the styled default skin, so
 //   `<Button size="5" />` compiles against the token size scale below. The
 //   unstyled primitive lives at `tamagui/unstyled` and owns no size scale.
 // - a couple of guide snippets use configured values such as the `max-md`
@@ -16,7 +15,8 @@
 import * as React from 'react'
 import {
   Adapt,
-  Button,
+  Avatar,
+  createStyledHOC,
   createStyledContext,
   getVariableValue,
   GetProps,
@@ -27,15 +27,29 @@ import {
   Sheet,
   styled,
   Surface,
+  Tabs,
+  Text,
   Theme,
-  Toast,
-  toast,
   View,
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from 'tamagui/button'
+import { Toast, toast } from 'tamagui/toast'
 import { FocusScope } from '@tamagui/focus-scope'
-import { getRadius, getSize } from '@tamagui/get-token'
+import { getRadius, getSpace } from '@tamagui/get-token'
+
+// §1 — behavior-only component roots need app-owned visual skins.
+export const AppAvatar = styled(Avatar, {
+  borderWidth: 1,
+  borderColor: 'border-color',
+})
+
+export const AppTab = styled(Tabs.Tab, {
+  paddingHorizontal: '3',
+  paddingVertical: '2',
+  activeStyle: { backgroundColor: 'background-press' },
+})
 
 // §2 — Sheet anatomy: Frame -> Container + Background
 export function SheetAnatomy({ children }: { children: React.ReactNode }) {
@@ -55,6 +69,20 @@ export const FocusableFullscreen = () => (
   <View tabIndex={0} position="absolute" inset={0} />
 )
 
+// §3 — selectable and Select.Item index removals
+export const TextAndSelectProps = () => (
+  <>
+    <Text userSelect="text">Copy me</Text>
+    <Select.Item value="first" />
+  </>
+)
+
+// §3 — createStyledHOC now accepts both arguments in one call.
+type CardProps = GetProps<typeof View> & { label?: string }
+export const Card = createStyledHOC(View, (props: CardProps, ref) => (
+  <View {...props} ref={ref} />
+))
+
 // §3 — themeInverse / <Theme inverse>
 export const ThemeInverse = () => (
   <Theme name="inverse">
@@ -67,7 +95,7 @@ export const TrueTokens = () => <XStack gap="4" p="4" />
 
 // §5 — token stepping replacement
 export function tokenStepping(sizeToken: any, radiusToken: any) {
-  const padding = getVariableValue(getSize(sizeToken)) * 0.6
+  const padding = getVariableValue(getSpace(sizeToken)) * 0.6
   const radius = getVariableValue(getRadius(radiusToken)) * 1.2
   return { padding, radius }
 }
@@ -202,7 +230,7 @@ export const Misc = () => (
   </>
 )
 
-// §4 — styled `tamagui` Button takes size tokens; omitting size uses the
+// §4 — the styled `tamagui/button` skin takes size tokens; omitting size uses the
 // package-local control policy from @tamagui/size.
 export const StyledButtonSize = () => <Button size="5">Save</Button>
 

@@ -59,6 +59,42 @@ tree without a global mode.
 Read the full [Tailwind post](/blog/tailwind-mode) for the compiler details
 and current utility coverage.
 
+## Three explicit component surfaces
+
+V3 makes the styling choice visible at the import boundary. The `tamagui` root
+remains the full styled barrel, while generated component subpaths let an app
+select only the skins it uses:
+
+```tsx
+import { Button } from 'tamagui/button'
+import { Toast, toast } from 'tamagui/toast'
+```
+
+Use `tamagui/unstyled` or `@tamagui/ui` for behavior primitives without the
+default skin. Use `@tamagui/tailwind` for the same primitive layer with Tailwind
+authoring. The Styled, Unstyled, and Tailwind switch on the v3 documentation
+rewrites examples between these authoring modes.
+
+## Conditional styles are flat values
+
+Tokens and conditional styles now live in one property value. Bare strings
+resolve against the active config first, while raw numbers remain platform
+values:
+
+```tsx
+// before
+<View bg="$background" hoverStyle={{ bg: '$backgroundHover' }} $sm={{ p: '$6' }} p="$4" />
+
+// after
+<View bg="background hover:background-hover" p="4 sm:6" />
+```
+
+Config v6 also renames multi-word theme keys to kebab case, such as
+`border-color` and `background-hover`. Run the flat-values codemod in report
+mode first, then use `--write` for conversions it can prove safe. The
+[v3 upgrade guide](/docs/guides/how-to-upgrade) lists the commands, the full
+rename table, and the cases that still need manual review.
+
 ## Style precedence is authored order
 
 Because Tamagui props, `style`, `className`, and Tailwind utilities all flow
@@ -120,6 +156,17 @@ props, and parent variants through `styled()`:
 ```tsx
 // before
 const MyInput = StyledInput.styleable<Props>((props, ref) => ...)
+
+// after
+const MyInput = createStyledHOC(StyledInput, (props: Props, ref) => ...)
+```
+
+An earlier standalone form was curried. V3 removes that intermediate signature,
+so pass the render function as the second argument:
+
+```tsx
+// before
+const MyInput = createStyledHOC(StyledInput)<Props>((props, ref) => ...)
 
 // after
 const MyInput = createStyledHOC(StyledInput, (props: Props, ref) => ...)
@@ -602,6 +649,11 @@ The short version:
 
 ```bash
 npx tamagui check
+cd code/core/codemod-flat-values
+bun src/index.ts --write \
+  --report /tmp/flat-values-report.md \
+  path/to/your/app
+cd ../../..
 node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
 ```
 
@@ -614,7 +666,3 @@ rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|in
 Finally, validate at the layer you changed: typecheck, build, run your web app,
 and exercise Dialog, Popover, Select, and Sheet flows on the breakpoints where
 you use Adapt.
-
-## Credits
-
-Placeholder: credits for the v3 launch contributors and reviewers will go here.

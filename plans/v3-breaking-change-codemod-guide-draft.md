@@ -1,16 +1,66 @@
 # V3 beta breaking changes and flat-values migration
 
-> Review draft. This document is not published. It describes the behavior in
-> the `v3-beta` tree on July 31, 2026. The proposed engine contraction is
-> separated from the behavior that has landed.
+> Audit verdict on August 3, 2026: **not ship-ready**. Most measurements and
+> implementation details describe the July 31 tree. The current beta has since
+> removed the legacy condition-object and sigil paths and replaced the web
+> program pipeline with direct style emission. Use the published v3 upgrade and
+> flat-values guides for tester instructions until this draft is reverified.
 
 V3 moves conditional styles into the value of the property they change. It
 also adopts the v6 built-in config vocabulary, makes identifier resolution
 config-first, and removes several web-only accidents from the cross-platform
 style contract.
 
-The migration tool currently produces a report. It never edits source files or
-configuration.
+The migration tool is report-only by default. Pass `--write` to apply every
+statically safe source conversion in place. It always reports conversions it
+cannot prove safe, and it never edits configuration.
+
+## Real consumer migration audit
+
+The Bento V2 corpus is the current external-consumer proxy. An August 3 dry run
+found 2,113 flat-value sites: 1,681 clean, 194 with an unverified host, 22 on
+properties that cannot carry flat clauses, and 232 with syntax or ordering
+flags. Of the 2,052 JSX sites, 412 need review. Another 20 of 61 `styled()`
+configuration sites need review. In total, 432 of 2,113 sites, or 20.4%, still
+need human judgement. After applying the proposed conversions, 63 of 208 files
+retain legacy condition objects and cannot run on V3 until those are migrated.
+
+The main flag classes in that corpus are 110 missing container-group
+declarations, 108 dot-path token names, 15 dynamic legacy conditions, 14 token
+constants whose provenance is not proven, 6 conditional non-style props, and 1
+unsupported legacy value. Do not present `--write` as a complete migration.
+Budget time to read the report, resolve every flag, and rerun it.
+
+The same consumer audit found these API and configuration migrations outside
+the flat-values codemod. Each requires a manual search and a before/after from
+the published upgrade guide:
+
+- the two-argument `createStyledHOC(Component, render)` signature;
+- `Sheet.Frame` split into `Sheet.Container` and `Sheet.Background`;
+- `focusable`, `fullscreen`, `Text selectable`, and `Select.Item index`;
+- the removed `$true` token and spread/type/catch-all variant keys;
+- removed token-stepping options, including `getSpace(value, { shift })`;
+- `backgroundActive`, `surface1` through `surface4`, and adaptive `color12`;
+- `@tamagui/config/v4`, `@tamagui/theme-builder/defaultComponentThemes`,
+  `@tamagui/animations-moti`, and `@tamagui/babel-plugin`;
+- app-owned visual skins for the V3 `Avatar`, `Tabs`, and `Group` behavior
+  components.
+
+## Migrate styled wrapper factories manually
+
+V3 accepts the component and render function in one `createStyledHOC` call. The
+flat-values codemod does not rewrite this API signature:
+
+```tsx
+// before
+const Card = createStyledHOC(CardFrame)<CardProps>((props, ref) => ...)
+
+// after
+const Card = createStyledHOC(CardFrame, (props: CardProps, ref) => ...)
+```
+
+Search every application and component package for `createStyledHOC(`. A
+one-argument call followed by another call is the removed curried form.
 
 ## Start with the v6 config
 
@@ -23,6 +73,13 @@ import { defaultConfig } from '@tamagui/config/v6'
 The v6 themes rename every multi-word built-in theme key to kebab case. The
 runtime does not provide camelCase aliases because a user config could define
 both spellings.
+
+The v6 config also removes old palette-step names such as `blue10` and `red10`.
+Missing colors are dropped silently, and web and native can expose different
+fallback colors underneath them. The codemod preserves these names because it
+does not evaluate runtime config and cannot choose the intended replacement.
+Search them manually, then select an absolute token such as `blue-500`, or enter
+a color theme and use its adaptive `colorN` ramp.
 
 | Previous key | V3 flat value |
 | --- | --- |
@@ -65,7 +122,7 @@ clause := modifier (":" modifier)* ":" payload
 ```
 
 The last matching clause wins. Multiple modifiers in one clause are combined:
-`dark:hover:blue10` requires both the dark theme and hover state.
+`dark:hover:blue-500` requires both the dark theme and hover state.
 
 ```tsx
 // legacy
@@ -79,7 +136,7 @@ The last matching clause wins. Multiple modifiers in one clause are combined:
 
 // V3
 <View
-  bg="background hover:background-hover dark:blue10"
+  bg="background hover:background-hover dark:blue-500"
   p="4 sm:6"
 />
 ```
@@ -145,7 +202,7 @@ native cannot source them until the behavior packages feed component state.
 Shared source therefore needs relocation to `.web.tsx`. Plain interaction
 states, media, themes, platforms, containers, and `enter` support both targets.
 
-## Run the report-only codemod
+## Run the codemod report-first
 
 Run the tool from a Tamagui checkout:
 
@@ -164,6 +221,18 @@ bun run dry-run \
 
 Read both the summary and each flagged site. A successful command means the
 report was generated. It does not mean every site converted.
+
+Commit or back up the source, then apply the clean conversions:
+
+```bash
+bun src/index.ts --write \
+  --report /tmp/flat-values-write-report.md \
+  path/to/src
+```
+
+`--write` updates only conversions the tool classified as statically safe.
+The generated report still lists relocation, host, eligibility, syntax, and
+ordering work that needs a person to decide.
 
 The codemod converts only bindings it can prove come from Tamagui. It handles:
 
@@ -357,7 +426,7 @@ Move shadow part conditions to a complete `boxShadow` or `textShadow` value:
 />
 
 // manual migration: each payload is a complete shadow
-<View boxShadow="0 2px 8px shadow-color hover:0 2px 8px blue10" />
+<View boxShadow="0 2px 8px shadow-color hover:0 2px 8px blue-500" />
 ```
 
 The tool cannot reconstruct a complete shadow from one conditional part
@@ -459,9 +528,7 @@ service. A proven View keeps the condition authored and reports, for example:
 
 The tool deliberately does not:
 
-- write or apply source changes;
-- edit the `createTamagui()` config or change
-  `settings.legacyConditionObjects`;
+- edit the `createTamagui()` config;
 - convert a local `styled` helper, a React Native component, or an intrinsic
   element without proven Tamagui provenance;
 - guess through computed keys, opaque spreads, runtime-built condition
@@ -484,11 +551,9 @@ The tool deliberately does not:
 The report separates manual flags from review-only inventory. Preserve
 authored code until each flagged decision is made.
 
-`legacyConditionObjects` defaults to `true` in the current beta, which converts
-eligible legacy condition objects at the style loop entry. Setting it to
-`false` keeps the old condition machinery. The report tells you which files
-still contain legacy objects, but the tool never changes this setting and the
-setting itself is not proof that migration is complete.
+The current beta has no `legacyConditionObjects` setting or runtime
+condition-object path. The codemod must rewrite eligible legacy objects before
+the application runs; flagged objects need a manual migration.
 
 ## Current specificity change
 
@@ -526,9 +591,10 @@ consumer CSS should prefer a stable authored class or selector.
 
 1. Import the v6 config and rename custom references to the 16 built-in names.
 2. Rename or remove every reserved config token.
-3. Generate the codemod report for one source directory.
-4. Apply clean suggestions manually, reviewing `x` and `y` against custom
-   space and size scales.
+3. Commit or back up the source, then generate the codemod report for one
+   source directory.
+4. Run the same source directory with `--write` and inspect the resulting diff.
+   Review converted `x` and `y` values against custom space and size scales.
 5. Resolve `needs-relocation`: keep shared `exitStyle` driver-evaluated or move
    the use to native-only source, move web-only component states to
    `.web.tsx`, and move text-only View styles to a text or DOM host.
@@ -547,21 +613,18 @@ consumer CSS should prefer a stable authored class or selector.
 14. Rebaseline snapshots or consumer CSS that pins generated classes for
     `active:` or `group-active/*` aliases.
 
-## Proposed only: engine contraction
+## Landed after this guide's measurements
 
-The full engine contraction has not been approved or landed. Current V3 beta
-behavior still includes the legacy pseudo-object path, media importance
-ordering, specificity ladders, and legacy theme, platform, and group prop-key
-parsing.
+The engine contraction described by the earlier draft has landed. Commits
+`96f6d5574a` and `7809660bee` removed legacy condition objects and the remaining
+sigil-era paths. Commit `12f7e0e981` replaced the web program pipeline with
+direct style emission. Any implementation, specificity, class-name, or corpus
+measurement claim in this draft now needs to be rerun against that engine before
+publication.
 
-If the contraction is approved, those legacy internal paths are planned for
-deletion after the program engine replaces them. The migration guide must then
-be revised from the resulting code and measurements. Do not change application
-code based on that proposed deletion today.
+## Historical verification record
 
-## Draft verification record
-
-The claims in this draft were checked against the following current-tree
+The July 31 claims in this draft were checked against the following then-current
 contracts:
 
 - `code/core/style-grammar/src/v6ThemeNames.ts` and the built

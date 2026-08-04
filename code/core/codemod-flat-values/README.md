@@ -77,6 +77,14 @@ with the real clause merge before it is printed. A program that does not read ba
 identically is reported (`emitted-program-mismatch`, `emitted-value-invalid`) instead
 of suggested.
 
+The codemod preserves palette-step names such as `blue10` and `red10`. It does
+not evaluate the application's runtime config, so it cannot know whether a
+custom config still defines them or which absolute shade preserves the design.
+When moving to `@tamagui/config/v6`, search these names and migrate them manually
+to absolute tokens such as `blue-500`, or enter a color theme and use its
+adaptive `colorN` ramp. The v6 defaults do not define the old palette-step
+names, and a missing color is dropped without a runtime warning.
+
 ## Conversion assessment
 
 Syntax alone cannot make a conversion safe. Before suggesting a program, the codemod

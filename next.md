@@ -10,26 +10,29 @@ Yes — confirmed. elevation is a real built-in variant on Tamagui's YStack/XSta
 > This file remains for the release-command reference, migration notes, and the
 > long-tail backlog; its "active work" / "open decisions" sections may lag.
 
-## cutting a beta (verified July 2026)
+## cutting a beta (verified August 2026)
 
-From the v3-beta branch, with a clean tree and CI green on the pushed HEAD:
+The beta is automatic after a successful push-triggered `Checks` run on the
+current `v3-beta` tip. `.github/workflows/release.yml` checks out the exact
+tested SHA and publishes this immutable version:
 
+```txt
+3.0.0-beta.<github-run-number>.<github-run-attempt>
 ```
-bun ./scripts/release.ts --beta --force-publish-all
-```
 
-Run it interactively (not `--ci`): coming from stable 2.4.6 the beta base is
-ambiguous, so pick `3.0.0-beta.0 (next major)` at the prompt. `computePublishTag`
-maps `3.0.0-beta.x` to the npm dist-tag `beta` automatically; it cannot land on
-`latest`. `--force-publish-all` matters for the first beta: without it,
-`skipPublishIfUnchanged` packages resolve dep versions via `npm view <pkg>
-dist-tags.beta`, which doesn't exist yet, and dependents would reference
-never-published versions. Preconditions: `git fetch origin --tags` (baseline
-detection picks the newest v* tag vs canary commit), npm login + a 2FA code,
-and nothing uncommitted anywhere (the finish step runs `git add -A`). The
-script runs check/lint/typecheck/tests/build itself, then publishes ~160
-packages, commits the version bump, tags `v3.0.0-beta.0`, and pushes the
-branch + tag. `--dry-run` prints the plan without writing.
+The workflow calls `scripts/release.ts` with `--beta`, the exact `--version`,
+`--ci`, `--dirty`, and `--skip-finish`. It publishes to the npm `beta` dist-tag
+without creating a version commit or Git tag. A newer `v3-beta` tip cancels the
+older candidate before publishing so the newer Checks run owns the release.
+
+The tested beta path prints `Publishing to npm dist-tag: beta` and adds
+`--tag beta` to every npm publish command. The general release script also has
+an explicit `--tag` escape hatch. Do not pass `--tag latest` during a manual
+prerelease because the explicit override wins by design.
+
+Do not run the release script locally for the beta cut. Freeze the tester
+artifacts at the validated SHA, push that candidate only after approval, and
+let the workflow publish the exact tree that passed Checks.
 
 ## landed on v3-beta (July 2026)
 

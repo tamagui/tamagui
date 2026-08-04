@@ -110,11 +110,26 @@ const tailwindTransform = {
   },
 }
 
-// unstyled swaps the `tamagui` import for the `tamagui/unstyled` subpath, which
-// re-exports @tamagui/ui's behavior primitives without the default v2-look skins
-// the main `tamagui` entry layers on top. only the exact `tamagui` specifier is
-// rewritten - `tamagui/x` and `@tamagui/x` are already the behavior surface.
-const tamaguiImportRe = /(\bfrom\s+|\bimport\s*\(\s*|\brequire\s*\(\s*)(['"])tamagui\2/g
+// unstyled swaps the `tamagui` root and generated styled-skin subpaths for
+// `tamagui/unstyled`, which re-exports @tamagui/ui's behavior primitives.
+// derive those subpaths from the package map that the registry generator owns,
+// so docs cannot advertise a stale hand-maintained skin set.
+const tamaguiPackage = JSON.parse(
+  fs.readFileSync(requireFn.resolve('tamagui/package.json'), 'utf8')
+) as {
+  exports: Record<string, { types?: string }>
+}
+const styledTamaguiSpecifiers = new Set([
+  'tamagui',
+  ...Object.entries(tamaguiPackage.exports)
+    .filter(
+      ([subpath, target]) =>
+        subpath !== './facets' && target.types?.includes('/components/')
+    )
+    .map(([subpath]) => `tamagui/${subpath.slice(2)}`),
+])
+const styledTamaguiImportRe =
+  /(\bfrom\s+|\bimport\s*\(\s*|\brequire\s*\(\s*)(['"])(tamagui(?:\/[a-z0-9-]+)?)\2/g
 
 const unstyledTransform = {
   name: 'tamagui-unstyled-transform',
@@ -142,7 +157,13 @@ const unstyledTransform = {
       const source = ctx.textContent(node)
       if (!source) return
 
-      const unstyledCode = source.replace(tamaguiImportRe, '$1$2tamagui/unstyled$2')
+      const unstyledCode = source.replace(
+        styledTamaguiImportRe,
+        (match, prefix, quote, specifier) =>
+          styledTamaguiSpecifiers.has(specifier)
+            ? `${prefix}${quote}tamagui/unstyled${quote}`
+            : match
+      )
       if (unstyledCode !== source) {
         ctx.replaceNode(node, {
           ...node,

@@ -13,6 +13,7 @@ export const repoRoot = join(import.meta.dir, '..', '..', '..')
 // ---------------------------------------------------------------------------
 
 export const skinSourceRoot = join(repoRoot, 'code/ui/tamagui/src/components')
+export const skinPackagePath = join(repoRoot, 'code/ui/tamagui/package.json')
 
 // where generated registry artifacts are written (checked in, served in CI)
 export const outDir = join(repoRoot, 'registry/json')

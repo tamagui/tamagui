@@ -94,6 +94,22 @@ describe('G1 package selection', () => {
     ])
   })
 
+  test('uses declared subpaths for a package without a root export', () => {
+    expect(
+      exportSpecifiers({
+        name: '@tamagui/config',
+        exports: {
+          './package.json': './package.json',
+          './v6': {
+            types: './types/v6.d.ts',
+            import: './dist/esm/v6.mjs',
+            require: './dist/cjs/v6.cjs',
+          },
+        },
+      })
+    ).toEqual(['@tamagui/config/v6'])
+  })
+
   test('derives changed package roots and expands their internal tarball closure', () => {
     const changed = packagesForChangedPaths(packages, [
       'code/core/core/src/index.tsx',
@@ -411,6 +427,17 @@ describe('G1 tarball audits', () => {
         dependencies: { '@tamagui/animations-motion': '2.4.6' },
       },
       { 'dist/index.mjs': `import '@tamagui/animations-motion'` }
+    )
+    await expect(auditExtractedPackage(root, '/repo')).resolves.toBeUndefined()
+  })
+
+  test('ignores import examples embedded in published prompt strings', async () => {
+    const root = await fixturePackage(
+      { name: '@tamagui/example', version: '3.0.0-beta.0' },
+      {
+        'dist/index.cjs':
+          "const prompt = `\\nimport { View } from '@tamagui/tailwind'\\n`; module.exports = prompt",
+      }
     )
     await expect(auditExtractedPackage(root, '/repo')).resolves.toBeUndefined()
   })
