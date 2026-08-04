@@ -1202,6 +1202,9 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  // built without conditional spreads: this runs once per component render and
+  // each spread transpiles to an ownKeys/defineProperty helper chain that
+  // profiles at several percent of total style-resolution time
   const result: GetStyleResult = {
     hasMedia,
     fontFamily: styleState.fontFamily,
@@ -1212,11 +1215,11 @@ export const getSplitStyles: StyleSplitter = (
     pseudoGroups,
     mediaGroups,
     overriddenContextProps: styleState.overriddenContextProps,
-    ...(effectiveTransition != null && { effectiveTransition }),
-    ...(conditionalStates && { programStates: conditionalStates }),
-    ...(usesSafeArea && { usesSafeArea: true }),
-    ...(getDirectDynamicThemeAccess(styleState) && { dynamicThemeAccess: true }),
   }
+  if (effectiveTransition != null) result.effectiveTransition = effectiveTransition
+  if (conditionalStates) result.programStates = conditionalStates
+  if (usesSafeArea) result.usesSafeArea = true
+  if (getDirectDynamicThemeAccess(styleState)) result.dynamicThemeAccess = true
 
   if (styleState.flatEnterKeys || styleState.flatExitKeys) {
     const effectiveKeys = (keys?: Set<string>) => {

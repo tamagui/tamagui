@@ -166,7 +166,10 @@ test('the compiled native platform fixture renders hosts, styles and interaction
   const input = findPrimitive(renderer!, 'TextInput', 'platform-input')
   const image = findPrimitive(renderer!, 'Image', 'platform-image')
   expect(main.props.accessibilityLabel).toBe('strict DOM fixture')
-  expect(styleValue(main, 'backgroundColor')).toBe('rgba(255,255,255,1)')
+  // 'white' stays a literal CSS color exactly like 'red' below: the old
+  // rgba(255,255,255,1) expectation came from the v5 themes' `white` key,
+  // which the sigil-less lookup resolved through the theme; v6 has no such key
+  expect(styleValue(main, 'backgroundColor')).toBe('white')
   expect(styleValue(main, 'paddingTop')).toBe(8)
   expect(heading.props.role).toBe('heading')
   expect(button.props.role).toBe('button')

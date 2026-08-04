@@ -731,4 +731,91 @@ export const App = () => <View padding={12} />
       await frontend.close()
     }
   })
+
+  test('plans project source when the Metro entry lives in node_modules (expo-router topology)', async () => {
+    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-router-entry-'))
+    temporaryRoots.push(fixtureRoot)
+    const projectRoot = join(fixtureRoot, 'app')
+    const appPath = join(projectRoot, 'src/App.tsx')
+    const distPath = join(projectRoot, 'dist/Generated.tsx')
+    const brokenPath = join(projectRoot, 'scripts/broken.tsx')
+    // the expo-router shape: the entry is a package file whose route imports
+    // happen through require.context, invisible to import scanning
+    const entryPath = join(projectRoot, 'node_modules/fake-router/entry.js')
+    const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
+    const cacheRoot = join(fixtureRoot, 'cache')
+    const appSource = `
+import { View } from '@fixture/ui'
+export const App = () => <View width={20} height={10} />
+`
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-router-entry"}\n')
+    await write(appPath, appSource)
+    await write(distPath, appSource)
+    await write(brokenPath, 'export const broken = <View\n')
+    await write(entryPath, 'module.exports = {}\n')
+    await write(uiPath, 'export const View = (_props) => null\n')
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    expect(viewInfo).toBeTruthy()
+    const reported: string[] = []
+    const frontend = new MetroCompilerFrontend({
+      projectRoot,
+      cacheRoot,
+      watch: false,
+      originalBabelTransformerPath: transformerPath,
+      loadCompilerProject: async () => ({
+        projectInfo: {
+          ...loadedProject,
+          components: [{ moduleName: '@fixture/ui', nameToInfo: { View: viewInfo! } }],
+        },
+        componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+        generation: 'e4-router-entry-v1',
+      }),
+      reportDiagnostic(diagnostic) {
+        reported.push(diagnostic.code)
+      },
+      resolver: {
+        resolveRequest: (context: any, specifier: string, platform: string) => {
+          if (specifier === '@fixture/ui') {
+            return { type: 'sourceFile', filePath: uiPath }
+          }
+          return context.resolveRequest(context, specifier, platform)
+        },
+        sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+        unstable_enablePackageExports: true,
+      },
+    })
+
+    try {
+      await frontend.ensureValidCache({
+        dev: false,
+        entryFiles: [entryPath],
+        hot: false,
+        platform: 'ios',
+        transform: { experimentalImportSupport: true },
+      })
+      const cache = new MetroCompilerCache(frontend.cacheRootFor('ios'))
+      const entry = await cache.read(appPath, appSource)
+      expect(entry?.plan.stats).toEqual({
+        found: 1,
+        lowered: 1,
+        flattened: 1,
+        styled: 0,
+        bailed: 0,
+      })
+      // build output is never walk-seeded
+      expect(await cache.read(distPath, appSource)).toBeNull()
+      // a walk-seeded file that fails to compile is speculative, not a build error
+      expect(reported).not.toContain('metro/transform-failed')
+    } finally {
+      await frontend.close()
+    }
+  })
 })
