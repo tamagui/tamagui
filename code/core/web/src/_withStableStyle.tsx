@@ -28,7 +28,14 @@ export const _withStableStyle = (
     const media = hasMediaKeys ? useMedia() : null
 
     const resolvedExpressions = media
-      ? _expressions.map((expr: any) => (typeof expr === 'string' ? media[expr] : expr))
+      ? _expressions.map((expr: any) =>
+          // ['gtLg', cond] needs the media query and the runtime condition
+          Array.isArray(expr)
+            ? !!(media[expr[0]] && expr[1])
+            : typeof expr === 'string'
+              ? media[expr]
+              : expr
+        )
       : _expressions
 
     let resolvedTheme: any = theme || EMPTY_THEME
