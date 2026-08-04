@@ -78,6 +78,30 @@ reader, but no assertion is wrong:
 Low priority, but cheap to correct while touching those files, and leaving them
 is how the next person mis-classifies one of these.
 
+## What "pre-existing" means here, precisely
+
+The A/B behind these classifications reverted **only my own two files**. That
+establishes "not caused by my change" and nothing more. It cannot show another
+lane's same-day work did not cause them, because that work sat in both arms.
+Saying "pre-existing" without that qualifier is the failure mode where an A/B
+looks rigorous while the variable you care about is held constant in both arms.
+
+For the two class (b) findings the dates do settle it, and it bears on the
+`__TamaguiStableView` theme-splitting investigation:
+
+- that A/B ran while HEAD was `bce992372d`, which descends from `077ab3cb2f`,
+  before the batch merge
+- `git merge-base --is-ancestor 3a24f5423d bce992372d` → **false**: the
+  theme-ref splitting commit was **not** in that tree
+- both arms failed identically there, and the same seven still fail after
+  fast-forwarding onto `6ca60222ff`, which does contain it
+
+So `StyledHOCNamed:10` and `StyledButtonTheme:9` are older than theme-ref
+splitting and cannot have been caused by it. They are theme resolution failing
+on **web**, reproducible in the kitchen-sink `default` project, which is a much
+cheaper reproduction than the native fixture path if the two turn out to share a
+cause.
+
 ## Not swept
 
 `OnLayoutStress` x6 are perf gates and were only ever observed under load, so
