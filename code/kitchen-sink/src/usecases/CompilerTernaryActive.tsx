@@ -1,10 +1,7 @@
 /**
- * Tests compiler extraction of ternaries mixing theme-token and non-token values.
- * Regression test for bug where fontWeight ternary was dropped when combined
- * with a theme-token color ternary on native.
- *
- * The former native compiler was unconditionally adding plain styles
- * (fontWeight) from ternary branches instead of wrapping them in the conditional.
+ * Tests the native compiler's conservative bailout for ternaries that mix theme
+ * tokens with non-token values. Static compiler coverage owns the lowering
+ * decision; Detox verifies that the bailout matches the explicit runtime path.
  */
 
 import { useState } from 'react'
@@ -75,12 +72,12 @@ export function CompilerTernaryActive() {
       </Button>
 
       <YStack gap="2">
-        <Text fontSize="2">Optimized:</Text>
+        <Text fontSize="2">Compiler path:</Text>
         <ActiveText isActive={isActive} label="Hello World" />
       </YStack>
 
       <YStack gap="2">
-        <Text fontSize="2">Non-optimized:</Text>
+        <Text fontSize="2">Explicit runtime:</Text>
         <ActiveTextNoOpt isActive={isActive} label="Hello World" />
       </YStack>
     </YStack>
