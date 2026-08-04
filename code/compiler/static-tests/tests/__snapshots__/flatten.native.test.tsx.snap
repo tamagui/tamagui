@@ -51,6 +51,6 @@ exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
         )
       }
 
-function __TamaguiNativeStyle108() { return __TamaguiNativeStyle108._ ?? (__TamaguiNativeStyle108._ = {"flexDirection":"column","backgroundColor":"hsla(0, 0%, 8%, 1)","transform":[{"translateX":20},{"translateY":10},{"rotate":"10deg"}]}); } __TamaguiNativeStyle108();
+function __TamaguiNativeStyle108() { return __TamaguiNativeStyle108._ ?? (__TamaguiNativeStyle108._ = {"flexDirection":"column","backgroundColor":"#030712","transform":[{"translateX":20},{"translateY":10},{"rotate":"10deg"}]}); } __TamaguiNativeStyle108();
 const __TamaguiNativeView = require('react-native').View;"
 `;
