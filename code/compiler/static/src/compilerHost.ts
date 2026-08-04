@@ -1273,6 +1273,17 @@ export function createTamaguiCompilerHost(
           props[entry.name] = entry.value.value
         }
       }
+      const disableOptimizationEntry = input.element.entries.find(
+        (entry) => entry.kind === 'prop' && entry.name === 'disableOptimization'
+      )
+      if (disableOptimizationEntry || Object.hasOwn(props, 'disableOptimization')) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'disableOptimization keeps the component on the runtime path',
+          disableOptimizationEntry?.span
+        )
+      }
       if (component.domTag && props.hidden) props.display = 'none'
       if (
         platform === 'native' &&
