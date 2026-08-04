@@ -381,6 +381,57 @@ function evaluateNode(
   }
 }
 
+export interface ConditionalEvaluation {
+  /** Span of the test expression, sliced verbatim into compiled output. */
+  test: SourceSpan
+  whenTrue: { value: StaticEvaluationValue; dependencies: ResolvedModuleId[] }
+  whenFalse: { value: StaticEvaluationValue; dependencies: ResolvedModuleId[] }
+}
+
+/**
+ * A conditional whose test resists static evaluation while both branches
+ * evaluate: `cond ? 'body' : 'heading'`. Plain evaluation bails on the test;
+ * this recovers the branch values so a lowering can resolve each branch at
+ * compile time and leave only the test in the output. Returns null for any
+ * other expression shape — the caller keeps its ordinary bailout.
+ */
+export function evaluateConditionalExpression(
+  resolver: SymbolResolver,
+  reference: ExpressionReference
+): ConditionalEvaluation | null {
+  const node = resolver.expressionNode(reference)
+  if (!node) return null
+  const expression = unwrapExpression(node)
+  if (!isAstNode(expression) || expression.type !== 'ConditionalExpression') return null
+  const testNode = childNode(expression, 'test')
+  const consequent = childNode(expression, 'consequent')
+  const alternate = childNode(expression, 'alternate')
+  if (!testNode || !consequent || !alternate) return null
+  const trueState: EvaluationState = {
+    activeDefinitions: new Set(),
+    dependencies: new Set(),
+  }
+  const whenTrue = evaluateNode(resolver, reference.id, consequent, trueState)
+  if (!whenTrue.ok) return null
+  const falseState: EvaluationState = {
+    activeDefinitions: new Set(),
+    dependencies: new Set(),
+  }
+  const whenFalse = evaluateNode(resolver, reference.id, alternate, falseState)
+  if (!whenFalse.ok) return null
+  return {
+    test: spanOf(reference.id, testNode),
+    whenTrue: {
+      value: whenTrue.value,
+      dependencies: [...trueState.dependencies].sort(),
+    },
+    whenFalse: {
+      value: whenFalse.value,
+      dependencies: [...falseState.dependencies].sort(),
+    },
+  }
+}
+
 export function evaluateExpression(
   resolver: SymbolResolver,
   reference: ExpressionReference
