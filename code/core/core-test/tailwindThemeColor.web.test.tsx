@@ -5,15 +5,15 @@ import { createTamagui, getConfig, StyleObjectValue } from '../web/src'
 import { Text, View } from '../tailwind/src'
 import { findRule, splitTailwindStyles } from '../tailwind/src/__tests__/utils'
 
-// the tailwind frontend should resolve semantic theme-value color names (color1-12,
+// the tailwind frontend should resolve semantic theme-value color names (color1-11,
 // background, border-color, …) to their theme css var (var(--color5)), theme-aware
 // and never as a dead literal through the shared property-scoped lookup.
 beforeAll(() => {
-  createTamagui(defaultConfig as any)
+  createTamagui(defaultConfig)
 })
 
 function theme() {
-  return (getConfig() as any).themes.light
+  return getConfig().themes.light
 }
 
 function colorRule(className: string, prop: string) {
@@ -55,15 +55,15 @@ describe('tailwind theme-value color classes', () => {
   })
 
   test('a configured palette token resolves to its CSS variable', () => {
-    expect((getConfig() as any).tokensParsed.color).toHaveProperty('blue-500')
+    expect(getConfig().tokensParsed.color).toHaveProperty('blue-500')
     const rule = colorRule('bg-blue-500', 'backgroundColor')
     expect(rule).toBeTruthy()
     expect(rule[StyleObjectValue]).toBe('var(--c-color-blue-500)')
   })
 
   test('an unconfigured palette name passes through', () => {
-    expect((getConfig() as any).tokensParsed.color).not.toHaveProperty('brand-500')
-    expect(colorRule('bg-brand-500', 'backgroundColor')).toBeNull()
+    expect(getConfig().tokensParsed.color).not.toHaveProperty('unconfigured-500')
+    expect(colorRule('bg-unconfigured-500', 'backgroundColor')).toBeNull()
   })
 
   test('non-color arbitrary width is unaffected', () => {

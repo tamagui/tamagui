@@ -428,3 +428,28 @@ The original estimate of about 28 maps omitted the light/dark multiplier for
 base, accent, and brand. The implemented tree's exact expected count is 36:
 eight normal maps, eight accent maps, eight brand maps, and twelve semantic
 color maps. `themes.test.ts` asserts both 128 names and 36 distinct maps.
+
+## 2026-08-03 checkpoint
+
+The implementation is landed through `8636bd5186`. A follow-up fixture pass
+updates the accent examples to the brand-tint contract, the adaptive ramp to
+`color1` through `color11`, selected-state checkbox styling, ListItem theme
+expectations, and RenderProp absolute palette tokens. Before the machine-load
+stop, the demos build and kitchen-sink lint passed. The focused accent browser
+suite and Tailwind theme-color unit suite had also passed before the last
+fixture edits. Kitchen-sink typecheck and the combined browser rerun were
+intentionally stopped.
+
+The remaining visual migration is mechanical but broad. This command currently
+finds 303 old palette-token references in live kitchen-sink and demos source:
+
+```sh
+rg -n '\b(gray|mauve|slate|sage|olive|sand|tomato|red|ruby|crimson|pink|plum|purple|violet|iris|indigo|blue|cyan|teal|jade|green|grass|bronze|gold|brown|orange|amber|yellow|lime|mint|sky)[0-9]{1,2}\b' code/kitchen-sink/src code/demos/src -g '*.ts' -g '*.tsx'
+```
+
+Replace palette-specific values with absolute kebab-case tokens, preserving the
+intended shade and contrast. `OnLayoutStressCase.tsx` also reads removed palette
+keys through `useTheme()` and must switch to configured color tokens before its
+browser test can be trusted. After that sweep, rerun kitchen-sink lint,
+typecheck, the affected Playwright cases, and the full visual pass on an
+unloaded machine.

@@ -37,7 +37,6 @@ export declare const webPropsToSkip: {
     transition: boolean;
     backdropFilter: boolean;
     WebkitBackdropFilter: boolean;
-    background: boolean;
     borderTop: boolean;
     borderRight: boolean;
     borderBottom: boolean;

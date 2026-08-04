@@ -223,7 +223,6 @@ export declare const stylePropsView: {
     transition?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
-    background?: boolean | undefined;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -393,6 +392,7 @@ export declare const stylePropsView: {
     borderBlock: boolean;
     borderInline: boolean;
     filter: boolean;
+    background: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
     outline: boolean;
@@ -505,7 +505,6 @@ export declare const stylePropsText: {
     transition?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
-    background?: boolean | undefined;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -685,6 +684,7 @@ export declare const stylePropsText: {
     borderBlock: boolean;
     borderInline: boolean;
     filter: boolean;
+    background: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
     outline: boolean;
@@ -778,7 +778,6 @@ export declare const stylePropsAll: {
     transition?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
-    background?: boolean | undefined;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -958,6 +957,7 @@ export declare const stylePropsAll: {
     borderBlock: boolean;
     borderInline: boolean;
     filter: boolean;
+    background: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
     outline: boolean;
@@ -1048,7 +1048,6 @@ export declare const validStyles: {
     transition?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
-    background?: boolean | undefined;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -1218,6 +1217,7 @@ export declare const validStyles: {
     borderBlock: boolean;
     borderInline: boolean;
     filter: boolean;
+    background: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
     outline: boolean;

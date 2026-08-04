@@ -17,7 +17,7 @@ test('ListItem renders correctly with default theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
+  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)')
 
   await expect(page.locator('#themed-list-item-default > svg')).toBeVisible()
 })
@@ -32,7 +32,7 @@ test('ListItem renders correctly with light theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
+  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)')
 })
 
 test('ListItem renders correctly with dark theme', async ({ page }) => {
@@ -45,13 +45,13 @@ test('ListItem renders correctly with dark theme', async ({ page }) => {
   await expect(subTitle).toBeVisible()
 
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(10, 10, 10)')
+  expect(styles.backgroundColor).toBe('rgb(3, 7, 18)')
 })
 
 test('ListItem with accent theme renders correctly in light theme', async ({ page }) => {
   const listItem = page.locator('#themed-list-item-light-accent')
   const title = listItem.getByText('<Theme name="accent">', { exact: true })
-  const subTitle = listItem.getByText('light + accent = light_accent (contrasting)', {
+  const subTitle = listItem.getByText('light + accent = light_accent brand tint', {
     exact: true,
   })
 
@@ -59,20 +59,14 @@ test('ListItem with accent theme renders correctly in light theme', async ({ pag
   await expect(title).toBeVisible()
   await expect(subTitle).toBeVisible()
 
-  // Accent theme inverts colors - light + accent = dark background
   const styles = await getStyles(listItem)
-  const match = styles.backgroundColor.match(/rgb\((\d+), (\d+), (\d+)\)/)
-  expect(match).toBeTruthy()
-  const [, r, g, b] = match!.map(Number)
-  expect(r).toBeLessThan(50)
-  expect(g).toBeLessThan(50)
-  expect(b).toBeLessThan(50)
+  expect(styles.backgroundColor).toBe('rgb(219, 234, 254)')
 })
 
 test('ListItem with accent theme renders correctly in dark theme', async ({ page }) => {
   const listItem = page.locator('#themed-list-item-dark-accent')
   const title = listItem.getByText('<Theme name="accent">', { exact: true })
-  const subTitle = listItem.getByText('dark + accent = dark_accent (contrasting)', {
+  const subTitle = listItem.getByText('dark + accent = dark_accent brand tint', {
     exact: true,
   })
 
@@ -80,14 +74,8 @@ test('ListItem with accent theme renders correctly in dark theme', async ({ page
   await expect(title).toBeVisible()
   await expect(subTitle).toBeVisible()
 
-  // Accent theme inverts colors - dark + accent = light background
   const styles = await getStyles(listItem)
-  const match = styles.backgroundColor.match(/rgb\((\d+), (\d+), (\d+)\)/)
-  expect(match).toBeTruthy()
-  const [, r, g, b] = match!.map(Number)
-  expect(r).toBeGreaterThan(200)
-  expect(g).toBeGreaterThan(200)
-  expect(b).toBeGreaterThan(200)
+  expect(styles.backgroundColor).toBe('rgb(28, 57, 142)')
 })
 
 test('ListItem renders correctly with outlined variant', async ({ page }) => {

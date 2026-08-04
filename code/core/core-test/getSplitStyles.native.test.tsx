@@ -31,6 +31,23 @@ describe('getSplitStyles', () => {
     expect(styles.style).toEqual({ color: 'red' })
   })
 
+  test(`background lowers single colors to backgroundColor and drops web-only values`, () => {
+    expect(getSplitStylesFor({ background: 'red' }).style).toEqual({
+      backgroundColor: 'red',
+    })
+
+    for (const background of [
+      '#fff url(x.png) no-repeat',
+      'url(x.png)',
+      'linear-gradient(to right, red, blue)',
+    ]) {
+      const { style, viewProps } = getSplitStylesFor({ background })
+      expect(style?.background).toBe(undefined)
+      expect(style?.backgroundColor).toBe(undefined)
+      expect(viewProps.background).toBe(undefined)
+    }
+  })
+
   test(`gap properties are correctly applied`, () => {
     const { style } = getSplitStylesFor({
       columnGap: 10,

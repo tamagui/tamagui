@@ -265,6 +265,9 @@ export const stylePropsView = {
   borderBlock: true,
   borderInline: true,
   filter: true,
+  // the v6 bg shorthand maps here; native lowers single color values to
+  // backgroundColor and drops url()/gradient/multi-part values it can't express
+  background: true,
   // RN 0.76+ supports linear-gradient via backgroundImage
   backgroundImage: true,
   // the actual RN 0.76+ prop name (backgroundImage expands to this on native)

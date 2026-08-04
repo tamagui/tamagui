@@ -18,7 +18,7 @@ export const ThemedListItem = () => (
       <ListItem
         id="themed-list-item-accent"
         title="Accent"
-        subTitle="Accent (contrasting) list item"
+        subTitle="Accent brand tint list item"
         icon={ChevronRight}
         size="3"
         borderRadius="3"
@@ -58,7 +58,7 @@ export const ThemedListItem = () => (
         <ListItem
           id="themed-list-item-light-accent"
           title='<Theme name="accent">'
-          subTitle="light + accent = light_accent (contrasting)"
+          subTitle="light + accent = light_accent brand tint"
           icon={ChevronRight}
           size="3"
           borderRadius="3"
@@ -72,7 +72,7 @@ export const ThemedListItem = () => (
         <ListItem
           id="themed-list-item-dark-accent"
           title='<Theme name="accent">'
-          subTitle="dark + accent = dark_accent (contrasting)"
+          subTitle="dark + accent = dark_accent brand tint"
           icon={ChevronRight}
           size="3"
           borderRadius="3"
@@ -99,7 +99,7 @@ export const ThemedListItem = () => (
 
     <H5>Apply (context):</H5>
 
-    <ListItem.Apply color="red10">
+    <ListItem.Apply color="red-600">
       <ListItem
         id="themed-list-item-apply-color"
         title="With Apply color"
@@ -120,7 +120,7 @@ export const ThemedListItem = () => (
       />
     </ListItem.Apply>
 
-    <ListItem id="themed-list-item-child-icon" size="10" color="red10" borderRadius="3">
+    <ListItem id="themed-list-item-child-icon" size="10" color="red-600" borderRadius="3">
       <ListItem.Icon>
         <Star />
       </ListItem.Icon>
