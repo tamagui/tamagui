@@ -253,7 +253,7 @@ Media rides the same interception shape as themes, one layer over:
   previously pushed keys its own style dropped, closing the last
   resurrection window RN's sticky merge would otherwise leave open.
 
-#### Test/demo surfaces (2026-08-04, code-complete, on-device run pending)
+#### Test/demo surfaces (2026-08-04, verified on-device — see integrated results below)
 
 - `NativeRegistryParityCase`: self-checking correctness — many prop kinds,
   pinned nested sub-theme receives no updates, warm toggles send bare
@@ -409,6 +409,56 @@ timestamp) or the fully-synchronous engine call; it has no vsync floor.
   baseline grid rendered invisibly (DynamicColorIOS resolves by OS scheme,
   and the harness forces light sub-themes). Visual verification needs the sim
   in light appearance.
+
+#### Integrated runtime-mode results (2026-08-04, iOS sim, dev build, after core integration)
+
+Same 500-square harness, now with the `fastpath` scenario running the REAL
+pipeline: `styled()` components under `<Theme>`, engine set via
+`setNativeStyleEngine`, useThemeState listener interception. All four
+scenarios in one session, medians of 20 toggles:
+
+| scenario | jsDone/toggle | React render ms (total run) | sq0 renders | engine commits |
+| --- | --- | --- | --- | --- |
+| tamagui baseline | 250ms | 5403ms | 1 per toggle | 0 |
+| fastpath (integrated) | 150ms | 21ms | **0** | 25/25, 0 misses |
+| native (pre-filled tables) | 42ms | 0 | 0 | 25/25 |
+| rn floor | 76ms | 1468ms | 0 | 0 |
+
+- The headline: React render work drops ~260x (5403ms → 21ms, just the Theme
+  provider re-rendering) and the profiled square never renders. Frame time
+  halved (283ms → 167ms median).
+- The gap between integrated fastpath (150ms) and the pure-native floor
+  (42ms) is runtime-mode JS: 500 listener invocations each running
+  getSplitStyles cold on first visit. Compiler emit mode exists to close
+  exactly this gap (pre-resolved mappings, no per-view style computation).
+- Harness lesson: the first integrated run showed sq0 rendering once per
+  toggle — an unstable inline `onRender` callback invalidated the grid's
+  `useMemo` so every square remounted per toggle. Stable callback → 0. The
+  per-square Profiler control keeps earning its place.
+
+#### On-device verification of the integrated path (2026-08-04)
+
+- `NativeRegistryParityCase`: ALL 10 CHECKS PASS on iOS sim — links,
+  cold/warm semantics, pinned nested sub-theme untouched, resolved values
+  match theme (processed color ints), per-side border expansion, zero
+  misses, `getViewState` tables synced, re-render cold reset.
+- Media flips verified end to end without GUI rotation: the parity case's
+  `flip media` button fires a synthetic `Dimensions.set` (the exact event
+  the media driver subscribes to). Activation pushed `paddingBottom: 30` +
+  sm-only `minHeight: 70` cold to all 7 views; deactivation pushed
+  `minHeight: null` (dropped-key reset) with paddingBottom back to base.
+- Two real core bugs found and fixed by this run, both with JS regression
+  tests:
+  1. `$`-prefixed tokens missed theme lookup in v3 direct style
+     (`tokenVariable` didn't strip `$`), so classic `$background` passed
+     through as a literal string on the fast path.
+  2. Native media recomputes resolved against the render-captured
+     `styleProps.mediaState` — a mount-time snapshot in `first-render` mode
+     (the native default) — so rotation styles never applied. Fixed to
+     resolve `getMedia()` live. Same fix coalesces the per-key listener
+     storm (one dimension change = one update per configured media key,
+     ~11x redundant cold recomputes) into a single recompute per event
+     turn, with the skipped re-render as the miss fallback.
 
 ### Phase 1: engine + compiler, themes only
 
