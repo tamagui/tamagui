@@ -32,7 +32,7 @@ const ButtonOuter = styled(View, {
 
 const ButtonText = styled(Text, {
   fontWeight: 'bold',
-  textAlign: 'center',
+  text: 'center',
   render: 'span',
 })
 
@@ -42,13 +42,8 @@ export default function Index() {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
   return (
-    <View theme={theme} flexDirection="column" gap={16} bg="background" minHeight="100vh">
-      <View
-        render="header"
-        padding="6"
-        borderBottomWidth={1}
-        borderBottomColor="border-color"
-      >
+    <View theme={theme} flexDirection="column" gap={16} bg="background" minH="100vh">
+      <View render="header" p="6" borderBottomWidth={1} borderBottomColor="border-color">
         <Text render="h1" fontSize="24px lg:32px">
           Welcome to Tamagui with Remix
         </Text>
@@ -97,13 +92,7 @@ export default function Index() {
           native performance and capabilities without having to rewrite your components.
         </Text>
       </Section>
-      <View
-        render="footer"
-        padding="6"
-        justifyContent="center"
-        marginTop="auto"
-        paddingTop={100}
-      >
+      <View render="footer" p="6" justify="center" mt="auto" pt={100}>
         <Text render="p" fontSize="16px lg:3">
           &copy; {new Date().getFullYear()} Tamagui with Remix.
         </Text>

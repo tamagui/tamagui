@@ -32,21 +32,15 @@ function textContent(value: unknown): string {
   return ''
 }
 
-function responder(rendered: Rendered, testID: string): TestNode {
+function control(rendered: Rendered, testID: string): TestNode {
   return rendered.root.find(
-    (node) =>
-      node.props.testID === testID &&
-      typeof node.props.onStartShouldSetResponder === 'function' &&
-      node.props.onStartShouldSetResponder({}) === true &&
-      typeof node.props.onResponderGrant === 'function' &&
-      typeof node.props.onResponderRelease === 'function'
+    (node) => node.props.testID === testID && typeof node.props.onPress === 'function'
   )
 }
 
 async function press(node: TestNode) {
   await act(async () => {
-    node.props.onResponderGrant({})
-    node.props.onResponderRelease({})
+    node.props.onPress()
   })
 }
 
@@ -62,17 +56,21 @@ describe('Expo Router starter on native', () => {
       )
     })
 
-    await press(responder(rendered!, 'toast-show'))
+    await press(control(rendered!, 'toast-show'))
 
+    expect(
+      rendered!.root.findAll(
+        (node) =>
+          textContent(node.props.children) === 'Successfully saved!' &&
+          node.props.toast?.delete !== true
+      ).length
+    ).toBeGreaterThan(0)
+
+    await press(control(rendered!, 'toast-hide'))
     expect(
       rendered!.root
-        .findAll((node) => node.props.testID === 'toast-title')
-        .some((node) => textContent(node.props.children) === 'Successfully saved!')
+        .findAll((node) => node.props.toast?.title === 'Successfully saved!')
+        .every((node) => node.props.toast.delete === true)
     ).toBe(true)
-
-    await press(responder(rendered!, 'toast-hide'))
-    expect(
-      rendered!.root.findAll((node) => node.props.testID === 'toast-title')
-    ).toHaveLength(0)
   })
 })
