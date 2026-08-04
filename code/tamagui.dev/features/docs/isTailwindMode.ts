@@ -14,20 +14,31 @@ function paramMode(search?: string): CodeMode | null {
  *   (tailwind.tamagui.dev, /tailwind*); unstyled is param/cookie only.
  * - otherwise the sticky `tamaguiSyntax` cookie set by the header toggle decides.
  */
-export function getDocsMode(props: { search?: string; request?: Request }): CodeMode {
+export function getDocsMode(props: {
+  path?: string
+  search?: string
+  request?: Request
+}): CodeMode {
   const fromParam = paramMode(props.search)
   if (fromParam) return fromParam
 
   const host = props.request?.headers.get('host') || ''
   if (host.startsWith('tailwind.')) return 'tailwind'
 
-  const pathname = props.request ? new URL(props.request.url).pathname : ''
+  const pathname = props.request
+    ? new URL(props.request.url).pathname
+    : (props.path ?? '')
   if (pathname.startsWith('/tailwind')) return 'tailwind'
+  if (pathname.startsWith('/unstyled')) return 'unstyled'
 
   return cookieCodeMode(props.request?.headers.get('cookie'))
 }
 
 /** back-compat boolean used by non-docs routes that only care about tailwind */
-export function isTailwindMode(props: { search?: string; request?: Request }): boolean {
+export function isTailwindMode(props: {
+  path?: string
+  search?: string
+  request?: Request
+}): boolean {
   return getDocsMode(props) === 'tailwind'
 }

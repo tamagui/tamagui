@@ -19,10 +19,11 @@ export async function generateStaticParams() {
   return paths
 }
 
-export async function loader({ params, search, request }) {
+export async function loader(props) {
+  const { params, search } = props
   const { getMDXBySlug } = await import('~/features/mdx/getMDXBySlug')
   const { getDocsMode } = await import('~/features/docs/isTailwindMode')
-  const mode = getDocsMode({ search, request })
+  const mode = getDocsMode(props)
   const { frontmatter, code } = await getMDXBySlug('data/docs/core', params.slug, {
     mode,
   })

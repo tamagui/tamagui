@@ -149,6 +149,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       z={50000}
     >
       <XStack items="center" gap="4">
+        <View id="docs-version-picker-slot" />
+
         <TooltipGroup delay={tooltipDelay}>
           <XGroup maxH={32} bg="transparent" items="center" size="4">
             <XGroup.Item>
