@@ -45,8 +45,8 @@ const TamaSquare = styled(TamaguiView, {
   borderRadius: 3,
   borderWidth: 1,
   margin: 1,
-  backgroundColor: '$background',
-  borderColor: '$color',
+  backgroundColor: 'background',
+  borderColor: 'color',
 })
 
 // visible proof the sub-theme actually resolves and changes: if this readout

@@ -29,8 +29,8 @@ const ShowdownSquare = styled(TamaguiView, {
   borderRadius: 3,
   borderWidth: 1,
   margin: 1,
-  backgroundColor: '$background',
-  borderColor: '$color',
+  backgroundColor: 'background',
+  borderColor: 'color',
 })
 
 type SubTheme = 'red' | 'green'

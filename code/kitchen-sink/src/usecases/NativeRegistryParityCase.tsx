@@ -2,7 +2,7 @@
 // (plans/native-fast-path.md). unlike the bench case (which proves speed),
 // this proves the engine commits the SAME styles a real re-render would, in
 // the situations that can break it:
-//   - many prop kinds (colors, radius, opacity, shadow, spacing, $sm media)
+//   - many prop kinds (colors, radius, opacity, shadow, spacing, sm: media)
 //   - nested sub-themes: a pinned inner theme must receive NO updates when
 //     the outer theme toggles; followers must all update
 //   - warm-path integrity: re-toggling an already-pushed theme sends bare
@@ -12,7 +12,7 @@
 //     that produced them)
 //   - engine table introspection via getViewState (activeState + both theme
 //     tables present + sticky nativeProps synced)
-//   - media flips (rotate the sim): $sm activates in landscape (minWidth
+//   - media flips (rotate the sim): sm: activates in landscape (minWidth
 //     640), adds paddingBottom; rotating back must push paddingBottom: null
 //     (reset-to-default), never leave it stuck
 // run with ?test=NativeRegistryParityCase / -directUseCase, tap "run parity",
@@ -36,13 +36,13 @@ const FOLLOWERS = 6
 const PSquare = styled(TamaguiView, {
   width: 56,
   height: 56,
-  margin: '$2',
-  padding: '$2',
-  borderRadius: '$4',
+  margin: '2',
+  padding: '2',
+  borderRadius: '4',
   opacity: 0.9,
-  backgroundColor: '$background',
-  borderColor: '$color',
-  shadowColor: '$shadowColor',
+  backgroundColor: 'background',
+  borderColor: 'color',
+  shadowColor: 'shadow-color',
   shadowOpacity: 0.5,
   shadowRadius: 4,
   // v3 flat candidates. sm (minWidth 640) is landscape-only on iPhone:
