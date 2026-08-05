@@ -20,6 +20,9 @@
 //                 call, zero React work. the engine's own floor.
 //   rn            inline RN views restyled by a parent setState: the cheapest
 //                 possible React re-render, the floor bounding any JS approach.
+//   rnHost        the same, on RN's `unstable_NativeView` host component
+//                 instead of `<View>`, which measures what View's JS wrapper
+//                 costs the paths that actually re-render.
 // honesty controls: a React.Profiler around each scenario counts commits and
 // sums actualDuration (native must show 0 commits during its run), engine
 // commit/miss counters and linked view count are read per run, warmup runs are
@@ -164,12 +167,44 @@ function CompiledGrid({
 
 // ── native scenario ──
 
-// values mirror v6 defaultConfig light_red / light_green background + color;
-// exact equality with the theme is cosmetic, timing is color-independent
+// this is the engine's floor: the same commit with no React and no tamagui.
+// its slots MUST mirror what compiler mode links or the comparison is rigged —
+// the engine merges base over state per view per commit, so a floor carrying
+// two state keys and no base does a fraction of the per-view work and reads
+// artificially fast. base is the compiled square's flattened static style
+// (what _withNativeStyle passes), state is the same five color keys the
+// compiler mapping produces (borderColor expands per side); the values mirror
+// v6 defaultConfig light_red / light_green, and timing is color-independent.
+const NATIVE_BASE = {
+  width: 10,
+  height: 10,
+  borderTopLeftRadius: 3,
+  borderTopRightRadius: 3,
+  borderBottomRightRadius: 3,
+  borderBottomLeftRadius: 3,
+  borderTopWidth: 1,
+  borderRightWidth: 1,
+  borderBottomWidth: 1,
+  borderLeftWidth: 1,
+  marginTop: 1,
+  marginRight: 1,
+  marginBottom: 1,
+  marginLeft: 1,
+  borderStyle: 'solid',
+}
+
+const sides = (color: string) => ({
+  borderTopColor: color,
+  borderRightColor: color,
+  borderBottomColor: color,
+  borderLeftColor: color,
+})
+
 const SLOTS: ViewSlots = {
+  base: NATIVE_BASE,
   state: {
-    red: { backgroundColor: '#ffe2e2', borderColor: '#c10007' },
-    green: { backgroundColor: '#dcfce7', borderColor: '#008236' },
+    red: { backgroundColor: '#ffe2e2', ...sides('#c10007') },
+    green: { backgroundColor: '#dcfce7', ...sides('#008236') },
   },
 }
 
@@ -196,18 +231,31 @@ function NativeGrid() {
   )
 }
 
-// ── rn floor scenario ──
+// ── rn floor scenarios ──
 
 const rnStates = StyleSheet.create({
   red: { backgroundColor: '#ffe2e2', borderColor: '#c10007' },
   green: { backgroundColor: '#dcfce7', borderColor: '#008236' },
 })
 
-function RNGrid({ sub }: { sub: 'red' | 'green' }) {
+// RN's <View> is a JS component: it reads TextAncestorContext, destructures
+// ~25 aria/accessibility props, and renders <ViewNativeComponent>, so every
+// view costs two React elements and a context read per render.
+// `unstable_NativeView` IS that inner host component (RN exports it as an
+// escape hatch for libraries, no semver guarantee). The compiler emits
+// `require('react-native').View` today, so the rnHost row measures the ceiling
+// on what emitting the host component instead could buy the re-rendering
+// paths. The fast path re-renders nothing, so it can only gain at mount.
+const NativeViewPrimitive = (
+  require('react-native') as { unstable_NativeView: typeof View }
+).unstable_NativeView
+
+function RNGrid({ sub, host }: { sub: 'red' | 'green'; host: boolean }) {
+  const Square = host ? NativeViewPrimitive : View
   return (
     <View style={styles.grid}>
       {indices.map((i) => (
-        <View key={i} style={[styles.nativeSq, rnStates[sub]]} />
+        <Square key={i} style={[styles.nativeSq, rnStates[sub]]} />
       ))}
     </View>
   )
@@ -281,6 +329,13 @@ type Result = {
   // synchronous time inside engine calls per toggle: the part of jsDone that
   // is native commit work rather than React/JS
   engineMs: ReturnType<typeof summarize>
+  // jsDone is the max of these two, which hides which one it is waiting on.
+  // engineAt is when the last engine call finished, reactAt when React's last
+  // commit landed. a big reactAt with a tiny reactRenderMs means jsDone is
+  // trailing an idle React commit that lands after the pixels are already
+  // committed, not measuring work.
+  engineAt: ReturnType<typeof summarize>
+  reactAt: ReturnType<typeof summarize>
   jsDoneMissed: number
   reactCommits: number
   reactRenderMs: number
@@ -304,7 +359,14 @@ type Result = {
   stateNameCalls: number
 }
 
-type Scenario = 'tamagui' | 'fastpath' | 'compiled' | 'compiledFast' | 'native' | 'rn'
+type Scenario =
+  | 'tamagui'
+  | 'fastpath'
+  | 'compiled'
+  | 'compiledFast'
+  | 'native'
+  | 'rn'
+  | 'rnHost'
 
 const engineScenarios: Scenario[] = ['fastpath', 'compiledFast', 'native']
 
@@ -341,6 +403,8 @@ export function NativeRegistryBenchCase() {
     const jsDone: number[] = []
     const frameTimes: number[] = []
     const engineMs: number[] = []
+    const engineAt: number[] = []
+    const reactAt: number[] = []
     let jsDoneMissed = 0
     let state: 'red' | 'green' = subRef.current
     let probeAtMeasureStart = { ...engineProbe }
@@ -364,6 +428,10 @@ export function NativeRegistryBenchCase() {
         sync.push(tSync)
         frameTimes.push(tFrame)
         engineMs.push(engineProbe.ms - engineMsBefore)
+        if (engineProbe.lastAt > t0) engineAt.push(engineProbe.lastAt - t0)
+        if (profilerRef.current.lastCommitAt > t0) {
+          reactAt.push(profilerRef.current.lastCommitAt - t0)
+        }
         if (name === 'native') {
           jsDone.push(tSync)
         } else if (commitAt > t0) {
@@ -381,6 +449,8 @@ export function NativeRegistryBenchCase() {
       jsDone: summarize(jsDone.length ? jsDone : [0]),
       frame: summarize(frameTimes),
       engineMs: summarize(engineMs),
+      engineAt: summarize(engineAt.length ? engineAt : [0]),
+      reactAt: summarize(reactAt.length ? reactAt : [0]),
       jsDoneMissed,
       reactCommits: profilerRef.current.commits,
       reactRenderMs: Number(profilerRef.current.renderMs.toFixed(1)),
@@ -419,6 +489,7 @@ export function NativeRegistryBenchCase() {
             ['runCompiledFast', 'compiledFast', 'compiled fast'],
             ['runNative', 'native', 'native'],
             ['runRN', 'rn', 'rn floor'],
+            ['runRNHost', 'rnHost', 'rn host view'],
           ] as [string, Scenario, string][]
         ).map(([testID, name, label]) => (
           <Pressable
@@ -464,7 +535,9 @@ export function NativeRegistryBenchCase() {
           <CompiledGrid key={scenario} sub={sub} onSquareRender={onSquareRender} />
         ) : null}
         {scenario === 'native' ? <NativeGrid /> : null}
-        {scenario === 'rn' ? <RNGrid sub={sub} /> : null}
+        {scenario === 'rn' || scenario === 'rnHost' ? (
+          <RNGrid key={scenario} sub={sub} host={scenario === 'rnHost'} />
+        ) : null}
       </Profiler>
     </View>
   )
