@@ -123,7 +123,18 @@ a regression from this batch:
   both platforms. The three colour assertions were therefore vacuous on Android rather than
   merely wrong, and were dropped instead of platform-forked; numeric height carries the
   suite.
-- **`AdaptLiveSlotSpike`** is the documented pre-existing flake.
+- **`AdaptLiveSlotSpike` is no longer behaving like the documented flake, and that
+  classification should not be repeated without checking.** On `2550d2a1ac` it failed
+  outright rather than retry-passing: the same test failed at 09:15:57 and again on its
+  in-place retry at 09:16:51, both with a 10 s `waitFor` timeout on
+  `toHaveText('sheet typed: sheet-ios')` for `sheet-live-slot-typed-value`, meaning typed
+  input never reached the sheet's slot. The other three tests in the suite passed around it
+  both times. READ across three cached logs, the identical Espresso signature appears at
+  03:45Z, 07:04Z and 09:15Z, so it has been stable across three consecutive runs rather
+  than flipping. Its older cross-run flip history is real, which is why it was recorded as
+  a flake, but the recent behaviour is a consistent Android failure in typing into a sheet
+  slot. Negative control on the obvious suspect: the 03:45Z occurrence predates the sheet
+  keyboard fix `f0f93c32b8` (pushed about 06:03Z), so that change did not cause it.
 
 **Verified on the run for `2550d2a1ac`: Android is down to `Accordion` and
 `AdaptLiveSlotSpike`.** `NativeRegistryCorrectness` and `NativeMixedDriver` both pass, so
