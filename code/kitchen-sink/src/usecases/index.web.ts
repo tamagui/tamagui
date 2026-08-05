@@ -57,8 +57,6 @@ const loaders: Record<string, () => ComponentType<any>> = {
   CheckboxDisabledOnPress: () =>
     require('./CheckboxDisabledOnPress').CheckboxDisabledOnPress,
   ClickDuringEnterCase: () => require('./ClickDuringEnterCase').ClickDuringEnterCase,
-  LifecycleOnlyEnterCase: () =>
-    require('./LifecycleOnlyEnterCase').LifecycleOnlyEnterCase,
   CodeExamplesInput: () => require('./CodeExamplesInput').CodeExamplesInput,
   ColorTokenFallback: () => require('./ColorTokenFallback').ColorTokenFallback,
   CompilerExtraction: () => require('./CompilerExtraction').CompilerExtraction,
