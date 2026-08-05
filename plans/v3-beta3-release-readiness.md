@@ -57,6 +57,36 @@ the `onPointer*` handlers to the native flatten bailout list and correct the cas
 palette names. The branch run on `ee76ceb69f` is the acceptance check for all three.
 That leaves `Accordion`, `NativeMixedDriver`, and the two keyboard-driven sheet cases.
 
+Of those, two are diagnosed and neither is a product defect, so neither blocks the cut.
+
+`NativeMixedDriver` is a **test bug**, owned by m3987. READ of Detox 20.47.0's
+`GetAttributesAction.kt`: `getFrame()` puts `view.width` and `view.height` straight into
+`frame`, which are raw pixels on Android, while the iOS frame is points. READ of the CI
+AVD: `hw.lcd.density=440`, a factor of 2.75, so the case's 40 dp node reports 110 and the
+suite's first assertion fails on every Android run forever. This is also why it is the
+only suite affected: it is the only one in `e2e` that reads `getAttributes().frame`.
+The animation-scale explanation is ruled out independently, because the case has no mount
+animation and `waitForHeight` only ever polls final targets, never intermediates. The fix
+divides `frame.height` by `frame.width / 120`, using the case's constant 120 dp width as
+the device pixel ratio, so it is unit-correct on both platforms with no platform branch
+and still catches a real 40-to-160 regression.
+
+`Accordion` is **two independent test-environment bugs**, owned by m3971, and the
+accordion itself is correct on both platforms. On iOS the flat-values migration
+`cfe12cb080` rewrote the case's width from the pre-v6 `$20` (about 224 px) to the v6
+token `20` (80 px). Every label then wraps about three times taller, the default-open
+first item pushes the second item's button below the 874 pt window, and Detox refuses the
+tap as obscured. Fix `f531d38190` pins `width={224}`; local Detox is 3 of 3. On Android
+the workflow set `disable-animations: true`, which zeroes the system animation scales.
+READ of reanimated's `NativeProxy.java`: its Android reduce-motion check is specifically
+`TRANSITION_ANIMATION_SCALE == 0`, so reanimated disables animations and the suite's
+intermediate-height assertions find content already at its final value or unmounted. Fix
+`445bbc2a00` keeps `disable-animations: true` and raises only `transition_animation_scale`
+after boot, so Detox's sync semantics stay conventional and only reanimated's trigger is
+defused. This applies to reanimated-driven suites only; `GroupPressTransitionMatrix` and
+`NativeMixedDriver` both use RN's Animated driver, which never consults that setting, so
+neither should move when `445bbc2a00` lands and neither is evidence against it.
+
 One piece of log noise to ignore while reading these runs: Metro prints
 `metro/resolve-failed: Failed to resolve assert from e2e/PressStyleNative.noRngh.test.ts`
 on every platform. The e2e files are Jest-side and never bundled into the app, and that
