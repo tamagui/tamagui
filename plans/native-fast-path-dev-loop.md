@@ -94,6 +94,34 @@ harness measures without changing a line of your source:
   grids build their elements with `createElement` so the compiler's JSX path
   can never claim them.
 
+## A generated `.native.tsx` fixture must be committed, not just generated
+
+Detox compiler fixtures work by building `Foo.tsx` through the CLI and renaming
+the result over `Foo.native.tsx`, which Metro then prefers. That only works if
+`Foo.native.tsx` EXISTS WHEN METRO STARTS. With `useWatchman=false` Metro will
+not resolve a `.native.tsx` that appears mid-session, so the app silently keeps
+running the uncompiled `.tsx` and every compiler-mode assertion reads zero.
+
+- Observed directly: editing `NativeRegistryCorrectnessCase.native.tsx` changed
+  nothing on device until Metro was restarted; after `--clear` the same edit
+  took effect. That is the same file the Detox fixture step writes.
+- This is what made `NativeRegistryCorrectness` red on both iOS and Android in
+  run 30971366037 with `activeLinks: 0`. The case itself is fine: with the
+  fixture actually resolved, the nested scenario reports `activeLinks: 3`,
+  `applyCalls: 0`, `commits: 3`, `misses: 0`, which is exactly what the test
+  asks for.
+- `CompilerTernaryActive.native.tsx` never had this problem because it is
+  committed. So is `NativeRegistryCorrectnessCase.native.tsx` now. The Detox
+  step still regenerates it every run; the committed copy exists so module
+  resolution is decided before Metro boots.
+- Regenerate it with:
+  `TAMAGUI_NATIVE_FAST_PATH=1 bun ../core/cli/dist/index.cjs build src/usecases/NativeRegistryCorrectnessCase.tsx --target native --output <dir>`
+  then move it into place and run oxfmt, since it is linted like any source file.
+- Harness note: the case's control row sits under the status bar on iPhone 17,
+  so HID taps (`xcodebuildmcp ui-automation tap`) cannot reach it. Detox's own
+  driver can. To drive it by hand, edit the generated fixture's initial mode
+  instead of trying to tap the top row.
+
 ## Running the compiler-mode bench
 
 1. `TAMAGUI_NATIVE_FAST_PATH=1 bun expo start --clear --port 8081` in
