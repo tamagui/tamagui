@@ -29,12 +29,12 @@ export type {
   SafeAreaFrame,
   SafeAreaMetrics,
   LinearGradientState,
-  ZeegoState,
   BurntState,
   NativePortalProps,
   NativePortalHostProps,
   NativePortalProviderProps,
 } from './types'
+export type { NativeMenuAdapter, NativeMenuModule } from './nativeMenuState'
 
 // portal
 export { getPortal } from './portalState'
@@ -76,9 +76,10 @@ export {
 } from './keyboardControllerState'
 export type { KeyboardControllerState } from './keyboardControllerState'
 
-// zeego (native menus)
-export { getZeego } from './zeegoState'
-export type { ZeegoAccessor } from './zeegoState'
+// native menus
+export { getNativeMenuAdapter, registerNativeMenuAdapter } from './nativeMenuState'
+export { createExpoUIMenuAdapter } from './expoUIMenuAdapter'
+export type { ExpoUIMenuAdapterOptions } from './expoUIMenuAdapter'
 export { NativeMenuContext } from './nativeMenuContext'
 
 // burnt (native toasts)
