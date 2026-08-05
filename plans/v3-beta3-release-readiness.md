@@ -88,6 +88,43 @@ same-value `setState` no-ops. Full local run after it: `SheetPressRegression` 4 
 `SheetKeyboardFitContent` green, `SheetDragResist` green with no regression from the sheet
 change, 11 passed 3 skipped 0 failed with no retries.
 
+**Update after the run on `f0442280bd`: iOS is fully green and Android is the only red.**
+READ, `gh run view 30982975620 --log-failed` returned only the `Android Detox Tests` job,
+so every iOS shard passed. That confirms the `PointerEvents` compiler bailout fix and the
+sheet keyboard fix on device. Four Android suites remained, now all classified, and none is
+a regression from this batch:
+
+- **`Accordion` is a real Android product gap** and the one item here that needs an owner
+  decision. It is not the animation-scale issue: `445bbc2a00` is verified to have executed
+  in the correct order, and a controlled local pair proved the reduce-motion mechanism in
+  both directions, yet with reduce-motion confirmed off the accordion still snaps.
+  Driver-level probes show `HeightAnimator` passing the correct descriptor (`minHeight`
+  target 84.36, timing 5000 ms) and the UI-thread worklet calling `withTiming`, after which
+  the completion callback never fires and no intermediate layout ever exists, so the value
+  applies one-shot with no frames. Narrowing, INFERRED: reanimated core is healthy on the
+  device, since the Sheet suites animate transforms and pass, so the dead path is
+  specifically layout props driven through `useAnimatedStyle` on Fabric Android. The
+  accordion opens and closes correctly; only the animation is skipped. The fix is engine
+  work in reanimated's Fabric-Android layout-prop handling, or moving `HeightAnimator` off
+  layout props. Secondary unexplained wrinkle: CI still logs the reduced-motion warning
+  despite the ordered writes, so `52a1e44ede` adds a `settings get global
+  transition_animation_scale` readout before the Android tests for ground truth.
+- **`NativeRegistryCorrectness` was a fixture geometry bug**, unrelated to the iOS
+  fixture-resolution fix. All three tests died at Espresso `Couldn't click at (...),81
+  precision 16,16`: the root had `padding: 12`, so the control row sat about 12 dp from the
+  window top, and at 440 dpi the tap box spans 65-97 px across the 66 px status-bar
+  boundary, which Espresso refuses. Fixed by `paddingTop: 60`, which also clears iPhone
+  17's bar and retires the "control row unreachable by HID taps" harness note.
+- **`NativeMixedDriver`'s dp fix is validated** and now clears both height assertions. The
+  remaining failure was an assertion that cannot pass on Android at all: Detox's element
+  screenshot is `view.draw(Canvas(bitmap))`, a direct draw that never applies `View#alpha`,
+  so an opacity-0 view always paints opaque. iOS `getAttributes()` exposes no `alpha`
+  either, and `visible` stays true at opacity 0, so no per-element API observes opacity on
+  both platforms. The three colour assertions were therefore vacuous on Android rather than
+  merely wrong, and were dropped instead of platform-forked; numeric height carries the
+  suite.
+- **`AdaptLiveSlotSpike`** is the documented pre-existing flake.
+
 The four non-product diagnoses follow.
 
 `NativeMixedDriver` is a **test bug**, diagnosed by m3987. READ of Detox 20.47.0's
