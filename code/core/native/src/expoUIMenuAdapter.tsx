@@ -69,6 +69,24 @@ function elementOfType(
   return null
 }
 
+const warnedUnsupported = new Set<string>()
+
+// @expo/ui's MenuAction carries no subtitle, and its MenuView has no preview or
+// auxiliary view. these are decorations on a menu that is otherwise complete, so
+// drop them and warn once. throwing took down the whole app for an optional
+// embellishment, and an app that renders the same menu on zeego and on expo-ui
+// cannot avoid it without forking its markup per adapter.
+function warnUnsupported(feature: string) {
+  if (warnedUnsupported.has(feature) || process.env.NODE_ENV === 'production') {
+    return
+  }
+  warnedUnsupported.add(feature)
+  console.warn(
+    `[Tamagui] @expo/ui/community/menu does not support ${feature}, so it will not render. ` +
+      `Register a different native menu adapter if you need it.`
+  )
+}
+
 function textFromNode(node: ReactNode): string {
   if (typeof node === 'string' || typeof node === 'number') return String(node)
   if (!React.isValidElement<MarkerProps>(node)) return ''
@@ -114,9 +132,7 @@ export function createExpoUIMenuAdapter({
       const auxiliary = elementOfType(children, Auxiliary)
 
       if (preview || auxiliary) {
-        throw new Error(
-          '@expo/ui/community/menu does not support Tamagui context-menu previews or auxiliary views'
-        )
+        warnUnsupported('context-menu previews or auxiliary views')
       }
       if (!trigger || !content) {
         throw new Error('Tamagui native menus require one Trigger and one Content')
@@ -235,9 +251,7 @@ export function createExpoUIMenuAdapter({
             continue
 
           if (elementOfType(child.props.children, ItemSubtitle)) {
-            throw new Error(
-              '@expo/ui/community/menu does not support menu item subtitles'
-            )
+            warnUnsupported('menu item subtitles')
           }
 
           const id = actionId(child)
