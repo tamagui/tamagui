@@ -47,8 +47,8 @@ interface DetoxFailureClassification {
 /**
  * Classify a detox/jest run's combined output into connect-flake vs real failures,
  * per spec file. jest prints each file's `FAIL e2e/X.test.ts` line followed by that
- * file's failure detail (the ● blocks) before the next PASS/FAIL line, so the text
- * between one FAIL line and the next delimiter is that file's failure block.
+ * file's failure detail (the ● blocks), so a file's block runs from its FAIL header to
+ * whichever comes first: the next PASS/FAIL header, or the first detox daemon line.
  *
  * Exported for unit testing against real CI logs.
  */

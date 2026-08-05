@@ -42,10 +42,7 @@ function marker(name: string): ComponentType<MarkerProps> {
   return Marker
 }
 
-function isMarkerType(
-  candidate: unknown,
-  type: ComponentType<MarkerProps>
-): boolean {
+function isMarkerType(candidate: unknown, type: ComponentType<MarkerProps>): boolean {
   if (candidate === type) return true
   // createMenu runs every native component through withNativeMenu, which wraps
   // it in a new function component and copies the marker's displayName onto the
