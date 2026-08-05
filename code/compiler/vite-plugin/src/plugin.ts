@@ -336,15 +336,12 @@ export function tamaguiPlugin({
         return {}
       }
 
-      // react-native-web-lite imports memoize-one internally. the esbuild dep
-      // scanner doesn't follow it through the react-native -> rnw-lite alias, so
-      // vite discovers it only at request time, re-optimizes mid-load, and full
-      // reloads. on slow runners (CI) the in-flight optimized-dep request 504s
-      // ("Outdated Optimize Dep") and surfaces as a console error. pre-include
-      // it so the first optimize pass is complete and no reload is triggered.
+      // the dep scanner doesn't follow transitive packages through the
+      // react-native -> rnw-lite alias. pre-include the CJS dependencies that
+      // would otherwise reach the browser raw or trigger a mid-load re-optimize.
       const include: string[] = []
-      if (isInstalled(process.cwd(), 'memoize-one')) {
-        include.push('memoize-one')
+      for (const dependency of ['memoize-one', '@react-native/normalize-color']) {
+        if (isInstalled(process.cwd(), dependency)) include.push(dependency)
       }
 
       return {
