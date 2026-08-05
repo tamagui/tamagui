@@ -295,7 +295,7 @@ export function NativeRegistryCorrectnessCase() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, padding: 12, gap: 8 },
+  root: { flex: 1, padding: 12, paddingTop: 60, gap: 8 },
   controls: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   button: { backgroundColor: '#ddd', borderRadius: 6, padding: 8 },
   swatches: { flexDirection: 'row', gap: 18, paddingTop: 20 },

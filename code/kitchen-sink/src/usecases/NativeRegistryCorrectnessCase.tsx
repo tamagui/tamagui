@@ -304,7 +304,12 @@ export function NativeRegistryCorrectnessCase() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, padding: 12, gap: 8 },
+  // paddingTop clears the status bar on both platforms. at 12 the control row
+  // sat under it: espresso refused tap injection with "Couldn't click at
+  // (...),81 precision 16,16" because the 16px box spans 65-97px and android's
+  // 24dp status bar ends at 66px. iOS 26's taller bar hid the same row from HID
+  // taps. this must stay above ~54pt for iPhone 17.
+  root: { flex: 1, padding: 12, paddingTop: 60, gap: 8 },
   controls: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   button: { backgroundColor: '#ddd', borderRadius: 6, padding: 8 },
   swatches: { flexDirection: 'row', gap: 18, paddingTop: 20 },
