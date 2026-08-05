@@ -177,8 +177,6 @@
     "postcss": "8.5.15",
     "protobufjs": "7.6.4",
     "qs": "6.15.2",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
     "react-native": "0.83.2",
     "rolldown": "1.0.1",
     "shell-quote": "1.8.4",
