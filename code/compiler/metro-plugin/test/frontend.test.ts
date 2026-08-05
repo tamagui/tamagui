@@ -1,0 +1,821 @@
+import { execFile } from 'node:child_process'
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { createRequire } from 'node:module'
+import { promisify } from 'node:util'
+import { runInNewContext } from 'node:vm'
+import { dirname, join, relative, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import { afterEach, describe, expect, test } from 'vitest'
+
+import { loadTamaguiSync } from '@tamagui/static'
+
+import { METRO_COMPILER_CACHE_VERSION, MetroCompilerCache } from '../src/compilerCache'
+import { MetroCompilerFrontend } from '../src/frontend'
+import { createMetroCompilerTransformer } from '../src/transformer'
+import { composeMetroGetTransformOptions } from '../src/transformOptions'
+
+const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const transformerPath = resolve(packageRoot, 'test/fixtures/user-babel-transformer.cjs')
+const cacheReaderPath = resolve(packageRoot, 'test/fixtures/cache-reader.cjs')
+const builtTransformerPath = resolve(packageRoot, 'dist/cjs/transformer.cjs')
+const tamaguiConfigPath = resolve(
+  packageRoot,
+  '../static-tests/tests/lib/tamagui.config.cjs'
+)
+const temporaryRoots: string[] = []
+const execFileAsync = promisify(execFile)
+const requireFromTest = createRequire(import.meta.url)
+const generateModule = requireFromTest('@babel/generator')
+const generate = generateModule.default ?? generateModule
+
+afterEach(async () => {
+  await Promise.all(
+    temporaryRoots.splice(0).map((path) => rm(path, { recursive: true, force: true }))
+  )
+})
+
+async function write(path: string, source: string): Promise<void> {
+  await mkdir(dirname(path), { recursive: true })
+  await writeFile(path, source, 'utf8')
+}
+
+function outputCode(result: { ast: Record<string, any> }): string {
+  return generate(result.ast, { comments: true }).code
+}
+
+function findObjectProperty(ast: unknown, name: string): Record<string, any> | null {
+  const seen = new Set<object>()
+  const visit = (value: unknown): Record<string, any> | null => {
+    if (!value || typeof value !== 'object' || seen.has(value as object)) return null
+    seen.add(value as object)
+    if (Array.isArray(value)) {
+      for (const child of value) {
+        const found = visit(child)
+        if (found) return found
+      }
+      return null
+    }
+    const node = value as Record<string, any>
+    if (
+      node.type === 'ObjectProperty' &&
+      (node.key?.name === name || node.key?.value === name)
+    ) {
+      return node
+    }
+    for (const [key, child] of Object.entries(node)) {
+      if (key === 'loc' || key === 'tokens') continue
+      const found = visit(child)
+      if (found) return found
+    }
+    return null
+  }
+  return visit(ast)
+}
+
+function executeNativeOutput(code: string): unknown {
+  const babel = requireFromTest('@babel/core')
+  const commonJsModule = requireFromTest('@babel/plugin-transform-modules-commonjs')
+  const commonJs = commonJsModule.default ?? commonJsModule
+  const transformed = babel.transformSync(code, {
+    babelrc: false,
+    configFile: false,
+    plugins: [commonJs],
+  })?.code
+  if (!transformed) throw new Error('Native execution fixture did not compile')
+  const module = { exports: {} as Record<string, any> }
+  const Fragment = Symbol('Fragment')
+  const jsx = (type: any, props: Record<string, unknown>) => {
+    if (type === Fragment) return props.children
+    return typeof type === 'function' ? type(props) : { type, props }
+  }
+  const fixtureRequire = (specifier: string) => {
+    if (specifier === '@fixture/ui') {
+      return { View: (props: Record<string, unknown>) => ({ host: 'runtime', props }) }
+    }
+    if (specifier === '~tokens') return { spacing: 12 }
+    if (specifier === 'react/jsx-runtime') return { Fragment, jsx, jsxs: jsx }
+    if (specifier === '@tamagui/core') {
+      return {
+        _withStableStyle:
+          (
+            Component: (props: Record<string, unknown>) => unknown,
+            createStyle: (theme: unknown, expressions: readonly unknown[]) => unknown
+          ) =>
+          ({
+            _expressions = [],
+            ...props
+          }: Record<string, unknown> & { _expressions?: readonly unknown[] }) =>
+            Component({
+              ...props,
+              style: createStyle(null, _expressions),
+            }),
+      }
+    }
+    if (specifier === 'react-native') {
+      return {
+        View: (props: Record<string, unknown>) => ({ host: 'native', props }),
+      }
+    }
+    throw new Error(`Unexpected native execution dependency: ${specifier}`)
+  }
+  runInNewContext(transformed, {
+    exports: module.exports,
+    module,
+    require: fixtureRequire,
+  })
+  return module.exports.App({ dynamic: 9 })
+}
+
+describe('E4 Metro compiler frontend', () => {
+  test('publishes and applies native dynamic opacity plans against raw source', async () => {
+    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-native-partial-'))
+    temporaryRoots.push(fixtureRoot)
+    const projectRoot = join(fixtureRoot, 'app')
+    const appPath = join(projectRoot, 'src/App.tsx')
+    const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
+    const cacheRoot = join(fixtureRoot, 'cache')
+    const appSource = `
+import { View } from '@fixture/ui'
+export const App = ({ dynamic }) => (
+  <View width={20} height={10} opacity={dynamic} marker="kept" />
+)
+`
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-native-partial"}\n')
+    await write(appPath, appSource)
+    await write(uiPath, 'export const View = (_props) => null\n')
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    expect(viewInfo).toBeTruthy()
+    const frontend = new MetroCompilerFrontend({
+      projectRoot,
+      cacheRoot,
+      watch: false,
+      originalBabelTransformerPath: transformerPath,
+      loadCompilerProject: async () => ({
+        projectInfo: {
+          ...loadedProject,
+          components: [{ moduleName: '@fixture/ui', nameToInfo: { View: viewInfo! } }],
+        },
+        componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+        generation: 'e4-native-partial-v1',
+      }),
+      resolver: {
+        resolveRequest: (context: any, specifier: string, platform: string) => {
+          if (specifier === '@fixture/ui') {
+            return { type: 'sourceFile', filePath: uiPath }
+          }
+          return context.resolveRequest(context, specifier, platform)
+        },
+        sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+        unstable_enablePackageExports: true,
+      },
+    })
+
+    const options = {
+      dev: false,
+      entryFiles: [appPath],
+      hot: false,
+      platform: 'ios',
+      transform: { experimentalImportSupport: true },
+    }
+    const args = {
+      filename: appPath,
+      src: appSource,
+      plugins: [],
+      options: {
+        dev: false,
+        hot: false,
+        platform: 'ios',
+        projectRoot,
+        experimentalImportSupport: true,
+      },
+    }
+
+    try {
+      await frontend.ensureValidCache(options)
+      const entry = await new MetroCompilerCache(frontend.cacheRootFor('ios')).read(
+        appPath,
+        appSource
+      )
+      expect(entry?.diagnostics).toEqual([])
+      expect(entry?.plan.stats).toEqual({
+        found: 1,
+        lowered: 1,
+        flattened: 1,
+        styled: 0,
+        bailed: 0,
+      })
+
+      const worker = createMetroCompilerTransformer({
+        cacheBaseRoot: cacheRoot,
+        originalBabelTransformerPath: transformerPath,
+        projectRoot,
+      })
+      const transformed = await worker.transform(args)
+      expect(transformed.metadata?.tamagui).toMatchObject({
+        cacheHit: true,
+        lowering: {
+          applied: true,
+          sourceMapComposed: true,
+          stats: { found: 1, lowered: 1, flattened: 1, styled: 0, bailed: 0 },
+        },
+      })
+      const code = outputCode(transformed)
+      expect(code).toContain("require('@tamagui/core')._withStableStyle")
+      expect(code).toContain('_expressions: [dynamic]')
+      expect(code).toContain('"width": 20')
+      expect(code).toContain('"height": 10')
+      expect(code).toContain('marker: "kept"')
+      expect(executeNativeOutput(code)).toEqual(
+        expect.objectContaining({
+          host: 'native',
+          props: expect.objectContaining({
+            marker: 'kept',
+            style: [
+              expect.objectContaining({ width: 20, height: 10 }),
+              expect.objectContaining({ opacity: 9 }),
+            ],
+          }),
+        })
+      )
+    } finally {
+      await frontend.close()
+    }
+  })
+
+  test('publishes raw-source lowering plans for isolated workers and invalidates exact edges', async () => {
+    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-fixture-'))
+    temporaryRoots.push(fixtureRoot)
+    const projectRoot = join(fixtureRoot, 'app')
+    const appPath = join(projectRoot, 'src/App.tsx')
+    const tokensPath = join(projectRoot, 'src/tokens.ts')
+    const themePath = join(fixtureRoot, 'packages/theme/index.ts')
+    const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
+    const cacheRoot = join(fixtureRoot, 'cache')
+    const appSource = `
+import { View } from '@fixture/ui'
+import { spacing } from '~tokens'
+export const App = ({ dynamic }) => <>
+  <View padding={spacing} marker={USER_PLUGIN_VALUE} data-lowered="yes" />
+  <View padding={dynamic} data-runtime="preserved" />
+</>
+`
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-fixture"}\n')
+    await write(appPath, appSource)
+    await write(tokensPath, `export { space as spacing } from '@fixture/theme'\n`)
+    await write(themePath, 'export const space = 12\n')
+    await write(uiPath, 'export const View = (_props) => null\n')
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    expect(viewInfo).toBeTruthy()
+    const compilerProject = {
+      projectInfo: {
+        ...loadedProject,
+        components: [
+          {
+            moduleName: '@fixture/ui',
+            nameToInfo: { View: viewInfo! },
+          },
+        ],
+      },
+      componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+      generation: 'e4-native-fixture-v1',
+    }
+
+    const resolvedByUser: string[] = []
+    let nextScanGate: Promise<void> | null = null
+    let notifyScanStarted: (() => void) | null = null
+    const resolveRequest = (context: any, specifier: string, platform: string) => {
+      resolvedByUser.push(`${platform}:${specifier}`)
+      if (specifier === '~tokens') return { type: 'sourceFile', filePath: tokensPath }
+      if (specifier === '@fixture/theme') {
+        return { type: 'sourceFile', filePath: themePath }
+      }
+      if (specifier === '@fixture/ui') return { type: 'sourceFile', filePath: uiPath }
+      return context.resolveRequest(context, specifier, platform)
+    }
+    const frontend = new MetroCompilerFrontend({
+      projectRoot,
+      cacheRoot,
+      watch: false,
+      originalBabelTransformerPath: transformerPath,
+      loadCompilerProject: async () => {
+        const gate = nextScanGate
+        if (gate) {
+          nextScanGate = null
+          notifyScanStarted?.()
+          notifyScanStarted = null
+          await gate
+        }
+        return compilerProject
+      },
+      resolver: {
+        resolveRequest,
+        sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+        unstable_enablePackageExports: true,
+      },
+    })
+
+    try {
+      const productionOptions = {
+        dev: false,
+        entryFiles: [appPath],
+        hot: true,
+        platform: 'ios',
+        transform: {},
+      }
+      const concurrentScans = await Promise.all([
+        frontend.ensureValidCache(productionOptions),
+        frontend.ensureValidCache(productionOptions),
+      ])
+      expect(concurrentScans[0].moduleIds).toContain(appPath)
+      expect(concurrentScans[1].moduleIds).toContain(appPath)
+
+      const getTransformOptions = composeMetroGetTransformOptions(frontend, async () => ({
+        transform: { experimentalImportSupport: true },
+      }))
+      const returnedOptions = await getTransformOptions(
+        [appPath],
+        { dev: true, hot: true, platform: 'ios' },
+        async () => []
+      )
+      expect(returnedOptions.transform?.experimentalImportSupport).toBe(true)
+      const generation = await frontend.ensureValidCache({
+        dev: true,
+        entryFiles: [appPath],
+        hot: true,
+        platform: 'ios',
+        transform: returnedOptions.transform,
+      })
+      expect(frontend.metroResolverVersion).toMatch(/^0\.83\./)
+      expect(generation.moduleIds).toEqual(
+        expect.arrayContaining([appPath, tokensPath, themePath, uiPath])
+      )
+      expect(resolvedByUser).toEqual(
+        expect.arrayContaining(['ios:~tokens', 'ios:@fixture/theme', 'ios:@fixture/ui'])
+      )
+
+      let releaseScan!: () => void
+      nextScanGate = new Promise<void>((resolve) => {
+        releaseScan = resolve
+      })
+      const scanStarted = new Promise<void>((resolve) => {
+        notifyScanStarted = resolve
+      })
+      const rescan = frontend.scan({
+        dev: true,
+        entryFiles: [appPath],
+        hot: true,
+        platform: 'ios',
+        transform: returnedOptions.transform,
+      })
+      await scanStarted
+      let updateFinished = false
+      const updateDuringScan = frontend.updateFile(themePath).then((result) => {
+        updateFinished = true
+        return result
+      })
+      await new Promise((resolve) => setTimeout(resolve, 20))
+      expect(updateFinished).toBe(false)
+      releaseScan()
+      await Promise.all([rescan, updateDuringScan])
+
+      const args = {
+        filename: appPath,
+        src: appSource,
+        plugins: [],
+        options: {
+          dev: true,
+          hot: true,
+          platform: 'ios',
+          projectRoot,
+          experimentalImportSupport: true,
+        },
+      }
+      const firstWorker = createMetroCompilerTransformer({
+        cacheBaseRoot: cacheRoot,
+        originalBabelTransformerPath: transformerPath,
+        projectRoot,
+      })
+      const secondWorker = createMetroCompilerTransformer({
+        cacheBaseRoot: cacheRoot,
+        originalBabelTransformerPath: transformerPath,
+        projectRoot,
+      })
+      const [first, second] = await Promise.all([
+        firstWorker.transform(args),
+        secondWorker.transform(args),
+      ])
+      expect(first.metadata?.fixtureUserPlugin).toBe('ran-before-tamagui')
+      expect(first.metadata?.tamagui.cacheHit).toBe(true)
+      expect(second.metadata?.tamagui.cacheHit).toBe(true)
+      expect(first.metadata?.tamagui.lowering).toMatchObject({
+        applied: true,
+        sourceMapComposed: true,
+        stats: { found: 2, lowered: 1, flattened: 1, bailed: 1 },
+      })
+      const firstCode = outputCode(first)
+      expect(firstCode).toContain(
+        "const __TamaguiNativeView = require('react-native').View"
+      )
+      expect(firstCode).toContain('"paddingTop": 12')
+      expect(firstCode).toContain('marker: 44')
+      expect(firstCode).toContain('data-lowered')
+      expect(firstCode).toContain('padding: dynamic')
+      expect(firstCode).toContain('data-runtime')
+      expect(firstCode).not.toContain('analysis-marker')
+      expect(outputCode(second)).toBe(firstCode)
+      expect(findObjectProperty(first.ast, 'style')?.start).toBe(
+        appSource.indexOf('padding={spacing}')
+      )
+      expect(findObjectProperty(first.ast, 'data-runtime')?.start).toBe(
+        appSource.indexOf('data-runtime')
+      )
+      expect(executeNativeOutput(firstCode)).toEqual([
+        expect.objectContaining({
+          host: 'native',
+          props: expect.objectContaining({
+            style: expect.objectContaining({ paddingTop: 12 }),
+            marker: 44,
+          }),
+        }),
+        expect.objectContaining({
+          host: 'runtime',
+          props: expect.objectContaining({ padding: 9 }),
+        }),
+      ])
+
+      // Metro hands workers project-relative filenames (relative to projectRoot,
+      // including ../ paths outside it); the worker must resolve them back to
+      // the cache's absolute realpath keys or every module ships unlowered
+      const relativeFilenameResult = await firstWorker.transform({
+        ...args,
+        filename: relative(projectRoot, appPath),
+      })
+      expect(relativeFilenameResult.metadata?.tamagui.cacheHit).toBe(true)
+      expect(outputCode(relativeFilenameResult)).toBe(firstCode)
+
+      // Plans are keyed on raw source, so a worker whose Babel options differ
+      // from the planning process (Expo Release builds add customTransformOptions
+      // like engine=hermes that getTransformOptions never exposes) must still
+      // apply the plan — its own Babel pass simply runs over the lowered source
+      const divergentOptionsResult = await firstWorker.transform({
+        ...args,
+        options: { ...args.options, experimentalImportSupport: false },
+      })
+      expect(divergentOptionsResult.metadata?.tamagui.cacheHit).toBe(true)
+      expect(divergentOptionsResult.metadata?.tamagui.lowering).toMatchObject({
+        applied: true,
+      })
+      const divergentCode = outputCode(divergentOptionsResult)
+      expect(divergentCode).toContain('"paddingTop": 12')
+      expect(divergentCode).toContain('marker: 33')
+
+      const workerInputPath = join(fixtureRoot, 'worker-input.json')
+      await write(workerInputPath, JSON.stringify(args))
+      const readFromIsolatedWorker = async () =>
+        JSON.parse(
+          (
+            await execFileAsync(
+              process.execPath,
+              [
+                cacheReaderPath,
+                builtTransformerPath,
+                cacheRoot,
+                transformerPath,
+                projectRoot,
+                workerInputPath,
+              ],
+              { encoding: 'utf8' }
+            )
+          ).stdout
+        )
+      const [isolatedWorker, secondIsolatedWorker] = await Promise.all([
+        readFromIsolatedWorker(),
+        readFromIsolatedWorker(),
+      ])
+      expect(isolatedWorker).toMatchObject({
+        cacheHit: true,
+        fixtureUserPlugin: 'ran-before-tamagui',
+        lowering: { applied: true, sourceMapComposed: true },
+      })
+      expect(isolatedWorker.code).toBe(firstCode)
+      expect(secondIsolatedWorker).toEqual(isolatedWorker)
+
+      await write(themePath, 'export const space = 14\n')
+      const themeUpdate = await frontend.updateFile(themePath)
+      expect(themeUpdate.changed).toBe(true)
+      expect(themeUpdate.affectedIds).toEqual([appPath, themePath, tokensPath].sort())
+      const afterTheme = await firstWorker.transform(args)
+      expect(outputCode(afterTheme)).toContain('"paddingTop": 14')
+
+      await write(tokensPath, 'export const spacing = 5\n')
+      const tokenUpdate = await frontend.updateFile(tokensPath)
+      expect(tokenUpdate.affectedIds).toEqual([appPath, tokensPath].sort())
+      await write(themePath, 'export const space = 18\n')
+      const detachedThemeUpdate = await frontend.updateFile(themePath)
+      expect(detachedThemeUpdate.affectedIds).toEqual([themePath])
+      const afterDetach = await secondWorker.transform(args)
+      expect(outputCode(afterDetach)).toContain('"paddingTop": 5')
+
+      const manifestPath = join(
+        cacheRoot,
+        'ios',
+        `v${METRO_COMPILER_CACHE_VERSION}`,
+        'manifest.json'
+      )
+      const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
+      const appBlob = manifest.entries[appPath].blobHash
+      await write(
+        join(
+          cacheRoot,
+          'ios',
+          `v${METRO_COMPILER_CACHE_VERSION}`,
+          'blobs',
+          `${appBlob}.json`
+        ),
+        '{broken'
+      )
+      const recovered = await frontend.ensureValidCache({
+        dev: true,
+        entryFiles: [appPath],
+        hot: true,
+        platform: 'ios',
+        transform: { experimentalImportSupport: true },
+      })
+      expect(recovered.moduleIds).toContain(appPath)
+      const afterRecovery = await firstWorker.transform(args)
+      expect(afterRecovery.metadata?.tamagui.cacheHit).toBe(true)
+      expect(outputCode(afterRecovery)).toContain('"paddingTop": 5')
+
+      const productionOptionsAfterEdits = {
+        dev: false,
+        entryFiles: [appPath],
+        // Expo production exports may still report hot=true. Production must not retain
+        // the graph or thousands of file watchers after the prepass has published.
+        hot: true,
+        platform: 'ios',
+        transform: { experimentalImportSupport: true },
+      }
+      const productionGeneration = await frontend.ensureValidCache(
+        productionOptionsAfterEdits
+      )
+      await write(themePath, 'export const space = 20\n')
+      expect(await frontend.updateFile(themePath)).toEqual({
+        changed: false,
+        affectedIds: [],
+        generation: null,
+      })
+
+      // a later production build (fresh process) must observe the source edit
+      // instead of reusing the published manifest and silently de-optimizing
+      await write(tokensPath, 'export const spacing = 21\n')
+      const laterBuildFrontend = new MetroCompilerFrontend({
+        projectRoot,
+        cacheRoot,
+        watch: false,
+        originalBabelTransformerPath: transformerPath,
+        loadCompilerProject: async () => compilerProject,
+        resolver: {
+          resolveRequest,
+          sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+          unstable_enablePackageExports: true,
+        },
+      })
+      try {
+        const refreshed = await laterBuildFrontend.ensureValidCache(
+          productionOptionsAfterEdits
+        )
+        expect(refreshed.generation).not.toBe(productionGeneration.generation)
+        expect(refreshed.moduleIds).toContain(appPath)
+        const afterLaterBuild = await firstWorker.transform(args)
+        expect(afterLaterBuild.metadata?.tamagui.cacheHit).toBe(true)
+        expect(outputCode(afterLaterBuild)).toContain('"paddingTop": 21')
+
+        // and an unchanged tree keeps the published generation
+        const reused = await new MetroCompilerFrontend({
+          projectRoot,
+          cacheRoot,
+          watch: false,
+          originalBabelTransformerPath: transformerPath,
+          loadCompilerProject: async () => compilerProject,
+          resolver: {
+            resolveRequest,
+            sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+            unstable_enablePackageExports: true,
+          },
+        }).ensureValidCache(productionOptionsAfterEdits)
+        expect(reused.generation).toBe(refreshed.generation)
+      } finally {
+        await laterBuildFrontend.close()
+      }
+    } finally {
+      await frontend.close()
+    }
+  })
+
+  test('warns loudly when CommonJS interop hides every component from the analyzer', async () => {
+    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-cjs-fixture-'))
+    temporaryRoots.push(fixtureRoot)
+    const projectRoot = join(fixtureRoot, 'app')
+    const appPath = join(projectRoot, 'src/App.tsx')
+    const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
+    // the shape metro's default CommonJS output takes when a transformer runs
+    // with experimentalImportSupport disabled
+    const appSource = `
+var _jsxRuntime = require('react/jsx-runtime')
+var _ui = require('@fixture/ui')
+exports.App = function App() {
+  return (0, _jsxRuntime.jsx)(_ui.View, { padding: 12 })
+}
+`
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-cjs-fixture"}\n')
+    await write(appPath, appSource)
+    await write(uiPath, 'export const View = (_props) => null\n')
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    expect(viewInfo).toBeTruthy()
+    const reported: string[] = []
+    const frontend = new MetroCompilerFrontend({
+      projectRoot,
+      cacheRoot: join(fixtureRoot, 'cache'),
+      watch: false,
+      originalBabelTransformerPath: transformerPath,
+      loadCompilerProject: async () => ({
+        projectInfo: {
+          ...loadedProject,
+          components: [{ moduleName: '@fixture/ui', nameToInfo: { View: viewInfo! } }],
+        },
+        componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+        generation: 'e4-cjs-fixture-v1',
+      }),
+      reportDiagnostic(diagnostic) {
+        reported.push(diagnostic.code)
+      },
+      resolver: {
+        resolveRequest: (context: any, specifier: string, platform: string) => {
+          if (specifier === '@fixture/ui') {
+            return { type: 'sourceFile', filePath: uiPath }
+          }
+          if (specifier === 'react/jsx-runtime') {
+            return {
+              type: 'sourceFile',
+              filePath: requireFromTest.resolve('react/jsx-runtime'),
+            }
+          }
+          return context.resolveRequest(context, specifier, platform)
+        },
+        sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+        unstable_enablePackageExports: true,
+      },
+    })
+
+    try {
+      const generation = await frontend.scan({
+        dev: false,
+        entryFiles: [appPath],
+        hot: false,
+        platform: 'ios',
+        transform: {},
+      })
+      expect(generation.moduleIds).toContain(appPath)
+      const warning = generation.diagnostics.find(
+        ({ code }) => code === 'metro/no-linked-components'
+      )
+      expect(warning).toBeTruthy()
+      expect(warning!.message).toContain('experimentalImportSupport')
+      expect(warning!.message).toContain('@fixture/ui')
+      expect(reported).toContain('metro/no-linked-components')
+
+      // the same project with real imports links components and stays quiet
+      await write(
+        appPath,
+        `
+import { View } from '@fixture/ui'
+export const App = () => <View padding={12} />
+`
+      )
+      const healthy = await frontend.scan({
+        dev: false,
+        entryFiles: [appPath],
+        hot: false,
+        platform: 'ios',
+        transform: {},
+      })
+      expect(
+        healthy.diagnostics.filter(({ code }) => code === 'metro/no-linked-components')
+      ).toEqual([])
+    } finally {
+      await frontend.close()
+    }
+  })
+
+  test('plans project source when the Metro entry lives in node_modules (expo-router topology)', async () => {
+    const fixtureRoot = await mkdtemp(join(packageRoot, 'test/.e4-router-entry-'))
+    temporaryRoots.push(fixtureRoot)
+    const projectRoot = join(fixtureRoot, 'app')
+    const appPath = join(projectRoot, 'src/App.tsx')
+    const distPath = join(projectRoot, 'dist/Generated.tsx')
+    const brokenPath = join(projectRoot, 'scripts/broken.tsx')
+    // the expo-router shape: the entry is a package file whose route imports
+    // happen through require.context, invisible to import scanning
+    const entryPath = join(projectRoot, 'node_modules/fake-router/entry.js')
+    const uiPath = join(fixtureRoot, 'packages/ui/index.ts')
+    const cacheRoot = join(fixtureRoot, 'cache')
+    const appSource = `
+import { View } from '@fixture/ui'
+export const App = () => <View width={20} height={10} />
+`
+    await write(join(projectRoot, 'package.json'), '{"name":"e4-router-entry"}\n')
+    await write(appPath, appSource)
+    await write(distPath, appSource)
+    await write(brokenPath, 'export const broken = <View\n')
+    await write(entryPath, 'module.exports = {}\n')
+    await write(uiPath, 'export const View = (_props) => null\n')
+
+    const loadedProject = loadTamaguiSync({
+      platform: 'native',
+      config: tamaguiConfigPath,
+      components: ['@tamagui/core'],
+    })
+    const viewInfo = loadedProject.components?.find(
+      ({ moduleName }) => moduleName === '@tamagui/core'
+    )?.nameToInfo.View
+    expect(viewInfo).toBeTruthy()
+    const reported: string[] = []
+    const frontend = new MetroCompilerFrontend({
+      projectRoot,
+      cacheRoot,
+      watch: false,
+      originalBabelTransformerPath: transformerPath,
+      loadCompilerProject: async () => ({
+        projectInfo: {
+          ...loadedProject,
+          components: [{ moduleName: '@fixture/ui', nameToInfo: { View: viewInfo! } }],
+        },
+        componentModules: [{ moduleName: '@fixture/ui', id: uiPath }],
+        generation: 'e4-router-entry-v1',
+      }),
+      reportDiagnostic(diagnostic) {
+        reported.push(diagnostic.code)
+      },
+      resolver: {
+        resolveRequest: (context: any, specifier: string, platform: string) => {
+          if (specifier === '@fixture/ui') {
+            return { type: 'sourceFile', filePath: uiPath }
+          }
+          return context.resolveRequest(context, specifier, platform)
+        },
+        sourceExts: ['js', 'jsx', 'ts', 'tsx'],
+        unstable_enablePackageExports: true,
+      },
+    })
+
+    try {
+      await frontend.ensureValidCache({
+        dev: false,
+        entryFiles: [entryPath],
+        hot: false,
+        platform: 'ios',
+        transform: { experimentalImportSupport: true },
+      })
+      const cache = new MetroCompilerCache(frontend.cacheRootFor('ios'))
+      const entry = await cache.read(appPath, appSource)
+      expect(entry?.plan.stats).toEqual({
+        found: 1,
+        lowered: 1,
+        flattened: 1,
+        styled: 0,
+        bailed: 0,
+      })
+      // build output is never walk-seeded
+      expect(await cache.read(distPath, appSource)).toBeNull()
+      // a walk-seeded file that fails to compile is speculative, not a build error
+      expect(reported).not.toContain('metro/transform-failed')
+    } finally {
+      await frontend.close()
+    }
+  })
+})

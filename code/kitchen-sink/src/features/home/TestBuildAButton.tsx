@@ -27,41 +27,31 @@ export const TestBuildAButton = () => {
 }
 
 export const ButtonContext = createStyledContext({
-  size: '$4' as SizeTokens,
+  size: '4' as SizeTokens,
 })
 
 export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
-  backgroundColor: '$background',
+  backgroundColor: 'background hover:background-hover press:background-press',
   alignItems: 'center',
   flexDirection: 'row',
-
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
-
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      Size: (name, { tokens }) => {
+        const sizeToken = (name === true ? '4' : name) as Exclude<SizeTokens, true>
+
         return {
-          height: tokens.size[name],
-          borderRadius: tokens.radius[name],
-          gap: tokens.space[name].val * 0.2,
-          paddingHorizontal: getSpace(name, {
-            shift: -1,
-          }),
+          height: tokens.size[sizeToken],
+          borderRadius: tokens.radius[sizeToken],
+          gap: tokens.space[sizeToken].val * 0.2,
+          paddingHorizontal: getSpace(sizeToken).val * 0.9,
         }
       },
     },
   } as const,
-
   defaultVariants: {
-    size: '$4',
+    size: '4',
   },
 })
 
@@ -70,14 +60,17 @@ type ButtonProps = GetProps<typeof ButtonFrame>
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
   context: ButtonContext,
-  color: '$color',
+  color: 'color',
   userSelect: 'none',
-
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
+      FontSize: (name, { font }) => {
+        const sizeToken = (name === true ? '4' : name) as Exclude<typeof name, true>
+
+        return {
+          fontSize: font?.size[sizeToken],
+        }
+      },
     },
   } as const,
 })
@@ -85,13 +78,11 @@ export const ButtonText = styled(Text, {
 const ButtonIcon = (props: { children: any }) => {
   // @ts-ignore
   const { size } = React.useContext(ButtonContext)
-  const smaller = getSize(size, {
-    shift: -2,
-  })
+  const smaller = getSize(size).val * 0.4
   const theme = useTheme()
   return React.cloneElement(props.children, {
-    size: smaller.val * 0.5,
-    color: theme.color.get(),
+    size: smaller,
+    color: theme.color?.get(),
   })
 }
 

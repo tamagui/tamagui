@@ -39,7 +39,8 @@ ARG APP_NAME
 ARG TAMAGUI_PRO_SECRET
 ARG DEEPSEEK_API_KEY
 ARG BENTO_GITHUB_TOKEN
-ARG BENTO_BRANCH
+# frozen bento v3-beta source validated with this tamagui candidate
+ARG BENTO_BRANCH=50432b85cc47de443b640bee0bcf5decd119231e
 
 # install dependencies (sharp needs libvips for image processing)
 RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh libvips-dev
@@ -51,16 +52,16 @@ COPY . .
 RUN git config --global user.email "you@example.com" && git config --global user.name "Docker Build" && git init . && git add -A && (git commit -m 'add' > /dev/null || true)
 
 # Clone bento repository as sibling directory (optional)
-# Use BENTO_BRANCH env var if set, otherwise default to main
 WORKDIR /root
 RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
-      BRANCH="${BENTO_BRANCH:-main}"; \
-      echo "Cloning bento repository (branch: $BRANCH)..."; \
+      echo "Cloning bento repository (ref: $BENTO_BRANCH)..."; \
       unset GITHUB_TOKEN && \
       echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
-      gh repo clone tamagui/bento -- --branch "$BRANCH" && \
+      gh repo clone tamagui/bento -- --no-checkout --depth 1 && \
+      git -C bento fetch --quiet --depth 1 origin "$BENTO_BRANCH" && \
+      git -C bento checkout --quiet --detach FETCH_HEAD && \
       gh auth logout --hostname github.com && \
-      echo "✅ Bento repository cloned (branch: $BRANCH)" && \
+      echo "✅ Bento repository cloned (ref: $BENTO_BRANCH)" && \
       echo "REQUIRE_BENTO=true" > /tmp/bento_status; \
     else \
       echo "⚠️ BENTO_GITHUB_TOKEN not provided - bento features will not be available" && \

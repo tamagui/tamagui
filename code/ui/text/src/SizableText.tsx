@@ -4,21 +4,11 @@ import { Text, styled } from '@tamagui/web'
 
 export const SizableText = styled(Text, {
   name: 'SizableText',
-  fontFamily: '$body',
-
+  fontFamily: 'body',
+  color: 'color',
+  size: true,
   variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        color: '$color',
-      },
-    },
-
     size: getFontSized,
-  },
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 
@@ -30,7 +20,7 @@ SizableText.staticConfig.inlineProps = new Set([
 // we are doing weird stuff to avoid bad types
 // TODO make this just work
 SizableText.staticConfig.variants!.fontFamily = {
-  '...': (val, extras) => {
+  any: (val, extras) => {
     // pass through inherit directly without font variant expansion
     if (val === 'inherit') {
       return { fontFamily: 'inherit' }
@@ -39,9 +29,7 @@ SizableText.staticConfig.variants!.fontFamily = {
     const sizeProp = extras.props['size']
     const fontSizeProp = extras.props['fontSize']
     const size =
-      sizeProp === '$true' && fontSizeProp
-        ? fontSizeProp
-        : extras.props['size'] || '$true'
+      sizeProp === true && fontSizeProp ? fontSizeProp : (extras.props['size'] ?? true)
     return getFontSized(size, extras)
   },
 }

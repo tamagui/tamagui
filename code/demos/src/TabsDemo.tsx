@@ -1,16 +1,16 @@
 import React from 'react'
 import type { TabsContentProps } from 'tamagui'
 import {
-  Button,
   H5,
   Separator,
   SizableText,
-  Tabs,
   XStack,
   YStack,
   isWeb,
   useWindowDimensions,
 } from 'tamagui'
+import { Button } from './Button'
+import { Tabs } from './ControlSkins'
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -23,23 +23,18 @@ export function TabsDemo() {
   const demo = demos[demoIndex]
 
   return (
-    <YStack
-      px="$4"
-      {...(isWeb && {
-        position: 'unset' as any,
-      })}
-    >
+    <YStack px="4" {...(isWeb && { position: 'unset' as any })}>
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
       <XStack
         items="center"
-        gap="$4"
+        gap="4"
         position="absolute"
-        b="$3"
-        l="$4"
-        $maxXs={{ display: 'none' }}
+        b="3"
+        l="4"
+        display="max-xs:none"
       >
-        <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button size="3" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
       </XStack>
@@ -54,44 +49,43 @@ const HorizontalTabs = () => {
       defaultValue="tab1"
       orientation="horizontal"
       flexDirection="column"
-      $maxMd={{ width: width - 32 }}
-      width={400}
+      width={`400px max-md:${width - 32}px`}
       height={150}
-      rounded="$4"
-      borderWidth="$0.25"
-      borderColor="$borderColor"
+      rounded="4"
+      borderWidth="0-25"
+      borderColor="border-color"
     >
       <Tabs.List aria-label="Manage your account">
         <Tabs.Tab
           activeStyle={{
-            backgroundColor: '$color3',
+            backgroundColor: 'color3',
           }}
           flex={1}
           value="tab1"
         >
-          <SizableText fontFamily="$body" text="center" ellipsis>
+          <SizableText fontFamily="body" text="center" ellipsis>
             Profile
           </SizableText>
         </Tabs.Tab>
         <Tabs.Tab
           activeStyle={{
-            backgroundColor: '$color3',
+            backgroundColor: 'color3',
           }}
           flex={1}
           value="tab2"
         >
-          <SizableText fontFamily="$body" text="center" ellipsis>
+          <SizableText fontFamily="body" text="center" ellipsis>
             Connections
           </SizableText>
         </Tabs.Tab>
         <Tabs.Tab
           activeStyle={{
-            backgroundColor: '$color3',
+            backgroundColor: 'color3',
           }}
           flex={1}
           value="tab3"
         >
-          <SizableText fontFamily="$body" text="center" ellipsis>
+          <SizableText fontFamily="body" text="center" ellipsis>
             Notifications
           </SizableText>
         </Tabs.Tab>
@@ -117,21 +111,21 @@ const VerticalTabs = () => {
     <Tabs
       defaultValue="tab1"
       flexDirection="row"
-      orientation="vertical"
       width={400}
-      rounded="$4"
-      borderWidth="$0.25"
+      rounded="4"
+      borderWidth="0-25"
       overflow="hidden"
-      borderColor="$borderColor"
+      borderColor="border-color"
+      orientation="vertical"
     >
       <Tabs.List aria-label="Manage your account">
-        <Tabs.Tab activeStyle={{ backgroundColor: '$color3' }} value="tab1">
+        <Tabs.Tab activeStyle={{ backgroundColor: 'color3' }} value="tab1">
           <SizableText>Profile</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab activeStyle={{ backgroundColor: '$color3' }} value="tab2">
+        <Tabs.Tab activeStyle={{ backgroundColor: 'color3' }} value="tab2">
           <SizableText>Connections</SizableText>
         </Tabs.Tab>
-        <Tabs.Tab activeStyle={{ backgroundColor: '$color3' }} value="tab3">
+        <Tabs.Tab activeStyle={{ backgroundColor: 'color3' }} value="tab3">
           <SizableText>Notifications</SizableText>
         </Tabs.Tab>
       </Tabs.List>
@@ -152,18 +146,18 @@ const VerticalTabs = () => {
 const TabsContent = (props: TabsContentProps) => {
   return (
     <Tabs.Content
-      bg="$background"
-      key="tab3"
-      p="$2"
+      bg="background"
+      p="2"
       items="center"
       justify="center"
       flex={1}
-      borderColor="$background"
-      rounded="$2"
+      borderColor="background"
+      rounded="2"
       borderTopLeftRadius={0}
       borderTopRightRadius={0}
-      borderWidth="$2"
+      borderWidth="2"
       {...props}
+      key="tab3"
     >
       {props.children}
     </Tabs.Content>

@@ -14,14 +14,12 @@ import type {
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
 import { router } from 'one'
-import { useToastController } from '@tamagui/toast'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { processError } from '~/features/posthog/errorHandling'
 import useSWR, { mutate } from 'swr'
 import useSWRMutation from 'swr/mutation'
 import {
   Avatar,
-  Button,
   debounce,
   Dialog,
   Fieldset,
@@ -36,11 +34,13 @@ import {
   Sheet,
   Spinner,
   Tabs,
+  toast,
   View,
   VisuallyHidden,
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { authFetch } from '~/features/api/authFetch'
 import { ADMIN_EMAILS } from '~/features/api/isAdmin'
 import type { UserContextType } from '~/features/auth/types'
@@ -105,20 +105,15 @@ export const NewAccountModal = () => {
           store.show = val
         }}
       >
-        <Dialog.Adapt when="maxMd">
+        <Dialog.Adapt when="max-md">
           <Sheet modal dismissOnSnapToBottom transition="medium">
-            <Sheet.Frame bg="$background" p={0} gap="$4">
+            <Sheet.Container p={0} gap="4">
+              <Sheet.Background bg="background" />
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
-            </Sheet.Frame>
-            <Sheet.Overlay
-              transition="lazy"
-              bg="$shadow6"
-              opacity={1}
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
-            />
+            </Sheet.Container>
+            <Sheet.Overlay transition="lazy" bg="shadow6" opacity="1 enter:0 exit:0" />
           </Sheet>
         </Dialog.Adapt>
 
@@ -126,30 +121,24 @@ export const NewAccountModal = () => {
           <Dialog.Overlay
             key="overlay"
             transition="medium"
-            bg="$shadow3"
+            bg="shadow3"
             backdropFilter="blur(20px)"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            opacity="enter:0 exit:0"
           />
 
           <Dialog.Content
             bordered
             elevate
             key="content"
-            transition={[
-              'quick',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-            enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.95 }}
-            exitStyle={{ x: 0, y: 5, opacity: 0, scale: 0.95 }}
+            transition={['quick', { opacity: { overshootClamping: true } }]}
+            x="enter:0 exit:0"
+            y="enter:-5px exit:5px"
+            opacity="enter:0 exit:0"
+            scale="enter:0.95 exit:0.95"
             width="90%"
             maxW={800}
             p={0}
-            rounded="$4"
+            rounded="4"
             overflow="hidden"
             height="85%"
             maxH="calc(min(85vh, 800px))"
@@ -161,7 +150,7 @@ export const NewAccountModal = () => {
             </VisuallyHidden>
 
             <Dialog.Close asChild>
-              <Button position="absolute" t="$3" r="$3" size="$3" circular icon={X} />
+              <Button position="absolute" t="3" r="3" size="4" circular icon={X} />
             </Dialog.Close>
           </Dialog.Content>
         </Dialog.Portal>
@@ -348,7 +337,7 @@ export const AccountView = () => {
         onValueChange={(val: any) => setCurrentTab(val)}
         orientation="horizontal"
         flexDirection="column"
-        size="$6"
+        size="6"
       >
         <Tabs.List>
           <YStack width={'33.3333%'} flex={1}>
@@ -384,7 +373,7 @@ export const AccountView = () => {
 
         <YStack overflow="hidden" flex={1} flexBasis="auto">
           <ScrollView>
-            <YStack p="$6">{renderTabs()}</YStack>
+            <YStack p="6">{renderTabs()}</YStack>
           </ScrollView>
         </YStack>
       </Tabs>
@@ -430,8 +419,8 @@ const AccountHeader = () => {
   }
 
   return (
-    <XStack gap="$4" p="$5" pb="$8">
-      <Avatar circular size="$5">
+    <XStack gap="4" paddingTop="5" paddingRight="5" paddingLeft="5" pb="8">
+      <Avatar circular size="5">
         <Avatar.Image
           source={{
             width: 50,
@@ -443,8 +432,8 @@ const AccountHeader = () => {
         />
       </Avatar>
 
-      <YStack gap="$3" items="flex-start" justify="center" flex={1}>
-        <XStack justify="space-between" gap="$4" items="center">
+      <YStack gap="3" items="flex-start" justify="center" flex={1}>
+        <XStack justify="space-between" gap="4" items="center">
           <YStack flex={1}>
             <H3
               mt={-5}
@@ -454,9 +443,9 @@ const AccountHeader = () => {
             >
               {userDetails?.full_name}
             </H3>
-            <Paragraph color="$color10">{user?.email}</Paragraph>
+            <Paragraph color="color10">{user?.email}</Paragraph>
             {githubUsername && (
-              <Paragraph color="$color9" size="$2">
+              <Paragraph color="color9" size="2">
                 GitHub: @{githubUsername}
               </Paragraph>
             )}
@@ -467,7 +456,7 @@ const AccountHeader = () => {
       <Button
         onPress={handleLogout}
         icon={<LogOut />}
-        size="$2"
+        size="3"
         self="flex-end"
         aria-label="Logout"
       >
@@ -488,42 +477,42 @@ const Tab = ({
 }) => {
   return (
     <Tabs.Tab
-      unstyled
       items="center"
       justify="center"
       overflow="hidden"
-      py="$1"
-      bg="$color1"
+      py="1"
+      bg="color1"
       height={60}
       borderBottomWidth={1}
       cursor="pointer"
       borderBottomColor="transparent"
       {...(!isActive && {
-        bg: '$color2',
+        bg: 'color2',
       })}
       {...props}
       value={props.value}
     >
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         pointerEvents="none"
         z={-1}
         {...(isActive && {
-          bg: '$color3',
+          bg: 'color3',
         })}
         {...(!isActive && {
-          bg: '$color1',
+          bg: 'color1',
           opacity: 0.25,
-          '$group-takeoutBody-hover': {
+          'group-takeoutBody-hover': {
             opacity: 0.33,
           },
         })}
       />
       <Paragraph
-        fontFamily="$mono"
-        size="$7"
-        color={isActive ? '$color12' : '$color10'}
+        fontFamily="mono"
+        color={`${isActive ? 'color12' : 'color10'}`}
         fontWeight={isActive ? 'bold' : 'normal'}
+        size="7"
       >
         {children}
       </Paragraph>
@@ -555,25 +544,25 @@ const ServiceCard = ({
   return (
     <YStack
       borderWidth={1}
-      borderColor="$color3"
-      rounded="$6"
-      p="$4"
-      gap="$2"
+      borderColor="color3"
+      rounded="6"
+      p="4"
+      gap="2"
       width={300}
       flex={1}
       flexBasis="auto"
     >
-      <H3 fontFamily="$mono" size="$6">
+      <H3 fontFamily="mono" size="6">
         {title}
       </H3>
-      <Paragraph color="$color10">{description}</Paragraph>
+      <Paragraph color="color10">{description}</Paragraph>
 
-      <XStack gap="$3">
+      <XStack gap="3">
         <Button
-          rounded="$10"
+          rounded="10"
           self="flex-end"
-          mt="$4"
-          size="$3"
+          mt="4"
+          size="4"
           theme="accent"
           onPress={onAction}
         >
@@ -582,10 +571,10 @@ const ServiceCard = ({
 
         {!!secondAction && (
           <Button
-            rounded="$10"
+            rounded="10"
             self="flex-end"
-            mt="$4"
-            size="$3"
+            mt="4"
+            size="4"
             theme="accent"
             onPress={secondAction.onPress}
           >
@@ -595,10 +584,10 @@ const ServiceCard = ({
 
         {!!thirdAction && (
           <Button
-            rounded="$10"
+            rounded="10"
             self="flex-end"
-            mt="$4"
-            size="$3"
+            mt="4"
+            size="4"
             theme="accent"
             onPress={thirdAction.onPress}
           >
@@ -624,13 +613,7 @@ const DiscordAccessDialog = ({
   return (
     <Dialog modal open onOpenChange={onClose}>
       <Dialog.Portal zIndex={999999}>
-        <Dialog.Overlay
-          key="overlay"
-          transition="medium"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Dialog.Overlay key="overlay" transition="medium" opacity="0.5 enter:0 exit:0" />
         <Dialog.Content
           bordered
           elevate
@@ -638,7 +621,7 @@ const DiscordAccessDialog = ({
           transition="quick"
           width="90%"
           maxW={600}
-          p="$6"
+          p="6"
         >
           <DiscordPanel
             subscription={subscription}
@@ -646,7 +629,7 @@ const DiscordAccessDialog = ({
             isTeamMember={isTeamMember}
           />
           <Dialog.Close asChild>
-            <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+            <Button position="absolute" t="2" r="2" size="3" circular icon={X} />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
@@ -663,8 +646,6 @@ const DiscordPanel = ({
   apiType: 'channel' | 'support'
   isTeamMember: boolean
 }) => {
-  const toast = useToastController()
-
   const hasSupportAccess = () => {
     const supportItems = subscription?.subscription_items?.filter((item) => {
       return (
@@ -744,8 +725,8 @@ const DiscordPanel = ({
 
   useEffect(() => {
     if (searchSwr.error) {
-      toast.show('Discord search failed', {
-        message: searchSwr.error.message || 'Could not search Discord members',
+      toast('Discord search failed', {
+        description: searchSwr.error.message || 'Could not search Discord members',
       })
       processError({
         error: searchSwr.error,
@@ -794,7 +775,7 @@ const DiscordPanel = ({
   const renderDiscordAccessContent = () => {
     if (isLoading) {
       return (
-        <XStack items="center" justify="center" p="$4">
+        <XStack items="center" justify="center" p="4">
           <Spinner size="small" />
         </XStack>
       )
@@ -802,7 +783,7 @@ const DiscordPanel = ({
 
     if (groupInfoError) {
       return (
-        <Paragraph size="$3" color="$red10">
+        <Paragraph size="3" color="red10">
           {groupInfoError.message || 'Failed to load Discord access info'}
         </Paragraph>
       )
@@ -810,7 +791,7 @@ const DiscordPanel = ({
 
     if (isTeamMember) {
       return (
-        <Paragraph size="$3" color="$color10">
+        <Paragraph size="3" color="color10">
           Only the team owner can manage Discord access.
         </Paragraph>
       )
@@ -820,8 +801,8 @@ const DiscordPanel = ({
     if (apiType === 'support') {
       if (!supportAccess.hasAccess) {
         return (
-          <YStack gap="$4" p="$4" bg="$color2" rounded="$4">
-            <Paragraph color="$color9" text="center">
+          <YStack gap="4" p="4" bg="color2" rounded="4">
+            <Paragraph color="color9" text="center">
               You need a Chat Support or Support tier subscription to access private
               support channels.
             </Paragraph>
@@ -833,9 +814,9 @@ const DiscordPanel = ({
     if (groupInfoData?.currentlyOccupiedSeats < groupInfoData?.discordSeats) {
       return (
         <>
-          <Form onSubmit={handleSearch} gap="$2" flexDirection="row" items="flex-end">
+          <Form onSubmit={handleSearch} gap="2" flexDirection="row" items="flex-end">
             <Fieldset>
-              <Label size="$3" color="$color10" htmlFor="discord-username">
+              <Label size="3" color="color10" htmlFor="discord-username">
                 Username / Nickname
               </Label>
               <Input
@@ -855,7 +836,7 @@ const DiscordPanel = ({
           </Form>
 
           <XStack render="article">
-            <Paragraph size="$3" color="$color10">
+            <Paragraph size="3" color="color10">
               Note: You must{' '}
               <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">
                 join the Discord server
@@ -865,11 +846,11 @@ const DiscordPanel = ({
           </XStack>
 
           {searchSwr.error ? (
-            <Paragraph size="$3" color="$red10">
+            <Paragraph size="3" color="red10">
               {searchSwr.error.message || 'Failed to search'}
             </Paragraph>
           ) : Array.isArray(searchSwr.data) && searchSwr.data.length === 0 ? (
-            <Paragraph size="$3" color="$color10">
+            <Paragraph size="3" color="color10">
               No users found
             </Paragraph>
           ) : Array.isArray(searchSwr.data) ? (
@@ -887,7 +868,7 @@ const DiscordPanel = ({
     }
 
     return (
-      <Paragraph size="$3" color="$color10">
+      <Paragraph size="3" color="color10">
         You've reached the maximum number of Discord members for your plan. Please reset
         if you want to add new members.
       </Paragraph>
@@ -895,8 +876,8 @@ const DiscordPanel = ({
   }
 
   return (
-    <YStack gap="$3">
-      <XStack justify="space-between" gap="$2" items="center">
+    <YStack gap="3">
+      <XStack justify="space-between" gap="2" items="center">
         <H4>
           {headerTitle}{' '}
           {showSeats &&
@@ -906,7 +887,7 @@ const DiscordPanel = ({
 
         {showResetButton && (
           <Button
-            size="$2"
+            size="3"
             onPress={() => resetChannelMutation.trigger()}
             disabled={resetChannelMutation.isMutating}
           >
@@ -918,11 +899,11 @@ const DiscordPanel = ({
       </XStack>
 
       {apiType === 'channel' ? (
-        <Paragraph color="$color9">
+        <Paragraph color="color9">
           Join the #takeout-general channel to discuss Tamagui with other Pro users.
         </Paragraph>
       ) : (
-        <Paragraph color="$color9">
+        <Paragraph color="color9">
           Get access to your private support channel where you can directly communicate
           with the Tamagui team.
         </Paragraph>
@@ -986,22 +967,22 @@ const DiscordMember = ({
     : null
 
   return (
-    <XStack gap="$2" items="center" flexWrap="wrap">
-      <Button minW={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
+    <XStack gap="2" items="center" flexWrap="wrap">
+      <Button minW={70} size="3" disabled={isMutating} onPress={() => trigger()}>
         <Button.Text>{isMutating ? 'Inviting...' : 'Add'}</Button.Text>
       </Button>
-      <Avatar circular size="$2">
+      <Avatar circular size="2">
         <Avatar.Image aria-label={`avatar for ${username}`} src={avatarSrc!} />
-        <Avatar.Fallback bg="$blue10" />
+        <Avatar.Fallback bg="blue10" />
       </Avatar>
       <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
       {data && (
-        <Paragraph size="$1" theme="green">
+        <Paragraph size="1" theme="green">
           {data.message}
         </Paragraph>
       )}
       {error && (
-        <Paragraph size="$1" theme="red">
+        <Paragraph size="1" theme="red">
           {error.message}
         </Paragraph>
       )}
@@ -1039,52 +1020,52 @@ const ProjectSetupForm = ({ onComplete }: { onComplete: () => void }) => {
   }
 
   return (
-    <YStack gap="$6" p="$4" maxWidth={500}>
-      <YStack gap="$2">
-        <H3 fontFamily="$mono">Set Up Your Project</H3>
-        <Paragraph size="$4" color="$color10">
+    <YStack gap="6" p="4" maxWidth={500}>
+      <YStack gap="2">
+        <H3 fontFamily="mono">Set Up Your Project</H3>
+        <Paragraph size="4" color="color10">
           Enter your project name and domain to activate your license. You can change this
           later.
         </Paragraph>
       </YStack>
 
-      <YStack gap="$4">
-        <Fieldset gap="$2">
-          <Label fontFamily="$mono" size="$3">
+      <YStack gap="4">
+        <Fieldset gap="2">
+          <Label fontFamily="mono" size="3">
             Project Name
           </Label>
           <Input
             placeholder="My Awesome App"
             value={projectName}
             onChangeText={setProjectName}
-            fontFamily="$mono"
+            fontFamily="mono"
           />
         </Fieldset>
 
-        <Fieldset gap="$2">
-          <Label fontFamily="$mono" size="$3">
+        <Fieldset gap="2">
+          <Label fontFamily="mono" size="3">
             Domain
           </Label>
           <Input
             placeholder="myapp.com"
             value={projectDomain}
             onChangeText={setProjectDomain}
-            fontFamily="$mono"
+            fontFamily="mono"
           />
-          <Paragraph size="$2" color="$color9">
+          <Paragraph size="2" color="color9">
             Primary web domain for your project. Your license covers this domain plus
             iOS/Android apps.
           </Paragraph>
         </Fieldset>
 
         {error && (
-          <Paragraph size="$3" color="$red10">
+          <Paragraph size="3" color="red10">
             {error}
           </Paragraph>
         )}
 
         <Button theme="accent" onPress={handleSubmit} disabled={isSubmitting}>
-          <Button.Text fontFamily="$mono">
+          <Button.Text fontFamily="mono">
             {isSubmitting ? 'Saving...' : 'Save Project'}
           </Button.Text>
         </Button>
@@ -1139,7 +1120,7 @@ const PlanTab = ({
   // Show loading while we check if they have projects
   if (isV2Pro && projectsLoading) {
     return (
-      <YStack flex={1} items="center" justify="center" p="$6">
+      <YStack flex={1} items="center" justify="center" p="6">
         <Spinner size="large" />
       </YStack>
     )
@@ -1184,19 +1165,19 @@ const PlanTab = ({
   }
 
   return (
-    <YStack gap="$6">
+    <YStack gap="6">
       {/* past-due banner - payment failed and Stripe is retrying */}
       {hasPastDueSubscription && (
         <YStack
-          bg="$red3"
-          borderColor="$red8"
+          bg="red3"
+          borderColor="red8"
           borderWidth={1}
-          borderRadius="$4"
-          p="$4"
-          gap="$3"
+          borderRadius="4"
+          p="4"
+          gap="3"
         >
-          <H4 color="$red11">Payment failed - your subscription is past due</H4>
-          <Paragraph color="$red11">
+          <H4 color="red11">Payment failed - your subscription is past due</H4>
+          <Paragraph color="red11">
             Your last payment didn't go through and Stripe is automatically retrying it.
             To avoid being charged again, cancel your subscription below - cancelling a
             past-due subscription stops the pending retry immediately.
@@ -1207,24 +1188,24 @@ const PlanTab = ({
       {/* expired subscription banner */}
       {hasExpiredSubscription && hasNoActiveSubscription && (
         <YStack
-          bg="$yellow3"
-          borderColor="$yellow8"
+          bg="yellow3"
+          borderColor="yellow8"
           borderWidth={1}
-          borderRadius="$4"
-          p="$4"
-          gap="$3"
+          borderRadius="4"
+          p="4"
+          gap="3"
         >
-          <H4 color="$yellow11">Your subscription has expired</H4>
-          <Paragraph color="$yellow11">
+          <H4 color="yellow11">Your subscription has expired</H4>
+          <Paragraph color="yellow11">
             Renew now to regain access to Takeout, Bento, and all Pro features. Use code{' '}
-            <Paragraph fontFamily="$mono" fontWeight="bold" color="$yellow12">
+            <Paragraph fontFamily="mono" fontWeight="bold" color="yellow12">
               RENEWAL30
             </Paragraph>{' '}
             for 30% off!
           </Paragraph>
-          <XStack gap="$3">
+          <XStack gap="3">
             <Button
-              size="$3"
+              size="4"
               theme="yellow"
               onPress={() => {
                 paymentModal.prefilledCouponCode = 'RENEWAL30'
@@ -1234,8 +1215,8 @@ const PlanTab = ({
               Renew Now
             </Button>
             <Button
-              size="$3"
-              chromeless
+              size="4"
+              variant="quiet"
               onPress={() => {
                 window.open('https://tamagui.dev/pro', '_blank')
               }}
@@ -1246,8 +1227,8 @@ const PlanTab = ({
         </YStack>
       )}
 
-      <YStack gap="$4">
-        <XStack flexWrap="wrap" gap="$3">
+      <YStack gap="4">
+        <XStack flexWrap="wrap" gap="3">
           <ServiceCard
             title="Takeout"
             description="Access to repository and updates."
@@ -1342,9 +1323,9 @@ const PlanTab = ({
       </YStack>
 
       {subscription?.status === 'active' && (
-        <YStack gap="$4">
+        <YStack gap="4">
           <H3>Support Services</H3>
-          <XStack flexWrap="wrap" gap="$4">
+          <XStack flexWrap="wrap" gap="4">
             <ServiceCard
               title="Discord Support"
               description="Access to private Discord support channels"
@@ -1434,10 +1415,10 @@ const CancelSubscriptionSection = ({ subscription }: { subscription: Subscriptio
 
   if (subscription.cancel_at_period_end) {
     return (
-      <YStack gap="$3" pt="$4">
+      <YStack gap="3" pt="4">
         <Separator />
-        <YStack bg="$yellow2" p="$3" rounded="$4">
-          <Paragraph color="$yellow11">
+        <YStack bg="yellow2" p="3" rounded="4">
+          <Paragraph color="yellow11">
             Your subscription will end on{' '}
             {new Date(subscription.current_period_end).toLocaleDateString()}
           </Paragraph>
@@ -1447,14 +1428,14 @@ const CancelSubscriptionSection = ({ subscription }: { subscription: Subscriptio
   }
 
   return (
-    <YStack gap="$3" pt="$4">
+    <YStack gap="3" pt="4">
       <Separator />
       <Button
         theme="red"
         disabled={isLoading}
         onPress={handleCancel}
         alignSelf="flex-start"
-        size="$3"
+        size="4"
       >
         <Button.Text>Cancel Subscription</Button.Text>
       </Button>
@@ -1541,29 +1522,29 @@ const SupportTabContent = ({
   }
 
   return (
-    <YStack gap="$6">
-      <YStack gap="$4">
+    <YStack gap="6">
+      <YStack gap="4">
         {tiers.map((tier) => (
           <YStack
             key={tier.value}
             borderWidth={1}
-            theme={supportTier === tier.value ? 'accent' : null}
-            rounded="$4"
-            borderColor="$color4"
-            p="$4"
-            bg="$color1"
+            rounded="4"
+            borderColor="color4"
+            p="4"
+            bg="color1"
             cursor="pointer"
+            theme={supportTier === tier.value ? 'accent' : null}
             onPress={() => setSupportTier(tier.value)}
           >
             <XStack justify="space-between" items="center">
-              <YStack gap="$1">
-                <H3 fontFamily="$mono" size="$6">
+              <YStack gap="1">
+                <H3 fontFamily="mono" size="6">
                   {tier.label}
                 </H3>
-                <Paragraph color="$color10" size="$3">
+                <Paragraph color="color10" size="3">
                   {tier.description}
                 </Paragraph>
-                <Paragraph color="$color10">
+                <Paragraph color="color10">
                   {tier.price === 0
                     ? 'Basic Support'
                     : `${formatCurrency(tier.price)}/month`}
@@ -1583,28 +1564,21 @@ const V2RenewalCard = () => {
   const couponCode = 'RENEWAL30'
 
   return (
-    <YStack
-      gap="$4"
-      p="$4"
-      borderWidth={1}
-      borderColor="$yellow6"
-      bg="$yellow2"
-      rounded="$4"
-    >
-      <XStack gap="$3" alignItems="flex-start">
-        <Gift y={5} size={24} color="$yellow10" />
-        <YStack flex={1} gap="$1">
-          <H4 fontFamily="$mono" color="$yellow11">
+    <YStack gap="4" p="4" borderWidth={1} borderColor="yellow6" bg="yellow2" rounded="4">
+      <XStack gap="3" alignItems="flex-start">
+        <Gift y={5} color="yellow10" size={24} />
+        <YStack flex={1} gap="1">
+          <H4 fontFamily="mono" color="yellow11">
             30% Off Applied To Renewal
           </H4>
-          <Paragraph color="$yellow10">
+          <Paragraph color="yellow10">
             Your pre-v2 renewal includes <strong>30% off</strong>. No action is needed.
           </Paragraph>
-          <Paragraph color="$yellow10">
+          <Paragraph color="yellow10">
             When this subscription renews, it stays on the current Pro package with
             Takeout 2, Takeout Static, and unlimited team members.
           </Paragraph>
-          <Paragraph color="$yellow10">
+          <Paragraph color="yellow10">
             If you want to buy another project or share the discount with a friend, use{' '}
             <strong>{couponCode}</strong>.
           </Paragraph>
@@ -1612,7 +1586,7 @@ const V2RenewalCard = () => {
       </XStack>
 
       <Button
-        size="$3"
+        size="4"
         theme="yellow"
         alignSelf="flex-start"
         onPress={() => {
@@ -1676,7 +1650,7 @@ const ManageTab = ({
 
   if (isTeamLoading || isProjectsLoading) {
     return (
-      <YStack flex={1} items="center" justify="center" p="$6">
+      <YStack flex={1} items="center" justify="center" p="6">
         <Spinner size="large" />
       </YStack>
     )
@@ -1737,9 +1711,9 @@ const ManageTab = ({
   // no subscription and no projects
   if (!hasSubscriptions && !hasProjects) {
     return (
-      <YStack gap="$4">
+      <YStack gap="4">
         <H3>No Active Subscription</H3>
-        <Paragraph color="$color10">
+        <Paragraph color="color10">
           You don't have an active subscription. Purchase a plan to get started.
         </Paragraph>
 
@@ -1756,7 +1730,7 @@ const ManageTab = ({
   }
 
   return (
-    <YStack gap="$8">
+    <YStack gap="8">
       {/* V2 Renewal Section for V1 Subscriptions */}
       {!isTeamMember &&
         sortedSubscriptions
@@ -1771,18 +1745,18 @@ const ManageTab = ({
             })
           })
           .map((v1Sub) => (
-            <YStack key={`v2-renewal-${v1Sub.id}`} gap="$4">
+            <YStack key={`v2-renewal-${v1Sub.id}`} gap="4">
               <V2RenewalCard />
             </YStack>
           ))}
 
       {/* Projects Section (V2) */}
       {hasProjects && (
-        <YStack gap="$4">
+        <YStack gap="4">
           <XStack justify="space-between" items="center">
             <H3>Projects</H3>
             <Button
-              size="$3"
+              size="4"
               theme="accent"
               onPress={() => {
                 paymentModal.show = true
@@ -1804,14 +1778,14 @@ const ManageTab = ({
 
       {/* Subscriptions Section */}
       {hasSubscriptions && (
-        <YStack gap="$4">
+        <YStack gap="4">
           <XStack justify="space-between" items="center">
             <View>
               <H3>Subscriptions</H3>
-              {isTeamMember && <Paragraph color="$green9">You are a member</Paragraph>}
+              {isTeamMember && <Paragraph color="green9">You are a member</Paragraph>}
             </View>
             <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
-              <Button size="$3">View Invoices</Button>
+              <Button size="4">View Invoices</Button>
             </Link>
           </XStack>
           {sortedSubscriptions.map((subscription) => {
@@ -1819,17 +1793,17 @@ const ManageTab = ({
             return (
               <YStack
                 key={subscription.id}
-                gap="$4"
-                p="$4"
+                gap="4"
+                p="4"
                 borderWidth={1}
-                borderColor="$color3"
-                rounded="$4"
+                borderColor="color3"
+                rounded="4"
               >
                 <YStack
-                  p="$4"
+                  p="4"
                   borderWidth={1}
-                  borderColor="$color3"
-                  rounded="$4"
+                  borderColor="color3"
+                  rounded="4"
                   width="100%"
                   style={{
                     overflowX: 'auto',
@@ -1837,7 +1811,7 @@ const ManageTab = ({
                 >
                   <YStack minW={500} width="100%">
                     {/* Table Header */}
-                    <XStack items="center" mb="$2" width="100%">
+                    <XStack items="center" mb="2" width="100%">
                       <Paragraph fontWeight="bold" width="60%">
                         Product
                       </Paragraph>
@@ -1858,11 +1832,11 @@ const ManageTab = ({
                           : (subscription.quantity ?? 1)
                       const total = (price?.unit_amount || 0) * qty
                       return (
-                        <XStack key={item.id || idx} items="center" mb="$2" width="100%">
+                        <XStack key={item.id || idx} items="center" mb="2" width="100%">
                           <YStack width="60%">
                             <Paragraph fontWeight="bold">{product?.name}</Paragraph>
                             {product?.description && (
-                              <Paragraph color="$color9" size="$3">
+                              <Paragraph color="color9" size="3">
                                 {product.description}
                               </Paragraph>
                             )}
@@ -1894,11 +1868,7 @@ const ManageTab = ({
                     textTransform="capitalize"
                     flex={1}
                     text="right"
-                    color={
-                      subscription.status === SubscriptionStatus.Active
-                        ? '$green9'
-                        : '$yellow9'
-                    }
+                    color={`${subscription.status === SubscriptionStatus.Active ? 'green9' : 'yellow9'}`}
                   >
                     {(subscription.status === SubscriptionStatus.Trialing
                       ? SubscriptionStatus.Active
@@ -1916,7 +1886,7 @@ const ManageTab = ({
                   </YStack>
                 </XStack>
                 {subscription.cancel_at_period_end && (
-                  <YStack bg="$yellow2" p="$3" rounded="$4">
+                  <YStack bg="yellow2" p="3" rounded="4">
                     <Paragraph theme="yellow">
                       Your subscription will end on{' '}
                       {new Date(subscription.current_period_end).toLocaleDateString()}
@@ -1955,7 +1925,7 @@ const ManageTab = ({
       {!isTeamMember && (hasProjects || hasSubscriptions) && (
         <>
           <Separator />
-          <YStack gap="$4">
+          <YStack gap="4">
             <H3>Support Tier</H3>
             <SupportTabContent
               currentTier={currentTierString}
@@ -1964,12 +1934,12 @@ const ManageTab = ({
             />
             <Button
               theme="accent"
-              rounded="$10"
+              rounded="10"
               self="flex-end"
               onPress={handleUpgrade}
               disabled={supportTier === currentTierString}
             >
-              <Button.Text fontFamily="$mono">{getActionLabel()}</Button.Text>
+              <Button.Text fontFamily="mono">{getActionLabel()}</Button.Text>
             </Button>
           </YStack>
         </>
@@ -2024,18 +1994,11 @@ const ProjectCard = ({
   }
 
   return (
-    <YStack
-      gap="$3"
-      p="$4"
-      borderWidth={1}
-      borderColor="$color4"
-      rounded="$4"
-      bg="$color2"
-    >
+    <YStack gap="3" p="4" borderWidth={1} borderColor="color4" rounded="4" bg="color2">
       {isEditing ? (
         <>
-          <YStack gap="$2">
-            <Label size="$2" htmlFor={`name-${project.id}`}>
+          <YStack gap="2">
+            <Label size="2" htmlFor={`name-${project.id}`}>
               Project Name
             </Label>
             <Input
@@ -2045,8 +2008,8 @@ const ProjectCard = ({
               placeholder="Project name"
             />
           </YStack>
-          <YStack gap="$2">
-            <Label size="$2" htmlFor={`domain-${project.id}`}>
+          <YStack gap="2">
+            <Label size="2" htmlFor={`domain-${project.id}`}>
               Domain
             </Label>
             <Input
@@ -2057,15 +2020,15 @@ const ProjectCard = ({
             />
           </YStack>
           {error && (
-            <Paragraph size="$2" color="$red10">
+            <Paragraph size="2" color="red10">
               {error}
             </Paragraph>
           )}
-          <XStack gap="$2" justify="flex-end">
-            <Button size="$3" onPress={handleCancel} disabled={isLoading}>
+          <XStack gap="2" justify="flex-end">
+            <Button size="4" onPress={handleCancel} disabled={isLoading}>
               <Button.Text>Cancel</Button.Text>
             </Button>
-            <Button size="$3" theme="accent" onPress={handleSave} disabled={isLoading}>
+            <Button size="4" theme="accent" onPress={handleSave} disabled={isLoading}>
               {isLoading ? <Spinner size="small" /> : <Check size={16} />}
               <Button.Text>Save</Button.Text>
             </Button>
@@ -2074,30 +2037,24 @@ const ProjectCard = ({
       ) : (
         <>
           <XStack justify="space-between" items="flex-start">
-            <YStack gap="$1" flex={1}>
-              <H4 fontFamily="$mono">{project.name}</H4>
-              <Paragraph size="$3" color="$color10">
+            <YStack gap="1" flex={1}>
+              <H4 fontFamily="mono">{project.name}</H4>
+              <Paragraph size="3" color="color10">
                 {project.domain}
               </Paragraph>
             </YStack>
-            <Button size="$2" chromeless onPress={() => setIsEditing(true)}>
+            <Button size="3" variant="quiet" onPress={() => setIsEditing(true)}>
               <Edit3 size={16} />
             </Button>
           </XStack>
 
           <XStack justify="space-between" items="center">
-            <Paragraph size="$2" color="$color9">
+            <Paragraph size="2" color="color9">
               Updates {updatesExpired ? 'expired' : 'expire'}:
             </Paragraph>
             <Paragraph
-              size="$2"
-              color={
-                updatesExpired
-                  ? '$red10'
-                  : daysUntilExpiry < 30
-                    ? '$yellow10'
-                    : '$color10'
-              }
+              size="2"
+              color={`${updatesExpired ? 'red10' : daysUntilExpiry < 30 ? 'yellow10' : 'color10'}`}
             >
               {new Date(project.updates_expire_at).toLocaleDateString()}
               {!updatesExpired && daysUntilExpiry <= 90 && ` (${daysUntilExpiry} days)`}
@@ -2167,9 +2124,9 @@ const TeamTab = ({
 
   if (teamError || !teamData) {
     return (
-      <YStack gap="$4">
+      <YStack gap="4">
         <H3>No Team Subscription</H3>
-        <Paragraph color="$color10">
+        <Paragraph color="color10">
           Purchase team seats to invite team members to your Tamagui Pro subscription.
         </Paragraph>
         <Button
@@ -2186,11 +2143,11 @@ const TeamTab = ({
   }
 
   return (
-    <YStack gap="$6">
-      <YStack gap="$4">
+    <YStack gap="6">
+      <YStack gap="4">
         <H3>Team Management</H3>
         <XStack items="center" justify="space-between">
-          <Paragraph color="$color10">
+          <Paragraph color="color10">
             {teamData.subscription.used_seats || 0} of {teamData.subscription.total_seats}{' '}
             seats used
           </Paragraph>
@@ -2198,10 +2155,10 @@ const TeamTab = ({
       </YStack>
 
       {teamData.subscription.used_seats < teamData.subscription.total_seats && (
-        <YStack gap="$4">
+        <YStack gap="4">
           <H4>Invite Team Member</H4>
-          <Form gap="$2">
-            <XStack gap="$2" items="flex-end">
+          <Form gap="2">
+            <XStack gap="2" items="flex-end">
               <Fieldset flex={1}>
                 <Label htmlFor="github-username">Name / Email / Id</Label>
                 <Input
@@ -2214,9 +2171,9 @@ const TeamTab = ({
             </XStack>
           </Form>
 
-          <YStack gap="$2">
+          <YStack gap="2">
             {isSearching ? (
-              <XStack p="$2" items="center" justify="center">
+              <XStack p="2" items="center" justify="center">
                 <Spinner size="small" />
               </XStack>
             ) : searchResults.length > 0 ? (
@@ -2229,8 +2186,8 @@ const TeamTab = ({
               ))
             ) : searchQuery.length > 0 ? (
               <YStack gap={0}>
-                <Paragraph color="$color10">No results found</Paragraph>
-                <Paragraph color="$color10">User is not a member of Tamagui</Paragraph>
+                <Paragraph color="color10">No results found</Paragraph>
+                <Paragraph color="color10">User is not a member of Tamagui</Paragraph>
               </YStack>
             ) : null}
           </YStack>
@@ -2239,9 +2196,9 @@ const TeamTab = ({
 
       <Separator />
 
-      <YStack gap="$4">
+      <YStack gap="4">
         <H4>Team Members</H4>
-        <YStack gap="$2">
+        <YStack gap="2">
           {teamData.members.map((member) => (
             <TeamMemberRow
               key={member.id}
@@ -2271,20 +2228,20 @@ const GitHubUserRow = ({
   return (
     <XStack
       borderWidth={1}
-      borderColor="$color3"
-      rounded="$4"
-      p="$3"
+      borderColor="color3"
+      rounded="4"
+      p="3"
       items="center"
       justify="space-between"
     >
-      <XStack items="center" gap="$3">
-        <Avatar circular size="$3">
+      <XStack items="center" gap="3">
+        <Avatar circular size="3">
           <Avatar.Image source={{ uri: user.avatar_url ?? '' }} />
         </Avatar>
         <YStack>
           <Paragraph>{user.full_name ?? 'Unknown User'}</Paragraph>
           {inviteError && (
-            <Paragraph size="$2" color="$red10">
+            <Paragraph size="2" color="red10">
               Error: {inviteError.message}
             </Paragraph>
           )}
@@ -2293,7 +2250,7 @@ const GitHubUserRow = ({
 
       <Button
         theme="accent"
-        size="$2"
+        size="3"
         onPress={() => inviteTeamMember({ user_id: String(user.id) })}
         disabled={isInviting}
       >
@@ -2316,14 +2273,14 @@ const TeamMemberRow = ({
   return (
     <XStack
       borderWidth={1}
-      borderColor="$color3"
-      rounded="$4"
-      p="$3"
+      borderColor="color3"
+      rounded="4"
+      p="3"
       items="center"
       justify="space-between"
     >
-      <XStack items="center" gap="$3">
-        <Avatar circular size="$3">
+      <XStack items="center" gap="3">
+        <Avatar circular size="3">
           <Avatar.Image
             source={{
               uri:
@@ -2334,19 +2291,19 @@ const TeamMemberRow = ({
         </Avatar>
         <YStack>
           <Paragraph>{member.user?.full_name ?? 'Unknown User'}</Paragraph>
-          <Paragraph color="$color9" size="$2">
+          <Paragraph color="color9" size="2">
             {member.user?.email}
           </Paragraph>
         </YStack>
       </XStack>
 
-      <XStack items="center" gap="$2">
-        <Paragraph size="$2" color="$color9">
+      <XStack items="center" gap="2">
+        <Paragraph size="2" color="color9">
           {member.role}
         </Paragraph>
         <Button
           theme="red"
-          size="$2"
+          size="3"
           onPress={() => removeTeamMember({ team_member_id: member.user?.id ?? '' })}
           disabled={isRemoving}
         >
@@ -2493,29 +2450,29 @@ const AdminTab = () => {
   const [subTab, setSubTab] = useState<AdminSubTab>('purchases')
 
   return (
-    <YStack gap="$4">
-      <XStack gap="$2" flexWrap="wrap">
+    <YStack gap="4">
+      <XStack gap="2" flexWrap="wrap">
         <Button
-          size="$3"
+          size="4"
           theme={subTab === 'purchases' ? 'accent' : undefined}
           onPress={() => setSubTab('purchases')}
-          chromeless={subTab !== 'purchases'}
+          variant={subTab !== 'purchases' ? 'quiet' : undefined}
         >
           <Button.Text>Purchases</Button.Text>
         </Button>
         <Button
-          size="$3"
+          size="4"
           theme={subTab === 'whitelist' ? 'accent' : undefined}
           onPress={() => setSubTab('whitelist')}
-          chromeless={subTab !== 'whitelist'}
+          variant={subTab !== 'whitelist' ? 'quiet' : undefined}
         >
           <Button.Text>Whitelist</Button.Text>
         </Button>
         <Button
-          size="$3"
+          size="4"
           theme={subTab === 'parity' ? 'accent' : undefined}
           onPress={() => setSubTab('parity')}
-          chromeless={subTab !== 'parity'}
+          variant={subTab !== 'parity' ? 'quiet' : undefined}
         >
           <Button.Text>Parity</Button.Text>
         </Button>
@@ -2587,9 +2544,9 @@ const AdminPurchasesSubTab = () => {
 
   if (isLoading) {
     return (
-      <YStack flex={1} items="center" justify="center" p="$6">
+      <YStack flex={1} items="center" justify="center" p="6">
         <Spinner size="large" />
-        <Paragraph color="$color10" mt="$4">
+        <Paragraph color="color10" mt="4">
           Loading recent purchases...
         </Paragraph>
       </YStack>
@@ -2598,8 +2555,8 @@ const AdminPurchasesSubTab = () => {
 
   if (error) {
     return (
-      <YStack gap="$4" p="$4">
-        <Paragraph color="$red10">Error loading purchases: {error.message}</Paragraph>
+      <YStack gap="4" p="4">
+        <Paragraph color="red10">Error loading purchases: {error.message}</Paragraph>
       </YStack>
     )
   }
@@ -2607,65 +2564,65 @@ const AdminPurchasesSubTab = () => {
   const purchases = purchasesData?.purchases || []
 
   return (
-    <YStack gap="$6">
-      <YStack gap="$2">
-        <XStack items="center" gap="$2">
+    <YStack gap="6">
+      <YStack gap="2">
+        <XStack items="center" gap="2">
           <Users size={20} />
           <H3>Recent Purchases</H3>
         </XStack>
-        <Paragraph color="$color10">
+        <Paragraph color="color10">
           View recent purchases and impersonate users to debug issues.
         </Paragraph>
       </YStack>
 
-      <YStack gap="$3">
+      <YStack gap="3">
         {purchases.length === 0 ? (
-          <Paragraph color="$color10">No recent purchases found.</Paragraph>
+          <Paragraph color="color10">No recent purchases found.</Paragraph>
         ) : (
           purchases.map((purchase) => (
             <YStack
               key={purchase.id}
-              p="$4"
+              p="4"
               borderWidth={1}
-              borderColor="$color4"
-              rounded="$4"
-              gap="$2"
+              borderColor="color4"
+              rounded="4"
+              gap="2"
             >
               <XStack justify="space-between" items="flex-start">
-                <YStack flex={1} gap="$1">
+                <YStack flex={1} gap="1">
                   <Paragraph fontWeight="bold">
                     {formatCurrency(purchase.amount, purchase.currency)}
                   </Paragraph>
-                  <Paragraph size="$2" color="$color10">
+                  <Paragraph size="2" color="color10">
                     {formatDate(purchase.created)}
                   </Paragraph>
                   {purchase.description && (
-                    <Paragraph size="$2" color="$color9">
+                    <Paragraph size="2" color="color9">
                       {purchase.description}
                     </Paragraph>
                   )}
                 </YStack>
 
-                <YStack items="flex-end" gap="$1">
+                <YStack items="flex-end" gap="1">
                   {purchase.customerEmail && (
-                    <Paragraph size="$2">{purchase.customerEmail}</Paragraph>
+                    <Paragraph size="2">{purchase.customerEmail}</Paragraph>
                   )}
                   {purchase.userName && (
-                    <Paragraph size="$2" color="$color10">
+                    <Paragraph size="2" color="color10">
                       {purchase.userName}
                     </Paragraph>
                   )}
                   {purchase.githubUsername && (
-                    <Paragraph size="$2" color="$color9">
+                    <Paragraph size="2" color="color9">
                       @{purchase.githubUsername}
                     </Paragraph>
                   )}
                 </YStack>
               </XStack>
 
-              <XStack justify="flex-end" gap="$2">
+              <XStack justify="flex-end" gap="2">
                 <Button
-                  size="$2"
+                  size="3"
                   theme="blue"
                   disabled={!!isImpersonating}
                   onPress={() =>
@@ -2760,9 +2717,9 @@ const AdminWhitelistSubTab = () => {
 
   if (isLoading) {
     return (
-      <YStack flex={1} items="center" justify="center" p="$6">
+      <YStack flex={1} items="center" justify="center" p="6">
         <Spinner size="large" />
-        <Paragraph color="$color10" mt="$4">
+        <Paragraph color="color10" mt="4">
           Loading whitelist...
         </Paragraph>
       </YStack>
@@ -2771,8 +2728,8 @@ const AdminWhitelistSubTab = () => {
 
   if (error) {
     return (
-      <YStack gap="$4" p="$4">
-        <Paragraph color="$red10">Error loading whitelist: {error.message}</Paragraph>
+      <YStack gap="4" p="4">
+        <Paragraph color="red10">Error loading whitelist: {error.message}</Paragraph>
       </YStack>
     )
   }
@@ -2780,22 +2737,22 @@ const AdminWhitelistSubTab = () => {
   const whitelist = whitelistData?.whitelist || []
 
   return (
-    <YStack gap="$6">
-      <YStack gap="$2">
-        <XStack items="center" gap="$2">
+    <YStack gap="6">
+      <YStack gap="2">
+        <XStack items="center" gap="2">
           <Gift size={20} />
           <H3>Pro Whitelist</H3>
         </XStack>
-        <Paragraph color="$color10">
+        <Paragraph color="color10">
           Grant pro access to GitHub users (contributors, partners, etc).
         </Paragraph>
       </YStack>
 
-      <YStack gap="$3" p="$4" borderWidth={1} borderColor="$color4" rounded="$4">
-        <Paragraph fontWeight="bold" size="$3">
+      <YStack gap="3" p="4" borderWidth={1} borderColor="color4" rounded="4">
+        <Paragraph fontWeight="bold" size="3">
           Add to whitelist
         </Paragraph>
-        <XStack gap="$3" flexWrap="wrap">
+        <XStack gap="3" flexWrap="wrap">
           <Input
             flex={1}
             minWidth={150}
@@ -2821,35 +2778,35 @@ const AdminWhitelistSubTab = () => {
         </XStack>
       </YStack>
 
-      <YStack gap="$3">
+      <YStack gap="3">
         {whitelist.length === 0 ? (
-          <Paragraph color="$color10">No whitelisted users.</Paragraph>
+          <Paragraph color="color10">No whitelisted users.</Paragraph>
         ) : (
           whitelist.map((entry) => (
             <XStack
               key={entry.id}
-              p="$3"
+              p="3"
               borderWidth={1}
-              borderColor="$color4"
-              rounded="$4"
+              borderColor="color4"
+              rounded="4"
               items="center"
               justify="space-between"
-              gap="$3"
+              gap="3"
             >
-              <YStack flex={1} gap="$1">
+              <YStack flex={1} gap="1">
                 <Paragraph fontWeight="bold">@{entry.github_username}</Paragraph>
                 {entry.note && (
-                  <Paragraph size="$2" color="$color10">
+                  <Paragraph size="2" color="color10">
                     {entry.note}
                   </Paragraph>
                 )}
-                <Paragraph size="$1" color="$color9">
+                <Paragraph size="1" color="color9">
                   Added {new Date(entry.created_at).toLocaleDateString()}
                 </Paragraph>
               </YStack>
 
               <Button
-                size="$2"
+                size="3"
                 theme="red"
                 disabled={deletingId === entry.id}
                 onPress={() => handleDelete(entry)}
@@ -2900,10 +2857,10 @@ const AdminParitySubTab = () => {
   }
 
   return (
-    <YStack gap="$6">
-      <YStack gap="$2">
+    <YStack gap="6">
+      <YStack gap="2">
         <H3>Parity Pricing Preview</H3>
-        <Paragraph color="$color10">
+        <Paragraph color="color10">
           Test how the site appears to users from different countries. This only affects
           the UI preview — actual payments still use real geo-detection.
         </Paragraph>
@@ -2911,17 +2868,17 @@ const AdminParitySubTab = () => {
 
       {/* current status */}
       <YStack
-        bg={currentOverride ? '$yellow3' : '$green3'}
-        rounded="$4"
+        bg={`${currentOverride ? 'yellow3' : 'green3'}`}
+        rounded="4"
         borderWidth={0.5}
-        borderColor={currentOverride ? '$yellow8' : '$green8'}
-        p="$3"
-        gap="$3"
+        borderColor={`${currentOverride ? 'yellow8' : 'green8'}`}
+        p="3"
+        gap="3"
       >
-        <XStack gap="$3" items="center" flexWrap="wrap">
+        <XStack gap="3" items="center" flexWrap="wrap">
           <Paragraph
-            size="$4"
-            color={currentOverride ? '$yellow11' : '$green11'}
+            size="4"
+            color={`${currentOverride ? 'yellow11' : 'green11'}`}
             flex={1}
           >
             {currentOverride ? (
@@ -2938,7 +2895,7 @@ const AdminParitySubTab = () => {
             )}
           </Paragraph>
           {currentOverride && (
-            <Button size="$2" theme="red" onPress={handleClearOverride}>
+            <Button size="3" theme="red" onPress={handleClearOverride}>
               <Button.Text>Clear Override</Button.Text>
             </Button>
           )}
@@ -2947,8 +2904,8 @@ const AdminParitySubTab = () => {
 
       {/* current parity deals display */}
       {parityDeals && (
-        <XStack bg="$color2" rounded="$4" borderWidth={0.5} borderColor="$color5" p="$3">
-          <Paragraph size="$3" color="$color11">
+        <XStack bg="color2" rounded="4" borderWidth={0.5} borderColor="color5" p="3">
+          <Paragraph size="3" color="color11">
             Current parity: {parityDeals.flag} {parityDeals.country} —{' '}
             {parityDeals.discountPercentage}% discount
           </Paragraph>
@@ -2956,20 +2913,20 @@ const AdminParitySubTab = () => {
       )}
 
       {/* quick select by tier */}
-      <YStack gap="$4">
+      <YStack gap="4">
         {Object.entries(PARITY_SAMPLE_COUNTRIES).map(([tierLabel, countries]) => (
-          <YStack key={tierLabel} gap="$2">
-            <Paragraph fontWeight="600" size="$3" color="$color10">
+          <YStack key={tierLabel} gap="2">
+            <Paragraph fontWeight="600" color="color10" size="3">
               {tierLabel}
             </Paragraph>
-            <XStack gap="$2" flexWrap="wrap">
+            <XStack gap="2" flexWrap="wrap">
               {countries.map((code) => {
                 const isActive = currentOverride === code
                 return (
                   <Button
                     key={code}
-                    size="$3"
-                    bg={isActive ? '$color8' : '$color3'}
+                    size="4"
+                    bg={isActive ? 'color8' : 'color3'}
                     onPress={() => handleSetCountry(code)}
                   >
                     <Button.Text>

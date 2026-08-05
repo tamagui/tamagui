@@ -1,10 +1,11 @@
 import React from 'react'
-import { Popover, Button, Input, Label, YStack, XStack, TextArea } from 'tamagui'
+import { Popover, Input, Label, YStack, XStack, TextArea } from 'tamagui'
+import { Button } from '../components/Button'
 import { ChevronDown } from '@tamagui/lucide-icons-2'
 
 export function PopoverFocusScopeCase() {
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       {/* Basic Popover with Focus Trap */}
       <Popover>
         <Popover.Trigger asChild>
@@ -13,19 +14,13 @@ export function PopoverFocusScopeCase() {
           </Button>
         </Popover.Trigger>
         <Popover.Content
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
-          elevate
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          y="enter:-10px exit:-10px"
+          opacity="enter:0 exit:0"
+          backgroundColor="background"
+          boxShadow="0 4px 12px shadow-color"
+          transition={['quick', { opacity: { overshootClamping: true } }]}
         >
-          <YStack gap="$3" padding="$4" data-testid="basic-popover-content">
+          <YStack gap="3" padding="4" data-testid="basic-popover-content">
             <Label htmlFor="popover-name">Name</Label>
             <Input
               id="popover-name"
@@ -47,10 +42,9 @@ export function PopoverFocusScopeCase() {
               id="popover-notes"
               data-testid="popover-notes-textarea"
               placeholder="Add some notes..."
-              size="$4"
             />
 
-            <XStack gap="$3" justifyContent="flex-end">
+            <XStack gap="3" justifyContent="flex-end">
               <Popover.Close asChild>
                 <Button variant="outlined" data-testid="popover-cancel-button">
                   Cancel
@@ -73,19 +67,13 @@ export function PopoverFocusScopeCase() {
         </Popover.Trigger>
         <Popover.Content
           trapFocus={false}
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
-          elevate
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          y="enter:-10px exit:-10px"
+          opacity="enter:0 exit:0"
+          backgroundColor="background"
+          boxShadow="0 4px 12px shadow-color"
+          transition={['quick', { opacity: { overshootClamping: true } }]}
         >
-          <YStack gap="$3" padding="$4" data-testid="no-trap-popover-content">
+          <YStack gap="3" padding="4" data-testid="no-trap-popover-content">
             <Label htmlFor="no-trap-input">Input Field</Label>
             <Input
               id="no-trap-input"
@@ -108,19 +96,13 @@ export function PopoverFocusScopeCase() {
           </Button>
         </Popover.Trigger>
         <Popover.Content
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
-          elevate
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          y="enter:-10px exit:-10px"
+          opacity="enter:0 exit:0"
+          backgroundColor="background"
+          boxShadow="0 4px 12px shadow-color"
+          transition={['quick', { opacity: { overshootClamping: true } }]}
         >
-          <YStack gap="$3" padding="$4" data-testid="parent-popover-content">
+          <YStack gap="3" padding="4" data-testid="parent-popover-content">
             <Label htmlFor="parent-popover-input">Parent Input</Label>
             <Input
               id="parent-popover-input"
@@ -131,29 +113,19 @@ export function PopoverFocusScopeCase() {
             {/* Nested Popover */}
             <Popover>
               <Popover.Trigger asChild>
-                <Button data-testid="nested-popover-trigger" size="$3">
-                  Open Nested
-                </Button>
+                <Button data-testid="nested-popover-trigger">Open Nested</Button>
               </Popover.Trigger>
               <Popover.Content
-                enterStyle={{ y: -10, opacity: 0 }}
-                exitStyle={{ y: -10, opacity: 0 }}
-                elevate
-                transition={[
-                  'quick',
-                  {
-                    opacity: {
-                      overshootClamping: true,
-                    },
-                  },
-                ]}
+                y="enter:-10px exit:-10px"
+                opacity="enter:0 exit:0"
+                backgroundColor="background"
+                boxShadow="0 4px 12px shadow-color"
+                transition={['quick', { opacity: { overshootClamping: true } }]}
               >
-                <YStack gap="$3" padding="$3" data-testid="nested-popover-content">
+                <YStack gap="3" padding="3" data-testid="nested-popover-content">
                   <Input data-testid="nested-popover-input" placeholder="Nested input" />
                   <Popover.Close asChild>
-                    <Button data-testid="nested-popover-close" size="$3">
-                      Close Nested
-                    </Button>
+                    <Button data-testid="nested-popover-close">Close Nested</Button>
                   </Popover.Close>
                 </YStack>
                 <Popover.Arrow />

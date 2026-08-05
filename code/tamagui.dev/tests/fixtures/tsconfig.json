@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "composite": false
+  },
+  "include": ["./migration-guide.tsx", "../../config/tamagui.config.ts"],
+  "references": []
+}

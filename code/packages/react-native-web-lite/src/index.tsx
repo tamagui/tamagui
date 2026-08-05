@@ -35,6 +35,7 @@ export { default as Easing } from './vendor/react-native/Animated/Easing'
 
 // react-native - keep default as these are vendor files
 export { default as NativeEventEmitter } from './vendor/react-native/EventEmitter/NativeEventEmitter'
+export * as TurboModuleRegistry from './vendor/react-native/TurboModule/TurboModuleRegistry'
 
 // APIs
 export { AccessibilityInfo } from './AccessibilityInfo/index'

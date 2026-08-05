@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { styled, Button, YStack } from 'tamagui'
 
 const StyledInput = styled(Input, {
-  borderColor: '$blue8',
+  borderColor: 'blue8',
   borderWidth: 2,
 })
 
@@ -11,7 +11,7 @@ export function InputAutoFocusStyledCase() {
   const [view, setView] = useState<'plain' | 'styled' | null>(null)
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       {view === null && (
         <>
           <Button data-testid="show-plain" onPress={() => setView('plain')}>

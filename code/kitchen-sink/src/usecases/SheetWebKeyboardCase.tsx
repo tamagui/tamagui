@@ -43,9 +43,9 @@ function ViewportHUD() {
       l={0}
       r={0}
       z={9_999_999}
-      bg="$red10"
-      px="$3"
-      py="$2"
+      bg="red10"
+      px="3"
+      py="2"
       pointerEvents="none"
     >
       <Text color="white" fontSize={14} fontWeight="bold" testID="hud">
@@ -77,10 +77,10 @@ export function SheetWebKeyboardCase() {
   }, [track])
 
   return (
-    <YStack padding="$4" gap="$4" testID="sheet-web-kb-screen">
+    <YStack padding="4" gap="4" testID="sheet-web-kb-screen">
       <ViewportHUD />
 
-      <Text fontSize="$5" fontWeight="bold">
+      <Text fontSize="5" fontWeight="bold">
         Sheet + Web Keyboard
       </Text>
 
@@ -109,24 +109,23 @@ export function SheetWebKeyboardCase() {
         <Sheet.Overlay
           testID="sheet-web-kb-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
-        <Sheet.Frame
+        <Sheet.Container
           testID="sheet-web-kb-frame"
-          rounded="$6"
+          rounded="6"
           onLayout={track ? (e) => reportSheetLayout('frame', e) : undefined}
         >
+          <Sheet.Background />
           <Sheet.ScrollView
             testID="sheet-web-kb-scrollview"
             maxHeight={maxHeight}
             keyboardShouldPersistTaps="handled"
             onLayout={track ? (e) => reportSheetLayout('scroll', e) : undefined}
           >
-            <YStack gap="$4" padding="$4">
-              <Text fontSize="$6" fontWeight="bold">
+            <YStack gap="4" padding="4">
+              <Text fontSize="6" fontWeight="bold">
                 New Thread
               </Text>
 
@@ -148,12 +147,12 @@ export function SheetWebKeyboardCase() {
               {/* spacer content to make the sheet tall */}
               <YStack
                 height={360}
-                bg="$backgroundHover"
-                rounded="$4"
+                bg="background-hover"
+                rounded="4"
                 items="center"
                 justify="center"
               >
-                <Text color="$gray11">filler content</Text>
+                <Text color="gray11">filler content</Text>
               </YStack>
 
               <Input
@@ -163,7 +162,7 @@ export function SheetWebKeyboardCase() {
                 onChangeText={setBody}
               />
 
-              <XStack gap="$3" justify="flex-end">
+              <XStack gap="3" justify="flex-end">
                 <Button testID="sheet-web-kb-cancel" onPress={() => setOpen(false)}>
                   Cancel
                 </Button>
@@ -173,7 +172,7 @@ export function SheetWebKeyboardCase() {
               </XStack>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

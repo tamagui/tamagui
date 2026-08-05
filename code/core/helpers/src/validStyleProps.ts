@@ -5,6 +5,9 @@ import {
   webOnlyStylePropsText,
   webOnlyStylePropsView,
 } from './webOnlyStyleProps'
+import { tokenCategories } from './tokenCategories'
+
+export { tokenCategories } from './tokenCategories'
 
 // generally organizing this so we don't duplicate things so its a bit weird
 
@@ -40,64 +43,16 @@ const textColors = {
   textShadowColor: true,
 }
 
-// used for propMapping to find the right token category
-// just specificy the least costly, all else go to `space` (most keys - we can exclude)
-export const tokenCategories = {
-  radius: {
-    borderRadius: true,
-    borderTopLeftRadius: true,
-    borderTopRightRadius: true,
-    borderBottomLeftRadius: true,
-    borderBottomRightRadius: true,
-
-    // logical
-    borderStartStartRadius: true,
-    borderStartEndRadius: true,
-    borderEndStartRadius: true,
-    borderEndEndRadius: true,
-  },
-  size: {
-    width: true,
-    height: true,
-    minWidth: true,
-    minHeight: true,
-    maxWidth: true,
-    maxHeight: true,
-    blockSize: true,
-    minBlockSize: true,
-    maxBlockSize: true,
-    inlineSize: true,
-    minInlineSize: true,
-    maxInlineSize: true,
-  },
-  zIndex: {
-    zIndex: true,
-  },
-  color: {
-    backgroundColor: true,
-    borderColor: true,
-    borderBlockStartColor: true,
-    borderBlockEndColor: true,
-    borderBlockColor: true,
-    borderBottomColor: true,
-    borderInlineColor: true,
-    borderInlineStartColor: true,
-    borderInlineEndColor: true,
-    borderTopColor: true,
-    borderLeftColor: true,
-    borderRightColor: true,
-    borderEndColor: true,
-    borderStartColor: true,
-    shadowColor: true,
-    ...textColors,
-    // outlineColor is supported on RN 0.77+ (New Architecture)
-    outlineColor: true,
-    // caretColor is web-only
-    ...(process.env.TAMAGUI_TARGET === 'web' && {
-      caretColor: true,
-    }),
-  },
-}
+// tokenCategories.color is a VALUE-binding table (which props resolve color
+// tokens); three of its members are text-only PROPS, so the View host's
+// validity table must not inherit them — `color` on a View resolves on
+// neither platform (RN has no View color; a web div would only inherit it)
+const {
+  color: _textOnlyColor,
+  textDecorationColor: _textOnlyDecoration,
+  textShadowColor: _textOnlyShadow,
+  ...viewColorCategoryProps
+} = tokenCategories.color
 
 // discrete (non-animatable) view style properties - keyword-based, no interpolation
 // defined above stylePropsView so it can be spread in without duplication
@@ -125,7 +80,14 @@ const nonAnimatableViewProps = {
   mixBlendMode: true,
   outlineStyle: true,
   overflow: true,
+  // a style on both platforms: CSS pointer-events on web, style.pointerEvents
+  // on RN (>= 0.71; repo pins 0.83) — the deprecated View prop spelling is
+  // not used, so flat clause values evaluate through the program engine
+  pointerEvents: true,
   position: true,
+  // visibility: native maps "hidden" -> opacity:0 + pointerEvents:none via expandStyle;
+  // on web passes through as CSS visibility (visible | hidden | collapse).
+  visibility: true,
 }
 
 // discrete (non-animatable) font properties
@@ -288,7 +250,7 @@ export const stylePropsView = {
   insetInlineStart: true,
   shadowOffset: true,
   shadowRadius: true,
-  ...tokenCategories.color,
+  ...viewColorCategoryProps,
   ...tokenCategories.radius,
   ...tokenCategories.size,
   ...stylePropsTransform,
@@ -297,7 +259,15 @@ export const stylePropsView = {
 
   boxShadow: true,
   border: true,
+  // logical shorthands: the border family splits them into CSS logical
+  // longhands on web; native evaluation diagnoses and drops them (RN has no
+  // logical border properties)
+  borderBlock: true,
+  borderInline: true,
   filter: true,
+  // the v6 bg shorthand maps here; native lowers single color values to
+  // backgroundColor and drops url()/gradient/multi-part values it can't express
+  background: true,
   // RN 0.76+ supports linear-gradient via backgroundImage
   backgroundImage: true,
   // the actual RN 0.76+ prop name (backgroundImage expands to this on native)
@@ -327,6 +297,10 @@ export const stylePropsTextOnly = {
   textShadow: true,
   textShadowOffset: true,
   textShadowRadius: true,
+  // resetting composites: the family splits turn these into per-longhand
+  // programs, which RN supports individually
+  textDecoration: true,
+  font: true,
   verticalAlign: true,
 
   // web-only text props - tree-shaken on native
@@ -339,20 +313,5 @@ export const stylePropsText = {
 }
 
 export const stylePropsAll = stylePropsText
-
-export const validPseudoKeys = {
-  enterStyle: true,
-  exitStyle: true,
-  hoverStyle: true,
-  pressStyle: true,
-  focusStyle: true,
-  disabledStyle: true,
-  focusWithinStyle: true,
-
-  // allow some web only ones
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    focusVisibleStyle: true,
-  }),
-}
 
 export const validStyles = stylePropsView

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Pressable, ScrollView } from 'react-native'
-import { Button, Text, YStack, XStack } from 'tamagui'
+import { Text, YStack, XStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Test case for nested press exclusivity:
@@ -35,16 +36,16 @@ export function NestedPressExclusive() {
 
   return (
     <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
-      <YStack gap="$4" padding="$4" testID="nested-press-root">
-        <Text fontSize="$5" fontWeight="bold">
+      <YStack gap="4" padding="4" testID="nested-press-root">
+        <Text fontSize="5" fontWeight="bold">
           Nested Press Exclusivity
         </Text>
-        <Text fontSize="$3" color="$gray11">
+        <Text fontSize="3" color="gray11">
           Tapping the button should only fire child onPress, not parent.
         </Text>
 
-        <YStack gap="$2">
-          <Text fontSize="$4" fontWeight="bold">
+        <YStack gap="2">
+          <Text fontSize="4" fontWeight="bold">
             Standalone Tamagui Button
           </Text>
           <Button
@@ -55,7 +56,7 @@ export function NestedPressExclusive() {
           >
             Tamagui Button (solo)
           </Button>
-          <XStack gap="$4">
+          <XStack gap="4">
             <Text testID="solo-press-count">Solo: {soloPressCount}</Text>
             <Text testID="solo-press-in-count">Solo in: {soloPressInCount}</Text>
             <Text testID="solo-press-out-count">Solo out: {soloPressOutCount}</Text>
@@ -75,7 +76,7 @@ export function NestedPressExclusive() {
             borderRadius: 8,
           }}
         >
-          <Text testID="parent-label" marginBottom="$2">
+          <Text testID="parent-label" marginBottom="2">
             RN Pressable (parent)
           </Text>
           <Button
@@ -92,23 +93,23 @@ export function NestedPressExclusive() {
         </Pressable>
 
         {/* counters for verification */}
-        <YStack gap="$2">
-          <XStack gap="$4">
+        <YStack gap="2">
+          <XStack gap="4">
             <Text testID="parent-press-count">Parent: {parentPressCount}</Text>
             <Text testID="child-press-count">Child: {childPressCount}</Text>
           </XStack>
-          <XStack gap="$4">
+          <XStack gap="4">
             <Text testID="child-press-in-count">Child in: {childPressInCount}</Text>
             <Text testID="child-press-out-count">Child out: {childPressOutCount}</Text>
           </XStack>
           <Text testID="last-pressed">Last pressed: {lastPressed}</Text>
-          <Button testID="nested-press-reset" size="$3" onPress={resetCounts}>
+          <Button testID="nested-press-reset" onPress={resetCounts}>
             Reset counts
           </Button>
         </YStack>
 
         {/* also test nested Tamagui components (should also be exclusive) */}
-        <Text fontSize="$4" fontWeight="bold" marginTop="$4">
+        <Text fontSize="4" fontWeight="bold" marginTop="4">
           Tamagui → Tamagui nesting
         </Text>
         <NestedTamaguiTest />
@@ -122,24 +123,23 @@ function NestedTamaguiTest() {
   const [innerCount, setInnerCount] = useState(0)
 
   return (
-    <YStack gap="$2">
+    <YStack gap="2">
       <Button
         testID="outer-tamagui-button"
-        size="$5"
+        size="5"
         onPress={() => setOuterCount((c) => c + 1)}
       >
         <YStack alignItems="center">
           <Text>Outer Tamagui Button</Text>
           <Button
             testID="inner-tamagui-button"
-            size="$3"
             onPress={() => setInnerCount((c) => c + 1)}
           >
             Inner Button
           </Button>
         </YStack>
       </Button>
-      <XStack gap="$4">
+      <XStack gap="4">
         <Text testID="outer-press-count">Outer: {outerCount}</Text>
         <Text testID="inner-press-count">Inner: {innerCount}</Text>
       </XStack>

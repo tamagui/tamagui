@@ -50,14 +50,14 @@ export function SheetFit3pcNativeRepro() {
 
   // 3pc focuses its primary input once the open animation completes, raising the
   // soft keyboard; with moveOnKeyboardChange the sheet then shifts up.
-  const handleAnimationComplete = ({ open: didOpen }: { open: boolean }) => {
-    if (didOpen) {
+  const handleTransition = (e: { phase: string; cause: string }) => {
+    if (e.phase === 'end' && e.cause !== 'close') {
       setTimeout(() => inputRef.current?.focus(), 150)
     }
   }
 
   return (
-    <View flex={1} bg="$color3">
+    <View flex={1} bg="color3">
       {/* safe-area top marker: the sheet top must never rise above this line */}
       <View
         testID="repro-3pc-native-safearea-marker"
@@ -69,7 +69,7 @@ export function SheetFit3pcNativeRepro() {
         bg="red"
         zIndex={1_000_000}
       />
-      <YStack flex={1} padding="$4" gap="$2" justifyContent="center">
+      <YStack flex={1} padding="4" gap="2" justifyContent="center">
         <Button testID="repro-3pc-native-trigger" onPress={() => setOpen(true)}>
           Open 3pc-style fit sheet (tall)
         </Button>
@@ -87,35 +87,32 @@ export function SheetFit3pcNativeRepro() {
         snapPointsMode="fit"
         dismissOnSnapToBottom
         moveOnKeyboardChange
-        onAnimationComplete={handleAnimationComplete}
+        onTransition={handleTransition}
       >
         <TamaguiSheet.Overlay
           testID="repro-3pc-native-overlay"
-          bg="$color5"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color5"
+          opacity="0.5 enter:0 exit:0"
         />
-        <TamaguiSheet.Frame
-          testID="repro-3pc-native-frame"
-          borderRadius={sheetBorderRadius}
-          borderBottomRightRadius={0}
-          borderBottomLeftRadius={0}
-          bg="transparent"
-          overflow="hidden"
-        >
+        <TamaguiSheet.Container testID="repro-3pc-native-frame" overflow="hidden">
+          <TamaguiSheet.Background
+            borderBottomRightRadius={0}
+            borderBottomLeftRadius={0}
+            bg="transparent"
+            borderRadius={sheetBorderRadius}
+          />
           {/* decorative absolute layers exactly like 3pc's wrapper */}
           <YStack
             {...sheetTopRadius}
             position="absolute"
             inset={0}
-            bg="$color12"
+            bg="color11"
             opacity={0.15}
             borderWidth={2}
             borderBottomWidth={0}
-            borderColor="$borderColor"
+            borderColor="border-color"
           />
-          <View {...sheetTopRadius} position="absolute" inset={0} bg="$color2" />
+          <View {...sheetTopRadius} position="absolute" inset={0} bg="color2" />
           <YStack
             {...sheetTopRadius}
             position="absolute"
@@ -123,7 +120,7 @@ export function SheetFit3pcNativeRepro() {
             opacity={0.25}
             borderWidth={1}
             borderBottomWidth={0}
-            borderColor="$color12"
+            borderColor="color11"
           />
 
           <TamaguiSheet.ScrollView
@@ -131,7 +128,7 @@ export function SheetFit3pcNativeRepro() {
             maxHeight={resolvedMaxHeight}
             keyboardShouldPersistTaps="handled"
           >
-            <YStack gap="$3" padding="$4">
+            <YStack gap="3" padding="4">
               <Paragraph fontWeight="bold">Filter by event</Paragraph>
               <Input
                 ref={inputRef as any}
@@ -142,9 +139,9 @@ export function SheetFit3pcNativeRepro() {
                 <View
                   key={i}
                   testID={`repro-3pc-native-item-${i}`}
-                  padding="$3"
-                  borderRadius="$3"
-                  bg="$background"
+                  padding="3"
+                  borderRadius="3"
+                  bg="background"
                   minHeight={56}
                 >
                   <Paragraph>Event {i + 1} — Fight night card</Paragraph>
@@ -155,7 +152,7 @@ export function SheetFit3pcNativeRepro() {
               </Button>
             </YStack>
           </TamaguiSheet.ScrollView>
-        </TamaguiSheet.Frame>
+        </TamaguiSheet.Container>
       </TamaguiSheet>
     </View>
   )

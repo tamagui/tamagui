@@ -1,26 +1,12 @@
-import { animationsCSS } from '@tamagui/config/v5-css'
-import { animationsMotion } from '@tamagui/config/v5-motion'
-import {
-  createV5Theme,
-  defaultConfig,
-  subtleChildrenThemes,
-} from '@tamagui/config/v5-subtle'
-
-// only generate the accent themes the site actually uses: red/green/blue/gray/yellow
-// (the @tamagui/logo tint family). dropping orange/pink/purple/teal/neutral roughly
-// halves the render-blocking theme css. note: dropping an accent also removes its
-// color tokens (--pink10 etc.), so all $pink/$purple/$orange/$teal/$neutral usages are
-// collapsed to kept colors across the site. component themes are kept (they dedupe to
-// surfaces in css and the site shows them off). themes-as-js is still stripped to {}
-// on the client below and hydrated from css.
-const { gray, blue, red, yellow, green } = subtleChildrenThemes
-const themes = createV5Theme({
-  childrenThemes: { gray, blue, red, yellow, green },
-})
+import { animationsCSS } from '@tamagui/config/animations-css'
+import { animationsMotion } from '@tamagui/config/animations-motion'
+import { defaultConfig } from '@tamagui/config/v6'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
+import { clientThemes } from './themeMetadata'
+import { themes } from './themes'
 
 setupDev({
   visualizer: true,
@@ -39,10 +25,12 @@ export const animations = {
   css: animationsCSS,
 }
 
-// Use v5 config as base, but with tamagui.dev custom themes
+const configuredThemes: typeof themes =
+  process.env.VITE_ENVIRONMENT === 'client' ? clientThemes : themes
+
 export const config = {
   ...defaultConfig,
-  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
+  themes: configuredThemes,
   fonts,
   animations,
   media,
@@ -50,8 +38,7 @@ export const config = {
     ...defaultConfig.settings,
     mediaQueryDefaultActive,
     allowedStyleValues: 'somewhat-strict-web',
-    autocompleteSpecificTokens: 'except-special',
-    // Allow both shorthands and longhand names for flexibility
+    // allow both shorthands and longhand names for flexibility
     onlyAllowShorthands: false,
   },
 } satisfies CreateTamaguiProps

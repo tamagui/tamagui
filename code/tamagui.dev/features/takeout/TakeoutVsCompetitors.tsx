@@ -3,10 +3,10 @@ import { Check, X } from '@tamagui/lucide-icons-2'
 import { H3, Paragraph, SizableText, XStack, YStack, styled, useThemeName } from 'tamagui'
 
 const FeatureLabel = styled(SizableText, {
-  size: '$3',
+  size: '3',
   fontWeight: '600',
-  color: '$color12',
-  fontFamily: '$mono',
+  color: 'color12',
+  fontFamily: 'mono',
 })
 
 type Feature = {
@@ -147,9 +147,9 @@ const FeatureRow = ({ feature, description, takeout, others }: Feature) => {
     }
     return (
       <SizableText
-        size="$3"
-        color={isPositive ? '$green11' : '$color10'}
-        fontFamily="$mono"
+        size="3"
+        color={`${isPositive ? 'green11' : 'color10'}`}
+        fontFamily="mono"
         fontWeight="600"
       >
         {value}
@@ -159,14 +159,11 @@ const FeatureRow = ({ feature, description, takeout, others }: Feature) => {
 
   return (
     <YStack
-      py="$3"
-      px="$4"
+      py="3"
+      px="4"
       borderBottomWidth={1}
-      borderBottomColor="$borderColor"
-      bg="transparent"
-      hoverStyle={{
-        bg: '$color2',
-      }}
+      borderBottomColor="border-color"
+      bg="transparent hover:color2"
     >
       <XStack items="center">
         <YStack flex={1.2}>
@@ -179,7 +176,7 @@ const FeatureRow = ({ feature, description, takeout, others }: Feature) => {
           {renderCell(others, false)}
         </XStack>
       </XStack>
-      <SizableText size="$2" color="$color9" mt="$1" style={{ lineHeight: 1.4 }}>
+      <SizableText size="2" color="color9" mt="1" style={{ lineHeight: 1.4 }}>
         {description}
       </SizableText>
     </YStack>
@@ -190,44 +187,38 @@ export function TakeoutVsCompetitors() {
   const isDark = useThemeName().startsWith('dark')
 
   return (
-    <YStack items="center" gap="$6" maxW={900} mx="auto" width="100%" py="$8" px="$4">
-      <YStack items="center" gap="$4">
+    <YStack items="center" gap="6" maxW={900} mx="auto" width="100%" py="8" px="4">
+      <YStack items="center" gap="4">
         <H3
-          fontSize={32}
+          fontSize="32px sm:28px"
           fontWeight="700"
           text="center"
-          color="$color12"
+          color="color12"
           style={{ lineHeight: '1.2' }}
-          $sm={{ fontSize: 28 }}
         >
           Why{' '}
           <ThemeTintAlt>
-            <SizableText
-              fontSize={32}
-              fontWeight="700"
-              color="$color10"
-              $sm={{ fontSize: 28 }}
-            >
+            <SizableText fontSize="32px sm:28px" fontWeight="700" color="color10">
               Takeout
             </SizableText>
           </ThemeTintAlt>
         </H3>
         <Paragraph
           fontSize={16}
-          color="$color11"
+          color="color11"
           text="center"
-          style={{ lineHeight: '1.6' }}
           maxW={500}
+          style={{ lineHeight: '1.6' }}
         >
           Not just another boilerplate. A production-grade universal app.
         </Paragraph>
       </YStack>
 
       <YStack
-        bg={isDark ? 'rgba(255,255,255,0.03)' : '$color2'}
-        rounded="$6"
+        bg={`${isDark ? 'rgba(255,255,255,0.03)' : 'color2'}`}
+        rounded="6"
         borderWidth={1}
-        borderColor={isDark ? 'rgba(255,255,255,0.08)' : '$color4'}
+        borderColor={`${isDark ? 'rgba(255,255,255,0.08)' : 'color4'}`}
         overflow="hidden"
         width="100%"
         style={{
@@ -236,18 +227,18 @@ export function TakeoutVsCompetitors() {
       >
         {/* Header */}
         <XStack
-          py="$3"
-          px="$4"
+          py="3"
+          px="4"
           borderBottomWidth={1}
-          borderBottomColor="$color6"
-          bg="$background02"
+          borderBottomColor="color6"
+          bg="background02"
         >
           <YStack flex={1.2} justify="center">
             <SizableText
-              size="$2"
+              size="2"
               fontWeight="600"
-              color="$color10"
-              fontFamily="$mono"
+              color="color10"
+              fontFamily="mono"
               textTransform="uppercase"
               letterSpacing={1}
             >
@@ -256,13 +247,13 @@ export function TakeoutVsCompetitors() {
           </YStack>
           <XStack flex={1} justify="center" items="center">
             <ThemeTintAlt>
-              <SizableText size="$3" fontWeight="700" color="$color10" fontFamily="$mono">
+              <SizableText size="3" fontWeight="700" color="color10" fontFamily="mono">
                 Takeout
               </SizableText>
             </ThemeTintAlt>
           </XStack>
           <XStack flex={1} justify="center" items="center">
-            <SizableText size="$3" fontWeight="600" color="$color9" fontFamily="$mono">
+            <SizableText size="3" fontWeight="600" color="color9" fontFamily="mono">
               Others
             </SizableText>
           </XStack>

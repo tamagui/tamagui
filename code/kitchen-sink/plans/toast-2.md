@@ -35,7 +35,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 
 5. **Focus outline shows on click** ✅ FIXED
    - Issue: Focus ring appeared on mouse click, should only show on keyboard
-   - Fix: Changed `focusStyle` to `focusVisibleStyle`
+   - Fix: Changed `focus clause` to `focus-visible clause`
 
 6. **Expanded state showed ALL toasts** ✅ FIXED
    - Issue: When expanded, ALL toasts showed instead of respecting visibleToasts limit
@@ -50,7 +50,7 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 3. **Top position anchor** - dynamic top/bottom based on position
 4. **ToastActionButton component** - proper text button for action/cancel
 5. **Subtle exit animations** - 10px/30px instead of 100px
-6. **focusVisibleStyle** - outline only on keyboard navigation
+6. **focus-visible clause** - outline only on keyboard navigation
 
 ### DESIGN DECISIONS (user feedback)
 
@@ -85,59 +85,59 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 - [x] position: absolute (within container)
 - [x] left: 0, right: 0 (full width of container)
 - [x] **Dynamic anchor: top:0 for top positions, bottom:0 for bottom positions** ✅ FIXED
-- [x] background: $background
-- [x] border-radius: $4 (8px)
-- [x] paddingHorizontal: $4, paddingVertical: $3
-- [x] border: 1px solid $borderColor
-- [x] elevation: $4 + shadow for depth
+- [x] background: background
+- [x] border-radius: 4 (8px)
+- [x] paddingHorizontal: 4, paddingVertical: 3
+- [x] border: 1px solid border-color
+- [x] elevation: 4 + shadow for depth
 - [x] focusable: true
-- [x] **focusVisibleStyle instead of focusStyle** ✅ FIXED
+- [x] **focus-visible clause instead of focus clause** ✅ FIXED
 
 ### Toast Content Layout
 
 - [x] flex row with icon, content, close button
 - [x] icon: 16x16px, flex-shrink: 0
-- [x] content: flex column, gap $1
-- [x] title: fontWeight 600, $color, size $4
-- [x] description: $color11, size $2
-- [x] gap: $3 between elements
+- [x] content: flex column, gap 1
+- [x] title: fontWeight 600, color, size 4
+- [x] description: color11, size 2
+- [x] gap: 3 between elements
 
 ### Close Button
 
 - [x] positioned inline (user decided against absolute overlap)
 - [x] 20x20px circle
-- [x] borderRadius: $10 (circular)
-- [x] backgroundColor: $color5
-- [x] hoverStyle: $color6
-- [x] pressStyle: $color7
+- [x] borderRadius: 10 (circular)
+- [x] backgroundColor: color5
+- [x] hover clause: color6
+- [x] press clause: color7
 
 ### Action Buttons ✅ FIXED
 
 - [x] **New ToastActionButton component** with proper sizing
-- [x] borderRadius: $2
-- [x] paddingHorizontal: $2
+- [x] borderRadius: 2
+- [x] paddingHorizontal: 2
 - [x] height: 24px
 - [x] primary variant for action button (dark bg, light text)
-- [x] marginTop: $3 spacing
-- [x] gap: $2 between buttons
+- [x] marginTop: 3 spacing
+- [x] gap: 2 between buttons
 - [x] justifyContent: flex-end
 
 ### Rich Colors (Type Variants)
 
-- [x] success: $green2 background, $green6 border
-- [x] error: $red2 background, $red6 border
-- [x] warning: $yellow2 background, $yellow6 border
-- [x] info: $blue2 background, $blue6 border
+- [x] success: green2 background, green6 border
+- [x] error: red2 background, red6 border
+- [x] warning: yellow2 background, yellow6 border
+- [x] info: blue2 background, blue6 border
 - [x] loading: default (neutral)
 
 ### Icons
 
-- [x] success: ✓ in $green10
-- [x] error: ✕ in $red10
-- [x] warning: ⚠ in $yellow10
-- [x] info: ℹ in $blue10
-- [x] loading: ⟳ in $color11
-- [x] close: ✕ in $color11
+- [x] success: ✓ in green10
+- [x] error: ✕ in red10
+- [x] warning: ⚠ in yellow10
+- [x] info: ℹ in blue10
+- [x] loading: ⟳ in color11
+- [x] close: ✕ in color11
 
 ---
 
@@ -219,8 +219,8 @@ Revamp @tamagui/toast to v2, inspired by Sonner's excellent UX. Must be fully cr
 
 ### Enter/Exit Animations ✅ REFINED
 
-- [x] enterStyle: opacity 0, y: ±10, scale: 0.95 (subtle)
-- [x] exitStyle: opacity 0, x/y: ±30 for swipe, ±10 for normal, scale: 0.95
+- [x] enter clause: opacity 0, y: ±10, scale: 0.95 (subtle)
+- [x] exit clause: opacity 0, x/y: ±30 for swipe, ±10 for normal, scale: 0.95
 - [x] AnimatePresence for mount/unmount
 - [x] transition: 'quick' (Tamagui animation)
 - [x] Disable animation while dragging
@@ -430,7 +430,7 @@ if (!expanded) {
    - Enter/exit styles with AnimatePresence
    - **Dynamic top/bottom anchor based on position**
    - **ToastActionButton component for action/cancel**
-   - **focusVisibleStyle for keyboard-only focus**
+   - **focus-visible clause for keyboard-only focus**
    - **Subtle exit animations (10px/30px)**
    - **Opacity fade for limit**
 

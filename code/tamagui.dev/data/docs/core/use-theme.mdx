@@ -209,14 +209,12 @@ export default () => {
 
 ## Changing the theme at the hook level
 
-This is a more advanced use for building custom hooks or components, but you can
-pass in a theme name and a component theme name (as
-[discussed here](/docs/intro/themes#component-themes)) to grab the right
-subset theme:
+This is a more advanced use for building custom hooks or components. Pass an
+explicit theme name to read the matching sub-theme below the current scheme:
 
 ```tsx
 function MyComponent(props) {
-  const theme = useTheme(props.theme, 'MyComponent')
+  const theme = useTheme(props.theme)
 }
 ```
 
@@ -224,7 +222,6 @@ For example, if you have the following themes:
 
 - `dark`
 - `dark_green`
-- `dark_green_MyComponent`
 
 And this code:
 
@@ -234,4 +231,5 @@ And this code:
 </Theme>
 ```
 
-The above `useTheme` hook would return the `dark_green_MyComponent` theme.
+The above `useTheme` hook returns the `dark_green` theme. V3 does not append a
+component name or inspect uppercase theme segments.

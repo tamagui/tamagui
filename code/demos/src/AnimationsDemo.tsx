@@ -1,6 +1,7 @@
 import { LogoIcon } from '@tamagui/logo'
 import { Play } from '@tamagui/lucide-icons-2'
-import { Button, isWeb, Square, useControllableState, Image, useEvent } from 'tamagui'
+import { isWeb, Square, useControllableState, Image, useEvent } from 'tamagui'
+import { Button } from './Button'
 
 export function AnimationsDemo(props) {
   const [positionI, setPositionI] = useControllableState({
@@ -19,20 +20,14 @@ export function AnimationsDemo(props) {
     <>
       <Square
         transition={props.animation ?? 'bouncy'}
+        borderColor="border-color"
+        borderWidth={1}
+        rounded="9"
+        bg="color9"
+        {...position}
         animateOnly={['transform']}
         onPress={onPress}
         size={104}
-        borderColor="$borderColor"
-        borderWidth={1}
-        rounded="$9"
-        bg="$color9"
-        hoverStyle={{
-          scale: 1.01,
-        }}
-        pressStyle={{
-          scale: 0.9,
-        }}
-        {...position}
       >
         {isWeb && <LogoIcon downscale={0.75} />}
       </Square>
@@ -42,8 +37,8 @@ export function AnimationsDemo(props) {
         b={20}
         l={20}
         icon={Play}
-        theme={props.tint ?? 'surface2'}
-        size="$5"
+        theme={props.tint ?? 'level3'}
+        size="5"
         circular
         onPress={onPress}
       />
@@ -55,31 +50,19 @@ export const positions = [
   {
     x: 0,
     y: 0,
-    scale: 1,
+    scale: '1 hover:1.01 press:0.9',
     rotate: '0deg',
   },
   {
     x: -50,
     y: -50,
-    scale: 0.5,
+    scale: '0.5 hover:0.6 press:0.4',
     rotate: '-45deg',
-    hoverStyle: {
-      scale: 0.6,
-    },
-    pressStyle: {
-      scale: 0.4,
-    },
   },
   {
     x: 50,
     y: 50,
-    scale: 1,
+    scale: '1 hover:1.1 press:0.9',
     rotate: '180deg',
-    hoverStyle: {
-      scale: 1.1,
-    },
-    pressStyle: {
-      scale: 0.9,
-    },
   },
 ]

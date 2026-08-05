@@ -116,7 +116,7 @@ export const SeasonTogglePopover = (props: { children: any }) => {
             <SizableText
               key={season}
               className={`season-emoji season-emoji-${season}`}
-              size="$8"
+              size="8"
               position="absolute"
               b={-10}
               r={-10}
@@ -129,47 +129,35 @@ export const SeasonTogglePopover = (props: { children: any }) => {
       </Popover.Trigger>
 
       <Popover.Content
-        enterStyle={{ y: -6, opacity: 0 }}
-        exitStyle={{ y: -6, opacity: 0 }}
-        elevation="$4"
-        p="$0"
-        t="$2"
+        y="enter:-6px exit:-6px"
+        opacity="enter:0 exit:0"
+        backgroundColor="background"
+        boxShadow="0 4px 12px shadow-color"
+        p="0"
+        t="2"
         overflow="hidden"
-        rounded="$8"
-        transition={[
-          'medium',
-          {
-            opacity: {
-              overshootClamping: true,
-            },
-          },
-        ]}
+        rounded="8"
+        transition={['medium', { opacity: { overshootClamping: true } }]}
       >
         <YStack>
           {Object.keys(seasons).map((optionName) => {
             return (
               <Square
                 key={optionName}
-                size="$4"
-                $sm={{ size: '$5' }}
-                hoverStyle={{
-                  bg: '$backgroundHover',
-                }}
-                pressStyle={{
-                  bg: '$backgroundPress',
-                }}
-                {...(name === optionName && {
-                  bg: '$color5',
-                  hoverStyle: {
-                    bg: '$color5',
-                  },
-                })}
+                size="4"
+                width="sm:5"
+                height="sm:5"
+                bg={
+                  name === optionName
+                    ? 'color5 hover:color5 press:color5'
+                    : 'hover:background-hover press:background-press'
+                }
                 onPress={(e) => {
                   e.stopPropagation()
                   setTintFamily(optionName as any)
                 }}
               >
-                <SizableText size="$6" cursor="default">
+                <SizableText size="6" cursor="default">
                   {seasons[optionName]}
                 </SizableText>
               </Square>

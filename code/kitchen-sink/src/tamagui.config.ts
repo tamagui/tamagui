@@ -2,16 +2,20 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMotion } from '@tamagui/animations-motion'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { createAnimations as createAnimationsReanimated } from '@tamagui/animations-reanimated'
-import { config } from '@tamagui/config/v3'
-import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
-import { defaultConfig } from '@tamagui/config/v5'
-import { tamaguiThemes } from '@tamagui/themes/v4'
-import { createTamagui, type CreateTamaguiProps } from 'tamagui'
-// TODO just move this into this folder
-import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
-import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
-// Generated theme from v5 theme builder for testing
-import { themes as generatedV5Themes } from './generatedV5Theme'
+import { defaultConfig } from '@tamagui/config/v6'
+import { createTamagui } from '@tamagui/core'
+import type { InferTamaguiConfig } from '@tamagui/web'
+import { themeDev, type TamaguiThemes } from './themes/theme.dev'
+
+// the kitchen sink runs on the shipped default config so the cases exercise
+// exactly what users get: v6 tokens, fonts, media, shorthands and settings.
+const media = {
+  ...defaultConfig.media,
+  // the reduced-motion keys are not part of the shipped media set, but the
+  // media drivers support them on both platforms — MotionReduceCase covers that
+  motionReduce: { prefersReducedMotion: 'reduce' },
+  motionSafe: { prefersReducedMotion: 'no-preference' },
+} as const
 
 export const animationsCSS = createAnimationsCSS({
   '0ms': '0ms linear',
@@ -316,50 +320,17 @@ export const animationsReanimated = createAnimationsReanimated({
   },
 })
 
-// this is used by the button test...
-config.themes = {
-  ...config.themes,
-
-  // @ts-ignore
-  light_green_Button: {
-    // @ts-ignore
-    ...config.themes.light_green_Button,
-    background: 'green',
-  },
-
-  // @ts-ignore
-  light_MyLabel: {
-    color: 'red',
-  },
-
-  // Test theme for Issue #3620: color tokens should be fallbacks, not overrides
-  // This theme overrides customRed to be green, to verify theme values take precedence
-  // @ts-ignore
-  light_ColorTokenTest: {
-    background: '#ffffff',
-    customRed: '#00ff00', // Override the color token (which is #ff0000) with green
-  },
-}
-
-const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
-
-const useV4Themes = search.includes('v4theme=true')
-const v5config = search.includes('v5config')
-const tamav5Config = search.includes('tamav5config')
-const generatedV5 = search.includes('generatedV5')
-
+// the shipped palette plus the cases' own fixture colors. v6 keeps colors in
+// tokens (the Tailwind palette), so these sit alongside rather than replacing it.
 const tokens = {
-  ...config.tokens,
+  ...defaultConfig.tokens,
   color: {
-    ...config.tokens.color,
+    ...defaultConfig.tokens.color,
     testsomethingdifferent: '#ff0000',
     customRed: '#ff0000',
     customBlue: '#0000ff',
     customGreen: '#00ff00',
   },
-  // size: {
-  //   0: 10,
-  // },
 }
 
 // multi-driver config for testing animatedBy prop and driver selection
@@ -367,6 +338,11 @@ const animationsMultiDriver = {
   default: animationsMotion,
   css: animationsCSS,
 }
+
+// the driver is the one thing the test harness picks per run, via ?animationDriver=.
+// it only swaps which driver object the same config carries — unlike a whole
+// alternate config, it cannot desync from what the compiler extracted.
+const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
 
 const animations = search.includes('animationDriver=css')
   ? animationsCSS
@@ -378,35 +354,106 @@ const animations = search.includes('animationDriver=css')
         ? animationsMultiDriver
         : animationsReanimated
 
-const tamaConf = createTamagui({
-  ...config,
-  // Use v4 themes when ?v4theme=true is in the URL
-  themes: useV4Themes
-    ? tamaguiThemes
-    : {
-        ...config.themes,
-        ...themeDev,
-      },
-  shorthands: shorthands,
-  settings: {
-    defaultFont: '$body',
-    allowedStyleValues: 'somewhat-strict',
-    autocompleteSpecificTokens: 'except-special',
-    fastSchemeChange: true,
-  },
-  tokens,
-  media: {
-    ...configV4.media, // adds max queries
-    ...config.media,
-  },
-  animations, // default reanimated
+/**
+ * A language variant of the body font, for FontLanguageSwapCase.
+ *
+ * A font key of `name_language` is what `createDesignSystem` reads to emit
+ * `:root .t_lang-body-ja .font_body { … }`, so this only ever applies inside a
+ * `<FontLanguage body="ja">` and cannot move default rendering. The family and
+ * the metrics differ from `body` on purpose: swapping the face has to carry the
+ * face's own sizes and line heights with it, not just its family name.
+ *
+ * It sorts after `body`, which matters — the shared `.font_*, .is_View` rule is
+ * built from the alphabetically first font, so a variant sorting before `body`
+ * would change the font reset for every View on the page.
+ */
+const bodyJa = {
+  ...defaultConfig.fonts.body,
+  family: 'KitchenSinkJA, sans-serif',
+  size: { ...defaultConfig.fonts.body.size, 3: 20 },
+  lineHeight: { ...defaultConfig.fonts.body.lineHeight, 3: 30 },
+}
 
-  defaultProps: {
-    Square: {
-      backgroundColor: 'violet',
-    },
+type Merge<Left, Right> = Omit<Left, keyof Right> & Right
+
+// deliberately partial theme the case asserts against. themeDev does not define
+// this name, so it lands whole rather than merging into a generated theme.
+const fixtureThemes = {
+  // A same-named theme value used to win. Flat values bind the color category
+  // first, so customRed here deliberately loses to the configured color token.
+  light_ColorTokenTest: {
+    background: '#ffffff',
+    customRed: '#00ff00',
   },
-})
+}
+
+type KitchenThemes = TamaguiThemes & typeof fixtureThemes
+
+const themes: KitchenThemes = {
+  ...defaultConfig.themes,
+  ...themeDev,
+  ...fixtureThemes,
+}
+
+const variables = {
+  caseAccent: { light: 'rgb(0, 90, 200)', dark: 'rgb(90, 90, 255)' },
+  caseSurface: 'background',
+  caseRadius: 4,
+} as const
+
+const defaultProps = {
+  Square: {
+    backgroundColor: 'violet',
+  },
+} as const
+
+type KitchenConfigInput = Omit<
+  typeof defaultConfig,
+  'fonts' | 'media' | 'settings' | 'themes' | 'tokens'
+> & {
+  animations: typeof animations
+  defaultProps: typeof defaultProps
+  fonts: Merge<typeof defaultConfig.fonts, { body_ja: typeof bodyJa }>
+  media: typeof media
+  settings: Merge<
+    typeof defaultConfig.settings,
+    {
+      defaultFont: 'body'
+      allowedStyleValues: 'somewhat-strict'
+      fastSchemeChange: true
+      onlyAllowShorthands: false
+    }
+  >
+  themes: KitchenThemes
+  tokens: typeof tokens
+  variables: typeof variables
+}
+
+const tamaConf: InferTamaguiConfig<KitchenConfigInput> =
+  createTamagui<KitchenConfigInput>({
+    ...defaultConfig,
+    fonts: {
+      ...defaultConfig.fonts,
+      body_ja: bodyJa,
+    },
+    themes,
+    settings: {
+      ...defaultConfig.settings,
+      defaultFont: 'body',
+      allowedStyleValues: 'somewhat-strict',
+      fastSchemeChange: true,
+      // the cases author with long property names as well as shorthands
+      onlyAllowShorthands: false,
+    },
+    tokens,
+    media,
+    animations, // default reanimated
+
+    // custom variables for VariablesCase (plans/variables.md)
+    variables,
+
+    defaultProps,
+  })
 
 export type Conf = typeof tamaConf
 
@@ -418,10 +465,4 @@ declare module 'tamagui' {
   }
 }
 
-export default tamav5Config
-  ? createTamagui(tamaguiDevConfig)
-  : generatedV5
-    ? createTamagui({ ...defaultConfig, themes: generatedV5Themes, animations })
-    : v5config
-      ? createTamagui({ ...defaultConfig, animations })
-      : tamaConf
+export default tamaConf

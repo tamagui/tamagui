@@ -24,34 +24,25 @@ export default function Blog() {
   return (
     <>
       <HeadInfo title="Blog — Tamagui" description="What's up with Tamagui." />
-      <Spacer size="$7" />
-      <ContainerLarge mb="$7">
-        <H2 size="$8" color="$color9" fontFamily="$silkscreen">
+      <Spacer size="7" />
+      <ContainerLarge mb="7">
+        <H2 size="8" color="color9" fontFamily="silkscreen">
           Blog
         </H2>
-        <Spacer size="$6" />
-        <XStack flexWrap="wrap" gap="$4" $md={{ flexDirection: 'column' }}>
+        <Spacer size="6" />
+        <XStack flexWrap="wrap" gap="4" flexDirection="md:column">
           {frontmatters.map((frontmatter) => (
             <Link asChild key={frontmatter.title} href={`/blog/${frontmatter.slug}`}>
               <TamaguiCard
                 title={frontmatter.title}
                 render="a"
-                width="calc(50% - var(--space-2))"
+                width="calc(50% - var(--space-2)) md:100% sm:100%"
                 minH="max-content"
-                $md={{
-                  width: '100%',
-                  maxWidth: '100%',
-                  flex: 'unset',
-                  flexShrink: 0,
-                }}
-                $sm={{
-                  width: '100%',
-                  maxWidth: '100%',
-                  flex: 'unset',
-                  flexShrink: 0,
-                }}
+                maxWidth="md:100% sm:100%"
+                flex="md:unset sm:unset"
+                flexShrink="md:0 sm:0"
                 subTitle={
-                  <Paragraph opacity={0.5} cursor="inherit" color="$color10" size="$3">
+                  <Paragraph opacity={0.5} cursor="inherit" color="color10" size="3">
                     {Intl.DateTimeFormat('en-US', {
                       month: 'short',
                       year: 'numeric',

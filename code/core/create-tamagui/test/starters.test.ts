@@ -13,7 +13,7 @@ describe('expo-router starter', () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf-8'))
     expect(pkg.dependencies['@tamagui/config']).toBe('workspace:*')
     expect(pkg.dependencies['tamagui']).toBe('workspace:*')
-    expect(pkg.devDependencies['@tamagui/babel-plugin']).toBe('workspace:*')
+    expect(pkg.devDependencies['@tamagui/metro-plugin']).toBe('workspace:*')
   })
 
   it('does not depend on @tamagui/cli', () => {
@@ -22,15 +22,16 @@ describe('expo-router starter', () => {
     expect(pkg.devDependencies?.['@tamagui/cli']).toBeUndefined()
   })
 
-  it('uses vanilla metro config', () => {
+  it('uses the shared Tamagui Metro compiler', () => {
     const metro = fs.readFileSync(path.join(dir, 'metro.config.js'), 'utf-8')
-    expect(metro).not.toContain('withTamagui')
+    expect(metro).toContain("require('@tamagui/metro-plugin')")
+    expect(metro).toContain('withTamagui(getDefaultConfig(__dirname)')
     expect(metro).toContain('getDefaultConfig')
   })
 
-  it('uses v5 tamagui config', () => {
+  it('uses v6 tamagui config', () => {
     const config = fs.readFileSync(path.join(dir, 'tamagui.config.ts'), 'utf-8')
-    expect(config).toContain('@tamagui/config/v5')
+    expect(config).toContain('@tamagui/config/v6')
   })
 
   // TODO: metro can't resolve @tamagui/menu through workspace symlinks
@@ -68,9 +69,9 @@ describe('remix starter', () => {
     expect(pkg.dependencies?.['@tamagui/core']).toBeUndefined()
   })
 
-  it('uses v5 tamagui config', () => {
+  it('uses v6 tamagui config', () => {
     const config = fs.readFileSync(path.join(dir, 'tamagui.config.ts'), 'utf-8')
-    expect(config).toContain('@tamagui/config/v5')
+    expect(config).toContain('@tamagui/config/v6')
   })
 
   it('imports from tamagui not @tamagui/web', () => {

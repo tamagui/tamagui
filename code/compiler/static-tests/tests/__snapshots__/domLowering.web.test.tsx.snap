@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DOM elements lower to literal tags through every normalized element form 1`] = `
+"
+    import React, { createElement } from 'react'
+    import { jsx, jsxs } from 'react/jsx-runtime'
+    import { html as h } from '@tamagui/core'
+
+    export const JSXElement = <main className="_mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _pt-2069939090 _pr-1050014265 _pb-1524626228 _pl-1453308760" id="main"><h1 className="_mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _pt-2069939090 _pr-1050014265 _pb-1524626228 _pl-1453308760 _fs-1399026576 _fw-1397293930">Title</h1></main>
+    export const JSXCall = jsx("section", { children: 'jsx' , className: "_mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _pt-2069939090 _pr-1050014265 _pb-1524626228 _pl-1453308760" })
+    export const JSXSCall = jsxs("nav", { children: ['one', jsx("span", { children: 'two' , className: "_mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _pt-2069939090 _pr-1050014265 _pb-1524626228 _pl-1453308760 _tdl-281247417" })] , className: "_mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _pt-2069939090 _pr-1050014265 _pb-1524626228 _pl-1453308760" })
+    export const CreateElementCall = createElement("article", { className: "_mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _pt-2069939090 _pr-1050014265 _pb-1524626228 _pl-1453308760" }, 'named')
+    export const MemberCreateElementCall = React.createElement("footer", { className: "_mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _pt-2069939090 _pr-1050014265 _pb-1524626228 _pl-1453308760" }, 'member')
+"
+`;

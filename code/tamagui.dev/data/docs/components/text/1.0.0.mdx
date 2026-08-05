@@ -19,7 +19,7 @@ demoName: Text
   features={[
     'Themes that give you control over spacing, weights, and sizes custom to each font.',
     'Size prop that automatically matches all theme values.',
-    'Media query styles, hoverStyle, pressStyle, focusStyle.',
+    'Flat media, hover, press, and focus clauses.',
   ]}
 />
 
@@ -56,13 +56,10 @@ export default () => (
   <>
     <Text
       // can add theme values
-      color="$white"
-      fontFamily="$body"
+      color="white hover:color-hover"
+      fontFamily="body"
       // or just use direct values
       fontSize={20}
-      hoverStyle={{
-        color: '$colorHover',
-      }}
     >
       Lorem ipsum
     </Text>
@@ -88,7 +85,7 @@ SizableText adds a `size` property thats defined using a [spread variant](/docs/
 So, if you've defined `small`, `medium` and `large` keys on each createFont category, you can use it like so:
 
 ```tsx
-<SizableText size="$small" />
+<SizableText size="small" />
 ```
 
 [Source code for SizableText](https://github.com/tamagui/tamagui/blob/main/code/ui/text/src/SizableText.tsx).
@@ -102,8 +99,8 @@ export const Paragraph = styled(SizableText, {
   name: 'Paragraph',
   tag: 'p',
   userSelect: 'auto',
-  color: '$color',
-  size: '$true',
+  color: 'color',
+  size: true,
   whiteSpace: 'normal',
 })
 ```

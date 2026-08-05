@@ -1,4 +1,4 @@
-import { View, styled } from '@tamagui/web'
+import { createStyledHOC, View, styled } from '@tamagui/web'
 import type { ImageProps, ImageType } from './types'
 
 const StyledImage = styled(View, {
@@ -6,8 +6,9 @@ const StyledImage = styled(View, {
   render: 'img',
 })
 
-export const Image = StyledImage.styleable<ImageProps>(
-  (inProps, ref) => {
+export const Image = createStyledHOC(
+  StyledImage,
+  (inProps: ImageProps, ref) => {
     const {
       // exclude native only props
       blurRadius,

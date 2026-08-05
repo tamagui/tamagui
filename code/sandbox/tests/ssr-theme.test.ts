@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('SSR Theme Styles', () => {
-  test('$theme-light generates proper CSS classes', async ({ page }) => {
+  test('theme-light generates proper CSS classes', async ({ page }) => {
     await page.goto('/ssr-test')
 
     // wait for render
@@ -11,15 +11,19 @@ test.describe('SSR Theme Styles', () => {
     // the theme rule is compile-time extracted; in dev vite injects the CSS
     // client-side after hydration, so wait on the stylesheet instead of racing
     // it by reading page.content() at first paint
+    const boxClasses = await box.getAttribute('class')
+    expect(boxClasses).toBeTruthy()
+
     const themeRule = await page.waitForFunction(
-      () => {
+      (classes) => {
         for (const sheet of document.styleSheets) {
           try {
             for (const rule of sheet.cssRules) {
               const text = rule.cssText || ''
-              // the extracted theme-scoped boxShadow rule specifically (not the
-              // theme variable definitions, which also mention .t_light)
-              if (text.includes('.t_light') && text.includes('_bxsh-_light_')) {
+              const matchesBox = classes.some((name) =>
+                text.startsWith(`.${name}:where(.t_light`)
+              )
+              if (matchesBox && text.includes('box-shadow')) {
                 return text
               }
             }
@@ -27,21 +31,17 @@ test.describe('SSR Theme Styles', () => {
         }
         return null
       },
-      undefined,
+      boxClasses!.split(/\s+/),
       { timeout: 15000 }
     )
 
     // the declaration must survive browser CSS parsing — an unresolved token
-    // like "$color5" makes the browser drop it, leaving an empty rule
+    // like "color5" makes the browser drop it, leaving an empty rule
     const ruleText = (await themeRule.jsonValue()) as string
     expect(ruleText).toContain('.t_light')
     expect(ruleText).toContain('box-shadow')
 
-    const boxClasses = await box.getAttribute('class')
     console.log('Box classes:', boxClasses)
-
-    // should have a _light_ prefixed class for the theme-specific style
-    expect(boxClasses).toMatch(/_light_/)
   })
 
   test('no hydration mismatch with JS enabled', async ({ page }) => {

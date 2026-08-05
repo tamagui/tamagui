@@ -9,7 +9,7 @@ import { getStackedZIndexProps } from './helpers'
 import type { PortalProps } from './PortalProps'
 
 export const Portal = React.memo((propsIn: PortalProps) => {
-  const { children, passThrough, style, open } = propsIn
+  const { children, passThrough, style, open, hidden } = propsIn
 
   const themeName = useThemeName()
   const didHydrate = useDidFinishSSR()
@@ -32,6 +32,14 @@ export const Portal = React.memo((propsIn: PortalProps) => {
         inset: 0,
         contain: 'strict',
         pointerEvents: open ? 'auto' : 'none',
+        // ios 26 safari colors the status-bar strip by hit-testing the top edge
+        // of the viewport: a full-viewport fixed host whose children are all
+        // invisible (opacity 0) samples as a solid white bar. visibility:hidden
+        // boxes are never hit-tested, and unlike display:none they keep layout,
+        // so closed-but-mounted content can still be measured. consumers pass
+        // hidden while closed AND not animating out (a childless host is
+        // already exempt from sampling, so default undefined is fine).
+        visibility: hidden ? 'hidden' : undefined,
         // prevent mobile browser from scrolling/moving this fixed element
         touchAction: 'none',
         display: 'flex',

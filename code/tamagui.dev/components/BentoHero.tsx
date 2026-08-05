@@ -1,7 +1,8 @@
 // @ts-expect-error - bento component wildcard import
 import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Button, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { BentoLogo } from '../features/bento/BentoLogo'
 import { LoadCherryBomb } from '../features/site/fonts/LoadFonts'
 import { useSubscriptionModal } from '../features/site/purchase/useSubscriptionModal'
@@ -15,66 +16,45 @@ export const BentoHero = () => {
       <LoadCherryBomb />
       <ContainerLarge>
         <XStack
-          gap="$6"
-          pb="$3"
+          gap="6"
+          pb="3"
           bg="transparent"
           justify="space-between"
           width="100%"
-          $sm={{
-            flexDirection: 'column',
-          }}
+          flexDirection="sm:column"
         >
           <YStack
             mb={40}
             mt={60}
-            maxW="55%"
+            maxW="55% sm:100%"
             z={100}
             justify="space-between"
             flex={10}
-            items="flex-start"
-            $sm={{
-              maxW: '100%',
-              items: 'center',
-              minHeight: 'max-content',
-            }}
+            items="flex-start sm:center"
+            minHeight="sm:max-content"
           >
             <YStack
               className="ms200 ease-in all"
               transformOrigin="center top"
-              $xxs={{
-                scale: 0.4,
-                mb: -80,
-              }}
-              $xs={{
-                scale: 0.5,
-                mb: -80,
-              }}
-              $sm={{
-                self: 'center',
-                scale: 0.6,
-                mb: -60,
-              }}
-              $md={{ mb: -100, scale: 0.72 }}
+              mb="xxs:-80px xs:-80px sm:-60px md:-100px"
+              scale="xxs:0.4 xs:0.5 sm:0.6 md:0.72"
+              self="sm:center"
             >
               <BentoLogo />
             </YStack>
 
-            <Spacer size="$6" />
+            <Spacer size="6" />
 
-            <YStack maxW={500} gap="$7" mx="auto" $sm={{ px: '$4', maxW: 400 }}>
-              <XStack gap="$6">
+            <YStack maxW="500px sm:400px" gap="7" mx="auto" px="sm:4">
+              <XStack gap="6">
                 <Paragraph
-                  fontFamily="$mono"
-                  fontSize={22}
+                  fontFamily="mono"
+                  fontSize="22px md:22px"
                   text="center"
-                  lineHeight={40}
-                  color="$color11"
+                  lineHeight="40px md:38px"
+                  color="color11"
                   maxH={120}
-                  $md={{
-                    mt: '$6',
-                    fontSize: 22,
-                    lineHeight: 38,
-                  }}
+                  mt="md:6"
                 >
                   Copy-paste UI for React&nbsp;Native and&nbsp;React web, free and paid.
                 </Paragraph>
@@ -82,15 +62,17 @@ export const BentoHero = () => {
               <XStack
                 justify="space-between"
                 items="center"
-                ml="$8"
-                mr="$4"
-                $md={{ mx: 0, flexDirection: 'column', gap: '$3' }}
+                marginLeft="8 md:0px"
+                marginRight="4 md:0px"
+                flexDirection="md:column"
+                gap="md:3"
               >
                 <Paragraph
-                  fontFamily="$mono"
-                  color="$color7"
-                  size="$5"
-                  $md={{ size: '$3' }}
+                  fontFamily="mono"
+                  color="color7"
+                  fontSize="md:3"
+                  lineHeight="md:3"
+                  size="5"
                 >
                   One-time Purchase
                 </Paragraph>
@@ -100,28 +82,20 @@ export const BentoHero = () => {
                   <Theme name="green">
                     <Button
                       className="box-3d all ease-in-out ms100"
-                      size="$4"
+                      size="4"
                       self="flex-end"
-                      mr="$4"
-                      bg="$color9"
-                      outlineColor="$background02"
+                      mr="4"
+                      bg="color9 hover:color10 press:color9"
+                      outlineColor="background02 hover:background04 press:background06"
+                      borderColor="hover:color11"
                       outlineOffset={2}
                       outlineWidth={3}
                       outlineStyle="solid"
-                      hoverStyle={{
-                        bg: '$color10',
-                        outlineColor: '$background04',
-                        borderColor: '$color11',
-                      }}
-                      pressStyle={{
-                        bg: '$color9',
-                        outlineColor: '$background06',
-                      }}
                       onPress={() => {
                         showAppropriateModal()
                       }}
                     >
-                      <Button.Text fontFamily="$mono" size="$7" color="$color1">
+                      <Button.Text fontFamily="mono" size="5" color="color1">
                         Pro
                       </Button.Text>
                     </Button>
@@ -129,10 +103,11 @@ export const BentoHero = () => {
                 </XStack>
 
                 <Paragraph
-                  fontFamily="$mono"
-                  color="$color7"
-                  size="$5"
-                  $md={{ size: '$3' }}
+                  fontFamily="mono"
+                  color="color7"
+                  fontSize="md:3"
+                  lineHeight="md:3"
+                  size="5"
                 >
                   Lifetime rights
                 </Paragraph>
@@ -142,41 +117,33 @@ export const BentoHero = () => {
 
           <YStack
             className="ms300 ease-in all"
-            mr={-300}
+            mr="-300px md:-400px"
             ml={-150}
             maxW={1000}
-            mt={-125}
+            mt="-125px md:-150px"
             pl={100}
             pr={300}
             pt={100}
             x={20}
             mb={-500}
             y={-20}
+            scale="md:0.9"
+            display="sm:none"
             style={{
               maskImage: `linear-gradient(rgba(0, 0, 0, 1) 40%, transparent 65%)`,
-            }}
-            $md={{
-              mr: -400,
-              mt: -150,
-              scale: 0.9,
-            }}
-            $sm={{
-              display: 'none',
             }}
           >
             <XStack
               pointerEvents="none"
+              mt="sm:-85px"
+              mb="sm:-60px"
               style={{
                 transform: `rotate(4deg) scale(0.75)`,
               }}
-              $sm={{
-                mt: -85,
-                mb: -60,
-              }}
             >
-              <YStack rounded="$4" shadowColor="rgba(0,0,0,0.1)" shadowRadius="$8">
+              <YStack rounded="4" shadowColor="rgba(0,0,0,0.1)" shadowRadius="8">
                 <ThemeTintAlt>
-                  <Theme name="surface2">
+                  <Theme name="level3">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -191,7 +158,7 @@ export const BentoHero = () => {
                 }}
               >
                 <ThemeTintAlt>
-                  <Theme name="surface1">
+                  <Theme name="level2">
                     <LocationNotification />
                   </Theme>
                 </ThemeTintAlt>
@@ -227,12 +194,12 @@ export const BentoHero = () => {
                 l="15%"
                 scale={0.9}
                 rotate="5deg"
-                rounded="$4"
+                rounded="4"
                 shadowColor="rgba(0,0,0,0.1)"
-                shadowRadius="$8"
+                shadowRadius="8"
               >
                 <ThemeTint>
-                  <Theme name="surface1">
+                  <Theme name="level2">
                     <LocationNotification />
                   </Theme>
                 </ThemeTint>

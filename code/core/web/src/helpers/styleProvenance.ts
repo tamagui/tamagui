@@ -4,7 +4,7 @@
 //
 // this is a pure inspection side channel. it records, per resolved style key,
 // which token produced the value and the full theme name that resolved it
-// (e.g. { backgroundColor: { token: '$background', theme: 'light_accent' } }).
+// (e.g. { backgroundColor: { token: 'background', theme: 'light_accent' } }).
 // a literal value produces NO entry, which is how a literal that happens to
 // equal a token value stays distinguishable from the token.
 //
@@ -24,7 +24,7 @@ export const STYLE_TOKEN_PROVENANCE_KEY = 'tamagui.styleTokenProvenance'
 const provenanceSymbol = /* @__PURE__ */ Symbol.for(STYLE_TOKEN_PROVENANCE_KEY)
 
 export type StyleTokenBinding = {
-  /** original token string before resolution, e.g. '$background' or '$color9' */
+  /** original token string before resolution, e.g. 'background' or 'color9' */
   token: string
   /** full resolved theme name that produced the value, e.g. 'light_accent' */
   theme: string

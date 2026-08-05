@@ -10,7 +10,7 @@ export const useBentoTheme = () => {
   const enabled = !bentoStore.disableCustomTheme && store.themeSuiteUID
 
   return {
-    bgColor: themeName ? '$color1' : '$colorBg',
+    bgColor: themeName ? 'color1' : 'colorBg',
     enabled,
     themeName: enabled
       ? bentoStore.disableTint

@@ -23,13 +23,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-import React, { type ReactNode } from 'react';
+import React, { type ReactElement, type ReactNode } from 'react';
 type ReactChildArray = ReturnType<typeof React.Children.toArray>;
 export declare function flattenChildrenKeyless(children: ReactNode): ReactChildArray;
 export declare function flattenChildren(children: ReactNode, componentNamesToIgnore?: string[], depth?: number, keys?: (string | number)[]): ReactNode[];
 export declare const pickChildren: <Props = any>(_children: ReactNode | undefined, targetChild: React.ElementType, componentNamesToIgnore?: string[]) => {
-    targetChildren: React.ReactElement<Props, string | React.JSXElementConstructor<any>>[] | undefined;
-    withoutTargetChildren: (string | number | bigint | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined>)[] | null | undefined;
+    targetChildren: ReactElement<Props, string | React.JSXElementConstructor<any>>[] | undefined;
+    withoutTargetChildren: (string | number | bigint | Iterable<ReactNode> | Promise<string | number | bigint | boolean | Iterable<ReactNode> | ReactElement<unknown, string | React.JSXElementConstructor<any>> | React.ReactPortal | null | undefined> | ReactElement<unknown, string | React.JSXElementConstructor<any>>)[] | null | undefined;
 };
 export declare const isInstanceOfComponent: (element: React.ReactElement | ReactNode | undefined, targetElement: React.ElementType) => boolean;
 export declare const filterNull: <T extends unknown | null | undefined>(t: T) => t is NonNullable<T>;

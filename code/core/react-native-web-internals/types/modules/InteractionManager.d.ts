@@ -19,8 +19,8 @@ type PromiseTask = {
 export type Task = SimpleTask | PromiseTask | (() => void);
 export declare const InteractionManager: {
     Events: {
-        interactionStart: "interactionStart";
-        interactionComplete: "interactionComplete";
+        interactionStart: 'interactionStart';
+        interactionComplete: 'interactionComplete';
     };
     /**
      * Schedule a function to run after all interactions have completed.
@@ -38,7 +38,7 @@ export declare const InteractionManager: {
      * Notify manager that an interaction has completed.
      */
     clearInteractionHandle(handle: number): void;
-    addListener: (eventType: "interactionStart" | "interactionComplete", listener: () => void, context?: any) => EventSubscription;
+    addListener: (eventType: 'interactionStart' | 'interactionComplete', listener: () => void, context?: any) => EventSubscription;
     /**
      * Set deadline for task processing
      */

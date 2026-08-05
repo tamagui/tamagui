@@ -36,7 +36,7 @@ export const ThemeNameEffect = memo((props: Props) => {
 })
 
 export const ThemeNameEffectNoTheme = ({
-  colorKey = '$color1',
+  colorKey = 'color1',
   theme: ssrTheme,
 }: Props) => {
   const isHydrated = useDidFinishSSR()
@@ -67,13 +67,13 @@ export const ThemeNameEffectNoTheme = ({
         {ssrTheme
           ? `
 body:has(#theme-name-effect-red) {
-  background: var(--red${colorKey.replace('$color', '')}) !important;
+  background: var(--red${colorKey.replace('color', '')}) !important;
 }
 body:has(#theme-name-effect-green) {
-  background: var(--green${colorKey.replace('$color', '')}) !important;
+  background: var(--green${colorKey.replace('color', '')}) !important;
 }
 body:has(#theme-name-effect-blue) {
-  background: var(--blue${colorKey.replace('$color', '')}) !important;
+  background: var(--blue${colorKey.replace('color', '')}) !important;
 }
   
 

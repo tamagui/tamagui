@@ -12,15 +12,15 @@ export function CheckboxDisabledOnPress() {
   const [disabledPressCount, setDisabledPressCount] = useState(0)
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       <Paragraph>Test: Disabled checkbox should NOT trigger onPress</Paragraph>
 
       {/* Enabled checkbox - onPress SHOULD work */}
-      <XStack gap="$4" alignItems="center">
+      <XStack gap="4" alignItems="center">
         <Checkbox
           id="enabled-checkbox"
           testID="enabled-checkbox"
-          size="$5"
+          size="5"
           onPress={() => setPressCount((c) => c + 1)}
         >
           <Checkbox.Indicator>
@@ -34,11 +34,11 @@ export function CheckboxDisabledOnPress() {
       </Paragraph>
 
       {/* Disabled checkbox - onPress should NOT work */}
-      <XStack gap="$4" alignItems="center">
+      <XStack gap="4" alignItems="center">
         <Checkbox
           id="disabled-checkbox"
           testID="disabled-checkbox"
-          size="$5"
+          size="5"
           disabled
           onPress={() => setDisabledPressCount((c) => c + 1)}
         >
@@ -52,7 +52,7 @@ export function CheckboxDisabledOnPress() {
         Disabled press count: {disabledPressCount}
       </Paragraph>
 
-      <Paragraph color="$color10" fontSize="$2">
+      <Paragraph color="color10" fontSize="2">
         Expected: Clicking disabled checkbox should NOT increment the count.
         {'\n'}
         Bug: On native, the count was incrementing even when disabled.

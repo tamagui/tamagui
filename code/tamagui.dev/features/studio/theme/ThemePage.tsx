@@ -12,7 +12,6 @@ import {
 } from 'react'
 import {
   AnimatePresence,
-  Button,
   ScrollView,
   Separator,
   Spacer,
@@ -23,6 +22,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
 import { Dialogs } from '~/features/studio/components/Dialogs'
 import { StudioAIBar } from '~/features/studio/theme/StudioAIBar'
@@ -55,7 +55,7 @@ export function ThemePage() {
     <>
       <Dialogs />
 
-      <YStack shrink={0} flexBasis="auto" mb="$10">
+      <YStack shrink={0} flexBasis="auto" mb="10">
         <Suspense fallback={null}>
           <ThemeBuilderModal />
         </Suspense>
@@ -63,26 +63,23 @@ export function ThemePage() {
         <XStack
           width="100%"
           height="max-content"
-          pr={540}
+          pr="540px lg:0px"
           pt={10}
-          $lg={{ pr: 0 }}
           justify="flex-end"
           overflow="hidden"
           z={100}
         >
           <YStack
-            p="$4"
+            p="4 md:4"
             flex={1}
             flexBasis="auto"
-            maxW="calc(min(100vw, 1300px))"
+            maxW="calc(min(100vw, 1300px)) md:calc(min(100vw, 900px))"
             group="content"
-            $md={{
-              maxW: `calc(min(100vw, 900px))`,
-              p: '$4',
-            }}
+            container
+            containerName="content"
           >
             <PreviewTheme>
-              <YStack gap="$6">
+              <YStack gap="6">
                 <StudioAIBar initialTheme={{ themeSuite: props.theme }} />
                 <StudioPreviewComponentsBar
                   scrollView={
@@ -148,34 +145,27 @@ const ThemeBuilderModal = memo(() => {
       transition="medium"
     >
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         transition="medium"
-        animateOnly={['transform']}
-        ref={ref}
         x={0}
-        elevation="$5"
-        borderTopLeftRadius="$6"
-        borderBottomLeftRadius="$6"
+        borderTopLeftRadius="6"
+        borderBottomLeftRadius="6"
         borderWidth={0.5}
-        borderColor="$color6"
-        bg="$background06"
+        borderColor="color6"
+        bg="background"
         backdropFilter="blur(60px)"
         {...(hide && {
-          borderColor: '$color0',
-          bg: '$color3',
+          borderColor: 'transparent',
+          bg: 'color3',
         })}
+        animateOnly={['transform']}
+        ref={ref}
+        elevation="5"
       >
-        <XStack
-          position="absolute"
-          z={999}
-          t="$2"
-          l="$2"
-          $gtLg={{
-            display: 'none',
-          }}
-        >
+        <XStack position="absolute" z={999} t="2" l="2" display="gtLg:none">
           <Button
-            size="$2"
+            size="3"
             circular
             icon={hide ? ChevronLeft : ChevronRight}
             onPress={() => setHide(!hide)}
@@ -185,10 +175,10 @@ const ThemeBuilderModal = memo(() => {
         <YStack
           transition={['medium', { opacity: { overshootClamping: true } }]}
           opacity={hide ? 0 : 1}
-          gap="$4"
+          gap="4"
           flex={1}
         >
-          <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
+          <AnimatePresence mode="wait" custom={{ going: store.direction }}>
             <Section
               flex={1}
               transition="75ms"
@@ -234,7 +224,14 @@ const StudioThemeBuilderTray = memo(() => {
 
 const StudioThemeBuilderBottomBar = memo(() => {
   return (
-    <XStack p="$4" py="$3" items="center" z={100} bg="$background02">
+    <XStack
+      paddingRight="4"
+      paddingLeft="4"
+      py="3"
+      items="center"
+      z={100}
+      bg="background"
+    >
       <CurrentStepActionBar />
       <Spacer flex={1} />
       <ThemeStudioStepButtonsBar />
@@ -274,7 +271,7 @@ const ThemeStudioStepButtonsBar = () => {
   }
 
   return (
-    <XStack gap="$2">
+    <XStack gap="2">
       {typeof location !== 'undefined' &&
         location.host === 'localhost' &&
         lastInserted && (
@@ -282,14 +279,14 @@ const ThemeStudioStepButtonsBar = () => {
             <a
               href={`start-chat-dev://theme?value=${btoa(JSON.stringify(lastInserted))}`}
             >
-              <Button size="$3">Chat</Button>
+              <Button size="4">Chat</Button>
             </a>
             <View flex={1} />
           </>
         )}
 
       <Button
-        size="$3"
+        size="4"
         onPress={() => {
           if (confirm(`Reset theme builder state?`)) {
             store.reset()
@@ -302,8 +299,8 @@ const ThemeStudioStepButtonsBar = () => {
 
       {canGoBackward && (
         <Button
-          chromeless
-          size="$3"
+          variant="quiet"
+          size="4"
           // disabled={disableBackward}
           // opacity={disableBackward ? 0.5 : 1}
           icon={ChevronLeft}
@@ -316,7 +313,7 @@ const ThemeStudioStepButtonsBar = () => {
       {canGoForward && (
         <Theme name={!disableForward ? 'accent' : undefined}>
           <Button
-            size="$3"
+            size="4"
             disabled={disableForward}
             opacity={disableForward ? 0.5 : 1}
             cursor={disableForward ? 'not-allowed' : undefined}
@@ -332,23 +329,16 @@ const ThemeStudioStepButtonsBar = () => {
 }
 
 const Section = styled(YStack, {
-  gap: '$2',
+  gap: '2',
   x: 0,
   opacity: 1,
-
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
-      ':number': (going) => ({
-        enterStyle: {
-          x: going > 0 ? 20 : -20,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: going < 0 ? 20 : -20,
-          opacity: 0,
-        },
+      number: (going) => ({
+        x: `enter:${going > 0 ? 20 : -20}px exit:${going < 0 ? 20 : -20}px`,
+        opacity: 'enter:0 exit:0',
+        zIndex: 'exit:0',
       }),
     },
   } as const,

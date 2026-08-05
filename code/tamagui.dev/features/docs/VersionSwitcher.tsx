@@ -8,8 +8,8 @@ import { type Href, usePathname, useRouter } from 'one'
 
 export function VersionSwitcher({ versions }: { versions: { name: string }[] }) {
   return (
-    <YStack gap="$4">
-      <XStack width="100%" items="center" gap="$4">
+    <YStack gap="4">
+      <XStack width="100%" items="center" gap="4">
         <VersionSwitcherItem versions={versions} />
       </XStack>
     </YStack>
@@ -40,22 +40,34 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
       disablePreventBodyScroll
       zIndex={200000}
     >
-      <Select.Trigger maxWidth={220} iconAfter={ChevronDown} borderRadius={8}>
+      <Select.Trigger
+        maxWidth={220}
+        height={36}
+        paddingHorizontal="3"
+        gap="2"
+        backgroundColor="background"
+        borderWidth={1}
+        borderColor="border-color"
+        borderRadius={8}
+      >
         <Select.Value placeholder="2.0.0" />
+        <Select.Icon marginLeft="auto">
+          <ChevronDown size={16} />
+        </Select.Icon>
       </Select.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
+      <Adapt when="max-md" platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
-            backgroundColor="$shadowColor"
+            backgroundColor="shadow-color"
             transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            opacity="enter:0 exit:0"
           />
         </Sheet>
       </Adapt>
@@ -66,7 +78,7 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronUp size={20} />
@@ -74,9 +86,10 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
-            colors={['$background', 'transparent']}
-            rounded="$4"
+            position="absolute"
+            inset={0}
+            rounded="4"
+            colors={['background', 'transparent']}
           />
         </Select.ScrollUpButton>
 
@@ -84,8 +97,8 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
           // to do animations:
           // transition="quick"
           // animateOnly={['transform', 'opacity']}
-          // enterStyle={{ o: 0, y: -10 }}
-          // exitStyle={{ o: 0, y: 10 }}
+          // opacity="enter:0 exit:0"
+          // y="enter:-10px exit:10px"
           minW={200}
         >
           <Select.Group>
@@ -93,13 +106,9 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>
-                versions.map((item, i) => {
+                versions.map((item) => {
                   return (
-                    <Select.Item
-                      index={i}
-                      key={item.name}
-                      value={item.name.toLowerCase()}
-                    >
+                    <Select.Item key={item.name} value={item.name.toLowerCase()}>
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
@@ -117,7 +126,7 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
           justify="center"
           position="relative"
           width="100%"
-          height="$3"
+          height="3"
         >
           <YStack z={10}>
             <ChevronDown size={20} />
@@ -125,9 +134,10 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
-            colors={['transparent', '$background']}
-            rounded="$4"
+            position="absolute"
+            inset={0}
+            rounded="4"
+            colors={['transparent', 'background']}
           />
         </Select.ScrollDownButton>
       </Select.Content>

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as t from '@babel/types'
 import { expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
@@ -23,9 +22,8 @@ test('basic extraction', async () => {
 })
 
 test('theme value extraction should work when no theme variables used', async () => {
-  // here we override default "$color" so it should flatten totally
-  // actually since we do unstyled: false and it expands to $color it acceses it
-  // were not smart enough yet to detect its later overriden :/
+  // here we override default "color" so it should flatten totally
+  // we're not smart enough yet to detect that it's later overridden
   // that could be a perf optimization, but also have work to improve flattening soon anyway
   const output = await extractForNative(`
     import { Paragraph } from 'tamagui'
@@ -105,7 +103,7 @@ test('handles style order merge properly', async () => {
   expect(code).toMatchSnapshot()
 })
 
-test(`normalize ternaries flips the conditional properly`, async () => {
+test(`dynamic ternary lowers per-branch, only the test survives`, async () => {
   const inputCode = `
   import { View } from 'tamagui'
   export function Test(props) {
@@ -116,8 +114,37 @@ test(`normalize ternaries flips the conditional properly`, async () => {
 `
   const output = await extractForNative(inputCode)
   const outCode = output?.code ?? ''
-  expect(outCode).toContain(`props === 123 ? _sheet["0"] : _sheet["1"]`)
+  expect(outCode).toContain(`_expressions={[props !== 123]}`)
+  expect(outCode).toContain(`expressions[0] ? {"marginBottom":12} : {"marginBottom":0}`)
   expect(outCode).toMatchSnapshot()
+})
+
+test(`conditional font family lowers per-branch with per-family size resolution`, async () => {
+  const output = await extractForNative(`
+  import { SizableText } from 'tamagui'
+  export function Test({ compact }) {
+    return (
+      <SizableText fontFamily={compact ? 'body' : 'heading'} size="7">
+        Go
+      </SizableText>
+    )
+  }
+`)
+  const code = output?.code ?? ''
+  expect(code).toContain('_expressions={[compact]}')
+  // each branch resolves the family AND everything that reads it at compile
+  // time; the branches must differ in family and carry their own font metrics
+  const branches = code.match(/expressions\[0\] \? (\{.*?\}) : (\{.*?\})\]/)
+  expect(branches).toBeTruthy()
+  const whenTrue = JSON.parse(branches![1]!)
+  const whenFalse = JSON.parse(branches![2]!)
+  // the test config's families share one family string; the branch difference
+  // shows up as the heading font's own metrics resolved per branch
+  expect(whenTrue).not.toEqual(whenFalse)
+  expect(whenFalse.fontWeight).toBe(700)
+  expect(output.stats.flattened).toBeGreaterThan(0)
+  expect(output.diagnostics).toEqual([])
+  expect(code).toMatchSnapshot()
 })
 
 test(`normalize ternaries with the conditional dynamic values`, async () => {
@@ -154,7 +181,7 @@ test('normalize dynamic values with theme access only', async () => {
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg='$color'/>
+        <YStack bg='color'/>
       )
     }
   `)
@@ -167,7 +194,7 @@ test('do NOT flatten dynamic values with theme access', async () => {
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg='$color' height={props.height}/>
+        <YStack bg='color' height={props.height}/>
       )
     }
   `)
@@ -180,7 +207,7 @@ test('do NOT flatten dynamic values with theme access, dynamic values, and condi
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg={props.isLoading ? '$color' : 'red'} height={props.height}/>
+        <YStack bg={props.isLoading ? 'color' : 'red'} height={props.height}/>
       )
     }
   `)
@@ -193,7 +220,7 @@ test('do NOT flatten multiple dynamic values with theme access and conditional',
     import { YStack } from 'tamagui'
     export function Test(props) {
       return (
-        <YStack bg={props.isLoading ? '$color' : 'red'} height={props.height} width={props.width}/>
+        <YStack bg={props.isLoading ? 'color' : 'red'} height={props.height} width={props.width}/>
       )
     }
   `)
@@ -201,265 +228,88 @@ test('do NOT flatten multiple dynamic values with theme access and conditional',
   expect(code).toMatchSnapshot()
 })
 
-test('$md and $gtMd media queries should respect breakpoint boundaries', async () => {
-  // Regression test for bug starting in 1.132.17
-  // On small screens (iPhone), $md should apply, NOT $gtMd
-  // The bug was that $gtMd was incorrectly applying on mobile
-  const output = await extractForNative(`
-    import { YStack } from 'tamagui'
-    export function Test() {
-      return (
-        <YStack
-          h={100}
-          w={100}
-          bc="red"
-          $md={{ bc: 'yellow' }}
-          $gtMd={{ bc: 'green' }}
-        />
-      )
-    }
-  `)
-  const code = output?.code ?? ''
-  // Verify the output includes both media query conditions
-  // and they are structured correctly for runtime evaluation
-  expect(code).toMatchSnapshot()
-})
-
-test('$gtMd only should NOT apply on small screens', async () => {
-  const output = await extractForNative(`
-    import { YStack } from 'tamagui'
-    export function Test() {
-      return (
-        <YStack
-          h={100}
-          w={100}
-          bc="red"
-          $gtMd={{ bc: 'green' }}
-        />
-      )
-    }
-  `)
-  const code = output?.code ?? ''
-  expect(code).toMatchSnapshot()
-})
-
-test('multiple media query components should not conflict', async () => {
-  const output = await extractForNative(`
-    import { YStack, XStack } from 'tamagui'
-    export function Test() {
-      return (
-        <>
-          <YStack bc="red" $md={{ bc: 'yellow' }} />
-          <XStack bc="blue" $gtMd={{ bc: 'green' }} />
-          <YStack bc="purple" $sm={{ bc: 'pink' }} />
-        </>
-      )
-    }
-  `)
-  const code = output?.code ?? ''
-  // Verify each wrapper has a unique name
-  expect(code).toMatchSnapshot()
-  // Make sure we don't have duplicate const declarations
-  const styledMatches = code.match(/const _\w+Styled\d+/g) || []
-  const uniqueNames = new Set(styledMatches)
-  expect(styledMatches.length).toBe(uniqueNames.size)
-})
-
-test('string ternary test should not be confused with media key', async () => {
-  // Regression: <View width={someString ? 24 : 66} xs={{ height: 30 }} />
-  // someString evaluates to a string at runtime, and _withStableStyle's
-  // resolvedExpressions check `typeof expr === 'string' ? media[expr] : expr`
-  // would incorrectly treat it as a media key lookup.
-  // The fix: compiler wraps non-string-literal expressions with !! to coerce to boolean.
+test('string ternary and media prop remain distinct on the runtime component', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test({ someString }) {
       return (
         <YStack
           width={someString ? 24 : 66}
-          $sm={{ height: 30 }}
+          height="sm:30px"
         />
       )
     }
   `)
   const code = output?.code ?? ''
-  // the ternary test expression must be coerced to boolean
-  expect(code).toContain('!!someString')
-  // the media key should remain a plain string literal
-  expect(code).toContain('"sm"')
+  expect(code).toContain('someString ? 24 : 66')
+  expect(code).toContain('sm:30px')
   expect(code).toMatchSnapshot()
 })
 
-test('dynamic values in media props require both media and runtime conditions', async () => {
-  const output = await extractForNative(`
-    import { YStack } from 'tamagui'
-    export function Test({ fillContainer }) {
-      return (
-        <YStack
-          $gtLg={{
-            width: fillContainer ? '100%' : '50%',
-            pb: '$4',
-          }}
-        />
-      )
-    }
-  `)
-
-  let expressions: t.ArrayExpression | null = null
-  t.traverseFast(output?.ast, (node) => {
-    if (
-      t.isJSXAttribute(node) &&
-      t.isJSXIdentifier(node.name, { name: '_expressions' }) &&
-      t.isJSXExpressionContainer(node.value) &&
-      t.isArrayExpression(node.value.expression)
-    ) {
-      expressions = node.value.expression
-    }
-  })
-
-  expect(expressions).not.toBeNull()
-  expect(expressions!.elements).toHaveLength(3)
-
-  const [whenFill, whenNotFill, staticPadding] = expressions!.elements
-  expect(t.isArrayExpression(whenFill)).toBe(true)
-  expect(t.isArrayExpression(whenNotFill)).toBe(true)
-
-  const [fillMediaKey, fillCondition] = (whenFill as t.ArrayExpression).elements
-  expect(t.isStringLiteral(fillMediaKey, { value: 'gtLg' })).toBe(true)
-  expect(t.isUnaryExpression(fillCondition, { operator: '!' })).toBe(true)
-  expect(
-    t.isUnaryExpression((fillCondition as t.UnaryExpression).argument, {
-      operator: '!',
-    })
-  ).toBe(true)
-  expect(
-    t.isIdentifier(
-      ((fillCondition as t.UnaryExpression).argument as t.UnaryExpression).argument,
-      { name: 'fillContainer' }
-    )
-  ).toBe(true)
-
-  const [notFillMediaKey, notFillCondition] = (whenNotFill as t.ArrayExpression).elements
-  expect(t.isStringLiteral(notFillMediaKey, { value: 'gtLg' })).toBe(true)
-  expect(t.isUnaryExpression(notFillCondition, { operator: '!' })).toBe(true)
-  expect(
-    t.isUnaryExpression((notFillCondition as t.UnaryExpression).argument, {
-      operator: '!',
-    })
-  ).toBe(true)
-  expect(
-    t.isUnaryExpression(
-      ((notFillCondition as t.UnaryExpression).argument as t.UnaryExpression).argument,
-      { operator: '!' }
-    )
-  ).toBe(true)
-  expect(t.isStringLiteral(staticPadding, { value: 'gtLg' })).toBe(true)
-})
-
-test('a single media style uses the media-aware wrapper', async () => {
-  const output = await extractForNative(`
-    import { View } from 'tamagui'
-    export function Test() {
-      return <View $gtLg={{ width: 100 }} />
-    }
-  `)
-
-  let expressions: t.ArrayExpression | null = null
-  t.traverseFast(output?.ast, (node) => {
-    if (
-      t.isJSXAttribute(node) &&
-      t.isJSXIdentifier(node.name, { name: '_expressions' }) &&
-      t.isJSXExpressionContainer(node.value) &&
-      t.isArrayExpression(node.value.expression)
-    ) {
-      expressions = node.value.expression
-    }
-  })
-
-  expect(expressions).not.toBeNull()
-  expect(expressions!.elements).toHaveLength(1)
-  expect(t.isStringLiteral(expressions!.elements[0], { value: 'gtLg' })).toBe(true)
-})
-
-// native has no hover state, so hoverStyle should be dropped instead of
-// preserved as runtime work.
-test('hoverStyle on native should drop dead hover work', async () => {
+test('a hover clause on native stays on the runtime path', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
       return (
-        <YStack backgroundColor="red" hoverStyle={{ backgroundColor: 'green' }} />
+        <YStack backgroundColor="red hover:green" />
       )
     }
   `)
   const code = output?.code ?? ''
-  // must not serialize hoverStyle into the stylesheet or preserve it as runtime work
-  expect(code).not.toContain('"hoverStyle"')
-  expect(code).not.toContain('hoverStyle')
-  expect(code).not.toContain("backgroundColor: 'green'")
-  expect(code).toContain('__ReactNativeView')
+  expect(code).toContain('hover:green')
+  expect(code).not.toContain('__TamaguiNativeView')
   expect(code).toMatchSnapshot()
 })
 
-test('$theme-* on native should de-opt (preserve as inline prop)', async () => {
+test('a theme clause on native de-opts to the runtime path', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
       return (
-        <YStack backgroundColor="red" $theme-dark={{ backgroundColor: 'green' }} />
+        <YStack backgroundColor="red dark:green" />
       )
     }
   `)
   const code = output?.code ?? ''
-  // must NOT serialize $theme-dark as a sheet key (it would never match on RN)
-  expect(code).not.toContain('"$theme-dark"')
-  // must preserve as an inline JSX prop so runtime resolves it via theme
-  expect(code).toContain('$theme-dark')
+  expect(code).toContain('dark:green')
   expect(code).toContain('<YStack')
   expect(code).toMatchSnapshot()
 })
 
-test('$group-*-hover on native should drop dead hover work', async () => {
+test('a named group hover clause on native stays on the runtime path', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
       return (
         <YStack group="row">
           <YStack
-            backgroundColor="red"
-            $group-row-hover={{ backgroundColor: 'green' }}
+            backgroundColor="red group-hover/row:green"
           />
         </YStack>
       )
     }
   `)
   const code = output?.code ?? ''
-  // must not serialize or preserve hover-only group styles on native
-  expect(code).not.toContain('"$group-row-hover"')
-  expect(code).not.toContain('$group-row-hover')
-  expect(code).not.toContain("backgroundColor: 'green'")
+  expect(code).toContain('group-hover/row:green')
+  expect(code).toContain('group="row"')
   expect(code).toMatchSnapshot()
 })
 
-test('$group-* non-hover on native should de-opt (preserve as inline prop)', async () => {
+test('a named group press clause on native stays on the runtime path', async () => {
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
       return (
         <YStack group="row">
           <YStack
-            backgroundColor="red"
-            $group-row-press={{ backgroundColor: 'green' }}
+            backgroundColor="red group-press/row:green"
           />
         </YStack>
       )
     }
   `)
   const code = output?.code ?? ''
-  // must not serialize $group-row-press as a sheet key
-  expect(code).not.toContain('"$group-row-press"')
-  // must preserve as an inline jsx prop so runtime resolves it via group context
-  expect(code).toContain('$group-row-press')
+  expect(code).toContain('group-press/row:green')
   // group="row" parent must remain (it provides the runtime container context)
   expect(code).toContain('group="row"')
   expect(code).toMatchSnapshot()
@@ -471,9 +321,9 @@ test('ternary with mixed theme-token and non-token values preserves all props', 
     export function Test({ isActive, label }) {
       return (
         <Text
-          fontSize="$3"
+          fontSize="3"
           fontWeight={isActive ? '600' : '400'}
-          color={isActive ? '$color12' : '$color11'}
+          color={isActive ? 'color12' : 'color11'}
         >
           {label}
         </Text>

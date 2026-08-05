@@ -57,7 +57,7 @@ import '@tamagui/native/setup-zeego'
 <Notice theme="blue">
   On native, `ContextMenu.Trigger` coordinates with parent Tamagui pressables
   automatically. You should not need extra wrapper views or empty `onPress`
-  handlers just to prevent a parent `pressStyle` from activating.
+  handlers just to prevent a parent `press:` clause from activating.
 </Notice>
 
 <Notice theme="yellow">
@@ -93,7 +93,7 @@ export default () => (
             <Text>Calendar</Text>
           </ContextMenu.ItemTitle>
           <ContextMenu.ItemIcon>
-            <Calendar color="gray" size="$1" />
+            <Calendar color="gray" size="1" />
           </ContextMenu.ItemIcon>
         </ContextMenu.Item>
         <ContextMenu.Separator />
@@ -103,7 +103,7 @@ export default () => (
           </ContextMenu.SubTrigger>
           <ContextMenu.Portal zIndex={200}>
             <ContextMenu.SubContent>
-              <ContextMenu.Label fontSize={'$1'}>Note settings</ContextMenu.Label>
+              <ContextMenu.Label fontSize={'1'}>Note settings</ContextMenu.Label>
               <ContextMenu.Item onSelect={onSelect} key="create-note">
                 <ContextMenu.ItemTitle>Create note</ContextMenu.ItemTitle>
               </ContextMenu.Item>

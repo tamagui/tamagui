@@ -23,7 +23,7 @@ export default function TakeoutPageNew() {
 
   return (
     <YStack maxW="100%">
-      <ThemeNameEffect colorKey="$color2" />
+      <ThemeNameEffect colorKey="color2" />
       <LoadCherryBomb />
       <HeadInfo
         title="Tamagui Takeout"
@@ -59,7 +59,8 @@ export default function TakeoutPageNew() {
 
       <YStack
         className="grain"
-        fullscreen
+        position="absolute"
+        inset={0}
         t={-60}
         b={0}
         opacity={0.25}
@@ -107,10 +108,7 @@ export default function TakeoutPageNew() {
         x={-300}
         scale={1}
         rotate="120deg"
-        opacity={0.02}
-        $theme-light={{
-          opacity: 0.12,
-        }}
+        opacity="0.02 light:0.12"
         z={-1}
       >
         <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
@@ -120,7 +118,8 @@ export default function TakeoutPageNew() {
       <ThemeTint>
         <YStack
           z={-1}
-          fullscreen
+          position="absolute"
+          inset={0}
           style={{
             background: `linear-gradient(to bottom, transparent, transparent, var(--color2))`,
           }}
@@ -135,7 +134,7 @@ export default function TakeoutPageNew() {
         />
 
         {/* Version Comparison Section */}
-        <YStack py="$8" px="$4">
+        <YStack py="8" px="4">
           <VersionComparison />
         </YStack>
 
@@ -149,12 +148,12 @@ export default function TakeoutPageNew() {
         <TakeoutBentoFeatures />
 
         {/* Video Section */}
-        <YStack py="$8" px="$4">
+        <YStack py="8" px="4">
           <VideoSection />
         </YStack>
 
         {/* Screenshot Gallery Section */}
-        <YStack py="$8" px="$4">
+        <YStack py="8" px="4">
           <ScreenshotGallery />
         </YStack>
 

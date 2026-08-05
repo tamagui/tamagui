@@ -1,661 +1,592 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Package.json exports support > should build app package for both web and native targets > native-optimized 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "position": "relative",
-    "flexDirection": "column",
-    "gap": 18
-  },
-  "1": {
-    "position": "relative",
-    "flexDirection": "row",
-    "width": "100%",
-    "alignItems": "center",
-    "gap": 18
-  },
-  "2": {
-    "position": "relative",
-    "flexDirection": "row",
-    "width": "100%",
-    "alignItems": "center",
-    "gap": 18
-  },
-  "3": {
-    "position": "relative",
-    "flexDirection": "column",
-    "zIndex": 10
-  },
-  "4": {
-    "flexDirection": "column",
-    "position": "absolute",
-    "right": 0,
-    "top": 0,
-    "bottom": 0,
-    "alignItems": "center",
-    "justifyContent": "center",
-    "width": 44
-  },
-  "5": {
-    "position": "relative",
-    "flexDirection": "column",
-    "zIndex": 10
-  },
-  "6": {
-    "position": "relative",
-    "flexDirection": "column",
-    "flex": 1,
-    "justifyContent": "center",
-    "alignItems": "center",
-    "gap": 46,
-    "paddingTop": 18,
-    "paddingRight": 18,
-    "paddingBottom": 18,
-    "paddingLeft": 18
-  },
-  "7": {
-    "flexDirection": "row",
-    "position": "absolute",
-    "width": "100%",
-    "top": 32,
-    "gap": 32,
-    "justifyContent": "center",
-    "flexWrap": "wrap"
-  },
-  "8": {
-    "top": 0,
-    "position": "relative"
-  },
-  "9": {
-    "position": "relative",
-    "flexDirection": "row",
-    "gap": 7
-  },
-  "10": {
-    "position": "relative",
-    "flexDirection": "column",
-    "gap": 18
-  },
-  "11": {
-    "fontFamily": "System",
-    "fontWeight": "300",
-    "letterSpacing": 0,
-    "fontSize": 64.39999999999999,
-    "lineHeight": 74.39999999999999,
-    "marginTop": 0,
-    "marginRight": 0,
-    "marginBottom": 0,
-    "marginLeft": 0,
-    "textAlign": "center"
-  },
-  "12": {
-    "fontFamily": "System",
-    "fontWeight": "300",
-    "letterSpacing": 0,
-    "fontSize": 14,
-    "lineHeight": 24,
-    "textAlign": "center"
-  },
-  "13": {
-    "flexShrink": 0,
-    "borderTopWidth": 0,
-    "borderRightWidth": 0,
-    "borderBottomWidth": 1,
-    "borderLeftWidth": 0,
-    "flex": 1,
-    "height": 0,
-    "maxHeight": 0,
-    "borderStyle": "solid",
-    "transform": [{
-      "translateY": -0.5
-    }]
-  },
-  "14": {
-    "fontFamily": "System",
-    "fontWeight": "300",
-    "letterSpacing": 0,
-    "fontSize": 14,
-    "lineHeight": 24,
-    "textAlign": "center"
-  },
-  "15": {
-    "flexShrink": 0,
-    "borderTopWidth": 0,
-    "borderRightWidth": 0,
-    "borderBottomWidth": 1,
-    "borderLeftWidth": 0,
-    "flex": 1,
-    "height": 0,
-    "maxHeight": 0,
-    "borderStyle": "solid",
-    "transform": [{
-      "translateY": -0.5
-    }]
-  },
-  "16": {
-    "position": "relative",
-    "flexDirection": "row",
-    "gap": 7
-  },
-  "17": {
-    "fontFamily": "System",
-    "fontWeight": "300",
-    "letterSpacing": 0,
-    "fontSize": 14,
-    "lineHeight": 24,
-    "textAlign": "center"
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { Adapt, Anchor, Button, type FontSizeTokens, getFontSize, H1, Label, Paragraph, Select, type SelectProps, Separator, Sheet, toast, XStack, YStack } from '@my/ui';
-import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton';
-import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton';
-import { LinearGradient } from '@tamagui/linear-gradient';
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
-import React, { useState } from 'react';
-import { Platform } from 'react-native';
-import { useLink } from 'solito/navigation';
+"import {
+  Adapt,
+  Anchor,
+  Button,
+  type FontSizeTokens,
+  getFontSize,
+  H1,
+  Label,
+  Paragraph,
+  Select,
+  type SelectProps,
+  Separator,
+  Sheet,
+  toast,
+  XStack,
+  YStack,
+} from '@my/ui'
+import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton'
+import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton'
+import { LinearGradient } from '@tamagui/linear-gradient'
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import React, { useState } from 'react'
+import { Platform } from 'react-native'
+import { useLink } from 'solito/navigation'
+
 export function SelectDemo() {
-  return <__ReactNativeView style={_sheet["0"]}>
-      <__ReactNativeView style={_sheet["1"]}>
+  return (
+    <__TamaguiNativeView style={__TamaguiNativeStyle658._ ?? __TamaguiNativeStyle658()}>
+      <__TamaguiNativeView style={__TamaguiNativeStyle681._ ?? __TamaguiNativeStyle681()}  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
-      </__ReactNativeView>
+      </__TamaguiNativeView>
 
-      <__ReactNativeView style={_sheet["2"]}>
+      <__TamaguiNativeView style={__TamaguiNativeStyle890._ ?? __TamaguiNativeStyle890()}  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
         <SelectDemoItem id="select-demo-2" native />
-      </__ReactNativeView>
-    </__ReactNativeView>;
+      </__TamaguiNativeView>
+    </__TamaguiNativeView>
+  )
 }
-export function SelectDemoItem(props: SelectProps & {
-  trigger?: React.ReactNode;
-}) {
-  const [val, setVal] = React.useState('apple');
-  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000} {...props}>
-      {props?.trigger || <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
+
+export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode }) {
+  const [val, setVal] = React.useState('apple')
+
+  return (
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      zIndex={200000}
+      {...props}
+    >
+      {props?.trigger || (
+        <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
-        </Select.Trigger>}
+        </Select.Trigger>
+      )}
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay backgroundColor="$shadowColor" transition="lazy" enterStyle={{
-          opacity: 0
-        }} exitStyle={{
-          opacity: 0
-        }} />
+          </Sheet.Container>
+          <Sheet.Overlay
+            backgroundColor="shadow-color"
+            transition="lazy"
+            opacity="enter:0 exit:0"
+          />
         </Sheet>
       </Adapt>
 
       <Select.Content>
-        <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
-          <__ReactNativeView style={_sheet["3"]}>
+        <Select.ScrollUpButton
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
+          <__TamaguiNativeView style={__TamaguiNativeStyle2277._ ?? __TamaguiNativeStyle2277()}>
             <ChevronUp size={20} />
-          </__ReactNativeView>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['$background', 'transparent']} />
+          </__TamaguiNativeView>
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            colors={['background', 'transparent']}
+          />
         </Select.ScrollUpButton>
 
         <Select.Viewport
-      // to do animations:
-      // transition="quick"
-      // animateOnly={['transform', 'opacity']}
-      // enterStyle={{ o: 0, y: -10 }}
-      // exitStyle={{ o: 0, y: 10 }}
-      minW={200}>
+          // to do animations:
+          // transition="quick"
+          // animateOnly={['transform', 'opacity']}
+          // opacity="enter:0 exit:0"
+          // y="enter:-10px exit:10px"
+          minW={200}
+        >
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
-            {React.useMemo(() => items.map((item, i) => {
-            return <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
+            {React.useMemo(
+              () =>
+                items.map((item, i) => {
+                  return (
+                    <Select.Item
+                      index={i}
+                      key={item.name}
+                      value={item.name.toLowerCase()}
+                    >
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
-                    </Select.Item>;
-          }), [items])}
+                    </Select.Item>
+                  )
+                }),
+              [items]
+            )}
           </Select.Group>
           {/* Native gets an extra icon */}
-          {props.native && <__ReactNativeView pointerEvents={"none"} style={_sheet["4"]}>
-              <ChevronDown size={getFontSize(props.size as FontSizeTokens ?? '$true')} />
-            </__ReactNativeView>}
+          {props.native && (
+            <__TamaguiNativeView
+              style={__TamaguiNativeStyle3703._ ?? __TamaguiNativeStyle3703()}
+
+
+
+
+
+
+
+            >
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
+            </__TamaguiNativeView>
+          )}
         </Select.Viewport>
 
-        <Select.ScrollDownButton items="center" justify="center" position="relative" width="100%" height="$3">
-          <__ReactNativeView style={_sheet["5"]}>
+        <Select.ScrollDownButton
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
+          <__TamaguiNativeView style={__TamaguiNativeStyle4269._ ?? __TamaguiNativeStyle4269()}>
             <ChevronDown size={20} />
-          </__ReactNativeView>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['transparent', '$background']} />
+          </__TamaguiNativeView>
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            colors={['transparent', 'background']}
+          />
         </Select.ScrollDownButton>
       </Select.Content>
-    </Select>;
+    </Select>
+  )
 }
-const items = [{
-  name: 'Apple'
-}, {
-  name: 'Pear'
-}, {
-  name: 'Blackberry'
-}, {
-  name: 'Peach'
-}, {
-  name: 'Apricot'
-}, {
-  name: 'Melon'
-}, {
-  name: 'Honeydew'
-}, {
-  name: 'Starfruit'
-}, {
-  name: 'Blueberry'
-}, {
-  name: 'Raspberry'
-}, {
-  name: 'Strawberry'
-}, {
-  name: 'Mango'
-}, {
-  name: 'Pineapple'
-}, {
-  name: 'Lime'
-}, {
-  name: 'Lemon'
-}, {
-  name: 'Coconut'
-}, {
-  name: 'Guava'
-}, {
-  name: 'Papaya'
-}, {
-  name: 'Orange'
-}, {
-  name: 'Grape'
-}, {
-  name: 'Jackfruit'
-}, {
-  name: 'Durian'
-}];
-export function HomeScreen({
-  pagesMode = false
-}: {
-  pagesMode?: boolean;
-}) {
-  const linkTarget = pagesMode ? '/pages-example-user' : '/user';
+
+const items = [
+  { name: 'Apple' },
+  { name: 'Pear' },
+  { name: 'Blackberry' },
+  { name: 'Peach' },
+  { name: 'Apricot' },
+  { name: 'Melon' },
+  { name: 'Honeydew' },
+  { name: 'Starfruit' },
+  { name: 'Blueberry' },
+  { name: 'Raspberry' },
+  { name: 'Strawberry' },
+  { name: 'Mango' },
+  { name: 'Pineapple' },
+  { name: 'Lime' },
+  { name: 'Lemon' },
+  { name: 'Coconut' },
+  { name: 'Guava' },
+  { name: 'Papaya' },
+  { name: 'Orange' },
+  { name: 'Grape' },
+  { name: 'Jackfruit' },
+  { name: 'Durian' },
+]
+
+export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
+  const linkTarget = pagesMode ? '/pages-example-user' : '/user'
   const linkProps = useLink({
-    href: \`\${linkTarget}/nate\`
-  });
-  return <_ReactNativeViewStyled0>
-      <_ReactNativeViewStyled1 _expressions={["sm"]}>
-        {Platform.OS === 'web' && <>
+    href: \`\${linkTarget}/nate\`,
+  })
+
+  return (
+    <__TamaguiStableView5363      >
+      <XStack
+        position="absolute sm:relative"
+        width="100%"
+        t="6 sm:0px"
+        gap="6"
+        justify="center"
+        flexWrap="wrap"
+      >
+        {Platform.OS === 'web' && (
+          <>
             <SwitchRouterButton pagesMode={pagesMode} />
             <SwitchThemeButton />
-          </>}
-      </_ReactNativeViewStyled1>
+          </>
+        )}
+      </XStack>
 
       <SelectDemo />
 
-      <__ReactNativeView style={_sheet["9"]}>
-        <Button size="$3" iconAfter={<Button.Icon>
+      <__TamaguiNativeView style={__TamaguiNativeStyle5822._ ?? __TamaguiNativeStyle5822()}>
+        <Button
+          size="3"
+          iconAfter={
+            <Button.Icon>
               <Activity />
-            </Button.Icon>}>
+            </Button.Icon>
+          }
+        >
           <Button.Text>Inverse</Button.Text>
         </Button>
-      </__ReactNativeView>
-      <__ReactNativeView style={_sheet["10"]}>
-        <_ReactNativeTextStyled2>
+      </__TamaguiNativeView>
+      <__TamaguiNativeView style={__TamaguiNativeStyle6083._ ?? __TamaguiNativeStyle6083()}>
+        <__TamaguiStableText6108  >
           Welcome to Tamagui.
-        </_ReactNativeTextStyled2>
-        <_ReactNativeTextStyled3>
+        </__TamaguiStableText6108>
+        <__TamaguiStableText6195  >
           Here's a basic starter to show navigating from one screen to another.
-        </_ReactNativeTextStyled3>
-        <_ReactNativeViewStyled4 />
-        <_ReactNativeTextStyled5>
+        </__TamaguiStableText6195>
+        <__TamaguiStableView6346 />
+        <__TamaguiStableText6368 >
           This screen uses the same code on Next.js and React Native.
-        </_ReactNativeTextStyled5>
-        <_ReactNativeViewStyled6 />
-      </__ReactNativeView>
+        </__TamaguiStableText6368>
+        <__TamaguiStableView6493 />
+      </__TamaguiNativeView>
 
       <Button {...linkProps} theme={'dark'}>
         Link to user
       </Button>
 
       <SheetDemo />
-    </_ReactNativeViewStyled0>;
+    </__TamaguiStableView5363>
+  )
 }
+
 function SheetDemo() {
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState(0);
-  return <>
-      <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen(x => !x)} />
-      <Sheet modal transition="medium" open={open} onOpenChange={setOpen} snapPoints={[80]} position={position} onPositionChange={setPosition} dismissOnSnapToBottom>
-        <Sheet.Overlay bg="$shadow4" transition="lazy" enterStyle={{
-        opacity: 0
-      }} exitStyle={{
-        opacity: 0
-      }} />
-        <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
-          <__ReactNativeView style={_sheet["16"]}>
-            <_ReactNativeTextStyled7>Made by</_ReactNativeTextStyled7>
-            <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
+  const [open, setOpen] = useState(false)
+  const [position, setPosition] = useState(0)
+
+  return (
+    <>
+      <Button
+        size="6"
+        icon={open ? ChevronDown : ChevronUp}
+        circular
+        onPress={() => setOpen((x) => !x)}
+      />
+      <Sheet
+        modal
+        transition="medium"
+        open={open}
+        onOpenChange={setOpen}
+        snapPoints={[80]}
+        position={position}
+        onPositionChange={setPosition}
+        dismissOnSnapToBottom
+      >
+        <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
+        <Sheet.Handle bg="color8" />
+        <Sheet.Container items="center" justify="center" gap="10">
+          <Sheet.Background bg="color2" />
+          <__TamaguiNativeView style={__TamaguiNativeStyle7400._ ?? __TamaguiNativeStyle7400()}>
+            <__TamaguiStableText7429 >Made by</__TamaguiStableText7429>
+            <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
-            <Anchor color="$blue10" href="https://github.com/tamagui/tamagui" target="_blank" rel="noreferrer">
+            <Anchor
+              color="blue10"
+              href="https://github.com/tamagui/tamagui"
+              target="_blank"
+              rel="noreferrer"
+            >
               give it a ⭐️
             </Anchor>
-          </__ReactNativeView>
+          </__TamaguiNativeView>
 
-          <Button size="$6" circular icon={ChevronDown} onPress={() => {
-          setOpen(false);
-          toast('Sheet closed!', {
-            description: 'Just showing how toast works...'
-          });
-        }} />
-        </Sheet.Frame>
+          <Button
+            size="6"
+            circular
+            icon={ChevronDown}
+            onPress={() => {
+              setOpen(false)
+              toast('Sheet closed!', {
+                description: 'Just showing how toast works...',
+              })
+            }}
+          />
+        </Sheet.Container>
       </Sheet>
-    </>;
+    </>
+  )
 }
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["6"], {
-  "backgroundColor": theme.background.get()
-}], true, false);
-const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["7"], _expressions[0] ? _sheet["8"] : null], false, true);
-const _ReactNativeTextStyled2 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["11"], {
-  "color": theme.color12.get()
-}], true, false);
-const _ReactNativeTextStyled3 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["12"], {
-  "color": theme.color10.get()
-}], true, false);
-const _ReactNativeViewStyled4 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["13"], {
-  "borderTopColor": theme.backgroundFocus.get(),
-  "borderRightColor": theme.backgroundFocus.get(),
-  "borderBottomColor": theme.backgroundFocus.get(),
-  "borderLeftColor": theme.backgroundFocus.get()
-}], true, false);
-const _ReactNativeTextStyled5 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["14"], {
-  "color": theme.color.get()
-}], true, false);
-const _ReactNativeViewStyled6 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["15"], {
-  "borderTopColor": theme.backgroundFocus.get(),
-  "borderRightColor": theme.backgroundFocus.get(),
-  "borderBottomColor": theme.backgroundFocus.get(),
-  "borderLeftColor": theme.backgroundFocus.get()
-}], true, false);
-const _ReactNativeTextStyled7 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["17"], {
-  "color": theme.color.get()
-}], true, false);"
+
+function __TamaguiNativeStyle658() { return __TamaguiNativeStyle658._ ?? (__TamaguiNativeStyle658._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle658();
+const __TamaguiNativeView = require('react-native').View;
+function __TamaguiNativeStyle681() { return __TamaguiNativeStyle681._ ?? (__TamaguiNativeStyle681._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle681();
+function __TamaguiNativeStyle890() { return __TamaguiNativeStyle890._ ?? (__TamaguiNativeStyle890._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle890();
+function __TamaguiNativeStyle2277() { return __TamaguiNativeStyle2277._ ?? (__TamaguiNativeStyle2277._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle2277();
+function __TamaguiNativeStyle3703() { return __TamaguiNativeStyle3703._ ?? (__TamaguiNativeStyle3703._ = {"flexDirection":"column","position":"absolute","right":0,"top":0,"bottom":0,"alignItems":"center","justifyContent":"center","width":16,"pointerEvents":"none"}); } __TamaguiNativeStyle3703();
+function __TamaguiNativeStyle4269() { return __TamaguiNativeStyle4269._ ?? (__TamaguiNativeStyle4269._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle4269();
+function __TamaguiNativeStyle5363() { return __TamaguiNativeStyle5363._ ?? (__TamaguiNativeStyle5363._ = {"flexDirection":"column","flex":1,"justifyContent":"center","alignItems":"center","gap":32,"paddingTop":16,"paddingRight":16,"paddingBottom":16,"paddingLeft":16}); } __TamaguiNativeStyle5363();
+const __TamaguiStableView5363 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle5363._ ?? __TamaguiNativeStyle5363(), { "backgroundColor": _theme["background"]?.get() }], true, false);
+function __TamaguiNativeStyle5822() { return __TamaguiNativeStyle5822._ ?? (__TamaguiNativeStyle5822._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle5822();
+function __TamaguiNativeStyle6083() { return __TamaguiNativeStyle6083._ ?? (__TamaguiNativeStyle6083._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle6083();
+function __TamaguiNativeStyle6108() { return __TamaguiNativeStyle6108._ ?? (__TamaguiNativeStyle6108._ = {"textTransform":"none","fontFamily":"InterBold","letterSpacing":-3,"fontSize":46,"lineHeight":56,"marginTop":0,"marginRight":0,"marginBottom":0,"marginLeft":0,"textAlign":"center"}); } __TamaguiNativeStyle6108();
+const __TamaguiNativeText = require('react-native').Text;
+const __TamaguiStableText6108 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6108._ ?? __TamaguiNativeStyle6108(), { "color": _theme["color11"]?.get() }], true, false);
+function __TamaguiNativeStyle6195() { return __TamaguiNativeStyle6195._ ?? (__TamaguiNativeStyle6195._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle6195();
+const __TamaguiStableText6195 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6195._ ?? __TamaguiNativeStyle6195(), { "color": _theme["color10"]?.get() }], true, false);
+function __TamaguiNativeStyle6346() { return __TamaguiNativeStyle6346._ ?? (__TamaguiNativeStyle6346._ = {"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderStyle":"solid","transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6346();
+const __TamaguiStableView6346 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6346._ ?? __TamaguiNativeStyle6346(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
+function __TamaguiNativeStyle6368() { return __TamaguiNativeStyle6368._ ?? (__TamaguiNativeStyle6368._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle6368();
+const __TamaguiStableText6368 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6368._ ?? __TamaguiNativeStyle6368(), { "color": _theme["color"]?.get() }], true, false);
+function __TamaguiNativeStyle6493() { return __TamaguiNativeStyle6493._ ?? (__TamaguiNativeStyle6493._ = {"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderStyle":"solid","transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6493();
+const __TamaguiStableView6493 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6493._ ?? __TamaguiNativeStyle6493(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
+function __TamaguiNativeStyle7400() { return __TamaguiNativeStyle7400._ ?? (__TamaguiNativeStyle7400._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle7400();
+function __TamaguiNativeStyle7429() { return __TamaguiNativeStyle7429._ ?? (__TamaguiNativeStyle7429._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle7429();
+const __TamaguiStableText7429 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7429._ ?? __TamaguiNativeStyle7429(), { "color": _theme["color"]?.get() }], true, false);"
 `;
 
-exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `
-":root ._pos-relative{position:relative;}
-:root ._fd-column{flex-direction:column;}
-:root ._gap-c-space-4{gap:var(--c-space-4);}
-:root ._fd-row{flex-direction:row;}
-:root ._width-10037{width:100%;}
-:root ._items-center{align-items:center;}
-:root ._z-10{z-index:10;}
-:root ._pos-absolute{position:absolute;}
-:root ._r-0px{right:0px;}
-:root ._t-0px{top:0px;}
-:root ._b-0px{bottom:0px;}
-:root ._justify-center{justify-content:center;}
-:root ._width-c-size-4{width:var(--c-size-4);}
-:root ._pe-none{pointer-events:none !important;}
-:root ._grow-1{flex-grow:1;}
-:root ._shrink-1{flex-shrink:1;}
-:root ._fb-auto{flex-basis:auto;}
-:root ._gap-c-space-8{gap:var(--c-space-8);}
-:root ._pt-c-space-4{padding-top:var(--c-space-4);}
-:root ._pr-c-space-4{padding-right:var(--c-space-4);}
-:root ._pb-c-space-4{padding-bottom:var(--c-space-4);}
-:root ._pl-c-space-4{padding-left:var(--c-space-4);}
-:root ._bg-background{background-color:var(--background);}
-:root ._t-c-space-6{top:var(--c-space-6);}
-:root ._gap-c-space-6{gap:var(--c-space-6);}
-:root ._fwr-wrap{flex-wrap:wrap;}
-@media (min-width: 640px){:root:root:root:root:root:root:root:root:root:root:root:root:root ._t-_sm_0px{top:0px;}}
-@media (min-width: 640px){:root:root:root:root:root:root:root:root:root:root:root:root:root ._pos-_sm_relative{position:relative;}}
-:root ._gap-c-space-2{gap:var(--c-space-2);}
-:root ._select-auto{user-select:auto;-webkit-user-select:auto;}
-:root ._ws-normal{white-space:normal;}
-:root ._tt-f-transform1451{text-transform:var(--f-transform-8);}
-:root ._ff-f-family{font-family:var(--f-family);}
-:root ._fw-f-weight-10{font-weight:var(--f-weight-10);}
-:root ._ls-f-letterSpa779312653{letter-spacing:var(--f-letterSpacing-10);}
-:root ._fs-f-size-10{font-size:var(--f-size-10);}
-:root ._lh-f-lineHeigh3500568{line-height:var(--f-lineHeight-10);}
-:root ._col-color12{color:var(--color12);}
-:root ._mt-0px{margin-top:0px;}
-:root ._mr-0px{margin-right:0px;}
-:root ._mb-0px{margin-bottom:0px;}
-:root ._ml-0px{margin-left:0px;}
-:root ._text-center{text-align:center;}
-:root ._fw-f-weight-4{font-weight:var(--f-weight-4);}
-:root ._ls-f-letterSpa1360334202{letter-spacing:var(--f-letterSpacing-4);}
-:root ._fs-f-size-4{font-size:var(--f-size-4);}
-:root ._lh-f-lineHeigh112923{line-height:var(--f-lineHeight-4);}
-:root ._col-color10{color:var(--color10);}
-:root ._btc-backgroundF3405682._btc-backgroundF3405682{border-top-color:var(--backgroundFocus);}
-:root ._brc-backgroundF3405682._brc-backgroundF3405682{border-right-color:var(--backgroundFocus);}
-:root ._borderBottomColor-backgroundF3405682._borderBottomColor-backgroundF3405682{border-bottom-color:var(--backgroundFocus);}
-:root ._borderLeftColor-backgroundF3405682._borderLeftColor-backgroundF3405682{border-left-color:var(--backgroundFocus);}
-:root ._btw-0px._btw-0px{border-top-width:0px;}
-:root ._brw-0px._brw-0px{border-right-width:0px;}
-:root ._borderBottomWidth-1px._borderBottomWidth-1px{border-bottom-width:1px;}
-:root ._borderLeftWidth-0px._borderLeftWidth-0px{border-left-width:0px;}
-:root ._height-0px{height:0px;}
-:root ._maxH-0px{max-height:0px;}
-:root ._bbs-solid._bbs-solid{border-bottom-style:solid;}
-:root ._bts-solid._bts-solid{border-top-style:solid;}
-:root ._bls-solid._bls-solid{border-left-style:solid;}
-:root ._brs-solid._brs-solid{border-right-style:solid;}
-:root ._tr-translateY-1736186894{transform:translateY(-0.5px);}
-:root ._col-color{color:var(--color);}"
-`;
+exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `"._fd-1155724988{flex-direction:column}._g-1012092611{gap:var(--c-space-4)}._fd-1289797684{flex-direction:row}._w-132203642{width:100%}._ai-1980109838{align-items:center}._g-1012092611{gap:var(--c-space-4)}._fd-1289797684{flex-direction:row}._w-132203642{width:100%}._ai-1980109838{align-items:center}._g-1012092611{gap:var(--c-space-4)}._fd-1155724988{flex-direction:column}._zi-1175933931{z-index:10}._fd-1155724988{flex-direction:column}._p-384527714{position:absolute}._r-1632656972{right:0px}._t-874702747{top:0px}._b-642571495{bottom:0px}._ai-1980109838{align-items:center}._jc-658029924{justify-content:center}._w-137381456{width:var(--c-size-4)}._pe-635873870{pointer-events:none}._pe-635873870>*{pointer-events:none}._fd-1155724988{flex-direction:column}._zi-1175933931{z-index:10}._fd-1155724988{flex-direction:column}._fg-169839737{flex-grow:1}._fs-1866857425{flex-shrink:1}._fb-1102215147{flex-basis:0px}._jc-658029924{justify-content:center}._ai-1980109838{align-items:center}._g-1012092487{gap:var(--c-space-8)}._pt-39185609{padding-top:var(--c-space-4)}._pr-635101616{padding-right:var(--c-space-4)}._pb-245633347{padding-bottom:var(--c-space-4)}._pl-354517857{padding-left:var(--c-space-4)}._bc-1288965051{background-color:var(--background)}._fd-1289797684{flex-direction:row}._p-1814547269{position:absolute}@media (min-width: 640px) {._p-1814547269{position:relative}}._w-132203642{width:100%}._t-1257708669{top:var(--c-space-6)}@media (min-width: 640px) {._t-1257708669{top:0px}}._g-1012092549{gap:var(--c-space-6)}._jc-658029924{justify-content:center}._fw-381719595{flex-wrap:wrap}._fd-1289797684{flex-direction:row}._g-1012092673{gap:var(--c-space-2)}._fd-1155724988{flex-direction:column}._g-1012092611{gap:var(--c-space-4)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._tt-1698380096{text-transform:var(--f-transform-10)}._ff-1640205464{font-family:var(--f-family)}._fw-1469196224{font-weight:var(--f-weight-10)}._ls-1888220256{letter-spacing:var(--f-letterSpacing-10)}._fs-313015168{font-size:var(--f-size-10)}._lh-1415683744{line-height:var(--f-lineHeight-10)}._c-856716194{color:var(--color11)}._mt-279610455{margin-top:0px}._mr-1468885570{margin-right:0px}._mb-1993857511{margin-bottom:0px}._ml-1118921597{margin-left:0px}._ta-628280461{text-align:center}._ff-1640205464{font-family:var(--f-family)}._fw-1379533702{font-weight:var(--f-weight-4)}._ls-870375212{letter-spacing:var(--f-letterSpacing-4)}._fs-183738666{font-size:var(--f-size-4)}._lh-106962612{line-height:var(--f-lineHeight-4)}._c-393637825{color:var(--color10)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._ta-628280461{text-align:center}._fs-1698630561{flex-shrink:1}._bs-1746519034{border-style:solid}._btw-1743474923{border-top-width:0px}._brw-1478209636{border-right-width:0px}._bbw-1723652447{border-bottom-width:1px}._blw-1024325245{border-left-width:0px}._fg-169839737{flex-grow:1}._fb-1102215147{flex-basis:0px}._h-883471467{height:0px}._mh-751572549{max-height:0px}._bbs-452384145{border-bottom-style:solid}._ty-885232850{--t-y:-0.5px}:where(._t-2131811775){--t-x:0px;--t-y:0px}._t-2131811775{translate:var(--t-x, 0px) var(--t-y, 0px)}._btc-462111959{border-top-color:var(--background-focus)}._brc-167070178{border-right-color:var(--background-focus)}._bbc-984892067{border-bottom-color:var(--background-focus)}._blc-1251242433{border-left-color:var(--background-focus)}._ff-1640205464{font-family:var(--f-family)}._fw-1379533702{font-weight:var(--f-weight-4)}._ls-870375212{letter-spacing:var(--f-letterSpacing-4)}._fs-183738666{font-size:var(--f-size-4)}._lh-106962612{line-height:var(--f-lineHeight-4)}._c-1572260098{color:var(--color)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._ta-628280461{text-align:center}._fs-1698630561{flex-shrink:1}._bs-1746519034{border-style:solid}._btw-1743474923{border-top-width:0px}._brw-1478209636{border-right-width:0px}._bbw-1723652447{border-bottom-width:1px}._blw-1024325245{border-left-width:0px}._fg-169839737{flex-grow:1}._fb-1102215147{flex-basis:0px}._h-883471467{height:0px}._mh-751572549{max-height:0px}._bbs-452384145{border-bottom-style:solid}._ty-885232850{--t-y:-0.5px}:where(._t-2131811775){--t-x:0px;--t-y:0px}._t-2131811775{translate:var(--t-x, 0px) var(--t-y, 0px)}._btc-462111959{border-top-color:var(--background-focus)}._brc-167070178{border-right-color:var(--background-focus)}._bbc-984892067{border-bottom-color:var(--background-focus)}._blc-1251242433{border-left-color:var(--background-focus)}._fd-1289797684{flex-direction:row}._g-1012092673{gap:var(--c-space-2)}._ff-1640205464{font-family:var(--f-family)}._fw-1379533702{font-weight:var(--f-weight-4)}._ls-870375212{letter-spacing:var(--f-letterSpacing-4)}._fs-183738666{font-size:var(--f-size-4)}._lh-106962612{line-height:var(--f-lineHeight-4)}._c-1572260098{color:var(--color)}._us-1298715756{user-select:auto;-webkit-user-select:auto;}._ws-45919554{white-space:normal}._ta-628280461{text-align:center}"`;
 
 exports[`Package.json exports support > should build app package for both web and native targets > web-optimized 1`] = `
 "import "./_screen.css"
-const _cn15 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center";
-const _cn14 = "is_View _pos-relative _fd-row _gap-c-space-2";
-const _cn13 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894";
-const _cn12 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center";
-const _cn11 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894";
-const _cn10 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color10 _select-auto _ws-normal _text-center";
-const _cn1 = "is_H1 is_Text font_heading _select-auto _ws-normal _tt-f-transform1451 _ff-f-family _fw-f-weight-10 _ls-f-letterSpa779312653 _fs-f-size-10 _lh-f-lineHeigh3500568 _col-color12 _mt-0px _mr-0px _mb-0px _ml-0px _text-center";
-const _cn0 = "is_View _pos-relative _fd-column _gap-c-space-4";
-const _cn9 = "is_View _pos-relative _fd-row _gap-c-space-2";
-const _cn8 = "is_View _fd-row _pos-absolute _width-10037 _t-c-space-6 _gap-c-space-6 _justify-center _fwr-wrap _t-_sm_0px _pos-_sm_relative";
-const _cn7 = "is_View _pos-relative _fd-column _grow-1 _shrink-1 _fb-auto _justify-center _items-center _gap-c-space-8 _pt-c-space-4 _pr-c-space-4 _pb-c-space-4 _pl-c-space-4 _bg-background";
-const _cn6 = "is_View _pos-relative _fd-column _z-10";
-const _cn5 = "is_View _fd-column _pos-absolute _r-0px _t-0px _b-0px _items-center _justify-center _width-c-size-4 _pe-none";
-const _cn4 = "is_View _pos-relative _fd-column _z-10";
-const _cn3 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4";
-const _cn2 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4";
-const _cn = "is_View _pos-relative _fd-column _gap-c-space-4";
-import { Adapt, Anchor, Button, type FontSizeTokens, getFontSize, H1, Label, Paragraph, Select, type SelectProps, Separator, Sheet, toast, XStack, YStack } from '@my/ui';
-import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton';
-import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton';
-import { LinearGradient } from '@tamagui/linear-gradient';
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
-import React, { useState } from 'react';
-import { Platform } from 'react-native';
-import { useLink } from 'solito/navigation';
+import {
+  Adapt,
+  Anchor,
+  Button,
+  type FontSizeTokens,
+  getFontSize,
+  H1,
+  Label,
+  Paragraph,
+  Select,
+  type SelectProps,
+  Separator,
+  Sheet,
+  toast,
+  XStack,
+  YStack,
+} from '@my/ui'
+import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton'
+import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton'
+import { LinearGradient } from '@tamagui/linear-gradient'
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import React, { useState } from 'react'
+import { Platform } from 'react-native'
+import { useLink } from 'solito/navigation'
+
 export function SelectDemo() {
-  return <div className={_cn}>
-      <div className={_cn2}>
+  return (
+    <div className="is_View _fd-1155724988 _g-1012092611">
+      <div className="is_View _fd-1289797684 _w-132203642 _ai-1980109838 _g-1012092611"  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </div>
 
-      <div className={_cn3}>
+      <div className="is_View _fd-1289797684 _w-132203642 _ai-1980109838 _g-1012092611"  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
         <SelectDemoItem id="select-demo-2" native />
       </div>
-    </div>;
+    </div>
+  )
 }
-export function SelectDemoItem(props: SelectProps & {
-  trigger?: React.ReactNode;
-}) {
-  const [val, setVal] = React.useState('apple');
-  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000} {...props}>
-      {props?.trigger || <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
+
+export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode }) {
+  const [val, setVal] = React.useState('apple')
+
+  return (
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      zIndex={200000}
+      {...props}
+    >
+      {props?.trigger || (
+        <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
-        </Select.Trigger>}
+        </Select.Trigger>
+      )}
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay backgroundColor="$shadowColor" transition="lazy" enterStyle={{
-          opacity: 0
-        }} exitStyle={{
-          opacity: 0
-        }} />
+          </Sheet.Container>
+          <Sheet.Overlay
+            backgroundColor="shadow-color"
+            transition="lazy"
+            opacity="enter:0 exit:0"
+          />
         </Sheet>
       </Adapt>
 
       <Select.Content>
-        <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
-          <div className={_cn4}>
+        <Select.ScrollUpButton
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
+          <div className="is_View _fd-1155724988 _zi-1175933931">
             <ChevronUp size={20} />
           </div>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['$background', 'transparent']} />
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            colors={['background', 'transparent']}
+          />
         </Select.ScrollUpButton>
 
         <Select.Viewport
-      // to do animations:
-      // transition="quick"
-      // animateOnly={['transform', 'opacity']}
-      // enterStyle={{ o: 0, y: -10 }}
-      // exitStyle={{ o: 0, y: 10 }}
-      minW={200}>
+          // to do animations:
+          // transition="quick"
+          // animateOnly={['transform', 'opacity']}
+          // opacity="enter:0 exit:0"
+          // y="enter:-10px exit:10px"
+          minW={200}
+        >
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
-            {React.useMemo(() => items.map((item, i) => {
-            return <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
+            {React.useMemo(
+              () =>
+                items.map((item, i) => {
+                  return (
+                    <Select.Item
+                      index={i}
+                      key={item.name}
+                      value={item.name.toLowerCase()}
+                    >
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
-                    </Select.Item>;
-          }), [items])}
+                    </Select.Item>
+                  )
+                }),
+              [items]
+            )}
           </Select.Group>
           {/* Native gets an extra icon */}
-          {props.native && <div className={_cn5}>
-              <ChevronDown size={getFontSize(props.size as FontSizeTokens ?? '$true')} />
-            </div>}
+          {props.native && (
+            <div
+              className="is_View _fd-1155724988 _p-384527714 _r-1632656972 _t-874702747 _b-642571495 _ai-1980109838 _jc-658029924 _w-137381456 _pe-635873870"
+
+
+
+
+
+
+
+            >
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
+            </div>
+          )}
         </Select.Viewport>
 
-        <Select.ScrollDownButton items="center" justify="center" position="relative" width="100%" height="$3">
-          <div className={_cn6}>
+        <Select.ScrollDownButton
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
+          <div className="is_View _fd-1155724988 _zi-1175933931">
             <ChevronDown size={20} />
           </div>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['transparent', '$background']} />
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            colors={['transparent', 'background']}
+          />
         </Select.ScrollDownButton>
       </Select.Content>
-    </Select>;
+    </Select>
+  )
 }
-const items = [{
-  name: 'Apple'
-}, {
-  name: 'Pear'
-}, {
-  name: 'Blackberry'
-}, {
-  name: 'Peach'
-}, {
-  name: 'Apricot'
-}, {
-  name: 'Melon'
-}, {
-  name: 'Honeydew'
-}, {
-  name: 'Starfruit'
-}, {
-  name: 'Blueberry'
-}, {
-  name: 'Raspberry'
-}, {
-  name: 'Strawberry'
-}, {
-  name: 'Mango'
-}, {
-  name: 'Pineapple'
-}, {
-  name: 'Lime'
-}, {
-  name: 'Lemon'
-}, {
-  name: 'Coconut'
-}, {
-  name: 'Guava'
-}, {
-  name: 'Papaya'
-}, {
-  name: 'Orange'
-}, {
-  name: 'Grape'
-}, {
-  name: 'Jackfruit'
-}, {
-  name: 'Durian'
-}];
-export function HomeScreen({
-  pagesMode = false
-}: {
-  pagesMode?: boolean;
-}) {
-  const linkTarget = pagesMode ? '/pages-example-user' : '/user';
+
+const items = [
+  { name: 'Apple' },
+  { name: 'Pear' },
+  { name: 'Blackberry' },
+  { name: 'Peach' },
+  { name: 'Apricot' },
+  { name: 'Melon' },
+  { name: 'Honeydew' },
+  { name: 'Starfruit' },
+  { name: 'Blueberry' },
+  { name: 'Raspberry' },
+  { name: 'Strawberry' },
+  { name: 'Mango' },
+  { name: 'Pineapple' },
+  { name: 'Lime' },
+  { name: 'Lemon' },
+  { name: 'Coconut' },
+  { name: 'Guava' },
+  { name: 'Papaya' },
+  { name: 'Orange' },
+  { name: 'Grape' },
+  { name: 'Jackfruit' },
+  { name: 'Durian' },
+]
+
+export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
+  const linkTarget = pagesMode ? '/pages-example-user' : '/user'
   const linkProps = useLink({
-    href: \`\${linkTarget}/nate\`
-  });
-  return <div className={_cn7}>
-      <div className={_cn8}>
-        {Platform.OS === 'web' && <>
+    href: \`\${linkTarget}/nate\`,
+  })
+
+  return (
+    <div className="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _jc-658029924 _ai-1980109838 _g-1012092487 _pt-39185609 _pr-635101616 _pb-245633347 _pl-354517857 _bc-1288965051"     >
+      <div
+        className="is_View _fd-1289797684 _p-1814547269 _w-132203642 _t-1257708669 _g-1012092549 _jc-658029924 _fw-381719595"
+
+
+
+
+
+      >
+        {Platform.OS === 'web' && (
+          <>
             <SwitchRouterButton pagesMode={pagesMode} />
             <SwitchThemeButton />
-          </>}
+          </>
+        )}
       </div>
 
       <SelectDemo />
 
-      <div className={_cn9}>
-        <Button size="$3" iconAfter={<Button.Icon>
+      <div className="is_View _fd-1289797684 _g-1012092673">
+        <Button
+          size="3"
+          iconAfter={
+            <Button.Icon>
               <Activity />
-            </Button.Icon>}>
+            </Button.Icon>
+          }
+        >
           <Button.Text>Inverse</Button.Text>
         </Button>
       </div>
-      <div className={_cn0}>
-        <h1 className={_cn1}>
+      <div className="is_View _fd-1155724988 _g-1012092611">
+        <h1 className="is_H1 is_Text font_heading _us-1298715756 _ws-45919554 _tt-1698380096 _ff-1640205464 _fw-1469196224 _ls-1888220256 _fs-313015168 _lh-1415683744 _c-856716194 _mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _ta-628280461" >
           Welcome to Tamagui.
         </h1>
-        <p className={_cn10}>
+        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-393637825 _us-1298715756 _ws-45919554 _ta-628280461" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
-        <div className={_cn11} />
-        <p className={_cn12}>
+        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433" />
+        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">
           This screen uses the same code on Next.js and React Native.
         </p>
-        <div className={_cn13} />
+        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433" />
       </div>
 
       <Button {...linkProps} theme={'dark'}>
@@ -663,632 +594,655 @@ export function HomeScreen({
       </Button>
 
       <SheetDemo />
-    </div>;
+    </div>
+  )
 }
+
 function SheetDemo() {
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState(0);
-  return <>
-      <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen(x => !x)} />
-      <Sheet modal transition="medium" open={open} onOpenChange={setOpen} snapPoints={[80]} position={position} onPositionChange={setPosition} dismissOnSnapToBottom>
-        <Sheet.Overlay bg="$shadow4" transition="lazy" enterStyle={{
-        opacity: 0
-      }} exitStyle={{
-        opacity: 0
-      }} />
-        <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
-          <div className={_cn14}>
-            <p className={_cn15}>Made by</p>
-            <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
+  const [open, setOpen] = useState(false)
+  const [position, setPosition] = useState(0)
+
+  return (
+    <>
+      <Button
+        size="6"
+        icon={open ? ChevronDown : ChevronUp}
+        circular
+        onPress={() => setOpen((x) => !x)}
+      />
+      <Sheet
+        modal
+        transition="medium"
+        open={open}
+        onOpenChange={setOpen}
+        snapPoints={[80]}
+        position={position}
+        onPositionChange={setPosition}
+        dismissOnSnapToBottom
+      >
+        <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
+        <Sheet.Handle bg="color8" />
+        <Sheet.Container items="center" justify="center" gap="10">
+          <Sheet.Background bg="color2" />
+          <div className="is_View _fd-1289797684 _g-1012092673">
+            <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
+            <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
-            <Anchor color="$blue10" href="https://github.com/tamagui/tamagui" target="_blank" rel="noreferrer">
+            <Anchor
+              color="blue10"
+              href="https://github.com/tamagui/tamagui"
+              target="_blank"
+              rel="noreferrer"
+            >
               give it a ⭐️
             </Anchor>
           </div>
 
-          <Button size="$6" circular icon={ChevronDown} onPress={() => {
-          setOpen(false);
-          toast('Sheet closed!', {
-            description: 'Just showing how toast works...'
-          });
-        }} />
-        </Sheet.Frame>
+          <Button
+            size="6"
+            circular
+            icon={ChevronDown}
+            onPress={() => {
+              setOpen(false)
+              toast('Sheet closed!', {
+                description: 'Just showing how toast works...',
+              })
+            }}
+          />
+        </Sheet.Container>
       </Sheet>
-    </>;
-}"
+    </>
+  )
+}
+"
 `;
 
 exports[`Package.json exports support > should recognize imports from path-specific exports during optimization > native-optimized-single 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {
-    "position": "relative",
-    "flexDirection": "column",
-    "gap": 18
-  },
-  "1": {
-    "position": "relative",
-    "flexDirection": "row",
-    "width": "100%",
-    "alignItems": "center",
-    "gap": 18
-  },
-  "2": {
-    "position": "relative",
-    "flexDirection": "row",
-    "width": "100%",
-    "alignItems": "center",
-    "gap": 18
-  },
-  "3": {
-    "position": "relative",
-    "flexDirection": "column",
-    "zIndex": 10
-  },
-  "4": {
-    "flexDirection": "column",
-    "position": "absolute",
-    "right": 0,
-    "top": 0,
-    "bottom": 0,
-    "alignItems": "center",
-    "justifyContent": "center",
-    "width": 44
-  },
-  "5": {
-    "position": "relative",
-    "flexDirection": "column",
-    "zIndex": 10
-  },
-  "6": {
-    "position": "relative",
-    "flexDirection": "column",
-    "flex": 1,
-    "justifyContent": "center",
-    "alignItems": "center",
-    "gap": 46,
-    "paddingTop": 18,
-    "paddingRight": 18,
-    "paddingBottom": 18,
-    "paddingLeft": 18
-  },
-  "7": {
-    "flexDirection": "row",
-    "position": "absolute",
-    "width": "100%",
-    "top": 32,
-    "gap": 32,
-    "justifyContent": "center",
-    "flexWrap": "wrap"
-  },
-  "8": {
-    "top": 0,
-    "position": "relative"
-  },
-  "9": {
-    "position": "relative",
-    "flexDirection": "row",
-    "gap": 7
-  },
-  "10": {
-    "position": "relative",
-    "flexDirection": "column",
-    "gap": 18
-  },
-  "11": {
-    "fontFamily": "System",
-    "fontWeight": "300",
-    "letterSpacing": 0,
-    "fontSize": 64.39999999999999,
-    "lineHeight": 74.39999999999999,
-    "marginTop": 0,
-    "marginRight": 0,
-    "marginBottom": 0,
-    "marginLeft": 0,
-    "textAlign": "center"
-  },
-  "12": {
-    "fontFamily": "System",
-    "fontWeight": "300",
-    "letterSpacing": 0,
-    "fontSize": 14,
-    "lineHeight": 24,
-    "textAlign": "center"
-  },
-  "13": {
-    "flexShrink": 0,
-    "borderTopWidth": 0,
-    "borderRightWidth": 0,
-    "borderBottomWidth": 1,
-    "borderLeftWidth": 0,
-    "flex": 1,
-    "height": 0,
-    "maxHeight": 0,
-    "borderStyle": "solid",
-    "transform": [{
-      "translateY": -0.5
-    }]
-  },
-  "14": {
-    "fontFamily": "System",
-    "fontWeight": "300",
-    "letterSpacing": 0,
-    "fontSize": 14,
-    "lineHeight": 24,
-    "textAlign": "center"
-  },
-  "15": {
-    "flexShrink": 0,
-    "borderTopWidth": 0,
-    "borderRightWidth": 0,
-    "borderBottomWidth": 1,
-    "borderLeftWidth": 0,
-    "flex": 1,
-    "height": 0,
-    "maxHeight": 0,
-    "borderStyle": "solid",
-    "transform": [{
-      "translateY": -0.5
-    }]
-  },
-  "16": {
-    "position": "relative",
-    "flexDirection": "row",
-    "gap": 7
-  },
-  "17": {
-    "fontFamily": "System",
-    "fontWeight": "300",
-    "letterSpacing": 0,
-    "fontSize": 14,
-    "lineHeight": 24,
-    "textAlign": "center"
-  }
-});
-import { _withStableStyle } from '@tamagui/core';
-const __ReactNativeView = require('react-native').View;
-const __ReactNativeText = require('react-native').Text;
-import { Adapt, Anchor, Button, type FontSizeTokens, getFontSize, H1, Label, Paragraph, Select, type SelectProps, Separator, Sheet, toast, XStack, YStack } from '@my/ui';
-import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton';
-import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton';
-import { LinearGradient } from '@tamagui/linear-gradient';
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
-import React, { useState } from 'react';
-import { Platform } from 'react-native';
-import { useLink } from 'solito/navigation';
+"import {
+  Adapt,
+  Anchor,
+  Button,
+  type FontSizeTokens,
+  getFontSize,
+  H1,
+  Label,
+  Paragraph,
+  Select,
+  type SelectProps,
+  Separator,
+  Sheet,
+  toast,
+  XStack,
+  YStack,
+} from '@my/ui'
+import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton'
+import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton'
+import { LinearGradient } from '@tamagui/linear-gradient'
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import React, { useState } from 'react'
+import { Platform } from 'react-native'
+import { useLink } from 'solito/navigation'
+
 export function SelectDemo() {
-  return <__ReactNativeView style={_sheet["0"]}>
-      <__ReactNativeView style={_sheet["1"]}>
+  return (
+    <__TamaguiNativeView style={__TamaguiNativeStyle658._ ?? __TamaguiNativeStyle658()}>
+      <__TamaguiNativeView style={__TamaguiNativeStyle681._ ?? __TamaguiNativeStyle681()}  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
-      </__ReactNativeView>
+      </__TamaguiNativeView>
 
-      <__ReactNativeView style={_sheet["2"]}>
+      <__TamaguiNativeView style={__TamaguiNativeStyle890._ ?? __TamaguiNativeStyle890()}  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
         <SelectDemoItem id="select-demo-2" native />
-      </__ReactNativeView>
-    </__ReactNativeView>;
+      </__TamaguiNativeView>
+    </__TamaguiNativeView>
+  )
 }
-export function SelectDemoItem(props: SelectProps & {
-  trigger?: React.ReactNode;
-}) {
-  const [val, setVal] = React.useState('apple');
-  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000} {...props}>
-      {props?.trigger || <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
+
+export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode }) {
+  const [val, setVal] = React.useState('apple')
+
+  return (
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      zIndex={200000}
+      {...props}
+    >
+      {props?.trigger || (
+        <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
-        </Select.Trigger>}
+        </Select.Trigger>
+      )}
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay backgroundColor="$shadowColor" transition="lazy" enterStyle={{
-          opacity: 0
-        }} exitStyle={{
-          opacity: 0
-        }} />
+          </Sheet.Container>
+          <Sheet.Overlay
+            backgroundColor="shadow-color"
+            transition="lazy"
+            opacity="enter:0 exit:0"
+          />
         </Sheet>
       </Adapt>
 
       <Select.Content>
-        <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
-          <__ReactNativeView style={_sheet["3"]}>
+        <Select.ScrollUpButton
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
+          <__TamaguiNativeView style={__TamaguiNativeStyle2277._ ?? __TamaguiNativeStyle2277()}>
             <ChevronUp size={20} />
-          </__ReactNativeView>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['$background', 'transparent']} />
+          </__TamaguiNativeView>
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            colors={['background', 'transparent']}
+          />
         </Select.ScrollUpButton>
 
         <Select.Viewport
-      // to do animations:
-      // transition="quick"
-      // animateOnly={['transform', 'opacity']}
-      // enterStyle={{ o: 0, y: -10 }}
-      // exitStyle={{ o: 0, y: 10 }}
-      minW={200}>
+          // to do animations:
+          // transition="quick"
+          // animateOnly={['transform', 'opacity']}
+          // opacity="enter:0 exit:0"
+          // y="enter:-10px exit:10px"
+          minW={200}
+        >
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
-            {React.useMemo(() => items.map((item, i) => {
-            return <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
+            {React.useMemo(
+              () =>
+                items.map((item, i) => {
+                  return (
+                    <Select.Item
+                      index={i}
+                      key={item.name}
+                      value={item.name.toLowerCase()}
+                    >
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
-                    </Select.Item>;
-          }), [items])}
+                    </Select.Item>
+                  )
+                }),
+              [items]
+            )}
           </Select.Group>
           {/* Native gets an extra icon */}
-          {props.native && <__ReactNativeView pointerEvents={"none"} style={_sheet["4"]}>
-              <ChevronDown size={getFontSize(props.size as FontSizeTokens ?? '$true')} />
-            </__ReactNativeView>}
+          {props.native && (
+            <__TamaguiNativeView
+              style={__TamaguiNativeStyle3703._ ?? __TamaguiNativeStyle3703()}
+
+
+
+
+
+
+
+            >
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
+            </__TamaguiNativeView>
+          )}
         </Select.Viewport>
 
-        <Select.ScrollDownButton items="center" justify="center" position="relative" width="100%" height="$3">
-          <__ReactNativeView style={_sheet["5"]}>
+        <Select.ScrollDownButton
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
+          <__TamaguiNativeView style={__TamaguiNativeStyle4269._ ?? __TamaguiNativeStyle4269()}>
             <ChevronDown size={20} />
-          </__ReactNativeView>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['transparent', '$background']} />
+          </__TamaguiNativeView>
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            colors={['transparent', 'background']}
+          />
         </Select.ScrollDownButton>
       </Select.Content>
-    </Select>;
+    </Select>
+  )
 }
-const items = [{
-  name: 'Apple'
-}, {
-  name: 'Pear'
-}, {
-  name: 'Blackberry'
-}, {
-  name: 'Peach'
-}, {
-  name: 'Apricot'
-}, {
-  name: 'Melon'
-}, {
-  name: 'Honeydew'
-}, {
-  name: 'Starfruit'
-}, {
-  name: 'Blueberry'
-}, {
-  name: 'Raspberry'
-}, {
-  name: 'Strawberry'
-}, {
-  name: 'Mango'
-}, {
-  name: 'Pineapple'
-}, {
-  name: 'Lime'
-}, {
-  name: 'Lemon'
-}, {
-  name: 'Coconut'
-}, {
-  name: 'Guava'
-}, {
-  name: 'Papaya'
-}, {
-  name: 'Orange'
-}, {
-  name: 'Grape'
-}, {
-  name: 'Jackfruit'
-}, {
-  name: 'Durian'
-}];
-export function HomeScreen({
-  pagesMode = false
-}: {
-  pagesMode?: boolean;
-}) {
-  const linkTarget = pagesMode ? '/pages-example-user' : '/user';
+
+const items = [
+  { name: 'Apple' },
+  { name: 'Pear' },
+  { name: 'Blackberry' },
+  { name: 'Peach' },
+  { name: 'Apricot' },
+  { name: 'Melon' },
+  { name: 'Honeydew' },
+  { name: 'Starfruit' },
+  { name: 'Blueberry' },
+  { name: 'Raspberry' },
+  { name: 'Strawberry' },
+  { name: 'Mango' },
+  { name: 'Pineapple' },
+  { name: 'Lime' },
+  { name: 'Lemon' },
+  { name: 'Coconut' },
+  { name: 'Guava' },
+  { name: 'Papaya' },
+  { name: 'Orange' },
+  { name: 'Grape' },
+  { name: 'Jackfruit' },
+  { name: 'Durian' },
+]
+
+export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
+  const linkTarget = pagesMode ? '/pages-example-user' : '/user'
   const linkProps = useLink({
-    href: \`\${linkTarget}/nate\`
-  });
-  return <_ReactNativeViewStyled0>
-      <_ReactNativeViewStyled1 _expressions={["sm"]}>
-        {Platform.OS === 'web' && <>
+    href: \`\${linkTarget}/nate\`,
+  })
+
+  return (
+    <__TamaguiStableView5363      >
+      <XStack
+        position="absolute sm:relative"
+        width="100%"
+        t="6 sm:0px"
+        gap="6"
+        justify="center"
+        flexWrap="wrap"
+      >
+        {Platform.OS === 'web' && (
+          <>
             <SwitchRouterButton pagesMode={pagesMode} />
             <SwitchThemeButton />
-          </>}
-      </_ReactNativeViewStyled1>
+          </>
+        )}
+      </XStack>
 
       <SelectDemo />
 
-      <__ReactNativeView style={_sheet["9"]}>
-        <Button size="$3" iconAfter={<Button.Icon>
+      <__TamaguiNativeView style={__TamaguiNativeStyle5822._ ?? __TamaguiNativeStyle5822()}>
+        <Button
+          size="3"
+          iconAfter={
+            <Button.Icon>
               <Activity />
-            </Button.Icon>}>
+            </Button.Icon>
+          }
+        >
           <Button.Text>Inverse</Button.Text>
         </Button>
-      </__ReactNativeView>
-      <__ReactNativeView style={_sheet["10"]}>
-        <_ReactNativeTextStyled2>
+      </__TamaguiNativeView>
+      <__TamaguiNativeView style={__TamaguiNativeStyle6083._ ?? __TamaguiNativeStyle6083()}>
+        <__TamaguiStableText6108  >
           Welcome to Tamagui.
-        </_ReactNativeTextStyled2>
-        <_ReactNativeTextStyled3>
+        </__TamaguiStableText6108>
+        <__TamaguiStableText6195  >
           Here's a basic starter to show navigating from one screen to another.
-        </_ReactNativeTextStyled3>
-        <_ReactNativeViewStyled4 />
-        <_ReactNativeTextStyled5>
+        </__TamaguiStableText6195>
+        <__TamaguiStableView6346 />
+        <__TamaguiStableText6368 >
           This screen uses the same code on Next.js and React Native.
-        </_ReactNativeTextStyled5>
-        <_ReactNativeViewStyled6 />
-      </__ReactNativeView>
+        </__TamaguiStableText6368>
+        <__TamaguiStableView6493 />
+      </__TamaguiNativeView>
 
       <Button {...linkProps} theme={'dark'}>
         Link to user
       </Button>
 
       <SheetDemo />
-    </_ReactNativeViewStyled0>;
+    </__TamaguiStableView5363>
+  )
 }
+
 function SheetDemo() {
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState(0);
-  return <>
-      <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen(x => !x)} />
-      <Sheet modal transition="medium" open={open} onOpenChange={setOpen} snapPoints={[80]} position={position} onPositionChange={setPosition} dismissOnSnapToBottom>
-        <Sheet.Overlay bg="$shadow4" transition="lazy" enterStyle={{
-        opacity: 0
-      }} exitStyle={{
-        opacity: 0
-      }} />
-        <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
-          <__ReactNativeView style={_sheet["16"]}>
-            <_ReactNativeTextStyled7>Made by</_ReactNativeTextStyled7>
-            <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
+  const [open, setOpen] = useState(false)
+  const [position, setPosition] = useState(0)
+
+  return (
+    <>
+      <Button
+        size="6"
+        icon={open ? ChevronDown : ChevronUp}
+        circular
+        onPress={() => setOpen((x) => !x)}
+      />
+      <Sheet
+        modal
+        transition="medium"
+        open={open}
+        onOpenChange={setOpen}
+        snapPoints={[80]}
+        position={position}
+        onPositionChange={setPosition}
+        dismissOnSnapToBottom
+      >
+        <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
+        <Sheet.Handle bg="color8" />
+        <Sheet.Container items="center" justify="center" gap="10">
+          <Sheet.Background bg="color2" />
+          <__TamaguiNativeView style={__TamaguiNativeStyle7400._ ?? __TamaguiNativeStyle7400()}>
+            <__TamaguiStableText7429 >Made by</__TamaguiStableText7429>
+            <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
-            <Anchor color="$blue10" href="https://github.com/tamagui/tamagui" target="_blank" rel="noreferrer">
+            <Anchor
+              color="blue10"
+              href="https://github.com/tamagui/tamagui"
+              target="_blank"
+              rel="noreferrer"
+            >
               give it a ⭐️
             </Anchor>
-          </__ReactNativeView>
+          </__TamaguiNativeView>
 
-          <Button size="$6" circular icon={ChevronDown} onPress={() => {
-          setOpen(false);
-          toast('Sheet closed!', {
-            description: 'Just showing how toast works...'
-          });
-        }} />
-        </Sheet.Frame>
+          <Button
+            size="6"
+            circular
+            icon={ChevronDown}
+            onPress={() => {
+              setOpen(false)
+              toast('Sheet closed!', {
+                description: 'Just showing how toast works...',
+              })
+            }}
+          />
+        </Sheet.Container>
       </Sheet>
-    </>;
+    </>
+  )
 }
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["6"], {
-  "backgroundColor": theme.background.get()
-}], true, false);
-const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["7"], _expressions[0] ? _sheet["8"] : null], false, true);
-const _ReactNativeTextStyled2 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["11"], {
-  "color": theme.color12.get()
-}], true, false);
-const _ReactNativeTextStyled3 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["12"], {
-  "color": theme.color10.get()
-}], true, false);
-const _ReactNativeViewStyled4 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["13"], {
-  "borderTopColor": theme.backgroundFocus.get(),
-  "borderRightColor": theme.backgroundFocus.get(),
-  "borderBottomColor": theme.backgroundFocus.get(),
-  "borderLeftColor": theme.backgroundFocus.get()
-}], true, false);
-const _ReactNativeTextStyled5 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["14"], {
-  "color": theme.color.get()
-}], true, false);
-const _ReactNativeViewStyled6 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["15"], {
-  "borderTopColor": theme.backgroundFocus.get(),
-  "borderRightColor": theme.backgroundFocus.get(),
-  "borderBottomColor": theme.backgroundFocus.get(),
-  "borderLeftColor": theme.backgroundFocus.get()
-}], true, false);
-const _ReactNativeTextStyled7 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["17"], {
-  "color": theme.color.get()
-}], true, false);"
+
+function __TamaguiNativeStyle658() { return __TamaguiNativeStyle658._ ?? (__TamaguiNativeStyle658._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle658();
+const __TamaguiNativeView = require('react-native').View;
+function __TamaguiNativeStyle681() { return __TamaguiNativeStyle681._ ?? (__TamaguiNativeStyle681._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle681();
+function __TamaguiNativeStyle890() { return __TamaguiNativeStyle890._ ?? (__TamaguiNativeStyle890._ = {"flexDirection":"row","width":"100%","alignItems":"center","gap":16}); } __TamaguiNativeStyle890();
+function __TamaguiNativeStyle2277() { return __TamaguiNativeStyle2277._ ?? (__TamaguiNativeStyle2277._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle2277();
+function __TamaguiNativeStyle3703() { return __TamaguiNativeStyle3703._ ?? (__TamaguiNativeStyle3703._ = {"flexDirection":"column","position":"absolute","right":0,"top":0,"bottom":0,"alignItems":"center","justifyContent":"center","width":16,"pointerEvents":"none"}); } __TamaguiNativeStyle3703();
+function __TamaguiNativeStyle4269() { return __TamaguiNativeStyle4269._ ?? (__TamaguiNativeStyle4269._ = {"flexDirection":"column","zIndex":10}); } __TamaguiNativeStyle4269();
+function __TamaguiNativeStyle5363() { return __TamaguiNativeStyle5363._ ?? (__TamaguiNativeStyle5363._ = {"flexDirection":"column","flex":1,"justifyContent":"center","alignItems":"center","gap":32,"paddingTop":16,"paddingRight":16,"paddingBottom":16,"paddingLeft":16}); } __TamaguiNativeStyle5363();
+const __TamaguiStableView5363 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle5363._ ?? __TamaguiNativeStyle5363(), { "backgroundColor": _theme["background"]?.get() }], true, false);
+function __TamaguiNativeStyle5822() { return __TamaguiNativeStyle5822._ ?? (__TamaguiNativeStyle5822._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle5822();
+function __TamaguiNativeStyle6083() { return __TamaguiNativeStyle6083._ ?? (__TamaguiNativeStyle6083._ = {"flexDirection":"column","gap":16}); } __TamaguiNativeStyle6083();
+function __TamaguiNativeStyle6108() { return __TamaguiNativeStyle6108._ ?? (__TamaguiNativeStyle6108._ = {"textTransform":"none","fontFamily":"InterBold","letterSpacing":-3,"fontSize":46,"lineHeight":56,"marginTop":0,"marginRight":0,"marginBottom":0,"marginLeft":0,"textAlign":"center"}); } __TamaguiNativeStyle6108();
+const __TamaguiNativeText = require('react-native').Text;
+const __TamaguiStableText6108 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6108._ ?? __TamaguiNativeStyle6108(), { "color": _theme["color11"]?.get() }], true, false);
+function __TamaguiNativeStyle6195() { return __TamaguiNativeStyle6195._ ?? (__TamaguiNativeStyle6195._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle6195();
+const __TamaguiStableText6195 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6195._ ?? __TamaguiNativeStyle6195(), { "color": _theme["color10"]?.get() }], true, false);
+function __TamaguiNativeStyle6346() { return __TamaguiNativeStyle6346._ ?? (__TamaguiNativeStyle6346._ = {"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderStyle":"solid","transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6346();
+const __TamaguiStableView6346 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6346._ ?? __TamaguiNativeStyle6346(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
+function __TamaguiNativeStyle6368() { return __TamaguiNativeStyle6368._ ?? (__TamaguiNativeStyle6368._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle6368();
+const __TamaguiStableText6368 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle6368._ ?? __TamaguiNativeStyle6368(), { "color": _theme["color"]?.get() }], true, false);
+function __TamaguiNativeStyle6493() { return __TamaguiNativeStyle6493._ ?? (__TamaguiNativeStyle6493._ = {"flexShrink":0,"borderTopWidth":0,"borderRightWidth":0,"borderBottomWidth":1,"borderLeftWidth":0,"flex":1,"height":0,"maxHeight":0,"borderStyle":"solid","transform":[{"translateY":-0.5}]}); } __TamaguiNativeStyle6493();
+const __TamaguiStableView6493 = require('@tamagui/core')._withStableStyle(__TamaguiNativeView, (_theme, expressions) => [__TamaguiNativeStyle6493._ ?? __TamaguiNativeStyle6493(), { "borderTopColor": _theme["background-focus"]?.get(), "borderRightColor": _theme["background-focus"]?.get(), "borderBottomColor": _theme["background-focus"]?.get(), "borderLeftColor": _theme["background-focus"]?.get() }], true, false);
+function __TamaguiNativeStyle7400() { return __TamaguiNativeStyle7400._ ?? (__TamaguiNativeStyle7400._ = {"flexDirection":"row","gap":8}); } __TamaguiNativeStyle7400();
+function __TamaguiNativeStyle7429() { return __TamaguiNativeStyle7429._ ?? (__TamaguiNativeStyle7429._ = {"fontFamily":"Inter","letterSpacing":0,"fontSize":15,"lineHeight":27,"textAlign":"center"}); } __TamaguiNativeStyle7429();
+const __TamaguiStableText7429 = require('@tamagui/core')._withStableStyle(__TamaguiNativeText, (_theme, expressions) => [__TamaguiNativeStyle7429._ ?? __TamaguiNativeStyle7429(), { "color": _theme["color"]?.get() }], true, false);"
 `;
 
 exports[`Package.json exports support > should recognize imports from path-specific exports during optimization > web-optimized-single 1`] = `
 "import "./_screen.css"
-const _cn15 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center";
-const _cn14 = "is_View _pos-relative _fd-row _gap-c-space-2";
-const _cn13 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894";
-const _cn12 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center";
-const _cn11 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894";
-const _cn10 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color10 _select-auto _ws-normal _text-center";
-const _cn1 = "is_H1 is_Text font_heading _select-auto _ws-normal _tt-f-transform1451 _ff-f-family _fw-f-weight-10 _ls-f-letterSpa779312653 _fs-f-size-10 _lh-f-lineHeigh3500568 _col-color12 _mt-0px _mr-0px _mb-0px _ml-0px _text-center";
-const _cn0 = "is_View _pos-relative _fd-column _gap-c-space-4";
-const _cn9 = "is_View _pos-relative _fd-row _gap-c-space-2";
-const _cn8 = "is_View _fd-row _pos-absolute _width-10037 _t-c-space-6 _gap-c-space-6 _justify-center _fwr-wrap _t-_sm_0px _pos-_sm_relative";
-const _cn7 = "is_View _pos-relative _fd-column _grow-1 _shrink-1 _fb-auto _justify-center _items-center _gap-c-space-8 _pt-c-space-4 _pr-c-space-4 _pb-c-space-4 _pl-c-space-4 _bg-background";
-const _cn6 = "is_View _pos-relative _fd-column _z-10";
-const _cn5 = "is_View _fd-column _pos-absolute _r-0px _t-0px _b-0px _items-center _justify-center _width-c-size-4 _pe-none";
-const _cn4 = "is_View _pos-relative _fd-column _z-10";
-const _cn3 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4";
-const _cn2 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4";
-const _cn = "is_View _pos-relative _fd-column _gap-c-space-4";
-import { Adapt, Anchor, Button, type FontSizeTokens, getFontSize, H1, Label, Paragraph, Select, type SelectProps, Separator, Sheet, toast, XStack, YStack } from '@my/ui';
-import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton';
-import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton';
-import { LinearGradient } from '@tamagui/linear-gradient';
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
-import React, { useState } from 'react';
-import { Platform } from 'react-native';
-import { useLink } from 'solito/navigation';
+import {
+  Adapt,
+  Anchor,
+  Button,
+  type FontSizeTokens,
+  getFontSize,
+  H1,
+  Label,
+  Paragraph,
+  Select,
+  type SelectProps,
+  Separator,
+  Sheet,
+  toast,
+  XStack,
+  YStack,
+} from '@my/ui'
+import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton'
+import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton'
+import { LinearGradient } from '@tamagui/linear-gradient'
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
+import React, { useState } from 'react'
+import { Platform } from 'react-native'
+import { useLink } from 'solito/navigation'
+
 export function SelectDemo() {
-  return <div className={_cn}>
-      <div className={_cn2}>
+  return (
+    <div className="is_View _fd-1155724988 _g-1012092611">
+      <div className="is_View _fd-1289797684 _w-132203642 _ai-1980109838 _g-1012092611"  >
         <Label htmlFor="select-demo-1" flex={1} minW={80}>
           Custom
         </Label>
         <SelectDemoItem id="select-demo-1" />
       </div>
 
-      <div className={_cn3}>
+      <div className="is_View _fd-1289797684 _w-132203642 _ai-1980109838 _g-1012092611"  >
         <Label htmlFor="select-demo-2" flex={1} minW={80}>
           Native
         </Label>
         <SelectDemoItem id="select-demo-2" native />
       </div>
-    </div>;
+    </div>
+  )
 }
-export function SelectDemoItem(props: SelectProps & {
-  trigger?: React.ReactNode;
-}) {
-  const [val, setVal] = React.useState('apple');
-  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000} {...props}>
-      {props?.trigger || <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
+
+export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode }) {
+  const [val, setVal] = React.useState('apple')
+
+  return (
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      zIndex={200000}
+      {...props}
+    >
+      {props?.trigger || (
+        <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
-        </Select.Trigger>}
+        </Select.Trigger>
+      )}
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay backgroundColor="$shadowColor" transition="lazy" enterStyle={{
-          opacity: 0
-        }} exitStyle={{
-          opacity: 0
-        }} />
+          </Sheet.Container>
+          <Sheet.Overlay
+            backgroundColor="shadow-color"
+            transition="lazy"
+            opacity="enter:0 exit:0"
+          />
         </Sheet>
       </Adapt>
 
       <Select.Content>
-        <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
-          <div className={_cn4}>
+        <Select.ScrollUpButton
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
+          <div className="is_View _fd-1155724988 _zi-1175933931">
             <ChevronUp size={20} />
           </div>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['$background', 'transparent']} />
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            colors={['background', 'transparent']}
+          />
         </Select.ScrollUpButton>
 
         <Select.Viewport
-      // to do animations:
-      // transition="quick"
-      // animateOnly={['transform', 'opacity']}
-      // enterStyle={{ o: 0, y: -10 }}
-      // exitStyle={{ o: 0, y: 10 }}
-      minW={200}>
+          // to do animations:
+          // transition="quick"
+          // animateOnly={['transform', 'opacity']}
+          // opacity="enter:0 exit:0"
+          // y="enter:-10px exit:10px"
+          minW={200}
+        >
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
-            {React.useMemo(() => items.map((item, i) => {
-            return <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
+            {React.useMemo(
+              () =>
+                items.map((item, i) => {
+                  return (
+                    <Select.Item
+                      index={i}
+                      key={item.name}
+                      value={item.name.toLowerCase()}
+                    >
                       <Select.ItemText>{item.name}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
-                    </Select.Item>;
-          }), [items])}
+                    </Select.Item>
+                  )
+                }),
+              [items]
+            )}
           </Select.Group>
           {/* Native gets an extra icon */}
-          {props.native && <div className={_cn5}>
-              <ChevronDown size={getFontSize(props.size as FontSizeTokens ?? '$true')} />
-            </div>}
+          {props.native && (
+            <div
+              className="is_View _fd-1155724988 _p-384527714 _r-1632656972 _t-874702747 _b-642571495 _ai-1980109838 _jc-658029924 _w-137381456 _pe-635873870"
+
+
+
+
+
+
+
+            >
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
+            </div>
+          )}
         </Select.Viewport>
 
-        <Select.ScrollDownButton items="center" justify="center" position="relative" width="100%" height="$3">
-          <div className={_cn6}>
+        <Select.ScrollDownButton
+          items="center"
+          justify="center"
+          position="relative"
+          width="100%"
+          height="3"
+        >
+          <div className="is_View _fd-1155724988 _zi-1175933931">
             <ChevronDown size={20} />
           </div>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['transparent', '$background']} />
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            position="absolute"
+            inset={0}
+            colors={['transparent', 'background']}
+          />
         </Select.ScrollDownButton>
       </Select.Content>
-    </Select>;
+    </Select>
+  )
 }
-const items = [{
-  name: 'Apple'
-}, {
-  name: 'Pear'
-}, {
-  name: 'Blackberry'
-}, {
-  name: 'Peach'
-}, {
-  name: 'Apricot'
-}, {
-  name: 'Melon'
-}, {
-  name: 'Honeydew'
-}, {
-  name: 'Starfruit'
-}, {
-  name: 'Blueberry'
-}, {
-  name: 'Raspberry'
-}, {
-  name: 'Strawberry'
-}, {
-  name: 'Mango'
-}, {
-  name: 'Pineapple'
-}, {
-  name: 'Lime'
-}, {
-  name: 'Lemon'
-}, {
-  name: 'Coconut'
-}, {
-  name: 'Guava'
-}, {
-  name: 'Papaya'
-}, {
-  name: 'Orange'
-}, {
-  name: 'Grape'
-}, {
-  name: 'Jackfruit'
-}, {
-  name: 'Durian'
-}];
-export function HomeScreen({
-  pagesMode = false
-}: {
-  pagesMode?: boolean;
-}) {
-  const linkTarget = pagesMode ? '/pages-example-user' : '/user';
+
+const items = [
+  { name: 'Apple' },
+  { name: 'Pear' },
+  { name: 'Blackberry' },
+  { name: 'Peach' },
+  { name: 'Apricot' },
+  { name: 'Melon' },
+  { name: 'Honeydew' },
+  { name: 'Starfruit' },
+  { name: 'Blueberry' },
+  { name: 'Raspberry' },
+  { name: 'Strawberry' },
+  { name: 'Mango' },
+  { name: 'Pineapple' },
+  { name: 'Lime' },
+  { name: 'Lemon' },
+  { name: 'Coconut' },
+  { name: 'Guava' },
+  { name: 'Papaya' },
+  { name: 'Orange' },
+  { name: 'Grape' },
+  { name: 'Jackfruit' },
+  { name: 'Durian' },
+]
+
+export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
+  const linkTarget = pagesMode ? '/pages-example-user' : '/user'
   const linkProps = useLink({
-    href: \`\${linkTarget}/nate\`
-  });
-  return <div className={_cn7}>
-      <div className={_cn8}>
-        {Platform.OS === 'web' && <>
+    href: \`\${linkTarget}/nate\`,
+  })
+
+  return (
+    <div className="is_View _fd-1155724988 _fg-169839737 _fs-1866857425 _fb-1102215147 _jc-658029924 _ai-1980109838 _g-1012092487 _pt-39185609 _pr-635101616 _pb-245633347 _pl-354517857 _bc-1288965051"     >
+      <div
+        className="is_View _fd-1289797684 _p-1814547269 _w-132203642 _t-1257708669 _g-1012092549 _jc-658029924 _fw-381719595"
+
+
+
+
+
+      >
+        {Platform.OS === 'web' && (
+          <>
             <SwitchRouterButton pagesMode={pagesMode} />
             <SwitchThemeButton />
-          </>}
+          </>
+        )}
       </div>
 
       <SelectDemo />
 
-      <div className={_cn9}>
-        <Button size="$3" iconAfter={<Button.Icon>
+      <div className="is_View _fd-1289797684 _g-1012092673">
+        <Button
+          size="3"
+          iconAfter={
+            <Button.Icon>
               <Activity />
-            </Button.Icon>}>
+            </Button.Icon>
+          }
+        >
           <Button.Text>Inverse</Button.Text>
         </Button>
       </div>
-      <div className={_cn0}>
-        <h1 className={_cn1}>
+      <div className="is_View _fd-1155724988 _g-1012092611">
+        <h1 className="is_H1 is_Text font_heading _us-1298715756 _ws-45919554 _tt-1698380096 _ff-1640205464 _fw-1469196224 _ls-1888220256 _fs-313015168 _lh-1415683744 _c-856716194 _mt-279610455 _mr-1468885570 _mb-1993857511 _ml-1118921597 _ta-628280461" >
           Welcome to Tamagui.
         </h1>
-        <p className={_cn10}>
+        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-393637825 _us-1298715756 _ws-45919554 _ta-628280461" >
           Here's a basic starter to show navigating from one screen to another.
         </p>
-        <div className={_cn11} />
-        <p className={_cn12}>
+        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433" />
+        <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">
           This screen uses the same code on Next.js and React Native.
         </p>
-        <div className={_cn13} />
+        <div className="is_Separator is_View _fs-1698630561 _bs-1746519034 _btw-1743474923 _brw-1478209636 _bbw-1723652447 _blw-1024325245 _fg-169839737 _fb-1102215147 _h-883471467 _mh-751572549 _bbs-452384145 _ty-885232850 _t-2131811775 _btc-462111959 _brc-167070178 _bbc-984892067 _blc-1251242433" />
       </div>
 
       <Button {...linkProps} theme={'dark'}>
@@ -1296,39 +1250,66 @@ export function HomeScreen({
       </Button>
 
       <SheetDemo />
-    </div>;
+    </div>
+  )
 }
+
 function SheetDemo() {
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState(0);
-  return <>
-      <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen(x => !x)} />
-      <Sheet modal transition="medium" open={open} onOpenChange={setOpen} snapPoints={[80]} position={position} onPositionChange={setPosition} dismissOnSnapToBottom>
-        <Sheet.Overlay bg="$shadow4" transition="lazy" enterStyle={{
-        opacity: 0
-      }} exitStyle={{
-        opacity: 0
-      }} />
-        <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
-          <div className={_cn14}>
-            <p className={_cn15}>Made by</p>
-            <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
+  const [open, setOpen] = useState(false)
+  const [position, setPosition] = useState(0)
+
+  return (
+    <>
+      <Button
+        size="6"
+        icon={open ? ChevronDown : ChevronUp}
+        circular
+        onPress={() => setOpen((x) => !x)}
+      />
+      <Sheet
+        modal
+        transition="medium"
+        open={open}
+        onOpenChange={setOpen}
+        snapPoints={[80]}
+        position={position}
+        onPositionChange={setPosition}
+        dismissOnSnapToBottom
+      >
+        <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
+        <Sheet.Handle bg="color8" />
+        <Sheet.Container items="center" justify="center" gap="10">
+          <Sheet.Background bg="color2" />
+          <div className="is_View _fd-1289797684 _g-1012092673">
+            <p className="is_Paragraph is_Text font_body _ff-1640205464 _fw-1379533702 _ls-870375212 _fs-183738666 _lh-106962612 _c-1572260098 _us-1298715756 _ws-45919554 _ta-628280461">Made by</p>
+            <Anchor color="blue10" href="https://twitter.com/natebirdman" target="_blank">
               @natebirdman,
             </Anchor>
-            <Anchor color="$blue10" href="https://github.com/tamagui/tamagui" target="_blank" rel="noreferrer">
+            <Anchor
+              color="blue10"
+              href="https://github.com/tamagui/tamagui"
+              target="_blank"
+              rel="noreferrer"
+            >
               give it a ⭐️
             </Anchor>
           </div>
 
-          <Button size="$6" circular icon={ChevronDown} onPress={() => {
-          setOpen(false);
-          toast('Sheet closed!', {
-            description: 'Just showing how toast works...'
-          });
-        }} />
-        </Sheet.Frame>
+          <Button
+            size="6"
+            circular
+            icon={ChevronDown}
+            onPress={() => {
+              setOpen(false)
+              toast('Sheet closed!', {
+                description: 'Just showing how toast works...',
+              })
+            }}
+          />
+        </Sheet.Container>
       </Sheet>
-    </>;
-}"
+    </>
+  )
+}
+"
 `;

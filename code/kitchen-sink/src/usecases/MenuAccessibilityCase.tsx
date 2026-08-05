@@ -1,7 +1,8 @@
 import { ChevronRight, FilePlus, Settings, Trash2 } from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu accessibility test case
@@ -17,35 +18,33 @@ export function MenuAccessibilityCase() {
   const [subMenuOpen, setSubMenuOpen] = React.useState(false)
 
   return (
-    <YStack padding="$4" gap="$4">
+    <YStack padding="4" gap="4">
       {/* focusable element before menu to test tab order */}
       <Button data-testid="before-button">Before</Button>
 
       <Menu placement="bottom-start">
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="$4">
-            Open Menu
-          </Button>
+          <Button data-testid="menu-trigger">Open Menu</Button>
         </Menu.Trigger>
 
         <Menu.Portal zIndex={100}>
           <Menu.Content
             data-testid="menu-content"
-            p="$2"
+            p="2"
             minW={200}
             borderWidth={1}
-            borderColor="$borderColor"
-            elevation="$3"
+            borderColor="border-color"
+            boxShadow="0 4px 12px shadow-color"
           >
             <Menu.Item
               data-testid="menu-item-1"
               key="item-1"
               textValue="Settings"
               style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-              focusStyle={{ bg: '$backgroundHover' }}
+              bg="focus:background-hover"
             >
               <Settings size={14} />
-              <Menu.ItemTitle marginLeft="$2">Settings</Menu.ItemTitle>
+              <Menu.ItemTitle marginLeft="2">Settings</Menu.ItemTitle>
             </Menu.Item>
 
             <Menu.Item
@@ -53,7 +52,7 @@ export function MenuAccessibilityCase() {
               key="item-2"
               textValue="Profile"
               style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-              focusStyle={{ bg: '$backgroundHover' }}
+              bg="focus:background-hover"
             >
               <Menu.ItemTitle>Profile</Menu.ItemTitle>
             </Menu.Item>
@@ -63,7 +62,7 @@ export function MenuAccessibilityCase() {
               key="item-3"
               textValue="Preferences"
               style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-              focusStyle={{ bg: '$backgroundHover' }}
+              bg="focus:background-hover"
             >
               <Menu.ItemTitle>Preferences</Menu.ItemTitle>
             </Menu.Item>
@@ -80,33 +79,33 @@ export function MenuAccessibilityCase() {
                 data-testid="submenu-trigger"
                 key="actions"
                 justify="space-between"
+                bg="focus:background-hover"
                 textValue="Actions"
                 style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-                focusStyle={{ bg: '$backgroundHover' }}
               >
                 <Menu.ItemTitle>Actions</Menu.ItemTitle>
-                <ChevronRight size={12} color="$color10" />
+                <ChevronRight size={12} color="color10" />
               </Menu.SubTrigger>
 
               <Menu.Portal zIndex={200}>
                 <Menu.SubContent
                   data-testid="submenu-content"
-                  elevation="$3"
+                  boxShadow="0 4px 12px shadow-color"
                   minW={160}
-                  bg="$background"
-                  p="$2"
+                  bg="background"
+                  p="2"
                   borderWidth={1}
-                  borderColor="$borderColor"
+                  borderColor="border-color"
                 >
                   <Menu.Item
                     data-testid="submenu-item-1"
                     key="create"
                     textValue="Create new"
                     style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-                    focusStyle={{ bg: '$backgroundHover' }}
+                    bg="focus:background-hover"
                   >
                     <FilePlus size={14} />
-                    <Menu.ItemTitle marginLeft="$2">Create new</Menu.ItemTitle>
+                    <Menu.ItemTitle marginLeft="2">Create new</Menu.ItemTitle>
                   </Menu.Item>
 
                   <Menu.Item
@@ -114,10 +113,10 @@ export function MenuAccessibilityCase() {
                     key="delete"
                     textValue="Delete all"
                     style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-                    focusStyle={{ bg: '$backgroundHover' }}
+                    bg="focus:background-hover"
                   >
                     <Trash2 size={14} />
-                    <Menu.ItemTitle marginLeft="$2">Delete all</Menu.ItemTitle>
+                    <Menu.ItemTitle marginLeft="2">Delete all</Menu.ItemTitle>
                   </Menu.Item>
                 </Menu.SubContent>
               </Menu.Portal>

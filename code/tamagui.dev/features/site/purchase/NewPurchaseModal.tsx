@@ -3,7 +3,6 @@ import { X } from '@tamagui/lucide-icons-2'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
-  Button,
   Dialog,
   H3,
   Paragraph,
@@ -20,6 +19,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
@@ -167,37 +167,36 @@ export function PurchaseModalContents() {
     pro: () => {
       return (
         <YStack>
-          <YStack $gtMd={{ gap: '$6' }} gap="$5">
+          <YStack gap="5 gtMd:6">
             <BigP mt={-10} text="center">
               We've put together tools that make starting and building a universal app as
               good as it gets.
             </BigP>
 
             <XStack
-              px="$4"
-              mx="$-4"
-              gap="$3"
+              px="4 gtMd:0px"
+              mx="-4"
+              gap="3"
               items="center"
               justify="center"
               flexWrap="wrap"
-              $gtMd={{ px: 0 }}
             >
               <PromoCards />
             </XStack>
 
             <Theme name="green">
-              <P size="$3" color="$color11" text="center" px="$8">
-                <Span fontFamily="$mono" color="$color8">
+              <P size="3" color="color11" text="center" px="8">
+                <Span fontFamily="mono" color="color8">
                   1&nbsp;year&nbsp;of&nbsp;updates
                 </Span>
                 {' · '}
-                <Span fontFamily="$mono">Unlimited&nbsp;team&nbsp;members</Span>
+                <Span fontFamily="mono">Unlimited&nbsp;team&nbsp;members</Span>
                 <br />
-                <Span fontFamily="$mono" color="$color8">
+                <Span fontFamily="mono" color="color8">
                   Private&nbsp;#takeout&nbsp;Discord
                 </Span>
                 {' · '}
-                <Span fontFamily="$mono">Lifetime&nbsp;code&nbsp;rights</Span>
+                <Span fontFamily="mono">Lifetime&nbsp;code&nbsp;rights</Span>
               </P>
             </Theme>
 
@@ -205,47 +204,42 @@ export function PurchaseModalContents() {
 
             {/* Support Tier Selection */}
             <YStack
-              gap="$4"
-              $gtMd={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
+              gap="4"
+              flexDirection="gtMd:row"
+              alignItems="gtMd:center"
+              justifyContent="gtMd:space-between"
             >
-              <YStack gap="$1" flexShrink={1} $gtMd={{ flex: 1 }}>
-                <Paragraph fontFamily="$mono" fontWeight="600" size="$5">
+              <YStack gap="1" flexShrink={1} flex="gtMd:1">
+                <Paragraph fontFamily="mono" fontWeight="600" size="5">
                   Support Level
                 </Paragraph>
-                <Paragraph size="$4" color="$color8">
+                <Paragraph size="4" color="color8">
                   {SUPPORT_TIERS[supportTier].description}
                 </Paragraph>
               </YStack>
 
               <XStack
-                borderRadius="$4"
+                borderRadius="4"
                 borderWidth={1}
-                borderColor="$color4"
+                borderColor="color4"
                 overflow="hidden"
                 flexShrink={0}
-                alignSelf="flex-start"
-                $gtMd={{ alignSelf: 'auto' }}
+                alignSelf="flex-start gtMd:auto"
               >
                 {(Object.keys(SUPPORT_TIERS) as SupportTier[]).map((tier) => (
                   <YStack
                     key={tier}
                     items="center"
-                    py="$2"
-                    px="$4"
-                    bg={supportTier === tier ? '$color3' : '$color1'}
-                    hoverStyle={{ bg: supportTier === tier ? '$color4' : '$color2' }}
-                    pressStyle={{ bg: '$color3' }}
+                    py="2"
+                    px="4"
+                    bg={`${supportTier === tier ? 'color3' : 'color1'} hover:${supportTier === tier ? 'color4' : 'color2'} press:color3`}
                     cursor="pointer"
                     onPress={() => setSupportTier(tier)}
                   >
-                    <Paragraph fontWeight="600" size="$3" mb={-3}>
+                    <Paragraph fontWeight="600" size="3" mb={-3}>
                       {SUPPORT_TIERS[tier].label}
                     </Paragraph>
-                    <Paragraph size="$2" color="$color9">
+                    <Paragraph size="2" color="color9">
                       {SUPPORT_TIERS[tier].priceLabel}
                     </Paragraph>
                   </YStack>
@@ -255,7 +249,7 @@ export function PurchaseModalContents() {
 
             <Separator />
 
-            <Paragraph size="$5" color="$color9">
+            <Paragraph size="5" color="color9">
               License covers one project: your web domain + iOS app + Android app. After
               the first year, continue receiving updates for $100/year (auto-subscribed).
             </Paragraph>
@@ -263,13 +257,13 @@ export function PurchaseModalContents() {
             {/* Enterprise Notice */}
             <Theme name="yellow">
               <XStack
-                bg="$color2"
-                rounded="$4"
+                bg="color2"
+                rounded="4"
                 borderWidth={0.5}
-                borderColor="$color5"
-                p="$3"
+                borderColor="color5"
+                p="3"
               >
-                <Paragraph size="$3" color="$color11">
+                <Paragraph size="3" color="color11">
                   For companies with over $1M in annual revenue,{' '}
                   <Link href="mailto:support@tamagui.dev">contact us</Link> for enterprise
                   pricing.
@@ -297,54 +291,43 @@ export function PurchaseModalContents() {
           }
         }}
       >
-        <Dialog.Adapt when="maxMd">
+        <Dialog.Adapt when="max-md">
           <Sheet modal dismissOnSnapToBottom transition="medium">
-            <Sheet.Frame bg="$color1" p={0} flex={1}>
+            <Sheet.Container p={0} flex={1}>
+              <Sheet.Background bg="color1" />
               <Sheet.ScrollView flex={1}>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
-            </Sheet.Frame>
-            <Sheet.Overlay
-              bg="$shadow4"
-              transition="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
-            />
+            </Sheet.Container>
+            <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
           </Sheet>
         </Dialog.Adapt>
 
         <Dialog.Portal zIndex={1_000_000}>
           <Dialog.Overlay
             backdropFilter="blur(35px)"
-            key="overlay"
             transition="quick"
-            bg="$shadow2"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            bg="shadow2"
+            opacity="enter:0 exit:0"
+            key="overlay"
           />
 
           <Dialog.Content
             bordered
             overflow="hidden"
-            elevate
-            key="content"
-            bg="$color1"
-            transition={[
-              'quick',
-              {
-                opacity: {
-                  overshootClamping: true,
-                },
-              },
-            ]}
-            enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-            exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+            bg="color1"
+            transition={['quick', { opacity: { overshootClamping: true } }]}
+            y="enter:-10px exit:10px"
+            opacity="enter:0 exit:0"
+            scale="enter:0.975 exit:0.975"
             width="90%"
             maxW={900}
             height="85%"
             maxH="calc(min(85vh, 800px))"
             minH={500}
             p={0}
+            elevate
+            key="content"
           >
             <YStack flex={1} flexBasis="auto" overflow="hidden">
               <Tabs
@@ -354,7 +337,7 @@ export function PurchaseModalContents() {
                 flexBasis="auto"
                 overflow="hidden"
                 defaultValue="pro"
-                size="$6"
+                size="6"
                 value={currentTab}
                 onValueChange={changeTab}
               >
@@ -381,7 +364,7 @@ export function PurchaseModalContents() {
                       overflow="hidden"
                     >
                       <ScrollView flex={1} flexBasis="auto">
-                        <YStack p="$4" gap="$4" $gtMd={{ p: '$8', gap: '$6' }}>
+                        <YStack p="4 gtMd:8" gap="4 gtMd:6">
                           {tabContents[currentTab]()}
                         </YStack>
                       </ScrollView>
@@ -393,37 +376,31 @@ export function PurchaseModalContents() {
               {/* Bottom */}
               <YStack
                 flexShrink={0}
-                p="$4"
-                gap="$2"
+                p="4"
+                gap="2"
                 borderTopWidth={0.5}
-                borderTopColor={'$color5'}
+                borderTopColor="color5"
               >
-                <YStack
-                  justify="center"
-                  items="center"
-                  gap="$4"
-                  $gtSm={{
-                    flexDirection: 'row',
-                  }}
-                >
+                <YStack justify="center" items="center" gap="4" flexDirection="gtSm:row">
                   <YStack
-                    gap="$2"
-                    width="100%"
-                    $gtXs={{ flex: 1, flexBasis: 'auto', width: '40%' }}
+                    gap="2"
+                    width="100% gtXs:40%"
+                    flex="gtXs:1"
+                    flexBasis="gtXs:auto"
                   >
                     {/* price breakdown */}
                     <YStack>
                       {/* original price - only show if there's any discount */}
                       {(store.activePromo || parityDeals) && (
-                        <XStack items="center" gap="$2" mb={-5}>
+                        <XStack items="center" gap="2" mb={-5}>
                           <Paragraph
-                            size="$3"
-                            color="$color8"
+                            size="3"
+                            color="color8"
                             textDecorationLine="line-through"
                           >
                             ${Intl.NumberFormat('en-US').format(V2_PRICE)}
                           </Paragraph>
-                          <Paragraph size="$2" color="$color8">
+                          <Paragraph size="2" color="color8">
                             original
                           </Paragraph>
                         </XStack>
@@ -431,10 +408,10 @@ export function PurchaseModalContents() {
 
                       {/* after beta discount */}
                       {store.activePromo && parityDeals && (
-                        <XStack items="center" gap="$2" mb={-5}>
+                        <XStack items="center" gap="2" mb={-5}>
                           <Paragraph
-                            size="$3"
-                            color={parityDeals ? '$color8' : '$color11'}
+                            size="3"
+                            color={`${parityDeals ? 'color8' : 'color11'}`}
                             textDecorationLine={parityDeals ? 'line-through' : 'none'}
                           >
                             $
@@ -442,7 +419,7 @@ export function PurchaseModalContents() {
                               calculatePromoPrice(V2_PRICE, store.activePromo)
                             )}
                           </Paragraph>
-                          <Paragraph size="$2" color="$color9">
+                          <Paragraph size="2" color="color9">
                             {store.activePromo.description}
                           </Paragraph>
                         </XStack>
@@ -450,8 +427,8 @@ export function PurchaseModalContents() {
 
                       {/* after parity discount (final price) */}
                       {parityDeals && (
-                        <XStack items="center" gap="$2">
-                          <Paragraph size="$3" color="$green10">
+                        <XStack items="center" gap="2">
+                          <Paragraph size="3" color="green10">
                             $
                             {Intl.NumberFormat('en-US').format(
                               Math.round(
@@ -460,7 +437,7 @@ export function PurchaseModalContents() {
                               )
                             )}
                           </Paragraph>
-                          <Paragraph size="$2" color="$green9">
+                          <Paragraph size="2" color="green9">
                             {parityDeals.flag} {parityDeals.discountPercentage}% parity
                           </Paragraph>
                         </XStack>
@@ -468,7 +445,12 @@ export function PurchaseModalContents() {
                     </YStack>
 
                     {/* final price display */}
-                    <H3 size="$9" $gtXs={{ size: '$11' }} letterSpacing={-2}>
+                    <H3
+                      size="9"
+                      fontSize="gtXs:11"
+                      lineHeight="gtXs:11"
+                      letterSpacing={-2}
+                    >
                       $
                       {Intl.NumberFormat('en-US').format(
                         parityDeals
@@ -480,25 +462,25 @@ export function PurchaseModalContents() {
                       )}
                     </H3>
 
-                    <Paragraph color="$color9" size="$3">
+                    <Paragraph color="color9" size="3">
                       One payment, one year updates, $100/year subscription
                     </Paragraph>
                   </YStack>
 
-                  <YStack gap="$2" width="100%" pt="$2" $gtXs={{ width: '42%', pt: 0 }}>
+                  <YStack gap="2" width="100% gtXs:42%" pt="2 gtXs:0px">
                     {parityDeals && (
                       <Theme name="green">
                         <XStack
-                          mb="$2"
-                          bg="$color3"
-                          rounded="$4"
+                          mb="2"
+                          bg="color3"
+                          rounded="4"
                           borderWidth={0.5}
-                          borderColor="$color8"
-                          p="$2"
+                          borderColor="color8"
+                          p="2"
                         >
                           <Paragraph
-                            size="$3"
-                            color="$color11"
+                            size="3"
+                            color="color11"
                             style={{ textWrap: 'balance' }}
                           >
                             {parityDeals.flag} {parityDeals.discountPercentage}% parity
@@ -510,23 +492,23 @@ export function PurchaseModalContents() {
                     {hasSubscribedBefore && (
                       <Theme name="yellow">
                         <XStack
-                          mb="$2"
-                          bg="$color3"
-                          rounded="$4"
+                          mb="2"
+                          bg="color3"
+                          rounded="4"
                           borderWidth={0.5}
-                          borderColor="$color8"
-                          p="$2"
+                          borderColor="color8"
+                          p="2"
                         >
                           <Paragraph
-                            size="$3"
-                            color="$color11"
+                            size="3"
+                            color="color11"
                             style={{ textWrap: 'balance' }}
                           >
                             You have subscribed before so you are eligible for a 30%
                             discount.
                             <br />
                             Use code{' '}
-                            <Text fontWeight="bold" fontFamily="$mono" color="$color12">
+                            <Text fontWeight="bold" fontFamily="mono" color="color12">
                               {subscriptionStatus.couponCodes.previouslySubscribed}
                             </Text>{' '}
                             at checkout for 30% off
@@ -540,34 +522,28 @@ export function PurchaseModalContents() {
                         {isProcessing ? 'Processing...' : 'Checkout'}
                       </PurchaseButton>
                     </Theme>
-                    <XStack justify="space-between" gap="$4" items="center" mb="$2">
-                      <XStack items="center" gap="$2">
+                    <XStack justify="space-between" gap="4" items="center" mb="2">
+                      <XStack items="center" gap="2">
                         <SizableText
-                          color="$color10"
+                          color="color10 hover:color11"
                           cursor="pointer"
                           onPress={() => {
                             takeoutStore.showProAgreement = true
                           }}
                           style={{ textDecorationLine: 'underline' }}
-                          hoverStyle={{
-                            color: '$color11',
-                          }}
-                          size="$2"
+                          size="2"
                         >
                           License
                         </SizableText>
 
                         <SizableText
-                          color="$color10"
+                          color="color10 hover:color11"
                           cursor="pointer"
                           onPress={() => {
                             takeoutStore.showProPolicies = true
                           }}
                           style={{ textDecorationLine: 'underline' }}
-                          hoverStyle={{
-                            color: '$color11',
-                          }}
-                          size="$2"
+                          size="2"
                         >
                           Policies
                         </SizableText>
@@ -580,7 +556,7 @@ export function PurchaseModalContents() {
             </YStack>
             <Unspaced>
               <Dialog.Close asChild>
-                <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+                <Button position="absolute" t="2" r="2" size="3" circular icon={X} />
               </Dialog.Close>
             </Unspaced>
           </Dialog.Content>
@@ -619,16 +595,10 @@ const AnimatedYStack = styled(YStack, {
   transition: '100ms',
   variants: {
     direction: {
-      ':number': (direction) => ({
-        enterStyle: {
-          x: direction > 0 ? -10 : 10,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: direction < 0 ? -10 : 10,
-          opacity: 0,
-        },
+      number: (direction) => ({
+        x: `enter:${direction > 0 ? -10 : 10}px exit:${direction < 0 ? -10 : 10}px`,
+        opacity: 'enter:0 exit:0',
+        zIndex: 'exit:0',
       }),
     },
   } as const,
@@ -643,42 +613,43 @@ function Tab({
   return (
     <Tabs.Tab
       group="takeoutBody"
-      unstyled
       items="center"
       justify="center"
       overflow="hidden"
-      py="$1"
+      py="1"
       height={60}
       cursor="pointer"
       borderBottomWidth={1}
       borderBottomColor="transparent"
       {...(!isActive && {
-        bg: '$color2',
+        bg: 'color2',
       })}
       {...props}
       value={props.value as string}
     >
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         pointerEvents="none"
         z={-1}
         {...(isActive && {
-          bg: '$color1',
+          bg: 'color1',
         })}
         {...(!isActive && {
-          bg: '$color1',
+          bg: 'color1',
           opacity: 0.25,
-          '$group-takeoutBody-hover': {
+          'group-takeoutBody-hover': {
             opacity: 0.33,
           },
         })}
       />
       <Paragraph
-        fontFamily="$mono"
-        size="$6"
-        $gtMd={{ size: '$7' }}
-        color={isActive ? '$color12' : '$color10'}
+        fontFamily="mono"
+        fontSize="gtMd:7"
+        lineHeight="gtMd:7"
+        color={`${isActive ? 'color12' : 'color10'}`}
         fontWeight={isActive ? 'bold' : 'normal'}
+        size="6"
       >
         {children}
       </Paragraph>

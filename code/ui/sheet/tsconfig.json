@@ -18,9 +18,6 @@
       "path": "../../core/core"
     },
     {
-      "path": "../../core/create-context"
-    },
-    {
       "path": "../../core/helpers"
     },
     {

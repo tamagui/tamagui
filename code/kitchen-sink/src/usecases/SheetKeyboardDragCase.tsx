@@ -62,36 +62,36 @@ export function SheetKeyboardDragCase() {
   }, [])
 
   return (
-    <YStack padding="$4" gap="$4" testID="sheet-keyboard-drag-screen">
-      <Text testID="sheet-keyboard-drag-title" fontSize="$5" fontWeight="bold">
+    <YStack padding="4" gap="4" testID="sheet-keyboard-drag-screen">
+      <Text testID="sheet-keyboard-drag-title" fontSize="5" fontWeight="bold">
         Sheet + Keyboard Drag Test
       </Text>
 
-      <XStack gap="$3">
+      <XStack gap="3">
         <Text
           testID="sheet-keyboard-drag-rngh-status"
-          fontSize="$2"
-          color={rnghEnabled ? '$green10' : '$red10'}
+          fontSize="2"
+          color={`${rnghEnabled ? 'green10' : 'red10'}`}
           fontWeight="bold"
         >
           RNGH: {rnghEnabled ? '✓' : '✗'}
         </Text>
         <Text
           testID="sheet-keyboard-drag-kbc-status"
-          fontSize="$2"
-          color={kbcEnabled ? '$green10' : '$yellow10'}
+          fontSize="2"
+          color={`${kbcEnabled ? 'green10' : 'yellow10'}`}
           fontWeight="bold"
         >
           KBC: {kbcEnabled ? '✓' : '○'}
         </Text>
       </XStack>
 
-      <Text testID="sheet-keyboard-drag-instructions" fontSize="$3" color="$gray11">
+      <Text testID="sheet-keyboard-drag-instructions" fontSize="3" color="gray11">
         Test keyboard + sheet interaction: tap input to show keyboard, drag sheet while
         keyboard is open.
       </Text>
 
-      <YStack flexDirection="row" gap="$2">
+      <YStack flexDirection="row" gap="2">
         <Button
           testID="sheet-keyboard-drag-trigger"
           onPress={() => setOpen(true)}
@@ -118,7 +118,7 @@ export function SheetKeyboardDragCase() {
         Reset
       </Button>
 
-      <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
+      <YStack gap="2" padding="3" bg="background-hover" borderRadius="2">
         <Text testID="sheet-keyboard-drag-position">Sheet position: {position}</Text>
         <Text testID="sheet-keyboard-drag-kb-height">
           Keyboard height: {keyboardHeight}
@@ -131,11 +131,11 @@ export function SheetKeyboardDragCase() {
         </Text>
       </YStack>
 
-      <YStack gap="$1" padding="$2" bg="$blue3" borderRadius="$2">
-        <Text fontSize="$2" fontWeight="bold">
+      <YStack gap="1" padding="2" bg="blue3" borderRadius="2">
+        <Text fontSize="2" fontWeight="bold">
           Expected behavior:
         </Text>
-        <Text fontSize="$2">
+        <Text fontSize="2">
           1. Tap input → keyboard shows → sheet moves up{'\n'}
           2. Drag sheet down → keyboard dismisses FIRST{'\n'}
           3. Tap outside input → keyboard hides → sheet restores
@@ -161,34 +161,33 @@ export function SheetKeyboardDragCase() {
         <Sheet.Overlay
           testID="sheet-keyboard-drag-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
         <Sheet.Handle testID="sheet-keyboard-drag-handle" />
-        <Sheet.Frame testID="sheet-keyboard-drag-frame">
+        <Sheet.Container testID="sheet-keyboard-drag-frame">
+          <Sheet.Background />
           <Sheet.ScrollView
             keyboardShouldPersistTaps="handled"
             keyboardDismissMode="interactive"
           >
-            <YStack gap="$4" padding="$4">
+            <YStack gap="4" padding="4">
               <Text
                 testID="sheet-keyboard-drag-sheet-title"
-                fontSize="$5"
+                fontSize="5"
                 fontWeight="bold"
               >
                 Keyboard Test Sheet
               </Text>
 
-              <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
-                <Text fontSize="$2">Position: {position}</Text>
-                <Text fontSize="$2">KB Height: {keyboardHeight}</Text>
-                <Text fontSize="$2">KB Visible: {keyboardVisible ? 'yes' : 'no'}</Text>
+              <YStack gap="2" padding="3" bg="background-hover" borderRadius="2">
+                <Text fontSize="2">Position: {position}</Text>
+                <Text fontSize="2">KB Height: {keyboardHeight}</Text>
+                <Text fontSize="2">KB Visible: {keyboardVisible ? 'yes' : 'no'}</Text>
               </YStack>
 
-              <YStack gap="$2">
-                <Text fontSize="$3" fontWeight="bold">
+              <YStack gap="2">
+                <Text fontSize="3" fontWeight="bold">
                   Test Input (tap to show keyboard):
                 </Text>
                 <Input
@@ -201,8 +200,8 @@ export function SheetKeyboardDragCase() {
                 />
               </YStack>
 
-              <YStack gap="$2">
-                <Text fontSize="$3" fontWeight="bold">
+              <YStack gap="2">
+                <Text fontSize="3" fontWeight="bold">
                   Second Input:
                 </Text>
                 <Input
@@ -230,20 +229,20 @@ export function SheetKeyboardDragCase() {
               {/* spacer for testing scroll + keyboard */}
               <YStack
                 height={300}
-                bg="$gray3"
-                borderRadius="$2"
-                padding="$4"
+                bg="gray3"
+                borderRadius="2"
+                padding="4"
                 justifyContent="center"
                 alignItems="center"
               >
-                <Text color="$gray11">Spacer area</Text>
-                <Text color="$gray11" fontSize="$2">
+                <Text color="gray11">Spacer area</Text>
+                <Text color="gray11" fontSize="2">
                   Drag here to test sheet drag
                 </Text>
               </YStack>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
 
       {/* ActionSheet for comparison */}
@@ -260,21 +259,21 @@ export function SheetKeyboardDragCase() {
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="interactive"
         >
-          <YStack gap="$4" padding="$4">
-            <Text fontSize="$5" fontWeight="bold">
+          <YStack gap="4" padding="4">
+            <Text fontSize="5" fontWeight="bold">
               ActionSheet (Reference)
             </Text>
-            <Text fontSize="$3" color="$gray11">
+            <Text fontSize="3" color="gray11">
               Compare keyboard + drag behavior
             </Text>
 
-            <YStack gap="$2" padding="$3" bg="$backgroundHover" borderRadius="$2">
-              <Text fontSize="$2">KB Height: {keyboardHeight}</Text>
-              <Text fontSize="$2">KB Visible: {keyboardVisible ? 'yes' : 'no'}</Text>
+            <YStack gap="2" padding="3" bg="background-hover" borderRadius="2">
+              <Text fontSize="2">KB Height: {keyboardHeight}</Text>
+              <Text fontSize="2">KB Visible: {keyboardVisible ? 'yes' : 'no'}</Text>
             </YStack>
 
-            <YStack gap="$2">
-              <Text fontSize="$3" fontWeight="bold">
+            <YStack gap="2">
+              <Text fontSize="3" fontWeight="bold">
                 Test Input (tap to show keyboard):
               </Text>
               <Input
@@ -284,8 +283,8 @@ export function SheetKeyboardDragCase() {
               />
             </YStack>
 
-            <YStack gap="$2">
-              <Text fontSize="$3" fontWeight="bold">
+            <YStack gap="2">
+              <Text fontSize="3" fontWeight="bold">
                 Second Input:
               </Text>
               <Input
@@ -309,14 +308,14 @@ export function SheetKeyboardDragCase() {
             {/* spacer for testing scroll + keyboard */}
             <YStack
               height={300}
-              bg="$gray3"
-              borderRadius="$2"
-              padding="$4"
+              bg="gray3"
+              borderRadius="2"
+              padding="4"
               justifyContent="center"
               alignItems="center"
             >
-              <Text color="$gray11">Spacer area</Text>
-              <Text color="$gray11" fontSize="$2">
+              <Text color="gray11">Spacer area</Text>
+              <Text color="gray11" fontSize="2">
                 Drag here to test sheet drag
               </Text>
             </YStack>

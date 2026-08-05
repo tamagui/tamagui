@@ -23,7 +23,7 @@ export const Ruler = ({
           position="absolute"
           width={orientation === 'horizontal' ? max : undefined}
           height={orientation === 'vertical' ? max : undefined}
-          borderColor="$color6"
+          borderColor="color6"
           borderBottomWidth={orientation === 'horizontal' ? 1 : undefined}
           borderLeftWidth={orientation === 'vertical' ? 1 : undefined}
         />
@@ -65,15 +65,7 @@ export const RulerLine = ({
   const size = prominent ? 12 : 5
   return (
     <YStack
-      bg={
-        disableColorDiff
-          ? '$color6'
-          : active
-            ? prominent
-              ? '$color11'
-              : '$color10'
-            : '$color6'
-      }
+      bg={`${disableColorDiff ? 'color6' : active ? (prominent ? 'color11' : 'color10') : 'color6'}`}
       width={orientation === 'horizontal' ? 1 : size}
       height={orientation === 'vertical' ? 1 : size}
     />

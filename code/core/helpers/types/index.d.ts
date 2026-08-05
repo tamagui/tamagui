@@ -3,6 +3,7 @@ export * from './clamp';
 export * from './composeEventHandlers';
 export * from './types';
 export * from './shouldRenderNativePlatform';
+export * from './tokenCategories';
 export * from './validStyleProps';
 export * from './withStaticProperties';
 export * from './webOnlyStyleProps';

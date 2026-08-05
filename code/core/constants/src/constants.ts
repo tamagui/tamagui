@@ -9,8 +9,6 @@ export const isBrowser: boolean =
 
 export const isServer: boolean = isWeb && !isBrowser
 export const isClient: boolean = isWeb && isBrowser
-/** @deprecated use isBrowser instead */
-export const isWindowDefined: boolean = isBrowser
 
 export const useIsomorphicLayoutEffect: typeof useEffect = isServer
   ? useEffect
@@ -24,7 +22,7 @@ export const isWebTouchable: boolean =
 
 export const isNativeDesktop: boolean = false
 export const isTouchable: boolean = !isWeb || isWebTouchable
-// set :boolean to avoid inferring type to false
+// annotate as boolean to avoid inferring the type as false
 // On web, isAndroid/isIos are always false in production.
 // TEST_NATIVE_PLATFORM is only set by the test runner (vitest) to simulate native
 // environments (e.g. androidtv, tvos) from a web/jsdom test context.

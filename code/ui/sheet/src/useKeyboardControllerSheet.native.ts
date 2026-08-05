@@ -97,10 +97,15 @@ export function useKeyboardControllerSheet(
     }
   }, [enabled, keyboardControllerEnabled])
 
-  // fallback to basic Keyboard API when keyboard-controller not available
+  // basic Keyboard API listeners, always on: keyboard-controller's events only
+  // fire when the app mounts its KeyboardProvider, and `enabled` above only
+  // proves the module is linked. an app (or the detox harness, which launches
+  // with disableKeyboardController) that skips the provider would otherwise get
+  // silently dead keyboard tracking - the sheet never moves and the scroll
+  // occlusion padding never applies. RN's Keyboard events always fire, so they
+  // are the baseline; when both fire the extra setState is a same-value no-op.
   useEffect(() => {
     if (!enabled) return
-    if (keyboardControllerEnabled) return
 
     const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
     const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'

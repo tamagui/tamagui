@@ -1,5 +1,6 @@
 {
   "name": "tamagui-build-test-js-main-package",
+  "private": true,
   "version": "2.0.0-rc.0-1769885482630",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",

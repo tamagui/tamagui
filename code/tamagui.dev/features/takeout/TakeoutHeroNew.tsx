@@ -2,7 +2,6 @@ import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, Copy, ExternalLink } from '@tamagui/lucide-icons-2'
 import { Suspense, lazy } from 'react'
 import {
-  Button,
   Paragraph,
   SizableText,
   Span,
@@ -12,6 +11,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { ButtonLink, Link } from '~/components/Link'
@@ -25,25 +25,16 @@ const TakeoutBox3D = lazy(() => import('./TakeoutBox3D'))
 
 // Prominent command box like in the reference image - centered under subtitle
 const CommandBoxLarge = styled(XStack, {
-  rounded: '$10',
-  px: '$6',
-  py: '$4',
-  bg: '$color3',
+  rounded: '10',
+  px: '6',
+  py: '4',
+  bg: 'color3 hover:color3 press:color4',
   items: 'center',
   justify: 'center',
-  gap: '$3',
+  gap: '3',
   cursor: 'pointer',
   borderWidth: 0.5,
-  borderColor: '$color4',
-
-  hoverStyle: {
-    bg: '$color3',
-    borderColor: '$color6',
-  },
-
-  pressStyle: {
-    bg: '$color4',
-  },
+  borderColor: 'color4 hover:color6',
 })
 
 const INSTALL_COMMAND = 'bunx create-takeout@latest'
@@ -55,29 +46,20 @@ const PromoBadgeContainer = styled(XStack, {
   l: '50%',
   x: '-50%',
   z: 20,
-  rounded: '$10',
-  px: '$4',
-  py: '$2',
+  rounded: '10',
+  px: '4',
+  py: '2',
   items: 'center',
   justify: 'center',
-  gap: '$2',
+  gap: '2',
   cursor: 'pointer',
   transformOrigin: 'center',
   borderWidth: 0.5,
-
-  hoverStyle: {
-    borderColor: '$color6',
-  },
-
-  pressStyle: {
-    scale: 0.98,
-    opacity: 0.9,
-  },
-
+  borderColor: 'hover:color6',
+  scale: 'press:0.98',
+  opacity: 'press:0.9',
   // mobile: hidden for space
-  $maxMd: {
-    display: 'none',
-  },
+  display: 'max-md:none',
 })
 
 // Prominent centered install command (like in reference image)
@@ -86,10 +68,10 @@ function InstallCommand() {
 
   return (
     <CommandBoxLarge onPress={onCopy}>
-      <Paragraph fontFamily="$mono" fontSize={14} color="$color10">
+      <Paragraph fontFamily="mono" fontSize={14} color="color10">
         $
       </Paragraph>
-      <Paragraph fontFamily="$mono" fontSize={14} color="$color12">
+      <Paragraph fontFamily="mono" fontSize={14} color="color12">
         {INSTALL_COMMAND}
       </Paragraph>
       {hasCopied ? (
@@ -109,19 +91,19 @@ export function TakeoutHeroNew({
   activePromo?: PromoConfig | null
 }) {
   return (
-    <YStack items="center" gap="$8" pt="$10" pb="$8" px="$4" position="relative">
+    <YStack items="center" gap="8" pt="10" pb="8" px="4" position="relative">
       {/* Promo badge - floating pill at top center, opens same modal as buy button */}
       {activePromo && onBuyPress && (
         <Theme name={activePromo.theme || 'green'}>
           <PromoBadgeContainer
             onPress={onBuyPress}
-            bg="$color3"
-            borderColor="$color5"
+            bg="color3"
+            borderColor="color5"
             style={{
               background: 'linear-gradient(180deg, var(--color2) 0%, var(--color1) 100%)',
             }}
           >
-            <Paragraph fontFamily="$mono" size="$4" color="$color11">
+            <Paragraph fontFamily="mono" color="color11" size="4">
               <Strong>{activePromo.label}</Strong> <Span>{activePromo.description}</Span>
             </Paragraph>
           </PromoBadgeContainer>
@@ -130,16 +112,16 @@ export function TakeoutHeroNew({
 
       {/* Buy buttons */}
       {onBuyPress && (
-        <XStack gap="$3" position="absolute" items="center" t={30} r="2%" z={10}>
+        <XStack gap="3" position="absolute" items="center" t={30} r="2%" z={10}>
           {/* <ButtonLink
             href="https://github.com/tamagui/takeout-free"
             target="_blank"
-            size="$2"
+            size="2"
           >
-            <SizableText fontFamily="$mono">Free</SizableText>
+            <SizableText fontFamily="mono">Free</SizableText>
             <ExternalLink size={12} opacity={0.5} />
           </ButtonLink> */}
-          <PurchaseButton onPress={onBuyPress} size="$5" theme="accent">
+          <PurchaseButton onPress={onBuyPress} size="5" theme="accent">
             Pro
           </PurchaseButton>
         </XStack>
@@ -149,11 +131,11 @@ export function TakeoutHeroNew({
       <YStack
         position="absolute"
         pointerEvents="none"
-        t={260}
-        r={20}
+        t="260px sm:220px"
+        r="20px sm:-100px"
         width={400}
         height={400}
-        $sm={{ scale: 0.6, t: 220, r: -100 }}
+        scale="sm:0.6"
         z={100}
       >
         <Suspense fallback={null}>
@@ -163,14 +145,14 @@ export function TakeoutHeroNew({
         </Suspense>
       </YStack>
 
-      <YStack gap="$6" items="center" maxW={800} width="100%" mt="$4">
+      <YStack gap="6" items="center" maxW={800} width="100%" mt="4">
         {/* Main headline */}
         <TakeoutLogo />
 
         {/* Description under logo */}
         <>
-          <YStack gap="$3" maxW={720} mt={-20}>
-            <SubTitle size="$8" text="center" $sm={{ size: '$6' }}>
+          <YStack gap="3" maxW={720} mt={-20}>
+            <SubTitle size="8" text="center" fontSize="sm:6" lineHeight="sm:6">
               Takeout makes React Native + web as well-structured, fast, and simple as
               possible, and funds the OSS development of Tamagui.
             </SubTitle>
@@ -181,19 +163,17 @@ export function TakeoutHeroNew({
         <InstallCommand />
 
         {/* CTA buttons */}
-        <XStack gap="$3" flexWrap="wrap" items="center" justify="center">
+        <XStack gap="3" flexWrap="wrap" items="center" justify="center">
           <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
             <ThemeTintAlt>
               <Button
-                size="$4"
-                bg="$color5"
+                size="4"
+                bg="color5 hover:color6 press:color7"
                 borderWidth={0.5}
-                borderColor="$color7"
+                borderColor="color7 hover:color8"
                 cursor="pointer"
-                hoverStyle={{ bg: '$color6', borderColor: '$color8' }}
-                pressStyle={{ bg: '$color7' }}
               >
-                <Button.Text fontFamily="$mono" color="$color12">
+                <Button.Text fontFamily="mono" color="color12">
                   Docs
                 </Button.Text>
               </Button>
@@ -201,8 +181,8 @@ export function TakeoutHeroNew({
           </Link>
 
           <Link href="https://takeout.tamagui.dev" target="_blank">
-            <Button size="$4" theme="accent">
-              <Button.Text fontFamily="$mono">Demo (web)</Button.Text>
+            <Button size="4" theme="accent">
+              <Button.Text fontFamily="mono">Demo (web)</Button.Text>
             </Button>
           </Link>
         </XStack>

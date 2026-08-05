@@ -68,7 +68,6 @@ export function ThemeDebug({
                 isNew: themeState.isNew,
                 themeProps: {
                   name: themeProps.name,
-                  componentName: themeProps.componentName,
                   reset: themeProps.reset,
                 },
                 parentState: {

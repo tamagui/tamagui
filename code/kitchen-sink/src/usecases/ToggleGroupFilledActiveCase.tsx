@@ -26,7 +26,7 @@ export function ToggleGroupFilledActiveCase() {
   const [value, setValue] = React.useState('a')
 
   return (
-    <YStack p="$4" gap="$4">
+    <YStack p="4" gap="4">
       <ToggleGroup
         id="tg-filled"
         type="single"

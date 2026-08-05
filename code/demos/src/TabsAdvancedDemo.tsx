@@ -1,15 +1,8 @@
 import React from 'react'
 import type { ViewProps, TabLayout, TabsTabProps } from 'tamagui'
-import {
-  AnimatePresence,
-  Button,
-  H5,
-  SizableText,
-  Tabs,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { AnimatePresence, H5, SizableText, XStack, YStack, styled } from 'tamagui'
+import { Button } from './Button'
+import { Tabs } from './ControlSkins'
 
 const demos = ['background', 'underline'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -24,15 +17,8 @@ export const TabsAdvancedDemo = () => {
     <>
       {demo === 'underline' ? <TabsAdvancedUnderline /> : <TabsAdvancedBackground />}
 
-      <XStack
-        items="center"
-        gap="$4"
-        position="absolute"
-        b="$3"
-        l="$4"
-        $xxs={{ display: 'none' }}
-      >
-        <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+      <XStack items="center" gap="4" position="absolute" b="3" l="4" display="xxs:none">
+        <Button size="3" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
       </XStack>
@@ -89,18 +75,18 @@ const TabsAdvancedBackground = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$4"
-      p="$2"
+      size="4"
+      p="2"
       height={150}
       flexDirection="column"
+      bg="background"
+      rounded="4"
       activationMode="manual"
-      bg="$background"
-      rounded="$4"
     >
       <AnimatePresence>
         {intentAt && (
           <TabsRovingIndicator
-            rounded="$4"
+            rounded="4"
             width={intentAt.width}
             height={intentAt.height}
             x={intentAt.x}
@@ -112,7 +98,7 @@ const TabsAdvancedBackground = () => {
       <AnimatePresence>
         {activeAt && (
           <TabsRovingIndicator
-            rounded="$4"
+            rounded="4"
             theme="accent"
             width={activeAt.width}
             height={activeAt.height}
@@ -126,28 +112,25 @@ const TabsAdvancedBackground = () => {
         <Tabs.List
           loop={false}
           aria-label="Manage your account"
-          gap="$2"
+          gap="2"
           backgroundColor="transparent"
         >
           <Tabs.Tab
-            unstyled
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab1"
             onInteraction={handleOnInteraction}
           >
             <SizableText>Profile</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            unstyled
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab2"
             onInteraction={handleOnInteraction}
           >
             <SizableText>Connections</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            unstyled
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab3"
             onInteraction={handleOnInteraction}
           >
@@ -156,7 +139,7 @@ const TabsAdvancedBackground = () => {
         </Tabs.List>
       </YStack>
 
-      <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
+      <AnimatePresence mode="wait" custom={{ direction }} initial={false}>
         <AnimatedYStack key={currentTab}>
           <Tabs.Content value={currentTab} forceMount flex={1} justify="center">
             <H5 text="center">{currentTab}</H5>
@@ -216,19 +199,19 @@ const TabsAdvancedUnderline = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$4"
+      size="4"
       height={150}
       flexDirection="column"
+      bg="background"
+      rounded="4"
       activationMode="manual"
-      bg="$background"
-      rounded="$4"
     >
       <YStack position="relative">
         <AnimatePresence>
           {intentAt && (
             <TabsRovingIndicator
               width={intentAt.width}
-              height="$0.5"
+              height="0-5"
               x={intentAt.x}
               b={0}
             />
@@ -240,7 +223,7 @@ const TabsAdvancedUnderline = () => {
               theme="accent"
               active
               width={activeAt.width}
-              height="$0.5"
+              height="0-5"
               x={activeAt.x}
               b={0}
             />
@@ -251,14 +234,13 @@ const TabsAdvancedUnderline = () => {
           aria-label="Manage your account"
           borderBottomLeftRadius={0}
           borderBottomRightRadius={0}
-          paddingBottom="$1.5"
-          borderColor="$color3"
-          borderBottomWidth="$0.5"
+          paddingBottom="1-5"
+          borderColor="color3"
+          borderBottomWidth="0-5"
           backgroundColor="transparent"
         >
           <Tabs.Tab
-            unstyled
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab1"
             onInteraction={handleOnInteraction}
           >
@@ -267,8 +249,7 @@ const TabsAdvancedUnderline = () => {
             </SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            unstyled
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab2"
             onInteraction={handleOnInteraction}
           >
@@ -277,8 +258,7 @@ const TabsAdvancedUnderline = () => {
             </SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            unstyled
-            paddingHorizontal="$3"
+            paddingHorizontal="3"
             value="tab3"
             onInteraction={handleOnInteraction}
           >
@@ -310,19 +290,10 @@ const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & ViewPr
   return (
     <YStack
       position="absolute"
-      backgroundColor="$color5"
-      opacity={0.7}
+      backgroundColor="color5"
+      opacity="0.7 enter:0 exit:0"
       transition="100ms"
-      enterStyle={{
-        opacity: 0,
-      }}
-      exitStyle={{
-        opacity: 0,
-      }}
-      {...(active && {
-        backgroundColor: '$color5',
-        opacity: 0.6,
-      })}
+      {...(active && { backgroundColor: 'color5', opacity: 0.6 })}
       {...props}
     />
   )
@@ -337,16 +308,10 @@ const AnimatedYStack = styled(YStack, {
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     direction: {
-      ':number': (direction) => ({
-        enterStyle: {
-          x: direction > 0 ? -25 : 25,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: direction < 0 ? -25 : 25,
-          opacity: 0,
-        },
+      number: (direction) => ({
+        x: `enter:${direction > 0 ? -25 : 25}px exit:${direction < 0 ? -25 : 25}px`,
+        opacity: 'enter:0 exit:0',
+        zIndex: 'exit:0',
       }),
     },
   } as const,

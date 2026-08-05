@@ -24,7 +24,7 @@ yarn add tamagui @tamagui/config
 Create a `tamagui.config.ts` file in your project root:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v5'
+import { defaultConfig } from '@tamagui/config/v6'
 import { createTamagui } from 'tamagui'
 
 const tamaguiConfig = createTamagui(defaultConfig)
@@ -101,8 +101,8 @@ import { Button, Text, YStack } from 'tamagui'
 
 export default function Home() {
   return (
-    <YStack f={1} jc="center" ai="center" p="$4" gap="$4">
-      <Text fontSize="$6">Welcome to Tamagui with One!</Text>
+    <YStack f={1} jc="center" ai="center" p="4" gap="4">
+      <Text fontSize="6">Welcome to Tamagui with One!</Text>
       <Button>Click me</Button>
     </YStack>
   )

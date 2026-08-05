@@ -4,6 +4,7 @@ import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { GroupContext } from '../contexts/GroupContext'
 import { useSplitStyles } from '../helpers/getSplitStyles'
+import { subscribeToSafeArea } from '../helpers/resolveSafeAreaVariable'
 import { subscribeToContextGroup } from '../helpers/subscribeToContextGroup'
 import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import type { ViewProps, ViewStyle } from '../views/View'
@@ -27,10 +28,7 @@ type UsePropsOptions = Pick<
   noMedia?: boolean
 }
 
-export type PropsWithoutMediaStyles<A> = {
-  // remove all media
-  [Key in keyof A as Key extends `$${string}` ? never : Key]?: A[Key]
-}
+export type PropsWithoutMediaStyles<A> = Partial<A>
 
 type PropsLikeObject = (ViewProps & Record<string, any>) | object
 type StyleLikeObject = (ViewStyle & Record<string, any>) | object
@@ -82,7 +80,6 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
 ): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {
   const staticConfig = opts?.forComponent?.staticConfig ?? View.staticConfig
   const [theme, themeState] = useThemeWithState({
-    componentName: staticConfig.componentName,
     name: 'theme' in props ? props.theme : undefined,
     needsUpdate() {
       return true
@@ -90,7 +87,16 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   })
   const componentContext = React.useContext(ComponentContext)
   const groupContext = React.useContext(GroupContext)
-  const { state, disabled, setStateShallow } = useComponentState(
+  // useComponentState injects enter/exit presence variants onto a fresh copy
+  // (it no longer mutates our `props` in place), so use the returned object for
+  // style resolution below to keep those variants applied
+  const {
+    props: statefulProps,
+    state,
+    disabled,
+    setState,
+    setStateShallow,
+  } = useComponentState(
     props,
     componentContext.animationDriver,
     staticConfig,
@@ -103,7 +109,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     : useMedia()
 
   const splitStyles = useSplitStyles(
-    props,
+    statefulProps,
     staticConfig,
     theme,
     themeState?.name || '',
@@ -125,26 +131,44 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   const { mediaGroups, pseudoGroups } = splitStyles || {}
 
   useIsomorphicLayoutEffect(() => {
+    let disposeSafeArea: (() => void) | undefined
+    if (splitStyles?.usesSafeArea) {
+      const updateSafeArea = () => {
+        setState((previous) => ({ ...previous }))
+      }
+      disposeSafeArea = subscribeToSafeArea(updateSafeArea)
+      // close the render-to-subscribe race: the provider tracker may have
+      // published new insets after this hook evaluated its styles.
+      updateSafeArea()
+    }
+
     if (disabled) {
-      return
+      return disposeSafeArea
     }
 
     if (state.unmounted) {
       setStateShallow({ unmounted: false })
-      return
+      return disposeSafeArea
     }
 
     if (groupContext) {
-      return subscribeToContextGroup({
+      const disposeGroup = subscribeToContextGroup({
         groupContext,
         setStateShallow,
         mediaGroups,
         pseudoGroups,
       })
+      if (!disposeSafeArea) return disposeGroup
+      return () => {
+        disposeSafeArea()
+        disposeGroup?.()
+      }
     }
+    return disposeSafeArea
   }, [
     disabled,
     groupContext,
+    splitStyles?.usesSafeArea,
     pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
     mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
   ])

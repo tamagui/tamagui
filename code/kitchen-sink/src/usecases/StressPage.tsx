@@ -16,8 +16,8 @@
  */
 import { timer } from '@tamagui/timer'
 import React from 'react'
+import { Button } from '../components/Button'
 import {
-  Button,
   Card,
   H1,
   H2,
@@ -49,48 +49,58 @@ if (shouldProfile) {
 
 // styled components with variants
 const StyledCard = styled(Card, {
-  padding: '$4',
-  borderRadius: '$4',
-  backgroundColor: '$background',
+  padding: '4',
+  borderRadius: '4',
+  backgroundColor: 'background',
   borderWidth: 1,
-  borderColor: '$borderColor',
-  elevation: '$2',
-
+  borderColor: 'border-color',
+  elevation: '2',
   variants: {
     highlighted: {
       true: {
-        backgroundColor: '$blue2',
-        borderColor: '$blue6',
+        backgroundColor: 'blue2',
+        borderColor: 'blue6',
       },
     },
     size: {
-      sm: { padding: '$2' },
-      md: { padding: '$4' },
-      lg: { padding: '$6' },
+      sm: {
+        padding: '2',
+      },
+      md: {
+        padding: '4',
+      },
+      lg: {
+        padding: '6',
+      },
     },
   } as const,
 })
 
 const Badge = styled(View, {
-  paddingHorizontal: '$2',
-  paddingVertical: '$1',
-  borderRadius: '$10',
-  backgroundColor: '$blue4',
-
+  paddingHorizontal: '2',
+  paddingVertical: '1',
+  borderRadius: '10',
+  backgroundColor: 'blue4',
   variants: {
     color: {
-      green: { backgroundColor: '$green4' },
-      red: { backgroundColor: '$red4' },
-      orange: { backgroundColor: '$orange4' },
+      green: {
+        backgroundColor: 'green4',
+      },
+      red: {
+        backgroundColor: 'red4',
+      },
+      orange: {
+        backgroundColor: 'orange4',
+      },
     },
   } as const,
 })
 
 const StatBox = styled(YStack, {
-  padding: '$3',
-  borderRadius: '$3',
-  backgroundColor: '$backgroundHover',
-  gap: '$1',
+  padding: '3',
+  borderRadius: '3',
+  backgroundColor: 'background-hover',
+  gap: '1',
   flex: 1,
 })
 
@@ -110,16 +120,16 @@ const stats = [
 
 function Header() {
   return (
-    <YStack gap="$2" padding="$4" backgroundColor="$background">
-      <H1 color="$color" fontWeight="800">
+    <YStack gap="2" padding="4" backgroundColor="background">
+      <H1 color="color" fontWeight="800">
         Dashboard
       </H1>
-      <Paragraph color="$color8" size="$4">
+      <Paragraph color="color8" size="4">
         Overview of your application metrics and recent activity
       </Paragraph>
-      <XStack gap="$2" flexWrap="wrap">
+      <XStack gap="2" flexWrap="wrap">
         {['All', 'Active', 'Pending', 'Archived'].map((tab) => (
-          <Button key={tab} size="$3" variant={tab === 'All' ? undefined : 'outlined'}>
+          <Button key={tab} variant={tab === 'All' ? undefined : 'outlined'}>
             {tab}
           </Button>
         ))}
@@ -130,13 +140,13 @@ function Header() {
 
 function StatsRow() {
   return (
-    <XStack gap="$3" paddingHorizontal="$4" flexWrap="wrap">
+    <XStack gap="3" paddingHorizontal="4" flexWrap="wrap">
       {stats.map((s) => (
         <StatBox key={s.label}>
-          <SizableText size="$2" color="$color8">
+          <SizableText size="2" color="color8">
             {s.label}
           </SizableText>
-          <SizableText size="$8" fontWeight="700" color="$color">
+          <SizableText size="8" fontWeight="700" color="color">
             {s.value}
           </SizableText>
         </StatBox>
@@ -148,24 +158,24 @@ function StatsRow() {
 function ItemRow({ item }: { item: (typeof items)[0] }) {
   return (
     <XStack
-      padding="$3"
-      gap="$3"
+      padding="3"
+      gap="3"
       alignItems="center"
-      borderBottomColor="$borderColor"
+      borderBottomColor="border-color"
       borderBottomWidth={1}
-      hoverStyle={{ backgroundColor: '$backgroundHover' }}
+      backgroundColor="hover:background-hover"
     >
-      <View width={40} height={40} borderRadius="$10" backgroundColor="$blue5" />
-      <YStack flex={1} gap="$1">
-        <SizableText fontWeight="600" size="$4">
+      <View width={40} height={40} borderRadius="10" backgroundColor="blue5" />
+      <YStack flex={1} gap="1">
+        <SizableText fontWeight="600" size="4">
           {item.title}
         </SizableText>
-        <SizableText size="$2" color="$color8" numberOfLines={1}>
+        <SizableText size="2" color="color8" numberOfLines={1}>
           {item.desc}
         </SizableText>
       </YStack>
       <Badge color={item.badge}>
-        <SizableText size="$1" color="white">
+        <SizableText size="1" color="white">
           {item.badge}
         </SizableText>
       </Badge>
@@ -176,7 +186,7 @@ function ItemRow({ item }: { item: (typeof items)[0] }) {
 function ItemList() {
   return (
     <StyledCard size="md">
-      <H3 marginBottom="$2">Recent Activity</H3>
+      <H3 marginBottom="2">Recent Activity</H3>
       <YStack>
         {items.map((item) => (
           <ItemRow key={item.id} item={item} />
@@ -189,19 +199,19 @@ function ItemList() {
 function FormSection() {
   return (
     <StyledCard highlighted size="md">
-      <H3 marginBottom="$3">Settings</H3>
-      <YStack gap="$3">
+      <H3 marginBottom="3">Settings</H3>
+      <YStack gap="3">
         {['Name', 'Email', 'Company', 'Role'].map((field) => (
-          <YStack key={field} gap="$1">
-            <Label size="$3">{field}</Label>
-            <Input size="$3" placeholder={`Enter ${field.toLowerCase()}`} />
+          <YStack key={field} gap="1">
+            <Label size="3">{field}</Label>
+            <Input size="3" placeholder={`Enter ${field.toLowerCase()}`} />
           </YStack>
         ))}
-        <XStack gap="$3" alignItems="center">
-          <Switch size="$3" />
-          <SizableText size="$3">Enable notifications</SizableText>
+        <XStack gap="3" alignItems="center">
+          <Switch size="3" />
+          <SizableText size="3">Enable notifications</SizableText>
         </XStack>
-        <Button size="$4">Save Changes</Button>
+        <Button>Save Changes</Button>
       </YStack>
     </StyledCard>
   )
@@ -210,19 +220,19 @@ function FormSection() {
 function ThemedSection() {
   return (
     <Theme name="blue">
-      <YStack gap="$3" padding="$4" backgroundColor="$background" borderRadius="$4">
-        <H2 color="$color">Themed Section</H2>
-        <XStack gap="$2" flexWrap="wrap">
+      <YStack gap="3" padding="4" backgroundColor="background" borderRadius="4">
+        <H2 color="color">Themed Section</H2>
+        <XStack gap="2" flexWrap="wrap">
           {Array.from({ length: 12 }, (_, i) => (
-            <Theme key={i} name={i % 2 === 0 ? 'surface1' : 'surface2'}>
+            <Theme key={i} name={i % 2 === 0 ? 'level2' : 'level3'}>
               <View
                 width={80}
                 height={60}
-                borderRadius="$3"
-                backgroundColor="$background"
-                padding="$2"
+                borderRadius="3"
+                backgroundColor="background"
+                padding="2"
               >
-                <SizableText size="$1" color="$color">
+                <SizableText size="1" color="color">
                   Card {i + 1}
                 </SizableText>
               </View>
@@ -237,14 +247,14 @@ function ThemedSection() {
 function Footer() {
   return (
     <XStack
-      padding="$4"
-      gap="$4"
+      padding="4"
+      gap="4"
       justifyContent="space-between"
-      borderTopColor="$borderColor"
+      borderTopColor="border-color"
       borderTopWidth={1}
     >
       {['About', 'Privacy', 'Terms', 'Contact', 'Help', 'Status'].map((link) => (
-        <SizableText key={link} size="$2" color="$color8" cursor="pointer">
+        <SizableText key={link} size="2" color="color8" cursor="pointer">
           {link}
         </SizableText>
       ))}
@@ -253,7 +263,12 @@ function Footer() {
 }
 
 export function StressPage() {
-  // render profiling: mark start before React render, measure in effect after commit
+  // render profiling: mark before React render, measure in the post-commit effect.
+  // a single mount renders the whole ~200-component tree once. the profiler test
+  // (StressPagePerf.test.tsx) reloads this page a few times inside one heap-sampling
+  // window to measure per-mount allocation. deliberately NO re-render/remount loop:
+  // repeatedly re-rendering this heavy tree under the profiler OOM-crashes the
+  // renderer, and a full page reload is a clean, deterministic fresh mount.
   if (shouldProfile) {
     performance.mark('stress-render-start')
   }
@@ -262,34 +277,33 @@ export function StressPage() {
     if (!shouldProfile) return
     performance.mark('stress-render-end')
     performance.measure('stress-render', 'stress-render-start', 'stress-render-end')
-    const measure = performance.getEntriesByName('stress-render', 'measure')[0]
+    const measure = performance.getEntriesByName('stress-render', 'measure').pop()!
 
     const t = (globalThis as any).__TIMER__
     const profile = t?.profile()
 
-    const result = {
+    ;(window as any).__PERF_RESULT__ = {
       renderMs: Math.round(measure.duration * 100) / 100,
       breakdown: profile?.timings,
       runs: profile?.runs,
       timestamp: Date.now(),
     }
-
-    ;(window as any).__PERF_RESULT__ = result
+    ;(window as any).__STRESS_READY__ = true
     t?.print()
-    console.log(`[StressPage] render: ${result.renderMs}ms`)
+    console.log(`[StressPage] mount: ${(window as any).__PERF_RESULT__.renderMs}ms`)
   }, [])
 
   return (
-    <YStack width="100%" maxWidth={900} gap="$4" paddingBottom="$6">
+    <YStack width="100%" maxWidth={900} gap="4" paddingBottom="6">
       <Header />
       <Separator />
       <StatsRow />
       <Separator />
-      <XStack gap="$4" paddingHorizontal="$4" flexWrap="wrap">
-        <YStack flex={2} minWidth={400} gap="$4">
+      <XStack gap="4" paddingHorizontal="4" flexWrap="wrap">
+        <YStack flex={2} minWidth={400} gap="4">
           <ItemList />
         </YStack>
-        <YStack flex={1} minWidth={280} gap="$4">
+        <YStack flex={1} minWidth={280} gap="4">
           <FormSection />
           <ThemedSection />
         </YStack>

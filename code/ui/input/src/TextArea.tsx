@@ -13,24 +13,16 @@ export const TextArea = styled(Input, {
   // this attribute fixes firefox newline issue
   // @ts-ignore
   whiteSpace: 'pre-wrap',
+  height: 'auto',
+  ...defaultStyles,
+  rows: 3,
 
   variants: {
-    unstyled: {
-      false: {
-        height: 'auto',
-        ...defaultStyles,
-        rows: 3,
-      },
-    },
-
     size: {
-      '...size': textAreaSizeVariant,
+      true: textAreaSizeVariant,
+      Size: textAreaSizeVariant,
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export type TextAreaProps = GetProps<typeof TextArea>

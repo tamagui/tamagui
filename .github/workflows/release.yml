@@ -35,6 +35,14 @@ jobs:
       github.event.workflow_run.head_branch == 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    # human gate: this job otherwise auto-publishes the first time Checks goes
+    # green on a v3-beta push. the environment pauses the job until a required
+    # reviewer approves it in the Actions UI. the protection rule lives in repo
+    # settings, not here: Settings -> Environments -> npm-publish-beta ->
+    # "Required reviewers" (add the approvers) or the job runs unpaused.
+    # if npmjs.com trusted publishing pins an environment name for these
+    # packages, it must match npm-publish-beta (or stay unset).
+    environment: npm-publish-beta
     permissions:
       contents: read
       id-token: write
@@ -63,7 +71,7 @@ jobs:
         if: steps.candidate.outputs.release == 'true'
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
-          node-version: '24'
+          node-version-file: '.node-version'
           registry-url: 'https://registry.npmjs.org'
           package-manager-cache: false
 
@@ -75,7 +83,7 @@ jobs:
 
       - name: Install npm with trusted publishing support
         if: steps.candidate.outputs.release == 'true'
-        run: npm install --global npm@12.0.1
+        run: npm install --global npm@12.0.2
 
       - name: Install dependencies
         if: steps.candidate.outputs.release == 'true'
@@ -241,7 +249,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
-          node-version: '24'
+          node-version-file: '.node-version'
           registry-url: 'https://registry.npmjs.org'
           package-manager-cache: false
 
@@ -251,7 +259,7 @@ jobs:
           bun-version-file: 'package.json'
 
       - name: Install npm with trusted publishing support
-        run: npm install --global npm@12.0.1
+        run: npm install --global npm@12.0.2
 
       - name: Install dependencies
         run: bun install --frozen-lockfile

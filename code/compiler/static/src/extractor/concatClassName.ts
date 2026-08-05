@@ -68,12 +68,7 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
       if (propName && propObjects) {
         if (
           propObjects.some((po) => {
-            if (pseudoKey) {
-              const propKey = pseudoInvert[pseudoKey]
-              return po && po[propKey] && propName in po[propKey] && po[propKey] !== null
-            }
-            const res = po && propName in po && po[propName] !== null
-            return res
+            return po && propName in po && po[propName] !== null
           })
         ) {
           // if (shouldDebug) console.log('debug exclude:', name)
@@ -114,17 +109,15 @@ function getClassNameScope(name: string, splitIndex: number) {
   return { mediaKey, pseudoKey }
 }
 
-const pseudoInvert = {
-  hover: 'hoverStyle',
-  active: 'pressStyle',
-  focus: 'focusStyle',
-  'focus-visible': 'focusVisibleStyle',
-  'focus-within': 'focusWithinStyle',
-  focusVisible: 'focusVisibleStyle',
-  focusWithin: 'focusWithinStyle',
-  disabled: 'disabledStyle',
-  enter: 'enterStyle',
-  exit: 'exitStyle',
-}
-
-const pseudoKeys = Object.keys(pseudoInvert).sort((a, b) => b.length - a.length)
+const pseudoKeys = [
+  'focus-visible',
+  'focus-within',
+  'focusVisible',
+  'focusWithin',
+  'disabled',
+  'active',
+  'hover',
+  'focus',
+  'enter',
+  'exit',
+]

@@ -1,9 +1,9 @@
 import type { MediaQueryList } from "@tamagui/web";
-type Orientation = "landscape" | "portrait";
-type Listener = (orientation: Orientation) => void;
+type Listener = () => void;
 export declare class NativeMediaQueryList implements MediaQueryList {
 	private query;
 	private listeners;
+	private reducedMotionExpected;
 	private get orientation();
 	constructor(query: string);
 	private notify;

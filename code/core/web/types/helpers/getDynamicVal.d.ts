@@ -1,4 +1,4 @@
-export declare function getOppositeScheme(scheme: string): "light" | "dark";
+export declare function getOppositeScheme(scheme: string): "dark" | "light";
 /**
  * Check if a style key is a color property that supports DynamicColorIOS.
  */

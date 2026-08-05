@@ -1,5 +1,5 @@
 import { CheckCircle2 } from '@tamagui/lucide-icons-2'
-import { Toast, toast, useToasts } from '@tamagui/toast/v2'
+import { Toast, toast, useToasts } from '@tamagui/toast'
 import { Button, XStack, YStack } from 'tamagui'
 
 /**
@@ -34,7 +34,7 @@ const ToastList = () => {
     <>
       {toasts.map((t, index) => (
         <Toast.Item key={t.id} toast={t} index={index}>
-          <XStack gap="$4" items="center">
+          <XStack gap="4" items="center">
             <YStack>
               <CheckCircle2 />
             </YStack>

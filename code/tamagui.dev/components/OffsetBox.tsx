@@ -5,9 +5,7 @@ export const OffsetBox = styled(YStack, {
   variants: {
     size: {
       hero: {
-        $gtSm: { mx: '$-2' },
-        $gtMd: { mx: '$-4' },
-        $gtLg: { mx: '$-6' },
+        mx: 'gtSm:-2 gtMd:-4 gtLg:-6',
       },
     },
   } as const,

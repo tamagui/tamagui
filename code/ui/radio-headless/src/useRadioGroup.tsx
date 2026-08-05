@@ -232,7 +232,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
     },
     rovingFocusGroupAttrs: {
       asChild: 'except-style' as const,
-      focusable: !isDisabled,
+      tabIndex: isDisabled ? -1 : 0,
       active: checked,
     },
   }

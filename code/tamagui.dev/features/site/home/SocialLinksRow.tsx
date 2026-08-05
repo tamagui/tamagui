@@ -8,19 +8,19 @@ import { TwitterIcon } from '~/features/icons/TwitterIcon'
 
 export const SocialLinksRow = () => {
   return (
-    <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
+    <XStack gap="4" flexDirection="sm:column">
       <Link
         asChild
         href="https://x.com/tamagui_js"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Card width="33.33%" justify="center" $sm={{ width: 'auto' }} gap="$2" p="$5">
+        <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
           <TwitterIcon />
-          <H4 cursor="pointer" fontFamily="$silkscreen">
+          <H4 cursor="pointer" fontFamily="silkscreen">
             X
           </H4>
-          <Paragraph cursor="pointer" color="$color9">
+          <Paragraph cursor="pointer" color="color9">
             Announcements and general updates.
           </Paragraph>
         </Card>
@@ -31,13 +31,13 @@ export const SocialLinksRow = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Card width="33.33%" justify="center" gap="$2" $sm={{ width: 'auto' }} p="$5">
+        <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
           <DiscordIcon />
-          {/* TODO this is using $body for other attributes not $silkscreen */}
-          <H4 cursor="pointer" fontFamily="$silkscreen">
+          {/* TODO this uses the body font for other attributes, not silkscreen */}
+          <H4 cursor="pointer" fontFamily="silkscreen">
             Discord
           </H4>
-          <Paragraph cursor="pointer" color="$color9">
+          <Paragraph cursor="pointer" color="color9">
             Get involved and get questions answered.
           </Paragraph>
         </Card>
@@ -48,12 +48,12 @@ export const SocialLinksRow = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Card width="33.33%" justify="center" $sm={{ width: 'auto' }} gap="$2" p="$5">
+        <Card width="33.33% sm:auto" justify="center" gap="2" p="5">
           <GithubIcon />
-          <H4 cursor="pointer" fontFamily="$silkscreen">
+          <H4 cursor="pointer" fontFamily="silkscreen">
             GitHub
           </H4>
-          <Paragraph cursor="pointer" color="$color9">
+          <Paragraph cursor="pointer" color="color9">
             Issues, feature requests, and contributing.
           </Paragraph>
         </Card>

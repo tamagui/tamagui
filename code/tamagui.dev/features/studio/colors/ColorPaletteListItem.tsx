@@ -5,7 +5,7 @@ import { colorToHex } from './helpers'
 
 const OffsetIndicator = styled(SizableText, {
   letterSpacing: -1,
-  size: '$1',
+  size: '1',
   flex: 1,
   text: 'center',
   width: 20,
@@ -36,23 +36,21 @@ export const ColorPaletteListItem = ({
   return (
     <Theme name={isActive ? 'accent' : null}>
       <ListItem
-        size="$2"
+        size="2"
         p={0}
         flexDirection="column"
         items="flex-start"
-        // Todo: fix hoverTheme
-        // hoverTheme={hoverTheme ?? !isActive}
-        borderColor={isActive ? '$borderColor' : 'transparent'}
-        bg={isActive ? '$background' : 'transparent'}
+        borderColor={`${isActive ? 'border-color' : 'transparent'}`}
+        bg={`${isActive ? 'background' : 'transparent'}`}
       >
-        <YStack p="$3" width="100%" mt={-1}>
+        <YStack p="3" width="100%" mt={-1}>
           {!hideTitle && (
-            <H5 size="$2" select="none" cursor="default" z={10} mb="$1">
+            <H5 size="2" select="none" cursor="default" z={10} mb="1">
               Palette: {scale?.name}
             </H5>
           )}
 
-          <YStack width="100%" position="relative" gap="$2" z={100}>
+          <YStack width="100%" position="relative" gap="2" z={100}>
             {showOffsetIndicators && (
               <XStack>
                 {colors.map((_, index) => (
@@ -79,19 +77,19 @@ export const ColorPaletteListItem = ({
                     {...(indicateActive === index && {
                       scale: 1.2,
                       z: 100,
-                      elevation: '$2',
-                      borderColor: '$color',
+                      elevation: '2',
+                      borderColor: 'color',
                     })}
                     {...(index === 0 && {
-                      borderBottomLeftRadius: '$8',
-                      borderTopLeftRadius: '$8',
+                      borderBottomLeftRadius: '8',
+                      borderTopLeftRadius: '8',
                     })}
                     {...(index === colors.length - 1 && {
-                      borderTopRightRadius: '$8',
-                      borderBottomRightRadius: '$8',
+                      borderTopRightRadius: '8',
+                      borderBottomRightRadius: '8',
                     })}
                   >
-                    <YStack bg={colorToHex(color) as any} fullscreen />
+                    <YStack bg={colorToHex(color) as any} position="absolute" inset={0} />
                   </YStack>
                 )
               })}
@@ -119,7 +117,7 @@ export const ColorPaletteListItem = ({
                   12
                 }
               >
-                <YStack height="100%" items="center" justify="flex-end" pb="$2">
+                <YStack height="100%" items="center" justify="flex-end" pb="2">
                   <YStack
                     x={-14}
                     y={indicateActive < 0 ? -12 : 12}

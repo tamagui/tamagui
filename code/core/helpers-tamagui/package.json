@@ -34,6 +34,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/web": "workspace:*"
   },

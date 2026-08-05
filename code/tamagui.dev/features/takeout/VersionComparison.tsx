@@ -1,7 +1,6 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons-2'
 import {
-  Button,
   H3,
   Paragraph,
   SizableText,
@@ -11,33 +10,33 @@ import {
   styled,
   useThemeName,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 import { SubTitle } from '../../components/SubTitle'
 
 const VersionBadge = styled(SizableText, {
-  px: '$2',
-  py: '$1',
-  rounded: '$3',
-  fontSize: '$2',
+  px: '2',
+  py: '1',
+  rounded: '3',
+  fontSize: '2',
   fontWeight: '600',
   borderWidth: 0.5,
-
   variants: {
     variant: {
       new: {
-        bg: '$green2',
-        color: '$green11',
-        borderColor: '$green4',
+        bg: 'green2',
+        color: 'green11',
+        borderColor: 'green4',
       },
       free: {
-        bg: '$blue2',
-        color: '$blue11',
-        borderColor: '$blue4',
+        bg: 'blue2',
+        color: 'blue11',
+        borderColor: 'blue4',
       },
       legacy: {
-        bg: '$gray2',
-        color: '$gray11',
-        borderColor: '$gray4',
+        bg: 'gray2',
+        color: 'gray11',
+        borderColor: 'gray4',
       },
     },
   } as const,
@@ -63,7 +62,7 @@ const FeatureRow = ({
       )
     }
     return (
-      <SizableText size="$3" color="$color11" fontFamily="$mono" fontWeight="600">
+      <SizableText size="3" color="color11" fontFamily="mono" fontWeight="600">
         {value}
       </SizableText>
     )
@@ -71,15 +70,15 @@ const FeatureRow = ({
 
   return (
     <XStack
-      py="$3"
-      px="$3"
+      py="3"
+      px="3"
       borderBottomWidth={1}
-      borderBottomColor="$borderColor"
+      borderBottomColor="border-color"
       items="center"
       bg="transparent"
     >
       <YStack flex={1.5}>
-        <SizableText size="$3" fontWeight="700" color="$color12" fontFamily="$mono">
+        <SizableText size="3" fontWeight="700" color="color12" fontFamily="mono">
           {feature}
         </SizableText>
       </YStack>
@@ -124,21 +123,20 @@ export function VersionComparison() {
   return (
     <YStack
       items="center"
-      gap="$6"
-      py="$4"
+      gap="6"
+      py="4"
       maxW={1000}
       mx="auto"
       width="100%"
-      $sm={{ display: 'none' }}
+      display="sm:none"
     >
-      <YStack items="center" gap="$4">
+      <YStack items="center" gap="4">
         <H3
-          fontSize={32}
+          fontSize="32px sm:40px"
           fontWeight="700"
           text="center"
-          color="$color12"
+          color="color12"
           style={{ lineHeight: '1.2' }}
-          $sm={{ fontSize: 40 }}
         >
           Next generation, and last
         </H3>
@@ -149,12 +147,12 @@ export function VersionComparison() {
       </YStack>
 
       <YStack
-        bg={isDark ? 'rgba(255,255,255,0.03)' : '$color2'}
-        rounded="$6"
-        p="$3"
+        bg={`${isDark ? 'rgba(255,255,255,0.03)' : 'color2'}`}
+        rounded="6"
+        p="3"
         borderWidth={0.5}
-        borderColor={isDark ? 'rgba(255,255,255,0.08)' : '$color4'}
-        gap="$4"
+        borderColor={`${isDark ? 'rgba(255,255,255,0.08)' : 'color4'}`}
+        gap="4"
         overflow="hidden"
         width="100%"
         style={{
@@ -162,39 +160,34 @@ export function VersionComparison() {
         }}
       >
         <YStack
-          rounded="$4"
+          rounded="4"
           borderWidth={0.5}
-          borderColor="$color4"
+          borderColor="color4"
           overflow="hidden"
-          bg="$background02"
+          bg="background02"
         >
-          <XStack py="$3" px="$3">
+          <XStack py="3" px="3">
             <YStack flex={1.5} justify="center">
-              <SizableText fontFamily="$mono" size="$3" color="$color11"></SizableText>
+              <SizableText fontFamily="mono" color="color11" size="3"></SizableText>
             </YStack>
-            <XStack flex={1} justify="center" items="center" gap="$2">
-              <SizableText
-                size="$4"
-                fontWeight="600"
-                color="$yellow10"
-                fontFamily="$mono"
-              >
+            <XStack flex={1} justify="center" items="center" gap="2">
+              <SizableText size="4" fontWeight="600" color="yellow10" fontFamily="mono">
                 v1
               </SizableText>
               <Theme name="gray">
                 <VersionBadge variant="legacy">Conservative</VersionBadge>
               </Theme>
             </XStack>
-            <XStack flex={1} justify="center" items="center" gap="$2">
-              <SizableText size="$4" fontWeight="600" color="$green10" fontFamily="$mono">
+            <XStack flex={1} justify="center" items="center" gap="2">
+              <SizableText size="4" fontWeight="600" color="green10" fontFamily="mono">
                 v2
               </SizableText>
               <Theme name="green">
                 <VersionBadge variant="new">New</VersionBadge>
               </Theme>
             </XStack>
-            <XStack flex={1} justify="center" items="center" gap="$2">
-              <SizableText size="$4" fontWeight="600" color="$blue10" fontFamily="$mono">
+            <XStack flex={1} justify="center" items="center" gap="2">
+              <SizableText size="4" fontWeight="600" color="blue10" fontFamily="mono">
                 v2-free
               </SizableText>
               <Theme name="blue">
@@ -208,19 +201,17 @@ export function VersionComparison() {
           ))}
         </YStack>
 
-        <XStack gap="$3" flexWrap="wrap" justify="center">
+        <XStack gap="3" flexWrap="wrap" justify="center">
           <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
             <ThemeTintAlt>
               <Button
-                size="$4"
-                bg="$color5"
+                size="4"
+                bg="color5 hover:color6 press:color7"
                 borderWidth={0.5}
-                borderColor="$color7"
+                borderColor="color7 hover:color8"
                 cursor="pointer"
-                hoverStyle={{ bg: '$color6', borderColor: '$color8' }}
-                pressStyle={{ bg: '$color7' }}
               >
-                <Button.Text fontFamily="$mono" color="$color12">
+                <Button.Text fontFamily="mono" color="color12">
                   Docs
                 </Button.Text>
               </Button>
@@ -229,15 +220,13 @@ export function VersionComparison() {
           <Link href="https://takeout.tamagui.dev/docs/highlights" target="_blank">
             <ThemeTintAlt offset={2}>
               <Button
-                size="$4"
-                bg="$color5"
+                size="4"
+                bg="color5 hover:color6 press:color7"
                 borderWidth={0.5}
-                borderColor="$color7"
+                borderColor="color7 hover:color8"
                 cursor="pointer"
-                hoverStyle={{ bg: '$color6', borderColor: '$color8' }}
-                pressStyle={{ bg: '$color7' }}
               >
-                <Button.Text fontFamily="$mono" color="$color12">
+                <Button.Text fontFamily="mono" color="color12">
                   Highlights
                 </Button.Text>
               </Button>
@@ -245,15 +234,13 @@ export function VersionComparison() {
           </Link>
           <Link href="https://github.com/tamagui/takeout-free" target="_blank">
             <Button
-              size="$4"
-              bg="$color3"
+              size="4"
+              bg="color3 hover:color4 press:color5"
               borderWidth={0.5}
-              borderColor="$color6"
+              borderColor="color6 hover:color8"
               cursor="pointer"
-              hoverStyle={{ bg: '$color4', borderColor: '$color8' }}
-              pressStyle={{ bg: '$color5' }}
             >
-              <Button.Text fontFamily="$mono" color="$color12">
+              <Button.Text fontFamily="mono" color="color12">
                 Takeout Free
               </Button.Text>
             </Button>

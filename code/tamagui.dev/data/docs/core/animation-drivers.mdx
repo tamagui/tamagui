@@ -31,13 +31,13 @@ You can swap drivers per-platform, or even dynamically load heavier drivers late
 
 ---
 
-## Using Config v5
+## Using Config v6
 
-The easiest way to get started is with [`@tamagui/config/v5`](/docs/core/config-v5), which provides pre-configured animations for all four drivers with matching keys:
+The easiest way to get started is with [`@tamagui/config/v6`](/docs/core/config-v6) and one of the four animation entries, which share matching keys:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v5'
-import { animations } from '@tamagui/config/v5-css' // or v5-motion, v5-rn, v5-reanimated
+import { defaultConfig } from '@tamagui/config/v6'
+import { animations } from '@tamagui/config/animations-css' // or animations-motion, animations-rn, animations-reanimated
 import { createTamagui } from 'tamagui'
 
 export const config = createTamagui({
@@ -46,7 +46,7 @@ export const config = createTamagui({
 })
 ```
 
-The v5 presets include timing animations (`100ms`, `200ms`, etc.) and spring animations (`bouncy`, `quick`, `lazy`, etc.) that work identically across all drivers. See [Config v5](/docs/core/config-v5#choosing-an-animation-driver) for the full list.
+The animation entries include timing keys (`100ms`, `200ms`, and others) and shared names such as `bouncy`, `quick`, and `lazy`.
 
 ---
 
@@ -313,4 +313,4 @@ loadAnimationDriver('spring', driver)
 
 - [Animations Overview](/docs/core/animations)
 - [AnimatePresence](/docs/core/animate-presence)
-- [Config v5](/docs/core/config-v5#choosing-an-animation-driver)
+- [Config v6](/docs/core/config-v6#animations)

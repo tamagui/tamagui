@@ -1,23 +1,27 @@
 import { isWeb } from '@tamagui/constants'
 import { View, styled } from '@tamagui/core'
 
+// Unstyled Separator: orientation + layout + the collapsed 1px rule only (an
+// invisible line, transparent by default). The theme line color lives in the
+// tamagui skin (code/ui/tamagui/src/components/Separator.tsx).
 export const Separator = styled(View, {
   name: 'Separator',
+  ...(isWeb && {
+    role: 'separator',
+    // @ts-ignore
+    'aria-orientation': 'horizontal',
+    'data-orientation': 'horizontal',
+  }),
+  borderColor: 'transparent',
+  flexShrink: 0,
+  borderWidth: 0,
+  flex: 1,
+  height: 0,
+  maxHeight: 0,
+  borderBottomWidth: 1,
+  y: -0.5,
 
   variants: {
-    unstyled: {
-      false: {
-        borderColor: '$backgroundFocus',
-        flexShrink: 0,
-        borderWidth: 0,
-        flex: 1,
-        height: 0,
-        maxHeight: 0,
-        borderBottomWidth: 1,
-        y: -0.5,
-      },
-    },
-
     vertical: {
       true: {
         y: 0,
@@ -31,11 +35,12 @@ export const Separator = styled(View, {
         maxWidth: 0,
         borderBottomWidth: 0,
         borderRightWidth: 1,
+        ...(isWeb && {
+          // @ts-ignore
+          'aria-orientation': 'vertical',
+          'data-orientation': 'vertical',
+        }),
       },
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })

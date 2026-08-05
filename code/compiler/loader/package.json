@@ -20,6 +20,11 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.cjs"
+    },
+    "./css": {
+      "import": "./dist/esm/css.mjs",
+      "require": "./dist/cjs/css.cjs",
+      "default": "./dist/cjs/css.cjs"
     }
   },
   "publishConfig": {
@@ -35,7 +40,6 @@
     "@tamagui/cli-color": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/static": "workspace:*",
-    "@tamagui/static-worker": "workspace:*",
     "@tamagui/types": "workspace:*",
     "@tamagui/web": "workspace:*",
     "esbuild-loader": "^4.2.2",

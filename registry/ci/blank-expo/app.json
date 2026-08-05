@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Tamagui Registry Blank Expo",
+    "slug": "tamagui-registry-blank-expo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "newArchEnabled": true,
+    "platforms": ["ios", "android"]
+  }
+}

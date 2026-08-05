@@ -1,0 +1,265 @@
+/**
+ * Injectable native style engine (plans/native-fast-path.md).
+ *
+ * When set (native only, experimental), eligible leaf components link their
+ * host view to the engine and theme changes commit styles straight to the
+ * native ShadowTree with zero React re-renders. The engine contract matches
+ * `@tamagui/native-registry`; core stays free of any native dependency and
+ * web builds never set an engine.
+ *
+ * Batching: one theme cascade fires many per-view updates synchronously; a
+ * microtask flush folds them into a single applyViewStates call, which the
+ * engine commits in one ShadowTree transaction.
+ */
+
+import { getVariableValue } from '../createVariable'
+
+export interface NativeStyleEngineLinkHandle {
+  id: number
+  unlink: () => void
+}
+
+export interface NativeViewStateUpdate {
+  id: number
+  state: string
+  props?: Record<string, unknown>
+}
+
+export interface NativeViewStateTableUpdate {
+  id: number
+  state: string
+  props: Record<string, unknown>
+}
+
+export interface NativeStyleEngineSlots {
+  base?: Record<string, unknown>
+  state?: Record<string, Record<string, unknown>>
+}
+
+export type NativeStyleThemeMapping = Record<string, string>
+
+export interface NativeStyleEngine {
+  link(
+    ref: unknown,
+    slots: NativeStyleEngineSlots,
+    scopeId?: string
+  ): NativeStyleEngineLinkHandle | null
+  applyViewStates(entries: NativeViewStateUpdate[]): void
+  updateViewStateTables(entries: NativeViewStateTableUpdate[]): void
+  processStyleColors(props: Record<string, unknown>): Record<string, unknown>
+  setStateName(stateName: string, scopeId?: string): void
+  removeScope(scopeId: string): void
+}
+
+let engine: NativeStyleEngine | null = null
+const scopeStates = new Map<string, { name: string; theme: object }>()
+
+interface CompiledMappingLink {
+  handle: NativeStyleEngineLinkHandle
+  scopeId: string
+  stateThemes: Map<string, object>
+}
+
+interface CompiledMapping {
+  mapping: NativeStyleThemeMapping
+  states: Map<string, { theme: object; props: Record<string, unknown> }>
+  links: Set<CompiledMappingLink>
+}
+
+const mappingKeys = new WeakMap<object, string>()
+const compiledMappings = new Map<string, CompiledMapping>()
+const processedBases = new WeakMap<
+  object,
+  { engine: NativeStyleEngine; props: Record<string, unknown> }
+>()
+
+function getCompiledMapping(mapping: NativeStyleThemeMapping): CompiledMapping {
+  let key = mappingKeys.get(mapping)
+  if (!key) {
+    key = JSON.stringify(
+      Object.keys(mapping)
+        .sort()
+        .map((styleKey) => [styleKey, mapping[styleKey]])
+    )
+    mappingKeys.set(mapping, key)
+  }
+  let compiled = compiledMappings.get(key)
+  if (!compiled) {
+    compiled = { mapping, states: new Map(), links: new Set() }
+    compiledMappings.set(key, compiled)
+  }
+  return compiled
+}
+
+function resolveCompiledMapping(
+  compiled: CompiledMapping,
+  stateName: string,
+  theme: Record<string, unknown>
+): Record<string, unknown> {
+  const cached = compiled.states.get(stateName)
+  if (cached?.theme === theme) return cached.props
+
+  const props: Record<string, unknown> = {}
+  for (const styleKey in compiled.mapping) {
+    const value = theme[compiled.mapping[styleKey]]
+    props[styleKey] = value === undefined ? null : getVariableValue(value)
+  }
+  const processed = engine?.processStyleColors(props) ?? props
+  compiled.states.set(stateName, { theme, props: processed })
+  return processed
+}
+
+export function setNativeStyleEngine(next: NativeStyleEngine | null): void {
+  if (engine !== next) {
+    compiledMappings.clear()
+  }
+  engine = next
+  if (next) {
+    for (const [scopeId, state] of scopeStates) {
+      next.setStateName(state.name, scopeId)
+    }
+  }
+}
+
+export function getNativeStyleEngine(): NativeStyleEngine | null {
+  return engine
+}
+
+export function updateNativeStyleScope(
+  scopeId: string,
+  stateName: string,
+  theme: object
+): void {
+  const previous = scopeStates.get(scopeId)
+  if (previous?.name === stateName && previous.theme === theme) return
+  scopeStates.set(scopeId, { name: stateName, theme })
+
+  if (engine) {
+    const entries: NativeViewStateTableUpdate[] = []
+    for (const compiled of compiledMappings.values()) {
+      let props: Record<string, unknown> | undefined
+      for (const link of compiled.links) {
+        if (link.scopeId !== scopeId) continue
+        const linkedTheme = link.stateThemes.get(stateName)
+        if (linkedTheme === theme) continue
+        props ||= resolveCompiledMapping(
+          compiled,
+          stateName,
+          theme as Record<string, unknown>
+        )
+        entries.push({ id: link.handle.id, state: stateName, props })
+        link.stateThemes.set(stateName, theme)
+      }
+    }
+    if (entries.length) engine.updateViewStateTables(entries)
+  }
+  engine?.setStateName(stateName, scopeId)
+}
+
+export function removeNativeStyleScope(scopeId: string): void {
+  if (!scopeStates.delete(scopeId)) return
+  engine?.removeScope(scopeId)
+}
+
+export function resolveNativeStyleMapping(
+  mapping: NativeStyleThemeMapping,
+  stateName: string,
+  theme: Record<string, unknown>
+): Record<string, unknown> {
+  return resolveCompiledMapping(getCompiledMapping(mapping), stateName, theme)
+}
+
+export function linkNativeStyleMapping(
+  ref: unknown,
+  baseStyle: Record<string, unknown>,
+  mapping: NativeStyleThemeMapping,
+  scopeId: string,
+  stateName: string,
+  theme: Record<string, unknown>
+): NativeStyleEngineLinkHandle | null {
+  if (!engine) return null
+
+  const compiled = getCompiledMapping(mapping)
+  const stateProps = resolveCompiledMapping(compiled, stateName, theme)
+  let base = processedBases.get(baseStyle)
+  if (!base || base.engine !== engine) {
+    base = { engine, props: engine.processStyleColors(baseStyle) }
+    processedBases.set(baseStyle, base)
+  }
+  const state: Record<string, Record<string, unknown>> = {}
+  const stateThemes = new Map<string, object>()
+  for (const [name, cached] of compiled.states) {
+    state[name] = cached.props
+    stateThemes.set(name, cached.theme)
+  }
+  state[stateName] = stateProps
+  stateThemes.set(stateName, theme)
+  const handle = engine.link(ref, { base: base.props, state }, scopeId)
+  if (!handle) return null
+
+  const link: CompiledMappingLink = {
+    handle,
+    scopeId,
+    stateThemes,
+  }
+  compiled.links.add(link)
+  return {
+    id: handle.id,
+    unlink: () => {
+      compiled.links.delete(link)
+      handle.unlink()
+    },
+  }
+}
+
+let pending: NativeViewStateUpdate[] | null = null
+let flushListener: ((entries: NativeViewStateUpdate[]) => void) | null = null
+
+/**
+ * instrumentation hook: called after each batched native flush with the
+ * flushed entries (benchmarks, parity tests)
+ */
+export function setNativeStyleEngineFlushListener(
+  cb: ((entries: NativeViewStateUpdate[]) => void) | null
+): void {
+  flushListener = cb
+}
+
+/**
+ * Host-ref hook for createComponent: links eligible mounted hosts to the
+ * engine, unlinks on detach. `nativeStyleUpdate` presence is the per-render
+ * eligibility signal; a host that mounts ineligible simply never links.
+ */
+export function updateNativeStyleLink(
+  ref: {
+    nativeLink?: NativeStyleEngineLinkHandle | null
+    nativeStyleUpdate?: unknown
+    nativePushedKeys?: Set<string>
+  },
+  host: unknown
+): void {
+  if (ref.nativeLink) {
+    ref.nativeLink.unlink()
+    ref.nativeLink = null
+  }
+  // pushed-key tracking is per-link: a new native view starts from the props
+  // React committed, nothing pushed yet
+  ref.nativePushedKeys = undefined
+  if (host && engine && ref.nativeStyleUpdate) {
+    ref.nativeLink = engine.link(host, {})
+  }
+}
+
+export function queueNativeViewState(entry: NativeViewStateUpdate): void {
+  if (!engine) return
+  if (!pending) {
+    pending = []
+    queueMicrotask(() => {
+      const entries = pending!
+      pending = null
+      engine?.applyViewStates(entries)
+      flushListener?.(entries)
+    })
+  }
+  pending.push(entry)
+}

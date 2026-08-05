@@ -19,7 +19,7 @@ demoName: Text
   features={[
     'Themes that give you control over spacing, weights, and sizes custom to each font.',
     'Size prop that automatically matches all theme values.',
-    'Media query styles, hoverStyle, pressStyle, focusStyle.',
+    'Flat media, hover, press, and focus clauses.',
   ]}
 />
 
@@ -62,13 +62,10 @@ export default () => (
   <>
     <Text
       // can add theme values
-      color="$white"
-      fontFamily="$body"
+      color="white hover:color-hover"
+      fontFamily="body"
       // or just use direct values
       fontSize={20}
-      hoverStyle={{
-        color: '$colorHover',
-      }}
     >
       Lorem ipsum
     </Text>
@@ -94,7 +91,7 @@ SizableText adds a `size` property that is defined using a [spread variant](/doc
 So, if you've defined `small`, `medium` and `large` keys on each createFont category, you can use it like so:
 
 ```tsx
-<SizableText size="$small" />
+<SizableText size="small" />
 ```
 
 [Source code for SizableText](https://github.com/tamagui/tamagui/blob/main/code/ui/text/src/SizableText.tsx).
@@ -108,8 +105,8 @@ export const Paragraph = styled(SizableText, {
   name: 'Paragraph',
   tag: 'p',
   userSelect: 'auto',
-  color: '$color',
-  size: '$true',
+  color: 'color',
+  size: true,
   whiteSpace: 'normal',
 })
 ```
@@ -130,7 +127,7 @@ import { Strong, Em, Span, Paragraph } from '@tamagui/text'
 export default () => (
   <Paragraph>
     This is <Strong>bold text</Strong>, this is <Em>italic text</Em>, and this is a{' '}
-    <Span color="$blue10">colored span</Span>.
+    <Span color="blue10">colored span</Span>.
   </Paragraph>
 )
 ```
@@ -219,8 +216,8 @@ Extends Text with the `size` prop for theme-aware font sizing.
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens',
-      description: `Sets font size, line height, letter spacing, and font weight from your theme's font configuration. Accepts any size token (e.g., "$4", "$true").`,
+      type: 'SizeTokens | true',
+      description: `Sets font size, line height, letter spacing, and font weight from your theme's font configuration. Accepts any size token (e.g., "4") or true for the default size.`,
     },
     {
       name: 'ellipsis',
@@ -246,8 +243,8 @@ Extends SizableText with semantic defaults. Renders as `<p>` on web, uses theme 
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens',
-      default: "'$true'",
+      type: 'SizeTokens | true',
+      default: 'true',
       description: `Sets font size from your theme. Defaults to the theme's base size.`,
     },
     {

@@ -1,0 +1,124 @@
+---
+title: Surfaces and levels
+description: Re-bind semantic theme values relative to the current subtree
+---
+
+Panels, wells, toolbars, controls, and nested cards all need the same operation:
+move semantic theme values relative to their current context. V3 calls this a
+level. There is no separate Surface theme system.
+
+## Two color vocabularies
+
+Keep adaptive scale values and semantic styling values separate:
+
+- `color1` through `color11` are the scheme-relative palette ramp.
+- `background`, `background-hover`, `background-press`, `border-color`,
+  `color`, and the other generics describe a component's role.
+
+Skins should normally use the generics. A level re-binds those keys once for the
+whole subtree, so every skin below it responds without its own color math.
+
+## Levels are relative sub-themes
+
+Use `level2`, `level3`, or `level4` to raise a subtree from its current level:
+
+```tsx
+<Theme name="level2">
+  <YStack backgroundColor="background" borderColor="border-color">
+    <Button>Raised again by the Button skin</Button>
+  </YStack>
+</Theme>
+```
+
+The name is an operation, not an absolute destination. From the root,
+`theme="level2"` resolves to absolute level 2. Inside that subtree, another
+`theme="level2"` resolves to absolute level 3. `theme="level3"` moves two
+steps from the current context. Values clamp at level 4.
+
+The generated path records the nesting, such as
+`light_level2_level2`. Saturated paths are aliases of an existing map, so they
+do not duplicate CSS declarations.
+
+Color themes keep their palette while levels compose:
+
+```tsx
+<Theme name="red">
+  <YStack backgroundColor="background">
+    <Theme name="level2">
+      <Button>Still red</Button>
+    </Theme>
+  </YStack>
+</Theme>
+```
+
+## Surface is a copied panel fixture
+
+For layout surfaces, copy the [Surface](/ui/surface) fixture. It is a `YStack`
+with a level variant and composable `filled`, `outlined`, `elevated`, `rounded`,
+and `interactive` facets. Nothing is enabled by default:
+
+```tsx
+<Surface level={2} filled outlined rounded interactive />
+```
+
+The `level={2}` variant creates a `level2` theme boundary. The facets read the
+semantic generics, so changing the level or surrounding color theme restyles
+them together.
+
+Component skins do not extend Surface. Card, Select content, ListItem, and other
+skins use the same generic values and choose their own default level.
+
+## Variables is the one-off escape hatch
+
+Use [`Variables`](/docs/core/variables) when a patch belongs in exactly one
+place:
+
+```tsx
+<Variables values={{ 'background-hover': 'blue-400' }}>
+  <YStack>{/* this subtree receives the patch */}</YStack>
+</Variables>
+```
+
+Create a named theme when the same patch appears in multiple places. Use
+`Variables` when it is local.
+
+## Custom levels
+
+The defaults are ordinary data in `@tamagui/themes/builder`. Change a level by
+editing or replacing its scale:
+
+```tsx
+import { raise, scales } from '@tamagui/themes/builder'
+
+const level3 = {
+  ...raise(scales.normal.light[1], 2),
+  'border-color': 400,
+}
+```
+
+`levels(max)` creates the recursive tree definitions. It works with custom
+recipes because it only reads and updates the optional `level` field.
+
+## V2 surface migration
+
+The old names represented fixed surface templates. Replace them with relative
+levels:
+
+| V2 theme | V3 theme |
+| --- | --- |
+| `surface1` | `level2` |
+| `surface2` | `level3` |
+| `surface3` | `level4` |
+| `surface4` | `level4` |
+
+`surface4` clamps because the default v3 scale has four absolute levels. If its
+old contrast was important, add another level to your own scale and tree.
+
+## Summary
+
+- Style reusable skins against semantic generics.
+- Use `theme="level2"` for the common one-step relative boundary.
+- Nest levels freely; the recipe tree carries the current absolute level.
+- Use `Variables` for a one-off patch.
+- Use the copied Surface fixture for layout chrome.
+- Customize scales and `levels()` in normal application code.

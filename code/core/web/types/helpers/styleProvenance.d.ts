@@ -1,6 +1,6 @@
 export declare const STYLE_TOKEN_PROVENANCE_KEY = "tamagui.styleTokenProvenance";
 export type StyleTokenBinding = {
-    /** original token string before resolution, e.g. '$background' or '$color9' */
+    /** original token string before resolution, e.g. 'background' or 'color9' */
     token: string;
     /** full resolved theme name that produced the value, e.g. 'light_accent' */
     theme: string;

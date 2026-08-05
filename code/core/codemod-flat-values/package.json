@@ -1,0 +1,22 @@
+{
+  "name": "@tamagui/codemod-flat-values",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dry-run": "bun src/index.ts",
+    "write": "bun src/index.ts --write",
+    "test": "bun test --timeout 20000 test",
+    "test:web": "bun test --timeout 20000 test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/language-service": "workspace:*",
+    "@tamagui/shorthands": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*",
+    "ts-morph": "^28.0.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.2"
+  }
+}

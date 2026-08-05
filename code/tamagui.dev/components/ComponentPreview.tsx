@@ -12,7 +12,6 @@ import {
 
 import {
   Avatar,
-  Button,
   Checkbox,
   getTokenValue,
   Label,
@@ -23,6 +22,7 @@ import {
   XStack,
   ZStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { CardFrame, Text, YStack } from 'tamagui'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 
@@ -32,23 +32,23 @@ const Chip = styled(View, {
   justify: 'center',
   items: 'center',
   rounded: 1000_000_000,
-  gap: '$2',
-  py: '$2',
-  px: '$3',
+  gap: '2',
+  py: '2',
+  px: '3',
 })
 
 const WindowMacView = () => {
   return (
     <XStack
-      bg="$backgroundPress"
+      bg="background-press"
       borderBottomWidth={1}
-      borderColor="$color3"
-      py="$1.5"
-      px="$2"
-      gap="$2"
+      borderColor="color3"
+      py="1.5"
+      px="2"
+      gap="2"
       theme="accent"
     >
-      {['$red10', '$yellow10', '$green10'].map((color, index) => (
+      {['red10', 'yellow10', 'green10'].map((color, index) => (
         <View
           bg={color as any}
           height={6}
@@ -68,11 +68,11 @@ const WindowLayout = ({ children, ...props }) => {
       <YStack
         width="100%"
         height={200}
-        bg="$color1"
-        rounded="$5"
+        bg="color1"
+        rounded="5"
         overflow="hidden"
         borderWidth={1}
-        borderColor="$color2"
+        borderColor="color2"
       >
         <WindowMacView />
         {children}
@@ -87,16 +87,14 @@ const CardItem = ({ title, children }) => {
       flexDirection="row"
       shrink={1}
       items="flex-start"
-      gap="$3"
+      gap="3"
       minW="100%"
-      p="$2.5"
-      hoverStyle={{
-        borderColor: '$color7',
-      }}
+      p="2.5"
+      borderColor="hover:color7"
     >
       {children}
 
-      <Label cursor="pointer" items="flex-start" lineHeight="$2" flexDirection="column">
+      <Label cursor="pointer" items="flex-start" lineHeight="2" flexDirection="column">
         {title}
       </Label>
     </CardFrame>
@@ -110,14 +108,15 @@ const ComponentPreview = {
         Full Name
       </Label>
       <View
-        bg="$background"
+        bg="background"
         borderWidth={1}
-        borderColor="$borderColor"
-        p="$2"
-        px="$3"
-        rounded="$4"
+        borderColor="border-color"
+        paddingTop="2"
+        paddingBottom="2"
+        px="3"
+        rounded="4"
       >
-        <Text color="$color7">Bento 🍱</Text>
+        <Text color="color7">Bento 🍱</Text>
       </View>
     </YStack>
   ),
@@ -125,16 +124,16 @@ const ComponentPreview = {
   Layouts: () => {
     return (
       <WindowLayout>
-        <YStack gap="$4" overflow="hidden" width="100%" p="$4">
-          <Text fontSize={'$1'} text="center" fontWeight="bold">
+        <YStack gap="4" overflow="hidden" width="100%" p="4">
+          <Text fontSize="1" text="center" fontWeight="bold">
             Sign Up
           </Text>
-          <XStack gap="$4" width="100%" justify="space-between">
-            <View flex={1} height={20} bg="$color4" rounded="$2" />
-            <View flex={1} height={20} bg="$color4" rounded="$2" />
+          <XStack gap="4" width="100%" justify="space-between">
+            <View flex={1} height={20} bg="color4" rounded="2" />
+            <View flex={1} height={20} bg="color4" rounded="2" />
           </XStack>
-          <View width="100%" height={20} bg="$color4" rounded="$2" />
-          <View width="100%" height="100%" bg="$color4" rounded="$2" />
+          <View width="100%" height={20} bg="color4" rounded="2" />
+          <View width="100%" height="100%" bg="color4" rounded="2" />
         </YStack>
       </WindowLayout>
     )
@@ -142,7 +141,7 @@ const ComponentPreview = {
 
   Checkboxes: () => {
     return (
-      <YStack width="100%" gap="$3">
+      <YStack width="100%" gap="3">
         <CardItem title="PayPal">
           <Checkbox checked={true}>
             <Checkbox.Indicator>
@@ -164,7 +163,7 @@ const ComponentPreview = {
   RadioGroups: () => {
     return (
       <YStack width="100%">
-        <RadioGroup defaultValue="2" gap="$3">
+        <RadioGroup defaultValue="2" gap="3">
           <CardItem title="PayPal">
             <RadioGroup.Item value={'1'}>
               <RadioGroup.Indicator />
@@ -185,19 +184,20 @@ const ComponentPreview = {
       <YStack
         flexDirection="row"
         maxW="100%"
-        borderColor="$color4"
+        borderColor="color4"
         borderWidth={1}
-        px="$4"
-        py="$3"
-        $group-window-sm={{ marginTop: '$6', marginHorizontal: '$5' }}
-        rounded="$10"
+        px="4"
+        py="3"
+        mt="@sm/window:6"
+        mx="@sm/window:5"
+        rounded="10"
         width="100%"
         height="auto"
         items="center"
-        gap="$2.5"
+        gap="2.5"
         transition="medium"
       >
-        <Label size="$1.5" htmlFor={'switch'}>
+        <Label size="1.5" htmlFor={'switch'}>
           Switch
         </Label>
 
@@ -206,12 +206,11 @@ const ComponentPreview = {
           checked={true}
           onCheckedChange={() => {}}
           marginLeft="auto"
-          bg="$green10"
-          // Note: replace the following code with "$2" only
-          size="$2"
+          bg="green10"
           scale={1}
+          size="2"
         >
-          <Switch.Thumb borderColor="$color1" bg="$white1" transition="quickest" />
+          <Switch.Thumb borderColor="color1" bg="white1" transition="quickest" />
         </Switch>
       </YStack>
     )
@@ -221,25 +220,23 @@ const ComponentPreview = {
     return (
       <View
         width="100%"
-        $group-window-sm={{
-          marginVertical: '$6',
-        }}
-        bg="$background04"
-        borderColor="$borderColor"
+        my="@sm/window:6"
+        bg="background04"
+        borderColor="border-color"
         borderWidth={1}
-        rounded="$4"
+        rounded="4"
         overflow="hidden"
       >
-        <View flexDirection="row" items="center" justify="flex-start" gap="$2">
-          <Text fontWeight="bold" p="$2" fontSize={12} bg="$backgroundFocus">
+        <View flexDirection="row" items="center" justify="flex-start" gap="2">
+          <Text fontWeight="bold" p="2" fontSize={12} bg="background-focus">
             Write
           </Text>
-          <Text fontWeight="300" p="$2" fontSize={12}>
+          <Text fontWeight="300" p="2" fontSize={12}>
             Preview
           </Text>
         </View>
 
-        <View px={0} rounded={0} p="$4">
+        <View px={0} rounded={0} p="4">
           <Text fontWeight="300" fontSize={12}>
             Your comment here
           </Text>
@@ -254,13 +251,13 @@ const ComponentPreview = {
         width="100%"
         borderWidth={1.5}
         borderStyle="dashed"
-        borderColor="$color6"
-        py="$5"
+        borderColor="color6"
+        py="5"
         justify="center"
         items="center"
-        rounded="$4"
+        rounded="4"
       >
-        <Upload size="$1" />
+        <Upload size="1" />
       </View>
     )
   },
@@ -268,15 +265,15 @@ const ComponentPreview = {
   List: () => {
     return (
       <WindowLayout>
-        <YStack overflow="hidden" p="$4" width="100%" mb="$-8" gap="$4">
+        <YStack overflow="hidden" p="4" width="100%" mb="-8" gap="4">
           {Array.from({ length: 3 }).map((_, index) => {
             return (
-              <View flexDirection="row" items="center" key={index} gap="$2">
-                <User color="$color8" />
+              <View flexDirection="row" items="center" gap="2" key={index}>
+                <User color="color8" />
 
-                <View gap="$2" flex={1}>
-                  <View height={4} bg="$color8" width="80%" />
-                  <View height={4} bg="$color8" width="45%" />
+                <View gap="2" flex={1}>
+                  <View height={4} bg="color8" width="80%" />
+                  <View height={4} bg="color8" width="45%" />
                   <View />
                 </View>
               </View>
@@ -298,14 +295,14 @@ const ComponentPreview = {
           <View
             key={img}
             z={index}
-            ml={index !== 0 ? -(getTokenValue('$2' as any) ?? 20) * 1.5 : undefined}
+            ml={index !== 0 ? -(getTokenValue('2' as any) ?? 20) * 1.5 : undefined}
             transition="bouncy"
             position="relative"
             x={0}
           >
-            <Avatar borderWidth={1.5} borderColor="$background" circular size="$5">
+            <Avatar borderWidth={1.5} borderColor="background" circular size="5">
               <Avatar.Image aria-label="Nate Wienert" src={`${img}?&w=100`} />
-              <Avatar.Fallback delayMs={600} bg="$color3" />
+              <Avatar.Fallback delay={600} bg="color3" />
             </Avatar>
           </View>
         ))}
@@ -316,10 +313,10 @@ const ComponentPreview = {
   Buttons: () => {
     return (
       <ZStack>
-        <Button mb="$-6" mr="$-6" self="center" icon={User} size="$4" theme="accent">
+        <Button mb="-6" mr="-6" self="center" icon={User} size="4" theme="accent">
           Follow
         </Button>
-        <Button mt="$-6" ml="$-6" self="center" icon={Share} size="$4">
+        <Button mt="-6" ml="-6" self="center" icon={Share} size="4">
           Share
         </Button>
       </ZStack>
@@ -332,35 +329,32 @@ const ComponentPreview = {
         <YStack
           borderWidth={1}
           width="100%"
-          borderColor="$borderColor"
-          $theme-light={{
-            borderColor: '$color7',
-          }}
-          rounded="$4"
-          gap="$2"
-          bg="$background"
+          borderColor="border-color light:color7"
+          rounded="4"
+          gap="2"
+          bg="background"
           overflow="hidden"
         >
-          <XStack bg="$backgroundFocus" justify="center" items="center" width="100%">
+          <XStack bg="background-focus" justify="center" items="center" width="100%">
             <YStack
-              p="$3"
-              gap="$1"
+              p="3"
+              gap="1"
               items="center"
               justify="center"
               flex={1}
               borderBottomWidth={1}
-              borderColor="$borderColor"
+              borderColor="border-color"
             >
-              <Text text="center" fontSize="$1">
+              <Text text="center" fontSize="1">
                 {new Date().getFullYear()}
               </Text>
-              <Text text="center" fontWeight="bold" fontSize="$3">
+              <Text text="center" fontWeight="bold" fontSize="3">
                 {new Date().toLocaleString('default', { month: 'long' })}
               </Text>
             </YStack>
           </XStack>
 
-          <XStack px="$2">
+          <XStack px="2">
             {['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'].map((day, index) => (
               <Text key={index} flex={1} text="center" fontSize={8}>
                 {day}
@@ -368,7 +362,7 @@ const ComponentPreview = {
             ))}
           </XStack>
 
-          <XStack px="$2" flexWrap="wrap">
+          <XStack px="2" flexWrap="wrap">
             {Array.from(
               {
                 length: 15,
@@ -386,7 +380,7 @@ const ComponentPreview = {
                   <XStack
                     key={i}
                     width="14.28%"
-                    height="$2"
+                    height="2"
                     justify="center"
                     items="center"
                     ml={i === 0 ? `${offset * 14.28}%` : 0}
@@ -406,45 +400,35 @@ const ComponentPreview = {
     return (
       <WindowLayout>
         <XStack
-          bg="$backgroundPress"
+          bg="background-press light:color4"
           borderBottomWidth={1}
-          borderColor="$borderColor"
-          $theme-light={{
-            borderColor: '$color6',
-            bg: '$color4',
-          }}
+          borderColor="border-color light:color6"
         >
           {Array.from({ length: 3 }).map((_, index) => (
             <View
               flex={1}
-              height="$2"
+              height="2"
               borderLeftWidth={1}
               borderRightWidth={1}
-              borderColor={index === 1 ? '$borderColor' : 'transparent'}
-              $theme-light={{
-                borderColor: index === 1 ? '$color6' : 'transparent',
-              }}
+              borderColor={`${index === 1 ? 'border-color' : 'transparent'} light:${index === 1 ? 'color6' : 'transparent'}`}
               key={index}
             />
           ))}
         </XStack>
-        <YStack width="100%" bg="$background">
+        <YStack width="100%" bg="background">
           {Array.from({ length: 10 }).map((_, index) => (
             <XStack
               borderBottomWidth={1}
-              borderColor={'$borderColor'}
+              borderColor="border-color"
+              height="1.5"
               key={index}
-              height="$1.5"
             >
               {Array.from({ length: 3 }).map((_, index) => (
                 <View
                   key={index}
                   borderLeftWidth={1}
                   borderRightWidth={1}
-                  borderColor={index === 1 ? '$borderColor' : 'transparent'}
-                  $theme-light={{
-                    borderColor: index === 1 ? '$color6' : 'transparent',
-                  }}
+                  borderColor={`${index === 1 ? 'border-color' : 'transparent'} light:${index === 1 ? 'color6' : 'transparent'}`}
                   flex={1}
                   height="100%"
                 />
@@ -458,22 +442,22 @@ const ComponentPreview = {
 
   Chips: () => {
     return (
-      <YStack gap="$2" justify="center" items="center">
-        <Chip rotate="5deg" mr="$-6" self="center" bg="$green10">
-          <Text fontSize="$1" color="$white1">
+      <YStack gap="2" justify="center" items="center">
+        <Chip rotate="5deg" mr="-6" self="center" bg="green10">
+          <Text fontSize="1" color="white1">
             Success
           </Text>
-          <CheckCircle2 size={12} color="$white1" />
+          <CheckCircle2 size={12} color="white1" />
         </Chip>
 
-        <Chip rotate="-2deg" ml={'$-6'} self="center" bg="$color10">
-          <Text fontSize="$1" color="$white1">
+        <Chip rotate="-2deg" ml="-6" self="center" bg="color10">
+          <Text fontSize="1" color="white1">
             Offline
           </Text>
         </Chip>
 
-        <Chip rotate="-5deg" gap="$2" mr="$-6" self="center" bg="$red10">
-          <Text fontSize="$1" color="$white1">
+        <Chip rotate="-5deg" gap="2" mr="-6" self="center" bg="red10">
+          <Text fontSize="1" color="white1">
             Online
           </Text>
         </Chip>
@@ -485,47 +469,38 @@ const ComponentPreview = {
     return (
       <YStack
         width="100%"
-        rounded="$4"
+        rounded="4"
         borderWidth={1}
-        borderColor="$borderColor"
-        $theme-light={{
-          borderColor: '$color6',
-        }}
-        gap="$2"
+        borderColor="border-color light:color6"
+        gap="2"
       >
-        <YStack width="100%" p="$2" py="$3" gap="$2">
-          <Text text="center" fontSize="$2" fontWeight="bold">
+        <YStack width="100%" paddingRight="2" paddingLeft="2" py="3" gap="2">
+          <Text text="center" fontSize="2" fontWeight="bold">
             Dialog
           </Text>
-          <Text text="center" fontSize="$1" fontWeight={'300'}>
+          <Text text="center" fontSize="1" fontWeight={'300'}>
             Hey, Hello there!
           </Text>
         </YStack>
 
         <YStack justify="space-between">
           <Text
-            color="$red10"
-            p="$2"
+            color="red10"
+            p="2"
             text="center"
             fontSize={10}
             borderTopWidth={1}
-            borderColor="$borderColor"
-            $theme-light={{
-              borderColor: '$color6',
-            }}
+            borderColor="border-color light:color6"
           >
             Cancel
           </Text>
           <Text
             borderTopWidth={1}
-            borderColor="$borderColor"
-            $theme-light={{
-              borderColor: '$color6',
-            }}
+            borderColor="border-color light:color6"
             text="center"
             fontSize={10}
-            p="$2"
-            color="$color10"
+            p="2"
+            color="color10"
           >
             Hi
           </Text>
@@ -539,19 +514,16 @@ const ComponentPreview = {
       <WindowLayout>
         <XStack
           items="center"
-          bg="$backgroundPress"
+          bg="background-press"
           borderBottomWidth={1}
-          borderColor="$borderColor"
-          $theme-light={{
-            borderColor: '$color6',
-          }}
-          p="$2"
-          gap="$2"
+          borderColor="border-color light:color6"
+          p="2"
+          gap="2"
         >
           <BentoIcon />
-          <XStack px="$2" gap="$4" flex={1}>
+          <XStack px="2" gap="4" flex={1}>
             {Array.from({ length: 3 }).map((_, index) => (
-              <View bg="$color8" flex={1} height={6} key={index} />
+              <View bg="color8" flex={1} height={6} key={index} />
             ))}
           </XStack>
         </XStack>
@@ -564,24 +536,21 @@ const ComponentPreview = {
       <WindowLayout>
         <YStack
           items="flex-start"
-          bg="$backgroundPress"
+          bg="background-press"
           width="33%"
           height="100%"
           borderBottomWidth={1}
-          borderColor="$borderColor"
-          $theme-light={{
-            borderColor: '$color6',
-          }}
+          borderColor="border-color light:color6"
           justify="flex-start"
-          p="$2"
-          gap="$4"
+          p="2"
+          gap="4"
         >
           <BentoIcon />
-          <YStack height="100%" width="100%" gap="$3" flex={1}>
-            <View width="90%" bg="$color8" height={6} />
-            <View width="70%" bg="$color8" height={6} />
-            <View width="50%" bg="$color8" height={6} />
-            <View width="90%" bg="$color8" height={6} />
+          <YStack height="100%" width="100%" gap="3" flex={1}>
+            <View width="90%" bg="color8" height={6} />
+            <View width="70%" bg="color8" height={6} />
+            <View width="50%" bg="color8" height={6} />
+            <View width="90%" bg="color8" height={6} />
           </YStack>
         </YStack>
       </WindowLayout>
@@ -593,19 +562,19 @@ const ComponentPreview = {
       <WindowLayout>
         <XStack
           items="center"
-          bg="$backgroundPress"
+          bg="background-press"
           borderBottomWidth={1}
-          borderColor={'$borderColor'}
+          borderColor="border-color"
         >
           {['Home', 'Explorer', 'Profile'].map((tab, index) => (
             <View
               flex={1}
-              p="$2"
-              key={index}
+              p="2"
               justify="center"
               items="center"
               borderBottomWidth={1}
-              borderColor={index === 0 ? '$accentColor' : 'transparent'}
+              borderColor={`${index === 0 ? 'accent-color' : 'transparent'}`}
+              key={index}
             >
               <Text opacity={index === 0 ? 1 : 0.5} text="center" fontSize={8}>
                 {tab}
@@ -614,16 +583,16 @@ const ComponentPreview = {
           ))}
         </XStack>
         <YStack
-          p="$4"
+          p="4"
           width="100%"
           justify="center"
           items="center"
-          bg="$background"
-          gap="$2"
+          bg="background"
+          gap="2"
         >
           <Text fontWeight="bold">Hero</Text>
-          <View width="100%" mt="$2" height={6} bg="$color8" />
-          <View width="80%" height={6} bg="$color8" />
+          <View width="100%" mt="2" height={6} bg="color8" />
+          <View width="80%" height={6} bg="color8" />
         </YStack>
       </WindowLayout>
     )
@@ -631,24 +600,24 @@ const ComponentPreview = {
   Microinteractions: () => {
     return (
       <YStack>
-        <View flex={1} flexDirection="row" items="center" justify="center" gap="$2">
+        <View flex={1} flexDirection="row" items="center" justify="center" gap="2">
           <View
             flexDirection="row"
             items="center"
             justify="center"
-            gap="$3"
-            bg="$background"
-            height="$3"
-            px="$4"
-            rounded="$8"
+            gap="3"
+            bg="background"
+            height="3"
+            px="4"
+            rounded="8"
           >
             {Array.from({ length: 4 }).map((_, index) => (
               <View
                 key={index}
-                width={index === 1 ? '$2' : '$0.75'}
-                height="$0.75"
-                rounded="$5"
-                bg={index === 1 ? '$accentColor' : '$color10'}
+                width={index === 1 ? '2' : '0.75'}
+                height="0.75"
+                rounded="5"
+                bg={`${index === 1 ? 'accent-color' : 'color10'}`}
                 transition="200ms"
               />
             ))}
@@ -667,9 +636,9 @@ const ComponentPreview = {
           height={100}
           rotate={'-16deg'}
           borderWidth={2}
-          borderColor="$color6"
-          bg="$background"
-          rounded="$4"
+          borderColor="color6"
+          bg="background"
+          rounded="4"
           opacity={0.6}
           scale={0.78}
         />
@@ -681,9 +650,9 @@ const ComponentPreview = {
           mb="10%"
           borderWidth={2}
           aspectRatio={1}
-          rounded="$4"
-          bg="$background"
-          borderColor="$color6"
+          rounded="4"
+          bg="background"
+          borderColor="color6"
           opacity={0.7}
           scale={0.8}
         />
@@ -695,10 +664,10 @@ const ComponentPreview = {
           mb="10%"
           borderWidth={2}
           aspectRatio={1}
-          rounded="$4"
-          bg="$background"
+          rounded="4"
+          bg="background"
           justify="center"
-          borderColor="$color6"
+          borderColor="color6"
           items="center"
         >
           <BentoIcon />
@@ -710,18 +679,18 @@ const ComponentPreview = {
   Cart: () => {
     return (
       <WindowLayout>
-        <YStack gap="$4" p="$4">
+        <YStack gap="4" p="4">
           <ShoppingCart rotate={'-16deg'} />
-          <YStack gap="$4">
+          <YStack gap="4">
             {Array.from({ length: 3 }).map((_, index) => (
-              <XStack gap="$2" key={index}>
-                <View aspectRatio={1} bg="$color8" height="$1.5" rounded="$2" />
-                <YStack flex={1} gap="$2">
-                  <View bg="$color8" height={6} width="70%" />
-                  <View bg="$color8" height={6} width="20%" />
+              <XStack gap="2" key={index}>
+                <View aspectRatio={1} bg="color8" height="1.5" rounded="2" />
+                <YStack flex={1} gap="2">
+                  <View bg="color8" height={6} width="70%" />
+                  <View bg="color8" height={6} width="20%" />
                 </YStack>
 
-                <View bg="$color8" height={6} width="10%" />
+                <View bg="color8" height={6} width="10%" />
               </XStack>
             ))}
           </YStack>
@@ -733,20 +702,20 @@ const ComponentPreview = {
   'Product Page': () => {
     return (
       <WindowLayout>
-        <XStack gap="$4" justify="flex-start" p="$4">
-          <YStack flex={3} gap="$1.5">
-            <View width="100%" bg="$color8" aspectRatio={3 / 2} />
-            <XStack gap="$1.5">
+        <XStack gap="4" justify="flex-start" p="4">
+          <YStack flex={3} gap="1.5">
+            <View width="100%" bg="color8" aspectRatio={3 / 2} />
+            <XStack gap="1.5">
               {Array.from({ length: 4 }).map((_, i) => (
-                <View key={i} bg="$color8" flex={1} aspectRatio={1} />
+                <View key={i} bg="color8" flex={1} aspectRatio={1} />
               ))}
             </XStack>
           </YStack>
-          <YStack gap="$2" flex={1}>
+          <YStack gap="2" flex={1}>
             <Text fontSize={10}>Product</Text>
 
-            <XStack gap="$1.5">
-              {['$red10', '$blue10', '$green10'].map((color, index) => (
+            <XStack gap="1.5">
+              {['red10', 'blue10', 'green10'].map((color, index) => (
                 <View
                   bg={color as any}
                   height={6}
@@ -757,8 +726,8 @@ const ComponentPreview = {
               ))}
             </XStack>
 
-            <View width="100%" mt="$2" height={6} bg="$color8" />
-            <View width="80%" height={6} bg="$color8" />
+            <View width="100%" mt="2" height={6} bg="color8" />
+            <View width="80%" height={6} bg="color8" />
           </YStack>
         </XStack>
       </WindowLayout>
@@ -769,17 +738,17 @@ const ComponentPreview = {
     return (
       <WindowLayout>
         <YStack
-          m="$4"
-          p="$4"
-          rounded="$4"
-          gap="$2"
+          m="4"
+          p="4"
+          rounded="4"
+          gap="2"
           borderWidth={1.5}
-          borderColor="$color8"
+          borderColor="color8"
           height={200}
         >
           <Mail />
-          <View width="100%" mt="$2" height={6} bg="$color8" />
-          <View width="80%" height={6} bg="$color8" />
+          <View width="100%" mt="2" height={6} bg="color8" />
+          <View width="80%" height={6} bg="color8" />
         </YStack>
       </WindowLayout>
     )
@@ -789,30 +758,30 @@ const ComponentPreview = {
     return (
       <YStack
         width="100%"
-        bg="$background"
+        bg="background"
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
         overflow="hidden"
-        rounded="$4"
+        rounded="4"
       >
         <XStack
           items="center"
-          p="$2"
-          gap="$2"
+          p="2"
+          gap="2"
           borderBottomWidth={1}
-          borderColor="$borderColor"
-          bg="$backgroundPress"
+          borderColor="border-color"
+          bg="background-press"
         >
           <Laptop2 size={16} />
           <Text fontSize={10}>Status Tracker</Text>
         </XStack>
-        <YStack p="$2" gap="$2">
+        <YStack p="2" gap="2">
           {[1, 2].map((_, i) => (
-            <XStack key={i} items="center" gap="$2">
-              <View bg="$color8" height={'$2'} aspectRatio={1} rounded={1_000_000_000} />
-              <View flex={1} gap="$2">
-                <View bg="$color8" height={6} width="80%" />
-                <View bg="$color8" height={6} width="20%" />
+            <XStack key={i} items="center" gap="2">
+              <View bg="color8" height="2" aspectRatio={1} rounded={1_000_000_000} />
+              <View flex={1} gap="2">
+                <View bg="color8" height={6} width="80%" />
+                <View bg="color8" height={6} width="20%" />
               </View>
             </XStack>
           ))}
@@ -825,17 +794,17 @@ const ComponentPreview = {
     return (
       <WindowLayout>
         <YStack
-          m="$4"
-          p="$4"
-          rounded="$4"
-          gap="$2"
+          m="4"
+          p="4"
+          rounded="4"
+          gap="2"
           borderWidth={1.5}
-          borderColor={'$color8'}
+          borderColor="color8"
           height={200}
         >
           <DollarSign />
-          <View width="100%" mt="$2" height={6} bg="$color8" />
-          <View width="80%" height={6} bg="$color8" />
+          <View width="100%" mt="2" height={6} bg="color8" />
+          <View width="80%" height={6} bg="color8" />
         </YStack>
       </WindowLayout>
     )

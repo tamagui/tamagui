@@ -16,7 +16,7 @@ export function BentoPage() {
   // }
 
   // return (
-  //   <YStack bg="$color2" f={1}>
+  //   <YStack bg="color2" f={1}>
   //     <Component />
   //   </YStack>
   // )

@@ -7,6 +7,8 @@ import { stopAccumulatingRules } from '../helpers/insertStyleRule'
 import { updateMediaListeners } from '../hooks/useMedia'
 import { resolveAnimationDriver } from '../helpers/resolveAnimationDriver'
 import type { AnimationDriver, TamaguiProviderProps } from '../types'
+import { ConfigRevisionCheck } from './ConfigRevisionCheck'
+import { hasSafeAreaTracker, SafeAreaTracker } from './SafeAreaTracker'
 import { TamaguiRoot } from './TamaguiRoot'
 import { ThemeProvider } from './ThemeProvider'
 
@@ -35,8 +37,9 @@ export function TamaguiProvider({
   // (e.g. useColorScheme() returns null on first render in RN 0.83+)
   const defaultTheme = defaultThemeProp || firstThemeKey(config) || 'light'
   useIsomorphicLayoutEffect(() => {
-    stopAccumulatingRules()
+    const resumeAccumulatingRules = stopAccumulatingRules()
     updateMediaListeners()
+    return resumeAccumulatingRules
   }, [])
 
   const memoizedInsets = React.useMemo(
@@ -76,8 +79,6 @@ export function TamaguiProvider({
 
   return (
     <>
-      {contents}
-
       {process.env.TAMAGUI_TARGET !== 'native' && config && !disableInjectCSS && (
         <style
           // react 19 feature to hoist style tags to header:
@@ -90,6 +91,12 @@ export function TamaguiProvider({
           {config.getCSS()}
         </style>
       )}
+
+      {process.env.NODE_ENV !== 'production' &&
+        process.env.TAMAGUI_TARGET !== 'native' &&
+        config && <ConfigRevisionCheck config={config} />}
+      {hasSafeAreaTracker() && <SafeAreaTracker />}
+      {contents}
     </>
   )
 }

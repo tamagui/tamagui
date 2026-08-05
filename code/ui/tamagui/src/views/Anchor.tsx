@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { styled } from '@tamagui/core'
+import { createStyledHOC, styled } from '@tamagui/core'
 import type { SizableTextProps } from '@tamagui/text'
 import { SizableText } from '@tamagui/text'
 import { Linking } from 'react-native'
@@ -18,8 +18,9 @@ const AnchorFrame = styled(SizableText, {
   role: 'link',
 })
 
-export const Anchor = AnchorFrame.styleable<AnchorExtraProps>(
-  ({ href, target, rel, ...props }, ref) => {
+export const Anchor = createStyledHOC(
+  AnchorFrame,
+  ({ href, target, rel, ...props }: AnchorProps, ref) => {
     return (
       <AnchorFrame
         {...props}

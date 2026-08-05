@@ -20,7 +20,7 @@
     "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "expo": "~55.0.6",
+    "expo": "~55.0.28",
     "expo-font": "~55.0.4",
     "react": ">=19",
     "react-native": "0.83.2",

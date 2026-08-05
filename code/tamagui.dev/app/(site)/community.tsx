@@ -1,19 +1,8 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
 import type { Href } from 'one'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  Image,
-  Paragraph,
-  Spacer,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { H1, H2, H3, H4, H5, Image, Paragraph, Spacer, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Card } from '~/components/Card'
 import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'
@@ -29,9 +18,9 @@ export default function Community() {
     <ThemeNameEffect>
       <HeadInfo title="Community" />
 
-      <Spacer size="$4" />
+      <Spacer size="4" />
 
-      <ContainerLarge gap="$4">
+      <ContainerLarge gap="4">
         <Spacer />
 
         <H1 self="center">Community</H1>
@@ -42,24 +31,19 @@ export default function Community() {
 
         <Spacer />
 
-        <XStack $sm={{ flexDirection: 'column' }}>
-          <FlatBubbleCard
-            width="50%"
-            $sm={{ width: 'auto' }}
-            items="center"
-            borderWidth={0}
-          >
+        <XStack flexDirection="sm:column">
+          <FlatBubbleCard width="50% sm:auto" items="center" borderWidth={0}>
             <Link href="/blog">
               <Button
                 bg="transparent"
-                borderColor="$borderColor"
+                borderColor="border-color"
                 borderWidth={1}
-                mt="$-3"
-                size="$6"
+                mt="-3"
+                size="5"
                 iconAfter={ChevronRight}
-                rounded="$10"
+                rounded="10"
               >
-                <H2 cursor="pointer" size="$9" text="center">
+                <H2 cursor="pointer" size="9" text="center">
                   The Blog
                 </H2>
               </Button>
@@ -69,23 +53,23 @@ export default function Community() {
             {/* <YStack w="100%" space>
               {[].map((frontmatter) => (
                 <Link key={frontmatter.title} href={frontmatter.slug}>
-                  <Card bc="transparent" p="$4" f={1}>
-                    <YStack gap="$2">
+                  <Card bc="transparent" p="4" f={1}>
+                    <YStack gap="2">
                       <H3
-                        fontFamily="$silkscreen"
-                        size="$6"
-                        color="$color"
+                        fontFamily="silkscreen"
+                        size="6"
+                        color="color"
                         cursor="pointer"
                       >
                         {frontmatter.title}
                       </H3>
 
-                      <XStack ai="center" space="$2">
+                      <XStack ai="center" space="2">
                         <Paragraph
                           cursor="inherit"
                           render="time"
-                          size="$5"
-                          color="$color9"
+                          size="5"
+                          color="color9"
                           fow="300"
                         >
                           {Intl.DateTimeFormat('en-US', {
@@ -94,7 +78,7 @@ export default function Community() {
                             day: 'numeric',
                           }).format(new Date(frontmatter.publishedAt || ''))}
                         </Paragraph>
-                        <Paragraph cursor="inherit" color="$color9" size="$4" fow="300">
+                        <Paragraph cursor="inherit" color="color9" size="4" fow="300">
                           &nbsp;by {authors[frontmatter.by].name}
                         </Paragraph>
                       </XStack>
@@ -105,34 +89,32 @@ export default function Community() {
             </YStack> */}
           </FlatBubbleCard>
 
-          <Spacer size="$4" />
+          <Spacer size="4" />
 
           <FlatBubbleCard items="center" borderWidth={0}>
-            <H2 size="$9" text="center">
+            <H2 size="9" text="center">
               Figma Design Kit
             </H2>
-            <Spacer size="$6" />
-            <YStack items="center" gap="$4">
+            <Spacer size="6" />
+            <YStack items="center" gap="4">
               <Link href="https://www.figma.com/community/file/1326593766534421119">
                 <YStack
-                  rounded="$5"
+                  rounded="5"
                   overflow="hidden"
                   borderWidth={0.5}
-                  borderColor="$borderColor"
+                  borderColor="border-color"
                 >
                   <Image
                     transition="quick"
                     cursor="pointer"
-                    shadowColor="$shadowColor"
-                    shadowRadius="$4"
-                    hoverStyle={{
-                      scale: 1.2,
-                      borderColor: '$color',
-                    }}
+                    shadowColor="shadow-color"
+                    shadowRadius="4"
+                    scale="hover:1.2"
+                    borderColor="hover:color"
                     opacity={0.5}
-                    src="/figma.png"
                     width={1466 * 0.25}
                     height={776 * 0.25}
+                    src="/figma.png"
                   />
                 </YStack>
               </Link>
@@ -142,12 +124,12 @@ export default function Community() {
 
         <Spacer />
 
-        <FlatBubbleCard borderWidth={0.5} gap="$4">
+        <FlatBubbleCard borderWidth={0.5} gap="4">
           <H3 id="starter-repos" text="center">
             Starter repos & Guides
           </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <XStack py="$2" gap="$4">
+            <XStack py="2" gap="4">
               <StarterRepoCard
                 url="https://galaxies.dev/course/react-native-tamagui"
                 name="Universal Apps with Tamagui (Guide)"
@@ -212,7 +194,7 @@ export default function Community() {
         <Spacer />
       </ContainerLarge>
 
-      <Spacer size="$10" />
+      <Spacer size="10" />
     </ThemeNameEffect>
   )
 }
@@ -231,28 +213,23 @@ const StarterRepoCard = ({
       flex={1}
       flexBasis={0}
       maxW={300}
-      gap="$2"
+      gap="2"
       render="a"
       // @ts-ignore
       href={url as string}
       target="_blank"
-      p="$5"
+      p="5"
       justify="space-between"
-      hoverStyle={{
-        scale: 1.02,
-        opacity: 0.9,
-      }}
-      pressStyle={{
-        scale: 0.98,
-      }}
+      scale="hover:1.02 press:0.98"
+      opacity="hover:0.9"
     >
-      <YStack gap="$2">
+      <YStack gap="2">
         <GithubIcon />
-        <H4 cursor="pointer" fontFamily="$silkscreen" letterSpacing={0}>
+        <H4 cursor="pointer" fontFamily="silkscreen" letterSpacing={0}>
           {name}
         </H4>
       </YStack>
-      <Paragraph cursor="pointer" color="$color9">
+      <Paragraph cursor="pointer" color="color9">
         by {author}
       </Paragraph>
     </Card>

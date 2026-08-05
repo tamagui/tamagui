@@ -1,28 +1,47 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { Slot, View, createStyledContext, useEvent } from '@tamagui/core'
+import {
+  Slot,
+  View,
+  createChangeEventDetails,
+  createStyledContext,
+  useEvent,
+  createRefComponent,
+  type GetRef,
+  type TamaguiChangeEventDetails,
+} from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
 
-const ENTRY_FOCUS = 'rovingFocusGroup.onEntryFocus'
-const EVENT_OPTIONS = { bubbles: false, cancelable: true }
-
 /* -----------------------------------------------------------------------------------------------*/
 
-type RovingFocusGroupImplElement = React.ElementRef<typeof View>
+type RovingFocusGroupImplElement = GetRef<typeof View>
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof View>
+export type RovingFocusChangeDetails = TamaguiChangeEventDetails<
+  'keyboard' | 'trigger-focus' | 'focus-out',
+  React.KeyboardEvent | React.MouseEvent | React.FocusEvent
+>
+
+export type RovingFocusEntryDetails = TamaguiChangeEventDetails<
+  'trigger-focus',
+  React.FocusEvent
+>
+
 interface RovingFocusGroupImplProps
   extends Omit<PrimitiveDivProps, 'dir'>, RovingFocusGroupOptions {
   currentTabStopId?: string | null
   defaultCurrentTabStopId?: string
-  onCurrentTabStopIdChange?: (tabStopId: string | null) => void
-  onEntryFocus?: (event: Event) => void
+  onCurrentTabStopIdChange?: (
+    tabStopId: string | null,
+    details: RovingFocusChangeDetails
+  ) => void
+  onEntryFocus?: (details: RovingFocusEntryDetails) => void
 }
 
-const RovingFocusGroupImpl = React.forwardRef<
+const RovingFocusGroupImpl = createRefComponent<
   RovingFocusGroupImplElement,
   ScopedProps<RovingFocusGroupImplProps>
 >((props: ScopedProps<RovingFocusGroupImplProps>, forwardedRef) => {
@@ -41,15 +60,21 @@ const RovingFocusGroupImpl = React.forwardRef<
   const ref = React.useRef<RovingFocusGroupImplElement>(null)
   const composedRefs = useComposedRefs(forwardedRef, ref)
   const direction = useDirection(dir)
-  const [currentTabStopId = null, setCurrentTabStopId] = useControllableState({
+  const [currentTabStopId = null, setCurrentTabStopId] = useControllableState<
+    string | null,
+    RovingFocusChangeDetails
+  >({
     prop: currentTabStopIdProp,
     defaultProp: defaultCurrentTabStopId ?? null,
-    onChange: onCurrentTabStopIdChange,
+    onChange: (tabStopId, details) => {
+      if (details) onCurrentTabStopIdChange?.(tabStopId, details)
+    },
   })
   const [isTabbingBackOut, setIsTabbingBackOut] = React.useState(false)
   const handleEntryFocus = useEvent(onEntryFocus)
   const getItems = useCollection(__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT)
   const isClickFocusRef = React.useRef(false)
+  const pendingFocusDetailsRef = React.useRef<RovingFocusChangeDetails | null>(null)
   const [focusableItemsCount, setFocusableItemsCount] = React.useState(0)
 
   const Comp = (asChild ? Slot : View) as typeof View
@@ -62,9 +87,19 @@ const RovingFocusGroupImpl = React.forwardRef<
       loop={loop}
       currentTabStopId={currentTabStopId}
       onItemFocus={React.useCallback(
-        (tabStopId) => setCurrentTabStopId(tabStopId),
-        [setCurrentTabStopId]
+        (tabStopId, event) => {
+          if (tabStopId === currentTabStopId) return
+          const details =
+            pendingFocusDetailsRef.current ??
+            createChangeEventDetails('trigger-focus', event, event.currentTarget)
+          pendingFocusDetailsRef.current = null
+          setCurrentTabStopId(tabStopId, details)
+        },
+        [currentTabStopId, setCurrentTabStopId]
       )}
+      setPendingFocusDetails={React.useCallback((details) => {
+        pendingFocusDetailsRef.current = details
+      }, [])}
       onItemShiftTab={React.useCallback(() => setIsTabbingBackOut(true), [])}
       onFocusableItemAdd={React.useCallback(
         () => setFocusableItemsCount((prevCount) => prevCount + 1),
@@ -96,12 +131,14 @@ const RovingFocusGroupImpl = React.forwardRef<
             isKeyboardFocus &&
             !isTabbingBackOut
           ) {
-            // create a cancelable event that onEntryFocus can call preventDefault on
-            const entryFocusEvent = new CustomEvent(ENTRY_FOCUS, EVENT_OPTIONS)
-            // call onEntryFocus directly (dispatching to DOM had issues with asChild/Slot)
-            handleEntryFocus(entryFocusEvent)
+            const details = createChangeEventDetails(
+              'trigger-focus',
+              event,
+              event.currentTarget
+            )
+            handleEntryFocus(details)
 
-            if (!entryFocusEvent.defaultPrevented) {
+            if (!details.isCanceled) {
               const items = getItems().filter((item) => item.focusable)
               const activeItem = items.find((item) => item.active)
               const currentItem = items.find((item) => item.id === currentTabStopId)
@@ -130,30 +167,32 @@ const RovingFocusGroupImpl = React.forwardRef<
 
 const ITEM_NAME = 'RovingFocusGroupItem'
 
-type RovingFocusItemElement = React.ElementRef<typeof View>
+type RovingFocusItemElement = GetRef<typeof View>
 type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>
 interface RovingFocusItemProps extends PrimitiveSpanProps {
   tabStopId?: string
-  focusable?: boolean
   active?: boolean
 }
 
-const RovingFocusGroupItem = React.forwardRef<
+const RovingFocusGroupItem = createRefComponent<
   RovingFocusItemElement,
   ScopedProps<RovingFocusItemProps>
 >((props: ScopedProps<RovingFocusItemProps>, forwardedRef) => {
   const {
     __scopeRovingFocusGroup,
-    focusable = true,
     active = false,
     tabStopId,
+    tabIndex: tabIndexProp,
     ...itemProps
   } = props
+  const tabIndex = tabIndexProp ?? 0
+  const focusable = Number(tabIndex) >= 0
   const autoId = React.useId()
   const id = tabStopId || autoId
   const context = useRovingFocusContext(__scopeRovingFocusGroup)
   const isCurrentTabStop = context.currentTabStopId === id
   const getItems = useCollection(__scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT)
+  const skipNextFocusRequestRef = React.useRef(false)
 
   const { onFocusableItemAdd, onFocusableItemRemove } = context
 
@@ -172,7 +211,7 @@ const RovingFocusGroupItem = React.forwardRef<
       active={active}
     >
       <View
-        tabIndex={focusable ? 0 : -1}
+        tabIndex={tabIndex}
         data-orientation={context.orientation}
         {...itemProps}
         ref={forwardedRef}
@@ -181,9 +220,21 @@ const RovingFocusGroupItem = React.forwardRef<
           // Even though the item has tabIndex={-1}, that only means take it out of the tab order.
           if (!focusable) event.preventDefault()
           // Safari doesn't focus a button when clicked so we run our logic on mousedown also
-          else context.onItemFocus(id)
+          else {
+            skipNextFocusRequestRef.current = true
+            queueMicrotask(() => {
+              skipNextFocusRequestRef.current = false
+            })
+            context.onItemFocus(id, event)
+          }
         })}
-        onFocus={composeEventHandlers(props.onFocus, () => context.onItemFocus(id))}
+        onFocus={composeEventHandlers(props.onFocus, (event) => {
+          if (skipNextFocusRequestRef.current) {
+            skipNextFocusRequestRef.current = false
+            return
+          }
+          context.onItemFocus(id, event)
+        })}
         {...(isWeb && {
           onKeyDown: composeEventHandlers(
             (props as React.ComponentProps<'span'>).onKeyDown,
@@ -215,7 +266,16 @@ const RovingFocusGroupItem = React.forwardRef<
                  * Imperative focus during keydown is risky so we prevent React's batching updates
                  * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
                  */
-                setTimeout(() => focusFirst(candidateNodes, { focusVisible: true }))
+                const details = createChangeEventDetails(
+                  'keyboard',
+                  event,
+                  event.currentTarget
+                )
+                setTimeout(() => {
+                  context.setPendingFocusDetails(details)
+                  focusFirst(candidateNodes, { focusVisible: true })
+                  context.setPendingFocusDetails(null)
+                })
               }
             }
           ),
@@ -264,7 +324,8 @@ interface RovingFocusGroupOptions {
 
 type RovingContextValue = RovingFocusGroupOptions & {
   currentTabStopId: string | null
-  onItemFocus(tabStopId: string): void
+  onItemFocus(tabStopId: string, event: React.MouseEvent | React.FocusEvent): void
+  setPendingFocusDetails(details: RovingFocusChangeDetails | null): void
   onItemShiftTab(): void
   onFocusableItemAdd(): void
   onFocusableItemRemove(): void
@@ -282,7 +343,7 @@ interface RovingFocusGroupProps extends RovingFocusGroupImplProps {}
 const ROVING_FOCUS_GROUP_CONTEXT = 'RovingFocusGroupContext'
 
 const RovingFocusGroup = withStaticProperties(
-  React.forwardRef<RovingFocusGroupElement, ScopedProps<RovingFocusGroupProps>>(
+  createRefComponent<RovingFocusGroupElement, ScopedProps<RovingFocusGroupProps>>(
     (props: ScopedProps<RovingFocusGroupProps>, forwardedRef) => {
       return (
         <Collection.Provider

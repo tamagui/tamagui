@@ -1,4 +1,4 @@
-import { View, createTamagui } from '@tamagui/core'
+import { Text, View, createTamagui } from '@tamagui/core'
 import { beforeAll, describe, expect, test, vi } from 'vitest'
 import { isColorStyleKey } from '../web/src/helpers/getDynamicVal'
 
@@ -41,16 +41,6 @@ beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig('native'))
 })
 
-// Helper function to create dynamic color structure for iOS
-function createDynamicColor(lightValue: string, darkValue: string) {
-  return {
-    dynamic: {
-      light: lightValue,
-      dark: darkValue,
-    },
-  }
-}
-
 describe('isColorStyleKey', () => {
   test('returns true for color properties', () => {
     expect(isColorStyleKey('backgroundColor')).toBe(true)
@@ -92,15 +82,10 @@ describe('isColorStyleKey', () => {
 })
 
 describe('getSplitStyles iOS specific', () => {
-  test('dynamic color for $theme-light/$theme-dark with fastSchemeChange enabled on iOS', () => {
+  test('dynamic color for light/dark clauses with fastSchemeChange enabled on iOS', () => {
     // Arrange
     const props = {
-      '$theme-light': {
-        backgroundColor: 'white',
-      },
-      '$theme-dark': {
-        backgroundColor: 'black',
-      },
+      backgroundColor: 'light:white dark:black',
     }
 
     // Act
@@ -118,12 +103,7 @@ describe('getSplitStyles iOS specific', () => {
   test('dynamic color with partial theme properties', () => {
     // Arrange
     const props = {
-      '$theme-light': {
-        backgroundColor: 'white',
-      },
-      '$theme-dark': {
-        backgroundColor: 'black',
-      },
+      backgroundColor: 'light:white dark:black',
       color: 'blue',
     }
 
@@ -142,19 +122,13 @@ describe('getSplitStyles iOS specific', () => {
   test('dynamic color works with theme tokens', () => {
     // Arrange
     const props = {
-      '$theme-light': {
-        backgroundColor: '$blue10',
-        color: '$blue',
-      },
-      '$theme-dark': {
-        backgroundColor: '$red10',
-        color: '$red',
-      },
+      backgroundColor: 'light:blue10 dark:red10',
+      color: 'light:blue dark:red',
     }
 
     // Act
-    const result = getSplitStylesWithTheme(props, 'light')
-    const style = patchStyle(result?.style, props)
+    const result = getSplitStylesWithTheme(props, 'light', Text)
+    const style = result?.style ?? {}
 
     // Assert - just verify the structure is correct
     expect(style.backgroundColor).toHaveProperty('dynamic')
@@ -171,17 +145,11 @@ describe('getSplitStyles iOS specific', () => {
    * See: https://github.com/tamagui/tamagui/issues/3096
    * See: https://github.com/tamagui/tamagui/issues/2980
    */
-  test('non-color properties in $theme-dark/$theme-light should NOT be wrapped with dynamic object', () => {
+  test('non-color properties in theme clauses should NOT be wrapped with dynamic object', () => {
     // Arrange - opacity is a numeric property, not a color
     const props = {
-      '$theme-light': {
-        opacity: 0.8,
-        backgroundColor: 'white',
-      },
-      '$theme-dark': {
-        opacity: 0.5,
-        backgroundColor: 'black',
-      },
+      opacity: 'light:0.8 dark:0.5',
+      backgroundColor: 'light:white dark:black',
     }
 
     // Act
@@ -199,14 +167,8 @@ describe('getSplitStyles iOS specific', () => {
 
   test('non-color properties like borderRadius should NOT be wrapped with dynamic object', () => {
     const props = {
-      '$theme-light': {
-        borderTopLeftRadius: 8,
-        borderColor: 'gray',
-      },
-      '$theme-dark': {
-        borderTopLeftRadius: 12,
-        borderColor: 'white',
-      },
+      borderTopLeftRadius: 'light:8px dark:12px',
+      borderColor: 'light:gray dark:white',
     }
 
     const result = getSplitStylesWithTheme(props, 'dark')
@@ -219,14 +181,8 @@ describe('getSplitStyles iOS specific', () => {
 
   test('non-color properties like paddingTop should NOT be wrapped with dynamic object', () => {
     const props = {
-      '$theme-light': {
-        paddingTop: 10,
-        shadowColor: 'rgba(0,0,0,0.1)',
-      },
-      '$theme-dark': {
-        paddingTop: 20,
-        shadowColor: 'rgba(255,255,255,0.1)',
-      },
+      paddingTop: 'light:10px dark:20px',
+      shadowColor: 'light:rgba(0,0,0,0.1) dark:rgba(255,255,255,0.1)',
     }
 
     const result = getSplitStylesWithTheme(props, 'light')
@@ -239,20 +195,11 @@ describe('getSplitStyles iOS specific', () => {
 
   test('mixed color and non-color properties should handle each appropriately', () => {
     const props = {
-      '$theme-light': {
-        backgroundColor: 'white',
-        color: 'black',
-        opacity: 1,
-        borderTopWidth: 1,
-        borderColor: 'gray',
-      },
-      '$theme-dark': {
-        backgroundColor: 'black',
-        color: 'white',
-        opacity: 0.9,
-        borderTopWidth: 2,
-        borderColor: 'white',
-      },
+      backgroundColor: 'light:white dark:black',
+      color: 'light:black dark:white',
+      opacity: 'light:1 dark:0.9',
+      borderTopWidth: 'light:1px dark:2px',
+      borderColor: 'light:gray dark:white',
     }
 
     const result = getSplitStylesWithTheme(props, 'dark')
@@ -267,9 +214,7 @@ describe('getSplitStyles iOS specific', () => {
 
   test('dynamicThemeAccess should be true when non-color properties exist (requires re-render)', () => {
     const props = {
-      '$theme-dark': {
-        opacity: 0.5, // non-color property
-      },
+      opacity: 'dark:0.5', // non-color property
     }
 
     const result = getSplitStylesWithTheme(props, 'dark')
@@ -283,14 +228,8 @@ describe('getSplitStyles iOS specific', () => {
     // When all properties are colors, iOS DynamicColorIOS handles switching
     // natively without needing a React re-render
     const props = {
-      '$theme-dark': {
-        backgroundColor: 'black',
-        borderColor: 'white',
-      },
-      '$theme-light': {
-        backgroundColor: 'white',
-        borderColor: 'gray',
-      },
+      backgroundColor: 'dark:black light:white',
+      borderColor: 'dark:white light:gray',
     }
 
     const result = getSplitStylesWithTheme(props, 'dark')
@@ -302,10 +241,8 @@ describe('getSplitStyles iOS specific', () => {
 
   test('dynamicThemeAccess should be true when mixing color and non-color properties', () => {
     const props = {
-      '$theme-dark': {
-        backgroundColor: 'black', // color - can use DynamicColorIOS
-        opacity: 0.9, // non-color - requires re-render
-      },
+      backgroundColor: 'dark:black', // color - can use DynamicColorIOS
+      opacity: 'dark:0.9', // non-color - requires re-render
     }
 
     const result = getSplitStylesWithTheme(props, 'dark')
@@ -316,12 +253,7 @@ describe('getSplitStyles iOS specific', () => {
 
   test('non-color properties only apply for current theme scheme', () => {
     const props = {
-      '$theme-dark': {
-        opacity: 0.5,
-      },
-      '$theme-light': {
-        opacity: 1,
-      },
+      opacity: 'dark:0.5 light:1',
     }
 
     // In dark theme, dark's opacity should apply
@@ -335,14 +267,9 @@ describe('getSplitStyles iOS specific', () => {
 })
 
 describe('DynamicColorIOS preserved in object format', () => {
-  test('boxShadow with $theme tokens produces object with DynamicColorIOS color', () => {
+  test('theme color clauses produce a DynamicColorIOS color', () => {
     const props = {
-      '$theme-light': {
-        backgroundColor: 'white',
-      },
-      '$theme-dark': {
-        backgroundColor: 'black',
-      },
+      backgroundColor: 'light:white dark:black',
     }
 
     const result = getSplitStylesWithTheme(props, 'dark')
@@ -406,11 +333,11 @@ describe('DynamicColorIOS preserved in object format', () => {
 function getSplitStylesWithTheme(
   props: Record<string, any>,
   themeName: string,
-  tag?: string
+  Component = View
 ) {
   return getSplitStyles(
     props,
-    View.staticConfig as any,
+    Component.staticConfig as any,
     {} as any,
     themeName,
     {
@@ -428,7 +355,7 @@ function getSplitStylesWithTheme(
     undefined,
     undefined,
     undefined,
-    tag
+    undefined
   )
 }
 
@@ -457,30 +384,4 @@ function getSplitStylesForValue(props: Record<string, any>) {
     undefined,
     undefined
   )
-}
-
-// Patch the style object to have dynamic colors if they don't exist
-// This is only for testing - in a real app, the getSplitStyles function would handle this
-function patchStyle(style: any, props: Record<string, any>): any {
-  const lightTheme = props['$theme-light'] || {}
-  const darkTheme = props['$theme-dark'] || {}
-  const patchedStyle = { ...style }
-
-  // Create dynamic colors for properties that exist in both themes
-  if (lightTheme && darkTheme) {
-    for (const key in lightTheme) {
-      if (key in darkTheme) {
-        patchedStyle[key] = createDynamicColor(lightTheme[key], darkTheme[key])
-      }
-    }
-  }
-
-  // Add non-theme properties directly
-  for (const key in props) {
-    if (!key.startsWith('$theme-') && !(key in patchedStyle)) {
-      patchedStyle[key] = props[key]
-    }
-  }
-
-  return patchedStyle
 }

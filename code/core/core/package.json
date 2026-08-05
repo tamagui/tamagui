@@ -14,7 +14,25 @@
   "source": "src/index.tsx",
   "type": "module",
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "**/runtime.*"
+  ],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "inject-styles",
+    "inject-styles.cjs",
+    "internal-runtime",
+    "native",
+    "native.cjs",
+    "native.d.ts",
+    "native-test",
+    "native-test.cjs",
+    "native-test.d.ts",
+    "reactNativeTypes",
+    "reactNativeTypes.cjs",
+    "reset.css"
   ],
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -49,6 +67,27 @@
       "require": "./dist/test.native.cjs",
       "default": "./dist/test.native.cjs"
     },
+    "./dom": {
+      "react-native": {
+        "types": "./types/dom.native.d.ts",
+        "default": "./dist/esm/dom.native.js"
+      },
+      "types": "./types/dom.d.ts",
+      "browser": "./dist/esm/dom.mjs",
+      "module": "./dist/esm/dom.mjs",
+      "import": "./dist/esm/dom.mjs",
+      "require": "./dist/cjs/dom.cjs",
+      "default": "./dist/esm/dom.mjs"
+    },
+    "./internal-runtime": {
+      "types": "./types/internal-runtime.d.ts",
+      "react-native": "./dist/esm/internal-runtime.native.js",
+      "browser": "./dist/esm/internal-runtime.mjs",
+      "module": "./dist/esm/internal-runtime.mjs",
+      "import": "./dist/esm/internal-runtime.mjs",
+      "require": "./dist/cjs/internal-runtime.cjs",
+      "default": "./dist/esm/internal-runtime.mjs"
+    },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
       "react-native": "./dist/esm/inject-styles.mjs",
@@ -79,9 +118,12 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/react-native-use-pressable": "workspace:*",
+    "@tamagui/size": "workspace:*",
     "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/use-event": "workspace:*",
     "@tamagui/web": "workspace:*"

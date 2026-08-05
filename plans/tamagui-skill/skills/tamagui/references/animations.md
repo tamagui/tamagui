@@ -83,24 +83,14 @@ const animations = createAnimations({
 />
 ```
 
-### Enter/Exit Styles
+### Enter/Exit Clauses
 
 ```tsx
 <View
   animation="fast"
-  enterStyle={{
-    opacity: 0,
-    y: -20,
-    scale: 0.9,
-  }}
-  exitStyle={{
-    opacity: 0,
-    y: 20,
-    scale: 0.9,
-  }}
-  opacity={1}
-  y={0}
-  scale={1}
+  opacity="1 enter:0 exit:0"
+  y="0 enter:-20px exit:20px"
+  scale="1 enter:0.9 exit:0.9"
 />
 ```
 
@@ -116,9 +106,7 @@ import { AnimatePresence } from 'tamagui'
     <View
       key="unique-key"  // key is required
       animation="medium"
-      enterStyle={{ opacity: 0 }}
-      exitStyle={{ opacity: 0 }}
-      opacity={1}
+      opacity="1 enter:0 exit:0"
     />
   )}
 </AnimatePresence>
@@ -161,14 +149,8 @@ State-based animations:
 ```tsx
 <Button
   animation="fast"
-  hoverStyle={{
-    scale: 1.05,
-    backgroundColor: '$blue9',
-  }}
-  pressStyle={{
-    scale: 0.95,
-    backgroundColor: '$blue11',
-  }}
+  scale="1 hover:1.05 press:0.95"
+  backgroundColor="background hover:blue9 press:blue11"
 />
 ```
 
@@ -202,8 +184,7 @@ const AnimatedCard = styled(View, {
 ```tsx
 <View
   animation="medium"
-  enterStyle={{ opacity: 0 }}
-  opacity={1}
+  opacity="1 enter:0"
 />
 ```
 
@@ -212,9 +193,8 @@ const AnimatedCard = styled(View, {
 ```tsx
 <View
   animation="fast"
-  enterStyle={{ opacity: 0, y: 20 }}
-  opacity={1}
-  y={0}
+  opacity="1 enter:0"
+  y="0 enter:20px"
 />
 ```
 
@@ -223,9 +203,8 @@ const AnimatedCard = styled(View, {
 ```tsx
 <View
   animation="bouncy"
-  enterStyle={{ opacity: 0, scale: 0.8 }}
-  opacity={1}
-  scale={1}
+  opacity="1 enter:0"
+  scale="1 enter:0.8"
 />
 ```
 
@@ -234,9 +213,7 @@ const AnimatedCard = styled(View, {
 ```tsx
 <Dialog.Overlay
   animation="fast"
-  enterStyle={{ opacity: 0 }}
-  exitStyle={{ opacity: 0 }}
-  opacity={0.5}
+  opacity="0.5 enter:0 exit:0"
 />
 ```
 
@@ -245,18 +222,16 @@ const AnimatedCard = styled(View, {
 ```tsx
 <Dialog.Content
   animation={['medium', { opacity: { overshootClamping: true } }]}
-  enterStyle={{ opacity: 0, y: -20, scale: 0.95 }}
-  exitStyle={{ opacity: 0, y: 10, scale: 0.98 }}
-  opacity={1}
-  y={0}
-  scale={1}
+  opacity="1 enter:0 exit:0"
+  y="0 enter:-20px exit:10px"
+  scale="1 enter:0.95 exit:0.98"
 />
 ```
 
 ## Tips
 
 1. **Always provide key** in AnimatePresence children
-2. **Set final values** on the component, not just in enterStyle
+2. **Put the base value first** in every clause-bearing style string
 3. **Use overshootClamping** for opacity to prevent negative values
 4. **CSS driver** doesn't support spring physics - use easing strings
 5. **Test on device** - animation feel differs between web and native

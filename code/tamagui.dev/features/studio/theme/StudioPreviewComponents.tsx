@@ -119,7 +119,7 @@ const PalettePreviewPanels = memo(() => {
   if (!palettes) return null
 
   return (
-    <XStack flexWrap="wrap" gap="$2">
+    <XStack flexWrap="wrap" gap="2">
       {Object.entries(palettes).map(([name, palette]) => {
         if (
           (isThemeDark && !name.startsWith('dark')) ||
@@ -130,7 +130,7 @@ const PalettePreviewPanels = memo(() => {
 
         return (
           <Panel key={name} disableSettings m={0} height="auto" flex={1} flexBasis="auto">
-            <YStack borderWidth={0} gap="$0" p="$0" overflow="hidden">
+            <YStack borderWidth={0} gap="0" p="0" overflow="hidden">
               <StudioPaletteBar showLabelIndices colors={palette} />
             </YStack>
           </Panel>
@@ -144,7 +144,7 @@ export const StudioPreviewComponentsSkeleton = memo(() => {
   return (
     <>
       <YStack mr={-10}>
-        <XStack flexWrap="wrap" gap="$4">
+        <XStack flexWrap="wrap" gap="4">
           {[...Array(13)].map((_, index) => (
             <ComponentSkeleton key={index} index={index} />
           ))}
@@ -155,7 +155,7 @@ export const StudioPreviewComponentsSkeleton = memo(() => {
 })
 
 const Skeleton = styled(YStack, {
-  bg: '$color2',
+  bg: 'color2',
 })
 
 const ComponentSkeleton = ({ index }) => {
@@ -163,7 +163,7 @@ const ComponentSkeleton = ({ index }) => {
   const height = heights[index % heights.length]
 
   return (
-    <YStack width="calc(33.33% - 16px)" mb="$4">
+    <YStack width="calc(33.33% - 16px)" mb="4">
       <Skeleton height={height} width="100%" rounded={16} />
     </YStack>
   )

@@ -1,3 +1,4 @@
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { isWeb } from '@tamagui/constants'
 import { getGestureHandler } from '@tamagui/native'
@@ -16,7 +17,7 @@ import { Portal } from '@tamagui/portal'
 import { XStack, YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
-import type { SwipeDirection } from './ToastProvider'
+import type { SwipeDirection } from './types'
 import type { ExternalToast, ToastT, ToastToDismiss, ToastType } from './ToastState'
 import { ToastState } from './ToastState'
 import type { BurntToastOptions } from './types'
@@ -85,10 +86,7 @@ interface ToastContextValue {
   icons?: ToastIcons
 }
 
-const ToastContext = createStyledContext<ToastContextValue>(
-  {} as ToastContextValue,
-  'Toast__'
-)
+const ToastContext = createStyledContext<ToastContextValue>({}, 'Toast__')
 
 const useToastContextValue = ToastContext.useStyledContext
 
@@ -244,7 +242,7 @@ function resolveSwipeDirection(
   return 'horizontal'
 }
 
-const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
+const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
   function ToastRoot(props, _ref) {
     const {
       children,
@@ -451,26 +449,15 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
 
 const ToastViewportFrame = styled(View, {
   name: 'ToastViewport',
-
-  variants: {
-    unstyled: {
-      false: {
-        position: isWeb ? ('fixed' as any) : 'absolute',
-        zIndex: 100000,
-        pointerEvents: 'box-none',
-        maxWidth: '100%',
-        ...(isWeb && { width: 356 }),
-        minHeight: 1,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  position: isWeb ? ('fixed' as any) : 'absolute',
+  zIndex: 100000,
+  pointerEvents: 'box-none',
+  maxWidth: '100%',
+  ...(isWeb && { width: 356 }),
+  minHeight: 1,
 })
 
-export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> {
+export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
   /**
    * Offset from screen edge
    * @default 24
@@ -497,8 +484,9 @@ export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> 
   portalZIndex?: number
 }
 
-const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
-  function ToastViewport(props, ref) {
+const ToastViewport = createStyledHOC(
+  ToastViewportFrame,
+  function ToastViewport(props: ToastViewportProps, ref) {
     const {
       offset = VIEWPORT_OFFSET,
       hotkey = DEFAULT_HOTKEY,
@@ -774,33 +762,27 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
     typeof toast.description === 'function' ? toast.description() : toast.description
 
   return (
-    <XStack alignItems="flex-start" gap="$3">
+    <XStack alignItems="flex-start" gap="3">
       <ToastIcon />
 
-      <YStack flex={1} gap="$1">
+      <YStack flex={1} gap="1">
         {title && <ToastTitle>{title}</ToastTitle>}
         {description && <ToastDescription>{description}</ToastDescription>}
 
         {(toast.action || toast.cancel) && (
-          <XStack gap="$2" marginTop="$2">
+          <XStack gap="2" marginTop="2">
             {toast.cancel && (
               <ToastActionFrame
-                backgroundColor="transparent"
                 onPress={(e: any) => {
                   toast.cancel?.onClick?.(e)
                   handleClose()
                 }}
               >
-                <SizableText size="$2" color="$color11">
-                  {toast.cancel.label}
-                </SizableText>
+                <SizableText size="2">{toast.cancel.label}</SizableText>
               </ToastActionFrame>
             )}
             {toast.action && (
               <ToastActionFrame
-                backgroundColor="$color12"
-                hoverStyle={{ backgroundColor: '$color11' }}
-                pressStyle={{ backgroundColor: '$color10' }}
                 onPress={(e: any) => {
                   toast.action?.onClick?.(e)
                   if (!(e as any).defaultPrevented) {
@@ -808,9 +790,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
                   }
                 }}
               >
-                <SizableText size="$2" fontWeight="600" color="$background">
-                  {toast.action.label}
-                </SizableText>
+                <SizableText size="2">{toast.action.label}</SizableText>
               </ToastActionFrame>
             )}
           </XStack>
@@ -893,14 +873,15 @@ function DragWrapper({
  * ToastItem (the wrapper with stacking/drag)
  * -----------------------------------------------------------------------------------------------*/
 
-export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
+export type ToastItemProps = GetProps<typeof ToastItemFrame> & {
   toast: ToastT
   index: number
   children: React.ReactNode
 }
 
-const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
-  function ToastItem(props, ref) {
+const ToastItemInner = createStyledHOC(
+  ToastItemFrame,
+  function ToastItem(props: ToastItemProps, ref) {
     const { toast, index, children, ...rest } = props
     const ctx = useToastContext('Toast.Item')
 
@@ -1025,12 +1006,6 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       dragRef,
     } = useToastAnimations({
       reducedMotion: ctx.reducedMotion,
-      swipeAxis:
-        ctx.swipeDirection === 'up' ||
-        ctx.swipeDirection === 'down' ||
-        ctx.swipeDirection === 'vertical'
-          ? 'vertical'
-          : 'horizontal',
     })
 
     const { isDragging, gestureHandlers, gesture } = useAnimatedDragGesture({
@@ -1163,17 +1138,20 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       <ToastPositionWrapper
         ref={ref}
         testID={rest.testID}
-        accessibilityLabel={rest.accessibilityLabel}
+        aria-label={rest['aria-label']}
         {...dataAttributes}
         transition={
           isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
         }
-        animateOnly={
-          isWeb ? ['transform', 'opacity', 'height'] : ['transform', 'opacity']
+        y={
+          ctx.reducedMotion
+            ? stackY
+            : `${stackY} enter:${isTop ? -80 : 80}px exit:${
+                swipeOut ? (swipeExitYRef.current ?? stackY) : stackY
+              }px`
         }
-        y={stackY}
         scale={stackScale}
-        opacity={computedOpacity}
+        opacity={`${computedOpacity} enter:0 exit:0`}
         zIndex={computedZIndex}
         height={computedHeight}
         overflow="visible"
@@ -1184,15 +1162,8 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           !isFront && {
             style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
-        enterStyle={
-          ctx.reducedMotion ? { opacity: 0 } : { opacity: 0, y: isTop ? -80 : 80 }
-        }
-        exitStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : swipeOut
-              ? { opacity: 0, y: swipeExitYRef.current ?? stackY, scale: stackScale }
-              : { opacity: 0, y: stackY, scale: stackScale }
+        animateOnly={
+          isWeb ? ['transform', 'opacity', 'height'] : ['transform', 'opacity']
         }
       >
         <DragWrapper
@@ -1252,50 +1223,26 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
  * ToastTitle
  * -----------------------------------------------------------------------------------------------*/
 
+// Structural (unstyled) — text color/weight/size live in the tamagui skin
+// (code/ui/tamagui/src/components/Toast.tsx).
 const ToastTitle = styled(SizableText, {
   name: 'ToastTitle',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color',
-        fontWeight: '600',
-        size: '$4',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 /* -------------------------------------------------------------------------------------------------
  * ToastDescription
  * -----------------------------------------------------------------------------------------------*/
 
+// Structural (unstyled) — text color/size live in the tamagui skin.
 const ToastDescription = styled(SizableText, {
   name: 'ToastDescription',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color11',
-        size: '$2',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 /* -------------------------------------------------------------------------------------------------
  * ToastClose - auto-wired to dismiss current toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
+const ToastClose = createStyledHOC(ToastCloseFrame, function ToastClose(props, ref) {
   // try to get handleClose from context, but allow manual override
   let handleClose: (() => void) | undefined
   try {
@@ -1318,7 +1265,7 @@ const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
  * ToastAction
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastAction = ToastActionFrame.styleable(function ToastAction(props, ref) {
+const ToastAction = createStyledHOC(ToastActionFrame, function ToastAction(props, ref) {
   return <ToastActionFrame ref={ref} {...props} />
 })
 
@@ -1343,7 +1290,7 @@ function ToastIcon(props: { children?: React.ReactNode }) {
   // if custom icon provided on toast, use it
   if (toast.icon !== undefined) {
     return (
-      <View flexShrink={0} marginTop="$0.5">
+      <View flexShrink={0} marginTop="0-5">
         {toast.icon}
       </View>
     )
@@ -1356,7 +1303,7 @@ function ToastIcon(props: { children?: React.ReactNode }) {
   if (!icon) return null
 
   return (
-    <View flexShrink={0} marginTop="$0.5">
+    <View flexShrink={0} marginTop="0-5">
       {icon}
     </View>
   )
@@ -1372,6 +1319,7 @@ export function useToasts() {
     toasts: ctx.toasts,
     expanded: ctx.expanded,
     position: ctx.position,
+    closeButton: ctx.closeButton,
   }
 }
 

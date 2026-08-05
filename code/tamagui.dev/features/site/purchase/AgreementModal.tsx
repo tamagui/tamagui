@@ -1,5 +1,6 @@
 import { X } from '@tamagui/lucide-icons-2'
-import { Button, Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from 'tamagui'
+import { Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 import { ProLicense } from '../../pro/ProLicense'
 import { useTakeoutStore } from './useTakeoutStore'
@@ -14,19 +15,15 @@ export const ProAgreementModal = () => {
         store.showProAgreement = val
       }}
     >
-      <Dialog.Adapt when="maxMd">
+      <Dialog.Adapt when="max-md">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame p="$4" gap="$4">
+          <Sheet.Container p="4" gap="4">
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            bg="$shadow4"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          </Sheet.Container>
+          <Sheet.Overlay bg="shadow4" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Dialog.Adapt>
 
@@ -34,30 +31,23 @@ export const ProAgreementModal = () => {
         <Dialog.Overlay
           key="overlay"
           transition="medium"
+          opacity="enter:0 exit:0"
           className="blur-medium"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
         />
 
         <Dialog.Content
           bordered
           elevate
           key="content"
-          transition={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
+          transition={['quick', { opacity: { overshootClamping: true } }]}
+          y="enter:-10px exit:10px"
+          opacity="enter:0 exit:0"
+          scale="enter:0.975 exit:0.975"
           width="90%"
           maxW={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxH: '90vh' }} gap="$4">
+            <YStack maxH="gtSm:90vh" gap="4">
               <Paragraph>
                 <Link href="/pro-license">Permalink to the license</Link>.
               </Paragraph>
@@ -67,7 +57,7 @@ export const ProAgreementModal = () => {
           </ScrollView>
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+              <Button position="absolute" t="2" r="2" size="3" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

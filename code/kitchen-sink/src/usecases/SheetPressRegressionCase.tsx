@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { getGestureHandler } from '@tamagui/native'
-import { unstable_isSheetGestureHandlerEnabled } from '@tamagui/sheet'
-import { Button, Input, Sheet, Text, View, XStack, YStack } from 'tamagui'
+import { getGestureHandlerConfig } from '@tamagui/native/setup-gesture-handler'
+import { Input, Sheet, Text, View, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * regression repro for 2ce98f604a (rngh press tap maxDistance).
@@ -20,7 +21,7 @@ export function SheetPressRegressionCase() {
   const [open, setOpen] = useState(false)
   const [caption, setCaption] = useState('')
   const pressRnghEnabled = getGestureHandler().isEnabled
-  const sheetRnghEnabled = unstable_isSheetGestureHandlerEnabled()
+  const sheetRnghEnabled = getGestureHandlerConfig().sheet !== false
 
   const [postCount, setPostCount] = useState(0)
   const [cancelCount, setCancelCount] = useState(0)
@@ -37,11 +38,11 @@ export function SheetPressRegressionCase() {
   }
 
   return (
-    <YStack padding="$4" gap="$3" testID="sheet-press-screen">
-      <Text fontSize="$5" fontWeight="bold">
+    <YStack padding="4" gap="3" testID="sheet-press-screen">
+      <Text fontSize="5" fontWeight="bold">
         Sheet Press Regression
       </Text>
-      <XStack gap="$3">
+      <XStack gap="3">
         <Text testID="sheet-press-press-rngh-status">
           pressRNGH: {pressRnghEnabled ? 'on' : 'off'}
         </Text>
@@ -74,19 +75,18 @@ export function SheetPressRegressionCase() {
         <Sheet.Overlay
           testID="sheet-press-overlay"
           transition="lazy"
-          bg="$color"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          bg="color"
+          opacity="0.5 enter:0 exit:0"
         />
-        <Sheet.Frame testID="sheet-press-frame" bg="$background">
+        <Sheet.Container testID="sheet-press-frame">
+          <Sheet.Background bg="background" />
           <Sheet.ScrollView
             testID="sheet-press-scrollview"
             maxHeight={520}
             keyboardShouldPersistTaps="handled"
           >
-            <YStack gap="$3" padding="$4">
-              <Text fontSize="$5" fontWeight="bold">
+            <YStack gap="3" padding="4">
+              <Text fontSize="5" fontWeight="bold">
                 New Thread
               </Text>
 
@@ -106,23 +106,24 @@ export function SheetPressRegressionCase() {
                 Scroll Button
               </Button>
 
-              {/* poll "add option" pattern: a View with onPress + pressStyle */}
+              {/* poll "add option" pattern: a View with onPress + press clause */}
               <View
                 testID="sheet-press-nested-view"
                 alignSelf="flex-start"
                 flexDirection="row"
                 alignItems="center"
-                gap="$2"
-                paddingVertical="$2"
-                paddingHorizontal="$3"
-                borderRadius="$3"
+                gap="2"
+                paddingVertical="2"
+                paddingHorizontal="3"
+                borderRadius="3"
                 borderWidth={1}
-                borderColor="$borderColor"
-                pressStyle={{ opacity: 0.6, backgroundColor: '$color5' }}
+                borderColor="border-color"
+                opacity="press:0.6"
+                backgroundColor="press:color5"
                 hitSlop={10}
                 onPress={() => setNestedViewCount((c) => c + 1)}
               >
-                <Text color="$blue10" fontWeight="600">
+                <Text color="blue10" fontWeight="600">
                   + Add option (count: {nestedViewCount})
                 </Text>
               </View>
@@ -130,12 +131,12 @@ export function SheetPressRegressionCase() {
               {/* ThreadMediaPicker pattern: a pressable card */}
               <View
                 testID="sheet-press-media-card"
-                padding="$4"
-                borderRadius="$4"
+                padding="4"
+                borderRadius="4"
                 borderWidth={2}
-                borderColor="$borderColor"
+                borderColor="border-color"
                 borderStyle="dashed"
-                pressStyle={{ backgroundColor: '$color5' }}
+                backgroundColor="press:color5"
                 onPress={() => setMediaCardCount((c) => c + 1)}
               >
                 <Text>Add Image (count: {mediaCardCount})</Text>
@@ -154,12 +155,14 @@ export function SheetPressRegressionCase() {
           {/* footer: inside the Frame, outside the ScrollView - like 3pc */}
           <YStack
             borderTopWidth={1}
-            borderColor="$borderColor"
-            bg="$color1"
-            padding="$3"
-            paddingBottom="$8"
+            borderColor="border-color"
+            bg="color1"
+            paddingTop="3"
+            paddingRight="3"
+            paddingLeft="3"
+            paddingBottom="8"
           >
-            <XStack justifyContent="flex-end" gap="$3">
+            <XStack justifyContent="flex-end" gap="3">
               <Button
                 testID="sheet-press-footer-cancel"
                 variant="outlined"
@@ -176,11 +179,11 @@ export function SheetPressRegressionCase() {
               </Button>
             </XStack>
           </YStack>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
 
       {/* counters mirrored outside the sheet so they're readable after close */}
-      <YStack gap="$1" padding="$3" bg="$color2" borderRadius="$2">
+      <YStack gap="1" padding="3" bg="color2" borderRadius="2">
         <Text testID="sheet-press-post-count">post: {postCount}</Text>
         <Text testID="sheet-press-cancel-count">cancel: {cancelCount}</Text>
         <Text testID="sheet-press-scroll-button-count">

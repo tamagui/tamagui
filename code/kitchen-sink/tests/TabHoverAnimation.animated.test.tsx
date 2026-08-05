@@ -49,6 +49,7 @@ async function getSlideContentInfo(page: any) {
       tab: (el as HTMLElement).dataset.tab,
       going: (el as HTMLElement).dataset.going,
       transform: getComputedStyle(el).transform,
+      translate: getComputedStyle(el).translate,
       opacity: getComputedStyle(el).opacity,
     }))
   })
@@ -65,8 +66,11 @@ async function trackTranslateX(page: any, selector: string, frames = 6) {
         let count = 0
         function tick() {
           const style = getComputedStyle(el!)
-          const matrix = new DOMMatrix(style.transform)
-          values.push(matrix.m41)
+          const individualTranslate =
+            style.translate === 'none' ? 0 : Number.parseFloat(style.translate)
+          const legacyTranslate =
+            style.transform === 'none' ? 0 : new DOMMatrixReadOnly(style.transform).e
+          values.push(individualTranslate + legacyTranslate)
           count++
           if (count < frames) {
             requestAnimationFrame(tick)
@@ -155,7 +159,7 @@ test('direction: exiting element keeps original direction when going reverses', 
     }
   })
 
-  // hover Tab E → Tab A starts exiting LEFT (going=1, exitStyle x=-100)
+  // hover Tab E → Tab A starts exiting LEFT (going=1, exit clause x=-100)
   await hoverTab(page, 'tab-tab-e')
   await page.waitForTimeout(80) // let exit animation start
 
@@ -175,8 +179,12 @@ test('direction: exiting element keeps original direction when going reverses', 
     for (let i = 0; i < els.length; i++) {
       const el = els[i] as HTMLElement
       if (el.dataset.tab === 'Tab A') {
-        const matrix = new DOMMatrix(getComputedStyle(el).transform)
-        return matrix.m41
+        const style = getComputedStyle(el)
+        const individualTranslate =
+          style.translate === 'none' ? 0 : Number.parseFloat(style.translate)
+        const legacyTranslate =
+          style.transform === 'none' ? 0 : new DOMMatrixReadOnly(style.transform).e
+        return individualTranslate + legacyTranslate
       }
     }
     return null

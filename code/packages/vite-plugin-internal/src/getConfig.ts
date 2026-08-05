@@ -88,10 +88,16 @@ export function getConfig(tamaguiPlugin: any) {
               resolve: {
                 // 'react-native', breaks because vitest isnt doing .native.js :/
                 conditions: ['react-native', 'require', 'default'],
-                alias: {
-                  '@tamagui/core': '@tamagui/core/native-test',
-                  '@tamagui/web': '@tamagui/core/native-test',
-                },
+                alias: [
+                  {
+                    find: /^@tamagui\/core$/,
+                    replacement: '@tamagui/core/native-test',
+                  },
+                  {
+                    find: /^@tamagui\/web$/,
+                    replacement: '@tamagui/core/native-test',
+                  },
+                ],
                 extensions: nativeExtensions,
               },
 

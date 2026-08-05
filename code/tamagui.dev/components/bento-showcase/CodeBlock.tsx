@@ -234,19 +234,18 @@ import { Paragraph, styled } from 'tamagui'
 const Code = styled(Paragraph, {
   name: 'Code',
   render: 'code',
-  fontFamily: '$mono',
-  size: '$3',
+  fontFamily: 'mono',
   lineHeight: 18,
   cursor: 'inherit',
   whiteSpace: 'pre',
-  p: '$1',
-  rounded: '$4',
-
+  p: '1',
+  rounded: '4',
+  size: '3',
   variants: {
     colored: {
       true: {
-        color: '$color',
-        backgroundColor: '$background',
+        color: 'color',
+        backgroundColor: 'background',
       },
     },
   } as const,
@@ -254,8 +253,8 @@ const Code = styled(Paragraph, {
 
 const Pre = styled(YStack, {
   overflow: 'visible',
+  p: '4',
+  rounded: '4',
+  bg: 'background',
   render: 'pre',
-  p: '$4',
-  rounded: '$4',
-  bg: '$background',
 })

@@ -27,10 +27,10 @@ demoName: Tabs
     <TabsDemo />
   </Tabs.Content>
   <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
-    <TabsHeadlessDemo />
+    <TabsCustomDemo />
   </Tabs.Content>
   <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
-    <TabsHeadlessDemo />
+    <TabsCustomDemo />
   </Tabs.Content>
 </HeroContainer>
 
@@ -40,13 +40,13 @@ demoName: Tabs
 ````
 </Tabs.Content>
 <Tabs.Content value="unstyled">
-```tsx hero template=TabsHeadless
+```tsx hero template=TabsCustom
 
 ````
 
 </Tabs.Content>
 <Tabs.Content value="headless">
-```tsx hero template=TabsHeadless
+```tsx hero template=TabsCustom
 
 ````
 </Tabs.Content>
@@ -124,7 +124,7 @@ export default () => (
 
 Use the `createTabs` export to create fully custom tabs that still use the Tamagui styling system. You provide your own styled frame components and get back a fully functional tabs component.
 
-```tsx template=TabsHeadless
+```tsx template=TabsCustom
 
 ```
 
@@ -251,8 +251,8 @@ The `useTabs` hook accepts these options and returns props/helpers:
     },
     {
       name: 'size',
-      type: 'SizeTokens',
-      default: "'$true'",
+      type: 'SizeTokens | true',
+      default: 'true',
       description: `Sets the size of the tab triggers. Passed down via context to all Tabs.Tab children.`,
     },
     {

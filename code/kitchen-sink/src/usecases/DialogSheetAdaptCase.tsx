@@ -11,7 +11,7 @@ import {
   YStack,
 } from 'tamagui'
 
-const CONTENT_RADIUS = '$6' as const
+const CONTENT_RADIUS = 16
 
 /**
  * Test case for Dialog with onPress on Overlay - Android crash reproduction
@@ -36,7 +36,7 @@ export function DialogSheetAdaptCase() {
   const [dialogState, setDialogState] = useState<{ open: boolean } | null>(null)
 
   return (
-    <YStack padding="$4" gap="$4" items="center">
+    <YStack padding="4" gap="4" items="center">
       <Button testID="open-dialog" onPress={() => setDialogState({ open: true })}>
         Open Dialog (Adapt to Sheet)
       </Button>
@@ -72,7 +72,7 @@ function TakeoutStyleDialog({
   return (
     <Dialog modal open={open} onOpenChange={onOpenChange}>
       {/* Simplified to match DialogDemo exactly */}
-      <Adapt platform="touch" when="maxMd">
+      <Adapt platform="touch" when="max-md">
         <Sheet
           transition="medium"
           zIndex={200000}
@@ -80,52 +80,46 @@ function TakeoutStyleDialog({
           dismissOnSnapToBottom
           unmountChildrenWhenHidden
         >
-          <Sheet.Frame p="$4" gap="$4">
+          <Sheet.Container p="4" gap="4">
+            <Sheet.Background />
             <Adapt.Contents />
-          </Sheet.Frame>
-          <Sheet.Overlay
-            bg="$background"
-            opacity={0.5}
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          </Sheet.Container>
+          <Sheet.Overlay bg="background" opacity="0.5 enter:0 exit:0" transition="lazy" />
         </Sheet>
       </Adapt>
 
       <Dialog.Portal z={500_000}>
         <DialogOverlay
           key="overlay"
-          bg="$shadow6"
+          bg="shadow6"
           transition="quick"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
+          opacity="enter:0 exit:0"
           onPress={() => {
             console.log('Overlay pressed')
           }}
         />
 
         <Dialog.FocusScope focusOnIdle>
-          <DialogContent key="content" rounded={CONTENT_RADIUS} overflow="hidden" p="$3">
-            <YStack pointerEvents="box-none" gap="$2">
-              <Dialog.Title fontFamily="$mono" size="$5" text="center">
+          <DialogContent key="content" rounded={CONTENT_RADIUS} overflow="hidden" p="3">
+            <YStack pointerEvents="box-none" gap="2">
+              <Dialog.Title fontFamily="monospace" text="center" size="5">
                 Dialog with Sheet Adapt
               </Dialog.Title>
-              <Dialog.Description size="$4" color="$color10">
+              <Dialog.Description size="4" color="color10">
                 On mobile/touch, this adapts to a Sheet with gesture handling.
               </Dialog.Description>
             </YStack>
 
             <Input placeholder="Enter your name" />
 
-            <YStack gap="$3">
+            <YStack gap="3">
               <Paragraph>
                 This tests the gesture handler integration when Sheet renders inside
                 AnimatePresence via Dialog.Adapt.
               </Paragraph>
             </YStack>
 
-            <XStack justify="flex-end" gap="$3">
+            <XStack justify="flex-end" gap="3">
               <Dialog.Close asChild displayWhenAdapted>
                 <Button testID="close-dialog" theme="accent">
                   Close
@@ -141,38 +135,32 @@ function TakeoutStyleDialog({
 
 const DialogOverlay = styled(Dialog.Overlay, {
   transition: '200ms',
-  opacity: 1,
+  opacity: '1 enter:0 exit:0',
   backdropFilter: 'blur(3px)',
-  enterStyle: { opacity: 0 },
-  exitStyle: { opacity: 0 },
 })
 
 const DialogContent = styled(Dialog.Content, {
-  unstyled: true,
   z: 1000000,
   transition: '200ms',
   bg: 'transparent',
   borderWidth: 0.5,
   rounded: CONTENT_RADIUS,
-  borderColor: '$color3',
+  borderColor: 'color3',
   position: 'relative',
   backdropFilter: 'blur(25px)',
-  shadowColor: '$shadow3',
+  shadowColor: 'shadow3',
   shadowRadius: 20,
   shadowOffset: { height: 20, width: 0 },
   maxH: 600,
   width: '60%',
   minW: 200,
   maxW: 500,
-  p: '$4',
-  opacity: 1,
-  y: 0,
-  enterStyle: { x: 0, y: -5, opacity: 0, scale: 0.985 },
-  exitStyle: { x: 0, y: 5, opacity: 0 },
-
-  focusStyle: {
-    outlineWidth: 2,
-    outlineColor: '$background02',
-    outlineStyle: 'solid',
-  },
+  p: '4',
+  opacity: '1 enter:0 exit:0',
+  y: '0 enter:-5px exit:5px',
+  scale: 'enter:0.985',
+  x: 'enter:0 exit:0',
+  outlineWidth: 'focus:2px',
+  outlineColor: 'focus:outline-color',
+  outlineStyle: 'focus:solid',
 })

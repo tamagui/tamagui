@@ -16,6 +16,7 @@ export const nonAnimatableWebViewProps = {
   borderTopStyle: true,
   contain: true,
   containerType: true,
+  containerName: true,
   content: true,
   float: true,
   maskBorderMode: true,
@@ -31,8 +32,6 @@ export const nonAnimatableWebViewProps = {
   overflowInline: true,
   overflowX: true,
   overflowY: true,
-  // NOTE: pointerEvents is NOT web-only - it's a core React Native View prop (not a style)
-  pointerEvents: true,
   scrollbarWidth: true,
   textWrap: true,
   touchAction: true,
@@ -53,7 +52,6 @@ export const webOnlyStylePropsView = {
   transition: true,
   backdropFilter: true,
   WebkitBackdropFilter: true,
-  background: true,
   borderTop: true,
   borderRight: true,
   borderBottom: true,
@@ -75,6 +73,11 @@ export const webOnlyStylePropsView = {
   objectPosition: true,
   textEmphasis: true,
   userSelect: true,
+  // real style keys, not DOM attributes: without these an authored value falls
+  // through to viewProps and reaches the element as an unknown attribute
+  overflowWrap: true,
+  wordWrap: true,
+  resize: true,
 }
 
 export const webOnlyStylePropsText = {

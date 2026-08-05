@@ -11,7 +11,7 @@ import { IconStack } from './IconStack'
 export const HomeHeroBelow = memo(() => {
   return (
     <>
-      <YStack position="relative" z={1000} py="$4" pt="$6" pb="$10">
+      <YStack position="relative" z={1000} pt="6" pb="10">
         <HeroBelowContent />
       </YStack>
     </>
@@ -26,52 +26,49 @@ export const HeroBelowContent = memo(() => {
         overflow="hidden"
         flexBasis="auto"
         maxW="100%"
-        gap="$8"
+        gap="8"
         flexWrap="nowrap"
-        px="$2"
+        px="2 gtSm:6"
         mb={-8}
-        py="$1"
-        $sm={{ flexDirection: 'column' }}
-        $gtSm={{
-          px: '$6',
-        }}
+        py="1"
+        flexDirection="sm:column"
       >
         <Section theme="red">
-          <XStack items="center" gap="$4">
+          <XStack items="center" gap="4">
             <IconStack>
               <Code size={12} color="var(--color9)" />
             </IconStack>
             <TitleLink href="/docs/core/configuration">Core</TitleLink>
           </XStack>
-          <Paragraph opacity={0.7} size="$5">
+          <Paragraph opacity={0.7} size="5">
             A style library for React and React Native with a large typed superset of the
             React Native style API, with no outside dependencies in ~24KB.
           </Paragraph>
         </Section>
 
         <Section theme="gray">
-          <XStack items="center" gap="$4">
+          <XStack items="center" gap="4">
             <IconStack>
               <Cpu size={16} color="var(--color9)" />
             </IconStack>
             <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           </XStack>
-          <Paragraph opacity={0.7} size="$5">
+          <Paragraph opacity={0.7} size="5">
             An optimizer that makes Core faster via partial analysis, CSS extraction, tree
             flattening, and dead code elimination. Next, Webpack, Vite, Babel, Metro.
           </Paragraph>
         </Section>
 
         <Section theme="blue">
-          <XStack items="center" gap="$4">
+          <XStack items="center" gap="4">
             <IconStack>
               <Layers size={16} color="var(--color9)" />
             </IconStack>
             <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           </XStack>
-          <Paragraph opacity={0.7} size="$5">
+          <Paragraph opacity={0.7} size="5">
             All the components you need, cross-platform and composable. Compound Component
-            APIs, styled or unstyled, easy to size, theme, and more.
+            APIs that are easy to style, size, theme, and more.
           </Paragraph>
         </Section>
       </XStack>
@@ -82,18 +79,15 @@ export const HeroBelowContent = memo(() => {
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
     <Link asChild href={href}>
-      <H3 cursor="pointer" color="$color" my="$2">
+      <H3 cursor="pointer" color="color" my="2">
         <CodeInline
           cursor="pointer"
-          fontFamily="$silkscreen"
-          bg="$color2"
-          px="$1.5"
-          py="$1.5"
-          hoverStyle={{
-            backgroundColor: '$color3',
-          }}
-          size="$9"
-          fontSize="$6"
+          fontFamily="silkscreen"
+          bg="color2 hover:color3"
+          px="1.5"
+          py="1.5"
+          size="9"
+          fontSize="6"
           ls={0}
           {...props}
         >
@@ -105,10 +99,5 @@ const TitleLink = ({ href, children, ...props }: any) => {
 }
 
 const Section = (props: YStackProps) => (
-  <YStack
-    width="33%"
-    $sm={{ width: 'auto', maxW: 500, mx: 'auto' }}
-    shrink={1}
-    {...props}
-  />
+  <YStack width="33% sm:auto" maxW="sm:500px" mx="sm:auto" shrink={1} {...props} />
 )

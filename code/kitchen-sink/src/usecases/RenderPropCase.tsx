@@ -5,96 +5,96 @@ import { forwardRef } from 'react'
 // Test: render prop with string in styled()
 const StyledButton = styled(View, {
   render: 'button',
-  padding: '$4',
-  backgroundColor: '$background',
-  borderRadius: '$4',
+  padding: '4',
+  backgroundColor: 'background',
+  borderRadius: '4',
   cursor: 'pointer',
 })
 
 // Test: styled.a() - styled-components style API with proper href typing
 const StyledAnchor = styled.a({
-  color: '$blue10',
+  color: 'blue-600',
   textDecorationLine: 'underline',
 })
 
 // Test: render prop with semantic elements
 const StyledNav = styled(View, {
   render: 'nav',
-  padding: '$2',
-  backgroundColor: '$backgroundHover',
+  padding: '2',
+  backgroundColor: 'background-hover',
 })
 
 const StyledMain = styled(View, {
   render: 'main',
-  padding: '$4',
+  padding: '4',
   flex: 1,
 })
 
 const StyledSection = styled(View, {
   render: 'section',
-  padding: '$3',
+  padding: '3',
   borderWidth: 1,
-  borderColor: '$borderColor',
+  borderColor: 'border-color',
 })
 
 const StyledArticle = styled(View, {
   render: 'article',
-  padding: '$3',
+  padding: '3',
 })
 
 const StyledFooter = styled(View, {
   render: 'footer',
-  padding: '$2',
-  backgroundColor: '$backgroundPress',
+  padding: '2',
+  backgroundColor: 'background-press',
 })
 
 // Test: render prop with form elements
 const StyledForm = styled(View, {
   render: 'form',
-  gap: '$3',
+  gap: '3',
 })
 
 const StyledLabel = styled(Text, {
   render: 'label',
-  fontSize: '$3',
+  fontSize: '3',
 })
 
 const StyledFieldset = styled(View, {
   render: 'fieldset',
-  padding: '$3',
+  padding: '3',
   borderWidth: 1,
-  borderColor: '$borderColor',
-  borderRadius: '$2',
+  borderColor: 'border-color',
+  borderRadius: '2',
 })
 
 // Test: render prop with heading elements
 const StyledH1 = styled(Text, {
   render: 'h1',
-  fontSize: '$9',
+  fontSize: '9',
   fontWeight: 'bold',
 })
 
 const StyledH2 = styled(Text, {
   render: 'h2',
-  fontSize: '$7',
+  fontSize: '7',
   fontWeight: 'bold',
 })
 
 // Test: render prop with list elements
 const StyledUl = styled(View, {
   render: 'ul',
-  paddingLeft: '$4',
+  paddingLeft: '4',
 })
 
 const StyledLi = styled(View, {
   render: 'li',
-  marginBottom: '$2',
+  marginBottom: '2',
 })
 
 // Test: render prop override at runtime
 const RuntimeOverrideView = styled(View, {
-  padding: '$2',
-  backgroundColor: '$background',
+  padding: '2',
+  backgroundColor: 'background',
 })
 
 // Custom component for function render test
@@ -109,7 +109,7 @@ CustomButton.displayName = 'CustomButton'
 
 export function RenderPropCase() {
   return (
-    <View gap="$4" padding="$4" testID="render-prop-container">
+    <View gap="4" padding="4" testID="render-prop-container">
       {/* Test styled() render prop */}
       <StyledButton testID="styled-button" data-testid="styled-button">
         <Text testID="styled-button-text">Styled Button (render='button')</Text>
@@ -174,11 +174,11 @@ export function RenderPropCase() {
       </RuntimeOverrideView>
 
       {/* Test Stack with runtime render */}
-      <View data-testid="stack-as-section" render="section" padding="$2">
+      <View data-testid="stack-as-section" render="section" padding="2">
         <Text>Stack as Section</Text>
       </View>
 
-      <View data-testid="stack-as-aside" render="aside" padding="$2">
+      <View data-testid="stack-as-aside" render="aside" padding="2">
         <Text>Stack as Aside</Text>
       </View>
 
@@ -199,8 +199,8 @@ export function RenderPropCase() {
       <View
         data-testid="jsx-element-render"
         render={<a href="/test-link" data-jsx-element="true" />}
-        padding="$2"
-        backgroundColor="$blue5"
+        padding="2"
+        backgroundColor="blue-500"
       >
         <Text>JSX Element Render (anchor with href)</Text>
       </View>
@@ -208,8 +208,8 @@ export function RenderPropCase() {
       <View
         data-testid="jsx-element-button"
         render={<button type="submit" data-jsx-button="true" />}
-        padding="$3"
-        backgroundColor="$green5"
+        padding="3"
+        backgroundColor="green-500"
       >
         <Text>JSX Element Render (button with type)</Text>
       </View>
@@ -219,8 +219,8 @@ export function RenderPropCase() {
         testID="function-render"
         data-testid="function-render"
         render={(props) => <CustomButton {...props} />}
-        padding="$2"
-        backgroundColor="$red5"
+        padding="2"
+        backgroundColor="red-500"
       >
         <Text testID="function-render-text">Function Render (CustomButton)</Text>
       </View>
@@ -235,10 +235,8 @@ export function RenderPropCase() {
               data-press={state.press ? 'true' : 'false'}
             />
           )}
-          padding="$3"
-          backgroundColor="$purple5"
-          hoverStyle={{ backgroundColor: '$purple7' }}
-          pressStyle={{ backgroundColor: '$purple9' }}
+          padding="3"
+          backgroundColor="purple-500 hover:purple-700 press:purple-900"
         >
           <Text>Function Render with State</Text>
         </View>
@@ -251,9 +249,8 @@ export function RenderPropCase() {
               aria-description={`hover:${state.hover},press:${state.press}`}
             />
           )}
-          padding="$3"
-          backgroundColor="$purple5"
-          pressStyle={{ backgroundColor: '$purple9' }}
+          padding="3"
+          backgroundColor="purple-500 press:purple-900"
         >
           <Text testID="function-render-state-text">Function Render with State</Text>
         </View>

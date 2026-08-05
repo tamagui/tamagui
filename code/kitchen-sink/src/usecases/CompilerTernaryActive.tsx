@@ -1,29 +1,27 @@
 /**
- * Tests compiler extraction of ternaries mixing theme-token and non-token values.
- * Regression test for bug where fontWeight ternary was dropped when combined
- * with a theme-token color ternary on native.
- *
- * The compiler's extractToNative was unconditionally adding plain styles
- * (fontWeight) from ternary branches instead of wrapping them in the conditional.
+ * Tests the native compiler's conservative bailout for ternaries that mix theme
+ * tokens with non-token values. Static compiler coverage owns the lowering
+ * decision; Detox verifies that the bailout matches the explicit runtime path.
  */
 
 import { useState } from 'react'
-import { Button, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 function ActiveText({ isActive, label }: { isActive: boolean; label: string }) {
   return (
     <YStack
       testID="opt-color-box"
-      backgroundColor={isActive ? '$color12' : '$color11'}
+      backgroundColor={`${isActive ? 'color11' : 'color10'}`}
       height={60}
       justifyContent="center"
       alignItems="center"
     >
       <Text
         testID="active-text"
-        fontSize="$3"
+        fontSize="3"
         fontWeight={isActive ? '700' : '400'}
-        color={isActive ? '$color12' : '$color11'}
+        color={`${isActive ? 'color11' : 'color10'}`}
       >
         {label}
       </Text>
@@ -36,7 +34,7 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
     <YStack
       disableOptimization
       testID="noopt-color-box"
-      backgroundColor={isActive ? '$color12' : '$color11'}
+      backgroundColor={`${isActive ? 'color11' : 'color10'}`}
       height={60}
       justifyContent="center"
       alignItems="center"
@@ -44,9 +42,9 @@ function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string
       <Text
         disableOptimization
         testID="active-text-noopt"
-        fontSize="$3"
+        fontSize="3"
         fontWeight={isActive ? '700' : '400'}
-        color={isActive ? '$color12' : '$color11'}
+        color={`${isActive ? 'color11' : 'color10'}`}
       >
         {label}
       </Text>
@@ -61,25 +59,25 @@ export function CompilerTernaryActive() {
     <YStack
       testID="compiler-ternary-active-root"
       flex={1}
-      padding="$4"
-      gap="$4"
-      backgroundColor="$background"
+      padding="4"
+      gap="4"
+      backgroundColor="background"
     >
-      <Text testID="active-state-label" fontSize="$3">
+      <Text testID="active-state-label" fontSize="3">
         Active: {isActive ? 'YES' : 'NO'}
       </Text>
 
-      <Button size="$2" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
+      <Button size="3" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
         Toggle Active
       </Button>
 
-      <YStack gap="$2">
-        <Text fontSize="$2">Optimized:</Text>
+      <YStack gap="2">
+        <Text fontSize="2">Compiler path:</Text>
         <ActiveText isActive={isActive} label="Hello World" />
       </YStack>
 
-      <YStack gap="$2">
-        <Text fontSize="$2">Non-optimized:</Text>
+      <YStack gap="2">
+        <Text fontSize="2">Explicit runtime:</Text>
         <ActiveTextNoOpt isActive={isActive} label="Hello World" />
       </YStack>
     </YStack>

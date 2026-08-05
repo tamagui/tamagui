@@ -22,6 +22,15 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
+    },
+    "./web": {
+      "types": "./types/web.d.ts",
+      "react-native": "./dist/esm/web.mjs",
+      "browser": "./dist/esm/web.mjs",
+      "module": "./dist/esm/web.mjs",
+      "import": "./dist/esm/web.mjs",
+      "require": "./dist/cjs/web.cjs",
+      "default": "./dist/esm/web.mjs"
     }
   },
   "publishConfig": {
@@ -34,7 +43,6 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/stacks": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

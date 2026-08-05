@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "isolatedDeclarations": true,
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "target": "es2020"
+  },
+  "include": [
+    "src"
+  ]
+}

@@ -30,12 +30,27 @@ export const getVariantExtras = (styleState: GetStyleState) => {
       )
     },
     get font() {
-      return (
-        fonts[this.fontFamily] ||
-        (!props.fontFamily || props.fontFamily[0] === '$'
-          ? fonts[getSetting('defaultFont') || '']
-          : undefined)
-      )
+      const found = fonts[this.fontFamily]
+      if (found) return found
+
+      // When a component re-processes already-resolved props (useProps -> inner
+      // render), fontFamily arrives as the opaque var(--f-family) reference. The
+      // font identity survives in the font_<name> class.
+      const className = props.className
+      if (typeof className === 'string') {
+        const match = /(?:^|\s)font_([A-Za-z0-9_-]+)/.exec(className)
+        if (match && fonts[match[1]]) {
+          return fonts[match[1]]
+        }
+      }
+
+      // Anything else is a font this config does not define — a bare var()
+      // reference to the root --f-family, or a real CSS family like
+      // `fontFamily: 'monospace'`. Neither has a configured type scale, so size
+      // resolution falls back to the default font's. Returning undefined here
+      // instead crashed every size variant that reads `font.size`, because each
+      // caller passes `extras.font!` straight into resolveTokenSize.
+      return fonts[conf.defaultFontToken]
     },
     props,
   }
@@ -58,8 +73,8 @@ export function getFontsForLanguage(fonts: GenericFonts, language: LanguageConte
         if (lang === 'default') {
           return []
         }
-        const langKey = `$${name}_${lang}`
-        return [[`$${name}`, fonts[langKey]]]
+        const langKey = `${name}_${lang}`
+        return [[name, fonts[langKey]]]
       })
     ),
   }

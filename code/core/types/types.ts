@@ -1,4 +1,7 @@
 export interface TamaguiBuildOptions {
+  /** Project root used to resolve compiler config and component modules. */
+  root?: string
+
   /**
    * module paths you want to compile with tamagui (for example ['tamagui'])
    * */
@@ -84,6 +87,13 @@ export interface TamaguiBuildOptions {
   disableExtraction?: boolean | string[]
 
   /**
+   * Disable partial extraction (extracting static style props into CSS beside
+   * retained runtime props on the same element). Elements with dynamic style
+   * props stay fully on the runtime path instead.
+   */
+  disablePartialExtraction?: boolean
+
+  /**
    * Disable just the addition of data- attributes that are added in dev mode to help
    * tie DOM to your filename/component-name.
    */
@@ -129,10 +139,13 @@ export interface TamaguiBuildOptions {
   useReactNativeWebLite?: boolean | 'without-animated'
   disableWatchTamaguiConfig?: boolean
 
-  /**
-   * (Experimental) Flatten theme access on native for better performance
-   */
-  experimentalFlattenThemesOnNative?: boolean
+  experimental?: {
+    /**
+     * Emit native flattened views with theme-token mappings for the experimental
+     * native style engine. Web output is unaffected.
+     */
+    nativeFastPath?: boolean
+  }
 }
 
 export interface TamaguiOptions extends TamaguiBuildOptions {

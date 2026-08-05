@@ -17,14 +17,20 @@ export function list({ isProUser, showAppropriateModal }: BentoShowcaseContext) 
       isProUser={isProUser}
       showAppropriateModal={showAppropriateModal}
     >
-      <YStack pb="$10" gap="$12" p="$2" $gtLg={{ p: '$0' }}>
+      <YStack
+        paddingBottom="2 gtLg:0"
+        gap="12"
+        paddingTop="2 gtLg:0"
+        paddingRight="2 gtLg:0"
+        paddingLeft="2 gtLg:0"
+      >
         <Showcase unlock fileName={Lists.HList.fileName} title="Horizontal Covers">
           <Lists.HList />
         </Showcase>
 
         <Showcase fileName={Lists.Chat.fileName} title={Lists.Chat.fileName}>
           <YStack flex={1} flexBasis="auto" items="center" maxH={700} position="relative">
-            <YStack theme="accent" bg="$background" position="absolute" inset={0} />
+            <YStack theme="accent" bg="background" position="absolute" inset={0} />
             <Lists.Chat />
           </YStack>
         </Showcase>

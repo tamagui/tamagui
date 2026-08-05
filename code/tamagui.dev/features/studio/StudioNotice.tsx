@@ -5,7 +5,6 @@ import { useRef, useState } from 'react'
 import type { ScrollViewProps, XStackProps } from 'tamagui'
 import {
   AnimatePresence,
-  Button,
   Paragraph,
   Separator,
   View,
@@ -14,6 +13,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 type PanelProps = XStackProps & {
   title?: React.ReactNode
@@ -41,21 +41,21 @@ const Panel = ({
     >
       {!!title && (
         <>
-          <XStack items="center" justify="space-between" mb="$3">
-            <Paragraph size="$6" fontWeight="600">
+          <XStack items="center" justify="space-between" mb="3">
+            <Paragraph size="6" fontWeight="600">
               {title}
             </Paragraph>
-            <XStack items="center" gap="$4">
+            <XStack items="center" gap="4">
               {afterTitle}
               {icon}
             </XStack>
           </XStack>
-          <Separator borderColor="$color5" />
+          <Separator borderColor="color5" />
         </>
       )}
 
       <XStack flex={1}>
-        <YStack flex={1} gap="$2">
+        <YStack flex={1} gap="2">
           {typeof children === 'string' ? (
             <NoticeParagraph>{children}</NoticeParagraph>
           ) : (
@@ -76,33 +76,30 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
   const paginate = (newDirection: number) => {
     setPage([page + newDirection, newDirection])
   }
-  const enterVariant = direction === 1 || direction === 0 ? 'isRight' : 'isLeft'
-  const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
-
   return (
     <Panel
-      icon={<Lightbulb size="$1" color="$color7" />}
+      icon={<Lightbulb size="1" color="color7" />}
       afterTitle={
         !steps ? null : (
-          <XStack gap="$2" items="center">
-            <Paragraph mr="$2" size="$2" color="$color9">
+          <XStack gap="2" items="center">
+            <Paragraph mr="2" color="color9" size="2">
               {index + 1}/{total}
             </Paragraph>
 
             <Button
               aria-label="Carousel left"
               icon={ChevronLeft}
-              size="$2"
+              size="3"
               circular
-              elevation="$0.5"
+              boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
               onPress={() => paginate(-1)}
             />
             <Button
               aria-label="Carousel left"
               icon={ChevronRight}
-              size="$2"
+              size="3"
               circular
-              elevation="$0.5"
+              boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)"
               onPress={() => paginate(1)}
             />
           </XStack>
@@ -113,19 +110,16 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
       {children ? (
         children
       ) : steps ? (
-        <YStack flex={1} overflow="hidden" mx="$-4" my="$-2">
+        <YStack flex={1} overflow="hidden" mx="-4" my="-2">
           <ScrollViewWithFade showsVerticalScrollIndicator={false}>
-            <AnimatePresence
-              initial={false}
-              enterVariant={enterVariant}
-              exitVariant={exitVariant}
-            >
+            <AnimatePresence initial={false} custom={{ going: direction }}>
               <YStackEnterable
                 key={page}
+                going={direction}
                 transition="quicker"
-                gap="$3"
+                gap="3"
                 position="absolute"
-                p="$4"
+                p="4"
               >
                 {steps[index]}
               </YStackEnterable>
@@ -215,7 +209,7 @@ const ScrollViewWithFade = ({
           l={0}
           r={0}
           height="20%"
-          colors={['$background', '$background0']}
+          colors={['background', 'transparent']}
         />
       )}
 
@@ -228,7 +222,7 @@ const ScrollViewWithFade = ({
           r={0}
           height="20%"
           b={0}
-          colors={['$background0', '$background']}
+          colors={['transparent', 'background']}
         />
       )}
 
@@ -311,29 +305,35 @@ const wrap = (min: number, max: number, v: number) => {
 
 const YStackEnterable = styled(YStack, {
   variants: {
-    isLeft: { true: { x: -30, opacity: 0 } },
-    isRight: { true: { x: 30, opacity: 0 } },
+    // 1 = paginated forward, -1 = back, 0 = first render
+    going: {
+      number: (going: number) => ({
+        x: `0 enter:${going >= 0 ? '30px' : '-30px'} exit:${going > 0 ? '-30px' : '30px'}`,
+        opacity: '1 enter:0 exit:0',
+      }),
+    },
   } as const,
 })
 
 export const StudioSuccess = (props: PanelProps) => {
-  return <Panel theme="green" icon={<Check size="$1" color="$color7" />} {...props} />
+  return <Panel theme="green" icon={<Check size="1" color="color7" />} {...props} />
 }
 
 export const NoticeParagraph = styled(Paragraph, {
-  pr: '$4',
-  size: '$3',
-  color: '$color11',
+  pr: '4',
+  color: 'color11',
+  size: '3',
 })
 
 const NoticeFrame = styled(YStack, {
   className: 'no-opacity-fade',
   borderWidth: 2,
-  borderColor: '$color6',
-  p: '$4',
-  py: '$3',
-  bg: '$background',
-  rounded: '$4',
-  gap: '$3',
+  borderColor: 'color6',
+  paddingRight: '4',
+  paddingLeft: '4',
+  py: '3',
+  bg: 'background',
+  rounded: '4',
+  gap: '3',
   position: 'relative',
 })

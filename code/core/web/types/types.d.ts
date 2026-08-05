@@ -1,20 +1,27 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { CSSProperties, ComponentType, Context, ForwardRefExoticComponent, ForwardRefRenderFunction, FunctionComponent, HTMLAttributes, ProviderExoticComponent, ReactNode, RefAttributes, RefObject } from 'react';
+import type { CSSProperties, ComponentType, Context, FunctionComponent, HTMLAttributes, ProviderExoticComponent, Ref as ReactRef, ReactNode, RefObject } from 'react';
 import type { PressableProps, Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
+import type { NativeStyleEngineLinkHandle } from './helpers/nativeStyleEngine';
+import type { StyleFrontend } from './helpers/styleFrontend';
 import type { CSSColorNames } from './interfaces/CSSColorNames';
 import type { RNOnlyProps } from './interfaces/RNExclusiveTypes';
 export type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight' | 'shadowRadius';
-export type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor' | 'outlineColor' | 'textShadowColor' | 'borderBlockColor' | 'borderBlockEndColor' | 'borderBlockStartColor' | 'borderInlineColor' | 'borderInlineStartColor' | 'borderInlineEndColor';
+export type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor' | 'outlineColor' | 'textShadowColor' | 'borderBlockColor' | 'borderBlockEndColor' | 'borderBlockStartColor' | 'borderInlineColor' | 'borderInlineStartColor' | 'borderInlineEndColor' | 'borderEndColor' | 'borderStartColor' | 'textDecorationColor' | 'caretColor';
 export type SpaceKeys = 'space' | 'padding' | 'paddingHorizontal' | 'paddingVertical' | 'paddingLeft' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingEnd' | 'paddingStart' | 'margin' | 'marginHorizontal' | 'marginVertical' | 'marginLeft' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginEnd' | 'marginStart' | 'marginBlock' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInline' | 'marginInlineStart' | 'marginInlineEnd' | 'paddingBlock' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInline' | 'paddingInlineStart' | 'paddingInlineEnd' | 'x' | 'y' | 'gap' | 'rowGap' | 'columnGap' | 'scale' | 'scaleX' | 'scaleY' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderTopStartRadius' | 'borderBottomEndRadius' | 'borderBottomLeftRadius' | 'borderBottomRightRadius' | 'borderBottomStartRadius' | 'borderBottomWidth' | 'borderLeftWidth' | 'borderRadius' | 'borderRightWidth' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderEndWidth' | 'borderStartWidth' | 'borderTopStartRadius' | 'borderTopWidth' | 'borderWidth' | 'left' | 'top' | 'right' | 'bottom' | 'shadowOffset' | 'borderBlockWidth' | 'borderBlockStartWidth' | 'borderBlockEndWidth' | 'borderInlineWidth' | 'borderInlineStartWidth' | 'borderInlineEndWidth';
-export type StyledContext<Props extends Record<string, any> = any> = Context<Props> & {
+export type StyledContext<Props extends Record<string, any> = any, ConsumedKeys extends keyof Props & string = keyof Props & string> = Context<Props> & {
     context: Context<Props>;
     props: Record<string, any> | undefined;
+    propKeys?: readonly ConsumedKeys[];
     Provider: ProviderExoticComponent<Partial<Props | undefined> & {
         children?: ReactNode;
         scope?: string;
     }>;
     useStyledContext: (scope?: string) => Props;
+};
+export type StyledContextOptions<Props extends Record<string, any>, ConsumedKeys extends keyof Props & string = keyof Props & string> = {
+    keys?: readonly ConsumedKeys[];
+    namespace?: string;
 };
 export type TamaguiComponentState = {
     unmounted: boolean | 'should-enter';
@@ -63,10 +70,6 @@ export type TamaguiComponentPropsBaseBase = {
      */
     themeShallow?: boolean;
     /**
-     * If true, component themes will not be applied
-     */
-    unstyled?: boolean;
-    /**
      * Same as the web id property for setting a uid on an element
      */
     id?: string;
@@ -90,7 +93,14 @@ export type TamaguiComponentPropsBaseBase = {
      * Marks this component as a group for use in styling children based on parents named group
      * See: https://tamagui.dev/docs/intro/props
      */
-    group?: GroupNames | boolean;
+    group?: GroupNames | (string & {}) | boolean;
+    /**
+     * Marks this component as a query container: the shorthand for an unnamed
+     * `containerType="inline-size"` container that `@sm:`-style clauses in
+     * children measure against. Use the `containerName` / `containerType` style
+     * properties for named or full-size containers.
+     */
+    container?: boolean;
     /**
      * Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
      * See: https://tamagui.dev/docs/intro/props
@@ -113,6 +123,12 @@ export type TamaguiComponentPropsBaseBase = {
      * Disable all compiler optimization
      */
     disableOptimization?: boolean;
+    /**
+     * Opt this component out of the experimental native style fast path
+     * (setNativeStyleEngine); it re-renders through React on theme/media
+     * changes like normal
+     */
+    disableNativeStyle?: boolean;
     /**
      * Forces the pseudo style state to be on
      */
@@ -179,7 +195,7 @@ export interface WebOnlyPressEvents {
     onPointerCancel?: DivAttributes['onPointerCancel'];
 }
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
-type FontFamilies = FontTokens extends `$${infer Token}` ? Token : never;
+type FontFamilies = FontTokens;
 export type LanguageContextType = Partial<{
     [key in FontFamilies]: FontLanguages | 'default';
 }>;
@@ -189,10 +205,6 @@ export type FontLanguageProps = LanguageContextType & {
 export type ThemeProviderProps = {
     className?: string;
     defaultTheme: string | null | undefined;
-    /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
-    disableRootThemeClass?: boolean;
-    /** @deprecated moved to createTamagui({ settings: { themeClassNameOnRoot } }) */
-    themeClassNameOnRoot?: boolean;
     children?: any;
     reset?: boolean;
 };
@@ -224,7 +236,6 @@ export interface PxValue {
     needsPx: true;
 }
 export type ColorScheme = 'light' | 'dark';
-export type IsMediaType = boolean | 'platform' | 'theme' | 'group';
 export type MaybeTamaguiComponent<A = any> = TamaguiComponent<A> | React.FC<A>;
 type MeasureOnSuccessCallback = (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => void;
 type MeasureInWindowOnSuccessCallback = (x: number, y: number, width: number, height: number) => void;
@@ -279,7 +290,9 @@ export type TamaguiProjectInfo = {
     nameToPaths: NameToPaths;
 };
 export type DivAttributes = HTMLAttributes<HTMLDivElement>;
-export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
+export type ReactComponentWithRef<Props, Ref> = ComponentType<Props & {
+    ref?: ReactRef<Ref>;
+}>;
 export type ComponentSetStateShallow = React.Dispatch<React.SetStateAction<Partial<TamaguiComponentState>>>;
 export type ComponentContextI = {
     disableSSR?: boolean;
@@ -298,6 +311,7 @@ export type ComponentContextI = {
 };
 export type TamaguiComponentStateRef = {
     startedUnhydrated: boolean;
+    optimizeForFirstRender?: boolean;
     host?: TamaguiElement;
     composedRef?: (x: TamaguiElement) => void;
     willHydrate?: boolean;
@@ -312,11 +326,13 @@ export type TamaguiComponentStateRef = {
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
     baseSetStateShallow?: ComponentSetStateShallow;
+    themeNeedsUpdate?: () => boolean;
     useStyleListener?: UseStyleListener;
     updateStyleListener?: () => void;
     group?: ComponentGroupEmitter;
     nextState?: TamaguiComponentState;
     nextMedia?: UseMediaState;
+    avoidReRenders?: boolean;
     mediaEmitCleanup?: () => void;
     prevPseudoState?: {
         hover?: boolean;
@@ -328,6 +344,15 @@ export type TamaguiComponentStateRef = {
             focus?: boolean;
         }>;
     };
+    nativeLink?: NativeStyleEngineLinkHandle | null;
+    nativeStyleUpdate?: (next: ThemeState) => boolean;
+    nativeUpdateProxy?: (next: ThemeState) => boolean;
+    nativePushedStates?: Set<string>;
+    nativeActiveState?: string;
+    nativeMediaUpdate?: (onMiss?: () => void) => boolean;
+    nativeMediaQueued?: boolean;
+    nativeThemeState?: ThemeState;
+    nativePushedKeys?: Set<string>;
 };
 export type ComponentGroupEmitter = {
     listeners: Set<GroupStateListener>;
@@ -374,6 +399,13 @@ export type DisposeFn = () => void;
 export type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export type VariableVal = number | string | Variable | VariableValGeneric | PxValue;
 export type VariableColorVal = string | Variable;
+export type VariableValIn = string | number | PxValue;
+export type GenericVariables = {
+    [key: string]: VariableValIn | {
+        light: VariableValIn;
+        dark: VariableValIn;
+    };
+};
 type GenericKey = string;
 export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
     [key: GenericKey]: Val;
@@ -491,7 +523,7 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
-type ConfProps<A, B, C, D, E, F, I> = {
+type ConfProps<A, B, C, D, E, F, I, V = undefined> = {
     tokens?: A;
     themes?: B;
     shorthands?: C;
@@ -499,6 +531,15 @@ type ConfProps<A, B, C, D, E, F, I> = {
     animations?: E;
     fonts?: F;
     settings?: I;
+    variables?: V;
+};
+type VariableValInScheme<V> = V extends {
+    light: infer L;
+} ? L : V;
+type ThemesWithVariables<B, V> = [V] extends [undefined] ? B : [keyof V] extends [never] ? B : {
+    [N in keyof B]: B[N] & {
+        [K in keyof V & string]: VariableValInScheme<V[K]> extends PxValue ? number : VariableValInScheme<V[K]>;
+    };
 };
 type EmptyTokens = {
     color: {};
@@ -514,7 +555,6 @@ type EmptyAnimations = {};
 type EmptyFonts = {};
 type EmptyTamaguiSettings = {
     allowedStyleValues: false;
-    autocompleteSpecificTokens: 'except-special';
 };
 type ExtractAnimationConfig<E> = E extends AnimationDriver<infer Config> ? Config : E extends {
     default: AnimationDriver<infer Config>;
@@ -522,7 +562,7 @@ type ExtractAnimationConfig<E> = E extends AnimationDriver<infer Config> ? Confi
 type ExtractAnimationDriverKeys<E> = E extends AnimationDriver<any> ? 'default' : E extends {
     default: AnimationDriver<any>;
 } ? Extract<keyof E, string> : 'default';
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings, ExtractAnimationDriverKeys<E>> : unknown;
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H, infer V> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings, ExtractAnimationDriverKeys<E>> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
@@ -532,22 +572,31 @@ export type ThemeKeys = keyof ThemeDefinition;
 export type ThemeParsed = {
     [key in ThemeKeys]: CoerceToVariable<ThemeDefinition[key]>;
 };
+export type VariablesValues = {
+    [Key in ThemeKeys]?: VariableValIn;
+};
+export type VariablesProps = {
+    values?: VariablesValues;
+    /**
+     * per theme name: applied additionally when the subtree's resolved theme
+     * matches that name (by theme-name segment, so `blue` matches `dark_blue`).
+     * `dark`/`light` keys follow the subtree's color scheme.
+     */
+    themes?: {
+        [Name in ThemeName]?: VariablesValues;
+    };
+    children?: ReactNode;
+};
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
-    [Key in keyof Required<Tokens>]: TokenPrefixed<Tokens[Key]>;
+    [Key in keyof Required<Tokens>]: TokenifyRecord<NonNullable<Tokens[Key]>>;
 };
-type TokenPrefixed<A extends {
-    [key: string]: any;
-}> = {
-    [Key in Ensure$Prefix<keyof A> | keyof A]: A[keyof A];
-};
-type Ensure$Prefix<A extends string | number | symbol> = A extends string | number | boolean ? A extends `$${string | number}` ? A : `$${A}` : never;
-export type TokensMerged = TokensParsed & Tokens;
 export type Shorthands = TamaguiConfig['shorthands'];
 export type Media = TamaguiConfig['media'];
 export type Themes = TamaguiConfig['themes'];
-export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>;
-export type ThemeTokens = `$${ThemeKeys}`;
+type BuiltInSubThemeName = 'inverse';
+export type ThemeName = Exclude<GetAltThemeNames<keyof Themes> | BuiltInSubThemeName, number>;
+export type ThemeTokens = GetTokenString<ThemeKeys>;
 type GetAnimationsFromDriver<T> = T extends {
     animations: infer A;
 } ? Extract<keyof A, string> : never;
@@ -564,7 +613,6 @@ export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
 export interface ThemeProps {
     className?: string;
     name?: Exclude<ThemeName, number> | null;
-    componentName?: string;
     children?: any;
     reset?: boolean;
     debug?: DebugProp;
@@ -576,7 +624,14 @@ export type UseThemeWithStateProps = ThemeProps & {
     passThrough?: boolean;
     disable?: boolean;
     needsUpdate?: () => boolean;
-    unstyled?: boolean;
+    /** <Variables> inline theme layer: patches merged over the parent theme */
+    inlineValues?: Pick<VariablesProps, 'values' | 'themes'>;
+    /**
+     * native fast path (experimental): called on a theme update instead of
+     * re-rendering; return true when the update was committed natively so the
+     * re-render is skipped. never called for forced updates.
+     */
+    nativeUpdate?: (next: ThemeState) => boolean;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S) | S;
@@ -593,7 +648,6 @@ type AllowedStyleValuesSettingPerCategory = {
     color?: AllowedStyleValuesSettingColor;
 };
 type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSettingPerCategory;
-type AutocompleteSpecificTokensSetting = boolean | 'except-special';
 export interface GenericTamaguiSettings {
     /**
      * controls style semantics where React Native/Yoga and CSS differ.
@@ -643,19 +697,6 @@ export interface GenericTamaguiSettings {
      */
     allowedStyleValues?: AllowedStyleValuesSetting;
     /**
-     * Set up if "specific tokens" ($color.name) are added to the types where
-     * tokens are allowed. The VSCode autocomplete puts specific tokens above the
-     * regular ones, which leads to worse DX. If true this setting removes the
-     * specific token from types for the defined categories.
-     *
-     * If set to "except-special", specific tokens will autocomplete only if they
-     * don't normally use one of the special token groups: space, size, radius,
-     * zIndex, color.
-     *
-     * @default except-special
-     */
-    autocompleteSpecificTokens?: AutocompleteSpecificTokensSetting;
-    /**
      * On iOS, this enables a mode where Tamagui returns color values using
      * `DynamicColorIOS` This is a React Native built in feature, you can read the
      * docs here: https://reactnative.dev/docs/dynamiccolorios
@@ -674,6 +715,26 @@ export interface GenericTamaguiSettings {
      * dark/light re-renders.
      */
     fastSchemeChange?: boolean;
+    /**
+     * Chooses whether Tamagui optimizes component renders for granular updates or
+     * for the lowest first-render overhead.
+     *
+     * - "updates" tracks the theme and media keys each component reads so changes
+     *   only re-render consumers of those values.
+     * - "first-render" skips per-key tracking and uses coarse theme and media
+     *   subscriptions. Theme and media changes still apply, but may re-render
+     *   every Tamagui component under the changed provider.
+     *
+     * This is a startup-level setting. Set it when creating the Tamagui config
+     * and do not change it while the app is running.
+     *
+     * Defaults per platform: web defaults to "updates" (granular theme/media
+     * changes matter most), native defaults to "first-render" (initial render
+     * speed matters most, and full-tree re-renders are cheaper without the DOM).
+     *
+     * @default "updates" on web, "first-render" on native
+     */
+    optimizeFor?: 'updates' | 'first-render';
     /**
      * On Web, this allows changing the behavior of container groups which by
      * default uses `container-type: inline-size`.
@@ -795,6 +856,14 @@ export type CreateTamaguiProps = {
             [key: string]: string | number | Variable;
         };
     };
+    /**
+     * Custom variables: merged into every base theme at createTamagui time, so
+     * they resolve like theme keys everywhere (bare names in style props, useTheme(),
+     * CSS variable emission) and can be redefined per-subtree via <Variables>.
+     * Values may reference theme keys or tokens by bare name or
+     * be literals; per-scheme values via { light, dark }.
+     */
+    variables?: GenericVariables;
     settings?: Partial<GenericTamaguiSettings>;
     /**
      * Web-only: define text-selection CSS
@@ -825,7 +894,6 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     userShorthands: C;
     reactNative?: any;
     fontSizeTokens: Set<string>;
-    specificTokens: Record<string, Variable>;
     settings: Omit<GenericTamaguiSettings, keyof G> & G;
     defaultFont?: string;
     defaultFontToken: `${string}`;
@@ -869,33 +937,19 @@ export type MediaQueryObject = {
     [key: string]: string | number | string;
 };
 export type MediaQueryKey = keyof Media;
-export type MediaPropKeys = `$${MediaQueryKey}`;
 export type MediaQueryState = {
     [key in MediaQueryKey]: boolean;
 };
-export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = TK extends string ? string extends TK ? never : TK extends `${string}_${string}` ? never : `$theme-${TK}` : never;
-export type PlatformMediaKeys = `$platform-${AllPlatforms}`;
 export interface TypeOverride {
     groupNames(): 1;
     animationDrivers(): 1;
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
-type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin';
-export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}` | `$group-${ParentMediaStates}` | `$group-${MediaQueryKey}` | `$group-${MediaQueryKey}-${ParentMediaStates}`;
-export type WithMediaProps<A> = {
-    [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends MediaPropKeys ? A & {
-        [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>;
-    } : Key extends `$platform-web` ? AddWebOnlyStyleProps<A> & {
-        [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A>;
-    } : A & {
-        [Key in MediaPropKeys]?: A;
-    };
-};
-export type AddWebOnlyStyleProps<A> = Partial<CSSProperties> & Partial<WebOnlyValidStyleValues> & {
+export type AddWebOnlyStyleProps<A> = Partial<Omit<CSSProperties, keyof WebOnlyValidStyleValues>> & Partial<WebOnlyValidStyleValues> & {
     [K in Exclude<keyof A, keyof CSSProperties>]?: A[K];
 };
 export type WebOnlyValidStyleValues = {
-    position: '-webkit-sticky';
+    position: CSSProperties['position'] | '-webkit-sticky';
 };
 export type MediaQueries = {
     [key in MediaQueryKey]: MediaQueryObject;
@@ -927,29 +981,51 @@ export type TransitionSpringConfig = {
     bounciness?: number;
     speed?: number;
 };
-export type TransitionProp = TransitionKeys | ({
-    default?: TransitionKeys;
-    enter?: TransitionKeys;
-    exit?: TransitionKeys;
+/**
+ * A transition value: the name of a configured driver animation, or a raw CSS
+ * transition string such as `200ms` or `200ms hover:400ms`. The runtime accepts
+ * both — a name that is not a configured preset is treated as CSS — so the type
+ * must too. `(string & {})` keeps the preset names in autocomplete instead of
+ * collapsing the union to plain `string`.
+ */
+export type TransitionValue = TransitionKeys | (string & {});
+export type TransitionProp = TransitionValue | ({
+    default?: TransitionValue;
+    enter?: TransitionValue;
+    exit?: TransitionValue;
     delay?: number;
 } & TransitionSpringConfig & {
-    [key: string]: TransitionKeys | {
-        type: TransitionKeys;
+    [key: string]: TransitionValue | {
+        type: TransitionValue;
         [key: string]: any;
     } | number | boolean | undefined;
 }) | [
-    TransitionKeys,
+    TransitionValue,
     {
         delay?: number;
-        enter?: TransitionKeys;
-        exit?: TransitionKeys;
+        enter?: TransitionValue;
+        exit?: TransitionValue;
     } & TransitionSpringConfig & {
-        [key: string]: TransitionKeys | {
-            type?: TransitionKeys;
+        [key: string]: TransitionValue | {
+            type?: TransitionValue;
             [key: string]: any;
         } | number | boolean | undefined;
     }
 ];
+/**
+ * Emitted by the animation driver at the start and end of a transition.
+ *
+ * `cause` is `enter` when the component mounts into an AnimatePresence, `exit`
+ * when it unmounts, and `update` for any style change while it stays mounted.
+ * On the `end` phase, `finished` is `false` when the transition was interrupted
+ * (e.g. an exit canceled by a re-enter, or an update superseded by another).
+ */
+export type TransitionEvent = {
+    phase: 'start' | 'end';
+    cause: 'enter' | 'exit' | 'update';
+    finished?: boolean;
+};
+export type OnTransition = (event: TransitionEvent) => void;
 /**
  * Tokens
  */
@@ -978,22 +1054,20 @@ export type ThemeValueFallbackSize = GetThemeValueFallbackFor<AllowedValueSettin
 export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingColor, never, SomewhatSpecificColorValue, UnionableString | UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
-export type GetTokenString<A> = A extends `$${string}` ? A : A extends string | number ? `$${A}` : `$${string}`;
-export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] extends `$${infer X}` ? X : keyof Record[RK] : never}` : never;
-export type SpecificTokensSpecial = TamaguiSettings extends {
-    autocompleteSpecificTokens: infer Val;
-} ? Val extends 'except-special' | undefined ? never : SpecificTokens : SpecificTokens;
-export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']>;
-export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace;
-type ColorTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
-type TokenWithOpacity = `$${string}/${number}`;
-export type ColorTokens = ColorTokenBase | CSSColorNames | TokenWithOpacity;
-export type ZIndexTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number;
-export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | ThemeValueFallbackRadius | number | RemString;
-export type NonSpecificTokens = GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
-export type Token = NonSpecificTokens | (TamaguiSettings extends {
-    autocompleteSpecificTokens: false;
-} ? never : SpecificTokens);
+export type GetTokenString<A> = A extends string | number ? `${A}` : string;
+export type Size = ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']> | (string & {}) | true;
+export type SizeTokens = Size;
+export type Space = GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | true;
+export type SpaceTokens = Space;
+type ColorTokenBase = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
+type TokenWithOpacity = `${string}/${number}`;
+export type Color = ColorTokenBase | CSSColorNames | TokenWithOpacity | (string & {});
+export type ColorTokens = Color;
+export type ZIndex = GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number | true;
+export type ZIndexTokens = ZIndex;
+export type Radius = GetTokenString<keyof Tokens['radius']> | ThemeValueFallbackRadius | number | RemString | true;
+export type RadiusTokens = Radius;
+export type Token = GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens;
 type DefaultFont = TamaguiSettings['defaultFont'];
 export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;
@@ -1001,27 +1075,28 @@ export type Font = ParseFont<Fonts>;
 export type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>;
-export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString;
-export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number | RemString;
+export type FontSize = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString | true;
+export type FontSizeTokens = FontSize;
+export type FontLineHeightTokens = GetTokenString<GetTokenFontKeysFor<'lineHeight'>> | number | RemString;
 export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
-export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;
-type FontColorTokenBase = `$${GetTokenFontKeysFor<'color'>}`;
+export type FontWeightTokens = GetTokenString<GetTokenFontKeysFor<'weight'>> | FontWeightValues;
+type FontColorTokenBase = GetTokenString<GetTokenFontKeysFor<'color'>>;
 export type FontColorTokens = FontColorTokenBase | number | TokenWithOpacity;
-export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number | RemString;
-export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | RNTextStyle['fontStyle'];
-export type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | RNTextStyle['textTransform'];
+export type FontLetterSpacingTokens = GetTokenString<GetTokenFontKeysFor<'letterSpacing'>> | number | RemString;
+export type FontStyleTokens = GetTokenString<GetTokenFontKeysFor<'style'>> | RNTextStyle['fontStyle'];
+export type FontTransformTokens = GetTokenString<GetTokenFontKeysFor<'transform'>> | RNTextStyle['textTransform'];
 export type ParseFont<A extends GenericFont> = {
-    size: TokenPrefixed<A['size']>;
-    lineHeight: TokenPrefixedIfExists<A['lineHeight']>;
-    letterSpacing: TokenPrefixedIfExists<A['letterSpacing']>;
-    weight: TokenPrefixedIfExists<A['weight']>;
-    family: TokenPrefixedIfExists<A['family']>;
-    style: TokenPrefixedIfExists<A['style']>;
-    transform: TokenPrefixedIfExists<A['transform']>;
-    color: TokenPrefixedIfExists<A['color']>;
-    face: TokenPrefixedIfExists<A['face']>;
+    size: TokenifyRecord<A['size']>;
+    lineHeight: TokenParsedIfExists<A['lineHeight']>;
+    letterSpacing: TokenParsedIfExists<A['letterSpacing']>;
+    weight: TokenParsedIfExists<A['weight']>;
+    family: TokenParsedIfExists<A['family']>;
+    style: TokenParsedIfExists<A['style']>;
+    transform: TokenParsedIfExists<A['transform']>;
+    color: TokenParsedIfExists<A['color']>;
+    face: TokenParsedIfExists<A['face']>;
 };
-export type TokenPrefixedIfExists<A> = A extends Record<string, any> ? TokenPrefixed<A> : {};
+export type TokenParsedIfExists<A> = A extends Record<string, any> ? TokenifyRecord<A> : {};
 export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'radius' ? RadiusTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : K extends keyof Tokens ? GetTokenString<keyof Tokens[K]> : never;
 export type FontKeys = 'fontFamily';
 export type FontSizeKeys = 'fontSize';
@@ -1033,13 +1108,20 @@ export type OpacityKeys = 'opacity';
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends `${`border${string | ''}Radius`}` ? RadiusTokens : K extends SpaceKeys ? K extends 'shadowOffset' ? {
     width: SpaceTokens;
     height: SpaceTokens;
-} : SpaceTokens : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : K extends OpacityKeys ? SpecificTokens | ThemeValueFallback : never;
-export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback | (TamaguiSettings extends {
-    autocompleteSpecificTokens: infer Val;
-} ? Val extends true | undefined ? SpecificTokens : never : never);
+} : SpaceTokens : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : K extends OpacityKeys ? ThemeValueFallback : never;
+export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback;
 export type SafeAreaValueKeys = 'padding' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingHorizontal' | 'paddingVertical' | 'paddingStart' | 'paddingEnd' | 'paddingBlock' | 'paddingInline' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInlineStart' | 'paddingInlineEnd' | 'margin' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginHorizontal' | 'marginVertical' | 'marginStart' | 'marginEnd' | 'marginBlock' | 'marginInline' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInlineStart' | 'marginInlineEnd' | 'inset' | 'top' | 'bottom' | 'left' | 'right' | 'start' | 'end';
+/**
+ * Flat values: every style prop accepts a clause-bearing string
+ * (`bg="red hover:blue"`, `p="4 sm:6"`). `(string & {})` admits the broad
+ * string without collapsing the token/literal unions, so autocomplete
+ * survives (design record, "Types and editor tooling"). Candidate and
+ * modifier validation is the compiler's and language service's job, never
+ * an exhaustive template-literal union.
+ */
+export type FlatStyleValue<T> = T | (string & {});
 export type WithThemeValues<T extends object> = {
-    [K in keyof T]: (ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset') | (K extends SafeAreaValueKeys ? 'safe' : never);
+    [K in keyof T]: (ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : FlatStyleValue<T[K] | 'unset'> : FlatStyleValue<GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'>) | (K extends SafeAreaValueKeys ? 'safe' : never);
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
@@ -1049,38 +1131,9 @@ type ShorthandLonghandProps = 'borderWidth' | 'borderStyle' | 'borderColor' | 'o
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
-export type PseudoStyleWithTransition<A> = A & {
-    transition?: TransitionProp | null;
-};
-export type WithPseudoProps<A> = {
-    hoverStyle?: PseudoStyleWithTransition<A> | null;
-    pressStyle?: PseudoStyleWithTransition<A> | null;
-    focusStyle?: PseudoStyleWithTransition<A> | null;
-    focusWithinStyle?: PseudoStyleWithTransition<A> | null;
-    focusVisibleStyle?: PseudoStyleWithTransition<A> | null;
-    disabledStyle?: PseudoStyleWithTransition<A> | null;
-    exitStyle?: PseudoStyleWithTransition<A> | null;
-    enterStyle?: PseudoStyleWithTransition<A> | null;
-};
-export type PseudoTransitions = Partial<Record<keyof WithPseudoProps<any>, TransitionProp | null>> & {
-    [key: `$group-${string}-${'hover' | 'press' | 'focus'}`]: TransitionProp | null | undefined;
-};
-export type PseudoPropKeys = keyof WithPseudoProps<any>;
-export type PseudoStyles = {
-    hoverStyle?: ViewStyle;
-    pressStyle?: ViewStyle;
-    focusStyle?: ViewStyle;
-    focusWithinStyle?: ViewStyle;
-    focusVisibleStyle?: ViewStyle;
-    disabledStyle?: ViewStyle;
-    enterStyle?: ViewStyle;
-    exitStyle?: ViewStyle;
-};
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios' | 'tv' | 'androidtv' | 'tvos';
 type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true ? Omit<A, ShorthandLonghandProps> : A;
 export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>;
-export type WithThemeShorthandsAndPseudos<A extends object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
-export type WithThemeShorthandsPseudosMedia<A extends object, Variants = {}> = WithThemeShorthandsAndPseudos<A, Variants> & WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>;
 /**
  * Base style-only props (no media, pseudo):
  */
@@ -1108,15 +1161,19 @@ export interface TransformStyleProps {
     rotateX?: `${number}deg` | UnionableString;
     rotateZ?: `${number}deg` | UnionableString;
 }
-type BoxShadowPreset = '0 0' | '0 1px 2px' | '0 1px 2px 0' | '0 1px 2px $shadowColor' | '0 1px 3px 0 $shadowColor' | '0 4px 6px -1px $shadowColor' | 'inset 0 2px 4px $shadowColor' | 'none';
+type BoxShadowPreset = '0 0' | '0 1px 2px' | '0 1px 2px 0' | '0 1px 2px shadow-color' | '0 1px 3px 0 shadow-color' | '0 4px 6px -1px shadow-color' | 'inset 0 2px 4px shadow-color' | 'none';
 export type BoxShadowValue = BoxShadowPreset | (string & {});
-type FilterPreset = 'blur(4px)' | 'brightness(1.2)' | 'contrast(1.2)' | 'drop-shadow(0 4px 8px $shadowColor)' | 'grayscale(1)' | 'hue-rotate(90deg)' | 'invert(1)' | 'opacity(0.5)' | 'saturate(1.5)' | 'sepia(1)' | 'none';
+type FilterPreset = 'blur(4px)' | 'brightness(1.2)' | 'contrast(1.2)' | 'drop-shadow(0 4px 8px shadow-color)' | 'grayscale(1)' | 'hue-rotate(90deg)' | 'invert(1)' | 'opacity(0.5)' | 'saturate(1.5)' | 'sepia(1)' | 'none';
 export type FilterValue = FilterPreset | (string & {});
-type BorderPreset = '1px solid' | '1px solid $borderColor' | '2px dashed $borderColor' | '1px dotted red' | 'none';
+type BorderPreset = '1px solid' | '1px solid border-color' | '2px dashed border-color' | '1px dotted red' | 'none';
 export type BorderValue = BorderPreset | (string & {});
-type OutlinePreset = '1px solid' | '1px solid $outlineColor' | '2px dashed $outlineColor' | '1px dotted red' | 'none';
+type OutlinePreset = '1px solid' | '1px solid outline-color' | '2px dashed outline-color' | '1px dotted red' | 'none';
 export type OutlineValue = OutlinePreset | (string & {});
 interface ExtraStyleProps {
+    /**
+     * Text color, or a web-scoped color clause on a View.
+     */
+    color?: ColorStyleProp;
     /**
      * Controls the curve style of rounded corners.
      * - 'circular': Standard circular arc corners (default)
@@ -1150,7 +1207,7 @@ interface ExtraStyleProps {
      */
     outlineWidth?: SpaceValue;
     /**
-     * CSS outline shorthand string. Supports tokens: "2px solid $outlineColor"
+     * CSS outline shorthand string. Supports tokens: "2px solid outline-color"
      * Expands to outlineWidth, outlineStyle, outlineColor on native.
      * Works on web and native.
      */
@@ -1164,9 +1221,17 @@ interface ExtraStyleProps {
      */
     backdropFilter?: Properties['backdropFilter'];
     /**
-     * Web-only style property. Will be omitted on native.
+     * Works on web and native. Native lowers a single color value to
+     * backgroundColor and drops url()/gradient/multi-part values it can't express.
+     *
+     * The v6 shorthands map `bg` here rather than to `backgroundColor`, because
+     * the background family splits a value like `url(x.png) color1` across
+     * backgroundImage and backgroundColor. Color tokens lead the union so `bg`
+     * completes them; `Properties['background']` keeps the CSS shorthand
+     * keywords. Adding this key to `ColorKeys` instead would erase that second
+     * arm, since that path runs the value type through `Exclude<T[K], string>`.
      */
-    background?: Properties['background'];
+    background?: ColorTokens | Properties['background'];
     /**
      * Web-only style property. Will be omitted on native.
      */
@@ -1188,16 +1253,40 @@ interface ExtraStyleProps {
      */
     backgroundSize?: Properties['backgroundSize'];
     /**
-     * CSS box-shadow string. Supports tokens: "0 4px 8px $shadowColor"
+     * CSS box-shadow string. Supports tokens: "0 4px 8px shadow-color"
      * Works on web and native (RN 0.76+).
      */
     boxShadow?: BoxShadowValue;
     /**
-     * CSS border shorthand string. Supports tokens: "1px solid $borderColor"
+     * CSS border shorthand string. Supports tokens: "1px solid border-color"
      * Expands to borderWidth, borderStyle, borderColor.
      * Works on web and native. On native, applies to all sides.
      */
     border?: BorderValue;
+    /**
+     * CSS logical border shorthand string, like `border` for the block axis.
+     * Splits to the CSS logical longhands on web; native has no logical border
+     * properties, so it is diagnosed and dropped there rather than approximated.
+     */
+    borderBlock?: BorderValue;
+    /**
+     * CSS logical border shorthand string, like `border` for the inline axis.
+     * Splits to the CSS logical longhands on web; native has no logical border
+     * properties, so it is diagnosed and dropped there rather than approximated.
+     */
+    borderInline?: BorderValue;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    overflowWrap?: Properties['overflowWrap'];
+    /**
+     * Web-only legacy alias of overflowWrap. Will be omitted on native.
+     */
+    wordWrap?: Properties['wordWrap'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    resize?: Properties['resize'];
     /**
      * Web-only style property. Will be omitted on native.
      */
@@ -1206,6 +1295,14 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     overflowY?: Properties['overflowY'];
+    /**
+     * Web-only text wrapping strategy. Will be omitted on native.
+     */
+    textWrap?: Properties['textWrap'];
+    /**
+     * Web visibility. Native lowers hidden visibility to opacity and pointer events.
+     */
+    visibility?: Properties['visibility'];
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * The point at which transforms originate from.
@@ -1260,10 +1357,6 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     float?: Properties['float'];
-    /**
-     * Web-only style property. Will be omitted on native.
-     */
-    content?: Properties['content'];
     /**
      * Web-only style property. Will be omitted on native.
      */
@@ -1377,6 +1470,12 @@ interface ExtraStyleProps {
      */
     containerType?: Properties['containerType'];
     /**
+     * Names this element as a query container for `@sm/name:`-style clauses.
+     * Lowers to CSS `container-name` on web; on native it configures the
+     * container context instead of emitting a style.
+     */
+    containerName?: string;
+    /**
      * Web-only style property. Will be omitted on native.
      */
     blockSize?: SizeTokens | number;
@@ -1475,6 +1574,11 @@ interface ExtraBaseProps {
      */
     animatePresence?: boolean;
     /**
+     * Called by the animation driver at the start and end of each transition
+     * (enter, exit, or an in-place style update). See `TransitionEvent`.
+     */
+    onTransition?: OnTransition;
+    /**
      * Avoids as much work as possible and passes through the children with no changes.
      * Advanced: Useful for adapting to other element when you want to avoid re-parenting.
      */
@@ -1494,20 +1598,30 @@ export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBase
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
     /**
-     * CSS text-shadow string. Supports tokens: "2px 2px 4px $shadowColor"
+     * CSS text-shadow string. Supports tokens: "2px 2px 4px shadow-color"
      * On native, only a single shadow is supported.
      */
     textShadow?: string;
+    /**
+     * CSS text-decoration shorthand string ("underline dotted red").
+     * Splits to line/style/color; on native the three RN longhand props.
+     */
+    textDecoration?: string;
+    /**
+     * CSS font shorthand string ("italic bold 16px/1.5 Inter").
+     * Splits by the CSS micro-syntax; ambiguous forms stay unparsed.
+     */
+    font?: string;
 }
 type LooseCombinedObjects<A extends object, B extends object> = A | B | (A & B);
 export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
-export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
+export type StackStyle = WithThemeAndShorthands<StackStyleBase>;
+export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style' | 'selectable'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
+export type TextStyle = WithThemeAndShorthands<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
@@ -1515,21 +1629,23 @@ export interface ThemeableProps {
     componentName?: string;
     debug?: DebugProp;
 }
-export type StyleableOptions = {
+export type StyledHOCOptions = {
     disableTheme?: boolean;
     staticConfig?: Partial<StaticConfig>;
 };
-export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties> = <CustomProps extends object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends ForwardRefRenderFunction<Ref, MergedProps> = ForwardRefRenderFunction<Ref, MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
-export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {});
-export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends object = {}, Variants = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'styleable'> & {
+export type StyledHOCMergedProps<Props, CustomProps> = keyof CustomProps extends never ? Props : Omit<Props, keyof CustomProps> & CustomProps;
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeAndShorthands<StylePropsBase, Variants> : {});
+export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends object = {}, Variants = {}, ParentStaticProperties = {}> = FunctionComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & {
+    ref?: ReactRef<Ref>;
+}> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties];
 };
-export type InferGenericComponentProps<A> = A extends ComponentType<infer Props> ? Props : A extends ForwardRefExoticComponent<infer P> ? P : A extends ReactComponentWithRef<infer P, any> ? P : A extends new (props: infer Props) => any ? Props : {};
+export type InferGenericComponentProps<A> = A extends ComponentType<infer Props> ? Props : A extends ReactComponentWithRef<infer P, any> ? P : A extends new (props: infer Props) => any ? Props : {};
 export type InferStyledProps<A extends StylableComponent, B extends StaticConfigPublic> = A extends {
     __tama: any;
 } ? GetProps<A> : GetFinalProps<InferGenericComponentProps<A>, GetBaseStyles<{}, B>, {}>;
 /** Like InferStyledProps but returns only style props (no non-styled props or variants). */
-export type InferStyleProps<A extends StylableComponent, B extends StaticConfigPublic> = WithThemeShorthandsPseudosMedia<GetBaseStyles<A, B>, {}>;
+export type InferStyleProps<A extends StylableComponent, B extends StaticConfigPublic> = WithThemeAndShorthands<GetBaseStyles<A, B>, {}>;
 export type GetProps<A extends StylableComponent> = A extends {
     __tama: [
         infer Props,
@@ -1562,7 +1678,6 @@ export type GetStaticConfig<A, Extra = {}> = A extends {
 } ? B & Extra : Extra;
 export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties> = {
     staticConfig: StaticConfig;
-    styleable: Styleable<Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties>;
 };
 export type TamaguiComponentExpectingVariants<Props = {}, Variants extends object = {}> = TamaguiComponent<Props, any, any, any, Variants>;
 export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
@@ -1579,7 +1694,6 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
 export type PropMappedValue = [string, any, any?][] | undefined;
 export type GetStyleState = {
     style: TextStyle | null;
-    usedKeys: Record<string, number>;
     classNames: ClassNamesObject;
     staticConfig: StaticConfig;
     theme: ThemeParsed;
@@ -1593,23 +1707,44 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
+    flatRulesToInsert?: RulesToInsert;
+    flatShouldDoClasses?: boolean;
+    flatThemeName?: string;
+    flatMediaState?: Record<string, boolean | undefined>;
+    flatGroupContext?: AllGroupContexts | null;
+    flatConditionOrder?: number;
+    flatActiveConditions?: Record<string, true>;
+    flatStateKeys?: Set<string>;
+    flatMediaKeys?: Set<string>;
+    flatGroupKeys?: Set<string>;
+    flatGroupMedia?: Set<string>;
+    flatEnterKeys?: Set<string>;
+    flatExitKeys?: Set<string>;
+    flatUsesSafeArea?: boolean;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
     tokenProvenance?: Record<string, string>;
-    pseudoTransitions?: PseudoTransitions | null;
     animationDriver?: AnimationDriver | null;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any, originalVal?: any) => void) => void;
 export type GenericVariantDefinitions = {
     [key: string]: {
-        [key: string]: ((a: any, b: any) => any) | {
+        [key: string]: ((a: any, b: any) => any) | StaticStyleInput | {
             [key: string]: any;
         };
     };
 };
+export type CompoundVariantDefinition<MatchProps extends Record<string, any> = Record<string, any>, StyleProps extends Record<string, any> = Record<string, any>> = {
+    [Key in keyof MatchProps]?: MatchProps[Key] | readonly MatchProps[Key][];
+} & {
+    style: StyleProps | StaticStyleInput;
+};
+export type GenericCompoundVariant = CompoundVariantDefinition<Record<string, any>, Record<string, any>>;
 export type StaticConfigPublic = {
     defaultProps?: Record<string, any>;
+    /** Static class input supplied to styled(Component, baseClassName, ...). */
+    baseClassName?: StaticStyleInput;
     /**
      * (compiler) If you need to pass context or something, prevents from ever
      * flattening. The 'jsx' option means it will never flatten. if you
@@ -1641,11 +1776,6 @@ export type StaticConfigPublic = {
      */
     inlineProps?: Set<string>;
     /**
-     * (compiler) If not flattening, leave this prop as original value.
-     * Only applies to style attributes
-     */
-    inlineWhenUnflattened?: Set<string>;
-    /**
      * Auto-detected, but can override. Wraps children to space them on top
      */
     isZStack?: boolean;
@@ -1663,11 +1793,16 @@ export type StaticConfigPublic = {
      * memoizes component, rarely useful except mostly style components that don't take children
      */
     memo?: boolean;
+    compoundVariants?: readonly GenericCompoundVariant[];
+    contextProps?: readonly string[];
 };
 type StaticConfigBase = StaticConfigPublic & {
     Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>;
+    baseStyle?: Record<string, any>;
     variants?: GenericVariantDefinitions;
+    compoundVariants?: readonly GenericCompoundVariant[];
     context?: StyledContext;
+    contextProps?: readonly string[];
     /**
      * Used for applying sub theme style
      */
@@ -1687,30 +1822,45 @@ type StaticConfigBase = StaticConfigPublic & {
      */
     isHOC?: boolean;
     isStyledHOC?: boolean;
+    /**
+     * The immutable authoring syntax of this component, set by the package that
+     * created it and inherited by styled() descendants. Absent means the regular
+     * Tamagui frontend (see `regularStyleFrontend`).
+     */
+    styleFrontend?: StyleFrontend;
+    /**
+     * Raw classes from `baseClassName` that the frontend did not claim, produced by
+     * the descriptor's `normalizeStaticConfig`. They stay a class string so the app's
+     * own CSS still applies them, and stay out of `baseStyle` because that object
+     * holds styles only.
+     */
+    passthroughClassName?: string;
 };
 export type StaticConfig = StaticConfigBase & {
     parentStaticConfig?: StaticConfigBase;
 };
-export type ViewStyleWithPseudos = TextStyle | (TextStyle & {
-    hoverStyle?: TextStyle;
-    pressStyle?: TextStyle;
-    focusStyle?: TextStyle;
-    focusWithinStyle?: TextStyle;
-    focusVisibleStyle?: TextStyle;
-    disabledStyle?: TextStyle;
-});
+export type ViewStyleObject = TextStyle;
 /**
  * --------------------------------------------
  *   variants
  * --------------------------------------------
  */
-export type StylableComponent = TamaguiComponent | ComponentType<any> | ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
-export type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...space' | '...color' | '...zIndex' | '...theme' | '...radius';
+export type StylableComponent = TamaguiComponent | ComponentType<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
+export declare const variantResolverNames: readonly ['Size', 'Space', 'Color', 'Radius', 'ZIndex', 'Theme', 'FontSize', 'FontStyle', 'FontTransform', 'FontLineHeight', 'FontLetterSpacing', 'number', 'string', 'boolean', 'any'];
+export type VariantResolverName = (typeof variantResolverNames)[number];
+type TrimWhitespace = ' ' | '\n' | '\t' | '\r' | '\v' | '\f';
+type Trim<S extends string> = S extends `${TrimWhitespace}${infer Next}` ? Trim<Next> : S extends `${infer Next}${TrimWhitespace}` ? Trim<Next> : S;
+type ValidateVariantResolverKey<Key extends string> = Trim<Key> extends `${infer Left}|${infer Right}` ? Trim<Left> extends VariantResolverName ? ValidateVariantResolverKey<Right> extends never ? never : Key : never : Trim<Key> extends VariantResolverName ? Key : never;
+export type VariantResolverKey<Key extends string = string> = Key extends string ? ValidateVariantResolverKey<Key> : never;
+type VariantResolverValueForName<Name extends string> = Name extends 'Size' ? Size : Name extends 'Space' ? Space : Name extends 'Color' ? Color : Name extends 'Radius' ? Radius : Name extends 'ZIndex' ? ZIndex : Name extends 'Theme' ? ThemeTokens : Name extends 'FontSize' ? FontSize : Name extends 'FontStyle' ? FontStyleTokens : Name extends 'FontTransform' ? FontTransformTokens : Name extends 'FontLineHeight' ? FontLineHeightTokens : Name extends 'FontLetterSpacing' ? FontLetterSpacingTokens : Name extends 'number' ? number : Name extends 'string' ? string : Name extends 'boolean' ? boolean : Name extends 'any' ? any : never;
+export type VariantResolverValue<Key extends string> = Trim<Key> extends `${infer Left}|${infer Right}` ? VariantResolverValueForName<Trim<Left>> | VariantResolverValue<Right> : VariantResolverValueForName<Trim<Key>>;
+export declare function createVariantResolver<Key extends string, Props extends PropLike = PropLike, Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> = VariantSpreadFunction<Props, VariantResolverValue<Key>>>(key: string extends Key ? never : Key & VariantResolverKey<Key>, resolver: Resolver): Resolver;
 export type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, StaticConfig extends StaticConfigPublic = Parent extends {
     __tama: [any, any, any, any, any, infer S];
 } ? S : {}, MyProps extends object = Partial<GetVariantProps<Parent, StaticConfig['isText'] extends true ? true : StaticConfig['isInput'] extends true ? true : false>>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
     _isEmpty?: 1;
 };
+export type StaticStyleInput = string;
 export type GetVariantProps<A extends StylableComponent, IsText extends boolean | undefined> = A extends {
     __tama: [
         infer Props,
@@ -1720,15 +1870,11 @@ export type GetVariantProps<A extends StylableComponent, IsText extends boolean 
         infer VariantProps,
         any
     ];
-} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeShorthandsPseudosMedia<IsText extends true ? TextStylePropsBase : StackStyleBase>;
+} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeAndShorthands<IsText extends true ? TextStylePropsBase : StackStyleBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object ? {
-    [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
-        [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
-    } & {
-        [Key in string | number | 'true' | 'false']?: MyProps | VariantSpreadFunction<MyProps, Val>;
-    } & {
-        [Key in VariantTypeKeys]?: Key extends ':number' ? VariantSpreadFunction<MyProps, number> : Key extends ':boolean' ? VariantSpreadFunction<MyProps, boolean> : Key extends ':string' ? VariantSpreadFunction<MyProps, string> : never;
-    });
+    [propName: string]: VariantSpreadFunction<MyProps, Val> | {
+        [Key in string | number | 'true' | 'false']?: MyProps | VariantSpreadFunction<MyProps, Val> | StaticStyleInput;
+    };
 } : {};
 export type GenericStackVariants = VariantDefinitionFromProps<StackNonStyleProps & StackStyle, any>;
 export type GenericTextVariants = VariantDefinitionFromProps<TextProps, any>;
@@ -1748,8 +1894,6 @@ type PropLike = {
 export type VariantSpreadFunction<Props extends PropLike, Val = any> = (val: Val, config: VariantSpreadExtras<Props>) => {
     [Key in keyof Props]: Props[Key] | Variable | VariableVal;
 } | null | undefined;
-export type VariantTypeKeys = ':string' | ':boolean' | ':number';
-export type GetVariantValues<Key> = Key extends `...${infer VariantSpread}` ? ThemeValueByCategory<VariantSpread> : Key extends 'true' | 'false' ? boolean : Key extends ':string' ? string : Key extends ':boolean' ? boolean : Key extends ':number' ? number : Key;
 export type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontSizeTokens>;
 export type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SizeTokens>;
 export type SpaceVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SpaceTokens>;
@@ -1782,8 +1926,6 @@ export type SplitStyleProps = {
     willBeAnimated?: boolean;
     isAnimated: boolean;
     isExiting?: boolean;
-    exitVariant?: string;
-    enterVariant?: string;
 };
 export interface PresenceContextProps {
     id: string;
@@ -1792,9 +1934,6 @@ export interface PresenceContextProps {
     onExitComplete?: (id: string) => void;
     initial?: false | string | string[];
     custom?: any;
-    exitVariant?: string | null;
-    enterVariant?: string | null;
-    enterExitVariant?: string | null;
 }
 type SafeToRemoveCallback = () => void;
 type AlwaysPresent = [true, null, null];
@@ -1850,7 +1989,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     }) => React.ReactNode;
     useAnimatedNumber: UseAnimatedNumber;
     useAnimatedNumberStyle: UseAnimatedNumberStyle;
-    useAnimatedNumbersStyle?: UseAnimatedNumbersStyle;
+    useAnimatedNumbersStyle: UseAnimatedNumbersStyle;
     useAnimatedNumberReaction: UseAnimatedNumberReaction;
     animations: A;
     View?: any;
@@ -1862,6 +2001,7 @@ export type UseStyleEmitter = (cb: UseStyleListener) => void;
 export type UseAnimationHook = (props: {
     style: Record<string, any>;
     props: Record<string, any>;
+    styleState?: GetStyleResult | null;
     presence?: UsePresenceResult | null;
     staticConfig: StaticConfig;
     styleProps: SplitStyleProps;
@@ -1869,11 +2009,10 @@ export type UseAnimationHook = (props: {
     useStyleEmitter?: UseStyleEmitter;
     theme: ThemeParsed;
     themeName: string;
-    pseudos: WithPseudoProps<ViewStyle> | null;
     stateRef: {
         current: TamaguiComponentStateRef;
     };
-    onDidAnimate?: any;
+    onTransition?: OnTransition;
     delay?: number;
 }) => null | {
     style?: StackStyleBase | StackStyleBase[];
@@ -1883,7 +2022,6 @@ export type UseAnimationHook = (props: {
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = Record<string, StyleObject>;
 export type GetStyleResult = {
-    pseudos?: PseudoStyles | null;
     style: ViewStyle | null;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;
@@ -1891,12 +2029,17 @@ export type GetStyleResult = {
     fontFamily: string | undefined;
     space?: any;
     hasMedia: boolean | Set<string>;
-    dynamicThemeAccess?: boolean;
     pseudoGroups?: Set<string>;
     mediaGroups?: Set<string>;
+    dynamicThemeAccess?: boolean;
     overriddenContextProps?: Record<string, any>;
-    pseudoTransitions?: PseudoTransitions | null;
+    programStates?: Set<string>;
+    usesSafeArea?: true;
     effectiveTransition?: TransitionProp | null;
+    programLifecycleStyleKeys?: {
+        enter?: Set<string>;
+        exit?: Set<string>;
+    };
 };
 export type ClassNamesObject = Record<string, string>;
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;

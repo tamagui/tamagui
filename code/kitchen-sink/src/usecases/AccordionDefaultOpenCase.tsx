@@ -65,8 +65,11 @@ export function AccordionDefaultOpenCase() {
   }, [initialLayoutPass])
 
   return (
-    <YStack testID="accordion-default-root" p="$4">
-      <Accordion overflow="hidden" width="$20" type="multiple" defaultValue={['a1']}>
+    <YStack testID="accordion-default-root" p="4">
+      {/* explicit px: this was $20 pre-v6; the flat-values migration mapped it
+          to the v6 "20" token (80px), which wrapped every label ~3x taller and
+          pushed grow-content below the window, so Detox refused the tap */}
+      <Accordion overflow="hidden" width={224} type="multiple" defaultValue={['a1']}>
         <Accordion.Item value="a1" mb={-1}>
           <Accordion.Trigger
             id="def-trigger"
@@ -75,13 +78,13 @@ export function AccordionDefaultOpenCase() {
             flexDirection="row"
             justify="space-between"
             borderWidth={1}
-            borderColor="$borderColor"
+            borderColor="border-color"
           >
             {({ open }: { open: boolean }) => (
               <>
                 <Paragraph>Open by default</Paragraph>
                 <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                  <ChevronDown size="$1" color="$color" />
+                  <ChevronDown size="1" color="color" />
                 </Square>
               </>
             )}
@@ -97,7 +100,7 @@ export function AccordionDefaultOpenCase() {
               testID="def-content"
               borderWidth={1}
               borderTopWidth={0}
-              borderColor="$borderColor"
+              borderColor="border-color"
             >
               <View
                 onLayout={() => setInitialLayoutPass((pass) => (pass === 0 ? 1 : pass))}
@@ -118,13 +121,13 @@ export function AccordionDefaultOpenCase() {
             flexDirection="row"
             justify="space-between"
             borderWidth={1}
-            borderColor="$borderColor"
+            borderColor="border-color"
           >
             {({ open }: { open: boolean }) => (
               <>
                 <Paragraph>Closed by default</Paragraph>
                 <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                  <ChevronDown size="$1" color="$color" />
+                  <ChevronDown size="1" color="color" />
                 </Square>
               </>
             )}
@@ -139,7 +142,7 @@ export function AccordionDefaultOpenCase() {
               testID="def-content2"
               borderWidth={1}
               borderTopWidth={0}
-              borderColor="$borderColor"
+              borderColor="border-color"
             >
               <Paragraph testID="def-content2-text">
                 {expanded
@@ -149,7 +152,7 @@ export function AccordionDefaultOpenCase() {
               <Button
                 id="grow-content"
                 testID="grow-content"
-                size="$2"
+                size="2"
                 onPress={() => setExpanded((value) => !value)}
               >
                 Resize content
@@ -175,7 +178,7 @@ export function AccordionDefaultOpenCase() {
         width={20}
         height={probeVisible ? 40 : undefined}
         x={probeVisible ? 40 : undefined}
-        bg="$backgroundHover"
+        bg="background-hover"
         transition="300ms"
       />
       <Button

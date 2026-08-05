@@ -1,46 +1,13 @@
 import { isWeb } from '@tamagui/constants'
 import type { CreateTamaguiProps, Variable } from '../types'
-import { getVariableVariable, isVariable } from '../createVariable'
 import { autoVariables, registerCSSVariable, variableToCSS } from './registerCSSVariable'
 import { getThemeCSSRules } from './getThemeCSSRules'
-import { getAllRules } from './insertStyleRule'
+import { getAllRules, wrapStyleRules } from './insertStyleRule'
 
 type ThemeConfig = {
   cssRuleSets: string[]
   getThemeRulesSets: () => string[]
 }
-
-// helper to get font property CSS declarations
-function getFontPropertyDeclarations(
-  fontParsed: any,
-  tokenKey: string = '$true'
-): string[] {
-  const props: string[] = ['font-family: var(--f-family)']
-
-  const getVarRef = (obj: any) => {
-    const val = obj?.[tokenKey]
-    if (isVariable(val)) {
-      return getVariableVariable(val)
-    }
-    return undefined
-  }
-
-  const letterSpacing = getVarRef(fontParsed.letterSpacing)
-  if (letterSpacing) props.push(`letter-spacing: ${letterSpacing}`)
-
-  const lineHeight = getVarRef(fontParsed.lineHeight)
-  if (lineHeight) props.push(`line-height: ${lineHeight}`)
-
-  const fontStyle = getVarRef(fontParsed.style)
-  if (fontStyle) props.push(`font-style: ${fontStyle}`)
-
-  const fontWeight = getVarRef(fontParsed.weight)
-  if (fontWeight) props.push(`font-weight: ${fontWeight}`)
-
-  return props
-}
-
-export { getFontPropertyDeclarations }
 
 /**
  * Generates CSS for tokens - registers CSS variables and builds declaration strings
@@ -97,7 +64,7 @@ export function createFontCSS(
       const [name, language] = key.includes('_') ? key.split('_') : [key]
       const fontVars = registerFontVariables(fontParsed)
       fontDeclarations[key] = {
-        name: name.slice(1),
+        name,
         declarations: fontVars,
         language,
         fontParsed,
@@ -118,7 +85,7 @@ export function buildCSSRuleSets(
     string,
     { name: string; declarations: string[]; language?: string; fontParsed: any }
   >,
-  defaultFontToken: string = '$true'
+  defaultFontToken = ''
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const cssRuleSets: string[] = []
@@ -148,16 +115,13 @@ export function buildCSSRuleSets(
     }
 
     // shared rule: all font_* classes + is_View apply font properties
-    // this resets fonts on Views like React Native does
+    // this resets fonts on Views like React Native does; the declarations must
+    // follow settings.defaultFont, never the sorted selector order
     if (fontSelectors.length) {
-      const firstFont = fontDeclarations[sortedFontDeclarationKeys[0]]
-      if (firstFont?.fontParsed) {
-        const fontProps = getFontPropertyDeclarations(
-          firstFont.fontParsed,
-          defaultFontToken
-        )
+      const defaultFont = fontDeclarations[defaultFontToken]
+      if (defaultFont?.fontParsed) {
         const sharedSelectors = [...fontSelectors, '.is_View'].join(', ')
-        cssRuleSets.push(`${sharedSelectors} {${fontProps.join('; ')}}`)
+        cssRuleSets.push(`${sharedSelectors} {font-family: var(--f-family)}`)
       }
     }
 
@@ -212,7 +176,7 @@ export function getCSS(
       const rules = getAllRules()
       const newRules = rules.slice(lastIndex.value)
       lastIndex.value = rules.length
-      return newRules.join(separator)
+      return wrapStyleRules(newRules.join(separator))
     }
 
     lastIndex.value = 0
@@ -220,7 +184,7 @@ export function getCSS(
     const runtimeStyles = getAllRules().join(separator)
 
     if (exclude === 'design-system') {
-      return runtimeStyles
+      return wrapStyleRules(runtimeStyles)
     }
 
     const themeRules = exclude ? '' : themeConfig.getThemeRulesSets().join(separator)
@@ -256,9 +220,9 @@ ${hideScrollBarsCSS}
 ${autoVarCSS}
 ${themeConfig.cssRuleSets.join(separator)}`
 
-    return `${designSystem}
+    return wrapStyleRules(`${designSystem}
 ${themeRules}
-${runtimeStyles}`
+${runtimeStyles}`)
   }
   return ''
 }

@@ -20,6 +20,7 @@ const reactNativeOnlyProps: Record<string, boolean> = {
   contentContainerStyle: true,
   contentOffset: true,
   decelerationRate: true,
+  focusable: true,
   maintainVisibleContentPosition: true,
   onLayout: true,
   onMomentumScrollBegin: true,
@@ -151,7 +152,6 @@ export const createDOMProps = (elementType, props, options?) => {
     accessibilityValueNow,
     accessibilityValueText,
     dataSet,
-    focusable,
     nativeID,
     pointerEvents,
     style,
@@ -358,10 +358,6 @@ export const createDOMProps = (elementType, props, options?) => {
   }
 
   // FOCUS
-  // "focusable" indicates that an element may be a keyboard tab-stop.
-  if (focusable === false) {
-    domProps.tabIndex = '-1'
-  }
   if (
     // These native elements are keyboard focusable by default
     elementType === 'a' ||
@@ -370,7 +366,7 @@ export const createDOMProps = (elementType, props, options?) => {
     elementType === 'select' ||
     elementType === 'textarea'
   ) {
-    if (focusable === false || accessibilityDisabled === true) {
+    if (accessibilityDisabled === true) {
       domProps.tabIndex = '-1'
     }
   } else if (
@@ -382,12 +378,7 @@ export const createDOMProps = (elementType, props, options?) => {
     role === 'textbox' ||
     role === 'switch'
   ) {
-    if (focusable !== false) {
-      domProps.tabIndex = '0'
-    }
-  } else {
-    // Everything else must explicitly set the prop
-    if (focusable === true) {
+    if (domProps.tabIndex == null) {
       domProps.tabIndex = '0'
     }
   }

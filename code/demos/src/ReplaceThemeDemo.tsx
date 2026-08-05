@@ -28,10 +28,10 @@ export function ReplaceThemeDemo() {
   }, [])
 
   return (
-    <YStack items="center" gap="$4">
-      <XStack gap="$5">
+    <YStack items="center" gap="4">
+      <XStack gap="5">
         <Theme name={theme ?? null}>
-          <Square rounded="$8" size={100} bg="$color" />
+          <Square rounded="8" bg="color" size={100} />
         </Theme>
       </XStack>
 
@@ -46,7 +46,7 @@ export function ReplaceThemeDemo() {
           update()
         }}
       >
-        Replace theme to only have $color: blue
+        Replace theme to only have color: blue
       </Button>
     </YStack>
   )

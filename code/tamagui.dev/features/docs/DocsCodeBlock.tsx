@@ -10,7 +10,6 @@ import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useId, useRef, useState } from 'react'
 import {
   AnimatePresence,
-  Button,
   Paragraph,
   Spacer,
   TooltipSimple,
@@ -18,6 +17,7 @@ import {
   YStack,
   useEvent,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'
@@ -96,38 +96,36 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     <YStack
       ref={ref}
       position="relative"
-      mb="$4"
+      mb="4"
       {...(isHero && {
-        px: '$4',
-        mx: '$-4',
-        $gtMd: {
-          mx: '$-7',
-        },
+        px: '4',
+        mx: '-4 gtMd:-7',
       })}
     >
       <ErrorBoundary>
         {isCollapsible && (
           <XStack
-            gap="$2"
+            gap="2"
             position="absolute"
             display="inline-flex"
             items="center"
             justify="flex-end"
             t={-82}
-            r="$6"
+            r="6"
             z={0}
           >
             <Button
               aria-label="Show or hide code"
               icon={Code2}
-              size="$3"
+              size="4"
+              fontWeight="400"
               z={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
             <TooltipSimple label="Toggle tint on/off">
-              <Button size="$3" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
+              <Button size="4" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
             </TooltipSimple>
           </XStack>
         )}
@@ -137,7 +135,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             {...(isCutoff && {
               maxHeight: 400,
               ov: 'hidden',
-              br: '$4',
+              br: '4',
             })}
           >
             {isCutoff && (
@@ -147,19 +145,19 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 l={0}
                 r={0}
                 height={200}
-                colors={['$background0', '$background']}
+                colors={['background0', 'background']}
                 z={1000}
               >
                 <Spacer flex={1} />
                 <Button
                   z={10}
-                  size="$3"
+                  size="4"
                   onPress={() => setIsCutoff(!isCutoff)}
                   self="center"
                 >
                   Show more
                 </Button>
-                <Spacer size="$4" />
+                <Spacer size="4" />
               </LinearGradient>
             )}
 
@@ -172,25 +170,25 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               mb={0}
               id={id}
               justify="center"
-              bg="$color2"
+              bg="color2"
               position="relative"
             >
               {showFileName && (
                 <XStack
                   items="center"
-                  gap="$2"
-                  pl="$4"
-                  height="$5"
-                  py="$4"
-                  borderBottomWidth="$0.5"
-                  borderBottomColor="$color3"
+                  gap="2"
+                  pl="4"
+                  height="5"
+                  py="4"
+                  borderBottomWidth="0.5"
+                  borderBottomColor="color3"
                 >
                   {isTerminalCommand ? (
-                    <TerminalSquare size="$1" color="$color11" />
+                    <TerminalSquare size="1" color="color11" />
                   ) : (
-                    <FileCode2 size="$1" color="$color11" />
+                    <FileCode2 size="1" color="color11" />
                   )}
-                  <Paragraph color="$color11">
+                  <Paragraph color="color11">
                     {isTerminalCommand ? 'Terminal' : fileName}
                   </Paragraph>
                 </XStack>
@@ -212,9 +210,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   <Button
                     position="absolute"
                     aria-label="Copy code to clipboard"
-                    size="$2"
-                    t={showFileName ? '$6' : '$3'}
-                    r="$3"
+                    size="3"
+                    t={showFileName ? '6' : '3'}
+                    r="3"
                     display="inline-flex"
                     icon={hasCopied ? CheckCircle : Copy}
                     onPress={() => {
@@ -231,7 +229,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               {isLong && !isCutoff && (
                 <>
                   <Spacer />
-                  <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} self="center">
+                  <Button size="4" onPress={() => setIsCutoff(!isCutoff)} self="center">
                     Show less
                   </Button>
                 </>

@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Tamagui v3 Canary",
+    "slug": "tamagui-v3-canary",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "newArchEnabled": true,
+    "platforms": ["ios", "android"]
+  }
+}

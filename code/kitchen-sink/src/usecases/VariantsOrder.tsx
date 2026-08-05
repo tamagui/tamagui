@@ -23,10 +23,9 @@ export function VariantsOrder() {
 }
 
 export const Text2 = styled(Text, {
-  fontFamily: '$body',
+  fontFamily: 'body',
   fontSize: 20,
   userSelect: 'auto',
-
   variants: {
     bold: {
       true: {
@@ -44,7 +43,6 @@ export const Text2 = styled(Text, {
       },
     },
   } as const,
-
   defaultVariants: {
     inherit: false,
   },

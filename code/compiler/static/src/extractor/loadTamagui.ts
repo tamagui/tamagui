@@ -1,21 +1,23 @@
 import { basename, dirname, extname, join, relative, resolve } from 'node:path'
+import { createRequire } from 'node:module'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import * as esbuildWasm from 'esbuild-wasm'
-import * as fsExtra from 'fs-extra'
+import fsExtra from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
-import { getNameToPaths, registerRequire } from '../registerRequire'
+import { getNameToPaths, registerRequire, setRequireResult } from '../registerRequire'
 import {
   type TamaguiProjectInfo,
+  getComponentStaticConfigByName,
   getBundledConfig,
   getLoadedConfig,
   hasBundledConfigChanged,
   loadComponentsSync,
+  setLoadedConfig,
   writeTamaguiCSS,
 } from './bundleConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
@@ -24,6 +26,10 @@ import {
   regenerateConfig,
   regenerateConfigSync,
 } from './regenerateConfig'
+
+const nodeRequire = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
@@ -36,7 +42,8 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
 let isLoadingPromise: null | Promise<any>
 
 export async function loadTamagui(
-  propsIn: Partial<TamaguiOptions>
+  propsIn: Partial<TamaguiOptions>,
+  rebuild = false
 ): Promise<TamaguiProjectInfo | null> {
   if (isLoadingPromise) return await isLoadingPromise
 
@@ -50,7 +57,7 @@ export async function loadTamagui(
   try {
     const props = getFilledOptions(propsIn)
 
-    const bundleInfo = await getBundledConfig(props)
+    const bundleInfo = await getBundledConfig(props, rebuild)
     if (!bundleInfo) {
       console.warn(
         `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
@@ -60,7 +67,7 @@ export async function loadTamagui(
     }
 
     // this affects the bundled config so run it first
-    await generateThemesAndLog(props)
+    await generateThemesAndLog(props, rebuild)
 
     // if they accidently pass in a config without createTamagui called,call it
     const maybeTamaguiConfig = bundleInfo.tamaguiConfig as TamaguiInternalConfig
@@ -86,6 +93,77 @@ export async function loadTamagui(
   }
 }
 
+export type EvaluatedTamaguiModule = {
+  moduleName: string
+  module: Record<string, unknown>
+}
+
+export type EvaluatedTamaguiProject = {
+  config: Record<string, unknown>
+  components: EvaluatedTamaguiModule[]
+}
+
+/**
+ * Load a Tamagui project from modules evaluated by the host bundler.
+ *
+ * Bundler adapters with a module runner use this boundary so aliases, package
+ * conditions, and user plugins are identical between application and compiler
+ * evaluation. Adapters without a module runner continue to use loadTamagui().
+ */
+export async function loadTamaguiFromModules(
+  propsIn: Partial<TamaguiOptions>,
+  evaluated: EvaluatedTamaguiProject
+): Promise<TamaguiProjectInfo> {
+  const props = getFilledOptions(propsIn)
+
+  await generateThemesAndLog(props)
+
+  const configModule = evaluated.config as any
+  let tamaguiConfig = (configModule.default || configModule.config || configModule) as
+    | TamaguiInternalConfig
+    | { config?: TamaguiInternalConfig }
+
+  if ('config' in tamaguiConfig && tamaguiConfig.config && !('tokens' in tamaguiConfig)) {
+    tamaguiConfig = tamaguiConfig.config
+  }
+
+  if (!tamaguiConfig || (tamaguiConfig as any)._isProxyWorm) {
+    throw new Error(`The Vite module runner did not return a valid Tamagui config`)
+  }
+
+  const hostCore = requireTamaguiCore(props.platform || 'web')
+  if (!(tamaguiConfig as TamaguiInternalConfig).parsed) {
+    tamaguiConfig = hostCore.createTamagui(tamaguiConfig as any) as TamaguiInternalConfig
+  } else {
+    // Module runners can evaluate the config in a separate Tamagui module
+    // instance. Install the already-parsed config so host module-local state
+    // matches without re-parsing it or running browser-only CSS discovery.
+    hostCore.installTamaguiConfig(tamaguiConfig as TamaguiInternalConfig)
+  }
+
+  setLoadedConfig(tamaguiConfig as TamaguiInternalConfig)
+
+  const components = evaluated.components.map(({ moduleName, module }) => {
+    setRequireResult(moduleName, module)
+    return {
+      moduleName,
+      nameToInfo: getComponentStaticConfigByName(moduleName, module.default ?? module),
+    }
+  })
+
+  const projectInfo = {
+    components,
+    nameToPaths: {},
+    tamaguiConfig: tamaguiConfig as TamaguiInternalConfig,
+  } satisfies TamaguiProjectInfo
+
+  if (props.outputCSS) {
+    await writeTamaguiCSS(props.outputCSS, projectInfo.tamaguiConfig)
+  }
+
+  return projectInfo
+}
+
 // debounce a bit
 let waiting = false
 
@@ -103,7 +181,7 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
       colorLog(
         Color.FgYellow,
         `${whitespaceBefore}➡ [tamagui] generated themes: ${relative(
-          process.cwd(),
+          options.root || process.cwd(),
           options.themeBuilder.output
         )}`
       )
@@ -123,70 +201,62 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
 const last: Record<string, TamaguiProjectInfo | null> = {}
 const lastVersion: Record<string, string> = {}
 
-// esbuild-wasm state - initialized once per process
-let esbuildWasmInitialized = false
+const buildConfigDependencies = new WeakMap<TamaguiOptions, readonly string[]>()
+
+export function getTamaguiBuildConfigDependencies(
+  options: TamaguiOptions
+): readonly string[] {
+  return buildConfigDependencies.get(options) ?? []
+}
 
 /**
- * Load tamagui.build.ts config using esbuild-wasm transform
- * Uses WASM to avoid native esbuild service lifecycle issues (EPIPE errors)
+ * Load tamagui.build.ts and its relative imports as one Node module.
  */
 export async function loadTamaguiBuildConfigAsync(
   tamaguiOptions: Partial<TamaguiOptions> | undefined
 ): Promise<TamaguiOptions> {
   const buildFilePath = tamaguiOptions?.buildFile ?? './tamagui.build.ts'
-  const absolutePath =
-    buildFilePath[0] === '.' ? join(process.cwd(), buildFilePath) : buildFilePath
+  const root = tamaguiOptions?.root || process.cwd()
+  const absolutePath = resolve(root, buildFilePath)
 
   if (fsExtra.existsSync(absolutePath)) {
     try {
-      const source = await fsExtra.readFile(absolutePath, 'utf-8')
-
-      // initialize esbuild-wasm once
-      if (!esbuildWasmInitialized) {
-        await esbuildWasm.initialize({})
-        esbuildWasmInitialized = true
-      }
-
-      // use esbuild-wasm.transform to compile this one small config file. note
-      // that in node, even esbuild-wasm's transform spawns a long-lived
-      // `--service --ping` child via ensureServiceIsRunning, so we tear it down
-      // below - otherwise every plugin instance leaks a persistent esbuild
-      // process for the lifetime of the dev server.
-      const result = await esbuildWasm.transform(source, {
-        loader: 'ts',
+      const result = await esbuild.build({
+        entryPoints: [absolutePath],
+        absWorkingDir: root,
+        bundle: true,
+        packages: 'external',
+        platform: 'node',
         format: 'cjs',
         target: 'node18',
-        sourcefile: absolutePath,
+        write: false,
+        metafile: true,
       })
 
-      // evaluate the compiled code to get the exports
-      // pass process so process.env works in the config
       const module = { exports: {} as any }
-      const fn = new Function('module', 'exports', 'require', 'process', result.code)
-      fn(module, module.exports, require, process)
+      const projectRequire = createRequire(absolutePath)
+      const code = result.outputFiles[0]?.text
+      if (!code) throw new Error(`No output generated for ${buildFilePath}`)
+      const fn = new Function('module', 'exports', 'require', 'process', code)
+      fn(module, module.exports, projectRequire, process)
 
       const out = module.exports.default || module.exports
       if (!out || typeof out !== 'object') {
         throw new Error(`No default export found in ${buildFilePath}: ${out}`)
       }
 
-      tamaguiOptions = {
+      const loadedOptions = {
         ...tamaguiOptions,
         ...out,
-      }
+      } as TamaguiOptions
+      const dependencies = Object.keys(result.metafile.inputs).map((input) =>
+        resolve(root, input)
+      )
+      buildConfigDependencies.set(loadedOptions, dependencies)
+      tamaguiOptions = loadedOptions
     } catch (err) {
       console.error(`[tamagui] Error loading ${buildFilePath}:`, err)
       throw err
-    } finally {
-      // this is a one-shot transform - don't keep the esbuild-wasm service
-      // running for the rest of the process. it gets lazily re-spawned if
-      // transform is ever called again.
-      try {
-        esbuildWasm.stop()
-        esbuildWasmInitialized = false
-      } catch {
-        // ok - service may already be gone
-      }
     }
   }
 
@@ -196,11 +266,14 @@ export async function loadTamaguiBuildConfigAsync(
     )
   }
 
-  return {
+  const options = {
     config: 'tamagui.config.ts',
     components: ['tamagui', '@tamagui/core'],
     ...tamaguiOptions,
   } as TamaguiOptions
+  const dependencies = buildConfigDependencies.get(tamaguiOptions)
+  if (dependencies) buildConfigDependencies.set(options, dependencies)
+  return options
 }
 
 /**
@@ -210,12 +283,12 @@ export function loadTamaguiBuildConfigSync(
   tamaguiOptions: Partial<TamaguiOptions> | undefined
 ) {
   const buildFilePath = tamaguiOptions?.buildFile ?? './tamagui.build.ts'
-  if (fsExtra.existsSync(buildFilePath)) {
+  const root = tamaguiOptions?.root || process.cwd()
+  const absolutePath = resolve(root, buildFilePath)
+  if (fsExtra.existsSync(absolutePath)) {
     const registered = registerRequire('web')
     try {
-      const out = require(
-        buildFilePath[0] === '.' ? join(process.cwd(), buildFilePath) : buildFilePath
-      ).default
+      const out = nodeRequire(absolutePath).default
       if (!out) {
         throw new Error(`No default export found in ${buildFilePath}: ${out}`)
       }
@@ -278,8 +351,11 @@ export function loadTamaguiSync({
       // config
       let tamaguiConfig: TamaguiInternalConfig | null = null
       if (propsIn.config) {
-        const configPath = getTamaguiConfigPathFromOptionsConfig(propsIn.config)
-        const exp = require(configPath)
+        const configPath = getTamaguiConfigPathFromOptionsConfig(
+          propsIn.config,
+          propsIn.root
+        )
+        const exp = nodeRequire(configPath)
 
         if (!exp || exp._isProxyWorm) {
           throw new Error(`Got a empty / proxied config!`)
@@ -288,7 +364,7 @@ export function loadTamaguiSync({
         tamaguiConfig = (exp['default'] || exp['config'] || exp) as TamaguiInternalConfig
 
         if (!tamaguiConfig || !tamaguiConfig.parsed) {
-          const confPath = require.resolve(configPath)
+          const confPath = nodeRequire.resolve(configPath)
           throw new Error(`Can't find valid config in ${confPath}:
           
   Be sure you "export default" or "export const config" the config.`)
@@ -404,7 +480,7 @@ export async function getOptions({
 
 export function resolveWebOrNativeSpecificEntry(entry: string, platform?: string) {
   const workspaceRoot = resolve()
-  const resolved = require.resolve(entry, { paths: [workspaceRoot] })
+  const resolved = nodeRequire.resolve(entry, { paths: [workspaceRoot] })
   const ext = extname(resolved)
   const fileName = basename(resolved).replace(ext, '')
   const target = platform || process.env.TAMAGUI_TARGET || 'web'

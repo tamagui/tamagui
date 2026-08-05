@@ -106,13 +106,13 @@ declare class Observer {
      * Show a toast for a promise, automatically transitioning through
      * loading -> success/error states
      */
-    promise: <ToastData>(promise: PromiseT<ToastData>, data?: PromiseData<ToastData>) => (string & {
+    promise: <ToastData>(promise: PromiseT<ToastData>, data?: PromiseData<ToastData>) => {
+        unwrap: () => Promise<ToastData>;
+    } | (string & {
         unwrap: () => Promise<ToastData>;
     }) | (number & {
         unwrap: () => Promise<ToastData>;
-    }) | {
-        unwrap: () => Promise<ToastData>;
-    } | undefined;
+    }) | undefined;
     /**
      * Show a custom JSX toast
      */
@@ -127,6 +127,9 @@ declare class Observer {
     getHistory: () => ToastT[];
 }
 export declare const ToastState: Observer;
+declare const toastFunction: (title: TitleT, data?: ExternalToast) => string | number;
+declare const getHistory: () => ToastT[];
+declare const getToasts: () => ToastT[];
 /**
  * Main toast API - call directly or use methods like toast.success()
  *
@@ -156,24 +159,24 @@ export declare const ToastState: Observer;
  * toast.dismiss(id)
  * toast.dismiss() // dismiss all
  */
-export declare const toast: ((title: TitleT, data?: ExternalToast) => string | number) & {
+export declare const toast: typeof toastFunction & {
     success: (title: TitleT, data?: ExternalToast) => string | number;
     error: (title: TitleT, data?: ExternalToast) => string | number;
     warning: (title: TitleT, data?: ExternalToast) => string | number;
     info: (title: TitleT, data?: ExternalToast) => string | number;
     loading: (title: TitleT, data?: ExternalToast) => string | number;
-    promise: <ToastData>(promise: PromiseT<ToastData>, data?: PromiseData<ToastData> | undefined) => (string & {
+    promise: <ToastData>(promise: PromiseT<ToastData>, data?: PromiseData<ToastData> | undefined) => {
+        unwrap: () => Promise<ToastData>;
+    } | (string & {
         unwrap: () => Promise<ToastData>;
     }) | (number & {
         unwrap: () => Promise<ToastData>;
-    }) | {
-        unwrap: () => Promise<ToastData>;
-    } | undefined;
+    }) | undefined;
     custom: (jsx: (id: string | number) => React.ReactElement, data?: ExternalToast) => string | number;
     dismiss: (id?: string | number) => string | number | undefined;
     message: (title: TitleT, data?: ExternalToast) => string | number;
-    getHistory: () => ToastT[];
-    getToasts: () => ToastT[];
+    getHistory: typeof getHistory;
+    getToasts: typeof getToasts;
 };
 export type { NativeToastRef };
 //# sourceMappingURL=ToastState.d.ts.map

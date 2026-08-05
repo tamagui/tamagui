@@ -42,7 +42,7 @@ Sizing buttons provides a unique challenge especially for a compiler, because yo
 ```tsx
 import { Button } from 'tamagui'
 
-export default () => <Button size="$6">Lorem ipsum</Button>
+export default () => <Button size="6">Lorem ipsum</Button>
 ```
 
 Given your theme defines a size `6`, the button will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
@@ -55,7 +55,7 @@ You can [use the source of Button itself](https://github.com/tamagui/tamagui/blo
 
 ### Customization (Advanced)
 
-Button only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization using some exported helpers.
+Button only supports a limited subset of text props directly. If you need more control over state-specific text values, customize its text component with flat clauses.
 
 Please note that this pattern is a bit antithetical to the multiple-components APIs that Tamagui generally prefers. In a future release we hope to fix this, but that change should be easy to migrate to.
 

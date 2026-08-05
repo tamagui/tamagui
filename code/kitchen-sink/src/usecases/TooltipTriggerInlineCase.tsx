@@ -2,14 +2,14 @@ import { Paragraph, Text, Tooltip, XStack, YStack } from 'tamagui'
 
 export function TooltipTriggerInlineCase() {
   return (
-    <YStack flex={1} gap="$4" p="$4" bg="$background">
+    <YStack flex={1} gap="4" p="4" bg="background">
       <Paragraph>
         This tests that{' '}
         <Tooltip>
           <Tooltip.Trigger display="inline" data-testid="inline-tooltip-trigger">
             <Text
               data-testid="inline-tooltip-text"
-              color="$blue10"
+              color="blue10"
               textDecorationLine="underline"
             >
               inline tooltip triggers
@@ -22,11 +22,11 @@ export function TooltipTriggerInlineCase() {
         work correctly within text.
       </Paragraph>
 
-      <XStack gap="$2" flexWrap="wrap">
+      <XStack gap="2" flexWrap="wrap">
         <Text>Words:</Text>
         <Tooltip>
           <Tooltip.Trigger display="inline" data-testid="inline-word-1">
-            <Text color="$green10" textDecorationLine="underline">
+            <Text color="green10" textDecorationLine="underline">
               hover
             </Text>
           </Tooltip.Trigger>
@@ -36,7 +36,7 @@ export function TooltipTriggerInlineCase() {
         </Tooltip>
         <Tooltip>
           <Tooltip.Trigger display="inline" data-testid="inline-word-2">
-            <Text color="$red10" textDecorationLine="underline">
+            <Text color="red10" textDecorationLine="underline">
               over
             </Text>
           </Tooltip.Trigger>
@@ -46,7 +46,7 @@ export function TooltipTriggerInlineCase() {
         </Tooltip>
         <Tooltip>
           <Tooltip.Trigger display="inline" data-testid="inline-word-3">
-            <Text color="$blue10" textDecorationLine="underline">
+            <Text color="blue10" textDecorationLine="underline">
               these
             </Text>
           </Tooltip.Trigger>

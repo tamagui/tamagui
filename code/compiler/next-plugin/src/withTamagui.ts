@@ -5,7 +5,6 @@ import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/lo
 import path from 'node:path'
 import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
 import { TamaguiPlugin } from 'tamagui-loader'
-import webpack from 'webpack'
 
 const { loadTamaguiBuildConfigSync } = Static
 
@@ -34,6 +33,10 @@ export type WithTamaguiProps = LoaderPluginOptions & {
   disableOptimizeLucideIcons?: boolean
 }
 
+/**
+ * @deprecated Webpack-only compatibility adapter. For Next.js with Turbopack,
+ * run `tamagui build --target web <source> -- next dev` or `next build`.
+ */
 export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
     const tamaguiOptions = {
@@ -49,7 +52,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
         'expo-linear-gradient',
       ],
       webpack: (webpackConfig: any, options: any) => {
-        const { dir, config, dev, isServer } = options
+        const { dir, config, dev, isServer, webpack } = options
 
         // @ts-ignore
         if (typeof globalThis['__DEV__'] === 'undefined') {

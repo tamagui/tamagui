@@ -11,62 +11,58 @@ import {
 } from '@tamagui/web'
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
+  size: 'md' as SizeTokens,
 })
 export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
-  backgroundColor: '$background',
+  backgroundColor: 'background',
   alignItems: 'center',
   flexDirection: 'row',
-
   // Here is the issue: <---------------------------------------------------
   height: 'auto',
   transition: 'bouncy',
-  pressStyle: {
-    scale: 0.97,
-    opacity: 0.9,
-  },
-
+  scale: 'press:0.97',
+  opacity: 'press:0.9',
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      Size: (name, { tokens }) => {
+        const sizeToken = (name === true ? '4' : name) as Exclude<SizeTokens, true>
+
         return {
-          height: tokens.size[name],
+          height: tokens.size[sizeToken],
 
-          borderRadius: tokens.radius[name],
+          borderRadius: tokens.radius[sizeToken],
 
-          // note the getSpace and getSize helpers will let you shift down/up token sizes
+          // resolve tokens to numeric values and multiply to derive related
+          // sizes - this is a stylistic choice that depends on your token scale
 
-          // whereas with gap we just multiply by 0.2
+          gap: tokens.space[sizeToken].val * 0.2,
 
-          // this is a stylistic choice, and depends on your design system values
-
-          gap: tokens.space[name].val * 0.2,
-
-          paddingHorizontal: getSpace(name, {
-            shift: -1,
-          }),
+          paddingHorizontal: getSpace(sizeToken).val * 0.9,
         }
       },
     },
   } as const,
-
   defaultVariants: {
-    size: '$5',
+    size: '5',
   },
 })
 type ButtonProps = GetProps<typeof ButtonFrame>
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
   context: ButtonContext,
-  color: '$color',
+  color: 'color',
   userSelect: 'none',
   variants: {
     size: {
-      '...fontSize': (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
+      FontSize: (name, { font }) => {
+        const sizeToken = (name === true ? '4' : name) as Exclude<typeof name, true>
+
+        return {
+          fontSize: font?.size[sizeToken],
+        }
+      },
     },
   } as const,
 })
@@ -74,15 +70,13 @@ export const ButtonText = styled(Text, {
 const ButtonIcon = (props: { children: any }) => {
   const { size } = React.useContext(ButtonContext.context)
 
-  const smaller = getSize(size, {
-    shift: -2,
-  })
+  const smaller = getSize(size).val * 0.4
 
   const theme = useTheme()
 
   return React.cloneElement(props.children, {
-    size: smaller.val * 0.5,
-    color: theme.color.get(),
+    size: smaller,
+    color: theme.color?.get(),
   })
 }
 

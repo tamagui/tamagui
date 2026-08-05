@@ -1,5 +1,8 @@
 import { memo, useCallback, useRef, useState, useMemo } from 'react'
-import { Button, Text, View, XStack, YStack, ScrollView } from 'tamagui'
+import { Text, View, XStack, YStack, ScrollView, useTheme, type GetProps } from 'tamagui'
+import { Button } from '../components/Button'
+
+type BackgroundColor = GetProps<typeof View>['backgroundColor']
 
 type Stats = {
   totalCallbacks: number
@@ -9,19 +12,38 @@ type Stats = {
   lastBatchTime: number
 }
 
-// deeply nested component tree
-const GRAY_COLORS = ['$gray2', '$gray3', '$gray4', '$gray5', '$gray6', '$gray7'] as const
-const GRID_COLORS = ['$red5', '$green5', '$blue5', '$purple5', '$orange5'] as const
-const SIBLING_COLORS = ['$red4', '$green4', '$blue4'] as const
+// deeply nested component tree.
+// these are read as theme[name].get(), so a name the theme does not define is
+// undefined and throws. v5's gray2/red5 spellings do not exist under v6, which
+// crashed this whole case on render and made every test here time out in
+// setupPage rather than reach a single assertion.
+const GRAY_COLORS = [
+  'gray-100',
+  'gray-200',
+  'gray-300',
+  'gray-400',
+  'gray-500',
+  'gray-600',
+] as const
+const GRID_COLORS = [
+  'red-500',
+  'green-500',
+  'blue-500',
+  'purple-500',
+  'orange-500',
+] as const
+const SIBLING_COLORS = ['red-400', 'green-400', 'blue-400'] as const
 
 const DeepChild = memo(
   ({
     depth,
     id,
+    colors,
     onLayoutFired,
   }: {
     depth: number
     id: string
+    colors: readonly BackgroundColor[]
     onLayoutFired: () => void
   }) => {
     const handleLayout = useCallback(() => {
@@ -35,7 +57,7 @@ const DeepChild = memo(
           onLayout={handleLayout}
           width={20 + (parseInt(id.split('-')[1] || '0') % 5) * 10}
           height={15}
-          backgroundColor="$blue5"
+          backgroundColor="blue5"
         />
       )
     }
@@ -45,9 +67,14 @@ const DeepChild = memo(
         testID={`deep-wrapper-${id}-${depth}`}
         onLayout={handleLayout}
         padding={2}
-        backgroundColor={GRAY_COLORS[Math.min(5, depth)] || '$gray5'}
+        backgroundColor={colors[Math.min(5, depth)]}
       >
-        <DeepChild depth={depth - 1} id={id} onLayoutFired={onLayoutFired} />
+        <DeepChild
+          depth={depth - 1}
+          id={id}
+          colors={colors}
+          onLayoutFired={onLayoutFired}
+        />
       </View>
     )
   }
@@ -58,10 +85,12 @@ const GridItem = memo(
   ({
     id,
     sizeMultiplier,
+    colors,
     onLayoutFired,
   }: {
     id: number
     sizeMultiplier: number
+    colors: readonly BackgroundColor[]
     onLayoutFired: () => void
   }) => {
     const handleLayout = useCallback(() => {
@@ -77,7 +106,7 @@ const GridItem = memo(
         onLayout={handleLayout}
         width={size}
         height={size * 0.6}
-        backgroundColor={GRID_COLORS[id % 5]}
+        backgroundColor={colors[id % 5]}
         margin={2}
       />
     )
@@ -105,10 +134,10 @@ const ListItem = memo(
         onLayout={handleLayout}
         width="100%"
         height={expanded ? 60 : 30}
-        backgroundColor={id % 2 === 0 ? '$background' : '$backgroundHover'}
+        backgroundColor={`${id % 2 === 0 ? 'background' : 'background-hover'}`}
         borderBottomWidth={1}
-        borderBottomColor="$borderColor"
-        padding="$2"
+        borderBottomColor="border-color"
+        padding="2"
       >
         <Text fontSize={12}>Item {id}</Text>
       </View>
@@ -122,11 +151,13 @@ const SiblingGroup = memo(
     groupId,
     count,
     widthMultiplier,
+    colors,
     onLayoutFired,
   }: {
     groupId: number
     count: number
     widthMultiplier: number
+    colors: readonly BackgroundColor[]
     onLayoutFired: () => void
   }) => {
     return (
@@ -138,7 +169,7 @@ const SiblingGroup = memo(
             onLayout={onLayoutFired}
             width={25 * widthMultiplier}
             height={20}
-            backgroundColor={SIBLING_COLORS[i % 3]}
+            backgroundColor={colors[i % 3]}
             margin={1}
           />
         ))}
@@ -148,6 +179,33 @@ const SiblingGroup = memo(
 )
 
 export function OnLayoutStressCase() {
+  const theme = useTheme()
+  const gray2 = theme[GRAY_COLORS[0]]!.get()
+  const gray3 = theme[GRAY_COLORS[1]]!.get()
+  const gray4 = theme[GRAY_COLORS[2]]!.get()
+  const gray5 = theme[GRAY_COLORS[3]]!.get()
+  const gray6 = theme[GRAY_COLORS[4]]!.get()
+  const gray7 = theme[GRAY_COLORS[5]]!.get()
+  const red5 = theme[GRID_COLORS[0]]!.get()
+  const green5 = theme[GRID_COLORS[1]]!.get()
+  const blue5 = theme[GRID_COLORS[2]]!.get()
+  const purple5 = theme[GRID_COLORS[3]]!.get()
+  const orange5 = theme[GRID_COLORS[4]]!.get()
+  const red4 = theme[SIBLING_COLORS[0]]!.get()
+  const green4 = theme[SIBLING_COLORS[1]]!.get()
+  const blue4 = theme[SIBLING_COLORS[2]]!.get()
+  const grayColors = useMemo(
+    () => [gray2, gray3, gray4, gray5, gray6, gray7] as readonly BackgroundColor[],
+    [gray2, gray3, gray4, gray5, gray6, gray7]
+  )
+  const gridColors = useMemo(
+    () => [red5, green5, blue5, purple5, orange5] as readonly BackgroundColor[],
+    [red5, green5, blue5, purple5, orange5]
+  )
+  const siblingColors = useMemo(
+    () => [red4, green4, blue4] as readonly BackgroundColor[],
+    [red4, green4, blue4]
+  )
   const [stats, setStats] = useState<Stats>({
     totalCallbacks: 0,
     totalTime: 0,
@@ -207,9 +265,15 @@ export function OnLayoutStressCase() {
   const deepItems = useMemo(
     () =>
       Array.from({ length: 10 }, (_, i) => (
-        <DeepChild key={i} depth={5} id={`deep-${i}`} onLayoutFired={onLayoutFired} />
+        <DeepChild
+          key={i}
+          depth={5}
+          id={`deep-${i}`}
+          colors={grayColors}
+          onLayoutFired={onLayoutFired}
+        />
       )),
-    [onLayoutFired]
+    [grayColors, onLayoutFired]
   )
 
   // create grid items (40 items)
@@ -220,10 +284,11 @@ export function OnLayoutStressCase() {
           key={i}
           id={i}
           sizeMultiplier={gridSize}
+          colors={gridColors}
           onLayoutFired={onLayoutFired}
         />
       )),
-    [gridSize, onLayoutFired]
+    [gridColors, gridSize, onLayoutFired]
   )
 
   // create list items (20 items)
@@ -244,51 +309,52 @@ export function OnLayoutStressCase() {
           groupId={i}
           count={10}
           widthMultiplier={widthMultiplier}
+          colors={siblingColors}
           onLayoutFired={onLayoutFired}
         />
       )),
-    [widthMultiplier, onLayoutFired]
+    [onLayoutFired, siblingColors, widthMultiplier]
   )
 
   return (
-    <YStack flex={1} padding="$2">
+    <YStack flex={1} padding="2">
       {/* controls */}
-      <XStack gap="$2" flexWrap="wrap" padding="$2" backgroundColor="$background">
+      <XStack gap="2" flexWrap="wrap" padding="2" backgroundColor="background">
         <Button
           testID="btn-resize-width"
-          size="$2"
+          size="3"
           onPress={() => setWidthMultiplier((v) => (v === 1 ? 1.5 : 1))}
         >
           toggle width ({widthMultiplier}x)
         </Button>
         <Button
           testID="btn-toggle-expand"
-          size="$2"
+          size="3"
           onPress={() => setExpanded((v) => !v)}
         >
           toggle expand ({expanded ? 'on' : 'off'})
         </Button>
         <Button
           testID="btn-resize-grid"
-          size="$2"
+          size="3"
           onPress={() => setGridSize((v) => (v === 1 ? 1.3 : 1))}
         >
           toggle grid ({gridSize}x)
         </Button>
         <Button
           testID="btn-resize-container"
-          size="$2"
+          size="3"
           onPress={() => setContainerWidth((v) => (v === 600 ? 400 : 600))}
         >
           container ({containerWidth}px)
         </Button>
-        <Button testID="btn-reset-stats" size="$2" onPress={resetStats}>
+        <Button testID="btn-reset-stats" size="3" onPress={resetStats}>
           reset stats
         </Button>
       </XStack>
 
       {/* stats readout */}
-      <XStack gap="$3" padding="$2" backgroundColor="$backgroundHover" flexWrap="wrap">
+      <XStack gap="3" padding="2" backgroundColor="background-hover" flexWrap="wrap">
         <Text testID="stat-total" fontSize={11}>
           total: {stats.totalCallbacks}
         </Text>
@@ -312,13 +378,13 @@ export function OnLayoutStressCase() {
 
       {/* scrollable content */}
       <ScrollView flex={1}>
-        <YStack testID="stress-container" width={containerWidth} gap="$3">
+        <YStack testID="stress-container" width={containerWidth} gap="3">
           {/* section 1: deeply nested (10 items x 6 depth = ~60 onLayout nodes) */}
           <YStack testID="section-deep">
             <Text fontSize={12} fontWeight="bold">
               Deep Nesting (10x6 depth)
             </Text>
-            <XStack flexWrap="wrap" gap="$1">
+            <XStack flexWrap="wrap" gap="1">
               {deepItems}
             </XStack>
           </YStack>
@@ -344,7 +410,7 @@ export function OnLayoutStressCase() {
             <Text fontSize={12} fontWeight="bold">
               Sibling Groups (5x10)
             </Text>
-            <YStack gap="$2">{siblingGroups}</YStack>
+            <YStack gap="2">{siblingGroups}</YStack>
           </YStack>
         </YStack>
       </ScrollView>

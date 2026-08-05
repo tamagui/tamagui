@@ -98,18 +98,18 @@ export interface UseTabProps {
 export declare function useTab(props: UseTabProps): {
     isSelected: boolean;
     tabProps: {
+        ref: React.RefObject<HTMLElement | null>;
+        role: 'tab';
+        id: string;
+        'aria-selected': boolean;
+        'aria-controls': string;
+        'data-state': string;
+        'data-disabled'?: "" | undefined;
         disabled: boolean | undefined;
         tabIndex: number;
         onKeyDown: import("@tamagui/helpers").EventHandler<React.KeyboardEvent<Element>> | undefined;
         onPress: import("@tamagui/helpers").EventHandler<any> | undefined;
         onFocus: import("@tamagui/helpers").EventHandler<React.FocusEvent<Element, Element>> | undefined;
-        'data-disabled'?: "" | undefined;
-        ref: React.RefObject<HTMLElement | null>;
-        role: "tab";
-        id: string;
-        'aria-selected': boolean;
-        'aria-controls': string;
-        'data-state': string;
     };
 };
 export interface UseTabContentProps {
@@ -120,7 +120,7 @@ export declare function useTabContent(props: UseTabContentProps): {
     isSelected: boolean;
     shouldMount: boolean;
     contentProps: {
-        role: "tabpanel";
+        role: 'tabpanel';
         id: string;
         'aria-labelledby': string;
         'data-state': string;

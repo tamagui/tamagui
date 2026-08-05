@@ -7,7 +7,6 @@ import { createStore, createUseStore } from '@tamagui/use-store'
 import { useState } from 'react'
 import { z } from 'zod'
 import {
-  Button,
   Dialog,
   H3,
   Paragraph,
@@ -22,6 +21,7 @@ import {
   useThemeName,
   SizableText,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { authFetch } from '~/features/api/authFetch'
 import { useUser } from '~/features/user/useUser'
 
@@ -162,21 +162,21 @@ const PaymentForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <YStack gap="$4">
+      <YStack gap="4">
         <PaymentElement />
         <Theme name="accent">
           <Button
-            rounded="$10"
+            rounded="10"
             self="flex-end"
             disabled={isProcessing || !stripe || !elements}
           >
-            <Button.Text fontFamily="$mono">
+            <Button.Text fontFamily="mono">
               {isProcessing ? 'Processing...' : 'Add Seats'}
             </Button.Text>
           </Button>
         </Theme>
         {error && (
-          <Paragraph color="$red10" size="$3">
+          <Paragraph color="red10" size="3">
             {error.message}
           </Paragraph>
         )}
@@ -270,13 +270,7 @@ export const AddTeamMemberModalComponent = () => {
       }}
     >
       <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          transition="medium"
-          opacity={0.5}
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
+        <Dialog.Overlay key="overlay" transition="medium" opacity="0.5 enter:0 exit:0" />
         <Dialog.Content
           bordered
           elevate
@@ -284,18 +278,18 @@ export const AddTeamMemberModalComponent = () => {
           transition="quick"
           width="90%"
           maxW={600}
-          p="$6"
+          p="6"
         >
           {isLoading ? (
             <YStack flex={1} items="center" justify="center">
               <Spinner size="large" />
             </YStack>
           ) : (
-            <YStack gap="$4">
+            <YStack gap="4">
               <H3>Add Team Seats</H3>
               <Separator />
 
-              <YStack gap="$2">
+              <YStack gap="2">
                 <Label htmlFor="seats">Number of Additional Seats</Label>
                 <Input
                   id="seats"
@@ -311,50 +305,49 @@ export const AddTeamMemberModalComponent = () => {
                 <YStack items="flex-end">
                   {finalCoupon && (
                     <Paragraph
-                      fontFamily="$mono"
-                      size="$3"
+                      fontFamily="mono"
                       opacity={0.5}
                       textDecorationLine="line-through"
+                      size="3"
                     >
                       Cost: ${baseAmount}/year per seat
                     </Paragraph>
                   )}
-                  <Paragraph color="$color9">Cost: ${amount}/year per seat</Paragraph>
+                  <Paragraph color="color9">Cost: ${amount}/year per seat</Paragraph>
                 </YStack>
               </YStack>
 
-              <YStack gap="$2">
+              <YStack gap="2">
                 <SizableText
-                  color="$color10"
-                  opacity={0.3}
+                  color="color10"
+                  opacity="0.3 hover:0.8"
                   cursor="pointer"
-                  hoverStyle={{ opacity: 0.8 }}
                   onPress={() => setShowCoupon((x) => !x)}
                 >
                   {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
                 </SizableText>
                 {showCoupon && (
-                  <XStack gap="$2" items="center">
+                  <XStack gap="2" items="center">
                     <Input
                       flex={1}
-                      size="$3"
+                      size="3"
                       borderWidth={1}
                       placeholder="Enter code"
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
                     />
-                    <Button size="$3" theme="accent" onPress={handleApplyCoupon}>
+                    <Button size="4" theme="accent" onPress={handleApplyCoupon}>
                       <Button.Text>Apply</Button.Text>
                     </Button>
                   </XStack>
                 )}
                 {couponError && (
-                  <Paragraph size="$2" color="$red10">
+                  <Paragraph size="2" color="red10">
                     {couponError}
                   </Paragraph>
                 )}
                 {finalCoupon && (
-                  <Paragraph size="$2" color="$green10">
+                  <Paragraph size="2" color="green10">
                     Coupon applied:{' '}
                     {finalCoupon.percent_off
                       ? `${finalCoupon.percent_off}% off`
@@ -387,7 +380,7 @@ export const AddTeamMemberModalComponent = () => {
             </YStack>
           )}
           <Dialog.Close asChild>
-            <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+            <Button position="absolute" t="2" r="2" size="3" circular icon={X} />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>

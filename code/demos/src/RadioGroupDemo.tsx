@@ -1,14 +1,15 @@
 import type { SizeTokens } from 'tamagui'
-import { Label, RadioGroup, Theme, XStack, YStack } from 'tamagui'
+import { Label, Theme, XStack, YStack } from 'tamagui'
+import { RadioGroup } from './ControlSkins'
 
 export function RadioGroupDemo() {
   return (
-    <Theme name="surface2">
+    <Theme name="level3">
       <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
-        <YStack width={300} items="center" gap="$2">
-          <RadioGroupItemWithLabel size="$3" value="2" label="Second value" />
-          <RadioGroupItemWithLabel size="$4" value="3" label="Third value" />
-          <RadioGroupItemWithLabel size="$5" value="4" label="Fourth value" />
+        <YStack width={300} items="center" gap="2">
+          <RadioGroupItemWithLabel size="3" value="2" label="Second value" />
+          <RadioGroupItemWithLabel size="4" value="3" label="Third value" />
+          <RadioGroupItemWithLabel size="5" value="4" label="Fourth value" />
         </YStack>
       </RadioGroup>
     </Theme>
@@ -22,7 +23,7 @@ export function RadioGroupItemWithLabel(props: {
 }) {
   const id = `radiogroup-${props.value}`
   return (
-    <XStack width={300} items="center" gap="$4">
+    <XStack width={300} items="center" gap="4">
       <RadioGroup.Item value={props.value} id={id} size={props.size}>
         <RadioGroup.Indicator />
       </RadioGroup.Item>

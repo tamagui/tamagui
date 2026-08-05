@@ -1,3 +1,4 @@
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import type * as BaseMenuTypes from '@tamagui/create-menu'
 import {
   type MenuArrowProps as BaseMenuArrowProps,
@@ -14,7 +15,6 @@ import {
   type MenuSubContentProps as BaseMenuSubContentProps,
   type MenuSubTriggerProps as BaseMenuSubTriggerProps,
   createBaseMenu,
-  type CreateBaseMenuProps,
 } from '@tamagui/create-menu'
 import { usePopperContextSlow } from '@tamagui/popper'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
@@ -203,8 +203,8 @@ type MenuScrollViewProps = ScrollViewProps
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export function createNonNativeMenu(params: CreateBaseMenuProps) {
-  const { Menu } = createBaseMenu(params)
+export function createNonNativeMenu() {
+  const { Menu } = createBaseMenu()
 
   /* -------------------------------------------------------------------------------------------------
    * Menu
@@ -281,8 +281,9 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const MenuTriggerFrame = Menu.Anchor
 
-  const MenuTrigger = View.styleable<ScopedProps<MenuTriggerProps>>(
-    (props, forwardedRef) => {
+  const MenuTrigger = createStyledHOC(
+    View,
+    (props: ScopedProps<MenuTriggerProps>, forwardedRef) => {
       const {
         scope,
         asChild,
@@ -433,62 +434,63 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const CONTENT_NAME = 'MenuContent'
 
-  const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
-    (props, forwardedRef) => {
-      const { scope, ...contentProps } = props
-      const context = useMenuContext(scope)
-      const hasInteractedOutsideRef = React.useRef(false)
+  const MenuContent = createRefComponent<
+    MenuContentElement,
+    ScopedProps<MenuContentProps>
+  >((props, forwardedRef) => {
+    const { scope, ...contentProps } = props
+    const context = useMenuContext(scope)
+    const hasInteractedOutsideRef = React.useRef(false)
 
-      return (
-        <Menu.Content
-          id={context.contentId}
-          aria-labelledby={context.triggerId}
-          scope={scope || DROPDOWN_MENU_CONTEXT}
-          {...contentProps}
-          ref={forwardedRef}
-          onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-            if (!hasInteractedOutsideRef.current) {
-              // delay to let React render new components and run their autoFocus effects
-              requestAnimationFrame(() => {
-                const activeEl = document.activeElement
-                if (!activeEl || activeEl === document.body) {
-                  context.triggerRef.current?.focus()
-                }
-              })
-            }
-            hasInteractedOutsideRef.current = false
-            // Always prevent auto focus because we either focus manually or want user agent focus
-            event.preventDefault()
-          })}
-          onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
-            const originalEvent = event.detail.originalEvent as PointerEvent
-            const ctrlLeftClick =
-              originalEvent.button === 0 && originalEvent.ctrlKey === true
-            const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-            if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
-          })}
-          style={
-            isWeb
-              ? {
-                  ...(props.style as object),
-                  ...({
-                    '--tamagui-menu-content-transform-origin':
-                      'var(--tamagui-popper-transform-origin)',
-                    '--tamagui-menu-content-available-width':
-                      'var(--tamagui-popper-available-width)',
-                    '--tamagui-menu-content-available-height':
-                      'var(--tamagui-popper-available-height)',
-                    '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
-                    '--tamagui-menu-trigger-height':
-                      'var(--tamagui-popper-anchor-height)',
-                  } as React.CSSProperties),
-                }
-              : props.style
+    return (
+      <Menu.Content
+        id={context.contentId}
+        aria-labelledby={context.triggerId}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
+        {...contentProps}
+        ref={forwardedRef}
+        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+          if (!hasInteractedOutsideRef.current) {
+            // delay to let React render new components and run their autoFocus effects
+            requestAnimationFrame(() => {
+              const activeEl = document.activeElement
+              if (!activeEl || activeEl === document.body) {
+                context.triggerRef.current?.focus()
+              }
+            })
           }
-        />
-      )
-    }
-  )
+          hasInteractedOutsideRef.current = false
+          // Always prevent auto focus because we either focus manually or want user agent focus
+          event.cancel()
+        })}
+        onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
+          if (event.interaction !== 'pointer' || !event.event) return
+          const originalEvent = event.event
+          const ctrlLeftClick =
+            originalEvent.button === 0 && originalEvent.ctrlKey === true
+          const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+          if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
+        })}
+        style={
+          isWeb
+            ? {
+                ...(props.style as object),
+                ...({
+                  '--tamagui-menu-content-transform-origin':
+                    'var(--tamagui-popper-transform-origin)',
+                  '--tamagui-menu-content-available-width':
+                    'var(--tamagui-popper-available-width)',
+                  '--tamagui-menu-content-available-height':
+                    'var(--tamagui-popper-available-height)',
+                  '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
+                  '--tamagui-menu-trigger-height': 'var(--tamagui-popper-anchor-height)',
+                } as React.CSSProperties),
+              }
+            : props.style
+        }
+      />
+    )
+  })
 
   MenuContent.displayName = CONTENT_NAME
 
@@ -526,7 +528,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const SUB_CONTENT_NAME = 'MenuSubContent'
 
-  const MenuSubContent = React.forwardRef<
+  const MenuSubContent = createRefComponent<
     MenuSubContentElement,
     ScopedProps<MenuSubContentProps>
   >((props, forwardedRef) => {
@@ -567,17 +569,14 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
   const MenuScrollView = styled(ScrollView, {
     flexShrink: 1,
     alignSelf: 'stretch',
+    maxHeight: 'web:var(--tamagui-menu-content-available-height)',
     showsHorizontalScrollIndicator: false,
     showsVerticalScrollIndicator: false,
-
-    '$platform-web': {
-      maxHeight: 'var(--tamagui-menu-content-available-height)',
-    },
   })
 
   /* -----------------------------------------------------------------------------------------------*/
 
-  // direct pass-through from base menu (preserves styleable)
+  // direct pass-through from base menu preserves the wrapped styled components
   const Group = Menu.Group
   const Label = Menu.Label
   const Item = Menu.Item

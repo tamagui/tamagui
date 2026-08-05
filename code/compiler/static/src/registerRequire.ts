@@ -1,15 +1,19 @@
 import { register } from 'esbuild-register/dist/node'
+import { createRequire } from 'node:module'
 
 import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
 import type { TamaguiPlatform } from './types'
 
 const nameToPaths = {}
+const nodeRequire = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
 
 export const getNameToPaths = () => nameToPaths
 
-const Module = require('node:module')
-const proxyWorm = require('@tamagui/proxy-worm')
+const Module = nodeRequire('node:module')
+const proxyWorm = nodeRequire('@tamagui/proxy-worm')
 
 let isRegistered = false
 let og: any
@@ -62,7 +66,7 @@ export function registerRequire(
   // already registered
   if (isRegistered) {
     return {
-      tamaguiRequire: require,
+      tamaguiRequire: nodeRequire,
       unregister: () => {},
     }
   }
@@ -244,7 +248,7 @@ export function registerRequire(
          */
 
         console.warn(
-          `  [tamagui] skipped "${path}" (set TAMAGUI_IGNORE_BUNDLE_ERRORS="${path}" to silence)`
+          `  [tamagui] skipped "${path}": ${err?.message} (set TAMAGUI_IGNORE_BUNDLE_ERRORS="${path}" to silence)`
         )
       }
 

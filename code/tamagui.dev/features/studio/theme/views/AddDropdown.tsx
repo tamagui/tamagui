@@ -1,7 +1,6 @@
 import { Plus } from '@tamagui/lucide-icons-2'
 import type { ListItemProps, PopoverProps } from 'tamagui'
 import {
-  Button,
   H6,
   ListItem,
   Paragraph,
@@ -10,54 +9,52 @@ import {
   styled,
   withStaticProperties,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 const Item = ({ children, ...props }: ListItemProps) => (
-  <ListItem minW={190} size="$5" iconAfter={Plus} {...props}>
+  <ListItem minW={190} size="5" iconAfter={Plus} {...props}>
     <Paragraph select="none">{children}</Paragraph>
   </ListItem>
 )
 
 const Title = styled(H6, {
-  size: '$1',
+  size: '1',
   text: 'left',
   lineHeight: 10,
-  pt: '$4',
-  pb: '$2',
-  px: '$3',
+  pt: '4',
+  pb: '2',
+  px: '3',
   opacity: 0.5,
 })
 
-const Separator = styled(TamaguiSeparator, { width: '100%', py: '$1' })
+const Separator = styled(TamaguiSeparator, {
+  width: '100%',
+  py: '1',
+})
 
 export const AddDropdown = withStaticProperties(
   function AddDropdown({ children, ...props }: PopoverProps) {
     return (
-      <Popover size="$5" allowFlip placement="top" {...props}>
+      <Popover size="5" allowFlip placement="top" {...props}>
         <Popover.Trigger asChild>
-          <Button size="$3" circular icon={Plus} />
+          <Button size="4" circular icon={Plus} />
         </Popover.Trigger>
 
         <Popover.Content
-          borderWidth="$0.5"
-          borderColor="$borderColor"
+          borderWidth="0.5"
+          borderColor="border-color"
           p={0}
-          trapFocus={false}
-          enterStyle={{ y: -7, opacity: 0 }}
-          exitStyle={{ y: -7, opacity: 0 }}
-          elevate
+          y="enter:-7px exit:-7px"
+          opacity="enter:0 exit:0"
+          backgroundColor="background"
+          boxShadow="0 4px 12px shadow-color"
           maxW={400}
           items="flex-start"
-          transition={[
-            'quickest',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          transition={['quickest', { opacity: { overshootClamping: true } }]}
+          trapFocus={false}
         >
           <Popover.ScrollView>{children}</Popover.ScrollView>
-          <Popover.Arrow bg="$background" borderColor="$borderColor" borderWidth="$0.5" />
+          <Popover.Arrow bg="background" borderColor="border-color" borderWidth="0.5" />
         </Popover.Content>
       </Popover>
     )

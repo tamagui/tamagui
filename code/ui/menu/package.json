@@ -38,8 +38,10 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/create-menu": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
+    "@tamagui/scroll-view": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/web": "workspace:*"
   },

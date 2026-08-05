@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { type MouseEvent as ReactMouseEvent, useRef, useState } from 'react'
 import { Circle, XStack } from 'tamagui'
 
 // faithful repro of the tamagui.dev LogoWords "dot" mechanism:
@@ -24,16 +24,15 @@ export function LogoDotInterruptCase() {
   const ref = useRef<HTMLDivElement>(null)
 
   return (
-    <XStack padding="$8">
+    <XStack padding="8">
       <XStack
         ref={ref as any}
         data-testid="logo-strip"
         position="relative"
         width={(NUM - 1) * SECTION + 60}
         height={80}
-        backgroundColor="$color3"
-        // @ts-ignore - web onMouseMove
-        onMouseMove={(e: MouseEvent) => {
+        backgroundColor="color3"
+        onMouseMove={(e: ReactMouseEvent<HTMLDivElement>) => {
           const el = ref.current
           if (!el) return
           const rect = el.getBoundingClientRect()
@@ -50,8 +49,8 @@ export function LogoDotInterruptCase() {
           top={30}
           left={20}
           x={positions[index]}
+          backgroundColor="color11"
           size={16}
-          backgroundColor="$color12"
         />
         {positions.map((p, i) => (
           <XStack
@@ -61,7 +60,7 @@ export function LogoDotInterruptCase() {
             top={10}
             width={1}
             height={16}
-            backgroundColor="$color8"
+            backgroundColor="color8"
           />
         ))}
       </XStack>

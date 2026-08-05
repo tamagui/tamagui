@@ -8,9 +8,8 @@ test.beforeEach(async ({ page }) => {
 
 test(`useTheme() returns right values`, async ({ page }) => {
   expect(await page.locator('#theme-get').innerText()).toBe(`var(--background)`)
-  // themeDev uses hsla format
-  expect(await page.locator('#theme-val').innerText()).toBe(`hsla(0, 0%, 100%, 1)`)
-  expect(await page.locator('#token-get').innerText()).toBe(`var(--blue1)`)
-  // Updated for Radix v3 hex format
-  expect(await page.locator('#token-val').innerText()).toBe(`#fbfdff`)
+  // The shipped v6 theme palette uses rgba values.
+  expect(await page.locator('#theme-val').innerText()).toBe(`rgba(255, 255, 255, 1)`)
+  expect(await page.locator('#token-get').innerText()).toBe(`var(--color1)`)
+  expect(await page.locator('#token-val').innerText()).toBe(`rgba(249, 250, 251, 1)`)
 })

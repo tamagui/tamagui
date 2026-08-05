@@ -2,7 +2,8 @@ import { Image } from '@tamagui/image'
 import { FastForward, Pause, Rewind } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
 import type { ThemeName, YStackProps } from 'tamagui'
-import { Button, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
+import { Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import image from './tame-impala.jpg'
 
@@ -30,26 +31,26 @@ export const MediaPlayer = memo(
           <YStack
             overflow="visible"
             borderWidth={1}
-            borderColor="$borderColor"
-            bg="$color1"
-            rounded="$7"
+            borderColor="border-color"
+            bg="color1"
+            rounded="7"
             pointerEvents={pointerEvents}
             p={0}
             items="stretch"
             mb={40}
             {...cardProps}
           >
-            <XStack items="center" p="$4" gap="$5">
-              <Square position="relative" overflow="hidden" rounded="$6" size="$8">
+            <XStack items="center" p="4" gap="5">
+              <Square position="relative" overflow="hidden" rounded="6" size="8">
                 <Image src={image} width={90} height={90} />
               </Square>
 
               <YStack items="center" y={-3} minW={165} justify="center">
                 <Paragraph fontWeight="700">The Less I Know the Better</Paragraph>
-                <Paragraph color="$color11" size="$3">
+                <Paragraph color="color11" size="3">
                   Tame Impala
                 </Paragraph>
-                <Paragraph color="$color11" opacity={0.65} size="$3">
+                <Paragraph color="color11" opacity={0.65} size="3">
                   Currents
                 </Paragraph>
               </YStack>
@@ -60,29 +61,25 @@ export const MediaPlayer = memo(
             <XStack
               z={1000}
               width="100%"
-              px="$6"
-              py="$4"
-              bg="$backgroundHover"
+              px="6"
+              py="4"
+              bg="background-hover"
               borderBottomRightRadius={17}
               borderBottomLeftRadius={17}
               items="center"
-              gap="$5"
+              gap="5"
               justify="center"
               pointerEvents={pointerEvents}
             >
               <Rewind size={20} />
               <Button
-                bg="$background"
-                hoverStyle={{
-                  bg: '$backgroundHover',
-                  elevation: '$6',
-                  scale: 1.025,
-                }}
-                my="$-7"
+                bg="background hover:backgroundHover"
+                boxShadow="(0 4px 10px rgba(0, 0, 0, 0.2)) hover:(0 8px 20px rgba(0, 0, 0, 0.24))"
+                scale="hover:1.025"
+                my="-7"
                 icon={Pause}
-                size="$8"
+                size="5"
                 circular
-                elevation="$2"
                 aria-label="Pause"
                 pointerEvents={pointerEventsControls}
               />

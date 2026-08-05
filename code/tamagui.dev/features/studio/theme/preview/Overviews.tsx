@@ -11,7 +11,7 @@ export const Overview1 = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
-      p="$0"
+      p="0"
       overflow="hidden"
     >
       <YStack flex={1} flexBasis="auto">
@@ -35,7 +35,7 @@ export const Overview2 = () => {
       {...demoProps.borderRadiusOuterProps}
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
-      p="$0"
+      p="0"
       overflow="hidden"
     >
       <YStack flex={1} flexBasis="auto">
@@ -75,7 +75,7 @@ export const OverviewCard = ({
       backgroundColor="transparent"
       {...props}
       {...(alternative && {
-        bg: '$color8',
+        bg: 'color8',
         m: -10,
         p: 10,
       })}
@@ -89,18 +89,18 @@ export const OverviewCard = ({
         <Paragraph
           {...demoProps.headingFontFamilyProps}
           fontWeight="400"
-          mb="$-2"
-          color="$color12"
+          mb="-2"
+          color="color11"
           {...(alternative && {
-            color: '$accent12',
+            color: 'accent12',
           })}
         >
           {title}
         </Paragraph>
         <H4
-          size="$9"
+          size="9"
           {...(alternative && {
-            color: '$accent12',
+            color: 'accent12',
           })}
         >
           {value}
@@ -108,10 +108,10 @@ export const OverviewCard = ({
         <XStack>
           {!!badgeText && (
             <Paragraph
-              size="$2"
-              px="$2"
+              size="2"
+              px="2"
               {...(alternative && {
-                color: '$accent12',
+                color: 'accent12',
               })}
             >
               {badgeText}

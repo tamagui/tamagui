@@ -29,14 +29,14 @@ export declare function useCheckbox<R extends View, P extends CheckboxProps>(pro
         role: string;
         'aria-labelledby': string | undefined;
         'aria-checked': string | boolean;
-    } & Omit<P, "disabled" | "labelledBy" | "name" | "required" | "value" | "onCheckedChange"> & {
-        onPress: import("@tamagui/web").EventHandler<import("react-native").GestureResponderEvent> | undefined;
+    } & Omit<P, "disabled" | "labelledBy" | "name" | "onCheckedChange" | "required" | "value"> & {
         type?: string | undefined;
         value?: string | undefined;
         'data-state'?: string | undefined;
         'data-disabled'?: string | undefined;
         disabled?: boolean | undefined;
-        onKeyDown?: import("@tamagui/web").EventHandler<React.KeyboardEvent<HTMLButtonElement>> | undefined;
+        onKeyDown?: import("@tamagui/helpers").EventHandler<React.KeyboardEvent<HTMLButtonElement>> | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<import("react-native").GestureResponderEvent> | undefined;
     };
 };
 export {};

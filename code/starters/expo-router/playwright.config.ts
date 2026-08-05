@@ -4,6 +4,7 @@ const port = 3838
 
 export default defineConfig({
   testDir: 'tests',
+  testMatch: '**/*.test.ts',
   reporter: [['list']],
 
   use: {
@@ -11,7 +12,7 @@ export default defineConfig({
   },
 
   webServer: {
-    command: `npx expo export --platform web && npx serve dist -l ${port}`,
+    command: `bun run build:web && bunx serve dist -l ${port}`,
     url: `http://localhost:${port}`,
     reuseExistingServer: true,
     timeout: 180_000,

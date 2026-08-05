@@ -3,9 +3,12 @@
  * Tests that Portal/Sheet/Popover work correctly when using teleport
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/lucide-icons-2'
 import React from 'react'
-import { Adapt, Button, Popover, Select, Sheet, Text, XStack, YStack } from 'tamagui'
+import { Adapt, Popover, Text, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+import { Select } from '../components/Select'
+import { Sheet } from '../components/Sheet'
 import { getPortal } from '@tamagui/native'
 
 const items = [{ name: 'Apple' }, { name: 'Pear' }, { name: 'Blackberry' }]
@@ -15,23 +18,20 @@ function SelectWithSheet({ id }: { id: string }) {
 
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000}>
-      <Select.Trigger testID={`${id}-trigger`} maxWidth={220} iconAfter={ChevronDown}>
+      <Select.Trigger testID={`${id}-trigger`} maxWidth={220}>
         <Select.Value placeholder="Select a fruit" />
+        <Select.Icon />
       </Select.Trigger>
 
       <Adapt when={true} platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            bg="$shadowColor"
-            transition="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
+          </Sheet.Container>
+          <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
         </Sheet>
       </Adapt>
 
@@ -39,9 +39,8 @@ function SelectWithSheet({ id }: { id: string }) {
         <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
-            {items.map((item, i) => (
+            {items.map((item) => (
               <Select.Item
-                index={i}
                 key={item.name}
                 value={item.name.toLowerCase()}
                 testID={`${id}-option-${item.name.toLowerCase()}`}
@@ -69,18 +68,17 @@ function PopoverTest({ id }: { id: string }) {
       <Popover.Content
         testID={`${id}-content`}
         borderWidth={1}
-        borderColor="$borderColor"
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
-        elevate
+        borderColor="border-color"
+        backgroundColor="background"
+        boxShadow="0 4px 12px shadow-color"
+        y="enter:-10px exit:-10px"
+        opacity="enter:0 exit:0"
       >
-        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
-        <YStack gap="$3" padding="$4">
+        <Popover.Arrow borderWidth={1} borderColor="border-color" />
+        <YStack gap="3" padding="4">
           <Text testID={`${id}-text`}>Popover content works!</Text>
           <Popover.Close asChild>
-            <Button testID={`${id}-close`} size="$3">
-              Close
-            </Button>
+            <Button testID={`${id}-close`}>Close</Button>
           </Popover.Close>
         </YStack>
       </Popover.Content>
@@ -104,20 +102,16 @@ function SheetTest({ id }: { id: string }) {
         dismissOnSnapToBottom
         transition="medium"
       >
-        <Sheet.Overlay
-          bg="$shadowColor"
-          transition="lazy"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-        <Sheet.Frame testID={`${id}-frame`} padding="$4">
-          <YStack gap="$4">
+        <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
+        <Sheet.Container testID={`${id}-frame`} padding="4">
+          <Sheet.Background />
+          <YStack gap="4">
             <Text testID={`${id}-text`}>Sheet content works!</Text>
             <Button testID={`${id}-close`} onPress={() => setOpen(false)}>
               Close Sheet
             </Button>
           </YStack>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )
@@ -127,22 +121,16 @@ export function NativePortalTest() {
   const portalState = getPortal().state
 
   return (
-    <YStack padding="$4" gap="$4" flex={1}>
+    <YStack padding="4" gap="4" flex={1}>
       {/* status display */}
-      <YStack padding="$3" bg="$backgroundHover" borderRadius="$2" gap="$2">
+      <YStack padding="3" bg="background-hover" borderRadius="2" gap="2">
         <Text fontWeight="bold">Native Portal Status:</Text>
-        <XStack gap="$2" alignItems="center">
+        <XStack gap="2" alignItems="center">
           <YStack
             width={12}
             height={12}
             borderRadius={6}
-            bg={
-              portalState.type === 'teleport'
-                ? '$green10'
-                : portalState.type === 'legacy'
-                  ? '$yellow10'
-                  : '$red10'
-            }
+            bg={`${portalState.type === 'teleport' ? 'green10' : portalState.type === 'legacy' ? 'yellow10' : 'red10'}`}
           />
           <Text testID="portal-status">
             {portalState.type === 'teleport'
@@ -152,24 +140,24 @@ export function NativePortalTest() {
                 : 'Not enabled (Gorhom fallback)'}
           </Text>
         </XStack>
-        <Text fontSize="$2" color="$colorHover">
+        <Text fontSize="2" color="color-hover">
           enabled: {String(portalState.enabled)}, type: {portalState.type ?? 'null'}
         </Text>
       </YStack>
 
       {/* test components */}
-      <YStack gap="$4">
-        <YStack gap="$2">
+      <YStack gap="4">
+        <YStack gap="2">
           <Text fontWeight="bold">Select with Sheet:</Text>
           <SelectWithSheet id="native-portal-select" />
         </YStack>
 
-        <YStack gap="$2">
+        <YStack gap="2">
           <Text fontWeight="bold">Popover:</Text>
           <PopoverTest id="native-portal-popover" />
         </YStack>
 
-        <YStack gap="$2">
+        <YStack gap="2">
           <Text fontWeight="bold">Sheet:</Text>
           <SheetTest id="native-portal-sheet" />
         </YStack>

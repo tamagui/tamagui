@@ -5,7 +5,7 @@ import {
   useToastItem,
   type ToastPosition,
   type ToastT,
-} from '@tamagui/toast/v2'
+} from '@tamagui/toast'
 import {
   ArrowDown,
   ArrowDownLeft,
@@ -15,7 +15,8 @@ import {
   ArrowUpRight,
 } from '@tamagui/lucide-icons-2'
 import { useRef, useState } from 'react'
-import { Button, Label, SizableText, Slider, XStack, YStack } from 'tamagui'
+import { Label, SizableText, Slider, XStack, YStack } from 'tamagui'
+import { Button } from './Button'
 
 export const ToastDemo = () => {
   const [position, setPosition] = useState<ToastPosition>('bottom-right')
@@ -49,10 +50,10 @@ export const ToastDemo = () => {
         />
       </Toast.Viewport>
 
-      <YStack gap="$3" self="center" width={280}>
+      <YStack gap="3" self="center" width={280}>
         {/* Position buttons */}
-        <YStack gap="$2" self="center">
-          <XStack gap="$2">
+        <YStack gap="2" self="center">
+          <XStack gap="2">
             <PositionButton
               position="top-left"
               current={position}
@@ -73,7 +74,7 @@ export const ToastDemo = () => {
               testID="toast-top-right-button"
             />
           </XStack>
-          <XStack gap="$2">
+          <XStack gap="2">
             <PositionButton
               position="bottom-left"
               current={position}
@@ -97,7 +98,7 @@ export const ToastDemo = () => {
         </YStack>
 
         {/* Controls */}
-        <YStack gap="$1" paddingTop="$1">
+        <YStack gap="1" paddingTop="1">
           <DemoSlider
             label="Gap"
             value={gap}
@@ -138,16 +139,16 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
 
   return (
     <>
-      <XStack gap="$3" alignItems="flex-start">
+      <XStack gap="3" alignItems="flex-start">
         <Toast.Icon />
-        <YStack flex={1} gap="$0.5">
+        <YStack flex={1} gap="0-5">
           {title && (
-            <Toast.Title fontWeight="600" size="$3">
+            <Toast.Title fontWeight="600" size="3">
               {title}
             </Toast.Title>
           )}
           {description && (
-            <Toast.Description color="$color9" size="$2">
+            <Toast.Description color="color9" size="2">
               {description}
             </Toast.Description>
           )}
@@ -185,8 +186,8 @@ function DemoSlider({
   format?: (v: number) => string
 }) {
   return (
-    <XStack gap="$2" alignItems="center">
-      <Label size="$2" width={55}>
+    <XStack gap="2" alignItems="center">
+      <Label size="2" width={55}>
         {label}
       </Label>
       <Slider
@@ -202,7 +203,7 @@ function DemoSlider({
         </Slider.Track>
         <Slider.Thumb theme="accent" size={16} borderRadius={100} index={0} />
       </Slider>
-      <SizableText userSelect="none" size="$2" width={35} textAlign="right">
+      <SizableText userSelect="none" size="2" width={35} textAlign="right">
         {format ? format(value) : Math.round(value)}
       </SizableText>
     </XStack>

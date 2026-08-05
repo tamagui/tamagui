@@ -1,7 +1,8 @@
 import React from 'react'
 import { LogoIcon } from '@tamagui/logo'
 
-import { Button, Square, YStack, isWeb } from 'tamagui'
+import { Square, YStack, isWeb } from 'tamagui'
+import { Button } from './Button'
 
 import { useIsIntersecting } from './useOnIntersecting'
 
@@ -18,24 +19,19 @@ export function AnimationsEnterDemo(props: any) {
     <>
       <Square
         key={key}
-        enterStyle={{
-          scale: 1.5,
-          y: -10,
-          opacity: 0,
-        }}
+        opacity="1 enter:0"
+        scale="1 enter:1.5"
+        y="0 enter:-10px"
         transition="bouncy"
-        elevation="$4"
+        bg="color9"
+        rounded="9"
+        elevation="4"
         size={110}
-        opacity={1}
-        scale={1}
-        y={0}
-        bg="$color9"
-        rounded="$9"
       >
         {props.children ?? <LogoIcon downscale={0.75} />}
       </Square>
 
-      <Button size="$3" mt="$4" onPress={() => setKey(Math.random())}>
+      <Button size="4" mt="4" onPress={() => setKey(Math.random())}>
         Re-mount
       </Button>
     </>

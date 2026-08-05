@@ -12,7 +12,7 @@ import { Adapt, Button, Paragraph, Popover, Sheet, XStack, YStack } from 'tamagu
  * down on the first frame while the Sheet is still animating out, so the body
  * of the sheet vanishes mid-slide.
  *
- * Same harness shape as the Dialog case: narrow viewport so `when="maxMd"`
+ * Same harness shape as the Dialog case: narrow viewport so `when="max-md"`
  * activates the adapted Sheet path, and an imperative window hook to drive
  * close (the SheetOverlay covers the viewport and Pressable ignores synthetic
  * clicks).
@@ -32,7 +32,7 @@ function AdaptedPopover({
         <Button testID="open-popover">Open Popover</Button>
       </Popover.Trigger>
 
-      <Adapt when="maxMd">
+      <Adapt when="max-md">
         <Sheet
           transition="medium"
           zIndex={250_000}
@@ -41,36 +41,33 @@ function AdaptedPopover({
           dismissOnSnapToBottom
         >
           <Sheet.Overlay
-            bg="$shadow6"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+            bg="shadow6"
+            opacity="enter:0 exit:0"
             onPress={() => onOpenChange?.(false)}
           />
-          <Sheet.Handle bg="$color5" />
-          <Sheet.Frame
-            testID="sheet-frame"
-            padding="$4"
-            gap="$4"
-            borderRadius="$6"
-            borderBottomRightRadius={0}
-            borderBottomLeftRadius={0}
-            bg="$background"
-          >
+          <Sheet.Handle bg="color5" />
+          <Sheet.Container testID="sheet-frame" padding="4" gap="4">
+            <Sheet.Background
+              borderBottomRightRadius={0}
+              borderBottomLeftRadius={0}
+              bg="background"
+              borderRadius="6"
+            />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
         </Sheet>
       </Adapt>
 
       <Popover.Content
         key="content"
         borderWidth={0.5}
-        borderColor="$color5"
-        bg="$background"
-        padding="$4"
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
+        borderColor="color5"
+        bg="background"
+        padding="4"
+        y="enter:-10px exit:-10px"
+        opacity="enter:0 exit:0"
       >
         {children}
       </Popover.Content>
@@ -92,13 +89,13 @@ export function PopoverAdaptSheetUnmountCase() {
   }, [])
 
   return (
-    <YStack p="$4" gap="$4" items="center">
+    <YStack p="4" gap="4" items="center">
       <AdaptedPopover open={open} onOpenChange={setOpen}>
-        <YStack gap="$3">
+        <YStack gap="3">
           <Paragraph testID="popover-content-marker">
             unique-content-marker-popover
           </Paragraph>
-          <XStack gap="$3" justify="flex-end">
+          <XStack gap="3" justify="flex-end">
             <Button testID="close-popover" onPress={() => setOpen(false)}>
               Close
             </Button>

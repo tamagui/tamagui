@@ -1,8 +1,10 @@
 import { getPlatformDriver, isServer, isWeb } from '@tamagui/constants'
+import { stylePropsAll } from '@tamagui/helpers'
 import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import { getSetting } from '../config'
+import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
@@ -20,6 +22,43 @@ import type {
   UseAnimationHook,
 } from '../types'
 import type { ViewProps } from '../views/View'
+
+const platformPseudoModifiers = new Set(['hover', 'press', 'active', 'focus'])
+const enterModifier = new Set(['enter'])
+
+function hasFlatModifier(
+  props: Record<string, any>,
+  config: TamaguiInternalConfig,
+  modifiers: ReadonlySet<string>
+): boolean {
+  for (const key in props) {
+    const value = props[key]
+    if (typeof value !== 'string' || value.indexOf(':') === -1) continue
+    const property = config.shorthands[key] || key
+    if (!(property in stylePropsAll) && property !== 'transition') continue
+    let wordStart = 0
+    let quote = 0
+    let depth = 0
+    for (let index = 0; index < value.length; index++) {
+      const code = value.charCodeAt(index)
+      if (quote) {
+        if (code === 92) index++
+        else if (code === quote) quote = 0
+        continue
+      }
+      if (code === 34 || code === 39) quote = code
+      else if (code === 40) depth++
+      else if (code === 41) depth--
+      else if (!depth && code <= 32) wordStart = index + 1
+      else if (!depth && code === 58) {
+        const modifier = value.slice(wordStart, index)
+        const start = modifier.lastIndexOf(':') + 1
+        if (modifiers.has(modifier.slice(start))) return true
+      }
+    }
+  }
+  return false
+}
 
 export const useComponentState = (
   props: ViewProps | TextProps | Record<string, any>,
@@ -46,6 +85,7 @@ export const useComponentState = (
   if (!stateRef.current) {
     stateRef.current = {
       startedUnhydrated: needsHydration && !isHydrated,
+      optimizeForFirstRender: isOptimizedForFirstRender(),
     }
   }
 
@@ -63,8 +103,8 @@ export const useComponentState = (
     curStateRef.hasAnimated = true
   }
 
-  // a renderer platform driver with native pseudo states (react-native-gpui)
-  // makes ANY component with runtime pseudo styles ride the animation-driver
+  // A renderer platform driver with native pseudo states (react-native-gpui)
+  // makes any component with interaction clauses ride the animation-driver
   // emitter path — no per-site transition/animation prop required. the flip is
   // driver-sourced (hover) or event-sourced (press/focus) but either way applies
   // through the emitter with zero React commits; with no transition declared it
@@ -74,7 +114,7 @@ export const useComponentState = (
     useAnimations &&
     animationDriver?.avoidReRenders &&
     getPlatformDriver()?.pseudo &&
-    ('hoverStyle' in props || 'pressStyle' in props || 'focusStyle' in props)
+    hasFlatModifier(props, config, platformPseudoModifiers)
   )
 
   const willBeAnimatedClient = (() => {
@@ -103,7 +143,7 @@ export const useComponentState = (
   const isExiting = presenceState?.isPresent === false
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
 
-  const hasEnterStyle = !!props.enterStyle
+  const hasEnterStyle = hasFlatModifier(props, config, enterModifier)
 
   const hasAnimationThatNeedsHydrate =
     hasAnimationProp &&
@@ -215,27 +255,18 @@ export const useComponentState = (
   if (process.env.NODE_ENV === 'development' && globalThis.time)
     globalThis.time`state-useCreateShallowSetState`
 
-  // set enter/exit variants onto our new props object
+  // merge AnimatePresence's `custom` onto a FRESH props object — never mutate the
+  // caller's incoming props. with the ref-strip clone removed in createComponent, on
+  // the no-defaults path that input IS React's own props object and must stay
+  // immutable. the augmented copy is returned as `props` below.
+  let outProps: typeof props = props
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
     if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
       console.warn(`has presenceState ${JSON.stringify(presenceState)}`)
     }
-    const { enterVariant, exitVariant, enterExitVariant, custom } = presenceState
+    const { custom } = presenceState
     if (isObj(custom)) {
-      Object.assign(props, custom)
-    }
-    const exv = exitVariant ?? enterExitVariant
-    const env = enterVariant ?? enterExitVariant
-    if (state.unmounted && env && staticConfig.variants[env]) {
-      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-        console.warn(`Animating presence ENTER "${env}"`)
-      }
-      props[env] = true
-    } else if (isExiting && exv) {
-      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-        console.warn(`Animating presence EXIT "${exv}"`)
-      }
-      props[exv] = exitVariant !== enterExitVariant
+      outProps = { ...props, ...custom }
     }
   }
 
@@ -278,6 +309,7 @@ export const useComponentState = (
   }
 
   return {
+    props: outProps,
     startedUnhydrated: curStateRef.startedUnhydrated,
     curStateRef,
     disabled,
@@ -303,10 +335,13 @@ export const useComponentState = (
 }
 
 function hasAnimatedStyleValue(style: object) {
-  return Object.keys(style).some((k) => {
+  for (const k in style) {
     const val = style[k]
-    return val && typeof val === 'object' && '_animation' in val
-  })
+    if (val && typeof val === 'object' && '_animation' in val) {
+      return true
+    }
+  }
+  return false
 }
 
 const isDisabled = (props: any) => {

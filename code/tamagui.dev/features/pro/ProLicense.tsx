@@ -3,8 +3,10 @@ import { YStack, H1, Paragraph, H3, styled } from 'tamagui'
 
 export const ProLicense = () => {
   return (
-    <YStack gap="$4" p="$4">
-      <H1 $sm={{ size: '$8' }}>Tamagui Pro V2 License Agreement</H1>
+    <YStack gap="4" p="4">
+      <H1 fontSize="sm:8" lineHeight="sm:8">
+        Tamagui Pro V2 License Agreement
+      </H1>
       <Link href="/pro-policy">Policy Agreement</Link>
 
       <H3>Overview</H3>
@@ -153,9 +155,9 @@ const Ul = styled(YStack, {
   pl: 20,
 })
 
+// @ts-ignore
 const Li = styled(Paragraph, {
   name: 'li',
   render: 'li',
-  // @ts-ignore
   display: 'list-item',
 })

@@ -39,6 +39,7 @@
     "react-native": "0.83.2"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=19",
+    "react-native-web": "*"
   }
 }

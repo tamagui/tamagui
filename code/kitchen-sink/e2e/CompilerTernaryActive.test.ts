@@ -1,10 +1,6 @@
 /**
- * Tests that the compiler correctly preserves fontWeight in ternaries
- * when mixed with theme-token conditionals (e.g. color).
- *
- * Regression test: the compiler was unconditionally adding plain styles
- * (fontWeight) from ternary branches instead of wrapping them in the
- * conditional, causing the last branch's value to always win.
+ * Tests that the compiler's conservative theme-conditional bailout matches the
+ * explicit runtime path in both branches.
  */
 
 import * as assert from 'assert'
@@ -28,7 +24,7 @@ describe('CompilerTernaryActive', () => {
     await remountDirectUseCase('compiler-ternary-active-root')
   })
 
-  it('optimized and non-optimized text should match colors in both states', async () => {
+  it('compiler bailout and explicit runtime path match colors in both states', async () => {
     await new Promise((r) => setTimeout(r, 300))
 
     // verify initial state is inactive

@@ -2,68 +2,68 @@ import { styled } from '@tamagui/core'
 
 // Test: styled.a() with proper href typing
 const StyledAnchor = styled.a({
-  color: '$blue10',
+  color: 'blue10',
   textDecorationLine: 'underline',
 })
 
 // Test: styled.button() with proper type/disabled typing
 const StyledButton = styled.button({
-  padding: '$4',
-  backgroundColor: '$background',
-  borderRadius: '$4',
+  padding: '4',
+  backgroundColor: 'background',
+  borderRadius: '4',
   cursor: 'pointer',
 })
 
 // Test: styled.div() basic
 const StyledDiv = styled.div({
-  padding: '$2',
-  backgroundColor: '$backgroundHover',
+  padding: '2',
+  backgroundColor: 'background-hover',
 })
 
 // Test: styled.span() text-like element
 const StyledSpan = styled.span({
-  color: '$color',
+  color: 'color',
   fontWeight: 'bold',
 })
 
 // Test: styled.input() with proper input attributes
 const StyledInput = styled.input({
-  padding: '$2',
+  padding: '2',
   borderWidth: 1,
-  borderColor: '$borderColor',
+  borderColor: 'border-color',
 })
 
 // Test: styled.form() with proper form attributes
 const StyledForm = styled.form({
-  gap: '$3',
+  gap: '3',
 })
 
 // Test: styled.label() with proper htmlFor typing
 const StyledLabel = styled.label({
-  fontSize: '$3',
+  fontSize: '3',
 })
 
 // Test: styled.nav/main/section/article/footer semantic elements
 const StyledNav = styled.nav({
-  padding: '$2',
+  padding: '2',
 })
 
 const StyledMain = styled.main({
-  padding: '$2',
+  padding: '2',
 })
 
 const StyledSection = styled.section({
-  padding: '$3',
+  padding: '3',
 })
 
 // Test: styled.a() with variants
 const StyledAnchorWithVariants = styled.a({
-  color: '$blue10',
+  color: 'blue10',
 
   variants: {
     size: {
-      small: { fontSize: '$2' },
-      large: { fontSize: '$6' },
+      small: { fontSize: '2' },
+      large: { fontSize: '6' },
     },
     underline: {
       true: { textDecorationLine: 'underline' },

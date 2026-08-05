@@ -8,7 +8,6 @@ import { useState } from 'react'
 import type { PopoverProps } from 'tamagui'
 import {
   Adapt,
-  Button,
   Input,
   isWeb,
   Label,
@@ -18,13 +17,14 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from './Button'
 
 export function PopoverDemo() {
   const [shouldAdapt, setShouldAdapt] = useState(true)
 
   return (
-    <YStack gap="$4">
-      <XStack gap="$2" flex={1} justify="center" items="center">
+    <YStack gap="4">
+      <XStack gap="2" flex={1} justify="center" items="center">
         <Demo
           shouldAdapt={shouldAdapt}
           placement="left"
@@ -67,56 +67,50 @@ export function Demo({
   ...props
 }: PopoverProps & { Icon?: any; Name?: string; shouldAdapt?: boolean }) {
   return (
-    <Popover size="$5" allowFlip stayInFrame offset={15} resize {...props}>
+    <Popover size="5" allowFlip stayInFrame offset={15} resize {...props}>
       <Popover.Trigger asChild>
         <Button icon={Icon} />
       </Popover.Trigger>
 
       {shouldAdapt && (
-        <Adapt when="maxMd" platform="touch">
+        <Adapt when="max-md" platform="touch">
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame p="$4">
+            <Sheet.Container p="4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
-            <Sheet.Overlay
-              bg="$shadowColor"
-              transition="lazy"
-              enterStyle={{ opacity: 0 }}
-              exitStyle={{ opacity: 0 }}
-            />
+            </Sheet.Container>
+            <Sheet.Overlay bg="shadow-color" transition="lazy" opacity="enter:0 exit:0" />
           </Sheet>
         </Adapt>
       )}
 
       <Popover.Content
+        backgroundColor="background"
         borderWidth={1}
-        borderColor="$borderColor"
+        borderColor="border-color"
         width={300}
         height={200}
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
+        y="enter:-10px exit:-10px"
+        opacity="enter:0 exit:0"
         boxShadow="0px 4px 8px rgba(0,0,0,0.1), 0px 12px 32px rgba(0,0,0,0.08)"
-        transition={[
-          'quick',
-          {
-            opacity: {
-              overshootClamping: true,
-            },
-          },
-        ]}
+        transition={['quick', { opacity: { overshootClamping: true } }]}
       >
-        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+        <Popover.Arrow
+          backgroundColor="background"
+          borderWidth={1}
+          borderColor="border-color"
+        />
 
-        <XStack gap="$3" mb="$3">
-          <Label size="$3" htmlFor={Name}>
+        <XStack gap="3" mb="3">
+          <Label size="3" htmlFor={Name}>
             Name
           </Label>
-          <Input flex={1} size="$3" id={Name} />
+          <Input flex={1} size="3" id={Name} />
         </XStack>
 
         <Popover.Close asChild>
           <Button
-            size="$3"
+            size="4"
             onPress={() => {
               /* Custom code goes here, does not interfere with popover closure */
             }}

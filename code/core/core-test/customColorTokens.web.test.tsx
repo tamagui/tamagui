@@ -18,10 +18,10 @@ describe('custom color tokens', () => {
     const config = {
       tokens: {
         color: customColors,
-        space: { true: 10 },
-        size: { true: 10 },
-        radius: { true: 10 },
-        zIndex: { true: 10 },
+        space: { 4: 10 },
+        size: { 4: 10 },
+        radius: { 4: 10 },
+        zIndex: { 4: 10 },
       },
       themes: {
         light: {
@@ -38,44 +38,45 @@ describe('custom color tokens', () => {
     const tamagui = createTamagui(config)
 
     // Check that custom colors are available in tokensParsed with correct structure
-    expect(tamagui.tokensParsed.color['$customRed']).toBeDefined()
-    expect(tamagui.tokensParsed.color['$customRed']).toMatchObject({
+    expect(tamagui.tokensParsed.color['customRed']).toBeDefined()
+    expect(tamagui.tokensParsed.color['customRed']).toMatchObject({
       isVar: true,
-      key: '$customRed',
+      key: 'customRed',
       name: 'c-color-customRed',
       val: '#ff0000',
       variable: 'var(--c-color-customRed)',
     })
 
-    expect(tamagui.tokensParsed.color['$customBlue']).toMatchObject({
+    expect(tamagui.tokensParsed.color['customBlue']).toMatchObject({
       isVar: true,
-      key: '$customBlue',
+      key: 'customBlue',
       name: 'c-color-customBlue',
       val: '#0000ff',
       variable: 'var(--c-color-customBlue)',
     })
 
-    expect(tamagui.tokensParsed.color['$customGreen']).toMatchObject({
+    expect(tamagui.tokensParsed.color['customGreen']).toMatchObject({
       isVar: true,
-      key: '$customGreen',
+      key: 'customGreen',
       name: 'c-color-customGreen',
       val: '#00ff00',
       variable: 'var(--c-color-customGreen)',
     })
 
-    // Check that custom colors are automatically added to themes
+    // Theme values normalize equivalent CSS colors to deterministic bytes, while
+    // tokensParsed above preserves the caller's original token serialization.
     const lightTheme = tamagui.themeConfig.themes.light
     const darkTheme = tamagui.themeConfig.themes.dark
 
     expect(lightTheme.customRed).toBeDefined()
-    expect(lightTheme.customRed.val).toBe('#ff0000')
-    expect(lightTheme.customBlue.val).toBe('#0000ff')
-    expect(lightTheme.customGreen.val).toBe('#00ff00')
+    expect(lightTheme.customRed.val).toBe('rgba(255, 0, 0, 1)')
+    expect(lightTheme.customBlue.val).toBe('rgba(0, 0, 255, 1)')
+    expect(lightTheme.customGreen.val).toBe('rgba(0, 255, 0, 1)')
 
     expect(darkTheme.customRed).toBeDefined()
-    expect(darkTheme.customRed.val).toBe('#ff0000')
-    expect(darkTheme.customBlue.val).toBe('#0000ff')
-    expect(darkTheme.customGreen.val).toBe('#00ff00')
+    expect(darkTheme.customRed.val).toBe('rgba(255, 0, 0, 1)')
+    expect(darkTheme.customBlue.val).toBe('rgba(0, 0, 255, 1)')
+    expect(darkTheme.customGreen.val).toBe('rgba(0, 255, 0, 1)')
   })
 
   test('works with nested theme structures', () => {
@@ -86,10 +87,10 @@ describe('custom color tokens', () => {
     const config = {
       tokens: {
         color: customColors,
-        space: { true: 10 },
-        size: { true: 10 },
-        radius: { true: 10 },
-        zIndex: { true: 10 },
+        space: { 4: 10 },
+        size: { 4: 10 },
+        radius: { 4: 10 },
+        zIndex: { 4: 10 },
       },
       themes: {
         light: {
@@ -110,18 +111,22 @@ describe('custom color tokens', () => {
     const tamagui = createTamagui(config)
 
     // Check token structure
-    expect(tamagui.tokensParsed.color['$customAccent']).toMatchObject({
+    expect(tamagui.tokensParsed.color['customAccent']).toMatchObject({
       isVar: true,
-      key: '$customAccent',
+      key: 'customAccent',
       name: 'c-color-customAccent',
       val: '#ff00ff',
       variable: 'var(--c-color-customAccent)',
     })
 
     // All themes should have the custom color
-    expect(tamagui.themeConfig.themes.light.customAccent.val).toBe('#ff00ff')
-    expect(tamagui.themeConfig.themes.dark.customAccent.val).toBe('#ff00ff')
-    expect(tamagui.themeConfig.themes.light_blue.customAccent.val).toBe('#ff00ff')
-    expect(tamagui.themeConfig.themes.dark_blue.customAccent.val).toBe('#ff00ff')
+    expect(tamagui.themeConfig.themes.light.customAccent.val).toBe('rgba(255, 0, 255, 1)')
+    expect(tamagui.themeConfig.themes.dark.customAccent.val).toBe('rgba(255, 0, 255, 1)')
+    expect(tamagui.themeConfig.themes.light_blue.customAccent.val).toBe(
+      'rgba(255, 0, 255, 1)'
+    )
+    expect(tamagui.themeConfig.themes.dark_blue.customAccent.val).toBe(
+      'rgba(255, 0, 255, 1)'
+    )
   })
 })

@@ -2,7 +2,8 @@ import { ArrowLeft, X } from '@tamagui/lucide-icons-2'
 import { useStore } from '@tamagui/use-store'
 import type React from 'react'
 import { memo, useEffect } from 'react'
-import { Button, H4, PortalHost, ScrollView, Spacer, XStack, YStack } from 'tamagui'
+import { H4, PortalHost, ScrollView, Spacer, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { SidePaneStore } from '../state/SidePaneStore'
 
 export const SidePane = ({
@@ -15,13 +16,9 @@ export const SidePane = ({
   controls?: React.ReactNode
 }) => {
   return (
-    <YStack
-      flex={1}
-      // space for floating menu:
-      mb="$14"
-    >
-      <XStack p="$8" pb="$4">
-        <H4 size="$10">{title}</H4>
+    <YStack flex={1} mb="14">
+      <XStack paddingTop="8" paddingRight="8" paddingLeft="8" pb="4">
+        <H4 size="10">{title}</H4>
         <Spacer flex={1} />
         {controls}
       </XStack>
@@ -29,7 +26,7 @@ export const SidePane = ({
       <YStack flex={1}>
         <ScrollView horizontal={false}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} flex={1}>
-            <YStack p="$6" flex={1}>
+            <YStack p="6" flex={1}>
               {children}
             </YStack>
           </ScrollView>
@@ -63,21 +60,22 @@ export const SidePaneHost = memo(() => {
       {/* backdrop */}
       <XStack
         z={1000}
-        fullscreen
+        position="absolute"
+        inset={0}
         className="blur-behind transition ease-in 200ms"
         pointerEvents={visible ? 'auto' : 'none'}
         opacity={visible ? 1 : 0}
         data-tauri-drag-region
       />
       <XStack
-        fullscreen
+        position="absolute"
+        inset={0}
         transition="quick"
         l="15%"
-        bg="$background"
-        borderColor="$borderColor"
+        bg="background"
+        borderColor="border-color"
         borderLeftWidth={1}
         z={10000}
-        elevation="$8"
         x={20}
         opacity={0}
         pointerEvents="none"
@@ -86,14 +84,15 @@ export const SidePaneHost = memo(() => {
           x: 1,
           pointerEvents: 'auto',
         })}
+        elevation="8"
       >
         <Button
-          l="$-4"
-          t="$4"
-          elevation="$2"
+          l="-4"
+          t="4"
+          boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
           borderWidth={2}
-          borderColor="$borderColor"
-          size="$4"
+          borderColor="border-color"
+          size="4"
           z={1000}
           circular
           icon={sidePane.panes.length > 1 ? ArrowLeft : X}

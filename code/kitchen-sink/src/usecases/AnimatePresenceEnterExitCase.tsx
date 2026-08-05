@@ -3,7 +3,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { Button, Circle, Paragraph, Square, Text, XStack, YStack } from 'tamagui'
 
 /**
- * Tests that enterStyle/exitStyle actually animate (opacity changes)
+ * Tests that enter clause/exit clause actually animate (opacity changes)
  * when using AnimatePresence with conditional rendering.
  *
  * Bug: motion driver doesn't animate enter/exit styles at all,
@@ -49,8 +49,8 @@ function useOpacityTracker(id: string, testId: string) {
 
 export function AnimatePresenceEnterExitCase() {
   return (
-    <YStack gap="$4" padding="$4">
-      <Paragraph fontWeight="bold" fontSize="$5">
+    <YStack gap="4" padding="4">
+      <Paragraph fontWeight="bold" fontSize="5">
         AnimatePresence Enter/Exit Animation Test
       </Paragraph>
 
@@ -62,7 +62,7 @@ export function AnimatePresenceEnterExitCase() {
 }
 
 /**
- * Scenario 01: basic square with enterStyle/exitStyle opacity
+ * Scenario 01: basic square with enter clause/exit clause opacity
  */
 function Scenario01_BasicEnterExit() {
   const [show, setShow] = useState(false)
@@ -81,8 +81,8 @@ function Scenario01_BasicEnterExit() {
   }
 
   return (
-    <YStack gap="$2">
-      <Paragraph size="$2">Scenario 01: Basic enter/exit opacity</Paragraph>
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 01: Basic enter/exit opacity</Paragraph>
       <Button testID="enter-exit-01-trigger" onPress={handleToggle}>
         Toggle
       </Button>
@@ -93,14 +93,9 @@ function Scenario01_BasicEnterExit() {
               key="test-square"
               testID="enter-exit-01-target"
               transition="medium"
+              bg="blue-600"
+              opacity="enter:0 exit:0"
               size={60}
-              bg="$blue10"
-              enterStyle={{
-                opacity: 0,
-              }}
-              exitStyle={{
-                opacity: 0,
-              }}
             />
           ) : null}
         </AnimatePresence>
@@ -136,9 +131,9 @@ function Scenario03_InitialFalse() {
   }
 
   return (
-    <YStack gap="$2">
-      <Paragraph size="$2">Scenario 03: initial=false (exact real-world case)</Paragraph>
-      <XStack gap="$2">
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 03: initial=false (exact real-world case)</Paragraph>
+      <XStack gap="2">
         <Button testID="enter-exit-03-increment" onPress={handleIncrement}>
           Add
         </Button>
@@ -153,23 +148,17 @@ function Scenario03_InitialFalse() {
               key="count-badge-03"
               testID="enter-exit-03-target"
               transition="medium"
-              bg="$color12"
-              size={16}
+              bg="color11"
               position="absolute"
               t={4}
               r={6}
               items="center"
               justify="center"
-              enterStyle={{
-                opacity: 0,
-                y: -3,
-              }}
-              exitStyle={{
-                opacity: 0,
-                y: -3,
-              }}
+              opacity="enter:0 exit:0"
+              y="enter:-3px exit:-3px"
+              size={16}
             >
-              <Text color="$color1" fontFamily="$mono" fontSize={10} lineHeight={10}>
+              <Text color="color1" fontFamily="monospace" fontSize={10} lineHeight={10}>
                 {countString}
               </Text>
             </Circle>
@@ -212,9 +201,9 @@ function Scenario02_CircleBadge() {
   }
 
   return (
-    <YStack gap="$2">
-      <Paragraph size="$2">Scenario 02: Circle badge (real-world case)</Paragraph>
-      <XStack gap="$2">
+    <YStack gap="2">
+      <Paragraph size="2">Scenario 02: Circle badge (real-world case)</Paragraph>
+      <XStack gap="2">
         <Button testID="enter-exit-02-increment" onPress={handleIncrement}>
           Add
         </Button>
@@ -229,21 +218,15 @@ function Scenario02_CircleBadge() {
               key="count-badge"
               testID="enter-exit-02-target"
               transition="medium"
-              bg="$color12"
-              size={24}
+              bg="color11"
               position="absolute"
               items="center"
               justify="center"
-              enterStyle={{
-                opacity: 0,
-                y: -3,
-              }}
-              exitStyle={{
-                opacity: 0,
-                y: -3,
-              }}
+              opacity="enter:0 exit:0"
+              y="enter:-3px exit:-3px"
+              size={24}
             >
-              <Text color="$color1" fontFamily="$mono" fontSize={12}>
+              <Text color="color1" fontFamily="monospace" fontSize={12}>
                 {countString}
               </Text>
             </Circle>

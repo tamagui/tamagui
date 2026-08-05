@@ -103,10 +103,12 @@ describe('_withStableStyle', () => {
     render(
       <TamaguiProvider defaultTheme="light" config={config}>
         <Wrapped
+          // the native setup deletes IS_STATIC, so the media listeners run and
+          // the 1024x768 test window decides: lg is active, gtLg is not
           _expressions={[
             ['gtLg', true],
-            ['xs', true],
-            ['xs', false],
+            ['lg', true],
+            ['lg', false],
           ]}
         />
       </TamaguiProvider>

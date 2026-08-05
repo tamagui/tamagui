@@ -23,6 +23,8 @@
 #                  driver makes `maestro test` hang with no exit, so without it
 #                  the loop never advances and the job sits idle until the
 #                  runner's 45-min cap                        (default: 360)
+#   MAESTRO_DEVICE_ID
+#                  simulator UDID to target explicitly        (default: booted)
 #
 # NOT using `set -e`: a failing/timed-out `maestro test` is expected and handled inline.
 
@@ -34,6 +36,12 @@ MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
 SKIP_FLOWS="${SKIP_FLOWS:-OpenApp.yaml WarmUp.yaml}"
 METRO_PID_FILE="${METRO_PID_FILE:-/tmp/metro-pid}"
 FLOW_TIMEOUT="${FLOW_TIMEOUT:-360}"
+MAESTRO_DEVICE_ID="${MAESTRO_DEVICE_ID:-}"
+
+maestro_cmd=(maestro)
+if [ -n "$MAESTRO_DEVICE_ID" ]; then
+  maestro_cmd+=(--device "$MAESTRO_DEVICE_ID")
+fi
 
 metro_alive() {
   local pid
@@ -44,7 +52,7 @@ metro_alive() {
 
 recover_sim() {
   echo "recovering simulator state (terminate app, keep Hermes bytecode cache)..."
-  xcrun simctl terminate booted "$BUNDLE_ID" 2>/dev/null || true
+  xcrun simctl terminate "${MAESTRO_DEVICE_ID:-booted}" "$BUNDLE_ID" 2>/dev/null || true
   sleep 2
   if ! metro_alive; then
     echo "::error::Metro died during test run — aborting (every retry would fail)"
@@ -65,7 +73,7 @@ recover_sim() {
 run_flow_with_timeout() {
   local flow="$1"
   set -m
-  maestro test "$flow" --no-ansi &
+  "${maestro_cmd[@]}" test "$flow" --no-ansi &
   local pid=$!
   set +m
   local waited=0

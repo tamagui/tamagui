@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
+import { expectNoTeleport, type PositionSample } from './utils'
 
 // regression: withStaticProperties(Tooltip, { Content }) from a lazy-loaded
 // module must not swap the shared Tooltip.Content identity. before the fix it
@@ -40,16 +41,24 @@ test.describe('Tooltip static clobber (withStaticProperties on shared compound)'
     // (no pointer movement — exactly how a chunk load behaves)
     await page.evaluate(() => (window as any).__clobberTooltip())
 
-    // per-frame recorder: track x and node identity
+    // per-frame recorder: track x and node identity. v3 writes position to the
+    // `translate` property, so read that first and only fall back to the
+    // transform matrix (same reader as the sibling toolbar-row suite)
     await page.evaluate((sel) => {
       ;(window as any).__rec = []
       let nextId = 1
-      const sample = () => {
+      const sample = (at: number) => {
         const el = document.querySelector(sel) as any
         if (el) {
           if (!el.__recId) el.__recId = nextId++
-          const m = new DOMMatrixReadOnly(getComputedStyle(el).transform)
-          ;(window as any).__rec.push({ x: m.e, id: el.__recId })
+          const style = getComputedStyle(el)
+          const x =
+            style.translate !== 'none'
+              ? Number.parseFloat(style.translate)
+              : style.transform === 'none'
+                ? 0
+                : new DOMMatrixReadOnly(style.transform).e
+          ;(window as any).__rec.push({ at, tx: x, id: el.__recId })
         }
         requestAnimationFrame(sample)
       }
@@ -67,7 +76,7 @@ test.describe('Tooltip static clobber (withStaticProperties on shared compound)'
     await page.waitForTimeout(700)
 
     const rec = await page.evaluate(
-      () => (window as any).__rec as { x: number; id: number }[]
+      () => (window as any).__rec as (PositionSample & { id: number })[]
     )
     expect(rec.length).toBeGreaterThan(10)
 
@@ -75,18 +84,20 @@ test.describe('Tooltip static clobber (withStaticProperties on shared compound)'
     const ids = new Set(rec.map((r) => r.id))
     expect(ids.size).toBe(1)
 
-    // no teleport: per-frame movement stays animation-sized
-    let maxJump = 0
-    for (let i = 1; i < rec.length; i++) {
-      maxJump = Math.max(maxJump, Math.abs(rec[i].x - rec[i - 1].x))
-    }
-    expect(maxJump).toBeLessThan(60)
+    // no teleport: same shared metric as the sibling toolbar-row suite
+    expectNoTeleport(rec)
 
     // and the tooltip did retarget to the last icon
     const state = await page.evaluate((sel) => {
       const el = document.querySelector(sel) as HTMLElement
-      const m = new DOMMatrixReadOnly(getComputedStyle(el).transform)
-      return { center: m.e + el.offsetWidth / 2, text: el.textContent }
+      const style = getComputedStyle(el)
+      const x =
+        style.translate !== 'none'
+          ? Number.parseFloat(style.translate)
+          : style.transform === 'none'
+            ? 0
+            : new DOMMatrixReadOnly(style.transform).e
+      return { center: x + el.offsetWidth / 2, text: el.textContent }
     }, CONTENT_SEL)
     expect(state.text).toContain('Gamma')
     expect(Math.abs(state.center - last.x)).toBeLessThan(4)

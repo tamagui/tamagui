@@ -18,7 +18,7 @@ describe('useTheme', () => {
     const tree = render(
       <TamaguiProvider defaultTheme="light" config={config}>
         <Theme name="light">
-          <View backgroundColor="$background" />
+          <View backgroundColor="background" />
         </Theme>
       </TamaguiProvider>
     )
@@ -44,7 +44,7 @@ describe('useTheme', () => {
     const tree = render(
       <TamaguiProvider defaultTheme="light" config={config}>
         <Theme name="dark">
-          <View backgroundColor="$background" />
+          <View backgroundColor="background" />
         </Theme>
       </TamaguiProvider>
     )
@@ -71,7 +71,7 @@ describe('useTheme', () => {
       <TamaguiProvider defaultTheme="light" config={config}>
         <Theme name="dark">
           <Theme name="blue">
-            <View backgroundColor="$background" />
+            <View backgroundColor="background" />
           </Theme>
         </Theme>
       </TamaguiProvider>
@@ -96,7 +96,7 @@ describe('useTheme', () => {
       <TamaguiProvider defaultTheme="light" config={config}>
         <Theme name="dark">
           <Theme name="dark">
-            <View backgroundColor="$background" />
+            <View backgroundColor="background" />
           </Theme>
         </Theme>
       </TamaguiProvider>

@@ -34,7 +34,7 @@ export const ForwardSelectContext = ({
 
   // fall back to context forwarding for legacy portal implementations
   return (
-    <SelectProvider isInSheet scope={context.scopeName} {...context}>
+    <SelectProvider scope={context.scopeName} {...context}>
       <SelectItemParentProvider scope={context.scopeName} {...itemContext}>
         {children}
       </SelectItemParentProvider>

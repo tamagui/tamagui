@@ -13,20 +13,15 @@ export const PromoLinksRow = () => {
   return (
     <TooltipGroup delay={tooltipDelay}>
       <Tooltip scope="promo-tooltip" offset={20} placement="bottom">
-        <XGroup position="absolute" self="center" y={-80} rounded="$8" elevation="$2">
+        <XGroup position="absolute" self="center" y={-80} rounded="8" elevation="2">
           <Tooltip.Trigger
             scope="promo-tooltip"
             asChild
             onMouseEnter={() => setLabel('Takeout — universal RN starter kit')}
           >
-            <Link
-              hoverStyle={{
-                z: 100,
-              }}
-              href="/takeout"
-            >
+            <Link z="hover:100" href="/takeout">
               <XGroup.Item>
-                <TakeoutButton mr={-1} elevation={0} />
+                <TakeoutButton mr={-1} boxShadow="none" />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
@@ -36,14 +31,9 @@ export const PromoLinksRow = () => {
             asChild
             onMouseEnter={() => setLabel('Bento — Free + paid pre-made UI')}
           >
-            <Link
-              hoverStyle={{
-                z: 100,
-              }}
-              href="/bento"
-            >
+            <Link z="hover:100" href="/bento">
               <XGroup.Item>
-                <BentoButton mr={-1} elevation={0} />
+                <BentoButton mr={-1} boxShadow="none" />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
@@ -53,15 +43,9 @@ export const PromoLinksRow = () => {
             asChild
             onMouseEnter={() => setLabel('Add Even — Expert React Native developers')}
           >
-            <Link
-              hoverStyle={{
-                z: 100,
-              }}
-              href="https://addeven.com"
-              target="_blank"
-            >
+            <Link z="hover:100" href="https://addeven.com" target="_blank">
               <XGroup.Item>
-                <ConsultingButton elevation={0} />
+                <ConsultingButton boxShadow="none" />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
@@ -70,16 +54,16 @@ export const PromoLinksRow = () => {
         <Tooltip.Content
           animatePosition
           transition="medium"
-          bg="$background"
-          elevation="$2"
-          rounded="$4"
-          px="$2.5"
-          py="$1"
-          enterStyle={{ y: -4, opacity: 0 }}
-          exitStyle={{ y: -4, opacity: 0 }}
+          bg="background"
+          boxShadow="0 4px 12px shadow-color"
+          rounded="4"
+          px="2.5"
+          py="1"
+          y="enter:-4px exit:-4px"
+          opacity="enter:0 exit:0"
         >
           <Tooltip.Arrow />
-          <Paragraph size="$3">{label}</Paragraph>
+          <Paragraph size="3">{label}</Paragraph>
         </Tooltip.Content>
       </Tooltip>
     </TooltipGroup>

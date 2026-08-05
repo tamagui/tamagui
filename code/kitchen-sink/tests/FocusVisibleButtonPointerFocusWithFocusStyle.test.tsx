@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'FocusVisibleButtonWithFocusStyle', type: 'useCase' })
 })
 
-test(`button + focusVisibleStyle + focusVisible`, async ({ page }) => {
+test(`button + focus-visible clause + focusVisible`, async ({ page }) => {
   const button = page.locator('#focus-visible-button')
 
   const beforeFocusStyles = await button.evaluate((el) => {

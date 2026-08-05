@@ -9,6 +9,7 @@ import {
   type MutableRefObject,
 } from 'react'
 import { getConfig, getSetting } from '../config'
+import { getInlineValuesKey, getMergedInlineTheme } from '../helpers/variables'
 import { MISSING_THEME_MESSAGE } from '../constants/constants'
 import type {
   ThemeParsed,
@@ -70,7 +71,8 @@ export const useThemeState = (
   // only they can have descendants subscribed under their id. Leaf styled
   // components pass false (the default) and save one hook slot per mount.
   // Stable per call-site (rule of hooks satisfied).
-  cascadeOnChange = false
+  cascadeOnChange = false,
+  optimizeForFirstRender = false
 ): ThemeState => {
   'use no memo'
 
@@ -82,7 +84,7 @@ export const useThemeState = (
       process.env.NODE_ENV === 'development'
         ? `${MISSING_THEME_MESSAGE}
 
-Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? ` (component: ${props.componentName})` : ''}, but no parent theme context was found (parentId: ${parentId}).`
+Looked for theme${props.name ? ` "${props.name}"` : ''}, but no parent theme context was found (parentId: ${parentId}).`
         : MISSING_THEME_MESSAGE
     )
   }
@@ -116,6 +118,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
       isRoot,
       keys,
       schemeKeys,
+      optimizeForFirstRender,
       renderVersion: 0,
     }
   } else {
@@ -167,10 +170,18 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
       if (!r.unsubscribe) {
         const pid = r.parentId
         const sid = r.id
-        const cb = () => {
+        const cb = (forced?: boolean) => {
           const next = getSnapshotImpl(r)
           if (next !== r.lastSnap) {
             r.lastSnap = next
+            // native fast path: the component can commit the themed styles
+            // straight to the native tree and skip this re-render. state maps
+            // are already updated above, so a later natural render resolves
+            // the exact same values (mirror consistency). forced updates
+            // (config changes) always re-render.
+            if (!forced && r.props.nativeUpdate?.(next)) {
+              return
+            }
             forceUpdate()
           }
         }
@@ -178,8 +189,9 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
         listenersByParent[pid] = listenersByParent[pid] || new Set()
         listenersByParent[pid].add(sid)
         allListeners.set(sid, () => {
-          PendingUpdate.set(sid, shouldForce ? 'force' : true)
-          cb()
+          const forced = shouldForce
+          PendingUpdate.set(sid, forced ? 'force' : true)
+          cb(forced)
         })
         r.subscribedParentId = pid
         r.unsubscribe = () => {
@@ -240,6 +252,7 @@ type SnapshotRef = {
   isRoot: boolean
   keys: MutableRefObject<Set<string> | null>
   schemeKeys?: MutableRefObject<Set<string> | null>
+  optimizeForFirstRender: boolean
 }
 
 type ThemeStateRef = SnapshotRef & {
@@ -250,6 +263,7 @@ type ThemeStateRef = SnapshotRef & {
 }
 
 const shouldSubscribeToTheme = (r: ThemeStateRef, cascadeOnChange: boolean): boolean =>
+  r.optimizeForFirstRender ||
   r.isRoot ||
   cascadeOnChange ||
   hasThemeUpdatingProps(r.props) ||
@@ -271,7 +285,16 @@ function cleanupThemeState(r: ThemeStateRef) {
 }
 
 const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
-  const { id, parentId, props, propsKey, isRoot, keys, schemeKeys } = r
+  const {
+    id,
+    parentId,
+    props,
+    propsKey,
+    isRoot,
+    keys,
+    schemeKeys,
+    optimizeForFirstRender,
+  } = r
   let local = localStates.get(id)
   const parentState = states.get(parentId)
 
@@ -288,6 +311,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
 
   // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
   const isSchemeOnlyChange =
+    !optimizeForFirstRender &&
     process.env.TAMAGUI_TARGET === 'native' &&
     supportsDynamicColorIOS &&
     getSetting('fastSchemeChange') &&
@@ -296,26 +320,30 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     local.scheme !== parentState.scheme &&
     getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
 
-  // all tracked keys are scheme-optimized = can skip re-render for scheme changes
-  const keysSize = keys?.current?.size ?? 0
-  const schemeKeysSize = schemeKeys?.current?.size ?? 0
-  const allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
+  let allKeysSchemeOptimized = false
+  if (!optimizeForFirstRender) {
+    const keysSize = keys.current?.size ?? 0
+    const schemeKeysSize = schemeKeys?.current?.size ?? 0
+    allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
+  }
 
-  const canSkipForSchemeChange = isSchemeOnlyChange && allKeysSchemeOptimized
+  const canSkipForSchemeChange = !!isSchemeOnlyChange && allKeysSchemeOptimized
 
   const needsUpdate = props.passThrough
     ? false
-    : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
+    : optimizeForFirstRender
       ? true
-      : !HasRenderedOnce.get(keys)
+      : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
         ? true
-        : canSkipForSchemeChange
-          ? false // skip re-render for scheme-only changes with DynamicColorIOS
-          : keys?.current?.size
-            ? true
-            : props.needsUpdate?.()
+        : !HasRenderedOnce.get(keys)
+          ? true
+          : canSkipForSchemeChange
+            ? false // skip re-render for scheme-only changes with DynamicColorIOS
+            : keys?.current?.size
+              ? true
+              : props.needsUpdate?.()
 
-  const [rerender, next] = getNextState(
+  const [rerender, nextRaw] = getNextState(
     local,
     props,
     propsKey,
@@ -325,6 +353,26 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     needsUpdate,
     PendingUpdate.get(id)
   )
+
+  // <Variables> inline theme layer: swap in the merged theme so descendants
+  // (which read states.get(parentId).theme) see the patched values. The base
+  // is always the PARENT state's theme, never this state's own theme —
+  // getNextState can return our previous (already-merged) state, and merging
+  // over own output would keep removed patch keys alive. Merged objects are
+  // identity-cached per (base theme, values, scheme) so bailouts stay stable.
+  let next = nextRaw
+  if (props.inlineValues && nextRaw?.theme) {
+    const parentTheme = states.get(parentId)?.theme || nextRaw.theme
+    const merged = getMergedInlineTheme(
+      parentTheme,
+      props.inlineValues,
+      nextRaw.name,
+      getConfig()
+    )
+    if (merged !== nextRaw.theme) {
+      next = { ...nextRaw, theme: merged as ThemeParsed }
+    }
+  }
 
   PendingUpdate.delete(id)
 
@@ -533,7 +581,6 @@ function getNewThemeName(
   forceUpdate = false
 ): string | null {
   const { name, reset } = props
-  const componentName = props.unstyled ? undefined : props.componentName
 
   if (name && reset) {
     throw new Error(
@@ -544,7 +591,7 @@ function getNewThemeName(
   }
 
   // check cache
-  const cacheKey = `${parentName}|${name || ''}|${componentName || ''}|${reset ? 1 : 0}|${forceUpdate ? 1 : 0}`
+  const cacheKey = `${parentName}|${name || ''}|${reset ? 1 : 0}|${forceUpdate ? 1 : 0}`
   if (themeNameCacheVer !== cacheVersion) {
     themeNameCache.clear()
     themeNameCacheVer = cacheVersion
@@ -577,104 +624,26 @@ function getNewThemeName(
     return result
   }
 
-  const parentParts = parentName.split('_')
-
-  // always remove component theme if it exists, we never sub a component theme
-  const lastName = parentParts[parentParts.length - 1]
-  if (lastName && lastName[0].toLowerCase() !== lastName[0]) {
-    parentParts.pop()
-  }
-
-  const subNames = [
-    name && componentName ? `${name}_${componentName}` : undefined,
-    name,
-    componentName,
-  ].filter(Boolean) as string[]
+  const parentParts = parentName ? parentName.split('_') : []
 
   let found: string | null = null
 
-  // If name is provided, try it as a standalone theme first (both with and without scheme)
-  // This allows explicit theme overrides like:
-  // - <Theme name="blue"><Button theme="dark_green"> → finds "dark_green_Button"
-  // - <Theme name="blue"><Button theme="green"> → finds "light_green_Button"
-  // - <Theme name="blue"><Button theme="green_active"> → finds "light_green_active_Button"
   if (name) {
-    // First try the exact name as-is, but only if it already has a scheme prefix
-    // This prevents "green" from matching before we try "light_green_Button"
     const nameHasScheme = getScheme(name)
 
-    if (nameHasScheme) {
-      // Name has scheme (like "dark_green"), try as-is with priority to component theme
-      for (const subName of subNames) {
-        if (subName in themes) {
-          found = subName
+    if (nameHasScheme && name in themes) {
+      found = name
+    }
+
+    if (!found && !nameHasScheme) {
+      for (let i = parentParts.length; i >= 0; i--) {
+        const base = parentParts.slice(0, i).join('_')
+        const potential = base ? `${base}_${name}` : name
+
+        if (potential in themes) {
+          found = potential
           break
         }
-      }
-    }
-
-    // If not found and name doesn't have a scheme, try adding parent's scheme
-    if (!found && !nameHasScheme) {
-      const parentScheme = getScheme(parentName)
-
-      if (parentScheme) {
-        // Try progressively shorter parent bases to preserve color context
-        // For parent "light_blue_surface1" + name "surface3":
-        //   Try: light_blue_surface1_surface3, light_blue_surface3, light_surface3
-        // This ensures color context (blue) is preserved before falling back to scheme-only
-
-        // Build list of potential bases from most specific to least specific
-        const potentialBases: string[] = []
-        for (let i = parentParts.length; i >= 1; i--) {
-          potentialBases.push(parentParts.slice(0, i).join('_'))
-        }
-
-        outer: for (const base of potentialBases) {
-          // Try with componentName first, then without
-          const candidates = [
-            componentName ? `${base}_${name}_${componentName}` : undefined,
-            `${base}_${name}`,
-          ].filter(Boolean) as string[]
-
-          for (const potential of candidates) {
-            if (potential in themes) {
-              found = potential
-              break outer
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // If not found, fall back to the original search algorithm combining with parent
-  if (!found) {
-    // If we're only adding componentName (no explicit name prop), don't backtrack through parent parts
-    // This preserves sub-themes like "light_red_surface1" when adding Button component
-    if (!name && componentName) {
-      // Just try adding component to full parent
-      const potential = `${parentParts.join('_')}_${componentName}`
-      if (potential in themes) {
-        found = potential
-      }
-      // If not found, don't add component theme - return null to keep parent theme
-    } else {
-      // Original backtracking search for when explicit name is provided
-      const max = parentParts.length
-
-      for (let i = 0; i <= max; i++) {
-        const base = (i === 0 ? parentParts : parentParts.slice(0, -i)).join('_')
-
-        for (const subName of subNames) {
-          const potential = base ? `${base}_${subName}` : subName
-
-          if (potential in themes) {
-            found = potential
-            break
-          }
-        }
-
-        if (found) break
       }
     }
   }
@@ -694,8 +663,18 @@ function getNewThemeName(
   return found
 }
 
-const getPropsKey = ({ name, reset, forceClassName, componentName }: ThemeProps) =>
-  `${name || ''}${reset || ''}${forceClassName || ''}${componentName || ''}`
+const getPropsKey = ({
+  name,
+  reset,
+  forceClassName,
+  inlineValues,
+}: UseThemeWithStateProps) =>
+  `${name || ''}${reset || ''}${forceClassName || ''}${
+    inlineValues ? getInlineValuesKey(inlineValues) : ''
+  }`
 
-export const hasThemeUpdatingProps = (props: ThemeProps) =>
-  'name' in props || 'reset' in props || 'forceClassName' in props
+export const hasThemeUpdatingProps = (props: UseThemeWithStateProps) =>
+  'name' in props ||
+  'reset' in props ||
+  'forceClassName' in props ||
+  'inlineValues' in props

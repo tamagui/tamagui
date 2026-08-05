@@ -5,8 +5,7 @@
   "files": [
     "src",
     "types",
-    "dist",
-    "v2"
+    "dist"
   ],
   "type": "module",
   "sideEffects": false,
@@ -23,15 +22,6 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
-    },
-    "./v2": {
-      "types": "./types/v2.d.ts",
-      "react-native": "./dist/esm/v2.native.js",
-      "browser": "./dist/esm/v2.mjs",
-      "module": "./dist/esm/v2.mjs",
-      "import": "./dist/esm/v2.mjs",
-      "require": "./dist/cjs/v2.cjs",
-      "default": "./dist/esm/v2.mjs"
     }
   },
   "publishConfig": {
@@ -69,12 +59,5 @@
   "peerDependencies": {
     "react": ">=19"
   },
-  "module:jsx": "dist/jsx",
-  "typesVersions": {
-    "*": {
-      "v2": [
-        "./types/v2.d.ts"
-      ]
-    }
-  }
+  "module:jsx": "dist/jsx"
 }

@@ -8,16 +8,10 @@
       "path": "../../core/constants"
     },
     {
-      "path": "../../packages/element"
-    },
-    {
-      "path": "../../core/create-context"
-    },
-    {
-      "path": "../../core/get-button-sized"
-    },
-    {
       "path": "../../core/helpers"
+    },
+    {
+      "path": "../../core/size"
     },
     {
       "path": "../../core/use-controllable-state"
@@ -29,18 +23,13 @@
       "path": "../../core/web"
     },
     {
-      "path": "../group"
-    },
-    {
       "path": "../roving-focus"
-    },
-    {
-      "path": "../stacks"
     }
   ],
   "exclude": [
     "types",
     "dist",
+    "test",
     "**/__tests__"
   ]
 }

@@ -2,7 +2,6 @@ import { LogoIcon, useTint } from '@tamagui/logo'
 import { ArrowDown, Play } from '@tamagui/lucide-icons-2'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
-  Button,
   ListItem,
   Paragraph,
   Separator,
@@ -12,6 +11,7 @@ import {
   useControllableState,
   useEvent,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { useIsIntersecting } from '~/hooks/useOnIntersecting'
@@ -64,8 +64,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
   return (
     <YStack>
-      <ContainerLarge position="relative" gap="$8">
-        <YStack z={1} gap="$3">
+      <ContainerLarge position="relative" gap="8">
+        <YStack z={1} gap="3">
           <HomeH2 position="relative">
             Universal <span className="rainbow clip-text">Animations</span>
           </HomeH2>
@@ -75,16 +75,16 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           </HomeH3>
         </YStack>
 
-        <XStack gap="$4">
+        <XStack gap="4">
           <YStack
             flex={2}
             minW="55%"
             self="flex-start"
             z={100}
-            elevation="$4"
-            rounded="$4"
-            theme={tint as any}
+            rounded="4"
             justify="center"
+            elevation="4"
+            theme={tint as any}
           >
             <ExampleAnimations />
           </YStack>
@@ -92,25 +92,26 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           <YStack
             perspective={1000}
             rotateY="-5deg"
-            $sm={{ display: 'none' }}
+            display="sm:none"
             position="relative"
-            rounded="$8"
-            elevation="$5"
+            rounded="8"
             overflow="hidden"
+            elevation="5"
           >
             <YStack
               pointerEvents={disableScrollPane ? 'auto' : 'none'}
               opacity={disableScrollPane ? 1 : 0}
-              fullscreen
+              position="absolute"
+              inset={0}
               items="center"
               justify="center"
             >
-              <YStack fullscreen t="60%" opacity={0.5} />
+              <YStack position="absolute" inset={0} t="60%" opacity={0.5} />
               <Button
                 aria-label="View more"
                 y={200}
                 iconAfter={ArrowDown}
-                size="$4"
+                size="4"
                 theme="accent"
                 z={10}
                 onPress={() => setDisableScrollPane((prev) => !prev)}
@@ -125,17 +126,17 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
               transition="quick"
               maxW={530}
               minW={530}
-              rounded="$8"
+              rounded="8"
               language="tsx"
               source={animationCode}
             />
           </YStack>
         </XStack>
 
-        <XStack self="center" gap="$3">
+        <XStack self="center" gap="3">
           <Link href="/docs/core/animations">
             <Button aria-label="Animation docs">
-              <Button.Text fontFamily="$silkscreen">Docs &raquo;</Button.Text>
+              <Button.Text fontFamily="silkscreen">Docs &raquo;</Button.Text>
             </Button>
           </Link>
         </XStack>
@@ -185,25 +186,24 @@ export const ExampleAnimations = memo(() => {
   return (
     <XStack
       borderWidth={1}
-      borderColor="$borderColor"
-      elevation="$1"
+      borderColor="border-color"
       width="100%"
-      rounded="$4"
+      rounded="4"
       overflow="hidden"
       height={305}
       self="center"
       x={0}
       flexDirection="row-reverse"
+      elevation="1"
     >
       <YStack
         ref={container}
         position="relative"
         items="center"
         justify="center"
-        width="60%"
-        $sm={{ width: '100%' }}
+        width="60% sm:100%"
       >
-        <YStack fullscreen z={-1} bg="$background" opacity={0.5} />
+        <YStack position="absolute" inset={0} z={-1} bg="background" opacity={0.5} />
         {isIntersecting ? (
           <AnimationsDemo position={positionI} animation={animation.animation} />
         ) : null}
@@ -211,20 +211,21 @@ export const ExampleAnimations = memo(() => {
 
       <Separator vertical />
 
-      <YStack position="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack flex={1} bg="$color1">
+      <YStack position="relative" display="sm:none" width="40%">
+        <YStack flex={1} bg="color1">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
               <ListItem
                 key={item.name}
                 theme={isActive ? 'accent' : null}
-                px="$4"
-                py="$2"
-                title={item.name}
-                bg={isActive ? '$color2' : '$color1'}
-                subTitle={item.description}
+                px="4"
+                py="2"
+                bg={isActive ? 'var(--color2)' : 'var(--color1)'}
+                borderColor="var(--border-color)"
                 cursor="pointer"
+                title={item.name}
+                subTitle={item.description}
                 onPress={() => {
                   setAnimationI(i)
                   next()
@@ -236,7 +237,7 @@ export const ExampleAnimations = memo(() => {
 
         <Separator />
 
-        <XStack bg="$background" p="$4" items="center" justify="center">
+        <XStack bg="background" p="4" items="center" justify="center">
           {/* @ts-ignore */}
           {settings.map(([key, value], i) => {
             if (key === 'type') {
@@ -245,7 +246,7 @@ export const ExampleAnimations = memo(() => {
             return (
               <React.Fragment key={key}>
                 <YStack>
-                  <Paragraph size="$2">{key}</Paragraph>
+                  <Paragraph size="2">{key}</Paragraph>
                   <Paragraph>{value}</Paragraph>
                 </YStack>
                 {i < settings.length - 1 && <Separator vertical mx={15} />}
@@ -275,20 +276,14 @@ export function AnimationsDemoBase(props) {
     <>
       <Square
         transition={props.animation || 'bouncy'}
+        borderColor="border-color"
+        borderWidth={1}
+        rounded="9"
+        bg="color9"
+        {...position}
         animateOnly={['transform']}
         onPress={onPress}
         size={104}
-        borderColor="$borderColor"
-        borderWidth={1}
-        rounded="$9"
-        bg="$color9"
-        hoverStyle={{
-          scale: 1.5,
-        }}
-        pressStyle={{
-          scale: 0.9,
-        }}
-        {...position}
       >
         {props.children || <LogoIcon downscale={0.75} />}
       </Square>
@@ -299,7 +294,7 @@ export function AnimationsDemoBase(props) {
         l={20}
         icon={Play}
         theme={props.tint}
-        size="$5"
+        size="5"
         circular
         onPress={onPress}
       />
@@ -311,31 +306,19 @@ export const positions = [
   {
     x: 0,
     y: 0,
-    scale: 1,
+    scale: '1 hover:1.5 press:0.9',
     rotate: '0deg',
   },
   {
     x: -50,
     y: -50,
-    scale: 0.5,
+    scale: '0.5 hover:0.6 press:0.4',
     rotate: '-45deg',
-    hoverStyle: {
-      scale: 0.6,
-    },
-    pressStyle: {
-      scale: 0.4,
-    },
   },
   {
     x: 50,
     y: 50,
-    scale: 1,
+    scale: '1 hover:1.1 press:0.9',
     rotate: '180deg',
-    hoverStyle: {
-      scale: 1.1,
-    },
-    pressStyle: {
-      scale: 0.9,
-    },
   },
 ]

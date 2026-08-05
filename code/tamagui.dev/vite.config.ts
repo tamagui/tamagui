@@ -20,7 +20,10 @@ const vitePluginDist = pathResolve(
   import.meta.dirname,
   '../compiler/vite-plugin/dist/esm/index.mjs'
 )
-const staticDist = pathResolve(import.meta.dirname, '../compiler/static/dist/index.cjs')
+const staticDist = pathResolve(
+  import.meta.dirname,
+  '../compiler/static/dist/cjs/index.cjs'
+)
 
 if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
   console.info('')
@@ -132,6 +135,10 @@ export default {
 
       // Standard string-based aliases
       {
+        find: /^~\//,
+        replacement: `${import.meta.dirname}/`,
+      },
+      {
         find: 'react-native-svg',
         replacement: '@tamagui/react-native-svg',
       },
@@ -229,8 +236,8 @@ export default function BentoComponentStub() {
     return null
   }
   return (
-    <YStack p="$4" bc="$borderColor" br="$4">
-      <Paragraph size="$2" color="$color10">
+    <YStack p="4" bc="border-color" br="4">
+      <Paragraph size="2" color="color10">
         Bento component not available
       </Paragraph>
     </YStack>
@@ -250,6 +257,12 @@ export const LocationNotification = BentoComponentStub
 
     one({
       native: false,
+
+      config: {
+        // The repo tsconfig contains declaration-only package mappings that
+        // must not override runtime package exports.
+        tsConfigPaths: false,
+      },
 
       setupFile: {
         server: './setup.server.ts',
@@ -333,6 +346,13 @@ export const LocationNotification = BentoComponentStub
           {
             source: '/vite',
             destination: 'https://vxrn.dev',
+            permanent: true,
+          },
+          // the v3 composable toast replaced the old imperative one, so the
+          // temporary "toast-2" page folded back into /ui/toast
+          {
+            source: '/ui/toast-2',
+            destination: '/ui/toast',
             permanent: true,
           },
           {

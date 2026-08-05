@@ -4,42 +4,34 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
 /**
  * Test cases for native press style behaviors:
  *
- * 1. pressStyle WITHOUT transition - tests fallback path in createComponent
- * 2. pressStyle WITH transition - tests animation driver path
+ * 1. press clause WITHOUT transition - tests fallback path in createComponent
+ * 2. press clause WITH transition - tests animation driver path
  * 3. Press and drag off behavior - should unpress correctly
  *
  * Colors are chosen to be easily distinguishable in screenshots:
- * - Default: pure blue (#0000ff-ish via $blue10)
- * - Pressed: pure red (#ff0000-ish via $red10)
+ * - Default: strong blue (#155dfc via blue-600)
+ * - Pressed: strong red (#e7000b via red-600)
  */
 
-// pressStyle WITHOUT transition - tests the fallback to normal re-render
+// press clause WITHOUT transition - tests the fallback to normal re-render
 const ColorTestPressable = styled(View, {
   name: 'ColorTestPressable',
   width: 200,
   height: 100,
-  backgroundColor: '$blue10',
+  backgroundColor: 'blue-600 press:red-600',
   alignItems: 'center',
   justifyContent: 'center',
-
-  pressStyle: {
-    backgroundColor: '$red10',
-  },
 })
 
-// pressStyle WITH transition - tests animation driver path
+// press clause WITH transition - tests animation driver path
 const ColorTestPressableAnimated = styled(View, {
   name: 'ColorTestPressableAnimated',
   width: 200,
   height: 100,
-  backgroundColor: '$blue10',
+  backgroundColor: 'blue-600 press:red-600',
   alignItems: 'center',
   justifyContent: 'center',
   transition: 'quick',
-
-  pressStyle: {
-    backgroundColor: '$red10',
-  },
 })
 
 export function PressStyleNative() {
@@ -56,15 +48,15 @@ export function PressStyleNative() {
   })
 
   return (
-    <YStack gap="$4" padding="$4" testID="press-style-native-root">
-      <Text fontSize="$5" fontWeight="bold">
+    <YStack gap="4" padding="4" testID="press-style-native-root">
+      <Text fontSize="5" fontWeight="bold">
         Press Style Tests
       </Text>
 
-      {/* test 1: pressStyle WITHOUT transition */}
-      <YStack gap="$2">
-        <Text fontSize="$3">1. No Transition</Text>
-        <Text fontSize="$2" color="$gray11">
+      {/* test 1: press clause WITHOUT transition */}
+      <YStack gap="2">
+        <Text fontSize="3">1. No Transition</Text>
+        <Text fontSize="2" color="color10">
           Blue → Red (no animation)
         </Text>
         <ColorTestPressable
@@ -88,7 +80,7 @@ export function PressStyleNative() {
             PRESS ME
           </Text>
         </ColorTestPressable>
-        <XStack gap="$2">
+        <XStack gap="2">
           <Text testID="simple-press-in-count">In: {simplePressState.pressInCount}</Text>
           <Text testID="simple-press-out-count">
             Out: {simplePressState.pressOutCount}
@@ -99,10 +91,10 @@ export function PressStyleNative() {
         </XStack>
       </YStack>
 
-      {/* test 2: pressStyle WITH transition */}
-      <YStack gap="$2">
-        <Text fontSize="$3">2. With Transition</Text>
-        <Text fontSize="$2" color="$gray11">
+      {/* test 2: press clause WITH transition */}
+      <YStack gap="2">
+        <Text fontSize="3">2. With Transition</Text>
+        <Text fontSize="2" color="color10">
           Blue → Red (animated)
         </Text>
         <ColorTestPressableAnimated
@@ -126,7 +118,7 @@ export function PressStyleNative() {
             ANIMATED
           </Text>
         </ColorTestPressableAnimated>
-        <XStack gap="$2">
+        <XStack gap="2">
           <Text testID="animated-press-in-count">
             In: {animatedPressState.pressInCount}
           </Text>

@@ -7,6 +7,7 @@ import type {
   ThemeParsed,
   TokensParsed,
 } from '../types'
+import { normalizeThemeValue } from './themes'
 
 // only cache tamagui styles
 // TODO merge totalSelectorsInserted and allSelectors?
@@ -23,6 +24,11 @@ export const getAllRules = () => {
     return sortedKeys.map((key) => allRules[key])
   }
   return []
+}
+
+export function wrapStyleRules(css: string): string {
+  const layer = process.env.TAMAGUI_CSS_LAYER
+  return layer && css ? `@layer ${layer} {\n${css}\n}` : css
 }
 
 // once react 19 onyl supported we can remove most of this
@@ -44,6 +50,7 @@ export function scanAllSheets(
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     if (process.env.NODE_ENV === 'test') return
     if (process.env.TAMAGUI_TARGET !== 'web') return
+    if (typeof document === 'undefined') return
 
     let themes: DedupedThemes | undefined
 
@@ -91,12 +98,12 @@ function updateSheetStyles(
 ): DedupedThemes | undefined {
   // avoid errors on cross origin sheets
   // https://stackoverflow.com/questions/49993633/uncaught-domexception-failed-to-read-the-cssrules-property
-  let rules: CSSRuleList
+  let rules: CSSRule[]
   try {
-    rules = sheet.cssRules
-    if (!rules) {
+    if (!sheet.cssRules) {
       return
     }
+    rules = flattenCSSRules(sheet.cssRules)
   } catch {
     return
   }
@@ -166,6 +173,21 @@ function updateSheetStyles(
   return dedupedThemes
 }
 
+function flattenCSSRules(rules: CSSRuleList, output: CSSRule[] = []): CSSRule[] {
+  for (let index = 0; index < rules.length; index++) {
+    const rule = rules[index]
+    if (rule instanceof CSSStyleRule) {
+      output.push(rule)
+      continue
+    }
+    if ('cssRules' in rule) {
+      const nested = (rule as CSSGroupingRule).cssRules
+      if (nested) flattenCSSRules(nested, output)
+    }
+  }
+  return output
+}
+
 let colorVarToVal: Record<string, string>
 let rootComputedStyle: CSSStyleDeclaration | null = null
 
@@ -221,7 +243,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
       {
         key,
         name: key,
-        val: value,
+        val: normalizeThemeValue(value),
       },
       true
     ) as any
@@ -231,22 +253,32 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   // loop selectors and build deduped
   for (const selector of selectors) {
-    if (selector === ' .tm_xxt') continue
-    const lastThemeSelectorIndex = selector.lastIndexOf('.t_')
-    const name = selector.slice(lastThemeSelectorIndex).slice(3)
-    const [schemeChar] = selector[lastThemeSelectorIndex - 5]
-    const scheme = schemeChar === 'd' ? 'dark' : schemeChar === 'i' ? 'light' : ''
-    const themeName = scheme && scheme !== name ? `${scheme}_${name}` : name
-    if (!themeName || themeName === 'light_dark' || themeName === 'dark_light') {
-      continue
-    }
-    names.add(themeName)
+    const themeName = getThemeNameFromSelector(selector)
+    if (themeName) names.add(themeName)
   }
 
   return {
     names: [...names],
     theme: values,
   } satisfies DedupedTheme
+}
+
+export function getThemeNameFromSelector(selector: string): string | undefined {
+  if (selector === ' .tm_xxt') return
+  const lastThemeSelectorIndex = selector.lastIndexOf('.t_')
+  if (lastThemeSelectorIndex === -1) return
+
+  // A selector may qualify the class for specificity, for example
+  // `.t_light_blue:not(#t_theme_full_name)`. Only the class identifier is a
+  // theme name; retaining the pseudo-class would double the client theme set.
+  const name = selector.slice(lastThemeSelectorIndex + 3).match(/^[\w-]+/)?.[0]
+  if (!name) return
+
+  const schemeChar = selector[lastThemeSelectorIndex - 5]
+  const scheme = schemeChar === 'd' ? 'dark' : schemeChar === 'i' ? 'light' : ''
+  const themeName = scheme && scheme !== name ? `${scheme}_${name}` : name
+  if (themeName === 'light_dark' || themeName === 'dark_light') return
+  return themeName
 }
 
 const tamaguiSelectorRegex = /\.tm_xxt/
@@ -281,11 +313,17 @@ const getIdentifierFromTamaguiSelector = (selector: string) => {
   return selector.slice(7)
 }
 
-let sheet: CSSStyleSheet | null = null
+let sheet: Pick<CSSStyleSheet, 'cssRules' | 'insertRule'> | null = null
 
+let mountedProviders = 0
 let trackAllRules = true
 export function stopAccumulatingRules() {
+  mountedProviders++
   trackAllRules = false
+  return () => {
+    mountedProviders--
+    trackAllRules = mountedProviders === 0
+  }
 }
 
 export function updateRules(identifier: string, rules: string[]) {
@@ -309,7 +347,18 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     if (nonce) {
       styleTag.nonce = nonce
     }
-    sheet = document.head.appendChild(styleTag).sheet
+    const rootSheet = document.head.appendChild(styleTag).sheet
+    const layer = process.env.TAMAGUI_CSS_LAYER
+    if (rootSheet && layer) {
+      rootSheet.insertRule(`@layer ${layer} {}`, rootSheet.cssRules.length)
+      const layerRule = rootSheet.cssRules[rootSheet.cssRules.length - 1]
+      sheet =
+        'cssRules' in layerRule && 'insertRule' in layerRule
+          ? (layerRule as CSSGroupingRule)
+          : rootSheet
+    } else {
+      sheet = rootSheet
+    }
   }
 
   if (!sheet) return
