@@ -127,7 +127,7 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
       {
         // map deep RNW paths like dist/exports/StyleSheet/preprocess to rnw-lite's flat structure
         // extracts the final path segment (e.g. "preprocess" or "createReactDOMStyle")
-        find: /^react-native(?:-web)?\/dist\/(?:exports|modules)\/.*\/([^/]+)$/,
+        find: /^react-native(?:-web)?\/dist\/(?:exports|modules)\/(?:.*\/)?([^/]+)$/,
         replacement: `${normalizePath(rnwlBase)}/dist/esm/$1.mjs`,
       },
       {
@@ -257,6 +257,8 @@ export function tamaguiPlugin({
       if (!options) {
         throw new Error(`No tamagui options loaded`)
       }
+      const useReactNativeWebLite =
+        tamaguiOptionsIn.useReactNativeWebLite ?? options.useReactNativeWebLite
 
       // start watching config if enabled
       if (!options.disableWatchTamaguiConfig) {
@@ -306,7 +308,7 @@ export function tamaguiPlugin({
                     'react-native/Libraries/Utilities/codegenNativeComponent':
                       resolve('@tamagui/proxy-worm'),
                     'react-native-svg': resolve('@tamagui/react-native-svg'),
-                    ...(!options?.useReactNativeWebLite && {
+                    ...(!useReactNativeWebLite && {
                       'react-native': resolve('react-native-web'),
                     }),
                   }),
@@ -318,6 +320,9 @@ export function tamaguiPlugin({
 
   const rnwLitePlugin: Plugin = {
     name: 'tamagui-rnw-lite',
+    // framework plugins may add their default react-native-web aliases from a
+    // normal config hook. apply the explicit lite choice after those defaults.
+    enforce: 'post',
 
     config() {
       if (enableNativeEnv) {
@@ -325,7 +330,9 @@ export function tamaguiPlugin({
       }
 
       const options = getTamaguiOptions()
-      if (!options?.useReactNativeWebLite) {
+      const useReactNativeWebLite =
+        tamaguiOptionsIn.useReactNativeWebLite ?? options?.useReactNativeWebLite
+      if (!useReactNativeWebLite) {
         return {}
       }
 
@@ -342,7 +349,7 @@ export function tamaguiPlugin({
 
       return {
         resolve: {
-          alias: tamaguiAliases({ rnwLite: options.useReactNativeWebLite }),
+          alias: tamaguiAliases({ rnwLite: useReactNativeWebLite }),
         },
         optimizeDeps: {
           // upstream react-native-web must not be pre-bundled when aliased to lite
