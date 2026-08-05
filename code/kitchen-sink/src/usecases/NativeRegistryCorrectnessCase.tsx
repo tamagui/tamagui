@@ -27,8 +27,8 @@ const ThemeSwatch = memo(function ThemeSwatch({ testID }: { testID: string }) {
       height={56}
       borderRadius="4"
       borderWidth="2"
-      backgroundColor="$background"
-      borderColor="$color"
+      backgroundColor="background"
+      borderColor="color"
     />
   )
 })

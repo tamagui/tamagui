@@ -117,6 +117,20 @@ running the uncompiled `.tsx` and every compiler-mode assertion reads zero.
 - Regenerate it with:
   `TAMAGUI_NATIVE_FAST_PATH=1 bun ../core/cli/dist/index.cjs build src/usecases/NativeRegistryCorrectnessCase.tsx --target native --output <dir>`
   then move it into place and run oxfmt, since it is linted like any source file.
+- **Re-add `// @ts-nocheck -- generated compiler fixture` as line 1 every time you
+  regenerate it.** The compiler emits `__TamaguiNativeStyle764._ ?? (__TamaguiNativeStyle764._ = ...)`,
+  which assigns a property to a function that TypeScript never declared, so the
+  committed copy fails root typecheck with TS2339 without the pragma.
+  `CompilerTernaryActive.native.tsx` carries the same line for the same reason.
+  Dropping it turned Checks red on `1b3629942b`.
+- Fix token syntax in the SOURCE `.tsx`, never in the generated `.native.tsx`, or the
+  next regeneration silently reverts it. The same commit that added this fixture also
+  shipped `backgroundColor="$background"` and `borderColor="$color"` in
+  `NativeRegistryCorrectnessCase.tsx`, which failed the `codemod-flat-values`
+  kitchen-sink corpus gate. That gate asserts the default corpus has zero v1
+  conversion sites, so any v5 `$token` syntax anywhere in kitchen-sink source fails
+  Checks. Run the codemod against the corpus before pushing a new case:
+  `bun src/index.ts --json /tmp/corpus.json` from `code/core/codemod-flat-values`.
 - Harness note: the case's control row sits under the status bar on iPhone 17,
   so HID taps (`xcodebuildmcp ui-automation tap`) cannot reach it. Detox's own
   driver can. To drive it by hand, edit the generated fixture's initial mode

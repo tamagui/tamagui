@@ -1,3 +1,4 @@
+// @ts-nocheck -- generated compiler fixture
 import { setNativeStyleEngine, type NativeStyleEngine } from '@tamagui/core'
 import * as registry from '@tamagui/native-registry'
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
