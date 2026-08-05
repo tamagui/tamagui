@@ -590,6 +590,18 @@ const runtimeEventProps = new Set([
   'onPressOut',
 ])
 
+// native-only: usePointerEvents maps these to touch events at runtime; a
+// flattened bare RN View ignores them (RN's W3C pointer events are flag-gated
+// off). on web they are real DOM events and pass through, so no bail there.
+const nativePointerEventProps = new Set([
+  'onPointerCancel',
+  'onPointerDown',
+  'onPointerEnter',
+  'onPointerLeave',
+  'onPointerMove',
+  'onPointerUp',
+])
+
 function isSerializableNativeStyle(value: unknown): boolean {
   if (value == null || typeof value === 'number' || typeof value === 'boolean') {
     return true
@@ -1331,13 +1343,21 @@ export function createTamaguiCompilerHost(
       // RN View silently ignores onPress/onLongPress (Tamagui wires press via
       // its responder system at runtime)
       {
+        // DOM primitives (html.*) keep their own event contract (see
+        // @tamagui/dom events table) — only bail for tamagui components,
+        // whose pointer handlers exist solely via usePointerEvents.
+        const needsRuntimeMapping = (name: string) =>
+          runtimeEventProps.has(name) ||
+          (platform === 'native' &&
+            !component.domTag &&
+            nativePointerEventProps.has(name))
         const directRuntimeEvent = input.element.entries.find(
-          (entry) => entry.kind === 'prop' && runtimeEventProps.has(entry.name)
+          (entry) => entry.kind === 'prop' && needsRuntimeMapping(entry.name)
         )
         const runtimeEvent =
           directRuntimeEvent?.kind === 'prop'
             ? directRuntimeEvent.name
-            : Object.keys(props).find((name) => runtimeEventProps.has(name))
+            : Object.keys(props).find(needsRuntimeMapping)
         if (runtimeEvent) {
           return bailout(
             input,

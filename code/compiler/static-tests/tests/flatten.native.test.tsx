@@ -190,6 +190,25 @@ describe('flatten-tests', () => {
     expect(code).not.toContain('__TamaguiNativeView')
   })
 
+  test(`bails on pointer event handlers — usePointerEvents maps them to touch at runtime`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test() {
+        return (
+          <View
+            width={60}
+            backgroundColor="rgb(1,2,3)"
+            onPointerDown={() => console.info('down')}
+          />
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    expect(code).toContain('onPointerDown')
+    expect(code).toContain('<View')
+    expect(code).not.toContain('__TamaguiNativeView')
+  })
+
   test(`preserves the complete runtime candidate on a state-clause bailout`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'
