@@ -125,6 +125,24 @@ a regression from this batch:
   suite.
 - **`AdaptLiveSlotSpike`** is the documented pre-existing flake.
 
+**Verified on the run for `2550d2a1ac`: Android is down to `Accordion` and
+`AdaptLiveSlotSpike`.** `NativeRegistryCorrectness` and `NativeMixedDriver` both pass, so
+the status-bar padding and the dropped opacity assertions are confirmed on device, and
+Checks is green for the second consecutive run.
+
+The reduced-motion contradiction is now settled as a dead end, and chasing it further is
+not worth it. READ from that run's log, the ordering is correct and the value is right:
+the runner writes `transition_animation_scale 0.0` at 09:11:30.66, `445bbc2a00` writes `1`
+at 09:11:31.63, and the new readout prints `1` at 09:11:41.45, all before any app launch.
+Reanimated still logs the warning from 09:15 onward. READ of `NativeProxy.java`
+`getIsReducedMotion`, the native check really is `TRANSITION_ANIMATION_SCALE == 0`, and
+READ of `ReducedMotion.ts`, the JS side is a module-load snapshot of the
+`_REANIMATED_IS_REDUCED_MOTION` global that native installs, warned about once at import
+time rather than per animation. Nothing in this repository sets that global or calls
+`ReducedMotionManager.setEnabled`, so the divergence is inside reanimated. It does not
+explain `Accordion` in any case: the local control had no warning at all and the accordion
+still snapped, so reduce-motion is not the cause and un-warning CI cannot green the suite.
+
 The four non-product diagnoses follow.
 
 `NativeMixedDriver` is a **test bug**, diagnosed by m3987. READ of Detox 20.47.0's
