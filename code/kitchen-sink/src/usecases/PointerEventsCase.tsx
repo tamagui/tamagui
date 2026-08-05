@@ -26,7 +26,7 @@ export function PointerEventsCase() {
       <Square
         testID="pointer-target"
         size={200}
-        backgroundColor="blue5"
+        backgroundColor="blue-500"
         onPointerDown={() => setCounts((c) => ({ ...c, down: c.down + 1 }))}
         onPointerUp={() => setCounts((c) => ({ ...c, up: c.up + 1 }))}
         onPointerMove={() => setCounts((c) => ({ ...c, move: c.move + 1 }))}
@@ -39,7 +39,7 @@ export function PointerEventsCase() {
       <Square
         testID="capture-target"
         size={200}
-        backgroundColor="green5"
+        backgroundColor="green-500"
         onPointerDown={(e: any) => {
           e.target.setPointerCapture(e.pointerId)
         }}
@@ -57,7 +57,7 @@ export function PointerEventsCase() {
           position="absolute"
           top={20}
           left={20}
-          backgroundColor="red5"
+          backgroundColor="red-500"
           size={100}
           onPress={() => setBoxNoneCounts((c) => ({ ...c, behind: c.behind + 1 }))}
         />
@@ -70,7 +70,7 @@ export function PointerEventsCase() {
           left={0}
           width={200}
           height={150}
-          backgroundColor="purple5"
+          backgroundColor="purple-500"
           opacity={0.5}
           onPress={() => setBoxNoneCounts((c) => ({ ...c, parent: c.parent + 1 }))}
         >
@@ -78,7 +78,7 @@ export function PointerEventsCase() {
           <Square
             testID="box-none-child"
             size={60}
-            backgroundColor="green5"
+            backgroundColor="green-500"
             onPress={() => setBoxNoneCounts((c) => ({ ...c, child: c.child + 1 }))}
           />
         </XStack>
