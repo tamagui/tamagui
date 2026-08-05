@@ -3,8 +3,8 @@
 Last complete packed preview: `b0bf3f7bef` on the assembled local `v3-beta` tree.
 The Android push freeze is lifted and every held commit is on `origin/v3-beta`,
 including `b0bf3f7bef`, `41af737b54` and `8ee854df01`. The native fast path batch
-landed on top of them, so the current candidate is `ee76ceb69f` and the packed G1
-preview is several batches behind it.
+landed on top of them, then the device-gate fix batch on top of that, so the current
+candidate is `1b3629942b` and the packed G1 preview is several batches behind it.
 Last updated: 2026-08-04.
 
 This is the single blocker list for the beta 3 cut. A checked item means the named
@@ -13,12 +13,19 @@ correctness gap remain owner actions.
 
 ## Cut verdict
 
-**Do not cut beta 3 yet.** Packaging, the whole-monorepo build and typecheck, the default
-Expo Router production export, and the static compiler suites are green on the assembled
-local candidate. Branch Checks, the native parity device gate, and the docs static-page
-fail-open gate remain open. The retained native benchmark cells remain invalid until a
-full 12-sample campaign replaces them; that campaign is now unblocked, because the freeze
-it waited on is lifted.
+**Do not cut beta 3 yet, but every finding now has a fix pushed.** Packaging, the
+whole-monorepo build and typecheck, the default Expo Router production export, and the
+static compiler suites are green on the assembled local candidate. What remains is
+verification and two owner actions, not open investigation:
+
+1. **Branch Checks and the native parity device gate** are both waiting on the branch run
+   for `1b3629942b`. No suite in either gate is undiagnosed.
+2. **The docs static-page fail-open gate is green and needs a merge.** onejs/one PR #747
+   is terminal-green on both jobs. Merging it is an owner action.
+3. **The publish itself needs explicit owner authorization**, per the release rules.
+
+The retained native benchmark cells remain invalid until a full 12-sample campaign
+replaces them; that campaign is now unblocked, because the freeze it waited on is lifted.
 
 Checks is close, and one of its failures turned out to be a real animation bug rather than a
 test artifact. The reanimated tooltip red was previously recorded here as a metric that
@@ -50,16 +57,40 @@ recorded until now. READ from the completed Detox log of the run that started
   platforms. The "seven suite families, one of them never launching" count is retired
   with them. `PressStyleScrollStuck` and `AdaptLiveSlotSpike` also pass.
 
-Three of the six already have fixes pushed that this log predates:
-`NativeRegistryCorrectness` by `6af1478d7b`, which commits the generated Detox fixture
-so Metro resolves it, and `PointerEvents` by `1811045631` plus `ee76ceb69f`, which add
-the `onPointer*` handlers to the native flatten bailout list and correct the case to v6
-palette names. The branch run on `ee76ceb69f` is the acceptance check for all three.
-That leaves `Accordion`, `NativeMixedDriver`, and the two keyboard-driven sheet cases.
+**All six now have fixes pushed, and the branch run on `1b3629942b` is the single
+acceptance check for every one of them.** Two were product defects and four were test or
+CI-environment bugs:
 
-Of those, two are diagnosed and neither is a product defect, so neither blocks the cut.
+| Suite | Class | Fix |
+| --- | --- | --- |
+| `PointerEvents` | Product, compiler | `1811045631` + `ee76ceb69f` |
+| `SheetKeyboardFitContent`, `SheetPressRegression` | Product, sheet runtime | `f0f93c32b8` |
+| `NativeRegistryCorrectness` | Test fixture resolution | `6af1478d7b` |
+| `Accordion` | Test fixture width, plus CI animation scale | `f531d38190` + `445bbc2a00` |
+| `NativeMixedDriver` | Test unit conversion | `1b3629942b` |
 
-`NativeMixedDriver` is a **test bug**, owned by m3987. READ of Detox 20.47.0's
+The two sheet suites turned out to share one product bug, which is why the second of them
+never needed its own diagnosis. `code/kitchen-sink/index.js` imports
+`@tamagui/native/setup-keyboard-controller` unconditionally, and that module sets
+`enabled = true` whenever `react-native-keyboard-controller` is merely linked. Detox
+launches with `disableKeyboardController: true`, so `App.native.tsx` never mounts
+`KeyboardProvider`. `useKeyboardControllerSheet.native.ts` saw `enabled` and subscribed
+only to keyboard-controller's `KeyboardEvents`, which never fire without that provider,
+and skipped the React Native `Keyboard` fallback. Sheet keyboard tracking was therefore
+silently dead: the fit sheet never translated and never got scroll occlusion padding.
+The discriminating pair is READ: with only the test-side swipe change the suite still
+failed with scroll Y stuck at 0 and the failure screenshot showed the sheet unmoved under
+an open keyboard; removing the "skip the fallback when the controller is enabled" gate
+turned the identical run green first try. This bites real apps the same way, and silently:
+import the setup module, forget the provider, and keyboard handling dies with no error.
+The fix keeps the RN `Keyboard` listeners always on, since duplicate events are
+same-value `setState` no-ops. Full local run after it: `SheetPressRegression` 4 of 4,
+`SheetKeyboardFitContent` green, `SheetDragResist` green with no regression from the sheet
+change, 11 passed 3 skipped 0 failed with no retries.
+
+The four non-product diagnoses follow.
+
+`NativeMixedDriver` is a **test bug**, diagnosed by m3987. READ of Detox 20.47.0's
 `GetAttributesAction.kt`: `getFrame()` puts `view.width` and `view.height` straight into
 `frame`, which are raw pixels on Android, while the iOS frame is points. READ of the CI
 AVD: `hw.lcd.density=440`, a factor of 2.75, so the case's 40 dp node reports 110 and the
@@ -69,7 +100,11 @@ The animation-scale explanation is ruled out independently, because the case has
 animation and `waitForHeight` only ever polls final targets, never intermediates. The fix
 divides `frame.height` by `frame.width / 120`, using the case's constant 120 dp width as
 the device pixel ratio, so it is unit-correct on both platforms with no platform branch
-and still catches a real 40-to-160 regression.
+and still catches a real 40-to-160 regression. m3987 exhausted its model credits before
+landing it, so this session took the change out of its worktree, dropped the temporary
+probe it had marked "not for commit", and pushed it as `1b3629942b`. It is unvalidated on
+a device and the branch run is its first execution, but the arithmetic is provably inert
+on iOS, where the ratio is 1, and iOS already passes this suite.
 
 `Accordion` is **two independent test-environment bugs**, owned by m3971, and the
 accordion itself is correct on both platforms. On iOS the flat-values migration
@@ -100,6 +135,7 @@ suite passes, so the message is a graph-walk artifact rather than a failure.
 | Documented, deferred post-beta | a2965, decision by a2943 | Metro's transform cache key excludes the lowering-plan generation. A plan change without a source change can therefore reuse stale compiled output in a live `expo start` session or warm CLI build. This is the third incomplete cache-key defect found in the campaign, after platform-ambiguous config bundles and `simpleHash` omitting `hashMin`. Metro provides no per-module cache-key hook, while global invalidation would defeat incremental rebuilds, so the root fix is deferred with coordinator sign-off. | The beta upgrade guide tells testers to restart with `expo start -c`, or clear the app-local Tamagui cache and reset Metro before a warm production rebuild, after changing Tamagui config. The one-time replan costs about 12 ms per module: 27 seconds for the 2,328-module starter and roughly two minutes for a 10,000-module app. Steady-state warm builds remain unchanged at 7 seconds in both measured arms. |
 | Fixed locally | a2965 | `compilerHost` previously resolved theme values against the first theme during native flattening, so theme switching broke on fully flattened components. The compiler now preserves theme-backed values as symbolic references through `except-theme` resolution and emits runtime theme reads. | Passed on assembled `b0bf3f7bef`: `themedFlatten.native.test.tsx` exercises the symbolic theme path end to end inside the 63-of-63 native static suite. The native core suite also passes 238 tests with only its seven pinned expected failures. |
 | Fixed | this session, m3971 | Native flattening dropped runtime behavior for three prop families, all silent. `onPointer*` handlers were missing from the bailout list, so a flattened bare RN View never fired them (RN's W3C pointer events are flag-gated off, and Tamagui's `usePointerEvents` maps them to touch at runtime). That prompted an audit of every `skipProps` key plus the separately destructured props, run as a probe over the native emit, which found two more. `asChild` flattened: `createComponent` sets `elementType = Slot`, which merges props into the single child and emits no element of its own, while the compiler emitted a real wrapping host view around the child, so the tree gained an element the runtime never renders and the child never received the merged props. `container`, `containerName` and `containerType` flattened: those three compute `isContainer`, which publishes the `'@'` and `'@name'` entries in `AllGroupContexts` that descendant `@sm:` and `@name-sm:` clauses read, so a flattened provider silently breaks every consumer under it. `group` already bailed for exactly that reason, and the asymmetry was the tell. The audit cleared the rest: `space` and `onGroupStateChange` have no live runtime implementation in v3, `untilMeasured` only functions alongside `group` and warns otherwise, and `animatedBy` is already consumed by the compiler. | Passed. `onPointer*` landed as `1811045631`; `asChild` and the container props bail as of the commit carrying this row, with behavioral tests asserting the outer element stays `View` rather than the flattened host. Negative control: the same probe showed all three flattening before the change. Full native static suite is 76 of 76 with no flattening regressions. Web is unverified for `asChild`: the runtime `Slot` swap has no platform guard so the bail covers both, while the container bail stays native-only because web compiles those to CSS container rules. |
+| Fixed | m3971 | Sheet keyboard tracking dies silently whenever `@tamagui/native/setup-keyboard-controller` is imported without `KeyboardProvider` mounted. The setup module sets `enabled = true` on the mere presence of a linked `react-native-keyboard-controller`, and `useKeyboardControllerSheet.native.ts` then subscribed only to that library's `KeyboardEvents` and skipped the React Native `Keyboard` fallback. Without the provider those events never fire, so a fit sheet never translates and never receives scroll occlusion padding, with no error or warning. Detox launches with `disableKeyboardController: true`, which is exactly this shape, so it surfaced as both `SheetKeyboardFitContent` and `SheetPressRegression`. Real apps hit it the same way. The fix removes the "skip the fallback when the controller is enabled" gate so the RN `Keyboard` listeners always run; duplicate events are same-value `setState` no-ops. | Passed locally, pushed as `f0f93c32b8`, awaiting the branch verdict. Discriminating pair is READ: with only the test-side swipe change the suite still failed with scroll Y stuck at 0, and the failure screenshot showed the sheet unmoved under an open keyboard; the identical run went green first try once the gate was removed. Full local run: `SheetPressRegression` 4 of 4, `SheetKeyboardFitContent` green, `SheetDragResist` green so the sheet change regresses nothing, 11 passed 3 skipped 0 failed with no retries. A test-robustness change rides along: the swipe now starts at 30% of the image height, because Detox checks hittability at the swipe start point and the keyboard can overlap the element's bottom edge, which is the default start point. |
 | Fixed | a2952 | V5 palette-step names such as `blue10` and `red10` do not exist in the v6 config. A live cross-driver probe computed the missing `blue10` color as transparent on both paths without an error or warning, then exposed different CSS and React Native Web fallback colors. The upgrade guide mentioned palette tokens as a separate migration but did not state that failure is silent. The flat-values codemod preserves `$blue10` as `blue10` because it cannot evaluate custom runtime config or choose the intended replacement. It now emits every preserved v5 palette name as a non-blocking `legacy-palette-token` configuration warning in both reports, while write mode keeps applying safe syntax conversions. | Passed: the published guide has an explicit before/after and silent-failure warning; focused static JSX, dynamic-expression, custom-name, Markdown report, full 92-test, and typecheck coverage pass. |
 | Fixed | a2971 code, a2952 docs | Explicit Button and Input sizes in the v6 config resolved through the Tailwind spacing scale, so `size="4"` produced a 16 px frame and `size="3"` a 12 px frame, shorter than their text. The control-height ramp reproduces every v2 component size name and value, including the duplicated 224 px values at steps `16` and `17`; the unsized default is the `4` step at 44 px. Shapes intentionally remain on the config spacing scale. | Passed. The ramp landed as `8ee0cafcf9` and `controlSizes` in `code/core/size/src/index.ts` carries the full v2 table. Measured in the kitchen sink on `a7bf975a27`: `button-skin-default` is a 44 px frame around 23 px text and `button-skin-wide` at `size="5"` is a 52 px frame around 24 px text, against the 20 px frame the original report recorded. The published guide and codemod draft carry the exact mapping and warn earlier v3 beta users to remove compensating oversized keys. |
 | Closed | a2952 lint, a2971 hydration, a2965 unit tests | The three Checks failures recorded at `a8d156b150` are all gone at `a7bf975a27`. Lint passes since `8ee854df01`. `v3-ssr-hydration`, which owns `hydration-drivers.test.ts`, ran on the PR #4124 event and passed; it is skipped on push runs by design because its `if` requires `pull_request`. `next15-plus-cli-optimize` no longer appears in the failed-task list, whose only entry was `@tamagui/codemod-flat-values#test:web`. | Passed. Superseded by the Checks row below, which lists the failures that replaced them. |
