@@ -1,7 +1,7 @@
 import { Image } from '@tamagui/image'
 import { Text, View, XStack, YStack } from 'tamagui'
 
-const IMG_SRC = 'https://placecats.com/300/300'
+import { TEST_IMAGE_WIDE } from './testImage'
 
 const cases = [
   {
@@ -45,7 +45,7 @@ export function ImageTokenStyle() {
           </View>
 
           <YStack width={130} alignItems="center" overflow="hidden">
-            <Image id={`v2-image-${i}`} src={IMG_SRC} {...c.props} />
+            <Image id={`v2-image-${i}`} src={TEST_IMAGE_WIDE} {...c.props} />
           </YStack>
 
           <YStack width={130} alignItems="center" overflow="hidden">

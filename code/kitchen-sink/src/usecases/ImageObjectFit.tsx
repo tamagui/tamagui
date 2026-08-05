@@ -1,7 +1,7 @@
 import { Image } from '@tamagui/image'
 import { Text, View, XStack, YStack } from 'tamagui'
 
-const IMG_SRC = 'https://placecats.com/600/300'
+import { TEST_IMAGE_WIDE } from './testImage'
 
 // Wide source image (600x300) into a square box (140x140) so the
 // difference between objectFit values is visually obvious.
@@ -26,7 +26,7 @@ export function ImageObjectFit() {
             <View width={140} height={140} backgroundColor="gray5" overflow="hidden">
               <Image
                 id={`fit-${fit}`}
-                src={IMG_SRC}
+                src={TEST_IMAGE_WIDE}
                 width={140}
                 height={140}
                 objectFit={fit}
@@ -47,7 +47,7 @@ export function ImageObjectFit() {
             <View width={140} height={140} backgroundColor="gray5" overflow="hidden">
               <Image
                 id={`pos-${pos}`}
-                src={IMG_SRC}
+                src={TEST_IMAGE_WIDE}
                 width={140}
                 height={140}
                 objectFit="cover"

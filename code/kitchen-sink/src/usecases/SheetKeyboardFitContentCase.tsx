@@ -2,11 +2,7 @@ import { useState, useSyncExternalStore } from 'react'
 import { Keyboard, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native'
 import { Image, Input, Sheet, Text, XStack, YStack } from 'tamagui'
 import { Button } from '../components/Button'
-
-const MOCK_URLS = {
-  tall: 'https://picsum.photos/400/600',
-  short: 'https://picsum.photos/400/150',
-}
+import { TEST_IMAGE_WIDE } from './testImage'
 
 type ScrollMetrics = {
   scrollY: number
@@ -107,7 +103,7 @@ function TestMetricsProbe() {
 export function SheetKeyboardFitContentCase() {
   const [open, setOpen] = useState(false)
   const [caption, setCaption] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageSize, setImageSize] = useState<'tall' | 'short' | null>(null)
 
   return (
     <YStack padding="4" gap="4" testID="sheet-kb-fit-screen">
@@ -166,13 +162,13 @@ export function SheetKeyboardFitContentCase() {
                 onBlur={() => addEventMetric('blur')}
               />
 
-              {/* Image area — always rendered, height changes with URL */}
-              {imageUrl ? (
+              {/* Image area — always rendered, height changes with the picked size */}
+              {imageSize ? (
                 <Image
                   testID="sheet-kb-fit-image"
-                  source={{ uri: imageUrl }}
+                  source={{ uri: TEST_IMAGE_WIDE }}
                   width="100%"
-                  height={imageUrl === MOCK_URLS.tall ? 300 : 100}
+                  height={imageSize === 'tall' ? 300 : 100}
                   borderRadius="4"
                   bg="background-hover"
                 />
@@ -198,7 +194,7 @@ export function SheetKeyboardFitContentCase() {
                   theme="green"
                   flex={1}
                   onPress={() => {
-                    setImageUrl(MOCK_URLS.tall)
+                    setImageSize('tall')
                     addEventMetric('load-tall')
                   }}
                 >
@@ -209,7 +205,7 @@ export function SheetKeyboardFitContentCase() {
                   theme="blue"
                   flex={1}
                   onPress={() => {
-                    setImageUrl(MOCK_URLS.short)
+                    setImageSize('short')
                     addEventMetric('load-short')
                   }}
                 >
@@ -219,7 +215,7 @@ export function SheetKeyboardFitContentCase() {
                   testID="sheet-kb-fit-reset"
                   flex={1}
                   onPress={() => {
-                    setImageUrl(null)
+                    setImageSize(null)
                     addEventMetric('reset')
                   }}
                 >
