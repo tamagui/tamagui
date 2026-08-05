@@ -5,9 +5,16 @@ import { safeLaunchApp } from './utils/detox'
 import { formatRGB, getDominantColor, isBlueish } from './utils/colors'
 import { remountDirectUseCase } from './utils/navigation'
 
+// detox reports iOS frames in points but android frames in raw pixels
+// (GetAttributesAction.kt writes view.width/height straight into frame).
+// the node's width is a constant 120dp that never animates, so frame.width/120
+// IS the device pixel ratio (1 on iOS, density on android) with no platform
+// branch. the 120 must match NativeMixedDriverCase's width prop; change both
+// together or every height here silently scales wrong.
 async function height() {
   const attributes: any = await element(by.id('native-mixed-driver-node')).getAttributes()
-  return attributes.frame.height as number
+  const frame = attributes.frame as { width: number; height: number }
+  return frame.height / (frame.width / 120)
 }
 
 async function waitForHeight(target: number) {
