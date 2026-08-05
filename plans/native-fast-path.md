@@ -1,8 +1,8 @@
 # Native fast path: zero-re-render style updates via ShadowTree commits
 
-Researched and built through the off-device compiler/runtime suites 2026-08-04.
-Target lane: v3-beta, as an opt-in experimental feature. Compiler mode still
-needs an on-device iOS run before it is called verified.
+Researched, built, and verified on iOS and Android simulators 2026-08-04.
+Target lane: v3-beta, as an opt-in experimental feature. Release runs on real
+devices still need owner provisioning.
 
 ## Goal
 
@@ -666,6 +666,25 @@ The old branch never ran Android once. This one now does, in both modes:
   scopes, sub-themes, list virtualization (recycled views must re-link
   correctly), and unmount/remount churn.
 
+#### Phase 2 ship-gate results (2026-08-04, iOS simulator)
+
+- The fallback fixture and compiler-mode fixture render the same sampled pixel
+  colors across the outer theme, a nested `level2` theme, and a pinned blue
+  sub-theme after red and green theme switches.
+- A virtualized 80-row `FlatList` scrolls to row 79 and back while theme
+  switches are interleaved. Link and unlink counters prove recycled views
+  leave and re-enter the registry, and sampled rows show the current theme
+  after each reuse.
+- Fifteen unmount/remount cycles interleave theme changes while the view is
+  absent and present. The final view has the current green theme, the engine
+  reports balanced lifetime traffic, and no stale styles or crashes occur.
+- The focused Detox suite passes all three scenarios in compiler mode. As a
+  negative control, installing no engine makes all three fail on their active
+  link assertions, which proves the suite exercises the registry path.
+- Static compiler coverage proves `experimental.nativeFastPath: false` emits
+  the same native output as omitting the flag. With the flag enabled and no
+  engine installed, the normal theme hook still updates light and dark values.
+
 ### Phase 3+: additional dependency kinds, in order of leverage
 
 - Media queries: compiler emits per-media slot props; a Dimensions listener
@@ -691,6 +710,5 @@ Each phase lands only with its own honesty-protocol benchmarks.
   used compiler mode. The native CLI currently omits aggregate `found` and
   `bailed` stats, so this does not count fully unlowered dynamic candidates.
   Takeout was not measured in this pass.
-- Whether the registry should also own DynamicColorIOS interplay (a linked
-  view on iOS could skip theme slots for pure-color scheme switches) or
-  simply supersede it when the flag is on. Prefer supersede: one path.
+- Owner decision: the existing `DynamicColorIOS` path stays. The native
+  registry does not supersede it and no existing dynamic-color code is removed.

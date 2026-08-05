@@ -235,9 +235,6 @@ one-session matrix replaced them.
    TextAncestorContext. Worth about 18% of React render time on a trivial
    view, and it helps the paths that re-render, which is the compiled baseline
    rather than the fast path.
-4. Detox correctness coverage (Phase 2): nested scopes, list virtualization
-   re-linking, unmount/remount churn.
-5. Takeout hit-rate measurement; native CLI aggregate found/bailed stats;
-   DynamicColorIOS supersede implementation.
-6. The metro plan-miss race above, which silently disables the compiler for a
+4. Takeout hit-rate measurement; native CLI aggregate found/bailed stats.
+5. The metro plan-miss race above, which silently disables the compiler for a
    file for the rest of a session.

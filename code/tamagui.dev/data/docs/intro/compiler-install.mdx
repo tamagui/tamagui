@@ -66,6 +66,51 @@ at all — they'll pick up everything from `tamagui.build.ts`:
 You can still pass options directly to a plugin, and they'll be merged with
 (and override) the options from `tamagui.build.ts`.
 
+### Experimental native theme fast path
+
+V3 beta includes an opt-in native theme engine for React Native 0.82 and newer.
+It can update eligible Fabric views through a ShadowTree commit without
+re-rendering each view in React. The API and compiler output are experimental.
+
+Install the native engine and Nitro runtime:
+
+```sh
+bun add @tamagui/native-registry react-native-nitro-modules
+```
+
+Enable its compiler output in `tamagui.build.ts`:
+
+```ts
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  experimental: {
+    nativeFastPath: true,
+  },
+} satisfies TamaguiBuildOptions
+```
+
+Install the engine before your themed application tree mounts:
+
+```ts
+import * as nativeRegistry from '@tamagui/native-registry'
+import { setNativeStyleEngine } from 'tamagui'
+
+if (nativeRegistry.isAvailable()) {
+  setNativeStyleEngine(nativeRegistry)
+}
+```
+
+Rebuild the iOS and Android applications after adding the packages. The flag
+defaults to `false`. When it is off, native compiler output is unchanged. When
+the compiler flag is on but the engine is unavailable, components use the
+existing theme hook and React render path. Web output is unchanged.
+
+The registry keeps the existing `DynamicColorIOS` optimization in place. It
+does not replace that path.
+
 ## Install
 
 There are plugins for a variety of bundlers, or you can use the `@tamagui/cli`
