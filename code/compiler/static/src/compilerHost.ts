@@ -613,6 +613,26 @@ function unusedIdentifier(source: string, base: string): string {
 
 type DOMPropEntry = Extract<MaterializedElement['entries'][number], { kind: 'prop' }>
 
+/** props RN's <View> remaps or composes before handing them to the host component */
+const VIEW_WRAPPER_PROPS =
+  /^(aria-|accessibilityState$|accessibilityValue$|id$|tabIndex$|nativeID$)/
+
+/**
+ * Whether an element can render RN's host component directly instead of
+ * <View>. A child is disqualifying because <View> resets TextAncestorContext
+ * for its descendants when it sits inside a <Text>, and no per-element
+ * analysis can rule that out; with no children nothing can observe it. A
+ * spread is disqualifying because it can carry the aria props this checks for.
+ */
+function isBareHostView(element: MaterializedElement): boolean {
+  return !element.entries.some(
+    (entry) =>
+      entry.kind === 'child' ||
+      entry.kind === 'spread' ||
+      (entry.kind === 'prop' && VIEW_WRAPPER_PROPS.test(entry.name))
+  )
+}
+
 function entrySource(input: LoweringCandidateInput, entry: DOMPropEntry): string {
   return entry.value.kind === 'static'
     ? JSON.stringify(entry.value.value)
@@ -2123,7 +2143,28 @@ export function createTamaguiCompilerHost(
           }
         }
         const nativeName = component.staticConfig.isText ? 'Text' : 'View'
-        const nativeLocal = unusedIdentifier(input.source, `__TamaguiNative${nativeName}`)
+        // RN's <View> is a JS component wrapping the real host component: it
+        // reads TextAncestorContext, remaps ~25 aria/id/tabIndex props, then
+        // renders <ViewNativeComponent>. RN exports that inner component as
+        // `unstable_NativeView`, and its registry returns the component NAME,
+        // so emitting it is literally `createElement('RCTView', props)` and
+        // saves a context read plus a React element per view per render.
+        // Only when the call site needs nothing the wrapper adds: the aria
+        // remapping (visible in the static props) and the TextAncestorContext
+        // reset, which only a child can observe. <Text>'s wrapper does far
+        // more than <View>'s, so text keeps the wrapper.
+        const useHostView =
+          options.experimentalNativeFastPath &&
+          nativeName === 'View' &&
+          isBareHostView(input.element)
+        const nativeExport = useHostView ? 'unstable_NativeView' : nativeName
+        // the local is named after the BINDING, not the component: a file can
+        // hold both kinds at once, and a shared name would emit two different
+        // declarations of one identifier
+        const nativeLocal = unusedIdentifier(
+          input.source,
+          `__TamaguiNative${useHostView ? 'HostView' : nativeName}`
+        )
         if (themedStyleKeys && options.disablePartialExtraction) {
           return bailout(
             input,
@@ -2180,7 +2221,7 @@ export function createTamaguiCompilerHost(
                 ...nativeStyleImports,
                 ...nativeFastPath.imports,
                 {
-                  content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
+                  content: `\nconst ${nativeLocal} = require('react-native').${nativeExport};`,
                   origin: input.element.component.span,
                 },
                 {
@@ -2377,7 +2418,7 @@ export function createTamaguiCompilerHost(
             imports: [
               ...nativeStyleImports,
               {
-                content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
+                content: `\nconst ${nativeLocal} = require('react-native').${nativeExport};`,
                 origin: input.element.component.span,
               },
               {
@@ -2417,7 +2458,7 @@ export function createTamaguiCompilerHost(
             imports: [
               ...nativeStyleImports,
               {
-                content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
+                content: `\nconst ${nativeLocal} = require('react-native').${nativeExport};`,
                 origin: input.element.component.span,
               },
             ],
@@ -2441,7 +2482,7 @@ export function createTamaguiCompilerHost(
             imports: [
               ...nativeStyleImports,
               {
-                content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
+                content: `\nconst ${nativeLocal} = require('react-native').${nativeExport};`,
                 origin: input.element.component.span,
               },
             ],
@@ -2472,7 +2513,7 @@ export function createTamaguiCompilerHost(
           imports: [
             ...nativeStyleImports,
             {
-              content: `\nconst ${nativeLocal} = require('react-native').${nativeName};`,
+              content: `\nconst ${nativeLocal} = require('react-native').${nativeExport};`,
               origin: input.element.component.span,
             },
           ],

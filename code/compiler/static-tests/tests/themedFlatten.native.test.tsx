@@ -23,6 +23,10 @@ vi.mock('react-native', async (importOriginal) => {
     Text: host('Text'),
     TextInput: host('TextInput'),
     View: host('View'),
+    // RN's registry returns the component NAME for host components, so this is
+    // what `unstable_NativeView` actually is at runtime, and it lets a render
+    // show whether the compiler skipped the <View> wrapper
+    unstable_NativeView: 'RCTView',
     StyleSheet: {
       ...original.StyleSheet,
       flatten: (style: unknown) => style,
@@ -424,4 +428,56 @@ test('compiler table states equal runtime-mode pushes after color processing', a
   )
 
   act(() => runtimeRenderer.unmount())
+})
+
+test("leaf views render RN's host component, views with children keep the wrapper", async () => {
+  const { exports: compiled } = await executeCompiled(
+    `
+      import { YStack } from 'tamagui'
+      export function Test() {
+        return <>
+          <YStack testID="leaf" bg="background" padding={8} />
+          <YStack testID="parent" bg="background" padding={8}>
+            <YStack testID="nested" bg="background" />
+          </YStack>
+          <YStack testID="labelled" aria-label="x" bg="background" padding={8} />
+        </>
+      }
+    `,
+    { options: { experimental: { nativeFastPath: true } } }
+  )
+  const mock = createMockEngine()
+  setNativeStyleEngine(mock.engine)
+  process.env.TAMAGUI_TARGET = 'native'
+
+  let renderer: ReactTestRenderer
+  act(() => {
+    renderer = create(
+      <TamaguiProvider config={config} defaultTheme="dark">
+        {ReactModule.createElement(compiled.Test!)}
+      </TamaguiProvider>,
+      { createNodeMock: () => ({}) }
+    )
+  })
+
+  // the innermost node carrying each testID is the host element React actually
+  // committed: 'RCTView' when the compiler skipped RN's <View> wrapper, the
+  // mocked 'View' when it kept it
+  const hostType = (testID: string) =>
+    renderer.root.findAll((node) => node.props?.testID === testID).at(-1)!.type
+
+  expect(hostType('leaf')).toBe('RCTView')
+  // a child could observe the TextAncestorContext reset <View> performs
+  expect(hostType('parent')).toBe('View')
+  // aria props only exist because <View> remaps them
+  expect(hostType('labelled')).toBe('View')
+  // styles still land through the host component
+  expect(
+    styleValue(
+      renderer.root.findAll((n) => n.props?.testID === 'leaf').at(-1)!,
+      'paddingTop'
+    )
+  ).toBe(8)
+
+  act(() => renderer.unmount())
 })
