@@ -162,11 +162,18 @@ interface DetoxFailureClassification {
   /** failed files whose failure looks real (assertion/logic) - never retried */
   realFiles: string[]
 }
+// The detox daemon logs to the same stream jest does, prefixed `HH:MM:SS.mmm detox[pid] i`.
+// jest failure detail never carries that prefix, so the first daemon line after a FAIL
+// header marks the end of that file's failure detail. Matching this matters: jest prints
+// a file's FAIL block as soon as the file finishes, then the daemon streams the NEXT
+// file's whole run into the same stdout before the next FAIL/PASS header appears. Without
+// this cut, a file's "block" swallows minutes of the following file's daemon output.
+const DETOX_DAEMON_LINE = /^.*\bdetox\[\d+\]\s+[a-zA-Z]\s/m
 /**
  * Classify a detox/jest run's combined output into connect-flake vs real failures,
  * per spec file. jest prints each file's `FAIL e2e/X.test.ts` line followed by that
- * file's failure detail (the ● blocks) before the next PASS/FAIL line, so the text
- * between one FAIL line and the next delimiter is that file's failure block.
+ * file's failure detail (the ● blocks), so a file's block runs from its FAIL header to
+ * whichever comes first: the next PASS/FAIL header, or the first detox daemon line.
  *
  * Exported for unit testing against real CI logs.
  */
@@ -185,7 +192,9 @@ export function classifyDetoxFailures(rawOutput: string): DetoxFailureClassifica
   for (let i = 0; i < marks.length; i++) {
     const mark = marks[i]
     if (mark.kind !== 'FAIL') continue
-    const blockEnd = i + 1 < marks.length ? marks[i + 1].index : output.length
+    const nextMark = i + 1 < marks.length ? marks[i + 1].index : output.length
+    const daemon = DETOX_DAEMON_LINE.exec(output.slice(mark.index, nextMark))
+    const blockEnd = daemon ? mark.index + daemon.index : nextMark
     const block = output.slice(mark.index, blockEnd)
     if (failedFiles.includes(mark.file)) continue
     failedFiles.push(mark.file)
