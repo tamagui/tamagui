@@ -110,11 +110,15 @@ export function NativeRegistrySpikeCase() {
 
   return (
     <View style={styles.root} testID="spikeRoot">
-      <Text style={styles.info} testID="available">native: {String(isAvailable())}</Text>
+      <Text style={styles.info} testID="available">
+        native: {String(isAvailable())}
+      </Text>
       <Text style={styles.info} testID="stats">
         views={stats.viewCount} commits={stats.commitCount} misses={stats.missCount}
       </Text>
-      <Text style={styles.info} testID="renderCount">parent renders: {renderCount}</Text>
+      <Text style={styles.info} testID="renderCount">
+        parent renders: {renderCount}
+      </Text>
 
       <Pressable
         testID="toggleState"

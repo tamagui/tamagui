@@ -15,8 +15,7 @@ import type { HybridObject } from 'react-native-nitro-modules'
  * Threading: every method must be called from the JS thread. The engine is
  * single-threaded by contract and holds no locks.
  */
-export interface TamaguiRegistry
-  extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
+export interface TamaguiRegistry extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
   /**
    * Set the active state name for a scope ('' = root scope) and commit the
    * matching slot props for every affected linked view in one ShadowTree

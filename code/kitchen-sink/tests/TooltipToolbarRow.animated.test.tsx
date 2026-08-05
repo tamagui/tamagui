@@ -97,9 +97,7 @@ test.describe('Tooltip toolbar row (shared tooltip across adjacent triggers)', (
     }
     await page.waitForTimeout(800)
 
-    const samples = await page.evaluate(
-      () => (window as any).__tips as PositionSample[]
-    )
+    const samples = await page.evaluate(() => (window as any).__tips as PositionSample[])
     expectNoTeleport(samples)
 
     const state = await page.evaluate((sel) => {

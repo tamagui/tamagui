@@ -122,9 +122,7 @@ export function NativeRegistryParityCase() {
       const nulled = cold.filter(
         (e) => e.props && Object.values(e.props).some((v) => v === null)
       )
-      const withPB = cold.filter(
-        (e) => e.props && e.props.paddingBottom != null
-      )
+      const withPB = cold.filter((e) => e.props && e.props.paddingBottom != null)
       const dist = (key: string) => {
         const counts: Record<string, number> = {}
         for (const e of cold) {
@@ -203,8 +201,7 @@ export function NativeRegistryParityCase() {
     const gotBg = cold[0]?.props?.backgroundColor
     results.push({
       name: 'pushed bg matches theme value',
-      pass:
-        wantBg !== undefined && JSON.stringify(gotBg) === JSON.stringify(wantBg),
+      pass: wantBg !== undefined && JSON.stringify(gotBg) === JSON.stringify(wantBg),
       detail: `got ${JSON.stringify(gotBg)} want ${JSON.stringify(wantBg)}`,
     })
     const propKeys = cold[0]?.props ? Object.keys(cold[0].props) : []
@@ -322,7 +319,9 @@ export function NativeRegistryParityCase() {
           const win = Dimensions.get('window')
           const screen = Dimensions.get('screen')
           const swap = (d: typeof win) => ({ ...d, width: d.height, height: d.width })
-          console.info(`[mediaflip] ${win.width}x${win.height} -> ${win.height}x${win.width}`)
+          console.info(
+            `[mediaflip] ${win.width}x${win.height} -> ${win.height}x${win.width}`
+          )
           ;(Dimensions as any).set({ window: swap(win), screen: swap(screen) })
         }}
       >
@@ -347,7 +346,10 @@ export function NativeRegistryParityCase() {
           : 'not run yet'}
       </Text>
       {checks.map((c) => (
-        <Text key={c.name} style={[styles.info, { color: c.pass ? '#008236' : '#c10007' }]}>
+        <Text
+          key={c.name}
+          style={[styles.info, { color: c.pass ? '#008236' : '#c10007' }]}
+        >
           {c.pass ? 'PASS' : 'FAIL'} {c.name} — {c.detail}
         </Text>
       ))}
@@ -357,11 +359,7 @@ export function NativeRegistryParityCase() {
       </Text>
 
       {engineReady ? (
-        <ParityGrid
-          outer={outer}
-          renderBump={renderBump}
-          onSq0Render={onSq0Render}
-        />
+        <ParityGrid outer={outer} renderBump={renderBump} onSq0Render={onSq0Render} />
       ) : null}
     </ScrollView>
   )

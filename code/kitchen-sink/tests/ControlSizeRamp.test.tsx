@@ -27,9 +27,7 @@ function measure(page: Page, testid: string): Promise<Measured> {
     const style = getComputedStyle(el)
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
       const lh = Number.parseFloat(style.lineHeight)
-      const text = Number.isFinite(lh)
-        ? lh
-        : Number.parseFloat(style.fontSize) * 1.2
+      const text = Number.isFinite(lh) ? lh : Number.parseFloat(style.fontSize) * 1.2
       return { frame, text }
     }
     let text = 0

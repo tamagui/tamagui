@@ -12,7 +12,10 @@ const scopeStates = new Map<string, string>()
 export const ROOT_SCOPE = ''
 
 export function getMirroredStateName(scopeId: string = ROOT_SCOPE): string | undefined {
-  return scopeStates.get(scopeId) ?? (scopeId === ROOT_SCOPE ? undefined : scopeStates.get(ROOT_SCOPE))
+  return (
+    scopeStates.get(scopeId) ??
+    (scopeId === ROOT_SCOPE ? undefined : scopeStates.get(ROOT_SCOPE))
+  )
 }
 
 export function setMirroredStateName(scopeId: string, stateName: string): void {

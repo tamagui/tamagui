@@ -40,8 +40,7 @@ vi.mock('@tamagui/constants', async (importOriginal) => ({
 import * as ReactNative from 'react-native'
 import { processStyleColors } from '../../../core/native-registry/src/processStyleColors'
 
-const { TamaguiProvider, Theme, View, createTamagui, setNativeStyleEngine, styled } =
-  Core
+const { TamaguiProvider, Theme, View, createTamagui, setNativeStyleEngine, styled } = Core
 const config = createTamagui(configDefault.getDefaultTamaguiConfig('native'))
 
 function createMockEngine() {
@@ -379,10 +378,7 @@ test('compiler table states equal runtime-mode pushes after color processing', a
   }
   let compilerRenderer: ReactTestRenderer
   act(() => {
-    compilerRenderer = create(
-      <CompilerHarness />,
-      { createNodeMock: () => ({}) }
-    )
+    compilerRenderer = create(<CompilerHarness />, { createNodeMock: () => ({}) })
   })
   await act(async () => setCompilerSub('blue'))
   const compilerSlots = compilerMock.links[0]!.processed

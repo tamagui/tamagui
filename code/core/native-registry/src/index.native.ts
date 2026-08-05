@@ -45,9 +45,7 @@ interface Engine extends TamaguiRegistry {
 let engine: Engine | null = null
 let initError: unknown = null
 try {
-  engine = NitroModules.createHybridObject<TamaguiRegistry>(
-    'TamaguiRegistry'
-  ) as Engine
+  engine = NitroModules.createHybridObject<TamaguiRegistry>('TamaguiRegistry') as Engine
 } catch (error) {
   initError = error
 }

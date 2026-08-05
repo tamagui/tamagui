@@ -125,9 +125,7 @@ test('v6 config: cold push carries resolved values, never raw tokens', async () 
   expect(entries).toHaveLength(1)
   expect(entries[0].state).toBe('light_green')
   const props = entries[0].props!
-  expect(props.backgroundColor).toBe(
-    (config.themes.light_green.background as any).val
-  )
+  expect(props.backgroundColor).toBe((config.themes.light_green.background as any).val)
   expect(props.borderTopColor).toBe((config.themes.light_green.color as any).val)
   // token-based size props resolve too
   expect(typeof props.borderTopLeftRadius).toBe('number')

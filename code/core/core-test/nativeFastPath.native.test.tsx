@@ -111,11 +111,7 @@ afterEach(() => {
 let setSub: (sub: string) => void
 let bumpRender: () => void
 
-function Harness({
-  extraProps,
-}: {
-  extraProps?: Record<string, unknown>
-}) {
+function Harness({ extraProps }: { extraProps?: Record<string, unknown> }) {
   const [sub, _setSub] = useState('red')
   const [bump, setBump] = useState(0)
   setSub = _setSub
@@ -196,7 +192,9 @@ test('a real re-render resets the warm cache', async () => {
 })
 
 test('keys dropped by a re-render are pushed as null resets', async () => {
-  const tree = render(<Harness extraProps={{ borderWidth: 4 }} />, { createNodeMock: () => ({}) })
+  const tree = render(<Harness extraProps={{ borderWidth: 4 }} />, {
+    createNodeMock: () => ({}),
+  })
   await act(async () => setSub('blue'))
   await flush()
   expect(mock.entries()[0].props?.borderTopWidth).toBe(4)
@@ -213,7 +211,9 @@ test('keys dropped by a re-render are pushed as null resets', async () => {
 })
 
 test('disableNativeStyle opts out: no entries, normal re-render', async () => {
-  const tree = render(<Harness extraProps={{ disableNativeStyle: true }} />, { createNodeMock: () => ({}) })
+  const tree = render(<Harness extraProps={{ disableNativeStyle: true }} />, {
+    createNodeMock: () => ({}),
+  })
   await flush()
   const before = JSON.stringify(tree.toJSON())
 

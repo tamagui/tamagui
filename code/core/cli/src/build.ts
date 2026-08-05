@@ -205,7 +205,9 @@ export const build = async (
           .update('\0')
           .update(String(!!targetOptions.disablePartialExtraction))
           .update('\0')
-          .update(String(target === 'native' && !!targetOptions.experimental?.nativeFastPath))
+          .update(
+            String(target === 'native' && !!targetOptions.experimental?.nativeFastPath)
+          )
           .digest('hex'),
         disablePartialExtraction: targetOptions.disablePartialExtraction,
         experimentalNativeFastPath:

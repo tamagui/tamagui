@@ -307,12 +307,7 @@ export function NativeRegistryShowdownCase() {
       </View>
 
       <View style={styles.panels}>
-        <ShowdownPanel
-          kind="today"
-          sub={sub}
-          hud={hud}
-          onRender={onLeftRender}
-        />
+        <ShowdownPanel kind="today" sub={sub} hud={hud} onRender={onLeftRender} />
         <ShowdownPanel kind="fast" sub={sub} hud={hud} onRender={onRightRender} />
       </View>
     </View>
