@@ -421,6 +421,23 @@ const applyAnimation = <T extends number | string>(
       reanimatedConfig as WithSpringConfig,
       callback
     )
+
+    // reanimated stamps lastTimestamp from performance.now() when an animation
+    // starts outside a frame (an event handler), then steps it on the frame
+    // timestamp, which is the frame's start and lags performance.now() badly
+    // when frames are starved. the delta goes negative, and the closed-form
+    // spring exponentiates instead of decaying: a tooltip crossing triggers on
+    // a loaded machine lands at translate -33,554,430px for a frame before it
+    // relaxes back. reanimated clamps the delta's upper bound only, so hold the
+    // clock monotonic before it reaches the spring math.
+    const innerOnFrame = animatedValue.onFrame
+    animatedValue.onFrame = (animation: any, now: number) => {
+      'worklet'
+      return innerOnFrame(
+        animation,
+        now < animation.lastTimestamp ? animation.lastTimestamp : now
+      )
+    }
   }
 
   // reanimated starts a descriptor from its per-view history for the key — the

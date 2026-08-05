@@ -57,6 +57,12 @@ export async function getHoverStyle(locator: Locator) {
 // tell a teleport from a delayed callback, and CI runs several browser projects
 // at once. velocity keeps the original 150px-per-60Hz-frame boundary without
 // depending on the frame rate the runner actually delivered.
+//
+// this metric is not just guarding against a hypothetical. it caught a real
+// spring stepped with a negative time delta on a loaded runner, which put the
+// tooltip at translate -33,554,430px for a frame; see the clock guard in
+// animations-reanimated's applyAnimation. TooltipStarvedFrames reproduces that
+// starvation on demand with cpu throttling.
 const NOMINAL_FRAME_MS = 1000 / 60
 export const TELEPORT_VELOCITY = 150 / NOMINAL_FRAME_MS
 
