@@ -177,6 +177,58 @@ test('fully-flattened theme values read the live theme and update on theme chang
   expect(styleValue(view(), 'paddingTop')).toBe(8)
 })
 
+test('flag-off native output is byte-identical to the existing compiler path', async () => {
+  const source = `
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return <YStack testID="themed" bg="background" borderColor="color" padding={8} />
+    }
+  `
+  const baseline = await extractForNative(source)
+  const disabled = await extractForNative(source, {
+    options: { experimental: { nativeFastPath: false } },
+  })
+
+  expect(disabled.code).toBe(baseline.code)
+  expect(disabled.stats).toEqual(baseline.stats)
+  expect(disabled.diagnostics).toEqual(baseline.diagnostics)
+})
+
+test('flag-on output uses the existing theme-hook path when no engine is installed', async () => {
+  const { exports: compiled } = await executeCompiled(
+    `
+      import { YStack } from 'tamagui'
+      export function Test() {
+        return <YStack testID="themed" bg="background" padding={8} />
+      }
+    `,
+    { options: { experimental: { nativeFastPath: true } } }
+  )
+  setNativeStyleEngine(null)
+  process.env.TAMAGUI_TARGET = 'native'
+
+  const Test = compiled.Test!
+  const app = (themeName: 'light' | 'dark') => (
+    <TamaguiProvider config={config} defaultTheme="light">
+      <Theme name={themeName}>
+        <Test />
+      </Theme>
+    </TamaguiProvider>
+  )
+  let renderer: ReactTestRenderer
+  act(() => {
+    renderer = create(app('light'))
+  })
+  const view = () =>
+    renderer.root.findAll((node) => node.props?.testID === 'themed').at(-1)!
+  expect(styleValue(view(), 'backgroundColor')).toBe(config.themes.light.background.val)
+
+  act(() => renderer.update(app('dark')))
+  expect(styleValue(view(), 'backgroundColor')).toBe(config.themes.dark.background.val)
+
+  act(() => renderer.unmount())
+})
+
 test('theme values with opacity modifiers stay on the runtime path', async () => {
   const source = `
     import { YStack } from 'tamagui'

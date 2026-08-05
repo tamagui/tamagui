@@ -1,5 +1,6 @@
 const { execFileSync } = require('node:child_process')
-const { existsSync, unlinkSync } = require('node:fs')
+const { existsSync, mkdtempSync, renameSync, rmSync } = require('node:fs')
+const { tmpdir } = require('node:os')
 const { basename, join, normalize } = require('node:path')
 
 const compilerFixtures = [
@@ -16,6 +17,13 @@ const compilerFixtures = [
     sourceFile: 'src/usecases/CompilerTernaryActive.tsx',
     nativeFile: 'src/usecases/CompilerTernaryActive.native.tsx',
     extraArgs: [],
+  },
+  {
+    testFile: 'e2e/NativeRegistryCorrectness.test.ts',
+    sourceFile: 'src/usecases/NativeRegistryCorrectnessCase.tsx',
+    nativeFile: 'src/usecases/NativeRegistryCorrectnessCase.native.tsx',
+    extraArgs: [],
+    env: { TAMAGUI_NATIVE_FAST_PATH: '1' },
   },
 ]
 
@@ -104,28 +112,36 @@ function buildCompilerFixturesForSelectedTests() {
 
   for (const fixture of selectedFixtures) {
     const nativePath = join(projectRoot, fixture.nativeFile)
-
-    if (existsSync(nativePath)) {
-      unlinkSync(nativePath)
-    }
+    const outputDir = mkdtempSync(join(tmpdir(), 'tamagui-detox-compiler-'))
+    const outputPath = join(outputDir, basename(fixture.sourceFile))
 
     const args = [
-      'tamagui',
+      '../core/cli/dist/index.cjs',
       'build',
       fixture.sourceFile,
       '--target',
       'native',
-      '--output-around',
+      '--output',
+      outputDir,
       ...fixture.extraArgs,
     ]
 
-    console.info(`Running: npx ${args.join(' ')}`)
-    execFileSync('npx', args, { cwd: projectRoot, stdio: 'inherit' })
+    try {
+      console.info(`Running: bun ${args.join(' ')}`)
+      execFileSync('bun', args, {
+        cwd: projectRoot,
+        stdio: 'inherit',
+        env: { ...process.env, ...fixture.env },
+      })
 
-    if (!existsSync(nativePath)) {
-      throw new Error(
-        `Expected compiler fixture was not generated: ${fixture.nativeFile}`
-      )
+      if (!existsSync(outputPath)) {
+        throw new Error(
+          `Expected compiler fixture was not generated: ${fixture.nativeFile}`
+        )
+      }
+      renameSync(outputPath, nativePath)
+    } finally {
+      rmSync(outputDir, { recursive: true, force: true })
     }
   }
 }

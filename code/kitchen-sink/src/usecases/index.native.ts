@@ -17,6 +17,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./NativeRegistryShowdownCase').NativeRegistryShowdownCase,
   NativeRegistryParityCase: () =>
     require('./NativeRegistryParityCase').NativeRegistryParityCase,
+  NativeRegistryCorrectnessCase: () =>
+    require('./NativeRegistryCorrectnessCase').NativeRegistryCorrectnessCase,
   AccordionDefaultOpenCase: () =>
     require('./AccordionDefaultOpenCase').AccordionDefaultOpenCase,
   ActionsSheetComparison: () =>
