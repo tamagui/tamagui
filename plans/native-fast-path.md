@@ -545,14 +545,38 @@ mode links, and the two timestamps reported separately:
 - **RN's `<View>` wrapper is worth about 18% of React render time** on the
   cheapest possible view: `rnHost` renders RN's `unstable_NativeView` host
   component directly and drops render time 648ms to 529ms and frame 66.7ms to
-  50.0ms versus the identical `rn` scenario. The compiler emits
-  `require('react-native').View` today, so emitting the host component instead
-  is available to the re-rendering paths (`compiled` above all). Note this
-  makes the BASELINE faster and narrows the fast path's advantage; the fast
-  path re-renders nothing, so it can only gain at mount. It is not free:
-  `<View>` also handles aria props and TextAncestorContext, so the compiler
-  could only use the host component for elements whose static prop set needs
-  neither.
+  50.0ms versus the identical `rn` scenario. Note this makes the BASELINE
+  faster and narrows the fast path's advantage; the fast path re-renders
+  nothing, so it can only gain at mount.
+
+#### Emitting the host component instead of `<View>` (built 2026-08-04)
+
+Behind the same `experimental.nativeFastPath` flag, native lowering now emits
+`require('react-native').unstable_NativeView` in place of
+`require('react-native').View` when the call site cannot observe anything the
+wrapper adds. RN's component registry returns the component NAME for host
+components, so this emit is literally `createElement('RCTView', style)`: no
+context read, no aria remapping, one React element instead of two.
+
+- The gate is `isBareHostView`: no children, no spread, and none of
+  `aria-*`, `accessibilityState`, `accessibilityValue`, `id`, `tabIndex`,
+  `nativeID`. Children disqualify because `<View>` resets
+  `TextAncestorContext` for its descendants when it sits inside a `<Text>`,
+  and no per-element analysis can rule that out; with no children nothing can
+  observe it. `<Text>`'s wrapper does far more than `<View>`'s, so text keeps
+  the wrapper.
+- The generated local is named after the binding
+  (`__TamaguiNativeHostView` vs `__TamaguiNativeView`) because one file can
+  hold both kinds, and a shared name emitted two declarations of one
+  identifier. That was a real duplicate-declaration break caught by the test.
+- Covered by a behavioral test in `themedFlatten.native.test.tsx` that renders
+  the compiled output and asserts the committed host element type: `RCTView`
+  for a leaf, the `View` wrapper for an element with children and for one
+  carrying `aria-label`, with styles still landing through the host component.
+  71 native and 158 web compiler tests pass.
+- On-device measurement of what this buys the `compiled` baseline is still
+  owed; the machine was busy with another agent's Xcode build when it landed,
+  and timing rows from a contended machine are worthless.
 
 #### Release build (2026-08-04, iOS sim, Release configuration)
 
