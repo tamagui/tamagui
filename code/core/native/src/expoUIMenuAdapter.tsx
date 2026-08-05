@@ -42,12 +42,30 @@ function marker(name: string): ComponentType<MarkerProps> {
   return Marker
 }
 
+function isMarkerType(
+  candidate: unknown,
+  type: ComponentType<MarkerProps>
+): boolean {
+  if (candidate === type) return true
+  // createMenu runs every native component through withNativeMenu, which wraps
+  // it in a new function component and copies the marker's displayName onto the
+  // wrapper. that wrapper is a different reference, so an identity-only check
+  // matches nothing and every item silently comes back with an empty title, no
+  // icon, and no submenu. fall back to the (unique, ExpoUI-prefixed) name.
+  const wanted = (type as { displayName?: string }).displayName
+  if (!wanted) return false
+  return (
+    typeof candidate === 'function' &&
+    (candidate as { displayName?: string }).displayName === wanted
+  )
+}
+
 function elementOfType(
   children: ReactNode,
   type: ComponentType<MarkerProps>
 ): ReactElement<MarkerProps> | null {
   for (const child of React.Children.toArray(children)) {
-    if (React.isValidElement<MarkerProps>(child) && child.type === type) {
+    if (React.isValidElement<MarkerProps>(child) && isMarkerType(child.type, type)) {
       return child
     }
   }
@@ -181,13 +199,13 @@ export function createExpoUIMenuAdapter({
         for (const child of React.Children.toArray(childrenToParse)) {
           if (!React.isValidElement<MarkerProps>(child)) continue
 
-          if (child.type === Separator) {
+          if (isMarkerType(child.type, Separator)) {
             if (!section) section = actions.splice(0)
             flushSection()
             continue
           }
 
-          if (child.type === Group) {
+          if (isMarkerType(child.type, Group)) {
             const label = elementOfType(child.props.children, Label)
             append({
               id: actionId(child),
@@ -198,7 +216,7 @@ export function createExpoUIMenuAdapter({
             continue
           }
 
-          if (child.type === Sub) {
+          if (isMarkerType(child.type, Sub)) {
             const subTrigger = elementOfType(child.props.children, SubTrigger)
             const subContent = elementOfType(child.props.children, SubContent)
             if (!subTrigger || !subContent) {
@@ -216,7 +234,8 @@ export function createExpoUIMenuAdapter({
             continue
           }
 
-          if (child.type !== Item && child.type !== CheckboxItem) continue
+          if (!isMarkerType(child.type, Item) && !isMarkerType(child.type, CheckboxItem))
+            continue
 
           if (elementOfType(child.props.children, ItemSubtitle)) {
             throw new Error(
@@ -225,7 +244,7 @@ export function createExpoUIMenuAdapter({
           }
 
           const id = actionId(child)
-          if (child.type === CheckboxItem) {
+          if (isMarkerType(child.type, CheckboxItem)) {
             const current =
               child.props.value === true ||
               child.props.value === 'on' ||
