@@ -506,6 +506,46 @@ All six scenarios in ONE app session, 500 squares, medians of 20 toggles after
 - jsDone for the engine scenarios is measured to the later of the last React
   commit and the last engine call, so it cannot understate native work.
 
+#### Release build (2026-08-04, iOS sim, Release configuration)
+
+The plan owed release numbers because dev-mode React overhead inflates every
+React path, which flatters the fast path. This is a release build on the
+simulator (a real device is still owed, and needs the owner for provisioning),
+built with `TAMAGUI_NATIVE_FAST_PATH=1` so the embedded bundle carries the
+compiler emit. Same six scenarios, one session:
+
+| scenario | frame | engineMs | engine calls / 20 toggles |
+| --- | --- | --- | --- |
+| tamagui (uncompiled, engine off) | 116.7ms | 0 | none |
+| compiled (`_withStableStyle`, engine off) | 49.9ms | 0 | none |
+| fastpath (uncompiled + engine) | 33.4ms | 5.3ms | 20 apply (10,000 entries) + 20 setStateName |
+| compiledFast (`_withNativeStyle` + engine) | 31.8ms | 3.9ms | 20 setStateName |
+| native (pre-filled tables) | 33.3ms | 2.1ms | 20 setStateName |
+| rn floor | 33.3ms | 0 | none |
+
+- Read `frame` here, not jsDone: **React.Profiler is compiled out of production
+  React**, so `reactCommits`, `reactRenderMs` and `sq0Commits` all read 0 in a
+  release build whether or not a scenario re-rendered, and jsDone reports
+  `missed 20` for the React-only paths. A release run cannot prove
+  "zero re-renders"; that control only works in dev. The bench now reports
+  `profiled: false` on such a run so the zeros cannot be misread.
+- `frame` has a two-frame vsync floor around 33ms. Both fast path modes, the
+  pure-native scenario, and the rn floor all sit ON that floor, so the only
+  honest statement is that all four finish a 500-square sub-theme switch inside
+  the frame budget and are indistinguishable at this resolution.
+- What is above the floor is the interesting part: the uncompiled baseline
+  costs 116.7ms (about 3.5 frames) and today's compiled baseline 49.9ms
+  (about 1.5 frames). So in release the fast path turns a visibly janky theme
+  switch into a free one, while the compiler alone gets it to roughly one
+  extra frame.
+- Release shrinks the engine's own commit cost about 7x versus dev (native
+  floor 15.5ms dev, 2.1ms release), so dev-mode numbers overstate the
+  ShadowTree commit, not just React.
+- Compiler mode versus runtime mode is cleanest here: 3.9ms vs 5.3ms of engine
+  time and 8.4ms vs 17.1ms of measurable JS-plus-engine work, because the
+  runtime path still ships 500 per-view entries per toggle and compiler mode
+  publishes one scope name.
+
 #### Android first run (2026-08-04, emulator, dev build)
 
 The old branch never ran Android once. This one now does, in both modes:

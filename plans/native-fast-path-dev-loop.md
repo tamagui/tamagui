@@ -170,6 +170,26 @@ Before touching engine code, check the harness for these known shapes:
   native default). If a value is stale on device, suspect a render-captured
   closure before suspecting the engine.
 
+## Release builds
+
+- `TAMAGUI_NATIVE_FAST_PATH=1 npx expo run:ios --configuration Release --device <UDID>`
+  from `code/kitchen-sink` builds and installs a release app with the JS bundle
+  embedded (about 25 min cold). It replaces the debug app on that sim, so
+  rebuild debug afterwards if you still need the dev loop.
+- Grepping the embedded `main.jsbundle` for `_withNativeStyle` proves nothing:
+  the release bundle is minified and the string is absent even when the module
+  was lowered. Confirm lowering from the metro output instead
+  (`grep plan-miss` over the build log) and from the engine call counts at
+  runtime.
+- No metro means no `[bench]` console lines. Read results from the on-screen
+  text through the accessibility tree (`xcodebuildmcp ui-automation
+  snapshot-ui`), which carries the full result line.
+- **React.Profiler is a no-op in production React.** Every React counter reads
+  0 in a release run, including `sq0Commits`, so a release build cannot show
+  that the fast path skipped re-renders; it will show zero for the baseline
+  too. The bench reports `profiled: false` in that case. Take re-render proof
+  from dev and frame timing from release.
+
 ## Measurement honesty (see plan's honesty protocol)
 
 - A benchmark that never increments the engine commit counter measured
@@ -202,10 +222,10 @@ one-session matrix replaced them.
 
 ## Remaining work (state as of 2026-08-04)
 
-1. Release-build benchmark on a real device (all current numbers are
-   dev-mode sim; the plan explicitly owes this). Needs the owner for device
-   provisioning. A real Android device is owed for the same reason: the
-   emulator can prove correctness but not timing.
+1. Release benchmark on REAL devices, iOS and Android. Release-on-simulator is
+   done (see the plan); what is left needs the owner for device provisioning,
+   and matters most for Android, where the emulator can prove correctness but
+   not timing.
 2. Detox correctness coverage (Phase 2): nested scopes, list virtualization
    re-linking, unmount/remount churn.
 3. Takeout hit-rate measurement; native CLI aggregate found/bailed stats;
