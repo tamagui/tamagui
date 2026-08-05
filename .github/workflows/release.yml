@@ -35,6 +35,14 @@ jobs:
       github.event.workflow_run.head_branch == 'v3-beta'
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    # human gate: this job otherwise auto-publishes the first time Checks goes
+    # green on a v3-beta push. the environment pauses the job until a required
+    # reviewer approves it in the Actions UI. the protection rule lives in repo
+    # settings, not here: Settings -> Environments -> npm-publish-beta ->
+    # "Required reviewers" (add the approvers) or the job runs unpaused.
+    # if npmjs.com trusted publishing pins an environment name for these
+    # packages, it must match npm-publish-beta (or stay unset).
+    environment: npm-publish-beta
     permissions:
       contents: read
       id-token: write
