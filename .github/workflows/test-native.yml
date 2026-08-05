@@ -670,6 +670,14 @@ jobs:
             # Wait for boot to complete
             adb shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
 
+            # disable-animations zeroes all three animation scales; reanimated's
+            # Android reduce-motion check is exactly TRANSITION_ANIMATION_SCALE == 0
+            # (NativeProxy.getIsReducedMotion), which silently snaps every reanimated
+            # animation to its final value and makes intermediate-frame suites
+            # (Accordion, NativeMixedDriver) unpassable. Restore only that scale so
+            # reanimated animates while window/animator scales stay 0 for stability.
+            adb shell settings put global transition_animation_scale 1
+
             # Wake and unlock without opening Pixel Launcher. The launcher is not
             # needed by Detox and can raise an ANR dialog under runner load that
             # steals window focus from every test app launch.
