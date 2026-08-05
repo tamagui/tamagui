@@ -3,8 +3,8 @@
 Last complete packed preview: `b0bf3f7bef` on the assembled local `v3-beta` tree.
 The Android push freeze is lifted and every held commit is on `origin/v3-beta`,
 including `b0bf3f7bef`, `41af737b54` and `8ee854df01`. The native fast path batch
-landed on top of them, so the current candidate is `a7bf975a27` and the packed G1
-preview is one batch behind it.
+landed on top of them, so the current candidate is `ee76ceb69f` and the packed G1
+preview is several batches behind it.
 Last updated: 2026-08-04.
 
 This is the single blocker list for the beta 3 cut. A checked item means the named
@@ -34,13 +34,33 @@ Every row is either passed, or pushed and waiting on a CI verdict, or an owner a
 conditional font variant gap, which was the one item still asking for a ship-or-fix
 decision, turned out to be fixed on both platforms on 2026-08-03.
 
-The device gate is the real remaining risk. Android produces no signal at all right now,
-because the native fast path batch broke the Android app build and a failed build skips
-the Detox job instead of failing it. The packaging fix is local and unverified on a device.
-Separately, all four iOS Detox shards have been red since before this batch, which is
-older and larger than the beta 3 blocker list has been treating it: seven suite families
-fail, one of them by never launching. Deciding what to do about the iOS shards is a cut
-decision that has not been made.
+The device gate is the real remaining risk, but it is smaller than this document
+recorded until now. READ from the completed Detox log of the run that started
+2026-08-05T03:16Z, the last run before `6af1478d7b`:
+
+- **Android produces a signal again.** The `packagingOptions.excludes` fix works: the
+  Android app built, the Detox job ran, and it reported per-suite results instead of
+  being skipped. The earlier "unverified on a device" caveat on that row is closed.
+- **Only six suites fail, across both platforms combined.** `Accordion` (iOS 1/4 and
+  Android), `PointerEvents` (iOS 2/4 and Android), `NativeMixedDriver` (Android only),
+  `NativeRegistryCorrectness` (iOS auto-discovered and Android),
+  `SheetKeyboardFitContent` (iOS 4/4), and `SheetPressRegression` (iOS 4/4).
+- **iOS shard 3/4 is green**, so "all four iOS shards are red" is retired.
+- **`GroupPressTransitionMatrix` and `PressStyleNative.noRngh` both pass** on both
+  platforms. The "seven suite families, one of them never launching" count is retired
+  with them. `PressStyleScrollStuck` and `AdaptLiveSlotSpike` also pass.
+
+Three of the six already have fixes pushed that this log predates:
+`NativeRegistryCorrectness` by `6af1478d7b`, which commits the generated Detox fixture
+so Metro resolves it, and `PointerEvents` by `1811045631` plus `ee76ceb69f`, which add
+the `onPointer*` handlers to the native flatten bailout list and correct the case to v6
+palette names. The branch run on `ee76ceb69f` is the acceptance check for all three.
+That leaves `Accordion`, `NativeMixedDriver`, and the two keyboard-driven sheet cases.
+
+One piece of log noise to ignore while reading these runs: Metro prints
+`metro/resolve-failed: Failed to resolve assert from e2e/PressStyleNative.noRngh.test.ts`
+on every platform. The e2e files are Jest-side and never bundled into the app, and that
+suite passes, so the message is a graph-walk artifact rather than a failure.
 
 ## Blockers
 
@@ -59,7 +79,7 @@ decision that has not been made.
 | Fixed | a2952 plumbing, a2968 Bento | The production site Dockerfile cloned private Bento from a moving branch and ignored its declared ref argument. The ref is a real independent input: Bento's older line still imports removed APIs and fails the v3 site build. Bento `v3-beta` is complete and pushed, and the validated source is frozen at `50432b85cc47de443b640bee0bcf5decd119231e`. A negative control proves `git clone --branch` rejects that SHA; the Docker path and local `TAMAGUI_BENTO_REF` path now both fetch the exact ref and detach at `FETCH_HEAD`. The positive Git probe lands exactly on the SHA with no branch. | Passed: the production docs build against that exact Bento SHA emits all 876 static pages with zero page-generation or template errors, and the three-mode browser check passes 9/9. |
 | Fixed | a2968 Bento, a2952 docs | Exact Bento `v3` at `25af842` had 28 callers of the removed curried `createStyledHOC(Component)(render)` signature. Bento had already migrated `.styleable()` to that intermediate form in July, so the current two-argument signature is a second API break on the same export in one cycle. The completed conversion audit reports zero conversion sites and zero legacy condition objects after manual review, including configuration, theme-builder, size, theme-key, and responsive-name fixes. This break was absent from the tester migration instructions; those instructions now include a before/after, and no curried caller remains in the Tamagui repository. | Passed: Bento `v3-beta` is pushed at the frozen SHA above, its production site integration builds, and the migration guide covers the API break. |
 | Fixed locally, upstream commit pending | a2952 | The docs picker portal targeted an element that did not exist, so no syntax control rendered. After restoring it, the control changed URL and cookie while code stayed Styled because query strings cannot select a different prebuilt SSG payload. Static Tailwind routes also compiled Styled because three prose loaders discarded the SSG `path`. The replacement gives Styled, Unstyled, and Tailwind distinct static routes and resolves mode from the SSG path. The same build exposed 11 omitted component pages from four demo names removed or renamed by the v3 migration. One printed those page errors, skipped them, exited zero, and still printed `build complete`; `/ui/checkbox` and `/ui/switch` returned 404. The MDX callers now use the current demo names and valid template sources. | Tamagui passes locally: 876 pages, zero page or template errors, all six current Checkbox/Switch mode URLs return 200, and Playwright passes 9/9 on the guide, Button, and Tabs. One branch `fix/page-build-errors` commit `c9cdfe4` removes both swallowing paths. An intentionally throwing SSG page now exits 1 with workers enabled and disabled; the valid fixture still reaches `build complete`. That commit is now onejs/one PR #747, opened 2026-08-04 against a `main` it merges into cleanly. Land it before trusting exit zero alone. |
-| Fixed locally, push pending | this session | Detox run `30948627664` on `a7bf975a27` is the first completed run after the native fast path batch, and the Android app build failed, so `Android Detox Tests` was skipped and the branch has no Android signal at all. `:tamagui_native-registry:mergeDebugAndroidTestNativeLibs` found `lib/arm64-v8a/libc++_shared.so` twice, once from the package's own AAR and once from React Native's. The package compiles with `-DANDROID_STL=c++_shared` while excluding only `libjsi.so` and `libreact_nativemodule_core.so` from packaging. Job-by-job against pre-batch baseline run `30912958881`, this is the only job that changed direction; all four iOS Detox shards were already red at the baseline, so the batch did not break iOS. Full comparison in `plans/v3-android-verdict-a8d156b150.md`. | `packagingOptions.excludes` now carries the same fourteen-library list `react-native-nitro-modules` uses, confirmed against that file by m3667. Unverified by build: neither this session nor m3667 ran Gradle, so the branch Detox run is the acceptance check. |
+| Fixed | this session | Detox run `30948627664` on `a7bf975a27` is the first completed run after the native fast path batch, and the Android app build failed, so `Android Detox Tests` was skipped and the branch has no Android signal at all. `:tamagui_native-registry:mergeDebugAndroidTestNativeLibs` found `lib/arm64-v8a/libc++_shared.so` twice, once from the package's own AAR and once from React Native's. The package compiles with `-DANDROID_STL=c++_shared` while excluding only `libjsi.so` and `libreact_nativemodule_core.so` from packaging. Job-by-job against pre-batch baseline run `30912958881`, this is the only job that changed direction; all four iOS Detox shards were already red at the baseline, so the batch did not break iOS. Full comparison in `plans/v3-android-verdict-a8d156b150.md`. | Passed. `packagingOptions.excludes` now carries the same fourteen-library list `react-native-nitro-modules` uses, confirmed against that file by m3667. READ on a later branch run whose log starts 2026-08-05T03:16Z: the Android app built, `Android Detox Tests` executed instead of being skipped, and it reported per-suite results with four failures rather than a build error. |
 | Fixed | a2946 | V3 refused to compile conditional font variants as `local/dynamic-style-value` on web and native, where v2 lowered each branch. Branch lowering is restored on both platforms, so no release decision is needed. Native landed as `ab66499598`, web as `9a15837246`, both on 2026-08-03 and both on `origin/v3-beta`. | Passed, run against the branch on 2026-08-04. `fonts.web.test.tsx` is 3 of 3 and its conditional case asserts the emitted `(compact) ? "font_body" : "font_heading"`, with no `_fs-` class inside either conditional segment because font size is now a family-independent `var(--f-size-*)`. `babel.native.test.tsx`'s `conditional font family lowers per-branch with per-family size resolution` passes, asserting the two branches differ, that the false branch carries its own `fontWeight` of 700, that `stats.flattened` is above zero, and that `diagnostics` is empty. |
 
 ## Fixed in beta 3
