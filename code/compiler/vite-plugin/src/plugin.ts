@@ -2,6 +2,7 @@ import type { TamaguiOptions, ExtractedResponse } from '@tamagui/static-worker'
 import * as Static from '@tamagui/static-worker'
 import { getPragmaOptions } from '@tamagui/static-worker'
 import { createHash } from 'node:crypto'
+import { readdirSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -123,11 +124,28 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
           : 'dist/esm/index.mjs'
       )
     )
+    // the flat module names rnw-lite ships, used to scope the deep-path alias
+    // below so unimplemented react-native-web exports are left alone.
+    const rnwlFlatModules = readdirSync(path.join(rnwlBase, 'dist/esm'))
+      .filter((file) => file.endsWith('.mjs'))
+      .map((file) => file.slice(0, -'.mjs'.length))
+      .filter((name) => /^[A-Za-z0-9_]+$/.test(name))
     aliases.push(
       {
         // map deep RNW paths like dist/exports/StyleSheet/preprocess to rnw-lite's flat structure
         // extracts the final path segment (e.g. "preprocess" or "createReactDOMStyle")
-        find: /^react-native(?:-web)?\/dist\/(?:exports|modules)\/(?:.*\/)?([^/]+)$/,
+        //
+        // only match segments rnw-lite actually ships. it implements part of
+        // react-native-web's export surface, not all of it, and there is no
+        // flat StyleSheet.mjs. expo sdk 56 added
+        // expo/src/launch/AppRegistry.web.tsx, which does
+        // `require('react-native-web/dist/exports/StyleSheet')`; the unscoped
+        // pattern rewrote that onto a file that does not exist and failed the
+        // whole optimize. anything lite lacks now falls through to the real
+        // package.
+        find: new RegExp(
+          `^react-native(?:-web)?\\/dist\\/(?:exports|modules)\\/(?:.*\\/)?(${rnwlFlatModules.join('|')})$`
+        ),
         replacement: `${normalizePath(rnwlBase)}/dist/esm/$1.mjs`,
       },
       {
