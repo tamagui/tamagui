@@ -226,9 +226,18 @@ one-session matrix replaced them.
    done (see the plan); what is left needs the owner for device provisioning,
    and matters most for Android, where the emulator can prove correctness but
    not timing.
-2. Detox correctness coverage (Phase 2): nested scopes, list virtualization
+2. Publish the scope change where the theme changes instead of from `Theme`'s
+   layout effect. Compiler mode's engine commit currently cannot start until
+   React has scheduled, rendered and committed, which is about 22ms of the
+   52ms it takes; the engine work itself is already at the floor.
+3. Emit RN's `unstable_NativeView` instead of `require('react-native').View`
+   for compiled elements whose static props need neither aria handling nor
+   TextAncestorContext. Worth about 18% of React render time on a trivial
+   view, and it helps the paths that re-render, which is the compiled baseline
+   rather than the fast path.
+4. Detox correctness coverage (Phase 2): nested scopes, list virtualization
    re-linking, unmount/remount churn.
-3. Takeout hit-rate measurement; native CLI aggregate found/bailed stats;
+5. Takeout hit-rate measurement; native CLI aggregate found/bailed stats;
    DynamicColorIOS supersede implementation.
-4. The metro plan-miss race above, which silently disables the compiler for a
+6. The metro plan-miss race above, which silently disables the compiler for a
    file for the rest of a session.

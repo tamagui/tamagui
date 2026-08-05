@@ -493,11 +493,10 @@ All six scenarios in ONE app session, 500 squares, medians of 20 toggles after
   jsDone and drops React render work 166x, from 1324ms to 8ms across the run.
   Against the uncompiled baseline it is 2.5x and 359x.
 - 28.4ms of compiledFast's 52.6ms is the synchronous ShadowTree commit itself.
-  The 15.5ms native floor commits the same 500 views with a two-key payload,
-  while compiler mode pushes five keys per view (`borderColor` expands to four
-  per-side keys), so payload accounts for most of that difference rather than
-  compiler-mode overhead. What is left, about 24ms, is React scheduling the
-  provider's two commits, not per-view work.
+  The 15.5ms native floor in this table is NOT a fair floor and the row is kept
+  only for continuity: it linked two state keys and no base slot, while
+  compiler mode links a 14-key base plus five state keys and the engine merges
+  base over state per view per commit. Corrected below.
 - So the honest summary of compiler mode versus runtime mode: it removes all
   per-view JS (10,000 entries per 20 toggles down to zero) and is modestly
   faster wall-clock here, because at 500 views the ShadowTree commit dominates
@@ -505,6 +504,55 @@ All six scenarios in ONE app session, 500 squares, medians of 20 toggles after
   competes with everything else on the JS thread.
 - jsDone for the engine scenarios is measured to the later of the last React
   commit and the last engine call, so it cannot understate native work.
+
+#### Where compiler mode's remaining time actually goes (2026-08-04, iOS sim, dev)
+
+The first pass reported compiler mode sitting 3.4x above the engine floor and
+guessed at payload plus React scheduling. Two harness defects were hiding the
+answer, both now fixed: the floor carried a fifth of the per-view payload, and
+`jsDone` reported `max(last React commit, last engine call)` so it could not
+say which side it was waiting on. With the floor given the same slots compiler
+mode links, and the two timestamps reported separately:
+
+| scenario | jsDone | engineAt | reactAt | engineMs | frame | React render ms |
+| --- | --- | --- | --- | --- | --- | --- |
+| tamagui | 131.6 | – | 131.6 | 0 | 151.3 | 2807 |
+| compiled | 70.5 | – | 70.5 | 0 | 116.7 | 1229 |
+| fastpath | 58.8 | 58.8 | 27.4 | 31.2 | 83.0 | 9.4 |
+| compiledFast | 52.4 | 50.9 | 52.4 | 28.4 | 81.9 | 8.0 |
+| native (same payload as compiler mode) | 31.3 | 31.3 | – | 31.3 | 33.4 | 0 |
+| rn | 35.8 | – | 35.8 | 0 | 66.7 | 648 |
+| rnHost (`unstable_NativeView`) | 31.2 | – | 31.2 | 0 | 50.0 | 529 |
+
+- **There is no engine gap.** Compiler mode's commit costs 28.4ms and the
+  pure-native floor doing the same work costs 31.3ms; they are the same
+  operation and the difference is run noise. The earlier "3.4x above the floor"
+  was entirely the rigged floor. Half the engine's cost is simply that 500
+  views x 19 style keys is real work, and it scales with payload, not with
+  which mode produced it.
+- **What is left is React scheduling latency, not work.** compiledFast's engine
+  call FINISHES at 50.9ms and takes 28.4ms, so it STARTED at about 22ms, while
+  React's own render across the whole run is 8ms over 50 commits. Nothing else
+  runs in that window: the toggle calls setState, and the scope publish sits in
+  `Theme`'s layout effect, so the engine cannot start until React has scheduled,
+  rendered and reached the commit phase. INFERRED from the timestamps, since
+  nothing else occupies the gap.
+- That points at a concrete next optimization: publish the scope change at the
+  point the theme changes rather than from a layout effect. The `native`
+  scenario is fast for exactly this reason, it calls `setStateName` with no
+  React in the path. Doing the same would take compiler mode from 52ms to
+  roughly the 31ms floor.
+- **RN's `<View>` wrapper is worth about 18% of React render time** on the
+  cheapest possible view: `rnHost` renders RN's `unstable_NativeView` host
+  component directly and drops render time 648ms to 529ms and frame 66.7ms to
+  50.0ms versus the identical `rn` scenario. The compiler emits
+  `require('react-native').View` today, so emitting the host component instead
+  is available to the re-rendering paths (`compiled` above all). Note this
+  makes the BASELINE faster and narrows the fast path's advantage; the fast
+  path re-renders nothing, so it can only gain at mount. It is not free:
+  `<View>` also handles aria props and TextAncestorContext, so the compiler
+  could only use the host component for elements whose static prop set needs
+  neither.
 
 #### Release build (2026-08-04, iOS sim, Release configuration)
 
@@ -522,6 +570,9 @@ compiler emit. Same six scenarios, one session:
 | compiledFast (`_withNativeStyle` + engine) | 31.8ms | 3.9ms | 20 setStateName |
 | native (pre-filled tables) | 33.3ms | 2.1ms | 20 setStateName |
 | rn floor | 33.3ms | 0 | none |
+
+Collected before the floor payload was corrected, so the `native` row here also
+understates the engine's work; the other rows are unaffected.
 
 - Read `frame` here, not jsDone: **React.Profiler is compiled out of production
   React**, so `reactCommits`, `reactRenderMs` and `sq0Commits` all read 0 in a
