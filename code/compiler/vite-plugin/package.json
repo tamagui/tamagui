@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin",
-  "version": "2.3.3",
+  "version": "2.6.4",
   "license": "MIT",
   "files": [
     "src",
@@ -45,6 +45,9 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "vite": "^8.0.3"
+  },
+  "peerDependencies": {
     "vite": "^8.0.3"
   },
   "tamagui": {

@@ -1,13 +1,13 @@
 {
   "name": "@tamagui/web",
-  "version": "2.3.3",
+  "version": "2.6.4",
   "license": "MIT",
   "author": {
     "name": "Nate Wienert"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tamagui/tamagui.git",
+    "url": "git+https://github.com/tamagui/tamagui.git",
     "directory": "packages/web"
   },
   "source": "src/index.ts",

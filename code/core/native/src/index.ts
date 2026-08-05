@@ -44,6 +44,7 @@ export type { PortalAccessor } from './portalState'
 export { getGestureHandler } from './gestureState'
 export {
   claimExternalPressOwnership as unstable_claimExternalPressOwnership,
+  hasExternalPressOwnership as unstable_hasExternalPressOwnership,
   releaseExternalPressOwnership as unstable_releaseExternalPressOwnership,
 } from './gestureState'
 export type {

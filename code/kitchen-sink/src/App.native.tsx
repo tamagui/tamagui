@@ -1,9 +1,11 @@
 // check launch args for disabling RNGH (for testing without gesture handler)
 import { LaunchArguments } from 'react-native-launch-arguments'
 import { getGestureHandler } from '@tamagui/native'
+import { setupGestureHandler } from '@tamagui/native/setup-gesture-handler'
 
 interface TestLaunchArgs {
   disableGestureHandler?: boolean
+  disablePressEventsKeepSheet?: boolean
   disableKeyboardController?: boolean
   initialTestCase?: string
   directUseCase?: string
@@ -21,10 +23,13 @@ const isTrueArg = (value: unknown) =>
 const launchArgs = {
   ...rawLaunchArgs,
   disableGestureHandler: isTrueArg(rawLaunchArgs.disableGestureHandler),
+  disablePressEventsKeepSheet: isTrueArg(rawLaunchArgs.disablePressEventsKeepSheet),
   disableKeyboardController: isTrueArg(rawLaunchArgs.disableKeyboardController),
 }
 
-if (launchArgs.disableGestureHandler) {
+if (launchArgs.disablePressEventsKeepSheet) {
+  setupGestureHandler({ pressEvents: false, sheet: true })
+} else if (launchArgs.disableGestureHandler) {
   getGestureHandler().disable()
 }
 

@@ -26,6 +26,13 @@ export const debugLog = (...args: any[]) => {
   if (process.env.DEBUG === 'true') console.log(...args)
 }
 
+// redact a secret (access token) for debug output so DEBUG=true logs / CI logs
+// can't leak the full bearer — show only a short prefix + length
+export const redact = (s: unknown): string =>
+  typeof s === 'string' && s.length > 8
+    ? `${s.slice(0, 6)}…(${s.length} chars)`
+    : '<redacted>'
+
 function BentoGet() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -105,7 +112,7 @@ function BentoGet() {
       setAccessToken(token as string)
       setIsLoggedIn(true)
       debugLog('Token found, setting isLoggedIn to true')
-      debugLog({ token })
+      debugLog({ token: redact(token) })
     } else {
       setIsLoggedIn(false)
     }

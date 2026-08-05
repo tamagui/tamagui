@@ -12,7 +12,7 @@ import {
   View,
 } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-import { Portal, needsPortalRepropagation } from '@tamagui/portal'
+import { Portal } from '@tamagui/portal'
 import { XStack, YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
@@ -90,7 +90,26 @@ const ToastContext = createStyledContext<ToastContextValue>(
   'Toast__'
 )
 
-const useToastContext = ToastContext.useStyledContext
+const useToastContextValue = ToastContext.useStyledContext
+
+function hasToastContext(ctx: Partial<ToastContextValue> | null | undefined) {
+  return (
+    !!ctx &&
+    Array.isArray(ctx.toasts) &&
+    typeof ctx.setToastHeight === 'function' &&
+    typeof ctx.removeToast === 'function'
+  )
+}
+
+function useToastContext(consumerName: string) {
+  const ctx = useToastContextValue()
+
+  if (!hasToastContext(ctx)) {
+    throw new Error(`\`${consumerName}\` must be used within \`Toast\``)
+  }
+
+  return ctx
+}
 
 /* -------------------------------------------------------------------------------------------------
  * ToastItemContext - for auto-wiring Toast.Close (web only)
@@ -490,7 +509,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
       ...rest
     } = props
 
-    const ctx = useToastContext()
+    const ctx = useToastContext('Toast.Viewport')
     const listRef = React.useRef<TamaguiElement>(null)
     const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
     const hoverCooldownRef = React.useRef(false)
@@ -671,14 +690,11 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
     )
 
     if (portalToRoot) {
-      // legacy native portal hosts render children outside styled context propagation.
-      const portaledContent = needsPortalRepropagation() ? (
-        <ToastContext.Provider {...ctx}>{content}</ToastContext.Provider>
-      ) : (
-        content
+      return (
+        <Portal zIndex={portalZIndex}>
+          <ToastContext.Provider {...ctx}>{content}</ToastContext.Provider>
+        </Portal>
       )
-
-      return <Portal zIndex={portalZIndex}>{portaledContent}</Portal>
     }
 
     return content
@@ -703,7 +719,7 @@ export interface ToastListProps {
 }
 
 function ToastList({ renderItem }: ToastListProps) {
-  const ctx = useToastContext()
+  const ctx = useToastContext('Toast.List')
 
   // render all toasts — hidden ones have opacity 0 but stay mounted
   // so they smoothly transition when visible toasts are dismissed
@@ -748,7 +764,7 @@ function ToastList({ renderItem }: ToastListProps) {
  * -----------------------------------------------------------------------------------------------*/
 
 function DefaultToastContent({ toast }: { toast: ToastT }) {
-  const ctx = useToastContext()
+  const ctx = useToastContext('Toast.Item')
   const { handleClose } = useToastItemContext()
   const toastType = toast.type ?? 'default'
   const dismissible = toast.dismissible !== false
@@ -886,7 +902,7 @@ export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
 const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
   function ToastItem(props, ref) {
     const { toast, index, children, ...rest } = props
-    const ctx = useToastContext()
+    const ctx = useToastContext('Toast.Item')
 
     const [mounted, setMounted] = React.useState(false)
     const [removed, setRemoved] = React.useState(false)
@@ -1289,7 +1305,7 @@ const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
     // not inside a Toast.Item context, require manual onPress
   }
 
-  const ctx = useToastContext()
+  const ctx = useToastContext('Toast.Close')
 
   return (
     <ToastCloseFrame ref={ref} aria-label="Close toast" onPress={handleClose} {...props}>
@@ -1311,7 +1327,7 @@ const ToastAction = ToastActionFrame.styleable(function ToastAction(props, ref) 
  * -----------------------------------------------------------------------------------------------*/
 
 function ToastIcon(props: { children?: React.ReactNode }) {
-  const ctx = useToastContext()
+  const ctx = useToastContext('Toast.Icon')
   let toast: ToastT | undefined
 
   try {
@@ -1351,7 +1367,7 @@ function ToastIcon(props: { children?: React.ReactNode }) {
  * -----------------------------------------------------------------------------------------------*/
 
 export function useToasts() {
-  const ctx = useToastContext()
+  const ctx = useToastContext('useToasts')
   return {
     toasts: ctx.toasts,
     expanded: ctx.expanded,

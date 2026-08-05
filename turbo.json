@@ -14,7 +14,7 @@
         "tamagui-build.js",
         "externalNodePlugin.js"
       ],
-      "outputs": [".next/**/*", "dist/**/*", "types/**/*", "**/*.css"]
+      "outputs": [".next/**/*", "dist/**/*", "types/**/*"]
     },
     "check": {
       "cache": false,

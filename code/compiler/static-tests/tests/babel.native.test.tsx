@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as t from '@babel/types'
 import { expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
@@ -286,6 +287,181 @@ test('string ternary test should not be confused with media key', async () => {
   expect(code).toContain('!!someString')
   // the media key should remain a plain string literal
   expect(code).toContain('"sm"')
+  expect(code).toMatchSnapshot()
+})
+
+test('dynamic values in media props require both media and runtime conditions', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test({ fillContainer }) {
+      return (
+        <YStack
+          $gtLg={{
+            width: fillContainer ? '100%' : '50%',
+            pb: '$4',
+          }}
+        />
+      )
+    }
+  `)
+
+  let expressions: t.ArrayExpression | null = null
+  t.traverseFast(output?.ast, (node) => {
+    if (
+      t.isJSXAttribute(node) &&
+      t.isJSXIdentifier(node.name, { name: '_expressions' }) &&
+      t.isJSXExpressionContainer(node.value) &&
+      t.isArrayExpression(node.value.expression)
+    ) {
+      expressions = node.value.expression
+    }
+  })
+
+  expect(expressions).not.toBeNull()
+  expect(expressions!.elements).toHaveLength(3)
+
+  const [whenFill, whenNotFill, staticPadding] = expressions!.elements
+  expect(t.isArrayExpression(whenFill)).toBe(true)
+  expect(t.isArrayExpression(whenNotFill)).toBe(true)
+
+  const [fillMediaKey, fillCondition] = (whenFill as t.ArrayExpression).elements
+  expect(t.isStringLiteral(fillMediaKey, { value: 'gtLg' })).toBe(true)
+  expect(t.isUnaryExpression(fillCondition, { operator: '!' })).toBe(true)
+  expect(
+    t.isUnaryExpression((fillCondition as t.UnaryExpression).argument, {
+      operator: '!',
+    })
+  ).toBe(true)
+  expect(
+    t.isIdentifier(
+      ((fillCondition as t.UnaryExpression).argument as t.UnaryExpression).argument,
+      { name: 'fillContainer' }
+    )
+  ).toBe(true)
+
+  const [notFillMediaKey, notFillCondition] = (whenNotFill as t.ArrayExpression).elements
+  expect(t.isStringLiteral(notFillMediaKey, { value: 'gtLg' })).toBe(true)
+  expect(t.isUnaryExpression(notFillCondition, { operator: '!' })).toBe(true)
+  expect(
+    t.isUnaryExpression((notFillCondition as t.UnaryExpression).argument, {
+      operator: '!',
+    })
+  ).toBe(true)
+  expect(
+    t.isUnaryExpression(
+      ((notFillCondition as t.UnaryExpression).argument as t.UnaryExpression).argument,
+      { operator: '!' }
+    )
+  ).toBe(true)
+  expect(t.isStringLiteral(staticPadding, { value: 'gtLg' })).toBe(true)
+})
+
+test('a single media style uses the media-aware wrapper', async () => {
+  const output = await extractForNative(`
+    import { View } from 'tamagui'
+    export function Test() {
+      return <View $gtLg={{ width: 100 }} />
+    }
+  `)
+
+  let expressions: t.ArrayExpression | null = null
+  t.traverseFast(output?.ast, (node) => {
+    if (
+      t.isJSXAttribute(node) &&
+      t.isJSXIdentifier(node.name, { name: '_expressions' }) &&
+      t.isJSXExpressionContainer(node.value) &&
+      t.isArrayExpression(node.value.expression)
+    ) {
+      expressions = node.value.expression
+    }
+  })
+
+  expect(expressions).not.toBeNull()
+  expect(expressions!.elements).toHaveLength(1)
+  expect(t.isStringLiteral(expressions!.elements[0], { value: 'gtLg' })).toBe(true)
+})
+
+// native has no hover state, so hoverStyle should be dropped instead of
+// preserved as runtime work.
+test('hoverStyle on native should drop dead hover work', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack backgroundColor="red" hoverStyle={{ backgroundColor: 'green' }} />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // must not serialize hoverStyle into the stylesheet or preserve it as runtime work
+  expect(code).not.toContain('"hoverStyle"')
+  expect(code).not.toContain('hoverStyle')
+  expect(code).not.toContain("backgroundColor: 'green'")
+  expect(code).toContain('__ReactNativeView')
+  expect(code).toMatchSnapshot()
+})
+
+test('$theme-* on native should de-opt (preserve as inline prop)', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack backgroundColor="red" $theme-dark={{ backgroundColor: 'green' }} />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // must NOT serialize $theme-dark as a sheet key (it would never match on RN)
+  expect(code).not.toContain('"$theme-dark"')
+  // must preserve as an inline JSX prop so runtime resolves it via theme
+  expect(code).toContain('$theme-dark')
+  expect(code).toContain('<YStack')
+  expect(code).toMatchSnapshot()
+})
+
+test('$group-*-hover on native should drop dead hover work', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack group="row">
+          <YStack
+            backgroundColor="red"
+            $group-row-hover={{ backgroundColor: 'green' }}
+          />
+        </YStack>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // must not serialize or preserve hover-only group styles on native
+  expect(code).not.toContain('"$group-row-hover"')
+  expect(code).not.toContain('$group-row-hover')
+  expect(code).not.toContain("backgroundColor: 'green'")
+  expect(code).toMatchSnapshot()
+})
+
+test('$group-* non-hover on native should de-opt (preserve as inline prop)', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack group="row">
+          <YStack
+            backgroundColor="red"
+            $group-row-press={{ backgroundColor: 'green' }}
+          />
+        </YStack>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // must not serialize $group-row-press as a sheet key
+  expect(code).not.toContain('"$group-row-press"')
+  // must preserve as an inline jsx prop so runtime resolves it via group context
+  expect(code).toContain('$group-row-press')
+  // group="row" parent must remain (it provides the runtime container context)
+  expect(code).toContain('group="row"')
   expect(code).toMatchSnapshot()
 })
 

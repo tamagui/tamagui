@@ -7,7 +7,7 @@ import { useContext, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import Spinner from 'ink-spinner'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { debugLog } from '../commands/index.js'
+import { debugLog, redact } from '../commands/index.js'
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '../constants.js'
 import { AppContext } from '../data/AppContext.js'
 
@@ -24,8 +24,8 @@ export const CodeAuthScreen = () => {
 
   const handleInputChange = async (value: string) => {
     debugLog('----\nauth input change ----\n', {
-      value,
-      at: appContext.accessToken,
+      value: redact(value),
+      at: redact(appContext.accessToken),
     })
 
     if (!location.pathname.includes('/auth/')) return
@@ -46,7 +46,7 @@ export const CodeAuthScreen = () => {
       appContext.setIsLoggedIn(true)
       appContext.tokenStore.set('accessToken', value)
       appContext.tokenStore.onDidChange('accessToken', (newValue) => {
-        debugLog('tokenStore changed', newValue)
+        debugLog('tokenStore changed', redact(newValue))
       })
       debugLog('navigating to install-confirm', { fileName })
       navigate(`/install-confirm/${fileName}`)

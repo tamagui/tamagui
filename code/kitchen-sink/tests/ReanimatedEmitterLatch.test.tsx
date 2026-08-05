@@ -55,4 +55,42 @@ test.describe('reanimated emitter latch', () => {
     await page.waitForTimeout(200)
     expect(await bg(page), 'flips back to inactive red').toBe('rgb(255, 0, 0)')
   })
+
+  test('named colors interpolate instead of painting the target directly', async ({
+    page,
+  }) => {
+    const samples = await page.evaluate(() => {
+      return new Promise<string[]>((resolve) => {
+        const square = document.querySelector('[data-testid="named-color-square"]')!
+        const button = document.querySelector('[data-testid="toggle-named-color"]')!
+        const colors: string[] = []
+        const start = performance.now()
+
+        function sample() {
+          colors.push(getComputedStyle(square).backgroundColor)
+          if (performance.now() - start < 350) {
+            requestAnimationFrame(sample)
+          } else {
+            resolve(colors)
+          }
+        }
+
+        ;(button as HTMLElement).click()
+        requestAnimationFrame(sample)
+      })
+    })
+
+    expect(
+      samples.some((color) => color !== 'rgb(255, 0, 0)' && color !== 'rgb(0, 0, 255)'),
+      `expected an intermediate named-color frame, got ${JSON.stringify(samples)}`
+    ).toBe(true)
+
+    await expect
+      .poll(() =>
+        page
+          .getByTestId('named-color-square')
+          .evaluate((element) => getComputedStyle(element).backgroundColor)
+      )
+      .toBe('rgb(0, 0, 255)')
+  })
 })

@@ -1,6 +1,7 @@
 name: Checks
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     paths-ignore:
@@ -84,6 +85,9 @@ jobs:
 
       - name: Run unit tests
         run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=1
+
+      - name: Run native unit tests
+        run: bun turbo run test:native --filter=@tamagui/static-tests --filter=@tamagui/core-test --filter=@tamagui/components-test --concurrency=1
 
   changes:
     runs-on: ubuntu-latest

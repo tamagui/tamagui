@@ -4,6 +4,7 @@ import slugify from '@sindresorhus/slugify'
 import { generateText } from 'ai'
 import { z } from 'zod'
 import { apiRoute } from '~/features/api/apiRoute'
+import { serverEnv } from '~/features/api/serverEnv'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
@@ -11,7 +12,7 @@ import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
 
 const openrouter = createOpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY,
+  apiKey: serverEnv('OPENROUTER_API_KEY'),
 })
 
 const modelChain = [
@@ -311,7 +312,8 @@ Don't add headers, backticks, or any labels around the structured data.
         .single()
 
       if (existingData) {
-        // Update existing record
+        // Update existing record (ownership verified by the select above; scope
+        // the write to the owner too as defense-in-depth)
         await supabaseAdmin
           .from('theme_histories')
           .update({
@@ -320,6 +322,7 @@ Don't add headers, backticks, or any labels around the structured data.
             is_cached: false,
           })
           .eq('id', lastId)
+          .eq('user_id', user.id)
 
         nextId = existingData.id
       } else {

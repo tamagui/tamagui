@@ -248,8 +248,9 @@ test.describe('Sheet.ScrollView inside snapPointsMode="fit"', () => {
     expect(frameBox).toBeTruthy()
     expect(viewport).toBeTruthy()
 
-    // short content (~4 paragraphs + button + handle) should be well under viewport
-    // before fix: frame was 0; if maxHeight cap is wrong it'd be full viewport.
+    // short content (~4 paragraphs + button + handle) should be well under viewport.
+    // this guards against the fit ScrollView content wrapper forcing minHeight: 100%,
+    // which makes the sheet measure as full-height instead of shrink-wrapping.
     // fit mode with short content should be < 60% viewport.
     expect(frameBox!.height).toBeLessThan(viewport!.height * 0.6)
   })

@@ -61,6 +61,12 @@ export type SheetProps = ScopedProps<
     unmountChildrenWhenHidden?: boolean
 
     /**
+     * Keep the sheet content wrapper opaque while the sheet is hidden.
+     * Useful for native visual effects that cannot initialize below a transparent ancestor.
+     */
+    disableTransparencyHide?: boolean
+
+    /**
      * Adapts the sheet to use native sheet on the given platform (if available)
      */
     native?: 'ios'[] | boolean
@@ -126,6 +132,9 @@ export type ScrollBridge = {
   _lastTouchY?: number
   // scroll lock position for forcing scroll back when pan handles
   scrollLockY?: number
+  // keep scroll locked while a drag that started below the top snap is still
+  // deciding whether to hand off into content scrolling.
+  lockScrollAtTop?: boolean
   // force scroll to position (compensates for async setNativeProps)
   forceScrollTo?: (y: number) => void
   // whether sheet is at top position (for scroll enable/disable)

@@ -441,6 +441,13 @@ export type ThemeState = {
   theme: ThemeParsed
   parentName?: string
   isInverse?: boolean
+  // cumulative count of scheme inversions from the root down to this state.
+  // isInverse only compares to the immediate parent, so a sub-theme that keeps
+  // its parent's scheme (e.g. dark_blue under dark) has isInverse=false even
+  // though the whole subtree is inverted vs the root/OS. `inverses > 0` means
+  // "this subtree forced a scheme away from the OS somewhere above" and must not
+  // use the DynamicColorIOS scheme-optimization (which always follows the OS).
+  inverses?: number
   isNew?: boolean
   parentId?: string
   scheme?: 'light' | 'dark'
@@ -600,6 +607,10 @@ export type TamaguiComponentStateRef = {
   isListeningToTheme?: boolean
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
+  // hoisted base shallow-setter that always calls the real React setState.
+  // kept on its own field so the avoidReRenders wrapper (which overwrites
+  // `setStateShallow`) can capture this as its real-re-render escape hatch.
+  baseSetStateShallow?: ComponentSetStateShallow
   useStyleListener?: UseStyleListener
   updateStyleListener?: () => void
 
@@ -1884,12 +1895,56 @@ export type GetThemeValueForKey<K extends string | symbol | number> =
         : never
       : never)
 
+// keys that accept the first-class "safe" value (-> env(safe-area-inset-*) on
+// web, numeric insets on native). must mirror propEdges in resolveSafeArea.ts.
+// only the longhands are listed; shorthands (pt, mt, ...) inherit via WithShorthands.
+export type SafeAreaValueKeys =
+  | 'padding'
+  | 'paddingTop'
+  | 'paddingBottom'
+  | 'paddingLeft'
+  | 'paddingRight'
+  | 'paddingHorizontal'
+  | 'paddingVertical'
+  | 'paddingStart'
+  | 'paddingEnd'
+  | 'paddingBlock'
+  | 'paddingInline'
+  | 'paddingBlockStart'
+  | 'paddingBlockEnd'
+  | 'paddingInlineStart'
+  | 'paddingInlineEnd'
+  | 'margin'
+  | 'marginTop'
+  | 'marginBottom'
+  | 'marginLeft'
+  | 'marginRight'
+  | 'marginHorizontal'
+  | 'marginVertical'
+  | 'marginStart'
+  | 'marginEnd'
+  | 'marginBlock'
+  | 'marginInline'
+  | 'marginBlockStart'
+  | 'marginBlockEnd'
+  | 'marginInlineStart'
+  | 'marginInlineEnd'
+  | 'inset'
+  | 'top'
+  | 'bottom'
+  | 'left'
+  | 'right'
+  | 'start'
+  | 'end'
+
 export type WithThemeValues<T extends object> = {
-  [K in keyof T]: ThemeValueGet<K> extends never
-    ? K extends keyof ExtraBaseProps
-      ? T[K]
-      : T[K] | 'unset'
-    : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'
+  [K in keyof T]:
+    | (ThemeValueGet<K> extends never
+        ? K extends keyof ExtraBaseProps
+          ? T[K]
+          : T[K] | 'unset'
+        : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset')
+    | (K extends SafeAreaValueKeys ? 'safe' : never)
 }
 
 export type NarrowShorthands = Narrow<Shorthands>
@@ -2791,6 +2846,10 @@ export type GetStyleState = {
   // Track original token values (like '$8') before they get resolved to CSS vars
   // This is used to preserve token strings in overriddenContextProps
   originalContextPropValues?: Record<string, any>
+  // opt-in dev-tools token provenance: original token string (like '$background')
+  // for each winning base style key, cleared on literal override. stamped onto
+  // the final style object as non-enumerable metadata (see helpers/styleProvenance).
+  tokenProvenance?: Record<string, string>
   // Transitions extracted from pseudo-style props (e.g., hoverStyle.transition)
   pseudoTransitions?: PseudoTransitions | null
   // Resolved animation driver (respects animatedBy prop)

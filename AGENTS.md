@@ -1,3 +1,35 @@
+# Tamagui — agent operating contract
+
+`CLAUDE.md` is a symlink to this file, so Claude, Codex, and every other agent
+read the same rules. Put durable, repo-wide agent guidance here.
+
+## Finish what you start, then merge it back
+
+The most common failure here is stopping early: a fix left on a branch, a
+migration written but never applied, a "critical, will do next" item dropped.
+Don't do that. If you were asked to do something, it is not done until:
+
+- it is committed, pushed, validated, and **merged back to `main`** (or a PR is
+  opened and driven to merge) — "I left it on a branch" / "I prepared the SQL"
+  is not done;
+- it is **validated at the layer it changes**: typecheck/build for code, a real
+  request or Playwright run for site behavior, an applied-and-verified query for
+  a DB/RLS change. "Should work" is not validation;
+- any **migration is actually applied and the live state verified** — this repo's
+  prod migration history is NOT auto-applied on deploy (see
+  `code/tamagui.dev/supabase/README.md`); a committed migration that was never
+  run is an open gap, not a fix;
+- for security/payments work especially, the loop is closed end to end — a
+  documented finding with no shipped, deployed fix counts as no fix.
+
+Keep going until the requested outcome is real. Continuing beats reporting. The
+only hard stops are the externally-irreversible ones — publishing/releasing to
+npm, force-pushing, rotating credentials, or changing prod infra (Cloudflare,
+DNS, Railway settings): pause and confirm for those, and hand them back with the
+exact steps when they block you. Everything else, finish it.
+
+---
+
 Please read ./CONTRIBUTING.md as well
 
 Note you need to re-build packages (`bun run build` in the package directory) as you change them, unless you or someone is running a `bun run watch` at root.

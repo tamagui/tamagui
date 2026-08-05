@@ -25,8 +25,18 @@ export const setMediaState = (next: MediaQueryState) => {
   mediaState = next
 }
 
-export const mediaQueryConfig: MediaQueries = {}
-
 export const getMedia = () => mediaState
 
-export const mediaKeys = new Set<string>() // with $ prefix
+// shared across copies of this package for the same reason setConfig writes
+// globalThis.__tamaguiConfig: an esm import and a cjs require resolve to
+// different files, and only the copy that ran createTamagui fills these.
+// sharing the containers rather than looking them up per read costs nothing.
+const shared = (globalThis.__tamaguiMediaShared ||= {
+  queryConfig: {} as MediaQueries,
+  keys: new Set<string>(), // with $ prefix
+  keysOrdered: [] as string[],
+})
+
+export const mediaQueryConfig: MediaQueries = shared.queryConfig
+export const mediaKeys: Set<string> = shared.keys
+export const mediaKeysOrdered: string[] = shared.keysOrdered

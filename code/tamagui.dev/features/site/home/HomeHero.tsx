@@ -374,19 +374,16 @@ const HeroText = styled(HeroH1, {
 })
 
 const TextWithEffects = ({ text }: { text: string }) => {
+  const displayText = text.replace(/&nbsp;/g, String.fromCharCode(160))
+
   return (
     <>
-      <span style={{ opacity: 0 }}>{text}</span>
+      <span style={{ opacity: 0 }}>{displayText}</span>
 
       <YStack fullscreen>
-        <HeroText
-          className="clip-text rainbow grain"
-          l={-1}
-          opacity={0.5}
-          dangerouslySetInnerHTML={{
-            __html: text,
-          }}
-        />
+        <HeroText className="clip-text rainbow grain" l={-1} opacity={0.5}>
+          {displayText}
+        </HeroText>
 
         <ThemeTintAlt offset={2}>
           <HeroText
@@ -395,10 +392,9 @@ const TextWithEffects = ({ text }: { text: string }) => {
             pointerEvents="none"
             x={-1}
             color="$color9"
-            dangerouslySetInnerHTML={{
-              __html: text,
-            }}
-          />
+          >
+            {displayText}
+          </HeroText>
         </ThemeTintAlt>
 
         <ThemeTintAlt offset={3}>
@@ -408,10 +404,9 @@ const TextWithEffects = ({ text }: { text: string }) => {
             mixBlendMode="hard-light"
             pointerEvents="none"
             color="$color9"
-            dangerouslySetInnerHTML={{
-              __html: text,
-            }}
-          />
+          >
+            {displayText}
+          </HeroText>
         </ThemeTintAlt>
 
         <ThemeTintAlt offset={0}>
@@ -421,10 +416,9 @@ const TextWithEffects = ({ text }: { text: string }) => {
             pointerEvents="none"
             color="$color9"
             opacity={0.26}
-            dangerouslySetInnerHTML={{
-              __html: text,
-            }}
-          />
+          >
+            {displayText}
+          </HeroText>
         </ThemeTintAlt>
 
         <ThemeTintAlt offset={-3}>
@@ -433,10 +427,9 @@ const TextWithEffects = ({ text }: { text: string }) => {
             className="mask-gradient-right"
             pointerEvents="none"
             color="$color9"
-            dangerouslySetInnerHTML={{
-              __html: text,
-            }}
-          />
+          >
+            {displayText}
+          </HeroText>
         </ThemeTintAlt>
       </YStack>
     </>

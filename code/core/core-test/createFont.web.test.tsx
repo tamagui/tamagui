@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 
 import { createFont } from '../core/src'
 import type { GenericFont } from '../core/src'
+import { getFontSized } from '../get-font-sized/src'
 
 const font: GenericFont = {
   family: 'Inter',
@@ -125,5 +126,34 @@ describe('createFont', () => {
     const processedFont = createFont(font)
 
     expect(processedFont).toStrictEqual(expectedProcessedFont)
+  })
+})
+
+describe('getFontSized', () => {
+  // tokens are keyed by strings like "$true" / "$9", so a numeric size has no
+  // entry in the size/lineHeight maps. Build a font with both so we can compare
+  // the token path against a raw-number override.
+  const sizedFont = {
+    family: 'Inter',
+    size: { $true: 16, $9: 32 },
+    lineHeight: { $true: 24, $9: 38 },
+  } as unknown as GenericFont
+
+  const extras = { font: sizedFont, fontFamily: '$body', props: {} } as any
+
+  test('a size token still pairs its fontSize with the token lineHeight', () => {
+    const style = getFontSized('$9' as any, extras) as any
+    expect(style.fontSize).toBe(32)
+    expect(style.lineHeight).toBe(38)
+  })
+
+  // regression for #4028: a numeric fontSize used to fall through every token
+  // lookup and return nothing, leaving the default "$true" lineHeight in place
+  // and clipping glyph tops on iOS. It must now apply the number as a literal
+  // fontSize and carry no mismatched token lineHeight.
+  test('a numeric size applies as a literal fontSize and drops the token lineHeight', () => {
+    const style = getFontSized(32 as any, extras) as any
+    expect(style.fontSize).toBe(32)
+    expect(style.lineHeight).toBeUndefined()
   })
 })

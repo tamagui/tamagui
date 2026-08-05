@@ -7,6 +7,7 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { Notice } from '~/components/Notice'
 import { useSupabase } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
+import { getSafeSupabaseAuthUrl } from '~/features/security/navigation'
 import { useForwardToDashboard } from '~/features/user/useForwardToDashboard'
 import { useUser } from '~/features/user/useUser'
 
@@ -68,8 +69,12 @@ function SignIn() {
         options: { redirectTo },
       })
       .then(({ data, error }) => {
-        if (!error && data?.url) {
-          window.location.href = data.url
+        const authUrl = getSafeSupabaseAuthUrl(data?.url)
+
+        if (!error && authUrl) {
+          window.location.assign(authUrl)
+        } else if (!error) {
+          setMessage({ type: 'error', content: 'Invalid authentication redirect.' })
         }
       })
   }, [supabase, user])
@@ -134,8 +139,13 @@ function SignIn() {
     }
 
     // AuthClient doesn't auto-redirect, we need to do it manually
-    if (data?.url) {
-      window.location.href = data.url
+    const authUrl = getSafeSupabaseAuthUrl(data?.url)
+
+    if (authUrl) {
+      window.location.assign(authUrl)
+    } else {
+      setMessage({ type: 'error', content: 'Invalid authentication redirect.' })
+      setLoading(false)
     }
   }
 

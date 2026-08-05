@@ -6,7 +6,8 @@ interface UseSheetScrollViewGesturesProps {
     hasScrollableContent: boolean;
     scrollEnabled: boolean;
     setScrollEnabled: (enabled: boolean, lockTo?: number) => void;
+    onManualScroll?: (node: HTMLElement, y: number) => void;
 }
-export declare function useSheetScrollViewGestures({ scrollRef, scrollBridge, hasScrollableContent, }: UseSheetScrollViewGesturesProps): {};
+export declare function useSheetScrollViewGestures({ scrollRef, scrollBridge, hasScrollableContent, onManualScroll, }: UseSheetScrollViewGesturesProps): {};
 export {};
 //# sourceMappingURL=useSheetScrollViewGestures.d.ts.map

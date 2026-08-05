@@ -2,7 +2,6 @@ import { ToastViewport } from '@tamagui/toast'
 import { lazy, Suspense } from 'react'
 import { LoadProgressBar, Slot, usePathname } from 'one'
 import { Theme, YStack } from 'tamagui'
-import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
 import { Header } from '~/features/site/header/Header'
 import { useSiteTheme } from '~/features/site/theme/useSiteTheme'
@@ -46,7 +45,6 @@ export default function SiteLayout() {
   const showAuth = isAuthPage || isProductLandingPage || isAccountPage
   const hideFooter = isDocs || isTakeout || isBento || isAuthPage
   const hideHeader = isAuthPage
-  const hidePromoBanner = isAuthPage
 
   const { themeName, enabled } = useSiteTheme()
 
@@ -60,7 +58,6 @@ export default function SiteLayout() {
       {/* stats */}
       <script defer src="https://assets.onedollarstats.com/stonks.js" />
 
-      {!hidePromoBanner && <PromoBanner />}
       {!hideHeader && <Header showAuth={showAuth} disableNew={disableNew} />}
       <Modals />
       <LoadProgressBar />

@@ -148,6 +148,11 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
         unstyled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        transparent?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }>, "size" | "unstyled" | "scope" | "disableScroll"> & {
         size?: SizeTokens;
         disableScroll?: boolean;
@@ -165,6 +170,11 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
         unstyled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        transparent?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Indicator: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;

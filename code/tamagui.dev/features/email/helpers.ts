@@ -1,7 +1,20 @@
 // @ts-ignore
 import * as postmark from 'postmark'
+import { serverEnv } from '../api/serverEnv'
 
-const serverToken = process.env.POSTMARK_SERVER_TOKEN!
+const serverToken = serverEnv('POSTMARK_SERVER_TOKEN')!
+
+export const trackedTransactionalEmail = {
+  MessageStream: 'outbound',
+  TrackOpens: true,
+  TrackLinks: postmark.Models.LinkTrackingOptions.HtmlAndText,
+} as const
+
+export const trackedBroadcastEmail = {
+  MessageStream: 'broadcast',
+  TrackOpens: true,
+  TrackLinks: postmark.Models.LinkTrackingOptions.HtmlAndText,
+} as const
 
 if (process.env.NODE_ENV === 'production') {
   if (!serverToken) {
@@ -46,6 +59,7 @@ export function sendProductPurchaseEmail(
   `)
 
   return client.sendEmail({
+    ...trackedTransactionalEmail,
     From: 'support@tamagui.dev',
     To: email,
     Subject: `Welcome to ${args.product_name}!`,
@@ -89,6 +103,7 @@ export function sendProductRenewalEmail(
   `)
 
   return client.sendEmail({
+    ...trackedTransactionalEmail,
     From: 'support@tamagui.dev',
     To: email,
     Subject: `Your ${args.product_name} subscription renews in ~7 days`,
@@ -230,6 +245,7 @@ export function sendV1UpgradeEmail(
   `)
 
   return client.sendEmail({
+    ...trackedTransactionalEmail,
     From: 'support@tamagui.dev',
     To: email,
     Subject: 'Your Tamagui Pro subscription renews in ~7 days',
@@ -286,6 +302,7 @@ export function sendV2RenewalEnabledEmail(email: string, args: { name: string })
   `)
 
   return client.sendEmail({
+    ...trackedTransactionalEmail,
     From: 'support@tamagui.dev',
     To: email,
     Subject: 'Your Tamagui renewal discount is set',
@@ -355,6 +372,7 @@ export function sendPaymentMethodReminderEmail(
   `)
 
   return client.sendEmail({
+    ...trackedBroadcastEmail,
     From: 'support@tamagui.dev',
     To: email,
     Subject: 'A genuine thank you',
@@ -401,6 +419,7 @@ export function sendCancellationEmail(
   `)
 
   return client.sendEmail({
+    ...trackedTransactionalEmail,
     From: 'support@tamagui.dev',
     To: email,
     Subject: 'Your Tamagui Pro subscription has been cancelled',
@@ -443,6 +462,7 @@ export function sendPaymentFailedEmail(
   `)
 
   return client.sendEmail({
+    ...trackedTransactionalEmail,
     From: 'support@tamagui.dev',
     To: email,
     Subject: 'Action needed: payment failed for your Tamagui Pro subscription',

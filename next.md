@@ -1,3 +1,6 @@
+Image "types of property ''aria-hidden'' are incompatible." improve compat with real img
+
+
 vite 8 monorepo fix:
 - added `tamagui-monorepo-exports-fix` plugin to `@tamagui/vite-plugin`
 - vite 8 (rolldown) resolves workspace subpath imports to filesystem dirs instead of package.json exports
@@ -382,6 +385,8 @@ $gtSm: false,
 - remove scroll not working when Dialog adapted to Sheet on mobile
 
   - we may want Sheet to have its own removeScroll in this case
+
+- adapt nested-ScrollView problem: when a Dialog adapts to a Sheet, the Sheet already wraps contents in Sheet.ScrollView, so any inner ScrollView the consumer renders (e.g. DialogBody's `scrollable`) double-nests and content overscrolls while the sheet drags. right now dialog.tsx hand-detects `$xs` and skips its own ScrollView - that's a leaky workaround. need something better: either Adapt automatically unwraps/flattens a redundant ScrollView when adapting, or a documented pattern (e.g. a context flag the adapted child reads to know "a Sheet.ScrollView already owns scrolling, don't add one")
 
 - AnimatePresence should just work if you change the enterStyle exitStyle dynamically in the render, no need for custom we can capture the props
 

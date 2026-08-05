@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "repository": {
-    "url": "https://github.com/tamagui/tamagui"
+    "url": "git+https://github.com/tamagui/tamagui.git"
   },
   "workspaces": [
     "./code/compiler/**/*",
@@ -73,6 +73,8 @@
     "llink": "lllink ~/one",
     "next-site": "./scripts/bun-run.sh @tamagui/next-site dev",
     "release:canary": "bun release --canary --ci",
+    "release:beta": "bun release --beta --ci",
+    "release:beta:dirty": "bun release --beta --dirty --ci",
     "release": "bun ./scripts/release.ts",
     "check:references": "bun ./scripts/check-references.ts",
     "check:references:fix": "bun ./scripts/check-references.ts --fix",
@@ -175,8 +177,6 @@
     "postcss": "8.5.15",
     "protobufjs": "7.6.4",
     "qs": "6.15.2",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
     "react-native": "0.83.2",
     "rolldown": "1.0.1",
     "shell-quote": "1.8.4",
@@ -186,11 +186,12 @@
     "uuid": "11.1.1",
     "vite": "8.0.16",
     "vitest": "4.1.0",
+    "websocket-driver": "0.7.5",
     "whatwg-url": "14.1.1",
     "ws": "8.21.0",
     "yaml": "2.8.3"
   },
-  "packageManager": "bun@1.3.9",
+  "packageManager": "bun@1.3.14",
   "manypkg": {
     "workspaceProtocol": "require",
     "ignoredRules": [

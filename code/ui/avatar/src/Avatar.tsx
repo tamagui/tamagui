@@ -1,13 +1,13 @@
 // forked from radix https://github.com/radix-ui/primitives/blob/main/packages/react/avatar/src/Avatar.tsx
 
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
-import { getTokens, getVariableValue, styled } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
 import type { ImageProps } from '@tamagui/image'
 import { Image } from '@tamagui/image'
-import { Square, getShapeSize } from '@tamagui/shapes'
+import { Square } from '@tamagui/shapes'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 
@@ -48,13 +48,6 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
     } = props
     const context = useAvatarContext(IMAGE_NAME, __scopeAvatar)
     const [status, setStatus] = React.useState<ImageLoadingStatus>('idle')
-    const shapeSize = getVariableValue(
-      getShapeSize(
-        context.size,
-        // @ts-expect-error
-        { tokens: getTokens() }
-      )?.width
-    ) as number
 
     // Support both `src` (web) and `source` (RN) props
     const resolvedSrc =
@@ -89,11 +82,15 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
           right={0}
           bottom={0}
           objectFit="cover"
-          {...(typeof shapeSize === 'number' &&
-            !Number.isNaN(shapeSize) && {
-              width: shapeSize,
-              height: shapeSize,
-            })}
+          // fill the frame. previously the image was sized to
+          // getShapeSize(context.size) — but that resolves a numeric `size`
+          // (e.g. <Avatar size={16} />) as a size-TOKEN index (tokens.size[16]),
+          // so it got the token-scale value (~224px) instead of 16px, blowing
+          // the image far past its frame; object-fit:cover then showed a
+          // blurry mis-cropped corner. the frame already owns the size, so the
+          // image just fills it — correct for numeric and token sizes alike.
+          width="100%"
+          height="100%"
           {...imageProps}
           // @ts-ignore
           ref={forwardedRef}
