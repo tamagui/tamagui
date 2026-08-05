@@ -690,6 +690,13 @@ jobs:
             # Verify screen is on and unlocked
             adb shell dumpsys window | grep -E "mAwake|mScreenOn" || true
 
+            # ground truth for the reanimated reduced-motion contradiction: CI runs
+            # have warned 'Reduced motion setting is enabled' even after the put
+            # above, while the same sequence on a local emulator does not. print
+            # the value the apps will actually read.
+            echo -n "transition_animation_scale at test start: "
+            adb shell settings get global transition_animation_scale || true
+
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
             ./run-detox-android-ci.sh
