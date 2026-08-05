@@ -285,6 +285,12 @@ type Result = {
   reactCommits: number
   reactRenderMs: number
   sq0Commits: number
+  // React.Profiler is compiled out of production React, so in a release build
+  // every React counter here reads 0 whether or not the scenario re-rendered.
+  // false means sq0Commits/reactRenderMs/jsDone prove nothing for this run;
+  // read `frame` instead, and take the per-square re-render control from a dev
+  // build.
+  profiled: boolean
   engineCommits: number
   engineMisses: number
   // views linked to the engine while this scenario ran: the path proof.
@@ -379,6 +385,7 @@ export function NativeRegistryBenchCase() {
       reactCommits: profilerRef.current.commits,
       reactRenderMs: Number(profilerRef.current.renderMs.toFixed(1)),
       sq0Commits: profilerRef.current.sq0,
+      profiled: name === 'native' || profilerRef.current.commits > 0,
       engineCommits: engineAfter.commitCount - engineBefore.commitCount,
       engineMisses: engineAfter.missCount - engineBefore.missCount,
       linkedViews: engineBefore.viewCount,
@@ -436,6 +443,7 @@ export function NativeRegistryBenchCase() {
           ms sq0 {r.sq0Commits} engine {r.engineCommits}c/{r.engineMisses}m linked{' '}
           {r.linkedViews} engineMs {r.engineMs.median} calls {r.stateNameCalls}s/
           {r.applyCalls}a({r.applyEntries})/{r.tableCalls}t({r.tableEntries})
+          {r.profiled ? '' : ' PROFILER-OFF (react counters and jsDone blind)'}
         </Text>
       ))}
 
