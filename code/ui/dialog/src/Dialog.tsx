@@ -268,6 +268,9 @@ const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
           // this makes sure its above typical stacking contexts
           stackZIndex={100000}
           passThrough={isAdapted}
+          // hide the host while closed (covers keepChildrenMounted content, see
+          // Portal.tsx); isVisible stays true through the exit animation
+          hidden={!isVisible}
         >
           <PassthroughTheme passThrough={isAdapted}>{framedContents}</PassthroughTheme>
         </Portal>

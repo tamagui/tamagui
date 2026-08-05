@@ -536,6 +536,7 @@ export const PopoverContent = createStyledHOC(
         passThrough={context.breakpointActive}
         context={context}
         open={open}
+        visuallyActive={open || !isFullyHidden}
         zIndex={zIndex}
       >
         <View
@@ -654,6 +655,7 @@ const PortalAdaptSafe = ({
 function PopoverPortal({
   context,
   open,
+  visuallyActive,
   zIndex,
   passThrough,
   children,
@@ -661,6 +663,9 @@ function PopoverPortal({
 }: Pick<PopoverContentProps, 'zIndex' | 'passThrough' | 'children' | 'onPress'> & {
   context: PopoverContextValue
   open: boolean
+  // true while open or still animating out - hides the portal host when false
+  // (matters for keepChildrenMounted/forceMount content, see Portal.tsx)
+  visuallyActive: boolean
 }) {
   'use no memo'
 
@@ -675,7 +680,12 @@ function PopoverPortal({
   }
 
   return (
-    <Portal passThrough={passThrough} stackZIndex zIndex={zIndex}>
+    <Portal
+      passThrough={passThrough}
+      stackZIndex
+      zIndex={zIndex}
+      hidden={!visuallyActive}
+    >
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
       {!!open && !context.breakpointActive && !context.hoverable && (

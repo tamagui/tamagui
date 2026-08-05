@@ -1031,6 +1031,16 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     if (open && isFullyClosed) {
       setIsFullyClosed(false)
     }
+    // whether the sheet is visually active: open, or still animating out.
+    // isFullyClosed only flips true from the close-animation-complete callback,
+    // so it stays false for a mounted-but-never-opened sheet - track first open
+    // separately so a closed sheet is inactive from mount. drives the portal
+    // host's visibility (see Portal.tsx on why closed hosts must be hidden).
+    const hasEverOpened = React.useRef(open)
+    if (open) {
+      hasEverOpened.current = true
+    }
+    const isVisuallyActive = open || (hasEverOpened.current && !isFullyClosed)
     // shouldHideParentSheet (a nested sheet on native gorhom) hides the parent
     // immediately; disableHideWhenClosed opts the closed wrapper out of hiding
     // but never overrides the nested-sheet hide.
@@ -1184,7 +1194,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
         <ContainerComponent>{contents}</ContainerComponent>
       ) : null
       const modalContents = (
-        <Portal stackZIndex={zIndex} {...portalProps}>
+        <Portal stackZIndex={zIndex} hidden={!isVisuallyActive} {...portalProps}>
           {mountedContents && RNGHRoot ? (
             <RNGHRoot style={open ? rnghRootStyleOpen : rnghRootStyleClosed}>
               {mountedContents}
