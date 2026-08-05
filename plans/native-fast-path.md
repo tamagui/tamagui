@@ -506,6 +506,31 @@ All six scenarios in ONE app session, 500 squares, medians of 20 toggles after
 - jsDone for the engine scenarios is measured to the later of the last React
   commit and the last engine call, so it cannot understate native work.
 
+#### Android first run (2026-08-04, emulator, dev build)
+
+The old branch never ran Android once. This one now does, in both modes:
+
+- Nitro loads the C++ library and creates `HybridTamaguiRegistry` on Android
+  (logcat, `Nitro.HybridObjectPrototype`), and `isAvailable()` is true.
+- `NativeRegistryParityCase`: ALL 10 CHECKS PASS, same as iOS. Pushed values
+  match the theme through the same color pipeline (`-2294553`), the pinned
+  nested sub-theme receives nothing, warm toggles send bare entries with zero
+  misses, `getViewState` shows both tables, and a real re-render resets the
+  warm cache.
+- Media flips behave identically to iOS: activation pushes `paddingBottom: 30`
+  and the sm-only `minHeight: 70` to all 7 views, deactivation pushes 7 null
+  resets (`minHeight: null`, paddingBottom back to its base 8).
+- The bench ran all six scenarios and compiler mode engaged: 0 applyViewStates
+  entries, 20 setStateName calls, 0 square renders, 25 engine commits, 500
+  linked views.
+- Android TIMINGS ARE NOT MEASURED. On a software-rendered emulator the noise
+  swamps the signal: the pure-native floor scenario alone ranged 63ms to
+  3976ms per toggle, and the app hit an ANR mid-run. The only timing-shaped
+  claim worth making is the React work, which is a count rather than a clock:
+  React render time over the run drops from 9709ms on the compiled baseline to
+  40ms in compiler mode. A real Android device is owed alongside the release
+  build.
+
 ### Phase 1: engine + compiler, themes only
 
 - `@tamagui/native-registry` package: Nitro module, slot model, theme state,

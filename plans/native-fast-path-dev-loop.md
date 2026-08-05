@@ -70,6 +70,17 @@ harness measures without changing a line of your source:
   `bun expo start --clear` (or another edit to that file) does.
 - So: after editing a file whose lowering matters, restart metro with `--clear`
   and confirm with `grep plan-miss <metro log>` that your file is not listed.
+- Root cause, INFERRED from reading `code/compiler/metro-plugin/src/`
+  (frontend `#watchModule` -> `void this.updateFile(id)`, transformer
+  `cache.read(moduleId, args.src, ...)`) plus the observed behavior: the
+  frontend republishes a file's plan from an `fs.watch` callback that is not
+  awaited, and metro's own watcher can transform the new content first. The
+  worker then finds only the old plan, ships the module unlowered, and metro
+  caches THAT output against the new content hash, so the miss outlives the
+  race that caused it. Worth fixing upstream: making a plan miss on an
+  eligible file non-cacheable, or having the worker wait briefly for the
+  republished generation, both beat a warning nobody reads in a wall of
+  gradle-sized log output.
 - Check what actually shipped without waiting on a 4-minute bundle fetch: the
   plan lives in
   `code/kitchen-sink/node_modules/.cache/tamagui/metro-compiler/ios/v4/`
@@ -94,6 +105,29 @@ harness measures without changing a line of your source:
 3. Read `[bench]` lines. The path proof per scenario:
    `applyEntries > 0` is runtime mode, `stateNameCalls` only is compiler mode,
    `linkedViews: 0` on an engine scenario means it measured the React fallback.
+
+## Android
+
+- `code/kitchen-sink/android/` is gitignored and locally prebuilt, same as
+  `ios/`. Build and install with
+  `npx expo run:android --no-bundler --device test` from `code/kitchen-sink`
+  (about 7 min clean, most of it the Nitro C++ NDK compile). `--device` wants
+  the AVD NAME (`test`), not the adb serial: `--device emulator-5554` fails
+  with "Could not find device with name".
+- Boot the emulator headless with
+  `$ANDROID_HOME/emulator/emulator -avd test -no-window -no-audio -gpu swiftshader_indirect`,
+  then `adb reverse tcp:8081 tcp:8081` so the app reaches metro on localhost.
+- Launch a case:
+  `adb shell am start -n com.tamagui.tamaguikitchensink/.MainActivity -e directUseCase NativeRegistryParityCase`
+  (`react-native-launch-arguments` reads intent extras). Drive it with
+  `adb shell input tap X Y`, with coordinates from
+  `adb shell uiautomator dump /sdcard/ui.xml && adb shell cat /sdcard/ui.xml`.
+- Read results from `adb logcat -d | grep '\[parity\]'` and friends.
+- This emulator ANRs under the 500-square bench and will swallow the tap that
+  triggered it. Tapping "Wait" recovers the app; re-tap the button afterwards
+  and confirm from the log, not from the fact that you tapped.
+- Do not report emulator timings as benchmarks. Correctness (parity checks,
+  engine call counts, media flips) is what this setup can prove.
 
 ## Tests
 
@@ -170,10 +204,11 @@ one-session matrix replaced them.
 
 1. Release-build benchmark on a real device (all current numbers are
    dev-mode sim; the plan explicitly owes this). Needs the owner for device
-   provisioning.
-2. Android first boot (packagingOptions build break was fixed, zero runs so
-   far).
-4. Detox correctness coverage (Phase 2): nested scopes, list virtualization
+   provisioning. A real Android device is owed for the same reason: the
+   emulator can prove correctness but not timing.
+2. Detox correctness coverage (Phase 2): nested scopes, list virtualization
    re-linking, unmount/remount churn.
-5. Takeout hit-rate measurement; native CLI aggregate found/bailed stats;
+3. Takeout hit-rate measurement; native CLI aggregate found/bailed stats;
    DynamicColorIOS supersede implementation.
+4. The metro plan-miss race above, which silently disables the compiler for a
+   file for the rest of a session.
