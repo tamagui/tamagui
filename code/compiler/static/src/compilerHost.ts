@@ -1512,7 +1512,33 @@ export function createTamaguiCompilerHost(
           'Theme boundary candidates remain on the runtime path'
         )
       }
-      if (platform === 'native' && 'group' in props) {
+      // asChild makes createComponent render a Slot: it merges its props into
+      // the single child and emits no element of its own. a flattened host view
+      // would add a wrapper the runtime never renders, and the child would
+      // never receive the merged props. both platforms.
+      const asChildEntry = input.element.entries.find(
+        (entry) => entry.kind === 'prop' && entry.name === 'asChild'
+      )
+      if (asChildEntry || Object.hasOwn(props, 'asChild')) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'asChild renders a Slot, not a host view',
+          asChildEntry?.span
+        )
+      }
+      // group and the container props publish the same context: group writes
+      // the group name, container writes '@' and '@name'. descendants read it
+      // for `group-name-*` and `@name-*` clauses, so a flattened provider
+      // silently breaks every consumer under it. web compiles these to CSS
+      // container rules instead, so only native needs the bail.
+      if (
+        platform === 'native' &&
+        ('group' in props ||
+          'container' in props ||
+          'containerName' in props ||
+          'containerType' in props)
+      ) {
         return bailout(
           input,
           'local/unsupported-target',

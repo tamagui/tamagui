@@ -209,6 +209,41 @@ describe('flatten-tests', () => {
     expect(code).not.toContain('__TamaguiNativeView')
   })
 
+  test(`bails on asChild — the runtime renders a Slot, not a host view`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test() {
+        return (
+          <View asChild width={60} backgroundColor="rgb(1,2,3)">
+            <View width={10} height={10} />
+          </View>
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    const outer = code.slice(code.indexOf('return ('))
+    expect(outer.match(/<(__TamaguiNativeView|View)\b/)?.[1]).toBe('View')
+    expect(code).toContain('asChild')
+  })
+
+  test(`bails on the container props — they provide the '@' context descendants read`, async () => {
+    for (const prop of ['container', 'containerName="side"', 'containerType="size"']) {
+      const output = await extractForNative(`
+        import { View } from 'tamagui'
+        export function Test() {
+          return (
+            <View ${prop} width={60} backgroundColor="rgb(1,2,3)">
+              <View width={10} height={10} />
+            </View>
+          )
+        }
+      `)
+      const code = output?.code ?? ''
+      const outer = code.slice(code.indexOf('return ('))
+      expect(outer.match(/<(__TamaguiNativeView|View)\b/)?.[1]).toBe('View')
+    }
+  })
+
   test(`preserves the complete runtime candidate on a state-clause bailout`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'
