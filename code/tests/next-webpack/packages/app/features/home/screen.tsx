@@ -230,7 +230,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
         </Button>
       </XStack>
       <YStack gap="4">
-        <H1 text="center" color="color12">
+        <H1 text="center" color="color11">
           Welcome to Tamagui.
         </H1>
         <Paragraph color="color10" text="center">

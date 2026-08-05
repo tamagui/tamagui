@@ -34,7 +34,7 @@ export function TestComponent() {
       padding="4"
       backgroundColor="background"
     >
-      <Text color="color12" fontSize="8" fontWeight="bold">
+      <Text color="color11" fontSize="8" fontWeight="bold">
         Tamagui + Turbopack
       </Text>
       <Text color="color10">Count: {count}</Text>
