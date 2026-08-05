@@ -14,7 +14,7 @@ const FramePlain = styled(View, {
   name: 'FramePlain',
   width: 80,
   height: 80,
-  backgroundColor: 'gray2',
+  backgroundColor: 'gray-100',
   alignItems: 'stretch',
 })
 
@@ -22,7 +22,7 @@ const FrameAnim = styled(View, {
   name: 'FrameAnim',
   width: 80,
   height: 80,
-  backgroundColor: 'gray2',
+  backgroundColor: 'gray-100',
   alignItems: 'stretch',
   transition: 'quick',
   opacity: 'press:0.95',
@@ -110,7 +110,7 @@ export function GroupPressTransitionMatrix() {
         testID="release-target"
         height={120}
         width={340}
-        backgroundColor="gray4"
+        backgroundColor="gray-200"
         alignItems="center"
         justifyContent="center"
       >

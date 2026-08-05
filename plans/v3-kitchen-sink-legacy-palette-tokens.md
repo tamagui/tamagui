@@ -61,6 +61,26 @@ Each replacement was checked against the assertion helper that reads it in
 fail `isBlueish` for `NativeMixedDriver`'s `!isBlueish(expandedColor)` assertion,
 and it does, because its blue channel of 62 is below its green channel of 166.
 
+### Second pass: `gray2` wedged GroupPressTransitionMatrix
+
+The first pass migrated this fixture's children and left `gray2` on both parent
+frames and `gray4` on the release target. `FrameAnim` carries `transition:
+'quick'`, so its background goes through reanimated, and Detox run `30956520834`
+logged `ERROR [ReanimatedError: [Reanimated] Invalid color value: "gray2"]` at
+23:02:39, immediately followed by "Run loop Main Run Loop is awake" every ten
+seconds until the `beforeAll` hook hit its 180 second timeout. All five tests
+then reported at 1 to 20 ms each, which reads like five assertion failures and is
+really one app that never became idle. It failed the same way on the retry.
+
+So the native consequence of an unmigrated token depends on what draws it. On a
+static component it paints nothing. On a reanimated-driven one it throws, spins
+the main run loop, and takes down every test in the file.
+
+`gray2` maps to `gray-100` and `gray4` to `gray-200`. Under the v6 config those
+resolve to `#f3f4f6` and `#e5e7eb`; `gray2` stays the raw string `gray2`, which
+is what reanimated rejects. Neither frame color is asserted by the suite, which
+only checks child colors and `release-target` existence.
+
 `gray11` maps to `color10` rather than a fixed gray token because `color10` is
 what the already-migrated fixtures use for secondary text, 34 sites to
 `color11`'s 24, and because a theme key follows dark mode.
@@ -72,9 +92,10 @@ branch Detox run; the web probe only proves the token resolves.
 
 ## Not fixed
 
-**38 files and 208 sites still author v5 palette names.** They are latent rather
-than currently failing: whatever they color is not asserted, or their suite does
-not run on a driver that throws. Largest offenders:
+**38 files and 208 sites still author v5 palette names.** Most are latent:
+whatever they color is not asserted, or their suite does not run on a driver that
+throws. A site on a reanimated-driven component is not latent, though, and does
+not merely paint transparent. See the `gray2` entry below. Largest offenders:
 
 | file | sites |
 | --- | --- |
@@ -90,9 +111,13 @@ not run on a driver that throws. Largest offenders:
 Find them all with:
 
 ```sh
-grep -rlE '\b(blue|red|green|gray|purple|orange|pink|teal|yellow)(9|10|11|12)\b' \
+grep -rlE "['\"](blue|red|green|gray|purple|orange|pink|teal|yellow)[0-9]{1,2}\b" \
   code/kitchen-sink/src/usecases/*.tsx
 ```
+
+The pattern above used to read `(9|10|11|12)`, which is what let the second
+`GroupPressTransitionMatrix` failure through. Low steps are exactly as invalid as
+high ones: `gray2` and `gray4` do not exist in v6 either.
 
 This was left for a separate pass on purpose. Each site needs a judgement the
 codemod explicitly declines to make, since it cannot pick the intended
