@@ -88,7 +88,12 @@ for (const driver of drivers) {
         await route.continue()
       })
 
-      await page.goto(`/hydration-${driver}`, { waitUntil: 'domcontentloaded' })
+      // 'commit', not 'domcontentloaded': DOMContentLoaded waits for deferred and
+      // module scripts, which is exactly what the gate above is holding, so waiting
+      // on it deadlocks against the release below and times out the navigation.
+      // 'commit' resolves as soon as the response lands, and the assertion below
+      // waits for the SSR'd element, which HTML parsing produces without scripts.
+      await page.goto(`/hydration-${driver}`, { waitUntil: 'commit' })
 
       const box = page.getByTestId('transform-box')
       await expect(box).toBeAttached({ timeout: 15000 })
