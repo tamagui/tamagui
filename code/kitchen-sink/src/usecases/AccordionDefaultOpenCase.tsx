@@ -66,7 +66,10 @@ export function AccordionDefaultOpenCase() {
 
   return (
     <YStack testID="accordion-default-root" p="4">
-      <Accordion overflow="hidden" width="20" type="multiple" defaultValue={['a1']}>
+      {/* explicit px: this was $20 pre-v6; the flat-values migration mapped it
+          to the v6 "20" token (80px), which wrapped every label ~3x taller and
+          pushed grow-content below the window, so Detox refused the tap */}
+      <Accordion overflow="hidden" width={224} type="multiple" defaultValue={['a1']}>
         <Accordion.Item value="a1" mb={-1}>
           <Accordion.Trigger
             id="def-trigger"
