@@ -19,8 +19,8 @@ export type NativeMenuModule = {
   SubTrigger: ComponentType<any>
   SubContent: ComponentType<any>
   CheckboxItem: ComponentType<any>
-  Preview: ComponentType<any>
-  Auxiliary: ComponentType<any>
+  Preview?: ComponentType<any>
+  Auxiliary?: ComponentType<any>
 }
 
 /**
