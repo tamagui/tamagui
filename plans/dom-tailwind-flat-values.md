@@ -2103,7 +2103,10 @@ locked:
     with the grammar's identifier resolution.
 12. Reactive native safe-area resolution: subscription-based inset updates
     (rotation, foldables) replacing the non-reactive `getInsets()` accessor,
-    plus the not-set-up diagnostic.
+    plus the not-set-up diagnostic. Shipped: `resolveSafeAreaVariable.native.ts`
+    exposes `subscribeToSafeArea`, `createComponent.tsx` and `useProps.tsx`
+    subscribe so rotation re-renders, and the missing-setup case warns once in
+    dev naming the import. **This item is closed.**
 
 Each prototype must end with one chosen path. The implementation must not ship
 multiple equivalent syntaxes or runtime fallback paths.
@@ -2112,6 +2115,11 @@ multiple equivalent syntaxes or runtime fallback paths.
 
 - `plans/react-native-style-capabilities.md` — RN 0.78→0.87 style-prop survey
   (2026-07): what the flat grammar can claim natively, per-platform gaps
+- `plans/v3-web-values-and-fluid-sizing.md` — proposal (2026-08): promoting
+  web-only style props to shared code and dropping them on native, which units
+  native evaluates (viewport family yes, math functions no), fluid values and
+  container units as the replacement for breakpoint-first responsive design,
+  and the 2026 CSS features worth first-class support
 - [React Strict DOM common props](https://facebook.github.io/react-strict-dom/api/html/common/)
 - [React Strict DOM HTML compatibility](https://facebook.github.io/react-strict-dom/api/html/)
 - [React Strict DOM CSS compatibility](https://facebook.github.io/react-strict-dom/api/css/)
