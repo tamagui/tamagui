@@ -65,8 +65,14 @@ type LayoutMeasurementStrategy = 'off' | 'sync' | 'async'
 
 let strategy: LayoutMeasurementStrategy = 'async'
 
+// the measurement loop parks itself whenever it provably has nothing to do: no
+// registered nodes, a hidden document, or measurement turned off. these are the
+// only three ways work can reappear, so each one restarts it.
+let resumeLayoutLoop: (() => void) | undefined
+
 export function setOnLayoutStrategy(state: LayoutMeasurementStrategy): void {
   strategy = state
+  resumeLayoutLoop?.()
 }
 
 export type LayoutValue = {
@@ -209,10 +215,23 @@ if (ENABLE) {
   let skipFrames = BASE_SKIP_FRAMES
   let frameCount = 0
 
+  // stays true across the await below so a node registering mid-cycle cannot
+  // start a second concurrent loop
+  let frameScheduled = false
+
+  function scheduleLayoutFrame() {
+    if (frameScheduled || strategy === 'off' || Nodes.size === 0 || document.hidden) {
+      return
+    }
+    frameScheduled = true
+    rAF ? rAF(layoutOnAnimationFrame) : setTimeout(layoutOnAnimationFrame, 16)
+  }
+
   async function layoutOnAnimationFrame() {
     // skip frames based on adaptive rate
     if (frameCount++ % skipFrames !== 0) {
-      rAF ? rAF(layoutOnAnimationFrame) : setTimeout(layoutOnAnimationFrame, 16)
+      frameScheduled = false
+      scheduleLayoutFrame()
       return
     }
 
@@ -283,10 +302,13 @@ if (ENABLE) {
     }
 
     // schedule next frame
-    rAF ? rAF(layoutOnAnimationFrame) : setTimeout(layoutOnAnimationFrame, 16)
+    frameScheduled = false
+    scheduleLayoutFrame()
   }
 
-  layoutOnAnimationFrame()
+  resumeLayoutLoop = scheduleLayoutFrame
+  document.addEventListener('visibilitychange', scheduleLayoutFrame)
+  scheduleLayoutFrame()
 }
 
 export const getElementLayoutEvent = (
@@ -388,6 +410,7 @@ function observeLayoutNode(node: HTMLElement, disableKey?: string) {
     globalIntersectionObserver.observe(node)
     IntersectionState.set(node, true)
   }
+  resumeLayoutLoop?.()
 }
 
 // register an arbitrary DOM element into the measurement loop without React lifecycle
