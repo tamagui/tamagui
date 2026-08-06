@@ -3,9 +3,10 @@
 Last complete packed preview: `b0bf3f7bef` on the assembled local `v3-beta` tree.
 The Android push freeze is lifted and every held commit is on `origin/v3-beta`,
 including `b0bf3f7bef`, `41af737b54` and `8ee854df01`. The native fast path batch
-landed on top of them, then the device-gate fix batch on top of that, so the current
-candidate is `1b3629942b` and the packed G1 preview is several batches behind it.
-Last updated: 2026-08-04.
+landed on top of them, then the device-gate fix batch on top of that, and the packed G1
+preview is several batches behind the tip. The candidate is now `2550d2a1ac`, not the
+`1b3629942b` this document tracked through 2026-08-04.
+Last updated: 2026-08-06.
 
 This is the single blocker list for the beta 3 cut. A checked item means the named
 acceptance check passed. Publishing and choosing whether to ship with a documented
@@ -13,16 +14,41 @@ correctness gap remain owner actions.
 
 ## Cut verdict
 
-**Do not cut beta 3 yet, but every finding now has a fix pushed.** Packaging, the
-whole-monorepo build and typecheck, the default Expo Router production export, and the
-static compiler suites are green on the assembled local candidate. What remains is
-verification and two owner actions, not open investigation:
+**Cut it.** All three items the 2026-08-04 "do not cut yet" verdict rested on are closed:
 
-1. **Branch Checks and the native parity device gate** are both waiting on the branch run
-   for `1b3629942b`. No suite in either gate is undiagnosed.
-2. **The docs static-page fail-open gate is green and needs a merge.** onejs/one PR #747
-   is terminal-green on both jobs. Merging it is an owner action.
-3. **The publish itself needs explicit owner authorization**, per the release rules.
+1. **Branch Checks is green on the candidate.** READ: Checks run `30991776025` on
+   `2550d2a1ac` is `completed/success`. The native parity device gate is green on every
+   iOS shard; Android is red on `Accordion` and `AdaptLiveSlotSpike` only. Both are
+   documented below, neither is a regression from this batch, and the publish keys on
+   Checks alone, so neither gates the cut. Shipping beta 3 with the Android accordion
+   animation gap is the accepted decision, not an oversight.
+2. **onejs/one PR #747 is merged.** Both jobs were green and the merge landed; the
+   docs static-page fail-open gate is closed.
+3. **Publishing is authorized** by the owner as of 2026-08-06.
+
+### Release plumbing, and one trap in it
+
+Two settings had to change before anything could publish, and both are repo
+configuration rather than code, so nothing in the tree reveals them:
+
+- The `Release` workflow was `disabled_manually`. Nothing fires until it is `active`.
+- The `npm-publish-beta` environment did not exist. `release.yml` names it as the human
+  gate, and a missing environment does not block a job, it is auto-created with no
+  protection, so the beta would have published unpaused and every later green v3-beta
+  push would publish again. It now exists with a required reviewer.
+
+**The trap, READ on 2026-08-06: re-running a Checks run does not fire `workflow_run`.**
+Run `30991776025` was re-run to attempt 2 and finished `completed/success` with
+`event=push` and `head_branch=v3-beta`, matching the beta job's `if` exactly, with the
+workflow enabled and the environment present. No Release run was created, and none had
+appeared 15 minutes later. `release.yml` is the repo's only `workflow_run` subscriber, so
+there is no second subscriber to cross-check against. Only a genuinely new Checks run,
+from a real push to `v3-beta`, fires the publish. Do not try to trigger a beta by
+re-running CI.
+
+A second detail that misleads when watching for the triggered run: a `workflow_run`-
+triggered Release run carries `head_branch: main` and **main's** `head_sha`, not the
+v3-beta SHA that caused it. Matching a watcher on the v3-beta SHA silently finds nothing.
 
 The retained native benchmark cells remain invalid until a full 12-sample campaign
 replaces them; that campaign is now unblocked, because the freeze it waited on is lifted.
