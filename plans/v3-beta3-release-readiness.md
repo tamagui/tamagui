@@ -37,14 +37,20 @@ configuration rather than code, so nothing in the tree reveals them:
   protection, so the beta would have published unpaused and every later green v3-beta
   push would publish again. It now exists with a required reviewer.
 
-**The trap, READ on 2026-08-06: re-running a Checks run does not fire `workflow_run`.**
-Run `30991776025` was re-run to attempt 2 and finished `completed/success` with
-`event=push` and `head_branch=v3-beta`, matching the beta job's `if` exactly, with the
-workflow enabled and the environment present. No Release run was created, and none had
-appeared 15 minutes later. `release.yml` is the repo's only `workflow_run` subscriber, so
-there is no second subscriber to cross-check against. Only a genuinely new Checks run,
-from a real push to `v3-beta`, fires the publish. Do not try to trigger a beta by
-re-running CI.
+**Unresolved on 2026-08-06: a green Checks run produced no Release run, during an
+Actions outage.** Run `30991776025` was re-run to attempt 2 and finished
+`completed/success` with `event=push` and `head_branch=v3-beta`, matching the beta job's
+`if` exactly, with the workflow enabled and the environment present. No Release run was
+created within 15 minutes. A later real push to `v3-beta` (`28a132d56a`) then created no
+workflow runs **at all**, repo-wide.
+
+Do not read the first observation as "re-runs do not fire `workflow_run`". That was this
+session's initial conclusion and it is NOT established. GitHub Actions was in a declared
+major outage from 2026-08-06T15:22Z, roughly six hours before either attempt, and its own
+status update says "some workflow runs are failing to start". That is sufficient to
+explain both observations, so the re-run question is untested and stays open. Retest it
+only against a healthy Actions, since absence of a run proves nothing while runs are
+failing to start.
 
 A second detail that misleads when watching for the triggered run: a `workflow_run`-
 triggered Release run carries `head_branch: main` and **main's** `head_sha`, not the
