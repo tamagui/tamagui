@@ -428,11 +428,13 @@ const applyAnimation = (
   // rejects it, preserving valid in-flight values during interruption.
   // during an initial updater run withTiming/withSpring return the plain
   // starting value instead of a descriptor — nothing starts, so there is no
-  // onStart to wrap (and creating a property on a primitive throws)
+  // onStart to wrap (and creating a property on a primitive throws). checked
+  // as not-string/not-number: comparing typeof against 'object' compiles to a
+  // _type_of helper that is a remote function on the UI runtime
   if (
     (seedValue !== undefined || validateStartAsColor) &&
-    typeof animatedValue === 'object' &&
-    animatedValue !== null
+    typeof animatedValue !== 'string' &&
+    typeof animatedValue !== 'number'
   ) {
     const innerOnStart = animatedValue.onStart
     animatedValue.onStart = (
