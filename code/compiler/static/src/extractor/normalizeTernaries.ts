@@ -61,12 +61,23 @@ export function normalizeTernaries(ternaries: Ternary[]) {
     const altStyle = (shouldSwap ? consequent : alternate) ?? {}
     const consStyle = (shouldSwap ? alternate : consequent) ?? {}
 
+    // a media "ternary" is a breakpoint bucket, not a runtime branch: two of
+    // them for the same breakpoint are just two writes to it, and these arrive
+    // defaults-first, so a $lg on the JSX has to beat the $lg the styled()
+    // frame declared. real ternaries keep merging the other way, which the
+    // branch expansion below depends on.
+    const mediaLastWins = Boolean(rest.inlineMediaQuery)
+
     const nextAlt = ternariesByKey[key].alternate!
-    ternariesByKey[key].alternate = mergeProps(altStyle, nextAlt)
+    ternariesByKey[key].alternate = mediaLastWins
+      ? mergeProps(nextAlt, altStyle)
+      : mergeProps(altStyle, nextAlt)
     forwardFontFamilyName(altStyle, ternariesByKey[key].alternate)
 
     const nextCons = ternariesByKey[key].consequent!
-    ternariesByKey[key].consequent = mergeProps(consStyle, nextCons)
+    ternariesByKey[key].consequent = mediaLastWins
+      ? mergeProps(nextCons, consStyle)
+      : mergeProps(consStyle, nextCons)
     forwardFontFamilyName(consStyle, ternariesByKey[key].consequent)
   }
 

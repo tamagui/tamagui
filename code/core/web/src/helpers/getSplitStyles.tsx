@@ -854,6 +854,22 @@ export const getSplitStyles: StyleSplitter = (
         const priority = mediaStylesSeen
         mediaStylesSeen += 1
 
+        // the compiler has no window to match against, so a media block must stay
+        // conditional: keep it nested under its own key and let the extractor's
+        // atomic-CSS pass emit an @media rule. merging it into the flat style here
+        // bakes whichever medias node happens to consider active into the
+        // unconditional styles, which is how a variant's $lg block ended up
+        // applying at every width while its real breakpoint lost to the base.
+        if (process.env.IS_STATIC === 'is_static' && isMedia === true) {
+          const mediaStyle = getSubStyle(styleState, key, val, true)
+          styleState.style ||= {}
+          const existing = styleState.style[key]
+          styleState.style[key] = existing
+            ? Object.assign(existing, mediaStyle)
+            : mediaStyle
+          return
+        }
+
         // for theme media ($theme-light, $theme-dark), generate CSS classes for proper SSR
         // when noClass is set (inline animation drivers), de-opt to inline styles so the
         if (shouldDoClasses) {
