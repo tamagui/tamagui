@@ -19,8 +19,7 @@ const wrapperState = () => {
   const st = getComputedStyle(el)
   return {
     // null when the node carries no transform at all
-    translateY:
-      st.transform === 'none' ? null : new DOMMatrixReadOnly(st.transform).m42,
+    translateY: st.transform === 'none' ? null : new DOMMatrixReadOnly(st.transform).m42,
     height: el.getBoundingClientRect().height,
   }
 }
