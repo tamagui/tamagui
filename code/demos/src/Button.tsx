@@ -18,7 +18,6 @@ import {
   type VariantSpreadExtras,
   withStaticProperties,
 } from 'tamagui'
-import { forwardRef } from 'react'
 
 export type ButtonSize = SizeTokens
 
@@ -132,14 +131,21 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
   )
 }
 
-const ButtonImpl = createStyledHOC(
+const ButtonComponent = createStyledHOC(
   ButtonFrame,
-  function Button(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
+  function Button(
+    props: ButtonBehaviorProps & {
+      size?: ButtonSize
+      theme?: ThemeProps['name']
+    },
+    ref
+  ) {
+    const { theme, ...buttonBehaviorProps } = props
     const contextSize = SizeContext.useStyledContext()?.size
-    const size = ((props.size as TokenSize | undefined) ??
+    const size = ((buttonBehaviorProps.size as TokenSize | undefined) ??
       contextSize ??
       true) as ButtonSize
-    const sizedProps = { size, ...props }
+    const sizedProps = { size, ...buttonBehaviorProps }
     const { props: buttonProps } = useButton(sizedProps, {
       Text: ButtonText,
       iconSize: getThemedIconSize(size),
@@ -151,17 +157,10 @@ const ButtonImpl = createStyledHOC(
       </Theme>
     )
 
-    return <SizeContext.Provider size={size}>{frame}</SizeContext.Provider>
+    const button = <SizeContext.Provider size={size}>{frame}</SizeContext.Provider>
+    return theme ? <Theme name={theme}>{button}</Theme> : button
   }
 )
-
-const ButtonComponent = forwardRef<
-  HTMLElement,
-  ButtonBehaviorProps & { size?: ButtonSize; theme?: ThemeProps['name'] }
->(function ThemedButton({ theme, ...props }, ref) {
-  const button = <ButtonImpl ref={ref} {...props} />
-  return theme ? <Theme name={theme}>{button}</Theme> : button
-})
 
 export const Button = withStaticProperties(ButtonComponent, {
   Frame: ButtonFrame,

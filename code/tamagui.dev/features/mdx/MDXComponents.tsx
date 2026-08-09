@@ -983,7 +983,6 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
     display="inline-flex"
     items="center"
     gap="4"
-    fontWeight="400"
     {...props}
   >
     {children}
