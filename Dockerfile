@@ -38,13 +38,12 @@ ARG ONE_SERVER_URL
 ARG APP_NAME
 ARG TAMAGUI_PRO_SECRET
 ARG DEEPSEEK_API_KEY
-ARG BENTO_GITHUB_TOKEN
 # use a v3-specific argument so Railway's inherited v2 BENTO_BRANCH variable
 # cannot override the validated Bento source for this build
 ARG BENTO_V3_BETA_REF=50432b85cc47de443b640bee0bcf5decd119231e
 
 # install dependencies (sharp needs libvips for image processing)
-RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh libvips-dev
+RUN apt-get update && apt-get install -y git bsdmainutils vim-common libvips-dev
 
 WORKDIR /root/tamagui
 COPY . .
@@ -52,33 +51,22 @@ COPY . .
 # init git (allow empty commit if nothing to commit)
 RUN git config --global user.email "you@example.com" && git config --global user.name "Docker Build" && git init . && git add -A && (git commit -m 'add' > /dev/null || true)
 
-# Clone bento repository as sibling directory (optional)
+# clone the public bento repository as a sibling at the validated v3 commit
 WORKDIR /root
-RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
-      echo "Cloning bento repository (ref: $BENTO_V3_BETA_REF)..."; \
-      unset GITHUB_TOKEN && \
-      echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
-      gh repo clone tamagui/bento -- --no-checkout --depth 1 && \
-      git -C bento fetch --quiet --depth 1 origin "$BENTO_V3_BETA_REF" && \
-      git -C bento checkout --quiet --detach FETCH_HEAD && \
-      gh auth logout --hostname github.com && \
-      echo "✅ Bento repository cloned (ref: $BENTO_V3_BETA_REF)" && \
-      echo "REQUIRE_BENTO=true" > /tmp/bento_status; \
-    else \
-      echo "⚠️ BENTO_GITHUB_TOKEN not provided - bento features will not be available" && \
-      echo "REQUIRE_BENTO=false" > /tmp/bento_status; \
-    fi
+RUN echo "Cloning bento repository (ref: $BENTO_V3_BETA_REF)..." && \
+    git init --quiet bento && \
+    git -C bento remote add origin https://github.com/tamagui/bento.git && \
+    git -C bento fetch --quiet --depth 1 origin "$BENTO_V3_BETA_REF" && \
+    git -C bento checkout --quiet --detach FETCH_HEAD && \
+    echo "Bento repository cloned (ref: $BENTO_V3_BETA_REF)"
 
 WORKDIR /root/tamagui
 
-# Set REQUIRE_BENTO based on whether bento was cloned
-RUN export $(cat /tmp/bento_status)
-
-# First install without bento deps
+# first install without bento deps
 RUN bun install
 
-# Merge bento dependencies into root package.json and reinstall (only if bento was cloned)
-RUN if [ -d "../bento" ]; then node scripts/with-bento.mjs && bun install; fi
+# merge bento dependencies into root package.json and reinstall
+RUN node scripts/with-bento.mjs && bun install
 RUN bun run build:js
 RUN bun run build:app
 
