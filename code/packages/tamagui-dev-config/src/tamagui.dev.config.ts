@@ -1,6 +1,6 @@
 import { animationsCSS } from '@tamagui/config/animations-css'
 import { animationsMotion } from '@tamagui/config/animations-motion'
-import { defaultConfig } from '@tamagui/config/v6'
+import { defaultConfig } from '@tamagui/config/v5-subtle'
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'
@@ -25,8 +25,10 @@ export const animations = {
   css: animationsCSS,
 }
 
-const configuredThemes: typeof themes =
-  process.env.VITE_ENVIRONMENT === 'client' ? clientThemes : themes
+const configuredThemes =
+  process.env.VITE_ENVIRONMENT === 'client'
+    ? (clientThemes as unknown as typeof themes)
+    : themes
 
 export const config = {
   ...defaultConfig,

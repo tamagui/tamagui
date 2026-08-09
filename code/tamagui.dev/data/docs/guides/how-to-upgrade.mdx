@@ -11,7 +11,8 @@ behavior should be verified in real screens.
 <Notice theme="blue">
   If you are on v1, migrate through the v2 guide first or run the v1-to-v3 AI
   migration prompt from the CLI. v3 assumes the v2 web-standard prop model,
-  Config v6, React 19, React Native 0.81+, and TypeScript 5+ baseline.
+  defaults to Config v6, and has a React 19, React Native 0.81+, and TypeScript
+  5+ baseline.
 </Notice>
 
 ## Required: migrate tokens and conditional styles
@@ -119,21 +120,29 @@ Remove tooling packages that no longer exist in v3:
 | `@tamagui/static-worker`   | Remove direct imports. Metro owns its graph/cache workers through `@tamagui/metro-plugin`.                    |
 | `@tamagui/theme-builder`   | Use `createThemes` and the recipe helpers from `@tamagui/themes/builder`.                                     |
 
-### Config and theme entries removed
+### Config and theme compatibility
 
-V3 ships one config generation lineage: v6. The v5 entries and every earlier
-entry are gone. V2 applications that must retain the v5 theme builder should
-stay on Tamagui v2. The v3 config does not bundle an animation driver, so import
-one alongside it.
+V3 defaults to Config v6. It also keeps frozen static v5 and v5-subtle packs so
+existing applications can preserve their token values and generated themes
+while migrating the rest of the v3 API. The dynamic v5 theme builders are still
+removed. Applications that generate custom v5 themes must move that generation
+to the v6 recipe API or remain on Tamagui v2 until they can.
 
-| Removed entry | Replacement |
+No config bundles an animation driver, so import one alongside it. The old
+`v5-*` animation paths remain aliases for compatibility, while the unversioned
+paths are preferred for new code.
+
+| V2 entry | V3 status or replacement |
 | --- | --- |
 | `@tamagui/config` (root, `config` / `configWithoutAnimations`) | `defaultConfig` from `@tamagui/config/v6` |
-| `@tamagui/config/v3`, `/v4`, or `/v5` | `defaultConfig` from `@tamagui/config/v6` |
-| `@tamagui/config` `animations` / `reanimated` and all `v5-*` animation entries | `@tamagui/config/animations-css`, `animations-rn`, `animations-reanimated`, or `animations-motion` |
+| `@tamagui/config/v3` or `/v4` | `defaultConfig` from `@tamagui/config/v6` |
+| `@tamagui/config/v5` or `/v5-subtle` | Retained as frozen static compatibility packs. Use `/v6` for new applications. |
+| `@tamagui/config` `animations` / `reanimated` | `@tamagui/config/animations-css`, `animations-rn`, `animations-reanimated`, or `animations-motion` |
+| `@tamagui/config/v5-css`, `/v5-rn`, `/v5-reanimated`, or `/v5-motion` | Retained aliases for the matching unversioned animation entries. |
 | old config `fonts`, `media`, `breakpoints`, and `shorthands` | the matching exports from `@tamagui/config/v6-base` |
 | `@tamagui/config` `createGenericFont` | `createSystemFont` from `@tamagui/config/v6-base` |
-| old `@tamagui/themes` roots and all `/v5*` entries | static `themes` and `tokens` from `@tamagui/themes` |
+| old `@tamagui/themes` root behavior | v6 static `themes` and `tokens` from `@tamagui/themes` |
+| `@tamagui/themes/v5`, `/v5-subtle`, or `/v5-tokens` | Retained as frozen static compatibility packs. The `/v5-builder` entries are removed. |
 | `@tamagui/theme-builder` | recipe helpers from `@tamagui/themes/builder` |
 | `@tamagui/colors/legacy` (the pre-v2 Radix ramps: `blue`/`blueDark`, `gray`/`grayDark`, …) | `@tamagui/colors`, which exports the same names from the current Radix scales |
 
@@ -190,6 +199,9 @@ seconds for a 2,328-module starter and about two minutes for a 10,000-module
 application. Later warm builds are unaffected.
 
 ### Theme migration
+
+You can defer this section while using the frozen v5 compatibility packs. Apply
+it when moving the application's values and themes to Config v6.
 
 V3's adaptive ramp has 11 keys, matching Tailwind's `50` through `950` shades.
 Rename the v2 12-step ramp approximately as follows:
@@ -310,7 +322,7 @@ normal `level2` boundary in its own skin.
 Search configuration and application code together:
 
 ```bash
-rg "@tamagui/theme-builder|defaultComponentThemes|themes/v5|config/v[3-5]|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
+rg "@tamagui/theme-builder|defaultComponentThemes|themes/v5-builder|config/v[34]|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
 ```
 
 See [Creating Themes](/docs/guides/theme-builder) for the recipe API and

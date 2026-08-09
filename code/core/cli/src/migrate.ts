@@ -88,9 +88,10 @@ add a compatibility setting or restore condition-object parsing.
 
 ### 3. Migrate config and themes
 
-- Replace every old config entry with \`defaultConfig\` from \`@tamagui/config/v6\`.
+- New applications should use \`defaultConfig\` from \`@tamagui/config/v6\`.
+- Existing V5 applications can keep \`@tamagui/config/v5\` or \`/v5-subtle\` while migrating incrementally. These are frozen static compatibility packs, so they preserve the V5 token and theme values but will not receive new theme-builder features.
 - Import animations from \`@tamagui/config/animations-css\`, \`animations-rn\`, \`animations-reanimated\`, or \`animations-motion\`.
-- Remove \`@tamagui/theme-builder\`, every \`@tamagui/themes/v5*\` entry, and every \`@tamagui/config/v5*\` entry.
+- Remove \`@tamagui/theme-builder\` and any V5 builder imports. Static \`@tamagui/themes/v5\`, \`/v5-subtle\`, and \`/v5-tokens\` imports remain supported.
 - Use \`createThemes\`, \`levels\`, scales, and the other recipe helpers from \`@tamagui/themes/builder\`.
 - Remove \`componentThemes\`, \`templates\`, \`masks\`, \`childrenThemes\`, and \`grandChildrenThemes\`. Express hierarchy in the recipe tree, semantic values in scales, and exact one-theme overrides in \`values\`.
 - Component names no longer select uppercase theme segments automatically. Replace component themes with explicit normal theme or \`level2\` boundaries in component skins.
@@ -117,7 +118,7 @@ color theme when nested.
 Search the config and application together:
 
 \`\`\`bash
-rg "@tamagui/theme-builder|themes/v5|config/v5|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
+rg "@tamagui/theme-builder|v5-builder|createV5Theme|componentThemes|grandChildrenThemes|surface[1-4]|color12"
 \`\`\`
 
 ### 4. Run the Sheet codemod

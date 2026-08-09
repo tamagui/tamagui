@@ -38,6 +38,33 @@
       "import": "./dist/esm/builder.mjs",
       "require": "./dist/cjs/builder.cjs",
       "default": "./dist/esm/builder.mjs"
+    },
+    "./v5": {
+      "types": "./types/v5.d.ts",
+      "react-native": "./dist/esm/v5.native.js",
+      "browser": "./dist/esm/v5.mjs",
+      "module": "./dist/esm/v5.mjs",
+      "import": "./dist/esm/v5.mjs",
+      "require": "./dist/cjs/v5.cjs",
+      "default": "./dist/esm/v5.mjs"
+    },
+    "./v5-subtle": {
+      "types": "./types/v5-subtle.d.ts",
+      "react-native": "./dist/esm/v5-subtle.native.js",
+      "browser": "./dist/esm/v5-subtle.mjs",
+      "module": "./dist/esm/v5-subtle.mjs",
+      "import": "./dist/esm/v5-subtle.mjs",
+      "require": "./dist/cjs/v5-subtle.cjs",
+      "default": "./dist/esm/v5-subtle.mjs"
+    },
+    "./v5-tokens": {
+      "types": "./types/v5-tokens.d.ts",
+      "react-native": "./dist/esm/v5-tokens.native.js",
+      "browser": "./dist/esm/v5-tokens.mjs",
+      "module": "./dist/esm/v5-tokens.mjs",
+      "import": "./dist/esm/v5-tokens.mjs",
+      "require": "./dist/cjs/v5-tokens.cjs",
+      "default": "./dist/esm/v5-tokens.mjs"
     }
   },
   "publishConfig": {

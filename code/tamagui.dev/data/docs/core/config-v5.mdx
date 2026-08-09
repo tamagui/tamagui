@@ -1,24 +1,53 @@
 ---
-title: 'Config v5 (Tamagui v2)'
-description: Legacy configuration retained only for Tamagui v2 applications
+title: 'Config v5 compatibility'
+description: Preserve Tamagui v2 token and theme values while migrating to v3
 ---
 
 <Notice theme="yellow">
-  Config v5 and `@tamagui/theme-builder` belong to Tamagui v2. Their package
-  entries are not available in Tamagui v3. Keep all Tamagui packages on v2 if
-  your application must retain that theme system.
+  Tamagui v3 defaults to Config v6. Use this frozen compatibility pack when an
+  existing application's layout and visual design still depend on v5 values.
+  The dynamic v5 theme builders are not included in v3.
 </Notice>
 
-New and migrated v3 applications should use
-[`@tamagui/config/v6`](/docs/core/config-v6):
+The v5 entry preserves the familiar independent size and space scales, the
+12-step adaptive color ramp, surface theme names, component themes, fonts, and
+shorthands:
 
 ```tsx fileName="tamagui.config.ts"
-import { defaultConfig } from '@tamagui/config/v6'
+import { animationsCSS } from '@tamagui/config/animations-css'
+import { defaultConfig } from '@tamagui/config/v5'
 import { createTamagui } from 'tamagui'
 
-export const config = createTamagui(defaultConfig)
+export const config = createTamagui({
+  ...defaultConfig,
+  animations: animationsCSS,
+})
 ```
 
-Read the [v3 upgrade guide](/docs/guides/how-to-upgrade#theme-migration) for the
-11-step color ramp, surface-to-level mapping, and recipe-tree replacement for
-the old builder options.
+The subtle pack exports its muted generated themes separately, matching its v2
+API:
+
+```tsx fileName="tamagui.config.ts"
+import { animationsCSS } from '@tamagui/config/animations-css'
+import { defaultConfig, themes } from '@tamagui/config/v5-subtle'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  themes,
+  animations: animationsCSS,
+})
+```
+
+The static theme data is also available from `@tamagui/themes/v5`,
+`@tamagui/themes/v5-subtle`, and `@tamagui/themes/v5-tokens`. Legacy animation
+imports at `@tamagui/config/v5-css`, `/v5-rn`, `/v5-reanimated`, and `/v5-motion`
+remain aliases to their maintained unversioned entries.
+
+The compatibility lane does not restore `@tamagui/theme-builder`,
+`@tamagui/themes/v5-builder`, or `@tamagui/themes/v5-subtle-builder`. Those
+builders carried a second theme-generation architecture. New custom themes
+should use [`@tamagui/themes/builder`](/docs/guides/theme-builder).
+
+Read the [v3 upgrade guide](/docs/guides/how-to-upgrade#theme-migration) when
+you are ready to move to the v6 11-step color ramp and level-based surfaces.

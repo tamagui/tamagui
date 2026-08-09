@@ -22,6 +22,7 @@ export {
   v6RemovedThemeNames,
   v6ThemeNameReplacements,
 } from '@tamagui/style-grammar/tooling'
+export { toV6Themes, type V6Theme, type V6Themes } from './v6-themes'
 // space and size deliberately remain separate configured domains even though their default
 // values coincide. z-index is literal, so its identity scale is not configured as tokens.
 export const tokens = {

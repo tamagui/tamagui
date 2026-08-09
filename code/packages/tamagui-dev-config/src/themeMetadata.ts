@@ -1,53 +1,98 @@
-const schemes = ['light', 'dark'] as const
-const deepGroups = ['base', 'accent', 'brand', 'inverse'] as const
-const tintGroups = ['red', 'yellow', 'green', 'blue', 'gray'] as const
+const schemes = ['light', 'dark']
+const colors = ['black', 'white', 'gray', 'blue', 'red', 'yellow', 'green']
+const componentThemes = [
+  'Button',
+  'Input',
+  'Progress',
+  'ProgressIndicator',
+  'Slider',
+  'SliderActive',
+  'SliderThumb',
+  'Switch',
+  'TextArea',
+  'Tooltip',
+  'SwitchThumb',
+]
 
-const deepLevelSuffixes = [
-  '',
-  '_level2',
-  '_level2_level2',
-  '_level2_level2_level2',
-  '_level2_level2_level3',
-  '_level2_level2_level4',
-  '_level2_level3',
-  '_level2_level4',
-  '_level3',
-  '_level3_level2',
-  '_level3_level3',
-  '_level3_level4',
-  '_level4',
-] as const
+const numbered = (prefix: string, count: number) =>
+  Array.from({ length: count }, (_, index) => `${prefix}${index + 1}`)
 
-export const themeNames = schemes.flatMap((scheme) => [
-  ...deepGroups.flatMap((group) =>
-    deepLevelSuffixes.map(
-      (suffix) => `${scheme}${group === 'base' ? '' : `_${group}`}${suffix}`
-    )
-  ),
-  ...tintGroups.flatMap((group) =>
-    ['', '_level2', '_level3', '_level4'].map((suffix) => `${scheme}_${group}${suffix}`)
-  ),
+const baseThemeNames = schemes.flatMap((scheme) => [
+  scheme,
+  `${scheme}_accent`,
+  `${scheme}_surface1`,
+  `${scheme}_surface2`,
+  ...colors.flatMap((color) => [
+    `${scheme}_${color}`,
+    `${scheme}_${color}_accent`,
+    `${scheme}_${color}_surface1`,
+    `${scheme}_${color}_surface2`,
+  ]),
 ])
 
+const componentThemeNames = schemes
+  .flatMap((scheme) => [scheme, ...colors.map((color) => `${scheme}_${color}`)])
+  .flatMap((parent) => componentThemes.map((component) => `${parent}_${component}`))
+
+const levelThemeNames = baseThemeNames.flatMap((themeName) =>
+  themeName.endsWith('_surface1')
+    ? [themeName.replace(/_surface1$/, '_level2')]
+    : themeName.endsWith('_surface2')
+      ? [themeName.replace(/_surface2$/, '_level3')]
+      : []
+)
+
+export const themeNames = [...baseThemeNames, ...levelThemeNames, ...componentThemeNames]
+
+const alphaSteps = [
+  '0',
+  '01',
+  '02',
+  '04',
+  '06',
+  '08',
+  '001',
+  '002',
+  '0025',
+  '005',
+  '0075',
+]
+
 export const themeVariableNames = [
-  ...Array.from({ length: 11 }, (_, index) => `color${index + 1}`),
-  'background',
-  'background-hover',
-  'background-press',
-  'background-focus',
-  'border-color',
-  'border-color-hover',
-  'border-color-press',
-  'border-color-focus',
-  'color',
-  'color-hover',
-  'color-press',
-  'color-focus',
-  'placeholder-color',
-  'outline-color',
-  'shadow-color',
   'accent-background',
   'accent-color',
+  ...numbered('accent', 12),
+  'background',
+  'background-focus',
+  'background-hover',
+  'background-press',
+  ...alphaSteps.map((step) => `background${step}`),
+  'border-color',
+  'border-color-focus',
+  'border-color-hover',
+  'border-color-press',
+  'color',
+  'color-focus',
+  'color-hover',
+  'color-press',
+  'color-transparent',
+  ...alphaSteps.map((step) => `color${step}`),
+  ...numbered('color', 12),
+  'outline-color',
+  'placeholder-color',
+  'shadow-color',
+  ...['black', 'white'].flatMap((color) => [
+    color,
+    `${color}0`,
+    `${color}02`,
+    `${color}04`,
+    `${color}06`,
+    `${color}08`,
+    ...numbered(color, 12),
+  ]),
+  ...['blue', 'gray', 'green', 'red', 'yellow'].flatMap((color) => numbered(color, 12)),
+  ...numbered('highlight', 8),
+  ...numbered('shadow', 8),
 ]
 
 const variableShape = Object.fromEntries(

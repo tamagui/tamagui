@@ -77,10 +77,11 @@ jobs:
       - name: Install playwright
         run: bunx playwright install
 
-      - name: Check v6 Tailwind defaults
+      - name: Check config defaults
         working-directory: code/core/config
         run: |
           bun run check:v6-tailwind-defaults
+          bun run test:v5-entries
           bun run test:v6-tailwind-defaults
           bun run test:v6-entries
 

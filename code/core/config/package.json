@@ -35,6 +35,24 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./v5": {
+      "types": "./types/v5.d.ts",
+      "react-native": "./dist/esm/v5.native.js",
+      "browser": "./dist/esm/v5.mjs",
+      "module": "./dist/esm/v5.mjs",
+      "import": "./dist/esm/v5.mjs",
+      "require": "./dist/cjs/v5.cjs",
+      "default": "./dist/esm/v5.mjs"
+    },
+    "./v5-subtle": {
+      "types": "./types/v5-subtle.d.ts",
+      "react-native": "./dist/esm/v5-subtle.native.js",
+      "browser": "./dist/esm/v5-subtle.mjs",
+      "module": "./dist/esm/v5-subtle.mjs",
+      "import": "./dist/esm/v5-subtle.mjs",
+      "require": "./dist/cjs/v5-subtle.cjs",
+      "default": "./dist/esm/v5-subtle.mjs"
+    },
     "./v6": {
       "types": "./types/v6.d.ts",
       "react-native": "./dist/esm/v6.native.js",
@@ -97,6 +115,42 @@
       "import": "./dist/esm/animations-motion.mjs",
       "require": "./dist/cjs/animations-motion.cjs",
       "default": "./dist/esm/animations-motion.mjs"
+    },
+    "./v5-css": {
+      "types": "./types/animations-css.d.ts",
+      "react-native": "./dist/esm/animations-css.native.js",
+      "browser": "./dist/esm/animations-css.mjs",
+      "module": "./dist/esm/animations-css.mjs",
+      "import": "./dist/esm/animations-css.mjs",
+      "require": "./dist/cjs/animations-css.cjs",
+      "default": "./dist/esm/animations-css.mjs"
+    },
+    "./v5-rn": {
+      "types": "./types/animations-rn.d.ts",
+      "react-native": "./dist/esm/animations-rn.native.js",
+      "browser": "./dist/esm/animations-rn.mjs",
+      "module": "./dist/esm/animations-rn.mjs",
+      "import": "./dist/esm/animations-rn.mjs",
+      "require": "./dist/cjs/animations-rn.cjs",
+      "default": "./dist/esm/animations-rn.mjs"
+    },
+    "./v5-reanimated": {
+      "types": "./types/animations-reanimated.d.ts",
+      "react-native": "./dist/esm/animations-reanimated.native.js",
+      "browser": "./dist/esm/animations-reanimated.mjs",
+      "module": "./dist/esm/animations-reanimated.mjs",
+      "import": "./dist/esm/animations-reanimated.mjs",
+      "require": "./dist/cjs/animations-reanimated.cjs",
+      "default": "./dist/esm/animations-reanimated.mjs"
+    },
+    "./v5-motion": {
+      "types": "./types/animations-motion.d.ts",
+      "react-native": "./dist/esm/animations-motion.native.js",
+      "browser": "./dist/esm/animations-motion.mjs",
+      "module": "./dist/esm/animations-motion.mjs",
+      "import": "./dist/esm/animations-motion.mjs",
+      "require": "./dist/cjs/animations-motion.cjs",
+      "default": "./dist/esm/animations-motion.mjs"
     }
   },
   "publishConfig": {
@@ -105,6 +159,7 @@
   "scripts": {
     "build": "tamagui-build",
     "check:v6-tailwind-defaults": "bun ./scripts/generate-v6-tailwind-defaults.ts --check",
+    "test:v5-entries": "bun test ./scripts/v5-entries.test.ts",
     "test:v6-tailwind-defaults": "bun test ./scripts/v6-tailwind-defaults.test.ts",
     "test:v6-entries": "bun test ./scripts/v6-entries.test.ts",
     "watch": "tamagui-build --watch",
