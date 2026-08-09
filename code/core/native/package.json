@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/native",
-  "version": "2.3.0",
+  "version": "2.7.4",
   "description": "Native setup modules for Tamagui - portals, gesture handler, worklets, and more",
   "type": "module",
   "sideEffects": [
@@ -35,6 +35,9 @@
       ],
       "setup-zeego": [
         "./types/setup-zeego.d.ts"
+      ],
+      "setup-expo-ui-menu": [
+        "./types/setup-expo-ui-menu.d.ts"
       ],
       "setup-burnt": [
         "./types/setup-burnt.d.ts"
@@ -123,6 +126,15 @@
       "import": "./dist/esm/setup-zeego.mjs",
       "require": "./dist/cjs/setup-zeego.cjs",
       "default": "./dist/esm/setup-zeego.mjs"
+    },
+    "./setup-expo-ui-menu": {
+      "types": "./types/setup-expo-ui-menu.d.ts",
+      "react-native": "./dist/esm/setup-expo-ui-menu.native.js",
+      "browser": "./dist/esm/setup-expo-ui-menu.mjs",
+      "module": "./dist/esm/setup-expo-ui-menu.mjs",
+      "import": "./dist/esm/setup-expo-ui-menu.mjs",
+      "require": "./dist/cjs/setup-expo-ui-menu.cjs",
+      "default": "./dist/esm/setup-expo-ui-menu.mjs"
     },
     "./setup-burnt": {
       "types": "./types/setup-burnt.d.ts",

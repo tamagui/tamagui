@@ -182,4 +182,71 @@ describe('RN 0.76+ Style Alignment - Web', () => {
       expect(value).toBe('contents')
     })
   })
+
+  // atomic CSS requires one class per longhand. If a shorthand like `inset`
+  // emits a single _inset-0px class, it silently controls 4 sub-properties
+  // and breaks dedup/override against top/right/bottom/left.
+  describe('logical property expansion (atomic CSS correctness)', () => {
+    test('inset expands to top/right/bottom/left', () => {
+      const styles = simplifiedGetSplitStyles(View, { inset: 0 })
+      expect(getStyleValue(styles, 'top')).toBe('0px')
+      expect(getStyleValue(styles, 'right')).toBe('0px')
+      expect(getStyleValue(styles, 'bottom')).toBe('0px')
+      expect(getStyleValue(styles, 'left')).toBe('0px')
+      expect(getStyleValue(styles, 'inset')).toBeUndefined()
+    })
+
+    test('insetBlock expands to top/bottom', () => {
+      const styles = simplifiedGetSplitStyles(View, { insetBlock: 4 })
+      expect(getStyleValue(styles, 'top')).toBe('4px')
+      expect(getStyleValue(styles, 'bottom')).toBe('4px')
+      expect(getStyleValue(styles, 'insetBlock')).toBeUndefined()
+    })
+
+    test('insetBlockStart expands to top', () => {
+      const styles = simplifiedGetSplitStyles(View, { insetBlockStart: 8 })
+      expect(getStyleValue(styles, 'top')).toBe('8px')
+      expect(getStyleValue(styles, 'insetBlockStart')).toBeUndefined()
+    })
+
+    test('later top overrides inset (atomic merge)', () => {
+      const styles = simplifiedGetSplitStyles(View, { inset: 0, top: 10 })
+      expect(getStyleValue(styles, 'top')).toBe('10px')
+      expect(getStyleValue(styles, 'right')).toBe('0px')
+      expect(getStyleValue(styles, 'bottom')).toBe('0px')
+      expect(getStyleValue(styles, 'left')).toBe('0px')
+    })
+
+    test('marginBlock expands to marginTop/marginBottom', () => {
+      const styles = simplifiedGetSplitStyles(View, { marginBlock: 10 })
+      expect(getStyleValue(styles, 'marginTop')).toBe('10px')
+      expect(getStyleValue(styles, 'marginBottom')).toBe('10px')
+      expect(getStyleValue(styles, 'marginBlock')).toBeUndefined()
+    })
+
+    test('paddingBlock expands to paddingTop/paddingBottom', () => {
+      const styles = simplifiedGetSplitStyles(View, { paddingBlock: 12 })
+      expect(getStyleValue(styles, 'paddingTop')).toBe('12px')
+      expect(getStyleValue(styles, 'paddingBottom')).toBe('12px')
+      expect(getStyleValue(styles, 'paddingBlock')).toBeUndefined()
+    })
+
+    test('blockSize expands to height', () => {
+      const styles = simplifiedGetSplitStyles(View, { blockSize: 100 })
+      expect(getStyleValue(styles, 'height')).toBe('100px')
+      expect(getStyleValue(styles, 'blockSize')).toBeUndefined()
+    })
+
+    test('inlineSize expands to width', () => {
+      const styles = simplifiedGetSplitStyles(View, { inlineSize: 100 })
+      expect(getStyleValue(styles, 'width')).toBe('100px')
+      expect(getStyleValue(styles, 'inlineSize')).toBeUndefined()
+    })
+
+    test('minBlockSize expands to minHeight', () => {
+      const styles = simplifiedGetSplitStyles(View, { minBlockSize: 50 })
+      expect(getStyleValue(styles, 'minHeight')).toBe('50px')
+      expect(getStyleValue(styles, 'minBlockSize')).toBeUndefined()
+    })
+  })
 })

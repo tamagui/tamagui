@@ -1,6 +1,6 @@
 import { ThemeTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons-2'
-import type { Frontmatter } from '@vxrn/mdx'
+import type { Frontmatter } from '@vxrn/mdx-rust'
 import {
   Button,
   H1,

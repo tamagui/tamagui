@@ -1,5 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { createContext } from '@tamagui/create-context'
 import { focusFocusable } from '@tamagui/focusable'
 import { getButtonSized } from '@tamagui/get-button-sized'
@@ -72,7 +72,12 @@ export const Label = LabelFrame.styleable(function Label(props, forwardedRef) {
   const id = idProp ?? backupId
 
   if (isWeb) {
-    React.useEffect(() => {
+    // layout effect, not effect: write aria-labelledby onto the htmlFor target
+    // synchronously before browser paint so assistive tech never sees the
+    // labeled control with no aria-labelledby. SSR HTML still ships without it
+    // (Label can't know which sibling input it points at on the server) — for
+    // SSR-correct a11y, pass aria-labelledby directly to the input.
+    useIsomorphicLayoutEffect(() => {
       if (htmlFor) {
         const element = document.getElementById(htmlFor)
         const label = ref.current
@@ -82,10 +87,8 @@ export const Label = LabelFrame.styleable(function Label(props, forwardedRef) {
           element.setAttribute('aria-labelledby', ariaLabelledBy)
           controlRef.current = element
           return () => {
-            /**
-             * We get the latest attribute value because at the time that this cleanup fires,
-             * the values from the closure may have changed.
-             */
+            // we re-read the attribute on cleanup because the value in the
+            // closure may have changed since the effect ran.
             if (!id) return
             const ariaLabelledBy = getAriaLabel()?.replace(id, '')
             if (ariaLabelledBy === '') {

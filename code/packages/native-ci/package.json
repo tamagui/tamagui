@@ -1,14 +1,16 @@
 {
   "name": "@tamagui/native-ci",
-  "version": "2.3.0",
+  "version": "2.7.4",
   "description": "Native CI/CD helpers for React Native apps with Expo - fingerprinting, caching, and build optimization",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tamagui/tamagui.git",
+    "url": "git+https://github.com/tamagui/tamagui.git",
     "directory": "code/packages/native-ci"
   },
-  "bin": "./dist/cli.mjs",
+  "bin": {
+    "native-ci": "dist/cli.mjs"
+  },
   "source": "src/index.ts",
   "files": [
     "src",

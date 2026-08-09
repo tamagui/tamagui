@@ -174,6 +174,9 @@ async function sendEmail(email, name, daysUntilExpiry, isApology) {
 
   try {
     await postmarkClient.sendEmail({
+      MessageStream: 'broadcast',
+      TrackOpens: true,
+      TrackLinks: 'HtmlAndText',
       From: 'support@tamagui.dev',
       To: email,
       Subject: subject,

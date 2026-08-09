@@ -204,6 +204,27 @@ describe('tamagui-build integration test', () => {
 
     expect(nativeOutput).toContain('getNativeOnlyMarker')
     expect(nativeOnlyOutput).toContain('native-import-marker')
+    expect(nativeOutput).toContain('from "./nativeOnly.native.js"')
+    expect(nativeOutput).toContain('from "./nested/index.native.js"')
+    expect(nativeOutput).not.toContain('from "./nativeOnly"')
+    expect(nativeOutput).not.toContain('from "./nested"')
+  })
+
+  it('should emit a real require() (not the throwing __require shim) for native esm', async () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+
+    const nativeOutput = await readFile(join(distPath, 'esm', 'index.native.js'), 'utf-8')
+    const webOutput = await readFile(join(distPath, 'esm', 'index.mjs'), 'utf-8')
+
+    // native keeps the require behind the DCE guard, but as a real require() that Metro
+    // can statically resolve — never the __require() call site that throws at runtime
+    expect(nativeOutput).toContain('require("lodash.debounce")')
+    // no __require() call sites — that shim throws "Dynamic require ... is not supported"
+    expect(nativeOutput).not.toContain('__require(')
+
+    // web DCE strips the native branch entirely, so the require never leaks into web
+    expect(webOutput).toContain('web-require-marker')
+    expect(webOutput).not.toContain('lodash.debounce')
   })
 
   it('should keep side-effectful native statements outside dev-only guards', async () => {

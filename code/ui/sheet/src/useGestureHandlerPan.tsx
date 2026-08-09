@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { useCallback, useMemo, useRef, type RefObject } from 'react'
+import { useCallback, useEffect, useMemo, useRef, type RefObject } from 'react'
 import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
 import { getSheetReleasePosition } from './keyboardAvoidance'
 import type { ScrollBridge, SnapPointsMode } from './types'
@@ -7,6 +7,7 @@ import type { ScrollBridge, SnapPointsMode } from './types'
 // threshold in pixels for considering sheet "at top" position
 // allows for small measurement variations
 const AT_TOP_THRESHOLD = 5
+const SCROLL_HANDOFF_THRESHOLD = 160
 
 interface GesturePanConfig {
   positions: number[]
@@ -104,18 +105,45 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
     frozenIsKeyboardVisible: false,
     // whether pan gesture actually started (vs just a tap in onBegin)
     panStarted: false,
+    startedBelowTop: false,
+    upwardDragAfterTop: 0,
+    scrollUnlockedAfterTop: false,
+    keepScrollLockedAfterEnd: false,
   })
+  const unlockScrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (unlockScrollTimer.current) {
+        clearTimeout(unlockScrollTimer.current)
+        unlockScrollTimer.current = null
+      }
+    }
+  }, [])
 
   const onStart = useCallback(() => {
     stopSpring()
   }, [stopSpring])
 
   const onEnd = useCallback(
-    (closestPoint: number, animationOverride?: any) => {
+    (closestPoint: number, animationOverride?: any, keepScrollLocked = false) => {
+      if (unlockScrollTimer.current) {
+        clearTimeout(unlockScrollTimer.current)
+        unlockScrollTimer.current = null
+      }
       setIsDragging(false)
       scrollBridge.setParentDragging(false)
-      // re-enable scroll when gesture ends
-      scrollBridge.setScrollEnabled?.(true)
+      scrollBridge.lockScrollAtTop = false
+      if (keepScrollLocked) {
+        scrollBridge.setScrollEnabled?.(false, 0)
+        unlockScrollTimer.current = setTimeout(() => {
+          unlockScrollTimer.current = null
+          scrollBridge.setScrollEnabled?.(true)
+        }, 160)
+      } else {
+        // re-enable scroll when gesture ends
+        scrollBridge.setScrollEnabled?.(true)
+      }
       setPosition(closestPoint)
       animateTo(closestPoint, animationOverride)
     },
@@ -173,6 +201,15 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         gs.frozenPositions = [...positions]
         gs.frozenMinY = minY
         gs.frozenIsKeyboardVisible = releaseConfigRef.current.isKeyboardVisible
+        gs.startedBelowTop = !atTop
+        gs.upwardDragAfterTop = 0
+        gs.scrollUnlockedAfterTop = false
+        gs.keepScrollLockedAfterEnd = false
+        scrollBridge.lockScrollAtTop = false
+        if (unlockScrollTimer.current) {
+          clearTimeout(unlockScrollTimer.current)
+          unlockScrollTimer.current = null
+        }
 
         // if sheet not at top, DISABLE SCROLL immediately and lock to 0
         // this prevents scroll from firing before pan takes over
@@ -251,8 +288,18 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
             // if there's scrollable content, let scroll handle so user can scroll into content
             // resistance only applies when there's NO scrollable content
             if (hasScrollableContent) {
-              // content is scrollable - let scroll handle (user wants to scroll down into content)
-              panHandles = false
+              if (gs.startedBelowTop && !gs.scrollUnlockedAfterTop) {
+                gs.upwardDragAfterTop += Math.max(0, -deltaY)
+                if (gs.upwardDragAfterTop >= SCROLL_HANDOFF_THRESHOLD) {
+                  gs.scrollUnlockedAfterTop = true
+                  panHandles = false
+                } else {
+                  panHandles = true
+                }
+              } else {
+                // content is scrollable - let scroll handle (user wants to scroll down into content)
+                panHandles = false
+              }
             } else {
               // no scrollable content -> pan handles for resistance effect
               panHandles = true
@@ -261,6 +308,7 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         }
 
         if (panHandles) {
+          scrollBridge.lockScrollAtTop = gs.startedBelowTop && !gs.scrollUnlockedAfterTop
           // pan handles - disable scroll and move sheet
           // when swiping down at top after scroll was engaged: lock at current scroll position
           //   (handoff from scroll to pan — preserve scroll offset)
@@ -278,17 +326,22 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
           setAnimatedPosition(newPosition)
           scrollBridge.setParentDragging(newPosition > minY)
         } else {
+          scrollBridge.lockScrollAtTop = false
           // scroll handles - enable scroll so it can move freely
           scrollBridge.setScrollEnabled?.(true)
+          scrollBridge.setParentDragging(false)
           // don't accumulate offset when scroll is handling
         }
       })
       .onEnd((event: { velocityY: number }) => {
         const { velocityY } = event
         const currentPos = gs.startY + gs.accumulatedOffset
+        const keepScrollLockedAfterEnd = gs.startedBelowTop && !gs.scrollUnlockedAfterTop
 
         // clear scroll lock
-        scrollBridge.scrollLockY = undefined
+        scrollBridge.lockScrollAtTop = false
+        scrollBridge.scrollLockY = keepScrollLockedAfterEnd ? 0 : undefined
+        gs.keepScrollLockedAfterEnd = keepScrollLockedAfterEnd
 
         // use frozen positions from gesture start — keyboard may have dismissed
         // during drag (input blur), reverting activePositions. Frozen positions
@@ -301,7 +354,7 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
 
         // if sheet is at top and scroll is engaged, just stay at top
         if (currentPos <= snapMinY + AT_TOP_THRESHOLD && scrollBridge.y > 0) {
-          onEnd(0)
+          onEnd(0, undefined, keepScrollLockedAfterEnd)
           return
         }
 
@@ -321,11 +374,12 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
           isWeb,
         })
 
-        onEnd(closestPoint)
+        onEnd(closestPoint, undefined, keepScrollLockedAfterEnd)
       })
       .onFinalize(() => {
         // clear scroll lock on finalize too (safety)
-        scrollBridge.scrollLockY = undefined
+        scrollBridge.lockScrollAtTop = false
+        scrollBridge.scrollLockY = gs.keepScrollLockedAfterEnd ? 0 : undefined
         if (gs.panStarted) {
           // real pan gesture — reset isDragging (also un-pauses keyboard handler + flushes)
           setIsDragging(false)

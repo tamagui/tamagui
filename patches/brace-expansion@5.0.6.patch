@@ -1,0 +1,18 @@
+diff --git a/dist/commonjs/index.js b/dist/commonjs/index.js
+index 33063dd3552cd631d7eba0fca8f849a348b31148..3be6fbcabd9fc1102ddd4f3a6a1a43bf1c88682b 100644
+--- a/dist/commonjs/index.js
++++ b/dist/commonjs/index.js
+@@ -198,4 +198,12 @@ function expand_(str, max, isTop) {
+     }
+     return expansions;
+ }
++// back-compat: brace-expansion 1.x/2.x exported the function directly as a callable
++// default (module.exports = expand). minimatch <10 (e.g. react-native codegen) does
++// `require('brace-expansion')` then calls the result. preserve that while keeping the
++// 5.x named exports for modern (ESM) consumers.
++module.exports = expand;
++module.exports.expand = expand;
++module.exports.EXPANSION_MAX = exports.EXPANSION_MAX;
++module.exports.default = expand;
+ //# sourceMappingURL=index.js.map
+\ No newline at end of file

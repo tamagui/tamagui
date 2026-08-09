@@ -38,13 +38,13 @@ if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
 }
 
 // Generate bento proxy files (creates stubs if bento repo not found)
-const { hasBento } = generateBentoProxy({
+const { hasBento, bentoPath } = generateBentoProxy({
   basePath: pathResolve(import.meta.dirname, 'scripts'),
   silent: false,
 })
 
 if (hasBento) {
-  console.info('Using ../bento')
+  console.info(`Using bento at ${bentoPath}`)
 }
 
 // use createRequire instead of import.meta.resolve for bun compatibility in vite config
@@ -61,13 +61,12 @@ const include = [
   '@stripe/react-stripe-js',
   '@stripe/stripe-js',
   'swr/mutation',
-  'mdx-bundler/client',
+  '@vxrn/mdx-rust/client',
   // core tamagui packages must be pre-bundled together to avoid duplicate instances
   'tamagui',
   '@tamagui/core',
   '@tamagui/web',
   // existing
-  '@ai-sdk/deepseek',
   'secure-json-parse',
   '@supabase/postgres-js',
   'ai',
@@ -109,7 +108,7 @@ export default {
 
   server: {
     fs: {
-      allow: ['..', '../../../bento'],
+      allow: ['..', ...(bentoPath ? [bentoPath] : [])],
     },
   },
 
@@ -128,18 +127,8 @@ export default {
     preserveSymlinks: false,
 
     alias: [
-      // Regex-based alias for bento components when not available
-      ...(!hasBento
-        ? [
-            {
-              find: /^@tamagui\/bento\/component\/.+$/,
-              replacement: pathResolve(
-                import.meta.dirname,
-                './helpers/dist/bento-component-stub.tsx'
-              ),
-            },
-          ]
-        : []),
+      // when bento is unavailable, @tamagui/bento/component/* is stubbed by the
+      // `stub-bento-components` plugin below (virtual module), not an alias
 
       // Standard string-based aliases
       {
@@ -156,21 +145,18 @@ export default {
         ? [
             {
               find: '@tamagui/bento/raw',
-              replacement: pathResolve(import.meta.dirname, '../../../bento/src/index'),
+              replacement: pathResolve(bentoPath, 'src/index'),
             },
             {
               find: '@tamagui/bento/provider',
               replacement: pathResolve(
-                import.meta.dirname,
-                '../../../bento/src/components/provider/CurrentRouteProvider'
+                bentoPath,
+                'src/components/provider/CurrentRouteProvider'
               ),
             },
             {
               find: '@tamagui/bento/component',
-              replacement: pathResolve(
-                import.meta.dirname,
-                '../../../bento/src/components'
-              ),
+              replacement: pathResolve(bentoPath, 'src/components'),
             },
           ]
         : []),
@@ -208,7 +194,14 @@ export default {
   },
 
   ssr: {
-    external: ['@vxrn/mdx', 'ws', 'postmark', 'stripe'],
+    external: [
+      '@vxrn/mdx-rust',
+      'satteri',
+      'satteri-expressive-code',
+      'ws',
+      'postmark',
+      'stripe',
+    ],
     noExternal: true,
   },
 
@@ -256,6 +249,8 @@ export const LocationNotification = BentoComponentStub
     }),
 
     one({
+      native: false,
+
       setupFile: {
         server: './setup.server.ts',
       },

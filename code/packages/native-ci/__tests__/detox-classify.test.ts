@@ -128,3 +128,145 @@ Tests:       32 passed, 32 total
   expect(flakeFiles).toEqual([])
   expect(realFiles).toEqual([])
 })
+
+// June 17: simulator FBSOpenApplicationServiceErrorDomain during test run
+const JUNE17_SIMULATOR_LAUNCH_FAILURE = `
+FAIL e2e/TabsOnInteraction.test.ts (240.123 s)
+  TabsOnInteraction
+    ✕ should fire onInteraction with layout for the default selected tab (60000 ms)
+  ● TabsOnInteraction › should fire onInteraction with layout for the default selected tab
+
+    An error was encountered processing the command (domain=FBSOpenApplicationServiceErrorDomain, code=4):
+    Simulator device failed to launch com.tamagui.tamaguikitchensink.
+    Underlying error (domain=FBSOpenApplicationServiceErrorDomain, code=4):
+    	The request to open "com.tamagui.tamaguikitchensink" failed.
+`
+
+// June 17: teardown timeout causing cascading worker failure
+const JUNE17_TEARDOWN_CASCADE = `
+FAIL e2e/TabsOnInteraction.test.ts (240.123 s)
+  TabsOnInteraction
+    ✕ should fire onInteraction with layout for the default selected tab (60000 ms)
+  ● Test suite failed to run
+
+    Exceeded timeout of 30000ms while tearing down Detox environment
+
+FAIL e2e/ShorthandVariables.test.ts (180.456 s)
+  ShorthandVariables
+    ✕ should handle shorthand variables (45000 ms)
+  ● Test suite failed to run
+
+    DetoxRuntimeError: Detox worker instance has not been installed in this context (DetoxSecondaryContext).
+    at get worker (node_modules/detox/src/Detox.js:123:45)
+`
+
+test('classifies simulator FBSOpenApplicationServiceErrorDomain as flake', () => {
+  const { failedFiles, flakeFiles, realFiles } = classifyDetoxFailures(
+    JUNE17_SIMULATOR_LAUNCH_FAILURE
+  )
+  expect(failedFiles).toEqual(['e2e/TabsOnInteraction.test.ts'])
+  expect(flakeFiles).toEqual(['e2e/TabsOnInteraction.test.ts'])
+  expect(realFiles).toEqual([])
+})
+
+test('classifies teardown timeout + cascading worker failure as flake', () => {
+  const { failedFiles, flakeFiles, realFiles } = classifyDetoxFailures(
+    JUNE17_TEARDOWN_CASCADE
+  )
+  expect(failedFiles).toEqual([
+    'e2e/TabsOnInteraction.test.ts',
+    'e2e/ShorthandVariables.test.ts',
+  ])
+  expect(flakeFiles).toEqual([
+    'e2e/TabsOnInteraction.test.ts',
+    'e2e/ShorthandVariables.test.ts',
+  ])
+  expect(realFiles).toEqual([])
+})
+
+// Aug 5, run 31019397687 shard 1/4: both files connect-flaked, but the shard was not
+// retried because CompilerExtraction was classified real. jest prints a file's FAIL block
+// the moment that file finishes, then the daemon streams the NEXT file's entire run into
+// the same stdout before the next FAIL header shows up. So CompilerExtraction's "block"
+// ran ~4 minutes past its own failure detail and swallowed a daemon line reading
+// `failed with error = Error: Command failed: /usr/bin/xcrun simctl get_app_container`,
+// which tripped the /Error: / real-failure signature. Both files must classify as flake.
+const AUG5_DAEMON_NOISE_AFTER_BLOCK = `
+FAIL e2e/CompilerExtraction.test.ts (208.657 s)
+  CompilerExtraction
+    ✕ should render and respond to theme changes (26 ms)
+    ✕ should benchmark optimized vs non-optimized (best of 3)
+
+  ● CompilerExtraction › should render and respond to theme changes
+
+    timed out after 53159ms
+
+      at Timeout.<anonymous> (e2e/utils/detox.ts:84:43)
+
+15:55:37.032 detox[35782] i "/usr/bin/xcrun simctl get_app_container 1556EED5 com.tamagui.tamaguikitchensink" failed with error = Error: Command failed: /usr/bin/xcrun simctl get_app_container 1556EED5 com.tamagui.tamaguikitchensink
+15:55:37.038 detox[35782] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=2):
+15:57:19.359 detox[35782] i safeLaunchApp: attempt 1 failed (connect timeout), retrying after 3000ms timed out after 70000ms
+FAIL e2e/SheetFitKeyboardSafeArea.test.ts (235.322 s)
+  SheetFitKeyboardSafeArea
+    ✕ keeps the fit sheet at/below the top safe area when the keyboard opens (7 ms)
+    ✕ returns the fit sheet to a bottom-anchored fit position after the keyboard dismisses (1 ms)
+
+  ● SheetFitKeyboardSafeArea › keeps the fit sheet at/below the top safe area when the keyboard opens
+
+    timed out after 51664ms
+
+      at Timeout.<anonymous> (e2e/utils/detox.ts:84:43)
+
+15:58:53.827 detox[35782] i Detox can't seem to connect to the test app(s)!
+Test Suites: 2 failed, 2 skipped, 2 passed, 4 of 6 total
+Tests:       4 failed, 16 skipped, 6 passed, 26 total
+`
+
+test("daemon output for the NEXT file does not leak into this file's block", () => {
+  const { failedFiles, flakeFiles, realFiles } = classifyDetoxFailures(
+    AUG5_DAEMON_NOISE_AFTER_BLOCK
+  )
+  expect(failedFiles).toEqual([
+    'e2e/CompilerExtraction.test.ts',
+    'e2e/SheetFitKeyboardSafeArea.test.ts',
+  ])
+  expect(flakeFiles).toEqual([
+    'e2e/CompilerExtraction.test.ts',
+    'e2e/SheetFitKeyboardSafeArea.test.ts',
+  ])
+  expect(realFiles).toEqual([])
+})
+
+test('a real failure is still real when daemon noise follows it', () => {
+  // negative control for the cut above: the assertion failure sits inside the failure
+  // detail, before the daemon resumes, so trimming the block must not rescue it.
+  const realThenNoise = `
+FAIL e2e/PressStyleNative.test.ts (42.1 s)
+  ● PressStyleNative › should fire pressIn and pressOut events on tap
+
+    Exceeded timeout of 5000ms while waiting for element at by.id("simple-press-in-count") to have text "In: 1"
+
+15:55:37.032 detox[35782] i something the daemon said afterwards
+`
+  const { flakeFiles, realFiles } = classifyDetoxFailures(realThenNoise)
+  expect(flakeFiles).toEqual([])
+  expect(realFiles).toEqual(['e2e/PressStyleNative.test.ts'])
+})
+
+test('real assertion failure with teardown timeout stays real', () => {
+  // A real failure followed by teardown timeout - the teardown timeout is flake
+  // but we classify per-file, so this file has both
+  const mixed = `
+FAIL e2e/PressStyleNative.test.ts (42.1 s)
+  PressStyleNative
+    ✕ should fire pressIn and pressOut events on tap (5300 ms)
+  ● PressStyleNative › should fire pressIn and pressOut events on tap
+    Exceeded timeout of 5000ms while waiting for element at by.id("simple-press-in-count") to have text "In: 1"
+  ● Test suite failed to run
+    Exceeded timeout of 30000ms while tearing down Detox environment
+`
+  const { flakeFiles, realFiles } = classifyDetoxFailures(mixed)
+  // File has both real failure AND teardown timeout - real failure takes priority
+  expect(flakeFiles).toEqual([])
+  expect(realFiles).toEqual(['e2e/PressStyleNative.test.ts'])
+})

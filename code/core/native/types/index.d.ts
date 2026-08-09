@@ -18,11 +18,12 @@
 * // LinearGradient will use expo-linear-gradient when installed
 * ```
 */
-export type { NativePortalState, GestureState, WorkletsState, SafeAreaState, SafeAreaInsets, SafeAreaFrame, SafeAreaMetrics, LinearGradientState, ZeegoState, BurntState, NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types";
+export type { NativePortalState, GestureState, WorkletsState, SafeAreaState, SafeAreaInsets, SafeAreaFrame, SafeAreaMetrics, LinearGradientState, BurntState, NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types";
+export type { NativeMenuAdapter, NativeMenuModule } from "./nativeMenuState";
 export { getPortal } from "./portalState";
 export type { PortalAccessor } from "./portalState";
 export { getGestureHandler } from "./gestureState";
-export { claimExternalPressOwnership as unstable_claimExternalPressOwnership, releaseExternalPressOwnership as unstable_releaseExternalPressOwnership } from "./gestureState";
+export { claimExternalPressOwnership as unstable_claimExternalPressOwnership, hasExternalPressOwnership as unstable_hasExternalPressOwnership, releaseExternalPressOwnership as unstable_releaseExternalPressOwnership } from "./gestureState";
 export type { ExternalPressOwnershipToken, GestureHandlerAccessor, PressGestureConfig } from "./gestureState";
 export type { GestureHandlerConfig } from "./setup-gesture-handler";
 export { getWorklets } from "./workletsState";
@@ -33,8 +34,9 @@ export { getLinearGradient } from "./linearGradientState";
 export type { LinearGradientAccessor } from "./linearGradientState";
 export { isKeyboardControllerEnabled, getKeyboardControllerState, setKeyboardControllerState } from "./keyboardControllerState";
 export type { KeyboardControllerState } from "./keyboardControllerState";
-export { getZeego } from "./zeegoState";
-export type { ZeegoAccessor } from "./zeegoState";
+export { getNativeMenuAdapter, registerNativeMenuAdapter } from "./nativeMenuState";
+export { createExpoUIMenuAdapter } from "./expoUIMenuAdapter";
+export type { ExpoUIMenuAdapterOptions } from "./expoUIMenuAdapter";
 export { NativeMenuContext } from "./nativeMenuContext";
 export { getBurnt } from "./burntState";
 export type { BurntAccessor } from "./burntState";

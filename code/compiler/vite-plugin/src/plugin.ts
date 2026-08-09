@@ -2,6 +2,7 @@ import type { TamaguiOptions, ExtractedResponse } from '@tamagui/static-worker'
 import * as Static from '@tamagui/static-worker'
 import { getPragmaOptions } from '@tamagui/static-worker'
 import { createHash } from 'node:crypto'
+import { readdirSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -123,11 +124,28 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
           : 'dist/esm/index.mjs'
       )
     )
+    // the flat module names rnw-lite ships, used to scope the deep-path alias
+    // below so unimplemented react-native-web exports are left alone.
+    const rnwlFlatModules = readdirSync(path.join(rnwlBase, 'dist/esm'))
+      .filter((file) => file.endsWith('.mjs'))
+      .map((file) => file.slice(0, -'.mjs'.length))
+      .filter((name) => /^[A-Za-z0-9_]+$/.test(name))
     aliases.push(
       {
         // map deep RNW paths like dist/exports/StyleSheet/preprocess to rnw-lite's flat structure
         // extracts the final path segment (e.g. "preprocess" or "createReactDOMStyle")
-        find: /^react-native(?:-web)?\/dist\/(?:exports|modules)\/.*\/([^/]+)$/,
+        //
+        // only match segments rnw-lite actually ships. it implements part of
+        // react-native-web's export surface, not all of it, and there is no
+        // flat StyleSheet.mjs. expo sdk 56 added
+        // expo/src/launch/AppRegistry.web.tsx, which does
+        // `require('react-native-web/dist/exports/StyleSheet')`; the unscoped
+        // pattern rewrote that onto a file that does not exist and failed the
+        // whole optimize. anything lite lacks now falls through to the real
+        // package.
+        find: new RegExp(
+          `^react-native(?:-web)?\\/dist\\/(?:exports|modules)\\/(?:.*\\/)?(${rnwlFlatModules.join('|')})$`
+        ),
         replacement: `${normalizePath(rnwlBase)}/dist/esm/$1.mjs`,
       },
       {
@@ -257,6 +275,8 @@ export function tamaguiPlugin({
       if (!options) {
         throw new Error(`No tamagui options loaded`)
       }
+      const useReactNativeWebLite =
+        tamaguiOptionsIn.useReactNativeWebLite ?? options.useReactNativeWebLite
 
       // start watching config if enabled
       if (!options.disableWatchTamaguiConfig) {
@@ -306,7 +326,7 @@ export function tamaguiPlugin({
                     'react-native/Libraries/Utilities/codegenNativeComponent':
                       resolve('@tamagui/proxy-worm'),
                     'react-native-svg': resolve('@tamagui/react-native-svg'),
-                    ...(!options?.useReactNativeWebLite && {
+                    ...(!useReactNativeWebLite && {
                       'react-native': resolve('react-native-web'),
                     }),
                   }),
@@ -318,6 +338,9 @@ export function tamaguiPlugin({
 
   const rnwLitePlugin: Plugin = {
     name: 'tamagui-rnw-lite',
+    // framework plugins may add their default react-native-web aliases from a
+    // normal config hook. apply the explicit lite choice after those defaults.
+    enforce: 'post',
 
     config() {
       if (enableNativeEnv) {
@@ -325,24 +348,23 @@ export function tamaguiPlugin({
       }
 
       const options = getTamaguiOptions()
-      if (!options?.useReactNativeWebLite) {
+      const useReactNativeWebLite =
+        tamaguiOptionsIn.useReactNativeWebLite ?? options?.useReactNativeWebLite
+      if (!useReactNativeWebLite) {
         return {}
       }
 
-      // react-native-web-lite imports memoize-one internally. the esbuild dep
-      // scanner doesn't follow it through the react-native -> rnw-lite alias, so
-      // vite discovers it only at request time, re-optimizes mid-load, and full
-      // reloads. on slow runners (CI) the in-flight optimized-dep request 504s
-      // ("Outdated Optimize Dep") and surfaces as a console error. pre-include
-      // it so the first optimize pass is complete and no reload is triggered.
+      // the dep scanner doesn't follow transitive packages through the
+      // react-native -> rnw-lite alias. pre-include the CJS dependencies that
+      // would otherwise reach the browser raw or trigger a mid-load re-optimize.
       const include: string[] = []
-      if (isInstalled(process.cwd(), 'memoize-one')) {
-        include.push('memoize-one')
+      for (const dependency of ['memoize-one', '@react-native/normalize-color']) {
+        if (isInstalled(process.cwd(), dependency)) include.push(dependency)
       }
 
       return {
         resolve: {
-          alias: tamaguiAliases({ rnwLite: options.useReactNativeWebLite }),
+          alias: tamaguiAliases({ rnwLite: useReactNativeWebLite }),
         },
         optimizeDeps: {
           // upstream react-native-web must not be pre-bundled when aliased to lite

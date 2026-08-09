@@ -4,6 +4,7 @@ import { createExtractor, extractToClassNames } from '@tamagui/static'
 
 export async function extractForNative(code: string) {
   const out = await babel.transformAsync(code, {
+    ast: true,
     configFile: './babel-config-test.cjs',
     filename: 'test.tsx',
   })

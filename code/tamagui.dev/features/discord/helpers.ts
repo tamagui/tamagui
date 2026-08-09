@@ -1,3 +1,5 @@
+import { serverEnv } from '../api/serverEnv'
+
 export const TAKEOUT_ROLE_ID = '1131082605052301403'
 export const TAMAGUI_DISCORD_GUILD_ID = '909986013848412191'
 export const TAKEOUT_GROUP_ID = '1131249991256657950' // group id
@@ -9,7 +11,7 @@ export const getDiscordClient = async () => {
   const { REST } = await import('@discordjs/rest')
   const { WebSocketManager } = await import('@discordjs/ws')
 
-  const token = process.env.DISCORD_BOT_TOKEN!
+  const token = serverEnv('DISCORD_BOT_TOKEN')!
 
   const rest = new REST({ version: '10' }).setToken(token)
 

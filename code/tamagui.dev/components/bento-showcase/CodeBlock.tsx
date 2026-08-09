@@ -7,6 +7,7 @@ import { YStack } from 'tamagui'
 import { toHtml } from 'hast-util-to-html'
 import parse from 'rehype-parse'
 import { unified } from 'unified'
+import { renderSafeHastNodes } from '~/features/security/renderSafeHtml'
 
 refractor.register(tsx)
 
@@ -35,7 +36,6 @@ export default React.forwardRef<HTMLPreElement, CodeBlockProps>(
     let result: any = refractor.highlight(value, language)
     result = highlightLine(result, rangeParser(line))
     result = highlightWord(result)
-    result = toHtml(result)
     const classes = `language-${language} ${className}`
     // if (mode === 'typewriter') {
     //   return <CodeTypewriter className={classes} variant="" value={result} {...props} />
@@ -48,7 +48,7 @@ export default React.forwardRef<HTMLPreElement, CodeBlockProps>(
         data-line-numbers={showLineNumbers}
         {...props}
       >
-        <Code className={classes} dangerouslySetInnerHTML={{ __html: result }} />
+        <Code className={classes}>{renderSafeHastNodes(result)}</Code>
       </Pre>
     )
   }
@@ -162,18 +162,71 @@ function highlightLine(ast, lines) {
   return wrapLines(numbered, lines)
 }
 
-const CALLOUT = /__(.*?)__/g
+const highlightWord = (nodes) => {
+  return nodes.flatMap((node) => wrapCallouts(node))
+}
 
-const highlightWord = (code) => {
-  const html = toHtml(code)
-  const result = html.replace(
-    CALLOUT,
-    (_, text) => `<span class="highlight-word">${text}</span>`
-  )
-  const hast = unified()
-    .use(parse, { emitParseErrors: true, fragment: true })
-    .parse(result)
-  return hast['children']
+const wrapCallouts = (node) => {
+  if (node?.type === 'text' && typeof node.value === 'string') {
+    return splitCallouts(node)
+  }
+
+  if (node?.children) {
+    return [
+      {
+        ...node,
+        children: node.children.flatMap((child) => wrapCallouts(child)),
+      },
+    ]
+  }
+
+  return [node]
+}
+
+const splitCallouts = (node) => {
+  const value = node.value
+  const parts: any[] = []
+  const callout = /__(.*?)__/g
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+
+  while ((match = callout.exec(value))) {
+    if (match.index > lastIndex) {
+      parts.push({
+        ...node,
+        value: value.slice(lastIndex, match.index),
+      })
+    }
+
+    parts.push({
+      type: 'element',
+      tagName: 'span',
+      properties: {
+        className: ['highlight-word'],
+      },
+      children: [
+        {
+          ...node,
+          value: match[1],
+        },
+      ],
+    })
+
+    lastIndex = match.index + match[0].length
+  }
+
+  if (parts.length === 0) {
+    return [node]
+  }
+
+  if (lastIndex < value.length) {
+    parts.push({
+      ...node,
+      value: value.slice(lastIndex),
+    })
+  }
+
+  return parts
 }
 
 import { Paragraph, styled } from 'tamagui'

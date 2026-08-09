@@ -32,6 +32,14 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
       const name = names[i]
 
       if (!name || name === ' ') continue
+      if (name.startsWith('font_')) {
+        if (usedPrefixes.has('fontFamily')) {
+          continue
+        }
+        usedPrefixes.add('fontFamily')
+        final = name + ' ' + final
+        continue
+      }
       if (name[0] !== '_') {
         // not snack style (todo slightly stronger heuristic)
         final = name + ' ' + final

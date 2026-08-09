@@ -1,6 +1,7 @@
 import type { Endpoint } from 'one'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { serverEnv } from '~/features/api/serverEnv'
 
 export const POST: Endpoint = async (req) => {
   const { user } = await ensureAuth({ req })
@@ -19,7 +20,7 @@ export const POST: Endpoint = async (req) => {
   const requestBody = {
     action: 'add',
     email,
-    key: process.env.TAMAGUI_PRO_SECRET,
+    key: serverEnv('TAMAGUI_PRO_SECRET'),
   }
 
   const response = await fetch('https://start.chat/api/tamagui-pro', {

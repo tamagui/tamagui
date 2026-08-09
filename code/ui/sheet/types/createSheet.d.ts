@@ -28,6 +28,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
+    disableTransparencyHide?: boolean;
     native?: "ios"[] | boolean;
     transition?: import("@tamagui/core").TransitionProp;
     handleDisableScroll?: boolean;

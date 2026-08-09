@@ -153,15 +153,20 @@ export function useEvents(
     const callbacksRef = useRef<any>(isUsingRNGH ? {} : null)
     const gestureRef = useRef<any>(null)
 
+    // Real press handlers use the responder system for delivery even when RNGH
+    // is configured. RNGH Tap begin/end ordering is not stable enough for
+    // nested Tamagui press arbitration, and Fabric can mount a stale Tap that
+    // claims responder but never finalizes. The responder path is the source of
+    // truth RN already uses for innermost press ownership.
+    //
     // Android pressStyle-only fallback: wire synthesized press handlers to the
     // responder system on viewProps instead of an RNGH Manual observer (which
     // freezes Android — see top-of-file isAndroid comment). Hook is called
     // unconditionally here for stable hooks order; useMainThreadPressEvents
     // no-ops when enabled is false.
     const useResponderFallback =
-      getIsAndroid() &&
-      !(hasRealPressEvents || stateRef.current.hasRealPressEvents) &&
-      Boolean(hasPressEvents)
+      !isInsideNativeMenu &&
+      Boolean(hasRealPressEvents || (getIsAndroid() && hasPressEvents))
     useMainThreadPressEvents(events, viewProps, useResponderFallback, debugName)
 
     if (everEnabled) {
@@ -174,6 +179,14 @@ export function useEvents(
             onLongPress: events.onLongPress,
           }
         : {}
+
+      if (hasRealPressEvents && !isInsideNativeMenu) {
+        // Real handlers are delivered by useMainThreadPressEvents above. Clear
+        // any cached pressStyle observer from an earlier render so it cannot
+        // double-fire after onPress appears dynamically.
+        gestureRef.current = null
+        return null
+      }
 
       // only create gesture once, callbacks are read from ref
       if (!gestureRef.current) {
@@ -197,19 +210,6 @@ export function useEvents(
               callbacksRef.current.onPressOut?.({})
             })
           gestureRef.current = manual
-        } else if (hasRealPressEvents || stateRef.current.hasRealPressEvents) {
-          // real user handler: full PressGesture, participates in the press
-          // ownership token system so nested real-handler children win
-          // arbitration (NestedPressExclusive semantics).
-          gestureRef.current = gh.createPressGesture({
-            debugName,
-            onPressIn: (e: any) => callbacksRef.current.onPressIn?.(e),
-            onPressOut: (e: any) => callbacksRef.current.onPressOut?.(e),
-            onPress: (e: any) => callbacksRef.current.onPress?.(e),
-            onLongPress: (e: any) => callbacksRef.current.onLongPress?.(e),
-            delayLongPress: events?.delayLongPress,
-            hitSlop: viewProps.hitSlop,
-          })
         } else if (!getIsAndroid()) {
           // pressStyle-only (events.onPress was synthesized to drive pressStyle
           // visuals, no user handler): use Manual + manualActivation. Touch
@@ -249,9 +249,10 @@ export function useEvents(
 export function wrapWithGestureDetector(
   content: any,
   gesture: any,
-  stateRef: { current: TamaguiComponentStateRef },
+  _stateRef: { current: TamaguiComponentStateRef },
   isHOC?: boolean,
-  isCompositeComponent?: boolean
+  isCompositeComponent?: boolean,
+  hasRealPressEvents?: boolean
 ) {
   // Skip wrapping for HOC and composite components - they pass press events
   // to the inner component via props instead of using GestureDetector
@@ -260,25 +261,12 @@ export function wrapWithGestureDetector(
   }
 
   const gh = getGestureHandler()
-  const { GestureDetector, Gesture } = gh.state
+  const { GestureDetector } = gh.state
 
-  // wrap whenever any press gesture was attached (real handler OR
-  // synthesized pressStyle observer). only the real-handler path claims
-  // the responder on Paper — observers must not preempt parents.
-  // On Android we skip the observer gesture entirely (see top-of-file
-  // isAndroid comment), so the wrap is real-handlers-only there.
-  const shouldWrap = getIsAndroid()
-    ? stateRef.current.hasRealPressEvents
-    : stateRef.current.hasHadEvents
-
-  if (!GestureDetector || !shouldWrap) {
-    return content
-  }
-
-  // use actual gesture or no-op Manual gesture to maintain tree structure
-  const gestureToUse = gesture || Gesture?.Manual()
-
-  if (!gestureToUse) {
+  // Only wrap when useEvents actually produced an RNGH gesture. Real press
+  // handlers are responder-delivered; wrapping them in a no-op GestureDetector
+  // recreates the same stale Tap/dead-zone failure mode this path avoids.
+  if (!GestureDetector || !gesture) {
     return content
   }
 
@@ -288,8 +276,8 @@ export function wrapWithGestureDetector(
   // where the View carries the merged navigate handler and the inner Button
   // has only pressStyle). The Manual gesture observes touches on the UI thread
   // for fast pressStyle visuals without participating in arbitration.
-  if (!stateRef.current.hasRealPressEvents) {
-    return React.createElement(GestureDetector, { gesture: gestureToUse }, content)
+  if (!hasRealPressEvents) {
+    return React.createElement(GestureDetector, { gesture }, content)
   }
 
   if (isFabric) {
@@ -310,7 +298,7 @@ export function wrapWithGestureDetector(
     const claimed = React.cloneElement(content, {
       onStartShouldSetResponder: responderClaim,
     })
-    return React.createElement(GestureDetector, { gesture: gestureToUse }, claimed)
+    return React.createElement(GestureDetector, { gesture }, claimed)
   }
 
   // Paper: keep the hoisted display:contents wrapper. claiming on the gesture
@@ -325,6 +313,6 @@ export function wrapWithGestureDetector(
       style: responderWrapperStyle,
       onStartShouldSetResponder: responderClaim,
     },
-    React.createElement(GestureDetector, { gesture: gestureToUse }, content)
+    React.createElement(GestureDetector, { gesture }, content)
   )
 }

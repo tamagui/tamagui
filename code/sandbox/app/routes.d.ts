@@ -6,7 +6,7 @@ import type { OneRouter } from 'one'
 declare module 'one' {
   export namespace OneRouter {
     export interface __routes<T extends string = string> extends Record<string, unknown> {
-      StaticRoutes: 
+      StaticRoutes:
         | `/`
         | `/_sitemap`
         | `/hydration-css`
@@ -19,12 +19,14 @@ declare module 'one' {
         | `/sub/portal-missing-styles`
         | `/test/rn-style-props`
         | `/test/scrollview-hide-scrollbar`
+        | `/test/sheet-late-open`
+        | `/test/sheet-unmount-when-hidden`
         | `/tooltip-heavy-ssr`
         | `/tooltip-ssr`
-      DynamicRoutes: 
+      DynamicRoutes:
         | `/bento/${OneRouter.SingleRoutePart<T>}`
         | `/test/${OneRouter.SingleRoutePart<T>}`
-      DynamicRouteTemplate: 
+      DynamicRouteTemplate:
         | `/bento/[slug]`
         | `/test/[slug]`
       IsTyped: true

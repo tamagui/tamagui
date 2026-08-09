@@ -1,8 +1,10 @@
 {
   "name": "bento-get",
-  "version": "2.3.0",
+  "version": "2.7.4",
   "license": "MIT",
-  "bin": "dist/cli.js",
+  "bin": {
+    "bento-get": "dist/cli.js"
+  },
   "source": "src/cli.tsx",
   "files": [
     "source",
@@ -50,7 +52,7 @@
     "open": "^10.1.0",
     "pastel": "3.0.0",
     "react": "npm:react@18.3.1",
-    "react-router-dom": "7.3.0",
+    "react-router-dom": "^7.18.0",
     "swr": "^2.2.5",
     "type-fest": "4.37.0",
     "zod": "^3.25.67"

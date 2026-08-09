@@ -4,7 +4,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
 import { needsPortalRepropagation } from '@tamagui/portal'
-import { YStack } from '@tamagui/stacks'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import { VIEWPORT_NAME } from './constants'
@@ -19,7 +19,9 @@ import type { SelectViewportExtraProps } from './types'
  * SelectViewport
  * -----------------------------------------------------------------------------------------------*/
 
-export const SelectViewportFrame = styled(YStack, {
+// must extend ThemeableStack (not YStack) so the `elevate` and `bordered`
+// variants used below resolve via stacks/variants instead of leaking to DOM.
+export const SelectViewportFrame = styled(ThemeableStack, {
   name: VIEWPORT_NAME,
 
   variants: {

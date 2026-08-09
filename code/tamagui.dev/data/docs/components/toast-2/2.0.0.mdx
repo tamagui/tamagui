@@ -36,33 +36,25 @@ Optionally install [Burnt](https://github.com/nandorojo/burnt) for native OS-lev
 ## Quick Start
 
 ```tsx
-import { Toast, toast, useToasts } from '@tamagui/toast/v2'
+import { Toast, toast } from '@tamagui/toast/v2'
 
 function App() {
   return (
     <Toast position="bottom-right">
       <Toast.Viewport>
-        <ToastList />
+        <Toast.List
+          renderItem={({ toast: t, index }) => (
+            <Toast.Item key={t.id} toast={t} index={index}>
+              <Toast.Title>{t.title}</Toast.Title>
+              <Toast.Description>{t.description}</Toast.Description>
+              <Toast.Close />
+            </Toast.Item>
+          )}
+        />
       </Toast.Viewport>
 
       <Button onPress={() => toast('Hello!')}>Show Toast</Button>
     </Toast>
-  )
-}
-
-function ToastList() {
-  const { toasts } = useToasts()
-
-  return (
-    <>
-      {toasts.map((t, index) => (
-        <Toast.Item key={t.id} toast={t} index={index}>
-          <Toast.Title>{t.title}</Toast.Title>
-          <Toast.Description>{t.description}</Toast.Description>
-          <Toast.Close />
-        </Toast.Item>
-      ))}
-    </>
   )
 }
 ```
@@ -245,7 +237,7 @@ Action button. Extends Stack.
 
 ### useToasts
 
-Hook to access toast state inside `<Toast>`:
+Hook to access toast state from a descendant of `<Toast>`. Most apps should use `<Toast.List>` for rendering and reach for this hook only when they need custom list control.
 
 ```tsx
 const { toasts, expanded, position } = useToasts()
@@ -325,3 +317,5 @@ function App() {
   )
 }
 ```
+
+Mount `<Toaster>` inside your `TamaguiProvider`, usually next to your app navigation or root layout.

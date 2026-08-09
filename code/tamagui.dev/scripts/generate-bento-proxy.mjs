@@ -1,9 +1,33 @@
 import { mkdirSync } from 'node:fs'
 import { existsSync, writeFileSync, readFileSync } from 'node:fs'
+import { homedir } from 'node:os'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
+
+/**
+ * Resolve the optional bento repo. Bento is a sibling checkout (pro features
+ * only). The normal `~/tamagui` checkout finds it via the sibling-relative
+ * path, but git worktrees (e.g. `~/.worktrees/tamagui-main`) break that
+ * relative path, so we also check `$TAMAGUI_BENTO_PATH` and `~/bento`.
+ *
+ * @param {string} basePath - Base path for sibling resolution (script dir)
+ * @returns {string | null} - Absolute path to the bento repo, or null
+ */
+export function resolveBentoPath(basePath = __dirname) {
+  const candidates = [
+    process.env.TAMAGUI_BENTO_PATH,
+    resolve(basePath, '../../../../bento'),
+    resolve(homedir(), 'bento'),
+  ]
+  for (const candidate of candidates) {
+    if (candidate && existsSync(candidate)) {
+      return candidate
+    }
+  }
+  return null
+}
 
 /**
  * Generate bento proxy files based on whether the bento repo is available.
@@ -17,9 +41,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 export function generateBentoProxy(options = {}) {
   const { basePath = __dirname, silent = false } = options
 
-  const BENTO_PATH = resolve(basePath, '../../../../bento')
+  const BENTO_PATH = resolveBentoPath(basePath)
   const HELPERS_DIST_PATH = resolve(basePath, '../helpers/dist')
-  const hasBento = existsSync(BENTO_PATH)
+  const hasBento = !!BENTO_PATH
 
   // Ensure dist exists
   mkdirSync(HELPERS_DIST_PATH, { recursive: true })
@@ -31,7 +55,7 @@ export function generateBentoProxy(options = {}) {
 
   // Skip if already generated with correct state and has all exports
   if (existingContent && isStub === !hasBento && hasCurrentRouteProvider) {
-    return { hasBento }
+    return { hasBento, bentoPath: BENTO_PATH }
   }
 
   if (!hasBento) {
@@ -87,7 +111,7 @@ export * as Sections from '../../components/bento-showcase/sections'
     }
   }
 
-  return { hasBento }
+  return { hasBento, bentoPath: BENTO_PATH }
 }
 
 // Run if called directly (postinstall script)

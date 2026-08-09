@@ -414,7 +414,7 @@ declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 
   interface TypeOverride {
-    groupNames(): 'testy'
+    groupNames(): 'testy' | 'root' | `nested-${number}`
   }
 }
 

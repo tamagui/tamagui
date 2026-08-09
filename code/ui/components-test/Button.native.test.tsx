@@ -1,10 +1,68 @@
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { Button } from '@tamagui/button'
-import { TamaguiProvider, createTamagui, styled } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/core'
+import {
+  getGestureHandler,
+  unstable_claimExternalPressOwnership,
+  unstable_hasExternalPressOwnership,
+  unstable_releaseExternalPressOwnership,
+} from '@tamagui/native'
+import type { ReactNode } from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
-import { describe, expect, test } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
+const GESTURE_ENABLED_FREEZE_KEY = '__tamagui_gesture_enabled_freeze__'
+
+function createGestureStub() {
+  const gesture: any = {}
+
+  for (const method of [
+    'runOnJS',
+    'maxDuration',
+    'minDuration',
+    'manualActivation',
+    'hitSlop',
+    'onBegin',
+    'onStart',
+    'onEnd',
+    'onFinalize',
+    'onTouchesDown',
+    'onTouchesMove',
+    'onTouchesUp',
+    'onTouchesCancelled',
+  ]) {
+    gesture[method] = () => gesture
+  }
+
+  return gesture
+}
+
+function resetGestureHandlerFreeze() {
+  delete (globalThis as any)[GESTURE_ENABLED_FREEZE_KEY]
+}
+
+function setGestureHandlerEnabled(
+  enabled: boolean,
+  GestureDetector?: any,
+  GestureOverrides?: Record<string, any>
+) {
+  getGestureHandler().set({
+    enabled,
+    GestureDetector: enabled ? GestureDetector : null,
+    Gesture: enabled
+      ? {
+          Tap: createGestureStub,
+          LongPress: createGestureStub,
+          Manual: createGestureStub,
+          Exclusive: (...gestures: any[]) => gestures[0],
+          ...GestureOverrides,
+        }
+      : null,
+    ScrollView: null,
+    RootView: null,
+  })
+}
 
 async function renderButton(element: React.ReactElement) {
   let rendered: TestRenderer.ReactTestRenderer | null = null
@@ -41,6 +99,18 @@ function flattenStyle(style: any): Record<string, any> {
 
   return style || {}
 }
+
+beforeEach(() => {
+  resetGestureHandlerFreeze()
+  setGestureHandlerEnabled(false)
+})
+
+afterEach(() => {
+  vi.useRealTimers()
+  vi.restoreAllMocks()
+  resetGestureHandlerFreeze()
+  setGestureHandlerEnabled(false)
+})
 
 describe('Button native text props', () => {
   test('passes maxFontSizeMultiplier from root props to wrapped text', async () => {
@@ -99,5 +169,99 @@ describe('Button native text props', () => {
     const rendered = await renderButton(<Button>HELLO</Button>)
 
     expect(flattenStyle(findWrappedText(rendered).props.style).cursor).toBeUndefined()
+  })
+
+  test('uses responder events for real press handlers when RNGH is enabled', async () => {
+    vi.useFakeTimers()
+
+    const GestureDetector = ({ children }: { children: ReactNode }) => {
+      return children
+    }
+    let tapGestureCalls = 0
+    setGestureHandlerEnabled(true, GestureDetector, {
+      Tap: () => {
+        tapGestureCalls += 1
+        return createGestureStub()
+      },
+    })
+
+    const onPressIn = vi.fn()
+    const onPress = vi.fn()
+    const onPressOut = vi.fn()
+
+    const rendered = await renderButton(
+      <View
+        width={10}
+        height={10}
+        minPressDuration={0}
+        onPressIn={onPressIn}
+        onPress={onPress}
+        onPressOut={onPressOut}
+      />
+    )
+
+    expect(tapGestureCalls).toBe(0)
+
+    const responderNode = rendered.root.find(
+      (node) =>
+        typeof node.props.onResponderGrant === 'function' &&
+        typeof node.props.onResponderRelease === 'function'
+    )
+
+    await act(async () => {
+      responderNode.props.onResponderGrant({})
+      responderNode.props.onResponderRelease({})
+      vi.runAllTimers()
+    })
+
+    expect(onPressIn).toHaveBeenCalledTimes(1)
+    expect(onPress).toHaveBeenCalledTimes(1)
+    expect(onPressOut).toHaveBeenCalledTimes(1)
+  })
+
+  test('responder press fallback respects external press ownership', async () => {
+    vi.useFakeTimers()
+
+    setGestureHandlerEnabled(true, ({ children }: { children: ReactNode }) => children)
+
+    const onPressIn = vi.fn()
+    const onPress = vi.fn()
+    const onPressOut = vi.fn()
+
+    const rendered = await renderButton(
+      <Button
+        minPressDuration={0}
+        onPressIn={onPressIn}
+        onPress={onPress}
+        onPressOut={onPressOut}
+      >
+        HELLO
+      </Button>
+    )
+
+    const responderNodes = rendered.root.findAll(
+      (node) =>
+        typeof node.props.onStartShouldSetResponder === 'function' &&
+        typeof node.props.onResponderGrant === 'function' &&
+        typeof node.props.onResponderRelease === 'function'
+    )
+
+    const owner = unstable_claimExternalPressOwnership('button-test')
+    expect(unstable_hasExternalPressOwnership()).toBe(true)
+    const responderNode = responderNodes.find(
+      (node) => node.props.onStartShouldSetResponder({}) === false
+    )
+    expect(responderNode).toBeTruthy()
+
+    await act(async () => {
+      responderNode!.props.onResponderGrant({})
+      unstable_releaseExternalPressOwnership(owner, 'button-test')
+      responderNode!.props.onResponderRelease({})
+      vi.runAllTimers()
+    })
+
+    expect(onPressIn).not.toHaveBeenCalled()
+    expect(onPress).not.toHaveBeenCalled()
+    expect(onPressOut).not.toHaveBeenCalled()
   })
 })

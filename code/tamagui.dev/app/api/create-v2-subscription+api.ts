@@ -3,6 +3,8 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { getParityDiscount } from '~/features/geo-pricing/parityConfig'
+import { getTrustedCountryCode } from '~/features/geo-pricing/trustedCountry'
+import { getCheckoutCouponId } from '~/features/site/purchase/promoConfig'
 import { assertValidCoupon } from '~/features/stripe/assertValidCoupon'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
@@ -49,14 +51,18 @@ export default apiRoute(async (req) => {
 
   // Project info is now collected after payment in the account modal
   const { paymentMethodId, couponId, supportTier } = await req.json()
+  const checkoutCouponId = getCheckoutCouponId(couponId)
 
   // Validate required fields
   if (!paymentMethodId) {
     return Response.json({ error: 'Payment method is required' }, { status: 400 })
   }
 
-  // Get parity discount from Cloudflare header (server-side validation - can't be spoofed)
-  const countryCode = req.headers.get('CF-IPCountry')
+  // Parity discount applies to the actual charge, so the country must come from a
+  // request proven to have transited Cloudflare (getTrustedCountryCode) -- a direct
+  // origin hit can't spoof CF-IPCountry to discount the price. Unverified -> null ->
+  // 0% discount (full price).
+  const countryCode = getTrustedCountryCode(req)
   const parityDiscountPercent = getParityDiscount(countryCode)
 
   // Track created resources for rollback
@@ -67,10 +73,10 @@ export default apiRoute(async (req) => {
   try {
     const { user } = await ensureAuth({ req })
 
-    // server-side coupon validation: a client-supplied coupon must be valid and
-    // actually apply to the V2 license product before we let it discount the charge
-    if (couponId) {
-      await assertValidCoupon(couponId, STRIPE_PRODUCTS.PRO_V2_LICENSE.productId)
+    // server-side coupon validation: the requested or configured promotion must be
+    // valid and apply to the V2 license product before it discounts the charge.
+    if (checkoutCouponId) {
+      await assertValidCoupon(checkoutCouponId, STRIPE_PRODUCTS.PRO_V2_LICENSE.productId)
     }
 
     // Deterministic idempotency base so request retries reuse Stripe operations.
@@ -78,7 +84,7 @@ export default apiRoute(async (req) => {
     const idempotencyBase = [
       user.id,
       paymentMethodId,
-      couponId || 'no_coupon',
+      checkoutCouponId || 'no_coupon',
       supportTier || 'chat',
       countryCode || 'XX',
     ].join('_')
@@ -172,7 +178,7 @@ export default apiRoute(async (req) => {
         customer: stripeCustomerId,
         collection_method: 'charge_automatically',
         auto_advance: true,
-        discounts: couponId ? [{ coupon: couponId }] : [],
+        discounts: checkoutCouponId ? [{ coupon: checkoutCouponId }] : [],
         metadata: {
           version: 'v2',
           type: 'pro_v2_license',

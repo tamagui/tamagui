@@ -202,6 +202,7 @@ export type ThemeState = {
     theme: ThemeParsed;
     parentName?: string;
     isInverse?: boolean;
+    inverses?: number;
     isNew?: boolean;
     parentId?: string;
     scheme?: 'light' | 'dark';
@@ -310,6 +311,7 @@ export type TamaguiComponentStateRef = {
     isListeningToTheme?: boolean;
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
+    baseSetStateShallow?: ComponentSetStateShallow;
     useStyleListener?: UseStyleListener;
     updateStyleListener?: () => void;
     group?: ComponentGroupEmitter;
@@ -984,7 +986,8 @@ export type SpecificTokensSpecial = TamaguiSettings extends {
 export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']>;
 export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace;
 type ColorTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
-export type ColorTokens = ColorTokenBase | CSSColorNames | `${ColorTokenBase & string}/${number}`;
+type TokenWithOpacity = `$${string}/${number}`;
+export type ColorTokens = ColorTokenBase | CSSColorNames | TokenWithOpacity;
 export type ZIndexTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number;
 export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | ThemeValueFallbackRadius | number | RemString;
 export type NonSpecificTokens = GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
@@ -1003,7 +1006,7 @@ export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | num
 export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;
 type FontColorTokenBase = `$${GetTokenFontKeysFor<'color'>}`;
-export type FontColorTokens = FontColorTokenBase | number | `${FontColorTokenBase}/${number}`;
+export type FontColorTokens = FontColorTokenBase | number | TokenWithOpacity;
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number | RemString;
 export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | RNTextStyle['fontStyle'];
 export type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | RNTextStyle['textTransform'];
@@ -1034,8 +1037,9 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
 export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValueGet<K> | ThemeValueFallback | (TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
 } ? Val extends true | undefined ? SpecificTokens : never : never);
+export type SafeAreaValueKeys = 'padding' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingHorizontal' | 'paddingVertical' | 'paddingStart' | 'paddingEnd' | 'paddingBlock' | 'paddingInline' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInlineStart' | 'paddingInlineEnd' | 'margin' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginHorizontal' | 'marginVertical' | 'marginStart' | 'marginEnd' | 'marginBlock' | 'marginInline' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInlineStart' | 'marginInlineEnd' | 'inset' | 'top' | 'bottom' | 'left' | 'right' | 'start' | 'end';
 export type WithThemeValues<T extends object> = {
-    [K in keyof T]: ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset';
+    [K in keyof T]: (ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset') | (K extends SafeAreaValueKeys ? 'safe' : never);
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
@@ -1591,6 +1595,7 @@ export type GetStyleState = {
     flatTransforms?: Record<string, any>;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
+    tokenProvenance?: Record<string, string>;
     pseudoTransitions?: PseudoTransitions | null;
     animationDriver?: AnimationDriver | null;
 };

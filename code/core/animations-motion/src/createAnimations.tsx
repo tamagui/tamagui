@@ -17,8 +17,10 @@ import {
   View,
 } from '@tamagui/web'
 import {
+  animate as animateMotionValue,
   type AnimationOptions,
   type AnimationPlaybackControlsWithThen,
+  motionValue,
   type MotionValue,
   useAnimate,
   useMotionValue,
@@ -93,6 +95,34 @@ type AnimationProps = {
   animationOptions?: AnimationOptions
 }
 
+// popper position (data-popper-animate-position) transform animation state.
+// position retargets constantly while the pointer crosses triggers — WAAPI
+// can only cancel + restart from rest each time, which freezes the element
+// for a frame and zeroes velocity (the tooltip visibly stutters and falls
+// behind). driving translate x/y through motion values instead gives spring
+// retargeting with velocity continuity: each new target continues from the
+// live position AND live velocity.
+type PopperPositionAnim = {
+  x: MotionValue<number>
+  y: MotionValue<number>
+  stop: (() => void) | null
+}
+const PopperPositionAnims = new WeakMap<HTMLElement, PopperPositionAnim>()
+
+// parse a css transform into translate x/y. returns null when the transform
+// has non-translate components (rotate/scale/skew) — those fall back to the
+// WAAPI path since we can't losslessly re-compose them per-frame.
+function parseTranslate(transform: string | undefined): { x: number; y: number } | null {
+  if (!transform || transform === 'none') return { x: 0, y: 0 }
+  try {
+    const m = new DOMMatrixReadOnly(transform)
+    if (!m.is2D || m.a !== 1 || m.b !== 0 || m.c !== 0 || m.d !== 1) return null
+    return { x: m.e, y: m.f }
+  } catch {
+    return null
+  }
+}
+
 // internal refs consolidated into a single object
 type MotionRefs = {
   isFirstRender: boolean
@@ -109,6 +139,7 @@ type MotionRefs = {
   exitCompleteScheduled: boolean
   wasEntering: boolean
   wasDisabled: boolean
+  wasNoClass: boolean
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -138,8 +169,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         isHydratingGlobal = true
       }
 
-      const { props, style, componentState, stateRef, useStyleEmitter, presence } =
-        animationProps
+      const {
+        props,
+        style,
+        componentState,
+        stateRef,
+        useStyleEmitter,
+        presence,
+        styleProps,
+      } = animationProps
 
       const animationKey = Array.isArray(props.transition)
         ? props.transition[0]
@@ -169,6 +207,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           exitCompleteScheduled: false,
           wasEntering: false,
           wasDisabled: false,
+          wasNoClass: !!styleProps.noClass,
         }
       }
 
@@ -340,6 +379,105 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 refs.current.frozenExitTarget = { ...doAnimate }
               }
 
+              const isPopperPosition = node.hasAttribute('data-popper-animate-position')
+
+              // popper position path: drive translate x/y through motion
+              // values (see PopperPositionAnims). retargeting a running spring
+              // continues from live position + velocity instead of WAAPI's
+              // cancel-freeze-restart-from-rest, which made a shared tooltip
+              // stutter and fall behind when the pointer crossed triggers
+              // quickly. exit is excluded: the WAAPI exit path owns its frozen
+              // target and completion signaling.
+              let popperHandledTransform = false
+              if (
+                isPopperPosition &&
+                !isCurrentlyExiting &&
+                typeof diff.transform === 'string'
+              ) {
+                const target = parseTranslate(diff.transform as string)
+                if (target) {
+                  let entry = PopperPositionAnims.get(node)
+                  if (!entry) {
+                    // seed from the current visual position so the first
+                    // animated move starts where the element actually is
+                    let seed = target
+                    try {
+                      seed = parseTranslate(getComputedStyle(node).transform) ?? target
+                    } catch {
+                      // getComputedStyle can fail on detached nodes
+                    }
+                    const x = motionValue(seed.x)
+                    const y = motionValue(seed.y)
+                    const write = () => {
+                      node.style.transform = `translate3d(${x.get()}px, ${y.get()}px, 0)`
+                    }
+                    x.on('change', write)
+                    y.on('change', write)
+                    entry = { x, y, stop: null }
+                    PopperPositionAnims.set(node, entry)
+                  }
+
+                  // if the spring isn't currently running (fresh entry, or a
+                  // WAAPI exit owned the transform since), the motion values
+                  // are stale — re-seed from the live visual position
+                  if (!entry.stop) {
+                    try {
+                      const live = parseTranslate(getComputedStyle(node).transform)
+                      if (live) {
+                        entry.x.jump(live.x)
+                        entry.y.jump(live.y)
+                      }
+                    } catch {
+                      // getComputedStyle can fail on detached nodes
+                    }
+                  }
+
+                  // a WAAPI animation still animating transform (e.g. from an
+                  // interrupted exit) would override our inline writes —
+                  // cancel transform-touching animations only, leaving e.g. an
+                  // in-flight enter opacity animation to complete
+                  for (const anim of node.getAnimations()) {
+                    try {
+                      const kf = (anim.effect as KeyframeEffect | null)?.getKeyframes?.()
+                      if (kf?.some((k) => 'transform' in k)) {
+                        anim.cancel()
+                      }
+                    } catch {
+                      // effect can be disposed mid-iteration
+                    }
+                  }
+
+                  const opts = animationOptions as TransitionAnimationOptions
+                  const positionTransition =
+                    opts.transform ?? opts.default ?? animationOptions
+                  const cx = animateMotionValue(
+                    entry.x,
+                    target.x,
+                    positionTransition as ValueTransition
+                  )
+                  const cy = animateMotionValue(
+                    entry.y,
+                    target.y,
+                    positionTransition as ValueTransition
+                  )
+                  entry.stop = () => {
+                    cx.stop()
+                    cy.stop()
+                  }
+                  popperHandledTransform = true
+                }
+              }
+
+              // when exit takes over the transform, stop the motion-value
+              // spring so the WAAPI exit animation owns the property
+              if (isCurrentlyExiting) {
+                const entry = PopperPositionAnims.get(node)
+                if (entry?.stop) {
+                  entry.stop()
+                  entry.stop = null
+                }
+              }
+
               // capture mid-flight values so we can provide explicit [from, to]
               // keyframes to WAAPI, ensuring smooth interpolation from the
               // current visual state.
@@ -348,7 +486,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // naturally replaces only conflicting property animations,
               // letting non-conflicting ones (like an in-flight enter
               // opacity animation) continue to completion.
-              const isPopperPosition = node.hasAttribute('data-popper-animate-position')
               let midFlightValues: Record<string, string> | null = null
               if (refs.current.controls) {
                 try {
@@ -373,6 +510,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 // position instead of stale inline styles
                 if (midFlightValues) {
                   for (const key in midFlightValues) {
+                    // the motion-value spring owns transform and is already at
+                    // the live value — a stale computed matrix would fight it
+                    if (key === 'transform' && popperHandledTransform) continue
                     ;(node.style as any)[key] = midFlightValues[key]
                   }
                 }
@@ -382,7 +522,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 // and skips commitStyles. without this, commitStyles writes
                 // a mid-flight transform that's visible for 1 frame before
                 // the new animation starts, causing a flash toward (0,0).
-                if (isPopperPosition) {
+                // skipped when the motion-value path took the transform — it
+                // already canceled transform-touching animations and the rest
+                // (e.g. enter opacity) should continue.
+                if (isPopperPosition && !popperHandledTransform) {
                   const anims = node.getAnimations()
                   for (const anim of anims) {
                     anim.cancel()
@@ -397,13 +540,46 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               )
 
               // provide explicit [from, to] keyframe for transforms during
-              // mid-flight interruption so motion starts from the right place
-              if (midFlightValues?.transform && fixedDiff.transform) {
-                fixedDiff.transform = [midFlightValues.transform, fixedDiff.transform]
+              // mid-flight interruption so motion starts from the right place —
+              // but ONLY when we've torn down the previous animation (popper
+              // cancel above, or exit stop()). otherwise the prior WAAPI
+              // transform animation is still running, and pinning a one-frame-
+              // stale `from` matrix makes each new flush re-start the animation
+              // from that stale base instead of continuing from the live value.
+              // for a plain transition element being interrupted repeatedly
+              // (the tamagui.dev logo dot swept back and forth — worse the more
+              // concurrent React work the page is doing, since each render flushes
+              // again) that reads as a constant stutter/reset instead of a smooth
+              // glide. in the un-torn-down case motion's resolver already
+              // interpolates from the live value, so leave it alone. (regressed in
+              // 9485bcef0e when this keyframe was ungated; covered by
+              // LogoDotInterrupt.animated.test.tsx)
+              //
+              // note: an earlier version also keyframed entering-presence-child
+              // interrupts, but enter no longer tears down (see the stop() comment
+              // above — WAAPI replaces conflicting props per-property), so those
+              // now rely on the same live-value interpolation. covered by
+              // PopoverClickDuringEnter / AnimatePresenceEnterExit.
+              // the motion-value spring owns transform — keep it out of the
+              // WAAPI animation so the two don't double-drive the property
+              let waapiDiff = fixedDiff
+              if (popperHandledTransform && 'transform' in waapiDiff) {
+                waapiDiff = { ...waapiDiff }
+                delete waapiDiff.transform
               }
 
-              startedControls = animate(scope.current, fixedDiff, animationOptions)
-              refs.current.controls = startedControls
+              if (
+                (isPopperPosition || isCurrentlyExiting) &&
+                midFlightValues?.transform &&
+                waapiDiff.transform
+              ) {
+                waapiDiff.transform = [midFlightValues.transform, waapiDiff.transform]
+              }
+
+              if (Object.keys(waapiDiff).length > 0) {
+                startedControls = animate(scope.current, waapiDiff, animationOptions)
+                refs.current.controls = startedControls
+              }
               refs.current.lastAnimateAt = Date.now()
             }
           }
@@ -491,11 +667,36 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // animate. components with an explicit enter animation still animate.
         const justEnabled = refs.current.wasDisabled && !disableAnimation
         refs.current.wasDisabled = disableAnimation
-        if (justEnabled && animationState !== 'enter') {
+
+        // SSR hydration handoff: styleProps.noClass flips false -> true on the
+        // render where the core strips the SSR atomic classes and moves every
+        // style inline (outputStyle: 'inline'). the style delta is huge but the
+        // visual state is unchanged — animating it would spring every property
+        // from the stripped (zeroed) computed values, visibly collapsing and
+        // re-growing SSR-painted elements right after load. jump instead: the
+        // inline writes below run pre-paint, so the strip is never visible.
+        const justStrippedClasses = !refs.current.wasNoClass && !!styleProps.noClass
+        refs.current.wasNoClass = !!styleProps.noClass
+
+        if ((justEnabled || justStrippedClasses) && animationState !== 'enter') {
           const node = stateRef.current.host
           if (node instanceof HTMLElement) {
             if (dontAnimate) Object.assign(node.style, dontAnimate)
             if (doAnimate) Object.assign(node.style, doAnimate)
+            // keep the popper position motion values in sync with the direct
+            // inline write so a later retarget doesn't start from a stale spot
+            const entry = PopperPositionAnims.get(node)
+            if (entry) {
+              const target = parseTranslate(
+                (doAnimate?.transform ?? dontAnimate?.transform) as string | undefined
+              )
+              if (target) {
+                entry.stop?.()
+                entry.stop = null
+                entry.x.jump(target.x)
+                entry.y.jump(target.y)
+              }
+            }
           }
           refs.current.lastDontAnimate = dontAnimate ? { ...dontAnimate } : {}
           refs.current.lastDoAnimate = doAnimate ? { ...doAnimate } : {}
@@ -507,7 +708,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [style, isExiting, disableAnimation])
+      }, [style, isExiting, disableAnimation, styleProps.noClass])
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] && props['debug'] !== 'profile') {
@@ -837,6 +1038,9 @@ function createMotionView(defaultTag: string) {
     const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
     const [scope, animate] = useAnimateSSRSafe()
     const hostRef = useRef<HTMLElement>(null)
+    const seededNode = useRef<HTMLElement>(null)
+    const seededInCurrentFrame = useRef(false)
+    const queuedAnimationFrames = useRef(new WeakMap<MotionValue, number>())
     const composedRefs = useComposedRefs(forwardedRef, ref, hostRef, scope)
 
     const stateRef = useRef<any>(null)
@@ -897,65 +1101,106 @@ function createMotionView(defaultTag: string) {
     const Element = render || 'div'
     const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
-    useEffect(() => {
+    // consumers set animated numbers from layout effects, so subscribe before
+    // passive effects to avoid missing a value set in the mounting commit.
+    useIsomorphicLayoutEffect(() => {
       if (!animatedStyle) return
+
+      const node = hostRef.current
+      if (node instanceof HTMLElement && seededNode.current !== node) {
+        const currentStyle = animatedStyle.motionValues
+          ? animatedStyle.getStyle(
+              ...animatedStyle.motionValues.map((value) => value.get())
+            )
+          : animatedStyle.motionValue
+            ? animatedStyle.getStyle(animatedStyle.motionValue.get())
+            : null
+        const webStyle = currentStyle && getProps({ style: currentStyle }).style
+        if (webStyle) {
+          Object.assign(node.style, webStyle)
+          seededNode.current = node
+          seededInCurrentFrame.current = true
+          requestAnimationFrame(() => {
+            if (seededNode.current === node) {
+              seededInCurrentFrame.current = false
+            }
+          })
+        }
+      }
+
+      const toTransition = (
+        animationConfig: AnimatedNumberStrategy | undefined
+      ): AnimationOptions =>
+        animationConfig?.type === 'timing'
+          ? { type: 'tween', duration: (animationConfig?.duration || 0) / 1000 }
+          : animationConfig?.type === 'direct'
+            ? { type: 'tween', duration: 0 }
+            : { type: 'spring', ...(animationConfig as any) }
+
+      const animateNodeTo = (
+        nextStyle: Record<string, unknown>,
+        transition: AnimationOptions,
+        mv: MotionValue
+      ) => {
+        if (!(node instanceof HTMLElement) || hostRef.current !== node) return
+        const webStyle = getProps({ style: nextStyle }).style
+        if (!webStyle) return
+        settlePendingMotionOnFinish(mv, animate(node, webStyle as any, transition))
+      }
+      const animateChangedValue = (
+        nextStyle: Record<string, unknown>,
+        transition: AnimationOptions,
+        mv: MotionValue
+      ) => {
+        if (seededInCurrentFrame.current && seededNode.current === node) {
+          const queuedFrame = queuedAnimationFrames.current.get(mv)
+          if (queuedFrame !== undefined) {
+            cancelAnimationFrame(queuedFrame)
+          }
+          const frame = requestAnimationFrame(() => {
+            if (queuedAnimationFrames.current.get(mv) !== frame) return
+            queuedAnimationFrames.current.delete(mv)
+            if (hostRef.current === node) {
+              animateNodeTo(nextStyle, transition, mv)
+            } else {
+              const onFinish = PendingMotionOnFinish.get(mv)
+              PendingMotionOnFinish.delete(mv)
+              onFinish?.()
+            }
+          })
+          queuedAnimationFrames.current.set(mv, frame)
+          return
+        }
+        animateNodeTo(nextStyle, transition, mv)
+      }
 
       // multi-value path: subscribe to all motion values
       if (animatedStyle.motionValues) {
         const mvs = animatedStyle.motionValues
+        const styleForAll = () => animatedStyle.getStyle(...mvs.map((v) => v.get()))
         const unsubs = mvs.map((mv) =>
-          mv.on('change', () => {
-            const currentValues = mvs.map((v) => v.get())
-            const nextStyle = animatedStyle.getStyle(...currentValues)
-            const animationConfig = MotionValueStrategy.get(mv)
-            const node = hostRef.current
-
-            const webStyle = getProps({ style: nextStyle }).style
-
-            if (webStyle && node instanceof HTMLElement) {
-              const motionAnimationConfig =
-                animationConfig?.type === 'timing'
-                  ? { type: 'tween', duration: (animationConfig?.duration || 0) / 1000 }
-                  : animationConfig?.type === 'direct'
-                    ? { type: 'tween', duration: 0 }
-                    : { type: 'spring', ...(animationConfig as any) }
-
-              const controls = animate(node, webStyle as any, motionAnimationConfig)
-              settlePendingMotionOnFinish(mv, controls)
-            }
-          })
+          mv.on('change', () =>
+            animateChangedValue(
+              styleForAll(),
+              toTransition(MotionValueStrategy.get(mv)),
+              mv
+            )
+          )
         )
         return () => unsubs.forEach((fn) => fn())
       }
 
       // single-value path
-      if (!animatedStyle.motionValue) return
+      const motionValue = animatedStyle.motionValue
+      if (!motionValue) return
 
-      return animatedStyle.motionValue.on('change', (value) => {
-        const nextStyle = animatedStyle.getStyle(value)
-        const animationConfig = MotionValueStrategy.get(animatedStyle.motionValue!)
-        const node = hostRef.current
-
-        const webStyle = getProps({ style: nextStyle }).style
-
-        if (webStyle && node instanceof HTMLElement) {
-          const motionAnimationConfig =
-            animationConfig?.type === 'timing'
-              ? {
-                  type: 'tween',
-                  duration: (animationConfig?.duration || 0) / 1000,
-                }
-              : animationConfig?.type === 'direct'
-                ? { type: 'tween', duration: 0 }
-                : {
-                    type: 'spring',
-                    ...(animationConfig as any),
-                  }
-
-          const controls = animate(node, webStyle as any, motionAnimationConfig)
-          settlePendingMotionOnFinish(animatedStyle.motionValue!, controls)
-        }
-      })
+      return motionValue.on('change', (value) =>
+        animateChangedValue(
+          animatedStyle.getStyle(value),
+          toTransition(MotionValueStrategy.get(motionValue)),
+          motionValue
+        )
+      )
     }, [animatedStyle])
 
     return <Element {...transformedProps} ref={composedRefs} />

@@ -112,10 +112,14 @@ export const getConfigMaybe = () => {
   return getConfigFromGlobalOrLocal()
 }
 
-let tokensMerged: TokensMerged
-export function setTokens(_: TokensMerged) {
-  tokensMerged = _
+// on globalThis for the same reason setConfig puts the config there: a project
+// can load two copies of this package, and only the one that ran createTamagui
+// would have this otherwise
+export function setTokens(next: TokensMerged) {
+  globalThis.__tamaguiTokensMerged = next
 }
+
+const getTokensMerged = (): TokensMerged => globalThis.__tamaguiTokensMerged
 
 export const getTokens = ({
   prefixed,
@@ -132,11 +136,12 @@ export const getTokens = ({
   const { tokens, tokensParsed } = config!
   if (prefixed === false) return tokens as any
   if (prefixed === true) return tokensParsed as any
-  return tokensMerged
+  return getTokensMerged()
 }
 
 export const getTokenObject = (value: Token, group?: keyof Tokens) => {
   const config = getConfigFromGlobalOrLocal()
+  const tokensMerged = getTokensMerged()
   return (
     config!.specificTokens[value] ??
     (group
@@ -167,7 +172,10 @@ export const getThemes = () => getConfigFromGlobalOrLocal()!.themes
 export const updateConfig = (key: string, value: any) => {
   // for usage internally only
   const config = getConfigFromGlobalOrLocal()
-  Object.assign(config![key], value)
+  if (!config || !Object.prototype.hasOwnProperty.call(config, key)) {
+    return
+  }
+  Object.assign(config[key], value)
 }
 
 // searches by value name or token name

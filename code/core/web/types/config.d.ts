@@ -6,7 +6,7 @@ export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
 export declare const getConfig: () => TamaguiInternalConfig;
 export declare const getConfigMaybe: () => TamaguiInternalConfig | null;
-export declare function setTokens(_: TokensMerged): void;
+export declare function setTokens(next: TokensMerged): void;
 export declare const getTokens: ({ prefixed, }?: {
     /**
      * Force either with $ or without $ prefix

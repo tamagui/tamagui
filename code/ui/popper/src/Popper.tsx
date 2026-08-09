@@ -293,6 +293,35 @@ function tamaguiAutoUpdate(
     cleanups.push(registerLayoutNode(reference, update))
   }
 
+  // watch the floating element's SIZE (not position). when content changes
+  // while open (e.g. a shared tooltip swapping labels), the floating rect
+  // resizes and the computed x/y are stale — without this the bubble sits
+  // off-center until some unrelated event triggers an update. ResizeObserver
+  // only fires on size changes, and our own position writes are transforms
+  // (no layout size change), so this cannot loop like watching the rect would.
+  if (typeof ResizeObserver !== 'undefined') {
+    let lastWidth = -1
+    let lastHeight = -1
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[entries.length - 1]
+      if (!entry) return
+      const { width, height } = entry.contentRect
+      // skip the initial observe callback so we don't double the initial update
+      if (lastWidth === -1) {
+        lastWidth = width
+        lastHeight = height
+        return
+      }
+      if (width !== lastWidth || height !== lastHeight) {
+        lastWidth = width
+        lastHeight = height
+        update()
+      }
+    })
+    ro.observe(floating)
+    cleanups.push(() => ro.disconnect())
+  }
+
   // scroll listeners for immediate response (only for real DOM elements)
   const refAncestors = reference instanceof Element ? getOverflowAncestors(reference) : []
   const ancestors = [...refAncestors, ...getOverflowAncestors(floating)]

@@ -388,31 +388,138 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
   expect(output?.styles).toMatchSnapshot()
 })
 
-test('$group- styles are not flattened', async () => {
+test('$group- styles extract to atomic CSS', async () => {
   const output = await extractForWeb(
     `
-    import { View, XStack } from '@tamagui/core'
+    import { View } from '@tamagui/core'
 
     export function Test() {
       return (
-        <XStack group="card">
+        <View group="card">
           <View
             width={100}
             $group-card={{ backgroundColor: 'red' }}
           />
-        </XStack>
+        </View>
+      )
+    }
+  `
+  )
+  // child View should fully flatten to <div> with className — no runtime $group-card prop
+  expect(output?.js).toContain('div')
+  expect(output?.js).not.toContain('$group-card')
+
+  // parent's static `group="card"` should emit container CSS + `t_group_card` className.
+  expect(output?.styles).toContain('container-name: card')
+  expect(output?.styles).toContain('container-type: inline-size')
+  expect(output?.js).toContain('t_group_card')
+
+  // child rule rides off the parent's `.t_group_card` className.
+  expect(output?.styles).toContain('.t_group_card')
+  expect(output?.styles).toContain('background-color')
+})
+
+test('$group- styles with pseudo extract to parent-hover selector', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View group="row">
+          <View
+            width={100}
+            $group-row-hover={{ backgroundColor: 'red' }}
+          />
+        </View>
       )
     }
   `
   )
 
-  // $group- styles should NOT be flattened - they need runtime handling
-  // The component should not be converted to a plain div
-  expect(output?.js).toContain('View')
+  expect(output?.js).toContain('div')
+  expect(output?.js).not.toContain('$group-row-hover')
+  // hover pseudo is matched off the parent's `.t_group_row` class — wrapped in
+  // @media (hover:hover) so touch devices don't sticky-trigger.
+  expect(output?.styles).toContain('.t_group_row:hover')
+  expect(output?.styles).toContain('@media (hover:hover)')
+  expect(output?.styles).toContain('background-color')
+})
+
+test('$group- with untilMeasured on the same parent does NOT extract child group styles', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View group="card" untilMeasured="hide">
+          <View
+            width={100}
+            $group-card={{ backgroundColor: 'red' }}
+          />
+        </View>
+      )
+    }
+  `
+  )
+
+  // child's $group-card must remain inline for runtime measurement gating
+  expect(output?.js).toContain('$group-card')
+  // parent still extracts its container CSS so siblings without untilMeasured
+  // can still use it — only the descendants' group styles bail.
+})
+
+test('$group- styles on an animated element stay on the runtime path (never extract to CSS)', async () => {
+  // Q2 invariant: a static @container class can't drive a JS animation driver's
+  // interpolation, so an animated element's $group- style must NOT extract to CSS.
+  // the compiler enforces this via createExtractor's `animation` de-opt (the whole
+  // element drops to runtime), backed by extractToClassNames' animation guard.
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View group="card">
+          <View
+            width={100}
+            animation="bouncy"
+            $group-card={{ backgroundColor: 'red' }}
+          />
+        </View>
+      )
+    }
+  `
+  )
   expect(output?.js).toContain('$group-card')
 })
 
-test('$theme- styles are not flattened', async () => {
+test('$group- styles on an element with enterStyle stay on the runtime path', async () => {
+  // same Q2 invariant via a different animation surface (enterStyle). guards
+  // against a regression where an animated element's group style leaks into
+  // static @container CSS.
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View group="card">
+          <View
+            width={100}
+            enterStyle={{ opacity: 0 }}
+            $group-card={{ backgroundColor: 'red' }}
+          />
+        </View>
+      )
+    }
+  `
+  )
+  expect(output?.js).toContain('$group-card')
+})
+
+test('$theme- styles extract to atomic CSS', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -429,11 +536,13 @@ test('$theme- styles are not flattened', async () => {
   `
   )
 
-  // $theme- styles should NOT be flattened - they need runtime handling
-  // The component should not be converted to a plain div
-  expect(output?.js).toContain('View')
-  expect(output?.js).toContain('$theme-light')
-  expect(output?.js).toContain('$theme-dark')
+  // fully flattens to a div; styles emitted as theme-scoped rules.
+  expect(output?.js).toContain('div')
+  expect(output?.js).not.toContain('$theme-light')
+  expect(output?.js).not.toContain('$theme-dark')
+  expect(output?.styles).toContain('background-color')
+  expect(output?.styles).toContain('t_light')
+  expect(output?.styles).toContain('t_dark')
 })
 
 test('$platform-web styles are flattened on web', async () => {
@@ -481,6 +590,31 @@ test('$platform-web transition property is preserved', async () => {
   // transition inside $platform-web should be preserved as a CSS property
   expect(output?.styles).toContain('transition')
   expect(output?.styles).toContain('clip-path')
+})
+
+test('CSS-only named transition stays flattened and emits CSS', async () => {
+  const output = await extractForWeb(`
+    import { View } from '@tamagui/core'
+
+    export function Test(props) {
+      return <View transition="medium" opacity={props.active ? 1 : 0} />
+    }
+  `)
+
+  expect({ js: output?.js, styles: output?.styles }).toMatchInlineSnapshot(`
+    {
+      "js": "const _cn3 = "is_View _transition-all300mscub1822784663";
+    const _cn2 = "is_View _transition-all300mscub1822784663 _o-1";
+    const _cn = "is_View _transition-all300mscub1822784663 _o-0";
+    import { View } from '@tamagui/core';
+    export function Test(props) {
+      return <div className={!props.active ? _cn : props.active ? _cn2 : _cn3} />;
+    }",
+      "styles": ":root ._transition-all300mscub1822784663{transition:all 300ms cubic-bezier(0.25, 0.1, 0.25, 1);}
+    :root ._o-1{opacity:1;}
+    :root ._o-0{opacity:0;}",
+    }
+  `)
 })
 
 // Verifies that conditional spread with runtime variable from hook inside map is correctly extracted

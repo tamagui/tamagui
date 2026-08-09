@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as t from '@babel/types'
 import { describe, expect, test } from 'vitest'
 
 import { extractForNative } from './lib/extract'
@@ -143,6 +144,36 @@ describe('flatten-tests', () => {
       `)
 
     expect(output?.code).contains('theme["invalid-identifier"].get()')
+  })
+
+  test(`keeps static props on the runtime component after a dynamic deopt`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test({ color }) {
+        return (
+          <View
+            bg="white"
+            m={16}
+            p={16}
+            borderWidth={4}
+            borderColor={color}
+          />
+        )
+      }
+    `)
+
+    let attributeNames: string[] = []
+    t.traverseFast(output?.ast, (node) => {
+      if (t.isJSXOpeningElement(node) && t.isJSXIdentifier(node.name, { name: 'View' })) {
+        attributeNames = node.attributes.flatMap((attribute) =>
+          t.isJSXAttribute(attribute) && t.isJSXIdentifier(attribute.name)
+            ? [attribute.name.name]
+            : []
+        )
+      }
+    })
+
+    expect(attributeNames).toEqual(['bg', 'm', 'p', 'borderWidth', 'borderColor'])
   })
 
   // TODO make this work:

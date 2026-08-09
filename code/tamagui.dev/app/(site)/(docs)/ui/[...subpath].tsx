@@ -1,6 +1,6 @@
 import { ThemeTint } from '@tamagui/logo'
 import { Theme } from 'tamagui'
-import { getMDXComponent } from 'mdx-bundler/client'
+import { getMDXComponent } from '@vxrn/mdx-rust/client'
 import React, { memo } from 'react'
 import type { LoaderProps } from 'one'
 import { useLoader } from 'one'

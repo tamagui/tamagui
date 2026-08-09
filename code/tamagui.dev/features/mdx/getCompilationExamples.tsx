@@ -1,4 +1,4 @@
-import { createCodeHighlighter } from '@vxrn/mdx'
+import { createCodeHighlighter } from './highlightPlugin'
 import { animationCode, compilationCode } from './codeExamples'
 
 const highlightCode = createCodeHighlighter()

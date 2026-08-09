@@ -228,13 +228,13 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _pos-relative _inset-0px"
+          class="is_View _fd-column _pos-relative _t-0px _r-0px _b-0px _l-0px"
         >
           <div
             class="is_View _fd-column _bg-red"
           >
             <div
-              class="is_View _fd-column _pos-relative _inset-0px _bg-white _col-blue"
+              class="is_View _fd-column _pos-relative _t-0px _r-0px _b-0px _l-0px _bg-white _col-blue"
             />
           </div>
         </div>
@@ -616,7 +616,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-_sm_nowrap _fwr-wrap _gap-t-space-2 _fd-row"
+          class="is_View _fwr-_sm_nowrap _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-wrap _gap-t-space-2 _fd-row"
         >
           <span
             class="is_Text _col-color"

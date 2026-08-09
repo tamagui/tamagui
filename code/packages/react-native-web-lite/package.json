@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-lite",
-  "version": "2.3.0",
+  "version": "2.7.4",
   "description": "React Native for Web",
   "keywords": [
     "react",
@@ -14,7 +14,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tamagui/tamagui.git",
+    "url": "git+https://github.com/tamagui/tamagui.git",
     "directory": "packages/react-native-web-lite"
   },
   "files": [

@@ -355,7 +355,8 @@ The old React Native props still work but are deprecated.
 
 ### Image
 
-Image now uses web-standard `src` instead of React Native's `source`:
+Image now prefers web-standard `src` for URLs and native `require()` results.
+React Native's `source` remains supported during migration, but is deprecated:
 
 ```tsx
 // before
@@ -372,6 +373,9 @@ Image now uses web-standard `src` instead of React Native's `source`:
   objectFit="cover"
 />
 ```
+
+The `width` and `height` props control layout. Percentage dimensions also work
+when the parent has defined dimensions.
 
 ### Button
 

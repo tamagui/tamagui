@@ -1,9 +1,14 @@
-import { useRef } from 'react'
+import { useRef, type MutableRefObject } from 'react'
 import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
 import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
 import { useThemeState } from './useThemeState'
 
 const EMPTY = {}
+
+type KeysBag = {
+  keys: MutableRefObject<Set<string> | null>
+  schemeKeys: MutableRefObject<Set<string> | null>
+}
 
 export const useTheme = () => {
   'use no memo'
@@ -20,13 +25,30 @@ export type ThemeWithState = [ThemeParsed, ThemeState]
  */
 export const useThemeWithState = (
   props: UseThemeWithStateProps,
-  isRoot = false
+  isRoot = false,
+  // <Theme> components push their themeState.id into ThemeStateContext,
+  // so their descendants subscribe under this id; <Theme> needs to schedule
+  // descendant updates when its propsKey changes. Leaf styled components
+  // (createComponent, useProps, useTheme, animation hooks) do NOT push a
+  // context — listenersByParent[componentId] is always empty — so the
+  // schedule-update effect is a no-op for them and can be skipped to save
+  // one hook slot per styled component on mount. Theme.tsx passes true.
+  forThemeView = false
 ): ThemeWithState => {
   'use no memo'
 
-  const keys = useRef<Set<string> | null>(null)
-  const schemeKeys = useRef<Set<string> | null>(null)
-  const themeState = useThemeState(props, isRoot, keys, schemeKeys)
+  // single useRef holding both keys + schemeKeys; saves one hook slot per
+  // component vs separate useRef calls. these still look like MutableRefObject
+  // to getThemeProxied which only reads/writes `.current`.
+  const bag = useRef<KeysBag | null>(null)
+  if (!bag.current) {
+    bag.current = {
+      keys: { current: null },
+      schemeKeys: { current: null },
+    }
+  }
+  const { keys, schemeKeys } = bag.current
+  const themeState = useThemeState(props, isRoot, keys, schemeKeys, forThemeView)
 
   if (process.env.NODE_ENV === 'development') {
     if (!props.passThrough && !themeState?.theme) {

@@ -155,3 +155,33 @@ This logic is used to check access to specific features like Pro, Chat, or Suppo
 - Confirm the payment method ID is valid
 - Check whether you're using the correct `sk_test_...` or `sk_live_...` key
 - Use stripe `paymentMethods.list` to view available methods
+
+---
+
+## 10. Production Geographic Pricing
+
+Production geographic pricing only trusts `CF-IPCountry` when Cloudflare proves
+that the request passed through its edge. The proof uses one shared secret:
+
+- Cloudflare's `http_request_late_transform` ruleset sets
+  `X-Origin-Secret` for `tamagui.dev` and `www.tamagui.dev` requests.
+- Railway's `tamagui` service stores the matching value as
+  `CF_ORIGIN_SECRET`.
+- `features/geo-pricing/trustedCountry.ts` compares the values before reading
+  `CF-IPCountry`. Direct requests to the Railway origin therefore cannot spoof a
+  discounted country.
+
+Generate a new random secret when configuring or rotating this pair. Never
+commit the value. Updating only one side disables geographic pricing safely by
+returning no country and no discount.
+
+After any Cloudflare rule or Railway variable change, wait for the Railway
+deployment to finish and verify the public route:
+
+```bash
+curl -sS https://tamagui.dev/api/parity-discount
+```
+
+The response must contain a real two-letter `country`. A response with
+`"country": null` means the Cloudflare rule and Railway secret do not match or
+one side is missing.

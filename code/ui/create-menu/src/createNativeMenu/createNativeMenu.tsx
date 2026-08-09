@@ -2,11 +2,11 @@
  * createNativeMenu - native menu implementation for React Native
  *
  * Web: returns empty stub components (withNativeMenu uses the web components instead)
- * Native: lazily resolves Zeego at render time so importing the package doesn't warn/error
+ * Native: lazily resolves the registered adapter at render time.
  */
 
 import {
-  getZeego,
+  getNativeMenuAdapter,
   NativeMenuContext,
   unstable_claimExternalPressOwnership,
   unstable_releaseExternalPressOwnership,
@@ -36,8 +36,8 @@ import type {
   MenuTriggerProps,
 } from './createNativeMenuTypes'
 
-// zeego module shape (DropdownMenu / ContextMenu both share this)
-type ZeegoMenuModule = {
+// native menu modules share this compound-component shape
+type NativeMenuModule = {
   Root: FC<Record<string, unknown>>
   Trigger: FC<MenuTriggerProps>
   Content: FC<NativeMenuContentProps>
@@ -65,7 +65,17 @@ type MappedComponentType =
   | 'Content'
   | 'Sub'
   | 'Group'
+  | 'Item'
+  | 'ItemTitle'
+  | 'ItemSubtitle'
+  | 'ItemIcon'
+  | 'ItemImage'
+  | 'ItemIndicator'
+  | 'Label'
+  | 'Separator'
   | 'CheckboxItem'
+  | 'Preview'
+  | 'Auxiliary'
 
 const MAPPED_TYPES: MappedComponentType[] = [
   'SubContent',
@@ -73,16 +83,30 @@ const MAPPED_TYPES: MappedComponentType[] = [
   'Content',
   'Sub',
   'Group',
+  'Item',
+  'ItemTitle',
+  'ItemSubtitle',
+  'ItemIcon',
+  'ItemImage',
+  'ItemIndicator',
+  'Label',
+  'Separator',
   'CheckboxItem',
+  'Preview',
+  'Auxiliary',
 ]
 
 // types whose children get recursively transformed
-const CONTAINER_TYPES: MappedComponentType[] = ['SubContent', 'Content', 'Sub', 'Group']
+const CONTAINER_TYPES: MappedComponentType[] = [
+  'SubContent',
+  'SubTrigger',
+  'Content',
+  'Sub',
+  'Group',
+  'Item',
+]
 
-type ComponentMap = Pick<
-  ZeegoMenuModule,
-  'SubContent' | 'Content' | 'Sub' | 'Group' | 'SubTrigger'
->
+type ComponentMap = Pick<NativeMenuModule, MappedComponentType>
 
 type TriggerPressBoundaryHandlers = {
   claim(debugName?: string | null): void
@@ -119,7 +143,12 @@ export type NativeMenuComponents = {
 
 function getComponentType(displayName: string): MappedComponentType | null {
   for (const type of MAPPED_TYPES) {
-    if (displayName === type || displayName.includes(`(${type})`)) {
+    if (
+      displayName === type ||
+      displayName === `Menu${type}` ||
+      displayName === `ContextMenu${type}` ||
+      displayName.includes(`(${type})`)
+    ) {
       return type
     }
   }
@@ -164,7 +193,7 @@ function getTriggerDebugName(
   return [prefix, detail].filter(Boolean).join(':') || prefix
 }
 
-// stub used for web — never actually rendered, just needs to exist for withNativeMenu fallback
+// web never renders these stubs, but withNativeMenu requires their component shape
 const emptyStub = (() => null) as FC<any>
 
 function createWebStubs(): NativeMenuComponents {
@@ -203,39 +232,48 @@ export const createNativeMenu = (
   }
 
   // ===========================================
-  // native implementation — lazily resolves zeego
+  // native implementation lazily resolves the registered adapter
   // ===========================================
 
   const isContextMenu = MenuType === 'ContextMenu'
   const isAndroid = !isIos && !isWeb
 
   // cached after first successful resolve
-  let resolved: { menu: ZeegoMenuModule; componentMap: ComponentMap } | null = null
+  let resolved: { menu: NativeMenuModule; componentMap: ComponentMap } | null = null
   let warned = false
 
   function resolve(): typeof resolved {
     if (resolved) return resolved
-    const zeego = getZeego()
-    if (!zeego.isEnabled) {
+    const adapter = getNativeMenuAdapter()
+    if (!adapter) {
       if (!warned) {
         warned = true
         console.warn(
-          `Warning: Must call import '@tamagui/native/setup-zeego' at your app entry point to use native menus`
+          `Warning: Register a native menu adapter before rendering Tamagui native menus`
         )
       }
       return null
     }
-    const menu = (
-      isContextMenu ? zeego.state.ContextMenu : zeego.state.DropdownMenu
-    ) as ZeegoMenuModule
+    const menu = (isContextMenu ? adapter.ContextMenu : adapter.Menu) as NativeMenuModule
     resolved = {
       menu,
       componentMap: {
         SubContent: menu.SubContent,
+        SubTrigger: menu.SubTrigger,
         Content: menu.Content,
         Sub: menu.Sub,
         Group: menu.Group,
-        SubTrigger: menu.SubTrigger,
+        Item: menu.Item,
+        ItemTitle: menu.ItemTitle,
+        ItemSubtitle: menu.ItemSubtitle,
+        ItemIcon: menu.ItemIcon,
+        ItemImage: menu.ItemImage,
+        ItemIndicator: menu.ItemIndicator,
+        Label: menu.Label,
+        Separator: menu.Separator,
+        CheckboxItem: menu.CheckboxItem,
+        Preview: menu.Preview,
+        Auxiliary: menu.Auxiliary,
       },
     }
     return resolved
@@ -246,9 +284,9 @@ export const createNativeMenu = (
     onValueChange?: (value: string) => void
   }
 
-  // transform children tree for zeego compatibility
+  // transform Tamagui menu children into the registered adapter's components
   function transformChildren(
-    menu: ZeegoMenuModule,
+    menu: NativeMenuModule,
     map: ComponentMap,
     children: React.ReactNode,
     shouldReverseOnIos = false,
@@ -280,7 +318,7 @@ export const createNativeMenu = (
         return
       }
 
-      // flatten ScrollView (native passthrough — children need to be visible to zeego)
+      // flatten ScrollView so the adapter can inspect every menu item
       if (displayName.includes('ScrollView')) {
         const inner = transformChildren(
           menu,
@@ -298,23 +336,30 @@ export const createNativeMenu = (
         const debugName = getTriggerDebugName(MenuType, props)
         const claim = () => triggerBoundaryHandlers?.claim(debugName)
         const release = () => triggerBoundaryHandlers?.release(debugName)
+        const { children: triggerChildren, ...triggerProps } = props
 
         result.push(
-          React.cloneElement(child, {
-            onTouchStart: composeHandlers(claim, props.onTouchStart),
-            onTouchEnd: composeHandlers(props.onTouchEnd, release),
-            onTouchCancel: composeHandlers(props.onTouchCancel, release),
-            onResponderGrant: composeHandlers(claim, props.onResponderGrant),
-            onResponderRelease: composeHandlers(props.onResponderRelease, release),
-            onResponderTerminate: composeHandlers(props.onResponderTerminate, release),
-            onPressIn: composeHandlers(claim, props.onPressIn),
-            onPressOut: composeHandlers(props.onPressOut, release),
-          } as any)
+          React.createElement(
+            menu.Trigger,
+            {
+              ...triggerProps,
+              key: child.key,
+              onTouchStart: composeHandlers(claim, props.onTouchStart),
+              onTouchEnd: composeHandlers(props.onTouchEnd, release),
+              onTouchCancel: composeHandlers(props.onTouchCancel, release),
+              onResponderGrant: composeHandlers(claim, props.onResponderGrant),
+              onResponderRelease: composeHandlers(props.onResponderRelease, release),
+              onResponderTerminate: composeHandlers(props.onResponderTerminate, release),
+              onPressIn: composeHandlers(claim, props.onPressIn),
+              onPressOut: composeHandlers(props.onPressOut, release),
+            } as any,
+            triggerChildren
+          )
         )
         return
       }
 
-      // RadioGroup: render as a zeego Group and pipe value/onValueChange
+      // RadioGroup: render as an adapter Group and pipe value/onValueChange
       // down to any RadioItem descendants via radioContext
       if (displayName.includes('RadioGroup')) {
         const {
@@ -341,7 +386,7 @@ export const createNativeMenu = (
         return
       }
 
-      // RadioItem: zeego has no radio primitive, so emit a CheckboxItem whose
+      // Native adapters share a checkbox primitive, so emit a CheckboxItem whose
       // 'on'/'off' state is derived from the enclosing RadioGroup's value.
       if (displayName.includes('RadioItem') && radioContext) {
         const {
@@ -366,7 +411,14 @@ export const createNativeMenu = (
               value: itemValue === radioContext.value ? 'on' : 'off',
               onValueChange: () => radioContext.onValueChange?.(itemValue),
             } as any,
-            cleanChildren
+            transformChildren(
+              menu,
+              map,
+              cleanChildren,
+              false,
+              triggerBoundaryHandlers,
+              radioContext
+            )
           )
         )
         return
@@ -406,7 +458,14 @@ export const createNativeMenu = (
               value: finalValue,
               onValueChange: finalOnValueChange,
             } as any,
-            cleanChildren
+            transformChildren(
+              menu,
+              map,
+              cleanChildren,
+              false,
+              triggerBoundaryHandlers,
+              radioContext
+            )
           )
         )
         return
@@ -414,18 +473,19 @@ export const createNativeMenu = (
 
       if (componentType) {
         const { children: childChildren, ...restProps } = props
-        const isContainer = (CONTAINER_TYPES as string[]).includes(componentType)
+        const AdapterComponent: FC<any> = map[componentType]
+        const isContainer = CONTAINER_TYPES.includes(componentType)
         const shouldReverse =
           componentType === 'Content' || componentType === 'SubContent'
         result.push(
           React.createElement(
-            map[componentType as keyof ComponentMap],
+            AdapterComponent,
             { ...restProps, key: child.key } as any,
             isContainer
               ? transformChildren(
                   menu,
                   map,
-                  childChildren as React.ReactNode,
+                  childChildren,
                   shouldReverse,
                   triggerBoundaryHandlers,
                   radioContext
@@ -436,14 +496,21 @@ export const createNativeMenu = (
         return
       }
 
-      // convert Item-like components to zeego Items
+      // convert Item-like components to adapter Items
       if (isItemLike(props, displayName)) {
         const { children: itemChildren, ...itemProps } = props
         result.push(
           React.createElement(
             menu.Item,
             { ...itemProps, key: child.key } as any,
-            itemChildren
+            transformChildren(
+              menu,
+              map,
+              itemChildren as React.ReactNode,
+              false,
+              triggerBoundaryHandlers,
+              radioContext
+            )
           )
         )
         return
@@ -460,9 +527,9 @@ export const createNativeMenu = (
     return result
   }
 
-  // lazy wrapper — resolves the zeego component on first render
-  function lazyZeego<P extends Record<string, any>>(
-    name: keyof ZeegoMenuModule,
+  // resolve each adapter component on its first render
+  function lazyAdapter<P extends Record<string, any>>(
+    name: keyof NativeMenuModule,
     displayName?: string
   ): FC<P> {
     const Comp: FC<P> = (props) => {
@@ -474,20 +541,20 @@ export const createNativeMenu = (
     return Comp
   }
 
-  const Trigger = lazyZeego<MenuTriggerProps>('Trigger')
-  const Content = lazyZeego<NativeMenuContentProps>('Content')
-  const Item = lazyZeego<NativeMenuItemProps>('Item')
-  const ItemTitle = lazyZeego<NativeMenuItemTitleProps>('ItemTitle')
-  const ItemSubtitle = lazyZeego<NativeMenuItemSubtitleProps>('ItemSubtitle')
-  const ItemIcon = lazyZeego<NativeMenuItemIconProps>('ItemIcon')
-  const ItemImage = lazyZeego<NativeMenuItemImageProps>('ItemImage')
-  const ItemIndicator = lazyZeego<NativeMenuItemIndicatorProps>('ItemIndicator')
-  const Group = lazyZeego<NativeMenuGroupProps>('Group')
-  const Label = lazyZeego<NativeMenuLabelProps>('Label')
-  const Separator = lazyZeego<NativeMenuSeparatorProps>('Separator')
-  const Sub = lazyZeego<NativeMenuSubProps>('Sub')
-  const SubTrigger = lazyZeego<NativeMenuSubTriggerProps>('SubTrigger')
-  const SubContent = lazyZeego<NativeMenuSubContentProps>('SubContent')
+  const Trigger = lazyAdapter<MenuTriggerProps>('Trigger')
+  const Content = lazyAdapter<NativeMenuContentProps>('Content')
+  const Item = lazyAdapter<NativeMenuItemProps>('Item')
+  const ItemTitle = lazyAdapter<NativeMenuItemTitleProps>('ItemTitle')
+  const ItemSubtitle = lazyAdapter<NativeMenuItemSubtitleProps>('ItemSubtitle')
+  const ItemIcon = lazyAdapter<NativeMenuItemIconProps>('ItemIcon')
+  const ItemImage = lazyAdapter<NativeMenuItemImageProps>('ItemImage')
+  const ItemIndicator = lazyAdapter<NativeMenuItemIndicatorProps>('ItemIndicator')
+  const Group = lazyAdapter<NativeMenuGroupProps>('Group')
+  const Label = lazyAdapter<NativeMenuLabelProps>('Label')
+  const Separator = lazyAdapter<NativeMenuSeparatorProps>('Separator')
+  const Sub = lazyAdapter<NativeMenuSubProps>('Sub')
+  const SubTrigger = lazyAdapter<NativeMenuSubTriggerProps>('SubTrigger')
+  const SubContent = lazyAdapter<NativeMenuSubContentProps>('SubContent')
 
   const Portal: FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>
   Portal.displayName = 'Portal'
@@ -505,12 +572,12 @@ export const createNativeMenu = (
   CheckboxItem.displayName = 'CheckboxItem'
 
   const Preview: FC<ContextMenuPreviewProps> = isContextMenu
-    ? lazyZeego<ContextMenuPreviewProps>('Preview', `${MenuType}Preview`)
+    ? lazyAdapter<ContextMenuPreviewProps>('Preview', `${MenuType}Preview`)
     : () => null
   Preview.displayName = `${MenuType}Preview`
 
   const Auxiliary: FC<NativeContextMenuAuxiliaryProps> = isContextMenu
-    ? lazyZeego<NativeContextMenuAuxiliaryProps>('Auxiliary', `${MenuType}Auxiliary`)
+    ? lazyAdapter<NativeContextMenuAuxiliaryProps>('Auxiliary', `${MenuType}Auxiliary`)
     : () => null
   Auxiliary.displayName = `${MenuType}Auxiliary`
 

@@ -11,7 +11,7 @@ const getBarColor = (name: string) => {
       return '$yellow4'
     case 'Styled Components':
     case 'SC':
-      return '$purple9'
+      return '$gray9'
     case 'react-native-web':
     case 'RN':
     case 'RNW':

@@ -16,6 +16,7 @@ import { Button, Square, YStack } from 'tamagui'
  */
 export function ReanimatedEmitterLatchCase() {
   const [active, setActive] = useState(false)
+  const [namedColorActive, setNamedColorActive] = useState(false)
 
   return (
     <YStack gap="$4" padding="$4">
@@ -31,6 +32,20 @@ export function ReanimatedEmitterLatchCase() {
 
       <Button testID="toggle-active" onPress={() => setActive((v) => !v)}>
         Toggle Active
+      </Button>
+
+      <Square
+        testID="named-color-square"
+        size={120}
+        backgroundColor={namedColorActive ? 'blue' : 'red'}
+        transition="500ms"
+      />
+
+      <Button
+        testID="toggle-named-color"
+        onPress={() => setNamedColorActive((value) => !value)}
+      >
+        Toggle Named Color
       </Button>
     </YStack>
   )

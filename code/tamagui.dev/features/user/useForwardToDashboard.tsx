@@ -1,9 +1,11 @@
 import { type Href, useActiveParams, useRouter } from 'one'
 import { useEffect } from 'react'
+import {
+  getSafeInternalPath,
+  safeDecodeURIComponent,
+} from '~/features/security/navigation'
 import { useUser } from './useUser'
 import { accountModal } from '../site/purchase/accountModalStore'
-
-const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev', '127.0.0.1', 'localhost']
 
 export function useForwardToDashboard() {
   const { data, isLoading } = useUser()
@@ -25,25 +27,19 @@ export function useForwardToDashboard() {
         }
 
         if (typeof query.redirect_to === 'string') {
-          const decodedUrl = decodeURIComponent(query.redirect_to)
-          if (decodedUrl.startsWith('/')) {
-            // e.g. /account
-            await router.replace(decodedUrl as Href)
-          } else {
-            try {
-              const url = new URL(decodedUrl)
-              if (
-                ALLOWED_REDIRECT_DOMAINS.includes(url.host) ||
-                process.env.NODE_ENV !== 'production'
-              ) {
-                await router.replace(decodedUrl as Href)
-              }
-            } catch {
-              // means the url is invalid
-              // just show the account modal
-              accountModal.show = true
+          const redirectPath = getSafeInternalPath(
+            safeDecodeURIComponent(query.redirect_to),
+            {
+              fallback: '',
             }
+          )
+
+          if (redirectPath) {
+            await router.replace(redirectPath as Href)
+            return
           }
+
+          accountModal.show = true
         } else {
           // No redirect_to, show the account modal
           accountModal.show = true

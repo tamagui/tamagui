@@ -91,6 +91,72 @@ describe('getSplitStyles', () => {
     expect(() => getSplitStylesFor(props)).not.toThrow()
   })
 
+  test('native skips hover pseudo style work', () => {
+    const directHover = getSplitStylesFor({
+      hoverStyle: {
+        backgroundColor: 'red',
+      },
+    })
+
+    expect(directHover.style?.backgroundColor).toBeUndefined()
+
+    const HoverVariant = styled(View, {
+      variants: {
+        hoverable: {
+          true: {
+            hoverStyle: {
+              opacity: 0.5,
+            },
+          },
+        },
+      } as const,
+    })
+
+    const variantHover = getSplitStylesFor({ hoverable: true }, HoverVariant)
+
+    expect(variantHover.style?.opacity).toBeUndefined()
+
+    const groupContext = {
+      row: {
+        state: {
+          pseudo: {
+            hover: false,
+          },
+        },
+        subscribe: () => () => {},
+      },
+    }
+
+    const groupHover = getSplitStylesFor(
+      {
+        '$group-row-hover': {
+          backgroundColor: 'red',
+        },
+      },
+      View,
+      {
+        groupContext,
+      }
+    )
+
+    expect(groupHover.style?.backgroundColor).toBeUndefined()
+    expect(groupHover.pseudoGroups).toBeUndefined()
+
+    const groupMedia = getSplitStylesFor(
+      {
+        '$group-row-sm': {
+          opacity: 0.5,
+        },
+      },
+      View,
+      {
+        groupContext,
+      }
+    )
+
+    expect(groupMedia.mediaGroups?.has('sm')).toBe(true)
+  })
+
   test(`transform properties are correctly applied`, () => {
     const { style } = getSplitStylesFor({
       scale: 1.5,
@@ -252,6 +318,39 @@ describe('getSplitStyles', () => {
       expect(resultStr).toContain('blue')
     }
   })
+
+  test('drops "unset" on native instead of passing it to RN style', () => {
+    // React Native rejects CSS-wide keywords — aspectRatio throws on "unset".
+    // propMapper should drop "unset" so the prop falls back to its default.
+    expect(() =>
+      getSplitStylesFor({ aspectRatio: 'unset', backgroundColor: 'unset' })
+    ).not.toThrow()
+    const { style } = getSplitStylesFor({
+      aspectRatio: 'unset',
+      backgroundColor: 'unset',
+    })
+    expect(style?.aspectRatio).toBeUndefined()
+    expect(style?.backgroundColor).toBeUndefined()
+  })
+
+  test('"unset" clears styled defaults on native (web reset parity)', () => {
+    // web resolves unset through the cascade, clearing earlier values (styled
+    // defaults included); native must do the same rather than silently keeping
+    // the default. shorthands clear every key they expand to.
+    const StyledView = styled(View, {
+      backgroundColor: 'red',
+      padding: 10,
+    })
+
+    const { style } = getSplitStylesFor(
+      { backgroundColor: 'unset', p: 'unset' },
+      StyledView
+    )
+
+    expect(style?.backgroundColor).toBeUndefined()
+    expect(style?.padding).toBeUndefined()
+    expect(style?.paddingTop).toBeUndefined()
+  })
 })
 
 describe.skip('getSplitStyles - pseudo prop merging', () => {
@@ -303,7 +402,7 @@ describe.skip('getSplitStyles - pseudo prop merging', () => {
 function getSplitStylesFor(
   props: Record<string, any>,
   Component = View,
-  options: { mediaState?: Record<string, any> } = {}
+  options: { mediaState?: Record<string, any>; groupContext?: any } = {}
 ) {
   return getSplitStyles(
     props,
@@ -325,6 +424,7 @@ function getSplitStylesFor(
     },
     undefined,
     undefined,
+    options.groupContext,
     undefined,
     undefined
   )!
