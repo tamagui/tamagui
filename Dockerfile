@@ -39,8 +39,9 @@ ARG APP_NAME
 ARG TAMAGUI_PRO_SECRET
 ARG DEEPSEEK_API_KEY
 ARG BENTO_GITHUB_TOKEN
-# frozen bento v3-beta source validated with this tamagui candidate
-ARG BENTO_BRANCH=50432b85cc47de443b640bee0bcf5decd119231e
+# use a v3-specific argument so Railway's inherited v2 BENTO_BRANCH variable
+# cannot override the validated Bento source for this build
+ARG BENTO_V3_BETA_REF=50432b85cc47de443b640bee0bcf5decd119231e
 
 # install dependencies (sharp needs libvips for image processing)
 RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh libvips-dev
@@ -54,14 +55,14 @@ RUN git config --global user.email "you@example.com" && git config --global user
 # Clone bento repository as sibling directory (optional)
 WORKDIR /root
 RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
-      echo "Cloning bento repository (ref: $BENTO_BRANCH)..."; \
+      echo "Cloning bento repository (ref: $BENTO_V3_BETA_REF)..."; \
       unset GITHUB_TOKEN && \
       echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
       gh repo clone tamagui/bento -- --no-checkout --depth 1 && \
-      git -C bento fetch --quiet --depth 1 origin "$BENTO_BRANCH" && \
+      git -C bento fetch --quiet --depth 1 origin "$BENTO_V3_BETA_REF" && \
       git -C bento checkout --quiet --detach FETCH_HEAD && \
       gh auth logout --hostname github.com && \
-      echo "✅ Bento repository cloned (ref: $BENTO_BRANCH)" && \
+      echo "✅ Bento repository cloned (ref: $BENTO_V3_BETA_REF)" && \
       echo "REQUIRE_BENTO=true" > /tmp/bento_status; \
     else \
       echo "⚠️ BENTO_GITHUB_TOKEN not provided - bento features will not be available" && \
