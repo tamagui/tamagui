@@ -26,6 +26,9 @@
 #   MAESTRO_DEVICE_ID
 #                  simulator UDID to target explicitly        (default: booted)
 #
+# pass one or more flow paths as arguments to run only those flows. with no
+# arguments, every yaml flow in FLOWS_DIR is discovered as before.
+#
 # NOT using `set -e`: a failing/timed-out `maestro test` is expected and handled inline.
 
 set -uo pipefail
@@ -33,7 +36,7 @@ set -uo pipefail
 FLOWS_DIR="${FLOWS_DIR:-./flows}"
 BUNDLE_ID="${BUNDLE_ID:-com.tamagui.tamaguikitchensink}"
 MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
-SKIP_FLOWS="${SKIP_FLOWS:-OpenApp.yaml WarmUp.yaml}"
+SKIP_FLOWS="${SKIP_FLOWS-OpenApp.yaml WarmUp.yaml}"
 METRO_PID_FILE="${METRO_PID_FILE:-/tmp/metro-pid}"
 FLOW_TIMEOUT="${FLOW_TIMEOUT:-360}"
 MAESTRO_DEVICE_ID="${MAESTRO_DEVICE_ID:-}"
@@ -92,9 +95,13 @@ run_flow_with_timeout() {
   wait "$pid"
 }
 
-shopt -s nullglob
-flows=("$FLOWS_DIR"/*.yaml "$FLOWS_DIR"/*.yml)
-shopt -u nullglob
+if [ "$#" -gt 0 ]; then
+  flows=("$@")
+else
+  shopt -s nullglob
+  flows=("$FLOWS_DIR"/*.yaml "$FLOWS_DIR"/*.yml)
+  shopt -u nullglob
+fi
 
 if [ "${#flows[@]}" -eq 0 ]; then
   echo "::error::no flow files found in $FLOWS_DIR"
@@ -103,6 +110,10 @@ fi
 
 failed=""
 for flow in "${flows[@]}"; do
+  if [ ! -f "$flow" ]; then
+    echo "::error::flow file not found: $flow"
+    exit 1
+  fi
   base="$(basename "$flow")"
   case " $SKIP_FLOWS " in
     *" $base "*)

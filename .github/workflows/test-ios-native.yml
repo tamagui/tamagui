@@ -190,21 +190,15 @@ jobs:
 
       - name: Warm up App (cold start + Hermes bytecode compile)
         if: env.SKIP_MAESTRO_TESTS != 'true'
+        env:
+          FLOW_TIMEOUT: 180
+          MAX_ATTEMPTS: 2
+          SKIP_FLOWS: ''
         run: |
-          # WarmUp.yaml does clearState:true for a clean first launch.
-          # Subsequent test flows use OpenApp.yaml (no clearState) so Hermes
-          # bytecode cache persists across launches = much faster restarts.
-          # if WarmUp fails, the Maestro xcuitest driver (port 7001) is usually
-          # dead — every subsequent flow will fail with "Failed to connect to
-          # /127.0.0.1:7001", so fail fast rather than burn 15+ min on doomed retries.
-          if ! maestro --device "$MAESTRO_DEVICE_ID" test ./flows/WarmUp.yaml --no-ansi; then
-            echo "::error::WarmUp failed — Maestro driver is likely dead, aborting"
-            echo "=== Recent app logs ==="
-            tail -50 /tmp/simulator-app.log 2>/dev/null || echo "No app logs"
-            echo "=== Metro output ==="
-            tail -50 /tmp/metro.log 2>/dev/null || echo "No metro logs"
-            exit 1
-          fi
+          # WarmUp.yaml clears state once, then later flows preserve the Hermes
+          # bytecode cache. use the shared bounded runner so a wedged xcuitest
+          # driver is killed, the simulator is recovered, and WarmUp retries.
+          bash "${{ github.workspace }}/.github/scripts/run-maestro-flows.sh" ./flows/WarmUp.yaml
 
       # run each flow independently and retry ONLY the flow that flakes, so a
       # transient flake in one flow doesn't discard the passes of the others.
