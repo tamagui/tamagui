@@ -122,7 +122,7 @@ describe('web lowering', () => {
     expect(cls.startsWith('_tx-')).toBe(true)
     expect(lowered.rules).toEqual([
       `.${cls}{--t-x:0px}`,
-      `@media (hover: hover) {.${cls}:where(:hover){--t-x:10px}}`,
+      `@media (hover: hover) {.${cls}:hover{--t-x:10px}}`,
     ])
     expect(lowered.composition).toBeDefined()
     expect(lowered.composition!.property).toBe('translate')
@@ -143,18 +143,14 @@ describe('web lowering', () => {
     expect(scaleX.composition!.className).not.toBe(x.composition!.className)
   })
 
-  test('program rules stay at specificity (0,1,0) and composition defaults lose to them', () => {
+  test('program rules encode clause depth while composition defaults lose to them', () => {
     const lowered = lower('--t-x', '0px hover:10px sm:20px dark:30px')
-    for (const rule of lowered.rules) {
-      let inner = rule
-      while (inner.startsWith('@')) {
-        inner = inner.slice(inner.indexOf('{') + 1, inner.lastIndexOf('}')).trim()
-      }
-      const selector = inner.slice(0, inner.lastIndexOf('{')).trim()
-      const bare = selector.replace(/:where\([^)]*\)/g, '').trim()
-      expect(bare, rule).toMatch(/^\.[A-Za-z0-9_-]+$/)
-      expect(bare.split(' '), rule).toHaveLength(1)
-    }
+    expect(lowered.rules).toEqual([
+      `.${lowered.className}{--t-x:0px}`,
+      `@media (max-width: 860px) {.${lowered.className}.${lowered.className}{--t-x:20px}}`,
+      `.${lowered.className}.${lowered.className}:where(.t_dark, .t_dark *){--t-x:30px}`,
+      `@media (hover: hover) {.${lowered.className}:hover{--t-x:10px}}`,
+    ])
     expect(
       lowered.composition!.rules[0].startsWith(
         `:where(.${lowered.composition!.className}){`
@@ -169,7 +165,7 @@ describe('web lowering', () => {
     const lowered = lower('rotate', '0deg hover:45deg')
     expect(lowered.composition).toBeUndefined()
     expect(lowered.rules[1]).toBe(
-      `@media (hover: hover) {.${lowered.className}:where(:hover){rotate:45deg}}`
+      `@media (hover: hover) {.${lowered.className}:hover{rotate:45deg}}`
     )
   })
 
@@ -179,7 +175,7 @@ describe('web lowering', () => {
     const cls = lowered.className
     expect(lowered.rules).toEqual([
       `.${cls}{scale:1}`,
-      `.${cls}:where(.t_unmounted, .t_unmounted *){scale:0.9}`,
+      `.${cls}:is(.t_unmounted, .t_unmounted *){scale:0.9}`,
     ])
     expect(lowered.composition).toBeUndefined()
   })
@@ -412,7 +408,7 @@ describe("the codemod's scale shape end to end", () => {
     )
     expect(lowered[0].rules).toEqual([
       `.${lowered[0].className}{--t-scale-x:1}`,
-      `.${lowered[0].className}:where(.t_unmounted, .t_unmounted *){--t-scale-x:0.9}`,
+      `.${lowered[0].className}:is(.t_unmounted, .t_unmounted *){--t-scale-x:0.9}`,
     ])
     expect(lowered[1].rules[0]).toBe(`.${lowered[1].className}{--t-scale-y:1}`)
     // one composing rule serves both axes
@@ -440,7 +436,7 @@ describe("the codemod's scale shape end to end", () => {
       { registry, configRevision }
     )
     expect(lowered.rules[1]).toBe(
-      `.${lowered.className}:where(.t_unmounted, .t_unmounted *){--t-y:10px}`
+      `.${lowered.className}:is(.t_unmounted, .t_unmounted *){--t-y:10px}`
     )
     expect(lowered.composition!.property).toBe('translate')
     expect(composeTransformArray({ y: '10px' }).transform).toEqual([{ translateY: 10 }])

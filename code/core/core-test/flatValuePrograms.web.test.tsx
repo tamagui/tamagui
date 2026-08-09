@@ -6,6 +6,12 @@
 import { beforeAll, expect, test } from 'vitest'
 import config from '../config-default'
 import { View, createTamagui, getSplitStyles, styled } from '../web/src'
+import {
+  flatValuePrecedenceFixtures,
+  reverseFixtureProgram,
+  type FlatValueFixtureConditions,
+  type FlatValuePrecedenceFixture,
+} from './flatValuePrecedenceFixtures'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -29,6 +35,75 @@ const split = (props: Record<string, any>) =>
 const rulesFor = (result: any, identifier: string): string[] =>
   result.rulesToInsert[identifier]?.[4] ?? []
 
+const fixtureGroupEntry = (
+  pseudo: Record<string, boolean> = {},
+  layout?: { width: number; height: number }
+) => ({
+  subscribe: () => () => {},
+  state: { pseudo, layout },
+})
+
+function fixtureOptions(active: FlatValueFixtureConditions) {
+  const groupContext: Record<string, any> = {}
+  for (const group of active.groups ?? []) {
+    const match = /^group-([^/]+)(?:\/(.+))?$/.exec(group)
+    if (match) {
+      groupContext[match[2] ?? 'true'] = fixtureGroupEntry({
+        [match[1] === 'active' ? 'press' : match[1]]: true,
+      })
+    }
+  }
+  for (const container of active.containers ?? []) {
+    const match = /^@[^/]+(?:\/(.+))?$/.exec(container)
+    groupContext[match?.[1] ? `@${match[1]}` : '@'] = fixtureGroupEntry(
+      {},
+      { width: 400, height: 100 }
+    )
+  }
+  return {
+    componentState: Object.fromEntries(
+      (active.states ?? []).map((state) => [state === 'active' ? 'press' : state, true])
+    ),
+    groupContext,
+    mediaState: Object.fromEntries((active.media ?? []).map((name) => [name, true])),
+    mergeDefaultProps: true,
+    noClass: true,
+    themeName: active.themes?.at(-1) ?? 'light',
+  }
+}
+
+function splitFixture(
+  fixture: FlatValuePrecedenceFixture,
+  active: FlatValueFixtureConditions,
+  reversed: boolean
+) {
+  let Component: any = View
+  const props: Record<string, string> = {}
+  for (const layer of fixture.layers) {
+    const value = reversed ? reverseFixtureProgram(layer.value) : layer.value
+    if (layer.source === 'styled') {
+      Component = styled(Component, { [fixture.property]: value })
+    } else {
+      props[fixture.property] = value
+    }
+  }
+  return simplifiedGetSplitStyles(Component, props, fixtureOptions(active))
+}
+
+for (const fixture of flatValuePrecedenceFixtures) {
+  for (const scenario of fixture.scenarios) {
+    if (scenario.active.platform === 'ios') continue
+    test(`precedence fixture ${fixture.id}: ${fixture.name} / ${scenario.name}`, () => {
+      for (const reversed of [false, true]) {
+        const result = splitFixture(fixture, scenario.active, reversed)
+        expect(result.style?.[fixture.property]).toBe(
+          reversed ? (scenario.reversedExpected ?? scenario.expected) : scenario.expected
+        )
+      }
+    })
+  }
+}
+
 test('a clause value lowers to one program block', () => {
   const result = split({ backgroundColor: 'red hover:blue' })
   const className = result.classNames.backgroundColor
@@ -37,7 +112,7 @@ test('a clause value lowers to one program block', () => {
   expect(rules).toHaveLength(2)
   expect(rules[0]).toBe(`.${className}{background-color:red}`)
   expect(rules[1]).toBe(
-    `@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`
+    `@media (hover: hover) {.${className}:hover{background-color:blue}}`
   )
 })
 
@@ -59,7 +134,7 @@ test('bare tokens resolve in conditional flat values', () => {
   const colorClass = colors.classNames.backgroundColor
   expect(rulesFor(colors, colorClass)).toEqual([
     `.${colorClass}{background-color:var(--c-white)}`,
-    `@media (hover: hover) {.${colorClass}:where(:hover){background-color:var(--c-black)}}`,
+    `@media (hover: hover) {.${colorClass}:hover{background-color:var(--c-black)}}`,
   ])
 
   const padding = split({ padding: '4 hover:8' })
@@ -72,7 +147,7 @@ test('bare tokens resolve in conditional flat values', () => {
     const className = padding.classNames[longhand]
     expect(rulesFor(padding, className), longhand).toEqual([
       `.${className}{${cssProperty}:var(--t-space-4)}`,
-      `@media (hover: hover) {.${className}:where(:hover){${cssProperty}:var(--t-space-8)}}`,
+      `@media (hover: hover) {.${className}:hover{${cssProperty}:var(--t-space-8)}}`,
     ])
   }
 
@@ -80,7 +155,7 @@ test('bare tokens resolve in conditional flat values', () => {
   const backgroundClass = background.classNames.backgroundColor
   expect(rulesFor(background, backgroundClass)).toEqual([
     `.${backgroundClass}{background-color:var(--c-white)}`,
-    `@media (hover: hover) {.${backgroundClass}:where(:hover){background-color:var(--c-black)}}`,
+    `@media (hover: hover) {.${backgroundClass}:hover{background-color:var(--c-black)}}`,
   ])
 })
 
@@ -95,7 +170,7 @@ test('an unknown bare lookup miss stays literal on web', () => {
     const className = result.classNames.backgroundColor
     expect(rulesFor(result, className)).toEqual([
       `.${className}{background-color:missing-web-base}`,
-      `@media (hover: hover) {.${className}:where(:hover){background-color:var(--c-black)}}`,
+      `@media (hover: hover) {.${className}:hover{background-color:var(--c-black)}}`,
     ])
     expect(warnings).toEqual([])
   } finally {
@@ -110,19 +185,19 @@ test('bare tokens reach conditional border-family splitting intact', () => {
   const widthClass = result.classNames.borderTopWidth
   expect(rulesFor(result, widthClass)).toEqual([
     `.${widthClass}{border-top-width:var(--t-space-4)}`,
-    `@media (hover: hover) {.${widthClass}:where(:hover){border-top-width:var(--t-space-8)}}`,
+    `@media (hover: hover) {.${widthClass}:hover{border-top-width:var(--t-space-8)}}`,
   ])
 
   const styleClass = result.classNames.borderTopStyle
   expect(rulesFor(result, styleClass)).toEqual([
     `.${styleClass}{border-top-style:solid}`,
-    `@media (hover: hover) {.${styleClass}:where(:hover){border-top-style:dashed}}`,
+    `@media (hover: hover) {.${styleClass}:hover{border-top-style:dashed}}`,
   ])
 
   const colorClass = result.classNames.borderTopColor
   expect(rulesFor(result, colorClass)).toEqual([
     `.${colorClass}{border-top-color:var(--c-white)}`,
-    `@media (hover: hover) {.${colorClass}:where(:hover){border-top-color:var(--c-black)}}`,
+    `@media (hover: hover) {.${colorClass}:hover{border-top-color:var(--c-black)}}`,
   ])
 })
 
@@ -133,7 +208,7 @@ test('a later plain value restates the base; the hover survives (decision 21)', 
   const rules = rulesFor(result, className)
   expect(rules[0]).toBe(`.${className}{background-color:green}`)
   expect(rules[1]).toBe(
-    `@media (hover: hover) {.${className}:where(:hover){background-color:blue}}`
+    `@media (hover: hover) {.${className}:hover{background-color:blue}}`
   )
 })
 
@@ -222,9 +297,9 @@ test('a program displaces a uniform geometric shorthand per longhand', () => {
 })
 
 test('noClass configurations evaluate programs inline like native', () => {
-  // the animated-inline path runs the same last-matching-clause evaluation
-  // native uses: the base applies now, states re-evaluate through re-renders,
-  // and no program classes are inserted
+  // The animated-inline path uses the same shared precedence evaluation as
+  // native: the base applies now, states re-evaluate through re-renders, and
+  // no program classes are inserted.
   const result = getSplitStyles(
     { backgroundColor: 'red hover:blue' },
     View.staticConfig,
@@ -262,6 +337,16 @@ test('web platform clauses apply on the inline path; native ones do not', () => 
   expect(result.style?.backgroundColor).toBe('blue')
 })
 
+test('web platform clauses sort last and carry the platform specificity floor', () => {
+  const result = split({ backgroundColor: 'sm:hover:blue web:red' })
+  const className = result.classNames.backgroundColor
+  const rules = rulesFor(result, className)
+  expect(rules).toHaveLength(2)
+  expect(rules[0]).toContain(':hover{background-color:blue}')
+  expect(rules[1]).toContain('background-color:red')
+  expect(rules[1].match(new RegExp(`\\.${className}`, 'g'))).toHaveLength(7)
+})
+
 test('a later style prop restates the base; the hover survives (decision 21)', () => {
   const result = split({
     backgroundColor: 'red hover:blue',
@@ -271,10 +356,10 @@ test('a later style prop restates the base; the hover survives (decision 21)', (
   expect(className).toMatch(/^_bc-/)
   const rules = rulesFor(result, className)
   expect(rules[0]).toContain('green')
-  expect(rules[1]).toContain(':where(:hover)')
+  expect(rules[1]).toContain(':hover')
 })
 
-test('styled same-key programs survive call-site props and retain authored order', () => {
+test('styled same-key programs merge by clause slot through call-site props', () => {
   const Frame = styled(View, {
     bg: 'gray hover:blue',
     p: '4 sm:6',
@@ -297,12 +382,12 @@ test('styled same-key programs survive call-site props and retain authored order
   expect(backgroundRules[0]).toContain('background-color:red')
   expect(
     backgroundRules.some(
-      (rule) => rule.includes(':where(:focus)') && rule.includes('yellow')
+      (rule) => rule.includes(':focus') && rule.includes('yellow')
     )
   ).toBe(true)
   expect(
     backgroundRules.some(
-      (rule) => rule.includes(':where(:hover)') && rule.includes('blue')
+      (rule) => rule.includes(':hover') && rule.includes('blue')
     )
   ).toBe(true)
 
@@ -323,12 +408,12 @@ test('styled same-key programs survive call-site props and retain authored order
   expect(variantLastRules[0]).toContain('background-color:orange')
   expect(
     variantLastRules.some(
-      (rule) => rule.includes(':where(:hover)') && rule.includes('blue')
+      (rule) => rule.includes(':hover') && rule.includes('blue')
     )
   ).toBe(true)
   expect(
     variantLastRules.some(
-      (rule) => rule.includes(':where(:focus)') && rule.includes('yellow')
+      (rule) => rule.includes(':focus') && rule.includes('yellow')
     )
   ).toBe(true)
 })
@@ -432,7 +517,7 @@ test('a styled clause default survives a call-site override (decision 21)', () =
   const rules = result.rulesToInsert[className]?.[4] ?? []
   // the call-site value restates the base; the styled hover clause survives
   expect(rules[0]).toBe(`.${className}{background-color:red}`)
-  expect(rules[1]).toContain(':where(:hover){background-color:blue}')
+  expect(rules[1]).toContain(':hover{background-color:blue}')
 })
 
 test('a base swallowed by a conditional payload is a diagnostic, not silence', () => {

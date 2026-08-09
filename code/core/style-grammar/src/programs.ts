@@ -1,3 +1,4 @@
+import { clauseConditionSetKey } from './clausePrecedence'
 import type { LonghandProgram, ParsedClause, ParsedValue } from './valueTypes'
 
 export const longhandExpansionTable: Readonly<Record<string, readonly string[]>> = {
@@ -44,16 +45,6 @@ export function expandToLonghands(
   return longhandExpansionTable[resolvedProp] ?? [resolvedProp]
 }
 
-// set-equality key for a clause's condition: `dark:hover:` and `hover:dark:`
-// restate the same clause
-function clauseSetKey(modifiers: readonly string[]): string {
-  if (modifiers.length === 1) return modifiers[0]
-  const sorted = modifiers.slice().sort()
-  let key = sorted[0]
-  for (let index = 1; index < sorted.length; index++) key += `:${sorted[index]}`
-  return key
-}
-
 /**
  * The merge unit is the clause, keyed by its exact condition set (decision
  * 21): the later contribution replaces the base only when it restates one,
@@ -74,10 +65,12 @@ export function mergeProgramValues(
     return base === earlier.base ? earlier : { base, clauses: earlier.clauses }
   }
   const restated = new Set<string>()
-  for (const clause of later.clauses) restated.add(clauseSetKey(clause.modifiers))
+  for (const clause of later.clauses) {
+    restated.add(clauseConditionSetKey(clause.modifiers))
+  }
   const clauses: ParsedClause[] = []
   for (const clause of earlier.clauses) {
-    if (!restated.has(clauseSetKey(clause.modifiers))) clauses.push(clause)
+    if (!restated.has(clauseConditionSetKey(clause.modifiers))) clauses.push(clause)
   }
   for (const clause of later.clauses) clauses.push(clause)
   return { base, clauses }

@@ -77,7 +77,7 @@ export const grammarPlatformGroups: ReadonlyMap<string, ReadonlySet<string>> = n
  * authored order. Non-platform modifiers never rank.
  */
 export function grammarPlatformRank(modifier: string): number {
-  return modifier === 'native'
+  return modifier === 'native' || modifier === 'web'
     ? 1
     : modifier === 'androidtv' || modifier === 'tvos'
       ? 3

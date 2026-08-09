@@ -1,10 +1,24 @@
-// Lane W3: on native, clause-bearing values evaluate last-matching-clause
-// against live conditions and land in the plain style object.
+// Lane W3: on native, clause-bearing values evaluate the shared fixed
+// precedence key against live conditions and land in the plain style object.
 
-import { beforeAll, expect, test } from 'vitest'
+import { beforeAll, expect, test, vi } from 'vitest'
 import config from '../config-default'
 import { Text, View, createTamagui, getSplitStyles, styled } from '../web/src'
+import {
+  flatValuePrecedenceFixtures,
+  reverseFixtureProgram,
+  type FlatValueFixtureConditions,
+  type FlatValuePrecedenceFixture,
+} from './flatValuePrecedenceFixtures'
 import { simplifiedGetSplitStyles } from './utils'
+
+// Exercise the table on a concrete native platform so both `native:` and the
+// more-specific `ios:` containment level are covered in this exact surface.
+vi.mock('@tamagui/constants', async () => ({
+  ...(await vi.importActual<any>('@tamagui/constants')),
+  isIos: true,
+  isWeb: false,
+}))
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig() as any)
@@ -37,6 +51,67 @@ const groupEntry = (
   subscribe: () => () => {},
   state: { pseudo, layout },
 })
+
+function fixtureOptions(active: FlatValueFixtureConditions) {
+  const groupContext: Record<string, any> = {}
+  for (const group of active.groups ?? []) {
+    const match = /^group-([^/]+)(?:\/(.+))?$/.exec(group)
+    if (match) {
+      groupContext[match[2] ?? 'true'] = groupEntry({
+        [match[1] === 'active' ? 'press' : match[1]]: true,
+      })
+    }
+  }
+  for (const container of active.containers ?? []) {
+    const match = /^@[^/]+(?:\/(.+))?$/.exec(container)
+    groupContext[match?.[1] ? `@${match[1]}` : '@'] = groupEntry(
+      {},
+      { width: 400, height: 100 }
+    )
+  }
+  return {
+    componentState: Object.fromEntries(
+      (active.states ?? []).map((state) => [state === 'active' ? 'press' : state, true])
+    ),
+    groupContext,
+    mediaState: Object.fromEntries((active.media ?? []).map((name) => [name, true])),
+    mergeDefaultProps: true,
+    noClass: true,
+    themeName: active.themes?.at(-1) ?? 'light',
+  }
+}
+
+function splitFixture(
+  fixture: FlatValuePrecedenceFixture,
+  active: FlatValueFixtureConditions,
+  reversed: boolean
+) {
+  let Component: any = View
+  const props: Record<string, string> = {}
+  for (const layer of fixture.layers) {
+    const value = reversed ? reverseFixtureProgram(layer.value) : layer.value
+    if (layer.source === 'styled') {
+      Component = styled(Component, { [fixture.property]: value })
+    } else {
+      props[fixture.property] = value
+    }
+  }
+  return simplifiedGetSplitStyles(Component, props, fixtureOptions(active))
+}
+
+for (const fixture of flatValuePrecedenceFixtures) {
+  for (const scenario of fixture.scenarios) {
+    if (scenario.active.platform === 'web') continue
+    test(`precedence fixture ${fixture.id}: ${fixture.name} / ${scenario.name}`, () => {
+      for (const reversed of [false, true]) {
+        const result = splitFixture(fixture, scenario.active, reversed)
+        expect(result.style?.[fixture.property]).toBe(
+          reversed ? (scenario.reversedExpected ?? scenario.expected) : scenario.expected
+        )
+      }
+    })
+  }
+}
 
 type SplitConditions = [
   state?: Record<string, any>,
@@ -374,7 +449,7 @@ test('a later plain value restates the base on native; the hover survives', () =
   expect(hovered.style?.backgroundColor).toBe('blue')
 })
 
-test('styled same-key programs survive call-site props and retain authored order', () => {
+test('styled same-key programs merge by clause slot through call-site props', () => {
   const Frame = styled(View, {
     bg: 'gray hover:blue',
     p: '4 sm:6',

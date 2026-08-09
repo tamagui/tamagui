@@ -5,7 +5,21 @@ import { hydrateRoot } from 'react-dom/client'
 import { renderToString } from 'react-dom/server'
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 import config from '../config-default'
-import { TamaguiProvider, Text, View, createTamagui, getSplitStyles } from '../web/src'
+import {
+  TamaguiProvider,
+  Text,
+  View,
+  createTamagui,
+  getSplitStyles,
+  styled,
+} from '../web/src'
+import {
+  flatValuePrecedenceFixtures,
+  reverseFixtureProgram,
+  type FlatValueFixtureConditions,
+  type FlatValuePrecedenceFixture,
+} from './flatValuePrecedenceFixtures'
+import { simplifiedGetSplitStyles } from './utils'
 
 const opts = { isAnimated: false, noClass: false, resolveValues: 'auto' } as any
 
@@ -32,6 +46,60 @@ function styleResourceCount(html: string, identifier: string): number {
     .filter((href) => href === `t_${identifier}`).length
 }
 
+const fixtureGroupEntry = (
+  pseudo: Record<string, boolean> = {},
+  layout?: { width: number; height: number }
+) => ({
+  subscribe: () => () => {},
+  state: { pseudo, layout },
+})
+
+function fixtureOptions(active: FlatValueFixtureConditions, noClass: boolean) {
+  const groupContext: Record<string, any> = {}
+  for (const group of active.groups ?? []) {
+    const match = /^group-([^/]+)(?:\/(.+))?$/.exec(group)
+    if (match) {
+      groupContext[match[2] ?? 'true'] = fixtureGroupEntry({
+        [match[1] === 'active' ? 'press' : match[1]]: true,
+      })
+    }
+  }
+  for (const container of active.containers ?? []) {
+    const match = /^@[^/]+(?:\/(.+))?$/.exec(container)
+    groupContext[match?.[1] ? `@${match[1]}` : '@'] = fixtureGroupEntry(
+      {},
+      { width: 400, height: 100 }
+    )
+  }
+  return {
+    componentState: Object.fromEntries(
+      (active.states ?? []).map((state) => [state === 'active' ? 'press' : state, true])
+    ),
+    groupContext,
+    mediaState: Object.fromEntries((active.media ?? []).map((name) => [name, true])),
+    mergeDefaultProps: true,
+    noClass,
+    themeName: active.themes?.at(-1) ?? 'light',
+  }
+}
+
+function fixtureComponent(
+  fixture: FlatValuePrecedenceFixture,
+  reversed: boolean
+): { Component: any; props: Record<string, string> } {
+  let Component: any = View
+  const props: Record<string, string> = {}
+  for (const layer of fixture.layers) {
+    const value = reversed ? reverseFixtureProgram(layer.value) : layer.value
+    if (layer.source === 'styled') {
+      Component = styled(Component, { [fixture.property]: value })
+    } else {
+      props[fixture.property] = value
+    }
+  }
+  return { Component, props }
+}
+
 beforeAll(() => {
   ;(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true
 })
@@ -42,6 +110,51 @@ afterEach(() => {
 })
 
 describe('flat value program SSR', () => {
+  test('the shared precedence table evaluates identically and emits its program blocks during SSR', () => {
+    const serverConfig = createTamagui(config.getDefaultTamaguiConfig() as any)
+
+    for (const fixture of flatValuePrecedenceFixtures) {
+      for (const scenario of fixture.scenarios) {
+        if (scenario.active.platform === 'ios') continue
+        for (const reversed of [false, true]) {
+          const { Component, props } = fixtureComponent(fixture, reversed)
+          const expected = reversed
+            ? (scenario.reversedExpected ?? scenario.expected)
+            : scenario.expected
+          const inline = simplifiedGetSplitStyles(
+            Component,
+            props,
+            fixtureOptions(scenario.active, true)
+          )
+          expect(inline.style?.[fixture.property], `fixture ${fixture.id}`).toBe(
+            expected
+          )
+
+          const emitted = simplifiedGetSplitStyles(
+            Component,
+            props,
+            fixtureOptions(scenario.active, false)
+          )
+          const className = emitted.classNames[fixture.property]
+          const rules = rulesFor(emitted, className)
+          const html = renderToString(
+            <TamaguiProvider
+              config={serverConfig}
+              defaultTheme={scenario.active.themes?.at(-1) ?? 'light'}
+              disableInjectCSS
+            >
+              <Component {...props} />
+            </TamaguiProvider>
+          )
+          expect(html, `fixture ${fixture.id}`).toContain(className)
+          for (const rule of rules) {
+            expect(html, `fixture ${fixture.id}: ${rule}`).toContain(rule)
+          }
+        }
+      }
+    }
+  })
+
   test('does not ship config revision diagnostics in production', () => {
     vi.stubEnv('NODE_ENV', 'production')
     const productionConfig = createTamagui(config.getDefaultTamaguiConfig() as any)

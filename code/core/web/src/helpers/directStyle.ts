@@ -11,7 +11,18 @@ import {
   tokenCategories,
   type StyleObject,
 } from '@tamagui/helpers'
-import type { ParsedValue } from '@tamagui/style-grammar/runtime'
+import {
+  canonicalClauseModifier,
+  clauseConditionSetKey,
+  clauseSubjectClassRepetitions,
+  compareClausePrecedence,
+  createClausePrecedenceOrder,
+  getClausePrecedenceKeyFromKinds,
+  type ClausePrecedenceKey,
+  type ClausePrecedenceOrder,
+  type ModifierKind,
+  type ParsedValue,
+} from '@tamagui/style-grammar/runtime'
 
 import { isVariable } from '../createVariable'
 import { mediaKeyMatch } from '../hooks/useMedia'
@@ -49,14 +60,22 @@ type Condition = {
   enter?: true
   exit?: true
   theme?: string
-  specificity?: number
-  specificityGroup?: string
+  precedence: ClausePrecedenceKey
+  classRepetitions: number
   unsupportedState?: string
 }
 
 type DirectAtomic = {
   baseRules: number
-  conditions?: Record<string, { count: number; index: number; default?: boolean }>
+  conditions?: Record<
+    string,
+    {
+      count: number
+      index: number
+      precedence: ClausePrecedenceKey
+      default?: boolean
+    }
+  >
   identifier: string
   signature: string
   styleObject: StyleObject
@@ -68,10 +87,12 @@ type DirectState = GetStyleState & {
   flatDynamicColors?: Record<string, Record<string, any>>
   flatDynamicThemeAccess?: boolean
   flatLegacyTransforms?: Record<string, any>
-  flatSpecificity?: Record<string, number>
+  flatPrecedence?: Record<string, ClausePrecedenceKey>
   flatTextShadow?: Record<string, any>
   flatWebShadow?: Record<string, any>
 }
+
+const baseClausePrecedence = [0, 0, 0, 0] as const
 
 const stateSelectors: Record<string, string> = {
   hover: ':hover',
@@ -181,6 +202,7 @@ const borderStyleDefaults: Record<string, string> = {
 }
 
 const mediaQueries = new WeakMap<object, Record<string, string>>()
+const clausePrecedenceOrders = new WeakMap<object, ClausePrecedenceOrder>()
 const warned = process.env.NODE_ENV !== 'production' ? new Set<string>() : null
 
 function warnOnce(message: string) {
@@ -199,6 +221,15 @@ function queryFor(state: GetStyleState, name: string): string | undefined {
     mediaQueries.set(state.conf, queries)
   }
   return queries[name]
+}
+
+function precedenceOrderFor(state: GetStyleState): ClausePrecedenceOrder {
+  let order = clausePrecedenceOrders.get(state.conf)
+  if (!order) {
+    order = createClausePrecedenceOrder(state.conf.media)
+    clausePrecedenceOrders.set(state.conf, order)
+  }
+  return order
 }
 
 function stateIsActive(state: GetStyleState, name: string): boolean {
@@ -263,26 +294,30 @@ function containerCondition(state: GetStyleState, modifier: string, out: Conditi
 }
 
 function getCondition(state: GetStyleState, source: string): Condition | null {
-  const out: Condition = { key: '', active: true, emit: true, selector: '' }
+  const out = { key: '', active: true, emit: true, selector: '' } as Condition
   const canonical: string[] = []
-  const specificityGroup: string[] = []
+  const kinds: ModifierKind[] = []
+  const seenModifiers = new Set<string>()
+  let selfStateSpecificity = 0
   let start = 0
   for (let index = 0; index <= source.length; index++) {
     if (index !== source.length && source.charCodeAt(index) !== 58) continue
-    let modifier = source.slice(start, index)
+    let modifier = canonicalClauseModifier(source.slice(start, index))
     start = index + 1
     if (!modifier) return null
+    if (seenModifiers.has(modifier)) continue
+    seenModifiers.add(modifier)
 
     if (modifier.startsWith('group-')) {
       if (!groupCondition(state, modifier, out)) return null
       canonical.push(modifier)
-      specificityGroup.push(modifier)
+      kinds.push('group')
       continue
     }
     if (modifier.charCodeAt(0) === 64) {
       if (!containerCondition(state, modifier, out)) return null
       canonical.push(modifier)
-      specificityGroup.push(modifier)
+      kinds.push('container')
       continue
     }
     if (
@@ -301,7 +336,8 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
               ? 'exit'
               : modifier
       canonical.push(modifier)
-      specificityGroup.push(modifier)
+      kinds.push('state')
+      selfStateSpecificity++
       const selector = stateSelectors[modifier]
       if (
         !isWeb &&
@@ -318,10 +354,10 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
       }
       if (modifier === 'enter' || modifier === 'exit') {
         const cls = modifier === 'enter' ? '.t_unmounted' : '.t_exiting'
-        out.selector += `:where(${cls}, ${cls} *)`
+        out.selector += `:is(${cls}, ${cls} *)`
         out[modifier] = true
       } else if (selector) {
-        out.selector += `:where(${selector})`
+        out.selector += selector
       }
       if (modifier === 'hover') (out.wrappers ||= []).push('@media (hover: hover)')
       out.active &&= stateIsActive(state, modifier)
@@ -340,7 +376,7 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
       const query = queryFor(state, modifier)
       if (!query) return null
       canonical.push(modifier)
-      specificityGroup.push(modifier)
+      kinds.push('media')
       ;(out.wrappers ||= []).push(`@media ${query}`)
       out.active &&= !!state.flatMediaState?.[modifier]
       ;(state.flatMediaKeys ||= new Set()).add(modifier)
@@ -348,7 +384,7 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
     }
     if (modifier in (state.conf.themes || {})) {
       canonical.push(modifier)
-      specificityGroup.push(modifier)
+      kinds.push('theme')
       out.theme = modifier
       out.selector += `:where(.t_${modifier}, .t_${modifier} *)`
       out.active &&=
@@ -366,27 +402,24 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
       modifier === 'androidtv'
     ) {
       canonical.push(modifier)
+      kinds.push('platform')
       const matches = platformMatches(modifier)
       out.active &&= matches
       out.emit &&= matches
-      out.specificity = Math.max(
-        out.specificity || 0,
-        modifier === 'native'
-          ? 1
-          : modifier === 'androidtv' || modifier === 'tvos'
-            ? 3
-            : 2
-      )
       continue
     }
     return null
   }
-  canonical.sort()
-  out.key = canonical.join(':')
-  if (out.specificity !== undefined) {
-    specificityGroup.sort()
-    out.specificityGroup = specificityGroup.join(':')
-  }
+  out.key = clauseConditionSetKey(canonical)
+  out.precedence = getClausePrecedenceKeyFromKinds(
+    canonical,
+    kinds,
+    precedenceOrderFor(state)
+  )
+  out.classRepetitions = clauseSubjectClassRepetitions(
+    out.precedence,
+    selfStateSpecificity
+  )
   return out
 }
 
@@ -638,7 +671,8 @@ function directAtomic(
     condition?.wrappers,
     signature,
     true,
-    atomicKey
+    atomicKey,
+    condition?.classRepetitions
   )
   if (!next) return
   const identifier = next[StyleObjectIdentifier]
@@ -654,6 +688,7 @@ function directAtomic(
             : condition!.key]: {
             count: nextRules.length,
             index: 0,
+            precedence: condition?.precedence ?? baseClausePrecedence,
             default: isDefault,
           },
         },
@@ -699,18 +734,32 @@ function directAtomic(
             }
           }
         }
-        previous.index = rules.length
-        previous.count = nextRules.length
-        previous.default = isDefault
-        rules.push(...nextRules)
-      } else {
-        ;(existing.conditions ||= {})[slot] = {
-          count: nextRules.length,
-          index: rules.length,
-          default: isDefault,
-        }
-        rules.push(...nextRules)
+        delete existing.conditions![slot]
       }
+      const precedence = condition?.precedence ?? baseClausePrecedence
+      let insertionIndex = rules.length
+      if (existing.conditions) {
+        for (const key in existing.conditions) {
+          const entry = existing.conditions[key]
+          if (
+            compareClausePrecedence(entry.precedence, precedence) > 0 &&
+            entry.index < insertionIndex
+          ) {
+            insertionIndex = entry.index
+          }
+        }
+        for (const key in existing.conditions) {
+          const entry = existing.conditions[key]
+          if (entry.index >= insertionIndex) entry.index += nextRules.length
+        }
+      }
+      ;(existing.conditions ||= {})[slot] = {
+        count: nextRules.length,
+        index: insertionIndex,
+        precedence,
+        default: isDefault,
+      }
+      rules.splice(insertionIndex, 0, ...nextRules)
     } else {
       const difference = nextRules.length - existing.baseRules
       rules.splice(0, existing.baseRules, ...nextRules)
@@ -811,12 +860,9 @@ function emitProperty(
 
   if (condition) {
     if (!condition.active) return
-    if (condition.specificity !== undefined) {
-      const key = `${property}\0${condition.specificityGroup || ''}`
-      const previous = direct.flatSpecificity?.[key] || 0
-      if (condition.specificity < previous) return
-      ;(direct.flatSpecificity ||= {})[key] = condition.specificity
-    }
+    const previous = direct.flatPrecedence?.[property]
+    if (previous && compareClausePrecedence(condition.precedence, previous) < 0) return
+    ;(direct.flatPrecedence ||= {})[property] = condition.precedence
     ;(state.flatActiveConditions ||= {})[property] = true
   } else if (state.flatActiveConditions?.[property]) {
     return

@@ -9,12 +9,10 @@
 //   descendant test inside their own `:where()` (`.t_dark *`), which makes each
 //   one independent, so nesting order between them never matters and no
 //   ancestor-permutation selectors exist;
-// - every rule has specificity exactly (0,1,0), the subject class alone, because
-//   every condition sits inside `:where()`, and the `@media`/`@container`
-//   wrappers add nothing;
-// - `rules` is authored clause order with the base first, and that order IS the
-//   semantics: equal specificity reduces the cascade to source order inside the
-//   block, so the last matching clause wins, exactly as native evaluates it;
+// - rule order is ascending clause precedence; selector specificity encodes
+//   depth, while platform clauses receive a floor above the maximum
+//   non-platform depth. Self states contribute naturally; media/container
+//   wrappers and :where()-scoped theme/group ancestors contribute zero;
 // - the block is inserted contiguously, so cross-program order never matters and
 //   append-at-end is always safe.
 //
@@ -25,6 +23,15 @@
 // impossible because the parser rejects a top-level `{`, `}`, or `;`.
 
 import { parseContainerModifier, parseGroupModifier } from './modifierRegistry'
+import {
+  canonicalClauseModifier,
+  clauseConditionSetKey,
+  clauseSubjectClassRepetitions,
+  compareClausePrecedence,
+  createClausePrecedenceOrder,
+  getClausePrecedenceKey,
+  type ClausePrecedenceOrder,
+} from './clausePrecedence'
 import { transformAxisCompositions } from './transformFamily'
 import { programClassName } from './programHash'
 import { stateToSelector } from './states'
@@ -109,6 +116,8 @@ export interface LowerProgramOptions {
   containerQueries?: Readonly<Record<string, string>>
   /** modifier -> selector, defaults to `defaultStateSelectors` */
   stateSelectors?: Readonly<Record<string, ConditionSelector>>
+  /** precomputed media declaration order; derived from mediaQueries by default */
+  precedenceOrder?: ClausePrecedenceOrder
   /** theme class prefix; `t_` gives `.t_dark` */
   themeClassPrefix?: string
   /** group class prefix; `t_group_` gives `.t_group_card` */
@@ -117,7 +126,7 @@ export interface LowerProgramOptions {
 
 export interface LoweredProgram {
   className: string
-  /** base rule first, then one rule per emitted clause in authored order */
+  /** base rule first, then one rule per emitted clause in precedence order */
   rules: string[]
   /**
    * Present when the program writes a per-axis custom property (`x`, `y`,
@@ -145,11 +154,17 @@ function hyphenate(property: string): string {
   return out
 }
 
-/** one zero-specificity condition, anchored on the subject */
-function conditionSelector(fragment: string, scope: ConditionScope): string {
-  if (scope === 'within') return `:where(${fragment} *)`
-  if (scope === 'is-or-within') return `:where(${fragment}, ${fragment} *)`
-  return `:where(${fragment})`
+function conditionSelector(
+  fragment: string,
+  scope: ConditionScope,
+  zeroSpecificity: boolean
+): string {
+  const pseudo = zeroSpecificity ? 'where' : 'is'
+  if (scope === 'within') return `:${pseudo}(${fragment} *)`
+  if (scope === 'is-or-within') {
+    return `:${pseudo}(${fragment}, ${fragment} *)`
+  }
+  return zeroSpecificity ? `:where(${fragment})` : fragment
 }
 
 type PointerEventsMode = 'auto' | 'none' | 'box-none' | 'box-only'
@@ -180,6 +195,7 @@ export function lowerProgram(
     mediaQueries,
     containerQueries,
     stateSelectors = defaultStateSelectors,
+    precedenceOrder = createClausePrecedenceOrder(mediaQueries),
     themeClassPrefix = 't_',
     groupClassPrefix = 't_group_',
   } = options
@@ -215,13 +231,41 @@ export function lowerProgram(
     pushRule(`.${className}`, [], program.value.base)
   }
 
-  for (const clause of program.value.clauses) {
-    let selector = `.${className}`
+  const clauseSlots = new Map<
+    string,
+    { clause: (typeof program.value.clauses)[number]; index: number }
+  >()
+  for (let index = 0; index < program.value.clauses.length; index++) {
+    const clause = program.value.clauses[index]
+    clauseSlots.set(clauseConditionSetKey(clause.modifiers), { clause, index })
+  }
+  const clauses = [...clauseSlots.values()]
+    .map((entry) => ({
+      ...entry,
+      precedence: getClausePrecedenceKey(
+        entry.clause.modifiers,
+        registry,
+        precedenceOrder
+      ),
+    }))
+    .sort(
+      (left, right) =>
+        compareClausePrecedence(left.precedence, right.precedence) ||
+        left.index - right.index
+    )
+
+  for (const { clause, precedence } of clauses) {
+    let selectorSuffix = ''
+    let selfStateSpecificity = 0
     // at-rule preludes wrapping this clause, outermost first in authored order
     const wrappers: string[] = []
     let skip = false
+    const seenModifiers = new Set<string>()
 
-    for (const modifier of clause.modifiers) {
+    for (const authoredModifier of clause.modifiers) {
+      const modifier = canonicalClauseModifier(authoredModifier)
+      if (seenModifiers.has(modifier)) continue
+      seenModifiers.add(modifier)
       const kind = registry.get(modifier)
 
       if (kind === 'platform') {
@@ -265,14 +309,23 @@ export function lowerProgram(
             `cannot lower "${modifier}:" — the state has no web selector, so it cannot become CSS`
           )
         }
-        selector += conditionSelector(state.fragment, state.scope ?? 'self')
+        selectorSuffix += conditionSelector(
+          state.fragment,
+          state.scope ?? 'self',
+          false
+        )
+        selfStateSpecificity++
         if (state.media) pushCapabilityGuard(wrappers, state.media)
         continue
       }
 
       if (kind === 'theme') {
         // the theme class is on the subject or anywhere above it
-        selector += conditionSelector(`.${themeClassPrefix}${modifier}`, 'is-or-within')
+        selectorSuffix += conditionSelector(
+          `.${themeClassPrefix}${modifier}`,
+          'is-or-within',
+          true
+        )
         continue
       }
 
@@ -285,9 +338,10 @@ export function lowerProgram(
           )
         }
         // a group is always a parent, never the subject itself
-        selector += conditionSelector(
+        selectorSuffix += conditionSelector(
           `.${groupClassPrefix}${group.group ?? unnamedGroup}${state.fragment}`,
-          'within'
+          'within',
+          true
         )
         if (state.media) pushCapabilityGuard(wrappers, state.media)
         continue
@@ -300,6 +354,9 @@ export function lowerProgram(
 
     if (skip) continue
 
+    const selector = `.${className}`.repeat(
+      clauseSubjectClassRepetitions(precedence, selfStateSpecificity)
+    ) + selectorSuffix
     pushRule(selector, wrappers, clause.payload)
   }
 

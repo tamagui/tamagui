@@ -26,10 +26,9 @@
 // Programs:
 //
 // - Every authored prop expands (via shorthand + family tables) to one or more
-//   CSS longhands. Each longhand gets exactly one program: the parsed value
-//   from the LAST authored prop that contributed to it. Forward merge in
-//   authored order, whole-program replacement — clause-level deep merging
-//   never happens.
+//   CSS longhands. Each longhand accumulates one program in authored order.
+//   Contributions merge by base or normalized condition-set slot, so a later
+//   clause replaces only that slot and unrelated earlier clauses persist.
 
 export type ModifierKind =
   | 'state'

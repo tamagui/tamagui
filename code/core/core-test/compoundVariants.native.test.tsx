@@ -228,9 +228,9 @@ describe('compoundVariants - native', () => {
     expect(nan.style?.transform).toEqual([{ scale: 2 }])
   })
 
-  test('later authored media entries win at equal cascade priority (authored order, not config order)', () => {
-    // v3 designed change: programs are last-match-wins in authored order like
-    // the web cascade; legacy ordered media objects by config-key importance
+  test('media declaration order wins independently of authored contribution order', () => {
+    // The fixed key ranks md after sm. Even many later sm contributions cannot
+    // displace an active md clause with a higher within-category rank.
     const compoundVariants = [
       {
         state: 'active' as const,
@@ -273,7 +273,7 @@ describe('compoundVariants - native', () => {
           },
         }
       ).style?.marginTop
-    ).toBe(1004)
+    ).toBe(2000)
   })
 
   test('nested platform matrices preserve equal-specificity later-order behavior', () => {

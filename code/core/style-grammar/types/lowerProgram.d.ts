@@ -1,3 +1,4 @@
+import { type ClausePrecedenceOrder } from "./clausePrecedence";
 import type { LonghandProgram, ModifierRegistryView } from "./valueTypes";
 /**
 * Where a condition's selector fragment is matched, relative to the subject: on
@@ -41,6 +42,8 @@ export interface LowerProgramOptions {
 	containerQueries?: Readonly<Record<string, string>>;
 	/** modifier -> selector, defaults to `defaultStateSelectors` */
 	stateSelectors?: Readonly<Record<string, ConditionSelector>>;
+	/** precomputed media declaration order; derived from mediaQueries by default */
+	precedenceOrder?: ClausePrecedenceOrder;
 	/** theme class prefix; `t_` gives `.t_dark` */
 	themeClassPrefix?: string;
 	/** group class prefix; `t_group_` gives `.t_group_card` */
@@ -48,7 +51,7 @@ export interface LowerProgramOptions {
 }
 export interface LoweredProgram {
 	className: string;
-	/** base rule first, then one rule per emitted clause in authored order */
+	/** base rule first, then one rule per emitted clause in precedence order */
 	rules: string[];
 	/**
 	* Present when the program writes a per-axis custom property (`x`, `y`,

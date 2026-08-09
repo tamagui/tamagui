@@ -1,8 +1,11 @@
+import { type ClausePrecedenceOrder } from "./clausePrecedence";
 import type { ModifierRegistryView, ParsedValue } from "./valueTypes";
 export interface ActiveConditions {
 	states: ReadonlySet<string>;
 	themes: ReadonlySet<string>;
 	media: ReadonlySet<string>;
+	/** config declaration order; falls back to `media` insertion order in tests */
+	mediaOrder?: ClausePrecedenceOrder;
 	platform: string;
 	groups: (modifier: string) => boolean;
 	/**
@@ -14,11 +17,10 @@ export interface ActiveConditions {
 	containers: (modifier: string) => boolean;
 }
 /**
-* Resolves a program to one payload, mirroring the runtime directStyle
-* contract: clauses apply in authored order, except that platform-bearing
-* clauses with the same non-platform condition set compete by platform
-* specificity (grammarPlatformRank), where a more specific earlier clause
-* survives a less specific later one and equal ranks keep authored order.
+* Resolves a program to one payload using the shared fixed precedence key.
+* Authored order only breaks exact-key ties, so a later restatement of the
+* same normalized condition set wins while distinct condition sets are stable
+* under reordering.
 */
 export declare function evaluateProgram(value: ParsedValue, registry: ModifierRegistryView, active: ActiveConditions): string | null;
 

@@ -49,5 +49,5 @@ test('pointerEvents lowers as a program on web', () => {
   expect(className).toBeTruthy()
   const rules = result.rulesToInsert[className]?.[4] ?? []
   expect(rules.join('')).toContain('pointer-events:auto')
-  expect(rules.join('')).toContain(':where(:hover){pointer-events:none}')
+  expect(rules.join('')).toContain(':hover{pointer-events:none}')
 })

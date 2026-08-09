@@ -155,6 +155,15 @@ describe('per-longhand programs', () => {
     ])
   })
 
+  test('state aliases restate the same normalized clause slot', () => {
+    expect(
+      mergeProgramValues(
+        value('rest', [{ modifiers: ['active'], payload: 'old' }]),
+        value('', [{ modifiers: ['press'], payload: 'new' }])
+      ).clauses
+    ).toEqual([{ modifiers: ['press'], payload: 'new' }])
+  })
+
   test('condition-set equality is order-insensitive', () => {
     const earlier = value('red', [{ modifiers: ['dark', 'hover'], payload: 'green' }])
     const later: ParsedValue = {

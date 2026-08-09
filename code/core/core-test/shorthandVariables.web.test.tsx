@@ -227,7 +227,7 @@ describe('text-decoration shorthand - web', () => {
     const className = styles.classNames?.textDecorationLine
     const rules = (styles.rulesToInsert?.[className]?.[StyleObjectRules] ?? []).join('')
     expect(rules).toContain('text-decoration-line:underline')
-    expect(rules).toContain(':where(:hover){text-decoration-line:none}')
+    expect(rules).toContain(':hover{text-decoration-line:none}')
   })
 })
 

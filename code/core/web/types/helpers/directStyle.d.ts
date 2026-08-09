@@ -1,4 +1,4 @@
-import type { ParsedValue } from '@tamagui/style-grammar/runtime';
+import { type ParsedValue } from '@tamagui/style-grammar/runtime';
 import type { GetStyleState } from '../types';
 export type MergeStyle = (state: GetStyleState, key: string, value: any, importance: number, disableNormalize?: boolean, originalValue?: any) => void;
 export declare function directStyleSignature(property: string, value: unknown, conditionKey?: string): string;

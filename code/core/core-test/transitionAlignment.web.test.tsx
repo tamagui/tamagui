@@ -111,7 +111,7 @@ test('conditional transition clauses stay in the direct block', () => {
   expect(className).toBeTruthy()
   const rules = (result.rulesToInsert?.[className]?.[4] ?? []).join('')
   expect(rules).toContain('transition:200ms')
-  expect(rules).toContain(':where(:hover){transition:400ms}')
+  expect(rules).toContain(':hover{transition:400ms}')
   expect(result.style?.transition).toBeUndefined()
 })
 
@@ -130,7 +130,7 @@ test('a clause-bearing longhand emits base and conditional declarations', () => 
   const result = split({ transitionDelay: '50ms hover:100ms' })
   const emitted = emittedTransition(result)
   expect(emitted).toContain('transition-delay:50ms')
-  expect(emitted).toContain(':where(:hover){transition-delay:100ms}')
+  expect(emitted).toContain(':hover{transition-delay:100ms}')
   expect(result.style?.transition).toBeUndefined()
   expect(result.viewProps.transitionDelay).toBeUndefined()
 })

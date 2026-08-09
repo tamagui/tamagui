@@ -35,7 +35,8 @@ export function getCSSStyleAtomic(
   wrappers?: readonly string[],
   identity?: string,
   direct = false,
-  identityKey = key
+  identityKey = key,
+  classRepetitions = 1
 ): StyleObject | undefined {
   return getStyleObject(
     { [key]: val } as ViewStyleObject,
@@ -44,7 +45,8 @@ export function getCSSStyleAtomic(
     wrappers,
     identity,
     direct,
-    identityKey
+    identityKey,
+    classRepetitions
   )
 }
 
@@ -58,7 +60,8 @@ const getStyleObject = (
   wrappers?: readonly string[],
   identity?: string,
   direct = false,
-  identityKey = key
+  identityKey = key,
+  classRepetitions = 1
 ): StyleObject | undefined => {
   let val = style[key]
   if (val == null) return
@@ -93,7 +96,15 @@ const getStyleObject = (
     if (value === 'box-none') identifier = '_pe-boxnone'
     else if (value === 'box-only') identifier = '_pe-boxonly'
   }
-  const rules = createAtomicRules(identifier, key, value, condition, wrappers, direct)
+  const rules = createAtomicRules(
+    identifier,
+    key,
+    value,
+    condition,
+    wrappers,
+    direct,
+    classRepetitions
+  )
   return [
     // array for performance
     key,
@@ -176,13 +187,17 @@ function createAtomicRules(
   value: any,
   condition = '',
   wrappers?: readonly string[],
-  direct = false
+  direct = false,
+  classRepetitions = 1
 ): string[] {
   // longhands get .cls.cls for higher specificity over shorthands
-  const cls =
-    !direct && property in cssShorthandLonghands
-      ? `.${identifier}.${identifier}`
-      : `.${identifier}`
+  const repetitions =
+    direct && classRepetitions > 1
+      ? classRepetitions
+      : !direct && property in cssShorthandLonghands
+        ? 2
+        : 1
+  const cls = `.${identifier}`.repeat(repetitions)
   const selector = `${cls}${condition}`
 
   let rules: string[] = []

@@ -125,57 +125,62 @@ function compoundVariantMatches(
 
 type OrderedPropEntry = readonly [string, any]
 
-// the clause-bearing string defaults of a styled component, computed once per
-// static config: `styled(View, { bg: 'gray hover:blue' })` must survive a
-// call-site `bg="red"` as clauses (decision 21), but mergeComponentProps
-// replaces defaults at the prop level, so the split re-injects the styled
-// value at the styled-base position and the later direct contribution restates
-// only the base. null = this component has none, one WeakMap hit per render.
-const styledClauseDefaultsCache = new WeakMap<object, OrderedPropEntry[] | null>()
+// Styled defaults computed once per static config. mergeComponentProps replaces
+// defaults at the prop level, but flat programs merge per clause slot: either a
+// conditioned default or a conditioned prop therefore needs the displaced
+// styled value re-injected at the styled-base position. This is what preserves
+// `styled(View, { flexDirection: 'row' })` under `sm:column`.
+const styledDefaultsCache = new WeakMap<object, OrderedPropEntry[] | null>()
 
-function getStyledClauseDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | null {
-  let entries = styledClauseDefaultsCache.get(staticConfig)
+function getStyledDefaults(staticConfig: StaticConfig): OrderedPropEntry[] | null {
+  let entries = styledDefaultsCache.get(staticConfig)
   if (entries === undefined) {
     entries = null
     const defaults = staticConfig.defaultProps
     if (defaults) {
       for (const key in defaults) {
-        const value = defaults[key]
-        if (typeof value === 'string' && value.indexOf(':') !== -1) {
-          ;(entries ||= []).push([key, value])
-        }
+        ;(entries ||= []).push([key, defaults[key]])
       }
     }
-    styledClauseDefaultsCache.set(staticConfig, entries)
+    styledDefaultsCache.set(staticConfig, entries)
   }
   return entries
 }
 
-function pushDisplacedClauseDefaults(
+function pushDisplacedStyledDefaults(
   orderedEntries: OrderedPropEntry[],
-  styledClauseDefaults: OrderedPropEntry[] | null,
-  processedProps: Record<string, any>
+  styledDefaults: OrderedPropEntry[] | null,
+  processedProps: Record<string, any>,
+  shorthands: Record<string, string>
 ) {
-  if (!styledClauseDefaults) return
-  for (let index = 0; index < styledClauseDefaults.length; index++) {
-    const [key, styledValue] = styledClauseDefaults[index]
+  if (!styledDefaults) return
+  for (let index = 0; index < styledDefaults.length; index++) {
+    const [key, styledValue] = styledDefaults[index]
     const propValue = processedProps[key]
+    if (!(key in stylePropsAll) && !(key in shorthands)) continue
     // equal means the default flowed through the merge untouched and will be
     // processed as an ordinary prop entry; different means a call-site value
-    // displaced it, so the styled clauses re-enter first
-    if (propValue !== undefined && propValue !== styledValue) {
-      orderedEntries.push(styledClauseDefaults[index])
+    // displaced it. Re-injection is only needed when either contribution is a
+    // program; ordinary values retain the prop-level fast path.
+    if (
+      propValue !== undefined &&
+      propValue !== styledValue &&
+      ((typeof styledValue === 'string' && styledValue.includes(':')) ||
+        (typeof propValue === 'string' && propValue.includes(':')))
+    ) {
+      orderedEntries.push(styledDefaults[index])
     }
   }
 }
 
 function getPropEntriesInForwardOrder(
   processedProps: Record<string, any>,
-  staticConfig: StaticConfig
+  staticConfig: StaticConfig,
+  shorthands: Record<string, string>
 ) {
   const processedBaseStyle = staticConfig.baseStyle
   const compoundVariants = staticConfig.compoundVariants
-  const styledClauseDefaults = getStyledClauseDefaults(staticConfig)
+  const styledDefaults = getStyledDefaults(staticConfig)
 
   // fast path: with no compound variants (the common case) build the forward-ordered
   // [key, value] list in a single for...in pass — skip the two Object.entries arrays
@@ -187,7 +192,12 @@ function getPropEntriesInForwardOrder(
         orderedEntries.push([key, processedBaseStyle[key]])
       }
     }
-    pushDisplacedClauseDefaults(orderedEntries, styledClauseDefaults, processedProps)
+    pushDisplacedStyledDefaults(
+      orderedEntries,
+      styledDefaults,
+      processedProps,
+      shorthands
+    )
     for (const key in processedProps) {
       orderedEntries.push([key, processedProps[key]])
     }
@@ -199,7 +209,12 @@ function getPropEntriesInForwardOrder(
   const orderedEntries = processedBaseStyle
     ? (Object.entries(processedBaseStyle) as OrderedPropEntry[])
     : []
-  pushDisplacedClauseDefaults(orderedEntries, styledClauseDefaults, processedProps)
+  pushDisplacedStyledDefaults(
+    orderedEntries,
+    styledDefaults,
+    processedProps,
+    shorthands
+  )
 
   // Compounds are ordinary contributions in the same authored forward pass. A
   // matching compound runs immediately after its last selector entry, then any
@@ -453,7 +468,11 @@ export const getSplitStyles: StyleSplitter = (
   }
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-  const orderedProcessedProps = getPropEntriesInForwardOrder(processedProps, staticConfig)
+  const orderedProcessedProps = getPropEntriesInForwardOrder(
+    processedProps,
+    staticConfig,
+    shorthands
+  )
 
   const mergeStylePropAtCurrentPosition = (styleProp: any) => {
     if (styleProps.noMergeStyle || !styleProp) return

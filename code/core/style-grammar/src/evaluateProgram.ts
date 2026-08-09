@@ -1,10 +1,20 @@
-import { grammarPlatformGroups, grammarPlatformRank } from './config'
-import type { ModifierRegistryView, ParsedValue } from './valueTypes'
+import { grammarPlatformGroups } from './config'
+import {
+  canonicalClauseModifier,
+  compareClausePrecedence,
+  createClausePrecedenceOrder,
+  getClausePrecedenceKeyFromKinds,
+  type ClausePrecedenceKey,
+  type ClausePrecedenceOrder,
+} from './clausePrecedence'
+import type { ModifierKind, ModifierRegistryView, ParsedValue } from './valueTypes'
 
 export interface ActiveConditions {
   states: ReadonlySet<string>
   themes: ReadonlySet<string>
   media: ReadonlySet<string>
+  /** config declaration order; falls back to `media` insertion order in tests */
+  mediaOrder?: ClausePrecedenceOrder
   platform: string
   groups: (modifier: string) => boolean
   /**
@@ -17,11 +27,10 @@ export interface ActiveConditions {
 }
 
 /**
- * Resolves a program to one payload, mirroring the runtime directStyle
- * contract: clauses apply in authored order, except that platform-bearing
- * clauses with the same non-platform condition set compete by platform
- * specificity (grammarPlatformRank), where a more specific earlier clause
- * survives a less specific later one and equal ranks keep authored order.
+ * Resolves a program to one payload using the shared fixed precedence key.
+ * Authored order only breaks exact-key ties, so a later restatement of the
+ * same normalized condition set wins while distinct condition sets are stable
+ * under reordering.
  */
 export function evaluateProgram(
   value: ParsedValue,
@@ -30,23 +39,22 @@ export function evaluateProgram(
 ): string | null {
   let payload: string | null = null
   let found = false
-  // best platform rank seen per non-platform condition set; mirrors the
-  // runtime gate keyed by property + specificityGroup in directStyle
-  let groupBest: Map<string, number> | undefined
+  let best: ClausePrecedenceKey | undefined
+  const order = active.mediaOrder ?? createClausePrecedenceOrder(active.media)
 
   for (let clauseIndex = 0; clauseIndex < value.clauses.length; clauseIndex++) {
     const clause = value.clauses[clauseIndex]
     let matches = true
-    let rank = 0
-    let others: string[] | undefined
+    const kinds: (ModifierKind | undefined)[] = []
 
     for (
       let modifierIndex = 0;
       modifierIndex < clause.modifiers.length;
       modifierIndex++
     ) {
-      const modifier = clause.modifiers[modifierIndex]
+      const modifier = canonicalClauseModifier(clause.modifiers[modifierIndex])
       const kind = registry.get(modifier)
+      kinds.push(kind)
 
       if (kind === 'state') {
         matches = active.states.has(modifier)
@@ -58,7 +66,6 @@ export function evaluateProgram(
         matches =
           modifier === active.platform ||
           (grammarPlatformGroups.get(modifier)?.has(active.platform) ?? false)
-        if (matches) rank = Math.max(rank, grammarPlatformRank(modifier))
       } else if (kind === 'group') {
         matches = active.groups(modifier)
       } else if (kind === 'container') {
@@ -68,19 +75,19 @@ export function evaluateProgram(
       }
 
       if (!matches) break
-      if (kind !== 'platform') (others ||= []).push(modifier)
     }
 
     if (!matches) continue
 
-    if (rank) {
-      const groupKey = others ? others.sort().join(':') : ''
-      const best = groupBest?.get(groupKey) ?? 0
-      if (rank < best) continue
-      ;(groupBest ||= new Map()).set(groupKey, rank)
-    }
+    const precedence = getClausePrecedenceKeyFromKinds(
+      clause.modifiers,
+      kinds,
+      order
+    )
+    if (best && compareClausePrecedence(precedence, best) < 0) continue
 
     payload = clause.payload
+    best = precedence
     found = true
   }
 

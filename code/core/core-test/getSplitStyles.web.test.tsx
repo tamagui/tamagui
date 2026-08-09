@@ -465,7 +465,7 @@ describe('getSplitStyles', () => {
     // container query on the group name: no @supports wrapper, no :root
     // ladder, no group-descendant selector hop
     expect(rule).toMatch(
-      /^@container testy \(max-width: 800px\) \{\._c-\d+\{color:red\}\}$/
+      /^@container testy \(max-width: 800px\) \{(\._c-\d+)\1\{color:red\}\}$/
     )
   })
 

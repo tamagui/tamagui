@@ -279,9 +279,9 @@ describe('compoundVariants - web', () => {
     ).toBe(1004)
   })
 
-  test('later authored media entries win at equal cascade priority (authored order, not config order)', () => {
-    // v3 designed change: programs are last-match-wins in authored order like
-    // the web cascade; legacy ordered media objects by config-key importance
+  test('media declaration order wins independently of authored contribution order', () => {
+    // The fixed key ranks md after sm. Even many later sm contributions cannot
+    // displace an active md clause with a higher within-category rank.
     const compoundVariants = [
       {
         state: 'active' as const,
@@ -324,10 +324,10 @@ describe('compoundVariants - web', () => {
           },
         }
       ).style?.marginTop
-    ).toBe(1004)
+    ).toBe(2000)
   })
 
-  test('later matching clauses win across modifier depths', () => {
+  test('deeper matching clauses win across authored order', () => {
     const Frame = styled(
       View,
       {},
@@ -350,7 +350,7 @@ describe('compoundVariants - web', () => {
     expect(
       lowerSpecificityLast.style?.marginTop ??
         getRuleValue(lowerSpecificityLast.rulesToInsert, 'marginTop')
-    ).toBe(1)
+    ).toBe(2)
   })
 
   test('nested platform matrices preserve equal-specificity later-order behavior', () => {

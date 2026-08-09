@@ -171,10 +171,9 @@ describe('Nested media + platform queries', () => {
       )
       // All conditions met — all properties should apply
       expect(result.style?.opacity).toBe(0.5)
-      // zIndex matches in both a chained clause (5) and an android clause (10).
-      // Every clause of one program has equal specificity, so the last matching
-      // clause wins regardless of how many conditions it chains.
-      expect(result.style?.zIndex).toBe(10)
+      // zIndex matches in both a chained clause (token 5 -> 500) and a later
+      // android clause (10). Platform rank ties, then the deeper chain wins.
+      expect(result.style?.zIndex).toBe(500)
       expect(result.style?.flex).toBe(1)
     })
   })

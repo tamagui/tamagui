@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`the shared precedence table compiles with runtime-identical CSS order and specificity 1`] = `
+{
+  "1-forward": "._fd-714342058{flex-direction:row}@media (min-width: 640px) {._fd-714342058._fd-714342058{flex-direction:column}}",
+  "1-reversed": "._fd-714342058{flex-direction:row}@media (min-width: 640px) {._fd-714342058._fd-714342058{flex-direction:column}}",
+  "10-forward": "._bc-1759742223{background-color:blue}",
+  "10-reversed": "._bc-1759742223{background-color:blue}",
+  "11-forward": "",
+  "11-reversed": "",
+  "12-forward": "@media (min-width: 640px) {@media (hover: hover) {._bc-1756769353._bc-1756769353:hover{background-color:blue}}}",
+  "12-reversed": "@media (min-width: 640px) {@media (hover: hover) {._bc-1756769353._bc-1756769353:hover{background-color:blue}}}",
+  "13-forward": "._bc-465294438._bc-465294438:where(.t_dark, .t_dark *){background-color:blue}._bc-465294438._bc-465294438:where(.t_dark_blue, .t_dark_blue *){background-color:red}",
+  "13-reversed": "._bc-2114248678._bc-2114248678:where(.t_dark, .t_dark *){background-color:blue}._bc-2114248678._bc-2114248678:where(.t_dark_blue, .t_dark_blue *){background-color:red}",
+  "14-forward": "@media (min-width: 640px) {._bc-1560288335._bc-1560288335{background-color:red}}@container (min-width: 640px) {._bc-1560288335._bc-1560288335{background-color:blue}}",
+  "14-reversed": "@media (min-width: 640px) {._bc-1672375151._bc-1672375151{background-color:red}}@container (min-width: 640px) {._bc-1672375151._bc-1672375151{background-color:blue}}",
+  "15-forward": "@media (hover: hover) {._bc-303723751._bc-303723751:where(.t_group_true:hover *){background-color:blue}}@media (hover: hover) {._bc-303723751:hover{background-color:red}}",
+  "15-reversed": "@media (hover: hover) {._bc-612909171._bc-612909171:where(.t_group_true:hover *){background-color:blue}}@media (hover: hover) {._bc-612909171:hover{background-color:red}}",
+  "2-forward": "._fd-714342058{flex-direction:row}@media (min-width: 640px) {._fd-714342058._fd-714342058{flex-direction:column}}",
+  "2-reversed": "._fd-714342058{flex-direction:row}@media (min-width: 640px) {._fd-714342058._fd-714342058{flex-direction:column}}",
+  "3-forward": "._bc-1951553591{background-color:red}@media (min-width: 640px) {._bc-1951553591._bc-1951553591{background-color:green}}",
+  "3-reversed": "._bc-941989121{background-color:red}@media (min-width: 640px) {._bc-941989121._bc-941989121{background-color:blue}}",
+  "4-forward": "@media (min-width: 640px) {._bc-1852283760._bc-1852283760{background-color:blue}}@media (min-width: 768px) {._bc-1852283760._bc-1852283760{background-color:green}}",
+  "4-reversed": "@media (min-width: 640px) {._bc-1874233030._bc-1874233030{background-color:blue}}@media (min-width: 768px) {._bc-1874233030._bc-1874233030{background-color:green}}",
+  "5-forward": "@media (min-width: 640px) {._bc-2043858191._bc-2043858191{background-color:blue}}._bc-2043858191._bc-2043858191:where(.t_dark, .t_dark *){background-color:green}",
+  "5-reversed": "@media (min-width: 640px) {._bc-22106983._bc-22106983{background-color:blue}}._bc-22106983._bc-22106983:where(.t_dark, .t_dark *){background-color:green}",
+  "6-forward": "@media (min-width: 768px) {._bc-1739593518._bc-1739593518{background-color:green}}@media (min-width: 640px) {@media (hover: hover) {._bc-1739593518._bc-1739593518:hover{background-color:blue}}}",
+  "6-reversed": "@media (min-width: 768px) {._bc-1209113596._bc-1209113596{background-color:green}}@media (min-width: 640px) {@media (hover: hover) {._bc-1209113596._bc-1209113596:hover{background-color:blue}}}",
+  "7-forward": "@media (min-width: 768px) {._bc-905159810._bc-905159810{background-color:green}}@media (min-width: 640px) {._bc-905159810._bc-905159810._bc-905159810:where(.t_dark, .t_dark *){background-color:blue}}",
+  "7-reversed": "@media (min-width: 768px) {._bc-1590143742._bc-1590143742{background-color:green}}@media (min-width: 640px) {._bc-1590143742._bc-1590143742._bc-1590143742:where(.t_dark, .t_dark *){background-color:blue}}",
+  "8-forward": "@media (hover: hover) {._bc-2060373333:hover{background-color:green}}@media (min-width: 640px) {._bc-2060373333._bc-2060373333._bc-2060373333:where(.t_dark, .t_dark *){background-color:blue}}",
+  "8-reversed": "@media (hover: hover) {._bc-1319070309:hover{background-color:green}}@media (min-width: 640px) {._bc-1319070309._bc-1319070309._bc-1319070309:where(.t_dark, .t_dark *){background-color:blue}}",
+  "9-forward": "@media (min-width: 640px) {._bc-517763403._bc-517763403._bc-517763403:where(.t_dark, .t_dark *){background-color:red}}",
+  "9-reversed": "@media (min-width: 640px) {._bc-618842885._bc-618842885._bc-618842885:where(.t_dark, .t_dark *){background-color:blue}}",
+}
+`;

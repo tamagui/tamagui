@@ -32,7 +32,7 @@ test('an x program writes its axis variable and ships the composing rule', () =>
   expect(axisClass).toBeTruthy()
   expect(rulesFor(result, axisClass)).toEqual([
     `.${axisClass}{--t-x:0px}`,
-    `@media (hover: hover) {.${axisClass}:where(:hover){--t-x:4px}}`,
+    `@media (hover: hover) {.${axisClass}:hover{--t-x:4px}}`,
   ])
 
   // the composing rule is its own class, keyed under the property it composes
@@ -69,10 +69,10 @@ test('uniform scale expands to both axis programs behind one scale composition',
   expect(y).toBeTruthy()
   expect(rulesFor(result, x)).toEqual([
     `.${x}{--t-scale-x:1}`,
-    `.${x}:where(.t_unmounted, .t_unmounted *){--t-scale-x:0.9}`,
+    `.${x}:is(.t_unmounted, .t_unmounted *){--t-scale-x:0.9}`,
   ])
   expect(rulesFor(result, y)[1]).toBe(
-    `.${y}:where(.t_unmounted, .t_unmounted *){--t-scale-y:0.9}`
+    `.${y}:is(.t_unmounted, .t_unmounted *){--t-scale-y:0.9}`
   )
   const composeClass = result.classNames.scale
   expect(rulesFor(result, composeClass)).toEqual([
@@ -87,10 +87,10 @@ test('scale then scaleX replaces only its axis through the forward merge', () =>
   const y = result.classNames['--t-scale-y']
   // the later scaleX owns X; the uniform scale still owns Y
   expect(rulesFor(result, x)[1]).toBe(
-    `@media (hover: hover) {.${x}:where(:hover){--t-scale-x:3}}`
+    `@media (hover: hover) {.${x}:hover{--t-scale-x:3}}`
   )
   expect(rulesFor(result, y)[1]).toBe(
-    `@media (hover: hover) {.${y}:where(:hover){--t-scale-y:2}}`
+    `@media (hover: hover) {.${y}:hover{--t-scale-y:2}}`
   )
 })
 
@@ -99,7 +99,7 @@ test('rotate lowers to the individual property with no composition', () => {
   const rotateClass = result.classNames.rotate
   expect(rulesFor(result, rotateClass)).toEqual([
     `.${rotateClass}{rotate:0deg}`,
-    `@media (hover: hover) {.${rotateClass}:where(:hover){rotate:45deg}}`,
+    `@media (hover: hover) {.${rotateClass}:hover{rotate:45deg}}`,
   ])
   expect(result.classNames.translate).toBeUndefined()
 })
@@ -131,7 +131,7 @@ test('a scaleX program merges over an earlier plain uniform scale', () => {
   expect(x).toBeTruthy()
   expect(rulesFor(result, x)[0]).toBe(`.${x}{--t-scale-x:1}`)
   expect(rulesFor(result, x)[1]).toBe(
-    `@media (hover: hover) {.${x}:where(:hover){--t-scale-x:3}}`
+    `@media (hover: hover) {.${x}:hover{--t-scale-x:3}}`
   )
   const y = result.classNames['--t-scale-y']
   expect(rulesFor(result, y)[0]).toBe(`.${y}{--t-scale-y:2}`)
@@ -144,7 +144,7 @@ test('a later plain transform value restates the base; the hover survives', () =
   expect(xClass).toBeTruthy()
   const rules = result.rulesToInsert[xClass]?.[4] ?? []
   expect(rules[0]).toContain('2')
-  expect(rules[1]).toContain(':where(:hover)')
+  expect(rules[1]).toContain(':hover')
   expect(result.classNames['--t-scale-y']).toBeTruthy()
 })
 
@@ -160,7 +160,7 @@ test('a raw transform value is one ordinary program', () => {
   expect(className).toBeTruthy()
   const rules = rulesFor(result, className)
   expect(rules[0]).toBe(`.${className}{transform:skewX(10deg)}`)
-  expect(rules[1]).toContain(':where(:hover){transform:skewX(20deg)}')
+  expect(rules[1]).toContain(':hover{transform:skewX(20deg)}')
 })
 
 test('a legacy part prop beside a transform program drops with a diagnostic', () => {

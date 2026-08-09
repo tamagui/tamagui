@@ -171,7 +171,7 @@ describe('runtime program evaluation', () => {
     ).toBeNull()
   })
 
-  test('backward iteration makes a later matching clause win', () => {
+  test('a later matching clause in the same slot wins', () => {
     expect(
       evaluateProgram(
         {
@@ -183,6 +183,19 @@ describe('runtime program evaluation', () => {
         },
         registry,
         active({ states: new Set(['hover']) })
+      )
+    ).toBe('blue')
+  })
+
+  test('state aliases match and merge as their canonical condition', () => {
+    expect(
+      evaluateProgram(
+        {
+          base: 'red',
+          clauses: [{ modifiers: ['active'], payload: 'blue' }],
+        },
+        registry,
+        active({ states: new Set(['press']) })
       )
     ).toBe('blue')
   })
@@ -201,7 +214,7 @@ describe('runtime program evaluation', () => {
   })
 })
 
-describe('platform specificity', () => {
+describe('platform precedence', () => {
   const platformRegistry: ModifierRegistryView = {
     get(name) {
       return (
@@ -244,7 +257,7 @@ describe('platform specificity', () => {
     ).toBe('androidtv')
   })
 
-  test('specificity cascade native < android < androidtv is order-independent', () => {
+  test('rank cascade native < android < androidtv is order-independent', () => {
     expect(
       evaluate([
         { modifiers: ['androidtv'], payload: 'androidtv' },
@@ -260,7 +273,7 @@ describe('platform specificity', () => {
     ).toBe('android')
   })
 
-  test('equal specificity keeps authored order (later wins)', () => {
+  test('equal precedence keeps authored order (later wins)', () => {
     expect(
       evaluate([
         { modifiers: ['android'], payload: 'android' },
@@ -275,9 +288,7 @@ describe('platform specificity', () => {
     ).toBe('android')
   })
 
-  test('specificity competes only within the same non-platform condition set', () => {
-    // hover:android and plain androidtv are different condition sets: the
-    // later clause wins by authored order once both match
+  test('platform rank dominates different non-platform condition sets', () => {
     expect(
       evaluate(
         [
@@ -286,8 +297,7 @@ describe('platform specificity', () => {
         ],
         { states: new Set(['hover']) }
       )
-    ).toBe('hover-android')
-    // within the hover set, androidtv still beats android
+    ).toBe('androidtv')
     expect(
       evaluate(
         [
@@ -299,7 +309,7 @@ describe('platform specificity', () => {
     ).toBe('hover-androidtv')
   })
 
-  test('a platform-less clause still applies by authored order', () => {
+  test('a platform clause beats a deeper platform-less clause', () => {
     expect(
       evaluate(
         [
@@ -308,6 +318,6 @@ describe('platform specificity', () => {
         ],
         { states: new Set(['hover']) }
       )
-    ).toBe('hover')
+    ).toBe('androidtv')
   })
 })
