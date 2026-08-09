@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin",
-  "version": "2.6.3",
+  "version": "2.7.4",
   "license": "MIT",
   "files": [
     "src",

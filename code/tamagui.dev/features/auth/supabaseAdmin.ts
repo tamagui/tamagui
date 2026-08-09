@@ -452,10 +452,25 @@ export const createTeamInvoice = async (sub: Stripe.Invoice) => {
   if (teamSubscriptionError) throw teamSubscriptionError
 }
 
-export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
-  const { error } = await supabaseAdmin.from('subscriptions').delete().eq('id', sub.id)
+// stripe fires customer.subscription.deleted when a subscription is canceled.
+// we intentionally do NOT delete the row: the account UI relies on canceled
+// subscriptions persisting so it can show the "your subscription expired, renew
+// now" prompt to churned customers. access checks already gate on active/trialing,
+// so a canceled row grants no access.
+export async function markSubscriptionCanceled(sub: Stripe.Subscription) {
+  const { error } = await supabaseAdmin
+    .from('subscriptions')
+    .update({
+      status: sub.status,
+      cancel_at_period_end: sub.cancel_at_period_end,
+      canceled_at: sub.canceled_at
+        ? (toDateTime(sub.canceled_at) as unknown as string)
+        : (toDateTime(Math.floor(Date.now() / 1000)) as unknown as string),
+      ended_at: sub.ended_at ? (toDateTime(sub.ended_at) as unknown as string) : null,
+    })
+    .eq('id', sub.id)
   if (error) throw error
-  console.error(`Deleted subscription: ${sub.id}`)
+  console.info(`Marked subscription canceled: ${sub.id}`)
 }
 
 export async function addRenewalSubscription(

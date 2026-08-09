@@ -69,12 +69,6 @@ export interface LinearGradientState {
   Component: any
 }
 
-export interface ZeegoState {
-  enabled: boolean
-  DropdownMenu: any
-  ContextMenu: any
-}
-
 export interface BurntState {
   enabled: boolean
   toast: ((options: any) => void) | null

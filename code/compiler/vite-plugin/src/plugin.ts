@@ -415,11 +415,19 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
           : 'dist/esm/index.mjs'
       )
     )
+    // only alias deep imports that rnw-lite actually implements. unimplemented
+    // react-native-web exports must fall through to the full package.
+    const rnwlFlatModules = readdirSync(path.join(rnwlBase, 'dist/esm'))
+      .filter((file) => file.endsWith('.mjs'))
+      .map((file) => file.slice(0, -'.mjs'.length))
+      .filter((name) => /^[A-Za-z0-9_]+$/.test(name))
     aliases.push(
       {
         // map deep RNW paths like dist/exports/StyleSheet/preprocess to rnw-lite's flat structure
         // extracts the final path segment (e.g. "preprocess" or "createReactDOMStyle")
-        find: /^react-native(?:-web)?\/dist\/(?:exports|modules)\/.*\/([^/]+)$/,
+        find: new RegExp(
+          `^react-native(?:-web)?\\/dist\\/(?:exports|modules)\\/(?:.*\\/)?(${rnwlFlatModules.join('|')})$`
+        ),
         replacement: `${normalizePath(rnwlBase)}/dist/esm/$1.mjs`,
       },
       {
@@ -850,6 +858,8 @@ export function createTamaguiPlugins({
       if (!options) {
         throw new Error(`No tamagui options loaded`)
       }
+      const useReactNativeWebLite =
+        tamaguiOptionsIn.useReactNativeWebLite ?? options.useReactNativeWebLite
 
       for (const source of [options.config, ...(options.components || [])]) {
         const packageName = getEvaluationPackageName(source)
@@ -896,7 +906,7 @@ export function createTamaguiPlugins({
                     'react-native/Libraries/Utilities/codegenNativeComponent':
                       resolve('@tamagui/proxy-worm'),
                     'react-native-svg': resolve('@tamagui/react-native-svg'),
-                    ...(!options?.useReactNativeWebLite && {
+                    ...(!useReactNativeWebLite && {
                       'react-native': resolve('react-native-web'),
                     }),
                   }),
@@ -908,6 +918,9 @@ export function createTamaguiPlugins({
 
   const rnwLitePlugin: Plugin = {
     name: 'tamagui-rnw-lite',
+    // framework plugins add their default react-native-web aliases from a
+    // normal config hook, so apply the explicit lite choice after them.
+    enforce: 'post',
 
     config() {
       if (enableNativeEnv) {
@@ -915,24 +928,23 @@ export function createTamaguiPlugins({
       }
 
       const options = tamaguiLoader.getTamaguiOptions()
-      if (!options?.useReactNativeWebLite) {
+      const useReactNativeWebLite =
+        tamaguiOptionsIn.useReactNativeWebLite ?? options?.useReactNativeWebLite
+      if (!useReactNativeWebLite) {
         return {}
       }
 
-      // react-native-web-lite imports memoize-one internally. the esbuild dep
-      // scanner doesn't follow it through the react-native -> rnw-lite alias, so
-      // vite discovers it only at request time, re-optimizes mid-load, and full
-      // reloads. on slow runners (CI) the in-flight optimized-dep request 504s
-      // ("Outdated Optimize Dep") and surfaces as a console error. pre-include
-      // it so the first optimize pass is complete and no reload is triggered.
+      // the dep scanner does not follow transitive packages through the
+      // react-native to rnw-lite alias. pre-include the CJS dependencies that
+      // would otherwise reach the browser raw or trigger a mid-load optimize.
       const include: string[] = []
-      if (isInstalled(process.cwd(), 'memoize-one')) {
-        include.push('memoize-one')
+      for (const dependency of ['memoize-one', '@react-native/normalize-color']) {
+        if (isInstalled(process.cwd(), dependency)) include.push(dependency)
       }
 
       return {
         resolve: {
-          alias: tamaguiAliases({ rnwLite: options.useReactNativeWebLite }),
+          alias: tamaguiAliases({ rnwLite: useReactNativeWebLite }),
         },
         ssr: {
           // Installed packages are externalized by default in SSR builds, which
