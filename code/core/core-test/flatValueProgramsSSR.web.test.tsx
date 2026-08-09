@@ -126,9 +126,7 @@ describe('flat value program SSR', () => {
             props,
             fixtureOptions(scenario.active, true)
           )
-          expect(inline.style?.[fixture.property], `fixture ${fixture.id}`).toBe(
-            expected
-          )
+          expect(inline.style?.[fixture.property], `fixture ${fixture.id}`).toBe(expected)
 
           const emitted = simplifiedGetSplitStyles(
             Component,

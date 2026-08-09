@@ -309,11 +309,7 @@ export function lowerProgram(
             `cannot lower "${modifier}:" — the state has no web selector, so it cannot become CSS`
           )
         }
-        selectorSuffix += conditionSelector(
-          state.fragment,
-          state.scope ?? 'self',
-          false
-        )
+        selectorSuffix += conditionSelector(state.fragment, state.scope ?? 'self', false)
         selfStateSpecificity++
         if (state.media) pushCapabilityGuard(wrappers, state.media)
         continue
@@ -354,9 +350,10 @@ export function lowerProgram(
 
     if (skip) continue
 
-    const selector = `.${className}`.repeat(
-      clauseSubjectClassRepetitions(precedence, selfStateSpecificity)
-    ) + selectorSuffix
+    const selector =
+      `.${className}`.repeat(
+        clauseSubjectClassRepetitions(precedence, selfStateSpecificity)
+      ) + selectorSuffix
     pushRule(selector, wrappers, clause.payload)
   }
 

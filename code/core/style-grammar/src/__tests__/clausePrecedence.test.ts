@@ -16,8 +16,7 @@ const { registry } = createModifierRegistry({
   themeNames: { dark: {}, dark_blue: {} },
 })
 const order = createClausePrecedenceOrder(['sm', 'md', 'lg'])
-const key = (...modifiers: string[]) =>
-  getClausePrecedenceKey(modifiers, registry, order)
+const key = (...modifiers: string[]) => getClausePrecedenceKey(modifiers, registry, order)
 
 describe('fixed clause precedence key', () => {
   test('platform rank is outermost and uses the decided containment levels', () => {
@@ -25,15 +24,11 @@ describe('fixed clause precedence key', () => {
     expect(key('web')).toEqual([1, 0, 0, 0])
     expect(key('ios')).toEqual([2, 0, 0, 0])
     expect(key('tvos')).toEqual([3, 0, 0, 0])
-    expect(compareClausePrecedence(key('native'), key('sm', 'hover'))).toBeGreaterThan(
-      0
-    )
+    expect(compareClausePrecedence(key('native'), key('sm', 'hover'))).toBeGreaterThan(0)
   })
 
   test('depth precedes category and within-category rank', () => {
-    expect(compareClausePrecedence(key('sm', 'dark'), key('press'))).toBeGreaterThan(
-      0
-    )
+    expect(compareClausePrecedence(key('sm', 'dark'), key('press'))).toBeGreaterThan(0)
     expect(compareClausePrecedence(key('dark'), key('@sm'))).toBeGreaterThan(0)
     expect(compareClausePrecedence(key('@sm'), key('sm'))).toBeGreaterThan(0)
   })
@@ -44,13 +39,9 @@ describe('fixed clause precedence key', () => {
   })
 
   test('own state beats group state and state lifecycle order is fixed', () => {
-    expect(compareClausePrecedence(key('hover'), key('group-hover'))).toBeGreaterThan(
-      0
-    )
+    expect(compareClausePrecedence(key('hover'), key('group-hover'))).toBeGreaterThan(0)
     expect(compareClausePrecedence(key('focus'), key('hover'))).toBeGreaterThan(0)
-    expect(compareClausePrecedence(key('press'), key('focus-visible'))).toBeGreaterThan(
-      0
-    )
+    expect(compareClausePrecedence(key('press'), key('focus-visible'))).toBeGreaterThan(0)
   })
 
   test('condition sets normalize spelling order and exact duplicates', () => {

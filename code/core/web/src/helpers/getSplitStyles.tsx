@@ -209,12 +209,7 @@ function getPropEntriesInForwardOrder(
   const orderedEntries = processedBaseStyle
     ? (Object.entries(processedBaseStyle) as OrderedPropEntry[])
     : []
-  pushDisplacedStyledDefaults(
-    orderedEntries,
-    styledDefaults,
-    processedProps,
-    shorthands
-  )
+  pushDisplacedStyledDefaults(orderedEntries, styledDefaults, processedProps, shorthands)
 
   // Compounds are ordinary contributions in the same authored forward pass. A
   // matching compound runs immediately after its last selector entry, then any

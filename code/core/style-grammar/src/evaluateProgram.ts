@@ -79,11 +79,7 @@ export function evaluateProgram(
 
     if (!matches) continue
 
-    const precedence = getClausePrecedenceKeyFromKinds(
-      clause.modifiers,
-      kinds,
-      order
-    )
+    const precedence = getClausePrecedenceKeyFromKinds(clause.modifiers, kinds, order)
     if (best && compareClausePrecedence(precedence, best) < 0) continue
 
     payload = clause.payload

@@ -59,10 +59,7 @@ function runtimeFixtureOptions(active: FlatValueFixtureConditions) {
   for (const container of active.containers ?? []) {
     const match = /^@[^/]+(?:\/(.+))?$/.exec(container)
     const key = match?.[1] ? `@${match[1]}` : '@'
-    groupContext[key] = fixtureGroupEntry(
-      {},
-      { width: 400, height: 100 }
-    )
+    groupContext[key] = fixtureGroupEntry({}, { width: 400, height: 100 })
     componentGroups[key] = { media: { [container.slice(1).split('/')[0]]: true } }
   }
   return {
@@ -77,10 +74,7 @@ function runtimeFixtureOptions(active: FlatValueFixtureConditions) {
       pressIn: false,
       disabled: false,
       ...Object.fromEntries(
-        (active.states ?? []).map((state) => [
-          state === 'active' ? 'press' : state,
-          true,
-        ])
+        (active.states ?? []).map((state) => [state === 'active' ? 'press' : state, true])
       ),
       group: componentGroups,
     },
@@ -124,9 +118,7 @@ const extractFixture = (fixture: FlatValuePrecedenceFixture, reversed: boolean) 
     options: {
       platform: 'web',
       components: ['@tamagui/core'],
-      ...(fixture.id === 13
-        ? { config: './tests/lib/precedence.config.cjs' }
-        : null),
+      ...(fixture.id === 13 ? { config: './tests/lib/precedence.config.cjs' } : null),
     },
   })
 
@@ -189,9 +181,7 @@ test('theme clauses lower to the is-or-within selector statically', async () => 
 })
 
 test('web platform clauses compile above the deepest platform-less clause', async () => {
-  const output = await extract(
-    `<View backgroundColor="sm:hover:blue web:red" />`
-  )
+  const output = await extract(`<View backgroundColor="sm:hover:blue web:red" />`)
   const className = output?.js.match(/_bc-\d+/)?.[0]
   expect(className).toBeTruthy()
   expect(output?.styles.indexOf('background-color:blue')).toBeLessThan(
@@ -254,9 +244,7 @@ test('the shared precedence table compiles with runtime-identical CSS order and 
         expect(output?.styles, label).toContain('flex-direction:column')
       } else {
         const propLayer = fixture.layers.find((layer) => layer.source === 'prop')!
-        const value = reversed
-          ? reverseFixtureProgram(propLayer.value)
-          : propLayer.value
+        const value = reversed ? reverseFixtureProgram(propLayer.value) : propLayer.value
         const runtime = hostCore.getSplitStyles(
           { [fixture.property]: value },
           hostCore.View.staticConfig,
@@ -289,9 +277,7 @@ test('the shared precedence table compiles with runtime-identical CSS order and 
         const options = runtimeFixtureOptions(scenario.active)
         const propLayer = fixture.layers.find((layer) => layer.source === 'prop')
         if (!propLayer || styledLayer || fixture.id === 13) continue
-        const value = reversed
-          ? reverseFixtureProgram(propLayer.value)
-          : propLayer.value
+        const value = reversed ? reverseFixtureProgram(propLayer.value) : propLayer.value
         const runtime = hostCore.getSplitStyles(
           { [fixture.property]: value },
           hostCore.View.staticConfig,

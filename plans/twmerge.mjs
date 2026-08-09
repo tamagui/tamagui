@@ -8,5 +8,7 @@ const calls = [
 ]
 
 for (const args of calls) {
-  console.log(`twMerge(${args.map(JSON.stringify).join(', ')}) => ${JSON.stringify(twMerge(...args))}`)
+  console.log(
+    `twMerge(${args.map(JSON.stringify).join(', ')}) => ${JSON.stringify(twMerge(...args))}`
+  )
 }

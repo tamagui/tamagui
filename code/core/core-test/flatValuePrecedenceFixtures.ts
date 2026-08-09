@@ -78,9 +78,7 @@ export const flatValuePrecedenceFixtures: readonly FlatValuePrecedenceFixture[] 
     name: 'later media declaration wins',
     property: 'backgroundColor',
     layers: [{ source: 'prop', value: 'sm:blue md:green' }],
-    scenarios: [
-      { name: 'at md', active: { media: ['sm', 'md'] }, expected: 'green' },
-    ],
+    scenarios: [{ name: 'at md', active: { media: ['sm', 'md'] }, expected: 'green' }],
   },
   {
     id: 5,
