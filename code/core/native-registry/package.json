@@ -36,9 +36,11 @@
         "require": "./dist/cjs/index.native.js"
       },
       "types": "./types/index.d.ts",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
     }
   },
   "devDependencies": {
