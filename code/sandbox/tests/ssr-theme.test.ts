@@ -20,9 +20,14 @@ test.describe('SSR Theme Styles', () => {
           try {
             for (const rule of sheet.cssRules) {
               const text = rule.cssText || ''
-              const matchesBox = classes.some((name) =>
-                text.startsWith(`.${name}:where(.t_light`)
-              )
+              const matchesBox = classes.some((name) => {
+                const classSelector = `.${name}`
+                const themeIndex = text.indexOf(':where(.t_light')
+                return (
+                  themeIndex > 0 &&
+                  text.slice(0, themeIndex).split(classSelector).join('') === ''
+                )
+              })
               if (matchesBox && text.includes('box-shadow')) {
                 return text
               }
