@@ -402,9 +402,9 @@ export const Fixture = () => (
     expect(resolve1(value, {})).toBe('surface')
     expect(resolve1(value, { states: ['hover'] })).toBe('surfaceHover')
     expect(resolve1(value, { themes: ['dark'] })).toBe('surfaceDark')
-    // last matching clause wins, so the later theme clause beats the hover one
-    expect(resolve1(value, { states: ['hover'], themes: ['dark'] })).toBe('surfaceDark')
-    expect(resolve1(value, { media: ['sm'], themes: ['dark'] })).toBe('surfaceSmall')
+    // state outranks theme at equal depth, independent of authored clause order
+    expect(resolve1(value, { states: ['hover'], themes: ['dark'] })).toBe('surfaceHover')
+    expect(resolve1(value, { media: ['sm'], themes: ['dark'] })).toBe('surfaceDark')
   })
 
   test('nested condition objects become one clause per condition set', () => {
