@@ -422,7 +422,10 @@ const DialogOverlay = createStyledHOC(
       id: 'overlay',
     })
 
-    if (!forceMount && isAdapted) {
+    // non-modal dialogs must not install a full-screen overlay: it intercepts
+    // the very outside interaction that Dismissable uses to close the dialog.
+    // this was the behavior before each dialog part gained its own presence.
+    if (!forceMount && (!context.modal || isAdapted)) {
       return null
     }
 
