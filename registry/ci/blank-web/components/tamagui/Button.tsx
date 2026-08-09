@@ -41,6 +41,10 @@ const buttonFrameSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any
     gap: Math.round(getVariableValue(frame.size) * 0.2),
     height: frame.size,
     paddingHorizontal: frame.space,
+    // `size` is a control preset, not square geometry. keep the frame's width
+    // content-driven even if an outer styled layer also recognizes `size` as
+    // the generic width/height shorthand.
+    width: 'auto',
   }
 }
 
