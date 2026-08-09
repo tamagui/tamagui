@@ -1,7 +1,6 @@
 import * as assert from 'assert'
-import { execFileSync } from 'node:child_process'
 import { by, device, element, expect as detoxExpect, waitFor } from 'detox'
-import { safeLaunchApp, withSync } from './utils/detox'
+import { safeLaunchApp, setAndroidAnimationScale, withSync } from './utils/detox'
 import { remountDirectUseCase } from './utils/navigation'
 
 const testElement = (id: string) => element(by.id(id)).atIndex(0)
@@ -14,27 +13,6 @@ async function getText(id: string) {
 async function openDialog() {
   await withSync(() => testElement('dialog-adapt-open').tap())
   await waitFor(testElement('dialog-adapt-content')).toExist().withTimeout(10000)
-}
-
-function setAndroidAnimationScale(scale: 0 | 1) {
-  if (device.getPlatform() !== 'android') return
-
-  for (const setting of [
-    'window_animation_scale',
-    'transition_animation_scale',
-    'animator_duration_scale',
-  ]) {
-    execFileSync('adb', [
-      '-s',
-      device.id,
-      'shell',
-      'settings',
-      'put',
-      'global',
-      setting,
-      String(scale),
-    ])
-  }
 }
 
 describe('DialogSheetAdaptHandoff', () => {

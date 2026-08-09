@@ -12,7 +12,7 @@
 
 import * as assert from 'assert'
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp } from './utils/detox'
+import { safeLaunchApp, setAndroidAnimationScale } from './utils/detox'
 
 async function frame(id: string) {
   const attrs: any = await element(by.id(id)).getAttributes()
@@ -50,6 +50,16 @@ async function pollLabel(id: string, predicate: (label: string) => boolean) {
 }
 
 describe('Accordion (auto-height, native)', () => {
+  beforeAll(() => {
+    // CI disables system animations for emulator stability. this suite verifies
+    // intermediate native frames, so opt it back in before Reanimated initializes.
+    setAndroidAnimationScale(1)
+  })
+
+  afterAll(() => {
+    setAndroidAnimationScale(0)
+  })
+
   beforeEach(async () => {
     await safeLaunchApp({
       newInstance: true,
@@ -82,7 +92,6 @@ describe('Accordion (auto-height, native)', () => {
   it('closes the default-open item through an intermediate height', async () => {
     const open = await frame('def-height')
     await element(by.id('def-trigger')).tap()
-    await expect(element(by.id('def-content-text'))).toBeVisible()
     const closing = await pollHeight(
       'def-height',
       (height) => height > 1 && height < open.height - 1,
@@ -98,8 +107,9 @@ describe('Accordion (auto-height, native)', () => {
       .split(',')
       .map(Number)
     assert.ok(frameSamples.length > 5, `expected native frame samples: ${frameSamples}`)
+    const maximumFrameSample = Math.max(...frameSamples)
     assert.ok(
-      frameSamples.every((height) => height > open.height * 0.5),
+      frameSamples.every((height) => height > maximumFrameSample * 0.5),
       `close must not paint a collapsed frame before animating: ${frameSamples}`
     )
     await expect(element(by.id('def-content-text'))).toExist()

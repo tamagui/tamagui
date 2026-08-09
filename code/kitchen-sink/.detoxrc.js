@@ -143,6 +143,13 @@ module.exports = {
         avdName: localAndroidAvdName,
       },
     },
+    // CI emulator - created by reactivecircus/android-emulator-runner
+    'emulator.ci': {
+      type: 'android.emulator',
+      device: {
+        avdName: 'test',
+      },
+    },
   },
   configurations: {
     'ios.sim.debug': {
@@ -171,10 +178,7 @@ module.exports = {
     },
     // CI configurations
     'android.emu.ci.debug': {
-      // the workflow owns this already-running emulator. allocating it as an
-      // emulator makes Detox disable animations after the workflow restores
-      // transition_animation_scale for Reanimated's intermediate-frame tests.
-      device: 'attached',
+      device: 'emulator.ci',
       app: 'android.debug',
     },
   },

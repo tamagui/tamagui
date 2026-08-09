@@ -87,6 +87,18 @@ function runAdb(...args: string[]): string {
   })
 }
 
+export function setAndroidAnimationScale(scale: 0 | 1): void {
+  if (device.getPlatform() !== 'android') return
+
+  for (const setting of [
+    'window_animation_scale',
+    'transition_animation_scale',
+    'animator_duration_scale',
+  ]) {
+    runAdb('shell', 'settings', 'put', 'global', setting, String(scale))
+  }
+}
+
 export function androidWindowHasAppFocus(windowState: string): boolean {
   return windowState
     .split('\n')
