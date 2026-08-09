@@ -44,9 +44,13 @@ export function PropsTable({
           <ListItem
             key={`${name}-${i}`}
             p={0}
+            paddingLeft={0}
+            paddingRight={0}
+            paddingTop="3"
+            paddingBottom="3"
+            gap={0}
             borderBottomWidth={1}
             borderBottomColor="color4"
-            py="3"
             pointerEvents="none"
             bg={`${i % 2 === 1 ? 'color0025' : 'transparent'}`}
           >
@@ -81,7 +85,7 @@ export function PropsTable({
 
                 {!!type && (
                   <>
-                    <Separator self="stretch" mx="3.5" my="2" vertical />
+                    <Separator self="stretch" mx="3-5" my="2" vertical />
 
                     <XStack
                       flex={2}
@@ -115,7 +119,7 @@ export function PropsTable({
                         ) : null}
 
                         {Boolean(defaultValue) && (
-                          <Separator self="stretch" mx="3.5" my="2" vertical />
+                          <Separator self="stretch" mx="3-5" my="2" vertical />
                         )}
 
                         {deprecated ? (

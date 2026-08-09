@@ -68,10 +68,10 @@ function InstallCommand() {
 
   return (
     <CommandBoxLarge onPress={onCopy}>
-      <Paragraph fontFamily="mono" fontSize={14} color="color10">
+      <Paragraph fontFamily="mono" fontSize={14} lineHeight={25} color="color10">
         $
       </Paragraph>
-      <Paragraph fontFamily="mono" fontSize={14} color="color12">
+      <Paragraph fontFamily="mono" fontSize={14} lineHeight={25} color="color12">
         {INSTALL_COMMAND}
       </Paragraph>
       {hasCopied ? (
@@ -152,7 +152,13 @@ export function TakeoutHeroNew({
         {/* Description under logo */}
         <>
           <YStack gap="3" maxW={720} mt={-20}>
-            <SubTitle size="8" text="center" fontSize="sm:6" lineHeight="sm:6">
+            <SubTitle
+              size="8"
+              text="center"
+              fontSize="sm:6"
+              lineHeight="sm:6"
+              letterSpacing="-0.25px sm:0px"
+            >
               Takeout makes React Native + web as well-structured, fast, and simple as
               possible, and funds the OSS development of Tamagui.
             </SubTitle>

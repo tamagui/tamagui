@@ -274,7 +274,7 @@ const ImageGallery = () => {
             </YStack>
 
             <Dialog.Close asChild>
-              <Button position="absolute" t="6" r="6" size="4" circular icon={X} />
+              <Button position="absolute" t="6" r="6" size="3" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

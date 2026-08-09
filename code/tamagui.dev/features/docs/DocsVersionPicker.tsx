@@ -126,7 +126,7 @@ export function DocsVersionPicker({
   }
 
   return (
-    <XStack gap="2" items="center">
+    <XStack gap="2" items="center" position="absolute" left={230} display="sm:none">
       <PickerSelect
         label="Version"
         value={state.productVersion}

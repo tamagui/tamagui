@@ -110,7 +110,7 @@ export const DropTamaguiConfig = () => {
                 position="absolute"
                 t="4"
                 r="4"
-                size="3"
+                size="2"
                 circular
                 z={1000}
                 icon={X}

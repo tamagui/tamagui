@@ -8,7 +8,7 @@ export const BentoButton = (props: ButtonProps) => {
       theme="green"
       borderColor="color6"
       boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
-      size="4"
+      size="3"
       rounded="10"
       z="hover:100"
       {...props}

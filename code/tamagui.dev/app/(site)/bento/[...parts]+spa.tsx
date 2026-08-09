@@ -185,7 +185,7 @@ export const DetailHeader = (props: { children: string }) => {
 
               <Button
                 icon={bentoStore.disableTint ? Paintbrush : CircleDashed}
-                size="4"
+                size="3"
                 rounded="6"
                 onPress={() => {
                   startTransition(() => {

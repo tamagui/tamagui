@@ -35,13 +35,13 @@ export const SubTitle = ({ children, ...props }) => {
       color="accent7"
       width="100% gtSm:max-content"
       fontFamily="mono"
+      size="7"
       letterSpacing={-0.25}
       pb="3"
       mb="3"
       textWrap="web:balance"
-      {...props}
-      size="7"
       render="p"
+      {...props}
     >
       {nbspLastWord(childText)}
     </H3>

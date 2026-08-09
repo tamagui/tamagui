@@ -228,6 +228,7 @@ export function TakeoutBentoFeatures() {
           <Paragraph
             fontFamily="mono"
             fontSize={12}
+            lineHeight={25}
             fontWeight="600"
             color="color10"
             textTransform="uppercase"

@@ -150,7 +150,7 @@ export const NewAccountModal = () => {
             </VisuallyHidden>
 
             <Dialog.Close asChild>
-              <Button position="absolute" t="3" r="3" size="4" circular icon={X} />
+              <Button position="absolute" t="3" r="3" size="3" circular icon={X} />
             </Dialog.Close>
           </Dialog.Content>
         </Dialog.Portal>
@@ -562,7 +562,7 @@ const ServiceCard = ({
           rounded="10"
           self="flex-end"
           mt="4"
-          size="4"
+          size="3"
           theme="accent"
           onPress={onAction}
         >
@@ -574,7 +574,7 @@ const ServiceCard = ({
             rounded="10"
             self="flex-end"
             mt="4"
-            size="4"
+            size="3"
             theme="accent"
             onPress={secondAction.onPress}
           >
@@ -587,7 +587,7 @@ const ServiceCard = ({
             rounded="10"
             self="flex-end"
             mt="4"
-            size="4"
+            size="3"
             theme="accent"
             onPress={thirdAction.onPress}
           >
@@ -629,7 +629,7 @@ const DiscordAccessDialog = ({
             isTeamMember={isTeamMember}
           />
           <Dialog.Close asChild>
-            <Button position="absolute" t="2" r="2" size="3" circular icon={X} />
+            <Button position="absolute" t="2" r="2" size="2" circular icon={X} />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
@@ -887,7 +887,7 @@ const DiscordPanel = ({
 
         {showResetButton && (
           <Button
-            size="3"
+            size="2"
             onPress={() => resetChannelMutation.trigger()}
             disabled={resetChannelMutation.isMutating}
           >
@@ -968,7 +968,7 @@ const DiscordMember = ({
 
   return (
     <XStack gap="2" items="center" flexWrap="wrap">
-      <Button minW={70} size="3" disabled={isMutating} onPress={() => trigger()}>
+      <Button minW={70} size="2" disabled={isMutating} onPress={() => trigger()}>
         <Button.Text>{isMutating ? 'Inviting...' : 'Add'}</Button.Text>
       </Button>
       <Avatar circular size="2">
@@ -1205,7 +1205,7 @@ const PlanTab = ({
           </Paragraph>
           <XStack gap="3">
             <Button
-              size="4"
+              size="3"
               theme="yellow"
               onPress={() => {
                 paymentModal.prefilledCouponCode = 'RENEWAL30'
@@ -1215,7 +1215,7 @@ const PlanTab = ({
               Renew Now
             </Button>
             <Button
-              size="4"
+              size="3"
               variant="quiet"
               onPress={() => {
                 window.open('https://tamagui.dev/pro', '_blank')
@@ -1435,7 +1435,7 @@ const CancelSubscriptionSection = ({ subscription }: { subscription: Subscriptio
         disabled={isLoading}
         onPress={handleCancel}
         alignSelf="flex-start"
-        size="4"
+        size="3"
       >
         <Button.Text>Cancel Subscription</Button.Text>
       </Button>
@@ -1586,7 +1586,7 @@ const V2RenewalCard = () => {
       </XStack>
 
       <Button
-        size="4"
+        size="3"
         theme="yellow"
         alignSelf="flex-start"
         onPress={() => {
@@ -1756,7 +1756,7 @@ const ManageTab = ({
           <XStack justify="space-between" items="center">
             <H3>Projects</H3>
             <Button
-              size="4"
+              size="3"
               theme="accent"
               onPress={() => {
                 paymentModal.show = true
@@ -1785,7 +1785,7 @@ const ManageTab = ({
               {isTeamMember && <Paragraph color="green9">You are a member</Paragraph>}
             </View>
             <Link href="https://zenvoice.io/p/66c8a1357aed16c9b4a6dafb" target="_blank">
-              <Button size="4">View Invoices</Button>
+              <Button size="3">View Invoices</Button>
             </Link>
           </XStack>
           {sortedSubscriptions.map((subscription) => {
@@ -2025,10 +2025,10 @@ const ProjectCard = ({
             </Paragraph>
           )}
           <XStack gap="2" justify="flex-end">
-            <Button size="4" onPress={handleCancel} disabled={isLoading}>
+            <Button size="3" onPress={handleCancel} disabled={isLoading}>
               <Button.Text>Cancel</Button.Text>
             </Button>
-            <Button size="4" theme="accent" onPress={handleSave} disabled={isLoading}>
+            <Button size="3" theme="accent" onPress={handleSave} disabled={isLoading}>
               {isLoading ? <Spinner size="small" /> : <Check size={16} />}
               <Button.Text>Save</Button.Text>
             </Button>
@@ -2043,7 +2043,7 @@ const ProjectCard = ({
                 {project.domain}
               </Paragraph>
             </YStack>
-            <Button size="3" variant="quiet" onPress={() => setIsEditing(true)}>
+            <Button size="2" variant="quiet" onPress={() => setIsEditing(true)}>
               <Edit3 size={16} />
             </Button>
           </XStack>
@@ -2250,7 +2250,7 @@ const GitHubUserRow = ({
 
       <Button
         theme="accent"
-        size="3"
+        size="2"
         onPress={() => inviteTeamMember({ user_id: String(user.id) })}
         disabled={isInviting}
       >
@@ -2303,7 +2303,7 @@ const TeamMemberRow = ({
         </Paragraph>
         <Button
           theme="red"
-          size="3"
+          size="2"
           onPress={() => removeTeamMember({ team_member_id: member.user?.id ?? '' })}
           disabled={isRemoving}
         >
@@ -2453,7 +2453,7 @@ const AdminTab = () => {
     <YStack gap="4">
       <XStack gap="2" flexWrap="wrap">
         <Button
-          size="4"
+          size="3"
           theme={subTab === 'purchases' ? 'accent' : undefined}
           onPress={() => setSubTab('purchases')}
           variant={subTab !== 'purchases' ? 'quiet' : undefined}
@@ -2461,7 +2461,7 @@ const AdminTab = () => {
           <Button.Text>Purchases</Button.Text>
         </Button>
         <Button
-          size="4"
+          size="3"
           theme={subTab === 'whitelist' ? 'accent' : undefined}
           onPress={() => setSubTab('whitelist')}
           variant={subTab !== 'whitelist' ? 'quiet' : undefined}
@@ -2469,7 +2469,7 @@ const AdminTab = () => {
           <Button.Text>Whitelist</Button.Text>
         </Button>
         <Button
-          size="4"
+          size="3"
           theme={subTab === 'parity' ? 'accent' : undefined}
           onPress={() => setSubTab('parity')}
           variant={subTab !== 'parity' ? 'quiet' : undefined}
@@ -2622,7 +2622,7 @@ const AdminPurchasesSubTab = () => {
 
               <XStack justify="flex-end" gap="2">
                 <Button
-                  size="3"
+                  size="2"
                   theme="blue"
                   disabled={!!isImpersonating}
                   onPress={() =>
@@ -2806,7 +2806,7 @@ const AdminWhitelistSubTab = () => {
               </YStack>
 
               <Button
-                size="3"
+                size="2"
                 theme="red"
                 disabled={deletingId === entry.id}
                 onPress={() => handleDelete(entry)}
@@ -2895,7 +2895,7 @@ const AdminParitySubTab = () => {
             )}
           </Paragraph>
           {currentOverride && (
-            <Button size="3" theme="red" onPress={handleClearOverride}>
+            <Button size="2" theme="red" onPress={handleClearOverride}>
               <Button.Text>Clear Override</Button.Text>
             </Button>
           )}
@@ -2925,7 +2925,7 @@ const AdminParitySubTab = () => {
                 return (
                   <Button
                     key={code}
-                    size="4"
+                    size="3"
                     bg={isActive ? 'color8' : 'color3'}
                     onPress={() => handleSetCountry(code)}
                   >

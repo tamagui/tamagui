@@ -170,8 +170,8 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             <ThemeTint>
               <YStack
                 display="none gtMd:block"
-                paddingTop="gtMd:0.5"
-                paddingLeft="gtMd:0.5"
+                paddingTop="gtMd:0-5"
+                paddingLeft="gtMd:0-5"
                 pr="gtMd:3"
                 mt="gtMd:108px"
                 pb="gtMd:18"

@@ -117,7 +117,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             <Button
               aria-label="Show or hide code"
               icon={Code2}
-              size="4"
+              size="3"
               fontWeight="400"
               z={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
@@ -125,7 +125,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
             <TooltipSimple label="Toggle tint on/off">
-              <Button size="4" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
+              <Button size="3" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
             </TooltipSimple>
           </XStack>
         )}
@@ -151,7 +151,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 <Spacer flex={1} />
                 <Button
                   z={10}
-                  size="4"
+                  size="3"
                   onPress={() => setIsCutoff(!isCutoff)}
                   self="center"
                 >
@@ -180,7 +180,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   pl="4"
                   height="5"
                   py="4"
-                  borderBottomWidth="0.5"
+                  borderBottomWidth="0-5"
                   borderBottomColor="color3"
                 >
                   {isTerminalCommand ? (
@@ -210,7 +210,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   <Button
                     position="absolute"
                     aria-label="Copy code to clipboard"
-                    size="3"
+                    size="2"
                     t={showFileName ? '6' : '3'}
                     r="3"
                     display="inline-flex"
@@ -229,7 +229,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               {isLong && !isCutoff && (
                 <>
                   <Spacer />
-                  <Button size="4" onPress={() => setIsCutoff(!isCutoff)} self="center">
+                  <Button size="3" onPress={() => setIsCutoff(!isCutoff)} self="center">
                     Show less
                   </Button>
                 </>

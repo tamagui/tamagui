@@ -37,11 +37,11 @@ export const AddDropdown = withStaticProperties(
     return (
       <Popover size="5" allowFlip placement="top" {...props}>
         <Popover.Trigger asChild>
-          <Button size="4" circular icon={Plus} />
+          <Button size="3" circular icon={Plus} />
         </Popover.Trigger>
 
         <Popover.Content
-          borderWidth="0.5"
+          borderWidth="0-5"
           borderColor="border-color"
           p={0}
           y="enter:-7px exit:-7px"
@@ -54,7 +54,7 @@ export const AddDropdown = withStaticProperties(
           trapFocus={false}
         >
           <Popover.ScrollView>{children}</Popover.ScrollView>
-          <Popover.Arrow bg="background" borderColor="border-color" borderWidth="0.5" />
+          <Popover.Arrow bg="background" borderColor="border-color" borderWidth="0-5" />
         </Popover.Content>
       </Popover>
     )

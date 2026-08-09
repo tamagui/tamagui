@@ -299,7 +299,7 @@ const componentsIn = {
               >
                 <SizableText color="color11">{transformedCommand}</SizableText>
 
-                <CopyIcon p="0.5" size={16} color="color10 hover:color2" />
+                <CopyIcon p="0-5" size={16} color="color10 hover:color2" />
               </XStack>
             </TooltipSimple>
           </ThemeTint>
@@ -339,7 +339,7 @@ const componentsIn = {
                 >
                   <SizableText color="color11">{tamaguiCommand}</SizableText>
 
-                  <CopyIcon2 p="0.5" size={16} color="color10 hover:color2" />
+                  <CopyIcon2 p="0-5" size={16} color="color10 hover:color2" />
                 </XStack>
               </TooltipSimple>
             </ThemeTintAlt>
@@ -391,7 +391,7 @@ const componentsIn = {
     <Button
       aria-label="Beta blog post"
       pointerEvents="none"
-      size="3"
+      size="2"
       theme="yellow"
       position="absolute"
       t={-15}
@@ -431,10 +431,10 @@ const componentsIn = {
       width={`fit-content` as any}
       mt="8"
       mb="4"
-      color="color12"
-      {...props}
       data-heading
       size="9"
+      color="color12"
+      {...props}
     >
       {children}
     </H2>
@@ -446,11 +446,11 @@ const componentsIn = {
         maxW="100%"
         position="relative"
         width={`fit-content` as any}
+        id={id}
+        size="8"
         color="color11"
         fontWeight="600"
         {...props}
-        id={id}
-        size="8"
       >
         {children}
       </H3>
@@ -464,11 +464,11 @@ const componentsIn = {
       width={`fit-content` as any}
       mt="8"
       mb="2"
+      size="8"
       color="color8"
+      data-heading
       {...props}
       fontWeight="400"
-      size="8"
-      data-heading
     />
   ),
 
@@ -478,10 +478,10 @@ const componentsIn = {
     <Paragraph
       className="docs-paragraph"
       display="block"
+      size="6"
       my="2"
       color="color11"
       {...props}
-      size="6"
     />
   ),
 
@@ -536,7 +536,7 @@ const componentsIn = {
       <LI
         render="li"
         size="6"
-        mb="1.5"
+        mb="1-5"
         className="docs-paragraph"
         style={{
           listStyleType: 'disc',
@@ -735,7 +735,7 @@ const componentsIn = {
 
   DocsIntro: () => {
     return (
-      <YStack gap="1">
+      <YStack gap="1" pb="sm:30px">
         <ThemeTintAlt offset={2}>
           <IntroParagraph large mt="4">
             Tamagui makes styling React on any platform a delight. All of its features
@@ -825,8 +825,10 @@ const componentsIn = {
                   </Paragraph>
                 </Card.Header>
 
-                <Card.Footer>
-                  <ChevronRight position="absolute" b="4" r="4" color="color11" />
+                <Card.Footer p={0}>
+                  <YStack position="absolute" b="4" r="4">
+                    <ChevronRight color="color11" />
+                  </YStack>
                 </Card.Footer>
               </Card>
             </Link>
@@ -849,7 +851,7 @@ const componentsIn = {
                   <Button
                     position="absolute"
                     aria-label="Copy code to clipboard"
-                    size="3"
+                    size="2"
                     r="3"
                     icon={clipBoard.hasCopied ? CheckCircle : Copy}
                     onPress={() => {
@@ -981,6 +983,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
     display="inline-flex"
     items="center"
     gap="4"
+    fontWeight="400"
     {...props}
   >
     {children}

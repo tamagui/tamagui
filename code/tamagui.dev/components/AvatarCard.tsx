@@ -24,7 +24,7 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
         >
           <Card.Header>
             <XStack justify="space-between">
-              <YStack gap="2.5">
+              <YStack gap="2-5">
                 <H5 size="6" color="color9" fontFamily="silkscreen">
                   {title}
                 </H5>

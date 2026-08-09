@@ -47,7 +47,7 @@ const BrowserUrlBar = styled(YStack, {
   bg: 'color1',
   rounded: '3',
   px: '3',
-  py: '1.5',
+  py: '1-5',
   mx: '4',
 })
 
@@ -250,7 +250,7 @@ export function TakeoutDeviceShowcase() {
           <Theme key={feature.label} name={feature.theme}>
             <XStack
               px="4"
-              py="2.5"
+              py="2-5"
               rounded="10"
               bg="color3 hover:color4"
               borderWidth={0.5}

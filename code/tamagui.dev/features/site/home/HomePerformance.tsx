@@ -1,6 +1,7 @@
 import { useTint } from '@tamagui/logo'
 import { useRef, useState } from 'react'
-import { Button, Paragraph, XStack, YStack } from 'tamagui'
+import { Paragraph, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 
 import { ContainerLarge } from '~/components/Containers'
@@ -24,7 +25,7 @@ export function HomePerformance() {
     <ContainerLarge position="relative">
       <YStack items="center" z={1} gap="4">
         <YStack items="center" gap="2">
-          <HomeH2 size="10" maxW={500} ref={ref as any}>
+          <HomeH2 maxW={500} ref={ref as any}>
             Automatically fast
           </HomeH2>
           <HomeH3>

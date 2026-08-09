@@ -45,9 +45,11 @@ export function SourceVersionSwitcher({
       zIndex={200000}
     >
       <Select.Trigger
-        height={32}
-        paddingHorizontal="3"
-        gap="2"
+        height={29}
+        paddingHorizontal="2"
+        paddingTop={1}
+        paddingBottom={1}
+        gap={0}
         backgroundColor="background"
         borderWidth={1}
         borderColor="border-color"

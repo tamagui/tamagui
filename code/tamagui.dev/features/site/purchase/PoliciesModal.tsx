@@ -57,7 +57,7 @@ export const ProPoliciesModal = () => {
           </ScrollView>
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="2" r="2" size="3" circular icon={X} />
+              <Button position="absolute" t="2" r="2" size="2" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

@@ -98,7 +98,7 @@ export const FieldsetWithLabel = ({
                 }
               >
                 <Button
-                  size="3"
+                  size="1"
                   scaleIcon={1.2}
                   ml="2"
                   circular

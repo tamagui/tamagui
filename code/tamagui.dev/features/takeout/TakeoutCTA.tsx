@@ -30,7 +30,7 @@ const CTAContainer = styled(YStack, {
 const PrimaryButton = styled(YStack, {
   rounded: '6',
   px: '5',
-  py: '3.5',
+  py: '3-5',
   cursor: 'pointer',
   items: 'center',
   justify: 'center',
@@ -45,7 +45,7 @@ const PrimaryButton = styled(YStack, {
 const SecondaryButton = styled(YStack, {
   rounded: '6',
   px: '5',
-  py: '3.5',
+  py: '3-5',
   cursor: 'pointer',
   items: 'center',
   justify: 'center',
@@ -114,7 +114,7 @@ export function TakeoutCTA() {
         <XStack gap="4" mt="2" flexWrap="wrap" justify="center" z={1}>
           <Link href="https://github.com/tamagui/takeout" target="_blank">
             <PrimaryButton>
-              <XStack gap="2.5" items="center">
+              <XStack gap="2-5" items="center">
                 <GithubIcon width={20} height={20} color="white" />
                 <Paragraph fontSize={16} fontWeight="600" color="white">
                   View on GitHub

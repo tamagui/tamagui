@@ -76,7 +76,7 @@ export const HomeExamples = memo(
                       theme={i === activeIndex ? 'accent' : null}
                       variant={i !== activeIndex ? 'quiet' : undefined}
                       rounded={0}
-                      size="4"
+                      size="3"
                     >
                       <Button.Text fontFamily="silkscreen" size="4" fontWeight="600">
                         {example.name}
@@ -122,7 +122,7 @@ export const HomeExamples = memo(
               z={1000}
               pointerEvents="none"
             >
-              <IconStack items="center" p="2.5" mb={0} elevation="2">
+              <IconStack items="center" p="2-5" mb={0} elevation="2">
                 <FastForward color="var(--colorHover)" size="1" />
               </IconStack>
             </YStack>
@@ -159,7 +159,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           self="center"
           items="center"
           z={10}
-          mb="-2.5"
+          mb="-2-5"
           maxW="100%"
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -186,10 +186,10 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                     aria-label="See example"
                     onPress={() => setActiveIndex(i)}
                     theme={i === activeIndex ? (tint as any) : 'alt1'}
-                    size="3"
+                    size="2"
                     rounded={0}
                   >
-                    <Button.Text size="3">{example.name}</Button.Text>
+                    <Button.Text size="2">{example.name}</Button.Text>
                   </Button>
                 </XGroup.Item>
               ))}

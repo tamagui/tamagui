@@ -38,7 +38,7 @@ export const BuildThemeItem = memo((props: BuildThemeItemProps) => {
 
         {onDelete && (
           <Button
-            size="3"
+            size="2"
             icon={Trash2}
             circular
             variant="quiet"

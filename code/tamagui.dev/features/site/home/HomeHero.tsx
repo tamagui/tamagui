@@ -254,18 +254,19 @@ const HeroContents = memo(function HeroContents() {
 
 const Subtitle = styled(Paragraph, {
   color: 'gray10',
+  size: '6',
   fontFamily: 'silkscreen',
   text: 'center',
-  letterSpacing: -1,
+  letterSpacing: '-1px gtSm:-1px gtMd:-1px gtLg:-1px',
   fontSize: 'gtSm:7 gtMd:7 gtLg:25px',
   lineHeight: 'gtSm:7 gtMd:7 gtLg:48px',
-  size: '6',
 })
 
 const Tag = styled(Text, {
   render: 'a',
   className: 'hero-tag text-decoration-none',
   fontFamily: 'silkscreen',
+  fontWeight: '400',
   fontSize: 'inherit' as any,
   rounded: '2',
   px: '1',
@@ -285,6 +286,7 @@ const Tag = styled(Text, {
 
 const HeroH1 = styled(H1, {
   text: 'center',
+  size: '11',
   lineHeight: 52,
   maxW: 500,
   maxH: 400,
@@ -293,7 +295,6 @@ const HeroH1 = styled(H1, {
   marginLeft: 'gtSm:5% gtMd:7%',
   scale: 'gtSm:1.5 gtMd:1.6 gtLg:2',
   my: 'gtSm:5% gtMd:7% gtLg:8%',
-  size: '11',
 })
 
 const HeroText = styled(Span, {

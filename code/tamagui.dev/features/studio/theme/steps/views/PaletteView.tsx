@@ -307,7 +307,7 @@ export const PaletteView = memo((props: Props) => {
                 <XStack width={50} overflow="hidden" items="center" justify="center">
                   <Button
                     variant="quiet"
-                    size="3"
+                    size="2"
                     scaleIcon={1.4}
                     circular
                     icon={anchor ? <Anchor /> : <ArrowLeftRight />}
@@ -319,7 +319,7 @@ export const PaletteView = memo((props: Props) => {
               }
             />
 
-            {/* {!anchor && <DataItem top="" bottom={<Button size="3">Edit</Button>} />} */}
+            {/* {!anchor && <DataItem top="" bottom={<Button size="2">Edit</Button>} />} */}
           </XStack>
         </YStack>
       </XLabeledItem>

@@ -118,7 +118,7 @@ export function Color({
         <Code>{toHsla(hex)}</Code>
 
         <Button
-          size="3"
+          size="2"
           onPress={() => {
             state.colors.deleteColor(Number.parseInt(index))
           }}

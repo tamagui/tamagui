@@ -130,6 +130,15 @@ export default {
     preserveSymlinks: false,
 
     alias: [
+      // One's SSR navigation fork imports these internal contexts directly.
+      // Resolve them to files so Vite does not reject the package's public-only exports map.
+      {
+        find: /^@react-navigation\/core\/lib\/module\/(.+)$/,
+        replacement: `${pathResolve(
+          resolve('@react-navigation/core/package.json'),
+          '../lib/module'
+        )}/$1.js`,
+      },
       // when bento is unavailable, @tamagui/bento/component/* is stubbed by the
       // `stub-bento-components` plugin below (virtual module), not an alias
 

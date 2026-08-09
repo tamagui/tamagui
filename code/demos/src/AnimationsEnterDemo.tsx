@@ -31,7 +31,7 @@ export function AnimationsEnterDemo(props: any) {
         {props.children ?? <LogoIcon downscale={0.75} />}
       </Square>
 
-      <Button size="4" mt="4" onPress={() => setKey(Math.random())}>
+      <Button size="3" mt="4" onPress={() => setKey(Math.random())}>
         Re-mount
       </Button>
     </>

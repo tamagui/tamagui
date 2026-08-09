@@ -85,7 +85,13 @@ function ScreenshotItem({
         </ImageWrapper>
 
         <YStack mt="2" items="center">
-          <Paragraph fontSize={12} color="color10" fontFamily="mono" fontWeight="500">
+          <Paragraph
+            fontSize={12}
+            lineHeight={25}
+            color="color10"
+            fontFamily="mono"
+            fontWeight="500"
+          >
             {img.label}
           </Paragraph>
         </YStack>

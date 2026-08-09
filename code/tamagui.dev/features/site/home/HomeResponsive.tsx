@@ -155,7 +155,7 @@ export const HomeResponsive = memo(() => {
     <YStack ref={ref as any} y={0} mt={-80} position="relative">
       <ContainerLarge position="relative">
         <ResponsiveHeader />
-        <Spacer size="6" width="sm:0" height="sm:0" />
+        <Spacer size={media.sm ? 0 : '6'} />
         <YStack height={browserHeight + 80} />
         <XStack
           b={-20}
@@ -163,11 +163,9 @@ export const HomeResponsive = memo(() => {
           z={1}
           flex={1}
           gap="1"
-          {...(media.sm && {
-            scale,
-            x: 150 - width / 2 - (smIndex ? (0.68 - scale) * 920 : 0),
-            y: -40,
-          })}
+          scale={scale}
+          x={150 - width / 2 - (smIndex ? (0.68 - scale) * 920 : 0)}
+          y={-40}
         >
           <YStack
             z={2}
@@ -255,7 +253,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
         <Button
           aria-label={`Responsive size ${name}`}
           borderWidth={1}
-          size="4"
+          size="3"
           circular
           position="absolute"
           t={0}

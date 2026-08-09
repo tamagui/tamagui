@@ -1,6 +1,18 @@
 const schemes = ['light', 'dark']
 const colors = ['black', 'white', 'gray', 'blue', 'red', 'yellow', 'green']
-const componentThemes = [
+const paletteColors = [
+  'blue',
+  'gray',
+  'green',
+  'neutral',
+  'orange',
+  'pink',
+  'purple',
+  'red',
+  'teal',
+  'yellow',
+]
+export const componentThemes = [
   'Button',
   'Input',
   'Progress',
@@ -30,16 +42,16 @@ const baseThemeNames = schemes.flatMap((scheme) => [
   ]),
 ])
 
-const componentThemeNames = schemes
-  .flatMap((scheme) => [scheme, ...colors.map((color) => `${scheme}_${color}`)])
-  .flatMap((parent) => componentThemes.map((component) => `${parent}_${component}`))
-
 const levelThemeNames = baseThemeNames.flatMap((themeName) =>
   themeName.endsWith('_surface1')
     ? [themeName.replace(/_surface1$/, '_level2')]
     : themeName.endsWith('_surface2')
       ? [themeName.replace(/_surface2$/, '_level3')]
       : []
+)
+
+const componentThemeNames = [...baseThemeNames, ...levelThemeNames].flatMap((parent) =>
+  componentThemes.map((component) => `${parent}_${component}`)
 )
 
 export const themeNames = [...baseThemeNames, ...levelThemeNames, ...componentThemeNames]
@@ -90,13 +102,13 @@ export const themeVariableNames = [
     `${color}08`,
     ...numbered(color, 12),
   ]),
-  ...['blue', 'gray', 'green', 'red', 'yellow'].flatMap((color) => numbered(color, 12)),
+  ...paletteColors.flatMap((color) => numbered(color, 12)),
   ...numbered('highlight', 8),
   ...numbered('shadow', 8),
 ]
 
 const variableShape = Object.fromEntries(
-  themeVariableNames.map((name) => [name, 'transparent'])
+  themeVariableNames.map((name) => [name, `var(--${name})`])
 )
 
 type ClientThemes = {

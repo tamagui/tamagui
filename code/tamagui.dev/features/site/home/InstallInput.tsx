@@ -34,12 +34,12 @@ export const InstallInput = memo(() => {
         />
         <Paragraph
           text="center"
+          size="5"
           fontWeight="500"
           fontFamily="mono"
-          letterSpacing={1}
+          letterSpacing="1px sm:0px"
           fontSize="sm:3"
           lineHeight="sm:3"
-          size="5"
         >
           {installScript}
         </Paragraph>
@@ -50,7 +50,7 @@ export const InstallInput = memo(() => {
         >
           <Button
             aria-label={installScript}
-            size="4"
+            size="3"
             rounded="8"
             mr="-6"
             zIndex={1}

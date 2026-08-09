@@ -336,7 +336,7 @@ export const AddTeamMemberModalComponent = () => {
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
                     />
-                    <Button size="4" theme="accent" onPress={handleApplyCoupon}>
+                    <Button size="3" theme="accent" onPress={handleApplyCoupon}>
                       <Button.Text>Apply</Button.Text>
                     </Button>
                   </XStack>
@@ -380,7 +380,7 @@ export const AddTeamMemberModalComponent = () => {
             </YStack>
           )}
           <Dialog.Close asChild>
-            <Button position="absolute" t="2" r="2" size="3" circular icon={X} />
+            <Button position="absolute" t="2" r="2" size="2" circular icon={X} />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>

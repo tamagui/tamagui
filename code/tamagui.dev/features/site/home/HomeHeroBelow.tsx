@@ -84,8 +84,8 @@ const TitleLink = ({ href, children, ...props }: any) => {
           cursor="pointer"
           fontFamily="silkscreen"
           bg="color2 hover:color3"
-          px="1.5"
-          py="1.5"
+          px="1-5"
+          py="1-5"
           size="9"
           fontSize="6"
           ls={0}

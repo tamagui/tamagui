@@ -78,7 +78,7 @@ export const MediaPlayer = memo(
                 scale="hover:1.025"
                 my="-7"
                 icon={Pause}
-                size="5"
+                size="8"
                 circular
                 aria-label="Pause"
                 pointerEvents={pointerEventsControls}

@@ -35,7 +35,7 @@ export const PricingCards = () => {
       bg="background"
     >
       <YStack
-        borderBottomWidth="0.25"
+        borderBottomWidth="0-25"
         borderBottomColor="border-color"
         borderWidth="0"
         pb="2"

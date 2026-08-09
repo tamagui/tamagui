@@ -71,7 +71,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
             return (
               <Theme key={`${type}${i}`} name={isVisible ? 'accent' : undefined}>
                 <Button
-                  size="3"
+                  size="2"
                   px="3"
                   aria-label={`Toggle ${type} curve visibility`}
                   aria-pressed={isVisible}
@@ -91,14 +91,14 @@ export const ColorCanvas = memo(function ColorCanvas() {
 
         <XGroup>
           <Button
-            size="3"
+            size="2"
             px="3"
             icon={Minus}
             aria-label="Remove color from end of scale"
             onPress={() => state.colors.popColor()}
           />
           <Button
-            size="3"
+            size="2"
             px="3"
             icon={Plus}
             aria-label="Add color to end of scale"

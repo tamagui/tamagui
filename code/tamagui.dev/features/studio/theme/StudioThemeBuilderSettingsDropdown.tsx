@@ -26,11 +26,11 @@ export const StudioThemeBuilderSettingsDropdown = () => {
       }}
     >
       <Popover.Trigger asChild>
-        <Button size="3" scaleIcon={1.5} variant="quiet" circular icon={Menu}></Button>
+        <Button size="2" scaleIcon={1.5} variant="quiet" circular icon={Menu}></Button>
       </Popover.Trigger>
 
       <Popover.Content
-        borderWidth="0.5"
+        borderWidth="0-5"
         borderColor="border-color"
         p={0}
         y="enter:-10px exit:-10px"

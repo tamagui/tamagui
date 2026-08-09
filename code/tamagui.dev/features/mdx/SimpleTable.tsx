@@ -93,7 +93,7 @@ function parseCell(content: CellContent): ReactNode {
     // Inline code: `text`
     else if (match[9]) {
       parts.push(
-        <Text key={i} fontFamily="mono" bg="color4" px="1.5" py="0.5" rounded="2">
+        <Text key={i} fontFamily="mono" bg="color4" px="1-5" py="0-5" rounded="2">
           {match[10]}
         </Text>
       )

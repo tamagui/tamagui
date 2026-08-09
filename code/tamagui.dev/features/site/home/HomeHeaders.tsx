@@ -21,22 +21,23 @@ export const HomeH2 = styled(H2, {
   fontSize: 'sm:10 xs:9',
   lineHeight: 'sm:10 xs:9',
   size: '10',
+  letterSpacing: '-0.25px sm:-0.1px',
 })
 
 export const HomeH3 = styled(H3, {
   className: 'word-break-keep-all',
   fontFamily: 'mono',
+  size: '8',
   text: 'center',
   color: 'color10 sm:color',
   self: 'center',
   px: 20,
   opacity: 0.9,
-  letterSpacing: -0.5,
+  letterSpacing: '-0.5px sm:0px',
   maxW: 720,
   fontSize: 'sm:6',
   lineHeight: 'sm:6',
   fontWeight: 'sm:400',
   textTransform: 'sm:none',
   name: 'HomeH3',
-  size: '8',
 })

@@ -29,7 +29,7 @@ export const Footer = memo(() => {
             flexBasis="auto"
             gap="3"
           >
-            <H4 mb="3" fontFamily="mono" letterSpacing={0.5} opacity={0.5} size="4">
+            <H4 mb="3" fontFamily="mono" size="4" letterSpacing={0.5} opacity={0.5}>
               Overview
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
@@ -49,7 +49,7 @@ export const Footer = memo(() => {
             flexBasis="auto"
             gap="3"
           >
-            <H4 mb="3" fontFamily="mono" letterSpacing={0.5} opacity={0.5} size="4">
+            <H4 mb="3" fontFamily="mono" size="4" letterSpacing={0.5} opacity={0.5}>
               Docs
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
@@ -60,7 +60,7 @@ export const Footer = memo(() => {
           </YStack>
 
           <YStack items="flex-start sm:center" px="4" py="5" flex={1.5} gap="3">
-            <H4 mb="3" fontFamily="mono" letterSpacing={0.5} opacity={0.5} size="4">
+            <H4 mb="3" fontFamily="mono" size="4" letterSpacing={0.5} opacity={0.5}>
               Community
             </H4>
             <XStack gap="1" items="center">

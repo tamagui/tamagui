@@ -8,7 +8,7 @@ export function InputsDemo() {
       <InputDemo size="2" />
       <InputDemo size="3" />
       <InputDemo size="4" />
-      <TextArea theme="level2" placeholder="Enter your details..." />
+      <TextArea theme="surface1" placeholder="Enter your details..." />
     </YStack>
   )
 }
@@ -17,12 +17,12 @@ function InputDemo(props: { size: SizeTokens }) {
   return (
     <XStack items="center" gap="2">
       <Input
-        theme="level2"
+        theme="surface1"
         flex={1}
         size={props.size}
         placeholder={`Size ${props.size}...`}
       />
-      <Button size={props.size === '2' ? 'small' : 'medium'}>Go</Button>
+      <Button size={props.size}>Go</Button>
     </XStack>
   )
 }

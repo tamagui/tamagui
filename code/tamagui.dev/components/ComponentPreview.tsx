@@ -43,7 +43,7 @@ const WindowMacView = () => {
       bg="background-press"
       borderBottomWidth={1}
       borderColor="color3"
-      py="1.5"
+      py="1-5"
       px="2"
       gap="2"
       theme="accent"
@@ -89,7 +89,7 @@ const CardItem = ({ title, children }) => {
       items="flex-start"
       gap="3"
       minW="100%"
-      p="2.5"
+      p="2-5"
       borderColor="hover:color7"
     >
       {children}
@@ -194,10 +194,10 @@ const ComponentPreview = {
         width="100%"
         height="auto"
         items="center"
-        gap="2.5"
+        gap="2-5"
         transition="medium"
       >
-        <Label size="1.5" htmlFor={'switch'}>
+        <Label size="1-5" htmlFor={'switch'}>
           Switch
         </Label>
 
@@ -420,7 +420,7 @@ const ComponentPreview = {
             <XStack
               borderBottomWidth={1}
               borderColor="border-color"
-              height="1.5"
+              height="1-5"
               key={index}
             >
               {Array.from({ length: 3 }).map((_, index) => (
@@ -614,8 +614,8 @@ const ComponentPreview = {
             {Array.from({ length: 4 }).map((_, index) => (
               <View
                 key={index}
-                width={index === 1 ? '2' : '0.75'}
-                height="0.75"
+                width={index === 1 ? '2' : '0-75'}
+                height="0-75"
                 rounded="5"
                 bg={`${index === 1 ? 'accent-color' : 'color10'}`}
                 transition="200ms"
@@ -684,7 +684,7 @@ const ComponentPreview = {
           <YStack gap="4">
             {Array.from({ length: 3 }).map((_, index) => (
               <XStack gap="2" key={index}>
-                <View aspectRatio={1} bg="color8" height="1.5" rounded="2" />
+                <View aspectRatio={1} bg="color8" height="1-5" rounded="2" />
                 <YStack flex={1} gap="2">
                   <View bg="color8" height={6} width="70%" />
                   <View bg="color8" height={6} width="20%" />
@@ -703,9 +703,9 @@ const ComponentPreview = {
     return (
       <WindowLayout>
         <XStack gap="4" justify="flex-start" p="4">
-          <YStack flex={3} gap="1.5">
+          <YStack flex={3} gap="1-5">
             <View width="100%" bg="color8" aspectRatio={3 / 2} />
-            <XStack gap="1.5">
+            <XStack gap="1-5">
               {Array.from({ length: 4 }).map((_, i) => (
                 <View key={i} bg="color8" flex={1} aspectRatio={1} />
               ))}
@@ -714,7 +714,7 @@ const ComponentPreview = {
           <YStack gap="2" flex={1}>
             <Text fontSize={10}>Product</Text>
 
-            <XStack gap="1.5">
+            <XStack gap="1-5">
               {['red10', 'blue10', 'green10'].map((color, index) => (
                 <View
                   bg={color as any}

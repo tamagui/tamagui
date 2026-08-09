@@ -16,7 +16,7 @@ export const AllTasks = () => {
       {...demoProps.panelPaddingProps}
       bg="background"
     >
-      <YStack borderBottomWidth="0.25" borderBottomColor="border-color" pb="4">
+      <YStack borderBottomWidth="0-25" borderBottomColor="border-color" pb="4">
         <H4 {...demoProps.headingFontFamilyProps} color="color">
           Tasks
         </H4>

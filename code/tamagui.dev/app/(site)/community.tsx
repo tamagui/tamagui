@@ -39,7 +39,7 @@ export default function Community() {
                 borderColor="border-color"
                 borderWidth={1}
                 mt="-3"
-                size="5"
+                size="6"
                 iconAfter={ChevronRight}
                 rounded="10"
               >

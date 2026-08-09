@@ -38,7 +38,7 @@ export const StudioBar = memo(function Header() {
             mx: 'auto',
             left: 0,
             right: 0,
-            b: '2.5',
+            b: '2-5',
           }
         : {
             right: '2',
@@ -96,7 +96,7 @@ export const ThemeSwitch = memo(() => {
                   render="span"
                   disabled
                   variant="quiet"
-                  size="3"
+                  size="1"
                   scaleIcon={1}
                   opacity={0.44}
                   x={-1.5}
@@ -112,7 +112,7 @@ export const ThemeSwitch = memo(() => {
                   render="span"
                   disabled
                   variant="quiet"
-                  size="3"
+                  size="1"
                   scaleIcon={1}
                   opacity={0.25}
                   x={-1.5}
@@ -129,7 +129,7 @@ export const ThemeSwitch = memo(() => {
                     render="span"
                     disabled
                     variant="quiet"
-                    size="3"
+                    size="1"
                     scaleIcon={1.2}
                     opacity={0.8}
                     y={-0.75}
@@ -141,7 +141,7 @@ export const ThemeSwitch = memo(() => {
                     render="span"
                     disabled
                     variant="quiet"
-                    size="3"
+                    size="1"
                     scaleIcon={1.2}
                     opacity={0.5}
                     y={-0.75}
@@ -174,7 +174,7 @@ export const ThemeSwitch = memo(() => {
 
         <Paragraph size="2">{tip}</Paragraph>
         <Button
-          size="3"
+          size="1"
           circular
           position="absolute"
           t="-2"

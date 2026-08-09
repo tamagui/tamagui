@@ -9,7 +9,7 @@ export const CheckCircle = () => (
     items="center"
     justify="center"
     rounded={100}
-    mr="2.5"
+    mr="2-5"
   >
     <Check size={12} color="var(--colorHover)" />
   </YStack>

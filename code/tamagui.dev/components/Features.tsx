@@ -17,7 +17,7 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
                 items="center"
                 justify="center"
                 rounded={100}
-                mr="2.5"
+                mr="2-5"
               >
                 <Pencil size={12} color="var(--colorHover)" />
               </YStack>

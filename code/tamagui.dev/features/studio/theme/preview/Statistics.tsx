@@ -15,7 +15,7 @@ export const StatisticsBarScreen = memo(() => {
       borderColor="color3"
     >
       <YStack
-        borderBottomWidth="0.25"
+        borderBottomWidth="0-25"
         borderBottomColor="border-color"
         paddingBottom="0"
         paddingTop="0"
@@ -58,7 +58,7 @@ export const StatisticsLineScreen = memo(() => {
       overflow="hidden"
     >
       <YStack
-        borderBottomWidth="0.25"
+        borderBottomWidth="0-25"
         borderBottomColor="border-color"
         paddingBottom="0"
         paddingTop="0"

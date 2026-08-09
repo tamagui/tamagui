@@ -128,7 +128,7 @@ function ProfileCard() {
         <YStack flex={1} p="3" gap="3" justify="space-between">
           <YStack gap="2">
             <Card3D.Item translateZ={20}>
-              <YStack gap="0.5">
+              <YStack gap="0-5">
                 <Paragraph
                   fontSize={10}
                   color="color9"
@@ -143,7 +143,7 @@ function ProfileCard() {
               </YStack>
             </Card3D.Item>
             <Card3D.Item translateZ={15}>
-              <YStack gap="1.5">
+              <YStack gap="1-5">
                 <XStack gap="2" items="center">
                   <Paragraph fontSize={11} color="color10" width={50}>
                     Dept
@@ -171,13 +171,13 @@ function ProfileCard() {
           <Card3D.Item translateZ={30}>
             <XStack gap="2">
               <ThemeTintAlt>
-                <Button size="3" bg="color9" flex={1} cursor="pointer">
+                <Button size="2" bg="color9" flex={1} cursor="pointer">
                   <Button.Text color="white" fontSize={11} fontWeight="600">
                     Message
                   </Button.Text>
                 </Button>
               </ThemeTintAlt>
-              <Button size="3" flex={1} cursor="pointer">
+              <Button size="2" flex={1} cursor="pointer">
                 <Button.Text fontSize={11} fontWeight="500">
                   Profile
                 </Button.Text>
@@ -209,8 +209,8 @@ function ProductCard() {
       />
       <YStack position="absolute" inset={0} justify="flex-end">
         <YStack
-          p="2.5"
-          gap="1.5"
+          p="2-5"
+          gap="1-5"
           m="2"
           rounded="6"
           borderWidth={0.5}
@@ -250,13 +250,13 @@ function TabsComponent() {
         if (index !== -1) setActiveIndex(index)
       }}
     >
-      <GlassCard p="1.5" rounded="5" position="relative">
+      <GlassCard p="1-5" rounded="5" position="relative">
         <Tabs.List flexDirection="row">
           <View
             position="absolute"
             t={0}
             b={0}
-            l="1.5"
+            l="1-5"
             my="auto"
             width={tabWidth}
             height="80%"
@@ -362,7 +362,7 @@ function InputComponent() {
         size="3"
         placeholder="Search..."
       />
-      <Button theme="surface1" size="4">
+      <Button theme="surface1" size="3">
         Go
       </Button>
     </XStack>
@@ -536,7 +536,7 @@ function TooltipBadge() {
   return (
     <Tooltip placement="bottom" offset={12} delay={{ open: 0, close: 150 }}>
       <Tooltip.Trigger asChild>
-        <Button theme="accent" size="4" cursor="pointer">
+        <Button theme="accent" size="3" cursor="pointer">
           <Button.Text fontSize={13} color="color11">
             Hover me
           </Button.Text>
@@ -548,7 +548,7 @@ function TooltipBadge() {
         bg="background"
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
-        px="2.5"
+        px="2-5"
         py="1"
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
@@ -609,10 +609,10 @@ function ChipGroup() {
           <XStack
             bg="color4 hover:color5"
             rounded="10"
-            px="2.5"
-            py="1.5"
+            px="2-5"
+            py="1-5"
             items="center"
-            gap="1.5"
+            gap="1-5"
           >
             <Icon size={12} color="color9" />
             <Paragraph fontSize={11} fontWeight="500" color="color9">
@@ -679,7 +679,7 @@ function DemoMenu() {
       <Menu.Trigger asChild>
         <XStack
           px="5"
-          py="2.5"
+          py="2-5"
           rounded="10"
           items="center"
           gap="2"
@@ -708,7 +708,7 @@ function DemoMenu() {
           borderColor="color4"
           overflow="hidden"
           minW={220}
-          p="1.5"
+          p="1-5"
           boxShadow="0 4px 12px shadow-color"
           y="enter:-10px exit:-10px"
           opacity="enter:0 exit:0"
@@ -720,7 +720,7 @@ function DemoMenu() {
               fontWeight="600"
               color="color9"
               px="3"
-              py="1.5"
+              py="1-5"
               textTransform="uppercase"
               letterSpacing={0.5}
             >
@@ -740,7 +740,7 @@ function DemoMenu() {
             </StyledItem>
           </Menu.Group>
 
-          <Menu.Separator mx="2" my="1.5" bg="color4" />
+          <Menu.Separator mx="2" my="1-5" bg="color4" />
 
           <Menu.Sub placement="right-start">
             <StyledSubTrigger key="more-options" textValue="More options">
@@ -758,7 +758,7 @@ function DemoMenu() {
                 borderColor="color4"
                 overflow="hidden"
                 minW={180}
-                p="1.5"
+                p="1-5"
                 boxShadow="0 4px 12px shadow-color"
                 x="enter:-10px exit:-10px"
                 opacity="enter:0 exit:0"
@@ -785,7 +785,7 @@ function DemoMenu() {
             </Menu.Portal>
           </Menu.Sub>
 
-          <Menu.Separator mx="2" my="1.5" bg="color4" />
+          <Menu.Separator mx="2" my="1-5" bg="color4" />
 
           <Menu.Group>
             <Menu.Label
@@ -793,7 +793,7 @@ function DemoMenu() {
               fontWeight="600"
               color="color9"
               px="3"
-              py="1.5"
+              py="1-5"
               textTransform="uppercase"
               letterSpacing={0.5}
             >

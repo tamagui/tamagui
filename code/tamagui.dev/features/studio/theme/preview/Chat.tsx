@@ -69,7 +69,7 @@ export const ChatScreen = () => {
         py="5"
         rounded="4"
         mb="2"
-        borderBottomWidth="0.25"
+        borderBottomWidth="0-25"
         borderBottomColor="border-color"
       >
         <XStack justify="space-between">
@@ -157,7 +157,7 @@ const ChatMessage = memo(
 
     let contents = (
       <YStack
-        px="2.5"
+        px="2-5"
         py="2"
         {...demoProps.borderRadiusProps}
         {...(isUser ? demoProps.chatFrameActiveProps : demoProps.chatFrameProps)}

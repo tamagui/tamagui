@@ -7,16 +7,18 @@ import {
   createStyledHOC,
   type GetProps,
   getThemedIconSize,
-  getVariableValue,
   resolveTokenSize,
   SizeContext,
   type SizeTokens,
   styled,
+  Theme,
+  type ThemeProps,
   type TokenSize,
   useButton,
   type VariantSpreadExtras,
   withStaticProperties,
 } from 'tamagui'
+import { forwardRef } from 'react'
 
 export type ButtonSize = SizeTokens
 
@@ -28,16 +30,23 @@ const buttonFrameSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any
   })
   return {
     borderRadius: frame.radius,
-    gap: Math.round(getVariableValue(frame.size) * 0.2),
+    gap: frame.radius,
     height: frame.size,
     paddingHorizontal: frame.space,
   }
 }
 
 const buttonTextSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>) => {
+  const isSilkscreen = String(extras.font?.family).includes('Silkscreen')
   const { text } = resolveTokenSize(val, {
     tokens: extras.tokens,
     font: extras.font!,
+    policy: {
+      size: 44,
+      space: '4',
+      radius: '4',
+      fontSize: isSilkscreen ? '6' : '5',
+    },
   })
   return {
     fontSize: text.fontSize,
@@ -49,7 +58,8 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   context: SizeContext,
   name: 'SiteButtonFrame',
   backgroundColor: 'background hover:background-hover press:background-press',
-  borderColor: 'border-color hover:border-color-hover',
+  borderColor: 'transparent hover:border-color-hover',
+  borderStyle: 'solid',
   borderWidth: 1,
   cursor: 'web:pointer',
   opacity: 'press:0.7',
@@ -106,7 +116,7 @@ export const ButtonText = styled(ButtonBehaviorText, {
   context: SizeContext,
   name: 'SiteButtonText',
   color: 'color',
-  fontWeight: '600',
+  fontWeight: '400',
   userSelect: 'none',
   variants: {
     size: {
@@ -130,7 +140,7 @@ export const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {
   )
 }
 
-const ButtonComponent = createStyledHOC(
+const ButtonImpl = createStyledHOC(
   ButtonFrame,
   function Button(props: ButtonBehaviorProps & { size?: ButtonSize }, ref) {
     const contextSize = SizeContext.useStyledContext()?.size
@@ -143,13 +153,23 @@ const ButtonComponent = createStyledHOC(
       iconSize: getThemedIconSize(size),
     })
 
-    return (
-      <SizeContext.Provider size={size}>
+    const frame = (
+      <Theme name="Button" forceClassName>
         <ButtonFrame ref={ref} {...buttonProps} />
-      </SizeContext.Provider>
+      </Theme>
     )
+
+    return <SizeContext.Provider size={size}>{frame}</SizeContext.Provider>
   }
 )
+
+const ButtonComponent = forwardRef<
+  HTMLElement,
+  ButtonBehaviorProps & { size?: ButtonSize; theme?: ThemeProps['name'] }
+>(function ThemedButton({ theme, ...props }, ref) {
+  const button = <ButtonImpl ref={ref} {...props} />
+  return theme ? <Theme name={theme}>{button}</Theme> : button
+})
 
 export const Button = withStaticProperties(ButtonComponent, {
   Frame: ButtonFrame,

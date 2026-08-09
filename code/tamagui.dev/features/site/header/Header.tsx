@@ -80,7 +80,7 @@ export function Header(props: HeaderProps) {
         <XStack pointerEvents="auto" width="100%" maxW={1200} position="relative">
           <XStack
             className="ease-out all ms300"
-            py="1.5 sm:2"
+            py="1-5 sm:2"
             y={`0px sm:-1px${isScrolled ? ' gtSm:6px' : ''}`}
             overflow="hidden"
             contain="paint"
@@ -149,7 +149,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       z={50000}
     >
       <XStack items="center" gap="4">
-        <View id="docs-version-picker-slot" />
+        <View id="docs-version-picker-slot" display="contents" />
 
         <TooltipGroup delay={tooltipDelay}>
           <XGroup maxH={32} bg="transparent" items="center" size="4">
@@ -159,7 +159,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton size="3" rounded="10" boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)" />
+        <SearchButton size="2" rounded="10" boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)" />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
           <XStack group containerType="normal">

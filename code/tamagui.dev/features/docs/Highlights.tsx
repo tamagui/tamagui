@@ -4,6 +4,7 @@ import { H2, Paragraph, SizableText, Text, VisuallyHidden, XStack, YStack } from
 import { Features } from '~/components/Features'
 import { Link } from '~/components/Link'
 import { FrontmatterContext } from './FrontmatterContext'
+import { SourceVersionSwitcher } from './SourceVersionSwitcher'
 
 export function Highlights({ features, disableLinks, disableTitle, large }: any) {
   const frontmatter = React.useContext(FrontmatterContext)
@@ -46,7 +47,14 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
-          <YStack marginTop={`3`} marginBottom="3" gap="3">
+          <YStack marginTop="3" marginBottom="3" gap="3">
+            {frontmatter.versions && frontmatter.versions.length > 1 && (
+              <SourceVersionSwitcher
+                versions={frontmatter.versions}
+                componentName={frontmatter.name || frontmatter.component || ''}
+              />
+            )}
+
             <Link
               href={`https://github.com/tamagui/tamagui/tree/${sourceVersion ? `v${sourceVersion}` : 'main'}/code/ui/${
                 frontmatter.package
@@ -57,7 +65,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
             >
               <XStack items="center" gap="1">
                 <SizableText size="3">View source</SizableText>
-                <YStack opacity={0.5} ml="0.5">
+                <YStack opacity={0.5} ml="0-5">
                   <ExternalLink size={12} color="var(--colorHover)" />
                 </YStack>
               </XStack>
@@ -65,7 +73,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
             <Link href={`https://www.npmjs.com/package/tamagui`} target="_blank">
               <XStack items="center" gap="1">
                 <SizableText size="3">View on npm</SizableText>
-                <YStack opacity={0.5} ml="0.5">
+                <YStack opacity={0.5} ml="0-5">
                   <ExternalLink size={12} color="var(--colorHover)" />
                 </YStack>
               </XStack>
@@ -76,7 +84,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
             >
               <XStack items="center" gap="1">
                 <SizableText size="3">Report an issue</SizableText>
-                <YStack opacity={0.5} ml="0.5">
+                <YStack opacity={0.5} ml="0-5">
                   <ExternalLink size={12} color="var(--colorHover)" />
                 </YStack>
               </XStack>

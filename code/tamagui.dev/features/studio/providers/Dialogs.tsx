@@ -16,7 +16,7 @@ import { useGlobalState } from '../state/useGlobalState'
 const DialogCloseButton = () => (
   <Unspaced>
     <Dialog.Close asChild="except-style">
-      <Button size="4" position="absolute" t="3" r="3" circular icon={X} z={1000} />
+      <Button size="3" position="absolute" t="3" r="3" circular icon={X} z={1000} />
     </Dialog.Close>
   </Unspaced>
 )

@@ -189,7 +189,7 @@ export const StepExportCodeSidebar = () => {
                               px="3"
                               pt="2"
                               mb={-22}
-                              pb="4.5"
+                              pb="4-5"
                               bg="color2"
                               value={file.filename}
                             >
@@ -247,7 +247,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           end={[0, 0]}
         />
       )}
-      <XStack position="absolute" r="2.5" t={10} gap="2" flexDirection="row-reverse">
+      <XStack position="absolute" r="2-5" t={10} gap="2" flexDirection="row-reverse">
         <Button
           onPress={() => {
             copyText(content)
@@ -261,7 +261,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           <Theme name="green">
             <Button
               self="center"
-              size="3"
+              size="2"
               icon={Download}
               onPress={() => {
                 downloadFile(filename, content)

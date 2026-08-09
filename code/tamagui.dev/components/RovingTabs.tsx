@@ -83,7 +83,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
           onValueChange={setPackageManager}
         >
           <YStack width="100%">
-            <YStack p="1.5" m="2" mb={0} rounded="5">
+            <YStack p="1-5" m="2" mb={0} rounded="5">
               <AnimatePresence initial={false}>
                 {intentAt && (
                   <TabIndicator
@@ -155,15 +155,15 @@ export function Tab({
   return (
     <Tabs.Tab
       pl="2"
-      pr="2.5"
-      py="1.5"
-      gap="1.5"
+      pr="2-5"
+      py="1-5"
+      gap="1-5"
       bg="transparent"
       {...(onInteraction && { onInteraction })}
       cursor="pointer"
       value={pkgManager}
     >
-      <XStack gap="1.5" items="center" justify="center">
+      <XStack gap="1-5" items="center" justify="center">
         <Image
           width={16}
           height={16}

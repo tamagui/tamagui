@@ -160,7 +160,7 @@ function CopyCodeButton({ onCopy, hasCopied, oneTabLayout = false }) {
       t={oneTabLayout ? 16 : 48}
       r={0}
       m="4"
-      size="4"
+      size="3"
       onPress={onCopy}
     >
       <Button.Text>{hasCopied ? 'Copied' : 'Copy'}</Button.Text>
@@ -183,7 +183,7 @@ function CustomizationEnabledBanner() {
           <XStack py={14} px="3" flex={1}>
             <AlertCircle t="3" l="3" z={100} color="color7" size={22} />
             <Paragraph
-              ml="2.5"
+              ml="2-5"
               fontWeight="200"
               lineHeight="2"
               color="color1"

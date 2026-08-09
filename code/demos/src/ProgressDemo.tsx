@@ -44,12 +44,12 @@ export function ProgressDemo() {
         </Slider> */}
 
         <Button
-          size="4"
+          size="3"
           icon={Play}
           onPress={() => setProgress((prev) => (prev + 20) % 100)}
         />
         <Button
-          size="4"
+          size="3"
           icon={RotateCcw}
           onPress={() => {
             setKey(Math.random())

@@ -188,7 +188,7 @@ const ToggleAllButton = ({
     <TooltipSimple label={expanded ? 'Collapse all' : 'Expand all'} placement="right">
       <Button
         circular
-        size="4"
+        size="3"
         my="-3"
         variant="quiet"
         opacity="hover:1 press:0.8"
@@ -260,7 +260,7 @@ const AccordionSection = ({
               alignItems="center"
               width="100%"
             >
-              <Paragraph size="5" fontWeight="500" color="color11">
+              <Paragraph size="5" fontWeight="600" color="color12">
                 {section.title}
               </Paragraph>
 

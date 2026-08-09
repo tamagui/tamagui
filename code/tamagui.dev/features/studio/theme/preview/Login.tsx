@@ -30,7 +30,7 @@ export const LoginScreen = () => {
       {...demoProps.panelPaddingProps}
     >
       <Form>
-        <YStack borderBottomWidth="0.25" borderBottomColor="border-color" pb="4" gap="3">
+        <YStack borderBottomWidth="0-25" borderBottomColor="border-color" pb="4" gap="3">
           <H4 {...demoProps.headingFontFamilyProps} text="center">
             Welcome Back!
           </H4>
@@ -49,7 +49,7 @@ export const LoginScreen = () => {
             <>
               <Button
                 flex={1}
-                size="4"
+                size="3"
                 icon={IconGitlab}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}
@@ -58,7 +58,7 @@ export const LoginScreen = () => {
               </Button>
               <Button
                 flex={1}
-                size="4"
+                size="3"
                 icon={IconGithub}
                 {...demoProps.borderRadiusProps}
                 {...demoProps.buttonOutlineProps}

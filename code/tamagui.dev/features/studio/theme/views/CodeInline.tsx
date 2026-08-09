@@ -9,5 +9,5 @@ export const CodeInline = styled(Paragraph, {
   cursor: 'inherit',
   rounded: '3',
   fontSize: '85%',
-  p: '1.5',
+  p: '1-5',
 })

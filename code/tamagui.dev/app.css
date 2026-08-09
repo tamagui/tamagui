@@ -16,6 +16,13 @@ body {
   scrollbar-color: #b1b1b1 transparent;
 }
 
+/* Preserve the v5 site's explicit default font metrics on the v3 runtime. */
+:where(.font_body, .font_cherryBomb, .font_heading, .font_mono, .font_silkscreen, .is_View) {
+  letter-spacing: var(--f-letterSpacing-true, var(--f-letterSpacing-4));
+  line-height: var(--f-lineHeight-true, var(--f-lineHeight-4));
+  font-weight: var(--f-weight-true, var(--f-weight-4));
+}
+
 /* font flickering all the time on media query changes */
 * {
   transition: none;
@@ -71,6 +78,16 @@ p a,
   text-decoration: underline;
 }
 
+.show-sm-inline {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .show-sm-inline {
+    display: inline;
+  }
+}
+
 :root:root .is_Paragraph a {
   text-decoration: underline;
   text-decoration-color: var(--color02);
@@ -101,7 +118,7 @@ a {
   text-decoration-color: var(--color8);
 }
 
-.is_Paragraph:has(> ul) {
+:where(.is_Paragraph:has(> ul)) {
   margin-bottom: 0;
 }
 
@@ -569,19 +586,19 @@ textarea {
   opacity: 0.88;
 }
 
-/* collapse margins between consecutive headings */
-[data-heading] + [data-heading] {
+/* Low-specificity content defaults: explicit Tamagui props still win. */
+:where([data-heading] + [data-heading]) {
   margin-top: 0;
   padding-top: var(--t-space-2);
 }
 
 /* collapse margins: notice followed by headings */
-.no-opacity-fade + [data-heading] {
+:where(.no-opacity-fade + [data-heading]) {
   margin-top: var(--t-space-4);
 }
 
 /* collapse margins: code blocks followed by headings */
-.DocCodeBlock + [data-heading] {
+:where(.DocCodeBlock + [data-heading]) {
   margin-top: var(--t-space-4);
 }
 

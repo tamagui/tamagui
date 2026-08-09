@@ -372,7 +372,7 @@ const PaletteView = memo((props: Props) => {
                 <XStack width={50} overflow="hidden" items="center" justify="center">
                   <Button
                     variant="quiet"
-                    size="3"
+                    size="2"
                     scaleIcon={1.4}
                     circular
                     icon={anchor ? <Anchor /> : <ArrowLeftRight />}
@@ -384,7 +384,7 @@ const PaletteView = memo((props: Props) => {
               }
             />
 
-            {/* {!anchor && <DataItem top="" bottom={<Button size="3">Edit</Button>} />} */}
+            {/* {!anchor && <DataItem top="" bottom={<Button size="2">Edit</Button>} />} */}
           </XStack>
         </YStack>
       </XLabeledItem>
@@ -612,7 +612,7 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
         bg="background"
         boxShadow="0 4px 12px shadow-color"
         rounded="4"
-        px="2.5"
+        px="2-5"
         py="1"
         y="enter:4px exit:4px"
         opacity="enter:0 exit:0"

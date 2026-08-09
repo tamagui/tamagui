@@ -57,7 +57,7 @@ export const PromoLinksRow = () => {
           bg="background"
           boxShadow="0 4px 12px shadow-color"
           rounded="4"
-          px="2.5"
+          px="2-5"
           py="1"
           y="enter:-4px exit:-4px"
           opacity="enter:0 exit:0"

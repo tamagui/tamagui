@@ -13,7 +13,7 @@ export const UserDropdown = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack borderBottomWidth="0.25" borderBottomColor="border-color" pb="4">
+      <YStack borderBottomWidth="0-25" borderBottomColor="border-color" pb="4">
         <XStack gap="4" justify="space-between" items="center" flexWrap="wrap">
           <Avatar size="5" {...demoProps.borderRadiusProps}>
             <Avatar.Image src="https://i.pravatar.cc/300?u=some-user" />

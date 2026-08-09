@@ -5,7 +5,6 @@ import { Link } from '~/components/Link'
 import { memo, useEffect, useRef, useState } from 'react'
 import type { Heading, TextProps } from 'tamagui'
 import {
-  Button,
   Card,
   H1,
   H2,
@@ -19,6 +18,7 @@ import {
   useDidFinishSSR,
 } from 'tamagui'
 
+import { Button } from '~/components/Button'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH2 } from './HomeHeaders'
 
@@ -69,7 +69,7 @@ export const HomeTypography = memo(() => {
           <YStack
             height={300}
             width="40%"
-            gap="0.5"
+            gap="0-5"
             justify="center"
             scale="1.1 sm:0.9"
             x="-20px sm:0"

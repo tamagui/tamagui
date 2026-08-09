@@ -33,7 +33,9 @@ export const Notice = ({
   return (
     <NoticeFrame theme={theme} {...props}>
       <XStack gap="3">
-        <IconComponent size="1" mt={5} color="color10" />
+        <YStack mt={5} width={20} height={20}>
+          <IconComponent size={20} color="color10" />
+        </YStack>
         <YStack flex={1}>
           {title && (
             <H3 size="5" mb={-10} mt={5}>

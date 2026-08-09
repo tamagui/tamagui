@@ -80,7 +80,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
                 <XStack items="center" flex={1000} gap="2">
                   <Square
                     aria-hidden
-                    size="2.5"
+                    size="2-5"
                     rounded="2"
                     borderWidth={1}
                     borderColor="border-color"
@@ -133,7 +133,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
             />
           </YStack>
           <Button
-            size="3"
+            size="2"
             onPress={async () => {
               const confirmed = await rootStore.confirmDialog('confirm-delete', {
                 thingName: `palette`,

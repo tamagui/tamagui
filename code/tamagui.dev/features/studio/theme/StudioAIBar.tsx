@@ -332,7 +332,7 @@ const HistoryButton = ({
 }) => {
   return (
     <XStack group="item" containerType="normal" position="relative">
-      <Button onPress={onPress} size="4" rounded="8" theme={active ? 'accent' : null}>
+      <Button onPress={onPress} size="3" rounded="8" theme={active ? 'accent' : null}>
         <Button.Icon>{icon}</Button.Icon>
 
         <Button.Text numberOfLines={1} maxW={200} fontFamily="mono">

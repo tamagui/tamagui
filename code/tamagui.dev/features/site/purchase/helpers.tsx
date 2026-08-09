@@ -31,8 +31,8 @@ export const isSafariMobile = (() => {
 
 export function PurchaseButton({ children, fontFamily = 'mono', ...props }) {
   return (
-    <Button size="5" rounded="10" {...props}>
-      <Button.Text size="5" fontFamily={fontFamily as any}>
+    <Button size="6" rounded="10" {...props}>
+      <Button.Text size="6" fontFamily={fontFamily as any}>
         {children}
       </Button.Text>
     </Button>
@@ -50,7 +50,7 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
       {...(props.id && { htmlFor: props.id })}
       p="4"
       display="flex"
-      borderWidth="0.25"
+      borderWidth="0-25"
       bg={`${props.checked ? 'color2' : 'color1'}`}
       borderColor={`${props.checked ? 'color5' : 'color2'} hover:${props.checked ? 'color7' : 'color7'}`}
       rounded="4"
@@ -92,7 +92,7 @@ export const RadioGroupItem = ({
       p="4"
       height="auto"
       display="flex"
-      borderWidth="0.25"
+      borderWidth="0-25"
       borderColor={`${active ? 'color9' : 'color5'} hover:${active ? 'color10' : 'color7'}`}
       rounded="4"
       gap="4"
@@ -137,7 +137,7 @@ export function BentoTable({
   const priceInfo = price ? bentoDefaults[price.id] : null
 
   return (
-    <YStack borderWidth="0.5" rounded="4" borderColor="color5">
+    <YStack borderWidth="0-5" rounded="4" borderColor="color5">
       <XStack px="4" py="4" gap="3">
         <YStack width="80%">
           <Paragraph size="6" fontWeight="bold">
@@ -180,7 +180,7 @@ export const TakeoutTable = ({
   const price = product?.prices.find((price) => price.id === selectedPriceId)
   const takeoutPriceInfo = getTakeoutPriceInfo(price?.description ?? '')
   return (
-    <YStack borderWidth="0.5" rounded="4" borderColor="border-color">
+    <YStack borderWidth="0-5" rounded="4" borderColor="border-color">
       <XStack px="4" py="4" gap="3">
         <YStack width="80%">
           <Paragraph size="6" fontWeight="bold">

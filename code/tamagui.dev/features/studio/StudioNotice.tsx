@@ -89,7 +89,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
             <Button
               aria-label="Carousel left"
               icon={ChevronLeft}
-              size="3"
+              size="2"
               circular
               boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
               onPress={() => paginate(-1)}
@@ -97,7 +97,7 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
             <Button
               aria-label="Carousel left"
               icon={ChevronRight}
-              size="3"
+              size="2"
               circular
               boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)"
               onPress={() => paginate(1)}
