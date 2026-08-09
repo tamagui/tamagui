@@ -17,9 +17,14 @@ const npmCli = resolve(npmPrefix, 'node_modules/npm/bin/npm-cli.js')
 const packages = [
   '@tamagui/compiler-core',
   '@tamagui/create-system-font',
+  '@tamagui/dom',
+  '@tamagui/eslint-plugin',
   '@tamagui/field',
+  '@tamagui/language-service',
+  '@tamagui/native-registry',
   '@tamagui/size',
   '@tamagui/style-grammar',
+  '@tamagui/tailwind',
   '@tamagui/to-tailwind',
   '@tamagui/ui',
 ]
