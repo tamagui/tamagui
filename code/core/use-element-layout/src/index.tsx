@@ -4,7 +4,6 @@ import { createContext, useContext, useId, type ReactNode, type RefObject } from
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const LayoutDisableKey = new WeakMap<HTMLElement, string>()
 const Nodes = new Set<HTMLElement>()
-const IntersectionState = new WeakMap<HTMLElement, boolean>()
 
 // feature flag to enable pre-transform dimension reporting (matches RN behavior)
 // can be set via env var at build time or runtime global for testing
@@ -44,7 +43,14 @@ export const LayoutMeasurementController = ({
   const id = useId()
 
   useIsomorphicLayoutEffect(() => {
+    const wasDisabled = DisableLayoutContextValues[id] === true
     DisableLayoutContextValues[id] = disable
+    // a controller flipping to enabled (a sheet or popper opening) is often
+    // waiting on a measurement to position itself, so don't make it sit out
+    // the frame-skip window
+    if (wasDisabled && !disable) {
+      measureOnNextFrame?.()
+    }
   }, [disable, id])
 
   return (
@@ -53,9 +59,6 @@ export const LayoutMeasurementController = ({
     </DisableLayoutContextKey.Provider>
   )
 }
-
-// Single persistent IntersectionObserver for visibility tracking
-let globalIntersectionObserver: IntersectionObserver | null = null
 
 type TamaguiComponentStatePartial = {
   host?: any
@@ -69,6 +72,11 @@ let strategy: LayoutMeasurementStrategy = 'async'
 // registered nodes, a hidden document, or measurement turned off. these are the
 // only three ways work can reappear, so each one restarts it.
 let resumeLayoutLoop: (() => void) | undefined
+
+// restarts the loop AND makes its next frame a measuring frame, skipping the
+// frame-skip backoff once. for consumers whose position depends on a pending
+// measurement (an opening sheet parked off-screen).
+let measureOnNextFrame: (() => void) | undefined
 
 export function setOnLayoutStrategy(state: LayoutMeasurementStrategy): void {
   strategy = state
@@ -106,25 +114,6 @@ export function enable(): void {
       queuedUpdates.clear()
     }
   }
-}
-
-function startGlobalObservers() {
-  if (!ENABLE || globalIntersectionObserver) return
-
-  globalIntersectionObserver = new IntersectionObserver(
-    (entries) => {
-      for (let i = 0; i < entries.length; i++) {
-        const entry = entries[i]
-        const node = entry.target as HTMLElement
-        if (IntersectionState.get(node) !== entry.isIntersecting) {
-          IntersectionState.set(node, entry.isIntersecting)
-        }
-      }
-    },
-    {
-      threshold: 0,
-    }
-  )
 }
 
 // optimization: inline rect comparison to avoid function call overhead on hot path
@@ -241,11 +230,14 @@ if (ENABLE) {
     }
 
     if (strategy !== 'off') {
-      const visibleNodes: HTMLElement[] = []
+      const activeNodes: HTMLElement[] = []
       // optimization: deduplicate parent observations
       const parentsToObserve = new Set<HTMLElement>()
 
-      // collect visible nodes and their unique parents
+      // collect non-disabled nodes and their unique parents. off-viewport
+      // nodes stay in: a sheet or popper parks off-screen until its own
+      // measurement arrives, so gating measurement on visibility deadlocks it
+      // there, and RN fires onLayout for off-screen views anyway
       for (const node of Nodes) {
         const parentElement = node.parentElement
         if (!(parentElement instanceof HTMLElement)) {
@@ -254,19 +246,17 @@ if (ENABLE) {
         }
         const disableKey = LayoutDisableKey.get(node)
         if (disableKey && DisableLayoutContextValues[disableKey] === true) continue
-        if (IntersectionState.get(node) === false) continue
-
-        visibleNodes.push(node)
+        activeNodes.push(node)
         parentsToObserve.add(parentElement)
       }
 
-      if (visibleNodes.length > 0) {
+      if (activeNodes.length > 0) {
         const io = ensureRectFetchObserver()
         rectFetchStartTime = performance.now()
 
         // observe all nodes
-        for (let i = 0; i < visibleNodes.length; i++) {
-          io.observe(visibleNodes[i])
+        for (let i = 0; i < activeNodes.length; i++) {
+          io.observe(activeNodes[i])
         }
         // optimization: observe unique parents only (not N times for N children)
         for (const parent of parentsToObserve) {
@@ -279,8 +269,8 @@ if (ENABLE) {
         })
 
         // unobserve all to reset for next cycle
-        for (let i = 0; i < visibleNodes.length; i++) {
-          io.unobserve(visibleNodes[i])
+        for (let i = 0; i < activeNodes.length; i++) {
+          io.unobserve(activeNodes[i])
         }
         for (const parent of parentsToObserve) {
           io.unobserve(parent)
@@ -295,8 +285,8 @@ if (ENABLE) {
         }
 
         // process updates
-        for (let i = 0; i < visibleNodes.length; i++) {
-          updateLayoutIfChanged(visibleNodes[i])
+        for (let i = 0; i < activeNodes.length; i++) {
+          updateLayoutIfChanged(activeNodes[i])
         }
       }
     }
@@ -307,6 +297,10 @@ if (ENABLE) {
   }
 
   resumeLayoutLoop = scheduleLayoutFrame
+  measureOnNextFrame = () => {
+    frameCount = 0
+    scheduleLayoutFrame()
+  }
   document.addEventListener('visibilitychange', scheduleLayoutFrame)
   scheduleLayoutFrame()
 }
@@ -405,11 +399,6 @@ function observeLayoutNode(node: HTMLElement, disableKey?: string) {
   } else {
     LayoutDisableKey.delete(node)
   }
-  startGlobalObservers()
-  if (globalIntersectionObserver) {
-    globalIntersectionObserver.observe(node)
-    IntersectionState.set(node, true)
-  }
   resumeLayoutLoop?.()
 }
 
@@ -429,10 +418,6 @@ function cleanupNode(node: HTMLElement) {
   LayoutHandlers.delete(node)
   LayoutDisableKey.delete(node)
   NodeRectCache.delete(node)
-  IntersectionState.delete(node)
-  if (globalIntersectionObserver) {
-    globalIntersectionObserver.unobserve(node)
-  }
 }
 
 const PrevHostNode = new WeakMap<object, HTMLElement | undefined>()

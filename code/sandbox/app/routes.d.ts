@@ -19,6 +19,7 @@ declare module 'one' {
         | `/sub/portal-missing-styles`
         | `/test/rn-style-props`
         | `/test/scrollview-hide-scrollbar`
+        | `/test/sheet-late-open`
         | `/test/sheet-unmount-when-hidden`
         | `/tooltip-heavy-ssr`
         | `/tooltip-ssr`
