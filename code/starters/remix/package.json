@@ -34,5 +34,5 @@
     "node": ">=20.0.0"
   },
   "packageManager": "bun@1.3.9",
-  "version": "2.7.3-1786169532869"
+  "version": "2.7.4"
 }
