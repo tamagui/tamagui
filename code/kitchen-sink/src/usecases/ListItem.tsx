@@ -126,5 +126,14 @@ export const ThemedListItem = () => (
       </ListItem.Icon>
       <ListItem.Text>Child icon inherits ListItem props</ListItem.Text>
     </ListItem>
+
+    <ListItem
+      id="themed-list-item-explicit-spacing"
+      padding={0}
+      paddingHorizontal={0}
+      paddingVertical="3"
+    >
+      Explicit spacing
+    </ListItem>
   </View>
 )

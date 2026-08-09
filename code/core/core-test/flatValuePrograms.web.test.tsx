@@ -4,8 +4,9 @@
 // unparseable colon-free strings keep the legacy path.
 
 import { beforeAll, expect, test } from 'vitest'
+import { H4 } from '../../ui/text/src/Headings'
 import config from '../config-default'
-import { View, createTamagui, getSplitStyles, styled } from '../web/src'
+import { Text, View, createTamagui, getSplitStyles, styled } from '../web/src'
 import {
   flatValuePrecedenceFixtures,
   reverseFixtureProgram,
@@ -381,14 +382,10 @@ test('styled same-key programs merge by clause slot through call-site props', ()
   const backgroundRules = rulesFor(callSiteLast, backgroundClass)
   expect(backgroundRules[0]).toContain('background-color:red')
   expect(
-    backgroundRules.some(
-      (rule) => rule.includes(':focus') && rule.includes('yellow')
-    )
+    backgroundRules.some((rule) => rule.includes(':focus') && rule.includes('yellow'))
   ).toBe(true)
   expect(
-    backgroundRules.some(
-      (rule) => rule.includes(':hover') && rule.includes('blue')
-    )
+    backgroundRules.some((rule) => rule.includes(':hover') && rule.includes('blue'))
   ).toBe(true)
 
   const paddingLeftClass = callSiteLast.classNames.paddingLeft
@@ -407,14 +404,10 @@ test('styled same-key programs merge by clause slot through call-site props', ()
   const variantLastRules = rulesFor(variantLast, variantLast.classNames.backgroundColor)
   expect(variantLastRules[0]).toContain('background-color:orange')
   expect(
-    variantLastRules.some(
-      (rule) => rule.includes(':hover') && rule.includes('blue')
-    )
+    variantLastRules.some((rule) => rule.includes(':hover') && rule.includes('blue'))
   ).toBe(true)
   expect(
-    variantLastRules.some(
-      (rule) => rule.includes(':focus') && rule.includes('yellow')
-    )
+    variantLastRules.some((rule) => rule.includes(':focus') && rule.includes('yellow'))
   ).toBe(true)
 })
 
@@ -518,6 +511,39 @@ test('a styled clause default survives a call-site override (decision 21)', () =
   // the call-site value restates the base; the styled hover clause survives
   expect(rules[0]).toBe(`.${className}{background-color:red}`)
   expect(rules[1]).toContain(':hover{background-color:blue}')
+})
+
+test('caller longhands override styled-base shorthands and same-key defaults', () => {
+  const Heading = styled(Text, {
+    margin: 0,
+    fontWeight: '700',
+  })
+  const result = simplifiedGetSplitStyles(
+    Heading,
+    { mt: '8', fontWeight: '400' },
+    { mergeDefaultProps: true }
+  )
+
+  const marginRules = rulesFor(result, result.classNames.marginTop)
+  const weightRules = rulesFor(result, result.classNames.fontWeight)
+  expect(marginRules[0]).toContain('var(--t-space-8)')
+  expect(weightRules[0]).toContain('font-weight:400')
+})
+
+test('heading caller spacing survives the inherited size variant chain', () => {
+  const result = simplifiedGetSplitStyles(
+    H4,
+    {
+      mt: '8',
+      mb: '2',
+      color: 'color8',
+      fontWeight: '400',
+      size: '8',
+    },
+    { mergeDefaultProps: true }
+  )
+
+  expect(rulesFor(result, result.classNames.marginTop)[0]).toContain('var(--t-space-8)')
 })
 
 test('a base swallowed by a conditional payload is a diagnostic, not silence', () => {

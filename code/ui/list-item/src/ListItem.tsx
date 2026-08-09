@@ -212,9 +212,9 @@ const ListItemComponent = createStyledHOC(
         | undefined,
     }
     const frameProps = {
-      ...rest,
       size,
       variant: listItemContext.variant,
+      ...rest,
     }
 
     return (

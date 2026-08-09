@@ -135,3 +135,15 @@ test('ListItem re-provides size and color context to child icons', async ({ page
   expect(stroke).not.toBe('none')
   expect(stroke).not.toBe('rgb(0, 0, 0)')
 })
+
+test('explicit spacing overrides the injected size variant', async ({ page }) => {
+  const listItem = page.locator('#themed-list-item-explicit-spacing')
+
+  await expect(listItem).toBeVisible()
+
+  const styles = await getStyles(listItem)
+  expect(styles.paddingTop).toBe('12px')
+  expect(styles.paddingRight).toBe('0px')
+  expect(styles.paddingBottom).toBe('12px')
+  expect(styles.paddingLeft).toBe('0px')
+})

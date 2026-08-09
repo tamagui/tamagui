@@ -41,6 +41,17 @@ describe('createTamagui', () => {
     expect(rootFontRule).toContain(theme.fontsParsed['body'].family.variable)
     expect(rootFontRule).not.toContain(theme.fontsParsed['aaa'].lineHeight['3'].variable)
     expect(rootFontRule).not.toContain('line-height')
+    expect(rootFontRule).toContain(':where(')
+  })
+
+  test(`design-system defaults do not outrank direct atomic styles`, () => {
+    const theme = createTamagui(config.getDefaultTamaguiConfig())
+    const css = theme.getCSS()
+
+    expect(css).toContain(':where(.is_View) { display: flex;')
+    expect(css).toContain(':where(.is_Text) { display: inline;')
+    expect(css).not.toContain('\n.is_View { display: flex;')
+    expect(css).not.toContain('\n.is_Text { display: inline;')
   })
 
   test(`font reset uses body without depending on sort order when defaultFont is omitted`, () => {

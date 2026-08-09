@@ -120,7 +120,9 @@ export function buildCSSRuleSets(
     if (fontSelectors.length) {
       const defaultFont = fontDeclarations[defaultFontToken]
       if (defaultFont?.fontParsed) {
-        const sharedSelectors = [...fontSelectors, '.is_View'].join(', ')
+        // These are defaults, so an atomic style prop must be able to override
+        // them regardless of stylesheet insertion order.
+        const sharedSelectors = `:where(${[...fontSelectors, '.is_View'].join(', ')})`
         cssRuleSets.push(`${sharedSelectors} {font-family: var(--f-family)}`)
       }
     }
@@ -208,9 +210,9 @@ export function getCSS(
 
     const designSystem = `._ovs-contain {overscroll-behavior:contain;}
 .t_unmounted .is_View, .t_unmounted .is_Text { transition: none !important; }
-.is_View { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
-.is_Text { display: inline; box-sizing: border-box; word-wrap: break-word; white-space: pre-wrap; margin: 0; }
-@scope (.is_Text) to (.is_View) { .is_Text { white-space: inherit; word-wrap: inherit; } }
+:where(.is_View) { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
+:where(.is_Text) { display: inline; box-sizing: border-box; word-wrap: break-word; white-space: pre-wrap; margin: 0; }
+@scope (.is_Text) to (.is_View) { :where(.is_Text) { white-space: inherit; word-wrap: inherit; } }
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
 .is_Input::selection, .is_TextArea::selection {background-color: var(--t_selectionColor);}

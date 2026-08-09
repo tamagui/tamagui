@@ -39,8 +39,9 @@ export const getSizedElevation = (
     return
   }
   const [height, shadowRadius] = [Math.round(num / 4 + 1), Math.round(num / 2 + 2)]
+  const shadowColor = theme['shadow-color'] ?? theme.shadowColor
   const shadow = {
-    shadowColor: theme.shadowColor,
+    shadowColor,
     shadowRadius,
     shadowOffset: { height, width: 0 },
     ...(isAndroid
