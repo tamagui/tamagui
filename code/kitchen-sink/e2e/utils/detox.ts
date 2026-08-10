@@ -87,14 +87,19 @@ function runAdb(...args: string[]): string {
   })
 }
 
-export function setAndroidAnimationScale(scale: 0 | 1): void {
+const androidAnimationScaleSettings = [
+  'window_animation_scale',
+  'transition_animation_scale',
+  'animator_duration_scale',
+] as const
+
+export function setAndroidAnimationScales(
+  scale: 0 | 1,
+  settings: readonly (typeof androidAnimationScaleSettings)[number][] = androidAnimationScaleSettings
+): void {
   if (device.getPlatform() !== 'android') return
 
-  for (const setting of [
-    'window_animation_scale',
-    'transition_animation_scale',
-    'animator_duration_scale',
-  ]) {
+  for (const setting of settings) {
     runAdb('shell', 'settings', 'put', 'global', setting, String(scale))
   }
 }

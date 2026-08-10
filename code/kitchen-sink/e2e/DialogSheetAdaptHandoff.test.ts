@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 import { by, device, element, expect as detoxExpect, waitFor } from 'detox'
-import { safeLaunchApp, setAndroidAnimationScale, withSync } from './utils/detox'
+import { safeLaunchApp, setAndroidAnimationScales, withSync } from './utils/detox'
 import { remountDirectUseCase } from './utils/navigation'
 
 const testElement = (id: string) => element(by.id(id)).atIndex(0)
@@ -19,7 +19,7 @@ describe('DialogSheetAdaptHandoff', () => {
   beforeAll(async () => {
     // this case must have a real exit window to interrupt. the Android CI
     // runner disables system animations globally, so opt this file back in.
-    setAndroidAnimationScale(1)
+    setAndroidAnimationScales(1)
     await safeLaunchApp({
       newInstance: true,
       launchArgs: { directUseCase: 'DialogSheetAdaptHandoffCase' },
@@ -28,7 +28,7 @@ describe('DialogSheetAdaptHandoff', () => {
   })
 
   afterAll(() => {
-    setAndroidAnimationScale(0)
+    setAndroidAnimationScales(0)
   })
 
   beforeEach(async () => {

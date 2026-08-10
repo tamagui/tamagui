@@ -12,7 +12,7 @@
 
 import * as assert from 'assert'
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp, setAndroidAnimationScale } from './utils/detox'
+import { safeLaunchApp, setAndroidAnimationScales } from './utils/detox'
 
 async function frame(id: string) {
   const attrs: any = await element(by.id(id)).getAttributes()
@@ -51,13 +51,13 @@ async function pollLabel(id: string, predicate: (label: string) => boolean) {
 
 describe('Accordion (auto-height, native)', () => {
   beforeAll(() => {
-    // CI disables system animations for emulator stability. this suite verifies
-    // intermediate native frames, so opt it back in before Reanimated initializes.
-    setAndroidAnimationScale(1)
+    // ci disables system animations for emulator stability. this suite verifies
+    // intermediate reanimated frames, so opt its transition scale back in.
+    setAndroidAnimationScales(1, ['transition_animation_scale'])
   })
 
   afterAll(() => {
-    setAndroidAnimationScale(0)
+    setAndroidAnimationScales(0, ['transition_animation_scale'])
   })
 
   beforeEach(async () => {

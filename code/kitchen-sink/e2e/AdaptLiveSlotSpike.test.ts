@@ -112,7 +112,11 @@ describe('AdaptLiveSlotSpike', () => {
     await withSync(() => testElement('live-slot-focus-next').tap())
     await detoxExpect(testElement('live-slot-press-count')).toHaveText('press-count: 1')
 
-    await withSync(() => testElement('live-slot-focus-input').replaceText('ios-focus'))
+    await withSync(async () => {
+      const input = testElement('live-slot-focus-input')
+      await input.tap()
+      await input.typeText('ios-focus')
+    })
     // waitFor for the same reason as the sheet's typed-value below: withSync
     // disables synchronization again before returning, so a bare expect can read
     // the node before React commits onChangeText. Same string, just polled.
@@ -136,7 +140,11 @@ describe('AdaptLiveSlotSpike', () => {
       'sheet press-count: 1'
     )
 
-    await withSync(() => testElement('sheet-live-slot-input').replaceText('sheet-ios'))
+    await withSync(async () => {
+      const input = testElement('sheet-live-slot-input')
+      await input.tap()
+      await input.typeText('sheet-ios')
+    })
     // waitFor, not a bare expect: withSync turns synchronization back off before
     // returning, so nothing makes Detox wait for React to commit the onChangeText
     // update before the assertion reads the node. This asserts the same text, it
