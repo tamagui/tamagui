@@ -20,6 +20,7 @@ const StyledSubContent = styled(Menu.SubContent, {
   borderWidth: 1,
   borderColor: 'border-color',
   boxShadow: '0 4px 12px shadow-color',
+  transition: 'quick',
   // these used to break positioning:
   scale: '1 enter:0.96 exit:0.98',
   opacity: '1 enter:0 exit:0',

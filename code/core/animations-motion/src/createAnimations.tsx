@@ -263,7 +263,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       // disable animation during hydration and mounting (prevents "flying across the page")
       const disableAnimation = isComponentHydrating || isMounting || !animationKey
 
-      const [scope, animate] = useAnimateSSRSafe()
+      const [scope] = useAnimateSSRSafe()
 
       // sync ref values for reliable access from callbacks
       refs.current.isExiting = isExiting
@@ -610,7 +610,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // PopoverClickDuringEnter / AnimatePresenceEnterExit.
               // the motion-value spring owns transform — keep it out of the
               // WAAPI animation so the two don't double-drive the property
-              let waapiDiff = fixedDiff
+              let waapiDiff = Object.fromEntries(
+                Object.entries(fixedDiff).map(([key, value]) => [
+                  key,
+                  Array.isArray(value)
+                    ? value.map((item) => normalizeValueWithProperty(item, key))
+                    : normalizeValueWithProperty(value, key),
+                ])
+              )
               if (popperHandledTransform && 'transform' in waapiDiff) {
                 waapiDiff = { ...waapiDiff }
                 delete waapiDiff.transform
@@ -625,7 +632,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               }
 
               if (Object.keys(waapiDiff).length > 0) {
-                startedControls = animate(scope.current, waapiDiff, animationOptions)
+                startedControls = animateMotionValue(
+                  node,
+                  waapiDiff,
+                  animationOptions
+                ) as AnimationPlaybackControlsWithThen
                 refs.current.controls = startedControls
               }
               refs.current.lastAnimateAt = Date.now()
