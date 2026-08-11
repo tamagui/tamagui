@@ -248,10 +248,11 @@ const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
           <DialogPortalFrame
             ref={ref}
             {...(isWeb &&
-              context.open && {
+              context.open &&
+              context.modal && {
                 'aria-modal': true,
               })}
-            pointerEvents={context.open ? 'auto' : 'none'}
+            pointerEvents={context.open && context.modal ? 'auto' : 'none'}
             {...frameProps}
             className={`_no_backdrop ` + (frameProps.className || '')}
           >
@@ -422,10 +423,7 @@ const DialogOverlay = createStyledHOC(
       id: 'overlay',
     })
 
-    // non-modal dialogs must not install a full-screen overlay: it intercepts
-    // the very outside interaction that Dismissable uses to close the dialog.
-    // this was the behavior before each dialog part gained its own presence.
-    if (!forceMount && (!context.modal || isAdapted)) {
+    if (!forceMount && isAdapted) {
       return null
     }
 
@@ -448,7 +446,7 @@ const DialogOverlay = createStyledHOC(
           data-state={getState(context.open)}
           // Presence freezes the exiting clone with its open props. The exit
           // clause releases the full-screen overlay during that frozen frame.
-          pointerEvents={context.open ? 'auto exit:none' : 'none'}
+          pointerEvents={context.open && context.modal ? 'auto exit:none' : 'none'}
           {...overlayProps}
           ref={forwardedRef}
         />
