@@ -182,7 +182,7 @@ export default {
         replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy-data'),
       },
       {
-        find: '@tamagui/bento',
+        find: /^@tamagui\/bento$/,
         replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
       },
 
@@ -238,23 +238,32 @@ export default {
         if (id.startsWith('\0bento-component-stub:')) {
           // Return stub component code
           return `
+import { createElement } from 'react'
 import { YStack, Paragraph } from 'tamagui'
 
 export default function BentoComponentStub() {
   if (process.env.NODE_ENV === 'production') {
     return null
   }
-  return (
-    <YStack p="4" bc="border-color" br="4">
-      <Paragraph size="2" color="color10">
-        Bento component not available
-      </Paragraph>
-    </YStack>
+  return createElement(
+    YStack,
+    { p: '4', bc: 'border-color', br: '4' },
+    createElement(
+      Paragraph,
+      { size: '2', color: 'color10' },
+      'Bento component not available'
+    )
   )
 }
 
-// Export as default and named for compatibility
+BentoComponentStub.fileName = ''
+
 export const LocationNotification = BentoComponentStub
+export const Calendar = BentoComponentStub
+
+export function useGroupMedia() {
+  return { sm: false }
+}
 `
         }
       },
