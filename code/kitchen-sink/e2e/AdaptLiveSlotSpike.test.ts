@@ -39,30 +39,11 @@ async function getText(id: string) {
 //    and never resets, so it is single-use and a search re-evaluates it. atIndex
 //    is fine everywhere else in this file.
 //
-// 3. don't anchor the search on the element you're about to tap. whileElement
-//    stops the instant its target crosses 75% visibility, parking it against the
-//    bottom edge - and this app draws edge-to-edge, so "visible" to espresso
-//    includes the strip behind the navigation bar, where taps are swallowed
-//    ("Couldn't click at: 798.0,2187.0" on a 2280px screen). anchor below what
-//    you tap so the tap target ends up well inside the viewport.
-//
-//    the anchor has to differ per platform. this is not a hedge - each branch is
-//    a separately proven green CI run, and no single anchor satisfied both:
-//
-//    - android anchors on sheet-live-slot-source (green: run 29687908034, all
-//      four tests [OK]). anchoring on press-count instead failed with "view was
-//      <0> percent visible" even though the failure screenshot plainly shows that
-//      text on screen at ~2018 of 2280. that contradiction is unexplained - do
-//      not "fix" it from first principles without an artifact in hand.
-//    - iOS anchors on sheet-live-slot-press-count (green: run 29689674422, all
-//      five iOS jobs including auto-discovered). source is the last node in the
-//      react tree but at maximum scroll it is still clipped by the screen bottom
-//      and never reaches 75%, so the search exhausts: "Unable to scroll down ...
-//      does not pass visibility percent threshold (75)". Detox's own
-//      DETOX_VISIBILITY_*.png artifact draws that clipped region.
-//
-//    the tests and every assertion are identical on both platforms. only which
-//    element the scroll stops at differs.
+// 3. keep every swipe as its own bounded Detox interaction. a native whileElement
+//    search can stay pending forever when the continuously published target keeps
+//    laying out between Espresso visibility checks. six 250-point swipes cover this
+//    fixed fixture on both phone profiles and park its bottom controls above the
+//    edge-to-edge navigation region.
 //
 // 4. match buttons by testID, never by rendered label. Button runs children
 //    through wrapChildrenInText, which wraps EACH string child in its own Text,
@@ -70,14 +51,10 @@ async function getText(id: string) {
 //    android TextViews ("increment " and "slot"). espresso's withText never sees
 //    a joined "increment slot".
 async function scrollToEnd() {
-  const anchor =
-    device.getPlatform() === 'android'
-      ? 'sheet-live-slot-source'
-      : 'sheet-live-slot-press-count'
-  await waitFor(element(by.id(anchor)))
-    .toBeVisible()
-    .whileElement(by.id('adapt-live-slot-scroll'))
-    .scroll(250, 'down')
+  const scroll = element(by.id('adapt-live-slot-scroll'))
+  for (let index = 0; index < 6; index++) {
+    await scroll.scroll(250, 'down')
+  }
 }
 
 describe('AdaptLiveSlotSpike', () => {
@@ -116,7 +93,13 @@ describe('AdaptLiveSlotSpike', () => {
       const input = testElement('live-slot-focus-input')
       await input.tap()
       await input.typeText('ios-focus')
+      if (device.getPlatform() === 'ios') {
+        await input.tapReturnKey()
+      }
     })
+    if (device.getPlatform() === 'android') {
+      await device.pressBack()
+    }
     // waitFor for the same reason as the sheet's typed-value below: withSync
     // disables synchronization again before returning, so a bare expect can read
     // the node before React commits onChangeText. Same string, just polled.
@@ -143,8 +126,14 @@ describe('AdaptLiveSlotSpike', () => {
     await withSync(async () => {
       const input = testElement('sheet-live-slot-input')
       await input.tap()
-      await input.typeText('sheet-ios')
+      await input.replaceText('sheet-ios')
+      if (device.getPlatform() === 'ios') {
+        await input.tapReturnKey()
+      }
     })
+    if (device.getPlatform() === 'android') {
+      await device.pressBack()
+    }
     // waitFor, not a bare expect: withSync turns synchronization back off before
     // returning, so nothing makes Detox wait for React to commit the onChangeText
     // update before the assertion reads the node. This asserts the same text, it

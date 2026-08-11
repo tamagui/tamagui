@@ -1,5 +1,5 @@
 import { ChevronDown } from '@tamagui/lucide-icons-2'
-import { useCallback, useLayoutEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import {
   measure,
   runOnJS,
@@ -9,6 +9,51 @@ import {
 } from 'react-native-reanimated'
 import { Accordion, Button, Paragraph, Square, View, YStack, isWeb } from 'tamagui'
 
+function useHeightFrameRecorder(animatedRef: any) {
+  const [label, setLabel] = useState('idle')
+  const recording = useSharedValue(false)
+  const startedAt = useSharedValue(0)
+  const cycle = useSharedValue(0)
+  const samples = useSharedValue<number[]>([])
+  const nextCycleRef = useRef(0)
+
+  const finishRecording = useCallback((finishedCycle: number, heights: number[]) => {
+    setLabel(`${finishedCycle}:${heights.join(',')}`)
+  }, [])
+
+  useFrameCallback(
+    useCallback(
+      ({ timestamp }) => {
+        'worklet'
+        if (isWeb || !recording.value) return
+        const frame = measure(animatedRef)
+        if (!frame) return
+        if (startedAt.value === 0) {
+          startedAt.value = timestamp
+        }
+        samples.value = [...samples.value, frame.height]
+        if (timestamp - startedAt.value >= 750) {
+          recording.value = false
+          runOnJS(finishRecording)(cycle.value, samples.value)
+        }
+      },
+      [animatedRef, cycle, finishRecording, recording, samples, startedAt]
+    )
+  )
+
+  const startRecording = useCallback(() => {
+    if (isWeb) return
+    const nextCycle = ++nextCycleRef.current
+    setLabel(`recording:${nextCycle}`)
+    startedAt.value = 0
+    samples.value = []
+    cycle.value = nextCycle
+    recording.value = true
+  }, [cycle, recording, samples, startedAt])
+
+  return [label, startRecording] as const
+}
+
 // verifies first-paint of a defaultValue-open item shows content at full height
 // (no collapse-to-0 flash), which is the client-side equivalent of the SSR case.
 // used by both the web Accordion.test and the native Accordion.e2e (Detox), so
@@ -17,48 +62,11 @@ export function AccordionDefaultOpenCase() {
   const [expanded, setExpanded] = useState(false)
   const [initialLayoutPass, setInitialLayoutPass] = useState(0)
   const [probeVisible, setProbeVisible] = useState(true)
-  const [closeFrameSamples, setCloseFrameSamples] = useState('idle')
   const defaultOpenHeightRef = useAnimatedRef<any>()
-  const recordingCloseFrames = useSharedValue(false)
-  const closeFrameStartedAt = useSharedValue(0)
-  const recordedCloseFrames = useSharedValue<number[]>([])
-
-  const finishRecordingCloseFrames = useCallback((samples: number[]) => {
-    setCloseFrameSamples(samples.join(','))
-  }, [])
-  useFrameCallback(
-    useCallback(
-      ({ timestamp }) => {
-        'worklet'
-        if (isWeb || !recordingCloseFrames.value) return
-        const frame = measure(defaultOpenHeightRef)
-        if (!frame) return
-        if (closeFrameStartedAt.value === 0) {
-          closeFrameStartedAt.value = timestamp
-        }
-        recordedCloseFrames.value = [...recordedCloseFrames.value, frame.height]
-        if (timestamp - closeFrameStartedAt.value >= 750) {
-          recordingCloseFrames.value = false
-          runOnJS(finishRecordingCloseFrames)(recordedCloseFrames.value)
-        }
-      },
-      [
-        closeFrameStartedAt,
-        defaultOpenHeightRef,
-        finishRecordingCloseFrames,
-        recordedCloseFrames,
-        recordingCloseFrames,
-      ]
-    )
-  )
-
-  const recordDefaultOpenClose = useCallback(() => {
-    if (isWeb) return
-    setCloseFrameSamples('recording')
-    closeFrameStartedAt.value = 0
-    recordedCloseFrames.value = []
-    recordingCloseFrames.value = true
-  }, [closeFrameStartedAt, recordedCloseFrames, recordingCloseFrames])
+  const secondHeightRef = useAnimatedRef<any>()
+  const [defaultOpenFrameSamples, recordDefaultOpenFrames] =
+    useHeightFrameRecorder(defaultOpenHeightRef)
+  const [secondFrameSamples, recordSecondFrames] = useHeightFrameRecorder(secondHeightRef)
 
   useLayoutEffect(() => {
     if (initialLayoutPass === 1) setInitialLayoutPass(2)
@@ -74,7 +82,7 @@ export function AccordionDefaultOpenCase() {
           <Accordion.Trigger
             id="def-trigger"
             testID="def-trigger"
-            onPressIn={recordDefaultOpenClose}
+            onPressIn={recordDefaultOpenFrames}
             flexDirection="row"
             justify="space-between"
             borderWidth={1}
@@ -118,6 +126,7 @@ export function AccordionDefaultOpenCase() {
           <Accordion.Trigger
             id="def-trigger2"
             testID="def-trigger2"
+            onPressIn={recordSecondFrames}
             flexDirection="row"
             justify="space-between"
             borderWidth={1}
@@ -133,6 +142,7 @@ export function AccordionDefaultOpenCase() {
             )}
           </Accordion.Trigger>
           <Accordion.HeightAnimator
+            ref={secondHeightRef}
             id="def-height2"
             testID="def-height2"
             transition={isWeb ? '300ms' : '5000ms'}
@@ -163,7 +173,15 @@ export function AccordionDefaultOpenCase() {
       </Accordion>
       <View
         testID="default-close-frame-samples"
-        accessibilityLabel={closeFrameSamples}
+        accessibilityLabel={defaultOpenFrameSamples}
+        position="absolute"
+        pointerEvents="none"
+        width={1}
+        height={1}
+      />
+      <View
+        testID="second-frame-samples"
+        accessibilityLabel={secondFrameSamples}
         position="absolute"
         pointerEvents="none"
         width={1}
