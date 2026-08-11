@@ -96,6 +96,15 @@
       "require": "./dist/cjs/components/Accordion.cjs",
       "default": "./dist/esm/components/Accordion.mjs"
     },
+    "./alert-dialog": {
+      "types": "./types/components/AlertDialog.d.ts",
+      "react-native": "./dist/esm/components/AlertDialog.native.js",
+      "browser": "./dist/esm/components/AlertDialog.mjs",
+      "module": "./dist/esm/components/AlertDialog.mjs",
+      "import": "./dist/esm/components/AlertDialog.mjs",
+      "require": "./dist/cjs/components/AlertDialog.cjs",
+      "default": "./dist/esm/components/AlertDialog.mjs"
+    },
     "./button": {
       "types": "./types/components/Button.d.ts",
       "react-native": "./dist/esm/components/Button.native.js",
@@ -113,6 +122,15 @@
       "import": "./dist/esm/components/Card.mjs",
       "require": "./dist/cjs/components/Card.cjs",
       "default": "./dist/esm/components/Card.mjs"
+    },
+    "./checkbox": {
+      "types": "./types/components/Checkbox.d.ts",
+      "react-native": "./dist/esm/components/Checkbox.native.js",
+      "browser": "./dist/esm/components/Checkbox.mjs",
+      "module": "./dist/esm/components/Checkbox.mjs",
+      "import": "./dist/esm/components/Checkbox.mjs",
+      "require": "./dist/cjs/components/Checkbox.cjs",
+      "default": "./dist/esm/components/Checkbox.mjs"
     },
     "./dialog": {
       "types": "./types/components/Dialog.d.ts",
@@ -150,6 +168,15 @@
       "require": "./dist/cjs/components/ListItem.cjs",
       "default": "./dist/esm/components/ListItem.mjs"
     },
+    "./popover": {
+      "types": "./types/components/Popover.d.ts",
+      "react-native": "./dist/esm/components/Popover.native.js",
+      "browser": "./dist/esm/components/Popover.mjs",
+      "module": "./dist/esm/components/Popover.mjs",
+      "import": "./dist/esm/components/Popover.mjs",
+      "require": "./dist/cjs/components/Popover.cjs",
+      "default": "./dist/esm/components/Popover.mjs"
+    },
     "./progress": {
       "types": "./types/components/Progress.d.ts",
       "react-native": "./dist/esm/components/Progress.native.js",
@@ -158,6 +185,15 @@
       "import": "./dist/esm/components/Progress.mjs",
       "require": "./dist/cjs/components/Progress.cjs",
       "default": "./dist/esm/components/Progress.mjs"
+    },
+    "./radio-group": {
+      "types": "./types/components/RadioGroup.d.ts",
+      "react-native": "./dist/esm/components/RadioGroup.native.js",
+      "browser": "./dist/esm/components/RadioGroup.mjs",
+      "module": "./dist/esm/components/RadioGroup.mjs",
+      "import": "./dist/esm/components/RadioGroup.mjs",
+      "require": "./dist/cjs/components/RadioGroup.cjs",
+      "default": "./dist/esm/components/RadioGroup.mjs"
     },
     "./select": {
       "types": "./types/components/Select.d.ts",
@@ -203,6 +239,24 @@
       "import": "./dist/esm/components/Surface.mjs",
       "require": "./dist/cjs/components/Surface.cjs",
       "default": "./dist/esm/components/Surface.mjs"
+    },
+    "./switch": {
+      "types": "./types/components/Switch.d.ts",
+      "react-native": "./dist/esm/components/Switch.native.js",
+      "browser": "./dist/esm/components/Switch.mjs",
+      "module": "./dist/esm/components/Switch.mjs",
+      "import": "./dist/esm/components/Switch.mjs",
+      "require": "./dist/cjs/components/Switch.cjs",
+      "default": "./dist/esm/components/Switch.mjs"
+    },
+    "./tabs": {
+      "types": "./types/components/Tabs.d.ts",
+      "react-native": "./dist/esm/components/Tabs.native.js",
+      "browser": "./dist/esm/components/Tabs.mjs",
+      "module": "./dist/esm/components/Tabs.mjs",
+      "import": "./dist/esm/components/Tabs.mjs",
+      "require": "./dist/cjs/components/Tabs.cjs",
+      "default": "./dist/esm/components/Tabs.mjs"
     },
     "./toast": {
       "types": "./types/components/Toast.d.ts",

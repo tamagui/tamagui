@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tabs",
+  "type": "registry:ui",
+  "title": "Tabs",
+  "description": "v2-look Tabs: token-based trigger sizing with theme background, hover/press/focus styling, and disabled dimming over the unstyled @tamagui/ui Tabs behavior.",
+  "files": [
+    {
+      "path": "components/tamagui/Tabs.tsx",
+      "content": "import {\n  resolveTokenSize,\n  styled,\n  Tabs as TabsBehavior,\n  type VariantSpreadExtras,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nconst tabSizeVariant = (size: any, extras: VariantSpreadExtras<any>) => {\n  if (extras.props.unstyled) return\n  const { frame } = resolveTokenSize(size, {\n    tokens: extras.tokens,\n    font: extras.font!,\n  })\n  return {\n    borderRadius: frame.radius,\n    height: frame.size,\n    paddingHorizontal: frame.space,\n  }\n}\n\nexport const TabsFrame = styled(TabsBehavior, {\n  name: 'Tabs',\n})\n\nexport const TabsList = styled(TabsBehavior.List, {\n  name: 'TabsList',\n})\n\nexport const TabsTab = styled(TabsBehavior.Tab, {\n  name: 'TabsTrigger',\n  variants: {\n    unstyled: {\n      false: {\n        alignItems: 'center',\n        justifyContent: 'center',\n        backgroundColor: 'background hover:background-hover press:background-press',\n        borderWidth: 0,\n        cursor: 'pointer',\n        flexDirection: 'row',\n        flexWrap: 'nowrap',\n        userSelect: 'none',\n        outlineColor: 'focus-visible:outline-color',\n        outlineStyle: 'focus-visible:solid',\n        outlineWidth: 'focus-visible:2px',\n        zIndex: 'focus-visible:10',\n      },\n    },\n\n    size: {\n      true: tabSizeVariant,\n      Size: tabSizeVariant,\n    },\n\n    disabled: {\n      true: {\n        cursor: 'not-allowed',\n        opacity: 0.45,\n      },\n    },\n  } as const,\n  defaultVariants: {\n    unstyled: false,\n  },\n})\n\nexport const TabsContent = styled(TabsBehavior.Content, {\n  name: 'TabsContent',\n})\n\nexport const Tabs = withStaticProperties(TabsFrame, {\n  List: TabsList,\n  Tab: TabsTab,\n  Content: TabsContent,\n})\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Tabs.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "navigation"
+  ],
+  "meta": {
+    "tokens": [
+      "background",
+      "background-hover",
+      "background-press",
+      "outline-color"
+    ],
+    "states": [
+      "disabled",
+      "pressed"
+    ]
+  }
+}

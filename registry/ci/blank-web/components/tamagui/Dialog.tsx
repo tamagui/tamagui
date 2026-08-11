@@ -1,10 +1,10 @@
-// Styled Dialog = the unstyled @tamagui/ui Dialog behavior + the default v2-look
+// styled Dialog = the unstyled @tamagui/ui Dialog behavior + the default v2-look
 // skin on its Overlay (scrim background) and Content (background, border,
 // padding, radius, elevation). The behavior frames keep only positioning +
 // pointer-event bookkeeping. Single skin definition; the shadcn registry item is
 // generated from this file.
 //
-// The opt-in `elevate` + `bordered` v2-compat variants (formerly from
+// the opt-in `elevate` + `bordered` v2-compat variants (formerly from
 // ThemeableStack) live on the unstyled DialogContent frame, so
 // `<Dialog.Content elevate bordered>` keeps working; this skin only adds the
 // static background/border/padding/radius.
@@ -18,18 +18,27 @@ import {
 } from '@tamagui/ui'
 import type * as React from 'react'
 
-export const DialogOverlay = styled(UiDialog.Overlay, {
-  name: 'DialogOverlay',
+export const dialogOverlayStyles = {
   backgroundColor: 'background',
-})
+} as const
 
-export const DialogContent = styled(UiDialog.Content, {
-  name: 'DialogContent',
+export const dialogContentStyles = {
   backgroundColor: 'background',
   borderWidth: 1,
   borderColor: 'border-color',
   padding: defaultTokenSizePolicy.space,
   borderRadius: defaultTokenSizePolicy.radius,
+  elevate: true,
+} as const
+
+export const DialogOverlay = styled(UiDialog.Overlay, {
+  name: 'DialogOverlay',
+  ...dialogOverlayStyles,
+})
+
+export const DialogContent = styled(UiDialog.Content, {
+  name: 'DialogContent',
+  ...dialogContentStyles,
 })
 
 // `withStaticProperties` assigns onto the component it is given, so composing the

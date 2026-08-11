@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alertdialog",
+  "type": "registry:ui",
+  "title": "AlertDialog",
+  "description": "v2-look AlertDialog: scrim background on the Overlay and background/border/padding/radius/elevation on the Content, over the unstyled @tamagui/ui AlertDialog behavior.",
+  "files": [
+    {
+      "path": "components/tamagui/AlertDialog.tsx",
+      "content": "import {\n  AlertDialog as UiAlertDialog,\n  createRefComponent,\n  styled,\n  type TamaguiElement,\n  withStaticProperties,\n} from '@tamagui/ui'\nimport type * as React from 'react'\nimport { dialogContentStyles, dialogOverlayStyles } from './Dialog'\n\nexport const AlertDialogOverlay = styled(UiAlertDialog.Overlay, {\n  name: 'AlertDialogOverlay',\n  ...dialogOverlayStyles,\n})\n\nexport const AlertDialogContent = styled(UiAlertDialog.Content, {\n  name: 'AlertDialogContent',\n  ...dialogContentStyles,\n})\n\nconst AlertDialogRoot = createRefComponent<\n  TamaguiElement,\n  React.ComponentProps<typeof UiAlertDialog>\n>(function AlertDialog(props, _ref) {\n  return <UiAlertDialog {...props} />\n})\n\nexport const AlertDialog = withStaticProperties(AlertDialogRoot, {\n  Trigger: UiAlertDialog.Trigger,\n  Portal: UiAlertDialog.Portal,\n  Title: UiAlertDialog.Title,\n  Description: UiAlertDialog.Description,\n  Action: UiAlertDialog.Action,\n  Cancel: UiAlertDialog.Cancel,\n  Destructive: UiAlertDialog.Destructive,\n  Overlay: AlertDialogOverlay,\n  Content: AlertDialogContent,\n})\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/AlertDialog.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "registryDependencies": [
+    "dialog"
+  ],
+  "categories": [
+    "overlay"
+  ],
+  "meta": {
+    "native": [
+      "requires a Portal provider at the app root for the alert dialog to mount above content"
+    ],
+    "tokens": [
+      "background",
+      "border-color"
+    ]
+  }
+}

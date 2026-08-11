@@ -151,32 +151,30 @@ const ButtonComponent = createStyledHOC(
     props: ButtonBehaviorProps & { size?: ButtonSize; theme?: ThemeProps['name'] },
     ref
   ) {
+    const { theme, ...buttonBehaviorProps } = props
     const contextSize = SizeContext.useStyledContext()?.size
-    const size = ((props.size as TokenSize | undefined) ??
+    const size = ((buttonBehaviorProps.size as TokenSize | undefined) ??
       contextSize ??
       true) as ButtonSize
     // Size is the frame's baseline contribution. Appending it after
     // HOC-expanded style props would let the variant overwrite a direct
     // padding override from the caller.
-    const sizedProps = { size, ...props }
+    const sizedProps = { size, ...buttonBehaviorProps }
     const { props: buttonProps } = useButton(sizedProps, {
       Text: ButtonText,
       iconSize: getThemedIconSize(size),
     })
 
-    const { theme, ...frameProps } = buttonProps
     const frame = (
       <Theme name="level2">
-        <ButtonFrame ref={ref} {...frameProps} />
+        <ButtonFrame ref={ref} {...buttonProps} />
       </Theme>
     )
 
-    return (
-      <SizeContext.Provider size={size}>
-        {theme ? <Theme name={theme}>{frame}</Theme> : frame}
-      </SizeContext.Provider>
-    )
-  }
+    const button = <SizeContext.Provider size={size}>{frame}</SizeContext.Provider>
+    return theme ? <Theme name={theme}>{button}</Theme> : button
+  },
+  { disableTheme: true }
 )
 
 export const Button = withStaticProperties(ButtonComponent, {

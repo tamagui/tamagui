@@ -13,6 +13,7 @@ import {
   getVariableValue,
   resolveTokenSize,
   Select as SelectBehavior,
+  SelectNativeComponentContext,
   type SelectProps as SelectBehaviorProps,
   type SelectScopedProps,
   SizableText,
@@ -62,8 +63,6 @@ const selectTriggerSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<a
   }
 }
 
-// Items keep their own small static radius inside the rounded viewport; only
-// height, padding, and gap follow the size token.
 const selectItemSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
   const { frame } = resolveTokenSize(val, {
     tokens: extras.tokens,
@@ -75,6 +74,46 @@ const selectItemSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>
     paddingHorizontal: frame.space,
   }
 }
+
+const selectNativeSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
+  const resolved = resolveTokenSize(val, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  const paddingVertical = Math.max(
+    0,
+    Math.round(getVariableValue(resolved.frame.size) * 0.36 - 9)
+  )
+  const lineHeight = getVariableValue(resolved.text.lineHeight ?? resolved.text.fontSize)
+  return {
+    paddingHorizontal: resolved.frame.space,
+    paddingVertical,
+    borderRadius: resolved.frame.radius,
+    height: Math.max(
+      getVariableValue(resolved.frame.size),
+      lineHeight + paddingVertical * 2 + 2
+    ),
+    paddingRight: getVariableValue(resolved.frame.space) + 20,
+  }
+}
+
+const SelectNative = styled(SizableText, {
+  name: 'SelectNative',
+  render: 'select',
+  backgroundColor: 'background hover:background-hover',
+  borderColor: 'border-color',
+  borderWidth: 1,
+  color: 'color',
+  outlineWidth: 0,
+  userSelect: 'none',
+  variants: {
+    size: {
+      true: selectNativeSizeVariant,
+      Size: selectNativeSizeVariant,
+    },
+  } as const,
+  defaultVariants: { size: true },
+})
 
 const selectTextSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
   const { text } = resolveTokenSize(val, {
@@ -90,6 +129,10 @@ const selectTextSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>
 export const SelectTrigger = styled(SelectBehavior.Trigger, {
   context: SizeContext,
   name: 'SelectTrigger',
+  width: '100%',
+  maxWidth: '100%',
+  overflow: 'hidden',
+  flexWrap: 'nowrap',
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover',
   borderWidth: 1,
@@ -151,6 +194,11 @@ export const SelectLabel = styled(SelectBehavior.Label, {
 export const SelectItem = styled(SelectBehavior.Item, {
   context: SizeContext,
   name: 'SelectItem',
+  width: '100%',
+  maxWidth: '100%',
+  overflow: 'hidden',
+  flexWrap: 'nowrap',
+  justifyContent: 'space-between',
   cursor: 'default',
   outlineOffset: -1,
   borderRadius: 6,
@@ -244,9 +292,11 @@ export function SelectRoot<
   Multiple extends boolean | undefined = false,
 >({ size = true, ...props }: SelectRootProps<Value, Multiple>) {
   return (
-    <SizeContext.Provider size={size}>
-      <SelectBehavior.Root<Value, Multiple> size={size} {...props} />
-    </SizeContext.Provider>
+    <SelectNativeComponentContext.Provider value={SelectNative}>
+      <SizeContext.Provider size={size}>
+        <SelectBehavior.Root<Value, Multiple> size={size} {...props} />
+      </SizeContext.Provider>
+    </SelectNativeComponentContext.Provider>
   )
 }
 

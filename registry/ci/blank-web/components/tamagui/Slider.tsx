@@ -12,19 +12,23 @@ import {
 } from '@tamagui/ui'
 import type * as React from 'react'
 
-export const SliderTrack = styled(UiSlider.Track, {
+export const SliderTrackFrame = styled(UiSlider.Track, {
   name: 'SliderTrack',
   backgroundColor: 'background-press',
   borderRadius: 100_000,
 })
 
-export const SliderActive = styled(UiSlider.TrackActive, {
+export const SliderTrack = SliderTrackFrame
+
+export const SliderActiveFrame = styled(UiSlider.TrackActive, {
   name: 'SliderTrackActive',
   backgroundColor: 'color',
   borderRadius: 100_000,
 })
 
-export const SliderThumb = styled(UiSlider.Thumb, {
+export const SliderActive = SliderActiveFrame
+
+export const SliderThumbFrame = styled(UiSlider.Thumb, {
   name: 'SliderThumb',
   borderWidth: 2,
   borderColor: 'border-color hover:border-color-hover press:border-color-press',
@@ -33,6 +37,8 @@ export const SliderThumb = styled(UiSlider.Thumb, {
   outlineWidth: 'focus-visible:2px',
   outlineColor: 'focus-visible:outline-color',
 })
+
+export const SliderThumb = SliderThumbFrame
 
 // see Dialog.tsx: withStaticProperties assigns in place, so composing onto UiSlider
 // would rewrite @tamagui/ui's own Slider.Track/.TrackActive/.Thumb for every consumer
