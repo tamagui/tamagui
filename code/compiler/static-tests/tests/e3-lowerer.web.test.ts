@@ -671,7 +671,8 @@ export const Card = () => (
     expect(output.code).not.toContain('padding="12px hover:16px"')
     expect(plan.css).toContain('transition:opacity 150ms ease-out')
     expect(plan.css).toContain('padding-top:12px')
-    expect(plan.css).toContain(':where(:hover){padding-top:16px}')
+    expect(plan.css).toContain('@media (hover: hover)')
+    expect(plan.css).toContain(':hover{padding-top:16px}')
   })
 
   test('lowers a configured CSS transition preset on a dynamic animated component', () => {

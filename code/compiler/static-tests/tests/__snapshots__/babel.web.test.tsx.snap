@@ -201,7 +201,7 @@ exports[`flexBasis: 0 with responsive style extracts correctly 1`] = `
 "
 `;
 
-exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._fb-1714115553{flex-basis:1}@media (min-width: 640px) {._fb-1714115553{flex-basis:0px}}"`;
+exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `"._fb-1714115553{flex-basis:1}@media (min-width: 640px) {._fb-1714115553._fb-1714115553{flex-basis:0px}}"`;
 
 exports[`font_body class is present in BOTH ternary branches 1`] = `
 "const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";

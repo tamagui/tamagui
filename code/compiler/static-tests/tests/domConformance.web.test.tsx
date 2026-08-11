@@ -56,8 +56,9 @@ test('standalone handles share Tamagui pseudo, media and theme lowering', async 
   `)
 
   expect(output.diagnostics).toEqual([])
-  expect(output.styles).toContain(':where(:hover)')
-  expect(output.styles).toContain('@media')
+  expect(output.styles).toContain('@media (hover: hover)')
+  expect(output.styles).toContain(':hover{opacity:0.5}')
+  expect(output.styles).toContain('@media (min-width: 640px)')
   expect(output.styles).toContain(':where(.t_dark, .t_dark *)')
 })
 
