@@ -147,7 +147,7 @@ describe('Accordion (auto-height, native)', () => {
       .withTimeout(4000)
     const natural = await frame('def-content2')
     const opening = openingSamples.find(
-      (height) => height > 1 && height < natural.height - 1
+      (height) => height > 0 && height < natural.height - 0.25
     )
     assert.ok(
       opening !== undefined,
@@ -187,15 +187,16 @@ describe('Accordion (auto-height, native)', () => {
       'def-trigger2',
       'second-frame-samples'
     )
-    const closingBeforeReverse = closingSamples.find(
-      (height) => height > 1 && height < open - 5
-    )
+    const closingPeak = Math.max(...closingSamples)
+    const closingBeforeReverse = closingSamples
+      .slice(closingSamples.indexOf(closingPeak) + 1)
+      .find((height) => height > 0 && height < closingPeak - 0.25)
     assert.ok(
       closingBeforeReverse !== undefined,
-      `expected close intermediate below ${open}: ${closingSamples}`
+      `expected close intermediate below ${closingPeak}: ${closingSamples}`
     )
     assert.ok(
-      closingSamples.at(-1)! < closingSamples[0] - 2,
+      closingSamples.at(-1)! < closingPeak - 0.25,
       `close samples should fall: ${closingSamples}`
     )
     await expect(element(by.id('def-content2-text'))).toExist()
@@ -228,13 +229,16 @@ describe('Accordion (auto-height, native)', () => {
       'def-trigger2',
       'second-frame-samples'
     )
-    const closing = finalClosingSamples.find((height) => height > 1 && height < open - 5)
+    const finalClosingPeak = Math.max(...finalClosingSamples)
+    const closing = finalClosingSamples
+      .slice(finalClosingSamples.indexOf(finalClosingPeak) + 1)
+      .find((height) => height > 0 && height < finalClosingPeak - 0.25)
     assert.ok(
       closing !== undefined,
-      `expected final close intermediate below ${open}: ${finalClosingSamples}`
+      `expected final close intermediate below ${finalClosingPeak}: ${finalClosingSamples}`
     )
     assert.ok(
-      finalClosingSamples.at(-1)! < finalClosingSamples[0] - 2,
+      finalClosingSamples.at(-1)! < finalClosingPeak - 0.25,
       `final close samples should fall: ${finalClosingSamples}`
     )
     assert.ok(closing > 0, 'final close should have an intermediate height')

@@ -9,7 +9,7 @@ import {
 } from 'react-native-reanimated'
 import { Accordion, Button, Paragraph, Square, View, YStack, isWeb } from 'tamagui'
 
-function useHeightFrameRecorder(animatedRef: any) {
+function useHeightFrameRecorder(animatedRef: any, duration = 750) {
   const [label, setLabel] = useState('idle')
   const recording = useSharedValue(false)
   const startedAt = useSharedValue(0)
@@ -32,12 +32,12 @@ function useHeightFrameRecorder(animatedRef: any) {
           startedAt.value = timestamp
         }
         samples.value = [...samples.value, frame.height]
-        if (timestamp - startedAt.value >= 750) {
+        if (timestamp - startedAt.value >= duration) {
           recording.value = false
           runOnJS(finishRecording)(cycle.value, samples.value)
         }
       },
-      [animatedRef, cycle, finishRecording, recording, samples, startedAt]
+      [animatedRef, cycle, duration, finishRecording, recording, samples, startedAt]
     )
   )
 
@@ -66,7 +66,10 @@ export function AccordionDefaultOpenCase() {
   const secondHeightRef = useAnimatedRef<any>()
   const [defaultOpenFrameSamples, recordDefaultOpenFrames] =
     useHeightFrameRecorder(defaultOpenHeightRef)
-  const [secondFrameSamples, recordSecondFrames] = useHeightFrameRecorder(secondHeightRef)
+  const [secondFrameSamples, recordSecondFrames] = useHeightFrameRecorder(
+    secondHeightRef,
+    1500
+  )
 
   useLayoutEffect(() => {
     if (initialLayoutPass === 1) setInitialLayoutPass(2)

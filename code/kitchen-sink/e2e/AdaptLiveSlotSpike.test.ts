@@ -39,11 +39,12 @@ async function getText(id: string) {
 //    and never resets, so it is single-use and a search re-evaluates it. atIndex
 //    is fine everywhere else in this file.
 //
-// 3. keep every swipe as its own bounded Detox interaction. a native whileElement
-//    search can stay pending forever when the continuously published target keeps
-//    laying out between Espresso visibility checks. six 250-point swipes cover this
-//    fixed fixture on both phone profiles and park its bottom controls above the
-//    edge-to-edge navigation region.
+// 3. on android, keep every swipe as its own bounded Detox interaction. its
+//    native whileElement search can stay pending forever when the continuously
+//    published target keeps laying out between espresso visibility checks. six
+//    250-point swipes cover this fixed fixture and park its bottom controls above
+//    the edge-to-edge navigation region. ios needs its visibility stop because a
+//    sixth fixed swipe reaches the content edge and fails the action.
 //
 // 4. match buttons by testID, never by rendered label. Button runs children
 //    through wrapChildrenInText, which wraps EACH string child in its own Text,
@@ -52,8 +53,15 @@ async function getText(id: string) {
 //    a joined "increment slot".
 async function scrollToEnd() {
   const scroll = element(by.id('adapt-live-slot-scroll'))
-  for (let index = 0; index < 6; index++) {
-    await scroll.scroll(250, 'down')
+  if (device.getPlatform() === 'ios') {
+    await waitFor(element(by.id('sheet-live-slot-press-count')))
+      .toBeVisible()
+      .whileElement(by.id('adapt-live-slot-scroll'))
+      .scroll(250, 'down')
+  } else {
+    for (let index = 0; index < 6; index++) {
+      await scroll.scroll(250, 'down')
+    }
   }
 }
 
