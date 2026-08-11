@@ -1593,3 +1593,84 @@ transitions parse through the transition IR while conditional and pseudo-prop
 transitions parse through the value grammar and pseudo extraction — two
 parsing rules for one property. The follow-up is one grammar owning both;
 neither side gets quietly extended to cover the other.
+
+## 13. Variant clause single-pass rework and skins batch (2026-08-10)
+
+Four commits landed on local `v3-beta` (not yet pushed), tree clean:
+
+- `cae9c5e2a2` feat(core): resolve variant prop condition clauses in a single inline pass
+- `cef386c4dd` fix(animations-motion): normalize WAAPI diff values and animate without scope
+- `f8ab79c8c0` feat(tamagui): ship skinned control components from the tamagui package
+- `c0bbd16c5a` site: adopt tamagui package skins and fix demo route lookup
+
+### Variant clause parsing was rewritten before commit
+
+The previous (uncommitted) implementation parsed `density="compact sm:roomy"`
+with `@tamagui/style-grammar` `parseValue` on every render, then built a Map of
+per-property program objects with clause arrays and a marker Symbol that
+getSplitStyles special-cased in two places. That violated the one-parse rule in
+CONTRIBUTING.md ("Style value parsing: one parse per unique value") and the
+single-forward-pass requirement, and it silently dropped any variant value
+containing a colon that failed to parse (`aspect="16:9"` would dev-throw).
+
+The committed design instead:
+
+- `resolveVariants` (propMapper.ts) lexes the value in ONE inline charCode
+  for loop, the same lexing `contributeStyleString` uses (quotes, paren depth,
+  top-level whitespace words, last top-level colon splits modifiers from
+  payload). No parseValue, no registry, no Map, no program objects.
+- Each clause's resolved entries carry the raw modifier source as `entry[3]`
+  (`PropMappedValue` is now `[key, value, original?, conditionSource?][]`).
+  Base-segment entries carry nothing and flow the completely normal path.
+- getSplitStyles' propMapper callback routes clause entries to
+  `contributeVariantClauseValue` (directStyle.ts): one `getCondition` per
+  entry, `emitValue` gated on `condition.emit && (condition.active || web
+  class gen)`. Same emission semantics the program version had.
+- HOC pass-through and nested-variant cases reduce a clause back to flat-value
+  string form via `appendFlatClause` (`"20 sm:40"`), so the wrapped component
+  or downstream string parser applies it with zero new object types crossing
+  component boundaries. Non-string-representable values dev-warn and drop.
+- A variant defining a literal colon key (`"16:9"`) exact-matches before any
+  clause lexing.
+
+Do not reintroduce a runtime `parseValue` call or a second scanner here; extend
+this inline lexer or the cached-parse representation instead.
+
+### createStyledHOC must keep props deferred
+
+`styled(Input, {...})` in FieldDemo hit TS2590 (union too complex). Two causes,
+both fixed:
+
+- createStyledHOC's return type now keeps the base component's `Props`
+  (TamaDefer) when `CustomProps` is empty, so styled() composes it lazily.
+- Annotating the render function's props parameter (e.g.
+  `function Input(props: GetProps<typeof InputFrame>)`) makes TS infer
+  `CustomProps` AS that whole concrete type, which defeats the deferral.
+  Render params must stay unannotated (contextual typing supplies the type)
+  unless the HOC genuinely adds custom props. Input/TextArea were fixed;
+  future skins must follow this or downstream styled() calls explode.
+
+`tamagui` also re-exports the `Popover` ref-handle type again (skin file
+declares `export type Popover = UiPopover`), keeping `useRef<Popover>` working.
+
+### Validation state at handoff
+
+READ (ran, output confirmed): all core-test suites green (web 454, native 265,
+ios, androidtv, tvos, token provenance), full repo `./scripts/typecheck.sh`
+green, root `bun run lint` green.
+
+NOT validated: kitchen-sink Playwright suites (including all four animated
+drivers), tamagui.dev build, native Detox. The animations-motion change
+(normalize WAAPI diff values, animate via `animateMotionValue` on the node
+instead of the scope-bound `animate`) has NO runtime validation yet; the
+updated Accordion motion test and MenuSubStyled motion test are its intended
+gates.
+
+Named follow-ups, none blocking:
+
+- No test covers the HOC clause pass-through (`styled(Input)` inside Field
+  exercises it) or nested-variant clause reduction; add coverage when touching.
+- Conditional variant clauses on non-style props (e.g. a variant setting
+  `numberOfLines`) are dropped with a dev warning, same as the program version.
+- `getCondition` runs once per resolved property per clause; a per-styleState
+  condition cache would cut that to once per clause if profiling ever shows it.
