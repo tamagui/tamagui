@@ -308,7 +308,7 @@ const PhoneFrame = (props: any) => {
       position="absolute"
       right={100}
       scale="0.8 hover:0.83 focus:0.85"
-      boxShadow="hover:(0 12px 28px shadowColor)"
+      boxShadow="hover:0 12px 28px shadow-color"
       top={0}
       zIndex={0}
       tabIndex={0}

@@ -344,7 +344,7 @@ export const Safari = memo(
                 justify="center"
                 gap="2"
               >
-                <Lock color="var(--colorPress)" size={12} />
+                <Lock color="var(--color-press)" size={12} />
                 <Paragraph color="color10" size="2">
                   tamagui.dev
                 </Paragraph>

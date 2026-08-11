@@ -123,7 +123,7 @@ export const HomeExamples = memo(
               pointerEvents="none"
             >
               <IconStack items="center" p="2-5" mb={0} elevation="2">
-                <FastForward color="var(--colorHover)" size="1" />
+                <FastForward color="var(--color-hover)" size={20} />
               </IconStack>
             </YStack>
             <YStack

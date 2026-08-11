@@ -11,6 +11,6 @@ export const CheckCircle = () => (
     rounded={100}
     mr="2-5"
   >
-    <Check size={12} color="var(--colorHover)" />
+    <Check size={12} color="var(--color-hover)" />
   </YStack>
 )

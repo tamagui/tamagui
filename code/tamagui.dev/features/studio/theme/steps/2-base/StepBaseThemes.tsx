@@ -617,7 +617,11 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
         y="enter:4px exit:4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope={scope} />
+        <Tooltip.Arrow
+          scope={scope}
+          backgroundColor="background"
+          borderColor="border-color"
+        />
         <Paragraph size="3">{tooltipLabel}</Paragraph>
       </Tooltip.Content>
     </Tooltip>

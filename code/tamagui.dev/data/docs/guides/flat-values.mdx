@@ -31,13 +31,13 @@ chain starts a new clause; the last matching clause wins.
   p="4 sm:6"
   backgroundColor="red hover:blue dark:hover:navy"
   width="100% md:42rem"
-  boxShadow="(0 2px 8px #0003) hover:(0 4px 16px #0004)"
+  boxShadow="0 2px 8px #0003 hover:0 4px 16px #0004"
   scale="1 enter:0.9 exit:0.9"
 />
 ```
 
-Use parentheses when a payload contains spaces and another clause follows it.
-An empty payload is invalid; clear a property with a real value such as `none`,
+Payloads run until the next registered modifier chain, including when they
+contain spaces. An empty payload is invalid; clear a property with a real value such as `none`,
 `transparent`, `initial`, or `unset`.
 
 Do not put clauses in the raw `transform` prop. Use the flattened transform

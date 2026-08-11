@@ -35,7 +35,7 @@ const PrimaryButton = styled(YStack, {
   items: 'center',
   justify: 'center',
   bg: 'blue10 hover:blue11 press:blue12',
-  boxShadow: '(0 4px 12px rgba(0,0,0,0.3)) hover:(0 4px 12px rgba(0,0,0,0.4))',
+  boxShadow: '0 4px 12px rgba(0,0,0,0.3) hover:0 4px 12px rgba(0,0,0,0.4)',
   y: 'hover:-2px press:0px',
   style: {
     transition: 'all 200ms ease',

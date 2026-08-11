@@ -174,7 +174,11 @@ export function BorderRadiusInput() {
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="border-radius" />
+        <Tooltip.Arrow
+          scope="border-radius"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
         <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
@@ -270,7 +274,11 @@ export function BorderWidthInput() {
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="border-width" />
+        <Tooltip.Arrow
+          scope="border-width"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
         <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
@@ -337,7 +345,11 @@ export function FontFamilyInput() {
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="font-family" />
+        <Tooltip.Arrow
+          scope="font-family"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
         <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
@@ -411,7 +423,11 @@ export function FillStyleInput() {
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="fill-style" />
+        <Tooltip.Arrow
+          scope="fill-style"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
         <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
@@ -510,7 +526,11 @@ export function ElevationInput() {
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="elevation" />
+        <Tooltip.Arrow
+          scope="elevation"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
         <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
@@ -616,7 +636,11 @@ export function SpacingInput() {
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="spacing" />
+        <Tooltip.Arrow
+          scope="spacing"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
         <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
@@ -688,7 +712,11 @@ export function TextAccentInput() {
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="text-accent" />
+        <Tooltip.Arrow
+          scope="text-accent"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
         <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
@@ -760,7 +788,11 @@ export function BackgroundAccentInput() {
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow scope="bg-accent" />
+        <Tooltip.Arrow
+          scope="bg-accent"
+          backgroundColor="background"
+          borderColor="border-color"
+        />
         <Paragraph size="3">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>

@@ -66,7 +66,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
               <XStack items="center" gap="1">
                 <SizableText size="3">View source</SizableText>
                 <YStack opacity={0.5} ml="0-5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
+                  <ExternalLink size={12} color="var(--color-hover)" />
                 </YStack>
               </XStack>
             </Link>
@@ -74,7 +74,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
               <XStack items="center" gap="1">
                 <SizableText size="3">View on npm</SizableText>
                 <YStack opacity={0.5} ml="0-5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
+                  <ExternalLink size={12} color="var(--color-hover)" />
                 </YStack>
               </XStack>
             </Link>
@@ -85,7 +85,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
               <XStack items="center" gap="1">
                 <SizableText size="3">Report an issue</SizableText>
                 <YStack opacity={0.5} ml="0-5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
+                  <ExternalLink size={12} color="var(--color-hover)" />
                 </YStack>
               </XStack>
             </Link>

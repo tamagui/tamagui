@@ -201,9 +201,15 @@ const HeroContents = memo(function HeroContents() {
               rounded={1000}
               variant="outlined"
               mx="2"
-              boxShadow="(0 4px 10px rgba(0, 0, 0, 0.2)) press:none"
+              boxShadow="0 12px 24px shadow-color press:none"
             >
-              <Button.Text fontFamily="silkscreen" fontSize="6">
+              <Button.Text
+                fontFamily="silkscreen"
+                fontSize="6"
+                fontWeight="300"
+                letterSpacing={3}
+                lineHeight={25}
+              >
                 Start
               </Button.Text>
               {/* <YStack scaleX="group-press/item:-1">

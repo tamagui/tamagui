@@ -553,7 +553,7 @@ function TooltipBadge() {
         y="enter:-4px exit:-4px"
         opacity="enter:0 exit:0"
       >
-        <Tooltip.Arrow />
+        <Tooltip.Arrow backgroundColor="background" borderColor="border-color" />
         <Paragraph size="3">Nice tooltips</Paragraph>
       </Tooltip.Content>
     </Tooltip>

@@ -34,10 +34,10 @@ export default function DemoPage() {
     )
   }
 
-  // Capitalize first letter and add "Demo" suffix
-  const componentName =
-    `${demoName.charAt(0).toUpperCase()}${demoName.slice(1)}Demo` as DemoExports
-  const DemoComponent = Demos[componentName] as ComponentType
+  const componentName = Object.keys(Demos).find(
+    (name) => name.toLowerCase() === `${demoName}demo`.toLowerCase()
+  ) as DemoExports | undefined
+  const DemoComponent = componentName ? (Demos[componentName] as ComponentType) : null
 
   if (!DemoComponent) {
     return (

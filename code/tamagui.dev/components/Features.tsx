@@ -19,7 +19,7 @@ export const Features = ({ items, size, large, soon, ...props }: any) => {
                 rounded={100}
                 mr="2-5"
               >
-                <Pencil size={12} color="var(--colorHover)" />
+                <Pencil size={12} color="var(--color-hover)" />
               </YStack>
             ) : (
               <CheckCircle />

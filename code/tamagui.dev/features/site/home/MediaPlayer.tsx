@@ -73,8 +73,8 @@ export const MediaPlayer = memo(
             >
               <Rewind size={20} />
               <Button
-                bg="background hover:backgroundHover"
-                boxShadow="(0 4px 10px rgba(0, 0, 0, 0.2)) hover:(0 8px 20px rgba(0, 0, 0, 0.24))"
+                bg="background hover:background-hover"
+                boxShadow="0 8px 16px shadow-color hover:0 20px 40px shadow-color"
                 scale="hover:1.025"
                 my="-7"
                 icon={Pause}

@@ -167,7 +167,8 @@ const ButtonComponent = createStyledHOC(
 
     const button = <SizeContext.Provider size={size}>{frame}</SizeContext.Provider>
     return theme ? <Theme name={theme}>{button}</Theme> : button
-  }
+  },
+  { disableTheme: true }
 )
 
 export const Button = withStaticProperties(ButtonComponent, {

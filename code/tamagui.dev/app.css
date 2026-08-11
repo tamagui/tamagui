@@ -417,11 +417,11 @@ iframe {
 }
 
 .highlight-line:hover {
-  background-color: var(--backgroundHover);
+  background-color: var(--background-hover);
 }
 
 .highlight-line {
-  color: var(--colorPress);
+  color: var(--color-press);
 }
 
 .token.attr-value,
