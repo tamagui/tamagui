@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "plugins": [{ "name": "@tamagui/language-service" }],
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
