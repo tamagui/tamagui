@@ -23,7 +23,6 @@ import {
   type VariantSpreadExtras,
   withStaticProperties,
 } from '@tamagui/ui'
-import { listItemSizeVariant } from '@tamagui/list-item'
 
 const IconGlyph = styled(SizableText, {
   name: 'SelectIconGlyph',
@@ -51,22 +50,50 @@ const Check = ({ size = 14 }: { size?: number }) => (
 
 export type SelectSize = SizeTokens
 
+const selectTriggerSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
+  const { frame } = resolveTokenSize(val, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  return {
+    borderRadius: frame.radius,
+    gap: Math.round(getVariableValue(frame.size) * 0.2),
+    height: frame.size,
+    paddingHorizontal: frame.space,
+  }
+}
+
+const selectItemSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
+  const { frame } = resolveTokenSize(val, {
+    tokens: extras.tokens,
+    font: extras.font!,
+  })
+  return {
+    gap: Math.round(getVariableValue(frame.size) * 0.2),
+    height: frame.size,
+    paddingHorizontal: frame.space,
+  }
+}
+
 const selectNativeSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>) => {
-  const frame = listItemSizeVariant(val, extras)
   const resolved = resolveTokenSize(val, {
     tokens: extras.tokens,
     font: extras.font!,
   })
-  const paddingVertical = getVariableValue(frame.paddingVertical)
+  const paddingVertical = Math.max(
+    0,
+    Math.round(getVariableValue(resolved.frame.size) * 0.36 - 9)
+  )
   const lineHeight = getVariableValue(resolved.text.lineHeight ?? resolved.text.fontSize)
   return {
-    ...frame,
+    paddingHorizontal: resolved.frame.space,
+    paddingVertical,
     borderRadius: resolved.frame.radius,
     height: Math.max(
       getVariableValue(resolved.frame.size),
       lineHeight + paddingVertical * 2 + 2
     ),
-    paddingRight: getVariableValue(frame.paddingHorizontal) + 20,
+    paddingRight: getVariableValue(resolved.frame.space) + 20,
   }
 }
 
@@ -115,8 +142,8 @@ export const SelectTrigger = styled(SelectBehavior.Trigger, {
   outlineWidth: 'focus-visible:2px',
   variants: {
     size: {
-      true: listItemSizeVariant,
-      Size: listItemSizeVariant,
+      true: selectTriggerSizeVariant,
+      Size: selectTriggerSizeVariant,
     },
   } as const,
   defaultVariants: { size: true },
@@ -151,15 +178,14 @@ export const SelectGroup = styled(SelectBehavior.Group, {
 export const SelectLabel = styled(SelectBehavior.Label, {
   context: SizeContext,
   name: 'SelectLabel',
-  color: 'color',
-  cursor: 'default',
-  ellipsis: true,
+  color: 'color10',
   fontWeight: '600',
-  maxWidth: '100%',
+  paddingHorizontal: 10,
+  paddingVertical: 6,
   variants: {
     size: {
-      true: listItemSizeVariant,
-      Size: listItemSizeVariant,
+      true: selectTextSizeVariant,
+      Size: selectTextSizeVariant,
     },
   } as const,
   defaultVariants: { size: true },
@@ -175,14 +201,15 @@ export const SelectItem = styled(SelectBehavior.Item, {
   justifyContent: 'space-between',
   cursor: 'default',
   outlineOffset: -1,
+  borderRadius: 6,
   backgroundColor: 'hover:background-hover press:background-press focus:background-focus',
   outlineColor: 'focus-visible:outline-color',
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:1px',
   variants: {
     size: {
-      true: listItemSizeVariant,
-      Size: listItemSizeVariant,
+      true: selectItemSizeVariant,
+      Size: selectItemSizeVariant,
     },
   } as const,
   defaultVariants: { size: true },
@@ -213,20 +240,19 @@ export const SelectItemIndicator = styled(SelectBehavior.ItemIndicator, {
 
 export const SelectIndicator = styled(SelectBehavior.Indicator, {
   name: 'SelectIndicator',
-  backgroundColor: 'background',
-  borderRadius: 0,
+  backgroundColor: 'background-focus',
+  borderRadius: 6,
 })
 
 export const SelectViewport = styled(SelectBehavior.Viewport, {
   name: 'SelectViewport',
   backgroundColor: 'background',
   borderColor: 'border-color',
-  borderRadius: 9,
+  borderRadius: 10,
   borderWidth: 1,
   maxHeight: 300,
-  shadowColor: 'shadow-color',
-  shadowRadius: 24,
-  shadowOffset: { width: 0, height: 12 },
+  padding: 4,
+  boxShadow: '0 12px 28px rgba(0, 0, 0, 0.2)',
 })
 
 export const SelectScrollUpButton = styled(SelectBehavior.ScrollUpButton, {

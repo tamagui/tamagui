@@ -55,6 +55,7 @@ export const TabsTab = styled(TabsBehavior.Tab, {
     disabled: {
       true: {
         cursor: 'not-allowed',
+        opacity: 0.45,
       },
     },
   } as const,

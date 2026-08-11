@@ -16,7 +16,7 @@ const SheetHandleFrame = styled(SheetBehavior.Handle, {
   name: 'SheetHandle',
   height: 10,
   borderRadius: 1000,
-  backgroundColor: 'background',
+  backgroundColor: 'color5',
   zIndex: 10,
   marginHorizontal: '35%',
   marginBottom: '2',
@@ -63,8 +63,8 @@ export const SheetContainer = styled(SheetBehavior.Container, {
 export const SheetBackground = styled(SheetBehavior.Background, {
   name: 'SheetBackground',
   backgroundColor: 'background',
-  borderTopLeftRadius: true,
-  borderTopRightRadius: true,
+  borderTopLeftRadius: '6',
+  borderTopRightRadius: '6',
 })
 
 export const SheetScrollView = styled(SheetBehavior.ScrollView, {

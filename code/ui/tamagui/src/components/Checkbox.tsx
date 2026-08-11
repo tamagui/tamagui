@@ -1,9 +1,10 @@
-import { getSize } from '@tamagui/get-token'
 import {
   Checkbox as CheckboxBehavior,
   getVariableValue,
   type GetProps,
+  resolveTokenSize,
   styled,
+  type VariantSpreadExtras,
   withStaticProperties,
 } from '@tamagui/ui'
 
@@ -12,21 +13,24 @@ export const CheckboxFrame = styled(CheckboxBehavior, {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'background press:background-press',
-  borderColor:
-    'border-color hover:border-color-hover press:border-color-press focus:border-color-focus',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
   borderWidth: 1,
   outlineColor: 'focus-visible:outline-color',
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
   variants: {
     size: {
-      Size: (size) => {
-        const tokenSize = getVariableValue(getSize(size))
-        const controlSize = Math.round(tokenSize * 0.45)
+      Size: (size, extras: VariantSpreadExtras<any>) => {
+        const controlSize = Math.round(
+          getVariableValue(
+            resolveTokenSize(size, { tokens: extras.tokens, font: extras.font! }).frame
+              .size
+          ) * 0.5
+        )
         return {
           width: controlSize,
           height: controlSize,
-          borderRadius: tokenSize / 8,
+          borderRadius: Math.max(3, Math.round(controlSize / 5)),
         }
       },
     },
@@ -34,7 +38,7 @@ export const CheckboxFrame = styled(CheckboxBehavior, {
     disabled: {
       true: {
         cursor: 'not-allowed',
-        outlineWidth: 0,
+        opacity: 0.45,
       },
     },
   } as const,

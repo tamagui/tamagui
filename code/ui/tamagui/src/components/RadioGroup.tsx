@@ -1,9 +1,10 @@
-import { getSize } from '@tamagui/get-token'
 import {
   getVariableValue,
   type GetProps,
   RadioGroup as RadioGroupBehavior,
+  resolveTokenSize,
   styled,
+  type VariantSpreadExtras,
   withStaticProperties,
 } from '@tamagui/ui'
 
@@ -15,19 +16,22 @@ export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
   name: 'RadioGroupItem',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: 'background hover:background-hover press:background-focus',
-  borderColor:
-    'border-color hover:border-color-hover press:border-color-focus focus:border-color-hover',
+  backgroundColor: 'background hover:background-hover press:background-press',
+  borderColor: 'border-color hover:border-color-hover press:border-color-press',
   borderRadius: 1000,
   borderWidth: 1,
   outlineColor: 'focus-visible:outline-color',
   outlineStyle: 'focus-visible:solid',
   outlineWidth: 'focus-visible:2px',
-  padding: 0,
   variants: {
     size: {
-      Size: (size) => {
-        const controlSize = Math.floor(getVariableValue(getSize(size)) * 0.5)
+      Size: (size, extras: VariantSpreadExtras<any>) => {
+        const controlSize = Math.round(
+          getVariableValue(
+            resolveTokenSize(size, { tokens: extras.tokens, font: extras.font! }).frame
+              .size
+          ) * 0.5
+        )
         return {
           width: controlSize,
           height: controlSize,
@@ -38,7 +42,7 @@ export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
     disabled: {
       true: {
         cursor: 'not-allowed',
-        outlineWidth: 0,
+        opacity: 0.45,
       },
     },
   } as const,
@@ -46,8 +50,8 @@ export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
 
 export const RadioGroupIndicator = styled(RadioGroupBehavior.Indicator, {
   name: 'RadioGroupIndicator',
-  width: '33%',
-  height: '33%',
+  width: '50%',
+  height: '50%',
   borderRadius: 1000,
   backgroundColor: 'color',
 })

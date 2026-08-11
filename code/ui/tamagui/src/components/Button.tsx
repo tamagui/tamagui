@@ -13,6 +13,7 @@ import {
   createStyledHOC,
   type GetProps,
   getThemedIconSize,
+  getVariableValue,
   resolveTokenSize,
   SizeContext,
   type SizeTokens,
@@ -37,7 +38,7 @@ const buttonFrameSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any
   })
   return {
     borderRadius: frame.radius,
-    gap: frame.radius,
+    gap: Math.round(getVariableValue(frame.size) * 0.2),
     height: frame.size,
     paddingHorizontal: frame.space,
     // `size` is a control preset, not square geometry. keep the frame's width
@@ -62,7 +63,7 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   context: SizeContext,
   name: 'ButtonFrame',
   backgroundColor: 'background hover:background-hover press:background-press',
-  borderColor: 'transparent hover:border-color-hover',
+  borderColor: 'border-color hover:border-color-hover',
   borderStyle: 'solid',
   borderWidth: 1,
   cursor: 'web:pointer',
@@ -94,6 +95,12 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
       },
     },
 
+    disabled: {
+      true: {
+        opacity: 0.35,
+      },
+    },
+
     variant: {
       outlined: {
         backgroundColor: 'transparent',
@@ -114,7 +121,7 @@ export const ButtonText = styled(ButtonBehaviorText, {
   context: SizeContext,
   name: 'ButtonText',
   color: 'color',
-  fontWeight: '400',
+  fontWeight: '600',
   userSelect: 'none',
   variants: {
     size: {
@@ -159,7 +166,7 @@ const ButtonComponent = createStyledHOC(
     })
 
     const frame = (
-      <Theme name="Button">
+      <Theme name="level2">
         <ButtonFrame ref={ref} {...buttonProps} />
       </Theme>
     )

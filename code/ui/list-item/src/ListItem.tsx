@@ -61,8 +61,8 @@ export const listItemSizeVariant = (
   return {
     minHeight: size,
     paddingHorizontal: tokens.space[spaceToken],
-    paddingVertical:
-      val === true ? tokens.space['2-5'] : Math.max(0, Math.round(sizeVal * 0.36 - 9)),
+    paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
+    gap: getThemedIconSize(sizeToken, 0.4),
   }
 }
 
@@ -198,13 +198,8 @@ const ListItemComponent = createStyledHOC(
       color: iconColorProp,
     })
 
-    const iconSpacing = iconSizeNumber * 0.4
-    const themedIcon = icon ? (
-      <View marginRight={iconSpacing}>{getThemedIcon(icon)}</View>
-    ) : null
-    const themedIconAfter = iconAfter ? (
-      <View marginLeft={iconSpacing}>{getThemedIcon(iconAfter)}</View>
-    ) : null
+    const themedIcon = icon ? getThemedIcon(icon) : null
+    const themedIconAfter = iconAfter ? getThemedIcon(iconAfter) : null
 
     const wrappedChildren = wrapChildrenInText(ListItemText, { children }, { size })
 

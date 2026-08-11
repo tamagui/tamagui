@@ -5,60 +5,28 @@
 // definition; the shadcn registry item is generated from this file.
 import {
   createRefComponent,
-  createStyledHOC,
-  type GetProps,
   Slider as UiSlider,
   styled,
   type TamaguiElement,
-  Theme,
-  type ThemeProps,
   withStaticProperties,
 } from '@tamagui/ui'
 import type * as React from 'react'
 
 export const SliderTrackFrame = styled(UiSlider.Track, {
-  name: 'Slider',
-  backgroundColor: 'background',
+  name: 'SliderTrack',
+  backgroundColor: 'background-press',
   borderRadius: 100_000,
 })
 
-export const SliderTrack = createStyledHOC(
-  SliderTrackFrame,
-  function SliderTrack(
-    props: GetProps<typeof SliderTrackFrame> & { theme?: ThemeProps['name'] },
-    ref
-  ) {
-    const { theme, ...trackProps } = props
-    return (
-      <Theme name={theme ?? 'Slider'}>
-        <SliderTrackFrame {...trackProps} ref={ref} />
-      </Theme>
-    )
-  },
-  { disableTheme: true }
-)
+export const SliderTrack = SliderTrackFrame
 
 export const SliderActiveFrame = styled(UiSlider.TrackActive, {
-  name: 'SliderActive',
-  backgroundColor: 'background',
+  name: 'SliderTrackActive',
+  backgroundColor: 'color',
   borderRadius: 100_000,
 })
 
-export const SliderActive = createStyledHOC(
-  SliderActiveFrame,
-  function SliderActive(
-    props: GetProps<typeof SliderActiveFrame> & { theme?: ThemeProps['name'] },
-    ref
-  ) {
-    const { theme, ...activeProps } = props
-    return (
-      <Theme name={theme ?? 'SliderActive'}>
-        <SliderActiveFrame {...activeProps} ref={ref} />
-      </Theme>
-    )
-  },
-  { disableTheme: true }
-)
+export const SliderActive = SliderActiveFrame
 
 export const SliderThumbFrame = styled(UiSlider.Thumb, {
   name: 'SliderThumb',
@@ -70,21 +38,7 @@ export const SliderThumbFrame = styled(UiSlider.Thumb, {
   outlineColor: 'focus-visible:outline-color',
 })
 
-export const SliderThumb = createStyledHOC(
-  SliderThumbFrame,
-  function SliderThumb(
-    props: GetProps<typeof SliderThumbFrame> & { theme?: ThemeProps['name'] },
-    ref
-  ) {
-    const { theme, ...thumbProps } = props
-    return (
-      <Theme name={theme ?? 'SliderThumb'}>
-        <SliderThumbFrame {...thumbProps} ref={ref} />
-      </Theme>
-    )
-  },
-  { disableTheme: true }
-)
+export const SliderThumb = SliderThumbFrame
 
 // see Dialog.tsx: withStaticProperties assigns in place, so composing onto UiSlider
 // would rewrite @tamagui/ui's own Slider.Track/.TrackActive/.Thumb for every consumer
