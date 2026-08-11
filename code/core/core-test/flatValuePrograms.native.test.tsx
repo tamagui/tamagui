@@ -550,3 +550,35 @@ test('geometric shorthand payloads distribute by slot on native', () => {
   expect(result.style?.paddingBottom).toBe(18)
   expect(result.style?.paddingLeft).toBe(46)
 })
+
+test('variant props resolve each conditional flat-value branch on native', () => {
+  const Frame = styled(View, {
+    variants: {
+      density: {
+        compact: { height: 20, paddingHorizontal: 8 },
+        roomy: { height: 40, paddingHorizontal: 16 },
+      },
+    } as const,
+  })
+
+  const compact = simplifiedGetSplitStyles(
+    Frame,
+    { density: 'compact sm:roomy' },
+    {
+      mergeDefaultProps: true,
+    }
+  )
+  expect(compact.style?.height).toBe(20)
+  expect(compact.style?.paddingLeft).toBe(8)
+
+  const roomy = simplifiedGetSplitStyles(
+    Frame,
+    { density: 'compact sm:roomy' },
+    {
+      mediaState: { sm: true },
+      mergeDefaultProps: true,
+    }
+  )
+  expect(roomy.style?.height).toBe(40)
+  expect(roomy.style?.paddingLeft).toBe(16)
+})

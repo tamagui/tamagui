@@ -1702,6 +1702,34 @@ export function contributeFrontendValue(
   return true
 }
 
+export function contributeVariantClauseValue(
+  state: GetStyleState,
+  property: string,
+  value: any,
+  conditionSource: string,
+  merge: MergeStyle,
+  originalValue?: any,
+  contextOnly = false
+) {
+  const condition = getCondition(state, conditionSource)
+  if (!condition) {
+    if (process.env.NODE_ENV === 'development') {
+      throw new Error(
+        `[tamagui] ${property} "${conditionSource}:" does not parse: unknown modifier`
+      )
+    }
+    return
+  }
+  if (process.env.NODE_ENV === 'development' && condition.unsupportedState) {
+    warnOnce(
+      `${property}: "${condition.unsupportedState}:" has no native component-state source; dropping the clause`
+    )
+  }
+  if (condition.emit && (condition.active || (isWeb && state.flatShouldDoClasses))) {
+    emitValue(state, property, value, condition, merge, originalValue, contextOnly)
+  }
+}
+
 export function contributeStyleValue(
   state: GetStyleState,
   property: string,

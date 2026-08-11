@@ -22,6 +22,22 @@ import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 
+// reduces a conditional variant clause back to flat-value string form
+// (`"20 sm:40"`) so the ordinary string parser applies it downstream. returns
+// undefined when either side is not string-representable, so the caller can
+// drop the clause with a diagnostic instead of emitting garbage
+export function appendFlatClause(
+  prev: unknown,
+  conditionSource: string,
+  value: unknown
+): string | undefined {
+  if (prev != null && typeof prev !== 'string' && typeof prev !== 'number') return
+  if (typeof value !== 'string' && typeof value !== 'number') return
+  return prev == null
+    ? `${conditionSource}:${value}`
+    : `${prev} ${conditionSource}:${value}`
+}
+
 export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
   if (disabled) {
     return map(key, value)
@@ -62,9 +78,9 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     if (variants && key in variants) {
       const variantValue = resolveVariants(key, value, styleProps, styleState, '')
       if (variantValue) {
-        variantValue.forEach(([key, value, originalValue]) => {
-          map(key, value, originalValue)
-        })
+        for (const entry of variantValue) {
+          map(entry[0], entry[1], entry[2], entry[3])
+        }
         return
       }
     }
@@ -133,6 +149,118 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
 }
 
 const resolveVariants: StyleResolver = (
+  key,
+  value,
+  styleProps,
+  styleState,
+  parentVariantKey
+) => {
+  const variantDefinition = styleState.staticConfig.variants?.[key]
+  if (
+    typeof value === 'string' &&
+    value.indexOf(':') !== -1 &&
+    // a variant can define a literal colon key like "16:9" — an exact match
+    // wins over clause parsing
+    !(
+      variantDefinition &&
+      typeof variantDefinition === 'object' &&
+      value in variantDefinition
+    )
+  ) {
+    // one forward pass, the same lexing contributeStyleString uses: words split
+    // on top-level whitespace, the last top-level colon in a word splits clause
+    // modifiers from the variant payload. each clause's resolved entries carry
+    // the raw modifier source (entry[3]) so emission gates them per condition
+    let quote = 0
+    let depth = 0
+    let wordStart = -1
+    let lastColon = -1
+    let segmentStart = 0
+    let modifierSource: string | undefined
+    let entries: [string, any, any?, string?][] | undefined
+    let sawClause = false
+
+    for (let index = 0; index <= value.length; index++) {
+      const code = index === value.length ? 32 : value.charCodeAt(index)
+      if (quote) {
+        if (code === 92) index++
+        else if (code === quote) quote = 0
+        continue
+      }
+      if (code === 34 || code === 39) {
+        quote = code
+        continue
+      }
+      if (code === 40) {
+        depth++
+        continue
+      }
+      if (code === 41) {
+        depth--
+        continue
+      }
+      if (depth) continue
+      if (code > 32) {
+        if (wordStart === -1) wordStart = index
+        if (code === 58) lastColon = index
+        continue
+      }
+      if (wordStart === -1) continue
+      if (lastColon !== -1) {
+        // this word begins a new clause, so the running segment's payload ends
+        // where this word starts
+        const payload = value.slice(segmentStart, wordStart).trim()
+        if (payload) {
+          const resolved = resolveVariantValue(
+            key,
+            payload,
+            styleProps,
+            styleState,
+            parentVariantKey
+          )
+          if (resolved) {
+            entries ||= []
+            for (const entry of resolved) {
+              if (modifierSource !== undefined) entry[3] = modifierSource
+              entries.push(entry)
+            }
+          }
+        }
+        sawClause = true
+        modifierSource = value.slice(wordStart, lastColon)
+        segmentStart = lastColon + 1
+      }
+      wordStart = -1
+      lastColon = -1
+    }
+
+    if (sawClause) {
+      const payload = value.slice(segmentStart).trim()
+      if (payload) {
+        const resolved = resolveVariantValue(
+          key,
+          payload,
+          styleProps,
+          styleState,
+          parentVariantKey
+        )
+        if (resolved) {
+          entries ||= []
+          for (const entry of resolved) {
+            if (modifierSource !== undefined) entry[3] = modifierSource
+            entries.push(entry)
+          }
+        }
+      }
+      return entries || []
+    }
+    // no clause structure found: the colon belongs to the value itself
+  }
+
+  return resolveVariantValue(key, value, styleProps, styleState, parentVariantKey)
+}
+
+const resolveVariantValue: StyleResolver = (
   key,
   value,
   styleProps,
@@ -222,7 +350,7 @@ const resolveVariants: StyleResolver = (
     const originalValues = styleOriginalValues.get(expanded)
 
     // store any changed font family (only support variables for now)
-    const next: [string, any, any][] = []
+    const next: [string, any, any, string?][] = []
     for (const key in expanded) {
       next.push([key, expanded[key], originalValues?.[key]])
     }
@@ -318,8 +446,21 @@ const resolveTokensAndVariants: StyleResolver<object> = (
 
           // apply variant output in authored order
           if (variantOut) {
-            for (const [key, val, originalVal] of variantOut) {
+            for (const [key, val, originalVal, conditionSource] of variantOut) {
               if (val == null) continue
+              if (conditionSource !== undefined) {
+                const appended = appendFlatClause(res[key], conditionSource, val)
+                if (appended === undefined) {
+                  if (process.env.NODE_ENV === 'development') {
+                    console.warn(
+                      `[tamagui] conditional variant value for "${key}" is not string-representable; dropping the clause`
+                    )
+                  }
+                  continue
+                }
+                res[key] = appended
+                continue
+              }
               res[key] = val
               if (originalVal !== undefined) {
                 originalValues ||= {}

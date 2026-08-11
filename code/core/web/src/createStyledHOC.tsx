@@ -37,12 +37,18 @@ export function createStyledHOC<
   ) => ReactNode,
   options?: StyledHOCOptions
 ): TamaguiComponent<
-  StyledHOCMergedProps<
-    Props extends TamaDefer
-      ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
-      : Props,
-    CustomProps
-  >,
+  // with no custom props the wrapper adds nothing to the prop surface, so keep
+  // the base component's deferred props: styled() then composes it through the
+  // same lazy path as any styled component instead of re-expanding a fully
+  // computed prop type (which hits TS2590 "union too complex" downstream)
+  keyof CustomProps extends never
+    ? Props
+    : StyledHOCMergedProps<
+        Props extends TamaDefer
+          ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+          : Props,
+        CustomProps
+      >,
   Ref,
   NonStyledProps & CustomProps,
   BaseStyles,

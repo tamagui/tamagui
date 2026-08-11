@@ -2875,7 +2875,9 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
   insets?: { top: number; right: number; bottom: number; left: number }
 }
 
-export type PropMappedValue = [string, any, any?][] | undefined
+// entry[3] is the raw modifier source of a conditional variant clause
+// (`"sm"` in `density="compact sm:roomy"`), present only on clause entries
+export type PropMappedValue = [string, any, any?, string?][] | undefined
 
 export type GetStyleState = {
   style: TextStyle | null
@@ -2933,7 +2935,7 @@ export type PropMapper = (
   value: any,
   state: GetStyleState,
   disabled: boolean,
-  map: (key: string, val: any, originalVal?: any) => void
+  map: (key: string, val: any, originalVal?: any, conditionSource?: string) => void
 ) => void
 
 export type GenericVariantDefinitions = {

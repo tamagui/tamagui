@@ -1,4 +1,51 @@
-import { type ReactNode, type Ref as ReactRef } from 'react';
-import type { GetFinalProps, StyledHOCMergedProps, StyledHOCOptions, TamaguiComponent, TamaDefer } from './types';
-export declare function createStyledHOC<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties, CustomProps extends object = {}>(component: TamaguiComponent<Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties>, render: (props: NoInfer<Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props> & CustomProps, ref?: ReactRef<NoInfer<Ref>>) => ReactNode, options?: StyledHOCOptions): TamaguiComponent<StyledHOCMergedProps<Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props, CustomProps>, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
+import { type ReactNode, type Ref as ReactRef } from 'react'
+import type {
+  GetFinalProps,
+  StyledHOCMergedProps,
+  StyledHOCOptions,
+  TamaguiComponent,
+  TamaDefer,
+} from './types'
+export declare function createStyledHOC<
+  Props,
+  Ref,
+  NonStyledProps,
+  BaseStyles extends object,
+  VariantProps,
+  ParentStaticProperties,
+  CustomProps extends object = {},
+>(
+  component: TamaguiComponent<
+    Props,
+    Ref,
+    NonStyledProps,
+    BaseStyles,
+    VariantProps,
+    ParentStaticProperties
+  >,
+  render: (
+    props: NoInfer<
+      Props extends TamaDefer
+        ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+        : Props
+    > &
+      CustomProps,
+    ref?: ReactRef<NoInfer<Ref>>
+  ) => ReactNode,
+  options?: StyledHOCOptions
+): TamaguiComponent<
+  keyof CustomProps extends never
+    ? Props
+    : StyledHOCMergedProps<
+        Props extends TamaDefer
+          ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
+          : Props,
+        CustomProps
+      >,
+  Ref,
+  NonStyledProps & CustomProps,
+  BaseStyles,
+  VariantProps,
+  ParentStaticProperties
+>
 //# sourceMappingURL=createStyledHOC.d.ts.map

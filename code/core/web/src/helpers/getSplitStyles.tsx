@@ -45,11 +45,12 @@ import { getDefaultProps } from './getDefaultProps'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
 import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import { propMapper } from './propMapper'
+import { appendFlatClause, propMapper } from './propMapper'
 import {
   clearDirectStyle,
   contributeStyleValue,
   contributeStyleString,
+  contributeVariantClauseValue,
   directStyleSignature,
   flushDirectStyles,
   getDirectDynamicThemeAccess,
@@ -887,103 +888,140 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    propMapper(keyInit, valInit, styleState, disablePropMap, (key, val, originalVal) => {
-      const isStyledContextProp = styledContext && key in styledContext
+    propMapper(
+      keyInit,
+      valInit,
+      styleState,
+      disablePropMap,
+      (key, val, originalVal, conditionSource) => {
+        const isStyledContextProp = styledContext && key in styledContext
 
-      if (key === 'className') {
-        if (typeof val === 'string' && val) {
-          className = `${className} ${val}`.trim()
-        }
-        return
-      }
-
-      if (!isHOC && disablePropMap && !isStyledContextProp) {
-        // a text-only style prop on a non-text host must not leak to the DOM
-        // as an unknown attribute (and RN would silently ignore it). every key
-        // here already failed this host's validity table, so the extra check
-        // only runs on that cold path
-        if (key in stylePropsAll && !isValidStyleKey(key, validStyles, accept)) {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn(
-              `[tamagui] "${key}" is a text style prop and this component is not text — it would render on neither platform. Use a Text-based component, or html.* for raw web elements.`
-            )
+        if (key === 'className') {
+          if (typeof val === 'string' && val) {
+            className = `${className} ${val}`.trim()
           }
           return
         }
-        viewProps[key] = val
-        return
-      }
 
-      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        console.groupCollapsed('  💠 expanded', keyInit, '=>', key)
-        log(val)
-        console.groupEnd()
-      }
+        if (!isHOC && disablePropMap && !isStyledContextProp) {
+          // a text-only style prop on a non-text host must not leak to the DOM
+          // as an unknown attribute (and RN would silently ignore it). every key
+          // here already failed this host's validity table, so the extra check
+          // only runs on that cold path
+          if (key in stylePropsAll && !isValidStyleKey(key, validStyles, accept)) {
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(
+                `[tamagui] "${key}" is a text style prop and this component is not text — it would render on neither platform. Use a Text-based component, or html.* for raw web elements.`
+              )
+            }
+            return
+          }
+          viewProps[key] = val
+          return
+        }
 
-      if (val == null) return
-
-      if (accept && key in accept) {
-        viewProps[key] = val
-        return
-      }
-
-      const isHostStyleKey =
-        (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
-        (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
-      const isContextProgramKey = !isHOC && Boolean(isStyledContextProp)
-
-      if (isHostStyleKey || isContextProgramKey) {
-        contributeStyleValue(
-          styleState,
-          key,
-          val,
-          mergeStyle,
-          originalVal,
-          !isHostStyleKey
-        )
-        return
-      }
-
-      isVariant = variants && key in variants
-
-      if (inlineProps?.has(key)) {
-        viewProps[key] = props[key] ?? val
-      }
-
-      const shouldPassThrough = isHOC && Boolean(parentStaticConfig?.variants?.[keyInit])
-
-      if (shouldPassThrough) {
-        passDownProp(viewProps, key, val)
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          console.groupCollapsed(` - passing down prop ${key}`)
-          log({ val, after: { ...viewProps[key] } })
+          console.groupCollapsed('  💠 expanded', keyInit, '=>', key)
+          log(val)
           console.groupEnd()
         }
-        return
-      }
 
-      // pass to view props
-      if (!isVariant) {
-        if (isStyledContextProp) {
+        if (val == null) return
+
+        if (accept && key in accept) {
+          viewProps[key] = val
           return
         }
 
-        // a text-only style prop on a non-text host must not leak to the DOM
-        // as an unknown attribute (and RN would silently ignore it): drop it
-        // with a dev diagnostic naming the fix. cold path — only keys that
-        // already failed this host's validity table get here
-        if (key in stylePropsAll && !isValidStyleKey(key, validStyles, accept)) {
-          if (process.env.NODE_ENV === 'development') {
+        const isHostStyleKey =
+          (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
+          (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
+        const isContextProgramKey = !isHOC && Boolean(isStyledContextProp)
+
+        if (conditionSource !== undefined) {
+          if (isHostStyleKey || isContextProgramKey) {
+            contributeVariantClauseValue(
+              styleState,
+              key,
+              val,
+              conditionSource,
+              mergeStyle,
+              originalVal,
+              !isHostStyleKey
+            )
+          } else if (isHOC) {
+            // reduce the clause back to flat-value string form so the wrapped
+            // component's own string parser applies the condition
+            const appended = appendFlatClause(viewProps[key], conditionSource, val)
+            if (appended !== undefined) {
+              viewProps[key] = appended
+            } else if (process.env.NODE_ENV === 'development') {
+              console.warn(
+                `[tamagui] conditional variant value for "${key}" is not string-representable; dropping the clause`
+              )
+            }
+          } else if (process.env.NODE_ENV === 'development') {
             console.warn(
-              `[tamagui] "${key}" is a text style prop and this component is not text — it would render on neither platform. Use a Text-based component, or html.* for raw web elements.`
+              `[tamagui] "${key}" is not a valid style on this component; the conditional variant value is dropped.`
             )
           }
           return
         }
 
-        viewProps[key] = val
+        if (isHostStyleKey || isContextProgramKey) {
+          contributeStyleValue(
+            styleState,
+            key,
+            val,
+            mergeStyle,
+            originalVal,
+            !isHostStyleKey
+          )
+          return
+        }
+
+        isVariant = variants && key in variants
+
+        if (inlineProps?.has(key)) {
+          viewProps[key] = props[key] ?? val
+        }
+
+        const shouldPassThrough =
+          isHOC && Boolean(parentStaticConfig?.variants?.[keyInit])
+
+        if (shouldPassThrough) {
+          passDownProp(viewProps, key, val)
+          if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+            console.groupCollapsed(` - passing down prop ${key}`)
+            log({ val, after: { ...viewProps[key] } })
+            console.groupEnd()
+          }
+          return
+        }
+
+        // pass to view props
+        if (!isVariant) {
+          if (isStyledContextProp) {
+            return
+          }
+
+          // a text-only style prop on a non-text host must not leak to the DOM
+          // as an unknown attribute (and RN would silently ignore it): drop it
+          // with a dev diagnostic naming the fix. cold path — only keys that
+          // already failed this host's validity table get here
+          if (key in stylePropsAll && !isValidStyleKey(key, validStyles, accept)) {
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(
+                `[tamagui] "${key}" is a text style prop and this component is not text — it would render on neither platform. Use a Text-based component, or html.* for raw web elements.`
+              )
+            }
+            return
+          }
+
+          viewProps[key] = val
+        }
       }
-    })
+    )
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       try {

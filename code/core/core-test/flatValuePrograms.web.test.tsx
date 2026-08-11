@@ -160,6 +160,40 @@ test('bare tokens resolve in conditional flat values', () => {
   ])
 })
 
+test('variant props resolve each conditional flat-value branch', () => {
+  const Frame = styled(View, {
+    variants: {
+      density: {
+        compact: { height: 20, paddingHorizontal: 8 },
+        roomy: { height: 40, paddingHorizontal: 16 },
+      },
+    } as const,
+  })
+
+  const compact = simplifiedGetSplitStyles(
+    Frame,
+    { density: 'compact sm:roomy' },
+    {
+      mergeDefaultProps: true,
+      noClass: true,
+    }
+  )
+  expect(compact.style?.height).toBe(20)
+  expect(compact.style?.paddingLeft).toBe(8)
+
+  const roomy = simplifiedGetSplitStyles(
+    Frame,
+    { density: 'compact sm:roomy' },
+    {
+      mediaState: { sm: true },
+      mergeDefaultProps: true,
+      noClass: true,
+    }
+  )
+  expect(roomy.style?.height).toBe(40)
+  expect(roomy.style?.paddingLeft).toBe(16)
+})
+
 test('an unknown bare lookup miss stays literal on web', () => {
   const warnings: string[] = []
   const original = console.warn
