@@ -51,7 +51,43 @@ jobs:
       - name: Lint
         run: bun run lint
 
+  playwright-browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: playwright-browser-cache-checks-${{ github.head_ref || github.ref_name }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Get Playwright version
+        id: pw-version
+        run: |
+          version=$(node -p "require('./package.json').devDependencies['@playwright/test']")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
+
+      - name: Setup Bun
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: 'package.json'
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: bunx -p @playwright/test@${{ steps.pw-version.outputs.version }} playwright install chromium webkit
+
   unit-tests:
+    needs: playwright-browsers
     runs-on: ubuntu-latest
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
@@ -72,10 +108,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
-
-      - name: Install playwright
-        run: bunx playwright install
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
       - name: Check config defaults
         working-directory: code/core/config
@@ -162,7 +195,7 @@ jobs:
           fi
 
   integration-tests:
-    needs: changes
+    needs: [changes, playwright-browsers]
     if: needs.changes.outputs.integration-relevant == 'true'
     # gate is turbo's actual workspace dependency graph — no manual path list to maintain
     runs-on: ubuntu-latest
@@ -190,10 +223,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
-      - name: Install playwright
-        run: bunx playwright install --with-deps
+      - name: Install Playwright system dependencies
+        run: bunx playwright install-deps chromium webkit
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
@@ -208,6 +241,7 @@ jobs:
         timeout-minutes: 20
 
   v3-ssr-hydration:
+    needs: playwright-browsers
     if: github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))
     runs-on: ubuntu-latest
     env:
@@ -230,10 +264,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}-chromium-webkit
 
-      - name: Install Playwright Chromium
-        run: bunx playwright install --with-deps chromium
+      - name: Install Playwright Chromium system dependencies
+        run: bunx playwright install-deps chromium
 
       - name: Run SSR hydration checks
         run: |
