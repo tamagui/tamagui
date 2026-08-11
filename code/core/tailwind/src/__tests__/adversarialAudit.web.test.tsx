@@ -93,8 +93,11 @@ describe('4 — existing raw hover color + flat hover clause follow authored ord
     const hoverColor = (props: Record<string, any>) => {
       const styles = splitTailwindStyles(View, props as any)
       const className = styles.classNames.backgroundColor
-      const rules = (styles.rulesToInsert[className]?.[4] ?? []).join('')
-      return rules.match(/:where\(:hover\)\{background-color:([^}]+)\}/)?.[1] ?? null
+      const rule = styles.rulesToInsert[className]?.[4]?.[0]
+      const prefix = `@media (hover: hover) {.${className}:hover{background-color:`
+      return rule?.startsWith(prefix) && rule.endsWith('}}')
+        ? rule.slice(prefix.length, -2)
+        : null
     }
     expect(
       hoverColor({
