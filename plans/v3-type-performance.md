@@ -279,6 +279,47 @@ widens to `string`, so this only bites where a real config narrows it — I did
 not reproduce the originally reported TS2322, and the change is recorded as
 making the runtime contract explicit rather than as fixing a reproduced failure.
 
+## Modifier-clause template arms: measured, and the answer is a cliff
+
+Measured 2026-08-11 (TS 5.9.3, real vocab: 37 modifiers = 29 media + 8 states,
+space = 55 tokens, radius = 13). Question: can `p="4 gtMd:2"` complete from
+types alone — base value plus prefixed clauses, one ordering, limited depth —
+instead of the language-service plugin? Harness: `flat-prefix-probe.mjs` /
+`flat-finite-probe.mjs` (session-local, same method as above: real
+`getCompletionsAtPosition`, JSX attribute shape, `types: []`).
+
+Three shapes, three verdicts:
+
+- **Open-payload patterns complete nothing.** `` `${Mod}:${string}` `` and
+  `` `${Tok} ${Mod}:${string}` `` produce ZERO completion entries at every
+  cursor position — TypeScript does not offer partial-prefix entries from
+  template arms containing `${string}` holes. "Type the prefixes with a generic
+  string" is therefore a checking tool only, and checking requires dropping
+  `(string & {})`, which the open-ended flat grammar cannot afford.
+- **Finite expansion works below a size cliff, and the className deletion
+  hazard does NOT apply.** Entries are whole strings (`4 gtMd:2`), so accepting
+  one after typing `4 gtMd:` preserves the base — unlike className lists, the
+  clause space is small enough to enumerate. Radius scale (13×37×13 = 6,747
+  entries): correct filtered completions at every stage, 0.9MB payload,
+  ~50ms, no TS2590, zero added check cost over 400 JSX sites.
+- **Real space scale is over the cliff.** 55×37×55 ≈ 112k members hits TS2590
+  and — worse — returns zero completions, deleting even the base-token
+  completions that work today. Trimming to state modifiers only (55×8×55 =
+  24,695) stays legal but is a 3.5MB tsserver payload per keystroke. Color
+  (~1,100 members) is out by orders of magnitude.
+
+So finite arms are viable only where `tok × mod × tok` stays under roughly
+10-20k — radius and zIndex qualify; space, size, and color, the props
+modifiers are actually used with, do not. A per-prop split (typed clauses on
+`rounded`, none on `p`/`bg`) would ship inconsistent autocomplete and was
+rejected.
+
+Conclusion: the vocabulary lives in one place — the language-service plugin —
+and the setup pain should be attacked at distribution instead (a VS Code
+extension contributing `typescriptServerPlugins` loads the plugin into the
+bundled tsserver with zero per-project config, the styled-components /
+Tailwind model).
+
 ## Reproducing
 
 The one harness that guards a live invariant is **committed**, because a tool
