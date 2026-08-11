@@ -100,8 +100,23 @@ export {
 export { Input, type InputProps, TextArea, type TextAreaProps } from './components/Input'
 export { ToggleGroup, type ToggleGroupItemProps } from './components/ToggleGroup'
 export { Accordion } from './components/Accordion'
+export {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogOverlay,
+} from './components/AlertDialog'
 export { Dialog, DialogContent, DialogOverlay } from './components/Dialog'
+export { Popover, PopoverArrow, PopoverContent } from './components/Popover'
 export { Slider, SliderActive, SliderThumb, SliderTrack } from './components/Slider'
+export { Switch, SwitchFrame, SwitchThumb, SwitchThumbFrame } from './components/Switch'
+export { Checkbox, CheckboxFrame, CheckboxIndicator } from './components/Checkbox'
+export {
+  RadioGroup,
+  RadioGroupFrame,
+  RadioGroupIndicator,
+  RadioGroupItem,
+} from './components/RadioGroup'
+export { Tabs, TabsContent, TabsFrame, TabsList, TabsTab } from './components/Tabs'
 export { ListItem, type ListItemProps } from './components/ListItem'
 export { Card, CardFrame, type CardProps } from './components/Card'
 export { Progress, ProgressIndicator, type ProgressProps } from './components/Progress'

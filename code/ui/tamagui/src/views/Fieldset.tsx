@@ -7,6 +7,7 @@ export const Fieldset = styled(YStack, {
   render: 'fieldset',
 
   // remove browser default styling
+  display: 'flex',
   borderWidth: 0,
 
   variants: {

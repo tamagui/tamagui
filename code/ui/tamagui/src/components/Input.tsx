@@ -4,10 +4,13 @@
 // primitives keep only structural sizing + the native outline reset. Single skin
 // definition; the shadcn registry item is generated from this file.
 import {
+  createStyledHOC,
   type GetProps,
   Input as UiInput,
   styled,
   TextArea as UiTextArea,
+  Theme,
+  type ThemeProps,
 } from '@tamagui/ui'
 
 const inputSkin = {
@@ -21,15 +24,41 @@ const inputSkin = {
   outlineStyle: 'focus-visible:solid',
 } as const
 
-export const Input = styled(UiInput, {
+const InputFrame = styled(UiInput, {
   name: 'Input',
   ...inputSkin,
 })
 
-export const TextArea = styled(UiTextArea, {
+const TextAreaFrame = styled(UiTextArea, {
   name: 'TextArea',
   ...inputSkin,
 })
+
+export const Input = createStyledHOC(
+  InputFrame,
+  function Input({ theme, ...props }, ref) {
+    const input = (
+      <Theme name="Input">
+        <InputFrame ref={ref} {...props} />
+      </Theme>
+    )
+    return theme ? <Theme name={theme as ThemeProps['name']}>{input}</Theme> : input
+  },
+  { disableTheme: true }
+)
+
+export const TextArea = createStyledHOC(
+  TextAreaFrame,
+  function TextArea({ theme, ...props }, ref) {
+    const textArea = (
+      <Theme name="TextArea">
+        <TextAreaFrame ref={ref} {...props} />
+      </Theme>
+    )
+    return theme ? <Theme name={theme as ThemeProps['name']}>{textArea}</Theme> : textArea
+  },
+  { disableTheme: true }
+)
 
 export type InputProps = GetProps<typeof Input>
 export type TextAreaProps = GetProps<typeof TextArea>

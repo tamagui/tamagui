@@ -40,7 +40,7 @@ export function ContextMenuDemo() {
           y="enter:-5px exit:-3px"
           transition="100ms"
         >
-          <ContextMenu.Arrow size="4" borderWidth={1} borderColor="border-color" />
+          <ContextMenu.Arrow size={13} borderWidth={1} borderColor="border-color" />
 
           <ContextMenu.Preview>
             {() => {

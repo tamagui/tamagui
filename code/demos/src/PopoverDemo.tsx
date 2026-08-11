@@ -8,6 +8,7 @@ import { useState } from 'react'
 import type { PopoverProps } from 'tamagui'
 import {
   Adapt,
+  Button,
   Input,
   isWeb,
   Label,
@@ -17,7 +18,6 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { Button } from './Button'
 
 export function PopoverDemo() {
   const [shouldAdapt, setShouldAdapt] = useState(true)

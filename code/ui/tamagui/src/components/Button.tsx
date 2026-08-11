@@ -13,7 +13,6 @@ import {
   createStyledHOC,
   type GetProps,
   getThemedIconSize,
-  getVariableValue,
   resolveTokenSize,
   SizeContext,
   type SizeTokens,
@@ -38,7 +37,7 @@ const buttonFrameSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any
   })
   return {
     borderRadius: frame.radius,
-    gap: Math.round(getVariableValue(frame.size) * 0.2),
+    gap: frame.radius,
     height: frame.size,
     paddingHorizontal: frame.space,
     // `size` is a control preset, not square geometry. keep the frame's width
@@ -63,7 +62,7 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
   context: SizeContext,
   name: 'ButtonFrame',
   backgroundColor: 'background hover:background-hover press:background-press',
-  borderColor: 'border-color hover:border-color-hover',
+  borderColor: 'transparent hover:border-color-hover',
   borderStyle: 'solid',
   borderWidth: 1,
   cursor: 'web:pointer',
@@ -95,12 +94,6 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
       },
     },
 
-    disabled: {
-      true: {
-        opacity: 0.35,
-      },
-    },
-
     variant: {
       outlined: {
         backgroundColor: 'transparent',
@@ -121,7 +114,7 @@ export const ButtonText = styled(ButtonBehaviorText, {
   context: SizeContext,
   name: 'ButtonText',
   color: 'color',
-  fontWeight: '600',
+  fontWeight: '400',
   userSelect: 'none',
   variants: {
     size: {
@@ -151,32 +144,30 @@ const ButtonComponent = createStyledHOC(
     props: ButtonBehaviorProps & { size?: ButtonSize; theme?: ThemeProps['name'] },
     ref
   ) {
+    const { theme, ...buttonBehaviorProps } = props
     const contextSize = SizeContext.useStyledContext()?.size
-    const size = ((props.size as TokenSize | undefined) ??
+    const size = ((buttonBehaviorProps.size as TokenSize | undefined) ??
       contextSize ??
       true) as ButtonSize
     // Size is the frame's baseline contribution. Appending it after
     // HOC-expanded style props would let the variant overwrite a direct
     // padding override from the caller.
-    const sizedProps = { size, ...props }
+    const sizedProps = { size, ...buttonBehaviorProps }
     const { props: buttonProps } = useButton(sizedProps, {
       Text: ButtonText,
       iconSize: getThemedIconSize(size),
     })
 
-    const { theme, ...frameProps } = buttonProps
     const frame = (
-      <Theme name="level2">
-        <ButtonFrame ref={ref} {...frameProps} />
+      <Theme name="Button">
+        <ButtonFrame ref={ref} {...buttonProps} />
       </Theme>
     )
 
-    return (
-      <SizeContext.Provider size={size}>
-        {theme ? <Theme name={theme}>{frame}</Theme> : frame}
-      </SizeContext.Provider>
-    )
-  }
+    const button = <SizeContext.Provider size={size}>{frame}</SizeContext.Provider>
+    return theme ? <Theme name={theme}>{button}</Theme> : button
+  },
+  { disableTheme: true }
 )
 
 export const Button = withStaticProperties(ButtonComponent, {

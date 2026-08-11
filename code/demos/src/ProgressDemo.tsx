@@ -1,6 +1,5 @@
 import React from 'react'
-import { Paragraph, Progress, Slider, Theme, XStack, YStack } from 'tamagui'
-import { Button } from './Button'
+import { Button, Paragraph, Progress, Slider, Theme, XStack, YStack } from 'tamagui'
 import { Play, RotateCcw } from '@tamagui/lucide-icons-2'
 
 export function ProgressDemo() {

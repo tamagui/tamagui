@@ -38,87 +38,87 @@ function Col(
     <YStack p="2-5" gap="3-5">
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={subThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('orange' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('yellow' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('green' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('blue' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('purple' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('pink' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('red' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={subThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('orange' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('yellow' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
       <Square
         rounded="6"
-        bg="background"
-        {...squareProps}
         size="10"
         theme={('green' + subTheme) as ThemeName}
+        bg="background"
+        {...squareProps}
       />
     </YStack>
   )

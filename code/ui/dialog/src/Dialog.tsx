@@ -480,8 +480,8 @@ const DialogContentFrame = styled(YStack, {
     elevate: {
       true: {
         shadowColor: 'shadow-color',
-        shadowRadius: 12,
-        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 24,
+        shadowOffset: { width: 0, height: 12 },
       },
     },
     bordered: {

@@ -1,5 +1,5 @@
 import { createRefComponent, getVariableValue } from '@tamagui/core'
-import { getSize } from '@tamagui/get-token'
+import { getRadius, getSize, getSpace } from '@tamagui/get-token'
 import type { YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
@@ -47,22 +47,29 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
         </Tooltip.Trigger>
 
         <Tooltip.Content
+          theme="Tooltip"
           y="enter:-4px exit:-4px"
           scale="1 enter:0.96 exit:0.96"
           opacity="1 enter:0 exit:0"
           pointerEvents="none"
+          paddingHorizontal={getVariableValue(getSpace(tooltipProps.size ?? true))}
           paddingVertical={Math.max(
             0,
             Math.round(
               (getVariableValue(getSize(tooltipProps.size ?? true)) as number) * 0.36 - 9
             )
           )}
+          borderRadius={getVariableValue(getRadius(tooltipProps.size ?? true))}
+          boxShadow="0 2px 4px shadow-color"
           transition={['quicker', { opacity: { overshootClamping: true } }]}
           {...contentProps}
-          elevation="0-5"
           animateOnly={['transform', 'opacity']}
         >
-          <Tooltip.Arrow />
+          <Tooltip.Arrow
+            size={tooltipProps.size ?? 7}
+            backgroundColor="background"
+            borderColor="border-color"
+          />
           <Paragraph
             maxWidth={350}
             overflow="hidden"

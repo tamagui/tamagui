@@ -6,8 +6,7 @@ import {
   Circle,
 } from '@tamagui/lucide-icons-2'
 import type { TooltipProps } from 'tamagui'
-import { Paragraph, Theme, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
-import { Button } from './Button'
+import { Button, Paragraph, Theme, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
 
 export function TooltipDemo() {
   return (
@@ -42,15 +41,18 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         <Button icon={Icon} circular />
       </Tooltip.Trigger>
       <Tooltip.Content
+        theme="Tooltip"
         scale="1 enter:0.9 exit:0.9"
         x="0 enter:0 exit:0"
         y="0 enter:-5px exit:-5px"
         opacity="1 enter:0 exit:0"
         py="2"
         px="3"
+        rounded
+        boxShadow="0 2px 4px shadow-color"
         transition={['quick', { opacity: { overshootClamping: true } }]}
       >
-        <Tooltip.Arrow />
+        <Tooltip.Arrow backgroundColor="background" borderColor="border-color" />
         <Paragraph size="2" lineHeight="1">
           Hello world
         </Paragraph>

@@ -1,16 +1,6 @@
 import React from 'react'
 import type { TabsContentProps } from 'tamagui'
-import {
-  H5,
-  Separator,
-  SizableText,
-  XStack,
-  YStack,
-  isWeb,
-  useWindowDimensions,
-} from 'tamagui'
-import { Button } from './Button'
-import { Tabs } from './ControlSkins'
+import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb } from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -43,13 +33,12 @@ export function TabsDemo() {
 }
 
 const HorizontalTabs = () => {
-  const { width } = useWindowDimensions()
   return (
     <Tabs
       defaultValue="tab1"
       orientation="horizontal"
       flexDirection="column"
-      width={`400px max-md:${width - 32}px`}
+      width="400px max-md:calc(100vw - 32px)"
       height={150}
       rounded="4"
       borderWidth="0-25"

@@ -1,6 +1,5 @@
 import { Activity, Airplay } from '@tamagui/lucide-icons-2'
-import { Group, ListItem, Separator, XGroup, YGroup, YStack } from 'tamagui'
-import { Button } from './Button'
+import { Button, Group, ListItem, Separator, XGroup, YGroup, YStack } from 'tamagui'
 
 export function GroupDemo() {
   return (
@@ -17,15 +16,15 @@ export function GroupDemo() {
         </Group.Item>
       </Group>
 
-      {/* responsive size - children control their own size/radius */}
+      {/* children control their own size and radius */}
       <XGroup>
         <XGroup.Item>
-          <Button size="3 gtSm:5" icon={Activity}>
+          <Button size="3" icon={Activity}>
             First
           </Button>
         </XGroup.Item>
         <XGroup.Item>
-          <Button size="3 gtSm:5" icon={Airplay}>
+          <Button size="3" icon={Airplay}>
             Second
           </Button>
         </XGroup.Item>

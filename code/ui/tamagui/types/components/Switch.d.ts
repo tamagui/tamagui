@@ -1,91 +1,95 @@
-import type { ColorTokens, GetProps, SizeTokens, VariantSpreadExtras } from '@tamagui/web'
-import type { FunctionComponent, JSX, ReactNode } from 'react'
-type IconProp =
-  | JSX.Element
-  | FunctionComponent<{
-      color?: any
-      size?: any
-    }>
-  | null
-type ListItemVariant = 'outlined'
-export type ListItemExtraProps = {
-  icon?: IconProp
-  iconAfter?: IconProp
-  scaleIcon?: number
-  title?: ReactNode
-  subTitle?: ReactNode
-  iconSize?: SizeTokens | true
-  color?: ColorTokens | string
-}
-export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
-export declare const listItemSizeVariant: (
-  val: SizeTokens | true,
-  { tokens }: VariantSpreadExtras<any>
-) => {
-  minHeight: number | import('@tamagui/web').Variable<any>
-  paddingHorizontal:
-    | import('@tamagui/web').Variable<any>
-    | import('@tamagui/web').Variable<string>
-    | import('@tamagui/web').Variable<number>
-    | import('@tamagui/web').Variable<import('@tamagui/web').PxValue>
-    | import('@tamagui/web').Variable<import('@tamagui/web').VariableValGeneric>
-  paddingVertical: number | import('@tamagui/web').Variable<any>
-}
-declare const ListItemFrame: FunctionComponent<
+import { type GetProps } from '@tamagui/ui'
+export declare const SwitchFrame: import('react').FunctionComponent<
   Omit<
-    import('@tamagui/web').StackNonStyleProps,
-    'disabled' | 'size' | 'variant' | keyof import('@tamagui/web').StackStyleBase
+    import('@tamagui/core').RNTamaguiViewNonStyleProps,
+    'active' | 'frameWidth' | 'size' | keyof import('@tamagui/web').StackStyleBase
   > &
     import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> & {
-      disabled?: boolean | undefined
-      size?: false | import('@tamagui/web').Size | undefined
-      variant?: 'outlined' | undefined
+      active?: boolean | undefined
+      frameWidth?: number | undefined
+      size?: number | import('@tamagui/web').Size | undefined
     } & import('@tamagui/web').WithShorthands<
       import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
     > & {
-      ref?: import('react').Ref<import('@tamagui/web').TamaguiElement> | undefined
+      ref?: import('react').Ref<import('@tamagui/ui').TamaguiElement> | undefined
     }
 > &
   import('@tamagui/web').StaticComponentObject<
     import('@tamagui/web').TamaDefer,
-    import('@tamagui/web').TamaguiElement,
-    import('@tamagui/web').StackNonStyleProps,
+    import('@tamagui/ui').TamaguiElement,
+    import('@tamagui/core').RNTamaguiViewNonStyleProps,
     import('@tamagui/web').StackStyleBase,
     {
-      disabled?: boolean | undefined
-      size?: false | import('@tamagui/web').Size | undefined
-      variant?: 'outlined' | undefined
+      active?: boolean | undefined
+      frameWidth?: number | undefined
+      size?: number | import('@tamagui/web').Size | undefined
     },
     import('@tamagui/web').StaticConfigPublic
   > &
   Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
     __tama: [
       import('@tamagui/web').TamaDefer,
-      import('@tamagui/web').TamaguiElement,
-      import('@tamagui/web').StackNonStyleProps,
+      import('@tamagui/ui').TamaguiElement,
+      import('@tamagui/core').RNTamaguiViewNonStyleProps,
       import('@tamagui/web').StackStyleBase,
       {
-        disabled?: boolean | undefined
-        size?: false | import('@tamagui/web').Size | undefined
-        variant?: 'outlined' | undefined
+        active?: boolean | undefined
+        frameWidth?: number | undefined
+        size?: number | import('@tamagui/web').Size | undefined
       },
       import('@tamagui/web').StaticConfigPublic,
     ]
   }
-declare const ListItemIcon: (props: {
-  children: React.ReactNode
-  size?: SizeTokens | true
-  scaleIcon?: number
-}) => any
-export declare const ListItem: FunctionComponent<
+export declare const SwitchThumbFrame: import('react').FunctionComponent<
   Omit<
-    import('@tamagui/web').GetFinalProps<
-      import('@tamagui/web').StackNonStyleProps,
+    import('@tamagui/core').RNTamaguiViewNonStyleProps,
+    'active' | 'frameWidth' | 'size' | keyof import('@tamagui/web').StackStyleBase
+  > &
+    import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> & {
+      active?: boolean | undefined
+      frameWidth?: number | undefined
+      size?: number | import('@tamagui/web').Size | undefined
+    } & import('@tamagui/web').WithShorthands<
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+    > & {
+      ref?: import('react').Ref<import('@tamagui/ui').TamaguiElement> | undefined
+    }
+> &
+  import('@tamagui/web').StaticComponentObject<
+    import('@tamagui/web').TamaDefer,
+    import('@tamagui/ui').TamaguiElement,
+    import('@tamagui/core').RNTamaguiViewNonStyleProps,
+    import('@tamagui/web').StackStyleBase,
+    {
+      active?: boolean | undefined
+      frameWidth?: number | undefined
+      size?: number | import('@tamagui/web').Size | undefined
+    },
+    import('@tamagui/web').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/web').TamaDefer,
+      import('@tamagui/ui').TamaguiElement,
+      import('@tamagui/core').RNTamaguiViewNonStyleProps,
       import('@tamagui/web').StackStyleBase,
       {
-        disabled?: boolean | undefined
-        size?: false | import('@tamagui/web').Size | undefined
-        variant?: 'outlined' | undefined
+        active?: boolean | undefined
+        frameWidth?: number | undefined
+        size?: number | import('@tamagui/web').Size | undefined
+      },
+      import('@tamagui/web').StaticConfigPublic,
+    ]
+  }
+export declare const Switch: import('react').FunctionComponent<
+  Omit<
+    import('@tamagui/web').GetFinalProps<
+      import('@tamagui/core').RNTamaguiViewNonStyleProps,
+      import('@tamagui/web').StackStyleBase,
+      {
+        active?: boolean | undefined
+        frameWidth?: number | undefined
+        size?: number | import('@tamagui/web').Size | undefined
       }
     >,
     | 'accessibilityActions'
@@ -104,6 +108,8 @@ export declare const ListItem: FunctionComponent<
     | 'accessibilityValue'
     | 'accessibilityViewIsModal'
     | 'accessible'
+    | 'activeStyle'
+    | 'activeTheme'
     | 'alignContent'
     | 'alignItems'
     | 'alignSelf'
@@ -194,6 +200,7 @@ export declare const ListItem: FunctionComponent<
     | 'boxShadow'
     | 'boxSizing'
     | 'caretColor'
+    | 'checked'
     | 'children'
     | 'className'
     | 'clipPath'
@@ -209,6 +216,7 @@ export declare const ListItem: FunctionComponent<
     | 'cursor'
     | 'dangerouslySetInnerHTML'
     | 'debug'
+    | 'defaultChecked'
     | 'direction'
     | 'disableClassName'
     | 'disableNativeStyle'
@@ -242,9 +250,6 @@ export declare const ListItem: FunctionComponent<
     | 'height'
     | 'hitSlop'
     | 'htmlFor'
-    | 'icon'
-    | 'iconAfter'
-    | 'iconSize'
     | 'id'
     | 'importantForAccessibility'
     | 'inlineSize'
@@ -258,6 +263,7 @@ export declare const ListItem: FunctionComponent<
     | 'isTVSelectable'
     | 'isolation'
     | 'justifyContent'
+    | 'labeledBy'
     | 'left'
     | 'margin'
     | 'marginBlock'
@@ -301,7 +307,10 @@ export declare const ListItem: FunctionComponent<
     | 'minInlineSize'
     | 'minWidth'
     | 'mixBlendMode'
+    | 'name'
+    | 'native'
     | 'nativeID'
+    | 'nativeProps'
     | 'needsOffscreenAlphaCompositing'
     | 'objectFit'
     | 'onAccessibilityAction'
@@ -310,6 +319,7 @@ export declare const ListItem: FunctionComponent<
     | 'onBeforeInput'
     | 'onBlur'
     | 'onChange'
+    | 'onCheckedChange'
     | 'onClick'
     | 'onContextMenu'
     | 'onCopy'
@@ -393,6 +403,7 @@ export declare const ListItem: FunctionComponent<
     | 'removeClippedSubviews'
     | 'render'
     | 'renderToHardwareTextureAndroid'
+    | 'required'
     | 'resize'
     | 'right'
     | 'role'
@@ -403,7 +414,6 @@ export declare const ListItem: FunctionComponent<
     | 'rotation'
     | 'rowGap'
     | 'scale'
-    | 'scaleIcon'
     | 'scaleX'
     | 'scaleY'
     | 'screenReaderFocusable'
@@ -417,7 +427,6 @@ export declare const ListItem: FunctionComponent<
     | 'skewY'
     | 'start'
     | 'style'
-    | 'subTitle'
     | 'tabIndex'
     | 'target'
     | 'testID'
@@ -425,7 +434,6 @@ export declare const ListItem: FunctionComponent<
     | 'textWrap'
     | 'theme'
     | 'themeShallow'
-    | 'title'
     | 'top'
     | 'transform'
     | 'transformMatrix'
@@ -440,7 +448,7 @@ export declare const ListItem: FunctionComponent<
     | 'tvParallaxTiltAngle'
     | 'untilMeasured'
     | 'userSelect'
-    | 'variant'
+    | 'value'
     | 'verticalAlign'
     | 'visibility'
     | 'width'
@@ -449,20 +457,18 @@ export declare const ListItem: FunctionComponent<
     | 'y'
     | 'zIndex'
   > &
-    Omit<
-      import('@tamagui/web').StackNonStyleProps,
-      'disabled' | 'size' | 'variant' | keyof import('@tamagui/web').StackStyleBase
-    > &
-    import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> & {
-      disabled?: boolean | undefined
-      size?: false | import('@tamagui/web').Size | undefined
-      variant?: 'outlined' | undefined
-    } & import('@tamagui/web').WithShorthands<
+    import('@tamagui/ui').StackNonStyleProps &
+    import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+    import('@tamagui/web').WithShorthands<
       import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
     > &
-    ListItemExtraProps & {
+    import('@tamagui/ui').SwitchSharedProps &
+    import('@tamagui/switch-headless').SwitchExtraProps & {
+      native?: import('@tamagui/ui').NativeValue<'mobile' | 'ios' | 'android'>
+      nativeProps?: import('react-native').SwitchProps
+    } & import('@tamagui/ui').SwitchFrameActiveStyleProps & {
       ref?:
-        | import('react').Ref<
+        | React.Ref<
             | import('react-native').View
             | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
           >
@@ -472,12 +478,12 @@ export declare const ListItem: FunctionComponent<
   import('@tamagui/web').StaticComponentObject<
     Omit<
       import('@tamagui/web').GetFinalProps<
-        import('@tamagui/web').StackNonStyleProps,
+        import('@tamagui/core').RNTamaguiViewNonStyleProps,
         import('@tamagui/web').StackStyleBase,
         {
-          disabled?: boolean | undefined
-          size?: false | import('@tamagui/web').Size | undefined
-          variant?: 'outlined' | undefined
+          active?: boolean | undefined
+          frameWidth?: number | undefined
+          size?: number | import('@tamagui/web').Size | undefined
         }
       >,
       | 'accessibilityActions'
@@ -496,6 +502,8 @@ export declare const ListItem: FunctionComponent<
       | 'accessibilityValue'
       | 'accessibilityViewIsModal'
       | 'accessible'
+      | 'activeStyle'
+      | 'activeTheme'
       | 'alignContent'
       | 'alignItems'
       | 'alignSelf'
@@ -586,6 +594,7 @@ export declare const ListItem: FunctionComponent<
       | 'boxShadow'
       | 'boxSizing'
       | 'caretColor'
+      | 'checked'
       | 'children'
       | 'className'
       | 'clipPath'
@@ -601,6 +610,7 @@ export declare const ListItem: FunctionComponent<
       | 'cursor'
       | 'dangerouslySetInnerHTML'
       | 'debug'
+      | 'defaultChecked'
       | 'direction'
       | 'disableClassName'
       | 'disableNativeStyle'
@@ -634,9 +644,6 @@ export declare const ListItem: FunctionComponent<
       | 'height'
       | 'hitSlop'
       | 'htmlFor'
-      | 'icon'
-      | 'iconAfter'
-      | 'iconSize'
       | 'id'
       | 'importantForAccessibility'
       | 'inlineSize'
@@ -650,6 +657,7 @@ export declare const ListItem: FunctionComponent<
       | 'isTVSelectable'
       | 'isolation'
       | 'justifyContent'
+      | 'labeledBy'
       | 'left'
       | 'margin'
       | 'marginBlock'
@@ -693,7 +701,10 @@ export declare const ListItem: FunctionComponent<
       | 'minInlineSize'
       | 'minWidth'
       | 'mixBlendMode'
+      | 'name'
+      | 'native'
       | 'nativeID'
+      | 'nativeProps'
       | 'needsOffscreenAlphaCompositing'
       | 'objectFit'
       | 'onAccessibilityAction'
@@ -702,6 +713,7 @@ export declare const ListItem: FunctionComponent<
       | 'onBeforeInput'
       | 'onBlur'
       | 'onChange'
+      | 'onCheckedChange'
       | 'onClick'
       | 'onContextMenu'
       | 'onCopy'
@@ -785,6 +797,7 @@ export declare const ListItem: FunctionComponent<
       | 'removeClippedSubviews'
       | 'render'
       | 'renderToHardwareTextureAndroid'
+      | 'required'
       | 'resize'
       | 'right'
       | 'role'
@@ -795,7 +808,6 @@ export declare const ListItem: FunctionComponent<
       | 'rotation'
       | 'rowGap'
       | 'scale'
-      | 'scaleIcon'
       | 'scaleX'
       | 'scaleY'
       | 'screenReaderFocusable'
@@ -809,7 +821,6 @@ export declare const ListItem: FunctionComponent<
       | 'skewY'
       | 'start'
       | 'style'
-      | 'subTitle'
       | 'tabIndex'
       | 'target'
       | 'testID'
@@ -817,7 +828,6 @@ export declare const ListItem: FunctionComponent<
       | 'textWrap'
       | 'theme'
       | 'themeShallow'
-      | 'title'
       | 'top'
       | 'transform'
       | 'transformMatrix'
@@ -832,7 +842,7 @@ export declare const ListItem: FunctionComponent<
       | 'tvParallaxTiltAngle'
       | 'untilMeasured'
       | 'userSelect'
-      | 'variant'
+      | 'value'
       | 'verticalAlign'
       | 'visibility'
       | 'width'
@@ -841,38 +851,34 @@ export declare const ListItem: FunctionComponent<
       | 'y'
       | 'zIndex'
     > &
-      Omit<
-        import('@tamagui/web').StackNonStyleProps,
-        'disabled' | 'size' | 'variant' | keyof import('@tamagui/web').StackStyleBase
-      > &
-      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> & {
-        disabled?: boolean | undefined
-        size?: false | import('@tamagui/web').Size | undefined
-        variant?: 'outlined' | undefined
-      } & import('@tamagui/web').WithShorthands<
+      import('@tamagui/ui').StackNonStyleProps &
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+      import('@tamagui/web').WithShorthands<
         import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
       > &
-      ListItemExtraProps,
+      import('@tamagui/ui').SwitchSharedProps &
+      import('@tamagui/switch-headless').SwitchExtraProps & {
+        native?: import('@tamagui/ui').NativeValue<'mobile' | 'ios' | 'android'>
+        nativeProps?: import('react-native').SwitchProps
+      } & import('@tamagui/ui').SwitchFrameActiveStyleProps,
     | import('react-native').View
     | (HTMLElement & import('@tamagui/web').TamaguiElementMethods),
-    import('@tamagui/web').StackNonStyleProps &
-      Omit<
-        import('@tamagui/web').StackNonStyleProps,
-        'disabled' | 'size' | 'variant' | keyof import('@tamagui/web').StackStyleBase
-      > &
-      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> & {
-        disabled?: boolean | undefined
-        size?: false | import('@tamagui/web').Size | undefined
-        variant?: 'outlined' | undefined
-      } & import('@tamagui/web').WithShorthands<
+    import('@tamagui/core').RNTamaguiViewNonStyleProps &
+      import('@tamagui/ui').StackNonStyleProps &
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+      import('@tamagui/web').WithShorthands<
         import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
       > &
-      ListItemExtraProps,
+      import('@tamagui/ui').SwitchSharedProps &
+      import('@tamagui/switch-headless').SwitchExtraProps & {
+        native?: import('@tamagui/ui').NativeValue<'mobile' | 'ios' | 'android'>
+        nativeProps?: import('react-native').SwitchProps
+      } & import('@tamagui/ui').SwitchFrameActiveStyleProps,
     import('@tamagui/web').StackStyleBase,
     {
-      disabled?: boolean | undefined
-      size?: false | import('@tamagui/web').Size | undefined
-      variant?: 'outlined' | undefined
+      active?: boolean | undefined
+      frameWidth?: number | undefined
+      size?: number | import('@tamagui/web').Size | undefined
     },
     import('@tamagui/web').StaticConfigPublic
   > &
@@ -880,12 +886,12 @@ export declare const ListItem: FunctionComponent<
     __tama: [
       Omit<
         import('@tamagui/web').GetFinalProps<
-          import('@tamagui/web').StackNonStyleProps,
+          import('@tamagui/core').RNTamaguiViewNonStyleProps,
           import('@tamagui/web').StackStyleBase,
           {
-            disabled?: boolean | undefined
-            size?: false | import('@tamagui/web').Size | undefined
-            variant?: 'outlined' | undefined
+            active?: boolean | undefined
+            frameWidth?: number | undefined
+            size?: number | import('@tamagui/web').Size | undefined
           }
         >,
         | 'accessibilityActions'
@@ -904,6 +910,8 @@ export declare const ListItem: FunctionComponent<
         | 'accessibilityValue'
         | 'accessibilityViewIsModal'
         | 'accessible'
+        | 'activeStyle'
+        | 'activeTheme'
         | 'alignContent'
         | 'alignItems'
         | 'alignSelf'
@@ -994,6 +1002,7 @@ export declare const ListItem: FunctionComponent<
         | 'boxShadow'
         | 'boxSizing'
         | 'caretColor'
+        | 'checked'
         | 'children'
         | 'className'
         | 'clipPath'
@@ -1009,6 +1018,7 @@ export declare const ListItem: FunctionComponent<
         | 'cursor'
         | 'dangerouslySetInnerHTML'
         | 'debug'
+        | 'defaultChecked'
         | 'direction'
         | 'disableClassName'
         | 'disableNativeStyle'
@@ -1042,9 +1052,6 @@ export declare const ListItem: FunctionComponent<
         | 'height'
         | 'hitSlop'
         | 'htmlFor'
-        | 'icon'
-        | 'iconAfter'
-        | 'iconSize'
         | 'id'
         | 'importantForAccessibility'
         | 'inlineSize'
@@ -1058,6 +1065,7 @@ export declare const ListItem: FunctionComponent<
         | 'isTVSelectable'
         | 'isolation'
         | 'justifyContent'
+        | 'labeledBy'
         | 'left'
         | 'margin'
         | 'marginBlock'
@@ -1101,7 +1109,10 @@ export declare const ListItem: FunctionComponent<
         | 'minInlineSize'
         | 'minWidth'
         | 'mixBlendMode'
+        | 'name'
+        | 'native'
         | 'nativeID'
+        | 'nativeProps'
         | 'needsOffscreenAlphaCompositing'
         | 'objectFit'
         | 'onAccessibilityAction'
@@ -1110,6 +1121,7 @@ export declare const ListItem: FunctionComponent<
         | 'onBeforeInput'
         | 'onBlur'
         | 'onChange'
+        | 'onCheckedChange'
         | 'onClick'
         | 'onContextMenu'
         | 'onCopy'
@@ -1193,6 +1205,7 @@ export declare const ListItem: FunctionComponent<
         | 'removeClippedSubviews'
         | 'render'
         | 'renderToHardwareTextureAndroid'
+        | 'required'
         | 'resize'
         | 'right'
         | 'role'
@@ -1203,7 +1216,6 @@ export declare const ListItem: FunctionComponent<
         | 'rotation'
         | 'rowGap'
         | 'scale'
-        | 'scaleIcon'
         | 'scaleX'
         | 'scaleY'
         | 'screenReaderFocusable'
@@ -1217,7 +1229,6 @@ export declare const ListItem: FunctionComponent<
         | 'skewY'
         | 'start'
         | 'style'
-        | 'subTitle'
         | 'tabIndex'
         | 'target'
         | 'testID'
@@ -1225,7 +1236,6 @@ export declare const ListItem: FunctionComponent<
         | 'textWrap'
         | 'theme'
         | 'themeShallow'
-        | 'title'
         | 'top'
         | 'transform'
         | 'transformMatrix'
@@ -1240,7 +1250,7 @@ export declare const ListItem: FunctionComponent<
         | 'tvParallaxTiltAngle'
         | 'untilMeasured'
         | 'userSelect'
-        | 'variant'
+        | 'value'
         | 'verticalAlign'
         | 'visibility'
         | 'width'
@@ -1249,248 +1259,267 @@ export declare const ListItem: FunctionComponent<
         | 'y'
         | 'zIndex'
       > &
-        Omit<
-          import('@tamagui/web').StackNonStyleProps,
-          'disabled' | 'size' | 'variant' | keyof import('@tamagui/web').StackStyleBase
-        > &
-        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> & {
-          disabled?: boolean | undefined
-          size?: false | import('@tamagui/web').Size | undefined
-          variant?: 'outlined' | undefined
-        } & import('@tamagui/web').WithShorthands<
+        import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
           import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
         > &
-        ListItemExtraProps,
+        import('@tamagui/ui').SwitchSharedProps &
+        import('@tamagui/switch-headless').SwitchExtraProps & {
+          native?: import('@tamagui/ui').NativeValue<'mobile' | 'ios' | 'android'>
+          nativeProps?: import('react-native').SwitchProps
+        } & import('@tamagui/ui').SwitchFrameActiveStyleProps,
       (
         | import('react-native').View
         | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
       ),
-      import('@tamagui/web').StackNonStyleProps &
-        Omit<
-          import('@tamagui/web').StackNonStyleProps,
-          'disabled' | 'size' | 'variant' | keyof import('@tamagui/web').StackStyleBase
-        > &
-        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> & {
-          disabled?: boolean | undefined
-          size?: false | import('@tamagui/web').Size | undefined
-          variant?: 'outlined' | undefined
-        } & import('@tamagui/web').WithShorthands<
+      import('@tamagui/core').RNTamaguiViewNonStyleProps &
+        import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
           import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
         > &
-        ListItemExtraProps,
+        import('@tamagui/ui').SwitchSharedProps &
+        import('@tamagui/switch-headless').SwitchExtraProps & {
+          native?: import('@tamagui/ui').NativeValue<'mobile' | 'ios' | 'android'>
+          nativeProps?: import('react-native').SwitchProps
+        } & import('@tamagui/ui').SwitchFrameActiveStyleProps,
       import('@tamagui/web').StackStyleBase,
       {
-        disabled?: boolean | undefined
-        size?: false | import('@tamagui/web').Size | undefined
-        variant?: 'outlined' | undefined
+        active?: boolean | undefined
+        frameWidth?: number | undefined
+        size?: number | import('@tamagui/web').Size | undefined
       },
       import('@tamagui/web').StaticConfigPublic,
     ]
   } & {
-    Apply: import('react').Provider<{
-      size?: SizeTokens | true
-      variant?: ListItemVariant
-      color?: ColorTokens | string
-    }> &
-      import('react').ProviderExoticComponent<
-        Partial<{
-          size?: SizeTokens | true
-          variant?: ListItemVariant
-          color?: ColorTokens | string
-        }> & {
-          children?: ReactNode
-          scope?: string
-        }
-      >
-    Frame: FunctionComponent<
+    Frame: React.FunctionComponent<
       Omit<
-        import('@tamagui/web').StackNonStyleProps,
-        'disabled' | 'size' | 'variant' | keyof import('@tamagui/web').StackStyleBase
+        import('@tamagui/core').RNTamaguiViewNonStyleProps,
+        'active' | 'frameWidth' | 'size' | keyof import('@tamagui/web').StackStyleBase
       > &
         import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> & {
-          disabled?: boolean | undefined
-          size?: false | import('@tamagui/web').Size | undefined
-          variant?: 'outlined' | undefined
+          active?: boolean | undefined
+          frameWidth?: number | undefined
+          size?: number | import('@tamagui/web').Size | undefined
         } & import('@tamagui/web').WithShorthands<
           import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
         > & {
-          ref?: import('react').Ref<import('@tamagui/web').TamaguiElement> | undefined
+          ref?: React.Ref<import('@tamagui/ui').TamaguiElement> | undefined
         }
     > &
       import('@tamagui/web').StaticComponentObject<
         import('@tamagui/web').TamaDefer,
-        import('@tamagui/web').TamaguiElement,
-        import('@tamagui/web').StackNonStyleProps,
+        import('@tamagui/ui').TamaguiElement,
+        import('@tamagui/core').RNTamaguiViewNonStyleProps,
         import('@tamagui/web').StackStyleBase,
         {
-          disabled?: boolean | undefined
-          size?: false | import('@tamagui/web').Size | undefined
-          variant?: 'outlined' | undefined
+          active?: boolean | undefined
+          frameWidth?: number | undefined
+          size?: number | import('@tamagui/web').Size | undefined
         },
         import('@tamagui/web').StaticConfigPublic
       > &
       Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
         __tama: [
           import('@tamagui/web').TamaDefer,
-          import('@tamagui/web').TamaguiElement,
-          import('@tamagui/web').StackNonStyleProps,
+          import('@tamagui/ui').TamaguiElement,
+          import('@tamagui/core').RNTamaguiViewNonStyleProps,
           import('@tamagui/web').StackStyleBase,
           {
-            disabled?: boolean | undefined
-            size?: false | import('@tamagui/web').Size | undefined
-            variant?: 'outlined' | undefined
+            active?: boolean | undefined
+            frameWidth?: number | undefined
+            size?: number | import('@tamagui/web').Size | undefined
           },
           import('@tamagui/web').StaticConfigPublic,
         ]
       }
-    Text: FunctionComponent<
+    Thumb: import('@tamagui/ui').TamaguiComponent<
       Omit<
-        import('@tamagui/web').TextNonStyleProps,
-        'size' | 'variant' | keyof import('@tamagui/web').TextStylePropsBase
-      > &
-        import('@tamagui/web').WithThemeValues<
-          import('@tamagui/web').TextStylePropsBase
-        > & {
-          size?: import('@tamagui/web').FontSize | undefined
-          variant?: 'outlined' | undefined
-        } & import('@tamagui/web').WithShorthands<
-          import('@tamagui/web').WithThemeValues<
-            import('@tamagui/web').TextStylePropsBase
-          >
-        > & {
-          ref?: import('react').Ref<import('@tamagui/web').TamaguiTextElement> | undefined
-        }
-    > &
-      import('@tamagui/web').StaticComponentObject<
-        import('@tamagui/web').TamaDefer,
-        import('@tamagui/web').TamaguiTextElement,
-        import('@tamagui/web').TextNonStyleProps,
-        import('@tamagui/web').TextStylePropsBase,
-        {
-          size?: import('@tamagui/web').FontSize | undefined
-          variant?: 'outlined' | undefined
-        },
-        import('@tamagui/web').StaticConfigPublic
-      > &
-      Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
-        __tama: [
-          import('@tamagui/web').TamaDefer,
-          import('@tamagui/web').TamaguiTextElement,
-          import('@tamagui/web').TextNonStyleProps,
-          import('@tamagui/web').TextStylePropsBase,
+        import('@tamagui/web').GetFinalProps<
+          import('@tamagui/core').RNTamaguiViewNonStyleProps,
+          import('@tamagui/web').StackStyleBase,
           {
-            size?: import('@tamagui/web').FontSize | undefined
-            variant?: 'outlined' | undefined
-          },
-          import('@tamagui/web').StaticConfigPublic,
-        ]
-      }
-    Subtitle: FunctionComponent<
-      Omit<
-        import('@tamagui/web').TextNonStyleProps,
-        'size' | 'variant' | keyof import('@tamagui/web').TextStylePropsBase
+            active?: boolean | undefined
+            frameWidth?: number | undefined
+            size?: number | import('@tamagui/web').Size | undefined
+          }
+        >,
+        | 'active'
+        | 'activeStyle'
+        | 'download'
+        | 'elevationAndroid'
+        | 'frameWidth'
+        | 'onLayout'
+        | 'onMoveShouldSetResponder'
+        | 'onMoveShouldSetResponderCapture'
+        | 'onResponderEnd'
+        | 'onResponderGrant'
+        | 'onResponderMove'
+        | 'onResponderReject'
+        | 'onResponderRelease'
+        | 'onResponderStart'
+        | 'onResponderTerminate'
+        | 'onResponderTerminationRequest'
+        | 'onScrollShouldSetResponder'
+        | 'onScrollShouldSetResponderCapture'
+        | 'onSelectionChangeShouldSetResponder'
+        | 'onSelectionChangeShouldSetResponderCapture'
+        | 'onStartShouldSetResponder'
+        | 'onStartShouldSetResponderCapture'
+        | 'rel'
+        | 'size'
+        | keyof import('@tamagui/ui').StackNonStyleProps
+        | keyof import('@tamagui/web').StackStyleBase
       > &
-        import('@tamagui/web').WithThemeValues<
-          import('@tamagui/web').TextStylePropsBase
-        > & {
-          size?:
-            | string
-            | number
-            | boolean
-            | import('@tamagui/web').UnionableNumber
-            | import('@tamagui/web').UnionableString
-            | (string & {})
-            | undefined
-          variant?: 'outlined' | undefined
-        } & import('@tamagui/web').WithShorthands<
-          import('@tamagui/web').WithThemeValues<
-            import('@tamagui/web').TextStylePropsBase
-          >
-        > & {
-          ref?: import('react').Ref<import('@tamagui/web').TamaguiTextElement> | undefined
-        }
-    > &
-      import('@tamagui/web').StaticComponentObject<
-        import('@tamagui/web').TamaDefer,
-        import('@tamagui/web').TamaguiTextElement,
-        import('@tamagui/web').TextNonStyleProps,
-        import('@tamagui/web').TextStylePropsBase,
-        {
-          size?:
-            | string
-            | number
-            | boolean
-            | import('@tamagui/web').UnionableNumber
-            | import('@tamagui/web').UnionableString
-            | (string & {})
-            | undefined
-          variant?: 'outlined' | undefined
-        },
-        import('@tamagui/web').StaticConfigPublic
-      > &
-      Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
-        __tama: [
-          import('@tamagui/web').TamaDefer,
-          import('@tamagui/web').TamaguiTextElement,
-          import('@tamagui/web').TextNonStyleProps,
-          import('@tamagui/web').TextStylePropsBase,
-          {
-            size?:
-              | string
-              | number
-              | boolean
-              | import('@tamagui/web').UnionableNumber
-              | import('@tamagui/web').UnionableString
-              | (string & {})
-              | undefined
-            variant?: 'outlined' | undefined
-          },
-          import('@tamagui/web').StaticConfigPublic,
-        ]
-      }
-    Icon: typeof ListItemIcon
-    Title: FunctionComponent<
-      Omit<
-        import('@tamagui/web').TextNonStyleProps,
-        'size' | 'variant' | keyof import('@tamagui/web').TextStylePropsBase
-      > &
-        import('@tamagui/web').WithThemeValues<
-          import('@tamagui/web').TextStylePropsBase
-        > & {
-          size?: import('@tamagui/web').FontSize | undefined
-          variant?: 'outlined' | undefined
-        } & import('@tamagui/web').WithShorthands<
-          import('@tamagui/web').WithThemeValues<
-            import('@tamagui/web').TextStylePropsBase
-          >
-        > & {
-          ref?: import('react').Ref<import('@tamagui/web').TamaguiTextElement> | undefined
-        }
-    > &
-      import('@tamagui/web').StaticComponentObject<
-        import('@tamagui/web').TamaDefer,
-        import('@tamagui/web').TamaguiTextElement,
-        import('@tamagui/web').TextNonStyleProps,
-        import('@tamagui/web').TextStylePropsBase,
-        {
-          size?: import('@tamagui/web').FontSize | undefined
-          variant?: 'outlined' | undefined
-        },
-        import('@tamagui/web').StaticConfigPublic
-      > &
-      Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
-        __tama: [
-          import('@tamagui/web').TamaDefer,
-          import('@tamagui/web').TamaguiTextElement,
-          import('@tamagui/web').TextNonStyleProps,
-          import('@tamagui/web').TextStylePropsBase,
-          {
-            size?: import('@tamagui/web').FontSize | undefined
-            variant?: 'outlined' | undefined
-          },
-          import('@tamagui/web').StaticConfigPublic,
-        ]
-      }
+        Omit<
+          import('@tamagui/web').GetFinalProps<
+            import('@tamagui/core').RNTamaguiViewNonStyleProps,
+            import('@tamagui/web').StackStyleBase,
+            {
+              active?: boolean | undefined
+              frameWidth?: number | undefined
+              size?: number | import('@tamagui/web').Size | undefined
+            }
+          >,
+          | 'activeStyle'
+          | 'size'
+          | keyof import('@tamagui/ui').StackNonStyleProps
+          | keyof import('@tamagui/web').StackStyleBase
+        > &
+        import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        > &
+        import('@tamagui/ui').SwitchSharedProps &
+        import('@tamagui/ui').SwitchThumbActiveStyleProps,
+      | import('react-native').View
+      | (HTMLElement & import('@tamagui/web').TamaguiElementMethods),
+      import('@tamagui/core').RNTamaguiViewNonStyleProps &
+        Omit<
+          import('@tamagui/web').GetFinalProps<
+            import('@tamagui/core').RNTamaguiViewNonStyleProps,
+            import('@tamagui/web').StackStyleBase,
+            {
+              active?: boolean | undefined
+              frameWidth?: number | undefined
+              size?: number | import('@tamagui/web').Size | undefined
+            }
+          >,
+          | 'activeStyle'
+          | 'size'
+          | keyof import('@tamagui/ui').StackNonStyleProps
+          | keyof import('@tamagui/web').StackStyleBase
+        > &
+        import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        > &
+        import('@tamagui/ui').SwitchSharedProps &
+        import('@tamagui/ui').SwitchThumbActiveStyleProps,
+      import('@tamagui/web').StackStyleBase,
+      {
+        active?: boolean | undefined
+        frameWidth?: number | undefined
+        size?: number | import('@tamagui/web').Size | undefined
+      },
+      import('@tamagui/web').StaticConfigPublic
+    >
   }
-export {}
-//# sourceMappingURL=ListItem.d.ts.map
+export declare const SwitchThumb: import('@tamagui/ui').TamaguiComponent<
+  Omit<
+    import('@tamagui/web').GetFinalProps<
+      import('@tamagui/core').RNTamaguiViewNonStyleProps,
+      import('@tamagui/web').StackStyleBase,
+      {
+        active?: boolean | undefined
+        frameWidth?: number | undefined
+        size?: number | import('@tamagui/web').Size | undefined
+      }
+    >,
+    | 'active'
+    | 'activeStyle'
+    | 'download'
+    | 'elevationAndroid'
+    | 'frameWidth'
+    | 'onLayout'
+    | 'onMoveShouldSetResponder'
+    | 'onMoveShouldSetResponderCapture'
+    | 'onResponderEnd'
+    | 'onResponderGrant'
+    | 'onResponderMove'
+    | 'onResponderReject'
+    | 'onResponderRelease'
+    | 'onResponderStart'
+    | 'onResponderTerminate'
+    | 'onResponderTerminationRequest'
+    | 'onScrollShouldSetResponder'
+    | 'onScrollShouldSetResponderCapture'
+    | 'onSelectionChangeShouldSetResponder'
+    | 'onSelectionChangeShouldSetResponderCapture'
+    | 'onStartShouldSetResponder'
+    | 'onStartShouldSetResponderCapture'
+    | 'rel'
+    | 'size'
+    | keyof import('@tamagui/ui').StackNonStyleProps
+    | keyof import('@tamagui/web').StackStyleBase
+  > &
+    Omit<
+      import('@tamagui/web').GetFinalProps<
+        import('@tamagui/core').RNTamaguiViewNonStyleProps,
+        import('@tamagui/web').StackStyleBase,
+        {
+          active?: boolean | undefined
+          frameWidth?: number | undefined
+          size?: number | import('@tamagui/web').Size | undefined
+        }
+      >,
+      | 'activeStyle'
+      | 'size'
+      | keyof import('@tamagui/ui').StackNonStyleProps
+      | keyof import('@tamagui/web').StackStyleBase
+    > &
+    import('@tamagui/ui').StackNonStyleProps &
+    import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+    import('@tamagui/web').WithShorthands<
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+    > &
+    import('@tamagui/ui').SwitchSharedProps &
+    import('@tamagui/ui').SwitchThumbActiveStyleProps,
+  | import('react-native').View
+  | (HTMLElement & import('@tamagui/web').TamaguiElementMethods),
+  import('@tamagui/core').RNTamaguiViewNonStyleProps &
+    Omit<
+      import('@tamagui/web').GetFinalProps<
+        import('@tamagui/core').RNTamaguiViewNonStyleProps,
+        import('@tamagui/web').StackStyleBase,
+        {
+          active?: boolean | undefined
+          frameWidth?: number | undefined
+          size?: number | import('@tamagui/web').Size | undefined
+        }
+      >,
+      | 'activeStyle'
+      | 'size'
+      | keyof import('@tamagui/ui').StackNonStyleProps
+      | keyof import('@tamagui/web').StackStyleBase
+    > &
+    import('@tamagui/ui').StackNonStyleProps &
+    import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+    import('@tamagui/web').WithShorthands<
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+    > &
+    import('@tamagui/ui').SwitchSharedProps &
+    import('@tamagui/ui').SwitchThumbActiveStyleProps,
+  import('@tamagui/web').StackStyleBase,
+  {
+    active?: boolean | undefined
+    frameWidth?: number | undefined
+    size?: number | import('@tamagui/web').Size | undefined
+  },
+  import('@tamagui/web').StaticConfigPublic
+>
+export type SwitchProps = GetProps<typeof Switch>
+//# sourceMappingURL=Switch.d.ts.map

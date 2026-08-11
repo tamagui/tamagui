@@ -150,6 +150,11 @@ export interface ToastIcons {
 export interface ToastRootProps {
   children: React.ReactNode
   /**
+   * Only render toasts sent to this toaster id. Untargeted toasts render in
+   * roots without an id.
+   */
+  toasterId?: string
+  /**
    * Position of the toasts on screen
    * @default 'bottom-right'
    */
@@ -246,6 +251,7 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
   function ToastRoot(props, _ref) {
     const {
       children,
+      toasterId,
       position = 'bottom-right',
       duration = TOAST_LIFETIME,
       gap = TOAST_GAP,
@@ -350,6 +356,10 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
           return
         }
 
+        if ((toast as ToastT).toasterId !== toasterId) {
+          return
+        }
+
         // Native dispatch: intercept before entering state so no in-app toast renders.
         // On failure (e.g. permission denied), falls through to in-app.
         if (native) {
@@ -373,7 +383,7 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
           return [toast as ToastT, ...toasts]
         })
       })
-    }, [native, duration])
+    }, [native, duration, toasterId])
 
     // collapse when 1 toast left, or when a new toast is added while expanded
     const prevToastCountRef = React.useRef(toasts.length)

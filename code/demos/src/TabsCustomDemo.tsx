@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {
+  Button,
   XStack,
   YStack,
   isWeb,
@@ -8,7 +9,6 @@ import {
   type VariantSpreadExtras,
   withStaticProperties,
 } from 'tamagui'
-import { Button } from './Button'
 import { Tabs as TabsBehavior } from '@tamagui/tabs'
 
 const tabSizeVariant = (value: any, extras: VariantSpreadExtras<any>) => {

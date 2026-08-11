@@ -18,6 +18,7 @@ import type { ControllableStateSetter } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import {
   SelectItemParentProvider,
+  SelectNativeComponentContext,
   SelectProvider,
   SelectZIndexContext,
   useSelectContext,
@@ -254,12 +255,18 @@ export const SelectGroup = createStyledHOC(
 
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)
+    const StyledNativeSelect = React.useContext(SelectNativeComponentContext)
     const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
 
     const content = (() => {
       if (itemParentContext.shouldRenderWebNative) {
         return (
           <NativeSelect
+            {...(StyledNativeSelect && {
+              render: StyledNativeSelect,
+              size: itemParentContext.size,
+              style: { appearance: 'none' },
+            })}
             {...groupProps}
             // @ts-ignore it's ok since render="select"
             value={context.value}

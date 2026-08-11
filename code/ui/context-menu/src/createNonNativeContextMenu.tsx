@@ -57,7 +57,6 @@ interface ContextMenuTriggerProps extends ViewProps {
 
 type ContextMenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>
 
-type ContextMenuContentElement = React.ComponentRef<BaseMenu['Content']>
 interface ContextMenuContentProps extends Omit<
   React.ComponentPropsWithoutRef<BaseMenu['Content']>,
   'onEntryFocus' | 'side' | 'sideOffset' | 'align'
@@ -87,7 +86,6 @@ interface ContextMenuSubProps extends BaseMenuTypes.MenuSubProps {
 }
 
 type ContextMenuSubTriggerProps = React.ComponentPropsWithoutRef<BaseMenu['SubTrigger']>
-type ContextMenuSubContentElement = React.ComponentRef<BaseMenu['Content']>
 type ContextMenuSubContentProps = React.ComponentPropsWithoutRef<BaseMenu['SubContent']>
 
 /* -----------------------------------------------------------------------------------------------*/
@@ -322,37 +320,37 @@ export function createNonNativeContextMenu() {
 
   const CONTENT_NAME = 'ContextMenuContent'
 
-  const ContextMenuContent = createRefComponent<
-    ContextMenuContentElement,
-    ScopedProps<ContextMenuContentProps>
-  >((props, forwardedRef) => {
-    const { scope, ...contentProps } = props
-    const context = useContextMenuContext(scope)
-    const hasInteractedOutsideRef = React.useRef(false)
+  const ContextMenuContent = createStyledHOC(
+    Menu.Content,
+    (props: ScopedProps<ContextMenuContentProps>, forwardedRef) => {
+      const { scope, ...contentProps } = props
+      const context = useContextMenuContext(scope)
+      const hasInteractedOutsideRef = React.useRef(false)
 
-    return (
-      <Menu.Content
-        id={context.contentId}
-        aria-labelledby={context.triggerId}
-        scope={scope || CONTEXTMENU_CONTEXT}
-        {...contentProps}
-        ref={forwardedRef}
-        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-          if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus()
-          hasInteractedOutsideRef.current = false
-          event.cancel()
-        })}
-        onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
-          if (event.interaction !== 'pointer' || !event.event) return
-          const originalEvent = event.event
-          const ctrlLeftClick =
-            originalEvent.button === 0 && originalEvent.ctrlKey === true
-          const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-          if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
-        })}
-      />
-    )
-  })
+      return (
+        <Menu.Content
+          id={context.contentId}
+          aria-labelledby={context.triggerId}
+          scope={scope || CONTEXTMENU_CONTEXT}
+          {...contentProps}
+          ref={forwardedRef}
+          onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+            if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus()
+            hasInteractedOutsideRef.current = false
+            event.cancel()
+          })}
+          onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
+            if (event.interaction !== 'pointer' || !event.event) return
+            const originalEvent = event.event
+            const ctrlLeftClick =
+              originalEvent.button === 0 && originalEvent.ctrlKey === true
+            const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+            if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
+          })}
+        />
+      )
+    }
+  )
 
   ContextMenuContent.displayName = CONTENT_NAME
 
@@ -527,38 +525,38 @@ export function createNonNativeContextMenu() {
 
   const SUB_CONTENT_NAME = 'ContextMenuSubContent'
 
-  const ContextMenuSubContent = createRefComponent<
-    ContextMenuSubContentElement,
-    ScopedProps<ContextMenuSubContentProps>
-  >((props, forwardedRef) => {
-    const { scope, ...subContentProps } = props
-    return (
-      <Menu.SubContent
-        scope={scope || CONTEXTMENU_CONTEXT}
-        {...subContentProps}
-        ref={forwardedRef}
-        style={
-          isWeb
-            ? {
-                ...(props.style as object),
-                ...({
-                  '--tamagui-context-menu-content-transform-origin':
-                    'var(--tamagui-popper-transform-origin)',
-                  '--tamagui-context-menu-content-available-width':
-                    'var(--tamagui-popper-available-width)',
-                  '--tamagui-context-menu-content-available-height':
-                    'var(--tamagui-popper-available-height)',
-                  '--tamagui-context-menu-trigger-width':
-                    'var(--tamagui-popper-anchor-width)',
-                  '--tamagui-context-menu-trigger-height':
-                    'var(--tamagui-popper-anchor-height)',
-                } as React.CSSProperties),
-              }
-            : null
-        }
-      />
-    )
-  })
+  const ContextMenuSubContent = createStyledHOC(
+    Menu.SubContent,
+    (props: ScopedProps<ContextMenuSubContentProps>, forwardedRef) => {
+      const { scope, ...subContentProps } = props
+      return (
+        <Menu.SubContent
+          scope={scope || CONTEXTMENU_CONTEXT}
+          {...subContentProps}
+          ref={forwardedRef}
+          style={
+            isWeb
+              ? {
+                  ...(props.style as object),
+                  ...({
+                    '--tamagui-context-menu-content-transform-origin':
+                      'var(--tamagui-popper-transform-origin)',
+                    '--tamagui-context-menu-content-available-width':
+                      'var(--tamagui-popper-available-width)',
+                    '--tamagui-context-menu-content-available-height':
+                      'var(--tamagui-popper-available-height)',
+                    '--tamagui-context-menu-trigger-width':
+                      'var(--tamagui-popper-anchor-width)',
+                    '--tamagui-context-menu-trigger-height':
+                      'var(--tamagui-popper-anchor-height)',
+                  } as React.CSSProperties),
+                }
+              : null
+          }
+        />
+      )
+    }
+  )
 
   ContextMenuSubContent.displayName = SUB_CONTENT_NAME
 

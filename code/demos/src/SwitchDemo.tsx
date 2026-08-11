@@ -1,6 +1,5 @@
 import type { SizeTokens } from 'tamagui'
-import { Label, Separator, XStack, YStack } from 'tamagui'
-import { Switch } from './ControlSkins'
+import { Label, Separator, Switch, XStack, YStack } from 'tamagui'
 
 export function SwitchDemo() {
   return (

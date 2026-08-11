@@ -8,7 +8,7 @@ import {
   Trash2,
 } from '@tamagui/lucide-icons-2'
 import React from 'react'
-import { Button } from './Button'
+import { Button } from 'tamagui'
 import { Menu } from './MenuSkins'
 
 /**
@@ -45,7 +45,7 @@ export function MenuDemo() {
             y="enter:-5px exit:-3px"
             boxShadow="0 4px 5px shadow-color"
           >
-            <Menu.Arrow size="4" borderWidth={1} borderColor="border-color" />
+            <Menu.Arrow size={13} borderWidth={1} borderColor="border-color" />
 
             <Menu.ScrollView padding={5}>
               <Menu.Item onSelect={onSelect} key="about-notes">

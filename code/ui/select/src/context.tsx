@@ -1,10 +1,14 @@
 import { createStyledContext } from '@tamagui/core'
 import { getPortal } from '@tamagui/native'
-import { createContext } from 'react'
+import { createContext, type ComponentType } from 'react'
 import type { SelectContextValue, SelectItemParentContextValue } from './types'
 
 // zIndex flows from root Select prop to SelectContent portal
 export const SelectZIndexContext = createContext<number | undefined>(undefined)
+
+// the behavior surface renders a raw native select. the styled tamagui surface
+// supplies its native-select skin through this slot.
+export const SelectNativeComponentContext = createContext<ComponentType<any> | null>(null)
 
 export const { Provider: SelectProvider, useStyledContext: useSelectContext } =
   createStyledContext<SelectContextValue>(null as any, 'Select')

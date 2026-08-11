@@ -1,5 +1,4 @@
-import { Input, Label, XStack, YStack } from 'tamagui'
-import { Switch } from './ControlSkins'
+import { Input, Label, Switch, XStack, YStack } from 'tamagui'
 
 export function LabelDemo() {
   return (

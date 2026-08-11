@@ -1,16 +1,30 @@
-import type { SelectContextValue, SelectItemParentContextValue } from './types';
-export declare const SelectZIndexContext: import("react").Context<number | undefined>;
-export declare const SelectProvider: import("react").Provider<SelectContextValue> & import("react").ProviderExoticComponent<Partial<SelectContextValue> & {
-    children?: import("react").ReactNode;
-    scope?: string;
-}>, useSelectContext: (scope?: string) => SelectContextValue;
-export declare const SelectItemParentProvider: import("react").Provider<SelectItemParentContextValue> & import("react").ProviderExoticComponent<Partial<SelectItemParentContextValue> & {
-    children?: import("react").ReactNode;
-    scope?: string;
-}>, useSelectItemParentContext: (scope?: string) => SelectItemParentContextValue;
-export declare const ForwardSelectContext: ({ context, itemContext, children, }: {
-    children?: any;
-    context: SelectContextValue;
-    itemContext: SelectItemParentContextValue;
-}) => any;
+import { type ComponentType } from 'react'
+import type { SelectContextValue, SelectItemParentContextValue } from './types'
+export declare const SelectZIndexContext: import('react').Context<number | undefined>
+export declare const SelectNativeComponentContext: import('react').Context<ComponentType<any> | null>
+export declare const SelectProvider: import('react').Provider<SelectContextValue> &
+    import('react').ProviderExoticComponent<
+      Partial<SelectContextValue> & {
+        children?: import('react').ReactNode
+        scope?: string
+      }
+    >,
+  useSelectContext: (scope?: string) => SelectContextValue
+export declare const SelectItemParentProvider: import('react').Provider<SelectItemParentContextValue> &
+    import('react').ProviderExoticComponent<
+      Partial<SelectItemParentContextValue> & {
+        children?: import('react').ReactNode
+        scope?: string
+      }
+    >,
+  useSelectItemParentContext: (scope?: string) => SelectItemParentContextValue
+export declare const ForwardSelectContext: ({
+  context,
+  itemContext,
+  children,
+}: {
+  children?: any
+  context: SelectContextValue
+  itemContext: SelectItemParentContextValue
+}) => any
 //# sourceMappingURL=context.d.ts.map

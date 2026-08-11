@@ -50,7 +50,7 @@ const context = createStyledContext<{
   color: undefined,
 })
 
-const listItemSizeVariant = (
+export const listItemSizeVariant = (
   val: SizeTokens | true,
   { tokens }: VariantSpreadExtras<any>
 ) => {
@@ -61,8 +61,8 @@ const listItemSizeVariant = (
   return {
     minHeight: size,
     paddingHorizontal: tokens.space[spaceToken],
-    paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
-    gap: getThemedIconSize(sizeToken, 0.4),
+    paddingVertical:
+      val === true ? tokens.space['2-5'] : Math.max(0, Math.round(sizeVal * 0.36 - 9)),
   }
 }
 
@@ -198,8 +198,13 @@ const ListItemComponent = createStyledHOC(
       color: iconColorProp,
     })
 
-    const themedIcon = icon ? getThemedIcon(icon) : null
-    const themedIconAfter = iconAfter ? getThemedIcon(iconAfter) : null
+    const iconSpacing = iconSizeNumber * 0.4
+    const themedIcon = icon ? (
+      <View marginRight={iconSpacing}>{getThemedIcon(icon)}</View>
+    ) : null
+    const themedIconAfter = iconAfter ? (
+      <View marginLeft={iconSpacing}>{getThemedIcon(iconAfter)}</View>
+    ) : null
 
     const wrappedChildren = wrapChildrenInText(ListItemText, { children }, { size })
 

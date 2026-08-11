@@ -2,8 +2,7 @@ import React from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons-2'
 
-import { Image, XStack, YStack, styled } from 'tamagui'
-import { Button } from './Button'
+import { Button, Image, XStack, YStack, styled } from 'tamagui'
 
 // @ts-ignore
 import photo1 from '@tamagui/demos/photo/photo1'

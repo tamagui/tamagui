@@ -20,6 +20,48 @@ export const defaultStyles = {
 const resolveInputFrame = (val: any, extras: VariantSpreadExtras<any>) =>
   resolveTokenSize(val, { tokens: extras.tokens, font: extras.font! }).frame
 
+const inputSizeKeys = [
+  '0',
+  '0-25',
+  '0-5',
+  '0-75',
+  '1',
+  '1-5',
+  '2',
+  '2-5',
+  '3',
+  '3-5',
+  '4',
+  '4-5',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+] as const
+
+const getInputPadding = (val: any, extras: VariantSpreadExtras<any>, steps: 1 | 2) => {
+  if (typeof val === 'number') {
+    return steps === 1
+      ? Math.max(0, Math.round(val * 0.6 - 12))
+      : Math.max(0, Math.round(val * 0.52 - 11.5))
+  }
+  const key = val === true ? '4' : val
+  const index = inputSizeKeys.indexOf(key)
+  return extras.tokens.space[inputSizeKeys[Math.max(0, index - steps)]]
+}
+
 export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = true, extras) => {
   // Check for textarea mode via tag, rows, multiline, or numberOfLines
   if (
@@ -31,8 +73,6 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = true, ext
     return textAreaSizeVariant(val, extras)
   }
   const frame = resolveInputFrame(val, extras)
-  const sizeVal = getVariableValue(frame.size) as number
-  const paddingHorizontal = Math.max(0, Math.round(sizeVal * 0.6 - 12))
   const fontStyle = getFontSized(val as any, extras)
   // lineHeight messes up input on native
   if (!isWeb && fontStyle) {
@@ -42,7 +82,7 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = true, ext
     ...fontStyle,
     height: frame.size,
     borderRadius: frame.radius,
-    paddingHorizontal,
+    paddingHorizontal: getInputPadding(val, extras, 1),
   }
 }
 
@@ -60,14 +100,11 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
   if (!isWeb && fontStyle) {
     delete fontStyle['lineHeight']
   }
-  const sizeVal = getVariableValue(frame.size) as number
-  const paddingVertical = Math.max(0, Math.round(sizeVal * 0.52 - 11.5))
-  const paddingHorizontal = Math.max(0, Math.round(sizeVal * 0.6 - 12))
   return {
     borderRadius: frame.radius,
     ...fontStyle,
-    paddingVertical,
-    paddingHorizontal,
+    paddingVertical: getInputPadding(val, extras, 2),
+    paddingHorizontal: getInputPadding(val, extras, 1),
     height,
   }
 }

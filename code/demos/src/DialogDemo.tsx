@@ -2,6 +2,7 @@ import { ChevronDown, X } from '@tamagui/lucide-icons-2'
 import { useState } from 'react'
 import {
   Adapt,
+  Button,
   Dialog,
   Fieldset,
   Input,
@@ -15,7 +16,6 @@ import {
   XGroup,
   XStack,
 } from 'tamagui'
-import { Button } from './Button'
 import { SelectDemoContents } from './SelectDemo'
 
 type DialogMode = 'plain' | 'adapt' | 'keepMounted'

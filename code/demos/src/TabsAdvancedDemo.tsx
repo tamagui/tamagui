@@ -1,8 +1,15 @@
 import React from 'react'
 import type { ViewProps, TabLayout, TabsTabProps } from 'tamagui'
-import { AnimatePresence, H5, SizableText, XStack, YStack, styled } from 'tamagui'
-import { Button } from './Button'
-import { Tabs } from './ControlSkins'
+import {
+  AnimatePresence,
+  Button,
+  H5,
+  SizableText,
+  Tabs,
+  XStack,
+  YStack,
+  styled,
+} from 'tamagui'
 
 const demos = ['background', 'underline'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -116,6 +123,7 @@ const TabsAdvancedBackground = () => {
           backgroundColor="transparent"
         >
           <Tabs.Tab
+            unstyled
             paddingHorizontal="3"
             value="tab1"
             onInteraction={handleOnInteraction}
@@ -123,6 +131,7 @@ const TabsAdvancedBackground = () => {
             <SizableText>Profile</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
+            unstyled
             paddingHorizontal="3"
             value="tab2"
             onInteraction={handleOnInteraction}
@@ -130,6 +139,7 @@ const TabsAdvancedBackground = () => {
             <SizableText>Connections</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
+            unstyled
             paddingHorizontal="3"
             value="tab3"
             onInteraction={handleOnInteraction}
@@ -240,6 +250,7 @@ const TabsAdvancedUnderline = () => {
           backgroundColor="transparent"
         >
           <Tabs.Tab
+            unstyled
             paddingHorizontal="3"
             value="tab1"
             onInteraction={handleOnInteraction}
@@ -249,6 +260,7 @@ const TabsAdvancedUnderline = () => {
             </SizableText>
           </Tabs.Tab>
           <Tabs.Tab
+            unstyled
             paddingHorizontal="3"
             value="tab2"
             onInteraction={handleOnInteraction}
@@ -258,6 +270,7 @@ const TabsAdvancedUnderline = () => {
             </SizableText>
           </Tabs.Tab>
           <Tabs.Tab
+            unstyled
             paddingHorizontal="3"
             value="tab3"
             onInteraction={handleOnInteraction}

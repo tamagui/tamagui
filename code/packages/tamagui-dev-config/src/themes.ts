@@ -27,13 +27,7 @@ for (const themeName of themeNames) {
   if (!component || selectedThemes[themeName]) continue
   const parentName = themeName.slice(0, -(component.length + 1))
   if (selectedThemes[parentName]) {
-    const schemeName = parentName.startsWith('dark') ? 'dark' : 'light'
-    const isLevelTheme = parentName.endsWith('_level2') || parentName.endsWith('_level3')
-    const schemeComponentTheme = selectedThemes[`${schemeName}_${component}`]
-    selectedThemes[themeName] =
-      isLevelTheme && schemeComponentTheme
-        ? schemeComponentTheme
-        : selectedThemes[parentName]
+    selectedThemes[themeName] = selectedThemes[parentName]
   }
 }
 

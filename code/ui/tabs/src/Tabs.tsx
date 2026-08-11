@@ -174,6 +174,11 @@ export const TabsTab = createStyledHOC(
     const isSelected = value === context.value
     const [layout, setLayout] = React.useState<TabLayout | null>(null)
     const triggerRef = React.useRef<TamaguiElement>(null)
+    const emitInteraction = useEvent(
+      (type: InteractionType, layout: TabLayout | null) => {
+        onInteraction?.(type, layout)
+      }
+    )
 
     React.useEffect(() => {
       context.registerTrigger()
@@ -186,12 +191,21 @@ export const TabsTab = createStyledHOC(
       const element = triggerRef.current as unknown as HTMLElement
 
       function updateTriggerSize() {
-        setLayout({
+        const next = {
           width: element.offsetWidth,
           height: element.offsetHeight,
           x: element.offsetLeft,
           y: element.offsetTop,
-        })
+        }
+        setLayout((previous) =>
+          previous &&
+          previous.width === next.width &&
+          previous.height === next.height &&
+          previous.x === next.x &&
+          previous.y === next.y
+            ? previous
+            : next
+        )
       }
 
       updateTriggerSize()
@@ -203,9 +217,9 @@ export const TabsTab = createStyledHOC(
 
     React.useEffect(() => {
       if (isSelected && layout) {
-        onInteraction?.('select', layout)
+        emitInteraction('select', layout)
       }
-    }, [isSelected, layout, onInteraction])
+    }, [emitInteraction, isSelected, layout])
 
     return (
       <RovingFocusGroup.Item
@@ -224,11 +238,11 @@ export const TabsTab = createStyledHOC(
           }
           onMouseEnter={composeEventHandlers(onMouseEnter, () => {
             if (layout) {
-              onInteraction?.('hover', layout)
+              emitInteraction('hover', layout)
             }
           })}
           onMouseLeave={composeEventHandlers(onMouseLeave, () => {
-            onInteraction?.('hover', null)
+            emitInteraction('hover', null)
           })}
           role="tab"
           aria-selected={isSelected}
@@ -262,7 +276,7 @@ export const TabsTab = createStyledHOC(
             }),
             onFocus: composeEventHandlers(onFocus, () => {
               if (layout) {
-                onInteraction?.('focus', layout)
+                emitInteraction('focus', layout)
               }
               const isAutomaticActivation = context.activationMode !== 'manual'
               if (!isSelected && !disabled && isAutomaticActivation) {
@@ -270,7 +284,7 @@ export const TabsTab = createStyledHOC(
               }
             }),
             onBlur: composeEventHandlers(onBlur, () => {
-              onInteraction?.('focus', null)
+              emitInteraction('focus', null)
             }),
           })}
         />

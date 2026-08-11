@@ -1,6 +1,5 @@
 import { Activity, Airplay } from '@tamagui/lucide-icons-2'
-import { Theme, XGroup, XStack, YStack } from 'tamagui'
-import { Button } from './Button'
+import { Button, Theme, XGroup, XStack, YStack } from 'tamagui'
 
 export function ButtonDemo() {
   return (
@@ -20,10 +19,10 @@ export function ButtonDemo() {
       <XStack gap="2" justify="center">
         <Theme name="accent">
           <Button size="3">
-            <Button.Icon>
+            <Button.Icon size={14}>
               <Activity />
             </Button.Icon>
-            <Button.Text>Inverse</Button.Text>
+            <Button.Text size={true}>Inverse</Button.Text>
           </Button>
         </Theme>
         <Button iconAfter={Activity} size="3">

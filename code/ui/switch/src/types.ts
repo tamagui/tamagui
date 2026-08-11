@@ -31,6 +31,9 @@ export type SwitchThumbProps = SwitchThumbBaseProps &
   SwitchSharedProps &
   SwitchThumbActiveStyleProps
 
+export type SwitchComponent = (props: any) => any
+export type SwitchThumbComponent = (props: any) => any
+
 export type UseSwitchNativeProps = {
   id?: string
   disabled?: boolean

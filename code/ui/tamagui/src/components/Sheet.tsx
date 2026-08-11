@@ -1,4 +1,4 @@
-// Styled Sheet = the unstyled @tamagui/ui Sheet behavior primitive + the
+// styled Sheet = the unstyled @tamagui/ui Sheet behavior primitive + the
 // default v2-look skin, layered here in `tamagui`. Single skin definition; the
 // shadcn registry item is generated from this file.
 import {
@@ -16,7 +16,7 @@ const SheetHandleFrame = styled(SheetBehavior.Handle, {
   name: 'SheetHandle',
   height: 10,
   borderRadius: 1000,
-  backgroundColor: 'color5',
+  backgroundColor: 'background',
   zIndex: 10,
   marginHorizontal: '35%',
   marginBottom: '2',
@@ -34,7 +34,7 @@ const SheetHandleFrame = styled(SheetBehavior.Handle, {
   } as const,
 })
 
-// The behavior forwards `open` to its inner handle frame, not to this styled
+// the behavior forwards `open` to its inner handle frame, not to this styled
 // wrapper, so read the sheet context here and forward `open` — otherwise the
 // open-opacity variant above never toggles.
 export const SheetHandle = createRefComponent<
@@ -63,8 +63,8 @@ export const SheetContainer = styled(SheetBehavior.Container, {
 export const SheetBackground = styled(SheetBehavior.Background, {
   name: 'SheetBackground',
   backgroundColor: 'background',
-  borderTopLeftRadius: '6',
-  borderTopRightRadius: '6',
+  borderTopLeftRadius: true,
+  borderTopRightRadius: true,
 })
 
 export const SheetScrollView = styled(SheetBehavior.ScrollView, {

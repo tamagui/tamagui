@@ -1,11 +1,4 @@
-import { isWeb } from 'tamagui'
-import {
-  Toast,
-  toast,
-  useToastItem,
-  type ToastPosition,
-  type ToastT,
-} from '@tamagui/toast'
+import { toast, useToastItem, type ToastPosition, type ToastT } from '@tamagui/toast'
 import {
   ArrowDown,
   ArrowDownLeft,
@@ -15,8 +8,7 @@ import {
   ArrowUpRight,
 } from '@tamagui/lucide-icons-2'
 import { useRef, useState } from 'react'
-import { Label, SizableText, Slider, XStack, YStack } from 'tamagui'
-import { Button } from './Button'
+import { Button, isWeb, Label, SizableText, Slider, Toast, XStack, YStack } from 'tamagui'
 
 export const ToastDemo = () => {
   const [position, setPosition] = useState<ToastPosition>('bottom-right')
@@ -29,12 +21,14 @@ export const ToastDemo = () => {
     setPosition(newPosition)
     count.current++
     toast(`Toast #${count.current}`, {
+      toasterId: 'demo',
       description: 'Swipe to dismiss or wait for auto-close.',
     })
   }
 
   return (
     <Toast
+      toasterId="demo"
       position={position}
       gap={Math.round(gap)}
       visibleToasts={visibleToasts}

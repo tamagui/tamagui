@@ -1,8 +1,7 @@
 import React from 'react'
 import { LogoIcon } from '@tamagui/logo'
 
-import { Square, YStack, isWeb } from 'tamagui'
-import { Button } from './Button'
+import { Button, Square, YStack, isWeb } from 'tamagui'
 
 import { useIsIntersecting } from './useOnIntersecting'
 

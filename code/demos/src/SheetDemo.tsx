@@ -1,9 +1,15 @@
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
-import type { SheetProps } from '@tamagui/sheet'
-import { Sheet } from '@tamagui/sheet'
 import React, { memo } from 'react'
-import { H2, Input, Paragraph, XStack, YStack } from 'tamagui'
-import { Button } from './Button'
+import {
+  Button,
+  H2,
+  Input,
+  Paragraph,
+  Sheet,
+  type SheetProps,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 const spModes = ['percent', 'constant', 'fit', 'mixed'] as const
 

@@ -1,6 +1,5 @@
 import type { SizeTokens } from 'tamagui'
-import { Label, Theme, XStack, YStack } from 'tamagui'
-import { RadioGroup } from './ControlSkins'
+import { Label, RadioGroup, Theme, XStack, YStack } from 'tamagui'
 
 export function RadioGroupDemo() {
   return (

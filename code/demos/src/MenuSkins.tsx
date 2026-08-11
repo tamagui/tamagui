@@ -4,24 +4,21 @@ import React from 'react'
 import { styled, withStaticProperties } from 'tamagui'
 
 const contentStyles = {
-  name: 'DemoMenuContent',
   minWidth: 180,
-  padding: '1-5',
-  backgroundColor: 'background press:background-press focus:background-hover',
+  backgroundColor: 'background',
   borderColor: 'border-color',
-  borderRadius: '4',
   borderWidth: 1,
-  boxShadow: '0 4px 12px shadow-color',
+  boxShadow: '0 10px 20px shadow-color',
 } as const
 
 const itemStyles = {
   name: 'DemoMenuItem',
   width: '100%',
-  paddingHorizontal: '2-5',
-  paddingVertical: '2',
+  paddingHorizontal: 8,
+  paddingVertical: 4,
   alignItems: 'center',
   flexDirection: 'row',
-  borderRadius: '2',
+  borderRadius: 6,
   cursor: 'pointer',
 
   variants: {
@@ -40,6 +37,7 @@ const titleStyles = {
   cursor: 'default',
   flexGrow: 1,
   flexShrink: 1,
+  fontSize: 14,
 } as const
 
 const subtitleStyles = {
@@ -47,6 +45,7 @@ const subtitleStyles = {
   color: 'color',
   opacity: 0.6,
   cursor: 'default',
+  fontSize: 14,
 } as const
 
 const iconStyles = {
@@ -68,8 +67,8 @@ const indicatorStyles = {
 const separatorStyles = {
   name: 'DemoMenuSeparator',
   height: 1,
-  marginHorizontal: '2',
-  marginVertical: '1',
+  marginHorizontal: 10,
+  marginVertical: 3,
   backgroundColor: 'border-color',
 } as const
 
@@ -80,6 +79,7 @@ const labelStyles = {
   color: 'color',
   opacity: 0.6,
   cursor: 'default',
+  fontSize: 14,
 } as const
 
 const groupStyles = {

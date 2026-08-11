@@ -1,85 +1,399 @@
-import { type TamaguiElement } from '@tamagui/ui';
-import type * as React from 'react';
-export declare const AccordionTrigger: React.FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    __scopeCollapsible?: string;
-} & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    __scopeCollapsible?: string;
-}, keyof import("@tamagui/web").StackStyleBase> & {
-    __scopeAccordion?: string;
-}, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    __scopeCollapsible?: string;
-} & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    __scopeCollapsible?: string;
-}, keyof import("@tamagui/web").StackStyleBase> & {
-    __scopeAccordion?: string;
-}, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        __scopeCollapsible?: string;
-    } & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        __scopeCollapsible?: string;
-    }, keyof import("@tamagui/web").StackStyleBase> & {
-        __scopeAccordion?: string;
-    }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
-};
-export declare const AccordionContent: React.FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    __scopeAccordion?: string;
-}, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-    __scopeAccordion?: string;
-}, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        __scopeAccordion?: string;
-    }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
-};
-export declare const Accordion: ((props: (((import("@tamagui/ui").AccordionMultipleProps | import("@tamagui/ui").AccordionSingleProps) & {
-    __scopeAccordion?: string;
-}) & import("@tamagui/ui").RefProp<TamaguiElement>) & import("@tamagui/ui").RefProp<TamaguiElement>) => React.ReactNode) & {
-    displayName?: string;
-    propTypes?: any;
+import { type TamaguiElement } from '@tamagui/ui'
+import type * as React from 'react'
+export declare const AccordionTrigger: React.FunctionComponent<
+  Omit<
+    import('@tamagui/ui').StackNonStyleProps &
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > & {
+        __scopeCollapsible?: string
+      } & Omit<
+        import('@tamagui/ui').StackNonStyleProps &
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+          import('@tamagui/web').WithShorthands<
+            import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+          > & {
+            __scopeCollapsible?: string
+          },
+        keyof import('@tamagui/web').StackStyleBase
+      > & {
+        __scopeAccordion?: string
+      },
+    keyof import('@tamagui/web').StackStyleBase
+  > &
+    import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+    import('@tamagui/web').WithShorthands<
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+    > & {
+      ref?:
+        | React.Ref<
+            | import('react-native').View
+            | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+          >
+        | undefined
+    }
+> &
+  import('@tamagui/web').StaticComponentObject<
+    import('@tamagui/web').TamaDefer,
+    | import('react-native').View
+    | (HTMLElement & import('@tamagui/web').TamaguiElementMethods),
+    import('@tamagui/ui').StackNonStyleProps &
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > & {
+        __scopeCollapsible?: string
+      } & Omit<
+        import('@tamagui/ui').StackNonStyleProps &
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+          import('@tamagui/web').WithShorthands<
+            import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+          > & {
+            __scopeCollapsible?: string
+          },
+        keyof import('@tamagui/web').StackStyleBase
+      > & {
+        __scopeAccordion?: string
+      },
+    import('@tamagui/web').StackStyleBase,
+    {},
+    import('@tamagui/web').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/web').TamaDefer,
+      (
+        | import('react-native').View
+        | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+      ),
+      import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        > & {
+          __scopeCollapsible?: string
+        } & Omit<
+          import('@tamagui/ui').StackNonStyleProps &
+            import('@tamagui/web').WithThemeValues<
+              import('@tamagui/web').StackStyleBase
+            > &
+            import('@tamagui/web').WithShorthands<
+              import('@tamagui/web').WithThemeValues<
+                import('@tamagui/web').StackStyleBase
+              >
+            > & {
+              __scopeCollapsible?: string
+            },
+          keyof import('@tamagui/web').StackStyleBase
+        > & {
+          __scopeAccordion?: string
+        },
+      import('@tamagui/web').StackStyleBase,
+      {},
+      import('@tamagui/web').StaticConfigPublic,
+    ]
+  }
+export declare const AccordionContent: React.FunctionComponent<
+  Omit<
+    import('@tamagui/ui').StackNonStyleProps &
+      import('@tamagui/ui').CollapsibleContentProps &
+      Omit<
+        import('@tamagui/ui').StackNonStyleProps &
+          import('@tamagui/ui').CollapsibleContentProps,
+        keyof import('@tamagui/web').StackStyleBase
+      > &
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > & {
+        __scopeAccordion?: string
+      },
+    keyof import('@tamagui/web').StackStyleBase
+  > &
+    import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+    import('@tamagui/web').WithShorthands<
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+    > & {
+      ref?:
+        | React.Ref<
+            | import('react-native').View
+            | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+          >
+        | undefined
+    }
+> &
+  import('@tamagui/web').StaticComponentObject<
+    import('@tamagui/web').TamaDefer,
+    | import('react-native').View
+    | (HTMLElement & import('@tamagui/web').TamaguiElementMethods),
+    import('@tamagui/ui').StackNonStyleProps &
+      import('@tamagui/ui').CollapsibleContentProps &
+      Omit<
+        import('@tamagui/ui').StackNonStyleProps &
+          import('@tamagui/ui').CollapsibleContentProps,
+        keyof import('@tamagui/web').StackStyleBase
+      > &
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > & {
+        __scopeAccordion?: string
+      },
+    import('@tamagui/web').StackStyleBase,
+    {},
+    import('@tamagui/web').StaticConfigPublic
+  > &
+  Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
+    __tama: [
+      import('@tamagui/web').TamaDefer,
+      (
+        | import('react-native').View
+        | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+      ),
+      import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/ui').CollapsibleContentProps &
+        Omit<
+          import('@tamagui/ui').StackNonStyleProps &
+            import('@tamagui/ui').CollapsibleContentProps,
+          keyof import('@tamagui/web').StackStyleBase
+        > &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        > & {
+          __scopeAccordion?: string
+        },
+      import('@tamagui/web').StackStyleBase,
+      {},
+      import('@tamagui/web').StaticConfigPublic,
+    ]
+  }
+export declare const Accordion: ((
+  props: (((
+    | import('@tamagui/ui').AccordionMultipleProps
+    | import('@tamagui/ui').AccordionSingleProps
+  ) & {
+    __scopeAccordion?: string
+  }) &
+    import('@tamagui/ui').RefProp<TamaguiElement>) &
+    import('@tamagui/ui').RefProp<TamaguiElement>
+) => React.ReactNode) & {
+  displayName?: string
+  propTypes?: any
 } & {
-    Header: import("@tamagui/ui").RefComponent<import("@tamagui/ui").TamaguiTextElement, Omit<Omit<import("@tamagui/ui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-        size?: import("@tamagui/web").FontSize | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & {
-        ref?: import("react").Ref<import("@tamagui/ui").TamaguiTextElement> | undefined;
-    }, "ref">>;
-    Item: import("@tamagui/ui").RefComponent<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").AccordionItemProps>;
-    HeightAnimator: import("@tamagui/ui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>;
-    Trigger: React.FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        __scopeCollapsible?: string;
-    } & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        __scopeCollapsible?: string;
-    }, keyof import("@tamagui/web").StackStyleBase> & {
-        __scopeAccordion?: string;
-    }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        __scopeCollapsible?: string;
-    } & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        __scopeCollapsible?: string;
-    }, keyof import("@tamagui/web").StackStyleBase> & {
-        __scopeAccordion?: string;
-    }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            __scopeCollapsible?: string;
-        } & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            __scopeCollapsible?: string;
-        }, keyof import("@tamagui/web").StackStyleBase> & {
-            __scopeAccordion?: string;
-        }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
-    };
-    Content: React.FunctionComponent<Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        __scopeAccordion?: string;
-    }, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
-    }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-        __scopeAccordion?: string;
-    }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps & Omit<import("@tamagui/ui").StackNonStyleProps & import("@tamagui/ui").CollapsibleContentProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & {
-            __scopeAccordion?: string;
-        }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
-    };
-};
+  Header: import('@tamagui/ui').RefComponent<
+    import('@tamagui/ui').TamaguiTextElement,
+    Omit<
+      Omit<
+        import('@tamagui/ui').TextNonStyleProps,
+        'size' | 'unstyled' | keyof import('@tamagui/web').TextStylePropsBase
+      > &
+        import('@tamagui/web').WithThemeValues<
+          import('@tamagui/web').TextStylePropsBase
+        > & {
+          size?: import('@tamagui/web').FontSize | undefined
+          unstyled?: boolean | undefined
+        } & import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<
+            import('@tamagui/web').TextStylePropsBase
+          >
+        > & {
+          ref?: import('react').Ref<import('@tamagui/ui').TamaguiTextElement> | undefined
+        },
+      'ref'
+    >
+  >
+  Item: import('@tamagui/ui').RefComponent<
+    | import('react-native').View
+    | (HTMLElement & import('@tamagui/web').TamaguiElementMethods),
+    import('@tamagui/ui').AccordionItemProps
+  >
+  HeightAnimator: import('@tamagui/ui').TamaguiComponent<
+    import('@tamagui/web').TamaDefer,
+    | import('react-native').View
+    | (HTMLElement & import('@tamagui/web').TamaguiElementMethods),
+    import('@tamagui/core').RNTamaguiViewNonStyleProps,
+    import('@tamagui/web').StackStyleBase,
+    {},
+    {}
+  >
+  Trigger: React.FunctionComponent<
+    Omit<
+      import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        > & {
+          __scopeCollapsible?: string
+        } & Omit<
+          import('@tamagui/ui').StackNonStyleProps &
+            import('@tamagui/web').WithThemeValues<
+              import('@tamagui/web').StackStyleBase
+            > &
+            import('@tamagui/web').WithShorthands<
+              import('@tamagui/web').WithThemeValues<
+                import('@tamagui/web').StackStyleBase
+              >
+            > & {
+              __scopeCollapsible?: string
+            },
+          keyof import('@tamagui/web').StackStyleBase
+        > & {
+          __scopeAccordion?: string
+        },
+      keyof import('@tamagui/web').StackStyleBase
+    > &
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > & {
+        ref?:
+          | React.Ref<
+              | import('react-native').View
+              | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+            >
+          | undefined
+      }
+  > &
+    import('@tamagui/web').StaticComponentObject<
+      import('@tamagui/web').TamaDefer,
+      | import('react-native').View
+      | (HTMLElement & import('@tamagui/web').TamaguiElementMethods),
+      import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        > & {
+          __scopeCollapsible?: string
+        } & Omit<
+          import('@tamagui/ui').StackNonStyleProps &
+            import('@tamagui/web').WithThemeValues<
+              import('@tamagui/web').StackStyleBase
+            > &
+            import('@tamagui/web').WithShorthands<
+              import('@tamagui/web').WithThemeValues<
+                import('@tamagui/web').StackStyleBase
+              >
+            > & {
+              __scopeCollapsible?: string
+            },
+          keyof import('@tamagui/web').StackStyleBase
+        > & {
+          __scopeAccordion?: string
+        },
+      import('@tamagui/web').StackStyleBase,
+      {},
+      import('@tamagui/web').StaticConfigPublic
+    > &
+    Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
+      __tama: [
+        import('@tamagui/web').TamaDefer,
+        (
+          | import('react-native').View
+          | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+        ),
+        import('@tamagui/ui').StackNonStyleProps &
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+          import('@tamagui/web').WithShorthands<
+            import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+          > & {
+            __scopeCollapsible?: string
+          } & Omit<
+            import('@tamagui/ui').StackNonStyleProps &
+              import('@tamagui/web').WithThemeValues<
+                import('@tamagui/web').StackStyleBase
+              > &
+              import('@tamagui/web').WithShorthands<
+                import('@tamagui/web').WithThemeValues<
+                  import('@tamagui/web').StackStyleBase
+                >
+              > & {
+                __scopeCollapsible?: string
+              },
+            keyof import('@tamagui/web').StackStyleBase
+          > & {
+            __scopeAccordion?: string
+          },
+        import('@tamagui/web').StackStyleBase,
+        {},
+        import('@tamagui/web').StaticConfigPublic,
+      ]
+    }
+  Content: React.FunctionComponent<
+    Omit<
+      import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/ui').CollapsibleContentProps &
+        Omit<
+          import('@tamagui/ui').StackNonStyleProps &
+            import('@tamagui/ui').CollapsibleContentProps,
+          keyof import('@tamagui/web').StackStyleBase
+        > &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        > & {
+          __scopeAccordion?: string
+        },
+      keyof import('@tamagui/web').StackStyleBase
+    > &
+      import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+      import('@tamagui/web').WithShorthands<
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+      > & {
+        ref?:
+          | React.Ref<
+              | import('react-native').View
+              | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+            >
+          | undefined
+      }
+  > &
+    import('@tamagui/web').StaticComponentObject<
+      import('@tamagui/web').TamaDefer,
+      | import('react-native').View
+      | (HTMLElement & import('@tamagui/web').TamaguiElementMethods),
+      import('@tamagui/ui').StackNonStyleProps &
+        import('@tamagui/ui').CollapsibleContentProps &
+        Omit<
+          import('@tamagui/ui').StackNonStyleProps &
+            import('@tamagui/ui').CollapsibleContentProps,
+          keyof import('@tamagui/web').StackStyleBase
+        > &
+        import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+        import('@tamagui/web').WithShorthands<
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+        > & {
+          __scopeAccordion?: string
+        },
+      import('@tamagui/web').StackStyleBase,
+      {},
+      import('@tamagui/web').StaticConfigPublic
+    > &
+    Omit<import('@tamagui/web').StaticConfigPublic, 'staticConfig'> & {
+      __tama: [
+        import('@tamagui/web').TamaDefer,
+        (
+          | import('react-native').View
+          | (HTMLElement & import('@tamagui/web').TamaguiElementMethods)
+        ),
+        import('@tamagui/ui').StackNonStyleProps &
+          import('@tamagui/ui').CollapsibleContentProps &
+          Omit<
+            import('@tamagui/ui').StackNonStyleProps &
+              import('@tamagui/ui').CollapsibleContentProps,
+            keyof import('@tamagui/web').StackStyleBase
+          > &
+          import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase> &
+          import('@tamagui/web').WithShorthands<
+            import('@tamagui/web').WithThemeValues<import('@tamagui/web').StackStyleBase>
+          > & {
+            __scopeAccordion?: string
+          },
+        import('@tamagui/web').StackStyleBase,
+        {},
+        import('@tamagui/web').StaticConfigPublic,
+      ]
+    }
+}
 //# sourceMappingURL=Accordion.d.ts.map

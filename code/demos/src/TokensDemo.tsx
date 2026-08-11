@@ -1,8 +1,7 @@
 import type { Tokens } from '@tamagui/core'
 import { getConfig } from '@tamagui/core'
 import React from 'react'
-import { H2, H3, H4, Square, XGroup, XStack, YStack } from 'tamagui'
-import { Button } from './Button'
+import { Button, H2, H3, H4, Square, XGroup, XStack, YStack } from 'tamagui'
 
 type Section = 'spaceNegative' | keyof Tokens
 

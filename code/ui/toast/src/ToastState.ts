@@ -8,6 +8,7 @@ export type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info' | '
 
 export interface ToastT {
   id: string | number
+  toasterId?: string
   title: React.ReactNode | (() => React.ReactNode)
   description?: React.ReactNode | (() => React.ReactNode)
   type?: ToastType
