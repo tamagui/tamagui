@@ -13,6 +13,19 @@ property-family validation to `@tamagui/style-grammar`.
 }
 ```
 
+VS Code must also be able to resolve the plugin package. Select the workspace
+TypeScript version, or add this machine setting and restart the TypeScript
+server:
+
+```json
+{
+  "js/ts.tsserver.pluginPaths": ["node_modules"]
+}
+```
+
+`js/ts.tsserver.pluginPaths` is machine-scoped, so VS Code ignores it in a
+workspace `.vscode/settings.json` file.
+
 If the generated config lives elsewhere, set `configPath` relative to the
 TypeScript project:
 

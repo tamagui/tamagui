@@ -1,4 +1,5 @@
 import type { StyleObject } from '@tamagui/helpers'
+import type { CoreStateModifierName } from '@tamagui/style-grammar/runtime'
 import type { Properties } from 'csstype'
 import type {
   CSSProperties,
