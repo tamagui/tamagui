@@ -33,7 +33,7 @@ describe('Color variant resolver (#3892)', () => {
   const StyledSvg = styled(
     View,
     {
-      name: 'ColorSpread',
+      displayName: 'ColorSpread',
       variants: {
         color: {
           Color: (val) => ({ stroke: val }),
@@ -67,7 +67,7 @@ describe('Color variant resolver (#3892)', () => {
     const Comp = styled(
       View,
       {
-        name: 'ColorExact',
+        displayName: 'ColorExact',
         variants: {
           color: {
             red: { stroke: 'red' },
@@ -84,7 +84,7 @@ describe('Color variant resolver (#3892)', () => {
 
 describe('FontSize variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'FontSizeSpread',
+    displayName: 'FontSizeSpread',
     variants: {
       textSize: {
         FontSize: (val, { font }) => ({
@@ -102,7 +102,7 @@ describe('FontSize variant resolver', () => {
 
 describe('FontStyle variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'FontStyleSpread',
+    displayName: 'FontStyleSpread',
     variants: {
       emphasis: {
         FontStyle: (val) => ({
@@ -120,7 +120,7 @@ describe('FontStyle variant resolver', () => {
 
 describe('FontTransform variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'FontTransformSpread',
+    displayName: 'FontTransformSpread',
     variants: {
       casing: {
         FontTransform: (val) => ({
@@ -138,7 +138,7 @@ describe('FontTransform variant resolver', () => {
 
 describe('FontLetterSpacing variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'LetterSpacingSpread',
+    displayName: 'LetterSpacingSpread',
     variants: {
       tracking: {
         FontLetterSpacing: (val, { font }) => ({
@@ -156,7 +156,7 @@ describe('FontLetterSpacing variant resolver', () => {
 
 describe('FontLineHeight variant resolver', () => {
   const Comp = styled(Text, {
-    name: 'LineHeightSpread',
+    displayName: 'LineHeightSpread',
     variants: {
       leading: {
         FontLineHeight: (val, { font }) => ({
@@ -174,7 +174,7 @@ describe('FontLineHeight variant resolver', () => {
 
 describe('Radius variant resolver', () => {
   const Comp = styled(View, {
-    name: 'RadiusSpread',
+    displayName: 'RadiusSpread',
     variants: {
       rounding: {
         Radius: (val) => ({ borderRadius: val }),
@@ -190,7 +190,7 @@ describe('Radius variant resolver', () => {
 
 describe('Size variant resolver', () => {
   const Comp = styled(View, {
-    name: 'SizeSpread',
+    displayName: 'SizeSpread',
     variants: {
       size: {
         Size: (val) => ({ height: val, width: val }),
@@ -213,7 +213,7 @@ describe('Size variant resolver', () => {
 
 describe('Space variant resolver', () => {
   const Comp = styled(View, {
-    name: 'SpaceSpread',
+    displayName: 'SpaceSpread',
     variants: {
       spacing: {
         Space: (val) => ({ padding: val }),
@@ -229,7 +229,7 @@ describe('Space variant resolver', () => {
 
 describe('Theme variant resolver', () => {
   const Comp = styled(View, {
-    name: 'ThemeSpread',
+    displayName: 'ThemeSpread',
     variants: {
       look: {
         Theme: (val) => ({
@@ -251,7 +251,7 @@ describe('Theme variant resolver', () => {
 
 describe('ZIndex variant resolver', () => {
   const Comp = styled(View, {
-    name: 'ZIndexSpread',
+    displayName: 'ZIndexSpread',
     variants: {
       layer: {
         ZIndex: (val) => ({ zIndex: val }),
@@ -269,7 +269,7 @@ describe('spread variants combined', () => {
   const StyledSvg = styled(
     View,
     {
-      name: 'CombinedSpread',
+      displayName: 'CombinedSpread',
       variants: {
         color: {
           Color: (val) => ({ stroke: val }),

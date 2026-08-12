@@ -13,7 +13,7 @@ export const HomeH1 = styled(H1, {
 
 export const HomeH2 = styled(H2, {
   className: 'word-break-keep-all',
-  name: 'HomeH2',
+  displayName: 'HomeH2',
   text: 'center',
   self: 'center',
   maxW: 720,
@@ -39,5 +39,5 @@ export const HomeH3 = styled(H3, {
   lineHeight: 'sm:6',
   fontWeight: 'sm:400',
   textTransform: 'sm:none',
-  name: 'HomeH3',
+  displayName: 'HomeH3',
 })

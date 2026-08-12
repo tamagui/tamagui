@@ -2,7 +2,7 @@ import { RadioGroup as RadioGroupBehavior } from '@tamagui/radio-group'
 import { getVariableValue, resolveTokenSize, styled, withStaticProperties } from 'tamagui'
 
 const RadioGroupItem = styled(RadioGroupBehavior.Item, {
-  name: 'SiteRadioGroupItem',
+  displayName: 'SiteRadioGroupItem',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'background hover:background-hover press:background-press',
@@ -38,7 +38,7 @@ const RadioGroupItem = styled(RadioGroupBehavior.Item, {
 })
 
 const RadioGroupIndicator = styled(RadioGroupBehavior.Indicator, {
-  name: 'SiteRadioGroupIndicator',
+  displayName: 'SiteRadioGroupIndicator',
   width: '50%',
   height: '50%',
   borderRadius: 1000,

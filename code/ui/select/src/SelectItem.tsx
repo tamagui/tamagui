@@ -49,7 +49,7 @@ export interface SelectItemProps
     SelectItemExtraProps {}
 
 export const SelectItemFrame = styled(View, {
-  name: ITEM_NAME,
+  displayName: ITEM_NAME,
   alignItems: 'center',
   flexDirection: 'row',
 })

@@ -15,7 +15,7 @@ export function PopoverContentStyledPlusAnimations() {
 }
 
 const PopoverStyledContent = styled(Popover.Content, {
-  name: 'PopoverContent2',
+  displayName: 'PopoverContent2',
   backgroundColor: 'background',
   borderWidth: 1,
   borderColor: 'border-color',

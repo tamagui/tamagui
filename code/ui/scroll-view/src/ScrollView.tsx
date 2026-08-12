@@ -5,7 +5,7 @@ import { WebScrollView } from './WebScrollView'
 export const ScrollView = styled(
   WebScrollView,
   {
-    name: 'ScrollView',
+    displayName: 'ScrollView',
     scrollEnabled: true,
   },
   {

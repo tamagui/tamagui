@@ -21,7 +21,7 @@ export const CustomButtonContext = createStyledContext<{
 })
 
 const CustomButtonFrame = styled(YStack, {
-  name: 'CustomButton',
+  displayName: 'CustomButton',
   context: CustomButtonContext,
   render: 'button',
   justifyContent: 'center',
@@ -48,7 +48,7 @@ const CustomButtonFrame = styled(YStack, {
 })
 
 const CustomButtonText = styled(SizableText, {
-  name: 'CustomButtonText',
+  displayName: 'CustomButtonText',
   context: CustomButtonContext,
 
   variants: {
@@ -69,7 +69,7 @@ const CustomButtonText = styled(SizableText, {
 // This is the key pattern from issue #3676 - using color to reference context value
 // The child should use color to reference the parent's color value from context
 const ContextRefButtonFrame = styled(YStack, {
-  name: 'ContextRefButton',
+  displayName: 'ContextRefButton',
   context: CustomButtonContext,
   render: 'button',
   justifyContent: 'center',
@@ -96,7 +96,7 @@ const ContextRefButtonFrame = styled(YStack, {
 // Child that references parent's context color using color syntax
 // This pattern mimics ButtonText which uses `color: 'color'` to inherit from parent
 const ContextRefButtonText = styled(SizableText, {
-  name: 'ContextRefButtonText',
+  displayName: 'ContextRefButtonText',
   context: CustomButtonContext,
   // this color should reference the parent's color value from context
   color: 'color',
@@ -138,7 +138,7 @@ const ContextRefButtonComponent = createStyledHOC(
 // Button with press clause that changes color - should propagate to text on press
 // Note: This only works with animation drivers that re-render on press (not CSS driver)
 const PressStyleButtonFrame = styled(YStack, {
-  name: 'PressStyleButton',
+  displayName: 'PressStyleButton',
   context: CustomButtonContext,
   render: 'button',
   justifyContent: 'center',
@@ -153,7 +153,7 @@ const PressStyleButtonFrame = styled(YStack, {
 })
 
 const PressStyleButtonText = styled(SizableText, {
-  name: 'PressStyleButtonText',
+  displayName: 'PressStyleButtonText',
   context: CustomButtonContext,
 
   variants: {

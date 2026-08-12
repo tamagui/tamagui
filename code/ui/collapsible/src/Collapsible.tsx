@@ -83,7 +83,7 @@ const TRIGGER_NAME = 'CollapsibleTrigger'
 type CollapsibleTriggerProps = GetProps<typeof View>
 
 const CollapsibleTriggerFrame = styled(View, {
-  name: TRIGGER_NAME,
+  displayName: TRIGGER_NAME,
   render: 'button',
 })
 
@@ -129,7 +129,7 @@ interface CollapsibleContentProps extends CollapsibleContentExtraProps, YStackPr
 const CONTENT_NAME = 'CollapsibleContent'
 
 const CollapsibleContentFrame = styled(View, {
-  name: CONTENT_NAME,
+  displayName: CONTENT_NAME,
 })
 
 const CollapsibleContent = createStyledHOC(

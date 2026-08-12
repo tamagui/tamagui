@@ -11,7 +11,7 @@ const config = createTamagui(getDefaultTamaguiConfig('native'))
 const GESTURE_ENABLED_FREEZE_KEY = '__tamagui_gesture_enabled_freeze__'
 
 const StyledButton = styled(Button, {
-  name: 'StyledButtonHookRegression',
+  displayName: 'StyledButtonHookRegression',
   variants: {
     disabled: {
       true: {

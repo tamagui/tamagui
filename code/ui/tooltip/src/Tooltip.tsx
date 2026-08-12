@@ -79,20 +79,19 @@ const TooltipContent = createStyledHOC(
     )
   },
   {
-    staticConfig: {
-      componentName: 'Tooltip',
-    },
+    displayName: 'Tooltip',
   }
 )
 
 const TooltipArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
   (props, ref) => {
+    const { className, ...rest } = props
     return (
       <PopoverArrow
         scope={props.scope || TOOLTIP_SCOPE}
-        componentName="Tooltip"
+        className={`is_Tooltip ${className || ''}`.trim()}
         ref={ref}
-        {...props}
+        {...rest}
       />
     )
   }

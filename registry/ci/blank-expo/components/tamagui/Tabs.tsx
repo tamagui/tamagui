@@ -20,15 +20,15 @@ const tabSizeVariant = (size: any, extras: VariantSpreadExtras<any>) => {
 }
 
 export const TabsFrame = styled(TabsBehavior, {
-  name: 'Tabs',
+  displayName: 'Tabs',
 })
 
 export const TabsList = styled(TabsBehavior.List, {
-  name: 'TabsList',
+  displayName: 'TabsList',
 })
 
 export const TabsTab = styled(TabsBehavior.Tab, {
-  name: 'TabsTrigger',
+  displayName: 'TabsTrigger',
   variants: {
     unstyled: {
       false: {
@@ -65,7 +65,7 @@ export const TabsTab = styled(TabsBehavior.Tab, {
 })
 
 export const TabsContent = styled(TabsBehavior.Content, {
-  name: 'TabsContent',
+  displayName: 'TabsContent',
 })
 
 export const Tabs = withStaticProperties(TabsFrame, {

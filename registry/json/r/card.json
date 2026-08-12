@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "components/tamagui/Card.tsx",
-      "content": "// Styled Card = the unstyled @tamagui/ui Card behavior (structural layout + the\n// size mechanism: size-derived radius on the frame, size-derived padding on\n// Header/Footer) + the default v2-look skin (theme background). Single skin\n// definition; the shadcn registry item is generated from this file.\nimport {\n  CardBackground,\n  CardFooter,\n  CardFrame as UiCardFrame,\n  CardHeader,\n  type GetProps,\n  styled,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nexport const CardFrame = styled(UiCardFrame, {\n  name: 'Card',\n  backgroundColor: 'background',\n})\n\nexport const Card = withStaticProperties(CardFrame, {\n  Header: CardHeader,\n  Footer: CardFooter,\n  Background: CardBackground,\n})\n\nexport type CardProps = GetProps<typeof CardFrame>\n",
+      "content": "// Styled Card = the unstyled @tamagui/ui Card behavior (structural layout + the\n// size mechanism: size-derived radius on the frame, size-derived padding on\n// Header/Footer) + the default v2-look skin (theme background). Single skin\n// definition; the shadcn registry item is generated from this file.\nimport {\n  CardBackground,\n  CardFooter,\n  CardFrame as UiCardFrame,\n  CardHeader,\n  type GetProps,\n  styled,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nexport const CardFrame = styled(UiCardFrame, {\n  displayName: 'Card',\n  backgroundColor: 'background',\n})\n\nexport const Card = withStaticProperties(CardFrame, {\n  Header: CardHeader,\n  Footer: CardFooter,\n  Background: CardBackground,\n})\n\nexport type CardProps = GetProps<typeof CardFrame>\n",
       "type": "registry:ui",
       "target": "components/tamagui/Card.tsx"
     }

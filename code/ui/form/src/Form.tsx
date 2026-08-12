@@ -60,12 +60,12 @@ export const FormContext = createStyledContext<FormTriggerContextValue>({
 export const { useStyledContext: useFormContext, Provider: FormProvider } = FormContext
 
 export const FormFrame = styled(View, {
-  name: FORM_NAME,
+  displayName: FORM_NAME,
   render: 'form',
 })
 
 const FormTriggerFrame = styled(View, {
-  name: 'FormTrigger',
+  displayName: 'FormTrigger',
 })
 
 export interface FormTriggerProps extends ViewProps {

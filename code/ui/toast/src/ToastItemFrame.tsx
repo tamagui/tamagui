@@ -20,7 +20,7 @@ import { SizableText } from '@tamagui/text'
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastPositionWrapper = styled(YStack, {
-  name: 'ToastPositionWrapper',
+  displayName: 'ToastPositionWrapper',
   pointerEvents: 'auto',
   position: 'absolute',
   left: 0,
@@ -37,7 +37,7 @@ export const ToastPositionWrapper = styled(YStack, {
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastItemFrame = styled(YStack, {
-  name: 'ToastItem',
+  displayName: 'ToastItem',
   userSelect: 'none',
   cursor: 'default',
   tabIndex: 0,
@@ -48,7 +48,7 @@ export const ToastItemFrame = styled(YStack, {
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastCloseFrame = styled(XStack, {
-  name: 'ToastClose',
+  displayName: 'ToastClose',
   render: 'button',
   alignItems: 'center',
   justifyContent: 'center',
@@ -62,7 +62,7 @@ export const ToastCloseFrame = styled(XStack, {
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastActionFrame = styled(XStack, {
-  name: 'ToastAction',
+  displayName: 'ToastAction',
   render: 'button',
   alignItems: 'center',
   justifyContent: 'center',

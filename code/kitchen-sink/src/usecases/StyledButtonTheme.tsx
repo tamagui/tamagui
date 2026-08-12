@@ -27,7 +27,7 @@ export const CustomButton = createStyledHOC(
 )
 
 const CustomButtonFrame2 = styled(Button, {
-  name: 'Test123',
+  displayName: 'Test123',
   backgroundColor: 'black',
 })
 

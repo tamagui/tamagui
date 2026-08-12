@@ -21,7 +21,7 @@ import { getSelectListboxProps } from './selectionController'
  * -----------------------------------------------------------------------------------------------*/
 
 export const SelectViewportFrame = styled(View, {
-  name: VIEWPORT_NAME,
+  displayName: VIEWPORT_NAME,
   position: 'relative',
 })
 

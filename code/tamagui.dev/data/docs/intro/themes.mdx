@@ -106,9 +106,9 @@ themes, and ultimately to tokens.
 
 #### Component themes
 
-V3 does not select themes from styled component names. The `name` option still
-identifies a styled component for configuration and debugging, but a name such
-as `Circle` does not make it search for `light_Circle`.
+V3 does not select themes from styled component display names. The `displayName`
+option sets React's debugging identity and may add an `is_Circle` class, but it
+does not make Tamagui search for `light_Circle` or affect style resolution.
 
 Use a normal theme boundary when a component owns a theme operation:
 
@@ -116,7 +116,7 @@ Use a normal theme boundary when a component owns a theme operation:
 import { Theme, View, styled } from 'tamagui'
 
 const CircleFrame = styled(View, {
-  name: 'Circle',
+  displayName: 'Circle',
   backgroundColor: 'background',
 })
 
@@ -225,12 +225,12 @@ follow this pattern:
 import { GetProps, View, Text, createStyledHOC, styled } from 'tamagui' // or '@tamagui/core'
 
 const ButtonFrame = styled(View, {
-  name: 'Button',
+  displayName: 'Button',
   backgroundColor: 'background',
 })
 
 const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   color: 'color',
 })
 

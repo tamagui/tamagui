@@ -8,7 +8,7 @@ import {
 import * as React from 'react'
 
 export const PopoverContent = styled(UiPopover.Content, {
-  name: 'PopoverContent',
+  displayName: 'PopoverContent',
   padding: defaultTokenSizePolicy.space,
   borderRadius: defaultTokenSizePolicy.radius,
   backgroundColor: 'background',
@@ -16,7 +16,7 @@ export const PopoverContent = styled(UiPopover.Content, {
 })
 
 export const PopoverArrow = styled(UiPopover.Arrow, {
-  name: 'PopoverArrow',
+  displayName: 'PopoverArrow',
   backgroundColor: 'background',
   borderColor: 'border-color',
 })

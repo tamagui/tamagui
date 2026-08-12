@@ -7,7 +7,7 @@ import { defaultStyles, textAreaSizeVariant } from './shared'
  * @see — Docs https://tamagui.dev/ui/inputs#textarea
  */
 export const TextArea = styled(Input, {
-  name: 'TextArea',
+  displayName: 'TextArea',
   render: 'textarea',
 
   // this attribute fixes firefox newline issue

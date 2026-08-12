@@ -346,10 +346,8 @@ Fresh start. On v3, remove:
   config.
 - `@tamagui/config`: all v5 entries, and `v6-builder.ts`'s delegation to
   `createV5Theme` (which also removes the prepended `#ffffff` endpoint).
-- Component themes: generation is already gone from the new system; also
-  remove the runtime component-theme resolution in `useThemeState.ts`
-  (`componentName` handling, the uppercase-segment check) as part of the v3
-  component-theme removal.
+- Component themes: generation is already gone from the new system; v3 also
+  removes the remaining runtime component-theme resolution in `useThemeState.ts`.
 - `@tamagui/generate-themes` (CLI-time compilation): port to the new core or
   drop; the new generator is cheap enough to run at config load, so decide
   when reached.

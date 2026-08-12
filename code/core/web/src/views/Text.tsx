@@ -1,6 +1,7 @@
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
+import { setComponentDisplayName } from '../helpers/componentDisplayName'
 import type {
   StaticConfig,
   TamaguiTextElement,
@@ -28,7 +29,6 @@ const ellipsisStyle =
  * Shared by every frontend's Text — see the note on `viewStaticConfig`.
  */
 export const textStaticConfig: StaticConfig = {
-  componentName: 'Text',
   acceptsClassName: true,
   isText: true,
 
@@ -70,9 +70,9 @@ export const textStaticConfig: StaticConfig = {
   },
 }
 
-export const Text = createComponent<
-  TextProps,
-  Text,
-  TextNonStyleProps,
-  TextStylePropsBase
->(textStaticConfig)
+export const Text = setComponentDisplayName(
+  createComponent<TextProps, Text, TextNonStyleProps, TextStylePropsBase>(
+    textStaticConfig
+  ),
+  'Text'
+)

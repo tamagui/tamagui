@@ -6,9 +6,9 @@ identifies a theme-engine regression.
 
 ## StyledHOCNamed: component themes were removed intentionally
 
-The fixture expected `styled(Label, { name: 'MyLabel' })` to select a
-hand-written `light_MyLabel` theme. V2.6.3 implemented that lookup by combining
-the current theme name with `componentName`. V3 removed this runtime behavior in
+The fixture expected a styled component identity to select a hand-written
+`light_MyLabel` theme. V2.6.3 combined that identity with the current theme
+name. V3 removed this runtime behavior in
 `5cd416790a` (`perf(web): remove runtime component themes`).
 
 The product decision is recorded in `next.md` and
@@ -19,12 +19,12 @@ whole-subtree component-state theming will not be rebuilt.
 The red test therefore pinned a removed feature. The `StyledHOCNamed` test,
 usecase, registration, and its `light_MyLabel` fixture theme are deleted.
 
-The original removal left `componentName` flowing into theme resolution even
-though `useThemeState` no longer reads it. That dead path is removed from
+The original removal left the legacy styled identity flowing into theme resolution
+even though `useThemeState` no longer reads it. That dead path is removed from
 `ThemeProps`, `themeable`, `createComponent`, `usePropsAndStyle`, and
-`ThemeDebug`. Component names remain available where they still have meaning:
-static configuration, global default props, generated component classes, and
-development diagnostics.
+`ThemeDebug`. `styled()` now accepts `displayName` solely for React identity,
+development diagnostics, and the optional generated `is_*` class. It does not
+participate in themes, global defaults, variants, or other styling behavior.
 
 ## StyledButtonTheme: Button rises one surface level by design
 

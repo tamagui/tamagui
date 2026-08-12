@@ -162,7 +162,7 @@ as documented above.
 which deleted v1 Button as part of the v3 component contract.
 
 `ef92d54e38` is structurally moot: v3-beta's `RadioGroupIndicatorFrame` is
-`styled(View, { name })` with no variants, and `pressTheme` has zero hits
+the legacy styled identity option with no variants, and `pressTheme` has zero hits
 repo-wide. Worth noting separately that v3-beta has no behavioural RadioGroup
 test at all — that is a coverage gap, not a merge action.
 

@@ -9,12 +9,12 @@ import type * as React from 'react'
 import { dialogContentStyles, dialogOverlayStyles } from './Dialog'
 
 export const AlertDialogOverlay = styled(UiAlertDialog.Overlay, {
-  name: 'AlertDialogOverlay',
+  displayName: 'AlertDialogOverlay',
   ...dialogOverlayStyles,
 })
 
 export const AlertDialogContent = styled(UiAlertDialog.Content, {
-  name: 'AlertDialogContent',
+  displayName: 'AlertDialogContent',
   ...dialogContentStyles,
 })
 

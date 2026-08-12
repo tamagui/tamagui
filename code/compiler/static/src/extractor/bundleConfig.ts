@@ -30,6 +30,7 @@ import { detectModuleFormat } from './detectModuleFormat'
 const nodeRequire = createRequire(
   typeof __filename === 'string' ? __filename : import.meta.url
 )
+const componentDisplayName = /* @__PURE__ */ Symbol.for('tamagui.componentDisplayName')
 
 // track temp files for cleanup on exit
 const activeTempFiles = new Set<string>()
@@ -106,6 +107,7 @@ export type LoadedComponents = {
     string,
     {
       staticConfig: StaticConfig
+      displayName?: string
     }
   >
 }
@@ -949,7 +951,8 @@ const esbuildit = (src: string, target?: 'modern') => {
 }
 
 export function getComponentStaticConfigByName(name: string, exported: any) {
-  const components: Record<string, { staticConfig: StaticConfig }> = {}
+  const components: Record<string, { staticConfig: StaticConfig; displayName?: string }> =
+    {}
   try {
     if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
       throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
@@ -960,7 +963,10 @@ export function getComponentStaticConfigByName(name: string, exported: any) {
       if (found) {
         // remove non-stringifyable
         const { Component, ...sc } = found.staticConfig
-        components[key] = { staticConfig: sc }
+        components[key] = {
+          staticConfig: sc,
+          ...(found.displayName && { displayName: found.displayName }),
+        }
       }
     }
   } catch (err) {
@@ -977,13 +983,16 @@ export function getComponentStaticConfigByName(name: string, exported: any) {
 function getTamaguiComponent(
   name: string,
   Component: any
-): undefined | { staticConfig: StaticConfig } {
+): undefined | { staticConfig: StaticConfig; displayName?: string } {
   if (name[0].toUpperCase() !== name[0]) {
     return
   }
   const staticConfig = Component?.staticConfig as StaticConfig | undefined
   if (staticConfig) {
-    return Component
+    return {
+      staticConfig,
+      displayName: Component[componentDisplayName] as string | undefined,
+    }
   }
 }
 

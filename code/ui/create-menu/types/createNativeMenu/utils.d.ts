@@ -26,8 +26,8 @@ SOFTWARE.
 import React, { type ReactElement, type ReactNode } from 'react';
 type ReactChildArray = ReturnType<typeof React.Children.toArray>;
 export declare function flattenChildrenKeyless(children: ReactNode): ReactChildArray;
-export declare function flattenChildren(children: ReactNode, componentNamesToIgnore?: string[], depth?: number, keys?: (string | number)[]): ReactNode[];
-export declare const pickChildren: <Props = any>(_children: ReactNode | undefined, targetChild: React.ElementType, componentNamesToIgnore?: string[]) => {
+export declare function flattenChildren(children: ReactNode, displayNamesToIgnore?: string[], depth?: number, keys?: (string | number)[]): ReactNode[];
+export declare const pickChildren: <Props = any>(_children: ReactNode | undefined, targetChild: React.ElementType, displayNamesToIgnore?: string[]) => {
     targetChildren: ReactElement<Props, string | React.JSXElementConstructor<any>>[] | undefined;
     withoutTargetChildren: (string | number | bigint | Iterable<ReactNode> | Promise<string | number | bigint | boolean | Iterable<ReactNode> | ReactElement<unknown, string | React.JSXElementConstructor<any>> | React.ReactPortal | null | undefined> | ReactElement<unknown, string | React.JSXElementConstructor<any>>)[] | null | undefined;
 };

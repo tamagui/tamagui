@@ -46,20 +46,20 @@ export const providedPeers = new Set([
 // drift consumers — the checked-in copies of each skin that live in
 // downstream apps. the SAME generator emits these; a CI drift check fails if
 // any real copy diverges from what the skin source would generate. the ONLY legitimate
-// per-consumer variation is the styled() `name:` prefix (used for component
+// per-consumer variation is the styled() `displayName:` prefix (used for React
 // identity / debugging); everything else must be byte-identical to the skin source.
 //
-// `canonicalNamePrefix` is the prefix the skin source uses in its `name:`
+// `canonicalDisplayNamePrefix` is the prefix the skin source uses in its `displayName:`
 // fields. each consumer swaps it for its own prefix. the real styled source
 // uses bare names, so the canonical prefix is empty.
 // ---------------------------------------------------------------------------
 
-export const canonicalNamePrefix = ''
+export const canonicalDisplayNamePrefix = ''
 
 export type DriftConsumer = {
   key: string
-  // styled() name: prefix this consumer uses
-  namePrefix: string
+  // styled() displayName: prefix this consumer uses
+  displayNamePrefix: string
   // directory holding the consumer's copies, relative to repo root
   dir: string
   // filename for a given skin basename (e.g. 'Button' -> 'Button.tsx')
@@ -74,28 +74,28 @@ export type DriftConsumer = {
 export const driftConsumers: DriftConsumer[] = [
   {
     key: 'demos',
-    namePrefix: 'Demo',
+    displayNamePrefix: 'Demo',
     dir: 'code/demos/src',
     filename: (b) => `${b}.tsx`,
     writeAuthorized: false,
   },
   {
     key: 'kitchen-sink',
-    namePrefix: 'KitchenSink',
+    displayNamePrefix: 'KitchenSink',
     dir: 'code/kitchen-sink/src/components',
     filename: (b) => `${b}.tsx`,
     writeAuthorized: false,
   },
   {
     key: 'site',
-    namePrefix: 'Site',
+    displayNamePrefix: 'Site',
     dir: 'code/tamagui.dev/components',
     filename: (b) => `${b}.tsx`,
     writeAuthorized: false,
   },
   {
     key: 'v3-canary',
-    namePrefix: 'Canary',
+    displayNamePrefix: 'Canary',
     dir: 'code/tests/v3-canary/src/components',
     filename: (b) => `${b}.tsx`,
     writeAuthorized: false,
@@ -105,14 +105,14 @@ export const driftConsumers: DriftConsumer[] = [
   // ARE the install output, kept honest by the drift check.
   {
     key: 'ci-blank-web',
-    namePrefix: '',
+    displayNamePrefix: '',
     dir: 'registry/ci/blank-web/components/tamagui',
     filename: (b) => `${b}.tsx`,
     writeAuthorized: true,
   },
   {
     key: 'ci-blank-expo',
-    namePrefix: '',
+    displayNamePrefix: '',
     dir: 'registry/ci/blank-expo/components/tamagui',
     filename: (b) => `${b}.tsx`,
     writeAuthorized: true,

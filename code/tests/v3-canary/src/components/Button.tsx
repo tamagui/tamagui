@@ -29,7 +29,7 @@ type ButtonSize = keyof typeof buttonSizes.values
 
 export const ButtonFrame = styled(ButtonBehaviorFrame, {
   context: buttonSizes.Context,
-  name: 'CanaryButtonFrame',
+  displayName: 'CanaryButtonFrame',
   bg: 'canaryTheme',
   borderColor: 'canary-token',
   rounded: 8,
@@ -60,7 +60,7 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
 
 export const ButtonText = styled(ButtonBehaviorText, {
   context: buttonSizes.Context,
-  name: 'CanaryButtonText',
+  displayName: 'CanaryButtonText',
   color: 'white',
   fontWeight: '600',
   variants: { size: buttonSizes.text } as const,

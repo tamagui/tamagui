@@ -7,7 +7,7 @@ import {
   stateToModifier,
 } from '../../../code/core/style-grammar/src/states'
 import { extractImportSpecifiers, classifyDependencies, packageNameOf } from './deps'
-import { reprefixNames, buildItem, loadSkin, type Skin } from './core'
+import { reprefixDisplayNames, buildItem, loadSkin, type Skin } from './core'
 import { buildRegistry, buildSkinPackageExports } from './emit'
 import { deriveStates, type StateTables } from './states-derive'
 
@@ -59,33 +59,34 @@ import { Thing } from '../x/Thing'
   })
 })
 
-describe('reprefixNames', () => {
-  const src = `styled(Frame, { name: 'DemoButtonFrame' })\nstyled(T, { name: 'DemoButtonText' })`
+describe('reprefixDisplayNames', () => {
+  const src = `styled(Frame, { displayName: 'DemoButtonFrame' })\nstyled(T, { displayName: 'DemoButtonText' })`
 
   test('strips the canonical prefix for the shipped copy', () => {
-    expect(reprefixNames(src, 'Demo', '')).toBe(
-      `styled(Frame, { name: 'ButtonFrame' })\nstyled(T, { name: 'ButtonText' })`
+    expect(reprefixDisplayNames(src, 'Demo', '')).toBe(
+      `styled(Frame, { displayName: 'ButtonFrame' })\nstyled(T, { displayName: 'ButtonText' })`
     )
   })
 
   test('swaps to a consumer prefix', () => {
-    expect(reprefixNames(src, 'Demo', 'KitchenSink')).toBe(
-      `styled(Frame, { name: 'KitchenSinkButtonFrame' })\nstyled(T, { name: 'KitchenSinkButtonText' })`
+    expect(reprefixDisplayNames(src, 'Demo', 'KitchenSink')).toBe(
+      `styled(Frame, { displayName: 'KitchenSinkButtonFrame' })\nstyled(T, { displayName: 'KitchenSinkButtonText' })`
     )
   })
 
   test('prepends when canonical prefix is empty', () => {
-    const bare = `styled(F, { name: 'ButtonFrame' })`
-    expect(reprefixNames(bare, '', 'Site')).toBe(`styled(F, { name: 'SiteButtonFrame' })`)
+    const bare = `styled(F, { displayName: 'ButtonFrame' })`
+    expect(reprefixDisplayNames(bare, '', 'Site')).toBe(
+      `styled(F, { displayName: 'SiteButtonFrame' })`
+    )
   })
 
-  test('only touches name: identity strings, not other code', () => {
-    const s = `const name = 'nope'\nstyled(F, { name: 'DemoX' })\n// name: 'DemoY' in a comment stays? no`
-    // the regex matches any `name: '...'`, including in comments — that is
-    // acceptable because skins do not put name: in comments; assert the real
-    // styled field flips and the bare `const name =` does not.
-    const out = reprefixNames(s, 'Demo', 'Z')
-    expect(out).toContain(`name: 'ZX'`)
+  test('only touches displayName identity strings, not other code', () => {
+    const s = `const name = 'nope'\nstyled(F, { displayName: 'DemoX' })\n// displayName: 'DemoY' in a comment stays? no`
+    // the regex matches any `displayName: '...'`, including in comments. skins do not
+    // put displayName in comments, so assert the real field flips and `const name` does not.
+    const out = reprefixDisplayNames(s, 'Demo', 'Z')
+    expect(out).toContain(`displayName: 'ZX'`)
     expect(out).toContain(`const name = 'nope'`)
   })
 })
@@ -106,7 +107,7 @@ describe('buildItem', () => {
 import { styled } from 'tamagui'
 import { Sun } from '@tamagui/lucide-icons-2'
 import { SelectItem } from './Select'
-styled(F, { name: 'ComboFrame' })
+styled(F, { displayName: 'ComboFrame' })
 `
     const item = buildItem(fakeSkin('Combo', src), new Set(['Combo', 'Select']))
     expect(item.name).toBe('combo')
@@ -114,19 +115,19 @@ styled(F, { name: 'ComboFrame' })
     expect(item.dependencies).toEqual(['@tamagui/lucide-icons-2', 'tamagui'])
     expect(item.registryDependencies).toEqual(['select'])
     // shipped copy uses neutral identity names
-    expect(item.files![0].content).toContain(`name: 'ComboFrame'`)
+    expect(item.files![0].content).toContain(`displayName: 'ComboFrame'`)
     expect(item.files![0].target).toBe('components/tamagui/Combo.tsx')
   })
 
   test('throws on a non-skin relative import (would silently drop a file)', () => {
-    const src = `import { x } from './localHelper'\nstyled(F, { name: 'AFrame' })`
+    const src = `import { x } from './localHelper'\nstyled(F, { displayName: 'AFrame' })`
     expect(() => buildItem(fakeSkin('A', src), new Set(['A']))).toThrow(
       /non-skin relative/
     )
   })
 
   test('surfaces manifest meta (tokens/themes/native/peers)', () => {
-    const skin = fakeSkin('B', `styled(F, { name: 'BFrame' })`)
+    const skin = fakeSkin('B', `styled(F, { displayName: 'BFrame' })`)
     skin.manifest = {
       description: 'b',
       tokens: ['background'],
@@ -146,7 +147,7 @@ styled(F, { name: 'ComboFrame' })
   })
 
   test('emits uniform meta.states only when the A1 tables are injected', () => {
-    const src = `styled(F, { name: 'CFrame', opacity: 'press:0.7', variants: { open: { true: {} } } })`
+    const src = `styled(F, { displayName: 'CFrame', opacity: 'press:0.7', variants: { open: { true: {} } } })`
     // no tables (pre-reassembly): registry unchanged, no states
     expect(buildItem(fakeSkin('C', src), new Set(['C'])).meta).toBeUndefined()
     // tables injected (post-reassembly): uniform canonical state names

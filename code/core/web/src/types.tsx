@@ -331,10 +331,8 @@ export type TamaguiComponentPropsBaseBase = {
    */
   untilMeasured?: 'hide' | 'show'
 
-  /**
-   * Equivalent to "name" property on styled() for automatically applying a theme
-   */
-  componentName?: string
+  /** web: forwards to the HTML name attribute. */
+  name?: string
 
   /**
    * Used for controlling the order of focus with keyboard or assistive device enavigation
@@ -1439,11 +1437,6 @@ export type CreateTamaguiProps = {
     backgroundColor?: any
     color?: any
   }
-
-  defaultProps?: Record<string, any> & {
-    Text?: TextProps
-    View?: StackNonStyleProps & StackStyle
-  }
 }
 
 export type GetCSS = (opts?: {
@@ -2021,10 +2014,7 @@ export type SafeAreaValueKeys =
  * survives (design record, "Types and editor tooling"). Candidate and
  * modifier validation is the compiler's and language service's job.
  */
-type ClauseModifierName =
-  | (MediaQueryKey & string)
-  | RootThemeName
-  | CoreStateModifierName
+type ClauseModifierName = (MediaQueryKey & string) | RootThemeName | CoreStateModifierName
 
 /**
  * Keep type-provided clause completion to the first modifier prefix. Adding
@@ -2747,12 +2737,12 @@ export type TextProps = TextNonStyleProps & TextStyle
 export interface ThemeableProps {
   theme?: ThemeName | null
   themeReset?: boolean
-  componentName?: string
   debug?: DebugProp
 }
 
 export type StyledHOCOptions = {
   disableTheme?: boolean
+  displayName?: string
   staticConfig?: Partial<StaticConfig>
 }
 
@@ -3059,11 +3049,6 @@ type StaticConfigBase = StaticConfigPublic & {
   contextProps?: readonly string[]
 
   /**
-   * Used for applying sub theme style
-   */
-  componentName?: string
-
-  /**
    * Merges into defaultProps later on, used internally only
    */
   defaultVariants?: { [key: string]: any }
@@ -3343,6 +3328,7 @@ export type ResolveVariableAs =
   | 'except-theme'
 
 export type SplitStyleProps = {
+  displayName?: string
   styledContext?: Record<string, any>
   mediaState?: Record<string, boolean>
   noClass?: boolean

@@ -151,7 +151,15 @@ export function createNonNativeContextMenu() {
   const ContextMenuTrigger = createStyledHOC(
     View,
     (props: ScopedProps<ContextMenuTriggerProps>, forwardedRef) => {
-      const { scope, style, disabled = false, asChild, children, ...triggerProps } = props
+      const {
+        scope,
+        style,
+        className,
+        disabled = false,
+        asChild,
+        children,
+        ...triggerProps
+      } = props
       const context = useContextMenuContext(scope)
       const pointRef = React.useRef<Point>({ x: 0, y: 0 })
       const virtualRef = React.useMemo(
@@ -224,7 +232,7 @@ export function createNonNativeContextMenu() {
           <Menu.Anchor scope={scope || CONTEXTMENU_CONTEXT} virtualRef={virtualRef} />
           <Comp
             render="span"
-            componentName={TRIGGER_NAME}
+            className={`is_${TRIGGER_NAME} ${className || ''}`.trim()}
             id={context.triggerId}
             data-state={context.open ? 'open' : 'closed'}
             data-disabled={disabled ? '' : undefined}
@@ -364,10 +372,10 @@ export function createNonNativeContextMenu() {
     TamaguiElement,
     ScopedProps<ContextMenuItemProps>
   >((props, forwardedRef) => {
-    const { scope, ...itemProps } = props
+    const { scope, className, ...itemProps } = props
     return (
       <Menu.Item
-        componentName={ITEM_NAME}
+        className={`is_${ITEM_NAME} ${className || ''}`.trim()}
         scope={scope || CONTEXTMENU_CONTEXT}
         {...itemProps}
         ref={forwardedRef}
@@ -387,10 +395,10 @@ export function createNonNativeContextMenu() {
     TamaguiElement,
     ScopedProps<ContextMenuCheckboxItemProps>
   >((props, forwardedRef) => {
-    const { scope, ...checkboxItemProps } = props
+    const { scope, className, ...checkboxItemProps } = props
     return (
       <Menu.CheckboxItem
-        componentName={CHECKBOX_ITEM_NAME}
+        className={`is_${CHECKBOX_ITEM_NAME} ${className || ''}`.trim()}
         scope={scope || CONTEXTMENU_CONTEXT}
         {...checkboxItemProps}
         ref={forwardedRef}
@@ -432,10 +440,10 @@ export function createNonNativeContextMenu() {
     TamaguiElement,
     ScopedProps<ContextMenuRadioItemProps>
   >((props, forwardedRef) => {
-    const { scope, ...radioItemProps } = props
+    const { scope, className, ...radioItemProps } = props
     return (
       <Menu.RadioItem
-        componentName={RADIO_ITEM_NAME}
+        className={`is_${RADIO_ITEM_NAME} ${className || ''}`.trim()}
         scope={scope || CONTEXTMENU_CONTEXT}
         {...radioItemProps}
         ref={forwardedRef}
@@ -454,10 +462,10 @@ export function createNonNativeContextMenu() {
   const ContextMenuItemIndicator = createStyledHOC(
     Menu.ItemIndicator,
     (props: ScopedProps<ContextMenuItemIndicatorProps>, forwardedRef) => {
-      const { scope, ...itemIndicatorProps } = props
+      const { scope, className, ...itemIndicatorProps } = props
       return (
         <Menu.ItemIndicator
-          componentName={INDICATOR_NAME}
+          className={`is_${INDICATOR_NAME} ${className || ''}`.trim()}
           scope={scope || CONTEXTMENU_CONTEXT}
           {...itemIndicatorProps}
           ref={forwardedRef}
@@ -505,10 +513,10 @@ export function createNonNativeContextMenu() {
   const ContextMenuSubTrigger = createStyledHOC(
     View,
     (props: ScopedProps<ContextMenuSubTriggerProps>, forwardedRef) => {
-      const { scope, ...subTriggerProps } = props
+      const { scope, className, ...subTriggerProps } = props
       return (
         <Menu.SubTrigger
-          componentName={SUB_TRIGGER_NAME}
+          className={`is_${SUB_TRIGGER_NAME} ${className || ''}`.trim()}
           scope={scope || CONTEXTMENU_CONTEXT}
           {...subTriggerProps}
           ref={forwardedRef}
@@ -570,10 +578,10 @@ export function createNonNativeContextMenu() {
     TamaguiElement,
     ScopedProps<ContextMenuArrowProps>
   >((props, forwardedRef) => {
-    const { scope, ...arrowProps } = props
+    const { scope, className, ...arrowProps } = props
     return (
       <Menu.Arrow
-        componentName={ARROW_NAME}
+        className={`is_${ARROW_NAME} ${className || ''}`.trim()}
         scope={scope || CONTEXTMENU_CONTEXT}
         {...arrowProps}
         ref={forwardedRef}

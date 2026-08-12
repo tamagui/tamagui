@@ -26,11 +26,11 @@ const tabSizeVariant = (value: any, extras: VariantSpreadExtras<any>) => {
 const demos = ['horizontal', 'vertical'] as const
 
 export const TabsFrame = styled(TabsBehavior, {
-  name: 'TabsFrame',
+  displayName: 'TabsFrame',
 })
 
 export const TabFrame = styled(TabsBehavior.Tab, {
-  name: 'TabsTrigger',
+  displayName: 'TabsTrigger',
   render: 'button',
   cursor: 'pointer',
   backgroundColor: 'transparent',
@@ -56,7 +56,7 @@ export const TabFrame = styled(TabsBehavior.Tab, {
 const CONTENT_NAME = 'TabsContent'
 
 export const ContentFrame = styled(TabsBehavior.Content, {
-  name: CONTENT_NAME,
+  displayName: CONTENT_NAME,
   flex: 1,
   p: '6',
   justify: 'center',

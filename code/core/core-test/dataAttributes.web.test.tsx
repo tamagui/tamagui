@@ -15,7 +15,7 @@ describe('data attributes', () => {
       'data-one-source': '/components/Button.tsx:147:7',
     })
     const Frame = styled(View, {
-      name: 'DataAttributeFrame',
+      displayName: 'DataAttributeFrame',
       context: FrameContext,
     })
 
@@ -42,7 +42,7 @@ describe('data attributes', () => {
         'data-one-source': '/components/Button.tsx:147:7',
       })
       const Frame = styled(View, {
-        name: 'DataAttributeSSRFrame',
+        displayName: 'DataAttributeSSRFrame',
         context: FrameContext,
       })
 

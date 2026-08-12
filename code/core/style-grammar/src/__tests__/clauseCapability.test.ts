@@ -70,10 +70,10 @@ describe('clauseCapability', () => {
 })
 
 describe('assessFlatConversion', () => {
-  const textHost = { accepts: () => true, componentName: 'Text' }
+  const textHost = { accepts: () => true, displayName: 'Text' }
   const viewHost = {
     accepts: (prop: string) => prop !== 'color',
-    componentName: 'View',
+    displayName: 'View',
   }
 
   test('exit is supported in shared files when the host is known', () => {

@@ -187,7 +187,7 @@ variants/config in the following object. All strings remain scanner-visible:
 const Frame = styled(View, 'p-4 rounded-4')
 
 const Button = styled(View, 'items-center justify-center', {
-  name: 'Button',
+  displayName: 'Button',
   variants: {
     size: { sm: 'h-8 px-3', md: 'h-10 px-4' },
   },

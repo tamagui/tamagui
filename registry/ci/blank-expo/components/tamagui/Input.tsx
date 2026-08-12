@@ -25,12 +25,12 @@ const inputSkin = {
 } as const
 
 const InputFrame = styled(UiInput, {
-  name: 'Input',
+  displayName: 'Input',
   ...inputSkin,
 })
 
 const TextAreaFrame = styled(UiTextArea, {
-  name: 'TextArea',
+  displayName: 'TextArea',
   ...inputSkin,
 })
 

@@ -328,7 +328,7 @@ export function createNonNativeMenu() {
       return (
         <MenuTriggerFrame
           asChild
-          componentName={TRIGGER_NAME}
+          className={`is_${TRIGGER_NAME}`}
           scope={scope || DROPDOWN_MENU_CONTEXT}
         >
           <Comp

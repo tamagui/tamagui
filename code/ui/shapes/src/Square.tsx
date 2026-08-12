@@ -7,7 +7,7 @@ import { getShapeSize } from './getShapeSize'
 export const Square = styled(
   YStack,
   {
-    name: 'Square',
+    displayName: 'Square',
     alignItems: 'center',
     justifyContent: 'center',
 

@@ -2,23 +2,23 @@ import { styled, withStaticProperties } from '@tamagui/core'
 import { Tabs } from '../src'
 
 const TabsSkinFrame = styled(Tabs, {
-  name: 'TabsSkinFrame',
+  displayName: 'TabsSkinFrame',
   gap: '2',
 })
 
 const TabsSkinList = styled(Tabs.List, {
-  name: 'TabsSkinList',
+  displayName: 'TabsSkinList',
   borderRadius: '4',
 })
 
 const TabsSkinTab = styled(Tabs.Tab, {
-  name: 'TabsSkinTab',
+  displayName: 'TabsSkinTab',
   padding: '3',
   backgroundColor: 'background',
 })
 
 const TabsSkinContent = styled(Tabs.Content, {
-  name: 'TabsSkinContent',
+  displayName: 'TabsSkinContent',
   padding: '4',
 })
 

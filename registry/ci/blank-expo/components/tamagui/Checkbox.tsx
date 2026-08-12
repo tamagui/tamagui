@@ -9,7 +9,7 @@ import {
 } from '@tamagui/ui'
 
 export const CheckboxFrame = styled(CheckboxBehavior, {
-  name: 'Checkbox',
+  displayName: 'Checkbox',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'background press:background-press',
@@ -45,7 +45,7 @@ export const CheckboxFrame = styled(CheckboxBehavior, {
 })
 
 export const CheckboxIndicator = styled(CheckboxBehavior.Indicator, {
-  name: 'CheckboxIndicator',
+  displayName: 'CheckboxIndicator',
   alignItems: 'center',
   justifyContent: 'center',
 })

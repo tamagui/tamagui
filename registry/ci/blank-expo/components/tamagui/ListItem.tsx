@@ -20,7 +20,7 @@ const outlined = {
 } as const
 
 const StyledListItem = styled(UiListItem, {
-  name: 'ListItem',
+  displayName: 'ListItem',
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover press:border-color-press',
   color: 'color',

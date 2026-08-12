@@ -107,10 +107,8 @@ export type TamaguiComponentPropsBaseBase = {
      * See: https://tamagui.dev/docs/intro/props
      */
     untilMeasured?: 'hide' | 'show';
-    /**
-     * Equivalent to "name" property on styled() for automatically applying a theme
-     */
-    componentName?: string;
+    /** web: forwards to the HTML name attribute. */
+    name?: string;
     /**
      * Used for controlling the order of focus with keyboard or assistive device enavigation
      * See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
@@ -873,10 +871,6 @@ export type CreateTamaguiProps = {
         backgroundColor?: any;
         color?: any;
     };
-    defaultProps?: Record<string, any> & {
-        Text?: TextProps;
-        View?: StackNonStyleProps & StackStyle;
-    };
 };
 export type GetCSS = (opts?: {
     separator?: string;
@@ -1634,11 +1628,11 @@ export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
     themeReset?: boolean;
-    componentName?: string;
     debug?: DebugProp;
 }
 export type StyledHOCOptions = {
     disableTheme?: boolean;
+    displayName?: string;
     staticConfig?: Partial<StaticConfig>;
 };
 export type StyledHOCMergedProps<Props, CustomProps> = keyof CustomProps extends never ? Props : Omit<Props, keyof CustomProps> & CustomProps;
@@ -1812,10 +1806,6 @@ type StaticConfigBase = StaticConfigPublic & {
     context?: StyledContext;
     contextProps?: readonly string[];
     /**
-     * Used for applying sub theme style
-     */
-    componentName?: string;
-    /**
      * Merges into defaultProps later on, used internally only
      */
     defaultVariants?: {
@@ -1920,6 +1910,7 @@ export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFuncti
  */
 export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web' | 'except-theme';
 export type SplitStyleProps = {
+    displayName?: string;
     styledContext?: Record<string, any>;
     mediaState?: Record<string, boolean>;
     noClass?: boolean;

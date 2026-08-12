@@ -288,7 +288,7 @@ type ToggleGroupContextValue = {
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>
 
 const ToggleGroupFrame = styled(View, {
-  name: TOGGLE_GROUP_NAME,
+  displayName: TOGGLE_GROUP_NAME,
 })
 
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {

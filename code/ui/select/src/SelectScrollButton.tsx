@@ -20,7 +20,7 @@ import type {
 const SCROLL_UP_BUTTON_NAME = 'SelectScrollUpButton'
 
 export const SelectScrollButtonFrame = styled(View, {
-  name: 'SelectScrollButton',
+  displayName: 'SelectScrollButton',
 })
 
 export const SelectScrollUpButton = createStyledHOC(
@@ -28,7 +28,7 @@ export const SelectScrollUpButton = createStyledHOC(
   (props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
     return (
       <SelectScrollButtonImpl
-        componentName={SCROLL_UP_BUTTON_NAME}
+        partClassName={`is_${SCROLL_UP_BUTTON_NAME}`}
         {...props}
         dir="up"
         ref={forwardedRef}
@@ -50,7 +50,7 @@ export const SelectScrollDownButton = createStyledHOC(
   (props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
     return (
       <SelectScrollButtonImpl
-        componentName={SCROLL_DOWN_BUTTON_NAME}
+        partClassName={`is_${SCROLL_DOWN_BUTTON_NAME}`}
         {...props}
         dir="down"
         ref={forwardedRef}
@@ -65,8 +65,9 @@ const SelectScrollButtonImpl = React.memo(
   createStyledHOC(
     SelectScrollButtonFrame,
     (props: SelectScrollButtonImplProps, forwardedRef) => {
-      const { scope, dir, componentName, ...scrollIndicatorProps } = props
-      const { onPointerEnter, onPointerLeave, ...frameProps } = scrollIndicatorProps
+      const { scope, dir, partClassName, ...scrollIndicatorProps } = props
+      const { className, onPointerEnter, onPointerLeave, ...frameProps } =
+        scrollIndicatorProps
       const { open, fallback, setScrollTop, setInnerOffset, ...context } =
         useSelectContext(scope)
       const floatingRef = context.floatingContext?.refs.floating
@@ -118,7 +119,7 @@ const SelectScrollButtonImpl = React.memo(
       return (
         <SelectScrollButtonFrame
           ref={composedRef}
-          componentName={componentName}
+          className={`${partClassName} ${className || ''}`.trim()}
           aria-hidden
           {...frameProps}
           zIndex={1000}

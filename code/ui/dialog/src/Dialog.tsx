@@ -104,7 +104,7 @@ export const { useStyledContext: useDialogContext, Provider: DialogProvider } =
  * -----------------------------------------------------------------------------------------------*/
 
 const DialogTriggerFrame = styled(View, {
-  name: 'DialogTrigger',
+  displayName: 'DialogTrigger',
 })
 
 type DialogTriggerProps = ScopedProps<ViewProps>
@@ -383,7 +383,7 @@ const OVERLAY_NAME = 'DialogOverlay'
 // dim/scrim background lives in the tamagui skin
 // (code/ui/tamagui/src/components/Dialog.tsx).
 export const DialogOverlayFrame = styled(YStack, {
-  name: OVERLAY_NAME,
+  displayName: OVERLAY_NAME,
   zIndex: 1,
   inset: 0,
   position: 'absolute',
@@ -468,7 +468,7 @@ const CONTENT_NAME = 'DialogContent'
 // variant block on a wrapper around it breaks the native animation driver's
 // interpolation.
 const DialogContentFrame = styled(YStack, {
-  name: CONTENT_NAME,
+  displayName: CONTENT_NAME,
   zIndex: 2,
   position: 'relative',
   // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
@@ -820,7 +820,7 @@ const DialogContentImpl = createRefComponent<TamaguiElement, DialogContentImplPr
  * -----------------------------------------------------------------------------------------------*/
 
 const DialogTitleFrame = styled(H2, {
-  name: 'DialogTitle',
+  displayName: 'DialogTitle',
 })
 
 type DialogTitleExtraProps = ScopedProps<{}>
@@ -840,7 +840,7 @@ const DialogTitle = createStyledHOC(
  * -----------------------------------------------------------------------------------------------*/
 
 const DialogDescriptionFrame = styled(Paragraph, {
-  name: 'DialogDescription',
+  displayName: 'DialogDescription',
 })
 
 type DialogDescriptionExtraProps = ScopedProps<{}>
@@ -869,7 +869,7 @@ const DialogDescription = createStyledHOC(
 const CLOSE_NAME = 'DialogClose'
 
 const DialogCloseFrame = styled(View, {
-  name: CLOSE_NAME,
+  displayName: CLOSE_NAME,
   render: 'button',
 })
 

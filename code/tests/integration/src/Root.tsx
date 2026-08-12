@@ -8,7 +8,7 @@ import config from './tamagui.config'
 import { HmrCandidate } from './HmrCandidate'
 
 const ScannerOwnedFrame = styled(TailwindView, 'grid grid-cols-[77px]', {
-  name: 'ScannerOwnedFrame',
+  displayName: 'ScannerOwnedFrame',
 })
 
 export const Root = () => {

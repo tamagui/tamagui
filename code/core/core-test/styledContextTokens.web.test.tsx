@@ -36,7 +36,7 @@ describe('styled context token preservation', () => {
     })
 
     const GridParent = styled(View, {
-      name: 'GridParent',
+      displayName: 'GridParent',
       context: GridContext,
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -90,7 +90,7 @@ describe('styled context token preservation', () => {
     })
 
     const Parent = styled(View, {
-      name: 'TestParent',
+      displayName: 'TestParent',
       context: TestContext,
 
       variants: {
@@ -134,7 +134,7 @@ describe('styled context token preservation', () => {
     })
 
     const Parent = styled(View, {
-      name: 'Parent',
+      displayName: 'Parent',
       context: ThemeContext,
 
       variants: {

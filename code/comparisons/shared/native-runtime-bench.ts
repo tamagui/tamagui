@@ -509,7 +509,7 @@ export function createNativeRuntimeBenchApp({
         }
       }
       if (
-        typeof Button.staticConfig?.componentName !== 'string' ||
+        typeof Button.displayName !== 'string' ||
         completeSignature.component.opacity !== 0.8
       ) {
         throw new Error(

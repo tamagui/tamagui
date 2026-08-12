@@ -21,7 +21,7 @@ export type LinearGradientExtraProps = {
 }
 
 const LinearGradientFrame = styled(YStack, {
-  name: 'LinearGradient',
+  displayName: 'LinearGradient',
   overflow: 'hidden',
   position: 'relative',
 })

@@ -101,8 +101,8 @@ export type ConversionTargets = 'shared' | 'web' | 'native'
 export interface HostView {
   /** does this host accept `prop` as a style (validStyles + accept) */
   accepts(prop: string): boolean
-  /** for diagnostics: the component name the author sees */
-  componentName?: string
+  /** for diagnostics: the component label the author sees */
+  displayName?: string
 }
 
 export interface ConversionReason {
@@ -185,7 +185,7 @@ export function assessFlatConversion(
   if (input.host && !input.host.accepts(input.property)) {
     reasons.push({
       dimension: 'host',
-      message: `"${input.property}" is not a valid style on ${input.host.componentName ?? 'this component'} — the runtime drops it`,
+      message: `"${input.property}" is not a valid style on ${input.host.displayName ?? 'this component'} — the runtime drops it`,
       remedy: `move this style to a component that accepts it (a Text-based component, or html.* on web)`,
     })
   }

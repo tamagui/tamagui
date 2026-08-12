@@ -71,6 +71,7 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 const shouldTrackStyleTokenProvenance =
   process.env.NODE_ENV === 'development' &&
   process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
+const validComponentClassName = /^[A-Za-z_][A-Za-z0-9_-]*$/
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
@@ -1308,14 +1309,17 @@ export const getSplitStyles: StyleSplitter = (
         const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
         const groupClassName = props.group ? `t_group_${props.group}` : ''
         const containerClassName = props.container ? 't_container' : ''
-        const componentNameFinal = props.componentName || staticConfig.componentName
-        const componentNameClassName =
-          props.asChild || !componentNameFinal || componentNameFinal === 'Text'
+        const displayNameClassName =
+          props.asChild ||
+          !styleProps.displayName ||
+          styleProps.displayName === 'Text' ||
+          styleProps.displayName === 'View' ||
+          !validComponentClassName.test(styleProps.displayName)
             ? ''
-            : `is_${componentNameFinal}`
+            : `is_${styleProps.displayName}`
 
         let classList: string[] = []
-        if (componentNameClassName) classList.push(componentNameClassName)
+        if (displayNameClassName) classList.push(displayNameClassName)
         // is_View gets base flex styles + font reset, is_Text gets base text styles
         if (!isText) classList.push('is_View')
         else classList.push('is_Text')

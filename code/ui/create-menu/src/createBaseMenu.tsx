@@ -372,7 +372,7 @@ const { Provider: MenuRootProvider, useStyledContext: useMenuRootContext } =
 const MENU_CONTEXT = 'MenuContext'
 
 const MenuImageFrame = styled(TamaguiImage, {
-  name: 'MenuItemImage',
+  displayName: 'MenuItemImage',
 })
 
 export function createBaseMenu() {
@@ -582,7 +582,7 @@ export function createBaseMenu() {
     createStyledContext<MenuContentContextValue>()
 
   const MenuContentFrame = styled(PopperPrimitive.PopperContentFrame, {
-    name: CONTENT_NAME,
+    displayName: CONTENT_NAME,
   })
 
   const MenuContent = createStyledHOC(
@@ -1076,7 +1076,13 @@ export function createBaseMenu() {
     MenuItemImplElement,
     ScopedProps<MenuItemImplProps>
   >((props, forwardedRef) => {
-    const { scope = MENU_CONTEXT, disabled = false, textValue, ...itemProps } = props
+    const {
+      scope = MENU_CONTEXT,
+      className,
+      disabled = false,
+      textValue,
+      ...itemProps
+    } = props
     const contentContext = useMenuContentContext(scope)
     const ref = React.useRef<TamaguiElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
@@ -1106,7 +1112,7 @@ export function createBaseMenu() {
           tabIndex={disabled ? -1 : 0}
         >
           <View
-            componentName={ITEM_NAME}
+            className={`is_${ITEM_NAME} ${className || ''}`.trim()}
             role="menuitem"
             data-highlighted={isFocused ? '' : undefined}
             aria-disabled={disabled || undefined}
@@ -1245,12 +1251,13 @@ export function createBaseMenu() {
         value,
         // @ts-ignore - native menu value change handler
         onValueChange,
+        className,
         ...checkboxItemProps
       } = props
       return (
         <ItemIndicatorProvider scope={scope} checked={checked}>
           <MenuItem
-            componentName={CHECKBOX_ITEM_NAME}
+            className={`is_${CHECKBOX_ITEM_NAME} ${className || ''}`.trim()}
             role={(isWeb ? 'menuitemcheckbox' : 'menuitem') as 'menuitem'}
             aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
             {...checkboxItemProps}
@@ -1281,11 +1288,21 @@ export function createBaseMenu() {
   const MenuRadioGroup = createStyledHOC(
     View,
     (props: ScopedProps<MenuRadioGroupProps>, forwardedRef) => {
-      const { value, onValueChange, scope = MENU_CONTEXT, ...groupProps } = props
+      const {
+        value,
+        onValueChange,
+        scope = MENU_CONTEXT,
+        className,
+        ...groupProps
+      } = props
       const handleValueChange = useCallbackRef(onValueChange)
       return (
         <RadioGroupProvider scope={scope} value={value} onValueChange={handleValueChange}>
-          <View componentName={RADIO_GROUP_NAME} {...groupProps} ref={forwardedRef} />
+          <View
+            className={`is_${RADIO_GROUP_NAME} ${className || ''}`.trim()}
+            {...groupProps}
+            ref={forwardedRef}
+          />
         </RadioGroupProvider>
       )
     }
@@ -1301,13 +1318,13 @@ export function createBaseMenu() {
   const MenuRadioItem = createStyledHOC(
     View,
     (props: ScopedProps<MenuRadioItemProps>, forwardedRef) => {
-      const { value, scope = MENU_CONTEXT, ...radioItemProps } = props
+      const { value, scope = MENU_CONTEXT, className, ...radioItemProps } = props
       const context = useRadioGroupContext(scope)
       const checked = value === context.value
       return (
         <ItemIndicatorProvider scope={scope} checked={checked}>
           <MenuItem
-            componentName={RADIO_ITEM_NAME}
+            className={`is_${RADIO_ITEM_NAME} ${className || ''}`.trim()}
             {...radioItemProps}
             scope={scope}
             aria-checked={checked}
@@ -1339,7 +1356,7 @@ export function createBaseMenu() {
   const MenuItemIndicator = createStyledHOC(
     View,
     (props: ScopedProps<MenuItemIndicatorProps>, forwardedRef) => {
-      const { scope = MENU_CONTEXT, forceMount, ...itemIndicatorProps } = props
+      const { scope = MENU_CONTEXT, className, forceMount, ...itemIndicatorProps } = props
       const indicatorContext = useItemIndicatorContext(scope)
       return (
         <Presence>
@@ -1347,7 +1364,7 @@ export function createBaseMenu() {
           isIndeterminate(indicatorContext.checked) ||
           indicatorContext.checked === true ? (
             <View
-              componentName={ITEM_INDICATOR_NAME}
+              className={`is_${ITEM_INDICATOR_NAME} ${className || ''}`.trim()}
               render="span"
               {...itemIndicatorProps}
               ref={forwardedRef}
@@ -1368,11 +1385,11 @@ export function createBaseMenu() {
   // TODO this wrapped a styled component but it cant flatten anyways so likely fine just need to check
   const MenuArrow = createRefComponent<TamaguiElement, MenuArrowProps>(
     function MenuArrow(props, forwardedRef) {
-      const { scope = MENU_CONTEXT, ...rest } = props
+      const { scope = MENU_CONTEXT, className, ...rest } = props
       return (
         <PopperPrimitive.PopperArrow
           scope={scope}
-          componentName="PopperArrow"
+          className={`is_PopperArrow ${className || ''}`.trim()}
           {...rest}
           ref={forwardedRef}
         />
@@ -1523,7 +1540,11 @@ export function createBaseMenu() {
     }, [pointerGraceTimerRef, onPointerGraceIntentChange])
 
     return (
-      <MenuAnchor componentName={SUB_TRIGGER_NAME} asChild="except-style" scope={scope}>
+      <MenuAnchor
+        className={`is_${SUB_TRIGGER_NAME}`}
+        asChild="except-style"
+        scope={scope}
+      >
         <MenuItemImpl
           id={subContext.triggerId}
           aria-haspopup="menu"
@@ -1731,7 +1752,7 @@ export function createBaseMenu() {
   const SUB_CONTENT_NAME = 'MenuSubContent'
 
   const MenuSubContentFrame = styled(PopperPrimitive.PopperContentFrame, {
-    name: SUB_CONTENT_NAME,
+    displayName: SUB_CONTENT_NAME,
   })
 
   const MenuSubContent = createStyledHOC(

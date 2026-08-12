@@ -35,7 +35,7 @@ import {
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastItem = styled(ToastBehavior.Item, {
-  name: 'ToastItem',
+  displayName: 'ToastItem',
   backgroundColor: 'background',
   borderRadius: '6',
   paddingHorizontal: '4',
@@ -51,20 +51,20 @@ export const ToastItem = styled(ToastBehavior.Item, {
 })
 
 export const ToastTitle = styled(ToastBehavior.Title, {
-  name: 'ToastTitle',
+  displayName: 'ToastTitle',
   color: 'color',
   fontWeight: '600',
   size: '4',
 })
 
 export const ToastDescription = styled(ToastBehavior.Description, {
-  name: 'ToastDescription',
+  displayName: 'ToastDescription',
   color: 'color11',
   size: '2',
 })
 
 export const ToastClose = styled(ToastBehavior.Close, {
-  name: 'ToastClose',
+  displayName: 'ToastClose',
   borderRadius: '10',
   backgroundColor: 'background hover:color3 press:color4',
   borderWidth: 1,
@@ -75,7 +75,7 @@ export const ToastClose = styled(ToastBehavior.Close, {
 })
 
 export const ToastAction = styled(ToastBehavior.Action, {
-  name: 'ToastAction',
+  displayName: 'ToastAction',
   borderRadius: '2',
   paddingHorizontal: '2',
   backgroundColor: 'color5 hover:color6 press:color7',

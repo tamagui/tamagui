@@ -3,7 +3,7 @@ import { styled } from '@tamagui/core'
 import { Checkbox } from '../src'
 
 const CheckboxSkin = styled(Checkbox, {
-  name: 'TypeTestCheckbox',
+  displayName: 'TypeTestCheckbox',
   alignItems: 'center',
   justifyContent: 'center',
   borderWidth: 1,
@@ -20,7 +20,7 @@ const CheckboxSkin = styled(Checkbox, {
 })
 
 const CheckboxIndicatorSkin = styled(Checkbox.Indicator, {
-  name: 'TypeTestCheckboxIndicator',
+  displayName: 'TypeTestCheckboxIndicator',
   width: '50%',
   height: '50%',
   backgroundColor: 'color',

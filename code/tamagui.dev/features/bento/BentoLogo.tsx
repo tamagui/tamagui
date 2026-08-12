@@ -50,7 +50,7 @@ export const BentoLogo = ({
       <XStack position="relative">
         <BentoLogoTheme offset={-1 + offsetAdjust}>
           <H1
-            componentName="span"
+            className="is_span"
             fontFamily="cherryBomb"
             px="3"
             mx="-3"

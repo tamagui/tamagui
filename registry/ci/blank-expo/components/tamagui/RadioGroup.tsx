@@ -9,11 +9,11 @@ import {
 } from '@tamagui/ui'
 
 export const RadioGroupFrame = styled(RadioGroupBehavior, {
-  name: 'RadioGroup',
+  displayName: 'RadioGroup',
 })
 
 export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
-  name: 'RadioGroupItem',
+  displayName: 'RadioGroupItem',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'background hover:background-hover press:background-press',
@@ -49,7 +49,7 @@ export const RadioGroupItem = styled(RadioGroupBehavior.Item, {
 })
 
 export const RadioGroupIndicator = styled(RadioGroupBehavior.Indicator, {
-  name: 'RadioGroupIndicator',
+  displayName: 'RadioGroupIndicator',
   width: '50%',
   height: '50%',
   borderRadius: 1000,

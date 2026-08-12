@@ -18,7 +18,7 @@ import { axe } from 'vitest-axe'
 const conf = createTamagui(getDefaultTamaguiConfig())
 
 const CheckboxFrame = styled(Checkbox, {
-  name: 'CheckboxTestFrame',
+  displayName: 'CheckboxTestFrame',
   width: 20,
   height: 20,
   borderRadius: 4,
@@ -26,7 +26,7 @@ const CheckboxFrame = styled(Checkbox, {
 })
 
 const CheckboxIndicator = styled(Checkbox.Indicator, {
-  name: 'CheckboxTestIndicator',
+  displayName: 'CheckboxTestIndicator',
   width: 10,
   height: 10,
   backgroundColor: 'color',

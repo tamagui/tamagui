@@ -107,7 +107,7 @@ export const Text = WebText as any as RNTamaguiText
 // export const InputFrame = styled(
 //   TextInput,
 //   {
-//     name: 'Input',
+//     displayName: 'Input',
 //     backgroundColor: 'green',
 
 //     variants: {

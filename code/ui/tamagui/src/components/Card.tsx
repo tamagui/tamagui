@@ -13,7 +13,7 @@ import {
 } from '@tamagui/ui'
 
 export const CardFrame = styled(UiCardFrame, {
-  name: 'Card',
+  displayName: 'Card',
   backgroundColor: 'background',
 })
 

@@ -20,6 +20,7 @@ import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
+import { componentDisplayName } from './helpers/componentDisplayName'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import {
@@ -271,11 +272,25 @@ export function createComponent<
   BaseStyles extends object = never,
 >(staticConfig: StaticConfig) {
   let config: TamaguiInternalConfig | null = null
+  let resolvedDefaultProps: Record<string, any> | undefined
+  let didResolveDefaultProps = false
 
   const { Component, isText, isHOC } = staticConfig
 
+  type ComponentType = TamaguiComponent<
+    ComponentPropTypes,
+    Ref,
+    BaseProps,
+    BaseStyles,
+    {}
+  >
+
+  let res: ComponentType
+
   const component = (propsInWithRef: ComponentPropTypes & { ref?: React.Ref<Ref> }) => {
     'use no memo'
+
+    const displayName = (res as any)[componentDisplayName] as string | undefined
 
     // read the forwarded ref directly off the incoming props — do NOT clone the
     // whole object every render just to strip `ref`. the original props object is
@@ -367,14 +382,24 @@ export function createComponent<
     // order important so we do loops, you can't just spread because JS does weird things
     let props: ViewProps | TextProps = propsIn
 
-    const componentName = props.componentName || staticConfig.componentName
-
     // merge both default props and styled context props - ensure order is preserved
-    const defaultProps = getDefaultProps(staticConfig, props.componentName)
+    if (!didResolveDefaultProps) {
+      didResolveDefaultProps = true
+      const staticDefaultProps = getDefaultProps(staticConfig)
+      resolvedDefaultProps =
+        isWeb &&
+        !isText &&
+        config.settings.defaultPosition === 'relative' &&
+        staticDefaultProps?.position === undefined
+          ? staticDefaultProps
+            ? { position: 'relative', ...staticDefaultProps }
+            : { position: 'relative' }
+          : staticDefaultProps
+    }
 
     // merge styled context props over defaults, ensure order is preserved
     const [nextProps, overrides] = mergeComponentProps(
-      defaultProps,
+      resolvedDefaultProps,
       styledContextValue,
       propsIn
     )
@@ -437,7 +462,7 @@ export function createComponent<
             tooltip.style.fontSize = '12px'
             tooltip.style.lineHeight = '12px'
             tooltip.style.fontFamily = 'monospace'
-            tooltip.innerText = `${componentName || ''} ${dataAt} ${dataIn}`.trim()
+            tooltip.innerText = `${displayName || ''} ${dataAt} ${dataIn}`.trim()
 
             overlay.appendChild(tooltip)
             node.appendChild(overlay)
@@ -453,7 +478,7 @@ export function createComponent<
           remove()
           debugKeyListeners?.delete(debugVisualizerHandler)
         }
-      }, [componentName])
+      }, [displayName])
     }
 
     const groupContextParent = React.useContext(GroupContext)
@@ -714,7 +739,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const name = `${
-          componentName ||
+          displayName ||
           Component?.displayName ||
           Component?.name ||
           '[Unnamed Component]'
@@ -807,6 +832,7 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
+      displayName,
       styledContext: getStyledContextKeys(staticConfig, styledContextValue),
     } as const
 
@@ -1183,7 +1209,7 @@ export function createComponent<
             debugProp &&
             debugProp !== 'profile'
           ) {
-            console.groupCollapsed(`[⚡️] avoid setState`, componentName, next, {
+            console.groupCollapsed(`[⚡️] avoid setState`, displayName, next, {
               updatedState,
               props,
             })
@@ -1455,7 +1481,7 @@ export function createComponent<
           // allow newlines because why not its annoying with mdx
           if (typeof item === 'string' && item !== '\n') {
             console.error(
-              `Unexpected text node: ${item}. A text node cannot be a child of a <${staticConfig.componentName || propsIn.tag || 'View'}>.`,
+              `Unexpected text node: ${item}. A text node cannot be a child of a <${displayName || propsIn.tag || 'View'}>.`,
               props
             )
           }
@@ -1814,7 +1840,7 @@ export function createComponent<
       (typeof propsInWithHref.href === 'string' ? propsInWithHref.href : null)
 
     const pressDebugName =
-      [componentName, pressDebugDetail].filter(Boolean).join(':') || null
+      [displayName, pressDebugDetail].filter(Boolean).join(':') || null
 
     // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
     // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
@@ -2176,19 +2202,7 @@ export function createComponent<
 
   // let hasLogged = false
 
-  if (staticConfig.componentName) {
-    component.displayName = staticConfig.componentName
-  }
-
-  type ComponentType = TamaguiComponent<
-    ComponentPropTypes,
-    Ref,
-    BaseProps,
-    BaseStyles,
-    {}
-  >
-
-  let res: ComponentType = component as any
+  res = component as any
 
   // we now have avoid re-renders in many more cases so imo this is way more worth it
   // Text/Button/string taking components

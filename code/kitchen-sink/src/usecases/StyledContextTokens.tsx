@@ -18,7 +18,7 @@ const GridContext = createStyledContext({
 })
 
 const GridParent = styled(View, {
-  name: 'GridParent',
+  displayName: 'GridParent',
   context: GridContext,
   flexDirection: 'row',
   flexWrap: 'wrap',
@@ -39,7 +39,7 @@ const GridParent = styled(View, {
 })
 
 const GridChild = styled(View, {
-  name: 'GridChild',
+  displayName: 'GridChild',
   context: GridContext,
   height: 50,
   backgroundColor: 'blue10',
@@ -70,7 +70,7 @@ const GridChild = styled(View, {
 
 // Component that displays debug info about the context props
 const DebugInfo = styled(Text, {
-  name: 'DebugInfo',
+  displayName: 'DebugInfo',
   context: GridContext,
   fontSize: 12,
   fontFamily: 'monospace',

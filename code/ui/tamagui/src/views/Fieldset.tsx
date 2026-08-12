@@ -3,7 +3,7 @@ import { styled } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 
 export const Fieldset = styled(YStack, {
-  name: 'Fieldset',
+  displayName: 'Fieldset',
   render: 'fieldset',
 
   // remove browser default styling

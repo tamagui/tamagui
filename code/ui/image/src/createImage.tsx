@@ -131,7 +131,7 @@ export function createImage<C extends ComponentType<any>>(
   const StyledImage = styled(
     Component as ComponentType<any>,
     {
-      name: 'Image',
+      displayName: 'Image',
     },
     {
       inlineProps: inlinePropsSet,

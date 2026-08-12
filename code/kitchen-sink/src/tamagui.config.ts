@@ -401,18 +401,11 @@ const variables = {
   caseRadius: 4,
 } as const
 
-const defaultProps = {
-  Square: {
-    backgroundColor: 'violet',
-  },
-} as const
-
 type KitchenConfigInput = Omit<
   typeof defaultConfig,
   'fonts' | 'media' | 'settings' | 'themes' | 'tokens'
 > & {
   animations: typeof animations
-  defaultProps: typeof defaultProps
   fonts: Merge<typeof defaultConfig.fonts, { body_ja: typeof bodyJa }>
   media: typeof media
   settings: Merge<
@@ -451,8 +444,6 @@ const tamaConf: InferTamaguiConfig<KitchenConfigInput> =
 
     // custom variables for VariablesCase (plans/variables.md)
     variables,
-
-    defaultProps,
   })
 
 export type Conf = typeof tamaConf

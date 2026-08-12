@@ -5,7 +5,7 @@ import { ScrollView as ScrollViewNative } from 'react-native'
 export const ScrollView = styled(
   ScrollViewNative,
   {
-    name: 'ScrollView',
+    displayName: 'ScrollView',
     scrollEnabled: true,
   },
   {

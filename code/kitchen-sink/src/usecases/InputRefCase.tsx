@@ -3,28 +3,28 @@ import React from 'react'
 import { Button, Dialog, Paragraph, Popover, YStack, styled } from 'tamagui'
 
 const StyledInput = styled(Input, {
-  name: 'InputRefCaseStyledInput',
+  displayName: 'InputRefCaseStyledInput',
 })
 
 const StyledTextArea = styled(TextArea, {
-  name: 'InputRefCaseStyledTextArea',
+  displayName: 'InputRefCaseStyledTextArea',
 })
 
 const DoubleStyledInput = styled(
   styled(Input, {
-    name: 'InputRefCaseDoubleStyledInputBase',
+    displayName: 'InputRefCaseDoubleStyledInputBase',
   }),
   {
-    name: 'InputRefCaseDoubleStyledInput',
+    displayName: 'InputRefCaseDoubleStyledInput',
   }
 )
 
 const DoubleStyledTextArea = styled(
   styled(TextArea, {
-    name: 'InputRefCaseDoubleStyledTextAreaBase',
+    displayName: 'InputRefCaseDoubleStyledTextAreaBase',
   }),
   {
-    name: 'InputRefCaseDoubleStyledTextArea',
+    displayName: 'InputRefCaseDoubleStyledTextArea',
   }
 )
 

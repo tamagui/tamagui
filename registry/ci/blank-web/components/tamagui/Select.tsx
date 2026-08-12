@@ -25,7 +25,7 @@ import {
 } from '@tamagui/ui'
 
 const IconGlyph = styled(SizableText, {
-  name: 'SelectIconGlyph',
+  displayName: 'SelectIconGlyph',
   color: 'color',
   userSelect: 'none',
 })
@@ -98,7 +98,7 @@ const selectNativeSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<an
 }
 
 const SelectNative = styled(SizableText, {
-  name: 'SelectNative',
+  displayName: 'SelectNative',
   render: 'select',
   backgroundColor: 'background hover:background-hover',
   borderColor: 'border-color',
@@ -128,7 +128,7 @@ const selectTextSizeVariant = (val: SelectSize, extras: VariantSpreadExtras<any>
 
 export const SelectTrigger = styled(SelectBehavior.Trigger, {
   context: SizeContext,
-  name: 'SelectTrigger',
+  displayName: 'SelectTrigger',
   width: '100%',
   maxWidth: '100%',
   overflow: 'hidden',
@@ -151,7 +151,7 @@ export const SelectTrigger = styled(SelectBehavior.Trigger, {
 
 export const SelectValue = styled(SelectBehavior.Value, {
   context: SizeContext,
-  name: 'SelectValue',
+  displayName: 'SelectValue',
   color: 'color',
   ellipsis: true,
   variants: {
@@ -165,19 +165,19 @@ export const SelectValue = styled(SelectBehavior.Value, {
 
 export const SelectIcon = styled(SelectBehavior.Icon, {
   context: SizeContext,
-  name: 'SelectIcon',
+  displayName: 'SelectIcon',
   marginLeft: 'auto',
   children: <ChevronDown />,
 })
 
 export const SelectGroup = styled(SelectBehavior.Group, {
-  name: 'SelectGroup',
+  displayName: 'SelectGroup',
   width: '100%',
 })
 
 export const SelectLabel = styled(SelectBehavior.Label, {
   context: SizeContext,
-  name: 'SelectLabel',
+  displayName: 'SelectLabel',
   color: 'color10',
   fontWeight: '600',
   paddingHorizontal: 10,
@@ -193,7 +193,7 @@ export const SelectLabel = styled(SelectBehavior.Label, {
 
 export const SelectItem = styled(SelectBehavior.Item, {
   context: SizeContext,
-  name: 'SelectItem',
+  displayName: 'SelectItem',
   width: '100%',
   maxWidth: '100%',
   overflow: 'hidden',
@@ -217,7 +217,7 @@ export const SelectItem = styled(SelectBehavior.Item, {
 
 export const SelectItemText = styled(SelectBehavior.ItemText, {
   context: SizeContext,
-  name: 'SelectItemText',
+  displayName: 'SelectItemText',
   color: 'color',
   userSelect: 'none',
   ellipsis: true,
@@ -231,7 +231,7 @@ export const SelectItemText = styled(SelectBehavior.ItemText, {
 })
 
 export const SelectItemIndicator = styled(SelectBehavior.ItemIndicator, {
-  name: 'SelectItemIndicator',
+  displayName: 'SelectItemIndicator',
   alignItems: 'center',
   justifyContent: 'center',
   marginLeft: 'auto',
@@ -239,13 +239,13 @@ export const SelectItemIndicator = styled(SelectBehavior.ItemIndicator, {
 })
 
 export const SelectIndicator = styled(SelectBehavior.Indicator, {
-  name: 'SelectIndicator',
+  displayName: 'SelectIndicator',
   backgroundColor: 'background-focus',
   borderRadius: 6,
 })
 
 export const SelectViewport = styled(SelectBehavior.Viewport, {
-  name: 'SelectViewport',
+  displayName: 'SelectViewport',
   backgroundColor: 'background',
   borderColor: 'border-color',
   borderRadius: 10,
@@ -256,7 +256,7 @@ export const SelectViewport = styled(SelectBehavior.Viewport, {
 })
 
 export const SelectScrollUpButton = styled(SelectBehavior.ScrollUpButton, {
-  name: 'SelectScrollUpButton',
+  displayName: 'SelectScrollUpButton',
   alignItems: 'center',
   backgroundColor: 'background',
   height: 28,
@@ -265,7 +265,7 @@ export const SelectScrollUpButton = styled(SelectBehavior.ScrollUpButton, {
 })
 
 export const SelectScrollDownButton = styled(SelectBehavior.ScrollDownButton, {
-  name: 'SelectScrollDownButton',
+  displayName: 'SelectScrollDownButton',
   alignItems: 'center',
   backgroundColor: 'background',
   height: 28,
@@ -274,7 +274,7 @@ export const SelectScrollDownButton = styled(SelectBehavior.ScrollDownButton, {
 })
 
 export const SelectSeparator = styled(SelectBehavior.Separator, {
-  name: 'SelectSeparator',
+  displayName: 'SelectSeparator',
   backgroundColor: 'border-color',
   height: 1,
   marginVertical: 4,

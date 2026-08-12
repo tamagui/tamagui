@@ -12,7 +12,7 @@ export function themeable<ComponentType extends (props: any) => any>(
   const withThemeComponent = function WithTheme(props: ThemeableProps & { ref?: any }) {
     'use no memo'
 
-    const userDefaults = getDefaultProps(staticConfig, props.componentName)
+    const userDefaults = getDefaultProps(staticConfig)
     const defaultTheme = userDefaults?.theme
     const defaultResetTheme = userDefaults?.themeReset
     const { theme, themeReset, ref, ...rest } = props

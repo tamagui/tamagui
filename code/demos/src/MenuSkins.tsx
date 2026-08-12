@@ -12,7 +12,7 @@ const contentStyles = {
 } as const
 
 const itemStyles = {
-  name: 'DemoMenuItem',
+  displayName: 'DemoMenuItem',
   width: '100%',
   paddingHorizontal: 8,
   paddingVertical: 4,
@@ -32,7 +32,7 @@ const itemStyles = {
 } as const
 
 const titleStyles = {
-  name: 'DemoMenuItemTitle',
+  displayName: 'DemoMenuItemTitle',
   color: 'color',
   cursor: 'default',
   flexGrow: 1,
@@ -41,7 +41,7 @@ const titleStyles = {
 } as const
 
 const subtitleStyles = {
-  name: 'DemoMenuItemSubtitle',
+  displayName: 'DemoMenuItemSubtitle',
   color: 'color',
   opacity: 0.6,
   cursor: 'default',
@@ -49,7 +49,7 @@ const subtitleStyles = {
 } as const
 
 const iconStyles = {
-  name: 'DemoMenuItemIcon',
+  displayName: 'DemoMenuItemIcon',
   width: 20,
   height: 20,
   marginLeft: 'auto',
@@ -58,14 +58,14 @@ const iconStyles = {
 } as const
 
 const indicatorStyles = {
-  name: 'DemoMenuItemIndicator',
+  displayName: 'DemoMenuItemIndicator',
   marginLeft: 'auto',
   alignItems: 'center',
   justifyContent: 'center',
 } as const
 
 const separatorStyles = {
-  name: 'DemoMenuSeparator',
+  displayName: 'DemoMenuSeparator',
   height: 1,
   marginHorizontal: 10,
   marginVertical: 3,
@@ -73,7 +73,7 @@ const separatorStyles = {
 } as const
 
 const labelStyles = {
-  name: 'DemoMenuLabel',
+  displayName: 'DemoMenuLabel',
   paddingHorizontal: '2-5',
   paddingVertical: '1-5',
   color: 'color',
@@ -83,7 +83,7 @@ const labelStyles = {
 } as const
 
 const groupStyles = {
-  name: 'DemoMenuGroup',
+  displayName: 'DemoMenuGroup',
   width: '100%',
 } as const
 
@@ -101,13 +101,13 @@ const MenuItemIcon = styled(MenuBehavior.ItemIcon, iconStyles)
 const MenuItemIndicator = styled(MenuBehavior.ItemIndicator, indicatorStyles)
 const MenuSeparator = styled(MenuBehavior.Separator, separatorStyles)
 const MenuArrow = styled(MenuBehavior.Arrow, {
-  name: 'DemoMenuArrow',
+  displayName: 'DemoMenuArrow',
   backgroundColor: 'background',
   borderColor: 'border-color',
   borderWidth: 1,
 })
 const MenuScrollView = styled(MenuBehavior.ScrollView, {
-  name: 'DemoMenuScrollView',
+  displayName: 'DemoMenuScrollView',
   padding: '1',
 })
 
@@ -155,7 +155,7 @@ const ContextMenuItemIndicator = styled(
 )
 const ContextMenuSeparator = styled(ContextMenuBehavior.Separator, separatorStyles)
 const ContextMenuArrow = styled(ContextMenuBehavior.Arrow, {
-  name: 'DemoContextMenuArrow',
+  displayName: 'DemoContextMenuArrow',
   backgroundColor: 'background',
   borderColor: 'border-color',
   borderWidth: 1,

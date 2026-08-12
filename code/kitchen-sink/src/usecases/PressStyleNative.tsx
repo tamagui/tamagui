@@ -15,7 +15,7 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
 
 // press clause WITHOUT transition - tests the fallback to normal re-render
 const ColorTestPressable = styled(View, {
-  name: 'ColorTestPressable',
+  displayName: 'ColorTestPressable',
   width: 200,
   height: 100,
   backgroundColor: 'blue-600 press:red-600',
@@ -25,7 +25,7 @@ const ColorTestPressable = styled(View, {
 
 // press clause WITH transition - tests animation driver path
 const ColorTestPressableAnimated = styled(View, {
-  name: 'ColorTestPressableAnimated',
+  displayName: 'ColorTestPressableAnimated',
   width: 200,
   height: 100,
   backgroundColor: 'blue-600 press:red-600',

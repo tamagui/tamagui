@@ -9,6 +9,10 @@ import type {
   TextareaHTMLAttributes,
 } from 'react'
 import { createComponent } from './createComponent'
+import {
+  componentDisplayName,
+  setComponentDisplayName,
+} from './helpers/componentDisplayName'
 import { mergeVariants } from './helpers/mergeVariants'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
 import type { GetRef } from './interfaces/GetRef'
@@ -92,7 +96,7 @@ export type StyledOptions<
   Context,
   ContextPropKeys
 > & {
-  name?: string
+  displayName?: string
   variants?: Variants | undefined
   defaultVariants?: NoInferLocal<GetVariantAcceptedValues<NonNullable<Variants>>>
   context?: Context
@@ -341,7 +345,7 @@ export function styledHtml<
 >(
   tag: Tag,
   options?: Partial<HTMLElementStyleBase<Tag>> & {
-    name?: string
+    displayName?: string
     variants?: Variants
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>
     context?: StyledContext
@@ -356,14 +360,14 @@ export function styledHtml<
       : GetVariantAcceptedValues<NonNullable<Variants>>
 
   const isText = textLikeElements.has(tag)
-  const { variants, name, defaultVariants, context, ...defaultProps } = options || {}
+  const { variants, displayName, defaultVariants, context, ...defaultProps } =
+    options || {}
 
   const conf: Partial<StaticConfig> = {
     Component: tag as any,
     variants: variants as any,
     defaultProps: defaultProps as any,
     defaultVariants,
-    componentName: name,
     isReactNative: false,
     isText,
     acceptsClassName: true,
@@ -374,7 +378,7 @@ export function styledHtml<
     conf.neverFlatten = true
   }
 
-  const component = createComponent(conf)
+  const component = setComponentDisplayName(createComponent(conf), displayName)
 
   return component as any as TamaguiComponent<
     TamaDefer,
@@ -472,6 +476,7 @@ function styledImpl<
     | StyledConfig
     | undefined
   const options = optionsIn
+  const displayName = options?.displayName
 
   // do type stuff at top for easier readability
 
@@ -563,7 +568,7 @@ function styledImpl<
   const staticConfigProps = (() => {
     let {
       variants,
-      name,
+      displayName: _displayName,
       defaultVariants,
       context,
       contextProps,
@@ -627,14 +632,6 @@ function styledImpl<
       }
     }
 
-    if (parentStaticConfig?.isHOC) {
-      // if HOC we map name => componentName as we have a difference in how we name prop vs styled() there
-      if (name) {
-        // @ts-ignore
-        defaultProps.componentName = name
-      }
-    }
-
     const isText = Boolean(config?.isText || parentStaticConfig?.isText)
 
     const acceptsClassName =
@@ -654,7 +651,6 @@ function styledImpl<
       baseClassName: mergedBaseClassName,
       defaultProps,
       defaultVariants,
-      componentName: name || parentStaticConfig?.componentName,
       isReactNative,
       isText,
       acceptsClassName,
@@ -675,7 +671,10 @@ function styledImpl<
     return conf
   })()
 
-  const component = createComponent(staticConfigProps || {})
+  const component = setComponentDisplayName(
+    createComponent(staticConfigProps || {}),
+    displayName || (ComponentIn as any)[componentDisplayName]
+  )
 
   for (const key in ComponentIn) {
     // dont inherit propTypes
@@ -751,7 +750,7 @@ type StyledHtmlFactory<Tag extends keyof HTMLElementTagNameMap> = <
   Variants extends VariantDefinitions<any, any> | undefined = undefined,
 >(
   options?: Partial<HTMLElementStyleBase<Tag>> & {
-    name?: string
+    displayName?: string
     variants?: Variants
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>
     context?: StyledContext

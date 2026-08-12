@@ -60,6 +60,7 @@ export interface TamaguiCompilerHostOptions {
 
 interface TamaguiLoweringComponent extends LoweringComponent {
   staticConfig: StaticConfig
+  displayName?: string
   partialRuntimeSafe: boolean
   domTag?: TagName
 }
@@ -947,7 +948,7 @@ export function createTamaguiCompilerHost(
 
   const directStaticConfig = (
     element: MaterializedElement
-  ): { key: string; staticConfig: StaticConfig } | null => {
+  ): { key: string; staticConfig: StaticConfig; displayName?: string } | null => {
     const identity = element.component.provenance
     if (!identity) return null
     const moduleName = modulesById.get(identity.resolvedId)
@@ -957,13 +958,19 @@ export function createTamaguiCompilerHost(
       ? {
           key: componentKey(identity.resolvedId, identity.importedName),
           staticConfig: normalizeStaticConfig(info.staticConfig),
+          displayName: info.displayName,
         }
       : null
   }
 
   const domStaticConfig = (
     element: MaterializedElement
-  ): { key: string; staticConfig: StaticConfig; tag: TagName } | null => {
+  ): {
+    key: string
+    staticConfig: StaticConfig
+    displayName: string
+    tag: TagName
+  } | null => {
     const identity = element.component.provenance
     const tag = element.component.name as TagName
     if (
@@ -995,10 +1002,10 @@ export function createTamaguiCompilerHost(
     return {
       key: componentKey(identity.resolvedId, `html.${tag}`),
       tag,
+      displayName: tag,
       staticConfig: normalizeStaticConfig({
         ...base,
         isInput: row.backing === 'textinput',
-        componentName: `html.${tag}`,
         // CSS text properties may be authored on any element and inherited by
         // descendant text, including from a View-backed tag on native.
         validStyles: { ...validStylesView, ...stylePropsText },
@@ -1012,7 +1019,7 @@ export function createTamaguiCompilerHost(
 
   const styledStaticConfig = (
     definition: MaterializedStyledDefinition | null
-  ): { key: string; staticConfig: StaticConfig } | null => {
+  ): { key: string; staticConfig: StaticConfig; displayName?: string } | null => {
     if (!definition || definition.options.kind !== 'static') return null
     const base = directStaticConfig({
       kind: 'element',
@@ -1030,7 +1037,7 @@ export function createTamaguiCompilerHost(
       variants,
       defaultVariants,
       compoundVariants,
-      name,
+      displayName,
       context,
       contextProps,
       ...defaultProps
@@ -1042,6 +1049,7 @@ export function createTamaguiCompilerHost(
         : undefined
     return {
       key: componentKey(definition.id, definition.name),
+      displayName: displayName || base.displayName,
       staticConfig: normalizeStaticConfig({
         ...base.staticConfig,
         variants: {
@@ -1065,8 +1073,6 @@ export function createTamaguiCompilerHost(
         contextProps: context
           ? contextProps
           : (contextProps ?? base.staticConfig.contextProps),
-        componentName: definition.name,
-        ...(name && { componentName: name }),
       }),
     }
   }
@@ -1087,6 +1093,7 @@ export function createTamaguiCompilerHost(
         !resolved.staticConfig.neverFlatten &&
         !resolved.staticConfig.context,
       staticConfig: resolved.staticConfig,
+      displayName: resolved.displayName,
       ...(dom && { domTag: dom.tag }),
       // retaining the component also retains these runtime style sources.
       // splitting their output into equal-specificity atomic classes would
@@ -1158,7 +1165,8 @@ export function createTamaguiCompilerHost(
   const resolveSplitStyles = (
     props: Record<string, unknown>,
     staticConfig: StaticConfig,
-    animationDriver?: AnimationDriver | null
+    animationDriver?: AnimationDriver | null,
+    displayName?: string
   ) => {
     const previousStatic = process.env.IS_STATIC
     const previousTarget = process.env.TAMAGUI_TARGET
@@ -1179,6 +1187,7 @@ export function createTamaguiCompilerHost(
           resolveValues: platform === 'native' ? 'except-theme' : 'variable',
           noClass: platform === 'native',
           isAnimated: false,
+          displayName,
         },
         undefined,
         undefined,
@@ -1702,7 +1711,14 @@ export function createTamaguiCompilerHost(
           entry.span
         )
       }
-      const defaultProps = core.getDefaultProps(component.staticConfig) ?? {}
+      const staticDefaultProps = core.getDefaultProps(component.staticConfig) ?? {}
+      const defaultProps =
+        platform === 'web' &&
+        !component.staticConfig.isText &&
+        options.tamaguiConfig.settings.defaultPosition === 'relative' &&
+        staticDefaultProps.position === undefined
+          ? core.mergeProps({ position: 'relative' }, staticDefaultProps)
+          : staticDefaultProps
       let completeProps = core.mergeProps(defaultProps, props)
       if (platform === 'native' && component.domTag && props.display === 'flex') {
         completeProps = core.mergeProps(
@@ -1749,7 +1765,8 @@ export function createTamaguiCompilerHost(
       const split = resolveSplitStyles(
         completeProps,
         component.staticConfig,
-        cssAnimationDriver
+        cssAnimationDriver,
+        component.displayName
       )
       if (!split) {
         return bailout(
@@ -2304,7 +2321,8 @@ export function createTamaguiCompilerHost(
                 const branchSplit = resolveSplitStyles(
                   { ...completeProps, [entry.name]: branchValue },
                   component.staticConfig,
-                  cssAnimationDriver
+                  cssAnimationDriver,
+                  component.displayName
                 )
                 const branchStyle = branchSplit?.viewProps?.style
                 if (!staticObject(branchStyle)) {
@@ -2665,7 +2683,8 @@ export function createTamaguiCompilerHost(
           const branchSplit = resolveSplitStyles(
             { ...completeProps, [entry.name]: branchValue },
             component.staticConfig,
-            cssAnimationDriver
+            cssAnimationDriver,
+            component.displayName
           )
           if (!branchSplit) {
             return bailout(

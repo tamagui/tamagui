@@ -13,12 +13,12 @@ import {
 } from '@tamagui/ui'
 
 export const ProgressIndicator = styled(UiProgressIndicator, {
-  name: 'ProgressIndicator',
+  displayName: 'ProgressIndicator',
   backgroundColor: 'background',
 })
 
 const ProgressFrame = styled(UiProgress, {
-  name: 'Progress',
+  displayName: 'Progress',
   backgroundColor: 'background',
   borderRadius: 100_000,
 })

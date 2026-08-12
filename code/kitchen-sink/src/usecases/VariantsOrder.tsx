@@ -74,7 +74,7 @@ const TestContext = createStyledContext({
 })
 
 const ButtonFrame = styled(View, {
-  name: 'ButtonFrame',
+  displayName: 'ButtonFrame',
   context: TestContext,
   backgroundColor: 'gray',
   padding: 10,
@@ -89,7 +89,7 @@ const ButtonFrame = styled(View, {
 })
 
 const ButtonFrame2 = styled(ButtonFrame, {
-  name: 'ButtonFrame2',
+  displayName: 'ButtonFrame2',
 
   variants: {
     test2: {
@@ -101,7 +101,7 @@ const ButtonFrame2 = styled(ButtonFrame, {
 })
 
 const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   context: TestContext,
   color: 'black',
 

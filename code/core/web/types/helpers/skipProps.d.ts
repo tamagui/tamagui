@@ -7,9 +7,9 @@ export declare const skipProps: {
     space: number;
     animateOnly: number;
     animatedBy: number;
+    displayName: number;
     disableClassName: number;
     debug: number;
-    componentName: number;
     disableOptimization: number;
     disableNativeStyle: number;
     render: number;

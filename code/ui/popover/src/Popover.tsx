@@ -884,13 +884,13 @@ export type PopoverCloseProps = ScopedPopoverProps<YStackProps>
 
 export const PopoverClose = createRefComponent<TamaguiElement, PopoverCloseProps>(
   function PopoverClose(props: ScopedPopoverProps<PopoverCloseProps>, forwardedRef) {
-    const { scope, ...rest } = props
+    const { scope, className, ...rest } = props
     const context = usePopoverContext(scope)
     return (
       <YStack
         {...rest}
         ref={forwardedRef}
-        componentName="PopoverClose"
+        className={`is_PopoverClose ${className || ''}`.trim()}
         onPress={composeEventHandlers(props.onPress as any, () =>
           context?.onOpenChange?.(false, 'press')
         )}
@@ -908,7 +908,7 @@ export type PopoverArrowProps = PopperArrowProps
 export const PopoverArrow = createStyledHOC(
   PopperArrowFrame,
   function PopoverArrow(props: PopperArrowExtraProps, forwardedRef) {
-    const { scope, ...rest } = props
+    const { scope, className, ...rest } = props as PopperArrowProps
     const context = usePopoverContext(scope)
     const isAdapted = useAdaptIsActive(context.adaptScope)
 
@@ -919,7 +919,7 @@ export const PopoverArrow = createStyledHOC(
     return (
       <PopperArrow
         scope={scope}
-        componentName="PopoverArrow"
+        className={`is_PopoverArrow ${className || ''}`.trim()}
         {...rest}
         ref={forwardedRef}
       />

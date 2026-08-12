@@ -5,7 +5,7 @@ import { Paragraph } from './Paragraph'
 
 export const Heading = styled(Paragraph, {
   render: 'span',
-  name: 'Heading',
+  displayName: 'Heading',
   role: 'heading',
   fontFamily: 'heading',
   margin: 0,
@@ -15,7 +15,7 @@ export const Heading = styled(Paragraph, {
 export type HeadingProps = GetProps<typeof Heading>
 
 export const H1 = styled(Heading, {
-  name: 'H1',
+  displayName: 'H1',
   render: 'h1',
 
   variants: {
@@ -32,7 +32,7 @@ export const H1 = styled(Heading, {
 })
 
 export const H2 = styled(Heading, {
-  name: 'H2',
+  displayName: 'H2',
   render: 'h2',
 
   variants: {
@@ -49,7 +49,7 @@ export const H2 = styled(Heading, {
 })
 
 export const H3 = styled(Heading, {
-  name: 'H3',
+  displayName: 'H3',
   render: 'h3',
 
   variants: {
@@ -66,7 +66,7 @@ export const H3 = styled(Heading, {
 })
 
 export const H4 = styled(Heading, {
-  name: 'H4',
+  displayName: 'H4',
   render: 'h4',
 
   variants: {
@@ -83,7 +83,7 @@ export const H4 = styled(Heading, {
 })
 
 export const H5 = styled(Heading, {
-  name: 'H5',
+  displayName: 'H5',
   render: 'h5',
 
   variants: {
@@ -100,7 +100,7 @@ export const H5 = styled(Heading, {
 })
 
 export const H6 = styled(Heading, {
-  name: 'H6',
+  displayName: 'H6',
   render: 'h6',
 
   variants: {

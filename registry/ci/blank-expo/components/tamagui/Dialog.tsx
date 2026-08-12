@@ -32,12 +32,12 @@ export const dialogContentStyles = {
 } as const
 
 export const DialogOverlay = styled(UiDialog.Overlay, {
-  name: 'DialogOverlay',
+  displayName: 'DialogOverlay',
   ...dialogOverlayStyles,
 })
 
 export const DialogContent = styled(UiDialog.Content, {
-  name: 'DialogContent',
+  displayName: 'DialogContent',
   ...dialogContentStyles,
 })
 

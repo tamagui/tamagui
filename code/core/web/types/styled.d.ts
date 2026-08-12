@@ -15,7 +15,7 @@ type NoInferLocal<T> = [T][T extends any ? 0 : never];
 type IsAny<T> = 0 extends 1 & T ? true : false;
 type GetStyledOptionsAcceptedProps<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context, ContextPropKeys extends string> = Partial<InferStyledProps<ParentComponent, StyledConfig>> & (AreVariantsUndefined<Variants> extends true ? {} : Partial<GetVariantAcceptedValues<Variants>>) & GetStyledContextProps<Context, ContextPropKeys>;
 export type StyledOptions<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>> = GetStyledOptionsAcceptedProps<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys> & {
-    name?: string;
+    displayName?: string;
     variants?: Variants | undefined;
     defaultVariants?: NoInferLocal<GetVariantAcceptedValues<NonNullable<Variants>>>;
     context?: Context;
@@ -55,7 +55,7 @@ type HTMLElementStyleBase<T extends keyof HTMLElementTagNameMap> = T extends Tex
  * <StyledAnchor href="/path">Link</StyledAnchor>
  */
 export declare function styledHtml<Tag extends keyof HTMLElementTagNameMap, Variants extends VariantDefinitions<any, any> | undefined = undefined>(tag: Tag, options?: Partial<HTMLElementStyleBase<Tag>> & {
-    name?: string;
+    displayName?: string;
     variants?: Variants;
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>;
     context?: StyledContext;
@@ -75,7 +75,7 @@ declare function styled<ParentComponent extends StylableComponent, StyledConfig 
  */
 export declare function createFrontendStyled(frontend: StyleFrontend): (ComponentIn: any, optionsOrBaseClassName?: any, configOrOptions?: any, maybeConfig?: any) => FrontendComponent;
 type StyledHtmlFactory<Tag extends keyof HTMLElementTagNameMap> = <Variants extends VariantDefinitions<any, any> | undefined = undefined>(options?: Partial<HTMLElementStyleBase<Tag>> & {
-    name?: string;
+    displayName?: string;
     variants?: Variants;
     defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>;
     context?: StyledContext;

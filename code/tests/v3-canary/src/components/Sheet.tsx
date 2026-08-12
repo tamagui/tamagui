@@ -2,7 +2,7 @@ import { Sheet as SheetBehavior, type SheetProps } from '@tamagui/sheet'
 import { createRefComponent, styled, type GetRef, withStaticProperties } from 'tamagui'
 
 export const SheetHandle = styled(SheetBehavior.Handle, {
-  name: 'CanarySheetHandle',
+  displayName: 'CanarySheetHandle',
   background: 'canary-token',
   borderRadius: 1000,
   height: 10,
@@ -24,25 +24,25 @@ export const SheetHandle = styled(SheetBehavior.Handle, {
 })
 
 export const SheetOverlay = styled(SheetBehavior.Overlay, {
-  name: 'CanarySheetOverlay',
+  displayName: 'CanarySheetOverlay',
   background: 'black',
   opacity: 0.45,
 })
 
 export const SheetContainer = styled(SheetBehavior.Container, {
-  name: 'CanarySheetContainer',
+  displayName: 'CanarySheetContainer',
   padding: '5',
 })
 
 export const SheetBackground = styled(SheetBehavior.Background, {
-  name: 'CanarySheetBackground',
+  displayName: 'CanarySheetBackground',
   background: 'background',
   borderTopLeftRadius: '6',
   borderTopRightRadius: '6',
 })
 
 export const SheetScrollView = styled(SheetBehavior.ScrollView, {
-  name: 'CanarySheetScrollView',
+  displayName: 'CanarySheetScrollView',
   flex: 1,
   paddingHorizontal: '2',
 })

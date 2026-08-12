@@ -11,7 +11,7 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
 
 // parent frame — `group` passed at JSX site.
 const FramePlain = styled(View, {
-  name: 'FramePlain',
+  displayName: 'FramePlain',
   width: 80,
   height: 80,
   backgroundColor: 'gray-100',
@@ -19,7 +19,7 @@ const FramePlain = styled(View, {
 })
 
 const FrameAnim = styled(View, {
-  name: 'FrameAnim',
+  displayName: 'FrameAnim',
   width: 80,
   height: 80,
   backgroundColor: 'gray-100',
@@ -29,13 +29,13 @@ const FrameAnim = styled(View, {
 })
 
 const ChildPlain = styled(View, {
-  name: 'ChildPlain',
+  displayName: 'ChildPlain',
   flex: 1,
   backgroundColor: 'blue-600 group-press:red-600',
 })
 
 const ChildAnim = styled(View, {
-  name: 'ChildAnim',
+  displayName: 'ChildAnim',
   flex: 1,
   backgroundColor: 'blue-600 group-press:red-600',
   transition: 'quick',

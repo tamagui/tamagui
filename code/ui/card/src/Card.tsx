@@ -31,7 +31,7 @@ const cardPaddingVariant = (
 // radius on the frame, size-derived padding on Header/Footer) only. The theme
 // background lives in the tamagui skin (code/ui/tamagui/src/components/Card.tsx).
 export const CardFrame = styled(YStack, {
-  name: 'Card',
+  displayName: 'Card',
   context: CardContext,
   size: true,
   position: 'relative',
@@ -45,7 +45,7 @@ export const CardFrame = styled(YStack, {
 })
 
 export const CardHeader = styled(YStack, {
-  name: 'CardHeader',
+  displayName: 'CardHeader',
   context: CardContext,
   zIndex: 10,
   backgroundColor: 'transparent',
@@ -60,7 +60,7 @@ export const CardHeader = styled(YStack, {
 })
 
 export const CardFooter = styled(CardHeader, {
-  name: 'CardFooter',
+  displayName: 'CardFooter',
   zIndex: 5,
   flexDirection: 'row',
   marginTop: 'auto',
@@ -68,7 +68,7 @@ export const CardFooter = styled(CardHeader, {
 })
 
 export const CardBackground = styled(YStack, {
-  name: 'CardBackground',
+  displayName: 'CardBackground',
   zIndex: 0,
   position: 'absolute',
   inset: 0,

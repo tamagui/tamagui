@@ -21,7 +21,7 @@ export function resolveTamaguiHost(
   if (propsTypes.length === 0) return undefined
 
   return {
-    componentName: component.getText(),
+    displayName: component.getText(),
     accepts: (property) =>
       propsTypes.some(
         (propsType) =>

@@ -49,7 +49,7 @@ export const ButtonContext = createStyledContext<
 
 export const ButtonFrame = styled(View, {
   context: ButtonContext,
-  name: 'ButtonFrame',
+  displayName: 'ButtonFrame',
   role: 'button',
   render: <button type="button" />,
   tabIndex: 0,
@@ -69,7 +69,7 @@ export const ButtonFrame = styled(View, {
 
 export const ButtonText = styled(Text, {
   context: ButtonContext,
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   // flexGrow 1 pushes text to the start of its parent on native
   flexGrow: 0,
   flexShrink: 1,

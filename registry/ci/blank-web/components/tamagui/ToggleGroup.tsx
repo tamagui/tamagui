@@ -20,7 +20,7 @@ const activeAppearance = {
 } as const
 
 export const ToggleGroupItem = styled(UiToggleGroup.Item, {
-  name: 'ToggleGroupItem',
+  displayName: 'ToggleGroupItem',
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'border-color hover:border-color-hover press:border-color-press',
   borderWidth: 1,

@@ -399,7 +399,6 @@ v3:
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
   - remove all theme css scanning stuff to separate optional package
-  - remove componentName, just allow setting default theme: ""
   - remove builders like themebuilder etc from config
     - do it via plugins automatically
   - inlineProps => `accept: 'number' | 'string' | value<type>()`

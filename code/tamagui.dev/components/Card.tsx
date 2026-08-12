@@ -1,7 +1,7 @@
 import { YStack, styled } from 'tamagui'
 
 export const Card = styled(YStack, {
-  name: 'Card',
+  displayName: 'Card',
   className: 'transition all ease-in ms100',
   rounded: '2',
   borderWidth: 2,

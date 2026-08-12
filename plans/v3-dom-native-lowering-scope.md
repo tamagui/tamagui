@@ -37,9 +37,9 @@ the backing, `isText`, the tag's default props.
 
 The shortcut is that this data already exists in generated form. `html.tsx` is
 generated from the same tables and already emits, per tag, exactly a
-`staticConfig` spread plus `Component`, `componentName`, `isInput` and the
-element defaults. The compiler could consume an equivalent generated table
-rather than inventing a second source of truth. That is the difference between
+`staticConfig` spread plus `Component`, `isInput`, the element defaults, and a
+separate React display name. The compiler could consume an equivalent generated
+table rather than inventing a second source of truth. That is the difference between
 this item being a day and a week, and it is the strongest argument for whoever
 builds this to be the person who owns the tables.
 

@@ -5,7 +5,7 @@ import { RadioGroup as RadioGroupBehavior } from '@tamagui/radio-group'
 const RADIO_GROUP_ITEM_NAME = 'RadioGroupItem'
 
 const RadioGroupItemFrame = styled(RadioGroupBehavior.Item, {
-  name: RADIO_GROUP_ITEM_NAME,
+  displayName: RADIO_GROUP_ITEM_NAME,
   render: 'button',
   rounded: 1000,
   bg: 'background hover:background-hover press:background-focus focus:background-hover',
@@ -35,7 +35,7 @@ const RadioGroupItemFrame = styled(RadioGroupBehavior.Item, {
 const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator'
 
 const RadioGroupIndicatorFrame = styled(RadioGroupBehavior.Indicator, {
-  name: RADIO_GROUP_INDICATOR_NAME,
+  displayName: RADIO_GROUP_INDICATOR_NAME,
   width: '53%',
   height: '53%',
   rounded: 1000,
@@ -45,7 +45,7 @@ const RadioGroupIndicatorFrame = styled(RadioGroupBehavior.Indicator, {
 const RADIO_GROUP_NAME = 'RadioGroup'
 
 const RadioGroupFrame = styled(RadioGroupBehavior, {
-  name: RADIO_GROUP_NAME,
+  displayName: RADIO_GROUP_NAME,
   variants: {
     orientation: {
       horizontal: {

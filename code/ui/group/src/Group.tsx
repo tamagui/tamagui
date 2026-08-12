@@ -31,7 +31,7 @@ const groupSizeVariant = (val: any, { tokens }: VariantSpreadExtras<any>) => {
 }
 
 export const GroupFrame = styled(YStack, {
-  name: 'GroupFrame',
+  displayName: 'GroupFrame',
   size: true,
 
   variants: {

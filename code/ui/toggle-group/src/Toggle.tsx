@@ -23,7 +23,7 @@ const NAME = 'Toggle'
 export const ToggleFrame = styled(
   View,
   {
-    name: NAME,
+    displayName: NAME,
     render: 'button',
     context,
     size: true,

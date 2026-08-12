@@ -60,7 +60,7 @@ export type SelectValue<
 const VALUE_NAME = 'SelectValue'
 
 export const SelectValueFrame = styled(Text, {
-  name: VALUE_NAME,
+  displayName: VALUE_NAME,
 })
 
 export type SelectValueExtraProps = SelectScopedProps<{
@@ -118,7 +118,7 @@ export const SelectValue = createStyledHOC(
  * -----------------------------------------------------------------------------------------------*/
 
 export const SelectIcon = styled(View, {
-  name: 'SelectIcon',
+  displayName: 'SelectIcon',
   // @ts-ignore
   'aria-hidden': true,
 })
@@ -128,7 +128,7 @@ export const SelectIcon = styled(View, {
  * -----------------------------------------------------------------------------------------------*/
 
 export const SelectItemIndicatorFrame = styled(View, {
-  name: 'SelectItemIndicator',
+  displayName: 'SelectItemIndicator',
 })
 
 export type SelectItemIndicatorProps = SelectScopedProps<
@@ -162,7 +162,7 @@ export const SelectItemIndicator = createStyledHOC(
  * -----------------------------------------------------------------------------------------------*/
 
 export const SelectIndicatorFrame = styled(View, {
-  name: 'SelectIndicator',
+  displayName: 'SelectIndicator',
   position: 'absolute',
   top: 0,
   left: 0,
@@ -236,11 +236,11 @@ const { Provider: SelectGroupContextProvider, useStyledContext: useSelectGroupCo
   createStyledContext<SelectGroupContextValue>({ id: '' }, 'SelectGroup')
 
 export const SelectGroupFrame = styled(View, {
-  name: GROUP_NAME,
+  displayName: GROUP_NAME,
 })
 
 const NativeSelectFrame = styled(Text, {
-  name: 'NativeSelect',
+  displayName: 'NativeSelect',
   render: 'select',
 })
 const NativeSelect = NativeSelectFrame as any
@@ -320,7 +320,7 @@ SelectGroup.displayName = GROUP_NAME
 const LABEL_NAME = 'SelectLabel'
 
 export const SelectLabelFrame = styled(Text, {
-  name: LABEL_NAME,
+  displayName: LABEL_NAME,
 })
 
 export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>
@@ -352,7 +352,7 @@ export const SelectLabel = createStyledHOC(
  * -----------------------------------------------------------------------------------------------*/
 
 export const SelectSeparator = styled(View, {
-  name: 'SelectSeparator',
+  displayName: 'SelectSeparator',
 })
 
 const SelectSheetImpl = (props: SelectImplProps) => {

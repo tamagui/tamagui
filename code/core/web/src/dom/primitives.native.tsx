@@ -31,6 +31,7 @@ import type {
   DOMViewProps,
 } from './contract'
 import { createComponent } from '../createComponent'
+import { setComponentDisplayName } from '../helpers/componentDisplayName'
 import { textStaticConfig } from '../views/Text'
 import { viewStaticConfig } from '../views/View'
 
@@ -552,32 +553,40 @@ function renderDOMTextInput(resolved: DOMTextInputProps) {
   return jsx(TextInput, next)
 }
 
-const DOMRuntimeViewFrame = createComponent({
-  ...viewStaticConfig,
-  validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
-  Component: DOMView as any,
-  componentName: 'DOMRuntimeView',
-  neverFlatten: true,
-})
-const DOMRuntimeTextFrame = createComponent({
-  ...textStaticConfig,
-  Component: DOMText as any,
-  componentName: 'DOMRuntimeText',
-  neverFlatten: true,
-})
-const DOMRuntimeImageFrame = createComponent({
-  ...viewStaticConfig,
-  validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
-  Component: DOMImage as any,
-  componentName: 'DOMRuntimeImage',
-  neverFlatten: true,
-})
-const DOMRuntimeTextInputFrame = createComponent({
-  ...textStaticConfig,
-  Component: DOMTextInput as any,
-  componentName: 'DOMRuntimeTextInput',
-  neverFlatten: true,
-})
+const DOMRuntimeViewFrame = setComponentDisplayName(
+  createComponent({
+    ...viewStaticConfig,
+    validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
+    Component: DOMView as any,
+    neverFlatten: true,
+  }),
+  'DOMRuntimeView'
+)
+const DOMRuntimeTextFrame = setComponentDisplayName(
+  createComponent({
+    ...textStaticConfig,
+    Component: DOMText as any,
+    neverFlatten: true,
+  }),
+  'DOMRuntimeText'
+)
+const DOMRuntimeImageFrame = setComponentDisplayName(
+  createComponent({
+    ...viewStaticConfig,
+    validStyles: { ...viewStaticConfig.validStyles, ...textStaticConfig.validStyles },
+    Component: DOMImage as any,
+    neverFlatten: true,
+  }),
+  'DOMRuntimeImage'
+)
+const DOMRuntimeTextInputFrame = setComponentDisplayName(
+  createComponent({
+    ...textStaticConfig,
+    Component: DOMTextInput as any,
+    neverFlatten: true,
+  }),
+  'DOMRuntimeTextInput'
+)
 
 function runtimeProps<T extends DOMMetadata>(props: T) {
   const { __styles, ...rest } = props

@@ -1,7 +1,7 @@
 import { Paragraph, styled } from 'tamagui'
 
 export const Code = styled(Paragraph, {
-  name: 'Code',
+  displayName: 'Code',
   render: 'code',
   fontFamily: 'mono',
   lineHeight: 18,
@@ -22,7 +22,7 @@ export const Code = styled(Paragraph, {
 
 // @ts-ignore
 export const CodeInline = styled(Paragraph, {
-  name: 'CodeInline',
+  displayName: 'CodeInline',
   render: 'code',
   fontFamily: 'mono',
   color: 'color12',

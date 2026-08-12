@@ -78,7 +78,7 @@ function AnimationChangeTest() {
 }
 
 export const StyledSizableText = styled(SizableText, {
-  name: 'TextSizableText',
+  displayName: 'TextSizableText',
   variants: {
     muted: {
       true: {

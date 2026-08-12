@@ -13,6 +13,7 @@ import type { FunctionComponent } from 'react'
 import type { ParsedValue } from '@tamagui/style-grammar/runtime'
 import { stylePropsUnitless } from '@tamagui/helpers'
 import { createComponent } from './createComponent'
+import { setComponentDisplayName } from './helpers/componentDisplayName'
 import { createFrontendProgram as createFrontendProgramImpl } from './helpers/frontendProgram'
 import type { FrontendComponent, StyleFrontend } from './helpers/styleFrontend'
 import type { FrontendProgramValue } from './internalRuntimeTypes'
@@ -94,7 +95,13 @@ export function createFrontendViews(frontend: StyleFrontend): {
   Text: FrontendComponent
 } {
   return {
-    View: createComponent({ ...viewStaticConfig, styleFrontend: frontend }),
-    Text: createComponent({ ...textStaticConfig, styleFrontend: frontend }),
+    View: setComponentDisplayName(
+      createComponent({ ...viewStaticConfig, styleFrontend: frontend }),
+      'View'
+    ),
+    Text: setComponentDisplayName(
+      createComponent({ ...textStaticConfig, styleFrontend: frontend }),
+      'Text'
+    ),
   }
 }

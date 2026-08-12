@@ -13,7 +13,7 @@ import {
 } from '@tamagui/ui'
 
 const SheetHandleFrame = styled(SheetBehavior.Handle, {
-  name: 'SheetHandle',
+  displayName: 'SheetHandle',
   height: 10,
   borderRadius: 1000,
   backgroundColor: 'color5',
@@ -46,13 +46,13 @@ export const SheetHandle = createRefComponent<
 })
 
 export const SheetOverlay = styled(SheetBehavior.Overlay, {
-  name: 'SheetOverlay',
+  displayName: 'SheetOverlay',
   backgroundColor: 'shadow-color',
   opacity: 0.45,
 })
 
 export const SheetContainer = styled(SheetBehavior.Container, {
-  name: 'SheetContainer',
+  displayName: 'SheetContainer',
   // no padding on the Container: the keyboard-avoidance measures this frame, and
   // in snapPointsMode="fit" any vertical padding here inflates the frame beyond
   // the preserved fit height, so the keyboard lift is off by exactly the padding
@@ -61,14 +61,14 @@ export const SheetContainer = styled(SheetBehavior.Container, {
 })
 
 export const SheetBackground = styled(SheetBehavior.Background, {
-  name: 'SheetBackground',
+  displayName: 'SheetBackground',
   backgroundColor: 'background',
   borderTopLeftRadius: '6',
   borderTopRightRadius: '6',
 })
 
 export const SheetScrollView = styled(SheetBehavior.ScrollView, {
-  name: 'SheetScrollView',
+  displayName: 'SheetScrollView',
   // no flex here: the behavior's fitSizingStyle sets flex per mode (undefined for
   // snapPointsMode="fit" so the content-sized Container doesn't collapse, 1
   // otherwise), and consumer props apply AFTER that guard — a skin-level flex:1

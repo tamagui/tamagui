@@ -8,7 +8,7 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
 // colored panel behind the label.
 
 const PillBackdrop = styled(View, {
-  name: 'PillBackdrop',
+  displayName: 'PillBackdrop',
   position: 'absolute',
   top: 0,
   right: 0,
@@ -22,7 +22,7 @@ const PillBackdrop = styled(View, {
 })
 
 const Pill = styled(View, {
-  name: 'Pill',
+  displayName: 'Pill',
   height: 36,
   paddingHorizontal: 16,
   alignItems: 'center',

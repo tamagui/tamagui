@@ -224,17 +224,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
-  const defaultPositionSetting = settingsIn.defaultPosition || 'static'
-
-  const defaultProps = configIn.defaultProps || {}
-  // apply defaultPosition via defaultProps when not static
-  if (process.env.TAMAGUI_TARGET === 'web' && defaultPositionSetting !== 'static') {
-    defaultProps.View = {
-      ...defaultProps.View,
-      position: defaultPositionSetting,
-    }
-  }
-
   // Text inherits font from root via CSS, no need for default fontFamily
   // only explicit fontFamily prop should add font_* class
 
@@ -259,7 +248,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // normalized animations (resolved from multi-driver format if needed)
     animations: resolvedAnimations ?? defaultAnimationDriver,
     animationDrivers,
-    defaultProps,
     settings: {
       webContainerType: 'inline-size',
       ...settingsIn,

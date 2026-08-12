@@ -201,7 +201,7 @@ export async function checkDrift(): Promise<DriftEntry[]> {
         })
         continue
       }
-      const expected = renderConsumerCopy(skin, consumer.namePrefix)
+      const expected = renderConsumerCopy(skin, consumer.displayNamePrefix)
       const actual = readFileSync(abs, 'utf8')
       entries.push({
         consumer: consumer.key,
@@ -241,7 +241,7 @@ export async function writeConsumers(): Promise<string[]> {
     mkdirSync(join(repoRoot, consumer.dir), { recursive: true })
     for (const skin of skins) {
       const abs = join(repoRoot, consumer.dir, consumer.filename(skin.base))
-      writeFileSync(abs, renderConsumerCopy(skin, consumer.namePrefix))
+      writeFileSync(abs, renderConsumerCopy(skin, consumer.displayNamePrefix))
       written.push(relative(repoRoot, abs))
     }
   }
@@ -258,7 +258,7 @@ export async function writeConsumersToSandbox(sandboxDir: string): Promise<strin
     mkdirSync(dir, { recursive: true })
     for (const skin of skins) {
       const abs = join(dir, consumer.filename(skin.base))
-      writeFileSync(abs, renderConsumerCopy(skin, consumer.namePrefix))
+      writeFileSync(abs, renderConsumerCopy(skin, consumer.displayNamePrefix))
       written.push(abs)
     }
   }
@@ -266,7 +266,7 @@ export async function writeConsumersToSandbox(sandboxDir: string): Promise<strin
 }
 
 export function loadExpectedConsumer(consumer: DriftConsumer, skin: Skin): string {
-  return renderConsumerCopy(skin, consumer.namePrefix)
+  return renderConsumerCopy(skin, consumer.displayNamePrefix)
 }
 
 export { driftConsumers }

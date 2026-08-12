@@ -20,7 +20,7 @@ export const SimpleTest = styled(View, {
 })
 
 export const Test14Component = styled(YStack, {
-  name: 'MyComponent',
+  displayName: 'MyComponent',
 
   variants: {
     fullbleed: {

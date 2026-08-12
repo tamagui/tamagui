@@ -669,7 +669,7 @@ export type PopperContentProps = ViewProps & {
 }
 
 export const PopperContentFrame = styled(TamaguiView, {
-  name: 'PopperContent',
+  displayName: 'PopperContent',
 })
 
 export const PopperContent = createRefComponent<PopperContentElement, PopperContentProps>(
@@ -885,12 +885,12 @@ export type PopperArrowExtraProps = {
 export type PopperArrowProps = ViewProps & PopperArrowExtraProps
 
 export const PopperArrowFrame = styled(TamaguiView, {
-  name: 'PopperArrow',
+  displayName: 'PopperArrow',
   position: 'relative',
 })
 
 const PopperArrowOuterFrame = styled(TamaguiView, {
-  name: 'PopperArrowOuter',
+  displayName: 'PopperArrowOuter',
   position: 'absolute',
   zIndex: 1_000_000,
   pointerEvents: 'none',

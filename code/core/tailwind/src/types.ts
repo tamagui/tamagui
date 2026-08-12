@@ -89,7 +89,7 @@ type TailwindCommonProps = AriaAttributes &
     group?: string | boolean
     container?: boolean
     untilMeasured?: 'hide' | 'show'
-    componentName?: string
+    name?: string
     tabIndex?: string | number
     role?: HTMLAttributes<HTMLDivElement>['role']
     disableOptimization?: boolean
@@ -186,7 +186,7 @@ export type TailwindCompoundVariant<Variants> = TailwindVariantProps<Variants> &
 }
 
 export type TailwindStyledOptions<Variants extends TailwindVariantDefinitions> = {
-  name?: string
+  displayName?: string
   variants?: Variants
   defaultVariants?: TailwindVariantProps<Variants>
   compoundVariants?: readonly TailwindCompoundVariant<Variants>[]

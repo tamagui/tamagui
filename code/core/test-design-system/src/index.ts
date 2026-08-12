@@ -5,14 +5,14 @@ export const MyStack = styled(View, {
 })
 
 export const MySizableText = styled(Text, {
-  name: 'MySizableText',
+  displayName: 'MySizableText',
   backgroundColor: 'green',
 })
 
 // a variant whose value carries a media clause. this is the v3 flat-value form
 // of the nested media object used by the v2 regression fixture.
 export const MyMediaVariantText = styled(Text, {
-  name: 'MyMediaVariantText',
+  displayName: 'MyMediaVariantText',
   fontWeight: '200',
   fontSize: '24px lg:35px',
 

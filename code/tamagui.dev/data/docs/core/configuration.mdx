@@ -241,14 +241,6 @@ const config = createTamagui({
     w: 'width',
   } as const,
 
-  // Change the default props for any styled() component with a name.
-  // We are discouraging the use of this and have deprecated it, prefer to use
-  // styled() on any component to change its styles.
-  defaultProps: {
-    Text: {
-      color: 'green',
-    },
-  },
 })
 
 type AppConfig = typeof config

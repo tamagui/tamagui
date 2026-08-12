@@ -50,34 +50,34 @@ const fieldStateVariants = {
 } as const
 
 export const FieldFrame = styled(View, {
-  name: 'Field',
+  displayName: 'Field',
   context: FieldStyledContext,
   variants: fieldStateVariants,
 })
 
 export const FieldLabelFrame = styled(Text, {
-  name: 'FieldLabel',
+  displayName: 'FieldLabel',
   render: 'label',
   context: FieldStyledContext,
   variants: fieldStateVariants,
 })
 
 export const FieldDescriptionFrame = styled(Text, {
-  name: 'FieldDescription',
+  displayName: 'FieldDescription',
   render: 'p',
   context: FieldStyledContext,
   variants: fieldStateVariants,
 })
 
 export const FieldErrorFrame = styled(Text, {
-  name: 'FieldError',
+  displayName: 'FieldError',
   render: 'span',
   context: FieldStyledContext,
   variants: fieldStateVariants,
 })
 
 export const FieldItemFrame = styled(View, {
-  name: 'FieldItem',
+  displayName: 'FieldItem',
   context: FieldStyledContext,
   variants: fieldStateVariants,
 })

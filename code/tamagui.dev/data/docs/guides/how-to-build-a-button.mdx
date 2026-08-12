@@ -69,7 +69,7 @@ export const ButtonContext = createStyledContext({
 })
 
 export const ButtonFrame = styled(View, {
-  name: 'Button',
+  displayName: 'Button',
   context: ButtonContext,
   backgroundColor: 'background hover:background-hover press:background-press',
   alignItems: 'center',
@@ -101,7 +101,7 @@ export const ButtonFrame = styled(View, {
 type ButtonProps = GetProps<typeof ButtonFrame>
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   context: ButtonContext,
   color: 'color',
   userSelect: 'none',
@@ -241,8 +241,8 @@ like so:
 import { View, styled } from '@tamagui/core'
 
 const ButtonFrame = styled(View, {
-  // name identifies the component for config and debugging
-  name: 'Button',
+  // displayName sets the React debugging identity
+  displayName: 'Button',
 
   alignItems: 'center',
   flexDirection: 'row',
@@ -281,7 +281,7 @@ Next we'll want a Text component to go inside:
 import { Text, styled } from '@tamagui/core'
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   color: 'color',
   fontFamily: 'body',
   fontSize: 'md',
@@ -311,7 +311,7 @@ We can add some variants:
 
 ```tsx
 const ButtonFrame = styled(View, {
-  name: 'Button',
+  displayName: 'Button',
   backgroundColor: 'background',
   alignItems: 'center',
   flexDirection: 'row',
@@ -346,7 +346,7 @@ use the handy Tamagui [Spread Variants](/docs/core/variants#spread-variants):
 import { View, styled } from '@tamagui/core'
 
 const ButtonFrame = styled(View, {
-  name: 'Button',
+  displayName: 'Button',
   backgroundColor: 'background',
   alignItems: 'center',
   flexDirection: 'row',
@@ -365,7 +365,7 @@ const ButtonFrame = styled(View, {
 })
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   color: 'color',
   userSelect: 'none',
 
@@ -585,7 +585,7 @@ export const ButtonContext = createStyledContext({
 })
 
 const ButtonFrame = styled(View, {
-  name: 'Button',
+  displayName: 'Button',
   context: ButtonContext,
   backgroundColor: 'background',
   alignItems: 'center',
@@ -605,7 +605,7 @@ const ButtonFrame = styled(View, {
 })
 
 const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   context: ButtonContext,
   color: 'color',
   userSelect: 'none',

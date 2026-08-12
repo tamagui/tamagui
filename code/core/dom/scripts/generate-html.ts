@@ -74,19 +74,21 @@ function htmlSource(): string {
       .join(', ')
 
     return [
-      `const ${tag} = createComponent<`,
-      `  ${propsFor(tag)} & ${props},`,
-      `  ${element},`,
-      `  ${propsFor(tag)} & ${nonStyle},`,
-      `  ${styleBase}`,
-      `>({`,
-      `  ...${base},`,
-      `  Component: tag('${tag}'),`,
-      `  componentName: '${tag}',`,
+      `const ${tag} = setComponentDisplayName(`,
+      `  createComponent<`,
+      `    ${propsFor(tag)} & ${props},`,
+      `    ${element},`,
+      `    ${propsFor(tag)} & ${nonStyle},`,
+      `    ${styleBase}`,
+      `  >({`,
+      `    ...${base},`,
+      `    Component: tag('${tag}'),`,
       // a text-entry control takes the text style props and the native input path
-      ...(backing === 'textinput' ? ['  isInput: true,'] : []),
-      `  defaultProps: { ...${base}.defaultProps${defaults ? `, ${defaults}` : ''} },`,
-      `})`,
+      ...(backing === 'textinput' ? ['    isInput: true,'] : []),
+      `    defaultProps: { ...${base}.defaultProps${defaults ? `, ${defaults}` : ''} },`,
+      `  }),`,
+      `  '${tag}'`,
+      `)`,
     ].join('\n')
   })
 
@@ -100,6 +102,7 @@ function htmlSource(): string {
     `import type {\n${interfaces.map((name) => `  ${name},`).join('\n')}\n} from '@tamagui/dom'`,
     '',
     `import { createComponent } from '../createComponent'`,
+    `import { setComponentDisplayName } from '../helpers/componentDisplayName'`,
     `import type {`,
     `  StackNonStyleProps,`,
     `  StackStyleBase,`,

@@ -15,7 +15,7 @@ import React from 'react'
 const RADIO_GROUP_ITEM_NAME = 'RadioGroupItem'
 
 export const RadioGroupItemFrame = styled(View, {
-  name: RADIO_GROUP_ITEM_NAME,
+  displayName: RADIO_GROUP_ITEM_NAME,
   render: 'button',
   alignItems: 'center',
   justifyContent: 'center',
@@ -33,13 +33,13 @@ export const RadioGroupItemFrame = styled(View, {
 const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator'
 
 export const RadioGroupIndicatorFrame = styled(View, {
-  name: RADIO_GROUP_INDICATOR_NAME,
+  displayName: RADIO_GROUP_INDICATOR_NAME,
 })
 
 const RADIO_GROUP_NAME = 'RadioGroup'
 
 export const RadioGroupFrame = styled(View, {
-  name: RADIO_GROUP_NAME,
+  displayName: RADIO_GROUP_NAME,
 
   variants: {
     orientation: {

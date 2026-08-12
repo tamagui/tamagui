@@ -24,12 +24,12 @@ import type {
 import { useSwitchNative } from './useSwitchNative'
 
 export const SwitchThumbFrame = styled(View, {
-  name: 'SwitchThumb',
+  displayName: 'SwitchThumb',
   context: SwitchStyledContext,
 })
 
 export const SwitchFrame = styled(View, {
-  name: 'Switch',
+  displayName: 'Switch',
   context: SwitchStyledContext,
   render: 'button',
   tabIndex: 0,

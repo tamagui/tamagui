@@ -374,8 +374,6 @@ export const SheetScrollView = createStyledHOC(
   },
   {
     disableTheme: true,
-    staticConfig: {
-      componentName: SHEET_SCROLL_VIEW_NAME,
-    },
+    displayName: SHEET_SCROLL_VIEW_NAME,
   }
 )

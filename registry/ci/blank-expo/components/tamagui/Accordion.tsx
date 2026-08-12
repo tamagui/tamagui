@@ -14,7 +14,7 @@ import {
 import type * as React from 'react'
 
 export const AccordionTrigger = styled(UiAccordion.Trigger, {
-  name: 'AccordionTrigger',
+  displayName: 'AccordionTrigger',
   cursor: 'pointer',
   backgroundColor:
     'background hover:background-hover press:background-press focus:background-focus',
@@ -22,7 +22,7 @@ export const AccordionTrigger = styled(UiAccordion.Trigger, {
 })
 
 export const AccordionContent = styled(UiAccordion.Content, {
-  name: 'AccordionContent',
+  displayName: 'AccordionContent',
   padding: defaultTokenSizePolicy.space,
   backgroundColor: 'background',
 })

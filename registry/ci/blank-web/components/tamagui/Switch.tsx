@@ -13,7 +13,7 @@ const getSwitchHeight = (size: SizeTokens) =>
   Math.round(getVariableValue(getSize(size)) * 0.65)
 
 export const SwitchFrame = styled(SwitchBehaviorFrame, {
-  name: 'Switch',
+  displayName: 'Switch',
   backgroundColor: 'background',
   borderRadius: 1000,
   outlineColor: 'focus-visible:outline-color',
@@ -34,7 +34,7 @@ export const SwitchFrame = styled(SwitchBehaviorFrame, {
 })
 
 export const SwitchThumbFrame = styled(SwitchBehaviorThumbFrame, {
-  name: 'SwitchThumb',
+  displayName: 'SwitchThumb',
   backgroundColor: 'background',
   borderRadius: 1000,
   variants: {

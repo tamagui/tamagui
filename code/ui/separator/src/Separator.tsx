@@ -5,7 +5,7 @@ import { View, styled } from '@tamagui/core'
 // invisible line, transparent by default). The theme line color lives in the
 // tamagui skin (code/ui/tamagui/src/components/Separator.tsx).
 export const Separator = styled(View, {
-  name: 'Separator',
+  displayName: 'Separator',
   ...(isWeb && {
     role: 'separator',
     // @ts-ignore

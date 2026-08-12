@@ -8,11 +8,11 @@ import { expect, test } from 'vitest'
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 
 const Card = styled(View, {
-  name: 'Card',
+  displayName: 'Card',
   backgroundColor: 'background',
 })
 
-test('styled component names do not resolve themes at runtime', () => {
+test('styled display names do not resolve themes at runtime', () => {
   const tree = render(
     <TamaguiProvider config={config} defaultTheme="dark">
       <Card />

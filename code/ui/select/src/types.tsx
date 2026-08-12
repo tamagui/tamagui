@@ -232,10 +232,10 @@ export type SelectContentProps = SelectScopedProps<
 export type SelectScrollButtonImplProps = ViewProps &
   SelectScopedProps<{
     dir: 'up' | 'down'
-    componentName: string
+    partClassName: string
   }>
 
 export interface SelectScrollButtonProps extends Omit<
   SelectScrollButtonImplProps,
-  'dir' | 'componentName'
+  'dir' | 'partClassName'
 > {}

@@ -23,6 +23,7 @@ import {
   SHEET_BACKGROUND_NAME,
   SHEET_CONTAINER_NAME,
   SHEET_HANDLE_NAME,
+  SHEET_OVERLAY_MARKER,
   SHEET_OVERLAY_NAME,
 } from './constants'
 import { getNativeSheet } from './nativeSheet'
@@ -51,7 +52,7 @@ type SheetViewProps<ExtraProps extends object = {}> = SheetScopedProps<
 >
 
 const SheetHandleFrame = styled(XStack, {
-  name: SHEET_HANDLE_NAME,
+  displayName: SHEET_HANDLE_NAME,
 
   // the behavior Handle ships no opacity rules; open/close aesthetics (fade in
   // when open, dim when idle) live in the copied skin. see the canonical skin.
@@ -68,7 +69,7 @@ const SheetHandleFrame = styled(XStack, {
 })
 
 const SheetOverlayFrame = styled(YStack, {
-  name: SHEET_OVERLAY_NAME,
+  displayName: SHEET_OVERLAY_NAME,
   inset: 0,
   position: 'absolute',
   zIndex: 100_000 - 1,
@@ -86,8 +87,10 @@ const SheetOverlayFrame = styled(YStack, {
   } as const,
 })
 
+Object.assign(SheetOverlayFrame.staticConfig, { [SHEET_OVERLAY_MARKER]: true })
+
 const SheetContainerFrame = styled(YStack, {
-  name: SHEET_CONTAINER_NAME,
+  displayName: SHEET_CONTAINER_NAME,
   flex: 1,
   position: 'relative',
   zIndex: 0,
@@ -96,7 +99,7 @@ const SheetContainerFrame = styled(YStack, {
 })
 
 const SheetBackgroundFrame = styled(YStack, {
-  name: SHEET_BACKGROUND_NAME,
+  displayName: SHEET_BACKGROUND_NAME,
   position: 'absolute',
   top: 0,
   left: 0,

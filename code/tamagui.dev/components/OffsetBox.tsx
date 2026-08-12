@@ -1,7 +1,7 @@
 import { YStack, styled } from 'tamagui'
 
 export const OffsetBox = styled(YStack, {
-  name: 'OffsetBox',
+  displayName: 'OffsetBox',
   variants: {
     size: {
       hero: {

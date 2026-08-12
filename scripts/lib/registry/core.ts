@@ -4,7 +4,7 @@ import {
   skinSourceRoot,
   installTargetDir,
   registryBaseUrl,
-  canonicalNamePrefix,
+  canonicalDisplayNamePrefix,
 } from './config'
 import { classifyDependencies } from './deps'
 import { deriveStates, type StateTables } from './states-derive'
@@ -58,30 +58,30 @@ export async function loadSkin(base: string): Promise<Skin> {
   return { base, name: base.toLowerCase(), file, source, manifest }
 }
 
-// rewrite styled() `name:` identity strings from one prefix to another. this is
+// rewrite styled() `displayName:` strings from one prefix to another. this is
 // the ONLY transform applied to skin source — it is what legitimately varies
 // between the canonical skin, the shipped registry copy, and each downstream
 // consumer copy. everything else is byte-identical.
-export function reprefixNames(source: string, from: string, to: string): string {
+export function reprefixDisplayNames(source: string, from: string, to: string): string {
   if (from === to) return source
   if (from) {
-    // replace `name: 'From<X>'` -> `name: 'To<X>'`
-    const re = new RegExp(`(name:\\s*['"])${from}([A-Za-z0-9_]*)(['"])`, 'g')
+    // replace `displayName: 'From<X>'` -> `displayName: 'To<X>'`
+    const re = new RegExp(`(displayName:\\s*['"])${from}([A-Za-z0-9_]*)(['"])`, 'g')
     return source.replace(re, (_all, pre, rest, post) => `${pre}${to}${rest}${post}`)
   }
   // from === '' : prepend `to` to component-identity names (start uppercase)
-  const re = /(name:\s*['"])([A-Z][A-Za-z0-9_]*)(['"])/g
+  const re = /(displayName:\s*['"])([A-Z][A-Za-z0-9_]*)(['"])/g
   return source.replace(re, (_all, pre, ident, post) => `${pre}${to}${ident}${post}`)
 }
 
 // the shipped registry copy uses neutral (unprefixed) identity names.
 export function renderRegistryCopy(skin: Skin): string {
-  return reprefixNames(skin.source, canonicalNamePrefix, '')
+  return reprefixDisplayNames(skin.source, canonicalDisplayNamePrefix, '')
 }
 
 // a downstream consumer copy uses that consumer's own name prefix.
 export function renderConsumerCopy(skin: Skin, consumerPrefix: string): string {
-  return reprefixNames(skin.source, canonicalNamePrefix, consumerPrefix)
+  return reprefixDisplayNames(skin.source, canonicalDisplayNamePrefix, consumerPrefix)
 }
 
 // map a relative import in a skin to a sibling skin base, if it is one.

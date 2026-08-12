@@ -13,7 +13,7 @@ import {
 import type * as React from 'react'
 
 export const SliderTrackFrame = styled(UiSlider.Track, {
-  name: 'SliderTrack',
+  displayName: 'SliderTrack',
   backgroundColor: 'background-press',
   borderRadius: 100_000,
 })
@@ -21,7 +21,7 @@ export const SliderTrackFrame = styled(UiSlider.Track, {
 export const SliderTrack = SliderTrackFrame
 
 export const SliderActiveFrame = styled(UiSlider.TrackActive, {
-  name: 'SliderTrackActive',
+  displayName: 'SliderTrackActive',
   backgroundColor: 'color',
   borderRadius: 100_000,
 })
@@ -29,7 +29,7 @@ export const SliderActiveFrame = styled(UiSlider.TrackActive, {
 export const SliderActive = SliderActiveFrame
 
 export const SliderThumbFrame = styled(UiSlider.Thumb, {
-  name: 'SliderThumb',
+  displayName: 'SliderThumb',
   borderWidth: 2,
   borderColor: 'border-color hover:border-color-hover press:border-color-press',
   backgroundColor: 'background hover:background-hover press:background-press',

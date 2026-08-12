@@ -27,7 +27,7 @@ import { CardFrame, Text, YStack } from 'tamagui'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 
 const Chip = styled(View, {
-  name: 'Chip',
+  displayName: 'Chip',
   flexDirection: 'row',
   justify: 'center',
   items: 'center',

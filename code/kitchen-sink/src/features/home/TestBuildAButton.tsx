@@ -31,7 +31,7 @@ export const ButtonContext = createStyledContext({
 })
 
 export const ButtonFrame = styled(View, {
-  name: 'Button',
+  displayName: 'Button',
   context: ButtonContext,
   backgroundColor: 'background hover:background-hover press:background-press',
   alignItems: 'center',
@@ -58,7 +58,7 @@ export const ButtonFrame = styled(View, {
 type ButtonProps = GetProps<typeof ButtonFrame>
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   context: ButtonContext,
   color: 'color',
   userSelect: 'none',

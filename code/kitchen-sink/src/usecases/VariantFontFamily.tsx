@@ -1,7 +1,7 @@
 import { Text, styled } from 'tamagui'
 
 export const Heading = styled(Text, {
-  name: 'Heading',
+  displayName: 'Heading',
   color: 'color',
   variants: {
     type: {

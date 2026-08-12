@@ -480,7 +480,7 @@ AccordionHeader.displayName = HEADER_NAME
 // decoration (cursor, background, padding, hover/focus/press color styling)
 // lives in the tamagui skin (code/ui/tamagui/src/components/Accordion.tsx).
 const AccordionTriggerFrame = styled(Collapsible.Trigger, {
-  name: 'AccordionTrigger',
+  displayName: 'AccordionTrigger',
 })
 
 type AccordionTrigger = GetRef<typeof AccordionTriggerFrame>
@@ -523,7 +523,7 @@ const AccordionTrigger = createStyledHOC(
 // Unstyled content frame: the Collapsible.Content behavior only. Padding and
 // background live in the tamagui skin.
 const AccordionContentFrame = styled(Collapsible.Content, {
-  name: 'AccordionContent',
+  displayName: 'AccordionContent',
 })
 
 type AccordionContentProps = GetProps<typeof AccordionContentFrame>

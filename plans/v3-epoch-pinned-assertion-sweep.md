@@ -34,7 +34,7 @@ construction, so it is **(b)** whenever it fails.
 
 | test | expects | receives | why (b) |
 | --- | --- | --- | --- |
-| `StyledHOCNamed.test.tsx:10` | `rgb(255,0,0)` | `rgb(3,7,18)` | expects a **hand-written** sub-theme, `light_MyLabel: { color: 'red' }` at `tamagui.config.ts:382`. Not a generated value, so it cannot have drifted. Receiving the base default means the component-name sub-theme (`styled(X, { name })` → `light_<name>`) is not being applied. |
+| `StyledHOCNamed.test.tsx:10` | `rgb(255,0,0)` | `rgb(3,7,18)` | expects a **hand-written** sub-theme, `light_MyLabel: { color: 'red' }` at `tamagui.config.ts:382`. Not a generated value, so it cannot have drifted. Receiving the base default means the removed component-specific sub-theme lookup is not being applied. |
 | `StyledButtonTheme.test.tsx:9` | `referenceStyles.backgroundColor` | a different green | the assertion is **relational**, comparing a styled + createStyledHOC + themed Button against an authored reference. Epoch-independent by construction. It gets `green-50` where the reference gets `green-100`, so the copied skin resolves a different level of the same theme. |
 
 Both are theme resolution, and `ButtonSkin`/`SelectSkin` sit next to them and pass,

@@ -173,9 +173,9 @@ export type SelectContentProps = SelectScopedProps<{
 } & Pick<DismissableProps, 'onEscapeKeyDown' | 'onPointerDownOutside' | 'onFocusOutside' | 'onInteractOutside'>>;
 export type SelectScrollButtonImplProps = ViewProps & SelectScopedProps<{
     dir: 'up' | 'down';
-    componentName: string;
+    partClassName: string;
 }>;
-export interface SelectScrollButtonProps extends Omit<SelectScrollButtonImplProps, 'dir' | 'componentName'> {
+export interface SelectScrollButtonProps extends Omit<SelectScrollButtonImplProps, 'dir' | 'partClassName'> {
 }
 export {};
 //# sourceMappingURL=types.d.ts.map

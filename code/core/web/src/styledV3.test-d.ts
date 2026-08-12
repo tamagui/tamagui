@@ -36,6 +36,18 @@ const buttonVariants = {
 type ButtonStyledOptions = StyledOptions<typeof Button, {}, typeof buttonVariants>
 
 describe('styled v3 overloads', () => {
+  test('displayName is a styled option and name remains an instance prop', () => {
+    const Frame = styled(View, {
+      displayName: 'Frame',
+    })
+
+    type Props = GetProps<typeof Frame>
+    type HasDisplayNameProp = 'displayName' extends keyof Props ? true : false
+
+    expectTypeOf<HasDisplayNameProp>().toEqualTypeOf<false>()
+    expectTypeOf<Props['name']>().toMatchTypeOf<string | undefined>()
+  })
+
   test('custom component inference survives options plus static config', () => {
     const ObjectFirst = styled(
       Button,

@@ -4,7 +4,7 @@ import { Text, YStack, styled } from 'tamagui'
 // This tests that group-press works inside variants
 
 const GroupPressText = styled(Text, {
-  name: 'GroupPressText',
+  displayName: 'GroupPressText',
   color: 'rgb(0, 0, 0)',
 
   variants: {
@@ -21,7 +21,7 @@ const GroupPressText = styled(Text, {
 
 // Also test with a named group
 const GroupPressTextNamed = styled(Text, {
-  name: 'GroupPressTextNamed',
+  displayName: 'GroupPressTextNamed',
   color: 'rgb(0, 0, 0)',
 
   variants: {
@@ -35,7 +35,7 @@ const GroupPressTextNamed = styled(Text, {
 
 // Test group-press at root level for comparison (this should already work)
 const GroupPressTextRoot = styled(Text, {
-  name: 'GroupPressTextRoot',
+  displayName: 'GroupPressTextRoot',
   color: 'rgb(0, 0, 255) group-press:rgb(255, 0, 0)',
 })
 

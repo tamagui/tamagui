@@ -30,7 +30,7 @@ const [ProgressProvider, useProgressContext] =
 const INDICATOR_NAME = 'ProgressIndicator'
 
 export const ProgressIndicatorFrame = styled(YStack, {
-  name: INDICATOR_NAME,
+  displayName: INDICATOR_NAME,
   height: '100%',
   width: '100%',
 })
@@ -118,7 +118,7 @@ type ProgressState = 'indeterminate' | 'complete' | 'loading'
 // (size-derived track height) only. The pill radius and theme background live in
 // the tamagui skin (code/ui/tamagui/src/components/Progress.tsx).
 export const ProgressFrame = styled(YStack, {
-  name: 'Progress',
+  displayName: 'Progress',
   overflow: 'hidden',
 
   variants: {

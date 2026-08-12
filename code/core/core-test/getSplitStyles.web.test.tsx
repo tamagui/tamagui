@@ -727,7 +727,7 @@ describe('getSplitStyles - asChild default props skipping', () => {
 
 describe('getSplitStyles - flat clause merging', () => {
   const StyledButton = styled(View, {
-    name: 'StyledButton',
+    displayName: 'StyledButton',
     backgroundColor: 'press:green',
     variants: {
       variant: {

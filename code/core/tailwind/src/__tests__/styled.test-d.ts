@@ -43,7 +43,7 @@ describe('components accept and reject the right props', () => {
 
 describe('class-first styled()', () => {
   const Frame = styled(View, 'bg-surface p-4', {
-    name: 'Frame',
+    displayName: 'Frame',
     variants: {
       tone: {
         warn: 'bg-yellow-500',

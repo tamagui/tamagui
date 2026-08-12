@@ -2,13 +2,13 @@ import { styled, withStaticProperties } from '@tamagui/core'
 import { Switch } from '../src'
 
 const SwitchSkinFrame = styled(Switch, {
-  name: 'SwitchSkinFrame',
+  displayName: 'SwitchSkinFrame',
   backgroundColor: 'background',
   borderRadius: '10',
 })
 
 const SwitchSkinThumb = styled(Switch.Thumb, {
-  name: 'SwitchSkinThumb',
+  displayName: 'SwitchSkinThumb',
   backgroundColor: 'color',
   borderRadius: '10',
 })

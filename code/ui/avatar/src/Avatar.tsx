@@ -120,7 +120,7 @@ AvatarImage.displayName = IMAGE_NAME
 const FALLBACK_NAME = 'AvatarFallback'
 
 export const AvatarFallbackFrame = styled(YStack, {
-  name: FALLBACK_NAME,
+  displayName: FALLBACK_NAME,
   position: 'absolute',
   inset: 0,
   zIndex: 0,
@@ -159,7 +159,7 @@ AvatarFallback.displayName = FALLBACK_NAME
  * -----------------------------------------------------------------------------------------------*/
 
 export const AvatarFrame = styled(Square, {
-  name: AVATAR_NAME,
+  displayName: AVATAR_NAME,
   position: 'relative',
   overflow: 'hidden',
 })

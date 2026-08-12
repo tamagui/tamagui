@@ -8,6 +8,7 @@ export type LoadedComponents = {
     moduleName: string;
     nameToInfo: Record<string, {
         staticConfig: StaticConfig;
+        displayName?: string;
     }>;
 };
 export type TamaguiProjectInfo = {
@@ -49,6 +50,7 @@ export declare function loadComponentsInner(props: TamaguiOptions, forceExports?
 export declare function loadComponentsInnerSync(props: TamaguiOptions, forceExports?: boolean): null | LoadedComponents[];
 export declare function getComponentStaticConfigByName(name: string, exported: any): Record<string, {
     staticConfig: StaticConfig;
+    displayName?: string;
 }>;
 export {};
 //# sourceMappingURL=bundleConfig.d.ts.map

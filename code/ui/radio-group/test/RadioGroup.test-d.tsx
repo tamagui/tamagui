@@ -3,12 +3,12 @@ import { styled, withStaticProperties } from '@tamagui/core'
 import { RadioGroup } from '../src'
 
 const RadioGroupRootSkin = styled(RadioGroup, {
-  name: 'TypeTestRadioGroup',
+  displayName: 'TypeTestRadioGroup',
   gap: '2',
 })
 
 const RadioGroupItemSkin = styled(RadioGroup.Item, {
-  name: 'TypeTestRadioGroupItem',
+  displayName: 'TypeTestRadioGroupItem',
   width: 20,
   height: 20,
   borderWidth: 1,
@@ -16,7 +16,7 @@ const RadioGroupItemSkin = styled(RadioGroup.Item, {
 })
 
 const RadioGroupIndicatorSkin = styled(RadioGroup.Indicator, {
-  name: 'TypeTestRadioGroupIndicator',
+  displayName: 'TypeTestRadioGroupIndicator',
   width: '50%',
   height: '50%',
   borderRadius: 10,

@@ -22,8 +22,8 @@ export type ConversionTargets = "shared" | "web" | "native";
 export interface HostView {
 	/** does this host accept `prop` as a style (validStyles + accept) */
 	accepts(prop: string): boolean;
-	/** for diagnostics: the component name the author sees */
-	componentName?: string;
+	/** for diagnostics: the component label the author sees */
+	displayName?: string;
 }
 export interface ConversionReason {
 	dimension: "property" | "clause" | "host";

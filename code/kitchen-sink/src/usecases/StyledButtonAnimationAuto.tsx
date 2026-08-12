@@ -14,7 +14,7 @@ export const ButtonContext = createStyledContext({
   size: 'md' as SizeTokens,
 })
 export const ButtonFrame = styled(View, {
-  name: 'Button',
+  displayName: 'Button',
   context: ButtonContext,
   backgroundColor: 'background',
   alignItems: 'center',
@@ -50,7 +50,7 @@ export const ButtonFrame = styled(View, {
 })
 type ButtonProps = GetProps<typeof ButtonFrame>
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
+  displayName: 'ButtonText',
   context: ButtonContext,
   color: 'color',
   userSelect: 'none',

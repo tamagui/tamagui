@@ -16,14 +16,14 @@ describe('Sheet public behavior parts', () => {
 
   test('recognizes named styled overlays through their ancestry', () => {
     const NamedOverlay = styled(Sheet.Overlay, {
-      name: 'NamedSheetOverlay',
+      displayName: 'NamedSheetOverlay',
       backgroundColor: 'shadow-color',
     })
     const NestedNamedOverlay = styled(NamedOverlay, {
-      name: 'NestedNamedSheetOverlay',
+      displayName: 'NestedNamedSheetOverlay',
     })
     const OrdinaryPart = styled(Sheet.Container, {
-      name: 'OrdinarySheetPart',
+      displayName: 'OrdinarySheetPart',
     })
     const UntypedOptIn = Object.assign(() => null, { isSheetOverlay: true })
 

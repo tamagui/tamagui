@@ -28,7 +28,7 @@ export const CheckboxIndicatorFrame = styled(
   View,
   {
     // use Checkbox for easier themes
-    name: INDICATOR_NAME,
+    displayName: INDICATOR_NAME,
     context: CheckboxStyledContext,
   },
   {
@@ -43,7 +43,7 @@ const CHECKBOX_NAME = 'Checkbox'
 export const CheckboxFrame = styled(
   View,
   {
-    name: CHECKBOX_NAME,
+    displayName: CHECKBOX_NAME,
     render: 'button',
     context: CheckboxStyledContext,
     alignItems: 'center',

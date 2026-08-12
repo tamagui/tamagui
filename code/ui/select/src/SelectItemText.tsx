@@ -15,7 +15,7 @@ import type { SelectScopedProps } from './types'
 export const ITEM_TEXT_NAME = 'SelectItemText'
 
 export const SelectItemTextFrame = styled(Text, {
-  name: ITEM_TEXT_NAME,
+  displayName: ITEM_TEXT_NAME,
 })
 
 type SelectItemTextExtraProps = SelectScopedProps<{}>

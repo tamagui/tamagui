@@ -1,4 +1,8 @@
 import React, { type ReactNode, type Ref as ReactRef } from 'react'
+import {
+  componentDisplayName,
+  setComponentDisplayName,
+} from './helpers/componentDisplayName'
 import { themeable } from './helpers/themeable'
 import type {
   GetFinalProps,
@@ -75,6 +79,9 @@ export function createStyledHOC<
   if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLED_HOC) {
     out = React.memo(out)
   }
+
+  const displayName = options?.displayName || (component as any)[componentDisplayName]
+  setComponentDisplayName(out, displayName)
 
   out.staticConfig = extendedConfig
   return out

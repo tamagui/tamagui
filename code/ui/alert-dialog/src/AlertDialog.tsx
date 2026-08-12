@@ -47,6 +47,26 @@ const getAlertDialogScope = (scope?: string) => scope
  * -----------------------------------------------------------------------------------------------*/
 
 const ROOT_NAME = 'AlertDialog'
+const ALERT_DIALOG_PART = Symbol('AlertDialogPart')
+
+type AlertDialogPart =
+  | 'trigger'
+  | 'title'
+  | 'description'
+  | 'action'
+  | 'cancel'
+  | 'destructive'
+
+type AlertDialogPartStaticConfig = {
+  [ALERT_DIALOG_PART]?: AlertDialogPart
+}
+
+const markAlertDialogPart = (
+  component: { staticConfig: object },
+  part: AlertDialogPart
+) => {
+  Object.assign(component.staticConfig, { [ALERT_DIALOG_PART]: part })
+}
 
 export type AlertDialogScopes = string
 
@@ -65,8 +85,9 @@ const TRIGGER_NAME = 'AlertDialogTrigger'
 type AlertDialogTriggerProps = ScopedProps<DialogTriggerProps>
 
 const NativeAlertDialogTriggerFrame = styled(View, {
-  name: TRIGGER_NAME,
+  displayName: TRIGGER_NAME,
 })
+markAlertDialogPart(NativeAlertDialogTriggerFrame, 'trigger')
 
 const AlertDialogTrigger = createStyledHOC(
   NativeAlertDialogTriggerFrame,
@@ -114,7 +135,7 @@ const AlertDialogPortal: React.FC<AlertDialogPortalProps> = function AlertDialog
 const OVERLAY_NAME = 'AlertDialogOverlay'
 
 const AlertDialogOverlayFrame = styled(DialogOverlayFrame, {
-  name: OVERLAY_NAME,
+  displayName: OVERLAY_NAME,
 })
 
 type AlertDialogOverlayExtraProps = ScopedProps<{}> & DialogOverlayExtraProps
@@ -218,8 +239,9 @@ const TITLE_NAME = 'AlertDialogTitle'
 type AlertDialogTitleProps = ScopedProps<DialogTitleProps>
 
 const AlertDialogTitleFrame = styled(View, {
-  name: TITLE_NAME,
+  displayName: TITLE_NAME,
 })
+markAlertDialogPart(AlertDialogTitleFrame, 'title')
 
 const AlertDialogTitle = createStyledHOC(
   AlertDialogTitleFrame,
@@ -244,8 +266,9 @@ const DESCRIPTION_NAME = 'AlertDialogDescription'
 type AlertDialogDescriptionProps = ScopedProps<DialogDescriptionProps>
 
 const AlertDialogDescriptionFrame = styled(View, {
-  name: DESCRIPTION_NAME,
+  displayName: DESCRIPTION_NAME,
 })
+markAlertDialogPart(AlertDialogDescriptionFrame, 'description')
 
 const AlertDialogDescription = createStyledHOC(
   AlertDialogDescriptionFrame,
@@ -270,8 +293,9 @@ const ACTION_NAME = 'AlertDialogAction'
 type AlertDialogActionProps = ScopedProps<DialogCloseProps>
 
 const AlertDialogActionFrame = styled(View, {
-  name: ACTION_NAME,
+  displayName: ACTION_NAME,
 })
+markAlertDialogPart(AlertDialogActionFrame, 'action')
 
 const AlertDialogAction = createStyledHOC(
   AlertDialogActionFrame,
@@ -296,8 +320,9 @@ const CANCEL_NAME = 'AlertDialogCancel'
 type AlertDialogCancelProps = ScopedProps<DialogCloseProps>
 
 const AlertDialogCancelFrame = styled(View, {
-  name: CANCEL_NAME,
+  displayName: CANCEL_NAME,
 })
+markAlertDialogPart(AlertDialogCancelFrame, 'cancel')
 
 const AlertDialogCancel = createStyledHOC(
   AlertDialogCancelFrame,
@@ -318,8 +343,9 @@ const DESTRUCTIVE_NAME = 'AlertDialogDestructive'
 type AlertDialogDestructiveProps = ScopedProps<DialogCloseProps>
 
 const AlertDialogDestructiveFrame = styled(View, {
-  name: DESTRUCTIVE_NAME,
+  displayName: DESTRUCTIVE_NAME,
 })
+markAlertDialogPart(AlertDialogDestructiveFrame, 'destructive')
 
 const AlertDialogDestructive = createStyledHOC(
   AlertDialogDestructiveFrame,
@@ -385,31 +411,31 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (props) => {
 
     forEachChildDeep(React.Children.toArray(props.children), (child) => {
       if (!React.isValidElement(child)) return false
-      const name = isTamaguiElement(child)
-        ? child.type.staticConfig.componentName
-        : (child.type['displayName'] as string | undefined)
-      switch (name) {
-        case TRIGGER_NAME: {
+      const part = isTamaguiElement(child)
+        ? (child.type.staticConfig as AlertDialogPartStaticConfig)[ALERT_DIALOG_PART]
+        : undefined
+      switch (part) {
+        case 'trigger': {
           triggerElement = React.cloneElement(child as any, {
             __native: true,
           })
           return false
         }
-        case TITLE_NAME: {
+        case 'title': {
           title = getStringChildren(child)
           return false
         }
-        case DESCRIPTION_NAME: {
+        case 'description': {
           description = getStringChildren(child)
           return false
         }
-        case ACTION_NAME:
-        case DESTRUCTIVE_NAME:
-        case CANCEL_NAME: {
+        case 'action':
+        case 'destructive':
+        case 'cancel': {
           const style =
-            name === ACTION_NAME
+            part === 'action'
               ? 'default'
-              : name === DESTRUCTIVE_NAME
+              : part === 'destructive'
                 ? 'destructive'
                 : 'cancel'
           const text = getStringChildren(child)

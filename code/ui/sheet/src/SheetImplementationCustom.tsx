@@ -23,7 +23,7 @@ import type {
 } from 'react-native'
 import { Dimensions, PanResponder, View } from 'react-native'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
-import { SHEET_OVERLAY_NAME } from './constants'
+import { SHEET_OVERLAY_MARKER } from './constants'
 import { GestureDetectorWrapper } from './GestureDetectorWrapper'
 import { getGestureHandlerState } from './gestureState'
 import { GestureSheetProvider } from './GestureSheetContext'
@@ -1222,7 +1222,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
 )
 
 type SheetPartStaticConfig = {
-  componentName?: string
+  [SHEET_OVERLAY_MARKER]?: boolean
   parentStaticConfig?: SheetPartStaticConfig
 }
 
@@ -1231,7 +1231,7 @@ export function isSheetOverlayComponent(type: unknown) {
     ?.staticConfig
 
   while (staticConfig) {
-    if (staticConfig.componentName === SHEET_OVERLAY_NAME) {
+    if (staticConfig[SHEET_OVERLAY_MARKER]) {
       return true
     }
     staticConfig = staticConfig.parentStaticConfig

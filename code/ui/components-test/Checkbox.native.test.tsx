@@ -8,14 +8,14 @@ import { expect, test, vi } from 'vitest'
 const config = createTamagui(getDefaultTamaguiConfig())
 
 const CheckboxSkin = styled(Checkbox, {
-  name: 'NativeCheckboxTestSkin',
+  displayName: 'NativeCheckboxTestSkin',
   width: 20,
   height: 20,
   borderWidth: 1,
 })
 
 const IndicatorSkin = styled(Checkbox.Indicator, {
-  name: 'NativeCheckboxIndicatorTestSkin',
+  displayName: 'NativeCheckboxIndicatorTestSkin',
   width: 10,
   height: 10,
   backgroundColor: 'color',

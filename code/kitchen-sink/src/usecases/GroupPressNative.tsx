@@ -16,7 +16,7 @@ import { Text, View, XStack, YStack, styled } from 'tamagui'
 
 // child that reacts to group press WITHOUT transition
 const GroupPressChild = styled(View, {
-  name: 'GroupPressChild',
+  displayName: 'GroupPressChild',
   width: 150,
   height: 60,
   backgroundColor: 'blue10 group-press:red10',
@@ -26,7 +26,7 @@ const GroupPressChild = styled(View, {
 
 // child that reacts to group press WITH transition
 const GroupPressChildAnimated = styled(View, {
-  name: 'GroupPressChildAnimated',
+  displayName: 'GroupPressChildAnimated',
   width: 150,
   height: 60,
   backgroundColor: 'blue10 group-press:red10',
@@ -37,7 +37,7 @@ const GroupPressChildAnimated = styled(View, {
 
 // child that reacts to named group press
 const NamedGroupPressChild = styled(View, {
-  name: 'NamedGroupPressChild',
+  displayName: 'NamedGroupPressChild',
   width: 150,
   height: 60,
   backgroundColor: 'blue10 group-press/testy:red10',
@@ -47,7 +47,7 @@ const NamedGroupPressChild = styled(View, {
 
 // child with named group + transition
 const NamedGroupPressChildAnimated = styled(View, {
-  name: 'NamedGroupPressChildAnimated',
+  displayName: 'NamedGroupPressChildAnimated',
   width: 150,
   height: 60,
   backgroundColor: 'blue10 group-press/testy:red10',

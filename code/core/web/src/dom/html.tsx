@@ -18,6 +18,7 @@ import type {
 } from '@tamagui/dom'
 
 import { createComponent } from '../createComponent'
+import { setComponentDisplayName } from '../helpers/componentDisplayName'
 import type {
   StackNonStyleProps,
   StackStyleBase,
@@ -49,783 +50,881 @@ const tag = (name: string) => name as unknown as StaticConfig['Component']
  * ran; `compatibility.ts` in `@tamagui/dom` records where they differ from
  * React Strict DOM and why.
  */
-const a = createComponent<
-  StrictDOMAnchorProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMAnchorProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('a'),
-  componentName: 'a',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
-})
+const a = setComponentDisplayName(
+  createComponent<
+    StrictDOMAnchorProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMAnchorProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('a'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+    },
+  }),
+  'a'
+)
 
-const article = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('article'),
-  componentName: 'article',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const article = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('article'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'article'
+)
 
-const aside = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('aside'),
-  componentName: 'aside',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const aside = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('aside'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'aside'
+)
 
-const b = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('b'),
-  componentName: 'b',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontWeight: 'bold',
-  },
-})
+const b = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('b'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+      fontWeight: 'bold',
+    },
+  }),
+  'b'
+)
 
-const bdi = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('bdi'),
-  componentName: 'bdi',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
-})
+const bdi = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('bdi'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+    },
+  }),
+  'bdi'
+)
 
-const bdo = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('bdo'),
-  componentName: 'bdo',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
-})
+const bdo = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('bdo'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+    },
+  }),
+  'bdo'
+)
 
-const blockquote = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('blockquote'),
-  componentName: 'blockquote',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const blockquote = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('blockquote'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'blockquote'
+)
 
-const br = createComponent<
-  StrictDOMVoidProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMVoidProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('br'),
-  componentName: 'br',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
-})
+const br = setComponentDisplayName(
+  createComponent<
+    StrictDOMVoidProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMVoidProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('br'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+    },
+  }),
+  'br'
+)
 
-const button = createComponent<
-  StrictDOMButtonProps & ViewProps,
-  TamaguiElement,
-  StrictDOMButtonProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('button'),
-  componentName: 'button',
-  defaultProps: {
-    ...viewStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    borderStyle: 'solid',
-    borderWidth: 1,
-  },
-})
+const button = setComponentDisplayName(
+  createComponent<
+    StrictDOMButtonProps & ViewProps,
+    TamaguiElement,
+    StrictDOMButtonProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('button'),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      borderStyle: 'solid',
+      borderWidth: 1,
+    },
+  }),
+  'button'
+)
 
-const code = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('code'),
-  componentName: 'code',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontFamily: 'monospace',
-    fontSize: '1em',
-  },
-})
+const code = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('code'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+      fontFamily: 'monospace',
+      fontSize: '1em',
+    },
+  }),
+  'code'
+)
 
-const del = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('del'),
-  componentName: 'del',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'line-through',
-  },
-})
+const del = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('del'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'line-through',
+    },
+  }),
+  'del'
+)
 
-const div = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('div'),
-  componentName: 'div',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const div = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('div'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'div'
+)
 
-const em = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('em'),
-  componentName: 'em',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontStyle: 'italic',
-  },
-})
+const em = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('em'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+      fontStyle: 'italic',
+    },
+  }),
+  'em'
+)
 
-const fieldset = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('fieldset'),
-  componentName: 'fieldset',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const fieldset = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('fieldset'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'fieldset'
+)
 
-const footer = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('footer'),
-  componentName: 'footer',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const footer = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('footer'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'footer'
+)
 
-const form = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('form'),
-  componentName: 'form',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const form = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('form'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'form'
+)
 
-const h1 = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('h1'),
-  componentName: 'h1',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
-})
+const h1 = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('h1'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  'h1'
+)
 
-const h2 = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('h2'),
-  componentName: 'h2',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
-})
+const h2 = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('h2'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  'h2'
+)
 
-const h3 = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('h3'),
-  componentName: 'h3',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
-})
+const h3 = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('h3'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  'h3'
+)
 
-const h4 = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('h4'),
-  componentName: 'h4',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
-})
+const h4 = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('h4'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  'h4'
+)
 
-const h5 = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('h5'),
-  componentName: 'h5',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
-})
+const h5 = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('h5'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  'h5'
+)
 
-const h6 = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('h6'),
-  componentName: 'h6',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-  },
-})
+const h6 = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('h6'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+  }),
+  'h6'
+)
 
-const header = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('header'),
-  componentName: 'header',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const header = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('header'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'header'
+)
 
-const hr = createComponent<
-  StrictDOMVoidProps & ViewProps,
-  TamaguiElement,
-  StrictDOMVoidProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('hr'),
-  componentName: 'hr',
-  defaultProps: {
-    ...viewStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    backgroundColor: 'black',
-    height: 1,
-    borderStyle: 'none',
-    borderWidth: 0,
-    boxSizing: 'border-box',
-  },
-})
+const hr = setComponentDisplayName(
+  createComponent<
+    StrictDOMVoidProps & ViewProps,
+    TamaguiElement,
+    StrictDOMVoidProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('hr'),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      backgroundColor: 'black',
+      height: 1,
+      borderStyle: 'none',
+      borderWidth: 0,
+      boxSizing: 'border-box',
+    },
+  }),
+  'hr'
+)
 
-const i = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('i'),
-  componentName: 'i',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontStyle: 'italic',
-  },
-})
+const i = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('i'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+      fontStyle: 'italic',
+    },
+  }),
+  'i'
+)
 
-const img = createComponent<
-  StrictDOMImageProps & ViewProps,
-  TamaguiElement,
-  StrictDOMImageProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('img'),
-  componentName: 'img',
-  defaultProps: {
-    ...viewStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    objectFit: 'fill',
-    height: 'auto',
-    maxWidth: '100%',
-  },
-})
+const img = setComponentDisplayName(
+  createComponent<
+    StrictDOMImageProps & ViewProps,
+    TamaguiElement,
+    StrictDOMImageProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('img'),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+      objectFit: 'fill',
+      height: 'auto',
+      maxWidth: '100%',
+    },
+  }),
+  'img'
+)
 
-const input = createComponent<
-  StrictDOMInputProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMInputProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('input'),
-  componentName: 'input',
-  isInput: true,
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    borderStyle: 'solid',
-    borderWidth: 1,
-  },
-})
+const input = setComponentDisplayName(
+  createComponent<
+    StrictDOMInputProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMInputProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('input'),
+    isInput: true,
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      borderStyle: 'solid',
+      borderWidth: 1,
+    },
+  }),
+  'input'
+)
 
-const ins = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('ins'),
-  componentName: 'ins',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'underline',
-  },
-})
+const ins = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('ins'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'underline',
+    },
+  }),
+  'ins'
+)
 
-const kbd = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('kbd'),
-  componentName: 'kbd',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontFamily: 'monospace',
-    fontSize: '1em',
-  },
-})
+const kbd = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('kbd'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+      fontFamily: 'monospace',
+      fontSize: '1em',
+    },
+  }),
+  'kbd'
+)
 
-const label = createComponent<
-  StrictDOMLabelProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMLabelProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('label'),
-  componentName: 'label',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
-})
+const label = setComponentDisplayName(
+  createComponent<
+    StrictDOMLabelProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMLabelProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('label'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+    },
+  }),
+  'label'
+)
 
-const li = createComponent<
-  StrictDOMListItemProps & ViewProps,
-  TamaguiElement,
-  StrictDOMListItemProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('li'),
-  componentName: 'li',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const li = setComponentDisplayName(
+  createComponent<
+    StrictDOMListItemProps & ViewProps,
+    TamaguiElement,
+    StrictDOMListItemProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('li'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'li'
+)
 
-const main = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('main'),
-  componentName: 'main',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const main = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('main'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'main'
+)
 
-const mark = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('mark'),
-  componentName: 'mark',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    backgroundColor: 'yellow',
-    color: 'black',
-  },
-})
+const mark = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('mark'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+      backgroundColor: 'yellow',
+      color: 'black',
+    },
+  }),
+  'mark'
+)
 
-const nav = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('nav'),
-  componentName: 'nav',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const nav = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('nav'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'nav'
+)
 
-const ol = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('ol'),
-  componentName: 'ol',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const ol = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('ol'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'ol'
+)
 
-const optgroup = createComponent<
-  StrictDOMOptionGroupProps & ViewProps,
-  TamaguiElement,
-  StrictDOMOptionGroupProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('optgroup'),
-  componentName: 'optgroup',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const optgroup = setComponentDisplayName(
+  createComponent<
+    StrictDOMOptionGroupProps & ViewProps,
+    TamaguiElement,
+    StrictDOMOptionGroupProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('optgroup'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'optgroup'
+)
 
-const option = createComponent<
-  StrictDOMOptionProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMOptionProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('option'),
-  componentName: 'option',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const option = setComponentDisplayName(
+  createComponent<
+    StrictDOMOptionProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMOptionProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('option'),
+    defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'option'
+)
 
-const p = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('p'),
-  componentName: 'p',
-  defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const p = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('p'),
+    defaultProps: { ...textStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'p'
+)
 
-const pre = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('pre'),
-  componentName: 'pre',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    fontFamily: 'monospace',
-    fontSize: '1em',
-    overflow: 'auto',
-  },
-})
+const pre = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('pre'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      fontFamily: 'monospace',
+      fontSize: '1em',
+      overflow: 'auto',
+    },
+  }),
+  'pre'
+)
 
-const s = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('s'),
-  componentName: 's',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'line-through',
-  },
-})
+const s = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('s'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'line-through',
+    },
+  }),
+  's'
+)
 
-const section = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('section'),
-  componentName: 'section',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const section = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('section'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'section'
+)
 
-const select = createComponent<
-  StrictDOMSelectProps & ViewProps,
-  TamaguiElement,
-  StrictDOMSelectProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('select'),
-  componentName: 'select',
-  defaultProps: {
-    ...viewStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    borderStyle: 'solid',
-  },
-})
+const select = setComponentDisplayName(
+  createComponent<
+    StrictDOMSelectProps & ViewProps,
+    TamaguiElement,
+    StrictDOMSelectProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('select'),
+    defaultProps: {
+      ...viewStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      borderStyle: 'solid',
+    },
+  }),
+  'select'
+)
 
-const span = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('span'),
-  componentName: 'span',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
-})
+const span = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('span'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+    },
+  }),
+  'span'
+)
 
-const strong = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('strong'),
-  componentName: 'strong',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-    fontWeight: 'bold',
-  },
-})
+const strong = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('strong'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+      fontWeight: 'bold',
+    },
+  }),
+  'strong'
+)
 
-const sub = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('sub'),
-  componentName: 'sub',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
-})
+const sub = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('sub'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+    },
+  }),
+  'sub'
+)
 
-const sup = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('sup'),
-  componentName: 'sup',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'none',
-  },
-})
+const sup = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('sup'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'none',
+    },
+  }),
+  'sup'
+)
 
-const textarea = createComponent<
-  StrictDOMTextAreaProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMTextAreaProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('textarea'),
-  componentName: 'textarea',
-  isInput: true,
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    borderStyle: 'solid',
-    borderWidth: 1,
-  },
-})
+const textarea = setComponentDisplayName(
+  createComponent<
+    StrictDOMTextAreaProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMTextAreaProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('textarea'),
+    isInput: true,
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      borderStyle: 'solid',
+      borderWidth: 1,
+    },
+  }),
+  'textarea'
+)
 
-const u = createComponent<
-  StrictDOMProps & TextProps,
-  TamaguiTextElement,
-  StrictDOMProps & TextNonStyleProps,
-  TextStylePropsBase
->({
-  ...textStaticConfig,
-  Component: tag('u'),
-  componentName: 'u',
-  defaultProps: {
-    ...textStaticConfig.defaultProps,
-    margin: 0,
-    padding: 0,
-    textDecorationLine: 'underline',
-  },
-})
+const u = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & TextProps,
+    TamaguiTextElement,
+    StrictDOMProps & TextNonStyleProps,
+    TextStylePropsBase
+  >({
+    ...textStaticConfig,
+    Component: tag('u'),
+    defaultProps: {
+      ...textStaticConfig.defaultProps,
+      margin: 0,
+      padding: 0,
+      textDecorationLine: 'underline',
+    },
+  }),
+  'u'
+)
 
-const ul = createComponent<
-  StrictDOMProps & ViewProps,
-  TamaguiElement,
-  StrictDOMProps & StackNonStyleProps,
-  StackStyleBase
->({
-  ...viewStaticConfig,
-  Component: tag('ul'),
-  componentName: 'ul',
-  defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
-})
+const ul = setComponentDisplayName(
+  createComponent<
+    StrictDOMProps & ViewProps,
+    TamaguiElement,
+    StrictDOMProps & StackNonStyleProps,
+    StackStyleBase
+  >({
+    ...viewStaticConfig,
+    Component: tag('ul'),
+    defaultProps: { ...viewStaticConfig.defaultProps, margin: 0, padding: 0 },
+  }),
+  'ul'
+)
 
 export const html = {
   a,

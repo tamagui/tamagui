@@ -320,7 +320,7 @@ type SliderTrackElement = TamaguiElement
 // Unstyled track frame: fill + clip only. Track color and radius live in the
 // tamagui skin (code/ui/tamagui/src/components/Slider.tsx).
 export const SliderTrackFrame = styled(SliderFrame, {
-  name: 'Slider',
+  displayName: 'Slider',
   height: '100%',
   width: '100%',
   position: 'relative',
@@ -354,7 +354,7 @@ const SliderTrack = createStyledHOC(
 // Unstyled active-range frame: positioning only. Fill color and radius live in
 // the tamagui skin.
 export const SliderActiveFrame = styled(SliderFrame, {
-  name: 'SliderActive',
+  displayName: 'SliderActive',
   position: 'absolute',
   pointerEvents: 'box-none',
 })
@@ -427,7 +427,7 @@ const getThumbSize = (val?: SizeTokens | number | true) => {
 // dimensions) + the circular shape modifier (opt-in, off by default). Border,
 // background, and hover/press/focus color styling live in the tamagui skin.
 export const SliderThumbFrame = styled(YStack, {
-  name: 'SliderThumb',
+  displayName: 'SliderThumb',
   position: 'absolute',
 
   variants: {

@@ -292,7 +292,7 @@ const resolveVariantValue: StyleResolver = (
     if (process.env.TAMAGUI_WARN_ON_MISSING_VARIANT === '1') {
       // don't warn on missing booleans
       if (typeof value !== 'boolean') {
-        const name = staticConfig.componentName || '[UnnamedComponent]'
+        const name = styleState.styleProps.displayName || '[UnnamedComponent]'
         console.warn(
           `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
         )

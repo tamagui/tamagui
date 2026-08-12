@@ -3,7 +3,7 @@ import type { GetProps } from 'tamagui'
 import { YStack, Paragraph, styled } from 'tamagui'
 
 const Code = styled(Paragraph, {
-  name: 'Code',
+  displayName: 'Code',
   render: 'code',
   fontFamily: 'mono',
   lineHeight: 18,

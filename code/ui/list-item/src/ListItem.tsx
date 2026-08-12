@@ -81,7 +81,7 @@ const listItemSubtitleSizeVariant = (
 // lives in the tamagui skin (code/ui/tamagui/src/components/ListItem.tsx).
 const ListItemFrame = styled(View, {
   context,
-  name: NAME,
+  displayName: NAME,
   render: 'li',
   role: 'listitem',
   size: true,
@@ -112,7 +112,7 @@ const ListItemFrame = styled(View, {
 // inherits.
 const ListItemText = styled(SizableText, {
   context,
-  name: 'ListItemText',
+  displayName: 'ListItemText',
   size: true,
   flexGrow: 1,
   flexShrink: 1,
@@ -121,7 +121,7 @@ const ListItemText = styled(SizableText, {
 })
 
 const ListItemSubtitle = styled(ListItemText, {
-  name: 'ListItemSubtitle',
+  displayName: 'ListItemSubtitle',
   context,
   opacity: 0.6,
   maxWidth: '100%',
@@ -134,7 +134,7 @@ const ListItemSubtitle = styled(ListItemText, {
 })
 
 const ListItemTitle = styled(ListItemText, {
-  name: 'ListItemTitle',
+  displayName: 'ListItemTitle',
   context,
 })
 

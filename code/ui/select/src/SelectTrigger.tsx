@@ -16,7 +16,7 @@ import type { SelectOpenChangeDetails, SelectScopedProps } from './types'
 const TRIGGER_NAME = 'SelectTrigger'
 
 export const SelectTriggerFrame = styled(View, {
-  name: TRIGGER_NAME,
+  displayName: TRIGGER_NAME,
   alignItems: 'center',
   flexDirection: 'row',
   render: <button type="button" />,

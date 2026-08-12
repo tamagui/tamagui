@@ -55,7 +55,7 @@ const buttonTextSizeVariant = (val: ButtonSize, extras: VariantSpreadExtras<any>
 
 export const ButtonFrame = styled(ButtonBehaviorFrame, {
   context: SizeContext,
-  name: 'SiteButtonFrame',
+  displayName: 'SiteButtonFrame',
   backgroundColor: 'background hover:background-hover press:background-press',
   borderColor: 'transparent hover:border-color-hover',
   borderStyle: 'solid',
@@ -113,7 +113,7 @@ export const ButtonFrame = styled(ButtonBehaviorFrame, {
 
 export const ButtonText = styled(ButtonBehaviorText, {
   context: SizeContext,
-  name: 'SiteButtonText',
+  displayName: 'SiteButtonText',
   color: 'color',
   fontWeight: '400',
   userSelect: 'none',

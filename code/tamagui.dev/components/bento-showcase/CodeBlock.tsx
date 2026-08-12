@@ -232,7 +232,7 @@ const splitCallouts = (node) => {
 import { Paragraph, styled } from 'tamagui'
 
 const Code = styled(Paragraph, {
-  name: 'Code',
+  displayName: 'Code',
   render: 'code',
   fontFamily: 'mono',
   lineHeight: 18,

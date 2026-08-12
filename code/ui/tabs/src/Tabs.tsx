@@ -15,18 +15,18 @@ import { TabsProvider, useTabsContext } from './StyledContext'
 const TABS_CONTEXT = 'TabsContext'
 
 export const TabsFrame = styled(View, {
-  name: 'Tabs',
+  displayName: 'Tabs',
   context: SizeContext,
 })
 
 export const TabsListFrame = styled(View, {
-  name: 'TabsList',
+  displayName: 'TabsList',
   context: SizeContext,
   role: 'tablist',
 })
 
 export const TabsTabFrame = styled(View, {
-  name: 'TabsTrigger',
+  displayName: 'TabsTrigger',
   context: SizeContext,
   role: 'tab',
 
@@ -40,7 +40,7 @@ export const TabsTabFrame = styled(View, {
 })
 
 export const TabsContentFrame = styled(View, {
-  name: 'TabsContent',
+  displayName: 'TabsContent',
   context: SizeContext,
 })
 

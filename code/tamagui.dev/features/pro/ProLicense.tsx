@@ -150,14 +150,14 @@ export const ProLicense = () => {
 }
 
 const Ul = styled(YStack, {
-  name: 'ul',
+  displayName: 'ul',
   render: 'ul',
   pl: 20,
 })
 
 // @ts-ignore
 const Li = styled(Paragraph, {
-  name: 'li',
+  displayName: 'li',
   render: 'li',
   display: 'list-item',
 })

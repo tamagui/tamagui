@@ -19,7 +19,7 @@ import {
 // We intentionally do NOT use display: none, visibility: hidden, or opacity: 0,
 // because each of those also hides the content from assistive tech on web.
 const VisuallyHiddenFrame = styled(Text, {
-  name: 'VisuallyHidden',
+  displayName: 'VisuallyHidden',
 
   position: 'absolute',
   width: 1,

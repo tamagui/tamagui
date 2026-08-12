@@ -1,10 +1,34 @@
-import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
+import { TamaguiProvider, View, createTamagui, styled } from '@tamagui/core'
 import { render } from '@testing-library/react'
 import { describe, expect, test } from 'vitest'
 
 import { getDefaultTamaguiConfig } from '../config-default'
 
 const config = createTamagui(getDefaultTamaguiConfig('web'))
+
+test('styled displayName sets React identity while name remains a host prop', () => {
+  const NamedButton = styled(View, {
+    displayName: 'NamedButton',
+    render: 'button',
+  })
+
+  const tree = render(
+    <TamaguiProvider config={config} defaultTheme="light">
+      <NamedButton
+        id="named-button"
+        name="submitter"
+        {...({ displayName: 'InstanceName' } as any)}
+      />
+    </TamaguiProvider>
+  )
+
+  const button = tree.container.querySelector('#named-button') as HTMLButtonElement
+  expect(NamedButton.displayName).toBe('NamedButton')
+  expect(button.name).toBe('submitter')
+  expect(button.className).toContain('is_NamedButton')
+  expect(button.className).not.toContain('is_InstanceName')
+  expect(button.getAttribute('displayname')).toBeNull()
+})
 
 describe('animation props', () => {
   test(`renders with animation props`, () => {

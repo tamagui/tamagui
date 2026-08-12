@@ -257,8 +257,8 @@ be. Compose it the way `html.tsx` itself does:
 - **Base config behavior** (style prop validity, resolution): the host
   already holds a loaded core; take `viewStaticConfig`/`textStaticConfig`
   from it and spread the descriptor over them, which is literally the
-  generated `html.tsx` recipe (`{...viewStaticConfig, componentName: tag,
-  defaultProps: {...}}`).
+  generated `html.tsx` recipe (`setComponentDisplayName(createComponent({
+  ...viewStaticConfig, defaultProps: {...} }), tag)`).
 
 Do **not** resolve descriptors through the runtime module registry (looking
 up the generated `html.div` component's `staticConfig` from the loaded

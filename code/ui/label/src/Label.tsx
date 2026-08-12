@@ -42,7 +42,7 @@ const labelSizeVariant = (val: SizeTokens | true, extras: VariantSpreadExtras<an
 // theme text color + the press color feedback live in the tamagui skin
 // (code/ui/tamagui/src/components/Label.tsx).
 export const LabelFrame = styled(SizableText, {
-  name: 'Label',
+  displayName: 'Label',
   render: 'label',
   size: true,
   backgroundColor: 'transparent',

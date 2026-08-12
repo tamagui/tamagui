@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react'
 import { styled, withStaticProperties } from 'tamagui'
 
 const contentStyles = {
-  name: 'KitchenSinkMenuContent',
+  displayName: 'KitchenSinkMenuContent',
   minWidth: 180,
   padding: '1-5',
   backgroundColor: 'background',
@@ -14,7 +14,7 @@ const contentStyles = {
 } as const
 
 const itemStyles = {
-  name: 'KitchenSinkMenuItem',
+  displayName: 'KitchenSinkMenuItem',
   width: '100%',
   paddingHorizontal: '2-5',
   paddingVertical: '2',
@@ -41,20 +41,20 @@ const MenuCheckboxItem = styled(MenuBehavior.CheckboxItem, itemStyles)
 const MenuRadioItem = styled(MenuBehavior.RadioItem, itemStyles)
 const MenuSubTrigger = styled(MenuBehavior.SubTrigger, itemStyles)
 const MenuItemTitle = styled(MenuBehavior.ItemTitle, {
-  name: 'KitchenSinkMenuItemTitle',
+  displayName: 'KitchenSinkMenuItemTitle',
   color: 'color',
   cursor: 'default',
   flexGrow: 1,
   flexShrink: 1,
 })
 const MenuItemSubtitle = styled(MenuBehavior.ItemSubtitle, {
-  name: 'KitchenSinkMenuItemSubtitle',
+  displayName: 'KitchenSinkMenuItemSubtitle',
   color: 'color',
   cursor: 'default',
   opacity: 0.6,
 })
 const MenuItemIcon = styled(MenuBehavior.ItemIcon, {
-  name: 'KitchenSinkMenuItemIcon',
+  displayName: 'KitchenSinkMenuItemIcon',
   width: 20,
   height: 20,
   marginLeft: 'auto',
@@ -62,17 +62,17 @@ const MenuItemIcon = styled(MenuBehavior.ItemIcon, {
   justifyContent: 'center',
 })
 const MenuItemIndicator = styled(MenuBehavior.ItemIndicator, {
-  name: 'KitchenSinkMenuItemIndicator',
+  displayName: 'KitchenSinkMenuItemIndicator',
   marginLeft: 'auto',
   alignItems: 'center',
   justifyContent: 'center',
 })
 const MenuGroup = styled(MenuBehavior.Group, {
-  name: 'KitchenSinkMenuGroup',
+  displayName: 'KitchenSinkMenuGroup',
   width: '100%',
 })
 const MenuLabel = styled(MenuBehavior.Label, {
-  name: 'KitchenSinkMenuLabel',
+  displayName: 'KitchenSinkMenuLabel',
   paddingHorizontal: '2-5',
   paddingVertical: '1-5',
   color: 'color',
@@ -80,20 +80,20 @@ const MenuLabel = styled(MenuBehavior.Label, {
   opacity: 0.6,
 })
 const MenuSeparator = styled(MenuBehavior.Separator, {
-  name: 'KitchenSinkMenuSeparator',
+  displayName: 'KitchenSinkMenuSeparator',
   height: 1,
   marginHorizontal: '2',
   marginVertical: '1',
   backgroundColor: 'border-color',
 })
 const MenuArrow = styled(MenuBehavior.Arrow, {
-  name: 'KitchenSinkMenuArrow',
+  displayName: 'KitchenSinkMenuArrow',
   backgroundColor: 'background',
   borderColor: 'border-color',
   borderWidth: 1,
 })
 const MenuScrollView = styled(MenuBehavior.ScrollView, {
-  name: 'KitchenSinkMenuScrollView',
+  displayName: 'KitchenSinkMenuScrollView',
   padding: '1',
 })
 

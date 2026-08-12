@@ -3,7 +3,7 @@ import type { GetProps } from '@tamagui/web'
 import { Text, styled } from '@tamagui/web'
 
 export const SizableText = styled(Text, {
-  name: 'SizableText',
+  displayName: 'SizableText',
   fontFamily: 'body',
   color: 'color',
   size: true,

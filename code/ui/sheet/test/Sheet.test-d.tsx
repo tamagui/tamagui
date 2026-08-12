@@ -10,27 +10,27 @@ import {
 } from '../src/Sheet'
 
 const StyledHandle = styled(Sheet.Handle, {
-  name: 'TypeTestSheetHandle',
+  displayName: 'TypeTestSheetHandle',
   backgroundColor: 'background',
 })
 
 const StyledOverlay = styled(Sheet.Overlay, {
-  name: 'TypeTestSheetOverlay',
+  displayName: 'TypeTestSheetOverlay',
   backgroundColor: 'shadow-color',
 })
 
 const StyledContainer = styled(Sheet.Container, {
-  name: 'TypeTestSheetContainer',
+  displayName: 'TypeTestSheetContainer',
   padding: '4',
 })
 
 const StyledBackground = styled(Sheet.Background, {
-  name: 'TypeTestSheetBackground',
+  displayName: 'TypeTestSheetBackground',
   borderTopLeftRadius: '4',
 })
 
 const StyledScrollView = styled(Sheet.ScrollView, {
-  name: 'TypeTestSheetScrollView',
+  displayName: 'TypeTestSheetScrollView',
   flex: 1,
 })
 

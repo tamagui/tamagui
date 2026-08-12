@@ -458,7 +458,7 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
  * -----------------------------------------------------------------------------------------------*/
 
 const ToastViewportFrame = styled(View, {
-  name: 'ToastViewport',
+  displayName: 'ToastViewport',
   position: isWeb ? ('fixed' as any) : 'absolute',
   zIndex: 100000,
   pointerEvents: 'box-none',
@@ -1236,7 +1236,7 @@ const ToastItemInner = createStyledHOC(
 // Structural (unstyled) — text color/weight/size live in the tamagui skin
 // (code/ui/tamagui/src/components/Toast.tsx).
 const ToastTitle = styled(SizableText, {
-  name: 'ToastTitle',
+  displayName: 'ToastTitle',
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -1245,7 +1245,7 @@ const ToastTitle = styled(SizableText, {
 
 // Structural (unstyled) — text color/size live in the tamagui skin.
 const ToastDescription = styled(SizableText, {
-  name: 'ToastDescription',
+  displayName: 'ToastDescription',
 })
 
 /* -------------------------------------------------------------------------------------------------
