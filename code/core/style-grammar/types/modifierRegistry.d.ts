@@ -26,6 +26,12 @@ export interface CreateModifierRegistryOptions {
 * behavior packages expose through DOM attributes.
 */
 export declare const stateModifierNames: readonly string[];
+/**
+* Theme conditions name a root theme. Nested themes still inherit from that
+* root, so `dark:` applies within `dark_blue`, but `dark_blue:` is not a
+* condition of its own.
+*/
+export declare function isRootThemeName(name: string): boolean;
 export interface GroupModifier {
 	/** the state the parent group must be in, always a built-in state modifier */
 	state: string;

@@ -16,7 +16,7 @@ const inputs = {
 
 const { registry } = createModifierRegistry({
   mediaNames: ['sm', 'lg'],
-  themeNames: { light: {}, dark: {}, dark_blue: {} },
+  themeNames: { light: {}, dark: {} },
 })
 
 function parsed(input) {

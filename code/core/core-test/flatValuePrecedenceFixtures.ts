@@ -178,14 +178,14 @@ export const flatValuePrecedenceFixtures: readonly FlatValuePrecedenceFixture[] 
   },
   {
     id: 13,
-    name: 'nested theme beats its parent',
+    name: 'root theme applies within a nested active theme',
     property: 'backgroundColor',
-    layers: [{ source: 'prop', value: 'dark:blue dark_blue:red' }],
+    layers: [{ source: 'prop', value: 'light:red dark:blue' }],
     scenarios: [
       {
         name: 'dark blue theme',
-        active: { themes: ['dark', 'dark_blue'] },
-        expected: 'red',
+        active: { themes: ['dark_blue'] },
+        expected: 'blue',
       },
     ],
   },

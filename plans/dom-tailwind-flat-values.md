@@ -584,7 +584,7 @@ Modifiers form one registry assembled from built-ins and Tamagui config:
 - state: `hover:`, `press:`, `focus:`, `focus-visible:`, `focus-within:`,
   `disabled:`, `checked:`, `selected:`, `open:`, `invalid:`, plus `enter:`
   and `exit:` for presence;
-- themes: `dark:`, `light:`, and configured theme conditions;
+- themes: configured root themes such as `dark:` and `light:`;
 - media: configured media names such as `sm:`;
 - platform: `web:`, `native:`, `ios:`, `android:`;
 - group and container modifiers as specified above.
@@ -594,15 +594,16 @@ Modifiers chain as an AND: `dark:hover:blue-500` applies when both hold.
 There is one global condition namespace. Duplicate configured names are
 reported when the config is created; the implementation must not silently
 choose between a theme, media, platform, or state condition sharing a name.
-Theme modifiers reuse Tamagui's established theme inheritance rules for
-matching. The flat syntax does not invent a second definition of whether a
-parent theme condition matches a child theme.
+Only root theme names are modifiers. Nested names such as `dark_blue` and the
+removed V2 component-theme names are not valid modifiers. Root theme modifiers
+reuse Tamagui's established inheritance rules, so a root condition applies
+within its nested themes.
 
 Two theme-matching rulings from the W3 review (2026-07-29):
 
-- A theme modifier matches when it is a name-boundary prefix of the active
-  theme: `dark:` matches active `dark_blue`, `dark_blue:` does not match
-  active `dark`. The legacy `$theme-*` check was exactly inverted (clause
+- A root theme modifier matches when it is a name-boundary prefix of the active
+  theme: `dark:` matches active `dark_blue`. The legacy `$theme-*` check was
+  exactly inverted (clause
   startsWith active theme, no name boundary, so `darkish` matched `dark`);
   that was a bug, the new rule is authoritative on both platforms, and the
   migration guide must note that converted `$theme-*` objects can change

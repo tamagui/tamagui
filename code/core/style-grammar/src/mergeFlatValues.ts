@@ -16,8 +16,8 @@ export function formatParsedValue(value: ParsedValue): string {
 // parser consults the registry for exactly one thing: whether a modifier is
 // registered at all. Nothing about the split depends on which kind comes back.
 // An accepting view therefore parses identically to a configured one, and it
-// keeps values whose modifiers this site cannot resolve (a config's media keys,
-// sub-theme names) mergeable instead of quietly dropping their clauses.
+// keeps values whose modifiers this site cannot resolve (for example, a
+// config's media keys) mergeable instead of quietly dropping their clauses.
 const acceptAnyModifier: ModifierRegistryView = { get: () => 'state' }
 
 /**

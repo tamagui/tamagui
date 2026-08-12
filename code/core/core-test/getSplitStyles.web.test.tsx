@@ -288,18 +288,19 @@ describe('getSplitStyles', () => {
     expect(combinedThemeString).toContain('dark')
   })
 
-  test(`theme conditional styles work with nested theme names`, () => {
-    // Test more specific theme names like dark_blue
-    const nestedThemeStyles = simplifiedGetSplitStyles(View, {
-      backgroundColor: 'dark_blue:darkblue',
-      color: 'dark_blue:lightblue',
-    })
+  test(`root theme clauses work within nested themes`, () => {
+    const nestedThemeStyles = simplifiedGetSplitStyles(
+      View,
+      {
+        backgroundColor: 'red dark:darkblue',
+      },
+      {
+        noClass: true,
+        themeName: 'dark_blue',
+      }
+    )
 
-    // Check the entire structure for expected values
-    const nestedThemeString = JSON.stringify(nestedThemeStyles.rulesToInsert)
-    expect(nestedThemeString).toContain('backgroundColor')
-    expect(nestedThemeString).toContain('darkblue')
-    expect(nestedThemeString).toContain('dark_blue')
+    expect(nestedThemeStyles.style?.backgroundColor).toBe('darkblue')
   })
 
   test(`a dark clause de-opts to inline style with a noClass animation driver`, () => {

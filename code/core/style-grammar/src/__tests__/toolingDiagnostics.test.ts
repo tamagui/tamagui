@@ -17,6 +17,7 @@ const config: GrammarConfigView = {
     p: 'padding',
   },
   mediaNames: ['sm'],
+  containerSizeNames: ['sm'],
   themeNames: ['dark'],
   tokenNames: {
     color: ['red', 'blue', 'red-500'],
@@ -288,6 +289,8 @@ describe('tooling diagnostics', () => {
       replaceStart: 4,
       replaceLength: 0,
       completions: expect.arrayContaining([
+        { value: '@sm', kind: 'modifier', insertText: '@sm:' },
+        { value: 'group-hover', kind: 'modifier', insertText: 'group-hover:' },
         { value: 'hover', kind: 'modifier', insertText: 'hover:' },
       ]),
     })

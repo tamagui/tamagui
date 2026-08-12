@@ -14,6 +14,12 @@
     "themes": {
       "dark": {
         "surface": "#111111"
+      },
+      "dark_blue": {
+        "surface": "#111111"
+      },
+      "dark_ProgressIndicator": {
+        "surface": "#111111"
       }
     },
     "tokens": {

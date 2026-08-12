@@ -75,9 +75,8 @@ The sort key, compared in order (later-sorting clause wins):
      sanity cell: `sm:blue md:green` at md -> green. Same rule for container
      sizes (they derive from the same media keys, see
      `createGrammarConfigView`).
-   - theme: a more specific (nested) theme name beats its parent:
-     `dark_blue:` beats `dark:`. Sibling themes are mutually exclusive so they
-     never tie.
+   - theme: only root theme names are conditions. Root themes are mutually
+     exclusive, so they never tie.
    - state: fixed lifecycle order from the `states.ts` vocabulary, later in
      lifecycle wins: `hover < focusWithin < focus < focusVisible < press`, and
      the component-tier states after interaction states in their table order.
@@ -178,12 +177,12 @@ Required named cells:
 | 10 | `blue native:red`, on native / on web | red / blue |
 | 11 | `native:red ios:green`, on iOS | green (platform rank) |
 | 12 | `native:red sm:hover:blue`, native + sm + hover | red (platform dominates depth) |
-| 13 | `dark:blue dark_blue:red`, dark_blue theme active | red (nested theme wins) |
+| 13 | `light:red dark:blue`, dark_blue theme active | blue (root condition inherits) |
 | 14 | `@sm:blue sm:red`, both active | blue (container > media) |
 | 15 | `group-hover:blue hover:red`, both active | red (own state > group) |
 | 16 | every cell above with program token order reversed | identical winners |
 
-Cells 8, 12, 13, 14 are decisions, not Tailwind mirrors; if implementation
+Cells 8, 12, 14 are decisions, not Tailwind mirrors; if implementation
 finds a real problem with one, raise it to Nate instead of silently changing
 the expectation.
 

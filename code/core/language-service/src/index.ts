@@ -8,7 +8,9 @@ import {
   grammarEntries,
   legacyPartComposite,
   programEligibility,
+  stateModifierNames,
   type DiagnoseStyleValueOptions,
+  type ModifierKind,
   type SerializedGrammarSourceConfig,
 } from '@tamagui/style-grammar/tooling'
 import type ts from 'typescript'
@@ -23,6 +25,17 @@ const flatStyledModules: ReadonlySet<string> = new Set([
   '@tamagui/ui',
   '@tamagui/web',
 ])
+const stateModifierSort = new Map(
+  stateModifierNames.map((name, index) => [name, index] as const)
+)
+const modifierKindSort: Readonly<Record<ModifierKind, string>> = {
+  state: '00',
+  group: '01',
+  media: '02',
+  container: '03',
+  theme: '04',
+  platform: '05',
+}
 
 export interface TamaguiLanguageServicePluginConfig {
   /** Path to the config JSON emitted by the Tamagui compiler. */
@@ -263,6 +276,10 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
       for (const completion of cursorCompletions.completions) {
         if (existing.has(completion.value)) continue
         const insertText = completion.insertText || completion.value
+        const modifierKind =
+          completion.kind === 'modifier'
+            ? state.options.registry.get(completion.value)
+            : undefined
         if (
           !checker.isTypeAssignableTo(
             checker.getStringLiteralType(insertText),
@@ -275,28 +292,41 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
           name: completion.value,
           kind: typescript.ScriptElementKind.string,
           kindModifiers: '',
-          sortText: '0',
+          sortText: modifierKind
+            ? `${modifierKindSort[modifierKind]}:${
+                modifierKind === 'state'
+                  ? `${String(stateModifierSort.get(completion.value) ?? 999).padStart(3, '0')}:`
+                  : ''
+              }${completion.value}`
+            : `${completion.kind === 'configured' ? '10' : '11'}:${completion.value}`,
           insertText,
           replacementSpan,
           source: completionSource,
           labelDetails: {
-            description:
-              completion.kind === 'configured'
+            description: modifierKind
+              ? `Tamagui ${modifierKind} modifier`
+              : completion.kind === 'configured'
                 ? 'Tamagui configured value'
-                : completion.kind === 'modifier'
-                  ? 'Tamagui modifier'
-                  : 'Tamagui style keyword',
+                : 'Tamagui style keyword',
           },
         })
       }
       if (entries.length === 0) return base
+      const pluginInsertions = new Set(
+        entries.map((entry) => entry.insertText || entry.name)
+      )
       return {
         ...(base || {
           isGlobalCompletion: false,
           isMemberCompletion: false,
           isNewIdentifierLocation: true,
         }),
-        entries: [...(base?.entries || []), ...entries],
+        entries: [
+          ...(base?.entries.filter(
+            (entry) => !pluginInsertions.has(entry.insertText || entry.name)
+          ) || []),
+          ...entries,
+        ],
       }
     }
 

@@ -26,6 +26,19 @@ server:
 `js/ts.tsserver.pluginPaths` is machine-scoped, so VS Code ignores it in a
 workspace `.vscode/settings.json` file.
 
+VS Code also disables automatic suggestions inside strings by default. Enable
+them for TSX if completion should open after typing a space in a value:
+
+```json
+{
+  "[typescriptreact]": {
+    "editor.quickSuggestions": {
+      "strings": "on"
+    }
+  }
+}
+```
+
 If the generated config lives elsewhere, set `configPath` relative to the
 TypeScript project:
 
@@ -47,6 +60,11 @@ conditional clause payloads on components carrying Tamagui's `staticConfig`
 type marker and configurations passed to the core Tamagui `styled()` export.
 TypeScript's contextual prop type remains the authority for whether the host
 accepts that property and value.
+
+Modifier suggestions are sorted as state, group, media, container, root theme,
+then platform. `hover:` and `press:` lead the state group. Nested themes remain
+valid `<Theme>` targets but are not flat-value modifiers, so an active
+`dark_blue` theme matches `dark:` and never adds a `dark_blue:` suggestion.
 
 It does not carry a fallback vocabulary. A missing or invalid generated config
 produces no Tamagui completions, so the editor cannot suggest names the runtime

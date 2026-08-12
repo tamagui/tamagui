@@ -41,7 +41,7 @@ export type ModifierKind =
 
 /**
  * What the parser needs to know about registered modifiers. Implementations
- * project the user config (media keys, sub-themes, platform names) plus the
+ * project the user config (media keys, root themes, platform names) plus the
  * built-in state vocabulary into this view. Parameterized modifiers
  * (`group-<name>-<state>`) are the implementation's concern — `get` receives
  * the full authored spelling.

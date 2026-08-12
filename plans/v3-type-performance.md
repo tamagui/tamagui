@@ -320,6 +320,24 @@ extension contributing `typescriptServerPlugins` loads the plugin into the
 bundled tsserver with zero per-project config, the styled-components /
 Tailwind model).
 
+### Real editor graph rejects expanded clause hints
+
+Follow-up measured 2026-08-12 against `HeroContainer.tsx` with VS Code's bundled
+TypeScript 6.0 server. The isolated fixtures above did not predict the cost of
+building JSX prop completions through the real `YStack` type graph. Expanding a
+second modifier and finite payloads produced 1,221 `margin` completion entries;
+value completion took 3.6 seconds initially and another 3.4 and 2.9 seconds
+after successive keystrokes. In VS Code, prop-name completion also returned to
+Loading after each character and took about 20 seconds on the active project.
+
+The public type now contributes only the first modifier prefix
+(``${Modifier}:``). A real tsserver probe at the JSX prop-name cursor took 191
+ms after `m` and 163 ms after `ma`. The value cursor took 98 to 178 ms, returned
+90 entries instead of 1,221, kept `sm:` from the ordinary type, and kept all 55
+configured margin values from `@tamagui/language-service`. Payload and chained
+modifier completion belong only to the plugin. Any future type expansion must
+be measured at both the prop-name and value cursors in the real component graph.
+
 ## Reproducing
 
 The one harness that guards a live invariant is **committed**, because a tool

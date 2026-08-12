@@ -118,7 +118,6 @@ const extractFixture = (fixture: FlatValuePrecedenceFixture, reversed: boolean) 
     options: {
       platform: 'web',
       components: ['@tamagui/core'],
-      ...(fixture.id === 13 ? { config: './tests/lib/precedence.config.cjs' } : null),
     },
   })
 
@@ -233,7 +232,7 @@ test('the shared precedence table compiles with runtime-identical CSS order and 
       if (fixture.id === 11) {
         // Both clauses are inactive in a web build and are dropped statically.
         expect(output?.styles, label).toBe('')
-      } else if (fixture.id !== 13) {
+      } else {
         expect(output?.styles, label).toBeTruthy()
       }
       snapshots[label] = output!.styles
@@ -276,7 +275,7 @@ test('the shared precedence table compiles with runtime-identical CSS order and 
         if (scenario.active.platform === 'ios') continue
         const options = runtimeFixtureOptions(scenario.active)
         const propLayer = fixture.layers.find((layer) => layer.source === 'prop')
-        if (!propLayer || styledLayer || fixture.id === 13) continue
+        if (!propLayer || styledLayer) continue
         const value = reversed ? reverseFixtureProgram(propLayer.value) : propLayer.value
         const runtime = hostCore.getSplitStyles(
           { [fixture.property]: value },

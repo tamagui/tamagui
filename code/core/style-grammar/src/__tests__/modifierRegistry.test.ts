@@ -52,9 +52,9 @@ describe('registered kinds', () => {
     expect(full.registry.get('android')).toBe('platform')
   })
 
-  test('config themes and sub-themes are theme modifiers', () => {
+  test('only root config themes are theme modifiers', () => {
     expect(full.registry.get('dark')).toBe('theme')
-    expect(full.registry.get('dark_blue')).toBe('theme')
+    expect(full.registry.get('dark_blue')).toBeUndefined()
   })
 
   test('a clean config produces no diagnostics', () => {

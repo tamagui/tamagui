@@ -106,7 +106,38 @@ describe('@tamagui/language-service', () => {
     expect(namesAt('bg=""')).toEqual(['blue', 'surface'])
     expect(namesAt('bg="blue hover:"')).toEqual(['blue', 'surface'])
     expect(namesAt('bg="blue hover:b"')).toEqual(['blue', 'surface'])
-    expect(namesAt('bg="blue "')).toEqual(expect.arrayContaining(['dark', 'hover', 'sm']))
+    expect(namesAt('bg="blue "')).toEqual(
+      expect.arrayContaining(['@sm', 'dark', 'group-hover', 'hover', 'sm'])
+    )
+    const modifierEntries = fixture.entriesAt('bg="blue "')
+    const orderedModifiers = [...modifierEntries].sort((left, right) =>
+      left.sortText.localeCompare(right.sortText)
+    )
+    expect(orderedModifiers.slice(0, 2).map((entry) => entry.name)).toEqual([
+      'hover',
+      'press',
+    ])
+    expect(modifierEntries.find((entry) => entry.name === 'hover')).toMatchObject({
+      sortText: '00:000:hover',
+      labelDetails: { description: 'Tamagui state modifier' },
+    })
+    expect(modifierEntries.find((entry) => entry.name === 'sm')).toMatchObject({
+      labelDetails: { description: 'Tamagui media modifier' },
+    })
+    expect(modifierEntries.find((entry) => entry.name === '@sm')).toMatchObject({
+      labelDetails: { description: 'Tamagui container modifier' },
+    })
+    expect(modifierEntries.find((entry) => entry.name === 'group-hover')).toMatchObject({
+      labelDetails: { description: 'Tamagui group modifier' },
+    })
+    expect(modifierEntries.find((entry) => entry.name === 'dark')).toMatchObject({
+      labelDetails: { description: 'Tamagui theme modifier' },
+    })
+    expect(
+      modifierEntries
+        .filter((entry) => entry.labelDetails?.description === 'Tamagui theme modifier')
+        .map((entry) => entry.name)
+    ).toEqual(['dark'])
     expect(namesAt('<Text fontSize=""')).toEqual(['xl'])
     expect(namesAt('<View display=""')).toEqual(['flex'])
     expect(namesAt('<View fontSize=""')).toEqual([])

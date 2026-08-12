@@ -1,7 +1,7 @@
 // The one global modifier namespace the flat value grammar parses against.
 //
 // Built from the existing built-in state vocabulary plus the config's media
-// keys, platform names, and (sub-)theme names, with parameterized group
+// keys, platform names, and root theme names, with parameterized group
 // modifiers resolved on lookup. There is a single namespace on purpose: a name
 // may mean exactly one thing, so a config whose media key collides with a state
 // or theme name gets a diagnostic instead of a silent choice. Registration order
@@ -52,6 +52,15 @@ export const stateModifierNames: readonly string[] = Object.freeze([
 const stateModifierSet: ReadonlySet<string> = new Set(stateModifierNames)
 
 const groupPrefixLength = 'group-'.length
+
+/**
+ * Theme conditions name a root theme. Nested themes still inherit from that
+ * root, so `dark:` applies within `dark_blue`, but `dark_blue:` is not a
+ * condition of its own.
+ */
+export function isRootThemeName(name: string): boolean {
+  return name.length > 0 && !name.includes('_')
+}
 
 export interface GroupModifier {
   /** the state the parent group must be in, always a built-in state modifier */
@@ -195,7 +204,9 @@ export function createModifierRegistry(
   forEachName(view.platformNames ?? grammarPlatformNames, (name) =>
     register(name, 'platform')
   )
-  forEachName(view.themeNames, (name) => register(name, 'theme'))
+  forEachName(view.themeNames, (name) => {
+    if (isRootThemeName(name)) register(name, 'theme')
+  })
 
   return {
     registry: {

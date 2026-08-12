@@ -13,7 +13,7 @@ import {
 
 const { registry } = createModifierRegistry({
   mediaNames: ['sm', 'md', 'lg'],
-  themeNames: { dark: {}, dark_blue: {} },
+  themeNames: { dark: {} },
 })
 const order = createClausePrecedenceOrder(['sm', 'md', 'lg'])
 const key = (...modifiers: string[]) => getClausePrecedenceKey(modifiers, registry, order)
@@ -33,9 +33,8 @@ describe('fixed clause precedence key', () => {
     expect(compareClausePrecedence(key('@sm'), key('sm'))).toBeGreaterThan(0)
   })
 
-  test('media declaration order and nested theme depth are deterministic', () => {
+  test('media declaration order is deterministic', () => {
     expect(compareClausePrecedence(key('md'), key('sm'))).toBeGreaterThan(0)
-    expect(compareClausePrecedence(key('dark_blue'), key('dark'))).toBeGreaterThan(0)
   })
 
   test('own state beats group state and state lifecycle order is fixed', () => {
@@ -79,7 +78,7 @@ describe('CSS specificity encoding', () => {
   })
 
   test('chains above the documented CSS emitter depth cap fail consistently', () => {
-    expect(() => key('sm', 'md', 'lg', 'dark', 'dark_blue', 'hover')).toThrow(
+    expect(() => key('sm', 'md', 'lg', 'dark', '@sm', 'hover')).toThrow(
       `at most ${grammarMaxNonPlatformDepth} non-platform conditions`
     )
   })

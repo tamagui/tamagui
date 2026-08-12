@@ -19,7 +19,7 @@ export type ClausePrecedenceKey = readonly [
   depth: number,
   /** media < container < theme < group < state */
   categoryRank: number,
-  /** declaration/nesting/lifecycle rank inside the highest category */
+  /** declaration/lifecycle rank inside the highest category */
   withinCategoryRank: number,
 ]
 
@@ -78,14 +78,6 @@ export function createClausePrecedenceOrder(
   return ranks
 }
 
-function themeRank(name: string): number {
-  let rank = 1
-  for (let index = 0; index < name.length; index++) {
-    if (name.charCodeAt(index) === 95 /* _ */) rank++
-  }
-  return rank
-}
-
 /** Canonical spelling used by slot identity, precedence, hashing, and matching. */
 export function canonicalClauseModifier(name: string): string {
   const direct = modifierAliases[name]
@@ -112,7 +104,7 @@ function withinCategoryRank(
     const container = parseContainerModifier(modifier)
     return container ? (order.get(container.size) ?? 0) : 0
   }
-  if (kind === 'theme') return themeRank(modifier)
+  if (kind === 'theme') return 0
   if (kind === 'group') {
     const group = parseGroupModifier(modifier)
     return group ? (stateRanks[group.state] ?? 0) : 0

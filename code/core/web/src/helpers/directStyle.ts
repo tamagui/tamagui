@@ -18,6 +18,7 @@ import {
   compareClausePrecedence,
   createClausePrecedenceOrder,
   getClausePrecedenceKeyFromKinds,
+  isRootThemeName,
   type ClausePrecedenceKey,
   type ClausePrecedenceOrder,
   type ModifierKind,
@@ -382,7 +383,7 @@ function getCondition(state: GetStyleState, source: string): Condition | null {
       ;(state.flatMediaKeys ||= new Set()).add(modifier)
       continue
     }
-    if (modifier in (state.conf.themes || {})) {
+    if (isRootThemeName(modifier) && modifier in (state.conf.themes || {})) {
       canonical.push(modifier)
       kinds.push('theme')
       out.theme = modifier

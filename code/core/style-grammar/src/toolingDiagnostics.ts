@@ -400,8 +400,12 @@ function completeModifiers(
   appendColon: boolean
 ): readonly StyleValueCompletion[] {
   const names = new Set<string>()
-  for (const name of stateModifierNames) names.add(name)
+  for (const name of stateModifierNames) {
+    names.add(name)
+    names.add(`group-${name}`)
+  }
   forEachName(options.config.mediaNames, (name) => names.add(name))
+  forEachName(options.config.containerSizeNames, (name) => names.add(`@${name}`))
   forEachName(options.config.themeNames, (name) => names.add(name))
   forEachName(options.config.platformNames, (name) => names.add(name))
 

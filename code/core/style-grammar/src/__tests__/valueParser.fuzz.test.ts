@@ -35,14 +35,19 @@ const registeredModifiers = [
   'sm',
   'md',
   'dark',
-  'dark_blue',
   'ios',
   'native',
   'group-hover',
   'group-hover/card',
 ] as const
 
-const unregisteredModifiers = ['hver', 'tablet', 'mystery', 'group-wobble'] as const
+const unregisteredModifiers = [
+  'hver',
+  'tablet',
+  'dark_blue',
+  'mystery',
+  'group-wobble',
+] as const
 
 const { registry } = createModifierRegistry({
   mediaNames: ['sm', 'md'],
