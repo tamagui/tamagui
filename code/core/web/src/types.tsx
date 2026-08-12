@@ -1034,12 +1034,14 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
 >
 
 // try and find the top level types as they can be supersets:
-type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}`
-  ? never
-  : A
-type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<
-  keyof TamaguiConfig['themes']
->]
+export type RootThemeName<TK extends keyof Themes = keyof Themes> = TK extends string
+  ? string extends TK
+    ? never
+    : TK extends `${string}_${string}`
+      ? never
+      : TK
+  : never
+type BaseThemeDefinitions = TamaguiConfig['themes'][RootThemeName]
 type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']]
 export type ThemeDefinition = BaseThemeDefinitions extends never
   ? GenericThemeDefinition
@@ -2019,7 +2021,10 @@ export type SafeAreaValueKeys =
  * survives (design record, "Types and editor tooling"). Candidate and
  * modifier validation is the compiler's and language service's job.
  */
-type ClauseModifierName = (MediaQueryKey & string) | CoreStateModifierName
+type ClauseModifierName =
+  | (MediaQueryKey & string)
+  | RootThemeName
+  | CoreStateModifierName
 
 /**
  * Keep type-provided clause completion to the first modifier prefix. Adding

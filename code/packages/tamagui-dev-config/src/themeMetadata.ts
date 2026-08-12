@@ -12,6 +12,20 @@ const paletteColors = [
   'teal',
   'yellow',
 ]
+export const componentThemes = [
+  'Button',
+  'Input',
+  'Progress',
+  'ProgressIndicator',
+  'Slider',
+  'SliderActive',
+  'SliderThumb',
+  'Switch',
+  'TextArea',
+  'Tooltip',
+  'SwitchThumb',
+]
+
 const numbered = (prefix: string, count: number) =>
   Array.from({ length: count }, (_, index) => `${prefix}${index + 1}`)
 
@@ -36,7 +50,11 @@ const levelThemeNames = baseThemeNames.flatMap((themeName) =>
       : []
 )
 
-export const themeNames = [...baseThemeNames, ...levelThemeNames]
+const componentThemeNames = [...baseThemeNames, ...levelThemeNames].flatMap((parent) =>
+  componentThemes.map((component) => `${parent}_${component}`)
+)
+
+export const themeNames = [...baseThemeNames, ...levelThemeNames, ...componentThemeNames]
 
 const alphaSteps = [
   '0',

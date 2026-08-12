@@ -565,8 +565,8 @@ type ExtractAnimationDriverKeys<E> = E extends AnimationDriver<any> ? 'default' 
 } ? Extract<keyof E, string> : 'default';
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H, infer V> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, ExtractAnimationConfig<E>, F extends GenericFonts ? F : EmptyFonts, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings, ExtractAnimationDriverKeys<E>> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
-type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
-type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
+export type RootThemeName<TK extends keyof Themes = keyof Themes> = TK extends string ? string extends TK ? never : TK extends `${string}_${string}` ? never : TK : never;
+type BaseThemeDefinitions = TamaguiConfig['themes'][RootThemeName];
 type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
 export type ThemeDefinition = BaseThemeDefinitions extends never ? GenericThemeDefinition : BaseThemeDefinitions;
 export type ThemeKeys = keyof ThemeDefinition;
@@ -1119,7 +1119,7 @@ export type SafeAreaValueKeys = 'padding' | 'paddingTop' | 'paddingBottom' | 'pa
  * survives (design record, "Types and editor tooling"). Candidate and
  * modifier validation is the compiler's and language service's job.
  */
-type ClauseModifierName = (MediaQueryKey & string) | CoreStateModifierName;
+type ClauseModifierName = (MediaQueryKey & string) | RootThemeName | CoreStateModifierName;
 /**
  * Keep type-provided clause completion to the first modifier prefix. Adding
  * payloads or another modifier creates thousands of union members and makes
