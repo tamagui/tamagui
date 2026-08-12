@@ -47,7 +47,7 @@ const CHAR_BRACE_CLOSE = 125
 const noClauses: readonly ParsedClause[] = Object.freeze([])
 
 export interface ValueSourceSpan {
-  kind: 'base' | 'payload' | 'modifier'
+  kind: 'base' | 'payload' | 'modifier' | 'word'
   start: number
   end: number
 }
@@ -248,7 +248,13 @@ function parseValueInternal(
   if (depth > 0) {
     addError('unterminated-function', parenStart, 'unterminated "(" in value')
   }
-  if (wordStart !== -1 && lastColon !== -1) startClause(wordStart, lastColon)
+  if (wordStart !== -1) {
+    if (lastColon !== -1) {
+      startClause(wordStart, lastColon)
+    } else if (sourceSpans) {
+      sourceSpans.push({ kind: 'word', start: wordStart, end: length })
+    }
+  }
   closeSegment(length)
 
   if (errors !== null) return { ok: false, errors }

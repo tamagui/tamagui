@@ -2016,15 +2016,19 @@ export type SafeAreaValueKeys =
  */
 type ClauseModifierName = (MediaQueryKey & string) | RootThemeName | CoreStateModifierName
 
-/**
- * Keep type-provided clause completion to the first modifier prefix. Adding
- * payloads or another modifier creates thousands of union members and makes
- * tsserver recompute them on every keystroke. The language-service plugin
- * owns completions after the prefix.
- */
-type FlatClausePrefix = `${ClauseModifierName}:`
+type FiniteString<T> = T extends string ? (string extends T ? never : T) : never
 
-export type FlatStyleValue<T> = T | FlatClausePrefix | (string & {})
+/**
+ * Keep type-provided clause completion to a modifier prefix, either at the
+ * start of the value or after one configured base value. Payload and chained
+ * modifier expansion creates the large unions that stall tsserver, so the
+ * language-service plugin owns completion beyond this bounded shape.
+ */
+type FlatClausePrefix<T> =
+  | `${ClauseModifierName}:`
+  | `${FiniteString<T>} ${ClauseModifierName}:`
+
+export type FlatStyleValue<T> = T | FlatClausePrefix<T> | (string & {})
 
 export type WithThemeValues<T extends object> = {
   [K in keyof T]:

@@ -154,9 +154,7 @@ function completionProperty(
   state: CompletionState,
   checker: ts.TypeChecker,
   bindings: ImportedBindings
-): { property: string; contextualType: ts.Type } | null {
-  const contextualType = checker.getContextualType(literal)
-  if (!contextualType) return null
+): { property: string } | null {
   let parent = literal.parent
 
   if (typescript.isJsxExpression(parent)) parent = parent.parent
@@ -168,7 +166,7 @@ function completionProperty(
     if (!typescript.isJsxOpeningLikeElement(opening)) return null
     const host = resolveTamaguiHost(checker, opening.tagName)
     if (!host?.accepts(property)) return null
-    return { property, contextualType }
+    return { property }
   }
 
   if (!typescript.isPropertyAssignment(parent)) return null
@@ -191,7 +189,7 @@ function completionProperty(
   const component = call.arguments[0]
   const host = component && resolveTamaguiHost(checker, component)
   if (!host?.accepts(property)) return null
-  return { property, contextualType }
+  return { property }
 }
 
 function copyLanguageService(service: ts.LanguageService): ts.LanguageService {
@@ -232,14 +230,15 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
       options,
       formattingSettings
     ) => {
-      const base = baseCompletions(fileName, position, options, formattingSettings)
-      if (!state) return base
+      const getBaseCompletions = () =>
+        baseCompletions(fileName, position, options, formattingSettings)
+      if (!state) return getBaseCompletions()
       const program = info.languageService.getProgram()
-      if (!program) return base
+      if (!program) return getBaseCompletions()
       const sourceFile = program.getSourceFile(fileName)
-      if (!sourceFile) return base
+      if (!sourceFile) return getBaseCompletions()
       const literal = findStringLiteralAtPosition(typescript, sourceFile, position)
-      if (!literal) return base
+      if (!literal) return getBaseCompletions()
       const checker = program.getTypeChecker()
       let bindings = bindingsBySourceFile.get(sourceFile)
       if (!bindings) {
@@ -247,10 +246,12 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
         bindingsBySourceFile.set(sourceFile, bindings)
       }
       const site = completionProperty(typescript, literal, state, checker, bindings)
-      if (!site) return base
+      if (!site) return getBaseCompletions()
       const targetProperty =
         state.options.config.shorthands?.[site.property] || site.property
-      if (programEligibility(targetProperty) === 'legacy-part') return base
+      if (programEligibility(targetProperty) === 'legacy-part') {
+        return getBaseCompletions()
+      }
 
       const contentStart = literal.getStart(sourceFile) + 1
       const contentEnd = literal.getEnd() - 1
@@ -259,34 +260,37 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
       // TypeScript exposes cooked literal values but not a cooked-to-source
       // offset map. Decline escaped literals until it can replace their exact
       // authored span without risking removal of a runtime clause.
-      if (input !== sourceInput) return base
+      if (input !== sourceInput) return getBaseCompletions()
       const cursorCompletions = completeStyleValueAtCursor(
         site.property,
         input,
         position - contentStart,
         state.options
       )
-      if (!cursorCompletions) return base
+      if (!cursorCompletions) return getBaseCompletions()
       const replacementSpan = {
         start: contentStart + cursorCompletions.replaceStart,
         length: cursorCompletions.replaceLength,
       }
-      const existing = new Set(base?.entries.map((entry) => entry.name))
       const entries: ts.CompletionEntry[] = []
+      let contextualType: ts.Type | undefined
       for (const completion of cursorCompletions.completions) {
-        if (existing.has(completion.value)) continue
         const insertText = completion.insertText || completion.value
         const modifierKind =
           completion.kind === 'modifier'
             ? state.options.registry.get(completion.value)
             : undefined
-        if (
-          !checker.isTypeAssignableTo(
-            checker.getStringLiteralType(insertText),
-            site.contextualType
-          )
-        ) {
-          continue
+        if (completion.kind === 'keyword') {
+          contextualType ||= checker.getContextualType(literal)
+          if (
+            !contextualType ||
+            !checker.isTypeAssignableTo(
+              checker.getStringLiteralType(insertText),
+              contextualType
+            )
+          ) {
+            continue
+          }
         }
         entries.push({
           name: completion.value,
@@ -311,22 +315,17 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
           },
         })
       }
-      if (entries.length === 0) return base
-      const pluginInsertions = new Set(
-        entries.map((entry) => entry.insertText || entry.name)
-      )
+      if (entries.length === 0) return getBaseCompletions()
       return {
-        ...(base || {
-          isGlobalCompletion: false,
-          isMemberCompletion: false,
-          isNewIdentifierLocation: true,
-        }),
-        entries: [
-          ...(base?.entries.filter(
-            (entry) => !pluginInsertions.has(entry.insertText || entry.name)
-          ) || []),
-          ...entries,
-        ],
+        isGlobalCompletion: false,
+        isMemberCompletion: false,
+        isNewIdentifierLocation: true,
+        // A completion requested immediately after whitespace has an empty
+        // replacement span. Ask the editor to request again as the modifier
+        // prefix grows instead of dismissing suggestions when the cursor
+        // moves beyond that initial span.
+        isIncomplete: true,
+        entries,
       }
     }
 

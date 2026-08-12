@@ -348,10 +348,28 @@ export function completeStyleValueAtCursor(
       (span) => cursor >= span.start && cursor <= span.end && span.kind === 'modifier'
     ) ??
     parsed.spans.find(
-      (span) => cursor >= span.start && cursor <= span.end && span.kind !== 'modifier'
+      (span) =>
+        cursor >= span.start &&
+        cursor <= span.end &&
+        span.kind === 'word' &&
+        span.start > 0 &&
+        parsed.result.ok &&
+        parsed.spans.some(
+          (segment) =>
+            (segment.kind === 'base' || segment.kind === 'payload') &&
+            segment.start < span.start &&
+            segment.end >= span.end
+        )
+    ) ??
+    parsed.spans.find(
+      (span) =>
+        cursor >= span.start &&
+        cursor <= span.end &&
+        span.kind !== 'modifier' &&
+        span.kind !== 'word'
     )
 
-  if (active?.kind === 'modifier') {
+  if (active?.kind === 'modifier' || active?.kind === 'word') {
     if (
       !parsed.result.ok &&
       parsed.result.errors.some(
@@ -366,7 +384,7 @@ export function completeStyleValueAtCursor(
     return {
       replaceStart: active.start,
       replaceLength: active.end - active.start,
-      completions: completeModifiers(options, false),
+      completions: completeModifiers(options, input.charCodeAt(active.end) !== 58),
     }
   }
 

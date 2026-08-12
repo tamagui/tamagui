@@ -49,7 +49,7 @@ export const size = {
 
 type SizeKeysIn = keyof typeof size
 type Sizes = { [Key in SizeKeysIn]: number }
-type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`
+type SizeKeys = `${SizeKeysIn}`
 
 export const spaces = Object.entries(size).map(([k, v]) => {
   return [k, sizeToSpace(v)] as const

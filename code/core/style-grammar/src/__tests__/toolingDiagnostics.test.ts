@@ -284,6 +284,14 @@ describe('tooling diagnostics', () => {
       ]),
     })
 
+    expect(completeStyleValueAtCursor('bg', 'red s', 5, options)).toMatchObject({
+      replaceStart: 4,
+      replaceLength: 1,
+      completions: expect.arrayContaining([
+        { value: 'sm', kind: 'modifier', insertText: 'sm:' },
+      ]),
+    })
+
     const appendedModifier = completeStyleValueAtCursor('bg', 'red ', 4, options)
     expect(appendedModifier).toMatchObject({
       replaceStart: 4,

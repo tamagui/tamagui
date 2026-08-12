@@ -1,6 +1,6 @@
 import type { ModifierRegistryView, ValueParseResult } from "./valueTypes";
 export interface ValueSourceSpan {
-	kind: "base" | "payload" | "modifier";
+	kind: "base" | "payload" | "modifier" | "word";
 	start: number;
 	end: number;
 }

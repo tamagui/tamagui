@@ -330,13 +330,28 @@ value completion took 3.6 seconds initially and another 3.4 and 2.9 seconds
 after successive keystrokes. In VS Code, prop-name completion also returned to
 Loading after each character and took about 20 seconds on the active project.
 
-The public type now contributes only the first modifier prefix
-(``${Modifier}:``). A real tsserver probe at the JSX prop-name cursor took 191
-ms after `m` and 163 ms after `ma`. The value cursor took 98 to 178 ms, returned
-90 entries instead of 1,221, kept `sm:` from the ordinary type, and kept all 55
-configured margin values from `@tamagui/language-service`. Payload and chained
-modifier completion belong only to the plugin. Any future type expansion must
-be measured at both the prop-name and value cursors in the real component graph.
+The public type was first reduced to only the first modifier prefix
+(``${Modifier}:``). A real tsserver probe at the JSX prop-name cursor then took
+191 ms after `m` and 163 ms after `ma`. The value cursor took 98 to 178 ms and
+returned 90 entries instead of 1,221.
+
+A narrower follow-up restored only the common second position:
+``${FiniteBase} ${Modifier}:``. It does not enumerate modifier payloads or
+chained modifiers. After correcting the V5 compatibility declaration that had
+collapsed `tokens.space` to `{}`, the real `margin` type produced 1,830 entries,
+including `4 sm:`. With VS Code's TypeScript 6 server, type-only completion took
+744, 963, and 833 ms after `4 `, `4 s`, and `4 sm`; prop-name completion took
+726 and 782 ms after `m` and `ma`. That is a visible cost, but it stays well
+below the earlier multi-second and 20-second failure.
+
+When the language-service plugin is loaded, it is authoritative for Tamagui
+string values and does not first request TypeScript's expanded base list. It
+returns the correctly ranged `sm:` item in 59, 91, and 89 ms across the same
+three value cursors. It marks the result incomplete so VS Code requests the
+next prefix instead of dismissing the popup after the zero-length whitespace
+range. Payload and chained-modifier completion still belong only to the plugin.
+Any future type expansion must be measured at both the prop-name and value
+cursors in the real component graph.
 
 ## Reproducing
 

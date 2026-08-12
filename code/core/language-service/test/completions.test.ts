@@ -16,6 +16,7 @@ const init = require('@tamagui/language-service') as ts.server.PluginModuleFacto
 
 function createService() {
   let configContents = readFileSync(configPath, 'utf8')
+  let baseCompletionCalls = 0
   const files = new Map([
     [sourcePath, { version: 0, text: source }],
     [declarationsPath, { version: 0, text: readFileSync(declarationsPath, 'utf8') }],
@@ -42,7 +43,10 @@ function createService() {
   let watchClosed = false
   let configChanged: ts.FileWatcherCallback | undefined
   const base = ts.createLanguageService(host)
-  base.getCompletionsAtPosition = () => undefined
+  base.getCompletionsAtPosition = () => {
+    baseCompletionCalls++
+    return undefined
+  }
   const plugin = init({ typescript: ts })
   const service = plugin.create({
     languageService: base,
@@ -84,6 +88,7 @@ function createService() {
       configContents = JSON.stringify(config)
       configChanged?.(configPath, ts.FileWatcherEventKind.Changed)
     },
+    baseCompletionCalls: () => baseCompletionCalls,
     watchWasClosed: () => watchClosed,
   }
 }
@@ -104,11 +109,16 @@ describe('@tamagui/language-service', () => {
       fixture.entriesAt(needle).map((entry) => entry.name)
 
     expect(namesAt('bg=""')).toEqual(['blue', 'surface'])
+    expect(fixture.baseCompletionCalls()).toBe(0)
     expect(namesAt('bg="blue hover:"')).toEqual(['blue', 'surface'])
     expect(namesAt('bg="blue hover:b"')).toEqual(['blue', 'surface'])
     expect(namesAt('bg="blue "')).toEqual(
       expect.arrayContaining(['@sm', 'dark', 'group-hover', 'hover', 'sm'])
     )
+    const afterWhitespacePosition = source.indexOf('bg="blue "') + 'bg="blue '.length
+    expect(
+      fixture.service.getCompletionsAtPosition(sourcePath, afterWhitespacePosition, {})
+    ).toMatchObject({ isIncomplete: true })
     const modifierEntries = fixture.entriesAt('bg="blue "')
     const orderedModifiers = [...modifierEntries].sort((left, right) =>
       left.sortText.localeCompare(right.sortText)
@@ -133,6 +143,15 @@ describe('@tamagui/language-service', () => {
     expect(modifierEntries.find((entry) => entry.name === 'dark')).toMatchObject({
       labelDetails: { description: 'Tamagui theme modifier' },
     })
+    expect(fixture.entriesAt('bg="blue s"')).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'sm',
+          insertText: 'sm:',
+          replacementSpan: { start: source.indexOf('bg="blue s"') + 9, length: 1 },
+        }),
+      ])
+    )
     expect(
       modifierEntries
         .filter((entry) => entry.labelDetails?.description === 'Tamagui theme modifier')
