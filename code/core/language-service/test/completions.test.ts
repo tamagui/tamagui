@@ -110,8 +110,12 @@ describe('@tamagui/language-service', () => {
 
     expect(namesAt('bg=""')).toEqual(['blue', 'surface'])
     expect(fixture.baseCompletionCalls()).toBe(0)
-    expect(namesAt('bg="blue hover:"')).toEqual(['blue', 'surface'])
-    expect(namesAt('bg="blue hover:b"')).toEqual(['blue', 'surface'])
+    expect(namesAt('bg="blue hover:"')).toEqual(
+      expect.arrayContaining(['blue', 'surface', 'hover', 'sm'])
+    )
+    expect(namesAt('bg="blue hover:b"')).toEqual(
+      expect.arrayContaining(['blue', 'surface', 'hover', 'sm'])
+    )
     expect(namesAt('bg="blue "')).toEqual(
       expect.arrayContaining(['@sm', 'dark', 'group-hover', 'hover', 'sm'])
     )
@@ -149,6 +153,30 @@ describe('@tamagui/language-service', () => {
           name: 'sm',
           insertText: 'sm:',
           replacementSpan: { start: source.indexOf('bg="blue s"') + 9, length: 1 },
+        }),
+      ])
+    )
+    expect(fixture.entriesAt('bg="blue sm:"')).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'hover',
+          insertText: 'hover:',
+          replacementSpan: {
+            start: source.indexOf('bg="blue sm:"') + 12,
+            length: 0,
+          },
+        }),
+      ])
+    )
+    expect(fixture.entriesAt('bg="blue sm:h"')).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'hover',
+          insertText: 'hover:',
+          replacementSpan: {
+            start: source.indexOf('bg="blue sm:h"') + 12,
+            length: 1,
+          },
         }),
       ])
     )

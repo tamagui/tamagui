@@ -262,7 +262,18 @@ describe('tooling diagnostics', () => {
     expect(completeStyleValueAtCursor('bg', 'red hover:', 10, options)).toMatchObject({
       replaceStart: 10,
       replaceLength: 0,
-      completions: expect.arrayContaining([{ value: 'blue', kind: 'configured' }]),
+      completions: expect.arrayContaining([
+        { value: 'blue', kind: 'configured' },
+        { value: 'hover', kind: 'modifier', insertText: 'hover:' },
+        { value: 'sm', kind: 'modifier', insertText: 'sm:' },
+      ]),
+    })
+    expect(completeStyleValueAtCursor('bg', 'red sm:h', 8, options)).toMatchObject({
+      replaceStart: 7,
+      replaceLength: 1,
+      completions: expect.arrayContaining([
+        { value: 'hover', kind: 'modifier', insertText: 'hover:' },
+      ]),
     })
 
     const partialModifier = completeStyleValueAtCursor('bg', 'red hov:blue', 7, options)

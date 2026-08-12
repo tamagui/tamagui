@@ -65,6 +65,8 @@ Modifier suggestions are sorted as state, group, media, container, root theme,
 then platform. `hover:` and `press:` lead the state group. Nested themes remain
 valid `<Theme>` targets but are not flat-value modifiers, so an active
 `dark_blue` theme matches `dark:` and never adds a `dark_blue:` suggestion.
+After a modifier colon, the plugin offers both property values and another
+modifier, so `margin="4 sm:h"` completes to `margin="4 sm:hover:"`.
 
 It does not carry a fallback vocabulary. A missing or invalid generated config
 produces no Tamagui completions, so the editor cannot suggest names the runtime

@@ -335,21 +335,22 @@ The public type was first reduced to only the first modifier prefix
 191 ms after `m` and 163 ms after `ma`. The value cursor took 98 to 178 ms and
 returned 90 entries instead of 1,221.
 
-A narrower follow-up restored only the common second position:
-``${FiniteBase} ${Modifier}:``. It does not enumerate modifier payloads or
-chained modifiers. After correcting the V5 compatibility declaration that had
-collapsed `tokens.space` to `{}`, the real `margin` type produced 1,830 entries,
-including `4 sm:`. With VS Code's TypeScript 6 server, type-only completion took
-744, 963, and 833 ms after `4 `, `4 s`, and `4 sm`; prop-name completion took
-726 and 782 ms after `m` and `ma`. That is a visible cost, but it stays well
-below the earlier multi-second and 20-second failure.
+A narrower follow-up tested only the common second position:
+``${FiniteBase} ${Modifier}:``. A direct completion request looked tolerable,
+but the real VS Code server stayed at 100 percent CPU rebuilding the contextual
+component prop type after edits. The editor repeatedly showed Loading for about
+15 seconds, including while typing prop names. The public type therefore keeps
+only the first modifier prefix. The language-service plugin owns every position
+after a base value. The V5 compatibility declaration fix remains because it
+correctly restores the finite `tokens.space` keys without creating clause
+cross-products.
 
 When the language-service plugin is loaded, it is authoritative for Tamagui
 string values and does not first request TypeScript's expanded base list. It
-returns the correctly ranged `sm:` item in 59, 91, and 89 ms across the same
-three value cursors. It marks the result incomplete so VS Code requests the
-next prefix instead of dismissing the popup after the zero-length whitespace
-range. Payload and chained-modifier completion still belong only to the plugin.
+returns the correctly ranged `sm:` item after a base value. It marks the result
+incomplete so VS Code requests the next prefix instead of dismissing the popup
+after the zero-length whitespace range. Payload and chained-modifier completion
+also belong only to the plugin.
 Any future type expansion must be measured at both the prop-name and value
 cursors in the real component graph.
 

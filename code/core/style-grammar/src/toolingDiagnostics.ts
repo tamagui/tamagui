@@ -398,7 +398,15 @@ export function completeStyleValueAtCursor(
     return {
       replaceStart: active.start,
       replaceLength: active.end - active.start,
-      completions: completeStyleValue(property, options),
+      // the first payload word is also where another modifier in the chain
+      // begins, so both vocabularies remain available until the author picks.
+      completions:
+        active.kind === 'payload' && input.charCodeAt(active.start - 1) === 58
+          ? [
+              ...completeModifiers(options, true),
+              ...completeStyleValue(property, options),
+            ]
+          : completeStyleValue(property, options),
     }
   }
 

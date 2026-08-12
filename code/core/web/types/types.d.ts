@@ -1114,15 +1114,14 @@ export type SafeAreaValueKeys = 'padding' | 'paddingTop' | 'paddingBottom' | 'pa
  * modifier validation is the compiler's and language service's job.
  */
 type ClauseModifierName = (MediaQueryKey & string) | RootThemeName | CoreStateModifierName;
-type FiniteString<T> = T extends string ? (string extends T ? never : T) : never;
 /**
- * Keep type-provided clause completion to a modifier prefix, either at the
- * start of the value or after one configured base value. Payload and chained
- * modifier expansion creates the large unions that stall tsserver, so the
- * language-service plugin owns completion beyond this bounded shape.
+ * Keep type-provided clause completion to the first modifier prefix. Adding
+ * base values, payloads, or another modifier creates large unions throughout
+ * the component prop graph and makes tsserver rebuild them after every edit.
+ * The language-service plugin owns completion after the first prefix.
  */
-type FlatClausePrefix<T> = `${ClauseModifierName}:` | `${FiniteString<T>} ${ClauseModifierName}:`;
-export type FlatStyleValue<T> = T | FlatClausePrefix<T> | (string & {});
+type FlatClausePrefix = `${ClauseModifierName}:`;
+export type FlatStyleValue<T> = T | FlatClausePrefix | (string & {});
 export type WithThemeValues<T extends object> = {
     [K in keyof T]: (ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : FlatStyleValue<T[K] | 'unset'> : FlatStyleValue<GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'>) | (K extends SafeAreaValueKeys ? 'safe' : never);
 };
