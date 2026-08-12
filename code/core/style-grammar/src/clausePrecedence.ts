@@ -1,7 +1,18 @@
 import { grammarPlatformRank } from './config'
-import { parseContainerModifier, parseGroupModifier } from './modifierRegistry'
-import { modifierAliases } from './stateModifiers'
-import type { ModifierKind, ModifierRegistryView } from './valueTypes'
+import {
+  canonicalClauseModifier,
+  parseContainerModifier,
+  parseGroupModifier,
+} from './modifierRegistry'
+
+export { canonicalClauseModifier } from './modifierRegistry'
+import {
+  grammarMaxNonPlatformDepth,
+  type ModifierKind,
+  type ModifierRegistryView,
+} from './valueTypes'
+
+export { grammarMaxNonPlatformDepth } from './valueTypes'
 
 /**
  * The CSS emitter deliberately caps a condition chain at five distinct
@@ -10,8 +21,6 @@ import type { ModifierKind, ModifierRegistryView } from './valueTypes'
  * floor above every platform-less clause, so the shared comparator rejects
  * them consistently on every surface.
  */
-export const grammarMaxNonPlatformDepth = 5
-
 export type ClausePrecedenceKey = readonly [
   /** no platform = 0; web/native = 1; ios/android/tv = 2; tvos/androidtv = 3 */
   platformRank: number,
@@ -76,22 +85,6 @@ export function createClausePrecedenceOrder(
     }
   }
   return ranks
-}
-
-/** Canonical spelling used by slot identity, precedence, hashing, and matching. */
-export function canonicalClauseModifier(name: string): string {
-  const direct = modifierAliases[name]
-  if (direct) return direct
-  if (name.startsWith('group-')) {
-    const group = parseGroupModifier(name)
-    if (group) {
-      const state = modifierAliases[group.state] ?? group.state
-      if (state !== group.state) {
-        return group.group === null ? `group-${state}` : `group-${state}/${group.group}`
-      }
-    }
-  }
-  return name
 }
 
 function withinCategoryRank(

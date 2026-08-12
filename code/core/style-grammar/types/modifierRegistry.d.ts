@@ -1,5 +1,5 @@
 import type { GrammarConfigView } from "./candidate";
-import type { ModifierRegistryView } from "./valueTypes";
+import { type ModifierRegistryView } from "./valueTypes";
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>;
 export interface ModifierRegistryResult {
 	registry: ModifierRegistryView;
@@ -38,6 +38,8 @@ export interface GroupModifier {
 	/** the group name, or null for the nearest unnamed group */
 	group: string | null;
 }
+/** Canonical spelling used by slot identity, precedence, hashing, and matching. */
+export declare function canonicalClauseModifier(name: string): string;
 /**
 * Parameterized group modifiers use Tailwind's spelling: `group-hover` for the
 * nearest unnamed group and `group-hover/card` for a named one. The state part

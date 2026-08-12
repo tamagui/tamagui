@@ -868,6 +868,10 @@
         "typescript": ">=5.7",
       },
     },
+    "code/core/language-service-vscode": {
+      "name": "tamagui-language-service",
+      "version": "0.0.1",
+    },
     "code/core/monorepo-test": {
       "name": "@tamagui/monorepo-test",
       "version": "2.7.4",
@@ -8689,6 +8693,8 @@
     "tamagui-build-test-subpath-only-package": ["tamagui-build-test-subpath-only-package@workspace:code/packages/build/__tests__/fixtures/subpath-only-package"],
 
     "tamagui-build-test-watch-package": ["tamagui-build-test-watch-package@workspace:code/packages/build/__tests__/fixtures/watch-package"],
+
+    "tamagui-language-service": ["tamagui-language-service@workspace:code/core/language-service-vscode"],
 
     "tamagui-loader": ["tamagui-loader@workspace:code/compiler/loader"],
 

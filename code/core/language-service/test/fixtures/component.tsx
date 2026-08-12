@@ -28,6 +28,8 @@ export function CompletionFixture() {
       <Frame bg="blue s" />
       <Frame bg="blue sm:" />
       <Frame bg="blue sm:h" />
+      <Frame padding="4 web:dark:@sm:sm:hover:" />
+      <Frame padding="4 sm:8 " />
       <Frame bg={'\x62lue'} />
       <Frame bg={`\x62lue`} />
       <Frame bg={'blue hover\x3ared'} />

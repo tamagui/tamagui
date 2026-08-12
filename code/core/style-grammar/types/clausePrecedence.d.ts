@@ -1,4 +1,6 @@
-import type { ModifierKind, ModifierRegistryView } from "./valueTypes";
+export { canonicalClauseModifier } from "./modifierRegistry";
+import { type ModifierKind, type ModifierRegistryView } from "./valueTypes";
+export { grammarMaxNonPlatformDepth } from "./valueTypes";
 /**
 * The CSS emitter deliberately caps a condition chain at five distinct
 * non-platform conditions. The parser can represent longer chains, but they
@@ -6,13 +8,10 @@ import type { ModifierKind, ModifierRegistryView } from "./valueTypes";
 * floor above every platform-less clause, so the shared comparator rejects
 * them consistently on every surface.
 */
-export declare const grammarMaxNonPlatformDepth = 5;
 export type ClausePrecedenceKey = readonly [platformRank: number, depth: number, categoryRank: number, withinCategoryRank: number];
 export type OrderedModifierNames = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>;
 export type ClausePrecedenceOrder = ReadonlyMap<string, number>;
 export declare function createClausePrecedenceOrder(names: OrderedModifierNames | undefined): ClausePrecedenceOrder;
-/** Canonical spelling used by slot identity, precedence, hashing, and matching. */
-export declare function canonicalClauseModifier(name: string): string;
 /** Order-insensitive set key used by every clause merge/emission slot. */
 export declare function clauseConditionSetKey(modifiers: readonly string[]): string;
 export declare function getClausePrecedenceKeyFromKinds(modifiers: readonly string[], kinds: readonly (ModifierKind | undefined)[], order: ClausePrecedenceOrder): ClausePrecedenceKey;

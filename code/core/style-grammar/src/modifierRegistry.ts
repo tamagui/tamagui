@@ -13,7 +13,11 @@ import type { GrammarConfigView } from './candidate'
 import { grammarPlatformNames } from './config'
 import { coreStateModifierNames, modifierAliases } from './stateModifiers'
 import { componentStateNames } from './states'
-import type { ModifierKind, ModifierRegistryView } from './valueTypes'
+import {
+  grammarMaxNonPlatformDepth,
+  type ModifierKind,
+  type ModifierRegistryView,
+} from './valueTypes'
 
 type Names = readonly string[] | ReadonlySet<string> | Readonly<Record<string, unknown>>
 
@@ -69,6 +73,22 @@ export interface GroupModifier {
   group: string | null
 }
 
+/** Canonical spelling used by slot identity, precedence, hashing, and matching. */
+export function canonicalClauseModifier(name: string): string {
+  const direct = modifierAliases[name]
+  if (direct) return direct
+  if (name.startsWith('group-')) {
+    const group = parseGroupModifier(name)
+    if (group) {
+      const state = modifierAliases[group.state] ?? group.state
+      if (state !== group.state) {
+        return group.group === null ? `group-${state}` : `group-${state}/${group.group}`
+      }
+    }
+  }
+  return name
+}
+
 /**
  * Parameterized group modifiers use Tailwind's spelling: `group-hover` for the
  * nearest unnamed group and `group-hover/card` for a named one. The state part
@@ -93,6 +113,12 @@ export interface ContainerModifier {
   size: string
   /** the container name, or null for the nearest container */
   container: string | null
+}
+
+interface ModifierTrieNode {
+  modifiers: readonly string[]
+  children: Map<string, ModifierTrieNode>
+  next?: readonly string[]
 }
 
 /**
@@ -155,6 +181,7 @@ export function createModifierRegistry(
 ): ModifierRegistryResult {
   const names = new Map<string, ModifierKind>()
   const diagnostics: string[] = []
+  const completionNames: string[] = []
 
   // options override the view's derived set. an undefined BOTH falls back to
   // every-media-name for now — that over-claim is scheduled for removal with
@@ -191,6 +218,7 @@ export function createModifierRegistry(
       )
     }
     names.set(name, kind)
+    completionNames.push(name)
   }
 
   // when the caller or the view declares which sizes a container can measure,
@@ -208,15 +236,117 @@ export function createModifierRegistry(
     if (isRootThemeName(name)) register(name, 'theme')
   })
 
+  for (const name of stateModifierNames) {
+    const group = `group-${name}`
+    if (names.get(group) === undefined) completionNames.push(group)
+  }
+  if (containerSizes) {
+    for (const size of containerSizes) {
+      if (isContainerSize(size)) completionNames.push(`@${size}`)
+    }
+  } else {
+    for (const name of completionNames.slice()) {
+      if (names.get(name) === 'media') completionNames.push(`@${name}`)
+    }
+  }
+
+  const kindOrder: Readonly<Record<ModifierKind, number>> = {
+    platform: 0,
+    theme: 1,
+    container: 2,
+    media: 3,
+    group: 4,
+    state: 5,
+  }
+  const modifierTrie: ModifierTrieNode = {
+    modifiers: [],
+    children: new Map(),
+  }
+
+  const get = (name: string): ModifierKind | undefined => {
+    const kind = names.get(name)
+    if (kind !== undefined) return kind
+    if (parseGroupModifier(name) !== null) return 'group'
+    const container = parseContainerModifier(name)
+    if (container !== null && isContainerSize(container.size)) return 'container'
+    return undefined
+  }
+
   return {
     registry: {
-      get(name: string): ModifierKind | undefined {
-        const kind = names.get(name)
-        if (kind !== undefined) return kind
-        if (parseGroupModifier(name) !== null) return 'group'
-        const container = parseContainerModifier(name)
-        if (container !== null && isContainerSize(container.size)) return 'container'
-        return undefined
+      get,
+      next(modifiers: readonly string[]): readonly string[] {
+        let node = modifierTrie
+        for (const authored of modifiers) {
+          const canonical = canonicalClauseModifier(authored)
+          let child = node.children.get(canonical)
+          if (!child) {
+            child = {
+              modifiers: [...node.modifiers, canonical],
+              children: new Map(),
+            }
+            node.children.set(canonical, child)
+          }
+          node = child
+        }
+        if (node.next) return node.next
+
+        const used = new Set<string>()
+        let highestOrder = -1
+        let hasPlatform = false
+        let hasTheme = false
+        let nonPlatformDepth = 0
+
+        for (const canonical of node.modifiers) {
+          if (used.has(canonical)) {
+            node.next = []
+            return node.next
+          }
+          used.add(canonical)
+          const kind = get(canonical)
+          if (!kind || kindOrder[kind] < highestOrder) {
+            node.next = []
+            return node.next
+          }
+          highestOrder = kindOrder[kind]
+          if (kind === 'platform') {
+            if (hasPlatform) {
+              node.next = []
+              return node.next
+            }
+            hasPlatform = true
+          } else {
+            nonPlatformDepth++
+            if (nonPlatformDepth > grammarMaxNonPlatformDepth) {
+              node.next = []
+              return node.next
+            }
+            if (kind === 'theme') {
+              if (hasTheme) {
+                node.next = []
+                return node.next
+              }
+              hasTheme = true
+            }
+          }
+        }
+
+        const next: string[] = []
+        for (const name of completionNames) {
+          const canonical = canonicalClauseModifier(name)
+          if (canonical !== name) continue
+          if (used.has(canonical)) continue
+          const kind = get(name)
+          if (!kind || kindOrder[kind] < highestOrder) continue
+          if (kind === 'platform' && hasPlatform) continue
+          if (kind === 'theme' && hasTheme) continue
+          if (kind !== 'platform' && nonPlatformDepth >= grammarMaxNonPlatformDepth) {
+            continue
+          }
+          next.push(name)
+        }
+        node.next = next
+        return node.next
       },
     },
     diagnostics,

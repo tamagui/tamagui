@@ -2014,7 +2014,12 @@ export type SafeAreaValueKeys =
  * survives (design record, "Types and editor tooling"). Candidate and
  * modifier validation is the compiler's and language service's job.
  */
-type ClauseModifierName = (MediaQueryKey & string) | RootThemeName | CoreStateModifierName
+type ClauseModifierName =
+  | (MediaQueryKey & string)
+  | RootThemeName
+  | CoreStateModifierName
+  | `group-${CoreStateModifierName}`
+  | AllPlatforms
 
 /**
  * Keep type-provided clause completion to the first modifier prefix. Adding

@@ -39,6 +39,10 @@ them for TSX if completion should open after typing a space in a value:
 }
 ```
 
+VS Code's TypeScript provider does not register `:` as a completion trigger.
+The companion Tamagui Language Service extension retriggers suggestions after a
+modifier colon and delegates the resulting request back to this plugin.
+
 If the generated config lives elsewhere, set `configPath` relative to the
 TypeScript project:
 
@@ -67,6 +71,20 @@ valid `<Theme>` targets but are not flat-value modifiers, so an active
 `dark_blue` theme matches `dark:` and never adds a `dark_blue:` suggestion.
 After a modifier colon, the plugin offers both property values and another
 modifier, so `margin="4 sm:h"` completes to `margin="4 sm:hover:"`.
+State continuations such as `hover:` and `press:` sort first, followed by the
+other modifier categories and configured property values. A finished chain such
+as `margin="4 web:sm:hover:"` still includes its payload tokens in that list.
+Modifier completion traverses a trie derived from the generated config. The
+canonical authoring order is platform, root theme, container, viewport media,
+group state, then subject state. A trie node omits conditions already used,
+aliases of used conditions, additional platforms or root themes, earlier
+categories, and conditions beyond the emitter's five non-platform limit.
+Runtime parsing remains order-insensitive for compatibility, but tooling only
+authors the canonical shape. A completed payload resets traversal, so every new
+space-delimited clause starts from the trie root at arbitrary program length.
+
+Container conditions include their size: `@sm:` targets the nearest container
+and `@sm/layout:` targets a named container. `@container:` is not a modifier.
 
 It does not carry a fallback vocabulary. A missing or invalid generated config
 produces no Tamagui completions, so the editor cannot suggest names the runtime

@@ -1,0 +1,30 @@
+{
+  "name": "tamagui-language-service",
+  "displayName": "Tamagui Language Service",
+  "description": "VS Code activation bridge for Tamagui flat value completions.",
+  "version": "0.0.1",
+  "private": true,
+  "publisher": "tamagui",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "code/core/language-service-vscode"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact"
+  ],
+  "files": [
+    "extension.cjs",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "./extension.cjs"
+}

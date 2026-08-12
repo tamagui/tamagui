@@ -6,7 +6,6 @@ import {
 } from './candidateTarget'
 import { createGrammarConfigView, type GrammarSourceConfig } from './config'
 import { formatParsedValue } from './mergeFlatValues'
-import { stateModifierNames } from './modifierRegistry'
 import { resolvePayload } from './resolvePayload'
 import {
   fontWeightNames,
@@ -384,7 +383,13 @@ export function completeStyleValueAtCursor(
     return {
       replaceStart: active.start,
       replaceLength: active.end - active.start,
-      completions: completeModifiers(options, input.charCodeAt(active.end) !== 58),
+      completions: completeModifiers(
+        options,
+        input.charCodeAt(active.end) !== 58,
+        active.kind === 'modifier'
+          ? modifierChainBefore(input, parsed.spans, active.start)
+          : []
+      ),
     }
   }
 
@@ -403,7 +408,11 @@ export function completeStyleValueAtCursor(
       completions:
         active.kind === 'payload' && input.charCodeAt(active.start - 1) === 58
           ? [
-              ...completeModifiers(options, true),
+              ...completeModifiers(
+                options,
+                true,
+                modifierChainBefore(input, parsed.spans, active.start)
+              ),
               ...completeStyleValue(property, options),
             ]
           : completeStyleValue(property, options),
@@ -414,7 +423,7 @@ export function completeStyleValueAtCursor(
     return {
       replaceStart: cursor,
       replaceLength: 0,
-      completions: completeModifiers(options, true),
+      completions: completeModifiers(options, true, []),
     }
   }
 
@@ -423,21 +432,13 @@ export function completeStyleValueAtCursor(
 
 function completeModifiers(
   options: DiagnoseStyleValueOptions,
-  appendColon: boolean
+  appendColon: boolean,
+  modifiers: readonly string[]
 ): readonly StyleValueCompletion[] {
-  const names = new Set<string>()
-  for (const name of stateModifierNames) {
-    names.add(name)
-    names.add(`group-${name}`)
-  }
-  forEachName(options.config.mediaNames, (name) => names.add(name))
-  forEachName(options.config.containerSizeNames, (name) => names.add(`@${name}`))
-  forEachName(options.config.themeNames, (name) => names.add(name))
-  forEachName(options.config.platformNames, (name) => names.add(name))
-
+  const names = options.registry.next?.(modifiers)
+  if (!names) return []
   const completions: StyleValueCompletion[] = []
   for (const name of names) {
-    if (options.registry.get(name) === undefined) continue
     completions.push({
       value: name,
       kind: 'modifier',
@@ -446,4 +447,26 @@ function completeModifiers(
   }
   completions.sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0))
   return completions
+}
+
+function modifierChainBefore(
+  input: string,
+  spans: readonly { kind: string; start: number; end: number }[],
+  start: number
+): readonly string[] {
+  const byEnd = new Map<number, (typeof spans)[number]>()
+  for (const span of spans) {
+    if (span.kind === 'modifier') byEnd.set(span.end, span)
+  }
+
+  const reversed: string[] = []
+  let colon = start - 1
+  while (colon >= 0 && input.charCodeAt(colon) === 58) {
+    const span = byEnd.get(colon)
+    if (!span) break
+    reversed.push(input.slice(span.start, span.end))
+    colon = span.start - 1
+  }
+  reversed.reverse()
+  return reversed
 }

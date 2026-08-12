@@ -286,3 +286,48 @@ describe('container size projection', () => {
     expect(diagnostics).toEqual([])
   })
 })
+
+describe('config-derived modifier trie', () => {
+  test('follows canonical chain order and omits used conditions', () => {
+    const root = full.registry.next!([])
+    expect(root).toEqual(expect.arrayContaining(['web', 'dark', '@sm', 'sm', 'hover']))
+
+    const platform = full.registry.next!(['web'])
+    expect(platform).toEqual(expect.arrayContaining(['dark', '@sm', 'sm', 'hover']))
+    expect(platform).not.toEqual(expect.arrayContaining(['web', 'native', 'ios']))
+
+    const chain = full.registry.next!(['web', 'dark', '@sm', 'sm', 'hover'])
+    expect(chain).toEqual(expect.arrayContaining(['press', 'focus']))
+    expect(chain).not.toEqual(
+      expect.arrayContaining(['web', 'dark', '@sm', 'sm', 'hover', 'group-hover'])
+    )
+  })
+
+  test('omits aliases, extra themes, and conditions beyond the emitter depth', () => {
+    expect(full.registry.next!(['press'])).not.toEqual(
+      expect.arrayContaining(['press', 'active'])
+    )
+    expect(full.registry.next!(['dark'])).not.toContain('light')
+    expect(full.registry.next!(['dark', '@sm', 'sm', 'md', 'lg'])).toEqual(
+      expect.not.arrayContaining(['hover'])
+    )
+  })
+
+  test('stops an invalid authored chain instead of recovering below it', () => {
+    expect(full.registry.next!(['hover', 'web'])).toEqual([])
+    expect(full.registry.next!(['hover', 'hover'])).toEqual([])
+    expect(full.registry.next!(['dark', 'light'])).toEqual([])
+    expect(full.registry.next!(['web', 'ios'])).toEqual([])
+    expect(full.registry.next!(['not-registered'])).toEqual([])
+  })
+
+  test('does not invent a separate container marker', () => {
+    expect(full.registry.get('@container')).toBeUndefined()
+  })
+
+  test('caches each visited chain node without prebuilding combinations', () => {
+    expect(full.registry.next!(['web', 'dark'])).toBe(
+      full.registry.next!(['web', 'dark'])
+    )
+  })
+})

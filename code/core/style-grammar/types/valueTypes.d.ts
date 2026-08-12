@@ -1,4 +1,6 @@
 export type ModifierKind = "state" | "theme" | "media" | "platform" | "group" | "container";
+/** Maximum distinct non-platform conditions one emitted clause can encode. */
+export declare const grammarMaxNonPlatformDepth = 5;
 /**
 * What the parser needs to know about registered modifiers. Implementations
 * project the user config (media keys, root themes, platform names) plus the
@@ -8,6 +10,12 @@ export type ModifierKind = "state" | "theme" | "media" | "platform" | "group" | 
 */
 export interface ModifierRegistryView {
 	get(name: string): ModifierKind | undefined;
+	/**
+	* Config-derived modifier trie lookup for authoring one canonical chain.
+	* Implementations that only parse values may omit it; tooling refuses to
+	* invent a completion vocabulary when it is absent.
+	*/
+	next?(modifiers: readonly string[]): readonly string[];
 }
 /** one `modifiers ":" payload` clause, modifiers in authored order */
 export interface ParsedClause {
