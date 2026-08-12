@@ -2016,10 +2016,39 @@ export type SafeAreaValueKeys =
  * (`bg="red hover:blue"`, `p="4 sm:6"`). `(string & {})` admits the broad
  * string without collapsing the token/literal unions, so autocomplete
  * survives (design record, "Types and editor tooling"). Candidate and
- * modifier validation is the compiler's and language service's job, never
- * an exhaustive template-literal union.
+ * modifier validation is the compiler's and language service's job — the
+ * clause arms below are bounded completion bait, never an exhaustive
+ * grammar.
  */
-export type FlatStyleValue<T> = T | (string & {})
+type ClauseModifierName = (MediaQueryKey & string) | CoreStateModifierName
+
+/** string-literal members of T — the finite vocabulary safe to expand */
+type FiniteString<T> = T extends string ? (string extends T ? never : T) : never
+
+/**
+ * Completion-bait arms for clause-bearing flat values. Entries are stepping
+ * stones the editor can offer (`gtMd:`, `hover:4`, `4 gtMd:`), not a
+ * grammar: `(string & {})` keeps every string legal and payloads past the
+ * first clause stay untyped. Expanding payload arms with the token set is
+ * only safe for small vocabularies — color-scale sets (~1k members)
+ * multiply into ~40k-member arms that hit TS2590 and megabyte completion
+ * payloads, so color props take the prefix-only form
+ * (measurements: plans/v3-type-performance.md, "Modifier-clause template
+ * arms").
+ */
+type FlatClauseBait<T, PrefixOnly extends boolean> =
+  | `${ClauseModifierName}:`
+  | `${ClauseModifierName}:${ClauseModifierName}:`
+  | (PrefixOnly extends true
+      ? never
+      :
+          | `${ClauseModifierName}:${FiniteString<T>}`
+          | `${FiniteString<T>} ${ClauseModifierName}:`)
+
+export type FlatStyleValue<T, PrefixOnlyBait extends boolean = false> =
+  | T
+  | FlatClauseBait<T, PrefixOnlyBait>
+  | (string & {})
 
 export type WithThemeValues<T extends object> = {
   [K in keyof T]:
@@ -2027,7 +2056,10 @@ export type WithThemeValues<T extends object> = {
         ? K extends keyof ExtraBaseProps
           ? T[K]
           : FlatStyleValue<T[K] | 'unset'>
-        : FlatStyleValue<GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'>)
+        : FlatStyleValue<
+            GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset',
+            K extends ColorKeys ? true : false
+          >)
     | (K extends SafeAreaValueKeys ? 'safe' : never)
 }
 

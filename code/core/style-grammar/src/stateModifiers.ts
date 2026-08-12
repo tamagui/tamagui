@@ -1,4 +1,4 @@
-export const coreStateModifierNames: readonly string[] = Object.freeze([
+export const coreStateModifierNames = Object.freeze([
   'hover',
   'press',
   'focus',
@@ -7,7 +7,9 @@ export const coreStateModifierNames: readonly string[] = Object.freeze([
   'disabled',
   'enter',
   'exit',
-])
+] as const)
+
+export type CoreStateModifierName = (typeof coreStateModifierNames)[number]
 
 export const modifierAliases: Readonly<Record<string, string>> = Object.freeze({
   active: 'press',
