@@ -159,6 +159,11 @@ function getFullySpecifiedModuleSpecifier(
   originalModuleSpecifier,
   { filePath, options }
 ) {
+  if (
+    !originalModuleSpecifier.startsWith('.') &&
+    !originalModuleSpecifier.startsWith('/')
+  )
+    return null
   const fileExt = (0, import_node_path.extname)(filePath),
     fileDir = (0, import_node_path.dirname)(filePath),
     isDirectory = isLocalDirectory(

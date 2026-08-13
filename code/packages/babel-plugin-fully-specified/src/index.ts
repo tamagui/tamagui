@@ -204,6 +204,19 @@ function getFullySpecifiedModuleSpecifier(
     options: FullySpecifiedOptions
   }
 ): string | null {
+  // bare package specifiers (e.g. `tamagui`, `react`) must never be rewritten:
+  // appending an extension produces an unresolvable package path. only
+  // relative/absolute specifiers are eligible (mirrors the guard in
+  // ./commonjs.ts). without this, a bare import that collides with a local
+  // sibling file of the same basename (e.g. `src/tamagui.ts` next to a file
+  // doing `import ... from 'tamagui'`) gets rewritten to `tamagui.mjs`.
+  if (
+    !originalModuleSpecifier.startsWith('.') &&
+    !originalModuleSpecifier.startsWith('/')
+  ) {
+    return null
+  }
+
   const fileExt = extname(filePath)
   const fileDir = dirname(filePath)
 

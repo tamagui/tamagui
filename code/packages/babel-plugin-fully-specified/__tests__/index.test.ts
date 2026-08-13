@@ -100,6 +100,27 @@ describe('local re-exports', () => {
   })
 })
 
+describe('bare package specifiers', () => {
+  test('bare import is never rewritten', () => {
+    const example = "import { createTamagui } from 'tamagui'"
+    expect(getTransformResult(example)?.code).toBe(
+      "import { createTamagui } from 'tamagui';"
+    )
+  })
+
+  test('bare re-export is never rewritten', () => {
+    const example = "export * from 'tamagui'"
+    expect(getTransformResult(example)?.code).toBe("export * from 'tamagui';")
+  })
+
+  test('bare dynamic import() is never rewritten', () => {
+    const example = "const tamagui = await import('tamagui')"
+    expect(getTransformResult(example)?.code).toBe(
+      "const tamagui = await import('tamagui');"
+    )
+  })
+})
+
 describe('transforming actual files', () => {
   test('multiple extensions exists', () => {
     const { code } =
@@ -123,6 +144,20 @@ describe('transforming actual files', () => {
       ) || {}
 
     expect(code).toBe('export * from "./modules/tamagui.dev.config.mjs";')
+  })
+
+  test('bare specifier colliding with a local sibling file is not rewritten', () => {
+    const { code } =
+      transformFileSync(
+        path.join(__dirname, 'fixtures', 'bare-package-collision', 'test.mjs'),
+        getTransformOptions({
+          pluginOptions: { ensureFileExists: true },
+        })
+      ) || {}
+
+    expect(code).toBe(
+      ["import { config } from 'tamagui';", 'export * from "./tamagui.mjs";'].join('\n')
+    )
   })
 
   test('native output extension resolves native sibling files', () => {
