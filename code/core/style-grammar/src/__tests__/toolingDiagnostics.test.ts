@@ -262,11 +262,11 @@ describe('tooling diagnostics', () => {
     expect(completeStyleValueAtCursor('bg', 'red hover:', 10, options)).toMatchObject({
       replaceStart: 10,
       replaceLength: 0,
-      completions: expect.arrayContaining([
-        { value: 'blue', kind: 'configured' },
-        { value: 'press', kind: 'modifier', insertText: 'press:' },
-      ]),
+      completions: expect.arrayContaining([{ value: 'blue', kind: 'configured' }]),
     })
+    expect(
+      completeStyleValueAtCursor('bg', 'red hover:', 10, options)?.completions
+    ).not.toEqual(expect.arrayContaining([expect.objectContaining({ kind: 'modifier' })]))
     expect(completeStyleValueAtCursor('bg', 'red sm:h', 8, options)).toMatchObject({
       replaceStart: 7,
       replaceLength: 1,
@@ -322,13 +322,10 @@ describe('tooling diagnostics', () => {
     expect(deepChain).toMatchObject({
       replaceStart: 24,
       replaceLength: 0,
-      completions: expect.arrayContaining([
-        { value: '4', kind: 'configured' },
-        { value: 'press', kind: 'modifier', insertText: 'press:' },
-      ]),
+      completions: expect.arrayContaining([{ value: '4', kind: 'configured' }]),
     })
-    expect(deepChain?.completions.map((entry) => entry.value)).not.toEqual(
-      expect.arrayContaining(['web', 'dark', '@sm', 'sm', 'hover', 'group-hover'])
+    expect(deepChain?.completions.filter((entry) => entry.kind === 'modifier')).toEqual(
+      []
     )
 
     expect(

@@ -11,6 +11,10 @@ function activate(context) {
           if (requesting) return
           requesting = true
           try {
+            // let VS Code's TypeScript extension synchronize the just-authored
+            // colon before asking its provider for the delegated result
+            await new Promise((resolve) => setTimeout(resolve, 0))
+            if (token.isCancellationRequested) return
             const result = await vscode.commands.executeCommand(
               'vscode.executeCompletionItemProvider',
               document.uri,

@@ -110,12 +110,8 @@ describe('@tamagui/language-service', () => {
 
     expect(namesAt('bg=""')).toEqual(['blue', 'surface'])
     expect(fixture.baseCompletionCalls()).toBe(0)
-    expect(namesAt('bg="blue hover:"')).toEqual(
-      expect.arrayContaining(['blue', 'surface', 'press'])
-    )
-    expect(namesAt('bg="blue hover:b"')).toEqual(
-      expect.arrayContaining(['blue', 'surface', 'press'])
-    )
+    expect(namesAt('bg="blue hover:"')).toEqual(['blue', 'surface'])
+    expect(namesAt('bg="blue hover:b"')).toEqual(['blue', 'surface'])
     expect(namesAt('bg="blue "')).toEqual(
       expect.arrayContaining(['@sm', 'dark', 'group-hover', 'hover', 'sm'])
     )
@@ -192,19 +188,13 @@ describe('@tamagui/language-service', () => {
             length: 0,
           },
         }),
-        expect.objectContaining({ name: 'press', insertText: 'press:' }),
       ])
     )
-    expect(deepChainEntries.map((entry) => entry.name)).not.toEqual(
-      expect.arrayContaining(['web', 'dark', '@sm', 'sm', 'hover', 'group-hover'])
-    )
     expect(
-      deepChainEntries
-        .find((entry) => entry.name === 'press')!
-        .sortText.localeCompare(
-          deepChainEntries.find((entry) => entry.name === '4')!.sortText
-        )
-    ).toBeLessThan(0)
+      deepChainEntries.filter((entry) =>
+        entry.labelDetails?.description?.endsWith(' modifier')
+      )
+    ).toEqual([])
     expect(namesAt('padding="4 sm:8 "')).toEqual(
       expect.arrayContaining(['web', 'dark', '@sm', 'sm', 'hover'])
     )

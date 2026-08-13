@@ -292,9 +292,8 @@ export function createModifierRegistry(
         if (node.next) return node.next
 
         const used = new Set<string>()
+        const usedKinds = new Set<ModifierKind>()
         let highestOrder = -1
-        let hasPlatform = false
-        let hasTheme = false
         let nonPlatformDepth = 0
 
         for (const canonical of node.modifiers) {
@@ -304,29 +303,17 @@ export function createModifierRegistry(
           }
           used.add(canonical)
           const kind = get(canonical)
-          if (!kind || kindOrder[kind] < highestOrder) {
+          if (!kind || usedKinds.has(kind) || kindOrder[kind] < highestOrder) {
             node.next = []
             return node.next
           }
+          usedKinds.add(kind)
           highestOrder = kindOrder[kind]
-          if (kind === 'platform') {
-            if (hasPlatform) {
-              node.next = []
-              return node.next
-            }
-            hasPlatform = true
-          } else {
+          if (kind !== 'platform') {
             nonPlatformDepth++
             if (nonPlatformDepth > grammarMaxNonPlatformDepth) {
               node.next = []
               return node.next
-            }
-            if (kind === 'theme') {
-              if (hasTheme) {
-                node.next = []
-                return node.next
-              }
-              hasTheme = true
             }
           }
         }
@@ -338,8 +325,7 @@ export function createModifierRegistry(
           if (used.has(canonical)) continue
           const kind = get(name)
           if (!kind || kindOrder[kind] < highestOrder) continue
-          if (kind === 'platform' && hasPlatform) continue
-          if (kind === 'theme' && hasTheme) continue
+          if (usedKinds.has(kind)) continue
           if (kind !== 'platform' && nonPlatformDepth >= grammarMaxNonPlatformDepth) {
             continue
           }

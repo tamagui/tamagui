@@ -79,6 +79,9 @@ canonical authoring order is platform, root theme, container, viewport media,
 group state, then subject state. A trie node omits conditions already used,
 aliases of used conditions, additional platforms or root themes, earlier
 categories, and conditions beyond the emitter's five non-platform limit.
+Each category occupies one slot in a clause. For example, `hover:` offers
+payload values and never another subject state such as `press:`, while `sm:`
+never offers another viewport-media modifier.
 Runtime parsing remains order-insensitive for compatibility, but tooling only
 authors the canonical shape. A completed payload resets traversal, so every new
 space-delimited clause starts from the trie root at arbitrary program length.

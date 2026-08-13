@@ -297,25 +297,29 @@ describe('config-derived modifier trie', () => {
     expect(platform).not.toEqual(expect.arrayContaining(['web', 'native', 'ios']))
 
     const chain = full.registry.next!(['web', 'dark', '@sm', 'sm', 'hover'])
-    expect(chain).toEqual(expect.arrayContaining(['press', 'focus']))
-    expect(chain).not.toEqual(
-      expect.arrayContaining(['web', 'dark', '@sm', 'sm', 'hover', 'group-hover'])
-    )
+    expect(chain).toEqual([])
   })
 
-  test('omits aliases, extra themes, and conditions beyond the emitter depth', () => {
+  test('omits aliases and every category already used by the chain', () => {
     expect(full.registry.next!(['press'])).not.toEqual(
       expect.arrayContaining(['press', 'active'])
     )
     expect(full.registry.next!(['dark'])).not.toContain('light')
-    expect(full.registry.next!(['dark', '@sm', 'sm', 'md', 'lg'])).toEqual(
-      expect.not.arrayContaining(['hover'])
+    expect(full.registry.next!(['sm'])).not.toEqual(expect.arrayContaining(['md', 'lg']))
+    expect(full.registry.next!(['@sm'])).not.toEqual(
+      expect.arrayContaining(['@md', '@lg'])
     )
+    expect(full.registry.next!(['group-hover'])).not.toContain('group-press')
+    expect(full.registry.next!(['dark', '@sm', 'sm', 'group-hover', 'hover'])).toEqual([])
   })
 
   test('stops an invalid authored chain instead of recovering below it', () => {
     expect(full.registry.next!(['hover', 'web'])).toEqual([])
     expect(full.registry.next!(['hover', 'hover'])).toEqual([])
+    expect(full.registry.next!(['hover', 'press'])).toEqual([])
+    expect(full.registry.next!(['sm', 'md'])).toEqual([])
+    expect(full.registry.next!(['@sm', '@md'])).toEqual([])
+    expect(full.registry.next!(['group-hover', 'group-press'])).toEqual([])
     expect(full.registry.next!(['dark', 'light'])).toEqual([])
     expect(full.registry.next!(['web', 'ios'])).toEqual([])
     expect(full.registry.next!(['not-registered'])).toEqual([])
