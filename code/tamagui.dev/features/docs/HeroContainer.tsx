@@ -46,8 +46,7 @@ export function HeroContainer({
   const contents = (
     <YStack
       className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
-      borderColor="border-color"
-      borderWidth={0.5}
+      border="0.5px solid border-color"
       mt="4"
       mb="4"
       position="relative"
