@@ -84,6 +84,19 @@ export interface ResolvePayloadOptions {
    * z-index). Off means bare numbers are always literal.
    */
   resolveNumbers?: boolean
+  /**
+   * tooling hook: receives every top-level candidate the resolver considered —
+   * idents and hex colors always, bare numbers when `resolveNumbers` is set —
+   * with its payload offsets and resolution. Skipped positions (strings, url()
+   * bodies, function names, custom properties) never report. The runtime path
+   * never passes this.
+   */
+  onCandidate?(
+    start: number,
+    end: number,
+    name: string,
+    resolved: PayloadReference | undefined
+  ): void
 }
 
 // CSS-wide keywords are case-insensitive, and the shared set spells one of them
@@ -164,7 +177,7 @@ export function resolvePayload(
   payload: string,
   options: ResolvePayloadOptions
 ): ResolvedPayload {
-  const { lookup, resolveNumbers = false } = options
+  const { lookup, resolveNumbers = false, onCandidate } = options
   const length = payload.length
 
   const segments: PayloadSegment[] = []
@@ -203,8 +216,10 @@ export function resolvePayload(
 
     // a hex color's digits are not a number token
     if (code === CHAR_HASH) {
+      const start = index
       index++
       while (index < length && isIdentPart(payload.charCodeAt(index))) index++
+      onCandidate?.(start, index, payload.slice(start, index), undefined)
       continue
     }
 
@@ -250,17 +265,17 @@ export function resolvePayload(
             name,
             opacity: Number(payload.slice(end + 1, suffix.end)),
           })
+          onCandidate?.(start, suffix.end, name, { ...resolved })
           index = suffix.end
           continue
         }
-        pushReference(
-          start,
-          suffix.end,
+        const reference =
           // 100% is the identity, so it never reaches a serializer
           suffix.percentage === 100
             ? { ...resolved }
             : { ...resolved, opacity: suffix.percentage }
-        )
+        pushReference(start, suffix.end, reference)
+        onCandidate?.(start, suffix.end, name, reference)
         index = suffix.end
         continue
       }
@@ -278,6 +293,7 @@ export function resolvePayload(
           name,
           opacity: suffix.percentage,
         })
+        onCandidate?.(start, end, name, resolved ? { ...resolved } : undefined)
         index = suffix.end
         continue
       }
@@ -285,11 +301,14 @@ export function resolvePayload(
       // no suffix, or a malformed one after an ident that is not a color token,
       // which is ordinary CSS such as `font: bold small/1.2 serif`
       if (!resolved) {
+        onCandidate?.(start, end, name, undefined)
         index = end
         continue
       }
 
-      pushReference(start, end, { ...resolved })
+      const reference = { ...resolved }
+      pushReference(start, end, reference)
+      onCandidate?.(start, end, name, reference)
       index = end
       continue
     }
@@ -341,7 +360,13 @@ export function resolvePayload(
 
       const name = payload.slice(start, numberEnd)
       const resolved = lookup(name)
-      if (resolved) pushReference(start, numberEnd, { ...resolved })
+      if (resolved) {
+        const reference = { ...resolved }
+        pushReference(start, numberEnd, reference)
+        onCandidate?.(start, numberEnd, name, reference)
+      } else {
+        onCandidate?.(start, numberEnd, name, undefined)
+      }
       index = numberEnd
       continue
     }

@@ -1,6 +1,7 @@
 export * from './runtime'
 export * from './clauseCapability'
 export * from './table'
+export * from './toolingAnnotations'
 export * from './toolingDiagnostics'
 export * from './toolingRegistry'
 export * from './transitionLegacy'

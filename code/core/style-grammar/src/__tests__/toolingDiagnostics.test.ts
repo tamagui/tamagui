@@ -73,6 +73,8 @@ describe('tooling diagnostics', () => {
       {
         code: 'unregistered-modifier',
         index: 4,
+        start: 4,
+        end: 8,
         message: '"hver" is not a registered modifier',
       },
     ])
@@ -94,13 +96,17 @@ describe('tooling diagnostics', () => {
       {
         code: 'v6-theme-name-replaced',
         index: 0,
+        start: 0,
+        end: 15,
         candidate: 'backgroundHover',
         replacement: 'background-hover',
         message: '"backgroundHover" is not a v6 built-in name; use "background-hover"',
       },
       {
         code: 'v6-theme-name-removed',
-        index: 0,
+        index: 22,
+        start: 22,
+        end: 38,
         candidate: 'backgroundActive',
         message: '"backgroundActive" was removed from the v6 built-in theme vocabulary',
       },

@@ -34,6 +34,7 @@
     "src/table.ts",
     "src/textDecorationFamily.ts",
     "src/tooling.ts",
+    "src/toolingAnnotations.ts",
     "src/toolingDiagnostics.ts",
     "src/toolingRegistry.ts",
     "src/transformFamily.ts",

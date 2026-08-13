@@ -1,5 +1,9 @@
+import type { TokenCategory } from './registry'
+
 export interface CandidateContribution {
   property: string
+  /** the token category this contribution binds through, when config-derived */
+  tokenCategory?: TokenCategory
 }
 
 export interface CandidatePropertyMismatch {

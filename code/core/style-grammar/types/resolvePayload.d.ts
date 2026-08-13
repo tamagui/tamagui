@@ -41,6 +41,14 @@ export interface ResolvePayloadOptions {
 	* z-index). Off means bare numbers are always literal.
 	*/
 	resolveNumbers?: boolean;
+	/**
+	* tooling hook: receives every top-level candidate the resolver considered —
+	* idents and hex colors always, bare numbers when `resolveNumbers` is set —
+	* with its payload offsets and resolution. Skipped positions (strings, url()
+	* bodies, function names, custom properties) never report. The runtime path
+	* never passes this.
+	*/
+	onCandidate?(start: number, end: number, name: string, resolved: PayloadReference | undefined): void;
 }
 export declare function resolvePayload(payload: string, options: ResolvePayloadOptions): ResolvedPayload;
 export type ColorOpacitySuffix = {
