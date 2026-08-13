@@ -1,7 +1,7 @@
 {
   "name": "tamagui-language-service",
   "displayName": "Tamagui Language Service",
-  "description": "VS Code activation bridge for Tamagui flat value completions.",
+  "description": "Flat value completions, diagnostics, hover, and inline color swatches for Tamagui.",
   "version": "0.0.1",
   "private": true,
   "publisher": "tamagui",
@@ -26,5 +26,17 @@
     "LICENSE",
     "README.md"
   ],
-  "main": "./extension.cjs"
+  "main": "./extension.cjs",
+  "contributes": {
+    "typescriptServerPlugins": [
+      {
+        "name": "@tamagui/language-service",
+        "enableForWorkspaceTypeScriptVersions": true
+      }
+    ]
+  },
+  "dependencies": {
+    "@tamagui/language-service": "workspace:*",
+    "sucrase": "3.35.1"
+  }
 }

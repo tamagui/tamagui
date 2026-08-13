@@ -48,7 +48,8 @@
     "prompts": "2.1.0",
     "ts-morph": "^28.0.0",
     "typescript": "~5.9.2",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "@tamagui/language-service": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

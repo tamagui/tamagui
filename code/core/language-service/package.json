@@ -21,6 +21,36 @@
       "import": "./dist/esm/host.mjs",
       "default": "./dist/esm/host.mjs"
     },
+    "./core": {
+      "types": "./types/core.d.ts",
+      "import": "./dist/esm/core.mjs",
+      "require": "./dist/cjs/core.cjs",
+      "default": "./dist/esm/core.mjs"
+    },
+    "./document": {
+      "types": "./types/document.d.ts",
+      "import": "./dist/esm/document.mjs",
+      "require": "./dist/cjs/document.cjs",
+      "default": "./dist/esm/document.mjs"
+    },
+    "./extract-sucrase": {
+      "types": "./types/extract-sucrase.d.ts",
+      "import": "./dist/esm/extract-sucrase.mjs",
+      "require": "./dist/cjs/extract-sucrase.cjs",
+      "default": "./dist/esm/extract-sucrase.mjs"
+    },
+    "./extract-estree": {
+      "types": "./types/extract-estree.d.ts",
+      "import": "./dist/esm/extract-estree.mjs",
+      "require": "./dist/cjs/extract-estree.cjs",
+      "default": "./dist/esm/extract-estree.mjs"
+    },
+    "./check": {
+      "types": "./types/check.d.ts",
+      "import": "./dist/esm/check.mjs",
+      "require": "./dist/cjs/check.cjs",
+      "default": "./dist/esm/check.mjs"
+    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -37,13 +67,16 @@
     "test:web": "bun run build && vitest --run test"
   },
   "dependencies": {
-    "@tamagui/style-grammar": "workspace:*"
+    "@tamagui/normalize-css-color": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*",
+    "sucrase": "3.35.1"
   },
   "peerDependencies": {
     "typescript": ">=5.7"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
+    "oxc-parser": "^0.112.0",
     "typescript": "~5.9.2",
     "vitest": "4.0.4"
   }

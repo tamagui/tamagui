@@ -7,20 +7,41 @@ process.on('exit', disposeAll)
 
 const COMMAND_MAP = {
   check: {
-    description: `Checks for inconsistent versions, duplicate installs, lockfile issues, and missing config.`,
+    description: `Checks flat style values, inconsistent versions, duplicate installs, lockfile issues, and missing config.`,
     shorthands: [],
     flags: {
       '--help': Boolean,
       '--debug': Boolean,
       '--verbose': Boolean,
+      '--styles-only': Boolean,
+      '--deps-only': Boolean,
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
-      const { checkDeps } = require('@tamagui/static/checkDeps')
-      await checkDeps(options.paths.root)
+      if (!flags['--styles-only']) {
+        const { checkDeps } = require('@tamagui/static/checkDeps')
+        await checkDeps(options.paths.root)
+      }
+      if (flags['--deps-only']) return
+      const { checkStyleFiles, formatCheckResults, MissingConfigArtifactError } =
+        require('@tamagui/language-service/check') as typeof import('@tamagui/language-service/check')
+      try {
+        const result = checkStyleFiles({
+          root: options.paths.root,
+          configPath: options.paths.conf,
+        })
+        console.info(formatCheckResults(result))
+        if (result.diagnosticCount > 0) process.exitCode = 1
+      } catch (error) {
+        if (error instanceof MissingConfigArtifactError) {
+          console.warn(chalk.yellow(`skipping flat value check: ${error.message}`))
+          return
+        }
+        throw error
+      }
     },
   },
 

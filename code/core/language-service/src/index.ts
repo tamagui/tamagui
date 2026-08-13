@@ -1,22 +1,16 @@
 import { isAbsolute, resolve } from 'node:path'
 
-import {
-  completeStyleValueAtCursor,
-  createCandidatePropertyVocabulary,
-  createGrammarConfigViewFromSerializedConfig,
-  createModifierRegistry,
-  grammarEntries,
-  legacyPartComposite,
-  programEligibility,
-  stateModifierNames,
-  type DiagnoseStyleValueOptions,
-  type ModifierKind,
-  type SerializedGrammarSourceConfig,
-} from '@tamagui/style-grammar/tooling'
 import type ts from 'typescript'
+import {
+  completionSortText,
+  createStyleTooling,
+  type SerializedConfigFile,
+  type StyleTooling,
+} from './core'
 import { resolveTamaguiHost } from './host'
 
 const completionSource = '@tamagui/language-service'
+const diagnosticCode = 78711
 const defaultConfigPath = '.tamagui/tamagui.config.json'
 const flatStyledModules: ReadonlySet<string> = new Set([
   'tamagui',
@@ -25,68 +19,33 @@ const flatStyledModules: ReadonlySet<string> = new Set([
   '@tamagui/ui',
   '@tamagui/web',
 ])
-const stateModifierSort = new Map(
-  stateModifierNames.map((name, index) => [name, index] as const)
-)
-const modifierKindSort: Readonly<Record<ModifierKind, string>> = {
-  state: '00',
-  group: '01',
-  media: '02',
-  container: '03',
-  theme: '04',
-  platform: '05',
-}
 
 export interface TamaguiLanguageServicePluginConfig {
   /** Path to the config JSON emitted by the Tamagui compiler. */
   configPath?: string
 }
 
-type SerializedConfigFile = {
-  tamaguiConfig?: SerializedGrammarSourceConfig
-  tamaguiConfigMetadata?: unknown
-}
-
-type CompletionState = {
-  options: DiagnoseStyleValueOptions
-  styleProps: ReadonlySet<string>
-}
-
 type ImportedBindings = {
   styled: ReadonlySet<string>
 }
 
-function loadCompletionState(
+type LiteralSite = {
+  property: string
+  /** cooked value, identical to its authored source text */
+  value: string
+  /** file offset of the value's first character */
+  contentStart: number
+  literal: ts.StringLiteralLike
+}
+
+function loadTooling(
   info: ts.server.PluginCreateInfo,
   configPath: string
-): CompletionState | null {
+): StyleTooling | null {
   const contents = info.serverHost.readFile(configPath)
   if (contents === undefined) return null
-
   try {
-    const serialized = JSON.parse(contents) as SerializedConfigFile
-    if (!serialized.tamaguiConfig) return null
-    const config = createGrammarConfigViewFromSerializedConfig(
-      serialized.tamaguiConfig,
-      serialized.tamaguiConfigMetadata
-    )
-    const registry = createModifierRegistry(config).registry
-    const styleProps = new Set([
-      ...grammarEntries.map((entry) => entry.prop),
-      ...Object.keys(legacyPartComposite),
-    ])
-    for (const shorthand in config.shorthands) {
-      styleProps.add(shorthand)
-      styleProps.add(config.shorthands[shorthand])
-    }
-    return {
-      options: {
-        config,
-        registry,
-        candidates: createCandidatePropertyVocabulary(config),
-      },
-      styleProps,
-    }
+    return createStyleTooling(JSON.parse(contents) as SerializedConfigFile)
   } catch {
     return null
   }
@@ -151,7 +110,7 @@ function propertyName(typescript: typeof ts, name: ts.PropertyName): string | nu
 function completionProperty(
   typescript: typeof ts,
   literal: ts.StringLiteralLike,
-  state: CompletionState,
+  tooling: StyleTooling,
   checker: ts.TypeChecker,
   bindings: ImportedBindings
 ): { property: string } | null {
@@ -161,7 +120,7 @@ function completionProperty(
   if (typescript.isJsxAttribute(parent)) {
     if (!typescript.isIdentifier(parent.name)) return null
     const property = parent.name.text
-    if (!state.styleProps.has(property)) return null
+    if (!tooling.styleProps.has(property)) return null
     const opening = parent.parent.parent
     if (!typescript.isJsxOpeningLikeElement(opening)) return null
     const host = resolveTamaguiHost(checker, opening.tagName)
@@ -171,7 +130,7 @@ function completionProperty(
 
   if (!typescript.isPropertyAssignment(parent)) return null
   const property = propertyName(typescript, parent.name)
-  if (!property || !state.styleProps.has(property)) return null
+  if (!property || !tooling.styleProps.has(property)) return null
 
   let current: ts.Node = parent
   while (current.parent && !typescript.isCallExpression(current.parent)) {
@@ -192,6 +151,56 @@ function completionProperty(
   return { property }
 }
 
+/**
+ * The literal as a style value site, or null when it is not one: wrong parent
+ * shape, not a style prop, not a tamagui host, or authored with escapes that
+ * cook differently than they read (TypeScript exposes cooked values but no
+ * cooked-to-source offset map, so exact-raw literals only).
+ */
+function siteForLiteral(
+  typescript: typeof ts,
+  sourceFile: ts.SourceFile,
+  literal: ts.StringLiteralLike,
+  tooling: StyleTooling,
+  checker: ts.TypeChecker,
+  bindings: ImportedBindings
+): LiteralSite | null {
+  const site = completionProperty(typescript, literal, tooling, checker, bindings)
+  if (!site) return null
+  const contentStart = literal.getStart(sourceFile) + 1
+  const contentEnd = literal.getEnd() - 1
+  const sourceInput = sourceFile.text.slice(contentStart, contentEnd)
+  if (literal.text !== sourceInput) return null
+  return { property: site.property, value: literal.text, contentStart, literal }
+}
+
+function collectLiteralSites(
+  typescript: typeof ts,
+  sourceFile: ts.SourceFile,
+  tooling: StyleTooling,
+  checker: ts.TypeChecker,
+  bindings: ImportedBindings
+): LiteralSite[] {
+  const sites: LiteralSite[] = []
+  const visit = (node: ts.Node): void => {
+    if (typescript.isStringLiteralLike(node)) {
+      const site = siteForLiteral(
+        typescript,
+        sourceFile,
+        node,
+        tooling,
+        checker,
+        bindings
+      )
+      if (site) sites.push(site)
+      return
+    }
+    typescript.forEachChild(node, visit)
+  }
+  visit(sourceFile)
+  return sites
+}
+
 function copyLanguageService(service: ts.LanguageService): ts.LanguageService {
   const proxy = Object.create(null) as ts.LanguageService
   for (const key of Object.keys(service) as Array<keyof ts.LanguageService>) {
@@ -209,9 +218,9 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
     const configPath = isAbsolute(configuredPath)
       ? configuredPath
       : resolve(info.project.getCurrentDirectory(), configuredPath)
-    let state = loadCompletionState(info, configPath)
+    let tooling = loadTooling(info, configPath)
     const watcher = info.serverHost.watchFile(configPath, () => {
-      state = loadCompletionState(info, configPath)
+      tooling = loadTooling(info, configPath)
     })
 
     const proxy = copyLanguageService(info.languageService)
@@ -221,8 +230,32 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
     const baseDetails = info.languageService.getCompletionEntryDetails.bind(
       info.languageService
     )
+    const baseSemanticDiagnostics = info.languageService.getSemanticDiagnostics.bind(
+      info.languageService
+    )
+    const baseQuickInfo = info.languageService.getQuickInfoAtPosition.bind(
+      info.languageService
+    )
     const baseDispose = info.languageService.dispose.bind(info.languageService)
     const bindingsBySourceFile = new WeakMap<ts.SourceFile, ImportedBindings>()
+
+    const fileContext = (
+      fileName: string
+    ): {
+      sourceFile: ts.SourceFile
+      checker: ts.TypeChecker
+      bindings: ImportedBindings
+    } | null => {
+      const program = info.languageService.getProgram()
+      const sourceFile = program?.getSourceFile(fileName)
+      if (!program || !sourceFile) return null
+      let bindings = bindingsBySourceFile.get(sourceFile)
+      if (!bindings) {
+        bindings = importedBindings(typescript, sourceFile)
+        bindingsBySourceFile.set(sourceFile, bindings)
+      }
+      return { sourceFile, checker: program.getTypeChecker(), bindings }
+    }
 
     proxy.getCompletionsAtPosition = (
       fileName,
@@ -232,44 +265,30 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
     ) => {
       const getBaseCompletions = () =>
         baseCompletions(fileName, position, options, formattingSettings)
-      if (!state) return getBaseCompletions()
-      const program = info.languageService.getProgram()
-      if (!program) return getBaseCompletions()
-      const sourceFile = program.getSourceFile(fileName)
-      if (!sourceFile) return getBaseCompletions()
+      if (!tooling) return getBaseCompletions()
+      const context = fileContext(fileName)
+      if (!context) return getBaseCompletions()
+      const { sourceFile, checker, bindings } = context
       const literal = findStringLiteralAtPosition(typescript, sourceFile, position)
       if (!literal) return getBaseCompletions()
-      const checker = program.getTypeChecker()
-      let bindings = bindingsBySourceFile.get(sourceFile)
-      if (!bindings) {
-        bindings = importedBindings(typescript, sourceFile)
-        bindingsBySourceFile.set(sourceFile, bindings)
-      }
-      const site = completionProperty(typescript, literal, state, checker, bindings)
+      const site = siteForLiteral(
+        typescript,
+        sourceFile,
+        literal,
+        tooling,
+        checker,
+        bindings
+      )
       if (!site) return getBaseCompletions()
-      const targetProperty =
-        state.options.config.shorthands?.[site.property] || site.property
-      if (programEligibility(targetProperty) === 'legacy-part') {
-        return getBaseCompletions()
-      }
 
-      const contentStart = literal.getStart(sourceFile) + 1
-      const contentEnd = literal.getEnd() - 1
-      const sourceInput = sourceFile.text.slice(contentStart, contentEnd)
-      const input = literal.text
-      // TypeScript exposes cooked literal values but not a cooked-to-source
-      // offset map. Decline escaped literals until it can replace their exact
-      // authored span without risking removal of a runtime clause.
-      if (input !== sourceInput) return getBaseCompletions()
-      const cursorCompletions = completeStyleValueAtCursor(
+      const cursorCompletions = tooling.completions(
         site.property,
-        input,
-        position - contentStart,
-        state.options
+        site.value,
+        position - site.contentStart
       )
       if (!cursorCompletions) return getBaseCompletions()
       const replacementSpan = {
-        start: contentStart + cursorCompletions.replaceStart,
+        start: site.contentStart + cursorCompletions.replaceStart,
         length: cursorCompletions.replaceLength,
       }
       const entries: ts.CompletionEntry[] = []
@@ -278,7 +297,7 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
         const insertText = completion.insertText || completion.value
         const modifierKind =
           completion.kind === 'modifier'
-            ? state.options.registry.get(completion.value)
+            ? tooling.modifierKind(completion.value)
             : undefined
         if (completion.kind === 'keyword') {
           contextualType ||= checker.getContextualType(literal)
@@ -296,13 +315,7 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
           name: completion.value,
           kind: typescript.ScriptElementKind.string,
           kindModifiers: '',
-          sortText: modifierKind
-            ? `${modifierKindSort[modifierKind]}:${
-                modifierKind === 'state'
-                  ? `${String(stateModifierSort.get(completion.value) ?? 999).padStart(3, '0')}:`
-                  : ''
-              }${completion.value}`
-            : `${completion.kind === 'configured' ? '10' : '11'}:${completion.value}`,
+          sortText: completionSortText(completion, modifierKind),
           insertText,
           replacementSpan,
           source: completionSource,
@@ -367,6 +380,65 @@ const init: ts.server.PluginModuleFactory = ({ typescript }) => ({
         preferences,
         data
       )
+    }
+
+    proxy.getSemanticDiagnostics = (fileName) => {
+      const diagnostics = [...baseSemanticDiagnostics(fileName)]
+      if (!tooling) return diagnostics
+      const context = fileContext(fileName)
+      if (!context) return diagnostics
+      const { sourceFile, checker, bindings } = context
+      for (const site of collectLiteralSites(
+        typescript,
+        sourceFile,
+        tooling,
+        checker,
+        bindings
+      )) {
+        for (const diagnostic of tooling.diagnostics(site.property, site.value)) {
+          diagnostics.push({
+            file: sourceFile,
+            start: site.contentStart + diagnostic.start,
+            length: Math.max(1, diagnostic.end - diagnostic.start),
+            messageText: diagnostic.message,
+            category: typescript.DiagnosticCategory.Error,
+            code: diagnosticCode,
+            source: completionSource,
+          })
+        }
+      }
+      return diagnostics
+    }
+
+    proxy.getQuickInfoAtPosition = (fileName, position) => {
+      const getBaseQuickInfo = () => baseQuickInfo(fileName, position)
+      if (!tooling) return getBaseQuickInfo()
+      const context = fileContext(fileName)
+      if (!context) return getBaseQuickInfo()
+      const { sourceFile, checker, bindings } = context
+      const literal = findStringLiteralAtPosition(typescript, sourceFile, position)
+      if (!literal) return getBaseQuickInfo()
+      const site = siteForLiteral(
+        typescript,
+        sourceFile,
+        literal,
+        tooling,
+        checker,
+        bindings
+      )
+      if (!site) return getBaseQuickInfo()
+      const hover = tooling.hover(site.property, site.value, position - site.contentStart)
+      if (!hover) return getBaseQuickInfo()
+      return {
+        kind: typescript.ScriptElementKind.string,
+        kindModifiers: '',
+        textSpan: {
+          start: site.contentStart + hover.start,
+          length: hover.end - hover.start,
+        },
+        displayParts: [{ text: hover.text, kind: 'stringLiteral' }],
+        documentation: [{ text: hover.markdown, kind: 'text' }],
+      }
     }
 
     proxy.dispose = () => {

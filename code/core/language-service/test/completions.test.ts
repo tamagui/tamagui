@@ -8,8 +8,10 @@ import { describe, expect, test } from 'vitest'
 
 const fixtureDirectory = join(dirname(fileURLToPath(import.meta.url)), 'fixtures')
 const sourcePath = join(fixtureDirectory, 'component.tsx')
+const diagnosticsPath = join(fixtureDirectory, 'diagnostics.tsx')
 const declarationsPath = join(fixtureDirectory, 'tamagui.d.ts')
 const source = readFileSync(sourcePath, 'utf8')
+const diagnosticsSource = readFileSync(diagnosticsPath, 'utf8')
 const configPath = join(fixtureDirectory, 'tamagui.config.json')
 const require = createRequire(import.meta.url)
 const init = require('@tamagui/language-service') as ts.server.PluginModuleFactory
@@ -19,6 +21,7 @@ function createService() {
   let baseCompletionCalls = 0
   const files = new Map([
     [sourcePath, { version: 0, text: source }],
+    [diagnosticsPath, { version: 0, text: diagnosticsSource }],
     [declarationsPath, { version: 0, text: readFileSync(declarationsPath, 'utf8') }],
   ])
   const host: ts.LanguageServiceHost = {
@@ -233,5 +236,71 @@ describe('@tamagui/language-service', () => {
 
     fixture.service.dispose()
     expect(fixture.watchWasClosed()).toBe(true)
+  })
+
+  test('reports flat value diagnostics with exact spans', () => {
+    const fixture = createService()
+    const diagnostics = fixture.service
+      .getSemanticDiagnostics(diagnosticsPath)
+      .filter((diagnostic) => diagnostic.source === '@tamagui/language-service')
+
+    const spans = diagnostics.map((diagnostic) => ({
+      code: diagnostic.code,
+      message: diagnostic.messageText,
+      text: diagnosticsSource.slice(
+        diagnostic.start!,
+        diagnostic.start! + diagnostic.length!
+      ),
+    }))
+
+    expect(spans).toEqual([
+      {
+        code: 78711,
+        message: '"hver" is not a registered modifier',
+        text: 'hver',
+      },
+      {
+        code: 78711,
+        message:
+          '"blue/150" is not an opacity suffix: it must be an integer percentage from 0 through 100',
+        text: 'blue/150',
+      },
+      {
+        code: 78711,
+        message: 'the "hover:" clause has no value',
+        text: ':',
+      },
+      {
+        code: 78711,
+        message:
+          '"blue" contributes to "backgroundColor", "borderColor", "borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor", "color", not "padding"',
+        text: 'blue',
+      },
+    ])
+    fixture.service.dispose()
+  })
+
+  test('hovers tokens, theme values, and modifiers with resolved config values', () => {
+    const fixture = createService()
+    const hoverAt = (needle: string, offsetInNeedle: number) => {
+      const position = source.indexOf(needle) + offsetInNeedle
+      return fixture.service.getQuickInfoAtPosition(sourcePath, position)
+    }
+
+    const token = hoverAt('bg="blue hover:"', 5)
+    expect(token?.documentation?.[0]?.text).toContain('#0000ff')
+    expect(
+      source.slice(token!.textSpan.start, token!.textSpan.start + token!.textSpan.length)
+    ).toBe('blue')
+
+    const modifier = hoverAt('padding="4 sm:8 "', 12)
+    expect(modifier?.documentation?.[0]?.text).toContain('media modifier')
+    expect(modifier?.documentation?.[0]?.text).toContain('maxWidth')
+
+    const space = hoverAt('padding="4 sm:8 "', 9)
+    expect(space?.documentation?.[0]?.text).toContain('space token')
+    expect(space?.documentation?.[0]?.text).toContain('16')
+
+    fixture.service.dispose()
   })
 })

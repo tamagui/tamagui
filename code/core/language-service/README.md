@@ -93,3 +93,48 @@ It does not carry a fallback vocabulary. A missing or invalid generated config
 produces no Tamagui completions, so the editor cannot suggest names the runtime
 config does not define. The generated config is watched and its vocabulary is
 reloaded without restarting tsserver.
+
+## Package layout: one engine, many hosts
+
+`@tamagui/style-grammar` owns what every value MEANS. This package projects
+that engine into editor- and checker-shaped results, and each host stays a
+thin adapter:
+
+| entry | runs in | provides |
+| --- | --- | --- |
+| `@tamagui/language-service` | tsserver | completions, diagnostics, hover (quick info) |
+| `@tamagui/language-service/core` | anywhere (browser-safe) | `createStyleTooling(configJson)`: completions, diagnostics, annotations, hover, color swatches for one prop/value |
+| `@tamagui/language-service/document` | anywhere (browser-safe) | `createDocumentStyleTooling(tooling, extract)`: the same, mapped to file offsets |
+| `@tamagui/language-service/extract-sucrase` | anywhere (browser-safe) | token-stream site extraction; inject your own sucrase `parse`/`TokenType` so bundles never duplicate it |
+| `@tamagui/language-service/extract-estree` | anywhere | the same site contract from any ESTree program (eslint, oxc-parser) |
+| `@tamagui/language-service/check` | node | `checkStyleFiles` + `formatCheckResults`, the engine behind `tamagui check` |
+
+Every path takes the same input: the `.tamagui/tamagui.config.json` artifact
+the compiler emits. `core`, `document`, and `extract-sucrase` have no node,
+typescript, or sucrase imports — bundled together they are ~15KB gzipped — so
+an in-browser IDE embeds them directly:
+
+```ts
+import { createStyleTooling } from '@tamagui/language-service/core'
+import { createDocumentStyleTooling } from '@tamagui/language-service/document'
+import { createSucraseStyleSiteExtractor } from '@tamagui/language-service/extract-sucrase'
+import { parse } from 'sucrase/dist/parser'
+import { TokenType } from 'sucrase/dist/parser/tokenizer/types'
+
+const tooling = createStyleTooling(configJson)
+const document = createDocumentStyleTooling(
+  tooling,
+  createSucraseStyleSiteExtractor({ parse, TokenType }, {
+    isStyleProp: (name) => tooling.isStyleProp(name),
+  })
+)
+document.completionsAt(source, offset)
+document.diagnostics(source)
+document.hoverAt(source, offset)
+document.colors(source)
+```
+
+The VS Code extension (`code/core/language-service-vscode`) contributes this
+plugin through `typescriptServerPlugins` (zero per-project tsconfig setup),
+adds inline color swatches through the document API, and retriggers
+completions after modifier colons.

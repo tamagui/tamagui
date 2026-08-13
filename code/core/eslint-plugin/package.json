@@ -31,7 +31,8 @@
     "test:web": "vitest --run test"
   },
   "dependencies": {
-    "@tamagui/style-grammar": "workspace:*"
+    "@tamagui/style-grammar": "workspace:*",
+    "@tamagui/language-service": "workspace:*"
   },
   "peerDependencies": {
     "eslint": ">=9"
