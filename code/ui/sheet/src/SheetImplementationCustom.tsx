@@ -529,6 +529,15 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       stopSpring()
 
       const animationCompleteCallback = () => {
+        // a newer animateTo supersedes this one: drivers still fire the owed
+        // completion callback when a new setValue replaces an in-flight one.
+        // the sheet has already retargeted at.current, so syncing it back to
+        // this stale toValue would make the next animateTo to this position
+        // no-op (at === toValue) while the dom sits somewhere else — on web
+        // that leaves a reopened sheet parked offscreen at its close target.
+        // it would also null out the superseding move's pending transition
+        // and double-emit a completed end for an already-interrupted event.
+        if (at.current !== toValue) return
         syncAnimatedPosition(toValue)
         pendingTransitionRef.current = null
         // use openRef (live) not open (stale closure) — if the sheet was
