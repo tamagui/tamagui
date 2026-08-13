@@ -6,6 +6,7 @@ import { useStackedZIndex, ZIndexHardcodedContext } from '@tamagui/z-index-stack
 import * as React from 'react'
 import { createPortal } from 'react-dom'
 import { getStackedZIndexProps } from './helpers'
+import { resolveDefaultPortalContainer } from './portalContainer'
 import type { PortalProps } from './PortalProps'
 
 export const Portal = React.memo((propsIn: PortalProps) => {
@@ -43,6 +44,6 @@ export const Portal = React.memo((propsIn: PortalProps) => {
         {children}
       </ZIndexHardcodedContext.Provider>
     </TamaguiRoot>,
-    globalThis.document?.body
+    resolveDefaultPortalContainer()
   )
 })

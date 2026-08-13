@@ -1,4 +1,5 @@
 export * from './Portal'
+export * from './portalContainer'
 export * from './PortalProps'
 export * from './GorhomPortal'
 export { GorhomPortalItem as PortalItem } from './GorhomPortalItem'
