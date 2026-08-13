@@ -67,7 +67,7 @@ export function ProductCard({ product, children, ...props }) {
             transition="quicker"
             y="-10 lg:-6 group-hover/card:-4-5"
             x="-0-25 group-hover/card:-3-5"
-            rotateZ="-5deg group-hover/card:0deg"
+            rotate="-5deg group-hover/card:0deg"
             scale="1 group-hover/card:1.15"
           >
             {Icon}
