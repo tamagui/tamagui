@@ -40,6 +40,7 @@
     "@tamagui/helpers": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
+    "@tamagui/scroll-view": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
