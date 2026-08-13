@@ -75,6 +75,9 @@ export { useFloating as useFloatingRaw } from './Floating'
 // event emitter for hook coordination
 export { createFloatingEvents } from './interactions/createFloatingEvents'
 
+// shadow-DOM-safe event target (uses composedPath, like the interaction hooks)
+export { getTarget } from './interactions/utils'
+
 // multi-trigger coordination
 export { PopupTriggerMap } from './interactions/PopupTriggerMap'
 

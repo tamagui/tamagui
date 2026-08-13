@@ -1,6 +1,7 @@
 import {
   autoUpdate,
   flip,
+  getTarget,
   inner,
   offset,
   shift,
@@ -325,7 +326,11 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   // dismiss on outside pointer down (arrows are outside the floating DOM tree)
   useIsomorphicLayoutEffect(() => {
     function onPointerDown(e: PointerEvent) {
-      const target = e.target as Node
+      // getTarget, not e.target: this listener sits on the document, so a press
+      // inside a shadow root is retargeted to the shadow host and would fail the
+      // contains() checks below, dismissing the listbox on every item press.
+      // composedPath()[0] === e.target when no shadow boundary is involved.
+      const target = getTarget(e) as Node
       if (
         !(
           refs.floating.current?.contains(target) ||

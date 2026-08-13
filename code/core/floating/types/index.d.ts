@@ -3,6 +3,7 @@ export { arrow, autoPlacement, autoUpdate, detectOverflow, flip, getOverflowAnce
 export { useFloating, FloatingOverrideContext, type UseFloatingReturn, type UseFloatingProps, type UseFloatingFn, type UseFloatingOverrideFn, } from './useFloating';
 export { useFloating as useFloatingRaw } from './Floating';
 export { createFloatingEvents } from './interactions/createFloatingEvents';
+export { getTarget } from './interactions/utils';
 export { PopupTriggerMap } from './interactions/PopupTriggerMap';
 export { useInteractions } from './interactions/useInteractions';
 export { useHover } from './interactions/useHover';
