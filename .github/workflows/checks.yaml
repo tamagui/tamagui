@@ -15,10 +15,12 @@ on:
 permissions:
   contents: read
 
-# cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
+# a stable release accepts only the current main sha, so an older main run can
+# never approve it. cancel obsolete work instead of letting one hung dependency
+# install hold every newer check behind github's concurrency slot.
 concurrency:
   group: checks-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
 
 jobs:
   checks:
@@ -74,6 +76,7 @@ jobs:
 
       - name: Install playwright
         run: bunx playwright install
+        timeout-minutes: 15
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
@@ -175,6 +178,7 @@ jobs:
 
       - name: Install playwright
         run: bunx playwright install --with-deps
+        timeout-minutes: 15
 
       - name: Restore Turbo cache
         uses: actions/cache@v4
