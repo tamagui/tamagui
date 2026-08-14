@@ -6,7 +6,7 @@
       "name": "tamagui-monorepo",
       "devDependencies": {
         "@manypkg/cli": "^0.23.0",
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@take-out/cli": "0.0.65",
         "@testing-library/dom": "^10.4.0",
         "dotenv-cli": "^7.4.2",
@@ -1363,7 +1363,7 @@
       "devDependencies": {
         "@babel/core": "^7.25.2",
         "@expo/fingerprint": "~0.16.6",
-        "@playwright/test": "^1.49.1",
+        "@playwright/test": "1.58.2",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "@tamagui/babel-plugin": "workspace:*",
         "@tamagui/metro-plugin": "workspace:*",
