@@ -42,7 +42,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@expo/metro-runtime": "~55.0.6",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "1.58.2",
     "@tamagui/babel-plugin": "workspace:*",
     "@types/react": "~19.1.10",
     "serve": "^14.2.5",
