@@ -114,7 +114,7 @@
   },
   "devDependencies": {
     "@manypkg/cli": "^0.23.0",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "1.58.2",
     "@take-out/cli": "0.0.65",
     "@testing-library/dom": "^10.4.0",
     "dotenv-cli": "^7.4.2",
