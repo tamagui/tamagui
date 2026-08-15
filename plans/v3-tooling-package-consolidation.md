@@ -153,27 +153,50 @@ definition. react-native provides its own type definitions, so you do not need
 this installed." There is nothing left in it to re-export, and RN has shipped
 its own types since 0.71.
 
-That leaves three real options for those seven names:
+**What landed: the DOM entry owns its style types, and CI proves they still
+match.** `View`/`Text` and the regular style props keep react-native's types on
+purpose. Only `@tamagui/core/dom` and `tamagui/dom` have to resolve without
+react-native, and that entry needed exactly one thing from `types.tsx`:
 
-1. **Optional peer, and accept the error.** Consumers with RN get exact types;
-   consumers without get "cannot find module 'react-native'" wherever the types
-   surface. This is where `da21efb550` leaves things.
-2. **A `@tamagui/react-native-types` shim that declares them.** Works offline,
-   but it is a hand-maintained copy that drifts from RN.
-3. **Own the types, and assert conformance in CI.** Define Tamagui's own
-   structural `ViewProps`/`ViewStyle`/`TextStyle`/`PressableProps`, publish
-   those, and keep a repo-internal type test asserting mutual assignability with
-   the real RN types. The published surface then depends on nothing, and drift
-   is caught by a compile error in CI rather than by a user.
+```ts
+export type StyleDefinition = StackStyleBase & TextStylePropsBase
+```
 
-Option 3 is the recommendation. It is what `@tamagui/dom` already does for the
-DOM side (strict prop interfaces generated from tables, with React Strict DOM as
-a conformance oracle rather than a runtime dependency), so it is an existing
-pattern in this repo rather than a new one. The conformance test is the thing
-that makes it "not a copy/paste": the definitions are Tamagui's, and CI proves
-they still match RN.
+`code/core/web/src/dom/styleTypes.ts` now defines that property set outright,
+from `csstype` plus explicit unions, and `standalone.ts` imports it instead. The
+transitive `.d.ts` closure of `types/dom/index.d.ts` went from
+`@tamagui/dom, @tamagui/helpers, @tamagui/style-grammar/runtime, csstype, react,
+react-native` down to `@tamagui/dom, csstype, react`.
 
-Not yet done. Scoped at seven type names in one file.
+`code/core/web/src/dom/styleTypes.test-d.ts` is the drift alarm, and it is the
+part that makes this owned rather than copy-pasted. It runs here, where
+react-native *is* installed, and asserts at the type level that the owned key set
+is exactly `keyof (StackStyleBase & TextStylePropsBase)`, that it covers
+react-native's `ViewStyle` and `TextStyle`, and that every value the regular
+props accept is accepted too. `vitest --typecheck` runs it, so a property added
+to `types.tsx` and not to `styleTypes.ts` is a red build.
+
+Three value forms are deliberately gone, all of them runtime handles a
+compile-only `style()` could never have read: `Animated.AnimatedNode`,
+`OpaqueColorValue` (`PlatformColor()`), and `Variable`. Token names stay plain
+strings on this entry rather than the config-derived `ColorTokens`/`SizeTokens`
+unions, which are rooted in `TamaguiConfig` and cannot be reached without the
+react-native-typed part of the config: `'$4'` still typechecks, it just does not
+autocomplete there.
+
+Worth recording for whoever does the remaining `View`/`Text` surface: a
+`grep -rl react-native types/dom/` is not a check. The leak was transitive
+through `'../types'`, so that grep came back clean before the fix and comes back
+dirty after it, on prose in the doc comments. And `skipLibCheck: true`, which
+nearly every consumer sets, hides the failure rather than surfacing it: the
+unresolved import silently degrades `StyleDefinition` to `any`, so
+`style({ notAStyleProperty: 1, padding: true })` typechecked. The real checks are
+a transitive import walk over the emitted `.d.ts` files, and `tsc` on a scratch
+project that has no react-native installed.
+
+The same treatment is still available for `ViewProps`/`PressableProps` on the
+regular entry if that peer is ever worth dropping, but the owner's bar was "so
+long as html stuff works without react-native at all we're good", and it does.
 
 ## Native binary distribution, for the Rust LSP
 

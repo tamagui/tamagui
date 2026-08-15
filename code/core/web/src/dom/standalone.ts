@@ -1,4 +1,4 @@
-import type { StackStyleBase, TextStylePropsBase } from '../types'
+import type { TamaguiStyleProps } from './styleTypes'
 
 /**
  * Standalone Tamagui DOM: the surface behind `tamagui/dom` and
@@ -38,8 +38,13 @@ export type DOMStyleProps = {
 /**
  * The style-definition grammar, the same one `styled()` consumes with the
  * component argument removed.
+ *
+ * It comes from `./styleTypes`, which owns the property set outright, so this
+ * entry typechecks in a project with no react-native installed.
+ * `styleTypes.test-d.ts` asserts it still matches `StackStyleBase &
+ * TextStylePropsBase` property for property.
  */
-export type StyleDefinition = StackStyleBase & TextStylePropsBase
+export type StyleDefinition = TamaguiStyleProps
 
 const compileOnly = (what: string) =>
   new Error(
