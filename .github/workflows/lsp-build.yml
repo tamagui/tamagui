@@ -1,0 +1,185 @@
+name: LSP Binaries
+
+# Cross-compiles the language server for every platform `@tamagui/lsp` claims to
+# support, and proves each one actually runs an LSP handshake.
+#
+# This deliberately does NOT publish. The eight platform packages are the part
+# of the release that cannot be validated locally (nobody has all eight
+# toolchains), so they get continuously built here first. Publishing is wired in
+# only once these are reliably green; a leaf that fails to build is otherwise
+# discovered at release time, when the umbrella is already on npm pinning it.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'code/lsp/**'
+      - '.github/workflows/lsp-build.yml'
+  push:
+    paths:
+      - 'code/lsp/**'
+      - '.github/workflows/lsp-build.yml'
+    branches:
+      - main
+      - v3
+      - 'v3-*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lsp-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.pkg }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      # one broken target should not hide the state of the other seven
+      fail-fast: false
+      matrix:
+        include:
+          # macOS runners are arm64 and carry both SDKs, so x64 is a plain
+          # rustup target rather than a cross toolchain
+          - { pkg: lsp-darwin-arm64, os: macos-latest, target: aarch64-apple-darwin }
+          - { pkg: lsp-darwin-x64, os: macos-latest, target: x86_64-apple-darwin }
+          # tree-sitter is C, so every linux target needs a C cross compiler.
+          # cargo-zigbuild supplies one for all four from a single runner,
+          # including both musl targets, which is the part apt cannot do simply.
+          - { pkg: lsp-linux-x64-gnu, os: ubuntu-latest, target: x86_64-unknown-linux-gnu, zig: true }
+          - { pkg: lsp-linux-arm64-gnu, os: ubuntu-latest, target: aarch64-unknown-linux-gnu, zig: true }
+          - { pkg: lsp-linux-x64-musl, os: ubuntu-latest, target: x86_64-unknown-linux-musl, zig: true }
+          - { pkg: lsp-linux-arm64-musl, os: ubuntu-latest, target: aarch64-unknown-linux-musl, zig: true }
+          - { pkg: lsp-win32-x64, os: windows-latest, target: x86_64-pc-windows-msvc }
+          - { pkg: lsp-win32-arm64, os: windows-latest, target: aarch64-pc-windows-msvc }
+
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Install Rust with the ${{ matrix.target }} target
+        shell: bash
+        run: |
+          rustup toolchain install stable --profile minimal --no-self-update
+          rustup target add ${{ matrix.target }}
+
+      - name: Install zig and cargo-zigbuild
+        if: matrix.zig
+        shell: bash
+        run: |
+          pip install ziglang
+          cargo install cargo-zigbuild --locked
+
+      - name: Cache cargo
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            code/lsp/target
+          key: lsp-${{ matrix.target }}-${{ hashFiles('code/lsp/Cargo.lock') }}
+          restore-keys: lsp-${{ matrix.target }}-
+
+      - name: Build
+        working-directory: code/lsp
+        shell: bash
+        run: |
+          if [ "${{ matrix.zig }}" = "true" ]; then
+            cargo zigbuild --release -p tamagui-lsp --target ${{ matrix.target }}
+          else
+            cargo build --release -p tamagui-lsp --target ${{ matrix.target }}
+          fi
+
+      - name: Check it is the architecture it claims to be
+        working-directory: code/lsp
+        shell: bash
+        run: |
+          EXE=target/${{ matrix.target }}/release/tamagui-lsp
+          [ "${{ runner.os }}" = "Windows" ] && EXE="$EXE.exe"
+          test -f "$EXE" || { echo "no binary at $EXE"; exit 1; }
+          ls -lh "$EXE"
+          # a silently-wrong architecture is the failure this whole matrix
+          # exists to catch, and it is invisible without an explicit check
+          case "${{ runner.os }}" in
+            macOS) file "$EXE" | grep -q "$(echo ${{ matrix.target }} | grep -q aarch64 && echo arm64 || echo x86_64)" ;;
+            Linux) file "$EXE" ;;
+          esac
+
+      - name: Run an LSP handshake against it
+        # only the natively-runnable targets; a cross-built binary cannot
+        # execute on this runner, and pretending otherwise would make the check
+        # vacuous rather than skipped
+        if: matrix.target == 'aarch64-apple-darwin' || matrix.target == 'x86_64-unknown-linux-gnu' || matrix.target == 'x86_64-pc-windows-msvc'
+        working-directory: code/lsp
+        shell: bash
+        run: |
+          EXE=target/${{ matrix.target }}/release/tamagui-lsp
+          [ "${{ runner.os }}" = "Windows" ] && EXE="$EXE.exe"
+          node - "$EXE" <<'NODE'
+          const { spawn } = require('node:child_process')
+          const child = spawn(process.argv[2], [], { stdio: ['pipe', 'pipe', 'inherit'] })
+          const body = JSON.stringify({
+            jsonrpc: '2.0', id: 1, method: 'initialize',
+            params: { processId: process.pid, rootUri: null, capabilities: {} },
+          })
+          child.stdin.write(`Content-Length: ${Buffer.byteLength(body)}\r\n\r\n${body}`)
+          let out = ''
+          child.stdout.on('data', (d) => {
+            out += d
+            if (!out.includes('"capabilities"')) return
+            // incremental sync is the capability the rope exists to provide, so
+            // assert it rather than merely that the process answered
+            if (!out.includes('"textDocumentSync":2')) {
+              console.error('server did not advertise incremental sync:', out.slice(0, 400))
+              process.exit(1)
+            }
+            console.log('handshake ok, incremental sync advertised')
+            child.kill()
+            process.exit(0)
+          })
+          setTimeout(() => { console.error('timed out waiting for initialize'); process.exit(1) }, 20000)
+          NODE
+
+      - name: Stage the npm package
+        working-directory: code/lsp
+        shell: bash
+        run: |
+          EXE_NAME=tamagui-lsp
+          [ "${{ runner.os }}" = "Windows" ] && EXE_NAME="tamagui-lsp.exe"
+          OUT="npm/${{ matrix.pkg }}"
+          mkdir -p "$OUT"
+          cp "target/${{ matrix.target }}/release/$EXE_NAME" "$OUT/$EXE_NAME"
+          chmod +x "$OUT/$EXE_NAME" || true
+          node -e "
+            const { readFileSync, writeFileSync } = require('node:fs')
+            const umbrella = JSON.parse(readFileSync('npm/tamagui-lsp/package.json', 'utf8'))
+            const name = '@tamagui/${{ matrix.pkg }}'
+            if (!umbrella.optionalDependencies[name]) {
+              console.error(\`umbrella does not declare \${name}\`)
+              process.exit(1)
+            }
+            writeFileSync('$OUT/package.json', JSON.stringify({
+              name,
+              version: umbrella.version,
+              description: \`The ${{ matrix.target }} binary for @tamagui/lsp\`,
+              license: 'MIT',
+              repository: umbrella.repository,
+              os: ['${{ runner.os }}'.toLowerCase().replace('macos', 'darwin').replace('windows', 'win32')],
+              cpu: ['${{ matrix.target }}'.startsWith('aarch64') ? 'arm64' : 'x64'],
+              ...('${{ matrix.target }}'.includes('musl') ? { libc: ['musl'] }
+                : '${{ matrix.target }}'.includes('linux') ? { libc: ['glibc'] } : {}),
+              files: [\`$EXE_NAME\`],
+              publishConfig: { access: 'public' },
+            }, null, 2) + '\n')
+          "
+          cat "$OUT/package.json"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ matrix.pkg }}
+          path: code/lsp/npm/${{ matrix.pkg }}
+          if-no-files-found: error

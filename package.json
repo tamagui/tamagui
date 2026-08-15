@@ -34,7 +34,7 @@
     "check:exports:web": "node ./scripts/check-package-exports-web-alignment.mjs",
     "check:unused": "knip --dependencies --workspace .",
     "check:tamagui": "./node_modules/.bin/tamagui check",
-    "check": "bun run check:deps && bun run check:unused && bun run check:tamagui && bun run check:references && bun run check:paths && bun run check:dom-types",
+    "check": "bun run check:deps && bun run check:unused && bun run check:tamagui && bun run check:references && bun run check:paths && bun run check:dom-types && bun run check:lsp-pins",
     "ci": "bun install && bun run check && bun run lint && bun run typecheck && bun run build && bun run test",
     "clean:build": "node ./code/packages/build/tamagui-build-workspace.js --script clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
@@ -122,7 +122,8 @@
     "watch:packages": "SKIP_INITIAL_BUILD=1 node ./code/packages/build/tamagui-build-workspace.js --watch --skip-types",
     "watch:ts": "bun ./scripts/watch-ts.ts",
     "watch": "npm-run-all --parallel watch:ts watch:packages",
-    "repair:exports": "node scripts/repair-exports.js"
+    "repair:exports": "node scripts/repair-exports.js",
+    "check:lsp-pins": "bun ./scripts/check-lsp-version-pins.ts"
   },
   "devDependencies": {
     "@jridgewell/trace-mapping": "0.3.31",

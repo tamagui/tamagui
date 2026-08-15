@@ -116,4 +116,22 @@ if (JSON.stringify(declared) !== JSON.stringify(expected)) {
   console.error(`  expected: ${expected.join(', ')}`)
   process.exit(1)
 }
-console.info('umbrella optionalDependencies match the target list')
+
+// each leaf is versioned from the umbrella, so the umbrella must pin exactly
+// its own version. the release script bumps `version` but has no reason to know
+// these pins exist, which would otherwise publish an umbrella depending on
+// leaves that were never published at that version.
+const stale = Object.entries(umbrella.optionalDependencies).filter(
+  ([, range]) => range !== umbrella.version
+)
+if (stale.length > 0) {
+  for (const [name, range] of stale) {
+    umbrella.optionalDependencies[name] = umbrella.version
+    console.info(`  repinned ${name} ${range} -> ${umbrella.version}`)
+  }
+  writeFileSync(
+    join(here, 'tamagui-lsp/package.json'),
+    `${JSON.stringify(umbrella, null, 2)}\n`
+  )
+}
+console.info(`umbrella pins ${declared.length} leaves at ${umbrella.version}`)

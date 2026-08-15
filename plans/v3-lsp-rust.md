@@ -137,11 +137,42 @@ code/lsp/
 
 `tamagui-config` is done, tested (14 tests) and benchmarked.
 
-### Parser choice
+### Parser choice: tree-sitter, and why not oxc
 
-`oxc_parser` for TSX. The repo already depends on oxc through oxlint, so the
-LSP and the lint rule agree on what parses by construction rather than by
-convention. It is arena-allocated, which suits parse-and-discard per document.
+The plan was `oxc_parser`, on the reasoning that the repo already depends on oxc
+through oxlint, so the server and the lint rule would agree on what parses by
+construction. **That was wrong, and the measurement is what changed it.**
+
+oxc has no error recovery. On a parse error it returns an EMPTY program, not a
+partial one. Replaying a realistic edit (typing one new component into a file
+that already had two style props) one keystroke at a time:
+
+| parser | states losing the already-valid sites |
+| --- | --- |
+| oxc, raw replay | 73 / 84 (87%) |
+| oxc, modelling the editor's auto-closed brackets and quotes | 59 / 84 (70%) |
+| tree-sitter | **0 / 84** |
+
+A file being typed into is invalid most of the time, so every colour swatch and
+completion in the untouched part of the file would blink out on most keystrokes.
+Error tolerance is the requirement here, not a nicety, and it outranks sharing
+an engine with the linter.
+
+`biome_js_parser` was the other candidate, being both pure Rust and built for an
+LSP, but the published 0.5.x crates are mutually incompatible (`biome_parser`
+0.5.8 requires `biome_rowan` 0.5.8 while `biome_js_syntax` 0.5.7 requires
+0.5.7), so it does not build.
+
+tree-sitter costs a C dependency, which matters only for cross-compilation, and
+the release already builds each platform on its own runner. In exchange it is
+error-tolerant AND incremental by design.
+
+One honest limitation: a string with no closing quote collapses its enclosing
+element into a flat `ERROR` node with no `jsx_attribute` and no `string`, so
+that one site is not reported. Recovering it would mean a second query against
+ERROR-node internals. An editor that auto-closes quotes produces `bg=""`
+instead, which does work, and the rest of the file is unaffected either way.
+Both behaviours are tested.
 
 ### Vocabulary structure
 
@@ -154,9 +185,23 @@ diagnostic path, which a sorted `Vec` cannot do without a second structure.
 
 `ropey` for document text so an edit is O(log n) rather than a full-string
 rebuild. Style sites are held as a sorted `Vec<StyleSite>` of byte ranges, so
-resolving the cursor is a binary search. Whole-file oxc reparse on change is
-sub-millisecond at realistic file sizes, so incrementality is spent where it
-pays (the rope and the site index) rather than on partial reparse.
+resolving the cursor is a binary search.
+
+Measured whole-file parse plus query, release build:
+
+| file | sites | time |
+| --- | --- | --- |
+| 14 lines / 497 B | 12 | 55 µs |
+| 280 lines / 9.9 KB | 240 | 935 µs |
+| 1,400 lines / 50 KB | 1,200 | 4.7 ms |
+| 5,600 lines / 199 KB | 4,800 | 19 ms |
+
+A typical component file is under a millisecond, so incrementality is currently
+spent where it pays (the rope and the site index) rather than on partial
+reparse. tree-sitter can reuse an old tree given an `InputEdit`, which is the
+next lever if large files prove slow in practice; it is deliberately not taken
+yet, because the bookkeeping is easy to get subtly wrong and the win is
+invisible at the sizes measured above.
 
 ## Distribution
 
@@ -173,12 +218,16 @@ toolchain collapses into a single package
 - [x] `tamagui-grammar`: flat value parse, FST vocabulary, completion,
       Levenshtein "did you mean" diagnostics
 - [x] `tamagui-lsp`: stdio server, incremental sync, config watcher, completion,
-      hover, document colours, diagnostics. **1.1 MB release binary, 68 tests.**
+      hover, document colours, colour presentation, diagnostics.
+      **1.1 MB release binary, 85 tests.**
 - [x] distribution: `@tamagui/lsp` umbrella with per-platform
-      `optionalDependencies`, a launcher, and editor setup docs for VS Code,
-      Neovim, Helix, Zed, Emacs, Sublime and JetBrains
-- [ ] swap the lexical site scanner for `oxc_parser`
-- [ ] convert the VS Code extension to spawn the binary
+      `optionalDependencies`, a launcher, `TAMAGUI_LSP_BINARY` for source
+      builds, and editor setup docs for VS Code, Neovim, Helix, Zed, Emacs,
+      Sublime and JetBrains
+- [x] site extraction on a real parser: tree-sitter, not oxc, for the measured
+      reason above
+- [x] the VS Code extension spawns the binary; the tsserver plugin and its
+      sucrase extractor are gone, so VS Code cannot drift from other editors
 - [ ] cross-compile the seven non-host targets in CI and publish the leaves
 
 ### Distribution, verified
