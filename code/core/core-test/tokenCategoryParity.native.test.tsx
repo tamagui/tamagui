@@ -28,14 +28,11 @@ test('borderWidth binds the space category on native', () => {
 })
 
 test('shadowRadius and shar bind the size category on native', () => {
-  // shadow parts fold into one boxShadow emission once a color is present
   const sizeToken = (config.getDefaultTamaguiConfig() as any).tokens.size['4']
-  expect(
-    split({ shadowColor: 'red', shadowRadius: '4' }, View.staticConfig).style?.boxShadow
-  ).toContain(`${sizeToken.val}px`)
-  expect(
-    split({ shadowColor: 'red', shar: '4' }, View.staticConfig).style?.boxShadow
-  ).toContain(`${sizeToken.val}px`)
+  expect(split({ shadowRadius: '4' }, View.staticConfig).style?.shadowRadius).toBe(
+    sizeToken.val
+  )
+  expect(split({ shar: '4' }, View.staticConfig).style?.shadowRadius).toBe(sizeToken.val)
 })
 
 test('React Native directional radii bind the radius category', () => {

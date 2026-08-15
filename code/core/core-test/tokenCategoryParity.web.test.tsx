@@ -1,3 +1,5 @@
+process.env.TAMAGUI_TARGET = 'web'
+
 // review P0-1: the runtime resolver kept a second property-to-category table
 // (tokenCategoryByProperty + fontSubMapByProp) that diverged from the
 // style-grammar registry: borderWidth and the four side widths bound to
