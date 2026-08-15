@@ -1037,18 +1037,22 @@ function emitTransform(
   }
 }
 
+// hoisted: these are constants, and rebuilding them per call allocated five
+// objects on the way to answering a question about four integers
+const SLOT_PATTERNS_4: Record<number, number[]> = {
+  1: [0, 0, 0, 0],
+  2: [0, 1, 0, 1],
+  3: [0, 1, 2, 1],
+  4: [0, 1, 2, 3],
+}
+const SLOT_PATTERNS_2: Record<number, number[]> = { 1: [0, 0], 2: [0, 1] }
+
 function slotValues(parts: string[], count: number): string[] | null {
-  const patterns: Record<number, number[]> =
-    count === 4
-      ? {
-          1: [0, 0, 0, 0],
-          2: [0, 1, 0, 1],
-          3: [0, 1, 2, 1],
-          4: [0, 1, 2, 3],
-        }
-      : { 1: [0, 0], 2: [0, 1] }
-  const pattern = patterns[parts.length]
-  return pattern ? pattern.map((index) => parts[index]) : null
+  const pattern = (count === 4 ? SLOT_PATTERNS_4 : SLOT_PATTERNS_2)[parts.length]
+  if (!pattern) return null
+  const out = new Array<string>(pattern.length)
+  for (let i = 0; i < pattern.length; i++) out[i] = parts[pattern[i]]
+  return out
 }
 
 function emitResolved(
